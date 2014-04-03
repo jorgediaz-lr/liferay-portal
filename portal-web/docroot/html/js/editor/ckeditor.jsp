@@ -142,6 +142,12 @@ if (!inlineEdit) {
 				data = '';
 			}
 
+			<c:if test="<%= Validator.isNotNull(initMethod) && !(inlineEdit && (inlineEditSaveURL != null)) %>">
+				if (!window['<%= name %>'].isInstanceReady) {
+					data = window['<%= HtmlUtil.escapeJS(namespace + initMethod) %>']();
+				}
+			</c:if>
+
 			return data;
 		},
 
@@ -152,6 +158,8 @@ if (!inlineEdit) {
 		getText: function() {
 			return window['<%= name %>'].getCkData();
 		},
+
+		isInstanceReady: false,
 
 		<c:if test="<%= Validator.isNotNull(onBlurMethod) %>">
 			onBlurCallback: function() {
@@ -344,6 +352,8 @@ if (inlineEdit && (inlineEditSaveURL != null)) {
 
 					if (instanceReady) {
 						initData();
+
+						window['<%= name %>'].isInstanceReady = true;
 					}
 				}
 			);
@@ -361,10 +371,14 @@ if (inlineEdit && (inlineEditSaveURL != null)) {
 
 						if (customDataProcessorLoaded) {
 							initData();
+
+							window['<%= name %>'].isInstanceReady = true;
 						}
 					</c:when>
 					<c:otherwise>
 						initData();
+
+						window['<%= name %>'].isInstanceReady = true;
 					</c:otherwise>
 				</c:choose>
 
