@@ -16,6 +16,7 @@
 
 <%@ include file="/html/taglib/aui/form/init.jsp" %>
 
+	</fieldset>
 </form>
 
 <aui:script use="liferay-form">
@@ -61,4 +62,6 @@
 			</c:if>
 		}
 	);
+
+	A.one('#<%= namespace + name %> fieldset').removeAttribute('disabled');
 </aui:script>
