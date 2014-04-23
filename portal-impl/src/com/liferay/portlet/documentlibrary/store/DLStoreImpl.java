@@ -618,8 +618,18 @@ public class DLStoreImpl implements DLStore {
 	public void validate(String fileName, boolean validateFileExtension)
 		throws PortalException, SystemException {
 
-		if (!isValidName(fileName)) {
+		String[] fileNameFragment=null;
+
+		if (Validator.isNotNull(fileName)) {
+			fileNameFragment = fileName.split(StringPool.SLASH);
+		}
+
+		if (fileNameFragment==null || fileNameFragment.length == 0) {
 			throw new FileNameException(fileName);
+		}
+
+		for(int i=0;i<fileNameFragment.length;i++) {
+			validateFileName(fileNameFragment[i]);
 		}
 
 		if (validateFileExtension) {
@@ -748,6 +758,15 @@ public class DLStoreImpl implements DLStore {
 
 		if (!isValidName(directoryName)) {
 			throw new FolderNameException(directoryName);
+		}
+	}
+
+	@Override
+	public void validateFileName(String fileName)
+		throws PortalException {
+
+		if (!isValidName(fileName)) {
+			throw new FileNameException(fileName);
 		}
 	}
 

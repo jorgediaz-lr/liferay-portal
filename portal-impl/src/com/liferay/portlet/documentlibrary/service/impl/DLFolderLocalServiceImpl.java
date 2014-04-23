@@ -1192,8 +1192,6 @@ public class DLFolderLocalServiceImpl extends DLFolderLocalServiceBaseImpl {
 			long folderId, long groupId, long parentFolderId, String name)
 		throws PortalException, SystemException {
 
-		validateFolderName(name);
-
 		DLStoreUtil.validateDirectoryName(name);
 
 		try {
@@ -1219,14 +1217,6 @@ public class DLFolderLocalServiceImpl extends DLFolderLocalServiceBaseImpl {
 		long folderId = 0;
 
 		validateFolder(folderId, groupId, parentFolderId, name);
-	}
-
-	protected void validateFolderName(String folderName)
-		throws PortalException {
-
-		if (folderName.contains(StringPool.SLASH)) {
-			throw new FolderNameException(folderName);
-		}
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(
