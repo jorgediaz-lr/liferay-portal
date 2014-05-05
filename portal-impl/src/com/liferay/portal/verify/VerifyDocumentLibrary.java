@@ -16,6 +16,7 @@ package com.liferay.portal.verify;
 
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.dao.orm.Disjunction;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.Property;
@@ -36,12 +37,14 @@ import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.UnicodeFormatter;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.repository.liferayrepository.model.LiferayFileEntry;
 import com.liferay.portal.repository.liferayrepository.model.LiferayFileVersion;
 import com.liferay.portal.repository.liferayrepository.model.LiferayFolder;
 import com.liferay.portal.util.PortalInstances;
+import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.documentlibrary.DuplicateFileException;
 import com.liferay.portlet.documentlibrary.DuplicateFolderNameException;
 import com.liferay.portlet.documentlibrary.model.DLFileEntry;
@@ -437,7 +440,33 @@ public class VerifyDocumentLibrary extends VerifyProcess {
 		DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
 			DLFileEntry.class);
 
-		dynamicQuery.add(RestrictionsFactoryUtil.like("title", "%\\\\%"));
+		Disjunction disjunction = RestrictionsFactoryUtil.disjunction();
+
+		for (String blacklistChar : PropsValues.DL_CHAR_BLACKLIST) {
+			blacklistChar = blacklistChar.replace(
+				StringPool.BACK_SLASH, "\\\\");
+
+			disjunction.add(
+				RestrictionsFactoryUtil.like(
+					"title", "%" + blacklistChar + "%"));
+		}
+
+		for (String blacklistLastChar : PropsValues.DL_CHAR_LAST_BLACKLIST) {
+			if (blacklistLastChar.startsWith(UnicodeFormatter.UNICODE_PREFIX)) {
+				blacklistLastChar = UnicodeFormatter.parseString(
+					blacklistLastChar);
+			}
+
+			disjunction.add(
+				RestrictionsFactoryUtil.like("title", "%" + blacklistLastChar));
+		}
+
+		for (String blacklistName : PropsValues.DL_NAME_BLACKLIST) {
+			disjunction.add(
+				RestrictionsFactoryUtil.like("title", blacklistName + "%"));
+		}
+
+		dynamicQuery.add(disjunction);
 
 		List<DLFileEntry> dlFileEntries =
 			DLFileEntryLocalServiceUtil.dynamicQuery(dynamicQuery);
@@ -452,8 +481,61 @@ public class VerifyDocumentLibrary extends VerifyProcess {
 
 			String title = dlFileEntry.getTitle();
 
-			String newTitle = title.replace(
-				StringPool.BACK_SLASH, StringPool.UNDERLINE);
+			String newTitle = title;
+
+			for (String blacklistChar : PropsValues.DL_CHAR_BLACKLIST) {
+				newTitle = newTitle.replace(
+					blacklistChar, StringPool.UNDERLINE);
+			}
+
+			boolean replaced = true;
+
+			while (replaced) {
+				replaced = false;
+
+				for (
+					String blacklistLastChar :
+						PropsValues.DL_CHAR_LAST_BLACKLIST) {
+
+					if (blacklistLastChar.startsWith(
+							UnicodeFormatter.UNICODE_PREFIX)) {
+
+						blacklistLastChar = UnicodeFormatter.parseString(
+							blacklistLastChar);
+					}
+
+					while (newTitle.endsWith(blacklistLastChar))
+					{
+						newTitle = StringUtil.replaceLast(
+							newTitle, blacklistLastChar, StringPool.BLANK);
+
+						replaced = true;
+					}
+				}
+			}
+
+			String nameWithoutExtension = newTitle;
+
+			String extension = StringPool.BLANK;
+
+			if (newTitle.contains(StringPool.PERIOD)) {
+				int index = newTitle.lastIndexOf(StringPool.PERIOD);
+
+				nameWithoutExtension = newTitle.substring(0, index);
+
+				extension = newTitle.substring(index);
+			}
+
+			for (String blacklistName : PropsValues.DL_NAME_BLACKLIST) {
+				if (StringUtil.equalsIgnoreCase(
+						nameWithoutExtension, blacklistName)) {
+
+					newTitle =
+						nameWithoutExtension + StringPool.UNDERLINE + extension;
+
+					break;
+				}
+			}
 
 			renameTitle(dlFileEntry, newTitle);
 		}
