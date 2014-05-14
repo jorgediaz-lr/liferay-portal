@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.search.DocumentImpl;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.SearchEngineUtil;
+import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.search.Summary;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.Constants;
@@ -241,6 +242,35 @@ public class JournalArticleIndexer extends BaseIndexer {
 		}
 	}
 
+	protected void addArticleVersionsToReindex(
+			JournalArticle article, Collection<Document> documents)
+				throws SearchException, SystemException {
+
+		if (article.isApproved()) {
+			List<JournalArticle> latestIndexableArticles =
+				JournalArticleLocalServiceUtil.fetchLatestIndexableArticles(
+					article.getResourcePrimKey(), 2);
+
+			if (latestIndexableArticles.size() > 1) {
+				JournalArticle previousHead = latestIndexableArticles.get(1);
+				JournalArticle currentHead = latestIndexableArticles.get(0);
+
+				if (article.getId() == currentHead.getId()) {
+					documents.add(getDocument(previousHead));
+				}
+			}
+		}
+		else if (!article.isDraft() && !article.isScheduled()) {
+			JournalArticle currentHead =
+					JournalArticleLocalServiceUtil.fetchLatestIndexableArticle(
+						article.getResourcePrimKey());
+
+			if (currentHead != null) {
+				documents.add(getDocument(currentHead));
+			}
+		}
+	}
+
 	protected void addDDMStructureAttributes(
 			Document document, JournalArticle article)
 		throws Exception {
@@ -320,7 +350,18 @@ public class JournalArticleIndexer extends BaseIndexer {
 
 		deleteDocument(article.getCompanyId(), article.getId());
 
-		reindexArticleVersions(article);
+		if (!article.isDraft() &&
+			!article.isExpired() &&
+			!article.isScheduled())
+		{
+			JournalArticle currentHead =
+					JournalArticleLocalServiceUtil.fetchLatestIndexableArticle(
+						article.getResourcePrimKey());
+
+			SearchEngineUtil.updateDocument(
+					getSearchEngineId(), article.getCompanyId(), getDocument(
+						currentHead));
+		}
 	}
 
 	@Override
@@ -457,9 +498,8 @@ public class JournalArticleIndexer extends BaseIndexer {
 		return new Summary(snippetLocale, title, content, portletURL);
 	}
 
-	@Override
-	protected void doReindex(Object obj) throws Exception {
-		JournalArticle article = (JournalArticle)obj;
+	protected void doReindex(JournalArticle article, boolean reindexAllVersions)
+		throws PortalException, SearchException, SystemException {
 
 		if (!article.isIndexable() ||
 			(PortalUtil.getClassNameId(DDMStructure.class) ==
@@ -474,22 +514,37 @@ public class JournalArticleIndexer extends BaseIndexer {
 			return;
 		}
 
-		reindexArticleVersions(article);
+		Collection<Document> documents;
+
+		if (reindexAllVersions) {
+			documents = getArticleVersions(article);
+		}
+
+		else
+		{
+			documents = new ArrayList<Document>();
+			documents.add(getDocument(article));
+
+			addArticleVersionsToReindex(article, documents);
+		}
+
+		SearchEngineUtil.updateDocuments(
+			getSearchEngineId(), article.getCompanyId(), documents);
+	}
+
+	@Override
+	protected void doReindex(Object obj) throws Exception {
+		JournalArticle article = (JournalArticle)obj;
+
+		doReindex(article, false);
 	}
 
 	@Override
 	protected void doReindex(String className, long classPK) throws Exception {
-		JournalArticle article =
-			JournalArticleLocalServiceUtil.fetchJournalArticle(classPK);
-
-		if (article == null) {
-			article =
-				JournalArticleLocalServiceUtil.fetchLatestIndexableArticle(
-					classPK);
-		}
+		JournalArticle article = getJournalArticle(classPK);
 
 		if (article != null) {
-			doReindex(article);
+			doReindex(article, false);
 		}
 	}
 
@@ -520,7 +575,18 @@ public class JournalArticleIndexer extends BaseIndexer {
 				ddmStructureKeys);
 
 		for (JournalArticle article : articles) {
-			doReindex(article);
+			doReindex(article, true);
+		}
+	}
+
+	@Override
+	protected void doReindexPermissions(String className, long classPK)
+		throws Exception {
+
+		JournalArticle article = getJournalArticle(classPK);
+
+		if (article != null) {
+			doReindex(article, true);
 		}
 	}
 
@@ -616,6 +682,21 @@ public class JournalArticleIndexer extends BaseIndexer {
 		return content;
 	}
 
+	protected JournalArticle getJournalArticle(long classPK)
+		throws SystemException {
+
+		JournalArticle article =
+			JournalArticleLocalServiceUtil.fetchJournalArticle(classPK);
+
+		if (article == null) {
+			article =
+				JournalArticleLocalServiceUtil.fetchLatestIndexableArticle(
+			classPK);
+		}
+
+		return article;
+	}
+
 	protected String[] getLanguageIds(
 		String defaultLanguageId,
 		com.liferay.portal.kernel.xml.Document document) {
@@ -672,14 +753,6 @@ public class JournalArticleIndexer extends BaseIndexer {
 		actionableDynamicQuery.setSearchEngineId(getSearchEngineId());
 
 		actionableDynamicQuery.performActions();
-	}
-
-	protected void reindexArticleVersions(JournalArticle article)
-		throws PortalException, SystemException {
-
-		SearchEngineUtil.updateDocuments(
-			getSearchEngineId(), article.getCompanyId(),
-			getArticleVersions(article));
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(
