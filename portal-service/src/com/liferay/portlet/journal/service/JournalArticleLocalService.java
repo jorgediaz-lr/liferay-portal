@@ -808,6 +808,17 @@ public interface JournalArticleLocalService extends BaseLocalService,
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	/**
+	* @param resourcePrimKey
+	* @param numArticles
+	* @return
+	* @throws SystemException
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public java.util.List<com.liferay.portlet.journal.model.JournalArticle> fetchLatestIndexableArticles(
+		long resourcePrimKey, int numArticles)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
 	* Returns the web content article with the ID.
 	*
 	* @param id the primary key of the web content article
@@ -2503,7 +2514,7 @@ public interface JournalArticleLocalService extends BaseLocalService,
 		long groupId, java.util.List<java.lang.Long> folderIds,
 		long classNameId, java.lang.String articleId, java.lang.String title,
 		java.lang.String description, java.lang.String content,
-		java.lang.String type, java.lang.String status,
+		java.lang.String type, java.lang.String statusString,
 		java.lang.String ddmStructureKey, java.lang.String ddmTemplateKey,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andSearch, int start, int end,
