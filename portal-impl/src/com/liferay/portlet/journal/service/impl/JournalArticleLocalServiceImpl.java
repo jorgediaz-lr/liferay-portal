@@ -2998,7 +2998,7 @@ public class JournalArticleLocalServiceImpl
 	 * @throws PortalException if a matching web content article could not be
 	 *         found
 	 */
-	@Indexable(type = IndexableType.REINDEX)
+	@Indexable(type = IndexableType.REINDEX_ALL)
 	@Override
 	public JournalArticle moveArticle(
 			long groupId, String articleId, long newFolderId)
@@ -3044,7 +3044,7 @@ public class JournalArticleLocalServiceImpl
 	 * @throws PortalException if a trashed web content article with the primary
 	 *         key could not be found or if a portal exception occurred
 	 */
-	@Indexable(type = IndexableType.REINDEX)
+	@Indexable(type = IndexableType.REINDEX_ALL)
 	@Override
 	public JournalArticle moveArticleFromTrash(
 			long userId, long groupId, JournalArticle article, long newFolderId,
@@ -3097,7 +3097,7 @@ public class JournalArticleLocalServiceImpl
 	 * @throws PortalException if the user did not have permission to move the
 	 *         article to the Recycle Bin or if a portal exception occurred
 	 */
-	@Indexable(type = IndexableType.REINDEX)
+	@Indexable(type = IndexableType.REINDEX_ALL)
 	@Override
 	public JournalArticle moveArticleToTrash(
 			long userId, JournalArticle article)
@@ -3302,7 +3302,7 @@ public class JournalArticleLocalServiceImpl
 	 *         permission to restore the article, or if a portal exception
 	 *         occurred
 	 */
-	@Indexable(type = IndexableType.REINDEX)
+	@Indexable(type = IndexableType.REINDEX_ALL)
 	@Override
 	public JournalArticle restoreArticleFromTrash(
 			long userId, JournalArticle article)
@@ -5380,7 +5380,8 @@ public class JournalArticleLocalServiceImpl
 			Indexer indexer = IndexerRegistryUtil.nullSafeGetIndexer(
 				JournalArticle.class);
 
-			indexer.reindex(article);
+			indexer.reindex(
+				article, PropsValues.JOURNAL_ARTICLE_EXPIRE_ALL_VERSIONS);
 
 			JournalContentUtil.clearCache(
 				article.getGroupId(), article.getArticleId(),
