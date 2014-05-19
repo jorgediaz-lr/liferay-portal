@@ -1311,7 +1311,6 @@ public class JournalArticleLocalServiceImpl
 	 *         found or if a portal exception occurred
 	 * @throws SystemException if a system exception occurred
 	 */
-	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public JournalArticle expireArticle(
 			long userId, long groupId, String articleId, double version,
@@ -3287,7 +3286,6 @@ public class JournalArticleLocalServiceImpl
 	 *         found
 	 * @throws SystemException if a system exception occurred
 	 */
-	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public JournalArticle moveArticle(
 			long groupId, String articleId, long newFolderId)
@@ -3301,11 +3299,16 @@ public class JournalArticleLocalServiceImpl
 		List<JournalArticle> articles = journalArticlePersistence.findByG_A(
 			groupId, articleId);
 
+		Indexer indexer = IndexerRegistryUtil.nullSafeGetIndexer(
+			JournalArticle.class);
+
 		for (JournalArticle article : articles) {
 			article.setFolderId(newFolderId);
 			article.setTreePath(article.buildTreePath());
 
 			journalArticlePersistence.update(article);
+
+			indexer.reindex(article);
 		}
 
 		return getArticle(groupId, articleId);
@@ -3334,7 +3337,6 @@ public class JournalArticleLocalServiceImpl
 	 *         key could not be found or if a portal exception occurred
 	 * @throws SystemException if a system exception occurred
 	 */
-	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public JournalArticle moveArticleFromTrash(
 			long userId, long groupId, JournalArticle article, long newFolderId,
@@ -3388,7 +3390,6 @@ public class JournalArticleLocalServiceImpl
 	 *         article to the Recycle Bin or if a portal exception occurred
 	 * @throws SystemException if a system exception occurred
 	 */
-	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public JournalArticle moveArticleToTrash(
 			long userId, JournalArticle article)
@@ -3605,7 +3606,6 @@ public class JournalArticleLocalServiceImpl
 	 *         occurred
 	 * @throws SystemException if a system exception occurred
 	 */
-	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public JournalArticle restoreArticleFromTrash(
 			long userId, JournalArticle article)
@@ -5686,11 +5686,6 @@ public class JournalArticleLocalServiceImpl
 			displayDate, WorkflowConstants.STATUS_SCHEDULED);
 
 		for (JournalArticle article : articles) {
-			Indexer indexer = IndexerRegistryUtil.nullSafeGetIndexer(
-				JournalArticle.class);
-
-			indexer.reindex(article);
-
 			ServiceContext serviceContext = new ServiceContext();
 
 			serviceContext.setCommand(Constants.UPDATE);
@@ -5724,6 +5719,9 @@ public class JournalArticleLocalServiceImpl
 
 		Set<Long> companyIds = new HashSet<Long>();
 
+		Indexer indexer = IndexerRegistryUtil.nullSafeGetIndexer(
+			JournalArticle.class);
+
 		for (JournalArticle article : articles) {
 			if (PropsValues.JOURNAL_ARTICLE_EXPIRE_ALL_VERSIONS) {
 				List<JournalArticle> currentArticles =
@@ -5738,20 +5736,19 @@ public class JournalArticleLocalServiceImpl
 					currentArticle.setStatus(WorkflowConstants.STATUS_EXPIRED);
 
 					journalArticlePersistence.update(currentArticle);
+
+					indexer.reindex(currentArticle);
 				}
 			}
 			else {
 				article.setStatus(WorkflowConstants.STATUS_EXPIRED);
 
 				journalArticlePersistence.update(article);
+
+				indexer.reindex(article);
 			}
 
 			updatePreviousApprovedArticle(article);
-
-			Indexer indexer = IndexerRegistryUtil.nullSafeGetIndexer(
-				JournalArticle.class);
-
-			indexer.reindex(article);
 
 			JournalContentUtil.clearCache(
 				article.getGroupId(), article.getArticleId(),

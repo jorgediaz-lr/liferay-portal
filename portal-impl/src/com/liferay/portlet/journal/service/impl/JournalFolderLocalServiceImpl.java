@@ -1091,7 +1091,9 @@ public class JournalFolderLocalServiceImpl
 				Indexer indexer = IndexerRegistryUtil.nullSafeGetIndexer(
 					JournalArticle.class);
 
-				indexer.reindex(article);
+				for (JournalArticle articleVersion : articles) {
+					indexer.reindex(articleVersion);
+				}
 			}
 			else if (object instanceof JournalFolder) {
 
