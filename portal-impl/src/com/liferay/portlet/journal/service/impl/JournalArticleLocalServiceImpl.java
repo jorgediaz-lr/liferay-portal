@@ -468,7 +468,7 @@ public class JournalArticleLocalServiceImpl
 		else {
 			updateStatus(
 				userId, article, WorkflowConstants.STATUS_APPROVED, null,
-				serviceContext, new HashMap<String, Serializable>());
+				serviceContext, new HashMap<String, Serializable>(), false);
 		}
 
 		return journalArticlePersistence.findByPrimaryKey(article.getId());
@@ -3110,7 +3110,7 @@ public class JournalArticleLocalServiceImpl
 
 			updateStatus(
 				userId, article, status, null, serviceContext,
-				new HashMap<String, Serializable>());
+				new HashMap<String, Serializable>(), false);
 
 			// Trash
 
@@ -3381,7 +3381,7 @@ public class JournalArticleLocalServiceImpl
 
 		updateStatus(
 			userId, article, trashEntry.getStatus(), null, serviceContext,
-			new HashMap<String, Serializable>());
+			new HashMap<String, Serializable>(), false);
 
 		// Trash
 
@@ -4600,7 +4600,7 @@ public class JournalArticleLocalServiceImpl
 		if (expired && imported) {
 			updateStatus(
 				userId, article, article.getStatus(), articleURL,
-				serviceContext, new HashMap<String, Serializable>());
+				serviceContext, new HashMap<String, Serializable>(), false);
 		}
 
 		if (serviceContext.getWorkflowAction() ==
@@ -4942,7 +4942,23 @@ public class JournalArticleLocalServiceImpl
 			Map<String, Serializable> workflowContext)
 		throws PortalException {
 
+		return updateStatus(
+			userId, article, status, articleURL, serviceContext,
+			workflowContext, true);
+	}
+
+	public JournalArticle updateStatus(
+			long userId, JournalArticle article, int status, String articleURL,
+			ServiceContext serviceContext,
+			Map<String, Serializable> workflowContext, boolean reindex)
+		throws PortalException {
+
 		boolean propagateReindex = false;
+
+		if (reindex) {
+			propagateReindex = needReindexAllVersionsAfterUpdateStatus(
+				article, status);
+		}
 
 		// Article
 
@@ -4990,7 +5006,7 @@ public class JournalArticleLocalServiceImpl
 				article.getVersion())) {
 
 			if (status == WorkflowConstants.STATUS_APPROVED) {
-				propagateReindex = updateUrlTitles(
+				updateUrlTitles(
 					article.getGroupId(), article.getArticleId(),
 					article.getUrlTitle());
 
@@ -5018,16 +5034,6 @@ public class JournalArticleLocalServiceImpl
 						long[] assetLinkEntryIds = StringUtil.split(
 							ListUtil.toString(
 								assetLinks, AssetLink.ENTRY_ID2_ACCESSOR), 0L);
-
-						if (!propagateReindex) {
-							AssetEntry oldAssetEntry =
-								assetEntryLocalService.fetchEntry(
-									JournalArticle.class.getName(),
-									article.getResourcePrimKey());
-
-							propagateReindex = categoriesOrTagsHaveChanges(
-								oldAssetEntry, assetCategoryIds, assetTagNames);
-						}
 
 						AssetEntry assetEntry =
 							assetEntryLocalService.updateEntry(
@@ -5151,10 +5157,12 @@ public class JournalArticleLocalServiceImpl
 				serviceContext);
 		}
 
-		Indexer indexer = IndexerRegistryUtil.nullSafeGetIndexer(
-			JournalArticle.class);
+		if (reindex) {
+			Indexer indexer = IndexerRegistryUtil.nullSafeGetIndexer(
+				JournalArticle.class);
 
-		indexer.reindex(article, propagateReindex);
+			indexer.reindex(article, propagateReindex);
+		}
 
 		return article;
 	}
@@ -5367,10 +5375,23 @@ public class JournalArticleLocalServiceImpl
 		return searchContext;
 	}
 
-	protected boolean categoriesOrTagsHaveChanges(
-			AssetEntry oldAssetEntry, long[] assetCategoryIds,
-			String[] assetTagNames)
-		throws PortalException, SystemException {
+	protected boolean categoriesOrTagsHaveChanges(JournalArticle article)
+		throws PortalException {
+
+		AssetEntry draftAssetEntry =
+				assetEntryLocalService.fetchEntry(
+					JournalArticle.class.getName(), article.getPrimaryKey());
+
+		if (draftAssetEntry == null) {
+			return false;
+		}
+
+		long[] assetCategoryIds = draftAssetEntry.getCategoryIds();
+		String[] assetTagNames = draftAssetEntry.getTagNames();
+
+		AssetEntry oldAssetEntry =
+			assetEntryLocalService.fetchEntry(
+				JournalArticle.class.getName(), article.getResourcePrimKey());
 
 		long[] oldAssetCategoryIds = new long[0];
 
@@ -6326,6 +6347,33 @@ public class JournalArticleLocalServiceImpl
 		}
 	}
 
+	protected boolean needReindexAllVersionsAfterUpdateStatus(
+			JournalArticle article, int newStatus)
+		throws NoSuchArticleException, PortalException {
+
+		if ((newStatus != WorkflowConstants.STATUS_APPROVED) ||
+			!hasModifiedLatestApprovedVersion(
+					article.getGroupId(), article.getArticleId(),
+					article.getVersion())) {
+
+			return false;
+		}
+
+		JournalArticle firstArticle = journalArticlePersistence.findByG_A_First(
+			article.getGroupId(), article.getArticleId(),
+			new ArticleVersionComparator(false));
+
+		if (!firstArticle.getUrlTitle().equals(article.getUrlTitle())) {
+			return true;
+		}
+
+		if (article.getStatus() == WorkflowConstants.STATUS_APPROVED) {
+			return false;
+		}
+
+		return categoriesOrTagsHaveChanges(article);
+	}
+
 	protected void notifySubscribers(
 			JournalArticle article, String articleURL,
 			ServiceContext serviceContext)
@@ -6721,7 +6769,7 @@ public class JournalArticleLocalServiceImpl
 		}
 	}
 
-	protected boolean updateUrlTitles(
+	protected void updateUrlTitles(
 			long groupId, String articleId, String urlTitle)
 		throws PortalException {
 
@@ -6729,25 +6777,19 @@ public class JournalArticleLocalServiceImpl
 			groupId, articleId, new ArticleVersionComparator(false));
 
 		if (firstArticle.getUrlTitle().equals(urlTitle)) {
-			return false;
+			return;
 		}
 
 		List<JournalArticle> articles = journalArticlePersistence.findByG_A(
 			groupId, articleId);
-
-		boolean updated = false;
 
 		for (JournalArticle article : articles) {
 			if (!article.getUrlTitle().equals(urlTitle)) {
 				article.setUrlTitle(urlTitle);
 
 				journalArticlePersistence.update(article);
-
-				updated = true;
 			}
 		}
-
-		return updated;
 	}
 
 	protected void validate(
