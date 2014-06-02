@@ -31,6 +31,7 @@ import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.LayoutLocalServiceUtil;
 import com.liferay.portal.service.LayoutServiceUtil;
 import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.service.ServiceContextThreadLocal;
 import com.liferay.portal.service.UserGroupLocalServiceUtil;
 import com.liferay.portal.test.EnvironmentExecutionTestListener;
 import com.liferay.portal.test.LiferayIntegrationJUnitTestRunner;
@@ -47,6 +48,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -63,6 +65,12 @@ import org.springframework.mock.web.MockHttpServletRequest;
 @RunWith(LiferayIntegrationJUnitTestRunner.class)
 @Transactional
 public class PortalImplActualURLTest {
+
+	@Before
+	public void setUp() throws Exception {
+		ServiceContextThreadLocal.pushServiceContext(
+				ServiceContextTestUtil.getServiceContext());
+	}
 
 	@Test
 	public void testChildLayoutFriendlyURL() throws Exception {

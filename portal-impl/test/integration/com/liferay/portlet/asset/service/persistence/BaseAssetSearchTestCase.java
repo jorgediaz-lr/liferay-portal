@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.service.ServiceContextThreadLocal;
 import com.liferay.portal.test.EnvironmentExecutionTestListener;
 import com.liferay.portal.test.LiferayIntegrationJUnitTestRunner;
 import com.liferay.portal.test.Sync;
@@ -47,7 +48,6 @@ import com.liferay.portlet.asset.service.persistence.test.AssetEntryQueryTestUti
 import com.liferay.portlet.asset.util.AssetUtil;
 
 import java.text.DateFormat;
-
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -78,6 +78,8 @@ public abstract class BaseAssetSearchTestCase {
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
+
+		ServiceContextThreadLocal.pushServiceContext(serviceContext);
 
 		AssetVocabulary vocabulary =
 			AssetVocabularyLocalServiceUtil.addVocabulary(

@@ -25,12 +25,15 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.LayoutLocalServiceUtil;
+import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.service.ServiceContextThreadLocal;
 import com.liferay.portal.test.LiferayIntegrationJUnitTestRunner;
 import com.liferay.portal.test.MainServletExecutionTestListener;
 import com.liferay.portal.test.Sync;
 import com.liferay.portal.test.SynchronousDestinationExecutionTestListener;
 import com.liferay.portal.util.test.CompanyTestUtil;
 import com.liferay.portal.util.test.GroupTestUtil;
+import com.liferay.portal.util.test.ServiceContextTestUtil;
 import com.liferay.portal.util.test.TestPropsValues;
 import com.liferay.portlet.journal.model.JournalArticle;
 import com.liferay.portlet.journal.model.JournalArticleResource;
@@ -39,7 +42,6 @@ import com.liferay.portlet.journal.service.JournalArticleResourceLocalServiceUti
 import com.liferay.portlet.journal.util.test.JournalTestUtil;
 
 import java.io.File;
-
 import java.util.Date;
 import java.util.Locale;
 
@@ -72,6 +74,11 @@ public class StagingLocalizationTest {
 
 		_sourceGroup = GroupTestUtil.addGroup();
 		_targetGroup = GroupTestUtil.addGroup();
+
+		ServiceContext serviceContext =
+				ServiceContextTestUtil.getServiceContext(_sourceGroup.getGroupId());
+
+			ServiceContextThreadLocal.pushServiceContext(serviceContext);
 	}
 
 	@After
