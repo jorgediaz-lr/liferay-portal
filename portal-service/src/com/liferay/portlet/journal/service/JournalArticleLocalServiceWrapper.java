@@ -958,6 +958,13 @@ public class JournalArticleLocalServiceWrapper
 		return _journalArticleLocalService.fetchLatestIndexableArticle(resourcePrimKey);
 	}
 
+	@Override
+	public com.liferay.portlet.journal.model.JournalArticle fetchPreviousLatestIndexableArticle(
+		long resourcePrimKey)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _journalArticleLocalService.fetchPreviousLatestIndexableArticle(resourcePrimKey);
+	}
+
 	/**
 	* Returns the web content article with the ID.
 	*
