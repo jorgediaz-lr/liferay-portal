@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
+import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -60,11 +61,11 @@ import com.liferay.portlet.journal.model.JournalArticle;
 import com.liferay.portlet.journal.model.JournalArticleDisplay;
 import com.liferay.portlet.journal.service.JournalArticleLocalServiceUtil;
 import com.liferay.portlet.journal.service.permission.JournalArticlePermission;
+import com.liferay.portlet.journal.util.comparator.ArticleVersionComparator;
 import com.liferay.portlet.journalcontent.util.JournalContentUtil;
 import com.liferay.portlet.trash.util.TrashUtil;
 
 import java.io.Serializable;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -322,10 +323,7 @@ public class JournalArticleIndexer extends BaseIndexer {
 
 		deleteDocument(article.getCompanyId(), article.getId());
 
-		if (!article.isDraft() &&
-			!article.isExpired() &&
-			!article.isScheduled())
-		{
+		if (article.isApproved()) {
 			JournalArticle currentHead =
 					JournalArticleLocalServiceUtil.fetchLatestIndexableArticle(
 						article.getResourcePrimKey());
@@ -478,17 +476,21 @@ public class JournalArticleIndexer extends BaseIndexer {
 	protected void doReindex(Object obj) throws Exception {
 		JournalArticle article = (JournalArticle)obj;
 
-		ServiceContext sc = ServiceContextThreadLocal.getServiceContext();
+		ServiceContext serviceContext = 
+			ServiceContextThreadLocal.getServiceContext();
 		Boolean reindexAllVersions = null;
 
-		if ( sc != null) {
-			reindexAllVersions = (Boolean)sc.getAttribute("reindexAllVersions");
+		if (serviceContext != null) {
+			reindexAllVersions = 
+				(Boolean)serviceContext.getAttribute("reindexAllVersions");
 		}
 
-		if (reindexAllVersions!= null && reindexAllVersions) {
-			sc.removeAttribute("reindexAllVersions");
+		if (reindexAllVersions != null && reindexAllVersions) {
+			serviceContext.removeAttribute("reindexAllVersions");
 
 			reindexArticleVersions(article);
+
+			//TODO FALTA BORRAR SI NO ES INDEXABLE
 
 			return;
 		}
@@ -593,6 +595,25 @@ public class JournalArticleIndexer extends BaseIndexer {
 			ddmStructure, fields, LocaleUtil.fromLanguageId(languageId));
 	}
 
+	protected Collection<Document> getArticleVersions(JournalArticle article)
+		throws PortalException, SystemException {
+
+		Collection<Document> documents = new ArrayList<Document>();
+
+		List<JournalArticle> articles =
+			JournalArticleLocalServiceUtil.
+				getIndexableArticlesByResourcePrimKey(
+					article.getResourcePrimKey());
+
+		for (JournalArticle curArticle : articles) {
+			Document document = getDocument(curArticle);
+
+			documents.add(document);
+		}
+
+		return documents;
+	}
+
 	protected Collection<Document> getArticleVersionsToReindex(
 			JournalArticle article)
 		throws PortalException, SystemException {
@@ -601,28 +622,35 @@ public class JournalArticleIndexer extends BaseIndexer {
 
 		documents.add(getDocument(article));
 
-		if (article.isApproved()) {
-			List<JournalArticle> latestIndexableArticles =
-				JournalArticleLocalServiceUtil.fetchLatestIndexableArticles(
-					article.getResourcePrimKey(), 2);
-
-			if (latestIndexableArticles.size() > 1) {
-				JournalArticle previousHead = latestIndexableArticles.get(1);
-				JournalArticle currentHead = latestIndexableArticles.get(0);
-
-				if (article.getId() == currentHead.getId()) {
-					documents.add(getDocument(previousHead));
+		if (article.isDraft() || article.isScheduled()) {
+			return documents;
 		}
+
+		JournalArticle currentlyPublishedInDBButNotInIndexes =
+				JournalArticleLocalServiceUtil.fetchLatestIndexableArticle(
+					article.getResourcePrimKey());
+
+		if (article.isApproved()) {
+			if (article.getVersion() == currentlyPublishedInDBButNotInIndexes.getVersion()) {
+
+				//TODO FUNCION UNICA
+				OrderByComparator orderByComparator = new ArticleVersionComparator();
+				JournalArticle previouslyPublished = JournalArticleLocalServiceUtil.getIndexableArticles(
+						article.getResourcePrimKey(), 1, 1, orderByComparator).get(0);
+
+				if (previouslyPublished != null) {
+					Document documentWithHeadSetToFalse = getDocument(previouslyPublished);
+
+					documents.add(documentWithHeadSetToFalse);
+				}
 			}
 		}
-		else if (!article.isDraft() && !article.isScheduled()) {
-			JournalArticle currentHead =
-					JournalArticleLocalServiceUtil.fetchLatestIndexableArticle(
-						article.getResourcePrimKey());
+		else {
+			if ((currentlyPublishedInDBButNotInIndexes != null) &&
+				(article.getVersion() > currentlyPublishedInDBButNotInIndexes.getVersion())) {
+					Document documentWithHeadSetToTrue = getDocument(currentlyPublishedInDBButNotInIndexes);
 
-			if ((currentHead != null) &&
-				(article.getVersion() > currentHead.getVersion())) {
-					documents.add(getDocument(currentHead));
+					documents.add(getDocument(documentWithHeadSetToTrue));
 			}
 		}
 
@@ -744,7 +772,7 @@ public class JournalArticleIndexer extends BaseIndexer {
 		actionableDynamicQuery.performActions();
 	}
 
-	protected void reindexArticleVersions(JournalArticle article)
+	protected void reindexArticleVersionsMia(JournalArticle article)
 		throws PortalException, SystemException {
 
 		Collection<String> deleteDocumentsUids = new ArrayList<String>();
@@ -774,6 +802,14 @@ public class JournalArticleIndexer extends BaseIndexer {
 
 		SearchEngineUtil.updateDocuments(
 			getSearchEngineId(), article.getCompanyId(), updateDocuments);
+	}
+
+	protected void reindexArticleVersions(JournalArticle article)
+		throws PortalException, SystemException {
+
+		SearchEngineUtil.updateDocuments(
+			getSearchEngineId(), article.getCompanyId(),
+			getArticleVersions(article));
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(

@@ -1438,18 +1438,16 @@ public class JournalArticleLocalServiceImpl
 	}
 
 	@Override
-	public List<JournalArticle> fetchLatestIndexableArticles(
-			long resourcePrimKey, int numArticles)
+	public List<JournalArticle> getIndexableArticles(
+			long resourcePrimKey, int start, int end, OrderByComparator orderByComparator)
 		throws SystemException {
-
-		OrderByComparator orderByComparator = new ArticleVersionComparator();
 
 		int[] statuses = new int[] {
 			WorkflowConstants.STATUS_APPROVED, WorkflowConstants.STATUS_IN_TRASH
 		};
 
 		return journalArticlePersistence.findByR_I_S(
-			resourcePrimKey, true, statuses, 0, numArticles, orderByComparator);
+			resourcePrimKey, true, statuses, start, end, orderByComparator);
 	}
 
 	/**
@@ -5315,11 +5313,13 @@ public class JournalArticleLocalServiceImpl
 			boolean reindexAllVersions = false;
 
 			if (status == WorkflowConstants.STATUS_APPROVED) {
-				JournalArticle previous =
+				JournalArticle previousApprovedArticle =
 					JournalArticleLocalServiceUtil.getPreviousApprovedArticle(
 						article);
 
-				if (!previous.getUrlTitle().equals(article.getUrlTitle())) {
+				if (!previousApprovedArticle.getUrlTitle().equals(
+						article.getUrlTitle())) {
+
 					updateUrlTitles(
 						article.getGroupId(), article.getArticleId(),
 						article.getUrlTitle());
