@@ -64,7 +64,6 @@ import com.liferay.portlet.journalcontent.util.JournalContentUtil;
 import com.liferay.portlet.trash.util.TrashUtil;
 
 import java.io.Serializable;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -472,8 +471,17 @@ public class JournalArticleIndexer extends BaseIndexer {
 		return new Summary(snippetLocale, title, content, portletURL);
 	}
 
-	protected void doReindex(JournalArticle article, boolean reindexAllVersions)
+	@Override
+	protected void doReindex(Object obj) throws Exception {
+
+		doReindex(obj, false);
+	}
+
+	@Override
+	protected void doReindex(Object obj, boolean reindexAllVersions)
 		throws Exception {
+
+		JournalArticle article = (JournalArticle)obj;
 
 		boolean articleIsIndexable = true;
 
@@ -501,28 +509,25 @@ public class JournalArticleIndexer extends BaseIndexer {
 	}
 
 	@Override
-	protected void doReindex(Object obj) throws Exception {
-		JournalArticle article = (JournalArticle)obj;
-
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
-
-		boolean reindexAllVersions = false;
-
-		if (serviceContext != null) {
-			reindexAllVersions = GetterUtil.get(
-				serviceContext.removeAttribute("reindexAllVersions"), false);
-		}
-
-		doReindex(article, reindexAllVersions);
+	protected void doReindex(String className, long classPK) throws Exception {
+		doReindex(className, classPK, false);
 	}
 
 	@Override
-	protected void doReindex(String className, long classPK) throws Exception {
-		JournalArticle article = getJournalArticle(classPK);
+	protected void doReindex(
+		String className, long classPK, boolean allVersions) throws Exception {
+
+		JournalArticle article =
+			JournalArticleLocalServiceUtil.fetchJournalArticle(classPK);
+
+		if (article == null) {
+			article =
+				JournalArticleLocalServiceUtil.fetchLatestIndexableArticle(
+					classPK);
+		}
 
 		if (article != null) {
-			doReindex(article);
+			doReindex(article, allVersions);
 		}
 	}
 
@@ -553,17 +558,6 @@ public class JournalArticleIndexer extends BaseIndexer {
 				ddmStructureKeys);
 
 		for (JournalArticle article : articles) {
-			doReindex(article, true);
-		}
-	}
-
-	@Override
-	protected void doReindexPermissions(String className, long classPK)
-		throws Exception {
-
-		JournalArticle article = getJournalArticle(classPK);
-
-		if (article != null) {
 			doReindex(article, true);
 		}
 	}
@@ -706,21 +700,6 @@ public class JournalArticleIndexer extends BaseIndexer {
 		}
 
 		return content;
-	}
-
-	protected JournalArticle getJournalArticle(long classPK)
-		throws SystemException {
-
-		JournalArticle article =
-			JournalArticleLocalServiceUtil.fetchJournalArticle(classPK);
-
-		if (article == null) {
-			article =
-				JournalArticleLocalServiceUtil.fetchLatestIndexableArticle(
-					classPK);
-		}
-
-		return article;
 	}
 
 	protected String[] getLanguageIds(
