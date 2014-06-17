@@ -169,7 +169,15 @@ public class DummyIndexer implements Indexer {
 	}
 
 	@Override
+	public void reindex(Object obj, boolean allVersions) {
+	}
+
+	@Override
 	public void reindex(String className, long classPK) {
+	}
+
+	@Override
+	public void reindex(String className, long classPK, boolean allVersions) {
 	}
 
 	@Override
@@ -178,10 +186,6 @@ public class DummyIndexer implements Indexer {
 
 	@Override
 	public void reindexDDMStructures(List<Long> ddmStructureIds) {
-	}
-
-	@Override
-	public void reindexPermissions(String className, long classPK) {
 	}
 
 	@Override

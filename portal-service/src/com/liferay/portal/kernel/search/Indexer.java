@@ -106,14 +106,16 @@ public interface Indexer {
 
 	public void reindex(Object obj) throws SearchException;
 
+	public void reindex(Object obj, boolean allVersions) throws SearchException;
+
 	public void reindex(String className, long classPK) throws SearchException;
+
+	public void reindex(String className, long classPK, boolean allVersions)
+		throws SearchException;
 
 	public void reindex(String[] ids) throws SearchException;
 
 	public void reindexDDMStructures(List<Long> ddmStructureIds)
-		throws SearchException;
-
-	public void reindexPermissions(String className, long classPK)
 		throws SearchException;
 
 	public Hits search(SearchContext searchContext) throws SearchException;

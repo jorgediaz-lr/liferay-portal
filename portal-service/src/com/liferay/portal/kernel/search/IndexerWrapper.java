@@ -194,6 +194,20 @@ public class IndexerWrapper implements Indexer {
 	}
 
 	@Override
+	public void reindex(Object obj, boolean allVersions)
+		throws SearchException {
+
+		_indexer.reindex(obj, allVersions);
+	}
+
+	@Override
+	public void reindex(String className, long classPK, boolean allVersions)
+		throws SearchException {
+
+		_indexer.reindex(className, classPK, allVersions);
+	}
+
+	@Override
 	public void reindex(String className, long classPK) throws SearchException {
 		_indexer.reindex(className, classPK);
 	}
@@ -208,13 +222,6 @@ public class IndexerWrapper implements Indexer {
 		throws SearchException {
 
 		_indexer.reindexDDMStructures(ddmStructureIds);
-	}
-
-	@Override
-	public void reindexPermissions(String className, long classPK)
-		throws SearchException {
-
-		_indexer.reindexPermissions(className, classPK);
 	}
 
 	@Override
