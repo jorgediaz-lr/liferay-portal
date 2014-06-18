@@ -84,7 +84,6 @@ import com.liferay.portal.model.ResourceConstants;
 import com.liferay.portal.model.SystemEventConstants;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
-import com.liferay.portal.service.ServiceContextThreadLocal;
 import com.liferay.portal.service.ServiceContextUtil;
 import com.liferay.portal.servlet.filters.cache.CacheUtil;
 import com.liferay.portal.theme.ThemeDisplay;
@@ -3032,7 +3031,7 @@ public class JournalArticleLocalServiceImpl
 	 * @throws PortalException if a matching web content article could not be
 	 *         found
 	 */
-	@Indexable(type = IndexableType.REINDEX)
+	@Indexable(type = IndexableType.REINDEX_ALL)
 	@Override
 	public JournalArticle moveArticle(
 			long groupId, String articleId, long newFolderId)
@@ -3052,17 +3051,6 @@ public class JournalArticleLocalServiceImpl
 
 			journalArticlePersistence.update(article);
 		}
-
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
-
-		if (serviceContext == null) {
-			serviceContext = new ServiceContext();
-
-			ServiceContextThreadLocal.pushServiceContext(serviceContext);
-		}
-
-		serviceContext.setAttribute("reindexAllVersions", true);
 
 		return getArticle(groupId, articleId);
 	}
@@ -3089,7 +3077,7 @@ public class JournalArticleLocalServiceImpl
 	 * @throws PortalException if a trashed web content article with the primary
 	 *         key could not be found or if a portal exception occurred
 	 */
-	@Indexable(type = IndexableType.REINDEX)
+	@Indexable(type = IndexableType.REINDEX_ALL)
 	@Override
 	public JournalArticle moveArticleFromTrash(
 			long userId, long groupId, JournalArticle article, long newFolderId,
@@ -3142,7 +3130,7 @@ public class JournalArticleLocalServiceImpl
 	 * @throws PortalException if the user did not have permission to move the
 	 *         article to the Recycle Bin or if a portal exception occurred
 	 */
-	@Indexable(type = IndexableType.REINDEX)
+	@Indexable(type = IndexableType.REINDEX_ALL)
 	@Override
 	public JournalArticle moveArticleToTrash(
 			long userId, JournalArticle article)
@@ -3233,17 +3221,6 @@ public class JournalArticleLocalServiceImpl
 				article.getCompanyId(), article.getGroupId(),
 				JournalArticle.class.getName(), article.getId());
 		}
-
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
-
-		if (serviceContext == null) {
-			serviceContext = new ServiceContext();
-
-			ServiceContextThreadLocal.pushServiceContext(serviceContext);
-		}
-
-		serviceContext.setAttribute("reindexAllVersions", true);
 
 		return article;
 	}
@@ -3358,7 +3335,7 @@ public class JournalArticleLocalServiceImpl
 	 *         permission to restore the article, or if a portal exception
 	 *         occurred
 	 */
-	@Indexable(type = IndexableType.REINDEX)
+	@Indexable(type = IndexableType.REINDEX_ALL)
 	@Override
 	public JournalArticle restoreArticleFromTrash(
 			long userId, JournalArticle article)
@@ -3431,16 +3408,6 @@ public class JournalArticleLocalServiceImpl
 			article.getResourcePrimKey(),
 			SocialActivityConstants.TYPE_RESTORE_FROM_TRASH,
 			extraDataJSONObject.toString(), 0);
-
-		serviceContext = ServiceContextThreadLocal.getServiceContext();
-
-		if (serviceContext == null) {
-			serviceContext = new ServiceContext();
-
-			ServiceContextThreadLocal.pushServiceContext(serviceContext);
-		}
-
-		serviceContext.setAttribute("reindexAllVersions", true);
 
 		return article;
 	}
@@ -4983,13 +4950,14 @@ public class JournalArticleLocalServiceImpl
 	 * @return the updated web content article
 	 * @throws PortalException if a portal exception occurred
 	 */
-	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public JournalArticle updateStatus(
 			long userId, JournalArticle article, int status, String articleURL,
 			ServiceContext serviceContext,
 			Map<String, Serializable> workflowContext)
 		throws PortalException {
+
+		boolean reindexAllVersions = false;
 
 		// Article
 
@@ -5035,8 +5003,6 @@ public class JournalArticleLocalServiceImpl
 		if (hasModifiedLatestApprovedVersion(
 				article.getGroupId(), article.getArticleId(),
 				article.getVersion())) {
-
-			boolean reindexAllVersions = false;
 
 			if (status == WorkflowConstants.STATUS_APPROVED) {
 				JournalArticle previousApprovedArticle =
@@ -5171,18 +5137,6 @@ public class JournalArticleLocalServiceImpl
 				updatePreviousApprovedArticle(article);
 			}
 
-			ServiceContext serviceContextThreadLocal =
-				ServiceContextThreadLocal.getServiceContext();
-
-			if (serviceContextThreadLocal == null) {
-				serviceContextThreadLocal = new ServiceContext();
-
-				ServiceContextThreadLocal.pushServiceContext(
-					serviceContextThreadLocal);
-			}
-
-			serviceContextThreadLocal.setAttribute(
-				"reindexAllVersions", reindexAllVersions);
 		}
 
 		if ((article.getClassNameId() ==
@@ -5229,6 +5183,11 @@ public class JournalArticleLocalServiceImpl
 				(String)workflowContext.get(WorkflowConstants.CONTEXT_URL),
 				serviceContext);
 		}
+
+		Indexer indexer = IndexerRegistryUtil.nullSafeGetIndexer(
+				JournalArticle.class);
+
+		indexer.reindex(article, reindexAllVersions);
 
 		return article;
 	}
@@ -5544,17 +5503,6 @@ public class JournalArticleLocalServiceImpl
 					journalArticlePersistence.update(currentArticle);
 				}
 
-				ServiceContext serviceContext =
-					ServiceContextThreadLocal.getServiceContext();
-
-				if (serviceContext == null) {
-					serviceContext = new ServiceContext();
-
-					ServiceContextThreadLocal.pushServiceContext(
-						serviceContext);
-				}
-
-				serviceContext.setAttribute("reindexAllVersions", true);
 			}
 			else {
 				article.setStatus(WorkflowConstants.STATUS_EXPIRED);
@@ -5567,7 +5515,8 @@ public class JournalArticleLocalServiceImpl
 			Indexer indexer = IndexerRegistryUtil.nullSafeGetIndexer(
 				JournalArticle.class);
 
-			indexer.reindex(article);
+			indexer.reindex(
+				article, PropsValues.JOURNAL_ARTICLE_EXPIRE_ALL_VERSIONS);
 
 			JournalContentUtil.clearCache(
 				article.getGroupId(), article.getArticleId(),
