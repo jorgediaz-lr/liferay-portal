@@ -1151,22 +1151,10 @@ public class JournalFolderLocalServiceImpl
 
 				// Indexer
 
-				ServiceContext serviceContext =
-					ServiceContextThreadLocal.getServiceContext();
-
-				if (serviceContext == null) {
-					serviceContext = new ServiceContext();
-
-					ServiceContextThreadLocal.pushServiceContext(
-						serviceContext);
-				}
-
-				serviceContext.setAttribute("reindexAllVersions", true);
-
 				Indexer indexer = IndexerRegistryUtil.nullSafeGetIndexer(
 					JournalArticle.class);
 
-				indexer.reindex(article);
+				indexer.reindex(article, true);
 			}
 			else if (object instanceof JournalFolder) {
 
@@ -1287,20 +1275,10 @@ public class JournalFolderLocalServiceImpl
 
 				// Indexer
 
-				ServiceContext sc =
-					ServiceContextThreadLocal.getServiceContext();
-
-				if (sc == null) {
-					sc = new ServiceContext();
-					ServiceContextThreadLocal.pushServiceContext(sc);
-				}
-
-				sc.setAttribute("reindexAllVersions", true);
-
 				Indexer indexer = IndexerRegistryUtil.nullSafeGetIndexer(
 					JournalArticle.class);
 
-				indexer.reindex(article);
+				indexer.reindex(article, true);
 			}
 			else if (object instanceof JournalFolder) {
 
