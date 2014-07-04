@@ -605,7 +605,7 @@ public class JournalArticleIndexer extends BaseIndexer {
 		return documents;
 	}
 
-	protected Collection<Document> getArticleVersionsToReindex(
+	protected Collection<Document> getArticleIndexableVersions(
 			JournalArticle article)
 		throws PortalException {
 
@@ -618,27 +618,24 @@ public class JournalArticleIndexer extends BaseIndexer {
 		}
 
 		JournalArticle latestIndexableArticle =
-				JournalArticleLocalServiceUtil.fetchLatestIndexableArticle(
+			JournalArticleLocalServiceUtil.fetchLatestIndexableArticle(
+				article.getResourcePrimKey());
+
+		if (latestIndexableArticle == null) {
+			return documents;
+		}
+
+		if (article.getVersion() == latestIndexableArticle.getVersion()) {
+			JournalArticle previousIndexableArticle =
+				JournalArticleLocalServiceUtil.fetchPreviousIndexableArticle(
 					article.getResourcePrimKey());
 
-		if (article.isApproved()) {
-			if (article.getVersion() == latestIndexableArticle.getVersion()) {
-				JournalArticle previouslyIndexableArticle =
-					JournalArticleLocalServiceUtil.
-						fetchPreviousIndexableArticle(
-							article.getResourcePrimKey());
-
-				if (previouslyIndexableArticle != null) {
-					documents.add(getDocument(previouslyIndexableArticle));
-				}
+			if (previousIndexableArticle != null) {
+				documents.add(getDocument(previousIndexableArticle));
 			}
 		}
 		else {
-			if ((latestIndexableArticle != null) &&
-				(article.getVersion() > latestIndexableArticle.getVersion())) {
-
-					documents.add(getDocument(latestIndexableArticle));
-			}
+			documents.add(getDocument(latestIndexableArticle));
 		}
 
 		return documents;
@@ -731,16 +728,16 @@ public class JournalArticleIndexer extends BaseIndexer {
 	}
 
 	protected void reindexArticleVersions(
-			JournalArticle article, boolean reindexAllVersions)
+			JournalArticle article, boolean propagate)
 		throws PortalException {
 
 		Collection<Document> documents;
 
-		if (reindexAllVersions) {
+		if (propagate) {
 			documents = getArticleVersions(article);
 		}
 		else {
-			documents = getArticleVersionsToReindex(article);
+			documents = getArticleIndexableVersions(article);
 		}
 
 		SearchEngineUtil.updateDocuments(
