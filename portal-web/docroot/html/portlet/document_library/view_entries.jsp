@@ -121,7 +121,7 @@ else {
 	}
 }
 
-OrderByComparator orderByComparator = DLUtil.getRepositoryModelOrderByComparator(orderByCol, orderByType);
+OrderByComparator<?> orderByComparator = DLUtil.getRepositoryModelOrderByComparator(orderByCol, orderByType);
 
 searchContainer.setOrderableHeaders(orderableHeaders);
 searchContainer.setOrderByCol(orderByCol);
@@ -300,9 +300,9 @@ request.setAttribute("view_entries.jsp-entryEnd", String.valueOf(searchContainer
 						</portlet:actionURL>
 
 						<liferay-ui:icon
-							iconCssClass="icon-ok-sign"
+							iconCssClass="icon-remove-sign"
 							label="<%= true %>"
-							message="icon-remove-sign"
+							message="unsubscribe"
 							url="<%= unsubscribeURL %>"
 						/>
 					</c:when>
