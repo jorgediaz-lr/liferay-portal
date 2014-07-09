@@ -42,6 +42,8 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.security.permission.ActionKeys;
 import com.liferay.portal.security.permission.PermissionChecker;
+import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.service.ServiceContextThreadLocal;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PortletKeys;
@@ -478,10 +480,22 @@ public class JournalArticleIndexer extends BaseIndexer {
 
 	@Override
 	protected void doReindex(Object obj) throws Exception {
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
+
+		if (serviceContext != null) {
+			JournalArticle article = (JournalArticle)obj;
+
+			if(article.getId() == GetterUtil.get(
+					serviceContext.removeAttribute("versionToReindex"), -1)) {
+
+				doReindex(obj, false);
+			}
+		}
+
 		doReindex(obj, true);
 	}
 
-	@Override
 	protected void doReindex(Object obj, boolean propagate) throws Exception {
 		JournalArticle article = (JournalArticle)obj;
 
@@ -505,7 +519,6 @@ public class JournalArticleIndexer extends BaseIndexer {
 		doReindex(className, classPK, true);
 	}
 
-	@Override
 	protected void doReindex(String className, long classPK, boolean propagate)
 		throws Exception {
 
