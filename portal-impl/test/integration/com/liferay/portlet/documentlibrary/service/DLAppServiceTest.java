@@ -210,7 +210,7 @@ public class DLAppServiceTest extends BaseDLAppTestCase {
 		}
 
 		try {
-			addFileEntry(false, "Title.txt", "Title");
+			addFileEntry(false, _FILE_NAME, _STRIPPED_FILE_NAME);
 
 			Assert.fail(
 				"Able to add two files with the same title (without " +
@@ -220,7 +220,7 @@ public class DLAppServiceTest extends BaseDLAppTestCase {
 		}
 
 		try {
-			addFileEntry(false, "Title", "Title.txt");
+			addFileEntry(false, _STRIPPED_FILE_NAME, _FILE_NAME);
 
 			Assert.fail(
 				"Able to add two files with the same title (without " +
@@ -232,9 +232,9 @@ public class DLAppServiceTest extends BaseDLAppTestCase {
 		FileEntry fileEntry = null;
 
 		try {
-			fileEntry = addFileEntry(true, "Title.txt", "Title");
+			fileEntry = addFileEntry(true, _FILE_NAME, _STRIPPED_FILE_NAME);
 
-			addFileEntry(true, "Title.txt", "Title.txt");
+			addFileEntry(true, _FILE_NAME, _FILE_NAME);
 
 			Assert.fail(
 				"Able to add two files with the same title (without " +
@@ -547,7 +547,7 @@ public class DLAppServiceTest extends BaseDLAppTestCase {
 	}
 
 	protected FileEntry addFileEntry(boolean rootFolder) throws Exception {
-		return addFileEntry(rootFolder, "Title.txt");
+		return addFileEntry(rootFolder, _FILE_NAME);
 	}
 
 	protected FileEntry addFileEntry(boolean rootFolder, String fileName)
@@ -669,6 +669,10 @@ public class DLAppServiceTest extends BaseDLAppTestCase {
 			group.getGroupId(), fileEntryId, fileName, fileName, majorVersion,
 			true, true);
 	}
+
+	private static final String _FILE_NAME = "Title.txt";
+
+	private static final String _STRIPPED_FILE_NAME = "Title";
 
 	private static Log _log = LogFactoryUtil.getLog(DLAppServiceTest.class);
 
