@@ -199,9 +199,9 @@ public class DLAppServiceTest extends BaseDLAppTestCase {
 		}
 
 		try {
-			addFileEntry(true);
+			FileEntry fileEntry = addFileEntry(true);
 
-			DLAppServiceUtil.deleteFileEntry(_fileEntry.getFileEntryId());
+			DLAppServiceUtil.deleteFileEntry(fileEntry.getFileEntryId());
 		}
 		catch (DuplicateFileException dfe) {
 			Assert.fail(
