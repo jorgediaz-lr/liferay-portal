@@ -63,6 +63,7 @@ import com.liferay.portal.model.ModelHintsUtil;
 import com.liferay.portal.model.Repository;
 import com.liferay.portal.model.ResourceConstants;
 import com.liferay.portal.model.SystemEventConstants;
+import com.liferay.portal.model.TreeModel;
 import com.liferay.portal.model.User;
 import com.liferay.portal.repository.liferayrepository.model.LiferayFileEntry;
 import com.liferay.portal.repository.liferayrepository.model.LiferayFileVersion;
@@ -1728,6 +1729,53 @@ public class DLFileEntryLocalServiceImpl
 		return dlFileEntry;
 	}
 
+	public TreeModel validateDuplicateFile(
+			long groupId, long folderId, long fileEntryId, String title,
+			String extension)
+		throws PortalException {
+
+		DLFolder dlFolder = dlFolderPersistence.fetchByG_P_N(
+			groupId, folderId, title);
+
+		if (dlFolder != null) {
+			return dlFolder;
+		}
+
+		DLFileEntry dlFileEntry = dlFileEntryPersistence.fetchByG_F_T(
+			groupId, folderId, title);
+
+		if ((dlFileEntry != null) &&
+			(dlFileEntry.getFileEntryId() != fileEntryId)) {
+
+			return dlFileEntry;
+		}
+
+		if (Validator.isNull(extension)) {
+			return null;
+		}
+
+		String periodAndExtension = StringPool.PERIOD.concat(extension);
+
+		if (title.endsWith(periodAndExtension)) {
+			title = FileUtil.stripExtension(title);
+		}
+		else {
+			title += periodAndExtension;
+		}
+
+		dlFileEntry = dlFileEntryPersistence.fetchByG_F_T(
+			groupId, folderId, title);
+
+		if ((dlFileEntry != null) &&
+			(dlFileEntry.getFileEntryId() != fileEntryId) &&
+			extension.equals(dlFileEntry.getExtension())) {
+
+			return dlFileEntry;
+		}
+
+		return null;
+	}
+
 	@Override
 	public boolean verifyFileEntryCheckOut(long fileEntryId, String lockUuid)
 		throws PortalException {
@@ -2467,43 +2515,16 @@ public class DLFileEntryLocalServiceImpl
 			String extension)
 		throws PortalException {
 
-		DLFolder dlFolder = dlFolderPersistence.fetchByG_P_N(
-			groupId, folderId, title);
+		TreeModel duplicatedObject = validateDuplicateFile(
+			groupId, folderId, fileEntryId, title, extension);
 
-		if (dlFolder != null) {
+		if (duplicatedObject instanceof DLFolder) {
 			throw new DuplicateFolderNameException(title);
 		}
+		else if (duplicatedObject instanceof DLFileEntry) {
+			DLFileEntry fileEntry = (DLFileEntry)duplicatedObject;
 
-		DLFileEntry dlFileEntry = dlFileEntryPersistence.fetchByG_F_T(
-			groupId, folderId, title);
-
-		if ((dlFileEntry != null) &&
-			(dlFileEntry.getFileEntryId() != fileEntryId)) {
-
-			throw new DuplicateFileException(title);
-		}
-
-		if (Validator.isNull(extension)) {
-			return;
-		}
-
-		String periodAndExtension = StringPool.PERIOD.concat(extension);
-
-		if (title.endsWith(periodAndExtension)) {
-			title = FileUtil.stripExtension(title);
-		}
-		else {
-			title += periodAndExtension;
-		}
-
-		dlFileEntry = dlFileEntryPersistence.fetchByG_F_T(
-			groupId, folderId, title);
-
-		if ((dlFileEntry != null) &&
-			(dlFileEntry.getFileEntryId() != fileEntryId) &&
-			extension.equals(dlFileEntry.getExtension())) {
-
-			throw new DuplicateFileException(title);
+			throw new DuplicateFileException(fileEntry.getTitle());
 		}
 	}
 

@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.trash.TrashHandlerRegistryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ContainerModel;
 import com.liferay.portal.model.TrashedModel;
+import com.liferay.portal.model.TreeModel;
 import com.liferay.portal.security.permission.ActionKeys;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.service.RepositoryServiceUtil;
@@ -285,16 +286,29 @@ public class DLFileEntryTrashHandler extends DLBaseTrashHandler {
 			originalTitle = newName;
 		}
 
-		DLFileEntry duplicateDLFileEntry =
-			DLFileEntryLocalServiceUtil.fetchFileEntry(
-				dlFileEntry.getGroupId(), containerModelId, originalTitle);
+		TreeModel duplicateObject =
+			DLFileEntryLocalServiceUtil.validateDuplicateFile(
+				dlFileEntry.getGroupId(), containerModelId,
+				dlFileEntry.getFileEntryId(), originalTitle,
+				dlFileEntry.getExtension());
 
-		if (duplicateDLFileEntry != null) {
+		if (duplicateObject != null) {
 			RestoreEntryException ree = new RestoreEntryException(
 				RestoreEntryException.DUPLICATE);
 
-			ree.setDuplicateEntryId(duplicateDLFileEntry.getFileEntryId());
-			ree.setOldName(duplicateDLFileEntry.getTitle());
+			if (duplicateObject instanceof DLFolder) {
+				DLFolder duplicateDLFolder = (DLFolder)duplicateObject;
+
+				ree.setDuplicateEntryId(duplicateDLFolder.getFolderId());
+				ree.setOldName(duplicateDLFolder.getName());
+			}
+			else if (duplicateObject instanceof DLFileEntry) {
+				DLFileEntry duplicateDLFileEntry = (DLFileEntry)duplicateObject;
+
+				ree.setDuplicateEntryId(duplicateDLFileEntry.getFileEntryId());
+				ree.setOldName(duplicateDLFileEntry.getTitle());
+			}
+
 			ree.setTrashEntryId(entryId);
 
 			throw ree;
