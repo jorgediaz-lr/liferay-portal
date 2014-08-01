@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.trash.TrashHandler;
-import com.liferay.portal.kernel.trash.TrashHandlerRegistryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
@@ -557,18 +556,11 @@ public abstract class BaseStagedModelDataHandler<T extends StagedModel>
 			}
 		}
 
-		StagedModelType stagedModelType = stagedModel.getStagedModelType();
-
-		TrashHandler trashHandler = TrashHandlerRegistryUtil.getTrashHandler(
-			stagedModelType.getClassName());
-
-		long classPK = 0;
-
-		if (trashHandler != null) {
+		if (stagedModel instanceof TrashedModel) {
 			try {
-				classPK = (Long)stagedModel.getPrimaryKeyObj();
+				TrashedModel trashedModel = (TrashedModel)stagedModel;
 
-				if (trashHandler.isInTrash(classPK)) {
+				if (trashedModel.isInTrash()) {
 					PortletDataException pde = new PortletDataException(
 						PortletDataException.STATUS_IN_TRASH);
 
@@ -588,7 +580,8 @@ public abstract class BaseStagedModelDataHandler<T extends StagedModel>
 					_log.warn(
 						"Unable to check trash status for " +
 							stagedModel.getModelClassName() +
-								" with primary key " + classPK);
+								" with primary key " +
+									stagedModel.getPrimaryKeyObj());
 				}
 			}
 		}
