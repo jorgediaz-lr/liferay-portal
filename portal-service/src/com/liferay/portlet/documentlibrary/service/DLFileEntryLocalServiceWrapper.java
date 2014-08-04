@@ -916,6 +916,15 @@ public class DLFileEntryLocalServiceWrapper implements DLFileEntryLocalService,
 	}
 
 	@Override
+	public com.liferay.portal.model.TreeModel validateDuplicateFile(
+		long groupId, long folderId, long fileEntryId, java.lang.String title,
+		java.lang.String extension)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _dlFileEntryLocalService.validateDuplicateFile(groupId,
+			folderId, fileEntryId, title, extension);
+	}
+
+	@Override
 	public boolean verifyFileEntryCheckOut(long fileEntryId,
 		java.lang.String lockUuid)
 		throws com.liferay.portal.kernel.exception.PortalException {
