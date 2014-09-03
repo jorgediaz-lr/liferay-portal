@@ -52,6 +52,7 @@ import com.liferay.portlet.documentlibrary.service.DLFileEntryTypeLocalServiceUt
 import com.liferay.portlet.documentlibrary.service.DLFileVersionLocalServiceUtil;
 import com.liferay.portlet.documentlibrary.service.DLFolderLocalServiceUtil;
 import com.liferay.portlet.documentlibrary.store.DLStoreUtil;
+import com.liferay.portlet.documentlibrary.util.DLAppUtil;
 import com.liferay.portlet.documentlibrary.util.DLUtil;
 import com.liferay.portlet.documentlibrary.util.comparator.FileVersionVersionComparator;
 import com.liferay.portlet.documentlibrary.webdav.DLWebDAVStorageImpl;
@@ -462,6 +463,8 @@ public class VerifyDocumentLibrary extends VerifyProcess {
 		throws PortalException {
 
 		String newTitle = dlFileEntry.getTitle();
+		String newFileName = DLAppUtil.getSanitizedFileName(
+				newTitle, dlFileEntry.getExtension());
 
 		String titleWithoutExtension = newTitle;
 
@@ -482,8 +485,7 @@ public class VerifyDocumentLibrary extends VerifyProcess {
 			try {
 				DLFileEntryLocalServiceUtil.validateFile(
 					dlFileEntry.getGroupId(), dlFileEntry.getFolderId(),
-					dlFileEntry.getFileEntryId(), newTitle,
-					dlFileEntry.getExtension());
+					dlFileEntry.getFileEntryId(), newFileName, newTitle);
 
 				duplicate = false;
 			}
@@ -503,10 +505,14 @@ public class VerifyDocumentLibrary extends VerifyProcess {
 				if (Validator.isNotNull(titleExtension)) {
 					newTitle += StringPool.PERIOD.concat(titleExtension);
 				}
+
+				newFileName = DLAppUtil.getSanitizedFileName(
+								newTitle, dlFileEntry.getExtension());
 			}
 		}
 
-		if (newTitle.equals(dlFileEntry.getTitle())) {
+		if (newTitle.equals(dlFileEntry.getTitle()) &&
+			newFileName.equals(dlFileEntry.getFileName())) {
 			return;
 		}
 
@@ -517,15 +523,22 @@ public class VerifyDocumentLibrary extends VerifyProcess {
 			DLFileEntry dlFileEntry, String newTitle)
 		throws PortalException {
 
+		String newFileName = DLAppUtil.getSanitizedFileName(
+								newTitle, dlFileEntry.getExtension());
+
 		String title = dlFileEntry.getTitle();
 
 		dlFileEntry.setTitle(newTitle);
+
+		dlFileEntry.setFileName(newFileName);
 
 		DLFileEntryLocalServiceUtil.updateDLFileEntry(dlFileEntry);
 
 		DLFileVersion dlFileVersion = dlFileEntry.getFileVersion();
 
 		dlFileVersion.setTitle(newTitle);
+
+		dlFileVersion.setFileName(newFileName);
 
 		DLFileVersionLocalServiceUtil.updateDLFileVersion(dlFileVersion);
 
