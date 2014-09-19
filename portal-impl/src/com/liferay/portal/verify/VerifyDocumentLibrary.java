@@ -537,7 +537,18 @@ public class VerifyDocumentLibrary extends VerifyProcess {
 				}
 			}
 
-			renameTitle(dlFileEntry, newTitle);
+			try {
+				renameTitle(dlFileEntry, newTitle);
+			}
+			catch (Exception e) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						"Unable to rename invalid document title " +
+							title + " to " + newTitle + " for file entry " +
+								dlFileEntry.getFileEntryId() + " :" +
+									e.getMessage());
+				}
+			}
 		}
 
 		checkDuplicateTitles();
