@@ -3337,8 +3337,7 @@ public class JournalFeedPersistenceImpl extends BasePersistenceImpl<JournalFeed>
 	private static final boolean _HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE = com.liferay.portal.util.PropsValues.HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE;
 	private static final Log _log = LogFactoryUtil.getLog(JournalFeedPersistenceImpl.class);
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
-				"uuid", "id", "type", "structureKey", "templateKey",
-				"rendererTemplateKey"
+				"uuid", "id", "type"
 			});
 	private static final JournalFeed _nullJournalFeed = new JournalFeedImpl() {
 			@Override

@@ -2042,9 +2042,9 @@
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="type" type="com.liferay.portal.dao.orm.hibernate.StringType" column="type_" />
-		<property name="structureKey" type="com.liferay.portal.dao.orm.hibernate.StringType" column="structureId" />
-		<property name="templateKey" type="com.liferay.portal.dao.orm.hibernate.StringType" column="templateId" />
-		<property name="rendererTemplateKey" type="com.liferay.portal.dao.orm.hibernate.StringType" column="rendererTemplateId" />
+		<property name="structureKey" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="templateKey" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="rendererTemplateKey" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="delta" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="orderByCol" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="orderByType" type="com.liferay.portal.dao.orm.hibernate.StringType" />

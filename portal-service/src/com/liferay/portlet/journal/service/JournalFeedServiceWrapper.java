@@ -36,8 +36,8 @@ public class JournalFeedServiceWrapper implements JournalFeedService,
 	public com.liferay.portlet.journal.model.JournalFeed addFeed(long groupId,
 		java.lang.String feedId, boolean autoFeedId, java.lang.String name,
 		java.lang.String description, java.lang.String type,
-		java.lang.String structureId, java.lang.String templateId,
-		java.lang.String rendererTemplateId, int delta,
+		java.lang.String structureKey, java.lang.String templateKey,
+		java.lang.String rendererTemplateKey, int delta,
 		java.lang.String orderByCol, java.lang.String orderByType,
 		java.lang.String targetLayoutFriendlyUrl,
 		java.lang.String targetPortletId, java.lang.String contentField,
@@ -45,7 +45,7 @@ public class JournalFeedServiceWrapper implements JournalFeedService,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _journalFeedService.addFeed(groupId, feedId, autoFeedId, name,
-			description, type, structureId, templateId, rendererTemplateId,
+			description, type, structureKey, templateKey, rendererTemplateKey,
 			delta, orderByCol, orderByType, targetLayoutFriendlyUrl,
 			targetPortletId, contentField, feedType, feedVersion, serviceContext);
 	}
@@ -119,8 +119,8 @@ public class JournalFeedServiceWrapper implements JournalFeedService,
 	public com.liferay.portlet.journal.model.JournalFeed updateFeed(
 		long groupId, java.lang.String feedId, java.lang.String name,
 		java.lang.String description, java.lang.String type,
-		java.lang.String structureId, java.lang.String templateId,
-		java.lang.String rendererTemplateId, int delta,
+		java.lang.String structureKey, java.lang.String templateKey,
+		java.lang.String rendererTemplateKey, int delta,
 		java.lang.String orderByCol, java.lang.String orderByType,
 		java.lang.String targetLayoutFriendlyUrl,
 		java.lang.String targetPortletId, java.lang.String contentField,
@@ -128,7 +128,7 @@ public class JournalFeedServiceWrapper implements JournalFeedService,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _journalFeedService.updateFeed(groupId, feedId, name,
-			description, type, structureId, templateId, rendererTemplateId,
+			description, type, structureKey, templateKey, rendererTemplateKey,
 			delta, orderByCol, orderByType, targetLayoutFriendlyUrl,
 			targetPortletId, contentField, feedType, feedVersion, serviceContext);
 	}
