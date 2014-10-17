@@ -70,16 +70,16 @@ public class JournalRSSUtil {
 			type = null;
 		}
 
-		String structureId = feed.getStructureKey();
+		String structureKey = feed.getStructureKey();
 
-		if (Validator.isNull(structureId)) {
-			structureId = null;
+		if (Validator.isNull(structureKey)) {
+			structureKey = null;
 		}
 
-		String templateId = feed.getTemplateKey();
+		String templateKey = feed.getTemplateKey();
 
-		if (Validator.isNull(templateId)) {
-			templateId = null;
+		if (Validator.isNull(templateKey)) {
+			templateKey = null;
 		}
 
 		Date displayDateGT = null;
@@ -104,7 +104,7 @@ public class JournalRSSUtil {
 		return JournalArticleLocalServiceUtil.search(
 			companyId, groupId, folderIds,
 			JournalArticleConstants.CLASSNAME_ID_DEFAULT, articleId, version,
-			title, description, content, type, structureId, templateId,
+			title, description, content, type, structureKey, templateKey,
 			displayDateGT, displayDateLT, status, reviewDate, andOperator,
 			start, end, obc);
 	}
