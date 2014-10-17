@@ -34,4 +34,34 @@ public interface JournalFeed extends JournalFeedModel, PersistedModel {
 	 *
 	 * Never modify this interface directly. Add methods to {@link com.liferay.portlet.journal.model.impl.JournalFeedImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+
+	/**
+	* @deprecated As of 7.0.0, replaced by {@link #getStructureKey()}
+	*/
+	public java.lang.String getStructureId();
+
+	/**
+	* @deprecated As of 7.0.0, replaced by {@link #setStructureKey()}
+	*/
+	public void setStructureId(java.lang.String structureKey);
+
+	/**
+	* @deprecated As of 7.0.0, replaced by {@link #getTemplateKey()}
+	*/
+	public java.lang.String getTemplateId();
+
+	/**
+	* @deprecated As of 7.0.0, replaced by {@link #setTemplateKey()}
+	*/
+	public void setTemplateId(java.lang.String templateKey);
+
+	/**
+	* @deprecated As of 7.0.0, replaced by {@link #getTemplateKey()}
+	*/
+	public java.lang.String getRendererTemplateId();
+
+	/**
+	* @deprecated As of 7.0.0, replaced by {@link #setTemplateKey()}
+	*/
+	public void setRendererTemplateId(java.lang.String rendererTemplateKey);
 }

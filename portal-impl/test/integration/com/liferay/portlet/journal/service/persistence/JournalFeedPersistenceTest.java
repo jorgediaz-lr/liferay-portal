@@ -146,11 +146,11 @@ public class JournalFeedPersistenceTest {
 
 		newJournalFeed.setType(RandomTestUtil.randomString());
 
-		newJournalFeed.setStructureId(RandomTestUtil.randomString());
+		newJournalFeed.setStructureKey(RandomTestUtil.randomString());
 
-		newJournalFeed.setTemplateId(RandomTestUtil.randomString());
+		newJournalFeed.setTemplateKey(RandomTestUtil.randomString());
 
-		newJournalFeed.setRendererTemplateId(RandomTestUtil.randomString());
+		newJournalFeed.setRendererTemplateKey(RandomTestUtil.randomString());
 
 		newJournalFeed.setDelta(RandomTestUtil.nextInt());
 
@@ -197,12 +197,12 @@ public class JournalFeedPersistenceTest {
 			newJournalFeed.getDescription());
 		Assert.assertEquals(existingJournalFeed.getType(),
 			newJournalFeed.getType());
-		Assert.assertEquals(existingJournalFeed.getStructureId(),
-			newJournalFeed.getStructureId());
-		Assert.assertEquals(existingJournalFeed.getTemplateId(),
-			newJournalFeed.getTemplateId());
-		Assert.assertEquals(existingJournalFeed.getRendererTemplateId(),
-			newJournalFeed.getRendererTemplateId());
+		Assert.assertEquals(existingJournalFeed.getStructureKey(),
+			newJournalFeed.getStructureKey());
+		Assert.assertEquals(existingJournalFeed.getTemplateKey(),
+			newJournalFeed.getTemplateKey());
+		Assert.assertEquals(existingJournalFeed.getRendererTemplateKey(),
+			newJournalFeed.getRendererTemplateKey());
 		Assert.assertEquals(existingJournalFeed.getDelta(),
 			newJournalFeed.getDelta());
 		Assert.assertEquals(existingJournalFeed.getOrderByCol(),
@@ -340,7 +340,7 @@ public class JournalFeedPersistenceTest {
 			"id", true, "groupId", true, "companyId", true, "userId", true,
 			"userName", true, "createDate", true, "modifiedDate", true,
 			"feedId", true, "name", true, "description", true, "type", true,
-			"structureId", true, "templateId", true, "rendererTemplateId",
+			"structureKey", true, "templateKey", true, "rendererTemplateKey",
 			true, "delta", true, "orderByCol", true, "orderByType", true,
 			"targetLayoutFriendlyUrl", true, "targetPortletId", true,
 			"contentField", true, "feedFormat", true, "feedVersion", true);
@@ -590,11 +590,11 @@ public class JournalFeedPersistenceTest {
 
 		journalFeed.setType(RandomTestUtil.randomString());
 
-		journalFeed.setStructureId(RandomTestUtil.randomString());
+		journalFeed.setStructureKey(RandomTestUtil.randomString());
 
-		journalFeed.setTemplateId(RandomTestUtil.randomString());
+		journalFeed.setTemplateKey(RandomTestUtil.randomString());
 
-		journalFeed.setRendererTemplateId(RandomTestUtil.randomString());
+		journalFeed.setRendererTemplateKey(RandomTestUtil.randomString());
 
 		journalFeed.setDelta(RandomTestUtil.nextInt());
 

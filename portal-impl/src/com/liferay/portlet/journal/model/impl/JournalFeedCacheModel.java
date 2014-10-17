@@ -67,12 +67,12 @@ public class JournalFeedCacheModel implements CacheModel<JournalFeed>,
 		sb.append(description);
 		sb.append(", type=");
 		sb.append(type);
-		sb.append(", structureId=");
-		sb.append(structureId);
-		sb.append(", templateId=");
-		sb.append(templateId);
-		sb.append(", rendererTemplateId=");
-		sb.append(rendererTemplateId);
+		sb.append(", structureKey=");
+		sb.append(structureKey);
+		sb.append(", templateKey=");
+		sb.append(templateKey);
+		sb.append(", rendererTemplateKey=");
+		sb.append(rendererTemplateKey);
 		sb.append(", delta=");
 		sb.append(delta);
 		sb.append(", orderByCol=");
@@ -159,25 +159,25 @@ public class JournalFeedCacheModel implements CacheModel<JournalFeed>,
 			journalFeedImpl.setType(type);
 		}
 
-		if (structureId == null) {
-			journalFeedImpl.setStructureId(StringPool.BLANK);
+		if (structureKey == null) {
+			journalFeedImpl.setStructureKey(StringPool.BLANK);
 		}
 		else {
-			journalFeedImpl.setStructureId(structureId);
+			journalFeedImpl.setStructureKey(structureKey);
 		}
 
-		if (templateId == null) {
-			journalFeedImpl.setTemplateId(StringPool.BLANK);
+		if (templateKey == null) {
+			journalFeedImpl.setTemplateKey(StringPool.BLANK);
 		}
 		else {
-			journalFeedImpl.setTemplateId(templateId);
+			journalFeedImpl.setTemplateKey(templateKey);
 		}
 
-		if (rendererTemplateId == null) {
-			journalFeedImpl.setRendererTemplateId(StringPool.BLANK);
+		if (rendererTemplateKey == null) {
+			journalFeedImpl.setRendererTemplateKey(StringPool.BLANK);
 		}
 		else {
-			journalFeedImpl.setRendererTemplateId(rendererTemplateId);
+			journalFeedImpl.setRendererTemplateKey(rendererTemplateKey);
 		}
 
 		journalFeedImpl.setDelta(delta);
@@ -245,9 +245,9 @@ public class JournalFeedCacheModel implements CacheModel<JournalFeed>,
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
 		type = objectInput.readUTF();
-		structureId = objectInput.readUTF();
-		templateId = objectInput.readUTF();
-		rendererTemplateId = objectInput.readUTF();
+		structureKey = objectInput.readUTF();
+		templateKey = objectInput.readUTF();
+		rendererTemplateKey = objectInput.readUTF();
 		delta = objectInput.readInt();
 		orderByCol = objectInput.readUTF();
 		orderByType = objectInput.readUTF();
@@ -311,25 +311,25 @@ public class JournalFeedCacheModel implements CacheModel<JournalFeed>,
 			objectOutput.writeUTF(type);
 		}
 
-		if (structureId == null) {
+		if (structureKey == null) {
 			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeUTF(structureId);
+			objectOutput.writeUTF(structureKey);
 		}
 
-		if (templateId == null) {
+		if (templateKey == null) {
 			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeUTF(templateId);
+			objectOutput.writeUTF(templateKey);
 		}
 
-		if (rendererTemplateId == null) {
+		if (rendererTemplateKey == null) {
 			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeUTF(rendererTemplateId);
+			objectOutput.writeUTF(rendererTemplateKey);
 		}
 
 		objectOutput.writeInt(delta);
@@ -391,9 +391,9 @@ public class JournalFeedCacheModel implements CacheModel<JournalFeed>,
 	public String name;
 	public String description;
 	public String type;
-	public String structureId;
-	public String templateId;
-	public String rendererTemplateId;
+	public String structureKey;
+	public String templateKey;
+	public String rendererTemplateKey;
 	public int delta;
 	public String orderByCol;
 	public String orderByType;

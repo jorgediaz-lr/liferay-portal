@@ -141,9 +141,9 @@ public class JournalFeedModelImpl extends BaseModelImpl<JournalFeed>
 		model.setName(soapModel.getName());
 		model.setDescription(soapModel.getDescription());
 		model.setType(soapModel.getType());
-		model.setStructureId(soapModel.getStructureId());
-		model.setTemplateId(soapModel.getTemplateId());
-		model.setRendererTemplateId(soapModel.getRendererTemplateId());
+		model.setStructureKey(soapModel.getStructureKey());
+		model.setTemplateKey(soapModel.getTemplateKey());
+		model.setRendererTemplateKey(soapModel.getRendererTemplateKey());
 		model.setDelta(soapModel.getDelta());
 		model.setOrderByCol(soapModel.getOrderByCol());
 		model.setOrderByType(soapModel.getOrderByType());
@@ -228,9 +228,9 @@ public class JournalFeedModelImpl extends BaseModelImpl<JournalFeed>
 		attributes.put("name", getName());
 		attributes.put("description", getDescription());
 		attributes.put("type", getType());
-		attributes.put("structureId", getStructureId());
-		attributes.put("templateId", getTemplateId());
-		attributes.put("rendererTemplateId", getRendererTemplateId());
+		attributes.put("structureKey", getStructureKey());
+		attributes.put("templateKey", getTemplateKey());
+		attributes.put("rendererTemplateKey", getRendererTemplateKey());
 		attributes.put("delta", getDelta());
 		attributes.put("orderByCol", getOrderByCol());
 		attributes.put("orderByType", getOrderByType());
@@ -320,22 +320,23 @@ public class JournalFeedModelImpl extends BaseModelImpl<JournalFeed>
 			setType(type);
 		}
 
-		String structureId = (String)attributes.get("structureId");
+		String structureKey = (String)attributes.get("structureKey");
 
-		if (structureId != null) {
-			setStructureId(structureId);
+		if (structureKey != null) {
+			setStructureKey(structureKey);
 		}
 
-		String templateId = (String)attributes.get("templateId");
+		String templateKey = (String)attributes.get("templateKey");
 
-		if (templateId != null) {
-			setTemplateId(templateId);
+		if (templateKey != null) {
+			setTemplateKey(templateKey);
 		}
 
-		String rendererTemplateId = (String)attributes.get("rendererTemplateId");
+		String rendererTemplateKey = (String)attributes.get(
+				"rendererTemplateKey");
 
-		if (rendererTemplateId != null) {
-			setRendererTemplateId(rendererTemplateId);
+		if (rendererTemplateKey != null) {
+			setRendererTemplateKey(rendererTemplateKey);
 		}
 
 		Integer delta = (Integer)attributes.get("delta");
@@ -610,50 +611,50 @@ public class JournalFeedModelImpl extends BaseModelImpl<JournalFeed>
 
 	@JSON
 	@Override
-	public String getStructureId() {
-		if (_structureId == null) {
+	public String getStructureKey() {
+		if (_structureKey == null) {
 			return StringPool.BLANK;
 		}
 		else {
-			return _structureId;
+			return _structureKey;
 		}
 	}
 
 	@Override
-	public void setStructureId(String structureId) {
-		_structureId = structureId;
+	public void setStructureKey(String structureKey) {
+		_structureKey = structureKey;
 	}
 
 	@JSON
 	@Override
-	public String getTemplateId() {
-		if (_templateId == null) {
+	public String getTemplateKey() {
+		if (_templateKey == null) {
 			return StringPool.BLANK;
 		}
 		else {
-			return _templateId;
+			return _templateKey;
 		}
 	}
 
 	@Override
-	public void setTemplateId(String templateId) {
-		_templateId = templateId;
+	public void setTemplateKey(String templateKey) {
+		_templateKey = templateKey;
 	}
 
 	@JSON
 	@Override
-	public String getRendererTemplateId() {
-		if (_rendererTemplateId == null) {
+	public String getRendererTemplateKey() {
+		if (_rendererTemplateKey == null) {
 			return StringPool.BLANK;
 		}
 		else {
-			return _rendererTemplateId;
+			return _rendererTemplateKey;
 		}
 	}
 
 	@Override
-	public void setRendererTemplateId(String rendererTemplateId) {
-		_rendererTemplateId = rendererTemplateId;
+	public void setRendererTemplateKey(String rendererTemplateKey) {
+		_rendererTemplateKey = rendererTemplateKey;
 	}
 
 	@JSON
@@ -823,9 +824,9 @@ public class JournalFeedModelImpl extends BaseModelImpl<JournalFeed>
 		journalFeedImpl.setName(getName());
 		journalFeedImpl.setDescription(getDescription());
 		journalFeedImpl.setType(getType());
-		journalFeedImpl.setStructureId(getStructureId());
-		journalFeedImpl.setTemplateId(getTemplateId());
-		journalFeedImpl.setRendererTemplateId(getRendererTemplateId());
+		journalFeedImpl.setStructureKey(getStructureKey());
+		journalFeedImpl.setTemplateKey(getTemplateKey());
+		journalFeedImpl.setRendererTemplateKey(getRendererTemplateKey());
 		journalFeedImpl.setDelta(getDelta());
 		journalFeedImpl.setOrderByCol(getOrderByCol());
 		journalFeedImpl.setOrderByType(getOrderByType());
@@ -987,28 +988,29 @@ public class JournalFeedModelImpl extends BaseModelImpl<JournalFeed>
 			journalFeedCacheModel.type = null;
 		}
 
-		journalFeedCacheModel.structureId = getStructureId();
+		journalFeedCacheModel.structureKey = getStructureKey();
 
-		String structureId = journalFeedCacheModel.structureId;
+		String structureKey = journalFeedCacheModel.structureKey;
 
-		if ((structureId != null) && (structureId.length() == 0)) {
-			journalFeedCacheModel.structureId = null;
+		if ((structureKey != null) && (structureKey.length() == 0)) {
+			journalFeedCacheModel.structureKey = null;
 		}
 
-		journalFeedCacheModel.templateId = getTemplateId();
+		journalFeedCacheModel.templateKey = getTemplateKey();
 
-		String templateId = journalFeedCacheModel.templateId;
+		String templateKey = journalFeedCacheModel.templateKey;
 
-		if ((templateId != null) && (templateId.length() == 0)) {
-			journalFeedCacheModel.templateId = null;
+		if ((templateKey != null) && (templateKey.length() == 0)) {
+			journalFeedCacheModel.templateKey = null;
 		}
 
-		journalFeedCacheModel.rendererTemplateId = getRendererTemplateId();
+		journalFeedCacheModel.rendererTemplateKey = getRendererTemplateKey();
 
-		String rendererTemplateId = journalFeedCacheModel.rendererTemplateId;
+		String rendererTemplateKey = journalFeedCacheModel.rendererTemplateKey;
 
-		if ((rendererTemplateId != null) && (rendererTemplateId.length() == 0)) {
-			journalFeedCacheModel.rendererTemplateId = null;
+		if ((rendererTemplateKey != null) &&
+				(rendererTemplateKey.length() == 0)) {
+			journalFeedCacheModel.rendererTemplateKey = null;
 		}
 
 		journalFeedCacheModel.delta = getDelta();
@@ -1095,12 +1097,12 @@ public class JournalFeedModelImpl extends BaseModelImpl<JournalFeed>
 		sb.append(getDescription());
 		sb.append(", type=");
 		sb.append(getType());
-		sb.append(", structureId=");
-		sb.append(getStructureId());
-		sb.append(", templateId=");
-		sb.append(getTemplateId());
-		sb.append(", rendererTemplateId=");
-		sb.append(getRendererTemplateId());
+		sb.append(", structureKey=");
+		sb.append(getStructureKey());
+		sb.append(", templateKey=");
+		sb.append(getTemplateKey());
+		sb.append(", rendererTemplateKey=");
+		sb.append(getRendererTemplateKey());
 		sb.append(", delta=");
 		sb.append(getDelta());
 		sb.append(", orderByCol=");
@@ -1179,16 +1181,16 @@ public class JournalFeedModelImpl extends BaseModelImpl<JournalFeed>
 		sb.append(getType());
 		sb.append("]]></column-value></column>");
 		sb.append(
-			"<column><column-name>structureId</column-name><column-value><![CDATA[");
-		sb.append(getStructureId());
+			"<column><column-name>structureKey</column-name><column-value><![CDATA[");
+		sb.append(getStructureKey());
 		sb.append("]]></column-value></column>");
 		sb.append(
-			"<column><column-name>templateId</column-name><column-value><![CDATA[");
-		sb.append(getTemplateId());
+			"<column><column-name>templateKey</column-name><column-value><![CDATA[");
+		sb.append(getTemplateKey());
 		sb.append("]]></column-value></column>");
 		sb.append(
-			"<column><column-name>rendererTemplateId</column-name><column-value><![CDATA[");
-		sb.append(getRendererTemplateId());
+			"<column><column-name>rendererTemplateKey</column-name><column-value><![CDATA[");
+		sb.append(getRendererTemplateKey());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>delta</column-name><column-value><![CDATA[");
@@ -1250,9 +1252,9 @@ public class JournalFeedModelImpl extends BaseModelImpl<JournalFeed>
 	private String _name;
 	private String _description;
 	private String _type;
-	private String _structureId;
-	private String _templateId;
-	private String _rendererTemplateId;
+	private String _structureKey;
+	private String _templateKey;
+	private String _rendererTemplateKey;
 	private int _delta;
 	private String _orderByCol;
 	private String _orderByType;

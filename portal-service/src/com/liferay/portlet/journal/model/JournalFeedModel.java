@@ -268,47 +268,49 @@ public interface JournalFeedModel extends BaseModel<JournalFeed>,
 	public void setType(String type);
 
 	/**
-	 * Returns the structure ID of this journal feed.
+	 * Returns the structure key of this journal feed.
 	 *
-	 * @return the structure ID of this journal feed
-	 */
-	public String getStructureId();
-
-	/**
-	 * Sets the structure ID of this journal feed.
-	 *
-	 * @param structureId the structure ID of this journal feed
-	 */
-	public void setStructureId(String structureId);
-
-	/**
-	 * Returns the template ID of this journal feed.
-	 *
-	 * @return the template ID of this journal feed
-	 */
-	public String getTemplateId();
-
-	/**
-	 * Sets the template ID of this journal feed.
-	 *
-	 * @param templateId the template ID of this journal feed
-	 */
-	public void setTemplateId(String templateId);
-
-	/**
-	 * Returns the renderer template ID of this journal feed.
-	 *
-	 * @return the renderer template ID of this journal feed
+	 * @return the structure key of this journal feed
 	 */
 	@AutoEscape
-	public String getRendererTemplateId();
+	public String getStructureKey();
 
 	/**
-	 * Sets the renderer template ID of this journal feed.
+	 * Sets the structure key of this journal feed.
 	 *
-	 * @param rendererTemplateId the renderer template ID of this journal feed
+	 * @param structureKey the structure key of this journal feed
 	 */
-	public void setRendererTemplateId(String rendererTemplateId);
+	public void setStructureKey(String structureKey);
+
+	/**
+	 * Returns the template key of this journal feed.
+	 *
+	 * @return the template key of this journal feed
+	 */
+	@AutoEscape
+	public String getTemplateKey();
+
+	/**
+	 * Sets the template key of this journal feed.
+	 *
+	 * @param templateKey the template key of this journal feed
+	 */
+	public void setTemplateKey(String templateKey);
+
+	/**
+	 * Returns the renderer template key of this journal feed.
+	 *
+	 * @return the renderer template key of this journal feed
+	 */
+	@AutoEscape
+	public String getRendererTemplateKey();
+
+	/**
+	 * Sets the renderer template key of this journal feed.
+	 *
+	 * @param rendererTemplateKey the renderer template key of this journal feed
+	 */
+	public void setRendererTemplateKey(String rendererTemplateKey);
 
 	/**
 	 * Returns the delta of this journal feed.
