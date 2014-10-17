@@ -105,7 +105,7 @@ public class JournalFeedStagedModelDataHandler
 
 		DDMStructure ddmStructure = DDMStructureLocalServiceUtil.fetchStructure(
 			feed.getGroupId(), PortalUtil.getClassNameId(JournalArticle.class),
-			feed.getStructureId(), true);
+			feed.getStructureKey(), true);
 
 		if (ddmStructure != null) {
 			StagedModelDataHandlerUtil.exportReferenceStagedModel(
@@ -116,13 +116,13 @@ public class JournalFeedStagedModelDataHandler
 			if (_log.isWarnEnabled()) {
 				_log.warn(
 					"Unable to find DDM structure with key " +
-						feed.getStructureId());
+						feed.getStructureKey());
 			}
 		}
 
 		DDMTemplate ddmTemplate = DDMTemplateLocalServiceUtil.fetchTemplate(
 			feed.getGroupId(), PortalUtil.getClassNameId(DDMStructure.class),
-			feed.getTemplateId());
+			feed.getTemplateKey());
 
 		if (ddmTemplate != null) {
 			StagedModelDataHandlerUtil.exportReferenceStagedModel(
@@ -133,7 +133,7 @@ public class JournalFeedStagedModelDataHandler
 			if (_log.isWarnEnabled()) {
 				_log.warn(
 					"Unable to find DDM template with key " +
-						feed.getTemplateId());
+						feed.getTemplateKey());
 			}
 		}
 
@@ -141,7 +141,7 @@ public class JournalFeedStagedModelDataHandler
 			DDMTemplateLocalServiceUtil.fetchTemplate(
 				feed.getGroupId(),
 				PortalUtil.getClassNameId(DDMStructure.class),
-				feed.getRendererTemplateId());
+				feed.getRendererTemplateKey());
 
 		if (rendererDDMTemplate != null) {
 			Element rendererDDMTemplateElement =
@@ -156,7 +156,7 @@ public class JournalFeedStagedModelDataHandler
 			if (_log.isWarnEnabled()) {
 				_log.warn(
 					"Unable to find DDM template with key " +
-						feed.getRendererTemplateId());
+						feed.getRendererTemplateKey());
 			}
 		}
 
@@ -238,17 +238,17 @@ public class JournalFeedStagedModelDataHandler
 				DDMStructure.class + ".ddmStructureKey");
 
 		String parentDDMStructureKey = MapUtil.getString(
-			ddmStructureKeys, feed.getStructureId(), feed.getStructureId());
+			ddmStructureKeys, feed.getStructureKey(), feed.getStructureKey());
 
 		Map<String, String> ddmTemplateKeys =
 			(Map<String, String>)portletDataContext.getNewPrimaryKeysMap(
 				DDMTemplate.class + ".ddmTemplateKey");
 
 		String parentDDMTemplateKey = MapUtil.getString(
-			ddmTemplateKeys, feed.getTemplateId(), feed.getTemplateId());
+			ddmTemplateKeys, feed.getTemplateKey(), feed.getTemplateKey());
 		String parentRendererDDMTemplateKey = MapUtil.getString(
-			ddmTemplateKeys, feed.getRendererTemplateId(),
-			feed.getRendererTemplateId());
+			ddmTemplateKeys, feed.getRendererTemplateKey(),
+			feed.getRendererTemplateKey());
 
 		ServiceContext serviceContext = portletDataContext.createServiceContext(
 			feed);

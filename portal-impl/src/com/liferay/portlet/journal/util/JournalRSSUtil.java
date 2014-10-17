@@ -70,13 +70,13 @@ public class JournalRSSUtil {
 			type = null;
 		}
 
-		String structureId = feed.getStructureId();
+		String structureId = feed.getStructureKey();
 
 		if (Validator.isNull(structureId)) {
 			structureId = null;
 		}
 
-		String templateId = feed.getTemplateId();
+		String templateId = feed.getTemplateKey();
 
 		if (Validator.isNull(templateId)) {
 			templateId = null;

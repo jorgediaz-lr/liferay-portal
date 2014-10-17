@@ -264,16 +264,16 @@ public class RSSAction extends com.liferay.portal.struts.RSSAction {
 		String contentField = feed.getContentField();
 
 		if (contentField.equals(JournalFeedConstants.RENDERED_WEB_CONTENT)) {
-			String rendererTemplateId = article.getTemplateKey();
+			String rendererTemplateKey = article.getTemplateKey();
 
-			if (Validator.isNotNull(feed.getRendererTemplateId())) {
-				rendererTemplateId = feed.getRendererTemplateId();
+			if (Validator.isNotNull(feed.getRendererTemplateKey())) {
+				rendererTemplateKey = feed.getRendererTemplateKey();
 			}
 
 			JournalArticleDisplay articleDisplay =
 				JournalContentUtil.getDisplay(
 					feed.getGroupId(), article.getArticleId(),
-					rendererTemplateId, null, languageId, 1,
+					rendererTemplateKey, null, languageId, 1,
 					new PortletRequestModel() {
 
 						@Override
