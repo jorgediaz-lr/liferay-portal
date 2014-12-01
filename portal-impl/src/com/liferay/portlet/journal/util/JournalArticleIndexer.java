@@ -408,14 +408,7 @@ public class JournalArticleIndexer extends BaseIndexer {
 		document.addKeyword("ddmStructureKey", article.getDDMStructureKey());
 		document.addKeyword("ddmTemplateKey", article.getDDMTemplateKey());
 		document.addDate("displayDate", article.getDisplayDate());
-
-		boolean head = true;
-
-		if (PropsValues.JOURNAL_ARTICLE_INDEX_ALL_VERSIONS) {
-			head = isHead(article);
-		}
-
-		document.addKeyword("head", head);
+		document.addKeyword("head", isHead(article));
 
 		addDDMStructureAttributes(document, article);
 
@@ -548,15 +541,11 @@ public class JournalArticleIndexer extends BaseIndexer {
 		}
 
 		List<JournalArticle> articles =
-			JournalArticleLocalServiceUtil.getStructureArticles(
+			JournalArticleLocalServiceUtil.getArticlesByDDMStructureKey(
 				ddmStructureKeys);
 
 		for (JournalArticle article : articles) {
-			if (PropsValues.JOURNAL_ARTICLE_INDEX_ALL_VERSIONS ||
-				isHead(article)) {
-
-				doReindex(article, false);
-			}
+			doReindex(article, false);
 		}
 	}
 
@@ -673,6 +662,10 @@ public class JournalArticleIndexer extends BaseIndexer {
 	}
 
 	protected boolean isHead(JournalArticle article) {
+		if (!PropsValues.JOURNAL_ARTICLE_INDEX_ALL_VERSIONS) {
+			return true;
+		}
+
 		JournalArticle latestArticle =
 			JournalArticleLocalServiceUtil.fetchLatestArticle(
 				article.getResourcePrimKey(),
@@ -725,7 +718,7 @@ public class JournalArticleIndexer extends BaseIndexer {
 			getArticleVersions(article), isCommitImmediately());
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		JournalArticleIndexer.class);
 
 }
