@@ -1509,6 +1509,11 @@ public class JournalArticleLocalServiceUtil {
 		return getService().getArticles(groupId, start, end, obc);
 	}
 
+	public static java.util.List<com.liferay.portlet.journal.model.JournalArticle> getArticlesByDDMStructureKey(
+		java.lang.String[] ddmStructureKeys) {
+		return getService().getArticlesByDDMStructureKey(ddmStructureKeys);
+	}
+
 	/**
 	* Returns all the web content articles matching the resource primary key.
 	*
