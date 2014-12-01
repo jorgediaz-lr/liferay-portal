@@ -1356,6 +1356,10 @@ public interface JournalArticleLocalService extends BaseLocalService,
 		long groupId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.portlet.journal.model.JournalArticle> obc);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public java.util.List<com.liferay.portlet.journal.model.JournalArticle> getArticlesByDDMStructureKey(
+		java.lang.String[] ddmStructureKeys);
+
 	/**
 	* Returns all the web content articles matching the resource primary key.
 	*
