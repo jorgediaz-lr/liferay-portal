@@ -541,7 +541,7 @@ public class JournalArticleIndexer extends BaseIndexer {
 		}
 
 		List<JournalArticle> articles =
-			JournalArticleLocalServiceUtil.getStructureArticles(
+			JournalArticleLocalServiceUtil.getArticlesByDDMStructureKey(
 				ddmStructureKeys);
 
 		for (JournalArticle article : articles) {
@@ -718,7 +718,7 @@ public class JournalArticleIndexer extends BaseIndexer {
 			getArticleVersions(article), isCommitImmediately());
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		JournalArticleIndexer.class);
 
 }

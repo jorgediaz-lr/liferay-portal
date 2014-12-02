@@ -1570,6 +1570,12 @@ public class JournalArticleLocalServiceWrapper
 		return _journalArticleLocalService.getArticles(groupId, start, end, obc);
 	}
 
+	@Override
+	public java.util.List<com.liferay.portlet.journal.model.JournalArticle> getArticlesByDDMStructureKey(
+		java.lang.String[] ddmStructureKeys) {
+		return _journalArticleLocalService.getArticlesByDDMStructureKey(ddmStructureKeys);
+	}
+
 	/**
 	* Returns all the web content articles matching the resource primary key.
 	*
