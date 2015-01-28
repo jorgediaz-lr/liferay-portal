@@ -550,60 +550,32 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 		sb.append(classPKField);
 		sb.append(")) AND (");
 
-		boolean hasPreviousViewableGroup = false;
+		boolean hasPreviousGroup = false;
 
 		for (int j = 0; j < groupIds.length; j++) {
 			long groupId = groupIds[j];
 
-			if (!permissionChecker.hasPermission(
-					groupId, className, 0, ActionKeys.VIEW)) {
+			if ((j > 0) && hasPreviousGroup) {
+				sb.append(" OR ");
+			}
 
-				if ((j > 0) && hasPreviousViewableGroup) {
-					sb.append(" OR ");
-				}
+			hasPreviousGroup = true;
 
-				hasPreviousViewableGroup = true;
+			sb.append(StringPool.OPEN_PARENTHESIS);
 
-				sb.append(StringPool.OPEN_PARENTHESIS);
-
-				if (Validator.isNull(groupIdField)) {
-					sb.append(
-						classPKField.substring(
-							0, classPKField.lastIndexOf(CharPool.PERIOD)));
-					sb.append(".groupId = ");
-				}
-				else {
-					sb.append(groupIdField);
-					sb.append(" = ");
-				}
-
-				sb.append(groupId);
-				sb.append(StringPool.CLOSE_PARENTHESIS);
+			if (Validator.isNull(groupIdField)) {
+				sb.append(
+					classPKField.substring(
+						0, classPKField.lastIndexOf(CharPool.PERIOD)));
+				sb.append(".groupId = ");
 			}
 			else {
-
-				if (hasPreviousViewableGroup) {
-					sb.append(" OR ");
-				}
-
-				hasPreviousViewableGroup = true;
-
-				sb.append(StringPool.OPEN_PARENTHESIS);
-
-				if (Validator.isNull(groupIdField)) {
-					sb.append(
-						classPKField.substring(
-							0, classPKField.lastIndexOf(CharPool.PERIOD)));
-					sb.append(".groupId = ");
-				}
-				else {
-					sb.append(groupIdField);
-					sb.append(" = ");
-				}
-
-				sb.append(groupId);
-				sb.append(StringPool.CLOSE_PARENTHESIS);
+				sb.append(groupIdField);
+				sb.append(" = ");
 			}
+
+			sb.append(groupId);
+			sb.append(StringPool.CLOSE_PARENTHESIS);
 		}
 
 		sb.append(")))");
