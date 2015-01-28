@@ -548,7 +548,7 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 
 		sb.append("(((InlineSQLResourcePermission.primKey = CAST_TEXT(");
 		sb.append(classPKField);
-		sb.append(")) AND ((");
+		sb.append(")) AND (");
 
 		boolean hasPreviousViewableGroup = false;
 
@@ -587,11 +587,16 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 			}
 		}
 
-		sb.append(StringPool.CLOSE_PARENTHESIS);
-
 		if (!viewableGroupIds.isEmpty()) {
 			for (Long viewableGroupId : viewableGroupIds) {
-				sb.append(" OR (");
+
+				if (hasPreviousViewableGroup) {
+					sb.append(" OR ");
+				}
+
+				hasPreviousViewableGroup = true;
+
+				sb.append(StringPool.OPEN_PARENTHESIS);
 
 				if (Validator.isNull(groupIdField)) {
 					sb.append(
