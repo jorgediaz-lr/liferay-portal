@@ -552,8 +552,6 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 
 		boolean hasPreviousViewableGroup = false;
 
-		List<Long> viewableGroupIds = new ArrayList<>();
-
 		for (int j = 0; j < groupIds.length; j++) {
 			long groupId = groupIds[j];
 
@@ -583,12 +581,6 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 				sb.append(StringPool.CLOSE_PARENTHESIS);
 			}
 			else {
-				viewableGroupIds.add(groupId);
-			}
-		}
-
-		if (!viewableGroupIds.isEmpty()) {
-			for (Long viewableGroupId : viewableGroupIds) {
 
 				if (hasPreviousViewableGroup) {
 					sb.append(" OR ");
@@ -609,7 +601,7 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 					sb.append(" = ");
 				}
 
-				sb.append(viewableGroupId);
+				sb.append(groupId);
 				sb.append(StringPool.CLOSE_PARENTHESIS);
 			}
 		}
