@@ -7282,7 +7282,7 @@ public class JournalArticleLocalServiceImpl
 			LocaleException le = new LocaleException(
 				LocaleException.TYPE_CONTENT,
 				"The locale " + articleDefaultLocale +
-					" is not available in site with groupId" + groupId);
+					" is not available in site with groupId " + groupId);
 
 			Locale[] sourceAvailableLocales = {articleDefaultLocale};
 
