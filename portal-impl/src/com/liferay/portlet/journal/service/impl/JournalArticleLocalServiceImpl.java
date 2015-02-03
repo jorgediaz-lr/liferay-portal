@@ -7264,7 +7264,8 @@ public class JournalArticleLocalServiceImpl
 		}
 	}
 
-	protected void validate(
+	@Override
+	public void validate(
 			long companyId, long groupId, long classNameId,
 			Map<Locale, String> titleMap, String content,
 			String ddmStructureKey, String ddmTemplateKey, Date expirationDate,
