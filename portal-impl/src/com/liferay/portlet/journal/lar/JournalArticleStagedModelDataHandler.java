@@ -42,6 +42,7 @@ import com.liferay.portal.model.Layout;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ImageLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.service.ServiceContextThreadLocal;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.dynamicdatamapping.model.DDMStructure;
@@ -282,6 +283,20 @@ public class JournalArticleStagedModelDataHandler
 	protected void doExportStagedModel(
 			PortletDataContext portletDataContext, JournalArticle article)
 		throws Exception {
+
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
+
+		if (serviceContext == null) {
+			serviceContext = new ServiceContext();
+		}
+
+		JournalArticleLocalServiceUtil.validate(
+			article.getCompanyId(), article.getGroupId(),
+			article.getClassNameId(), article.getTitleMap(),
+			article.getContent(), article.getDDMStructureKey(),
+			article.getDDMTemplateKey(), null, false, null, null, null,
+			serviceContext);
 
 		Element articleElement = portletDataContext.getExportDataElement(
 			article);
