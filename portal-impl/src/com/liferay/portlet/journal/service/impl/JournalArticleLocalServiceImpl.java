@@ -5831,6 +5831,111 @@ public class JournalArticleLocalServiceImpl
 			groupId, classNameId, oldDDMTemplateKey, newDDMTemplateKey);
 	}
 
+	@Override
+	public void validate(
+			long companyId, long groupId, long classNameId,
+			Map<Locale, String> titleMap, String content,
+			String ddmStructureKey, String ddmTemplateKey, Date expirationDate,
+			boolean smallImage, String smallImageURL, File smallImageFile,
+			byte[] smallImageBytes, ServiceContext serviceContext)
+		throws PortalException {
+
+		Locale articleDefaultLocale = LocaleUtil.fromLanguageId(
+			LocalizationUtil.getDefaultLanguageId(content));
+
+		Locale[] availableLocales = LanguageUtil.getAvailableLocales(groupId);
+
+		if (!ArrayUtil.contains(availableLocales, articleDefaultLocale)) {
+			LocaleException le = new LocaleException(
+				LocaleException.TYPE_CONTENT,
+				"The locale " + articleDefaultLocale +
+					" is not available in site with groupId " + groupId);
+
+			Locale[] sourceAvailableLocales = {articleDefaultLocale};
+
+			le.setSourceAvailableLocales(sourceAvailableLocales);
+			le.setTargetAvailableLocales(availableLocales);
+
+			throw le;
+		}
+
+		if ((classNameId == JournalArticleConstants.CLASSNAME_ID_DEFAULT) &&
+			(titleMap.isEmpty() ||
+			 Validator.isNull(titleMap.get(articleDefaultLocale)))) {
+
+			throw new ArticleTitleException();
+		}
+
+		validateContent(content);
+
+		DDMStructure ddmStructure = ddmStructureLocalService.getStructure(
+			PortalUtil.getSiteGroupId(groupId),
+			classNameLocalService.getClassNameId(JournalArticle.class),
+			ddmStructureKey, true);
+
+		validateDDMStructureFields(ddmStructure, classNameId, serviceContext);
+
+		if (Validator.isNotNull(ddmTemplateKey)) {
+			DDMTemplate ddmTemplate = ddmTemplateLocalService.getTemplate(
+				PortalUtil.getSiteGroupId(groupId),
+				classNameLocalService.getClassNameId(DDMStructure.class),
+				ddmTemplateKey, true);
+
+			if (ddmTemplate.getClassPK() != ddmStructure.getStructureId()) {
+				throw new NoSuchTemplateException(
+					"{templateKey=" + ddmTemplateKey + "}");
+			}
+		}
+		else if (classNameId == JournalArticleConstants.CLASSNAME_ID_DEFAULT) {
+			throw new NoSuchTemplateException();
+		}
+
+		if ((expirationDate != null) && expirationDate.before(new Date()) &&
+			!ExportImportThreadLocal.isImportInProcess()) {
+
+			throw new ArticleExpirationDateException();
+		}
+
+		String[] imageExtensions = PrefsPropsUtil.getStringArray(
+			PropsKeys.JOURNAL_IMAGE_EXTENSIONS, StringPool.COMMA);
+
+		if (!smallImage || Validator.isNotNull(smallImageURL) ||
+			(smallImageFile == null) || (smallImageBytes == null)) {
+
+			return;
+		}
+
+		String smallImageName = smallImageFile.getName();
+
+		if (smallImageName != null) {
+			boolean validSmallImageExtension = false;
+
+			for (String _imageExtension : imageExtensions) {
+				if (StringPool.STAR.equals(_imageExtension) ||
+					StringUtil.endsWith(smallImageName, _imageExtension)) {
+
+					validSmallImageExtension = true;
+
+					break;
+				}
+			}
+
+			if (!validSmallImageExtension) {
+				throw new ArticleSmallImageNameException(smallImageName);
+			}
+		}
+
+		long smallImageMaxSize = PrefsPropsUtil.getLong(
+			PropsKeys.JOURNAL_IMAGE_SMALL_MAX_SIZE);
+
+		if ((smallImageMaxSize > 0) &&
+			((smallImageBytes == null) ||
+			 (smallImageBytes.length > smallImageMaxSize))) {
+
+			throw new ArticleSmallImageSizeException();
+		}
+	}
+
 	protected String buildArticleURL(
 		String articleURL, long groupId, long folderId, String articleId) {
 
@@ -7261,111 +7366,6 @@ public class JournalArticleLocalServiceImpl
 
 				journalArticlePersistence.update(article);
 			}
-		}
-	}
-
-	@Override
-	public void validate(
-			long companyId, long groupId, long classNameId,
-			Map<Locale, String> titleMap, String content,
-			String ddmStructureKey, String ddmTemplateKey, Date expirationDate,
-			boolean smallImage, String smallImageURL, File smallImageFile,
-			byte[] smallImageBytes, ServiceContext serviceContext)
-		throws PortalException {
-
-		Locale articleDefaultLocale = LocaleUtil.fromLanguageId(
-			LocalizationUtil.getDefaultLanguageId(content));
-
-		Locale[] availableLocales = LanguageUtil.getAvailableLocales(groupId);
-
-		if (!ArrayUtil.contains(availableLocales, articleDefaultLocale)) {
-			LocaleException le = new LocaleException(
-				LocaleException.TYPE_CONTENT,
-				"The locale " + articleDefaultLocale +
-					" is not available in site with groupId " + groupId);
-
-			Locale[] sourceAvailableLocales = {articleDefaultLocale};
-
-			le.setSourceAvailableLocales(sourceAvailableLocales);
-			le.setTargetAvailableLocales(availableLocales);
-
-			throw le;
-		}
-
-		if ((classNameId == JournalArticleConstants.CLASSNAME_ID_DEFAULT) &&
-			(titleMap.isEmpty() ||
-			 Validator.isNull(titleMap.get(articleDefaultLocale)))) {
-
-			throw new ArticleTitleException();
-		}
-
-		validateContent(content);
-
-		DDMStructure ddmStructure = ddmStructureLocalService.getStructure(
-			PortalUtil.getSiteGroupId(groupId),
-			classNameLocalService.getClassNameId(JournalArticle.class),
-			ddmStructureKey, true);
-
-		validateDDMStructureFields(ddmStructure, classNameId, serviceContext);
-
-		if (Validator.isNotNull(ddmTemplateKey)) {
-			DDMTemplate ddmTemplate = ddmTemplateLocalService.getTemplate(
-				PortalUtil.getSiteGroupId(groupId),
-				classNameLocalService.getClassNameId(DDMStructure.class),
-				ddmTemplateKey, true);
-
-			if (ddmTemplate.getClassPK() != ddmStructure.getStructureId()) {
-				throw new NoSuchTemplateException(
-					"{templateKey=" + ddmTemplateKey + "}");
-			}
-		}
-		else if (classNameId == JournalArticleConstants.CLASSNAME_ID_DEFAULT) {
-			throw new NoSuchTemplateException();
-		}
-
-		if ((expirationDate != null) && expirationDate.before(new Date()) &&
-			!ExportImportThreadLocal.isImportInProcess()) {
-
-			throw new ArticleExpirationDateException();
-		}
-
-		String[] imageExtensions = PrefsPropsUtil.getStringArray(
-			PropsKeys.JOURNAL_IMAGE_EXTENSIONS, StringPool.COMMA);
-
-		if (!smallImage || Validator.isNotNull(smallImageURL) ||
-			(smallImageFile == null) || (smallImageBytes == null)) {
-
-			return;
-		}
-
-		String smallImageName = smallImageFile.getName();
-
-		if (smallImageName != null) {
-			boolean validSmallImageExtension = false;
-
-			for (String _imageExtension : imageExtensions) {
-				if (StringPool.STAR.equals(_imageExtension) ||
-					StringUtil.endsWith(smallImageName, _imageExtension)) {
-
-					validSmallImageExtension = true;
-
-					break;
-				}
-			}
-
-			if (!validSmallImageExtension) {
-				throw new ArticleSmallImageNameException(smallImageName);
-			}
-		}
-
-		long smallImageMaxSize = PrefsPropsUtil.getLong(
-			PropsKeys.JOURNAL_IMAGE_SMALL_MAX_SIZE);
-
-		if ((smallImageMaxSize > 0) &&
-			((smallImageBytes == null) ||
-			 (smallImageBytes.length > smallImageMaxSize))) {
-
-			throw new ArticleSmallImageSizeException();
 		}
 	}
 
