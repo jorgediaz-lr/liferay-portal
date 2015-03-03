@@ -2491,6 +2491,10 @@ public interface PropsKeys {
 
 	public static final String SQL_DATA_MAX_PARAMETERS = "sql.data.max.parameters";
 
+	public static final String STAGING_DELETE_TEMP_LAR_ON_FAILURE = "staging.delete.temp.lar.on.failure";
+
+	public static final String STAGING_DELETE_TEMP_LAR_ON_SUCCESS = "staging.delete.temp.lar.on.success";
+
 	public static final String STAGING_LIVE_GROUP_REMOTE_STAGING_ENABLED = "staging.live.group.remote.staging.enabled";
 
 	public static final String STAGING_PUBLISH_BUTTON_EXPORT_IMPORT_CONFIGURATION_DISPLAY_COUNT = "staging.publish.button.export.import.configuration.display.count";
