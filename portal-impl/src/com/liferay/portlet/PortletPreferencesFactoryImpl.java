@@ -206,7 +206,8 @@ public class PortletPreferencesFactoryImpl
 	public PortalPreferences getPortalPreferences(HttpServletRequest request) {
 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
 			WebKeys.THEME_DISPLAY);
-
+		// VER DE DONDE SE OBTIENE EL USERID, YA QUE DEBERÍA ESTAR COGIENDO EL SUPLANTADO doAsUserId, en el PortalImpl es dónde se calcula el userId y entiendo que debería haber obtenido el suplantado
+		// si no es así aquí habrá que meter la lógica de usar el themeDisplay.getdoAsUserId o usar este. 
 		return getPortalPreferences(
 			request.getSession(), themeDisplay.getUserId(),
 			themeDisplay.isSignedIn());
