@@ -719,6 +719,26 @@ public abstract class BaseIndexer implements Indexer {
 		queryConfig.setSelectedFieldNames(selectedFieldNames);
 	}
 
+	protected void addGroupFields(
+		Document document, GroupedModel groupedModel) {
+
+		boolean stagingGroup = false;
+		long siteGroupId = groupedModel.getGroupId();
+		Group group = getSiteGroup(siteGroupId);
+
+		if (group != null) {
+			siteGroupId = group.getGroupId();
+			stagingGroup = group.isStagingGroup();
+		}
+
+		document.addKeyword(Field.GROUP_ID, siteGroupId);
+		document.addKeyword(Field.SCOPE_GROUP_ID, groupedModel.getGroupId());
+
+		if (isStagingAware()) {
+			document.addKeyword(Field.STAGING_GROUP, stagingGroup);
+		}
+	}
+
 	protected void addSearchAssetCategoryIds(
 			BooleanQuery contextQuery, SearchContext searchContext)
 		throws Exception {
@@ -1038,26 +1058,6 @@ public abstract class BaseIndexer implements Indexer {
 
 				selectedFieldNames.add(localizedFieldName);
 			}
-		}
-	}
-
-	protected void addGroupFields(
-			Document document, GroupedModel groupedModel) {
-
-		boolean stagingGroup = false;
-		long siteGroupId = groupedModel.getGroupId();
-		Group group = getSiteGroup(siteGroupId);
-
-		if(group != null) {
-			siteGroupId = group.getGroupId();
-			stagingGroup = group.isStagingGroup();
-		}
-
-		document.addKeyword(Field.GROUP_ID, siteGroupId);
-		document.addKeyword(Field.SCOPE_GROUP_ID, groupedModel.getGroupId());
-
-		if (isStagingAware()) {
-			document.addKeyword(Field.STAGING_GROUP, stagingGroup);
 		}
 	}
 
