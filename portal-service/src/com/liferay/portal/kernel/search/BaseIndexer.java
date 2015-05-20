@@ -154,16 +154,6 @@ public abstract class BaseIndexer implements Indexer {
 				return null;
 			}
 
-			Map<String, Field> fields = document.getFields();
-
-			Field groupIdField = fields.get(Field.GROUP_ID);
-
-			if (groupIdField != null) {
-				long groupId = GetterUtil.getLong(groupIdField.getValue());
-
-				addStagingGroupKeyword(document, groupId);
-			}
-
 			return document;
 		}
 		catch (SearchException se) {
@@ -1403,6 +1393,8 @@ public abstract class BaseIndexer implements Indexer {
 				Field.GROUP_ID, getSiteGroupId(groupedModel.getGroupId()));
 			document.addKeyword(
 				Field.SCOPE_GROUP_ID, groupedModel.getGroupId());
+
+			addStagingGroupKeyword(document, groupedModel.getGroupId());
 		}
 
 		if (workflowedBaseModel instanceof WorkflowedModel) {
