@@ -1041,20 +1041,24 @@ public abstract class BaseIndexer implements Indexer {
 		}
 	}
 
-	protected void addStagingGroupKeyword(Document document, long groupId) {
-		if (!isStagingAware()) {
-			return;
-		}
+	protected void addGroupFields(
+			Document document, GroupedModel groupedModel) {
 
 		boolean stagingGroup = false;
+		long siteGroupId = groupedModel.getGroupId();
+		Group group = getSiteGroup(siteGroupId);
 
-		Group group = getSiteGroup(groupId);
-
-		if (group != null && group.isStagingGroup()) {
-			stagingGroup = true;
+		if(group != null) {
+			siteGroupId = group.getGroupId();
+			stagingGroup = group.isStagingGroup();
 		}
 
-		document.addKeyword(Field.STAGING_GROUP, stagingGroup);
+		document.addKeyword(Field.GROUP_ID, siteGroupId);
+		document.addKeyword(Field.SCOPE_GROUP_ID, groupedModel.getGroupId());
+
+		if (isStagingAware()) {
+			document.addKeyword(Field.STAGING_GROUP, stagingGroup);
+		}
 	}
 
 	protected void addStatus(
@@ -1389,12 +1393,7 @@ public abstract class BaseIndexer implements Indexer {
 		if (baseModel instanceof GroupedModel) {
 			groupedModel = (GroupedModel)baseModel;
 
-			document.addKeyword(
-				Field.GROUP_ID, getSiteGroupId(groupedModel.getGroupId()));
-			document.addKeyword(
-				Field.SCOPE_GROUP_ID, groupedModel.getGroupId());
-
-			addStagingGroupKeyword(document, groupedModel.getGroupId());
+			addGroupFields(document, groupedModel);
 		}
 
 		if (workflowedBaseModel instanceof WorkflowedModel) {
