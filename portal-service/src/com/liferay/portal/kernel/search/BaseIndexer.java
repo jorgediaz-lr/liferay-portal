@@ -1253,23 +1253,25 @@ public abstract class BaseIndexer implements Indexer {
 		}
 	}
 
-	protected void addStagingGroupKeyword(Document document, long groupId)
-		throws Exception {
-
+	protected void addStagingGroupKeyword(Document document, long groupId) {
 		if (!isStagingAware()) {
 			return;
 		}
 
 		boolean stagingGroup = false;
 
-		Group group = GroupLocalServiceUtil.getGroup(groupId);
+		try {
+			Group group = GroupLocalServiceUtil.getGroup(groupId);
 
-		if (group.isLayout()) {
-			group = GroupLocalServiceUtil.getGroup(group.getParentGroupId());
+			if (group.isLayout()) {
+				group = GroupLocalServiceUtil.getGroup(group.getParentGroupId());
+			}
+	
+			if (group.isStagingGroup()) {
+				stagingGroup = true;
+			}
 		}
-
-		if (group.isStagingGroup()) {
-			stagingGroup = true;
+		catch (PortalException e) {
 		}
 
 		document.addKeyword(Field.STAGING_GROUP, stagingGroup);
