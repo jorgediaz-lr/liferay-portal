@@ -1260,18 +1260,10 @@ public abstract class BaseIndexer implements Indexer {
 
 		boolean stagingGroup = false;
 
-		try {
-			Group group = GroupLocalServiceUtil.getGroup(groupId);
+		Group group = getSiteGroup(groupId);
 
-			if (group.isLayout()) {
-				group = GroupLocalServiceUtil.getGroup(group.getParentGroupId());
-			}
-	
-			if (group.isStagingGroup()) {
-				stagingGroup = true;
-			}
-		}
-		catch (PortalException e) {
+		if (group != null && group.isStagingGroup()) {
+			stagingGroup = true;
 		}
 
 		document.addKeyword(Field.STAGING_GROUP, stagingGroup);
@@ -1707,20 +1699,30 @@ public abstract class BaseIndexer implements Indexer {
 		return StringPool.BLANK;
 	}
 
-	protected long getSiteGroupId(long groupId) {
-		long siteGroupId = groupId;
+	protected Group getSiteGroup(long groupId) {
+		Group group = null;
 
 		try {
-			Group group = GroupLocalServiceUtil.getGroup(groupId);
+			group = GroupLocalServiceUtil.getGroup(groupId);
 
 			if (group.isLayout()) {
-				siteGroupId = group.getParentGroupId();
+				group = group.getParentGroup();
 			}
 		}
-		catch (Exception e) {
+		catch (PortalException e) {
 		}
 
-		return siteGroupId;
+		return group;
+	}
+
+	protected long getSiteGroupId(long groupId) {
+		Group group = getSiteGroup(groupId);
+
+		if (group == null) {
+			return groupId;
+		}
+
+		return group.getGroupId();
 	}
 
 	protected Locale getSnippetLocale(Document document, Locale locale) {
