@@ -22,14 +22,18 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.model.adapter.ModelAdapterUtil;
 import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.util.PortalUtil;
+import com.liferay.portlet.asset.model.AssetEntry;
 import com.liferay.portlet.asset.model.AssetTag;
 import com.liferay.portlet.asset.model.adapter.StagedAssetTag;
+import com.liferay.portlet.asset.service.AssetEntryLocalServiceUtil;
 import com.liferay.portlet.asset.service.AssetTagLocalServiceUtil;
 import com.liferay.portlet.exportimport.lar.BaseStagedModelDataHandler;
 import com.liferay.portlet.exportimport.lar.ExportImportPathUtil;
 import com.liferay.portlet.exportimport.lar.PortletDataContext;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Daniel Kocsis
@@ -159,6 +163,24 @@ public class StagedAssetTagStagedModelDataHandler
 				stagedAssetTag.getName(), serviceContext);
 		}
 		else {
+			if (!existingAssetTag.getName().equals(stagedAssetTag.getName())) {
+				List<AssetEntry> entries =
+					AssetEntryLocalServiceUtil.getAssetTagAssetEntries(
+						existingAssetTag.getTagId());
+
+				for (AssetEntry entry : entries) {
+					String className = PortalUtil.getClassName(
+						entry.getClassNameId());
+
+					Map<Long, Long> newPrimaryKeysMap =
+						(Map<Long, Long>)
+							portletDataContext.getNewPrimaryKeysMap(className);
+
+					newPrimaryKeysMap.put(
+						entry.getClassPK(), entry.getClassPK());
+				}
+			}
+
 			importedAssetTag = AssetTagLocalServiceUtil.updateTag(
 				userId, existingAssetTag.getTagId(), stagedAssetTag.getName(),
 				serviceContext);

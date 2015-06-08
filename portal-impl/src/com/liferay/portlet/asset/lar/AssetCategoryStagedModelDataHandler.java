@@ -26,9 +26,11 @@ import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.asset.model.AssetCategory;
 import com.liferay.portlet.asset.model.AssetCategoryConstants;
 import com.liferay.portlet.asset.model.AssetCategoryProperty;
+import com.liferay.portlet.asset.model.AssetEntry;
 import com.liferay.portlet.asset.model.AssetVocabulary;
 import com.liferay.portlet.asset.service.AssetCategoryLocalServiceUtil;
 import com.liferay.portlet.asset.service.AssetCategoryPropertyLocalServiceUtil;
+import com.liferay.portlet.asset.service.AssetEntryLocalServiceUtil;
 import com.liferay.portlet.asset.service.AssetVocabularyLocalServiceUtil;
 import com.liferay.portlet.asset.service.persistence.AssetCategoryUtil;
 import com.liferay.portlet.exportimport.lar.BaseStagedModelDataHandler;
@@ -255,6 +257,24 @@ public class AssetCategoryStagedModelDataHandler
 			String name = getCategoryName(
 				category.getUuid(), portletDataContext.getScopeGroupId(),
 				parentCategoryId, category.getName(), vocabularyId, 2);
+
+			if (!existingCategory.getName().equals(name)) {
+				List<AssetEntry> entries =
+					AssetEntryLocalServiceUtil.getAssetCategoryAssetEntries(
+						category.getCategoryId());
+
+				for (AssetEntry entry : entries) {
+					String className = PortalUtil.getClassName(
+						entry.getClassNameId());
+
+					Map<Long, Long> newPrimaryKeysMap =
+						(Map<Long, Long>)
+							portletDataContext.getNewPrimaryKeysMap(className);
+
+					newPrimaryKeysMap.put(
+						entry.getClassPK(), entry.getClassPK());
+				}
+			}
 
 			importedCategory = AssetCategoryLocalServiceUtil.updateCategory(
 				userId, existingCategory.getCategoryId(), parentCategoryId,
