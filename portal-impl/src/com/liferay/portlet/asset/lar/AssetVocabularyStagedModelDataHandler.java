@@ -49,7 +49,8 @@ public class AssetVocabularyStagedModelDataHandler
 		{AssetVocabulary.class.getName()};
 
 	@Override
-	public void deleteStagedModel(AssetVocabulary vocabulary)
+	public void deleteStagedModel(
+			PortletDataContext portletDataContext, AssetVocabulary vocabulary)
 		throws PortalException {
 
 		AssetVocabularyLocalServiceUtil.deleteVocabulary(vocabulary);
@@ -57,14 +58,15 @@ public class AssetVocabularyStagedModelDataHandler
 
 	@Override
 	public void deleteStagedModel(
-			String uuid, long groupId, String className, String extraData)
+			PortletDataContext portletDataContext, String uuid,
+			String className, String extraData)
 		throws PortalException {
 
 		AssetVocabulary vocabulary = fetchStagedModelByUuidAndGroupId(
-			uuid, groupId);
+			uuid, portletDataContext.getScopeGroupId());
 
 		if (vocabulary != null) {
-			deleteStagedModel(vocabulary);
+			deleteStagedModel(portletDataContext, vocabulary);
 		}
 	}
 

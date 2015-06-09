@@ -31,19 +31,24 @@ public class MBThreadStagedModelDataHandler
 	public static final String[] CLASS_NAMES = {MBThread.class.getName()};
 
 	@Override
-	public void deleteStagedModel(MBThread thread) throws PortalException {
+	public void deleteStagedModel(
+			PortletDataContext portletDataContext, MBThread thread)
+		throws PortalException {
+
 		MBThreadLocalServiceUtil.deleteThread(thread);
 	}
 
 	@Override
 	public void deleteStagedModel(
-			String uuid, long groupId, String className, String extraData)
+			PortletDataContext portletDataContext, String uuid,
+			String className, String extraData)
 		throws PortalException {
 
-		MBThread thread = fetchStagedModelByUuidAndGroupId(uuid, groupId);
+		MBThread thread = fetchStagedModelByUuidAndGroupId(
+			uuid, portletDataContext.getScopeGroupId());
 
 		if (thread != null) {
-			deleteStagedModel(thread);
+			deleteStagedModel(portletDataContext, thread);
 		}
 	}
 

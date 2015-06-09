@@ -39,23 +39,27 @@ public class RatingsEntryStagedModelDataHandler
 	public static final String[] CLASS_NAMES = {RatingsEntry.class.getName()};
 
 	@Override
-	public void deleteStagedModel(RatingsEntry ratingsEntry) {
+	public void deleteStagedModel(
+		PortletDataContext portletDataContext, RatingsEntry ratingsEntry) {
+
 		RatingsEntryLocalServiceUtil.deleteRatingsEntry(ratingsEntry);
 	}
 
 	@Override
 	public void deleteStagedModel(
-			String uuid, long groupId, String className, String extraData)
+			PortletDataContext portletDataContext, String uuid,
+			String className, String extraData)
 		throws PortalException {
 
-		Group group = GroupLocalServiceUtil.getGroup(groupId);
+		Group group = GroupLocalServiceUtil.getGroup(
+			portletDataContext.getScopeGroupId());
 
 		RatingsEntry entry =
 			RatingsEntryLocalServiceUtil.fetchRatingsEntryByUuidAndCompanyId(
 				uuid, group.getCompanyId());
 
 		if (entry != null) {
-			deleteStagedModel(entry);
+			deleteStagedModel(portletDataContext, entry);
 		}
 	}
 

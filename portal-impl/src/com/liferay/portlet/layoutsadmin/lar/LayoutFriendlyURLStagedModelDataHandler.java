@@ -44,19 +44,23 @@ public class LayoutFriendlyURLStagedModelDataHandler
 		{LayoutFriendlyURL.class.getName()};
 
 	@Override
-	public void deleteStagedModel(LayoutFriendlyURL layoutFriendlyURL) {
+	public void deleteStagedModel(
+		PortletDataContext portletDataContext,
+		LayoutFriendlyURL layoutFriendlyURL) {
+
 		LayoutFriendlyURLLocalServiceUtil.deleteLayoutFriendlyURL(
 			layoutFriendlyURL);
 	}
 
 	@Override
 	public void deleteStagedModel(
-		String uuid, long groupId, String className, String extraData) {
+		PortletDataContext portletDataContext, String uuid, String className,
+		String extraData) {
 
 		LayoutFriendlyURL layoutFriendlyURL = fetchStagedModelByUuidAndGroupId(
-			uuid, groupId);
+			uuid, portletDataContext.getScopeGroupId());
 
-		deleteStagedModel(layoutFriendlyURL);
+		deleteStagedModel(portletDataContext, layoutFriendlyURL);
 	}
 
 	@Override

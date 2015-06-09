@@ -134,7 +134,9 @@ public abstract class BaseStagedModelDataHandlerTestCase {
 
 		initImport();
 
-		deleteStagedModel(stagedModel, dependentStagedModelsMap, stagingGroup);
+		deleteStagedModel(
+			portletDataContext, stagedModel, dependentStagedModelsMap,
+			stagingGroup);
 
 		// Reread the staged model for import from ZIP for true testing
 
@@ -262,7 +264,7 @@ public abstract class BaseStagedModelDataHandlerTestCase {
 		throws Exception;
 
 	protected void deleteStagedModel(
-			StagedModel stagedModel,
+			PortletDataContext portletDataContext, StagedModel stagedModel,
 			Map<String, List<StagedModel>> dependentStagedModelsMap,
 			Group group)
 		throws Exception {
@@ -272,7 +274,8 @@ public abstract class BaseStagedModelDataHandlerTestCase {
 			StagedModelDataHandlerRegistryUtil.getStagedModelDataHandler(
 				ExportImportClassedModelUtil.getClassName(stagedModel));
 
-		stagedModelDataHandler.deleteStagedModel(stagedModel);
+		stagedModelDataHandler.deleteStagedModel(
+			portletDataContext, stagedModel);
 
 		for (List<StagedModel> dependentStagedModels :
 				dependentStagedModelsMap.values()) {
@@ -284,7 +287,8 @@ public abstract class BaseStagedModelDataHandlerTestCase {
 							ExportImportClassedModelUtil.getClassName(
 								dependentStagedModel));
 
-				stagedModelDataHandler.deleteStagedModel(dependentStagedModel);
+				stagedModelDataHandler.deleteStagedModel(
+					portletDataContext, dependentStagedModel);
 			}
 		}
 	}

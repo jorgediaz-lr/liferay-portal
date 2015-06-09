@@ -58,19 +58,24 @@ public class BlogsEntryStagedModelDataHandler
 	public static final String[] CLASS_NAMES = {BlogsEntry.class.getName()};
 
 	@Override
-	public void deleteStagedModel(BlogsEntry entry) throws PortalException {
+	public void deleteStagedModel(
+			PortletDataContext portletDataContext, BlogsEntry entry)
+		throws PortalException {
+
 		BlogsEntryLocalServiceUtil.deleteEntry(entry);
 	}
 
 	@Override
 	public void deleteStagedModel(
-			String uuid, long groupId, String className, String extraData)
+			PortletDataContext portletDataContext, String uuid,
+			String className, String extraData)
 		throws PortalException {
 
-		BlogsEntry entry = fetchStagedModelByUuidAndGroupId(uuid, groupId);
+		BlogsEntry entry = fetchStagedModelByUuidAndGroupId(
+			uuid, portletDataContext.getScopeGroupId());
 
 		if (entry != null) {
-			deleteStagedModel(entry);
+			deleteStagedModel(portletDataContext, entry);
 		}
 	}
 

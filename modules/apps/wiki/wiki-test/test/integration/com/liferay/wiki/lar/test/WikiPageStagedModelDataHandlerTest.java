@@ -16,6 +16,10 @@ package com.liferay.wiki.lar.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.portal.NoSuchModelException;
+import com.liferay.portal.kernel.lar.ExportImportClassedModelUtil;
+import com.liferay.portal.kernel.lar.PortletDataContext;
+import com.liferay.portal.kernel.lar.StagedModelDataHandler;
+import com.liferay.portal.kernel.lar.StagedModelDataHandlerRegistryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
@@ -170,7 +174,7 @@ public class WikiPageStagedModelDataHandlerTest
 
 	@Override
 	protected void deleteStagedModel(
-			StagedModel stagedModel,
+			PortletDataContext portletDataContext, StagedModel stagedModel,
 			Map<String, List<StagedModel>> dependentStagedModelsMap,
 			Group group)
 		throws Exception {
@@ -179,7 +183,8 @@ public class WikiPageStagedModelDataHandlerTest
 			StagedModelDataHandlerRegistryUtil.getStagedModelDataHandler(
 				ExportImportClassedModelUtil.getClassName(stagedModel));
 
-		stagedModelDataHandler.deleteStagedModel(stagedModel);
+		stagedModelDataHandler.deleteStagedModel(
+				portletDataContext, stagedModel);
 
 		for (List<StagedModel> dependentStagedModels :
 				dependentStagedModelsMap.values()) {
@@ -193,7 +198,7 @@ public class WikiPageStagedModelDataHandlerTest
 									dependentStagedModel));
 
 					stagedModelDataHandler.deleteStagedModel(
-						dependentStagedModel);
+						portletDataContext, dependentStagedModel);
 				}
 				catch (NoSuchModelException nsme) {
 					if (!(nsme instanceof NoSuchFileEntryException) &&

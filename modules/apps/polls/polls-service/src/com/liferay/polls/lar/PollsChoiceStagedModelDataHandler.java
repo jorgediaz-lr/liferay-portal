@@ -45,19 +45,22 @@ public class PollsChoiceStagedModelDataHandler
 	public static final String[] CLASS_NAMES = {PollsChoice.class.getName()};
 
 	@Override
-	public void deleteStagedModel(PollsChoice choice) {
+	public void deleteStagedModel(
+			PortletDataContext portletDataContext, PollsChoice choice) {
+
 		PollsChoiceLocalServiceUtil.deletePollsChoice(choice);
 	}
 
 	@Override
 	public void deleteStagedModel(
-		String uuid, long groupId, String className, String extraData) {
+		PortletDataContext portletDataContext, String uuid, String className,
+		String extraData) {
 
 		PollsChoice pollsChoice = fetchStagedModelByUuidAndGroupId(
-			uuid, groupId);
+			uuid, portletDataContext.getScopeGroupId());
 
 		if (pollsChoice != null) {
-			deleteStagedModel(pollsChoice);
+			deleteStagedModel(portletDataContext, pollsChoice);
 		}
 	}
 

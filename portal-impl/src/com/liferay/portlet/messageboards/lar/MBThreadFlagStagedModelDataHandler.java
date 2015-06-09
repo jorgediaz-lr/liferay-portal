@@ -47,19 +47,22 @@ public class MBThreadFlagStagedModelDataHandler
 	public static final String[] CLASS_NAMES = {MBThreadFlag.class.getName()};
 
 	@Override
-	public void deleteStagedModel(MBThreadFlag threadFlag) {
+	public void deleteStagedModel(
+		PortletDataContext portletDataContext, MBThreadFlag threadFlag) {
+
 		MBThreadFlagLocalServiceUtil.deleteThreadFlag(threadFlag);
 	}
 
 	@Override
 	public void deleteStagedModel(
-		String uuid, long groupId, String className, String extraData) {
+		PortletDataContext portletDataContext, String uuid, String className,
+		String extraData) {
 
 		MBThreadFlag threadFlag = fetchStagedModelByUuidAndGroupId(
-			uuid, groupId);
+			uuid, portletDataContext.getScopeGroupId());
 
 		if (threadFlag != null) {
-			deleteStagedModel(threadFlag);
+			deleteStagedModel(portletDataContext, threadFlag);
 		}
 	}
 

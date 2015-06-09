@@ -37,12 +37,14 @@ public class StagedThemeStagedModelDataHandler
 	public static final String[] CLASS_NAMES = {StagedTheme.class.getName()};
 
 	@Override
-	public void deleteStagedModel(StagedTheme stagedTheme) {
+	public void deleteStagedModel(
+		PortletDataContext portletDataContext, StagedTheme stagedTheme) {
 	}
 
 	@Override
 	public void deleteStagedModel(
-		String uuid, long groupId, String className, String extraData) {
+		PortletDataContext portletDataContext, String uuid, String className,
+		String extraData) {
 	}
 
 	@Override

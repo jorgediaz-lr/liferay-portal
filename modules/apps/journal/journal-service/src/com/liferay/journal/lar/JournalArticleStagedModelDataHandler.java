@@ -80,7 +80,8 @@ public class JournalArticleStagedModelDataHandler
 	public static final String[] CLASS_NAMES = {JournalArticle.class.getName()};
 
 	@Override
-	public void deleteStagedModel(JournalArticle article)
+	public void deleteStagedModel(
+			PortletDataContext portletDataContext, JournalArticle article)
 		throws PortalException {
 
 		_journalArticleLocalService.deleteArticle(article);
@@ -88,12 +89,14 @@ public class JournalArticleStagedModelDataHandler
 
 	@Override
 	public void deleteStagedModel(
-			String uuid, long groupId, String className, String extraData)
+			PortletDataContext portletDataContext, String uuid,
+			String className, String extraData)
 		throws PortalException {
 
 		JournalArticleResource articleResource =
 			_journalArticleResourceLocalService.
-				fetchJournalArticleResourceByUuidAndGroupId(uuid, groupId);
+				fetchJournalArticleResourceByUuidAndGroupId(
+					uuid, portletDataContext.getScopeGroupId());
 
 		if (articleResource == null) {
 			return;
@@ -106,13 +109,14 @@ public class JournalArticleStagedModelDataHandler
 			String articleUuid = extraDataJSONObject.getString("uuid");
 
 			JournalArticle article = fetchStagedModelByUuidAndGroupId(
-				articleUuid, groupId);
+				articleUuid, portletDataContext.getScopeGroupId());
 
-			deleteStagedModel(article);
+			deleteStagedModel(portletDataContext, article);
 		}
 		else {
 			_journalArticleLocalService.deleteArticle(
-				groupId, articleResource.getArticleId(), null);
+				portletDataContext.getScopeGroupId(),
+				articleResource.getArticleId(), null);
 		}
 	}
 
@@ -130,8 +134,8 @@ public class JournalArticleStagedModelDataHandler
 		String uuid, long companyId) {
 
 		return _journalArticleLocalService.getJournalArticlesByUuidAndCompanyId(
-			uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			new StagedModelModifiedDateComparator<JournalArticle>());
+				uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+				new StagedModelModifiedDateComparator<JournalArticle>());
 	}
 
 	@Override
@@ -690,14 +694,14 @@ public class JournalArticleStagedModelDataHandler
 				}
 				else {
 					importedArticle = _journalArticleLocalService.updateArticle(
-						userId, existingArticle.getGroupId(), folderId,
+							userId, existingArticle.getGroupId(), folderId,
 						existingArticle.getArticleId(), article.getVersion(),
 						article.getTitleMap(), article.getDescriptionMap(),
 						article.getContent(), parentDDMStructureKey,
 						parentDDMTemplateKey, article.getLayoutUuid(),
 						displayDateMonth, displayDateDay, displayDateYear,
 						displayDateHour, displayDateMinute, expirationDateMonth,
-						expirationDateDay, expirationDateYear,
+							expirationDateDay, expirationDateYear,
 						expirationDateHour, expirationDateMinute, neverExpire,
 						reviewDateMonth, reviewDateDay, reviewDateYear,
 						reviewDateHour, reviewDateMinute, neverReview,

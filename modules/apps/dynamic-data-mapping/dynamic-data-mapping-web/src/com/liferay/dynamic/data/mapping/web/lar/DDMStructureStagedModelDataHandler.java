@@ -56,7 +56,8 @@ public class DDMStructureStagedModelDataHandler
 	public static final String[] CLASS_NAMES = {DDMStructure.class.getName()};
 
 	@Override
-	public void deleteStagedModel(DDMStructure structure)
+	public void deleteStagedModel(
+			PortletDataContext portletDataContext, DDMStructure structure)
 		throws PortalException {
 
 		DDMStructureLocalServiceUtil.deleteStructure(structure);
@@ -64,14 +65,15 @@ public class DDMStructureStagedModelDataHandler
 
 	@Override
 	public void deleteStagedModel(
-			String uuid, long groupId, String className, String extraData)
+			PortletDataContext portletDataContext, String uuid,
+			String className, String extraData)
 		throws PortalException {
 
 		DDMStructure ddmStructure = fetchStagedModelByUuidAndGroupId(
-			uuid, groupId);
+			uuid, portletDataContext.getScopeGroupId());
 
 		if (ddmStructure != null) {
-			deleteStagedModel(ddmStructure);
+			deleteStagedModel(portletDataContext, ddmStructure);
 		}
 	}
 

@@ -58,7 +58,8 @@ public class OrganizationStagedModelDataHandler
 	public static final String[] CLASS_NAMES = {Organization.class.getName()};
 
 	@Override
-	public void deleteStagedModel(Organization organization)
+	public void deleteStagedModel(
+			PortletDataContext portletDataContext, Organization organization)
 		throws PortalException {
 
 		OrganizationLocalServiceUtil.deleteOrganization(organization);
@@ -66,17 +67,19 @@ public class OrganizationStagedModelDataHandler
 
 	@Override
 	public void deleteStagedModel(
-			String uuid, long groupId, String className, String extraData)
+			PortletDataContext portletDataContext, String uuid,
+			String className, String extraData)
 		throws PortalException {
 
-		Group group = GroupLocalServiceUtil.getGroup(groupId);
+		Group group = GroupLocalServiceUtil.getGroup(
+			portletDataContext.getScopeGroupId());
 
 		Organization organization =
 			OrganizationLocalServiceUtil.fetchOrganizationByUuidAndCompanyId(
 				uuid, group.getCompanyId());
 
 		if (organization != null) {
-			deleteStagedModel(organization);
+			deleteStagedModel(portletDataContext, organization);
 		}
 	}
 

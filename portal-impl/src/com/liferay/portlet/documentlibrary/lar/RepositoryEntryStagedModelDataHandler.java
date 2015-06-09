@@ -39,19 +39,23 @@ public class RepositoryEntryStagedModelDataHandler
 		{RepositoryEntry.class.getName()};
 
 	@Override
-	public void deleteStagedModel(RepositoryEntry repositoryEntry) {
+	public void deleteStagedModel(
+		PortletDataContext portletDataContext,
+		RepositoryEntry repositoryEntry) {
+
 		RepositoryEntryLocalServiceUtil.deleteRepositoryEntry(repositoryEntry);
 	}
 
 	@Override
 	public void deleteStagedModel(
-		String uuid, long groupId, String className, String extraData) {
+		PortletDataContext portletDataContext, String uuid, String className,
+		String extraData) {
 
 		RepositoryEntry repositoryEntry = fetchStagedModelByUuidAndGroupId(
-			uuid, groupId);
+			uuid, portletDataContext.getScopeGroupId());
 
 		if (repositoryEntry != null) {
-			deleteStagedModel(repositoryEntry);
+			deleteStagedModel(portletDataContext, repositoryEntry);
 		}
 	}
 

@@ -14,6 +14,7 @@
 
 package com.liferay.portlet.layoutprototypes.lar;
 
+import com.liferay.portal.kernel.lar.PortletDataContext;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.TransactionalTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -102,7 +103,7 @@ public class LayoutPrototypeStagedModelDataHandlerTest
 
 	@Override
 	protected void deleteStagedModel(
-			StagedModel stagedModel,
+			PortletDataContext portletDataContext, StagedModel stagedModel,
 			Map<String, List<StagedModel>> dependentStagedModelsMap,
 			Group group)
 		throws Exception {

@@ -37,22 +37,26 @@ public class PhoneStagedModelDataHandler
 	public static final String[] CLASS_NAMES = {Phone.class.getName()};
 
 	@Override
-	public void deleteStagedModel(Phone phone) {
+	public void deleteStagedModel(
+		PortletDataContext portletDataContext, Phone phone) {
+
 		PhoneLocalServiceUtil.deletePhone(phone);
 	}
 
 	@Override
 	public void deleteStagedModel(
-			String uuid, long groupId, String className, String extraData)
+			PortletDataContext portletDataContext, String uuid,
+			String className, String extraData)
 		throws PortalException {
 
-		Group group = GroupLocalServiceUtil.getGroup(groupId);
+		Group group = GroupLocalServiceUtil.getGroup(
+			portletDataContext.getScopeGroupId());
 
 		Phone phone = PhoneLocalServiceUtil.fetchPhoneByUuidAndCompanyId(
 			uuid, group.getCompanyId());
 
 		if (phone != null) {
-			deleteStagedModel(phone);
+			deleteStagedModel(portletDataContext, phone);
 		}
 	}
 

@@ -63,19 +63,24 @@ public class JournalFeedStagedModelDataHandler
 	public static final String[] CLASS_NAMES = {JournalFeed.class.getName()};
 
 	@Override
-	public void deleteStagedModel(JournalFeed feed) throws PortalException {
+	public void deleteStagedModel(
+			PortletDataContext portletDataContext, JournalFeed feed)
+		throws PortalException {
+
 		_journalFeedLocalService.deleteFeed(feed);
 	}
 
 	@Override
 	public void deleteStagedModel(
-			String uuid, long groupId, String className, String extraData)
+			PortletDataContext portletDataContext, String uuid,
+			String className, String extraData)
 		throws PortalException {
 
-		JournalFeed feed = fetchStagedModelByUuidAndGroupId(uuid, groupId);
+		JournalFeed feed = fetchStagedModelByUuidAndGroupId(
+			uuid, portletDataContext.getScopeGroupId());
 
 		if (feed != null) {
-			deleteStagedModel(feed);
+			deleteStagedModel(portletDataContext, feed);
 		}
 	}
 

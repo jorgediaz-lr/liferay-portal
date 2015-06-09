@@ -40,11 +40,13 @@ public class TestStagedModelDataHandler
 
 	@Override
 	public void deleteStagedModel(
-		String uuid, long groupId, String className, String extraData) {
+		PortletDataContext portletDataContext, String uuid, String className,
+		String extraData) {
 	}
 
 	@Override
-	public void deleteStagedModel(User user) {
+	public void deleteStagedModel(
+		PortletDataContext portletDataContext, User user) {
 	}
 
 	@Override

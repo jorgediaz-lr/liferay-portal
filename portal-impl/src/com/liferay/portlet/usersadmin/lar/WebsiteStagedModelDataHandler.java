@@ -38,22 +38,26 @@ public class WebsiteStagedModelDataHandler
 
 	@Override
 	public void deleteStagedModel(
-			String uuid, long groupId, String className, String extraData)
+			PortletDataContext portletDataContext, String uuid,
+			String className, String extraData)
 		throws PortalException {
 
-		Group group = GroupLocalServiceUtil.getGroup(groupId);
+		Group group = GroupLocalServiceUtil.getGroup(
+			portletDataContext.getScopeGroupId());
 
 		Website website =
 			WebsiteLocalServiceUtil.fetchWebsiteByUuidAndCompanyId(
 				uuid, group.getCompanyId());
 
 		if (website != null) {
-			deleteStagedModel(website);
+			deleteStagedModel(portletDataContext, website);
 		}
 	}
 
 	@Override
-	public void deleteStagedModel(Website website) {
+	public void deleteStagedModel(
+		PortletDataContext portletDataContext, Website website) {
+
 		WebsiteLocalServiceUtil.deleteWebsite(website);
 	}
 

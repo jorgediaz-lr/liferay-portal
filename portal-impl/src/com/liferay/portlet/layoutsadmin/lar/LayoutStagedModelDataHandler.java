@@ -93,13 +93,16 @@ public class LayoutStagedModelDataHandler
 	public static final String[] CLASS_NAMES = {Layout.class.getName()};
 
 	@Override
-	public void deleteStagedModel(Layout layout) {
+	public void deleteStagedModel(
+		PortletDataContext portletDataContext, Layout layout) {
+
 		LayoutLocalServiceUtil.deleteLayout(layout);
 	}
 
 	@Override
 	public void deleteStagedModel(
-			String uuid, long groupId, String className, String extraData)
+			PortletDataContext portletDataContext, String uuid,
+			String className, String extraData)
 		throws PortalException {
 
 		JSONObject extraDataJSONObject = JSONFactoryUtil.createJSONObject(
@@ -108,10 +111,10 @@ public class LayoutStagedModelDataHandler
 		boolean privateLayout = extraDataJSONObject.getBoolean("privateLayout");
 
 		Layout layout = LayoutLocalServiceUtil.fetchLayoutByUuidAndGroupId(
-			uuid, groupId, privateLayout);
+			uuid, portletDataContext.getScopeGroupId(), privateLayout);
 
 		if (layout != null) {
-			deleteStagedModel(layout);
+			deleteStagedModel(portletDataContext, layout);
 		}
 	}
 

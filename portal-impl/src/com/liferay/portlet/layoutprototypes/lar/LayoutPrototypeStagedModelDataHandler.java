@@ -44,7 +44,9 @@ public class LayoutPrototypeStagedModelDataHandler
 		{LayoutPrototype.class.getName()};
 
 	@Override
-	public void deleteStagedModel(LayoutPrototype layoutPrototype)
+	public void deleteStagedModel(
+			PortletDataContext portletDataContext,
+			LayoutPrototype layoutPrototype)
 		throws PortalException {
 
 		LayoutPrototypeLocalServiceUtil.deleteLayoutPrototype(layoutPrototype);
@@ -52,10 +54,12 @@ public class LayoutPrototypeStagedModelDataHandler
 
 	@Override
 	public void deleteStagedModel(
-			String uuid, long groupId, String className, String extraData)
+			PortletDataContext portletDataContext, String uuid,
+			String className, String extraData)
 		throws PortalException {
 
-		Group group = GroupLocalServiceUtil.getGroup(groupId);
+		Group group = GroupLocalServiceUtil.getGroup(
+			portletDataContext.getScopeGroupId());
 
 		LayoutPrototype layoutPrototype =
 			LayoutPrototypeLocalServiceUtil.
@@ -63,7 +67,7 @@ public class LayoutPrototypeStagedModelDataHandler
 					uuid, group.getCompanyId());
 
 		if (layoutPrototype != null) {
-			deleteStagedModel(layoutPrototype);
+			deleteStagedModel(portletDataContext, layoutPrototype);
 		}
 	}
 

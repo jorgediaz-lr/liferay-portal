@@ -45,19 +45,22 @@ public class MBDiscussionStagedModelDataHandler
 	public static final String[] CLASS_NAMES = {MBDiscussion.class.getName()};
 
 	@Override
-	public void deleteStagedModel(MBDiscussion discussion) {
+	public void deleteStagedModel(
+		PortletDataContext portletDataContext, MBDiscussion discussion) {
+
 		MBDiscussionLocalServiceUtil.deleteMBDiscussion(discussion);
 	}
 
 	@Override
 	public void deleteStagedModel(
-		String uuid, long groupId, String className, String extraData) {
+		PortletDataContext portletDataContext, String uuid, String className,
+		String extraData) {
 
 		MBDiscussion discussion = fetchStagedModelByUuidAndGroupId(
-			uuid, groupId);
+			uuid, portletDataContext.getScopeGroupId());
 
 		if (discussion != null) {
-			deleteStagedModel(discussion);
+			deleteStagedModel(portletDataContext, discussion);
 		}
 	}
 

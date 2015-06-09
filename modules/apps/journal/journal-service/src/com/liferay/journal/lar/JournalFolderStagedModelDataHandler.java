@@ -46,19 +46,24 @@ public class JournalFolderStagedModelDataHandler
 	public static final String[] CLASS_NAMES = {JournalFolder.class.getName()};
 
 	@Override
-	public void deleteStagedModel(JournalFolder folder) throws PortalException {
+	public void deleteStagedModel(
+			PortletDataContext portletDataContext, JournalFolder folder)
+		throws PortalException {
+
 		_journalFolderLocalService.deleteFolder(folder);
 	}
 
 	@Override
 	public void deleteStagedModel(
-			String uuid, long groupId, String className, String extraData)
+			PortletDataContext portletDataContext, String uuid,
+			String className, String extraData)
 		throws PortalException {
 
-		JournalFolder folder = fetchStagedModelByUuidAndGroupId(uuid, groupId);
+		JournalFolder folder = fetchStagedModelByUuidAndGroupId(
+			uuid, portletDataContext.getScopeGroupId());
 
 		if (folder != null) {
-			deleteStagedModel(folder);
+			deleteStagedModel(portletDataContext, folder);
 		}
 	}
 
@@ -75,8 +80,8 @@ public class JournalFolderStagedModelDataHandler
 		String uuid, long companyId) {
 
 		return _journalFolderLocalService.getJournalFoldersByUuidAndCompanyId(
-			uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			new StagedModelModifiedDateComparator<JournalFolder>());
+				uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+				new StagedModelModifiedDateComparator<JournalFolder>());
 	}
 
 	@Override

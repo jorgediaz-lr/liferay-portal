@@ -84,19 +84,24 @@ public class FileEntryStagedModelDataHandler
 	};
 
 	@Override
-	public void deleteStagedModel(FileEntry fileEntry) throws PortalException {
+	public void deleteStagedModel(
+			PortletDataContext portletDataContext, FileEntry fileEntry)
+		throws PortalException {
+
 		DLAppLocalServiceUtil.deleteFileEntry(fileEntry.getFileEntryId());
 	}
 
 	@Override
 	public void deleteStagedModel(
-			String uuid, long groupId, String className, String extraData)
+			PortletDataContext portletDataContext, String uuid,
+			String className, String extraData)
 		throws PortalException {
 
-		FileEntry fileEntry = fetchStagedModelByUuidAndGroupId(uuid, groupId);
+		FileEntry fileEntry = fetchStagedModelByUuidAndGroupId(
+			uuid, portletDataContext.getScopeGroupId());
 
 		if (fileEntry != null) {
-			deleteStagedModel(fileEntry);
+			deleteStagedModel(portletDataContext, fileEntry);
 		}
 	}
 

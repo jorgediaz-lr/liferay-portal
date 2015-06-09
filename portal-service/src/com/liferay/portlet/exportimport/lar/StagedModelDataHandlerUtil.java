@@ -54,8 +54,7 @@ public class StagedModelDataHandlerUtil {
 
 		if (stagedModelDataHandler != null) {
 			stagedModelDataHandler.deleteStagedModel(
-				uuid, portletDataContext.getScopeGroupId(), className,
-				extraData);
+				portletDataContext, uuid, className, extraData);
 		}
 	}
 

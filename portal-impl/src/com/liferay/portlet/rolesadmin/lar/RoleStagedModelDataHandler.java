@@ -58,22 +58,27 @@ public class RoleStagedModelDataHandler
 	public static final String[] CLASS_NAMES = {Role.class.getName()};
 
 	@Override
-	public void deleteStagedModel(Role role) throws PortalException {
+	public void deleteStagedModel(
+			PortletDataContext portletDataContext, Role role)
+		throws PortalException {
+
 		RoleLocalServiceUtil.deleteRole(role);
 	}
 
 	@Override
 	public void deleteStagedModel(
-			String uuid, long groupId, String className, String extraData)
+			PortletDataContext portletDataContext, String uuid,
+			String className, String extraData)
 		throws PortalException {
 
-		Group group = GroupLocalServiceUtil.getGroup(groupId);
+		Group group = GroupLocalServiceUtil.getGroup(
+			portletDataContext.getScopeGroupId());
 
 		Role role = RoleLocalServiceUtil.fetchRoleByUuidAndCompanyId(
 			uuid, group.getCompanyId());
 
 		if (role != null) {
-			deleteStagedModel(role);
+			deleteStagedModel(portletDataContext, role);
 		}
 	}
 

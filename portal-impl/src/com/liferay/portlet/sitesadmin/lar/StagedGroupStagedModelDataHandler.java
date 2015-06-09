@@ -37,13 +37,16 @@ public class StagedGroupStagedModelDataHandler
 	public static final String[] CLASS_NAMES = {StagedGroup.class.getName()};
 
 	@Override
-	public void deleteStagedModel(StagedGroup stagedGroup) {
+	public void deleteStagedModel(
+		PortletDataContext portletDataContext, StagedGroup stagedGroup) {
+
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void deleteStagedModel(
-		String uuid, long groupId, String className, String extraData) {
+		PortletDataContext portletDataContext, String uuid, String className,
+		String extraData) {
 
 		throw new UnsupportedOperationException();
 	}

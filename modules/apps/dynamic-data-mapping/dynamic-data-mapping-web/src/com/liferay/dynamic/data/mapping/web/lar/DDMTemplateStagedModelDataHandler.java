@@ -65,20 +65,24 @@ public class DDMTemplateStagedModelDataHandler
 	public static final String[] CLASS_NAMES = {DDMTemplate.class.getName()};
 
 	@Override
-	public void deleteStagedModel(DDMTemplate template) throws PortalException {
+	public void deleteStagedModel(
+			PortletDataContext portletDataContext, DDMTemplate template)
+		throws PortalException {
+
 		DDMTemplateLocalServiceUtil.deleteTemplate(template);
 	}
 
 	@Override
 	public void deleteStagedModel(
-			String uuid, long groupId, String className, String extraData)
+			PortletDataContext portletDataContext, String uuid,
+			String className, String extraData)
 		throws PortalException {
 
 		DDMTemplate ddmTemplate = fetchStagedModelByUuidAndGroupId(
-			uuid, groupId);
+			uuid, portletDataContext.getScopeGroupId());
 
 		if (ddmTemplate != null) {
-			deleteStagedModel(ddmTemplate);
+			deleteStagedModel(portletDataContext, ddmTemplate);
 		}
 	}
 

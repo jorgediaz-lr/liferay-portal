@@ -44,7 +44,9 @@ public class StagedAssetTagStagedModelDataHandler
 	public static final String[] CLASS_NAMES = {StagedAssetTag.class.getName()};
 
 	@Override
-	public void deleteStagedModel(StagedAssetTag stagedAssetTag)
+	public void deleteStagedModel(
+			PortletDataContext portletDataContext,
+			StagedAssetTag stagedAssetTag)
 		throws PortalException {
 
 		AssetTagLocalServiceUtil.deleteTag(stagedAssetTag);
@@ -52,14 +54,15 @@ public class StagedAssetTagStagedModelDataHandler
 
 	@Override
 	public void deleteStagedModel(
-			String uuid, long groupId, String className, String extraData)
+			PortletDataContext portletDataContext, String uuid,
+			String className, String extraData)
 		throws PortalException {
 
 		StagedAssetTag stagedAssetTag = fetchStagedModelByUuidAndGroupId(
-			uuid, groupId);
+			uuid, portletDataContext.getScopeGroupId());
 
 		if (stagedAssetTag != null) {
-			deleteStagedModel(stagedAssetTag);
+			deleteStagedModel(portletDataContext, stagedAssetTag);
 		}
 	}
 

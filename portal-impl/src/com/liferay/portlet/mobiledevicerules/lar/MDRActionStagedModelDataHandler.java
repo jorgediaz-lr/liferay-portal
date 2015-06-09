@@ -49,18 +49,22 @@ public class MDRActionStagedModelDataHandler
 	public static final String[] CLASS_NAMES = {MDRAction.class.getName()};
 
 	@Override
-	public void deleteStagedModel(MDRAction action) {
+	public void deleteStagedModel(
+		PortletDataContext portletDataContext, MDRAction action) {
+
 		MDRActionLocalServiceUtil.deleteAction(action);
 	}
 
 	@Override
 	public void deleteStagedModel(
-		String uuid, long groupId, String className, String extraData) {
+		PortletDataContext portletDataContext, String uuid, String className,
+		String extraData) {
 
-		MDRAction action = fetchStagedModelByUuidAndGroupId(uuid, groupId);
+		MDRAction action = fetchStagedModelByUuidAndGroupId(
+			uuid, portletDataContext.getScopeGroupId());
 
 		if (action != null) {
-			deleteStagedModel(action);
+			deleteStagedModel(portletDataContext, action);
 		}
 	}
 

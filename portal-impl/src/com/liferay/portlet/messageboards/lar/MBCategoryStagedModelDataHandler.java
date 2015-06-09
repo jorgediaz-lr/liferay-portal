@@ -41,19 +41,24 @@ public class MBCategoryStagedModelDataHandler
 	public static final String[] CLASS_NAMES = {MBCategory.class.getName()};
 
 	@Override
-	public void deleteStagedModel(MBCategory category) throws PortalException {
+	public void deleteStagedModel(
+			PortletDataContext portletDataContext, MBCategory category)
+		throws PortalException {
+
 		MBCategoryLocalServiceUtil.deleteCategory(category);
 	}
 
 	@Override
 	public void deleteStagedModel(
-			String uuid, long groupId, String className, String extraData)
+			PortletDataContext portletDataContext, String uuid,
+			String className, String extraData)
 		throws PortalException {
 
-		MBCategory category = fetchStagedModelByUuidAndGroupId(uuid, groupId);
+		MBCategory category = fetchStagedModelByUuidAndGroupId(
+			uuid, portletDataContext.getScopeGroupId());
 
 		if (category != null) {
-			deleteStagedModel(category);
+			deleteStagedModel(portletDataContext, category);
 		}
 	}
 

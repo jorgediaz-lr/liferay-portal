@@ -45,7 +45,8 @@ public class DDLRecordSetStagedModelDataHandler
 	public static final String[] CLASS_NAMES = {DDLRecordSet.class.getName()};
 
 	@Override
-	public void deleteStagedModel(DDLRecordSet recordSet)
+	public void deleteStagedModel(
+			PortletDataContext portletDataContext, DDLRecordSet recordSet)
 		throws PortalException {
 
 		DDLRecordSetLocalServiceUtil.deleteRecordSet(recordSet);
@@ -53,14 +54,15 @@ public class DDLRecordSetStagedModelDataHandler
 
 	@Override
 	public void deleteStagedModel(
-			String uuid, long groupId, String className, String extraData)
+			PortletDataContext portletDataContext, String uuid,
+			String className, String extraData)
 		throws PortalException {
 
 		DDLRecordSet ddlRecordSet = fetchStagedModelByUuidAndGroupId(
-			uuid, groupId);
+			uuid, portletDataContext.getScopeGroupId());
 
 		if (ddlRecordSet != null) {
-			deleteStagedModel(ddlRecordSet);
+			deleteStagedModel(portletDataContext, ddlRecordSet);
 		}
 	}
 

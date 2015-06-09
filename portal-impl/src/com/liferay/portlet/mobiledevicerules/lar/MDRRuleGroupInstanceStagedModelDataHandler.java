@@ -49,20 +49,25 @@ public class MDRRuleGroupInstanceStagedModelDataHandler
 		{MDRRuleGroupInstance.class.getName()};
 
 	@Override
-	public void deleteStagedModel(MDRRuleGroupInstance ruleGroupInstance) {
+	public void deleteStagedModel(
+		PortletDataContext portletDataContext,
+		MDRRuleGroupInstance ruleGroupInstance) {
+
 		MDRRuleGroupInstanceLocalServiceUtil.deleteRuleGroupInstance(
 			ruleGroupInstance);
 	}
 
 	@Override
 	public void deleteStagedModel(
-		String uuid, long groupId, String className, String extraData) {
+		PortletDataContext portletDataContext, String uuid, String className,
+		String extraData) {
 
 		MDRRuleGroupInstance ruleGroupInstance =
-			fetchStagedModelByUuidAndGroupId(uuid, groupId);
+			fetchStagedModelByUuidAndGroupId(
+				uuid, portletDataContext.getScopeGroupId());
 
 		if (ruleGroupInstance != null) {
-			deleteStagedModel(ruleGroupInstance);
+			deleteStagedModel(portletDataContext, ruleGroupInstance);
 		}
 	}
 

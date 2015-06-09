@@ -38,21 +38,26 @@ public class UserGroupStagedModelDataHandler
 
 	@Override
 	public void deleteStagedModel(
-			String uuid, long groupId, String className, String extraData)
+			PortletDataContext portletDataContext, String uuid,
+			String className, String extraData)
 		throws PortalException {
 
-		Group group = GroupLocalServiceUtil.getGroup(groupId);
+		Group group = GroupLocalServiceUtil.getGroup(
+			portletDataContext.getScopeGroupId());
 
 		UserGroup userGroup = fetchStagedModelByUuidAndGroupId(
 			uuid, group.getCompanyId());
 
 		if (userGroup != null) {
-			deleteStagedModel(userGroup);
+			deleteStagedModel(portletDataContext, userGroup);
 		}
 	}
 
 	@Override
-	public void deleteStagedModel(UserGroup userGroup) throws PortalException {
+	public void deleteStagedModel(
+			PortletDataContext portletDataContext, UserGroup userGroup)
+		throws PortalException {
+
 		UserGroupLocalServiceUtil.deleteUserGroup(userGroup);
 	}
 

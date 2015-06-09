@@ -37,22 +37,26 @@ public class EmailAddressStagedModelDataHandler
 	public static final String[] CLASS_NAMES = {EmailAddress.class.getName()};
 
 	@Override
-	public void deleteStagedModel(EmailAddress emailAddress) {
+	public void deleteStagedModel(
+		PortletDataContext portletDataContext, EmailAddress emailAddress) {
+
 		EmailAddressLocalServiceUtil.deleteEmailAddress(emailAddress);
 	}
 
 	@Override
 	public void deleteStagedModel(
-			String uuid, long groupId, String className, String extraData)
+			PortletDataContext portletDataContext, String uuid,
+			String className, String extraData)
 		throws PortalException {
 
-		Group group = GroupLocalServiceUtil.getGroup(groupId);
+		Group group = GroupLocalServiceUtil.getGroup(
+			portletDataContext.getScopeGroupId());
 
 		EmailAddress emailAddress =
 			EmailAddressLocalServiceUtil.fetchEmailAddressByUuidAndCompanyId(
 				uuid, group.getCompanyId());
 
-		deleteStagedModel(emailAddress);
+		deleteStagedModel(portletDataContext, emailAddress);
 	}
 
 	@Override

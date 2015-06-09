@@ -15,6 +15,10 @@
 package com.liferay.portlet.messageboards.lar;
 
 import com.liferay.portal.NoSuchModelException;
+import com.liferay.portal.kernel.lar.ExportImportClassedModelUtil;
+import com.liferay.portal.kernel.lar.PortletDataContext;
+import com.liferay.portal.kernel.lar.StagedModelDataHandler;
+import com.liferay.portal.kernel.lar.StagedModelDataHandlerRegistryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
@@ -50,7 +54,6 @@ import com.liferay.portlet.messageboards.service.MBMessageLocalServiceUtil;
 import com.liferay.portlet.messageboards.util.test.MBTestUtil;
 
 import java.io.InputStream;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -184,7 +187,7 @@ public class MBMessageStagedModelDataHandlerTest
 
 	@Override
 	protected void deleteStagedModel(
-			StagedModel stagedModel,
+			PortletDataContext portletDataContext, StagedModel stagedModel,
 			Map<String, List<StagedModel>> dependentStagedModelsMap,
 			Group group)
 		throws Exception {
@@ -194,7 +197,8 @@ public class MBMessageStagedModelDataHandlerTest
 			StagedModelDataHandlerRegistryUtil.getStagedModelDataHandler(
 				ExportImportClassedModelUtil.getClassName(stagedModel));
 
-		stagedModelDataHandler.deleteStagedModel(stagedModel);
+		stagedModelDataHandler.deleteStagedModel(
+			portletDataContext, stagedModel);
 
 		for (List<StagedModel> dependentStagedModels :
 				dependentStagedModelsMap.values()) {
@@ -208,7 +212,7 @@ public class MBMessageStagedModelDataHandlerTest
 									dependentStagedModel));
 
 					stagedModelDataHandler.deleteStagedModel(
-						dependentStagedModel);
+						portletDataContext, dependentStagedModel);
 				}
 				catch (NoSuchModelException nsme) {
 					if (!(nsme instanceof NoSuchFileEntryException) &&

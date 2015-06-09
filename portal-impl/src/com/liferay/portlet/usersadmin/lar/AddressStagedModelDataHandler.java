@@ -37,23 +37,27 @@ public class AddressStagedModelDataHandler
 	public static final String[] CLASS_NAMES = {Address.class.getName()};
 
 	@Override
-	public void deleteStagedModel(Address address) {
+	public void deleteStagedModel(
+		PortletDataContext portletDataContext, Address address) {
+
 		AddressLocalServiceUtil.deleteAddress(address);
 	}
 
 	@Override
 	public void deleteStagedModel(
-			String uuid, long groupId, String className, String extraData)
+			PortletDataContext portletDataContext, String uuid,
+			String className, String extraData)
 		throws PortalException {
 
-		Group group = GroupLocalServiceUtil.getGroup(groupId);
+		Group group = GroupLocalServiceUtil.getGroup(
+			portletDataContext.getScopeGroupId());
 
 		Address address =
 			AddressLocalServiceUtil.fetchAddressByUuidAndCompanyId(
 				uuid, group.getCompanyId());
 
 		if (address != null) {
-			deleteStagedModel(address);
+			deleteStagedModel(portletDataContext, address);
 		}
 	}
 

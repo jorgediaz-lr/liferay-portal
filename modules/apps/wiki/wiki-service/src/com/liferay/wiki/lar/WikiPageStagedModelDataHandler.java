@@ -57,18 +57,23 @@ public class WikiPageStagedModelDataHandler
 
 	@Override
 	public void deleteStagedModel(
-			String uuid, long groupId, String className, String extraData)
+			PortletDataContext portletDataContext, String uuid,
+			String className, String extraData)
 		throws PortalException {
 
-		WikiPage wikiPage = fetchStagedModelByUuidAndGroupId(uuid, groupId);
+		WikiPage wikiPage = fetchStagedModelByUuidAndGroupId(
+			uuid, portletDataContext.getScopeGroupId());
 
 		if (wikiPage != null) {
-			deleteStagedModel(wikiPage);
+			deleteStagedModel(portletDataContext, wikiPage);
 		}
 	}
 
 	@Override
-	public void deleteStagedModel(WikiPage page) throws PortalException {
+	public void deleteStagedModel(
+			PortletDataContext portletDataContext, WikiPage page)
+		throws PortalException {
+
 		WikiPageLocalServiceUtil.deletePage(page);
 	}
 
