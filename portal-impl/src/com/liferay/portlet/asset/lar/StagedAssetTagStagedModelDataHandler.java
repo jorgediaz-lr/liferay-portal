@@ -49,6 +49,20 @@ public class StagedAssetTagStagedModelDataHandler
 			StagedAssetTag stagedAssetTag)
 		throws PortalException {
 
+		List<AssetEntry> entries =
+			AssetEntryLocalServiceUtil.getAssetTagAssetEntries(
+				stagedAssetTag.getTagId());
+
+		for (AssetEntry entry : entries) {
+			String className = PortalUtil.getClassName(entry.getClassNameId());
+
+			Map<Long, Long> newPrimaryKeysMap =
+				(Map<Long, Long>)
+					portletDataContext.getNewPrimaryKeysMap(className);
+
+			newPrimaryKeysMap.put(entry.getClassPK(), entry.getClassPK());
+		}
+
 		AssetTagLocalServiceUtil.deleteTag(stagedAssetTag);
 	}
 
@@ -166,6 +180,9 @@ public class StagedAssetTagStagedModelDataHandler
 				stagedAssetTag.getName(), serviceContext);
 		}
 		else {
+			/* It does not work, at tag level we are using the name as uuid,
+			 * so it will never enter at this code */
+
 			if (!existingAssetTag.getName().equals(stagedAssetTag.getName())) {
 				List<AssetEntry> entries =
 					AssetEntryLocalServiceUtil.getAssetTagAssetEntries(

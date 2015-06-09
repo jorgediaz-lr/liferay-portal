@@ -60,6 +60,20 @@ public class AssetCategoryStagedModelDataHandler
 			PortletDataContext portletDataContext, AssetCategory category)
 		throws PortalException {
 
+		List<AssetEntry> entries =
+			AssetEntryLocalServiceUtil.getAssetCategoryAssetEntries(
+				category.getCategoryId());
+
+		for (AssetEntry entry : entries) {
+			String className = PortalUtil.getClassName(entry.getClassNameId());
+
+			Map<Long, Long> newPrimaryKeysMap =
+				(Map<Long, Long>)
+					portletDataContext.getNewPrimaryKeysMap(className);
+
+			newPrimaryKeysMap.put(entry.getClassPK(), entry.getClassPK());
+		}
+
 		AssetCategoryLocalServiceUtil.deleteCategory(category);
 	}
 
