@@ -70,7 +70,8 @@ public abstract class BaseStagedModelDataHandler<T extends StagedModel>
 
 	@Override
 	public abstract void deleteStagedModel(
-			String uuid, long groupId, String className, String extraData)
+			PortletDataContext portletDataContext, String uuid,
+			String className, String extraData)
 		throws PortalException;
 
 	@Override

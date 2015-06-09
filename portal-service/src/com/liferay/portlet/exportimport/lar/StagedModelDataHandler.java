@@ -29,10 +29,13 @@ import java.util.Map;
 public interface StagedModelDataHandler<T extends StagedModel> {
 
 	public void deleteStagedModel(
-			String uuid, long groupId, String className, String extraData)
+			PortletDataContext portletDataContext, String uuid,
+			String className, String extraData)
 		throws PortalException;
 
-	public void deleteStagedModel(T stagedModel) throws PortalException;
+	public void deleteStagedModel(
+			PortletDataContext portletDataContext, T stagedModel)
+		throws PortalException;
 
 	public void exportStagedModel(
 			PortletDataContext portletDataContext, T stagedModel)
