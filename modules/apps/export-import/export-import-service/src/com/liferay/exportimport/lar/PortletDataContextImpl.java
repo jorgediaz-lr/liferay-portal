@@ -2048,7 +2048,9 @@ public class PortletDataContextImpl implements PortletDataContext {
 
 			serviceContext.setAssetTagNames(assetTagNames);
 
-			serviceContext.setAssetLinkEntryIds(new long[0]);
+			if (ExportImportThreadLocal.isStagingInProcess()) {
+				serviceContext.setAssetLinkEntryIds(new long[0]);
+			}
 		}
 
 		// Expando
