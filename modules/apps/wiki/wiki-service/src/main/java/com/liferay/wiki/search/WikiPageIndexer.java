@@ -218,14 +218,16 @@ public class WikiPageIndexer
 	}
 
 	@Override
-	protected void doReindex(String className, long classPK) throws Exception {
+	protected WikiPage doGetObject(String className, long classPK)
+		throws Exception {
+
 		WikiPage page = _wikiPageLocalService.fetchWikiPage(classPK);
 
 		if (page == null) {
 			page = _wikiPageLocalService.getPage(classPK, (Boolean)null);
 		}
 
-		doReindex(page);
+		return page;
 	}
 
 	@Override

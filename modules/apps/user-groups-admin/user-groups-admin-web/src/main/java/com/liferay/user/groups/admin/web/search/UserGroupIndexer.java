@@ -121,6 +121,13 @@ public class UserGroupIndexer extends BaseIndexer<UserGroup> {
 	}
 
 	@Override
+	protected UserGroup doGetObject(String className, long classPK)
+			throws PortalException {
+
+		return _userGroupLocalService.getUserGroup(classPK);
+	}
+
+	@Override
 	protected Summary doGetSummary(
 		Document document, Locale locale, String snippet,
 		PortletRequest portletRequest, PortletResponse portletResponse) {
@@ -130,13 +137,6 @@ public class UserGroupIndexer extends BaseIndexer<UserGroup> {
 		String content = null;
 
 		return new Summary(title, content);
-	}
-
-	@Override
-	protected void doReindex(String className, long classPK) throws Exception {
-		UserGroup userGroup = _userGroupLocalService.getUserGroup(classPK);
-
-		doReindex(userGroup);
 	}
 
 	@Override

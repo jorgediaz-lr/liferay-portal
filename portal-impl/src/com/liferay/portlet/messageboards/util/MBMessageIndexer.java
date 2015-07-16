@@ -58,6 +58,8 @@ import com.liferay.portlet.messageboards.service.MBDiscussionLocalServiceUtil;
 import com.liferay.portlet.messageboards.service.MBMessageLocalServiceUtil;
 import com.liferay.portlet.messageboards.service.permission.MBMessagePermission;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
@@ -305,37 +307,37 @@ public class MBMessageIndexer
 
 	@Override
 	protected void doReindex(MBMessage mbMessage) throws Exception {
-		if ((!mbMessage.isApproved() && !mbMessage.isInTrash()) ||
-			(mbMessage.isDiscussion() && mbMessage.isRoot())) {
+		List<MBMessage> messages = new ArrayList<>();
 
-			return;
+		if (mbMessage.isRoot()) {
+			messages = MBMessageLocalServiceUtil.getThreadMessages(
+				mbMessage.getThreadId(), WorkflowConstants.STATUS_APPROVED);
+
+		}
+		else {
+			messages.add(mbMessage);
 		}
 
-		Document document = getDocument(mbMessage);
+		Collection<Document> documents = new ArrayList<>();
 
-		IndexWriterHelperUtil.updateDocument(
-			getSearchEngineId(), mbMessage.getCompanyId(), document,
+		for (MBMessage curMessage : messages) {
+			if (!mbMessage.isDiscussion() &&
+				(mbMessage.isApproved() || mbMessage.isInTrash())) {
+
+				documents.add(getDocument(curMessage));
+			}
+		}
+
+		IndexWriterHelperUtil.updateDocuments(
+			getSearchEngineId(), mbMessage.getCompanyId(), documents,
 			isCommitImmediately());
 	}
 
 	@Override
-	protected void doReindex(String className, long classPK) throws Exception {
-		MBMessage message = MBMessageLocalServiceUtil.getMessage(classPK);
+	protected MBMessage doGetObject(String className, long classPK)
+		throws Exception {
 
-		doReindex(message);
-
-		if (message.isRoot()) {
-			List<MBMessage> messages =
-				MBMessageLocalServiceUtil.getThreadMessages(
-					message.getThreadId(), WorkflowConstants.STATUS_APPROVED);
-
-			for (MBMessage curMessage : messages) {
-				reindex(curMessage);
-			}
-		}
-		else {
-			reindex(message);
-		}
+		return MBMessageLocalServiceUtil.getMessage(classPK);
 	}
 
 	@Override

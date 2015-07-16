@@ -552,7 +552,7 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 				return;
 			}
 
-			doReindex(className, classPK);
+			reindex(doGetObject(className, classPK));
 		}
 		catch (NoSuchModelException nsme) {
 			if (_log.isWarnEnabled()) {
@@ -1486,7 +1486,7 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 		}
 	}
 
-	protected abstract void doReindex(String className, long classPK)
+	protected abstract T doGetObject(String className, long classPK)
 		throws Exception;
 
 	protected abstract void doReindex(String[] ids) throws Exception;

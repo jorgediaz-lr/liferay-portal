@@ -138,10 +138,10 @@ public class BookmarksEntryIndexer extends BaseIndexer<BookmarksEntry> {
 	}
 
 	@Override
-	protected void doReindex(String className, long classPK) throws Exception {
-		BookmarksEntry entry = _bookmarksEntryLocalService.getEntry(classPK);
+	protected BookmarksEntry doGetObject(String className, long classPK)
+		throws Exception {
 
-		doReindex(entry);
+		return _bookmarksEntryLocalService.getEntry(classPK);
 	}
 
 	@Override
