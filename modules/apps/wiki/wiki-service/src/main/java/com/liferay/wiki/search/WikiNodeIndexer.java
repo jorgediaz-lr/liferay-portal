@@ -95,19 +95,19 @@ public class WikiNodeIndexer extends BaseIndexer<WikiNode> {
 	}
 
 	@Override
+	protected WikiNode doGetObject(String className, long classPK)
+		throws Exception {
+
+		return _wikiNodeLocalService.getNode(classPK);
+	}
+
+	@Override
 	protected Summary doGetSummary(
 			Document document, Locale locale, String snippet,
 			PortletRequest portletRequest, PortletResponse portletResponse)
 		throws Exception {
 
 		return null;
-	}
-
-	@Override
-	protected WikiNode doGetObject(String className, long classPK)
-		throws Exception {
-
-		return _wikiNodeLocalService.getNode(classPK);
 	}
 
 	@Override

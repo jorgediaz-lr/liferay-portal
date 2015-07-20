@@ -121,6 +121,13 @@ public class CalendarIndexer extends BaseIndexer<Calendar> {
 	}
 
 	@Override
+	protected Calendar doGetObject(String className, long classPK)
+		throws Exception {
+
+		return _calendarLocalService.getCalendar(classPK);
+	}
+
+	@Override
 	protected Summary doGetSummary(
 		Document document, Locale locale, String snippet,
 		PortletRequest portletRequest, PortletResponse portletResponse) {
@@ -140,13 +147,6 @@ public class CalendarIndexer extends BaseIndexer<Calendar> {
 		IndexWriterHelperUtil.updateDocument(
 			getSearchEngineId(), calendar.getCompanyId(), document,
 			isCommitImmediately());
-	}
-
-	@Override
-	protected Calendar doGetObject(String className, long classPK)
-		throws Exception {
-
-		return _calendarLocalService.getCalendar(classPK);
 	}
 
 	@Override

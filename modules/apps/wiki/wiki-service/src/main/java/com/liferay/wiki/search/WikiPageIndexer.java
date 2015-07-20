@@ -206,18 +206,6 @@ public class WikiPageIndexer
 	}
 
 	@Override
-	protected Summary doGetSummary(
-		Document document, Locale locale, String snippet,
-		PortletRequest portletRequest, PortletResponse portletResponse) {
-
-		Summary summary = createSummary(document, Field.TITLE, Field.CONTENT);
-
-		summary.setMaxContentLength(200);
-
-		return summary;
-	}
-
-	@Override
 	protected WikiPage doGetObject(String className, long classPK)
 		throws Exception {
 
@@ -228,6 +216,18 @@ public class WikiPageIndexer
 		}
 
 		return page;
+	}
+
+	@Override
+	protected Summary doGetSummary(
+		Document document, Locale locale, String snippet,
+		PortletRequest portletRequest, PortletResponse portletResponse) {
+
+		Summary summary = createSummary(document, Field.TITLE, Field.CONTENT);
+
+		summary.setMaxContentLength(200);
+
+		return summary;
 	}
 
 	@Override

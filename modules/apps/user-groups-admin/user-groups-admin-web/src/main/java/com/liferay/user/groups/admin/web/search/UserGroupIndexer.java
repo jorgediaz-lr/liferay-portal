@@ -108,6 +108,13 @@ public class UserGroupIndexer extends BaseIndexer<UserGroup> {
 	}
 
 	@Override
+	protected UserGroup doGetObject(String className, long classPK)
+		throws PortalException {
+
+		return _userGroupLocalService.getUserGroup(classPK);
+	}
+
+	@Override
 	protected String doGetSortField(String orderByCol) {
 		if (orderByCol.equals("description")) {
 			return "description";
@@ -118,13 +125,6 @@ public class UserGroupIndexer extends BaseIndexer<UserGroup> {
 		else {
 			return orderByCol;
 		}
-	}
-
-	@Override
-	protected UserGroup doGetObject(String className, long classPK)
-			throws PortalException {
-
-		return _userGroupLocalService.getUserGroup(classPK);
 	}
 
 	@Override

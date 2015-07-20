@@ -294,6 +294,13 @@ public class MBMessageIndexer
 	}
 
 	@Override
+	protected MBMessage doGetObject(String className, long classPK)
+		throws Exception {
+
+		return MBMessageLocalServiceUtil.getMessage(classPK);
+	}
+
+	@Override
 	protected Summary doGetSummary(
 		Document document, Locale locale, String snippet,
 		PortletRequest portletRequest, PortletResponse portletResponse) {
@@ -329,13 +336,6 @@ public class MBMessageIndexer
 		IndexWriterHelperUtil.updateDocuments(
 			getSearchEngineId(), mbMessage.getCompanyId(), documents,
 			isCommitImmediately());
-	}
-
-	@Override
-	protected MBMessage doGetObject(String className, long classPK)
-		throws Exception {
-
-		return MBMessageLocalServiceUtil.getMessage(classPK);
 	}
 
 	@Override

@@ -141,6 +141,15 @@ public class ExportImportConfigurationIndexer
 	}
 
 	@Override
+	protected ExportImportConfiguration doGetObject(
+			String className, long classPK)
+		throws Exception {
+
+		return _exportImportConfigurationLocalService.
+			getExportImportConfiguration(classPK);
+	}
+
+	@Override
 	protected Summary doGetSummary(
 			Document document, Locale locale, String snippet,
 			PortletRequest portletRequest, PortletResponse portletResponse)
@@ -162,15 +171,6 @@ public class ExportImportConfigurationIndexer
 		IndexWriterHelperUtil.updateDocument(
 			getSearchEngineId(), exportImportConfiguration.getCompanyId(),
 			document, isCommitImmediately());
-	}
-
-	@Override
-	protected ExportImportConfiguration doGetObject(
-			String className, long classPK)
-		throws Exception {
-
-		return _exportImportConfigurationLocalService.
-			getExportImportConfiguration(classPK);
 	}
 
 	@Override

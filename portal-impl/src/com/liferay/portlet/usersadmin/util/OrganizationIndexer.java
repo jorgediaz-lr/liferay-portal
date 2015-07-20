@@ -182,6 +182,13 @@ public class OrganizationIndexer extends BaseIndexer<Organization> {
 	}
 
 	@Override
+	protected Organization doGetObject(String className, long classPK)
+		throws Exception {
+
+		return OrganizationLocalServiceUtil.getOrganization(classPK);
+	}
+
+	@Override
 	protected String doGetSortField(String orderByCol) {
 		if (orderByCol.equals("name")) {
 			return "name";
@@ -213,13 +220,6 @@ public class OrganizationIndexer extends BaseIndexer<Organization> {
 		IndexWriterHelperUtil.updateDocument(
 			getSearchEngineId(), organization.getCompanyId(), document,
 			isCommitImmediately());
-	}
-
-	@Override
-	protected Organization doGetObject(String className, long classPK)
-		throws Exception {
-
-		return OrganizationLocalServiceUtil.getOrganization(classPK);
 	}
 
 	@Override

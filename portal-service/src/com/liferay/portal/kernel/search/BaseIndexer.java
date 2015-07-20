@@ -1460,6 +1460,9 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 
 	protected abstract Document doGetDocument(T object) throws Exception;
 
+	protected abstract T doGetObject(String className, long classPK)
+		throws Exception;
+
 	protected String doGetSortField(String orderByCol) {
 		return orderByCol;
 	}
@@ -1489,9 +1492,6 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 				searchQuery, searchContext);
 		}
 	}
-
-	protected abstract T doGetObject(String className, long classPK)
-		throws Exception;
 
 	protected abstract void doReindex(String[] ids) throws Exception;
 

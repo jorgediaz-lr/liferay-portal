@@ -479,6 +479,13 @@ public class DLFileEntryIndexer
 	}
 
 	@Override
+	protected DLFileEntry doGetObject(String className, long classPK)
+		throws Exception {
+
+		return DLFileEntryLocalServiceUtil.getFileEntry(classPK);
+	}
+
+	@Override
 	protected Summary doGetSummary(
 		Document document, Locale locale, String snippet,
 		PortletRequest portletRequest, PortletResponse portletResponse) {
@@ -503,13 +510,6 @@ public class DLFileEntryIndexer
 		IndexWriterHelperUtil.updateDocument(
 			getSearchEngineId(), dlFileEntry.getCompanyId(), document,
 			isCommitImmediately());
-	}
-
-	@Override
-	protected DLFileEntry doGetObject(String className, long classPK)
-		throws Exception {
-
-		return DLFileEntryLocalServiceUtil.getFileEntry(classPK);
 	}
 
 	@Override

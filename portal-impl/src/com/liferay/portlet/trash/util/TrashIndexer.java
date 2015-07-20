@@ -157,6 +157,11 @@ public class TrashIndexer extends BaseIndexer<TrashEntry> {
 	}
 
 	@Override
+	protected TrashEntry doGetObject(String className, long classPK) {
+		return null;
+	}
+
+	@Override
 	protected String doGetSortField(String orderByCol) {
 		if (orderByCol.equals("removed-date")) {
 			return Field.REMOVED_DATE;
@@ -174,11 +179,6 @@ public class TrashIndexer extends BaseIndexer<TrashEntry> {
 		Document document, Locale locale, String snippet,
 		PortletRequest portletRequest, PortletResponse portletResponse) {
 
-		return null;
-	}
-
-	@Override
-	protected TrashEntry doGetObject(String className, long classPK) {
 		return null;
 	}
 

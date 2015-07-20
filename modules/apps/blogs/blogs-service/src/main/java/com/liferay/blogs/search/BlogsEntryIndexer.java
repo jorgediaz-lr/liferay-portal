@@ -119,6 +119,13 @@ public class BlogsEntryIndexer extends BaseIndexer<BlogsEntry> {
 	}
 
 	@Override
+	protected BlogsEntry doGetObject(String className, long classPK)
+		throws Exception {
+
+		return BlogsEntryLocalServiceUtil.getEntry(classPK);
+	}
+
+	@Override
 	protected Summary doGetSummary(
 		Document document, Locale locale, String snippet,
 		PortletRequest portletRequest, PortletResponse portletResponse) {

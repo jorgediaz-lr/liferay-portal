@@ -142,6 +142,13 @@ public class MBThreadIndexer extends BaseIndexer<MBThread> {
 	}
 
 	@Override
+	protected MBThread doGetObject(String className, long classPK)
+		throws Exception {
+
+		return MBThreadLocalServiceUtil.getThread(classPK);
+	}
+
+	@Override
 	protected Summary doGetSummary(
 		Document document, Locale locale, String snippet,
 		PortletRequest portletRequest, PortletResponse portletResponse) {
@@ -156,13 +163,6 @@ public class MBThreadIndexer extends BaseIndexer<MBThread> {
 		IndexWriterHelperUtil.updateDocument(
 			getSearchEngineId(), mbThread.getCompanyId(), document,
 			isCommitImmediately());
-	}
-
-	@Override
-	protected MBThread doGetObject(String className, long classPK)
-		throws Exception {
-
-		return MBThreadLocalServiceUtil.getThread(classPK);
 	}
 
 	@Override

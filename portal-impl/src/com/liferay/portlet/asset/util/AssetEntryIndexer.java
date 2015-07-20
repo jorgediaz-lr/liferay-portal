@@ -73,6 +73,11 @@ public class AssetEntryIndexer extends BaseIndexer<AssetEntry> {
 	}
 
 	@Override
+	protected AssetEntry doGetObject(String className, long classPK) {
+		return null;
+	}
+
+	@Override
 	protected Summary doGetSummary(
 		Document document, Locale locale, String snippet,
 		PortletRequest portletRequest, PortletResponse portletResponse) {
@@ -82,11 +87,6 @@ public class AssetEntryIndexer extends BaseIndexer<AssetEntry> {
 
 	@Override
 	protected void doReindex(AssetEntry assetEntry) {
-	}
-
-	@Override
-	protected AssetEntry doGetObject(String className, long classPK) {
-		return null;
 	}
 
 	@Override

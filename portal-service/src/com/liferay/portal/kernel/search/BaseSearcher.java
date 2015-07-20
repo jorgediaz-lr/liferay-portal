@@ -81,6 +81,13 @@ public abstract class BaseSearcher extends BaseIndexer<Object> {
 	}
 
 	@Override
+	protected Object doGetObject(String className, long classPK)
+		throws Exception {
+
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
 	protected Summary doGetSummary(
 			Document document, Locale locale, String snippet,
 			PortletRequest portletRequest, PortletResponse portletResponse)
@@ -104,13 +111,6 @@ public abstract class BaseSearcher extends BaseIndexer<Object> {
 
 	@Override
 	protected void doReindex(Object obj) throws Exception {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	protected Object doGetObject(String className, long classPK)
-		throws Exception {
-
 		throw new UnsupportedOperationException();
 	}
 

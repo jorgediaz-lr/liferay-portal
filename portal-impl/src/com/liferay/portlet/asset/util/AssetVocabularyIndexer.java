@@ -126,6 +126,13 @@ public class AssetVocabularyIndexer extends BaseIndexer<AssetVocabulary> {
 	}
 
 	@Override
+	protected AssetVocabulary doGetObject(String className, long classPK)
+		throws Exception {
+
+		return AssetVocabularyLocalServiceUtil.getVocabulary(classPK);
+	}
+
+	@Override
 	protected Summary doGetSummary(
 		Document document, Locale locale, String snippet,
 		PortletRequest portletRequest, PortletResponse portletResponse) {
@@ -140,13 +147,6 @@ public class AssetVocabularyIndexer extends BaseIndexer<AssetVocabulary> {
 		IndexWriterHelperUtil.updateDocument(
 			getSearchEngineId(), assetVocabulary.getCompanyId(), document,
 			isCommitImmediately());
-	}
-
-	@Override
-	protected AssetVocabulary doGetObject(String className, long classPK)
-		throws Exception {
-
-		return AssetVocabularyLocalServiceUtil.getVocabulary(classPK);
 	}
 
 	@Override

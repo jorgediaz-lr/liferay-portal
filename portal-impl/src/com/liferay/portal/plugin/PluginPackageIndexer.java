@@ -165,6 +165,13 @@ public class PluginPackageIndexer extends BaseIndexer<PluginPackage> {
 	}
 
 	@Override
+	protected PluginPackage doGetObject(String className, long classPK)
+		throws Exception {
+
+		return null;
+	}
+
+	@Override
 	protected Summary doGetSummary(
 		Document document, Locale locale, String snippet,
 		PortletRequest portletRequest, PortletResponse portletResponse) {
@@ -187,13 +194,6 @@ public class PluginPackageIndexer extends BaseIndexer<PluginPackage> {
 		IndexWriterHelperUtil.updateDocument(
 			getSearchEngineId(), CompanyConstants.SYSTEM, document,
 			isCommitImmediately());
-	}
-
-	@Override
-	protected PluginPackage doGetObject(String className, long classPK)
-		throws Exception {
-
-		return null;
 	}
 
 	@Override

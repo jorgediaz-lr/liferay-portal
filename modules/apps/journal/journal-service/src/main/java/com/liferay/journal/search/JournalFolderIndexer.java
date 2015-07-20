@@ -124,6 +124,13 @@ public class JournalFolderIndexer
 	}
 
 	@Override
+	protected JournalFolder doGetObject(String className, long classPK)
+		throws Exception {
+
+		return _journalFolderLocalService.getFolder(classPK);
+	}
+
+	@Override
 	protected Summary doGetSummary(
 		Document document, Locale locale, String snippet,
 		PortletRequest portletRequest, PortletResponse portletResponse) {
@@ -143,13 +150,6 @@ public class JournalFolderIndexer
 		IndexWriterHelperUtil.updateDocument(
 			getSearchEngineId(), journalFolder.getCompanyId(), document,
 			isCommitImmediately());
-	}
-
-	@Override
-	protected JournalFolder doGetObject(String className, long classPK)
-		throws Exception {
-
-		return _journalFolderLocalService.getFolder(classPK);
 	}
 
 	@Override

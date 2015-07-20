@@ -118,6 +118,13 @@ public class BookmarksFolderIndexer extends BaseIndexer<BookmarksFolder> {
 	}
 
 	@Override
+	protected BookmarksFolder doGetObject(String className, long classPK)
+		throws Exception {
+
+		return BookmarksFolderLocalServiceUtil.getFolder(classPK);
+	}
+
+	@Override
 	protected Summary doGetSummary(
 		Document document, Locale locale, String snippet,
 		PortletRequest portletRequest, PortletResponse portletResponse) {
@@ -141,13 +148,6 @@ public class BookmarksFolderIndexer extends BaseIndexer<BookmarksFolder> {
 		IndexWriterHelperUtil.updateDocument(
 			getSearchEngineId(), bookmarksFolder.getCompanyId(), document,
 			isCommitImmediately());
-	}
-
-	@Override
-	protected BookmarksFolder doGetObject(String className, long classPK)
-		throws Exception {
-
-		return BookmarksFolderLocalServiceUtil.getFolder(classPK);
 	}
 
 	@Override

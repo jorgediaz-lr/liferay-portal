@@ -125,6 +125,13 @@ public class DLFolderIndexer
 	}
 
 	@Override
+	protected DLFolder doGetObject(String className, long classPK)
+		throws Exception {
+
+		return DLFolderLocalServiceUtil.getFolder(classPK);
+	}
+
+	@Override
 	protected Summary doGetSummary(
 		Document document, Locale locale, String snippet,
 		PortletRequest portletRequest, PortletResponse portletResponse) {
@@ -148,13 +155,6 @@ public class DLFolderIndexer
 		IndexWriterHelperUtil.updateDocument(
 			getSearchEngineId(), dlFolder.getCompanyId(), document,
 			isCommitImmediately());
-	}
-
-	@Override
-	protected DLFolder doGetObject(String className, long classPK)
-		throws Exception {
-
-		return DLFolderLocalServiceUtil.getFolder(classPK);
 	}
 
 	@Override

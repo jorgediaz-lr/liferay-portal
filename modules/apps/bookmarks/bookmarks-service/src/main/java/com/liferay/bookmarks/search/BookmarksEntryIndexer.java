@@ -119,6 +119,13 @@ public class BookmarksEntryIndexer extends BaseIndexer<BookmarksEntry> {
 	}
 
 	@Override
+	protected BookmarksEntry doGetObject(String className, long classPK)
+		throws Exception {
+
+		return BookmarksEntryLocalServiceUtil.getEntry(classPK);
+	}
+
+	@Override
 	protected Summary doGetSummary(
 		Document document, Locale locale, String snippet,
 		PortletRequest portletRequest, PortletResponse portletResponse) {

@@ -284,6 +284,13 @@ public class UserIndexer extends BaseIndexer<User> {
 	}
 
 	@Override
+	protected User doGetObject(String className, long classPK)
+		throws Exception {
+
+		return UserLocalServiceUtil.getUserById(classPK);
+	}
+
+	@Override
 	protected String doGetSortField(String orderByCol) {
 		if (orderByCol.equals("email-address")) {
 			return "emailAddress";
@@ -323,13 +330,6 @@ public class UserIndexer extends BaseIndexer<User> {
 		String content = null;
 
 		return new Summary(title, content);
-	}
-
-	@Override
-	protected User doGetObject(String className, long classPK)
-		throws Exception {
-
-		return UserLocalServiceUtil.getUserById(classPK);
 	}
 
 	@Override

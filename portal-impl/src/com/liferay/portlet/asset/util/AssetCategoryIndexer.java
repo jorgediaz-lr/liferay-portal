@@ -182,6 +182,13 @@ public class AssetCategoryIndexer extends BaseIndexer<AssetCategory> {
 	}
 
 	@Override
+	protected AssetCategory doGetObject(String className, long classPK)
+		throws Exception {
+
+		return AssetCategoryLocalServiceUtil.getCategory(classPK);
+	}
+
+	@Override
 	protected Summary doGetSummary(
 		Document document, Locale locale, String snippet,
 		PortletRequest portletRequest, PortletResponse portletResponse) {
@@ -196,13 +203,6 @@ public class AssetCategoryIndexer extends BaseIndexer<AssetCategory> {
 		IndexWriterHelperUtil.updateDocument(
 			getSearchEngineId(), assetCategory.getCompanyId(), document,
 			isCommitImmediately());
-	}
-
-	@Override
-	protected AssetCategory doGetObject(String className, long classPK)
-		throws Exception {
-
-		return AssetCategoryLocalServiceUtil.getCategory(classPK);
 	}
 
 	@Override

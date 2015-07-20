@@ -127,6 +127,13 @@ public class ContactIndexer extends BaseIndexer<Contact> {
 	}
 
 	@Override
+	protected Contact doGetObject(String className, long classPK)
+		throws Exception {
+
+		return ContactLocalServiceUtil.getContact(classPK);
+	}
+
+	@Override
 	protected String doGetSortField(String orderByCol) {
 		if (orderByCol.equals("email-address")) {
 			return "emailAddress";
@@ -160,13 +167,6 @@ public class ContactIndexer extends BaseIndexer<Contact> {
 		IndexWriterHelperUtil.updateDocument(
 			getSearchEngineId(), contact.getCompanyId(), document,
 			isCommitImmediately());
-	}
-
-	@Override
-	protected Contact doGetObject(String className, long classPK)
-		throws Exception {
-
-		return ContactLocalServiceUtil.getContact(classPK);
 	}
 
 	@Override

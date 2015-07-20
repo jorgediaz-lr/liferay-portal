@@ -544,6 +544,20 @@ public class JournalArticleIndexer
 	}
 
 	@Override
+	protected JournalArticle doGetObject(String className, long classPK)
+		throws Exception {
+
+		JournalArticle article =
+			_journalArticleLocalService.fetchJournalArticle(classPK);
+
+		if (article == null) {
+			article = _journalArticleLocalService.fetchLatestArticle(classPK);
+		}
+
+		return article;
+	}
+
+	@Override
 	protected String doGetSortField(String orderByCol) {
 		if (orderByCol.equals("display-date")) {
 			return "displayDate";
@@ -625,20 +639,6 @@ public class JournalArticleIndexer
 		}
 
 		reindexArticleVersions(article);
-	}
-
-	@Override
-	protected JournalArticle doGetObject(String className, long classPK)
-		throws Exception {
-
-		JournalArticle article =
-			_journalArticleLocalService.fetchJournalArticle(classPK);
-
-		if (article == null) {
-			article = _journalArticleLocalService.fetchLatestArticle(classPK);
-		}
-
-		return article;
 	}
 
 	@Override
