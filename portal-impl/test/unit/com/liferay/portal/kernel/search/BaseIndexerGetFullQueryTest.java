@@ -223,6 +223,11 @@ public class BaseIndexerGetFullQueryTest extends PowerMockito {
 		}
 
 		@Override
+		protected Object doGetObject(String className, long classPK) {
+			return null;
+		}
+
+		@Override
 		protected Summary doGetSummary(
 				Document document, Locale locale, String snippet,
 				PortletRequest portletRequest, PortletResponse portletResponse)
@@ -233,11 +238,6 @@ public class BaseIndexerGetFullQueryTest extends PowerMockito {
 
 		@Override
 		protected void doReindex(Object object) throws Exception {
-		}
-
-		@Override
-		protected void doReindex(String className, long classPK)
-			throws Exception {
 		}
 
 		@Override
