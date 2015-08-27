@@ -15,6 +15,9 @@
 package com.liferay.frontend.taglib.servlet.taglib;
 
 import com.liferay.frontend.taglib.servlet.ServletContextUtil;
+import com.liferay.portal.kernel.dao.search.ResultRow;
+import com.liferay.portal.kernel.dao.search.RowChecker;
+import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.taglib.util.IncludeTag;
 
 import java.util.Map;
@@ -43,8 +46,20 @@ public class CardTag extends IncludeTag {
 		_actionJspServletContext = actionJspServletContext;
 	}
 
+	public void setCheckboxChecked(boolean checkboxChecked) {
+		_checkboxChecked = checkboxChecked;
+	}
+
 	public void setCheckboxCSSClass(String checkboxCSSClass) {
 		_checkboxCSSClass = checkboxCSSClass;
+	}
+
+	public void setCheckboxData(Map<String, Object> checkboxData) {
+		_checkboxData = checkboxData;
+	}
+
+	public void setCheckboxDisabled(boolean checkboxDisabled) {
+		_checkboxDisabled = checkboxDisabled;
 	}
 
 	public void setCheckboxId(String checkboxId) {
@@ -94,6 +109,14 @@ public class CardTag extends IncludeTag {
 		servletContext = ServletContextUtil.getServletContext();
 	}
 
+	public void setResultRow(ResultRow resultRow) {
+		_resultRow = resultRow;
+	}
+
+	public void setRowChecker(RowChecker rowChecker) {
+		_rowChecker = rowChecker;
+	}
+
 	public void setShowCheckbox(boolean showCheckbox) {
 		_showCheckbox = showCheckbox;
 	}
@@ -122,7 +145,10 @@ public class CardTag extends IncludeTag {
 	protected void cleanUp() {
 		_actionJsp = null;
 		_actionJspServletContext = null;
+		_checkboxChecked = null;
 		_checkboxCSSClass = null;
+		_checkboxData = null;
+		_checkboxDisabled = null;
 		_checkboxId = null;
 		_checkboxName = null;
 		_checkboxValue = null;
@@ -133,6 +159,8 @@ public class CardTag extends IncludeTag {
 		_horizontal = false;
 		_imageUrl = null;
 		_imageCSSClass = null;
+		_resultRow = null;
+		_rowChecker = null;
 		_showCheckbox = true;
 		_smallImageCSSClass = null;
 		_smallImageUrl = null;
@@ -165,7 +193,15 @@ public class CardTag extends IncludeTag {
 			"liferay-frontend:card:actionJspServletContext",
 			getActionJspServletContext());
 		request.setAttribute(
+			"liferay-frontend:card:checkboxChecked",
+			String.valueOf(_checkboxChecked));
+		request.setAttribute(
 			"liferay-frontend:card:checkboxCSSClass", _checkboxCSSClass);
+		request.setAttribute(
+			"liferay-frontend:card:checkboxData", _checkboxData);
+		request.setAttribute(
+			"liferay-frontend:card:checkboxDisabled",
+			String.valueOf(_checkboxDisabled));
 		request.setAttribute("liferay-frontend:card:checkboxId", _checkboxId);
 		request.setAttribute(
 			"liferay-frontend:card:checkboxName", _checkboxName);
@@ -178,6 +214,8 @@ public class CardTag extends IncludeTag {
 		request.setAttribute(
 			"liferay-frontend:card:imageCSSClass", _imageCSSClass);
 		request.setAttribute("liferay-frontend:card:imageUrl", _imageUrl);
+		request.setAttribute("liferay-frontend:card:resultRow", _resultRow);
+		request.setAttribute("liferay-frontend:card:rowChecker", _rowChecker);
 		request.setAttribute(
 			"liferay-frontend:card:showCheckbox", _showCheckbox);
 		request.setAttribute(
@@ -187,11 +225,16 @@ public class CardTag extends IncludeTag {
 		request.setAttribute("liferay-frontend:card:subtitle", _subtitle);
 		request.setAttribute("liferay-frontend:card:title", _title);
 		request.setAttribute("liferay-frontend:card:url", _url);
+
+		request.setAttribute(WebKeys.SEARCH_CONTAINER_RESULT_ROW, _resultRow);
 	}
 
 	private String _actionJsp;
 	private ServletContext _actionJspServletContext;
+	private Boolean _checkboxChecked;
 	private String _checkboxCSSClass;
+	private Map<String, Object> _checkboxData;
+	private Boolean _checkboxDisabled;
 	private String _checkboxId;
 	private String _checkboxName;
 	private String _checkboxValue;
@@ -202,6 +245,8 @@ public class CardTag extends IncludeTag {
 	private boolean _horizontal = false;
 	private String _imageCSSClass;
 	private String _imageUrl;
+	private ResultRow _resultRow;
+	private RowChecker _rowChecker;
 	private boolean _showCheckbox;
 	private String _smallImageCSSClass;
 	private String _smallImageUrl;

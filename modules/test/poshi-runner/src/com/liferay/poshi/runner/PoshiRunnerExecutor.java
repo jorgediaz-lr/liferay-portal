@@ -295,6 +295,8 @@ public class PoshiRunnerExecutor {
 				classCommandName);
 		}
 
+		Exception exception = null;
+
 		int locatorCount = PoshiRunnerContext.getFunctionLocatorCount(
 			className);
 
@@ -309,7 +311,7 @@ public class PoshiRunnerExecutor {
 			if (locator != null) {
 				Matcher matcher = _locatorKeyPattern.matcher(locator);
 
-				if (matcher.find()) {
+				if (matcher.find() && !locator.contains("/")) {
 					String pathClassName =
 						PoshiRunnerGetterUtil.getClassNameFromClassCommandName(
 							locator);
@@ -322,8 +324,13 @@ public class PoshiRunnerExecutor {
 					PoshiRunnerVariablesUtil.putIntoExecuteMap(
 						"locator-key" + (i + 1), locatorKey);
 
-					locator = PoshiRunnerContext.getPathLocator(
-						pathClassName + "#" + locatorKey);
+					try {
+						locator = PoshiRunnerContext.getPathLocator(
+							pathClassName + "#" + locatorKey);
+					}
+					catch (Exception e) {
+						exception = e;
+					}
 
 					locator = PoshiRunnerVariablesUtil.replaceExecuteVars(
 						locator);
@@ -356,6 +363,10 @@ public class PoshiRunnerExecutor {
 			classCommandName);
 
 		try {
+			if (exception != null) {
+				throw exception;
+			}
+
 			runFunctionCommandElement(classCommandName, commandElement);
 		}
 		catch (Throwable t) {

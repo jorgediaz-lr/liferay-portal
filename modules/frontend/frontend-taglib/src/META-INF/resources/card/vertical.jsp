@@ -16,11 +16,16 @@
 
 <%@ include file="/card/init.jsp" %>
 
-<div class="col-lg-4 <%= cssClass %> <%= showCheckbox ? "selectable" : StringPool.BLANK %>" <%= AUIUtil.buildData(data) %>>
+<div class="<%= cssClass %> <%= showCheckbox ? "selectable" : StringPool.BLANK %>" <%= AUIUtil.buildData(data) %>>
 	<div class="<%= showCheckbox ? "checkbox checkbox-default toggle-card-dm" : StringPool.BLANK %>">
-		<c:if test="<%= showCheckbox %>">
-			<aui:input cssClass="<%= checkboxCSSClass %>" id="<%= checkboxId %>" label="" name="<%= checkboxName %>" type="checkbox" value="<%= checkboxValue %>" wrappedField="<%= true %>" />
-		</c:if>
+		<c:choose>
+			<c:when test="<%= (rowChecker != null) && (resultRow != null) %>">
+				<%= rowChecker.getRowCheckBox(request, rowChecker.isChecked(resultRow.getObject()), rowChecker.isDisabled(resultRow.getObject()), resultRow.getPrimaryKey()) %>
+			</c:when>
+			<c:when test="<%= showCheckbox %>">
+				<aui:input checked="<%= checkboxChecked %>" cssClass="<%= checkboxCSSClass %>" data="<%= checkboxData %>" disabled="<%= checkboxDisabled %>" id="<%= checkboxId %>" label="" name="<%= checkboxName %>" title='<%= LanguageUtil.format(request, "select-x", new Object[] {HtmlUtil.escape(title)}) %>' type="checkbox" useNamespace="<%= false %>" value="<%= checkboxValue %>" wrappedField="<%= true %>" />
+			</c:when>
+		</c:choose>
 
 		<div class="card card-dm <%= showCheckbox ? "toggle-card-container" : StringPool.BLANK %>">
 			<div class="aspect-ratio">
