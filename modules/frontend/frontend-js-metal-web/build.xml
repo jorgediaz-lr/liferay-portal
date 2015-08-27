@@ -28,7 +28,7 @@
 		<node-execute
 			node.args="rebuild node-sass"
 			node.command="npm"
-			node.working.dir="${basedir}"
+			node.working.dir="${basedir}/node_modules/gulp-metal/node_modules/gulp-sass"
 		/>
 
 		<node-execute
