@@ -26,8 +26,14 @@
 		/>
 
 		<node-execute
+			node.args="rebuild node-sass"
+			node.command="npm"
+			node.working.dir="${basedir}"
+		/>
+
+		<node-execute
 			node.command="node"
-			node.command.args="${sdk.tools.dir}/node-v${nodejs.version}/node_modules/bower/bin/bower install"
+			node.command.args="${sdk.tools.dir}/node-v${nodejs.version}/node_modules/bower/bin/bower install --allow-root"
 			node.working.dir="${basedir}"
 		/>
 
