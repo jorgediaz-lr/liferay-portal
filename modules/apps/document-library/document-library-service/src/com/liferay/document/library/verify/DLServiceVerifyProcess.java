@@ -544,15 +544,6 @@ public class DLServiceVerifyProcess extends VerifyProcess {
 		String uniqueTitle = title;
 
 		for (int i = 1;;) {
-			uniqueTitle =
-				titleWithoutExtension + StringPool.UNDERLINE +
-					String.valueOf(i);
-
-			if (Validator.isNotNull(titleExtension)) {
-				uniqueTitle = uniqueTitle.concat(
-					StringPool.PERIOD.concat(titleExtension));
-			}
-
 			String uniqueFileName = DLUtil.getSanitizedFileName(
 				uniqueTitle, extension);
 
@@ -569,8 +560,15 @@ public class DLServiceVerifyProcess extends VerifyProcess {
 
 					throw pe;
 				}
+			}
 
-				i++;
+			uniqueTitle =
+				titleWithoutExtension + StringPool.UNDERLINE +
+					String.valueOf(i++);
+
+			if (Validator.isNotNull(titleExtension)) {
+				uniqueTitle = uniqueTitle.concat(
+					StringPool.PERIOD.concat(titleExtension));
 			}
 		}
 	}
