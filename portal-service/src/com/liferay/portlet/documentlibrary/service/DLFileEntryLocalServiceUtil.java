@@ -783,6 +783,12 @@ public class DLFileEntryLocalServiceUtil {
 		return getService().getRepositoryFileEntriesCount(repositoryId);
 	}
 
+	public static java.lang.String getUniqueTitle(long groupId, long folderId,
+		long fileEntryId, java.lang.String title)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getUniqueTitle(groupId, folderId, fileEntryId, title);
+	}
+
 	public static boolean hasExtraSettings() {
 		return getService().hasExtraSettings();
 	}
