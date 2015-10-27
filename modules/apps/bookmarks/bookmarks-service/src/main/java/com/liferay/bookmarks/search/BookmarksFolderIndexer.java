@@ -121,7 +121,7 @@ public class BookmarksFolderIndexer extends BaseIndexer<BookmarksFolder> {
 	protected BookmarksFolder doGetObject(String className, long classPK)
 		throws Exception {
 
-		return BookmarksFolderLocalServiceUtil.getFolder(classPK);
+		return _bookmarksFolderLocalService.getFolder(classPK);
 	}
 
 	@Override

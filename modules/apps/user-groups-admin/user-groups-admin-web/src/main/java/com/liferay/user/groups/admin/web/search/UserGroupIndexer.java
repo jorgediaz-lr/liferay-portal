@@ -131,7 +131,7 @@ public class UserGroupIndexer extends BaseIndexer<UserGroup> {
 	protected UserGroup doGetObject(String className, long classPK)
 			throws PortalException {
 
-		return UserGroupLocalServiceUtil.getUserGroup(classPK);
+		return _userGroupLocalService.getUserGroup(classPK);
 	}
 
 	@Override

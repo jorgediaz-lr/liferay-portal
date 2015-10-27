@@ -122,7 +122,7 @@ public class BookmarksEntryIndexer extends BaseIndexer<BookmarksEntry> {
 	protected BookmarksEntry doGetObject(String className, long classPK)
 		throws Exception {
 
-		return BookmarksEntryLocalServiceUtil.getEntry(classPK);
+		return _bookmarksEntryLocalService.getEntry(classPK);
 	}
 
 	@Override
@@ -144,12 +144,6 @@ public class BookmarksEntryIndexer extends BaseIndexer<BookmarksEntry> {
 			isCommitImmediately());
 	}
 
-	@Override
-	protected BookmarksEntry doGetObject(String className, long classPK)
-		throws Exception {
-
-		return _bookmarksEntryLocalService.getEntry(classPK);
-	}
 
 	@Override
 	protected void doReindex(String[] ids) throws Exception {

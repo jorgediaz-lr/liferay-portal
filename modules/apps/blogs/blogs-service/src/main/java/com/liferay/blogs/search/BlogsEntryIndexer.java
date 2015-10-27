@@ -122,7 +122,7 @@ public class BlogsEntryIndexer extends BaseIndexer<BlogsEntry> {
 	protected BlogsEntry doGetObject(String className, long classPK)
 		throws Exception {
 
-		return BlogsEntryLocalServiceUtil.getEntry(classPK);
+		return _blogsEntryLocalService.getEntry(classPK);
 	}
 
 	@Override
@@ -146,10 +146,6 @@ public class BlogsEntryIndexer extends BaseIndexer<BlogsEntry> {
 			isCommitImmediately());
 	}
 
-	@Override
-	protected BlogsEntry doGetObject(String className, long classPK) throws Exception {
-		return _blogsEntryLocalService.getEntry(classPK);
-	}
 
 	@Override
 	protected void doReindex(String[] ids) throws Exception {

@@ -183,7 +183,7 @@ public class DDLRecordIndexer extends BaseIndexer<DDLRecord> {
 	protected DDLRecord doGetObject(String className, long classPK)
 		throws Exception {
 
-		return DDLRecordLocalServiceUtil.getRecord(classPK);
+		return _ddlRecordLocalService.getRecord(classPK);
 	}
 
 	@Override
