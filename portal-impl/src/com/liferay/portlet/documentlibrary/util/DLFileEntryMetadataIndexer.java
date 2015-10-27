@@ -83,6 +83,13 @@ public class DLFileEntryMetadataIndexer
 	}
 
 	@Override
+	protected DLFileEntryMetadata doGetObject(String className, long classPK)
+			throws Exception {
+
+		return null;
+	}
+
+	@Override
 	protected Summary doGetSummary(
 			Document document, Locale locale, String snippet,
 			PortletRequest portletRequest, PortletResponse portletResponse)
@@ -93,10 +100,6 @@ public class DLFileEntryMetadataIndexer
 
 	@Override
 	protected void doReindex(DLFileEntryMetadata object) throws Exception {
-	}
-
-	@Override
-	protected void doReindex(String className, long classPK) throws Exception {
 	}
 
 	@Override
