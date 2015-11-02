@@ -69,6 +69,42 @@ public class JenkinsResultsParserUtil {
 		return url;
 	}
 
+	public static String getAxisVariable(JSONObject jsonObject)
+		throws Exception {
+
+		JSONArray actionsJSONArray = (JSONArray)jsonObject.get("actions");
+
+		for (int i = 0; i < actionsJSONArray.length(); i++) {
+			Object object = actionsJSONArray.get(i);
+
+			if (object.equals(JSONObject.NULL)) {
+				continue;
+			}
+
+			JSONObject actionsJSONObject = actionsJSONArray.getJSONObject(i);
+
+			JSONArray parametersJSONArray = actionsJSONObject.optJSONArray(
+				"parameters");
+
+			if (parametersJSONArray == null) {
+				continue;
+			}
+
+			for (int j = 0; j < parametersJSONArray.length(); j++) {
+				JSONObject parametersJSONObject =
+					parametersJSONArray.getJSONObject(j);
+
+				String name = parametersJSONObject.getString("name");
+
+				if (name.contains("AXIS_VARIABLE")) {
+					return parametersJSONObject.getString("value");
+				}
+			}
+		}
+
+		return "";
+	}
+
 	public static String getJobVariant(JSONObject jsonObject) throws Exception {
 		JSONArray actionsJSONArray = jsonObject.getJSONArray("actions");
 
@@ -102,6 +138,9 @@ public class JenkinsResultsParserUtil {
 	}
 
 	public static String getLocalURL(String remoteURL) {
+		remoteURL = remoteURL.replace(
+			"${user.dir}", System.getProperty("user.dir"));
+
 		Matcher matcher = _localURLPattern1.matcher(remoteURL);
 
 		if (matcher.find()) {
@@ -132,10 +171,14 @@ public class JenkinsResultsParserUtil {
 	}
 
 	public static JSONObject toJSONObject(String url) throws Exception {
-		return new JSONObject(toString(fixURL(url)));
+		return new JSONObject(toString(url));
 	}
 
 	public static String toString(String url) throws IOException {
+		url = fixURL(url);
+
+		System.out.println("Downloading " + url);
+
 		StringBuilder sb = new StringBuilder();
 
 		URL urlObject = new URL(fixURL(url));

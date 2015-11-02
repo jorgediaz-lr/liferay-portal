@@ -881,6 +881,8 @@ public interface PropsKeys {
 
 	public static final String IMAGEMAGICK_RESOURCE_LIMIT = "imagemagick.resource.limit.";
 
+	public static final String INDEX_COMMIT_IMMEDIATELY = "index.commit.immediately";
+
 	public static final String INDEX_DATE_FORMAT_PATTERN = "index.date.format.pattern";
 
 	public static final String INDEX_DUMP_COMPRESSION_ENABLED = "index.dump.compression.enabled";
@@ -1302,10 +1304,6 @@ public interface PropsKeys {
 	public static final String MAIL_AUDIT_TRAIL = "mail.audit.trail";
 
 	public static final String MAIL_BATCH_SIZE = "mail.batch.size";
-
-	public static final String MAIL_HOOK_CYRUS_ADD_USER = "mail.hook.cyrus.add.user";
-
-	public static final String MAIL_HOOK_CYRUS_DELETE_USER = "mail.hook.cyrus.delete.user";
 
 	public static final String MAIL_HOOK_CYRUS_HOME = "mail.hook.cyrus.home";
 
