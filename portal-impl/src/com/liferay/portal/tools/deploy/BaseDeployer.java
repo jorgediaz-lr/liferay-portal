@@ -1810,7 +1810,7 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 				_log.info("Process output: " + line);
 			}
 
-			int exitValue = process.exitValue();
+			int exitValue = process.waitFor();
 
 			if (exitValue == 0) {
 				_log.info(
@@ -1819,8 +1819,8 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 			}
 			else {
 				_log.info(
-					"Unsuccessfully executed command with an exit value of " +
-						exitValue);
+					"Unsuccessfully executed command with an exit value " +
+						"of " + exitValue);
 			}
 		}
 
