@@ -146,7 +146,6 @@ public class BlogsEntryIndexer extends BaseIndexer<BlogsEntry> {
 			isCommitImmediately());
 	}
 
-
 	@Override
 	protected void doReindex(String[] ids) throws Exception {
 		long companyId = GetterUtil.getLong(ids[0]);

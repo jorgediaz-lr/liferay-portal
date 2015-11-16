@@ -144,7 +144,6 @@ public class BookmarksEntryIndexer extends BaseIndexer<BookmarksEntry> {
 			isCommitImmediately());
 	}
 
-
 	@Override
 	protected void doReindex(String[] ids) throws Exception {
 		long companyId = GetterUtil.getLong(ids[0]);

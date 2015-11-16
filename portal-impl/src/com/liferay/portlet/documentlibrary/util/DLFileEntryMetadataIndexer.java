@@ -84,7 +84,7 @@ public class DLFileEntryMetadataIndexer
 
 	@Override
 	protected DLFileEntryMetadata doGetObject(String className, long classPK)
-			throws Exception {
+		throws Exception {
 
 		return null;
 	}
