@@ -126,8 +126,8 @@ public class ElasticsearchUpdateDocumentCommandImpl
 		Client client = _elasticsearchConnectionManager.getClient();
 
 		UpdateRequestBuilder updateRequestBuilder = client.prepareUpdate(
-			"liferay-" + String.valueOf(searchContext.getCompanyId()), documentType,
-			document.getUID());
+			"liferay-" + String.valueOf(searchContext.getCompanyId()),
+			documentType, document.getUID());
 
 		String elasticSearchDocument =
 			_elasticsearchDocumentFactory.getElasticsearchDocument(document);
@@ -156,7 +156,8 @@ public class ElasticsearchUpdateDocumentCommandImpl
 				if (deleteFirst) {
 					DeleteRequestBuilder deleteRequestBuilder =
 						client.prepareDelete(
-							"liferay-" + String.valueOf(searchContext.getCompanyId()),
+							"liferay-" +
+								String.valueOf(searchContext.getCompanyId()),
 							DocumentTypes.LIFERAY, document.getUID());
 
 					bulkRequestBuilder.add(deleteRequestBuilder);

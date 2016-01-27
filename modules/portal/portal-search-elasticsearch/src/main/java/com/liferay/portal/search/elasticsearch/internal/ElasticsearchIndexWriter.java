@@ -87,7 +87,7 @@ public class ElasticsearchIndexWriter extends BaseIndexWriter {
 
 			RefreshRequestBuilder refreshRequestBuilder =
 				indicesAdminClient.prepareRefresh(
-					"liferay-"  + String.valueOf(searchContext.getCompanyId()));
+					"liferay-" + String.valueOf(searchContext.getCompanyId()));
 
 			RefreshResponse refreshResponse = refreshRequestBuilder.get();
 
@@ -137,7 +137,8 @@ public class ElasticsearchIndexWriter extends BaseIndexWriter {
 			for (String uid : uids) {
 				DeleteRequestBuilder deleteRequestBuilder =
 					client.prepareDelete(
-						"liferay-" + String.valueOf(searchContext.getCompanyId()),
+						"liferay-" +
+							String.valueOf(searchContext.getCompanyId()),
 						DocumentTypes.LIFERAY, uid);
 
 				bulkRequestBuilder.add(deleteRequestBuilder);
