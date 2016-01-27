@@ -75,7 +75,7 @@ public class CompanyIndexFactory implements IndexFactory {
 
 		LiferayDocumentTypeFactory liferayDocumentTypeFactory =
 			new LiferayDocumentTypeFactory(
-				"liferay-"+ String.valueOf(companyId), indicesAdminClient);
+				"liferay-" + String.valueOf(companyId), indicesAdminClient);
 
 		createIndex(companyId, indicesAdminClient, liferayDocumentTypeFactory);
 
@@ -94,7 +94,7 @@ public class CompanyIndexFactory implements IndexFactory {
 
 		DeleteIndexRequestBuilder deleteIndexRequestBuilder =
 			indicesAdminClient.prepareDelete(
-				"liferay-"+ String.valueOf(companyId));
+				"liferay-" + String.valueOf(companyId));
 
 		DeleteIndexResponse deleteIndexResponse =
 			deleteIndexRequestBuilder.get();
@@ -191,7 +191,7 @@ public class CompanyIndexFactory implements IndexFactory {
 
 		IndicesExistsRequestBuilder indicesExistsRequestBuilder =
 			indicesAdminClient.prepareExists(
-				"liferay-"+ String.valueOf(companyId));
+				"liferay-" + String.valueOf(companyId));
 
 		IndicesExistsResponse indicesExistsResponse =
 			indicesExistsRequestBuilder.get();
