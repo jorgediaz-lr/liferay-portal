@@ -154,7 +154,8 @@ public class CompanyIndexFactory implements IndexFactory {
 		throws Exception {
 
 		CreateIndexRequestBuilder createIndexRequestBuilder =
-			indicesAdminClient.prepareCreate(String.valueOf(companyId));
+			indicesAdminClient.prepareCreate(
+				"liferay-" + String.valueOf(companyId));
 
 		addMappings(createIndexRequestBuilder);
 		setSettings(createIndexRequestBuilder, liferayDocumentTypeFactory);
