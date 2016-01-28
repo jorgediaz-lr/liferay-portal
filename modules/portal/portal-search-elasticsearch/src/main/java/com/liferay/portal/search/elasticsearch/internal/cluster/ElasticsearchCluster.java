@@ -123,7 +123,7 @@ public class ElasticsearchCluster {
 			}
 
 			targetIndexNames[targetIndexNames.length - 1] =
-				CompanyConstants.SYSTEM_STRING;
+				"liferay-" + CompanyConstants.SYSTEM_STRING;
 
 			return targetIndexNames;
 		}
