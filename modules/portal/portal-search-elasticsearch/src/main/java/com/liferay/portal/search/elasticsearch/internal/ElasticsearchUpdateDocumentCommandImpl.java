@@ -126,7 +126,8 @@ public class ElasticsearchUpdateDocumentCommandImpl
 		Client client = _elasticsearchConnectionManager.getClient();
 
 		UpdateRequestBuilder updateRequestBuilder = client.prepareUpdate(
-			"liferay-" + String.valueOf(searchContext.getCompanyId()),
+			_elasticsearchConnectionManager.getIndexNamePrefix() +
+				String.valueOf(searchContext.getCompanyId()),
 			documentType, document.getUID());
 
 		String elasticSearchDocument =
@@ -150,13 +151,16 @@ public class ElasticsearchUpdateDocumentCommandImpl
 		try {
 			Client client = _elasticsearchConnectionManager.getClient();
 
+			String indexNamePrefix =
+				_elasticsearchConnectionManager.getIndexNamePrefix();
+
 			BulkRequestBuilder bulkRequestBuilder = client.prepareBulk();
 
 			for (Document document : documents) {
 				if (deleteFirst) {
 					DeleteRequestBuilder deleteRequestBuilder =
 						client.prepareDelete(
-							"liferay-" +
+							indexNamePrefix +
 								String.valueOf(searchContext.getCompanyId()),
 							DocumentTypes.LIFERAY, document.getUID());
 
