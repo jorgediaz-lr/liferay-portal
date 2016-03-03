@@ -492,7 +492,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 			referrerClassedModel, element, classedModel, className, binPath,
 			referenceType, false);
 
-		if(referenceElement == null) {
+		if (referenceElement == null) {
 			return null;
 		}
 
@@ -2056,7 +2056,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 		ClassedModel classedModel, String className, String binPath,
 		String referenceType, boolean missing) {
 
-		if((classedModel == null) || (referrerClassedModel == null)) {
+		if ((classedModel == null) || (referrerClassedModel == null)) {
 			return null;
 		}
 
