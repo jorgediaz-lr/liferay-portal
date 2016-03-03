@@ -15,6 +15,7 @@
 package com.liferay.exportimport.content.processor.base;
 
 import com.liferay.exportimport.content.processor.ExportImportContentProcessor;
+import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.kernel.lar.PortletDataHandlerKeys;
 import com.liferay.portal.kernel.exception.NoSuchLayoutException;
@@ -815,7 +816,9 @@ public abstract class BaseLayoutExportImportContentProcessor
 			Layout layout = LayoutLocalServiceUtil.fetchLayoutByFriendlyURL(
 				groupId, privateLayout, url);
 
-			if (layout == null) {
+			if (!ExportImportThreadLocal.isInitialLayoutStagingInProcess() &&
+				(layout == null)) {
+
 				throw new NoSuchLayoutException();
 			}
 		}
@@ -838,7 +841,9 @@ public abstract class BaseLayoutExportImportContentProcessor
 			Layout layout = LayoutLocalServiceUtil.fetchLayout(
 				groupId, privateLayout, layoutId);
 
-			if (layout == null) {
+			if (!ExportImportThreadLocal.isInitialLayoutStagingInProcess() &&
+				(layout == null)) {
+
 				throw new NoSuchLayoutException();
 			}
 		}
