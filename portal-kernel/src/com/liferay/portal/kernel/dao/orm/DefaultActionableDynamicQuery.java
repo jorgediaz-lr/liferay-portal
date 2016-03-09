@@ -31,6 +31,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
@@ -297,8 +298,21 @@ public class DefaultActionableDynamicQuery implements ActionableDynamicQuery {
 								}));
 					}
 
-					for (Future<Void> future : futures) {
-						future.get();
+					try {
+						for (Future<Void> future : futures) {
+							future.get();
+						}
+					}
+					catch (ExecutionException ee) {
+						try {
+							throw (PortalException)ee.getCause();
+						}
+						catch (PortalException pe) {
+							throw pe;
+						}
+						catch (Exception e) {
+							throw new SystemException(ee);
+						}
 					}
 				}
 				else {
