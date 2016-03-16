@@ -1161,9 +1161,14 @@ public class HookHotDeployListener
 			String languagePropertiesLocation =
 				languagePropertiesElement.getText();
 
-			String languageId = getLanguageId(languagePropertiesLocation);
+			String languageId;
 
-			if (Validator.isNotNull(languageId)) {
+			int x = languagePropertiesLocation.indexOf(CharPool.UNDERLINE);
+			int y = languagePropertiesLocation.indexOf(".properties");
+
+			if ((x != -1) && (y != 1)) {
+				languageId = languagePropertiesLocation.substring(x + 1, y);
+
 				Locale locale = LocaleUtil.fromLanguageId(
 					languageId, true, false);
 
@@ -2289,17 +2294,6 @@ public class HookHotDeployListener
 		value = stringArraysContainer.getStringArray();
 
 		field.set(null, value);
-	}
-
-	private String getLanguageId(String languagePropertiesLocation) {
-		int x = languagePropertiesLocation.indexOf(CharPool.UNDERLINE);
-		int y = languagePropertiesLocation.indexOf(".properties");
-
-		if ((x != -1) && (y != 1)) {
-			return languagePropertiesLocation.substring(x + 1, y);
-		}
-
-		return null;
 	}
 
 	private static final String[] _PROPS_KEYS_EVENTS = {
