@@ -598,19 +598,15 @@ public class HookHotDeployListener
 		}
 	}
 
-	protected Locale getLocale(String languagePropertiesLocation) {
+	protected String getLanguageId(String languagePropertiesLocation) {
 		int x = languagePropertiesLocation.indexOf(CharPool.UNDERLINE);
 		int y = languagePropertiesLocation.indexOf(".properties");
 
-		Locale locale = null;
-
 		if ((x != -1) && (y != 1)) {
-			String localeKey = languagePropertiesLocation.substring(x + 1, y);
-
-			locale = LocaleUtil.fromLanguageId(localeKey, true, false);
+			return languagePropertiesLocation.substring(x + 1, y);
 		}
 
-		return locale;
+		return null;
 	}
 
 	protected BasePersistence<?> getPersistence(
@@ -1179,7 +1175,23 @@ public class HookHotDeployListener
 			String languagePropertiesLocation =
 				languagePropertiesElement.getText();
 
-			Locale locale = getLocale(languagePropertiesLocation);
+			String languageId = getLanguageId(languagePropertiesLocation);
+
+			Locale locale = null;
+
+			if (Validator.isNotNull(languageId)) {
+				locale = LocaleUtil.fromLanguageId(languageId, true, false);
+
+				if (locale == null) {
+					if (_log.isWarnEnabled()) {
+						_log.warn(
+							"Ignoring " + languagePropertiesLocation + ": " +
+								languageId + " is not valid");
+					}
+
+					continue;
+				}
+			}
 
 			if (locale != null) {
 				if (!checkPermission(
@@ -1200,8 +1212,6 @@ public class HookHotDeployListener
 			}
 
 			if (locale != null) {
-				String languageId = LocaleUtil.toLanguageId(locale);
-
 				try (InputStream inputStream = url.openStream()) {
 					ResourceBundle resourceBundle = new LiferayResourceBundle(
 						inputStream, StringPool.UTF8);
@@ -1222,17 +1232,13 @@ public class HookHotDeployListener
 		}
 
 		if (baseLanguageURL != null) {
-			Locale locale = new Locale(StringPool.BLANK);
-
-			String languageId = LocaleUtil.toLanguageId(locale);
-
 			try (InputStream inputStream = baseLanguageURL.openStream()) {
 				ResourceBundle resourceBundle = new LiferayResourceBundle(
 					inputStream, StringPool.UTF8);
 
 				Map<String, Object> properties = new HashMap<>();
 
-				properties.put("language.id", languageId);
+				properties.put("language.id", StringPool.BLANK);
 
 				registerService(
 					servletContextName, baseLanguagePropertiesLocation,
