@@ -1163,10 +1163,9 @@ public class HookHotDeployListener
 
 			String languageId = getLanguageId(languagePropertiesLocation);
 
-			Locale locale = null;
-
 			if (Validator.isNotNull(languageId)) {
-				locale = LocaleUtil.fromLanguageId(languageId, true, false);
+				Locale locale = LocaleUtil.fromLanguageId(
+					languageId, true, false);
 
 				if (locale == null) {
 					if (_log.isInfoEnabled()) {
@@ -1177,12 +1176,7 @@ public class HookHotDeployListener
 
 					continue;
 				}
-			}
-			else {
-				languageId = StringPool.BLANK;
-			}
 
-			if (locale != null) {
 				if (!checkPermission(
 						PACLConstants.
 							PORTAL_HOOK_PERMISSION_LANGUAGE_PROPERTIES_LOCALE,
@@ -1193,7 +1187,7 @@ public class HookHotDeployListener
 				}
 			}
 			else {
-				locale = new Locale(StringPool.BLANK);
+				languageId = StringPool.BLANK;
 			}
 
 			URL url = portletClassLoader.getResource(
@@ -1203,19 +1197,17 @@ public class HookHotDeployListener
 				continue;
 			}
 
-			if (locale != null) {
-				try (InputStream inputStream = url.openStream()) {
-					ResourceBundle resourceBundle = new LiferayResourceBundle(
-						inputStream, StringPool.UTF8);
+			try (InputStream inputStream = url.openStream()) {
+				ResourceBundle resourceBundle = new LiferayResourceBundle(
+					inputStream, StringPool.UTF8);
 
-					Map<String, Object> properties = new HashMap<>();
+				Map<String, Object> properties = new HashMap<>();
 
-					properties.put("language.id", languageId);
+				properties.put("language.id", languageId);
 
-					registerService(
-						servletContextName, languagePropertiesLocation,
-						ResourceBundle.class, resourceBundle, properties);
-				}
+				registerService(
+					servletContextName, languagePropertiesLocation,
+					ResourceBundle.class, resourceBundle, properties);
 			}
 		}
 	}
