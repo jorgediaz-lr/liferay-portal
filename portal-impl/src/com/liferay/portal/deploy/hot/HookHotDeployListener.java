@@ -598,17 +598,6 @@ public class HookHotDeployListener
 		}
 	}
 
-	private String getLanguageId(String languagePropertiesLocation) {
-		int x = languagePropertiesLocation.indexOf(CharPool.UNDERLINE);
-		int y = languagePropertiesLocation.indexOf(".properties");
-
-		if ((x != -1) && (y != 1)) {
-			return languagePropertiesLocation.substring(x + 1, y);
-		}
-
-		return null;
-	}
-
 	protected BasePersistence<?> getPersistence(
 		String servletContextName, String modelName) {
 
@@ -2328,6 +2317,17 @@ public class HookHotDeployListener
 		value = stringArraysContainer.getStringArray();
 
 		field.set(null, value);
+	}
+
+	private String getLanguageId(String languagePropertiesLocation) {
+		int x = languagePropertiesLocation.indexOf(CharPool.UNDERLINE);
+		int y = languagePropertiesLocation.indexOf(".properties");
+
+		if ((x != -1) && (y != 1)) {
+			return languagePropertiesLocation.substring(x + 1, y);
+		}
+
+		return null;
 	}
 
 	private static final String[] _PROPS_KEYS_EVENTS = {
