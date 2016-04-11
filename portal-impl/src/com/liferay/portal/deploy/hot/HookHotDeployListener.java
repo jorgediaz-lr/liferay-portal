@@ -42,7 +42,6 @@ import com.liferay.portal.kernel.events.InvokerSimpleAction;
 import com.liferay.portal.kernel.events.LifecycleAction;
 import com.liferay.portal.kernel.events.SessionAction;
 import com.liferay.portal.kernel.events.SimpleAction;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.format.PhoneNumberFormat;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.lock.LockListener;
@@ -604,16 +603,16 @@ public class HookHotDeployListener
 		int x = languagePropertiesLocation.indexOf(CharPool.UNDERLINE);
 		int y = languagePropertiesLocation.indexOf(".properties");
 
+		if ((x == -1) && (y != -1)) {
+			return new Locale(StringPool.BLANK);
+		}
+
 		Locale locale = null;
 
 		if ((x != -1) && (y != -1)) {
 			String localeKey = languagePropertiesLocation.substring(x + 1, y);
 
 			locale = LocaleUtil.fromLanguageId(localeKey, true, false);
-
-			if (locale == null) {
-				throw new SystemException("Invalid locale " + localeKey);
-			}
 		}
 
 		return locale;
@@ -1182,20 +1181,19 @@ public class HookHotDeployListener
 			String languagePropertiesLocation =
 				languagePropertiesElement.getText();
 
-			Locale locale = null;
+			Locale locale = getLocale(languagePropertiesLocation);
 
-			try {
-				locale = getLocale(languagePropertiesLocation);
-			}
-			catch (Exception e) {
+			if(locale == null) {
 				if (_log.isInfoEnabled()) {
-					_log.info("Ignoring " + languagePropertiesLocation, e);
+					_log.info("Ignoring " + languagePropertiesLocation);
 				}
 
 				continue;
 			}
 
-			if (locale != null) {
+			String languageId = LocaleUtil.toLanguageId(locale);
+
+			if (!StringPool.BLANK.equals(languageId)) {
 				if (!checkPermission(
 						PACLConstants.
 							PORTAL_HOOK_PERMISSION_LANGUAGE_PROPERTIES_LOCALE,
@@ -1205,9 +1203,6 @@ public class HookHotDeployListener
 					continue;
 				}
 			}
-			else {
-				locale = new Locale(StringPool.BLANK);
-			}
 
 			URL url = portletClassLoader.getResource(
 				languagePropertiesLocation);
@@ -1215,8 +1210,6 @@ public class HookHotDeployListener
 			if (url == null) {
 				continue;
 			}
-
-			String languageId = LocaleUtil.toLanguageId(locale);
 
 			try (InputStream inputStream = url.openStream()) {
 				ResourceBundle resourceBundle = new LiferayResourceBundle(
