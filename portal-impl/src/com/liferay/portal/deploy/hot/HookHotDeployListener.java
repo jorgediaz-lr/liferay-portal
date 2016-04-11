@@ -1183,7 +1183,7 @@ public class HookHotDeployListener
 
 			Locale locale = getLocale(languagePropertiesLocation);
 
-			if(locale == null) {
+			if (locale == null) {
 				if (_log.isInfoEnabled()) {
 					_log.info("Ignoring " + languagePropertiesLocation);
 				}
@@ -1197,8 +1197,7 @@ public class HookHotDeployListener
 				!checkPermission(
 					PACLConstants.
 						PORTAL_HOOK_PERMISSION_LANGUAGE_PROPERTIES_LOCALE,
-					portletClassLoader, locale,
-					"Rejecting locale " + locale)) {
+					portletClassLoader, locale, "Rejecting locale " + locale)) {
 
 				continue;
 			}
