@@ -1193,15 +1193,14 @@ public class HookHotDeployListener
 
 			String languageId = LocaleUtil.toLanguageId(locale);
 
-			if (!StringPool.BLANK.equals(languageId)) {
-				if (!checkPermission(
-						PACLConstants.
-							PORTAL_HOOK_PERMISSION_LANGUAGE_PROPERTIES_LOCALE,
-						portletClassLoader, locale,
-						"Rejecting locale " + locale)) {
+			if (!StringPool.BLANK.equals(languageId) &&
+				!checkPermission(
+					PACLConstants.
+						PORTAL_HOOK_PERMISSION_LANGUAGE_PROPERTIES_LOCALE,
+					portletClassLoader, locale,
+					"Rejecting locale " + locale)) {
 
-					continue;
-				}
+				continue;
 			}
 
 			URL url = portletClassLoader.getResource(
