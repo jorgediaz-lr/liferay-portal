@@ -148,14 +148,6 @@ public class BookmarksFolderIndexer
 	}
 
 	@Override
-	protected void doReindex(String className, long classPK) throws Exception {
-		BookmarksFolder folder = _bookmarksFolderLocalService.getFolder(
-			classPK);
-
-		doReindex(folder);
-	}
-
-	@Override
 	protected void doReindex(String[] ids) throws Exception {
 		long companyId = GetterUtil.getLong(ids[0]);
 
