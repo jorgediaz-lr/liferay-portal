@@ -110,13 +110,6 @@ public class WikiNodeIndexer extends BaseIndexer<WikiNode> {
 	}
 
 	@Override
-	protected void doReindex(String className, long classPK) throws Exception {
-		WikiNode node = _wikiNodeLocalService.getNode(classPK);
-
-		doReindex(node);
-	}
-
-	@Override
 	protected void doReindex(String[] ids) throws Exception {
 		long companyId = GetterUtil.getLong(ids[0]);
 

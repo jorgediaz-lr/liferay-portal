@@ -92,14 +92,6 @@ public class DDLRecordSetIndexer extends BaseIndexer<DDLRecordSet> {
 	}
 
 	@Override
-	protected void doReindex(String className, long classPK) throws Exception {
-		DDLRecordSet recordSet = _ddlRecordSetLocalService.getRecordSet(
-			classPK);
-
-		doReindex(recordSet);
-	}
-
-	@Override
 	protected void doReindex(String[] ids) throws Exception {
 		long companyId = GetterUtil.getLong(ids[0]);
 
