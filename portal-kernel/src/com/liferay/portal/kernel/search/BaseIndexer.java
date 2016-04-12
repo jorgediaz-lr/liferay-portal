@@ -51,6 +51,8 @@ import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.service.CountryServiceUtil;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
+import com.liferay.portal.kernel.service.PersistedModelLocalService;
+import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistryUtil;
 import com.liferay.portal.kernel.service.RegionServiceUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -1418,8 +1420,15 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 		}
 	}
 
-	protected abstract void doReindex(String className, long classPK)
-		throws Exception;
+	protected void doReindex(String className, long classPK) throws Exception {
+		PersistedModelLocalService service =
+			PersistedModelLocalServiceRegistryUtil.
+				getPersistedModelLocalService(className);
+
+		T object = (T)service.getPersistedModel(classPK);
+
+		doReindex(object);
+	}
 
 	protected abstract void doReindex(String[] ids) throws Exception;
 
