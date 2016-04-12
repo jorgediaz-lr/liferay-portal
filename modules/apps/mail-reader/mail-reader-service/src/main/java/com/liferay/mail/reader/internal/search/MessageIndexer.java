@@ -96,13 +96,6 @@ public class MessageIndexer extends BaseIndexer<Message> {
 	}
 
 	@Override
-	protected void doReindex(String className, long classPK) throws Exception {
-		Message message = _messageLocalService.getMessage(classPK);
-
-		doReindex(message);
-	}
-
-	@Override
 	protected void doReindex(String[] ids) throws Exception {
 		long companyId = GetterUtil.getLong(ids[0]);
 

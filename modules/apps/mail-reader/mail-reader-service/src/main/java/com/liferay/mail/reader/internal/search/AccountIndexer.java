@@ -125,13 +125,6 @@ public class AccountIndexer extends BaseIndexer<Account> {
 	}
 
 	@Override
-	protected void doReindex(String className, long classPK) throws Exception {
-		Account account = _accountLocalService.getAccount(classPK);
-
-		doReindex(account);
-	}
-
-	@Override
 	protected void doReindex(String[] ids) throws Exception {
 		long companyId = GetterUtil.getLong(ids[0]);
 

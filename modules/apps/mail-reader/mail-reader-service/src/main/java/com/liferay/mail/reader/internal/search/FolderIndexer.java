@@ -127,13 +127,6 @@ public class FolderIndexer extends BaseIndexer<Folder> {
 	}
 
 	@Override
-	protected void doReindex(String className, long classPK) throws Exception {
-		Folder folder = _folderLocalService.getFolder(classPK);
-
-		doReindex(folder);
-	}
-
-	@Override
 	protected void doReindex(String[] ids) throws Exception {
 		long companyId = GetterUtil.getLong(ids[0]);
 
