@@ -5171,6 +5171,26 @@ public class JournalArticleLocalServiceImpl
 
 				addNewVersion = true;
 
+				Group group = groupLocalService.getGroup(groupId);
+				long liveGroupId = group.getLiveGroupId();
+				if(liveGroupId > 0) {
+					JournalArticleResource articleResource =
+						journalArticleResourceLocalService.
+							fetchJournalArticleResourceByUuidAndGroupId(
+								article.getArticleResourceUuid(), liveGroupId);
+
+					if (articleResource != null) {
+						JournalArticle liveArticle =
+							journalArticleLocalService.fetchLatestArticle(
+								articleResource.getResourcePrimKey(),
+								WorkflowConstants.STATUS_ANY, false);
+
+						if(liveArticle.getVersion() > latestVersion) {
+							latestVersion = liveArticle.getVersion();
+						}
+					}
+				}
+
 				version = MathUtil.format(latestVersion + 0.1, 1, 1);
 			}
 		}
@@ -5461,6 +5481,26 @@ public class JournalArticleLocalServiceImpl
 		Locale defaultLocale = getArticleDefaultLocale(content);
 
 		if (incrementVersion) {
+			Group group = groupLocalService.getGroup(groupId);
+			long liveGroupId = group.getLiveGroupId();
+			if(liveGroupId > 0) {
+				JournalArticleResource articleResource =
+					journalArticleResourceLocalService.
+						fetchJournalArticleResourceByUuidAndGroupId(
+							oldArticle.getArticleResourceUuid(), liveGroupId);
+
+				if (articleResource != null) {
+					JournalArticle liveArticle =
+						journalArticleLocalService.fetchLatestArticle(
+							articleResource.getResourcePrimKey(),
+							WorkflowConstants.STATUS_ANY, false);
+
+					if(liveArticle.getVersion() > oldVersion) {
+						oldVersion = liveArticle.getVersion();
+					}
+				}
+			}
+
 			double newVersion = MathUtil.format(oldVersion + 0.1, 1, 1);
 
 			long id = counterLocalService.increment();
