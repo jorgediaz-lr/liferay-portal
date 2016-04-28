@@ -5824,6 +5824,28 @@ public class JournalArticleLocalServiceImpl
 				article.getVersion())) {
 
 			if (status == WorkflowConstants.STATUS_APPROVED) {
+				Group group = groupLocalService.getGroup(article.getGroupId());
+
+				long liveGroupId = group.getLiveGroupId();
+
+				if (liveGroupId > 0) {
+					JournalArticleResource articleResource =
+						journalArticleResourceLocalService.
+							fetchJournalArticleResourceByUuidAndGroupId(
+								article.getArticleResourceUuid(), liveGroupId);
+
+					if (articleResource != null) {
+						JournalArticle liveArticle =
+							journalArticleLocalService.fetchLatestArticle(
+								articleResource.getResourcePrimKey(),
+								WorkflowConstants.STATUS_ANY, false);
+
+						if (liveArticle.getVersion() > article.getVersion()) {
+							article.setVersion(liveArticle.getVersion());
+						}
+					}
+				}
+
 				updateUrlTitles(
 					article.getGroupId(), article.getArticleId(),
 					article.getUrlTitle());
