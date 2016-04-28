@@ -5172,8 +5172,10 @@ public class JournalArticleLocalServiceImpl
 				addNewVersion = true;
 
 				Group group = groupLocalService.getGroup(groupId);
+
 				long liveGroupId = group.getLiveGroupId();
-				if(liveGroupId > 0) {
+
+				if (liveGroupId > 0) {
 					JournalArticleResource articleResource =
 						journalArticleResourceLocalService.
 							fetchJournalArticleResourceByUuidAndGroupId(
@@ -5185,7 +5187,7 @@ public class JournalArticleLocalServiceImpl
 								articleResource.getResourcePrimKey(),
 								WorkflowConstants.STATUS_ANY, false);
 
-						if(liveArticle.getVersion() > latestVersion) {
+						if (liveArticle.getVersion() > latestVersion) {
 							latestVersion = liveArticle.getVersion();
 						}
 					}
@@ -5482,8 +5484,10 @@ public class JournalArticleLocalServiceImpl
 
 		if (incrementVersion) {
 			Group group = groupLocalService.getGroup(groupId);
+
 			long liveGroupId = group.getLiveGroupId();
-			if(liveGroupId > 0) {
+
+			if (liveGroupId > 0) {
 				JournalArticleResource articleResource =
 					journalArticleResourceLocalService.
 						fetchJournalArticleResourceByUuidAndGroupId(
@@ -5495,7 +5499,7 @@ public class JournalArticleLocalServiceImpl
 							articleResource.getResourcePrimKey(),
 							WorkflowConstants.STATUS_ANY, false);
 
-					if(liveArticle.getVersion() > oldVersion) {
+					if (liveArticle.getVersion() > oldVersion) {
 						oldVersion = liveArticle.getVersion();
 					}
 				}
