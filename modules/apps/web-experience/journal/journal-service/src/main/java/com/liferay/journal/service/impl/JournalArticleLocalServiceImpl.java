@@ -5171,26 +5171,13 @@ public class JournalArticleLocalServiceImpl
 
 				addNewVersion = true;
 
-				Group group = groupLocalService.getGroup(groupId);
+				JournalArticle liveArticle = fetchLatestArticleFromLive(
+					article);
 
-				long liveGroupId = group.getLiveGroupId();
+				if ((liveArticle != null) &&
+					(liveArticle.getVersion() > latestVersion)) {
 
-				if (liveGroupId > 0) {
-					JournalArticleResource articleResource =
-						journalArticleResourceLocalService.
-							fetchJournalArticleResourceByUuidAndGroupId(
-								article.getArticleResourceUuid(), liveGroupId);
-
-					if (articleResource != null) {
-						JournalArticle liveArticle =
-							journalArticleLocalService.fetchLatestArticle(
-								articleResource.getResourcePrimKey(),
-								WorkflowConstants.STATUS_ANY, false);
-
-						if (liveArticle.getVersion() > latestVersion) {
-							latestVersion = liveArticle.getVersion();
-						}
-					}
+					latestVersion = liveArticle.getVersion();
 				}
 
 				version = MathUtil.format(latestVersion + 0.1, 1, 1);
@@ -5483,26 +5470,12 @@ public class JournalArticleLocalServiceImpl
 		Locale defaultLocale = getArticleDefaultLocale(content);
 
 		if (incrementVersion) {
-			Group group = groupLocalService.getGroup(groupId);
+			JournalArticle liveArticle = fetchLatestArticleFromLive(article);
 
-			long liveGroupId = group.getLiveGroupId();
+			if ((liveArticle != null) &&
+				(liveArticle.getVersion() > oldVersion)) {
 
-			if (liveGroupId > 0) {
-				JournalArticleResource articleResource =
-					journalArticleResourceLocalService.
-						fetchJournalArticleResourceByUuidAndGroupId(
-							oldArticle.getArticleResourceUuid(), liveGroupId);
-
-				if (articleResource != null) {
-					JournalArticle liveArticle =
-						journalArticleLocalService.fetchLatestArticle(
-							articleResource.getResourcePrimKey(),
-							WorkflowConstants.STATUS_ANY, false);
-
-					if (liveArticle.getVersion() > oldVersion) {
-						oldVersion = liveArticle.getVersion();
-					}
-				}
+				oldVersion = liveArticle.getVersion();
 			}
 
 			double newVersion = MathUtil.format(oldVersion + 0.1, 1, 1);
@@ -5824,26 +5797,16 @@ public class JournalArticleLocalServiceImpl
 				article.getVersion())) {
 
 			if (status == WorkflowConstants.STATUS_APPROVED) {
-				Group group = groupLocalService.getGroup(article.getGroupId());
+				JournalArticle liveArticle = fetchLatestArticleFromLive(
+					article);
 
-				long liveGroupId = group.getLiveGroupId();
+				if ((liveArticle != null) &&
+					(liveArticle.getVersion() > article.getVersion())) {
 
-				if (liveGroupId > 0) {
-					JournalArticleResource articleResource =
-						journalArticleResourceLocalService.
-							fetchJournalArticleResourceByUuidAndGroupId(
-								article.getArticleResourceUuid(), liveGroupId);
+					double liveVersion = MathUtil.format(
+						liveArticle.getVersion() + 0.1, 1, 1);
 
-					if (articleResource != null) {
-						JournalArticle liveArticle =
-							journalArticleLocalService.fetchLatestArticle(
-								articleResource.getResourcePrimKey(),
-								WorkflowConstants.STATUS_ANY, false);
-
-						if (liveArticle.getVersion() > article.getVersion()) {
-							article.setVersion(liveArticle.getVersion());
-						}
-					}
+					article.setVersion(liveVersion);
 				}
 
 				updateUrlTitles(
@@ -6505,6 +6468,31 @@ public class JournalArticleLocalServiceImpl
 		catch (DocumentException de) {
 			throw new SystemException(de);
 		}
+	}
+
+	protected JournalArticle fetchLatestArticleFromLive(JournalArticle article)
+		throws PortalException {
+
+		JournalArticle liveArticle = null;
+
+		Group group = groupLocalService.getGroup(article.getGroupId());
+
+		long liveGroupId = group.getLiveGroupId();
+
+		if (liveGroupId > 0) {
+			JournalArticleResource articleResource =
+				journalArticleResourceLocalService.
+					fetchJournalArticleResourceByUuidAndGroupId(
+						article.getArticleResourceUuid(), liveGroupId);
+
+			if (articleResource != null) {
+				liveArticle = journalArticleLocalService.fetchLatestArticle(
+					articleResource.getResourcePrimKey(),
+					WorkflowConstants.STATUS_ANY, false);
+			}
+		}
+
+		return liveArticle;
 	}
 
 	protected void format(
