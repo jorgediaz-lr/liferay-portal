@@ -6473,26 +6473,26 @@ public class JournalArticleLocalServiceImpl
 	protected JournalArticle fetchLatestArticleFromLive(JournalArticle article)
 		throws PortalException {
 
-		JournalArticle liveArticle = null;
-
 		Group group = groupLocalService.getGroup(article.getGroupId());
 
 		long liveGroupId = group.getLiveGroupId();
 
-		if (liveGroupId > 0) {
-			JournalArticleResource articleResource =
-				journalArticleResourceLocalService.
-					fetchJournalArticleResourceByUuidAndGroupId(
-						article.getArticleResourceUuid(), liveGroupId);
-
-			if (articleResource != null) {
-				liveArticle = journalArticleLocalService.fetchLatestArticle(
-					articleResource.getResourcePrimKey(),
-					WorkflowConstants.STATUS_ANY, false);
-			}
+		if (liveGroupId == 0) {
+			return null;
 		}
 
-		return liveArticle;
+		JournalArticleResource articleResource =
+			journalArticleResourceLocalService.
+				fetchJournalArticleResourceByUuidAndGroupId(
+					article.getArticleResourceUuid(), liveGroupId);
+
+		if (articleResource == null) {
+			return null;
+		}
+
+		return journalArticleLocalService.fetchLatestArticle(
+			articleResource.getResourcePrimKey(), WorkflowConstants.STATUS_ANY,
+			false);
 	}
 
 	protected void format(
