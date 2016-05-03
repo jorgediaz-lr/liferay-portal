@@ -5470,7 +5470,7 @@ public class JournalArticleLocalServiceImpl
 		Locale defaultLocale = getArticleDefaultLocale(content);
 
 		if (incrementVersion) {
-			JournalArticle liveArticle = fetchLatestArticleFromLive(article);
+			JournalArticle liveArticle = fetchLatestArticleFromLive(oldArticle);
 
 			if ((liveArticle != null) &&
 				(liveArticle.getVersion() > oldVersion)) {
