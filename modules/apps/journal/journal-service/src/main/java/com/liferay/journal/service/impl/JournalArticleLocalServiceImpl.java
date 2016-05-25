@@ -502,11 +502,30 @@ public class JournalArticleLocalServiceImpl
 
 		// Asset
 
+		int oldStatus = article.getStatus();
+
+		boolean importInProcess = false;
+
+		if (ExportImportThreadLocal.isImportInProcess() &&
+			(serviceContext.getWorkflowAction() ==
+				WorkflowConstants.ACTION_PUBLISH)) {
+
+			importInProcess = true;
+		}
+
+		if (importInProcess) {
+			article.setStatus(WorkflowConstants.STATUS_APPROVED);
+		}
+
 		updateAsset(
 			userId, article, serviceContext.getAssetCategoryIds(),
 			serviceContext.getAssetTagNames(),
 			serviceContext.getAssetLinkEntryIds(),
 			serviceContext.getAssetPriority());
+
+		if (importInProcess) {
+			article.setStatus(oldStatus);
+		}
 
 		// Dynamic data mapping
 
