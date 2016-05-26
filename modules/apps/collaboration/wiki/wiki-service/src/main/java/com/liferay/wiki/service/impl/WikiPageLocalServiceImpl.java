@@ -236,12 +236,6 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 					new GroupServiceSettingsLocator(
 						node.getGroupId(), WikiConstants.SERVICE_NAME));
 
-		if (wikiGroupServiceOverriddenConfiguration.pageCommentsEnabled()) {
-			CommentManagerUtil.addDiscussion(
-				userId, page.getGroupId(), WikiPage.class.getName(),
-				resourcePrimKey, page.getUserName());
-		}
-
 		// Workflow
 
 		page = startWorkflowInstance(userId, page, serviceContext);

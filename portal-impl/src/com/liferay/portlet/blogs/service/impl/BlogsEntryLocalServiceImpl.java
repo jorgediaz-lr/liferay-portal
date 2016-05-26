@@ -297,10 +297,6 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 			serviceContext.getAssetLinkEntryIds(),
 			serviceContext.getAssetPriority());
 
-		// Comment
-
-		addDiscussion(entry, userId, groupId);
-
 		// Images
 
 		long coverImageFileEntryId = 0;
@@ -1466,16 +1462,6 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 		throws PortalException {
 
 		return doAddFolder(userId, groupId, _COVER_IMAGE_FOLDER_NAME);
-	}
-
-	protected void addDiscussion(BlogsEntry entry, long userId, long groupId)
-		throws PortalException {
-
-		if (PropsValues.BLOGS_ENTRY_COMMENTS_ENABLED) {
-			commentManager.addDiscussion(
-				userId, groupId, BlogsEntry.class.getName(), entry.getEntryId(),
-				entry.getUserName());
-		}
 	}
 
 	protected long addProcessedImageFileEntry(
