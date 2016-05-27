@@ -26,21 +26,6 @@ import com.liferay.portal.util.PropsValues;
 public class LayoutModelListener extends BaseModelListener<Layout> {
 
 	@Override
-	public void onAfterCreate(Layout layout) throws ModelListenerException {
-		if (PropsValues.LAYOUT_COMMENTS_ENABLED) {
-			try {
-				CommentManagerUtil.addDiscussion(
-					layout.getUserId(), layout.getGroupId(),
-					Layout.class.getName(), layout.getPlid(),
-					layout.getUserName());
-			}
-			catch (Exception e) {
-				throw new ModelListenerException(e);
-			}
-		}
-	}
-
-	@Override
 	public void onBeforeRemove(Layout layout) throws ModelListenerException {
 		try {
 			CommentManagerUtil.deleteDiscussion(
