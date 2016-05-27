@@ -1,11 +1,10 @@
-; DO NOT EDIT (unless you know what you are doing)
 ;
-; This subdirectory is a git "subrepo", and this file is maintained by the
-; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+; Do not manually edit this file. See
+; https://github.com/git-commands/git-subrepo#readme for more information.
 ;
 [subrepo]
-	remote = git@github.com:liferay-continuous-integration/com-liferay-portal-security-sso.git
-	branch = 7.0.x
-	commit = a27ed25392672fcb45f4ddff6f6d4ddfb8a648cb
-	parent = 6e39e7f50af7916607926452dd91797962a53cef
 	cmdver = liferay
+	commit = de9388488d74f37c73e00f073ad546c0f960c08f
+	mode = push
+	parent = c0a666c3b99260d011f993ec0110f1d19d7ef6c1
+	remote = git@github.com:liferay/com-liferay-portal-security-sso.git

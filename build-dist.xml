@@ -863,7 +863,7 @@
 		<antcall target="build-dist-resin" />
 		<antcall target="build-dist-tcat" />
 		<antcall target="build-dist-tomcat" />
-		<antcall target="build-dist-wildlfy" />
+		<antcall target="build-dist-wildfly" />
 
 		<antcall target="zip-glassfish" />
 		<antcall target="zip-jboss" />
@@ -1223,7 +1223,7 @@ this task.
 
 		<replace file="${app.server.jboss.dir}/standalone/configuration/standalone.xml">
 			<replacetoken><![CDATA[<deployment-scanner ]]></replacetoken>
-			<replacevalue><![CDATA[<deployment-scanner deployment-timeout="120" ]]></replacevalue>
+			<replacevalue><![CDATA[<deployment-scanner deployment-timeout="360" ]]></replacevalue>
 		</replace>
 
 		<replace file="${app.server.jboss.dir}/standalone/configuration/standalone.xml">
@@ -1246,11 +1246,6 @@ this task.
 			};
 		</echo>
 
-		<replace file="${app.server.jboss.bin.dir}/standalone.conf">
-			<replacetoken><![CDATA[JAVA_OPTS="-Xms64m -Xmx512m -XX:MaxPermSize=256m ]]></replacetoken>
-			<replacevalue><![CDATA[JAVA_OPTS="]]></replacevalue>
-		</replace>
-
 		<if>
 			<equals arg1="${java.security.manager.option}" arg2="" />
 			<then>
@@ -1268,13 +1263,13 @@ this task.
 
 		<echo append="true" file="${app.server.jboss.bin.dir}/standalone.conf">
 			<![CDATA[
-				JAVA_OPTS="$JAVA_OPTS -Dfile.encoding=UTF-8 -Djava.net.preferIPv4Stack=true ${java.security.config} -Duser.timezone=GMT -Xmx1024m -XX:MaxPermSize=384m"
+				JAVA_OPTS="$JAVA_OPTS -Dfile.encoding=UTF-8 -Djava.net.preferIPv4Stack=true ${java.security.config} -Djboss.as.management.blocking.timeout=480 -Duser.timezone=GMT -Xmx1024m -XX:MaxMetaspaceSize=384m"
 			]]>
 		</echo>
 
 		<replace file="${app.server.jboss.bin.dir}/standalone.conf.bat">
-			<replacetoken><![CDATA[set "JAVA_OPTS=-Xms64M ]]></replacetoken>
-			<replacevalue><![CDATA[rem set "JAVA_OPTS=-Xms64M ]]></replacevalue>
+			<replacetoken><![CDATA[set "JAVA_OPTS=-Xms1G -Xmx1G -XX:MaxPermSize=256M"]]></replacetoken>
+			<replacevalue></replacevalue>
 		</replace>
 
 		<replace file="${app.server.jboss.bin.dir}/standalone.conf.bat">
@@ -1282,7 +1277,7 @@ this task.
 			<replacetoken><![CDATA[:JAVA_OPTS_SET]]></replacetoken>
 			<replacevalue>
 				<![CDATA[
-					set "JAVA_OPTS=%JAVA_OPTS% -Dfile.encoding=UTF-8 -Djava.net.preferIPv4Stack=true @java.security.config@ -Duser.timezone=GMT -Xmx1024m -XX:MaxPermSize=384m"
+					set "JAVA_OPTS=%JAVA_OPTS% -Dfile.encoding=UTF-8 -Djava.net.preferIPv4Stack=true @java.security.config@ -Djboss.as.management.blocking.timeout=480 -Duser.timezone=GMT -Xmx1024m -XX:MaxMetaspaceSize=384m"
 
 					:JAVA_OPTS_SET
 				]]>
@@ -1290,10 +1285,10 @@ this task.
 		</replace>
 
 		<replace file="${app.server.jboss.instance.dir}/configuration/standalone.xml">
-			<replacetoken><![CDATA[<subsystem default-virtual-server="default-host" native="false" xmlns="urn:jboss:domain:web:1.1">]]></replacetoken>
+			<replacetoken><![CDATA[<subsystem xmlns="urn:jboss:domain:web:2.2" default-virtual-server="default-host" native="false">]]></replacetoken>
 			<replacevalue>
 				<![CDATA[
-					<subsystem xmlns="urn:jboss:domain:web:1.1" default-virtual-server="default-host" native="false">
+					<subsystem xmlns="urn:jboss:domain:web:2.2" default-virtual-server="default-host" native="false">
 						<configuration>
 							<jsp-configuration development="true" />
 						</configuration>
@@ -1969,10 +1964,8 @@ closeTemplate()
 						<echo file="${tstamp.value}/create-weblogic-domain.bat">
 							@echo off
 
-							set "USER_MEM_ARGS=-Xmx1024m -XX:MetaspaceSize=256m"
-
 							set "MW_HOME=${app.server.weblogic.dir.windows}"
-
+							set "USER_MEM_ARGS=-Xmx1024m -XX:MetaspaceSize=256m"
 							set "WL_HOME=${app.server.weblogic.wlserver.dir.windows}"
 
 							call %MW_HOME%/oracle_common/common/bin/commEnv.cmd
@@ -1993,10 +1986,8 @@ closeTemplate()
 						<echo file="${tstamp.value}/create-weblogic-domain.bat">
 							@echo off
 
-							set "USER_MEM_ARGS=-Xmx1024m -XX:MetaspaceSize=256m"
-
 							set "MW_HOME=${app.server.weblogic.dir.windows}"
-
+							set "USER_MEM_ARGS=-Xmx1024m -XX:MetaspaceSize=256m"
 							set "WL_HOME=${app.server.weblogic.wlserver.dir.windows}"
 
 							call %WL_HOME%/common/bin/commEnv.cmd
@@ -2020,11 +2011,10 @@ closeTemplate()
 						<![CDATA[
 							SETLOCAL
 
-							set "USER_MEM_ARGS=-Xmx1024m -XX:PermSize=512m"
-
-							set "MW_HOME=${app.server.weblogic.dir.windows}"
-
+							set DERBY_FLAG="false"
 							set "JAVA_OPTIONS=%JAVA_OPTIONS% -Dfile.encoding=UTF-8 @java.security.manager.option@ -da:org.apache.lucene... -da:org.aspectj..."
+							set "MW_HOME=${app.server.weblogic.dir.windows}"
+							set "USER_MEM_ARGS=-Xmx1024m -XX:PermSize=512m"
 						]]>
 					</replacevalue>
 				</replace>
@@ -2130,10 +2120,8 @@ closeTemplate()
 						<echo file="${tstamp.value}/create-weblogic-domain.sh">
 							#!/bin/sh
 
-							export USER_MEM_ARGS="-Xmx1024m -XX:MetaspaceSize=256m"
-
 							export MW_HOME="${app.server.weblogic.dir}"
-
+							export USER_MEM_ARGS="-Xmx1024m -XX:MetaspaceSize=256m"
 							export WL_HOME="${app.server.weblogic.wlserver.dir}"
 
 							${source.command} ${MW_HOME}/oracle_common/common/bin/commEnv.sh
@@ -2147,10 +2135,8 @@ closeTemplate()
 						<echo file="${tstamp.value}/create-weblogic-domain.sh">
 							#!/bin/sh
 
-							export USER_MEM_ARGS="-Xmx1024m -XX:MetaspaceSize=256m"
-
 							export MW_HOME="${app.server.weblogic.dir}"
-
+							export USER_MEM_ARGS="-Xmx1024m -XX:MetaspaceSize=256m"
 							export WL_HOME="${app.server.weblogic.wlserver.dir}"
 
 							${source.command} ${WL_HOME}/common/bin/commEnv.sh
@@ -2178,11 +2164,10 @@ closeTemplate()
 						<![CDATA[
 							# Any changes to this script may be lost when adding extensions to this configuration.
 
-							export USER_MEM_ARGS="-Xmx1024m -XX:MetaspaceSize=512m"
-
-							export MW_HOME="${app.server.weblogic.dir}"
-
+							export DERBY_FLAG="false"
 							export JAVA_OPTIONS="${JAVA_OPTIONS} @java.security.manager.option@ -da:org.apache.lucene... -da:org.aspectj..."
+							export MW_HOME="${app.server.weblogic.dir}"
+							export USER_MEM_ARGS="-Xmx1024m -XX:MetaspaceSize=512m"
 						]]>
 					</replacevalue>
 				</replace>
@@ -2230,8 +2215,10 @@ closeTemplate()
 			<then>
 				<trycatch>
 					<try>
+						<mkdir dir="${app.server.parent.dir}" />
+
 						<mirrors-get
-							dest="${app.server.parent.dir}"
+							dest="${app.server.parent.dir}/${app.server.weblogic.custom.zip.name}"
 							src="http://mirrors/files.liferay.com/private/apps/oracle/weblogicas/12/${app.server.weblogic.custom.zip.name}"
 							verbose="true"
 						/>
@@ -2301,55 +2288,6 @@ this task.
 	</target>
 
 	<target name="unzip-websphere">
-		<if>
-			<available file="${app.server.parent.dir}/${app.server.websphere.custom.zip.name}" />
-			<then>
-				<antcall target="unzip-websphere-custom" />
-			</then>
-			<else>
-				<antcall target="unzip-websphere-original" />
-			</else>
-		</if>
-	</target>
-
-	<target name="unzip-websphere-custom">
-		<remake-dir dir="${app.server.websphere.dir}" />
-
-		<unzip
-			dest="${app.server.websphere.dir}"
-			src="${app.server.parent.dir}/${app.server.websphere.custom.zip.name}"
-		/>
-
-		<if>
-			<os family="windows" />
-			<then>
-				<propertyregex
-					input="${app.server.websphere.dir.windows}"
-					property="app.server.websphere.dir.windows.double.slash"
-					regexp="\\"
-					replace="\\\\\\\\"
-				/>
-
-				<propertyregex
-					input="${app.server.websphere.dir.windows.double.slash}"
-					property="app.server.websphere.dir.windows.escaped"
-					regexp=":"
-					replace="\\\\:"
-				/>
-
-				<replace
-					dir="${app.server.websphere.dir}"
-					includes="**/*.bat,**/*.js,**/*.metadata,**/*.properties,**/*.props,**/*.txt,**/*.xml"
-				>
-					<replacefilter token="@app.server.websphere.dir@" value="${app.server.websphere.dir}" />
-					<replacefilter token="@app.server.websphere.dir.windows@" value="${app.server.websphere.dir.windows}" />
-					<replacefilter token="@app.server.websphere.dir.windows.escaped@" value="${app.server.websphere.dir.windows.escaped}" />
-				</replace>
-			</then>
-		</if>
-	</target>
-
-	<target name="unzip-websphere-original">
 		<if>
 			<and>
 				<not>
@@ -2697,6 +2635,72 @@ and put it in ${app.server.parent.dir}. Then rerun this task.
 		</replace>
 	</target>
 
+	<target name="unzip-websphere-custom">
+		<if>
+			<not>
+				<available file="${app.server.parent.dir}/${app.server.websphere.custom.zip.name}" />
+			</not>
+			<then>
+				<trycatch>
+					<try>
+						<mkdir dir="${app.server.parent.dir}" />
+
+						<mirrors-get
+							dest="${app.server.parent.dir}/${app.server.websphere.custom.zip.name}"
+							src="http://mirrors/files.liferay.com/private/apps/ibm/websphere/8.5.5/${app.server.websphere.custom.zip.name}"
+							verbose="true"
+						/>
+					</try>
+					<catch>
+						<fail>
+.
+
+Please download the Websphere custom zip file from
+http://mirrors/files.liferay.com/private/apps/ibm/websphere/8.5.5 and
+place it here: ${app.server.parent.dir}/${app.server.websphere.custom.zip.name}. Then rerun
+this task.
+						</fail>
+					</catch>
+				</trycatch>
+			</then>
+		</if>
+
+		<delete dir="${app.server.websphere.dir}" />
+
+		<unzip
+			dest="${app.server.websphere.dir}"
+			src="${app.server.parent.dir}/${app.server.websphere.custom.zip.name}"
+		/>
+
+		<if>
+			<os family="windows" />
+			<then>
+				<propertyregex
+					input="${app.server.websphere.dir.windows}"
+					property="app.server.websphere.dir.windows.double.slash"
+					regexp="\\"
+					replace="\\\\\\\\"
+				/>
+
+				<propertyregex
+					input="${app.server.websphere.dir.windows.double.slash}"
+					property="app.server.websphere.dir.windows.escaped"
+					regexp=":"
+					replace="\\\\:"
+				/>
+
+				<replace
+					dir="${app.server.websphere.dir}"
+					includes="**/*.bat,**/*.js,**/*.metadata,**/*.properties,**/*.props,**/*.txt,**/*.xml"
+				>
+					<replacefilter token="@app.server.websphere.dir@" value="${app.server.websphere.dir}" />
+					<replacefilter token="@app.server.websphere.dir.windows@" value="${app.server.websphere.dir.windows}" />
+					<replacefilter token="@app.server.websphere.dir.windows.escaped@" value="${app.server.websphere.dir.windows.escaped}" />
+				</replace>
+			</then>
+		</if>
+	</target>
+
 	<target name="unzip-wildfly">
 		<delete dir="${app.server.wildfly.dir}" />
 
@@ -2740,11 +2744,6 @@ and put it in ${app.server.parent.dir}. Then rerun this task.
 						<path name="com/sun/org/apache/xml/internal/resolver/tools" />
 				]]>
 			</replacevalue>
-		</replace>
-
-		<replace file="${app.server.wildfly.dir}/standalone/configuration/standalone.xml">
-			<replacetoken><![CDATA[<location handler="welcome-content" name="/"/>]]></replacetoken>
-			<replacevalue></replacevalue>
 		</replace>
 
 		<replace file="${app.server.wildfly.dir}/standalone/configuration/standalone.xml">
@@ -2794,6 +2793,17 @@ and put it in ${app.server.parent.dir}. Then rerun this task.
 			</replacevalue>
 		</replace>
 
+		<replace file="${app.server.wildfly.dir}/standalone/configuration/standalone.xml">
+			<replacetoken><![CDATA[<location name="/" handler="welcome-content"/>]]></replacetoken>
+			<replacevalue></replacevalue>
+		</replace>
+
+		<replaceregexp
+			file="${app.server.wildfly.dir}/standalone/configuration/standalone.xml"
+			match=" *&lt;handlers>\r?\n *&lt;file name=&quot;welcome-content&quot; path=&quot;\$\{jboss\.home\.dir}\/welcome-content&quot;\/>\r?\n *&lt;\/handlers>"
+			replace=""
+		/>
+
 		<echo file="${app.server.wildfly.bin.dir}/server.policy">
 			grant {
 				permission java.security.AllPermission;
@@ -2817,7 +2827,7 @@ and put it in ${app.server.parent.dir}. Then rerun this task.
 
 		<echo append="true" file="${app.server.wildfly.bin.dir}/standalone.conf">
 			<![CDATA[
-				JAVA_OPTS="$JAVA_OPTS -Dfile.encoding=UTF-8 -Djava.net.preferIPv4Stack=true ${java.security.config} -Duser.timezone=GMT -Xmx1024m -XX:MaxMetaspaceSize=384m -XX:MetaspaceSize=200m"
+				JAVA_OPTS="$JAVA_OPTS -Dfile.encoding=UTF-8 -Djava.net.preferIPv4Stack=true ${java.security.config} -Djboss.as.management.blocking.timeout=480 -Duser.timezone=GMT -Xmx1024m -XX:MaxMetaspaceSize=384m -XX:MetaspaceSize=200m"
 			]]>
 		</echo>
 
@@ -2831,7 +2841,7 @@ and put it in ${app.server.parent.dir}. Then rerun this task.
 			<replacetoken><![CDATA[:JAVA_OPTS_SET]]></replacetoken>
 			<replacevalue>
 				<![CDATA[
-					set "JAVA_OPTS=%JAVA_OPTS% -Dfile.encoding=UTF-8 -Djava.net.preferIPv4Stack=true @java.security.config@ -Duser.timezone=GMT -Xmx1024m -XX:MaxMetaspaceSize=384m -XX:MetaspaceSize=200m"
+					set "JAVA_OPTS=%JAVA_OPTS% -Dfile.encoding=UTF-8 -Djava.net.preferIPv4Stack=true @java.security.config@ -Djboss.as.management.blocking.timeout=480 -Duser.timezone=GMT -Xmx1024m -XX:MaxMetaspaceSize=384m -XX:MetaspaceSize=200m"
 
 					:JAVA_OPTS_SET
 				]]>
@@ -3044,7 +3054,7 @@ plugins.includes=</echo>
 							</then>
 							<else>
 								<antcall target="exec-patching-tool">
-									<param name="patching.tool.arg.line" value="auto-discovery ${zip.executable.dir}" />
+									<param name="patching.tool.arg.line" value="auto-discovery" />
 									<param name="patching.tool.dir" value="${zip.executable.dir}/../patching-tool" />
 								</antcall>
 							</else>
@@ -3074,6 +3084,21 @@ plugins.includes=</echo>
 								filemode="744"
 								includes="**/*.sh"
 								prefix="liferay-portal-${lp.version}/patching-tool"
+							/>
+						</zip>
+					</then>
+				</if>
+
+				<if>
+					<available file="${zip.executable.dir}/../tools" />
+					<then>
+						<zip
+							destfile="dist/${zip.executable.file}-${lp.version}.zip"
+							update="true"
+						>
+							<zipfileset
+								dir="${zip.executable.dir}/../tools"
+								prefix="liferay-portal-${lp.version}/tools"
 							/>
 						</zip>
 					</then>
@@ -3228,6 +3253,11 @@ plugins.includes=</echo>
 			<zipfileset
 				dir="portal-kernel"
 				includes="portal-kernel.jar"
+				prefix="liferay-portal-dependencies-${lp.version}"
+			/>
+			<zipfileset
+				dir="tools/sdk/dist"
+				includes="com.liferay.registry.api*.jar"
 				prefix="liferay-portal-dependencies-${lp.version}"
 			/>
 		</zip>

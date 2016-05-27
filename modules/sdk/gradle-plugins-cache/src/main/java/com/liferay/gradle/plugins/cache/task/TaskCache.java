@@ -22,7 +22,7 @@ import java.io.File;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -44,6 +44,8 @@ public class TaskCache implements PatternFilterable {
 	public TaskCache(String name, Project project) {
 		_baseDir = project.getProjectDir();
 		_cacheDir = project.file(".cache/" + name);
+		_disabled = GradleUtil.getProperty(
+			project, name + "CacheDisabled", false);
 		_name = name;
 		_project = project;
 	}
@@ -110,25 +112,8 @@ public class TaskCache implements PatternFilterable {
 		return _project;
 	}
 
-	public Set<Task> getSkippedTaskDependencies() {
-		Set<Task> skippedTaskDependencies = new HashSet<>();
-
-		for (Object skippedDependencyTask : _skippedTaskDependencies) {
-			skippedDependencyTask = GradleUtil.toObject(skippedDependencyTask);
-
-			if (skippedDependencyTask instanceof Task) {
-				skippedTaskDependencies.add((Task)skippedDependencyTask);
-			}
-			else {
-				String taskName = GradleUtil.toString(skippedDependencyTask);
-
-				Task task = GradleUtil.getTask(_project, taskName);
-
-				skippedTaskDependencies.add(task);
-			}
-		}
-
-		return skippedTaskDependencies;
+	public Set<Object> getSkippedTaskDependencies() {
+		return _skippedTaskDependencies;
 	}
 
 	public Task getTask() {
@@ -169,12 +154,20 @@ public class TaskCache implements PatternFilterable {
 		return this;
 	}
 
+	public boolean isDisabled() {
+		return _disabled;
+	}
+
 	public void setBaseDir(Object baseDir) {
 		_baseDir = baseDir;
 	}
 
 	public void setCacheDir(Object cacheDir) {
 		_cacheDir = cacheDir;
+	}
+
+	public void setDisabled(boolean disabled) {
+		_disabled = disabled;
 	}
 
 	@Override
@@ -238,10 +231,11 @@ public class TaskCache implements PatternFilterable {
 
 	private Object _baseDir;
 	private Object _cacheDir;
+	private boolean _disabled;
 	private final String _name;
 	private final PatternFilterable _patternFilterable = new PatternSet();
 	private final Project _project;
-	private final List<Object> _skippedTaskDependencies = new ArrayList<>();
+	private final Set<Object> _skippedTaskDependencies = new LinkedHashSet<>();
 	private final List<Object> _testFiles = new ArrayList<>();
 
 }

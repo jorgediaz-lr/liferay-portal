@@ -225,9 +225,10 @@ AUI.add(
 			_getTemplateResourceURL: function() {
 				var instance = this;
 
-				var portletURL = Liferay.PortletURL.createResourceURL();
+				var portletURL = Liferay.PortletURL.createURL(themeDisplay.getURLControlPanel());
 
 				portletURL.setDoAsGroupId(instance.get('doAsGroupId'));
+				portletURL.setLifecycle(Liferay.PortletURL.RESOURCE_PHASE);
 				portletURL.setParameter('fieldName', instance.get('name'));
 				portletURL.setParameter('mode', instance.get('mode'));
 				portletURL.setParameter('namespace', instance.get('fieldsNamespace'));
@@ -332,12 +333,6 @@ AUI.add(
 						);
 					},
 
-					destructor: function() {
-						var instance = this;
-
-						instance.get('container').remove();
-					},
-
 					renderUI: function() {
 						var instance = this;
 
@@ -359,12 +354,20 @@ AUI.add(
 						);
 					},
 
+					destructor: function() {
+						var instance = this;
+
+						instance.get('container').remove();
+					},
+
 					createField: function(fieldTemplate) {
 						var instance = this;
 
 						var fieldNode = A.Node.create(fieldTemplate);
 
 						instance.get('container').placeAfter(fieldNode);
+
+						instance.parseContent(fieldTemplate);
 
 						var parent = instance.get('parent');
 
@@ -473,6 +476,18 @@ AUI.add(
 						return Lang.String.unescapeHTML(inputNode.val());
 					},
 
+					parseContent: function(content) {
+						var instance = this;
+
+						var container = instance.get('container');
+
+						container.plug(A.Plugin.ParseContent);
+
+						var parser = container.ParseContent;
+
+						parser.parseContent(content);
+					},
+
 					remove: function() {
 						var instance = this;
 
@@ -498,8 +513,6 @@ AUI.add(
 						container.append(TPL_REPEATABLE_DELETE);
 
 						container.delegate('click', instance._handleToolbarClick, SELECTOR_REPEAT_BUTTONS, instance);
-
-						container.plug(A.Plugin.ParseContent);
 					},
 
 					repeat: function() {
@@ -521,19 +534,21 @@ AUI.add(
 
 						var labelNode = instance.getLabelNode();
 
-						var tipNode = labelNode.one('.taglib-icon-help');
+						if (labelNode) {
+							var tipNode = labelNode.one('.taglib-icon-help');
 
-						if (Lang.isValue(label) && Lang.isNode(labelNode)) {
-							labelNode.html(A.Escape.html(label));
+							if (Lang.isValue(label) && Lang.isNode(labelNode)) {
+								labelNode.html(A.Escape.html(label));
+							}
+
+							var fieldDefinition = instance.getFieldDefinition();
+
+							if (fieldDefinition.required) {
+								labelNode.append(TPL_REQUIRED_MARK);
+							}
+
+							instance._addTip(labelNode, tipNode);
 						}
-
-						var fieldDefinition = instance.getFieldDefinition();
-
-						if (fieldDefinition.required) {
-							labelNode.append(TPL_REQUIRED_MARK);
-						}
-
-						instance._addTip(labelNode, tipNode);
 					},
 
 					setValue: function(value) {
@@ -1162,7 +1177,7 @@ AUI.add(
 					},
 
 					getWebContentSelectorURL: function() {
-						var url = Liferay.PortletURL.createRenderURL();
+						var url = Liferay.PortletURL.createURL(themeDisplay.getURLControlPanel());
 
 						url.setParameter('eventName', 'selectContent');
 						url.setParameter('groupId', themeDisplay.getScopeGroupId());
@@ -2141,14 +2156,14 @@ AUI.add(
 
 						instance.eventHandlers = null;
 
-						 A.each(
-						 	instance.repeatableInstances,
-						 	function(item) {
-						 		item.destroy();
-						 	}
-						 );
+						A.each(
+							instance.repeatableInstances,
+							function(item) {
+								item.destroy();
+							}
+						);
 
-						 instance.repeatableInstances = null;
+						instance.repeatableInstances = null;
 					},
 
 					moveField: function(parentField, oldIndex, newIndex) {

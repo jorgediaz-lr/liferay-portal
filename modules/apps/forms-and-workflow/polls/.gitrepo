@@ -1,11 +1,10 @@
-; DO NOT EDIT (unless you know what you are doing)
 ;
-; This subdirectory is a git "subrepo", and this file is maintained by the
-; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+; Do not manually edit this file. See
+; https://github.com/git-commands/git-subrepo#readme for more information.
 ;
 [subrepo]
-	remote = git@github.com:liferay-continuous-integration/com-liferay-polls.git
-	branch = 7.0.x
-	commit = a27ed25392672fcb45f4ddff6f6d4ddfb8a648cb
-	parent = 6e39e7f50af7916607926452dd91797962a53cef
 	cmdver = liferay
+	commit = e20d8e0e1a8069544717d951e527fcb8531d4165
+	mode = push
+	parent = 2043854eaf5a63b29c05a7ac456f2e0b0f449489
+	remote = git@github.com:liferay/com-liferay-polls.git

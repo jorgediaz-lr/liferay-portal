@@ -64,12 +64,15 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.CompanyConstants;
-import com.liferay.portal.kernel.model.ResourceAction;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.ResourcePermission;
 import com.liferay.portal.kernel.model.RoleConstants;
-import com.liferay.portal.kernel.service.ResourceActionLocalService;
+import com.liferay.portal.kernel.security.permission.ResourceActions;
+import com.liferay.portal.kernel.service.ResourceLocalService;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.permission.ModelPermissions;
+import com.liferay.portal.kernel.service.permission.ModelPermissionsFactory;
 import com.liferay.portal.kernel.upgrade.UpgradeException;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.upgrade.util.UpgradeProcessUtil;
@@ -139,7 +142,8 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 		ExpandoRowLocalService expandoRowLocalService,
 		ExpandoTableLocalService expandoTableLocalService,
 		ExpandoValueLocalService expandoValueLocalService,
-		ResourceActionLocalService resourceActionLocalService,
+		ResourceActions resourceActions,
+		ResourceLocalService resourceLocalService,
 		ResourcePermissionLocalService resourcePermissionLocalService) {
 
 		_assetEntryLocalService = assetEntryLocalService;
@@ -156,8 +160,16 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 		_expandoRowLocalService = expandoRowLocalService;
 		_expandoTableLocalService = expandoTableLocalService;
 		_expandoValueLocalService = expandoValueLocalService;
-		_resourceActionLocalService = resourceActionLocalService;
+		_resourceLocalService = resourceLocalService;
 		_resourcePermissionLocalService = resourcePermissionLocalService;
+
+		_dlFolderModelPermissions = ModelPermissionsFactory.create(
+			_DLFOLDER_GROUP_PERMISSIONS, _DLFOLDER_GUEST_PERMISSIONS);
+
+		_dlFolderModelPermissions.addRolePermissions(
+			RoleConstants.OWNER, _DLFOLDER_OWNER_PERMISSIONS);
+
+		_initModelResourceNames(resourceActions);
 	}
 
 	protected void addDynamicContentElements(
@@ -571,7 +583,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 	protected void transformFieldTypeDDMFormFields(
 			long groupId, long companyId, long userId, String userName,
 			Timestamp createDate, long entryId, String entryVersion,
-			DDMFormValues ddmFormValues)
+			String entryModelName, DDMFormValues ddmFormValues)
 		throws Exception {
 
 		DDMFormValuesTransformer ddmFormValuesTransformer =
@@ -580,7 +592,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 		ddmFormValuesTransformer.addTransformer(
 			new FileUploadDDMFormFieldValueTransformer(
 				groupId, companyId, userId, userName, createDate, entryId,
-				entryVersion));
+				entryVersion, entryModelName));
 
 		ddmFormValuesTransformer.addTransformer(
 			new DateDDMFormFieldValueTransformer());
@@ -848,7 +860,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 
 				transformFieldTypeDDMFormFields(
 					groupId, companyId, userId, userName, createDate, entryId,
-					entryVersion, ddmFormValues);
+					entryVersion, "DDLRecord", ddmFormValues);
 
 				ps2.setString(1, toJSON(ddmFormValues));
 				ps2.setLong(2, contentId);
@@ -900,7 +912,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 
 				transformFieldTypeDDMFormFields(
 					groupId, companyId, userId, userName, createDate, entryId,
-					entryVersion, ddmFormValues);
+					entryVersion, "DLFileEntry", ddmFormValues);
 
 				ps2.setString(1, toJSON(ddmFormValues));
 				ps2.setLong(2, contentId);
@@ -1385,11 +1397,68 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 		}
 	}
 
+	private void _initModelResourceNames(ResourceActions resourceActions) {
+		_structureModelResourceNames.put(
+			"com.liferay.document.library.kernel.model.DLFileEntry",
+			resourceActions.getCompositeModelName(
+				"com.liferay.document.library.kernel.model.DLFileEntry",
+				_CLASS_NAME_DDM_STRUCTURE));
+
+		_structureModelResourceNames.put(
+			"com.liferay.document.library.kernel.model.DLFileEntryMetadata",
+			resourceActions.getCompositeModelName(
+				"com.liferay.document.library.kernel.model.DLFileEntryMetadata",
+				_CLASS_NAME_DDM_STRUCTURE));
+
+		_structureModelResourceNames.put(
+			"com.liferay.document.library.kernel.util.RawMetadataProcessor",
+			_CLASS_NAME_DDM_STRUCTURE);
+
+		_structureModelResourceNames.put(
+			"com.liferay.portlet.dynamicdatalists.model.DDLRecordSet",
+			resourceActions.getCompositeModelName(
+				"com.liferay.dynamic.data.lists.model.DDLRecordSet",
+				_CLASS_NAME_DDM_STRUCTURE));
+
+		_structureModelResourceNames.put(
+			"com.liferay.portlet.journal.model.JournalArticle",
+			resourceActions.getCompositeModelName(
+				"com.liferay.journal.model.JournalArticle",
+				_CLASS_NAME_DDM_STRUCTURE));
+
+		_templateModelResourceNames.put(
+			"com.liferay.portlet.display.template.PortletDisplayTemplate",
+			_CLASS_NAME_DDM_TEMPLATE);
+
+		_templateModelResourceNames.put(
+			"com.liferay.portlet.dynamicdatalists.model.DDLRecordSet",
+			resourceActions.getCompositeModelName(
+				"com.liferay.dynamic.data.lists.model.DDLRecordSet",
+				_CLASS_NAME_DDM_TEMPLATE));
+
+		_templateModelResourceNames.put(
+			"com.liferay.portlet.journal.model.JournalArticle",
+			resourceActions.getCompositeModelName(
+				"com.liferay.journal.model.JournalArticle",
+				_CLASS_NAME_DDM_TEMPLATE));
+	}
+
 	private static final String _CLASS_NAME_DDM_STRUCTURE =
 		"com.liferay.dynamic.data.mapping.model.DDMStructure";
 
 	private static final String _CLASS_NAME_DDM_TEMPLATE =
 		"com.liferay.dynamic.data.mapping.model.DDMTemplate";
+
+	private static final String[] _DLFOLDER_GROUP_PERMISSIONS = {
+		"ADD_DOCUMENT", "ADD_SHORTCUT", "ADD_SUBFOLDER", "SUBSCRIBE", "VIEW"
+	};
+
+	private static final String[] _DLFOLDER_GUEST_PERMISSIONS = {"VIEW"};
+
+	private static final String[] _DLFOLDER_OWNER_PERMISSIONS = {
+		"ACCESS", "ADD_DOCUMENT", "ADD_SHORTCUT", "ADD_SUBFOLDER", "DELETE",
+		"PERMISSIONS", "SUBSCRIBE", "UPDATE", "VIEW"
+	};
 
 	private static final String _INVALID_FIELD_NAME_CHARS_REGEX =
 		"([\\p{Punct}&&[^_]]|\\p{Space})+";
@@ -1399,45 +1468,6 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 
 	private static final Pattern _invalidFieldNameCharsPattern =
 		Pattern.compile(_INVALID_FIELD_NAME_CHARS_REGEX);
-	private static final Map<String, String> _structureModelResourceNames =
-		new HashMap<>();
-	private static final Map<String, String> _templateModelResourceNames =
-		new HashMap<>();
-
-	static {
-		_structureModelResourceNames.put(
-			"com.liferay.document.library.kernel.model.DLFileEntryMetadata",
-			"com.liferay.document.library.kernel.model.DLFileEntryMetadata-" +
-				_CLASS_NAME_DDM_STRUCTURE);
-
-		_structureModelResourceNames.put(
-			"com.liferay.document.library.kernel.util.RawMetadataProcessor",
-			_CLASS_NAME_DDM_STRUCTURE);
-
-		_structureModelResourceNames.put(
-			"com.liferay.portlet.dynamicdatalists.model.DDLRecordSet",
-			"com.liferay.dynamic.data.lists.model.DDLRecordSet-" +
-				_CLASS_NAME_DDM_STRUCTURE);
-
-		_structureModelResourceNames.put(
-			"com.liferay.portlet.journal.model.JournalArticle",
-			"com.liferay.journal.model.JournalArticle-" +
-				_CLASS_NAME_DDM_STRUCTURE);
-
-		_templateModelResourceNames.put(
-			"com.liferay.portlet.display.template.PortletDisplayTemplate",
-			_CLASS_NAME_DDM_TEMPLATE);
-
-		_templateModelResourceNames.put(
-			"com.liferay.portlet.dynamicdatalists.model.DDLRecordSet",
-			"com.liferay.dynamic.data.lists.model.DDLRecordSet-" +
-				_CLASS_NAME_DDM_TEMPLATE);
-
-		_templateModelResourceNames.put(
-			"com.liferay.portlet.journal.model.JournalArticle",
-			"com.liferay.journal.model.JournalArticle-" +
-				_CLASS_NAME_DDM_TEMPLATE);
-	}
 
 	private final AssetEntryLocalService _assetEntryLocalService;
 	private final DDM _ddm;
@@ -1452,16 +1482,21 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 	private final DLFileEntryLocalService _dlFileEntryLocalService;
 	private final DLFileVersionLocalService _dlFileVersionLocalService;
 	private final DLFolderLocalService _dlFolderLocalService;
+	private final ModelPermissions _dlFolderModelPermissions;
 	private final ExpandoRowLocalService _expandoRowLocalService;
 	private long _expandoStorageAdapterClassNameId;
 	private final ExpandoTableLocalService _expandoTableLocalService;
 	private final ExpandoValueLocalService _expandoValueLocalService;
-	private final ResourceActionLocalService _resourceActionLocalService;
+	private final ResourceLocalService _resourceLocalService;
 	private final ResourcePermissionLocalService
 		_resourcePermissionLocalService;
 	private final Map<Long, Long> _structureClassNameIds = new HashMap<>();
 	private final Map<Long, Map<String, String>>
 		_structureInvalidDDMFormFieldNamesMap = new HashMap<>();
+	private final Map<String, String> _structureModelResourceNames =
+		new HashMap<>();
+	private final Map<String, String> _templateModelResourceNames =
+		new HashMap<>();
 	private final Map<Long, Long> _templateResourceClassNameIds =
 		new HashMap<>();
 
@@ -1995,7 +2030,8 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 
 		public FileUploadDDMFormFieldValueTransformer(
 			long groupId, long companyId, long userId, String userName,
-			Timestamp createDate, long entryId, String entryVersion) {
+			Timestamp createDate, long entryId, String entryVersion,
+			String entryModelName) {
 
 			_groupId = groupId;
 			_companyId = companyId;
@@ -2004,6 +2040,13 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			_createDate = createDate;
 			_entryId = entryId;
 			_entryVersion = entryVersion;
+			_entryModelName = entryModelName;
+
+			_modelPermissions = ModelPermissionsFactory.create(
+				_groupPermissions, _guestPermissions);
+
+			_modelPermissions.addRolePermissions(
+				RoleConstants.OWNER, _ownerPermissions);
 		}
 
 		@Override
@@ -2218,6 +2261,12 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			dlFolder.setRestrictionType(0);
 
 			_dlFolderLocalService.updateDLFolder(dlFolder);
+
+			ServiceContext serviceContext = new ServiceContext();
+
+			serviceContext.setModelPermissions(_dlFolderModelPermissions);
+
+			_resourceLocalService.addModelResources(dlFolder, serviceContext);
 		}
 
 		protected long addDLFolderTree(String ddmFormFieldName)
@@ -2278,22 +2327,19 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			return entryVersionFolderId;
 		}
 
-		protected long getActionBitwiseValue(String actionId)throws Exception {
-			ResourceAction resourceAction =
-				_resourceActionLocalService.getResourceAction(
-					DLFileEntry.class.getName(), actionId);
-
-			return resourceAction.getBitwiseValue();
-		}
-
-		protected long getActionIdsLong(String[] actions) throws Exception {
-			long actionIdsLong = 0;
-
-			for (String action : actions) {
-				actionIdsLong |= getActionBitwiseValue(action);
+		protected File fetchFile(String filePath) throws PortalException {
+			try {
+				return DLStoreUtil.getFile(
+					_companyId, CompanyConstants.SYSTEM, filePath);
 			}
-
-			return actionIdsLong;
+			catch (PortalException pe) {
+				_log.error(
+					String.format(
+						"Unable to find the binary file with path \"%s\" " +
+							"referenced by %s",
+						filePath, getModelInfo()));
+				throw pe;
+			}
 		}
 
 		protected long getDLFolderId(
@@ -2319,6 +2365,12 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			}
 
 			return StringUtil.toLowerCase(extension);
+		}
+
+		protected String getModelInfo() {
+			return String.format(
+				"%s {primaryKey: %d, version: %s}", _entryModelName, _entryId,
+				_entryVersion);
 		}
 
 		protected String toJSON(long groupId, String fileEntryUuid) {
@@ -2353,8 +2405,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 
 				String extension = getExtension(fileName);
 
-				File file = DLStoreUtil.getFile(
-					_companyId, CompanyConstants.SYSTEM, filePath);
+				File file = fetchFile(filePath);
 
 				DLFileEntry dlFileEntry = addDLFileEntry(
 					fileEntryUuid, fileEntryId, _groupId, _companyId, _userId,
@@ -2381,24 +2432,14 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 
 				_dlFileEntryLocalService.updateDLFileEntry(dlFileEntry);
 
-				// Resource permissions
+				// Resources
 
-				_resourcePermissionLocalService.addResourcePermissions(
-					DLFileEntry.class.getName(), RoleConstants.OWNER,
-					ResourceConstants.SCOPE_INDIVIDUAL,
-					getActionIdsLong(_ownerPermissions));
+				ServiceContext serviceContext = new ServiceContext();
 
-				if (_groupId > 0) {
-					_resourcePermissionLocalService.addResourcePermissions(
-						DLFileEntry.class.getName(), RoleConstants.SITE_MEMBER,
-						ResourceConstants.SCOPE_INDIVIDUAL,
-						getActionIdsLong(_groupPermissions));
-				}
+				serviceContext.setModelPermissions(_modelPermissions);
 
-				_resourcePermissionLocalService.addResourcePermissions(
-					DLFileEntry.class.getName(), RoleConstants.GUEST,
-					ResourceConstants.SCOPE_INDIVIDUAL,
-					getActionIdsLong(_guestPermissions));
+				_resourceLocalService.addModelResources(
+					dlFileEntry, serviceContext);
 
 				// Asset entry
 
@@ -2426,10 +2467,12 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 		private final long _companyId;
 		private final Timestamp _createDate;
 		private final long _entryId;
+		private final String _entryModelName;
 		private final String _entryVersion;
 		private final long _groupId;
 		private final String[] _groupPermissions = {"ADD_DISCUSSION", "VIEW"};
 		private final String[] _guestPermissions = {"ADD_DISCUSSION", "VIEW"};
+		private final ModelPermissions _modelPermissions;
 		private final Timestamp _now = new Timestamp(
 			System.currentTimeMillis());
 		private final String[] _ownerPermissions = {

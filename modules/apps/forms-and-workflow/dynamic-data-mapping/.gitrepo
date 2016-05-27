@@ -1,11 +1,10 @@
-; DO NOT EDIT (unless you know what you are doing)
 ;
-; This subdirectory is a git "subrepo", and this file is maintained by the
-; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+; Do not manually edit this file. See
+; https://github.com/git-commands/git-subrepo#readme for more information.
 ;
 [subrepo]
-	remote = git@github.com:liferay-continuous-integration/com-liferay-dynamic-data-mapping.git
-	branch = 7.0.x
-	commit = a27ed25392672fcb45f4ddff6f6d4ddfb8a648cb
-	parent = 6e39e7f50af7916607926452dd91797962a53cef
 	cmdver = liferay
+	commit = 0692a77c5b66f9d92d2dfca3ce65daf9f534ab5f
+	mode = push
+	parent = afdd1a563241f620315c8590e506a9891335945a
+	remote = git@github.com:liferay/com-liferay-dynamic-data-mapping.git

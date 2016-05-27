@@ -1,11 +1,10 @@
-; DO NOT EDIT (unless you know what you are doing)
 ;
-; This subdirectory is a git "subrepo", and this file is maintained by the
-; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+; Do not manually edit this file. See
+; https://github.com/git-commands/git-subrepo#readme for more information.
 ;
 [subrepo]
-	remote = git@github.com:liferay-continuous-integration/com-liferay-frontend-theme.git
-	branch = 7.0.x
-	commit = a27ed25392672fcb45f4ddff6f6d4ddfb8a648cb
-	parent = 6e39e7f50af7916607926452dd91797962a53cef
 	cmdver = liferay
+	commit = 912b8328af931c99a57934b28c3fc924471e9926
+	mode = push
+	parent = 41b1465719603a989c50438e5f0f3f7e3e2d89a9
+	remote = git@github.com:liferay/com-liferay-frontend-theme.git

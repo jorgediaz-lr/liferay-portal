@@ -32,6 +32,7 @@ import com.liferay.knowledge.base.web.selector.KBArticleSelector;
 import com.liferay.knowledge.base.web.selector.KBArticleSelectorFactory;
 import com.liferay.portal.kernel.exception.NoSuchSubscriptionException;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.portlet.PortalPreferences;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
@@ -85,7 +86,6 @@ import org.osgi.service.component.annotations.Reference;
 		"javax.portlet.init-param.template-path=/display/",
 		"javax.portlet.init-param.view-template=/display/view.jsp",
 		"javax.portlet.name=" + KBPortletKeys.KNOWLEDGE_BASE_DISPLAY,
-		"javax.portlet.preferences=classpath:/META-INF/portlet-preferences/display-default-portlet-preferences.xml",
 		"javax.portlet.resource-bundle=content.Language",
 		"javax.portlet.security-role-ref=administrator,guest,power-user,user",
 		"javax.portlet.supported-public-render-parameter=categoryId",
@@ -406,6 +406,13 @@ public class DisplayPortlet extends BaseKBPortlet {
 		KBArticleSelectorFactory kbArticleSelectorFactory) {
 
 		_kbArticleSelectorFactory = kbArticleSelectorFactory;
+	}
+
+	@Reference(
+		target = "(&(release.bundle.symbolic.name=com.liferay.knowledge.base.web)(release.schema.version=1.0.0))",
+		unbind = "-"
+	)
+	protected void setRelease(Release release) {
 	}
 
 	private ClassNameLocalService _classNameLocalService;

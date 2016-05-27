@@ -940,11 +940,30 @@ public class SyncDLObjectClp extends BaseModelImpl<SyncDLObject>
 	}
 
 	@Override
+	public java.lang.String buildTreePath() {
+		try {
+			String methodName = "buildTreePath";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			java.lang.String returnObj = (java.lang.String)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
 	public void setCreateDate(Date createDate) {
 		try {
 			String methodName = "setCreateDate";
 
-			Class<?>[] parameterTypes = new Class<?>[] { java.util.Date.class };
+			Class<?>[] parameterTypes = new Class<?>[] { Date.class };
 
 			Object[] parameterValues = new Object[] { createDate };
 
@@ -960,30 +979,11 @@ public class SyncDLObjectClp extends BaseModelImpl<SyncDLObject>
 		try {
 			String methodName = "setModifiedDate";
 
-			Class<?>[] parameterTypes = new Class<?>[] { java.util.Date.class };
+			Class<?>[] parameterTypes = new Class<?>[] { Date.class };
 
 			Object[] parameterValues = new Object[] { modifiedDate };
 
 			invokeOnRemoteModel(methodName, parameterTypes, parameterValues);
-		}
-		catch (Exception e) {
-			throw new UnsupportedOperationException(e);
-		}
-	}
-
-	@Override
-	public java.lang.String buildTreePath() {
-		try {
-			String methodName = "buildTreePath";
-
-			Class<?>[] parameterTypes = new Class<?>[] {  };
-
-			Object[] parameterValues = new Object[] {  };
-
-			java.lang.String returnObj = (java.lang.String)invokeOnRemoteModel(methodName,
-					parameterTypes, parameterValues);
-
-			return returnObj;
 		}
 		catch (Exception e) {
 			throw new UnsupportedOperationException(e);
@@ -1392,7 +1392,7 @@ public class SyncDLObjectClp extends BaseModelImpl<SyncDLObject>
 	private long _typePK;
 	private String _typeUuid;
 	private BaseModel<?> _syncDLObjectRemoteModel;
-	private Class<?> _clpSerializerClass = com.liferay.sync.service.ClpSerializer.class;
+	private Class<?> _clpSerializerClass = ClpSerializer.class;
 	private boolean _entityCacheEnabled;
 	private boolean _finderCacheEnabled;
 }

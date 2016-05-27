@@ -1,11 +1,10 @@
-; DO NOT EDIT (unless you know what you are doing)
 ;
-; This subdirectory is a git "subrepo", and this file is maintained by the
-; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+; Do not manually edit this file. See
+; https://github.com/git-commands/git-subrepo#readme for more information.
 ;
 [subrepo]
-	remote = git@github.com:liferay-continuous-integration/com-liferay-ip-geocoder.git
-	branch = 7.0.x
-	commit = a27ed25392672fcb45f4ddff6f6d4ddfb8a648cb
-	parent = 6e39e7f50af7916607926452dd91797962a53cef
 	cmdver = liferay
+	commit = 3c1d4dde863efcfc91b7129103d49131d1e926ef
+	mode = push
+	parent = e3abf083a0227d887145f37c33894c2daa12a833
+	remote = git@github.com:liferay/com-liferay-ip-geocoder.git

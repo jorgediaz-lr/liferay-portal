@@ -23,6 +23,7 @@ import com.liferay.dynamic.data.mapping.io.DDMFormXSDDeserializer;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.dynamic.data.mapping.service.DDMTemplateLocalService;
 import com.liferay.dynamic.data.mapping.util.DDMXML;
+import com.liferay.exportimport.resources.importer.constants.ResourcesImporterConstants;
 import com.liferay.exportimport.resources.importer.portlet.preferences.PortletPreferencesTranslator;
 import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.journal.util.JournalConverter;
@@ -38,6 +39,7 @@ import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.LayoutPrototypeLocalService;
 import com.liferay.portal.kernel.service.LayoutSetLocalService;
 import com.liferay.portal.kernel.service.LayoutSetPrototypeLocalService;
+import com.liferay.portal.kernel.service.PortletPreferencesLocalService;
 import com.liferay.portal.kernel.service.RepositoryLocalService;
 import com.liferay.portal.kernel.service.ThemeLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -202,8 +204,10 @@ public class ImporterFactory {
 			_indexStatusManager, _indexerRegistry, _journalArticleLocalService,
 			_layoutLocalService, _layoutPrototypeLocalService,
 			_layoutSetLocalService, _layoutSetPrototypeLocalService, _mimeTypes,
-			_portal, _portletPreferencesFactory, _portletPreferencesTranslators,
-			_repositoryLocalService, _saxReader, _themeLocalService);
+			_portal, _portletPreferencesFactory,
+			_portletPreferencesLocalService, _portletPreferencesTranslator,
+			_portletPreferencesTranslators, _repositoryLocalService, _saxReader,
+			_themeLocalService);
 	}
 
 	protected LARImporter getLARImporter() {
@@ -219,14 +223,17 @@ public class ImporterFactory {
 			_indexStatusManager, _indexerRegistry, _journalArticleLocalService,
 			_layoutLocalService, _layoutPrototypeLocalService,
 			_layoutSetLocalService, _layoutSetPrototypeLocalService, _mimeTypes,
-			_portal, _portletPreferencesFactory, _portletPreferencesTranslators,
-			_repositoryLocalService, _saxReader, _themeLocalService);
+			_portal, _portletPreferencesFactory,
+			_portletPreferencesLocalService, _portletPreferencesTranslator,
+			_portletPreferencesTranslators, _repositoryLocalService, _saxReader,
+			_themeLocalService);
 	}
 
 	@Reference(
 		cardinality = ReferenceCardinality.AT_LEAST_ONE,
 		policy = ReferencePolicy.DYNAMIC,
 		policyOption = ReferencePolicyOption.GREEDY,
+		target = "(!(portlet.preferences.translator.portlet.id=" + ResourcesImporterConstants.PORTLET_ID_DEFAULT +"))",
 		unbind = "unsetPortletPreferencesTranslator"
 	)
 	protected void setPortletPreferencesTranslator(
@@ -333,6 +340,14 @@ public class ImporterFactory {
 
 	@Reference
 	private PortletPreferencesFactory _portletPreferencesFactory;
+
+	@Reference
+	private PortletPreferencesLocalService _portletPreferencesLocalService;
+
+	@Reference(
+		target = "(portlet.preferences.translator.portlet.id=" + ResourcesImporterConstants.PORTLET_ID_DEFAULT +")"
+	)
+	private PortletPreferencesTranslator _portletPreferencesTranslator;
 
 	private final Map<String, PortletPreferencesTranslator>
 		_portletPreferencesTranslators = new ConcurrentHashMap<>();

@@ -23,7 +23,6 @@ import com.liferay.portal.captcha.recaptcha.ReCaptchaImpl;
 import com.liferay.portal.captcha.simplecaptcha.SimpleCaptchaImpl;
 import com.liferay.portal.convert.ConvertException;
 import com.liferay.portal.convert.ConvertProcess;
-import com.liferay.portal.kernel.backgroundtask.BackgroundTask;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskConstants;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskManager;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
@@ -31,7 +30,6 @@ import com.liferay.portal.kernel.cache.MultiVMPool;
 import com.liferay.portal.kernel.cache.SingleVMPool;
 import com.liferay.portal.kernel.captcha.Captcha;
 import com.liferay.portal.kernel.captcha.CaptchaUtil;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.image.GhostscriptUtil;
 import com.liferay.portal.kernel.image.ImageMagickUtil;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
@@ -91,6 +89,7 @@ import com.liferay.portal.util.PrefsPropsUtil;
 import com.liferay.portal.util.ShutdownUtil;
 import com.liferay.portlet.ActionResponseImpl;
 import com.liferay.portlet.admin.util.CleanUpPermissionsUtil;
+import com.liferay.portlet.admin.util.CleanUpPortletPreferencesUtil;
 
 import java.io.File;
 import java.io.Serializable;
@@ -173,6 +172,10 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 		}
 		else if (cmd.equals("cleanUpPermissions")) {
 			CleanUpPermissionsUtil.cleanUpAddToPagePermissions(actionRequest);
+		}
+		else if (cmd.equals("cleanUpPortletPreferences")) {
+			CleanUpPortletPreferencesUtil.
+				cleanUpLayoutRevisionPortletPreferences();
 		}
 		else if (cmd.startsWith("convertProcess.")) {
 			redirect = convertProcess(actionRequest, actionResponse, cmd);
@@ -359,9 +362,7 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 			return;
 		}
 
-		final String uuid = _portalUUID.generate();
-
-		taskContextMap.put("uuid", uuid);
+		final String jobName = "reindex-".concat(_portalUUID.generate());
 
 		final CountDownLatch countDownLatch = new CountDownLatch(1);
 
@@ -371,46 +372,34 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 			public void receive(Message message)
 				throws MessageListenerException {
 
-				try {
-					BackgroundTask backgroundTask =
-						_backgroundTaskManager.getBackgroundTask(
-							message.getLong(
-								BackgroundTaskConstants.BACKGROUND_TASK_ID));
-
-					Map<String, Serializable> taskContextMap =
-						backgroundTask.getTaskContextMap();
-
-					if (!uuid.equals(taskContextMap.get("uuid"))) {
-						return;
-					}
-				}
-				catch (PortalException pe) {
-					throw new MessageListenerException(pe);
-				}
-
 				int status = message.getInteger("status");
 
-				if ((status == BackgroundTaskConstants.STATUS_CANCELLED) ||
-					(status == BackgroundTaskConstants.STATUS_FAILED) ||
-					(status == BackgroundTaskConstants.STATUS_SUCCESSFUL)) {
+				if ((status != BackgroundTaskConstants.STATUS_CANCELLED) &&
+					(status != BackgroundTaskConstants.STATUS_FAILED) &&
+					(status != BackgroundTaskConstants.STATUS_SUCCESSFUL)) {
 
-					PortletSession portletSession =
-						actionRequest.getPortletSession();
-
-					long lastAccessedTime =
-						portletSession.getLastAccessedTime();
-					int maxInactiveInterval =
-						portletSession.getMaxInactiveInterval();
-
-					int extendedMaxInactiveIntervalTime =
-						(int)(System.currentTimeMillis() - lastAccessedTime +
-							maxInactiveInterval);
-
-					portletSession.setMaxInactiveInterval(
-						extendedMaxInactiveIntervalTime);
-
-					countDownLatch.countDown();
+					return;
 				}
+
+				if (!jobName.equals(message.getString("name"))) {
+					return;
+				}
+
+				PortletSession portletSession =
+					actionRequest.getPortletSession();
+
+				long lastAccessedTime = portletSession.getLastAccessedTime();
+				int maxInactiveInterval =
+					portletSession.getMaxInactiveInterval();
+
+				int extendedMaxInactiveIntervalTime =
+					(int)(System.currentTimeMillis() - lastAccessedTime +
+						maxInactiveInterval);
+
+				portletSession.setMaxInactiveInterval(
+					extendedMaxInactiveIntervalTime);
+
+				countDownLatch.countDown();
 			}
 
 		};
@@ -420,7 +409,7 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 
 		try {
 			_indexWriterHelper.reindex(
-				themeDisplay.getUserId(), "reindex",
+				themeDisplay.getUserId(), jobName,
 				PortalInstances.getCompanyIds(), className, taskContextMap);
 
 			countDownLatch.await(

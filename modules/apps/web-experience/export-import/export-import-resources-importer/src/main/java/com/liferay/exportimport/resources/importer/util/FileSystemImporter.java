@@ -68,6 +68,7 @@ import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.LayoutPrototypeLocalService;
 import com.liferay.portal.kernel.service.LayoutSetLocalService;
 import com.liferay.portal.kernel.service.LayoutSetPrototypeLocalService;
+import com.liferay.portal.kernel.service.PortletPreferencesLocalService;
 import com.liferay.portal.kernel.service.RepositoryLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
@@ -85,6 +86,7 @@ import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.xml.Attribute;
@@ -136,6 +138,8 @@ public class FileSystemImporter extends BaseImporter {
 		LayoutSetPrototypeLocalService layoutSetPrototypeLocalService,
 		MimeTypes mimeTypes, Portal portal,
 		PortletPreferencesFactory portletPreferencesFactory,
+		PortletPreferencesLocalService portletPreferencesLocalService,
+		PortletPreferencesTranslator portletPreferencesTranslator,
 		Map<String, PortletPreferencesTranslator> portletPreferencesTranslators,
 		RepositoryLocalService repositoryLocalService, SAXReader saxReader,
 		ThemeLocalService themeLocalService) {
@@ -159,7 +163,10 @@ public class FileSystemImporter extends BaseImporter {
 		this.mimeTypes = mimeTypes;
 		this.portal = portal;
 		this.portletPreferencesFactory = portletPreferencesFactory;
-		this.portletPreferencesTranslators = portletPreferencesTranslators;
+		this.portletPreferencesLocalService = portletPreferencesLocalService;
+		this.portletPreferencesTranslators =
+			new DefaultedPortletPreferencesTranslatorMap(
+				portletPreferencesTranslators, portletPreferencesTranslator);
 		this.repositoryLocalService = repositoryLocalService;
 		this.saxReader = saxReader;
 		this.themeLocalService = themeLocalService;
@@ -1073,6 +1080,8 @@ public class FileSystemImporter extends BaseImporter {
 					friendlyURLMap, serviceContext);
 			}
 			else {
+				resetLayoutColumns(layout);
+
 				layout = layoutLocalService.updateLayout(
 					groupId, privateLayout, layout.getLayoutId(),
 					parentLayoutId, nameMap, titleMap,
@@ -1171,16 +1180,6 @@ public class FileSystemImporter extends BaseImporter {
 		PortletPreferencesTranslator portletPreferencesTranslator =
 			portletPreferencesTranslators.get(rootPortletId);
 
-		if (portletPreferencesTranslator == null) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(
-					"No PortletPreferenceRetriever configured for : " +
-						rootPortletId);
-			}
-
-			return;
-		}
-
 		String portletId = layoutTypePortlet.addPortletId(
 			userId, rootPortletId, columnId, -1, false);
 
@@ -1197,19 +1196,22 @@ public class FileSystemImporter extends BaseImporter {
 			return;
 		}
 
-		PortletPreferences portletSetup =
-			portletPreferencesFactory.getLayoutPortletSetup(layout, portletId);
+		if (portletPreferencesTranslator != null) {
+			PortletPreferences portletSetup =
+				portletPreferencesFactory.getLayoutPortletSetup(
+					layout, portletId);
 
-		Iterator<String> iterator = portletPreferencesJSONObject.keys();
+			Iterator<String> iterator = portletPreferencesJSONObject.keys();
 
-		while (iterator.hasNext()) {
-			String key = iterator.next();
+			while (iterator.hasNext()) {
+				String key = iterator.next();
 
-			portletPreferencesTranslator.translate(
-				portletPreferencesJSONObject, key, portletSetup);
+				portletPreferencesTranslator.translate(
+					portletPreferencesJSONObject, key, portletSetup);
+			}
+
+			portletSetup.store();
 		}
-
-		portletSetup.store();
 
 		if (rootPortletId.equals(PortletKeys.NESTED_PORTLETS)) {
 			JSONArray columnsJSONArray =
@@ -1521,7 +1523,7 @@ public class FileSystemImporter extends BaseImporter {
 	}
 
 	protected String getKey(String name) {
-		name = StringUtil.replace(name, StringPool.SPACE, StringPool.DASH);
+		name = StringUtil.replace(name, CharPool.SPACE, CharPool.DASH);
 
 		name = StringUtil.toUpperCase(name);
 
@@ -1702,6 +1704,49 @@ public class FileSystemImporter extends BaseImporter {
 		}
 
 		return content;
+	}
+
+	protected void resetLayoutColumns(Layout layout) {
+		UnicodeProperties typeSettings = layout.getTypeSettingsProperties();
+
+		Set<Map.Entry<String, String>> set = typeSettings.entrySet();
+
+		Iterator<Map.Entry<String, String>> iterator = set.iterator();
+
+		while (iterator.hasNext()) {
+			Map.Entry<String, String> entry = iterator.next();
+
+			String key = entry.getKey();
+
+			if (!key.startsWith("column-")) {
+				continue;
+			}
+
+			String[] portletIds = StringUtil.split(entry.getValue());
+
+			for (String portletId : portletIds) {
+				try {
+					portletPreferencesLocalService.deletePortletPreferences(
+						PortletKeys.PREFS_OWNER_ID_DEFAULT,
+						PortletKeys.PREFS_OWNER_TYPE_LAYOUT, layout.getPlid(),
+						portletId);
+				}
+				catch (PortalException pe) {
+					if (_log.isWarnEnabled()) {
+						_log.warn(
+							"Unable to delete portlet preferences for " +
+								"portlet " + portletId,
+							pe);
+					}
+				}
+			}
+
+			iterator.remove();
+		}
+
+		layout.setTypeSettingsProperties(typeSettings);
+
+		layoutLocalService.updateLayout(layout);
 	}
 
 	protected void setServiceContext(String name) {
@@ -1898,6 +1943,8 @@ public class FileSystemImporter extends BaseImporter {
 	protected final MimeTypes mimeTypes;
 	protected final Portal portal;
 	protected final PortletPreferencesFactory portletPreferencesFactory;
+	protected final PortletPreferencesLocalService
+		portletPreferencesLocalService;
 	protected final Map<String, PortletPreferencesTranslator>
 		portletPreferencesTranslators;
 	protected final RepositoryLocalService repositoryLocalService;
@@ -1969,5 +2016,34 @@ public class FileSystemImporter extends BaseImporter {
 		"\\[\\$FILE=([^\\$]+)\\$\\]");
 	private final Map<String, Set<Long>> _primaryKeys = new HashMap<>();
 	private File _resourcesDir;
+
+	private class DefaultedPortletPreferencesTranslatorMap
+		extends HashMap<String, PortletPreferencesTranslator> {
+
+		public DefaultedPortletPreferencesTranslatorMap(
+			Map<String, PortletPreferencesTranslator>
+				portletPreferencesTranslators,
+			PortletPreferencesTranslator portletPreferencesTranslator) {
+
+			super(portletPreferencesTranslators);
+
+			_portletPreferencesTranslator = portletPreferencesTranslator;
+		}
+
+		@Override
+		public PortletPreferencesTranslator get(Object key) {
+			PortletPreferencesTranslator value = super.get(key);
+
+			if (value == null) {
+				value = _portletPreferencesTranslator;
+			}
+
+			return value;
+		}
+
+		private final PortletPreferencesTranslator
+			_portletPreferencesTranslator;
+
+	}
 
 }

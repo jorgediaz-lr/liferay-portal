@@ -25,67 +25,83 @@ define("frontend-js-spa-web@1.0.6/liferay/init.es", ['exports', './screen/Action
 		};
 	}
 
-	var app = new _App2.default();
+	var initSPA = function initSPA(callback) {
+		var app = new _App2.default();
 
-	app.addRoutes([{
-		handler: _ActionURLScreen2.default,
-		path: function path(url) {
-			var uri = new _Uri2.default(url);
+		app.addRoutes([{
+			handler: _ActionURLScreen2.default,
+			path: function path(url) {
+				var uri = new _Uri2.default(url);
 
-			var loginRedirect = new _Uri2.default(Liferay.SPA.loginRedirect);
+				var loginRedirect = new _Uri2.default(Liferay.SPA.loginRedirect);
 
-			var hostname = loginRedirect.getHostname() || window.location.hostname;
+				var hostname = loginRedirect.getHostname() || window.location.hostname;
 
-			if (!app.isLinkSameOrigin_(hostname)) {
-				return false;
+				if (!app.isLinkSameOrigin_(hostname)) {
+					return false;
+				}
+
+				return uri.getParameterValue('p_p_lifecycle') === '1';
 			}
+		}, {
+			handler: _RenderURLScreen2.default,
+			path: function path(url) {
+				if (url.indexOf(themeDisplay.getPathMain()) === 0) {
+					return false;
+				}
 
-			return uri.getParameterValue('p_p_lifecycle') === '1';
-		}
-	}, {
-		handler: _RenderURLScreen2.default,
-		path: function path(url) {
-			if (url.indexOf(themeDisplay.getPathMain()) === 0) {
-				return false;
+				var excluded = Liferay.SPA.excludedPaths.some(function (excludedPath) {
+					return url.indexOf(excludedPath) === 0;
+				});
+
+				if (excluded) {
+					return false;
+				}
+
+				var uri = new _Uri2.default(url);
+
+				var lifecycle = uri.getParameterValue('p_p_lifecycle');
+
+				return lifecycle === '0' || !lifecycle;
 			}
+		}]);
 
-			var excluded = Liferay.SPA.excludedPaths.find(function (excludedPath) {
-				return url.indexOf(excludedPath) === 0;
+		Liferay.Util.submitForm = function (form) {
+			_async2.default.nextTick(function () {
+				var formElement = form.getDOM();
+				var url = formElement.action;
+
+				if (app.canNavigate(url) && formElement.method !== 'get' && !app.isInPortletBlacklist(formElement)) {
+					Liferay.Util._submitLocked = false;
+
+					_globals2.default.capturedFormElement = formElement;
+
+					app.navigate(_utils2.default.getUrlPath(url));
+				} else {
+					formElement.submit();
+				}
 			});
+		};
 
-			if (excluded !== undefined) {
-				return false;
-			}
+		Liferay.SPA.app = app;
 
-			var uri = new _Uri2.default(url);
+		Liferay.fire('SPAReady');
 
-			var lifecycle = uri.getParameterValue('p_p_lifecycle');
-
-			return lifecycle === '0' || !lifecycle;
-		}
-	}]);
-
-	Liferay.Util.submitForm = function (form) {
-		_async2.default.nextTick(function () {
-			var formElement = form.getDOM();
-			var url = formElement.action;
-
-			if (app.canNavigate(url) && formElement.method !== 'get') {
-				Liferay.Util._submitLocked = false;
-
-				_globals2.default.capturedFormElement = formElement;
-
-				app.navigate(_utils2.default.getUrlPath(url));
-			} else {
-				formElement.submit();
-			}
-		});
+		return app;
 	};
 
-	Liferay.SPA = Liferay.SPA || {};
+	exports.default = {
+		init: function init(callback) {
+			var _this = this;
 
-	Liferay.SPA.app = app;
-
-	exports.default = Liferay.SPA;
+			if (_globals2.default.document.readyState == 'loading') {
+				_globals2.default.document.addEventListener('DOMContentLoaded', function () {
+					callback.call(_this, initSPA());
+				});
+			} else {
+				callback.call(this, initSPA());
+			}
+		}
+	};
 });
 //# sourceMappingURL=init.es.js.map

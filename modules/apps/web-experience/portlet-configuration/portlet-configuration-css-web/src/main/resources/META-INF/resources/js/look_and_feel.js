@@ -220,6 +220,8 @@ AUI.add(
 							);
 						}
 
+						Liferay.Util.Window._setWindowDefaultSizeIfNeeded(instance._currentPopup);
+
 						instance._currentPopup.show();
 						instance._currentPopup.loadingmask.show();
 						instance._currentPopup.io.start();
@@ -1096,7 +1098,7 @@ AUI.add(
 					instance._spacingStyles();
 					instance._cssStyles();
 
-					var useForAll = newPanel.all('.lfr-use-for-all input[type=checkbox]');
+					var useForAll = newPanel.all('input[type=checkbox].lfr-use-for-all');
 
 					var handleForms = function(item, index) {
 						var checkBox = item;

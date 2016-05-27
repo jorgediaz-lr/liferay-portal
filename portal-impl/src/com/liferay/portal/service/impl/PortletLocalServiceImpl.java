@@ -255,6 +255,32 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 	}
 
 	@Override
+	@Skip
+	public void deployPortlet(Portlet portlet) throws Exception {
+		PortletApp portletApp = portlet.getPortletApp();
+
+		if (portletApp != null) {
+			_portletApps.put(portletApp.getServletContextName(), portletApp);
+		}
+
+		clearCache();
+
+		ServletContext servletContext = portletApp.getServletContext();
+
+		PortletBagFactory portletBagFactory = new PortletBagFactory();
+
+		portletBagFactory.setClassLoader(
+			ClassLoaderPool.getClassLoader(
+				servletContext.getServletContextName()));
+		portletBagFactory.setServletContext(servletContext);
+		portletBagFactory.setWARFile(true);
+
+		portletBagFactory.create(portlet, true);
+
+		_portletsMap.put(portlet.getRootPortletId(), portlet);
+	}
+
+	@Override
 	public Portlet deployRemotePortlet(Portlet portlet, String categoryName)
 		throws PortalException {
 
@@ -829,9 +855,9 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 
 				portlet = entry.getValue();
 
-				_portletsMap.put(entry.getKey(), portlet);
-
 				portletBagFactory.create(portlet, true);
+
+				_portletsMap.put(entry.getKey(), portlet);
 			}
 
 			// Sprite images
@@ -963,11 +989,15 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 		String portletId = _portletIdsByStrutsPath.get(securityPath);
 
 		if (Validator.isNull(portletId)) {
-			for (String strutsPath : _portletIdsByStrutsPath.keySet()) {
+			for (Map.Entry<String, String> entry :
+					_portletIdsByStrutsPath.entrySet()) {
+
+				String strutsPath = entry.getKey();
+
 				if (securityPath.startsWith(
 						strutsPath.concat(StringPool.SLASH))) {
 
-					portletId = _portletIdsByStrutsPath.get(strutsPath);
+					portletId = entry.getValue();
 
 					break;
 				}
