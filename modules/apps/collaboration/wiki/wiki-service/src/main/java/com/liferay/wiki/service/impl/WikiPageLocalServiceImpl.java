@@ -39,6 +39,8 @@ import com.liferay.portal.kernel.portletfilerepository.PortletFileRepositoryUtil
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.sanitizer.SanitizerUtil;
+import com.liferay.portal.kernel.search.Indexable;
+import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -1562,6 +1564,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 		return fileEntry;
 	}
 
+	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public WikiPage movePageFromTrash(
 			long userId, long nodeId, String title, long newNodeId,
@@ -1607,7 +1610,8 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 			nodeId, title, true, 0, 1);
 
 		if (!wikiPages.isEmpty()) {
-			return movePageToTrash(userId, wikiPages.get(0));
+			return wikiPageLocalService.movePageToTrash(
+					userId, wikiPages.get(0));
 		}
 
 		return null;
@@ -1620,9 +1624,10 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 
 		WikiPage page = wikiPagePersistence.findByN_T_V(nodeId, title, version);
 
-		return movePageToTrash(userId, page);
+		return wikiPageLocalService.movePageToTrash(userId, page);
 	}
 
+	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public WikiPage movePageToTrash(long userId, WikiPage page)
 		throws PortalException {
@@ -1730,15 +1735,6 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 		SocialActivityManagerUtil.addActivity(
 			userId, page, SocialActivityConstants.TYPE_MOVE_TO_TRASH,
 			extraDataJSONObject.toString(), 0);
-
-		if (!pageVersions.isEmpty()) {
-			Indexer<WikiPage> indexer = IndexerRegistryUtil.nullSafeGetIndexer(
-				WikiPage.class);
-
-			for (WikiPage pageVersion : pageVersions) {
-				indexer.reindex(pageVersion);
-			}
-		}
 
 		// Workflow
 
@@ -1997,7 +1993,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 				"{resourcePrimKey=" + resourcePrimKey + "}");
 		}
 
-		return updateStatus(
+		return wikiPageLocalService.updateStatus(
 			userId, page, status, serviceContext,
 			new HashMap<String, Serializable>());
 	}
@@ -2013,11 +2009,12 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 			ServiceContext serviceContext)
 		throws PortalException {
 
-		return updateStatus(
+		return wikiPageLocalService.updateStatus(
 			userId, page, status, serviceContext,
 			new HashMap<String, Serializable>());
 	}
 
+	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public WikiPage updateStatus(
 			long userId, WikiPage page, int status,
@@ -2183,13 +2180,6 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 				}
 			}
 		}
-
-		// Indexer
-
-		Indexer<WikiPage> indexer = IndexerRegistryUtil.nullSafeGetIndexer(
-			WikiPage.class);
-
-		indexer.reindex(page);
 
 		return wikiPagePersistence.update(page);
 	}
@@ -2895,15 +2885,6 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 		SocialActivityManagerUtil.addActivity(
 			userId, page, SocialActivityConstants.TYPE_RESTORE_FROM_TRASH,
 			extraDataJSONObject.toString(), 0);
-
-		if (!pageVersions.isEmpty()) {
-			Indexer<WikiPage> indexer = IndexerRegistryUtil.nullSafeGetIndexer(
-				WikiPage.class);
-
-			for (WikiPage pageVersion : pageVersions) {
-				indexer.reindex(pageVersion);
-			}
-		}
 	}
 
 	protected void notifySubscribers(
