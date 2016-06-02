@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.ClassedModel;
 import com.liferay.portal.kernel.model.ContainerModel;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.ResourcedModel;
 import com.liferay.portal.kernel.model.SystemEventConstants;
 import com.liferay.portal.kernel.model.TrashedModel;
 import com.liferay.portal.kernel.model.WorkflowedModel;
@@ -205,12 +206,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 		moveBaseModelToTrash((Long)baseModel.getPrimaryKeyObj());
 
-		Indexer<?> indexer = IndexerRegistryUtil.nullSafeGetIndexer(
-				baseModel.getModelClassName());
-
-		indexer.reindex(
-				baseModel.getModelClassName(),
-				(Long)baseModel.getPrimaryKeyObj());
+		reindex(baseModel);
 
 		Assert.assertEquals(
 			initialBaseModelsSearchCount,
@@ -288,12 +284,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 		moveBaseModelToTrash((Long)baseModel.getPrimaryKeyObj());
 
-		Indexer<?> indexer = IndexerRegistryUtil.nullSafeGetIndexer(
-				baseModel.getModelClassName());
-
-		indexer.reindex(
-				baseModel.getModelClassName(),
-				(Long)baseModel.getPrimaryKeyObj());
+		reindex(baseModel);
 
 		Assert.assertEquals(
 			initialBaseModelsSearchCount + 1,
@@ -2148,12 +2139,7 @@ public abstract class BaseTrashHandlerTestCase {
 		whenHasParent.moveParentBaseModelToTrash(
 			(Long)parentBaseModel.getPrimaryKeyObj());
 
-		Indexer<?> indexer = IndexerRegistryUtil.nullSafeGetIndexer(
-				baseModel.getModelClassName());
-
-		indexer.reindex(
-				baseModel.getModelClassName(),
-				(Long)baseModel.getPrimaryKeyObj());
+		reindex(baseModel);
 
 		Assert.assertEquals(
 			initialBaseModelsSearchCount,
@@ -2723,13 +2709,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 		moveBaseModelToTrash((Long)baseModel.getPrimaryKeyObj());
 
-		Indexer<?> indexer = IndexerRegistryUtil.nullSafeGetIndexer(
-				baseModel.getModelClassName());
-
-		indexer.reindex(
-				baseModel.getModelClassName(),
-				(Long)baseModel.getPrimaryKeyObj());
-
+		reindex(baseModel);
 
 		Assert.assertEquals(
 			initialBaseModelsSearchCount,
@@ -2821,12 +2801,7 @@ public abstract class BaseTrashHandlerTestCase {
 
 		moveBaseModelToTrash((Long)baseModel.getPrimaryKeyObj());
 
-		Indexer<?> indexer = IndexerRegistryUtil.nullSafeGetIndexer(
-				baseModel.getModelClassName());
-
-		indexer.reindex(
-				baseModel.getModelClassName(),
-				(Long)baseModel.getPrimaryKeyObj());
+		reindex(baseModel);
 
 		Assert.assertEquals(
 			initialBaseModelsSearchCount + 1,
@@ -3523,6 +3498,25 @@ public abstract class BaseTrashHandlerTestCase {
 
 	protected abstract void moveBaseModelToTrash(long primaryKey)
 		throws Exception;
+
+	protected void reindex(ClassedModel classedModel)
+		throws Exception {
+		Indexer<?> indexer = IndexerRegistryUtil.nullSafeGetIndexer(
+				classedModel.getModelClassName());
+
+		long classPK;
+
+		if (classedModel instanceof ResourcedModel) {
+			ResourcedModel resourceModel = (ResourcedModel)classedModel;
+
+			classPK = resourceModel.getResourcePrimKey();
+		}
+		else {
+			classPK = (Long)classedModel.getPrimaryKeyObj();
+		}
+		
+		indexer.reindex(classedModel.getModelClassName(), classPK);
+	}
 
 	protected BaseModel<?> baseModel;
 
