@@ -29,11 +29,11 @@ public class MessageBoardsCommentUpgrade implements UpgradeStepRegistrator {
 	@Override
 	public void register(Registry registry) {
 		registry.register(
-			"com.liferay.message.boards.comment", "0.0.0", "2.0.1",
+			"com.liferay.message.boards.comment", "0.0.0", "2.0.2",
 			new DummyUpgradeStep());
 
 		registry.register(
-			"com.liferay.message.boards.comment", "2.0.1", "2.0.2",
+			"com.liferay.message.boards.comment", "2.0.2", "2.0.3",
 			new UpgradeMBDiscussion());
 	}
 

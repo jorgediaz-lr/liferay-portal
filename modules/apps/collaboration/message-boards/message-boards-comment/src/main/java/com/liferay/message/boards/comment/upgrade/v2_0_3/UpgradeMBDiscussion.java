@@ -14,63 +14,83 @@
 
 package com.liferay.message.boards.comment.upgrade.v2_0_3;
 
+import com.liferay.message.boards.kernel.model.MBDiscussion;
+import com.liferay.message.boards.kernel.model.MBThread;
+import com.liferay.message.boards.kernel.service.MBDiscussionLocalService;
+import com.liferay.message.boards.kernel.service.MBMessageLocalService;
+import com.liferay.message.boards.kernel.service.MBThreadLocalService;
+import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-import com.liferay.portal.upgrade.AutoBatchPreparedStatementUtil;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import org.osgi.service.component.annotations.Reference;
 
 /**
- * @author Adolfo Pérez
+ * @author Jorge Díaz
  */
 public class UpgradeMBDiscussion extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		try (Statement s = connection.createStatement()) {
-			try (ResultSet rs = s.executeQuery(
-					"select MBDiscussion.discussionId, MBThread.threadId, " +
-						"MBMessage.messageId from MBDiscussion inner join " +
-							"MBThread on MBDiscussion.threadId = " +
-								"MBThread.threadId inner join MBMessage on " +
-									"MBMessage.messageId = " +
-										"MBThread.rootMessageId where " +
-											"MBThread.messageCount = 1");
-				PreparedStatement ps1 =
-					AutoBatchPreparedStatementUtil.concurrentAutoBatch(
-						connection,
-						"delete from MBDiscussion where discussionId = ?");
-				PreparedStatement ps2 =
-					AutoBatchPreparedStatementUtil.concurrentAutoBatch(
-						connection, "delete from MBThread where threadId = ?");
-				PreparedStatement ps3 =
-					AutoBatchPreparedStatementUtil.concurrentAutoBatch(
-						connection,
-						"delete from MBMessage where messageId = ?")) {
+		final ActionableDynamicQuery actionableDynamicQuery =
+			_mbThreadLocalService.getActionableDynamicQuery();
 
-				/*
-				 * TODO: We also need to delete MBMessage assets. We should also
-				 * discuss where this upgrade should be located: here in the
-				 * module or in the core MB upgrades.
-				 */
+		actionableDynamicQuery.setPerformActionMethod(
+			new ActionableDynamicQuery.PerformActionMethod<MBThread>() {
 
-				while (rs.next()) {
-					ps1.setLong(1, rs.getLong(1));
-					ps1.addBatch();
+				@Override
+				public void performAction(MBThread mbThread)
+					throws PortalException {
 
-					ps2.setLong(1, rs.getLong(2));
-					ps2.addBatch();
+					if ((mbThread.getMessageCount() > 1) &&
+						(mbThread.getCategoryId() != -1)) {
 
-					ps3.setLong(1, rs.getLong(3));
-					ps3.addBatch();
+						return;
+					}
+
+					long threadId = mbThread.getThreadId();
+
+					MBDiscussion mbDiscussion =
+						_mbDiscussionLocalService.fetchThreadDiscussion(
+							threadId);
+
+					if (mbDiscussion == null) {
+
+						return;
+					}
+
+					_mbMessageLocalService.deleteDiscussionMessages(
+						mbDiscussion.getClassName(), mbDiscussion.getClassPK());
 				}
 
-				ps1.executeBatch();
-				ps2.executeBatch();
-				ps3.executeBatch();
-			}
-		}
+			});
+
+		actionableDynamicQuery.performActions();
 	}
+
+	@Reference(unbind = "-")
+	protected void setMBDiscussionLocalService(
+		MBDiscussionLocalService mbDiscussionLocalService) {
+
+		_mbDiscussionLocalService = mbDiscussionLocalService;
+	}
+
+	@Reference(unbind = "-")
+	protected void setMBMessageLocalService(
+		MBMessageLocalService mbMessageLocalService) {
+
+		_mbMessageLocalService = mbMessageLocalService;
+	}
+
+	@Reference(unbind = "-")
+	protected void setMBThreadLocalService(
+		MBThreadLocalService mbThreadLocalService) {
+
+		_mbThreadLocalService = mbThreadLocalService;
+	}
+
+	private MBDiscussionLocalService _mbDiscussionLocalService;
+	private MBMessageLocalService _mbMessageLocalService;
+	private MBThreadLocalService _mbThreadLocalService;
 
 }
