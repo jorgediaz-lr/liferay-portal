@@ -1076,6 +1076,8 @@ public class GroupImpl extends GroupBaseImpl {
 					return GetterUtil.getBoolean(entry.getValue());
 				}
 			}
+
+			return portletDataHandler.isPublishToLiveByDefault();
 		}
 		catch (Exception e) {
 		}
