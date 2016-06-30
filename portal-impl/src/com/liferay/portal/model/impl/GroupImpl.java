@@ -1084,6 +1084,9 @@ public class GroupImpl extends GroupBaseImpl {
 			return portletDataHandler.isPublishToLiveByDefault();
 		}
 		catch (Exception e) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(e, e);
+			}
 		}
 
 		return true;
