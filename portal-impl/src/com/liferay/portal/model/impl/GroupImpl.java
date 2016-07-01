@@ -1077,6 +1077,10 @@ public class GroupImpl extends GroupBaseImpl {
 				}
 			}
 
+			if (portlet.getPortletDataHandlerClass() == null) {
+				return true;
+			}
+
 			return portletDataHandler.isPublishToLiveByDefault();
 		}
 		catch (Exception e) {
