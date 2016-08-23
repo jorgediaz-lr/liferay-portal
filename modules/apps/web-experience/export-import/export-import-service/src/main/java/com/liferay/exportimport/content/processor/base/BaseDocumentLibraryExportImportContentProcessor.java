@@ -21,6 +21,7 @@ import com.liferay.document.library.kernel.service.DLFileEntryLocalServiceUtil;
 import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.exportimport.content.processor.ExportImportContentProcessor;
 import com.liferay.exportimport.kernel.lar.ExportImportPathUtil;
+import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -510,7 +511,9 @@ public abstract class BaseDocumentLibraryExportImportContentProcessor
 
 			FileEntry fileEntry = getFileEntry(dlReferenceParameters);
 
-			if (fileEntry == null) {
+			if (!ExportImportThreadLocal.isInitialLayoutStagingInProcess() &&
+				(fileEntry == null)) {
+
 				throw new NoSuchFileEntryException();
 			}
 
