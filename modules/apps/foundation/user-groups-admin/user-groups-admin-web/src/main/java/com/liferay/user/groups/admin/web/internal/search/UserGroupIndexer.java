@@ -143,6 +143,11 @@ public class UserGroupIndexer extends BaseIndexer<UserGroup> {
 	}
 
 	@Override
+	protected void doReindex(String className, long classPK) throws Exception {
+		super.doReindex(className, classPK);
+	}
+
+	@Override
 	protected void doReindex(String[] ids) throws Exception {
 		long companyId = GetterUtil.getLong(ids[0]);
 
