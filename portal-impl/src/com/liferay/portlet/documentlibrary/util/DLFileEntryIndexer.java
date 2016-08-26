@@ -509,6 +509,11 @@ public class DLFileEntryIndexer
 	}
 
 	@Override
+	protected void doReindex(String className, long classPK) throws Exception {
+		super.doReindex(className, classPK);
+	}
+
+	@Override
 	protected void doReindex(String[] ids) throws Exception {
 		if (ids.length == 1) {
 			long companyId = GetterUtil.getLong(ids[0]);
