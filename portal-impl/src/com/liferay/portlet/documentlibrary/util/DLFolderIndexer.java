@@ -161,9 +161,7 @@ public class DLFolderIndexer
 
 	@Override
 	protected void doReindex(String className, long classPK) throws Exception {
-		DLFolder dlFolder = DLFolderLocalServiceUtil.getFolder(classPK);
-
-		doReindex(dlFolder);
+		super.doReindex(className, classPK);
 	}
 
 	@Override
