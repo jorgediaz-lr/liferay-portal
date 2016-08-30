@@ -164,9 +164,7 @@ public class ContactIndexer extends BaseIndexer<Contact> {
 
 	@Override
 	protected void doReindex(String className, long classPK) throws Exception {
-		Contact contact = ContactLocalServiceUtil.getContact(classPK);
-
-		doReindex(contact);
+		super.doReindex(className, classPK);
 	}
 
 	@Override

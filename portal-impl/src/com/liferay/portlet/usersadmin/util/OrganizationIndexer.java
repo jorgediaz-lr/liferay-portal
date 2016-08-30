@@ -217,10 +217,7 @@ public class OrganizationIndexer extends BaseIndexer<Organization> {
 
 	@Override
 	protected void doReindex(String className, long classPK) throws Exception {
-		Organization organization =
-			OrganizationLocalServiceUtil.getOrganization(classPK);
-
-		doReindex(organization);
+		super.doReindex(className, classPK);
 	}
 
 	@Override
