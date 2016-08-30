@@ -166,11 +166,7 @@ public class ExportImportConfigurationIndexer
 
 	@Override
 	protected void doReindex(String className, long classPK) throws Exception {
-		ExportImportConfiguration exportImportConfiguration =
-			_exportImportConfigurationLocalService.getExportImportConfiguration(
-				classPK);
-
-		doReindex(exportImportConfiguration);
+		super.doReindex(className, classPK);
 	}
 
 	@Override
