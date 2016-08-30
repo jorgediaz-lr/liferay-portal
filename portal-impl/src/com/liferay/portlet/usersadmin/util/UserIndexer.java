@@ -327,9 +327,7 @@ public class UserIndexer extends BaseIndexer<User> {
 
 	@Override
 	protected void doReindex(String className, long classPK) throws Exception {
-		User user = UserLocalServiceUtil.getUserById(classPK);
-
-		doReindex(user);
+		super.doReindex(className, classPK);
 	}
 
 	@Override
