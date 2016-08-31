@@ -151,9 +151,7 @@ public class CalendarIndexer extends BaseIndexer<Calendar> {
 
 	@Override
 	protected void doReindex(String className, long classPK) throws Exception {
-		Calendar calendar = _calendarLocalService.getCalendar(classPK);
-
-		doReindex(calendar);
+		super.doReindex(className, classPK);
 	}
 
 	@Override

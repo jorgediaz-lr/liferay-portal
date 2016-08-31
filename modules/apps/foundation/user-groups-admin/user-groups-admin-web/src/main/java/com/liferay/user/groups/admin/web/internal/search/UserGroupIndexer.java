@@ -149,9 +149,7 @@ public class UserGroupIndexer extends BaseIndexer<UserGroup> {
 
 	@Override
 	protected void doReindex(String className, long classPK) throws Exception {
-		UserGroup userGroup = _userGroupLocalService.getUserGroup(classPK);
-
-		doReindex(userGroup);
+		super.doReindex(className, classPK);
 	}
 
 	@Override
