@@ -1501,9 +1501,7 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 		}
 	}
 
-	protected void doReindex(String className, long classPK)
-		throws Exception {
-
+	protected void doReindex(String className, long classPK) throws Exception {
 		PersistedModelLocalService service =
 			PersistedModelLocalServiceRegistryUtil.
 				getPersistedModelLocalService(className);
