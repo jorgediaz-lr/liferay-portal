@@ -145,10 +145,7 @@ public class BookmarksFolderIndexer extends BaseIndexer<BookmarksFolder> {
 
 	@Override
 	protected void doReindex(String className, long classPK) throws Exception {
-		BookmarksFolder folder = _bookmarksFolderLocalService.getFolder(
-			classPK);
-
-		doReindex(folder);
+		super.doReindex(className, classPK);
 	}
 
 	@Override
