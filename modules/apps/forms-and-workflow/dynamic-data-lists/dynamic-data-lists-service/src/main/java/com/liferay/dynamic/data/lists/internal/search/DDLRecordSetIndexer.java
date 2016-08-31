@@ -93,10 +93,7 @@ public class DDLRecordSetIndexer extends BaseIndexer<DDLRecordSet> {
 
 	@Override
 	protected void doReindex(String className, long classPK) throws Exception {
-		DDLRecordSet recordSet = _ddlRecordSetLocalService.getRecordSet(
-			classPK);
-
-		doReindex(recordSet);
+		super.doReindex(className, classPK);
 	}
 
 	@Override

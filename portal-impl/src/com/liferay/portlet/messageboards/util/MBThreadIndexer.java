@@ -160,9 +160,7 @@ public class MBThreadIndexer extends BaseIndexer<MBThread> {
 
 	@Override
 	protected void doReindex(String className, long classPK) throws Exception {
-		MBThread thread = MBThreadLocalServiceUtil.getThread(classPK);
-
-		doReindex(thread);
+		super.doReindex(className, classPK);
 	}
 
 	@Override

@@ -516,10 +516,7 @@ public class DLFileEntryIndexer
 
 	@Override
 	protected void doReindex(String className, long classPK) throws Exception {
-		DLFileEntry dlFileEntry = DLFileEntryLocalServiceUtil.getFileEntry(
-			classPK);
-
-		doReindex(dlFileEntry);
+		super.doReindex(className, classPK);
 	}
 
 	@Override
