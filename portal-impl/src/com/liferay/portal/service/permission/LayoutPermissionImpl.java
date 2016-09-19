@@ -387,7 +387,7 @@ public class LayoutPermissionImpl
 
 		// Inactive sites are not viewable
 
-		if (!group.isActive()) {
+		if (!GroupLocalServiceUtil.isActive(group)) {
 			return false;
 		}
 
