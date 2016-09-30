@@ -96,7 +96,8 @@ public class JournalFolderIndexer
 
 	@Override
 	protected void doDelete(JournalFolder journalFolder) throws Exception {
-		super.doDelete(journalFolder);
+		deleteDocument(
+			journalFolder.getCompanyId(), journalFolder.getFolderId());
 	}
 
 	@Override
@@ -155,7 +156,9 @@ public class JournalFolderIndexer
 
 	@Override
 	protected void doReindex(String className, long classPK) throws Exception {
-		super.doReindex(className, classPK);
+		JournalFolder folder = _journalFolderLocalService.getFolder(classPK);
+
+		doReindex(folder);
 	}
 
 	@Override
@@ -169,7 +172,34 @@ public class JournalFolderIndexer
 		final IndexableActionableDynamicQuery indexableActionableDynamicQuery =
 			_journalFolderLocalService.getIndexableActionableDynamicQuery();
 
-		reindexCompany(indexableActionableDynamicQuery, companyId);
+		indexableActionableDynamicQuery.setCompanyId(companyId);
+		indexableActionableDynamicQuery.setPerformActionMethod(
+			new ActionableDynamicQuery.PerformActionMethod<JournalFolder>() {
+
+				@Override
+				public void performAction(JournalFolder folder) {
+					try {
+						Document document = getDocument(folder);
+
+						if (document != null) {
+							indexableActionableDynamicQuery.addDocuments(
+								document);
+						}
+					}
+					catch (PortalException pe) {
+						if (_log.isWarnEnabled()) {
+							_log.warn(
+								"Unable to index journal folder " +
+									folder.getFolderId(),
+								pe);
+						}
+					}
+				}
+
+			});
+		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
+
+		indexableActionableDynamicQuery.performActions();
 	}
 
 	@Reference(unbind = "-")
