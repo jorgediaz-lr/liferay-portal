@@ -148,31 +148,7 @@ public class BookmarksFolderIndexer extends BaseIndexer<BookmarksFolder> {
 		final IndexableActionableDynamicQuery indexableActionableDynamicQuery =
 			_bookmarksFolderLocalService.getIndexableActionableDynamicQuery();
 
-		indexableActionableDynamicQuery.setCompanyId(companyId);
-		indexableActionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<BookmarksFolder>() {
-
-				@Override
-				public void performAction(BookmarksFolder folder) {
-					try {
-						Document document = getDocument(folder);
-
-						indexableActionableDynamicQuery.addDocuments(document);
-					}
-					catch (PortalException pe) {
-						if (_log.isWarnEnabled()) {
-							_log.warn(
-								"Unable to index bookmarks folder " +
-									folder.getFolderId(),
-								pe);
-						}
-					}
-				}
-
-			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
-
-		indexableActionableDynamicQuery.performActions();
+		reindexCompany(indexableActionableDynamicQuery, companyId);
 	}
 
 	@Reference(unbind = "-")
