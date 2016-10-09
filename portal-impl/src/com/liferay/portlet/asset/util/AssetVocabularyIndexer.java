@@ -96,6 +96,11 @@ public class AssetVocabularyIndexer extends BaseIndexer<AssetVocabulary> {
 	}
 
 	@Override
+	protected void doDelete(AssetVocabulary assetVocabulary) throws Exception {
+		super.doDelete(assetVocabulary);
+	}
+
+	@Override
 	protected Document doGetDocument(AssetVocabulary assetVocabulary)
 		throws Exception {
 

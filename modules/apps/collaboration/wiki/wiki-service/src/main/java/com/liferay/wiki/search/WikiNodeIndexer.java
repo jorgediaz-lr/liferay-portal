@@ -79,6 +79,11 @@ public class WikiNodeIndexer extends BaseIndexer<WikiNode> {
 	}
 
 	@Override
+	protected void doDelete(WikiNode wikiNode) throws Exception {
+		super.doDelete(wikiNode);
+	}
+
+	@Override
 	protected Document doGetDocument(WikiNode wikiNode) throws Exception {
 		Document document = getBaseModelDocument(CLASS_NAME, wikiNode);
 

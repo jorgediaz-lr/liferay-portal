@@ -113,6 +113,11 @@ public class CalendarBookingIndexer extends BaseIndexer<CalendarBooking> {
 	}
 
 	@Override
+	protected void doDelete(CalendarBooking calendarBooking) throws Exception {
+		super.doDelete(calendarBooking);
+	}
+
+	@Override
 	protected Document doGetDocument(CalendarBooking calendarBooking)
 		throws Exception {
 
