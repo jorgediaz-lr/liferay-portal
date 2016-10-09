@@ -18,6 +18,7 @@ import com.liferay.message.boards.kernel.model.MBCategory;
 import com.liferay.message.boards.kernel.model.MBCategoryConstants;
 import com.liferay.message.boards.kernel.model.MBDiscussion;
 import com.liferay.message.boards.kernel.model.MBMessage;
+import com.liferay.message.boards.kernel.model.MBMessageConstants;
 import com.liferay.message.boards.kernel.service.MBCategoryLocalServiceUtil;
 import com.liferay.message.boards.kernel.service.MBCategoryServiceUtil;
 import com.liferay.message.boards.kernel.service.MBDiscussionLocalServiceUtil;
@@ -238,7 +239,7 @@ public class MBMessageIndexer
 
 	@Override
 	protected void doDelete(MBMessage mbMessage) throws Exception {
-		deleteDocument(mbMessage.getCompanyId(), mbMessage.getMessageId());
+		super.doDelete(mbMessage);
 	}
 
 	@Override
@@ -438,39 +439,23 @@ public class MBMessageIndexer
 					};
 
 					dynamicQuery.add(statusProperty.in(statuses));
+
+					if (categoryId ==
+							MBCategoryConstants.DISCUSSION_CATEGORY_ID) {
+
+						Property parentMessageIdProperty =
+							PropertyFactoryUtil.forName("parentMessageId");
+
+						dynamicQuery.add(
+							parentMessageIdProperty.ne(
+								MBMessageConstants.DEFAULT_PARENT_MESSAGE_ID));
+					}
 				}
 
 			});
-		indexableActionableDynamicQuery.setCompanyId(companyId);
 		indexableActionableDynamicQuery.setGroupId(groupId);
-		indexableActionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<MBMessage>() {
 
-				@Override
-				public void performAction(MBMessage message) {
-					if (message.isDiscussion() && message.isRoot()) {
-						return;
-					}
-
-					try {
-						Document document = getDocument(message);
-
-						indexableActionableDynamicQuery.addDocuments(document);
-					}
-					catch (PortalException pe) {
-						if (_log.isWarnEnabled()) {
-							_log.warn(
-								"Unable to index message boards message " +
-									message.getMessageId(),
-								pe);
-						}
-					}
-				}
-
-			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
-
-		indexableActionableDynamicQuery.performActions();
+		reindexCompany(indexableActionableDynamicQuery, companyId);
 	}
 
 	protected void reindexRoot(final long companyId) throws PortalException {

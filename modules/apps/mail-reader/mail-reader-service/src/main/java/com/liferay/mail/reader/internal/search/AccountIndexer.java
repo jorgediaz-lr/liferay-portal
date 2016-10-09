@@ -18,7 +18,6 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeIndexerUtil;
 import com.liferay.mail.reader.model.Account;
 import com.liferay.mail.reader.service.AccountLocalService;
-import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -126,9 +125,7 @@ public class AccountIndexer extends BaseIndexer<Account> {
 
 	@Override
 	protected void doReindex(String className, long classPK) throws Exception {
-		Account account = _accountLocalService.getAccount(classPK);
-
-		doReindex(account);
+		super.doReindex(className, classPK);
 	}
 
 	@Override
@@ -142,33 +139,7 @@ public class AccountIndexer extends BaseIndexer<Account> {
 		final IndexableActionableDynamicQuery indexableActionableDynamicQuery =
 			_accountLocalService.getIndexableActionableDynamicQuery();
 
-		indexableActionableDynamicQuery.setCompanyId(companyId);
-		indexableActionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<Account>() {
-
-				@Override
-				public void performAction(Account account)
-					throws PortalException {
-
-					try {
-						Document document = getDocument(account);
-
-						indexableActionableDynamicQuery.addDocuments(document);
-					}
-					catch (PortalException pe) {
-						if (_log.isWarnEnabled()) {
-							_log.warn(
-								"Unable to index account " +
-									account.getAccountId(),
-								pe);
-						}
-					}
-				}
-
-			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
-
-		indexableActionableDynamicQuery.performActions();
+		reindexCompany(indexableActionableDynamicQuery, companyId);
 	}
 
 	@Reference(unbind = "-")

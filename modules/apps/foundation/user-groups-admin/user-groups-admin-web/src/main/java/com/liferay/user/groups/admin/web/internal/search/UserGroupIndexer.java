@@ -14,7 +14,6 @@
 
 package com.liferay.user.groups.admin.web.internal.search;
 
-import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -78,7 +77,7 @@ public class UserGroupIndexer extends BaseIndexer<UserGroup> {
 			long entryClassPK, String actionId)
 		throws Exception {
 
-		UserGroup userGroup = _userGroupLocalService.getUserGroup(entryClassPK);
+		UserGroup userGroup = getPersistedModel(entryClassName, entryClassPK);
 
 		return _userGroupPermission.contains(
 			permissionChecker, userGroup.getUserGroupId(), actionId);
@@ -107,7 +106,7 @@ public class UserGroupIndexer extends BaseIndexer<UserGroup> {
 
 	@Override
 	protected void doDelete(UserGroup userGroup) throws Exception {
-		deleteDocument(userGroup.getCompanyId(), userGroup.getUserGroupId());
+		super.doDelete(userGroup);
 	}
 
 	@Override
@@ -149,9 +148,7 @@ public class UserGroupIndexer extends BaseIndexer<UserGroup> {
 
 	@Override
 	protected void doReindex(String className, long classPK) throws Exception {
-		UserGroup userGroup = _userGroupLocalService.getUserGroup(classPK);
-
-		doReindex(userGroup);
+		super.doReindex(className, classPK);
 	}
 
 	@Override
@@ -174,31 +171,7 @@ public class UserGroupIndexer extends BaseIndexer<UserGroup> {
 		final IndexableActionableDynamicQuery indexableActionableDynamicQuery =
 			_userGroupLocalService.getIndexableActionableDynamicQuery();
 
-		indexableActionableDynamicQuery.setCompanyId(companyId);
-		indexableActionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<UserGroup>() {
-
-				@Override
-				public void performAction(UserGroup userGroup) {
-					try {
-						Document document = getDocument(userGroup);
-
-						indexableActionableDynamicQuery.addDocuments(document);
-					}
-					catch (PortalException pe) {
-						if (_log.isWarnEnabled()) {
-							_log.warn(
-								"Unable to index user group " +
-									userGroup.getUserGroupId(),
-								pe);
-						}
-					}
-				}
-
-			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
-
-		indexableActionableDynamicQuery.performActions();
+		reindexCompany(indexableActionableDynamicQuery, companyId);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

@@ -17,7 +17,6 @@ package com.liferay.bookmarks.search;
 import com.liferay.bookmarks.model.BookmarksFolder;
 import com.liferay.bookmarks.service.BookmarksFolderLocalService;
 import com.liferay.bookmarks.service.permission.BookmarksFolderPermissionChecker;
-import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -71,8 +70,8 @@ public class BookmarksFolderIndexer extends BaseIndexer<BookmarksFolder> {
 			long entryClassPK, String actionId)
 		throws Exception {
 
-		BookmarksFolder folder = _bookmarksFolderLocalService.getFolder(
-			entryClassPK);
+		BookmarksFolder folder = getPersistedModel(
+			entryClassName, entryClassPK);
 
 		return BookmarksFolderPermissionChecker.contains(
 			permissionChecker, folder, ActionKeys.VIEW);
@@ -88,8 +87,7 @@ public class BookmarksFolderIndexer extends BaseIndexer<BookmarksFolder> {
 
 	@Override
 	protected void doDelete(BookmarksFolder bookmarksFolder) throws Exception {
-		deleteDocument(
-			bookmarksFolder.getCompanyId(), bookmarksFolder.getFolderId());
+		super.doDelete(bookmarksFolder);
 	}
 
 	@Override
@@ -145,10 +143,7 @@ public class BookmarksFolderIndexer extends BaseIndexer<BookmarksFolder> {
 
 	@Override
 	protected void doReindex(String className, long classPK) throws Exception {
-		BookmarksFolder folder = _bookmarksFolderLocalService.getFolder(
-			classPK);
-
-		doReindex(folder);
+		super.doReindex(className, classPK);
 	}
 
 	@Override
@@ -162,31 +157,7 @@ public class BookmarksFolderIndexer extends BaseIndexer<BookmarksFolder> {
 		final IndexableActionableDynamicQuery indexableActionableDynamicQuery =
 			_bookmarksFolderLocalService.getIndexableActionableDynamicQuery();
 
-		indexableActionableDynamicQuery.setCompanyId(companyId);
-		indexableActionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<BookmarksFolder>() {
-
-				@Override
-				public void performAction(BookmarksFolder folder) {
-					try {
-						Document document = getDocument(folder);
-
-						indexableActionableDynamicQuery.addDocuments(document);
-					}
-					catch (PortalException pe) {
-						if (_log.isWarnEnabled()) {
-							_log.warn(
-								"Unable to index bookmarks folder " +
-									folder.getFolderId(),
-								pe);
-						}
-					}
-				}
-
-			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
-
-		indexableActionableDynamicQuery.performActions();
+		reindexCompany(indexableActionableDynamicQuery, companyId);
 	}
 
 	@Reference(unbind = "-")

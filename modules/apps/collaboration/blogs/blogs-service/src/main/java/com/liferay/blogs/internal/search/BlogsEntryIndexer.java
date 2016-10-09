@@ -100,7 +100,7 @@ public class BlogsEntryIndexer extends BaseIndexer<BlogsEntry> {
 
 	@Override
 	protected void doDelete(BlogsEntry blogsEntry) throws Exception {
-		deleteDocument(blogsEntry.getCompanyId(), blogsEntry.getEntryId());
+		super.doDelete(blogsEntry);
 	}
 
 	@Override
@@ -141,9 +141,7 @@ public class BlogsEntryIndexer extends BaseIndexer<BlogsEntry> {
 
 	@Override
 	protected void doReindex(String className, long classPK) throws Exception {
-		BlogsEntry entry = _blogsEntryLocalService.getEntry(classPK);
-
-		doReindex(entry);
+		super.doReindex(className, classPK);
 	}
 
 	@Override
@@ -179,31 +177,8 @@ public class BlogsEntryIndexer extends BaseIndexer<BlogsEntry> {
 				}
 
 			});
-		indexableActionableDynamicQuery.setCompanyId(companyId);
-		indexableActionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<BlogsEntry>() {
 
-				@Override
-				public void performAction(BlogsEntry entry) {
-					try {
-						Document document = getDocument(entry);
-
-						indexableActionableDynamicQuery.addDocuments(document);
-					}
-					catch (PortalException pe) {
-						if (_log.isWarnEnabled()) {
-							_log.warn(
-								"Unable to index blogs entry " +
-									entry.getEntryId(),
-								pe);
-						}
-					}
-				}
-
-			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
-
-		indexableActionableDynamicQuery.performActions();
+		reindexCompany(indexableActionableDynamicQuery, companyId);
 	}
 
 	@Reference(unbind = "-")

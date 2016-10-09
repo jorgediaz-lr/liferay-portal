@@ -32,7 +32,6 @@ import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.Property;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -157,7 +156,7 @@ public class DDLRecordIndexer extends BaseIndexer<DDLRecord> {
 
 	@Override
 	protected void doDelete(DDLRecord ddlRecord) throws Exception {
-		deleteDocument(ddlRecord.getCompanyId(), ddlRecord.getRecordId());
+		super.doDelete(ddlRecord);
 	}
 
 	@Override
@@ -238,9 +237,7 @@ public class DDLRecordIndexer extends BaseIndexer<DDLRecord> {
 
 	@Override
 	protected void doReindex(String className, long classPK) throws Exception {
-		DDLRecord record = _ddlRecordLocalService.getRecord(classPK);
-
-		doReindex(record);
+		super.doReindex(className, classPK);
 	}
 
 	@Override
@@ -336,36 +333,8 @@ public class DDLRecordIndexer extends BaseIndexer<DDLRecord> {
 				}
 
 			});
-		indexableActionableDynamicQuery.setCompanyId(companyId);
-		indexableActionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<DDLRecord>() {
 
-				@Override
-				public void performAction(DDLRecord record)
-					throws PortalException {
-
-					try {
-						Document document = getDocument(record);
-
-						if (document != null) {
-							indexableActionableDynamicQuery.addDocuments(
-								document);
-						}
-					}
-					catch (PortalException pe) {
-						if (_log.isWarnEnabled()) {
-							_log.warn(
-								"Unable to index dynamic data lists record " +
-									record.getRecordId(),
-								pe);
-						}
-					}
-				}
-
-			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
-
-		indexableActionableDynamicQuery.performActions();
+		reindexCompany(indexableActionableDynamicQuery, companyId);
 	}
 
 	@Reference(unbind = "-")

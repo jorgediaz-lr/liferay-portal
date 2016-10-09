@@ -97,8 +97,7 @@ public class BookmarksEntryIndexer extends BaseIndexer<BookmarksEntry> {
 
 	@Override
 	protected void doDelete(BookmarksEntry bookmarksEntry) throws Exception {
-		deleteDocument(
-			bookmarksEntry.getCompanyId(), bookmarksEntry.getEntryId());
+		super.doDelete(bookmarksEntry);
 	}
 
 	@Override
@@ -139,9 +138,7 @@ public class BookmarksEntryIndexer extends BaseIndexer<BookmarksEntry> {
 
 	@Override
 	protected void doReindex(String className, long classPK) throws Exception {
-		BookmarksEntry entry = _bookmarksEntryLocalService.getEntry(classPK);
-
-		doReindex(entry);
+		super.doReindex(className, classPK);
 	}
 
 	@Override
@@ -181,32 +178,8 @@ public class BookmarksEntryIndexer extends BaseIndexer<BookmarksEntry> {
 				}
 
 			});
-		indexableActionableDynamicQuery.setCompanyId(companyId);
-		indexableActionableDynamicQuery.setGroupId(groupId);
-		indexableActionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<BookmarksEntry>() {
 
-				@Override
-				public void performAction(BookmarksEntry entry) {
-					try {
-						Document document = getDocument(entry);
-
-						indexableActionableDynamicQuery.addDocuments(document);
-					}
-					catch (PortalException pe) {
-						if (_log.isWarnEnabled()) {
-							_log.warn(
-								"Unable to index bookmarks entry " +
-									entry.getEntryId(),
-								pe);
-						}
-					}
-				}
-
-			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
-
-		indexableActionableDynamicQuery.performActions();
+		reindexCompany(indexableActionableDynamicQuery, companyId);
 	}
 
 	protected void reindexFolders(final long companyId) throws PortalException {

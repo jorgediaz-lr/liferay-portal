@@ -17,9 +17,7 @@ package com.liferay.dynamic.data.lists.internal.search;
 import com.liferay.dynamic.data.lists.model.DDLRecord;
 import com.liferay.dynamic.data.lists.model.DDLRecordSet;
 import com.liferay.dynamic.data.lists.service.DDLRecordSetLocalService;
-import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.BaseIndexer;
@@ -61,7 +59,7 @@ public class DDLRecordSetIndexer extends BaseIndexer<DDLRecordSet> {
 
 	@Override
 	protected void doDelete(DDLRecordSet recordSet) throws Exception {
-		deleteDocument(recordSet.getCompanyId(), recordSet.getRecordSetId());
+		super.doDelete(recordSet);
 	}
 
 	@Override
@@ -93,10 +91,7 @@ public class DDLRecordSetIndexer extends BaseIndexer<DDLRecordSet> {
 
 	@Override
 	protected void doReindex(String className, long classPK) throws Exception {
-		DDLRecordSet recordSet = _ddlRecordSetLocalService.getRecordSet(
-			classPK);
-
-		doReindex(recordSet);
+		super.doReindex(className, classPK);
 	}
 
 	@Override
@@ -117,36 +112,7 @@ public class DDLRecordSetIndexer extends BaseIndexer<DDLRecordSet> {
 		final IndexableActionableDynamicQuery indexableActionableDynamicQuery =
 			_ddlRecordSetLocalService.getIndexableActionableDynamicQuery();
 
-		indexableActionableDynamicQuery.setCompanyId(companyId);
-		indexableActionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<DDLRecordSet>() {
-
-				@Override
-				public void performAction(DDLRecordSet recordSet)
-					throws PortalException {
-
-					try {
-						Document document = getDocument(recordSet);
-
-						if (document != null) {
-							indexableActionableDynamicQuery.addDocuments(
-								document);
-						}
-					}
-					catch (PortalException pe) {
-						if (_log.isWarnEnabled()) {
-							_log.warn(
-								"Unable to index dynamic data lists record " +
-									recordSet.getRecordSetId(),
-								pe);
-						}
-					}
-				}
-
-			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
-
-		indexableActionableDynamicQuery.performActions();
+		reindexCompany(indexableActionableDynamicQuery, companyId);
 	}
 
 	@Reference(unbind = "-")
