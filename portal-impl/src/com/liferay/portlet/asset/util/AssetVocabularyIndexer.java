@@ -16,7 +16,6 @@ package com.liferay.portlet.asset.util;
 
 import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.asset.kernel.service.AssetVocabularyLocalServiceUtil;
-import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -70,8 +69,8 @@ public class AssetVocabularyIndexer extends BaseIndexer<AssetVocabulary> {
 			long entryClassPK, String actionId)
 		throws Exception {
 
-		AssetVocabulary vocabulary =
-			getPersistedModel(entryClassName, entryClassPK);
+		AssetVocabulary vocabulary = getPersistedModel(
+			entryClassName, entryClassPK);
 
 		return AssetVocabularyPermission.contains(
 			permissionChecker, vocabulary, ActionKeys.VIEW);

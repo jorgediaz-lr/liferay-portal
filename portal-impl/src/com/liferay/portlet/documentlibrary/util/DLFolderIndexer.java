@@ -79,8 +79,7 @@ public class DLFolderIndexer
 			long entryClassPK, String actionId)
 		throws Exception {
 
-		DLFolder dlFolder =
-			getPersistedModel(entryClassName, entryClassPK);
+		DLFolder dlFolder = getPersistedModel(entryClassName, entryClassPK);
 
 		return DLFolderPermission.contains(
 			permissionChecker, dlFolder, ActionKeys.VIEW);

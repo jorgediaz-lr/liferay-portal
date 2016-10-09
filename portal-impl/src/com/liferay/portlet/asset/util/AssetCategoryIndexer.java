@@ -16,7 +16,6 @@ package com.liferay.portlet.asset.util;
 
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.service.AssetCategoryLocalServiceUtil;
-import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -74,8 +73,8 @@ public class AssetCategoryIndexer extends BaseIndexer<AssetCategory> {
 			long entryClassPK, String actionId)
 		throws Exception {
 
-		AssetCategory category =
-			getPersistedModel(entryClassName, entryClassPK);
+		AssetCategory category = getPersistedModel(
+			entryClassName, entryClassPK);
 
 		return AssetCategoryPermission.contains(
 			permissionChecker, category, ActionKeys.VIEW);
