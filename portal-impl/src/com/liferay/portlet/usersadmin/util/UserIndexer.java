@@ -383,33 +383,7 @@ public class UserIndexer extends BaseIndexer<User> {
 		final IndexableActionableDynamicQuery indexableActionableDynamicQuery =
 			UserLocalServiceUtil.getIndexableActionableDynamicQuery();
 
-		indexableActionableDynamicQuery.setCompanyId(companyId);
-		indexableActionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<User>() {
-
-				@Override
-				public void performAction(User user) {
-					if (!user.isDefaultUser()) {
-						try {
-							Document document = getDocument(user);
-
-							indexableActionableDynamicQuery.addDocuments(
-								document);
-						}
-						catch (PortalException pe) {
-							if (_log.isWarnEnabled()) {
-								_log.warn(
-									"Unable to index user " + user.getUserId(),
-									pe);
-							}
-						}
-					}
-				}
-
-			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
-
-		indexableActionableDynamicQuery.performActions();
+		reindexCompany(indexableActionableDynamicQuery, companyId);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(UserIndexer.class);

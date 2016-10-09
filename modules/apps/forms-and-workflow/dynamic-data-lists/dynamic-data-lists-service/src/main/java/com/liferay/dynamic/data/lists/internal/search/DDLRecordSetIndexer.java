@@ -104,36 +104,7 @@ public class DDLRecordSetIndexer extends BaseIndexer<DDLRecordSet> {
 		final IndexableActionableDynamicQuery indexableActionableDynamicQuery =
 			_ddlRecordSetLocalService.getIndexableActionableDynamicQuery();
 
-		indexableActionableDynamicQuery.setCompanyId(companyId);
-		indexableActionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<DDLRecordSet>() {
-
-				@Override
-				public void performAction(DDLRecordSet recordSet)
-					throws PortalException {
-
-					try {
-						Document document = getDocument(recordSet);
-
-						if (document != null) {
-							indexableActionableDynamicQuery.addDocuments(
-								document);
-						}
-					}
-					catch (PortalException pe) {
-						if (_log.isWarnEnabled()) {
-							_log.warn(
-								"Unable to index dynamic data lists record " +
-									recordSet.getRecordSetId(),
-								pe);
-						}
-					}
-				}
-
-			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
-
-		indexableActionableDynamicQuery.performActions();
+		reindexCompany(indexableActionableDynamicQuery, companyId);
 	}
 
 	@Reference(unbind = "-")

@@ -167,31 +167,8 @@ public class BlogsEntryIndexer extends BaseIndexer<BlogsEntry> {
 				}
 
 			});
-		indexableActionableDynamicQuery.setCompanyId(companyId);
-		indexableActionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<BlogsEntry>() {
 
-				@Override
-				public void performAction(BlogsEntry entry) {
-					try {
-						Document document = getDocument(entry);
-
-						indexableActionableDynamicQuery.addDocuments(document);
-					}
-					catch (PortalException pe) {
-						if (_log.isWarnEnabled()) {
-							_log.warn(
-								"Unable to index blogs entry " +
-									entry.getEntryId(),
-								pe);
-						}
-					}
-				}
-
-			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
-
-		indexableActionableDynamicQuery.performActions();
+		reindexCompany(indexableActionableDynamicQuery, companyId);
 	}
 
 	@Reference(unbind = "-")

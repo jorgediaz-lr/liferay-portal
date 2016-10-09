@@ -293,36 +293,7 @@ public class ExportImportConfigurationIndexer
 			_exportImportConfigurationLocalService.
 				getIndexableActionableDynamicQuery();
 
-		indexableActionableDynamicQuery.setCompanyId(companyId);
-		indexableActionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.
-				PerformActionMethod<ExportImportConfiguration>() {
-
-				@Override
-				public void performAction(
-					ExportImportConfiguration exportImportConfiguration) {
-
-					try {
-						Document document = getDocument(
-							exportImportConfiguration);
-
-						indexableActionableDynamicQuery.addDocuments(document);
-					}
-					catch (PortalException pe) {
-						if (_log.isWarnEnabled()) {
-							_log.warn(
-								"Unable to index export import configuration " +
-									exportImportConfiguration.
-										getExportImportConfigurationId(),
-								pe);
-						}
-					}
-				}
-
-			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
-
-		indexableActionableDynamicQuery.performActions();
+		reindexCompany(indexableActionableDynamicQuery, companyId);
 	}
 
 	@Reference(unbind = "-")

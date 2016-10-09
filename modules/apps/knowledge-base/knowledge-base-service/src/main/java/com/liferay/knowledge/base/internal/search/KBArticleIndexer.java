@@ -238,31 +238,8 @@ public class KBArticleIndexer extends BaseIndexer<KBArticle> {
 				}
 
 			});
-		indexableActionableDynamicQuery.setCompanyId(companyId);
-		indexableActionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<KBArticle>() {
 
-				@Override
-				public void performAction(KBArticle kbArticle) {
-					try {
-						Document document = getDocument(kbArticle);
-
-						indexableActionableDynamicQuery.addDocuments(document);
-					}
-					catch (PortalException pe) {
-						if (_log.isWarnEnabled()) {
-							_log.warn(
-								"Unable to index knowledge base article " +
-									kbArticle.getKbArticleId(),
-								pe);
-						}
-					}
-				}
-
-			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
-
-		indexableActionableDynamicQuery.performActions();
+		reindexCompany(indexableActionableDynamicQuery, companyId);
 	}
 
 	@Reference(unbind = "-")

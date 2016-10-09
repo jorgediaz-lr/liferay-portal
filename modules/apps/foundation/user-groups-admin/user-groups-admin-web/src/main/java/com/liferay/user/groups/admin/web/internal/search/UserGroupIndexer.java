@@ -162,31 +162,7 @@ public class UserGroupIndexer extends BaseIndexer<UserGroup> {
 		final IndexableActionableDynamicQuery indexableActionableDynamicQuery =
 			_userGroupLocalService.getIndexableActionableDynamicQuery();
 
-		indexableActionableDynamicQuery.setCompanyId(companyId);
-		indexableActionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<UserGroup>() {
-
-				@Override
-				public void performAction(UserGroup userGroup) {
-					try {
-						Document document = getDocument(userGroup);
-
-						indexableActionableDynamicQuery.addDocuments(document);
-					}
-					catch (PortalException pe) {
-						if (_log.isWarnEnabled()) {
-							_log.warn(
-								"Unable to index user group " +
-									userGroup.getUserGroupId(),
-								pe);
-						}
-					}
-				}
-
-			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
-
-		indexableActionableDynamicQuery.performActions();
+		reindexCompany(indexableActionableDynamicQuery, companyId);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

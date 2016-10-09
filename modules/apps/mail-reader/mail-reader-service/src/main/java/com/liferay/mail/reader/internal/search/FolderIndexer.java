@@ -137,33 +137,7 @@ public class FolderIndexer extends BaseIndexer<Folder> {
 		final IndexableActionableDynamicQuery indexableActionableDynamicQuery =
 			_folderLocalService.getIndexableActionableDynamicQuery();
 
-		indexableActionableDynamicQuery.setCompanyId(companyId);
-		indexableActionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<Folder>() {
-
-				@Override
-				public void performAction(Folder folder)
-					throws PortalException {
-
-					try {
-						Document document = getDocument(folder);
-
-						indexableActionableDynamicQuery.addDocuments(document);
-					}
-					catch (PortalException pe) {
-						if (_log.isWarnEnabled()) {
-							_log.warn(
-								"Unable to index folder " +
-									folder.getFolderId(),
-								pe);
-						}
-					}
-				}
-
-			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
-
-		indexableActionableDynamicQuery.performActions();
+		reindexCompany(indexableActionableDynamicQuery, companyId);
 	}
 
 	@Reference(unbind = "-")

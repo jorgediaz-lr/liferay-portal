@@ -436,36 +436,9 @@ public class MBMessageIndexer
 				}
 
 			});
-		indexableActionableDynamicQuery.setCompanyId(companyId);
 		indexableActionableDynamicQuery.setGroupId(groupId);
-		indexableActionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<MBMessage>() {
 
-				@Override
-				public void performAction(MBMessage message) {
-					if (message.isDiscussion() && message.isRoot()) {
-						return;
-					}
-
-					try {
-						Document document = getDocument(message);
-
-						indexableActionableDynamicQuery.addDocuments(document);
-					}
-					catch (PortalException pe) {
-						if (_log.isWarnEnabled()) {
-							_log.warn(
-								"Unable to index message boards message " +
-									message.getMessageId(),
-								pe);
-						}
-					}
-				}
-
-			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
-
-		indexableActionableDynamicQuery.performActions();
+		reindexCompany(indexableActionableDynamicQuery, companyId);
 	}
 
 	protected void reindexRoot(final long companyId) throws PortalException {
