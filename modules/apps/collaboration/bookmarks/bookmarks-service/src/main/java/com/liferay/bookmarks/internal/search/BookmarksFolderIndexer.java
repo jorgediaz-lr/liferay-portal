@@ -17,7 +17,6 @@ package com.liferay.bookmarks.internal.search;
 import com.liferay.bookmarks.model.BookmarksFolder;
 import com.liferay.bookmarks.service.BookmarksFolderLocalService;
 import com.liferay.petra.string.CharPool;
-import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -78,8 +77,8 @@ public class BookmarksFolderIndexer
 			long entryClassPK, String actionId)
 		throws Exception {
 
-		BookmarksFolder folder =
-			getPersistedModel(entryClassName, entryClassPK);
+		BookmarksFolder folder = getPersistedModel(
+			entryClassName, entryClassPK);
 
 		return _bookmarksFolderModelResourcePermission.contains(
 			permissionChecker, entryClassPK, ActionKeys.VIEW);
