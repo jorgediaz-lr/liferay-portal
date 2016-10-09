@@ -18,6 +18,7 @@ import com.liferay.message.boards.kernel.model.MBCategory;
 import com.liferay.message.boards.kernel.model.MBCategoryConstants;
 import com.liferay.message.boards.kernel.model.MBDiscussion;
 import com.liferay.message.boards.kernel.model.MBMessage;
+import com.liferay.message.boards.kernel.model.MBMessageConstants;
 import com.liferay.message.boards.kernel.service.MBCategoryLocalServiceUtil;
 import com.liferay.message.boards.kernel.service.MBCategoryServiceUtil;
 import com.liferay.message.boards.kernel.service.MBDiscussionLocalServiceUtil;
@@ -433,6 +434,17 @@ public class MBMessageIndexer
 					};
 
 					dynamicQuery.add(statusProperty.in(statuses));
+
+					if (categoryId ==
+							MBCategoryConstants.DISCUSSION_CATEGORY_ID) {
+
+						Property parentMessageIdProperty =
+							PropertyFactoryUtil.forName("parentMessageId");
+
+						dynamicQuery.add(
+							parentMessageIdProperty.ne(
+								MBMessageConstants.DEFAULT_PARENT_MESSAGE_ID));
+					}
 				}
 
 			});
