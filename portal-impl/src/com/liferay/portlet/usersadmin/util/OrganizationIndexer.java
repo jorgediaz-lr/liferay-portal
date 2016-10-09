@@ -220,31 +220,7 @@ public class OrganizationIndexer extends BaseIndexer<Organization> {
 		final IndexableActionableDynamicQuery indexableActionableDynamicQuery =
 			OrganizationLocalServiceUtil.getIndexableActionableDynamicQuery();
 
-		indexableActionableDynamicQuery.setCompanyId(companyId);
-		indexableActionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<Organization>() {
-
-				@Override
-				public void performAction(Organization organization) {
-					try {
-						Document document = getDocument(organization);
-
-						indexableActionableDynamicQuery.addDocuments(document);
-					}
-					catch (PortalException pe) {
-						if (_log.isWarnEnabled()) {
-							_log.warn(
-								"Unable to index organization " +
-									organization.getOrganizationId(),
-								pe);
-						}
-					}
-				}
-
-			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
-
-		indexableActionableDynamicQuery.performActions();
+		reindexCompany(indexableActionableDynamicQuery, companyId);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

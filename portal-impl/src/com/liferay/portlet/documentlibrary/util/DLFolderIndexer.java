@@ -183,31 +183,8 @@ public class DLFolderIndexer
 				}
 
 			});
-		indexableActionableDynamicQuery.setCompanyId(companyId);
-		indexableActionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<DLFolder>() {
 
-				@Override
-				public void performAction(DLFolder dlFolder) {
-					try {
-						Document document = getDocument(dlFolder);
-
-						indexableActionableDynamicQuery.addDocuments(document);
-					}
-					catch (PortalException pe) {
-						if (_log.isWarnEnabled()) {
-							_log.warn(
-								"Unable to index document library folder " +
-									dlFolder.getFolderId(),
-								pe);
-						}
-					}
-				}
-
-			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
-
-		indexableActionableDynamicQuery.performActions();
+		reindexCompany(indexableActionableDynamicQuery, companyId);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

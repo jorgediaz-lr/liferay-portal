@@ -150,31 +150,7 @@ public class AssetVocabularyIndexer extends BaseIndexer<AssetVocabulary> {
 			AssetVocabularyLocalServiceUtil.
 				getIndexableActionableDynamicQuery();
 
-		indexableActionableDynamicQuery.setCompanyId(companyId);
-		indexableActionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<AssetVocabulary>() {
-
-				@Override
-				public void performAction(AssetVocabulary assetVocabulary) {
-					try {
-						Document document = getDocument(assetVocabulary);
-
-						indexableActionableDynamicQuery.addDocuments(document);
-					}
-					catch (PortalException pe) {
-						if (_log.isWarnEnabled()) {
-							_log.warn(
-								"Unable to index asset vocabulary " +
-									assetVocabulary.getVocabularyId(),
-								pe);
-						}
-					}
-				}
-
-			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
-
-		indexableActionableDynamicQuery.performActions();
+		reindexCompany(indexableActionableDynamicQuery, companyId);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

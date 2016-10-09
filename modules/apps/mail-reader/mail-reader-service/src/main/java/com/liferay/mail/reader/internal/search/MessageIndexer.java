@@ -101,33 +101,7 @@ public class MessageIndexer extends BaseIndexer<Message> {
 		final IndexableActionableDynamicQuery indexableActionableDynamicQuery =
 			_messageLocalService.getIndexableActionableDynamicQuery();
 
-		indexableActionableDynamicQuery.setCompanyId(companyId);
-		indexableActionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<Message>() {
-
-				@Override
-				public void performAction(Message message)
-					throws PortalException {
-
-					try {
-						Document document = getDocument(message);
-
-						indexableActionableDynamicQuery.addDocuments(document);
-					}
-					catch (PortalException pe) {
-						if (_log.isWarnEnabled()) {
-							_log.warn(
-								"Unable to index message " +
-									message.getMessageId(),
-								pe);
-						}
-					}
-				}
-
-			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
-
-		indexableActionableDynamicQuery.performActions();
+		reindexCompany(indexableActionableDynamicQuery, companyId);
 	}
 
 	@Reference(unbind = "-")

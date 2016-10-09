@@ -168,32 +168,7 @@ public class CalendarIndexer extends BaseIndexer<Calendar> {
 		final IndexableActionableDynamicQuery indexableActionableDynamicQuery =
 			_calendarLocalService.getIndexableActionableDynamicQuery();
 
-		indexableActionableDynamicQuery.setCompanyId(companyId);
-		indexableActionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<Calendar>() {
-
-				@Override
-				public void performAction(Calendar calendar) {
-					try {
-						Document document = getDocument(calendar);
-
-						indexableActionableDynamicQuery.addDocuments(document);
-					}
-					catch (PortalException pe) {
-						if (_log.isWarnEnabled()) {
-							_log.warn(
-								"Unable to index calendar " +
-									calendar.getCalendarId(),
-								pe);
-						}
-					}
-				}
-
-			});
-
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
-
-		indexableActionableDynamicQuery.performActions();
+		reindexCompany(indexableActionableDynamicQuery, companyId);
 	}
 
 	@Reference(unbind = "-")

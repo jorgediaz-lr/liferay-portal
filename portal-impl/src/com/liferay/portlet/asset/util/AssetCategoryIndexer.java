@@ -205,34 +205,7 @@ public class AssetCategoryIndexer extends BaseIndexer<AssetCategory> {
 		final IndexableActionableDynamicQuery indexableActionableDynamicQuery =
 			AssetCategoryLocalServiceUtil.getIndexableActionableDynamicQuery();
 
-		indexableActionableDynamicQuery.setCompanyId(companyId);
-		indexableActionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<AssetCategory>() {
-
-				@Override
-				public void performAction(AssetCategory category) {
-					try {
-						Document document = getDocument(category);
-
-						if (document != null) {
-							indexableActionableDynamicQuery.addDocuments(
-								document);
-						}
-					}
-					catch (PortalException pe) {
-						if (_log.isWarnEnabled()) {
-							_log.warn(
-								"Unable to index asset category " +
-									category.getCategoryId(),
-								pe);
-						}
-					}
-				}
-
-			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
-
-		indexableActionableDynamicQuery.performActions();
+		reindexCompany(indexableActionableDynamicQuery, companyId);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
