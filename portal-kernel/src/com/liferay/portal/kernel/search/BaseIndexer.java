@@ -1422,7 +1422,7 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 		}
 
 		ClassedModel classedModel = (ClassedModel)object;
-				
+
 		deleteDocument(companyId, (long)classedModel.getPrimaryKeyObj());
 	}
 
@@ -1459,7 +1459,6 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 	}
 
 	protected void doReindex(String className, long classPK) throws Exception {
-
 		T object = getPersistedModel(className, classPK);
 
 		doReindex(object);
