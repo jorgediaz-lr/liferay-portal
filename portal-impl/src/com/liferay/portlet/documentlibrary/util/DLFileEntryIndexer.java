@@ -339,12 +339,6 @@ public class DLFileEntryIndexer
 	}
 
 	@Override
-	protected void doDelete(DLFileEntry dlFileEntry) throws Exception {
-		deleteDocument(
-			dlFileEntry.getCompanyId(), dlFileEntry.getFileEntryId());
-	}
-
-	@Override
 	protected Document doGetDocument(DLFileEntry dlFileEntry) throws Exception {
 		if (_log.isDebugEnabled()) {
 			_log.debug("Indexing document " + dlFileEntry);

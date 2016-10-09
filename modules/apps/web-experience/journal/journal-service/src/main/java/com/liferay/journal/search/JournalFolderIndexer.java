@@ -95,12 +95,6 @@ public class JournalFolderIndexer
 	}
 
 	@Override
-	protected void doDelete(JournalFolder journalFolder) throws Exception {
-		deleteDocument(
-			journalFolder.getCompanyId(), journalFolder.getFolderId());
-	}
-
-	@Override
 	protected Document doGetDocument(JournalFolder journalFolder)
 		throws Exception {
 

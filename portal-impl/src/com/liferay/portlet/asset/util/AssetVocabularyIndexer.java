@@ -96,12 +96,6 @@ public class AssetVocabularyIndexer extends BaseIndexer<AssetVocabulary> {
 	}
 
 	@Override
-	protected void doDelete(AssetVocabulary assetVocabulary) throws Exception {
-		deleteDocument(
-			assetVocabulary.getCompanyId(), assetVocabulary.getVocabularyId());
-	}
-
-	@Override
 	protected Document doGetDocument(AssetVocabulary assetVocabulary)
 		throws Exception {
 

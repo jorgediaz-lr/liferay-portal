@@ -99,15 +99,6 @@ public class ExportImportConfigurationIndexer
 	}
 
 	@Override
-	protected void doDelete(ExportImportConfiguration exportImportConfiguration)
-		throws Exception {
-
-		deleteDocument(
-			exportImportConfiguration.getCompanyId(),
-			exportImportConfiguration.getExportImportConfigurationId());
-	}
-
-	@Override
 	protected Document doGetDocument(
 			ExportImportConfiguration exportImportConfiguration)
 		throws Exception {
