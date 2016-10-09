@@ -96,6 +96,11 @@ public class BookmarksEntryIndexer extends BaseIndexer<BookmarksEntry> {
 	}
 
 	@Override
+	protected void doDelete(BookmarksEntry bookmarksEntry) throws Exception {
+		super.doDelete(bookmarksEntry);
+	}
+
+	@Override
 	protected Document doGetDocument(BookmarksEntry bookmarksEntry)
 		throws Exception {
 

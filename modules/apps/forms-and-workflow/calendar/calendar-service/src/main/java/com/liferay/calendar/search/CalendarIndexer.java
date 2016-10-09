@@ -98,6 +98,11 @@ public class CalendarIndexer extends BaseIndexer<Calendar> {
 	}
 
 	@Override
+	protected void doDelete(Calendar calendar) throws Exception {
+		super.doDelete(calendar);
+	}
+
+	@Override
 	protected Document doGetDocument(Calendar calendar) throws Exception {
 		Document document = getBaseModelDocument(CLASS_NAME, calendar);
 
