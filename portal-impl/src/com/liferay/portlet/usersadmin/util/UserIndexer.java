@@ -236,7 +236,7 @@ public class UserIndexer extends BaseIndexer<User> {
 
 	@Override
 	protected void doDelete(User user) throws Exception {
-		deleteDocument(user.getCompanyId(), user.getUserId());
+		super.doDelete(user);
 
 		Indexer<Contact> indexer = IndexerRegistryUtil.nullSafeGetIndexer(
 			Contact.class);

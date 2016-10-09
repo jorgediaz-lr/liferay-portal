@@ -94,12 +94,6 @@ public class BookmarksFolderIndexer
 	}
 
 	@Override
-	protected void doDelete(BookmarksFolder bookmarksFolder) throws Exception {
-		deleteDocument(
-			bookmarksFolder.getCompanyId(), bookmarksFolder.getFolderId());
-	}
-
-	@Override
 	protected Document doGetDocument(BookmarksFolder bookmarksFolder)
 		throws Exception {
 
