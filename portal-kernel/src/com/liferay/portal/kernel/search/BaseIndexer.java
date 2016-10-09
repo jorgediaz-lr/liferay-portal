@@ -1421,11 +1421,8 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 	}
 
 	protected void doReindex(String className, long classPK) throws Exception {
-		PersistedModelLocalService service =
-			PersistedModelLocalServiceRegistryUtil.
-				getPersistedModelLocalService(className);
 
-		T object = (T)service.getPersistedModel(classPK);
+		T object = getPersistedModel(className, classPK);
 
 		doReindex(object);
 	}
@@ -1570,6 +1567,16 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 		}
 
 		return countryNames;
+	}
+
+	protected T getPersistedModel(String className, long classPK)
+		throws PortalException {
+
+		PersistedModelLocalService service =
+				PersistedModelLocalServiceRegistryUtil.
+					getPersistedModelLocalService(className);
+
+		return (T)service.getPersistedModel(classPK);
 	}
 
 	/**
