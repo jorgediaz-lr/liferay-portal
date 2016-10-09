@@ -153,12 +153,6 @@ public class OrganizationIndexer extends BaseIndexer<Organization> {
 	}
 
 	@Override
-	protected void doDelete(Organization organization) throws Exception {
-		deleteDocument(
-			organization.getCompanyId(), organization.getOrganizationId());
-	}
-
-	@Override
 	protected Document doGetDocument(Organization organization)
 		throws Exception {
 
