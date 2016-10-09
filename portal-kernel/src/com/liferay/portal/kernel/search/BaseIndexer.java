@@ -30,10 +30,12 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.model.BaseModel;
+import com.liferay.portal.kernel.model.ClassedModel;
 import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Region;
 import com.liferay.portal.kernel.model.ResourcedModel;
+import com.liferay.portal.kernel.model.StagedModel;
 import com.liferay.portal.kernel.model.TrashedModel;
 import com.liferay.portal.kernel.model.WorkflowedModel;
 import com.liferay.portal.kernel.search.facet.Facet;
@@ -1380,7 +1382,24 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 			_commitImmediately);
 	}
 
-	protected abstract void doDelete(T object) throws Exception;
+	protected void doDelete(T object) throws Exception {
+		long companyId = CompanyThreadLocal.getCompanyId();
+
+		if (object instanceof AuditedModel) {
+			AuditedModel auditedModel = (AuditedModel)object;
+
+			companyId = auditedModel.getCompanyId();
+		}
+		else if (object instanceof StagedModel) {
+			StagedModel stagedModel = (StagedModel)object;
+
+			companyId = stagedModel.getCompanyId();
+		}
+
+		ClassedModel classedModel = (ClassedModel)object;
+				
+		deleteDocument(companyId, (long)classedModel.getPrimaryKeyObj());
+	}
 
 	protected abstract Document doGetDocument(T object) throws Exception;
 
