@@ -78,6 +78,9 @@ public class BookmarksFolderIndexer
 			long entryClassPK, String actionId)
 		throws Exception {
 
+		BookmarksFolder folder =
+			getPersistedModel(entryClassName, entryClassPK);
+
 		return _bookmarksFolderModelResourcePermission.contains(
 			permissionChecker, entryClassPK, ActionKeys.VIEW);
 	}
