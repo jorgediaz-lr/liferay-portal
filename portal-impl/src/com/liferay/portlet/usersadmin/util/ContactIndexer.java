@@ -168,31 +168,7 @@ public class ContactIndexer extends BaseIndexer<Contact> {
 		final IndexableActionableDynamicQuery indexableActionableDynamicQuery =
 			ContactLocalServiceUtil.getIndexableActionableDynamicQuery();
 
-		indexableActionableDynamicQuery.setCompanyId(companyId);
-		indexableActionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<Contact>() {
-
-				@Override
-				public void performAction(Contact contact) {
-					try {
-						Document document = getDocument(contact);
-
-						indexableActionableDynamicQuery.addDocuments(document);
-					}
-					catch (PortalException pe) {
-						if (_log.isWarnEnabled()) {
-							_log.warn(
-								"Unable to index contact " +
-									contact.getContactId(),
-								pe);
-						}
-					}
-				}
-
-			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
-
-		indexableActionableDynamicQuery.performActions();
+		reindexCompany(indexableActionableDynamicQuery, companyId);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(ContactIndexer.class);
