@@ -106,11 +106,6 @@ public class UserGroupIndexer extends BaseIndexer<UserGroup> {
 	}
 
 	@Override
-	protected void doDelete(UserGroup userGroup) throws Exception {
-		deleteDocument(userGroup.getCompanyId(), userGroup.getUserGroupId());
-	}
-
-	@Override
 	protected Document doGetDocument(UserGroup userGroup) throws Exception {
 		Document document = getBaseModelDocument(CLASS_NAME, userGroup);
 

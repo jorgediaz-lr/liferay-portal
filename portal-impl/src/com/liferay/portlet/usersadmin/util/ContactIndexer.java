@@ -92,11 +92,6 @@ public class ContactIndexer extends BaseIndexer<Contact> {
 	}
 
 	@Override
-	protected void doDelete(Contact contact) throws Exception {
-		deleteDocument(contact.getCompanyId(), contact.getContactId());
-	}
-
-	@Override
 	protected Document doGetDocument(Contact contact) throws Exception {
 		if (contact.isUser()) {
 			User user = UserLocalServiceUtil.fetchUserByContactId(

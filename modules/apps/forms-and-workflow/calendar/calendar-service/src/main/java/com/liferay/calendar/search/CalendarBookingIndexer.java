@@ -128,13 +128,6 @@ public class CalendarBookingIndexer extends BaseIndexer<CalendarBooking> {
 	}
 
 	@Override
-	protected void doDelete(CalendarBooking calendarBooking) throws Exception {
-		deleteDocument(
-			calendarBooking.getCompanyId(),
-			calendarBooking.getCalendarBookingId());
-	}
-
-	@Override
 	protected Document doGetDocument(CalendarBooking calendarBooking)
 		throws Exception {
 

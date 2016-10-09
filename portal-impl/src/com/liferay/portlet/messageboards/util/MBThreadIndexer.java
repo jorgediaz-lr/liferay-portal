@@ -110,15 +110,6 @@ public class MBThreadIndexer extends BaseIndexer<MBThread> {
 	}
 
 	@Override
-	protected void doDelete(MBThread mbThread) throws Exception {
-		SearchContext searchContext = new SearchContext();
-
-		searchContext.setSearchEngineId(getSearchEngineId());
-
-		deleteDocument(mbThread.getCompanyId(), mbThread.getThreadId());
-	}
-
-	@Override
 	protected Document doGetDocument(MBThread mbThread) throws Exception {
 		Document document = getBaseModelDocument(CLASS_NAME, mbThread);
 

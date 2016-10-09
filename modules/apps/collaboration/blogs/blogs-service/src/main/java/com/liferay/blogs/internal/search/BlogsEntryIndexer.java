@@ -99,11 +99,6 @@ public class BlogsEntryIndexer extends BaseIndexer<BlogsEntry> {
 	}
 
 	@Override
-	protected void doDelete(BlogsEntry blogsEntry) throws Exception {
-		deleteDocument(blogsEntry.getCompanyId(), blogsEntry.getEntryId());
-	}
-
-	@Override
 	protected Document doGetDocument(BlogsEntry blogsEntry) throws Exception {
 		Document document = getBaseModelDocument(CLASS_NAME, blogsEntry);
 
