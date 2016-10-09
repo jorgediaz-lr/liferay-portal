@@ -55,6 +55,11 @@ public class MessageIndexer extends BaseIndexer<Message> {
 	}
 
 	@Override
+	protected void doDelete(Message message) throws Exception {
+		super.doDelete(message);
+	}
+
+	@Override
 	protected Document doGetDocument(Message message) throws Exception {
 		Document document = getBaseModelDocument(CLASS_NAME, message);
 

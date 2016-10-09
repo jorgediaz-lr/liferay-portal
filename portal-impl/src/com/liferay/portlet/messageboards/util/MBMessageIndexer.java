@@ -238,6 +238,11 @@ public class MBMessageIndexer
 	}
 
 	@Override
+	protected void doDelete(MBMessage mbMessage) throws Exception {
+		super.doDelete(mbMessage);
+	}
+
+	@Override
 	protected Document doGetDocument(MBMessage mbMessage) throws Exception {
 		Document document = getBaseModelDocument(CLASS_NAME, mbMessage);
 

@@ -139,6 +139,11 @@ public class AssetCategoryIndexer extends BaseIndexer<AssetCategory> {
 	}
 
 	@Override
+	protected void doDelete(AssetCategory assetCategory) throws Exception {
+		super.doDelete(assetCategory);
+	}
+
+	@Override
 	protected Document doGetDocument(AssetCategory assetCategory)
 		throws Exception {
 

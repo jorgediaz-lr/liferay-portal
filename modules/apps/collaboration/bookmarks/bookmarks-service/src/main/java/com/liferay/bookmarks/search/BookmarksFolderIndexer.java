@@ -87,6 +87,11 @@ public class BookmarksFolderIndexer extends BaseIndexer<BookmarksFolder> {
 	}
 
 	@Override
+	protected void doDelete(BookmarksFolder bookmarksFolder) throws Exception {
+		super.doDelete(bookmarksFolder);
+	}
+
+	@Override
 	protected Document doGetDocument(BookmarksFolder bookmarksFolder)
 		throws Exception {
 

@@ -95,6 +95,11 @@ public class JournalFolderIndexer
 	}
 
 	@Override
+	protected void doDelete(JournalFolder journalFolder) throws Exception {
+		super.doDelete(journalFolder);
+	}
+
+	@Override
 	protected Document doGetDocument(JournalFolder journalFolder)
 		throws Exception {
 
