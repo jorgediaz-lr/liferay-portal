@@ -71,7 +71,7 @@ public class AssetVocabularyIndexer extends BaseIndexer<AssetVocabulary> {
 		throws Exception {
 
 		AssetVocabulary vocabulary =
-			AssetVocabularyLocalServiceUtil.getVocabulary(entryClassPK);
+			getPersistedModel(entryClassName, entryClassPK);
 
 		return AssetVocabularyPermission.contains(
 			permissionChecker, vocabulary, ActionKeys.VIEW);

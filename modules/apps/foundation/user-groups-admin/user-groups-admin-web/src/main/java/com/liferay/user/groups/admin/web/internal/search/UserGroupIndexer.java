@@ -78,7 +78,7 @@ public class UserGroupIndexer extends BaseIndexer<UserGroup> {
 			long entryClassPK, String actionId)
 		throws Exception {
 
-		UserGroup userGroup = _userGroupLocalService.getUserGroup(entryClassPK);
+		UserGroup userGroup = getPersistedModel(entryClassName, entryClassPK);
 
 		return _userGroupPermission.contains(
 			permissionChecker, userGroup.getUserGroupId(), actionId);

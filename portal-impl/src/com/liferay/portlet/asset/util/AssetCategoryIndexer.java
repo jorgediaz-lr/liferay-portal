@@ -74,8 +74,8 @@ public class AssetCategoryIndexer extends BaseIndexer<AssetCategory> {
 			long entryClassPK, String actionId)
 		throws Exception {
 
-		AssetCategory category = AssetCategoryLocalServiceUtil.getCategory(
-			entryClassPK);
+		AssetCategory category =
+			getPersistedModel(entryClassName, entryClassPK);
 
 		return AssetCategoryPermission.contains(
 			permissionChecker, category, ActionKeys.VIEW);
