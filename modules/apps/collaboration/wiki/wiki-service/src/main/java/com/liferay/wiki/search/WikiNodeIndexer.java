@@ -72,7 +72,7 @@ public class WikiNodeIndexer extends BaseIndexer<WikiNode> {
 			long entryClassPK, String actionId)
 		throws Exception {
 
-		WikiNode node = _wikiNodeLocalService.getNode(entryClassPK);
+		WikiNode node = getPersistedModel(entryClassName, entryClassPK);
 
 		return WikiNodePermissionChecker.contains(
 			permissionChecker, node, ActionKeys.VIEW);

@@ -71,8 +71,8 @@ public class BookmarksFolderIndexer extends BaseIndexer<BookmarksFolder> {
 			long entryClassPK, String actionId)
 		throws Exception {
 
-		BookmarksFolder folder = _bookmarksFolderLocalService.getFolder(
-			entryClassPK);
+		BookmarksFolder folder =
+			getPersistedModel(entryClassName, entryClassPK);
 
 		return BookmarksFolderPermissionChecker.contains(
 			permissionChecker, folder, ActionKeys.VIEW);
