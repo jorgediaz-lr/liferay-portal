@@ -21,6 +21,8 @@ import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.service.AssetEntryLocalServiceUtil;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.exception.NoSuchCountryException;
 import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.exception.NoSuchRegionException;
@@ -1780,6 +1782,43 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 		throws SearchException {
 
 		HitsProcessorRegistryUtil.process(searchContext, hits);
+	}
+
+	protected void reindexCompany(
+			final IndexableActionableDynamicQuery
+				indexableActionableDynamicQuery,
+			final long companyId)
+		throws PortalException {
+
+		indexableActionableDynamicQuery.setCompanyId(companyId);
+		indexableActionableDynamicQuery.setPerformActionMethod(
+			new ActionableDynamicQuery.PerformActionMethod<T>() {
+
+				@Override
+				public void performAction(T object) {
+					try {
+						Document document = getDocument(object);
+
+						if (document == null) {
+							return;
+						}
+
+						indexableActionableDynamicQuery.addDocuments(document);
+					}
+					catch (PortalException pe) {
+						if (_log.isWarnEnabled()) {
+							_log.warn(
+								"Unable to index object " +
+									object.toString(),
+								pe);
+						}
+					}
+				}
+
+			});
+		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
+
+		indexableActionableDynamicQuery.performActions();
 	}
 
 	protected void resetFullQuery(SearchContext searchContext) {
