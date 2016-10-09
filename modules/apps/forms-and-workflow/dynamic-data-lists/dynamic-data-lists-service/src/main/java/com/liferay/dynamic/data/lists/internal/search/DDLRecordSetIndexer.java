@@ -60,6 +60,11 @@ public class DDLRecordSetIndexer extends BaseIndexer<DDLRecordSet> {
 	}
 
 	@Override
+	protected void doDelete(DDLRecordSet recordSet) throws Exception {
+		super.doDelete(recordSet);
+	}
+
+	@Override
 	protected Document doGetDocument(DDLRecordSet ddlRecordSet)
 		throws Exception {
 

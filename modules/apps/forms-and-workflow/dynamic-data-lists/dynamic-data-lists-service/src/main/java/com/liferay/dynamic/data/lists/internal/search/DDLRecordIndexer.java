@@ -198,6 +198,11 @@ public class DDLRecordIndexer extends BaseIndexer<DDLRecord> {
 	}
 
 	@Override
+	protected void doDelete(DDLRecord ddlRecord) throws Exception {
+		super.doDelete(ddlRecord);
+	}
+
+	@Override
 	protected Document doGetDocument(DDLRecord ddlRecord) throws Exception {
 		Document document = getBaseModelDocument(CLASS_NAME, ddlRecord);
 
