@@ -446,6 +446,10 @@ public class StagedModelDataHandlerUtil {
 			PortletDataContext portletDataContext, T stagedModel)
 		throws PortletDataException {
 
+		if (stagedModel == null) {
+			return;
+		}
+
 		StagedModelDataHandler<T> stagedModelDataHandler =
 			_getStagedModelDataHandler(stagedModel);
 
