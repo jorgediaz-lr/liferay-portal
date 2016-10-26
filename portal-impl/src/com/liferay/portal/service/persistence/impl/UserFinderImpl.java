@@ -71,6 +71,9 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 	public static final String COUNT_BY_USER =
 		UserFinder.class.getName() + ".countByUser";
 
+	public static final String COUNT_BY_C_FN_MN_LN_SN_EA_S =
+		UserFinder.class.getName() + ".countByC_FN_MN_LN_SN_EA_S";
+
 	public static final String FIND_BY_NO_ANNOUNCEMENTS_DELIVERIES =
 		UserFinder.class.getName() + ".findByNoAnnouncementsDeliveries";
 
@@ -438,12 +441,22 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 		String[] lastNames, String[] screenNames, String[] emailAddresses,
 		int status, LinkedHashMap<String, Object> params, boolean andOperator) {
 
-		List<Long> userIds = doFindByC_FN_MN_LN_SN_EA_S(
-			companyId, firstNames, middleNames, lastNames, screenNames,
-			emailAddresses, status, params, andOperator, QueryUtil.ALL_POS,
-			QueryUtil.ALL_POS, null);
+		String sql = CustomSQLUtil.get(COUNT_BY_C_FN_MN_LN_SN_EA_S);
 
-		return userIds.size();
+		List<Long> partialCounts = doFindByC_FN_MN_LN_SN_EA_S(
+			sql, "COUNT_VALUE", companyId, firstNames, middleNames, lastNames,
+			screenNames, emailAddresses, status, params, andOperator,
+			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+
+		int userCount = 0;
+
+		if (partialCounts != null) {
+			for (Long partialCount : partialCounts) {
+				userCount += partialCount.intValue();
+			}
+		}
+
+		return userCount;
 	}
 
 	@Override
@@ -661,6 +674,21 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 		String[] lastNames, String[] screenNames, String[] emailAddresses,
 		int status, LinkedHashMap<String, Object> params, boolean andOperator,
 		int start, int end, OrderByComparator<User> obc) {
+
+		String sql = CustomSQLUtil.get(FIND_BY_C_FN_MN_LN_SN_EA_S);
+
+		return doFindByC_FN_MN_LN_SN_EA_S(
+			sql, "userId", companyId, firstNames, middleNames, lastNames,
+			screenNames, emailAddresses, status, params, andOperator, start,
+			end, obc);
+	}
+
+	protected List<Long> doFindByC_FN_MN_LN_SN_EA_S(
+		String sql, String attribute, long companyId, String[] firstNames,
+		String[] middleNames, String[] lastNames, String[] screenNames,
+		String[] emailAddresses, int status,
+		LinkedHashMap<String, Object> params, boolean andOperator, int start,
+		int end, OrderByComparator<User> obc) {
 
 		firstNames = CustomSQLUtil.keywords(firstNames);
 		middleNames = CustomSQLUtil.keywords(middleNames);
@@ -883,8 +911,6 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 		try {
 			session = openSession();
 
-			String sql = CustomSQLUtil.get(FIND_BY_C_FN_MN_LN_SN_EA_S);
-
 			sql = CustomSQLUtil.replaceKeywords(
 				sql, "lower(User_.firstName)", StringPool.LIKE, false,
 				firstNames);
@@ -952,7 +978,7 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 
 			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
-			q.addScalar("userId", Type.LONG);
+			q.addScalar(attribute, Type.LONG);
 
 			QueryPos qPos = QueryPos.getInstance(q);
 
