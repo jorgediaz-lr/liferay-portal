@@ -443,16 +443,20 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 
 		String sql = CustomSQLUtil.get(COUNT_BY_C_FN_MN_LN_SN_EA_S);
 
-		List<Long> userIds = doFindByC_FN_MN_LN_SN_EA_S(
+		List<Long> partialCounts = doFindByC_FN_MN_LN_SN_EA_S(
 			sql, "COUNT_VALUE", companyId, firstNames, middleNames, lastNames,
 			screenNames, emailAddresses, status, params, andOperator,
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 
-		if ((userIds == null) || userIds.isEmpty()) {
-			return 0;
+		int userCount = 0;
+
+		if (partialCounts != null) {
+			for (Long partialCount : partialCounts) {
+				userCount += partialCount.intValue();
+			}
 		}
 
-		return userIds.get(0).intValue();
+		return userCount;
 	}
 
 	@Override
