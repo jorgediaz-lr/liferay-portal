@@ -896,12 +896,12 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 			}
 		}
 
-		boolean sqlCount = true;
+		boolean sqlHasUnionClauses = false;
 
-		if(!count || (params2 != null) || (params3 != null) ||
-			(params4 != null) || (params5 != null) || (params6 != null)) {
+		if ((params2 != null) || (params3 != null) || (params4 != null) ||
+			(params5 != null) || (params6 != null)) {
 
-			sqlCount = false;
+			sqlHasUnionClauses = true;
 		}
 
 		Session session = null;
@@ -910,7 +910,7 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 			session = openSession();
 
 			String sql;
-			if(sqlCount) {
+			if (count && !sqlHasUnionClauses) {
 				sql = CustomSQLUtil.get(COUNT_BY_C_FN_MN_LN_SN_EA_S);
 			}
 			else {
@@ -984,7 +984,7 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 
 			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
-			if(sqlCount) {
+			if (count && !sqlHasUnionClauses) {
 				q.addScalar("COUNT_VALUE", Type.LONG);
 			}
 			else {
@@ -1090,14 +1090,13 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 			List<Long> userIds =
 				(List<Long>)QueryUtil.list(q, getDialect(), start, end);
 
-			if (!count || sqlCount) {
-				return userIds;
-			}
-			else {
+			if (count && sqlHasUnionClauses) {
 				List<Long> userCounts = new ArrayList<Long>();
 				userCounts.add((long)userIds.size());
 				return userCounts;
 			}
+
+			return userIds;
 		}
 		catch (Exception e) {
 			throw new SystemException(e);
