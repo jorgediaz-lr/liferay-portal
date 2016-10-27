@@ -939,6 +939,10 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 
 			StringBundler sb = new StringBundler(20);
 
+			if (count && sqlHasUnionClauses) {
+				sb.append("SELECT COUNT(userId) AS COUNT_VALUE FROM (");
+			}
+
 			sb.append(StringPool.OPEN_PARENTHESIS);
 			sb.append(replaceJoinAndWhere(sql, params1));
 			sb.append(StringPool.CLOSE_PARENTHESIS);
@@ -973,7 +977,10 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 				sb.append(StringPool.CLOSE_PARENTHESIS);
 			}
 
-			if (obc != null) {
+			if (count && sqlHasUnionClauses) {
+				sb.append(") userId");
+			}
+			else if (obc != null) {
 				sb.append(" ORDER BY ");
 				sb.append(obc.toString());
 			}
@@ -984,7 +991,7 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 
 			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
-			if (count && !sqlHasUnionClauses) {
+			if (count) {
 				q.addScalar("COUNT_VALUE", Type.LONG);
 			}
 			else {
@@ -1087,16 +1094,7 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 				}
 			}
 
-			List<Long> userIds =
-				(List<Long>)QueryUtil.list(q, getDialect(), start, end);
-
-			if (count && sqlHasUnionClauses) {
-				List<Long> userCounts = new ArrayList<Long>();
-				userCounts.add((long)userIds.size());
-				return userCounts;
-			}
-
-			return userIds;
+			return (List<Long>)QueryUtil.list(q, getDialect(), start, end);
 		}
 		catch (Exception e) {
 			throw new SystemException(e);
