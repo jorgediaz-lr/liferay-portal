@@ -71,6 +71,9 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 	public static final String COUNT_BY_USER =
 		UserFinder.class.getName() + ".countByUser";
 
+	public static final String COUNT_BY_C_FN_MN_LN_SN_EA_S =
+		UserFinder.class.getName() + ".countByC_FN_MN_LN_SN_EA_S";
+
 	public static final String FIND_BY_NO_ANNOUNCEMENTS_DELIVERIES =
 		UserFinder.class.getName() + ".findByNoAnnouncementsDeliveries";
 
@@ -438,12 +441,16 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 		String[] lastNames, String[] screenNames, String[] emailAddresses,
 		int status, LinkedHashMap<String, Object> params, boolean andOperator) {
 
-		List<Long> userIds = doFindByC_FN_MN_LN_SN_EA_S(
+		List<Long> userCounts = doFindByC_FN_MN_LN_SN_EA_S(
 			companyId, firstNames, middleNames, lastNames, screenNames,
 			emailAddresses, status, params, andOperator, QueryUtil.ALL_POS,
-			QueryUtil.ALL_POS, null);
+			QueryUtil.ALL_POS, null, true);
 
-		return userIds.size();
+		if ((userCounts == null) || userCounts.isEmpty()) {
+			return 0;
+		}
+
+		return userCounts.get(0).intValue();
 	}
 
 	@Override
@@ -662,6 +669,18 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 		int status, LinkedHashMap<String, Object> params, boolean andOperator,
 		int start, int end, OrderByComparator<User> obc) {
 
+		return doFindByC_FN_MN_LN_SN_EA_S(
+			companyId, firstNames, middleNames, lastNames, screenNames,
+			emailAddresses, status, params, andOperator, start, end, obc,
+			false);
+	}
+
+	protected List<Long> doFindByC_FN_MN_LN_SN_EA_S(
+		long companyId, String[] firstNames, String[] middleNames,
+		String[] lastNames, String[] screenNames, String[] emailAddresses,
+		int status, LinkedHashMap<String, Object> params, boolean andOperator,
+		int start, int end, OrderByComparator<User> obc, boolean count) {
+
 		firstNames = CustomSQLUtil.keywords(firstNames);
 		middleNames = CustomSQLUtil.keywords(middleNames);
 		lastNames = CustomSQLUtil.keywords(lastNames);
@@ -878,12 +897,27 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 			}
 		}
 
+		boolean sqlHasUnionClauses = false;
+
+		if ((params2 != null) || (params3 != null) || (params4 != null) ||
+			(params5 != null) || (params6 != null)) {
+
+			sqlHasUnionClauses = true;
+		}
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			String sql = CustomSQLUtil.get(FIND_BY_C_FN_MN_LN_SN_EA_S);
+			String sql;
+
+			if (count && !sqlHasUnionClauses) {
+				sql = CustomSQLUtil.get(COUNT_BY_C_FN_MN_LN_SN_EA_S);
+			}
+			else {
+				sql = CustomSQLUtil.get(FIND_BY_C_FN_MN_LN_SN_EA_S);
+			}
 
 			sql = CustomSQLUtil.replaceKeywords(
 				sql, "lower(User_.firstName)", StringPool.LIKE, false,
@@ -906,6 +940,10 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 			}
 
 			StringBundler sb = new StringBundler(20);
+
+			if (count && sqlHasUnionClauses) {
+				sb.append("SELECT COUNT(userId) AS COUNT_VALUE FROM (");
+			}
 
 			sb.append(StringPool.OPEN_PARENTHESIS);
 			sb.append(replaceJoinAndWhere(sql, params1));
@@ -941,7 +979,10 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 				sb.append(StringPool.CLOSE_PARENTHESIS);
 			}
 
-			if (obc != null) {
+			if (count && sqlHasUnionClauses) {
+				sb.append(") userId");
+			}
+			else if (obc != null) {
 				sb.append(" ORDER BY ");
 				sb.append(obc.toString());
 			}
@@ -952,7 +993,12 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 
 			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
-			q.addScalar("userId", Type.LONG);
+			if (count) {
+				q.addScalar("COUNT_VALUE", Type.LONG);
+			}
+			else {
+				q.addScalar("userId", Type.LONG);
+			}
 
 			QueryPos qPos = QueryPos.getInstance(q);
 

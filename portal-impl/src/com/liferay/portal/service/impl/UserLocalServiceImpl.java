@@ -3126,7 +3126,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 		Indexer<?> indexer = IndexerRegistryUtil.nullSafeGetIndexer(User.class);
 
-		if (!indexer.isIndexerEnabled() ||
+		if (Validator.isNull(keywords) || !indexer.isIndexerEnabled() ||
 			!PropsValues.USERS_SEARCH_WITH_INDEX || isUseCustomSQL(params)) {
 
 			return userFinder.countByKeywords(
