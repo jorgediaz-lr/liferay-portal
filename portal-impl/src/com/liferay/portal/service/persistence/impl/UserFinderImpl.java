@@ -449,6 +449,7 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 		if ((userCounts == null) || userCounts.isEmpty()) {
 			return 0;
 		}
+
 		return userCounts.get(0).intValue();
 	}
 
@@ -910,6 +911,7 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 			session = openSession();
 
 			String sql;
+
 			if (count && !sqlHasUnionClauses) {
 				sql = CustomSQLUtil.get(COUNT_BY_C_FN_MN_LN_SN_EA_S);
 			}
