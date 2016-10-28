@@ -433,6 +433,36 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	}
 
 	/**
+	 * Adds a user to the organization.
+	 *
+	 * @param organizationId the primary key of the organization
+	 * @param userId the primary key of the user
+	 */
+	@Override
+	public void addOrganizationUser(long organizationId, long userId)
+		throws PortalException {
+
+		organizationPersistence.addUser(organizationId, userId);
+
+		reindex(userId);
+	}
+
+	/**
+	 * Adds a user to the organization.
+	 *
+	 * @param organizationId the primary key of the organization
+	 * @param user
+	 */
+	@Override
+	public void addOrganizationUser(long organizationId, User user)
+		throws PortalException {
+
+		organizationPersistence.addUser(organizationId, user);
+
+		reindex(user);
+	}
+
+	/**
 	 * Adds the users to the organization.
 	 *
 	 * @param organizationId the primary key of the organization
@@ -445,6 +475,21 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		organizationPersistence.addUsers(organizationId, userIds);
 
 		reindex(userIds);
+	}
+
+	/**
+	 * Adds the users to the organization.
+	 *
+	 * @param organizationId the primary key of the organization
+	 * @param users
+	 */
+	@Override
+	public void addOrganizationUsers(long organizationId, List<User> users)
+		throws PortalException {
+
+		organizationPersistence.addUsers(organizationId, users);
+
+		reindex(users);
 	}
 
 	/**
@@ -5950,6 +5995,13 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 			users.add(user);
 		}
+
+		indexer.reindex(users);
+	}
+
+	protected void reindex(final List<User> users) throws SearchException {
+		Indexer<User> indexer = IndexerRegistryUtil.nullSafeGetIndexer(
+			User.class);
 
 		indexer.reindex(users);
 	}
