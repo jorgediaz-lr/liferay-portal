@@ -340,8 +340,7 @@ public class DLFileEntryIndexer
 
 	@Override
 	protected void doDelete(DLFileEntry dlFileEntry) throws Exception {
-		deleteDocument(
-			dlFileEntry.getCompanyId(), dlFileEntry.getFileEntryId());
+		super.doDelete(dlFileEntry);
 	}
 
 	@Override
@@ -516,10 +515,7 @@ public class DLFileEntryIndexer
 
 	@Override
 	protected void doReindex(String className, long classPK) throws Exception {
-		DLFileEntry dlFileEntry = DLFileEntryLocalServiceUtil.getFileEntry(
-			classPK);
-
-		doReindex(dlFileEntry);
+		super.doReindex(className, classPK);
 	}
 
 	@Override
@@ -592,32 +588,9 @@ public class DLFileEntryIndexer
 				}
 
 			});
-		indexableActionableDynamicQuery.setCompanyId(companyId);
 		indexableActionableDynamicQuery.setGroupId(groupId);
-		indexableActionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<DLFileEntry>() {
 
-				@Override
-				public void performAction(DLFileEntry dlFileEntry) {
-					try {
-						Document document = getDocument(dlFileEntry);
-
-						indexableActionableDynamicQuery.addDocuments(document);
-					}
-					catch (PortalException pe) {
-						if (_log.isWarnEnabled()) {
-							_log.warn(
-								"Unable to index document library file entry " +
-									dlFileEntry.getFileEntryId(),
-								pe);
-						}
-					}
-				}
-
-			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
-
-		indexableActionableDynamicQuery.performActions();
+		reindexCompany(indexableActionableDynamicQuery, companyId);
 	}
 
 	protected void reindexFolders(final long companyId) throws PortalException {

@@ -15,7 +15,10 @@
 package com.liferay.portlet.usersadmin.util;
 
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
+import com.liferay.portal.kernel.dao.orm.Property;
+import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.NoSuchContactException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -326,13 +329,6 @@ public class UserIndexer extends BaseIndexer<User> {
 	}
 
 	@Override
-	protected void doReindex(String className, long classPK) throws Exception {
-		User user = UserLocalServiceUtil.getUserById(classPK);
-
-		doReindex(user);
-	}
-
-	@Override
 	protected void doReindex(String[] ids) throws Exception {
 		long companyId = GetterUtil.getLong(ids[0]);
 
@@ -390,33 +386,20 @@ public class UserIndexer extends BaseIndexer<User> {
 		final IndexableActionableDynamicQuery indexableActionableDynamicQuery =
 			UserLocalServiceUtil.getIndexableActionableDynamicQuery();
 
-		indexableActionableDynamicQuery.setCompanyId(companyId);
-		indexableActionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<User>() {
+		indexableActionableDynamicQuery.setAddCriteriaMethod(
+			new ActionableDynamicQuery.AddCriteriaMethod() {
 
 				@Override
-				public void performAction(User user) {
-					if (!user.isDefaultUser()) {
-						try {
-							Document document = getDocument(user);
+				public void addCriteria(DynamicQuery dynamicQuery) {
+					Property defaultUserProperty = PropertyFactoryUtil.forName(
+						"defaultUser");
 
-							indexableActionableDynamicQuery.addDocuments(
-								document);
-						}
-						catch (PortalException pe) {
-							if (_log.isWarnEnabled()) {
-								_log.warn(
-									"Unable to index user " + user.getUserId(),
-									pe);
-							}
-						}
-					}
+					dynamicQuery.add(defaultUserProperty.eq(false));
 				}
 
 			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
 
-		indexableActionableDynamicQuery.performActions();
+		reindexCompany(indexableActionableDynamicQuery, companyId);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(UserIndexer.class);

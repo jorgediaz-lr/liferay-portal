@@ -18,7 +18,6 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeIndexerUtil;
 import com.liferay.mail.reader.model.Message;
 import com.liferay.mail.reader.service.MessageLocalService;
-import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -56,7 +55,7 @@ public class MessageIndexer extends BaseIndexer<Message> {
 
 	@Override
 	protected void doDelete(Message message) throws Exception {
-		deleteDocument(message.getCompanyId(), message.getMessageId());
+		super.doDelete(message);
 	}
 
 	@Override
@@ -97,9 +96,7 @@ public class MessageIndexer extends BaseIndexer<Message> {
 
 	@Override
 	protected void doReindex(String className, long classPK) throws Exception {
-		Message message = _messageLocalService.getMessage(classPK);
-
-		doReindex(message);
+		super.doReindex(className, classPK);
 	}
 
 	@Override
@@ -113,33 +110,7 @@ public class MessageIndexer extends BaseIndexer<Message> {
 		final IndexableActionableDynamicQuery indexableActionableDynamicQuery =
 			_messageLocalService.getIndexableActionableDynamicQuery();
 
-		indexableActionableDynamicQuery.setCompanyId(companyId);
-		indexableActionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<Message>() {
-
-				@Override
-				public void performAction(Message message)
-					throws PortalException {
-
-					try {
-						Document document = getDocument(message);
-
-						indexableActionableDynamicQuery.addDocuments(document);
-					}
-					catch (PortalException pe) {
-						if (_log.isWarnEnabled()) {
-							_log.warn(
-								"Unable to index message " +
-									message.getMessageId(),
-								pe);
-						}
-					}
-				}
-
-			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
-
-		indexableActionableDynamicQuery.performActions();
+		reindexCompany(indexableActionableDynamicQuery, companyId);
 	}
 
 	@Reference(unbind = "-")

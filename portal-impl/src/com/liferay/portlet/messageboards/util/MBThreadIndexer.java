@@ -111,11 +111,7 @@ public class MBThreadIndexer extends BaseIndexer<MBThread> {
 
 	@Override
 	protected void doDelete(MBThread mbThread) throws Exception {
-		SearchContext searchContext = new SearchContext();
-
-		searchContext.setSearchEngineId(getSearchEngineId());
-
-		deleteDocument(mbThread.getCompanyId(), mbThread.getThreadId());
+		super.doDelete(mbThread);
 	}
 
 	@Override
@@ -156,13 +152,6 @@ public class MBThreadIndexer extends BaseIndexer<MBThread> {
 		IndexWriterHelperUtil.updateDocument(
 			getSearchEngineId(), mbThread.getCompanyId(), document,
 			isCommitImmediately());
-	}
-
-	@Override
-	protected void doReindex(String className, long classPK) throws Exception {
-		MBThread thread = MBThreadLocalServiceUtil.getThread(classPK);
-
-		doReindex(thread);
 	}
 
 	@Override
@@ -265,32 +254,9 @@ public class MBThreadIndexer extends BaseIndexer<MBThread> {
 				}
 
 			});
-		indexableActionableDynamicQuery.setCompanyId(companyId);
 		indexableActionableDynamicQuery.setGroupId(groupId);
-		indexableActionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<MBThread>() {
 
-				@Override
-				public void performAction(MBThread thread) {
-					try {
-						Document document = getDocument(thread);
-
-						indexableActionableDynamicQuery.addDocuments(document);
-					}
-					catch (PortalException pe) {
-						if (_log.isWarnEnabled()) {
-							_log.warn(
-								"Unable to index message boards thread " +
-									thread.getThreadId(),
-								pe);
-						}
-					}
-				}
-
-			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
-
-		indexableActionableDynamicQuery.performActions();
+		reindexCompany(indexableActionableDynamicQuery, companyId);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

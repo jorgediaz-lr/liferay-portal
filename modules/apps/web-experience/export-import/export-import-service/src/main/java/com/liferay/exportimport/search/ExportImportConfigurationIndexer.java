@@ -19,7 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
 import com.liferay.exportimport.kernel.service.ExportImportConfigurationLocalService;
-import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -105,9 +104,7 @@ public class ExportImportConfigurationIndexer
 	protected void doDelete(ExportImportConfiguration exportImportConfiguration)
 		throws Exception {
 
-		deleteDocument(
-			exportImportConfiguration.getCompanyId(),
-			exportImportConfiguration.getExportImportConfigurationId());
+		super.doDelete(exportImportConfiguration);
 	}
 
 	@Override
@@ -169,11 +166,7 @@ public class ExportImportConfigurationIndexer
 
 	@Override
 	protected void doReindex(String className, long classPK) throws Exception {
-		ExportImportConfiguration exportImportConfiguration =
-			_exportImportConfigurationLocalService.getExportImportConfiguration(
-				classPK);
-
-		doReindex(exportImportConfiguration);
+		super.doReindex(className, classPK);
 	}
 
 	@Override
@@ -311,36 +304,7 @@ public class ExportImportConfigurationIndexer
 			_exportImportConfigurationLocalService.
 				getIndexableActionableDynamicQuery();
 
-		indexableActionableDynamicQuery.setCompanyId(companyId);
-		indexableActionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.
-				PerformActionMethod<ExportImportConfiguration>() {
-
-				@Override
-				public void performAction(
-					ExportImportConfiguration exportImportConfiguration) {
-
-					try {
-						Document document = getDocument(
-							exportImportConfiguration);
-
-						indexableActionableDynamicQuery.addDocuments(document);
-					}
-					catch (PortalException pe) {
-						if (_log.isWarnEnabled()) {
-							_log.warn(
-								"Unable to index export import configuration " +
-									exportImportConfiguration.
-										getExportImportConfigurationId(),
-								pe);
-						}
-					}
-				}
-
-			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
-
-		indexableActionableDynamicQuery.performActions();
+		reindexCompany(indexableActionableDynamicQuery, companyId);
 	}
 
 	@Reference(unbind = "-")

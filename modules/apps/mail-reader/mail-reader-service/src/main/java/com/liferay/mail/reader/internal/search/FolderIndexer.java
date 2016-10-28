@@ -18,7 +18,6 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeIndexerUtil;
 import com.liferay.mail.reader.model.Folder;
 import com.liferay.mail.reader.service.FolderLocalService;
-import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -128,9 +127,7 @@ public class FolderIndexer extends BaseIndexer<Folder> {
 
 	@Override
 	protected void doReindex(String className, long classPK) throws Exception {
-		Folder folder = _folderLocalService.getFolder(classPK);
-
-		doReindex(folder);
+		super.doReindex(className, classPK);
 	}
 
 	@Override
@@ -144,33 +141,7 @@ public class FolderIndexer extends BaseIndexer<Folder> {
 		final IndexableActionableDynamicQuery indexableActionableDynamicQuery =
 			_folderLocalService.getIndexableActionableDynamicQuery();
 
-		indexableActionableDynamicQuery.setCompanyId(companyId);
-		indexableActionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<Folder>() {
-
-				@Override
-				public void performAction(Folder folder)
-					throws PortalException {
-
-					try {
-						Document document = getDocument(folder);
-
-						indexableActionableDynamicQuery.addDocuments(document);
-					}
-					catch (PortalException pe) {
-						if (_log.isWarnEnabled()) {
-							_log.warn(
-								"Unable to index folder " +
-									folder.getFolderId(),
-								pe);
-						}
-					}
-				}
-
-			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
-
-		indexableActionableDynamicQuery.performActions();
+		reindexCompany(indexableActionableDynamicQuery, companyId);
 	}
 
 	@Reference(unbind = "-")

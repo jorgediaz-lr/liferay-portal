@@ -28,6 +28,8 @@ import com.liferay.expando.kernel.model.ExpandoColumnConstants;
 import com.liferay.expando.kernel.service.ExpandoColumnLocalServiceUtil;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.expando.kernel.util.ExpandoBridgeIndexerUtil;
+import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.exception.NoSuchCountryException;
 import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.exception.NoSuchRegionException;
@@ -39,11 +41,13 @@ import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.model.AttachedModel;
 import com.liferay.portal.kernel.model.AuditedModel;
 import com.liferay.portal.kernel.model.BaseModel;
+import com.liferay.portal.kernel.model.ClassedModel;
 import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupedModel;
 import com.liferay.portal.kernel.model.Region;
 import com.liferay.portal.kernel.model.ResourcedModel;
+import com.liferay.portal.kernel.model.StagedModel;
 import com.liferay.portal.kernel.model.TrashedModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.WorkflowedModel;
@@ -63,6 +67,8 @@ import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.service.CountryServiceUtil;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
+import com.liferay.portal.kernel.service.PersistedModelLocalService;
+import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistryUtil;
 import com.liferay.portal.kernel.service.RegionServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
@@ -1466,7 +1472,24 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 			_commitImmediately);
 	}
 
-	protected abstract void doDelete(T object) throws Exception;
+	protected void doDelete(T object) throws Exception {
+		long companyId = CompanyThreadLocal.getCompanyId();
+
+		if (object instanceof AuditedModel) {
+			AuditedModel auditedModel = (AuditedModel)object;
+
+			companyId = auditedModel.getCompanyId();
+		}
+		else if (object instanceof StagedModel) {
+			StagedModel stagedModel = (StagedModel)object;
+
+			companyId = stagedModel.getCompanyId();
+		}
+
+		ClassedModel classedModel = (ClassedModel)object;
+
+		deleteDocument(companyId, (long)classedModel.getPrimaryKeyObj());
+	}
 
 	protected abstract Document doGetDocument(T object) throws Exception;
 
@@ -1500,8 +1523,11 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 		}
 	}
 
-	protected abstract void doReindex(String className, long classPK)
-		throws Exception;
+	protected void doReindex(String className, long classPK) throws Exception {
+		T object = getPersistedModel(className, classPK);
+
+		doReindex(object);
+	}
 
 	protected abstract void doReindex(String[] ids) throws Exception;
 
@@ -1704,6 +1730,16 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 		return countryNames;
 	}
 
+	protected T getPersistedModel(String className, long classPK)
+		throws PortalException {
+
+		PersistedModelLocalService service =
+				PersistedModelLocalServiceRegistryUtil.
+					getPersistedModelLocalService(className);
+
+		return (T)service.getPersistedModel(classPK);
+	}
+
 	/**
 	 * @deprecated As of 7.0.0, replaced by {@link #getClassName}
 	 */
@@ -1883,6 +1919,43 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 		throws SearchException {
 
 		HitsProcessorRegistryUtil.process(searchContext, hits);
+	}
+
+	protected void reindexCompany(
+			final IndexableActionableDynamicQuery
+				indexableActionableDynamicQuery,
+			final long companyId)
+		throws PortalException {
+
+		indexableActionableDynamicQuery.setCompanyId(companyId);
+		indexableActionableDynamicQuery.setPerformActionMethod(
+			new ActionableDynamicQuery.PerformActionMethod<T>() {
+
+				@Override
+				public void performAction(T object) {
+					try {
+						Document document = getDocument(object);
+
+						if (document == null) {
+							return;
+						}
+
+						indexableActionableDynamicQuery.addDocuments(document);
+					}
+					catch (PortalException pe) {
+						if (_log.isWarnEnabled()) {
+							_log.warn(
+								"Unable to index object " +
+									object.toString(),
+								pe);
+						}
+					}
+				}
+
+			});
+		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
+
+		indexableActionableDynamicQuery.performActions();
 	}
 
 	protected void resetFullQuery(SearchContext searchContext) {

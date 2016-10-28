@@ -72,7 +72,7 @@ public class WikiNodeIndexer extends BaseIndexer<WikiNode> {
 			long entryClassPK, String actionId)
 		throws Exception {
 
-		WikiNode node = _wikiNodeLocalService.getNode(entryClassPK);
+		WikiNode node = getPersistedModel(entryClassName, entryClassPK);
 
 		return WikiNodePermissionChecker.contains(
 			permissionChecker, node, ActionKeys.VIEW);
@@ -80,7 +80,7 @@ public class WikiNodeIndexer extends BaseIndexer<WikiNode> {
 
 	@Override
 	protected void doDelete(WikiNode wikiNode) throws Exception {
-		deleteDocument(wikiNode.getCompanyId(), wikiNode.getNodeId());
+		super.doDelete(wikiNode);
 	}
 
 	@Override
@@ -111,9 +111,7 @@ public class WikiNodeIndexer extends BaseIndexer<WikiNode> {
 
 	@Override
 	protected void doReindex(String className, long classPK) throws Exception {
-		WikiNode node = _wikiNodeLocalService.getNode(classPK);
-
-		doReindex(node);
+		super.doReindex(className, classPK);
 	}
 
 	@Override
@@ -156,30 +154,8 @@ public class WikiNodeIndexer extends BaseIndexer<WikiNode> {
 				}
 
 			});
-		indexableActionableDynamicQuery.setCompanyId(companyId);
-		indexableActionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<WikiNode>() {
 
-				@Override
-				public void performAction(WikiNode node) {
-					try {
-						Document document = getDocument(node);
-
-						indexableActionableDynamicQuery.addDocuments(document);
-					}
-					catch (PortalException pe) {
-						if (_log.isWarnEnabled()) {
-							_log.warn(
-								"Unable to index wiki node " + node.getNodeId(),
-								pe);
-						}
-					}
-				}
-
-			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
-
-		indexableActionableDynamicQuery.performActions();
+		reindexCompany(indexableActionableDynamicQuery, companyId);
 	}
 
 	@Reference(unbind = "-")

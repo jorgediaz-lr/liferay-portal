@@ -14,7 +14,6 @@
 
 package com.liferay.portlet.usersadmin.util;
 
-import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -92,11 +91,6 @@ public class ContactIndexer extends BaseIndexer<Contact> {
 	}
 
 	@Override
-	protected void doDelete(Contact contact) throws Exception {
-		deleteDocument(contact.getCompanyId(), contact.getContactId());
-	}
-
-	@Override
 	protected Document doGetDocument(Contact contact) throws Exception {
 		if (contact.isUser()) {
 			User user = UserLocalServiceUtil.fetchUserByContactId(
@@ -163,13 +157,6 @@ public class ContactIndexer extends BaseIndexer<Contact> {
 	}
 
 	@Override
-	protected void doReindex(String className, long classPK) throws Exception {
-		Contact contact = ContactLocalServiceUtil.getContact(classPK);
-
-		doReindex(contact);
-	}
-
-	@Override
 	protected void doReindex(String[] ids) throws Exception {
 		long companyId = GetterUtil.getLong(ids[0]);
 
@@ -180,31 +167,7 @@ public class ContactIndexer extends BaseIndexer<Contact> {
 		final IndexableActionableDynamicQuery indexableActionableDynamicQuery =
 			ContactLocalServiceUtil.getIndexableActionableDynamicQuery();
 
-		indexableActionableDynamicQuery.setCompanyId(companyId);
-		indexableActionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<Contact>() {
-
-				@Override
-				public void performAction(Contact contact) {
-					try {
-						Document document = getDocument(contact);
-
-						indexableActionableDynamicQuery.addDocuments(document);
-					}
-					catch (PortalException pe) {
-						if (_log.isWarnEnabled()) {
-							_log.warn(
-								"Unable to index contact " +
-									contact.getContactId(),
-								pe);
-						}
-					}
-				}
-
-			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
-
-		indexableActionableDynamicQuery.performActions();
+		reindexCompany(indexableActionableDynamicQuery, companyId);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(ContactIndexer.class);

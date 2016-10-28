@@ -20,7 +20,6 @@ import com.liferay.calendar.model.CalendarResource;
 import com.liferay.calendar.service.CalendarBookingLocalService;
 import com.liferay.calendar.service.CalendarLocalService;
 import com.liferay.calendar.service.permission.CalendarPermission;
-import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -99,7 +98,7 @@ public class CalendarIndexer extends BaseIndexer<Calendar> {
 
 	@Override
 	protected void doDelete(Calendar calendar) throws Exception {
-		deleteDocument(calendar.getCompanyId(), calendar.getCalendarId());
+		super.doDelete(calendar);
 	}
 
 	@Override
@@ -151,9 +150,7 @@ public class CalendarIndexer extends BaseIndexer<Calendar> {
 
 	@Override
 	protected void doReindex(String className, long classPK) throws Exception {
-		Calendar calendar = _calendarLocalService.getCalendar(classPK);
-
-		doReindex(calendar);
+		super.doReindex(className, classPK);
 	}
 
 	@Override
@@ -180,32 +177,7 @@ public class CalendarIndexer extends BaseIndexer<Calendar> {
 		final IndexableActionableDynamicQuery indexableActionableDynamicQuery =
 			_calendarLocalService.getIndexableActionableDynamicQuery();
 
-		indexableActionableDynamicQuery.setCompanyId(companyId);
-		indexableActionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<Calendar>() {
-
-				@Override
-				public void performAction(Calendar calendar) {
-					try {
-						Document document = getDocument(calendar);
-
-						indexableActionableDynamicQuery.addDocuments(document);
-					}
-					catch (PortalException pe) {
-						if (_log.isWarnEnabled()) {
-							_log.warn(
-								"Unable to index calendar " +
-									calendar.getCalendarId(),
-								pe);
-						}
-					}
-				}
-
-			});
-
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
-
-		indexableActionableDynamicQuery.performActions();
+		reindexCompany(indexableActionableDynamicQuery, companyId);
 	}
 
 	@Reference(unbind = "-")

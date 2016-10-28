@@ -114,9 +114,7 @@ public class CalendarBookingIndexer extends BaseIndexer<CalendarBooking> {
 
 	@Override
 	protected void doDelete(CalendarBooking calendarBooking) throws Exception {
-		deleteDocument(
-			calendarBooking.getCompanyId(),
-			calendarBooking.getCalendarBookingId());
+		super.doDelete(calendarBooking);
 	}
 
 	@Override
@@ -231,10 +229,7 @@ public class CalendarBookingIndexer extends BaseIndexer<CalendarBooking> {
 
 	@Override
 	protected void doReindex(String className, long classPK) throws Exception {
-		CalendarBooking calendarBooking =
-			_calendarBookingLocalService.getCalendarBooking(classPK);
-
-		doReindex(calendarBooking);
+		super.doReindex(className, classPK);
 	}
 
 	@Override
@@ -280,31 +275,8 @@ public class CalendarBookingIndexer extends BaseIndexer<CalendarBooking> {
 				}
 
 			});
-		indexableActionableDynamicQuery.setCompanyId(companyId);
-		indexableActionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<CalendarBooking>() {
 
-				@Override
-				public void performAction(CalendarBooking calendarBooking) {
-					try {
-						Document document = getDocument(calendarBooking);
-
-						indexableActionableDynamicQuery.addDocuments(document);
-					}
-					catch (PortalException pe) {
-						if (_log.isWarnEnabled()) {
-							_log.warn(
-								"Unable to index calendar booking " +
-									calendarBooking.getCalendarBookingId(),
-								pe);
-						}
-					}
-				}
-
-			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
-
-		indexableActionableDynamicQuery.performActions();
+		reindexCompany(indexableActionableDynamicQuery, companyId);
 	}
 
 	@Reference(unbind = "-")

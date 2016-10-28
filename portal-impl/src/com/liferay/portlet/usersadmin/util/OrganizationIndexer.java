@@ -14,9 +14,7 @@
 
 package com.liferay.portlet.usersadmin.util;
 
-import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Organization;
@@ -153,12 +151,6 @@ public class OrganizationIndexer extends BaseIndexer<Organization> {
 	}
 
 	@Override
-	protected void doDelete(Organization organization) throws Exception {
-		deleteDocument(
-			organization.getCompanyId(), organization.getOrganizationId());
-	}
-
-	@Override
 	protected Document doGetDocument(Organization organization)
 		throws Exception {
 
@@ -216,14 +208,6 @@ public class OrganizationIndexer extends BaseIndexer<Organization> {
 	}
 
 	@Override
-	protected void doReindex(String className, long classPK) throws Exception {
-		Organization organization =
-			OrganizationLocalServiceUtil.getOrganization(classPK);
-
-		doReindex(organization);
-	}
-
-	@Override
 	protected void doReindex(String[] ids) throws Exception {
 		long companyId = GetterUtil.getLong(ids[0]);
 
@@ -234,31 +218,7 @@ public class OrganizationIndexer extends BaseIndexer<Organization> {
 		final IndexableActionableDynamicQuery indexableActionableDynamicQuery =
 			OrganizationLocalServiceUtil.getIndexableActionableDynamicQuery();
 
-		indexableActionableDynamicQuery.setCompanyId(companyId);
-		indexableActionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<Organization>() {
-
-				@Override
-				public void performAction(Organization organization) {
-					try {
-						Document document = getDocument(organization);
-
-						indexableActionableDynamicQuery.addDocuments(document);
-					}
-					catch (PortalException pe) {
-						if (_log.isWarnEnabled()) {
-							_log.warn(
-								"Unable to index organization " +
-									organization.getOrganizationId(),
-								pe);
-						}
-					}
-				}
-
-			});
-		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
-
-		indexableActionableDynamicQuery.performActions();
+		reindexCompany(indexableActionableDynamicQuery, companyId);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
