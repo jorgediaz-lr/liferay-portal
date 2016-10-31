@@ -1593,8 +1593,8 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 		throws PortalException {
 
 		PersistedModelLocalService service =
-				PersistedModelLocalServiceRegistryUtil.
-					getPersistedModelLocalService(className);
+			PersistedModelLocalServiceRegistryUtil.
+				getPersistedModelLocalService(className);
 
 		return (T)service.getPersistedModel(classPK);
 	}
