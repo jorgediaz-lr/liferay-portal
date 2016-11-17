@@ -673,225 +673,7 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 		}
 
 		List<LinkedHashMap<String, Object>> paramsMapList =
-				new ArrayList<LinkedHashMap<String, Object>>();
-
-		LinkedHashMap<String, Object> params1 = params;
-
-		Long[] groupIds = null;
-
-		if (params.get("usersGroups") instanceof Long) {
-			Long groupId = (Long)params.get("usersGroups");
-
-			if (groupId > 0) {
-				groupIds = new Long[] {groupId};
-			}
-		}
-		else {
-			groupIds = (Long[])params.get("usersGroups");
-		}
-
-		Long[] roleIds = null;
-
-		if (params.get("usersRoles") instanceof Long) {
-			Long roleId = (Long)params.get("usersRoles");
-
-			if (roleId > 0) {
-				roleIds = new Long[] {roleId};
-			}
-		}
-		else {
-			roleIds = (Long[])params.get("usersRoles");
-		}
-
-		boolean inherit = GetterUtil.getBoolean(params.get("inherit"));
-		boolean socialRelationTypeUnionUserGroups = GetterUtil.getBoolean(
-			params.get("socialRelationTypeUnionUserGroups"));
-
-		if (ArrayUtil.isNotEmpty(groupIds) && inherit &&
-			!socialRelationTypeUnionUserGroups) {
-
-			List<Long> organizationIds = new ArrayList<>();
-			List<Long> siteGroupIds = new ArrayList<>();
-			List<Long> userGroupIds = new ArrayList<>();
-
-			for (long groupId : groupIds) {
-				Group group = GroupLocalServiceUtil.fetchGroup(groupId);
-
-				if (group == null) {
-					continue;
-				}
-
-				if (group.isOrganization()) {
-					organizationIds.add(group.getOrganizationId());
-				}
-				else if (group.isUserGroup()) {
-					userGroupIds.add(group.getClassPK());
-				}
-				else {
-					siteGroupIds.add(groupId);
-				}
-			}
-
-			if (!organizationIds.isEmpty()) {
-				LinkedHashMap<String, Object> params2 = new LinkedHashMap<>(params1);
-
-				params2.remove("usersGroups");
-
-				if (PropsValues.ORGANIZATIONS_MEMBERSHIP_STRICT) {
-					params2.put("usersOrgs", organizationIds);
-				}
-				else {
-					Map<Serializable, Organization> organizations =
-						OrganizationUtil.fetchByPrimaryKeys(
-							new HashSet<Serializable>(organizationIds));
-
-					params2.put(
-						"usersOrgsTree",
-						new ArrayList<Organization>(organizations.values()));
-				}
-
-				paramsMapList.add(params2);
-			}
-
-			if (!siteGroupIds.isEmpty()) {
-				Long[] siteGroupIdsArray = siteGroupIds.toArray(
-					new Long[siteGroupIds.size()]);
-
-				LinkedHashMap<String, Object> params3 = new LinkedHashMap<>(params1);
-
-				params3.remove("usersGroups");
-
-				params3.put("groupsOrgs", siteGroupIdsArray);
-
-				paramsMapList.add(params3);
-
-				LinkedHashMap<String, Object> params4 = new LinkedHashMap<>(params1);
-
-				params4.remove("usersGroups");
-
-				params4.put("groupsUserGroups", siteGroupIdsArray);
-
-				paramsMapList.add(params4);
-			}
-
-			if (!userGroupIds.isEmpty()) {
-				LinkedHashMap<String, Object> params5 = new LinkedHashMap<>(params1);
-
-				params5.remove("usersGroups");
-
-				params5.put(
-					"usersUserGroups",
-					userGroupIds.toArray(new Long[userGroupIds.size()]));
-
-				paramsMapList.add(params5);
-			}
-		}
-
-		if (ArrayUtil.isNotEmpty(roleIds) && inherit &&
-			!socialRelationTypeUnionUserGroups) {
-
-			List<Long> organizationIds = new ArrayList<>();
-			List<Long> siteGroupIds = new ArrayList<>();
-			List<Long> userGroupIds = new ArrayList<>();
-
-			for (long roleId : roleIds) {
-				List<Group> groups = RoleUtil.getGroups(roleId);
-
-				for (Group group : groups) {
-					if (group.isOrganization()) {
-						organizationIds.add(group.getOrganizationId());
-					}
-					else if (group.isUserGroup()) {
-						userGroupIds.add(group.getClassPK());
-					}
-					else {
-						siteGroupIds.add(group.getGroupId());
-					}
-				}
-			}
-
-			if (!organizationIds.isEmpty()) {
-				LinkedHashMap<String, Object> params2 = new LinkedHashMap<>(params1);
-
-				params2.remove("usersRoles");
-
-				if (PropsValues.ORGANIZATIONS_MEMBERSHIP_STRICT) {
-					params2.put(
-						"usersOrgs",
-						organizationIds.toArray(
-							new Long[organizationIds.size()]));
-				}
-				else {
-					Map<Serializable, Organization> organizations =
-						OrganizationUtil.fetchByPrimaryKeys(
-							new HashSet<Serializable>(organizationIds));
-
-					params2.put(
-						"usersOrgsTree",
-						new ArrayList<Organization>(organizations.values()));
-				}
-
-				paramsMapList.add(params2);
-			}
-
-			if (!siteGroupIds.isEmpty()) {
-				Long[] siteGroupIdsArray = siteGroupIds.toArray(
-					new Long[siteGroupIds.size()]);
-
-				LinkedHashMap<String, Object> params3 = new LinkedHashMap<>(params1);
-
-				params3.remove("usersRoles");
-
-				params3.put("usersGroups", siteGroupIdsArray);
-
-				paramsMapList.add(params3);
-
-				LinkedHashMap<String, Object> params4 = new LinkedHashMap<>(params1);
-
-				params4.remove("usersRoles");
-
-				params4.put("groupsOrgs", siteGroupIdsArray);
-
-				paramsMapList.add(params4);
-
-				LinkedHashMap<String, Object> params5 = new LinkedHashMap<>(params1);
-
-				params5.remove("usersRoles");
-
-				params5.put("groupsUserGroups", siteGroupIdsArray);
-
-				paramsMapList.add(params5);
-			}
-
-			if (!userGroupIds.isEmpty()) {
-				LinkedHashMap<String, Object> params6 = new LinkedHashMap<>(params1);
-
-				params6.remove("usersRoles");
-
-				params6.put(
-					"usersUserGroups",
-					userGroupIds.toArray(new Long[userGroupIds.size()]));
-
-				paramsMapList.add(params6);
-			}
-		}
-
-		if (socialRelationTypeUnionUserGroups) {
-			boolean hasSocialRelationTypes = Validator.isNotNull(
-				params.get("socialRelationType"));
-
-			if (hasSocialRelationTypes && ArrayUtil.isNotEmpty(groupIds)) {
-				LinkedHashMap<String, Object> params2 = new LinkedHashMap<>(params1);
-
-				params1.remove("socialRelationType");
-
-				params2.remove("usersGroups");
-
-				paramsMapList.add(params2);
-			}
-		}
-
-		paramsMapList.add(0,params1);
+				getParamsMapList(params);
 
 		Session session = null;
 
@@ -1066,6 +848,241 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 		}
 
 		return join;
+	}
+
+	protected List<LinkedHashMap<String, Object>> getParamsMapList(
+		LinkedHashMap<String, Object> params) {
+
+		List<LinkedHashMap<String, Object>> paramsMapList = new ArrayList<>();
+
+		Long[] groupIds = null;
+
+		if (params.get("usersGroups") instanceof Long) {
+			Long groupId = (Long)params.get("usersGroups");
+
+			if (groupId > 0) {
+				groupIds = new Long[] {groupId};
+			}
+		}
+		else {
+			groupIds = (Long[])params.get("usersGroups");
+		}
+
+		Long[] roleIds = null;
+
+		if (params.get("usersRoles") instanceof Long) {
+			Long roleId = (Long)params.get("usersRoles");
+
+			if (roleId > 0) {
+				roleIds = new Long[] {roleId};
+			}
+		}
+		else {
+			roleIds = (Long[])params.get("usersRoles");
+		}
+
+		boolean inherit = GetterUtil.getBoolean(params.get("inherit"));
+		boolean socialRelationTypeUnionUserGroups = GetterUtil.getBoolean(
+			params.get("socialRelationTypeUnionUserGroups"));
+
+		if (ArrayUtil.isNotEmpty(groupIds) && inherit &&
+			!socialRelationTypeUnionUserGroups) {
+
+			List<Long> organizationIds = new ArrayList<>();
+			List<Long> siteGroupIds = new ArrayList<>();
+			List<Long> userGroupIds = new ArrayList<>();
+
+			for (long groupId : groupIds) {
+				Group group = GroupLocalServiceUtil.fetchGroup(groupId);
+
+				if (group == null) {
+					continue;
+				}
+
+				if (group.isOrganization()) {
+					organizationIds.add(group.getOrganizationId());
+				}
+				else if (group.isUserGroup()) {
+					userGroupIds.add(group.getClassPK());
+				}
+				else {
+					siteGroupIds.add(groupId);
+				}
+			}
+
+			if (!organizationIds.isEmpty()) {
+				LinkedHashMap<String, Object> params2 =
+					new LinkedHashMap<>(params);
+
+				params2.remove("usersGroups");
+
+				if (PropsValues.ORGANIZATIONS_MEMBERSHIP_STRICT) {
+					params2.put("usersOrgs", organizationIds);
+				}
+				else {
+					Map<Serializable, Organization> organizations =
+						OrganizationUtil.fetchByPrimaryKeys(
+							new HashSet<Serializable>(organizationIds));
+
+					params2.put(
+						"usersOrgsTree",
+						new ArrayList<Organization>(organizations.values()));
+				}
+
+				paramsMapList.add(params2);
+			}
+
+			if (!siteGroupIds.isEmpty()) {
+				Long[] siteGroupIdsArray = siteGroupIds.toArray(
+					new Long[siteGroupIds.size()]);
+
+				LinkedHashMap<String, Object> params3 =
+					new LinkedHashMap<>(params);
+
+				params3.remove("usersGroups");
+
+				params3.put("groupsOrgs", siteGroupIdsArray);
+
+				paramsMapList.add(params3);
+
+				LinkedHashMap<String, Object> params4 =
+					new LinkedHashMap<>(params);
+
+				params4.remove("usersGroups");
+
+				params4.put("groupsUserGroups", siteGroupIdsArray);
+
+				paramsMapList.add(params4);
+			}
+
+			if (!userGroupIds.isEmpty()) {
+				LinkedHashMap<String, Object> params5 =
+					new LinkedHashMap<>(params);
+
+				params5.remove("usersGroups");
+
+				params5.put(
+					"usersUserGroups",
+					userGroupIds.toArray(new Long[userGroupIds.size()]));
+
+				paramsMapList.add(params5);
+			}
+		}
+
+		if (ArrayUtil.isNotEmpty(roleIds) && inherit &&
+			!socialRelationTypeUnionUserGroups) {
+
+			List<Long> organizationIds = new ArrayList<>();
+			List<Long> siteGroupIds = new ArrayList<>();
+			List<Long> userGroupIds = new ArrayList<>();
+
+			for (long roleId : roleIds) {
+				List<Group> groups = RoleUtil.getGroups(roleId);
+
+				for (Group group : groups) {
+					if (group.isOrganization()) {
+						organizationIds.add(group.getOrganizationId());
+					}
+					else if (group.isUserGroup()) {
+						userGroupIds.add(group.getClassPK());
+					}
+					else {
+						siteGroupIds.add(group.getGroupId());
+					}
+				}
+			}
+
+			if (!organizationIds.isEmpty()) {
+				LinkedHashMap<String, Object> params2  =
+						new LinkedHashMap<>(params);
+
+				params2.remove("usersRoles");
+
+				if (PropsValues.ORGANIZATIONS_MEMBERSHIP_STRICT) {
+					params2.put(
+						"usersOrgs",
+						organizationIds.toArray(
+							new Long[organizationIds.size()]));
+				}
+				else {
+					Map<Serializable, Organization> organizations =
+						OrganizationUtil.fetchByPrimaryKeys(
+							new HashSet<Serializable>(organizationIds));
+
+					params2.put(
+						"usersOrgsTree",
+						new ArrayList<Organization>(organizations.values()));
+				}
+
+				paramsMapList.add(params2);
+			}
+
+			if (!siteGroupIds.isEmpty()) {
+				Long[] siteGroupIdsArray = siteGroupIds.toArray(
+					new Long[siteGroupIds.size()]);
+
+				LinkedHashMap<String, Object> params3  =
+					new LinkedHashMap<>(params);
+
+				params3.remove("usersRoles");
+
+				params3.put("usersGroups", siteGroupIdsArray);
+
+				paramsMapList.add(params3);
+
+				LinkedHashMap<String, Object> params4  =
+					new LinkedHashMap<>(params);
+
+				params4.remove("usersRoles");
+
+				params4.put("groupsOrgs", siteGroupIdsArray);
+
+				paramsMapList.add(params4);
+
+				LinkedHashMap<String, Object> params5  =
+					new LinkedHashMap<>(params);
+
+				params5.remove("usersRoles");
+
+				params5.put("groupsUserGroups", siteGroupIdsArray);
+
+				paramsMapList.add(params5);
+			}
+
+			if (!userGroupIds.isEmpty()) {
+				LinkedHashMap<String, Object> params6  =
+					new LinkedHashMap<>(params);
+
+				params6.remove("usersRoles");
+
+				params6.put(
+					"usersUserGroups",
+					userGroupIds.toArray(new Long[userGroupIds.size()]));
+
+				paramsMapList.add(params6);
+			}
+		}
+
+		LinkedHashMap<String, Object> params1 = new LinkedHashMap<>(params);
+
+		if (socialRelationTypeUnionUserGroups) {
+			boolean hasSocialRelationTypes = Validator.isNotNull(
+				params.get("socialRelationType"));
+
+			if (hasSocialRelationTypes && ArrayUtil.isNotEmpty(groupIds)) {
+				LinkedHashMap<String, Object> params2 = new LinkedHashMap<>(params);
+
+				params1.remove("socialRelationType");
+
+				params2.remove("usersGroups");
+
+				paramsMapList.add(params2);
+			}
+		}
+
+		paramsMapList.add(0,params1);
+
+		return paramsMapList;
 	}
 
 	protected String getWhere(LinkedHashMap<String, Object> params) {
