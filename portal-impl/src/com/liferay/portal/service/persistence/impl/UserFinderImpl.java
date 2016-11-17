@@ -444,10 +444,6 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 		screenNames = CustomSQLUtil.keywords(screenNames);
 		emailAddresses = CustomSQLUtil.keywords(emailAddresses);
 
-		if (params == null) {
-			params = _emptyLinkedHashMap;
-		}
-
 		List<LinkedHashMap<String, Object>> paramsMapList = getParamsMapList(
 			params);
 
@@ -487,7 +483,7 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 			if (db.getDBType() == DBType.SYBASE) {
 				sybase = true;
 
-				stringBundlerSize = (paramsMapList.size() * 6) + 1;
+				stringBundlerSize = (paramsMapList.size() * 7) + 1;
 			}
 			else {
 				stringBundlerSize = (paramsMapList.size() * 4) + 1;
@@ -511,7 +507,8 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 				sb.append(StringPool.CLOSE_PARENTHESIS);
 
 				if (sybase) {
-					sb.append(" params" + i);
+					sb.append(" params");
+					sb.append(i);
 				}
 			}
 
@@ -544,7 +541,7 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 			}
 
 			List<Long> userCounts = (List<Long>)QueryUtil.list(
-					q, getDialect(), QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+				q, getDialect(), QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
 			if ((userCounts == null) || userCounts.isEmpty()) {
 				return 0;
@@ -782,10 +779,6 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 		screenNames = CustomSQLUtil.keywords(screenNames);
 		emailAddresses = CustomSQLUtil.keywords(emailAddresses);
 
-		if (params == null) {
-			params = _emptyLinkedHashMap;
-		}
-
 		List<LinkedHashMap<String, Object>> paramsMapList = getParamsMapList(
 			params);
 
@@ -969,6 +962,10 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 
 	protected List<LinkedHashMap<String, Object>> getParamsMapList(
 		LinkedHashMap<String, Object> params) {
+
+		if (params == null) {
+			params = _emptyLinkedHashMap;
+		}
 
 		Long[] groupIds = null;
 
