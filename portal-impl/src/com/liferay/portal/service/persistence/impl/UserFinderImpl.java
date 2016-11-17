@@ -885,8 +885,32 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 		boolean socialRelationTypeUnionUserGroups = GetterUtil.getBoolean(
 			params.get("socialRelationTypeUnionUserGroups"));
 
-		if (ArrayUtil.isNotEmpty(groupIds) && inherit &&
-			!socialRelationTypeUnionUserGroups) {
+		LinkedHashMap<String, Object> params1 = new LinkedHashMap<>(params);
+
+		paramsMapList.add(params1);
+
+		if (socialRelationTypeUnionUserGroups) {
+			boolean hasSocialRelationTypes = Validator.isNotNull(
+				params.get("socialRelationType"));
+
+			if (hasSocialRelationTypes && ArrayUtil.isNotEmpty(groupIds)) {
+				LinkedHashMap<String, Object> params2 = new LinkedHashMap<>(params);
+
+				params1.remove("socialRelationType");
+
+				params2.remove("usersGroups");
+
+				paramsMapList.add(params2);
+			}
+
+			return paramsMapList;
+		}
+
+		if (!inherit) {
+			return paramsMapList;
+		}
+
+		if (ArrayUtil.isNotEmpty(groupIds)) {
 
 			List<Long> organizationIds = new ArrayList<>();
 			List<Long> siteGroupIds = new ArrayList<>();
@@ -969,8 +993,7 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 			}
 		}
 
-		if (ArrayUtil.isNotEmpty(roleIds) && inherit &&
-			!socialRelationTypeUnionUserGroups) {
+		if (ArrayUtil.isNotEmpty(roleIds)) {
 
 			List<Long> organizationIds = new ArrayList<>();
 			List<Long> siteGroupIds = new ArrayList<>();
@@ -1062,25 +1085,6 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 				paramsMapList.add(params6);
 			}
 		}
-
-		LinkedHashMap<String, Object> params1 = new LinkedHashMap<>(params);
-
-		if (socialRelationTypeUnionUserGroups) {
-			boolean hasSocialRelationTypes = Validator.isNotNull(
-				params.get("socialRelationType"));
-
-			if (hasSocialRelationTypes && ArrayUtil.isNotEmpty(groupIds)) {
-				LinkedHashMap<String, Object> params2 = new LinkedHashMap<>(params);
-
-				params1.remove("socialRelationType");
-
-				params2.remove("usersGroups");
-
-				paramsMapList.add(params2);
-			}
-		}
-
-		paramsMapList.add(0,params1);
 
 		return paramsMapList;
 	}
