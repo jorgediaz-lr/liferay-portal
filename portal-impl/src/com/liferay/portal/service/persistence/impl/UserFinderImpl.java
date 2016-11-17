@@ -478,7 +478,9 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 				sql = StringUtil.replace(sql, _STATUS_SQL, StringPool.BLANK);
 			}
 
-			StringBundler sb = new StringBundler(20);
+			int stringBundlerSize = (paramsMapList.size() * 4) - 1;
+
+			StringBundler sb = new StringBundler(stringBundlerSize);
 
 			for (int i = 0; i < paramsMapList.size(); i++) {
 				if (i != 0) {
@@ -785,7 +787,9 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 				sql = StringUtil.replace(sql, _STATUS_SQL, StringPool.BLANK);
 			}
 
-			StringBundler sb = new StringBundler(20);
+			int stringBundlerSize = (paramsMapList.size() * 4) + 1;
+
+			StringBundler sb = new StringBundler(stringBundlerSize);
 
 			for (int i = 0; i < paramsMapList.size(); i++) {
 				if (i != 0) {
