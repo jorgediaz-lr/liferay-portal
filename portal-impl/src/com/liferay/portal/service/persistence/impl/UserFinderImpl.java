@@ -672,8 +672,8 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 			params = _emptyLinkedHashMap;
 		}
 
-		List<LinkedHashMap<String, Object>> paramsMapList =
-				getParamsMapList(params);
+		List<LinkedHashMap<String, Object>> paramsMapList = getParamsMapList(
+			params);
 
 		Session session = null;
 
@@ -704,10 +704,11 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 
 			StringBundler sb = new StringBundler(20);
 
-			for (int i=0;i < paramsMapList.size();i++) {
+			for (int i = 0; i < paramsMapList.size(); i++) {
 				if (i != 0) {
 					sb.append(" UNION ");
 				}
+
 				sb.append(StringPool.OPEN_PARENTHESIS);
 				sb.append(replaceJoinAndWhere(sql, paramsMapList.get(i)));
 				sb.append(StringPool.CLOSE_PARENTHESIS);
@@ -853,8 +854,6 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 	protected List<LinkedHashMap<String, Object>> getParamsMapList(
 		LinkedHashMap<String, Object> params) {
 
-		List<LinkedHashMap<String, Object>> paramsMapList = new ArrayList<>();
-
 		Long[] groupIds = null;
 
 		if (params.get("usersGroups") instanceof Long) {
@@ -885,16 +884,21 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 		boolean socialRelationTypeUnionUserGroups = GetterUtil.getBoolean(
 			params.get("socialRelationTypeUnionUserGroups"));
 
+		List<LinkedHashMap<String, Object>> paramsMapList = new ArrayList<>();
+
 		LinkedHashMap<String, Object> params1 = new LinkedHashMap<>(params);
 
 		paramsMapList.add(params1);
 
-		if (socialRelationTypeUnionUserGroups && ArrayUtil.isNotEmpty(groupIds)) {
+		if (socialRelationTypeUnionUserGroups &&
+			ArrayUtil.isNotEmpty(groupIds)) {
+
 			boolean hasSocialRelationTypes = Validator.isNotNull(
 				params.get("socialRelationType"));
 
 			if (hasSocialRelationTypes) {
-				LinkedHashMap<String, Object> params2 = new LinkedHashMap<>(params);
+				LinkedHashMap<String, Object> params2 = new LinkedHashMap<>(
+					params);
 
 				params1.remove("socialRelationType");
 
@@ -911,7 +915,6 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 		}
 
 		if (ArrayUtil.isNotEmpty(groupIds)) {
-
 			List<Long> organizationIds = new ArrayList<>();
 			List<Long> siteGroupIds = new ArrayList<>();
 			List<Long> userGroupIds = new ArrayList<>();
@@ -935,8 +938,8 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 			}
 
 			if (!organizationIds.isEmpty()) {
-				LinkedHashMap<String, Object> params2 =
-					new LinkedHashMap<>(params);
+				LinkedHashMap<String, Object> params2 = new LinkedHashMap<>(
+					params);
 
 				params2.remove("usersGroups");
 
@@ -960,8 +963,8 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 				Long[] siteGroupIdsArray = siteGroupIds.toArray(
 					new Long[siteGroupIds.size()]);
 
-				LinkedHashMap<String, Object> params3 =
-					new LinkedHashMap<>(params);
+				LinkedHashMap<String, Object> params3 = new LinkedHashMap<>(
+					params);
 
 				params3.remove("usersGroups");
 
@@ -969,8 +972,8 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 
 				paramsMapList.add(params3);
 
-				LinkedHashMap<String, Object> params4 =
-					new LinkedHashMap<>(params);
+				LinkedHashMap<String, Object> params4 = new LinkedHashMap<>(
+					params);
 
 				params4.remove("usersGroups");
 
@@ -980,8 +983,8 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 			}
 
 			if (!userGroupIds.isEmpty()) {
-				LinkedHashMap<String, Object> params5 =
-					new LinkedHashMap<>(params);
+				LinkedHashMap<String, Object> params5 = new LinkedHashMap<>(
+					params);
 
 				params5.remove("usersGroups");
 
@@ -994,7 +997,6 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 		}
 
 		if (ArrayUtil.isNotEmpty(roleIds)) {
-
 			List<Long> organizationIds = new ArrayList<>();
 			List<Long> siteGroupIds = new ArrayList<>();
 			List<Long> userGroupIds = new ArrayList<>();
@@ -1016,8 +1018,8 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 			}
 
 			if (!organizationIds.isEmpty()) {
-				LinkedHashMap<String, Object> params2  =
-						new LinkedHashMap<>(params);
+				LinkedHashMap<String, Object> params2 = new LinkedHashMap<>(
+					params);
 
 				params2.remove("usersRoles");
 
@@ -1044,8 +1046,8 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 				Long[] siteGroupIdsArray = siteGroupIds.toArray(
 					new Long[siteGroupIds.size()]);
 
-				LinkedHashMap<String, Object> params3  =
-					new LinkedHashMap<>(params);
+				LinkedHashMap<String, Object> params3 = new LinkedHashMap<>(
+					params);
 
 				params3.remove("usersRoles");
 
@@ -1053,8 +1055,8 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 
 				paramsMapList.add(params3);
 
-				LinkedHashMap<String, Object> params4  =
-					new LinkedHashMap<>(params);
+				LinkedHashMap<String, Object> params4 = new LinkedHashMap<>(
+					params);
 
 				params4.remove("usersRoles");
 
@@ -1062,8 +1064,8 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 
 				paramsMapList.add(params4);
 
-				LinkedHashMap<String, Object> params5  =
-					new LinkedHashMap<>(params);
+				LinkedHashMap<String, Object> params5 = new LinkedHashMap<>(
+					params);
 
 				params5.remove("usersRoles");
 
@@ -1073,8 +1075,8 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 			}
 
 			if (!userGroupIds.isEmpty()) {
-				LinkedHashMap<String, Object> params6  =
-					new LinkedHashMap<>(params);
+				LinkedHashMap<String, Object> params6 = new LinkedHashMap<>(
+					params);
 
 				params6.remove("usersRoles");
 
