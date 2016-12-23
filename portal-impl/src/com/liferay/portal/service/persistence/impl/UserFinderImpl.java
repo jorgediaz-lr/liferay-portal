@@ -783,9 +783,11 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 
 			if (obc != null) {
 				for (String conditionField : obc.getOrderByConditionFields()) {
-					attributes += ", User_." + conditionField + " AS " + conditionField;
+					attributes += ", User_." + conditionField + " AS " +
+						conditionField;
 				}
 			}
+
 			sql = StringUtil.replace(sql, "[$ATTRIBUTES$]", attributes);
 
 			sql = replaceKeywords(
