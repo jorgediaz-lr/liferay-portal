@@ -31,27 +31,27 @@ import com.liferay.portal.kernel.util.Validator;
 public class CompoundSessionIdSplitterUtil {
 
 	public static String getSessionIdDelimiter() {
-		return sessionIdDelimiter;
+		return _sessionIdDelimiter;
 	}
 
 	public static boolean hasSessionDelimiter() {
-		if (sessionIdDelimiter != null) {
-			return hasSessionDelimiter;
+		if (_sessionIdDelimiter != null) {
+			return _hasSessionDelimiter;
 		}
 
-		sessionIdDelimiter = PropsUtil.get(PropsKeys.SESSION_ID_DELIMITER);
+		_sessionIdDelimiter = PropsUtil.get(PropsKeys.SESSION_ID_DELIMITER);
 
-		if (Validator.isNull(sessionIdDelimiter)) {
-			sessionIdDelimiter = PropsUtil.get(
+		if (Validator.isNull(_sessionIdDelimiter)) {
+			_sessionIdDelimiter = PropsUtil.get(
 				"session.id." + ServerDetector.getServerId() + ".delimiter");
 		}
 
-		if (Validator.isNull(sessionIdDelimiter)) {
-			hasSessionDelimiter = false;
-			sessionIdDelimiter = StringPool.BLANK;
+		if (Validator.isNull(_sessionIdDelimiter)) {
+			_hasSessionDelimiter = false;
+			_sessionIdDelimiter = StringPool.BLANK;
 		}
 
-		return hasSessionDelimiter;
+		return _hasSessionDelimiter;
 	}
 
 	public static String parseSessionId(String sessionId) {
@@ -59,7 +59,7 @@ public class CompoundSessionIdSplitterUtil {
 			return sessionId;
 		}
 
-		int pos = sessionId.indexOf(getSessionIdDelimiter());
+		int pos = sessionId.indexOf(_sessionIdDelimiter);
 
 		if (pos == -1) {
 			return sessionId;
@@ -68,7 +68,7 @@ public class CompoundSessionIdSplitterUtil {
 		return sessionId.substring(0, pos);
 	}
 
-	private static boolean hasSessionDelimiter = true;
-	private static String sessionIdDelimiter;
+	private static boolean _hasSessionDelimiter = true;
+	private static String _sessionIdDelimiter;
 
 }
