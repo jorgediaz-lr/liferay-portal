@@ -1080,6 +1080,12 @@ public class GroupImpl extends GroupBaseImpl {
 					return GetterUtil.getBoolean(entry.getValue());
 				}
 			}
+
+			if (portlet.getPortletDataHandlerClass() == null) {
+				return true;
+			}
+
+			return portletDataHandler.isPublishToLiveByDefault();
 		}
 		catch (Exception e) {
 			if (_log.isDebugEnabled()) {
