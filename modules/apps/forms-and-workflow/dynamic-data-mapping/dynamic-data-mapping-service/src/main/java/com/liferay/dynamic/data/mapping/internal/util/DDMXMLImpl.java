@@ -129,7 +129,14 @@ public class DDMXMLImpl implements DDMXML {
 				String languageId = dynamicContentElement.attributeValue(
 					"language-id");
 
-				Locale locale = LocaleUtil.fromLanguageId(languageId);
+				Locale locale;
+
+				if (languageId == null) {
+					locale = defaultLocale;
+				}
+				else {
+					locale = LocaleUtil.fromLanguageId(languageId);
+				}
 
 				Serializable fieldValueSerializable =
 					FieldConstants.getSerializable(fieldDataType, fieldValue);
