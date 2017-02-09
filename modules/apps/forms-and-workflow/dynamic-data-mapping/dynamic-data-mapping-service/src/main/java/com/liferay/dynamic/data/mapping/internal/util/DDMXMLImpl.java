@@ -107,6 +107,17 @@ public class DDMXMLImpl implements DDMXML {
 				continue;
 			}
 
+			String defaultLanguageId =
+				dynamicElementElement.attributeValue("default-language-id");
+
+			if (Validator.isNull(defaultLanguageId)) {
+				defaultLanguageId = rootElement.attributeValue(
+					"default-locale");
+			}
+
+			Locale defaultLocale = LocaleUtil.fromLanguageId(
+				defaultLanguageId);
+
 			String fieldDataType = structure.getFieldDataType(fieldName);
 
 			List<Element> dynamicContentElements =
@@ -127,18 +138,6 @@ public class DDMXMLImpl implements DDMXML {
 
 				if (field == null) {
 					field = new Field();
-
-					String defaultLanguageId =
-						dynamicElementElement.attributeValue(
-							"default-language-id");
-
-					if (Validator.isNull(defaultLanguageId)) {
-						defaultLanguageId = rootElement.attributeValue(
-							"default-locale");
-					}
-
-					Locale defaultLocale = LocaleUtil.fromLanguageId(
-						defaultLanguageId);
 
 					field.setDefaultLocale(defaultLocale);
 
