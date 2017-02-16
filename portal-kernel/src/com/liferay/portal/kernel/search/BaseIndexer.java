@@ -36,8 +36,10 @@ import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.GroupModel;
 import com.liferay.portal.kernel.model.Region;
 import com.liferay.portal.kernel.model.ResourcedModel;
+import com.liferay.portal.kernel.model.ShardedModel;
 import com.liferay.portal.kernel.model.TrashedModel;
 import com.liferay.portal.kernel.model.WorkflowedModel;
 import com.liferay.portal.kernel.search.facet.AssetEntriesFacet;
@@ -61,6 +63,7 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -156,7 +159,36 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 
 	@Override
 	public Document getDocument(T object) throws SearchException {
+		Long companyThreadLocalCompanyId = null;
+		Locale localeThreadLocalSiteDefaultLocale = null;
+
 		try {
+			if (object instanceof ShardedModel) {
+				ShardedModel shardedModel = (ShardedModel)object;
+
+				if (CompanyThreadLocal.getCompanyId() !=
+						shardedModel.getCompanyId()) {
+
+					companyThreadLocalCompanyId =
+						CompanyThreadLocal.getCompanyId();
+
+					CompanyThreadLocal.setCompanyId(
+						shardedModel.getCompanyId());
+				}
+			}
+
+			if (object instanceof GroupModel) {
+				localeThreadLocalSiteDefaultLocale =
+					LocaleThreadLocal.getSiteDefaultLocale();
+
+				GroupModel groupModel = (GroupModel)object;
+
+				Locale siteDefaultLocale = PortalUtil.getSiteDefaultLocale(
+					groupModel.getGroupId());
+
+				LocaleThreadLocal.setSiteDefaultLocale(siteDefaultLocale);
+			}
+
 			Document document = doGetDocument(object);
 
 			for (IndexerPostProcessor indexerPostProcessor :
@@ -186,6 +218,16 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 		}
 		catch (Exception e) {
 			throw new SearchException(e);
+		}
+		finally {
+			if (companyThreadLocalCompanyId != null) {
+				CompanyThreadLocal.setCompanyId(companyThreadLocalCompanyId);
+			}
+
+			if (localeThreadLocalSiteDefaultLocale != null) {
+				LocaleThreadLocal.setSiteDefaultLocale(
+					localeThreadLocalSiteDefaultLocale);
+			}
 		}
 	}
 
