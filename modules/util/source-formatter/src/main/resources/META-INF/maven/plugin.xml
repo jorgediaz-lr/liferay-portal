@@ -281,6 +281,12 @@
 			<version>3.4</version>
 		</dependency>
 		<dependency>
+			<groupId>xerces</groupId>
+			<artifactId>xercesImpl</artifactId>
+			<type>jar</type>
+			<version>2.11.0</version>
+		</dependency>
+		<dependency>
 			<groupId>com.ibm.icu</groupId>
 			<artifactId>icu4j</artifactId>
 			<type>jar</type>
