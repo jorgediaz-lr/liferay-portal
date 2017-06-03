@@ -136,17 +136,6 @@ public class JournalArticleIndexerLocalizedContentTest {
 				{
 					put("localized_title_en_US", originalTitle);
 					put("localized_title_hu_HU", translatedTitle);
-
-					put("localized_title_ca_ES", originalTitle);
-					put("localized_title_de_DE", originalTitle);
-					put("localized_title_es_ES", originalTitle);
-					put("localized_title_fi_FI", originalTitle);
-					put("localized_title_fr_FR", originalTitle);
-					put("localized_title_iw_IL", originalTitle);
-					put("localized_title_ja_JP", originalTitle);
-					put("localized_title_nl_NL", originalTitle);
-					put("localized_title_pt_BR", originalTitle);
-					put("localized_title_zh_CN", originalTitle);
 				}
 			});
 
@@ -194,17 +183,6 @@ public class JournalArticleIndexerLocalizedContentTest {
 				{
 					put("localized_title_en_US", originalTitle);
 					put("localized_title_pt_BR", translatedTitle);
-
-					put("localized_title_ca_ES", originalTitle);
-					put("localized_title_de_DE", originalTitle);
-					put("localized_title_es_ES", originalTitle);
-					put("localized_title_fi_FI", originalTitle);
-					put("localized_title_fr_FR", originalTitle);
-					put("localized_title_hu_HU", originalTitle);
-					put("localized_title_iw_IL", originalTitle);
-					put("localized_title_ja_JP", originalTitle);
-					put("localized_title_nl_NL", originalTitle);
-					put("localized_title_zh_CN", originalTitle);
 				}
 			});
 
@@ -271,18 +249,6 @@ public class JournalArticleIndexerLocalizedContentTest {
 			new HashMap<String, String>() {
 				{
 					put("localized_title_ja_JP", title);
-
-					put("localized_title_ca_ES", title);
-					put("localized_title_de_DE", title);
-					put("localized_title_en_US", title);
-					put("localized_title_es_ES", title);
-					put("localized_title_fi_FI", title);
-					put("localized_title_fr_FR", title);
-					put("localized_title_hu_HU", title);
-					put("localized_title_iw_IL", title);
-					put("localized_title_nl_NL", title);
-					put("localized_title_pt_BR", title);
-					put("localized_title_zh_CN", title);
 				}
 			});
 
