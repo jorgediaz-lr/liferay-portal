@@ -785,8 +785,7 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 		}
 
 		document.addLocalizedKeyword(
-			"localized_title",
-			populateMap(assetEntry, assetEntry.getTitleMap()), true, true);
+			"localized_title", assetEntry.getTitleMap(), true, true);
 		document.addKeyword("visible", assetEntry.isVisible());
 	}
 
@@ -1771,6 +1770,10 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 		document.addText("zip", zips.toArray(new String[zips.size()]));
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	protected Map<Locale, String> populateMap(
 		AssetEntry assetEntry, Map<Locale, String> map) {
 
