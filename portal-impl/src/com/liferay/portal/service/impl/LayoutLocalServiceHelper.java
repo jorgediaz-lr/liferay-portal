@@ -397,7 +397,7 @@ public class LayoutLocalServiceHelper implements IdentifiableOSGiService {
 			}
 		}
 
-		for (Locale locale : LanguageUtil.getAvailableLocales()) {
+		for (Locale locale : LanguageUtil.getAvailableLocales(groupId)) {
 			String languageId = StringUtil.toLowerCase(
 				LocaleUtil.toLanguageId(locale));
 

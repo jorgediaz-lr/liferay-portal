@@ -3334,7 +3334,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 			String defaultLanguageId = typeSettingsProperties.getProperty(
 				"languageId", LocaleUtil.toLanguageId(LocaleUtil.getDefault()));
 
-			validateLanguageIds(defaultLanguageId, newLanguageIds);
+			validateLanguageIds(groupId, defaultLanguageId, newLanguageIds);
 
 			if (!Objects.equals(oldLanguageIds, newLanguageIds)) {
 				LanguageUtil.resetAvailableGroupLocales(groupId);
@@ -4381,7 +4381,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 	}
 
 	protected void validateLanguageIds(
-			String defaultLanguageId, String languageIds)
+			long groupId, String defaultLanguageId, String languageIds)
 		throws PortalException {
 
 		String[] languageIdsArray = StringUtil.split(languageIds);
@@ -4394,7 +4394,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 					LocaleException.TYPE_DISPLAY_SETTINGS);
 
 				le.setSourceAvailableLocales(
-					LanguageUtil.getAvailableLocales());
+					LanguageUtil.getAvailableLocales(groupId));
 				le.setTargetAvailableLocales(
 					Arrays.asList(
 						LocaleUtil.fromLanguageIds(languageIdsArray)));
@@ -4407,7 +4407,8 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 			LocaleException le = new LocaleException(
 				LocaleException.TYPE_DEFAULT);
 
-			le.setSourceAvailableLocales(LanguageUtil.getAvailableLocales());
+			le.setSourceAvailableLocales(
+				LanguageUtil.getAvailableLocales(groupId));
 			le.setTargetAvailableLocales(
 				Arrays.asList(LocaleUtil.fromLanguageIds(languageIdsArray)));
 

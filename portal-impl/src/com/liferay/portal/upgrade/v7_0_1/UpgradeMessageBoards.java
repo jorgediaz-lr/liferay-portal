@@ -16,6 +16,7 @@ package com.liferay.portal.upgrade.v7_0_1;
 
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.upgrade.BaseUpgradePortletPreferences;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CharPool;
@@ -79,6 +80,8 @@ public class UpgradeMessageBoards extends BaseUpgradePortletPreferences {
 		PortletPreferences portletPreferences =
 			PortletPreferencesFactoryUtil.fromXML(
 				companyId, ownerId, ownerType, plid, portletId, xml);
+
+		CompanyThreadLocal.setCompanyId(companyId);
 
 		upgradeLocalizedThreadPriorities(portletPreferences);
 

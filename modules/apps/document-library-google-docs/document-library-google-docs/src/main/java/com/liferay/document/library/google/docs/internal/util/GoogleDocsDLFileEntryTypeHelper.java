@@ -73,7 +73,7 @@ public class GoogleDocsDLFileEntryTypeHelper {
 		Map<Locale, String> descriptionMap = new HashMap<>();
 
 		for (Locale curLocale :
-				LanguageUtil.getAvailableLocales(_company.getCompanyId())) {
+				LanguageUtil.getAvailableLocales(_company.getGroupId())) {
 
 			nameMap.put(curLocale, "Google Docs Metadata");
 			descriptionMap.put(curLocale, "Google Docs Metadata");
