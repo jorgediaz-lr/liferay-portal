@@ -37,7 +37,7 @@ public class SerializableObjectWrapper implements Externalizable {
 		SerializableObjectWrapper serializableWrapper =
 			(SerializableObjectWrapper)object;
 
-		return (T)serializableWrapper._serializable;
+		return (T)serializableWrapper.getSerializable();
 	}
 
 	/**
@@ -64,12 +64,12 @@ public class SerializableObjectWrapper implements Externalizable {
 		SerializableObjectWrapper serializableWrapper =
 			(SerializableObjectWrapper)object;
 
-		return _serializable.equals(serializableWrapper._serializable);
+		return getSerializable().equals(serializableWrapper.getSerializable());
 	}
 
 	@Override
 	public int hashCode() {
-		return _serializable.hashCode();
+		return getSerializable().hashCode();
 	}
 
 	@Override
@@ -88,11 +88,15 @@ public class SerializableObjectWrapper implements Externalizable {
 		}
 	}
 
+	public Serializable getSerializable() {
+		return _serializable;
+	}
+
 	@Override
 	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		Serializer serializer = new Serializer();
 
-		serializer.writeObject(_serializable);
+		serializer.writeObject(getSerializable());
 
 		ByteBuffer byteBuffer = serializer.toByteBuffer();
 
