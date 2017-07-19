@@ -67,6 +67,29 @@ public class SerializableObjectWrapper implements Externalizable {
 		return getSerializable().equals(serializableWrapper.getSerializable());
 	}
 
+	public Serializable getSerializable() {
+		if (_serializable != null) {
+			return _serializable;
+		}
+
+		if (_data == null) {
+			return null;
+		}
+
+		Deserializer deserializer = new Deserializer(ByteBuffer.wrap(_data));
+
+		try {
+			_serializable = deserializer.readObject();
+
+			_data = null;
+		}
+		catch (ClassNotFoundException cnfe) {
+			_log.error("Unable to deserialize object", cnfe);
+		}
+
+		return _serializable;
+	}
+
 	@Override
 	public int hashCode() {
 		return getSerializable().hashCode();
@@ -78,18 +101,7 @@ public class SerializableObjectWrapper implements Externalizable {
 
 		objectInput.readFully(data);
 
-		Deserializer deserializer = new Deserializer(ByteBuffer.wrap(data));
-
-		try {
-			_serializable = deserializer.readObject();
-		}
-		catch (ClassNotFoundException cnfe) {
-			_log.error("Unable to deserialize object", cnfe);
-		}
-	}
-
-	public Serializable getSerializable() {
-		return _serializable;
+		_data = data;
 	}
 
 	@Override
@@ -109,6 +121,7 @@ public class SerializableObjectWrapper implements Externalizable {
 	private static final Log _log = LogFactoryUtil.getLog(
 		SerializableObjectWrapper.class);
 
+	private byte[] _data;
 	private Serializable _serializable;
 
 }
