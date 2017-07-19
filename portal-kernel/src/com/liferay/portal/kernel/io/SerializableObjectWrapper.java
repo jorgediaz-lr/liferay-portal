@@ -24,6 +24,8 @@ import java.io.Serializable;
 
 import java.nio.ByteBuffer;
 
+import java.util.Objects;
+
 /**
  * @author Tina Tian
  */
@@ -64,7 +66,8 @@ public class SerializableObjectWrapper implements Externalizable {
 		SerializableObjectWrapper serializableWrapper =
 			(SerializableObjectWrapper)object;
 
-		return getSerializable().equals(serializableWrapper.getSerializable());
+		return Objects.equals(
+			getSerializable(), serializableWrapper.getSerializable());
 	}
 
 	public Serializable getSerializable() {
@@ -92,7 +95,7 @@ public class SerializableObjectWrapper implements Externalizable {
 
 	@Override
 	public int hashCode() {
-		return getSerializable().hashCode();
+		return Objects.hashCode(getSerializable());
 	}
 
 	@Override
