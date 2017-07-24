@@ -224,7 +224,7 @@ public class BreadcrumbUtil {
 				HttpSession session = request.getSession();
 
 				portletBreadcrumbEntry.setURL(
-					PortalUtil.getURLWithSessionId(url, session.getId()));
+					PortalUtil.getURLWithSessionId(url, session));
 			}
 		}
 
