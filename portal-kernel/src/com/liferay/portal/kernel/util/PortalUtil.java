@@ -1882,6 +1882,10 @@ public class PortalUtil {
 		return getPortal().getUptime();
 	}
 
+	public static String getURLWithSessionId(String url, HttpSession session) {
+		return getPortal().getURLWithSessionId(url, session);
+	}
+
 	public static String getURLWithSessionId(String url, String sessionId) {
 		return getPortal().getURLWithSessionId(url, sessionId);
 	}

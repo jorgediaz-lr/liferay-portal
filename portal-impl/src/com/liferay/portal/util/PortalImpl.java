@@ -149,6 +149,7 @@ import com.liferay.portal.kernel.servlet.PortalWebResourcesUtil;
 import com.liferay.portal.kernel.servlet.PortletServlet;
 import com.liferay.portal.kernel.servlet.ServletContextUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.servlet.filters.compoundsessionid.CompoundSessionIdHttpSession;
 import com.liferay.portal.kernel.servlet.taglib.ui.BreadcrumbEntry;
 import com.liferay.portal.kernel.servlet.taglib.ui.BreadcrumbUtil;
 import com.liferay.portal.kernel.theme.PortletDisplay;
@@ -1034,7 +1035,7 @@ public class PortalImpl implements Portal {
 		}
 
 		if (!CookieKeys.hasSessionId(request) && url.startsWith(portalURL)) {
-			url = getURLWithSessionId(url, request.getSession().getId());
+			url = getURLWithSessionId(url, request.getSession());
 		}
 
 		return url;
@@ -5513,6 +5514,18 @@ public class PortalImpl implements Portal {
 	@Override
 	public Date getUptime() {
 		return _upTime;
+	}
+
+	@Override
+	public String getURLWithSessionId(String url, HttpSession session) {
+		String sessionId = (String)session.getAttribute(
+			CompoundSessionIdHttpSession.ORIGINAL_SESSIONID);
+
+		if (sessionId == null) {
+			sessionId = session.getId();
+		}
+
+		return getURLWithSessionId(url, sessionId);
 	}
 
 	@Override

@@ -1163,6 +1163,8 @@ public interface Portal {
 
 	public Date getUptime();
 
+	public String getURLWithSessionId(String url, HttpSession session);
+
 	public String getURLWithSessionId(String url, String sessionId);
 
 	public User getUser(HttpServletRequest request) throws PortalException;
