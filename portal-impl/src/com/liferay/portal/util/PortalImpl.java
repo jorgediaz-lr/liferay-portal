@@ -5583,6 +5583,15 @@ public class PortalImpl implements Portal {
 	}
 
 	@Override
+	public String getURLWithSessionId(String url, ThemeDisplay themeDisplay) {
+		if ((themeDisplay == null) || !themeDisplay.isAddSessionIdToURL()) {
+			return url;
+		}
+
+		return getURLWithSessionId(url, themeDisplay.getSessionId());
+	}
+
+	@Override
 	public User getUser(HttpServletRequest request) throws PortalException {
 		User user = (User)request.getAttribute(WebKeys.USER);
 

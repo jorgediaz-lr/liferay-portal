@@ -1167,6 +1167,8 @@ public interface Portal {
 
 	public String getURLWithSessionId(String url, String sessionId);
 
+	public String getURLWithSessionId(String url, ThemeDisplay themeDisplay);
+
 	public User getUser(HttpServletRequest request) throws PortalException;
 
 	public User getUser(PortletRequest portletRequest) throws PortalException;

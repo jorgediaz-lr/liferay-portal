@@ -1890,6 +1890,12 @@ public class PortalUtil {
 		return getPortal().getURLWithSessionId(url, sessionId);
 	}
 
+	public static String getURLWithSessionId(
+		String url, ThemeDisplay themeDisplay) {
+
+		return getPortal().getURLWithSessionId(url, themeDisplay);
+	}
+
 	public static User getUser(HttpServletRequest request)
 		throws PortalException {
 
