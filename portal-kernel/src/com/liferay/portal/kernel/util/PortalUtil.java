@@ -1886,6 +1886,12 @@ public class PortalUtil {
 		return getPortal().getURLWithSessionId(url, session);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #getURLWithSessionId(String,
+	 *             HttpSession)} and {@link #getURLWithSessionId(String,
+	 *             ThemeDisplay)}
+	 */
+	@Deprecated
 	public static String getURLWithSessionId(String url, String sessionId) {
 		return getPortal().getURLWithSessionId(url, sessionId);
 	}

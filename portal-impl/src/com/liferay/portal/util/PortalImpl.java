@@ -5528,6 +5528,12 @@ public class PortalImpl implements Portal {
 		return getURLWithSessionId(url, sessionId);
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, replaced by {@link #getURLWithSessionId(String,
+	 *             HttpSession)} and {@link #getURLWithSessionId(String,
+	 *             ThemeDisplay)}
+	 */
+	@Deprecated
 	@Override
 	public String getURLWithSessionId(String url, String sessionId) {
 		if (!PropsValues.SESSION_ENABLE_URL_WITH_SESSION_ID) {
