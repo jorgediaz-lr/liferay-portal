@@ -1022,7 +1022,7 @@ public class PortletURLImpl
 
 		if (!CookieKeys.hasSessionId(_request)) {
 			result = PortalUtil.getURLWithSessionId(
-				result, _request.getSession().getId());
+				result, _request.getSession());
 		}
 
 		if (_escapeXml) {
