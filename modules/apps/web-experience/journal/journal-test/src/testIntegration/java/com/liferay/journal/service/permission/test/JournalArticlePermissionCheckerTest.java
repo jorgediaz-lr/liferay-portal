@@ -74,6 +74,8 @@ public class JournalArticlePermissionCheckerTest
 
 		removePortletModelViewPermission();
 
+		permissionChecker.getPermissionChecksMap().clear();
+
 		if (_journalServiceConfiguration.articleViewPermissionsCheckEnabled()) {
 			Assert.assertFalse(
 				JournalArticlePermission.contains(
