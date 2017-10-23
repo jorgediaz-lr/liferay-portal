@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -189,7 +190,9 @@ public interface BasePersistence<T extends BaseModel<T>> {
 
 	public Set<String> getBadColumnNames();
 
-	public Set<String> getCompoundPKColumnNames();
+	public default Set<String> getCompoundPKColumnNames() {
+		return Collections.emptySet();
+	}
 
 	public Session getCurrentSession() throws ORMException;
 
