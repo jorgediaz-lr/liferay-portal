@@ -214,6 +214,11 @@ public class BasePersistenceImpl<T extends BaseModel<T>>
 	}
 
 	@Override
+	public Set<String> getCompoundPKColumnNames() {
+		return Collections.emptySet();
+	}
+
+	@Override
 	public Session getCurrentSession() throws ORMException {
 		return _sessionFactory.getCurrentSession();
 	}
