@@ -189,6 +189,8 @@ public interface BasePersistence<T extends BaseModel<T>> {
 
 	public Set<String> getBadColumnNames();
 
+	public Set<String> getCompoundPKColumnNames();
+
 	public Session getCurrentSession() throws ORMException;
 
 	/**
