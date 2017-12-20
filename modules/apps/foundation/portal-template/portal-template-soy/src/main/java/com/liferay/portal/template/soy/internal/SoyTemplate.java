@@ -214,6 +214,24 @@ public class SoyTemplate extends AbstractMultiResourceTemplate {
 		if (value == null) {
 			soyMapValue = null;
 		}
+		else if (value instanceof List) {
+			List<Object> list = (List<Object>)value;
+
+			for (int i = 0; i < list.size(); i++) {
+				list.set(i, getSoyMapValue(list.get(i)));
+			}
+
+			soyMapValue = list;
+		}
+		else if (value instanceof Map) {
+			Map<Object, Object> map = (Map<Object, Object>)value;
+
+			for (Object mapKey : map.keySet()) {
+				map.put(mapKey, getSoyMapValue(map.get(mapKey)));
+			}
+
+			soyMapValue = map;
+		}
 		else if (value instanceof SoyHTMLContextValue) {
 			SoyHTMLContextValue htmlValue = (SoyHTMLContextValue)value;
 
