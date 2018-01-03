@@ -24,6 +24,7 @@ import com.google.template.soy.tofu.SoyTofu;
 import com.google.template.soy.tofu.SoyTofu.Renderer;
 import com.google.template.soy.tofu.SoyTofuOptions;
 
+import com.liferay.portal.kernel.bean.BeanPropertiesUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -48,12 +49,14 @@ import com.liferay.portal.template.soy.utils.SoyTemplateResourcesProvider;
 import java.io.Reader;
 import java.io.Writer;
 
+import java.lang.reflect.Array;
 import java.security.AccessController;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -64,6 +67,8 @@ import java.util.ResourceBundle;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang3.ClassUtils;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.wiring.BundleWiring;
@@ -209,44 +214,78 @@ public class SoyTemplate extends AbstractMultiResourceTemplate {
 	}
 
 	protected Object getSoyMapValue(Object value) {
-		Object soyMapValue = null;
-
 		if (value == null) {
-			soyMapValue = null;
+			return null;
 		}
-		else if (value instanceof List) {
-			List<Object> list = (List<Object>)value;
 
-			for (int i = 0; i < list.size(); i++) {
-				list.set(i, getSoyMapValue(list.get(i)));
+		Class<?> type = value.getClass();
+
+		if (ClassUtils.isPrimitiveOrWrapper(type) || value instanceof String) {
+			return value;
+		}
+
+		if (type.isArray()) {
+			List<Object> newList = new ArrayList<>();
+
+			for (int i = 0; i < Array.getLength(value); i++) {
+				Object obj = Array.get(value, i);
+
+				newList.add(getSoyMapValue(obj));
 			}
 
-			soyMapValue = list;
+			return newList;
 		}
-		else if (value instanceof Map) {
+
+		if (value instanceof Collection) {
+			@SuppressWarnings("unchecked")
+			Collection<Object> collection = (Collection<Object>)value;
+
+			List<Object> newList = new ArrayList<>();
+
+			for (Object obj : collection) {
+				newList.add(getSoyMapValue(obj));
+			}
+
+			return newList;
+		}
+
+		if (value instanceof Map) {
+			@SuppressWarnings("unchecked")
 			Map<Object, Object> map = (Map<Object, Object>)value;
 
-			for (Object mapKey : map.keySet()) {
-				map.put(mapKey, getSoyMapValue(map.get(mapKey)));
+			Map<Object, Object> newMap = new TreeMap<>();
+
+			for (Map.Entry<Object, Object> entry : map.entrySet()) {
+				Object newKey = getSoyMapValue(entry.getKey());
+				Object newValue = getSoyMapValue(entry.getValue());
+
+				newMap.put(newKey, newValue);
 			}
 
-			soyMapValue = map;
+			return newMap;
 		}
-		else if (value instanceof SoyHTMLContextValue) {
+
+		if (value instanceof SoyHTMLContextValue) {
 			SoyHTMLContextValue htmlValue = (SoyHTMLContextValue)value;
 
-			soyMapValue = htmlValue.getValue();
+			return htmlValue.getValue();
 		}
-		else if (value instanceof SoyRawData) {
+
+		if (value instanceof SoyRawData) {
 			SoyRawData soyRawData = (SoyRawData)value;
 
-			soyMapValue = soyRawData.getValue();
-		}
-		else {
-			soyMapValue = _templateContextHelper.deserializeValue(value);
+			return soyRawData.getValue();
 		}
 
-		return soyMapValue;
+		Map<String, Object> map = new TreeMap<>();
+
+		BeanPropertiesUtil.copyProperties(value, map);
+
+		if (!map.isEmpty()) {
+			return getSoyMapValue(map);
+		}
+
+		return _templateContextHelper.deserializeValue(value);
 	}
 
 	protected Optional<SoyMsgBundle> getSoyMsgBundle(
