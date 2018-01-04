@@ -25,6 +25,7 @@ import com.google.template.soy.tofu.SoyTofu.Renderer;
 import com.google.template.soy.tofu.SoyTofuOptions;
 
 import com.liferay.portal.kernel.bean.BeanPropertiesUtil;
+import com.liferay.portal.kernel.json.JSONSerializable;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -56,7 +57,6 @@ import java.security.PrivilegedExceptionAction;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -65,6 +65,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -236,13 +237,13 @@ public class SoyTemplate extends AbstractMultiResourceTemplate {
 			return newList;
 		}
 
-		if (value instanceof Collection) {
+		if (value instanceof Iterable) {
 			@SuppressWarnings("unchecked")
-			Collection<Object> collection = (Collection<Object>)value;
+			Iterable<Object> iterable = (Iterable<Object>)value;
 
 			List<Object> newList = new ArrayList<>();
 
-			for (Object obj : collection) {
+			for (Object obj : iterable) {
 				newList.add(getSoyMapValue(obj));
 			}
 
@@ -277,12 +278,14 @@ public class SoyTemplate extends AbstractMultiResourceTemplate {
 			return soyRawData.getValue();
 		}
 
-		Map<String, Object> map = new TreeMap<>();
+		if (!(value instanceof JSONSerializable)) {
+			Map<String, Object> map = new TreeMap<>();
 
-		BeanPropertiesUtil.copyProperties(value, map);
+			BeanPropertiesUtil.copyProperties(value, map);
 
-		if (!map.isEmpty()) {
-			return getSoyMapValue(map);
+			if (!map.isEmpty()) {
+				return getSoyMapValue(map);
+			}
 		}
 
 		return _templateContextHelper.deserializeValue(value);
