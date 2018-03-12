@@ -588,7 +588,8 @@ public class DLReferencesExportImportContentProcessor
 
 			FileEntry fileEntry = getFileEntry(dlReferenceParameters);
 
-			if (fileEntry == null) {
+			if (!ExportImportThreadLocal.isInitialLayoutStagingInProcess() &&
+				(fileEntry == null)) {
 				boolean absolutePortalURL = false;
 
 				boolean relativePortalURL = false;

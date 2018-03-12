@@ -428,7 +428,9 @@ public class LayoutReferencesExportImportContentProcessor
 				Group urlGroup = _groupLocalService.fetchFriendlyURLGroup(
 					group.getCompanyId(), groupFriendlyURL);
 
-				if (urlGroup == null) {
+				if (!ExportImportThreadLocal.isInitialLayoutStagingInProcess() &&
+					(urlGroup == null)) {
+
 					throw new NoSuchLayoutException();
 				}
 

@@ -303,7 +303,9 @@ public class LinksToLayoutsExportImportContentProcessor
 			Layout layout = _layoutLocalService.fetchLayout(
 				groupId, privateLayout, layoutId);
 
-			if (layout == null) {
+			if (!ExportImportThreadLocal.isInitialLayoutStagingInProcess() &&
+				(layout == null)) {
+
 				ExportImportContentValidationException eicve =
 					new ExportImportContentValidationException(
 						LinksToLayoutsExportImportContentProcessor.class.
