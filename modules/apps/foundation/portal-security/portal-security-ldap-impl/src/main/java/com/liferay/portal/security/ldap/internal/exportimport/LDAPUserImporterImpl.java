@@ -654,6 +654,10 @@ public class LDAPUserImporterImpl implements LDAPUserImporter, UserImporter {
 		}
 	}
 
+	protected String escapeLDAPName(String ldapName) {
+		return StringUtil.replace(ldapName, '\\', "\\\\");
+	}
+
 	protected String escapeValue(String value) {
 		return StringUtil.replace(value, _UNESCAPED_CHARS, _ESCAPED_CHARS);
 	}
@@ -987,7 +991,7 @@ public class LDAPUserImporterImpl implements LDAPUserImporter, UserImporter {
 
 			fullUserDN = normalizeLdapName(fullUserDN);
 
-			sb.append(escapeValue(fullUserDN));
+			sb.append(escapeLDAPName(fullUserDN));
 
 			sb.append(StringPool.CLOSE_PARENTHESIS);
 			sb.append(StringPool.CLOSE_PARENTHESIS);
