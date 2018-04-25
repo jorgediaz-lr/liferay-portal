@@ -27,55 +27,55 @@ public class LDAPUserImporterImplTest {
 	@Test
 	public void testCleanupLdapName() throws InvalidNameException {
 		Assert.assertEquals(
-			"cn=test test,ou=test", cleanupLdapName("cn=test\\20test,ou=test"));
+			"cn=test test,ou=test", normalizeLdapName("cn=test\\20test,ou=test"));
 		Assert.assertEquals(
 			"cn=test\\\"test,ou=test",
-			cleanupLdapName("cn=test\\22test,ou=test"));
+			normalizeLdapName("cn=test\\22test,ou=test"));
 		Assert.assertEquals(
 			"cn=test\\#test,ou=test",
-			cleanupLdapName("cn=test\\23test,ou=test"));
+			normalizeLdapName("cn=test\\23test,ou=test"));
 		Assert.assertEquals(
 			"cn=test\\+test,ou=test",
-			cleanupLdapName("cn=test\\2Btest,ou=test"));
+			normalizeLdapName("cn=test\\2Btest,ou=test"));
 		Assert.assertEquals(
 			"cn=test\\+test,ou=test",
-			cleanupLdapName("cn=test\\2btest,ou=test"));
+			normalizeLdapName("cn=test\\2btest,ou=test"));
 		Assert.assertEquals(
 			"cn=test\\,test,ou=test",
-			cleanupLdapName("cn=test\\2Ctest,ou=test"));
+			normalizeLdapName("cn=test\\2Ctest,ou=test"));
 		Assert.assertEquals(
 			"cn=test\\,test,ou=test",
-			cleanupLdapName("cn=test\\2ctest,ou=test"));
+			normalizeLdapName("cn=test\\2ctest,ou=test"));
 		Assert.assertEquals(
 			"cn=test\\;test,ou=test",
-			cleanupLdapName("cn=test\\3Btest,ou=test"));
+			normalizeLdapName("cn=test\\3Btest,ou=test"));
 		Assert.assertEquals(
 			"cn=test\\;test,ou=test",
-			cleanupLdapName("cn=test\\3btest,ou=test"));
+			normalizeLdapName("cn=test\\3btest,ou=test"));
 		Assert.assertEquals(
 			"cn=test\\<test,ou=test",
-			cleanupLdapName("cn=test\\3Ctest,ou=test"));
+			normalizeLdapName("cn=test\\3Ctest,ou=test"));
 		Assert.assertEquals(
 			"cn=test\\<test,ou=test",
-			cleanupLdapName("cn=test\\3ctest,ou=test"));
+			normalizeLdapName("cn=test\\3ctest,ou=test"));
 		Assert.assertEquals(
 			"cn=test\\=test,ou=test",
-			cleanupLdapName("cn=test\\3Dtest,ou=test"));
+			normalizeLdapName("cn=test\\3Dtest,ou=test"));
 		Assert.assertEquals(
 			"cn=test\\=test,ou=test",
-			cleanupLdapName("cn=test\\3dtest,ou=test"));
+			normalizeLdapName("cn=test\\3dtest,ou=test"));
 		Assert.assertEquals(
 			"cn=test\\>test,ou=test",
-			cleanupLdapName("cn=test\\3Etest,ou=test"));
+			normalizeLdapName("cn=test\\3Etest,ou=test"));
 		Assert.assertEquals(
 			"cn=test\\>test,ou=test",
-			cleanupLdapName("cn=test\\3etest,ou=test"));
+			normalizeLdapName("cn=test\\3etest,ou=test"));
 		Assert.assertEquals(
 			"cn=test\\\\test,ou=test",
-			cleanupLdapName("cn=test\\5Ctest,ou=test"));
+			normalizeLdapName("cn=test\\5Ctest,ou=test"));
 		Assert.assertEquals(
 			"cn=test\\\\test,ou=test",
-			cleanupLdapName("cn=test\\5ctest,ou=test"));
+			normalizeLdapName("cn=test\\5ctest,ou=test"));
 	}
 
 	@Test
@@ -92,8 +92,8 @@ public class LDAPUserImporterImplTest {
 		Assert.assertEquals("test\\\\\\\\test", escapeValue("test\\\\test"));
 	}
 
-	protected String cleanupLdapName(String name) throws InvalidNameException {
-		return _ldapUserImporterImpl.cleanupLdapName(name);
+	protected String normalizeLdapName(String name) throws InvalidNameException {
+		return _ldapUserImporterImpl.normalizeLdapName(name);
 	}
 
 	protected String escapeValue(String query) {
