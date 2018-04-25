@@ -92,7 +92,7 @@ public class DefaultPortalToLDAPConverter implements PortalToLDAPConverter {
 			ldapServerId, userGroup.getCompanyId(), userGroup.getName());
 
 		if (groupBinding != null) {
-			return groupBinding.getNameInNamespace();
+			return groupBinding.getNameInNamespace(); // here
 		}
 
 		StringBundler sb = new StringBundler(5);
@@ -342,7 +342,7 @@ public class DefaultPortalToLDAPConverter implements PortalToLDAPConverter {
 			user.getEmailAddress());
 
 		if (userBinding != null) {
-			return userBinding.getNameInNamespace();
+			return userBinding.getNameInNamespace(); // fix here
 		}
 
 		StringBundler sb = new StringBundler(5);
