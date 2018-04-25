@@ -654,16 +654,6 @@ public class LDAPUserImporterImpl implements LDAPUserImporter, UserImporter {
 		}
 	}
 
-	protected String normalizeLdapName(String name) throws InvalidNameException {
-		LdapName ldapNameString = new LdapName(name);
-
-		List<Rdn> rdns = ldapNameString.getRdns();
-
-		LdapName ldapNameRdns = new LdapName(rdns);
-
-		return ldapNameRdns.toString();
-	}
-
 	protected String escapeValue(String value) {
 		return StringUtil.replace(value, _UNESCAPED_CHARS, _ESCAPED_CHARS);
 	}
@@ -1324,6 +1314,18 @@ public class LDAPUserImporterImpl implements LDAPUserImporter, UserImporter {
 
 		_userLocalService.deleteUserGroupUsers(
 			userGroupId, ArrayUtil.toLongArray(deletedUserIds));
+	}
+
+	protected String normalizeLdapName(String name)
+		throws InvalidNameException {
+
+		LdapName ldapNameString = new LdapName(name);
+
+		List<Rdn> rdns = ldapNameString.getRdns();
+
+		LdapName ldapNameRdns = new LdapName(rdns);
+
+		return ldapNameRdns.toString();
 	}
 
 	protected void populateExpandoAttributes(
