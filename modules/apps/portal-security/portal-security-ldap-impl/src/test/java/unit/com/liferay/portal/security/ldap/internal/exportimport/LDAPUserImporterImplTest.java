@@ -27,7 +27,8 @@ public class LDAPUserImporterImplTest {
 	@Test
 	public void testCleanupLdapName() throws InvalidNameException {
 		Assert.assertEquals(
-			"cn=test test,ou=test", normalizeLdapName("cn=test\\20test,ou=test"));
+			"cn=test test,ou=test",
+			normalizeLdapName("cn=test\\20test,ou=test"));
 		Assert.assertEquals(
 			"cn=test\\\"test,ou=test",
 			normalizeLdapName("cn=test\\22test,ou=test"));
@@ -92,12 +93,14 @@ public class LDAPUserImporterImplTest {
 		Assert.assertEquals("test\\\\\\\\test", escapeValue("test\\\\test"));
 	}
 
-	protected String normalizeLdapName(String name) throws InvalidNameException {
-		return _ldapUserImporterImpl.normalizeLdapName(name);
-	}
-
 	protected String escapeValue(String query) {
 		return _ldapUserImporterImpl.escapeValue(query);
+	}
+
+	protected String normalizeLdapName(String name)
+		throws InvalidNameException {
+
+		return _ldapUserImporterImpl.normalizeLdapName(name);
 	}
 
 	private static final LDAPUserImporterImpl _ldapUserImporterImpl =
