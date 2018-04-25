@@ -654,7 +654,7 @@ public class LDAPUserImporterImpl implements LDAPUserImporter, UserImporter {
 		}
 	}
 
-	protected String cleanupLdapName(String name) throws InvalidNameException {
+	protected String normalizeLdapName(String name) throws InvalidNameException {
 		LdapName ldapNameString = new LdapName(name);
 
 		List<Rdn> rdns = ldapNameString.getRdns();
@@ -995,7 +995,7 @@ public class LDAPUserImporterImpl implements LDAPUserImporter, UserImporter {
 
 			String fullUserDN = binding.getNameInNamespace();
 
-			fullUserDN = cleanupLdapName(fullUserDN);
+			fullUserDN = normalizeLdapName(fullUserDN);
 
 			sb.append(escapeValue(fullUserDN));
 
