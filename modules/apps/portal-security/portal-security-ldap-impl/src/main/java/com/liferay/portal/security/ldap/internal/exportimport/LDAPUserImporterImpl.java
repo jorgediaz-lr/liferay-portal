@@ -94,7 +94,6 @@ import java.util.Properties;
 import java.util.Set;
 
 import javax.naming.Binding;
-import javax.naming.InvalidNameException;
 import javax.naming.NameNotFoundException;
 import javax.naming.NamingEnumeration;
 import javax.naming.directory.Attribute;
@@ -102,8 +101,6 @@ import javax.naming.directory.Attributes;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 import javax.naming.ldap.LdapContext;
-import javax.naming.ldap.LdapName;
-import javax.naming.ldap.Rdn;
 
 import org.apache.commons.lang.time.StopWatch;
 
@@ -735,7 +732,7 @@ public class LDAPUserImporterImpl implements LDAPUserImporter, UserImporter {
 		sb.append(StringPool.OPEN_PARENTHESIS);
 		sb.append(groupMappings.getProperty("groupName"));
 		sb.append("=");
-		sb.append(userGroup.getName());
+		sb.append(escapeLDAPName(userGroup.getName()));
 		sb.append("))");
 
 		return _portalLDAP.getMultivaluedAttribute(
@@ -984,8 +981,6 @@ public class LDAPUserImporterImpl implements LDAPUserImporter, UserImporter {
 				user.getEmailAddress());
 
 			String fullUserDN = binding.getNameInNamespace();
-
-			fullUserDN = normalizeLdapName(fullUserDN);
 
 			sb.append(escapeLDAPName(fullUserDN));
 
@@ -1314,18 +1309,6 @@ public class LDAPUserImporterImpl implements LDAPUserImporter, UserImporter {
 
 		_userLocalService.deleteUserGroupUsers(
 			userGroupId, ArrayUtil.toLongArray(deletedUserIds));
-	}
-
-	protected String normalizeLdapName(String name)
-		throws InvalidNameException {
-
-		LdapName ldapNameString = new LdapName(name);
-
-		List<Rdn> rdns = ldapNameString.getRdns();
-
-		LdapName ldapNameRdns = new LdapName(rdns);
-
-		return ldapNameRdns.toString();
 	}
 
 	protected void populateExpandoAttributes(

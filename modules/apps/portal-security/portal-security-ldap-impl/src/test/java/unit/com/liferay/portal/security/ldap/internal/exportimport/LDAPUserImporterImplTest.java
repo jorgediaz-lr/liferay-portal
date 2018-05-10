@@ -29,78 +29,15 @@ public class LDAPUserImporterImplTest {
 		Assert.assertEquals(
 			"cn=User\\\\,with\\\\,commas,ou=users,dc=example,dc=com",
 			escapeLDAPName(
-				normalizeLdapName(
-					"cn=User\\,with\\,commas,ou=users,dc=example,dc=com")));
+				"cn=User\\,with\\,commas,ou=users,dc=example,dc=com"));
 		Assert.assertEquals(
-			"cn=User\\\\,with\\\\,commas,ou=users,dc=example,dc=com",
+			"cn=User\\\\2cwith\\\\2ccommas,ou=users,dc=example,dc=com",
 			escapeLDAPName(
-				normalizeLdapName(
-					"cn=User\\2cwith\\2ccommas,ou=users,dc=example,dc=com")));
-	}
-
-	@Test
-	public void testCleanupLdapName() throws InvalidNameException {
-		Assert.assertEquals(
-			"cn=test test,ou=test",
-			normalizeLdapName("cn=test\\20test,ou=test"));
-		Assert.assertEquals(
-			"cn=test\\\"test,ou=test",
-			normalizeLdapName("cn=test\\22test,ou=test"));
-		Assert.assertEquals(
-			"cn=test\\#test,ou=test",
-			normalizeLdapName("cn=test\\23test,ou=test"));
-		Assert.assertEquals(
-			"cn=test\\+test,ou=test",
-			normalizeLdapName("cn=test\\2Btest,ou=test"));
-		Assert.assertEquals(
-			"cn=test\\+test,ou=test",
-			normalizeLdapName("cn=test\\2btest,ou=test"));
-		Assert.assertEquals(
-			"cn=test\\,test,ou=test",
-			normalizeLdapName("cn=test\\2Ctest,ou=test"));
-		Assert.assertEquals(
-			"cn=test\\,test,ou=test",
-			normalizeLdapName("cn=test\\2ctest,ou=test"));
-		Assert.assertEquals(
-			"cn=test\\;test,ou=test",
-			normalizeLdapName("cn=test\\3Btest,ou=test"));
-		Assert.assertEquals(
-			"cn=test\\;test,ou=test",
-			normalizeLdapName("cn=test\\3btest,ou=test"));
-		Assert.assertEquals(
-			"cn=test\\<test,ou=test",
-			normalizeLdapName("cn=test\\3Ctest,ou=test"));
-		Assert.assertEquals(
-			"cn=test\\<test,ou=test",
-			normalizeLdapName("cn=test\\3ctest,ou=test"));
-		Assert.assertEquals(
-			"cn=test\\=test,ou=test",
-			normalizeLdapName("cn=test\\3Dtest,ou=test"));
-		Assert.assertEquals(
-			"cn=test\\=test,ou=test",
-			normalizeLdapName("cn=test\\3dtest,ou=test"));
-		Assert.assertEquals(
-			"cn=test\\>test,ou=test",
-			normalizeLdapName("cn=test\\3Etest,ou=test"));
-		Assert.assertEquals(
-			"cn=test\\>test,ou=test",
-			normalizeLdapName("cn=test\\3etest,ou=test"));
-		Assert.assertEquals(
-			"cn=test\\\\test,ou=test",
-			normalizeLdapName("cn=test\\5Ctest,ou=test"));
-		Assert.assertEquals(
-			"cn=test\\\\test,ou=test",
-			normalizeLdapName("cn=test\\5ctest,ou=test"));
+				"cn=User\\2cwith\\2ccommas,ou=users,dc=example,dc=com"));
 	}
 
 	protected String escapeLDAPName(String query) {
 		return _ldapUserImporterImpl.escapeLDAPName(query);
-	}
-
-	protected String normalizeLdapName(String name)
-		throws InvalidNameException {
-
-		return _ldapUserImporterImpl.normalizeLdapName(name);
 	}
 
 	private static final LDAPUserImporterImpl _ldapUserImporterImpl =
