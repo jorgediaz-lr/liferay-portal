@@ -53,6 +53,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.Portlet;
@@ -1036,18 +1037,18 @@ public class AssetPublisherExportImportPortletPreferencesProcessor
 
 			Group group = _groupLocalService.fetchGroup(groupId);
 
-			long liveGroupId = 0;
-
-			if (group != null) {
-				liveGroupId = group.getLiveGroupId();
-
-				if (group.isStagedRemotely()) {
-					liveGroupId = group.getRemoteLiveGroupId();
-				}
+			if (group == null) {
+				continue;
 			}
 
-			if ((groupId == 0) || (liveGroupId == 0)) {
-				continue;
+			long liveGroupId = group.getLiveGroupId();
+
+			if (group.isStagedRemotely()) {
+				liveGroupId = group.getRemoteLiveGroupId();
+			}
+
+			if (liveGroupId == GroupConstants.DEFAULT_LIVE_GROUP_ID) {
+				liveGroupId = group.getGroupId();
 			}
 
 			newValues[i] = String.valueOf(groupId);
@@ -1059,6 +1060,8 @@ public class AssetPublisherExportImportPortletPreferencesProcessor
 				"group-id", String.valueOf(groupId));
 			groupIdMappingElement.addAttribute(
 				"live-group-id", String.valueOf(liveGroupId));
+			groupIdMappingElement.addAttribute(
+				"group-key", group.getGroupKey());
 		}
 
 		portletPreferences.setValues(key, newValues);
