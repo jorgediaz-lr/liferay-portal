@@ -168,6 +168,10 @@ public class DDMTemplateStagedModelDataHandler
 		boolean preloaded = GetterUtil.getBoolean(
 			referenceElement.attributeValue("preloaded"));
 
+		if (!preloaded) {
+			return super.validateMissingReference(uuid, groupId);
+		}
+
 		DDMTemplate existingTemplate = fetchExistingTemplateWithParentGroups(
 			uuid, groupId, classNameId, templateKey, preloaded);
 
@@ -294,8 +298,15 @@ public class DDMTemplateStagedModelDataHandler
 		boolean preloaded = GetterUtil.getBoolean(
 			referenceElement.attributeValue("preloaded"));
 
-		DDMTemplate existingTemplate = fetchExistingTemplateWithParentGroups(
-			uuid, groupId, classNameId, templateKey, preloaded);
+		DDMTemplate existingTemplate;
+
+		if (!preloaded) {
+			existingTemplate = fetchMissingReference(uuid, groupId);
+		}
+		else {
+			existingTemplate = fetchExistingTemplateWithParentGroups(
+				uuid, groupId, classNameId, templateKey, preloaded);
+		}
 
 		Map<Long, Long> templateIds =
 			(Map<Long, Long>)portletDataContext.getNewPrimaryKeysMap(
@@ -478,6 +489,8 @@ public class DDMTemplateStagedModelDataHandler
 
 		Group group = _groupLocalService.fetchGroup(groupId);
 
+		long companyId = group.getCompanyId();
+
 		while (group != null) {
 			DDMTemplate existingTemplate = fetchExistingTemplate(
 				uuid, group.getGroupId(), classNameId, templateKey, preloaded);
@@ -489,7 +502,15 @@ public class DDMTemplateStagedModelDataHandler
 			group = group.getParentGroup();
 		}
 
-		return null;
+		Group companyGroup = _groupLocalService.fetchCompanyGroup(companyId);
+
+		if (companyGroup == null) {
+			return null;
+		}
+
+		return fetchExistingTemplate(
+			uuid, companyGroup.getGroupId(), classNameId, templateKey,
+			preloaded);
 	}
 
 	@Reference(unbind = "-")
