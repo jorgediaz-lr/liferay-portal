@@ -120,7 +120,7 @@ public class StagingImplTest {
 
 		Dictionary<String, Object> properties = new Hashtable<>();
 
-		properties.put("staging-delete-temp-lar-on-success", false);
+		properties.put("stagingDeleteTempLarOnSuccess", false);
 
 		ConfigurationProviderUtil.saveCompanyConfiguration(
 			ExportImportServiceConfiguration.class, companyId, properties);
@@ -130,8 +130,7 @@ public class StagingImplTest {
 		}
 		finally {
 			properties.put(
-				"staging-delete-temp-lar-on-success",
-				stagingDeleteTempLarOnSuccess);
+				"stagingDeleteTempLarOnSuccess", stagingDeleteTempLarOnSuccess);
 
 			ConfigurationProviderUtil.saveCompanyConfiguration(
 				ExportImportServiceConfiguration.class, companyId, properties);
