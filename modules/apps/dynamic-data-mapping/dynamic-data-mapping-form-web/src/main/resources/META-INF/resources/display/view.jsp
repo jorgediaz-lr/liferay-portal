@@ -31,9 +31,15 @@ long formInstanceId = ddmFormDisplayContext.getFormInstanceId();
 	<c:otherwise>
 
 		<%
-		String languageId = ddmFormDisplayContext.getDefaultLanguageId();
+		String languageId = LocaleUtil.toLanguageId(locale);
 
-		Locale displayLocale = LocaleUtil.fromLanguageId(languageId);
+		Locale displayLocale = locale;
+
+		if (ddmFormDisplayContext.isFormShared()) {
+			languageId = ddmFormDisplayContext.getDefaultLanguageId();
+
+			displayLocale = LocaleUtil.fromLanguageId(languageId);
+		}
 		%>
 
 		<c:choose>
@@ -133,10 +139,10 @@ long formInstanceId = ddmFormDisplayContext.getFormInstanceId();
 
 						<div class="ddm-form-basic-info">
 							<div class="container-fluid-1280">
-								<h1 class="ddm-form-name"><%= HtmlUtil.escape(formInstance.getName(displayLocale)) %></h1>
+								<h1 class="ddm-form-name"><%= HtmlUtil.escape(formInstance.getName(displayLocale, true)) %></h1>
 
 								<%
-								String description = HtmlUtil.escape(formInstance.getDescription(displayLocale));
+								String description = HtmlUtil.escape(formInstance.getDescription(displayLocale, true));
 								%>
 
 								<c:if test="<%= Validator.isNotNull(description) %>">
