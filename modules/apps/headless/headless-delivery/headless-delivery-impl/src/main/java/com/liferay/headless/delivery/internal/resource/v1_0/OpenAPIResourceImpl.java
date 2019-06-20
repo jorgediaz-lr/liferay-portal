@@ -108,6 +108,8 @@ public class OpenAPIResourceImpl {
 
 			add(StructuredContentFolderResourceImpl.class);
 
+			add(WikiPageResourceImpl.class);
+
 			add(OpenAPIResourceImpl.class);
 		}
 	};
