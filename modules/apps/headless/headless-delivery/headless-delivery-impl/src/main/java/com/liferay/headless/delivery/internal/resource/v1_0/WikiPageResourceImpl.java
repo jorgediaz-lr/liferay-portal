@@ -14,6 +14,8 @@
 
 package com.liferay.headless.delivery.internal.resource.v1_0;
 
+import com.liferay.headless.common.spi.service.context.ServiceContextUtil;
+import com.liferay.headless.delivery.dto.v1_0.Rating;
 import com.liferay.headless.delivery.dto.v1_0.WikiPage;
 import com.liferay.headless.delivery.internal.odata.entity.v1_0.WikiPageEntityModel;
 import com.liferay.headless.delivery.resource.v1_0.WikiPageResource;
@@ -58,6 +60,20 @@ public class WikiPageResourceImpl extends BaseWikiPageResourceImpl
 	@Override
 	public WikiPage getWikiPage(Long wikiPageId) throws Exception {
 		return _toWiki(_wikiPageService.getPage(wikiPageId));
+	}
+
+	@Override
+	public WikiPage postWikiNodeWikiPage(
+		Long wikiNodeId, WikiPage wikiPage) throws Exception {
+
+		WikiNode wikiNode = _wikiNodeService.getNode(wikiNodeId);
+
+		return _toWiki(
+			_wikiPageService.addPage(
+				wikiNodeId, wikiPage.getTitle(), wikiPage.getContent(),
+				wikiPage.getHeadline(), true,
+				ServiceContextUtil.createServiceContext(
+					wikiNode.getGroupId(), "all")));
 	}
 
 	@Override

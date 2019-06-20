@@ -82,6 +82,8 @@ public class ServletDataImpl implements ServletData {
 			_structuredContentResourceComponentServiceObjects);
 		Mutation.setStructuredContentFolderResourceComponentServiceObjects(
 			_structuredContentFolderResourceComponentServiceObjects);
+		Mutation.setWikiPageResourceComponentServiceObjects(
+			_wikiPageResourceComponentServiceObjects);
 
 		Query.setBlogPostingResourceComponentServiceObjects(
 			_blogPostingResourceComponentServiceObjects);
@@ -195,15 +197,15 @@ public class ServletDataImpl implements ServletData {
 		_structuredContentFolderResourceComponentServiceObjects;
 
 	@Reference(scope = ReferenceScope.PROTOTYPE_REQUIRED)
+	private ComponentServiceObjects<WikiPageResource>
+		_wikiPageResourceComponentServiceObjects;
+
+	@Reference(scope = ReferenceScope.PROTOTYPE_REQUIRED)
 	private ComponentServiceObjects<ContentSetElementResource>
 		_contentSetElementResourceComponentServiceObjects;
 
 	@Reference(scope = ReferenceScope.PROTOTYPE_REQUIRED)
 	private ComponentServiceObjects<ContentStructureResource>
 		_contentStructureResourceComponentServiceObjects;
-
-	@Reference(scope = ReferenceScope.PROTOTYPE_REQUIRED)
-	private ComponentServiceObjects<WikiPageResource>
-		_wikiPageResourceComponentServiceObjects;
 
 }

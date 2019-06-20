@@ -421,8 +421,7 @@ public abstract class BaseWikiPageResourceTestCase {
 			Long wikiNodeId, WikiPage wikiPage)
 		throws Exception {
 
-		throw new UnsupportedOperationException(
-			"This method needs to be implemented");
+		return wikiPageResource.postWikiNodeWikiPage(wikiNodeId, wikiPage);
 	}
 
 	protected Long testGetWikiNodeWikiPagesPage_getWikiNodeId()
@@ -436,6 +435,24 @@ public abstract class BaseWikiPageResourceTestCase {
 		throws Exception {
 
 		return null;
+	}
+
+	@Test
+	public void testPostWikiNodeWikiPage() throws Exception {
+		WikiPage randomWikiPage = randomWikiPage();
+
+		WikiPage postWikiPage = testPostWikiNodeWikiPage_addWikiPage(
+			randomWikiPage);
+
+		assertEquals(randomWikiPage, postWikiPage);
+		assertValid(postWikiPage);
+	}
+
+	protected WikiPage testPostWikiNodeWikiPage_addWikiPage(WikiPage wikiPage)
+		throws Exception {
+
+		return wikiPageResource.postWikiNodeWikiPage(
+			testGetWikiNodeWikiPagesPage_getWikiNodeId(), wikiPage);
 	}
 
 	protected void assertHttpResponseStatusCode(

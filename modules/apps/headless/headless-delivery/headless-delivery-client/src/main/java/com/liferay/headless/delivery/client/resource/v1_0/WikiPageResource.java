@@ -52,6 +52,13 @@ public interface WikiPageResource {
 			Pagination pagination, String sortString)
 		throws Exception;
 
+	public WikiPage postWikiNodeWikiPage(Long wikiNodeId, WikiPage wikiPage)
+		throws Exception;
+
+	public HttpInvoker.HttpResponse postWikiNodeWikiPageHttpResponse(
+			Long wikiNodeId, WikiPage wikiPage)
+		throws Exception;
+
 	public static class Builder {
 
 		public Builder authentication(String login, String password) {
@@ -193,6 +200,59 @@ public interface WikiPageResource {
 			if (sortString != null) {
 				httpInvoker.parameter("sort", sortString);
 			}
+
+			httpInvoker.path(
+				_builder._scheme + "://" + _builder._host + ":" +
+					_builder._port +
+						"/o/headless-delivery/v1.0/wiki-nodes/{wikiNodeId}/wiki-pages/",
+				wikiNodeId);
+
+			httpInvoker.userNameAndPassword(
+				_builder._login + ":" + _builder._password);
+
+			return httpInvoker.invoke();
+		}
+
+		public WikiPage postWikiNodeWikiPage(Long wikiNodeId, WikiPage wikiPage)
+			throws Exception {
+
+			HttpInvoker.HttpResponse httpResponse =
+				postWikiNodeWikiPageHttpResponse(wikiNodeId, wikiPage);
+
+			String content = httpResponse.getContent();
+
+			_logger.fine("HTTP response content: " + content);
+
+			_logger.fine("HTTP response message: " + httpResponse.getMessage());
+			_logger.fine(
+				"HTTP response status code: " + httpResponse.getStatusCode());
+
+			try {
+				return WikiPageSerDes.toDTO(content);
+			}
+			catch (Exception e) {
+				_logger.log(
+					Level.WARNING,
+					"Unable to process HTTP response: " + content, e);
+
+				throw e;
+			}
+		}
+
+		public HttpInvoker.HttpResponse postWikiNodeWikiPageHttpResponse(
+				Long wikiNodeId, WikiPage wikiPage)
+			throws Exception {
+
+			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
+
+			httpInvoker.body(wikiPage.toString(), "application/json");
+
+			if (_builder._locale != null) {
+				httpInvoker.header(
+					"Accept-Language", _builder._locale.toLanguageTag());
+			}
+
+			httpInvoker.httpMethod(HttpInvoker.HttpMethod.POST);
 
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
