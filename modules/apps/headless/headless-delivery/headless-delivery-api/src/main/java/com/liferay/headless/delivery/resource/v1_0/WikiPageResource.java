@@ -18,6 +18,7 @@ import com.liferay.headless.delivery.dto.v1_0.WikiPage;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
 import com.liferay.portal.vulcan.pagination.Page;
+import com.liferay.portal.vulcan.pagination.Pagination;
 
 import javax.annotation.Generated;
 
@@ -34,7 +35,8 @@ public interface WikiPageResource {
 
 	public WikiPage getWikiPage(Long wikiPageId) throws Exception;
 
-	public Page<WikiPage> getWikiNodeWikiPagesPage(Long wikiNodeId)
+	public Page<WikiPage> getWikiNodeWikiPagesPage(
+			Long wikiNodeId, Pagination pagination)
 		throws Exception;
 
 	public default void setContextAcceptLanguage(

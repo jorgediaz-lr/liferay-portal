@@ -17,6 +17,7 @@ package com.liferay.headless.delivery.client.resource.v1_0;
 import com.liferay.headless.delivery.client.dto.v1_0.WikiPage;
 import com.liferay.headless.delivery.client.http.HttpInvoker;
 import com.liferay.headless.delivery.client.pagination.Page;
+import com.liferay.headless.delivery.client.pagination.Pagination;
 import com.liferay.headless.delivery.client.serdes.v1_0.WikiPageSerDes;
 
 import java.util.Locale;
@@ -41,11 +42,12 @@ public interface WikiPageResource {
 	public HttpInvoker.HttpResponse getWikiPageHttpResponse(Long wikiPageId)
 		throws Exception;
 
-	public Page<WikiPage> getWikiNodeWikiPagesPage(Long wikiNodeId)
+	public Page<WikiPage> getWikiNodeWikiPagesPage(
+			Long wikiNodeId, Pagination pagination)
 		throws Exception;
 
 	public HttpInvoker.HttpResponse getWikiNodeWikiPagesPageHttpResponse(
-			Long wikiNodeId)
+			Long wikiNodeId, Pagination pagination)
 		throws Exception;
 
 	public static class Builder {
@@ -137,11 +139,12 @@ public interface WikiPageResource {
 			return httpInvoker.invoke();
 		}
 
-		public Page<WikiPage> getWikiNodeWikiPagesPage(Long wikiNodeId)
+		public Page<WikiPage> getWikiNodeWikiPagesPage(
+				Long wikiNodeId, Pagination pagination)
 			throws Exception {
 
 			HttpInvoker.HttpResponse httpResponse =
-				getWikiNodeWikiPagesPageHttpResponse(wikiNodeId);
+				getWikiNodeWikiPagesPageHttpResponse(wikiNodeId, pagination);
 
 			String content = httpResponse.getContent();
 
@@ -155,7 +158,7 @@ public interface WikiPageResource {
 		}
 
 		public HttpInvoker.HttpResponse getWikiNodeWikiPagesPageHttpResponse(
-				Long wikiNodeId)
+				Long wikiNodeId, Pagination pagination)
 			throws Exception {
 
 			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
@@ -166,6 +169,13 @@ public interface WikiPageResource {
 			}
 
 			httpInvoker.httpMethod(HttpInvoker.HttpMethod.GET);
+
+			if (pagination != null) {
+				httpInvoker.parameter(
+					"page", String.valueOf(pagination.getPage()));
+				httpInvoker.parameter(
+					"pageSize", String.valueOf(pagination.getPageSize()));
+			}
 
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +

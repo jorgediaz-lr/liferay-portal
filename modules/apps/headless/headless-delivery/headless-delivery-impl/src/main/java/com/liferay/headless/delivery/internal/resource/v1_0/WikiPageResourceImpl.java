@@ -19,6 +19,7 @@ import com.liferay.headless.delivery.resource.v1_0.WikiPageResource;
 
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.vulcan.pagination.Page;
+import com.liferay.portal.vulcan.pagination.Pagination;
 import com.liferay.portal.vulcan.util.TransformUtil;
 import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.service.WikiNodeService;
@@ -46,17 +47,18 @@ public class WikiPageResourceImpl extends BaseWikiPageResourceImpl {
 	}
 
 	@Override
-	public Page<WikiPage> getWikiNodeWikiPagesPage(Long wikiNodeId) throws Exception {
+	public Page<WikiPage> getWikiNodeWikiPagesPage(
+		Long wikiNodeId, Pagination pagination) throws Exception {
 
 		WikiNode wikiNode = _wikiNodeService.getNode(wikiNodeId);
 
-		List<com.liferay.wiki.model.WikiPage> pages =
-			_wikiPageService.getPages(wikiNode.getGroupId(), _user.getUserId(),
-				wikiNodeId, 0, 0, 10);
-
-		List<WikiPage> transform =
-			TransformUtil.transform(pages, this::_toWiki);
-		return Page.of(transform);
+		return Page.of(TransformUtil.transform(_wikiPageService.getPages(
+			wikiNode.getGroupId(), _user.getUserId(),
+			wikiNodeId, 0, pagination.getStartPosition(),
+			pagination.getEndPosition()), this::_toWiki),
+			pagination,
+			_wikiPageService.getPagesCount(
+				wikiNode.getGroupId(), _user.getUserId(), wikiNodeId, 0));
 	}
 
 	private WikiPage _toWiki(com.liferay.wiki.model.WikiPage wikiPage) {
