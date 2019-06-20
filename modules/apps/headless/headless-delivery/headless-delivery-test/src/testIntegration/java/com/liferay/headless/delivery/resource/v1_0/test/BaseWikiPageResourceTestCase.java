@@ -28,6 +28,7 @@ import com.liferay.headless.delivery.client.pagination.Page;
 import com.liferay.headless.delivery.client.pagination.Pagination;
 import com.liferay.headless.delivery.client.resource.v1_0.WikiPageResource;
 import com.liferay.headless.delivery.client.serdes.v1_0.WikiPageSerDes;
+import com.liferay.petra.function.UnsafeTriConsumer;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -50,6 +51,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.text.DateFormat;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -60,7 +63,9 @@ import javax.annotation.Generated;
 
 import javax.ws.rs.core.MultivaluedHashMap;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.BeanUtilsBean;
+import org.apache.commons.lang.time.DateUtils;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -192,6 +197,12 @@ public abstract class BaseWikiPageResourceTestCase {
 
 	@Test
 	public void testGetWikiNodeWikiPagesPage() throws Exception {
+		Page<WikiPage> page = wikiPageResource.getWikiNodeWikiPagesPage(
+			testGetWikiNodeWikiPagesPage_getWikiNodeId(),
+			RandomTestUtil.randomString(), null, Pagination.of(1, 2), null);
+
+		Assert.assertEquals(0, page.getTotalCount());
+
 		Long wikiNodeId = testGetWikiNodeWikiPagesPage_getWikiNodeId();
 		Long irrelevantWikiNodeId =
 			testGetWikiNodeWikiPagesPage_getIrrelevantWikiNodeId();
@@ -201,8 +212,8 @@ public abstract class BaseWikiPageResourceTestCase {
 				testGetWikiNodeWikiPagesPage_addWikiPage(
 					irrelevantWikiNodeId, randomIrrelevantWikiPage());
 
-			Page<WikiPage> page = wikiPageResource.getWikiNodeWikiPagesPage(
-				irrelevantWikiNodeId, Pagination.of(1, 2));
+			page = wikiPageResource.getWikiNodeWikiPagesPage(
+				irrelevantWikiNodeId, null, null, Pagination.of(1, 2), null);
 
 			Assert.assertEquals(1, page.getTotalCount());
 
@@ -218,8 +229,8 @@ public abstract class BaseWikiPageResourceTestCase {
 		WikiPage wikiPage2 = testGetWikiNodeWikiPagesPage_addWikiPage(
 			wikiNodeId, randomWikiPage());
 
-		Page<WikiPage> page = wikiPageResource.getWikiNodeWikiPagesPage(
-			wikiNodeId, Pagination.of(1, 2));
+		page = wikiPageResource.getWikiNodeWikiPagesPage(
+			wikiNodeId, null, null, Pagination.of(1, 2), null);
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -227,6 +238,67 @@ public abstract class BaseWikiPageResourceTestCase {
 			Arrays.asList(wikiPage1, wikiPage2),
 			(List<WikiPage>)page.getItems());
 		assertValid(page);
+	}
+
+	@Test
+	public void testGetWikiNodeWikiPagesPageWithFilterDateTimeEquals()
+		throws Exception {
+
+		List<EntityField> entityFields = getEntityFields(
+			EntityField.Type.DATE_TIME);
+
+		if (entityFields.isEmpty()) {
+			return;
+		}
+
+		Long wikiNodeId = testGetWikiNodeWikiPagesPage_getWikiNodeId();
+
+		WikiPage wikiPage1 = randomWikiPage();
+
+		wikiPage1 = testGetWikiNodeWikiPagesPage_addWikiPage(
+			wikiNodeId, wikiPage1);
+
+		for (EntityField entityField : entityFields) {
+			Page<WikiPage> page = wikiPageResource.getWikiNodeWikiPagesPage(
+				wikiNodeId, null,
+				getFilterString(entityField, "between", wikiPage1),
+				Pagination.of(1, 2), null);
+
+			assertEquals(
+				Collections.singletonList(wikiPage1),
+				(List<WikiPage>)page.getItems());
+		}
+	}
+
+	@Test
+	public void testGetWikiNodeWikiPagesPageWithFilterStringEquals()
+		throws Exception {
+
+		List<EntityField> entityFields = getEntityFields(
+			EntityField.Type.STRING);
+
+		if (entityFields.isEmpty()) {
+			return;
+		}
+
+		Long wikiNodeId = testGetWikiNodeWikiPagesPage_getWikiNodeId();
+
+		WikiPage wikiPage1 = testGetWikiNodeWikiPagesPage_addWikiPage(
+			wikiNodeId, randomWikiPage());
+
+		@SuppressWarnings("PMD.UnusedLocalVariable")
+		WikiPage wikiPage2 = testGetWikiNodeWikiPagesPage_addWikiPage(
+			wikiNodeId, randomWikiPage());
+
+		for (EntityField entityField : entityFields) {
+			Page<WikiPage> page = wikiPageResource.getWikiNodeWikiPagesPage(
+				wikiNodeId, null, getFilterString(entityField, "eq", wikiPage1),
+				Pagination.of(1, 2), null);
+
+			assertEquals(
+				Collections.singletonList(wikiPage1),
+				(List<WikiPage>)page.getItems());
+		}
 	}
 
 	@Test
@@ -243,14 +315,14 @@ public abstract class BaseWikiPageResourceTestCase {
 			wikiNodeId, randomWikiPage());
 
 		Page<WikiPage> page1 = wikiPageResource.getWikiNodeWikiPagesPage(
-			wikiNodeId, Pagination.of(1, 2));
+			wikiNodeId, null, null, Pagination.of(1, 2), null);
 
 		List<WikiPage> wikiPages1 = (List<WikiPage>)page1.getItems();
 
 		Assert.assertEquals(wikiPages1.toString(), 2, wikiPages1.size());
 
 		Page<WikiPage> page2 = wikiPageResource.getWikiNodeWikiPagesPage(
-			wikiNodeId, Pagination.of(2, 2));
+			wikiNodeId, null, null, Pagination.of(2, 2), null);
 
 		Assert.assertEquals(3, page2.getTotalCount());
 
@@ -259,11 +331,90 @@ public abstract class BaseWikiPageResourceTestCase {
 		Assert.assertEquals(wikiPages2.toString(), 1, wikiPages2.size());
 
 		Page<WikiPage> page3 = wikiPageResource.getWikiNodeWikiPagesPage(
-			wikiNodeId, Pagination.of(1, 3));
+			wikiNodeId, null, null, Pagination.of(1, 3), null);
 
 		assertEqualsIgnoringOrder(
 			Arrays.asList(wikiPage1, wikiPage2, wikiPage3),
 			(List<WikiPage>)page3.getItems());
+	}
+
+	@Test
+	public void testGetWikiNodeWikiPagesPageWithSortDateTime()
+		throws Exception {
+
+		testGetWikiNodeWikiPagesPageWithSort(
+			EntityField.Type.DATE_TIME,
+			(entityField, wikiPage1, wikiPage2) -> {
+				BeanUtils.setProperty(
+					wikiPage1, entityField.getName(),
+					DateUtils.addMinutes(new Date(), -2));
+			});
+	}
+
+	@Test
+	public void testGetWikiNodeWikiPagesPageWithSortInteger() throws Exception {
+		testGetWikiNodeWikiPagesPageWithSort(
+			EntityField.Type.INTEGER,
+			(entityField, wikiPage1, wikiPage2) -> {
+				BeanUtils.setProperty(wikiPage1, entityField.getName(), 0);
+				BeanUtils.setProperty(wikiPage2, entityField.getName(), 1);
+			});
+	}
+
+	@Test
+	public void testGetWikiNodeWikiPagesPageWithSortString() throws Exception {
+		testGetWikiNodeWikiPagesPageWithSort(
+			EntityField.Type.STRING,
+			(entityField, wikiPage1, wikiPage2) -> {
+				BeanUtils.setProperty(wikiPage1, entityField.getName(), "Aaa");
+				BeanUtils.setProperty(wikiPage2, entityField.getName(), "Bbb");
+			});
+	}
+
+	protected void testGetWikiNodeWikiPagesPageWithSort(
+			EntityField.Type type,
+			UnsafeTriConsumer<EntityField, WikiPage, WikiPage, Exception>
+				unsafeTriConsumer)
+		throws Exception {
+
+		List<EntityField> entityFields = getEntityFields(type);
+
+		if (entityFields.isEmpty()) {
+			return;
+		}
+
+		Long wikiNodeId = testGetWikiNodeWikiPagesPage_getWikiNodeId();
+
+		WikiPage wikiPage1 = randomWikiPage();
+		WikiPage wikiPage2 = randomWikiPage();
+
+		for (EntityField entityField : entityFields) {
+			unsafeTriConsumer.accept(entityField, wikiPage1, wikiPage2);
+		}
+
+		wikiPage1 = testGetWikiNodeWikiPagesPage_addWikiPage(
+			wikiNodeId, wikiPage1);
+
+		wikiPage2 = testGetWikiNodeWikiPagesPage_addWikiPage(
+			wikiNodeId, wikiPage2);
+
+		for (EntityField entityField : entityFields) {
+			Page<WikiPage> ascPage = wikiPageResource.getWikiNodeWikiPagesPage(
+				wikiNodeId, null, null, Pagination.of(1, 2),
+				entityField.getName() + ":asc");
+
+			assertEquals(
+				Arrays.asList(wikiPage1, wikiPage2),
+				(List<WikiPage>)ascPage.getItems());
+
+			Page<WikiPage> descPage = wikiPageResource.getWikiNodeWikiPagesPage(
+				wikiNodeId, null, null, Pagination.of(1, 2),
+				entityField.getName() + ":desc");
+
+			assertEquals(
+				Arrays.asList(wikiPage2, wikiPage1),
+				(List<WikiPage>)descPage.getItems());
+		}
 	}
 
 	protected WikiPage testGetWikiNodeWikiPagesPage_addWikiPage(

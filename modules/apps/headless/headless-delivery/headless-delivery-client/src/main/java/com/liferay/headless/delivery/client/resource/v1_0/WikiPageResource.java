@@ -43,11 +43,13 @@ public interface WikiPageResource {
 		throws Exception;
 
 	public Page<WikiPage> getWikiNodeWikiPagesPage(
-			Long wikiNodeId, Pagination pagination)
+			Long wikiNodeId, String search, String filterString,
+			Pagination pagination, String sortString)
 		throws Exception;
 
 	public HttpInvoker.HttpResponse getWikiNodeWikiPagesPageHttpResponse(
-			Long wikiNodeId, Pagination pagination)
+			Long wikiNodeId, String search, String filterString,
+			Pagination pagination, String sortString)
 		throws Exception;
 
 	public static class Builder {
@@ -140,11 +142,13 @@ public interface WikiPageResource {
 		}
 
 		public Page<WikiPage> getWikiNodeWikiPagesPage(
-				Long wikiNodeId, Pagination pagination)
+				Long wikiNodeId, String search, String filterString,
+				Pagination pagination, String sortString)
 			throws Exception {
 
 			HttpInvoker.HttpResponse httpResponse =
-				getWikiNodeWikiPagesPageHttpResponse(wikiNodeId, pagination);
+				getWikiNodeWikiPagesPageHttpResponse(
+					wikiNodeId, search, filterString, pagination, sortString);
 
 			String content = httpResponse.getContent();
 
@@ -158,7 +162,8 @@ public interface WikiPageResource {
 		}
 
 		public HttpInvoker.HttpResponse getWikiNodeWikiPagesPageHttpResponse(
-				Long wikiNodeId, Pagination pagination)
+				Long wikiNodeId, String search, String filterString,
+				Pagination pagination, String sortString)
 			throws Exception {
 
 			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
@@ -170,11 +175,23 @@ public interface WikiPageResource {
 
 			httpInvoker.httpMethod(HttpInvoker.HttpMethod.GET);
 
+			if (search != null) {
+				httpInvoker.parameter("search", String.valueOf(search));
+			}
+
+			if (filterString != null) {
+				httpInvoker.parameter("filter", filterString);
+			}
+
 			if (pagination != null) {
 				httpInvoker.parameter(
 					"page", String.valueOf(pagination.getPage()));
 				httpInvoker.parameter(
 					"pageSize", String.valueOf(pagination.getPageSize()));
+			}
+
+			if (sortString != null) {
+				httpInvoker.parameter("sort", sortString);
 			}
 
 			httpInvoker.path(

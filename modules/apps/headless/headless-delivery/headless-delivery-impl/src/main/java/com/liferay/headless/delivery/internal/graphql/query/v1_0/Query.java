@@ -1303,8 +1303,10 @@ public class Query {
 	@GraphQLInvokeDetached
 	public java.util.Collection<WikiPage> getWikiNodeWikiPagesPage(
 			@GraphQLName("wikiNodeId") Long wikiNodeId,
+			@GraphQLName("search") String search,
+			@GraphQLName("filter") Filter filter,
 			@GraphQLName("pageSize") int pageSize,
-			@GraphQLName("page") int page)
+			@GraphQLName("page") int page, @GraphQLName("sorts") Sort[] sorts)
 		throws Exception {
 
 		return _applyComponentServiceObjects(
@@ -1312,7 +1314,8 @@ public class Query {
 			this::_populateResourceContext,
 			wikiPageResource -> {
 				Page paginationPage = wikiPageResource.getWikiNodeWikiPagesPage(
-					wikiNodeId, Pagination.of(pageSize, page));
+					wikiNodeId, search, filter, Pagination.of(pageSize, page),
+					sorts);
 
 				return paginationPage.getItems();
 			});
