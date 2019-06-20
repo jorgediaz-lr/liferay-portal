@@ -18,4 +18,5 @@ dependencies {
 	testIntegrationCompile project(":core:petra:petra-function")
 	testIntegrationCompile project(":core:petra:petra-string")
 	testIntegrationCompile project(":test:arquillian-extension-junit-bridge")
+	testIntegrationCompile project(":apps:wiki:wiki-api")
 }
