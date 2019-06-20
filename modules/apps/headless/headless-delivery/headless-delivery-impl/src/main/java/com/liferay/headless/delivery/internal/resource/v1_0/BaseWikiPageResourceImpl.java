@@ -20,6 +20,7 @@ import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
 import com.liferay.portal.vulcan.pagination.Page;
+import com.liferay.portal.vulcan.pagination.Pagination;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
 import io.swagger.v3.oas.annotations.Parameter;
@@ -69,14 +70,19 @@ public abstract class BaseWikiPageResourceImpl implements WikiPageResource {
 	@Override
 	@GET
 	@Parameters(
-		value = {@Parameter(in = ParameterIn.PATH, name = "wikiNodeId")}
+		value = {
+			@Parameter(in = ParameterIn.PATH, name = "wikiNodeId"),
+			@Parameter(in = ParameterIn.QUERY, name = "page"),
+			@Parameter(in = ParameterIn.QUERY, name = "pageSize")
+		}
 	)
 	@Path("/wiki-nodes/{wikiNodeId}/wiki-pages/")
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "WikiPage")})
 	public Page<WikiPage> getWikiNodeWikiPagesPage(
 			@NotNull @Parameter(hidden = true) @PathParam("wikiNodeId") Long
-				wikiNodeId)
+				wikiNodeId,
+			@Context Pagination pagination)
 		throws Exception {
 
 		return Page.of(Collections.emptyList());

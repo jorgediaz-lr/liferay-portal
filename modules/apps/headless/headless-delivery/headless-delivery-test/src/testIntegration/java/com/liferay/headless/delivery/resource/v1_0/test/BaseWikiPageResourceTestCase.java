@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 import com.liferay.headless.delivery.client.dto.v1_0.WikiPage;
 import com.liferay.headless.delivery.client.http.HttpInvoker;
 import com.liferay.headless.delivery.client.pagination.Page;
+import com.liferay.headless.delivery.client.pagination.Pagination;
 import com.liferay.headless.delivery.client.resource.v1_0.WikiPageResource;
 import com.liferay.headless.delivery.client.serdes.v1_0.WikiPageSerDes;
 import com.liferay.petra.string.StringBundler;
@@ -201,7 +202,7 @@ public abstract class BaseWikiPageResourceTestCase {
 					irrelevantWikiNodeId, randomIrrelevantWikiPage());
 
 			Page<WikiPage> page = wikiPageResource.getWikiNodeWikiPagesPage(
-				irrelevantWikiNodeId);
+				irrelevantWikiNodeId, Pagination.of(1, 2));
 
 			Assert.assertEquals(1, page.getTotalCount());
 
@@ -218,7 +219,7 @@ public abstract class BaseWikiPageResourceTestCase {
 			wikiNodeId, randomWikiPage());
 
 		Page<WikiPage> page = wikiPageResource.getWikiNodeWikiPagesPage(
-			wikiNodeId);
+			wikiNodeId, Pagination.of(1, 2));
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -226,6 +227,43 @@ public abstract class BaseWikiPageResourceTestCase {
 			Arrays.asList(wikiPage1, wikiPage2),
 			(List<WikiPage>)page.getItems());
 		assertValid(page);
+	}
+
+	@Test
+	public void testGetWikiNodeWikiPagesPageWithPagination() throws Exception {
+		Long wikiNodeId = testGetWikiNodeWikiPagesPage_getWikiNodeId();
+
+		WikiPage wikiPage1 = testGetWikiNodeWikiPagesPage_addWikiPage(
+			wikiNodeId, randomWikiPage());
+
+		WikiPage wikiPage2 = testGetWikiNodeWikiPagesPage_addWikiPage(
+			wikiNodeId, randomWikiPage());
+
+		WikiPage wikiPage3 = testGetWikiNodeWikiPagesPage_addWikiPage(
+			wikiNodeId, randomWikiPage());
+
+		Page<WikiPage> page1 = wikiPageResource.getWikiNodeWikiPagesPage(
+			wikiNodeId, Pagination.of(1, 2));
+
+		List<WikiPage> wikiPages1 = (List<WikiPage>)page1.getItems();
+
+		Assert.assertEquals(wikiPages1.toString(), 2, wikiPages1.size());
+
+		Page<WikiPage> page2 = wikiPageResource.getWikiNodeWikiPagesPage(
+			wikiNodeId, Pagination.of(2, 2));
+
+		Assert.assertEquals(3, page2.getTotalCount());
+
+		List<WikiPage> wikiPages2 = (List<WikiPage>)page2.getItems();
+
+		Assert.assertEquals(wikiPages2.toString(), 1, wikiPages2.size());
+
+		Page<WikiPage> page3 = wikiPageResource.getWikiNodeWikiPagesPage(
+			wikiNodeId, Pagination.of(1, 3));
+
+		assertEqualsIgnoringOrder(
+			Arrays.asList(wikiPage1, wikiPage2, wikiPage3),
+			(List<WikiPage>)page3.getItems());
 	}
 
 	protected WikiPage testGetWikiNodeWikiPagesPage_addWikiPage(
