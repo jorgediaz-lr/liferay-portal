@@ -5555,3 +5555,27 @@ paths:
                     description: ""
             tags: ["WikiPage"]
     "/wiki-nodes/{wikiNodeId}/wiki-pages/":
+        get:
+            operationId: getWikiNodeWikiPagesPage
+            # @review a
+            description:
+            parameters:
+                - in: path
+                  name: wikiNodeId
+                  required: true
+                  schema:
+                      format: int64
+                      type: integer
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/WikiPage"
+                        application/xml:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/WikiPage"
+                    description: ""
+            tags: ["WikiPage"]
