@@ -18,6 +18,8 @@ import com.liferay.headless.delivery.dto.v1_0.WikiPage;
 import com.liferay.headless.delivery.resource.v1_0.WikiPageResource;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.kernel.search.Sort;
+import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
@@ -40,6 +42,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 
@@ -72,8 +75,11 @@ public abstract class BaseWikiPageResourceImpl implements WikiPageResource {
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "wikiNodeId"),
+			@Parameter(in = ParameterIn.QUERY, name = "search"),
+			@Parameter(in = ParameterIn.QUERY, name = "filter"),
 			@Parameter(in = ParameterIn.QUERY, name = "page"),
-			@Parameter(in = ParameterIn.QUERY, name = "pageSize")
+			@Parameter(in = ParameterIn.QUERY, name = "pageSize"),
+			@Parameter(in = ParameterIn.QUERY, name = "sort")
 		}
 	)
 	@Path("/wiki-nodes/{wikiNodeId}/wiki-pages/")
@@ -82,7 +88,9 @@ public abstract class BaseWikiPageResourceImpl implements WikiPageResource {
 	public Page<WikiPage> getWikiNodeWikiPagesPage(
 			@NotNull @Parameter(hidden = true) @PathParam("wikiNodeId") Long
 				wikiNodeId,
-			@Context Pagination pagination)
+			@Parameter(hidden = true) @QueryParam("search") String search,
+			@Context Filter filter, @Context Pagination pagination,
+			@Context Sort[] sorts)
 		throws Exception {
 
 		return Page.of(Collections.emptyList());

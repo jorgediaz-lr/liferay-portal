@@ -16,6 +16,8 @@ package com.liferay.headless.delivery.resource.v1_0;
 
 import com.liferay.headless.delivery.dto.v1_0.WikiPage;
 import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.kernel.search.Sort;
+import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
@@ -36,7 +38,8 @@ public interface WikiPageResource {
 	public WikiPage getWikiPage(Long wikiPageId) throws Exception;
 
 	public Page<WikiPage> getWikiNodeWikiPagesPage(
-			Long wikiNodeId, Pagination pagination)
+			Long wikiNodeId, String search, Filter filter,
+			Pagination pagination, Sort[] sorts)
 		throws Exception;
 
 	public default void setContextAcceptLanguage(

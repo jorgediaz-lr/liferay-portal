@@ -15,11 +15,22 @@
 package com.liferay.headless.delivery.internal.resource.v1_0;
 
 import com.liferay.headless.delivery.dto.v1_0.WikiPage;
+import com.liferay.headless.delivery.internal.odata.entity.v1_0.WikiPageEntityModel;
 import com.liferay.headless.delivery.resource.v1_0.WikiPageResource;
-
+import com.liferay.journal.model.JournalFolder;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.search.BooleanClauseOccur;
+import com.liferay.portal.kernel.search.Field;
+import com.liferay.portal.kernel.search.Sort;
+import com.liferay.portal.kernel.search.filter.BooleanFilter;
+import com.liferay.portal.kernel.search.filter.Filter;
+import com.liferay.portal.kernel.search.filter.TermFilter;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
+import com.liferay.portal.vulcan.resource.EntityModelResource;
+import com.liferay.portal.vulcan.util.SearchUtil;
 import com.liferay.portal.vulcan.util.TransformUtil;
 import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.service.WikiNodeService;
@@ -30,7 +41,7 @@ import org.osgi.service.component.annotations.ServiceScope;
 
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.core.Context;
-import java.util.List;
+import javax.ws.rs.core.MultivaluedMap;
 
 /**
  * @author Javier Gamarra
@@ -39,7 +50,10 @@ import java.util.List;
 	properties = "OSGI-INF/liferay/rest/v1_0/wiki-page.properties",
 	scope = ServiceScope.PROTOTYPE, service = WikiPageResource.class
 )
-public class WikiPageResourceImpl extends BaseWikiPageResourceImpl {
+public class WikiPageResourceImpl extends BaseWikiPageResourceImpl
+	implements EntityModelResource {
+
+	private WikiPageEntityModel _entityModel = new WikiPageEntityModel();
 
 	@Override
 	public WikiPage getWikiPage(Long wikiPageId) throws Exception {
@@ -48,17 +62,30 @@ public class WikiPageResourceImpl extends BaseWikiPageResourceImpl {
 
 	@Override
 	public Page<WikiPage> getWikiNodeWikiPagesPage(
-		Long wikiNodeId, Pagination pagination) throws Exception {
+		Long wikiNodeId, String search, Filter filter,
+		Pagination pagination, Sort[] sorts) throws Exception {
 
-		WikiNode wikiNode = _wikiNodeService.getNode(wikiNodeId);
+		return SearchUtil.search(
+			booleanQuery -> {
+				BooleanFilter booleanFilter =
+					booleanQuery.getPreBooleanFilter();
 
-		return Page.of(TransformUtil.transform(_wikiPageService.getPages(
-			wikiNode.getGroupId(), _user.getUserId(),
-			wikiNodeId, 0, pagination.getStartPosition(),
-			pagination.getEndPosition()), this::_toWiki),
-			pagination,
-			_wikiPageService.getPagesCount(
-				wikiNode.getGroupId(), _user.getUserId(), wikiNodeId, 0));
+				booleanFilter.add(
+					new TermFilter(
+						"nodeId",
+						String.valueOf(wikiNodeId)),
+					BooleanClauseOccur.MUST);
+			},
+			filter, com.liferay.wiki.model.WikiPage.class, search, pagination,
+			queryConfig -> queryConfig.setSelectedFieldNames(
+				Field.ENTRY_CLASS_PK),
+			searchContext -> {
+				searchContext.setCompanyId(contextCompany.getCompanyId());
+			},
+			document -> _toWiki(
+				_wikiPageService.getPage(
+					GetterUtil.getLong(document.get(Field.ENTRY_CLASS_PK)))),
+			sorts);
 	}
 
 	private WikiPage _toWiki(com.liferay.wiki.model.WikiPage wikiPage) {
@@ -79,4 +106,10 @@ public class WikiPageResourceImpl extends BaseWikiPageResourceImpl {
 
 	@Reference
 	private WikiNodeService _wikiNodeService;
+
+	@Override
+	public EntityModel getEntityModel(
+		MultivaluedMap multivaluedMap) throws Exception {
+		return _entityModel;
+	}
 }
