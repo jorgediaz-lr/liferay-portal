@@ -1379,6 +1379,19 @@ components:
             required:
                 - name
             type: object
+        WikiPage:
+            description: Represents a folder that can be used to organize structured content.
+            properties:
+                content:
+                    type: string
+                headline:
+                    type: string
+                siteId:
+                    format: int64
+                    type: integer
+                title:
+                    type: string
+            type: object
 info:
     description: ""
     title: "Headless Delivery"
@@ -5519,3 +5532,26 @@ paths:
                                 type: string
                     description: ""
             tags: ["StructuredContent"]
+    "/wiki-pages/{wikiPageId}":
+        get:
+            description:
+            operationId: getWikiPage
+            parameters:
+                - in: path
+                  name: wikiPageId
+                  required: true
+                  schema:
+                      format: int64
+                      type: integer
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/WikiPage"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/WikiPage"
+                    description: ""
+            tags: ["WikiPage"]
+    "/wiki-nodes/{wikiNodeId}/wiki-pages/":
