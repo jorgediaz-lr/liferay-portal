@@ -5599,3 +5599,31 @@ paths:
                                     $ref: "#/components/schemas/WikiPage"
                     description: ""
             tags: ["WikiPage"]
+        post:
+            operationId: postWikiNodeWikiPage
+            parameters:
+                - in: path
+                  name: wikiNodeId
+                  required: true
+                  schema:
+                      format: int64
+                      type: integer
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/WikiPage"
+                    application/xml:
+                        schema:
+                            $ref: "#/components/schemas/WikiPage"
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/WikiPage"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/WikiPage"
+                    description: ""
+            tags: ["WikiPage"]

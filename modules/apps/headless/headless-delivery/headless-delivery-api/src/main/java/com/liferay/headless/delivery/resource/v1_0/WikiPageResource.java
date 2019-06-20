@@ -42,6 +42,9 @@ public interface WikiPageResource {
 			Pagination pagination, Sort[] sorts)
 		throws Exception;
 
+	public WikiPage postWikiNodeWikiPage(Long wikiNodeId, WikiPage wikiPage)
+		throws Exception;
+
 	public default void setContextAcceptLanguage(
 		AcceptLanguage contextAcceptLanguage) {
 	}

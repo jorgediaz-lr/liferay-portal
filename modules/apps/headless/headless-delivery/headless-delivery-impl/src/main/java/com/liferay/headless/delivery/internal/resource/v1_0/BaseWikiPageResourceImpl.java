@@ -38,7 +38,9 @@ import javax.annotation.Generated;
 
 import javax.validation.constraints.NotNull;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -94,6 +96,24 @@ public abstract class BaseWikiPageResourceImpl implements WikiPageResource {
 		throws Exception {
 
 		return Page.of(Collections.emptyList());
+	}
+
+	@Override
+	@Consumes({"application/json", "application/xml"})
+	@POST
+	@Parameters(
+		value = {@Parameter(in = ParameterIn.PATH, name = "wikiNodeId")}
+	)
+	@Path("/wiki-nodes/{wikiNodeId}/wiki-pages/")
+	@Produces({"application/json", "application/xml"})
+	@Tags(value = {@Tag(name = "WikiPage")})
+	public WikiPage postWikiNodeWikiPage(
+			@NotNull @Parameter(hidden = true) @PathParam("wikiNodeId") Long
+				wikiNodeId,
+			WikiPage wikiPage)
+		throws Exception {
+
+		return new WikiPage();
 	}
 
 	public void setContextAcceptLanguage(AcceptLanguage contextAcceptLanguage) {
