@@ -107,6 +107,7 @@ public class WikiPageResourceImpl
 			{
 				content = wikiPage.getContent();
 				headline = wikiPage.getSummary();
+				siteId = wikiPage.getGroupId();
 				title = wikiPage.getTitle();
 			}
 		};
