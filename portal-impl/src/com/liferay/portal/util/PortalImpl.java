@@ -5283,7 +5283,16 @@ public class PortalImpl implements Portal {
 			parameterMap = HttpUtil.getParameterMap(queryString);
 		}
 
-		StringBundler sb = new StringBundler(17);
+		StringBundler sb = new StringBundler(20);
+
+		if (uri.startsWith(StringPool.FORWARD_SLASH)) {
+			sb.append(themeDisplay.getCDNBaseURL());
+			sb.append(getPathProxy());
+
+			if (!uri.startsWith(getPathContext())) {
+				sb.append(getPathContext());
+			}
+		}
 
 		// URI
 
