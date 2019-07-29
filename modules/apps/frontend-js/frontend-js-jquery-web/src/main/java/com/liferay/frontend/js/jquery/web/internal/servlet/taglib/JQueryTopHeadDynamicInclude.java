@@ -75,8 +75,8 @@ public class JQueryTopHeadDynamicInclude extends BaseDynamicInclude {
 			sb.append("<script data-senna-track=\"permanent\" src=\"");
 			sb.append(
 				_portal.getStaticResourceURL(
-					httpServletRequest, _portal.getPathContext() + "/combo",
-					"minifierType=js", _lastModified));
+					httpServletRequest, "/combo", "minifierType=js",
+					_lastModified));
 
 			for (String fileName : _FILE_NAMES) {
 				sb.append("&");

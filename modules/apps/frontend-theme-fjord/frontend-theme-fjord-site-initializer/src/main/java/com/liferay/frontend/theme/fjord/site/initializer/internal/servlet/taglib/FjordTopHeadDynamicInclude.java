@@ -82,10 +82,7 @@ public class FjordTopHeadDynamicInclude implements DynamicInclude {
 
 		printWriter.write("<link data-senna-track=\"permanent\" href=\"");
 
-		StringBundler sb = new StringBundler(4);
-
-		sb.append(themeDisplay.getCDNBaseURL());
-		sb.append(_portal.getPathProxy());
+		StringBundler sb = new StringBundler(2);
 
 		Theme theme = _themeLocalService.getTheme(
 			themeDisplay.getCompanyId(), _THEME_ID);
