@@ -166,6 +166,10 @@ else {
 						</liferay-ui:icon-menu>
 					</div>
 
+					<liferay-util:html-top>
+						<link href="<%= PortalUtil.getStaticResourceURL(request, "/o/dynamic-data-mapping-web/css/main.css") %>" rel="stylesheet" type="text/css" />
+					</liferay-util:html-top>
+
 					<%
 					if (fileEntryTypeId > 0) {
 						try {

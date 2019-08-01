@@ -399,6 +399,10 @@ if (portletTitleBasedNavigation) {
 											<div class="hide">
 										</c:if>
 
+										<liferay-util:html-top>
+											<link href="<%= PortalUtil.getStaticResourceURL(request, "/o/dynamic-data-mapping-web/css/main.css") %>" rel="stylesheet" type="text/css" />
+										</liferay-util:html-top>
+
 										<liferay-ddm:html
 											classNameId="<%= PortalUtil.getClassNameId(com.liferay.dynamic.data.mapping.model.DDMStructure.class) %>"
 											classPK="<%= ddmStructure.getPrimaryKey() %>"

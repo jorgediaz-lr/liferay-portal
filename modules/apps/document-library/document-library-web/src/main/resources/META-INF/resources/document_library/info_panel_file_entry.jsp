@@ -419,6 +419,10 @@ long assetClassPK = DLAssetHelperUtil.getAssetClassPK(fileEntry, fileVersion);
 				markupView="lexicon"
 				persistState="<%= true %>"
 			>
+				<liferay-util:html-top>
+					<link href="<%= PortalUtil.getStaticResourceURL(request, "/o/dynamic-data-mapping-web/css/main.css") %>" rel="stylesheet" type="text/css" />
+				</liferay-util:html-top>
+
 				<c:if test="<%= dlViewFileVersionDisplayContext.getDDMStructuresCount() > 0 %>">
 
 					<%
