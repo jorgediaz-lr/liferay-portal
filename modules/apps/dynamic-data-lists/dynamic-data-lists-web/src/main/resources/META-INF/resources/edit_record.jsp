@@ -77,6 +77,10 @@ else {
 }
 %>
 
+<liferay-util:html-top>
+	<link href="<%= PortalUtil.getStaticResourceURL(request, "/o/dynamic-data-mapping-web/css/main.css") %>" rel="stylesheet" type="text/css" />
+</liferay-util:html-top>
+
 <portlet:actionURL name="addRecord" var="addRecordURL">
 	<portlet:param name="mvcPath" value="/edit_record.jsp" />
 </portlet:actionURL>

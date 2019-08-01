@@ -28,6 +28,10 @@ DDMStructure ddmStructure = recordSet.getDDMStructure();
 DDMFormValues ddmFormValues = recordVersion.getDDMFormValues();
 %>
 
+<liferay-util:html-top>
+	<link href="<%= PortalUtil.getStaticResourceURL(request, "/o/dynamic-data-mapping-web/css/main.css") %>" rel="stylesheet" type="text/css" />
+</liferay-util:html-top>
+
 <liferay-ddm:html
 	classNameId="<%= PortalUtil.getClassNameId(DDMStructure.class) %>"
 	classPK="<%= ddmStructure.getPrimaryKey() %>"
