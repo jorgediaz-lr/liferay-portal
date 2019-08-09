@@ -2970,23 +2970,55 @@ public class PortletDataContextImpl implements PortletDataContext {
 					long importedClassPK = GetterUtil.getLong(
 						classedModel.getPrimaryKeyObj());
 
-					String referrerUuid =
+					long typePK = GetterUtil.getLong(
 						stagedGroupedWorkflowDefinitionLinkElement.
-							attributeValue("uuid");
+							attributeValue("type-pk"),
+						-1);
 
-					WorkflowDefinitionLink referrerWorkflowDefinitionLink =
-						WorkflowDefinitionLinkLocalServiceUtil.
-							getWorkflowDefinitionLink(
-								Long.valueOf(referrerUuid));
+					String typeUUIDAttribute =
+						stagedGroupedWorkflowDefinitionLinkElement.
+							attributeValue("type-uuid");
 
-					long typePK = referrerWorkflowDefinitionLink.getTypePK();
+					if (typeUUIDAttribute != null) {
+						String[] typeUUIDAttributeValues = StringUtil.split(
+							typeUUIDAttribute, StringPool.POUND);
 
-					if (typePK != -1) {
-						Map<Long, Long> ddmPrimaryKeys =
-							(Map<Long, Long>)getNewPrimaryKeysMap(
-								DDMStructure.class.getName());
+						String uuid = typeUUIDAttributeValues[0];
 
-						typePK = ddmPrimaryKeys.getOrDefault(typePK, typePK);
+						long groupId = portletDataContext.getScopeGroupId();
+
+						Map<Long, Long> groupIds =
+							(Map<Long, Long>)getNewPrimaryKeysMap(Group.class);
+
+						groupId = MapUtil.getLong(
+							groupIds,
+							GetterUtil.getLong(typeUUIDAttributeValues[1]),
+							groupId);
+
+						DDMStructure ddmStructure =
+							DDMStructureLocalServiceUtil.
+								fetchStructureByUuidAndGroupId(
+									uuid, groupId, true);
+
+						if (ddmStructure == null) {
+							Map<String, String> structureUuids =
+								(Map<String, String>)
+									portletDataContext.getNewPrimaryKeysMap(
+										DDMStructure.class +
+											".ddmStructureUuid");
+
+							String defaultStructureUuid = MapUtil.getString(
+								structureUuids, uuid, uuid);
+
+							ddmStructure =
+								DDMStructureLocalServiceUtil.
+									fetchDDMStructureByUuidAndGroupId(
+										defaultStructureUuid, groupId);
+						}
+
+						if (ddmStructure != null) {
+							typePK = ddmStructure.getStructureId();
+						}
 					}
 
 					PermissionChecker permissionChecker =
