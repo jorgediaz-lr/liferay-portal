@@ -2964,27 +2964,27 @@ public class PortletDataContextImpl implements PortletDataContext {
 				continue;
 			}
 
+			long typePK = GetterUtil.getLong(
+				stagedGroupedWorkflowDefinitionLinkElement.
+					attributeValue("type-pk"),
+				-1);
+
+			if (typePK != -1) {
+				Map<Long, Long> ddmPrimaryKeys =
+					(Map<Long, Long>)getNewPrimaryKeysMap(
+						DDMStructure.class.getName());
+
+				typePK = ddmPrimaryKeys.getOrDefault(typePK, typePK);
+			}
+
 			if (!WorkflowDefinitionLinkLocalServiceUtil.
 					hasWorkflowDefinitionLink(
 						getCompanyId(), getScopeGroupId(), className,
-						newPrimaryKey)) {
+						newPrimaryKey, typePK)) {
 
 				try {
 					long importedClassPK = GetterUtil.getLong(
 						classedModel.getPrimaryKeyObj());
-
-					long typePK = GetterUtil.getLong(
-						stagedGroupedWorkflowDefinitionLinkElement.
-							attributeValue("type-pk"),
-						-1);
-
-					if (typePK != -1) {
-						Map<Long, Long> ddmPrimaryKeys =
-							(Map<Long, Long>)getNewPrimaryKeysMap(
-								DDMStructure.class.getName());
-
-						typePK = ddmPrimaryKeys.getOrDefault(typePK, typePK);
-					}
 
 					PermissionChecker permissionChecker =
 						PermissionThreadLocal.getPermissionChecker();
