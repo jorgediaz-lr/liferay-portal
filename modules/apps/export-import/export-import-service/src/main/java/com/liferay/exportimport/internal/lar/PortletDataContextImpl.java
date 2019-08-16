@@ -2957,11 +2957,14 @@ public class PortletDataContextImpl implements PortletDataContext {
 						we);
 				}
 
-				return;
+				continue;
 			}
 
-			if ((workflowDefinition != null) &&
-				!WorkflowDefinitionLinkLocalServiceUtil.
+			if (workflowDefinition == null) {
+				continue;
+			}
+
+			if (!WorkflowDefinitionLinkLocalServiceUtil.
 					hasWorkflowDefinitionLink(
 						getCompanyId(), getScopeGroupId(), className,
 						newPrimaryKey)) {
