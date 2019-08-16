@@ -2965,8 +2965,8 @@ public class PortletDataContextImpl implements PortletDataContext {
 			}
 
 			long typePK = GetterUtil.getLong(
-				stagedGroupedWorkflowDefinitionLinkElement.
-					attributeValue("type-pk"),
+				stagedGroupedWorkflowDefinitionLinkElement.attributeValue(
+					"type-pk"),
 				-1);
 
 			if (typePK != -1) {
@@ -2977,28 +2977,30 @@ public class PortletDataContextImpl implements PortletDataContext {
 				typePK = ddmPrimaryKeys.getOrDefault(typePK, typePK);
 			}
 
-			if (!WorkflowDefinitionLinkLocalServiceUtil.
+			if (WorkflowDefinitionLinkLocalServiceUtil.
 					hasWorkflowDefinitionLink(
 						getCompanyId(), getScopeGroupId(), className,
 						newPrimaryKey, typePK)) {
 
-				try {
-					long importedClassPK = GetterUtil.getLong(
-						classedModel.getPrimaryKeyObj());
+				continue;
+			}
 
-					PermissionChecker permissionChecker =
-						PermissionThreadLocal.getPermissionChecker();
+			try {
+				long importedClassPK = GetterUtil.getLong(
+					classedModel.getPrimaryKeyObj());
 
-					WorkflowDefinitionLinkLocalServiceUtil.
-						addWorkflowDefinitionLink(
-							permissionChecker.getUserId(), getCompanyId(),
-							getScopeGroupId(), className, importedClassPK,
-							typePK, workflowDefinition.getName(),
-							workflowDefinition.getVersion());
-				}
-				catch (PortalException pe) {
-					throw new PortletDataException(pe.getMessage(), pe);
-				}
+				PermissionChecker permissionChecker =
+					PermissionThreadLocal.getPermissionChecker();
+
+				WorkflowDefinitionLinkLocalServiceUtil.
+					addWorkflowDefinitionLink(
+						permissionChecker.getUserId(), getCompanyId(),
+						getScopeGroupId(), className, importedClassPK, typePK,
+						workflowDefinition.getName(),
+						workflowDefinition.getVersion());
+			}
+			catch (PortalException pe) {
+				throw new PortletDataException(pe.getMessage(), pe);
 			}
 		}
 	}
