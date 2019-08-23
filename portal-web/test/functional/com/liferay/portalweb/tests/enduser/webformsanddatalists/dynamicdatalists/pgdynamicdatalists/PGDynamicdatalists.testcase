@@ -828,7 +828,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "user@liferay.com",
+			userEmailAddress = "user@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -839,7 +839,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "user@liferay.com",
+			userEmailAddress = "user@example.com",
 			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
@@ -930,7 +930,7 @@ definition {
 			field = "Text");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "user@liferay.com",
+			userLoginEmailAddress = "user@example.com",
 			userLoginFullName = "userfn userln");
 
 		SearchPortlets.searchEmbedded(searchTerm = "Record Text");

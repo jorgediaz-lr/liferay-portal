@@ -2,7 +2,7 @@ definition {
 
 	macro addBlogsEntryLoginUserPG {
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "Test Test");
 
 		if ("${siteURLTemp}" == "true") {
@@ -40,7 +40,7 @@ definition {
 
 	macro addDMFolderLoginUserPG {
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "Test Test");
 
 		Navigator.gotoPage(pageName = "${pageName}");
@@ -72,7 +72,7 @@ definition {
 
 	macro definePermissionLoginUserCP {
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "Test Test");
 
 		Permissions.definePermissionCP(
@@ -121,7 +121,7 @@ definition {
 
 	macro removePermissionLoginUserCP {
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "Test Test");
 
 		Permissions.removePermissionCP(

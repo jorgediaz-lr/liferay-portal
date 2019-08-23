@@ -154,7 +154,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "skandi@liferay.com",
+			userEmailAddress = "skandi@example.com",
 			userFirstName = "Skändi",
 			userLastName = "Ääkkönen",
 			userScreenName = "uskandi");
@@ -165,7 +165,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.viewCP(
-			userEmailAddress = "skandi@liferay.com",
+			userEmailAddress = "skandi@example.com",
 			userFirstName = "Skändi",
 			userLastName = "Ääkkönen",
 			userScreenName = "uskandi");

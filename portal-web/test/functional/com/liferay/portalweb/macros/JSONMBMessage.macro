@@ -12,7 +12,7 @@ definition {
 
 		var curl = '''
 			${portalURL}/api/jsonws/mb.mbcategory/add-category \
-			-u test@liferay.com:test \
+			-u test@example.com:test \
 			-d userId=${userId} \
 			-d parentCategoryId=${parentCategoryId} \
 			-d name=${categoryName} \
@@ -40,7 +40,7 @@ definition {
 
 		var curl = '''
 			${portalURL}/api/jsonws/mb.mbmessage/add-message \
-			-u test@liferay.com:test \
+			-u test@example.com:test \
 			-d groupId=${groupId} \
 			-d categoryId=${categoryId} \
 			-d subject=${threadSubject} \
@@ -69,7 +69,7 @@ definition {
 
 		var curl = '''
 			${portalURL}/api/jsonws/mb.mbmessage/add-message \
-				-u test@liferay.com:test \
+				-u test@example.com:test \
 				-d parentMessageId=${messageId} \
 				-d subject=<script>alert(123);</script> \
 				-d body=<script>alert(123);</script> \

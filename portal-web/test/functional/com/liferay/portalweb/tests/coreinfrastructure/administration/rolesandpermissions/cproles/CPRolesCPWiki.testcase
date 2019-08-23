@@ -40,10 +40,10 @@ definition {
 		Permissions.setUpRegRoleLoginUserCP(
 			portletName = "Wiki",
 			roleTitle = "Regrole Name",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln",
 			userScreenName = "usersn");
 
@@ -60,7 +60,7 @@ definition {
 			roleTitle = "Regrole Name");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		Navigator.openURL();
@@ -82,10 +82,10 @@ definition {
 			roleType = "Site",
 			siteName = "Site Name",
 			sitePagePrivacy = "Public",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln",
 			userScreenName = "usersn");
 
@@ -106,7 +106,7 @@ definition {
 			roleType = "site");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		Navigator.openSiteURL(siteName = "Site Name");

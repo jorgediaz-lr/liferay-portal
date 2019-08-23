@@ -543,12 +543,12 @@ definition {
 		JSONMBMessage.addCategory(
 			categoryDescription = "MB Category Description",
 			categoryName = "MB Category1 Name",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		JSONMBMessage.addCategory(
 			categoryDescription = "MB Category Description",
 			categoryName = "MB Category2 Name",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Navigator.gotoPage(pageName = "Message Boards Page");
 
@@ -587,12 +587,12 @@ definition {
 		JSONMBMessage.addCategory(
 			categoryDescription = "MB Category Description",
 			categoryName = "MB Category1 Name",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		JSONMBMessage.addCategory(
 			categoryDescription = "MB Category Description",
 			categoryName = "MB Category2 Name",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Navigator.gotoPage(pageName = "Message Boards Page");
 
@@ -702,7 +702,7 @@ definition {
 		var siteName = TestCase.getSiteName(siteName = "${siteName}");
 
 		JSONUser.addUser(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -713,7 +713,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
@@ -735,7 +735,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		Navigator.gotoPage(pageName = "Message Boards Page");
 
@@ -747,7 +747,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Navigator.gotoPage(pageName = "Message Boards Page");
 
@@ -898,7 +898,7 @@ definition {
 			threadSubject = "MB Thread Message Subject 2");
 
 		JSONUser.addUser(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -909,7 +909,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
@@ -923,7 +923,7 @@ definition {
 			userScreenName = "usersn");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		Navigator.gotoPage(pageName = "Message Boards Page");

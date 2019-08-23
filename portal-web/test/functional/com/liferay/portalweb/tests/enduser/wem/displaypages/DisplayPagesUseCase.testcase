@@ -35,7 +35,7 @@ definition {
 		}
 		else {
 			User.logoutAndLoginPG(
-				userLoginEmailAddress = "test@liferay.com",
+				userLoginEmailAddress = "test@example.com",
 				userLoginFullName = "Test Test");
 
 			JSONGroup.deleteGroupByName(groupName = "Test Site Name");
@@ -103,7 +103,7 @@ definition {
 
 		task ("Add a user with permission to edit web content articles and display pages") {
 			JSONUser.addUser(
-				userEmailAddress = "userea1@liferay.com",
+				userEmailAddress = "userea1@example.com",
 				userFirstName = "Userfn1",
 				userLastName = "Userln1",
 				userScreenName = "usersn1");
@@ -111,7 +111,7 @@ definition {
 			User.openUsersAdmin();
 
 			User.editPasswordCP(
-				userEmailAddress = "userea1@liferay.com",
+				userEmailAddress = "userea1@example.com",
 				userScreenName = "usersn1");
 
 			User.openUsersAdmin();
@@ -123,7 +123,7 @@ definition {
 
 		task ("Add a second user without any permissions") {
 			JSONUser.addUser(
-				userEmailAddress = "userea2@liferay.com",
+				userEmailAddress = "userea2@example.com",
 				userFirstName = "Userfn2",
 				userLastName = "Userln2",
 				userScreenName = "usersn2");
@@ -131,13 +131,13 @@ definition {
 			User.openUsersAdmin();
 
 			User.editPasswordCP(
-				userEmailAddress = "userea2@liferay.com",
+				userEmailAddress = "userea2@example.com",
 				userScreenName = "usersn2");
 		}
 
 		task ("Sign in as the first user") {
 			User.logoutAndLoginPG(
-				userLoginEmailAddress = "userea1@liferay.com",
+				userLoginEmailAddress = "userea1@example.com",
 				userLoginFullName = "Userfn1 Userln1");
 		}
 
@@ -221,7 +221,7 @@ definition {
 
 		task ("Sign in as the second user") {
 			User.logoutAndLoginPG(
-				userLoginEmailAddress = "userea2@liferay.com",
+				userLoginEmailAddress = "userea2@example.com",
 				userLoginFullName = "Userfn2 Userln2");
 		}
 
@@ -353,7 +353,7 @@ definition {
 
 		task ("Add a second user with permission to edit web content articles") {
 			JSONUser.addUser(
-				userEmailAddress = "userea@liferay.com",
+				userEmailAddress = "userea@example.com",
 				userFirstName = "Userfn",
 				userLastName = "Userln",
 				userScreenName = "usersn");
@@ -361,7 +361,7 @@ definition {
 			User.openUsersAdmin();
 
 			User.editPasswordCP(
-				userEmailAddress = "userea@liferay.com",
+				userEmailAddress = "userea@example.com",
 				userScreenName = "usersn");
 
 			User.openUsersAdmin();
@@ -415,7 +415,7 @@ definition {
 
 		task ("Sign in as the second user") {
 			User.logoutAndLoginPG(
-				userLoginEmailAddress = "userea@liferay.com",
+				userLoginEmailAddress = "userea@example.com",
 				userLoginFullName = "Userfn Userln");
 		}
 

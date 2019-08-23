@@ -69,7 +69,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -107,7 +107,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -143,7 +143,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -179,7 +179,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -199,7 +199,7 @@ definition {
 		property portal.acceptance = "true";
 		property test.name.skip.portal.instance = "CPPortalSettings#EnterReservedEmailAddress";
 
-		PortalSettings.enterReservedEmailAddressCP(userEmailAddress = "userea@liferay.com");
+		PortalSettings.enterReservedEmailAddressCP(userEmailAddress = "userea@example.com");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -207,7 +207,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addReservedEmailAddressCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -228,7 +228,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addReservedScreenNameCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");

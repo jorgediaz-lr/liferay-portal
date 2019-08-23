@@ -11,7 +11,7 @@ definition {
 		User.firstLoginPG();
 
 		JSONUser.addUser(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -22,7 +22,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		JSONLayout.addPublicLayout(
@@ -71,7 +71,7 @@ definition {
 
 		DMDocument.sharePG(
 			noAutocomplete = "true",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userName = "userfn userln");
 
 		Navigator.gotoPage(pageName = "Documents and Media Page");
@@ -85,7 +85,7 @@ definition {
 
 		DMDocument.sharePG(
 			sharingPermissions = "Update",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userName = "userfn userln");
 
 		Navigator.gotoPage(pageName = "Documents and Media Page");
@@ -99,14 +99,14 @@ definition {
 
 		DMDocument.sharePG(
 			sharingPermissions = "Comment",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userName = "userfn userln");
 
 		User.logoutPG();
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		Notifications.viewBadgeCount(notificationCount = "3");
 
@@ -154,7 +154,7 @@ definition {
 		DMNavigator.gotoShareInfoPanel(dmDocumentTitle = "DM Document Title");
 
 		DMDocument.sharePG(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userName = "userfn userln");
 
 		Navigator.gotoPage(pageName = "Documents and Media Page");
@@ -165,7 +165,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		Notifications.viewBadgeCount(notificationCount = "1");
 
@@ -206,7 +206,7 @@ definition {
 			userScreenName = "usersn");
 
 		JSONUser.addUser(
-			userEmailAddress = "userea2@liferay.com",
+			userEmailAddress = "userea2@example.com",
 			userFirstName = "userfn2",
 			userLastName = "userln2",
 			userScreenName = "usersn2");
@@ -217,7 +217,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea2@liferay.com",
+			userEmailAddress = "userea2@example.com",
 			userScreenName = "usersn2");
 
 		Navigator.gotoPage(pageName = "Documents and Media Page");
@@ -230,28 +230,28 @@ definition {
 		DMNavigator.gotoShare(dmDocumentTitle = "DM Document Title");
 
 		DMDocument.sharePG(
-			userEmailAddress = "userea2@liferay.com",
+			userEmailAddress = "userea2@example.com",
 			userName = "userfn2 userln2");
 
 		User.logoutPG();
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		Navigator.gotoPage(pageName = "Documents and Media Page");
 
 		DMNavigator.gotoShare(dmDocumentTitle = "DM Document Title");
 
 		DMDocument.sharePG(
-			userEmailAddress = "userea2@liferay.com",
+			userEmailAddress = "userea2@example.com",
 			userName = "userfn2 userln2");
 
 		User.logoutPG();
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea2@liferay.com");
+			userEmailAddress = "userea2@example.com");
 
 		Notifications.viewBadgeCount(notificationCount = "2");
 
@@ -395,14 +395,14 @@ definition {
 		DMNavigator.gotoShare(dmDocumentTitle = "DM Document Title");
 
 		DMDocument.sharePG(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userName = "userfn userln");
 
 		User.logoutPG();
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		Notifications.viewBadgeCount(notificationCount = "1");
 
@@ -430,14 +430,14 @@ definition {
 		DMNavigator.gotoShare(dmDocumentTitle = "DM Document Title");
 
 		DMDocument.sharePG(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userName = "userfn userln");
 
 		User.logoutPG();
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		Navigator.gotoPage(pageName = "Documents and Media Page");
 
@@ -453,7 +453,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Navigator.gotoPage(pageName = "Documents and Media Page");
 
@@ -467,7 +467,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		Navigator.gotoPage(pageName = "Documents and Media Page");
 
@@ -481,7 +481,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Navigator.gotoPage(pageName = "Documents and Media Page");
 
@@ -495,7 +495,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		Navigator.gotoPage(pageName = "Documents and Media Page");
 
@@ -525,17 +525,17 @@ definition {
 
 		Type.sendKeys(
 			locator1 = "Sharing#MODAL_INVITE_TO_COLLABORATE_INPUT",
-			value1 = "userea2@liferay.com ");
+			value1 = "userea2@example.com ");
 
 		KeyPress(
 			locator1 = "Sharing#MODAL_INVITE_TO_COLLABORATE_INPUT",
 			value1 = "\RETURN");
 
 		AssertElementPresent(
-			key_userEmailAddress = "userea2@liferay.com",
+			key_userEmailAddress = "userea2@example.com",
 			locator1 = "Sharing#MODAL_INVITE_TO_COLLABORATE_FEEDBACK_ITEM");
 
-		var key_userName = "userea2@liferay.com";
+		var key_userName = "userea2@example.com";
 
 		AssertElementNotPresent(locator1 = "Sharing#MODAL_INVITE_TO_COLLABORATE_TAG");
 	}
@@ -544,7 +544,7 @@ definition {
 	@priority = "5"
 	test ShareViaSharedContent {
 		JSONUser.addUser(
-			userEmailAddress = "userea2@liferay.com",
+			userEmailAddress = "userea2@example.com",
 			userFirstName = "userfn2",
 			userLastName = "userln2",
 			userScreenName = "usersn2");
@@ -555,7 +555,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea2@liferay.com",
+			userEmailAddress = "userea2@example.com",
 			userScreenName = "usersn2");
 
 		Navigator.gotoPage(pageName = "Documents and Media Page");
@@ -569,14 +569,14 @@ definition {
 
 		DMDocument.sharePG(
 			shareable = "true",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userName = "userfn userln");
 
 		User.logoutPG();
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		Navigator.openURL();
 
@@ -584,13 +584,13 @@ definition {
 
 		DMNavigator.gotoShareViaSharedContent(dmDocumentTitle = "DM Document Title");
 
-		DMDocument.shareWithNoSharingPermissionsUser(userEmailAddress = "userea2@liferay.com");
+		DMDocument.shareWithNoSharingPermissionsUser(userEmailAddress = "userea2@example.com");
 
 		User.logoutPG();
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -605,7 +605,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		Navigator.openURL();
 
@@ -617,7 +617,7 @@ definition {
 
 		Type(
 			locator1 = "Sharing#MODAL_INVITE_TO_COLLABORATE_INPUT",
-			value1 = "userea2@liferay.com");
+			value1 = "userea2@example.com");
 
 		AssertElementPresent(locator1 = "Sharing#MODAL_INVITE_TO_COLLABORATE_DROPDOWN");
 
@@ -625,7 +625,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -655,7 +655,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		Navigator.openURL();
 
@@ -665,14 +665,14 @@ definition {
 
 		DMDocument.sharePG(
 			shareable = "true",
-			userEmailAddress = "userea2@liferay.com",
+			userEmailAddress = "userea2@example.com",
 			userName = "userfn2 userln2");
 
 		User.logoutPG();
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea2@liferay.com");
+			userEmailAddress = "userea2@example.com");
 
 		Navigator.gotoPage(pageName = "Documents and Media Page");
 
@@ -686,7 +686,7 @@ definition {
 	@priority = "5"
 	test ShareWithNoSharingPermissions {
 		JSONUser.addUser(
-			userEmailAddress = "userea1@liferay.com",
+			userEmailAddress = "userea1@example.com",
 			userFirstName = "userfn1",
 			userLastName = "userln1",
 			userScreenName = "usersn1");
@@ -697,7 +697,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea1@liferay.com",
+			userEmailAddress = "userea1@example.com",
 			userScreenName = "usersn1");
 
 		Navigator.gotoPage(pageName = "Documents and Media Page");
@@ -710,14 +710,14 @@ definition {
 		DMNavigator.gotoShare(dmDocumentTitle = "DM Document Title");
 
 		DMDocument.sharePG(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userName = "userfn userln");
 
 		User.logoutPG();
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		UserBar.gotoDropdownItem(dropdownItem = "Shared Content");
 
@@ -770,14 +770,14 @@ definition {
 
 		DMDocument.sharePG(
 			noAutocomplete = "true",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userName = "userfn userln");
 
 		User.logoutPG();
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		Notifications.viewBadgeCount(notificationCount = "1");
 
@@ -794,7 +794,7 @@ definition {
 	@priority = "5"
 	test ViewAndRemoveCollaborators {
 		JSONUser.addUser(
-			userEmailAddress = "userea2@liferay.com",
+			userEmailAddress = "userea2@example.com",
 			userFirstName = "userfn2",
 			userLastName = "userln2",
 			userScreenName = "usersn2");
@@ -805,7 +805,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea2@liferay.com",
+			userEmailAddress = "userea2@example.com",
 			userScreenName = "usersn2");
 
 		Navigator.gotoPage(pageName = "Documents and Media Page");
@@ -819,7 +819,7 @@ definition {
 
 		DMDocument.sharePG(
 			noAutocomplete = "true",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userName = "userfn userln");
 
 		Navigator.gotoPage(pageName = "Documents and Media Page");
@@ -827,7 +827,7 @@ definition {
 		DMNavigator.gotoShare(dmDocumentTitle = "DM Document Title");
 
 		DMDocument.sharePG(
-			userEmailAddress = "userea2@liferay.com",
+			userEmailAddress = "userea2@example.com",
 			userName = "userfn2 userln2");
 
 		Navigator.gotoPage(pageName = "Documents and Media Page");
@@ -842,7 +842,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea2@liferay.com");
+			userEmailAddress = "userea2@example.com");
 
 		Navigator.gotoPage(pageName = "Documents and Media Page");
 
@@ -866,7 +866,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Navigator.gotoPage(pageName = "Documents and Media Page");
 

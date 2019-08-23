@@ -321,7 +321,7 @@ definition {
 
 		Type(
 			locator1 = "TextInput#EMAIL_ADDRESS",
-			value1 = "test@liferay.com");
+			value1 = "test@example.com");
 
 		Type(
 			locator1 = "TextInput#PASSWORD",

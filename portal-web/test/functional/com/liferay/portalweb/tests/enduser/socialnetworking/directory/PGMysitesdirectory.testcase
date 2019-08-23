@@ -48,7 +48,7 @@ definition {
 	@priority = "4"
 	test SearchMySitesDirectory {
 		var pageName = "My Sites Directory Page";
-		var userEmailAddress = "userea@liferay.com";
+		var userEmailAddress = "userea@example.com";
 		var userFirstName = "userfn";
 		var userLastName = "userln";
 		var userMiddleName = "usermn";
@@ -62,7 +62,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userMiddleName = "usermn",
@@ -157,7 +157,7 @@ definition {
 
 		User.advancedSearchViaMySitesDirectoryPG(
 			searchField = "Email Address",
-			searchTerm = "userea@liferay.com",
+			searchTerm = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -167,7 +167,7 @@ definition {
 		User.advancedSearchViaMySitesDirectoryPG(
 			searchField = "Email Address",
 			searchNoResults = "true",
-			searchTerm = "userea@liferay.com1",
+			searchTerm = "userea@example.com1",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");

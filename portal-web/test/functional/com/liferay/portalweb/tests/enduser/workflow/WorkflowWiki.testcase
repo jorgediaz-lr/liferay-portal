@@ -66,7 +66,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -77,7 +77,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		Navigator.openURL();
@@ -93,7 +93,7 @@ definition {
 			userScreenName = "usersn");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		Navigator.gotoPage(pageName = "Wiki Page");
@@ -109,7 +109,7 @@ definition {
 			workflowTask = "Review");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "Test Test");
 
 		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
@@ -125,7 +125,7 @@ definition {
 			workflowTask = "Review");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		Navigator.gotoPage(pageName = "Wiki Page");
@@ -144,7 +144,7 @@ definition {
 			workflowTask = "Approved");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "Test Test");
 	}
 
@@ -156,7 +156,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -167,7 +167,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		Navigator.openURL();
@@ -183,7 +183,7 @@ definition {
 			userScreenName = "usersn");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		Navigator.gotoPage(pageName = "Wiki Page");
@@ -199,7 +199,7 @@ definition {
 			workflowTask = "Review");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "Test Test");
 
 		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
@@ -215,7 +215,7 @@ definition {
 			workflowTask = "Review");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		Navigator.gotoPage(pageName = "Wiki Page");
@@ -231,7 +231,7 @@ definition {
 			workflowTask = "Update");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "Test Test");
 	}
 

@@ -574,7 +574,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -585,7 +585,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
@@ -598,7 +598,7 @@ definition {
 			userScreenName = "usersn");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		ProductMenu.gotoPortlet(
@@ -657,7 +657,7 @@ definition {
 		KaleoFormsAdmin.viewProcess(kfProcessName = "Kaleo Forms Process");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "Test Test");
 	}
 
@@ -695,7 +695,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -706,7 +706,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
@@ -800,7 +800,7 @@ definition {
 			workflowTask = "Review");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
@@ -825,7 +825,7 @@ definition {
 			workflowTask = "Review");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "Test Test");
 	}
 
@@ -861,7 +861,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -872,7 +872,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
@@ -970,7 +970,7 @@ definition {
 		Workflow.assignByDetails(user = "userfn userln");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
@@ -994,7 +994,7 @@ definition {
 			fieldValue = "Test Submitted");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "Test Test");
 	}
 
@@ -1032,7 +1032,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -1043,7 +1043,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
@@ -1137,7 +1137,7 @@ definition {
 			workflowTask = "Review");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
@@ -1162,7 +1162,7 @@ definition {
 			workflowTask = "Review");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "Test Test");
 	}
 
@@ -1221,7 +1221,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -1250,15 +1250,15 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "Test Test");
 
 		ProductMenu.gotoPortlet(
@@ -1328,7 +1328,7 @@ definition {
 		KaleoFormsAdmin.viewProcess(kfProcessName = "Kaleo Forms Process");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
@@ -1358,7 +1358,7 @@ definition {
 			workflowTask = "Review");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "Test Test");
 	}
 
@@ -1389,7 +1389,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -1400,15 +1400,15 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "Test Test");
 
 		ProductMenu.gotoPortlet(
@@ -1421,7 +1421,7 @@ definition {
 			userScreenName = "usersn");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
@@ -1429,7 +1429,7 @@ definition {
 		Workflow.viewDefaultMyWorkflowTasksCP();
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "Test Test");
 	}
 
@@ -4358,7 +4358,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -4369,7 +4369,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
@@ -4382,7 +4382,7 @@ definition {
 			userScreenName = "usersn");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
@@ -4403,7 +4403,7 @@ definition {
 		KaleoFormsAdmin.saveProcessRecord();
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "Test Test");
 
 		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");

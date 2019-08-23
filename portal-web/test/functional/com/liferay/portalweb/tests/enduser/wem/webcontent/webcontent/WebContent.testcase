@@ -839,7 +839,7 @@ definition {
 		User.openUsersAdmin();
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -847,7 +847,7 @@ definition {
 		User.openUsersAdmin();
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		Role.openRolesAdmin();
@@ -864,7 +864,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		WebContent.openWebContentAdmin(siteURLKey = "test-site-name");
 

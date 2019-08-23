@@ -280,7 +280,7 @@ definition {
 		User.loginPG(
 			password = "test",
 			specificURL = "http://www.charlie.com:8080/group/guest",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		AssertTextEquals(
 			key_pageName = "Private Page",
@@ -291,7 +291,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 	}
 
 	@priority = "4"

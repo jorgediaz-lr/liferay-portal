@@ -391,7 +391,7 @@ definition {
 		Role.addStagingAdminRole();
 
 		JSONUser.addUser(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -403,7 +403,7 @@ definition {
 
 		User.editPasswordCP(
 			password = "password",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		Navigator.openSiteURL(siteName = "${siteName}");
@@ -906,7 +906,7 @@ definition {
 			User.loginPG(
 				nodePort = "${remotePort}",
 				password = "test",
-				userEmailAddress = "test@liferay.com");
+				userEmailAddress = "test@example.com");
 		}
 		else {
 			Navigator.openURL();
@@ -936,7 +936,7 @@ definition {
 			User.loginPG(
 				nodePort = "8080",
 				password = "test",
-				userEmailAddress = "test@liferay.com");
+				userEmailAddress = "test@example.com");
 		}
 
 		SitePages.openPagesAdmin(siteURLKey = "${siteName}");

@@ -38,7 +38,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -71,7 +71,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -144,7 +144,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -276,7 +276,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -421,7 +421,7 @@ definition {
 
 		User.addCP(
 			allowManualMembershipManagement = "true",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -552,7 +552,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -667,7 +667,7 @@ definition {
 			panel = "Control Panel",
 			portlet = "Users and Organizations");
 
-		User.addMultipleCP(usersEmailsList = "userfn1@liferay.com,userfn2@liferay.com,userfn3@liferay.com,userfn4@liferay.com,userfn5@liferay.com,userfn6@liferay.com,userfn7@liferay.com,userfn8@liferay.com,userfn9@liferay.com,userfn10@liferay.com");
+		User.addMultipleCP(usersEmailsList = "userfn1@example.com,userfn2@example.com,userfn3@example.com,userfn4@example.com,userfn5@example.com,userfn6@example.com,userfn7@example.com,userfn8@example.com,userfn9@example.com,userfn10@example.com");
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -690,7 +690,7 @@ definition {
 			panel = "Site Administration",
 			portlet = "Memberships");
 
-		Site.viewMemberListCP(usersEmailsList = "userfn1@liferay.com,userfn2@liferay.com,userfn3@liferay.com,userfn4@liferay.com,userfn5@liferay.com,userfn6@liferay.com,userfn7@liferay.com,userfn8@liferay.com,userfn9@liferay.com,userfn10@liferay.com");
+		Site.viewMemberListCP(usersEmailsList = "userfn1@example.com,userfn2@example.com,userfn3@example.com,userfn4@example.com,userfn5@example.com,userfn6@example.com,userfn7@example.com,userfn8@example.com,userfn9@example.com,userfn10@example.com");
 
 		Site.viewMemberCP(
 			userFirstName = "Test",
@@ -715,11 +715,11 @@ definition {
 			locator1 = "Pagination#CURRENT_PAGE_SELECT",
 			value1 = "Showing 6 to 10 of 11 entries.");
 
-		Site.assertMemberListNotVisibleCP(usersEmailsList = "userfn1@liferay.com,userfn2@liferay.com,userfn3@liferay.com,userfn10@liferay.com");
+		Site.assertMemberListNotVisibleCP(usersEmailsList = "userfn1@example.com,userfn2@example.com,userfn3@example.com,userfn10@example.com");
 
-		Site.viewMemberListCP(usersEmailsList = "userfn4@liferay.com,userfn5@liferay.com,userfn6@liferay.com,userfn7@liferay.com,userfn8@liferay.com");
+		Site.viewMemberListCP(usersEmailsList = "userfn4@example.com,userfn5@example.com,userfn6@example.com,userfn7@example.com,userfn8@example.com");
 
-		Site.assertMemberListNotVisibleCP(usersEmailsList = "userfn9@liferay.com");
+		Site.assertMemberListNotVisibleCP(usersEmailsList = "userfn9@example.com");
 
 		Click(locator1 = "Pagination#FIRST_LINK");
 
@@ -727,11 +727,11 @@ definition {
 			locator1 = "Pagination#CURRENT_PAGE_SELECT",
 			value1 = "Showing 1 to 5 of 11 entries.");
 
-		Site.viewMemberListCP(usersEmailsList = "userfn1@liferay.com,userfn2@liferay.com,userfn3@liferay.com,userfn10@liferay.com");
+		Site.viewMemberListCP(usersEmailsList = "userfn1@example.com,userfn2@example.com,userfn3@example.com,userfn10@example.com");
 
-		Site.assertMemberListNotVisibleCP(usersEmailsList = "userfn4@liferay.com,userfn5@liferay.com,userfn6@liferay.com,userfn7@liferay.com,userfn8@liferay.com");
+		Site.assertMemberListNotVisibleCP(usersEmailsList = "userfn4@example.com,userfn5@example.com,userfn6@example.com,userfn7@example.com,userfn8@example.com");
 
-		Site.assertMemberListNotVisibleCP(usersEmailsList = "userfn9@liferay.com");
+		Site.assertMemberListNotVisibleCP(usersEmailsList = "userfn9@example.com");
 
 		Site.viewMemberCP(
 			userFirstName = "Test",
@@ -744,11 +744,11 @@ definition {
 			locator1 = "Pagination#CURRENT_PAGE_SELECT",
 			value1 = "Showing 11 to 11 of 11 entries.");
 
-		Site.assertMemberListNotVisibleCP(usersEmailsList = "userfn1@liferay.com,userfn2@liferay.com,userfn3@liferay.com,userfn10@liferay.com");
+		Site.assertMemberListNotVisibleCP(usersEmailsList = "userfn1@example.com,userfn2@example.com,userfn3@example.com,userfn10@example.com");
 
-		Site.assertMemberListNotVisibleCP(usersEmailsList = "userfn4@liferay.com,userfn5@liferay.com,userfn6@liferay.com,userfn7@liferay.com,userfn8@liferay.com");
+		Site.assertMemberListNotVisibleCP(usersEmailsList = "userfn4@example.com,userfn5@example.com,userfn6@example.com,userfn7@example.com,userfn8@example.com");
 
-		Site.viewMemberListCP(usersEmailsList = "userfn9@liferay.com");
+		Site.viewMemberListCP(usersEmailsList = "userfn9@example.com");
 
 		Click(locator1 = "Pagination#PREVIOUS_LINK");
 
@@ -756,11 +756,11 @@ definition {
 			locator1 = "Pagination#CURRENT_PAGE_SELECT",
 			value1 = "Showing 6 to 10 of 11 entries.");
 
-		Site.assertMemberListNotVisibleCP(usersEmailsList = "userfn1@liferay.com,userfn2@liferay.com,userfn3@liferay.com,userfn10@liferay.com");
+		Site.assertMemberListNotVisibleCP(usersEmailsList = "userfn1@example.com,userfn2@example.com,userfn3@example.com,userfn10@example.com");
 
-		Site.viewMemberListCP(usersEmailsList = "userfn4@liferay.com,userfn5@liferay.com,userfn6@liferay.com,userfn7@liferay.com,userfn8@liferay.com");
+		Site.viewMemberListCP(usersEmailsList = "userfn4@example.com,userfn5@example.com,userfn6@example.com,userfn7@example.com,userfn8@example.com");
 
-		Site.assertMemberListNotVisibleCP(usersEmailsList = "userfn9@liferay.com");
+		Site.assertMemberListNotVisibleCP(usersEmailsList = "userfn9@example.com");
 	}
 
 	@priority = "4"
@@ -773,7 +773,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "4568@liferay.com",
+			userEmailAddress = "4568@example.com",
 			userFirstName = "userfnTest1",
 			userLastName = "One",
 			userScreenName = "user1");
@@ -784,7 +784,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "5670@liferay.com",
+			userEmailAddress = "5670@example.com",
 			userFirstName = "userfnTest2",
 			userLastName = "Two",
 			userScreenName = "screen2");
@@ -795,7 +795,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "9758@liferay.com",
+			userEmailAddress = "9758@example.com",
 			userFirstName = "userfnTest3",
 			userLastName = "Three",
 			userScreenName = "member3");
@@ -862,14 +862,14 @@ definition {
 			userScreenNameSearchValue = "member");
 
 		Site.searchMemberCP(
-			userEmailAddress = "4568@liferay.com",
+			userEmailAddress = "4568@example.com",
 			userEmailAddressSearchValue = "4",
 			userFirstName = "userfnTest1",
 			userLastName = "One",
 			userScreenName = "user1");
 
 		Site.searchMemberCP(
-			userEmailAddress = "4568@liferay.com",
+			userEmailAddress = "4568@example.com",
 			userEmailAddressSearchValue = "5",
 			userFirstName = "userfnTest1",
 			userLastName = "One",
@@ -886,7 +886,7 @@ definition {
 			userScreenName = "member3");
 
 		Site.searchMemberCP(
-			userEmailAddress = "4568@liferay.com",
+			userEmailAddress = "4568@example.com",
 			userEmailAddressSearchValue = "6",
 			userFirstName = "userfnTest1",
 			userLastName = "One",
@@ -898,7 +898,7 @@ definition {
 			userScreenName = "screen2");
 
 		Site.searchMemberCP(
-			userEmailAddress = "5670@liferay.com",
+			userEmailAddress = "5670@example.com",
 			userEmailAddressSearchValue = "7",
 			userFirstName = "userfnTest2",
 			userLastName = "Two",
@@ -910,7 +910,7 @@ definition {
 			userScreenName = "member3");
 
 		Site.searchMemberCP(
-			userEmailAddress = "4568@liferay.com",
+			userEmailAddress = "4568@example.com",
 			userEmailAddressSearchValue = "8",
 			userFirstName = "userfnTest1",
 			userLastName = "One",
@@ -922,14 +922,14 @@ definition {
 			userScreenName = "member3");
 
 		Site.searchMemberCP(
-			userEmailAddress = "5670@liferay.com",
+			userEmailAddress = "5670@example.com",
 			userEmailAddressSearchValue = "0",
 			userFirstName = "userfnTest2",
 			userLastName = "Two",
 			userScreenName = "screen2");
 
 		Site.searchMemberCP(
-			userEmailAddress = "4568@liferay.com",
+			userEmailAddress = "4568@example.com",
 			userEmailAddressSearchValue = "9",
 			userFirstName = "userfnTest3",
 			userLastName = "Three",
@@ -975,7 +975,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -986,11 +986,11 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "Userfn Userln",
 			userScreenName = "usersn");
 

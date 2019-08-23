@@ -224,7 +224,7 @@ definition {
 
 		AssertTextEquals.assertValue(
 			locator1 = "TextInput#EMAIL",
-			value1 = "test@liferay.com");
+			value1 = "test@example.com");
 	}
 
 	macro viewDefaultDatabasePG {
@@ -305,7 +305,7 @@ definition {
 		Pagination.viewResults(results = "Showing 1 to 20 of 101 entries.");
 
 		User.viewCP(
-			userEmailAddress = "default.dlc.1@liferay.com",
+			userEmailAddress = "default.dlc.1@example.com",
 			userFirstName = "Test",
 			userLastName = "DLC 1",
 			userScreenName = "default.dlc.1");

@@ -34,7 +34,7 @@ definition {
 			User.loginPG(
 				nodePort = "${nodePort}",
 				password = "test",
-				userEmailAddress = "test@liferay.com");
+				userEmailAddress = "test@example.com");
 		}
 
 		ProductMenu.gotoPortlet(
@@ -123,7 +123,7 @@ definition {
 			User.loginPG(
 				nodePort = "${nodePort}",
 				password = "test",
-				userEmailAddress = "test@liferay.com");
+				userEmailAddress = "test@example.com");
 		}
 
 		ProductMenu.gotoPortlet(

@@ -38,7 +38,7 @@ definition {
 
 		var curl = '''
 			${portalURL}/api/jsonws/role/add-role \
-				-u test@liferay.com:test \
+				-u test@example.com:test \
 				-d className=com.liferay.portal.kernel.model.Role \
 				-d classPK=0 \
 				-d name=${roleTitleEncoded} \
@@ -72,7 +72,7 @@ definition {
 
 		var curl = '''
 			${portalURL}/api/jsonws/user/add-role-users \
-				-u test@liferay.com:test \
+				-u test@example.com:test \
 				-d roleId=${roleId} \
 				-d userIds=${userId}
 		''';
@@ -145,7 +145,7 @@ definition {
 
 		var curl = '''
 			${portalURL}/api/jsonws/role/get-role/company-id/${companyId}/name/${roleTitleEncoded} \
-				-u test@liferay.com:test
+				-u test@example.com:test
 		''';
 		var roleId = JSONCurlUtil.get("${curl}", "$['roleId']");
 
@@ -159,7 +159,7 @@ definition {
 
 		var curl = '''
 			${portalURL}/api/jsonws/role/get-role/role-id/${roleId} \
-				-u test@liferay.com:test
+				-u test@example.com:test
 		''';
 		var roleTitle = JSONCurlUtil.get("${curl}", "$['name']");
 

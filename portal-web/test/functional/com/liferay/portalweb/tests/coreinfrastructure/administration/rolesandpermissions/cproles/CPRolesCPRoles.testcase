@@ -20,7 +20,7 @@ definition {
 		}
 		else {
 			User.logoutAndLoginPG(
-				userLoginEmailAddress = "test@liferay.com",
+				userLoginEmailAddress = "test@example.com",
 				userLoginFullName = "Test Test");
 
 			User.tearDownCP();
@@ -35,10 +35,10 @@ definition {
 	test AddOrganizationRoleRegRole {
 		Permissions.setUpRegRoleLoginUserCP(
 			roleTitle = "Regrole Name",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "Test Test",
 			userScreenName = "usersn");
 
@@ -53,7 +53,7 @@ definition {
 			roleTitle = "Regrole Name");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		ProductMenu.gotoPortlet(
@@ -74,7 +74,7 @@ definition {
 			roleTitle = "Regrole Name");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		ProductMenu.gotoPortlet(
@@ -97,7 +97,7 @@ definition {
 			roleTitle = "Regrole Name");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		ProductMenu.gotoPortlet(
@@ -112,10 +112,10 @@ definition {
 	test AddRegularRoleRegRole {
 		Permissions.setUpRegRoleLoginUserCP(
 			roleTitle = "Regrole Name",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "Test Test",
 			userScreenName = "usersn");
 
@@ -130,7 +130,7 @@ definition {
 			roleTitle = "Regrole Name");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		ProductMenu.gotoPortlet(
@@ -151,7 +151,7 @@ definition {
 			roleTitle = "Regrole Name");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		ProductMenu.gotoPortlet(
@@ -172,7 +172,7 @@ definition {
 			roleTitle = "Regrole Name");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		ProductMenu.gotoPortlet(
@@ -187,10 +187,10 @@ definition {
 	test AddSiteRoleRegRole {
 		Permissions.setUpRegRoleLoginUserCP(
 			roleTitle = "Regrole Name",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "Test Test",
 			userScreenName = "usersn");
 
@@ -205,7 +205,7 @@ definition {
 			roleTitle = "Regrole Name");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		ProductMenu.gotoPortlet(
@@ -226,7 +226,7 @@ definition {
 			roleTitle = "Regrole Name");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		ProductMenu.gotoPortlet(
@@ -249,7 +249,7 @@ definition {
 			roleTitle = "Regrole Name");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		ProductMenu.gotoPortlet(

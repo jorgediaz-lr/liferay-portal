@@ -54,12 +54,12 @@ definition {
 
 		User.logoutPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Page.assertNodePortPG(nodePort = "9080");
 
@@ -130,11 +130,11 @@ definition {
 		User.logoutPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Navigator.gotoPage(pageName = "Test Page2");
 
@@ -165,12 +165,12 @@ definition {
 
 		User.logoutPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Page.assertNodePortPG(nodePort = "9080");
 
@@ -187,12 +187,12 @@ definition {
 
 		User.logoutPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginPG(
 			nodePort = "8080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Page.assertNodePortPG(nodePort = "8080");
 
@@ -207,12 +207,12 @@ definition {
 
 		User.logoutPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Page.assertNodePortPG(nodePort = "9080");
 	}
@@ -248,12 +248,12 @@ definition {
 
 		User.logoutPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Page.assertNodePortPG(nodePort = "9080");
 
@@ -266,11 +266,11 @@ definition {
 		User.logoutPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 	}
 
 	@priority = "5"
@@ -290,7 +290,7 @@ definition {
 		User.loginPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -302,7 +302,7 @@ definition {
 		User.loginPG(
 			nodePort = "8080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -316,7 +316,7 @@ definition {
 		User.loginPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -374,12 +374,12 @@ definition {
 
 		User.logoutPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Page.assertNodePortPG(nodePort = "9080");
 
@@ -413,11 +413,11 @@ definition {
 		User.logoutPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 	}
 
 }

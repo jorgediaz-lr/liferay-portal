@@ -1,7 +1,7 @@
 definition {
 
 	var password = "test";
-	var userEmailAddress = "test@liferay.com";
+	var userEmailAddress = "test@example.com";
 
 	macro _login {
 		AssertClick(
@@ -309,7 +309,7 @@ definition {
 	macro addMultipleCP {
 		for (var userEmail : list "${usersEmailsList}") {
 			var userEmailAddress = "${userEmail}";
-			var userName = StringUtil.replace("${userEmail}", "@liferay.com", "");
+			var userName = StringUtil.replace("${userEmail}", "@example.com", "");
 
 			ProductMenu.gotoPortlet(
 				category = "Users",
@@ -895,7 +895,7 @@ definition {
 				password = "test",
 				resetPassword = "${resetPassword}",
 				syntaxCheckingEnabled = "${syntaxCheckingEnabled}",
-				userEmailAddress = "test@liferay.com",
+				userEmailAddress = "test@example.com",
 				userScreenName = "${userScreenName}");
 		}
 		else {
@@ -927,7 +927,7 @@ definition {
 				password = "test",
 				resetPassword = "${resetPassword}",
 				syntaxCheckingEnabled = "${syntaxCheckingEnabled}",
-				userEmailAddress = "test@liferay.com",
+				userEmailAddress = "test@example.com",
 				userScreenName = "${userScreenName}");
 		}
 	}
@@ -1257,7 +1257,7 @@ definition {
 			authenticationMethod = "${authenticationMethod}",
 			nodePort = "${nodePort}",
 			password = "test",
-			userEmailAddress = "test@liferay.com",
+			userEmailAddress = "test@example.com",
 			userScreenName = "${userScreenName}");
 	}
 
@@ -2313,7 +2313,7 @@ definition {
 
 					AssertTextEquals.assertPartialText(
 						locator1 = "UsersAndOrganizations#USER_CONTACT_INFORMATION_CONTAINER_TABLE",
-						value1 = "${addressPrefix}${i}@liferay.com");
+						value1 = "${addressPrefix}${i}@example.com");
 				}
 			}
 

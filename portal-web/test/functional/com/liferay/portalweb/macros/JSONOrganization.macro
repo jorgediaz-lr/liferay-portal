@@ -13,7 +13,7 @@ definition {
 
 		var curl = '''
 			${portalURL}/api/jsonws/organization/add-organization \
-				-u test@liferay.com:test \
+				-u test@example.com:test \
 				-d parentOrganizationId=0 \
 				-d name=${organizationNameEncoded} \
 				-d type=organization \
@@ -40,7 +40,7 @@ definition {
 
 		var curl = '''
 			${portalURL}/api/jsonws/user/add-organization-users \
-				-u test@liferay.com:test \
+				-u test@example.com:test \
 				-d organizationId=${organizationId} \
 				-d userIds=${userId}
 		''';
@@ -65,7 +65,7 @@ definition {
 
 		var curl = '''
 			${portalURL}/api/jsonws/organization/delete-organization \
-				-u test@liferay.com:test \
+				-u test@example.com:test \
 				-d organizationId=${organizationId}
 		''';
 
@@ -119,7 +119,7 @@ definition {
 
 		var curl = '''
 			${portalURL}/api/jsonws/organization/get-organizations/company-id/${companyId}/parent-organization-id/0 \
-				-u test@liferay.com:test
+				-u test@example.com:test
 		''';
 		var organizationId = JSONCurlUtil.get("${curl}", "$.[?(@['name'] == '${organizationName}')]['organizationId']");
 		var organizationId = StringUtil.replace("${organizationId}", "[&quot;", "");
@@ -135,7 +135,7 @@ definition {
 
 		var curl = '''
 			${portalURL}/api/jsonws/organization/get-organization/organization-id/${organizationId} \
-				-u test@liferay.com:test
+				-u test@example.com:test
 		''';
 		var organizationName = JSONCurlUtil.get("${curl}", "$['name']");
 

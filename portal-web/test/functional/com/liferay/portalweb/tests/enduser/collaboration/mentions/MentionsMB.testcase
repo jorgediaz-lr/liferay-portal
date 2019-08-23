@@ -11,7 +11,7 @@ definition {
 		User.firstLoginPG();
 
 		JSONUser.addUser(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -23,7 +23,7 @@ definition {
 
 		User.editPasswordCP(
 			password = "password",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 	}
 

@@ -45,7 +45,7 @@ definition {
 			roleTitle = "Roles Siterole Name",
 			roleType = "Site",
 			siteName = "Site Name",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -69,7 +69,7 @@ definition {
 			roleType = "site");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		Navigator.gotoSitePage(
@@ -91,7 +91,7 @@ definition {
 			roleTitle = "Roles Siterole Name",
 			roleType = "Site",
 			siteName = "Site Name",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -132,7 +132,7 @@ definition {
 			folderName = "WC Folder Name 1");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		Navigator.openSiteURL(siteName = "Site Name");
@@ -170,7 +170,7 @@ definition {
 			subfolder = "false");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "Test Test");
 
 		Permissions.removePermissionViaAPI(
@@ -180,7 +180,7 @@ definition {
 			roleType = "site");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		Navigator.gotoSitePage(
@@ -201,7 +201,7 @@ definition {
 			roleTitle = "Roles Siterole Name",
 			roleType = "Site",
 			siteName = "Site Name",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -225,7 +225,7 @@ definition {
 			roleType = "site");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		Navigator.gotoSitePage(
@@ -247,7 +247,7 @@ definition {
 			roleTitle = "Roles Siterole Name",
 			roleType = "Site",
 			siteName = "Site Name",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -277,7 +277,7 @@ definition {
 			roleType = "site");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		Navigator.openSiteURL(siteName = "Site Name");
@@ -301,7 +301,7 @@ definition {
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "Test Test");
 
 		Permissions.removePermissionViaAPI(
@@ -311,7 +311,7 @@ definition {
 			roleType = "site");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		Navigator.gotoSitePage(
@@ -333,7 +333,7 @@ definition {
 			roleTitle = "Roles Siterole Name",
 			roleType = "Site",
 			siteName = "Site Name",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -357,7 +357,7 @@ definition {
 			roleType = "site");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		Navigator.gotoSitePage(
@@ -379,7 +379,7 @@ definition {
 			roleTitle = "Roles Siterole Name",
 			roleType = "Site",
 			siteName = "Site Name",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -403,7 +403,7 @@ definition {
 			roleType = "site");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		Permissions.definePermissionViaJSONAPI(
@@ -426,7 +426,7 @@ definition {
 			templateName = "WC Template Name");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "Test Test");
 
 		Permissions.removePermissionViaAPI(
@@ -436,7 +436,7 @@ definition {
 			roleType = "site");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		Navigator.gotoSitePage(
@@ -457,7 +457,7 @@ definition {
 			roleTitle = "Roles Siterole Name",
 			roleType = "Site",
 			siteName = "Site Name",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -481,7 +481,7 @@ definition {
 			roleType = "site");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		Navigator.gotoSitePage(
@@ -503,7 +503,7 @@ definition {
 			roleTitle = "Roles Siterole Name",
 			roleType = "Site",
 			siteName = "Site Name",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -533,7 +533,7 @@ definition {
 			roleType = "site");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		Navigator.openSiteURL(siteName = "Site Name");
@@ -558,7 +558,7 @@ definition {
 		WebContent.viewTitle(webContentTitle = "WC WebContent Title");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "Test Test");
 
 		Permissions.removePermissionViaAPI(
@@ -568,7 +568,7 @@ definition {
 			roleType = "site");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		Navigator.gotoSitePage(
@@ -583,10 +583,10 @@ definition {
 		Permissions.setUpRegRoleLoginUserCP(
 			portletName = "Web Content",
 			roleTitle = "Regrole Name",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln",
 			userScreenName = "usersn");
 
@@ -608,7 +608,7 @@ definition {
 			roleTitle = "Regrole Name");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		Navigator.openURL();
@@ -629,10 +629,10 @@ definition {
 			roleTitle = "Roles Siterole Name",
 			roleType = "Site",
 			siteName = "Site Name",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln",
 			userScreenName = "usersn");
 
@@ -659,7 +659,7 @@ definition {
 			roleType = "site");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		Navigator.openSiteURL(siteName = "Site Name");

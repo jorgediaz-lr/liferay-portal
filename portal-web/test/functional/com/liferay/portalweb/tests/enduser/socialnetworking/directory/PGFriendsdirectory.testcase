@@ -54,7 +54,7 @@ definition {
 	@priority = "3"
 	test SearchFriendsDirectory {
 		var pageName = "Friends Directory Page";
-		var userEmailAddress = "userea@liferay.com";
+		var userEmailAddress = "userea@example.com";
 		var userFirstName = "userfn";
 		var userLastName = "userln";
 		var userMiddleName = "usermn";
@@ -66,7 +66,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		JSONUser.addUser(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userMiddleName = "usermn",
@@ -78,7 +78,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		ProductMenuHelper.openProductMenu();
@@ -114,7 +114,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		Navigator.gotoSitePage(
@@ -133,7 +133,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com",
+			userEmailAddress = "test@example.com",
 			userScreenName = "usersn");
 
 		Navigator.gotoSitePage(
@@ -224,7 +224,7 @@ definition {
 
 		User.advancedSearchViaFriendsDirectoryPG(
 			searchField = "Email Address",
-			searchTerm = "userea@liferay.com",
+			searchTerm = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -234,7 +234,7 @@ definition {
 		User.advancedSearchViaFriendsDirectoryPG(
 			searchField = "Email Address",
 			searchNoResults = "true",
-			searchTerm = "userea@liferay.com1",
+			searchTerm = "userea@example.com1",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");

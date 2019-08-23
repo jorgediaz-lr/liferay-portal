@@ -45,10 +45,10 @@ definition {
 		Permissions.setUpRegRoleLoginUserCP(
 			portletName = "Blogs",
 			roleTitle = "Regrole Name",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "Test Test",
 			userScreenName = "usersn");
 
@@ -63,7 +63,7 @@ definition {
 			roleTitle = "Regrole Name");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "Test Test");
 
 		Navigator.openURL();
@@ -91,7 +91,7 @@ definition {
 			roleTitle = "Guest");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		Navigator.openURL();
@@ -104,7 +104,7 @@ definition {
 		BlogsEntry.viewDefaultCP(entryTitle = "Blogs Entry Title");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "Test Test");
 
 		Navigator.openURL();
@@ -123,7 +123,7 @@ definition {
 			roleTitle = "Guest");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		Navigator.openURL();
@@ -147,10 +147,10 @@ definition {
 		Permissions.setUpRegRoleLoginUserCP(
 			portletName = "Blogs",
 			roleTitle = "Regrole Name",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln",
 			userScreenName = "usersn");
 
@@ -184,10 +184,10 @@ definition {
 			roleTitle = "Roles Siterole Name",
 			roleType = "Site",
 			siteName = "Site Name",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln",
 			userScreenName = "usersn");
 

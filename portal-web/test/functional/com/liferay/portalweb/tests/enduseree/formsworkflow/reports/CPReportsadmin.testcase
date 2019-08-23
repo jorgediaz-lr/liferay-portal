@@ -109,8 +109,8 @@ definition {
 			templateFile = "reports_admin_template_source_sample_class_name.jrxml");
 
 		ReportsAdmin.addScheduleEntry(
-			emailNotificationsAddress = "test@liferay.com",
-			emailRecipientAddress = "test@liferay.com",
+			emailNotificationsAddress = "test@example.com",
+			emailRecipientAddress = "test@example.com",
 			reportFormat = "pdf",
 			reportsDefinitionName = "Reports Definition Name");
 
@@ -160,8 +160,8 @@ definition {
 			templateFile = "reports_admin_template_source_sample_class_name.jrxml");
 
 		ReportsAdmin.addReportEntry(
-			emailNotificationsAddress = "test@liferay.com",
-			emailRecipientAddress = "test@liferay.com",
+			emailNotificationsAddress = "test@example.com",
+			emailRecipientAddress = "test@example.com",
 			reportFormat = "csv",
 			reportName = "Custom Name",
 			reportsDefinitionName = "Reports Definition Name");
@@ -196,8 +196,8 @@ definition {
 			templateFile = "reports_admin_template_source_sample_class_name.jrxml");
 
 		ReportsAdmin.addReportEntry(
-			emailNotificationsAddress = "test@liferay.com",
-			emailRecipientAddress = "test@liferay.com",
+			emailNotificationsAddress = "test@example.com",
+			emailRecipientAddress = "test@example.com",
 			reportFormat = "csv",
 			reportsDefinitionName = "Reports Definition Name");
 
@@ -246,8 +246,8 @@ definition {
 			templateFile = "reports_admin_template_source_sample_class_name.jrxml");
 
 		ReportsAdmin.addReportEntry(
-			emailNotificationsAddress = "test@liferay.com",
-			emailRecipientAddress = "test@liferay.com",
+			emailNotificationsAddress = "test@example.com",
+			emailRecipientAddress = "test@example.com",
 			reportFormat = "pdf",
 			reportsDefinitionName = "Reports Definition Name");
 
@@ -261,13 +261,13 @@ definition {
 			userName = "Test Test");
 
 		ReportsAdmin.deliverReportEntryFile(
-			emailRecipientAddress = "user1@liferay.com",
+			emailRecipientAddress = "user1@example.com",
 			reportsFileName = "reports_admin_template_source_sample_class_name.pdf");
 
 		MockMock.viewMail(
 			asset = "New Report: reports_admin_template_source_sample_class_name.pdf",
 			content = "New Report: reports_admin_template_source_sample_class_name.pdf",
-			recipient = "user1@liferay.com",
+			recipient = "user1@example.com",
 			sender = "Joe Bloggs",
 			subject = "New Report: reports_admin_template_source_sample_class_name.pdf");
 
@@ -292,8 +292,8 @@ definition {
 			templateFile = "reports_admin_template_source_sample_class_name.jrxml");
 
 		ReportsAdmin.addReportEntry(
-			emailNotificationsAddress = "test@liferay.com",
-			emailRecipientAddress = "test@liferay.com",
+			emailNotificationsAddress = "test@example.com",
+			emailRecipientAddress = "test@example.com",
 			reportFormat = "csv",
 			reportsDefinitionName = "Reports Definition Name");
 
@@ -327,8 +327,8 @@ definition {
 			templateFile = "reports_admin_template_source_sample_class_name.jrxml");
 
 		ReportsAdmin.addReportEntry(
-			emailNotificationsAddress = "test@liferay.com",
-			emailRecipientAddress = "test@liferay.com",
+			emailNotificationsAddress = "test@example.com",
+			emailRecipientAddress = "test@example.com",
 			reportFormat = "HTML",
 			reportsDefinitionName = "Reports Definition Name");
 
@@ -362,8 +362,8 @@ definition {
 			templateFile = "reports_admin_template_source_sample_class_name.jrxml");
 
 		ReportsAdmin.addReportEntry(
-			emailNotificationsAddress = "test@liferay.com",
-			emailRecipientAddress = "test@liferay.com",
+			emailNotificationsAddress = "test@example.com",
+			emailRecipientAddress = "test@example.com",
 			reportFormat = "pdf",
 			reportsDefinitionName = "Reports Definition Name");
 
@@ -399,8 +399,8 @@ definition {
 			templateFile = "reports_admin_template_source_sample_class_name.jrxml");
 
 		ReportsAdmin.addReportEntry(
-			emailNotificationsAddress = "test@liferay.com",
-			emailRecipientAddress = "test@liferay.com",
+			emailNotificationsAddress = "test@example.com",
+			emailRecipientAddress = "test@example.com",
 			reportFormat = "rtf",
 			reportsDefinitionName = "Reports Definition Name");
 
@@ -434,8 +434,8 @@ definition {
 			templateFile = "reports_admin_template_source_sample_class_name.jrxml");
 
 		ReportsAdmin.addReportEntry(
-			emailNotificationsAddress = "test@liferay.com",
-			emailRecipientAddress = "test@liferay.com",
+			emailNotificationsAddress = "test@example.com",
+			emailRecipientAddress = "test@example.com",
 			reportFormat = "txt",
 			reportsDefinitionName = "Reports Definition Name");
 
@@ -469,8 +469,8 @@ definition {
 			templateFile = "reports_admin_template_source_sample_class_name.jrxml");
 
 		ReportsAdmin.addReportEntry(
-			emailNotificationsAddress = "test@liferay.com",
-			emailRecipientAddress = "test@liferay.com",
+			emailNotificationsAddress = "test@example.com",
+			emailRecipientAddress = "test@example.com",
 			reportFormat = "xls",
 			reportsDefinitionName = "Reports Definition Name");
 
@@ -504,8 +504,8 @@ definition {
 			templateFile = "reports_admin_template_source_sample_class_name.jrxml");
 
 		ReportsAdmin.addReportEntry(
-			emailNotificationsAddress = "test@liferay.com",
-			emailRecipientAddress = "test@liferay.com",
+			emailNotificationsAddress = "test@example.com",
+			emailRecipientAddress = "test@example.com",
 			reportFormat = "XML",
 			reportsDefinitionName = "Reports Definition Name");
 
@@ -584,7 +584,7 @@ definition {
 
 		ReportsAdmin.addReportEntry(
 			emailNotificationsAddress = PropsUtil.get("email.address.2"),
-			emailRecipientAddress = "test@liferay.com",
+			emailRecipientAddress = "test@example.com",
 			reportFormat = "pdf",
 			reportName = "Custom Report Name",
 			reportsDefinitionName = "Reports Definition Name");
@@ -660,7 +660,7 @@ definition {
 			templateFile = "reports_admin_template_source_sample_class_name.jrxml");
 
 		ReportsAdmin.addReportEntry(
-			emailNotificationsAddress = "test@liferay.com",
+			emailNotificationsAddress = "test@example.com",
 			emailRecipientAddress = PropsUtil.get("email.address.4"),
 			reportFormat = "pdf",
 			reportsDefinitionName = "Reports Definition Name");

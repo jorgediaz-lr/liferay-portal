@@ -8,7 +8,7 @@ definition {
 	property testray.main.component.name = "Upgrades Collaboration";
 
 	setUp {
-		SignIn.signIn(userEmailAddress = "user@liferay.com");
+		SignIn.signIn(userEmailAddress = "user@example.com");
 
 		Smoke.viewWelcomePage();
 

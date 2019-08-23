@@ -171,7 +171,7 @@ definition {
 			roleTitle = "Can Add Widgets");
 
 		JSONUser.addUser(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -179,17 +179,17 @@ definition {
 		JSONUser.setFirstPassword(
 			agreeToTermsAndAnswerReminderQuery = "true",
 			requireReset = "false",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		JSONRole.assignRoleToUser(
 			roleTitle = "Can Add Widgets",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		User.logoutPG();
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		UserBar.gotoDropdownItem(dropdownItem = "My Profile");
 
@@ -1277,7 +1277,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -1340,7 +1340,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -1804,7 +1804,7 @@ definition {
 	@priority = "5"
 	test ViewCreatedSearchPagePermissions {
 		JSONUser.addUser(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -1812,11 +1812,11 @@ definition {
 		JSONUser.setFirstPassword(
 			agreeToTermsAndAnswerReminderQuery = "true",
 			requireReset = "false",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		JSONUser.addUserToSite(
 			groupName = "Guest",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		JSONLayout.addPublicLayout(
 			groupName = "Guest",
@@ -1867,7 +1867,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		SearchPortlets.searchEmbedded(searchTerm = "WC Title");
 
@@ -1889,7 +1889,7 @@ definition {
 	@priority = "5"
 	test ViewDefaultSearchPagePermissions {
 		JSONUser.addUser(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -1897,11 +1897,11 @@ definition {
 		JSONUser.setFirstPassword(
 			agreeToTermsAndAnswerReminderQuery = "true",
 			requireReset = "false",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		JSONUser.addUserToSite(
 			groupName = "Guest",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		var webContentServiceContext = '''{"addGuestPermissions": "true", "assetTagNames": ["tag"]}''';
 
@@ -1946,7 +1946,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		SearchPortlets.searchEmbedded(searchTerm = "WC Title");
 
@@ -2035,7 +2035,7 @@ definition {
 
 		var curl = '''
 			${portalURL}/api/jsonws/journal.journalfolder/add-folder \
-				-u test@liferay.com:test \
+				-u test@example.com:test \
 				-d groupId=${liferaySiteId} \
 				-d parentFolderId=0 \
 				-d name=${webContentFolderName1} \
@@ -2069,7 +2069,7 @@ definition {
 
 		var curl = '''
 			${portalURL}/api/jsonws/journal.journalfolder/add-folder \
-				-u test@liferay.com:test \
+				-u test@example.com:test \
 				-d groupId=${liferaySiteId} \
 				-d parentFolderId=0 \
 				-d name=${webContentFolderName2} \
@@ -2112,14 +2112,14 @@ definition {
 		Navigator.openURL();
 
 		JSONUser.addUser(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
 
 		JSONRole.assignRoleToUser(
 			roleTitle = "Administrator",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -2127,14 +2127,14 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		User.logoutPG();
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -2152,7 +2152,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		ProductMenu.gotoPortlet(
 			category = "Site Builder",

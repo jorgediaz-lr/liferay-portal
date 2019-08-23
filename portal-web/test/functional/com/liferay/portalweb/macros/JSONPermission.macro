@@ -23,7 +23,7 @@ definition {
 
 		var curl = '''
 			${portalURL}/api/jsonws/resourcepermission/${method} \
-				-u test@liferay.com:test \
+				-u test@example.com:test \
 				-d groupId=${groupId} \
 				-d companyId=${companyId} \
 				-d name=${resourceName} \

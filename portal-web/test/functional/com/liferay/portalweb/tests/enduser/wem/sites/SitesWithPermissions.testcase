@@ -146,7 +146,7 @@ definition {
 		AssertElementPresent(locator1 = "Search#EMBEDDED_SEARCH_BAR");
 
 		SignIn.signIn(
-			userEmailAddress = "test@liferay.com",
+			userEmailAddress = "test@example.com",
 			userPassword = "test");
 
 		Navigator.openSpecificURL(url = "${portalURL}/web/site-name/home");

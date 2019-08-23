@@ -1105,7 +1105,7 @@ definition {
 		var siteName = TestCase.getSiteName(siteName = "${siteName}");
 
 		JSONUser.addUser(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -1132,7 +1132,7 @@ definition {
 		BlogsEntry.flagPG(
 			flagReason = "Spam",
 			siteName = "${siteName}",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		MockMock.viewMail(
 			asset = "Inappropriate Content Flagged in Liferay",
@@ -1149,7 +1149,7 @@ definition {
 		var siteName = TestCase.getSiteName(siteName = "${siteName}");
 
 		JSONUser.addUser(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -1160,7 +1160,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
@@ -1176,7 +1176,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		Navigator.gotoPage(pageName = "Blogs Page");
 
@@ -1186,7 +1186,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Navigator.gotoPage(pageName = "Blogs Page");
 
@@ -1280,7 +1280,7 @@ definition {
 			entryComment = "Guest Blogs Entry Comment",
 			entryContent = "Blogs Entry Content",
 			entryTitle = "Blogs Entry Title",
-			userEmailAddress = "guest@liferay.com",
+			userEmailAddress = "guest@example.com",
 			userFirstName = "Guestfn",
 			userLastName = "Guestln");
 
@@ -1301,7 +1301,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Navigator.gotoPage(pageName = "Blogs Page");
 
@@ -1335,7 +1335,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 	}
 
 	@priority = "3"
@@ -1348,7 +1348,7 @@ definition {
 			entryTitle = "Blogs Entry Title");
 
 		JSONUser.addUser(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -1359,14 +1359,14 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		User.logoutPG();
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		Navigator.gotoPage(pageName = "Blogs Page");
 
@@ -1376,7 +1376,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 	}
 
 	@description = "Basic test that ensures reading time displays when enabled."

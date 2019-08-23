@@ -23,7 +23,7 @@ definition {
 		SetupWizard.viewDefaultPortalNamePG();
 
 		SetupWizard.configureAdministratorUserPG(
-			administratorEmail = "testsetupwizard@liferay.com",
+			administratorEmail = "testsetupwizard@example.com",
 			administratorFirstName = "TestSetupWizardFN",
 			administratorLastName = "TestSetupWizardLN");
 
@@ -73,7 +73,7 @@ definition {
 
 		AssertTextEquals(
 			locator1 = "TextInput#EMAIL_ADDRESS",
-			value1 = "testsetupwizard@liferay.com");
+			value1 = "testsetupwizard@example.com");
 
 		AssertTextEquals(
 			locator1 = "TextInput#FIRST_NAME",
@@ -95,7 +95,7 @@ definition {
 		property test.name.skip.portal.instance = "SetupWizardMySQL#MySQLtoMySQLLportal1";
 
 		SetupWizard.configurePG(
-			administratorEmail = "test@liferay.com",
+			administratorEmail = "test@example.com",
 			administratorFirstName = "Test",
 			administratorLastName = "Test",
 			databaseName = "lportal1",
@@ -121,7 +121,7 @@ definition {
 
 		SetupWizard.configurePG(
 			addSampleData = "false",
-			administratorEmail = "test@liferay.com",
+			administratorEmail = "test@example.com",
 			administratorFirstName = "Test",
 			administratorLastName = "Test",
 			databaseName = "lportal1",

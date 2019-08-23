@@ -71,7 +71,7 @@ definition {
 		Calendar.editEmailTemplate(
 			calendarName = "Calendar Resource Name",
 			calendarType = "Other Calendars",
-			fromAddressEdit = "testedit@liferay.com",
+			fromAddressEdit = "testedit@example.com",
 			fromNameEdit = "Calendar Resource Name Edit",
 			inviteEmail = "true");
 
@@ -98,7 +98,7 @@ definition {
 		Calendar.editEmailTemplate(
 			calendarName = "Site Calendar Name",
 			calendarType = "Current Site Calendars",
-			fromAddressEdit = "testedit@liferay.com",
+			fromAddressEdit = "testedit@example.com",
 			fromNameEdit = "Site Calendar Name Edit",
 			inviteEmail = "true",
 			site = "${siteName}");
@@ -123,7 +123,7 @@ definition {
 		Calendar.editEmailTemplate(
 			calendarName = "My Calendar Name",
 			calendarType = "My Calendars",
-			fromAddressEdit = "testedit@liferay.com",
+			fromAddressEdit = "testedit@example.com",
 			fromNameEdit = "My Calendar Name Edit",
 			inviteEmail = "true",
 			user = "Test Test");
@@ -144,7 +144,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -160,7 +160,7 @@ definition {
 		Calendar.editEmailTemplate(
 			calendarName = "userfn userln",
 			calendarType = "Other Calendars",
-			fromAddressEdit = "testedit@liferay.com",
+			fromAddressEdit = "testedit@example.com",
 			fromNameEdit = "Calendar Resource Name Edit",
 			inviteEmail = "true");
 
@@ -186,7 +186,7 @@ definition {
 		Calendar.editEmailTemplate(
 			calendarName = "Calendar Resource Name",
 			calendarType = "Other Calendars",
-			fromAddressEdit = "testedit@liferay.com",
+			fromAddressEdit = "testedit@example.com",
 			fromNameEdit = "Calendar Resource Name Edit",
 			reminderEmail = "true");
 
@@ -213,7 +213,7 @@ definition {
 		Calendar.editEmailTemplate(
 			calendarName = "Site Calendar Name",
 			calendarType = "Current Site Calendars",
-			fromAddressEdit = "testedit@liferay.com",
+			fromAddressEdit = "testedit@example.com",
 			fromNameEdit = "Site Calendar Name Edit",
 			reminderEmail = "true",
 			site = "${siteName}");
@@ -238,7 +238,7 @@ definition {
 		Calendar.editEmailTemplate(
 			calendarName = "My Calendar Name",
 			calendarType = "My Calendars",
-			fromAddressEdit = "testedit@liferay.com",
+			fromAddressEdit = "testedit@example.com",
 			fromNameEdit = "My Calendar Name Edit",
 			reminderEmail = "true",
 			user = "Test Test");
@@ -259,7 +259,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -275,7 +275,7 @@ definition {
 		Calendar.editEmailTemplate(
 			calendarName = "userfn userln",
 			calendarType = "Other Calendars",
-			fromAddressEdit = "testedit@liferay.com",
+			fromAddressEdit = "testedit@example.com",
 			fromNameEdit = "Calendar Resource Name Edit",
 			reminderEmail = "true");
 

@@ -507,7 +507,7 @@ definition {
 		Navigator.gotoPage(pageName = "Message Boards Page");
 
 		JSONUser.addUser(
-			userEmailAddress = "userea1@liferay.com",
+			userEmailAddress = "userea1@example.com",
 			userFirstName = "userfn1",
 			userLastName = "userln1",
 			userScreenName = "usersn1");
@@ -518,11 +518,11 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea1@liferay.com",
+			userEmailAddress = "userea1@example.com",
 			userScreenName = "usersn1");
 
 		JSONUser.addUser(
-			userEmailAddress = "userea2@liferay.com",
+			userEmailAddress = "userea2@example.com",
 			userFirstName = "userfn2",
 			userLastName = "userln2",
 			userScreenName = "usersn2");
@@ -533,7 +533,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea2@liferay.com",
+			userEmailAddress = "userea2@example.com",
 			userScreenName = "usersn2");
 
 		PermissionsInline.gotoMessageBoardsPG(pageName = "Message Boards Page");
@@ -554,7 +554,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "userea1@liferay.com");
+			userEmailAddress = "userea1@example.com");
 
 		Navigator.gotoPage(pageName = "Message Boards Page");
 
@@ -566,7 +566,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "userea2@liferay.com");
+			userEmailAddress = "userea2@example.com");
 
 		Navigator.gotoPage(pageName = "Message Boards Page");
 

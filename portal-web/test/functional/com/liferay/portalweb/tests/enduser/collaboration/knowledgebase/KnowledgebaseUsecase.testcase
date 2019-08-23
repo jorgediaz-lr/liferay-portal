@@ -40,7 +40,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		JSONUser.addUser(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -51,7 +51,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
@@ -75,7 +75,7 @@ definition {
 			workflowResourceValue = "Knowledge Base Article");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		KBAdmin.openKBAdmin(siteURLKey = "guest");
@@ -86,7 +86,7 @@ definition {
 			kbWorkflowAction = "Submit for Publication");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "Test Test");
 
 		WorkflowAsset.gotoViaNotification(
@@ -1340,7 +1340,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		JSONUser.addUser(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -1352,7 +1352,7 @@ definition {
 
 		User.editPasswordCP(
 			password = "password",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
@@ -1374,7 +1374,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		Navigator.gotoPage(pageName = "Knowledge Base Display Page");
 
@@ -1390,7 +1390,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		KBAdmin.openKBAdmin(siteURLKey = "guest");
 
@@ -1445,7 +1445,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		JSONUser.addUser(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "Test",
 			userLastName = "2",
 			userScreenName = "usersn");
@@ -1456,7 +1456,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
@@ -1484,14 +1484,14 @@ definition {
 			suggestionInProgress = "true",
 			suggestionReceived = "true",
 			suggestionResolved = "true",
-			userEmailAddress = "test@liferay.com",
+			userEmailAddress = "test@example.com",
 			userName = "Test Test");
 
 		User.logoutPG();
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		KBAdmin.openKBAdmin(siteURLKey = "guest");
 
@@ -1501,7 +1501,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		KBAdmin.openKBAdmin(siteURLKey = "guest");
 
@@ -1513,7 +1513,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		Navigator.gotoPage(pageName = "Knowledge Base Display Page");
 
@@ -1527,7 +1527,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Navigator.gotoPage(pageName = "Knowledge Base Display Page");
 
@@ -1761,7 +1761,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		JSONUser.addUser(
-			userEmailAddress = "poweruser@liferay.com",
+			userEmailAddress = "poweruser@example.com",
 			userFirstName = "Power",
 			userLastName = "User",
 			userScreenName = "poweruser");
@@ -1791,7 +1791,7 @@ definition {
 
 		User.editPasswordCP(
 			password = "password",
-			userEmailAddress = "poweruser@liferay.com",
+			userEmailAddress = "poweruser@example.com",
 			userScreenName = "poweruser");
 
 		ProductMenu.gotoPortlet(
@@ -1800,7 +1800,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		JSONUser.addUser(
-			userEmailAddress = "user1@liferay.com",
+			userEmailAddress = "user1@example.com",
 			userFirstName = "userfn1",
 			userLastName = "userln1",
 			userScreenName = "usersn1");
@@ -1812,7 +1812,7 @@ definition {
 
 		User.editPasswordCP(
 			password = "password",
-			userEmailAddress = "user1@liferay.com",
+			userEmailAddress = "user1@example.com",
 			userScreenName = "usersn1");
 
 		ProductMenu.gotoPortlet(
@@ -1821,7 +1821,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		JSONUser.addUser(
-			userEmailAddress = "user2@liferay.com",
+			userEmailAddress = "user2@example.com",
 			userFirstName = "userfn2",
 			userLastName = "userln2",
 			userScreenName = "usersn2");
@@ -1833,7 +1833,7 @@ definition {
 
 		User.editPasswordCP(
 			password = "password",
-			userEmailAddress = "user2@liferay.com",
+			userEmailAddress = "user2@example.com",
 			userScreenName = "usersn2");
 
 		KBAdmin.openKBAdmin(siteURLKey = "guest");
@@ -1867,7 +1867,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "user1@liferay.com");
+			userEmailAddress = "user1@example.com");
 
 		Navigator.gotoPage(pageName = "Knowledge Base Display Page");
 
@@ -1889,7 +1889,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "user2@liferay.com");
+			userEmailAddress = "user2@example.com");
 
 		Navigator.gotoPage(pageName = "Knowledge Base Display Page");
 
@@ -1907,7 +1907,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "poweruser@liferay.com");
+			userEmailAddress = "poweruser@example.com");
 
 		Navigator.gotoPage(pageName = "Knowledge Base Display Page");
 

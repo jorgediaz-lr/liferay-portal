@@ -28,7 +28,7 @@ definition {
 
 		var curl = '''
 			${portalURL}/api/jsonws/group/add-group \
-				-u test@liferay.com:test \
+				-u test@example.com:test \
 				-d parentGroupId=${parentGroupId} \
 				-d liveGroupId=0 \
 				-d nameMap=${groupNameMap} \
@@ -61,7 +61,7 @@ definition {
 
 		var curl = '''
 			${portalURL}/api/jsonws/usergrouprole/add-user-group-roles \
-				-u test@liferay.com:test \
+				-u test@example.com:test \
 				-d roleId=${roleId} \
 				-d groupId=${groupId} \
 				-d userIds=${userId}
@@ -92,7 +92,7 @@ definition {
 
 		var curl = '''
 			${portalURL}/api/jsonws/user/add-group-users \
-				-u test@liferay.com:test \
+				-u test@example.com:test \
 				-d groupId=${groupId} \
 				-d userIds=${userId}
 		''';
@@ -124,7 +124,7 @@ definition {
 
 		var curl = '''
 			${portalURL}/api/jsonws/group/delete-group \
-				-u test@liferay.com:test \
+				-u test@example.com:test \
 				-d groupId=${groupId}
 		''';
 		var temp = JSONCurlUtil.post("${curl}", "$");
@@ -144,7 +144,7 @@ definition {
 
 		var curl = '''
 			${portalURL}/api/jsonws/group/get-groups/company-id/${companyId}/parent-group-id/0/site/${site} \
-				-u test@liferay.com:test
+				-u test@example.com:test
 		''';
 
 		echo("${curl}', '$.[?(@[\'groupKey\'] == \'${groupKey}\')][\'groupId\']");
@@ -173,7 +173,7 @@ definition {
 
 		var curl = '''
 			${portalURL}/api/jsonws/group/get-groups/company-id/${companyId}/parent-group-id/0/site/true \
-				-u test@liferay.com:test
+				-u test@example.com:test
 		''';
 		var groupId = JSONCurlUtil.get("${curl}", "$.[?(@['nameCurrentValue'] == '${groupName}')]['groupId']");
 		var groupId = StringUtil.replace("${groupId}", "[&quot;", "");
@@ -199,7 +199,7 @@ definition {
 
 		var curl = '''
 			${portalURL}/api/jsonws/group/get-group/group-id/${groupId} \
-				-u test@liferay.com:test
+				-u test@example.com:test
 		''';
 		var groupName = JSONCurlUtil.get("${curl}", "$['nameCurrentValue']");
 
@@ -216,7 +216,7 @@ definition {
 
 		var curl = '''
 			${portalURL}/api/jsonws/group/get-group \
-				-u test@liferay.com:test \
+				-u test@example.com:test \
 				-d companyId=${companyId} \
 				-d groupKey=${groupName}
 		''';

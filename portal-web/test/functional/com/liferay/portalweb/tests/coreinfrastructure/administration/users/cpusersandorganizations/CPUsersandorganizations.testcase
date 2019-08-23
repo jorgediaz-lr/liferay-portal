@@ -39,7 +39,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -494,7 +494,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -507,7 +507,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.viewCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -536,7 +536,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -552,7 +552,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -575,7 +575,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@@liferay.com",
+			userEmailAddress = "userea@@example.com",
 			userEmailAddressVariation = "Invalid",
 			userFirstName = "userfn",
 			userLastName = "userln",
@@ -584,7 +584,7 @@ definition {
 		Navigator.gotoBack();
 
 		User.viewCP(
-			userEmailAddress = "userea@@liferay.com",
+			userEmailAddress = "userea@@example.com",
 			userEmailAddressVariation = "At",
 			userFirstName = "userfn",
 			userLastName = "userln",
@@ -599,7 +599,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea\@liferay.com",
+			userEmailAddress = "userea\@example.com",
 			userEmailAddressVariation = "Invalid",
 			userFirstName = "userfn",
 			userLastName = "userln",
@@ -614,7 +614,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea`@liferay.com",
+			userEmailAddress = "userea`@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -628,7 +628,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea^@liferay.com",
+			userEmailAddress = "userea^@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -642,7 +642,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea]@liferay.com",
+			userEmailAddress = "userea]@example.com",
 			userEmailAddressVariation = "Invalid",
 			userFirstName = "userfn",
 			userLastName = "userln",
@@ -657,7 +657,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea}@liferay.com",
+			userEmailAddress = "userea}@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -671,7 +671,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea)@liferay.com",
+			userEmailAddress = "userea)@example.com",
 			userEmailAddressVariation = "Invalid",
 			userFirstName = "userfn",
 			userLastName = "userln",
@@ -686,7 +686,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea:@liferay.com",
+			userEmailAddress = "userea:@example.com",
 			userEmailAddressVariation = "Invalid",
 			userFirstName = "userfn",
 			userLastName = "userln",
@@ -701,7 +701,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea-@liferay.com",
+			userEmailAddress = "userea-@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -715,7 +715,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea=@liferay.com",
+			userEmailAddress = "userea=@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -726,7 +726,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.viewCP(
-			userEmailAddress = "userea=@liferay.com",
+			userEmailAddress = "userea=@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -740,7 +740,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea&gt;@liferay.com",
+			userEmailAddress = "userea&gt;@example.com",
 			userEmailAddressVariation = "Invalid",
 			userFirstName = "userfn",
 			userLastName = "userln",
@@ -755,7 +755,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea-@liferay.com",
+			userEmailAddress = "userea-@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -784,7 +784,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea[@liferay.com",
+			userEmailAddress = "userea[@example.com",
 			userEmailAddressVariation = "Invalid",
 			userFirstName = "userfn",
 			userLastName = "userln",
@@ -799,7 +799,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea{@liferay.com",
+			userEmailAddress = "userea{@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -813,7 +813,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea(@liferay.com",
+			userEmailAddress = "userea(@example.com",
 			userEmailAddressVariation = "Invalid",
 			userFirstName = "userfn",
 			userLastName = "userln",
@@ -828,7 +828,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea.@liferay.com",
+			userEmailAddress = "userea.@example.com",
 			userEmailAddressVariation = "Invalid",
 			userFirstName = "userfn",
 			userLastName = "userln",
@@ -837,7 +837,7 @@ definition {
 		Navigator.gotoBack();
 
 		User.viewCP(
-			userEmailAddress = "userea.@liferay.com",
+			userEmailAddress = "userea.@example.com",
 			userEmailAddressVariation = "Period",
 			userFirstName = "userfn",
 			userLastName = "userln",
@@ -852,7 +852,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "root@liferay.com",
+			userEmailAddress = "root@example.com",
 			userEmailAddressVariation = "Root",
 			userFirstName = "userfn",
 			userLastName = "userln",
@@ -867,7 +867,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea;@liferay.com",
+			userEmailAddress = "userea;@example.com",
 			userEmailAddressVariation = "Invalid",
 			userFirstName = "userfn",
 			userLastName = "userln",
@@ -882,7 +882,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea_@liferay.com",
+			userEmailAddress = "userea_@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -893,7 +893,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.viewCP(
-			userEmailAddress = "userea_@liferay.com",
+			userEmailAddress = "userea_@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -910,7 +910,7 @@ definition {
 				portlet = "Users and Organizations");
 
 			User.addCP(
-				userEmailAddress = "userea${count}@liferay.com",
+				userEmailAddress = "userea${count}@example.com",
 				userFirstName = "userfn${count}",
 				userLastName = "userln${count}",
 				userScreenName = "usersn${count}");
@@ -927,7 +927,7 @@ definition {
 				portlet = "Users and Organizations");
 
 			User.viewCP(
-				userEmailAddress = "userea${count}@liferay.com",
+				userEmailAddress = "userea${count}@example.com",
 				userFirstName = "userfn${count}",
 				userLastName = "userln${count}",
 				userScreenName = "usersn${count}");
@@ -944,7 +944,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "!@#$",
@@ -953,7 +953,7 @@ definition {
 		Navigator.gotoBack();
 
 		User.viewCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "!@#$",
@@ -970,7 +970,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "11111");
@@ -981,7 +981,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.viewCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "11111");
@@ -995,7 +995,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -1006,18 +1006,18 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		User.logoutPG();
 
-		User.loginUserPG(userEmailAddress = "userea@liferay.com");
+		User.loginUserPG(userEmailAddress = "userea@example.com");
 
 		Navigator.openURL();
 
 		Navigator.gotoAccountSettings();
 
-		User.changePasswordCP(userEmailAddress = "userea@liferay.com");
+		User.changePasswordCP(userEmailAddress = "userea@example.com");
 	}
 
 	@priority = "4"
@@ -1028,7 +1028,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -1039,19 +1039,19 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		User.logoutPG();
 
-		User.loginUserPG(userEmailAddress = "userea@liferay.com");
+		User.loginUserPG(userEmailAddress = "userea@example.com");
 
 		Navigator.openURL();
 
 		Navigator.gotoAccountSettings();
 
 		User.changePasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userPassword = "Invalid");
 	}
 
@@ -1135,7 +1135,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -1247,7 +1247,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -1341,7 +1341,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -1401,7 +1401,7 @@ definition {
 
 		User.addScreenNameNumberSiteIdCP(
 			siteID = "${siteID}",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "${SiteID}");
@@ -1415,7 +1415,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -1426,18 +1426,18 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		User.logoutPG();
 
-		User.loginUserPG(userEmailAddress = "userea@liferay.com");
+		User.loginUserPG(userEmailAddress = "userea@example.com");
 
 		User.logoutUserPG();
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com",
+			userEmailAddress = "test@example.com",
 			userScreenName = "usersn");
 	}
 
@@ -1449,7 +1449,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -1528,7 +1528,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -1540,7 +1540,7 @@ definition {
 
 		User.basicSearchCP(
 			userBasicSearch = "Basic",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userName = "userfn userln",
 			userScreenName = "usersn");
 	}
@@ -1553,7 +1553,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -1565,7 +1565,7 @@ definition {
 
 		User.basicSearchCP(
 			userBasicSearch = "Full Name",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userName = "userfn userln",
@@ -1580,7 +1580,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea1@liferay.com",
+			userEmailAddress = "userea1@example.com",
 			userFirstName = "userfn1",
 			userLastName = "userln1",
 			userScreenName = "usersn1");
@@ -1591,7 +1591,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea2@liferay.com",
+			userEmailAddress = "userea2@example.com",
 			userFirstName = "userfn2",
 			userLastName = "userln2",
 			userScreenName = "usersn2");
@@ -1623,7 +1623,7 @@ definition {
 
 		User.basicSearchCP(
 			userBasicSearch = "Quotes",
-			userEmailAddress = "userea1@liferay.com",
+			userEmailAddress = "userea1@example.com",
 			userName = "userfn1 userln1",
 			userScreenName = "usersn1");
 
@@ -1642,7 +1642,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -1716,7 +1716,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -1727,7 +1727,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
@@ -1743,7 +1743,7 @@ definition {
 
 		User.loginUserInvalidPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		User.loginUserPG();
 	}
@@ -1759,7 +1759,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -1770,7 +1770,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
@@ -1790,7 +1790,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		UserBar.gotoDropdown();
 
@@ -1811,7 +1811,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -1822,7 +1822,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
@@ -1836,11 +1836,11 @@ definition {
 
 		User.loginUserInvalidPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com",
+			userEmailAddress = "test@example.com",
 			userScreenName = "usersn");
 	}
 
@@ -1968,7 +1968,7 @@ definition {
 			userBirthdayDay = "24",
 			userBirthdayMonth = "10",
 			userBirthdayYear = "1984",
-			userEmailAddress = "test1@liferay.com",
+			userEmailAddress = "test1@example.com",
 			userFacebookId = "0",
 			userFirstName = "test1",
 			userId = "${userId}",
@@ -2005,7 +2005,7 @@ definition {
 
 		AssertValue(
 			locator1 = "UsersAndOrganizationsEditUser#DETAILS_EMAIL_ADDRESS_FIELD",
-			value1 = "test1@liferay.com");
+			value1 = "test1@example.com");
 
 		AssertValue(
 			locator1 = "UsersAndOrganizationsEditUser#DETAILS_SCREEN_NAME_FIELD",

@@ -16,7 +16,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -28,7 +28,7 @@ definition {
 
 		User.editPasswordCP(
 			password = "password",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
@@ -68,7 +68,7 @@ definition {
 		property testray.component.names = "Web Content Administration";
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		Navigator.openURL();
@@ -84,7 +84,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -128,7 +128,7 @@ definition {
 		PortletEntry.publish();
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		Navigator.openURL();
@@ -144,7 +144,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -186,7 +186,7 @@ definition {
 		PortletEntry.publish();
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		Navigator.openURL();
@@ -202,7 +202,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",

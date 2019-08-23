@@ -1,6 +1,6 @@
 definition {
 
-	var userEmailAddress = "test@liferay.com";
+	var userEmailAddress = "test@example.com";
 	var userPassword = "test";
 	var userPasswordReminderAnswer = "test";
 

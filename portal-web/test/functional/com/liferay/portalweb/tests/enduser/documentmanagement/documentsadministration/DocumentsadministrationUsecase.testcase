@@ -316,7 +316,7 @@ definition {
 		property testray.component.names = "Training";
 
 		JSONUser.addUser(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -327,7 +327,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		JSONGroup.addGroup(groupName = "Site Name");
@@ -362,7 +362,7 @@ definition {
 			dmFolderName = "DM Folder Name");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		Navigator.gotoSitePage(
@@ -388,7 +388,7 @@ definition {
 		DMFolder.subscribePG();
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "Test Test");
 
 		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "site-name");
@@ -408,7 +408,7 @@ definition {
 		IFrame.selectTopFrame();
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		Navigator.gotoSitePage(
@@ -423,7 +423,7 @@ definition {
 		property testray.component.names = "Training";
 
 		JSONUser.addUser(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -434,7 +434,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		JSONGroup.addGroup(groupName = "Site Name");
@@ -461,7 +461,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		Navigator.gotoSitePage(
 			pageName = "Documents and Media Page",
@@ -476,7 +476,7 @@ definition {
 	@priority = "5"
 	test CheckOutDocument {
 		JSONUser.addUser(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -487,7 +487,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
@@ -540,7 +540,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		Navigator.gotoPage(pageName = "Documents and Media Page");
 
@@ -806,7 +806,7 @@ definition {
 			roleTitle = "Regular Role Name");
 
 		JSONUser.addUser(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -830,7 +830,7 @@ definition {
 
 		User.editPasswordCP(
 			newPassword = "test1",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
@@ -846,7 +846,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "moon-rocks-101");
 
@@ -900,7 +900,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -1082,7 +1082,7 @@ definition {
 		}
 
 		JSONUser.addUser(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -1094,7 +1094,7 @@ definition {
 
 		User.editPasswordCP(
 			password = "password",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
@@ -1116,7 +1116,7 @@ definition {
 			userScreenName = "usersn");
 
 		JSONUser.addUser(
-			userEmailAddress = "userea2@liferay.com",
+			userEmailAddress = "userea2@example.com",
 			userFirstName = "userfn2",
 			userLastName = "userln2",
 			userScreenName = "usersn2");
@@ -1128,7 +1128,7 @@ definition {
 
 		User.editPasswordCP(
 			password = "password",
-			userEmailAddress = "userea2@liferay.com",
+			userEmailAddress = "userea2@example.com",
 			userScreenName = "usersn2");
 
 		ProductMenu.gotoPortlet(
@@ -1169,7 +1169,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -1190,7 +1190,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea2@liferay.com");
+			userEmailAddress = "userea2@example.com");
 
 		Navigator.gotoPage(pageName = "Documents and Media Page");
 
@@ -1443,7 +1443,7 @@ definition {
 		property testray.component.names = "Training";
 
 		JSONUser.addUser(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -1454,7 +1454,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
@@ -1552,7 +1552,7 @@ definition {
 		IFrame.selectTopFrame();
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		Navigator.gotoSitePage(
@@ -1562,7 +1562,7 @@ definition {
 		DMPortlet.viewDefaultPG();
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "Test Test");
 
 		Navigator.gotoSitePage(
@@ -1585,7 +1585,7 @@ definition {
 		IFrame.selectTopFrame();
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		Navigator.gotoSitePage(

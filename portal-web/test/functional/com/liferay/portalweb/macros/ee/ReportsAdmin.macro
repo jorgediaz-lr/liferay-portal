@@ -293,7 +293,7 @@ definition {
 
 		Type(
 			locator1 = "TextInput#EMAIL_FROM_ADDRESS",
-			value1 = "test@liferay.com");
+			value1 = "test@example.com");
 
 		PortletEntry.save();
 

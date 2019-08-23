@@ -38,7 +38,7 @@ definition {
 		}
 		else {
 			User.logoutAndLoginPG(
-				userLoginEmailAddress = "test@liferay.com",
+				userLoginEmailAddress = "test@example.com",
 				userLoginFullName = "Test Test");
 
 			Site.tearDownCP();

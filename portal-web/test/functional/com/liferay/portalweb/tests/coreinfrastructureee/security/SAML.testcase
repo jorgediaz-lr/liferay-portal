@@ -122,7 +122,7 @@ definition {
 		SAML.executeSPInitiatedSSO(
 			password = "test",
 			specificURL = "http://www.able.com:9080/",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.viewLoggedInPG();
 
@@ -165,7 +165,7 @@ definition {
 			password = "test",
 			specificURL = "http://www.able.com:9080",
 			spURL = "http://www.able.com:9080/",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.viewLoggedInPG();
 
@@ -209,7 +209,7 @@ definition {
 			password = "test",
 			specificURL = "http://www.able.com:9080",
 			spURL = "http://www.able.com:9080/",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.viewLoggedInPG();
 
@@ -223,7 +223,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Navigator.gotoAccountSettings();
 
@@ -239,7 +239,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.viewCP(
-			userEmailAddress = "test@liferay.com",
+			userEmailAddress = "test@example.com",
 			userFirstName = "Testedit",
 			userLastName = "Test",
 			userScreenName = "test");
@@ -335,7 +335,7 @@ definition {
 			password = "test",
 			samlEnabled = "true",
 			spURL = "http://www.able.com:9080/",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Navigator.openURL();
 
@@ -369,7 +369,7 @@ definition {
 			password = "test",
 			samlEnabled = "true",
 			spURL = "http://www.able.com:9080/",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Navigator.openURL();
 
@@ -381,7 +381,7 @@ definition {
 			password = "test",
 			samlEnabled = "true",
 			spURL = "http://www.able.com:9080/",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Navigator.openURL();
 
@@ -417,7 +417,7 @@ definition {
 			idpInitiatedSSOURL = "${portalURL}/c/portal/saml/sso?entityId=samlsp&amp;RelayState=http://www.able.com:9080",
 			password = "test",
 			spURL = "http://www.able.com:9080/",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.viewLoggedInPG();
 
@@ -461,7 +461,7 @@ definition {
 			password = "test",
 			samlEnabled = "true",
 			spURL = "http://www.able.com:9080/",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Navigator.openURL();
 
@@ -512,7 +512,7 @@ definition {
 			password = "test",
 			specificURL = "http://www.able.com:9080",
 			spURL = "http://www.able.com:9080/",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.viewLoggedInPG();
 
@@ -541,7 +541,7 @@ definition {
 
 		User._login(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		AssertTextEquals(
 			locator1 = "Portlet#PORTLET_CONTENT",
@@ -581,7 +581,7 @@ definition {
 			idpInitiatedSSOURL = "${portalURL}/c/portal/saml/sso?entityId=samlsp&amp;RelayState=http://www.able.com:9080",
 			password = "test",
 			spURL = "http://www.able.com:9080/",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.viewLoggedInPG();
 
@@ -606,7 +606,7 @@ definition {
 			password = "test",
 			specificURL = "http://www.able.com:9080",
 			spURL = "http://www.able.com:9080/",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.viewLoggedInPG();
 
@@ -642,7 +642,7 @@ definition {
 			password = "test",
 			specificURL = "http://www.able.com:9080",
 			spURL = "http://www.able.com:9080/",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.viewLoggedInPG();
 
@@ -754,7 +754,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.viewCP(
-			userEmailAddress = "ldapuseremail@liferay.com",
+			userEmailAddress = "ldapuseremail@example.com",
 			userFirstName = "ldapusergivenname",
 			userLastName = "ldapusersn",
 			userScreenName = "ldapusercn");
@@ -763,7 +763,7 @@ definition {
 
 		User.editPasswordCP(
 			samlEnabled = "true",
-			userEmailAddress = "ldapuseremail@liferay.com",
+			userEmailAddress = "ldapuseremail@example.com",
 			userScreenName = "ldapusercn");
 
 		Navigator.openSpecificURL(url = "http://www.able.com:9080");
@@ -786,14 +786,14 @@ definition {
 		User.loginPG(
 			password = "test",
 			specificURL = "http://www.able.com:9080",
-			userEmailAddress = "ldapuseremail@liferay.com");
+			userEmailAddress = "ldapuseremail@example.com");
 
 		User.logoutPG(specificURL = "http://www.able.com:9080");
 
 		User.loginPG(
 			password = "test",
 			specificURL = "http://www.able.com:9080",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -801,7 +801,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.viewCP(
-			userEmailAddress = "ldapuseremail@liferay.com",
+			userEmailAddress = "ldapuseremail@example.com",
 			userFirstName = "ldapusergivenname",
 			userLastName = "ldapusersn",
 			userScreenName = "ldapusercn");
@@ -836,7 +836,7 @@ definition {
 			password = "test",
 			specificURL = "http://www.able.com:9080",
 			spURL = "http://www.able.com:9080/",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.viewLoggedInPG();
 
@@ -862,7 +862,7 @@ definition {
 			password = "test",
 			specificURL = "http://www.able.com:9080",
 			spURL = "http://www.able.com:9080/",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.viewLoggedInPG();
 
@@ -932,7 +932,7 @@ definition {
 			idpInitiatedSSOURL = "${portalURL}/c/portal/saml/sso?entityId=samlsp&amp;RelayState=http://www.able.com:9080",
 			password = "test",
 			spURL = "http://www.able.com:9080/",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.viewLoggedInPG();
 
@@ -979,7 +979,7 @@ definition {
 			password = "test",
 			rememberMeChecked = "true",
 			spURL = "http://www.able.com:9080/",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.viewLoggedInPG();
 
@@ -1026,7 +1026,7 @@ definition {
 			password = "test",
 			specificURL = "http://www.able.com:9080",
 			spURL = "http://www.able.com:9080/",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.viewLoggedInPG();
 
@@ -1063,7 +1063,7 @@ definition {
 		User.loginPG(
 			password = "test",
 			specificURL = "http://www.able.com:9080",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -1098,7 +1098,7 @@ definition {
 		User.loginPG(
 			password = "test",
 			specificURL = "http://www.able.com:9080",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.viewLoggedInPG();
 
@@ -1140,7 +1140,7 @@ definition {
 			password = "test",
 			rememberMeChecked = "true",
 			spURL = "http://www.able.com:9080/",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.logoutPG(specificURL = "http://www.able.com:9080");
 
@@ -1170,7 +1170,7 @@ definition {
 			password = "test",
 			specificURL = "http://www.able.com:9080",
 			spURL = "http://www.able.com:9080/",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.viewLoggedInPG();
 
@@ -1282,7 +1282,7 @@ definition {
 			password = "test",
 			samlMultiIdPs = "true",
 			specificURL = "http://www.baker.com:10080",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -1310,7 +1310,7 @@ definition {
 		User.loginPG(
 			password = "test",
 			specificURL = "http://www.baker.com:10080",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",

@@ -43,7 +43,7 @@ definition {
 		JSONMBMessage.addCategory(
 			categoryDescription = "MB Category Description",
 			categoryName = "MB Category Name",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		MessageBoardsAdmin.openMessageBoardsAdmin(siteURLKey = "guest");
 

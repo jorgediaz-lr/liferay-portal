@@ -148,7 +148,7 @@ definition {
 			User.openUsersAdmin();
 
 			User.addCP(
-				userEmailAddress = "user${number}@liferay.com",
+				userEmailAddress = "user${number}@example.com",
 				userFirstName = "userfn${number}",
 				userLastName = "userln${number}",
 				userScreenName = "usersn${number}");
@@ -156,7 +156,7 @@ definition {
 			User.openUsersAdmin();
 
 			User.editPasswordCP(
-				userEmailAddress = "user${number}@liferay.com",
+				userEmailAddress = "user${number}@example.com",
 				userScreenName = "usersn${number}");
 
 			Site.openSiteMembershipsAdmin(siteURLKey = "test-site-name");
@@ -177,7 +177,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "user1@liferay.com");
+			userEmailAddress = "user1@example.com");
 
 		WebContent.openWebContentAdmin(siteURLKey = "test-site-name");
 
@@ -200,7 +200,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "user2@liferay.com");
+			userEmailAddress = "user2@example.com");
 
 		WebContent.openWebContentAdmin(siteURLKey = "test-site-name");
 
@@ -215,7 +215,7 @@ definition {
 		AssertTextNotPresent(value1 = "WC Template Name");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "Test Test");
 
 		Role.openRolesAdmin();
@@ -251,7 +251,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "user1@liferay.com");
+			userEmailAddress = "user1@example.com");
 
 		WebContent.openWebContentAdmin(siteURLKey = "test-site-name");
 

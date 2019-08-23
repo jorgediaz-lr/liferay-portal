@@ -36,7 +36,7 @@ definition {
 		var curl = '''
 			${portalURL}/api/jsonws/user/get-user-by-email-address \
 				-d companyId=${companyId} \
-				-d emailAddress=test@liferay.com
+				-d emailAddress=test@example.com
 		''';
 		var output = JSONCurlUtil.post("${curl}");
 
@@ -56,12 +56,12 @@ definition {
 			allowedServiceSignature = "com.liferay.portal.kernel.service.UserService#getUserByEmailAddress",
 			policyName = "SYSTEM_DEFAULT");
 
-		var userId = JSONUser.getUserIdByEmailAddress(userEmailAddress = "test@liferay.com ");
+		var userId = JSONUser.getUserIdByEmailAddress(userEmailAddress = "test@example.com ");
 
 		var curl = '''
 			${portalURL}/api/jsonws/user/get-user-by-email-address \
 				-d companyId=${companyId} \
-				-d emailAddress=test@liferay.com
+				-d emailAddress=test@example.com
 		''';
 		var output = JSONCurlUtil.post("${curl}");
 
@@ -75,7 +75,7 @@ definition {
 		var curl = '''
 			${portalURL}/api/jsonws/user/get-current-user \
 				-basic \
-				-u test@liferay.com:test
+				-u test@example.com:test
 		''';
 		var output = JSONCurlUtil.post("${curl}");
 
@@ -98,7 +98,7 @@ definition {
 		var curl = '''
 			${portalURL}/api/jsonws/user/get-current-user \
 				-basic \
-				-u test@liferay.com:test
+				-u test@example.com:test
 		''';
 		var output = JSONCurlUtil.post("${curl}");
 

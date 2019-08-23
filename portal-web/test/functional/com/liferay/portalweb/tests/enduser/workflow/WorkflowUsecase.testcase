@@ -659,7 +659,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -670,7 +670,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
@@ -686,7 +686,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		Navigator.gotoPage(pageName = "Wiki Page");
 
@@ -734,7 +734,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com",
+			userEmailAddress = "test@example.com",
 			userScreenName = "usersn");
 
 		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
@@ -776,7 +776,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		Navigator.gotoPage(pageName = "Wiki Page");
 
@@ -1178,7 +1178,7 @@ definition {
 				portlet = "Users and Organizations");
 
 			User.addCP(
-				userEmailAddress = "usersn${n}@liferay.com",
+				userEmailAddress = "usersn${n}@example.com",
 				userFirstName = "userfn${n}",
 				userLastName = "userln${n}",
 				userScreenName = "usersn${n}");
@@ -1198,11 +1198,11 @@ definition {
 				portlet = "Users and Organizations");
 
 			User.editPasswordCP(
-				userEmailAddress = "usersn${n}@liferay.com",
+				userEmailAddress = "usersn${n}@example.com",
 				userScreenName = "usersn${n}");
 
 			User.logoutAndLoginPG(
-				userLoginEmailAddress = "usersn${n}@liferay.com",
+				userLoginEmailAddress = "usersn${n}@example.com",
 				userScreenName = "usersn${n}");
 
 			Navigator.openURL();
@@ -1230,7 +1230,7 @@ definition {
 				entryTitle = "User ${n} Blog Title Pending");
 
 			User.logoutAndLoginPG(
-				userLoginEmailAddress = "test@liferay.com",
+				userLoginEmailAddress = "test@example.com",
 				userScreenName = "Test Test");
 
 			Navigator.openURL();
@@ -1249,7 +1249,7 @@ definition {
 		}
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "usersn1@liferay.com",
+			userLoginEmailAddress = "usersn1@example.com",
 			userScreenName = "usersn1");
 
 		Navigator.openURL();
@@ -1273,7 +1273,7 @@ definition {
 		Workflow.viewSubmissionNotPresent(workflowAssetTitle = "User 2 Blog Title Approved");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "usersn2@liferay.com",
+			userLoginEmailAddress = "usersn2@example.com",
 			userScreenName = "usersn2");
 
 		Navigator.openURL();

@@ -513,7 +513,7 @@ definition {
 		User.openUsersAdmin();
 
 		User.addCP(
-			userEmailAddress = "test1@liferay.com",
+			userEmailAddress = "test1@example.com",
 			userFirstName = "test1",
 			userLastName = "test1",
 			userScreenName = "test1test");
@@ -521,7 +521,7 @@ definition {
 		User.openUsersAdmin();
 
 		User.editPasswordCP(
-			userEmailAddress = "test1@liferay.com",
+			userEmailAddress = "test1@example.com",
 			userScreenName = "test1test");
 
 		Site.openSiteMembershipsAdmin(siteURLKey = "test-site-name");
@@ -538,7 +538,7 @@ definition {
 			roleTitle = "Site Administrator");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "test1@liferay.com",
+			userLoginEmailAddress = "test1@example.com",
 			userLoginFullName = "test1 test1");
 
 		WebContent.openWebContentAdmin(siteURLKey = "test-site-name");

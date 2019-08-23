@@ -38,7 +38,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea1@liferay.com",
+			userEmailAddress = "userea1@example.com",
 			userFirstName = "userfn1",
 			userLastName = "userln1",
 			userScreenName = "usersn1");
@@ -49,7 +49,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea2@liferay.com",
+			userEmailAddress = "userea2@example.com",
 			userFirstName = "userfn2",
 			userLastName = "userln2",
 			userScreenName = "usersn2");
@@ -118,7 +118,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -129,7 +129,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
@@ -162,7 +162,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		UserBar.gotoDropdownItem(dropdownItem = "My Dashboard");
 
@@ -174,7 +174,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com",
+			userEmailAddress = "test@example.com",
 			userScreenName = "usersn");
 	}
 
@@ -210,7 +210,7 @@ definition {
 				portlet = "Users and Organizations");
 
 			User.addCP(
-				userEmailAddress = "userea${userNumber}@liferay.com",
+				userEmailAddress = "userea${userNumber}@example.com",
 				userFirstName = "userfn${userNumber}",
 				userLastName = "userln${userNumber}",
 				userScreenName = "usersn${userNumber}");
@@ -221,7 +221,7 @@ definition {
 				portlet = "Users and Organizations");
 
 			User.editPasswordCP(
-				userEmailAddress = "userea${userNumber}@liferay.com",
+				userEmailAddress = "userea${userNumber}@example.com",
 				userScreenName = "usersn${userNumber}");
 		}
 
@@ -290,7 +290,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea3@liferay.com");
+			userEmailAddress = "userea3@example.com");
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -319,7 +319,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -336,7 +336,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea5@liferay.com");
+			userEmailAddress = "userea5@example.com");
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -353,7 +353,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -392,7 +392,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea1@liferay.com");
+			userEmailAddress = "userea1@example.com");
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -409,7 +409,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -438,7 +438,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -449,7 +449,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
@@ -515,7 +515,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		UserBar.gotoDropdownItem(dropdownItem = "My Profile");
 
@@ -559,7 +559,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -574,7 +574,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		UserBar.gotoDropdownItem(dropdownItem = "My Profile");
 
@@ -614,7 +614,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -653,7 +653,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea1@liferay.com",
+			userEmailAddress = "userea1@example.com",
 			userFirstName = "userfn1",
 			userLastName = "userln1",
 			userScreenName = "usersn1");
@@ -664,7 +664,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea1@liferay.com",
+			userEmailAddress = "userea1@example.com",
 			userScreenName = "usersn1");
 
 		ProductMenu.gotoPortlet(
@@ -682,7 +682,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea2@liferay.com",
+			userEmailAddress = "userea2@example.com",
 			userFirstName = "userfn2",
 			userLastName = "userln2",
 			userScreenName = "usersn2");
@@ -693,7 +693,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea3@liferay.com",
+			userEmailAddress = "userea3@example.com",
 			userFirstName = "userfn3",
 			userLastName = "userln3",
 			userScreenName = "usersn3");
@@ -764,7 +764,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea1@liferay.com");
+			userEmailAddress = "userea1@example.com");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -783,7 +783,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 	}
 
 	@priority = "4"

@@ -87,7 +87,7 @@ definition {
 		SitePages.addPublicPage(pageName = "Staging Test Page");
 
 		JSONUser.addUser(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -99,7 +99,7 @@ definition {
 
 		User.editPasswordCP(
 			password = "password",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
@@ -117,7 +117,7 @@ definition {
 			userScreenName = "usersn");
 
 		JSONUser.addUser(
-			userEmailAddress = "usereacr@liferay.com",
+			userEmailAddress = "usereacr@example.com",
 			userFirstName = "userfncr",
 			userLastName = "userlncr",
 			userName = "userfncr userlncr",
@@ -130,7 +130,7 @@ definition {
 
 		User.editPasswordCP(
 			password = "password",
-			userEmailAddress = "usereacr@liferay.com",
+			userEmailAddress = "usereacr@example.com",
 			userScreenName = "usersncr");
 
 		ProductMenu.gotoPortlet(
@@ -162,7 +162,7 @@ definition {
 			userScreenName = "usersncr");
 
 		JSONUser.addUser(
-			userEmailAddress = "usereaoa@liferay.com",
+			userEmailAddress = "usereaoa@example.com",
 			userFirstName = "userfnoa",
 			userLastName = "userlnoa",
 			userScreenName = "usersnoa");
@@ -174,7 +174,7 @@ definition {
 
 		User.editPasswordCP(
 			password = "password",
-			userEmailAddress = "usereaoa@liferay.com",
+			userEmailAddress = "usereaoa@example.com",
 			userScreenName = "usersnoa");
 
 		ProductMenu.gotoPortlet(
@@ -227,7 +227,7 @@ definition {
 			workflowResourceValue = "Blogs Entry");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		Navigator.gotoStagedSitePage(
@@ -248,7 +248,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "usereaoa@liferay.com");
+			userEmailAddress = "usereaoa@example.com");
 
 		Navigator.gotoStagedSitePage(
 			pageName = "Staging Test Page",
@@ -268,7 +268,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		Navigator.gotoStagedSitePage(
 			pageName = "Staging Test Page",
@@ -288,7 +288,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "usereacr@liferay.com");
+			userEmailAddress = "usereacr@example.com");
 
 		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
 
@@ -312,7 +312,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "usereaoa@liferay.com");
+			userEmailAddress = "usereaoa@example.com");
 
 		Navigator.gotoStagedSitePage(
 			pageName = "Staging Test Page",
@@ -332,7 +332,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",

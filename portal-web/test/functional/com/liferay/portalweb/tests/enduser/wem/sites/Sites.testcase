@@ -57,7 +57,7 @@ definition {
 
 		User.firstLoginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Site.openSitesAdmin();
 

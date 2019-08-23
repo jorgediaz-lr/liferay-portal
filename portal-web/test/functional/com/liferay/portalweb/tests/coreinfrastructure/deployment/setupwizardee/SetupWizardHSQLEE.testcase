@@ -16,7 +16,7 @@ definition {
 		property test.name.skip.portal.instance = "SetupWizardHSQL#HSQLtoDB2";
 
 		SetupWizard.configurePG(
-			administratorEmail = "test@liferay.com",
+			administratorEmail = "test@example.com",
 			administratorFirstName = "Test",
 			administratorLastName = "Test",
 			databasePassword = PropsUtil.get("database.db2.password"),
@@ -40,7 +40,7 @@ definition {
 
 		SetupWizard.configurePG(
 			addSampleData = "false",
-			administratorEmail = "test@liferay.com",
+			administratorEmail = "test@example.com",
 			administratorFirstName = "Test",
 			administratorLastName = "Test",
 			databasePassword = PropsUtil.get("database.db2.password"),
@@ -62,7 +62,7 @@ definition {
 
 		SetupWizard.configurePG(
 			addSampleData = "true",
-			administratorEmail = "test@liferay.com",
+			administratorEmail = "test@example.com",
 			administratorFirstName = "Test",
 			administratorLastName = "Test",
 			databaseName = "lportal1",
@@ -87,7 +87,7 @@ definition {
 		property test.name.skip.portal.instance = "SetupWizardHSQL#HSQLtoOracle";
 
 		SetupWizard.configurePG(
-			administratorEmail = "test@liferay.com",
+			administratorEmail = "test@example.com",
 			administratorFirstName = "Test",
 			administratorLastName = "Test",
 			databasePassword = PropsUtil.get("database.oracle.password"),
@@ -111,7 +111,7 @@ definition {
 
 		SetupWizard.configurePG(
 			addSampleData = "false",
-			administratorEmail = "test@liferay.com",
+			administratorEmail = "test@example.com",
 			administratorFirstName = "Test",
 			administratorLastName = "Test",
 			databasePassword = PropsUtil.get("database.oracle.password"),
@@ -133,7 +133,7 @@ definition {
 
 		SetupWizard.configurePG(
 			addSampleData = "true",
-			administratorEmail = "test@liferay.com",
+			administratorEmail = "test@example.com",
 			administratorFirstName = "Test",
 			administratorLastName = "Test",
 			databaseName = "lportal1",
@@ -158,7 +158,7 @@ definition {
 		property test.name.skip.portal.instance = "SetupWizardHSQL#HSQLtoSybase";
 
 		SetupWizard.configurePG(
-			administratorEmail = "test@liferay.com",
+			administratorEmail = "test@example.com",
 			administratorFirstName = "Test",
 			administratorLastName = "Test",
 			databasePassword = PropsUtil.get("database.sybase.password"),
@@ -182,7 +182,7 @@ definition {
 
 		SetupWizard.configurePG(
 			addSampleData = "false",
-			administratorEmail = "test@liferay.com",
+			administratorEmail = "test@example.com",
 			administratorFirstName = "Test",
 			administratorLastName = "Test",
 			databasePassword = PropsUtil.get("database.sybase.password"),
@@ -204,7 +204,7 @@ definition {
 
 		SetupWizard.configurePG(
 			addSampleData = "true",
-			administratorEmail = "test@liferay.com",
+			administratorEmail = "test@example.com",
 			administratorFirstName = "Test",
 			administratorLastName = "Test",
 			databaseName = "lportal1",

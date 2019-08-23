@@ -53,7 +53,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userMiddleName = "usermn",
@@ -139,7 +139,7 @@ definition {
 
 		User.advancedSearchViaPortalDirectoryPG(
 			searchField = "Email Address",
-			searchTerm = "userea@liferay.com",
+			searchTerm = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -149,7 +149,7 @@ definition {
 		User.advancedSearchViaPortalDirectoryPG(
 			searchField = "Email Address",
 			searchNoResults = "true",
-			searchTerm = "userea@liferay.com1",
+			searchTerm = "userea@example.com1",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");

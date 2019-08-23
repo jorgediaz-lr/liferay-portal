@@ -11,14 +11,14 @@ definition {
 		User.firstLoginPG();
 
 		JSONUser.addUser(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
 
 		JSONRole.assignRoleToUser(
 			roleTitle = "Administrator",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -26,7 +26,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 	}
 
@@ -54,7 +54,7 @@ definition {
 	@priority = "4"
 	test AnonymizeAllEntries {
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		Navigator.openURL();
@@ -92,7 +92,7 @@ definition {
 			wikiPageTitle = "Wiki Page Title");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "Test Test");
 
 		ProductMenu.gotoPortlet(
@@ -159,7 +159,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
 
@@ -169,7 +169,7 @@ definition {
 			dmDocumentTitle = "DM Document Title");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "Test Test");
 
 		ProductMenu.gotoPortlet(
@@ -200,7 +200,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		BlogsNavigator.openBlogsAdmin(siteURLKey = "guest");
 
@@ -209,7 +209,7 @@ definition {
 			entryTitle = "Blogs Entry Title");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "Test Test");
 
 		ProductMenu.gotoPortlet(
@@ -240,7 +240,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		UserBar.gotoDropdownItem(dropdownItem = "My Profile");
 
@@ -276,7 +276,7 @@ definition {
 			threadSubject = "MB Thread Message Subject in My Dashboard");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "Test Test");
 
 		ProductMenu.gotoPortlet(
@@ -313,13 +313,13 @@ definition {
 
 		JSONUser.addUserToSite(
 			groupName = "Site Name",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		User.logoutPG();
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		BlogsNavigator.openBlogsAdmin(siteURLKey = "site-name");
 
@@ -328,7 +328,7 @@ definition {
 			entryTitle = "Blogs Entry Title");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "Test Test");
 
 		ProductMenu.gotoPortlet(
@@ -365,7 +365,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
 
@@ -375,7 +375,7 @@ definition {
 			dmDocumentTitle = "DM Document Title");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "Test Test");
 
 		ProductMenu.gotoPortlet(

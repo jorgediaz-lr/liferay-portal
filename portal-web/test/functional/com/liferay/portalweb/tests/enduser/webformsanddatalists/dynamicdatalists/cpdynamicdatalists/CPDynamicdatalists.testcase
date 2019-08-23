@@ -226,7 +226,7 @@ definition {
 			fieldName = "company");
 
 		DDLRecord.populateFieldText(
-			ddlRecordFieldData = "test@liferay.com",
+			ddlRecordFieldData = "test@example.com",
 			fieldFieldLabel = "Email",
 			fieldName = "email");
 

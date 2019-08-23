@@ -68,8 +68,8 @@ definition {
 			templateFile = "reports_admin_template_source_sample_class_name.jrxml");
 
 		ReportsAdmin.addReportEntry(
-			emailNotificationsAddress = "test@liferay.com",
-			emailRecipientAddress = "test@liferay.com",
+			emailNotificationsAddress = "test@example.com",
+			emailRecipientAddress = "test@example.com",
 			reportFormat = "pdf",
 			reportsDefinitionName = "Reports Definition Name");
 
@@ -148,7 +148,7 @@ definition {
 		ReportsAdmin.gotoConfiguration();
 
 		ReportsAdmin.configureEmailFrom(
-			emailFromAddress = "user1@liferay.com",
+			emailFromAddress = "user1@example.com",
 			emailFromName = "Liferay QA");
 
 		IFrame.closeFrame();
@@ -197,22 +197,22 @@ Thanks,<br/>
 			templateFile = "reports_admin_template_source_sample_class_name.jrxml");
 
 		ReportsAdmin.addReportEntry(
-			emailNotificationsAddress = "user2@liferay.com",
-			emailRecipientAddress = "user3@liferay.com",
+			emailNotificationsAddress = "user2@example.com",
+			emailRecipientAddress = "user3@example.com",
 			reportFormat = "pdf",
 			reportsDefinitionName = "Reports Definition Name");
 
 		MockMock.viewMail(
 			asset = "New Report From QA: reports_admin_template_source_sample_class_name.pdf",
 			content = "You have a new",
-			recipient = "user2@liferay.com",
+			recipient = "user2@example.com",
 			sender = "Liferay QA",
 			subject = "reports_admin_template_source_sample_class_name.pdf");
 
 		MockMock.viewMail(
 			asset = "New Report From QA: reports_admin_template_source_sample_class_name.pdf",
 			content = "Please review the attached report from your friends in QA!",
-			recipient = "user3@liferay.com",
+			recipient = "user3@example.com",
 			sender = "Liferay QA",
 			subject = "reports_admin_template_source_sample_class_name.pdf");
 
@@ -246,8 +246,8 @@ Thanks,<br/>
 			templateFile = "reports_admin_template_source_sample_class_name.jrxml");
 
 		ReportsAdmin.addReportEntry(
-			emailNotificationsAddress = "test@liferay.com",
-			emailRecipientAddress = "test@liferay.com",
+			emailNotificationsAddress = "test@example.com",
+			emailRecipientAddress = "test@example.com",
 			reportFormat = "csv",
 			reportsDefinitionName = "Reports Definition Name");
 

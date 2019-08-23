@@ -74,7 +74,7 @@ definition {
 		// Create a user and set its password
 
 		JSONUser.addUser(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -82,7 +82,7 @@ definition {
 		User.openUsersAdmin();
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		// Login with the new user and join the open site
@@ -91,7 +91,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		UserBar.gotoDropdownItem(dropdownItem = "My Dashboard");
 
@@ -103,7 +103,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 	}
 
 	@description = "Assert a default user cannot join a normal private site"
@@ -123,7 +123,7 @@ definition {
 		// Create a user and set its password
 
 		JSONUser.addUser(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -131,7 +131,7 @@ definition {
 		User.openUsersAdmin();
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		// Login with the new user and attempt to join the private site
@@ -140,7 +140,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		UserBar.gotoDropdownItem(dropdownItem = "My Dashboard");
 
@@ -154,7 +154,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 	}
 
 	@description = "Assert joining a restricted site requires admin approval"
@@ -173,7 +173,7 @@ definition {
 		// Create a user and set its password
 
 		JSONUser.addUser(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -181,7 +181,7 @@ definition {
 		User.openUsersAdmin();
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		// Login with the new user and request to join the restricted site
@@ -190,7 +190,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		UserBar.gotoDropdownItem(dropdownItem = "My Dashboard");
 
@@ -212,12 +212,12 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Site.openSiteMembershipsAdmin(siteURLKey = "site-name");
 
 		Site.approveJoinSiteRestrictedViaMySitesPG(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -228,7 +228,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		UserBar.gotoDropdownItem(dropdownItem = "My Dashboard");
 
@@ -242,7 +242,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 	}
 
 	@description = "Assert a default user can leave a site"
@@ -258,7 +258,7 @@ definition {
 		// Create a user and set its password
 
 		JSONUser.addUser(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -266,7 +266,7 @@ definition {
 		User.openUsersAdmin();
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		// Log in with new user and join site
@@ -275,7 +275,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		UserBar.gotoDropdownItem(dropdownItem = "My Dashboard");
 
@@ -293,7 +293,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 	}
 
 	@description = "Search for a site using MySites widget"
@@ -336,7 +336,7 @@ definition {
 		// Create a user and set its password
 
 		JSONUser.addUser(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -344,7 +344,7 @@ definition {
 		User.openUsersAdmin();
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		// Make user a member of home site via Site Settings CP
@@ -360,7 +360,7 @@ definition {
 
 		JSONRole.assignRoleToUser(
 			roleTitle = "Power User",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		// Create another new site
 
@@ -386,7 +386,7 @@ definition {
 
 		User.firstLoginPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		// Assert user is a member of both sites
 
@@ -439,7 +439,7 @@ definition {
 		// Create a new user
 
 		JSONUser.addUser(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -447,7 +447,7 @@ definition {
 		User.openUsersAdmin();
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		// Give user administrative role for home site
@@ -461,7 +461,7 @@ definition {
 
 		JSONRole.assignRoleToUser(
 			roleTitle = "Administrator",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		// Add new site with manual membership disabled
 
@@ -483,7 +483,7 @@ definition {
 
 		User.firstLoginPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		Navigator.gotoSitePage(
 			pageName = "Site Page",

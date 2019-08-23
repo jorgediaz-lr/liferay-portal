@@ -29,7 +29,7 @@ definition {
 
 		var curl = '''
 			${portalURL}/api/jsonws/assetcategory/add-category \
-			-u test@liferay.com:test \
+			-u test@example.com:test \
 				-d groupId=${groupId} \
 				-d parentCategoryId=${parentCategoryId} \
 				-d titleMap=${titleMap} \
@@ -66,7 +66,7 @@ definition {
 
 		var curl = '''
 			${portalURL}/api/jsonws/assetvocabulary/add-vocabulary \
-				-u test@liferay.com:test \
+				-u test@example.com:test \
 				-d groupId=${groupId} \
 				-d title= \
 				-d titleMap=${titleMap} \
@@ -87,7 +87,7 @@ definition {
 
 		var curl = '''
 			${portalURL}/api/jsonws/assetcategory/get-vocabulary-categories \
-				-u test@liferay.com:test \
+				-u test@example.com:test \
 				-d groupId=${groupId} \
 				-d name=${categoryName} \
 				-d vocabularyId=${vocabularyId} \
@@ -118,7 +118,7 @@ definition {
 
 		var curl = '''
 			${portalURL}/api/jsonws/assetvocabulary/get-group-vocabularies \
-				-u test@liferay.com:test \
+				-u test@example.com:test \
 				-d groupId=${groupId}
 		''';
 

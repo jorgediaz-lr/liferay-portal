@@ -13,7 +13,7 @@ definition {
 		property test.name.skip.portal.instance = "SetupWizard#HypersonicToHypersonic";
 
 		SetupWizard.configurePG(
-			administratorEmail = "test@liferay.com",
+			administratorEmail = "test@example.com",
 			administratorFirstName = "Test",
 			administratorLastName = "Test",
 			databasePassword = PropsUtil.get("database.hypersonic.password"),
@@ -34,7 +34,7 @@ definition {
 		property test.name.skip.portal.instance = "SetupWizard#HypersonicToMySQL";
 
 		SetupWizard.configurePG(
-			administratorEmail = "test@liferay.com",
+			administratorEmail = "test@example.com",
 			administratorFirstName = "Test",
 			administratorLastName = "Test",
 			databasePassword = PropsUtil.get("database.mysql.password"),
@@ -123,7 +123,7 @@ definition {
 		SetupWizard.viewDefaultPortalNamePG();
 
 		SetupWizard.configureAdministratorUserPG(
-			administratorEmail = "user@liferay.com",
+			administratorEmail = "user@example.com",
 			administratorFirstName = "User",
 			administratorLastName = "User");
 
@@ -148,12 +148,12 @@ definition {
 
 		User.firstLoginPG(
 			password = "test",
-			userEmailAddress = "user@liferay.com");
+			userEmailAddress = "user@example.com");
 
 		var liferayHome = PropsUtil.get("liferay.home.dir.name");
 		var fileContent = FileUtil.read("${liferayHome}/portal-setup-wizard.properties");
 
-		if ((contains("${fileContent}", "admin.email.from.address=user@liferay.com")) && (contains("${fileContent}", "admin.email.from.name=User User")) && (contains("${fileContent}", "default.admin.email.address.prefix=user")) && (contains("${fileContent}", "default.admin.first.name=User")) && (contains("${fileContent}", "default.admin.last.name=User"))) {
+		if ((contains("${fileContent}", "admin.email.from.address=user@example.com")) && (contains("${fileContent}", "admin.email.from.name=User User")) && (contains("${fileContent}", "default.admin.email.address.prefix=user")) && (contains("${fileContent}", "default.admin.first.name=User")) && (contains("${fileContent}", "default.admin.last.name=User"))) {
 			echo("The configuration was saved successfully in portal-setup-wizard.properties!");
 		}
 		else {

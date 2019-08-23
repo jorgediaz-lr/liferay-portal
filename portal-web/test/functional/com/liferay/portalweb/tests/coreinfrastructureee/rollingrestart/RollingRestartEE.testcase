@@ -41,12 +41,12 @@ definition {
 
 		User.logoutPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Page.assertNodePortPG(nodePort = "9080");
 
@@ -93,12 +93,12 @@ definition {
 
 		User.logoutPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginPG(
 			nodePort = "8080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Page.assertNodePortPG(nodePort = "8080");
 
@@ -141,12 +141,12 @@ definition {
 
 		User.logoutPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Page.assertNodePortPG(nodePort = "9080");
 
@@ -174,12 +174,12 @@ definition {
 
 		User.logoutPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Page.assertNodePortPG(nodePort = "9080");
 
@@ -188,7 +188,7 @@ definition {
 		User.loginPG(
 			nodePort = "10080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Page.assertNodePortPG(nodePort = "10080");
 
@@ -208,7 +208,7 @@ definition {
 		User.loginPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Page.assertNodePortPG(nodePort = "9080");
 
@@ -230,11 +230,11 @@ definition {
 		User.logoutPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Page.assertNodePortPG(nodePort = "8080");
 
@@ -247,12 +247,12 @@ definition {
 
 		User.logoutPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginPG(
 			nodePort = "10080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Page.assertNodePortPG(nodePort = "10080");
 
@@ -280,7 +280,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Page.assertNodePortPG(nodePort = "8080");
 
@@ -301,12 +301,12 @@ definition {
 
 		User.logoutPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Page.assertNodePortPG(nodePort = "9080");
 
@@ -320,12 +320,12 @@ definition {
 		User.logoutPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginPG(
 			nodePort = "10080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Page.assertNodePortPG(nodePort = "10080");
 
@@ -339,7 +339,7 @@ definition {
 		User.logoutPG(
 			nodePort = "10080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Clustering.shutdownSpecificServer(nodePort = "10080");
 
@@ -355,7 +355,7 @@ definition {
 		User.loginPG(
 			nodePort = "10080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Page.assertNodePortPG(nodePort = "10080");
 
@@ -377,11 +377,11 @@ definition {
 		User.logoutPG(
 			nodePort = "10080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Page.assertNodePortPG(nodePort = "8080");
 
@@ -394,12 +394,12 @@ definition {
 
 		User.logoutPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Page.assertNodePortPG(nodePort = "9080");
 
@@ -441,12 +441,12 @@ definition {
 
 		User.logoutPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Page.assertNodePortPG(nodePort = "9080");
 
@@ -469,7 +469,7 @@ definition {
 		User.loginPG(
 			nodePort = "10080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Page.assertNodePortPG(nodePort = "10080");
 
@@ -502,7 +502,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Page.assertNodePortPG(nodePort = "8080");
 
@@ -537,12 +537,12 @@ definition {
 
 		User.logoutPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Page.assertNodePortPG(nodePort = "9080");
 
@@ -572,7 +572,7 @@ definition {
 		User.loginPG(
 			nodePort = "10080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Page.assertNodePortPG(nodePort = "10080");
 
@@ -612,31 +612,31 @@ definition {
 		User.logoutPG(
 			nodePort = "8080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Page.assertNodePortPG(nodePort = "9080");
 
 		User.logoutPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginPG(
 			nodePort = "10080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Page.assertNodePortPG(nodePort = "10080");
 
 		User.logoutPG(
 			nodePort = "10080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		// Install the latest FP on all 3 servers
 
@@ -655,14 +655,14 @@ definition {
 			User.loginPG(
 				nodePort = "${nodePort}",
 				password = "test",
-				userEmailAddress = "test@liferay.com");
+				userEmailAddress = "test@example.com");
 
 			Page.assertNodePortPG(nodePort = "${nodePort}");
 
 			User.logoutPG(
 				nodePort = "${nodePort}",
 				password = "test",
-				userEmailAddress = "test@liferay.com");
+				userEmailAddress = "test@example.com");
 		}
 
 		// Take down cluster2, revert the latest FP and install FP5
@@ -684,20 +684,20 @@ definition {
 			User.loginPG(
 				nodePort = "${nodePort}",
 				password = "test",
-				userEmailAddress = "test@liferay.com");
+				userEmailAddress = "test@example.com");
 
 			Page.assertNodePortPG(nodePort = "${nodePort}");
 
 			User.logoutPG(
 				nodePort = "${nodePort}",
 				password = "test",
-				userEmailAddress = "test@liferay.com");
+				userEmailAddress = "test@example.com");
 		}
 
 		User.loginPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -717,13 +717,13 @@ definition {
 		User.logoutPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		for (var nodePort : list "8080,10080") {
 			User.loginPG(
 				nodePort = "${nodePort}",
 				password = "test",
-				userEmailAddress = "test@liferay.com");
+				userEmailAddress = "test@example.com");
 
 			ProductMenu.gotoPortlet(
 				category = "Content &amp; Data",
@@ -735,7 +735,7 @@ definition {
 			User.logoutPG(
 				nodePort = "${nodePort}",
 				password = "test",
-				userEmailAddress = "test@liferay.com");
+				userEmailAddress = "test@example.com");
 		}
 
 		// Take down cluster1, revert the latest FP and install FP5
@@ -757,20 +757,20 @@ definition {
 			User.loginPG(
 				nodePort = "${nodePort}",
 				password = "test",
-				userEmailAddress = "test@liferay.com");
+				userEmailAddress = "test@example.com");
 
 			Page.assertNodePortPG(nodePort = "${nodePort}");
 
 			User.logoutPG(
 				nodePort = "${nodePort}",
 				password = "test",
-				userEmailAddress = "test@liferay.com");
+				userEmailAddress = "test@example.com");
 		}
 
 		User.loginPG(
 			nodePort = "8080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		ProductMenu.gotoPortlet(
 			category = "Site Builder",
@@ -794,13 +794,13 @@ definition {
 		User.logoutPG(
 			nodePort = "8080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		for (var nodePort : list "9080,10080") {
 			User.loginPG(
 				nodePort = "${nodePort}",
 				password = "test",
-				userEmailAddress = "test@liferay.com");
+				userEmailAddress = "test@example.com");
 
 			Navigator.gotoSpecificURLPage(
 				pageName = "Documents and Media Page",
@@ -811,7 +811,7 @@ definition {
 			User.logoutPG(
 				nodePort = "${nodePort}",
 				password = "test",
-				userEmailAddress = "test@liferay.com");
+				userEmailAddress = "test@example.com");
 		}
 
 		// Take down cluster3, revert the latest FP and install FP5
@@ -833,20 +833,20 @@ definition {
 			User.loginPG(
 				nodePort = "${nodePort}",
 				password = "test",
-				userEmailAddress = "test@liferay.com");
+				userEmailAddress = "test@example.com");
 
 			Page.assertNodePortPG(nodePort = "${nodePort}");
 
 			User.logoutPG(
 				nodePort = "${nodePort}",
 				password = "test",
-				userEmailAddress = "test@liferay.com");
+				userEmailAddress = "test@example.com");
 		}
 
 		User.loginPG(
 			nodePort = "10080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Navigator.gotoSpecificURLPage(
 			pageName = "Documents and Media Page",
@@ -862,13 +862,13 @@ definition {
 		User.logoutPG(
 			nodePort = "10080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		for (var nodePort : list "8080,9080") {
 			User.loginPG(
 				nodePort = "${nodePort}",
 				password = "test",
-				userEmailAddress = "test@liferay.com");
+				userEmailAddress = "test@example.com");
 
 			Navigator.gotoSpecificURLPage(
 				pageName = "Documents and Media Page",
@@ -879,7 +879,7 @@ definition {
 			User.logoutPG(
 				nodePort = "${nodePort}",
 				password = "test",
-				userEmailAddress = "test@liferay.com");
+				userEmailAddress = "test@example.com");
 		}
 	}
 
@@ -900,7 +900,7 @@ definition {
 		User.loginPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Page.assertNodePortPG(nodePort = "9080");
 
@@ -909,7 +909,7 @@ definition {
 		User.loginPG(
 			nodePort = "10080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Page.assertNodePortPG(nodePort = "10080");
 
@@ -957,7 +957,7 @@ definition {
 			User.loginPG(
 				nodePort = "${nodePort}",
 				password = "test",
-				userEmailAddress = "test@liferay.com");
+				userEmailAddress = "test@example.com");
 
 			Page.assertNodePortPG(nodePort = "${nodePort}");
 
@@ -1032,7 +1032,7 @@ definition {
 		User.loginPG(
 			nodePort = "10080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Page.assertNodePortPG(nodePort = "10080");
 

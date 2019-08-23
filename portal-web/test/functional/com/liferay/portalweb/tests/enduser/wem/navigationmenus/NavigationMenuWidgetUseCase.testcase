@@ -148,7 +148,7 @@ definition {
 
 		task ("Assert user can sign in after signing out") {
 			User.logoutAndLoginPG(
-				userLoginEmailAddress = "test@liferay.com",
+				userLoginEmailAddress = "test@example.com",
 				userLoginFullName = "Test Test");
 		}
 
@@ -242,7 +242,7 @@ definition {
 				portlet = "Users and Organizations");
 
 			User.addCP(
-				userEmailAddress = "userea@liferay.com",
+				userEmailAddress = "userea@example.com",
 				userFirstName = "userfn",
 				userLastName = "userln",
 				userScreenName = "usersn");
@@ -253,7 +253,7 @@ definition {
 				portlet = "Users and Organizations");
 
 			User.editPasswordCP(
-				userEmailAddress = "userea@liferay.com",
+				userEmailAddress = "userea@example.com",
 				userScreenName = "usersn");
 
 			ProductMenu.gotoPortlet(
@@ -269,7 +269,7 @@ definition {
 		task ("Sign in as the created user") {
 			User.logoutPG();
 
-			User.loginUserPG(userEmailAddress = "userea@liferay.com");
+			User.loginUserPG(userEmailAddress = "userea@example.com");
 		}
 
 		task ("Assert the user can add widgets to the page") {

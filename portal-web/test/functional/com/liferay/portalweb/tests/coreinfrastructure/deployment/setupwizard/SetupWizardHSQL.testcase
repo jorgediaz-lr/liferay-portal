@@ -14,7 +14,7 @@ definition {
 		property test.name.skip.portal.instance = "SetupWizardHSQL#HSQLtoHSQLLportal1";
 
 		SetupWizard.configurePG(
-			administratorEmail = "test@liferay.com",
+			administratorEmail = "test@example.com",
 			administratorFirstName = "Test",
 			administratorLastName = "Test",
 			databaseName = "lportal1",
@@ -39,7 +39,7 @@ definition {
 
 		SetupWizard.configurePG(
 			addSampleData = "false",
-			administratorEmail = "test@liferay.com",
+			administratorEmail = "test@example.com",
 			administratorFirstName = "Test",
 			administratorLastName = "Test",
 			databaseName = "lportal1",
@@ -61,7 +61,7 @@ definition {
 
 		SetupWizard.configurePG(
 			addSampleData = "true",
-			administratorEmail = "test@liferay.com",
+			administratorEmail = "test@example.com",
 			administratorFirstName = "Test",
 			administratorLastName = "Test",
 			databaseName = "lportal1",
@@ -87,7 +87,7 @@ definition {
 
 		SetupWizard.configurePG(
 			addSampleData = "false",
-			administratorEmail = "test@liferay.com",
+			administratorEmail = "test@example.com",
 			administratorFirstName = "Test",
 			administratorLastName = "Test",
 			databasePassword = PropsUtil.get("database.mariadb.password"),
@@ -111,7 +111,7 @@ definition {
 
 		SetupWizard.configurePG(
 			addSampleData = "false",
-			administratorEmail = "test@liferay.com",
+			administratorEmail = "test@example.com",
 			administratorFirstName = "Test",
 			administratorLastName = "Test",
 			databasePassword = PropsUtil.get("database.mariadb.password"),
@@ -133,7 +133,7 @@ definition {
 
 		SetupWizard.configurePG(
 			addSampleData = "true",
-			administratorEmail = "test@liferay.com",
+			administratorEmail = "test@example.com",
 			administratorFirstName = "Test",
 			administratorLastName = "Test",
 			databaseName = "lportal1",
@@ -160,7 +160,7 @@ definition {
 
 		SetupWizard.configurePG(
 			addSampleData = "false",
-			administratorEmail = "test@liferay.com",
+			administratorEmail = "test@example.com",
 			administratorFirstName = "Test",
 			administratorLastName = "Test",
 			databasePassword = PropsUtil.get("database.mysql.password"),
@@ -182,7 +182,7 @@ definition {
 
 		SetupWizard.configurePG(
 			addSampleData = "true",
-			administratorEmail = "test@liferay.com",
+			administratorEmail = "test@example.com",
 			administratorFirstName = "Test",
 			administratorLastName = "Test",
 			databaseName = "lportal1",
@@ -207,7 +207,7 @@ definition {
 		property test.name.skip.portal.instance = "SetupWizardHSQL#HSQLtoPostgreSQL";
 
 		SetupWizard.configurePG(
-			administratorEmail = "test@liferay.com",
+			administratorEmail = "test@example.com",
 			administratorFirstName = "Test",
 			administratorLastName = "Test",
 			databasePassword = PropsUtil.get("database.postgresql.password"),
@@ -231,7 +231,7 @@ definition {
 
 		SetupWizard.configurePG(
 			addSampleData = "false",
-			administratorEmail = "test@liferay.com",
+			administratorEmail = "test@example.com",
 			administratorFirstName = "Test",
 			administratorLastName = "Test",
 			databasePassword = PropsUtil.get("database.postgresql.password"),
@@ -253,7 +253,7 @@ definition {
 
 		SetupWizard.configurePG(
 			addSampleData = "true",
-			administratorEmail = "test@liferay.com",
+			administratorEmail = "test@example.com",
 			administratorFirstName = "Test",
 			administratorLastName = "Test",
 			databaseName = "lportal1",

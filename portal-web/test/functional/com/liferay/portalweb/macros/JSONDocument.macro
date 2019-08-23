@@ -12,7 +12,7 @@ definition {
 
 		var curl = '''
 			${portalURL}/api/jsonws/dlapp/add-file-entry \
-			-u test@liferay.com:test \
+			-u test@example.com:test \
 			-d repositoryId=${repositoryId} \
 			-d folderId=${folderId} \
 			-d sourceFileName='' \
@@ -44,7 +44,7 @@ definition {
 
 		var curl = '''
 			${portalURL}/api/jsonws/dlapp/add-folder \
-			-u test@liferay.com:test \
+			-u test@example.com:test \
 			-d repositoryId=${repositoryId} \
 			-d parentFolderId=${parentFolderId} \
 			-d name=${dmFolderName} \

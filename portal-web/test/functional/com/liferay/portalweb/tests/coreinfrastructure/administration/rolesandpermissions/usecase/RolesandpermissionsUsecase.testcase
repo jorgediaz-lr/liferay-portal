@@ -107,7 +107,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -118,7 +118,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
@@ -143,7 +143,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -174,7 +174,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -203,7 +203,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -308,7 +308,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -319,7 +319,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
@@ -353,7 +353,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		Navigator.gotoPage(pageName = "Bookmarks Page");
 
@@ -377,7 +377,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 	}
 
 	@priority = "3"
@@ -467,7 +467,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea1@liferay.com",
+			userEmailAddress = "userea1@example.com",
 			userFirstName = "userfn1",
 			userLastName = "userln1",
 			userScreenName = "usersn1");
@@ -478,7 +478,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea1@liferay.com",
+			userEmailAddress = "userea1@example.com",
 			userScreenName = "usersn1");
 
 		ProductMenu.gotoPortlet(
@@ -496,7 +496,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea2@liferay.com",
+			userEmailAddress = "userea2@example.com",
 			userFirstName = "userfn2",
 			userLastName = "userln2",
 			userScreenName = "usersn2");
@@ -507,7 +507,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea2@liferay.com",
+			userEmailAddress = "userea2@example.com",
 			userScreenName = "usersn2");
 
 		ProductMenu.gotoPortlet(
@@ -601,7 +601,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea1@liferay.com");
+			userEmailAddress = "userea1@example.com");
 
 		Navigator.gotoSitePage(
 			pageName = "Documents and Media Page",
@@ -623,7 +623,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea2@liferay.com");
+			userEmailAddress = "userea2@example.com");
 
 		Navigator.gotoSitePage(
 			pageName = "Documents and Media Page",
@@ -660,7 +660,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 	}
 
 	@priority = "4"
@@ -705,7 +705,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea1@liferay.com",
+			userEmailAddress = "userea1@example.com",
 			userFirstName = "userfn1",
 			userLastName = "userln1",
 			userScreenName = "usersn1");
@@ -716,7 +716,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea1@liferay.com",
+			userEmailAddress = "userea1@example.com",
 			userScreenName = "usersn1");
 
 		ProductMenu.gotoPortlet(
@@ -743,7 +743,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea2@liferay.com",
+			userEmailAddress = "userea2@example.com",
 			userFirstName = "userfn2",
 			userLastName = "userln2",
 			userScreenName = "usersn2");
@@ -754,7 +754,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea2@liferay.com",
+			userEmailAddress = "userea2@example.com",
 			userScreenName = "usersn2");
 
 		ProductMenu.gotoPortlet(
@@ -929,7 +929,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea1@liferay.com");
+			userEmailAddress = "userea1@example.com");
 
 		Navigator.gotoPage(pageName = "Dynamic Data Lists Page");
 
@@ -943,7 +943,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea2@liferay.com");
+			userEmailAddress = "userea2@example.com");
 
 		Navigator.gotoPage(pageName = "Dynamic Data Lists Page");
 
@@ -955,7 +955,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea1@liferay.com");
+			userEmailAddress = "userea1@example.com");
 	}
 
 	@priority = "4"
@@ -988,7 +988,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea1@liferay.com",
+			userEmailAddress = "userea1@example.com",
 			userFirstName = "userfn1",
 			userLastName = "userln1",
 			userScreenName = "usersn1");
@@ -999,7 +999,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea1@liferay.com",
+			userEmailAddress = "userea1@example.com",
 			userScreenName = "usersn1");
 
 		ProductMenu.gotoPortlet(
@@ -1017,7 +1017,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea2@liferay.com",
+			userEmailAddress = "userea2@example.com",
 			userFirstName = "userfn2",
 			userLastName = "userln2",
 			userScreenName = "usersn2");
@@ -1028,7 +1028,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea2@liferay.com",
+			userEmailAddress = "userea2@example.com",
 			userScreenName = "usersn2");
 
 		ProductMenu.gotoPortlet(
@@ -1103,7 +1103,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea1@liferay.com");
+			userEmailAddress = "userea1@example.com");
 
 		Navigator.gotoPage(pageName = "Documents and Media Page");
 
@@ -1119,7 +1119,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea2@liferay.com");
+			userEmailAddress = "userea2@example.com");
 
 		Navigator.gotoPage(pageName = "Documents and Media Page");
 
@@ -1146,7 +1146,7 @@ definition {
 			dmDocumentFile = "Document_1.doc",
 			dmDocumentTitle = "Test Document",
 			password = "test",
-			userEmailAddress = "test@liferay.com");*/
+			userEmailAddress = "test@example.com");*/
 	}
 
 	@priority = "4"
@@ -1157,7 +1157,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea1@liferay.com",
+			userEmailAddress = "userea1@example.com",
 			userFirstName = "userfn1",
 			userLastName = "userln1",
 			userScreenName = "usersn1");
@@ -1168,7 +1168,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea1@liferay.com",
+			userEmailAddress = "userea1@example.com",
 			userScreenName = "usersn1");
 
 		ProductMenu.gotoPortlet(
@@ -1177,7 +1177,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea2@liferay.com",
+			userEmailAddress = "userea2@example.com",
 			userFirstName = "userfn2",
 			userLastName = "userln2",
 			userScreenName = "usersn2");
@@ -1188,7 +1188,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea2@liferay.com",
+			userEmailAddress = "userea2@example.com",
 			userScreenName = "usersn2");
 
 		ProductMenu.gotoPortlet(
@@ -1197,7 +1197,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea3@liferay.com",
+			userEmailAddress = "userea3@example.com",
 			userFirstName = "userfn3",
 			userLastName = "userln3",
 			userScreenName = "usersn3");
@@ -1208,7 +1208,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea3@liferay.com",
+			userEmailAddress = "userea3@example.com",
 			userScreenName = "usersn3");
 
 		ProductMenu.gotoPortlet(
@@ -1546,7 +1546,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea1@liferay.com");
+			userEmailAddress = "userea1@example.com");
 
 		Navigator.gotoSitePage(
 			pageName = "Asset Publisher Page",
@@ -1572,7 +1572,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea2@liferay.com");
+			userEmailAddress = "userea2@example.com");
 
 		Navigator.gotoSitePage(
 			pageName = "Asset Publisher Page",
@@ -1618,7 +1618,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea3@liferay.com");
+			userEmailAddress = "userea3@example.com");
 
 		Navigator.gotoSitePage(
 			pageName = "Asset Publisher Page",
@@ -1646,7 +1646,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 	}
 
 	@priority = "4"
@@ -1701,7 +1701,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -1712,7 +1712,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
@@ -1728,7 +1728,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		Bookmark.viewNoPG(
 			bookmarkName = "Test Bookmark Name",
@@ -1738,7 +1738,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -1753,7 +1753,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		Navigator.gotoPage(pageName = "Bookmarks Page");
 
@@ -1767,7 +1767,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 	}
 
 	@priority = "4"
@@ -1786,7 +1786,7 @@ definition {
 				portlet = "Users and Organizations");
 
 			User.addCP(
-				userEmailAddress = "userea${userNumber}@liferay.com",
+				userEmailAddress = "userea${userNumber}@example.com",
 				userFirstName = "userfn${userNumber}",
 				userLastName = "userln${userNumber}",
 				userScreenName = "usersn${userNumber}");
@@ -1797,7 +1797,7 @@ definition {
 				portlet = "Users and Organizations");
 
 			User.editPasswordCP(
-				userEmailAddress = "userea${userNumber}@liferay.com",
+				userEmailAddress = "userea${userNumber}@example.com",
 				userScreenName = "usersn${userNumber}");
 
 			ProductMenu.gotoPortlet(
@@ -1869,7 +1869,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea1@liferay.com");
+			userEmailAddress = "userea1@example.com");
 
 		Navigator.gotoSitePage(
 			pageName = "USA Ice Hockey Team Blog",
@@ -1887,7 +1887,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea2@liferay.com");
+			userEmailAddress = "userea2@example.com");
 
 		AssertElementNotPresent(
 			key_pageName = "USA Ice Hockey Team Blog",
@@ -1897,7 +1897,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 	}
 
 	@priority = "4"
@@ -1977,7 +1977,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -1997,7 +1997,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		Portlet.addPG(portletName = "Currency Converter");
@@ -2016,7 +2016,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		Portlet.gotoPortletOptions(
 			portletName = "Currency Converter",
@@ -2036,7 +2036,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 	}
 
 	@priority = "4"
@@ -2047,7 +2047,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -2058,7 +2058,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
@@ -2095,7 +2095,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		Navigator.openPrivateURL(pageName = "Private Page");
 
@@ -2160,7 +2160,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -2171,7 +2171,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
@@ -2201,7 +2201,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		Navigator.openSiteURL(siteName = "Site Name");
 

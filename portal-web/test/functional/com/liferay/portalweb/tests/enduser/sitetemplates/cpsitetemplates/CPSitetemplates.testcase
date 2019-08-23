@@ -456,7 +456,7 @@ definition {
 		AssertElementPresent(locator1 = "ControlMenu#ADD");
 
 		JSONUser.addUser(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -467,7 +467,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		SitePages.openPagesAdmin(siteURLKey = "Site Template Site Name");
@@ -484,7 +484,7 @@ definition {
 
 		User.logoutUserPG();
 
-		User.loginUserPG(userEmailAddress = "userea@liferay.com");
+		User.loginUserPG(userEmailAddress = "userea@example.com");
 
 		Navigator.gotoSitePage(
 			pageName = "Home",

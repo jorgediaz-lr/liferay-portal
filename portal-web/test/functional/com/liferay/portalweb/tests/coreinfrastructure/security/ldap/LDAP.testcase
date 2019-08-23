@@ -68,7 +68,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.viewCP(
-			userEmailAddress = "ldapuseremail@liferay.com",
+			userEmailAddress = "ldapuseremail@example.com",
 			userFirstName = "ldapusergivenname",
 			userLastName = "ldapusersn",
 			userScreenName = "ldapusercn");
@@ -116,7 +116,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.viewCP(
-			userEmailAddress = "ldapuseremail@liferay.com",
+			userEmailAddress = "ldapuseremail@example.com",
 			userFirstName = "ldapusergivenname",
 			userLastName = "ldapusersn",
 			userScreenName = "ldapusercn");
@@ -142,11 +142,11 @@ definition {
 		Navigator.gotoBack();
 
 		User.editPasswordCP(
-			userEmailAddress = "ldapuseremail@liferay.com",
+			userEmailAddress = "ldapuseremail@example.com",
 			userScreenName = "ldapusercn");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "ldapuseremail@liferay.com",
+			userLoginEmailAddress = "ldapuseremail@example.com",
 			userLoginFullName = "ldapusergivenname ldapusersn");
 
 		UserBar.gotoDropdownItem(dropdownItem = "Account Settings");

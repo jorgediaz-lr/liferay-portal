@@ -55,7 +55,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -69,7 +69,7 @@ definition {
 
 		User.editPasswordCP(
 			password = "password",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		Navigator.openSiteURL(siteName = "Site Name");
@@ -118,7 +118,7 @@ definition {
 
 		User.logoutAndLoginPG(
 			password = "test",
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		Navigator.gotoStagedSitePage(
@@ -129,7 +129,7 @@ definition {
 
 		User.logoutAndLoginPG(
 			password = "test",
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "test test");
 	}
 
@@ -143,7 +143,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "usereapu@liferay.com",
+			userEmailAddress = "usereapu@example.com",
 			userFirstName = "userfnpu",
 			userLastName = "userlnpu",
 			userScreenName = "usersnpu");
@@ -157,7 +157,7 @@ definition {
 
 		User.editPasswordCP(
 			password = "password",
-			userEmailAddress = "usereapu@liferay.com",
+			userEmailAddress = "usereapu@example.com",
 			userScreenName = "usersnpu");
 
 		Navigator.openSiteURL(siteName = "Site Name");
@@ -221,7 +221,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "usereacr@liferay.com",
+			userEmailAddress = "usereacr@example.com",
 			userFirstName = "userfncr",
 			userLastName = "userlncr",
 			userScreenName = "usersncr");
@@ -235,7 +235,7 @@ definition {
 
 		User.editPasswordCP(
 			password = "password",
-			userEmailAddress = "usereacr@liferay.com",
+			userEmailAddress = "usereacr@example.com",
 			userScreenName = "usersncr");
 
 		Navigator.openSiteURL(siteName = "Site Name");
@@ -269,7 +269,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "usereaa@liferay.com",
+			userEmailAddress = "usereaa@example.com",
 			userFirstName = "userfna",
 			userLastName = "userlna",
 			userScreenName = "usersna");
@@ -283,7 +283,7 @@ definition {
 
 		User.editPasswordCP(
 			password = "password",
-			userEmailAddress = "usereaa@liferay.com",
+			userEmailAddress = "usereaa@example.com",
 			userScreenName = "usersna");
 
 		Navigator.openSiteURL(siteName = "Site Name");
@@ -331,7 +331,7 @@ definition {
 
 		User.logoutAndLoginPG(
 			password = "test",
-			userLoginEmailAddress = "usereapu@liferay.com",
+			userLoginEmailAddress = "usereapu@example.com",
 			userLoginFullName = "userfnpu userlnpu");
 
 		Navigator.openSiteURL(siteName = "Site Name");
@@ -361,7 +361,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "usereaa@liferay.com");
+			userEmailAddress = "usereaa@example.com");
 
 		Navigator.gotoStagedSitePage(
 			pageName = "Blogs Test Page",
@@ -379,7 +379,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "usereapu@liferay.com");
+			userEmailAddress = "usereapu@example.com");
 
 		Navigator.gotoStagedSitePage(
 			pageName = "Blogs Test Page",
@@ -403,7 +403,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "usereacr@liferay.com");
+			userEmailAddress = "usereacr@example.com");
 
 		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
 
@@ -431,7 +431,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "usereaa@liferay.com");
+			userEmailAddress = "usereaa@example.com");
 
 		Navigator.gotoStagedSitePage(
 			pageName = "Blogs Test Page",
@@ -455,7 +455,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 	}
 
 }

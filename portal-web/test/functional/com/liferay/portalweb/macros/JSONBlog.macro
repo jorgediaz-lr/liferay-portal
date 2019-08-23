@@ -14,7 +14,7 @@ definition {
 
 		var curl = '''
 			${portalURL}/api/jsonws/blogs.blogsentry/add-entry \
-			-u test@liferay.com:test \
+			-u test@example.com:test \
 			-d title=${entryTitle} \
 			-d subtitle=${entrySubtitle} \
 			-d description='' \

@@ -44,7 +44,7 @@ definition {
 
 		User.loginPG(
 			localization = "ES",
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "Test Test");
 
 		Navigator.openSiteURL(siteName = "Site Name");
@@ -627,12 +627,12 @@ definition {
 
 		User.logoutPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -644,11 +644,11 @@ definition {
 		User.logoutPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -673,12 +673,12 @@ definition {
 
 		User.logoutPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Navigator.gotoSitePage(
 			baseURL = "http://localhost:9080",
@@ -700,11 +700,11 @@ definition {
 		User.logoutPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -727,12 +727,12 @@ definition {
 
 		User.logoutPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -746,11 +746,11 @@ definition {
 		User.logoutPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -776,12 +776,12 @@ definition {
 
 		User.logoutPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Navigator.gotoSitePage(
 			baseURL = "http://localhost:9080",
@@ -1108,7 +1108,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea1@liferay.com",
+			userEmailAddress = "userea1@example.com",
 			userFirstName = "userfn1",
 			userLastName = "userln1",
 			userScreenName = "usersn1");
@@ -1119,7 +1119,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea1@liferay.com",
+			userEmailAddress = "userea1@example.com",
 			userScreenName = "usersn1");
 
 		ProductMenu.gotoPortlet(
@@ -1137,7 +1137,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea2@liferay.com",
+			userEmailAddress = "userea2@example.com",
 			userFirstName = "userfn2",
 			userLastName = "userln2",
 			userScreenName = "usersn2");
@@ -1148,7 +1148,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea2@liferay.com",
+			userEmailAddress = "userea2@example.com",
 			userScreenName = "usersn2");
 
 		ProductMenu.gotoPortlet(
@@ -1164,7 +1164,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea1@liferay.com");
+			userEmailAddress = "userea1@example.com");
 
 		for (var pageCount : list "1,2,3") {
 			Navigator.gotoStagedSitePage(
@@ -1178,11 +1178,11 @@ definition {
 
 		User.logoutPG(
 			password = "test",
-			userEmailAddress = "userea1@liferay.com");
+			userEmailAddress = "userea1@example.com");
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "userea2@liferay.com");
+			userEmailAddress = "userea2@example.com");
 
 		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
 
@@ -1216,11 +1216,11 @@ definition {
 
 		User.logoutPG(
 			password = "test",
-			userEmailAddress = "userea2@liferay.com");
+			userEmailAddress = "userea2@example.com");
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "userea1@liferay.com");
+			userEmailAddress = "userea1@example.com");
 
 		for (var pageCount : list "1,2,3") {
 			Navigator.gotoStagedSitePage(
@@ -1234,11 +1234,11 @@ definition {
 
 		User.logoutPG(
 			password = "test",
-			userEmailAddress = "userea1@liferay.com");
+			userEmailAddress = "userea1@example.com");
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "userea2@liferay.com");
+			userEmailAddress = "userea2@example.com");
 
 		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
 
@@ -1313,7 +1313,7 @@ definition {
 		User.loginPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		SitePages.openPagesAdmin(
 			baseURL = "http://localhost:9080",
@@ -1333,11 +1333,11 @@ definition {
 		User.logoutPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		SitePages.openPagesAdmin(siteURLKey = "Global");
 
@@ -1363,7 +1363,7 @@ definition {
 		User.loginPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		SitePages.openPagesAdmin(
 			baseURL = "http://localhost:9080",
@@ -1379,11 +1379,11 @@ definition {
 		User.logoutPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Category.openCategoriesAdmin(siteURLKey = "global");
 
@@ -1396,7 +1396,7 @@ definition {
 		User.loginPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		SitePages.openPagesAdmin(
 			baseURL = "http://localhost:9080",
@@ -2028,7 +2028,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Navigator.gotoSitePage(
 			pageName = "Staging Test Page",
@@ -2355,12 +2355,12 @@ definition {
 
 		User.logoutPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Navigator.gotoSitePage(
 			baseURL = "http://localhost:9080",
@@ -2379,11 +2379,11 @@ definition {
 		User.logoutPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Navigator.gotoSitePage(
 			pageName = "Staging Test Page",
@@ -2447,12 +2447,12 @@ definition {
 
 		User.logoutPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Navigator.gotoSitePage(
 			baseURL = "http://localhost:9080",
@@ -2572,12 +2572,12 @@ definition {
 
 		User.logoutPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Navigator.gotoSitePage(
 			baseURL = "http://localhost:9080",
@@ -2641,12 +2641,12 @@ definition {
 
 		User.logoutPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		WebContent.openWebContentAdmin(
 			baseURL = "http://localhost:9080",
@@ -2715,12 +2715,12 @@ definition {
 
 		User.logoutPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Navigator.gotoSitePage(
 			baseURL = "http://localhost:9080",
@@ -2759,12 +2759,12 @@ definition {
 
 		User.logoutPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -2783,11 +2783,11 @@ definition {
 		User.logoutPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -2813,12 +2813,12 @@ definition {
 
 		User.logoutPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Navigator.gotoSitePage(
 			baseURL = "http://localhost:9080",
@@ -2926,12 +2926,12 @@ definition {
 
 		User.logoutPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginPG(
 			nodePort = "9080",
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Navigator.gotoSitePage(
 			baseURL = "http://localhost:9080",
@@ -3093,7 +3093,7 @@ definition {
 	@priority = "4"
 	test ViewHistoryVersionWithDeletedUser {
 		JSONUser.addUser(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -3107,7 +3107,7 @@ definition {
 
 		User.editPasswordCP(
 			password = "password",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		Navigator.openSiteURL(siteName = "Site Name");
@@ -3143,7 +3143,7 @@ definition {
 			siteName = "Site Name");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		Navigator.openSiteURL(siteName = "Site Name");
@@ -3176,7 +3176,7 @@ definition {
 		var historyVersion = selenium.getText("Staging#HISTORY_VERSION");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "test test");
 
 		ProductMenu.gotoPortlet(

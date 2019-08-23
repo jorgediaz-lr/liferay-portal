@@ -1,7 +1,7 @@
 definition {
 
 	var password = "test";
-	var userEmailAddress = "test@liferay.com";
+	var userEmailAddress = "test@example.com";
 
 	macro apiJsonwsUserView {
 		Open(locator1 = "Home#API_JSON_URL");

@@ -58,7 +58,7 @@ definition {
 			outputParameterType = "List",
 			password = "test",
 			url = "${portalURL}/api/jsonws/country/get-countries",
-			username = "test@liferay.com");
+			username = "test@example.com");
 
 		FormsAdmin.saveDataProvider();
 

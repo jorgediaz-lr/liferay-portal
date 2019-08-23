@@ -46,7 +46,7 @@ definition {
 
 		WorkflowAsset.createNewUserAccount(
 			newPassword = "test",
-			userEmailAddress = "user@liferay.com",
+			userEmailAddress = "user@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn",
@@ -54,7 +54,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -82,7 +82,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "user@liferay.com",
+			userEmailAddress = "user@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -90,7 +90,7 @@ definition {
 		User.logoutAndLoginPG(
 			userFirstName = "userfn",
 			userLastName = "userln",
-			userLoginEmailAddress = "user@liferay.com",
+			userLoginEmailAddress = "user@example.com",
 			userScreenName = "usersn");
 	}
 
@@ -114,22 +114,22 @@ definition {
 
 		WorkflowAsset.createNewUserAccount(
 			newPassword = "password",
-			userEmailAddress = "user@liferay.com",
+			userEmailAddress = "user@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		WorkflowAsset.gotoViaNotification(assetType = "User");
 
-		WorkflowAsset.viewUserDetails(userEmailAddress = "user@liferay.com");
+		WorkflowAsset.viewUserDetails(userEmailAddress = "user@example.com");
 
 		Workflow.gotoPreviewView();
 
-		WorkflowAsset.viewUserDetails(userEmailAddress = "user@liferay.com");
+		WorkflowAsset.viewUserDetails(userEmailAddress = "user@example.com");
 	}
 
 }

@@ -1209,7 +1209,7 @@ definition {
 
 		AssertTextEquals(
 			locator1 = "PortalSettingsEmailNotifications#EMAIL_NOTIFICATIONS_SENDER_ADDRESS_FIELD",
-			value1 = "test@liferay.com");
+			value1 = "test@example.com");
 	}
 
 	macro viewEnabledLDAPSetting {

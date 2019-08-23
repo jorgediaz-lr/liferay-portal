@@ -38,7 +38,7 @@ definition {
 
 		task ("Add second user with administrator permissions") {
 			JSONUser.addUser(
-				userEmailAddress = "user2@liferay.com",
+				userEmailAddress = "user2@example.com",
 				userFirstName = "userfn",
 				userLastName = "userln",
 				userScreenName = "user2");
@@ -50,7 +50,7 @@ definition {
 
 			User.editPasswordCP(
 				password = "password",
-				userEmailAddress = "user2@liferay.com",
+				userEmailAddress = "user2@example.com",
 				userScreenName = "user2");
 
 			ProductMenu.gotoPortlet(
@@ -92,7 +92,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "user2@liferay.com");
+			userEmailAddress = "user2@example.com");
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/test-site-name/content-page-name");
 
@@ -109,7 +109,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Notifications.viewBadgeCount(
 			activePanel = "Notifications",
@@ -151,7 +151,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "user2@liferay.com");
+			userEmailAddress = "user2@example.com");
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "web/test-site-name/content-page-name");
 
@@ -171,7 +171,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Notifications.viewBadgeCount(
 			activePanel = "Notifications",

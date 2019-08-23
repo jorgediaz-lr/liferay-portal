@@ -249,7 +249,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "user@liferay.com",
+			userEmailAddress = "user@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -260,7 +260,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "user@liferay.com",
+			userEmailAddress = "user@example.com",
 			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
@@ -282,7 +282,7 @@ definition {
 			userScreenName = "usersn");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "user@liferay.com",
+			userLoginEmailAddress = "user@example.com",
 			userScreenName = "usersn");
 
 		Navigator.gotoStagedSitePage(
@@ -294,7 +294,7 @@ definition {
 		Staging.submitForPublicationPageRevision();
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userScreenName = "Test Test");
 
 		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");

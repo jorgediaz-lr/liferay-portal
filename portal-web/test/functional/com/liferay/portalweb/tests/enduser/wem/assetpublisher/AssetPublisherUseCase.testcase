@@ -36,7 +36,7 @@ definition {
 		}
 		else {
 			User.logoutAndLoginPG(
-				userLoginEmailAddress = "test@liferay.com",
+				userLoginEmailAddress = "test@example.com",
 				userLoginFullName = "Test Test");
 
 			Site.tearDownCP();
@@ -66,7 +66,7 @@ definition {
 
 		JSONOrganization.assignUserToOrganization(
 			organizationName = "Organization Name",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Site.openSiteSettingsAdmin(siteURLKey = "organization-name");
 
@@ -85,7 +85,7 @@ definition {
 		User.firstLoginPG(
 			password = "test",
 			samlEnabled = "true",
-			userEmailAddress = "test@liferay.com",
+			userEmailAddress = "test@example.com",
 			virtualHostsURL = "http://www.baker.com:8080");
 
 		for (var sitePageName : list "Home,Documents and Media,News") {
@@ -104,7 +104,7 @@ definition {
 
 		User.firstLoginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com",
+			userEmailAddress = "test@example.com",
 			virtualHostsURL = "http://www.able.com:8080");
 
 		Navigator.openSpecificURL(url = "http://www.able.com:8080");
@@ -952,7 +952,7 @@ definition {
 	test ViewAPPortletAsNewUserSiteAdministratorViaUserSite {
 		task ("Add a new user with Site Administrator role") {
 			JSONUser.addUser(
-				userEmailAddress = "userea@liferay.com",
+				userEmailAddress = "userea@example.com",
 				userFirstName = "userfn",
 				userLastName = "userln",
 				userScreenName = "usersn");
@@ -960,11 +960,11 @@ definition {
 			JSONUser.setFirstPassword(
 				agreeToTermsAndAnswerReminderQuery = "true",
 				requireReset = "false",
-				userEmailAddress = "userea@liferay.com");
+				userEmailAddress = "userea@example.com");
 
 			JSONUser.addUserToSite(
 				groupName = "Test Site Name",
-				userEmailAddress = "userea@liferay.com");
+				userEmailAddress = "userea@example.com");
 
 			User.openUsersAdmin();
 
@@ -976,7 +976,7 @@ definition {
 		task ("Sign in as new user and assert user can configure the asset publisher to be dynamic") {
 			User.logoutPG();
 
-			User.loginUserPG(userEmailAddress = "userea@liferay.com");
+			User.loginUserPG(userEmailAddress = "userea@example.com");
 
 			Navigator.gotoSitePage(
 				pageName = "Asset Publisher Page",
@@ -1121,7 +1121,7 @@ definition {
 		}
 
 		for (var userScreenName : list "author1,author2") {
-			var userEmailAddress = "${userScreenName}ea@liferay.com";
+			var userEmailAddress = "${userScreenName}ea@example.com";
 			var userFirstName = "${userScreenName}";
 			var userLastName = "${userScreenName}";
 
@@ -1145,7 +1145,7 @@ definition {
 		}
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "author1ea@liferay.com",
+			userLoginEmailAddress = "author1ea@example.com",
 			userLoginFullName = "author1 author1");
 
 		WebContent.openWebContentAdmin(siteURLKey = "test-site-name");
@@ -1170,7 +1170,7 @@ definition {
 			webContentTitle = "WC WebContent Title");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "author2ea@liferay.com",
+			userLoginEmailAddress = "author2ea@example.com",
 			userLoginFullName = "author2 author2");
 
 		WebContent.openWebContentAdmin(siteURLKey = "test-site-name");

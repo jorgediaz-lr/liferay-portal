@@ -297,7 +297,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "user2@liferay.com",
+			userEmailAddress = "user2@example.com",
 			userFirstName = "user2",
 			userLastName = "user2",
 			userScreenName = "user2");
@@ -772,7 +772,7 @@ definition {
 
 		User.loginPG(
 			password = "test2",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 	}
 
 	macro searchForAssetsAfterUpgrade {
@@ -995,7 +995,7 @@ definition {
 
 		User.viewCP(
 			userBirthday = "09/09/1999",
-			userEmailAddress = "user@liferay.com",
+			userEmailAddress = "user@example.com",
 			userFirstName = "userfn",
 			userJobTitle = "PhD",
 			userLastName = "userln",
@@ -1095,14 +1095,14 @@ definition {
 
 		User.editPasswordCP(
 			requirePasswordReset = "true",
-			userEmailAddress = "user@liferay.com",
+			userEmailAddress = "user@example.com",
 			userScreenName = "usersn");
 
 		User.logoutPG();
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "user@liferay.com");
+			userEmailAddress = "user@example.com");
 
 		UserBar.gotoDropdownItem(dropdownItem = "My Profile");
 
@@ -1124,7 +1124,7 @@ definition {
 		DMDocument.viewPG(dmDocumentTitle = "Document doc Title");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "Test Test");
 
 		ProductMenu.gotoPortlet(
@@ -1165,7 +1165,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.viewCP(
-			userEmailAddress = "user@liferay.com",
+			userEmailAddress = "user@example.com",
 			userFirstName = "userfn1",
 			userLastName = "userln1",
 			userScreenName = "usersn1");
@@ -1230,7 +1230,7 @@ definition {
 
 		User.removeContactInformation(rowEntry = "555-555-5555");
 
-		User.removeContactInformation(rowEntry = "test1@liferay.com");
+		User.removeContactInformation(rowEntry = "test1@example.com");
 
 		User.removeContactInformation(rowEntry = "https://www.google.com/");
 
@@ -1420,7 +1420,7 @@ definition {
 
 		FormFields.viewTextMultilineValue(
 			fieldName = "reserved-email-addresses",
-			fieldValue = "userea@liferay.com");
+			fieldValue = "userea@example.com");
 
 		PortalSettings.gotoConfiguration(
 			configurationCategory = "Users",
@@ -1720,7 +1720,7 @@ definition {
 
 	macro ViewPortletsPermissions {
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea1@liferay.com",
+			userLoginEmailAddress = "userea1@example.com",
 			userLoginFullName = "userfn1 userln1");
 
 		Navigator.gotoSitePage(
@@ -1753,7 +1753,7 @@ definition {
 		Portlet.viewNoPermissionPG();
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea2@liferay.com",
+			userLoginEmailAddress = "userea2@example.com",
 			userLoginFullName = "userfn2 userln2");
 
 		Navigator.gotoSitePage(
@@ -1895,7 +1895,7 @@ definition {
 
 		SystemSettings.viewTextareaValue(
 			fieldName = "emailFromAddress",
-			fieldValue = "test@liferay.com");
+			fieldValue = "test@example.com");
 
 		FormFields.viewCheckboxNotChecked(fieldName = "emailArticleAddedEnabled");
 
@@ -1913,7 +1913,7 @@ definition {
 
 		SystemSettings.viewTextareaValue(
 			fieldName = "emailFromAddress",
-			fieldValue = "test@liferay.com");
+			fieldValue = "test@example.com");
 
 		SystemSettings.viewTextareaValue(
 			fieldName = "emailFromName",
@@ -2071,7 +2071,7 @@ definition {
 
 		SignOut.signOut();
 
-		SignIn.signIn(userEmailAddress = "user@liferay.com");
+		SignIn.signIn(userEmailAddress = "user@example.com");
 
 		Smoke.viewWelcomePage(
 			userFirstName = "Userfn",

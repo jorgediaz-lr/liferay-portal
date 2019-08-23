@@ -11,7 +11,7 @@ definition {
 		User.firstLoginPG();
 
 		JSONUser.addUser(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -22,7 +22,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		JSONBlog.addEntry(
@@ -53,7 +53,7 @@ definition {
 
 		Asset.share(
 			sharingPermissions = "View",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userName = "userfn userln");
 
 		BlogsNavigator.openBlogsAdmin(siteURLKey = "guest");
@@ -62,7 +62,7 @@ definition {
 
 		Asset.share(
 			sharingPermissions = "Update",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userName = "userfn userln");
 
 		BlogsNavigator.openBlogsAdmin(siteURLKey = "guest");
@@ -71,14 +71,14 @@ definition {
 
 		Asset.share(
 			sharingPermissions = "Comment",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userName = "userfn userln");
 
 		User.logoutPG();
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		Notifications.viewBadgeCount(notificationCount = "3");
 
@@ -112,7 +112,7 @@ definition {
 		Asset.share(
 			noAutocomplete = "true",
 			sharingPermissions = "Update",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userName = "userfn userln");
 
 		Navigator.openURL();
@@ -131,7 +131,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		Notifications.viewBadgeCount(notificationCount = "2");
 
@@ -156,14 +156,14 @@ definition {
 
 		Asset.share(
 			sharingPermissions = "Comment",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userName = "userfn userln");
 
 		User.logoutPG();
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		Notifications.viewBadgeCount(notificationCount = "1");
 
@@ -190,14 +190,14 @@ definition {
 
 		Asset.share(
 			sharingPermissions = "Update",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userName = "userfn userln");
 
 		User.logoutPG();
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		Notifications.viewBadgeCount(notificationCount = "1");
 
@@ -236,7 +236,7 @@ definition {
 		Asset.share(
 			noAutocomplete = "true",
 			sharingPermissions = "Update",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userName = "userfn userln");
 
 		BlogsNavigator.openBlogsAdmin(siteURLKey = "guest");
@@ -249,7 +249,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		Notifications.viewBadgeCount(notificationCount = "1");
 
@@ -271,7 +271,7 @@ definition {
 		Asset.share(
 			noAutocomplete = "true",
 			sharingPermissions = "Update",
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userName = "userfn userln");
 
 		Navigator.openURL();
@@ -290,7 +290,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		Notifications.viewBadgeCount(notificationCount = "2");
 

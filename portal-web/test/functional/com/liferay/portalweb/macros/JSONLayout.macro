@@ -17,7 +17,7 @@ definition {
 
 		var curl = '''
 			${portalURL}/api/jsonws/layout/add-layout \
-				-u test@liferay.com:test \
+				-u test@example.com:test \
 				-d groupId=${groupId} \
 				-d privateLayout=${privateLayout} \
 				-d parentLayoutId=${parentLayoutId} \
@@ -52,7 +52,7 @@ definition {
 
 		var curl = '''
 			${portalURL}/api/jsonws/layout/get-layouts \
-				-u test@liferay.com:test \
+				-u test@example.com:test \
 				-d groupId=${groupId} \
 				-d privateLayout=${privateLayout}
 		''';
@@ -82,7 +82,7 @@ definition {
 
 		var curl = '''
 			${portalURL}/api/jsonws/layout/get-layouts \
-				-u test@liferay.com:test \
+				-u test@example.com:test \
 				-d groupId=${groupId} \
 				-d privateLayout=${privateLayout}
 		''';

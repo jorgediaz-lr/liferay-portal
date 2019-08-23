@@ -6,7 +6,7 @@ definition {
 
 		var curl = '''
 			${portalURL}/api/jsonws/fragment.fragmentcollection/add-fragment-collection \
-			-u test@liferay.com:test \
+			-u test@example.com:test \
 			-d groupId=${groupId} \
 			-d name=${name} \
 			-d description=
@@ -37,7 +37,7 @@ definition {
 
 		var curl = '''
 			${portalURL}/api/jsonws/fragment.fragmententry/add-fragment-entry \
-			-u test@liferay.com:test \
+			-u test@example.com:test \
 			-d groupId=${groupId} \
 			-d fragmentCollectionId=${collectionId} \
 			-d fragmentEntryKey= \
@@ -64,7 +64,7 @@ definition {
 
 		var curl = '''
 			${portalURL}/api/jsonws/fragment.fragmentcollection/get-fragment-collections \
-			-u test@liferay.com:test \
+			-u test@example.com:test \
 			-d groupId=${groupId} \
 			-d name=${collectionName} \
 			-d <CURL_DATA[start=-1]CURL_DATA> \
@@ -91,7 +91,7 @@ definition {
 
 		var curl = '''
 			${portalURL}/api/jsonws/fragment.fragmentcollection/get-fragment-collections \
-			-u test@liferay.com:test \
+			-u test@example.com:test \
 			-d groupId=${groupId} \
 			-d name=${collectionName} \
 			-d <CURL_DATA[start=-1]CURL_DATA> \
@@ -109,7 +109,7 @@ definition {
 
 		var curl = '''
 			${portalURL}/api/jsonws/fragment.fragmententry/get-fragment-entries \
-			-u test@liferay.com:test \
+			-u test@example.com:test \
 			-d groupId=${groupId} \
 			-d fragmentCollectionId=${fragmentCollectionId} \
 			-d <CURL_DATA[start=-1]CURL_DATA> \

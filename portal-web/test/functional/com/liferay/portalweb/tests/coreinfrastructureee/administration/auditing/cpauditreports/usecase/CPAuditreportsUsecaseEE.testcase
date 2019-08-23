@@ -107,11 +107,11 @@ definition {
 
 		User.loginUserInvalidPG(
 			password = "user",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -131,7 +131,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "test1@liferay.com",
+			userEmailAddress = "test1@example.com",
 			userFirstName = "test1",
 			userLastName = "test1",
 			userScreenName = "test1");
@@ -142,7 +142,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "test1@liferay.com",
+			userEmailAddress = "test1@example.com",
 			userScreenName = "test1");
 
 		ProductMenu.gotoPortlet(

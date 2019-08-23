@@ -173,7 +173,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -184,7 +184,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		SitePages.openPagesAdmin(siteURLKey = "guest");
@@ -238,7 +238,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -249,7 +249,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		Navigator.openURL();
@@ -273,7 +273,7 @@ definition {
 			site = "${siteName}");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userLoginFullName = "userfn userln");
 
 		Navigator.gotoPage(pageName = "Calendar Page");
@@ -293,7 +293,7 @@ definition {
 		CalendarEvent.view(eventTitle = "Calendar Event");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "Test Test");
 	}
 
@@ -426,7 +426,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -437,7 +437,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
@@ -661,7 +661,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -672,7 +672,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
@@ -956,7 +956,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -993,7 +993,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "usersn1@liferay.com",
+			userEmailAddress = "usersn1@example.com",
 			userFirstName = "userfn1",
 			userLastName = "userln1",
 			userScreenName = "usersn1");
@@ -1004,7 +1004,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "usersn2@liferay.com",
+			userEmailAddress = "usersn2@example.com",
 			userFirstName = "userfn2",
 			userLastName = "userln2",
 			userScreenName = "usersn2");
@@ -1015,7 +1015,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "usersn3@liferay.com",
+			userEmailAddress = "usersn3@example.com",
 			userFirstName = "userfn3",
 			userLastName = "userln3",
 			userScreenName = "usersn3");
@@ -1027,7 +1027,7 @@ definition {
 				portlet = "Users and Organizations");
 
 			User.editPasswordCP(
-				userEmailAddress = "${userScreenName}@liferay.com",
+				userEmailAddress = "${userScreenName}@example.com",
 				userScreenName = "${userScreenName}");
 		}
 
@@ -1044,7 +1044,7 @@ definition {
 			specificOptionSetValue = "userfn1 userln1,userfn2 userln2,userfn3 userln3");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "usersn1@liferay.com",
+			userLoginEmailAddress = "usersn1@example.com",
 			userLoginFullName = "userfn1 userln1");
 
 		Navigator.gotoPage(pageName = "Calendar Page");
@@ -1054,7 +1054,7 @@ definition {
 			rsvp = "Maybe");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "usersn2@liferay.com",
+			userLoginEmailAddress = "usersn2@example.com",
 			userLoginFullName = "userfn2 userln2");
 
 		Navigator.gotoPage(pageName = "Calendar Page");
@@ -1064,7 +1064,7 @@ definition {
 			rsvp = "No");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "usersn3@liferay.com",
+			userLoginEmailAddress = "usersn3@example.com",
 			userLoginFullName = "userfn3 userln3");
 
 		Navigator.gotoPage(pageName = "Calendar Page");
@@ -1074,7 +1074,7 @@ definition {
 			rsvp = "Yes");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "Test Test");
 
 		Navigator.gotoPage(pageName = "Calendar Page");

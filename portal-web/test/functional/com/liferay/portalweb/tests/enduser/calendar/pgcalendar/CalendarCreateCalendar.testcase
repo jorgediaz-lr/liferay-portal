@@ -96,7 +96,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -203,7 +203,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "usersn@liferay.com",
+			userEmailAddress = "usersn@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -214,7 +214,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "usersn@liferay.com",
+			userEmailAddress = "usersn@example.com",
 			userScreenName = "usersn");
 
 		for (var siteName : list "Site A,Site B,Site C") {
@@ -262,7 +262,7 @@ definition {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "usersn@liferay.com",
+			userLoginEmailAddress = "usersn@example.com",
 			userScreenName = "usersn");
 
 		UserBar.gotoDropdownItem(dropdownItem = "My Dashboard");
@@ -270,7 +270,7 @@ definition {
 		Portlet.addPG(portletName = "Calendar");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "usersn@liferay.com",
+			userLoginEmailAddress = "usersn@example.com",
 			userScreenName = "usersn");
 
 		UserBar.gotoDropdownItem(dropdownItem = "My Dashboard");

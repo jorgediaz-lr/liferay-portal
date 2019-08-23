@@ -19,7 +19,7 @@ definition {
 		}
 		else {
 			User.logoutAndLoginPG(
-				userLoginEmailAddress = "test@liferay.com",
+				userLoginEmailAddress = "test@example.com",
 				userLoginFullName = "Test Test");
 
 			User.tearDownCP();
@@ -69,7 +69,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "&lt;userfn&gt;",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -80,7 +80,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.viewCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "&lt;userfn&gt;",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -91,7 +91,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
@@ -107,7 +107,7 @@ definition {
 
 		User.loginUserPG(
 			password = "test",
-			userEmailAddress = "userea@liferay.com");
+			userEmailAddress = "userea@example.com");
 
 		UserBar.gotoDropdownItem(dropdownItem = "My Profile");
 
@@ -231,7 +231,7 @@ definition {
 	@priority = "4"
 	test EditUserAdditionalEmailAddresses {
 		JSONUser.addUser(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -248,85 +248,85 @@ definition {
 		Navigator.gotoNavNested(navNested = "Contact Information");
 
 		User.addContactInformation(
-			address = "additional1@liferay.com",
+			address = "additional1@example.com",
 			contactType = "add-email-address-link");
 
 		User.viewContactInformation(
-			address = "additional1@liferay.com",
+			address = "additional1@example.com",
 			searchContainerType = "emailAddressesSearchContainer");
 
 		User.viewIsPrimary(
-			contactInfoPrimaryValue = "additional1@liferay.com",
+			contactInfoPrimaryValue = "additional1@example.com",
 			searchContainerType = "emailAddressesSearchContainer");
 
 		User.addContactInformation(
-			address = "additional2@liferay.com",
+			address = "additional2@example.com",
 			contactType = "add-email-address-link",
 			makePrimary = "true");
 
 		User.viewIsPrimary(
-			contactInfoPrimaryValue = "additional2@liferay.com",
+			contactInfoPrimaryValue = "additional2@example.com",
 			searchContainerType = "emailAddressesSearchContainer");
 
 		User.addContactInformation(
-			address = "additional3@liferay.com",
+			address = "additional3@example.com",
 			contactType = "add-email-address-link");
 
 		User.viewNotPrimary(
-			contactInfoPrimaryValue = "additional1@liferay.com",
+			contactInfoPrimaryValue = "additional1@example.com",
 			searchContainerType = "emailAddressesSearchContainer");
 
 		User.viewIsPrimary(
-			contactInfoPrimaryValue = "additional2@liferay.com",
+			contactInfoPrimaryValue = "additional2@example.com",
 			searchContainerType = "emailAddressesSearchContainer");
 
 		User.viewNotPrimary(
-			contactInfoPrimaryValue = "additional3@liferay.com",
+			contactInfoPrimaryValue = "additional3@example.com",
 			searchContainerType = "emailAddressesSearchContainer");
 
-		UserNavigator.gotoEdit(rowEntry = "additional2@liferay.com");
+		UserNavigator.gotoEdit(rowEntry = "additional2@example.com");
 
 		User.editPrimary(makePrimary = "false");
 
 		User.viewNotPrimary(
-			contactInfoPrimaryValue = "additional2@liferay.com",
+			contactInfoPrimaryValue = "additional2@example.com",
 			searchContainerType = "emailAddressesSearchContainer");
 
 		User.viewIsPrimary(
-			contactInfoPrimaryValue = "additional3@liferay.com",
+			contactInfoPrimaryValue = "additional3@example.com",
 			searchContainerType = "emailAddressesSearchContainer");
 
-		User.makePrimary(rowEntry = "additional2@liferay.com");
+		User.makePrimary(rowEntry = "additional2@example.com");
 
 		User.viewNotPrimary(
-			contactInfoPrimaryValue = "additional1@liferay.com",
+			contactInfoPrimaryValue = "additional1@example.com",
 			searchContainerType = "emailAddressesSearchContainer");
 
 		User.viewIsPrimary(
-			contactInfoPrimaryValue = "additional2@liferay.com",
+			contactInfoPrimaryValue = "additional2@example.com",
 			searchContainerType = "emailAddressesSearchContainer");
 
 		User.viewNotPrimary(
-			contactInfoPrimaryValue = "additional3@liferay.com",
+			contactInfoPrimaryValue = "additional3@example.com",
 			searchContainerType = "emailAddressesSearchContainer");
 
-		User.removeContactInformation(rowEntry = "additional3@liferay.com");
+		User.removeContactInformation(rowEntry = "additional3@example.com");
 
 		User.viewIsPrimary(
-			contactInfoPrimaryValue = "additional2@liferay.com",
+			contactInfoPrimaryValue = "additional2@example.com",
 			searchContainerType = "emailAddressesSearchContainer");
 
-		User.removeContactInformation(rowEntry = "additional2@liferay.com");
+		User.removeContactInformation(rowEntry = "additional2@example.com");
 
 		User.viewIsPrimary(
-			contactInfoPrimaryValue = "additional1@liferay.com",
+			contactInfoPrimaryValue = "additional1@example.com",
 			searchContainerType = "emailAddressesSearchContainer");
 	}
 
 	@priority = "4"
 	test EditUserAddresses {
 		JSONUser.addUser(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -406,7 +406,7 @@ definition {
 	@priority = "4"
 	test EditUserPhoneNumbers {
 		JSONUser.addUser(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -503,7 +503,7 @@ definition {
 	@priority = "4"
 	test EditUserWebsites {
 		JSONUser.addUser(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -629,19 +629,19 @@ definition {
 			roleTitle = "Impersonating Role Name");
 
 		JSONUser.addUser(
-			userEmailAddress = "userea1@liferay.com",
+			userEmailAddress = "userea1@example.com",
 			userFirstName = "userfn1",
 			userLastName = "userln1",
 			userScreenName = "usersn1");
 
 		JSONUser.addUser(
-			userEmailAddress = "userea2@liferay.com",
+			userEmailAddress = "userea2@example.com",
 			userFirstName = "userfn2",
 			userLastName = "userln2",
 			userScreenName = "usersn2");
 
 		JSONUser.addUser(
-			userEmailAddress = "userea3@liferay.com",
+			userEmailAddress = "userea3@example.com",
 			userFirstName = "userfn3",
 			userLastName = "userln3",
 			userScreenName = "usersn3");
@@ -652,16 +652,16 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea1@liferay.com",
+			userEmailAddress = "userea1@example.com",
 			userScreenName = "usersn1");
 
 		JSONRole.assignRoleToUser(
 			roleTitle = "Impersonating Role Name",
-			userEmailAddress = "userea1@liferay.com");
+			userEmailAddress = "userea1@example.com");
 
 		JSONRole.assignRoleToUser(
 			roleTitle = "Administrator",
-			userEmailAddress = "userea3@liferay.com");
+			userEmailAddress = "userea3@example.com");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -669,7 +669,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea2@liferay.com",
+			userEmailAddress = "userea2@example.com",
 			userScreenName = "usersn2");
 
 		ProductMenu.gotoPortlet(
@@ -678,11 +678,11 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea3@liferay.com",
+			userEmailAddress = "userea3@example.com",
 			userScreenName = "usersn3");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea1@liferay.com",
+			userLoginEmailAddress = "userea1@example.com",
 			userLoginFullName = "userfn1 userln1");
 
 		ProductMenu.gotoPortlet(
@@ -720,15 +720,15 @@ definition {
 			userScreenName = "test");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "test@liferay.com",
+			userLoginEmailAddress = "test@example.com",
 			userLoginFullName = "Test Test");
 
 		JSONRole.assignRoleToUser(
 			roleTitle = "Administrator",
-			userEmailAddress = "userea1@liferay.com");
+			userEmailAddress = "userea1@example.com");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea1@liferay.com",
+			userLoginEmailAddress = "userea1@example.com",
 			userLoginFullName = "userfn1 userln1");
 
 		ProductMenu.gotoPortlet(
@@ -794,7 +794,7 @@ definition {
 				portlet = "Users and Organizations");
 
 			User.addCP(
-				userEmailAddress = "userea${count}@liferay.com",
+				userEmailAddress = "userea${count}@example.com",
 				userFirstName = "userfn${count}",
 				userLastName = "userln${count}",
 				userScreenName = "usersn${count}");
@@ -1137,7 +1137,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea1@liferay.com",
+			userEmailAddress = "userea1@example.com",
 			userFirstName = "userfn1",
 			userLastName = "userln1",
 			userScreenName = "usersn1");
@@ -1148,7 +1148,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea1@liferay.com",
+			userEmailAddress = "userea1@example.com",
 			userScreenName = "usersn1");
 
 		ProductMenu.gotoPortlet(
@@ -1187,7 +1187,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea2@liferay.com",
+			userEmailAddress = "userea2@example.com",
 			userFirstName = "userfn2",
 			userLastName = "userln2",
 			userScreenName = "usersn2");
@@ -1208,7 +1208,7 @@ definition {
 
 		User.logoutPG();
 
-		User.loginUserPG(userEmailAddress = "userea1@liferay.com");
+		User.loginUserPG(userEmailAddress = "userea1@example.com");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -1236,7 +1236,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 	}
 
 	@priority = "3"
@@ -1334,7 +1334,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -1387,7 +1387,7 @@ definition {
 			number = "1-877-543-3729");
 
 		Organization.addContactInformation(
-			address = "testuser@liferay.com",
+			address = "testuser@example.com",
 			contactType = "add-email-address-link");
 
 		Organization.addContactInformation(
@@ -1429,7 +1429,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "test1@liferay.com",
+			userEmailAddress = "test1@example.com",
 			userFirstName = "test1",
 			userLastName = "test1",
 			userScreenName = "test1");
@@ -1466,7 +1466,7 @@ definition {
 		User.editPasswordInvalidCP(
 			newPassword = "NO1else",
 			regex = "(?=.{4})(?:[a-zA-Z]*)",
-			userEmailAddress = "test1@liferay.com",
+			userEmailAddress = "test1@example.com",
 			userScreenName = "test1");
 
 		ProductMenu.gotoPortlet(
@@ -1478,7 +1478,7 @@ definition {
 			newPassword = "tryingHARD",
 			resetPassword = "tryingHARDER",
 			syntaxCheckingEnabled = "true",
-			userEmailAddress = "test1@liferay.com",
+			userEmailAddress = "test1@example.com",
 			userScreenName = "test1");
 
 		ProductMenu.gotoPortlet(
@@ -1499,7 +1499,7 @@ definition {
 			newPassword = "abcABC",
 			resetPassword = "abcdABCD",
 			syntaxCheckingEnabled = "true",
-			userEmailAddress = "test1@liferay.com",
+			userEmailAddress = "test1@example.com",
 			userScreenName = "test1");
 
 		ProductMenu.gotoPortlet(
@@ -1511,7 +1511,7 @@ definition {
 			newPassword = "123ABC",
 			resetPassword = "1234ABCD",
 			syntaxCheckingEnabled = "true",
-			userEmailAddress = "test1@liferay.com",
+			userEmailAddress = "test1@example.com",
 			userScreenName = "test1");
 
 		ProductMenu.gotoPortlet(
@@ -1522,7 +1522,7 @@ definition {
 		User.editPasswordInvalidCP(
 			newPassword = "1-2-3ABC",
 			regex = "(?=.{6})(?:[a-zA-Z0-9]*)",
-			userEmailAddress = "test1@liferay.com",
+			userEmailAddress = "test1@example.com",
 			userScreenName = "test1");
 
 		ProductMenu.gotoPortlet(
@@ -1542,7 +1542,7 @@ definition {
 		User.editPasswordInvalidCP(
 			minimumNumbers = "2",
 			newPassword = "abcABC",
-			userEmailAddress = "test1@liferay.com",
+			userEmailAddress = "test1@example.com",
 			userScreenName = "test1");
 
 		ProductMenu.gotoPortlet(
@@ -1553,7 +1553,7 @@ definition {
 		User.editPasswordInvalidCP(
 			newPassword = "12AB",
 			regex = "(?=.{6})(?:[a-zA-Z0-9]*)",
-			userEmailAddress = "test1@liferay.com",
+			userEmailAddress = "test1@example.com",
 			userScreenName = "test1");
 
 		ProductMenu.gotoPortlet(
@@ -1565,7 +1565,7 @@ definition {
 			newPassword = "12ABcd",
 			resetPassword = "123ABcd",
 			syntaxCheckingEnabled = "true",
-			userEmailAddress = "test1@liferay.com",
+			userEmailAddress = "test1@example.com",
 			userScreenName = "test1");
 	}
 
@@ -1598,7 +1598,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea1@liferay.com",
+			userEmailAddress = "userea1@example.com",
 			userFirstName = "userfn1",
 			userLastName = "userln1",
 			userScreenName = "usersn1");
@@ -1606,7 +1606,7 @@ definition {
 		Navigator.gotoBack();
 
 		User.editPasswordCP(
-			userEmailAddress = "userea1@liferay.com",
+			userEmailAddress = "userea1@example.com",
 			userScreenName = "usersn1");
 
 		ProductMenu.gotoPortlet(
@@ -1615,7 +1615,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea2@liferay.com",
+			userEmailAddress = "userea2@example.com",
 			userFirstName = "userfn2",
 			userLastName = "userln2",
 			userScreenName = "usersn2");
@@ -1623,7 +1623,7 @@ definition {
 		Navigator.gotoBack();
 
 		User.editPasswordCP(
-			userEmailAddress = "userea2@liferay.com",
+			userEmailAddress = "userea2@example.com",
 			userScreenName = "usersn2");
 
 		ProductMenu.gotoPortlet(
@@ -1796,7 +1796,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "userea1@liferay.com");
+			userEmailAddress = "userea1@example.com");
 
 		Navigator.openSpecificURL(url = "${portalURL}/web/united-states");
 
@@ -1806,7 +1806,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "userea2@liferay.com");
+			userEmailAddress = "userea2@example.com");
 
 		Navigator.openSpecificURL(url = "${portalURL}/web/canada");
 
@@ -1816,7 +1816,7 @@ definition {
 	@priority = "4"
 	test ViewUserFormPersistence {
 		JSONUser.addUser(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");

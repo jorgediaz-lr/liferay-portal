@@ -412,7 +412,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
@@ -423,7 +423,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = "userea@liferay.com",
+			userEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
@@ -488,7 +488,7 @@ definition {
 			userScreenName = "usersn");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = "userea@liferay.com",
+			userLoginEmailAddress = "userea@example.com",
 			userScreenName = "usersn");
 
 		Navigator.openSiteURL(siteName = "Form Site");
@@ -2723,10 +2723,10 @@ definition {
 		FormsAdminNavigator.gotoSettings();
 
 		Form.configureEmailNotifications(
-			fromAddress = "test@liferay.com",
+			fromAddress = "test@example.com",
 			fromName = "Sender Name",
 			subject = "Form Subject",
-			toAddress = "formreviewer@liferay.com");
+			toAddress = "formreviewer@example.com");
 
 		Form.save();
 
@@ -2764,7 +2764,7 @@ definition {
 		MockMock.viewMail(
 			asset = "Form Subject",
 			content = "Text Field Value",
-			recipient = "formreviewer@liferay.com",
+			recipient = "formreviewer@example.com",
 			sender = "Sender Name",
 			subject = "submitted an entry");
 

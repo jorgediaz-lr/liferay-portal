@@ -33,7 +33,7 @@ definition {
 		}
 		else {
 			User.logoutAndLoginPG(
-				userLoginEmailAddress = "test@liferay.com",
+				userLoginEmailAddress = "test@example.com",
 				userLoginFullName = "Test Test");
 
 			BlogsEntry.tearDownCP();
@@ -472,7 +472,7 @@ definition {
 
 		User.firstLoginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com",
+			userEmailAddress = "test@example.com",
 			virtualHostsURL = "http://www.able.com:8080");
 
 		Navigator.gotoSpecificURLPage(
@@ -1213,7 +1213,7 @@ definition {
 
 		User.loginPG(
 			password = "test",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Navigator.gotoPage(pageName = "Blogs Aggregator Page");
 
@@ -1321,7 +1321,7 @@ definition {
 		User.loginPG(
 			password = "test",
 			specificURL = "http://www.baker.com:8080/group/guest",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Portlet.addPG(portletName = "Blogs");
 

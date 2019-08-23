@@ -8,7 +8,7 @@ definition {
 			User.loginPG(
 				password = "test",
 				specificURL = "${idpURL}",
-				userEmailAddress = "test@liferay.com");
+				userEmailAddress = "test@example.com");
 
 			Navigator.openSpecificURL(url = "${idpURL}");
 		}
@@ -47,7 +47,7 @@ definition {
 		User.loginPG(
 			password = "test",
 			specificURL = "${spURL}",
-			userEmailAddress = "test@liferay.com");
+			userEmailAddress = "test@example.com");
 
 		Navigator.openSpecificURL(url = "${spURL}");
 
@@ -95,7 +95,7 @@ definition {
 			User.loginPG(
 				password = "test",
 				specificURL = "${spURL}",
-				userEmailAddress = "test@liferay.com");
+				userEmailAddress = "test@example.com");
 		}
 
 		ProductMenu.gotoPortlet(
@@ -127,7 +127,7 @@ definition {
 			User.loginPG(
 				password = "test",
 				specificURL = "${idpURL}",
-				userEmailAddress = "test@liferay.com");
+				userEmailAddress = "test@example.com");
 		}
 
 		ProductMenu.gotoPortlet(
@@ -182,7 +182,7 @@ definition {
 				rememberMeChecked = "${rememberMeChecked}",
 				samlMultiIdPs = "${samlMultiIdPs}",
 				specificURL = "${specificURL}",
-				userEmailAddress = "test@liferay.com");
+				userEmailAddress = "test@example.com");
 		}
 
 		Pause(locator1 = "2000");
