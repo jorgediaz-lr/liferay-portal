@@ -645,7 +645,7 @@ Liferay.Service(
 
 		<textarea class="hide" id="curlTpl">
 curl <%= themeDisplay.getPortalURL() + jsonWSPath + jsonWebServiceActionMapping.getPath() %> \\
-  -u test@liferay.com:test <tpl if="data.length">\\
+  -u test@example.com:test <tpl if="data.length">\\
   <tpl for="data">-{parent.flag} {key}={[this.formatDataType(values.key, values.value)]} <tpl if="!$last">\\
   </tpl></tpl></tpl>
 		</textarea>

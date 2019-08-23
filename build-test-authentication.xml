@@ -138,7 +138,7 @@ SERVER_URL=http://test.able.com:8080</echo>
 
 					<exec dir="${openam.admin.tools.dir}/openam/bin" executable="/bin/bash" failonerror="true">
 						<arg value="-c" />
-						<arg value="./ssoadm create-identity -e / -i 'test' -t User -u amAdmin -f ${openam.admin.tools.dir}/passwordfile -a givenName=Test sn=Test userPassword=password mail=test@liferay.com" />
+						<arg value="./ssoadm create-identity -e / -i 'test' -t User -u amAdmin -f ${openam.admin.tools.dir}/passwordfile -a givenName=Test sn=Test userPassword=password mail=test@example.com" />
 					</exec>
 				</then>
 				<elseif>
@@ -156,7 +156,7 @@ SERVER_URL=http://test.able.com:8080</echo>
 
 						<exec dir="${openam.admin.tools.dir}/openam/bin" executable="cmd" failonerror="true">
 							<arg value="/c" />
-							<arg value="ssoadm create-identity -e / -i 'Test Test' -t User -u amAdmin -f ${openam.admin.tools.dir}/passwordfile -a givenName=Test sn=Test userPassword=password mail=test@liferay.com" />
+							<arg value="ssoadm create-identity -e / -i 'Test Test' -t User -u amAdmin -f ${openam.admin.tools.dir}/passwordfile -a givenName=Test sn=Test userPassword=password mail=test@example.com" />
 						</exec>
 					</then>
 				</elseif>
@@ -174,7 +174,7 @@ SERVER_URL=http://test.able.com:8080</echo>
 
 	<target name="verify-token-based-login">
 		<exec executable="curl" outputproperty="curl.output">
-			<arg line="-H SM_USER:test@liferay.com localhost:8080/web/guest" />
+			<arg line="-H SM_USER:test@example.com localhost:8080/web/guest" />
 		</exec>
 
 		<echo>${curl.output}</echo>
