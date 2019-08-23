@@ -67,7 +67,7 @@ public abstract class BaseBlogPostingImageResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'DELETE' 'http://localhost:8080/o/headless-delivery/v1.0/blog-posting-images/{blogPostingImageId}'  -u 'test@liferay.com:test'
+	 * curl -X 'DELETE' 'http://localhost:8080/o/headless-delivery/v1.0/blog-posting-images/{blogPostingImageId}'  -u 'test@example.com:test'
 	 */
 	@Override
 	@DELETE
@@ -87,7 +87,7 @@ public abstract class BaseBlogPostingImageResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/headless-delivery/v1.0/blog-posting-images/{blogPostingImageId}'  -u 'test@liferay.com:test'
+	 * curl -X 'GET' 'http://localhost:8080/o/headless-delivery/v1.0/blog-posting-images/{blogPostingImageId}'  -u 'test@example.com:test'
 	 */
 	@Override
 	@GET
@@ -111,7 +111,7 @@ public abstract class BaseBlogPostingImageResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/headless-delivery/v1.0/sites/{siteId}/blog-posting-images'  -u 'test@liferay.com:test'
+	 * curl -X 'GET' 'http://localhost:8080/o/headless-delivery/v1.0/sites/{siteId}/blog-posting-images'  -u 'test@example.com:test'
 	 */
 	@Override
 	@GET
@@ -144,7 +144,7 @@ public abstract class BaseBlogPostingImageResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'POST' 'http://localhost:8080/o/headless-delivery/v1.0/sites/{siteId}/blog-posting-images'  -u 'test@liferay.com:test'
+	 * curl -X 'POST' 'http://localhost:8080/o/headless-delivery/v1.0/sites/{siteId}/blog-posting-images'  -u 'test@example.com:test'
 	 */
 	@Override
 	@Consumes("multipart/form-data")

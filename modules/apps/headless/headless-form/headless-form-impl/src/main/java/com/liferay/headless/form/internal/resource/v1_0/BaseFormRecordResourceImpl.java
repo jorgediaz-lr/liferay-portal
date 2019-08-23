@@ -61,7 +61,7 @@ public abstract class BaseFormRecordResourceImpl implements FormRecordResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/headless-form/v1.0/form-records/{formRecordId}'  -u 'test@liferay.com:test'
+	 * curl -X 'GET' 'http://localhost:8080/o/headless-form/v1.0/form-records/{formRecordId}'  -u 'test@example.com:test'
 	 */
 	@Override
 	@GET
@@ -82,7 +82,7 @@ public abstract class BaseFormRecordResourceImpl implements FormRecordResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'PUT' 'http://localhost:8080/o/headless-form/v1.0/form-records/{formRecordId}' -d $'{"creator": ___, "draft": ___, "formFieldValues": ___, "formId": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
+	 * curl -X 'PUT' 'http://localhost:8080/o/headless-form/v1.0/form-records/{formRecordId}' -d $'{"creator": ___, "draft": ___, "formFieldValues": ___, "formId": ___}' --header 'Content-Type: application/json' -u 'test@example.com:test'
 	 */
 	@Override
 	@Consumes({"application/json", "application/xml"})
@@ -105,7 +105,7 @@ public abstract class BaseFormRecordResourceImpl implements FormRecordResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/headless-form/v1.0/forms/{formId}/form-records'  -u 'test@liferay.com:test'
+	 * curl -X 'GET' 'http://localhost:8080/o/headless-form/v1.0/forms/{formId}/form-records'  -u 'test@example.com:test'
 	 */
 	@Override
 	@GET
@@ -130,7 +130,7 @@ public abstract class BaseFormRecordResourceImpl implements FormRecordResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'POST' 'http://localhost:8080/o/headless-form/v1.0/forms/{formId}/form-records' -d $'{"creator": ___, "draft": ___, "formFieldValues": ___, "formId": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
+	 * curl -X 'POST' 'http://localhost:8080/o/headless-form/v1.0/forms/{formId}/form-records' -d $'{"creator": ___, "draft": ___, "formFieldValues": ___, "formId": ___}' --header 'Content-Type: application/json' -u 'test@example.com:test'
 	 */
 	@Override
 	@Consumes({"application/json", "application/xml"})
@@ -150,7 +150,7 @@ public abstract class BaseFormRecordResourceImpl implements FormRecordResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/headless-form/v1.0/forms/{formId}/form-records/by-latest-draft'  -u 'test@liferay.com:test'
+	 * curl -X 'GET' 'http://localhost:8080/o/headless-form/v1.0/forms/{formId}/form-records/by-latest-draft'  -u 'test@example.com:test'
 	 */
 	@Override
 	@GET

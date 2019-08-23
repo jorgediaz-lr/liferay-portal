@@ -49,7 +49,7 @@ public class IsEmailAddressFunctionTest {
 		IsEmailAddressFunction isEmailAddressFunction =
 			new IsEmailAddressFunction();
 
-		Boolean result = isEmailAddressFunction.apply("test@liferay.com");
+		Boolean result = isEmailAddressFunction.apply("test@example.com");
 
 		Assert.assertTrue(result);
 	}

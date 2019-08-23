@@ -65,7 +65,7 @@ public abstract class BaseDataRecordCollectionResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/data-engine/v1.0/data-definitions/{dataDefinitionId}/data-record-collections'  -u 'test@liferay.com:test'
+	 * curl -X 'GET' 'http://localhost:8080/o/data-engine/v1.0/data-definitions/{dataDefinitionId}/data-record-collections'  -u 'test@example.com:test'
 	 */
 	@Override
 	@GET
@@ -95,7 +95,7 @@ public abstract class BaseDataRecordCollectionResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'POST' 'http://localhost:8080/o/data-engine/v1.0/data-definitions/{dataDefinitionId}/data-record-collections' -d $'{"dataDefinitionId": ___, "dataRecordCollectionKey": ___, "description": ___, "id": ___, "name": ___, "siteId": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
+	 * curl -X 'POST' 'http://localhost:8080/o/data-engine/v1.0/data-definitions/{dataDefinitionId}/data-record-collections' -d $'{"dataDefinitionId": ___, "dataRecordCollectionKey": ___, "description": ___, "id": ___, "name": ___, "siteId": ___}' --header 'Content-Type: application/json' -u 'test@example.com:test'
 	 */
 	@Override
 	@Consumes({"application/json", "application/xml"})
@@ -118,7 +118,7 @@ public abstract class BaseDataRecordCollectionResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'DELETE' 'http://localhost:8080/o/data-engine/v1.0/data-record-collections/{dataRecordCollectionId}'  -u 'test@liferay.com:test'
+	 * curl -X 'DELETE' 'http://localhost:8080/o/data-engine/v1.0/data-record-collections/{dataRecordCollectionId}'  -u 'test@example.com:test'
 	 */
 	@Override
 	@DELETE
@@ -139,7 +139,7 @@ public abstract class BaseDataRecordCollectionResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/data-engine/v1.0/data-record-collections/{dataRecordCollectionId}'  -u 'test@liferay.com:test'
+	 * curl -X 'GET' 'http://localhost:8080/o/data-engine/v1.0/data-record-collections/{dataRecordCollectionId}'  -u 'test@example.com:test'
 	 */
 	@Override
 	@GET
@@ -162,7 +162,7 @@ public abstract class BaseDataRecordCollectionResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'PUT' 'http://localhost:8080/o/data-engine/v1.0/data-record-collections/{dataRecordCollectionId}' -d $'{"dataDefinitionId": ___, "dataRecordCollectionKey": ___, "description": ___, "id": ___, "name": ___, "siteId": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
+	 * curl -X 'PUT' 'http://localhost:8080/o/data-engine/v1.0/data-record-collections/{dataRecordCollectionId}' -d $'{"dataDefinitionId": ___, "dataRecordCollectionKey": ___, "description": ___, "id": ___, "name": ___, "siteId": ___}' --header 'Content-Type: application/json' -u 'test@example.com:test'
 	 */
 	@Override
 	@Consumes({"application/json", "application/xml"})
@@ -187,7 +187,7 @@ public abstract class BaseDataRecordCollectionResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'POST' 'http://localhost:8080/o/data-engine/v1.0/data-record-collections/{dataRecordCollectionId}/data-record-collection-permissions' -d $'{"addDataRecord": ___, "addDataRecordCollection": ___, "definePermissions": ___, "delete": ___, "deleteDataRecord": ___, "exportDataRecord": ___, "roleNames": ___, "update": ___, "updateDataRecord": ___, "view": ___, "viewDataRecord": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
+	 * curl -X 'POST' 'http://localhost:8080/o/data-engine/v1.0/data-record-collections/{dataRecordCollectionId}/data-record-collection-permissions' -d $'{"addDataRecord": ___, "addDataRecordCollection": ___, "definePermissions": ___, "delete": ___, "deleteDataRecord": ___, "exportDataRecord": ___, "roleNames": ___, "update": ___, "updateDataRecord": ___, "view": ___, "viewDataRecord": ___}' --header 'Content-Type: application/json' -u 'test@example.com:test'
 	 */
 	@Override
 	@Consumes({"application/json", "application/xml"})
@@ -215,7 +215,7 @@ public abstract class BaseDataRecordCollectionResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'POST' 'http://localhost:8080/o/data-engine/v1.0/sites/{siteId}/data-record-collection-permissions' -d $'{"addDataRecord": ___, "addDataRecordCollection": ___, "definePermissions": ___, "delete": ___, "deleteDataRecord": ___, "exportDataRecord": ___, "roleNames": ___, "update": ___, "updateDataRecord": ___, "view": ___, "viewDataRecord": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
+	 * curl -X 'POST' 'http://localhost:8080/o/data-engine/v1.0/sites/{siteId}/data-record-collection-permissions' -d $'{"addDataRecord": ___, "addDataRecordCollection": ___, "definePermissions": ___, "delete": ___, "deleteDataRecord": ___, "exportDataRecord": ___, "roleNames": ___, "update": ___, "updateDataRecord": ___, "view": ___, "viewDataRecord": ___}' --header 'Content-Type: application/json' -u 'test@example.com:test'
 	 */
 	@Override
 	@Consumes({"application/json", "application/xml"})
@@ -240,7 +240,7 @@ public abstract class BaseDataRecordCollectionResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/data-engine/v1.0/sites/{siteId}/data-record-collections'  -u 'test@liferay.com:test'
+	 * curl -X 'GET' 'http://localhost:8080/o/data-engine/v1.0/sites/{siteId}/data-record-collections'  -u 'test@example.com:test'
 	 */
 	@Override
 	@GET
@@ -267,7 +267,7 @@ public abstract class BaseDataRecordCollectionResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/data-engine/v1.0/sites/{siteId}/data-record-collections/{dataRecordCollectionKey}'  -u 'test@liferay.com:test'
+	 * curl -X 'GET' 'http://localhost:8080/o/data-engine/v1.0/sites/{siteId}/data-record-collections/{dataRecordCollectionKey}'  -u 'test@example.com:test'
 	 */
 	@Override
 	@GET

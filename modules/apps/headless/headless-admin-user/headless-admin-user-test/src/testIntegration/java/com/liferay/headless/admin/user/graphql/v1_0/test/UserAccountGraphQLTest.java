@@ -58,7 +58,7 @@ public class UserAccountGraphQLTest extends BaseUserAccountGraphQLTestCase {
 		super.setUp();
 
 		User testUser = UserLocalServiceUtil.getUserByEmailAddress(
-			testGroup.getCompanyId(), "test@liferay.com");
+			testGroup.getCompanyId(), "test@example.com");
 
 		UserLocalServiceUtil.deleteGroupUser(
 			testGroup.getGroupId(), testUser.getUserId());

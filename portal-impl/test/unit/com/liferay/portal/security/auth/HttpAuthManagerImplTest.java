@@ -51,7 +51,7 @@ public class HttpAuthManagerImplTest {
 
 		mockHttpServletRequest.addHeader(
 			HttpHeaders.AUTHORIZATION,
-			"Basic " + Base64.encode("test@liferay.com:te:st".getBytes()));
+			"Basic " + Base64.encode("test@example.com:te:st".getBytes()));
 
 		HttpAuthorizationHeader httpAuthorizationHeader =
 			_httpAuthManagerImpl.parse(mockHttpServletRequest);
@@ -69,7 +69,7 @@ public class HttpAuthManagerImplTest {
 
 		mockHttpServletRequest.addHeader(
 			HttpHeaders.AUTHORIZATION,
-			"Basic " + Base64.encode("test@liferay.com:test".getBytes()));
+			"Basic " + Base64.encode("test@example.com:test".getBytes()));
 
 		HttpAuthorizationHeader httpAuthorizationHeader =
 			_httpAuthManagerImpl.parse(mockHttpServletRequest);
@@ -85,7 +85,7 @@ public class HttpAuthManagerImplTest {
 			authParameters.toString(), 2, authParameters.size());
 
 		Assert.assertEquals(
-			"test@liferay.com",
+			"test@example.com",
 			httpAuthorizationHeader.getAuthParameter(
 				HttpAuthorizationHeader.AUTH_PARAMETER_NAME_USERNAME));
 
@@ -102,7 +102,7 @@ public class HttpAuthManagerImplTest {
 
 		mockHttpServletRequest.addHeader(
 			HttpHeaders.AUTHORIZATION,
-			"Basic " + Base64.encode("test@liferay.com".getBytes()));
+			"Basic " + Base64.encode("test@example.com".getBytes()));
 
 		HttpAuthorizationHeader httpAuthorizationHeader =
 			_httpAuthManagerImpl.parse(mockHttpServletRequest);
@@ -118,7 +118,7 @@ public class HttpAuthManagerImplTest {
 			authParameters.toString(), 2, authParameters.size());
 
 		Assert.assertEquals(
-			"test@liferay.com",
+			"test@example.com",
 			httpAuthorizationHeader.getAuthParameter(
 				HttpAuthorizationHeader.AUTH_PARAMETER_NAME_USERNAME));
 
@@ -131,7 +131,7 @@ public class HttpAuthManagerImplTest {
 
 		mockHttpServletRequest.addHeader(
 			HttpHeaders.AUTHORIZATION,
-			"Basic " + Base64.encode("test@liferay.com:".getBytes()));
+			"Basic " + Base64.encode("test@example.com:".getBytes()));
 
 		httpAuthorizationHeader = _httpAuthManagerImpl.parse(
 			mockHttpServletRequest);
@@ -168,7 +168,7 @@ public class HttpAuthManagerImplTest {
 
 		mockHttpServletRequest.addHeader(
 			HttpHeaders.AUTHORIZATION,
-			"Basic " + Base64.encode(" test@liferay.com : test ".getBytes()));
+			"Basic " + Base64.encode(" test@example.com : test ".getBytes()));
 
 		HttpAuthorizationHeader httpAuthorizationHeader =
 			_httpAuthManagerImpl.parse(mockHttpServletRequest);
@@ -184,7 +184,7 @@ public class HttpAuthManagerImplTest {
 			authParameters.toString(), 2, authParameters.size());
 
 		Assert.assertEquals(
-			"test@liferay.com",
+			"test@example.com",
 			httpAuthorizationHeader.getAuthParameter(
 				HttpAuthorizationHeader.AUTH_PARAMETER_NAME_USERNAME));
 

@@ -60,7 +60,7 @@ public class OrganizationTestUtil {
 
 		return EmailAddressLocalServiceUtil.addEmailAddress(
 			organization.getUserId(), organization.getModelClassName(),
-			organization.getOrganizationId(), "test@liferay.com",
+			organization.getOrganizationId(), "test@example.com",
 			_getListTypeId(ListTypeConstants.ORGANIZATION_EMAIL_ADDRESS), false,
 			new ServiceContext());
 	}

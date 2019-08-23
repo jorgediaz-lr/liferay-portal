@@ -53,14 +53,14 @@ public class GrantedFlowsTest extends BaseClientTestCase {
 
 		String tokenString = getToken(
 			"oauthTestApplicationPassword", null,
-			getResourceOwnerPasswordBiFunction("test@liferay.com", "test"),
+			getResourceOwnerPasswordBiFunction("test@example.com", "test"),
 			this::parseTokenString);
 
 		Assert.assertNotNull(tokenString);
 
 		errorString = getToken(
 			"oauthTestApplicationClient", null,
-			getResourceOwnerPasswordBiFunction("test@liferay.com", "test"),
+			getResourceOwnerPasswordBiFunction("test@example.com", "test"),
 			this::parseError);
 
 		Assert.assertEquals("unauthorized_client", errorString);
@@ -74,21 +74,21 @@ public class GrantedFlowsTest extends BaseClientTestCase {
 		errorString = getToken(
 			"oauthTestApplicationNoGrants", null,
 			getAuthorizationCodePKCEBiFunction(
-				"test@liferay.com", "test", null),
+				"test@example.com", "test", null),
 			this::parseError);
 
 		Assert.assertEquals("unauthorized_client", errorString);
 
 		tokenString = getToken(
 			"oauthTestApplicationCode", null,
-			getAuthorizationCodeBiFunction("test@liferay.com", "test", null),
+			getAuthorizationCodeBiFunction("test@example.com", "test", null),
 			this::parseTokenString);
 
 		Assert.assertNotNull(tokenString);
 
 		errorString = getToken(
 			"oauthTestApplicationPassword", null,
-			getAuthorizationCodeBiFunction("test@liferay.com", "test", null),
+			getAuthorizationCodeBiFunction("test@example.com", "test", null),
 			this::parseError);
 
 		Assert.assertEquals("unauthorized_client", errorString);
@@ -96,7 +96,7 @@ public class GrantedFlowsTest extends BaseClientTestCase {
 		tokenString = getToken(
 			"oauthTestApplicationCodePKCE", null,
 			getAuthorizationCodePKCEBiFunction(
-				"test@liferay.com", "test", null),
+				"test@example.com", "test", null),
 			this::parseTokenString);
 
 		Assert.assertNotNull(tokenString);

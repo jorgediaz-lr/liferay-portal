@@ -55,7 +55,7 @@ public abstract class BaseEntryResourceImpl implements EntryResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/change-tracking/v1.0/entries/{entryId}'  -u 'test@liferay.com:test'
+	 * curl -X 'GET' 'http://localhost:8080/o/change-tracking/v1.0/entries/{entryId}'  -u 'test@example.com:test'
 	 */
 	@Override
 	@GET

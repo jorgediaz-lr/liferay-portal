@@ -92,7 +92,7 @@ public class MatchExpressionDataRuleFunctionTest {
 		_dataRecord.setDataRecordValues(
 			new HashMap() {
 				{
-					put("fieldName", "test@liferay.com");
+					put("fieldName", "test@example.com");
 				}
 			});
 

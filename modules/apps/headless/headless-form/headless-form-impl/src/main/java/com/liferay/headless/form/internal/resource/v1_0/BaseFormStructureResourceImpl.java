@@ -59,7 +59,7 @@ public abstract class BaseFormStructureResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/headless-form/v1.0/form-structures/{formStructureId}'  -u 'test@liferay.com:test'
+	 * curl -X 'GET' 'http://localhost:8080/o/headless-form/v1.0/form-structures/{formStructureId}'  -u 'test@example.com:test'
 	 */
 	@Override
 	@GET
@@ -80,7 +80,7 @@ public abstract class BaseFormStructureResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/headless-form/v1.0/sites/{siteId}/form-structures'  -u 'test@liferay.com:test'
+	 * curl -X 'GET' 'http://localhost:8080/o/headless-form/v1.0/sites/{siteId}/form-structures'  -u 'test@example.com:test'
 	 */
 	@Override
 	@GET

@@ -47,7 +47,7 @@ public class MatchFunctionTest {
 		MatchFunction matchFunction = new MatchFunction();
 
 		Boolean result = matchFunction.apply(
-			"test@liferay.com", "\\S+@\\S+\\.\\S+");
+			"test@example.com", "\\S+@\\S+\\.\\S+");
 
 		Assert.assertTrue(result);
 	}

@@ -6339,7 +6339,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		if (!user.hasCompanyMx() && user.hasCompanyMx(emailAddress) &&
 			Validator.isNotNull(password)) {
 
-			// test@test.com -> test@liferay.com
+			// test@test.com -> test@example.com
 
 			mailService.addUser(
 				user.getCompanyId(), userId, password, firstName, middleName,
@@ -6347,14 +6347,14 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		}
 		else if (user.hasCompanyMx() && user.hasCompanyMx(emailAddress)) {
 
-			// test@liferay.com -> bob@liferay.com
+			// test@example.com -> bob@liferay.com
 
 			mailService.updateEmailAddress(
 				user.getCompanyId(), userId, emailAddress);
 		}
 		else if (user.hasCompanyMx() && !user.hasCompanyMx(emailAddress)) {
 
-			// test@liferay.com -> test@test.com
+			// test@example.com -> test@test.com
 
 			mailService.deleteEmailAddress(user.getCompanyId(), userId);
 		}

@@ -66,7 +66,7 @@ public abstract class BaseCollectionResourceImpl implements CollectionResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/change-tracking/v1.0/collections'  -u 'test@liferay.com:test'
+	 * curl -X 'GET' 'http://localhost:8080/o/change-tracking/v1.0/collections'  -u 'test@example.com:test'
 	 */
 	@Override
 	@GET
@@ -99,7 +99,7 @@ public abstract class BaseCollectionResourceImpl implements CollectionResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'POST' 'http://localhost:8080/o/change-tracking/v1.0/collections' -d $'{"description": ___, "name": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
+	 * curl -X 'POST' 'http://localhost:8080/o/change-tracking/v1.0/collections' -d $'{"description": ___, "name": ___}' --header 'Content-Type: application/json' -u 'test@example.com:test'
 	 */
 	@Override
 	@Consumes({"application/json", "application/xml"})
@@ -127,7 +127,7 @@ public abstract class BaseCollectionResourceImpl implements CollectionResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'DELETE' 'http://localhost:8080/o/change-tracking/v1.0/collections/{collectionId}'  -u 'test@liferay.com:test'
+	 * curl -X 'DELETE' 'http://localhost:8080/o/change-tracking/v1.0/collections/{collectionId}'  -u 'test@example.com:test'
 	 */
 	@Override
 	@DELETE
@@ -155,7 +155,7 @@ public abstract class BaseCollectionResourceImpl implements CollectionResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/change-tracking/v1.0/collections/{collectionId}'  -u 'test@liferay.com:test'
+	 * curl -X 'GET' 'http://localhost:8080/o/change-tracking/v1.0/collections/{collectionId}'  -u 'test@example.com:test'
 	 */
 	@Override
 	@GET
@@ -181,7 +181,7 @@ public abstract class BaseCollectionResourceImpl implements CollectionResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'POST' 'http://localhost:8080/o/change-tracking/v1.0/collections/{collectionId}/checkout'  -u 'test@liferay.com:test'
+	 * curl -X 'POST' 'http://localhost:8080/o/change-tracking/v1.0/collections/{collectionId}/checkout'  -u 'test@example.com:test'
 	 */
 	@Override
 	@POST
@@ -208,7 +208,7 @@ public abstract class BaseCollectionResourceImpl implements CollectionResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'POST' 'http://localhost:8080/o/change-tracking/v1.0/collections/{collectionId}/publish'  -u 'test@liferay.com:test'
+	 * curl -X 'POST' 'http://localhost:8080/o/change-tracking/v1.0/collections/{collectionId}/publish'  -u 'test@example.com:test'
 	 */
 	@Override
 	@POST

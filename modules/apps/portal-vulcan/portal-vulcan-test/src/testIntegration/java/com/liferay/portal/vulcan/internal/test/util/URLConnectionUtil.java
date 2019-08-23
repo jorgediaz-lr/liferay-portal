@@ -45,7 +45,7 @@ public class URLConnectionUtil {
 		Base64.Encoder encoder = Base64.getEncoder();
 
 		String encodedUserNameAndPassword = encoder.encodeToString(
-			"test@liferay.com:test".getBytes(StandardCharsets.UTF_8));
+			"test@example.com:test".getBytes(StandardCharsets.UTF_8));
 
 		urlConnection.setRequestProperty(
 			"Authorization", "Basic " + encodedUserNameAndPassword);

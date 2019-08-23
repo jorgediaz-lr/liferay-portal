@@ -66,7 +66,7 @@ public abstract class BaseKeywordResourceImpl implements KeywordResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'DELETE' 'http://localhost:8080/o/headless-admin-taxonomy/v1.0/keywords/{keywordId}'  -u 'test@liferay.com:test'
+	 * curl -X 'DELETE' 'http://localhost:8080/o/headless-admin-taxonomy/v1.0/keywords/{keywordId}'  -u 'test@example.com:test'
 	 */
 	@Override
 	@DELETE
@@ -86,7 +86,7 @@ public abstract class BaseKeywordResourceImpl implements KeywordResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/headless-admin-taxonomy/v1.0/keywords/{keywordId}'  -u 'test@liferay.com:test'
+	 * curl -X 'GET' 'http://localhost:8080/o/headless-admin-taxonomy/v1.0/keywords/{keywordId}'  -u 'test@example.com:test'
 	 */
 	@Override
 	@GET
@@ -106,7 +106,7 @@ public abstract class BaseKeywordResourceImpl implements KeywordResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'PUT' 'http://localhost:8080/o/headless-admin-taxonomy/v1.0/keywords/{keywordId}' -d $'{"name": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
+	 * curl -X 'PUT' 'http://localhost:8080/o/headless-admin-taxonomy/v1.0/keywords/{keywordId}' -d $'{"name": ___}' --header 'Content-Type: application/json' -u 'test@example.com:test'
 	 */
 	@Override
 	@Consumes({"application/json", "application/xml"})
@@ -130,7 +130,7 @@ public abstract class BaseKeywordResourceImpl implements KeywordResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/headless-admin-taxonomy/v1.0/sites/{siteId}/keywords'  -u 'test@liferay.com:test'
+	 * curl -X 'GET' 'http://localhost:8080/o/headless-admin-taxonomy/v1.0/sites/{siteId}/keywords'  -u 'test@example.com:test'
 	 */
 	@Override
 	@GET
@@ -163,7 +163,7 @@ public abstract class BaseKeywordResourceImpl implements KeywordResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'POST' 'http://localhost:8080/o/headless-admin-taxonomy/v1.0/sites/{siteId}/keywords' -d $'{"name": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
+	 * curl -X 'POST' 'http://localhost:8080/o/headless-admin-taxonomy/v1.0/sites/{siteId}/keywords' -d $'{"name": ___}' --header 'Content-Type: application/json' -u 'test@example.com:test'
 	 */
 	@Override
 	@Consumes({"application/json", "application/xml"})

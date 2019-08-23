@@ -343,7 +343,7 @@ public abstract class BaseBlogPostingImageGraphQLTestCase {
 			"application/json");
 		httpInvoker.httpMethod(HttpInvoker.HttpMethod.POST);
 		httpInvoker.path("http://localhost:8080/o/graphql");
-		httpInvoker.userNameAndPassword("test@liferay.com:test");
+		httpInvoker.userNameAndPassword("test@example.com:test");
 
 		HttpInvoker.HttpResponse httpResponse = httpInvoker.invoke();
 

@@ -116,7 +116,7 @@ public class MultipleCommentDemoDataCreatorImpl
 	private static final int _MAX_USERS = 100;
 
 	private static final List<String> _excludedUsers = Arrays.asList(
-		"test@liferay.com", "default@liferay.com");
+		"test@example.com", "default@liferay.com");
 
 	@Reference
 	private CommentDemoDataCreator _commentDemoDataCreator;

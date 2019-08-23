@@ -97,7 +97,7 @@ public class Query {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {collections(collectionType: ___, companyId: ___, page: ___, pageSize: ___, sorts: ___, userId: ___){items {__}, page, pageSize, totalCount}}"}' -u 'test@liferay.com:test'
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {collections(collectionType: ___, companyId: ___, page: ___, pageSize: ___, sorts: ___, userId: ___){items {__}, page, pageSize, totalCount}}"}' -u 'test@example.com:test'
 	 */
 	@GraphQLField
 	public CollectionPage collections(
@@ -124,7 +124,7 @@ public class Query {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {collection(collectionId: ___, companyId: ___){additionCount, companyId, dateStatus, deletionCount, description, id, modificationCount, name, statusByUserName}}"}' -u 'test@liferay.com:test'
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {collection(collectionId: ___, companyId: ___){additionCount, companyId, dateStatus, deletionCount, description, id, modificationCount, name, statusByUserName}}"}' -u 'test@example.com:test'
 	 */
 	@GraphQLField
 	public Collection collection(
@@ -142,7 +142,7 @@ public class Query {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {entry(entryId: ___){affectedByEntriesCount, changeType, classNameId, classPK, collision, contentType, dateModified, id, key, siteName, title, userName, version}}"}' -u 'test@liferay.com:test'
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {entry(entryId: ___){affectedByEntriesCount, changeType, classNameId, classPK, collision, contentType, dateModified, id, key, siteName, title, userName, version}}"}' -u 'test@example.com:test'
 	 */
 	@GraphQLField
 	public Entry entry(@GraphQLName("entryId") Long entryId) throws Exception {
@@ -155,7 +155,7 @@ public class Query {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {processes(companyId: ___, keywords: ___, page: ___, pageSize: ___, processType: ___, sorts: ___, userId: ___){items {__}, page, pageSize, totalCount}}"}' -u 'test@liferay.com:test'
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {processes(companyId: ___, keywords: ___, page: ___, pageSize: ___, processType: ___, sorts: ___, userId: ___){items {__}, page, pageSize, totalCount}}"}' -u 'test@example.com:test'
 	 */
 	@GraphQLField
 	public ProcessPage processes(
@@ -183,7 +183,7 @@ public class Query {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {process(processId: ___){collection, companyId, dateCreated, id, percentage, processUser, status}}"}' -u 'test@liferay.com:test'
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {process(processId: ___){collection, companyId, dateCreated, id, percentage, processUser, status}}"}' -u 'test@example.com:test'
 	 */
 	@GraphQLField
 	public Process process(@GraphQLName("processId") Long processId)
@@ -198,7 +198,7 @@ public class Query {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {processUsers(companyId: ___, keywords: ___, page: ___, pageSize: ___, processType: ___){items {__}, page, pageSize, totalCount}}"}' -u 'test@liferay.com:test'
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {processUsers(companyId: ___, keywords: ___, page: ___, pageSize: ___, processType: ___){items {__}, page, pageSize, totalCount}}"}' -u 'test@example.com:test'
 	 */
 	@GraphQLField
 	public ProcessUserPage processUsers(
@@ -223,7 +223,7 @@ public class Query {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {settings(companyId: ___, userId: ___){items {__}, page, pageSize, totalCount}}"}' -u 'test@liferay.com:test'
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {settings(companyId: ___, userId: ___){items {__}, page, pageSize, totalCount}}"}' -u 'test@example.com:test'
 	 */
 	@GraphQLField
 	public SettingsPage settings(

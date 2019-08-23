@@ -70,9 +70,9 @@ describe('Liferay.Util.PortletURL.createPortletURL', () => {
 	});
 
 	it('returns a URL object when the base url is a mailto url', () => {
-		const portletURL = createPortletURL('mailto:test@liferay.com');
+		const portletURL = createPortletURL('mailto:test@example.com');
 
-		expect(portletURL.href).toEqual('mailto:test@liferay.com');
+		expect(portletURL.href).toEqual('mailto:test@example.com');
 	});
 
 	it('returns a URL object consisting of a portal url followd by the base url when the base url  starts with a backslash', () => {

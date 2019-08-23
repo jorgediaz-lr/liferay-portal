@@ -60,7 +60,7 @@ public abstract class BaseSettingsResourceImpl implements SettingsResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/change-tracking/v1.0/settings'  -u 'test@liferay.com:test'
+	 * curl -X 'GET' 'http://localhost:8080/o/change-tracking/v1.0/settings'  -u 'test@example.com:test'
 	 */
 	@Override
 	@GET
@@ -85,7 +85,7 @@ public abstract class BaseSettingsResourceImpl implements SettingsResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'PUT' 'http://localhost:8080/o/change-tracking/v1.0/settings' -d $'{"changeTrackingEnabled": ___, "checkoutCTCollectionConfirmationEnabled": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
+	 * curl -X 'PUT' 'http://localhost:8080/o/change-tracking/v1.0/settings' -d $'{"changeTrackingEnabled": ___, "checkoutCTCollectionConfirmationEnabled": ___}' --header 'Content-Type: application/json' -u 'test@example.com:test'
 	 */
 	@Override
 	@Consumes({"application/json", "application/xml"})

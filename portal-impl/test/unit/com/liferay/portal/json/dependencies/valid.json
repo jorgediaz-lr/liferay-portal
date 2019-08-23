@@ -5,7 +5,7 @@
 		3
 	],
 	"boolean": true,
-	"email": "test@liferay.com",
+	"email": "test@example.com",
 	"integer": 1,
 	"null": null,
 	"number": 1.5,

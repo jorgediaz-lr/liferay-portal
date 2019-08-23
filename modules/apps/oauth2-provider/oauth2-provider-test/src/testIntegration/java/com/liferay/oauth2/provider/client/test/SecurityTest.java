@@ -58,7 +58,7 @@ public class SecurityTest extends BaseClientTestCase {
 		Assert.assertEquals(
 			"SAMEORIGIN",
 			getCodeResponse(
-				"test@liferay.com", "test", null,
+				"test@example.com", "test", null,
 				getCodeFunction(
 					webTarget -> webTarget.queryParam(
 						"client_id", "oauthTestApplicationCode"
@@ -77,7 +77,7 @@ public class SecurityTest extends BaseClientTestCase {
 		Assert.assertEquals(
 			"invalid_request",
 			getCodeResponse(
-				"test@liferay.com", "test", null,
+				"test@example.com", "test", null,
 				getCodeFunction(
 					webTarget -> webTarget.queryParam(
 						"client_id", "oauthTestApplicationCode"
@@ -93,7 +93,7 @@ public class SecurityTest extends BaseClientTestCase {
 	@Test
 	public void testPreventCSRFUsingPKCE() {
 		String authorizationCode = getCodeResponse(
-			"test@liferay.com", "test", null,
+			"test@example.com", "test", null,
 			getCodeFunction(
 				webTarget -> webTarget.queryParam(
 					"client_id", "oauthTestApplicationCodePKCE"
@@ -123,7 +123,7 @@ public class SecurityTest extends BaseClientTestCase {
 		String state = "csrf_token";
 
 		String responseState = getCodeResponse(
-			"test@liferay.com", "test", null,
+			"test@example.com", "test", null,
 			getCodeFunction(
 				webTarget -> webTarget.queryParam(
 					"client_id", "oauthTestApplicationCode"
@@ -145,7 +145,7 @@ public class SecurityTest extends BaseClientTestCase {
 		Assert.assertEquals(
 			"invalid_request",
 			getCodeResponse(
-				"test@liferay.com", "test", null,
+				"test@example.com", "test", null,
 				getCodeFunction(
 					webTarget -> webTarget.queryParam(
 						"client_id", "oauthTestApplicationCode"
@@ -160,7 +160,7 @@ public class SecurityTest extends BaseClientTestCase {
 	@Test
 	public void testRedirectUriMustMatch() {
 		String authorizationCode = getCodeResponse(
-			"test@liferay.com", "test", null,
+			"test@example.com", "test", null,
 			getCodeFunction(
 				webTarget -> webTarget.queryParam(
 					"client_id", "oauthTestApplicationCode"

@@ -52,7 +52,7 @@ public class GrantAuthorizationCodeKillSwitchTest extends BaseClientTestCase {
 		Assert.assertEquals(
 			"unauthorized_client",
 			getCodeResponse(
-				"test@liferay.com", "test", null,
+				"test@example.com", "test", null,
 				getCodeFunction(
 					webTarget -> webTarget.queryParam(
 						"client_id", "oauthTestApplicationCode"

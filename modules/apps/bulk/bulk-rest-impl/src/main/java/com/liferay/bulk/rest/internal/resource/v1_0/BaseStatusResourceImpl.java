@@ -48,7 +48,7 @@ public abstract class BaseStatusResourceImpl implements StatusResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/bulk/v1.0/status'  -u 'test@liferay.com:test'
+	 * curl -X 'GET' 'http://localhost:8080/o/bulk/v1.0/status'  -u 'test@example.com:test'
 	 */
 	@Override
 	@GET

@@ -34,7 +34,7 @@ public class DummyFolderTestUtil {
 		dummyFolder.setLastPublishDate(null);
 
 		User user = UserLocalServiceUtil.getUserByEmailAddress(
-			TestPropsValues.getCompanyId(), "test@liferay.com");
+			TestPropsValues.getCompanyId(), "test@example.com");
 
 		dummyFolder.setUserId(user.getUserId());
 		dummyFolder.setUserName(user.getScreenName());

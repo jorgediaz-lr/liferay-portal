@@ -80,7 +80,7 @@ public class JsonWebServiceTest extends BaseClientTestCase {
 
 		String tokenString = getToken(
 			"oauthTestApplicationRO", null,
-			getResourceOwnerPasswordBiFunction("test@liferay.com", "test"),
+			getResourceOwnerPasswordBiFunction("test@example.com", "test"),
 			this::parseTokenString);
 
 		invocationBuilder = authorize(webTarget.request(), tokenString);
@@ -115,7 +115,7 @@ public class JsonWebServiceTest extends BaseClientTestCase {
 		String token = getToken(
 			"oauthTestApplicationRW", null,
 			getResourceOwnerPasswordBiFunction(
-				"test@liferay.com", "test", "everything.write"),
+				"test@example.com", "test", "everything.write"),
 			this::parseTokenString);
 
 		invocationBuilder = authorize(webTarget.request(), token);

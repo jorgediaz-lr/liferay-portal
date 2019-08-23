@@ -74,7 +74,7 @@ public class TOCTOUTest extends BaseClientTestCase {
 
 		String token = getToken(
 			"oauthTestApplicationCode", null,
-			getAuthorizationCodeBiFunction("test@liferay.com", "test", null),
+			getAuthorizationCodeBiFunction("test@example.com", "test", null),
 			this::parseTokenString);
 
 		Invocation.Builder webTarget1InvocationBuilder = authorize(
@@ -117,7 +117,7 @@ public class TOCTOUTest extends BaseClientTestCase {
 		token = getToken(
 			"oauthTestApplicationCode", null,
 			getAuthorizationCodeBiFunction(
-				"test@liferay.com", "test", null, "everything.read"),
+				"test@example.com", "test", null, "everything.read"),
 			this::parseTokenString);
 
 		webTarget2InvocationBuilder = authorize(webTarget2.request(), token);
@@ -166,7 +166,7 @@ public class TOCTOUTest extends BaseClientTestCase {
 
 		token = getToken(
 			"oauthTestApplicationCode", null,
-			getAuthorizationCodeBiFunction("test@liferay.com", "test", null),
+			getAuthorizationCodeBiFunction("test@example.com", "test", null),
 			this::parseTokenString);
 
 		webTarget2InvocationBuilder = authorize(webTarget2.request(), token);

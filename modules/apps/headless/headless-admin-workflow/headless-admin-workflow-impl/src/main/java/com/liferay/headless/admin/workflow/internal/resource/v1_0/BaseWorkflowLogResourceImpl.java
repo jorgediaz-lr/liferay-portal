@@ -59,7 +59,7 @@ public abstract class BaseWorkflowLogResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/headless-admin-workflow/v1.0/workflow-logs/{workflowLogId}'  -u 'test@liferay.com:test'
+	 * curl -X 'GET' 'http://localhost:8080/o/headless-admin-workflow/v1.0/workflow-logs/{workflowLogId}'  -u 'test@example.com:test'
 	 */
 	@Override
 	@GET
@@ -80,7 +80,7 @@ public abstract class BaseWorkflowLogResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/headless-admin-workflow/v1.0/workflow-tasks/{workflowTaskId}/workflow-logs'  -u 'test@liferay.com:test'
+	 * curl -X 'GET' 'http://localhost:8080/o/headless-admin-workflow/v1.0/workflow-tasks/{workflowTaskId}/workflow-logs'  -u 'test@example.com:test'
 	 */
 	@Override
 	@GET

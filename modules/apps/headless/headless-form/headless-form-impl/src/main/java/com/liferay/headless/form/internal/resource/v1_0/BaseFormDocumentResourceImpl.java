@@ -56,7 +56,7 @@ public abstract class BaseFormDocumentResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'DELETE' 'http://localhost:8080/o/headless-form/v1.0/form-documents/{formDocumentId}'  -u 'test@liferay.com:test'
+	 * curl -X 'DELETE' 'http://localhost:8080/o/headless-form/v1.0/form-documents/{formDocumentId}'  -u 'test@example.com:test'
 	 */
 	@Override
 	@DELETE
@@ -75,7 +75,7 @@ public abstract class BaseFormDocumentResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/headless-form/v1.0/form-documents/{formDocumentId}'  -u 'test@liferay.com:test'
+	 * curl -X 'GET' 'http://localhost:8080/o/headless-form/v1.0/form-documents/{formDocumentId}'  -u 'test@example.com:test'
 	 */
 	@Override
 	@GET

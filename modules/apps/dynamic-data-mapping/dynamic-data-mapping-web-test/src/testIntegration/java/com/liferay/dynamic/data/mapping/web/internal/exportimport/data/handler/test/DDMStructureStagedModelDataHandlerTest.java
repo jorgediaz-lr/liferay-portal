@@ -375,7 +375,7 @@ public class DDMStructureStagedModelDataHandlerTest
 				"http://localhost:8080/api/jsonws/country/get-countries"));
 		ddmFormValues.addDDMFormFieldValue(
 			DDMFormValuesTestUtil.createUnlocalizedDDMFormFieldValue(
-				"username", "test@liferay.com"));
+				"username", "test@example.com"));
 		ddmFormValues.addDDMFormFieldValue(
 			DDMFormValuesTestUtil.createUnlocalizedDDMFormFieldValue(
 				"timeout", "1000"));

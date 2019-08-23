@@ -63,7 +63,7 @@ public abstract class BaseDataRecordResourceImpl implements DataRecordResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/data-engine/v1.0/data-definitions/{dataDefinitionId}/data-records'  -u 'test@liferay.com:test'
+	 * curl -X 'GET' 'http://localhost:8080/o/data-engine/v1.0/data-definitions/{dataDefinitionId}/data-records'  -u 'test@example.com:test'
 	 */
 	@Override
 	@GET
@@ -89,7 +89,7 @@ public abstract class BaseDataRecordResourceImpl implements DataRecordResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'POST' 'http://localhost:8080/o/data-engine/v1.0/data-definitions/{dataDefinitionId}/data-records' -d $'{"dataRecordCollectionId": ___, "dataRecordValues": ___, "id": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
+	 * curl -X 'POST' 'http://localhost:8080/o/data-engine/v1.0/data-definitions/{dataDefinitionId}/data-records' -d $'{"dataRecordCollectionId": ___, "dataRecordValues": ___, "id": ___}' --header 'Content-Type: application/json' -u 'test@example.com:test'
 	 */
 	@Override
 	@Consumes({"application/json", "application/xml"})
@@ -112,7 +112,7 @@ public abstract class BaseDataRecordResourceImpl implements DataRecordResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/data-engine/v1.0/data-record-collections/{dataRecordCollectionId}/data-records'  -u 'test@liferay.com:test'
+	 * curl -X 'GET' 'http://localhost:8080/o/data-engine/v1.0/data-record-collections/{dataRecordCollectionId}/data-records'  -u 'test@example.com:test'
 	 */
 	@Override
 	@GET
@@ -138,7 +138,7 @@ public abstract class BaseDataRecordResourceImpl implements DataRecordResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'POST' 'http://localhost:8080/o/data-engine/v1.0/data-record-collections/{dataRecordCollectionId}/data-records' -d $'{"dataRecordCollectionId": ___, "dataRecordValues": ___, "id": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
+	 * curl -X 'POST' 'http://localhost:8080/o/data-engine/v1.0/data-record-collections/{dataRecordCollectionId}/data-records' -d $'{"dataRecordCollectionId": ___, "dataRecordValues": ___, "id": ___}' --header 'Content-Type: application/json' -u 'test@example.com:test'
 	 */
 	@Override
 	@Consumes({"application/json", "application/xml"})
@@ -163,7 +163,7 @@ public abstract class BaseDataRecordResourceImpl implements DataRecordResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/data-engine/v1.0/data-record-collections/{dataRecordCollectionId}/data-records/export'  -u 'test@liferay.com:test'
+	 * curl -X 'GET' 'http://localhost:8080/o/data-engine/v1.0/data-record-collections/{dataRecordCollectionId}/data-records/export'  -u 'test@example.com:test'
 	 */
 	@Override
 	@GET
@@ -191,7 +191,7 @@ public abstract class BaseDataRecordResourceImpl implements DataRecordResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'DELETE' 'http://localhost:8080/o/data-engine/v1.0/data-records/{dataRecordId}'  -u 'test@liferay.com:test'
+	 * curl -X 'DELETE' 'http://localhost:8080/o/data-engine/v1.0/data-records/{dataRecordId}'  -u 'test@example.com:test'
 	 */
 	@Override
 	@DELETE
@@ -210,7 +210,7 @@ public abstract class BaseDataRecordResourceImpl implements DataRecordResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/data-engine/v1.0/data-records/{dataRecordId}'  -u 'test@liferay.com:test'
+	 * curl -X 'GET' 'http://localhost:8080/o/data-engine/v1.0/data-records/{dataRecordId}'  -u 'test@example.com:test'
 	 */
 	@Override
 	@GET
@@ -231,7 +231,7 @@ public abstract class BaseDataRecordResourceImpl implements DataRecordResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'PUT' 'http://localhost:8080/o/data-engine/v1.0/data-records/{dataRecordId}' -d $'{"dataRecordCollectionId": ___, "dataRecordValues": ___, "id": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
+	 * curl -X 'PUT' 'http://localhost:8080/o/data-engine/v1.0/data-records/{dataRecordId}' -d $'{"dataRecordCollectionId": ___, "dataRecordValues": ___, "id": ___}' --header 'Content-Type: application/json' -u 'test@example.com:test'
 	 */
 	@Override
 	@Consumes({"application/json", "application/xml"})

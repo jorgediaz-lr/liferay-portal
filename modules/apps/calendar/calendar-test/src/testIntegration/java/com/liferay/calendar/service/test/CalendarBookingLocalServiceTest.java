@@ -1596,7 +1596,7 @@ public class CalendarBookingLocalServiceTest {
 
 		CalendarNotificationTemplateTestUtil.addCalendarNotificationTemplate(
 			stagingCalendar, NotificationTemplateType.INVITE,
-			"test@liferay.com", "Test Test", mailSubject, mailBody);
+			"test@example.com", "Test Test", mailSubject, mailBody);
 
 		CalendarStagingTestUtil.publishLayouts(_liveGroup, true);
 

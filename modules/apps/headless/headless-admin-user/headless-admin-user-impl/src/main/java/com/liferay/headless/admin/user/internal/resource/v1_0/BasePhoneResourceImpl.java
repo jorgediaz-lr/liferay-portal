@@ -57,7 +57,7 @@ public abstract class BasePhoneResourceImpl implements PhoneResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/headless-admin-user/v1.0/organizations/{organizationId}/phones'  -u 'test@liferay.com:test'
+	 * curl -X 'GET' 'http://localhost:8080/o/headless-admin-user/v1.0/organizations/{organizationId}/phones'  -u 'test@example.com:test'
 	 */
 	@Override
 	@GET
@@ -79,7 +79,7 @@ public abstract class BasePhoneResourceImpl implements PhoneResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/headless-admin-user/v1.0/phones/{phoneId}'  -u 'test@liferay.com:test'
+	 * curl -X 'GET' 'http://localhost:8080/o/headless-admin-user/v1.0/phones/{phoneId}'  -u 'test@example.com:test'
 	 */
 	@Override
 	@GET
@@ -99,7 +99,7 @@ public abstract class BasePhoneResourceImpl implements PhoneResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/headless-admin-user/v1.0/user-accounts/{userAccountId}/phones'  -u 'test@liferay.com:test'
+	 * curl -X 'GET' 'http://localhost:8080/o/headless-admin-user/v1.0/user-accounts/{userAccountId}/phones'  -u 'test@example.com:test'
 	 */
 	@Override
 	@GET

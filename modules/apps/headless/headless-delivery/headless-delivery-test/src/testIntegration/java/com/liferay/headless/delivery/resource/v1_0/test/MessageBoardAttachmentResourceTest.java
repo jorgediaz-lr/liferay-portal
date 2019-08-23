@@ -123,7 +123,7 @@ public class MessageBoardAttachmentResourceTest
 
 		httpInvoker.httpMethod(HttpInvoker.HttpMethod.GET);
 		httpInvoker.path(url);
-		httpInvoker.userNameAndPassword("test@liferay.com:test");
+		httpInvoker.userNameAndPassword("test@example.com:test");
 
 		HttpInvoker.HttpResponse httpResponse = httpInvoker.invoke();
 

@@ -36,11 +36,11 @@ public class HttpAuthorizationHeaderTest {
 			HttpAuthorizationHeader.AUTH_PARAMETER_NAME_PASSWORD, "test");
 		httpAuthorizationHeader.setAuthParameter(
 			HttpAuthorizationHeader.AUTH_PARAMETER_NAME_USERNAME,
-			"test@liferay.com");
+			"test@example.com");
 
 		Assert.assertEquals(
 			httpAuthorizationHeader.toString(),
-			"Basic " + Base64.encode("test@liferay.com:test".getBytes()));
+			"Basic " + Base64.encode("test@example.com:test".getBytes()));
 	}
 
 	@Test
@@ -80,14 +80,14 @@ public class HttpAuthorizationHeaderTest {
 			HttpAuthorizationHeader.AUTH_PARAMETER_NAME_URI, "/url");
 		httpAuthorizationHeader.setAuthParameter(
 			HttpAuthorizationHeader.AUTH_PARAMETER_NAME_USERNAME,
-			"test@liferay.com");
+			"test@example.com");
 
 		Assert.assertEquals(
 			httpAuthorizationHeader.toString(),
 			StringBundler.concat(
 				"Digest nonce=\"", nonce, "\", realm=\"PortalRealm\", ",
 				"response=\"", response, "\", uri=\"/url\", ",
-				"username=\"test@liferay.com\""));
+				"username=\"test@example.com\""));
 	}
 
 	@Test

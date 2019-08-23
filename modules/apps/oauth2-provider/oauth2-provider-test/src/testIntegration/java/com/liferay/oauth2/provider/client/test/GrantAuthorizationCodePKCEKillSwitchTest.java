@@ -53,7 +53,7 @@ public class GrantAuthorizationCodePKCEKillSwitchTest
 		Assert.assertEquals(
 			"unauthorized_client",
 			getCodeResponse(
-				"test@liferay.com", "test", null,
+				"test@example.com", "test", null,
 				getCodeFunction(
 					webTarget -> webTarget.queryParam(
 						"client_id", "oauthTestApplicationCodePKCE"

@@ -59,7 +59,7 @@ public abstract class BaseRoleResourceImpl implements RoleResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/headless-admin-user/v1.0/roles'  -u 'test@liferay.com:test'
+	 * curl -X 'GET' 'http://localhost:8080/o/headless-admin-user/v1.0/roles'  -u 'test@example.com:test'
 	 */
 	@Override
 	@GET
@@ -84,7 +84,7 @@ public abstract class BaseRoleResourceImpl implements RoleResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/headless-admin-user/v1.0/roles/{roleId}'  -u 'test@liferay.com:test'
+	 * curl -X 'GET' 'http://localhost:8080/o/headless-admin-user/v1.0/roles/{roleId}'  -u 'test@example.com:test'
 	 */
 	@Override
 	@GET

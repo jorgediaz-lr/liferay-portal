@@ -70,7 +70,7 @@ public class MailReaderIndexerFixture {
 	}
 
 	public Message createMessage() throws Exception {
-		String sender = "test@liferay.com";
+		String sender = "test@example.com";
 		String to = "test2@liferay.com";
 		Folder folder = createFolder();
 

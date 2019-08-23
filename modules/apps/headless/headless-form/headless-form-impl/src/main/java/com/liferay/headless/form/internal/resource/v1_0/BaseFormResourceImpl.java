@@ -63,7 +63,7 @@ public abstract class BaseFormResourceImpl implements FormResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/headless-form/v1.0/forms/{formId}'  -u 'test@liferay.com:test'
+	 * curl -X 'GET' 'http://localhost:8080/o/headless-form/v1.0/forms/{formId}'  -u 'test@example.com:test'
 	 */
 	@Override
 	@GET
@@ -81,7 +81,7 @@ public abstract class BaseFormResourceImpl implements FormResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'POST' 'http://localhost:8080/o/headless-form/v1.0/forms/{formId}/evaluate-context' -d $'{"formFieldValues": ___, "formPageContexts": ___, "readOnly": ___, "showRequiredFieldsWarning": ___, "showSubmitButton": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
+	 * curl -X 'POST' 'http://localhost:8080/o/headless-form/v1.0/forms/{formId}/evaluate-context' -d $'{"formFieldValues": ___, "formPageContexts": ___, "readOnly": ___, "showRequiredFieldsWarning": ___, "showSubmitButton": ___}' --header 'Content-Type: application/json' -u 'test@example.com:test'
 	 */
 	@Override
 	@Consumes({"application/json", "application/xml"})
@@ -101,7 +101,7 @@ public abstract class BaseFormResourceImpl implements FormResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'POST' 'http://localhost:8080/o/headless-form/v1.0/forms/{formId}/form-document'  -u 'test@liferay.com:test'
+	 * curl -X 'POST' 'http://localhost:8080/o/headless-form/v1.0/forms/{formId}/form-document'  -u 'test@example.com:test'
 	 */
 	@Override
 	@Consumes("multipart/form-data")
@@ -121,7 +121,7 @@ public abstract class BaseFormResourceImpl implements FormResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/headless-form/v1.0/sites/{siteId}/forms'  -u 'test@liferay.com:test'
+	 * curl -X 'GET' 'http://localhost:8080/o/headless-form/v1.0/sites/{siteId}/forms'  -u 'test@example.com:test'
 	 */
 	@Override
 	@GET

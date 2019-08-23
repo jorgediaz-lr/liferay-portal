@@ -62,7 +62,7 @@ public class UserAccountResourceTest extends BaseUserAccountResourceTestCase {
 		_organization = OrganizationTestUtil.addOrganization();
 
 		_testUser = UserLocalServiceUtil.getUserByEmailAddress(
-			testGroup.getCompanyId(), "test@liferay.com");
+			testGroup.getCompanyId(), "test@example.com");
 
 		UserLocalServiceUtil.deleteGroupUser(
 			testGroup.getGroupId(), _testUser.getUserId());

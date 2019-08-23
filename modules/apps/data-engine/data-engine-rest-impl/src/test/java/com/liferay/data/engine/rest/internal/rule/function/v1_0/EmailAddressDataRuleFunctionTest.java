@@ -51,7 +51,7 @@ public class EmailAddressDataRuleFunctionTest {
 		_dataRecord.setDataRecordValues(
 			new HashMap() {
 				{
-					put("fieldName", "TEXT,test@liferay.com");
+					put("fieldName", "TEXT,test@example.com");
 				}
 			});
 
@@ -102,7 +102,7 @@ public class EmailAddressDataRuleFunctionTest {
 		_dataRecord.setDataRecordValues(
 			new HashMap() {
 				{
-					put("fieldName", "test@liferay.com");
+					put("fieldName", "test@example.com");
 				}
 			});
 

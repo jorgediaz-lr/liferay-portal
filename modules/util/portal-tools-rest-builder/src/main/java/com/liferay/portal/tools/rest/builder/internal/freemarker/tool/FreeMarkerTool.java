@@ -162,7 +162,7 @@ public class FreeMarkerTool {
 		sb.append("-X 'POST' 'http://localhost:8080/o/graphql' ");
 		sb.append("-d $'");
 		sb.append(_getGraphQLBody(javaMethodSignature, openAPIYAML));
-		sb.append("' -u 'test@liferay.com:test'");
+		sb.append("' -u 'test@example.com:test'");
 
 		return sb.toString();
 	}
@@ -437,7 +437,7 @@ public class FreeMarkerTool {
 		sb.append(javaMethodSignature.getPath());
 		sb.append("' ");
 		sb.append(_getRESTBody(javaMethodSignature, openAPIYAML));
-		sb.append(" -u 'test@liferay.com:test'");
+		sb.append(" -u 'test@example.com:test'");
 
 		return sb.toString();
 	}

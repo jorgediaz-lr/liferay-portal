@@ -62,7 +62,7 @@ public abstract class BaseProcessResourceImpl implements ProcessResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/change-tracking/v1.0/processes'  -u 'test@liferay.com:test'
+	 * curl -X 'GET' 'http://localhost:8080/o/change-tracking/v1.0/processes'  -u 'test@example.com:test'
 	 */
 	@Override
 	@GET
@@ -98,7 +98,7 @@ public abstract class BaseProcessResourceImpl implements ProcessResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/change-tracking/v1.0/processes/{processId}'  -u 'test@liferay.com:test'
+	 * curl -X 'GET' 'http://localhost:8080/o/change-tracking/v1.0/processes/{processId}'  -u 'test@example.com:test'
 	 */
 	@Override
 	@GET

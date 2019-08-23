@@ -104,8 +104,8 @@ public class PortalImplEscapeRedirectTest {
 			Assert.assertNull(_portalImpl.escapeRedirect(":google.com"));
 			Assert.assertNull(_portalImpl.escapeRedirect("test:google.com"));
 			Assert.assertNull(
-				_portalImpl.escapeRedirect("test:test@liferay.com"));
-			Assert.assertNull(_portalImpl.escapeRedirect("test@liferay.com"));
+				_portalImpl.escapeRedirect("test:test@example.com"));
+			Assert.assertNull(_portalImpl.escapeRedirect("test@example.com"));
 			Assert.assertNull(_portalImpl.escapeRedirect("@liferay.com"));
 			Assert.assertNull(_portalImpl.escapeRedirect(":@liferay.com"));
 			Assert.assertNull(_portalImpl.escapeRedirect("//www.google.com"));

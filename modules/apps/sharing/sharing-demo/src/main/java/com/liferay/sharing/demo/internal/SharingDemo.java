@@ -84,7 +84,7 @@ public class SharingDemo extends BasePortalInstanceLifecycleListener {
 		}
 
 		User testUser = _userLocalService.fetchUserByEmailAddress(
-			company.getCompanyId(), "test@liferay.com");
+			company.getCompanyId(), "test@example.com");
 
 		if (testUser != null) {
 			_sharingEntryLocalService.addSharingEntry(

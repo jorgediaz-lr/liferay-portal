@@ -58,7 +58,7 @@ definition {
 
 		SetupWizard.configurePG(
 			databaseType = "MySQL",
-			administratorEmail = "test@liferay.com",
+			administratorEmail = "test@example.com",
 			administratorFirstName = '''<script>alert("xss")</script>''',
 			administratorLastName = '''<script>alert("xss")</script>''',
 			databasePassword = PropsUtil.get("database.mysql.password"),

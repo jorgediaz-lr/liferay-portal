@@ -61,7 +61,7 @@ public class NarrowDownScopeClientTest extends BaseClientTestCase {
 			getToken(
 				"oauthTestApplication", null,
 				getAuthorizationCodeBiFunction(
-					"test@liferay.com", "test", null, "GET"),
+					"test@example.com", "test", null, "GET"),
 				this::parseScopeString));
 
 		Assert.assertEquals(
@@ -74,7 +74,7 @@ public class NarrowDownScopeClientTest extends BaseClientTestCase {
 		Response response = getToken(
 			"oauthTestApplication", null,
 			getResourceOwnerPasswordBiFunction(
-				"test@liferay.com", "test", "GET"),
+				"test@example.com", "test", "GET"),
 			Function.identity());
 
 		Assert.assertEquals("GET", parseScopeString(response));
@@ -91,7 +91,7 @@ public class NarrowDownScopeClientTest extends BaseClientTestCase {
 
 		String scopeString = getToken(
 			"oauthTestApplication", null,
-			getResourceOwnerPasswordBiFunction("test@liferay.com", "test"),
+			getResourceOwnerPasswordBiFunction("test@example.com", "test"),
 			this::parseScopeString);
 
 		Assert.assertEquals(
@@ -103,7 +103,7 @@ public class NarrowDownScopeClientTest extends BaseClientTestCase {
 			getToken(
 				"oauthTestApplication", null,
 				getResourceOwnerPasswordBiFunction(
-					"test@liferay.com", "test", "GET POST PUT"),
+					"test@example.com", "test", "GET POST PUT"),
 				this::parseError));
 	}
 

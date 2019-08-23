@@ -29,6 +29,6 @@ public class UIKeys {
 
 	public static final String LIFERAY_DEFAULT_PASSWORD = "test";
 
-	public static final String LIFERAY_DEFAULT_USER_ID = "test@liferay.com";
+	public static final String LIFERAY_DEFAULT_USER_ID = "test@example.com";
 
 }
