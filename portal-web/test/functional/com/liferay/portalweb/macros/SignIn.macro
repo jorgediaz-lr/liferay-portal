@@ -104,7 +104,7 @@ definition {
 
 		Type(
 			locator1 = "TextInput#MAIL_DOMAIN",
-			value1 = "liferay.com");
+			value1 = "example.com");
 
 		Button.clickSave();
 
