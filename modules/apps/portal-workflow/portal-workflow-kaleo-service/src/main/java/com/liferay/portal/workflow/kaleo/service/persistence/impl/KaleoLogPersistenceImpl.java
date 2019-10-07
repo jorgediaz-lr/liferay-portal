@@ -45,7 +45,6 @@ import java.io.Serializable;
 
 import java.lang.reflect.InvocationHandler;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -221,7 +220,7 @@ public class KaleoLogPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KaleoLogModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -238,18 +237,8 @@ public class KaleoLogPersistenceImpl
 
 				qPos.add(companyId);
 
-				if (!pagination) {
-					list = (List<KaleoLog>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KaleoLog>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KaleoLog>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -745,7 +734,7 @@ public class KaleoLogPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KaleoLogModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -762,18 +751,8 @@ public class KaleoLogPersistenceImpl
 
 				qPos.add(kaleoDefinitionVersionId);
 
-				if (!pagination) {
-					list = (List<KaleoLog>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KaleoLog>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KaleoLog>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -1272,7 +1251,7 @@ public class KaleoLogPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KaleoLogModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -1289,18 +1268,8 @@ public class KaleoLogPersistenceImpl
 
 				qPos.add(kaleoInstanceId);
 
-				if (!pagination) {
-					list = (List<KaleoLog>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KaleoLog>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KaleoLog>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -1799,7 +1768,7 @@ public class KaleoLogPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KaleoLogModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -1816,18 +1785,8 @@ public class KaleoLogPersistenceImpl
 
 				qPos.add(kaleoTaskInstanceTokenId);
 
-				if (!pagination) {
-					list = (List<KaleoLog>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KaleoLog>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KaleoLog>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -2347,7 +2306,7 @@ public class KaleoLogPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KaleoLogModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -2368,18 +2327,8 @@ public class KaleoLogPersistenceImpl
 					qPos.add(type);
 				}
 
-				if (!pagination) {
-					list = (List<KaleoLog>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KaleoLog>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KaleoLog>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -2984,7 +2933,7 @@ public class KaleoLogPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KaleoLogModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -3011,18 +2960,8 @@ public class KaleoLogPersistenceImpl
 					qPos.add(type);
 				}
 
-				if (!pagination) {
-					list = (List<KaleoLog>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KaleoLog>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KaleoLog>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -4114,14 +4053,11 @@ public class KaleoLogPersistenceImpl
 		int start, int end, OrderByComparator<KaleoLog> orderByComparator,
 		boolean useFinderCache) {
 
-		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
-
-			pagination = false;
 
 			if (useFinderCache) {
 				finderPath = _finderPathWithoutPaginationFindAll;
@@ -4158,9 +4094,7 @@ public class KaleoLogPersistenceImpl
 			else {
 				sql = _SQL_SELECT_KALEOLOG;
 
-				if (pagination) {
-					sql = sql.concat(KaleoLogModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(KaleoLogModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -4170,18 +4104,8 @@ public class KaleoLogPersistenceImpl
 
 				Query q = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<KaleoLog>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KaleoLog>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KaleoLog>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 

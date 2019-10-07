@@ -46,7 +46,6 @@ import java.io.Serializable;
 
 import java.lang.reflect.InvocationHandler;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -232,7 +231,7 @@ public class AssetEntryUsagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(AssetEntryUsageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -251,18 +250,8 @@ public class AssetEntryUsagePersistenceImpl
 					qPos.add(uuid);
 				}
 
-				if (!pagination) {
-					list = (List<AssetEntryUsage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<AssetEntryUsage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<AssetEntryUsage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -1034,7 +1023,7 @@ public class AssetEntryUsagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(AssetEntryUsageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -1051,18 +1040,8 @@ public class AssetEntryUsagePersistenceImpl
 
 				qPos.add(assetEntryId);
 
-				if (!pagination) {
-					list = (List<AssetEntryUsage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<AssetEntryUsage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<AssetEntryUsage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -1552,7 +1531,7 @@ public class AssetEntryUsagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(AssetEntryUsageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -1569,18 +1548,8 @@ public class AssetEntryUsagePersistenceImpl
 
 				qPos.add(plid);
 
-				if (!pagination) {
-					list = (List<AssetEntryUsage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<AssetEntryUsage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<AssetEntryUsage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -2076,7 +2045,7 @@ public class AssetEntryUsagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(AssetEntryUsageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -2095,18 +2064,8 @@ public class AssetEntryUsagePersistenceImpl
 
 				qPos.add(type);
 
-				if (!pagination) {
-					list = (List<AssetEntryUsage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<AssetEntryUsage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<AssetEntryUsage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -2659,7 +2618,7 @@ public class AssetEntryUsagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(AssetEntryUsageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -2682,18 +2641,8 @@ public class AssetEntryUsagePersistenceImpl
 
 				qPos.add(plid);
 
-				if (!pagination) {
-					list = (List<AssetEntryUsage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<AssetEntryUsage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<AssetEntryUsage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -4111,14 +4060,11 @@ public class AssetEntryUsagePersistenceImpl
 		OrderByComparator<AssetEntryUsage> orderByComparator,
 		boolean useFinderCache) {
 
-		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
-
-			pagination = false;
 
 			if (useFinderCache) {
 				finderPath = _finderPathWithoutPaginationFindAll;
@@ -4155,9 +4101,7 @@ public class AssetEntryUsagePersistenceImpl
 			else {
 				sql = _SQL_SELECT_ASSETENTRYUSAGE;
 
-				if (pagination) {
-					sql = sql.concat(AssetEntryUsageModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(AssetEntryUsageModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -4167,18 +4111,8 @@ public class AssetEntryUsagePersistenceImpl
 
 				Query q = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<AssetEntryUsage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<AssetEntryUsage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<AssetEntryUsage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 

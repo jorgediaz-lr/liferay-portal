@@ -44,7 +44,6 @@ import java.io.Serializable;
 
 import java.lang.reflect.InvocationHandler;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -220,7 +219,7 @@ public class PhonePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(PhoneModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -239,18 +238,7 @@ public class PhonePersistenceImpl
 					qPos.add(uuid);
 				}
 
-				if (!pagination) {
-					list = (List<Phone>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<Phone>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<Phone>)QueryUtil.list(q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -781,7 +769,7 @@ public class PhonePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(PhoneModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -802,18 +790,7 @@ public class PhonePersistenceImpl
 
 				qPos.add(companyId);
 
-				if (!pagination) {
-					list = (List<Phone>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<Phone>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<Phone>)QueryUtil.list(q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -1354,7 +1331,7 @@ public class PhonePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(PhoneModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -1371,18 +1348,7 @@ public class PhonePersistenceImpl
 
 				qPos.add(companyId);
 
-				if (!pagination) {
-					list = (List<Phone>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<Phone>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<Phone>)QueryUtil.list(q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -1861,7 +1827,7 @@ public class PhonePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(PhoneModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -1878,18 +1844,7 @@ public class PhonePersistenceImpl
 
 				qPos.add(userId);
 
-				if (!pagination) {
-					list = (List<Phone>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<Phone>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<Phone>)QueryUtil.list(q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -2382,7 +2337,7 @@ public class PhonePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(PhoneModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -2401,18 +2356,7 @@ public class PhonePersistenceImpl
 
 				qPos.add(classNameId);
 
-				if (!pagination) {
-					list = (List<Phone>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<Phone>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<Phone>)QueryUtil.list(q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -2950,7 +2894,7 @@ public class PhonePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(PhoneModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -2971,18 +2915,7 @@ public class PhonePersistenceImpl
 
 				qPos.add(classPK);
 
-				if (!pagination) {
-					list = (List<Phone>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<Phone>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<Phone>)QueryUtil.list(q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -3559,7 +3492,7 @@ public class PhonePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(PhoneModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -3582,18 +3515,7 @@ public class PhonePersistenceImpl
 
 				qPos.add(primary);
 
-				if (!pagination) {
-					list = (List<Phone>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<Phone>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<Phone>)QueryUtil.list(q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -4640,14 +4562,11 @@ public class PhonePersistenceImpl
 		int start, int end, OrderByComparator<Phone> orderByComparator,
 		boolean useFinderCache) {
 
-		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
-
-			pagination = false;
 
 			if (useFinderCache) {
 				finderPath = _finderPathWithoutPaginationFindAll;
@@ -4684,9 +4603,7 @@ public class PhonePersistenceImpl
 			else {
 				sql = _SQL_SELECT_PHONE;
 
-				if (pagination) {
-					sql = sql.concat(PhoneModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(PhoneModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -4696,18 +4613,7 @@ public class PhonePersistenceImpl
 
 				Query q = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<Phone>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<Phone>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<Phone>)QueryUtil.list(q, getDialect(), start, end);
 
 				cacheResult(list);
 

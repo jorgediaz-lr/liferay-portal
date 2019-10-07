@@ -44,7 +44,6 @@ import java.io.Serializable;
 
 import java.lang.reflect.InvocationHandler;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -220,7 +219,7 @@ public class ChangesetCollectionPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(ChangesetCollectionModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -237,18 +236,8 @@ public class ChangesetCollectionPersistenceImpl
 
 				qPos.add(groupId);
 
-				if (!pagination) {
-					list = (List<ChangesetCollection>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<ChangesetCollection>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<ChangesetCollection>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -743,7 +732,7 @@ public class ChangesetCollectionPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(ChangesetCollectionModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -760,18 +749,8 @@ public class ChangesetCollectionPersistenceImpl
 
 				qPos.add(companyId);
 
-				if (!pagination) {
-					list = (List<ChangesetCollection>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<ChangesetCollection>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<ChangesetCollection>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -1276,7 +1255,7 @@ public class ChangesetCollectionPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(ChangesetCollectionModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -1295,18 +1274,8 @@ public class ChangesetCollectionPersistenceImpl
 
 				qPos.add(userId);
 
-				if (!pagination) {
-					list = (List<ChangesetCollection>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<ChangesetCollection>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<ChangesetCollection>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -2101,7 +2070,7 @@ public class ChangesetCollectionPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(ChangesetCollectionModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -2122,18 +2091,8 @@ public class ChangesetCollectionPersistenceImpl
 					qPos.add(name);
 				}
 
-				if (!pagination) {
-					list = (List<ChangesetCollection>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<ChangesetCollection>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<ChangesetCollection>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -3128,14 +3087,11 @@ public class ChangesetCollectionPersistenceImpl
 		OrderByComparator<ChangesetCollection> orderByComparator,
 		boolean useFinderCache) {
 
-		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
-
-			pagination = false;
 
 			if (useFinderCache) {
 				finderPath = _finderPathWithoutPaginationFindAll;
@@ -3172,10 +3128,7 @@ public class ChangesetCollectionPersistenceImpl
 			else {
 				sql = _SQL_SELECT_CHANGESETCOLLECTION;
 
-				if (pagination) {
-					sql = sql.concat(
-						ChangesetCollectionModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(ChangesetCollectionModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -3185,18 +3138,8 @@ public class ChangesetCollectionPersistenceImpl
 
 				Query q = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<ChangesetCollection>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<ChangesetCollection>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<ChangesetCollection>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 

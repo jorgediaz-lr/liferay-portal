@@ -233,7 +233,7 @@ public class OrganizationPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(OrganizationModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -252,18 +252,8 @@ public class OrganizationPersistenceImpl
 					qPos.add(uuid);
 				}
 
-				if (!pagination) {
-					list = (List<Organization>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<Organization>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<Organization>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -1217,7 +1207,7 @@ public class OrganizationPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(OrganizationModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -1238,18 +1228,8 @@ public class OrganizationPersistenceImpl
 
 				qPos.add(companyId);
 
-				if (!pagination) {
-					list = (List<Organization>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<Organization>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<Organization>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -2237,7 +2217,7 @@ public class OrganizationPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(OrganizationModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -2254,18 +2234,8 @@ public class OrganizationPersistenceImpl
 
 				qPos.add(companyId);
 
-				if (!pagination) {
-					list = (List<Organization>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<Organization>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<Organization>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -3129,7 +3099,7 @@ public class OrganizationPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(OrganizationModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -3146,18 +3116,8 @@ public class OrganizationPersistenceImpl
 
 				qPos.add(companyId);
 
-				if (!pagination) {
-					list = (List<Organization>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<Organization>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<Organization>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -4035,7 +3995,7 @@ public class OrganizationPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(OrganizationModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -4054,18 +4014,8 @@ public class OrganizationPersistenceImpl
 
 				qPos.add(parentOrganizationId);
 
-				if (!pagination) {
-					list = (List<Organization>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<Organization>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<Organization>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -4997,7 +4947,7 @@ public class OrganizationPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(OrganizationModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -5018,18 +4968,8 @@ public class OrganizationPersistenceImpl
 					qPos.add(treePath);
 				}
 
-				if (!pagination) {
-					list = (List<Organization>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<Organization>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<Organization>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -6279,7 +6219,7 @@ public class OrganizationPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(OrganizationModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -6300,18 +6240,8 @@ public class OrganizationPersistenceImpl
 					qPos.add(StringUtil.toLowerCase(name));
 				}
 
-				if (!pagination) {
-					list = (List<Organization>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<Organization>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<Organization>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -7305,7 +7235,7 @@ public class OrganizationPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(OrganizationModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -7326,18 +7256,8 @@ public class OrganizationPersistenceImpl
 
 				qPos.add(parentOrganizationId);
 
-				if (!pagination) {
-					list = (List<Organization>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<Organization>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<Organization>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -7962,7 +7882,7 @@ public class OrganizationPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(OrganizationModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -7985,18 +7905,8 @@ public class OrganizationPersistenceImpl
 					qPos.add(StringUtil.toLowerCase(name));
 				}
 
-				if (!pagination) {
-					list = (List<Organization>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<Organization>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<Organization>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -9838,14 +9748,11 @@ public class OrganizationPersistenceImpl
 		int start, int end, OrderByComparator<Organization> orderByComparator,
 		boolean useFinderCache) {
 
-		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
-
-			pagination = false;
 
 			if (useFinderCache) {
 				finderPath = _finderPathWithoutPaginationFindAll;
@@ -9882,9 +9789,7 @@ public class OrganizationPersistenceImpl
 			else {
 				sql = _SQL_SELECT_ORGANIZATION;
 
-				if (pagination) {
-					sql = sql.concat(OrganizationModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(OrganizationModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -9894,18 +9799,8 @@ public class OrganizationPersistenceImpl
 
 				Query q = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<Organization>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<Organization>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<Organization>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 

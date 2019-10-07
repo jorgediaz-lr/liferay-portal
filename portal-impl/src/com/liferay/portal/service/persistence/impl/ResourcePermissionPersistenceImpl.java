@@ -219,7 +219,7 @@ public class ResourcePermissionPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(ResourcePermissionModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -238,18 +238,8 @@ public class ResourcePermissionPersistenceImpl
 					qPos.add(name);
 				}
 
-				if (!pagination) {
-					list = (List<ResourcePermission>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<ResourcePermission>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<ResourcePermission>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -766,7 +756,7 @@ public class ResourcePermissionPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(ResourcePermissionModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -783,18 +773,8 @@ public class ResourcePermissionPersistenceImpl
 
 				qPos.add(scope);
 
-				if (!pagination) {
-					list = (List<ResourcePermission>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<ResourcePermission>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<ResourcePermission>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -1230,7 +1210,7 @@ public class ResourcePermissionPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(ResourcePermissionModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -1243,18 +1223,8 @@ public class ResourcePermissionPersistenceImpl
 
 				Query q = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<ResourcePermission>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<ResourcePermission>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<ResourcePermission>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -1551,7 +1521,7 @@ public class ResourcePermissionPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(ResourcePermissionModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -1568,18 +1538,8 @@ public class ResourcePermissionPersistenceImpl
 
 				qPos.add(roleId);
 
-				if (!pagination) {
-					list = (List<ResourcePermission>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<ResourcePermission>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<ResourcePermission>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -2083,7 +2043,7 @@ public class ResourcePermissionPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(ResourcePermissionModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -2104,18 +2064,8 @@ public class ResourcePermissionPersistenceImpl
 					qPos.add(primKey);
 				}
 
-				if (!pagination) {
-					list = (List<ResourcePermission>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<ResourcePermission>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<ResourcePermission>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -2696,7 +2646,7 @@ public class ResourcePermissionPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(ResourcePermissionModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -2719,18 +2669,8 @@ public class ResourcePermissionPersistenceImpl
 					qPos.add(primKey);
 				}
 
-				if (!pagination) {
-					list = (List<ResourcePermission>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<ResourcePermission>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<ResourcePermission>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -3356,7 +3296,7 @@ public class ResourcePermissionPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(ResourcePermissionModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -3383,18 +3323,8 @@ public class ResourcePermissionPersistenceImpl
 					qPos.add(primKey);
 				}
 
-				if (!pagination) {
-					list = (List<ResourcePermission>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<ResourcePermission>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<ResourcePermission>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -4066,7 +3996,7 @@ public class ResourcePermissionPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(ResourcePermissionModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -4091,18 +4021,8 @@ public class ResourcePermissionPersistenceImpl
 
 				qPos.add(roleId);
 
-				if (!pagination) {
-					list = (List<ResourcePermission>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<ResourcePermission>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<ResourcePermission>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -4857,7 +4777,7 @@ public class ResourcePermissionPersistenceImpl
 			appendOrderByComparator(
 				query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 		}
-		else if (pagination) {
+		else {
 			query.append(ResourcePermissionModelImpl.ORDER_BY_JPQL);
 		}
 
@@ -4884,18 +4804,8 @@ public class ResourcePermissionPersistenceImpl
 				qPos.add(primKey);
 			}
 
-			if (!pagination) {
-				list = (List<ResourcePermission>)QueryUtil.list(
-					q, getDialect(), start, end, false);
-
-				Collections.sort(list);
-
-				list = Collections.unmodifiableList(list);
-			}
-			else {
-				list = (List<ResourcePermission>)QueryUtil.list(
-					q, getDialect(), start, end);
-			}
+			list = (List<ResourcePermission>)QueryUtil.list(
+				q, getDialect(), start, end);
 		}
 		catch (Exception e) {
 			throw processException(e);
@@ -5612,7 +5522,7 @@ public class ResourcePermissionPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(ResourcePermissionModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -5641,18 +5551,8 @@ public class ResourcePermissionPersistenceImpl
 
 				qPos.add(viewActionId);
 
-				if (!pagination) {
-					list = (List<ResourcePermission>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<ResourcePermission>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<ResourcePermission>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -6319,7 +6219,7 @@ public class ResourcePermissionPersistenceImpl
 			appendOrderByComparator(
 				query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 		}
-		else if (pagination) {
+		else {
 			query.append(ResourcePermissionModelImpl.ORDER_BY_JPQL);
 		}
 
@@ -6346,18 +6246,8 @@ public class ResourcePermissionPersistenceImpl
 
 			qPos.add(viewActionId);
 
-			if (!pagination) {
-				list = (List<ResourcePermission>)QueryUtil.list(
-					q, getDialect(), start, end, false);
-
-				Collections.sort(list);
-
-				list = Collections.unmodifiableList(list);
-			}
-			else {
-				list = (List<ResourcePermission>)QueryUtil.list(
-					q, getDialect(), start, end);
-			}
+			list = (List<ResourcePermission>)QueryUtil.list(
+				q, getDialect(), start, end);
 		}
 		catch (Exception e) {
 			throw processException(e);
@@ -7394,14 +7284,11 @@ public class ResourcePermissionPersistenceImpl
 		OrderByComparator<ResourcePermission> orderByComparator,
 		boolean useFinderCache) {
 
-		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
-
-			pagination = false;
 
 			if (useFinderCache) {
 				finderPath = _finderPathWithoutPaginationFindAll;
@@ -7438,9 +7325,7 @@ public class ResourcePermissionPersistenceImpl
 			else {
 				sql = _SQL_SELECT_RESOURCEPERMISSION;
 
-				if (pagination) {
-					sql = sql.concat(ResourcePermissionModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(ResourcePermissionModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -7450,18 +7335,8 @@ public class ResourcePermissionPersistenceImpl
 
 				Query q = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<ResourcePermission>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<ResourcePermission>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<ResourcePermission>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 

@@ -42,7 +42,6 @@ import java.io.Serializable;
 
 import java.lang.reflect.InvocationHandler;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -219,7 +218,7 @@ public class JournalContentSearchPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(JournalContentSearchModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -236,18 +235,8 @@ public class JournalContentSearchPersistenceImpl
 
 				qPos.add(companyId);
 
-				if (!pagination) {
-					list = (List<JournalContentSearch>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<JournalContentSearch>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<JournalContentSearch>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -757,7 +746,7 @@ public class JournalContentSearchPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(JournalContentSearchModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -776,18 +765,8 @@ public class JournalContentSearchPersistenceImpl
 					qPos.add(portletId);
 				}
 
-				if (!pagination) {
-					list = (List<JournalContentSearch>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<JournalContentSearch>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<JournalContentSearch>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -1326,7 +1305,7 @@ public class JournalContentSearchPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(JournalContentSearchModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -1345,18 +1324,8 @@ public class JournalContentSearchPersistenceImpl
 					qPos.add(articleId);
 				}
 
-				if (!pagination) {
-					list = (List<JournalContentSearch>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<JournalContentSearch>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<JournalContentSearch>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -1894,7 +1863,7 @@ public class JournalContentSearchPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(JournalContentSearchModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -1913,18 +1882,8 @@ public class JournalContentSearchPersistenceImpl
 
 				qPos.add(privateLayout);
 
-				if (!pagination) {
-					list = (List<JournalContentSearch>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<JournalContentSearch>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<JournalContentSearch>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -2469,7 +2428,7 @@ public class JournalContentSearchPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(JournalContentSearchModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -2490,18 +2449,8 @@ public class JournalContentSearchPersistenceImpl
 					qPos.add(articleId);
 				}
 
-				if (!pagination) {
-					list = (List<JournalContentSearch>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<JournalContentSearch>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<JournalContentSearch>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -3074,7 +3023,7 @@ public class JournalContentSearchPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(JournalContentSearchModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -3095,18 +3044,8 @@ public class JournalContentSearchPersistenceImpl
 
 				qPos.add(layoutId);
 
-				if (!pagination) {
-					list = (List<JournalContentSearch>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<JournalContentSearch>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<JournalContentSearch>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -3692,7 +3631,7 @@ public class JournalContentSearchPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(JournalContentSearchModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -3715,18 +3654,8 @@ public class JournalContentSearchPersistenceImpl
 					qPos.add(articleId);
 				}
 
-				if (!pagination) {
-					list = (List<JournalContentSearch>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<JournalContentSearch>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<JournalContentSearch>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -4354,7 +4283,7 @@ public class JournalContentSearchPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(JournalContentSearchModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -4379,18 +4308,8 @@ public class JournalContentSearchPersistenceImpl
 					qPos.add(portletId);
 				}
 
-				if (!pagination) {
-					list = (List<JournalContentSearch>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<JournalContentSearch>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<JournalContentSearch>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -5939,14 +5858,11 @@ public class JournalContentSearchPersistenceImpl
 		OrderByComparator<JournalContentSearch> orderByComparator,
 		boolean useFinderCache) {
 
-		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
-
-			pagination = false;
 
 			if (useFinderCache) {
 				finderPath = _finderPathWithoutPaginationFindAll;
@@ -5983,10 +5899,7 @@ public class JournalContentSearchPersistenceImpl
 			else {
 				sql = _SQL_SELECT_JOURNALCONTENTSEARCH;
 
-				if (pagination) {
-					sql = sql.concat(
-						JournalContentSearchModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(JournalContentSearchModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -5996,18 +5909,8 @@ public class JournalContentSearchPersistenceImpl
 
 				Query q = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<JournalContentSearch>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<JournalContentSearch>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<JournalContentSearch>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 

@@ -43,7 +43,6 @@ import java.io.Serializable;
 
 import java.lang.reflect.InvocationHandler;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -220,7 +219,7 @@ public class AttachmentPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(AttachmentModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -237,18 +236,8 @@ public class AttachmentPersistenceImpl
 
 				qPos.add(messageId);
 
-				if (!pagination) {
-					list = (List<Attachment>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<Attachment>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<Attachment>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -1000,14 +989,11 @@ public class AttachmentPersistenceImpl
 		int start, int end, OrderByComparator<Attachment> orderByComparator,
 		boolean useFinderCache) {
 
-		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
-
-			pagination = false;
 
 			if (useFinderCache) {
 				finderPath = _finderPathWithoutPaginationFindAll;
@@ -1044,9 +1030,7 @@ public class AttachmentPersistenceImpl
 			else {
 				sql = _SQL_SELECT_ATTACHMENT;
 
-				if (pagination) {
-					sql = sql.concat(AttachmentModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(AttachmentModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -1056,18 +1040,8 @@ public class AttachmentPersistenceImpl
 
 				Query q = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<Attachment>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<Attachment>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<Attachment>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 

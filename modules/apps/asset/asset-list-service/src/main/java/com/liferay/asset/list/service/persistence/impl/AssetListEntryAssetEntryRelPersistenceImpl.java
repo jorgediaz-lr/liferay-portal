@@ -47,7 +47,6 @@ import java.io.Serializable;
 
 import java.lang.reflect.InvocationHandler;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -237,7 +236,7 @@ public class AssetListEntryAssetEntryRelPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(
 					AssetListEntryAssetEntryRelModelImpl.ORDER_BY_JPQL);
 			}
@@ -257,18 +256,8 @@ public class AssetListEntryAssetEntryRelPersistenceImpl
 					qPos.add(uuid);
 				}
 
-				if (!pagination) {
-					list = (List<AssetListEntryAssetEntryRel>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<AssetListEntryAssetEntryRel>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<AssetListEntryAssetEntryRel>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -1080,7 +1069,7 @@ public class AssetListEntryAssetEntryRelPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(
 					AssetListEntryAssetEntryRelModelImpl.ORDER_BY_JPQL);
 			}
@@ -1102,18 +1091,8 @@ public class AssetListEntryAssetEntryRelPersistenceImpl
 
 				qPos.add(companyId);
 
-				if (!pagination) {
-					list = (List<AssetListEntryAssetEntryRel>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<AssetListEntryAssetEntryRel>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<AssetListEntryAssetEntryRel>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -1673,7 +1652,7 @@ public class AssetListEntryAssetEntryRelPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(
 					AssetListEntryAssetEntryRelModelImpl.ORDER_BY_JPQL);
 			}
@@ -1691,18 +1670,8 @@ public class AssetListEntryAssetEntryRelPersistenceImpl
 
 				qPos.add(assetListEntryId);
 
-				if (!pagination) {
-					list = (List<AssetListEntryAssetEntryRel>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<AssetListEntryAssetEntryRel>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<AssetListEntryAssetEntryRel>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -2221,7 +2190,7 @@ public class AssetListEntryAssetEntryRelPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(
 					AssetListEntryAssetEntryRelModelImpl.ORDER_BY_JPQL);
 			}
@@ -2241,18 +2210,8 @@ public class AssetListEntryAssetEntryRelPersistenceImpl
 
 				qPos.add(segmentsEntryId);
 
-				if (!pagination) {
-					list = (List<AssetListEntryAssetEntryRel>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<AssetListEntryAssetEntryRel>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<AssetListEntryAssetEntryRel>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -3061,7 +3020,7 @@ public class AssetListEntryAssetEntryRelPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(
 					AssetListEntryAssetEntryRelModelImpl.ORDER_BY_JPQL);
 			}
@@ -3083,18 +3042,8 @@ public class AssetListEntryAssetEntryRelPersistenceImpl
 
 				qPos.add(position);
 
-				if (!pagination) {
-					list = (List<AssetListEntryAssetEntryRel>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<AssetListEntryAssetEntryRel>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<AssetListEntryAssetEntryRel>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -4208,14 +4157,11 @@ public class AssetListEntryAssetEntryRelPersistenceImpl
 		OrderByComparator<AssetListEntryAssetEntryRel> orderByComparator,
 		boolean useFinderCache) {
 
-		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
-
-			pagination = false;
 
 			if (useFinderCache) {
 				finderPath = _finderPathWithoutPaginationFindAll;
@@ -4252,10 +4198,8 @@ public class AssetListEntryAssetEntryRelPersistenceImpl
 			else {
 				sql = _SQL_SELECT_ASSETLISTENTRYASSETENTRYREL;
 
-				if (pagination) {
-					sql = sql.concat(
-						AssetListEntryAssetEntryRelModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(
+					AssetListEntryAssetEntryRelModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -4265,18 +4209,8 @@ public class AssetListEntryAssetEntryRelPersistenceImpl
 
 				Query q = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<AssetListEntryAssetEntryRel>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<AssetListEntryAssetEntryRel>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<AssetListEntryAssetEntryRel>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 

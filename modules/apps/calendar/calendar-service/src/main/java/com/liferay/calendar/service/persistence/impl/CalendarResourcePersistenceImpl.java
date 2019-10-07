@@ -51,7 +51,6 @@ import java.io.Serializable;
 
 import java.lang.reflect.InvocationHandler;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -237,7 +236,7 @@ public class CalendarResourcePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(CalendarResourceModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -256,18 +255,8 @@ public class CalendarResourcePersistenceImpl
 					qPos.add(uuid);
 				}
 
-				if (!pagination) {
-					list = (List<CalendarResource>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<CalendarResource>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<CalendarResource>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -1059,7 +1048,7 @@ public class CalendarResourcePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(CalendarResourceModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -1080,18 +1069,8 @@ public class CalendarResourcePersistenceImpl
 
 				qPos.add(companyId);
 
-				if (!pagination) {
-					list = (List<CalendarResource>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<CalendarResource>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<CalendarResource>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -1639,7 +1618,7 @@ public class CalendarResourcePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(CalendarResourceModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -1656,18 +1635,8 @@ public class CalendarResourcePersistenceImpl
 
 				qPos.add(groupId);
 
-				if (!pagination) {
-					list = (List<CalendarResource>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<CalendarResource>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<CalendarResource>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -2533,7 +2502,7 @@ public class CalendarResourcePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(CalendarResourceModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -2550,18 +2519,8 @@ public class CalendarResourcePersistenceImpl
 
 				qPos.add(active);
 
-				if (!pagination) {
-					list = (List<CalendarResource>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<CalendarResource>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<CalendarResource>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -3073,7 +3032,7 @@ public class CalendarResourcePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(CalendarResourceModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -3094,18 +3053,8 @@ public class CalendarResourcePersistenceImpl
 					qPos.add(code);
 				}
 
-				if (!pagination) {
-					list = (List<CalendarResource>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<CalendarResource>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<CalendarResource>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -4132,7 +4081,7 @@ public class CalendarResourcePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(CalendarResourceModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -4151,18 +4100,8 @@ public class CalendarResourcePersistenceImpl
 					qPos.add(code);
 				}
 
-				if (!pagination) {
-					list = (List<CalendarResource>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<CalendarResource>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<CalendarResource>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -4676,7 +4615,7 @@ public class CalendarResourcePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(CalendarResourceModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -4695,18 +4634,8 @@ public class CalendarResourcePersistenceImpl
 
 				qPos.add(active);
 
-				if (!pagination) {
-					list = (List<CalendarResource>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<CalendarResource>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<CalendarResource>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -5874,7 +5803,7 @@ public class CalendarResourcePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(CalendarResourceModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -5897,18 +5826,8 @@ public class CalendarResourcePersistenceImpl
 
 				qPos.add(active);
 
-				if (!pagination) {
-					list = (List<CalendarResource>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<CalendarResource>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<CalendarResource>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -7033,14 +6952,11 @@ public class CalendarResourcePersistenceImpl
 		OrderByComparator<CalendarResource> orderByComparator,
 		boolean useFinderCache) {
 
-		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
-
-			pagination = false;
 
 			if (useFinderCache) {
 				finderPath = _finderPathWithoutPaginationFindAll;
@@ -7077,9 +6993,7 @@ public class CalendarResourcePersistenceImpl
 			else {
 				sql = _SQL_SELECT_CALENDARRESOURCE;
 
-				if (pagination) {
-					sql = sql.concat(CalendarResourceModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(CalendarResourceModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -7089,18 +7003,8 @@ public class CalendarResourcePersistenceImpl
 
 				Query q = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<CalendarResource>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<CalendarResource>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<CalendarResource>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 

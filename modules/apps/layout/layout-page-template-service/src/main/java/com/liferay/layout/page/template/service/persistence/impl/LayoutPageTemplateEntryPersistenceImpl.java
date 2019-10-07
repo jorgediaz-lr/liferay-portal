@@ -50,7 +50,6 @@ import java.io.Serializable;
 
 import java.lang.reflect.InvocationHandler;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -238,7 +237,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(LayoutPageTemplateEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -257,18 +256,8 @@ public class LayoutPageTemplateEntryPersistenceImpl
 					qPos.add(uuid);
 				}
 
-				if (!pagination) {
-					list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -1075,7 +1064,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(LayoutPageTemplateEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -1096,18 +1085,8 @@ public class LayoutPageTemplateEntryPersistenceImpl
 
 				qPos.add(companyId);
 
-				if (!pagination) {
-					list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -1657,7 +1636,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(LayoutPageTemplateEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -1674,18 +1653,8 @@ public class LayoutPageTemplateEntryPersistenceImpl
 
 				qPos.add(groupId);
 
-				if (!pagination) {
-					list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -2576,7 +2545,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(LayoutPageTemplateEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -2593,18 +2562,8 @@ public class LayoutPageTemplateEntryPersistenceImpl
 
 				qPos.add(layoutPrototypeId);
 
-				if (!pagination) {
-					list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -3331,7 +3290,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(LayoutPageTemplateEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -3350,18 +3309,8 @@ public class LayoutPageTemplateEntryPersistenceImpl
 
 				qPos.add(layoutPageTemplateCollectionId);
 
-				if (!pagination) {
-					list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -4569,7 +4518,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(LayoutPageTemplateEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -4588,18 +4537,8 @@ public class LayoutPageTemplateEntryPersistenceImpl
 
 				qPos.add(type);
 
-				if (!pagination) {
-					list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -5559,7 +5498,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(LayoutPageTemplateEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -5582,18 +5521,8 @@ public class LayoutPageTemplateEntryPersistenceImpl
 					qPos.add(name);
 				}
 
-				if (!pagination) {
-					list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -6683,7 +6612,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(LayoutPageTemplateEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -6704,18 +6633,8 @@ public class LayoutPageTemplateEntryPersistenceImpl
 
 				qPos.add(type);
 
-				if (!pagination) {
-					list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -7736,7 +7655,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(LayoutPageTemplateEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -7757,18 +7676,8 @@ public class LayoutPageTemplateEntryPersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -8782,7 +8691,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(LayoutPageTemplateEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -8805,18 +8714,8 @@ public class LayoutPageTemplateEntryPersistenceImpl
 
 				qPos.add(type);
 
-				if (!pagination) {
-					list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -9877,7 +9776,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(LayoutPageTemplateEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -9898,18 +9797,8 @@ public class LayoutPageTemplateEntryPersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -10921,7 +10810,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(LayoutPageTemplateEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -10946,18 +10835,8 @@ public class LayoutPageTemplateEntryPersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -12117,7 +11996,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(LayoutPageTemplateEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -12140,18 +12019,8 @@ public class LayoutPageTemplateEntryPersistenceImpl
 
 				qPos.add(type);
 
-				if (!pagination) {
-					list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -13221,7 +13090,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(LayoutPageTemplateEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -13244,18 +13113,8 @@ public class LayoutPageTemplateEntryPersistenceImpl
 
 				qPos.add(defaultTemplate);
 
-				if (!pagination) {
-					list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -14336,7 +14195,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(LayoutPageTemplateEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -14359,18 +14218,8 @@ public class LayoutPageTemplateEntryPersistenceImpl
 
 				qPos.add(defaultTemplate);
 
-				if (!pagination) {
-					list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -15429,7 +15278,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(LayoutPageTemplateEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -15454,18 +15303,8 @@ public class LayoutPageTemplateEntryPersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -16603,7 +16442,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(LayoutPageTemplateEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -16630,18 +16469,8 @@ public class LayoutPageTemplateEntryPersistenceImpl
 
 				qPos.add(type);
 
-				if (!pagination) {
-					list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -17839,7 +17668,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(LayoutPageTemplateEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -17864,18 +17693,8 @@ public class LayoutPageTemplateEntryPersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -19005,7 +18824,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(LayoutPageTemplateEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -19030,18 +18849,8 @@ public class LayoutPageTemplateEntryPersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -20178,7 +19987,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(LayoutPageTemplateEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -20207,18 +20016,8 @@ public class LayoutPageTemplateEntryPersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -22353,14 +22152,11 @@ public class LayoutPageTemplateEntryPersistenceImpl
 		OrderByComparator<LayoutPageTemplateEntry> orderByComparator,
 		boolean useFinderCache) {
 
-		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
-
-			pagination = false;
 
 			if (useFinderCache) {
 				finderPath = _finderPathWithoutPaginationFindAll;
@@ -22397,10 +22193,8 @@ public class LayoutPageTemplateEntryPersistenceImpl
 			else {
 				sql = _SQL_SELECT_LAYOUTPAGETEMPLATEENTRY;
 
-				if (pagination) {
-					sql = sql.concat(
-						LayoutPageTemplateEntryModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(
+					LayoutPageTemplateEntryModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -22410,18 +22204,8 @@ public class LayoutPageTemplateEntryPersistenceImpl
 
 				Query q = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<LayoutPageTemplateEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 

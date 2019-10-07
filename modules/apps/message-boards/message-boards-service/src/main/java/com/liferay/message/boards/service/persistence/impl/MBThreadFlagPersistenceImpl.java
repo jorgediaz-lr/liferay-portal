@@ -47,7 +47,6 @@ import java.io.Serializable;
 
 import java.lang.reflect.InvocationHandler;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -233,7 +232,7 @@ public class MBThreadFlagPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(MBThreadFlagModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -252,18 +251,8 @@ public class MBThreadFlagPersistenceImpl
 					qPos.add(uuid);
 				}
 
-				if (!pagination) {
-					list = (List<MBThreadFlag>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<MBThreadFlag>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<MBThreadFlag>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -1050,7 +1039,7 @@ public class MBThreadFlagPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(MBThreadFlagModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -1071,18 +1060,8 @@ public class MBThreadFlagPersistenceImpl
 
 				qPos.add(companyId);
 
-				if (!pagination) {
-					list = (List<MBThreadFlag>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<MBThreadFlag>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<MBThreadFlag>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -1624,7 +1603,7 @@ public class MBThreadFlagPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(MBThreadFlagModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -1641,18 +1620,8 @@ public class MBThreadFlagPersistenceImpl
 
 				qPos.add(userId);
 
-				if (!pagination) {
-					list = (List<MBThreadFlag>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<MBThreadFlag>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<MBThreadFlag>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -2136,7 +2105,7 @@ public class MBThreadFlagPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(MBThreadFlagModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -2153,18 +2122,8 @@ public class MBThreadFlagPersistenceImpl
 
 				qPos.add(threadId);
 
-				if (!pagination) {
-					list = (List<MBThreadFlag>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<MBThreadFlag>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<MBThreadFlag>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -3346,14 +3305,11 @@ public class MBThreadFlagPersistenceImpl
 		int start, int end, OrderByComparator<MBThreadFlag> orderByComparator,
 		boolean useFinderCache) {
 
-		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
-
-			pagination = false;
 
 			if (useFinderCache) {
 				finderPath = _finderPathWithoutPaginationFindAll;
@@ -3390,9 +3346,7 @@ public class MBThreadFlagPersistenceImpl
 			else {
 				sql = _SQL_SELECT_MBTHREADFLAG;
 
-				if (pagination) {
-					sql = sql.concat(MBThreadFlagModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(MBThreadFlagModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -3402,18 +3356,8 @@ public class MBThreadFlagPersistenceImpl
 
 				Query q = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<MBThreadFlag>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<MBThreadFlag>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<MBThreadFlag>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 

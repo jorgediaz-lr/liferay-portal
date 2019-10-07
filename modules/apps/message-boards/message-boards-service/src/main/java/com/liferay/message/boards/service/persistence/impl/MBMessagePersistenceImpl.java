@@ -57,7 +57,6 @@ import java.io.Serializable;
 
 import java.lang.reflect.InvocationHandler;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -242,7 +241,7 @@ public class MBMessagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(MBMessageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -261,18 +260,8 @@ public class MBMessagePersistenceImpl
 					qPos.add(uuid);
 				}
 
-				if (!pagination) {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<MBMessage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -1059,7 +1048,7 @@ public class MBMessagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(MBMessageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -1080,18 +1069,8 @@ public class MBMessagePersistenceImpl
 
 				qPos.add(companyId);
 
-				if (!pagination) {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<MBMessage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -1632,7 +1611,7 @@ public class MBMessagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(MBMessageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -1649,18 +1628,8 @@ public class MBMessagePersistenceImpl
 
 				qPos.add(groupId);
 
-				if (!pagination) {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<MBMessage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -2517,7 +2486,7 @@ public class MBMessagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(MBMessageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -2534,18 +2503,8 @@ public class MBMessagePersistenceImpl
 
 				qPos.add(companyId);
 
-				if (!pagination) {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<MBMessage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -3027,7 +2986,7 @@ public class MBMessagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(MBMessageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -3044,18 +3003,8 @@ public class MBMessagePersistenceImpl
 
 				qPos.add(userId);
 
-				if (!pagination) {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<MBMessage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -3535,7 +3484,7 @@ public class MBMessagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(MBMessageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -3552,18 +3501,8 @@ public class MBMessagePersistenceImpl
 
 				qPos.add(threadId);
 
-				if (!pagination) {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<MBMessage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -4048,7 +3987,7 @@ public class MBMessagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(MBMessageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -4065,18 +4004,8 @@ public class MBMessagePersistenceImpl
 
 				qPos.add(threadId);
 
-				if (!pagination) {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<MBMessage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -4564,7 +4493,7 @@ public class MBMessagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(MBMessageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -4581,18 +4510,8 @@ public class MBMessagePersistenceImpl
 
 				qPos.add(parentMessageId);
 
-				if (!pagination) {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<MBMessage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -5091,7 +5010,7 @@ public class MBMessagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(MBMessageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -5110,18 +5029,8 @@ public class MBMessagePersistenceImpl
 
 				qPos.add(userId);
 
-				if (!pagination) {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<MBMessage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -6038,7 +5947,7 @@ public class MBMessagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(MBMessageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -6057,18 +5966,8 @@ public class MBMessagePersistenceImpl
 
 				qPos.add(categoryId);
 
-				if (!pagination) {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<MBMessage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -6989,7 +6888,7 @@ public class MBMessagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(MBMessageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -7008,18 +6907,8 @@ public class MBMessagePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<MBMessage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -7936,7 +7825,7 @@ public class MBMessagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(MBMessageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -7955,18 +7844,8 @@ public class MBMessagePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<MBMessage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -8493,7 +8372,7 @@ public class MBMessagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(MBMessageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -8512,18 +8391,8 @@ public class MBMessagePersistenceImpl
 
 				qPos.add(classNameId);
 
-				if (!pagination) {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<MBMessage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -8990,7 +8859,7 @@ public class MBMessagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(MBMessageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -9007,18 +8876,8 @@ public class MBMessagePersistenceImpl
 
 				qPos.add(userId);
 
-				if (!pagination) {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<MBMessage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -9345,7 +9204,7 @@ public class MBMessagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(MBMessageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -9364,18 +9223,8 @@ public class MBMessagePersistenceImpl
 
 				qPos.add(classPK);
 
-				if (!pagination) {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<MBMessage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -9903,7 +9752,7 @@ public class MBMessagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(MBMessageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -9922,18 +9771,8 @@ public class MBMessagePersistenceImpl
 
 				qPos.add(parentMessageId);
 
-				if (!pagination) {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<MBMessage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -10460,7 +10299,7 @@ public class MBMessagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(MBMessageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -10479,18 +10318,8 @@ public class MBMessagePersistenceImpl
 
 				qPos.add(answer);
 
-				if (!pagination) {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<MBMessage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -11014,7 +10843,7 @@ public class MBMessagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(MBMessageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -11033,18 +10862,8 @@ public class MBMessagePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<MBMessage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -11556,7 +11375,7 @@ public class MBMessagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(MBMessageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -11575,18 +11394,8 @@ public class MBMessagePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<MBMessage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -12111,7 +11920,7 @@ public class MBMessagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(MBMessageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -12130,18 +11939,8 @@ public class MBMessagePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<MBMessage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -12667,7 +12466,7 @@ public class MBMessagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(MBMessageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -12686,18 +12485,8 @@ public class MBMessagePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<MBMessage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -13232,7 +13021,7 @@ public class MBMessagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(MBMessageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -13253,18 +13042,8 @@ public class MBMessagePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<MBMessage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -14242,7 +14021,7 @@ public class MBMessagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(MBMessageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -14263,18 +14042,8 @@ public class MBMessagePersistenceImpl
 
 				qPos.add(threadId);
 
-				if (!pagination) {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<MBMessage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -15255,7 +15024,7 @@ public class MBMessagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(MBMessageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -15276,18 +15045,8 @@ public class MBMessagePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<MBMessage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -16265,7 +16024,7 @@ public class MBMessagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(MBMessageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -16286,18 +16045,8 @@ public class MBMessagePersistenceImpl
 
 				qPos.add(classPK);
 
-				if (!pagination) {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<MBMessage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -16860,7 +16609,7 @@ public class MBMessagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(MBMessageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -16881,18 +16630,8 @@ public class MBMessagePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<MBMessage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -17387,7 +17126,7 @@ public class MBMessagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(MBMessageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -17406,18 +17145,8 @@ public class MBMessagePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<MBMessage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -17770,7 +17499,7 @@ public class MBMessagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(MBMessageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -17791,18 +17520,8 @@ public class MBMessagePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<MBMessage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -18377,7 +18096,7 @@ public class MBMessagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(MBMessageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -18400,18 +18119,8 @@ public class MBMessagePersistenceImpl
 
 				qPos.add(answer);
 
-				if (!pagination) {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<MBMessage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -19456,7 +19165,7 @@ public class MBMessagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(MBMessageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -19479,18 +19188,8 @@ public class MBMessagePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<MBMessage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -20535,7 +20234,7 @@ public class MBMessagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(MBMessageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -20558,18 +20257,8 @@ public class MBMessagePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<MBMessage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -22361,14 +22050,11 @@ public class MBMessagePersistenceImpl
 		int start, int end, OrderByComparator<MBMessage> orderByComparator,
 		boolean useFinderCache) {
 
-		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
-
-			pagination = false;
 
 			if (useFinderCache) {
 				finderPath = _finderPathWithoutPaginationFindAll;
@@ -22405,9 +22091,7 @@ public class MBMessagePersistenceImpl
 			else {
 				sql = _SQL_SELECT_MBMESSAGE;
 
-				if (pagination) {
-					sql = sql.concat(MBMessageModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(MBMessageModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -22417,18 +22101,8 @@ public class MBMessagePersistenceImpl
 
 				Query q = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<MBMessage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<MBMessage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 

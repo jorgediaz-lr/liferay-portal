@@ -48,7 +48,6 @@ import java.io.Serializable;
 
 import java.lang.reflect.InvocationHandler;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -225,7 +224,7 @@ public class DLFileEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(DLFileEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -244,18 +243,8 @@ public class DLFileEntryPersistenceImpl
 					qPos.add(uuid);
 				}
 
-				if (!pagination) {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<DLFileEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -1044,7 +1033,7 @@ public class DLFileEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(DLFileEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -1065,18 +1054,8 @@ public class DLFileEntryPersistenceImpl
 
 				qPos.add(companyId);
 
-				if (!pagination) {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<DLFileEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -1619,7 +1598,7 @@ public class DLFileEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(DLFileEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -1636,18 +1615,8 @@ public class DLFileEntryPersistenceImpl
 
 				qPos.add(groupId);
 
-				if (!pagination) {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<DLFileEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -2511,7 +2480,7 @@ public class DLFileEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(DLFileEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -2528,18 +2497,8 @@ public class DLFileEntryPersistenceImpl
 
 				qPos.add(companyId);
 
-				if (!pagination) {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<DLFileEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -3028,7 +2987,7 @@ public class DLFileEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(DLFileEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -3045,18 +3004,8 @@ public class DLFileEntryPersistenceImpl
 
 				qPos.add(repositoryId);
 
-				if (!pagination) {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<DLFileEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -3553,7 +3502,7 @@ public class DLFileEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(DLFileEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -3572,18 +3521,8 @@ public class DLFileEntryPersistenceImpl
 					qPos.add(mimeType);
 				}
 
-				if (!pagination) {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<DLFileEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -4101,7 +4040,7 @@ public class DLFileEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(DLFileEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -4118,18 +4057,8 @@ public class DLFileEntryPersistenceImpl
 
 				qPos.add(fileEntryTypeId);
 
-				if (!pagination) {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<DLFileEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -4625,7 +4554,7 @@ public class DLFileEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(DLFileEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -4642,18 +4571,8 @@ public class DLFileEntryPersistenceImpl
 
 				qPos.add(smallImageId);
 
-				if (!pagination) {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<DLFileEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -5142,7 +5061,7 @@ public class DLFileEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(DLFileEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -5159,18 +5078,8 @@ public class DLFileEntryPersistenceImpl
 
 				qPos.add(largeImageId);
 
-				if (!pagination) {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<DLFileEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -5659,7 +5568,7 @@ public class DLFileEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(DLFileEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -5676,18 +5585,8 @@ public class DLFileEntryPersistenceImpl
 
 				qPos.add(custom1ImageId);
 
-				if (!pagination) {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<DLFileEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -6179,7 +6078,7 @@ public class DLFileEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(DLFileEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -6196,18 +6095,8 @@ public class DLFileEntryPersistenceImpl
 
 				qPos.add(custom2ImageId);
 
-				if (!pagination) {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<DLFileEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -6706,7 +6595,7 @@ public class DLFileEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(DLFileEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -6725,18 +6614,8 @@ public class DLFileEntryPersistenceImpl
 
 				qPos.add(userId);
 
-				if (!pagination) {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<DLFileEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -7658,7 +7537,7 @@ public class DLFileEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(DLFileEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -7677,18 +7556,8 @@ public class DLFileEntryPersistenceImpl
 
 				qPos.add(folderId);
 
-				if (!pagination) {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<DLFileEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -8645,7 +8514,7 @@ public class DLFileEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(DLFileEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -8662,18 +8531,8 @@ public class DLFileEntryPersistenceImpl
 
 				qPos.add(groupId);
 
-				if (!pagination) {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<DLFileEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -9126,7 +8985,7 @@ public class DLFileEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(DLFileEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -9145,18 +9004,8 @@ public class DLFileEntryPersistenceImpl
 
 				qPos.add(folderId);
 
-				if (!pagination) {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<DLFileEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -9695,7 +9544,7 @@ public class DLFileEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(DLFileEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -9716,18 +9565,8 @@ public class DLFileEntryPersistenceImpl
 					qPos.add(name);
 				}
 
-				if (!pagination) {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<DLFileEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -10293,7 +10132,7 @@ public class DLFileEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(DLFileEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -10314,18 +10153,8 @@ public class DLFileEntryPersistenceImpl
 
 				qPos.add(folderId);
 
-				if (!pagination) {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<DLFileEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -11336,7 +11165,7 @@ public class DLFileEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(DLFileEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -11355,18 +11184,8 @@ public class DLFileEntryPersistenceImpl
 
 				qPos.add(userId);
 
-				if (!pagination) {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<DLFileEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -12689,7 +12508,7 @@ public class DLFileEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(DLFileEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -12710,18 +12529,8 @@ public class DLFileEntryPersistenceImpl
 
 				qPos.add(fileEntryTypeId);
 
-				if (!pagination) {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<DLFileEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -13747,7 +13556,7 @@ public class DLFileEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(DLFileEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -13766,18 +13575,8 @@ public class DLFileEntryPersistenceImpl
 
 				qPos.add(fileEntryTypeId);
 
-				if (!pagination) {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<DLFileEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -14293,7 +14092,7 @@ public class DLFileEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(DLFileEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -14316,18 +14115,8 @@ public class DLFileEntryPersistenceImpl
 
 				qPos.add(custom2ImageId);
 
-				if (!pagination) {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<DLFileEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -15901,14 +15690,11 @@ public class DLFileEntryPersistenceImpl
 		int start, int end, OrderByComparator<DLFileEntry> orderByComparator,
 		boolean useFinderCache) {
 
-		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
-
-			pagination = false;
 
 			if (useFinderCache) {
 				finderPath = _finderPathWithoutPaginationFindAll;
@@ -15945,9 +15731,7 @@ public class DLFileEntryPersistenceImpl
 			else {
 				sql = _SQL_SELECT_DLFILEENTRY;
 
-				if (pagination) {
-					sql = sql.concat(DLFileEntryModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(DLFileEntryModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -15957,18 +15741,8 @@ public class DLFileEntryPersistenceImpl
 
 				Query q = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<DLFileEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<DLFileEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 

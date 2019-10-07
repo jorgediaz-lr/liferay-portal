@@ -57,7 +57,6 @@ import java.io.Serializable;
 
 import java.lang.reflect.InvocationHandler;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -237,7 +236,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -254,18 +253,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(resourcePrimKey);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -762,7 +751,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -781,18 +770,8 @@ public class KBArticlePersistenceImpl
 					qPos.add(uuid);
 				}
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -1579,7 +1558,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -1600,18 +1579,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(companyId);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -2166,7 +2135,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -2185,18 +2154,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(groupId);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -3348,7 +3307,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -3367,18 +3326,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(latest);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -3850,7 +3799,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -3867,18 +3816,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(latest);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -4208,7 +4147,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -4227,18 +4166,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(main);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -4710,7 +4639,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -4727,18 +4656,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(main);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -5069,7 +4988,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -5088,18 +5007,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -5570,7 +5479,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -5587,18 +5496,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -5926,7 +5825,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -5945,18 +5844,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(latest);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -6872,7 +6761,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -6891,18 +6780,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(main);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -7817,7 +7696,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -7836,18 +7715,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -8764,7 +8633,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -8783,18 +8652,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(latest);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -9319,7 +9178,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -9338,18 +9197,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(main);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -9874,7 +9723,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -9893,18 +9742,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -10435,7 +10274,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -10454,18 +10293,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(latest);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -10942,7 +10771,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -10959,18 +10788,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(latest);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -11303,7 +11122,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -11322,18 +11141,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(main);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -11809,7 +11618,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -11826,18 +11635,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(main);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -12170,7 +11969,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -12189,18 +11988,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -12677,7 +12466,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -12694,18 +12483,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -13299,7 +13078,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -13320,18 +13099,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(latest);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -14357,7 +14126,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -14376,18 +14145,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(latest);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -14889,7 +14648,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -14910,18 +14669,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(main);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -15943,7 +15692,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -15962,18 +15711,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(main);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -16473,7 +16212,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -16494,18 +16233,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -17530,7 +17259,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -17549,18 +17278,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -18064,7 +17783,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -18085,18 +17804,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(latest);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -19124,7 +18833,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -19143,18 +18852,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(latest);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -19666,7 +19365,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -19687,18 +19386,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(main);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -20726,7 +20415,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -20745,18 +20434,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(main);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -21268,7 +20947,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -21289,18 +20968,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -22328,7 +21997,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -22347,18 +22016,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -22873,7 +22532,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -22896,18 +22555,8 @@ public class KBArticlePersistenceImpl
 					qPos.add(urlTitle);
 				}
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -23960,7 +23609,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -23981,18 +23630,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(latest);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -24975,7 +24614,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -24996,18 +24635,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -25988,7 +25617,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -26011,18 +25640,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(latest);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -27106,7 +26725,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -27131,18 +26750,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(latest);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -27706,7 +27315,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -27729,18 +27338,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(main);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -28824,7 +28423,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -28849,18 +28448,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(main);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -29422,7 +29011,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -29445,18 +29034,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -30540,7 +30119,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -30565,18 +30144,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -31153,7 +30722,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -31176,18 +30745,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -32266,7 +31825,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -32287,18 +31846,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -32856,7 +32405,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -32881,18 +32430,8 @@ public class KBArticlePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -34016,7 +33555,7 @@ public class KBArticlePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -34039,18 +33578,8 @@ public class KBArticlePersistenceImpl
 					qPos.add(urlTitle);
 				}
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -35915,14 +35444,11 @@ public class KBArticlePersistenceImpl
 		int start, int end, OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
-		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
-
-			pagination = false;
 
 			if (useFinderCache) {
 				finderPath = _finderPathWithoutPaginationFindAll;
@@ -35959,9 +35485,7 @@ public class KBArticlePersistenceImpl
 			else {
 				sql = _SQL_SELECT_KBARTICLE;
 
-				if (pagination) {
-					sql = sql.concat(KBArticleModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(KBArticleModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -35971,18 +35495,8 @@ public class KBArticlePersistenceImpl
 
 				Query q = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KBArticle>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KBArticle>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 

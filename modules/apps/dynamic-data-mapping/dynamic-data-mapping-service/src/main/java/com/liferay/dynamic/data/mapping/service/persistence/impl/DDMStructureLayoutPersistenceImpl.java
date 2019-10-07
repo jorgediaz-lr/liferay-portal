@@ -236,7 +236,7 @@ public class DDMStructureLayoutPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(DDMStructureLayoutModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -255,18 +255,8 @@ public class DDMStructureLayoutPersistenceImpl
 					qPos.add(uuid);
 				}
 
-				if (!pagination) {
-					list = (List<DDMStructureLayout>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<DDMStructureLayout>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<DDMStructureLayout>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -1061,7 +1051,7 @@ public class DDMStructureLayoutPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(DDMStructureLayoutModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -1082,18 +1072,8 @@ public class DDMStructureLayoutPersistenceImpl
 
 				qPos.add(companyId);
 
-				if (!pagination) {
-					list = (List<DDMStructureLayout>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<DDMStructureLayout>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<DDMStructureLayout>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -1641,7 +1621,7 @@ public class DDMStructureLayoutPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(DDMStructureLayoutModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -1658,18 +1638,8 @@ public class DDMStructureLayoutPersistenceImpl
 
 				qPos.add(groupId);
 
-				if (!pagination) {
-					list = (List<DDMStructureLayout>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<DDMStructureLayout>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<DDMStructureLayout>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -2180,7 +2150,7 @@ public class DDMStructureLayoutPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(DDMStructureLayoutModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -2199,18 +2169,8 @@ public class DDMStructureLayoutPersistenceImpl
 					qPos.add(structureLayoutKey);
 				}
 
-				if (!pagination) {
-					list = (List<DDMStructureLayout>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<DDMStructureLayout>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<DDMStructureLayout>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -2983,7 +2943,7 @@ public class DDMStructureLayoutPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(DDMStructureLayoutModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -3002,18 +2962,8 @@ public class DDMStructureLayoutPersistenceImpl
 
 				qPos.add(classNameId);
 
-				if (!pagination) {
-					list = (List<DDMStructureLayout>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<DDMStructureLayout>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<DDMStructureLayout>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -3851,7 +3801,7 @@ public class DDMStructureLayoutPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(DDMStructureLayoutModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -3872,18 +3822,8 @@ public class DDMStructureLayoutPersistenceImpl
 
 				qPos.add(structureVersionId);
 
-				if (!pagination) {
-					list = (List<DDMStructureLayout>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<DDMStructureLayout>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<DDMStructureLayout>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -5045,14 +4985,11 @@ public class DDMStructureLayoutPersistenceImpl
 		OrderByComparator<DDMStructureLayout> orderByComparator,
 		boolean useFinderCache) {
 
-		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
-
-			pagination = false;
 
 			if (useFinderCache) {
 				finderPath = _finderPathWithoutPaginationFindAll;
@@ -5089,9 +5026,7 @@ public class DDMStructureLayoutPersistenceImpl
 			else {
 				sql = _SQL_SELECT_DDMSTRUCTURELAYOUT;
 
-				if (pagination) {
-					sql = sql.concat(DDMStructureLayoutModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(DDMStructureLayoutModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -5101,18 +5036,8 @@ public class DDMStructureLayoutPersistenceImpl
 
 				Query q = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<DDMStructureLayout>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<DDMStructureLayout>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<DDMStructureLayout>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 

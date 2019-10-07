@@ -40,7 +40,6 @@ import java.io.Serializable;
 
 import java.lang.reflect.InvocationHandler;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -211,7 +210,7 @@ public class PluginSettingPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(PluginSettingModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -228,18 +227,8 @@ public class PluginSettingPersistenceImpl
 
 				qPos.add(companyId);
 
-				if (!pagination) {
-					list = (List<PluginSetting>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<PluginSetting>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<PluginSetting>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -1374,14 +1363,11 @@ public class PluginSettingPersistenceImpl
 		int start, int end, OrderByComparator<PluginSetting> orderByComparator,
 		boolean useFinderCache) {
 
-		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
-
-			pagination = false;
 
 			if (useFinderCache) {
 				finderPath = _finderPathWithoutPaginationFindAll;
@@ -1418,9 +1404,7 @@ public class PluginSettingPersistenceImpl
 			else {
 				sql = _SQL_SELECT_PLUGINSETTING;
 
-				if (pagination) {
-					sql = sql.concat(PluginSettingModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(PluginSettingModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -1430,18 +1414,8 @@ public class PluginSettingPersistenceImpl
 
 				Query q = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<PluginSetting>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<PluginSetting>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<PluginSetting>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 

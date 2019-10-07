@@ -304,7 +304,7 @@ public class RatingsStatsPersistenceImpl
 			appendOrderByComparator(
 				query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 		}
-		else if (pagination) {
+		else {
 			query.append(RatingsStatsModelImpl.ORDER_BY_JPQL);
 		}
 
@@ -321,18 +321,8 @@ public class RatingsStatsPersistenceImpl
 
 			qPos.add(classNameId);
 
-			if (!pagination) {
-				list = (List<RatingsStats>)QueryUtil.list(
-					q, getDialect(), start, end, false);
-
-				Collections.sort(list);
-
-				list = Collections.unmodifiableList(list);
-			}
-			else {
-				list = (List<RatingsStats>)QueryUtil.list(
-					q, getDialect(), start, end);
-			}
+			list = (List<RatingsStats>)QueryUtil.list(
+				q, getDialect(), start, end);
 		}
 		catch (Exception e) {
 			throw processException(e);
@@ -1133,14 +1123,11 @@ public class RatingsStatsPersistenceImpl
 		int start, int end, OrderByComparator<RatingsStats> orderByComparator,
 		boolean useFinderCache) {
 
-		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
-
-			pagination = false;
 
 			if (useFinderCache) {
 				finderPath = _finderPathWithoutPaginationFindAll;
@@ -1177,9 +1164,7 @@ public class RatingsStatsPersistenceImpl
 			else {
 				sql = _SQL_SELECT_RATINGSSTATS;
 
-				if (pagination) {
-					sql = sql.concat(RatingsStatsModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(RatingsStatsModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -1189,18 +1174,8 @@ public class RatingsStatsPersistenceImpl
 
 				Query q = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<RatingsStats>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<RatingsStats>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<RatingsStats>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 

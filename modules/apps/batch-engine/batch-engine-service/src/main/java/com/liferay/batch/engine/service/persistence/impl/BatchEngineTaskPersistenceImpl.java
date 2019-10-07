@@ -47,7 +47,6 @@ import java.io.Serializable;
 
 import java.lang.reflect.InvocationHandler;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -233,7 +232,7 @@ public class BatchEngineTaskPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(BatchEngineTaskModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -252,18 +251,8 @@ public class BatchEngineTaskPersistenceImpl
 					qPos.add(uuid);
 				}
 
-				if (!pagination) {
-					list = (List<BatchEngineTask>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<BatchEngineTask>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<BatchEngineTask>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -799,7 +788,7 @@ public class BatchEngineTaskPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(BatchEngineTaskModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -820,18 +809,8 @@ public class BatchEngineTaskPersistenceImpl
 
 				qPos.add(companyId);
 
-				if (!pagination) {
-					list = (List<BatchEngineTask>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<BatchEngineTask>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<BatchEngineTask>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -1394,7 +1373,7 @@ public class BatchEngineTaskPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(BatchEngineTaskModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -1413,18 +1392,8 @@ public class BatchEngineTaskPersistenceImpl
 					qPos.add(executeStatus);
 				}
 
-				if (!pagination) {
-					list = (List<BatchEngineTask>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<BatchEngineTask>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<BatchEngineTask>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -2316,14 +2285,11 @@ public class BatchEngineTaskPersistenceImpl
 		OrderByComparator<BatchEngineTask> orderByComparator,
 		boolean useFinderCache) {
 
-		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
-
-			pagination = false;
 
 			if (useFinderCache) {
 				finderPath = _finderPathWithoutPaginationFindAll;
@@ -2360,9 +2326,7 @@ public class BatchEngineTaskPersistenceImpl
 			else {
 				sql = _SQL_SELECT_BATCHENGINETASK;
 
-				if (pagination) {
-					sql = sql.concat(BatchEngineTaskModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(BatchEngineTaskModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -2372,18 +2336,8 @@ public class BatchEngineTaskPersistenceImpl
 
 				Query q = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<BatchEngineTask>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<BatchEngineTask>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<BatchEngineTask>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 

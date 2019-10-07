@@ -56,7 +56,6 @@ import java.io.Serializable;
 
 import java.lang.reflect.InvocationHandler;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -235,7 +234,7 @@ public class WikiPagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(WikiPageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -252,18 +251,8 @@ public class WikiPagePersistenceImpl
 
 				qPos.add(resourcePrimKey);
 
-				if (!pagination) {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<WikiPage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -757,7 +746,7 @@ public class WikiPagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(WikiPageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -776,18 +765,8 @@ public class WikiPagePersistenceImpl
 					qPos.add(uuid);
 				}
 
-				if (!pagination) {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<WikiPage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -1573,7 +1552,7 @@ public class WikiPagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(WikiPageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -1594,18 +1573,8 @@ public class WikiPagePersistenceImpl
 
 				qPos.add(companyId);
 
-				if (!pagination) {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<WikiPage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -2144,7 +2113,7 @@ public class WikiPagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(WikiPageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -2161,18 +2130,8 @@ public class WikiPagePersistenceImpl
 
 				qPos.add(nodeId);
 
-				if (!pagination) {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<WikiPage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -2661,7 +2620,7 @@ public class WikiPagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(WikiPageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -2680,18 +2639,8 @@ public class WikiPagePersistenceImpl
 					qPos.add(format);
 				}
 
-				if (!pagination) {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<WikiPage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -3213,7 +3162,7 @@ public class WikiPagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(WikiPageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -3232,18 +3181,8 @@ public class WikiPagePersistenceImpl
 
 				qPos.add(nodeId);
 
-				if (!pagination) {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<WikiPage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -3770,7 +3709,7 @@ public class WikiPagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(WikiPageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -3789,18 +3728,8 @@ public class WikiPagePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<WikiPage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -4336,7 +4265,7 @@ public class WikiPagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(WikiPageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -4357,18 +4286,8 @@ public class WikiPagePersistenceImpl
 					qPos.add(StringUtil.toLowerCase(title));
 				}
 
-				if (!pagination) {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<WikiPage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -4917,7 +4836,7 @@ public class WikiPagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(WikiPageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -4936,18 +4855,8 @@ public class WikiPagePersistenceImpl
 
 				qPos.add(head);
 
-				if (!pagination) {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<WikiPage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -5477,7 +5386,7 @@ public class WikiPagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(WikiPageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -5498,18 +5407,8 @@ public class WikiPagePersistenceImpl
 					qPos.add(StringUtil.toLowerCase(parentTitle));
 				}
 
-				if (!pagination) {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<WikiPage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -6075,7 +5974,7 @@ public class WikiPagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(WikiPageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -6096,18 +5995,8 @@ public class WikiPagePersistenceImpl
 					qPos.add(StringUtil.toLowerCase(redirectTitle));
 				}
 
-				if (!pagination) {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<WikiPage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -6661,7 +6550,7 @@ public class WikiPagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(WikiPageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -6680,18 +6569,8 @@ public class WikiPagePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<WikiPage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -7474,7 +7353,7 @@ public class WikiPagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(WikiPageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -7495,18 +7374,8 @@ public class WikiPagePersistenceImpl
 
 				qPos.add(head);
 
-				if (!pagination) {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<WikiPage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -8068,7 +7937,7 @@ public class WikiPagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(WikiPageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -8089,18 +7958,8 @@ public class WikiPagePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<WikiPage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -8659,7 +8518,7 @@ public class WikiPagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(WikiPageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -8680,18 +8539,8 @@ public class WikiPagePersistenceImpl
 
 				qPos.add(head);
 
-				if (!pagination) {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<WikiPage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -9665,7 +9514,7 @@ public class WikiPagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(WikiPageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -9686,18 +9535,8 @@ public class WikiPagePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<WikiPage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -10671,7 +10510,7 @@ public class WikiPagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(WikiPageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -10692,18 +10531,8 @@ public class WikiPagePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<WikiPage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -11547,7 +11376,7 @@ public class WikiPagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(WikiPageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -11570,18 +11399,8 @@ public class WikiPagePersistenceImpl
 
 				qPos.add(head);
 
-				if (!pagination) {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<WikiPage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -12179,7 +11998,7 @@ public class WikiPagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(WikiPageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -12202,18 +12021,8 @@ public class WikiPagePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<WikiPage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -12814,7 +12623,7 @@ public class WikiPagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(WikiPageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -12837,18 +12646,8 @@ public class WikiPagePersistenceImpl
 					qPos.add(StringUtil.toLowerCase(parentTitle));
 				}
 
-				if (!pagination) {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<WikiPage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -13449,7 +13248,7 @@ public class WikiPagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(WikiPageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -13472,18 +13271,8 @@ public class WikiPagePersistenceImpl
 					qPos.add(StringUtil.toLowerCase(redirectTitle));
 				}
 
-				if (!pagination) {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<WikiPage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -14070,7 +13859,7 @@ public class WikiPagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(WikiPageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -14091,18 +13880,8 @@ public class WikiPagePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<WikiPage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -14649,7 +14428,7 @@ public class WikiPagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(WikiPageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -14670,18 +14449,8 @@ public class WikiPagePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<WikiPage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -15251,7 +15020,7 @@ public class WikiPagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(WikiPageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -15274,18 +15043,8 @@ public class WikiPagePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<WikiPage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -16332,7 +16091,7 @@ public class WikiPagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(WikiPageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -16357,18 +16116,8 @@ public class WikiPagePersistenceImpl
 
 				qPos.add(head);
 
-				if (!pagination) {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<WikiPage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -17470,7 +17219,7 @@ public class WikiPagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(WikiPageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -17493,18 +17242,8 @@ public class WikiPagePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<WikiPage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -18552,7 +18291,7 @@ public class WikiPagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(WikiPageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -18577,18 +18316,8 @@ public class WikiPagePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<WikiPage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -19216,7 +18945,7 @@ public class WikiPagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(WikiPageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -19241,18 +18970,8 @@ public class WikiPagePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<WikiPage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -19894,7 +19613,7 @@ public class WikiPagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(WikiPageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -19919,18 +19638,8 @@ public class WikiPagePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<WikiPage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -20560,7 +20269,7 @@ public class WikiPagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(WikiPageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -20585,18 +20294,8 @@ public class WikiPagePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<WikiPage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -21250,7 +20949,7 @@ public class WikiPagePersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(WikiPageModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -21277,18 +20976,8 @@ public class WikiPagePersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<WikiPage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -23736,14 +23425,11 @@ public class WikiPagePersistenceImpl
 		int start, int end, OrderByComparator<WikiPage> orderByComparator,
 		boolean useFinderCache) {
 
-		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
-
-			pagination = false;
 
 			if (useFinderCache) {
 				finderPath = _finderPathWithoutPaginationFindAll;
@@ -23780,9 +23466,7 @@ public class WikiPagePersistenceImpl
 			else {
 				sql = _SQL_SELECT_WIKIPAGE;
 
-				if (pagination) {
-					sql = sql.concat(WikiPageModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(WikiPageModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -23792,18 +23476,8 @@ public class WikiPagePersistenceImpl
 
 				Query q = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<WikiPage>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<WikiPage>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 

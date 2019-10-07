@@ -47,7 +47,6 @@ import java.io.Serializable;
 
 import java.lang.reflect.InvocationHandler;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -233,7 +232,7 @@ public class AppBuilderAppPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(AppBuilderAppModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -252,18 +251,8 @@ public class AppBuilderAppPersistenceImpl
 					qPos.add(uuid);
 				}
 
-				if (!pagination) {
-					list = (List<AppBuilderApp>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<AppBuilderApp>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<AppBuilderApp>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -1052,7 +1041,7 @@ public class AppBuilderAppPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(AppBuilderAppModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -1073,18 +1062,8 @@ public class AppBuilderAppPersistenceImpl
 
 				qPos.add(companyId);
 
-				if (!pagination) {
-					list = (List<AppBuilderApp>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<AppBuilderApp>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<AppBuilderApp>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -1629,7 +1608,7 @@ public class AppBuilderAppPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(AppBuilderAppModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -1646,18 +1625,8 @@ public class AppBuilderAppPersistenceImpl
 
 				qPos.add(groupId);
 
-				if (!pagination) {
-					list = (List<AppBuilderApp>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<AppBuilderApp>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<AppBuilderApp>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -2154,7 +2123,7 @@ public class AppBuilderAppPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(AppBuilderAppModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -2173,18 +2142,8 @@ public class AppBuilderAppPersistenceImpl
 
 				qPos.add(status);
 
-				if (!pagination) {
-					list = (List<AppBuilderApp>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<AppBuilderApp>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<AppBuilderApp>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -2726,7 +2685,7 @@ public class AppBuilderAppPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(AppBuilderAppModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -2747,18 +2706,8 @@ public class AppBuilderAppPersistenceImpl
 
 				qPos.add(ddmStructureId);
 
-				if (!pagination) {
-					list = (List<AppBuilderApp>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<AppBuilderApp>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<AppBuilderApp>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -3784,14 +3733,11 @@ public class AppBuilderAppPersistenceImpl
 		int start, int end, OrderByComparator<AppBuilderApp> orderByComparator,
 		boolean useFinderCache) {
 
-		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
-
-			pagination = false;
 
 			if (useFinderCache) {
 				finderPath = _finderPathWithoutPaginationFindAll;
@@ -3828,9 +3774,7 @@ public class AppBuilderAppPersistenceImpl
 			else {
 				sql = _SQL_SELECT_APPBUILDERAPP;
 
-				if (pagination) {
-					sql = sql.concat(AppBuilderAppModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(AppBuilderAppModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -3840,18 +3784,8 @@ public class AppBuilderAppPersistenceImpl
 
 				Query q = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<AppBuilderApp>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<AppBuilderApp>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<AppBuilderApp>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 

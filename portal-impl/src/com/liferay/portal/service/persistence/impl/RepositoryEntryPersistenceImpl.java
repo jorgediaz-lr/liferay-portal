@@ -44,7 +44,6 @@ import java.io.Serializable;
 
 import java.lang.reflect.InvocationHandler;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -222,7 +221,7 @@ public class RepositoryEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(RepositoryEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -241,18 +240,8 @@ public class RepositoryEntryPersistenceImpl
 					qPos.add(uuid);
 				}
 
-				if (!pagination) {
-					list = (List<RepositoryEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<RepositoryEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<RepositoryEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -1045,7 +1034,7 @@ public class RepositoryEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(RepositoryEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -1066,18 +1055,8 @@ public class RepositoryEntryPersistenceImpl
 
 				qPos.add(companyId);
 
-				if (!pagination) {
-					list = (List<RepositoryEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<RepositoryEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<RepositoryEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -1628,7 +1607,7 @@ public class RepositoryEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(RepositoryEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -1645,18 +1624,8 @@ public class RepositoryEntryPersistenceImpl
 
 				qPos.add(repositoryId);
 
-				if (!pagination) {
-					list = (List<RepositoryEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<RepositoryEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<RepositoryEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -2876,14 +2845,11 @@ public class RepositoryEntryPersistenceImpl
 		OrderByComparator<RepositoryEntry> orderByComparator,
 		boolean useFinderCache) {
 
-		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
-
-			pagination = false;
 
 			if (useFinderCache) {
 				finderPath = _finderPathWithoutPaginationFindAll;
@@ -2920,9 +2886,7 @@ public class RepositoryEntryPersistenceImpl
 			else {
 				sql = _SQL_SELECT_REPOSITORYENTRY;
 
-				if (pagination) {
-					sql = sql.concat(RepositoryEntryModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(RepositoryEntryModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -2932,18 +2896,8 @@ public class RepositoryEntryPersistenceImpl
 
 				Query q = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<RepositoryEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<RepositoryEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<RepositoryEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
