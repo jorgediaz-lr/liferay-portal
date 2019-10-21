@@ -45,7 +45,6 @@ import javax.portlet.Portlet;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.osgi.service.component.annotations.Component;
@@ -87,7 +86,7 @@ public class MentionsPortlet extends MVCPortlet {
 			}
 
 			JSONArray jsonArray = _getJSONArray(
-				_portal.getHttpServletRequest(resourceRequest));
+				themeDisplay, ParamUtil.getString(resourceRequest, "query"));
 
 			HttpServletResponse httpServletResponse =
 				_portal.getHttpServletResponse(resourceResponse);
@@ -102,21 +101,15 @@ public class MentionsPortlet extends MVCPortlet {
 		}
 	}
 
-	private JSONArray _getJSONArray(HttpServletRequest httpServletRequest)
+	private JSONArray _getJSONArray(ThemeDisplay themeDisplay, String query)
 		throws PortalException {
 
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
-
-		ThemeDisplay themeDisplay =
-			(ThemeDisplay)httpServletRequest.getAttribute(
-				WebKeys.THEME_DISPLAY);
 
 		SocialInteractionsConfiguration socialInteractionsConfiguration =
 			SocialInteractionsConfigurationUtil.
 				getSocialInteractionsConfiguration(
 					themeDisplay.getCompanyId(), MentionsPortletKeys.MENTIONS);
-
-		String query = ParamUtil.getString(httpServletRequest, "query");
 
 		List<User> users = _mentionsUserFinder.getUsers(
 			themeDisplay.getCompanyId(), themeDisplay.getUserId(), query,
