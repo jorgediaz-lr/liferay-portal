@@ -276,8 +276,11 @@ public class DefaultAssetDisplayPageFriendlyURLResolver
 
 		_portal.addPageSubtitle(
 			journalArticle.getTitle(locale), httpServletRequest);
-		_portal.addPageDescription(
-			journalArticle.getDescription(locale), httpServletRequest);
+
+		String summary = com.liferay.portal.kernel.util.HtmlUtil.unescape(
+    			com.liferay.portal.kernel.util.HtmlUtil.stripHtml(journalArticle.getDescription(locale)));
+		
+		_portal.addPageDescription(summary, httpServletRequest);
 
 		InfoDisplayObjectProvider infoDisplayObjectProvider =
 			_getInfoDisplayObjectProvider(journalArticle);
