@@ -248,6 +248,8 @@ public class AssetCategoriesSelectorDisplayContext {
 				"id", category.getCategoryId()
 			).put(
 				"name", category.getTitle(themeDisplay.getLocale())
+			).put(
+				"nodePath", category.getPath(themeDisplay.getLocale(), true)
 			);
 
 			if (getSelectedCategoryIds().contains(
