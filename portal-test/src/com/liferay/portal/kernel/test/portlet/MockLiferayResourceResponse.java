@@ -293,7 +293,7 @@ public class MockLiferayResourceResponse
 	}
 
 	@Override
-	public void setContentType(String type) {
+	public void setContentType(String contentType) {
 	}
 
 	@Override
