@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.PortletPreferences;
 import com.liferay.portal.kernel.portlet.PortletIdCodec;
 import com.liferay.portal.kernel.portlet.PortletJSONUtil;
@@ -42,9 +43,6 @@ import java.util.Dictionary;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Stream;
-
-import javax.portlet.Portlet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -158,35 +156,29 @@ public class PortletRegistryImpl implements PortletRegistry {
 				PortletKeys.PREFS_OWNER_ID_DEFAULT,
 				PortletKeys.PREFS_OWNER_TYPE_LAYOUT, plid);
 
-		Stream<PortletPreferences> stream = portletPreferencesList.stream();
-
-		stream.map(
-			portletPreferences -> _portletLocalService.getPortletById(
+		for (PortletPreferences portletPreferences : portletPreferencesList) {
+			Portlet portlet = _portletLocalService.getPortletById(
 				fragmentEntryLink.getCompanyId(),
-				portletPreferences.getPortletId())
-		).forEach(
-			portlet -> {
-				JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+				portletPreferences.getPortletId());
 
-				try {
-					PortletJSONUtil.populatePortletJSONObject(
-						httpServletRequest, StringPool.BLANK, portlet,
-						jsonObject);
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-					PortletJSONUtil.writeHeaderPaths(
-						httpServletResponse, jsonObject);
+			try {
+				PortletJSONUtil.populatePortletJSONObject(
+					httpServletRequest, StringPool.BLANK, portlet, jsonObject);
 
-					PortletJSONUtil.writeFooterPaths(
-						httpServletResponse, jsonObject);
-				}
-				catch (Exception exception) {
-					_log.error(
-						"Unable to write portlet paths " +
-							portlet.getPortletId(),
-						exception);
-				}
+				PortletJSONUtil.writeHeaderPaths(
+					httpServletResponse, jsonObject);
+
+				PortletJSONUtil.writeFooterPaths(
+					httpServletResponse, jsonObject);
 			}
-		);
+			catch (Exception exception) {
+				_log.error(
+					"Unable to write portlet paths " + portlet.getPortletId(),
+					exception);
+			}
+		}
 	}
 
 	@Reference(
@@ -194,7 +186,9 @@ public class PortletRegistryImpl implements PortletRegistry {
 		policy = ReferencePolicy.DYNAMIC,
 		target = "(com.liferay.fragment.entry.processor.portlet.alias=*)"
 	)
-	protected void setPortlet(Portlet portlet, Map<String, Object> properties) {
+	protected void setPortlet(
+		javax.portlet.Portlet jxPortlet, Map<String, Object> properties) {
+
 		String alias = MapUtil.getString(
 			properties, "com.liferay.fragment.entry.processor.portlet.alias");
 		String portletName = MapUtil.getString(
@@ -202,7 +196,7 @@ public class PortletRegistryImpl implements PortletRegistry {
 
 		_portletNames.put(alias, portletName);
 
-		Bundle bundle = FrameworkUtil.getBundle(portlet.getClass());
+		Bundle bundle = FrameworkUtil.getBundle(jxPortlet.getClass());
 
 		BundleContext bundleContext = bundle.getBundleContext();
 
@@ -220,7 +214,7 @@ public class PortletRegistryImpl implements PortletRegistry {
 	}
 
 	protected void unsetPortlet(
-		Portlet portlet, Map<String, Object> properties) {
+		javax.portlet.Portlet jxPortlet, Map<String, Object> properties) {
 
 		String alias = MapUtil.getString(
 			properties, "com.liferay.fragment.entry.processor.portlet.alias");
