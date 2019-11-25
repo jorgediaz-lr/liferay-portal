@@ -37,10 +37,12 @@ import com.liferay.portal.template.soy.util.SoyContext;
 import com.liferay.portal.template.soy.util.SoyContextFactoryUtil;
 import com.liferay.segments.constants.SegmentsEntryConstants;
 import com.liferay.segments.constants.SegmentsExperienceConstants;
+import com.liferay.segments.constants.SegmentsPortletKeys;
 import com.liferay.segments.model.SegmentsEntry;
 import com.liferay.segments.model.SegmentsExperience;
 import com.liferay.segments.service.SegmentsEntryServiceUtil;
 import com.liferay.segments.service.SegmentsExperienceLocalServiceUtil;
+import com.liferay.staging.StagingGroupHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -61,11 +63,14 @@ public class ContentPageLayoutEditorDisplayContext
 		HttpServletRequest httpServletRequest, RenderResponse renderResponse,
 		CommentManager commentManager,
 		List<ContentPageEditorSidebarPanel> contentPageEditorSidebarPanels,
-		FragmentRendererController fragmentRendererController) {
+		FragmentRendererController fragmentRendererController,
+		StagingGroupHelper stagingGroupHelper) {
 
 		super(
 			httpServletRequest, renderResponse, commentManager,
 			contentPageEditorSidebarPanels, fragmentRendererController);
+
+		_stagingGroupHelper = stagingGroupHelper;
 	}
 
 	@Override
@@ -140,7 +145,8 @@ public class ContentPageLayoutEditorDisplayContext
 			SoyContextFactoryUtil.createSoyContext();
 
 		List<SegmentsEntry> segmentsEntries =
-			SegmentsEntryServiceUtil.getSegmentsEntries(getGroupId(), true);
+			SegmentsEntryServiceUtil.getSegmentsEntries(
+				_getStagingAwareGroupId(SegmentsPortletKeys.SEGMENTS), true);
 
 		for (SegmentsEntry segmentsEntry : segmentsEntries) {
 			SoyContext segmentsEntrySoyContext =
@@ -250,6 +256,22 @@ public class ContentPageLayoutEditorDisplayContext
 		return _segmentsEntryId;
 	}
 
+	private long _getStagingAwareGroupId(String portletId) {
+		Long groupId = getGroupId();
+
+		if (_stagingGroupHelper.isStagingGroup(groupId) &&
+			!_stagingGroupHelper.isStagedPortlet(groupId, portletId)) {
+
+			Group group = _stagingGroupHelper.fetchLiveGroup(groupId);
+
+			if (group != null) {
+				groupId = group.getGroupId();
+			}
+		}
+
+		return groupId;
+	}
+
 	private boolean _hasEditSegmentsEntryPermission() throws PortalException {
 		if (Validator.isNull(_getEditSegmentsEntryURL())) {
 			return false;
@@ -333,5 +355,6 @@ public class ContentPageLayoutEditorDisplayContext
 	private Long _segmentsEntryId;
 	private Long _segmentsExperienceId;
 	private Boolean _showSegmentsExperiences;
+	private final StagingGroupHelper _stagingGroupHelper;
 
 }
