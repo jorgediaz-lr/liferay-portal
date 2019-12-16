@@ -709,23 +709,6 @@ public class BookmarksEntryLocalServiceImpl
 		return entry;
 	}
 
-	private long _getFolder(BookmarksEntry entry, long folderId) {
-		if ((entry.getFolderId() == folderId) ||
-			(folderId == BookmarksFolderConstants.DEFAULT_PARENT_FOLDER_ID)) {
-
-			return folderId;
-		}
-
-		BookmarksFolder folder = bookmarksFolderPersistence.fetchByPrimaryKey(
-			folderId);
-
-		if ((folder != null) && (entry.getGroupId() == folder.getGroupId())) {
-			return folderId;
-		}
-
-		return entry.getFolderId();
-	}
-
 	private void _notifySubscribers(
 			long userId, BookmarksEntry entry, ServiceContext serviceContext)
 		throws PortalException {
