@@ -37,7 +37,6 @@ public class BackgroundTaskThreadLocal {
 	}
 
 	/**
-	 * @author Kyle Miho
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
 	 *             #setBackgroundTaskIdWithSafeClosable(long)}
 	 */
