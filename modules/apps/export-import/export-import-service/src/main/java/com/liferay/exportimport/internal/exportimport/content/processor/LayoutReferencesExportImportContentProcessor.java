@@ -132,16 +132,16 @@ public class LayoutReferencesExportImportContentProcessor
 		TreeMap<String, String> publicLayoutSetVirtualHostnames =
 			publicLayoutSet.getVirtualHostnames();
 
-		String portalUrl = StringPool.BLANK;
+		String portalURL = StringPool.BLANK;
 
 		if (!publicLayoutSetVirtualHostnames.isEmpty()) {
-			portalUrl = _getPortalUrl(
+			portalURL = _getPortalURL(
 				url,
 				_portal.getPortalURL(
 					publicLayoutSetVirtualHostnames.firstKey(), serverPort,
 					secure));
 
-			if (url.startsWith(portalUrl)) {
+			if (url.startsWith(portalURL)) {
 				if (secure) {
 					urlSB.append(_DATA_HANDLER_PUBLIC_LAYOUT_SET_SECURE_URL);
 				}
@@ -149,7 +149,7 @@ public class LayoutReferencesExportImportContentProcessor
 					urlSB.append(_DATA_HANDLER_PUBLIC_LAYOUT_SET_URL);
 				}
 
-				return url.substring(portalUrl.length());
+				return url.substring(portalURL.length());
 			}
 		}
 
@@ -159,13 +159,13 @@ public class LayoutReferencesExportImportContentProcessor
 			privateLayoutSet.getVirtualHostnames();
 
 		if (!privateLayoutSetVirtualHostnames.isEmpty()) {
-			portalUrl = _getPortalUrl(
+			portalURL = _getPortalURL(
 				url,
 				_portal.getPortalURL(
 					privateLayoutSetVirtualHostnames.firstKey(), serverPort,
 					secure));
 
-			if (url.startsWith(portalUrl)) {
+			if (url.startsWith(portalURL)) {
 				if (secure) {
 					urlSB.append(_DATA_HANDLER_PRIVATE_LAYOUT_SET_SECURE_URL);
 				}
@@ -173,7 +173,7 @@ public class LayoutReferencesExportImportContentProcessor
 					urlSB.append(_DATA_HANDLER_PRIVATE_LAYOUT_SET_URL);
 				}
 
-				return url.substring(portalUrl.length());
+				return url.substring(portalURL.length());
 			}
 		}
 
@@ -182,12 +182,12 @@ public class LayoutReferencesExportImportContentProcessor
 		String companyVirtualHostname = company.getVirtualHostname();
 
 		if (Validator.isNotNull(companyVirtualHostname)) {
-			portalUrl = _getPortalUrl(
+			portalURL = _getPortalURL(
 				url,
 				_portal.getPortalURL(
 					companyVirtualHostname, serverPort, secure));
 
-			if (url.startsWith(portalUrl)) {
+			if (url.startsWith(portalURL)) {
 				if (secure) {
 					urlSB.append(_DATA_HANDLER_COMPANY_SECURE_URL);
 				}
@@ -195,14 +195,14 @@ public class LayoutReferencesExportImportContentProcessor
 					urlSB.append(_DATA_HANDLER_COMPANY_URL);
 				}
 
-				return url.substring(portalUrl.length());
+				return url.substring(portalURL.length());
 			}
 		}
 
-		portalUrl = _portal.getPortalURL("localhost", serverPort, secure);
+		portalURL = _portal.getPortalURL("localhost", serverPort, secure);
 
-		if (url.startsWith(portalUrl)) {
-			return url.substring(portalUrl.length());
+		if (url.startsWith(portalURL)) {
+			return url.substring(portalURL.length());
 		}
 
 		return url;
@@ -1068,7 +1068,7 @@ public class LayoutReferencesExportImportContentProcessor
 		}
 	}
 
-	private String _getPortalUrl(String url, String portalURL)
+	private String _getPortalURL(String url, String portalURL)
 		throws PortalException {
 
 		try {
