@@ -89,7 +89,7 @@ if (folder != null) {
 	portletURL="<%= blogsItemSelectorViewDisplayContext.getPortletURL(request, liferayPortletResponse) %>"
 	repositoryEntries="<%= portletFileEntries %>"
 	repositoryEntriesCount="<%= portletFileEntriesCount %>"
-	showDragAndDropZone="<%= false %>"
+	showDragAndDropZone="<%= true %>"
 	tabName="<%= blogsItemSelectorViewDisplayContext.getTitle(locale) %>"
 	uploadURL="<%= blogsItemSelectorViewDisplayContext.getUploadURL(liferayPortletResponse) %>"
 />
