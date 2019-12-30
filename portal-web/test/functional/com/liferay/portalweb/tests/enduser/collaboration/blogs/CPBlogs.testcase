@@ -258,7 +258,7 @@ definition {
 		BlogsNavigator.gotoSelectFile();
 
 		ItemSelector.uploadFile(
-			navTab = "Upload Image",
+			navTab = "Blog Images",
 			uploadFileName = "Document_1.jpg");
 
 		BlogsEntry.addEntryContent(
@@ -489,7 +489,7 @@ definition {
 			entryContent = "Blogs Entry Content",
 			entrySubtitle = "Blogs Entry Subtitle",
 			entryTitle = "Blogs Entry Title",
-			navTab = "Upload Image",
+			navTab = "Blog Images",
 			uploadFileName = "Document_1.jpg");
 
 		Button.clickPublish();
@@ -547,7 +547,7 @@ definition {
 			entryContent = "Blogs Entry Content",
 			entrySubtitle = "Blogs Entry Subtitle",
 			entryTitle = "Blogs Entry Title",
-			navTab = "Upload Image",
+			navTab = "Blog Images",
 			uploadFileName = "Document_1.jpg");
 
 		Pause(locator1 = "1000");
@@ -584,7 +584,7 @@ definition {
 			entryContent = "Blogs Entry Content",
 			entrySubtitle = "Blogs Entry Subtitle",
 			entryTitle = "Blogs Entry Title",
-			navTab = "Upload Image",
+			navTab = "Blog Images",
 			uploadFileName = "Document_1.jpg");
 
 		Button.clickPublish();
