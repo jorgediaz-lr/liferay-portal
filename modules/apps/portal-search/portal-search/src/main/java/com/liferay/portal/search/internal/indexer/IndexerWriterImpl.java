@@ -195,8 +195,17 @@ public class IndexerWriterImpl<T extends BaseModel<?>>
 
 						@Override
 						public Document getDocument(BaseModel baseModel) {
-							return _indexerDocumentBuilder.getDocument(
-								baseModel);
+							try {
+								return _indexerDocumentBuilder.getDocument(
+									baseModel);
+							}
+							catch (Exception exception) {
+								if (_log.isWarnEnabled()) {
+									_log.warn(exception, exception);
+								}
+
+								return null;
+							}
 						}
 
 					});
