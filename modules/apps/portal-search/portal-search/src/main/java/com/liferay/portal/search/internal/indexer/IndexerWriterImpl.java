@@ -201,7 +201,13 @@ public class IndexerWriterImpl<T extends BaseModel<?>>
 							}
 							catch (Exception exception) {
 								if (_log.isWarnEnabled()) {
-									_log.warn(exception, exception);
+									_log.warn(
+										StringBundler.concat(
+											"Error indexing ",
+											_modelSearchSettings.getClassName(),
+											" with primaryKey=",
+											baseModel.getPrimaryKeyObj()),
+										exception);
 								}
 
 								return null;
