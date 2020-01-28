@@ -124,15 +124,15 @@ public class ItemSelectorRepositoryEntryManagementToolbarDisplayContext {
 
 		return new ViewTypeItemList(displayStyleURL, _getDisplayStyle()) {
 			{
-				if (ArrayUtil.contains(_getDisplayViews(), "icon")) {
+				if (ArrayUtil.contains(_getDisplayStyles(), "icon")) {
 					addCardViewTypeItem();
 				}
 
-				if (ArrayUtil.contains(_getDisplayViews(), "descriptive")) {
+				if (ArrayUtil.contains(_getDisplayStyles(), "descriptive")) {
 					addListViewTypeItem();
 				}
 
-				if (ArrayUtil.contains(_getDisplayViews(), "list")) {
+				if (ArrayUtil.contains(_getDisplayStyles(), "list")) {
 					addTableViewTypeItem();
 				}
 			}
@@ -159,7 +159,7 @@ public class ItemSelectorRepositoryEntryManagementToolbarDisplayContext {
 				"liferay-item-selector:repository-entry-browser:displayStyle"));
 	}
 
-	private String[] _getDisplayViews() {
+	private String[] _getDisplayStyles() {
 		return RepositoryEntryBrowserTag.DISPLAY_STYLES;
 	}
 
