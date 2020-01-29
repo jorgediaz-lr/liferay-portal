@@ -84,13 +84,11 @@ public class ItemSelectorRepositoryEntryManagementToolbarDisplayContext {
 
 		if (Validator.isNotNull(orderByType)) {
 			_portalPreferences.setValue(
-				_TAGLIB_UI_REPOSITORY_ENTRY_BROWSER_PAGE_NAMESPACE,
-				"order-by-type", orderByType);
+				_NAMESPACE, "order-by-type", orderByType);
 		}
 		else {
 			orderByType = _portalPreferences.getValue(
-				_TAGLIB_UI_REPOSITORY_ENTRY_BROWSER_PAGE_NAMESPACE,
-				"order-by-type", "asc");
+				_NAMESPACE, "order-by-type", "asc");
 		}
 
 		_orderByType = orderByType;
@@ -172,14 +170,11 @@ public class ItemSelectorRepositoryEntryManagementToolbarDisplayContext {
 			_httpServletRequest, "orderByCol");
 
 		if (Validator.isNotNull(orderByCol)) {
-			_portalPreferences.setValue(
-				_TAGLIB_UI_REPOSITORY_ENTRY_BROWSER_PAGE_NAMESPACE,
-				"order-by-col", orderByCol);
+			_portalPreferences.setValue(_NAMESPACE, "order-by-col", orderByCol);
 		}
 		else {
 			orderByCol = _portalPreferences.getValue(
-				_TAGLIB_UI_REPOSITORY_ENTRY_BROWSER_PAGE_NAMESPACE,
-				"order-by-col", "title");
+				_NAMESPACE, "order-by-col", "title");
 		}
 
 		_orderByCol = orderByCol;
@@ -226,9 +221,8 @@ public class ItemSelectorRepositoryEntryManagementToolbarDisplayContext {
 			"liferay-item-selector:repository-entry-browser:portletURL");
 	}
 
-	private static final String
-		_TAGLIB_UI_REPOSITORY_ENTRY_BROWSER_PAGE_NAMESPACE =
-			"taglib_ui_repository_entry_browse_page";
+	private static final String _NAMESPACE =
+		"taglib_ui_repository_entry_browse_page";
 
 	private final PortletURL _currentURLObj;
 	private final HttpServletRequest _httpServletRequest;
