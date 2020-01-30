@@ -183,6 +183,21 @@ public class BundleBlacklist {
 	private boolean _processBundle(Bundle bundle) {
 		String symbolicName = bundle.getSymbolicName();
 
+		if (symbolicName == null) {
+			_log.error(
+				bundle.getLocation() +
+					" has a null symbolicName, it will be blacklisted");
+
+			try {
+				bundle.uninstall();
+			}
+			catch (Exception exception) {
+				_log.error("Unable to uninstall " + bundle, exception);
+			}
+
+			return true;
+		}
+
 		if (_blacklistBundleSymbolicNames.contains(symbolicName)) {
 			if (_log.isInfoEnabled()) {
 				_log.info("Stopping blacklisted bundle " + bundle);
