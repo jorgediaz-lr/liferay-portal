@@ -27,6 +27,7 @@ import java.io.InputStream;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
@@ -67,7 +68,9 @@ public abstract class BaseThemeFragmentBundleInstaller {
 				public Bundle addingBundle(Bundle bundle, BundleEvent event) {
 					String symbolicName = bundle.getSymbolicName();
 
-					if (!symbolicName.equals(getHostBundleSymbolicName())) {
+					if (!Objects.equals(
+							symbolicName, getHostBundleSymbolicName())) {
+
 						return null;
 					}
 

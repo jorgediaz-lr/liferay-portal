@@ -67,7 +67,7 @@ public class ClassLoaderTrackerBundleActivator implements BundleActivator {
 	}
 
 	private String _toClassLoaderName(Bundle bundle) {
-		String classLoaderName = bundle.getSymbolicName();
+		String classLoaderName = String.valueOf(bundle.getSymbolicName());
 
 		classLoaderName = classLoaderName.concat(StringPool.UNDERLINE);
 
