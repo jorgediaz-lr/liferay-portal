@@ -66,10 +66,9 @@ public abstract class BaseThemeFragmentBundleInstaller {
 
 				@Override
 				public Bundle addingBundle(Bundle bundle, BundleEvent event) {
-					String symbolicName = bundle.getSymbolicName();
-
 					if (!Objects.equals(
-							symbolicName, getHostBundleSymbolicName())) {
+							bundle.getSymbolicName(),
+							getHostBundleSymbolicName())) {
 
 						return null;
 					}
