@@ -238,6 +238,7 @@ import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
+import java.net.URI;
 import java.net.UnknownHostException;
 
 import java.sql.Connection;
@@ -935,17 +936,24 @@ public class PortalImpl implements Portal {
 			return url;
 		}
 
-		String domain = HttpUtil.getDomain(url);
-		String protocol = HttpUtil.getProtocol(url);
+		URI uri = HttpUtil.getURI(url);
 
-		if (Validator.isBlank(domain)) {
-			if (Validator.isBlank(HttpUtil.getPath(url))) {
+		if (uri == null) {
+			return null;
+		}
+
+		String domain = uri.getHost();
+
+		String protocol = uri.getScheme();
+
+		if (domain == null) {
+			if (uri.getPath() == null) {
 				return null;
 			}
 
 			// Specs allow URL of protocol followed by path, but we do not
 
-			if (!Validator.isBlank(protocol)) {
+			if (protocol != null) {
 				return null;
 			}
 
@@ -956,7 +964,7 @@ public class PortalImpl implements Portal {
 
 		// Specs regard URL starting with double slashes as valid, but we do not
 
-		if (Validator.isBlank(protocol)) {
+		if (protocol == null) {
 			return null;
 		}
 
