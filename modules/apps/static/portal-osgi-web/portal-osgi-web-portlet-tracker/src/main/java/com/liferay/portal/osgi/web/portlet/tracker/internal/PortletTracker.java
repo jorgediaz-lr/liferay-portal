@@ -26,7 +26,6 @@ import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.model.EventDefinition;
 import com.liferay.portal.kernel.model.PortletApp;
@@ -44,7 +43,6 @@ import com.liferay.portal.kernel.portlet.PortletIdCodec;
 import com.liferay.portal.kernel.portlet.PortletInstanceFactory;
 import com.liferay.portal.kernel.security.permission.ResourceActions;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
-import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.PortletLocalService;
 import com.liferay.portal.kernel.service.ResourceActionLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -225,14 +223,14 @@ public class PortletTracker
 
 		_portletInstanceFactory.destroy(portletModel);
 
-		List<Company> companies = _companyLocalService.getCompanies();
+		long[] companyIds = _portal.getCompanyIds();
 
-		for (Company company : companies) {
+		for (long companyId : companyIds) {
 			PortletCategory portletCategory = (PortletCategory)WebAppPool.get(
-				company.getCompanyId(), WebKeys.PORTLET_CATEGORY);
+				companyId, WebKeys.PORTLET_CATEGORY);
 
 			if (portletCategory == null) {
-				_log.error("Unable to get portlet category for " + company);
+				_log.error("Unable to get portlet category for " + companyId);
 			}
 			else {
 				portletCategory.separate(portletModel.getRootPortletId());
@@ -344,8 +342,7 @@ public class PortletTracker
 			portletBagFactory.create(portletModel, portlet, true);
 
 			deployPortlet(
-				serviceReference, portletModel,
-				_companyLocalService.getCompanies());
+				serviceReference, portletModel, _portal.getCompanyIds());
 
 			portletModel.setReady(true);
 
@@ -1226,7 +1223,7 @@ public class PortletTracker
 	protected void deployPortlet(
 			ServiceReference<Portlet> serviceReference,
 			com.liferay.portal.kernel.model.Portlet portletModel,
-			List<Company> companies)
+			long[] companyIds)
 		throws PortalException {
 
 		List<String> categoryNames = StringPlus.asList(
@@ -1238,11 +1235,11 @@ public class PortletTracker
 
 		String[] categoryNamesArray = ArrayUtil.toStringArray(categoryNames);
 
-		for (Company company : companies) {
+		for (long companyId : companyIds) {
 			com.liferay.portal.kernel.model.Portlet companyPortletModel =
 				(com.liferay.portal.kernel.model.Portlet)portletModel.clone();
 
-			companyPortletModel.setCompanyId(company.getCompanyId());
+			companyPortletModel.setCompanyId(companyId);
 
 			_portletLocalService.deployRemotePortlet(
 				companyPortletModel, categoryNamesArray, false);
@@ -1364,10 +1361,6 @@ public class PortletTracker
 	private static final Log _log = LogFactoryUtil.getLog(PortletTracker.class);
 
 	private BundleContext _bundleContext;
-
-	@Reference
-	private CompanyLocalService _companyLocalService;
-
 	private String _httpServiceEndpoint = StringPool.BLANK;
 
 	@Reference(
