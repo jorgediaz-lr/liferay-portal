@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.util.LoggingTimer;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.security.service.access.policy.service.SAPEntryLocalService;
 import com.liferay.portal.verify.VerifyProcess;
 
@@ -73,14 +72,13 @@ public class SAPServiceVerifyProcess extends VerifyProcess {
 		}
 	}
 
+	@Reference
+	protected DLAppLocalService portal;
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		SAPServiceVerifyProcess.class);
 
 	private CompanyLocalService _companyLocalService;
-
-	@Reference
-	protected DLAppLocalService portal;
-
 	private SAPEntryLocalService _sapEntryLocalService;
 
 }

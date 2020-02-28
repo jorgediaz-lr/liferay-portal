@@ -99,7 +99,7 @@ public class SingleIndexToMultipleIndexImporterImpl
 	}
 
 	protected void createRankingIndices() {
-		LongStream longStream = Arrays.stream(_portal.getCompanyIds());
+		LongStream longStream = Arrays.stream(portal.getCompanyIds());
 
 		longStream.boxed(
 		).map(
@@ -171,13 +171,13 @@ public class SingleIndexToMultipleIndexImporterImpl
 		};
 
 	@Reference
+	protected DLAppLocalService portal;
+
+	@Reference
 	private CompanyService _companyService;
 
 	@Reference
 	private IndexNameBuilder _indexNameBuilder;
-
-	@Reference
-	private DLAppLocalService _portal;
 
 	@Reference
 	private Queries _queries;
