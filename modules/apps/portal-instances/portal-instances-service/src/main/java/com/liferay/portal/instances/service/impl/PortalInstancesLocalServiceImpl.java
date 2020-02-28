@@ -131,7 +131,11 @@ public class PortalInstancesLocalServiceImpl
 			List<Long> removeableCompanyIds = ListUtil.fromArray(
 				initializedCompanyIds);
 
-			for (long companyId : _portal.getCompanyIds()) {
+			List<Company> companies = _companyLocalService.getCompanies();
+
+			for (Company company : companies) {
+				long companyId = company.getCompanyId();
+
 				removeableCompanyIds.remove(companyId);
 
 				if (ArrayUtil.contains(initializedCompanyIds, companyId)) {
@@ -140,8 +144,6 @@ public class PortalInstancesLocalServiceImpl
 
 				ServletContext portalContext = ServletContextPool.get(
 					_portal.getPathContext());
-
-				Company company = _companyLocalService.fetchCompany(companyId);
 
 				PortalInstances.initCompany(portalContext, company.getWebId());
 			}
