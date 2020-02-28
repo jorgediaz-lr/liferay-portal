@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.workflow.WorkflowDefinition;
 import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.workflow.comparator.WorkflowComparatorFactory;
@@ -68,11 +69,7 @@ public class DefaultPortalKaleoManager
 	public void deployDefaultDefinitionLink(String assetClassName)
 		throws Exception {
 
-		List<Company> companies = companyLocalService.getCompanies();
-
-		for (Company company : companies) {
-			long companyId = company.getCompanyId();
-
+		for (long companyId : PortalUtil.getCompanyIds()) {
 			User defaultUser = userLocalService.getDefaultUser(companyId);
 
 			Group companyGroup = groupLocalService.getCompanyGroup(companyId);
@@ -97,8 +94,8 @@ public class DefaultPortalKaleoManager
 	public void deployDefaultDefinitionLinks() throws Exception {
 		List<Company> companies = companyLocalService.getCompanies(false);
 
-		for (Company company : companies) {
-			deployDefaultDefinitionLinks(company.getCompanyId());
+		for (long companyId : PortalUtil.getCompanyIds()) {
+			deployDefaultDefinitionLinks(companyId);
 		}
 	}
 
@@ -124,10 +121,8 @@ public class DefaultPortalKaleoManager
 
 	@Override
 	public void deployDefaultDefinitions() throws Exception {
-		List<Company> companies = companyLocalService.getCompanies();
-
-		for (Company company : companies) {
-			deployDefaultDefinitions(company.getCompanyId());
+		for (long companyId : PortalUtil.getCompanyIds()) {
+			deployDefaultDefinitions(companyId);
 		}
 	}
 
@@ -180,10 +175,8 @@ public class DefaultPortalKaleoManager
 
 	@Override
 	public void deployDefaultRoles() throws Exception {
-		List<Company> companies = companyLocalService.getCompanies();
-
-		for (Company company : companies) {
-			deployDefaultRoles(company.getCompanyId());
+		for (long companyId : PortalUtil.getCompanyIds()) {
+			deployDefaultRoles(companyId);
 		}
 	}
 

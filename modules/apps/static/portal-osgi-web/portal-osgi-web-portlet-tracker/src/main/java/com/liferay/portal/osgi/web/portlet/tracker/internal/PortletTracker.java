@@ -225,14 +225,14 @@ public class PortletTracker
 
 		_portletInstanceFactory.destroy(portletModel);
 
-		List<Company> companies = _companyLocalService.getCompanies();
+		long[] companyIds = _portal.getCompanyIds();
 
-		for (Company company : companies) {
+		for (long companyId : companyIds) {
 			PortletCategory portletCategory = (PortletCategory)WebAppPool.get(
-				company.getCompanyId(), WebKeys.PORTLET_CATEGORY);
+				companyId, WebKeys.PORTLET_CATEGORY);
 
 			if (portletCategory == null) {
-				_log.error("Unable to get portlet category for " + company);
+				_log.error("Unable to get portlet category for " + companyId);
 			}
 			else {
 				portletCategory.separate(portletModel.getRootPortletId());

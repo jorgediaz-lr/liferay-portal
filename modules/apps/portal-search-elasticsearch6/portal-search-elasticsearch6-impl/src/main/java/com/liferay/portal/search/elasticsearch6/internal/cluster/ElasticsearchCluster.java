@@ -17,7 +17,6 @@ package com.liferay.portal.search.elasticsearch6.internal.cluster;
 import com.liferay.portal.kernel.cluster.ClusterExecutor;
 import com.liferay.portal.kernel.cluster.ClusterMasterExecutor;
 import com.liferay.portal.kernel.cluster.ClusterNode;
-import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.search.elasticsearch6.internal.connection.ElasticsearchConnection;
@@ -68,6 +67,9 @@ public class ElasticsearchCluster {
 	@Reference
 	protected IndexNameBuilder indexNameBuilder;
 
+	@Reference
+	protected DLAppLocalService portal;
+
 	protected class ReplicasClusterContextImpl
 		implements ReplicasClusterContext {
 
@@ -92,15 +94,13 @@ public class ElasticsearchCluster {
 
 		@Override
 		public String[] getTargetIndexNames() {
-			List<Company> companies = companyLocalService.getCompanies();
+			long[] companyIds = portal.getCompanyIds();
 
-			String[] targetIndexNames = new String[companies.size() + 1];
+			String[] targetIndexNames = new String[companyIds.length + 1];
 
 			for (int i = 0; i < (targetIndexNames.length - 1); i++) {
-				Company company = companies.get(i);
-
 				targetIndexNames[i] = indexNameBuilder.getIndexName(
-					company.getCompanyId());
+					companyIds[i]);
 			}
 
 			targetIndexNames[targetIndexNames.length - 1] =

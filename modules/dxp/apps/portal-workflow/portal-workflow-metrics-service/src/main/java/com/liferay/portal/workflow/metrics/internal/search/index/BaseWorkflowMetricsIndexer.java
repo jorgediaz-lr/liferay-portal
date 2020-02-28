@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
 import com.liferay.portal.kernel.search.BooleanQuery;
@@ -207,8 +206,8 @@ public abstract class BaseWorkflowMetricsIndexer {
 		createIndex();
 
 		if (!_INDEX_ON_STARTUP) {
-			for (Company company : companyLocalService.getCompanies()) {
-				reindex(company.getCompanyId());
+			for (long companyId : portal.getCompanyIds()) {
+				reindex(companyId);
 			}
 		}
 	}
@@ -353,6 +352,9 @@ public abstract class BaseWorkflowMetricsIndexer {
 
 	@Reference
 	protected KaleoTaskLocalService kaleoTaskLocalService;
+
+	@Reference
+	protected DLAppLocalService portal;
 
 	@Reference
 	protected Queries queries;

@@ -14,7 +14,6 @@
 
 package com.liferay.portal.search.tuning.rankings.web.internal.index.importer;
 
-import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.service.CompanyService;
 import com.liferay.portal.search.document.Document;
 import com.liferay.portal.search.engine.adapter.SearchEngineAdapter;
@@ -32,10 +31,12 @@ import com.liferay.portal.search.tuning.rankings.web.internal.index.RankingIndex
 import com.liferay.portal.search.tuning.rankings.web.internal.index.name.RankingIndexName;
 import com.liferay.portal.search.tuning.rankings.web.internal.index.name.RankingIndexNameBuilder;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
@@ -98,12 +99,9 @@ public class SingleIndexToMultipleIndexImporterImpl
 	}
 
 	protected void createRankingIndices() {
-		List<Company> companies = _companyService.getCompanies();
+		LongStream longStream = Arrays.stream(_portal.getCompanyIds());
 
-		Stream<Company> stream = companies.stream();
-
-		stream.map(
-			Company::getCompanyId
+		longStream.boxed(
 		).map(
 			_indexNameBuilder::getIndexName
 		).map(
@@ -177,6 +175,9 @@ public class SingleIndexToMultipleIndexImporterImpl
 
 	@Reference
 	private IndexNameBuilder _indexNameBuilder;
+
+	@Reference
+	private DLAppLocalService _portal;
 
 	@Reference
 	private Queries _queries;
