@@ -26,7 +26,6 @@ import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.model.EventDefinition;
 import com.liferay.portal.kernel.model.PortletApp;
@@ -42,11 +41,8 @@ import com.liferay.portal.kernel.portlet.LiferayPortletConfig;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletIdCodec;
 import com.liferay.portal.kernel.portlet.PortletInstanceFactory;
-import com.liferay.portal.kernel.security.permission.ResourceActions;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
-import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.PortletLocalService;
-import com.liferay.portal.kernel.service.ResourceActionLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -63,7 +59,6 @@ import com.liferay.portal.kernel.xml.SAXReader;
 import com.liferay.portal.model.impl.EventDefinitionImpl;
 import com.liferay.portal.model.impl.PortletURLListenerImpl;
 import com.liferay.portal.model.impl.PublicRenderParameterImpl;
-import com.liferay.portal.osgi.web.servlet.context.helper.ServletContextHelperFactory;
 import com.liferay.portal.osgi.web.servlet.context.helper.ServletContextHelperRegistration;
 import com.liferay.portal.util.WebAppPool;
 import com.liferay.portlet.PortletBagFactory;
@@ -225,14 +220,14 @@ public class PortletTracker
 
 		_portletInstanceFactory.destroy(portletModel);
 
-		List<Company> companies = _companyLocalService.getCompanies();
+		long[] companyIds = _portal.getCompanyIds();
 
-		for (Company company : companies) {
+		for (long companyId : companyIds) {
 			PortletCategory portletCategory = (PortletCategory)WebAppPool.get(
-				company.getCompanyId(), WebKeys.PORTLET_CATEGORY);
+				companyId, WebKeys.PORTLET_CATEGORY);
 
 			if (portletCategory == null) {
-				_log.error("Unable to get portlet category for " + company);
+				_log.error("Unable to get portlet category for " + companyId);
 			}
 			else {
 				portletCategory.separate(portletModel.getRootPortletId());
@@ -344,8 +339,7 @@ public class PortletTracker
 			portletBagFactory.create(portletModel, portlet, true);
 
 			deployPortlet(
-				serviceReference, portletModel,
-				_companyLocalService.getCompanies());
+				serviceReference, portletModel, _portal.getCompanyIds());
 
 			portletModel.setReady(true);
 
@@ -1226,7 +1220,7 @@ public class PortletTracker
 	protected void deployPortlet(
 			ServiceReference<Portlet> serviceReference,
 			com.liferay.portal.kernel.model.Portlet portletModel,
-			List<Company> companies)
+			long[] companyIds)
 		throws PortalException {
 
 		List<String> categoryNames = StringPlus.asList(
@@ -1238,11 +1232,11 @@ public class PortletTracker
 
 		String[] categoryNamesArray = ArrayUtil.toStringArray(categoryNames);
 
-		for (Company company : companies) {
+		for (long companyId : companyIds) {
 			com.liferay.portal.kernel.model.Portlet companyPortletModel =
 				(com.liferay.portal.kernel.model.Portlet)portletModel.clone();
 
-			companyPortletModel.setCompanyId(company.getCompanyId());
+			companyPortletModel.setCompanyId(companyId);
 
 			_portletLocalService.deployRemotePortlet(
 				companyPortletModel, categoryNamesArray, false);
@@ -1364,10 +1358,6 @@ public class PortletTracker
 	private static final Log _log = LogFactoryUtil.getLog(PortletTracker.class);
 
 	private BundleContext _bundleContext;
-
-	@Reference
-	private CompanyLocalService _companyLocalService;
-
 	private String _httpServiceEndpoint = StringPool.BLANK;
 
 	@Reference(
@@ -1391,22 +1381,12 @@ public class PortletTracker
 		new PortletPropertyValidator();
 
 	@Reference
-	private ResourceActionLocalService _resourceActionLocalService;
-
-	@Reference
-	private ResourceActions _resourceActions;
-
-	@Reference
 	private SAXReader _saxReader;
 
 	private final ConcurrentMap<Long, ServiceRegistrations>
 		_serviceRegistrations = new ConcurrentHashMap<>();
 	private ServiceTracker<Portlet, com.liferay.portal.kernel.model.Portlet>
 		_serviceTracker;
-
-	@Reference
-	private ServletContextHelperFactory _servletContextHelperFactory;
-
 	private ServiceReference<ServletContextHelperRegistration>
 		_servletContextHelperRegistrationServiceReference;
 
