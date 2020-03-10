@@ -85,10 +85,11 @@ public class StructuredContentResourceTest
 	public void setUp() throws Exception {
 		super.setUp();
 
-		_ddmStructure = _addDDMStructure(
-			testGroup, "test-structured-content-structure.json");
 		_ddmLocalizedStructure = _addDDMStructure(
 			testGroup, "test-localized-structured-content-structure.json");
+
+		_ddmStructure = _addDDMStructure(
+			testGroup, "test-structured-content-structure.json");
 
 		_irrelevantDDMStructure = _addDDMStructure(
 			irrelevantGroup, "test-structured-content-structure.json");
@@ -203,6 +204,19 @@ public class StructuredContentResourceTest
 					structuredContent.getId(), _ddmTemplate.getTemplateId()));
 	}
 
+	@Test
+	public void testPostSiteLocalizedStructuredContent() throws Exception {
+		StructuredContent randomLocalizedStructuredContent =
+			_randomLocalizedStructuredContent();
+
+		StructuredContent postStructuredContent =
+			testPostSiteStructuredContent_addStructuredContent(
+				randomLocalizedStructuredContent);
+
+		assertEquals(randomLocalizedStructuredContent, postStructuredContent);
+		assertValid(postStructuredContent);
+	}
+
 	public static class ExtensionContextResolver
 		implements ContextResolver<ExtensionContext> {
 
@@ -239,19 +253,6 @@ public class StructuredContentResourceTest
 			return null;
 		}
 
-	}
-
-	@Test
-	public void testPostSiteLocalizedStructuredContent() throws Exception {
-		StructuredContent randomLocalizedStructuredContent =
-			_randomLocalizedStructuredContent();
-
-		StructuredContent postStructuredContent =
-			testPostSiteStructuredContent_addStructuredContent(
-				randomLocalizedStructuredContent);
-
-		assertEquals(randomLocalizedStructuredContent, postStructuredContent);
-		assertValid(postStructuredContent);
 	}
 
 	@Override
@@ -330,8 +331,7 @@ public class StructuredContentResourceTest
 		return _journalFolder.getFolderId();
 	}
 
-
-	private DDMStructure _addDDMStructure(Group group, String filename)
+	private DDMStructure _addDDMStructure(Group group, String fileName)
 		throws Exception {
 
 		DDMStructureTestHelper ddmStructureTestHelper =
@@ -341,7 +341,7 @@ public class StructuredContentResourceTest
 		return ddmStructureTestHelper.addStructure(
 			PortalUtil.getClassNameId(JournalArticle.class),
 			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
-			_deserialize(_read(filename)), StorageType.JSON.getValue(),
+			_deserialize(_read(fileName)), StorageType.JSON.getValue(),
 			DDMStructureConstants.TYPE_DEFAULT);
 	}
 
