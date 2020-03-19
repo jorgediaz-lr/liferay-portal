@@ -53,6 +53,9 @@ import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutSetLocalServiceUtil;
 import com.liferay.portal.kernel.service.permission.LayoutPermissionUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.transaction.TransactionConfig;
+import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.trash.TrashRenderer;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -228,11 +231,20 @@ public class JournalArticleAssetRenderer
 			String ddmTemplateKey = ParamUtil.getString(
 				portletRequest, "ddmTemplateKey");
 
-			JournalArticleDisplay articleDisplay =
-				JournalArticleLocalServiceUtil.getArticleDisplay(
-					_article, ddmTemplateKey, null,
-					LanguageUtil.getLanguageId(locale), 1, portletRequestModel,
+			JournalArticleDisplayGetter journalArticleDisplayGetter =
+				new JournalArticleDisplayGetter(
+					_article, ddmTemplateKey, locale, portletRequestModel,
 					themeDisplay);
+
+			try {
+				TransactionInvokerUtil.invoke(
+					transactionConfig, journalArticleDisplayGetter);
+			}
+			catch (Throwable e) {
+			}
+
+			JournalArticleDisplay articleDisplay =
+				journalArticleDisplayGetter.getJournalArticleDisplay();
 
 			summary = HtmlUtil.render(
 				HtmlUtil.stripHtml(articleDisplay.getContent()));
@@ -241,6 +253,43 @@ public class JournalArticleAssetRenderer
 		}
 
 		return summary;
+	}
+
+	public class JournalArticleDisplayGetter implements Callable<Void> {
+
+		protected JournalArticle article;
+		protected String ddmTemplateKey;
+		protected Locale locale;
+		PortletRequestModel portletRequestModel;
+		ThemeDisplay themeDisplay;
+		JournalArticleDisplay journalArticleDisplay;
+
+		public JournalArticleDisplay getJournalArticleDisplay() {
+			return journalArticleDisplay;
+		}
+
+		public JournalArticleDisplayGetter(
+			JournalArticle article, String ddmTemplateKey, Locale locale,
+			PortletRequestModel portletRequestModel, ThemeDisplay themeDisplay) {
+
+			this.article = article;
+			this.ddmTemplateKey = ddmTemplateKey;
+			this.locale = locale;
+			this.portletRequestModel = portletRequestModel;
+			this.themeDisplay = themeDisplay;
+		}
+
+		@Override
+		public Void call() throws Exception {
+			journalArticleDisplay =
+				JournalArticleLocalServiceUtil.getArticleDisplay(
+					article, ddmTemplateKey, null,
+					LanguageUtil.getLanguageId(locale), 1, portletRequestModel,
+					themeDisplay);
+
+			throw new Exception("Force rollback");
+		}
+		
 	}
 
 	@Override
@@ -672,5 +721,9 @@ public class JournalArticleAssetRenderer
 	private JournalContent _journalContent;
 	private JournalConverter _journalConverter;
 	private JournalServiceConfiguration _journalServiceConfiguration;
+
+	protected static final TransactionConfig transactionConfig =
+		TransactionConfig.Factory.create(
+			Propagation.REQUIRED, new Class<?>[] {Exception.class});
 
 }
