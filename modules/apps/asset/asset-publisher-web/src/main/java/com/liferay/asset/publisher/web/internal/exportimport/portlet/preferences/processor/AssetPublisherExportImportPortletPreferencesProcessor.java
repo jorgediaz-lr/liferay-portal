@@ -216,6 +216,10 @@ public class AssetPublisherExportImportPortletPreferencesProcessor
 		Layout layout = layoutLocalService.getLayout(
 			portletDataContext.getPlid());
 
+		if (layout.isTypeAssetDisplay()) {
+			return;
+		}
+
 		String selectionStyle = portletPreferences.getValue(
 			"selectionStyle", "dynamic");
 
