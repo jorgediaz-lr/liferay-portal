@@ -37,6 +37,18 @@ import org.osgi.annotation.versioning.ProviderType;
 public interface ExportImportServiceConfiguration {
 
 	@Meta.AD(
+		deflt = "false", description = "replicate-individual-deletions-help",
+		name = "replicate-individual-deletions", required = false
+	)
+	public boolean replicateIndividualDeletions();
+
+	@Meta.AD(
+		deflt = "false", description = "publish-permissions-help",
+		name = "publish-permissions", required = false
+	)
+	public boolean publishPermissions();
+
+	@Meta.AD(
 		deflt = "true", description = "validate-file-entry-references-help",
 		name = "validate-file-entry-references", required = false
 	)
