@@ -101,21 +101,21 @@ public class DDMIndexerImpl implements DDMIndexer {
 					for (Locale locale : locales) {
 						name = encodeName(
 							ddmStructure.getStructureId(), field.getName(),
-							locale, indexType);
+							null, null);
 						value = field.getValue(locale);
 
 						fieldArray.addField(
-							createField(indexType, name, type, value));
+							createField(indexType, name, type, value, locale));
 					}
 				}
 				else {
 					name = encodeName(
 						ddmStructure.getStructureId(), field.getName(), null,
-						indexType);
+						null);
 					value = field.getValue(ddmFormValues.getDefaultLocale());
 
 					fieldArray.addField(
-						createField(indexType, name, type, value));
+						createField(indexType, name, type, value, null));
 				}
 			}
 			catch (Exception exception) {
@@ -300,12 +300,16 @@ public class DDMIndexerImpl implements DDMIndexer {
 	}
 
 	protected Document createDocument(
-			String indexType, String type, Serializable value)
+			String indexType, String type, Serializable value, Locale locale)
 		throws JSONException {
 
 		Document document = new DocumentImpl();
 
 		String name = "fieldValue" + StringUtil.upperCaseFirstLetter(indexType);
+
+		if (locale != null) {
+			name = name + StringPool.UNDERLINE + LocaleUtil.toLanguageId(locale);
+		}
 
 		if (value instanceof BigDecimal) {
 			document.addNumberSortable(name, (BigDecimal)value);
@@ -409,10 +413,10 @@ public class DDMIndexerImpl implements DDMIndexer {
 	}
 
 	protected com.liferay.portal.kernel.search.Field createField(
-			String indexType, String name, String type, Serializable value)
+			String indexType, String name, String type, Serializable value, Locale locale)
 		throws PortalException {
 
-		Document document = createDocument(indexType, type, value);
+		Document document = createDocument(indexType, type, value, locale);
 
 		com.liferay.portal.kernel.search.Field field =
 			new com.liferay.portal.kernel.search.Field("");
