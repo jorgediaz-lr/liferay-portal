@@ -153,11 +153,11 @@ public class DDMIndexerImpl implements DDMIndexer {
 		}
 
 		String ddmFieldsFieldName = encodeName(
-			GetterUtil.getLong(ddmStructureFieldNameParts[2]), fieldName,
-			null, null);
+			GetterUtil.getLong(ddmStructureFieldNameParts[2]), fieldName, null,
+			null);
 		String ddmFieldsFieldValueSuffix =
 			StringUtil.upperCaseFirstLetter(ddmStructureFieldNameParts[1]) +
-			StringPool.UNDERLINE + LocaleUtil.toLanguageId(locale);
+				StringPool.UNDERLINE + LocaleUtil.toLanguageId(locale);
 
 		if (ddmStructureFieldValue instanceof String[]) {
 			String[] ddmStructureFieldValueArray =
@@ -317,7 +317,8 @@ public class DDMIndexerImpl implements DDMIndexer {
 		String name = "fieldValue" + StringUtil.upperCaseFirstLetter(indexType);
 
 		if (locale != null) {
-			name = name + StringPool.UNDERLINE + LocaleUtil.toLanguageId(locale);
+			name =
+				name + StringPool.UNDERLINE + LocaleUtil.toLanguageId(locale);
 		}
 
 		if (value instanceof BigDecimal) {
@@ -422,7 +423,8 @@ public class DDMIndexerImpl implements DDMIndexer {
 	}
 
 	protected com.liferay.portal.kernel.search.Field createField(
-			String indexType, String name, String type, Serializable value, Locale locale)
+			String indexType, String name, String type, Serializable value,
+			Locale locale)
 		throws PortalException {
 
 		Document document = createDocument(indexType, type, value, locale);
