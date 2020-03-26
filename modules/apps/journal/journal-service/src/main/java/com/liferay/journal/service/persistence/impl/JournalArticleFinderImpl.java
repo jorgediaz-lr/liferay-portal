@@ -1340,17 +1340,6 @@ public class JournalArticleFinderImpl
 					"JournalArticle.resourcePrimKey", groupId);
 			}
 
-			if ((orderByComparator != null) &&
-				StringUtil.containsIgnoreCase(
-					orderByComparator.getOrderBy(), _TITLE_FIELD,
-					StringPool.COMMA)) {
-
-				sql = StringUtil.replace(sql, "[$RETRIEVE_TITLE$]", "1 = 1");
-			}
-			else {
-				sql = StringUtil.replace(sql, "[$RETRIEVE_TITLE$]", "1 = 0");
-			}
-
 			sql = StringUtil.replace(
 				sql, "[$FOLDER_ID$]",
 				getFolderIds(folderIds, JournalArticleImpl.TABLE_NAME));
@@ -1361,6 +1350,17 @@ public class JournalArticleFinderImpl
 				JournalArticleImpl.TABLE_NAME, JournalArticleImpl.class);
 
 			QueryPos qPos = QueryPos.getInstance(q);
+
+			if ((orderByComparator != null) &&
+				StringUtil.containsIgnoreCase(
+					orderByComparator.getOrderBy(), _TITLE_FIELD,
+					StringPool.COMMA)) {
+
+				qPos.add(1);
+			}
+			else {
+				qPos.add(0);
+			}
 
 			qPos.add(groupId);
 			qPos.add(queryDefinition.getStatus());
@@ -1449,23 +1449,23 @@ public class JournalArticleFinderImpl
 					"JournalArticle.resourcePrimKey", groupId);
 			}
 
-			if ((orderByComparator != null) &&
-				StringUtil.containsIgnoreCase(
-					orderByComparator.getOrderBy(), _TITLE_FIELD,
-					StringPool.COMMA)) {
-
-				sql = StringUtil.replace(sql, "[$RETRIEVE_TITLE$]", "1 = 1");
-			}
-			else {
-				sql = StringUtil.replace(sql, "[$RETRIEVE_TITLE$]", "1 = 0");
-			}
-
 			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addEntity(
 				JournalArticleImpl.TABLE_NAME, JournalArticleImpl.class);
 
 			QueryPos qPos = QueryPos.getInstance(q);
+
+			if ((orderByComparator != null) &&
+				StringUtil.containsIgnoreCase(
+					orderByComparator.getOrderBy(), _TITLE_FIELD,
+					StringPool.COMMA)) {
+
+				qPos.add(1);
+			}
+			else {
+				qPos.add(0);
+			}
 
 			qPos.add(LocaleUtil.toLanguageId(locale));
 			qPos.add(groupId);
@@ -1509,17 +1509,6 @@ public class JournalArticleFinderImpl
 					"JournalArticle.resourcePrimKey", groupId);
 			}
 
-			if ((orderByComparator != null) &&
-				StringUtil.containsIgnoreCase(
-					orderByComparator.getOrderBy(), _TITLE_FIELD,
-					StringPool.COMMA)) {
-
-				sql = StringUtil.replace(sql, "[$RETRIEVE_TITLE$]", "1 = 1");
-			}
-			else {
-				sql = StringUtil.replace(sql, "[$RETRIEVE_TITLE$]", "1 = 0");
-			}
-
 			sql = StringUtil.replace(
 				sql, "[$FOLDER_ID$]",
 				getFolderIds(folderIds, JournalArticleImpl.TABLE_NAME));
@@ -1530,6 +1519,17 @@ public class JournalArticleFinderImpl
 				JournalArticleImpl.TABLE_NAME, JournalArticleImpl.class);
 
 			QueryPos qPos = QueryPos.getInstance(q);
+
+			if ((orderByComparator != null) &&
+				StringUtil.containsIgnoreCase(
+					orderByComparator.getOrderBy(), _TITLE_FIELD,
+					StringPool.COMMA)) {
+
+				qPos.add(1);
+			}
+			else {
+				qPos.add(0);
+			}
 
 			qPos.add(LocaleUtil.toLanguageId(locale));
 
@@ -1572,17 +1572,6 @@ public class JournalArticleFinderImpl
 
 			sql = _customSQL.replaceOrderBy(sql, orderByComparator);
 
-			if ((orderByComparator != null) &&
-				StringUtil.containsIgnoreCase(
-					orderByComparator.getOrderBy(), _TITLE_FIELD,
-					StringPool.COMMA)) {
-
-				sql = StringUtil.replace(sql, "[$RETRIEVE_TITLE$]", "1 = 1");
-			}
-			else {
-				sql = StringUtil.replace(sql, "[$RETRIEVE_TITLE$]", "1 = 0");
-			}
-
 			if (groupId <= 0) {
 				sql = StringUtil.removeSubstring(
 					sql, "(JournalArticle.groupId = ?) AND");
@@ -1605,6 +1594,17 @@ public class JournalArticleFinderImpl
 				JournalArticleImpl.TABLE_NAME, JournalArticleImpl.class);
 
 			QueryPos qPos = QueryPos.getInstance(q);
+
+			if ((orderByComparator != null) &&
+				StringUtil.containsIgnoreCase(
+					orderByComparator.getOrderBy(), _TITLE_FIELD,
+					StringPool.COMMA)) {
+
+				qPos.add(1);
+			}
+			else {
+				qPos.add(0);
+			}
 
 			if (groupId > 0) {
 				qPos.add(groupId);
@@ -1646,17 +1646,6 @@ public class JournalArticleFinderImpl
 
 			sql = _customSQL.replaceOrderBy(sql, orderByComparator);
 
-			if ((orderByComparator != null) &&
-				StringUtil.containsIgnoreCase(
-					orderByComparator.getOrderBy(), _TITLE_FIELD,
-					StringPool.COMMA)) {
-
-				sql = StringUtil.replace(sql, "[$RETRIEVE_TITLE$]", "1 = 1");
-			}
-			else {
-				sql = StringUtil.replace(sql, "[$RETRIEVE_TITLE$]", "1 = 0");
-			}
-
 			if (folderIds.isEmpty()) {
 				sql = StringUtil.removeSubstring(sql, "([$FOLDER_ID$]) AND");
 			}
@@ -1678,6 +1667,17 @@ public class JournalArticleFinderImpl
 				JournalArticleImpl.TABLE_NAME, JournalArticleImpl.class);
 
 			QueryPos qPos = QueryPos.getInstance(q);
+
+			if ((orderByComparator != null) &&
+				StringUtil.containsIgnoreCase(
+					orderByComparator.getOrderBy(), _TITLE_FIELD,
+					StringPool.COMMA)) {
+
+				qPos.add(1);
+			}
+			else {
+				qPos.add(0);
+			}
 
 			qPos.add(groupId);
 			qPos.add(classNameId);
@@ -1733,17 +1733,6 @@ public class JournalArticleFinderImpl
 					sql, "(JournalArticle.groupId = ?) AND");
 			}
 
-			if ((orderByComparator != null) &&
-				StringUtil.containsIgnoreCase(
-					orderByComparator.getOrderBy(), _TITLE_FIELD,
-					StringPool.COMMA)) {
-
-				sql = StringUtil.replace(sql, "[$RETRIEVE_TITLE$]", "1 = 1");
-			}
-			else {
-				sql = StringUtil.replace(sql, "[$RETRIEVE_TITLE$]", "1 = 0");
-			}
-
 			sql = StringUtil.replace(
 				sql, "[$DDM_STRUCTURE_KEY$]",
 				getDDMStructureKeys(
@@ -1761,6 +1750,17 @@ public class JournalArticleFinderImpl
 				JournalArticleImpl.TABLE_NAME, JournalArticleImpl.class);
 
 			QueryPos qPos = QueryPos.getInstance(q);
+
+			if ((orderByComparator != null) &&
+				StringUtil.containsIgnoreCase(
+					orderByComparator.getOrderBy(), _TITLE_FIELD,
+					StringPool.COMMA)) {
+
+				qPos.add(1);
+			}
+			else {
+				qPos.add(0);
+			}
 
 			qPos.add(LocaleUtil.toLanguageId(locale));
 
@@ -1805,17 +1805,6 @@ public class JournalArticleFinderImpl
 
 			sql = _customSQL.replaceOrderBy(sql, orderByComparator);
 
-			if ((orderByComparator != null) &&
-				StringUtil.containsIgnoreCase(
-					orderByComparator.getOrderBy(), _TITLE_FIELD,
-					StringPool.COMMA)) {
-
-				sql = StringUtil.replace(sql, "[$RETRIEVE_TITLE$]", "1 = 1");
-			}
-			else {
-				sql = StringUtil.replace(sql, "[$RETRIEVE_TITLE$]", "1 = 0");
-			}
-
 			if (folderIds.isEmpty()) {
 				sql = StringUtil.removeSubstring(sql, "([$FOLDER_ID$]) AND");
 			}
@@ -1837,6 +1826,17 @@ public class JournalArticleFinderImpl
 				JournalArticleImpl.TABLE_NAME, JournalArticleImpl.class);
 
 			QueryPos qPos = QueryPos.getInstance(q);
+
+			if ((orderByComparator != null) &&
+				StringUtil.containsIgnoreCase(
+					orderByComparator.getOrderBy(), _TITLE_FIELD,
+					StringPool.COMMA)) {
+
+				qPos.add(1);
+			}
+			else {
+				qPos.add(0);
+			}
 
 			qPos.add(LocaleUtil.toLanguageId(locale));
 			qPos.add(groupId);
