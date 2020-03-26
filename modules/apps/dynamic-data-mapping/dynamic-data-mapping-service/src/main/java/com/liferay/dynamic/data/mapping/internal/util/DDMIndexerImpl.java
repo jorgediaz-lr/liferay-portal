@@ -38,6 +38,7 @@ import com.liferay.portal.kernel.search.DocumentImpl;
 import com.liferay.portal.kernel.search.FieldArray;
 import com.liferay.portal.kernel.search.filter.QueryFilter;
 import com.liferay.portal.kernel.search.generic.BooleanQueryImpl;
+import com.liferay.portal.kernel.search.generic.NestedQuery;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -182,7 +183,7 @@ public class DDMIndexerImpl implements DDMIndexer {
 				StringPool.QUOTE + ddmStructureFieldValue + StringPool.QUOTE);
 		}
 
-		return new QueryFilter(booleanQuery);
+		return new QueryFilter(new NestedQuery("ddmFields", booleanQuery));
 	}
 
 	@Override
