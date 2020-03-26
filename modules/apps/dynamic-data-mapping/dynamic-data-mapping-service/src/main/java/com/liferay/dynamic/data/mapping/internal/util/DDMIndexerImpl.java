@@ -102,7 +102,7 @@ public class DDMIndexerImpl implements DDMIndexer {
 					for (Locale locale : locales) {
 						name = encodeName(
 							ddmStructure.getStructureId(), field.getName(),
-							null, null);
+							locale, indexType);
 						value = field.getValue(locale);
 
 						fieldArray.addField(
@@ -112,7 +112,7 @@ public class DDMIndexerImpl implements DDMIndexer {
 				else {
 					name = encodeName(
 						ddmStructure.getStructureId(), field.getName(), null,
-						null);
+						indexType);
 					value = field.getValue(ddmFormValues.getDefaultLocale());
 
 					fieldArray.addField(
@@ -153,9 +153,6 @@ public class DDMIndexerImpl implements DDMIndexer {
 				ddmStructureFieldValue, structure.getFieldType(fieldName));
 		}
 
-		String ddmFieldsFieldName = encodeName(
-			GetterUtil.getLong(ddmStructureFieldNameParts[2]), fieldName, null,
-			null);
 		String ddmFieldsFieldValueSuffix =
 			StringUtil.upperCaseFirstLetter(ddmStructureFieldNameParts[1]) +
 				StringPool.UNDERLINE + LocaleUtil.toLanguageId(locale);
@@ -168,7 +165,7 @@ public class DDMIndexerImpl implements DDMIndexer {
 					ddmStructureFieldValueArray) {
 
 				booleanQuery.addRequiredTerm(
-					"ddmFields.fieldName", ddmFieldsFieldName);
+					"ddmFields.fieldName", ddmStructureFieldName);
 				booleanQuery.addRequiredTerm(
 					"ddmFields.fieldValue" + ddmFieldsFieldValueSuffix,
 					StringPool.QUOTE + ddmStructureFieldValueString +
@@ -177,7 +174,7 @@ public class DDMIndexerImpl implements DDMIndexer {
 		}
 		else {
 			booleanQuery.addRequiredTerm(
-				"ddmFields.fieldName", ddmFieldsFieldName);
+				"ddmFields.fieldName", ddmStructureFieldName);
 			booleanQuery.addRequiredTerm(
 				"ddmFields.fieldValue" + ddmFieldsFieldValueSuffix,
 				StringPool.QUOTE + ddmStructureFieldValue + StringPool.QUOTE);
