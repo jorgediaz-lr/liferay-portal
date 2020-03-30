@@ -4,6 +4,8 @@
  * It renders a progressbar and a loading icon.
  *
  * @param disabled
+ * @param _imagesFailed
+ * @param _handleClickRetry
  * @param _percentage
  * @param _progressBarTooltip
  * @param spritemap
@@ -11,14 +13,52 @@
  * @param _showLoadingIndicator
  */
 {template .render}
-	<div id="{$_id}">
-		<div class="progress-container {$disabled ? 'disabled' : ''}" data-title="{$_progressBarTooltip}">
-			{call ClayProgressBar.render}
-				{param spritemap: $spritemap /}
-				{param value: $_percentage /}
-			{/call}
-		</div>
+	{if $_imagesFailed > 0}
+		{call .errorTpl}
+			{param _imagesFailed: $_imagesFailed /}
+			{param _handleClickRetry: $_handleClickRetry /}
+			{param spritemap: $spritemap /}
+		{/call}
+	{else}
+		<div id="{$_id}">
+			<div class="progress-container {$disabled ? 'disabled' : ''}" data-title="{$_progressBarTooltip}">
+				{call ClayProgressBar.render}
+					{param spritemap: $spritemap /}
+					{param value: $_percentage /}
+				{/call}
+			</div>
 
-		<span class="{$_showLoadingIndicator ? '' : 'hide '}loading-animation loading-animation-sm"></span>
+			<span class="{$_showLoadingIndicator ? '' : 'hide '}loading-animation loading-animation-sm"></span>
+		</div>
+	{/if}
+{/template}
+
+/**
+ * @param _imagesFailed
+ * @param _handleClickRetry
+ * @param spritemap
+ */
+{template .errorTpl}
+	<div class="progress-error-container">
+		<span class="text-danger">
+			{call ClayIcon.render}
+				{param spritemap: $spritemap /}
+				{param symbol: 'exclamation-full' /}
+			{/call}
+			<span>
+				<strong>{msg desc=""}error{/msg}: </strong>
+				{$_imagesFailed} images failed.
+			</span>
+		</span>
+
+		{call ClayButton.render}
+			{param elementClasses: 'btn-outline-borderless text-danger' /}
+			{param events: ['click': $_handleClickRetry] /}
+			{param label kind="text"}
+				{msg desc=""}retry{/msg}
+			{/param}
+			{param size: 'sm' /}
+			{param style: 'secondary' /}
+		{/call}
 	</div>
 {/template}

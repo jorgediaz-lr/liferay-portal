@@ -84,6 +84,17 @@ class AdaptiveMediaProgress extends PortletBase {
 	}
 
 	/**
+	 * Retry the proccess of adapting images
+	 *
+	 *  @protected
+	 */
+	_handleClickRetry() {
+		this._imagesFailed = 0;
+
+		this.startProgress();
+	}
+
+	/**
 	 * Sends an ajax request to obtain the percentage of
 	 * adapted images and updates the progressbar.
 	 *
@@ -93,9 +104,14 @@ class AdaptiveMediaProgress extends PortletBase {
 		fetch(this.percentageUrl)
 			.then(res => res.json())
 			.then(json => {
-				this._updateProgressBar(json.adaptedImages, json.totalImages);
+				const adaptedImages = json.adaptedImages;
+				const totalImages = json.totalImages;
+				const errors = json.errors;
 
-				if (this._percentage >= 100) {
+				this._imagesFailed = errors;
+				this._updateProgressBar(adaptedImages, totalImages);
+
+				if (this._percentage >= 100 || adaptedImages + errors === totalImages) {
 					this._onProgressBarComplete();
 				}
 			})
@@ -137,6 +153,17 @@ class AdaptiveMediaProgress extends PortletBase {
  * @type {!Object}
  */
 AdaptiveMediaProgress.STATE = {
+	/**
+	 * Number of images that have failed durings
+	 * the process of adapting images.
+	 *
+	 * @memberof AdaptiveMediaProgress
+	 * @protected
+	 * @type {Number}
+	 */
+	_imagesFailed: {
+		validator: core.isNumber
+	},
 	/**
 	 * Percentage of adapted images.
 	 *
