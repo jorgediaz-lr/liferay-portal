@@ -169,9 +169,18 @@ public class SearchResultsPortlet extends MVCPortlet {
 		searchResultsPortletDisplayContext.setRenderNothing(
 			isRenderNothing(portletSharedSearchResponse, searchResponse));
 
+		int totalHits = documents.size();
+
+		List<Document> searchResponseDocuments =
+			searchResponse.getDocuments71();
+
+		if (searchResponse.getTotalHits() > searchResponseDocuments.size()) {
+			totalHits = searchResponse.getTotalHits();
+		}
+
 		searchResultsPortletDisplayContext.setSearchContainer(
 			buildSearchContainer(
-				documents, searchResponse.getTotalHits(),
+				documents, totalHits,
 				portletSharedSearchResponse.getPaginationStart(),
 				searchResultsPortletPreferences.
 					getPaginationStartParameterName(),
