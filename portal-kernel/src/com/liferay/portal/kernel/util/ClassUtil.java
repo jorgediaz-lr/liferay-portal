@@ -152,6 +152,16 @@ public class ClassUtil {
 
 		URL url = classLoader.getResource(className);
 
+		String parentPath = getPathFromURL(url, className);
+
+		if (_log.isDebugEnabled()) {
+			_log.debug("Parent path " + parentPath);
+		}
+
+		return parentPath;
+	}
+
+	public static String getPathFromURL(URL url, String resourceName) {
 		String path = null;
 
 		try {
@@ -194,7 +204,7 @@ public class ClassUtil {
 			_log.debug("Path " + path);
 		}
 
-		int pos = path.indexOf(className);
+		int pos = path.indexOf(resourceName);
 
 		String parentPath = path.substring(0, pos);
 
@@ -204,10 +214,6 @@ public class ClassUtil {
 
 		if (parentPath.startsWith("file:/")) {
 			parentPath = parentPath.substring(6);
-		}
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Parent path " + parentPath);
 		}
 
 		return parentPath;
