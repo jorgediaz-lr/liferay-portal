@@ -157,7 +157,11 @@ public class ClassUtil {
 		URL url = classLoader.getResource(className);
 
 		try {
-			String parentPath = getPathFromURL(url, className);
+			String parentPath = getPathFromURL(url);
+
+			int pos = parentPath.indexOf(className);
+
+			parentPath = parentPath.substring(0, pos);
 
 			if (_log.isDebugEnabled()) {
 				_log.debug("Parent path " + parentPath);
@@ -170,7 +174,7 @@ public class ClassUtil {
 		}
 	}
 
-	public static String getPathFromURL(URL url, String resourceName)
+	public static String getPathFromURL(URL url)
 		throws MalformedURLException, URISyntaxException {
 
 		String urlProtocol = url.getProtocol();
@@ -202,13 +206,7 @@ public class ClassUtil {
 			_log.debug("Path " + path);
 		}
 
-		int pos = path.indexOf(resourceName);
-
-		if (pos == -1) {
-			return null;
-		}
-
-		return path.substring(0, pos);
+		return path;
 	}
 
 	public static boolean isSubclass(Class<?> a, Class<?> b) {
