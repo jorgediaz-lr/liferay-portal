@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.StringReader;
 
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -212,9 +213,9 @@ public class ClassUtilTest {
 	protected void testGetPathFromURL(String url, String expectedPath)
 		throws MalformedURLException, URISyntaxException {
 
-		String normalizedPath = ClassUtil.getPathFromURL(new URL(url));
+		URI uri = ClassUtil.getPathURIFromURL(new URL(url));
 
-		Assert.assertEquals(expectedPath, normalizedPath);
+		Assert.assertEquals(expectedPath, uri.getPath());
 	}
 
 }
