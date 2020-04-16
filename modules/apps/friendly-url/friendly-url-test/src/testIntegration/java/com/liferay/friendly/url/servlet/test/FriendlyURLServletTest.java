@@ -447,20 +447,30 @@ public class FriendlyURLServletTest {
 	}
 
 	protected void testGetRedirect(
-			HttpServletRequest httpServletRequest, String path, String mainPath,
-			Object expectedRedirect)
+			HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse, String path,
+			String mainPath, Object expectedRedirect)
 		throws Throwable {
 
 		try {
 			Assert.assertEquals(
 				expectedRedirect,
 				_getRedirectMethod.invoke(
-					_servlet, httpServletRequest, new MockHttpServletResponse(),
-					path));
+					_servlet, httpServletRequest, httpServletResponse, path));
 		}
 		catch (InvocationTargetException invocationTargetException) {
 			throw invocationTargetException.getCause();
 		}
+	}
+
+	protected void testGetRedirect(
+			HttpServletRequest httpServletRequest, String path, String mainPath,
+			Object expectedRedirect)
+		throws Throwable {
+
+		testGetRedirect(
+			httpServletRequest, new MockHttpServletResponse(), path, mainPath,
+			expectedRedirect);
 	}
 
 	@Inject
