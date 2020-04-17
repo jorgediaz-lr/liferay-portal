@@ -111,7 +111,10 @@ class AdaptiveMediaProgress extends PortletBase {
 				this._imagesFailed = errors;
 				this._updateProgressBar(adaptedImages, totalImages);
 
-				if (this._percentage >= 100 || adaptedImages + errors === totalImages) {
+				if (
+					this._percentage >= 100 ||
+					adaptedImages + errors === totalImages
+				) {
 					this._onProgressBarComplete();
 				}
 			})
