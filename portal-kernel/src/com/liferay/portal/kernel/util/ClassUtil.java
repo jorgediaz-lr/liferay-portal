@@ -184,6 +184,8 @@ public class ClassUtil {
 
 		String path = uri.getSchemeSpecificPart();
 
+		path = _fixWindowsPathRoot(path);
+
 		if (_log.isDebugEnabled()) {
 			_log.debug("Path " + path);
 		}
@@ -247,6 +249,17 @@ public class ClassUtil {
 		}
 
 		return false;
+	}
+
+	private static String _fixWindowsPathRoot(String path) {
+		if ((path.charAt(0) == CharPool.SLASH) &&
+			Character.isLetter(path.charAt(1)) &&
+			(path.charAt(2) == CharPool.COLON)) {
+
+			return path.substring(1);
+		}
+
+		return path;
 	}
 
 	private static String[] _processAnnotation(String s, StreamTokenizer st)
