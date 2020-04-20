@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.portlet.LiferayResourceRequest;
 import java.io.IOException;
 
 import java.util.Collection;
+import java.util.Enumeration;
 import java.util.Map;
 
 import javax.portlet.PortletAsyncContext;
@@ -36,6 +37,7 @@ import javax.servlet.DispatcherType;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.portlet.MockResourceRequest;
 
 /**
@@ -43,6 +45,26 @@ import org.springframework.mock.web.portlet.MockResourceRequest;
  */
 public class MockLiferayResourceRequest
 	extends MockResourceRequest implements LiferayResourceRequest {
+
+	public MockLiferayResourceRequest() {
+		_mockHttpServletRequest = new MockHttpServletRequest();
+	}
+
+	public MockLiferayResourceRequest(
+		MockHttpServletRequest mockHttpServletRequest) {
+
+		_mockHttpServletRequest = mockHttpServletRequest;
+	}
+
+	@Override
+	public void addParameter(String name, String value) {
+		_mockHttpServletRequest.addParameter(name, value);
+	}
+
+	@Override
+	public void addParameter(String name, String[] values) {
+		_mockHttpServletRequest.addParameter(name, values);
+	}
 
 	@Override
 	public void cleanUp() {
@@ -59,6 +81,16 @@ public class MockLiferayResourceRequest
 	}
 
 	@Override
+	public Object getAttribute(String name) {
+		return _mockHttpServletRequest.getAttribute(name);
+	}
+
+	@Override
+	public Enumeration<String> getAttributeNames() {
+		return _mockHttpServletRequest.getAttributeNames();
+	}
+
+	@Override
 	public long getContentLengthLong() {
 		return 0;
 	}
@@ -70,7 +102,7 @@ public class MockLiferayResourceRequest
 
 	@Override
 	public HttpServletRequest getHttpServletRequest() {
-		return null;
+		return _mockHttpServletRequest;
 	}
 
 	@Override
@@ -81,6 +113,16 @@ public class MockLiferayResourceRequest
 	@Override
 	public HttpServletRequest getOriginalHttpServletRequest() {
 		return null;
+	}
+
+	@Override
+	public String getParameter(String name) {
+		return _mockHttpServletRequest.getParameter(name);
+	}
+
+	@Override
+	public Map<String, String[]> getParameterMap() {
+		return _mockHttpServletRequest.getParameterMap();
 	}
 
 	@Override
@@ -153,6 +195,26 @@ public class MockLiferayResourceRequest
 	}
 
 	@Override
+	public void setAttribute(String name, Object value) {
+		_mockHttpServletRequest.setAttribute(name, value);
+	}
+
+	@Override
+	public void setParameter(String key, String value) {
+		_mockHttpServletRequest.setParameter(key, value);
+	}
+
+	@Override
+	public void setParameter(String key, String[] values) {
+		_mockHttpServletRequest.setParameter(key, values);
+	}
+
+	@Override
+	public void setParameters(Map<String, String[]> parameters) {
+		_mockHttpServletRequest.setParameters(parameters);
+	}
+
+	@Override
 	public void setPortletRequestDispatcherRequest(
 		HttpServletRequest httpServletRequest) {
 	}
@@ -171,5 +233,7 @@ public class MockLiferayResourceRequest
 
 		return null;
 	}
+
+	private final MockHttpServletRequest _mockHttpServletRequest;
 
 }
