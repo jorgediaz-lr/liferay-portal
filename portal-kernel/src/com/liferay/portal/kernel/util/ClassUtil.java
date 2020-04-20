@@ -15,7 +15,7 @@
 package com.liferay.portal.kernel.util;
 
 import com.liferay.petra.string.CharPool;
-import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
 import com.liferay.portal.kernel.log.Log;
@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StreamTokenizer;
 
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -152,65 +153,44 @@ public class ClassUtil {
 
 		URL url = classLoader.getResource(className);
 
-		String path = null;
-
 		try {
-			path = url.getPath();
+			String parentPath = getPathFromURL(url);
 
-			URI uri = new URI(path);
+			int pos = parentPath.indexOf(className);
 
-			String scheme = uri.getScheme();
+			parentPath = parentPath.substring(0, pos);
 
-			if (path.contains(StringPool.EXCLAMATION) &&
-				((scheme == null) || (scheme.length() <= 1))) {
-
-				if (!path.startsWith(StringPool.SLASH)) {
-					path = StringPool.SLASH + path;
-				}
+			if (_log.isDebugEnabled()) {
+				_log.debug("Parent path " + parentPath);
 			}
-			else {
-				path = uri.getPath();
 
-				if (path == null) {
-					path = url.getFile();
-				}
-			}
+			return parentPath;
 		}
-		catch (URISyntaxException uriSyntaxException) {
-			path = url.getFile();
+		catch (Exception exception) {
+			throw new SystemException(exception);
+		}
+	}
+
+	public static String getPathFromURL(URL url)
+		throws MalformedURLException, URISyntaxException {
+
+		String urlProtocol = url.getProtocol();
+
+		if (urlProtocol.equals("jar")) {
+			url = new URL(url.getPath());
 		}
 
-		if ((ServerDetector.isJBoss() || ServerDetector.isWildfly()) &&
-			path.startsWith("file:") && !path.startsWith("file:/")) {
+		URI uri = url.toURI();
 
-			path = path.substring(5);
+		String path = uri.getSchemeSpecificPart();
 
-			path = "file:/".concat(path);
-
-			path = StringUtil.replace(path, "%5C", StringPool.SLASH);
-		}
+		path = _fixWindowsPathRoot(path);
 
 		if (_log.isDebugEnabled()) {
 			_log.debug("Path " + path);
 		}
 
-		int pos = path.indexOf(className);
-
-		String parentPath = path.substring(0, pos);
-
-		if (parentPath.startsWith("jar:")) {
-			parentPath = parentPath.substring(4);
-		}
-
-		if (parentPath.startsWith("file:/")) {
-			parentPath = parentPath.substring(6);
-		}
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Parent path " + parentPath);
-		}
-
-		return parentPath;
+		return path;
 	}
 
 	public static boolean isSubclass(Class<?> a, Class<?> b) {
@@ -269,6 +249,17 @@ public class ClassUtil {
 		}
 
 		return false;
+	}
+
+	private static String _fixWindowsPathRoot(String path) {
+		if ((path.charAt(0) == CharPool.SLASH) &&
+			Character.isLetter(path.charAt(1)) &&
+			(path.charAt(2) == CharPool.COLON)) {
+
+			return path.substring(1);
+		}
+
+		return path;
 	}
 
 	private static String[] _processAnnotation(String s, StreamTokenizer st)
