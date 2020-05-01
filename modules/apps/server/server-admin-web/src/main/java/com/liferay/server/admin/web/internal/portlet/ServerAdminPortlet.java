@@ -16,9 +16,17 @@ package com.liferay.server.admin.web.internal.portlet;
 
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
+import com.liferay.portal.kernel.servlet.SessionMessages;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortletKeys;
+import com.liferay.server.admin.web.internal.security.advisory.SecurityBugsHelper;
+
+import java.io.IOException;
 
 import javax.portlet.Portlet;
+import javax.portlet.PortletException;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -50,11 +58,29 @@ import org.osgi.service.component.annotations.Reference;
 )
 public class ServerAdminPortlet extends MVCPortlet {
 
+	@Override
+	public void doView(
+			RenderRequest renderRequest, RenderResponse renderResponse)
+		throws IOException, PortletException {
+
+		SessionMessages.add(
+			portal.getHttpServletRequest(renderRequest), "securityBugsHelper",
+			securityBugsHelper);
+
+		super.doView(renderRequest, renderResponse);
+	}
+
 	@Reference(
 		target = "(&(release.bundle.symbolic.name=com.liferay.server.admin.web)(&(release.schema.version>=1.0.0)(!(release.schema.version>=2.0.0))))",
 		unbind = "-"
 	)
 	protected void setRelease(Release release) {
 	}
+
+	@Reference
+	protected Portal portal;
+
+	@Reference
+	protected SecurityBugsHelper securityBugsHelper;
 
 }

@@ -20,6 +20,14 @@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %><%@
 taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
-<%@ page import="com.liferay.portal.kernel.servlet.SessionMessages" %>
+<%@ page import="com.liferay.petra.string.StringBundler" %><%@
+page import="com.liferay.petra.string.StringPool" %><%@
+page import="com.liferay.portal.kernel.servlet.SessionMessages" %><%@
+page import="com.liferay.portal.kernel.util.ListUtil" %><%@
+page import="com.liferay.portal.kernel.util.Validator" %><%@
+page import="com.liferay.server.admin.web.internal.security.advisory.SecurityBugsHelper" %>
+
+<%@ page import="java.util.List" %><%@
+page import="java.util.stream.Collectors" %>
 
 <liferay-frontend:defineObjects />

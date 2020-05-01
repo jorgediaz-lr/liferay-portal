@@ -14,8 +14,6 @@
 
 package com.liferay.server.admin.web.internal.security.advisory;
 
-import com.liferay.petra.string.StringBundler;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
@@ -24,14 +22,9 @@ import com.liferay.portal.kernel.servlet.taglib.BaseJSPDynamicInclude;
 import com.liferay.portal.kernel.servlet.taglib.DynamicInclude;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.io.IOException;
-
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -74,60 +67,8 @@ public class SecurityBugsBottomJSPDynamicInclude extends BaseJSPDynamicInclude {
 
 		httpSession.setAttribute("securityBugsAdvisory", Boolean.TRUE);
 
-		List<SecurityBugsHelper.Issue> issues = null;
-		String securityBugsLevel = null;
-		String securityBugsType = null;
-
-		if (ListUtil.isNotEmpty(_securityBugsHelper.getSev1Issues())) {
-			issues = _securityBugsHelper.getSev1Issues();
-			securityBugsLevel = "SEV-1";
-			securityBugsType = "danger";
-		}
-		else if (ListUtil.isNotEmpty(_securityBugsHelper.getSev2Issues())) {
-			issues = _securityBugsHelper.getSev2Issues();
-			securityBugsLevel = "SEV-2";
-			securityBugsType = "danger";
-		}
-		else if (ListUtil.isNotEmpty(_securityBugsHelper.getSev3Issues())) {
-			issues = _securityBugsHelper.getSev3Issues();
-			securityBugsLevel = "SEV-3";
-			securityBugsType = "warning";
-		}
-
-		if (issues == null) {
-			return;
-		}
-
-		Stream<SecurityBugsHelper.Issue> issuesStream = issues.stream();
-
-		String securityBugsIssues = issuesStream.map(
-			issue -> issue.getKey()
-		).map(
-			issueKey -> StringBundler.concat(
-				"<a href='https://issues.liferay.com/browse/", issueKey, "' >",
-				issueKey, "</a>")
-		).collect(
-			Collectors.joining(StringPool.COMMA_AND_SPACE)
-		);
-
-		issuesStream = issues.stream();
-
-		int securityBugsNewFixpack = issuesStream.mapToInt(
-			issue -> issue.getFixpack()
-		).max(
-		).orElse(
-			0
-		);
-
 		SessionMessages.add(
-			httpServletRequest, "securityBugsIssues", securityBugsIssues);
-		SessionMessages.add(
-			httpServletRequest, "securityBugsLevel", securityBugsLevel);
-		SessionMessages.add(
-			httpServletRequest, "securityBugsType", securityBugsType);
-		SessionMessages.add(
-			httpServletRequest, "securityBugsNewFixpack",
-			securityBugsNewFixpack);
+			httpServletRequest, "securityBugsHelper", securityBugsHelper);
 
 		super.include(httpServletRequest, httpServletResponse, key);
 	}
@@ -156,10 +97,10 @@ public class SecurityBugsBottomJSPDynamicInclude extends BaseJSPDynamicInclude {
 		super.setServletContext(servletContext);
 	}
 
+	@Reference
+	protected SecurityBugsHelper securityBugsHelper;
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		SecurityBugsBottomJSPDynamicInclude.class);
-
-	@Reference
-	private SecurityBugsHelper _securityBugsHelper;
 
 }

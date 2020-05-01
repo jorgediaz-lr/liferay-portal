@@ -19,6 +19,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactory;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.patcher.PatcherUtil;
@@ -26,17 +27,19 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ReleaseInfo;
+import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.URLCodec;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -49,36 +52,6 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(immediate = true, service = SecurityBugsHelper.class)
 public class SecurityBugsHelper {
-
-	public void dumpSecurityIssuesInfo(
-		PrintWriter out, int lowerSeverity, int buildNumber,
-		int installedFixpack) {
-
-		if ((buildNumber % 100) < 10) {
-			out.println("BuildNumber: " + buildNumber);
-			out.println("This Liferay installation cannot be patched");
-
-			return;
-		}
-
-		try {
-			for (int i = 1; i <= lowerSeverity; i++) {
-				out.println("=== SEV-" + i + "===");
-				List<Issue> issues = filterInstalledIssues(
-					getJiraSecurityIssues(buildNumber, i), new String[0],
-					installedFixpack);
-
-				for (Issue issue : issues) {
-					out.println(issue);
-				}
-
-				out.println("");
-			}
-		}
-		catch (Exception exception) {
-			exception.printStackTrace(out);
-		}
-	}
 
 	public List<Issue> getJiraIssues(String query, int buildNumber)
 		throws IOException, PortalException {
@@ -187,111 +160,46 @@ public class SecurityBugsHelper {
 		return sev3Issues;
 	}
 
-	public void initialization() {
-		int buildNumber = ReleaseInfo.getBuildNumber();
-
-		if ((buildNumber % 100) < 10) {
-			if (_log.isInfoEnabled()) {
-				_log.info("BuildNumber: " + buildNumber);
-				_log.info("This Liferay installation cannot be patched");
-			}
-
-			sev1Issues = null;
-			sev2Issues = null;
-			sev3Issues = null;
-
-			return;
-		}
-
-		int installedFixpackLevel = 0;
-
-		for (String installedPatch : PatcherUtil.getInstalledPatches()) {
-			installedFixpackLevel = getLabelFixpackNumber(
-				installedPatch, buildNumber);
-
-			if (installedFixpackLevel != 0) {
-				break;
-			}
-		}
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("installed fixpack level: " + installedFixpackLevel);
-		}
-
-		initialization(buildNumber, installedFixpackLevel);
-	}
-
-	public void initialization(int buildNumber, int installedFixpackLevel) {
-		try {
-			sev1Issues = filterInstalledIssues(
-				getJiraSecurityIssues(buildNumber, 1),
-				PatcherUtil.getFixedIssues(), installedFixpackLevel);
-			sev2Issues = filterInstalledIssues(
-				getJiraSecurityIssues(buildNumber, 2),
-				PatcherUtil.getFixedIssues(), installedFixpackLevel);
-			sev3Issues = filterInstalledIssues(
-				getJiraSecurityIssues(buildNumber, 3),
-				PatcherUtil.getFixedIssues(), installedFixpackLevel);
-		}
-		catch (IOException ioException) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(
-					"Cannot connect to jira server: " +
-						ioException.getMessage());
-			}
-
-			sev1Issues = null;
-			sev2Issues = null;
-			sev3Issues = null;
-		}
-		catch (PortalException portalException) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(portalException, portalException);
-			}
-
-			sev1Issues = null;
-			sev2Issues = null;
-			sev3Issues = null;
-		}
-	}
-
 	public void writeLogTraces() {
+		ResourceBundle resourceBundle = ResourceBundleUtil.getBundle(
+			LocaleUtil.getDefault(), SecurityBugsHelper.class);
+
 		if (ListUtil.isNotEmpty(sev1Issues)) {
 			_log.error(
-				"There are SEV-1 security vulnerabilities not fixed in the " +
-					"system: " + getIssueKeys(sev1Issues));
+				language.format(
+					resourceBundle, "security-vulnerabilities-not-fixed-x-x",
+					new String[] {"SEV-1", getIssueKeys(sev1Issues)}));
 			_log.error(
-				StringBundler.concat(
-					"Please, update the patch level of your installation to ",
-					"the fixpack ", getGreatestFixpackNumber(sev1Issues), " ",
-					"or a greater one. For more information, go to ",
-					"https://help.liferay.com"));
+				language.format(
+					resourceBundle,
+					"security-vulnerabilities-update-to-fixpack-x",
+					getGreatestFixpackNumber(sev1Issues)));
 		}
 
 		if (ListUtil.isNotEmpty(sev2Issues)) {
 			_log.error(
-				"There are SEV-2 security vulnerabilities not fixed in the " +
-					"system: " + getIssueKeys(sev2Issues));
+				language.format(
+					resourceBundle, "security-vulnerabilities-not-fixed-x-x",
+					new String[] {"SEV-2", getIssueKeys(sev2Issues)}));
 			_log.error(
-				StringBundler.concat(
-					"Please, update the patch level of your installation to ",
-					"the fixpack ", getGreatestFixpackNumber(sev2Issues), " ",
-					"or a greater one. For more information, go to ",
-					"https://help.liferay.com"));
+				language.format(
+					resourceBundle,
+					"security-vulnerabilities-update-to-fixpack-x",
+					getGreatestFixpackNumber(sev2Issues)));
 		}
 
 		if (_log.isWarnEnabled() && ListUtil.isEmpty(sev1Issues) &&
 			ListUtil.isEmpty(sev2Issues) && !ListUtil.isEmpty(sev3Issues)) {
 
 			_log.warn(
-				"There are SEV-3 security vulnerabilities not fixed in the " +
-					"system: " + getIssueKeys(sev3Issues));
+				language.format(
+					resourceBundle, "security-vulnerabilities-not-fixed-x-x",
+					new String[] {"SEV-3", getIssueKeys(sev3Issues)}));
 			_log.warn(
-				StringBundler.concat(
-					"Please, update the patch level of your installation to ",
-					"the fixpack ", getGreatestFixpackNumber(sev3Issues), " ",
-					"or a greater one. For more information, go to ",
-					"https://help.liferay.com"));
+				language.format(
+					resourceBundle,
+					"security-vulnerabilities-update-to-fixpack-x",
+					getGreatestFixpackNumber(sev3Issues)));
 		}
 	}
 
@@ -396,7 +304,7 @@ public class SecurityBugsHelper {
 
 	@Activate
 	protected void activate(Map<String, Object> properties) {
-		initialization();
+		initialize();
 
 		writeLogTraces();
 	}
@@ -487,6 +395,74 @@ public class SecurityBugsHelper {
 		return 0;
 	}
 
+	protected void initialize() {
+		int buildNumber = ReleaseInfo.getBuildNumber();
+
+		if ((buildNumber % 100) < 10) {
+			if (_log.isInfoEnabled()) {
+				_log.info("BuildNumber: " + buildNumber);
+				_log.info("This Liferay installation cannot be patched");
+			}
+
+			sev1Issues = null;
+			sev2Issues = null;
+			sev3Issues = null;
+
+			return;
+		}
+
+		int installedFixpackLevel = 0;
+
+		for (String installedPatch : PatcherUtil.getInstalledPatches()) {
+			installedFixpackLevel = getLabelFixpackNumber(
+				installedPatch, buildNumber);
+
+			if (installedFixpackLevel != 0) {
+				break;
+			}
+		}
+
+		if (_log.isDebugEnabled()) {
+			_log.debug("installed fixpack level: " + installedFixpackLevel);
+		}
+
+		initialize(buildNumber, installedFixpackLevel);
+	}
+
+	protected void initialize(int buildNumber, int installedFixpackLevel) {
+		try {
+			sev1Issues = filterInstalledIssues(
+				getJiraSecurityIssues(buildNumber, 1),
+				PatcherUtil.getFixedIssues(), installedFixpackLevel);
+			sev2Issues = filterInstalledIssues(
+				getJiraSecurityIssues(buildNumber, 2),
+				PatcherUtil.getFixedIssues(), installedFixpackLevel);
+			sev3Issues = filterInstalledIssues(
+				getJiraSecurityIssues(buildNumber, 3),
+				PatcherUtil.getFixedIssues(), installedFixpackLevel);
+		}
+		catch (IOException ioException) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					"Cannot connect to jira server: " +
+						ioException.getMessage());
+			}
+
+			sev1Issues = null;
+			sev2Issues = null;
+			sev3Issues = null;
+		}
+		catch (PortalException portalException) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(portalException, portalException);
+			}
+
+			sev1Issues = null;
+			sev2Issues = null;
+			sev3Issues = null;
+		}
+	}
+
 	protected static final String JIRA_DELTA_PARAM = "startAt=";
 
 	protected static final String JIRA_FIELDS_PARAM = "&fields=";
@@ -501,6 +477,9 @@ public class SecurityBugsHelper {
 
 	@Reference
 	protected JSONFactory jsonFactory;
+
+	@Reference
+	protected Language language;
 
 	protected List<Issue> sev1Issues;
 	protected List<Issue> sev2Issues;

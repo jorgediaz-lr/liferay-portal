@@ -16,28 +16,34 @@
 
 <%@ include file="/dynamic_include/init.jsp" %>
 
-<c:if test='<%= SessionMessages.contains(request, "securityBugsIssues") %>'>
-
-	<%
-	String securityBugsIssues = (String)SessionMessages.get(request, "securityBugsIssues");
-	String securityBugsLevel = (String)SessionMessages.get(request, "securityBugsLevel");
-	String securityBugsType = (String)SessionMessages.get(request, "securityBugsType");
-	Integer securityBugsNewFixpack = (Integer)SessionMessages.get(request, "securityBugsNewFixpack");
-	%>
-
+<c:if test='<%= SessionMessages.contains(request, "securityBugsHelper") %>'>
 	<liferay-util:buffer
-		var="alertMessage"
+		var="securityBugsMessage"
 	>
-		There are <%= securityBugsLevel %> security vulnerabilities not fixed in the system: <%= securityBugsIssues %><br />
-		Please, update the patch level of your installation to the fixpack <%= securityBugsNewFixpack %> or a greater one.<br />
-		For more information, go to <a href='https://help.liferay.com'>https://help.liferay.com</a>
+		<%@ include file="/security_advisory_message.jspf" %>
 	</liferay-util:buffer>
 
-	<liferay-ui:alert
-		icon="exclamation-full"
-		message="<%= alertMessage %>"
-		targetNode="#controlMenuAlertsContainer"
-		timeout="<%= 0 %>"
-		type="<%= securityBugsType %>"
-	/>
+	<c:if test="<%= Validator.isNotNull(securityBugsMessage) %>">
+
+		<%
+		SecurityBugsHelper securityBugsHelper = (SecurityBugsHelper)SessionMessages.get(request, "securityBugsHelper");
+
+		String securityBugsMessageType = null;
+
+		if (ListUtil.isNotEmpty(securityBugsHelper.getSev1Issues()) || ListUtil.isNotEmpty(securityBugsHelper.getSev2Issues())) {
+			securityBugsMessageType = "danger";
+		}
+		else if (ListUtil.isNotEmpty(securityBugsHelper.getSev3Issues())) {
+			securityBugsMessageType = "warning";
+		}
+		%>
+
+		<liferay-ui:alert
+			icon="exclamation-full"
+			message="<%= securityBugsMessage %>"
+			targetNode="#controlMenuAlertsContainer"
+			timeout="<%= 0 %>"
+			type="<%= securityBugsMessageType %>"
+		/>
+	</c:if>
 </c:if>

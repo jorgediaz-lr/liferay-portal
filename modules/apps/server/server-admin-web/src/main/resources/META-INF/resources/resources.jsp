@@ -38,6 +38,30 @@ long usedMemory = totalMemory - runtime.freeMemory();
 >
 	<div class="panel panel-default server-admin-tabs" id="adminServerInformationPanel">
 		<div class="panel-body">
+			<liferay-util:buffer
+				var="securityBugsMessage"
+			>
+				<%@ include file="/security_advisory_message.jspf" %>
+			</liferay-util:buffer>
+
+			<c:if test="<%= Validator.isNotNull(securityBugsMessage) %>">
+
+				<%
+				SecurityBugsHelper securityBugsHelper = (SecurityBugsHelper)SessionMessages.get(request, "securityBugsHelper");
+
+				String securityBugsMessageType = null;
+
+				if (ListUtil.isNotEmpty(securityBugsHelper.getSev1Issues()) || ListUtil.isNotEmpty(securityBugsHelper.getSev2Issues())) {
+					securityBugsMessageType = "danger";
+				}
+				else if (ListUtil.isNotEmpty(securityBugsHelper.getSev3Issues())) {
+					securityBugsMessageType = "warning";
+				}
+				%>
+
+				<div class="alert alert-<%= securityBugsMessageType %>"><%= securityBugsMessage %></div>
+			</c:if>
+
 			<div class="alert alert-info">
 				<strong><liferay-ui:message key="info" /></strong>: <%= ReleaseInfo.getReleaseInfo() %>
 				<c:if test="<%= (installedPatches != null) && (installedPatches.length > 0) %>">
