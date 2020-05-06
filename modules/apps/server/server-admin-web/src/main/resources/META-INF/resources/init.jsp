@@ -33,6 +33,7 @@ page import="com.liferay.expando.kernel.model.ExpandoColumnConstants" %><%@
 page import="com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenu" %><%@
 page import="com.liferay.petra.log4j.Levels" %><%@
 page import="com.liferay.petra.string.CharPool" %><%@
+page import="com.liferay.petra.string.StringBundler" %><%@
 page import="com.liferay.petra.string.StringPool" %><%@
 page import="com.liferay.portal.convert.ConvertProcess" %><%@
 page import="com.liferay.portal.convert.ConvertProcessUtil" %><%@
@@ -74,6 +75,7 @@ page import="com.liferay.portal.util.PropsValues" %><%@
 page import="com.liferay.portal.util.ShutdownUtil" %><%@
 page import="com.liferay.server.admin.web.internal.constants.ServerAdminNavigationEntryConstants" %><%@
 page import="com.liferay.server.admin.web.internal.display.context.ServerDisplayContext" %><%@
+page import="com.liferay.server.admin.web.internal.security.advisory.SecurityBugsHelper" %><%@
 page import="com.liferay.taglib.servlet.PipingServletResponse" %>
 
 <%@ page import="java.text.NumberFormat" %>
@@ -85,7 +87,8 @@ page import="java.util.Iterator" %><%@
 page import="java.util.List" %><%@
 page import="java.util.Map" %><%@
 page import="java.util.Properties" %><%@
-page import="java.util.TreeMap" %>
+page import="java.util.TreeMap" %><%@
+page import="java.util.stream.Collectors" %>
 
 <%@ page import="javax.portlet.PortletPreferences" %><%@
 page import="javax.portlet.PortletURL" %><%@
