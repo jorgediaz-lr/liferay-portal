@@ -46,7 +46,6 @@ public class UpgradePortletPreferences extends BaseUpgradePortletPreferences {
 
 		String enableSocialBookmarks = portletPreferences.getValue(
 			"enableSocialBookmarks", Boolean.TRUE.toString());
-
 		String socialBookmarksTypes = portletPreferences.getValue(
 			"socialBookmarksTypes", StringPool.BLANK);
 
