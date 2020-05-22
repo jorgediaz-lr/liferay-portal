@@ -274,15 +274,7 @@ public class HttpImpl implements Http {
 
 	@Override
 	public String decodePath(String path) {
-		if (Validator.isNull(path)) {
-			return path;
-		}
-
-		path = StringUtil.replace(path, CharPool.SLASH, _TEMP_SLASH);
-		path = decodeURL(path);
-		path = StringUtil.replace(path, _TEMP_SLASH, StringPool.SLASH);
-
-		return path;
+		return decodeURL(path);
 	}
 
 	@Override
@@ -360,11 +352,8 @@ public class HttpImpl implements Http {
 			return path;
 		}
 
-		path = StringUtil.replace(path, CharPool.SLASH, _TEMP_SLASH);
-		path = URLCodec.encodeURL(path, true);
-		path = StringUtil.replace(path, _TEMP_SLASH, StringPool.SLASH);
-
-		return path;
+		return URLCodec.encodeURL(
+			path, StringPool.UTF8, true, _PATH_VALID_CHARS);
 	}
 
 	@Override
@@ -2009,6 +1998,8 @@ public class HttpImpl implements Http {
 	private static final String _NON_PROXY_HOSTS = SystemProperties.get(
 		"http.nonProxyHosts");
 
+	private static final char[] _PATH_VALID_CHARS = {CharPool.SLASH};
+
 	private static final String _PROXY_AUTH_TYPE = GetterUtil.getString(
 		PropsUtil.get(HttpImpl.class.getName() + ".proxy.auth.type"));
 
@@ -2029,8 +2020,6 @@ public class HttpImpl implements Http {
 
 	private static final String _PROXY_USERNAME = GetterUtil.getString(
 		PropsUtil.get(HttpImpl.class.getName() + ".proxy.username"));
-
-	private static final String _TEMP_SLASH = "_LIFERAY_TEMP_SLASH_";
 
 	private static final int _TIMEOUT = GetterUtil.getInteger(
 		PropsUtil.get(HttpImpl.class.getName() + ".timeout"), 5000);

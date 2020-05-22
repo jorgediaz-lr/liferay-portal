@@ -122,6 +122,13 @@ public class URLCodec {
 	public static String encodeURL(
 		String rawURLString, String charsetName, boolean escapeSpaces) {
 
+		return encodeURL(rawURLString, StringPool.UTF8, escapeSpaces, null);
+	}
+
+	public static String encodeURL(
+		String rawURLString, String charsetName, boolean escapeSpaces,
+		char[] allowedChars) {
+
 		if (rawURLString == null) {
 			return null;
 		}
@@ -139,6 +146,10 @@ public class URLCodec {
 			char c = rawURLString.charAt(i);
 
 			if ((c < 128) && _VALID_CHARS[c]) {
+				continue;
+			}
+
+			if (ArrayUtil.contains(allowedChars, c)) {
 				continue;
 			}
 
@@ -169,7 +180,7 @@ public class URLCodec {
 			}
 
 			CharBuffer charBuffer = _getRawCharBuffer(
-				rawURLString, i, escapeSpaces);
+				rawURLString, i, escapeSpaces, allowedChars);
 
 			if (charsetEncoder == null) {
 				charsetEncoder = CharsetEncoderUtil.getCharsetEncoder(
@@ -261,7 +272,8 @@ public class URLCodec {
 	}
 
 	private static CharBuffer _getRawCharBuffer(
-		String rawString, int start, boolean escapeSpaces) {
+		String rawString, int start, boolean escapeSpaces,
+		char[] allowedChars) {
 
 		int count = 0;
 
@@ -269,6 +281,7 @@ public class URLCodec {
 			char rawChar = rawString.charAt(i);
 
 			if (((rawChar >= 128) || !_VALID_CHARS[rawChar]) &&
+				!ArrayUtil.contains(allowedChars, rawChar) &&
 				(escapeSpaces || (rawChar != CharPool.SPACE))) {
 
 				count++;
