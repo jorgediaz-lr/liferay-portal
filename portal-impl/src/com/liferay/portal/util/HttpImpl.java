@@ -1998,7 +1998,9 @@ public class HttpImpl implements Http {
 	private static final String _NON_PROXY_HOSTS = SystemProperties.get(
 		"http.nonProxyHosts");
 
-	private static final char[] _PATH_VALID_CHARS = {CharPool.SLASH};
+	private static final char[] _PATH_VALID_CHARS = {
+		CharPool.SLASH, CharPool.TILDE
+	};
 
 	private static final String _PROXY_AUTH_TYPE = GetterUtil.getString(
 		PropsUtil.get(HttpImpl.class.getName() + ".proxy.auth.type"));
