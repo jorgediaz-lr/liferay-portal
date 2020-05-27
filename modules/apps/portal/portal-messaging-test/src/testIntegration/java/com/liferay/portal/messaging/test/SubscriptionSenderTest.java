@@ -86,12 +86,11 @@ public class SubscriptionSenderTest {
 		SubscriptionSender subscriptionSender = new SubscriptionSender();
 
 		subscriptionSender.setCompanyId(TestPropsValues.getCompanyId());
-		subscriptionSender.setGroupId(_group.getGroupId());
-		subscriptionSender.setMailId("test-mail-id");
-
 		subscriptionSender.setEntryURL(
 			_portalURL +
 				PropsValues.LAYOUT_FRIENDLY_URL_PRIVATE_GROUP_SERVLET_MAPPING);
+		subscriptionSender.setGroupId(_group.getGroupId());
+		subscriptionSender.setMailId("test-mail-id");
 
 		subscriptionSender.initialize();
 
@@ -152,12 +151,11 @@ public class SubscriptionSenderTest {
 		SubscriptionSender subscriptionSender = new SubscriptionSender();
 
 		subscriptionSender.setCompanyId(TestPropsValues.getCompanyId());
-		subscriptionSender.setGroupId(_group.getGroupId());
-		subscriptionSender.setMailId("test-mail-id");
-
 		subscriptionSender.setEntryURL(
 			_portalURL +
 				PropsValues.LAYOUT_FRIENDLY_URL_PRIVATE_GROUP_SERVLET_MAPPING);
+		subscriptionSender.setGroupId(_group.getGroupId());
+		subscriptionSender.setMailId("test-mail-id");
 
 		subscriptionSender.initialize();
 
@@ -243,10 +241,9 @@ public class SubscriptionSenderTest {
 		SubscriptionSender subscriptionSender = new SubscriptionSender();
 
 		subscriptionSender.setCompanyId(TestPropsValues.getCompanyId());
+		subscriptionSender.setEntryURL(_portalURL + "/test/page?with&params");
 		subscriptionSender.setGroupId(_group.getGroupId());
 		subscriptionSender.setMailId("test-mail-id");
-
-		subscriptionSender.setEntryURL(_portalURL + "/test/page?with&params");
 
 		subscriptionSender.initialize();
 
