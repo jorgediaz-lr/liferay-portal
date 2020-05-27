@@ -138,7 +138,7 @@ public class SubscriptionSenderTest {
 				"virtual", StringPool.BLANK
 			).build());
 
-		// Include a public layoutSet to test for LPS-113218
+		// Include a public layout set to test for LPS-113218
 
 		LayoutTestUtil.addLayout(_group, false);
 
