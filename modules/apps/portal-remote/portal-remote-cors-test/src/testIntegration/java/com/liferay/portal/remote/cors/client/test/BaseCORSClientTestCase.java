@@ -290,8 +290,8 @@ public abstract class BaseCORSClientTestCase {
 		}
 
 		arguments.add("-Dliferay.mode=test");
-		arguments.add("-Dsun.zip.disableMemoryMapping=true");
 		arguments.add("-Dsun.net.http.allowRestrictedHeaders=true");
+		arguments.add("-Dsun.zip.disableMemoryMapping=true");
 
 		builder.setArguments(arguments);
 
