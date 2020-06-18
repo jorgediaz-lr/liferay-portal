@@ -758,6 +758,14 @@ public class DDLRecordSetLocalServiceImpl
 			minDisplayRows, serviceContext, recordSet);
 	}
 
+	protected void addDefaultName(Map<Locale, String> nameMap) {
+		Locale locale = LocaleUtil.getSiteDefault();
+
+		if (Validator.isNull(nameMap.get(locale))) {
+			nameMap.put(locale, "Untitled Dynamic Data List");
+		}
+	}
+
 	protected DDLRecordSetVersion addRecordSetVersion(
 			long ddmStructureVersionId, User user, DDLRecordSet recordSet,
 			String version, ServiceContext serviceContext)
@@ -995,14 +1003,6 @@ public class DDLRecordSetLocalServiceImpl
 			throw new RecordSetDDMStructureIdException(
 				"No DDM structure exists with the DDM structure ID " +
 					ddmStructureId);
-		}
-	}
-
-	protected void addDefaultName(Map<Locale, String> nameMap) {
-		Locale locale = LocaleUtil.getSiteDefault();
-
-		if (Validator.isNull(nameMap.get(locale))) {
-			nameMap.put(locale, "Untitled Dynamic Data List");
 		}
 	}
 
