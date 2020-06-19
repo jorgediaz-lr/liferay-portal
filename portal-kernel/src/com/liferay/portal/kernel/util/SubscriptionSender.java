@@ -800,8 +800,7 @@ public class SubscriptionSender implements Serializable {
 				_log.info(
 					StringBundler.concat(
 						"User with email address ", emailAddress,
-						" does not exist for company ",
-						String.valueOf(companyId)));
+						" does not exist for company ", companyId));
 			}
 
 			if (bulk) {
