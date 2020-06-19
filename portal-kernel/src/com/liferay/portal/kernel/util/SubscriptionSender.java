@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.ResourceAction;
 import com.liferay.portal.kernel.model.Subscription;
 import com.liferay.portal.kernel.model.User;
@@ -46,6 +47,7 @@ import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
+import com.liferay.portal.kernel.service.LayoutSetLocalServiceUtil;
 import com.liferay.portal.kernel.service.ResourceActionLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.SubscriptionLocalServiceUtil;
@@ -67,6 +69,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.function.Function;
 
 import javax.mail.internet.InternetAddress;
@@ -313,12 +316,25 @@ public class SubscriptionSender implements Serializable {
 				secureConnection);
 
 			if (_entryURL.startsWith(portalURL)) {
-				setContextAttribute(
-					"[$PORTAL_URL$]",
-					company.getPortalURL(
-						groupId,
-						_entryURL.contains(
-							_LAYOUT_FRIENDLY_URL_PRIVATE_GROUP_SERVLET_MAPPING)));
+				if (groupId > 0) {
+					LayoutSet layoutSet =
+						LayoutSetLocalServiceUtil.getLayoutSet(
+							groupId,
+							_entryURL.contains(
+								_LAYOUT_FRIENDLY_URL_PRIVATE_GROUP_SERVLET_MAPPING));
+
+					TreeMap<String, String> virtualHostnames =
+						layoutSet.getVirtualHostnames();
+
+					if (!virtualHostnames.isEmpty()) {
+						portalURL = PortalUtil.getPortalURL(
+							virtualHostnames.firstKey(),
+							PortalUtil.getPortalServerPort(secureConnection),
+							secureConnection);
+					}
+				}
+
+				setContextAttribute("[$PORTAL_URL$]", portalURL);
 			}
 			else {
 				int endIndex = _entryURL.indexOf(
