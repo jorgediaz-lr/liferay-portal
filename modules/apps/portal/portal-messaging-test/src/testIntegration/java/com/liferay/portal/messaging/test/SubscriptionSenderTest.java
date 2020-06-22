@@ -23,7 +23,6 @@ import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutSetLocalService;
-import com.liferay.portal.kernel.test.rule.DataGuard;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.Portal;
@@ -46,7 +45,6 @@ import org.junit.runner.RunWith;
  * @author Mika Koivisto
  * @author Christopher Kian
  */
-@DataGuard(scope = DataGuard.Scope.METHOD)
 @RunWith(Arquillian.class)
 public class SubscriptionSenderTest {
 
@@ -214,7 +212,7 @@ public class SubscriptionSenderTest {
 
 		subscriptionSender.setCompanyId(TestPropsValues.getCompanyId());
 		subscriptionSender.addPersistedSubscribers(
-			Group.class.getName(), _group.getGroupId(), false);
+			Group.class.getName(), _group.getGroupId());
 
 		Assert.assertTrue(subscriptionSender.hasSubscribers());
 
