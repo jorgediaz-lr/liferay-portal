@@ -18,13 +18,18 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.layout.test.util.LayoutTestUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.exception.NoSuchLayoutSetException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.VirtualHost;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutSetLocalService;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.VirtualHostLocalService;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.SubscriptionSender;
 import com.liferay.portal.kernel.util.TreeMapBuilder;
@@ -34,6 +39,7 @@ import com.liferay.portal.util.PropsValues;
 import com.liferay.subscription.model.Subscription;
 import com.liferay.subscription.service.SubscriptionLocalService;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -64,13 +70,37 @@ public class SubscriptionSenderTest {
 			company.getVirtualHostname(), _portal.getPortalServerPort(false),
 			false);
 
-		_virtualURL = "http://virtual";
+		_virtualURL = Http.HTTP_WITH_SLASH + _VIRTUAL_HOST_NAME;
 
 		int portalServerPort = _portal.getPortalServerPort(false);
 
 		if (portalServerPort > 0) {
 			_virtualURL = StringBundler.concat(
 				_virtualURL, StringPool.COLON, portalServerPort);
+		}
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		try {
+			_layoutSetLocalService.deleteLayoutSet(
+				_group.getGroupId(), true, new ServiceContext());
+		}
+		catch (NoSuchLayoutSetException noSuchLayoutSetException) {
+		}
+
+		try {
+			_layoutSetLocalService.deleteLayoutSet(
+				_group.getGroupId(), false, new ServiceContext());
+		}
+		catch (NoSuchLayoutSetException noSuchLayoutSetException) {
+		}
+
+		VirtualHost virtualHost = _virtualHostLocalService.fetchVirtualHost(
+			_VIRTUAL_HOST_NAME);
+
+		if (virtualHost != null) {
+			_virtualHostLocalService.deleteVirtualHost(virtualHost);
 		}
 	}
 
@@ -161,6 +191,11 @@ public class SubscriptionSenderTest {
 			subscriptionSender.getContextAttribute("[$PORTAL_URL$]"));
 
 		Assert.assertEquals(_virtualURL, portalURL);
+
+		VirtualHost virtualHost = _virtualHostLocalService.getVirtualHost(
+			"publicVirtualHost");
+
+		_virtualHostLocalService.deleteVirtualHost(virtualHost);
 	}
 
 	@Test
@@ -267,6 +302,8 @@ public class SubscriptionSenderTest {
 		Assert.assertEquals(_virtualURL, portalURL);
 	}
 
+	private static final String _VIRTUAL_HOST_NAME = "virtual";
+
 	private Group _group;
 
 	@Inject
@@ -279,6 +316,9 @@ public class SubscriptionSenderTest {
 
 	@Inject
 	private SubscriptionLocalService _subscriptionLocalService;
+
+	@Inject
+	private VirtualHostLocalService _virtualHostLocalService;
 
 	private String _virtualURL;
 
