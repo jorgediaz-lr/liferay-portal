@@ -112,7 +112,7 @@ public abstract class BaseNestedFieldsSortTestCase
 		return optional.get();
 	}
 
-	protected List getDDMFieldValues(
+	protected List<?> getDDMFieldValues(
 		String fieldName, SearchResponse searchResponse) {
 
 		Stream<Document> stream = searchResponse.getDocumentsStream();
