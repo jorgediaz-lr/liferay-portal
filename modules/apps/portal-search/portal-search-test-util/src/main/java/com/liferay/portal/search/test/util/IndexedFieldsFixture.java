@@ -96,6 +96,10 @@ public class IndexedFieldsFixture {
 		}
 	}
 
+	public void populatePriority(String priority, Map<String, String> map) {
+		populatePriority(priority, map, false);
+	}
+
 	public void populatePriority(
 		String priority, Map<String, String> map,
 		boolean sourceFilteringEnabled) {
