@@ -22,6 +22,7 @@ import com.liferay.bookmarks.constants.BookmarksPortletKeys;
 import com.liferay.bookmarks.exception.EntryURLException;
 import com.liferay.bookmarks.model.BookmarksEntry;
 import com.liferay.bookmarks.model.BookmarksFolder;
+import com.liferay.bookmarks.model.BookmarksFolderConstants;
 import com.liferay.bookmarks.service.base.BookmarksEntryLocalServiceBaseImpl;
 import com.liferay.bookmarks.social.BookmarksActivityKeys;
 import com.liferay.bookmarks.util.comparator.EntryModifiedDateComparator;
@@ -706,6 +707,48 @@ public class BookmarksEntryLocalServiceImpl
 		}
 
 		return entry;
+	}
+
+	/**
+	 * @deprecated As of Mueller (7.2.x), with no direct replacement
+	 */
+	@Deprecated
+	protected long getFolder(BookmarksEntry entry, long folderId) {
+		if ((entry.getFolderId() == folderId) ||
+			(folderId == BookmarksFolderConstants.DEFAULT_PARENT_FOLDER_ID)) {
+
+			return folderId;
+		}
+
+		BookmarksFolder folder = bookmarksFolderPersistence.fetchByPrimaryKey(
+			folderId);
+
+		if ((folder != null) && (entry.getGroupId() == folder.getGroupId())) {
+			return folderId;
+		}
+
+		return entry.getFolderId();
+	}
+
+	/**
+	 * @deprecated As of Mueller (7.2.x), replaced by {@link
+	 *             #_notifySubscribers(long, BookmarksEntry, ServiceContext)}
+	 */
+	@Deprecated
+	protected void notifySubscribers(
+			long userId, BookmarksEntry entry, ServiceContext serviceContext)
+		throws PortalException {
+
+		_notifySubscribers(userId, entry, serviceContext);
+	}
+
+	/**
+	 * @deprecated As of Mueller (7.2.x), replaced by {@link
+	 * 				#_validate(String)}
+	 */
+	@Deprecated
+	protected void validate(String url) throws PortalException {
+		_validate(url);
 	}
 
 	private String _getBookmarksEntryURL(
