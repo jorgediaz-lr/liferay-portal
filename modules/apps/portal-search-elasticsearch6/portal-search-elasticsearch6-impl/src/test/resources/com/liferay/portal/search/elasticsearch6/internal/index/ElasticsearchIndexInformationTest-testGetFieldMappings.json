@@ -5,6 +5,26 @@
 				"date_detection": false,
 				"dynamic_templates": [
 					{
+						"template_ddmFields_fieldValue_Number_sortable": {
+							"path_match": "ddmFields.fieldValue*Number_sortable",
+							"mapping": {
+								"scaling_factor": 1000,
+								"store": true,
+								"type": "scaled_float"
+							}
+						}
+					},
+					{
+						"template_ddmFields_fieldValueKeyword": {
+							"path_match": "ddmFields.fieldValueKeyword*",
+							"mapping": {
+								"store": true,
+								"type": "keyword"
+							},
+							"match_mapping_type": "string"
+						}
+					},
+					{
 						"template_long_sortable": {
 							"mapping": {
 								"store": true,
@@ -554,12 +574,6 @@
 						"properties": {
 							"fieldName": {
 								"type": "keyword"
-							},
-							"fieldValueKeyword": {
-								"type": "keyword"
-							},
-							"fieldValueText": {
-								"type": "text"
 							},
 							"valueFieldName": {
 								"type": "keyword"
