@@ -126,12 +126,10 @@ public class DDMIndexerImplTest {
 
 		Map<String, String> map = _withSortableValues(
 			Collections.singletonMap(
-				"ddm__text__NNNNN__text1_ja_JP", fieldValue));
+				"ddmFields.fieldValueText_ja_JP", fieldValue));
 
 		FieldValuesAssert.assertFieldValues(
-			_replaceKeys(
-				"NNNNN", String.valueOf(ddmStructure.getStructureId()), map),
-			"ddm__text", document, fieldValue);
+			map, "ddmFields.fieldValueText", document, fieldValue);
 	}
 
 	@Test
@@ -166,12 +164,10 @@ public class DDMIndexerImplTest {
 
 		Map<String, String> map = _withSortableValues(
 			Collections.singletonMap(
-				"ddm__text__NNNNN__text1_ja_JP", fieldValue));
+				"ddmFields.fieldValueText_ja_JP", fieldValue));
 
 		FieldValuesAssert.assertFieldValues(
-			_replaceKeys(
-				"NNNNN", String.valueOf(ddmStructure.getStructureId()), map),
-			"ddm__text", document, fieldValue);
+			map, "ddmFields.fieldValueText", document, fieldValue);
 	}
 
 	@Test
@@ -212,15 +208,13 @@ public class DDMIndexerImplTest {
 
 		Map<String, String> map = _withSortableValues(
 			HashMapBuilder.put(
-				"ddm__text__NNNNN__text1_en_US", fieldValueUS
+				"ddmFields.fieldValueText_en_US", fieldValueUS
 			).put(
-				"ddm__text__NNNNN__text1_ja_JP", fieldValueJP
+				"ddmFields.fieldValueText_ja_JP", fieldValueJP
 			).build());
 
 		FieldValuesAssert.assertFieldValues(
-			_replaceKeys(
-				"NNNNN", String.valueOf(ddmStructure.getStructureId()), map),
-			"ddm__text", document, fieldValueJP);
+			map, "ddmFields.fieldValueText", document, fieldValueJP);
 	}
 
 	protected DDMFormField createDDMFormField(
@@ -330,19 +324,6 @@ public class DDMIndexerImplTest {
 		createDDMFormJSONSerializer();
 	protected final DDMIndexer ddmIndexer = createDDMIndexer();
 	protected final DocumentFixture documentFixture = new DocumentFixture();
-
-	private static Map<String, String> _replaceKeys(
-		String oldSub, String newSub, Map<String, String> map) {
-
-		Set<Map.Entry<String, String>> entrySet = map.entrySet();
-
-		Stream<Map.Entry<String, String>> entries = entrySet.stream();
-
-		return entries.collect(
-			Collectors.toMap(
-				entry -> StringUtil.replace(entry.getKey(), oldSub, newSub),
-				Map.Entry::getValue));
-	}
 
 	private static Map<String, String> _withSortableValues(
 		Map<String, String> map) {
