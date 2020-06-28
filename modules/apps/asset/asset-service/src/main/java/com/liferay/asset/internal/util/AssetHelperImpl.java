@@ -657,23 +657,7 @@ public class AssetHelperImpl implements AssetHelper {
 			String orderByType, String sortField, Locale locale)
 		throws Exception {
 
-		boolean ddmFormFieldLocalizable = true;
-		String ddmFormFieldType = sortField;
-
-		if (ddmFormFieldType.startsWith(DDMIndexer.DDM_FIELD_PREFIX)) {
-			ddmFormFieldLocalizable = _getDDMFormFieldLocalizable(sortField);
-
-			ddmFormFieldType = _getDDMFormFieldType(ddmFormFieldType);
-		}
-
-		int sortType = _getSortType(ddmFormFieldType);
-
-		Sort sort = SortFactoryUtil.getSort(
-			AssetEntry.class, sortType,
-			_getOrderByCol(
-				sortField, ddmFormFieldType, ddmFormFieldLocalizable, sortType,
-				locale),
-			!sortField.startsWith(DDMIndexer.DDM_FIELD_PREFIX), orderByType);
+		Sort sort = _getSort(orderByType, sortField, locale);
 
 		FieldSort fieldSort = _sorts.field(sort.getFieldName());
 
@@ -681,27 +665,29 @@ public class AssetHelperImpl implements AssetHelper {
 			fieldSort.setSortOrder(SortOrder.DESC);
 		}
 
-		if (sortField.startsWith(DDMIndexer.DDM_FIELD_PREFIX)) {
-			NestedSort nestedSort = _sorts.nested(DDMIndexer.DDM_FIELDS);
-
-			StringBundler sb = new StringBundler(3);
-
-			sb.append(sortField);
-
-			if (ddmFormFieldLocalizable) {
-				sb.append(StringPool.UNDERLINE);
-				sb.append(LocaleUtil.toLanguageId(locale));
-			}
-
-			nestedSort.setFilterQuery(
-				_queries.term(
-					StringBundler.concat(
-						DDMIndexer.DDM_FIELDS, StringPool.PERIOD,
-						DDMIndexer.DDM_FIELD_NAME),
-					sb.toString()));
-
-			fieldSort.setNestedSort(nestedSort);
+		if (!sortField.startsWith(DDMIndexer.DDM_FIELD_PREFIX)) {
+			return fieldSort;
 		}
+
+		NestedSort nestedSort = _sorts.nested(DDMIndexer.DDM_FIELDS);
+
+		StringBundler sb = new StringBundler(3);
+
+		sb.append(sortField);
+
+		if (_getDDMFormFieldLocalizable(sortField)) {
+			sb.append(StringPool.UNDERLINE);
+			sb.append(LocaleUtil.toLanguageId(locale));
+		}
+
+		nestedSort.setFilterQuery(
+			_queries.term(
+				StringBundler.concat(
+					DDMIndexer.DDM_FIELDS, StringPool.PERIOD,
+					DDMIndexer.DDM_FIELD_NAME),
+				sb.toString()));
+
+		fieldSort.setNestedSort(nestedSort);
 
 		return fieldSort;
 	}
@@ -718,6 +704,28 @@ public class AssetHelperImpl implements AssetHelper {
 			locale);
 
 		return new com.liferay.portal.search.sort.Sort[] {sort1, sort2};
+	}
+
+	private Sort _getSort(String orderByType, String sortField, Locale locale)
+		throws Exception {
+
+		boolean ddmFormFieldLocalizable = true;
+		String ddmFormFieldType = sortField;
+
+		if (ddmFormFieldType.startsWith(DDMIndexer.DDM_FIELD_PREFIX)) {
+			ddmFormFieldLocalizable = _getDDMFormFieldLocalizable(sortField);
+
+			ddmFormFieldType = _getDDMFormFieldType(ddmFormFieldType);
+		}
+
+		int sortType = _getSortType(ddmFormFieldType);
+
+		return SortFactoryUtil.getSort(
+			AssetEntry.class, sortType,
+			_getOrderByCol(
+				sortField, ddmFormFieldType, ddmFormFieldLocalizable, sortType,
+				locale),
+			!sortField.startsWith(DDMIndexer.DDM_FIELD_PREFIX), orderByType);
 	}
 
 	private int _getSortType(String fieldType) {
