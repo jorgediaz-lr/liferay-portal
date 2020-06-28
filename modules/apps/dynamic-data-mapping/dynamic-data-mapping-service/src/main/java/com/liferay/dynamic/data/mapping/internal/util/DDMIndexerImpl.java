@@ -27,7 +27,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
@@ -78,6 +77,8 @@ public class DDMIndexerImpl implements DDMIndexer {
 
 		if (fieldArray == null) {
 			fieldArray = new FieldArray(DDM_FIELDS);
+
+			document.add(fieldArray);
 		}
 
 		Set<Locale> locales = ddmFormValues.getAvailableLocales();
@@ -94,7 +95,6 @@ public class DDMIndexerImpl implements DDMIndexer {
 				}
 
 				String name = null;
-				String type = field.getType();
 				Serializable value = null;
 
 				if (GetterUtil.getBoolean(
@@ -108,7 +108,7 @@ public class DDMIndexerImpl implements DDMIndexer {
 						value = field.getValue(locale);
 
 						fieldArray.addField(
-							createField(indexType, name, type, value, locale));
+							createField(field, name, value, indexType, locale));
 					}
 				}
 				else {
@@ -118,7 +118,7 @@ public class DDMIndexerImpl implements DDMIndexer {
 					value = field.getValue(ddmFormValues.getDefaultLocale());
 
 					fieldArray.addField(
-						createField(indexType, name, type, value, null));
+						createField(field, name, value, indexType, null));
 				}
 			}
 			catch (Exception exception) {
@@ -127,8 +127,6 @@ public class DDMIndexerImpl implements DDMIndexer {
 				}
 			}
 		}
-
-		document.add(fieldArray);
 	}
 
 	@Override
@@ -336,55 +334,52 @@ public class DDMIndexerImpl implements DDMIndexer {
 		return valueFieldName;
 	}
 
-	protected Document createDocument(
-			String indexType, String type, Serializable value, Locale locale)
-		throws JSONException {
-
-		Document document = new DocumentImpl();
-
-		String valueFieldName = getValueFieldName(indexType, locale);
+	protected void addToDocument(
+			Document document, Field field, String name, Serializable value,
+			String indexType)
+		throws PortalException {
 
 		if (value instanceof BigDecimal) {
-			document.addNumberSortable(valueFieldName, (BigDecimal)value);
+			document.addNumberSortable(name, (BigDecimal)value);
 		}
 		else if (value instanceof BigDecimal[]) {
-			document.addNumberSortable(valueFieldName, (BigDecimal[])value);
+			document.addNumberSortable(name, (BigDecimal[])value);
 		}
 		else if (value instanceof Boolean) {
-			document.addKeywordSortable(valueFieldName, (Boolean)value);
+			document.addKeywordSortable(name, (Boolean)value);
 		}
 		else if (value instanceof Boolean[]) {
-			document.addKeywordSortable(valueFieldName, (Boolean[])value);
+			document.addKeywordSortable(name, (Boolean[])value);
 		}
 		else if (value instanceof Date) {
-			document.addDateSortable(valueFieldName, (Date)value);
+			document.addDateSortable(name, (Date)value);
 		}
 		else if (value instanceof Date[]) {
-			document.addDateSortable(valueFieldName, (Date[])value);
+			document.addDateSortable(name, (Date[])value);
 		}
 		else if (value instanceof Double) {
-			document.addNumberSortable(valueFieldName, (Double)value);
+			document.addNumberSortable(name, (Double)value);
 		}
 		else if (value instanceof Double[]) {
-			document.addNumberSortable(valueFieldName, (Double[])value);
+			document.addNumberSortable(name, (Double[])value);
 		}
 		else if (value instanceof Integer) {
-			document.addNumberSortable(valueFieldName, (Integer)value);
+			document.addNumberSortable(name, (Integer)value);
 		}
 		else if (value instanceof Integer[]) {
-			document.addNumberSortable(valueFieldName, (Integer[])value);
+			document.addNumberSortable(name, (Integer[])value);
 		}
 		else if (value instanceof Long) {
-			document.addNumberSortable(valueFieldName, (Long)value);
+			document.addNumberSortable(name, (Long)value);
 		}
 		else if (value instanceof Long[]) {
-			document.addNumberSortable(valueFieldName, (Long[])value);
+			document.addNumberSortable(name, (Long[])value);
 		}
 		else if (value instanceof Float) {
-			document.addNumberSortable(valueFieldName, (Float)value);
+			document.addNumberSortable(name, (Float)value);
 		}
 		else if (value instanceof Float[]) {
-			document.addNumberSortable(valueFieldName, (Float[])value);
+			document.addNumberSortable(name, (Float[])value);
 		}
 		else if (value instanceof Number[]) {
 			Number[] numbers = (Number[])value;
@@ -395,20 +390,22 @@ public class DDMIndexerImpl implements DDMIndexer {
 				doubles[i] = numbers[i].doubleValue();
 			}
 
-			document.addNumberSortable(valueFieldName, doubles);
+			document.addNumberSortable(name, doubles);
 		}
 		else if (value instanceof Object[]) {
 			String[] valuesString = ArrayUtil.toStringArray((Object[])value);
 
 			if (indexType.equals("keyword")) {
-				document.addKeywordSortable(valueFieldName, valuesString);
+				document.addKeywordSortable(name, valuesString);
 			}
 			else {
-				document.addTextSortable(valueFieldName, valuesString);
+				document.addTextSortable(name, valuesString);
 			}
 		}
 		else {
 			String valueString = String.valueOf(value);
+
+			String type = field.getType();
 
 			if (type.equals(DDMFormFieldType.GEOLOCATION)) {
 				JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
@@ -418,7 +415,7 @@ public class DDMIndexerImpl implements DDMIndexer {
 				double longitude = jsonObject.getDouble("longitude", 0);
 
 				document.addGeoLocation(
-					valueFieldName.concat("_geolocation"), latitude, longitude);
+					name.concat("_geolocation"), latitude, longitude);
 			}
 			else if (type.equals(DDMImpl.TYPE_SELECT)) {
 				JSONArray jsonArray = JSONFactoryUtil.createJSONArray(
@@ -426,7 +423,7 @@ public class DDMIndexerImpl implements DDMIndexer {
 
 				String[] stringArray = ArrayUtil.toStringArray(jsonArray);
 
-				document.addKeywordSortable(valueFieldName, stringArray);
+				document.addKeywordSortable(name, stringArray);
 			}
 			else {
 				if (type.equals(DDMImpl.TYPE_DDM_TEXT_HTML)) {
@@ -434,23 +431,29 @@ public class DDMIndexerImpl implements DDMIndexer {
 				}
 
 				if (indexType.equals("keyword")) {
-					document.addKeywordSortable(valueFieldName, valueString);
+					document.addKeywordSortable(name, valueString);
 				}
 				else {
-					document.addTextSortable(valueFieldName, valueString);
+					document.addTextSortable(name, valueString);
 				}
 			}
 		}
-
-		return document;
 	}
 
 	protected com.liferay.portal.kernel.search.Field createField(
-			String indexType, String name, String type, Serializable value,
-			Locale locale)
+			Field ddmStructureField, String name, Serializable value,
+			String indexType, Locale locale)
 		throws PortalException {
 
-		Document document = createDocument(indexType, type, value, locale);
+		Document document = new DocumentImpl();
+
+		String valueFieldName = getValueFieldName(indexType, locale);
+
+		addToDocument(
+			document, ddmStructureField, valueFieldName, value, indexType);
+
+		Map<String, com.liferay.portal.kernel.search.Field> fields =
+			document.getFields();
 
 		com.liferay.portal.kernel.search.Field ddmField =
 			new com.liferay.portal.kernel.search.Field("");
@@ -458,29 +461,12 @@ public class DDMIndexerImpl implements DDMIndexer {
 		ddmField.addField(
 			new com.liferay.portal.kernel.search.Field(DDM_FIELD_NAME, name));
 
-		Map<String, com.liferay.portal.kernel.search.Field> fields =
-			document.getFields();
-
-		String valueFieldName = null;
+		ddmField.addField(
+			new com.liferay.portal.kernel.search.Field(
+				DDM_VALUE_FIELD_NAME, valueFieldName));
 
 		for (com.liferay.portal.kernel.search.Field field : fields.values()) {
 			ddmField.addField(field);
-
-			String fieldName = field.getName();
-
-			if ((valueFieldName == null) &&
-				!fieldName.contains(
-					com.liferay.portal.kernel.search.Field.
-						SORTABLE_FIELD_SUFFIX)) {
-
-				valueFieldName = fieldName;
-			}
-		}
-
-		if (valueFieldName != null) {
-			ddmField.addField(
-				new com.liferay.portal.kernel.search.Field(
-					DDM_VALUE_FIELD_NAME, valueFieldName));
 		}
 
 		return ddmField;
