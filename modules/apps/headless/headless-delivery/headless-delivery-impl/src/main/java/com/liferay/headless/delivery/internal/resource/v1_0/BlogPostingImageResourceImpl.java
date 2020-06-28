@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.odata.entity.EntityModel;
+import com.liferay.portal.vulcan.aggregation.Aggregation;
 import com.liferay.portal.vulcan.multipart.BinaryFile;
 import com.liferay.portal.vulcan.multipart.MultipartBody;
 import com.liferay.portal.vulcan.pagination.Page;
@@ -37,7 +38,10 @@ import com.liferay.portal.vulcan.pagination.Pagination;
 import com.liferay.portal.vulcan.resource.EntityModelResource;
 import com.liferay.portal.vulcan.util.SearchUtil;
 
+import java.util.Collections;
 import java.util.Optional;
+
+import javax.validation.constraints.NotNull;
 
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.core.MultivaluedMap;
@@ -81,26 +85,28 @@ public class BlogPostingImageResourceImpl
 
 	@Override
 	public Page<BlogPostingImage> getSiteBlogPostingImagesPage(
-			Long siteId, String search, Filter filter, Pagination pagination,
-			Sort[] sorts)
+			@NotNull Long siteId, String search, Aggregation aggregation,
+			Filter filter, Pagination pagination, Sort[] sorts)
 		throws Exception {
 
 		Folder folder = _blogsEntryService.addAttachmentsFolder(siteId);
 
 		return SearchUtil.search(
+			Collections.emptyMap(),
 			booleanQuery -> {
 			},
 			filter, DLFileEntry.class, search, pagination,
 			queryConfig -> queryConfig.setSelectedFieldNames(
 				Field.ENTRY_CLASS_PK),
 			searchContext -> {
+				searchContext.addVulcanAggregation(aggregation);
 				searchContext.setCompanyId(contextCompany.getCompanyId());
 				searchContext.setFolderIds(new long[] {folder.getFolderId()});
 			},
+			sorts,
 			document -> _toBlogPostingImage(
 				_dlAppService.getFileEntry(
-					GetterUtil.getLong(document.get(Field.ENTRY_CLASS_PK)))),
-			sorts);
+					GetterUtil.getLong(document.get(Field.ENTRY_CLASS_PK)))));
 	}
 
 	@Override
