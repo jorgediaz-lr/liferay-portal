@@ -2401,6 +2401,12 @@ paths:
                       format: int64
                       type: integer
                 - in: query
+                  name: aggregationTerms
+                  schema:
+                      items:
+                          type: string
+                      type: array
+                - in: query
                   name: filter
                   schema:
                       type: string
@@ -2660,6 +2666,12 @@ paths:
                       format: int64
                       type: integer
                 - in: query
+                  name: aggregationTerms
+                  schema:
+                      items:
+                          type: string
+                      type: array
+                - in: query
                   name: filter
                   schema:
                       type: string
@@ -2805,6 +2817,12 @@ paths:
                   schema:
                       format: int64
                       type: integer
+                - in: query
+                  name: aggregationTerms
+                  schema:
+                      items:
+                          type: string
+                      type: array
                 - in: query
                   name: filter
                   schema:
@@ -2964,6 +2982,12 @@ paths:
                       format: int64
                       type: integer
                 - in: query
+                  name: aggregationTerms
+                  schema:
+                      items:
+                          type: string
+                      type: array
+                - in: query
                   name: flatten
                   schema:
                       type: boolean
@@ -3087,6 +3111,12 @@ paths:
                   schema:
                       format: int64
                       type: integer
+                - in: query
+                  name: aggregationTerms
+                  schema:
+                      items:
+                          type: string
+                      type: array
                 - in: query
                   name: flatten
                   schema:
@@ -3285,6 +3315,12 @@ paths:
                   schema:
                       format: int64
                       type: integer
+                - in: query
+                  name: aggregationTerms
+                  schema:
+                      items:
+                          type: string
+                      type: array
                 - in: query
                   name: filter
                   schema:
@@ -3784,6 +3820,12 @@ paths:
                       format: int64
                       type: integer
                 - in: query
+                  name: aggregationTerms
+                  schema:
+                      items:
+                          type: string
+                      type: array
+                - in: query
                   name: filter
                   schema:
                       type: string
@@ -4013,6 +4055,12 @@ paths:
                   schema:
                       format: int64
                       type: integer
+                - in: query
+                  name: aggregationTerms
+                  schema:
+                      items:
+                          type: string
+                      type: array
                 - in: query
                   name: flatten
                   schema:
@@ -4520,6 +4568,12 @@ paths:
                       format: int64
                       type: integer
                 - in: query
+                  name: aggregationTerms
+                  schema:
+                      items:
+                          type: string
+                      type: array
+                - in: query
                   name: filter
                   schema:
                       type: string
@@ -4705,6 +4759,12 @@ paths:
                       format: int64
                       type: integer
                 - in: query
+                  name: aggregationTerms
+                  schema:
+                      items:
+                          type: string
+                      type: array
+                - in: query
                   name: filter
                   schema:
                       type: string
@@ -4820,6 +4880,12 @@ paths:
                   schema:
                       format: int64
                       type: integer
+                - in: query
+                  name: aggregationTerms
+                  schema:
+                      items:
+                          type: string
+                      type: array
                 - in: query
                   name: filter
                   schema:
@@ -5070,6 +5136,12 @@ paths:
                       format: int64
                       type: integer
                 - in: query
+                  name: aggregationTerms
+                  schema:
+                      items:
+                          type: string
+                      type: array
+                - in: query
                   name: filter
                   schema:
                       type: string
@@ -5291,6 +5363,12 @@ paths:
                       format: int64
                       type: integer
                 - in: query
+                  name: aggregationTerms
+                  schema:
+                      items:
+                          type: string
+                      type: array
+                - in: query
                   name: filter
                   schema:
                       type: string
@@ -5373,6 +5451,12 @@ paths:
                   schema:
                       format: int64
                       type: integer
+                - in: query
+                  name: aggregationTerms
+                  schema:
+                      items:
+                          type: string
+                      type: array
                 - in: query
                   name: filter
                   schema:
@@ -5486,6 +5570,12 @@ paths:
                   schema:
                       format: int64
                       type: integer
+                - in: query
+                  name: aggregationTerms
+                  schema:
+                      items:
+                          type: string
+                      type: array
                 - in: query
                   name: filter
                   schema:
@@ -5617,6 +5707,12 @@ paths:
                       format: int64
                       type: integer
                 - in: query
+                  name: aggregationTerms
+                  schema:
+                      items:
+                          type: string
+                      type: array
+                - in: query
                   name: filter
                   schema:
                       type: string
@@ -5665,6 +5761,12 @@ paths:
                   schema:
                       format: int64
                       type: integer
+                - in: query
+                  name: aggregationTerms
+                  schema:
+                      items:
+                          type: string
+                      type: array
                 - in: query
                   name: flatten
                   schema:
@@ -5749,6 +5851,12 @@ paths:
                   schema:
                       format: int64
                       type: integer
+                - in: query
+                  name: aggregationTerms
+                  schema:
+                      items:
+                          type: string
+                      type: array
                 - in: query
                   name: flatten
                   schema:
@@ -5837,6 +5945,12 @@ paths:
                   schema:
                       format: int64
                       type: integer
+                - in: query
+                  name: aggregationTerms
+                  schema:
+                      items:
+                          type: string
+                      type: array
                 - in: query
                   name: flatten
                   schema:
@@ -6025,6 +6139,12 @@ paths:
                       format: int64
                       type: integer
                 - in: query
+                  name: aggregationTerms
+                  schema:
+                      items:
+                          type: string
+                      type: array
+                - in: query
                   name: flatten
                   schema:
                       type: boolean
@@ -6077,6 +6197,12 @@ paths:
                   schema:
                       format: int64
                       type: integer
+                - in: query
+                  name: aggregationTerms
+                  schema:
+                      items:
+                          type: string
+                      type: array
                 - in: query
                   name: flatten
                   schema:
@@ -6162,6 +6288,12 @@ paths:
                       format: int64
                       type: integer
                 - in: query
+                  name: aggregationTerms
+                  schema:
+                      items:
+                          type: string
+                      type: array
+                - in: query
                   name: flatten
                   schema:
                       type: boolean
@@ -6246,6 +6378,12 @@ paths:
                       format: int64
                       type: integer
                 - in: query
+                  name: aggregationTerms
+                  schema:
+                      items:
+                          type: string
+                      type: array
+                - in: query
                   name: flatten
                   schema:
                       type: boolean
@@ -6329,6 +6467,12 @@ paths:
                   schema:
                       format: int64
                       type: integer
+                - in: query
+                  name: aggregationTerms
+                  schema:
+                      items:
+                          type: string
+                      type: array
                 - in: query
                   name: flatten
                   schema:
@@ -6488,6 +6632,12 @@ paths:
                       format: int64
                       type: integer
                 - in: query
+                  name: aggregationTerms
+                  schema:
+                      items:
+                          type: string
+                      type: array
+                - in: query
                   name: filter
                   schema:
                       type: string
@@ -6565,6 +6715,12 @@ paths:
                   schema:
                       format: int64
                       type: integer
+                - in: query
+                  name: aggregationTerms
+                  schema:
+                      items:
+                          type: string
+                      type: array
                 - in: query
                   name: filter
                   schema:
@@ -6750,6 +6906,12 @@ paths:
                   schema:
                       format: int64
                       type: integer
+                - in: query
+                  name: aggregationTerms
+                  schema:
+                      items:
+                          type: string
+                      type: array
                 - in: query
                   name: flatten
                   schema:
@@ -7031,6 +7193,12 @@ paths:
                   schema:
                       format: int64
                       type: integer
+                - in: query
+                  name: aggregationTerms
+                  schema:
+                      items:
+                          type: string
+                      type: array
                 - in: query
                   name: filter
                   schema:
@@ -7357,6 +7525,12 @@ paths:
                   schema:
                       format: int64
                       type: integer
+                - in: query
+                  name: aggregationTerms
+                  schema:
+                      items:
+                          type: string
+                      type: array
                 - in: query
                   name: filter
                   schema:
