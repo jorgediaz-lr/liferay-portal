@@ -606,10 +606,19 @@ public class AssetHelperImpl implements AssetHelper {
 		if (sortField.startsWith(DDMIndexer.DDM_FIELD_PREFIX)) {
 			StringBundler sb = new StringBundler(5);
 
-			sb.append(DDMIndexer.DDM_FIELDS);
-			sb.append(StringPool.PERIOD);
+			if (_ddmIndexer.isLegacyDDMIndexFieldsEnabled()) {
+				sb.append(sortField);
+				sb.append(StringPool.UNDERLINE);
 
-			try {
+				if (fieldLocalizable) {
+					sb.append(LocaleUtil.toLanguageId(locale));
+					sb.append(StringPool.UNDERLINE);
+				}
+			}
+			else {
+				sb.append(DDMIndexer.DDM_FIELDS);
+				sb.append(StringPool.PERIOD);
+
 				String indexType =
 					sortField.split(DDMIndexer.DDM_FIELD_SEPARATOR)[1];
 
@@ -621,11 +630,6 @@ public class AssetHelperImpl implements AssetHelper {
 					sb.append(_ddmIndexer.getValueFieldName(indexType));
 					sb.append(StringPool.UNDERLINE);
 				}
-			}
-			catch (Exception exception) {
-				_log.error("Unable to sort assets", exception);
-
-				throw exception;
 			}
 
 			String suffix = "String";
@@ -665,7 +669,9 @@ public class AssetHelperImpl implements AssetHelper {
 			fieldSort.setSortOrder(SortOrder.DESC);
 		}
 
-		if (!sortField.startsWith(DDMIndexer.DDM_FIELD_PREFIX)) {
+		if (!sortField.startsWith(DDMIndexer.DDM_FIELD_PREFIX) ||
+			_ddmIndexer.isLegacyDDMIndexFieldsEnabled()) {
+
 			return fieldSort;
 		}
 
