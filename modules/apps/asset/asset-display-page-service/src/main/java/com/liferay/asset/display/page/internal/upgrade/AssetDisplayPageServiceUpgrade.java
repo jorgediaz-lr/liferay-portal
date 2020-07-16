@@ -20,7 +20,6 @@ import com.liferay.asset.display.page.internal.upgrade.v2_1_1.UpgradeAssetDispla
 import com.liferay.asset.display.page.internal.upgrade.v2_2_1.UpgradeAssetDisplayLayoutFriendlyURLPrivateLayout;
 import com.liferay.asset.display.page.internal.upgrade.v2_2_2.UpgradeAssetDisplayPageEntry;
 import com.liferay.asset.kernel.service.AssetEntryLocalService;
-import com.liferay.counter.kernel.service.CounterLocalService;
 import com.liferay.layout.page.template.service.LayoutPageTemplateEntryLocalService;
 import com.liferay.layout.page.template.service.LayoutPageTemplateEntryService;
 import com.liferay.portal.kernel.service.LayoutLocalService;
@@ -72,16 +71,11 @@ public class AssetDisplayPageServiceUpgrade implements UpgradeStepRegistrator {
 			"2.2.0", "2.2.1",
 			new UpgradeAssetDisplayLayoutFriendlyURLPrivateLayout());
 
-		registry.register(
-			"2.2.1", "2.2.2",
-			new UpgradeAssetDisplayPageEntry(_counterLocalService));
+		registry.register("2.2.1", "2.2.2", new UpgradeAssetDisplayPageEntry());
 	}
 
 	@Reference
 	private AssetEntryLocalService _assetEntryLocalService;
-
-	@Reference
-	private CounterLocalService _counterLocalService;
 
 	@Reference
 	private LayoutLocalService _layoutLocalService;
