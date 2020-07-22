@@ -183,7 +183,7 @@ public class MockLiferayPortletActionResponse
 
 	@Override
 	public ResourceURL createResourceURL() {
-		return null;
+		return new MockLiferayPortletURL();
 	}
 
 	@Override
