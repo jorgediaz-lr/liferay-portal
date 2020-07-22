@@ -12,6 +12,7 @@
  * details.
  */
 
+import {sub} from 'dynamic-data-mapping-form-builder/js/util/strings.es';
 import {debounce} from 'frontend-js-web';
 import dom from 'metal-dom';
 
@@ -309,21 +310,42 @@ export default Component => {
 			const {pages} = this;
 			const visitor = new PagesVisitor(pages);
 
-			this.setState({
-				pages: visitor.mapFields(
-					(
-						field,
-						fieldIndex,
-						columnIndex,
-						rowIndex,
-						currentPageIndex
-					) => {
-						return {
-							...field,
-							displayErrors: currentPageIndex === pageIndex
-						};
+			let firstInvalidFieldLabel = null;
+
+			const updatedPages = visitor.mapFields(
+				(
+					field,
+					fieldIndex,
+					columnIndex,
+					rowIndex,
+					currentPageIndex
+				) => {
+					const displayErrors = currentPageIndex === pageIndex;
+
+					if (
+						displayErrors &&
+						field.errorMessage != undefined &&
+						field.errorMessage != '' &&
+						!field.valid &&
+						firstInvalidFieldLabel == null
+					) {
+						firstInvalidFieldLabel = field.label;
 					}
-				)
+
+					return {
+						...field,
+						displayErrors
+					};
+				}
+			);
+
+			this.setState({
+				forceAriaUpdate: Date.now(),
+				invalidFormMessage: sub(
+					Liferay.Language.get('invalid-form-check-field-x'),
+					[firstInvalidFieldLabel]
+				),
+				pages: updatedPages
 			});
 		}
 

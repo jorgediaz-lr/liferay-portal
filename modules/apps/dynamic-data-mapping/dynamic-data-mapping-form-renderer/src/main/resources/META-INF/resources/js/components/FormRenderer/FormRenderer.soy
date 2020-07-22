@@ -16,6 +16,8 @@
 	{@param? showSubmitButton: bool}
 	{@param? strings: map<string, string>}
 	{@param? submitLabel: string}
+	{@param? invalidFormMessage: string}
+	{@param? forceAriaUpdate: number}
 
 	{if $displayable}
 		{let $currentPaginationMode: $paginationMode ?: 'wizard' /}
@@ -31,6 +33,15 @@
 		{/let}
 
 		<div class="{$classes}">
+			{if $invalidFormMessage}
+				<span aria-atomic="true" aria-live="polite" aria-hidden="false" hidden>
+				{$invalidFormMessage}
+					<span aria-hidden="true">
+						{$forceAriaUpdate}
+					</span>
+				</span>
+			{/if}
+
 			{foreach $page in $pages}
 				{call PageRenderer.render}
 					{param activePage: $activePage /}
@@ -54,6 +65,7 @@
 					{param strings: $strings /}
 					{param submitLabel: $submitLabel ?: 'submit' /}
 					{param total: $total /}
+					{param invalidFormMessage: $invalidFormMessage /}
 				{/call}
 			{/foreach}
 		</div>
