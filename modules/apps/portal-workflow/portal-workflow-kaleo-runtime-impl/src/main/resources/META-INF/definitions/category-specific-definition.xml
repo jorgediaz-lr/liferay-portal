@@ -8,35 +8,6 @@
 	<name>Category Specific Approval</name>
 	<description>A single approver can approve a workflow content.</description>
 	<version>1</version>
-	<state>
-		<name>created</name>
-		<metadata>
-			<![CDATA[
-				{
-					"transitions": {
-						"Determine Branch": {
-							"xy": [
-								-40,
-								6
-							]
-						}
-					},
-					"xy": [
-						60,
-						45
-					]
-				}
-			]]>
-		</metadata>
-		<initial>true</initial>
-		<transitions>
-			<transition>
-				<name>Determine Branch</name>
-				<target>determine-branch</target>
-				<default>true</default>
-			</transition>
-		</transitions>
-	</state>
 	<condition>
 		<name>determine-branch</name>
 		<metadata>
@@ -95,7 +66,7 @@
 			<transition>
 				<name>Legal Review</name>
 				<target>legal-review</target>
-				<default>false</default>
+				<default>true</default>
 			</transition>
 			<transition>
 				<name>Content Review</name>
@@ -104,6 +75,64 @@
 			</transition>
 		</transitions>
 	</condition>
+	<state>
+		<name>created</name>
+		<metadata>
+			<![CDATA[
+				{
+					"transitions": {
+						"Determine Branch": {
+							"xy": [
+								-40,
+								6
+							]
+						}
+					},
+					"xy": [
+						60,
+						45
+					]
+				}
+			]]>
+		</metadata>
+		<initial>true</initial>
+		<transitions>
+			<transition>
+				<name>Determine Branch</name>
+				<target>determine-branch</target>
+				<default>true</default>
+			</transition>
+		</transitions>
+	</state>
+	<state>
+		<name>approved</name>
+		<metadata>
+			<![CDATA[
+				{
+					"terminal": true,
+					"xy": [
+						680,
+						295
+					]
+				}
+			]]>
+		</metadata>
+		<actions>
+			<action>
+				<name>approve</name>
+				<script>
+					<![CDATA[
+						import com.liferay.portal.kernel.workflow.WorkflowStatusManagerUtil;
+						import com.liferay.portal.kernel.workflow.WorkflowConstants;
+
+						WorkflowStatusManagerUtil.updateStatus(WorkflowConstants.getLabelStatus("approved"), workflowContext);
+					]]>
+				</script>
+				<script-language>groovy</script-language>
+				<execution-type>onEntry</execution-type>
+			</action>
+		</actions>
+	</state>
 	<task>
 		<name>update</name>
 		<metadata>
@@ -119,7 +148,9 @@
 		<actions>
 			<notification>
 				<name>Creator Modification Notification</name>
-				<template>Your submission was rejected by a reviewer, please modify and resubmit.</template>
+				<template>
+					<![CDATA[Your submission was rejected by a reviewer, please modify and resubmit.]]>
+				</template>
 				<template-language>text</template-language>
 				<notification-type>email</notification-type>
 				<notification-type>user-notification</notification-type>
@@ -152,7 +183,9 @@
 		<actions>
 			<notification>
 				<name>Review Notification</name>
-				<template>You have a new submission waiting for your review in the workflow.</template>
+				<template>
+					<![CDATA[You have a new submission waiting for your review in the workflow.]]>
+				</template>
 				<template-language>text</template-language>
 				<notification-type>email</notification-type>
 				<notification-type>user-notification</notification-type>
@@ -206,7 +239,9 @@
 				<timer-actions>
 					<timer-notification>
 						<name></name>
-						<template></template>
+						<template>
+							<![CDATA[]]>
+						</template>
 						<template-language>text</template-language>
 						<notification-type>im</notification-type>
 					</timer-notification>
@@ -241,7 +276,9 @@
 		<actions>
 			<notification>
 				<name>Review Notification</name>
-				<template>You have a new submission waiting for your review in the workflow.</template>
+				<template>
+					<![CDATA[You have a new submission waiting for your review in the workflow.]]>
+				</template>
 				<template-language>text</template-language>
 				<notification-type>email</notification-type>
 				<notification-type>user-notification</notification-type>
@@ -297,27 +334,4 @@
 			</transition>
 		</transitions>
 	</task>
-	<state>
-		<name>approved</name>
-		<metadata>
-			<![CDATA[
-				{"terminal":true,"xy":[680,295]}
-			]]>
-		</metadata>
-		<actions>
-			<action>
-				<name>approve</name>
-				<script>
-					<![CDATA[
-						import com.liferay.portal.kernel.workflow.WorkflowStatusManagerUtil;
-						import com.liferay.portal.kernel.workflow.WorkflowConstants;
-
-						WorkflowStatusManagerUtil.updateStatus(WorkflowConstants.getLabelStatus("approved"), workflowContext);
-					]]>
-				</script>
-				<script-language>groovy</script-language>
-				<execution-type>onEntry</execution-type>
-			</action>
-		</actions>
-	</state>
 </workflow-definition>

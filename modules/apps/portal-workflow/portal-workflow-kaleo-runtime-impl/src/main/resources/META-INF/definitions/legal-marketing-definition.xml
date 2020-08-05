@@ -37,6 +37,35 @@
 			</transition>
 		</transitions>
 	</state>
+	<state>
+		<name>approved</name>
+		<metadata>
+			<![CDATA[
+				{
+					"terminal": true,
+					"xy": [
+						540,
+						285
+					]
+				}
+			]]>
+		</metadata>
+		<actions>
+			<action>
+				<name>approve</name>
+				<script>
+					<![CDATA[
+						import com.liferay.portal.kernel.workflow.WorkflowStatusManagerUtil;
+						import com.liferay.portal.kernel.workflow.WorkflowConstants;
+
+						WorkflowStatusManagerUtil.updateStatus(WorkflowConstants.getLabelStatus("approved"), workflowContext);
+					]]>
+				</script>
+				<script-language>groovy</script-language>
+				<execution-type>onEntry</execution-type>
+			</action>
+		</actions>
+	</state>
 	<task>
 		<name>update</name>
 		<metadata>
@@ -66,7 +95,9 @@
 		<actions>
 			<notification>
 				<name>Creator Modification Notification</name>
-				<template>Your asset was rejected by a reviewer, please modify and resubmit.</template>
+				<template>
+					<![CDATA[Your asset was rejected by a reviewer, please modify and resubmit.]]>
+				</template>
 				<template-language>text</template-language>
 				<notification-type>email</notification-type>
 				<notification-type>user-notification</notification-type>
@@ -113,7 +144,9 @@
 		<actions>
 			<notification>
 				<name>Market Content Review Notification</name>
-				<template>You have a new asset waiting for your review in the workflow.</template>
+				<template>
+					<![CDATA[You have a new asset waiting for your review in the workflow.]]>
+				</template>
 				<template-language>text</template-language>
 				<notification-type>email</notification-type>
 				<notification-type>user-notification</notification-type>
@@ -184,7 +217,9 @@
 		<actions>
 			<notification>
 				<name>Legal Content Review Notification</name>
-				<template>You have a new asset waiting for your review in the workflow.</template>
+				<template>
+					<![CDATA[You have a new asset waiting for your review in the workflow.]]>
+				</template>
 				<template-language>text</template-language>
 				<notification-type>email</notification-type>
 				<notification-type>user-notification</notification-type>
@@ -240,27 +275,4 @@
 			</transition>
 		</transitions>
 	</task>
-	<state>
-		<name>approved</name>
-		<metadata>
-			<![CDATA[
-				{"terminal":true,"xy":[540,285]}
-			]]>
-		</metadata>
-		<actions>
-			<action>
-				<name>approve</name>
-				<script>
-					<![CDATA[
-						import com.liferay.portal.kernel.workflow.WorkflowStatusManagerUtil;
-						import com.liferay.portal.kernel.workflow.WorkflowConstants;
-
-						WorkflowStatusManagerUtil.updateStatus(WorkflowConstants.getLabelStatus("approved"), workflowContext);
-					]]>
-				</script>
-				<script-language>groovy</script-language>
-				<execution-type>onEntry</execution-type>
-			</action>
-		</actions>
-	</state>
 </workflow-definition>
