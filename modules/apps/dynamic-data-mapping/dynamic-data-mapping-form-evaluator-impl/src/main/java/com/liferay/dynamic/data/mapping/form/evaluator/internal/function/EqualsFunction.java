@@ -49,11 +49,11 @@ public class EqualsFunction
 		else if (object instanceof JSONArray) {
 			JSONArray jsonArray = (JSONArray)object;
 
-			String[] stringArray = ArrayUtil.toStringArray(jsonArray);
+			String[] strings = ArrayUtil.toStringArray(jsonArray);
 
-			Arrays.sort(stringArray);
+			Arrays.sort(strings);
 
-			return StringUtil.merge(stringArray);
+			return StringUtil.merge(strings);
 		}
 
 		return object;
