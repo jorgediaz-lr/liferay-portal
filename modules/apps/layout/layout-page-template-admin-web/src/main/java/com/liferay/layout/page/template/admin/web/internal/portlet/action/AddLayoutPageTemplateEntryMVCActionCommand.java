@@ -22,6 +22,8 @@ import com.liferay.layout.page.template.service.LayoutPageTemplateEntryService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
@@ -101,6 +103,10 @@ public class AddLayoutPageTemplateEntryMVCActionCommand
 			}
 		}
 		catch (PortalException portalException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(portalException, portalException);
+			}
+
 			SessionErrors.add(
 				actionRequest, "layoutPageTemplateEntryNameInvalid");
 
@@ -142,6 +148,9 @@ public class AddLayoutPageTemplateEntryMVCActionCommand
 
 		return _http.setParameter(layoutFullURL, "p_l_mode", Constants.EDIT);
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		AddLayoutPageTemplateEntryMVCActionCommand.class);
 
 	@Reference
 	private Http _http;

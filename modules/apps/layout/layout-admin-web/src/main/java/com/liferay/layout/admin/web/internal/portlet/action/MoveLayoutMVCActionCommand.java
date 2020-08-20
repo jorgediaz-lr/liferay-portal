@@ -27,6 +27,8 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
@@ -122,12 +124,19 @@ public class MoveLayoutMVCActionCommand extends BaseAddLayoutMVCActionCommand {
 				liferayPortletRequest, liferayPortletResponse, jsonObject);
 		}
 		catch (PortalException portalException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(portalException, portalException);
+			}
+
 			hideDefaultErrorMessage(actionRequest);
 
 			_layoutExceptionRequestHandler.handlePortalException(
 				actionRequest, actionResponse, portalException);
 		}
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		MoveLayoutMVCActionCommand.class);
 
 	private volatile LayoutConverterConfiguration _layoutConverterConfiguration;
 

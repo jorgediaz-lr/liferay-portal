@@ -20,6 +20,8 @@ import com.liferay.layout.page.template.service.LayoutPageTemplateEntryService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
@@ -75,6 +77,10 @@ public class UpdateLayoutPageTemplateEntryMVCActionCommand
 				actionRequest, actionResponse, jsonObject);
 		}
 		catch (PortalException portalException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(portalException, portalException);
+			}
+
 			SessionErrors.add(
 				actionRequest, "layoutPageTemplateEntryNameInvalid");
 
@@ -85,6 +91,9 @@ public class UpdateLayoutPageTemplateEntryMVCActionCommand
 					actionRequest, actionResponse, portalException);
 		}
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		UpdateLayoutPageTemplateEntryMVCActionCommand.class);
 
 	@Reference
 	private LayoutPageTemplateEntryExceptionRequestHandler

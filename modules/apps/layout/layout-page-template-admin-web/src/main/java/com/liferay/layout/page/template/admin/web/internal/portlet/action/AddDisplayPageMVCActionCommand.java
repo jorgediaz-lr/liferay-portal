@@ -24,6 +24,8 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
@@ -146,6 +148,10 @@ public class AddDisplayPageMVCActionCommand extends BaseMVCActionCommand {
 				getRedirectURL(actionRequest, layoutPageTemplateEntry));
 		}
 		catch (PortalException portalException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(portalException, portalException);
+			}
+
 			if (portalException instanceof NoSuchClassNameException) {
 				errorJSONObject = JSONUtil.put(
 					"classNameId",
@@ -169,6 +175,9 @@ public class AddDisplayPageMVCActionCommand extends BaseMVCActionCommand {
 
 		return JSONUtil.put("error", errorJSONObject);
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		AddDisplayPageMVCActionCommand.class);
 
 	@Reference
 	private Http _http;
