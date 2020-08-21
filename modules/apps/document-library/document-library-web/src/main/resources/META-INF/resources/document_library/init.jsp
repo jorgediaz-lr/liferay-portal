@@ -29,7 +29,8 @@ page import="com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemLi
 page import="com.liferay.portal.kernel.lock.Lock" %><%@
 page import="com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil" %><%@
 page import="com.liferay.portal.kernel.util.LocaleUtil" %><%@
-page import="com.liferay.portal.util.RepositoryUtil" %>
+page import="com.liferay.portal.util.RepositoryUtil" %><%@
+page import="com.liferay.portlet.asset.util.comparator.AssetVocabularyGroupLocalizedTitleComparator" %>
 
 <%
 DLRequestHelper dlRequestHelper = new DLRequestHelper(request);
