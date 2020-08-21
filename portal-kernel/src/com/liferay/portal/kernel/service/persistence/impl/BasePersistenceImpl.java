@@ -808,8 +808,8 @@ public class BasePersistenceImpl<T extends BaseModel<T>>
 
 	protected int databaseInMaxParameters;
 	protected Map<String, String> dbColumnNames;
-	protected boolean entityCacheEnabled;
-	protected boolean finderCacheEnabled;
+	protected boolean entityCacheEnabled = true;
+	protected boolean finderCacheEnabled = true;
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		BasePersistenceImpl.class);
