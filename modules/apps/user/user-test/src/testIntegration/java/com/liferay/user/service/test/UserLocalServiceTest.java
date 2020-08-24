@@ -16,6 +16,7 @@ package com.liferay.user.service.test;
 
 import com.liferay.announcements.kernel.service.AnnouncementsDeliveryLocalService;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.RequiredRoleException;
@@ -48,9 +49,13 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
+import com.liferay.portal.util.PropsValues;
+
+import java.lang.reflect.Field;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -336,6 +341,29 @@ public class UserLocalServiceTest {
 		}
 		finally {
 			PermissionThreadLocal.setPermissionChecker(oldPermissionChecker);
+		}
+	}
+
+	@Test
+	public void testSearchUsersFromDatabase() throws Exception {
+		Field propsValuesField = ReflectionUtil.getDeclaredField(
+			PropsValues.class, "USERS_SEARCH_WITH_INDEX");
+
+		boolean oldPropsValuesValue = (boolean)propsValuesField.get(null);
+
+		try {
+			propsValuesField.set(null, false);
+
+			_userLocalService.searchCount(
+				TestPropsValues.getCompanyId(), null,
+				WorkflowConstants.STATUS_APPROVED,
+				LinkedHashMapBuilder.<String, Object>put(
+					com.liferay.portal.kernel.search.Field.GROUP_ID,
+					TestPropsValues.getGroupId()
+				).build());
+		}
+		finally {
+			propsValuesField.set(null, oldPropsValuesValue);
 		}
 	}
 
