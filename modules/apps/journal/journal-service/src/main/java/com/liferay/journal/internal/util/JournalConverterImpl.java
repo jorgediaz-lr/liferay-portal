@@ -648,8 +648,8 @@ public class JournalConverterImpl implements JournalConverter {
 				if (_log.isWarnEnabled()) {
 					_log.warn(
 						StringBundler.concat(
-							"Unable to get file entry for uuid ", uuid,
-							" and group id ", groupId));
+							"Unable to get file entry for UUID ", uuid,
+							" and group ID ", groupId));
 				}
 
 				jsonObject.put(
