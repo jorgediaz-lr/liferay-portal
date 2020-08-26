@@ -69,7 +69,7 @@ else {
 			}
 			%>
 
-			<aui:workflow-status markupView="lexicon" showIcon="<%= false %>" showLabel="<%= false %>" status="<%= status %>" statusMessage='<%= layoutRevision.isHead() ? "ready-for-publication" : null %>' />
+			<aui:workflow-status markupView="lexicon" showIcon="<%= false %>" showLabel="<%= false %>" status="<%= status %>" statusMessage="<%= _getStatusMessage(layoutRevision, group, layout) %>" />
 		</div>
 	</div>
 </span>
