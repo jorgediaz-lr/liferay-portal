@@ -180,7 +180,7 @@ class LayoutProvider extends Component {
 		pages = visitor.mapFields(field => {
 			const {settingsContext} = field;
 
-			return {
+			const newField = {
 				...getFieldProperties(
 					settingsContext,
 					defaultLanguageId,
@@ -194,6 +194,19 @@ class LayoutProvider extends Component {
 					pages: this.getLocalizedPages(settingsContext.pages)
 				}
 			};
+
+			if (
+				field.type === 'select' &&
+				field.dataSourceType &&
+				field.dataSourceType.includes('data-provider')
+			) {
+				return {
+					...newField,
+					options: field.options
+				};
+			}
+
+			return newField;
 		});
 
 		visitor.setPages(pages);
