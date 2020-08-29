@@ -99,7 +99,7 @@ public abstract class JSONAction implements Action {
 				_log.warn(securityException.getMessage());
 			}
 
-			if (PropsValues.JSON_SERVICE_SERIALIZE_THROWABLES) {
+			if (PropsValues.JSON_SERVICE_SERIALIZE_THROWABLE) {
 				json = JSONFactoryUtil.serializeThrowable(securityException);
 			}
 			else {
