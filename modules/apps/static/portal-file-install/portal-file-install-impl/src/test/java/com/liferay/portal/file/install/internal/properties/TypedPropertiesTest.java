@@ -47,7 +47,7 @@ public class TypedPropertiesTest {
 
 	@Test
 	public void testLoadandSaveArray() throws IOException {
-		String line = "testKey = [\"testValue1\",\"testValue2\"]";
+		String line = "testKey = [\"testValue1\", \"testValue2\"]";
 
 		TypedProperties typedProperties = _createTypedProperties(line);
 
@@ -60,7 +60,7 @@ public class TypedPropertiesTest {
 
 	@Test
 	public void testLoadandSaveCollection() throws IOException {
-		String line = "testKey = (\"testValue1\",\"testValue2\")";
+		String line = "testKey = (\"testValue1\", \"testValue2\")";
 
 		TypedProperties typedProperties = _createTypedProperties(line);
 
