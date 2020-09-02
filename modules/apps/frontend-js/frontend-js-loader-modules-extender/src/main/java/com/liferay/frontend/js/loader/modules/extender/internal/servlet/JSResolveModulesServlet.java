@@ -58,7 +58,7 @@ import org.osgi.service.component.annotations.Reference;
 public class JSResolveModulesServlet extends HttpServlet {
 
 	public JSResolveModulesServlet() {
-		updateEtag();
+		updateETag();
 	}
 
 	@Override
@@ -93,7 +93,7 @@ public class JSResolveModulesServlet extends HttpServlet {
 		printWriter.close();
 	}
 
-	protected void updateEtag() {
+	protected void updateETag() {
 		_etag = StringBundler.concat(
 			"W/", StringPool.QUOTE, UUID.randomUUID(), StringPool.QUOTE);
 	}
