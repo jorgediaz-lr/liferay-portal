@@ -82,7 +82,6 @@ public class JSResolveModulesServlet extends HttpServlet {
 
 		httpServletResponse.addHeader(HttpHeaders.CACHE_CONTROL, "no-cache");
 		httpServletResponse.addHeader(HttpHeaders.ETAG, _etag);
-
 		httpServletResponse.setCharacterEncoding(StringPool.UTF8);
 		httpServletResponse.setContentType(ContentTypes.APPLICATION_JSON);
 

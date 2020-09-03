@@ -21,6 +21,7 @@ import org.osgi.annotation.versioning.ConsumerType;
  * {@link NPMRegistry} is updated.
  *
  * @author Iván Zaera Avellón
+ * @review
  */
 @ConsumerType
 public interface NPMRegistryUpdatesListener {
