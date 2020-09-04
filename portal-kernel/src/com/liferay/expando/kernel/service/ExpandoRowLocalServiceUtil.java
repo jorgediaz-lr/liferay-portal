@@ -152,6 +152,12 @@ public class ExpandoRowLocalServiceUtil {
 		getService().deleteRows(classPK);
 	}
 
+	public static void deleteRows(
+		long companyId, long classNameId, long classPK) {
+
+		getService().deleteRows(companyId, classNameId, classPK);
+	}
+
 	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
 		dynamicQuery() {
 
