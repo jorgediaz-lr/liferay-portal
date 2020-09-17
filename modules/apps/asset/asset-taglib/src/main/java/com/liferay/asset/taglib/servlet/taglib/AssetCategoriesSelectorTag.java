@@ -37,7 +37,6 @@ import com.liferay.portlet.asset.util.comparator.AssetVocabularyGroupLocalizedTi
 import com.liferay.taglib.util.IncludeTag;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.portlet.PortletURL;
@@ -244,8 +243,7 @@ public class AssetCategoriesSelectorTag extends IncludeTag {
 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		Collections.sort(
-			vocabularies,
+		vocabularies.sort(
 			new AssetVocabularyGroupLocalizedTitleComparator(
 				themeDisplay.getScopeGroupId(), themeDisplay.getLocale(),
 				true));
