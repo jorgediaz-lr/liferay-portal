@@ -35,6 +35,10 @@ class Text extends Component {
 	}
 
 	dispatchEvent(event, name, value) {
+		if (this.isMultilineTextRenderedByIE(event)) {
+			value = this.value;
+		}
+
 		this.emit(name, {
 			fieldInstance: this,
 			originalEvent: event,
@@ -52,6 +56,14 @@ class Text extends Component {
 		return options.map(option => {
 			return option.label;
 		});
+	}
+
+	isMultilineTextRenderedByIE(event) {
+		return (
+			this.displayStyle === 'multiline' &&
+			event.target.nodeName === 'TEXTAREA' &&
+			Liferay.Browser.isIe()
+		);
 	}
 
 	prepareStateForRender(state) {
@@ -117,6 +129,10 @@ class Text extends Component {
 	}
 
 	_handleFieldBlurred(event) {
+		if (this.isMultilineTextRenderedByIE(event)) {
+			event.target.value = this.value;
+		}
+
 		this.dispatchEvent(event, 'fieldBlurred', event.target.value);
 	}
 
@@ -124,6 +140,25 @@ class Text extends Component {
 		const {target} = event;
 		let {value} = target;
 		const {fieldName} = this;
+
+		if (this.isMultilineTextRenderedByIE(event)) {
+			if (this.value === '' && value === '') {
+				const currentTargetValue = target.value;
+
+				target.value = ' ';
+				target.value = currentTargetValue;
+				target.blur();
+
+				return;
+			}
+			else if (
+				this.value != '' &&
+				value === '' &&
+				target.innerText != ''
+			) {
+				value = target.innerText;
+			}
+		}
 
 		if (fieldName === 'name') {
 			value = normalizeFieldName(value);
@@ -140,6 +175,10 @@ class Text extends Component {
 	}
 
 	_handleFieldFocused(event) {
+		if (this.isMultilineTextRenderedByIE(event)) {
+			event.target.value = this.value;
+		}
+
 		this.dispatchEvent(event, 'fieldFocused', event.target.value);
 	}
 }
