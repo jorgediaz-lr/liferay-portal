@@ -500,14 +500,14 @@ public class JournalDisplayContext {
 
 		String[] displayViews = getDisplayViews();
 
+		PortalPreferences portalPreferences =
+			PortletPreferencesFactoryUtil.getPortalPreferences(
+				_httpServletRequest);
+
 		_displayStyle = ParamUtil.getString(
 			_httpServletRequest, "displayStyle");
 
 		if (Validator.isNull(_displayStyle)) {
-			PortalPreferences portalPreferences =
-				PortletPreferencesFactoryUtil.getPortalPreferences(
-					_httpServletRequest);
-
 			_displayStyle = portalPreferences.getValue(
 				JournalPortletKeys.JOURNAL, "display-style",
 				_journalWebConfiguration.defaultDisplayView());
