@@ -19,8 +19,11 @@ import com.liferay.osb.provisioning.customer.web.service.AccountEntryWebService;
 import com.liferay.osb.provisioning.customer.web.service.internal.configuration.CustomerConfiguration;
 import com.liferay.petra.json.web.service.client.JSONWebServiceClient;
 import com.liferay.petra.json.web.service.client.JSONWebServiceClientFactory;
+import com.liferay.petra.json.web.service.client.JSONWebServiceException;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.json.JSONFactory;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 
 import java.util.HashMap;
@@ -47,8 +50,17 @@ public class AccountEntryWebServiceImpl implements AccountEntryWebService {
 
 		parameters.put("koroneikiAccountKey", koroneikiAccountKey);
 
-		String response = _jsonWebServiceClient.doGet(
-			_URL_API_JSONWS_FETCH_ACCOUNT_ENTRY, parameters);
+		String response = null;
+
+		try {
+			response = _jsonWebServiceClient.doGet(
+				_URL_API_JSONWS_FETCH_ACCOUNT_ENTRY, parameters);
+		}
+		catch (JSONWebServiceException jsonWebServiceException) {
+			_log.error(jsonWebServiceException, jsonWebServiceException);
+
+			throw new JSONWebServiceException(jsonWebServiceException);
+		}
 
 		if (response == null) {
 			return null;
@@ -86,8 +98,15 @@ public class AccountEntryWebServiceImpl implements AccountEntryWebService {
 
 		parameters.put("koroneikiAccountKey", koroneikiAccountKey);
 
-		_jsonWebServiceClient.doPost(
-			_URL_API_JSONWS_SYNC_TO_ZENDESK, parameters);
+		try {
+			_jsonWebServiceClient.doPost(
+				_URL_API_JSONWS_SYNC_TO_ZENDESK, parameters);
+		}
+		catch (JSONWebServiceException jsonWebServiceException) {
+			_log.error(jsonWebServiceException, jsonWebServiceException);
+
+			throw new JSONWebServiceException(jsonWebServiceException);
+		}
 	}
 
 	public void updateInstructions(
@@ -99,8 +118,15 @@ public class AccountEntryWebServiceImpl implements AccountEntryWebService {
 		parameters.put("instructions", instructions);
 		parameters.put("koroneikiAccountKey", koroneikiAccountKey);
 
-		_jsonWebServiceClient.doPost(
-			_URL_API_JSONWS_UPDATE_INSTRUCTIONS, parameters);
+		try {
+			_jsonWebServiceClient.doPost(
+				_URL_API_JSONWS_UPDATE_INSTRUCTIONS, parameters);
+		}
+		catch (JSONWebServiceException jsonWebServiceException) {
+			_log.error(jsonWebServiceException, jsonWebServiceException);
+
+			throw new JSONWebServiceException(jsonWebServiceException);
+		}
 	}
 
 	public void updateLanguageId(String koroneikiAccountKey, String languageId)
@@ -111,8 +137,15 @@ public class AccountEntryWebServiceImpl implements AccountEntryWebService {
 		parameters.put("koroneikiAccountKey", koroneikiAccountKey);
 		parameters.put("languageId", languageId);
 
-		_jsonWebServiceClient.doPost(
-			_URL_API_JSONWS_UPDATE_LANGUAGE_ID, parameters);
+		try {
+			_jsonWebServiceClient.doPost(
+				_URL_API_JSONWS_UPDATE_LANGUAGE_ID, parameters);
+		}
+		catch (JSONWebServiceException jsonWebServiceException) {
+			_log.error(jsonWebServiceException, jsonWebServiceException);
+
+			throw new JSONWebServiceException(jsonWebServiceException);
+		}
 	}
 
 	@Activate
@@ -154,9 +187,16 @@ public class AccountEntryWebServiceImpl implements AccountEntryWebService {
 	}
 
 	private String _getAccountAttachmentApiToken() throws Exception {
-		return _jsonWebServiceClient.doGet(
-			_URL_ACCOUNT_ATTACHMENT_TOKEN + "?cmd=token",
-			new HashMap<String, String>());
+		try {
+			return _jsonWebServiceClient.doGet(
+				_URL_ACCOUNT_ATTACHMENT_TOKEN + "?cmd=token",
+				new HashMap<String, String>());
+		}
+		catch (JSONWebServiceException jsonWebServiceException) {
+			_log.error(jsonWebServiceException, jsonWebServiceException);
+
+			throw new JSONWebServiceException(jsonWebServiceException);
+		}
 	}
 
 	private static final String _URL_ACCOUNT_ATTACHMENT_TOKEN =
@@ -176,6 +216,9 @@ public class AccountEntryWebServiceImpl implements AccountEntryWebService {
 
 	private static final String _URL_API_JSONWS_UPDATE_LANGUAGE_ID =
 		_URL_API_JSONWS + "/update-language-id";
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		AccountEntryWebServiceImpl.class);
 
 	private String _accountAttachmentURL;
 

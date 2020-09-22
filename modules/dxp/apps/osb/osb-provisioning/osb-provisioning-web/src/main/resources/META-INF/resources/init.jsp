@@ -75,6 +75,7 @@ page import="com.liferay.osb.provisioning.web.internal.display.context.ViewProdu
 page import="com.liferay.osb.provisioning.web.internal.display.context.ViewSubscriptionDisplayContext" %><%@
 page import="com.liferay.osb.provisioning.web.internal.display.context.ViewTeamDisplayContext" %><%@
 page import="com.liferay.osb.provisioning.web.internal.util.ProvisioningWebComponentProvider" %><%@
+page import="com.liferay.petra.json.web.service.client.JSONWebServiceException" %><%@
 page import="com.liferay.petra.string.StringPool" %><%@
 page import="com.liferay.portal.kernel.bean.BeanParamUtil" %><%@
 page import="com.liferay.portal.kernel.dao.search.ResultRow" %><%@

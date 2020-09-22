@@ -88,14 +88,14 @@ public class UnassignAccountCustomerContactMVCActionCommand
 				SessionErrors.add(
 					actionRequest, ContactRequiredException.class);
 			}
-
-			sendRedirect(actionRequest, actionResponse);
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
 
-			throw exception;
+			SessionErrors.add(actionRequest, exception.getClass(), exception);
 		}
+
+		sendRedirect(actionRequest, actionResponse);
 	}
 
 	private List<ZendeskTicket> _getZendeskTickets(
@@ -104,6 +104,10 @@ public class UnassignAccountCustomerContactMVCActionCommand
 
 		AccountEntry accountEntry = _accountEntryWebService.fetchAccountEntry(
 			accountKey);
+
+		if (accountEntry == null) {
+			return null;
+		}
 
 		ZendeskOrganization zendeskOrganization =
 			_zendeskOrganizationWebService.getZendeskOrganization(
