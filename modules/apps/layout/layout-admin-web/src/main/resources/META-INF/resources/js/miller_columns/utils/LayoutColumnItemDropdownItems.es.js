@@ -97,9 +97,18 @@ const LAYOUT_COLUMN_ITEM_DROPDOWN_ITEMS = [
 		 * @private
 		 */
 		handleClick: event => {
-			const deleteMessage = Liferay.Language.get(
-				'are-you-sure-you-want-to-delete-this'
-			);
+			let deleteMessage;
+
+			if (event.data.item.layoutColumnItem.hasChild) {
+				deleteMessage = Liferay.Language.get(
+					'this-page-has-child-pages-that-will-also-be-removed-are-you-sure-you-want-to-delete-this-page'
+				);
+			}
+			else {
+				deleteMessage = Liferay.Language.get(
+					'are-you-sure-you-want-to-delete-this-page'
+				);
+			}
 
 			if (!confirm(deleteMessage)) {
 				event.preventDefault();

@@ -92,7 +92,7 @@
 	var deleteSelectedPages = function() {
 		if (
 			confirm(
-				'<liferay-ui:message key="are-you-sure-you-want-to-delete-this" />'
+				'<liferay-ui:message key="are-you-sure-you-want-to-delete-the-selected-pages-if-the-selected-pages-have-child-pages-they-will-also-be-removed" />'
 			)
 		) {
 			submitForm(document.<portlet:namespace />fm);
