@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.ObjectValuePair;
+import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProtectedClassLoaderObjectInputStream;
@@ -78,7 +79,7 @@ public class TunnelUtil {
 				new ProtectedClassLoaderObjectInputStream(
 					httpURLConnection.getInputStream(),
 					AggregateClassLoader.getAggregateClassLoader(
-						TunnelUtil.class.getClassLoader(),
+						PortalClassLoaderUtil.getClassLoader(),
 						thread.getContextClassLoader()))) {
 
 			returnObject = objectInputStream.readObject();
