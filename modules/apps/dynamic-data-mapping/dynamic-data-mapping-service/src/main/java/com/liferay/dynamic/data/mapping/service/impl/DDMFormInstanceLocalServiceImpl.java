@@ -107,16 +107,20 @@ public class DDMFormInstanceLocalServiceImpl
 		updateWorkflowDefinitionLink(
 			ddmFormInstance, settingsDDMFormValues, serviceContext);
 
-		if (serviceContext.isAddGroupPermissions() ||
-			serviceContext.isAddGuestPermissions()) {
+		if (GetterUtil.getBoolean(
+				serviceContext.getAttribute("addResources"), true)) {
 
-			addFormInstanceResources(
-				ddmFormInstance, serviceContext.isAddGroupPermissions(),
-				serviceContext.isAddGuestPermissions());
-		}
-		else {
-			addFormInstanceResources(
-				ddmFormInstance, serviceContext.getModelPermissions());
+			if (serviceContext.isAddGroupPermissions() ||
+				serviceContext.isAddGuestPermissions()) {
+
+				addFormInstanceResources(
+					ddmFormInstance, serviceContext.isAddGroupPermissions(),
+					serviceContext.isAddGuestPermissions());
+			}
+			else {
+				addFormInstanceResources(
+					ddmFormInstance, serviceContext.getModelPermissions());
+			}
 		}
 
 		addFormInstanceVersion(
@@ -202,6 +206,30 @@ public class DDMFormInstanceLocalServiceImpl
 			ddmFormInstance.getUserId(), DDMFormInstance.class.getName(),
 			ddmFormInstance.getFormInstanceId(), groupPermissions,
 			guestPermissions);
+	}
+
+	@Override
+	public DDMFormInstance copyFormInstance(
+			long userId, long groupId, Map<Locale, String> nameMap,
+			DDMFormInstance ddmFormInstance,
+			DDMFormValues settingsDDMFormValues, ServiceContext serviceContext)
+		throws PortalException {
+
+		DDMStructure ddmStructure = ddmFormInstance.getStructure();
+
+		serviceContext.setAttribute("addResources", Boolean.FALSE);
+
+		DDMFormInstance newDDMFormInstance = addFormInstance(
+			userId, groupId, nameMap, ddmFormInstance.getDescriptionMap(),
+			ddmStructure.getDDMForm(), ddmStructure.getDDMFormLayout(),
+			settingsDDMFormValues, serviceContext);
+
+		resourceLocalService.copyModelResources(
+			ddmFormInstance.getCompanyId(), DDMFormInstance.class.getName(),
+			ddmFormInstance.getFormInstanceId(),
+			newDDMFormInstance.getFormInstanceId());
+
+		return newDDMFormInstance;
 	}
 
 	@Override
