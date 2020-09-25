@@ -56,7 +56,7 @@ if (product != null) {
 				<%
 				String propertyType = StringPool.BLANK;
 
-				if (properties != null) {
+				if ((properties != null) && Validator.isNotNull(properties.get("type"))) {
 					propertyType = properties.get("type");
 				}
 
