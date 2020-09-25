@@ -93,16 +93,13 @@ public class EditProductMVCActionCommand extends BaseMVCActionCommand {
 
 			if (cmd.equals(Constants.DELETE)) {
 				deleteProduct(actionRequest, user);
-
-				sendRedirect(actionRequest, actionResponse);
 			}
 			else {
-				String productKey = updateProduct(actionRequest, user);
-
-				sendRedirect(
-					actionRequest, actionResponse,
-					getRedirect(actionResponse, productKey));
+				updateProduct(actionRequest, user);
 			}
+
+			sendRedirect(
+				actionRequest, actionResponse, getRedirect(actionResponse));
 		}
 		catch (HttpException httpException) {
 			SessionErrors.add(
@@ -115,8 +112,7 @@ public class EditProductMVCActionCommand extends BaseMVCActionCommand {
 		}
 	}
 
-	protected String getRedirect(
-			ActionResponse actionResponse, String productKey)
+	protected String getRedirect(ActionResponse actionResponse)
 		throws Exception {
 
 		LiferayPortletResponse liferayPortletResponse =
@@ -125,7 +121,6 @@ public class EditProductMVCActionCommand extends BaseMVCActionCommand {
 		PortletURL portletURL = liferayPortletResponse.createRenderURL();
 
 		portletURL.setParameter("mvcRenderCommandName", "/products/view");
-		portletURL.setParameter("productKey", productKey);
 
 		return portletURL.toString();
 	}
@@ -169,7 +164,7 @@ public class EditProductMVCActionCommand extends BaseMVCActionCommand {
 		}
 	}
 
-	protected String updateProduct(ActionRequest actionRequest, User user)
+	protected void updateProduct(ActionRequest actionRequest, User user)
 		throws Exception {
 
 		String productKey = ParamUtil.getString(actionRequest, "productKey");
@@ -215,8 +210,6 @@ public class EditProductMVCActionCommand extends BaseMVCActionCommand {
 			_productWebService.updateProduct(
 				user.getFullName(), user.getUuid(), productKey, product);
 		}
-
-		return productKey;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
