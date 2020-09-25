@@ -45,7 +45,7 @@ public class RequiredProductEntryException extends PortalException {
 			super(
 				String.format(
 					"Product %s cannot be deleted because it is referenced " +
-						"by one or more product consumption",
+						"by one or more product consumptions",
 					productEntryId));
 		}
 

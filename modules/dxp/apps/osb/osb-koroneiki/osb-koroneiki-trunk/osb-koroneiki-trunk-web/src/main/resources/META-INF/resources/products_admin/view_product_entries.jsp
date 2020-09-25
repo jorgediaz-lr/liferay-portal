@@ -31,7 +31,7 @@ ViewProductEntriesManagementToolbarDisplayContext viewProductEntriesManagementTo
 	displayContext="<%= viewProductEntriesManagementToolbarDisplayContext %>"
 />
 
-<liferay-ui:error exception="<%= RequiredProductEntryException.MustNotDeleteProductEntryReferencedByProductConsumption.class %>" message="the-product-cannot-be-deleted-because-it-is-required-by-one-or-more-product-consumption" />
+<liferay-ui:error exception="<%= RequiredProductEntryException.MustNotDeleteProductEntryReferencedByProductConsumption.class %>" message="the-product-cannot-be-deleted-because-it-is-required-by-one-or-more-product-consumptions" />
 <liferay-ui:error exception="<%= RequiredProductEntryException.MustNotDeleteProductEntryReferencedByProductPurchase.class %>" message="the-product-cannot-be-deleted-because-it-is-required-by-one-or-more-product-purchases" />
 
 <div class="container-fluid-1280">
