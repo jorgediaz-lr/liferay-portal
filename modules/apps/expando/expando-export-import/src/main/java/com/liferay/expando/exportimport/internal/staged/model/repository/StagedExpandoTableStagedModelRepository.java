@@ -87,10 +87,10 @@ public class StagedExpandoTableStagedModelRepository
 			_expandoTableLocalService.getExpandoTables(
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
-		long companyId = portletDataContext.getCompanyId();
-
 		for (ExpandoTable expandoTable : expandoTables) {
-			if (expandoTable.getCompanyId() == companyId) {
+			if (expandoTable.getCompanyId() ==
+					portletDataContext.getCompanyId()) {
+
 				_expandoTableLocalService.deleteTable(expandoTable);
 			}
 		}
