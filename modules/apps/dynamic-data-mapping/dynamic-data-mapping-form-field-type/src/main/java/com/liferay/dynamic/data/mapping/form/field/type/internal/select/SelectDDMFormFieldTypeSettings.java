@@ -90,7 +90,7 @@ import com.liferay.dynamic.data.mapping.model.LocalizedValue;
 								"visibilityExpression", "validation",
 								"fieldNamespace", "indexType", "localizable",
 								"readOnly", "dataType", "type", "showLabel",
-								"repeatable", "multiple"
+								"repeatable", "multiple", "alphabeticalOrder"
 							}
 						)
 					}
@@ -101,6 +101,12 @@ import com.liferay.dynamic.data.mapping.model.LocalizedValue;
 )
 public interface SelectDDMFormFieldTypeSettings
 	extends DefaultDDMFormFieldTypeSettings {
+
+	@DDMFormField(
+		label = "%order-options-alphabetically",
+		properties = "showAsSwitcher=true"
+	)
+	public boolean alphabeticalOrder();
 
 	@DDMFormField(
 		label = "%create-list",
