@@ -424,19 +424,7 @@ class DatePicker extends Component {
 	_setValue(value) {
 		let newValue;
 
-		if (moment(value, this.dateFormat).isValid()) {
-			if (typeof value == 'string') {
-				newValue = value;
-			}
-			else {
-				const date = moment(value)
-					.clone()
-					.format(this.dateFormat);
-
-				newValue = date;
-			}
-		}
-		else if (moment(value).isValid()) {
+		if (moment(value).isValid()) {
 			const date = moment(value)
 				.clone()
 				.format(this.dateFormat);
