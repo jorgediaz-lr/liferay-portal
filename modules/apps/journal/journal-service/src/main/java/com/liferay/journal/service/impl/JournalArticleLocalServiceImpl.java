@@ -1750,9 +1750,11 @@ public class JournalArticleLocalServiceImpl
 				new ArticleVersionComparator(true));
 
 			for (JournalArticle article : articles) {
-				journalArticleLocalService.expireArticle(
-					userId, groupId, article.getArticleId(),
-					article.getVersion(), articleURL, serviceContext);
+				if (!article.isExpired()) {
+					journalArticleLocalService.expireArticle(
+						userId, groupId, article.getArticleId(),
+						article.getVersion(), articleURL, serviceContext);
+				}
 			}
 		}
 		else {
