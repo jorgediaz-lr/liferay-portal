@@ -1561,9 +1561,12 @@ public class LayoutStagedModelDataHandler
 			ManifestSummary manifestSummary =
 				portletDataContext.getManifestSummary();
 
-			if (!_isPortletDefinedInManifest(
-				portletDataContext.getCompanyId(), portletId,
-				manifestSummary)) {
+			Collection<String> manifestSummaryKeys =
+				manifestSummary.getManifestSummaryKeys();
+
+			if (!manifestSummaryKeys.contains(
+					_exportImportHelper.getExportableRootPortletId(
+						portletDataContext.getCompanyId(), portletId))) {
 
 				manifestSummary = null;
 			}
@@ -2169,18 +2172,6 @@ public class LayoutStagedModelDataHandler
 		}
 
 		return layout.getLayoutPrototypeUuid();
-	}
-
-	private boolean _isPortletDefinedInManifest(
-		long companyId, String portletId, ManifestSummary manifestSummary)
-		throws Exception {
-
-		Collection<String> manifestSummaryKeys =
-			manifestSummary.getManifestSummaryKeys();
-
-		return manifestSummaryKeys.contains(
-			_exportImportHelper.getExportableRootPortletId(
-				companyId, portletId));
 	}
 
 	private static final String _SAME_GROUP_FRIENDLY_URL =
