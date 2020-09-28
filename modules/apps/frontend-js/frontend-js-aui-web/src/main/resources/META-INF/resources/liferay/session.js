@@ -585,7 +585,10 @@ AUI.add(
 										instance._host.extend();
 									}
 									else if (
-										event.domEvent.target.test('.close')
+										event.domEvent.target.test('.close') ||
+										event.domEvent.target._node.classList.contains(
+											'lexicon-icon-outline'
+										)
 									) {
 										instance._destroyBanner();
 										instance._alertClosed = true;
