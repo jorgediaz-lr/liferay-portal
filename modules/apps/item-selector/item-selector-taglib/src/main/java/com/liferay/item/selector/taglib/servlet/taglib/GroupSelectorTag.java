@@ -25,8 +25,12 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Organization;
+import com.liferay.portal.kernel.security.auth.GuestOrUserUtil;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
-import com.liferay.portal.kernel.service.GroupServiceUtil;
+import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
+import com.liferay.portal.kernel.service.permission.GroupPermissionUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -34,7 +38,9 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.taglib.util.IncludeTag;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -102,6 +108,30 @@ public class GroupSelectorTag extends IncludeTag {
 			ItemSelectorUtil.getItemSelector());
 	}
 
+	private List<Group> _filterGroups(List<Group> groups, int delta)
+		throws PortalException {
+
+		List<Group> filteredGroups = new ArrayList<>();
+
+		PermissionChecker permissionChecker =
+			GuestOrUserUtil.getPermissionChecker();
+
+		for (Group group : groups) {
+			if (group.isCompany() ||
+				GroupPermissionUtil.contains(
+					permissionChecker, group, ActionKeys.VIEW)) {
+
+				filteredGroups.add(group);
+			}
+
+			if (filteredGroups.size() == delta) {
+				return filteredGroups;
+			}
+		}
+
+		return filteredGroups;
+	}
+
 	private void _search(HttpServletRequest httpServletRequest) {
 		try {
 			ThemeDisplay themeDisplay =
@@ -111,19 +141,24 @@ public class GroupSelectorTag extends IncludeTag {
 			String keywords = ParamUtil.getString(
 				httpServletRequest, "keywords");
 
-			List<Group> groups = GroupServiceUtil.search(
-				themeDisplay.getCompanyId(), _CLASS_NAME_IDS, keywords,
+			LinkedHashMap<String, Object> groupParams =
 				LinkedHashMapBuilder.<String, Object>put(
 					"site", Boolean.TRUE
-				).build(),
-				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+				).build();
+
+			int delta = ParamUtil.getInteger(
+				httpServletRequest, SearchContainer.DEFAULT_DELTA_PARAM,
+				SearchContainer.DEFAULT_DELTA);
+
+			List<Group> groups = _filterGroups(
+				GroupLocalServiceUtil.search(
+					themeDisplay.getCompanyId(), _CLASS_NAME_IDS, keywords,
+					groupParams, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null),
+				delta);
 
 			int cur = ParamUtil.getInteger(
 				httpServletRequest, SearchContainer.DEFAULT_CUR_PARAM,
 				SearchContainer.DEFAULT_CUR);
-			int delta = ParamUtil.getInteger(
-				httpServletRequest, SearchContainer.DEFAULT_DELTA_PARAM,
-				SearchContainer.DEFAULT_DELTA);
 
 			int[] startAndEnd = SearchPaginationUtil.calculateStartAndEnd(
 				cur, delta);
