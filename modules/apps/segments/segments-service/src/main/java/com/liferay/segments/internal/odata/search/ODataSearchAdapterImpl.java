@@ -137,6 +137,7 @@ public class ODataSearchAdapterImpl implements ODataSearchAdapter {
 
 		searchContext.setCompanyId(companyId);
 		searchContext.setEnd(end);
+		searchContext.setGroupIds(new long[] {-1L});
 		searchContext.setStart(start);
 
 		QueryConfig queryConfig = searchContext.getQueryConfig();
