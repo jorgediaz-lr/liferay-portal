@@ -47,6 +47,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.util.PropsValues;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -154,10 +155,17 @@ public class EditLayoutMVCActionCommand extends BaseMVCActionCommand {
 			groupId, privateLayout, layoutId, useCustomCanonicalURL,
 			canonicalURLMap, serviceContext);
 
+		boolean layoutIsNotDraft = false;
 		Layout draftLayout = _layoutLocalService.fetchLayout(
 			_portal.getClassNameId(Layout.class), layout.getPlid());
 
 		if (draftLayout != null) {
+			Date modifiedDate = draftLayout.getModifiedDate();
+
+			Date publishDate = layout.getPublishDate();
+
+			layoutIsNotDraft = modifiedDate.getTime() <= publishDate.getTime();
+
 			_layoutService.updateLayout(
 				groupId, privateLayout, draftLayout.getLayoutId(),
 				draftLayout.getParentLayoutId(), nameMap, titleMap,
@@ -230,6 +238,12 @@ public class EditLayoutMVCActionCommand extends BaseMVCActionCommand {
 			layout = _layoutService.updateLayout(
 				groupId, privateLayout, layoutId,
 				layoutTypeSettingsProperties.toString());
+		}
+
+		if (layoutIsNotDraft) {
+			_layoutLocalService.updateLayout(
+				layout.getGroupId(), layout.isPrivateLayout(),
+				layout.getLayoutId(), new Date());
 		}
 
 		EventsProcessorUtil.process(
