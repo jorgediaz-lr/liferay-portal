@@ -59,7 +59,7 @@ public class AccountEntryWebServiceImpl implements AccountEntryWebService {
 		catch (JSONWebServiceException jsonWebServiceException) {
 			_log.error(jsonWebServiceException, jsonWebServiceException);
 
-			throw new JSONWebServiceException(jsonWebServiceException);
+			throw jsonWebServiceException;
 		}
 
 		if (response == null) {
@@ -105,7 +105,7 @@ public class AccountEntryWebServiceImpl implements AccountEntryWebService {
 		catch (JSONWebServiceException jsonWebServiceException) {
 			_log.error(jsonWebServiceException, jsonWebServiceException);
 
-			throw new JSONWebServiceException(jsonWebServiceException);
+			throw jsonWebServiceException;
 		}
 	}
 
@@ -125,7 +125,7 @@ public class AccountEntryWebServiceImpl implements AccountEntryWebService {
 		catch (JSONWebServiceException jsonWebServiceException) {
 			_log.error(jsonWebServiceException, jsonWebServiceException);
 
-			throw new JSONWebServiceException(jsonWebServiceException);
+			throw jsonWebServiceException;
 		}
 	}
 
@@ -144,7 +144,7 @@ public class AccountEntryWebServiceImpl implements AccountEntryWebService {
 		catch (JSONWebServiceException jsonWebServiceException) {
 			_log.error(jsonWebServiceException, jsonWebServiceException);
 
-			throw new JSONWebServiceException(jsonWebServiceException);
+			throw jsonWebServiceException;
 		}
 	}
 
@@ -195,7 +195,7 @@ public class AccountEntryWebServiceImpl implements AccountEntryWebService {
 		catch (JSONWebServiceException jsonWebServiceException) {
 			_log.error(jsonWebServiceException, jsonWebServiceException);
 
-			throw new JSONWebServiceException(jsonWebServiceException);
+			throw jsonWebServiceException;
 		}
 	}
 
