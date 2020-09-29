@@ -57,7 +57,10 @@ function init(
 	portletNamespace,
 	options,
 	changedCallback,
-	destroyedCallback
+	destroyedCallback,
+	event,
+	type,
+	initialValue
 ) {
 	const _destroy = destroy;
 
@@ -116,7 +119,7 @@ function init(
 							.appendChild('<div></div>'),
 						previewCssClass:
 							'alloy-editor alloy-editor-placeholder',
-						value: editableElement.innerHTML
+						value: initialValue || editableElement.innerHTML
 					}).render();
 				});
 		}
