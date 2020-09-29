@@ -37,6 +37,7 @@ public class AssignAccountTeamDisplayContext extends ViewAccountDisplayContext {
 
 		portletURL.setParameter(
 			"mvcRenderCommandName", "/accounts/assign_account_team");
+		portletURL.setParameter("accountKey", account.getKey());
 
 		return portletURL.toString();
 	}

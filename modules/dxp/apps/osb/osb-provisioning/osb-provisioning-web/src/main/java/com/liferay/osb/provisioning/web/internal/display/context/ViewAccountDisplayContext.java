@@ -133,7 +133,7 @@ public class ViewAccountDisplayContext {
 
 		data.put("assignParentAccountURL", assignParentAccountURL.toString());
 
-		PortletURL assignPartnerTeamURL = renderResponse.createActionURL();
+		PortletURL assignPartnerTeamURL = renderResponse.createRenderURL();
 
 		assignPartnerTeamURL.setParameter(
 			"mvcRenderCommandName", "/accounts/assign_account_team");
