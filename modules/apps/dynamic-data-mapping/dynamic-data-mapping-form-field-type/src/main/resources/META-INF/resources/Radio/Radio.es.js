@@ -22,6 +22,7 @@ import Soy from 'metal-soy';
 import {Config} from 'metal-state';
 
 import {setJSONArrayValue} from '../util/setters.es';
+import {htmlEscape} from '../util/strings.es';
 import templates from './Radio.soy';
 
 /**
@@ -31,11 +32,19 @@ import templates from './Radio.soy';
 
 class Radio extends Component {
 	prepareStateForRender(state) {
-		const {predefinedValue} = state;
+		const {options, predefinedValue} = state;
 		const predefinedValueArray = this._getArrayValue(predefinedValue);
+
+		const escapedOptions = options.map(option => {
+			return {
+				...option,
+				label: htmlEscape(option.label)
+			};
+		});
 
 		return {
 			...state,
+			options: escapedOptions,
 			predefinedValue: predefinedValueArray[0] || ''
 		};
 	}

@@ -59,3 +59,18 @@ export function subWords(langKey, args) {
 
 	return keyArray.join('');
 }
+
+const AMPERSAND_REGEX = /&/g;
+const DOUBLE_QUOTE_REGEX = /"/g;
+const GREATER_THAN_REGEX = />/g;
+const LESS_THAN_REGEX = /</g;
+const SINGLE_QUOTE_REGEX = /'/g;
+
+export function htmlEscape(string) {
+	return string
+		.replace(AMPERSAND_REGEX, '&amp;')
+		.replace(LESS_THAN_REGEX, '&lt;')
+		.replace(GREATER_THAN_REGEX, '&gt;')
+		.replace(DOUBLE_QUOTE_REGEX, '&quot;')
+		.replace(SINGLE_QUOTE_REGEX, '&#39;');
+}
