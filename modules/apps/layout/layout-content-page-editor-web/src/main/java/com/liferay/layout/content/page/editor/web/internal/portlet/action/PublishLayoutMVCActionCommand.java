@@ -16,6 +16,7 @@ package com.liferay.layout.content.page.editor.web.internal.portlet.action;
 
 import com.liferay.layout.content.page.editor.constants.ContentPageEditorPortletKeys;
 import com.liferay.layout.util.LayoutCopyHelper;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
@@ -116,6 +117,9 @@ public class PublishLayoutMVCActionCommand extends BaseMVCActionCommand {
 			LayoutPermissionUtil.check(
 				themeDisplay.getPermissionChecker(), layout, ActionKeys.UPDATE);
 
+			UnicodeProperties layoutTypeSettingsProperties =
+				layout.getTypeSettingsProperties();
+
 			layout = _layoutCopyHelper.copyLayout(draftLayout, layout);
 
 			UnicodeProperties typeSettingsProperties =
@@ -126,6 +130,8 @@ public class PublishLayoutMVCActionCommand extends BaseMVCActionCommand {
 			_layoutLocalService.updateLayout(
 				draftLayout.getGroupId(), draftLayout.isPrivateLayout(),
 				draftLayout.getLayoutId(), typeSettingsProperties.toString());
+
+			_mergeTypeSettingsProperties(layout, layoutTypeSettingsProperties);
 
 			_layoutLocalService.updateLayout(
 				layout.getGroupId(), layout.isPrivateLayout(),
@@ -149,6 +155,23 @@ public class PublishLayoutMVCActionCommand extends BaseMVCActionCommand {
 
 		private PublishLayoutCallable(ActionRequest actionRequest) {
 			_actionRequest = actionRequest;
+		}
+
+		private void _mergeTypeSettingsProperties(
+				Layout layout, UnicodeProperties typeSettingsProperties)
+			throws PortalException {
+
+			UnicodeProperties layoutTypeSettingsProperties =
+				layout.getTypeSettingsProperties();
+
+			for (String key : typeSettingsProperties.keySet()) {
+				layoutTypeSettingsProperties.put(
+					key, typeSettingsProperties.get(key));
+			}
+
+			_layoutLocalService.updateLayout(
+				layout.getGroupId(), layout.isPrivateLayout(),
+				layout.getLayoutId(), layoutTypeSettingsProperties.toString());
 		}
 
 		private final ActionRequest _actionRequest;
