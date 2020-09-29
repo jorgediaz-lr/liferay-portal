@@ -28,6 +28,7 @@ import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.distributed.messaging.internal.configuration.ProvisioningDistributedMessagingConfigurationUtil;
 import com.liferay.osb.provisioning.distributed.messaging.internal.configuration.ProvisioningDistributedMessagingConfigurationValues;
 import com.liferay.osb.provisioning.distributed.messaging.internal.constants.SalesforceConstants;
+import com.liferay.osb.provisioning.identity.management.provider.ContactIdentityProvider;
 import com.liferay.osb.provisioning.koroneiki.constants.ContactRoleConstants;
 import com.liferay.osb.provisioning.koroneiki.reader.AccountReader;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
@@ -56,6 +57,7 @@ import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SubscriptionSender;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.net.URL;
 
@@ -317,30 +319,33 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 		PostalAddress postalAddress = parseAddress(jsonObject);
 
-		_checkUsers(jsonObject, contacts, postalAddress, analyticsCloud);
+		List<Contact> activeContacts = _checkUsers(
+			jsonObject, contacts, postalAddress, analyticsCloud);
 
 		Account account = null;
 
 		String accountKey = getAccountKey(jsonObject);
 
 		if (Validator.isNotNull(accountKey)) {
-			account = updateAccount(accountKey, contacts, productPurchases);
+			account = updateAccount(
+				accountKey, activeContacts, productPurchases);
 		}
 		else {
 			ExternalLink[] externalLinks = parseExternalLinks(jsonObject);
 
 			account = createAccount(
-				postalAddress, contacts.toArray(new Contact[0]), externalLinks,
-				productPurchases.toArray(new ProductPurchase[0]), jsonObject);
+				postalAddress, activeContacts.toArray(new Contact[0]),
+				externalLinks, productPurchases.toArray(new ProductPurchase[0]),
+				jsonObject);
 
 			if (analyticsCloud) {
-				sendAnalyticsCloudWelcomeEmail(contacts);
+				sendAnalyticsCloudWelcomeEmail(activeContacts);
 			}
 		}
 
 		checkWarnings(
-			accountKey, account, contacts.size(), salesforceOpportunityTypeName,
-			salesforceOpportunityType);
+			accountKey, account, activeContacts.size(),
+			salesforceOpportunityTypeName, salesforceOpportunityType);
 
 		String salesforceOpportunityProductFamily = jsonObject.getString(
 			"_salesforceOpportunityProductFamily");
@@ -968,7 +973,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			templateDirName + defaultTemplateName);
 	}
 
-	private void _checkUsers(
+	private List<Contact> _checkUsers(
 			JSONObject jsonObject, List<Contact> contacts,
 			PostalAddress postalAddress, boolean analyticsCloud)
 		throws Exception {
@@ -982,16 +987,50 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		Account.Region region = getSupportRegion(
 			soldBy, postalAddress.getAddressCountry());
 
+		List<Contact> activeContacts = new ArrayList<>();
+
+		StringBundler deactivatedContactSB = new StringBundler();
+		StringBundler nonexistentContactSB = new StringBundler();
+
 		for (Contact contact : contacts) {
-			Contact koroneikiContact =
-				_contactWebService.fetchContactByEmailAddress(
+			Integer status =
+				_contactIdentityProvider.fetchContactStatusByEmailAddress(
 					contact.getEmailAddress());
 
-			if (koroneikiContact == null) {
+			if (status == null) {
 				sendUserCreationEmail(
 					contact, accountName, region.toString(), analyticsCloud);
+
+				nonexistentContactSB.append("<br />");
+				nonexistentContactSB.append(contact.getEmailAddress());
+			}
+			else if (status.intValue() == WorkflowConstants.STATUS_APPROVED) {
+				_contactWebService.getContactByEmailAddress(
+					contact.getEmailAddress());
+
+				activeContacts.add(contact);
+			}
+			else {
+				deactivatedContactSB.append("<br />");
+				deactivatedContactSB.append(contact.getEmailAddress());
 			}
 		}
+
+		if (deactivatedContactSB.length() > 0) {
+			_logWarning(
+				StringBundler.concat(
+					"Following deactivated contact(s) cannot be assigned to ",
+					"the account:", deactivatedContactSB.toString(), "<br />"));
+		}
+
+		if (nonexistentContactSB.length() > 0) {
+			_logWarning(
+				StringBundler.concat(
+					"Following nonexistent contact(s) cannot be assigned to ",
+					"the account:", nonexistentContactSB.toString(), "<br />"));
+		}
+
+		return activeContacts;
 	}
 
 	private String _getCode(String parentAccountName, String accountName)
@@ -1108,6 +1147,9 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 	@Reference
 	private AccountWebService _accountWebService;
+
+	@Reference
+	private ContactIdentityProvider _contactIdentityProvider;
 
 	@Reference
 	private ContactRoleWebService _contactRoleWebService;
