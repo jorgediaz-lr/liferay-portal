@@ -244,4 +244,11 @@ definition {
 		}
 	}
 
+	macro viewPermissionsPG {
+		var key_portletName = "${portletName}";
+		Click.mouseOverClick(locator1 = "Portlet#SPECIFIC_BORDERLESS_ELLIPSIS_ICON");
+
+		MenuItem.viewPresent(menuItem = "Permissions");
+	}
+
 }
