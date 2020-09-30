@@ -586,8 +586,10 @@ AUI.add(
 									}
 									else if (
 										event.domEvent.target.test('.close') ||
-										event.domEvent.target._node.classList.contains(
-											'lexicon-icon-outline'
+										event.domEvent.target.ancestor(
+											'.close',
+											true,
+											'.liferayalert'
 										)
 									) {
 										instance._destroyBanner();
