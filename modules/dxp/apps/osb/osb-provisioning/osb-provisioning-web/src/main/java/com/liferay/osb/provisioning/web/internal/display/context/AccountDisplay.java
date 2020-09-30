@@ -152,10 +152,15 @@ public class AccountDisplay {
 		PortletURL editAccountURL = _liferayPortletResponse.createActionURL();
 
 		editAccountURL.setParameter(
-			ActionRequest.ACTION_NAME, " /accounts/edit_account");
+			ActionRequest.ACTION_NAME, "/accounts/edit_account");
 
 		PortletURL portletURL = _getPortletURL(
 			"/accounts/view_account", "details");
+
+		editAccountURL.setParameter(
+			"mvcRenderCommandName", "/accounts/view_account");
+
+		editAccountURL.setParameter("tabs1", "details");
 
 		editAccountURL.setParameter("redirect", portletURL.toString());
 

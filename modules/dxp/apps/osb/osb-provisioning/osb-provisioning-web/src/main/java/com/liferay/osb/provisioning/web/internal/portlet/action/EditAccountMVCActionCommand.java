@@ -130,8 +130,6 @@ public class EditAccountMVCActionCommand extends BaseMVCActionCommand {
 
 			throw exception;
 		}
-
-		sendRedirect(actionRequest, actionResponse);
 	}
 
 	protected String getRedirect(
@@ -145,6 +143,7 @@ public class EditAccountMVCActionCommand extends BaseMVCActionCommand {
 
 		portletURL.setParameter(
 			"mvcRenderCommandName", "/accounts/view_account");
+		portletURL.setParameter("tabs1", "details");
 		portletURL.setParameter("accountKey", accountKey);
 
 		return portletURL.toString();

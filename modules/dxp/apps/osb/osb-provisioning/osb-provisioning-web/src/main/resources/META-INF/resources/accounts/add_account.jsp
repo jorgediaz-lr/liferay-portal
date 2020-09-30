@@ -29,7 +29,18 @@ String redirect = ParamUtil.getString(request, "redirect");
 		title="new-account"
 	/>
 
-	<portlet:actionURL name="/accounts/edit_account" var="addAccountURL" />
+	<liferay-ui:error exception="<%= HttpException.class %>">
+
+		<%
+		HttpException httpException = (HttpException)errorException;
+		%>
+
+		<%= httpException.getMessage() %>
+	</liferay-ui:error>
+
+	<portlet:actionURL name="/accounts/edit_account" var="addAccountURL">
+		<portlet:param name="mvcRenderCommandName" value="/accounts/add_account" />
+	</portlet:actionURL>
 
 	<aui:form action="<%= addAccountURL %>" cssClass="container-fluid container-fluid-max-xl" method="post" name="fm">
 		<div class="add-items-sheet sheet sheet-lg">
