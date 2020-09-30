@@ -4977,6 +4977,7 @@ definition {
 			workflowActivityComment = "Process is approved.",
 			workflowAssetTitle = "Kaleo Forms Process",
 			workflowAssetType = "${workflowAssetType}",
+			workflowOrder = "true",
 			workflowTask = "Review");
 
 		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
