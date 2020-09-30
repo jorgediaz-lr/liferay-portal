@@ -117,7 +117,7 @@ definition {
 	test UninstallJarOffline {
 		property test.name.skip.portal.instance = "FileInstall#UninstallJarOffline";
 
-		FileInstall.deployFileOnServer(liferayDependencyJars = "com.liferay.cluster.test.module.jar");
+		FileInstall.deployFileOnServer(liferayDependencyJars = "com.liferay.cluster.test.module.7.2.jar");
 
 		GogoShell.openGogoShellAdmin();
 
@@ -131,7 +131,7 @@ definition {
 
 		Portlet.shutdownServer();
 
-		FileInstall.deleteJarOffline(liferayDependencyJars = "com.liferay.cluster.test.module.jar");
+		FileInstall.deleteJarOffline(liferayDependencyJars = "com.liferay.cluster.test.module.7.2.jar");
 
 		Portlet.startServer(keepOSGiState = "true");
 
