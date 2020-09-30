@@ -191,9 +191,9 @@ public class TemplateNode extends LinkedHashMap<String, Object> {
 				_log.debug("Unable to parse JSON from data: " + data);
 			}
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {
-				_log.debug(e.getMessage());
+				_log.debug(exception.getMessage());
 			}
 		}
 
