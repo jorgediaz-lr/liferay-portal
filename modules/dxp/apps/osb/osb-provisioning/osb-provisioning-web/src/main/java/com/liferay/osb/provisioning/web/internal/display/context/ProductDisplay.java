@@ -55,6 +55,13 @@ public class ProductDisplay {
 		deleteProductURL.setParameter(
 			ActionRequest.ACTION_NAME, "/products/edit_product");
 		deleteProductURL.setParameter(Constants.CMD, Constants.DELETE);
+
+		PortletURL portletURL = _liferayPortletResponse.createRenderURL();
+
+		portletURL.setParameter("mvcRenderCommandName", "/products/view");
+
+		deleteProductURL.setParameter("redirect", portletURL.toString());
+
 		deleteProductURL.setParameter("productKey", _product.getKey());
 
 		return deleteProductURL.toString();

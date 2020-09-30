@@ -27,7 +27,6 @@ import com.liferay.osb.provisioning.service.ProductBundleProductsLocalService;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.servlet.SessionErrors;
@@ -43,7 +42,6 @@ import java.util.Map;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
-import javax.portlet.PortletURL;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -60,21 +58,39 @@ import org.osgi.service.component.annotations.Reference;
 )
 public class EditProductMVCActionCommand extends BaseMVCActionCommand {
 
-	protected void deleteProduct(ActionRequest actionRequest, User user)
+	protected void deleteProduct(
+			ActionRequest actionRequest, ActionResponse actionResponse,
+			User user)
 		throws Exception {
 
-		String productKey = ParamUtil.getString(actionRequest, "productKey");
+		try {
+			String productKey = ParamUtil.getString(
+				actionRequest, "productKey");
 
-		int count =
-			_productBundleProductsLocalService.getProductBundleProductsCount(
-				productKey);
+			int count =
+				_productBundleProductsLocalService.
+					getProductBundleProductsCount(productKey);
 
-		if (count == 0) {
-			_productWebService.deleteProduct(
-				user.getFullName(), user.getUuid(), productKey);
+			if (count == 0) {
+				_productWebService.deleteProduct(
+					user.getFullName(), user.getUuid(), productKey);
+			}
+			else {
+				throw new RequiredProductException();
+			}
 		}
-		else {
-			throw new RequiredProductException();
+		catch (Exception exception) {
+			if (exception instanceof HttpException ||
+				exception instanceof RequiredProductException) {
+
+				SessionErrors.add(
+					actionRequest, exception.getClass(), exception);
+
+				sendRedirect(actionRequest, actionResponse);
+			}
+			else {
+				throw exception;
+			}
 		}
 	}
 
@@ -92,37 +108,25 @@ public class EditProductMVCActionCommand extends BaseMVCActionCommand {
 			User user = themeDisplay.getUser();
 
 			if (cmd.equals(Constants.DELETE)) {
-				deleteProduct(actionRequest, user);
+				deleteProduct(actionRequest, actionResponse, user);
 			}
 			else {
 				updateProduct(actionRequest, user);
 			}
 
-			sendRedirect(
-				actionRequest, actionResponse, getRedirect(actionResponse));
-		}
-		catch (HttpException httpException) {
-			SessionErrors.add(
-				actionRequest, httpException.getClass(), httpException);
+			sendRedirect(actionRequest, actionResponse);
 		}
 		catch (Exception exception) {
-			_log.error(exception, exception);
+			if (exception instanceof HttpException) {
+				SessionErrors.add(
+					actionRequest, exception.getClass(), exception);
+			}
+			else {
+				_log.error(exception, exception);
 
-			throw exception;
+				throw exception;
+			}
 		}
-	}
-
-	protected String getRedirect(ActionResponse actionResponse)
-		throws Exception {
-
-		LiferayPortletResponse liferayPortletResponse =
-			_portal.getLiferayPortletResponse(actionResponse);
-
-		PortletURL portletURL = liferayPortletResponse.createRenderURL();
-
-		portletURL.setParameter("mvcRenderCommandName", "/products/view");
-
-		return portletURL.toString();
 	}
 
 	protected void updateDossieraMapping(
@@ -217,9 +221,6 @@ public class EditProductMVCActionCommand extends BaseMVCActionCommand {
 
 	@Reference
 	private ExternalLinkWebService _externalLinkWebService;
-
-	@Reference
-	private Portal _portal;
 
 	@Reference
 	private ProductBundleProductsLocalService
