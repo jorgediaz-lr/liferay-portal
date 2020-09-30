@@ -159,7 +159,14 @@ definition {
 
 		MenuItem.click(menuItem = "Manage");
 
-		SitePages.deletePage(pageName = "${pageName}");
+		if (isSet(hasChildren)) {
+			SitePages.deletePage(
+				hasChildren = "true",
+				pageName = "${pageName}");
+		}
+		else {
+			SitePages.deletePage(pageName = "${pageName}");
+		}
 	}
 
 	macro deleteViaDeleteIconCP {
