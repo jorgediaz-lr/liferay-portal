@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker;
 import com.liferay.portal.kernel.dao.search.ResultRow;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.HtmlUtil;
 
 import java.util.List;
 
@@ -49,7 +50,8 @@ public class AssignProductBundleProductsRowChecker
 		return getRowCheckBox(
 			httpServletRequest, isChecked(resultRow.getObject()),
 			isDisabled(resultRow.getObject()),
-			productDisplay.getKey() + "_" + productDisplay.getName());
+			productDisplay.getKey() + "_" +
+				HtmlUtil.escape(productDisplay.getName()));
 	}
 
 	@Override
