@@ -41,6 +41,7 @@ else {
 List<AssetVocabulary> vocabularies = new ArrayList<>();
 
 vocabularies.addAll(AssetVocabularyServiceUtil.getGroupVocabularies(groupIds));
+
 vocabularies.sort(new AssetVocabularyGroupLocalizedTitleComparator(scopeGroupId, locale, true));
 
 if (Validator.isNotNull(className)) {

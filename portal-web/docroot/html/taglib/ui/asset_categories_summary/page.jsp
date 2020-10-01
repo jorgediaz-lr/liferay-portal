@@ -33,6 +33,7 @@ AssetEntry assetEntry = AssetEntryLocalServiceUtil.fetchEntry(className, classPK
 List<AssetVocabulary> vocabularies = new ArrayList<>();
 
 vocabularies.addAll(AssetVocabularyServiceUtil.getGroupVocabularies(PortalUtil.getCurrentAndAncestorSiteGroupIds((assetEntry != null) ? assetEntry.getGroupId() : scopeGroupId)));
+
 vocabularies.sort(new AssetVocabularyGroupLocalizedTitleComparator((assetEntry != null) ? assetEntry.getGroupId() : scopeGroupId, themeDisplay.getLocale(), true));
 
 for (AssetVocabulary vocabulary : vocabularies) {
