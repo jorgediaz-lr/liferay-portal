@@ -91,17 +91,8 @@ Layout curLayout = (Layout)row.getObject();
 	</c:if>
 
 	<c:if test="<%= layoutsAdminDisplayContext.isShowDeleteAction(curLayout) %>">
-
-		<%
-		String confirmation = "are-you-sure-you-want-to-delete-this-page";
-
-		if (curLayout.hasChildren()) {
-			confirmation = "this-page-has-child-pages-that-will-also-be-removed-are-you-sure-you-want-to-delete-this-page";
-		}
-		%>
-
 		<liferay-ui:icon-delete
-			confirmation="<%= confirmation %>"
+			confirmation='<%= curLayout.hasChildren() ? "this-page-has-child-pages-that-will-also-be-removed-are-you-sure-you-want-to-delete-this-page" : "are-you-sure-you-want-to-delete-this-page" %>'
 			url="<%= layoutsAdminDisplayContext.getDeleteLayoutURL(curLayout) %>"
 		/>
 	</c:if>
