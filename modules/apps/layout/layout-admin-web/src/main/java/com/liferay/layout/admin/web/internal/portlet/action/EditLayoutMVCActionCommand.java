@@ -155,7 +155,8 @@ public class EditLayoutMVCActionCommand extends BaseMVCActionCommand {
 			groupId, privateLayout, layoutId, useCustomCanonicalURL,
 			canonicalURLMap, serviceContext);
 
-		boolean layoutIsNotDraft = false;
+		boolean layoutHasDraftChanges = true;
+
 		Layout draftLayout = _layoutLocalService.fetchLayout(
 			_portal.getClassNameId(Layout.class), layout.getPlid());
 
@@ -164,7 +165,8 @@ public class EditLayoutMVCActionCommand extends BaseMVCActionCommand {
 
 			Date publishDate = layout.getPublishDate();
 
-			layoutIsNotDraft = modifiedDate.getTime() <= publishDate.getTime();
+			layoutHasDraftChanges =
+				modifiedDate.getTime() > publishDate.getTime();
 
 			_layoutService.updateLayout(
 				groupId, privateLayout, draftLayout.getLayoutId(),
@@ -240,7 +242,7 @@ public class EditLayoutMVCActionCommand extends BaseMVCActionCommand {
 				layoutTypeSettingsProperties.toString());
 		}
 
-		if (layoutIsNotDraft) {
+		if (!layoutHasDraftChanges) {
 			_layoutLocalService.updateLayout(
 				layout.getGroupId(), layout.isPrivateLayout(),
 				layout.getLayoutId(), new Date());
