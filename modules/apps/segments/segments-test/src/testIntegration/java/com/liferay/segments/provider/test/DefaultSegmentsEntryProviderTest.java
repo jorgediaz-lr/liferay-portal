@@ -15,15 +15,18 @@
 package com.liferay.segments.provider.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.role.RoleConstants;
+import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.OrganizationTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
+import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -202,6 +205,36 @@ public class DefaultSegmentsEntryProviderTest {
 	}
 
 	@Test
+	public void testGetSegmentsEntryIdsWithContextCriterionAndDefaultUser()
+		throws Exception {
+
+		Criteria criteria = new Criteria();
+
+		_contextSegmentsCriteriaContributor.contribute(
+			criteria, "(languageId eq 'en')", Criteria.Conjunction.AND);
+
+		SegmentsTestUtil.addSegmentsEntry(
+			_group.getGroupId(), CriteriaSerializer.serialize(criteria),
+			User.class.getName());
+
+		Company company = _companyLocalService.getCompany(
+			TestPropsValues.getCompanyId());
+
+		User defaultUser = company.getDefaultUser();
+
+		Context context = new Context();
+
+		context.put(Context.LANGUAGE_ID, "en");
+		context.put(Context.SIGNED_IN, false);
+
+		long[] segmentsEntryIds = _segmentsEntryProvider.getSegmentsEntryIds(
+			_group.getGroupId(), User.class.getName(), defaultUser.getUserId(),
+			context);
+
+		Assert.assertArrayEquals(new long[0], segmentsEntryIds);
+	}
+
+	@Test
 	public void testGetSegmentsEntryIdsWithContextCriterionAndModelCriterion()
 		throws Exception {
 
@@ -240,7 +273,8 @@ public class DefaultSegmentsEntryProviderTest {
 
 		Context context = new Context();
 
-		context.put("languageId", "en");
+		context.put(Context.LANGUAGE_ID, "en");
+		context.put(Context.SIGNED_IN, true);
 
 		long[] segmentsEntryIds = _segmentsEntryProvider.getSegmentsEntryIds(
 			_group.getGroupId(), User.class.getName(), _user1.getUserId(),
@@ -256,6 +290,37 @@ public class DefaultSegmentsEntryProviderTest {
 					segmentsEntry3.getSegmentsEntryId()
 				},
 				segmentsEntryIds));
+	}
+
+	@Test
+	public void testGetSegmentsEntryIdsWithModelCriterionAndDefaultUser()
+		throws Exception {
+
+		Company company = _companyLocalService.getCompany(
+			TestPropsValues.getCompanyId());
+
+		User defaultUser = company.getDefaultUser();
+
+		Criteria criteria = new Criteria();
+
+		_userSegmentsCriteriaContributor.contribute(
+			criteria,
+			String.format("(firstName eq '%s')", defaultUser.getFirstName()),
+			Criteria.Conjunction.AND);
+
+		SegmentsTestUtil.addSegmentsEntry(
+			_group.getGroupId(), CriteriaSerializer.serialize(criteria),
+			User.class.getName());
+
+		Context context = new Context();
+
+		context.put(Context.SIGNED_IN, false);
+
+		long[] segmentsEntryIds = _segmentsEntryProvider.getSegmentsEntryIds(
+			_group.getGroupId(), User.class.getName(), defaultUser.getUserId(),
+			context);
+
+		Assert.assertArrayEquals(new long[0], segmentsEntryIds);
 	}
 
 	@Test
@@ -344,7 +409,8 @@ public class DefaultSegmentsEntryProviderTest {
 
 		Context context = new Context();
 
-		context.put("languageId", "en");
+		context.put(Context.LANGUAGE_ID, "en");
+		context.put(Context.SIGNED_IN, true);
 
 		long[] segmentsEntryIds = _segmentsEntryProvider.getSegmentsEntryIds(
 			_group.getGroupId(), User.class.getName(), _user1.getUserId(),
@@ -407,6 +473,9 @@ public class DefaultSegmentsEntryProviderTest {
 				},
 				segmentsEntryIds));
 	}
+
+	@Inject
+	private CompanyLocalService _companyLocalService;
 
 	@Inject(
 		filter = "segments.criteria.contributor.key=context",
