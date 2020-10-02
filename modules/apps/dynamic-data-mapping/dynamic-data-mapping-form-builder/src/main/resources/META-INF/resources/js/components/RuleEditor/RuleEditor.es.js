@@ -1043,9 +1043,16 @@ class RuleEditor extends Component {
 		let secondOperandType = 'field';
 		let valueType = 'field';
 		if (value[0] == 'value') {
-			valueType = 'string';
-			secondOperandType = this._getFieldTypeByFieldName(operands[0].value)
-				.dataType;
+			const fieldType = this._getFieldTypeByFieldName(operands[0].value);
+
+			if (fieldType.type === 'grid') {
+				valueType = 'json';
+				secondOperandType = 'json';
+			}
+			else {
+				valueType = 'string';
+				secondOperandType = fieldType.dataType;
+			}
 		}
 
 		if (
