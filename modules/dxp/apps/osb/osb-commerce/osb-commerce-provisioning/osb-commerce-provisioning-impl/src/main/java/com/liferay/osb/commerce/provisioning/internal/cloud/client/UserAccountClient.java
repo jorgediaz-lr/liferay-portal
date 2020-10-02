@@ -19,9 +19,7 @@ import com.liferay.headless.osb.commerce.client.dto.v1_0.UserAccount;
 /**
  * @author Ivica Cardic
  */
-public interface UserAccountClient {
-
-	public void destroy();
+public interface UserAccountClient extends Client {
 
 	public UserAccount postUserAccount(
 		UserAccount userAccount, String virtualHostname);

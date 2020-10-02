@@ -14,16 +14,46 @@
 
 package com.liferay.osb.commerce.provisioning.internal.cloud.client;
 
+import com.liferay.osb.commerce.provisioning.internal.configuration.OSBCommerceProvisioningConfiguration;
+import com.liferay.osb.commerce.provisioning.internal.util.ApplicationProfile;
+import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
+
+import java.util.Map;
+
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 
 /**
  * @author Ivica Cardic
  */
-@Component(service = UserAccountClientFactory.class)
+@Component(
+	configurationPid = "com.liferay.osb.commerce.provisioning.internal.configuration.OSBCommerceProvisioningConfiguration",
+	service = UserAccountClientFactory.class
+)
 public class UserAccountClientFactory {
 
 	public UserAccountClient getUserAccountClient() {
-		return new UserAccountClientMockImpl();
+		if (_osbCommerceProvisioningConfiguration.applicationProfile() ==
+				ApplicationProfile.DEVELOPMENT) {
+
+			return new UserAccountClientMockImpl();
+		}
+
+		return new UserAccountClientImpl(
+			_osbCommerceProvisioningConfiguration.
+				osbCommerceInstanceOAuthClientId(),
+			_osbCommerceProvisioningConfiguration.
+				osbCommerceInstanceOAuthClientSecret());
 	}
+
+	@Activate
+	protected void activate(Map<String, Object> properties) {
+		_osbCommerceProvisioningConfiguration =
+			ConfigurableUtil.createConfigurable(
+				OSBCommerceProvisioningConfiguration.class, properties);
+	}
+
+	private OSBCommerceProvisioningConfiguration
+		_osbCommerceProvisioningConfiguration;
 
 }
