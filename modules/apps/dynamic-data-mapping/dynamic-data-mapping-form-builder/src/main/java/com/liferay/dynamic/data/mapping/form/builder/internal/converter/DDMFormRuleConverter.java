@@ -143,6 +143,11 @@ public class DDMFormRuleConverter {
 				_FUNCTION_CALL_UNARY_EXPRESSION_FORMAT, "getValue",
 				StringUtil.quote(operand.getValue()));
 		}
+		else if (Objects.equals("json", operand.getType())) {
+			return String.format(
+				_FUNCTION_CALL_UNARY_EXPRESSION_FORMAT, "getJSONValue",
+				StringUtil.quote(operand.getValue()));
+		}
 
 		String value = operand.getValue();
 
