@@ -178,7 +178,7 @@ public class ContactResourceImpl
 		throws Exception {
 
 		return ContactUtil.toContact(
-			_contactIdentityProvider.getContactByEmailAddress(emailAddress));
+			_contactService.getContactByEmailAddress(emailAddress));
 	}
 
 	@Override
@@ -186,7 +186,7 @@ public class ContactResourceImpl
 		throws Exception {
 
 		return ContactUtil.toContact(
-			_contactIdentityProvider.getContactByProviderId(contactUuid));
+			_contactService.getContactByUuid(contactUuid));
 	}
 
 	@Override
