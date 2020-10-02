@@ -50,6 +50,9 @@ function destroy() {
  * @param {Object} options
  * @param {function} changedCallback
  * @param {function} destroyedCallback
+ * @param {Event} event
+ * @param {string} type
+ * @param {string} initialValue
  */
 function init(
 	editableElement,
