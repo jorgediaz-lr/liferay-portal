@@ -71,7 +71,7 @@ public class WebContactIdentityProvider implements ContactIdentityProvider {
 			return null;
 		}
 
-		return Integer.valueOf(jsonObject.getInt("status"));
+		return (Integer)jsonObject.get("status");
 	}
 
 	@Activate

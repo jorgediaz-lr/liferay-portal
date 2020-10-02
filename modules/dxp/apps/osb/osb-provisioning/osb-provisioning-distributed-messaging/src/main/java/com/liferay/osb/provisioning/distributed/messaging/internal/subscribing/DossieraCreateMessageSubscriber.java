@@ -989,8 +989,10 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 		List<Contact> activeContacts = new ArrayList<>();
 
-		StringBundler deactivatedContactSB = new StringBundler();
-		StringBundler nonexistentContactSB = new StringBundler();
+		StringBundler deactivatedContactsSB = new StringBundler(
+			contacts.size() * 2);
+		StringBundler missingContactsSB = new StringBundler(
+			contacts.size() * 2);
 
 		for (Contact contact : contacts) {
 			Integer status =
@@ -1001,33 +1003,31 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 				sendUserCreationEmail(
 					contact, accountName, region.toString(), analyticsCloud);
 
-				nonexistentContactSB.append("<br />");
-				nonexistentContactSB.append(contact.getEmailAddress());
+				missingContactsSB.append("<br />");
+				missingContactsSB.append(contact.getEmailAddress());
 			}
-			else if (status.intValue() == WorkflowConstants.STATUS_APPROVED) {
-				_contactWebService.getContactByEmailAddress(
-					contact.getEmailAddress());
-
+			else if (status == WorkflowConstants.STATUS_APPROVED) {
 				activeContacts.add(contact);
 			}
 			else {
-				deactivatedContactSB.append("<br />");
-				deactivatedContactSB.append(contact.getEmailAddress());
+				deactivatedContactsSB.append("<br />");
+				deactivatedContactsSB.append(contact.getEmailAddress());
 			}
 		}
 
-		if (deactivatedContactSB.length() > 0) {
+		if (deactivatedContactsSB.length() > 0) {
 			_logWarning(
 				StringBundler.concat(
-					"Following deactivated contact(s) cannot be assigned to ",
-					"the account:", deactivatedContactSB.toString(), "<br />"));
+					"The following deactivated contact(s) cannot be assigned ",
+					"to the account:", deactivatedContactsSB.toString(),
+					"<br />"));
 		}
 
-		if (nonexistentContactSB.length() > 0) {
+		if (missingContactsSB.length() > 0) {
 			_logWarning(
 				StringBundler.concat(
-					"Following nonexistent contact(s) cannot be assigned to ",
-					"the account:", nonexistentContactSB.toString(), "<br />"));
+					"The following missing contact(s) cannot be assigned to ",
+					"the account:", missingContactsSB.toString(), "<br />"));
 		}
 
 		return activeContacts;
