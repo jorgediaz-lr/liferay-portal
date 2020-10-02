@@ -210,20 +210,24 @@ class RuleList extends Component {
 	}
 
 	_getOptionLabel(fieldName, optionValue) {
+		return this._getPropertyLabel(fieldName, 'options', optionValue);
+	}
+
+	_getPropertyLabel(fieldName, propertyName, propertyValue) {
 		const pages = this.pages;
 
 		let fieldLabel = null;
 
-		if (pages && optionValue) {
+		if (pages && propertyValue) {
 			const visitor = new PagesVisitor(pages);
 
 			visitor.findField(field => {
 				let found = false;
 
 				if (field.fieldName === fieldName && field.options) {
-					field.options.some(option => {
-						if (option.value == optionValue) {
-							fieldLabel = option.label;
+					field[propertyName].some(property => {
+						if (property.value == propertyValue) {
+							fieldLabel = property.label;
 
 							found = true;
 						}
@@ -236,7 +240,7 @@ class RuleList extends Component {
 			});
 		}
 
-		return fieldLabel;
+		return fieldLabel ? fieldLabel : propertyValue;
 	}
 
 	_getRulesCardOptions(rule) {
