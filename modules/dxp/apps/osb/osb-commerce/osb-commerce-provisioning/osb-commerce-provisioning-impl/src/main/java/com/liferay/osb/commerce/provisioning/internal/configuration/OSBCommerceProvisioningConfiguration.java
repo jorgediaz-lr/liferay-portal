@@ -30,6 +30,9 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
 )
 public interface OSBCommerceProvisioningConfiguration {
 
+	@Meta.AD(deflt = "DEVELOPMENT", name = "environment", required = false)
+	public ApplicationProfile applicationProfile();
+
 	@Meta.AD(
 		deflt = "https://api.liferay.sh", name = "dxp-cloud-api-url",
 		required = false
@@ -45,7 +48,16 @@ public interface OSBCommerceProvisioningConfiguration {
 	)
 	public String dxpCloudAPIUsername();
 
-	@Meta.AD(deflt = "DEVELOPMENT", name = "environment", required = false)
-	public ApplicationProfile applicationProfile();
+	@Meta.AD(
+		deflt = "", name = "osb-commerce-instance-oauth-client-id",
+		required = false
+	)
+	public String osbCommerceInstanceOAuthClientId();
+
+	@Meta.AD(
+		deflt = "", name = "osb-commerce-instance-oauth-client-secret",
+		required = false
+	)
+	public String osbCommerceInstanceOAuthClientSecret();
 
 }
