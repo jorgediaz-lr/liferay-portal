@@ -20,11 +20,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.Base64;
 
 import java.io.IOException;
-
-import java.nio.charset.StandardCharsets;
 
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpStatus;
@@ -47,14 +44,7 @@ import org.apache.http.util.EntityUtils;
  */
 public abstract class BaseClientImpl implements Client {
 
-	public BaseClientImpl(
-		String dxpCloudAPIURL, String password, String username) {
-
-		this.dxpCloudAPIURL = dxpCloudAPIURL;
-
-		_password = password;
-		_username = username;
-
+	public BaseClientImpl() {
 		_closeableHttpClient = _createCloseableHttpClient();
 	}
 
@@ -86,8 +76,13 @@ public abstract class BaseClientImpl implements Client {
 		}
 	}
 
-	protected String execute(HttpUriRequest httpUriRequest) {
-		_setAuthorizationHeader(httpUriRequest);
+	protected String execute(
+		String authorizationHeader, HttpUriRequest httpUriRequest) {
+
+		if (authorizationHeader != null) {
+			httpUriRequest.setHeader(
+				HttpHeaders.AUTHORIZATION, authorizationHeader);
+		}
 
 		try (CloseableHttpResponse closeableHttpResponse =
 				_closeableHttpClient.execute(httpUriRequest)) {
@@ -99,22 +94,28 @@ public abstract class BaseClientImpl implements Client {
 		}
 	}
 
-	protected void executeDelete(String uri) {
-		execute(new HttpDelete(uri));
-	}
-
-	protected <T> T executeGet(Class<T> valueType, String uri) {
-		return convert(execute(new HttpGet(uri)), valueType);
+	protected void executeDelete(String authorizationHeader, String uri) {
+		execute(authorizationHeader, new HttpDelete(uri));
 	}
 
 	protected <T> T executeGet(
-		TypeReference<T> valueTypeReference, String uri) {
+		String authorizationHeader, String uri, Class<T> valueType) {
 
-		return convert(execute(new HttpGet(uri)), valueTypeReference);
+		return convert(
+			execute(authorizationHeader, new HttpGet(uri)), valueType);
+	}
+
+	protected <T> T executeGet(
+		String authorizationHeader, TypeReference<T> valueTypeReference,
+		String uri) {
+
+		return convert(
+			execute(authorizationHeader, new HttpGet(uri)), valueTypeReference);
 	}
 
 	protected <T> T executePost(
-		Object content, Class<T> valueType, String uri) {
+		String authorizationHeader, Object content, String uri,
+		Class<T> valueType) {
 
 		HttpPost httpPost = new HttpPost(uri);
 
@@ -122,11 +123,12 @@ public abstract class BaseClientImpl implements Client {
 			new StringEntity(
 				writeValueAsString(content), ContentType.APPLICATION_JSON));
 
-		return convert(execute(httpPost), valueType);
+		return convert(execute(authorizationHeader, httpPost), valueType);
 	}
 
 	protected <T> T executeUpdate(
-		Object content, Class<T> valueType, String uri) {
+		String authorizationHeader, Object content, Class<T> valueType,
+		String uri) {
 
 		HttpPatch httpPatch = new HttpPatch(uri);
 
@@ -134,7 +136,7 @@ public abstract class BaseClientImpl implements Client {
 			new StringEntity(
 				writeValueAsString(content), ContentType.APPLICATION_JSON));
 
-		return convert(execute(httpPatch), valueType);
+		return convert(execute(authorizationHeader, httpPatch), valueType);
 	}
 
 	protected String getResponseContent(
@@ -159,8 +161,6 @@ public abstract class BaseClientImpl implements Client {
 		}
 	}
 
-	protected final String dxpCloudAPIURL;
-
 	private CloseableHttpClient _createCloseableHttpClient() {
 		HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
 
@@ -177,16 +177,6 @@ public abstract class BaseClientImpl implements Client {
 		return httpClientBuilder.build();
 	}
 
-	private void _setAuthorizationHeader(HttpUriRequest httpUriRequest) {
-		String authorization = _username + ":" + _password;
-
-		String encodedAuthorization = Base64.encode(
-			authorization.getBytes(StandardCharsets.ISO_8859_1));
-
-		httpUriRequest.setHeader(
-			HttpHeaders.AUTHORIZATION, "Basic " + encodedAuthorization);
-	}
-
 	private static final ObjectMapper _objectMapper = new ObjectMapper() {
 		{
 			configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -194,7 +184,5 @@ public abstract class BaseClientImpl implements Client {
 	};
 
 	private final CloseableHttpClient _closeableHttpClient;
-	private final String _password;
-	private final String _username;
 
 }

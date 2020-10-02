@@ -19,10 +19,13 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.liferay.osb.commerce.provisioning.internal.cloud.client.dto.PortalInstance;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+
+import java.nio.charset.StandardCharsets;
 
 import java.util.List;
 
@@ -37,24 +40,30 @@ public class DXPCloudProvisioningClientImpl
 	public DXPCloudProvisioningClientImpl(
 		String dxpCloudAPIURL, String password, String username) {
 
-		super(dxpCloudAPIURL, password, username);
+		_dxpCloudAPIURL = dxpCloudAPIURL;
+		_password = password;
+		_username = username;
 	}
 
 	@Override
 	public void deletePortalInstance(String portalInstanceId) {
-		executeDelete(_getProvisioningPortalInstancesURI(portalInstanceId));
+		executeDelete(
+			_getAuthorizationHeader(),
+			_getProvisioningPortalInstancesURI(portalInstanceId));
 	}
 
 	@Override
 	public PortalInstance getPortalInstance(String portalInstanceId) {
 		return executeGet(
-			PortalInstance.class,
-			_getProvisioningPortalInstancesURI(portalInstanceId));
+			_getAuthorizationHeader(),
+			_getProvisioningPortalInstancesURI(portalInstanceId),
+			PortalInstance.class);
 	}
 
 	@Override
 	public List<PortalInstance> getPortalInstances() {
 		return executeGet(
+			_getAuthorizationHeader(),
 			new TypeReference<List<PortalInstance>>() {
 			},
 			_getProvisioningPortalInstancesURI());
@@ -74,10 +83,11 @@ public class DXPCloudProvisioningClientImpl
 			URI uri = uriBuilder.build();
 
 			return executePost(
+				_getAuthorizationHeader(),
 				HashMapBuilder.put(
 					"domain", domain
 				).build(),
-				PortalInstance.class, uri.toString());
+				uri.toString(), PortalInstance.class);
 		}
 		catch (URISyntaxException uriSyntaxException) {
 			throw new SystemException(uriSyntaxException);
@@ -89,6 +99,7 @@ public class DXPCloudProvisioningClientImpl
 		String domain, String portalInstanceId) {
 
 		return executeUpdate(
+			_getAuthorizationHeader(),
 			HashMapBuilder.put(
 				"domain", domain
 			).build(),
@@ -96,17 +107,30 @@ public class DXPCloudProvisioningClientImpl
 			_getProvisioningPortalInstancesURI(portalInstanceId));
 	}
 
+	private String _getAuthorizationHeader() {
+		String authorization = _username + ":" + _password;
+
+		String encodedAuthorization = Base64.encode(
+			authorization.getBytes(StandardCharsets.ISO_8859_1));
+
+		return "Basic " + encodedAuthorization;
+	}
+
 	private String _getProvisioningPortalInstancesURI() {
-		return dxpCloudAPIURL + _PROVISIONING_SAAS_PORTAL_INSTANCES_PATH;
+		return _dxpCloudAPIURL + _PROVISIONING_SAAS_PORTAL_INSTANCES_PATH;
 	}
 
 	private String _getProvisioningPortalInstancesURI(String portalInstanceId) {
 		return StringBundler.concat(
-			dxpCloudAPIURL, _PROVISIONING_SAAS_PORTAL_INSTANCES_PATH, "/",
+			_dxpCloudAPIURL, _PROVISIONING_SAAS_PORTAL_INSTANCES_PATH, "/",
 			portalInstanceId);
 	}
 
 	private static final String _PROVISIONING_SAAS_PORTAL_INSTANCES_PATH =
 		"/provisioning/saas/portal-instances";
+
+	private final String _dxpCloudAPIURL;
+	private final String _password;
+	private final String _username;
 
 }
