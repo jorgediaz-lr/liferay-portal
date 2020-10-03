@@ -34,7 +34,10 @@ renderResponse.setTitle((koroneikiAccount == null) ? LanguageUtil.get(request, "
 	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 	<aui:input name="accountId" type="hidden" value="<%= accountId %>" />
 
+	<liferay-ui:error exception="<%= AccountCodeException.MustNotBeDuplicate.class %>" message="please-enter-a-valid-code" />
 	<liferay-ui:error exception="<%= AccountNameException.class %>" message="please-enter-a-valid-name" />
+	<liferay-ui:error exception="<%= AccountParentException.MustNotBeDescendant.class %>" message="please-select-a-valid-parent" />
+	<liferay-ui:error exception="<%= AccountParentException.MustNotBeSelf.class %>" message="please-select-a-valid-parent" />
 
 	<aui:model-context bean="<%= koroneikiAccount %>" model="<%= Account.class %>" />
 

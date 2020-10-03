@@ -34,7 +34,7 @@ renderResponse.setTitle((productEntry == null) ? LanguageUtil.get(request, "new-
 	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 	<aui:input name="productEntryId" type="hidden" value="<%= productEntryId %>" />
 
-	<liferay-ui:error exception="<%= ProductEntryNameException.class %>" message="please-enter-a-valid-name" />
+	<liferay-ui:error exception="<%= ProductEntryNameException.MustNotBeDuplicate.class %>" message="please-enter-a-valid-name" />
 
 	<aui:model-context bean="<%= productEntry %>" model="<%= ProductEntry.class %>" />
 

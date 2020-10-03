@@ -15,7 +15,10 @@
 package com.liferay.osb.koroneiki.taproot.web.internal.portlet.action;
 
 import com.liferay.osb.koroneiki.taproot.constants.TaprootPortletKeys;
+import com.liferay.osb.koroneiki.taproot.exception.AccountCodeException;
 import com.liferay.osb.koroneiki.taproot.exception.AccountNameException;
+import com.liferay.osb.koroneiki.taproot.exception.AccountParentException;
+import com.liferay.osb.koroneiki.taproot.exception.RequiredAccountException;
 import com.liferay.osb.koroneiki.taproot.model.Account;
 import com.liferay.osb.koroneiki.taproot.service.AccountService;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -75,8 +78,18 @@ public class EditAccountMVCActionCommand extends BaseMVCActionCommand {
 			sendRedirect(actionRequest, actionResponse);
 		}
 		catch (Exception exception) {
-			if (exception instanceof AccountNameException) {
-				SessionErrors.add(actionRequest, exception.getClass());
+			if (exception instanceof RequiredAccountException) {
+				SessionErrors.add(
+					actionRequest, exception.getClass(), exception);
+
+				sendRedirect(actionRequest, actionResponse);
+			}
+			else if (exception instanceof AccountCodeException ||
+					 exception instanceof AccountNameException ||
+					 exception instanceof AccountParentException) {
+
+				SessionErrors.add(
+					actionRequest, exception.getClass(), exception);
 
 				actionResponse.setRenderParameter(
 					"mvcRenderCommandName", "/accounts_admin/edit_account");

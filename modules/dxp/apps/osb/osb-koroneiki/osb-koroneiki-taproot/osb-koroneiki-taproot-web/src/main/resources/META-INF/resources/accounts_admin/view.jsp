@@ -27,6 +27,8 @@ ViewAccountsManagementToolbarDisplayContext viewAccountsManagementToolbarDisplay
 	navigationItems="<%= viewAccountsManagementToolbarDisplayContext.getNavigationItems() %>"
 />
 
+<liferay-ui:error exception="<%= RequiredAccountException.class %>" message="the-account-cannot-be-deleted-because-it-is-required-by-other-accounts" />
+
 <clay:management-toolbar
 	displayContext="<%= viewAccountsManagementToolbarDisplayContext %>"
 />
