@@ -319,8 +319,24 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 		PostalAddress postalAddress = parseAddress(jsonObject);
 
-		List<Contact> activeContacts = _checkUsers(
-			jsonObject, contacts, postalAddress, analyticsCloud);
+		Map<Integer, Contact> contactsStatusMap = _checkUsers(contacts);
+
+		List<Contact> activeContacts = new ArrayList<>();
+		List<Contact> missingContacts = new ArrayList<>();
+
+		for (Map.Entry<Integer, Contact> contactStatus :
+				contactsStatusMap.entrySet()) {
+
+			Integer status = contactStatus.getKey();
+			Contact contact = contactStatus.getValue();
+
+			if (status == null) {
+				missingContacts.add(contact);
+			}
+			else if (status == WorkflowConstants.STATUS_APPROVED) {
+				activeContacts.add(contact);
+			}
+		}
 
 		Account account = null;
 
@@ -357,6 +373,10 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			createZendeskTicket(
 				account, postalAddress, salesforceOpportunityTypeName,
 				salesforceOpportunityKey);
+		}
+
+		for (Contact contact : missingContacts) {
+			sendUserCreationEmail(contact, account, analyticsCloud);
 		}
 	}
 
@@ -844,8 +864,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 	}
 
 	protected void sendUserCreationEmail(
-		Contact contact, String accountName, String accountRegion,
-		boolean analyticsCloud) {
+		Contact contact, Account account, boolean analyticsCloud) {
 
 		StringBundler sb = new StringBundler(2);
 
@@ -860,7 +879,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			ProvisioningDistributedMessagingConfigurationUtil.get(
 				ProvisioningDistributedMessagingConfigurationValues.
 					PROVISIONING_EMAIL_ADDRESS,
-				new Filter(accountRegion));
+				new Filter(account.getRegionAsString()));
 
 		if (Validator.isNull(provisioningEmailAddress)) {
 			provisioningEmailAddress =
@@ -884,8 +903,8 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		subscriptionSender.setBody(body);
 		subscriptionSender.setCompanyId(_portal.getDefaultCompanyId());
 		subscriptionSender.setContextAttributes(
-			"[$ACCOUNT_ENTRY_NAME$]", accountName, "[$SUBSCRIPTION_SERVICES$]",
-			sb.toString());
+			"[$ACCOUNT_ENTRY_NAME$]", account.getName(),
+			"[$SUBSCRIPTION_SERVICES$]", sb.toString());
 		subscriptionSender.setFrom(
 			provisioningEmailAddress, "Liferay Provisioning");
 		subscriptionSender.setHtmlFormat(true);
@@ -973,21 +992,10 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			templateDirName + defaultTemplateName);
 	}
 
-	private List<Contact> _checkUsers(
-			JSONObject jsonObject, List<Contact> contacts,
-			PostalAddress postalAddress, boolean analyticsCloud)
+	private Map<Integer, Contact> _checkUsers(List<Contact> contacts)
 		throws Exception {
 
-		JSONObject accountJSONObject = jsonObject.getJSONObject("_account");
-
-		String accountName = accountJSONObject.getString("_name");
-
-		String soldBy = jsonObject.getString("_salesforceOpportunitySoldBy");
-
-		Account.Region region = getSupportRegion(
-			soldBy, postalAddress.getAddressCountry());
-
-		List<Contact> activeContacts = new ArrayList<>();
+		Map<Integer, Contact> contactsStatusMap = new HashMap<>();
 
 		StringBundler deactivatedContactsSB = new StringBundler(
 			contacts.size() * 2);
@@ -999,17 +1007,13 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 				_contactIdentityProvider.fetchContactStatusByEmailAddress(
 					contact.getEmailAddress());
 
-			if (status == null) {
-				sendUserCreationEmail(
-					contact, accountName, region.toString(), analyticsCloud);
+			contactsStatusMap.put(status, contact);
 
+			if (status == null) {
 				missingContactsSB.append("<br />");
 				missingContactsSB.append(contact.getEmailAddress());
 			}
-			else if (status == WorkflowConstants.STATUS_APPROVED) {
-				activeContacts.add(contact);
-			}
-			else {
+			else if (status != WorkflowConstants.STATUS_APPROVED) {
 				deactivatedContactsSB.append("<br />");
 				deactivatedContactsSB.append(contact.getEmailAddress());
 			}
@@ -1030,7 +1034,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 					"the account:", missingContactsSB.toString(), "<br />"));
 		}
 
-		return activeContacts;
+		return contactsStatusMap;
 	}
 
 	private String _getCode(String parentAccountName, String accountName)
