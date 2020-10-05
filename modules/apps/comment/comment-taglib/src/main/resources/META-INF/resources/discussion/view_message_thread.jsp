@@ -88,16 +88,11 @@ Format dateFormatDateTime = FastDateFormatFactoryUtil.getDateTime(locale, timeZo
 									<liferay-util:buffer
 										var="parentCommentUserBuffer"
 									>
-
-										<%
-										User parentMessageUser = parentDiscussionComment.getUser();
-										%>
-
 										<div class="autofit-padded-no-gutters-x autofit-row">
 											<div class="autofit-col">
 												<liferay-ui:user-portrait
 													cssClass="sticker-lg"
-													user="<%= parentMessageUser %>"
+													user="<%= parentDiscussionComment.getUser() %>"
 												/>
 											</div>
 

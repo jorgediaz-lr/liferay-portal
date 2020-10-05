@@ -283,10 +283,6 @@ for (AssetEntry assetEntry : assetEntryResult.getAssetEntries()) {
 						</div>
 					</c:if>
 
-					<%
-					PortletURL viewFullContentURL = assetPublisherHelper.getBaseAssetViewURL(liferayPortletRequest, liferayPortletResponse, assetRenderer, assetEntry);
-					%>
-
 					<div class="autofit-col">
 						<liferay-social-bookmarks:bookmarks
 							className="<%= assetEntry.getClassName() %>"
@@ -295,7 +291,7 @@ for (AssetEntry assetEntry : assetEntryResult.getAssetEntries()) {
 							target="_blank"
 							title="<%= title %>"
 							types="<%= assetPublisherDisplayContext.getSocialBookmarksTypes() %>"
-							urlImpl="<%= viewFullContentURL %>"
+							urlImpl="<%= assetPublisherHelper.getBaseAssetViewURL(liferayPortletRequest, liferayPortletResponse, assetRenderer, assetEntry) %>"
 						/>
 					</div>
 				</div>
