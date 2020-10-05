@@ -862,6 +862,14 @@ mariadb.executable=${mariadb.executable}]]></echo>
 						<then>
 							<ant antfile="build-test-elasticsearch7.xml" target="start-elasticsearch" />
 						</then>
+						<elseif>
+							<equals arg1="${suite.search.engine}" arg2="remote-elasticsearch7-jdk11" />
+							<then>
+								<ant antfile="build-test-elasticsearch7.xml" target="start-elasticsearch">
+									<property name="jdk.version" value="openjdk11" />
+								</ant>
+							</then>
+						</elseif>
 					</if>
 				</then>
 				<elseif>
@@ -3349,7 +3357,10 @@ log.sanitizer.enabled=false</echo>
 			</if>
 
 			<if>
-				<equals arg1="${suite.search.engine}" arg2="remote-elasticsearch7" />
+				<or>
+					<equals arg1="${suite.search.engine}" arg2="remote-elasticsearch7" />
+					<equals arg1="${suite.search.engine}" arg2="remote-elasticsearch7-jdk11" />
+				</or>
 				<then>
 					<ant antfile="build-test-elasticsearch7.xml" target="stop-elasticsearch" />
 				</then>
