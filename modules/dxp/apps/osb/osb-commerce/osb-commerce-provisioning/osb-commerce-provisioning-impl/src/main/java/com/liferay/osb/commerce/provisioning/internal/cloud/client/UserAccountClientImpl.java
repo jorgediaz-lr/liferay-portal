@@ -50,11 +50,12 @@ public class UserAccountClientImpl
 
 		return executePost(
 			_getAuthorizationHeader(virtualHostname), userAccount,
-			virtualHostname + _USER_ACCOUNTS_PATH, UserAccount.class);
+			virtualHostname + "/o/headless-osb-commerce/v1.0/user-accounts",
+			UserAccount.class);
 	}
 
 	private String _getAuthorizationHeader(String virtualHostname) {
-		HttpPost httpPost = new HttpPost(virtualHostname + _OAUTH2_TOKEN_PATH);
+		HttpPost httpPost = new HttpPost(virtualHostname + "/o/oauth2/token");
 
 		try {
 			httpPost.setEntity(
@@ -83,11 +84,6 @@ public class UserAccountClientImpl
 
 		return "Bearer: " + result.get("access_token");
 	}
-
-	private static final String _OAUTH2_TOKEN_PATH = "/o/oauth2/token";
-
-	private static final String _USER_ACCOUNTS_PATH =
-		"/o/headless-osb-commerce/v1.0/user-accounts";
 
 	private final String _oauthClientId;
 	private final String _oauthClientSecret;
