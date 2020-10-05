@@ -82,7 +82,8 @@ import org.osgi.service.component.annotations.Reference;
 public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 	protected void checkWarnings(
-		String accountKey, Account account, int contactCount,
+		String accountKey, Account account, List<Contact> activeContacts,
+		List<Contact> inactiveContacts, List<Contact> missingContacts,
 		String salesforceOpportunityTypeName, int salesforceOpportunityType) {
 
 		if (Validator.isNull(accountKey) &&
@@ -108,11 +109,41 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 		int maxDeveloperCount = _accountReader.getMaxDeveloperCount(account);
 
-		if (contactCount > maxDeveloperCount) {
+		if (activeContacts.size() > maxDeveloperCount) {
 			_logWarning(
 				StringBundler.concat(
 					"Maximum contacts is ", maxDeveloperCount,
-					" but there are ", contactCount, " contacts"));
+					" but there are ", activeContacts.size(), " contacts"));
+		}
+
+		if (!inactiveContacts.isEmpty()) {
+			StringBundler sb = new StringBundler(
+				(2 * inactiveContacts.size()) + 2);
+
+			sb.append("The following inactive contact(s) cannot be assigned ");
+			sb.append("to the account:<br />");
+
+			for (Contact contact : inactiveContacts) {
+				sb.append(contact.getEmailAddress());
+				sb.append("<br />");
+			}
+
+			_logWarning(sb.toString());
+		}
+
+		if (!missingContacts.isEmpty()) {
+			StringBundler sb = new StringBundler(
+				(2 * missingContacts.size()) + 2);
+
+			sb.append("The following missing contact(s) cannot be assigned ");
+			sb.append("to the account:<br />");
+
+			for (Contact contact : missingContacts) {
+				sb.append(contact.getEmailAddress());
+				sb.append("<br />");
+			}
+
+			_logWarning(sb.toString());
 		}
 	}
 
@@ -312,23 +343,14 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 		List<Contact> contacts = parseContacts(jsonObject);
 
-		List<ProductPurchase> productPurchases = parseProductPurchases(
-			jsonObject);
-
-		boolean analyticsCloud = hasAnalyticsCloud(productPurchases);
-
-		PostalAddress postalAddress = parseAddress(jsonObject);
-
-		Map<Integer, Contact> contactsStatusMap = _checkUsers(contacts);
-
 		List<Contact> activeContacts = new ArrayList<>();
+		List<Contact> inactiveContacts = new ArrayList<>();
 		List<Contact> missingContacts = new ArrayList<>();
 
-		for (Map.Entry<Integer, Contact> contactStatus :
-				contactsStatusMap.entrySet()) {
-
-			Integer status = contactStatus.getKey();
-			Contact contact = contactStatus.getValue();
+		for (Contact contact : contacts) {
+			Integer status =
+				_contactIdentityProvider.fetchContactStatusByEmailAddress(
+					contact.getEmailAddress());
 
 			if (status == null) {
 				missingContacts.add(contact);
@@ -336,7 +358,17 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			else if (status == WorkflowConstants.STATUS_APPROVED) {
 				activeContacts.add(contact);
 			}
+			else {
+				inactiveContacts.add(contact);
+			}
 		}
+
+		List<ProductPurchase> productPurchases = parseProductPurchases(
+			jsonObject);
+
+		boolean analyticsCloud = hasAnalyticsCloud(productPurchases);
+
+		PostalAddress postalAddress = parseAddress(jsonObject);
 
 		Account account = null;
 
@@ -360,8 +392,9 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		}
 
 		checkWarnings(
-			accountKey, account, activeContacts.size(),
-			salesforceOpportunityTypeName, salesforceOpportunityType);
+			accountKey, account, activeContacts, inactiveContacts,
+			missingContacts, salesforceOpportunityTypeName,
+			salesforceOpportunityType);
 
 		String salesforceOpportunityProductFamily = jsonObject.getString(
 			"_salesforceOpportunityProductFamily");
@@ -653,8 +686,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			return Collections.emptyList();
 		}
 
-		ArrayList<Contact> contacts = new ArrayList<>(
-			contactsJSONArray.length());
+		List<Contact> contacts = new ArrayList<>(contactsJSONArray.length());
 
 		for (int i = 0; i < contactsJSONArray.length(); i++) {
 			JSONObject contactJSONObject = contactsJSONArray.getJSONObject(i);
@@ -990,51 +1022,6 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		return ContentUtil.get(
 			DossieraCreateMessageSubscriber.class.getClassLoader(),
 			templateDirName + defaultTemplateName);
-	}
-
-	private Map<Integer, Contact> _checkUsers(List<Contact> contacts)
-		throws Exception {
-
-		Map<Integer, Contact> contactsStatusMap = new HashMap<>();
-
-		StringBundler deactivatedContactsSB = new StringBundler(
-			contacts.size() * 2);
-		StringBundler missingContactsSB = new StringBundler(
-			contacts.size() * 2);
-
-		for (Contact contact : contacts) {
-			Integer status =
-				_contactIdentityProvider.fetchContactStatusByEmailAddress(
-					contact.getEmailAddress());
-
-			contactsStatusMap.put(status, contact);
-
-			if (status == null) {
-				missingContactsSB.append("<br />");
-				missingContactsSB.append(contact.getEmailAddress());
-			}
-			else if (status != WorkflowConstants.STATUS_APPROVED) {
-				deactivatedContactsSB.append("<br />");
-				deactivatedContactsSB.append(contact.getEmailAddress());
-			}
-		}
-
-		if (deactivatedContactsSB.length() > 0) {
-			_logWarning(
-				StringBundler.concat(
-					"The following deactivated contact(s) cannot be assigned ",
-					"to the account:", deactivatedContactsSB.toString(),
-					"<br />"));
-		}
-
-		if (missingContactsSB.length() > 0) {
-			_logWarning(
-				StringBundler.concat(
-					"The following missing contact(s) cannot be assigned to ",
-					"the account:", missingContactsSB.toString(), "<br />"));
-		}
-
-		return contactsStatusMap;
 	}
 
 	private String _getCode(String parentAccountName, String accountName)
