@@ -1474,7 +1474,14 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 	}
 
 	protected void preregisterCompany(long companyId) {
-		SearchEngineHelperUtil.initialize(companyId);
+		try {
+			SearchEngineHelperUtil.initialize(companyId);
+		}
+		catch (Exception exception) {
+			_log.error(
+				"Unable to initialize search engine for company " + companyId,
+				exception);
+		}
 	}
 
 	protected void preunregisterCompany(Company company) {
