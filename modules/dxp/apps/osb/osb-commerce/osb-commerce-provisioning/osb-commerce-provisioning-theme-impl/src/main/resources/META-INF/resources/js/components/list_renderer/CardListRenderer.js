@@ -11,29 +11,36 @@
 
 import React from 'react';
 
-import ProductCard from '../product_card/ProductCard';
+import CardEntryRenderer from './CardEntryRenderer';
+import {GUEST_ID} from '../../helper/index';
 
-function ListRenderer({cpEntries, portletNamespace}) {
+function CardListRenderer({
+	commerceAccountId = GUEST_ID,
+	CPEntries,
+	checkoutURL,
+	portletNamespace
+}) {
 	return (
 		<div className={'align-items-center d-flex'}>
-			{cpEntries.map((entry, index) => (
+			{CPEntries.map((entry, index) => (
 				<div
 					className={
-						'col-md-4 col-sm-12 osb-commerce-product-card-container'
+						'col-sm-12 col-md-4 osb-commerce-product-card-container'
 					}
-					key={index}
 				>
-					<ProductCard
+					<CardEntryRenderer
+						checkoutURL={checkoutURL}
+						commerceAccountId={commerceAccountId}
+						key={index}
 						isFeatured={index === 1}
 						isTrial={index === 0}
-						key={index}
 						namespace={portletNamespace}
 						{...entry}
 					/>
 				</div>
 			))}
 		</div>
-	);
+	)
 }
 
-export default ListRenderer;
+export default CardListRenderer;

@@ -22,6 +22,7 @@ taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %>
 <%@ page import="com.liferay.osb.commerce.provisioning.theme.internal.constants.OSBCommerceProvisioningThemeWebKeys" %>
 
 <%@ page import="java.util.Map" %>
+<%@ page import="java.util.HashMap" %>
 
 <liferay-theme:defineObjects />
 

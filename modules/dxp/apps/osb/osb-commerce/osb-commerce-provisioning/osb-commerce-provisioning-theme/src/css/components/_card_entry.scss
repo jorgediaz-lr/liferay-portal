@@ -38,57 +38,12 @@
 		}
 	}
 
+	.actions {
+		z-index: 2;
+	}
+
 	.btn {
 		height: 3.5em;
 		width: 12em;
-	}
-
-	.product {
-		&-image img {
-			height: 4em;
-		}
-
-		&-description {
-			line-height: 1.8em;
-
-			p {
-				font-size: 1.2em;
-			}
-
-			big {
-				font-size: 1.8em;
-				font-weight: 600;
-			}
-		}
-
-		&-features {
-			box-sizing: border-box;
-			padding: 0 3.5em;
-
-			ul {
-				list-style-type: none;
-				padding: 0;
-				text-align: left;
-
-				li {
-					align-items: center;
-					display: flex;
-					margin-bottom: 0.5em;
-
-					.list-icon {
-						color: $success;
-						width: 10%;
-					}
-
-					.feature {
-						width: 90%;
-					}
-				}
-			}
-		}
-
-		&-name h1 {
-			font-size: 2em;
-		}
 	}
 }

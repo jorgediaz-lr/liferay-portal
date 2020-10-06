@@ -1,5 +1,6 @@
 {
 	"name": "osb-commerce-provisioning-theme-impl",
+	"main": "js/index.js",
 	"scripts": {
 		"build": "liferay-npm-scripts build",
 		"checkFormat": "liferay-npm-scripts check",

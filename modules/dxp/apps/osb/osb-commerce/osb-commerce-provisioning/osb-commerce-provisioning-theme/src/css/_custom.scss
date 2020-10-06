@@ -9,12 +9,19 @@ body {
 		$gray-400;
 }
 
+html, body {
+	width: 100vw;
+	overflow-x: hidden;
+}
+
 #wrapper {
 	@import 'components/banner';
+	@import 'components/cart_summary.scss';
 	@import 'components/commerce_accounts_portlet';
 	@import 'components/footer';
 	@import 'components/navbars';
-	@import 'components/product_card';
+	@import 'components/subscription_entry';
+	@import 'components/card_entry';
 	@import 'components/rep';
 	@import 'components/sign_in';
 	@import 'portlet/plan_management';

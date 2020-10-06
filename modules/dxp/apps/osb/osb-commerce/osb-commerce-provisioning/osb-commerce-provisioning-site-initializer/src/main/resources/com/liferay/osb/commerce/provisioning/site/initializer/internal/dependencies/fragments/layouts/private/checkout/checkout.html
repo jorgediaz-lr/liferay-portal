@@ -4,6 +4,7 @@
 			<div class="col-md-8">
 				[#if liferay_portlet??]
 					[@liferay_portlet.runtime
+						layoutFriendlyURL="/checkout"
 						defaultPreferences=portlet_preferences
 						instanceId="osb_commerce_checkout_checkout"
 						portletName="com_liferay_commerce_checkout_web_internal_portlet_CommerceCheckoutPortlet"
@@ -12,7 +13,13 @@
 			</div>
 
 			<div class="col-md-4">
-
+				[#if liferay_portlet??]
+					[@liferay_commerce_ui["mini-cart"]
+						cartViewRendererURL="osb-commerce-provisioning-theme-impl@1.0.0/js/components/cart_summary/CartSummary"
+						spritemap="${themeDisplay.getPathThemeImages()}/lexicon/icons.svg"
+						toggleable=false
+					/]
+				[/#if]
 			</div>
 		</div>
 	</div>

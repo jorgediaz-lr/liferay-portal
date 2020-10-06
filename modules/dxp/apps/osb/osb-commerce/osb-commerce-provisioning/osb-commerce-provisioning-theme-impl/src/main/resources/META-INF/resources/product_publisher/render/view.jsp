@@ -1,4 +1,4 @@
-<%--
+<%@ page import="java.util.HashMap" %><%--
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
@@ -18,7 +18,7 @@
 
 <div class="container product-publisher-container">
 	<react:component
-		data="<%= (Map<String, Object>)request.getAttribute(OSBCommerceProvisioningThemeWebKeys.OSB_COMMERCE_PROVISIONING_THEME_CP_ENTRIES_MAP) %>"
-		module="js/components/list_renderer/ListRenderer"
+		data="<%= (Map<String, Object>)request.getAttribute("osb-commerce-provisioning:CPContentList") %>"
+		module="js/components/list_renderer/ListRendererWrapper"
 	/>
 </div>

@@ -41,7 +41,7 @@ public class OSBCommerceThemeHttpHelper {
 
 		CommerceSubscriptionEntry commerceSubscriptionEntry =
 			_getCommerceSubscriptionEntry(
-				_getCurrentCommerceAccountId(httpServletRequest));
+				getCurrentCommerceAccountId(httpServletRequest));
 
 		if (commerceSubscriptionEntry == null) {
 			return false;
@@ -80,7 +80,7 @@ public class OSBCommerceThemeHttpHelper {
 		return null;
 	}
 
-	private long _getCurrentCommerceAccountId(
+	public long getCurrentCommerceAccountId(
 			HttpServletRequest httpServletRequest)
 		throws PortalException {
 
