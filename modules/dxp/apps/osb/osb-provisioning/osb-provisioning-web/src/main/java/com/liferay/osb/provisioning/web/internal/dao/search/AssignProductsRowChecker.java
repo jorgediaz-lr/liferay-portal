@@ -14,7 +14,7 @@
 
 package com.liferay.osb.provisioning.web.internal.dao.search;
 
-import com.liferay.osb.provisioning.web.internal.display.context.ProductDisplay;
+import com.liferay.osb.provisioning.web.internal.display.context.AssignProductDisplay;
 import com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker;
 import com.liferay.portal.kernel.dao.search.ResultRow;
 import com.liferay.portal.kernel.log.Log;
@@ -30,10 +30,9 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @author Yuanyuan Huang
  */
-public class AssignProductBundleProductsRowChecker
-	extends EmptyOnClickRowChecker {
+public class AssignProductsRowChecker extends EmptyOnClickRowChecker {
 
-	public AssignProductBundleProductsRowChecker(
+	public AssignProductsRowChecker(
 		RenderResponse renderResponse, List<String> productKeys) {
 
 		super(renderResponse);
@@ -45,21 +44,22 @@ public class AssignProductBundleProductsRowChecker
 	public String getRowCheckBox(
 		HttpServletRequest httpServletRequest, ResultRow resultRow) {
 
-		ProductDisplay productDisplay = (ProductDisplay)resultRow.getObject();
+		AssignProductDisplay assignProductDisplay =
+			(AssignProductDisplay)resultRow.getObject();
 
 		return getRowCheckBox(
 			httpServletRequest, isChecked(resultRow.getObject()),
 			isDisabled(resultRow.getObject()),
-			productDisplay.getKey() + "_" +
-				HtmlUtil.escape(productDisplay.getName()));
+			HtmlUtil.escape(assignProductDisplay.getKey()) + "_" +
+				HtmlUtil.escape(assignProductDisplay.getName()));
 	}
 
 	@Override
 	public boolean isChecked(Object obj) {
-		ProductDisplay productDisplay = (ProductDisplay)obj;
+		AssignProductDisplay assignProductDisplay = (AssignProductDisplay)obj;
 
 		try {
-			return _productKeys.contains(productDisplay.getKey());
+			return _productKeys.contains(assignProductDisplay.getKey());
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
@@ -69,7 +69,7 @@ public class AssignProductBundleProductsRowChecker
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		AssignProductBundleProductsRowChecker.class);
+		AssignProductsRowChecker.class);
 
 	private final List<String> _productKeys;
 

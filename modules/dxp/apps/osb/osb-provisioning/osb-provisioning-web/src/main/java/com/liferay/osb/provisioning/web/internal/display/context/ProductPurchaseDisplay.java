@@ -71,6 +71,10 @@ public class ProductPurchaseDisplay {
 		}
 	}
 
+	public String getAccountKey() {
+		return _productPurchase.getAccountKey();
+	}
+
 	public Date getEndDate() {
 		return _productPurchase.getEndDate();
 	}

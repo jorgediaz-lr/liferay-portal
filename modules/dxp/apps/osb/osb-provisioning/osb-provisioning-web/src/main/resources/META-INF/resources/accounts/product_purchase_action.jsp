@@ -30,9 +30,10 @@ ProductPurchaseDisplay productPurchaseDisplay = (ProductPurchaseDisplay)row.getO
 	showWhenSingleIcon="<%= true %>"
 >
 	<portlet:renderURL var="editURL">
-		<portlet:param name="mvcRenderCommandName" value="/accounts/edit_product_purchase" />
+		<portlet:param name="mvcRenderCommandName" value="/accounts/edit_product_purchases" />
 		<portlet:param name="redirect" value="<%= currentURL %>" />
-		<portlet:param name="productPurchaseKey" value="<%= productPurchaseDisplay.getKey() %>" />
+		<portlet:param name="accountKey" value="<%= productPurchaseDisplay.getAccountKey() %>" />
+		<portlet:param name="productPurchaseKeys" value="<%= productPurchaseDisplay.getKey() %>" />
 	</portlet:renderURL>
 
 	<liferay-ui:icon

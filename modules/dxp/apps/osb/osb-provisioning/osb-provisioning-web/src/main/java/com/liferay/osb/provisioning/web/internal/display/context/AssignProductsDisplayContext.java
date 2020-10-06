@@ -16,13 +16,17 @@ package com.liferay.osb.provisioning.web.internal.display.context;
 
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
-import com.liferay.osb.provisioning.web.internal.dao.search.AssignProductBundleProductsRowChecker;
+import com.liferay.osb.provisioning.model.ProductBundle;
+import com.liferay.osb.provisioning.service.ProductBundleLocalServiceUtil;
+import com.liferay.osb.provisioning.web.internal.dao.search.AssignProductsRowChecker;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -36,9 +40,9 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @author Yuanyuan Huang
  */
-public class AssignProductBundleProductsDisplayContext {
+public class AssignProductsDisplayContext {
 
-	public AssignProductBundleProductsDisplayContext(
+	public AssignProductsDisplayContext(
 		RenderRequest renderRequest, RenderResponse renderResponse,
 		HttpServletRequest httpServletRequest,
 		ProductWebService productWebService) {
@@ -50,13 +54,22 @@ public class AssignProductBundleProductsDisplayContext {
 
 		_currentURLObj = PortletURLUtil.getCurrent(
 			_renderRequest, _renderResponse);
+
+		_accountKey = ParamUtil.getString(renderRequest, "accountKey");
 	}
 
 	public String getClearResultsURL() {
 		PortletURL portletURL = _renderResponse.createRenderURL();
 
-		portletURL.setParameter(
-			"mvcRenderCommandName", "/product_bundles/assign_products");
+		if (Validator.isNotNull(_accountKey)) {
+			portletURL.setParameter(
+				"mvcRenderCommandName", "/accounts/assign_products");
+			portletURL.setParameter("accountKey", _accountKey);
+		}
+		else {
+			portletURL.setParameter(
+				"mvcRenderCommandName", "/product_bundles/assign_products");
+		}
 
 		return portletURL.toString();
 	}
@@ -74,28 +87,49 @@ public class AssignProductBundleProductsDisplayContext {
 
 		String keywords = ParamUtil.getString(_renderRequest, "keywords");
 
+		List<Object> results = new ArrayList<>();
+
+		int count = 0;
+
+		if (Validator.isNotNull(_accountKey)) {
+			List<ProductBundle> productBundles =
+				ProductBundleLocalServiceUtil.getProductBundles(
+					searchContainer.getStart(), searchContainer.getEnd());
+
+			results.addAll(
+				TransformUtil.transform(
+					productBundles,
+					productBundle -> new AssignProductDisplay(
+						_renderRequest, _renderResponse, null, productBundle)));
+
+			count = results.size();
+		}
+
 		List<Product> products = _productWebService.getProducts(
 			keywords, StringPool.BLANK, searchContainer.getCur(),
 			searchContainer.getEnd() - searchContainer.getStart(), "name");
 
-		searchContainer.setResults(
+		results.addAll(
 			TransformUtil.transform(
 				products,
-				product -> new ProductDisplay(
-					_renderRequest, _renderResponse, product)));
+				product -> new AssignProductDisplay(
+					_renderRequest, _renderResponse, product, null)));
+
+		count += (int)_productWebService.getProductsCount(
+			keywords, StringPool.BLANK);
+
+		searchContainer.setResults(results);
 
 		searchContainer.setRowChecker(
-			new AssignProductBundleProductsRowChecker(
+			new AssignProductsRowChecker(
 				_renderResponse, Arrays.asList(productKeys)));
-
-		int count = (int)_productWebService.getProductsCount(
-			keywords, StringPool.BLANK);
 
 		searchContainer.setTotal(count);
 
 		return searchContainer;
 	}
 
+	private final String _accountKey;
 	private final PortletURL _currentURLObj;
 	private final HttpServletRequest _httpServletRequest;
 	private final ProductWebService _productWebService;

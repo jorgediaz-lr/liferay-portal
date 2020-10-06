@@ -29,10 +29,10 @@ import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamRoleWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamWebService;
 import com.liferay.osb.provisioning.web.internal.display.context.AccountSearchDisplayContext;
-import com.liferay.osb.provisioning.web.internal.display.context.AssignProductBundleProductsDisplayContext;
+import com.liferay.osb.provisioning.web.internal.display.context.AssignProductsDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.AssignTeamContactsDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.ContactSearchDisplayContext;
-import com.liferay.osb.provisioning.web.internal.display.context.EditProductPurchaseDisplayContext;
+import com.liferay.osb.provisioning.web.internal.display.context.EditProductPurchasesDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.ProductSearchDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.TeamSearchDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.ViewAccountContactsDisplayContext;
@@ -75,14 +75,13 @@ public class ProvisioningWebComponentProvider {
 				renderRequest, renderResponse, httpServletRequest);
 	}
 
-	public static AssignProductBundleProductsDisplayContext
-			getAssignProductBundleProductsDisplayContext(
-				RenderRequest renderRequest, RenderResponse renderResponse,
-				HttpServletRequest httpServletRequest)
+	public static AssignProductsDisplayContext getAssignProductsDisplayContext(
+			RenderRequest renderRequest, RenderResponse renderResponse,
+			HttpServletRequest httpServletRequest)
 		throws Exception {
 
 		return _provisioningWebComponentProvider.
-			_getAssignProductBundleProductsDisplayContext(
+			_getAssignProductsDisplayContext(
 				renderRequest, renderResponse, httpServletRequest);
 	}
 
@@ -106,14 +105,14 @@ public class ProvisioningWebComponentProvider {
 				renderRequest, renderResponse, httpServletRequest);
 	}
 
-	public static EditProductPurchaseDisplayContext
-			getEditProductPurchaseDisplayContext(
+	public static EditProductPurchasesDisplayContext
+			getEditProductPurchasesDisplayContext(
 				RenderRequest renderRequest, RenderResponse renderResponse,
 				HttpServletRequest httpServletRequest)
 		throws Exception {
 
 		return _provisioningWebComponentProvider._getViewAccountDisplayContext(
-			EditProductPurchaseDisplayContext.class, renderRequest,
+			EditProductPurchasesDisplayContext.class, renderRequest,
 			renderResponse, httpServletRequest);
 	}
 
@@ -259,12 +258,11 @@ public class ProvisioningWebComponentProvider {
 			_productWebService, _teamRoleWebService, _userLocalService);
 	}
 
-	private AssignProductBundleProductsDisplayContext
-		_getAssignProductBundleProductsDisplayContext(
-			RenderRequest renderRequest, RenderResponse renderResponse,
-			HttpServletRequest httpServletRequest) {
+	private AssignProductsDisplayContext _getAssignProductsDisplayContext(
+		RenderRequest renderRequest, RenderResponse renderResponse,
+		HttpServletRequest httpServletRequest) {
 
-		return new AssignProductBundleProductsDisplayContext(
+		return new AssignProductsDisplayContext(
 			renderRequest, renderResponse, httpServletRequest,
 			_productWebService);
 	}

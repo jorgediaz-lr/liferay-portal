@@ -17,18 +17,19 @@
 <%@ include file="/init.jsp" %>
 
 <%
-AssignProductBundleProductsDisplayContext assignProductBundleProductsDisplayContext = ProvisioningWebComponentProvider.getAssignProductBundleProductsDisplayContext(renderRequest, renderResponse, request);
+AssignProductsDisplayContext assignProductsDisplayContext = ProvisioningWebComponentProvider.getAssignProductsDisplayContext(renderRequest, renderResponse, request);
 
 String[] productKeys = ParamUtil.getStringValues(renderRequest, "productKeys");
 
-SearchContainer searchContainer = assignProductBundleProductsDisplayContext.getSearchContainer(productKeys);
+String accountKey = ParamUtil.getString(renderRequest, "accountKey");
+
+SearchContainer searchContainer = assignProductsDisplayContext.getSearchContainer(productKeys);
 %>
 
 <clay:management-toolbar
-	clearResultsURL="<%= assignProductBundleProductsDisplayContext.getClearResultsURL() %>"
-	elementClasses="full-width"
+	clearResultsURL="<%= assignProductsDisplayContext.getClearResultsURL() %>"
 	itemsTotal="<%= searchContainer.getTotal() %>"
-	searchActionURL="<%= assignProductBundleProductsDisplayContext.getCurrentURL() %>"
+	searchActionURL="<%= assignProductsDisplayContext.getCurrentURL() %>"
 	searchContainerId="assignProducts"
 	selectable="<%= true %>"
 	showSearch="<%= true %>"
@@ -41,19 +42,19 @@ SearchContainer searchContainer = assignProductBundleProductsDisplayContext.getS
 		var="productsSearchContainer"
 	>
 		<liferay-ui:search-container-row
-			className="com.liferay.osb.provisioning.web.internal.display.context.ProductDisplay"
-			keyProperty="key"
-			modelVar="productDisplay"
+			className="com.liferay.osb.provisioning.web.internal.display.context.AssignProductDisplay"
+			modelVar="assignProductDisplay"
 		>
 			<liferay-ui:search-container-column-text
 				cssClass="table-cell-expand"
-				name="products"
-				value="<%= HtmlUtil.escape(productDisplay.getName()) %>"
+				name='<%= (Validator.isNotNull(accountKey))? "": "products" %>'
+				value="<%= HtmlUtil.escape(assignProductDisplay.getName()) %>"
 			/>
 		</liferay-ui:search-container-row>
 
 		<liferay-ui:search-iterator
 			markupView="lexicon"
+			resultRowSplitter="<%= (Validator.isNotNull(accountKey))? new ProductResultRowSplitter(): null %>"
 		/>
 	</liferay-ui:search-container>
 </div>

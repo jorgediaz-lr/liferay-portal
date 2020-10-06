@@ -60,6 +60,17 @@ public class ProductWebServiceImpl implements ProductWebService {
 		_productResource.deleteProduct(agentName, agentUID, productKey);
 	}
 
+	public Product fetchProduct(String productKey) throws Exception {
+		HttpInvoker.HttpResponse httpResponse =
+			_productResource.getProductHttpResponse(productKey);
+
+		if (httpResponse.getStatusCode() == HttpServletResponse.SC_NOT_FOUND) {
+			return null;
+		}
+
+		return ProductSerDes.toDTO(httpResponse.getContent());
+	}
+
 	public Product fetchProductByName(String name) throws Exception {
 		HttpInvoker.HttpResponse httpResponse =
 			_productResource.getProductByNameProductNameHttpResponse(

@@ -36,6 +36,13 @@ public class ProvisioningWebKeys {
 
 	public static final String PRODUCT_PURCHASE_VIEW = "PRODUCT_PURCHASE_VIEW";
 
+	public static final String PRODUCT_PURCHASE_VIEWS =
+		"PRODUCT_PURCHASE_VIEWS";
+
+	public static final String PRODUCT_PURCHASES = "PRODUCT_PURCHASES";
+
+	public static final String PRODUCTS = "PRODUCTS";
+
 	public static final String TEAM = "TEAM";
 
 }

@@ -43,7 +43,7 @@ public class AssignProductBundleProductsMVCRenderCommand
 		throws PortletException {
 
 		try {
-			return "/product_bundles/assign_products.jsp";
+			return "/common/assign_products.jsp";
 		}
 		catch (Exception exception) {
 			SessionErrors.add(renderRequest, exception.getClass(), exception);

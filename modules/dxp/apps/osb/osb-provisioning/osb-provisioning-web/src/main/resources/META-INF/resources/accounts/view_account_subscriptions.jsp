@@ -22,6 +22,8 @@ String tabs2 = ParamUtil.getString(request, "tabs2");
 ViewAccountDisplayContext viewAccountDisplayContext = ProvisioningWebComponentProvider.getViewAccountDisplayContext(renderRequest, renderResponse, request);
 
 PortletURL portletURL = viewAccountDisplayContext.getPortletURL();
+
+SearchContainer productPurchasesSearchContainer = viewAccountDisplayContext.getProductPurchaseViewsSearchContainer();
 %>
 
 <div class="details-table table-striped">
@@ -32,99 +34,179 @@ PortletURL portletURL = viewAccountDisplayContext.getPortletURL();
 		<liferay-util:param name="values" value="active,inactive,all" />
 	</liferay-util:include>
 
-	<liferay-ui:search-container
-		searchContainer="<%= viewAccountDisplayContext.getProductPurchaseViewsSearchContainer() %>"
-	>
+	<portlet:renderURL var="editProductPurchasesURL">
+		<portlet:param name="mvcRenderCommandName" value="/accounts/edit_product_purchases" />
+		<portlet:param name="redirect" value="<%= currentURL %>" />
+		<portlet:param name="accountKey" value="<%= accountDisplay.getKey() %>" />
+	</portlet:renderURL>
+
+	<aui:form action="<%= editProductPurchasesURL %>" method="post" name="editProductPurchasesFm">
+		<aui:input name="productKeys" type="hidden" />
+		<aui:input name="productPurchaseViewKeys" type="hidden" />
+
 		<clay:management-toolbar
-			clearResultsURL="<%= viewAccountDisplayContext.getClearResultsURL() %>"
-			creationMenu="<%= viewAccountDisplayContext.getCreationMenu() %>"
-			elementClasses="full-width"
-			itemsTotal="<%= searchContainer.getTotal() %>"
-			searchActionURL="<%= viewAccountDisplayContext.getCurrentURL() %>"
-			searchContainerId="account-subscriptions"
-			selectable="<%= false %>"
-			showSearch="<%= true %>"
+			displayContext="<%= new ViewProductPurchasesManagementToolbarDisplayContext(liferayPortletRequest, liferayPortletResponse, request, productPurchasesSearchContainer, accountDisplay.getKey()) %>"
+			searchContainerId="productPurchases"
 		/>
 
-		<liferay-ui:search-container-row
-			className="com.liferay.osb.provisioning.web.internal.display.context.ProductPurchaseViewDisplay"
-			modelVar="productPurchaseViewDisplay"
+		<liferay-ui:search-container
+			id="productPurchases"
+			searchContainer="<%= productPurchasesSearchContainer %>"
 		>
-			<portlet:renderURL var="rowURL">
-				<portlet:param name="mvcRenderCommandName" value="/accounts/view_subscription" />
+			<liferay-ui:search-container-row
+				className="com.liferay.osb.provisioning.web.internal.display.context.ProductPurchaseViewDisplay"
+				keyProperty="productKey"
+				modelVar="productPurchaseViewDisplay"
+			>
+				<portlet:renderURL var="rowURL">
+					<portlet:param name="mvcRenderCommandName" value="/accounts/view_subscription" />
+					<portlet:param name="redirect" value="<%= currentURL %>" />
+					<portlet:param name="accountKey" value="<%= productPurchaseViewDisplay.getAccountKey() %>" />
+					<portlet:param name="productKey" value="<%= productPurchaseViewDisplay.getProductKey() %>" />
+				</portlet:renderURL>
+
+				<liferay-ui:search-container-column-text
+					href="<%= rowURL %>"
+					name="product"
+				>
+					<%= HtmlUtil.escape(productPurchaseViewDisplay.getName()) %>
+
+					<div class="secondary-information">
+						<%= productPurchaseViewDisplay.getSizingWithLabel() %>
+					</div>
+				</liferay-ui:search-container-column-text>
+
+				<liferay-ui:search-container-column-text
+					href="<%= rowURL %>"
+					name="support-life"
+				>
+					<%= productPurchaseViewDisplay.getSupportLife() %>
+
+					<c:if test="<%= productPurchaseViewDisplay.isInSupportGap() && Validator.isNotNull(productPurchaseViewDisplay.getNextTermStartDate()) %>">
+						<div class="secondary-information">
+							<liferay-ui:message key="next-term-starts" />: <%= productPurchaseViewDisplay.getNextTermStartDate() %>
+						</div>
+					</c:if>
+				</liferay-ui:search-container-column-text>
+
+				<%
+				String licenseManagerHREF = StringUtil.replace(provisioningWebConfiguration.licenseManagerHREF(), "[$ACCOUNT_KEY$]", productPurchaseViewDisplay.getAccountKey());
+
+				licenseManagerHREF = StringUtil.replace(licenseManagerHREF, "[$PRODUCT_KEY$]", productPurchaseViewDisplay.getProductKey());
+				%>
+
+				<liferay-ui:search-container-column-text
+					cssClass="semi-bold"
+					href="<%= licenseManagerHREF %>"
+					name='<%= tabs2.equals("all") ? "provisioned" : "current-provisioned" %>'
+					value='<%= tabs2.equals("all") ? productPurchaseViewDisplay.getProvisionedCount() : productPurchaseViewDisplay.getCurrentProvisionedCount() %>'
+				/>
+
+				<%
+				String columnName = "current-purchased";
+				String columnCount = productPurchaseViewDisplay.getCurrentPurchasedCount();
+
+				if (tabs2.equals("inactive")) {
+					columnName = "latest-purchased";
+					columnCount = productPurchaseViewDisplay.getLatestPurchasedCount();
+				}
+				else if (tabs2.equals("all")) {
+					columnName = "approved-purchased";
+					columnCount = productPurchaseViewDisplay.getApprovedPurchasedCount();
+				}
+				%>
+
+				<liferay-ui:search-container-column-text
+					cssClass="semi-bold"
+					href="<%= rowURL %>"
+					name="<%= columnName %>"
+					value="<%= columnCount %>"
+				/>
+
+				<liferay-ui:search-container-column-text
+					href="<%= rowURL %>"
+					name="status"
+				>
+					<span class="label <%= productPurchaseViewDisplay.getStatusStyle() %>"><%= productPurchaseViewDisplay.getStatus() %></span>
+				</liferay-ui:search-container-column-text>
+			</liferay-ui:search-container-row>
+
+			<liferay-ui:search-iterator
+				markupView="lexicon"
+			/>
+		</liferay-ui:search-container>
+	</aui:form>
+</div>
+
+<aui:script use="liferay-search-container">
+	var searchContainer = Liferay.SearchContainer.get(
+		'<portlet:namespace />productPurchases'
+	);
+
+	searchContainer.on('rowToggled', function(event) {
+		var selectedItems = event.elements.allSelectedElements;
+
+		var productKeys = [];
+
+		if (selectedItems.size() > 0) {
+			selectedItems.each(function() {
+				var value = this.attr('value');
+
+				productKeys.push(value);
+			});
+
+			A.one('#<portlet:namespace />productPurchaseViewKeys').val(
+				productKeys.join(',')
+			);
+		}
+	});
+</aui:script>
+
+<aui:script>
+	Liferay.provide(
+		window,
+		'<portlet:namespace />assignProducts',
+		function() {
+			<portlet:renderURL var="assignProductsURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+				<portlet:param name="mvcRenderCommandName" value="/accounts/assign_products" />
 				<portlet:param name="redirect" value="<%= currentURL %>" />
-				<portlet:param name="accountKey" value="<%= productPurchaseViewDisplay.getAccountKey() %>" />
-				<portlet:param name="productKey" value="<%= productPurchaseViewDisplay.getProductKey() %>" />
+				<portlet:param name="accountKey" value="<%= accountDisplay.getKey() %>" />
 			</portlet:renderURL>
 
-			<liferay-ui:search-container-column-text
-				href="<%= rowURL %>"
-				name="product"
-			>
-				<%= HtmlUtil.escape(productPurchaseViewDisplay.getName()) %>
+			var A = AUI();
 
-				<div class="secondary-information">
-					<%= productPurchaseViewDisplay.getSizingWithLabel() %>
-				</div>
-			</liferay-ui:search-container-column-text>
+			var itemSelectorDialog = new A.LiferayItemSelectorDialog({
+				eventName: '<portlet:namespace />assignProducts',
+				title: '<liferay-ui:message key="select-subscriptions" />',
+				url: '<%= assignProductsURL.toString() %>'
+			});
 
-			<liferay-ui:search-container-column-text
-				href="<%= rowURL %>"
-				name="support-life"
-			>
-				<%= productPurchaseViewDisplay.getSupportLife() %>
+			itemSelectorDialog.on('selectedItemChange', function(event) {
+				var selectedItems = event.newVal;
 
-				<c:if test="<%= productPurchaseViewDisplay.isInSupportGap() && Validator.isNotNull(productPurchaseViewDisplay.getNextTermStartDate()) %>">
-					<div class="secondary-information">
-						<liferay-ui:message key="next-term-starts" />: <%= productPurchaseViewDisplay.getNextTermStartDate() %>
-					</div>
-				</c:if>
-			</liferay-ui:search-container-column-text>
+				if (selectedItems) {
+					var productKeys = [];
 
-			<%
-			String licenseManagerHREF = StringUtil.replace(provisioningWebConfiguration.licenseManagerHREF(), "[$ACCOUNT_KEY$]", productPurchaseViewDisplay.getAccountKey());
+					selectedItems.forEach(function(selectedItem) {
+						productKeys.push(selectedItem[0]);
+					});
 
-			licenseManagerHREF = StringUtil.replace(licenseManagerHREF, "[$PRODUCT_KEY$]", productPurchaseViewDisplay.getProductKey());
-			%>
+					A.one('#<portlet:namespace />productKeys').val(
+						productKeys.join(',')
+					);
 
-			<liferay-ui:search-container-column-text
-				cssClass="semi-bold"
-				href="<%= licenseManagerHREF %>"
-				name='<%= tabs2.equals("all") ? "provisioned" : "current-provisioned" %>'
-				value='<%= tabs2.equals("all") ? productPurchaseViewDisplay.getProvisionedCount() : productPurchaseViewDisplay.getCurrentProvisionedCount() %>'
-			/>
+					<portlet:namespace />editProductPurchases();
+				}
+			});
 
-			<%
-			String columnName = "current-purchased";
-			String columnCount = productPurchaseViewDisplay.getCurrentPurchasedCount();
+			itemSelectorDialog.open();
+		},
+		['aui-base', 'liferay-item-selector-dialog']
+	);
 
-			if (tabs2.equals("inactive")) {
-				columnName = "latest-purchased";
-				columnCount = productPurchaseViewDisplay.getLatestPurchasedCount();
-			}
-			else if (tabs2.equals("all")) {
-				columnName = "approved-purchased";
-				columnCount = productPurchaseViewDisplay.getApprovedPurchasedCount();
-			}
-			%>
-
-			<liferay-ui:search-container-column-text
-				cssClass="semi-bold"
-				href="<%= rowURL %>"
-				name="<%= columnName %>"
-				value="<%= columnCount %>"
-			/>
-
-			<liferay-ui:search-container-column-text
-				href="<%= rowURL %>"
-				name="state"
-			>
-				<span class="label <%= productPurchaseViewDisplay.getStateStyle() %>"><%= productPurchaseViewDisplay.getState() %></span>
-			</liferay-ui:search-container-column-text>
-		</liferay-ui:search-container-row>
-
-		<liferay-ui:search-iterator
-			markupView="lexicon"
-		/>
-	</liferay-ui:search-container>
-</div>
+	function <portlet:namespace />editProductPurchases() {
+		document
+			.getElementById('<portlet:namespace />editProductPurchasesFm')
+			.submit();
+	}
+</aui:script>

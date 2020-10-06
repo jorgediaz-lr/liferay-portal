@@ -1,0 +1,162 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package com.liferay.osb.provisioning.web.internal.portlet.action;
+
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
+import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.ProductPurchaseSerDes;
+import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
+import com.liferay.osb.provisioning.exception.ProductPurchaseQuantityException;
+import com.liferay.osb.provisioning.koroneiki.web.service.ProductPurchaseWebService;
+import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
+import com.liferay.osb.provisioning.koroneiki.web.service.exception.HttpException;
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
+import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
+import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.WebKeys;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
+/**
+ * @author Yuanyuan Huang
+ */
+@Component(
+	property = {
+		"javax.portlet.name=" + ProvisioningPortletKeys.ACCOUNTS,
+		"mvc.command.name=/accounts/edit_product_purchases"
+	},
+	service = MVCActionCommand.class
+)
+public class EditProductPurchasesMVCActionCommand extends BaseMVCActionCommand {
+
+	@Override
+	protected void doProcessAction(
+			ActionRequest actionRequest, ActionResponse actionResponse)
+		throws Exception {
+
+		try {
+			updateProductPurchases(actionRequest);
+
+			sendRedirect(actionRequest, actionResponse);
+		}
+		catch (HttpException httpException) {
+			_log.error(httpException, httpException);
+
+			SessionErrors.add(
+				actionRequest, httpException.getClass(), httpException);
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+
+			throw exception;
+		}
+	}
+
+	protected void updateProductPurchases(ActionRequest actionRequest)
+		throws Exception {
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		User user = themeDisplay.getUser();
+
+		String accountKey = ParamUtil.getString(actionRequest, "accountKey");
+
+		JSONArray jsonArray = JSONFactoryUtil.createJSONArray(
+			ParamUtil.getString(actionRequest, "data"));
+
+		ProductPurchase[] productPurchases = ProductPurchaseSerDes.toDTOs(
+			jsonArray.toString());
+
+		for (ProductPurchase productPurchase : productPurchases) {
+			if ((productPurchase.getQuantity() == null) ||
+				(productPurchase.getQuantity() <= 0)) {
+
+				throw new ProductPurchaseQuantityException();
+			}
+
+			String productPurchaseKey = productPurchase.getKey();
+
+			Map<String, String> properties = new HashMap<>();
+
+			if (Validator.isNotNull(productPurchaseKey)) {
+				ProductPurchase curProductPurchase =
+					_productPurchaseWebService.getProductPurchase(
+						productPurchaseKey);
+
+				Map<String, String> curProperties =
+					curProductPurchase.getProperties();
+
+				if (curProperties != null) {
+					for (Map.Entry<String, String> entry :
+							curProperties.entrySet()) {
+
+						properties.put(entry.getKey(), entry.getValue());
+					}
+				}
+			}
+
+			Map<String, String> newProperties = productPurchase.getProperties();
+
+			if ((newProperties != null) &&
+				(newProperties.get("sizing") != null)) {
+
+				properties.put(
+					"sizing", String.valueOf(newProperties.get("sizing")));
+			}
+
+			productPurchase.setProperties(properties);
+
+			if (Validator.isNull(productPurchaseKey)) {
+				_productPurchaseWebService.addProductPurchase(
+					user.getFullName(), user.getUuid(), accountKey,
+					productPurchase);
+			}
+			else {
+				_productPurchaseWebService.updateProductPurchase(
+					user.getFullName(), user.getUuid(), productPurchaseKey,
+					productPurchase);
+			}
+		}
+	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		EditProductPurchasesMVCActionCommand.class);
+
+	@Reference
+	private Portal _portal;
+
+	@Reference
+	private ProductPurchaseWebService _productPurchaseWebService;
+
+	@Reference
+	private ProductWebService _productWebService;
+
+}

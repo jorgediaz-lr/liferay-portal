@@ -39,6 +39,7 @@ import com.liferay.osb.provisioning.koroneiki.web.service.ProductConsumptionWebS
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductPurchaseViewWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamWebService;
+import com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
@@ -301,9 +302,6 @@ public class ViewAccountDisplayContext {
 	}
 
 	public Map<String, Object> getPanelData() throws Exception {
-		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
 		Map<String, Object> data = new HashMap<>();
 
 		PortletURL addNoteURL = renderResponse.createActionURL();
@@ -392,6 +390,9 @@ public class ViewAccountDisplayContext {
 				keywords, _getFilter(tabs2));
 
 		searchContainer.setTotal(count);
+
+		searchContainer.setRowChecker(
+			new EmptyOnClickRowChecker(renderResponse));
 
 		return searchContainer;
 	}
@@ -542,6 +543,9 @@ public class ViewAccountDisplayContext {
 
 		currentURLObj = PortletURLUtil.getCurrent(
 			renderRequest, renderResponse);
+
+		themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
 	}
 
 	protected String getTabName(String label, long count) {
@@ -576,6 +580,7 @@ public class ViewAccountDisplayContext {
 	protected RenderRequest renderRequest;
 	protected RenderResponse renderResponse;
 	protected TeamWebService teamWebService;
+	protected ThemeDisplay themeDisplay;
 	protected UserLocalService userLocalService;
 
 	private AccountEntry _fetchAccountEntry() throws Exception {
