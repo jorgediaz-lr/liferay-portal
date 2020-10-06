@@ -21,7 +21,6 @@ String redirect = ParamUtil.getString(request, "redirect");
 
 ContactRole contactRole = (ContactRole)request.getAttribute(TaprootWebKeys.CONTACT_ROLE);
 
-long contactRoleId = BeanParamUtil.getLong(contactRole, request, "contactRoleId");
 String type = BeanParamUtil.getString(contactRole, request, "type");
 %>
 
@@ -29,7 +28,7 @@ String type = BeanParamUtil.getString(contactRole, request, "type");
 
 <aui:form action="<%= editContactRoleURL %>" cssClass="container-fluid-1280" method="post" name="fm">
 	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
-	<aui:input name="contactRoleId" type="hidden" value="<%= contactRoleId %>" />
+	<aui:input name="contactRoleId" type="hidden" value='<%= BeanParamUtil.getLong(contactRole, request, "contactRoleId") %>' />
 	<aui:input name="type" type="hidden" value="<%= type %>" />
 
 	<liferay-ui:error exception="<%= ContactRoleNameException.class %>" message="please-enter-a-valid-name" />

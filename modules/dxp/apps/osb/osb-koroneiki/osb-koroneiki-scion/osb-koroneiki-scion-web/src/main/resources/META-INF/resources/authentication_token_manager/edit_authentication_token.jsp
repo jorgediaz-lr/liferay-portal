@@ -20,8 +20,6 @@
 String redirect = ParamUtil.getString(request, "redirect");
 
 AuthenticationToken authenticationToken = (AuthenticationToken)request.getAttribute(ScionWebKeys.AUTHENTICATION_TOKEN);
-
-long authenticationTokenId = BeanParamUtil.getLong(authenticationToken, request, "authenticationTokenId");
 %>
 
 <liferay-ui:header
@@ -33,7 +31,7 @@ long authenticationTokenId = BeanParamUtil.getLong(authenticationToken, request,
 
 <aui:form action="<%= editAuthenticationTokenURL %>" method="post" name="fm">
 	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
-	<aui:input name="authenticationTokenId" type="hidden" value="<%= authenticationTokenId %>" />
+	<aui:input name="authenticationTokenId" type="hidden" value='<%= BeanParamUtil.getLong(authenticationToken, request, "authenticationTokenId") %>' />
 
 	<aui:model-context bean="<%= authenticationToken %>" model="<%= AuthenticationToken.class %>" />
 

@@ -16,14 +16,10 @@
 
 <%@ include file="/init.jsp" %>
 
-<%
-String redirect = ParamUtil.getString(request, "redirect");
-%>
-
 <portlet:actionURL name="/external_links_admin/edit_external_link_mappings" var="editExternalLinkMappingsURL" />
 
 <aui:form action="<%= editExternalLinkMappingsURL %>" cssClass="container-fluid-1280" method="post" name="fm">
-	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
+	<aui:input name="redirect" type="hidden" value='<%= ParamUtil.getString(request, "redirect") %>' />
 
 	<aui:fieldset-group>
 		<h3 class="sheet-subtitle"><liferay-ui:message key="external-link-mappings" /></h3>

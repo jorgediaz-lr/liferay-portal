@@ -36,8 +36,6 @@ else {
 	orderByCol = portalPreferences.getValue(PortletKeys.BACKGROUND_TASK, "entries-order-by-col", "create-date");
 	orderByType = portalPreferences.getValue(PortletKeys.BACKGROUND_TASK, "entries-order-by-type", "desc");
 }
-
-OrderByComparator<BackgroundTask> orderByComparator = BackgroundTaskComparatorFactoryUtil.getBackgroundTaskOrderByComparator(orderByCol, orderByType);
 %>
 
 <c:if test="<%= StagingUtil.isChangeTrackingEnabled(company.getCompanyId()) %>">
@@ -54,7 +52,7 @@ OrderByComparator<BackgroundTask> orderByComparator = BackgroundTaskComparatorFa
 		emptyResultsMessage="no-export-processes-were-found"
 		iteratorURL="<%= portletURL %>"
 		orderByCol="<%= orderByCol %>"
-		orderByComparator="<%= orderByComparator %>"
+		orderByComparator="<%= BackgroundTaskComparatorFactoryUtil.getBackgroundTaskOrderByComparator(orderByCol, orderByType) %>"
 		orderByType="<%= orderByType %>"
 		total="<%= BackgroundTaskManagerUtil.getBackgroundTasksCount(groupId, selPortlet.getPortletId(), BackgroundTaskExecutorNames.PORTLET_EXPORT_BACKGROUND_TASK_EXECUTOR) %>"
 	>

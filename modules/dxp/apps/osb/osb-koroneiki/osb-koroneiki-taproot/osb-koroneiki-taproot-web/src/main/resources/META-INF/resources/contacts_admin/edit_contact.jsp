@@ -20,8 +20,6 @@
 String redirect = ParamUtil.getString(request, "redirect");
 
 Contact koroneikiContact = (Contact)request.getAttribute(TaprootWebKeys.CONTACT);
-
-long contactId = BeanParamUtil.getLong(koroneikiContact, request, "contactId");
 %>
 
 <liferay-util:include page="/contacts_admin/edit_contact_tabs.jsp" servletContext="<%= application %>" />
@@ -30,7 +28,7 @@ long contactId = BeanParamUtil.getLong(koroneikiContact, request, "contactId");
 
 <aui:form action="<%= editContactURL %>" cssClass="container-fluid-1280" method="post" name="fm">
 	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
-	<aui:input name="contactId" type="hidden" value="<%= contactId %>" />
+	<aui:input name="contactId" type="hidden" value='<%= BeanParamUtil.getLong(koroneikiContact, request, "contactId") %>' />
 
 	<liferay-ui:error exception="<%= ContactEmailAddressException.class %>" message="please-enter-a-valid-email-address" />
 	<liferay-ui:error exception="<%= ContactEmailAddressException.MustNotBeDuplicate.class %>" message="the-email-address-you-requested-is-already-taken" />

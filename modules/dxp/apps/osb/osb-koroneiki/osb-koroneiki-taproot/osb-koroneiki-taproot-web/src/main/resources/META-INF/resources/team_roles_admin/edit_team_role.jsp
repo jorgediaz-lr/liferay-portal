@@ -20,15 +20,13 @@
 String redirect = ParamUtil.getString(request, "redirect");
 
 TeamRole teamRole = (TeamRole)request.getAttribute(TaprootWebKeys.TEAM_ROLE);
-
-long teamRoleId = BeanParamUtil.getLong(teamRole, request, "teamRoleId");
 %>
 
 <portlet:actionURL name="/team_roles_admin/edit_team_role" var="editTeamRoleURL" />
 
 <aui:form action="<%= editTeamRoleURL %>" cssClass="container-fluid-1280" method="post" name="fm">
 	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
-	<aui:input name="teamRoleId" type="hidden" value="<%= teamRoleId %>" />
+	<aui:input name="teamRoleId" type="hidden" value='<%= BeanParamUtil.getLong(teamRole, request, "teamRoleId") %>' />
 
 	<liferay-ui:error exception="<%= TeamRoleNameException.class %>" message="please-enter-a-valid-name" />
 	<liferay-ui:error exception="<%= TeamRoleTypeException.class %>" message="please-enter-a-valid-type" />
