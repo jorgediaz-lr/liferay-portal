@@ -43,8 +43,10 @@ import com.liferay.portal.kernel.util.Validator;
 import java.text.DecimalFormat;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.portlet.PortletRequest;
@@ -385,9 +387,22 @@ public class TemplateNode extends LinkedHashMap<String, Object> {
 			}
 
 			String updatedTitle = assetRenderer.getTitle(
-				_themeDisplay.getLocale());
+				LocaleUtil.fromLanguageId(
+					assetRenderer.getDefaultLanguageId()));
 
 			jsonObject.put("title", updatedTitle);
+
+			Map<Locale, String> titleMap = new HashMap<>();
+
+			for (String languageId : assetRenderer.getAvailableLanguageIds()) {
+				Locale locale = LocaleUtil.fromLanguageId(languageId);
+
+				if (locale != null) {
+					titleMap.put(locale, assetRenderer.getTitle(locale));
+				}
+			}
+
+			jsonObject.put("titleMap", titleMap);
 			jsonObject.put("uuid", assetRenderer.getUuid());
 
 			return jsonObject.toJSONString();
