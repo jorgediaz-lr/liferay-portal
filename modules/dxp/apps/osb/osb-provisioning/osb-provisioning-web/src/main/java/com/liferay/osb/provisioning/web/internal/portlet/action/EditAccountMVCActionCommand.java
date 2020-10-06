@@ -131,6 +131,10 @@ public class EditAccountMVCActionCommand extends BaseMVCActionCommand {
 					actionRequest, actionResponse,
 					getRedirect(actionResponse, accountKey));
 			}
+			else {
+				actionResponse.setRenderParameter(
+					"mvcRenderCommandName", "/accounts/add_account");
+			}
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);

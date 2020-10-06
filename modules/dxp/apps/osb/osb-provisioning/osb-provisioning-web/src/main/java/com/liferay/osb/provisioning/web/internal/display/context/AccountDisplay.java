@@ -136,7 +136,7 @@ public class AccountDisplay {
 			_liferayPortletResponse.createActionURL();
 
 		editAccountHierarchyURL.setParameter(
-			ActionRequest.ACTION_NAME, " /accounts/edit_account_hierarchy");
+			ActionRequest.ACTION_NAME, "/accounts/edit_account_hierarchy");
 
 		PortletURL portletURL = _getPortletURL(
 			"/accounts/view_account", "details");
