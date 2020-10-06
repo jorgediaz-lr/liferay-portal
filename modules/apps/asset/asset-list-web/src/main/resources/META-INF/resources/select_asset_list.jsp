@@ -36,15 +36,6 @@ SelectAssetListDisplayContext selectAssetListDisplayContext = new SelectAssetLis
 			keyProperty="assetListEntryId"
 			modelVar="assetListEntry"
 		>
-
-			<%
-			Map<String, Object> data = HashMapBuilder.<String, Object>put(
-				"assetListEntryId", assetListEntry.getAssetListEntryId()
-			).put(
-				"assetListEntryTitle", assetListEntry.getTitle()
-			).build();
-			%>
-
 			<liferay-ui:search-container-column-icon
 				icon="list"
 			/>
@@ -55,7 +46,17 @@ SelectAssetListDisplayContext selectAssetListDisplayContext = new SelectAssetLis
 				<h5>
 					<c:choose>
 						<c:when test="<%= assetListEntry.getAssetListEntryId() != selectAssetListDisplayContext.getSelectedAssetListEntryId() %>">
-							<aui:a cssClass="selector-button" data="<%= data %>" href="javascript:;">
+							<aui:a
+								cssClass="selector-button"
+								data='<%=
+									HashMapBuilder.<String, Object>put(
+										"assetListEntryId", assetListEntry.getAssetListEntryId()
+									).put(
+										"assetListEntryTitle", assetListEntry.getTitle()
+									).build()
+								%>'
+								href="javascript:;"
+							>
 								<%= HtmlUtil.escape(assetListEntry.getTitle()) %>
 							</aui:a>
 						</c:when>
