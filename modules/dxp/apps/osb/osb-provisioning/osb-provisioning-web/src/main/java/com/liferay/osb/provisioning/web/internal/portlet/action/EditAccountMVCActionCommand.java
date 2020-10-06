@@ -59,7 +59,7 @@ import org.osgi.service.component.annotations.Reference;
 )
 public class EditAccountMVCActionCommand extends BaseMVCActionCommand {
 
-	protected void addAccount(
+	protected String addAccount(
 			ActionRequest actionRequest, ActionResponse actionResponse,
 			User user)
 		throws Exception {
@@ -93,9 +93,7 @@ public class EditAccountMVCActionCommand extends BaseMVCActionCommand {
 		Account newAccount = _accountWebService.addAccount(
 			user.getFullName(), user.getUuid(), account);
 
-		sendRedirect(
-			actionRequest, actionResponse,
-			getRedirect(actionResponse, newAccount.getKey()));
+		return newAccount.getKey();
 	}
 
 	@Override
@@ -108,22 +106,31 @@ public class EditAccountMVCActionCommand extends BaseMVCActionCommand {
 
 		User user = themeDisplay.getUser();
 
-		try {
-			String accountKey = ParamUtil.getString(
-				actionRequest, "accountKey");
+		String accountKey = ParamUtil.getString(actionRequest, "accountKey");
 
+		try {
 			if (Validator.isNotNull(accountKey)) {
 				updateAccount(actionRequest, actionResponse, user);
 			}
 			else {
-				addAccount(actionRequest, actionResponse, user);
+				accountKey = addAccount(actionRequest, actionResponse, user);
 			}
+
+			sendRedirect(
+				actionRequest, actionResponse,
+				getRedirect(actionResponse, accountKey));
 		}
 		catch (HttpException httpException) {
 			_log.error(httpException, httpException);
 
 			SessionErrors.add(
 				actionRequest, httpException.getClass(), httpException);
+
+			if (Validator.isNotNull(accountKey)) {
+				sendRedirect(
+					actionRequest, actionResponse,
+					getRedirect(actionResponse, accountKey));
+			}
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
@@ -213,8 +220,6 @@ public class EditAccountMVCActionCommand extends BaseMVCActionCommand {
 				user, accountKey, firstLineSupportTeamKey,
 				TeamRoleConstants.NAME_FIRST_LINE_SUPPORT);
 		}
-
-		sendRedirect(actionRequest, actionResponse);
 	}
 
 	protected void updateAssignedTeam(

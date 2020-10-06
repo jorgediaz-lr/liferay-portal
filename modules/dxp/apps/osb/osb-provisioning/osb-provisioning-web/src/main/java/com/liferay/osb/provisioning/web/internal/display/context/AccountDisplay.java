@@ -157,11 +157,6 @@ public class AccountDisplay {
 		PortletURL portletURL = _getPortletURL(
 			"/accounts/view_account", "details");
 
-		editAccountURL.setParameter(
-			"mvcRenderCommandName", "/accounts/view_account");
-
-		editAccountURL.setParameter("tabs1", "details");
-
 		editAccountURL.setParameter("redirect", portletURL.toString());
 
 		editAccountURL.setParameter("accountKey", _account.getKey());
