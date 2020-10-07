@@ -22,6 +22,7 @@ import com.liferay.asset.kernel.model.DDMFormValuesReader;
 import com.liferay.asset.kernel.service.persistence.AssetEntryQuery;
 import com.liferay.asset.test.util.AssetEntryQueryTestUtil;
 import com.liferay.asset.util.AssetHelper;
+import com.liferay.dynamic.data.mapping.configuration.DDMIndexerConfiguration;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
 import com.liferay.dynamic.data.mapping.model.DDMFormFieldOptions;
@@ -40,6 +41,7 @@ import com.liferay.dynamic.data.mapping.util.DDMIndexer;
 import com.liferay.osgi.util.service.OSGiServiceUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.configuration.test.util.ConfigurationTemporarySwapper;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.Group;
@@ -48,10 +50,14 @@ import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.test.util.SearchContextTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
+import java.util.Dictionary;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -344,16 +350,15 @@ public abstract class TestOrderHelper {
 	}
 
 	protected void testOrderByDDMField() throws Exception {
-		DDMStructure ddmStructure = addDDMStructure();
+		_testOrderByDDMField(
+			HashMapBuilder.put(
+				"enableLegacyDDMIndexFields", "false"
+			).build());
 
-		DDMTemplate ddmTemplate = addDDMTemplate(ddmStructure);
-
-		addSearchableAssetEntries(ddmStructure, ddmTemplate);
-
-		final AssetEntryQuery assetEntryQuery = createAssetEntryQuery(
-			ddmStructure);
-
-		assertSearch(assetEntryQuery);
+		_testOrderByDDMField(
+			HashMapBuilder.put(
+				"enableLegacyDDMIndexFields", "true"
+			).build());
 	}
 
 	protected void testOrderByDDMField(
@@ -424,6 +429,35 @@ public abstract class TestOrderHelper {
 			new String[] {"a", "D", "c", "B"},
 			new String[] {"a", "B", "c", "D"}, FieldConstants.STRING, indexType,
 			DDMFormFieldType.TEXT);
+	}
+
+	private void _testOrderByDDMField() throws Exception {
+		DDMStructure ddmStructure = addDDMStructure();
+
+		DDMTemplate ddmTemplate = addDDMTemplate(ddmStructure);
+
+		addSearchableAssetEntries(ddmStructure, ddmTemplate);
+
+		final AssetEntryQuery assetEntryQuery = createAssetEntryQuery(
+			ddmStructure);
+
+		assertSearch(assetEntryQuery);
+	}
+
+	private void _testOrderByDDMField(Map<String, String> map)
+		throws Exception {
+
+		try (ConfigurationTemporarySwapper configurationTemporarySwapper =
+				new ConfigurationTemporarySwapper(
+					DDMIndexerConfiguration.class.getName(),
+					_toDictionary(map))) {
+
+			_testOrderByDDMField();
+		}
+	}
+
+	private Dictionary<String, Object> _toDictionary(Map<String, String> map) {
+		return new HashMapDictionary<>(new HashMap<String, Object>(map));
 	}
 
 	private String _dataType;
