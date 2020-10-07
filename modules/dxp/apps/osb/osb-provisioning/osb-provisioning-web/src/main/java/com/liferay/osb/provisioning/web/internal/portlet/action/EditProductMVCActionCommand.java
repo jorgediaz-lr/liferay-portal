@@ -57,39 +57,21 @@ import org.osgi.service.component.annotations.Reference;
 )
 public class EditProductMVCActionCommand extends BaseMVCActionCommand {
 
-	protected void deleteProduct(
-			ActionRequest actionRequest, ActionResponse actionResponse,
-			User user)
+	protected void deleteProduct(ActionRequest actionRequest, User user)
 		throws Exception {
 
-		try {
-			String productKey = ParamUtil.getString(
-				actionRequest, "productKey");
+		String productKey = ParamUtil.getString(actionRequest, "productKey");
 
-			int count =
-				_productBundleProductsLocalService.
-					getProductBundleProductsCount(productKey);
+		int count =
+			_productBundleProductsLocalService.getProductBundleProductsCount(
+				productKey);
 
-			if (count == 0) {
-				_productWebService.deleteProduct(
-					user.getFullName(), user.getUuid(), productKey);
-			}
-			else {
-				throw new RequiredProductException();
-			}
+		if (count == 0) {
+			_productWebService.deleteProduct(
+				user.getFullName(), user.getUuid(), productKey);
 		}
-		catch (Exception exception) {
-			if (exception instanceof HttpException ||
-				exception instanceof RequiredProductException) {
-
-				SessionErrors.add(
-					actionRequest, exception.getClass(), exception);
-
-				sendRedirect(actionRequest, actionResponse);
-			}
-			else {
-				throw exception;
-			}
+		else {
+			throw new RequiredProductException();
 		}
 	}
 
@@ -107,7 +89,7 @@ public class EditProductMVCActionCommand extends BaseMVCActionCommand {
 			User user = themeDisplay.getUser();
 
 			if (cmd.equals(Constants.DELETE)) {
-				deleteProduct(actionRequest, actionResponse, user);
+				deleteProduct(actionRequest, user);
 			}
 			else {
 				updateProduct(actionRequest, user);
@@ -116,9 +98,19 @@ public class EditProductMVCActionCommand extends BaseMVCActionCommand {
 			sendRedirect(actionRequest, actionResponse);
 		}
 		catch (Exception exception) {
-			if (exception instanceof HttpException) {
+			if (exception instanceof HttpException ||
+				exception instanceof RequiredProductException) {
+
 				SessionErrors.add(
 					actionRequest, exception.getClass(), exception);
+
+				if (cmd.equals(Constants.DELETE)) {
+					sendRedirect(actionRequest, actionResponse);
+				}
+				else {
+					actionResponse.setRenderParameter(
+						"mvcRenderCommandName", "/products/edit_product");
+				}
 			}
 			else {
 				_log.error(exception, exception);
