@@ -35,7 +35,6 @@ import com.liferay.journal.service.JournalArticleLocalServiceUtil;
 import com.liferay.journal.service.JournalArticleServiceUtil;
 import com.liferay.journal.service.JournalFolderServiceUtil;
 import com.liferay.journal.test.util.JournalTestUtil;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.test.util.ConfigurationTestUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.model.BaseModel;
@@ -70,7 +69,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.search.test.util.BaseSearchTestCase;
-import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.registry.Registry;
 import com.liferay.registry.RegistryUtil;
@@ -90,9 +88,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import org.osgi.service.cm.Configuration;
-import org.osgi.service.cm.ConfigurationAdmin;
-
 /**
  * @author Juan Fernández
  * @author Tibor Lipusz
@@ -107,12 +102,8 @@ public class JournalArticleSearchTest extends BaseSearchTestCase {
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
-		Configuration ddmIndexerConfiguration =
-			configurationAdmin.getConfiguration(
-				DDMIndexerConfiguration.class.getName(), StringPool.QUESTION);
-
 		ConfigurationTestUtil.saveConfiguration(
-			ddmIndexerConfiguration,
+			DDMIndexerConfiguration.class.getName(),
 			new HashMapDictionary() {
 				{
 					put("enableLegacyDDMIndexFields", false);
@@ -122,11 +113,8 @@ public class JournalArticleSearchTest extends BaseSearchTestCase {
 
 	@AfterClass
 	public static void tearDownClass() throws Exception {
-		Configuration ddmIndexerConfiguration =
-			configurationAdmin.getConfiguration(
-				DDMIndexerConfiguration.class.getName(), StringPool.QUESTION);
-
-		ConfigurationTestUtil.deleteConfiguration(ddmIndexerConfiguration);
+		ConfigurationTestUtil.deleteConfiguration(
+			DDMIndexerConfiguration.class.getName());
 	}
 
 	@Before
@@ -627,9 +615,6 @@ public class JournalArticleSearchTest extends BaseSearchTestCase {
 			_ddmStructure.getDescriptionMap(), ddmForm, ddmFormLayout,
 			serviceContext);
 	}
-
-	@Inject
-	protected static ConfigurationAdmin configurationAdmin;
 
 	protected class JournalArticleSearchTestOrderHelper
 		extends TestOrderHelper {

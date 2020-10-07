@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.journal.search.test;
+package com.liferay.document.library.search.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.dynamic.data.mapping.configuration.DDMIndexerConfiguration;
@@ -27,8 +27,8 @@ import org.junit.runner.RunWith;
  * @author Jorge Díaz
  */
 @RunWith(Arquillian.class)
-public class JournalArticleSearchLegacyDDMIndexFieldsTest
-	extends JournalArticleSearchTest {
+public class DLFileEntrySearchLegacyDDMIndexFieldsTest
+	extends DLFileEntrySearchTest {
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
