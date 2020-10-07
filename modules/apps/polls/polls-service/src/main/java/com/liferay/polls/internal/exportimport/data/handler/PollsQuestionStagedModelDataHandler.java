@@ -204,8 +204,8 @@ public class PollsQuestionStagedModelDataHandler
 					userId, existingQuestion.getQuestionId(),
 					question.getTitleMap(), question.getDescriptionMap(),
 					expirationMonth, expirationDay, expirationYear,
-					expirationHour, expirationMinute, neverExpire, null,
-					serviceContext);
+					expirationHour, expirationMinute, neverExpire,
+					question.getChoices(), serviceContext);
 			}
 		}
 		else {
