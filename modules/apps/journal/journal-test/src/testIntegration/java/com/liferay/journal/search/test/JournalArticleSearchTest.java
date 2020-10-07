@@ -15,6 +15,7 @@
 package com.liferay.journal.search.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.dynamic.data.mapping.configuration.DDMIndexerConfiguration;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormLayout;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
@@ -34,6 +35,8 @@ import com.liferay.journal.service.JournalArticleLocalServiceUtil;
 import com.liferay.journal.service.JournalArticleServiceUtil;
 import com.liferay.journal.service.JournalFolderServiceUtil;
 import com.liferay.journal.test.util.JournalTestUtil;
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.configuration.test.util.ConfigurationTestUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.ClassedModel;
@@ -61,11 +64,13 @@ import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.search.test.util.BaseSearchTestCase;
+import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.registry.Registry;
 import com.liferay.registry.RegistryUtil;
@@ -75,13 +80,18 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import org.osgi.service.cm.Configuration;
+import org.osgi.service.cm.ConfigurationAdmin;
 
 /**
  * @author Juan Fernández
@@ -94,6 +104,30 @@ public class JournalArticleSearchTest extends BaseSearchTestCase {
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
 		new LiferayIntegrationTestRule();
+
+	@BeforeClass
+	public static void setUpClass() throws Exception {
+		Configuration ddmIndexerConfiguration =
+			configurationAdmin.getConfiguration(
+				DDMIndexerConfiguration.class.getName(), StringPool.QUESTION);
+
+		ConfigurationTestUtil.saveConfiguration(
+			ddmIndexerConfiguration,
+			new HashMapDictionary() {
+				{
+					put("enableLegacyDDMIndexFields", false);
+				}
+			});
+	}
+
+	@AfterClass
+	public static void tearDownClass() throws Exception {
+		Configuration ddmIndexerConfiguration =
+			configurationAdmin.getConfiguration(
+				DDMIndexerConfiguration.class.getName(), StringPool.QUESTION);
+
+		ConfigurationTestUtil.deleteConfiguration(ddmIndexerConfiguration);
+	}
 
 	@Before
 	@Override
@@ -593,6 +627,9 @@ public class JournalArticleSearchTest extends BaseSearchTestCase {
 			_ddmStructure.getDescriptionMap(), ddmForm, ddmFormLayout,
 			serviceContext);
 	}
+
+	@Inject
+	protected static ConfigurationAdmin configurationAdmin;
 
 	protected class JournalArticleSearchTestOrderHelper
 		extends TestOrderHelper {
