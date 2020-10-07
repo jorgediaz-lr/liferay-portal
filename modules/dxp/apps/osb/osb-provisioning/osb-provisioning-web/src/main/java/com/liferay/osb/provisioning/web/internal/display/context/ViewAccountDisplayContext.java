@@ -125,7 +125,7 @@ public class ViewAccountDisplayContext {
 		PortletURL assignParentAccountURL = renderResponse.createRenderURL();
 
 		assignParentAccountURL.setParameter(
-			"mvcRenderCommandName", "/accounts/edit_account_hierarchy");
+			"mvcRenderCommandName", "/accounts/select_account");
 		assignParentAccountURL.setParameter("accountKey", account.getKey());
 		assignParentAccountURL.setParameter(
 			"parentAccountKey", account.getParentAccountKey());
@@ -136,8 +136,8 @@ public class ViewAccountDisplayContext {
 		PortletURL assignPartnerTeamURL = renderResponse.createRenderURL();
 
 		assignPartnerTeamURL.setParameter(
-			"mvcRenderCommandName", "/accounts/assign_account_team");
-		assignPartnerTeamURL.setParameter("accountKey", account.getKey());
+			"mvcRenderCommandName", "/accounts/select_team");
+		assignPartnerTeamURL.setParameter("partner", Boolean.TRUE.toString());
 		assignPartnerTeamURL.setParameter(
 			"teamKey", accountDisplay.getPartnerTeamKey());
 		assignPartnerTeamURL.setWindowState(LiferayWindowState.POP_UP);
@@ -148,9 +148,9 @@ public class ViewAccountDisplayContext {
 			renderResponse.createRenderURL();
 
 		assignFirstLineSupportTeamURL.setParameter(
-			"mvcRenderCommandName", "/accounts/assign_account_team");
+			"mvcRenderCommandName", "/accounts/select_team");
 		assignFirstLineSupportTeamURL.setParameter(
-			"accountKey", account.getKey());
+			"partner", Boolean.TRUE.toString());
 		assignFirstLineSupportTeamURL.setParameter(
 			"teamKey", accountDisplay.getFirstLineSupportTeamKey());
 		assignFirstLineSupportTeamURL.setWindowState(LiferayWindowState.POP_UP);

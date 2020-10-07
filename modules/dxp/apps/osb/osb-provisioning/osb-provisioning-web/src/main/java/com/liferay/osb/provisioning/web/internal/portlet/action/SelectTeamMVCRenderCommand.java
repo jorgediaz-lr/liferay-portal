@@ -15,53 +15,32 @@
 package com.liferay.osb.provisioning.web.internal.portlet.action;
 
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
-import com.liferay.osb.provisioning.constants.ProvisioningWebKeys;
-import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
-import com.liferay.portal.kernel.servlet.SessionErrors;
-import com.liferay.portal.kernel.util.ParamUtil;
 
 import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
- * @author Amos Fong
+ * @author Kyle Bischof
  */
 @Component(
 	property = {
 		"javax.portlet.name=" + ProvisioningPortletKeys.ACCOUNTS,
-		"mvc.command.name=/accounts/edit_account_hierarchy"
+		"mvc.command.name=/accounts/select_team"
 	},
 	service = MVCRenderCommand.class
 )
-public class EditAccountHierarchyMVCRenderCommand implements MVCRenderCommand {
+public class SelectTeamMVCRenderCommand implements MVCRenderCommand {
 
 	@Override
 	public String render(
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws PortletException {
 
-		String accountKey = ParamUtil.getString(renderRequest, "accountKey");
-
-		try {
-			renderRequest.setAttribute(
-				ProvisioningWebKeys.ACCOUNT,
-				_accountWebService.getAccount(accountKey));
-
-			return "/accounts/edit_account_hierarchy.jsp";
-		}
-		catch (Exception exception) {
-			SessionErrors.add(renderRequest, exception.getClass(), exception);
-
-			return "/common/error.jsp";
-		}
+		return "/accounts/select_team.jsp";
 	}
-
-	@Reference
-	private AccountWebService _accountWebService;
 
 }

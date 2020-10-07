@@ -14,12 +14,16 @@
 
 package com.liferay.osb.provisioning.identity.management.provider;
 
+import com.liferay.portal.kernel.json.JSONObject;
+
 /**
  * @author Yuanyuan Huang
  */
-public interface ContactIdentityProvider {
+public interface IdentityProvider {
 
-	public Integer fetchContactStatusByEmailAddress(String emailAddress)
+	public JSONObject fetchByEmailAddress(String emailAddress) throws Exception;
+
+	public Integer fetchStatusByEmailAddress(String emailAddress)
 		throws Exception;
 
 }

@@ -28,7 +28,7 @@ import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.distributed.messaging.internal.configuration.ProvisioningDistributedMessagingConfigurationUtil;
 import com.liferay.osb.provisioning.distributed.messaging.internal.configuration.ProvisioningDistributedMessagingConfigurationValues;
 import com.liferay.osb.provisioning.distributed.messaging.internal.constants.SalesforceConstants;
-import com.liferay.osb.provisioning.identity.management.provider.ContactIdentityProvider;
+import com.liferay.osb.provisioning.identity.management.provider.IdentityProvider;
 import com.liferay.osb.provisioning.koroneiki.constants.ContactRoleConstants;
 import com.liferay.osb.provisioning.koroneiki.reader.AccountReader;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
@@ -348,9 +348,8 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		List<Contact> missingContacts = new ArrayList<>();
 
 		for (Contact contact : contacts) {
-			Integer status =
-				_contactIdentityProvider.fetchContactStatusByEmailAddress(
-					contact.getEmailAddress());
+			Integer status = _identityProvider.fetchStatusByEmailAddress(
+				contact.getEmailAddress());
 
 			if (status == null) {
 				missingContacts.add(contact);
@@ -1140,9 +1139,6 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 	private AccountWebService _accountWebService;
 
 	@Reference
-	private ContactIdentityProvider _contactIdentityProvider;
-
-	@Reference
 	private ContactRoleWebService _contactRoleWebService;
 
 	@Reference
@@ -1150,6 +1146,9 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 	@Reference
 	private GroupLocalService _groupLocalService;
+
+	@Reference
+	private IdentityProvider _identityProvider;
 
 	@Reference
 	private NoteWebService _noteWebService;

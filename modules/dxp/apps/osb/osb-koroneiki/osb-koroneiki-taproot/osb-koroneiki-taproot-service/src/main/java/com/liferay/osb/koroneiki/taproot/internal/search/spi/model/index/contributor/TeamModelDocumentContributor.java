@@ -107,7 +107,7 @@ public class TeamModelDocumentContributor
 	private void _contributeAssignedAccounts(Document document, long teamId)
 		throws PortalException {
 
-		Set<String> accountKeysTeamRoleKeys = new HashSet<>();
+		Set<String> accountKeyTeamRoleKeys = new HashSet<>();
 
 		List<TeamAccountRole> teamAccountRoles =
 			_teamAccountRoleLocalService.getTeamAccountRoles(teamId);
@@ -116,14 +116,14 @@ public class TeamModelDocumentContributor
 			Account account = teamAccountRole.getAccount();
 			TeamRole teamRole = teamAccountRole.getTeamRole();
 
-			accountKeysTeamRoleKeys.add(
+			accountKeyTeamRoleKeys.add(
 				account.getAccountKey() + StringPool.UNDERLINE +
 					teamRole.getTeamRoleKey());
 		}
 
 		document.addKeyword(
-			"accountKeysTeamRoleKeys",
-			ArrayUtil.toStringArray(accountKeysTeamRoleKeys.toArray()));
+			"accountKeyTeamRoleKeys",
+			ArrayUtil.toStringArray(accountKeyTeamRoleKeys.toArray()));
 	}
 
 	private void _contributeContacts(Document document, long teamId)

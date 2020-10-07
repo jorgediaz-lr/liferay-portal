@@ -15,7 +15,9 @@
 package com.liferay.osb.koroneiki.phloem.rest.internal.odata.entity.v1_0;
 
 import com.liferay.portal.kernel.search.Field;
+import com.liferay.portal.odata.entity.BooleanEntityField;
 import com.liferay.portal.odata.entity.CollectionEntityField;
+import com.liferay.portal.odata.entity.DateTimeEntityField;
 import com.liferay.portal.odata.entity.EntityField;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.odata.entity.StringEntityField;
@@ -54,6 +56,7 @@ public class AccountEntityModel implements EntityModel {
 			new CollectionEntityField(
 				new StringEntityField(
 					"contactUuids", locale -> "contactUuids")),
+			new StringEntityField("creatorUuid", locale -> "userUuid"),
 			new CollectionEntityField(
 				new StringEntityField(
 					"customerContactEmailAddresses",
@@ -61,6 +64,14 @@ public class AccountEntityModel implements EntityModel {
 			new CollectionEntityField(
 				new StringEntityField(
 					"customerContactUuids", locale -> "customerContactUuids")),
+			new DateTimeEntityField(
+				"dateCreated",
+				locale -> Field.getSortableFieldName(Field.CREATE_DATE),
+				locale -> Field.CREATE_DATE),
+			new DateTimeEntityField(
+				"dateModified",
+				locale -> Field.getSortableFieldName(Field.MODIFIED_DATE),
+				locale -> Field.MODIFIED_DATE),
 			new CollectionEntityField(
 				new StringEntityField(
 					"entitlements", locale -> "entitlements")),
@@ -75,14 +86,48 @@ public class AccountEntityModel implements EntityModel {
 				new StringEntityField(
 					"externalLinkEntityNames",
 					locale -> "externalLinkEntityNames")),
+			new BooleanEntityField("internal", locale -> "internal"),
 			new StringEntityField(
 				"name", locale -> Field.getSortableFieldName("name_String")),
 			new StringEntityField(
 				"parentAccountKey", locale -> "parentAccountKey"),
 			new CollectionEntityField(
 				new StringEntityField(
+					"postalAddressCities",
+					locale -> Field.getSortableFieldName(
+						"addressCities_String"))),
+			new CollectionEntityField(
+				new StringEntityField(
+					"postalAddressCountries",
+					locale -> Field.getSortableFieldName(
+						"addressCountries_String"))),
+			new CollectionEntityField(
+				new StringEntityField(
+					"postalAddressRegions",
+					locale -> Field.getSortableFieldName(
+						"addressRegions_String"))),
+			new CollectionEntityField(
+				new StringEntityField(
+					"postalAddressStreets",
+					locale -> Field.getSortableFieldName(
+						"addressStreets_String"))),
+			new CollectionEntityField(
+				new StringEntityField(
+					"postalAddressZips",
+					locale -> Field.getSortableFieldName(
+						"addressZips_String"))),
+			new CollectionEntityField(
+				new StringEntityField(
 					"productKeys", locale -> "productEntryKeys")),
+			new StringEntityField(
+				"region",
+				locale -> Field.getSortableFieldName("region_String")),
 			new StringEntityField("status", locale -> "status"),
+			new CollectionEntityField(
+				new StringEntityField(
+					"teamsAssignedToAccountKeyTeamRoleKeys",
+					locale -> "teamsAssignedToAccountKeyTeamRoleKeys")),
+			new StringEntityField("tier", locale -> "tier"),
 			new CollectionEntityField(
 				new StringEntityField(
 					"workerContactEmailAddresses",

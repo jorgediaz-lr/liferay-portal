@@ -15,6 +15,7 @@
 package com.liferay.osb.provisioning.web.internal.util;
 
 import com.liferay.osb.provisioning.customer.web.service.AccountEntryWebService;
+import com.liferay.osb.provisioning.identity.management.provider.IdentityProvider;
 import com.liferay.osb.provisioning.koroneiki.reader.AccountReader;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.AuditEntryWebService;
@@ -25,14 +26,15 @@ import com.liferay.osb.provisioning.koroneiki.web.service.NoteWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductConsumptionWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductPurchaseViewWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
+import com.liferay.osb.provisioning.koroneiki.web.service.TeamRoleWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamWebService;
 import com.liferay.osb.provisioning.web.internal.display.context.AccountSearchDisplayContext;
-import com.liferay.osb.provisioning.web.internal.display.context.AssignAccountTeamDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.AssignProductBundleProductsDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.AssignTeamContactsDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.ContactSearchDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.EditProductPurchaseDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.ProductSearchDisplayContext;
+import com.liferay.osb.provisioning.web.internal.display.context.TeamSearchDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.ViewAccountContactsDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.ViewAccountDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.ViewAccountLiferayWorkersDisplayContext;
@@ -41,6 +43,7 @@ import com.liferay.osb.provisioning.web.internal.display.context.ViewAccountTeam
 import com.liferay.osb.provisioning.web.internal.display.context.ViewContactDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.ViewSubscriptionDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.ViewTeamDisplayContext;
+import com.liferay.portal.kernel.service.CountryService;
 import com.liferay.portal.kernel.service.UserLocalService;
 
 import javax.portlet.RenderRequest;
@@ -66,17 +69,6 @@ public class ProvisioningWebComponentProvider {
 		return _provisioningWebComponentProvider.
 			_getAccountSearchDisplayContext(
 				renderRequest, renderResponse, httpServletRequest);
-	}
-
-	public static AssignAccountTeamDisplayContext
-			getAssignAccountTeamDisplayContext(
-				RenderRequest renderRequest, RenderResponse renderResponse,
-				HttpServletRequest httpServletRequest)
-		throws Exception {
-
-		return _provisioningWebComponentProvider._getViewAccountDisplayContext(
-			AssignAccountTeamDisplayContext.class, renderRequest,
-			renderResponse, httpServletRequest);
 	}
 
 	public static AssignProductBundleProductsDisplayContext
@@ -134,6 +126,15 @@ public class ProvisioningWebComponentProvider {
 		getProvisioningWebComponentProvider() {
 
 		return _provisioningWebComponentProvider;
+	}
+
+	public static TeamSearchDisplayContext getTeamSearchDisplayContext(
+			RenderRequest renderRequest, RenderResponse renderResponse,
+			HttpServletRequest httpServletRequest)
+		throws Exception {
+
+		return _provisioningWebComponentProvider._getTeamSearchDisplayContext(
+			renderRequest, renderResponse, httpServletRequest);
 	}
 
 	public static ViewAccountContactsDisplayContext
@@ -237,7 +238,8 @@ public class ProvisioningWebComponentProvider {
 
 		return new AccountSearchDisplayContext(
 			renderRequest, renderResponse, httpServletRequest, _accountReader,
-			_accountWebService);
+			_accountWebService, _countryService, _identityProvider,
+			_teamRoleWebService);
 	}
 
 	private AssignProductBundleProductsDisplayContext
@@ -266,6 +268,14 @@ public class ProvisioningWebComponentProvider {
 		return new ProductSearchDisplayContext(
 			renderRequest, renderResponse, httpServletRequest,
 			_productWebService);
+	}
+
+	private TeamSearchDisplayContext _getTeamSearchDisplayContext(
+		RenderRequest renderRequest, RenderResponse renderResponse,
+		HttpServletRequest httpServletRequest) {
+
+		return new TeamSearchDisplayContext(
+			renderRequest, renderResponse, httpServletRequest, _teamWebService);
 	}
 
 	private <T extends ViewAccountDisplayContext> T
@@ -346,7 +356,13 @@ public class ProvisioningWebComponentProvider {
 	private ContactWebService _contactWebService;
 
 	@Reference
+	private CountryService _countryService;
+
+	@Reference
 	private ExternalLinkWebService _externalLinkWebService;
+
+	@Reference
+	private IdentityProvider _identityProvider;
 
 	@Reference
 	private NoteWebService _noteWebService;
@@ -359,6 +375,9 @@ public class ProvisioningWebComponentProvider {
 
 	@Reference
 	private ProductWebService _productWebService;
+
+	@Reference
+	private TeamRoleWebService _teamRoleWebService;
 
 	@Reference
 	private TeamWebService _teamWebService;

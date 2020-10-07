@@ -234,7 +234,7 @@ public class EditAccountMVCActionCommand extends BaseMVCActionCommand {
 			teamRoleName, TeamRole.Type.ACCOUNT.toString());
 
 		String filterString = StringBundler.concat(
-			"accountKeysTeamRoleKeys/any(s:s eq '", accountKey, "_",
+			"accountKeyTeamRoleKeys/any(s:s eq '", accountKey, "_",
 			teamRole.getKey(), "')");
 
 		List<Team> teams = _teamWebService.search(

@@ -17,7 +17,9 @@ package com.liferay.osb.koroneiki.taproot.internal.search.spi.model.index.contri
 import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.ContactRole.Type;
 import com.liferay.osb.koroneiki.phytohormone.model.Entitlement;
 import com.liferay.osb.koroneiki.phytohormone.service.EntitlementLocalService;
+import com.liferay.osb.koroneiki.root.model.AuditEntry;
 import com.liferay.osb.koroneiki.root.model.ExternalLink;
+import com.liferay.osb.koroneiki.root.service.AuditEntryLocalService;
 import com.liferay.osb.koroneiki.root.service.ExternalLinkLocalService;
 import com.liferay.osb.koroneiki.taproot.model.Account;
 import com.liferay.osb.koroneiki.taproot.model.Contact;
@@ -30,19 +32,27 @@ import com.liferay.osb.koroneiki.taproot.service.ContactAccountRoleLocalService;
 import com.liferay.osb.koroneiki.taproot.service.ContactLocalService;
 import com.liferay.osb.koroneiki.taproot.service.ContactRoleLocalService;
 import com.liferay.osb.koroneiki.taproot.service.TeamAccountRoleLocalService;
+import com.liferay.osb.koroneiki.taproot.service.TeamLocalService;
 import com.liferay.osb.koroneiki.trunk.model.ProductPurchase;
 import com.liferay.osb.koroneiki.trunk.service.ProductPurchaseLocalService;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Address;
+import com.liferay.portal.kernel.model.Country;
+import com.liferay.portal.kernel.model.Region;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Field;
+import com.liferay.portal.kernel.service.ClassNameLocalService;
+import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.spi.model.index.contributor.ModelDocumentContributor;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -102,6 +112,17 @@ public class AccountModelDocumentContributor
 			"profileEmailAddress", account.getProfileEmailAddress());
 		document.addKeyword("region", account.getRegion());
 		document.addKeyword("tier", account.getTier());
+
+		List<AuditEntry> auditEntries = _auditEntryLocalService.getAuditEntries(
+			_classNameLocalService.getClassNameId(Account.class),
+			account.getAccountId(), 0, 1);
+
+		if (!auditEntries.isEmpty()) {
+			AuditEntry auditEntry = auditEntries.get(0);
+
+			document.addKeyword("userUuid", auditEntry.getAgentUID());
+		}
+
 		document.addKeyword("website", account.getWebsite());
 
 		document.addDateSortable(Field.CREATE_DATE, account.getCreateDate());
@@ -111,12 +132,65 @@ public class AccountModelDocumentContributor
 
 		document.addTextSortable("code", account.getCode());
 		document.addTextSortable("name", account.getName());
+		document.addTextSortable("region", account.getRegion());
 
+		_contributeAddresses(document, account.getAddresses());
 		_contributeContacts(document, account.getAccountId());
 		_contributeEntitlements(document, account.getAccountId());
 		_contributeExternalLinks(document, account.getAccountId());
 		_contributeProductEntries(document, account.getAccountId());
 		_contributeTeams(document, account.getAccountId());
+	}
+
+	private void _contributeAddresses(
+			Document document, List<Address> addresses)
+		throws PortalException {
+
+		List<String> cities = new ArrayList<>();
+		List<String> countries = new ArrayList<>();
+		List<String> regions = new ArrayList<>();
+		List<String> streets = new ArrayList<>();
+		List<String> zips = new ArrayList<>();
+
+		for (Address address : addresses) {
+			cities.add(StringUtil.toLowerCase(address.getCity()));
+
+			Country country = address.getCountry();
+
+			if (country.getCountryId() > 0) {
+				countries.add(StringUtil.toLowerCase(country.getName()));
+			}
+
+			Region region = address.getRegion();
+
+			if (region.getRegionId() > 0) {
+				regions.add(StringUtil.toLowerCase(region.getName()));
+			}
+
+			streets.add(StringUtil.toLowerCase(address.getStreet1()));
+
+			if (Validator.isNotNull(address.getStreet2())) {
+				streets.add(StringUtil.toLowerCase(address.getStreet2()));
+			}
+
+			if (Validator.isNotNull(address.getStreet3())) {
+				streets.add(StringUtil.toLowerCase(address.getStreet3()));
+			}
+
+			if (Validator.isNotNull(address.getZip())) {
+				zips.add(StringUtil.toLowerCase(address.getZip()));
+			}
+		}
+
+		document.addTextSortable(
+			"addressCities", cities.toArray(new String[0]));
+		document.addTextSortable(
+			"addressCountries", countries.toArray(new String[0]));
+		document.addTextSortable(
+			"addressRegions", regions.toArray(new String[0]));
+		document.addTextSortable(
+			"addressStreets", streets.toArray(new String[0]));
+		document.addTextSortable("addressZips", zips.toArray(new String[0]));
 	}
 
 	private void _contributeContacts(Document document, long accountId)
@@ -276,10 +350,41 @@ public class AccountModelDocumentContributor
 		document.addKeyword(
 			"assignedTeamKeyTeamRoleKeys",
 			ArrayUtil.toStringArray(assignedTeamKeyTeamRoleKeys.toArray()));
+
+		Set<String> teamsAssignedToAccountKeyTeamRoleKeys = new HashSet<>();
+
+		List<Team> teams = _teamLocalService.getAccountTeams(
+			accountId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+
+		for (Team team : teams) {
+			List<TeamAccountRole> curTeamAccountRoles =
+				_teamAccountRoleLocalService.getTeamAccountRoles(
+					team.getTeamId());
+
+			for (TeamAccountRole teamAccountRole : curTeamAccountRoles) {
+				Account account = teamAccountRole.getAccount();
+				TeamRole teamRole = teamAccountRole.getTeamRole();
+
+				teamsAssignedToAccountKeyTeamRoleKeys.add(
+					account.getAccountKey() + StringPool.UNDERLINE +
+						teamRole.getTeamRoleKey());
+			}
+		}
+
+		document.addKeyword(
+			"teamsAssignedToAccountKeyTeamRoleKeys",
+			ArrayUtil.toStringArray(
+				teamsAssignedToAccountKeyTeamRoleKeys.toArray()));
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		AccountModelDocumentContributor.class);
+
+	@Reference
+	private AuditEntryLocalService _auditEntryLocalService;
+
+	@Reference
+	private ClassNameLocalService _classNameLocalService;
 
 	@Reference
 	private ContactAccountRoleLocalService _contactAccountRoleLocalService;
@@ -301,5 +406,11 @@ public class AccountModelDocumentContributor
 
 	@Reference
 	private TeamAccountRoleLocalService _teamAccountRoleLocalService;
+
+	@Reference
+	private TeamLocalService _teamLocalService;
+
+	@Reference
+	private UserLocalService _userLocalService;
 
 }

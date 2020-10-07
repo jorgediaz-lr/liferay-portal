@@ -17,17 +17,7 @@
 <%@ include file="/init.jsp" %>
 
 <%
-Map<String, Object> data = new HashMap<>();
-
-PortletURL accountsHomeURL = PortletURLFactoryUtil.create(request, ProvisioningPortletKeys.ACCOUNTS, PortletRequest.RENDER_PHASE);
-
-data.put("accountsHomeURL", accountsHomeURL.toString());
-
-ResourceURL autocompleteAccountURL = PortletURLFactoryUtil.create(request, ProvisioningPortletKeys.ACCOUNTS, PortletRequest.RESOURCE_PHASE);
-
-autocompleteAccountURL.setResourceID("/accounts/autocomplete");
-
-data.put("resourceURL", autocompleteAccountURL.toString());
+AccountSearchDisplayContext accountSearchDisplayContext = ProvisioningWebComponentProvider.getAccountSearchDisplayContext(renderRequest, renderResponse, request);
 %>
 
 <div class="search-menu">
@@ -42,7 +32,7 @@ data.put("resourceURL", autocompleteAccountURL.toString());
 			</li>
 			<li class="account-search hide">
 				<react:component
-					data="<%= data %>"
+					data="<%= accountSearchDisplayContext.getData() %>"
 					module="js/SearchApp"
 				/>
 			</li>

@@ -40,8 +40,8 @@ public class TeamEntityModel implements EntityModel {
 			new StringEntityField("accountKey", locale -> "accountKey"),
 			new CollectionEntityField(
 				new StringEntityField(
-					"accountKeysTeamRoleKeys",
-					locale -> "accountKeysTeamRoleKeys")),
+					"accountKeyTeamRoleKeys",
+					locale -> "accountKeyTeamRoleKeys")),
 			new CollectionEntityField(
 				new StringEntityField(
 					"contactEmailAddresses",

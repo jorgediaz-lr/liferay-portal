@@ -16,7 +16,7 @@ package com.liferay.osb.provisioning.identity.management.internal.provider;
 
 import com.liferay.mail.kernel.model.MailMessage;
 import com.liferay.mail.kernel.service.MailService;
-import com.liferay.osb.provisioning.identity.management.provider.ContactIdentityProvider;
+import com.liferay.osb.provisioning.identity.management.provider.IdentityProvider;
 import com.liferay.petra.json.web.service.client.JSONWebServiceClient;
 import com.liferay.petra.json.web.service.client.JSONWebServiceClientFactory;
 import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
@@ -53,19 +53,25 @@ import org.osgi.service.component.annotations.Reference;
 		"api.token=", "error.email.address=", "host=", "port=", "protocol=",
 		"provider=web"
 	},
-	service = ContactIdentityProvider.class
+	service = IdentityProvider.class
 )
-public class WebContactIdentityProvider implements ContactIdentityProvider {
+public class WebIdentityProvider implements IdentityProvider {
 
-	public Integer fetchContactStatusByEmailAddress(String emailAddress)
+	public JSONObject fetchByEmailAddress(String emailAddress)
 		throws Exception {
 
 		Map<String, String> parameters = new HashMap<>();
 
 		parameters.put("emailAddress", emailAddress);
 
-		JSONObject jsonObject = _getToJSONObject(
+		return _getToJSONObject(
 			_URL_API_REST_USERS + "email_address", parameters);
+	}
+
+	public Integer fetchStatusByEmailAddress(String emailAddress)
+		throws Exception {
+
+		JSONObject jsonObject = fetchByEmailAddress(emailAddress);
 
 		if (jsonObject == null) {
 			return null;
@@ -178,7 +184,7 @@ public class WebContactIdentityProvider implements ContactIdentityProvider {
 	private static final String _URL_API_REST_USERS = "/osb-entity-web/users/";
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		WebContactIdentityProvider.class);
+		WebIdentityProvider.class);
 
 	private String _errorEmailAddress;
 

@@ -19,16 +19,16 @@
 <%
 String teamKey = ParamUtil.getString(request, "teamKey");
 
-AssignAccountTeamDisplayContext assignAccountTeamDisplayContext = ProvisioningWebComponentProvider.getAssignAccountTeamDisplayContext(renderRequest, renderResponse, request);
+TeamSearchDisplayContext teamSearchDisplayContext = ProvisioningWebComponentProvider.getTeamSearchDisplayContext(renderRequest, renderResponse, request);
 
-SearchContainer searchContainer = assignAccountTeamDisplayContext.getSearchContainer();
+SearchContainer searchContainer = teamSearchDisplayContext.getSearchContainer();
 %>
 
 <clay:management-toolbar
-	clearResultsURL="<%= assignAccountTeamDisplayContext.getClearResultsURL() %>"
+	clearResultsURL="<%= teamSearchDisplayContext.getClearResultsURL() %>"
 	elementClasses="full-width"
 	itemsTotal="<%= searchContainer.getTotal() %>"
-	searchActionURL="<%= assignAccountTeamDisplayContext.getCurrentURL() %>"
+	searchActionURL="<%= currentURL %>"
 	searchContainerId="teamContainer"
 	searchFormName="searchFm"
 	showSearch="<%= true %>"

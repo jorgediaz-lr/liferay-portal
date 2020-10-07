@@ -17,6 +17,7 @@ package com.liferay.osb.koroneiki.taproot.service.impl;
 import com.liferay.osb.koroneiki.taproot.exception.TeamRoleTypeException;
 import com.liferay.osb.koroneiki.taproot.model.TeamAccountRole;
 import com.liferay.osb.koroneiki.taproot.model.TeamRole;
+import com.liferay.osb.koroneiki.taproot.service.AccountLocalService;
 import com.liferay.osb.koroneiki.taproot.service.TeamLocalService;
 import com.liferay.osb.koroneiki.taproot.service.base.TeamAccountRoleLocalServiceBaseImpl;
 import com.liferay.osb.koroneiki.taproot.service.persistence.TeamAccountRolePK;
@@ -57,6 +58,8 @@ public class TeamAccountRoleLocalServiceImpl
 			teamAccountRole = teamAccountRolePersistence.update(
 				teamAccountRole);
 
+			_accountLocalService.reindex(accountId);
+
 			_teamLocalService.reindex(teamId);
 		}
 
@@ -75,6 +78,8 @@ public class TeamAccountRoleLocalServiceImpl
 
 		if (teamAccountRole != null) {
 			deleteTeamAccountRole(teamAccountRole);
+
+			_accountLocalService.reindex(accountId);
 
 			_teamLocalService.reindex(teamId);
 		}
@@ -114,6 +119,9 @@ public class TeamAccountRoleLocalServiceImpl
 			throw new TeamRoleTypeException();
 		}
 	}
+
+	@Reference
+	private AccountLocalService _accountLocalService;
 
 	@Reference
 	private TeamLocalService _teamLocalService;
