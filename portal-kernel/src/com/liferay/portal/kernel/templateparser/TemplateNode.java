@@ -140,14 +140,14 @@ public class TemplateNode extends LinkedHashMap<String, Object> {
 	public String getData() {
 		String type = getType();
 
-		if (type.equals("document_library") || type.equals("image")) {
+		if (type.equals("ddm-journal-article")) {
+			return _getLatestArticleData();
+		}
+		else if (type.equals("document_library") || type.equals("image")) {
 			return _getFileEntryData();
 		}
 		else if (type.equals("link_to_layout")) {
 			return _getLinkToLayoutData();
-		}
-		else if (type.equals("ddm-journal-article")) {
-			return _getLatestArticleData();
 		}
 		else if (type.equals("ddm-decimal") || type.equals("ddm-number") ||
 				 type.equals("numeric")) {
