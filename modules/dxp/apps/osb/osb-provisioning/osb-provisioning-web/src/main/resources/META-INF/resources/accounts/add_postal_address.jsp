@@ -33,9 +33,16 @@ AccountDisplay accountDisplay = viewAccountDisplayContext.getAccountDisplay();
 		title="add-address"
 	/>
 
-	<portlet:actionURL name="/accounts/edit_postal_address" var="editPostalAddressURL">
-		<portlet:param name="mvcRenderCommandName" value="/accounts/add_postal_address" />
-	</portlet:actionURL>
+	<liferay-ui:error exception="<%= HttpException.class %>">
+
+		<%
+		HttpException httpException = (HttpException)errorException;
+		%>
+
+		<%= httpException.getMessage() %>
+	</liferay-ui:error>
+
+	<portlet:actionURL name="/accounts/edit_postal_address" var="editPostalAddressURL" />
 
 	<aui:form action="<%= editPostalAddressURL %>" cssClass="container-fluid container-fluid-max-xl" method="post" name="fm">
 		<div class="add-items-sheet sheet sheet-lg">

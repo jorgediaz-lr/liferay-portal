@@ -34,7 +34,6 @@ AccountDisplay accountDisplay = viewAccountContactsDisplayContext.getAccountDisp
 	/>
 
 	<portlet:actionURL name="/accounts/assign_contact_roles" var="assignContactRolesURL">
-		<portlet:param name="mvcRenderCommandName" value="/accounts/assign_contacts" />
 		<portlet:param name="redirect" value="<%= redirect %>" />
 		<portlet:param name="accountKey" value="<%= accountDisplay.getKey() %>" />
 	</portlet:actionURL>
@@ -49,6 +48,8 @@ AccountDisplay accountDisplay = viewAccountContactsDisplayContext.getAccountDisp
 	</liferay-ui:error>
 
 	<aui:form action="<%= assignContactRolesURL.toString() %>" cssClass="container-fluid container-fluid-max-xl" method="post" name="assignContactFm">
+		<aui:input name="contactRoleType" type="hidden" value="<%= ContactRole.Type.ACCOUNT_CUSTOMER.toString() %>" />
+
 		<div class="assign-contacts-sheet sheet">
 			<react:component
 				data="<%= viewAccountContactsDisplayContext.getAssignContactData() %>"

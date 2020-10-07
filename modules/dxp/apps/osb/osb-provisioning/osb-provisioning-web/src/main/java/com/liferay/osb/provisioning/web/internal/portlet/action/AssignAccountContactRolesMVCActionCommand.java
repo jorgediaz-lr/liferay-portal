@@ -14,6 +14,7 @@
 
 package com.liferay.osb.provisioning.web.internal.portlet.action;
 
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.exception.HttpException;
@@ -26,6 +27,7 @@ import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import javax.portlet.ActionRequest;
@@ -85,6 +87,23 @@ public class AssignAccountContactRolesMVCActionCommand
 		catch (HttpException httpException) {
 			SessionErrors.add(
 				actionRequest, httpException.getClass(), httpException);
+
+			String contactRoleType = ParamUtil.getString(
+				actionRequest, "contactRoleType");
+
+			if (Validator.isNotNull(contactRoleType)) {
+				if (contactRoleType.equals(
+						ContactRole.Type.ACCOUNT_CUSTOMER.toString())) {
+
+					actionResponse.setRenderParameter(
+						"mvcRenderCommandName", "/accounts/assign_contacts");
+				}
+				else {
+					actionResponse.setRenderParameter(
+						"mvcRenderCommandName",
+						"/accounts/assign_liferay_workers");
+				}
+			}
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);

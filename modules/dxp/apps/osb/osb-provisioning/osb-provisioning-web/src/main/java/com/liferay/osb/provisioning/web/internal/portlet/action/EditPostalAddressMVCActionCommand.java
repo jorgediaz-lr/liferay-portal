@@ -86,28 +86,34 @@ public class EditPostalAddressMVCActionCommand extends BaseMVCActionCommand {
 			else {
 				updatePostalAddress(actionRequest, user);
 			}
-		}
-		catch (HttpException httpException) {
-			_log.error(httpException, httpException);
 
-			SessionErrors.add(
-				actionRequest, httpException.getClass(), httpException);
+			sendRedirect(actionRequest, actionResponse);
 		}
 		catch (Exception exception) {
-			if (exception instanceof NoSuchCountryException ||
+			_log.error(exception, exception);
+
+			SessionErrors.add(actionRequest, exception.getClass(), exception);
+
+			if (exception instanceof HttpException ||
+				exception instanceof NoSuchCountryException ||
 				exception instanceof NoSuchListTypeException ||
 				exception instanceof NoSuchRegionException) {
 
-				SessionErrors.add(actionRequest, exception.getClass());
+				long postalAddressId = ParamUtil.getLong(
+					actionRequest, "postalAddressId");
+
+				if (postalAddressId > 0) {
+					sendRedirect(actionRequest, actionResponse);
+				}
+				else {
+					actionResponse.setRenderParameter(
+						"mvcRenderCommandName", "/accounts/add_postal_address");
+				}
 			}
 			else {
-				_log.error(exception, exception);
-
 				throw exception;
 			}
 		}
-
-		sendRedirect(actionRequest, actionResponse);
 	}
 
 	protected void updatePostalAddress(ActionRequest actionRequest, User user)

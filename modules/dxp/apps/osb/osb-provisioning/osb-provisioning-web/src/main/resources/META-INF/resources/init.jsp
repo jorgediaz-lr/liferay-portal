@@ -32,6 +32,7 @@ page import="com.liferay.osb.koroneiki.phloem.rest.client.constants.ExternalLink
 page import="com.liferay.osb.koroneiki.phloem.rest.client.constants.ExternalLinkEntityName" %><%@
 page import="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account" %><%@
 page import="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact" %><%@
+page import="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole" %><%@
 page import="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Entitlement" %><%@
 page import="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ExternalLink" %><%@
 page import="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Note" %><%@
