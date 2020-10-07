@@ -49,6 +49,16 @@
 					}
 				},
 				{
+					"template_ddm_keyword": {
+						"mapping": {
+							"store": true,
+							"type": "text"
+						},
+						"match": "ddm__keyword__*",
+						"match_mapping_type": "string"
+					}
+				},
+				{
 					"template_expando_keyword": {
 						"mapping": {
 							"analyzer": "keyword_lowercase",
@@ -468,8 +478,8 @@
 				{
 					"template_ddm": {
 						"mapping": {
-							"store": true,
-							"type": "text"
+							"store": false,
+							"type": "keyword"
 						},
 						"match": "ddm__*",
 						"match_mapping_type": "string"
