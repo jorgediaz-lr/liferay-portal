@@ -11,8 +11,8 @@
 
 import React from 'react';
 
-import CardEntryRenderer from './CardEntryRenderer';
 import {GUEST_ID} from '../../helper/index';
+import CardEntryRenderer from './CardEntryRenderer';
 
 function CardListRenderer({
 	commerceAccountId = GUEST_ID,
@@ -25,22 +25,22 @@ function CardListRenderer({
 			{CPEntries.map((entry, index) => (
 				<div
 					className={
-						'col-sm-12 col-md-4 osb-commerce-product-card-container'
+						'col-md-4 col-sm-12 osb-commerce-product-card-container'
 					}
 				>
 					<CardEntryRenderer
 						checkoutURL={checkoutURL}
 						commerceAccountId={commerceAccountId}
-						key={index}
 						isFeatured={index === 1}
 						isTrial={index === 0}
+						key={index}
 						namespace={portletNamespace}
 						{...entry}
 					/>
 				</div>
 			))}
 		</div>
-	)
+	);
 }
 
 export default CardListRenderer;

@@ -1,8 +1,20 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {MiniCartContext} from 'commerce-frontend-js';
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ */
+
 import ClayButton from '@clayui/button';
-import SubscriptionEntry from '../subscription_entry/index';
+import {MiniCartContext} from 'commerce-frontend-js';
+import React, {useContext, useEffect, useState} from 'react';
+
 import {hasURLComponent, mapToFeatures} from '../../helper/index';
+import SubscriptionEntry from '../subscription_entry/index';
 
 function CartSummary() {
 	const {cartState, spritemap} = useContext(MiniCartContext),
@@ -19,12 +31,7 @@ function CartSummary() {
 		}
 	}, []);
 
-	const {
-		name,
-		options,
-		skuId,
-		thumbnail
-	} = subscriptionEntry;
+	const {name, options, skuId, thumbnail} = subscriptionEntry;
 
 	const {
 		subtotalFormatted,
@@ -49,24 +56,26 @@ function CartSummary() {
 				</div>
 
 				<div className={'cart-summary-coupon-code'}>
-					<div className='input-group'>
-						<div className='input-group-item'>
+					<div className="input-group">
+						<div className="input-group-item">
 							<input
-								aria-label={
-									Liferay.Language.get('insert-discount-code')
-								}
-								className='form-control'
-								placeholder={Liferay.Language.get('insert-discount-code')}
-								type='text'
+								aria-label={Liferay.Language.get(
+									'insert-discount-code'
+								)}
+								className="form-control"
+								placeholder={Liferay.Language.get(
+									'insert-discount-code'
+								)}
+								type="text"
 							/>
 						</div>
-						<span
-							className='input-group-item input-group-item-shrink'
-						>
+						<span className="input-group-item input-group-item-shrink">
 							<button
-								className='btn btn-secondary'
-								onClick={(e) => {e.preventDefault();}}
-								type='button'
+								className="btn btn-secondary"
+								onClick={e => {
+									e.preventDefault();
+								}}
+								type="button"
 							>
 								{Liferay.Language.get('apply')}
 							</button>
@@ -99,7 +108,7 @@ function CartSummary() {
 				</div>
 			)}
 		</div>
-	)
+	);
 }
 
 export default CartSummary;

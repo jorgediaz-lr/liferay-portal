@@ -36,6 +36,21 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = OSBCommerceThemeHttpHelper.class)
 public class OSBCommerceThemeHttpHelper {
 
+	public long getCurrentCommerceAccountId(
+			HttpServletRequest httpServletRequest)
+		throws PortalException {
+
+		CommerceAccount commerceAccount =
+			_commerceAccountHelper.getCurrentCommerceAccount(
+				httpServletRequest);
+
+		if (commerceAccount == null) {
+			return -1;
+		}
+
+		return commerceAccount.getCommerceAccountId();
+	}
+
 	public boolean showTrialButton(HttpServletRequest httpServletRequest)
 		throws PortalException {
 
@@ -78,21 +93,6 @@ public class OSBCommerceThemeHttpHelper {
 		}
 
 		return null;
-	}
-
-	public long getCurrentCommerceAccountId(
-			HttpServletRequest httpServletRequest)
-		throws PortalException {
-
-		CommerceAccount commerceAccount =
-			_commerceAccountHelper.getCurrentCommerceAccount(
-				httpServletRequest);
-
-		if (commerceAccount == null) {
-			return -1;
-		}
-
-		return commerceAccount.getCommerceAccountId();
 	}
 
 	@Reference

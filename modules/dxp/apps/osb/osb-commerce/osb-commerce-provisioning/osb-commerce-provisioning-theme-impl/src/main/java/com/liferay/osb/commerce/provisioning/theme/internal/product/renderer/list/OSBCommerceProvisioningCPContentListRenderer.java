@@ -16,20 +16,23 @@ import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.WebKeys;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
-import javax.portlet.PortletURL;
-import javax.portlet.WindowStateException;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
+
+import javax.portlet.PortletURL;
+import javax.portlet.WindowStateException;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 @Component(
 	immediate = true,
@@ -59,8 +62,9 @@ public class OSBCommerceProvisioningCPContentListRenderer
 
 	@Override
 	public void render(
-		HttpServletRequest httpServletRequest,
-		HttpServletResponse httpServletResponse) throws Exception {
+			HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse)
+		throws Exception {
 
 		httpServletRequest.setAttribute(
 			"osb-commerce-provisioning:CPContentList",
@@ -72,34 +76,42 @@ public class OSBCommerceProvisioningCPContentListRenderer
 	}
 
 	private Map<String, Object> _getCPEntriesRenderProps(
-		HttpServletRequest httpServletRequest)
+			HttpServletRequest httpServletRequest)
 		throws PortalException, WindowStateException {
 
-		CPDataSourceResult cpDataSourceResult = (CPDataSourceResult)
-			httpServletRequest.getAttribute(CPWebKeys.CP_DATA_SOURCE_RESULT);
+		CPDataSourceResult cpDataSourceResult =
+			(CPDataSourceResult)httpServletRequest.getAttribute(
+				CPWebKeys.CP_DATA_SOURCE_RESULT);
 
 		List<Map<String, Object>> cpEntriesRenderProps = new ArrayList<>();
 
-		for (CPCatalogEntry cpCatalogEntry : cpDataSourceResult.getCPCatalogEntries()) {
+		for (CPCatalogEntry cpCatalogEntry :
+				cpDataSourceResult.getCPCatalogEntries()) {
+
 			cpEntriesRenderProps.add(
 				_getCPEntryRenderProps(cpCatalogEntry, httpServletRequest));
 		}
 
-		PortletURL checkoutPortletURL = _commerceOrderHttpHelper
-			.getCommerceCheckoutPortletURL(httpServletRequest);
+		PortletURL checkoutPortletURL =
+			_commerceOrderHttpHelper.getCommerceCheckoutPortletURL(
+				httpServletRequest);
 
 		checkoutPortletURL.setWindowState(LiferayWindowState.MAXIMIZED);
 
-		return new HashMap<String, Object>() {{
-			put("CPEntries", cpEntriesRenderProps);
-			put("checkoutURL", checkoutPortletURL.toString());
-			put("commerceAccountId", _commerceThemeHttpHelper
-				.getCurrentCommerceAccountId(httpServletRequest));
-		}};
+		return new HashMap<String, Object>() {
+			{
+				put("checkoutURL", checkoutPortletURL.toString());
+				put(
+					"commerceAccountId",
+					_commerceThemeHttpHelper.getCurrentCommerceAccountId(
+						httpServletRequest));
+				put("CPEntries", cpEntriesRenderProps);
+			}
+		};
 	}
 
 	private Map<String, Object> _getCPEntryRenderProps(
-		CPCatalogEntry cpCatalogEntry, HttpServletRequest request)
+			CPCatalogEntry cpCatalogEntry, HttpServletRequest request)
 		throws PortalException {
 
 		List<CPSku> cpSkus = cpCatalogEntry.getCPSkus();
@@ -110,9 +122,8 @@ public class OSBCommerceProvisioningCPContentListRenderer
 			cpSku = cpSkus.get(0);
 		}
 
-		ThemeDisplay themeDisplay =
-			(ThemeDisplay) request.getAttribute(
-				WebKeys.THEME_DISPLAY);
+		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
+			WebKeys.THEME_DISPLAY);
 
 		Map<String, Object> renderProps = new HashMap<>();
 
@@ -123,9 +134,9 @@ public class OSBCommerceProvisioningCPContentListRenderer
 			_cpContentHelper.getFriendlyURL(cpCatalogEntry, themeDisplay));
 
 		renderProps.put("name", cpCatalogEntry.getName());
+		renderProps.put("productId", cpCatalogEntry.getCPDefinitionId());
 		renderProps.put(
 			"productImageURL", cpCatalogEntry.getDefaultImageFileUrl());
-		renderProps.put("productId", cpCatalogEntry.getCPDefinitionId());
 
 		if (cpSku != null) {
 			renderProps.put("sku", cpSku.getSku());
@@ -140,13 +151,13 @@ public class OSBCommerceProvisioningCPContentListRenderer
 	}
 
 	@Reference
-	private CPContentHelper _cpContentHelper;
-
-	@Reference
 	private CommerceOrderHttpHelper _commerceOrderHttpHelper;
 
 	@Reference
 	private OSBCommerceThemeHttpHelper _commerceThemeHttpHelper;
+
+	@Reference
+	private CPContentHelper _cpContentHelper;
 
 	@Reference
 	private JSPRenderer _jspRenderer;
@@ -155,4 +166,5 @@ public class OSBCommerceProvisioningCPContentListRenderer
 		target = "(osgi.web.symbolicname=com.liferay.osb.commerce.provisioning.theme.impl)"
 	)
 	private ServletContext _servletContext;
+
 }
