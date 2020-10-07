@@ -3,16 +3,6 @@
 		"date_detection": false,
 		"dynamic_templates": [
 			{
-				"template_ddmFieldArray_ddmFieldValue_Number_sortable": {
-					"mapping": {
-						"scaling_factor": 1000,
-						"store": true,
-						"type": "scaled_float"
-					},
-					"path_match": "ddmFieldArray.ddmFieldValue*Number_sortable"
-				}
-			},
-			{
 				"template_long_sortable": {
 					"mapping": {
 						"store": true,
@@ -55,16 +45,6 @@
 					},
 					"match_mapping_type": "string",
 					"path_match": "ddmFieldArray.ddmFieldValueKeyword*"
-				}
-			},
-			{
-				"template_ddm_keyword": {
-					"mapping": {
-						"store": true,
-						"type": "keyword"
-					},
-					"match": "ddm__keyword__*",
-					"match_mapping_type": "string"
 				}
 			},
 			{
