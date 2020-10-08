@@ -32,7 +32,6 @@ definition {
 				portlet = "Metrics");
 
 			WorkflowMetrics.tearDown();
-
 		}
 
 		Blogs.tearDownCP();

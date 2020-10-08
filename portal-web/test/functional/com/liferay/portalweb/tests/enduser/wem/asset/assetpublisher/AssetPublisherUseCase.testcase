@@ -215,7 +215,6 @@ definition {
 
 	@priority = "4"
 	test AssertGuestRefreshNoConsoleErrors {
-
 		JSONWebcontent.addWebContent(
 			content = "WC WebContent Content",
 			groupName = "Test Site Name",

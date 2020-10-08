@@ -73,7 +73,6 @@ definition {
 	@description = "This test covers LPS-94657. It ensures that auto complete for edit categories."
 	@priority = "5"
 	test AddAutoAssertionCategoryViaDMDocument {
-
 		property test.name.skip.portal.instance = "DocumentsadministrationUsecase#AddAutoAssertionCategoryViaDMDocument";
 
 		ProductMenu.gotoPortlet(

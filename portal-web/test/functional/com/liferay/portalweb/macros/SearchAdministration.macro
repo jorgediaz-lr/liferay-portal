@@ -24,7 +24,6 @@ definition {
 		var reindexElapsedTime = "0";
 
 		while ("${reindexElapsedTime}" == "0" || "${reindexElapsedTime}" == "10" || "${reindexElapsedTime}" == "480" && (maxIterations = "2")) {
-
 			AssertTextEquals(
 				locator1 = "Portlet#HEADER",
 				value1 = "Search");

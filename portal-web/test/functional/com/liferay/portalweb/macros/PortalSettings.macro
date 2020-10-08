@@ -194,7 +194,6 @@ definition {
 
 	macro configureLDAPSetting {
 		for (var enableSetting : list "${enableSettingList}") {
-
 			if ("${enableSetting}" == "enabled") {
 				PortalSettings.gotoConfiguration(
 					configurationCategory = "LDAP",
@@ -1230,7 +1229,6 @@ definition {
 
 	macro viewEnabledLDAPSetting {
 		for (var enableSetting : list "${enableSettingList}") {
-
 			if ("${enableSetting}" == "enabled") {
 				PortalSettings.gotoConfiguration(
 					configurationCategory = "LDAP",

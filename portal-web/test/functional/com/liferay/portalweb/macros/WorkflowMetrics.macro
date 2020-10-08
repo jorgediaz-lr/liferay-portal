@@ -7,7 +7,6 @@ definition {
 			Click(locator1 = "WorkflowMetricsSLA#DELETE_SLA_BUTTON");
 
 			Click(locator1 = "WorkflowMetricsSLA#SLA_REMOVE_CONFIRMATION_BUTTON");
-
 		}
 	}
 
@@ -146,7 +145,6 @@ definition {
 
 		if (IsElementPresent(locator1 = "WorkflowMetricsSLA#SLA_TABLE")) {
 			WorkflowMetrics._deleteAllSLAs();
-
 		}
 	}
 
@@ -154,7 +152,6 @@ definition {
 		var key_completionVelocityDateRange = "${completionVelocityDateRange}";
 
 		for (var isUnitPresent : list "${isPresent}") {
-
 			Click(locator1 = "WorkflowMetrics#METRICS_COMPLETION_VELOCITY_DATE_RANGE_DROPDOWN");
 
 			Click(locator1 = "WorkflowMetrics#METRICS_COMPLETION_VELOCITY_DATE_RANGE_DROPDOWN_OPTION");
@@ -228,13 +225,11 @@ definition {
 	macro verifyFiltersFromDashboard {
 		for (var key_workflowFilterValue : list "${isFilterOptionPresent}") {
 			AssertElementPresent(locator1 = "WorkflowAllItems#WORKFLOW_ALL_ITEMS_FILTER_VALUE");
-
 		}
 	}
 
 	macro waitForSLA {
 		while (IsTextEqual(locator1 = "WorkflowMetrics#DASHBOARD_TOTAL_${key_status}_ITEMS_VALUE", value1 = "${key_expectedValue}") && (maxIterations = "24")) {
-
 			echo("Waiting 5 seconds to recheck");
 
 			Pause(locator1 = "5000");
@@ -243,7 +238,6 @@ definition {
 		}
 
 		if (IsTextEqual(locator1 = "WorkflowMetrics#DASHBOARD_TOTAL_${key_status}_ITEMS_VALUE", value1 = "${key_expectedValue}")) {
-
 			echo("timeout exceeded");
 		}
 	}

@@ -248,7 +248,6 @@ definition {
 
 	@priority = "4"
 	test ViewRecycleBin {
-
 		var entryTitle = '''<script>alert(123);</script>''';
 
 		Navigator.openURL();
@@ -339,7 +338,6 @@ definition {
 
 	@priority = "5"
 	test ViewSearchResults {
-
 		var siteName = '''<script>alert(123);</script>''';
 
 		ProductMenu.gotoPortlet(

@@ -125,7 +125,6 @@ definition {
 
 	@priority = "4"
 	test AddFrontPageChildPageFormatHTML {
-
 		var welcomeToLiferay = '''
 				<p><a href="http://www.liferay.com">Welcome to LIFERAY</a></p>
 			''';
@@ -444,7 +443,6 @@ definition {
 
 	@priority = "5"
 	test AddPageWithHTMLFormat {
-
 		var welcomeToLiferay = '''
 				<p><a href="http://www.liferay.com">Welcome to LIFERAY</a></p>
 			''';
