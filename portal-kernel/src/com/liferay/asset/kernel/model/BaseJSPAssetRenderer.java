@@ -104,9 +104,8 @@ public abstract class BaseJSPAssetRenderer<T>
 			return _servletContext;
 		}
 
-		String portletId = getAssetRendererFactory().getPortletId();
-
-		PortletBag portletBag = PortletBagPool.get(portletId);
+		PortletBag portletBag = PortletBagPool.get(
+			getAssetRendererFactory().getPortletId());
 
 		return portletBag.getServletContext();
 	}

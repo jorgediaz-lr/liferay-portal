@@ -54,7 +54,6 @@ import com.liferay.dynamic.data.mapping.service.DDMFormInstanceService;
 import com.liferay.dynamic.data.mapping.service.DDMFormInstanceVersionLocalService;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.dynamic.data.mapping.service.DDMStructureService;
-import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.dynamic.data.mapping.util.DDMFormFactory;
 import com.liferay.dynamic.data.mapping.util.DDMFormLayoutFactory;
 import com.liferay.dynamic.data.mapping.util.DDMFormValuesMerger;
@@ -1389,9 +1388,8 @@ public class DDMFormAdminDisplayContext {
 			return;
 		}
 
-		DDMFormValues ddmFormValues = formInstance.getSettingsDDMFormValues();
-
-		ddmFormRenderingContext.setDDMFormValues(ddmFormValues);
+		ddmFormRenderingContext.setDDMFormValues(
+			formInstance.getSettingsDDMFormValues());
 	}
 
 	protected final DDMFormRenderer ddmFormRenderer;

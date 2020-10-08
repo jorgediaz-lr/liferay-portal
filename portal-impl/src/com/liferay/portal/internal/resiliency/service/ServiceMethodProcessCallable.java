@@ -67,11 +67,8 @@ public class ServiceMethodProcessCallable
 				User user = UserLocalServiceUtil.fetchUser(_userId);
 
 				if (user != null) {
-					PermissionChecker permissionChecker =
-						PermissionCheckerFactoryUtil.create(user);
-
 					PermissionThreadLocal.setPermissionChecker(
-						permissionChecker);
+						PermissionCheckerFactoryUtil.create(user));
 				}
 			}
 

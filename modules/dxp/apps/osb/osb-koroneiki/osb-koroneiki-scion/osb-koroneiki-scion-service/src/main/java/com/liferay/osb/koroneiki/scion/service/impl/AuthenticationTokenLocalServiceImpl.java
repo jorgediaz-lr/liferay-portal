@@ -55,9 +55,8 @@ public class AuthenticationTokenLocalServiceImpl
 		authenticationToken.setName(name);
 		authenticationToken.setPrefix(token.substring(0, 6));
 
-		String digest = DigesterUtil.digestBase64(Digester.SHA_256, token);
-
-		authenticationToken.setDigest(digest);
+		authenticationToken.setDigest(
+			DigesterUtil.digestBase64(Digester.SHA_256, token));
 
 		authenticationToken.setStatus(WorkflowConstants.STATUS_APPROVED);
 

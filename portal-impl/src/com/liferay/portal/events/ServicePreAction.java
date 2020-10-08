@@ -1634,9 +1634,7 @@ public class ServicePreAction extends Action {
 		themeDisplay.setURLCurrent(
 			PortalUtil.getCurrentURL(httpServletRequest));
 
-		String urlHome = PortalUtil.getHomeURL(httpServletRequest);
-
-		themeDisplay.setURLHome(urlHome);
+		themeDisplay.setURLHome(PortalUtil.getHomeURL(httpServletRequest));
 
 		if (layout != null) {
 			if (layout.isTypePortlet() && hasUpdateLayoutPermission) {

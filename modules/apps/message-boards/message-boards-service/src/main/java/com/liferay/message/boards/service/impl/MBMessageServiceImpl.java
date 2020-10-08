@@ -940,9 +940,7 @@ public class MBMessageServiceImpl extends MBMessageServiceBaseImpl {
 			SyndEntry syndEntry = _syndModelFactory.createSyndEntry();
 
 			if (!message.isAnonymous()) {
-				String author = _portal.getUserName(message);
-
-				syndEntry.setAuthor(author);
+				syndEntry.setAuthor(_portal.getUserName(message));
 			}
 
 			SyndContent syndContent = _syndModelFactory.createSyndContent();

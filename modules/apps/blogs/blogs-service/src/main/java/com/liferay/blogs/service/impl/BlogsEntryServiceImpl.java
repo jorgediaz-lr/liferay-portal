@@ -709,9 +709,7 @@ public class BlogsEntryServiceImpl extends BlogsEntryServiceBaseImpl {
 		for (BlogsEntry entry : blogsEntries) {
 			SyndEntry syndEntry = _syndModelFactory.createSyndEntry();
 
-			String author = _portal.getUserName(entry);
-
-			syndEntry.setAuthor(author);
+			syndEntry.setAuthor(_portal.getUserName(entry));
 
 			SyndContent syndContent = _syndModelFactory.createSyndContent();
 

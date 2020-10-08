@@ -35,9 +35,7 @@ public class PermissionCheckerUtil {
 			return;
 		}
 
-		String name = String.valueOf(user.getUserId());
-
-		PrincipalThreadLocal.setName(name);
+		PrincipalThreadLocal.setName(String.valueOf(user.getUserId()));
 
 		try {
 			PermissionChecker permissionChecker =

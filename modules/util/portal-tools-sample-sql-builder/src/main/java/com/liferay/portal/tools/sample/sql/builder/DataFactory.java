@@ -291,9 +291,7 @@ public class DataFactory {
 		for (String model : models) {
 			ClassNameModel classNameModel = new ClassNameModelImpl();
 
-			long classNameId = _counter.get();
-
-			classNameModel.setClassNameId(classNameId);
+			classNameModel.setClassNameId(_counter.get());
 
 			classNameModel.setValue(model);
 
@@ -2063,9 +2061,7 @@ public class DataFactory {
 		sb.append(StringPool.UNDERLINE);
 		sb.append(versionIndex);
 
-		String urlTitle = sb.toString();
-
-		journalArticleModel.setUrlTitle(urlTitle);
+		journalArticleModel.setUrlTitle(sb.toString());
 
 		journalArticleModel.setContent(_journalArticleContent);
 		journalArticleModel.setDefaultLanguageId("en_US");

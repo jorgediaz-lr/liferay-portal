@@ -305,9 +305,7 @@ public class PortletServletResponse extends HttpServletResponseWrapper {
 	}
 
 	public void setContentLengthLong(long contentLengthLong) {
-		int contentLength = Math.toIntExact(contentLengthLong);
-
-		setContentLength(contentLength);
+		setContentLength(Math.toIntExact(contentLengthLong));
 	}
 
 	@Override
