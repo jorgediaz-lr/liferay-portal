@@ -19,7 +19,6 @@ import '../Text/Text.es';
 import './KeyValueRegister.soy';
 
 import {normalizeFieldName} from 'dynamic-data-mapping-form-renderer/js/util/fields.es';
-import {debounce} from 'frontend-js-web';
 import Component from 'metal-component';
 import Soy from 'metal-soy';
 import {Config} from 'metal-state';
@@ -31,13 +30,8 @@ import templates from './KeyValue.soy';
  * @extends Component
  */
 
-const UPDATE_DELAY_MS = 50;
-
-const debounceFn = debounce(fn => fn(), UPDATE_DELAY_MS);
-
 class KeyValue extends Component {
 	willReceiveState(changes) {
-		debounceFn(() => {
 			if (changes.keyword) {
 				this.setState({
 					_keyword: changes.keyword.newVal
@@ -49,7 +43,6 @@ class KeyValue extends Component {
 					_value: changes.value.newVal
 				});
 			}
-		});
 	}
 
 	_handleKeywordInputBlurred(event) {
