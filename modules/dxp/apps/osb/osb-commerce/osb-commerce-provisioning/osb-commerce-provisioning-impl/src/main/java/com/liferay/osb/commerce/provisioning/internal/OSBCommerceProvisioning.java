@@ -101,7 +101,7 @@ public class OSBCommerceProvisioning {
 
 		PortalInstance portalInstance =
 			_dxpCloudProvisioningClient.postPortalInstance(
-				email.substring(email.indexOf(CharPool.AT)),
+				email.substring(email.indexOf(CharPool.AT) + 1),
 				"osb-commerce-portal-instance-initializer");
 
 		User user = _userLocalService.getUser(commerceOrder.getUserId());
