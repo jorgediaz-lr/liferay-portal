@@ -16,13 +16,13 @@ import CardEntryRenderer from './CardEntryRenderer';
 
 function CardListRenderer({
 	commerceAccountId = GUEST_ID,
-	CPEntries,
+	cpEntries,
 	checkoutURL,
 	portletNamespace
 }) {
 	return (
 		<div className={'align-items-center d-flex'}>
-			{CPEntries.map((entry, index) => (
+			{cpEntries.map((entry, index) => (
 				<div
 					className={
 						'col-md-4 col-sm-12 osb-commerce-product-card-container'
