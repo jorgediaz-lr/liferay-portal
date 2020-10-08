@@ -19,6 +19,8 @@
 <%@ taglib uri="http://liferay.com/tld/react" prefix="react" %><%@
 taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %>
 
+<%@ page import="com.liferay.osb.commerce.provisioning.theme.internal.constants.OSBCommerceProvisioningThemeWebKeys" %>
+
 <%@ page import="java.util.Map" %>
 
 <liferay-theme:defineObjects />
