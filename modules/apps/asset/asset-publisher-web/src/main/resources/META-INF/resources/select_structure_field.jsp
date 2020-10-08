@@ -106,15 +106,6 @@ portletURL.setParameter("eventName", eventName);
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text>
-
-				<%
-				JSONObject jsonObject = JSONUtil.put(
-					"ddmStructureFieldName", ddmStructureFieldName
-				).put(
-					"ddmStructureFieldValue", ddmStructureFieldValue
-				);
-				%>
-
 				<aui:button
 					cssClass="selector-button"
 					data='<%=
@@ -127,7 +118,12 @@ portletURL.setParameter("eventName", eventName);
 						).put(
 							"name", name
 						).put(
-							"value", jsonObject
+							"value",
+							JSONUtil.put(
+								"ddmStructureFieldName", ddmStructureFieldName
+							).put(
+								"ddmStructureFieldValue", ddmStructureFieldValue
+							)
 						).build()
 					%>'
 					disabled="<%= name.equals(ddmStructureFieldName) ? false : true %>"
