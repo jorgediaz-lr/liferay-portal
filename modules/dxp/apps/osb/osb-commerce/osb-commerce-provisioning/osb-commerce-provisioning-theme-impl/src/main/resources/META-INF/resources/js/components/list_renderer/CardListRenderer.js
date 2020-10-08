@@ -27,13 +27,13 @@ function CardListRenderer({
 					className={
 						'col-md-4 col-sm-12 osb-commerce-product-card-container'
 					}
+					key={index}
 				>
 					<CardEntryRenderer
 						checkoutURL={checkoutURL}
 						commerceAccountId={commerceAccountId}
 						isFeatured={index === 1}
 						isTrial={index === 0}
-						key={index}
 						namespace={portletNamespace}
 						{...entry}
 					/>

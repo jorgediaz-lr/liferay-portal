@@ -17,8 +17,6 @@ import React, {createRef, useEffect, useState} from 'react';
 import {TRIAL_SKU, addToOrder} from '../../helper/index';
 import SubscriptionEntry from '../subscription_entry/index';
 
-// eslint-disable react-hooks/exhaustive-deps
-
 const PRODUCT_HIGHLIGHT = 'highlightProduct';
 
 function CardEntryRenderer({
@@ -32,15 +30,17 @@ function CardEntryRenderer({
 	...entry
 }) {
 	const [isHighlighted, setIsHighlighted] = useState(isFeatured),
-		cardEntryRef = createRef(),
-		onProductHighlight = ({id}) =>
+		cardEntryRef = createRef();
+
+	useEffect(() => {
+		const onProductHighlight = ({id}) =>
 			!id
 				? setIsHighlighted(isFeatured)
 				: setIsHighlighted(id === productId);
 
-	useEffect(() => {
 		Liferay.on(`${namespace}_${PRODUCT_HIGHLIGHT}`, onProductHighlight);
-	}, [namespace, onProductHighlight]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [namespace]);
 
 	useEffect(() => {
 		const cardEntryElement = cardEntryRef.current,
@@ -53,7 +53,7 @@ function CardEntryRenderer({
 
 		cardEntryElement.addEventListener('mouseover', onHover);
 		cardEntryElement.addEventListener('mouseout', onOut);
-	}, []);
+	}, [cardEntryRef, namespace, productId]);
 
 	return (
 		<div
@@ -76,9 +76,11 @@ function CardEntryRenderer({
 								: 'secondary'
 						}
 						onClick={() => {
-							addToOrder(commerceAccountId, productId).then(() => {
-								navigate(checkoutURL)
-							});
+							addToOrder(commerceAccountId, productId).then(
+								() => {
+									navigate(checkoutURL);
+								}
+							);
 						}}
 					>
 						{Liferay.Language.get(

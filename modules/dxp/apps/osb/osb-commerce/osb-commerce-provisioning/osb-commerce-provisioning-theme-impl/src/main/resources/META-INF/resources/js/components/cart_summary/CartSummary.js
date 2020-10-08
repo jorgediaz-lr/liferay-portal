@@ -11,6 +11,7 @@
 
 import ClayButton from '@clayui/button';
 import {MiniCartContext} from 'commerce-frontend-js';
+import {navigate} from 'frontend-js-web';
 import React, {useContext, useEffect, useState} from 'react';
 
 import {hasURLComponent, mapToFeatures} from '../../helper/index';
@@ -98,9 +99,7 @@ function CartSummary() {
 				<div className={'cart-summary-button'}>
 					<ClayButton
 						displayType={'primary'}
-						onClick={() => {
-							navigate(detailURL);
-						}}
+						onClick={() => navigate()}
 						type={'button'}
 					>
 						{Liferay.Language.get('subscribe')}

@@ -15,17 +15,11 @@ import React from 'react';
 
 function SubscriptionEntry({
 	description,
+	features,
 	name,
 	productImageURL: imageURL,
 	spritemap
 }) {
-	const debugFeatures = [
-		'This is an amazing feature',
-		'This is an amazing feature with a super long text',
-		'This is yet another cool feature',
-		'And much more. No, really. I mean it.'
-	];
-
 	return (
 		<div className={'subscription-entry'}>
 			<div className={'header'}>
@@ -42,12 +36,12 @@ function SubscriptionEntry({
 				</div>
 			</div>
 
-			{debugFeatures.length && (
+			{features.length && (
 				<div className={'features'}>
 					<ul>
-						{debugFeatures.map(feature => {
+						{features.map((feature, index) => {
 							return (
-								<li>
+								<li key={index}>
 									<div className={'list-icon'}>
 										<ClayIcon
 											spritemap={spritemap}

@@ -1,4 +1,18 @@
-package com.liferay.osb.commerce.provisioning.theme.internal.product.renderer.list;
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package com.liferay.osb.commerce.provisioning.theme.internal.commerce.product.content.renderer.list;
 
 import com.liferay.commerce.order.CommerceOrderHttpHelper;
 import com.liferay.commerce.product.catalog.CPCatalogEntry;
@@ -26,7 +40,6 @@ import java.util.ResourceBundle;
 
 import javax.portlet.PortletURL;
 import javax.portlet.WindowStateException;
-
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,6 +47,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
+/**
+ * @author Gianmarco Brunialti Masera
+ */
 @Component(
 	immediate = true,
 	property = {
@@ -62,8 +78,8 @@ public class OSBCommerceProvisioningCPContentListRenderer
 
 	@Override
 	public void render(
-			HttpServletRequest httpServletRequest,
-			HttpServletResponse httpServletResponse)
+		HttpServletRequest httpServletRequest,
+		HttpServletResponse httpServletResponse)
 		throws Exception {
 
 		httpServletRequest.setAttribute(
@@ -76,7 +92,7 @@ public class OSBCommerceProvisioningCPContentListRenderer
 	}
 
 	private Map<String, Object> _getCPEntriesRenderProps(
-			HttpServletRequest httpServletRequest)
+		HttpServletRequest httpServletRequest)
 		throws PortalException, WindowStateException {
 
 		CPDataSourceResult cpDataSourceResult =
@@ -86,7 +102,7 @@ public class OSBCommerceProvisioningCPContentListRenderer
 		List<Map<String, Object>> cpEntriesRenderProps = new ArrayList<>();
 
 		for (CPCatalogEntry cpCatalogEntry :
-				cpDataSourceResult.getCPCatalogEntries()) {
+			cpDataSourceResult.getCPCatalogEntries()) {
 
 			cpEntriesRenderProps.add(
 				_getCPEntryRenderProps(cpCatalogEntry, httpServletRequest));
@@ -111,7 +127,7 @@ public class OSBCommerceProvisioningCPContentListRenderer
 	}
 
 	private Map<String, Object> _getCPEntryRenderProps(
-			CPCatalogEntry cpCatalogEntry, HttpServletRequest request)
+		CPCatalogEntry cpCatalogEntry, HttpServletRequest request)
 		throws PortalException {
 
 		List<CPSku> cpSkus = cpCatalogEntry.getCPSkus();

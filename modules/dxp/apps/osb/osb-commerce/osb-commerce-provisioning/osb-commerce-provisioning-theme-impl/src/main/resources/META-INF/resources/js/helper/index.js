@@ -46,39 +46,6 @@ export function mapToFeatures(stringifiedJSON) {
 	}
 }
 
-export function getCurrentURLParameter(parameterName) {
-	const URLParameters = new URL(window.location.href).searchParams;
-
-	return URLParameters.get(parameterName);
-}
-
 export function hasURLComponent(componentName) {
 	return window.location.href.indexOf(componentName) > -1;
 }
-
-export const OSBCommerceCookieUtil = {
-	COOKIE_SCOPE: 'OSB_COMMERCE_PROVISIONING_',
-
-	getValue(key) {
-		const [, value] = document.cookie.split(`${this.COOKIE_SCOPE}${key}=`);
-
-		return !value ? null : value.split(';')[0];
-	},
-
-	delete(key) {
-		const value = this.getValue(key);
-
-		value && this.set(key, value, 0);
-	},
-
-	set(key, value, expires, path = '/') {
-		const expirationDate =
-			expires instanceof Date ? expires : new Date(expires);
-
-		const cookieValue = `${this.COOKIE_SCOPE}${key}=${value};`,
-			cookieExp = `expires=${expirationDate.toUTCString()};`,
-			cookiePath = `path=${path};`;
-
-		document.cookie = `${cookieValue}${cookieExp}${cookiePath}`;
-	}
-};
