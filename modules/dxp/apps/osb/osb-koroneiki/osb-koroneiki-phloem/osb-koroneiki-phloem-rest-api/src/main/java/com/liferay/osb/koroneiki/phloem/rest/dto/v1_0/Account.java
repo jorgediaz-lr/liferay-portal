@@ -1272,8 +1272,7 @@ public class Account {
 	@GraphQLName("Status")
 	public static enum Status {
 
-		APPROVED("Approved"), CLOSED("Closed"), EXPIRED("Expired"),
-		INACTIVE("Inactive");
+		ACTIVE("Active"), CLOSED("Closed");
 
 		@JsonCreator
 		public static Status create(String value) {

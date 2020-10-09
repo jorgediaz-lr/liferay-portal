@@ -642,8 +642,7 @@ public class Account implements Cloneable {
 
 	public static enum Status {
 
-		APPROVED("Approved"), CLOSED("Closed"), EXPIRED("Expired"),
-		INACTIVE("Inactive");
+		ACTIVE("Active"), CLOSED("Closed");
 
 		public static Status create(String value) {
 			for (Status status : values()) {
