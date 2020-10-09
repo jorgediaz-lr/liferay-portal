@@ -166,12 +166,13 @@ class Options extends Component {
 			desiredValue = Liferay.Language.get('option');
 		}
 
-		let normalizedValue = desiredValue;
+		const baseNormalizedValue = normalizeFieldName(desiredValue);
+		let normalizedValue = baseNormalizedValue;
 		let counter = 0;
 
 		do {
 			if (counter > 0) {
-				normalizedValue = desiredValue + counter;
+				normalizedValue = baseNormalizedValue + counter;
 			}
 
 			counter++;
