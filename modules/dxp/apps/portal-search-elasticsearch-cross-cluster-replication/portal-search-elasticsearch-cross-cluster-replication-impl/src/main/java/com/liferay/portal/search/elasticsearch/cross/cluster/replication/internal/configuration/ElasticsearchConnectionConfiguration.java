@@ -118,9 +118,8 @@ public interface ElasticsearchConnectionConfiguration {
 	public String transportSSLVerificationMode();
 
 	@Meta.AD(
-		deflt = "PKCS#12", description = "certificate-format-help",
-		name = "certificate-format", optionValues = {"PEM", "PKCS#12"},
-		required = false
+		deflt = "pkcs12", description = "certificate-format-help",
+		name = "certificate-format", required = false
 	)
 	public String certificateFormat();
 
