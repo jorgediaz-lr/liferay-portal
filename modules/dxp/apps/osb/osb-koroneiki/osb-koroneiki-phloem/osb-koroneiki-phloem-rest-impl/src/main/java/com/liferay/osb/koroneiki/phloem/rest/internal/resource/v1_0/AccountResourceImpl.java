@@ -348,7 +348,7 @@ public class AccountResourceImpl
 			region = accountRegion.toString();
 		}
 
-		String status = Account.Status.APPROVED.toString();
+		String status = Account.Status.ACTIVE.toString();
 
 		Account.Status accountStatus = account.getStatus();
 

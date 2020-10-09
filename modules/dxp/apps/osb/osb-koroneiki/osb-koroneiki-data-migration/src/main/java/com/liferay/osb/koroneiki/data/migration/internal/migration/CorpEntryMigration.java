@@ -89,15 +89,7 @@ public class CorpEntryMigration {
 				account.setPhoneNumber(resultSet.getString("phoneNumber"));
 				account.setFaxNumber(resultSet.getString("faxNumber"));
 				account.setWebsite(resultSet.getString("website"));
-
-				int status = resultSet.getInt("status");
-
-				if (status == WorkflowConstants.STATUS_EXPIRED) {
-					account.setStatus(Status.EXPIRED.toString());
-				}
-				else {
-					account.setStatus(Status.APPROVED.toString());
-				}
+				account.setStatus(Status.ACTIVE.toString());
 
 				_accountLocalService.addAccount(account);
 

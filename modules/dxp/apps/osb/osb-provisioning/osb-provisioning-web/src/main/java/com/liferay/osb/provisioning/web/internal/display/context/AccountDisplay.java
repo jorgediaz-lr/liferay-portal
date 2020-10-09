@@ -285,18 +285,11 @@ public class AccountDisplay {
 	public String getStatusStyle() {
 		Account.Status status = _account.getStatus();
 
-		if (status == Account.Status.APPROVED) {
+		if (status == Account.Status.ACTIVE) {
 			return "label-success";
 		}
-		else if (status == Account.Status.CLOSED) {
-			return "label-secondary";
-		}
-		else if (status == Account.Status.INACTIVE) {
-			return "label-warning";
-		}
-		else {
-			return "label-danger";
-		}
+
+		return "label-secondary";
 	}
 
 	public String getSupportEndDate() {

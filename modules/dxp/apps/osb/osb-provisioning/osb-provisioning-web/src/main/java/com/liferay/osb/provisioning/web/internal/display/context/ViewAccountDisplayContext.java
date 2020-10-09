@@ -305,7 +305,7 @@ public class ViewAccountDisplayContext {
 
 						if (account.getStatus() == Account.Status.CLOSED) {
 							workflowURL.setParameter(
-								"status", Account.Status.APPROVED.toString());
+								"status", Account.Status.ACTIVE.toString());
 						}
 						else {
 							workflowURL.setParameter(

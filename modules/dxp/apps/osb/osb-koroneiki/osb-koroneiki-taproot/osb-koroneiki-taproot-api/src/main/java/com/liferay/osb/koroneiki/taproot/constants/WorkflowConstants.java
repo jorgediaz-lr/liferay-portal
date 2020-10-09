@@ -20,32 +20,22 @@ package com.liferay.osb.koroneiki.taproot.constants;
 public class WorkflowConstants
 	extends com.liferay.portal.kernel.workflow.WorkflowConstants {
 
+	public static final String LABEL_ACTIVE = "Active";
+
 	public static final String LABEL_APPROVED = "Approved";
 
 	public static final String LABEL_CANCELLED = "Cancelled";
 
 	public static final String LABEL_CLOSED = "Closed";
 
-	public static final String LABEL_EXPIRED = "Expired";
-
 	public static final String LABEL_INACTIVE = "Inactive";
-
-	public static final String LABEL_PENDING = "Pending";
-
-	public static final String LABEL_PENDING_VALIDATION = "Pending Validation";
-
-	public static final String LABEL_REJECTED = "Rejected";
 
 	public static final int STATUS_CANCELLED = 600;
 
 	public static final int STATUS_CLOSED = 400;
 
-	public static final int STATUS_PENDING_VALIDATION = 100;
-
-	public static final int STATUS_REJECTED = 500;
-
 	public static int getLabelStatus(String label) {
-		if (label.equals(LABEL_APPROVED)) {
+		if (label.equals(LABEL_ACTIVE) || label.equals(LABEL_APPROVED)) {
 			return STATUS_APPROVED;
 		}
 		else if (label.equals(LABEL_CANCELLED)) {
@@ -54,20 +44,8 @@ public class WorkflowConstants
 		else if (label.equals(LABEL_CLOSED)) {
 			return STATUS_CLOSED;
 		}
-		else if (label.equals(LABEL_EXPIRED)) {
-			return STATUS_EXPIRED;
-		}
 		else if (label.equals(LABEL_INACTIVE)) {
 			return STATUS_INACTIVE;
-		}
-		else if (label.equals(LABEL_PENDING)) {
-			return STATUS_PENDING;
-		}
-		else if (label.equals(LABEL_PENDING_VALIDATION)) {
-			return STATUS_PENDING_VALIDATION;
-		}
-		else if (label.equals(LABEL_REJECTED)) {
-			return STATUS_REJECTED;
 		}
 
 		return com.liferay.portal.kernel.workflow.WorkflowConstants.
@@ -84,20 +62,8 @@ public class WorkflowConstants
 		else if (status == STATUS_CLOSED) {
 			return LABEL_CLOSED;
 		}
-		else if (status == STATUS_EXPIRED) {
-			return LABEL_EXPIRED;
-		}
 		else if (status == STATUS_INACTIVE) {
 			return LABEL_INACTIVE;
-		}
-		else if (status == STATUS_PENDING) {
-			return LABEL_PENDING;
-		}
-		else if (status == STATUS_PENDING_VALIDATION) {
-			return LABEL_PENDING_VALIDATION;
-		}
-		else if (status == STATUS_REJECTED) {
-			return LABEL_REJECTED;
 		}
 		else {
 			return com.liferay.portal.kernel.workflow.WorkflowConstants.

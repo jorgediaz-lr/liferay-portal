@@ -115,11 +115,11 @@ public class ViewAccountRelatedAccountsDisplayContext
 				LanguageUtil.get(httpServletRequest, "all"), accounts.size()));
 
 		accounts = accountWebService.search(
-			StringPool.BLANK, _getFilter(Account.Status.APPROVED.toString()), 1,
+			StringPool.BLANK, _getFilter(Account.Status.ACTIVE.toString()), 1,
 			1000, StringPool.BLANK);
 
 		tabsNames.add(
-			_getTabName(Account.Status.APPROVED.toString(), accounts.size()));
+			_getTabName(Account.Status.ACTIVE.toString(), accounts.size()));
 
 		accounts = accountWebService.search(
 			StringPool.BLANK, _getFilter(Account.Status.CLOSED.toString()), 1,
@@ -133,7 +133,7 @@ public class ViewAccountRelatedAccountsDisplayContext
 
 	public String getTabsValues() {
 		return StringBundler.concat(
-			"all,", Account.Status.APPROVED.toString(), ",",
+			"all,", Account.Status.ACTIVE.toString(), ",",
 			Account.Status.CLOSED.toString());
 	}
 

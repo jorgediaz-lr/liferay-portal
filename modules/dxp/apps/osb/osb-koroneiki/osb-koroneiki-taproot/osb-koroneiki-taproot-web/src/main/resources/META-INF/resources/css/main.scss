@@ -15,7 +15,7 @@ $label-warning-color: #2E5AAC;
 	padding: 4px 8px 2px;
 	text-transform: uppercase;
 
-	&.label-approved {
+	&.label-active, .label-approved {
 		border: 1px solid $label-success-border;
 		color: $label-success-color;
 	}
@@ -25,34 +25,9 @@ $label-warning-color: #2E5AAC;
 		color: $label-default-color;
 	}
 
-	&.label-expired {
-		border: 1px solid $label-danger-border;
-		color: $label-danger-color;
-	}
-	
 	&.label-inactive {
 		border: 1px solid $label-default-border;
 		color: $label-default-color;
-	}
-
-	&.label-on-hold {
-		border: 1px solid $label-warning-border;
-		color: $label-warning-color;
-	}
-
-	&.label-pending {
-		border: 1px solid $label-warning-border;
-		color: $label-warning-color;
-	}
-
-	&.label-pending {
-		border: 1px solid $label-warning-border;
-		color: $label-warning-color;
-	}
-
-	&.label-rejected {
-		border: 1px solid $label-danger-border;
-		color: $label-danger-color;
 	}
 
 	&.label-sm {

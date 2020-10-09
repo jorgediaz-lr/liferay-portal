@@ -26,12 +26,12 @@ function renderGeneralDetails(props) {
 				name: 'Test Account',
 				parterTeamName: 'Test Partner Team',
 				region: 'US',
-				status: 'Approved',
+				status: 'Active',
 				statusStyle: 'label-success',
 				tier: 'Regular'
 			}}
 			parentAccountName="Parent Account Name"
-			statuses={['Approved', 'Expired', 'Pending']}
+			statuses={['Active', 'Closed']}
 			tiers={['1', '2', '3']}
 			{...props}
 		/>

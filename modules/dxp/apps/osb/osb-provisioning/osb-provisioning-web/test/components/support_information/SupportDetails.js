@@ -23,7 +23,7 @@ function renderSupportDetails() {
 				key: '123',
 				name: 'Test Account',
 				region: 'United States',
-				status: 'Approved',
+				status: 'Active',
 				tier: 'Regular'
 			}}
 			language={{id: 'en_US', name: 'English'}}

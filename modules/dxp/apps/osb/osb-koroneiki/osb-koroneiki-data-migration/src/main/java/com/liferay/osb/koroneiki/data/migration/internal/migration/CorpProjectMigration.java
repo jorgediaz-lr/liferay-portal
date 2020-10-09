@@ -110,7 +110,7 @@ public class CorpProjectMigration {
 				account.setRegion(
 					_getRegion(resultSet.getLong("supportRegionId")));
 				account.setInternal(_getInternal(resultSet.getInt("type_")));
-				account.setStatus(Status.APPROVED.toString());
+				account.setStatus(Status.ACTIVE.toString());
 
 				_accountLocalService.addAccount(account);
 

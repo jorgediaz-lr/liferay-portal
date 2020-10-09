@@ -94,7 +94,7 @@ public class AccountLocalServiceImpl extends AccountLocalServiceBaseImpl {
 		if (Validator.isNull(status)) {
 			status =
 				com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.Account.Status.
-					APPROVED.toString();
+					ACTIVE.toString();
 		}
 
 		long accountId = counterLocalService.increment();

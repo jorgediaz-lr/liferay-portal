@@ -23,7 +23,7 @@ function renderSupportInformation() {
 				key: '123',
 				name: 'Test Account',
 				region: 'United States',
-				status: 'Approved',
+				status: 'Active',
 				tier: 'Regular'
 			}}
 			accountAttachmentURL="account/attachment/url"
