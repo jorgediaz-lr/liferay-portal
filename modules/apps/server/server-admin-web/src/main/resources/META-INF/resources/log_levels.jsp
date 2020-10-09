@@ -54,7 +54,6 @@ Iterator itr = currentLoggerNamesList.iterator();
 while (itr.hasNext()) {
 	Map.Entry entry = (Map.Entry)itr.next();
 
-	String name = (String)entry.getKey();
 	Logger logger = (Logger)entry.getValue();
 
 	Level level = logger.getLevel();
