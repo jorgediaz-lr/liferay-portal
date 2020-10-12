@@ -565,7 +565,6 @@ public class FileInstallDeployTest {
 				attributes.putValue(Constants.BUNDLE_MANIFESTVERSION, "2");
 				attributes.putValue(
 					Constants.BUNDLE_SYMBOLICNAME, _symbolicName);
-
 				attributes.putValue(
 					Constants.BUNDLE_VERSION, _version.toString());
 
