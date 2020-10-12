@@ -31,87 +31,95 @@ if (products != null) {
 }
 %>
 
-<portlet:actionURL name="/product_bundles/edit_product_bundle" var="editProductBundleURL">
-	<portlet:param name="mvcRenderCommandName" value="/product_bundles/edit_product_bundle" />
-	<portlet:param name="redirect" value="<%= redirect %>" />
-	<portlet:param name="productBundleId" value='<%= (productBundle != null) ? String.valueOf(productBundle.getProductBundleId()) : "" %>' />
-</portlet:actionURL>
+<div class="add-items provisioning-product-bundle">
+	<liferay-ui:header
+		backURL="<%= redirect %>"
+		cssClass="add-items-header"
+		title='<%= (productBundle != null) ? "edit-product-bundle" : "new-product-bundle" %>'
+	/>
 
-<aui:form action="<%= editProductBundleURL %>" cssClass="container-fluid container-fluid-max-xl" method="post" name="fm">
-	<aui:input name="productKeys" type="hidden" value="<%= StringUtil.merge(productKeys) %>" />
+	<portlet:actionURL name="/product_bundles/edit_product_bundle" var="editProductBundleURL">
+		<portlet:param name="mvcRenderCommandName" value="/product_bundles/edit_product_bundle" />
+		<portlet:param name="redirect" value="<%= redirect %>" />
+		<portlet:param name="productBundleId" value='<%= (productBundle != null) ? String.valueOf(productBundle.getProductBundleId()) : "" %>' />
+	</portlet:actionURL>
 
-	<liferay-ui:error exception="<%= ProductBundleNameException.MustNotBeDuplicate.class %>">
+	<aui:form action="<%= editProductBundleURL %>" cssClass="container-fluid container-fluid-max-xl" method="post" name="fm">
+		<div class="add-items-sheet sheet sheet-lg">
+			<aui:input name="productKeys" type="hidden" value="<%= StringUtil.merge(productKeys) %>" />
 
-		<%
-		ProductBundleNameException.MustNotBeDuplicate productBundleNameException = (ProductBundleNameException.MustNotBeDuplicate)errorException;
-		%>
+			<liferay-ui:error exception="<%= ProductBundleNameException.MustNotBeDuplicate.class %>">
 
-		<%= productBundleNameException.getMessage() %>
-	</liferay-ui:error>
+				<%
+				ProductBundleNameException.MustNotBeDuplicate productBundleNameException = (ProductBundleNameException.MustNotBeDuplicate)errorException;
+				%>
 
-	<liferay-ui:error key="<%= RequiredProductException.class.getName() %>" message="please-select-at-least-one-product" />
+				<%= productBundleNameException.getMessage() %>
+			</liferay-ui:error>
 
-	<aui:fieldset-group>
-		<aui:fieldset>
-			<aui:input name="name" value='<%= (productBundle != null) ? productBundle.getName() : "" %>'>
+			<liferay-ui:error key="<%= RequiredProductException.class.getName() %>" message="please-select-at-least-one-product" />
+
+			<aui:input inlineLabel="left" name="name" value='<%= (productBundle != null) ? productBundle.getName() : "" %>'>
 				<aui:validator name="required" />
 			</aui:input>
 
-			<h5><liferay-ui:message key="products" /></h5>
+			<div class="form-group form-inline input-text-wrapper">
+				<label class="control-label"><liferay-ui:message key="products" /></label>
 
-			<div id="<portlet:namespace />productName">
-				<c:if test="<%= products != null %>">
-					<table class="table table-list">
-						<thead>
-							<tr>
-								<th>
-									<liferay-ui:message key="name" />
-								</th>
-								<th>
-								</th>
-							</tr>
-						</thead>
+				<div class="field table-field">
+					<div class="field-name" id="<portlet:namespace />productName">
+						<c:if test="<%= products != null %>">
+							<table class="table table-list">
+								<thead>
+									<tr>
+										<th>
+											<liferay-ui:message key="name" />
+										</th>
+										<th>
+										</th>
+									</tr>
+								</thead>
 
-						<tbody>
+								<tbody>
 
-							<%
-							for (Product product : products) {
-							%>
+									<%
+									for (Product product : products) {
+									%>
 
-								<tr>
-									<td>
-										<%= HtmlUtil.escape(product.getName()) %>
-									</td>
-									<td class="text-right" id="<%= product.getKey() %>">
-										<button class="btn" onclick="<portlet:namespace />removeName(this);" type="button">
-											<svg class="lexicon-icon lexicon-icon-times-circle">
-												<use xlink:href="#delete-icon" />
-											</svg>
-										</button>
-									</td>
-								</tr>
+										<tr>
+											<td>
+												<%= HtmlUtil.escape(product.getName()) %>
+											</td>
+											<td class="text-right" id="<%= product.getKey() %>">
+												<button class="btn" onclick="<portlet:namespace />removeName(this);" type="button">
+													<svg class="lexicon-icon lexicon-icon-times-circle">
+														<use xlink:href="#delete-icon" />
+													</svg>
+												</button>
+											</td>
+										</tr>
 
-							<%
-							}
-							%>
+									<%
+									}
+									%>
 
-						</tbody>
-					</table>
+								</tbody>
+							</table>
+						</c:if>
+					</div>
 
-					<br />
-				</c:if>
+					<aui:button onClick='<%= renderResponse.getNamespace() + "assignProducts();" %>' value="select" />
+				</div>
 			</div>
 
-			<aui:button onClick='<%= renderResponse.getNamespace() + "assignProducts();" %>' value="select" />
-		</aui:fieldset>
-	</aui:fieldset-group>
+			<aui:button-row>
+				<aui:button type="submit" />
 
-	<aui:button-row>
-		<aui:button type="submit" />
-
-		<aui:button href="<%= redirect %>" type="cancel" />
-	</aui:button-row>
-</aui:form>
+				<aui:button href="<%= redirect %>" type="cancel" />
+			</aui:button-row>
+		</div>
+	</aui:form>
+</div>
 
 <aui:script>
 	Liferay.provide(
