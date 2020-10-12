@@ -107,7 +107,7 @@ public class OSBCommerceProvisioning {
 		User user = _userLocalService.getUser(commerceOrder.getUserId());
 
 		_userAccountClient.postUserAccount(
-			_toUserAccount(user), portalInstance.getVirtualHost());
+			portalInstance.getPortalInstanceId(), _toUserAccount(user));
 
 		_updateSubscriptionTypeSettingsProperties(
 			commerceSubscriptionEntry,

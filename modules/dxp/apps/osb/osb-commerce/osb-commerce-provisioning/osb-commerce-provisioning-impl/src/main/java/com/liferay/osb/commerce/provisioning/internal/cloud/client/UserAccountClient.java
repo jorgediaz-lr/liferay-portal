@@ -22,6 +22,7 @@ import com.liferay.headless.osb.commerce.client.dto.v1_0.UserAccount;
 public interface UserAccountClient extends Client {
 
 	public UserAccount postUserAccount(
-		UserAccount userAccount, String virtualHostname);
+			String portalInstanceId, UserAccount userAccount)
+		throws Exception;
 
 }

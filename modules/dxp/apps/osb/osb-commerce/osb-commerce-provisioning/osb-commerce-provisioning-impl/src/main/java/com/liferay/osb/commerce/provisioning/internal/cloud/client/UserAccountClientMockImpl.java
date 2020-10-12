@@ -32,26 +32,20 @@ public class UserAccountClientMockImpl implements UserAccountClient {
 
 	@Override
 	public UserAccount postUserAccount(
-		UserAccount userAccount, String virtualHostname) {
+			String portalInstanceId, UserAccount userAccount)
+		throws Exception {
 
 		UserAccountResource.Builder builder = UserAccountResource.builder();
 
 		UserAccountResource userAccountResource = builder.endpoint(
-			virtualHostname, 8080, "http"
+			"localhost", 8080, "http"
 		).authentication(
-			PropsValues.DEFAULT_ADMIN_EMAIL_ADDRESS_PREFIX + "@" +
-				virtualHostname,
+			PropsValues.DEFAULT_ADMIN_EMAIL_ADDRESS_PREFIX + "@localhost",
 			PropsValues.DEFAULT_ADMIN_PASSWORD
 		).build();
 
-		try {
-			userAccount = userAccountResource.postUserAccount(userAccount);
-		}
-		catch (Exception exception) {
-			throw new RuntimeException(exception);
-		}
-
-		return userAccount;
+		return userAccountResource.postUserAccount(
+			portalInstanceId, userAccount);
 	}
 
 }

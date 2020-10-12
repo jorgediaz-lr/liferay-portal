@@ -15,17 +15,11 @@
 package com.liferay.osb.commerce.provisioning.internal.cloud.client;
 
 import com.liferay.headless.osb.commerce.client.dto.v1_0.UserAccount;
-import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.headless.osb.commerce.client.resource.v1_0.UserAccountResource;
+import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.util.Validator;
 
-import java.io.UnsupportedEncodingException;
-
-import java.util.ArrayList;
-import java.util.Map;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.HttpHeaders;
 
 /**
  * @author Ivica Cardic
@@ -34,10 +28,21 @@ public class UserAccountClientImpl
 	extends BaseClientImpl implements UserAccountClient {
 
 	public UserAccountClientImpl(
-		String oauthClientId, String oauthClientSecret) {
+		String osbCommerceInstanceDomainName,
+		String osbCommerceInstanceOauthClientId,
+		String osbCommerceInstanceOAuthClientSecret,
+		String osbCommerceInstancePassword, int osbCommerceInstancePort,
+		String osbCommerceInstanceProtocol,
+		String osbCommerceInstanceUsername) {
 
-		_oauthClientId = oauthClientId;
-		_oauthClientSecret = oauthClientSecret;
+		_osbCommerceInstanceDomainName = osbCommerceInstanceDomainName;
+		_osbCommerceInstanceOauthClientId = osbCommerceInstanceOauthClientId;
+		_osbCommerceInstanceOAuthClientSecret =
+			osbCommerceInstanceOAuthClientSecret;
+		_osbCommerceInstancePassword = osbCommerceInstancePassword;
+		_osbCommerceInstancePort = osbCommerceInstancePort;
+		_osbCommerceInstanceProtocol = osbCommerceInstanceProtocol;
+		_osbCommerceInstanceUsername = osbCommerceInstanceUsername;
 	}
 
 	@Override
@@ -46,46 +51,47 @@ public class UserAccountClientImpl
 
 	@Override
 	public UserAccount postUserAccount(
-		UserAccount userAccount, String virtualHostname) {
+			String portalInstanceId, UserAccount userAccount)
+		throws Exception {
 
-		return executePost(
-			_getAuthorizationHeader(virtualHostname), userAccount,
-			virtualHostname + "/o/headless-osb-commerce/v1.0/user-accounts",
-			UserAccount.class);
-	}
+		String authorizationHeader = null;
 
-	private String _getAuthorizationHeader(String virtualHostname) {
-		HttpPost httpPost = new HttpPost(virtualHostname + "/o/oauth2/token");
-
-		try {
-			httpPost.setEntity(
-				new UrlEncodedFormEntity(
-					new ArrayList<NameValuePair>() {
-						{
-							add(
-								new BasicNameValuePair(
-									"client_id", _oauthClientId));
-							add(
-								new BasicNameValuePair(
-									"client_secret", _oauthClientSecret));
-							add(
-								new BasicNameValuePair(
-									"grant_type", "client_credentials"));
-						}
-					},
-					"UTF-8"));
+		if (Validator.isNull(_osbCommerceInstanceOauthClientId)) {
+			authorizationHeader = getBasicAuthorizationHeader(
+				_osbCommerceInstancePassword, _osbCommerceInstanceUsername);
 		}
-		catch (UnsupportedEncodingException unsupportedEncodingException) {
-			throw new SystemException(unsupportedEncodingException);
+		else {
+			authorizationHeader = getBearerAuthorizationHeader(
+				_osbCommerceInstanceOauthClientId,
+				_osbCommerceInstanceOAuthClientSecret,
+				_getOSBCommerceInstanceURI(_osbCommerceInstanceDomainName));
 		}
 
-		Map<String, String> result = convert(
-			execute(null, httpPost), Map.class);
+		UserAccountResource.Builder builder = UserAccountResource.builder();
 
-		return "Bearer: " + result.get("access_token");
+		UserAccountResource userAccountResource = builder.endpoint(
+			_osbCommerceInstanceDomainName, _osbCommerceInstancePort,
+			_osbCommerceInstanceProtocol
+		).header(
+			HttpHeaders.AUTHORIZATION, authorizationHeader
+		).build();
+
+		return userAccountResource.postUserAccount(
+			portalInstanceId, userAccount);
 	}
 
-	private final String _oauthClientId;
-	private final String _oauthClientSecret;
+	private String _getOSBCommerceInstanceURI(String domainName) {
+		return StringBundler.concat(
+			_osbCommerceInstanceProtocol, "://", domainName, ":",
+			_osbCommerceInstancePort);
+	}
+
+	private final String _osbCommerceInstanceDomainName;
+	private final String _osbCommerceInstanceOauthClientId;
+	private final String _osbCommerceInstanceOAuthClientSecret;
+	private final String _osbCommerceInstancePassword;
+	private final int _osbCommerceInstancePort;
+	private final String _osbCommerceInstanceProtocol;
+	private final String _osbCommerceInstanceUsername;
 
 }
