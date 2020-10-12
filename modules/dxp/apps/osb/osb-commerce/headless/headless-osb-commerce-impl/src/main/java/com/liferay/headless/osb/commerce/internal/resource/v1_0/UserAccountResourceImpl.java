@@ -17,21 +17,21 @@ package com.liferay.headless.osb.commerce.internal.resource.v1_0;
 import com.liferay.headless.osb.commerce.dto.v1_0.UserAccount;
 import com.liferay.headless.osb.commerce.resource.v1_0.UserAccountResource;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.role.RoleConstants;
+import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.GroupLocalService;
-import com.liferay.portal.kernel.service.RoleService;
+import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.service.UserGroupRoleService;
 import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.service.UserService;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.Optional;
 
@@ -49,14 +49,19 @@ import org.osgi.service.component.annotations.ServiceScope;
 public class UserAccountResourceImpl extends BaseUserAccountResourceImpl {
 
 	@Override
-	public UserAccount postUserAccount(UserAccount userAccount)
+	public UserAccount postUserAccount(
+			String portalInstanceId, UserAccount userAccount)
 		throws Exception {
 
-		Role role = _roleService.getRole(
-			contextCompany.getCompanyId(), "OSB Commerce Administrator");
+		Company company = _companyLocalService.getCompanyByWebId(
+			portalInstanceId);
 
-		User user = _userService.addUser(
-			contextCompany.getCompanyId(), true, null, null, false,
+		Role role = _roleLocalService.getRole(
+			company.getCompanyId(), "OSB Commerce Administrator");
+
+		User user = _userLocalService.addUser(
+			_userLocalService.getDefaultUserId(company.getCompanyId()),
+			company.getCompanyId(), true, null, null, false,
 			userAccount.getScreenName(), userAccount.getEmailAddress(), 0, null,
 			LocaleUtil.fromLanguageId(userAccount.getLanguageId()),
 			userAccount.getFirstName(), userAccount.getMiddleName(),
@@ -64,28 +69,26 @@ public class UserAccountResourceImpl extends BaseUserAccountResourceImpl {
 			_getBirthdayMonth(userAccount), _getBirthdayDay(userAccount),
 			_getBirthdayYear(userAccount), userAccount.getJobTitle(),
 			new long[0], new long[0], new long[] {role.getRoleId()},
-			new long[0], Collections.emptyList(), Collections.emptyList(),
-			Collections.emptyList(), Collections.emptyList(),
-			Collections.emptyList(), false,
+			new long[0], false,
 			ServiceContextFactory.getInstance(contextHttpServletRequest));
 
 		_userLocalService.updatePasswordManually(
 			user.getUserId(), userAccount.getPassword(), true, false,
 			new Date());
 
-		_addUserSiteOwnerGroupRole(user.getUserId());
+		_addUserSiteOwnerGroupRole(company, user.getUserId());
 
 		return _toUserAccount(user);
 	}
 
-	private void _addUserSiteOwnerGroupRole(long userId)
+	private void _addUserSiteOwnerGroupRole(Company company, long userId)
 		throws PortalException {
 
-		Role role = _roleService.getRole(
-			contextCompany.getCompanyId(), RoleConstants.SITE_OWNER);
+		Role role = _roleLocalService.getRole(
+			company.getCompanyId(), RoleConstants.SITE_OWNER);
 
 		Group group = _groupLocalService.getFriendlyURLGroup(
-			contextCompany.getCompanyId(), "/osb-commerce");
+			company.getCompanyId(), "/osb-commerce");
 
 		_userGroupRoleService.addUserGroupRoles(
 			userId, group.getGroupId(), new long[] {role.getRoleId()});
@@ -142,18 +145,18 @@ public class UserAccountResourceImpl extends BaseUserAccountResourceImpl {
 	}
 
 	@Reference
+	private CompanyLocalService _companyLocalService;
+
+	@Reference
 	private GroupLocalService _groupLocalService;
 
 	@Reference
-	private RoleService _roleService;
+	private RoleLocalService _roleLocalService;
 
 	@Reference
 	private UserGroupRoleService _userGroupRoleService;
 
 	@Reference
 	private UserLocalService _userLocalService;
-
-	@Reference
-	private UserService _userService;
 
 }
