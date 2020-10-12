@@ -49,6 +49,12 @@ public interface OSBCommerceProvisioningConfiguration {
 	public String dxpCloudAPIUsername();
 
 	@Meta.AD(
+		deflt = "localhost", name = "osb-commerce-instance-domain-name",
+		required = false
+	)
+	public String osbCommerceInstanceDomainName();
+
+	@Meta.AD(
 		deflt = "", name = "osb-commerce-instance-oauth-client-id",
 		required = false
 	)
@@ -59,5 +65,28 @@ public interface OSBCommerceProvisioningConfiguration {
 		required = false
 	)
 	public String osbCommerceInstanceOAuthClientSecret();
+
+	@Meta.AD(
+		deflt = "443", name = "osb-commerce-instance-port", required = false
+	)
+	public int osbCommerceInstancePort();
+
+	@Meta.AD(
+		deflt = "test", name = "osb-commerce-instance-password",
+		required = false
+	)
+	public String osbCommerceInstancePassword();
+
+	@Meta.AD(
+		deflt = "https", name = "osb-commerce-instance-protocol",
+		required = false
+	)
+	public String osbCommerceInstanceProtocol();
+
+	@Meta.AD(
+		deflt = "test@liferay.com", name = "osb-commerce-instance-username",
+		required = false
+	)
+	public String osbCommerceInstanceUsername();
 
 }

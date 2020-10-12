@@ -41,9 +41,16 @@ public class UserAccountClientFactory {
 
 		return new UserAccountClientImpl(
 			_osbCommerceProvisioningConfiguration.
+				osbCommerceInstanceDomainName(),
+			_osbCommerceProvisioningConfiguration.
 				osbCommerceInstanceOAuthClientId(),
 			_osbCommerceProvisioningConfiguration.
-				osbCommerceInstanceOAuthClientSecret());
+				osbCommerceInstanceOAuthClientSecret(),
+			_osbCommerceProvisioningConfiguration.osbCommerceInstancePassword(),
+			_osbCommerceProvisioningConfiguration.osbCommerceInstancePort(),
+			_osbCommerceProvisioningConfiguration.osbCommerceInstanceProtocol(),
+			_osbCommerceProvisioningConfiguration.
+				osbCommerceInstanceUsername());
 	}
 
 	@Activate

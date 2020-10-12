@@ -47,8 +47,8 @@ public class DXPCloudClientClientFactory {
 
 		return new DXPCloudProvisioningClientImpl(
 			_osbCommerceProvisioningConfiguration.dxpCloudAPIURL(),
-			_osbCommerceProvisioningConfiguration.dxpCloudAPIUsername(),
-			_osbCommerceProvisioningConfiguration.dxpCloudAPIPassword());
+			_osbCommerceProvisioningConfiguration.dxpCloudAPIPassword(),
+			_osbCommerceProvisioningConfiguration.dxpCloudAPIUsername());
 	}
 
 	@Activate
