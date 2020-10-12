@@ -18,14 +18,24 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.Base64;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+
+import java.nio.charset.StandardCharsets;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpStatus;
+import org.apache.http.NameValuePair;
 import org.apache.http.StatusLine;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
@@ -37,6 +47,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 /**
@@ -139,6 +150,48 @@ public abstract class BaseClientImpl implements Client {
 		return convert(execute(authorizationHeader, httpPatch), valueType);
 	}
 
+	protected String getBasicAuthorizationHeader(
+		String password, String username) {
+
+		String authorization = username + ":" + password;
+
+		String encodedAuthorization = Base64.encode(
+			authorization.getBytes(StandardCharsets.ISO_8859_1));
+
+		return "Basic " + encodedAuthorization;
+	}
+
+	protected String getBearerAuthorizationHeader(
+		String clientId, String clientSecret, String virtualHostURI) {
+
+		HttpPost httpPost = new HttpPost(virtualHostURI + "/o/oauth2/token");
+
+		try {
+			httpPost.setEntity(
+				new UrlEncodedFormEntity(
+					new ArrayList<NameValuePair>() {
+						{
+							add(new BasicNameValuePair("client_id", clientId));
+							add(
+								new BasicNameValuePair(
+									"client_secret", clientSecret));
+							add(
+								new BasicNameValuePair(
+									"grant_type", "client_credentials"));
+						}
+					},
+					"UTF-8"));
+		}
+		catch (UnsupportedEncodingException unsupportedEncodingException) {
+			throw new SystemException(unsupportedEncodingException);
+		}
+
+		Map<String, String> result = convert(
+			execute(null, httpPost), Map.class);
+
+		return "Bearer: " + result.get("access_token");
+	}
+
 	protected String getResponseContent(
 			CloseableHttpResponse closeableHttpResponse)
 		throws IOException {
@@ -180,6 +233,11 @@ public abstract class BaseClientImpl implements Client {
 	private static final ObjectMapper _objectMapper = new ObjectMapper() {
 		{
 			configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+			SimpleFilterProvider simpleFilterProvider =
+				new SimpleFilterProvider();
+
+			setFilterProvider(simpleFilterProvider.setFailOnUnknownId(false));
 		}
 	};
 

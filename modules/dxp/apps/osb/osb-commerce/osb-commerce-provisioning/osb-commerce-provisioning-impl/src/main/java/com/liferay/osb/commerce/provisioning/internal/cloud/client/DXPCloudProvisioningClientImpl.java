@@ -19,13 +19,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.liferay.osb.commerce.provisioning.internal.cloud.client.dto.PortalInstance;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
-import java.nio.charset.StandardCharsets;
 
 import java.util.List;
 
@@ -48,14 +45,14 @@ public class DXPCloudProvisioningClientImpl
 	@Override
 	public void deletePortalInstance(String portalInstanceId) {
 		executeDelete(
-			_getAuthorizationHeader(),
+			getBasicAuthorizationHeader(_password, _username),
 			_getProvisioningPortalInstancesURI(portalInstanceId));
 	}
 
 	@Override
 	public PortalInstance getPortalInstance(String portalInstanceId) {
 		return executeGet(
-			_getAuthorizationHeader(),
+			getBasicAuthorizationHeader(_password, _username),
 			_getProvisioningPortalInstancesURI(portalInstanceId),
 			PortalInstance.class);
 	}
@@ -63,7 +60,7 @@ public class DXPCloudProvisioningClientImpl
 	@Override
 	public List<PortalInstance> getPortalInstances() {
 		return executeGet(
-			_getAuthorizationHeader(),
+			getBasicAuthorizationHeader(_password, _username),
 			new TypeReference<List<PortalInstance>>() {
 			},
 			_getProvisioningPortalInstancesURI());
@@ -71,19 +68,18 @@ public class DXPCloudProvisioningClientImpl
 
 	@Override
 	public PortalInstance postPortalInstance(
-		String domain, String portalInitializerKey) {
+		String domain, String initializerKey) {
 
 		try {
 			URIBuilder uriBuilder = new URIBuilder(
 				_getProvisioningPortalInstancesURI());
 
-			uriBuilder.setParameter(
-				"portalInitializerKey", portalInitializerKey);
+			uriBuilder.setParameter("initializerKey", initializerKey);
 
 			URI uri = uriBuilder.build();
 
 			return executePost(
-				_getAuthorizationHeader(),
+				getBasicAuthorizationHeader(_password, _username),
 				HashMapBuilder.put(
 					"domain", domain
 				).build(),
@@ -99,21 +95,12 @@ public class DXPCloudProvisioningClientImpl
 		String domain, String portalInstanceId) {
 
 		return executeUpdate(
-			_getAuthorizationHeader(),
+			getBasicAuthorizationHeader(_password, _username),
 			HashMapBuilder.put(
 				"domain", domain
 			).build(),
 			PortalInstance.class,
 			_getProvisioningPortalInstancesURI(portalInstanceId));
-	}
-
-	private String _getAuthorizationHeader() {
-		String authorization = _username + ":" + _password;
-
-		String encodedAuthorization = Base64.encode(
-			authorization.getBytes(StandardCharsets.ISO_8859_1));
-
-		return "Basic " + encodedAuthorization;
 	}
 
 	private String _getProvisioningPortalInstancesURI() {
