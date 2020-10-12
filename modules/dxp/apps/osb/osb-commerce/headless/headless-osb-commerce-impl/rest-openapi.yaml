@@ -79,11 +79,17 @@ info:
     version: v1.0
 openapi: 3.0.1
 paths:
-    "/user-accounts":
+    "/user-accounts/{portalInstanceId}":
         post:
             description:
                 Creates a new user account
             operationId: postUserAccount
+            parameters:
+                - in: path
+                  name: portalInstanceId
+                  required: true
+                  schema:
+                      type: string
             requestBody:
                 content:
                     application/json:
