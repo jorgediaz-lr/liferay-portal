@@ -26,7 +26,7 @@ ViewAccountContactsDisplayContext viewAccountContactsDisplayContext = Provisioni
 AccountDisplay accountDisplay = viewAccountContactsDisplayContext.getAccountDisplay();
 %>
 
-<div class="account-add-items provisioning-accounts">
+<div class="add-items provisioning-accounts">
 	<liferay-ui:header
 		backURL="<%= redirect %>"
 		cssClass="add-items-header"
