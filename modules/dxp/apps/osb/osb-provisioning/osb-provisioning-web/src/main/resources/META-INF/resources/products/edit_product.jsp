@@ -30,26 +30,32 @@ if (product != null) {
 }
 %>
 
-<portlet:actionURL name="/products/edit_product" var="editProductURL">
-	<portlet:param name="redirect" value="<%= redirect %>" />
-	<portlet:param name="productKey" value='<%= (product != null) ? product.getKey() : "" %>' />
-</portlet:actionURL>
+<div class="add-items provisioning-products">
+	<liferay-ui:header
+		backURL="<%= redirect %>"
+		cssClass="add-items-header"
+		title='<%= (product != null) ? "edit-product" : "new-product" %>'
+	/>
 
-<liferay-ui:error exception="<%= HttpException.class %>">
+	<portlet:actionURL name="/products/edit_product" var="editProductURL">
+		<portlet:param name="redirect" value="<%= redirect %>" />
+		<portlet:param name="productKey" value='<%= (product != null) ? product.getKey() : "" %>' />
+	</portlet:actionURL>
 
-	<%
-	HttpException httpException = (HttpException)errorException;
-	%>
+	<liferay-ui:error exception="<%= HttpException.class %>">
 
-	<%= httpException.getMessage() %>
-</liferay-ui:error>
+		<%
+		HttpException httpException = (HttpException)errorException;
+		%>
 
-<aui:form action="<%= editProductURL.toString() %>" cssClass="container-fluid container-fluid-max-xl" method="post" name="fm">
-	<aui:fieldset-group>
-		<aui:fieldset>
-			<aui:input name="name" value='<%= (product != null) ? product.getName() : "" %>' />
+		<%= httpException.getMessage() %>
+	</liferay-ui:error>
 
-			<aui:select name="type">
+	<aui:form action="<%= editProductURL.toString() %>" cssClass="container-fluid container-fluid-max-xl" method="post" name="fm">
+		<div class="add-items-sheet sheet sheet-lg">
+			<aui:input inlineLabel="left" name="name" value='<%= (product != null) ? product.getName() : "" %>' />
+
+			<aui:select inlineLabel="left" name="type">
 				<aui:option value="" />
 
 				<%
@@ -93,13 +99,13 @@ if (product != null) {
 			}
 			%>
 
-			<aui:input name="dossieraIdMapping" value="<%= dossieraIdMapping %>" />
-		</aui:fieldset>
-	</aui:fieldset-group>
+			<aui:input inlineLabel="left" name="dossieraIdMapping" value="<%= dossieraIdMapping %>" />
 
-	<aui:button-row>
-		<aui:button type="submit" />
+			<aui:button-row>
+				<aui:button type="submit" />
 
-		<aui:button href="<%= redirect %>" type="cancel" />
-	</aui:button-row>
-</aui:form>
+				<aui:button href="<%= redirect %>" type="cancel" />
+			</aui:button-row>
+		</div>
+	</aui:form>
+</div>
