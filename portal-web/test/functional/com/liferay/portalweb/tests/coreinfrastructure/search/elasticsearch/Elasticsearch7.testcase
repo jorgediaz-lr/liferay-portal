@@ -133,18 +133,10 @@ definition {
 			panel = "Control Panel",
 			portlet = "Search");
 
-		if (IsTextEqual.isPartialText(locator1 = "SearchAdmin#SEARCH_ENGINE_VENDOR", value1 = "Embedded")) {
-			SearchAdministration.assertEngineVendorAndVersions(
-				clientVersion = "7.3.0",
-				engineVendor = "Elasticsearch",
-				serverVersion = "7.3.0");
-		}
-		else {
-			SearchAdministration.assertEngineVendorAndVersions(
-				clientVersion = "7.3.0",
-				engineVendor = "Elasticsearch",
-				serverVersion = "7.9.0");
-		}
+		SearchAdministration.assertEngineVendorAndVersions(
+			clientVersion = "7.9.0",
+			engineVendor = "Elasticsearch",
+			serverVersion = "7.9.0");
 
 		Navigator.gotoNavItem(navItem = "Field Mappings");
 
@@ -343,18 +335,10 @@ definition {
 			panel = "Control Panel",
 			portlet = "Search");
 
-		if (IsTextEqual.isPartialText(locator1 = "SearchAdmin#SEARCH_ENGINE_VENDOR", value1 = "Embedded")) {
-			SearchAdministration.assertEngineVendorAndVersions(
-				clientVersion = "7.3.0",
-				engineVendor = "Elasticsearch",
-				serverVersion = "7.3.0");
-		}
-		else {
-			SearchAdministration.assertEngineVendorAndVersions(
-				clientVersion = "7.3.0",
-				engineVendor = "Elasticsearch",
-				serverVersion = "7.9.0");
-		}
+		SearchAdministration.assertEngineVendorAndVersions(
+			clientVersion = "7.9.0",
+			engineVendor = "Elasticsearch",
+			serverVersion = "7.9.0");
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
