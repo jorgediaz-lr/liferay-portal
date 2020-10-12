@@ -308,6 +308,8 @@ public class ProductPurchaseLocalServiceImpl
 				productField.getProductFieldId());
 		}
 
+		_accountLocalService.reindex(productPurchase.getAccountId());
+
 		reindexProductPurchaseView(productPurchase);
 
 		return productPurchase;

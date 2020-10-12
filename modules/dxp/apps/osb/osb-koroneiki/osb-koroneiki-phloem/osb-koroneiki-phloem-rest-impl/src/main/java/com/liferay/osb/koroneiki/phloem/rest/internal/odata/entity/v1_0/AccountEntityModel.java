@@ -39,6 +39,12 @@ public class AccountEntityModel implements EntityModel {
 			new StringEntityField("accountKey", locale -> "accountKey"),
 			new CollectionEntityField(
 				new StringEntityField(
+					"activeProductKeys", locale -> "activeProductKeys")),
+			new CollectionEntityField(
+				new StringEntityField(
+					"cancelledProductKeys", locale -> "cancelledProductKeys")),
+			new CollectionEntityField(
+				new StringEntityField(
 					"assignedTeamKeyTeamRoleKeys",
 					locale -> "assignedTeamKeyTeamRoleKeys")),
 			new EntityField(
@@ -75,6 +81,9 @@ public class AccountEntityModel implements EntityModel {
 			new CollectionEntityField(
 				new StringEntityField(
 					"entitlements", locale -> "entitlements")),
+			new CollectionEntityField(
+				new StringEntityField(
+					"expiredProductKeys", locale -> "expiredProductKeys")),
 			new CollectionEntityField(
 				new StringEntityField(
 					"externalLinkDomains", locale -> "externalLinkDomains")),
@@ -128,6 +137,10 @@ public class AccountEntityModel implements EntityModel {
 					"teamsAssignedToAccountKeyTeamRoleKeys",
 					locale -> "teamsAssignedToAccountKeyTeamRoleKeys")),
 			new StringEntityField("tier", locale -> "tier"),
+			new CollectionEntityField(
+				new StringEntityField(
+					"unactivatedProductKeys",
+					locale -> "unactivatedProductKeys")),
 			new CollectionEntityField(
 				new StringEntityField(
 					"workerContactEmailAddresses",

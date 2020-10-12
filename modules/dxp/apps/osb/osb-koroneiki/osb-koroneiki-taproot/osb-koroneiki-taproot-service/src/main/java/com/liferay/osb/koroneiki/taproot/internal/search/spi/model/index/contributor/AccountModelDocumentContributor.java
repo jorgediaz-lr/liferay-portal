@@ -33,6 +33,7 @@ import com.liferay.osb.koroneiki.taproot.service.ContactLocalService;
 import com.liferay.osb.koroneiki.taproot.service.ContactRoleLocalService;
 import com.liferay.osb.koroneiki.taproot.service.TeamAccountRoleLocalService;
 import com.liferay.osb.koroneiki.taproot.service.TeamLocalService;
+import com.liferay.osb.koroneiki.trunk.model.ProductEntry;
 import com.liferay.osb.koroneiki.trunk.model.ProductPurchase;
 import com.liferay.osb.koroneiki.trunk.service.ProductPurchaseLocalService;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -44,15 +45,22 @@ import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.model.Region;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Field;
+import com.liferay.portal.kernel.search.FieldArray;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.spi.model.index.contributor.ModelDocumentContributor;
 
+import java.text.Format;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -320,6 +328,8 @@ public class AccountModelDocumentContributor
 			_productPurchaseLocalService.getAccountProductPurchases(
 				accountId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
+		document.add(_getProductPurchasesField(productPurchases));
+
 		for (ProductPurchase productPurchase : productPurchases) {
 			productEntryKeys.add(productPurchase.getProductEntryKey());
 		}
@@ -377,6 +387,68 @@ public class AccountModelDocumentContributor
 				teamsAssignedToAccountKeyTeamRoleKeys.toArray()));
 	}
 
+	private FieldArray _getProductPurchasesField(
+			List<ProductPurchase> productPurchases)
+		throws PortalException {
+
+		FieldArray fieldArray = new FieldArray("productPurchases");
+
+		for (ProductPurchase productPurchase : productPurchases) {
+			ProductEntry productEntry = productPurchase.getProductEntry();
+
+			Field field = new Field(StringPool.BLANK);
+
+			Field statusField = new Field(Field.STATUS);
+
+			statusField.setValue(String.valueOf(productPurchase.getStatus()));
+
+			field.addField(statusField);
+
+			Date endDate = productPurchase.getEndDate();
+
+			if (endDate == null) {
+				endDate = _END_DATE_PERPETUAL;
+			}
+
+			Field endDateField = new Field("endDate");
+
+			endDateField.setDates(new Date[] {endDate});
+			endDateField.setValue(_dateFormat.format(endDate));
+
+			field.addField(endDateField);
+
+			Field productEntryKeyField = new Field("productEntryKey");
+
+			productEntryKeyField.setValue(productEntry.getProductEntryKey());
+
+			field.addField(productEntryKeyField);
+
+			Date startDate = productPurchase.getStartDate();
+
+			if (startDate == null) {
+				startDate = _START_DATE_PERPETUAL;
+			}
+
+			Field startDateField = new Field("startDate");
+
+			startDateField.setDates(new Date[] {startDate});
+			startDateField.setValue(_dateFormat.format(startDate));
+
+			field.addField(startDateField);
+
+			fieldArray.addField(field);
+		}
+
+		return fieldArray;
+	}
+
+	private static final Date _END_DATE_PERPETUAL = new Date(4102444800000L);
+
+	private static final String _INDEX_DATE_FORMAT_PATTERN = PropsUtil.get(
+		PropsKeys.INDEX_DATE_FORMAT_PATTERN);
+
+	private static final Date _START_DATE_PERPETUAL = new Date(0L);
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		AccountModelDocumentContributor.class);
 
@@ -394,6 +466,9 @@ public class AccountModelDocumentContributor
 
 	@Reference
 	private ContactRoleLocalService _contactRoleLocalService;
+
+	private Format _dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
+		_INDEX_DATE_FORMAT_PATTERN);
 
 	@Reference
 	private EntitlementLocalService _entitlementLocalService;
