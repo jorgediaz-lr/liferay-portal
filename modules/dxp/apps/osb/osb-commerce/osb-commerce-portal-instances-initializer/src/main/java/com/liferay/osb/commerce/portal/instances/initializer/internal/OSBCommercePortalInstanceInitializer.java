@@ -17,6 +17,8 @@ package com.liferay.osb.commerce.portal.instances.initializer.internal;
 import com.liferay.commerce.account.constants.CommerceAccountActionKeys;
 import com.liferay.commerce.constants.CommerceActionKeys;
 import com.liferay.commerce.currency.constants.CommerceCurrencyActionKeys;
+import com.liferay.commerce.currency.model.CommerceCurrency;
+import com.liferay.commerce.currency.service.CommerceCurrencyLocalService;
 import com.liferay.commerce.discount.constants.CommerceDiscountActionKeys;
 import com.liferay.commerce.inventory.constants.CommerceInventoryActionKeys;
 import com.liferay.commerce.product.constants.CPActionKeys;
@@ -56,8 +58,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.servlet.ServletContext;
-
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -84,9 +84,9 @@ public class OSBCommercePortalInstanceInitializer
 		throws InitializationException {
 
 		try {
-			Company company = _addCompany(mx, webId, virtualHostname);
+			Company company = _companyLocalService.getCompanyByWebId(webId);
 
-			_initializeOSBCommercePortalInstance(company.getWebId());
+			_addOSBCommerceCurrencyDefaultValues(company);
 
 			_addOSBCommerceAdministratorRole(company.getCompanyId());
 
@@ -105,24 +105,6 @@ public class OSBCommercePortalInstanceInitializer
 	@Override
 	public boolean isActive() {
 		return true;
-	}
-
-	private Company _addCompany(String mx, String webId, String virtualHostname)
-		throws PortalException {
-
-		PermissionChecker permissionChecker =
-			PermissionThreadLocal.getPermissionChecker();
-
-		PermissionThreadLocal.setPermissionChecker(
-			PermissionCheckerFactoryUtil.create(_getAdministratorUser()));
-
-		try {
-			return _companyLocalService.addCompany(
-				webId, virtualHostname, mx, false, 0, true);
-		}
-		finally {
-			PermissionThreadLocal.setPermissionChecker(permissionChecker);
-		}
 	}
 
 	private void _addOSBCommerceAdministratorRole(long companyId)
@@ -148,6 +130,30 @@ public class OSBCommercePortalInstanceInitializer
 		}
 	}
 
+	private void _addOSBCommerceCurrencyDefaultValues(Company company)
+		throws Exception {
+
+		CommerceCurrency commerceCurrency =
+			_commerceCurrencyLocalService.fetchPrimaryCommerceCurrency(
+				company.getCompanyId());
+
+		if (commerceCurrency != null) {
+			return;
+		}
+
+		ServiceContext serviceContext = new ServiceContext();
+
+		serviceContext.setCompanyId(company.getCompanyId());
+		serviceContext.setLanguageId(
+			LocaleUtil.toLanguageId(company.getLocale()));
+
+		User defaultUser = company.getDefaultUser();
+
+		serviceContext.setUserId(defaultUser.getUserId());
+
+		_commerceCurrencyLocalService.importDefaultValues(serviceContext);
+	}
+
 	private long _addOSBCommerceSiteGroup(long companyId) throws Exception {
 		Map<Locale, String> nameMap = new HashMap<>();
 
@@ -165,17 +171,6 @@ public class OSBCommercePortalInstanceInitializer
 			_getDefaultServiceContext(companyId));
 
 		return group.getGroupId();
-	}
-
-	private User _getAdministratorUser() throws PortalException {
-		Role role = _roleLocalService.getRole(
-			_portal.getDefaultCompanyId(), RoleConstants.ADMINISTRATOR);
-
-		for (User user : _userLocalService.getRoleUsers(role.getRoleId())) {
-			return user;
-		}
-
-		throw new IllegalStateException("Administrator user does not exist");
 	}
 
 	private long _getDefaultCompanyGroupId(long companyId)
@@ -200,13 +195,6 @@ public class OSBCommercePortalInstanceInitializer
 
 	private long _getDefaultUserId(long companyId) throws PortalException {
 		return _userLocalService.getDefaultUserId(companyId);
-	}
-
-	private void _initializeOSBCommercePortalInstance(String webId) {
-		_portalInstancesLocalService.initializePortalInstance(
-			_servletContext, webId);
-
-		_portalInstancesLocalService.synchronizePortalInstances();
 	}
 
 	private void _initializeOSBCommerceSite(
@@ -279,6 +267,9 @@ public class OSBCommercePortalInstanceInitializer
 		};
 
 	@Reference
+	private CommerceCurrencyLocalService _commerceCurrencyLocalService;
+
+	@Reference
 	private CompanyLocalService _companyLocalService;
 
 	@Reference
@@ -295,11 +286,6 @@ public class OSBCommercePortalInstanceInitializer
 
 	@Reference
 	private RoleLocalService _roleLocalService;
-
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.osb.commerce.portal.instances.initializer)"
-	)
-	private ServletContext _servletContext;
 
 	@Reference(target = "(site.initializer.key=minium-initializer)")
 	private SiteInitializer _siteInitializer;
