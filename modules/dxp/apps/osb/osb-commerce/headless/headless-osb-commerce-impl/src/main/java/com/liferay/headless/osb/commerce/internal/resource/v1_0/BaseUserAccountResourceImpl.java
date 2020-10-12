@@ -53,9 +53,12 @@ import javax.annotation.Generated;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import javax.validation.constraints.NotNull;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MultivaluedHashMap;
@@ -76,16 +79,22 @@ public abstract class BaseUserAccountResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'POST' 'http://localhost:8080/o/headless-osb-commerce/v1.0/user-accounts' -d $'{"birthDate": ___, "dateCreated": ___, "dateModified": ___, "emailAddress": ___, "firstName": ___, "jobTitle": ___, "languageId": ___, "lastName": ___, "middleName": ___, "name": ___, "password": ___, "screenName": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
+	 * curl -X 'POST' 'http://localhost:8080/o/headless-osb-commerce/v1.0/user-accounts/{portalInstanceId}' -d $'{"birthDate": ___, "dateCreated": ___, "dateModified": ___, "emailAddress": ___, "firstName": ___, "jobTitle": ___, "languageId": ___, "lastName": ___, "middleName": ___, "name": ___, "password": ___, "screenName": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
 	@Override
 	@Consumes({"application/json", "application/xml"})
 	@Operation(description = "Creates a new user account")
 	@POST
-	@Path("/user-accounts")
+	@Parameters(
+		value = {@Parameter(in = ParameterIn.PATH, name = "portalInstanceId")}
+	)
+	@Path("/user-accounts/{portalInstanceId}")
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {})
-	public UserAccount postUserAccount(UserAccount userAccount)
+	public UserAccount postUserAccount(
+			@NotNull @Parameter(hidden = true) @PathParam("portalInstanceId")
+				String portalInstanceId,
+			UserAccount userAccount)
 		throws Exception {
 
 		return new UserAccount();
@@ -94,18 +103,23 @@ public abstract class BaseUserAccountResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'POST' 'http://localhost:8080/o/headless-osb-commerce/v1.0/user-accounts/batch'  -u 'test@liferay.com:test'
+	 * curl -X 'POST' 'http://localhost:8080/o/headless-osb-commerce/v1.0/user-accounts/{portalInstanceId}/batch'  -u 'test@liferay.com:test'
 	 */
 	@Override
 	@Consumes("application/json")
 	@POST
 	@Parameters(
-		value = {@Parameter(in = ParameterIn.QUERY, name = "callbackURL")}
+		value = {
+			@Parameter(in = ParameterIn.PATH, name = "portalInstanceId"),
+			@Parameter(in = ParameterIn.QUERY, name = "callbackURL")
+		}
 	)
-	@Path("/user-accounts/batch")
+	@Path("/user-accounts/{portalInstanceId}/batch")
 	@Produces("application/json")
 	@Tags(value = {})
 	public Response postUserAccountBatch(
+			@NotNull @Parameter(hidden = true) @PathParam("portalInstanceId")
+				String portalInstanceId,
 			@Parameter(hidden = true) @QueryParam("callbackURL") String
 				callbackURL,
 			Object object)
@@ -135,7 +149,7 @@ public abstract class BaseUserAccountResourceImpl
 		throws Exception {
 
 		for (UserAccount userAccount : userAccounts) {
-			postUserAccount(userAccount);
+			postUserAccount(null, userAccount);
 		}
 	}
 

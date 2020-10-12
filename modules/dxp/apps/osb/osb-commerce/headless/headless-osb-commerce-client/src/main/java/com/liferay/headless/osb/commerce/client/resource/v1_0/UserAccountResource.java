@@ -37,18 +37,20 @@ public interface UserAccountResource {
 		return new Builder();
 	}
 
-	public UserAccount postUserAccount(UserAccount userAccount)
+	public UserAccount postUserAccount(
+			String portalInstanceId, UserAccount userAccount)
 		throws Exception;
 
 	public HttpInvoker.HttpResponse postUserAccountHttpResponse(
-			UserAccount userAccount)
+			String portalInstanceId, UserAccount userAccount)
 		throws Exception;
 
-	public void postUserAccountBatch(String callbackURL, Object object)
+	public void postUserAccountBatch(
+			String portalInstanceId, String callbackURL, Object object)
 		throws Exception;
 
 	public HttpInvoker.HttpResponse postUserAccountBatchHttpResponse(
-			String callbackURL, Object object)
+			String portalInstanceId, String callbackURL, Object object)
 		throws Exception;
 
 	public static class Builder {
@@ -106,11 +108,12 @@ public interface UserAccountResource {
 
 	public static class UserAccountResourceImpl implements UserAccountResource {
 
-		public UserAccount postUserAccount(UserAccount userAccount)
+		public UserAccount postUserAccount(
+				String portalInstanceId, UserAccount userAccount)
 			throws Exception {
 
 			HttpInvoker.HttpResponse httpResponse = postUserAccountHttpResponse(
-				userAccount);
+				portalInstanceId, userAccount);
 
 			String content = httpResponse.getContent();
 
@@ -134,7 +137,7 @@ public interface UserAccountResource {
 		}
 
 		public HttpInvoker.HttpResponse postUserAccountHttpResponse(
-				UserAccount userAccount)
+				String portalInstanceId, UserAccount userAccount)
 			throws Exception {
 
 			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
@@ -163,7 +166,8 @@ public interface UserAccountResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/headless-osb-commerce/v1.0/user-accounts");
+						"/o/headless-osb-commerce/v1.0/user-accounts/{portalInstanceId}",
+				portalInstanceId);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -171,11 +175,13 @@ public interface UserAccountResource {
 			return httpInvoker.invoke();
 		}
 
-		public void postUserAccountBatch(String callbackURL, Object object)
+		public void postUserAccountBatch(
+				String portalInstanceId, String callbackURL, Object object)
 			throws Exception {
 
 			HttpInvoker.HttpResponse httpResponse =
-				postUserAccountBatchHttpResponse(callbackURL, object);
+				postUserAccountBatchHttpResponse(
+					portalInstanceId, callbackURL, object);
 
 			String content = httpResponse.getContent();
 
@@ -187,7 +193,7 @@ public interface UserAccountResource {
 		}
 
 		public HttpInvoker.HttpResponse postUserAccountBatchHttpResponse(
-				String callbackURL, Object object)
+				String portalInstanceId, String callbackURL, Object object)
 			throws Exception {
 
 			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
@@ -221,7 +227,8 @@ public interface UserAccountResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/headless-osb-commerce/v1.0/user-accounts/batch");
+						"/o/headless-osb-commerce/v1.0/user-accounts/{portalInstanceId}/batch",
+				portalInstanceId);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);

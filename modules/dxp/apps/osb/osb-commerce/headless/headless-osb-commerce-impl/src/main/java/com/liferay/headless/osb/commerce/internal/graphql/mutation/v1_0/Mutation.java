@@ -54,6 +54,7 @@ public class Mutation {
 
 	@GraphQLField(description = "Creates a new user account")
 	public UserAccount createUserAccount(
+			@GraphQLName("portalInstanceId") String portalInstanceId,
 			@GraphQLName("userAccount") UserAccount userAccount)
 		throws Exception {
 
@@ -61,11 +62,12 @@ public class Mutation {
 			_userAccountResourceComponentServiceObjects,
 			this::_populateResourceContext,
 			userAccountResource -> userAccountResource.postUserAccount(
-				userAccount));
+				portalInstanceId, userAccount));
 	}
 
 	@GraphQLField
 	public Response createUserAccountBatch(
+			@GraphQLName("portalInstanceId") String portalInstanceId,
 			@GraphQLName("callbackURL") String callbackURL,
 			@GraphQLName("object") Object object)
 		throws Exception {
@@ -74,7 +76,7 @@ public class Mutation {
 			_userAccountResourceComponentServiceObjects,
 			this::_populateResourceContext,
 			userAccountResource -> userAccountResource.postUserAccountBatch(
-				callbackURL, object));
+				portalInstanceId, callbackURL, object));
 	}
 
 	private <T, R, E1 extends Throwable, E2 extends Throwable> R

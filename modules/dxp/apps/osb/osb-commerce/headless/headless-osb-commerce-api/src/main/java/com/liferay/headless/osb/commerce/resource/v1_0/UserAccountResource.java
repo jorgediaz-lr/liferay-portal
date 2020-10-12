@@ -47,10 +47,12 @@ public interface UserAccountResource {
 		return FactoryHolder.factory.create();
 	}
 
-	public UserAccount postUserAccount(UserAccount userAccount)
+	public UserAccount postUserAccount(
+			String portalInstanceId, UserAccount userAccount)
 		throws Exception;
 
-	public Response postUserAccountBatch(String callbackURL, Object object)
+	public Response postUserAccountBatch(
+			String portalInstanceId, String callbackURL, Object object)
 		throws Exception;
 
 	public default void setContextAcceptLanguage(
