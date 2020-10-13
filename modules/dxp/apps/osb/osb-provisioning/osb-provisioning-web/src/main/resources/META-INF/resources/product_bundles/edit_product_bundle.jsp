@@ -169,7 +169,7 @@ if (products != null) {
 							'"><button type="button" class="btn" onclick="<portlet:namespace />removeName(this);"><svg class="lexicon-icon lexicon-icon-times-circle"><use xlink:href="#delete-icon" /></svg></button></td></tr>';
 					}
 
-					display += '</tbody></table><br />';
+					display += '</tbody></table>';
 
 					A.one('#<portlet:namespace />productName').html(display);
 					A.one('#<portlet:namespace />productKeys').val(

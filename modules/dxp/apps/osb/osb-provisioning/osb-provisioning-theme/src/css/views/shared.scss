@@ -177,6 +177,10 @@
 .form-group {
 	.field.table-field {
 		width: 65%;
+
+		table {
+			margin-bottom: $spacing-default;
+		}
 	}
 }
 
