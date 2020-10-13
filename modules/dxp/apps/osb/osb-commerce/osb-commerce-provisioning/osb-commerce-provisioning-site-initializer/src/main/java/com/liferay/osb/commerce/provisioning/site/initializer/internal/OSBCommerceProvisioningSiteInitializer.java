@@ -19,6 +19,9 @@ import com.liferay.commerce.account.util.CommerceAccountRoleHelper;
 import com.liferay.commerce.currency.model.CommerceCurrency;
 import com.liferay.commerce.currency.service.CommerceCurrencyLocalService;
 import com.liferay.commerce.initializer.util.CPDefinitionsImporter;
+import com.liferay.commerce.initializer.util.CommercePriceEntriesImporter;
+import com.liferay.commerce.price.list.constants.CommercePriceListConstants;
+import com.liferay.commerce.product.model.CPDefinition;
 import com.liferay.commerce.product.model.CommerceCatalog;
 import com.liferay.commerce.product.model.CommerceChannel;
 import com.liferay.commerce.product.model.CommerceChannelConstants;
@@ -491,7 +494,27 @@ public class OSBCommerceProvisioningSiteInitializer implements SiteInitializer {
 		return serviceContext;
 	}
 
-	private void _importCPDefinitions(
+	private void _importBaseCommercePriceListEntries(
+			CommerceCatalog commerceCatalog, List<CPDefinition> cpDefinitions)
+		throws Exception {
+
+		if (_log.isInfoEnabled()) {
+			_log.info("Importing base commerce price list entries...");
+		}
+
+		_commercePriceEntriesImporter.importBaseCommercePriceListEntries(
+			commerceCatalog, cpDefinitions,
+			CommercePriceListConstants.TYPE_PRICE_LIST);
+		_commercePriceEntriesImporter.importBaseCommercePriceListEntries(
+			commerceCatalog, cpDefinitions,
+			CommercePriceListConstants.TYPE_PROMOTION);
+
+		if (_log.isInfoEnabled()) {
+			_log.info("Base commerce price list entries successfully imported");
+		}
+	}
+
+	private List<CPDefinition> _importCPDefinitions(
 			long catalogGroupId, long commerceChannelId,
 			ServiceContext serviceContext)
 		throws Exception {
@@ -500,7 +523,7 @@ public class OSBCommerceProvisioningSiteInitializer implements SiteInitializer {
 
 		JSONArray jsonArray = _getJSONArray("products.json");
 
-		_cpDefinitionsImporter.importCPDefinitions(
+		return _cpDefinitionsImporter.importCPDefinitions(
 			jsonArray, group.getName(serviceContext.getLocale()),
 			catalogGroupId, commerceChannelId, new long[0],
 			OSBCommerceProvisioningSiteInitializer.class.getClassLoader(),
@@ -518,9 +541,11 @@ public class OSBCommerceProvisioningSiteInitializer implements SiteInitializer {
 
 		_configureB2BSite(commerceChannel.getGroupId(), serviceContext);
 
-		_importCPDefinitions(
+		List<CPDefinition> cpDefinitions = _importCPDefinitions(
 			catalogGroupId, commerceChannel.getCommerceChannelId(),
 			serviceContext);
+
+		_importBaseCommercePriceListEntries(commerceCatalog, cpDefinitions);
 
 		int catalogCPDefinitionsCount =
 			_cpDefinitionLocalService.getCPDefinitionsCount(
@@ -625,6 +650,9 @@ public class OSBCommerceProvisioningSiteInitializer implements SiteInitializer {
 
 	@Reference
 	private CommerceCurrencyLocalService _commerceCurrencyLocalService;
+
+	@Reference
+	private CommercePriceEntriesImporter _commercePriceEntriesImporter;
 
 	@Reference
 	private CPDefinitionLocalService _cpDefinitionLocalService;
