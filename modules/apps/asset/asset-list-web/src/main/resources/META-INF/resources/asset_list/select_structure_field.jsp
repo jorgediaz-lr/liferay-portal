@@ -142,7 +142,7 @@ portletURL.setParameter("eventName", eventName);
 				'<portlet:namespace />' + data.fieldsnamespace + 'ddmForm'
 			);
 
-			initialDDMForm.get('fields').forEach(function (field) {
+			initialDDMForm.get('fields').forEach(function(field) {
 				if (field.get('name') === value.ddmStructureFieldName) {
 					field.setValue(value.ddmStructureFieldValue);
 				}
