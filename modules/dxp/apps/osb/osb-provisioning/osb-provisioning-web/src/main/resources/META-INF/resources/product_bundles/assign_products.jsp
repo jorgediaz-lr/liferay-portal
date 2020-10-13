@@ -46,6 +46,7 @@ SearchContainer searchContainer = assignProductBundleProductsDisplayContext.getS
 			modelVar="productDisplay"
 		>
 			<liferay-ui:search-container-column-text
+				cssClass="table-cell-expand"
 				name="products"
 				value="<%= HtmlUtil.escape(productDisplay.getName()) %>"
 			/>
