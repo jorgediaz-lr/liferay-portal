@@ -499,7 +499,7 @@ public class OSBCommerceProvisioningSiteInitializer implements SiteInitializer {
 		throws Exception {
 
 		if (_log.isInfoEnabled()) {
-			_log.info("Importing base commerce price list entries...");
+			_log.info("Importing base commerce price list entries");
 		}
 
 		_commercePriceEntriesImporter.importBaseCommercePriceListEntries(
