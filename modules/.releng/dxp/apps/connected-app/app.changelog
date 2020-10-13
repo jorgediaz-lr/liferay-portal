@@ -104,3 +104,15 @@ app.artifacts-1.0.8=\
 app.change.log-1.0.8=LPS-103302 LPS-77699 LPS-91645 LPS-93605 LPS-95413 LPS-95555
 
 app.git.id-1.0.8=296077e9d986e387718d8aa0d31f771fe8d68285
+
+#
+# Liferay App Version 1.0.9
+#
+
+app.artifacts-1.0.9=\
+	com.liferay.connected.app.api-1.0.6.jar,\
+	com.liferay.connected.app.web-1.0.22.jar
+
+app.change.log-1.0.9=LPS-100448 LPS-101718 LPS-103302 LPS-105380 LPS-77699 LPS-84119 LPS-91645 LPS-93605 LPS-93670 LPS-93908 LPS-94323 LPS-94555 LPS-95413 LPS-95555 LPS-98032 LPS-98877 LPS-98879 LRQA-51488
+
+app.git.id-1.0.9=fb979f4abdb4150afa2431b1fff886c49283bd93

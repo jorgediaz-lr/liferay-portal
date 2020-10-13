@@ -85,3 +85,14 @@ app.artifacts-2.0.7=\
 app.change.log-2.0.7=LPS-77699
 
 app.git.id-2.0.7=296077e9d986e387718d8aa0d31f771fe8d68285
+
+#
+# Liferay App Version 2.0.8
+#
+
+app.artifacts-2.0.8=\
+	com.liferay.microsoft.translator-3.0.13.jar
+
+app.change.log-2.0.8=LPS-100448 LPS-103302 LPS-105380 LPS-107697 LPS-77425 LPS-77699 LPS-80332 LPS-82828 LPS-84009 LPS-84092 LPS-84119 LPS-87590 LPS-94555 LPS-95413 LPS-98879 LRQA-51488
+
+app.git.id-2.0.8=fb979f4abdb4150afa2431b1fff886c49283bd93
