@@ -25,8 +25,6 @@ public class ContactRoleConstants {
 
 	public static final String NAME_PARTNER_MEMBER = "Partner Member";
 
-	public static final String NAME_PREFIX_LIFERAY = "Liferay";
-
 	public static final String NAME_SALES = "Sales";
 
 	public static final String NAME_SUPPORT_CLOSED_WATCHER =
