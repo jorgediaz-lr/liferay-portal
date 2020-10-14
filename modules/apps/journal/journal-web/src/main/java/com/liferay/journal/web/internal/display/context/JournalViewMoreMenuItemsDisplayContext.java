@@ -69,7 +69,7 @@ public class JournalViewMoreMenuItemsDisplayContext {
 			_ddmStructures = JournalFolderServiceUtil.getDDMStructures(
 				PortalUtil.getCurrentAndAncestorSiteGroupIds(
 					themeDisplay.getScopeGroupId()),
-				_folderId, _restrictionType);
+				_folderId, _restrictionType, _getOrderByComparator());
 		}
 		else {
 			_ddmStructures = JournalFolderServiceUtil.searchDDMStructures(
