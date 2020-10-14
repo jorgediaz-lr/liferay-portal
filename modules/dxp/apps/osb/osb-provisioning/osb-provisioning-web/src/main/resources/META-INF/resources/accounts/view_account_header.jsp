@@ -46,10 +46,10 @@ AccountDisplay accountDisplay = viewAccountDisplayContext.getAccountDisplay();
 		<ul class="header-details">
 			<li>
 				<div class="header-label">
-					<liferay-ui:message key="status" />
+					<liferay-ui:message key="state" />
 				</div>
 
-				<span class="label <%= accountDisplay.getStatusStyle() %>"><%= accountDisplay.getStatus() %></span>
+				<span class="label <%= accountDisplay.getSubscriptionStateStyle() %>"><%= accountDisplay.getSubscriptionState() %></span>
 			</li>
 			<li>
 				<div class="header-label">

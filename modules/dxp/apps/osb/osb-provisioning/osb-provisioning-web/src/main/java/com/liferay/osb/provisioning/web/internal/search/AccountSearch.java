@@ -110,7 +110,8 @@ public class AccountSearch extends SearchContainer<AccountDisplay> {
 		iteratorURL.setParameter(
 			AccountDisplayTerms.REGIONS, displayTerms.getRegions());
 		iteratorURL.setParameter(
-			AccountDisplayTerms.STATUS, displayTerms.getStatus());
+			AccountDisplayTerms.SUBSCRIPTION_STATE,
+			displayTerms.getSubscriptionState());
 		iteratorURL.setParameter(
 			AccountDisplayTerms.TIERS, displayTerms.getTiers());
 		iteratorURL.setParameter(

@@ -15,6 +15,7 @@
 package com.liferay.osb.provisioning.web.internal.search;
 
 import com.liferay.osb.provisioning.koroneiki.constants.EntitlementConstants;
+import com.liferay.osb.provisioning.koroneiki.constants.ProductPurchaseConstants;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DateUtil;
@@ -26,6 +27,8 @@ import com.liferay.portal.kernel.util.Validator;
 import java.text.DateFormat;
 
 import java.util.Date;
+import java.util.Iterator;
+import java.util.Set;
 
 import javax.portlet.PortletRequest;
 
@@ -39,13 +42,54 @@ public class AccountSearchTerms extends AccountDisplayTerms {
 	}
 
 	public String getAdvancedSearchFilter(
-			String createdByUuid, String flsTeamRoleKey,
-			String partnerTeamRoleKey)
+			Set<String> subscriptionProductKeys, String createdByUuid,
+			String flsTeamRoleKey, String partnerTeamRoleKey)
 		throws Exception {
 
 		StringBundler sb = new StringBundler();
 
+		if (Validator.isNotNull(subscriptionState)) {
+			if (subscriptionState.equals(
+					ProductPurchaseConstants.STATE_ACTIVE)) {
+
+				sb.append("activeProductKeys");
+			}
+			else if (subscriptionState.equals(
+						ProductPurchaseConstants.STATE_CANCELLED)) {
+
+				sb.append("cancelledProductKeys");
+			}
+			else if (subscriptionState.equals(
+						ProductPurchaseConstants.STATE_EXPIRED)) {
+
+				sb.append("expiredProductKeys");
+			}
+			else if (subscriptionState.equals(
+						ProductPurchaseConstants.STATE_UNACTIVATED)) {
+
+				sb.append("unactivatedProductKeys");
+			}
+
+			sb.append("/any(s:");
+
+			Iterator iterator = subscriptionProductKeys.iterator();
+
+			while (iterator.hasNext()) {
+				sb.append("s eq '");
+				sb.append(iterator.next());
+				sb.append("'");
+
+				if (iterator.hasNext()) {
+					sb.append(" or ");
+				}
+			}
+
+			sb.append(")");
+		}
+
 		if (!ArrayUtil.isEmpty(activeSLAs)) {
+			sb.append(_getBooleanOperator(sb));
+
 			sb.append("(");
 
 			for (int i = 0; i < activeSLAs.length; i++) {
@@ -253,14 +297,6 @@ public class AccountSearchTerms extends AccountDisplayTerms {
 			sb.append(")");
 		}
 
-		if (Validator.isNotNull(status)) {
-			sb.append(_getBooleanOperator(sb));
-
-			sb.append("status eq '");
-			sb.append(status);
-			sb.append("'");
-		}
-
 		if (!ArrayUtil.isEmpty(tiers)) {
 			sb.append(_getBooleanOperator(sb));
 
@@ -333,7 +369,8 @@ public class AccountSearchTerms extends AccountDisplayTerms {
 				Validator.isNotNull(parentAccountKey) || (partner != null) ||
 				Validator.isNotNull(partnerTeamKey) || (providesFLS != null) ||
 				(receivesFLS != null) || !ArrayUtil.isEmpty(regions) ||
-				Validator.isNotNull(status) || !ArrayUtil.isEmpty(tiers) ||
+				Validator.isNotNull(subscriptionState) ||
+				!ArrayUtil.isEmpty(tiers) ||
 				Validator.isNotNull(workerContactEmailAddress)) {
 
 				return true;

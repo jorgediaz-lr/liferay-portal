@@ -22,7 +22,7 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.PostalAddress;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
-import com.liferay.osb.provisioning.koroneiki.constants.ProductConstants;
+import com.liferay.osb.provisioning.koroneiki.constants.ProductPurchaseConstants;
 import com.liferay.osb.provisioning.koroneiki.reader.AccountReader;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
@@ -165,7 +165,7 @@ public class AccountDisplay {
 	}
 
 	public String getEWSA() throws Exception {
-		if (isEWSA()) {
+		if (_isEWSA()) {
 			return LanguageUtil.get(_httpServletRequest, "yes");
 		}
 
@@ -272,24 +272,31 @@ public class AccountDisplay {
 		return StringPool.DASH;
 	}
 
-	public String getStatus() {
-		Account.Status status = _account.getStatus();
+	public String getSubscriptionState() {
+		String state = _accountReader.getSubscriptionState(_account);
 
-		if (status != null) {
-			return status.toString();
+		if (Validator.isNotNull(state)) {
+			return LanguageUtil.get(_httpServletRequest, state);
 		}
 
 		return StringPool.DASH;
 	}
 
-	public String getStatusStyle() {
-		Account.Status status = _account.getStatus();
+	public String getSubscriptionStateStyle() {
+		String state = _accountReader.getSubscriptionState(_account);
 
-		if (status == Account.Status.ACTIVE) {
-			return "label-success";
+		if (Validator.isNull(state)) {
+			return "label-danger";
 		}
 
-		return "label-secondary";
+		if (state.equals(ProductPurchaseConstants.STATE_ACTIVE)) {
+			return "label-success";
+		}
+		else if (state.equals(ProductPurchaseConstants.STATE_UNACTIVATED)) {
+			return "label-secondary";
+		}
+
+		return "label-danger";
 	}
 
 	public String getSupportEndDate() {
@@ -335,20 +342,6 @@ public class AccountDisplay {
 			_getExternalLinkKey(
 				ExternalLinkDomain.SALESFORCE,
 				ExternalLinkEntityName.SALESFORCE_PROJECT));
-	}
-
-	public boolean isEWSA() throws Exception {
-		if (_ancestorAccounts == null) {
-			_ancestorAccounts = _accountReader.getAncestorAccounts(_account);
-		}
-
-		for (Account account : _ancestorAccounts) {
-			if (_isEWSA(account)) {
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	private String _getAddExternalLinkURL() {
@@ -443,20 +436,14 @@ public class AccountDisplay {
 		return _getAddExternalLinkURL();
 	}
 
-	private boolean _isEWSA(Account account) throws Exception {
-		ProductPurchase[] productPurchases = account.getProductPurchases();
+	private boolean _isEWSA() throws Exception {
+		if (_ancestorAccounts == null) {
+			_ancestorAccounts = _accountReader.getAncestorAccounts(_account);
+		}
 
-		if (productPurchases != null) {
-			for (ProductPurchase productPurchase : productPurchases) {
-				Product product = productPurchase.getProduct();
-
-				String name = product.getName();
-
-				if (name.equals(ProductConstants.NAME_DXP_EWSA) ||
-					name.equals(ProductConstants.NAME_PORTAL_EWSA)) {
-
-					return true;
-				}
+		for (Account account : _ancestorAccounts) {
+			if (_accountReader.isEWSA(account)) {
+				return true;
 			}
 		}
 

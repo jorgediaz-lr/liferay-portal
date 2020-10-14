@@ -25,6 +25,7 @@ import com.liferay.osb.provisioning.constants.ProvisioningActionKeys;
 import com.liferay.osb.provisioning.constants.ProvisioningWebKeys;
 import com.liferay.osb.provisioning.customer.model.AccountEntry;
 import com.liferay.osb.provisioning.customer.web.service.AccountEntryWebService;
+import com.liferay.osb.provisioning.koroneiki.constants.ProductPurchaseConstants;
 import com.liferay.osb.provisioning.koroneiki.reader.AccountReader;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.AuditEntryWebService;
@@ -439,18 +440,25 @@ public class ViewAccountDisplayContext {
 		String orderByType = ParamUtil.getString(
 			renderRequest, "orderByType", "asc");
 
-		StringBundler sb = new StringBundler(8);
+		StringBundler sb = new StringBundler(13);
 
 		sb.append("(accountKey eq '");
 		sb.append(account.getKey());
 		sb.append("')");
 
 		if (tabs2.equals("active")) {
-			sb.append(" and (state eq 'active')");
+			sb.append(" and (state eq '");
+			sb.append(ProductPurchaseConstants.STATE_ACTIVE);
+			sb.append("')");
 		}
 		else if (tabs2.equals("inactive") && (states.length == 0)) {
-			sb.append(" and ((state eq 'cancelled') or (state eq 'expired') ");
-			sb.append("or (state eq 'unactivated'))");
+			sb.append(" and ((state eq '");
+			sb.append(ProductPurchaseConstants.STATE_CANCELLED);
+			sb.append("') or (state eq '");
+			sb.append(ProductPurchaseConstants.STATE_EXPIRED);
+			sb.append("') or (state eq '");
+			sb.append(ProductPurchaseConstants.STATE_UNACTIVATED);
+			sb.append("'))");
 		}
 
 		if (!tabs2.equals("active") && (states.length > 0)) {

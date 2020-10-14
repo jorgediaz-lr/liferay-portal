@@ -31,6 +31,8 @@ public interface ProductWebService {
 			String agentName, String agentUID, String productKey)
 		throws Exception;
 
+	public Product fetchProductByName(String name) throws Exception;
+
 	public Product getProduct(String productKey) throws Exception;
 
 	public List<Product> getProducts(

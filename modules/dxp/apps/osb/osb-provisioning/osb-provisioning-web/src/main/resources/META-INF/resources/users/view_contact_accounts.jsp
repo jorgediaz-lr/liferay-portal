@@ -90,9 +90,9 @@ ViewContactDisplayContext viewContactDisplayContext = ProvisioningWebComponentPr
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text
-				name="account-status"
+				name="account-state"
 			>
-				<span class="label <%= accountDisplay.getStatusStyle() %>"><%= accountDisplay.getStatus() %></span>
+				<span class="label <%= accountDisplay.getSubscriptionStateStyle() %>"><%= accountDisplay.getSubscriptionState() %></span>
 			</liferay-ui:search-container-column-text>
 		</liferay-ui:search-container-row>
 
@@ -145,9 +145,9 @@ ViewContactDisplayContext viewContactDisplayContext = ProvisioningWebComponentPr
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text
-				name="account-status"
+				name="account-state"
 			>
-				<span class="label <%= accountDisplay.getStatusStyle() %>"><%= accountDisplay.getStatus() %></span>
+				<span class="label <%= accountDisplay.getSubscriptionStateStyle() %>"><%= accountDisplay.getSubscriptionState() %></span>
 			</liferay-ui:search-container-column-text>
 		</liferay-ui:search-container-row>
 

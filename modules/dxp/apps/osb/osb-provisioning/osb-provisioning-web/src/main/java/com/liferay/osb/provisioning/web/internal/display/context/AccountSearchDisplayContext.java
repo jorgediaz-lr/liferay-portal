@@ -15,13 +15,17 @@
 package com.liferay.osb.provisioning.web.internal.display.context;
 
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.identity.management.provider.IdentityProvider;
 import com.liferay.osb.provisioning.koroneiki.constants.EntitlementConstants;
+import com.liferay.osb.provisioning.koroneiki.constants.ProductConstants;
+import com.liferay.osb.provisioning.koroneiki.constants.ProductPurchaseConstants;
 import com.liferay.osb.provisioning.koroneiki.constants.TeamRoleConstants;
 import com.liferay.osb.provisioning.koroneiki.reader.AccountReader;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
+import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamRoleWebService;
 import com.liferay.osb.provisioning.web.internal.search.AccountSearch;
 import com.liferay.osb.provisioning.web.internal.search.AccountSearchTerms;
@@ -32,6 +36,7 @@ import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
 import com.liferay.portal.kernel.service.CountryService;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
@@ -39,8 +44,10 @@ import com.liferay.portal.vulcan.util.TransformUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -61,7 +68,7 @@ public class AccountSearchDisplayContext {
 		RenderRequest renderRequest, RenderResponse renderResponse,
 		HttpServletRequest httpServletRequest, AccountReader accountReader,
 		AccountWebService accountWebService, CountryService countryService,
-		IdentityProvider identityProvider,
+		IdentityProvider identityProvider, ProductWebService productWebService,
 		TeamRoleWebService teamRoleWebService) {
 
 		_renderRequest = renderRequest;
@@ -71,6 +78,7 @@ public class AccountSearchDisplayContext {
 		_accountWebService = accountWebService;
 		_countryService = countryService;
 		_identityProvider = identityProvider;
+		_productWebService = productWebService;
 		_teamRoleWebService = teamRoleWebService;
 
 		_currentURLObj = PortletURLUtil.getCurrent(
@@ -166,13 +174,9 @@ public class AccountSearchDisplayContext {
 		data.put(
 			"selectFirstLineSupportURL", selectFirstLineSupportURL.toString());
 
-		List<String> statusNames = new ArrayList<>();
-
-		for (Account.Status status : Account.Status.values()) {
-			statusNames.add(status.toString());
-		}
-
-		data.put("statusNames", statusNames);
+		data.put(
+			"subscriptionStateNames",
+			ListUtil.fromArray(ProductPurchaseConstants.STATES));
 
 		List<String> tierNames = new ArrayList<>();
 
@@ -198,6 +202,8 @@ public class AccountSearchDisplayContext {
 		String filter = null;
 
 		if (searchTerms.isAdvancedSearch()) {
+			Set<String> subscriptionProductKeys = _getSubscriptionProductKeys();
+
 			String createdByUuid = null;
 
 			String createdByEmailAddress =
@@ -220,7 +226,8 @@ public class AccountSearchDisplayContext {
 				TeamRole.Type.ACCOUNT.toString());
 
 			filter = searchTerms.getAdvancedSearchFilter(
-				createdByUuid, flsTeamRole.getKey(), partnerTeamRole.getKey());
+				subscriptionProductKeys, createdByUuid, flsTeamRole.getKey(),
+				partnerTeamRole.getKey());
 		}
 		else {
 			filter = searchTerms.getBasicSearchFilter();
@@ -250,6 +257,34 @@ public class AccountSearchDisplayContext {
 		return _accountSearch;
 	}
 
+	private Set<String> _getSubscriptionProductKeys() throws Exception {
+		if (_subscriptionProductKeys != null) {
+			return _subscriptionProductKeys;
+		}
+
+		Set<String> subscriptionProductKeys = new HashSet<>();
+
+		for (String name : ProductConstants.NAMES_PARTNERSHIP) {
+			Product product = _productWebService.fetchProductByName(name);
+
+			if (product != null) {
+				subscriptionProductKeys.add(product.getKey());
+			}
+		}
+
+		for (String name : ProductConstants.NAMES_SUBSCRIPTION) {
+			Product product = _productWebService.fetchProductByName(name);
+
+			if (product != null) {
+				subscriptionProductKeys.add(product.getKey());
+			}
+		}
+
+		_subscriptionProductKeys = subscriptionProductKeys;
+
+		return _subscriptionProductKeys;
+	}
+
 	private final AccountReader _accountReader;
 	private AccountSearch _accountSearch;
 	private final AccountWebService _accountWebService;
@@ -257,8 +292,10 @@ public class AccountSearchDisplayContext {
 	private final PortletURL _currentURLObj;
 	private final HttpServletRequest _httpServletRequest;
 	private final IdentityProvider _identityProvider;
+	private final ProductWebService _productWebService;
 	private final RenderRequest _renderRequest;
 	private final RenderResponse _renderResponse;
+	private Set<String> _subscriptionProductKeys;
 	private final TeamRoleWebService _teamRoleWebService;
 
 }

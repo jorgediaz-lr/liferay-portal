@@ -94,10 +94,10 @@ SearchContainer accountSearchContainer = accountSearchDisplayContext.getSearchCo
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text
-				name="status"
+				name="state"
 			>
-				<span class="label <%= accountDisplay.getStatusStyle() %>">
-					<%= accountDisplay.getStatus() %>
+				<span class="label <%= accountDisplay.getSubscriptionStateStyle() %>">
+					<%= accountDisplay.getSubscriptionState() %>
 				</span>
 			</liferay-ui:search-container-column-text>
 		</liferay-ui:search-container-row>

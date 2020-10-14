@@ -77,7 +77,7 @@ public class AccountDisplayTerms extends DisplayTerms {
 
 	public static final String REGIONS = "regions";
 
-	public static final String STATUS = "status";
+	public static final String SUBSCRIPTION_STATE = "subscriptionState";
 
 	public static final String TIERS = "tiers";
 
@@ -153,7 +153,8 @@ public class AccountDisplayTerms extends DisplayTerms {
 		activeSLAs = ParamUtil.getStringValues(portletRequest, ACTIVE_SLAS);
 
 		regions = ParamUtil.getStringValues(portletRequest, REGIONS);
-		status = ParamUtil.getString(portletRequest, STATUS);
+		subscriptionState = ParamUtil.getString(
+			portletRequest, SUBSCRIPTION_STATE);
 		tiers = ParamUtil.getStringValues(portletRequest, TIERS);
 		workerContactEmailAddress = ParamUtil.getString(
 			portletRequest, WORKER_CONTACT_EMAIL_ADDRESS);
@@ -259,8 +260,8 @@ public class AccountDisplayTerms extends DisplayTerms {
 		return regions;
 	}
 
-	public String getStatus() {
-		return status;
+	public String getSubscriptionState() {
+		return subscriptionState;
 	}
 
 	public String[] getTiers() {
@@ -296,7 +297,7 @@ public class AccountDisplayTerms extends DisplayTerms {
 	protected Boolean providesFLS;
 	protected Boolean receivesFLS;
 	protected String[] regions;
-	protected String status;
+	protected String subscriptionState;
 	protected String[] tiers;
 	protected String workerContactEmailAddress;
 

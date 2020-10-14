@@ -467,8 +467,9 @@ public class AccountModelDocumentContributor
 	@Reference
 	private ContactRoleLocalService _contactRoleLocalService;
 
-	private Format _dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
-		_INDEX_DATE_FORMAT_PATTERN);
+	private final Format _dateFormat =
+		FastDateFormatFactoryUtil.getSimpleDateFormat(
+			_INDEX_DATE_FORMAT_PATTERN);
 
 	@Reference
 	private EntitlementLocalService _entitlementLocalService;

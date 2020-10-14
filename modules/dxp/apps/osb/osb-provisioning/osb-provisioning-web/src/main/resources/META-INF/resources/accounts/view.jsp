@@ -113,9 +113,9 @@ AccountSearchDisplayContext accountSearchDisplayContext = ProvisioningWebCompone
 
 			<liferay-ui:search-container-column-text
 				href="<%= rowURL %>"
-				name="status"
+				name="state"
 			>
-				<span class="label <%= accountDisplay.getStatusStyle() %>"><%= accountDisplay.getStatus() %></span>
+				<span class="label <%= accountDisplay.getSubscriptionStateStyle() %>"><%= accountDisplay.getSubscriptionState() %></span>
 			</liferay-ui:search-container-column-text>
 		</liferay-ui:search-container-row>
 

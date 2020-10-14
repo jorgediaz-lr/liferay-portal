@@ -97,9 +97,9 @@ PortletURL portletURL = viewAccountRelatedAccountsDisplayContext.getPortletURL()
 
 			<liferay-ui:search-container-column-text
 				href="<%= rowURL %>"
-				name="status"
+				name="state"
 			>
-				<span class="label <%= curAccountDisplay.getStatusStyle() %>"><%= curAccountDisplay.getStatus() %></span>
+				<span class="label <%= curAccountDisplay.getSubscriptionStateStyle() %>"><%= curAccountDisplay.getSubscriptionState() %></span>
 			</liferay-ui:search-container-column-text>
 		</liferay-ui:search-container-row>
 

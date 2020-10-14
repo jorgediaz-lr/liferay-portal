@@ -146,7 +146,6 @@ public class ProductPurchaseResourceImpl
 
 		booleanFilter.addRequiredTerm(
 			"accountKey", StringUtil.toLowerCase(accountKey));
-		booleanFilter.addRequiredTerm("state", "active");
 
 		Page<ProductPurchase> productPurchasesPage = SearchUtil.search(
 			booleanQuery -> {

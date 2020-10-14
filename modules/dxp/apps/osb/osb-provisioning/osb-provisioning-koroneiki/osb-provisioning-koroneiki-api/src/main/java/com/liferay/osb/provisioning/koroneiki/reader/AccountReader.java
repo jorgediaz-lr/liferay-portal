@@ -38,4 +38,8 @@ public interface AccountReader {
 
 	public ProductPurchase getSLAProductPurchase(Account account);
 
+	public String getSubscriptionState(Account account);
+
+	public boolean isEWSA(Account account);
+
 }

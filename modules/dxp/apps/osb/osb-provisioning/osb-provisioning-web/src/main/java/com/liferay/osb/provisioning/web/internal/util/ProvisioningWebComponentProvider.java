@@ -239,7 +239,7 @@ public class ProvisioningWebComponentProvider {
 		return new AccountSearchDisplayContext(
 			renderRequest, renderResponse, httpServletRequest, _accountReader,
 			_accountWebService, _countryService, _identityProvider,
-			_teamRoleWebService);
+			_productWebService, _teamRoleWebService);
 	}
 
 	private AssignProductBundleProductsDisplayContext

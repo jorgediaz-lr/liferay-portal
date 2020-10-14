@@ -19,6 +19,9 @@ package com.liferay.osb.provisioning.koroneiki.constants;
  */
 public class ProductConstants {
 
+	public static final String NAME_BASIC_RESELLER_PARTNERSHIP =
+		"Basic Reseller Partnership";
+
 	public static final String NAME_DESIGNATED_CONTACT_ADD_ON =
 		"Designated Contact Add-on";
 
@@ -36,8 +39,6 @@ public class ProductConstants {
 
 	public static final String NAME_DXP_PRODUCTION = "Liferay DXP Production";
 
-	public static final String NAME_FLOATING = "Floating Subscription";
-
 	public static final String NAME_GOLD = "Gold Subscription";
 
 	public static final String NAME_LIMITED = "Limited Subscription";
@@ -47,10 +48,23 @@ public class ProductConstants {
 	public static final String NAME_PORTAL_EWSA =
 		"Portal Enterprise-Wide Subscription";
 
+	public static final String NAME_SERVICE_PARTNERSHIP = "Service Partnership";
+
 	public static final String NAME_SILVER = "Silver Subscription";
 
-	public static final String[] SUBSCRIPTION_NAMES = {
-		NAME_FLOATING, NAME_GOLD, NAME_LIMITED, NAME_PLATINUM, NAME_SILVER
+	public static final String NAME_TRAINING_PARTNERSHIP =
+		"Training Partnership";
+
+	public static final String NAME_VALUE_ADDED_RESELLER_PARTNERSHIP =
+		"Value-Added Reseller Partnership";
+
+	public static final String[] NAMES_PARTNERSHIP = {
+		NAME_BASIC_RESELLER_PARTNERSHIP, NAME_SERVICE_PARTNERSHIP,
+		NAME_TRAINING_PARTNERSHIP, NAME_VALUE_ADDED_RESELLER_PARTNERSHIP
+	};
+
+	public static final String[] NAMES_SUBSCRIPTION = {
+		NAME_GOLD, NAME_LIMITED, NAME_PLATINUM, NAME_SILVER
 	};
 
 }

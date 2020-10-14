@@ -31,6 +31,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -65,6 +67,18 @@ public class ProductWebServiceImpl
 				agentName, agentUID, productKey);
 
 		validateResponse(httpResponse);
+	}
+
+	public Product fetchProductByName(String name) throws Exception {
+		HttpInvoker.HttpResponse httpResponse =
+			_productResource.getProductByNameProductNameHttpResponse(
+				_http.encodePath(name));
+
+		if (httpResponse.getStatusCode() == HttpServletResponse.SC_NOT_FOUND) {
+			return null;
+		}
+
+		return ProductSerDes.toDTO(httpResponse.getContent());
 	}
 
 	public Product getProduct(String productKey) throws Exception {

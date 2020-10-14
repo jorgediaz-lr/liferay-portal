@@ -23,6 +23,7 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductConsumption;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchaseView;
 import com.liferay.osb.provisioning.koroneiki.constants.ProductConstants;
+import com.liferay.osb.provisioning.koroneiki.constants.ProductPurchaseConstants;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductPurchaseViewWebService;
 import com.liferay.osb.provisioning.lcs.web.service.LCSSubscriptionEntryWebService;
@@ -308,11 +309,13 @@ public class LCSSubscriptionEntryWebServiceImpl
 		Map<String, LCSSubscriptionEntry> lcsSubscriptionEntriesMap =
 			new HashMap<>();
 
-		StringBundler sb = new StringBundler(3);
+		StringBundler sb = new StringBundler(5);
 
 		sb.append("(accountKey eq '");
 		sb.append(accountKey);
-		sb.append("') and (state eq 'active')");
+		sb.append("') and (state eq '");
+		sb.append(ProductPurchaseConstants.STATE_ACTIVE);
+		sb.append("')");
 
 		List<ProductPurchaseView> productPurchaseViews =
 			_productPurchaseViewWebService.getProductPurchaseViews(

@@ -276,7 +276,8 @@ public class AccountIndexerPostProcessor extends BaseIndexerPostProcessor {
 	private static final String _INDEX_DATE_FORMAT_PATTERN = PropsUtil.get(
 		PropsKeys.INDEX_DATE_FORMAT_PATTERN);
 
-	private Format _dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
-		_INDEX_DATE_FORMAT_PATTERN);
+	private final Format _dateFormat =
+		FastDateFormatFactoryUtil.getSimpleDateFormat(
+			_INDEX_DATE_FORMAT_PATTERN);
 
 }
