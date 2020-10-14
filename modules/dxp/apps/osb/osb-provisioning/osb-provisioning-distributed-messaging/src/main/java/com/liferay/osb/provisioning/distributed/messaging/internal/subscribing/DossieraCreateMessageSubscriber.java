@@ -713,6 +713,25 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			contacts.add(contact);
 		}
 
+		JSONObject ownerJSONObject = jsonObject.getJSONObject("_owner");
+
+		if (ownerJSONObject != null) {
+			Contact contact = new Contact();
+
+			contact.setFirstName(ownerJSONObject.getString("_firstName"));
+			contact.setLastName(ownerJSONObject.getString("_lastName"));
+			contact.setEmailAddress(ownerJSONObject.getString("_emailAddress"));
+
+			ContactRole contactRole = new ContactRole();
+
+			contactRole.setName(ContactRoleConstants.NAME_SALES);
+			contactRole.setType(ContactRole.Type.ACCOUNT_WORKER);
+
+			contact.setContactRoles(new ContactRole[] {contactRole});
+
+			contacts.add(contact);
+		}
+
 		return contacts;
 	}
 
