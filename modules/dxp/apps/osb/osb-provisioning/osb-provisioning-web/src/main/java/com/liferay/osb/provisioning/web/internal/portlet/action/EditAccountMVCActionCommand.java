@@ -110,7 +110,7 @@ public class EditAccountMVCActionCommand extends BaseMVCActionCommand {
 
 		try {
 			if (Validator.isNotNull(accountKey)) {
-				updateAccount(actionRequest, actionResponse, user);
+				updateAccount(actionRequest, actionResponse, accountKey, user);
 			}
 			else {
 				accountKey = addAccount(actionRequest, actionResponse, user);
@@ -162,10 +162,8 @@ public class EditAccountMVCActionCommand extends BaseMVCActionCommand {
 
 	protected void updateAccount(
 			ActionRequest actionRequest, ActionResponse actionResponse,
-			User user)
+			String accountKey, User user)
 		throws Exception {
-
-		String accountKey = ParamUtil.getString(actionRequest, "accountKey");
 
 		boolean updateAccount = ParamUtil.getBoolean(
 			actionRequest, "updateAccount");

@@ -74,6 +74,9 @@ public class EditPostalAddressMVCActionCommand extends BaseMVCActionCommand {
 
 		String cmd = ParamUtil.getString(actionRequest, Constants.CMD);
 
+		long postalAddressId = ParamUtil.getLong(
+			actionRequest, "postalAddressId");
+
 		try {
 			ThemeDisplay themeDisplay =
 				(ThemeDisplay)actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
@@ -84,7 +87,7 @@ public class EditPostalAddressMVCActionCommand extends BaseMVCActionCommand {
 				deletePostalAddress(actionRequest, user);
 			}
 			else {
-				updatePostalAddress(actionRequest, user);
+				updatePostalAddress(actionRequest, postalAddressId, user);
 			}
 
 			sendRedirect(actionRequest, actionResponse);
@@ -98,9 +101,6 @@ public class EditPostalAddressMVCActionCommand extends BaseMVCActionCommand {
 				exception instanceof NoSuchCountryException ||
 				exception instanceof NoSuchListTypeException ||
 				exception instanceof NoSuchRegionException) {
-
-				long postalAddressId = ParamUtil.getLong(
-					actionRequest, "postalAddressId");
 
 				if (postalAddressId > 0) {
 					sendRedirect(actionRequest, actionResponse);
@@ -116,11 +116,9 @@ public class EditPostalAddressMVCActionCommand extends BaseMVCActionCommand {
 		}
 	}
 
-	protected void updatePostalAddress(ActionRequest actionRequest, User user)
+	protected void updatePostalAddress(
+			ActionRequest actionRequest, long postalAddressId, User user)
 		throws Exception {
-
-		long postalAddressId = ParamUtil.getLong(
-			actionRequest, "postalAddressId");
 
 		String accountKey = ParamUtil.getString(actionRequest, "accountKey");
 		String streetAddressLine1 = ParamUtil.getString(
