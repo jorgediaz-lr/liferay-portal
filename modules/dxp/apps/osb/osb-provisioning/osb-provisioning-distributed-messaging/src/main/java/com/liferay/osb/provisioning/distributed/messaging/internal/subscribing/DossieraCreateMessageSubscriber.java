@@ -679,13 +679,32 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 	protected List<Contact> parseContacts(JSONObject jsonObject)
 		throws PortalException {
 
+		List<Contact> contacts = new ArrayList<>();
+
+		JSONObject ownerJSONObject = jsonObject.getJSONObject("_owner");
+
+		if (ownerJSONObject != null) {
+			Contact contact = new Contact();
+
+			contact.setFirstName(ownerJSONObject.getString("_firstName"));
+			contact.setLastName(ownerJSONObject.getString("_lastName"));
+			contact.setEmailAddress(ownerJSONObject.getString("_emailAddress"));
+
+			ContactRole contactRole = new ContactRole();
+
+			contactRole.setName(ContactRoleConstants.NAME_SALES);
+			contactRole.setType(ContactRole.Type.ACCOUNT_WORKER);
+
+			contact.setContactRoles(new ContactRole[] {contactRole});
+
+			contacts.add(contact);
+		}
+
 		JSONArray contactsJSONArray = jsonObject.getJSONArray("_contacts");
 
 		if (contactsJSONArray == null) {
-			return Collections.emptyList();
+			return contacts;
 		}
-
-		List<Contact> contacts = new ArrayList<>(contactsJSONArray.length());
 
 		for (int i = 0; i < contactsJSONArray.length(); i++) {
 			JSONObject contactJSONObject = contactsJSONArray.getJSONObject(i);
@@ -707,25 +726,6 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 			contactRole.setName(role);
 			contactRole.setType(ContactRole.Type.ACCOUNT_CUSTOMER);
-
-			contact.setContactRoles(new ContactRole[] {contactRole});
-
-			contacts.add(contact);
-		}
-
-		JSONObject ownerJSONObject = jsonObject.getJSONObject("_owner");
-
-		if (ownerJSONObject != null) {
-			Contact contact = new Contact();
-
-			contact.setFirstName(ownerJSONObject.getString("_firstName"));
-			contact.setLastName(ownerJSONObject.getString("_lastName"));
-			contact.setEmailAddress(ownerJSONObject.getString("_emailAddress"));
-
-			ContactRole contactRole = new ContactRole();
-
-			contactRole.setName(ContactRoleConstants.NAME_SALES);
-			contactRole.setType(ContactRole.Type.ACCOUNT_WORKER);
 
 			contact.setContactRoles(new ContactRole[] {contactRole});
 
