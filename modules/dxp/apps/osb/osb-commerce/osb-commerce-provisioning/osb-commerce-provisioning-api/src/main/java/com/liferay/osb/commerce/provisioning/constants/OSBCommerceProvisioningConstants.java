@@ -19,6 +19,9 @@ package com.liferay.osb.commerce.provisioning.constants;
  */
 public class OSBCommerceProvisioningConstants {
 
+	public static final String OSB_COMMERCE_CHECKOUT_URL =
+		"/osb-commerce-checkout";
+
 	public static final String OSB_COMMERCE_PROVISIONING_FRIENDLY_URL =
 		"/osb-commerce-provisioning";
 
