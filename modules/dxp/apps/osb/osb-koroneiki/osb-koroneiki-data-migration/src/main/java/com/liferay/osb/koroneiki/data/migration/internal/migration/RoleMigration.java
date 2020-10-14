@@ -66,10 +66,15 @@ public class RoleMigration {
 		_partnerWorkerRoleMap.put(0, partnerWatcherContactRoleId);
 		_partnerWorkerRoleMap.put(3, partnerWatcherContactRoleId);
 
-		_portalRoleMap.put(12324522L, _addCustomerContactRole(userId, "Admin"));
-		_portalRoleMap.put(33118240L, _addCustomerContactRole(userId, "Buyer"));
 		_portalRoleMap.put(
-			33118252L, _addCustomerContactRole(userId, "Developer"));
+			12324522L,
+			_addCustomerContactRole(userId, "Marketplace User Admin"));
+		_portalRoleMap.put(
+			33118240L,
+			_addCustomerContactRole(userId, "Marketplace App Buyer"));
+		_portalRoleMap.put(
+			33118252L,
+			_addCustomerContactRole(userId, "Marketplace App Developer"));
 		_portalRoleMap.put(
 			33118264L, _addCustomerContactRole(userId, "LCS User"));
 		_portalRoleMap.put(
