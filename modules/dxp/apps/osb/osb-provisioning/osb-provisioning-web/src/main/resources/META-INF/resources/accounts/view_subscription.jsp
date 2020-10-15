@@ -24,7 +24,7 @@ viewSubscriptionDisplayContext.addPortletBreadcrumbEntries();
 
 <liferay-util:include page="/accounts/view_subscription_header.jsp" servletContext="<%= application %>" />
 
-<div class="subscription" id="subscription">
+<div class="subscription" id="account">
 	<div class="subscription-content">
 		<liferay-ui:tabs
 			names="terms"
