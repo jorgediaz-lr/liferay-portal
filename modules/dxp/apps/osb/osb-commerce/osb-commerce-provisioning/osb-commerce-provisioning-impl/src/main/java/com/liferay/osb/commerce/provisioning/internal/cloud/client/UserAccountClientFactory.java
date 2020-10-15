@@ -14,8 +14,8 @@
 
 package com.liferay.osb.commerce.provisioning.internal.cloud.client;
 
-import com.liferay.osb.commerce.provisioning.internal.configuration.OSBCommerceProvisioningConfiguration;
-import com.liferay.osb.commerce.provisioning.internal.util.ApplicationProfile;
+import com.liferay.osb.commerce.provisioning.configuration.ApplicationProfile;
+import com.liferay.osb.commerce.provisioning.configuration.OSBCommerceProvisioningConfiguration;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 
 import java.util.Map;
@@ -27,7 +27,7 @@ import org.osgi.service.component.annotations.Component;
  * @author Ivica Cardic
  */
 @Component(
-	configurationPid = "com.liferay.osb.commerce.provisioning.internal.configuration.OSBCommerceProvisioningConfiguration",
+	configurationPid = "com.liferay.osb.commerce.provisioning.configuration.OSBCommerceProvisioningConfiguration",
 	service = UserAccountClientFactory.class
 )
 public class UserAccountClientFactory {

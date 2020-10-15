@@ -12,11 +12,10 @@
  *
  */
 
-package com.liferay.osb.commerce.provisioning.internal.configuration;
+package com.liferay.osb.commerce.provisioning.configuration;
 
 import aQute.bnd.annotation.metatype.Meta;
 
-import com.liferay.osb.commerce.provisioning.internal.util.ApplicationProfile;
 import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
 
 /**
@@ -24,7 +23,7 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
  */
 @ExtendedObjectClassDefinition(category = "osb-commerce")
 @Meta.OCD(
-	id = "com.liferay.osb.commerce.provisioning.internal.configuration.OSBCommerceProvisioningConfiguration",
+	id = "com.liferay.osb.commerce.provisioning.configuration.OSBCommerceProvisioningConfiguration",
 	localization = "content/Language",
 	name = "osb-commerce-provisioning-configuration-name"
 )

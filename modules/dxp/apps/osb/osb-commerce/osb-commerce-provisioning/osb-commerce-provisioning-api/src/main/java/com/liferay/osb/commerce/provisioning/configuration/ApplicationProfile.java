@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.commerce.provisioning.internal.util;
+package com.liferay.osb.commerce.provisioning.configuration;
 
 /**
  * @author Ivica Cardic
