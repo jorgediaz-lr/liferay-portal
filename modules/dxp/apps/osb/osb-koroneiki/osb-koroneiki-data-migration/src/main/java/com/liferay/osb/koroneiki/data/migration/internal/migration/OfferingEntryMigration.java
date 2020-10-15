@@ -14,7 +14,10 @@
 
 package com.liferay.osb.koroneiki.data.migration.internal.migration;
 
+import com.liferay.osb.koroneiki.phloem.rest.client.constants.ExternalLinkDomain;
+import com.liferay.osb.koroneiki.phloem.rest.client.constants.ExternalLinkEntityName;
 import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.ProductPurchase.Status;
+import com.liferay.osb.koroneiki.root.service.ExternalLinkLocalService;
 import com.liferay.osb.koroneiki.taproot.constants.WorkflowConstants;
 import com.liferay.osb.koroneiki.taproot.model.Account;
 import com.liferay.osb.koroneiki.taproot.service.AccountLocalService;
@@ -69,19 +72,22 @@ public class OfferingEntryMigration {
 
 		_platinumProductEntryId = productEntry.getProductEntryId();
 
-		StringBundler sb = new StringBundler(11);
+		StringBundler sb = new StringBundler(13);
 
 		sb.append("select corpProjectId, OSB_ProductEntry.name, ");
 		sb.append("supportResponseId, startDate, supportEndDate, quantity, ");
-		sb.append("OSB_OfferingEntry.status, licenses, sizing, version from ");
-		sb.append("OSB_OfferingEntry inner join OSB_AccountEntry on ");
-		sb.append("OSB_OfferingEntry.accountEntryId = ");
+		sb.append("OSB_OfferingEntry.status, licenses, sizing, version, ");
+		sb.append("externalId from OSB_OfferingEntry inner join ");
+		sb.append("OSB_AccountEntry on OSB_OfferingEntry.accountEntryId = ");
 		sb.append("OSB_AccountEntry.accountEntryId inner join ");
 		sb.append("OSB_ProductEntry on OSB_OfferingEntry.productEntryId = ");
 		sb.append("OSB_ProductEntry.productEntryId inner join OSB_OrderEntry ");
 		sb.append("on OSB_OfferingEntry.orderEntryId = ");
-		sb.append("OSB_OrderEntry.orderEntryId where OSB_AccountEntry.status ");
-		sb.append("!= 500");
+		sb.append("OSB_OrderEntry.orderEntryId inner join ");
+		sb.append("OSB_ExternalIdMapper on OSB_OrderEntry.orderEntryId = ");
+		sb.append("OSB_ExternalIdMapper.classPK where ");
+		sb.append("OSB_AccountEntry.status != 500 and ");
+		sb.append("OSB_ExternalIdMapper.classNameId = 4117502");
 
 		try (Connection connection = DataAccess.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(
@@ -164,10 +170,20 @@ public class OfferingEntryMigration {
 						_productEntryLocalService.getProductEntryByName(
 							productEntryName);
 
-					_productPurchaseLocalService.addProductPurchase(
-						userId, account.getAccountId(),
-						curProductEntry.getProductEntryId(), startDate, endDate,
-						endDate, quantity, status, productFields);
+					ProductPurchase productPurchase =
+						_productPurchaseLocalService.addProductPurchase(
+							userId, account.getAccountId(),
+							curProductEntry.getProductEntryId(), startDate,
+							endDate, endDate, quantity, status, productFields);
+
+					String externalId = resultSet.getString(11);
+
+					_externalLinkLocalService.addExternalLink(
+						userId, ProductPurchase.class.getName(),
+						productPurchase.getProductPurchaseId(),
+						ExternalLinkDomain.SALESFORCE,
+						ExternalLinkEntityName.SALESFORCE_OPPORTUNITY,
+						externalId);
 				}
 				catch (Exception exception) {
 					_log.error(exception, exception);
@@ -335,6 +351,9 @@ public class OfferingEntryMigration {
 
 	@Reference
 	private AccountLocalService _accountLocalService;
+
+	@Reference
+	private ExternalLinkLocalService _externalLinkLocalService;
 
 	private long _goldProductEntryId;
 	private long _limitedProductEntryId;
