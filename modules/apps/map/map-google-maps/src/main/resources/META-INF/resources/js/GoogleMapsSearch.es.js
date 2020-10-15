@@ -58,6 +58,15 @@ class GoogleMapsSearch extends State {
 				this._autocomplete,
 				'place_changed',
 				this._handlePlaceChanged
+			),
+			google.maps.event.addDomListener(
+				this.inputNode,
+				'keydown',
+				event => {
+					if (event.keyCode === 13) {
+						event.preventDefault();
+					}
+				}
 			)
 		];
 	}
