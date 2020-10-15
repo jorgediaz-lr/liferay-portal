@@ -90,7 +90,11 @@ function Search({accountsHomeURL = '', resourceURL}) {
 	function getSearchParameter() {
 		const searchParams = new URLSearchParams(window.location.search);
 
-		return searchParams.has('keywords') ? searchParams.get('keywords') : '';
+		return searchParams.has('keywords') ||
+			searchParams.has(`${NAMESPACE}keywords`)
+			? searchParams.get('keywords') ||
+					searchParams.get(`${NAMESPACE}keywords`)
+			: '';
 	}
 
 	function handleKeyDown(event) {
