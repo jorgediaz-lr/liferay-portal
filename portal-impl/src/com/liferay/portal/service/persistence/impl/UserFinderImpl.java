@@ -1311,7 +1311,6 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 				params3 = new LinkedHashMap<>(params1);
 
 				params3.remove("socialRelationType");
-
 				params3.remove("usersGroups");
 
 				params3.put("groupsUserGroups", groupIds);
