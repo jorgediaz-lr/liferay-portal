@@ -43,4 +43,10 @@ describe('Search', () => {
 
 		getByLabelText('search-icon');
 	});
+
+	it('displays a caret to trigger Advanced Search', () => {
+		const {getByLabelText} = renderSearch();
+
+		getByLabelText('advanced-search-icon');
+	});
 });

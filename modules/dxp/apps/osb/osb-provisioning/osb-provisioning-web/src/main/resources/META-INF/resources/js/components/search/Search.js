@@ -90,9 +90,7 @@ function Search({accountsHomeURL = '', resourceURL}) {
 	function getSearchParameter() {
 		const searchParams = new URLSearchParams(window.location.search);
 
-		return searchParams.has('keywords')
-			? searchParams.get('keywords')
-			: '';
+		return searchParams.has('keywords') ? searchParams.get('keywords') : '';
 	}
 
 	function handleKeyDown(event) {
@@ -116,6 +114,20 @@ function Search({accountsHomeURL = '', resourceURL}) {
 				placeholder={Liferay.Language.get('search-accounts')}
 				value={keywords}
 			/>
+
+			<div className="advanced-search-trigger">
+				<button className="advanced-search-btn btn btn-monospaced btn-sm">
+					<svg
+						aria-label={Liferay.Language.get(
+							'advanced-search-icon'
+						)}
+						className="lexicon-icon lexicon-icon-advanced-search"
+						role="image"
+					>
+						<use xlinkHref="#caret-bottom" />
+					</svg>
+				</button>
+			</div>
 
 			<a
 				className="btn btn-default search-btn"
