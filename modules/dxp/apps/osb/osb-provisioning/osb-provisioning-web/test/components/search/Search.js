@@ -9,7 +9,7 @@
  * distribution rights of the Software.
  */
 
-import {cleanup, render} from '@testing-library/react';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 import React from 'react';
 
 import Search from '../../../src/main/resources/META-INF/resources/js/components/search/Search';
@@ -48,5 +48,13 @@ describe('Search', () => {
 		const {getByLabelText} = renderSearch();
 
 		getByLabelText('advanced-search-icon');
+	});
+
+	it('opens the Advanced Search when the caret is clicked', () => {
+		const {getByLabelText, getByText} = renderSearch();
+
+		fireEvent.click(getByLabelText('advanced-search-icon'));
+
+		getByText('Advanced Search');
 	});
 });

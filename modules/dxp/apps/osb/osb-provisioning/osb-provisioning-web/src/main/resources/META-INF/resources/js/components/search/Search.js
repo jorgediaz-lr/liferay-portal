@@ -19,6 +19,8 @@ import React, {useRef, useState} from 'react';
 import {NAMESPACE} from '../../utilities/constants';
 import {request} from '../../utilities/helpers';
 
+import AdvancedSearch from './AdvancedSearch';
+
 const MAX_RESULTS = 7;
 
 const AutocompleteItem = React.forwardRef(
@@ -59,6 +61,7 @@ function Search({accountsHomeURL = '', resourceURL}) {
 	const [error, setError] = useState(false);
 	const [keywords, setKeywords] = useState(getSearchParameter());
 	const [results, setResults] = useState([]);
+	const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
 
 	const {current: requestSearchResults} = useRef(
 		debounce(value => {
@@ -69,8 +72,7 @@ function Search({accountsHomeURL = '', resourceURL}) {
 				.then(({data}) => {
 					if (data.length === 0) {
 						setError(true);
-					}
-					else {
+					} else {
 						setError(false);
 						setResults(data);
 					}
@@ -109,80 +111,88 @@ function Search({accountsHomeURL = '', resourceURL}) {
 		requestSearchResults(event.target.value);
 	}
 
-	return (
-		<ClayAutocomplete>
-			<ClayAutocomplete.Input
-				className="search-input"
-				onChange={handleOnChange}
-				onKeyDown={handleKeyDown}
-				placeholder={Liferay.Language.get('search-accounts')}
-				value={keywords}
-			/>
+	function handleOnToggle() {
+		setShowAdvancedSearch(!showAdvancedSearch);
+	}
 
-			<div className="advanced-search-trigger">
-				<button className="advanced-search-btn btn btn-monospaced btn-sm">
+	return (
+		<>
+			<ClayAutocomplete>
+				<ClayAutocomplete.Input
+					className="search-input"
+					onChange={handleOnChange}
+					onKeyDown={handleKeyDown}
+					placeholder={Liferay.Language.get('search-accounts')}
+					value={keywords}
+				/>
+
+				<div className="advanced-search-trigger">
+					<button className="advanced-search-btn btn btn-monospaced btn-sm" onClick={handleOnToggle}>
+						<svg
+							aria-label={Liferay.Language.get(
+								'advanced-search-icon'
+							)}
+							className="lexicon-icon lexicon-icon-advanced-search"
+							role="image"
+						>
+							<use xlinkHref="#caret-bottom" />
+						</svg>
+					</button>
+				</div>
+
+				<a
+					className="btn btn-default search-btn"
+					href={buildSearchResultsURL()}
+					role="button"
+				>
 					<svg
-						aria-label={Liferay.Language.get(
-							'advanced-search-icon'
-						)}
-						className="lexicon-icon lexicon-icon-advanced-search"
+						aria-hidden="true"
+						aria-label={Liferay.Language.get('search-icon')}
+						className="lexicon-icon lexicon-icon-search"
 						role="image"
 					>
-						<use xlinkHref="#caret-bottom" />
+						<use xlinkHref="#search" />
 					</svg>
-				</button>
-			</div>
+				</a>
 
-			<a
-				className="btn btn-default search-btn"
-				href={buildSearchResultsURL()}
-				role="button"
-			>
-				<svg
-					aria-hidden="true"
-					aria-label={Liferay.Language.get('search-icon')}
-					className="lexicon-icon lexicon-icon-search"
-					role="image"
-				>
-					<use xlinkHref="#search" />
-				</svg>
-			</a>
+				<ClayAutocomplete.DropDown active={keywords}>
+					{error && (
+						<ul className="list-unstyled">
+							<ClayDropDown.Item className="disabled">
+								{Liferay.Language.get('no-results-were-found')}
+							</ClayDropDown.Item>
+						</ul>
+					)}
 
-			<ClayAutocomplete.DropDown active={keywords}>
-				{error && (
-					<ul className="list-unstyled">
-						<ClayDropDown.Item className="disabled">
-							{Liferay.Language.get('no-results-were-found')}
-						</ClayDropDown.Item>
-					</ul>
-				)}
+					{!error && (
+						<>
+							<ClayDropDown.ItemList>
+								{results.map(result => (
+									<AutocompleteItem
+										href={`${result.url}&keywords=${keywords}`}
+										key={result.key}
+										match={keywords}
+										secondaryValue={result.code}
+										value={result.name}
+									/>
+								))}
+							</ClayDropDown.ItemList>
 
-				{!error && (
-					<>
-						<ClayDropDown.ItemList>
-							{results.map(result => (
-								<AutocompleteItem
-									href={`${result.url}&keywords=${keywords}`}
-									key={result.key}
-									match={keywords}
-									secondaryValue={result.code}
-									value={result.name}
-								/>
-							))}
-						</ClayDropDown.ItemList>
+							{results.length === MAX_RESULTS && (
+								<a
+									className="all-results dropdown-item"
+									href={buildSearchResultsURL()}
+								>
+									{Liferay.Language.get('see-all-results')}
+								</a>
+							)}
+						</>
+					)}
+				</ClayAutocomplete.DropDown>
+			</ClayAutocomplete>
 
-						{results.length === MAX_RESULTS && (
-							<a
-								className="all-results dropdown-item"
-								href={buildSearchResultsURL()}
-							>
-								{Liferay.Language.get('see-all-results')}
-							</a>
-						)}
-					</>
-				)}
-			</ClayAutocomplete.DropDown>
-		</ClayAutocomplete>
+			{showAdvancedSearch && <AdvancedSearch />}
+		</>
 	);
 }
 
