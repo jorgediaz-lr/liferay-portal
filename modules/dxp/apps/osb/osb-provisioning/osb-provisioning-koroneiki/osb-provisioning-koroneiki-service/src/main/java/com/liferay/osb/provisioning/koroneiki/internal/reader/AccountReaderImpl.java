@@ -323,13 +323,16 @@ public class AccountReaderImpl implements AccountReader {
 
 	private int _getStateRank(String state) {
 		if (state.equals(ProductPurchaseConstants.STATE_ACTIVE)) {
-			return 3;
+			return 4;
 		}
-		else if (state.equals(ProductPurchaseConstants.STATE_EXPIRED)) {
+		else if (state.equals(ProductPurchaseConstants.STATE_CANCELLED)) {
 			return 1;
 		}
-		else if (state.equals(ProductPurchaseConstants.STATE_UNACTIVATED)) {
+		else if (state.equals(ProductPurchaseConstants.STATE_EXPIRED)) {
 			return 2;
+		}
+		else if (state.equals(ProductPurchaseConstants.STATE_UNACTIVATED)) {
+			return 3;
 		}
 
 		return 0;

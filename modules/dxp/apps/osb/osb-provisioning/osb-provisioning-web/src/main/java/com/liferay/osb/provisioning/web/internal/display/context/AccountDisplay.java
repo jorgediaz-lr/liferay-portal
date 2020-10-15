@@ -272,6 +272,26 @@ public class AccountDisplay {
 		return StringPool.DASH;
 	}
 
+	public String getStatus() {
+		Account.Status status = _account.getStatus();
+
+		if (status != null) {
+			return status.toString();
+		}
+
+		return StringPool.DASH;
+	}
+
+	public String getStatusStyle() {
+		Account.Status status = _account.getStatus();
+
+		if (status == Account.Status.ACTIVE) {
+			return "label-success";
+		}
+
+		return "label-secondary";
+	}
+
 	public String getSubscriptionState() {
 		String state = _accountReader.getSubscriptionState(_account);
 
@@ -286,7 +306,7 @@ public class AccountDisplay {
 		String state = _accountReader.getSubscriptionState(_account);
 
 		if (Validator.isNull(state)) {
-			return "label-danger";
+			return StringPool.BLANK;
 		}
 
 		if (state.equals(ProductPurchaseConstants.STATE_ACTIVE)) {
