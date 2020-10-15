@@ -120,7 +120,7 @@ definition {
 
 		GogoShell.openGogoShellAdmin();
 
-		AssertConsoleTextPresent(value1 = "STARTED com.liferay.cluster.test.module_");
+		WaitForConsoleTextPresent(value1 = "STARTED com.liferay.cluster.test.module_");
 
 		GogoShell.executeCommand(commandName = "lb | grep 'Test Module'");
 
@@ -155,7 +155,7 @@ definition {
 
 		GogoShell.openGogoShellAdmin();
 
-		AssertConsoleTextPresent(value1 = "STARTED test-theme_");
+		WaitForConsoleTextPresent(value1 = "STARTED test-theme_");
 
 		GogoShell.executeCommand(commandName = "lb | grep test-theme");
 
