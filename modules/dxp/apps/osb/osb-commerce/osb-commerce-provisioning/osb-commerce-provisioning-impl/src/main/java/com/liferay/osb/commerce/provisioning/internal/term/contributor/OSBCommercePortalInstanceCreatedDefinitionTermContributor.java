@@ -17,13 +17,11 @@ package com.liferay.osb.commerce.provisioning.internal.term.contributor;
 import com.liferay.commerce.constants.CommerceDefinitionTermConstants;
 import com.liferay.commerce.model.CommerceSubscriptionEntry;
 import com.liferay.commerce.order.CommerceDefinitionTermContributor;
-import com.liferay.commerce.service.CommerceOrderItemLocalService;
 import com.liferay.osb.commerce.provisioning.constants.OSBCommerceNotificationConstants;
 import com.liferay.osb.commerce.provisioning.constants.OSBCommercePortalInstanceConstants;
-import com.liferay.osb.commerce.provisioning.util.OSBCommercePortalInstanceUtil;
+import com.liferay.osb.commerce.provisioning.util.OSBCommercePortalInstance;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
-import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 
@@ -84,7 +82,7 @@ public class OSBCommercePortalInstanceCreatedDefinitionTermContributor
 				commerceSubscriptionEntry.
 					getSubscriptionTypeSettingsProperties();
 
-			return OSBCommercePortalInstanceUtil.getPortalInstanceURL(
+			return _osbCommercePortalInstance.getPortalInstanceURL(
 				subscriptionTypeSettingsProperties.get(
 					OSBCommercePortalInstanceConstants.
 						PORTAL_INSTANCE_VIRTUAL_HOSTNAME));
@@ -120,9 +118,6 @@ public class OSBCommercePortalInstanceCreatedDefinitionTermContributor
 		};
 
 	@Reference
-	private CommerceOrderItemLocalService _commerceOrderItemLocalService;
-
-	@Reference
-	private UserLocalService _userLocalService;
+	private OSBCommercePortalInstance _osbCommercePortalInstance;
 
 }

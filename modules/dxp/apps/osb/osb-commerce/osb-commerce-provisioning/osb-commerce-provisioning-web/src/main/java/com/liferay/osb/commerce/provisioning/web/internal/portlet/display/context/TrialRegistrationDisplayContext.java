@@ -20,7 +20,7 @@ import com.liferay.commerce.product.constants.CPConstants;
 import com.liferay.commerce.service.CommerceCountryService;
 import com.liferay.commerce.service.CommerceSubscriptionEntryLocalService;
 import com.liferay.osb.commerce.provisioning.constants.OSBCommercePortalInstanceConstants;
-import com.liferay.osb.commerce.provisioning.util.OSBCommercePortalInstanceUtil;
+import com.liferay.osb.commerce.provisioning.util.OSBCommercePortalInstance;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 
 import java.util.List;
@@ -34,11 +34,13 @@ public class TrialRegistrationDisplayContext {
 	public TrialRegistrationDisplayContext(
 		CommerceCountryService commerceCountryService,
 		CommerceSubscriptionEntryLocalService
-			commerceSubscriptionEntryLocalService) {
+			commerceSubscriptionEntryLocalService,
+		OSBCommercePortalInstance osbCommercePortalInstance) {
 
 		_commerceCountryService = commerceCountryService;
 		_commerceSubscriptionEntryLocalService =
 			commerceSubscriptionEntryLocalService;
+		_osbCommercePortalInstance = osbCommercePortalInstance;
 	}
 
 	public List<CommerceCountry> getCommerceCountries(long companyId) {
@@ -54,7 +56,7 @@ public class TrialRegistrationDisplayContext {
 		UnicodeProperties unicodeProperties =
 			commerceSubscriptionEntry.getSubscriptionTypeSettingsProperties();
 
-		return OSBCommercePortalInstanceUtil.getPortalInstanceURL(
+		return _osbCommercePortalInstance.getPortalInstanceURL(
 			unicodeProperties.get(
 				OSBCommercePortalInstanceConstants.
 					PORTAL_INSTANCE_VIRTUAL_HOSTNAME));
@@ -87,5 +89,6 @@ public class TrialRegistrationDisplayContext {
 	private final CommerceCountryService _commerceCountryService;
 	private final CommerceSubscriptionEntryLocalService
 		_commerceSubscriptionEntryLocalService;
+	private final OSBCommercePortalInstance _osbCommercePortalInstance;
 
 }
