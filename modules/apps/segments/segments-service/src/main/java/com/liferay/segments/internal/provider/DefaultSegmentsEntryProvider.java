@@ -172,12 +172,6 @@ public class DefaultSegmentsEntryProvider implements SegmentsEntryProvider {
 		return stream.filter(
 			segmentsEntry -> _isMember(
 				className, classPK, context, segmentsEntry)
-		).sorted(
-			(segmentsEntry1, segmentsEntry2) -> {
-				Date modifiedDate = segmentsEntry2.getModifiedDate();
-
-				return modifiedDate.compareTo(segmentsEntry1.getModifiedDate());
-			}
 		).mapToLong(
 			SegmentsEntry::getSegmentsEntryId
 		).toArray();
