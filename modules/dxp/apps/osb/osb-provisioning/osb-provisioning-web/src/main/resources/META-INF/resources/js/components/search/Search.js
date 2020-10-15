@@ -57,7 +57,7 @@ AutocompleteItem.propTypes = {
 
 function Search({accountsHomeURL = '', resourceURL}) {
 	const [error, setError] = useState(false);
-	const [keywords, setKeywords] = useState('');
+	const [keywords, setKeywords] = useState(getSearchParameter());
 	const [results, setResults] = useState([]);
 
 	const {current: requestSearchResults} = useRef(
@@ -85,6 +85,14 @@ function Search({accountsHomeURL = '', resourceURL}) {
 
 	function buildSearchResultsURL() {
 		return `${accountsHomeURL}&${NAMESPACE}keywords=${keywords}`;
+	}
+
+	function getSearchParameter() {
+		const searchParams = new URLSearchParams(window.location.search);
+
+		return searchParams.has('keywords')
+			? searchParams.get('keywords')
+			: '';
 	}
 
 	function handleKeyDown(event) {
@@ -138,7 +146,7 @@ function Search({accountsHomeURL = '', resourceURL}) {
 						<ClayDropDown.ItemList>
 							{results.map(result => (
 								<AutocompleteItem
-									href={result.url}
+									href={`${result.url}&keywords=${keywords}`}
 									key={result.key}
 									match={keywords}
 									secondaryValue={result.code}
