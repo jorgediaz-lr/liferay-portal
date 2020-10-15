@@ -26,18 +26,18 @@ public class ProductConstants {
 		"Designated Contact Add-on";
 
 	public static final String NAME_DXP_CLOUD_INSTANCE_PRODUCTION =
-		"Liferay DXP Cloud Instance - Production";
+		"DXP Cloud Instance - Production";
 
 	public static final String NAME_DXP_CLOUD_SUBSCRIPTION_HA_PRODUCTION =
-		"Liferay DXP Cloud Subscription HA Production";
+		"DXP Cloud Subscription HA Production";
 
 	public static final String NAME_DXP_CLOUD_SUBSCRIPTION_STD_PRODUCTION =
-		"Liferay DXP Cloud Subscription Std Production";
+		"DXP Cloud Subscription Std Production";
 
 	public static final String NAME_DXP_EWSA =
 		"DXP Enterprise-Wide Subscription";
 
-	public static final String NAME_DXP_PRODUCTION = "Liferay DXP Production";
+	public static final String NAME_DXP_PRODUCTION = "DXP Production";
 
 	public static final String NAME_GOLD = "Gold Subscription";
 

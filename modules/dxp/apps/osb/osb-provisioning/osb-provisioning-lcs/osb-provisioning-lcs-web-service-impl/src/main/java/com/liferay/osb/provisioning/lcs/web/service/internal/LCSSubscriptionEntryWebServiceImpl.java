@@ -166,7 +166,7 @@ public class LCSSubscriptionEntryWebServiceImpl
 
 		String productName = product.getName();
 
-		if (productName.contains(_DIGITAL_ENTERPRISE)) {
+		if (productName.contains(_DXP)) {
 			return 7000;
 		}
 
@@ -255,32 +255,32 @@ public class LCSSubscriptionEntryWebServiceImpl
 
 		String productName = product.getName();
 
-		if (productName.contains(_DIGITAL_ENTERPRISE_BACKUP) ||
+		if (productName.contains(_DXP_BACKUP) ||
 			productName.contains(_PORTAL_BACKUP)) {
 
 			lcsProduct = _PORTAL_BACKUP;
 		}
-		else if (productName.contains(_DIGITAL_ENTERPRISE_DEVELOPMENT) ||
+		else if (productName.contains(_DXP_DEVELOPMENT) ||
 				 productName.contains(_PORTAL_DEVELOPMENT)) {
 
 			lcsProduct = _PORTAL_DEVELOPMENT;
 		}
-		else if (productName.contains(_DIGITAL_ENTERPRISE_ENTERPRISE) ||
+		else if (productName.contains(_DXP_ENTERPRISE) ||
 				 productName.contains(_PORTAL_ENTERPRISE)) {
 
 			lcsProduct = _PORTAL_ENTERPRISE;
 		}
-		else if (productName.contains(_DIGITAL_ENTERPRISE_LIMITED) ||
+		else if (productName.contains(_DXP_LIMITED) ||
 				 productName.contains(_PORTAL_LIMITED)) {
 
 			lcsProduct = _PORTAL_LIMITED;
 		}
-		else if (productName.contains(_DIGITAL_ENTERPRISE_NON_PRODUCTION) ||
+		else if (productName.contains(_DXP_NON_PRODUCTION) ||
 				 productName.contains(_PORTAL_NON_PRODUCTION)) {
 
 			lcsProduct = _PORTAL_NON_PRODUCTION;
 		}
-		else if (productName.contains(_DIGITAL_ENTERPRISE_PRODUCTION) ||
+		else if (productName.contains(_DXP_PRODUCTION) ||
 				 productName.contains(_PORTAL_PRODUCTION)) {
 
 			lcsProduct = _PORTAL_PRODUCTION;
@@ -453,32 +453,32 @@ public class LCSSubscriptionEntryWebServiceImpl
 	}
 
 	private String _getType(String lcsProduct) {
-		if (lcsProduct.contains(_DIGITAL_ENTERPRISE_BACKUP) ||
+		if (lcsProduct.contains(_DXP_BACKUP) ||
 			lcsProduct.contains(_PORTAL_BACKUP)) {
 
 			return LicenseType.BACKUP;
 		}
-		else if (lcsProduct.contains(_DIGITAL_ENTERPRISE_DEVELOPMENT) ||
+		else if (lcsProduct.contains(_DXP_DEVELOPMENT) ||
 				 lcsProduct.contains(_PORTAL_DEVELOPMENT)) {
 
 			return LicenseType.DEVELOPER;
 		}
-		else if (lcsProduct.contains(_DIGITAL_ENTERPRISE_ENTERPRISE) ||
+		else if (lcsProduct.contains(_DXP_ENTERPRISE) ||
 				 lcsProduct.contains(_PORTAL_ENTERPRISE)) {
 
 			return LicenseType.ENTERPRISE;
 		}
-		else if (lcsProduct.contains(_DIGITAL_ENTERPRISE_LIMITED) ||
+		else if (lcsProduct.contains(_DXP_LIMITED) ||
 				 lcsProduct.contains(_PORTAL_LIMITED)) {
 
 			return LicenseType.LIMITED;
 		}
-		else if (lcsProduct.contains(_DIGITAL_ENTERPRISE_NON_PRODUCTION) ||
+		else if (lcsProduct.contains(_DXP_NON_PRODUCTION) ||
 				 lcsProduct.contains(_PORTAL_NON_PRODUCTION)) {
 
 			return LicenseType.NON_PRODUCTION;
 		}
-		else if (lcsProduct.contains(_DIGITAL_ENTERPRISE_PRODUCTION) ||
+		else if (lcsProduct.contains(_DXP_PRODUCTION) ||
 				 lcsProduct.contains(_PORTAL_PRODUCTION)) {
 
 			return LicenseType.PRODUCTION;
@@ -526,26 +526,20 @@ public class LCSSubscriptionEntryWebServiceImpl
 
 	private static final int _ALLOWED_SERVERS_UNLIMITED = 10000;
 
-	private static final String _DIGITAL_ENTERPRISE =
-		"Digital Enterprise Backup";
+	private static final String _DXP = "DXP";
 
-	private static final String _DIGITAL_ENTERPRISE_BACKUP =
-		"Digital Enterprise Backup";
+	private static final String _DXP_BACKUP = "DXP Backup";
 
-	private static final String _DIGITAL_ENTERPRISE_DEVELOPMENT =
-		"Digital Enterprise Development";
+	private static final String _DXP_DEVELOPMENT = "DXP Development";
 
-	private static final String _DIGITAL_ENTERPRISE_ENTERPRISE =
-		"Digital Enterprise Unlimited Enterprise-Wide";
+	private static final String _DXP_ENTERPRISE =
+		"DXP Unlimited Enterprise-Wide";
 
-	private static final String _DIGITAL_ENTERPRISE_LIMITED =
-		"Digital Enterprise Limited";
+	private static final String _DXP_LIMITED = "DXP Limited";
 
-	private static final String _DIGITAL_ENTERPRISE_NON_PRODUCTION =
-		"Digital Enterprise Non-Production";
+	private static final String _DXP_NON_PRODUCTION = "DXP Non-Production";
 
-	private static final String _DIGITAL_ENTERPRISE_PRODUCTION =
-		"Digital Enterprise Production";
+	private static final String _DXP_PRODUCTION = "DXP Production";
 
 	private static final String _ELASTIC_ACTIVATION = "Elastic Activation";
 

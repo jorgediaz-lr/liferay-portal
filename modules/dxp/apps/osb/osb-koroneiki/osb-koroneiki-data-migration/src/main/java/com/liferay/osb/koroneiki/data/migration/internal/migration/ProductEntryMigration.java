@@ -25,6 +25,8 @@ import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -50,7 +52,7 @@ public class ProductEntryMigration {
 			ResultSet resultSet = preparedStatement.executeQuery()) {
 
 			while (resultSet.next()) {
-				String name = resultSet.getString("name");
+				String name = _getNewName(resultSet.getString("name"));
 				int type = resultSet.getInt("type_");
 
 				List<ProductField> productFields = new ArrayList<>();
@@ -93,6 +95,17 @@ public class ProductEntryMigration {
 			userId, _NAME_LIMITED, Collections.emptyList());
 		_productEntryLocalService.addProductEntry(
 			userId, _NAME_PLATINUM, Collections.emptyList());
+	}
+
+	private String _getNewName(String name) {
+		String newName = StringUtil.replace(name, "Digital Enterprise", "DXP");
+
+		if (newName.startsWith("Liferay ")) {
+			newName = StringUtil.replaceFirst(
+				newName, "Liferay ", StringPool.BLANK);
+		}
+
+		return newName;
 	}
 
 	private void _migrateExternalIdMappers(
