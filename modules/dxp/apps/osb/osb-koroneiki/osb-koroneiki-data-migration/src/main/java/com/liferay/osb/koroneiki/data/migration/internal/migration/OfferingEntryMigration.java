@@ -72,7 +72,7 @@ public class OfferingEntryMigration {
 
 		_platinumProductEntryId = productEntry.getProductEntryId();
 
-		StringBundler sb = new StringBundler(13);
+		StringBundler sb = new StringBundler(14);
 
 		sb.append("select corpProjectId, OSB_ProductEntry.name, ");
 		sb.append("supportResponseId, startDate, supportEndDate, quantity, ");
