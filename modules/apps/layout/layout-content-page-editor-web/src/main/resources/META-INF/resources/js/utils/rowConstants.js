@@ -34,6 +34,7 @@ export const CONFIG_KEYS = {
 	backgroundColorCssClass: 'backgroundColorCssClass',
 	columnSpacing: 'columnSpacing',
 	containerType: 'containerType',
+	nonIndexable: 'nonIndexable',
 	paddingHorizontal: 'paddingHorizontal',
 	paddingVertical: 'paddingVertical'
 };
