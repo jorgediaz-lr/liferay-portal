@@ -217,7 +217,7 @@ public class DLPortletInstanceSettingsHelper {
 	private String[] _getAllEntryColumns() {
 		String allEntryColumns = "name,description,size,status";
 
-		if (PropsValues.VIEW_COUNTS_ENABLED) {
+		if (PropsValues.VIEW_COUNT_ENABLED) {
 			allEntryColumns += ",downloads";
 		}
 
@@ -233,7 +233,7 @@ public class DLPortletInstanceSettingsHelper {
 	private String[] _getAllFileEntryColumns() {
 		String allFileEntryColumns = "name,size";
 
-		if (PropsValues.VIEW_COUNTS_ENABLED) {
+		if (PropsValues.VIEW_COUNT_ENABLED) {
 			allFileEntryColumns += ",downloads";
 		}
 
