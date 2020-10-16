@@ -111,8 +111,17 @@ function Search({accountsHomeURL = '', resourceURL}) {
 		requestSearchResults(event.target.value);
 	}
 
-	function handleOnToggle() {
-		setShowAdvancedSearch(!showAdvancedSearch);
+	function handleOnToggle(event) {
+		const newState = !showAdvancedSearch;
+
+		setShowAdvancedSearch(newState);
+
+		const ariaLabel = newState
+			? Liferay.Language.get('close-advanced-search')
+			: Liferay.Language.get('open-advanced-search');
+
+		event.currentTarget.setAttribute('aria-label', ariaLabel);
+		event.currentTarget.setAttribute('aria-expanded', newState);
 	}
 
 	return (
@@ -129,6 +138,11 @@ function Search({accountsHomeURL = '', resourceURL}) {
 
 				<div className="advanced-search-trigger">
 					<button
+						aria-controls="advancedSearch"
+						aria-expanded="false"
+						aria-label={Liferay.Language.get(
+							'open-advanced-search'
+						)}
 						className="advanced-search-btn btn btn-monospaced btn-sm"
 						onClick={handleOnToggle}
 					>

@@ -70,6 +70,12 @@ body {
 			margin-right: $spacing-xxs;
 			margin-top: $spacing-xxs;
 
+			&[aria-expanded='true'] {
+				svg {
+					transform: rotate(180deg);
+				}
+			}
+
 			&:hover {
 				background-color: $light-d1;
 			}

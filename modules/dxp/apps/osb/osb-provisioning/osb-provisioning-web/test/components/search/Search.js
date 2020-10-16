@@ -59,10 +59,14 @@ describe('Search', () => {
 	});
 
 	it('opens the Advanced Search when the caret is clicked', () => {
-		const {getByLabelText, getByText} = renderSearch();
+		const {getByLabelText} = renderSearch();
 
 		fireEvent.click(getByLabelText('advanced-search-icon'));
 
-		getByText('Advanced Search');
+		const advancedSearchToggler = getByLabelText('close-advanced-search');
+
+		expect(
+			advancedSearchToggler.getAttribute('aria-expanded')
+		).toBeTruthy();
 	});
 });

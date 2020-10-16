@@ -13,9 +13,7 @@ import React from 'react';
 
 function AdvancedSearch() {
 	return (
-		<div className="advanced-search-container">
-			Advanced Search
-
+		<div className="advanced-search-container" id="advancedSearch">
 			<div className="button-holder button-holder-lg" role="group">
 				<button
 					className="btn btn-secondary"
@@ -26,11 +24,7 @@ function AdvancedSearch() {
 					{Liferay.Language.get('clear')}
 				</button>
 
-				<button
-					className="btn btn-primary"
-					role="button"
-					type="submit"
-				>
+				<button className="btn btn-primary" role="button" type="submit">
 					{Liferay.Language.get('search')}
 				</button>
 			</div>
