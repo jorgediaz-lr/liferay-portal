@@ -83,16 +83,18 @@ public class UserMigration {
 	private void _migrateAccountCustomers(Connection connection, long userId)
 		throws Exception {
 
-		StringBundler sb = new StringBundler(11);
+		StringBundler sb = new StringBundler(13);
 
 		sb.append("select CUSTOMER_User.uuid_, CUSTOMER_User.firstName, ");
 		sb.append("CUSTOMER_User.middleName, CUSTOMER_User.lastName, ");
 		sb.append("CUSTOMER_User.emailAddress, CUSTOMER_User.languageId, ");
 		sb.append("CUSTOMER_User.emailAddressVerified, ");
 		sb.append("OSB_AccountEntry.corpProjectUuid, ");
-		sb.append("OSB_AccountCustomer.role from OSB_AccountCustomer inner ");
-		sb.append("join OSB_AccountEntry on OSB_AccountEntry.accountEntryId ");
-		sb.append("= OSB_AccountCustomer.accountEntryId inner join ");
+		sb.append("OSB_AccountCustomer.role, ");
+		sb.append("OSB_AccountCustomer.closedWatcher from ");
+		sb.append("OSB_AccountCustomer inner join OSB_AccountEntry on ");
+		sb.append("OSB_AccountEntry.accountEntryId = ");
+		sb.append("OSB_AccountCustomer.accountEntryId inner join ");
 		sb.append("CUSTOMER_User on CUSTOMER_User.userId = ");
 		sb.append("OSB_AccountCustomer.userId where OSB_AccountEntry.status ");
 		sb.append("!= 500 and OSB_AccountEntry.corpProjectUuid is not null");
@@ -147,6 +149,14 @@ public class UserMigration {
 				_contactAccountRoleLocalService.addContactAccountRole(
 					contact.getContactId(), account.getAccountId(),
 					contactRoleId);
+
+				boolean closedWatcher = resultSet.getBoolean(10);
+
+				if (closedWatcher) {
+					_contactAccountRoleLocalService.addContactAccountRole(
+						contact.getContactId(), account.getAccountId(),
+						_roleMigration.getAccountCustomerContactRoleId(100));
+				}
 			}
 		}
 	}

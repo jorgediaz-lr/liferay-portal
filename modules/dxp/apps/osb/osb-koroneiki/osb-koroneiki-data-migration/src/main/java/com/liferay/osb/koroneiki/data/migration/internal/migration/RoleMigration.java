@@ -98,6 +98,9 @@ public class RoleMigration {
 		_accountCustomerRoleMap.put(3, supportWatcherContactRoleId);
 		_accountCustomerRoleMap.put(4, supportWatcherContactRoleId);
 
+		_accountCustomerRoleMap.put(
+			100, _addCustomerContactRole(userId, "Support Closed Watcher"));
+
 		ContactRole workerMemberContactRole =
 			_contactRoleLocalService.getMemberContactRole(
 				com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.ContactRole.Type.
