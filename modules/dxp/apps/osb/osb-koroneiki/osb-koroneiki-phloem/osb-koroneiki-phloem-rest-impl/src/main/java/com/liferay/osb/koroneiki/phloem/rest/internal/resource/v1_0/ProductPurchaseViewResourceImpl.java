@@ -21,7 +21,6 @@ import com.liferay.osb.koroneiki.phloem.rest.resource.v1_0.ProductPurchaseViewRe
 import com.liferay.osb.koroneiki.taproot.model.Account;
 import com.liferay.osb.koroneiki.taproot.service.AccountService;
 import com.liferay.osb.koroneiki.trunk.model.ProductEntry;
-import com.liferay.osb.koroneiki.trunk.model.ProductPurchase;
 import com.liferay.osb.koroneiki.trunk.service.ProductConsumptionService;
 import com.liferay.osb.koroneiki.trunk.service.ProductEntryLocalService;
 import com.liferay.osb.koroneiki.trunk.service.ProductEntryService;
@@ -37,8 +36,6 @@ import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
 import com.liferay.portal.vulcan.resource.EntityModelResource;
 import com.liferay.portal.vulcan.util.SearchUtil;
-
-import java.util.List;
 
 import javax.ws.rs.core.MultivaluedMap;
 
@@ -66,21 +63,14 @@ public class ProductPurchaseViewResourceImpl
 		ProductEntry productEntry = _productEntryLocalService.getProductEntry(
 			productKey);
 
-		List<ProductPurchase> productPurchases =
-			_productPurchaseService.getAccountProductEntryProductPurchases(
-				account.getAccountId(), productEntry.getProductEntryId(),
-				QueryUtil.ALL_POS, QueryUtil.ALL_POS);
-
-		if (productPurchases.isEmpty()) {
-			return null;
-		}
-
 		return ProductPurchaseViewUtil.toProductPurchaseView(
 			productEntry,
 			_productConsumptionService.
 				getAccountProductEntryProductConsumptions(
 					account.getAccountId(), productEntry.getProductEntryId()),
-			productPurchases);
+			_productPurchaseService.getAccountProductEntryProductPurchases(
+				account.getAccountId(), productEntry.getProductEntryId(),
+				QueryUtil.ALL_POS, QueryUtil.ALL_POS));
 	}
 
 	@Override
