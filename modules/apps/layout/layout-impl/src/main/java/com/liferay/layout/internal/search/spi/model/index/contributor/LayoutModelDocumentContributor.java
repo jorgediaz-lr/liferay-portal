@@ -136,7 +136,7 @@ public class LayoutModelDocumentContributor
 								_fragmentRendererController, httpServletRequest,
 								httpServletResponse,
 								layoutPageTemplateStructure,
-								FragmentEntryLinkConstants.VIEW,
+								FragmentEntryLinkConstants.SEARCH,
 								new HashMap<>(), locale, segmentsExperienceIds);
 				}
 
