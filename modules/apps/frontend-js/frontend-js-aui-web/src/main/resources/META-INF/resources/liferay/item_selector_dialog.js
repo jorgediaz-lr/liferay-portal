@@ -80,7 +80,7 @@ AUI.add(
 						.get('boundingBox')
 						.one('#addButton');
 
-					Util.toggleDisabled(addButton, currentItem.length < 1);
+					Util.toggleDisabled(addButton, !currentItem);
 
 					instance._currentItem = currentItem;
 				},
