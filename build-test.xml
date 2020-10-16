@@ -7397,6 +7397,17 @@ go</echo>
 						/>
 					</sequential>
 				</for>
+
+				<get-testcase-property property.name="restart.required" />
+
+				<if>
+					<equals arg1="${restart.required}" arg2="true" />
+					<then>
+						<start-app-server />
+
+						<stop-app-server />
+					</then>
+				</if>
 			</then>
 		</if>
 	</target>
