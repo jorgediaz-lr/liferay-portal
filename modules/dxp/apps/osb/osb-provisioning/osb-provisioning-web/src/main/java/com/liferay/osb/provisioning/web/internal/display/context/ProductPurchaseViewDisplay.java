@@ -77,6 +77,9 @@ public class ProductPurchaseViewDisplay {
 				_status = "future";
 			}
 		}
+		else if (_purchasedCount == 0) {
+			_status = "empty";
+		}
 		else {
 			_status = "cancelled";
 		}
