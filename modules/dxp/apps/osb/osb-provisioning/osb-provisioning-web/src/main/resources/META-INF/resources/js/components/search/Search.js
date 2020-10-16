@@ -58,7 +58,7 @@ AutocompleteItem.propTypes = {
 
 function Search({accountsHomeURL = '', resourceURL}) {
 	const [error, setError] = useState(false);
-	const [keywords, setKeywords] = useState(getSearchParameter());
+	const [keywords, setKeywords] = useState('');
 	const [results, setResults] = useState([]);
 	const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
 
@@ -133,7 +133,7 @@ function Search({accountsHomeURL = '', resourceURL}) {
 					onChange={handleOnChange}
 					onKeyDown={handleKeyDown}
 					placeholder={Liferay.Language.get('search-accounts')}
-					value={keywords}
+					value={keywords || getSearchParameter()}
 				/>
 
 				<div className="advanced-search-trigger">
