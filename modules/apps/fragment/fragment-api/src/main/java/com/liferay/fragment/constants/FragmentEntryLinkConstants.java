@@ -23,6 +23,8 @@ public class FragmentEntryLinkConstants {
 
 	public static final String EDIT = "EDIT";
 
+	public static final String SEARCH = "SEARCH";
+
 	public static final String VIEW = "VIEW";
 
 }
