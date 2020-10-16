@@ -14,6 +14,7 @@
 
 package com.liferay.layout.internal.search.util;
 
+import com.liferay.fragment.constants.FragmentEntryLinkConstants;
 import com.liferay.fragment.model.FragmentEntryLink;
 import com.liferay.fragment.renderer.DefaultFragmentRendererContext;
 import com.liferay.fragment.renderer.FragmentRendererController;
@@ -29,6 +30,7 @@ import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -70,6 +72,20 @@ public class LayoutPageTemplateStructureRenderUtil {
 
 		for (int i = 0; i < structureJSONArray.length(); i++) {
 			JSONObject rowJSONObject = structureJSONArray.getJSONObject(i);
+
+			JSONObject rowConfigJSONObject = rowJSONObject.getJSONObject(
+				"config");
+
+			if (rowConfigJSONObject != null) {
+				boolean nonIndexable = rowConfigJSONObject.getBoolean(
+					"nonIndexable", false);
+
+				if (nonIndexable &&
+					Objects.equals(mode, FragmentEntryLinkConstants.SEARCH)) {
+
+					continue;
+				}
+			}
 
 			JSONArray columnsJSONArray = rowJSONObject.getJSONArray("columns");
 

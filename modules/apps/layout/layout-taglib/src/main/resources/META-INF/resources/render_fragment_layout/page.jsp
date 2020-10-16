@@ -41,6 +41,16 @@ RenderFragmentLayoutDisplayContext renderFragmentLayoutDisplayContext = new Rend
 			for (int i = 0; i < structureJSONArray.length(); i++) {
 				JSONObject rowJSONObject = structureJSONArray.getJSONObject(i);
 
+				JSONObject rowConfigJSONObject = rowJSONObject.getJSONObject("config");
+
+				if (rowConfigJSONObject != null) {
+					boolean nonIndexable = rowConfigJSONObject.getBoolean("nonIndexable", false);
+
+					if (nonIndexable && Objects.equals(mode, FragmentEntryLinkConstants.SEARCH)) {
+						continue;
+					}
+				}
+
 				int type = rowJSONObject.getInt("type", FragmentConstants.TYPE_COMPONENT);
 
 				if (type == FragmentConstants.TYPE_COMPONENT) {
@@ -50,8 +60,6 @@ RenderFragmentLayoutDisplayContext renderFragmentLayoutDisplayContext = new Rend
 					String containerType = StringPool.BLANK;
 					long paddingHorizontal = 3L;
 					long paddingVertical = 3L;
-
-					JSONObject rowConfigJSONObject = rowJSONObject.getJSONObject("config");
 
 					if (rowConfigJSONObject != null) {
 						backgroundColorCssClass = rowConfigJSONObject.getString("backgroundColorCssClass");

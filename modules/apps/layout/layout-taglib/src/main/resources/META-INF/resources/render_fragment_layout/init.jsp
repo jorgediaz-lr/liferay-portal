@@ -18,6 +18,7 @@
 
 <%@ page import="com.liferay.fragment.constants.FragmentActionKeys" %><%@
 page import="com.liferay.fragment.constants.FragmentConstants" %><%@
+page import="com.liferay.fragment.constants.FragmentEntryLinkConstants" %><%@
 page import="com.liferay.fragment.model.FragmentEntryLink" %><%@
 page import="com.liferay.fragment.renderer.DefaultFragmentRendererContext" %><%@
 page import="com.liferay.fragment.renderer.FragmentRendererController" %><%@
