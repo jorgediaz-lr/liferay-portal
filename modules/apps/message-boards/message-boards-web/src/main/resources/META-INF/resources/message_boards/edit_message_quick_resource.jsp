@@ -102,9 +102,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 			</h4>
 
 			<%
-			MBStatsUser statsUser = MBStatsUserLocalServiceUtil.getStatsUser(scopeGroupId, themeDisplay.getUserId());
-
-			String[] ranks = MBUserRankUtil.getUserRank(mbGroupServiceSettings, themeDisplay.getLanguageId(), statsUser);
+			String[] ranks = MBUserRankUtil.getUserRank(mbGroupServiceSettings, themeDisplay.getLanguageId(), MBStatsUserLocalServiceUtil.getStatsUser(scopeGroupId, themeDisplay.getUserId()));
 			%>
 
 			<c:if test="<%= Validator.isNotNull(ranks[1]) %>">

@@ -58,11 +58,10 @@ AssetVocabulariesManagementToolbarDisplayContext assetVocabulariesManagementTool
 		>
 
 			<%
-			Map<String, Object> rowData = HashMapBuilder.<String, Object>put(
-				"actions", assetVocabulariesManagementToolbarDisplayContext.getAvailableActions(vocabulary)
-			).build();
-
-			row.setData(rowData);
+			row.setData(
+				HashMapBuilder.<String, Object>put(
+					"actions", assetVocabulariesManagementToolbarDisplayContext.getAvailableActions(vocabulary)
+				).build());
 			%>
 
 			<portlet:renderURL var="rowURL">

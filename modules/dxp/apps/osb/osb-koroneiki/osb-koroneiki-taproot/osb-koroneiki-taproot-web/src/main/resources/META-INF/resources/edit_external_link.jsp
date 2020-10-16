@@ -25,9 +25,7 @@ long externalLinkId = BeanParamUtil.getLong(externalLink, request, "externalLink
 long classNameId = BeanParamUtil.getLong(externalLink, request, "classNameId");
 long classPK = BeanParamUtil.getLong(externalLink, request, "classPK");
 
-String title = ParamUtil.getString(request, "title");
-
-renderResponse.setTitle(title);
+renderResponse.setTitle(ParamUtil.getString(request, "title"));
 %>
 
 <portlet:actionURL name="/edit_external_link" var="editExternalLinkURL" />
