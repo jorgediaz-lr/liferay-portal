@@ -171,7 +171,7 @@ export const FLOATING_TOOLBAR_BUTTONS = {
 	},
 
 	spacing: {
-		icon: 'table',
+		icon: 'cog',
 		id: 'spacing',
 		panelId: 'spacing',
 		title: Liferay.Language.get('spacing'),
