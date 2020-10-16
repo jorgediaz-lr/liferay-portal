@@ -78,7 +78,7 @@ public class ProductPurchaseViewDisplay {
 			}
 		}
 		else if (_purchasedCount == 0) {
-			_status = "empty";
+			_status = StringPool.BLANK;
 		}
 		else {
 			_status = "cancelled";
@@ -151,10 +151,18 @@ public class ProductPurchaseViewDisplay {
 	}
 
 	public String getStatus() {
-		return LanguageUtil.get(_httpServletRequest, _status);
+		if (Validator.isNotNull(_status)) {
+			return LanguageUtil.get(_httpServletRequest, _status);
+		}
+
+		return StringPool.DASH;
 	}
 
 	public String getStatusStyle() {
+		if (Validator.isNull(_status)) {
+			return StringPool.BLANK;
+		}
+
 		if (_status.equals("active")) {
 			return "label-success";
 		}
