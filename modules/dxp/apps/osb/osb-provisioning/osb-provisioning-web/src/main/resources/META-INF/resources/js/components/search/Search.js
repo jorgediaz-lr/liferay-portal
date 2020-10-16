@@ -18,7 +18,6 @@ import React, {useRef, useState} from 'react';
 
 import {NAMESPACE} from '../../utilities/constants';
 import {request} from '../../utilities/helpers';
-
 import AdvancedSearch from './AdvancedSearch';
 
 const MAX_RESULTS = 7;
@@ -72,7 +71,8 @@ function Search({accountsHomeURL = '', resourceURL}) {
 				.then(({data}) => {
 					if (data.length === 0) {
 						setError(true);
-					} else {
+					}
+					else {
 						setError(false);
 						setResults(data);
 					}
@@ -120,6 +120,7 @@ function Search({accountsHomeURL = '', resourceURL}) {
 			<ClayAutocomplete>
 				<ClayAutocomplete.Input
 					className="search-input"
+					disabled={showAdvancedSearch}
 					onChange={handleOnChange}
 					onKeyDown={handleKeyDown}
 					placeholder={Liferay.Language.get('search-accounts')}
@@ -127,7 +128,10 @@ function Search({accountsHomeURL = '', resourceURL}) {
 				/>
 
 				<div className="advanced-search-trigger">
-					<button className="advanced-search-btn btn btn-monospaced btn-sm" onClick={handleOnToggle}>
+					<button
+						className="advanced-search-btn btn btn-monospaced btn-sm"
+						onClick={handleOnToggle}
+					>
 						<svg
 							aria-label={Liferay.Language.get(
 								'advanced-search-icon'
@@ -155,40 +159,46 @@ function Search({accountsHomeURL = '', resourceURL}) {
 					</svg>
 				</a>
 
-				<ClayAutocomplete.DropDown active={keywords}>
-					{error && (
-						<ul className="list-unstyled">
-							<ClayDropDown.Item className="disabled">
-								{Liferay.Language.get('no-results-were-found')}
-							</ClayDropDown.Item>
-						</ul>
-					)}
+				{!showAdvancedSearch && (
+					<ClayAutocomplete.DropDown active={keywords}>
+						{error && (
+							<ul className="list-unstyled">
+								<ClayDropDown.Item className="disabled">
+									{Liferay.Language.get(
+										'no-results-were-found'
+									)}
+								</ClayDropDown.Item>
+							</ul>
+						)}
 
-					{!error && (
-						<>
-							<ClayDropDown.ItemList>
-								{results.map(result => (
-									<AutocompleteItem
-										href={`${result.url}&keywords=${keywords}`}
-										key={result.key}
-										match={keywords}
-										secondaryValue={result.code}
-										value={result.name}
-									/>
-								))}
-							</ClayDropDown.ItemList>
+						{!error && (
+							<>
+								<ClayDropDown.ItemList>
+									{results.map(result => (
+										<AutocompleteItem
+											href={`${result.url}&keywords=${keywords}`}
+											key={result.key}
+											match={keywords}
+											secondaryValue={result.code}
+											value={result.name}
+										/>
+									))}
+								</ClayDropDown.ItemList>
 
-							{results.length === MAX_RESULTS && (
-								<a
-									className="all-results dropdown-item"
-									href={buildSearchResultsURL()}
-								>
-									{Liferay.Language.get('see-all-results')}
-								</a>
-							)}
-						</>
-					)}
-				</ClayAutocomplete.DropDown>
+								{results.length === MAX_RESULTS && (
+									<a
+										className="all-results dropdown-item"
+										href={buildSearchResultsURL()}
+									>
+										{Liferay.Language.get(
+											'see-all-results'
+										)}
+									</a>
+								)}
+							</>
+						)}
+					</ClayAutocomplete.DropDown>
+				)}
 			</ClayAutocomplete>
 
 			{showAdvancedSearch && <AdvancedSearch />}

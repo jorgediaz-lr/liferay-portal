@@ -50,6 +50,14 @@ describe('Search', () => {
 		getByLabelText('advanced-search-icon');
 	});
 
+	it('disables autocomplete when Advanced Search is expanded', () => {
+		const {getByLabelText, getByPlaceholderText} = renderSearch();
+
+		fireEvent.click(getByLabelText('advanced-search-icon'));
+
+		expect(getByPlaceholderText('search-accounts').disabled).toBe(true);
+	});
+
 	it('opens the Advanced Search when the caret is clicked', () => {
 		const {getByLabelText, getByText} = renderSearch();
 
