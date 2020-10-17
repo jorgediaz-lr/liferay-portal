@@ -9,11 +9,16 @@
  * distribution rights of the Software.
  */
 
+import PropTypes from 'prop-types';
 import React from 'react';
 
-function AdvancedSearch() {
+import Account from './Account';
+
+function AdvancedSearch({countryNames}) {
 	return (
 		<div className="advanced-search-container" id="advancedSearch">
+			<Account countryNames={countryNames} />
+
 			<div className="button-holder button-holder-lg" role="group">
 				<button
 					className="btn btn-secondary"
@@ -31,5 +36,9 @@ function AdvancedSearch() {
 		</div>
 	);
 }
+
+AdvancedSearch.propTypes = {
+	countryNames: PropTypes.array.isRequired
+};
 
 export default AdvancedSearch;

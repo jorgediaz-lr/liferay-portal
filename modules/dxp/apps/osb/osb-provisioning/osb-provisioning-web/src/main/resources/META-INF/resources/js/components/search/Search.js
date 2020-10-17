@@ -56,7 +56,7 @@ AutocompleteItem.propTypes = {
 	value: PropTypes.string
 };
 
-function Search({accountsHomeURL = '', resourceURL}) {
+function Search({accountsHomeURL = '', countryNames, resourceURL}) {
 	const [error, setError] = useState(false);
 	const [keywords, setKeywords] = useState('');
 	const [results, setResults] = useState([]);
@@ -215,13 +215,16 @@ function Search({accountsHomeURL = '', resourceURL}) {
 				)}
 			</ClayAutocomplete>
 
-			{showAdvancedSearch && <AdvancedSearch />}
+			{showAdvancedSearch && (
+				<AdvancedSearch countryNames={countryNames} />
+			)}
 		</>
 	);
 }
 
 Search.propTypes = {
 	accountsHomeURL: PropTypes.string.isRequired,
+	countryNames: PropTypes.array.isRequired,
 	resourceURL: PropTypes.string.isRequired
 };
 

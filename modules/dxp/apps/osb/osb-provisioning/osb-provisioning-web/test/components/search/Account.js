@@ -12,29 +12,39 @@
 import {cleanup, render} from '@testing-library/react';
 import React from 'react';
 
-import AdvancedSearch from '../../../src/main/resources/META-INF/resources/js/components/search/AdvancedSearch';
+import Account from '../../../src/main/resources/META-INF/resources/js/components/search/Account';
 
-function renderAdvancedSearch() {
+function renderAccount() {
 	return render(
-		<AdvancedSearch
-			countryNames={[]}
-		/>
+		<Account countryNames={['Afghanistan', 'Aland Islands', 'Albania']} />
 	);
 }
 
-describe('AdvancedSearch', () => {
+describe('Account', () => {
 	afterEach(cleanup);
 
 	it('renders', () => {
-		const {container} = renderAdvancedSearch();
+		const {container} = renderAccount();
 
 		expect(container).toBeTruthy();
 	});
 
-	it('displays a Clear button and a Search button', () => {
-		const {getByText} = renderAdvancedSearch();
+	it('displays an Account Name field', () => {
+		const {getByLabelText} = renderAccount();
 
-		getByText('clear');
-		getByText('search');
+		getByLabelText('account-name');
+	});
+
+	it('displays a Code field', () => {
+		const {getByLabelText} = renderAccount();
+
+		getByLabelText('code');
+	});
+
+	it('displays a Country dropdown field', () => {
+		const {getByLabelText, getByText} = renderAccount();
+
+		getByLabelText('country');
+		getByText('Afghanistan');
 	});
 });

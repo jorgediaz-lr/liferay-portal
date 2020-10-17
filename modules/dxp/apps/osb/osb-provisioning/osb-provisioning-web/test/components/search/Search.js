@@ -18,6 +18,7 @@ function renderSearch() {
 	return render(
 		<Search
 			accountsHomeURL="/accounts/home/URL"
+			countryNames={[]}
 			resourceURL="/resource/URL"
 		/>
 	);
