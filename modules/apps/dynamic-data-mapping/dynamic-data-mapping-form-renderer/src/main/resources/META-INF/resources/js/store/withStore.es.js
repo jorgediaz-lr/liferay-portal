@@ -15,7 +15,7 @@
 import {debounce} from 'frontend-js-web';
 import dom from 'metal-dom';
 
-import {evaluate} from '../util/evaluation.es';
+import {evaluate, mergePages} from '../util/evaluation.es';
 import {PagesVisitor} from '../util/visitors.es';
 import handleActivePageUpdated from './actions/handleActivePageUpdated.es';
 import handleFieldBlurred from './actions/handleFieldBlurred.es';
@@ -34,13 +34,23 @@ const UPDATE_DELAY_MS = 50;
 
 const debounceFn = debounce(fn => fn(), UPDATE_DELAY_MS);
 
+let lastEditedPages = [];
+
 const _handleFieldEdited = function(properties) {
 	debounceFn(() => {
 		const {fieldInstance} = properties;
 		const {evaluable} = fieldInstance;
 		const evaluatorContext = this.getEvaluatorContext();
 
+		const {
+			defaultLanguageId,
+			editingLanguageId,
+			fieldName
+		} = evaluatorContext;
+
 		const editedPages = handleFieldEdited(evaluatorContext, properties);
+
+		lastEditedPages = editedPages;
 
 		this.setState({
 			pages: editedPages
@@ -72,9 +82,17 @@ const _handleFieldEdited = function(properties) {
 						return;
 					}
 
+					const mergedPages = mergePages(
+						defaultLanguageId,
+						editingLanguageId,
+						fieldName,
+						evaluatedPages,
+						lastEditedPages
+					);
+
 					this.setState(
 						{
-							pages: evaluatedPages
+							pages: mergedPages
 						},
 						() => {
 							if (evaluable) {
