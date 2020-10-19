@@ -5316,18 +5316,6 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 				</or>
 				<then>
 					<ant antfile="build-test-elasticsearch6.xml" target="stop-elasticsearch" />
-
-					<if>
-						<and>
-							<equals arg1="${remote.elasticsearch.ccr.enabled}" arg2="true" />
-							<not>
-								<contains string="${test.name.skip.portal.instance}" substring="Smoke" />
-							</not>
-						</and>
-						<then>
-							<ant antfile="build-test-elasticsearch6.xml" target="stop-elasticsearch-local-cluster" />
-						</then>
-					</if>
 				</then>
 			</if>
 
