@@ -21,14 +21,19 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.events.Action;
 import com.liferay.portal.kernel.events.LifecycleAction;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.util.CookieKeys;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.util.PropsValues;
+
+import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -68,6 +73,8 @@ public class LoginPostAction extends Action {
 							group.getGroupId())));
 
 			if (Validator.isNull(cookieValue)) {
+				_checkCompanyAdmin(httpServletRequest, httpServletResponse);
+
 				return;
 			}
 
@@ -82,6 +89,23 @@ public class LoginPostAction extends Action {
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
+		}
+	}
+
+	private void _checkCompanyAdmin(
+			HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse)
+		throws IOException, PortalException {
+
+		PermissionChecker permissionChecker =
+			PermissionCheckerFactoryUtil.create(
+				_portal.getUser(httpServletRequest));
+
+		if (!permissionChecker.isCompanyAdmin()) {
+			httpServletResponse.sendRedirect(
+				PropsValues.LAYOUT_FRIENDLY_URL_PRIVATE_GROUP_SERVLET_MAPPING +
+					OSBCommerceProvisioningConstants.
+						OSB_COMMERCE_PROVISIONING_FRIENDLY_URL);
 		}
 	}
 
