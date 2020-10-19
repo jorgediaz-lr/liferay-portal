@@ -70,6 +70,20 @@ ProductPurchaseViewDisplay productPurchaseViewDisplay = viewSubscriptionDisplayC
 
 				<%= productPurchaseViewDisplay.getGracePeriod() %>
 			</li>
+
+			<%
+			String licenseManagerHREF = StringUtil.replace(provisioningWebConfiguration.licenseManagerHREF(), "[$ACCOUNT_KEY$]", productPurchaseViewDisplay.getAccountKey());
+
+			licenseManagerHREF = StringUtil.replace(licenseManagerHREF, "[$PRODUCT_KEY$]", productPurchaseViewDisplay.getProductKey());
+			%>
+
+			<li>
+				<div class="header-label">
+					<liferay-ui:message key="provisioned" />
+				</div>
+
+				<a href="<%= licenseManagerHREF %>"><%= productPurchaseViewDisplay.getProvisionedCount() %></a>
+			</li>
 		</ul>
 	</div>
 
