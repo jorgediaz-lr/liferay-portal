@@ -74,6 +74,19 @@ public class JournalFolderServiceWrapper
 	}
 
 	@Override
+	public java.util.List<com.liferay.dynamic.data.mapping.model.DDMStructure>
+			getDDMStructures(
+				long[] groupIds, long folderId, int restrictionType,
+				com.liferay.portal.kernel.util.OrderByComparator
+					<com.liferay.dynamic.data.mapping.model.DDMStructure>
+						orderByComparator)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _journalFolderService.getDDMStructures(
+			groupIds, folderId, restrictionType, orderByComparator);
+	}
+
+	@Override
 	public com.liferay.journal.model.JournalFolder getFolder(long folderId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
