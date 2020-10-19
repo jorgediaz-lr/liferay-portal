@@ -119,7 +119,7 @@ AUI.add(
 				},
 
 				selectedLanguageId: {
-					validator: Lang.isString,
+					validator: Lang.isString
 				},
 
 				translatedLanguages: {
