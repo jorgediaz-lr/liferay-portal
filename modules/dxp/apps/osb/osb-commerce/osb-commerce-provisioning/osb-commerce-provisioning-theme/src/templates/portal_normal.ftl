@@ -21,7 +21,7 @@
 				<#include "${full_templates_path}/header.ftl" />
 			</#if>
 
-			<main id="content" role="main">
+			<main class="container" id="content" role="main">
 				<h2 class="sr-only" role="heading" aria-level="1">${the_title}</h2>
 
 				<#if selectable>
