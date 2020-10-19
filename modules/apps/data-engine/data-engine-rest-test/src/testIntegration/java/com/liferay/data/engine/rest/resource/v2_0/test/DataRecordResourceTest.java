@@ -356,7 +356,7 @@ public class DataRecordResourceTest extends BaseDataRecordResourceTestCase {
 					}
 				});
 
-		// Retrieve data records sorting by Multiple Selection field
+		//Sort Data Record by Multiple Selection field
 
 		Page<DataRecord> ascPageMultipleSelection =
 			dataRecordResource.getDataRecordCollectionDataRecordsPage(
@@ -376,7 +376,7 @@ public class DataRecordResourceTest extends BaseDataRecordResourceTestCase {
 			Arrays.asList(dataRecord2, dataRecord1),
 			(List<DataRecord>)descPageMultipleSelection.getItems());
 
-		// Retrieve data records sorting by Select From List field
+		//Sort Data Record by Select From List field
 
 		Page<DataRecord> ascPageSelectFromList =
 			dataRecordResource.getDataRecordCollectionDataRecordsPage(
@@ -396,7 +396,7 @@ public class DataRecordResourceTest extends BaseDataRecordResourceTestCase {
 			Arrays.asList(dataRecord1, dataRecord2),
 			(List<DataRecord>)descPageSelectFromList.getItems());
 
-		// Retrieve data records sorting by Single Selection field
+		//Sort Data Record by Single Selection field
 
 		Page<DataRecord> ascPageSingleSelection =
 			dataRecordResource.getDataRecordCollectionDataRecordsPage(
@@ -416,7 +416,7 @@ public class DataRecordResourceTest extends BaseDataRecordResourceTestCase {
 			Arrays.asList(dataRecord1, dataRecord2),
 			(List<DataRecord>)descPageSingleSelection.getItems());
 
-		//Retrieve data records sorting by Text field
+		//Sort Data Record by Text field
 
 		Page<DataRecord> ascPageText =
 			dataRecordResource.getDataRecordCollectionDataRecordsPage(

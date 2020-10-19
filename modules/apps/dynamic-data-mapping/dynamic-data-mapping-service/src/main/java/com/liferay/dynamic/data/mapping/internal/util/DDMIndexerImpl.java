@@ -111,6 +111,9 @@ public class DDMIndexerImpl implements DDMIndexer {
 				String name = null;
 				Serializable value = null;
 
+				DDMFormField ddmFormField = ddmStructure.getDDMFormField(
+					field.getName());
+
 				if (GetterUtil.getBoolean(
 						ddmStructure.getFieldProperty(
 							field.getName(), "localizable"))) {
@@ -122,15 +125,14 @@ public class DDMIndexerImpl implements DDMIndexer {
 						value = field.getValue(locale);
 
 						if (legacyDDMIndexFieldsEnabled) {
-							addToDocument(
+							_addToDocument(
 								document, field, indexType, name, value);
 						}
 						else {
 							fieldArray.addField(
 								createField(
-									ddmStructure.getDDMFormField(
-										field.getName()),
-									field, indexType, locale, name, value));
+									ddmFormField, field, name, value, indexType,
+									locale));
 						}
 					}
 				}
@@ -141,13 +143,13 @@ public class DDMIndexerImpl implements DDMIndexer {
 					value = field.getValue(ddmFormValues.getDefaultLocale());
 
 					if (legacyDDMIndexFieldsEnabled) {
-						addToDocument(document, field, indexType, name, value);
+						_addToDocument(document, field, indexType, name, value);
 					}
 					else {
 						fieldArray.addField(
 							createField(
-								ddmStructure.getDDMFormField(field.getName()),
-								field, indexType, null, name, value));
+								ddmFormField, field, name, value, indexType,
+								null));
 					}
 				}
 			}
@@ -402,14 +404,6 @@ public class DDMIndexerImpl implements DDMIndexer {
 
 	protected void addToDocument(
 			Document document, Field field, String indexType, String name,
-			Serializable value)
-		throws PortalException {
-
-		addToDocument(document, field, indexType, name, value, value);
-	}
-
-	protected void addToDocument(
-			Document document, Field field, String indexType, String name,
 			Serializable sortableValue, Serializable value)
 		throws PortalException {
 
@@ -523,8 +517,8 @@ public class DDMIndexerImpl implements DDMIndexer {
 	}
 
 	protected com.liferay.portal.kernel.search.Field createField(
-			DDMFormField ddmFormField, Field ddmStructureField,
-			String indexType, Locale locale, String name, Serializable value)
+			DDMFormField ddmFormField, Field ddmStructureField, String name,
+			Serializable value, String indexType, Locale locale)
 		throws PortalException {
 
 		Document document = new DocumentImpl();
@@ -617,6 +611,14 @@ public class DDMIndexerImpl implements DDMIndexer {
 	@Reference
 	protected SearchEngineInformation searchEngineInformation;
 
+	private void _addToDocument(
+			Document document, Field field, String indexType, String name,
+			Serializable value)
+		throws PortalException {
+
+		addToDocument(document, field, indexType, name, value, value);
+	}
+
 	private String _getSortableFieldName(String name) {
 		return com.liferay.portal.kernel.search.Field.getSortableFieldName(
 			StringBundler.concat(name, StringPool.UNDERLINE, "String"));
@@ -625,10 +627,10 @@ public class DDMIndexerImpl implements DDMIndexer {
 	private String _getSortableValue(
 		DDMFormField ddmFormField, Locale locale, Serializable value) {
 
-		String sortableValue = String.valueOf(value);
-
 		DDMFormFieldOptions ddmFormFieldOptions =
 			(DDMFormFieldOptions)ddmFormField.getProperty("options");
+
+		String sortableValue = String.valueOf(value);
 
 		Map<String, LocalizedValue> map = ddmFormFieldOptions.getOptions();
 
