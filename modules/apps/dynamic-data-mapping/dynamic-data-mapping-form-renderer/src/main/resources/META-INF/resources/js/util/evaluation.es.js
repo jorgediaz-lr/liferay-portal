@@ -126,7 +126,8 @@ export const mergePages = (
 				defaultLanguageId,
 				displayErrors,
 				editingLanguageId,
-				valid: field.valid !== false
+				valid: field.valid !== false,
+				value: field.valueChanged ? field.value : sourceField.value
 			};
 
 			if (newField.type === 'captcha') {
