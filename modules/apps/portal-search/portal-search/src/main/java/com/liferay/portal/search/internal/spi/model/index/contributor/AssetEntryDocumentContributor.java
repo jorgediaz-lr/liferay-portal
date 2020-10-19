@@ -54,7 +54,7 @@ public class AssetEntryDocumentContributor implements DocumentContributor {
 			return;
 		}
 
-		AssetEntry assetEntry;
+		AssetEntry assetEntry = null;
 
 		Date displayDate = new Date();
 
