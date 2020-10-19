@@ -424,7 +424,7 @@ public abstract class TestOrderHelper {
 		String dummyText = "";
 
 		if (Objects.equals(indexType, "text")) {
-			while (dummyText.length < 40000) {
+			while (dummyText.length() < 40000) {
 				dummyText += " word";
 			}
 		}
