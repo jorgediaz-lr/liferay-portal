@@ -30,7 +30,7 @@ String userFirstName = ParamUtil.getString(request, "userFirstName");
 				<p><%= LanguageUtil.get(request, "loading-instance") %></p>
 			</div>
 
-			<div class="instance-status">
+			<div class="instance-status" id="<portlet:namespace />instanceStatus">
 				<p><%= LanguageUtil.get(request, "wait-time") %></p>
 
 				<ul>
@@ -59,6 +59,12 @@ String userFirstName = ParamUtil.getString(request, "userFirstName");
 					</li>
 				</ul>
 			</div>
+
+			<div class="hide" id="<portlet:namespace />instanceCreationFailure">
+				<div class="alert alert-danger">
+					<%= LanguageUtil.format(request, "instance-creation-failed", "hello@liferay.com") %>
+				</div>
+			</div>
 		</div>
 
 		<div class="col-md-6 col-xs-12">
@@ -75,7 +81,7 @@ String userFirstName = ParamUtil.getString(request, "userFirstName");
 	<portlet:param name="commerceOrderItemId" value="<%= String.valueOf(commerceOrderItemId) %>" />
 </portlet:renderURL>
 
-<aui:script>
+<aui:script use="aui-base">
 	setTimeout(function() {
 		function callOnTimeOut() {
 			var resourceURL = '<%= portalInstanceStatusResourceURL %>';
@@ -91,6 +97,12 @@ String userFirstName = ParamUtil.getString(request, "userFirstName");
 				.then(function(payload) {
 					if (payload.status === 0) {
 						window.location = '<%= portalInstanceInitializedURL %>';
+					}
+					else if (payload.status === 6) {
+						A.one('#<portlet:namespace />instanceStatus').hide();
+						A.one(
+							'#<portlet:namespace />instanceCreationFailure'
+						).show();
 					}
 					else {
 						setTimeout(function() {

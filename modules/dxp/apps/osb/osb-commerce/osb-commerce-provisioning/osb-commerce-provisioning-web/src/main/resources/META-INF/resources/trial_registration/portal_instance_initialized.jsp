@@ -30,7 +30,7 @@ TrialRegistrationDisplayContext trialRegistrationDisplayContext = (TrialRegistra
 			</div>
 
 			<div class="instance-status">
-				<p><%= LanguageUtil.get(request, "welcome-message") %></p>
+				<p><%= LanguageUtil.format(request, "welcome-message", "hello@liferay.com") %></p>
 				<p><%= LanguageUtil.get(request, "trial-period-expires-in-days") %></p>
 
 				<a class="btn btn-primary" href="<%= trialRegistrationDisplayContext.getPortalInstanceURL(commerceOrderItemId) %>" role="button" target="_blank">
