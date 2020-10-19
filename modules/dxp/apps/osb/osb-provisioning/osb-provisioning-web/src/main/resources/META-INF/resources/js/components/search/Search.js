@@ -216,7 +216,10 @@ function Search({accountsHomeURL = '', countryNames, resourceURL}) {
 			</ClayAutocomplete>
 
 			{showAdvancedSearch && (
-				<AdvancedSearch countryNames={countryNames} />
+				<AdvancedSearch
+					countryNames={countryNames}
+					formAction={accountsHomeURL}
+				/>
 			)}
 		</>
 	);

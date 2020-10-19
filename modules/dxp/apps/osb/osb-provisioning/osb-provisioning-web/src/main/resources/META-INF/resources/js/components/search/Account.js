@@ -12,6 +12,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import {NAMESPACE} from '../../utilities/constants';
+
 function Account({countryNames}) {
 	return (
 		<div className="row">
@@ -23,15 +25,21 @@ function Account({countryNames}) {
 					<input
 						className="form-control form-control-sm"
 						id="name"
+						name={`${NAMESPACE}name`}
 						type="text"
 					/>
 				</div>
 
 				<div className="form-group-item">
-					<label htmlFor="country">
+					<label htmlFor="countryName">
 						{Liferay.Language.get('country')}
 					</label>
-					<select className="form-control" id="country">
+					<select
+						className="form-control"
+						id="countryName"
+						name={`${NAMESPACE}countryName`}
+					>
+						<option></option>
 						{countryNames.map(name => (
 							<option key={name} value={name}>{name}</option>
 						))}
@@ -45,6 +53,7 @@ function Account({countryNames}) {
 					<input
 						className="form-control form-control-sm"
 						id="code"
+						name={`${NAMESPACE}code`}
 						type="text"
 					/>
 				</div>

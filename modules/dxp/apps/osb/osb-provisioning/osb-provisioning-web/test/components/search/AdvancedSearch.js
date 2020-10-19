@@ -9,13 +9,13 @@
  * distribution rights of the Software.
  */
 
-import {cleanup, render} from '@testing-library/react';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 import React from 'react';
 
 import AdvancedSearch from '../../../src/main/resources/META-INF/resources/js/components/search/AdvancedSearch';
 
 function renderAdvancedSearch() {
-	return render(<AdvancedSearch countryNames={[]} />);
+	return render(<AdvancedSearch countryNames={[]} formAction="/url" />);
 }
 
 describe('AdvancedSearch', () => {
@@ -34,11 +34,22 @@ describe('AdvancedSearch', () => {
 		getByText('search');
 	});
 
-	it('displays a set of matcher radio buttons with the options of Any or All', () => {
+	it('displays a set of match results radio buttons with the options of Any or All', () => {
 		const {getByText} = renderAdvancedSearch();
 
 		getByText('match:');
 		getByText('any');
 		getByText('all');
+	});
+
+	it('displays the All match results option as checked by default', () => {
+		const {getByLabelText} = renderAdvancedSearch();
+
+		expect(getByLabelText('all').checked).toBeTruthy();
+
+		fireEvent.click(getByLabelText('any'));
+
+		expect(getByLabelText('any').checked).toBeTruthy();
+		expect(getByLabelText('all').checked).toBeFalsy();
 	});
 });

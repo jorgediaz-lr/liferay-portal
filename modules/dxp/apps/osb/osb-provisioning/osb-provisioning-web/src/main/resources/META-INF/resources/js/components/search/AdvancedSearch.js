@@ -10,71 +10,93 @@
  */
 
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {useState} from 'react';
 
+import {NAMESPACE} from '../../utilities/constants';
 import Account from './Account';
 
-function AdvancedSearch({countryNames}) {
+function AdvancedSearch({countryNames, formAction}) {
+	const [isAndOperator, setIsAndOperator] = useState(true);
+
+	function handleOnCheck() {
+		setIsAndOperator(!isAndOperator);
+	}
+
 	return (
 		<div className="advanced-search-container" id="advancedSearch">
-			<div className="form-group search-match">
-				<h5 className="form-check-inline">
-					{Liferay.Language.get('match')}:
-				</h5>
+			<form action={formAction} method="post" name="advancedSearch">
+				<input
+					name={`${NAMESPACE}advancedSearch`}
+					type="hidden"
+					value="true"
+				/>
 
-				<div className="form-check form-check-inline">
-					<label className="form-check-label">
-						<input
-							className="form-check-input"
-							id="matchAny"
-							name="matchAny"
-							type="radio"
-							value={Liferay.Language.get('any')}
-						/>
-						<span className="form-check-label-text">
-							{Liferay.Language.get('any')}
-						</span>
-					</label>
+				<div className="form-group search-match">
+					<h5 className="form-check-inline">
+						{Liferay.Language.get('match')}:
+					</h5>
+
+					<div className="form-check form-check-inline">
+						<label className="form-check-label">
+							<input
+								checked={isAndOperator}
+								className="form-check-input"
+								name={`${NAMESPACE}andOperator`}
+								onChange={() => handleOnCheck()}
+								type="radio"
+								value={isAndOperator}
+							/>
+							<span className="form-check-label-text">
+								{Liferay.Language.get('all')}
+							</span>
+						</label>
+					</div>
+
+					<div className="form-check form-check-inline">
+						<label className="form-check-label">
+							<input
+								checked={!isAndOperator}
+								className="form-check-input"
+								name={`${NAMESPACE}orOperator`}
+								onChange={() => handleOnCheck()}
+								type="radio"
+								value={!isAndOperator}
+							/>
+							<span className="form-check-label-text">
+								{Liferay.Language.get('any')}
+							</span>
+						</label>
+					</div>
 				</div>
 
-				<div className="form-check form-check-inline">
-					<label className="form-check-label">
-						<input
-							className="form-check-input"
-							id="matchAll"
-							name="matchAll"
-							type="radio"
-							value={Liferay.Language.get('all')}
-						/>
-						<span className="form-check-label-text">
-							{Liferay.Language.get('all')}
-						</span>
-					</label>
+				<Account countryNames={countryNames} />
+
+				<div className="button-holder button-holder-lg" role="group">
+					<button
+						className="btn btn-secondary"
+						disabled={true}
+						role="button"
+						type="reset"
+					>
+						{Liferay.Language.get('clear')}
+					</button>
+
+					<button
+						className="btn btn-primary"
+						role="button"
+						type="submit"
+					>
+						{Liferay.Language.get('search')}
+					</button>
 				</div>
-			</div>
-
-			<Account countryNames={countryNames} />
-
-			<div className="button-holder button-holder-lg" role="group">
-				<button
-					className="btn btn-secondary"
-					disabled={true}
-					role="button"
-					type="reset"
-				>
-					{Liferay.Language.get('clear')}
-				</button>
-
-				<button className="btn btn-primary" role="button" type="submit">
-					{Liferay.Language.get('search')}
-				</button>
-			</div>
+			</form>
 		</div>
 	);
 }
 
 AdvancedSearch.propTypes = {
-	countryNames: PropTypes.array.isRequired
+	countryNames: PropTypes.array.isRequired,
+	formAction: PropTypes.string.isRequired
 };
 
 export default AdvancedSearch;
