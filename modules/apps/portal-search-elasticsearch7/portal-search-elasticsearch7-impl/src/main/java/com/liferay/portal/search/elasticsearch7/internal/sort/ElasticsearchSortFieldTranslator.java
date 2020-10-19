@@ -80,9 +80,7 @@ public class ElasticsearchSortFieldTranslator
 		}
 
 		if (fieldSort.getSortMode() != null) {
-			SortMode sortMode = fieldSort.getSortMode();
-
-			fieldSortBuilder.sortMode(translate(sortMode));
+			fieldSortBuilder.sortMode(translate(fieldSort.getSortMode()));
 		}
 
 		return fieldSortBuilder.unmappedType("keyword");
@@ -123,9 +121,8 @@ public class ElasticsearchSortFieldTranslator
 		}
 
 		if (geoDistanceSort.getSortMode() != null) {
-			SortMode sortMode = geoDistanceSort.getSortMode();
-
-			geoDistanceSortBuilder.sortMode(translate(sortMode));
+			geoDistanceSortBuilder.sortMode(
+				translate(geoDistanceSort.getSortMode()));
 		}
 
 		return geoDistanceSortBuilder;
@@ -158,9 +155,7 @@ public class ElasticsearchSortFieldTranslator
 		}
 
 		if (scriptSort.getSortMode() != null) {
-			SortMode sortMode = scriptSort.getSortMode();
-
-			scriptSortBuilder.sortMode(translate(sortMode));
+			scriptSortBuilder.sortMode(translate(scriptSort.getSortMode()));
 		}
 
 		return scriptSortBuilder;
