@@ -50,6 +50,12 @@ body {
 	}
 }
 
+.search-match {
+	.form-check-input {
+		vertical-align: middle;
+	}
+}
+
 .search-menu {
 	background-color: $body-bg;
 	border-bottom: 1px solid $secondary-l3;

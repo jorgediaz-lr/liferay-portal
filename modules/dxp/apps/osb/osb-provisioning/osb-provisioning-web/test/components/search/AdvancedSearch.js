@@ -15,11 +15,7 @@ import React from 'react';
 import AdvancedSearch from '../../../src/main/resources/META-INF/resources/js/components/search/AdvancedSearch';
 
 function renderAdvancedSearch() {
-	return render(
-		<AdvancedSearch
-			countryNames={[]}
-		/>
-	);
+	return render(<AdvancedSearch countryNames={[]} />);
 }
 
 describe('AdvancedSearch', () => {
@@ -36,5 +32,13 @@ describe('AdvancedSearch', () => {
 
 		getByText('clear');
 		getByText('search');
+	});
+
+	it('displays a set of matcher radio buttons with the options of Any or All', () => {
+		const {getByText} = renderAdvancedSearch();
+
+		getByText('match:');
+		getByText('any');
+		getByText('all');
 	});
 });
