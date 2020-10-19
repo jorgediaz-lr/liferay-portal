@@ -15,11 +15,8 @@
 package com.liferay.dynamic.data.mapping.internal.util;
 
 import com.liferay.dynamic.data.mapping.configuration.DDMIndexerConfiguration;
-import com.liferay.dynamic.data.mapping.model.DDMFormField;
-import com.liferay.dynamic.data.mapping.model.DDMFormFieldOptions;
 import com.liferay.dynamic.data.mapping.model.DDMFormFieldType;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
-import com.liferay.dynamic.data.mapping.model.LocalizedValue;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.dynamic.data.mapping.storage.Field;
@@ -111,9 +108,6 @@ public class DDMIndexerImpl implements DDMIndexer {
 				String name = null;
 				Serializable value = null;
 
-				DDMFormField ddmFormField = ddmStructure.getDDMFormField(
-					field.getName());
-
 				if (GetterUtil.getBoolean(
 						ddmStructure.getFieldProperty(
 							field.getName(), "localizable"))) {
@@ -125,14 +119,13 @@ public class DDMIndexerImpl implements DDMIndexer {
 						value = field.getValue(locale);
 
 						if (legacyDDMIndexFieldsEnabled) {
-							_addToDocument(
-								document, field, indexType, name, value);
+							addToDocument(
+								document, field, name, value, indexType);
 						}
 						else {
 							fieldArray.addField(
 								createField(
-									ddmFormField, field, name, value, indexType,
-									locale));
+									field, name, value, indexType, locale));
 						}
 					}
 				}
@@ -143,13 +136,11 @@ public class DDMIndexerImpl implements DDMIndexer {
 					value = field.getValue(ddmFormValues.getDefaultLocale());
 
 					if (legacyDDMIndexFieldsEnabled) {
-						_addToDocument(document, field, indexType, name, value);
+						addToDocument(document, field, name, value, indexType);
 					}
 					else {
 						fieldArray.addField(
-							createField(
-								ddmFormField, field, name, value, indexType,
-								null));
+							createField(field, name, value, indexType, null));
 					}
 				}
 			}
@@ -298,9 +289,7 @@ public class DDMIndexerImpl implements DDMIndexer {
 					}
 				}
 				else {
-					String valueString = _getSortableValue(
-						ddmStructure.getDDMFormField(field.getName()), locale,
-						value);
+					String valueString = String.valueOf(value);
 
 					String type = field.getType();
 
@@ -403,8 +392,8 @@ public class DDMIndexerImpl implements DDMIndexer {
 	}
 
 	protected void addToDocument(
-			Document document, Field field, String indexType, String name,
-			Serializable sortableValue, Serializable value)
+			Document document, Field field, String name, Serializable value,
+			String indexType)
 		throws PortalException {
 
 		if (value instanceof BigDecimal) {
@@ -471,8 +460,6 @@ public class DDMIndexerImpl implements DDMIndexer {
 			}
 		}
 		else {
-			String sortableValueString = StringUtil.toLowerCase(
-				String.valueOf(sortableValue));
 			String valueString = String.valueOf(value);
 
 			String type = field.getType();
@@ -488,14 +475,12 @@ public class DDMIndexerImpl implements DDMIndexer {
 					name.concat("_geolocation"), latitude, longitude);
 			}
 			else if (type.equals(DDMImpl.TYPE_SELECT)) {
-				document.addKeyword(
-					_getSortableFieldName(name),
-					ArrayUtil.toStringArray(
-						JSONFactoryUtil.createJSONArray(sortableValueString)));
-				document.addKeyword(
-					name,
-					ArrayUtil.toStringArray(
-						JSONFactoryUtil.createJSONArray(valueString)));
+				JSONArray jsonArray = JSONFactoryUtil.createJSONArray(
+					valueString);
+
+				String[] stringArray = ArrayUtil.toStringArray(jsonArray);
+
+				document.addKeywordSortable(name, stringArray);
 			}
 			else {
 				if (type.equals(DDMImpl.TYPE_DDM_TEXT_HTML)) {
@@ -503,22 +488,18 @@ public class DDMIndexerImpl implements DDMIndexer {
 				}
 
 				if (indexType.equals("keyword")) {
-					document.addKeyword(
-						_getSortableFieldName(name), sortableValueString);
-					document.addKeyword(name, valueString);
+					document.addKeywordSortable(name, valueString);
 				}
 				else {
-					document.addText(
-						_getSortableFieldName(name), sortableValueString);
-					document.addText(name, valueString);
+					document.addTextSortable(name, valueString);
 				}
 			}
 		}
 	}
 
 	protected com.liferay.portal.kernel.search.Field createField(
-			DDMFormField ddmFormField, Field ddmStructureField, String name,
-			Serializable value, String indexType, Locale locale)
+			Field ddmStructureField, String name, Serializable value,
+			String indexType, Locale locale)
 		throws PortalException {
 
 		Document document = new DocumentImpl();
@@ -526,8 +507,7 @@ public class DDMIndexerImpl implements DDMIndexer {
 		String valueFieldName = getValueFieldName(indexType, locale);
 
 		addToDocument(
-			document, ddmStructureField, indexType, valueFieldName,
-			_getSortableValue(ddmFormField, locale, value), value);
+			document, ddmStructureField, valueFieldName, value, indexType);
 
 		Map<String, com.liferay.portal.kernel.search.Field> fields =
 			document.getFields();
@@ -610,40 +590,6 @@ public class DDMIndexerImpl implements DDMIndexer {
 
 	@Reference
 	protected SearchEngineInformation searchEngineInformation;
-
-	private void _addToDocument(
-			Document document, Field field, String indexType, String name,
-			Serializable value)
-		throws PortalException {
-
-		addToDocument(document, field, indexType, name, value, value);
-	}
-
-	private String _getSortableFieldName(String name) {
-		return com.liferay.portal.kernel.search.Field.getSortableFieldName(
-			StringBundler.concat(name, StringPool.UNDERLINE, "String"));
-	}
-
-	private String _getSortableValue(
-		DDMFormField ddmFormField, Locale locale, Serializable value) {
-
-		DDMFormFieldOptions ddmFormFieldOptions =
-			(DDMFormFieldOptions)ddmFormField.getProperty("options");
-
-		String sortableValue = String.valueOf(value);
-
-		Map<String, LocalizedValue> map = ddmFormFieldOptions.getOptions();
-
-		for (Map.Entry<String, LocalizedValue> entry : map.entrySet()) {
-			LocalizedValue localizedValue = entry.getValue();
-
-			sortableValue = StringUtil.replace(
-				sortableValue, entry.getKey(),
-				localizedValue.getString(locale));
-		}
-
-		return sortableValue;
-	}
 
 	private static final Log _log = LogFactoryUtil.getLog(DDMIndexerImpl.class);
 
