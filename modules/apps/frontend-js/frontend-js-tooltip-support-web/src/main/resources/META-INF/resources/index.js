@@ -18,10 +18,10 @@ import dom from 'metal-dom';
 import {Align} from 'metal-position';
 import React, {
 	useEffect,
+	useLayoutEffect,
 	useReducer,
 	useRef,
-	useState,
-	useLayoutEffect
+	useState
 } from 'react';
 
 import reducer, {STATES} from './reducer';
@@ -98,9 +98,11 @@ const TooltipProvider = () => {
 
 		if (state.current === STATES.WAIT_SHOW) {
 			dispose = delay(() => dispatch({type: 'showDelayCompleted'}), 500);
-		} else if (state.current === STATES.WAIT_HIDE) {
+		}
+		else if (state.current === STATES.WAIT_HIDE) {
 			dispose = delay(() => dispatch({type: 'hideDelayCompleted'}), 100);
-		} else if (state.current === STATES.WAIT_RESHOW) {
+		}
+		else if (state.current === STATES.WAIT_RESHOW) {
 			dispose = delay(() => dispatch({type: 'showDelayCompleted'}), 100);
 		}
 
@@ -114,7 +116,8 @@ const TooltipProvider = () => {
 			if (title) {
 				element.setAttribute('data-restore-title', title);
 				element.removeAttribute('title');
-			} else if (element.tagName === 'svg') {
+			}
+			else if (element.tagName === 'svg') {
 				const titleTag = element.querySelector('title');
 
 				if (titleTag) {
@@ -140,7 +143,8 @@ const TooltipProvider = () => {
 					titleTag.innerHTML = title;
 
 					element.appendChild(titleTag);
-				} else {
+				}
+				else {
 					element.setAttribute('title', title);
 				}
 
