@@ -27,6 +27,10 @@ body {
 .autocomplete-dropdown-menu {
 	max-height: unset;
 
+	&.show {
+		position: fixed;
+	}
+
 	.all-results,
 	.main-item {
 		font-weight: $font-weight-semi-bold;
