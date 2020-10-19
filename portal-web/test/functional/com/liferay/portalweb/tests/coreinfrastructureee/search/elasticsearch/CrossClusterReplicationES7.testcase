@@ -42,7 +42,7 @@ definition {
 			dmDocumentTitle = "Apple1",
 			groupName = "Guest");
 
-		CrossClusterReplication.setupCrossClusterReplicationES7();
+		CrossClusterReplication.setupCrossClusterReplication();
 
 		Navigator.openURL();
 
@@ -78,7 +78,7 @@ definition {
 	test BreakWorkflowSLA {
 		property test.name.skip.portal.instance = "CrossClusterReplicationES7#BreakWorkflowSLA";
 
-		CrossClusterReplication.setupCrossClusterReplicationES7();
+		CrossClusterReplication.setupCrossClusterReplication();
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -149,7 +149,7 @@ definition {
 	test CreateBlogsEntryWithNewWorkflow {
 		property test.name.skip.portal.instance = "CrossClusterReplicationES7#CreateBlogsEntryWithNewWorkflow";
 
-		CrossClusterReplication.setupCrossClusterReplicationES7();
+		CrossClusterReplication.setupCrossClusterReplication();
 
 		Workflow.duplicateSingleApproverWorkflow(workflowName = "CCR Single Approver");
 
@@ -260,7 +260,7 @@ definition {
 	test SearchWithResultRankings {
 		property test.name.skip.portal.instance = "CrossClusterReplicationES7#SearchWithResultRankings";
 
-		CrossClusterReplication.setupCrossClusterReplicationES7();
+		CrossClusterReplication.setupCrossClusterReplication();
 
 		JSONWebcontent.addWebContent(
 			content = "",
@@ -305,7 +305,7 @@ definition {
 	test SearchWithSynonyms {
 		property test.name.skip.portal.instance = "CrossClusterReplicationES7#SearchWithSynonyms";
 
-		CrossClusterReplication.setupCrossClusterReplicationES7();
+		CrossClusterReplication.setupCrossClusterReplication();
 
 		for (var title : list "banana,red apple") {
 			JSONWebcontent.addWebContent(
@@ -359,7 +359,7 @@ definition {
 			virtualHost = "www.able.com",
 			webId = "www.able.com");
 
-		CrossClusterReplication.setupCrossClusterReplicationES7();
+		CrossClusterReplication.setupCrossClusterReplication();
 
 		User.firstLoginPG(
 			password = "test",
@@ -402,7 +402,7 @@ definition {
 			dmDocumentTitle = "DM Title 1",
 			groupName = "Guest");
 
-		CrossClusterReplication.setupCrossClusterReplicationES7();
+		CrossClusterReplication.setupCrossClusterReplication();
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
