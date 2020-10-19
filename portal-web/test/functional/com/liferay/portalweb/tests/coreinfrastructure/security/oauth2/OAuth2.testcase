@@ -110,6 +110,8 @@ definition {
 	}
 
 	test AddAndEditOAuthSAPEntries {
+		property custom.properties = "json.service.serialize.throwable=true";
+
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
@@ -240,6 +242,7 @@ definition {
 	test AssertAuthorizationCodeWorksInCluster {
 		property app.server.bundles.size = "1";
 		property cluster.enabled = "true";
+		property custom.properties = "json.service.serialize.throwable=true";
 		property custom.properties = "virtual.hosts.default.site.name=Guest";
 		property remote.elasticsearch.enabled = "true";
 		property test.name.skip.portal.instance = "OAuth2#AssertAuthorizationCodeWorksInCluster";
@@ -324,6 +327,8 @@ definition {
 	@description = "This is a use case for OAUTH2-259."
 	@priority = "4"
 	test AssertClientCredentialsIsUserScoped {
+		property custom.properties = "json.service.serialize.throwable=true";
+
 		JSONWebcontent.addWebContent(
 			content = "WC Content",
 			groupName = "Guest",
