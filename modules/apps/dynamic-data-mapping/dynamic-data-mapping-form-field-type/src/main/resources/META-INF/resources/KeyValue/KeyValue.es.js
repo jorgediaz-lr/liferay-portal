@@ -32,10 +32,8 @@ import templates from './KeyValue.soy';
 
 class KeyValue extends Component {
 	willReceiveState(changes) {
-		const {generateKeyword} = this;
-
-		if (!generateKeyword && changes.keyword && changes.value) {
-			if (changes.keyword) {
+		if (!this.generateKeyword) {
+			if (changes.keyword && changes.value) {
 				this.setState({
 					_keyword: changes.keyword.newVal,
 					_value: changes.value.newVal
