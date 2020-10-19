@@ -95,6 +95,52 @@ public class OSBCommerceProvisioning {
 			String.valueOf(
 				OSBCommercePortalInstanceStatus.IN_PROGRESS.getStatus()));
 
+		try {
+			_provisionPortalInstance(commerceOrder, commerceSubscriptionEntry);
+		}
+		catch (Exception exception) {
+			_updateSubscriptionTypeSettingsProperties(
+				commerceSubscriptionEntry,
+				OSBCommercePortalInstanceConstants.PORTAL_INSTANCE_STATUS,
+				String.valueOf(
+					OSBCommercePortalInstanceStatus.FAILED.getStatus()));
+
+			throw exception;
+		}
+	}
+
+	@Activate
+	protected void activate() {
+		_dxpCloudProvisioningClient =
+			_dxpCloudClientClientFactory.getDXPCloudClient();
+		_userAccountClient = _userAccountClientFactory.getUserAccountClient();
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_dxpCloudProvisioningClient.destroy();
+		_userAccountClient.destroy();
+	}
+
+	private long _getCommerceChannelGroupId(long companyId)
+		throws PortalException {
+
+		Group osbCommerceProvisioningSiteGroup =
+			_groupLocalService.getFriendlyURLGroup(
+				companyId,
+				OSBCommerceProvisioningConstants.
+					OSB_COMMERCE_PROVISIONING_FRIENDLY_URL);
+
+		return _commerceChannelLocalService.
+			getCommerceChannelGroupIdBySiteGroupId(
+				osbCommerceProvisioningSiteGroup.getGroupId());
+	}
+
+	private void _provisionPortalInstance(
+			CommerceOrder commerceOrder,
+			CommerceSubscriptionEntry commerceSubscriptionEntry)
+		throws Exception {
+
 		CommerceAccount commerceAccount = commerceOrder.getCommerceAccount();
 
 		String email = commerceAccount.getEmail();
@@ -126,34 +172,7 @@ public class OSBCommerceProvisioning {
 			commerceSubscriptionEntry);
 	}
 
-	@Activate
-	protected void activate() {
-		_dxpCloudProvisioningClient =
-			_dxpCloudClientClientFactory.getDXPCloudClient();
-		_userAccountClient = _userAccountClientFactory.getUserAccountClient();
-	}
-
-	@Deactivate
-	protected void deactivate() {
-		_dxpCloudProvisioningClient.destroy();
-		_userAccountClient.destroy();
-	}
-
-	private long _getCommerceChannelGroupId(long companyId)
-		throws PortalException {
-
-		Group osbCommerceProvisioningSiteGroup =
-			_groupLocalService.getFriendlyURLGroup(
-				companyId,
-				OSBCommerceProvisioningConstants.
-					OSB_COMMERCE_PROVISIONING_FRIENDLY_URL);
-
-		return _commerceChannelLocalService.
-			getCommerceChannelGroupIdBySiteGroupId(
-				osbCommerceProvisioningSiteGroup.getGroupId());
-	}
-
-	private UserAccount _toUserAccount(User user) throws Exception {
+	private UserAccount _toUserAccount(User user) throws PortalException {
 		return new UserAccount() {
 			{
 				birthDate = user.getBirthday();

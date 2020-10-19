@@ -23,7 +23,8 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 public enum OSBCommercePortalInstanceStatus {
 
 	ACTIVE(WorkflowConstants.STATUS_APPROVED), CANCELLED(1),
-	IN_PROGRESS(WorkflowConstants.STATUS_INCOMPLETE);
+	FAILED(WorkflowConstants.STATUS_INCOMPLETE),
+	IN_PROGRESS(WorkflowConstants.STATUS_PENDING);
 
 	public static OSBCommercePortalInstanceStatus parse(String statusString) {
 		if (statusString == null) {
