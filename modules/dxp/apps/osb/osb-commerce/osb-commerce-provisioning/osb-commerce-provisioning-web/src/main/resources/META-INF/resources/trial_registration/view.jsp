@@ -38,6 +38,8 @@ List<CommerceCountry> commerceCountries = trialRegistrationDisplayContext.getCom
 					<h3><%= LanguageUtil.get(request, "start-your-private-demo") %></h3>
 				</div>
 
+				<liferay-ui:error exception="<%= UserEmailAddressException.MustNotBeDuplicate.class %>" message="the-email-address-you-requested-is-already-taken" />
+
 				<div class="form-wrapper">
 					<portlet:actionURL name="registerTrial" var="registerTrialURL" />
 
