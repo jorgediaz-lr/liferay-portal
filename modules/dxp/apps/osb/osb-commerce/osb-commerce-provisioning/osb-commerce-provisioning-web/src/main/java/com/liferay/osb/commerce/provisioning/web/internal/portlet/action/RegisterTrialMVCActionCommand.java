@@ -41,6 +41,7 @@ import com.liferay.osb.commerce.provisioning.constants.OSBCommerceNotificationCo
 import com.liferay.osb.commerce.provisioning.constants.OSBCommerceProvisioningConstants;
 import com.liferay.osb.commerce.provisioning.web.internal.constants.OSBCommerceProvisioningPortletKeys;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.UserEmailAddressException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
@@ -52,6 +53,7 @@ import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
@@ -111,7 +113,24 @@ public class RegisterTrialMVCActionCommand extends BaseMVCActionCommand {
 					password, serviceContext));
 		}
 		catch (Throwable throwable) {
-			throw new PortalException(throwable);
+			Exception exception = null;
+
+			if (throwable.getCause() == null) {
+				exception = (Exception)throwable;
+			}
+			else {
+				exception = (Exception)throwable.getCause();
+			}
+
+			if (exception instanceof
+					UserEmailAddressException.MustNotBeDuplicate) {
+
+				hideDefaultErrorMessage(actionRequest);
+
+				SessionErrors.add(actionRequest, throwable.getClass());
+			}
+
+			throw exception;
 		}
 
 		_sendRedirect(actionResponse, commerceOrderItemId, name);
@@ -257,12 +276,15 @@ public class RegisterTrialMVCActionCommand extends BaseMVCActionCommand {
 			false, new ServiceContext());
 	}
 
-	private void _checkUser(long companyId, String emailAddress) {
+	private void _checkUser(long companyId, String emailAddress)
+		throws UserEmailAddressException.MustNotBeDuplicate {
+
 		User user = _userLocalService.fetchUserByEmailAddress(
 			companyId, emailAddress);
 
 		if (user != null) {
-			throw new IllegalArgumentException("User already exists");
+			throw new UserEmailAddressException.MustNotBeDuplicate(
+				companyId, emailAddress);
 		}
 	}
 
