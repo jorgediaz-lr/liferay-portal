@@ -692,7 +692,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 			ContactRole contactRole = new ContactRole();
 
-			contactRole.setName(ContactRoleConstants.NAME_SALES);
+			contactRole.setName(ContactRoleConstants.NAME_LIFERAY_SALES);
 			contactRole.setType(ContactRole.Type.ACCOUNT_WORKER);
 
 			contact.setContactRoles(new ContactRole[] {contactRole});
