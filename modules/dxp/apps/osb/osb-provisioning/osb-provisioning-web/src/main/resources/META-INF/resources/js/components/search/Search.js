@@ -86,16 +86,14 @@ function Search({accountsHomeURL = '', countryNames, resourceURL}) {
 	);
 
 	function buildSearchResultsURL() {
-		return `${accountsHomeURL}&${NAMESPACE}keywords=${keywords}`;
+		return `${accountsHomeURL}&${NAMESPACE}keywords=${keywords}&accountSearchKeywords=${keywords}`;
 	}
 
 	function getSearchParameter() {
 		const searchParams = new URLSearchParams(window.location.search);
 
-		return searchParams.has('keywords') ||
-			searchParams.has(`${NAMESPACE}keywords`)
-			? searchParams.get('keywords') ||
-					searchParams.get(`${NAMESPACE}keywords`)
+		return searchParams.has('accountSearchKeywords')
+			? searchParams.get('accountSearchKeywords')
 			: '';
 	}
 
@@ -190,7 +188,7 @@ function Search({accountsHomeURL = '', countryNames, resourceURL}) {
 								<ClayDropDown.ItemList>
 									{results.map(result => (
 										<AutocompleteItem
-											href={`${result.url}&keywords=${keywords}`}
+											href={`${result.url}&accountSearchKeywords=${keywords}`}
 											key={result.key}
 											match={keywords}
 											secondaryValue={result.code}
