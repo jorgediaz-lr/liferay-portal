@@ -41,7 +41,9 @@ function Account({countryNames}) {
 					>
 						<option></option>
 						{countryNames.map(name => (
-							<option key={name} value={name}>{name}</option>
+							<option key={name} value={name}>
+								{name}
+							</option>
 						))}
 					</select>
 				</div>

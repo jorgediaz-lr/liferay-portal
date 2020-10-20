@@ -114,12 +114,13 @@ function Search({accountsHomeURL = '', countryNames, resourceURL}) {
 
 		setShowAdvancedSearch(newState);
 
+		event.currentTarget.setAttribute('aria-expanded', newState);
+
 		const ariaLabel = newState
 			? Liferay.Language.get('close-advanced-search')
 			: Liferay.Language.get('open-advanced-search');
 
 		event.currentTarget.setAttribute('aria-label', ariaLabel);
-		event.currentTarget.setAttribute('aria-expanded', newState);
 	}
 
 	return (
