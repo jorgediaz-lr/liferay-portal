@@ -17,6 +17,7 @@ package com.liferay.osb.koroneiki.root.audit.model;
 import com.liferay.counter.kernel.service.CounterLocalService;
 import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.AuditEntry;
 import com.liferay.osb.koroneiki.root.service.AuditEntryLocalService;
+import com.liferay.osb.koroneiki.root.util.AuditEntryThreadLocal;
 import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.instances.service.PortalInstancesLocalService;
@@ -47,6 +48,10 @@ public abstract class BaseAuditModelListener<T extends BaseModel<T>>
 
 	@Override
 	public void onAfterCreate(T model) throws ModelListenerException {
+		if (!isEnabled()) {
+			return;
+		}
+
 		try {
 			ServiceContext serviceContext = getServiceContext(model);
 
@@ -75,6 +80,10 @@ public abstract class BaseAuditModelListener<T extends BaseModel<T>>
 
 	@Override
 	public void onBeforeRemove(T model) throws ModelListenerException {
+		if (!isEnabled()) {
+			return;
+		}
+
 		try {
 			ServiceContext serviceContext = getServiceContext(model);
 
@@ -103,6 +112,10 @@ public abstract class BaseAuditModelListener<T extends BaseModel<T>>
 
 	@Override
 	public void onBeforeUpdate(T model) throws ModelListenerException {
+		if (!isEnabled()) {
+			return;
+		}
+
 		try {
 			ServiceContext serviceContext = getServiceContext(model);
 
@@ -218,6 +231,14 @@ public abstract class BaseAuditModelListener<T extends BaseModel<T>>
 		}
 
 		return userId;
+	}
+
+	protected boolean isEnabled() {
+		if (AuditEntryThreadLocal.isEnabled()) {
+			return true;
+		}
+
+		return false;
 	}
 
 	protected boolean isIgnoredField(String field) {

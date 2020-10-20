@@ -40,6 +40,10 @@ public class ContactTeamRoleModelListener
 	public void onAfterCreate(ContactTeamRole contactTeamRole)
 		throws ModelListenerException {
 
+		if (!isEnabled()) {
+			return;
+		}
+
 		try {
 			Contact contact = contactTeamRole.getContact();
 			ContactRole contactRole = contactTeamRole.getContactRole();
@@ -85,6 +89,10 @@ public class ContactTeamRoleModelListener
 	@Override
 	public void onBeforeRemove(ContactTeamRole contactTeamRole)
 		throws ModelListenerException {
+
+		if (!isEnabled()) {
+			return;
+		}
 
 		try {
 			Contact contact = contactTeamRole.getContact();

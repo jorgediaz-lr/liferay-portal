@@ -38,6 +38,10 @@ public class AddressModelListener extends BaseAuditModelListener<Address> {
 
 	@Override
 	public void onAfterCreate(Address address) throws ModelListenerException {
+		if (!isEnabled()) {
+			return;
+		}
+
 		if (address.getClassNameId() != classNameLocalService.getClassNameId(
 				Account.class)) {
 
@@ -60,6 +64,10 @@ public class AddressModelListener extends BaseAuditModelListener<Address> {
 
 	@Override
 	public void onBeforeRemove(Address address) throws ModelListenerException {
+		if (!isEnabled()) {
+			return;
+		}
+
 		if (address.getClassNameId() != classNameLocalService.getClassNameId(
 				Account.class)) {
 
@@ -82,6 +90,10 @@ public class AddressModelListener extends BaseAuditModelListener<Address> {
 
 	@Override
 	public void onBeforeUpdate(Address address) throws ModelListenerException {
+		if (!isEnabled()) {
+			return;
+		}
+
 		if (address.getClassNameId() != classNameLocalService.getClassNameId(
 				Account.class)) {
 

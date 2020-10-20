@@ -16,10 +16,14 @@ package com.liferay.osb.koroneiki.data.migration.internal.migration;
 
 import com.liferay.osb.koroneiki.taproot.model.ContactRole;
 import com.liferay.osb.koroneiki.taproot.service.ContactRoleLocalService;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import org.apache.commons.lang.time.StopWatch;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -47,6 +51,10 @@ public class RoleMigration {
 	}
 
 	public void migrate(long userId) throws Exception {
+		StopWatch stopWatch = new StopWatch();
+
+		stopWatch.start();
+
 		long partnerManagerContactRoleId = _addCustomerContactRole(
 			userId, "Partner Manager");
 
@@ -117,6 +125,10 @@ public class RoleMigration {
 			5, _addWorkerContactRole(userId, "Liferay Managed Services"));
 		_accountWorkerRoleMap.put(
 			6, _addWorkerContactRole(userId, "Liferay Customer Success"));
+
+		if (_log.isInfoEnabled()) {
+			_log.info("Migration took " + stopWatch.getTime() + " ms");
+		}
 	}
 
 	private long _addCustomerContactRole(long userId, String name)
@@ -140,6 +152,8 @@ public class RoleMigration {
 
 		return contactRole.getContactRoleId();
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(RoleMigration.class);
 
 	private final Map<Integer, Long> _accountCustomerRoleMap = new HashMap<>();
 	private final Map<Integer, Long> _accountWorkerRoleMap = new HashMap<>();

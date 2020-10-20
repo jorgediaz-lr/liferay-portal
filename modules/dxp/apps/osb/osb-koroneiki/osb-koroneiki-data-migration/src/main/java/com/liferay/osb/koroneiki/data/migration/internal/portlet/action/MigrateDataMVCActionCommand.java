@@ -23,6 +23,7 @@ import com.liferay.osb.koroneiki.data.migration.internal.migration.PartnerMigrat
 import com.liferay.osb.koroneiki.data.migration.internal.migration.ProductEntryMigration;
 import com.liferay.osb.koroneiki.data.migration.internal.migration.RoleMigration;
 import com.liferay.osb.koroneiki.data.migration.internal.migration.UserMigration;
+import com.liferay.osb.koroneiki.root.util.AuditEntryThreadLocal;
 import com.liferay.osb.koroneiki.xylem.distributed.messaging.model.listener.PublishingTasksThreadLocal;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -62,6 +63,7 @@ public class MigrateDataMVCActionCommand extends BaseMVCActionCommand {
 
 			stopWatch.start();
 
+			AuditEntryThreadLocal.setEnabled(false);
 			PublishingTasksThreadLocal.setImportInProcess(true);
 
 			_indexStatusManager.setIndexReadOnly(true);
@@ -94,6 +96,7 @@ public class MigrateDataMVCActionCommand extends BaseMVCActionCommand {
 			throw exception;
 		}
 		finally {
+			AuditEntryThreadLocal.setEnabled(true);
 			PublishingTasksThreadLocal.setImportInProcess(false);
 
 			_indexStatusManager.setIndexReadOnly(false);

@@ -47,6 +47,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.time.StopWatch;
+
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -57,6 +59,10 @@ import org.osgi.service.component.annotations.Reference;
 public class OfferingEntryMigration {
 
 	public void migrate(long userId) throws Exception {
+		StopWatch stopWatch = new StopWatch();
+
+		stopWatch.start();
+
 		ProductEntry productEntry =
 			_productEntryLocalService.getProductEntryByName(_NAME_GOLD);
 
@@ -113,7 +119,8 @@ public class OfferingEntryMigration {
 					continue;
 				}
 
-				String productEntryName = resultSet.getString(2);
+				String productEntryName = ProductEntryMigration.getNewName(
+					resultSet.getString(2));
 				Date startDate = resultSet.getDate(4);
 				Date endDate = resultSet.getDate(5);
 				int quantity = resultSet.getInt(6);
@@ -209,6 +216,10 @@ public class OfferingEntryMigration {
 					_log.error(exception, exception);
 				}
 			}
+		}
+
+		if (_log.isInfoEnabled()) {
+			_log.info("Migration took " + stopWatch.getTime() + " ms");
 		}
 	}
 

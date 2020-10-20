@@ -47,6 +47,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.time.StopWatch;
+
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -57,6 +59,10 @@ import org.osgi.service.component.annotations.Reference;
 public class CorpProjectMigration {
 
 	public void migrate(long userId) throws Exception {
+		StopWatch stopWatch = new StopWatch();
+
+		stopWatch.start();
+
 		User user = _userLocalService.getUser(userId);
 
 		StringBundler sb = new StringBundler(11);
@@ -159,6 +165,10 @@ public class CorpProjectMigration {
 					_log.info("Migrated CorpProject " + account.getAccountId());
 				}
 			}
+		}
+
+		if (_log.isInfoEnabled()) {
+			_log.info("Migration took " + stopWatch.getTime() + " ms");
 		}
 	}
 

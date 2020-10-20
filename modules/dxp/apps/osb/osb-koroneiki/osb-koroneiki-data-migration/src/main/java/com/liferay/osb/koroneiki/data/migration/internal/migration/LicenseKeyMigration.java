@@ -35,6 +35,8 @@ import java.sql.ResultSet;
 import java.util.Collections;
 import java.util.Date;
 
+import org.apache.commons.lang.time.StopWatch;
+
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -45,6 +47,10 @@ import org.osgi.service.component.annotations.Reference;
 public class LicenseKeyMigration {
 
 	public void migrate(long userId) throws Exception {
+		StopWatch stopWatch = new StopWatch();
+
+		stopWatch.start();
+
 		StringBundler sb = new StringBundler(9);
 
 		sb.append("select corpProjectId, OSB_ProductEntry.name, ");
@@ -76,7 +82,8 @@ public class LicenseKeyMigration {
 					continue;
 				}
 
-				String productEntryName = resultSet.getString(2);
+				String productEntryName = ProductEntryMigration.getNewName(
+					resultSet.getString(2));
 
 				ProductEntry productEntry =
 					_productEntryLocalService.fetchProductEntryByName(
@@ -106,6 +113,10 @@ public class LicenseKeyMigration {
 					ExternalLinkEntityName.CUSTOMER_LICENSE_KEY,
 					String.valueOf(licenseKeyId));
 			}
+		}
+
+		if (_log.isInfoEnabled()) {
+			_log.info("Migration took " + stopWatch.getTime() + " ms");
 		}
 	}
 

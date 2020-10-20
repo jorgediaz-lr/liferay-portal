@@ -38,6 +38,10 @@ public class TeamModelListener extends BaseAuditModelListener<Team> {
 
 	@Override
 	public void onAfterCreate(Team team) throws ModelListenerException {
+		if (!isEnabled()) {
+			return;
+		}
+
 		super.onAfterCreate(team);
 
 		try {
@@ -61,6 +65,10 @@ public class TeamModelListener extends BaseAuditModelListener<Team> {
 
 	@Override
 	public void onBeforeRemove(Team team) throws ModelListenerException {
+		if (!isEnabled()) {
+			return;
+		}
+
 		super.onBeforeRemove(team);
 
 		try {
@@ -84,6 +92,10 @@ public class TeamModelListener extends BaseAuditModelListener<Team> {
 
 	@Override
 	public void onBeforeUpdate(Team team) throws ModelListenerException {
+		if (!isEnabled()) {
+			return;
+		}
+
 		super.onBeforeUpdate(team);
 
 		try {

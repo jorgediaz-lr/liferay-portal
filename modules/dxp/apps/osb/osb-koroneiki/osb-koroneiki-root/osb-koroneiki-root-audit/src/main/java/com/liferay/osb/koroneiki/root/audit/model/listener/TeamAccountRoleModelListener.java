@@ -38,6 +38,10 @@ public class TeamAccountRoleModelListener
 	public void onAfterCreate(TeamAccountRole teamAccountRole)
 		throws ModelListenerException {
 
+		if (!isEnabled()) {
+			return;
+		}
+
 		try {
 			Account account = teamAccountRole.getAccount();
 
@@ -73,6 +77,10 @@ public class TeamAccountRoleModelListener
 	@Override
 	public void onBeforeRemove(TeamAccountRole teamAccountRole)
 		throws ModelListenerException {
+
+		if (!isEnabled()) {
+			return;
+		}
 
 		try {
 			Account account = teamAccountRole.getAccount();

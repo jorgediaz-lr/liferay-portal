@@ -48,6 +48,10 @@ public class ProductFieldModelListener
 	public void onAfterCreate(ProductField productField)
 		throws ModelListenerException {
 
+		if (!isEnabled()) {
+			return;
+		}
+
 		try {
 			ServiceContext serviceContext = getServiceContext(
 				productField.getClassNameId(), productField.getClassPK());
@@ -69,6 +73,10 @@ public class ProductFieldModelListener
 	public void onBeforeRemove(ProductField productField)
 		throws ModelListenerException {
 
+		if (!isEnabled()) {
+			return;
+		}
+
 		try {
 			ServiceContext serviceContext = getServiceContext(
 				productField.getClassNameId(), productField.getClassPK());
@@ -89,6 +97,10 @@ public class ProductFieldModelListener
 	@Override
 	public void onBeforeUpdate(ProductField productField)
 		throws ModelListenerException {
+
+		if (!isEnabled()) {
+			return;
+		}
 
 		try {
 			ProductField oldProductField =

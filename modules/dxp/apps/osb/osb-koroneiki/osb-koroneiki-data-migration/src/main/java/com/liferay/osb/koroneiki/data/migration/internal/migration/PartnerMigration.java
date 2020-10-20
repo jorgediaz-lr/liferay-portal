@@ -54,6 +54,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.time.StopWatch;
+
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -64,6 +66,10 @@ import org.osgi.service.component.annotations.Reference;
 public class PartnerMigration {
 
 	public void migrate(long userId) throws Exception {
+		StopWatch stopWatch = new StopWatch();
+
+		stopWatch.start();
+
 		TeamRole flsTeamRole = _teamRoleLocalService.addTeamRole(
 			userId, "First Line Support", StringPool.BLANK,
 			com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.TeamRole.Type.
@@ -82,6 +88,10 @@ public class PartnerMigration {
 			_migratePartnerEntries(connection, userId);
 
 			_migratePartnerWorkers(connection, userId);
+		}
+
+		if (_log.isInfoEnabled()) {
+			_log.info("Migration took " + stopWatch.getTime() + " ms");
 		}
 	}
 

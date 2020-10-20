@@ -39,6 +39,10 @@ public class ContactAccountRoleModelListener
 	public void onAfterCreate(ContactAccountRole contactAccountRole)
 		throws ModelListenerException {
 
+		if (!isEnabled()) {
+			return;
+		}
+
 		try {
 			Account account = contactAccountRole.getAccount();
 
@@ -75,6 +79,10 @@ public class ContactAccountRoleModelListener
 	@Override
 	public void onBeforeRemove(ContactAccountRole contactAccountRole)
 		throws ModelListenerException {
+
+		if (!isEnabled()) {
+			return;
+		}
 
 		try {
 			Account account = contactAccountRole.getAccount();

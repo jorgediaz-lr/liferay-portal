@@ -37,6 +37,8 @@ import java.sql.ResultSet;
 
 import java.util.List;
 
+import org.apache.commons.lang.time.StopWatch;
+
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -47,6 +49,10 @@ import org.osgi.service.component.annotations.Reference;
 public class UserMigration {
 
 	public void migrate(long userId) throws Exception {
+		StopWatch stopWatch = new StopWatch();
+
+		stopWatch.start();
+
 		try (Connection connection = DataAccess.getConnection()) {
 			_migrateAccountCustomers(connection, userId);
 		}
@@ -61,6 +67,10 @@ public class UserMigration {
 
 		try (Connection connection = DataAccess.getConnection()) {
 			_migrateCorpProjects(connection, userId);
+		}
+
+		if (_log.isInfoEnabled()) {
+			_log.info("Migration took " + stopWatch.getTime() + " ms");
 		}
 	}
 
