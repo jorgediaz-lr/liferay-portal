@@ -136,9 +136,48 @@ else {
 	title='<%= LanguageUtil.get(request, "info") %>'
 />
 
+<%
+String methodName = null;
+%>
+
+<liferay-util:buffer
+	var="resultsHTML"
+>
+	<c:choose>
+		<c:when test="<%= role == null %>">
+			<liferay-util:include page="/edit_roles.jsp" servletContext="<%= application %>" />
+		</c:when>
+		<c:otherwise>
+			<c:choose>
+				<c:when test="<%= className.equals(User.class.getName()) %>">
+
+					<%
+					methodName = "updateUserGroupRoleUsers";
+					%>
+
+					<liferay-util:include page="/edit_roles_users.jsp" servletContext="<%= application %>" />
+				</c:when>
+				<c:otherwise>
+
+					<%
+					methodName = "updateUserGroupGroupRoleUsers";
+					%>
+
+					<liferay-util:include page="/edit_roles_user_groups.jsp" servletContext="<%= application %>" />
+				</c:otherwise>
+			</c:choose>
+		</c:otherwise>
+	</c:choose>
+</liferay-util:buffer>
+
+<%
+SearchContainer<?> searchContainer = (SearchContainer<?>)request.getAttribute("liferay-ui:search:searchContainer");
+%>
+
 <clay:management-toolbar
 	clearResultsURL="<%= portletURL.toString() %>"
 	namespace="<%= renderResponse.getNamespace() %>"
+	itemsTotal="<%= searchContainer.getTotal() %>"
 	searchActionURL="<%= portletURL.toString() %>"
 	selectable="<%= false %>"
 	showCreationMenu="<%= false %>"
@@ -150,38 +189,8 @@ else {
 	<aui:input name="groupId" type="hidden" value="<%= String.valueOf(group.getGroupId()) %>" />
 	<aui:input name="roleId" type="hidden" value="<%= roleId %>" />
 
-	<%
-	String methodName = null;
-	%>
-
 	<div class="roles-selector-body">
-		<div class="container-fluid-1280">
-			<c:choose>
-				<c:when test="<%= role == null %>">
-					<liferay-util:include page="/edit_roles.jsp" servletContext="<%= application %>" />
-				</c:when>
-				<c:otherwise>
-					<c:choose>
-						<c:when test="<%= className.equals(User.class.getName()) %>">
-
-							<%
-							methodName = "updateUserGroupRoleUsers";
-							%>
-
-							<liferay-util:include page="/edit_roles_users.jsp" servletContext="<%= application %>" />
-						</c:when>
-						<c:otherwise>
-
-							<%
-							methodName = "updateUserGroupGroupRoleUsers";
-							%>
-
-							<liferay-util:include page="/edit_roles_user_groups.jsp" servletContext="<%= application %>" />
-						</c:otherwise>
-					</c:choose>
-				</c:otherwise>
-			</c:choose>
-		</div>
+			<%= resultsHTML %>
 	</div>
 
 	<aui:button-row>
