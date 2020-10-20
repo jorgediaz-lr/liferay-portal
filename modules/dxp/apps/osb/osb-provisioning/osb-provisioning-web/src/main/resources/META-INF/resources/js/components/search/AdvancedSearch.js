@@ -9,6 +9,7 @@
  * distribution rights of the Software.
  */
 
+import ClayPanel from '@clayui/panel';
 import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 
@@ -69,7 +70,14 @@ function AdvancedSearch({countryNames, formAction}) {
 					</div>
 				</div>
 
-				<Account countryNames={countryNames} />
+				<ClayPanel
+					collapsable
+					displayTitle={Liferay.Language.get('account')}
+					displayType="secondary"
+					showCollapseIcon={true}
+				>
+					<Account countryNames={countryNames} />
+				</ClayPanel>
 
 				<div className="button-holder button-holder-lg" role="group">
 					<button

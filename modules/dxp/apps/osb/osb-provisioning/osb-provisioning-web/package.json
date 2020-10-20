@@ -4,6 +4,7 @@
 		"@clayui/drop-down": "3.2.0",
 		"@clayui/list": "3.1.0",
 		"@clayui/loading-indicator": "3.0.0",
+		"@clayui/panel": "3.0.7",
 		"@clayui/sticker": "3.0.5",
 		"@clayui/tabs": "3.0.6",
 		"@clayui/tooltip": "3.1.0",

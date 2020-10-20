@@ -11,6 +11,7 @@ $primary-l1: #80acff;
 $primary-l2: #b3cdff;
 $primary-l3: #f0f5ff;
 $secondary: #6b6c7e;
+$secondary-l1: #a7a9bc;
 $secondary-l3: #e7e7ed;
 $success: #287d3c;
 
@@ -33,6 +34,16 @@ $breadcrumb-font-weight: $font-weight-semi-bold;
 $breadcrumb-link-color: $primary;
 
 $btn-group-item-margin-right: 0.5rem; // 8px
+
+$panel-border-bottom-width: 0;
+$panel-border-left-width: 0;
+$panel-border-right-width: 0;
+$panel-border-top-width: 0;
+$panel-body-padding-x: 0;
+$panel-body-padding-y: 0.75rem; // 12px
+$panel-header-collapse-icon-right: 0;
+$panel-header-padding-x: 0;
+$panel-header-padding-y: 0.25rem; // 4px
 
 $input-textarea-height: auto;
 

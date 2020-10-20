@@ -16,49 +16,45 @@ import {NAMESPACE} from '../../utilities/constants';
 
 function Account({countryNames}) {
 	return (
-		<div className="row">
-			<div className="col-md-6">
-				<div className="form-group">
-					<label htmlFor="name">
-						{Liferay.Language.get('account-name')}
-					</label>
-					<input
-						className="form-control form-control-sm"
-						id="name"
-						name={`${NAMESPACE}name`}
-						type="text"
-					/>
-				</div>
-
-				<div className="form-group-item">
-					<label htmlFor="countryName">
-						{Liferay.Language.get('country')}
-					</label>
-					<select
-						className="form-control"
-						id="countryName"
-						name={`${NAMESPACE}countryName`}
-					>
-						<option></option>
-						{countryNames.map(name => (
-							<option key={name} value={name}>
-								{name}
-							</option>
-						))}
-					</select>
-				</div>
+		<div className="panel-body">
+			<div className="form-group">
+				<label htmlFor="name">
+					{Liferay.Language.get('account-name')}
+				</label>
+				<input
+					className="form-control form-control-sm"
+					id="name"
+					name={`${NAMESPACE}name`}
+					type="text"
+				/>
 			</div>
 
-			<div className="col-md-6">
-				<div className="form-group">
-					<label htmlFor="code">{Liferay.Language.get('code')}</label>
-					<input
-						className="form-control form-control-sm"
-						id="code"
-						name={`${NAMESPACE}code`}
-						type="text"
-					/>
-				</div>
+			<div className="form-group">
+				<label htmlFor="code">{Liferay.Language.get('code')}</label>
+				<input
+					className="form-control form-control-sm"
+					id="code"
+					name={`${NAMESPACE}code`}
+					type="text"
+				/>
+			</div>
+
+			<div className="form-group">
+				<label htmlFor="countryName">
+					{Liferay.Language.get('country')}
+				</label>
+				<select
+					className="form-control"
+					id="countryName"
+					name={`${NAMESPACE}countryName`}
+				>
+					<option></option>
+					{countryNames.map(name => (
+						<option key={name} value={name}>
+							{name}
+						</option>
+					))}
+				</select>
 			</div>
 		</div>
 	);

@@ -1090,7 +1090,7 @@
     "@clayui/icon" "^3.0.3"
     classnames "^2.2.6"
 
-"@clayui/button@3.3.0", "@clayui/button@^3.2.0", "@clayui/button@^3.3.0":
+"@clayui/button@^3.2.0", "@clayui/button@^3.3.0":
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/@clayui/button/-/button-3.3.0.tgz#f8be387a44450b3d7745504bd0cb57955effd860"
   integrity sha512-6j7CB7VxpxPuGzgj7jGTC+28plLOV5HBrKTxgbKnxXYJoqLc4lfiG49amh1L7LQ+9ZGthnCCdMxt1HK40XmMPA==
@@ -1207,7 +1207,7 @@
     classnames "^2.2.6"
     warning "^4.0.3"
 
-"@clayui/icon@3.0.4", "@clayui/icon@^3.0.3", "@clayui/icon@^3.0.4":
+"@clayui/icon@^3.0.3", "@clayui/icon@^3.0.4":
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/@clayui/icon/-/icon-3.0.4.tgz#f4b04e23c97163021b5665208f7d7c711f44918c"
   integrity sha512-X5N1DqiPMwi5soYxbNgqC/asn/FDigRxHLjc785i7WfE6xdUpcTjvdJhGFx+Xgoign8NpNbVo5NZATHZLCLiFw==
@@ -1398,15 +1398,6 @@
   integrity sha512-YbcoB8cdZ1/RgpPuQhLtPAIPYapgRm5cNU59otsca5Bv0+KKo8CsJd4k92eBRPKJpQGaOYUoJjD4JH+COVAArw==
   dependencies:
     "@clayui/icon" "^3.0.3"
-    classnames "^2.2.6"
-    warning "^4.0.3"
-
-"@clayui/progress-bar@3.0.4":
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/@clayui/progress-bar/-/progress-bar-3.0.4.tgz#9ca7e5f8bb950370c63c36d5285102d2efb8dfa8"
-  integrity sha512-+qr7plRSEXwV3f7KSIZNlgnhJRiPqt+Sq6nZ+60/+PKnskfCzevgpjmIinAlExECs1izSPr5Ya9L2cbLk+rZkw==
-  dependencies:
-    "@clayui/icon" "^3.0.4"
     classnames "^2.2.6"
     warning "^4.0.3"
 
