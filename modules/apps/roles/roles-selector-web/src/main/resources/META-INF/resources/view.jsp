@@ -176,8 +176,8 @@ SearchContainer<?> searchContainer = (SearchContainer<?>)request.getAttribute("l
 
 <clay:management-toolbar
 	clearResultsURL="<%= portletURL.toString() %>"
-	namespace="<%= renderResponse.getNamespace() %>"
 	itemsTotal="<%= searchContainer.getTotal() %>"
+	namespace="<%= renderResponse.getNamespace() %>"
 	searchActionURL="<%= portletURL.toString() %>"
 	selectable="<%= false %>"
 	showCreationMenu="<%= false %>"
@@ -190,7 +190,7 @@ SearchContainer<?> searchContainer = (SearchContainer<?>)request.getAttribute("l
 	<aui:input name="roleId" type="hidden" value="<%= roleId %>" />
 
 	<div class="roles-selector-body">
-			<%= resultsHTML %>
+		<%= resultsHTML %>
 	</div>
 
 	<aui:button-row>
