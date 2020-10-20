@@ -197,3 +197,8 @@ e1719ad20733066cb1c793cf83f7e805aff04401^..12e44fe3db78ad1c6011e092ae4d47cf2e7fb
 # Bundle Version 3.0.44
 #
 12e44fe3db78ad1c6011e092ae4d47cf2e7fb241^..fa1d2fcab12eab9420b78de0bc2dd207e6090339=LPS-119196
+
+#
+# Bundle Version 3.0.45
+#
+fa1d2fcab12eab9420b78de0bc2dd207e6090339^..3aa9220d74f3b6482dccdf4bcecf91ffdceaeccc=LPS-105380 LPS-121450
