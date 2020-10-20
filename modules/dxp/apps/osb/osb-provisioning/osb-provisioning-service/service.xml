@@ -44,6 +44,8 @@
 	</entity>
 	<exceptions>
 		<exception>ContactRequired</exception>
+		<exception>DuplicateDossieraKey</exception>
+		<exception>MultipleDossieraKeys</exception>
 		<exception>ProductBundleName</exception>
 		<exception>ProductPurchaseQuantity</exception>
 		<exception>RequiredProduct</exception>

@@ -14,8 +14,14 @@
 
 package com.liferay.osb.provisioning.web.internal.portlet.action;
 
+import com.liferay.osb.koroneiki.phloem.rest.client.constants.ExternalLinkDomain;
+import com.liferay.osb.koroneiki.phloem.rest.client.constants.ExternalLinkEntityName;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ExternalLink;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
+import com.liferay.osb.provisioning.exception.DuplicateDossieraKeyException;
+import com.liferay.osb.provisioning.exception.MultipleDossieraKeysException;
+import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ExternalLinkWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.exception.HttpException;
 import com.liferay.portal.kernel.log.Log;
@@ -29,6 +35,8 @@ import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+
+import java.util.List;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -78,16 +86,19 @@ public class EditExternalLinkMVCActionCommand extends BaseMVCActionCommand {
 				updateExternalLink(actionRequest, user);
 			}
 		}
-		catch (HttpException httpException) {
-			_log.error(httpException, httpException);
-
-			SessionErrors.add(
-				actionRequest, httpException.getClass(), httpException);
-		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
 
-			throw exception;
+			if (exception instanceof DuplicateDossieraKeyException ||
+				exception instanceof HttpException ||
+				exception instanceof MultipleDossieraKeysException) {
+
+				SessionErrors.add(
+					actionRequest, exception.getClass(), exception);
+			}
+			else {
+				throw exception;
+			}
 		}
 
 		sendRedirect(actionRequest, actionResponse);
@@ -103,6 +114,8 @@ public class EditExternalLinkMVCActionCommand extends BaseMVCActionCommand {
 		String domain = ParamUtil.getString(actionRequest, "domain");
 		String entityName = ParamUtil.getString(actionRequest, "entityName");
 		String entityId = ParamUtil.getString(actionRequest, "entityId");
+
+		_validate(accountKey, domain, entityName, entityId);
 
 		ExternalLink externalLink = new ExternalLink();
 
@@ -121,8 +134,45 @@ public class EditExternalLinkMVCActionCommand extends BaseMVCActionCommand {
 		}
 	}
 
+	private void _validate(
+			String accountKey, String domain, String entityName,
+			String entityId)
+		throws Exception {
+
+		if (domain.equals(ExternalLinkDomain.DOSSIERA)) {
+			List<Account> accounts = _accountWebService.getAccounts(
+				domain, entityName, entityId, 1, 1);
+
+			if (!accounts.isEmpty()) {
+				throw new DuplicateDossieraKeyException();
+			}
+
+			List<ExternalLink> externalLinks =
+				_externalLinkWebService.getExternalLinks(accountKey, 1, 1000);
+
+			for (ExternalLink externalLink : externalLinks) {
+				String curEntityName = externalLink.getEntityName();
+
+				if ((entityName.equals(
+						ExternalLinkEntityName.DOSSIERA_ACCOUNT) &&
+					 curEntityName.equals(
+						 ExternalLinkEntityName.DOSSIERA_PROJECT)) ||
+					(entityName.equals(
+						ExternalLinkEntityName.DOSSIERA_PROJECT) &&
+					 curEntityName.equals(
+						 ExternalLinkEntityName.DOSSIERA_ACCOUNT))) {
+
+					throw new MultipleDossieraKeysException();
+				}
+			}
+		}
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		EditExternalLinkMVCActionCommand.class);
+
+	@Reference
+	private AccountWebService _accountWebService;
 
 	@Reference
 	private ExternalLinkWebService _externalLinkWebService;
