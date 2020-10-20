@@ -74,7 +74,6 @@ function AdvancedSearch({countryNames, formAction}) {
 				<div className="button-holder button-holder-lg" role="group">
 					<button
 						className="btn btn-secondary"
-						disabled={true}
 						role="button"
 						type="reset"
 					>
