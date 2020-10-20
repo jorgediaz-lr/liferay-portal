@@ -62,7 +62,7 @@ String userFirstName = ParamUtil.getString(request, "userFirstName");
 
 			<div class="hide" id="<portlet:namespace />instanceCreationFailure">
 				<div class="alert alert-danger">
-					<%= LanguageUtil.format(request, "instance-creation-failed", "hello@liferay.com") %>
+					<%= LanguageUtil.format(request, "Unable to create instance", "hello@liferay.com") %>
 				</div>
 			</div>
 		</div>
