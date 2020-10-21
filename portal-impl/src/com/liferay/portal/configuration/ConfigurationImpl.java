@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -49,6 +50,9 @@ import org.apache.commons.configuration.MapConfiguration;
  */
 public class ConfigurationImpl
 	implements com.liferay.portal.kernel.configuration.Configuration {
+
+	public static final String CONFIGURATION_IMPL_QUIET =
+		"configuration.impl.quiet";
 
 	/**
 	 * @deprecated As of Judson (7.1.x), replaced by {@link
@@ -344,6 +348,12 @@ public class ConfigurationImpl
 	}
 
 	protected void printSources(long companyId, String webId) {
+		if (GetterUtil.getBoolean(
+				System.getProperty(CONFIGURATION_IMPL_QUIET))) {
+
+			return;
+		}
+
 		List<String> sources = _classLoaderAggregateProperties.loadedSources();
 
 		for (int i = sources.size() - 1; i >= 0; i--) {
