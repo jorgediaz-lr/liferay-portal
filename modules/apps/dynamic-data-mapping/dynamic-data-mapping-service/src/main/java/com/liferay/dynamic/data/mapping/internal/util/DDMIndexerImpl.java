@@ -414,7 +414,6 @@ public class DDMIndexerImpl implements DDMIndexer {
 		throws PortalException {
 
 		if (value == null) {
-			return;
 		}
 		else if (value instanceof BigDecimal) {
 			document.addNumberSortable(name, (BigDecimal)value);
