@@ -1524,6 +1524,10 @@ public class DLFileEntryLocalServiceImpl
 	)
 	@Override
 	public void incrementViewCounter(DLFileEntry dlFileEntry, int increment) {
+		if (!PropsValues.DL_FILE_ENTRY_VIEW_COUNT_ENABLED) {
+			return;
+		}
+
 		if (ExportImportThreadLocal.isImportInProcess()) {
 			return;
 		}

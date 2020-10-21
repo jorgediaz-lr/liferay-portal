@@ -64,6 +64,7 @@ import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.util.PropsValues;
 import com.liferay.social.kernel.model.SocialActivityConstants;
 import com.liferay.subscription.service.SubscriptionLocalService;
 import com.liferay.trash.kernel.exception.RestoreEntryException;
@@ -513,6 +514,10 @@ public class MBThreadLocalServiceImpl extends MBThreadLocalServiceBaseImpl {
 	@Override
 	public void incrementViewCounter(long threadId, int increment)
 		throws PortalException {
+
+		if (!PropsValues.MESSAGE_BOARDS_THREAD_VIEW_COUNT_ENABLED) {
+			return;
+		}
 
 		if (ExportImportThreadLocal.isImportInProcess()) {
 			return;

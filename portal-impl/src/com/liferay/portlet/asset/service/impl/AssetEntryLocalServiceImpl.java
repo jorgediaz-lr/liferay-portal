@@ -53,6 +53,7 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.asset.service.base.AssetEntryLocalServiceBaseImpl;
 import com.liferay.portlet.asset.service.permission.AssetCategoryPermission;
 import com.liferay.portlet.asset.util.AssetSearcher;
@@ -464,6 +465,10 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 	@Override
 	public void incrementViewCounter(
 		long userId, String className, long classPK, int increment) {
+
+		if (!PropsValues.ASSET_ENTRY_VIEW_COUNT_ENABLED) {
+			return;
+		}
 
 		if (ExportImportThreadLocal.isImportInProcess() || (classPK <= 0)) {
 			return;

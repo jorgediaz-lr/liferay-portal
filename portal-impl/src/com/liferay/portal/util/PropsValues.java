@@ -176,6 +176,11 @@ public class PropsValues {
 				PropsKeys.BUFFERED_INCREMENT_ENABLED,
 				new Filter("AssetEntry")));
 
+	public static final boolean ASSET_ENTRY_VIEW_COUNT_ENABLED =
+		GetterUtil.getBoolean(
+			PropsUtil.get(
+				PropsKeys.VIEW_COUNT_ENABLED, new Filter("AssetEntry")));
+
 	public static final int ASSET_FILTER_SEARCH_LIMIT = GetterUtil.getInteger(
 		PropsUtil.get(PropsKeys.ASSET_FILTER_SEARCH_LIMIT));
 
@@ -1079,6 +1084,11 @@ public class PropsValues {
 		GetterUtil.getInteger(
 			PropsUtil.get(PropsKeys.DL_FILE_ENTRY_VERSION_POLICY));
 
+	public static final boolean DL_FILE_ENTRY_VIEW_COUNT_ENABLED =
+		GetterUtil.getBoolean(
+			PropsUtil.get(
+				PropsKeys.VIEW_COUNT_ENABLED, new Filter("DLFileEntry")));
+
 	/**
 	 * @deprecated As of Judson (7.1.x), with no direct replacement
 	 */
@@ -1834,6 +1844,11 @@ public class PropsValues {
 	public static final int MESSAGE_BOARDS_RSS_ABSTRACT_LENGTH =
 		GetterUtil.getInteger(
 			PropsUtil.get(PropsKeys.MESSAGE_BOARDS_RSS_ABSTRACT_LENGTH));
+
+	public static final boolean MESSAGE_BOARDS_THREAD_VIEW_COUNT_ENABLED =
+		GetterUtil.getBoolean(
+			PropsUtil.get(
+				PropsKeys.VIEW_COUNT_ENABLED, new Filter("MBThread")));
 
 	/**
 	 * @deprecated As of Judson (7.1.x), with no direct replacement
