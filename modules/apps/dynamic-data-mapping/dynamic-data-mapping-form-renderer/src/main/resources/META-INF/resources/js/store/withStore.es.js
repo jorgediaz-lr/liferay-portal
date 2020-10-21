@@ -42,12 +42,6 @@ const _handleFieldEdited = function(properties) {
 		const {evaluable} = fieldInstance;
 		const evaluatorContext = this.getEvaluatorContext();
 
-		const {
-			defaultLanguageId,
-			editingLanguageId,
-			fieldName
-		} = evaluatorContext;
-
 		const editedPages = handleFieldEdited(evaluatorContext, properties);
 
 		lastEditedPages = editedPages;
@@ -81,6 +75,12 @@ const _handleFieldEdited = function(properties) {
 					if (fieldInstance.isDisposed()) {
 						return;
 					}
+
+					const {
+						defaultLanguageId,
+						editingLanguageId,
+						fieldName
+					} = evaluatorContext;
 
 					const mergedPages = mergePages(
 						defaultLanguageId,
