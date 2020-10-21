@@ -158,7 +158,8 @@ public class SearchEngineAdapterTest {
 				Assert.assertTrue(
 					message,
 					message.contains(
-						"<p>Problem accessing /solr/" + index + "/update"));
+						"<p>Problem accessing /solr/" + index + "/update") ||
+					message.contains("Error 404 Not Found"));
 			}
 			else {
 				Assert.assertTrue(
