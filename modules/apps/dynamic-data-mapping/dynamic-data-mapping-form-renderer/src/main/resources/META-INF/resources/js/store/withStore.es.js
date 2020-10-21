@@ -96,7 +96,7 @@ const _handleFieldEdited = function(properties) {
 						},
 						() => {
 							if (evaluable) {
-								this.emit('evaluated', evaluatedPages);
+								this.emit('evaluated', mergedPages);
 							}
 						}
 					);
