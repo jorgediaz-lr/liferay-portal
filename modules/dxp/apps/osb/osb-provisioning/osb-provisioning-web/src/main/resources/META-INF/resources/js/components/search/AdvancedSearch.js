@@ -15,8 +15,14 @@ import React, {useState} from 'react';
 
 import {NAMESPACE} from '../../utilities/constants';
 import Account from './Account';
+import Categorization from './Categorization';
 
-function AdvancedSearch({countryNames, formAction}) {
+function AdvancedSearch({
+	countryNames,
+	formAction,
+	subscriptionStateNames,
+	tierNames
+}) {
 	const [isAndOperator, setIsAndOperator] = useState(true);
 
 	function handleOnCheck() {
@@ -72,11 +78,24 @@ function AdvancedSearch({countryNames, formAction}) {
 
 				<ClayPanel
 					collapsable
+					defaultExpanded={true}
 					displayTitle={Liferay.Language.get('account')}
 					displayType="secondary"
 					showCollapseIcon={true}
 				>
 					<Account countryNames={countryNames} />
+				</ClayPanel>
+
+				<ClayPanel
+					collapsable
+					displayTitle={Liferay.Language.get('categorization')}
+					displayType="secondary"
+					showCollapseIcon={true}
+				>
+					<Categorization
+						subscriptionStateNames={subscriptionStateNames}
+						tierNames={tierNames}
+					/>
 				</ClayPanel>
 
 				<div className="button-holder button-holder-lg" role="group">
@@ -103,7 +122,9 @@ function AdvancedSearch({countryNames, formAction}) {
 
 AdvancedSearch.propTypes = {
 	countryNames: PropTypes.array.isRequired,
-	formAction: PropTypes.string.isRequired
+	formAction: PropTypes.string.isRequired,
+	subscriptionStateNames: PropTypes.array.isRequired,
+	tierNames: PropTypes.array.isRequired
 };
 
 export default AdvancedSearch;

@@ -17,7 +17,7 @@ import {NAMESPACE} from '../../utilities/constants';
 function Account({countryNames}) {
 	return (
 		<div className="panel-body">
-			<div className="form-group">
+			<div className="col-md-6 form-group">
 				<label htmlFor="name">
 					{Liferay.Language.get('account-name')}
 				</label>
@@ -29,7 +29,7 @@ function Account({countryNames}) {
 				/>
 			</div>
 
-			<div className="form-group">
+			<div className="col-md-6 form-group">
 				<label htmlFor="code">{Liferay.Language.get('code')}</label>
 				<input
 					className="form-control form-control-sm"
@@ -39,7 +39,7 @@ function Account({countryNames}) {
 				/>
 			</div>
 
-			<div className="form-group">
+			<div className="col-md-6 form-group">
 				<label htmlFor="countryName">
 					{Liferay.Language.get('country')}
 				</label>

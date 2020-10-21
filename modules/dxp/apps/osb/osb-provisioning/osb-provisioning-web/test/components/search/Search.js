@@ -20,6 +20,8 @@ function renderSearch() {
 			accountsHomeURL="/accounts/home/URL"
 			countryNames={[]}
 			resourceURL="/resource/URL"
+			subscriptionStateNames={[]}
+			tierNames={[]}
 		/>
 	);
 }

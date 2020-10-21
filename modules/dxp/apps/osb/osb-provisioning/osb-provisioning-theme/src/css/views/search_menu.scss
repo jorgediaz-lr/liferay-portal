@@ -23,15 +23,23 @@ body {
 	position: fixed;
 	width: 100%;
 
+	.button-holder {
+		text-align: right;
+	}
+
+	.form-group {
+		h5 {
+			color: $dark;
+		}
+	}
+
 	.panel-body {
 		display: flex;
 		flex-wrap: wrap;
 		margin: 0 -$spacing-sm;
 
 		.form-group {
-			flex: 0 0 50%;
 			margin-bottom: 0;
-			max-width: 50%;
 			padding: $spacing-sm $spacing-sm 0;
 		}
 	}

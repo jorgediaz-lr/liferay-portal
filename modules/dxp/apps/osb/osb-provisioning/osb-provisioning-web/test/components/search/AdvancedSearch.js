@@ -15,7 +15,14 @@ import React from 'react';
 import AdvancedSearch from '../../../src/main/resources/META-INF/resources/js/components/search/AdvancedSearch';
 
 function renderAdvancedSearch() {
-	return render(<AdvancedSearch countryNames={[]} formAction="/url" />);
+	return render(
+		<AdvancedSearch
+			countryNames={[]}
+			formAction="/url"
+			subscriptionStateNames={[]}
+			tierNames={[]}
+		/>
+	);
 }
 
 describe('AdvancedSearch', () => {

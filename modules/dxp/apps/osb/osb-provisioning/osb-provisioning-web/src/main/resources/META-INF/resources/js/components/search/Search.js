@@ -56,7 +56,13 @@ AutocompleteItem.propTypes = {
 	value: PropTypes.string
 };
 
-function Search({accountsHomeURL = '', countryNames, resourceURL}) {
+function Search({
+	accountsHomeURL = '',
+	countryNames,
+	resourceURL,
+	subscriptionStateNames,
+	tierNames
+}) {
 	const [error, setError] = useState(false);
 	const [keywords, setKeywords] = useState('');
 	const [results, setResults] = useState([]);
@@ -218,6 +224,8 @@ function Search({accountsHomeURL = '', countryNames, resourceURL}) {
 				<AdvancedSearch
 					countryNames={countryNames}
 					formAction={accountsHomeURL}
+					subscriptionStateNames={subscriptionStateNames}
+					tierNames={tierNames}
 				/>
 			)}
 		</>
@@ -227,7 +235,9 @@ function Search({accountsHomeURL = '', countryNames, resourceURL}) {
 Search.propTypes = {
 	accountsHomeURL: PropTypes.string.isRequired,
 	countryNames: PropTypes.array.isRequired,
-	resourceURL: PropTypes.string.isRequired
+	resourceURL: PropTypes.string.isRequired,
+	subscriptionStateNames: PropTypes.array.isRequired,
+	tierNames: PropTypes.array.isRequired
 };
 
 export default Search;
