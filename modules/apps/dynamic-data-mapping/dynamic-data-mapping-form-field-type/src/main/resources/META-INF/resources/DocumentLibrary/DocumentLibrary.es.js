@@ -64,7 +64,7 @@ class DocumentLibrary extends Component {
 
 	getDocumentLibrarySelectorURL() {
 		const {groupId, itemSelectorAuthToken} = this.initialConfig_;
-		const {portletNamespace} = this;
+		const {folderId, portletNamespace} = this;
 
 		const criterionJSON = {
 			desiredItemSelectorReturnTypes:
@@ -84,6 +84,7 @@ class DocumentLibrary extends Component {
 			criteria:
 				'com.liferay.item.selector.criteria.file.criterion.FileItemSelectorCriterion',
 			doAsGroupId: groupId,
+			folderId,
 			itemSelectedEventName: `${portletNamespace}selectDocumentLibrary`,
 			p_p_auth: itemSelectorAuthToken,
 			p_p_id: Liferay.PortletKeys.ITEM_SELECTOR,
@@ -206,6 +207,14 @@ DocumentLibrary.STATE = {
 	 */
 
 	fieldName: Config.string(),
+
+	/**
+	 * @default undefined
+	 * @memberof DocumentLibrary
+	 * @type {?(string|undefined)}
+	 */
+
+	folderId: Config.string(),
 
 	/**
 	 * @default undefined
