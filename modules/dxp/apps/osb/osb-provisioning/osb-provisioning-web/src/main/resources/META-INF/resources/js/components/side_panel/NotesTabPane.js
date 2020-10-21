@@ -92,9 +92,13 @@ function ApprovedNotes({addURL, hasArchive, notes, onClick, tabType}) {
 						? Liferay.Language.get('view-archived-notes')
 						: Liferay.Language.get('view-archived-sales-info')}{' '}
 					<svg
-						aria-label={Liferay.Language.get(
-							'view-archived-notes-link'
-						)}
+						aria-label={
+							tabType === NOTE_TYPE_GENERAL
+								? Liferay.Language.get('view-archived-notes')
+								: Liferay.Language.get(
+										'view-archived-sales-info'
+								  )
+						}
 						role="img"
 					>
 						<use xlinkHref="#angle-right" />
