@@ -88,7 +88,9 @@ function ApprovedNotes({addURL, hasArchive, notes, onClick, tabType}) {
 					className="archive-btn btn btn-link"
 					onClick={() => onClick(true)}
 				>
-					{Liferay.Language.get('view-archived-notes')}{' '}
+					{tabType === NOTE_TYPE_GENERAL
+						? Liferay.Language.get('view-archived-notes')
+						: Liferay.Language.get('view-archived-sales-info')}{' '}
 					<svg
 						aria-label={Liferay.Language.get(
 							'view-archived-notes-link'
