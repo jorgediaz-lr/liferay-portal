@@ -113,10 +113,6 @@ public class CorpEntryMigration {
 				_migrateAddress(
 					connection, resultSet.getLong("addressId"), userId,
 					account.getAccountId());
-
-				if (_log.isInfoEnabled()) {
-					_log.info("Migrated CorpEntry " + account.getAccountId());
-				}
 			}
 		}
 

@@ -65,14 +65,15 @@ public class CorpProjectMigration {
 
 		User user = _userLocalService.getUser(userId);
 
-		StringBundler sb = new StringBundler(11);
+		StringBundler sb = new StringBundler(12);
 
 		sb.append("select OSB_CorpProject.*, ");
+		sb.append("OSB_AccountEntry.accountEntryId, ");
 		sb.append("OSB_AccountEntry.dossieraAccountKey, ");
 		sb.append("OSB_AccountEntry.code_, OSB_AccountEntry.type_, ");
 		sb.append("OSB_AccountEntry.tier, OSB_AccountEntry.notes, ");
 		sb.append("OSB_AccountEntries_SupportRegions.supportRegionId from ");
-		sb.append("OSB_CorpProject left join OSB_AccountEntry on ");
+		sb.append("OSB_CorpProject inner join OSB_AccountEntry on ");
 		sb.append("OSB_AccountEntry.corpProjectUuid = OSB_CorpProject.uuid_ ");
 		sb.append("left join OSB_AccountEntries_SupportRegions on ");
 		sb.append("OSB_AccountEntries_SupportRegions.accountEntryId = ");
@@ -126,8 +127,10 @@ public class CorpProjectMigration {
 					resultSet.getString("notes"), Note.Format.PLAIN.toString(),
 					Note.Status.APPROVED.toString());
 
+				long accountEntryId = resultSet.getLong("accountEntryId");
+
 				_migrateAuditEntries(
-					connection, userId, account.getAccountId());
+					connection, userId, account.getAccountId(), accountEntryId);
 
 				if (Validator.isNotNull(
 						resultSet.getString("dossieraProjectKey"))) {
@@ -361,16 +364,14 @@ public class CorpProjectMigration {
 	}
 
 	private void _migrateAuditEntries(
-			Connection connection, long userId, long corpProjectId)
+			Connection connection, long userId, long accountId,
+			long accountEntryId)
 		throws Exception {
 
-		StringBundler sb = new StringBundler(5);
+		StringBundler sb = new StringBundler(2);
 
-		sb.append("select OSB_AuditEntry.* from OSB_AuditEntry inner join ");
-		sb.append("OSB_AccountEntry on OSB_AccountEntry.accountEntryId = ");
-		sb.append("OSB_AuditEntry.classPK where ");
-		sb.append("OSB_AccountEntry.corpProjectId = ");
-		sb.append(corpProjectId);
+		sb.append("select * from OSB_AuditEntry where classPK = ");
+		sb.append(accountEntryId);
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				sb.toString());
@@ -398,7 +399,7 @@ public class CorpProjectMigration {
 				_auditEntryLocalService.addAuditEntry(
 					userId,
 					_classNameLocalService.getClassNameId(Account.class),
-					corpProjectId, _getFieldClassNameId(fieldClassNameId), 0,
+					accountId, _getFieldClassNameId(fieldClassNameId), 0,
 					_getAction(action), _getField(field), oldLabel, oldValue,
 					newLabel, newValue, description, serviceContext);
 			}
