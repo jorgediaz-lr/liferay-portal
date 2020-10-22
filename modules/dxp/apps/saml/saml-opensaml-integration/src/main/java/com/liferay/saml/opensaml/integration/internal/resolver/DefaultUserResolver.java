@@ -376,7 +376,7 @@ public class DefaultUserResolver implements UserResolver {
 				_log.debug("Found user " + user.toString());
 			}
 
-			user = updateUser(companyId, user, attributesMap, serviceContext);
+			user = updateUser(user, attributesMap, serviceContext);
 		}
 		else {
 			user = addUser(companyId, attributesMap, serviceContext);
@@ -390,8 +390,7 @@ public class DefaultUserResolver implements UserResolver {
 	}
 
 	protected User updateUser(
-			long companyId, User user,
-			Map<String, List<Serializable>> attributesMap,
+			User user, Map<String, List<Serializable>> attributesMap,
 			ServiceContext serviceContext)
 		throws PortalException {
 
