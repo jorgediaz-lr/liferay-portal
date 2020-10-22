@@ -31,17 +31,9 @@ function Categorization({subscriptionStateNames, tierNames}) {
 					{Liferay.Language.get('subscription-status')}
 				</h5>
 
-				{/* Subscription Status selection options are mutually exclusive */}
+				{/* NOTE: Subscription Status selection options are mutually exclusive */}
 
-				{subscriptionStateNames.map(subscription => (
-					<ClayCheckbox
-						aria-label={subscription}
-						key={subscription}
-						label={subscription}
-						name={`${NAMESPACE}subscriptionState`}
-						value={subscription}
-					/>
-				))}
+				<CheckboxGroup fieldValues={subscriptionStateNames} inputName="subscriptionState" />
 			</div>
 		</div>
 	);
