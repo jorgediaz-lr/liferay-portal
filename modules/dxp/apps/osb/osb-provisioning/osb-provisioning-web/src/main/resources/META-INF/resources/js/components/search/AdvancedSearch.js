@@ -52,7 +52,7 @@ function AdvancedSearch({
 								name={`${NAMESPACE}andOperator`}
 								onChange={() => handleOnCheck()}
 								type="radio"
-								value={isAndOperator}
+								value={true}
 							/>
 							<span className="form-check-label-text">
 								{Liferay.Language.get('all')}
@@ -65,10 +65,10 @@ function AdvancedSearch({
 							<input
 								checked={!isAndOperator}
 								className="form-check-input"
-								name={`${NAMESPACE}orOperator`}
+								name={`${NAMESPACE}andOperator`}
 								onChange={() => handleOnCheck()}
 								type="radio"
-								value={!isAndOperator}
+								value={false}
 							/>
 							<span className="form-check-label-text">
 								{Liferay.Language.get('any')}
