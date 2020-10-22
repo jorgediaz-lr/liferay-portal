@@ -9,8 +9,9 @@
  * distribution rights of the Software.
  */
 
+import {ClayCheckbox} from '@clayui/form';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {useState} from 'react';
 
 import {NAMESPACE} from '../../utilities/constants';
 
@@ -22,9 +23,7 @@ function Categorization({subscriptionStateNames, tierNames}) {
 					{Liferay.Language.get('tier')}
 				</h5>
 
-				{tierNames.map(tier => (
-					<Checkbox key={tier} labelName={tier} />
-				))}
+				<CheckboxGroup fieldValues={tierNames} inputName="tiers" />
 			</div>
 
 			<div className="col-md-3 form-group">
@@ -32,8 +31,16 @@ function Categorization({subscriptionStateNames, tierNames}) {
 					{Liferay.Language.get('subscription-status')}
 				</h5>
 
+				{/* Subscription Status selection options are mutually exclusive */}
+
 				{subscriptionStateNames.map(subscription => (
-					<Checkbox key={subscription} labelName={subscription} />
+					<ClayCheckbox
+						aria-label={subscription}
+						key={subscription}
+						label={subscription}
+						name={`${NAMESPACE}subscriptionState`}
+						value={subscription}
+					/>
 				))}
 			</div>
 		</div>
@@ -45,18 +52,38 @@ Categorization.propTypes = {
 	tierNames: PropTypes.array.isRequired
 };
 
-function Checkbox({labelName}) {
+function CheckboxGroup({fieldValues, inputName}) {
+	const [values, setValues] = useState([]);
+
+	function handleOnClick(event) {
+		const currentValue = event.currentTarget.value;
+
+		if (!values.includes(currentValue)) {
+			setValues([...values, currentValue]);
+		}
+		else {
+			setValues(values.filter(value => value !== currentValue));
+		}
+	}
+
 	return (
-		<div className="custom-checkbox custom-control">
-			<label>
-				<input className="custom-control-input" type="checkbox" />
-				<span className="custom-control-label">
-					<span className="custom-control-label-text">
-						{labelName}
-					</span>
-				</span>
-			</label>
-		</div>
+		<>
+			<input
+				name={`${NAMESPACE}${inputName}`}
+				type="hidden"
+				value={values.join()}
+			/>
+
+			{fieldValues.map(field => (
+				<ClayCheckbox
+					aria-label={field}
+					key={field}
+					label={field}
+					onClick={handleOnClick}
+					value={field}
+				/>
+			))}
+		</>
 	);
 }
 

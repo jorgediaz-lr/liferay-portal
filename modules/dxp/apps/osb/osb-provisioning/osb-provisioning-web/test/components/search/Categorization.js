@@ -9,7 +9,7 @@
  * distribution rights of the Software.
  */
 
-import {cleanup, render} from '@testing-library/react';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 import React from 'react';
 
 import Categorization from '../../../src/main/resources/META-INF/resources/js/components/search/Categorization';
@@ -18,10 +18,10 @@ function renderCategorization() {
 	return render(
 		<Categorization
 			subscriptionStateNames={[
-				'active',
-				'cancelled',
-				'expired',
-				'unactivated'
+				'Active',
+				'Cancelled',
+				'Expired',
+				'Unactivated'
 			]}
 			tierNames={['OEM', 'Premier', 'Regular', 'Strategic']}
 		/>
@@ -41,11 +41,37 @@ describe('Account', () => {
 		const {getByText} = renderCategorization();
 
 		getByText('tier');
+		getByText('OEM');
+		getByText('Premier');
+		getByText('Regular');
+		getByText('Strategic');
+	});
+
+	it('sets the input value as a comma deliminated list of clicked items when multiple checkboxes in a group are checked', () => {
+		const {container, getByText} = renderCategorization();
+
+		fireEvent.click(getByText('OEM'));
+		fireEvent.click(getByText('Regular'));
+		fireEvent.click(getByText('Strategic'));
+
+		expect(
+			container.querySelector('input[name = "namespacetiers"]').value
+		).toBe('OEM,Regular,Strategic');
+
+		fireEvent.click(getByText('Strategic'));
+
+		expect(
+			container.querySelector('input[name = "namespacetiers"]').value
+		).toBe('OEM,Regular');
 	});
 
 	it('displays a Subscription Status field', () => {
 		const {getByText} = renderCategorization();
 
 		getByText('subscription-status');
+		getByText('Active');
+		getByText('Cancelled');
+		getByText('Expired');
+		getByText('Unactivated');
 	});
 });
