@@ -48,43 +48,51 @@ public class AccountSearchTerms extends AccountDisplayTerms {
 
 		StringBundler sb = new StringBundler();
 
-		if (Validator.isNotNull(subscriptionState)) {
-			if (subscriptionState.equals(
-					ProductPurchaseConstants.STATE_ACTIVE)) {
+		if (!ArrayUtil.isEmpty(subscriptionStates)) {
+			for (int i = 0; i < subscriptionStates.length; i++) {
+				String subscriptionState = subscriptionStates[i];
 
-				sb.append("activeProductKeys");
-			}
-			else if (subscriptionState.equals(
-						ProductPurchaseConstants.STATE_CANCELLED)) {
+				if (subscriptionState.equals(
+						ProductPurchaseConstants.STATE_ACTIVE)) {
 
-				sb.append("cancelledProductKeys");
-			}
-			else if (subscriptionState.equals(
-						ProductPurchaseConstants.STATE_EXPIRED)) {
+					sb.append("activeProductKeys");
+				}
+				else if (subscriptionState.equals(
+							ProductPurchaseConstants.STATE_CANCELLED)) {
 
-				sb.append("expiredProductKeys");
-			}
-			else if (subscriptionState.equals(
-						ProductPurchaseConstants.STATE_UNACTIVATED)) {
+					sb.append("cancelledProductKeys");
+				}
+				else if (subscriptionState.equals(
+							ProductPurchaseConstants.STATE_EXPIRED)) {
 
-				sb.append("unactivatedProductKeys");
-			}
+					sb.append("expiredProductKeys");
+				}
+				else if (subscriptionState.equals(
+							ProductPurchaseConstants.STATE_UNACTIVATED)) {
 
-			sb.append("/any(s:");
+					sb.append("unactivatedProductKeys");
+				}
 
-			Iterator iterator = subscriptionProductKeys.iterator();
+				sb.append("/any(s:");
 
-			while (iterator.hasNext()) {
-				sb.append("s eq '");
-				sb.append(iterator.next());
-				sb.append("'");
+				Iterator iterator = subscriptionProductKeys.iterator();
 
-				if (iterator.hasNext()) {
+				while (iterator.hasNext()) {
+					sb.append("s eq '");
+					sb.append(iterator.next());
+					sb.append("'");
+
+					if (iterator.hasNext()) {
+						sb.append(" or ");
+					}
+				}
+
+				sb.append(")");
+
+				if ((i + 1) < subscriptionStates.length) {
 					sb.append(" or ");
 				}
 			}
-
-			sb.append(")");
 		}
 
 		if (!ArrayUtil.isEmpty(activeSLAs)) {
@@ -369,7 +377,7 @@ public class AccountSearchTerms extends AccountDisplayTerms {
 				Validator.isNotNull(parentAccountKey) || (partner != null) ||
 				Validator.isNotNull(partnerTeamKey) || (providesFLS != null) ||
 				(receivesFLS != null) || !ArrayUtil.isEmpty(regions) ||
-				Validator.isNotNull(subscriptionState) ||
+				!ArrayUtil.isEmpty(subscriptionStates) ||
 				!ArrayUtil.isEmpty(tiers) ||
 				Validator.isNotNull(workerContactEmailAddress)) {
 

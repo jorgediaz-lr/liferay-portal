@@ -31,9 +31,10 @@ function Categorization({subscriptionStateNames, tierNames}) {
 					{Liferay.Language.get('subscription-status')}
 				</h5>
 
-				{/* NOTE: Subscription Status selection options are mutually exclusive */}
-
-				<CheckboxGroup fieldValues={subscriptionStateNames} inputName="subscriptionState" />
+				<CheckboxGroup
+					fieldValues={subscriptionStateNames}
+					inputName="subscriptionStates"
+				/>
 			</div>
 		</div>
 	);
