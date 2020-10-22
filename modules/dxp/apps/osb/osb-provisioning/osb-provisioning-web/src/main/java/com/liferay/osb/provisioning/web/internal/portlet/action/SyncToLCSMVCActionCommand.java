@@ -14,14 +14,23 @@
 
 package com.liferay.osb.provisioning.web.internal.portlet.action;
 
+import com.liferay.osb.koroneiki.phloem.rest.client.constants.ExternalLinkDomain;
+import com.liferay.osb.koroneiki.phloem.rest.client.constants.ExternalLinkEntityName;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ExternalLink;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
+import com.liferay.osb.provisioning.koroneiki.web.service.ExternalLinkWebService;
 import com.liferay.osb.provisioning.lcs.web.service.LCSSubscriptionEntryWebService;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.WebKeys;
+
+import java.util.List;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -41,6 +50,40 @@ import org.osgi.service.component.annotations.Reference;
 )
 public class SyncToLCSMVCActionCommand extends BaseMVCActionCommand {
 
+	protected void addExternalLink(
+			ActionRequest actionRequest, String accountKey,
+			String corpProjectId)
+		throws Exception {
+
+		List<ExternalLink> externalLinks =
+			_externalLinkWebService.getExternalLinks(accountKey, 1, 1000);
+
+		for (ExternalLink externalLink : externalLinks) {
+			String domain = externalLink.getDomain();
+			String entityName = externalLink.getEntityName();
+
+			if (domain.equals(ExternalLinkDomain.LCS) &&
+				entityName.equals(ExternalLinkEntityName.LCS_CORP_PROJECT)) {
+
+				return;
+			}
+		}
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		User user = themeDisplay.getUser();
+
+		ExternalLink externalLink = new ExternalLink();
+
+		externalLink.setDomain(ExternalLinkDomain.LCS);
+		externalLink.setEntityName(ExternalLinkEntityName.LCS_CORP_PROJECT);
+		externalLink.setEntityId(corpProjectId);
+
+		_externalLinkWebService.addAccountExternalLink(
+			user.getFullName(), user.getUuid(), accountKey, externalLink);
+	}
+
 	@Override
 	protected void doProcessAction(
 			ActionRequest actionRequest, ActionResponse actionResponse)
@@ -50,7 +93,10 @@ public class SyncToLCSMVCActionCommand extends BaseMVCActionCommand {
 			String accountKey = ParamUtil.getString(
 				actionRequest, "accountKey");
 
-			_lcsSubscriptionEntryWebService.syncToLCS(accountKey);
+			String corpProjectId = _lcsSubscriptionEntryWebService.syncToLCS(
+				accountKey);
+
+			addExternalLink(actionRequest, accountKey, corpProjectId);
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
@@ -63,6 +109,9 @@ public class SyncToLCSMVCActionCommand extends BaseMVCActionCommand {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		SyncToLCSMVCActionCommand.class);
+
+	@Reference
+	private ExternalLinkWebService _externalLinkWebService;
 
 	@Reference
 	private LCSSubscriptionEntryWebService _lcsSubscriptionEntryWebService;

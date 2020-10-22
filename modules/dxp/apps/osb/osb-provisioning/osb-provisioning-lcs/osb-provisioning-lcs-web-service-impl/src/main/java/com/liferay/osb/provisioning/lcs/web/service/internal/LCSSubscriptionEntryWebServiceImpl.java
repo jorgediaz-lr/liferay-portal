@@ -63,12 +63,8 @@ import org.osgi.service.component.annotations.Reference;
 public class LCSSubscriptionEntryWebServiceImpl
 	implements LCSSubscriptionEntryWebService {
 
-	public void syncToLCS(String accountKey) throws Exception {
+	public String syncToLCS(String accountKey) throws Exception {
 		String corpProjectId = _getCorpProjectId(accountKey);
-
-		if (Validator.isNull(corpProjectId)) {
-			return;
-		}
 
 		List<LCSSubscriptionEntry> lcsSubscriptionEntries =
 			_getLCSSubscriptionEntries(accountKey);
@@ -91,6 +87,8 @@ public class LCSSubscriptionEntryWebServiceImpl
 		_jsonWebServiceClient.doPost(
 			_URL_API_JSONWS_LCS_GATEWAY + "/send-lcs-subscription-entries",
 			parameters);
+
+		return corpProjectId;
 	}
 
 	@Activate
@@ -187,7 +185,7 @@ public class LCSSubscriptionEntryWebServiceImpl
 			}
 		}
 
-		return null;
+		return accountKey.substring(4);
 	}
 
 	private Date _getEndDate(ProductPurchase[] productPurchases) {

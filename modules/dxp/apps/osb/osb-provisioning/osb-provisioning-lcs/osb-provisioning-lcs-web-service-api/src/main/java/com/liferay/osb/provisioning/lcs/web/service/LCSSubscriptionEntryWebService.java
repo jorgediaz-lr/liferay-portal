@@ -19,6 +19,6 @@ package com.liferay.osb.provisioning.lcs.web.service;
  */
 public interface LCSSubscriptionEntryWebService {
 
-	public void syncToLCS(String accountKey) throws Exception;
+	public String syncToLCS(String accountKey) throws Exception;
 
 }
