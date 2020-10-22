@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.site.navigation.menu.item.layout.constants.SiteNavigationMenuItemTypeConstants;
 import com.liferay.site.navigation.model.SiteNavigationMenu;
 import com.liferay.site.navigation.model.SiteNavigationMenuItem;
@@ -54,7 +55,7 @@ public class LayoutModelListener extends BaseModelListener<Layout> {
 			return;
 		}
 
-		if (!_isVisible(layout)) {
+		if (!_isVisible(layout, false)) {
 			return;
 		}
 
@@ -88,7 +89,7 @@ public class LayoutModelListener extends BaseModelListener<Layout> {
 
 	@Override
 	public void onAfterUpdate(Layout layout) throws ModelListenerException {
-		if (!_isVisible(layout)) {
+		if (!_isVisible(layout, true)) {
 			return;
 		}
 
@@ -114,6 +115,41 @@ public class LayoutModelListener extends BaseModelListener<Layout> {
 		for (long siteNavigationMenuId : siteNavigationMenuIds) {
 			if (siteNavigationMenuId > 0) {
 				_addSiteNavigationMenuItem(siteNavigationMenuId, layout);
+			}
+		}
+
+		if (Validator.isNotNull(
+				layout.getTypeSettingsProperty("siteNavigationMenuId"))) {
+
+			UnicodeProperties unicodeProperties =
+				layout.getTypeSettingsProperties();
+
+			unicodeProperties.remove("siteNavigationMenuId");
+
+			try {
+				_layoutLocalService.updateLayout(
+					layout.getGroupId(), layout.isPrivateLayout(),
+					layout.getLayoutId(), unicodeProperties.toString());
+
+				Layout draftLayout = layout.fetchDraftLayout();
+
+				if ((draftLayout != null) &&
+					Validator.isNotNull(
+						draftLayout.getTypeSettingsProperty(
+							"siteNavigationMenuId"))) {
+
+					unicodeProperties = draftLayout.getTypeSettingsProperties();
+
+					unicodeProperties.remove("siteNavigationMenuId");
+
+					_layoutLocalService.updateLayout(
+						draftLayout.getGroupId(), draftLayout.isPrivateLayout(),
+						draftLayout.getLayoutId(),
+						unicodeProperties.toString());
+				}
+			}
+			catch (PortalException portalException) {
+				throw new ModelListenerException(portalException);
 			}
 		}
 	}
@@ -209,7 +245,7 @@ public class LayoutModelListener extends BaseModelListener<Layout> {
 		return 0;
 	}
 
-	private boolean _isVisible(Layout layout) {
+	private boolean _isVisible(Layout layout, boolean update) {
 		UnicodeProperties typeSettingsProperties =
 			layout.getTypeSettingsProperties();
 
@@ -218,7 +254,8 @@ public class LayoutModelListener extends BaseModelListener<Layout> {
 
 		if (layout.isHidden() || !visible ||
 			(Objects.equals(layout.getType(), LayoutConstants.TYPE_CONTENT) &&
-			 Objects.equals(layout.getCreateDate(), layout.getPublishDate()))) {
+			 Objects.equals(layout.getCreateDate(), layout.getPublishDate())) ||
+			(!Objects.equals(layout.getType(), LayoutConstants.TYPE_CONTENT) && update)) {
 
 			return false;
 		}
