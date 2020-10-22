@@ -16,6 +16,7 @@ import React, {useState} from 'react';
 import {NAMESPACE} from '../../utilities/constants';
 import Account from './Account';
 import Categorization from './Categorization';
+import Dates from './Dates';
 
 function AdvancedSearch({
 	countryNames,
@@ -96,6 +97,15 @@ function AdvancedSearch({
 						subscriptionStateNames={subscriptionStateNames}
 						tierNames={tierNames}
 					/>
+				</ClayPanel>
+
+				<ClayPanel
+					collapsable
+					displayTitle={Liferay.Language.get('dates')}
+					displayType="secondary"
+					showCollapseIcon={true}
+				>
+					<Dates />
 				</ClayPanel>
 
 				<div className="button-holder button-holder-lg" role="group">
