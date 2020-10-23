@@ -17,6 +17,23 @@ import Categorization from '../../../src/main/resources/META-INF/resources/js/co
 function renderCategorization() {
 	return render(
 		<Categorization
+			activeSLANames={[
+				'Gold Subscription',
+				'Limited Subscription',
+				'Platinum Subscription',
+				'Silver Subscription'
+			]}
+			regionNames={[
+				'Australia',
+				'Brazil',
+				'China',
+				'Global',
+				'Hungary',
+				'India',
+				'Japan',
+				'Spain',
+				'United States'
+			]}
 			subscriptionStateNames={[
 				'Active',
 				'Cancelled',
@@ -73,5 +90,30 @@ describe('Account', () => {
 		getByText('Cancelled');
 		getByText('Expired');
 		getByText('Unactivated');
+	});
+
+	it('displays a SLA field', () => {
+		const {getByText} = renderCategorization();
+
+		getByText('sla');
+		getByText('Gold Subscription');
+		getByText('Limited Subscription');
+		getByText('Platinum Subscription');
+		getByText('Silver Subscription');
+	});
+
+	it('displays a Support Region field', () => {
+		const {getByText} = renderCategorization();
+
+		getByText('support-region');
+		getByText('Australia');
+		getByText('Brazil');
+		getByText('China');
+		getByText('Global');
+		getByText('Hungary');
+		getByText('India');
+		getByText('Japan');
+		getByText('Spain');
+		getByText('United States');
 	});
 });

@@ -58,7 +58,9 @@ AutocompleteItem.propTypes = {
 
 function Search({
 	accountsHomeURL = '',
+	activeSLANames,
 	countryNames,
+	regionNames,
 	resourceURL,
 	subscriptionStateNames,
 	tierNames
@@ -222,8 +224,10 @@ function Search({
 
 			{showAdvancedSearch && (
 				<AdvancedSearch
+					activeSLANames={activeSLANames}
 					countryNames={countryNames}
 					formAction={accountsHomeURL}
+					regionNames={regionNames}
 					subscriptionStateNames={subscriptionStateNames}
 					tierNames={tierNames}
 				/>
@@ -234,7 +238,9 @@ function Search({
 
 Search.propTypes = {
 	accountsHomeURL: PropTypes.string.isRequired,
+	activeSLANames: PropTypes.array.isRequired,
 	countryNames: PropTypes.array.isRequired,
+	regionNames: PropTypes.array.isRequired,
 	resourceURL: PropTypes.string.isRequired,
 	subscriptionStateNames: PropTypes.array.isRequired,
 	tierNames: PropTypes.array.isRequired

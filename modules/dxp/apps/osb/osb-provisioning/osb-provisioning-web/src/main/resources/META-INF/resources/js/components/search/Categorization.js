@@ -15,7 +15,12 @@ import React, {useState} from 'react';
 
 import {NAMESPACE} from '../../utilities/constants';
 
-function Categorization({subscriptionStateNames, tierNames}) {
+function Categorization({
+	activeSLANames,
+	regionNames,
+	subscriptionStateNames,
+	tierNames
+}) {
 	return (
 		<div className="panel-body">
 			<div className="col-md-3 form-group">
@@ -36,11 +41,32 @@ function Categorization({subscriptionStateNames, tierNames}) {
 					inputName="subscriptionStates"
 				/>
 			</div>
+
+			<div className="col-md-3 form-group">
+				<h5 className="form-check-inline">
+					{Liferay.Language.get('sla')}
+				</h5>
+
+				<CheckboxGroup
+					fieldValues={activeSLANames}
+					inputName="activeSLAs"
+				/>
+			</div>
+
+			<div className="col-md-3 form-group">
+				<h5 className="form-check-inline">
+					{Liferay.Language.get('support-region')}
+				</h5>
+
+				<CheckboxGroup fieldValues={regionNames} inputName="regions" />
+			</div>
 		</div>
 	);
 }
 
 Categorization.propTypes = {
+	activeSLANames: PropTypes.array.isRequired,
+	regionNames: PropTypes.array.isRequired,
 	subscriptionStateNames: PropTypes.array.isRequired,
 	tierNames: PropTypes.array.isRequired
 };

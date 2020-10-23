@@ -18,7 +18,9 @@ function renderSearch() {
 	return render(
 		<Search
 			accountsHomeURL="/accounts/home/URL"
+			activeSLANames={[]}
 			countryNames={[]}
+			regionNames={[]}
 			resourceURL="/resource/URL"
 			subscriptionStateNames={[]}
 			tierNames={[]}

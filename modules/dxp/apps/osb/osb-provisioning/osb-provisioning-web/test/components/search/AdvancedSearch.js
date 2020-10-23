@@ -17,8 +17,10 @@ import AdvancedSearch from '../../../src/main/resources/META-INF/resources/js/co
 function renderAdvancedSearch() {
 	return render(
 		<AdvancedSearch
+			activeSLANames={[]}
 			countryNames={[]}
 			formAction="/url"
+			regionNames={[]}
 			subscriptionStateNames={[]}
 			tierNames={[]}
 		/>

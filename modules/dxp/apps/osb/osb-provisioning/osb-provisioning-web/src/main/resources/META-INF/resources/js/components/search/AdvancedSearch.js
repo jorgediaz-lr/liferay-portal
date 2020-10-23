@@ -19,8 +19,10 @@ import Categorization from './Categorization';
 import Dates from './Dates';
 
 function AdvancedSearch({
+	activeSLANames,
 	countryNames,
 	formAction,
+	regionNames,
 	subscriptionStateNames,
 	tierNames
 }) {
@@ -94,6 +96,8 @@ function AdvancedSearch({
 					showCollapseIcon={true}
 				>
 					<Categorization
+						activeSLANames={activeSLANames}
+						regionNames={regionNames}
 						subscriptionStateNames={subscriptionStateNames}
 						tierNames={tierNames}
 					/>
@@ -131,8 +135,10 @@ function AdvancedSearch({
 }
 
 AdvancedSearch.propTypes = {
+	activeSLANames: PropTypes.array.isRequired,
 	countryNames: PropTypes.array.isRequired,
 	formAction: PropTypes.string.isRequired,
+	regionNames: PropTypes.array.isRequired,
 	subscriptionStateNames: PropTypes.array.isRequired,
 	tierNames: PropTypes.array.isRequired
 };
