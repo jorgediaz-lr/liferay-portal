@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portlet.asset.util.comparator.AssetVocabularyGroupLocalizedTitleComparator;
 import com.liferay.taglib.aui.AUIUtil;
 
 import java.util.ArrayList;
@@ -166,8 +167,18 @@ public class AssetCategoriesSelectorTag extends ComponentRendererTag {
 	}
 
 	protected List<AssetVocabulary> getAssetVocabularies() {
-		List<AssetVocabulary> vocabularies =
-			AssetVocabularyServiceUtil.getGroupVocabularies(getGroupIds());
+		List<AssetVocabulary> vocabularies = new ArrayList<>();
+
+		vocabularies.addAll(
+			AssetVocabularyServiceUtil.getGroupVocabularies(getGroupIds()));
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		vocabularies.sort(
+			new AssetVocabularyGroupLocalizedTitleComparator(
+				themeDisplay.getScopeGroupId(), themeDisplay.getLocale(),
+				true));
 
 		if (Validator.isNotNull(_className)) {
 			vocabularies = AssetVocabularyUtil.filterVocabularies(
