@@ -348,16 +348,16 @@ public class CorpProjectMigration {
 
 	private String _getTier(int tier) {
 		if (tier == 1) {
-			return Tier.REGULAR.toString();
+			return Tier.T4.toString();
 		}
 		else if (tier == 2) {
-			return Tier.OEM.toString();
+			return Tier.T4.toString();
 		}
 		else if (tier == 3) {
-			return Tier.PREMIER.toString();
+			return Tier.T1.toString();
 		}
 		else if (tier == 4) {
-			return Tier.STRATEGIC.toString();
+			return Tier.T2.toString();
 		}
 
 		return StringPool.BLANK;

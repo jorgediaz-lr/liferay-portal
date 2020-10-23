@@ -138,7 +138,7 @@ components:
                 tier:
                     description:
                         The tier of the account.
-                    enum: ["OEM", "Premier", "Regular", "Strategic"]
+                    enum: ["T1", "T2", "T3", "T4"]
                     type: string
                 website:
                     description:

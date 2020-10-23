@@ -673,8 +673,7 @@ public class Account implements Cloneable {
 
 	public static enum Tier {
 
-		OEM("OEM"), PREMIER("Premier"), REGULAR("Regular"),
-		STRATEGIC("Strategic");
+		T1("T1"), T2("T2"), T3("T3"), T4("T4");
 
 		public static Tier create(String value) {
 			for (Tier tier : values()) {
