@@ -17,6 +17,8 @@ package com.liferay.data.engine.rest.client.dto.v1_0;
 import com.liferay.data.engine.rest.client.function.UnsafeSupplier;
 import com.liferay.data.engine.rest.client.serdes.v1_0.DataDefinitionPermissionSerDes;
 
+import java.io.Serializable;
+
 import java.util.Objects;
 
 import javax.annotation.Generated;
@@ -26,7 +28,7 @@ import javax.annotation.Generated;
  * @generated
  */
 @Generated("")
-public class DataDefinitionPermission implements Cloneable {
+public class DataDefinitionPermission implements Cloneable, Serializable {
 
 	public static DataDefinitionPermission toDTO(String json) {
 		return DataDefinitionPermissionSerDes.toDTO(json);

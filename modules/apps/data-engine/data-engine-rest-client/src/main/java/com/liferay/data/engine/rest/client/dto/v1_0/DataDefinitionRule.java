@@ -17,6 +17,8 @@ package com.liferay.data.engine.rest.client.dto.v1_0;
 import com.liferay.data.engine.rest.client.function.UnsafeSupplier;
 import com.liferay.data.engine.rest.client.serdes.v1_0.DataDefinitionRuleSerDes;
 
+import java.io.Serializable;
+
 import java.util.Map;
 import java.util.Objects;
 
@@ -27,7 +29,7 @@ import javax.annotation.Generated;
  * @generated
  */
 @Generated("")
-public class DataDefinitionRule implements Cloneable {
+public class DataDefinitionRule implements Cloneable, Serializable {
 
 	public static DataDefinitionRule toDTO(String json) {
 		return DataDefinitionRuleSerDes.toDTO(json);

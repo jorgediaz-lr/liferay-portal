@@ -28,6 +28,8 @@ import com.liferay.portal.vulcan.util.ObjectMapperUtil;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.io.Serializable;
+
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
@@ -47,7 +49,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @GraphQLName("Metric")
 @JsonFilter("Liferay.Vulcan")
 @XmlRootElement(name = "Metric")
-public class Metric {
+public class Metric implements Serializable {
 
 	public static Metric toDTO(String json) {
 		return ObjectMapperUtil.readValue(Metric.class, json);
