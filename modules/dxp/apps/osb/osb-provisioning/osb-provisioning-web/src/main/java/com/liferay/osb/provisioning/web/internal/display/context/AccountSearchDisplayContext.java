@@ -103,14 +103,7 @@ public class AccountSearchDisplayContext {
 		data.put("accountsHomeURL", accountsHomeURL.toString());
 
 		data.put(
-			"activeSLANames",
-			new ArrayList<String>() {
-				{
-					add(EntitlementConstants.GOLD_SUBSCRIPTION);
-					add(EntitlementConstants.PLATINUM_SUBSCRIPTION);
-					add(EntitlementConstants.SILVER_SUBSCRIPTION);
-				}
-			});
+			"activeSLANames", ListUtil.fromArray(EntitlementConstants.SLAS));
 
 		List<Country> countries = _countryService.getCountries();
 
