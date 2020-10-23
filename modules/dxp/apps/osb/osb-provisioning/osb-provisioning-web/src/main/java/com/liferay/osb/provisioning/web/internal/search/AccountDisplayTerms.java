@@ -32,17 +32,9 @@ public class AccountDisplayTerms extends DisplayTerms {
 
 	public static final String COUNTRY_NAME = "countryName";
 
-	public static final String CREATE_DATE_GT_DAY = "createDateGTDay";
+	public static final String CREATE_DATE_GT = "createDateGT";
 
-	public static final String CREATE_DATE_GT_MONTH = "createDateGTMonth";
-
-	public static final String CREATE_DATE_GT_YEAR = "createDateGTYear";
-
-	public static final String CREATE_DATE_LT_DAY = "createDateLTDay";
-
-	public static final String CREATE_DATE_LT_MONTH = "createDateLTMonth";
-
-	public static final String CREATE_DATE_LT_YEAR = "createDateLTYear";
+	public static final String CREATE_DATE_LT = "createDateLT";
 
 	public static final String CREATED_BY_EMAIL_ADDRESS =
 		"createdByEmailAddress";
@@ -51,17 +43,9 @@ public class AccountDisplayTerms extends DisplayTerms {
 
 	public static final String INTERNAL = "internal";
 
-	public static final String MODIFIED_DATE_GT_DAY = "modifiedDateGTDay";
+	public static final String MODIFIED_DATE_GT = "modifiedDateGT";
 
-	public static final String MODIFIED_DATE_GT_MONTH = "modifiedDateGTMonth";
-
-	public static final String MODIFIED_DATE_GT_YEAR = "modifiedDateGTYear";
-
-	public static final String MODIFIED_DATE_LT_DAY = "modifiedDateLTDay";
-
-	public static final String MODIFIED_DATE_LT_MONTH = "modifiedDateLTMonth";
-
-	public static final String MODIFIED_DATE_LT_YEAR = "modifiedDateLTYear";
+	public static final String MODIFIED_DATE_LT = "modifiedDateLT";
 
 	public static final String NAME = "name";
 
@@ -89,18 +73,8 @@ public class AccountDisplayTerms extends DisplayTerms {
 
 		code = ParamUtil.getString(portletRequest, CODE);
 		countryName = ParamUtil.getString(portletRequest, COUNTRY_NAME);
-		createDateGTDay = ParamUtil.getInteger(
-			portletRequest, CREATE_DATE_GT_DAY);
-		createDateGTMonth = ParamUtil.getInteger(
-			portletRequest, CREATE_DATE_GT_MONTH);
-		createDateGTYear = ParamUtil.getInteger(
-			portletRequest, CREATE_DATE_GT_YEAR);
-		createDateLTDay = ParamUtil.getInteger(
-			portletRequest, CREATE_DATE_LT_DAY);
-		createDateLTMonth = ParamUtil.getInteger(
-			portletRequest, CREATE_DATE_LT_MONTH);
-		createDateLTYear = ParamUtil.getInteger(
-			portletRequest, CREATE_DATE_LT_YEAR);
+		createDateGT = ParamUtil.getString(portletRequest, CREATE_DATE_GT);
+		createDateLT = ParamUtil.getString(portletRequest, CREATE_DATE_LT);
 		createdByEmailAddress = ParamUtil.getString(
 			portletRequest, CREATED_BY_EMAIL_ADDRESS);
 		flsTeamKey = ParamUtil.getString(portletRequest, FLS_TEAM_KEY);
@@ -111,18 +85,8 @@ public class AccountDisplayTerms extends DisplayTerms {
 			internal = GetterUtil.getBoolean(internalString);
 		}
 
-		modifiedDateGTDay = ParamUtil.getInteger(
-			portletRequest, MODIFIED_DATE_GT_DAY);
-		modifiedDateGTMonth = ParamUtil.getInteger(
-			portletRequest, MODIFIED_DATE_GT_MONTH);
-		modifiedDateGTYear = ParamUtil.getInteger(
-			portletRequest, MODIFIED_DATE_GT_YEAR);
-		modifiedDateLTDay = ParamUtil.getInteger(
-			portletRequest, MODIFIED_DATE_LT_DAY);
-		modifiedDateLTMonth = ParamUtil.getInteger(
-			portletRequest, MODIFIED_DATE_LT_MONTH);
-		modifiedDateLTYear = ParamUtil.getInteger(
-			portletRequest, MODIFIED_DATE_LT_YEAR);
+		modifiedDateGT = ParamUtil.getString(portletRequest, MODIFIED_DATE_GT);
+		modifiedDateLT = ParamUtil.getString(portletRequest, MODIFIED_DATE_LT);
 		name = ParamUtil.getString(portletRequest, NAME);
 
 		parentAccountKey = ParamUtil.getString(
@@ -172,28 +136,12 @@ public class AccountDisplayTerms extends DisplayTerms {
 		return countryName;
 	}
 
-	public int getCreateDateGTDay() {
-		return createDateGTDay;
+	public String getCreateDateGT() {
+		return createDateGT;
 	}
 
-	public int getCreateDateGTMonth() {
-		return createDateGTMonth;
-	}
-
-	public int getCreateDateGTYear() {
-		return createDateGTYear;
-	}
-
-	public int getCreateDateLTDay() {
-		return createDateLTDay;
-	}
-
-	public int getCreateDateLTMonth() {
-		return createDateLTMonth;
-	}
-
-	public int getCreateDateLTYear() {
-		return createDateLTYear;
+	public String getCreateDateLT() {
+		return createDateLT;
 	}
 
 	public String getCreatedByEmailAddress() {
@@ -208,28 +156,12 @@ public class AccountDisplayTerms extends DisplayTerms {
 		return internal;
 	}
 
-	public int getModifiedDateGTDay() {
-		return modifiedDateGTDay;
+	public String getModifiedDateGT() {
+		return modifiedDateGT;
 	}
 
-	public int getModifiedDateGTMonth() {
-		return modifiedDateGTMonth;
-	}
-
-	public int getModifiedDateGTYear() {
-		return modifiedDateGTYear;
-	}
-
-	public int getModifiedDateLTDay() {
-		return modifiedDateLTDay;
-	}
-
-	public int getModifiedDateLTMonth() {
-		return modifiedDateLTMonth;
-	}
-
-	public int getModifiedDateLTYear() {
-		return modifiedDateLTYear;
+	public String getModifiedDateLT() {
+		return modifiedDateLT;
 	}
 
 	public String getName() {
@@ -275,21 +207,13 @@ public class AccountDisplayTerms extends DisplayTerms {
 	protected String[] activeSLAs;
 	protected String code;
 	protected String countryName;
-	protected int createDateGTDay;
-	protected int createDateGTMonth;
-	protected int createDateGTYear;
-	protected int createDateLTDay;
-	protected int createDateLTMonth;
-	protected int createDateLTYear;
+	protected String createDateGT;
+	protected String createDateLT;
 	protected String createdByEmailAddress;
 	protected String flsTeamKey;
 	protected Boolean internal;
-	protected int modifiedDateGTDay;
-	protected int modifiedDateGTMonth;
-	protected int modifiedDateGTYear;
-	protected int modifiedDateLTDay;
-	protected int modifiedDateLTMonth;
-	protected int modifiedDateLTYear;
+	protected String modifiedDateGT;
+	protected String modifiedDateLT;
 	protected String name;
 	protected String parentAccountKey;
 	protected Boolean partner;

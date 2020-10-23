@@ -18,8 +18,8 @@ import com.liferay.osb.provisioning.koroneiki.constants.EntitlementConstants;
 import com.liferay.osb.provisioning.koroneiki.constants.ProductPurchaseConstants;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.DateUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -129,38 +129,24 @@ public class AccountSearchTerms extends AccountDisplayTerms {
 			sb.append("')");
 		}
 
-		if ((createDateGTDay > 0) && (createDateGTMonth > 0) &&
-			(createDateGTYear > 0)) {
+		if (Validator.isNotNull(createDateGT)) {
+			sb.append(_getBooleanOperator(sb));
 
-			Date createDate = PortalUtil.getDate(
-				createDateGTMonth, createDateGTDay, createDateGTYear, null);
+			sb.append("dateCreated gt ");
 
-			if (createDate != null) {
-				sb.append(_getBooleanOperator(sb));
+			Date createDate = _dateFormat.parse(createDateGT);
 
-				sb.append("dateCreated gt ");
-
-				DateFormat dateFormat = DateUtil.getISO8601Format();
-
-				sb.append(dateFormat.format(createDate));
-			}
+			sb.append(_isoDateFormat.format(createDate));
 		}
 
-		if ((createDateLTDay > 0) && (createDateLTMonth > 0) &&
-			(createDateLTYear > 0)) {
+		if (Validator.isNotNull(createDateLT)) {
+			sb.append(_getBooleanOperator(sb));
 
-			Date createDate = PortalUtil.getDate(
-				createDateLTMonth, createDateLTDay, createDateLTYear, null);
+			sb.append("dateCreated lt ");
 
-			if (createDate != null) {
-				sb.append(_getBooleanOperator(sb));
+			Date createDate = _dateFormat.parse(createDateLT);
 
-				sb.append("dateCreated lt ");
-
-				DateFormat dateFormat = DateUtil.getISO8601Format();
-
-				sb.append(dateFormat.format(createDate));
-			}
+			sb.append(_isoDateFormat.format(createDate));
 		}
 
 		if (Validator.isNotNull(createdByUuid)) {
@@ -188,40 +174,24 @@ public class AccountSearchTerms extends AccountDisplayTerms {
 			sb.append(internal);
 		}
 
-		if ((modifiedDateGTDay > 0) && (modifiedDateGTMonth > 0) &&
-			(modifiedDateGTYear > 0)) {
+		if (Validator.isNotNull(modifiedDateGT)) {
+			sb.append(_getBooleanOperator(sb));
 
-			Date modifiedDate = PortalUtil.getDate(
-				modifiedDateGTMonth, modifiedDateGTDay, modifiedDateGTYear,
-				null);
+			sb.append("dateModified gt ");
 
-			if (modifiedDate != null) {
-				sb.append(_getBooleanOperator(sb));
+			Date modifiedDate = _dateFormat.parse(modifiedDateGT);
 
-				sb.append("dateModified gt ");
-
-				DateFormat dateFormat = DateUtil.getISO8601Format();
-
-				sb.append(dateFormat.format(modifiedDate));
-			}
+			sb.append(_isoDateFormat.format(modifiedDate));
 		}
 
-		if ((modifiedDateLTDay > 0) && (modifiedDateLTMonth > 0) &&
-			(modifiedDateLTYear > 0)) {
+		if (Validator.isNotNull(modifiedDateLT)) {
+			sb.append(_getBooleanOperator(sb));
 
-			Date modifiedDate = PortalUtil.getDate(
-				modifiedDateLTMonth, modifiedDateLTDay, modifiedDateLTYear,
-				null);
+			sb.append("dateModified lt ");
 
-			if (modifiedDate != null) {
-				sb.append(_getBooleanOperator(sb));
+			Date modifiedDate = _dateFormat.parse(modifiedDateLT);
 
-				sb.append("dateModified lt ");
-
-				DateFormat dateFormat = DateUtil.getISO8601Format();
-
-				sb.append(dateFormat.format(modifiedDate));
-			}
+			sb.append(_isoDateFormat.format(modifiedDate));
 		}
 
 		if (Validator.isNotNull(name)) {
@@ -363,16 +333,12 @@ public class AccountSearchTerms extends AccountDisplayTerms {
 		if (isAdvancedSearch()) {
 			if (!ArrayUtil.isEmpty(activeSLAs) || Validator.isNotNull(code) ||
 				Validator.isNotNull(countryName) ||
-				((createDateGTDay > 0) && (createDateGTMonth > 0) &&
-				 (createDateGTYear > 0)) ||
-				((createDateLTDay > 0) && (createDateLTMonth > 0) &&
-				 (createDateLTYear > 0)) ||
+				Validator.isNotNull(createDateGT) ||
+				Validator.isNotNull(createDateLT) ||
 				Validator.isNotNull(createdByEmailAddress) ||
 				Validator.isNotNull(flsTeamKey) || (internal != null) ||
-				((modifiedDateGTDay > 0) && (modifiedDateGTMonth > 0) &&
-				 (modifiedDateGTYear > 0)) ||
-				((modifiedDateLTDay > 0) && (modifiedDateLTMonth > 0) &&
-				 (modifiedDateLTYear > 0)) ||
+				Validator.isNotNull(modifiedDateGT) ||
+				Validator.isNotNull(modifiedDateLT) ||
 				Validator.isNotNull(name) ||
 				Validator.isNotNull(parentAccountKey) || (partner != null) ||
 				Validator.isNotNull(partnerTeamKey) || (providesFLS != null) ||
@@ -404,5 +370,9 @@ public class AccountSearchTerms extends AccountDisplayTerms {
 
 		return " or ";
 	}
+
+	private final DateFormat _dateFormat =
+		DateFormatFactoryUtil.getSimpleDateFormat("yyyy-MM-dd");
+	private final DateFormat _isoDateFormat = DateUtil.getISO8601Format();
 
 }

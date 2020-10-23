@@ -48,23 +48,9 @@ public class AccountSearch extends SearchContainer<AccountDisplay> {
 		iteratorURL.setParameter(
 			AccountDisplayTerms.COUNTRY_NAME, displayTerms.getCountryName());
 		iteratorURL.setParameter(
-			AccountDisplayTerms.CREATE_DATE_GT_DAY,
-			String.valueOf(displayTerms.getCreateDateGTDay()));
+			AccountDisplayTerms.CREATE_DATE_GT, displayTerms.getCreateDateGT());
 		iteratorURL.setParameter(
-			AccountDisplayTerms.CREATE_DATE_GT_MONTH,
-			String.valueOf(displayTerms.getCreateDateGTMonth()));
-		iteratorURL.setParameter(
-			AccountDisplayTerms.CREATE_DATE_GT_YEAR,
-			String.valueOf(displayTerms.getCreateDateGTYear()));
-		iteratorURL.setParameter(
-			AccountDisplayTerms.CREATE_DATE_LT_DAY,
-			String.valueOf(displayTerms.getCreateDateLTDay()));
-		iteratorURL.setParameter(
-			AccountDisplayTerms.CREATE_DATE_LT_MONTH,
-			String.valueOf(displayTerms.getCreateDateLTMonth()));
-		iteratorURL.setParameter(
-			AccountDisplayTerms.CREATE_DATE_LT_YEAR,
-			String.valueOf(displayTerms.getCreateDateLTYear()));
+			AccountDisplayTerms.CREATE_DATE_LT, displayTerms.getCreateDateLT());
 		iteratorURL.setParameter(
 			AccountDisplayTerms.CREATED_BY_EMAIL_ADDRESS,
 			displayTerms.getCreatedByEmailAddress());
@@ -74,23 +60,11 @@ public class AccountSearch extends SearchContainer<AccountDisplay> {
 			AccountDisplayTerms.INTERNAL,
 			String.valueOf(displayTerms.internal));
 		iteratorURL.setParameter(
-			AccountDisplayTerms.MODIFIED_DATE_GT_DAY,
-			String.valueOf(displayTerms.getModifiedDateGTDay()));
+			AccountDisplayTerms.MODIFIED_DATE_GT,
+			displayTerms.getModifiedDateGT());
 		iteratorURL.setParameter(
-			AccountDisplayTerms.MODIFIED_DATE_GT_MONTH,
-			String.valueOf(displayTerms.getModifiedDateGTMonth()));
-		iteratorURL.setParameter(
-			AccountDisplayTerms.MODIFIED_DATE_GT_YEAR,
-			String.valueOf(displayTerms.getModifiedDateGTYear()));
-		iteratorURL.setParameter(
-			AccountDisplayTerms.MODIFIED_DATE_LT_DAY,
-			String.valueOf(displayTerms.getModifiedDateLTDay()));
-		iteratorURL.setParameter(
-			AccountDisplayTerms.MODIFIED_DATE_LT_MONTH,
-			String.valueOf(displayTerms.getModifiedDateLTMonth()));
-		iteratorURL.setParameter(
-			AccountDisplayTerms.MODIFIED_DATE_LT_YEAR,
-			String.valueOf(displayTerms.getModifiedDateLTYear()));
+			AccountDisplayTerms.MODIFIED_DATE_LT,
+			displayTerms.getModifiedDateLT());
 		iteratorURL.setParameter(
 			AccountDisplayTerms.NAME, displayTerms.getName());
 		iteratorURL.setParameter(

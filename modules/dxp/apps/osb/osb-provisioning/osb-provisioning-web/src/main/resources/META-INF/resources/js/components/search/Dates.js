@@ -40,7 +40,7 @@ function Dates() {
 				<input
 					className="form-control form-control-sm"
 					id="createdAfter"
-					name={`${NAMESPACE}createDateGTDate`}
+					name={`${NAMESPACE}createDateGT`}
 					type="date"
 				/>
 			</div>
@@ -52,7 +52,7 @@ function Dates() {
 				<input
 					className="form-control form-control-sm"
 					id="createdBefore"
-					name={`${NAMESPACE}createDateLTDate`}
+					name={`${NAMESPACE}createDateLT`}
 					type="date"
 				/>
 			</div>
@@ -64,7 +64,7 @@ function Dates() {
 				<input
 					className="form-control form-control-sm"
 					id="modifiedAfter"
-					name={`${NAMESPACE}modifiedDateGTDate`}
+					name={`${NAMESPACE}modifiedDateGT`}
 					type="date"
 				/>
 			</div>
@@ -76,7 +76,7 @@ function Dates() {
 				<input
 					className="form-control form-control-sm"
 					id="modifiedBefore"
-					name={`${NAMESPACE}modifiedDateLTDate`}
+					name={`${NAMESPACE}modifiedDateLT`}
 					type="date"
 				/>
 			</div>
