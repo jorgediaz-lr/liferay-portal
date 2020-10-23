@@ -54,6 +54,30 @@ describe('Account', () => {
 		expect(container).toBeTruthy();
 	});
 
+	it('displays a Partner field', () => {
+		const {getByText} = renderCategorization();
+
+		getByText('partner');
+	});
+
+	it('displays a Provides FLS field', () => {
+		const {getByText} = renderCategorization();
+
+		getByText('provides-fls');
+	});
+
+	it('displays a Receives FLS field', () => {
+		const {getByText} = renderCategorization();
+
+		getByText('receives-fls');
+	});
+
+	it('displays an Internal field', () => {
+		const {getByText} = renderCategorization();
+
+		getByText('internal');
+	});
+
 	it('displays a Tier field', () => {
 		const {getByText} = renderCategorization();
 

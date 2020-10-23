@@ -21,8 +21,57 @@ function Categorization({
 	subscriptionStateNames,
 	tierNames
 }) {
+	const binarySelection = [
+		Liferay.Language.get('yes'),
+		Liferay.Language.get('no')
+	];
+
 	return (
 		<div className="panel-body">
+			<div className="col-md-3 form-group">
+				<h5 className="form-check-inline">
+					{Liferay.Language.get('partner')}
+				</h5>
+
+				<CheckboxGroup
+					fieldValues={binarySelection}
+					inputName="partner"
+				/>
+			</div>
+
+			<div className="col-md-3 form-group">
+				<h5 className="form-check-inline">
+					{Liferay.Language.get('provides-fls')}
+				</h5>
+
+				<CheckboxGroup
+					fieldValues={binarySelection}
+					inputName="providesFLS"
+				/>
+			</div>
+
+			<div className="col-md-3 form-group">
+				<h5 className="form-check-inline">
+					{Liferay.Language.get('receives-fls')}
+				</h5>
+
+				<CheckboxGroup
+					fieldValues={binarySelection}
+					inputName="receivesFLS"
+				/>
+			</div>
+
+			<div className="col-md-3 form-group">
+				<h5 className="form-check-inline">
+					{Liferay.Language.get('internal')}
+				</h5>
+
+				<CheckboxGroup
+					fieldValues={binarySelection}
+					inputName="internal"
+				/>
+			</div>
+
 			<div className="col-md-3 form-group">
 				<h5 className="form-check-inline">
 					{Liferay.Language.get('tier')}
