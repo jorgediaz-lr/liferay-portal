@@ -34,7 +34,13 @@ function AdvancedSearch({
 
 	return (
 		<div className="advanced-search-container" id="advancedSearch">
-			<form action={formAction} method="post" name="advancedSearch">
+			<form action={formAction} method="get" name="advancedSearch">
+				<input
+					name="p_p_id"
+					type="hidden"
+					value="com_liferay_osb_provisioning_web_portlet_AccountsPortlet"
+				/>
+				<input name="p_p_lifecycle" type="hidden" value="0" />
 				<input
 					name={`${NAMESPACE}advancedSearch`}
 					type="hidden"
