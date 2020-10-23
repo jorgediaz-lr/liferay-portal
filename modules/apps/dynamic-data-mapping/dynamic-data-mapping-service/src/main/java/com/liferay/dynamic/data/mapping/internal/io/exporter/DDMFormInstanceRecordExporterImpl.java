@@ -191,7 +191,7 @@ public class DDMFormInstanceRecordExporterImpl
 					ddmFormFieldsValue.put(
 						entry.getKey(),
 						getDDMFormFieldValue(
-							entry.getValue(), ddmFormFieldValuesMap, locale));
+							entry.getValue(), ddmFormFieldValuesMap, ddmFormValues.getDefaultLocale()));
 				}
 			}
 
