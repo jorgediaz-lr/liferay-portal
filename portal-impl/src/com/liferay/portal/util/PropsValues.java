@@ -167,7 +167,7 @@ public class PropsValues {
 
 	/**
 	 * @deprecated As of Mueller (7.2.x), replaced by {@link
-	 *             #VIEW_COUNT_ENABLED}
+	 *             #ASSET_ENTRY_VIEW_COUNT_ENABLED}
 	 */
 	@Deprecated
 	public static final boolean ASSET_ENTRY_BUFFERED_INCREMENT_ENABLED =
@@ -914,7 +914,7 @@ public class PropsValues {
 
 	/**
 	 * @deprecated As of Mueller (7.2.x), replaced by {@link
-	 *             #VIEW_COUNT_ENABLED}
+	 *             #DL_FILE_ENTRY_VIEW_COUNT_ENABLED}
 	 */
 	@Deprecated
 	public static final boolean DL_FILE_ENTRY_BUFFERED_INCREMENT_ENABLED =
