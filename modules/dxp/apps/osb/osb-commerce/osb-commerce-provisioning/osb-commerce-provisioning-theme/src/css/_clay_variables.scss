@@ -13,7 +13,7 @@ $orange: #ff8c21;
 
 $secondary-l2: rgba(11, 99, 206, 0.3);
 
-$secondary-bg: #dae2fb;
+$secondary-bg: #dbeeff;
 
 $font-family-sans-serif: 'Source Sans Pro', -apple-system, blinkmacsystemfont,
 	'Segoe UI', roboto, 'Helvetica Neue', arial, 'Noto Sans', sans-serif,
@@ -44,3 +44,7 @@ $box-shadow: 0 5px 8px -5px rgba(0, 0, 0, 0.2);
 $box-shadow-hover: 0 20px 30px -10px rgba(0, 0, 0, 0.2);
 $control-menu-height-desktop: 56px;
 $topbar-height: 50px;
+
+// parallax
+$base-parallax-perspective: 20;
+$base-parallax-z-distance: 5;

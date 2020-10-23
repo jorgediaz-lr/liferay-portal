@@ -21,25 +21,36 @@
 				<#include "${full_templates_path}/header.ftl" />
 			</#if>
 
-			<main class="container" id="content" role="main">
-				<h2 class="sr-only" role="heading" aria-level="1">${the_title}</h2>
+			<div class="parallax-container">
+				<div class="parallax">
+					<div class="bg-wrapper container">
+						<div class="bg back"></div>
+						<div class="bg front"></div>
+					</div>
 
-				<#if selectable>
-					<@liferay_util["include"] page=content_include />
-				<#else>
-					${portletDisplay.recycle()}
+					<div class="content-wrapper">
+						<main id="content" role="main">
+							<h2 class="sr-only" role="heading" aria-level="1">${the_title}</h2>
 
-					${portletDisplay.setTitle(the_title)}
+							<#if selectable>
+								<@liferay_util["include"] page=content_include />
+							<#else>
+								${portletDisplay.recycle()}
 
-					<@liferay_theme["wrap-portlet"] page="portlet.ftl">
-						<@liferay_util["include"] page=content_include />
-					</@>
-				</#if>
-			</main>
+								${portletDisplay.setTitle(the_title)}
 
-			<#if show_footer>
-				<#include "${full_templates_path}/footer.ftl" />
-			</#if>
+								<@liferay_theme["wrap-portlet"] page="portlet.ftl">
+									<@liferay_util["include"] page=content_include />
+								</@>
+							</#if>
+						</main>
+
+						<#if show_footer>
+							<#include "${full_templates_path}/footer.ftl" />
+						</#if>
+					</div>
+				</div>
+			</div>
 		</div>
 
 	<@liferay_util["include"] page=body_bottom_include />

@@ -22,4 +22,8 @@
 	&.is-solid::before {
 		opacity: 1;
 	}
+
+	&.is-solid {
+		box-shadow: 0 2px 33px -24px #134194;
+	}
 }

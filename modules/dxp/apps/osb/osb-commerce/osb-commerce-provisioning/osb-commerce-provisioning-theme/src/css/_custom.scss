@@ -1,4 +1,5 @@
 @import 'fonts';
+@import 'parallax';
 
 body {
 	background: linear-gradient(
@@ -13,6 +14,7 @@ html,
 body {
 	overflow-x: hidden;
 	width: 100vw;
+	-webkit-font-smoothing: subpixel-antialiased;
 }
 
 #wrapper {

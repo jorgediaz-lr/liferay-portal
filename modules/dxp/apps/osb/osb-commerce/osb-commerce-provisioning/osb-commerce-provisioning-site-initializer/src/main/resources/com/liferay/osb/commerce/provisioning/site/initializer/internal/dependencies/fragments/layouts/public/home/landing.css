@@ -1,6 +1,10 @@
 .osb-commerce-landing {
-	min-height: calc(100vh - 200px);
+	height: 100vh;
 	position: relative;
+}
+
+.has-control-menu .osb-commerce-landing {
+	height: calc(100vh - 56px);
 }
 
 .osb-commerce-landing-headline {
@@ -8,27 +12,22 @@
 }
 
 .osb-commerce-landing-image {
-	filter: saturate(.5) hue-rotate(20deg) brightness(1.2);
-	height: 100%;
+	bottom: 0;
+	height: auto;
 	left: 0;
-	opacity: 0.5;
 	position: absolute;
-	top: 0;
+	transform: translateY(-151px);
 	width: 100%;
 	z-index: 1;
 }
 
-.osb-commerce-landing-image > div {
-	height: inherit;
-	width: inherit;
-}
-
 .osb-commerce-landing-image img {
+	bottom: 0;
 	display: block;
-	height: 70%;
-	margin: 15rem auto 0 auto;
-	position: relative;
-	width: auto;
+	height: auto;
+	left: 8%;
+	position: absolute;
+	width: 84%;
 }
 
 .osb-commerce-landing-text {
@@ -39,20 +38,27 @@
 	font-size: 1.5rem;
 }
 
+.osb-commerce-landing-trial-btn {
+	box-shadow: 0 4px 20px -8px #134194;
+}
+
 .osb-commerce-plans-pricing {
+	margin-top: -77px;
 	position: relative;
 }
 
 .osb-commerce-plans-pricing::before {
 	background-color: #fff;
 	content: '';
-	height: 100%;
+	height: 140%;
 	position: absolute;
 	top: -7rem;
 	width: 100%;
 }
 
 .osb-commerce-rep {
+	margin-top: 10rem;
+	padding: 6rem;
 	position: relative;
 	width: 100vw;
 }
