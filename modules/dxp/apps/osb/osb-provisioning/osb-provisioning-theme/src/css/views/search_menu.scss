@@ -48,6 +48,11 @@ body {
 	.panel-header {
 		border-bottom: 1px solid $secondary-l1;
 		border-radius: 0;
+
+		.collapse-icon-closed,
+		.collapse-icon-open {
+			right: 0;
+		}
 	}
 
 	.panel-title {
