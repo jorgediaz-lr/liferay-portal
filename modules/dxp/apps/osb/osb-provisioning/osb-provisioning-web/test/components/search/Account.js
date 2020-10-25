@@ -41,6 +41,12 @@ describe('Account', () => {
 		getByLabelText('code');
 	});
 
+	it('displays a Project Worker email field', () => {
+		const {getByLabelText} = renderAccount();
+
+		expect(getByLabelText('project-worker').type).toBe('email');
+	});
+
 	it('displays a Country dropdown field', () => {
 		const {getByLabelText, getByText} = renderAccount();
 

@@ -40,11 +40,28 @@ function Account({countryNames}) {
 			</div>
 
 			<div className="col-md-6 form-group">
+				<label htmlFor="workerContactEmailAddress">
+					{Liferay.Language.get('project-worker')}
+				</label>
+				<input
+					className="form-control form-control-sm"
+					id="workerContactEmailAddress"
+					name={`${NAMESPACE}workerContactEmailAddress`}
+					type="email"
+				/>
+				<div className="form-feedback-group">
+					<div className="form-text">
+						{Liferay.Language.get('users-liferay-email-address')}
+					</div>
+				</div>
+			</div>
+
+			<div className="col-md-6 form-group">
 				<label htmlFor="countryName">
 					{Liferay.Language.get('country')}
 				</label>
 				<select
-					className="form-control"
+					className="form-control form-control-sm"
 					id="countryName"
 					name={`${NAMESPACE}countryName`}
 				>
