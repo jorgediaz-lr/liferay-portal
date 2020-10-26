@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.commerce.portal.instances.initializer.internal;
+package com.liferay.osb.commerce.instance.initializer.internal;
 
 import com.liferay.commerce.account.constants.CommerceAccountActionKeys;
 import com.liferay.commerce.constants.CommerceActionKeys;

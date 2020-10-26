@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.commerce.portal.instances.initializer.internal.instance.lifecycle;
+package com.liferay.osb.commerce.instance.initializer.internal.instance.lifecycle;
 
 import com.liferay.oauth2.provider.constants.ClientProfile;
 import com.liferay.oauth2.provider.constants.OAuth2ProviderActionKeys;
