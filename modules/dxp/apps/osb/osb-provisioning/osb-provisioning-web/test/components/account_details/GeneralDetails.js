@@ -26,12 +26,11 @@ function renderGeneralDetails(props) {
 				name: 'Test Account',
 				parterTeamName: 'Test Partner Team',
 				region: 'US',
-				status: 'Active',
-				statusStyle: 'label-success',
+				subscriptionState: 'Active',
+				subscriptionStateStyle: 'label-success',
 				tier: 'Regular'
 			}}
 			parentAccountName="Parent Account Name"
-			statuses={['Active', 'Closed']}
 			tiers={['1', '2', '3']}
 			{...props}
 		/>
@@ -45,6 +44,27 @@ describe('GeneralDetails', () => {
 		const {container} = renderGeneralDetails();
 
 		expect(container).toBeTruthy();
+	});
+
+	it('shows Account Name field', () => {
+		const {getByText} = renderGeneralDetails();
+
+		getByText('account-name');
+		getByText('Test Account');
+	});
+
+	it('shows Code field', () => {
+		const {getByText} = renderGeneralDetails();
+
+		getByText('code');
+		getByText('123');
+	});
+
+	it('shows Tier field', () => {
+		const {getByText} = renderGeneralDetails();
+
+		getByText('tier');
+		getByText('Regular');
 	});
 
 	it('shows Parent Account field', () => {

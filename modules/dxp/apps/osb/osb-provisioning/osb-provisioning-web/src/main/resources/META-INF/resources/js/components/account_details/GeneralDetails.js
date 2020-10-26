@@ -26,7 +26,6 @@ function GeneralDetails({
 	assignParentAccountURL,
 	details,
 	parentAccountName,
-	statuses,
 	tiers
 }) {
 	const parentAccountFormData = {parentAccountKey: ''};
@@ -34,7 +33,6 @@ function GeneralDetails({
 		code: convertDashToEmptyString(details.code),
 		name: convertDashToEmptyString(details.name),
 		region: convertDashToEmptyString(details.region),
-		status: convertDashToEmptyString(details.status),
 		tier: convertDashToEmptyString(details.tier),
 		updateAccount: true
 	};
@@ -64,14 +62,10 @@ function GeneralDetails({
 
 			<DetailField
 				displayAs="label"
-				fieldLabel={Liferay.Language.get('status')}
-				fieldName="status"
-				formAction={details.editAccountURL}
-				formData={formData}
-				inputStyle={details.statusStyle}
-				options={createSelectOptions(statuses)}
-				type={FIELD_TYPE_SELECT}
-				value={details.status}
+				fieldLabel={Liferay.Language.get('state')}
+				inputStyle={details.subscriptionStateStyle}
+				type={FIELD_TYPE_NONEDITABLE}
+				value={details.subscriptionState}
 			/>
 
 			<DetailField
@@ -134,12 +128,11 @@ GeneralDetails.propTypes = {
 		name: PropTypes.string,
 		parterTeamName: PropTypes.string,
 		region: PropTypes.string,
-		status: PropTypes.string,
-		statusStyle: PropTypes.string,
+		subscriptionState: PropTypes.string,
+		subscriptionStateStyle: PropTypes.string,
 		tier: PropTypes.string
 	}),
 	parentAccountName: PropTypes.string,
-	statuses: PropTypes.arrayOf(PropTypes.string).isRequired,
 	tiers: PropTypes.arrayOf(PropTypes.string).isRequired
 };
 

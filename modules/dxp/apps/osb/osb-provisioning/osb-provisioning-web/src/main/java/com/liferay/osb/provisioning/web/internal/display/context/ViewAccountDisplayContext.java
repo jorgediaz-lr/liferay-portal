@@ -164,14 +164,6 @@ public class ViewAccountDisplayContext {
 
 		data.put("parentAccountName", getParentAccountName());
 
-		List<String> statusNames = new ArrayList<>();
-
-		for (Account.Status status : Account.Status.values()) {
-			statusNames.add(status.toString());
-		}
-
-		data.put("statusNames", statusNames);
-
 		List<String> tierNames = new ArrayList<>();
 
 		for (Account.Tier tier : Account.Tier.values()) {

@@ -34,15 +34,14 @@ function renderAccountDetails(props) {
 				postalAddressDisplays: [],
 				region: 'US',
 				salesforceProjectKey: 'TestSalesForceProjectKey',
-				status: 'Active',
-				statusStyle: 'label-success',
+				subscriptionState: 'Active',
+				subscriptionStateStyle: 'label-success',
 				tier: 'Regular',
 				updateDossieraAccountURL: '/update/dossiera/account',
 				updateDossieraProjectURL: '/update/dossiera/project',
 				updateSalesforceProjectURL: 'update/salesforce/project'
 			}}
 			parentAccountName="parent"
-			statusNames={['Active', 'Closed']}
 			tierNames={['1', '2', '3']}
 			{...props}
 		/>

@@ -23,7 +23,6 @@ function AccountDetails({
 	assignPartnerTeamURL,
 	details,
 	parentAccountName,
-	statusNames,
 	tierNames
 }) {
 	return (
@@ -32,7 +31,6 @@ function AccountDetails({
 				assignParentAccountURL={assignParentAccountURL}
 				details={details}
 				parentAccountName={parentAccountName}
-				statuses={statusNames}
 				tiers={tierNames}
 			/>
 
@@ -87,15 +85,14 @@ AccountDetails.propTypes = {
 		),
 		region: PropTypes.string,
 		salesforceProjectKey: PropTypes.string,
-		status: PropTypes.string,
-		statusStyle: PropTypes.string,
+		subscriptionState: PropTypes.string,
+		subscriptionStateStyle: PropTypes.string,
 		tier: PropTypes.string,
 		updateDossieraAccountURL: PropTypes.string,
 		updateDossieraProjectURL: PropTypes.string,
 		updateSalesforceProjectURL: PropTypes.string
 	}),
 	parentAccountName: PropTypes.string,
-	statusNames: PropTypes.arrayOf(PropTypes.string),
 	tierNames: PropTypes.arrayOf(PropTypes.string)
 };
 
