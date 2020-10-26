@@ -18,6 +18,8 @@ import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.service.AssetEntryLocalService;
 import com.liferay.asset.util.AssetRendererFactoryLookup;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.DocumentContributor;
@@ -25,8 +27,9 @@ import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 
+import java.text.ParseException;
+
 import java.util.Date;
-import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -53,12 +56,19 @@ public class AssetEntryDocumentContributor implements DocumentContributor {
 
 		AssetEntry assetEntry;
 
-		Map<String, Object> modelAttributes = baseModel.getModelAttributes();
+		Date displayDate = new Date();
 
-		Date displayDate = (Date)modelAttributes.get(Field.DISPLAY_DATE);
+		try {
+			displayDate = document.getDate(Field.DISPLAY_DATE);
+		}
+		catch (ParseException parseException) {
+			if (_log.isWarnEnabled()) {
+				_log.warn("Unable to parse data ", parseException);
+			}
+		}
 
 		if (displayDate.getTime() > System.currentTimeMillis()) {
-			String uuid = GetterUtil.getString(modelAttributes.get("uuid"));
+			String uuid = GetterUtil.getString(document.get(Field.UUID));
 
 			long groupId = GetterUtil.getLong(document.get(Field.GROUP_ID));
 
@@ -109,6 +119,9 @@ public class AssetEntryDocumentContributor implements DocumentContributor {
 		document.addNumber("viewCount", assetEntry.getViewCount());
 		document.addKeyword("visible", assetEntry.isVisible());
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		AssetEntryDocumentContributor.class);
 
 	@Reference
 	protected AssetEntryLocalService assetEntryLocalService;
