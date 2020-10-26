@@ -66,7 +66,7 @@ function Search({
 	tierNames
 }) {
 	const [error, setError] = useState(false);
-	const [keywords, setKeywords] = useState('');
+	const [keywords, setKeywords] = useState(getSearchParameter());
 	const [results, setResults] = useState([]);
 	const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
 
@@ -140,7 +140,7 @@ function Search({
 					onChange={handleOnChange}
 					onKeyDown={handleKeyDown}
 					placeholder={Liferay.Language.get('search-accounts')}
-					value={keywords || getSearchParameter()}
+					value={keywords}
 				/>
 
 				<div className="advanced-search-trigger">
