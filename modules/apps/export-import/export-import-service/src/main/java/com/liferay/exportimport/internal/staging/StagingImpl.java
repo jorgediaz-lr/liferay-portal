@@ -4273,7 +4273,9 @@ public class StagingImpl implements Staging {
 			long layoutRevisionId)
 		throws PortalException {
 
-		if (layoutRevisionId <= 0) {
+		if ((layoutRevisionId <= 0) ||
+			ExportImportThreadLocal.isLayoutStagingInProcess()) {
+
 			return;
 		}
 
