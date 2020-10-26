@@ -99,7 +99,7 @@ if (productPurchase != null) {
 				<table class="table table-autofit table-hover table-list">
 					<thead>
 						<tr>
-							<th class="table-cell-expand">
+							<th class="table-cell-expand-small">
 								<liferay-ui:message key="product" />
 							</th>
 
@@ -115,18 +115,18 @@ if (productPurchase != null) {
 							<th class="table-cell-expand-smallest">
 								<liferay-ui:message key="perpetual-subscription" />
 							</th>
-							<th class="table-cell-expand-small">
+							<th class="table-cell-expand">
 								<liferay-ui:message key="start-date" />
 							</th>
-							<th class="table-cell-expand-small">
+							<th class="table-cell-expand">
 								<liferay-ui:message key="end-date" />
 							</th>
-							<th class="table-cell-expand-small">
+							<th class="table-cell-expand">
 								<liferay-ui:message key="instance-size" />
 							</th>
 
 							<c:if test="<%= productPurchase != null %>">
-								<th class="table-cell-expand-small">
+								<th class="table-cell-expand">
 									<liferay-ui:message key="grace-period-end-date" />
 								</th>
 								<th class="table-cell-expand">
@@ -148,7 +148,7 @@ if (productPurchase != null) {
 
 					<tbody>
 						<tr>
-							<td class="table-cell-expand" id="<portlet:namespace />productName">
+							<td class="table-cell-expand-small" id="<portlet:namespace />productName">
 								<%= (productPurchase != null) ? HtmlUtil.escape(productPurchaseDisplay.getProductName()) : "" %>
 							</td>
 
@@ -175,7 +175,7 @@ if (productPurchase != null) {
 							}
 							%>
 
-							<td class="table-cell-expand-small">
+							<td class="table-cell-expand">
 								<liferay-ui:input-date
 									dayParam="startDateDay"
 									dayValue="<%= startCal.get(Calendar.DATE) %>"
@@ -199,7 +199,7 @@ if (productPurchase != null) {
 							}
 							%>
 
-							<td class="table-cell-expand-small">
+							<td class="table-cell-expand">
 								<liferay-ui:input-date
 									dayParam="endDateDay"
 									dayValue="<%= endCal.get(Calendar.DATE) %>"
@@ -211,7 +211,7 @@ if (productPurchase != null) {
 									yearValue="<%= endCal.get(Calendar.YEAR) %>"
 								/>
 							</td>
-							<td class="table-cell-expand-small">
+							<td class="table-cell-expand">
 								<aui:select cssClass="account-edit-subscription" label="" name="sizing">
 
 									<%
@@ -241,7 +241,7 @@ if (productPurchase != null) {
 								}
 								%>
 
-								<td class="table-cell-expand-small">
+								<td class="table-cell-expand">
 									<liferay-ui:input-date
 										dayParam="gracePeriodEndDateDay"
 										dayValue="<%= gracePeriodEndCal.get(Calendar.DATE) %>"
