@@ -51,6 +51,8 @@ String navigation = ParamUtil.getString(request, "navigation");
 		request.setAttribute("view.jsp-displayStyle", displayStyle);
 		%>
 
+		<portlet:actionURL name="/document_library/edit_entry" var="editEntryURL" />
+
 		<liferay-util:buffer var="uploadURL"><liferay-portlet:actionURL name="/document_library/edit_file_entry"><portlet:param name="<%= Constants.CMD %>" value="<%= Constants.ADD_DYNAMIC %>" /><portlet:param name="folderId" value="{folderId}" /><portlet:param name="repositoryId" value="<%= String.valueOf(repositoryId) %>" /></liferay-portlet:actionURL></liferay-util:buffer>
 
 		<portlet:actionURL name="/document_library/edit_entry" var="restoreTrashEntriesURL">
@@ -73,6 +75,27 @@ String navigation = ParamUtil.getString(request, "navigation");
 		context.put("bulkInProgress", bulkSelectionRunner.isBusy(user));
 		context.put("pathModule", PortalUtil.getPathModule());
 		context.put("portletNamespace", liferayPortletResponse.getNamespace());
+
+		boolean uploadable = true;
+
+		if (!DLFolderPermission.contains(permissionChecker, scopeGroupId, folderId, ActionKeys.ADD_DOCUMENT)) {
+			uploadable = false;
+		}
+		else {
+			List<AssetVocabulary> assetVocabularies = AssetVocabularyServiceUtil.getGroupVocabularies(PortalUtil.getCurrentAndAncestorSiteGroupIds(scopeGroupId));
+
+			if (!assetVocabularies.isEmpty()) {
+				long classNameId = ClassNameLocalServiceUtil.getClassNameId(DLFileEntryConstants.getClassName());
+
+				for (AssetVocabulary assetVocabulary : assetVocabularies) {
+					if (assetVocabulary.isRequired(classNameId, DLFileEntryTypeConstants.FILE_ENTRY_TYPE_ID_BASIC_DOCUMENT)) {
+						uploadable = false;
+
+						break;
+					}
+				}
+			}
+		}
 		%>
 
 		<soy:component-renderer
@@ -157,31 +180,6 @@ String navigation = ParamUtil.getString(request, "navigation");
 			PortalUtil.setPageDescription(folder.getDescription(), request);
 		}
 
-		boolean uploadable = true;
-
-		if (!DLFolderPermission.contains(permissionChecker, scopeGroupId, folderId, ActionKeys.ADD_DOCUMENT)) {
-			uploadable = false;
-		}
-		else {
-			List<AssetVocabulary> assetVocabularies = new ArrayList<>();
-
-			assetVocabularies.addAll(AssetVocabularyServiceUtil.getGroupVocabularies(PortalUtil.getCurrentAndAncestorSiteGroupIds(scopeGroupId)));
-
-			assetVocabularies.sort(new AssetVocabularyGroupLocalizedTitleComparator(scopeGroupId, themeDisplay.getLocale(), true));
-
-			if (!assetVocabularies.isEmpty()) {
-				long classNameId = ClassNameLocalServiceUtil.getClassNameId(DLFileEntryConstants.getClassName());
-
-				for (AssetVocabulary assetVocabulary : assetVocabularies) {
-					if (assetVocabulary.isRequired(classNameId, DLFileEntryTypeConstants.FILE_ENTRY_TYPE_ID_BASIC_DOCUMENT)) {
-						uploadable = false;
-
-						break;
-					}
-				}
-			}
-		}
-
 		PortletURL selectCategoriesURL = PortletProviderUtil.getPortletURL(request, AssetCategory.class.getName(), PortletProvider.Action.BROWSE);
 
 		selectCategoriesURL.setParameter("eventName", liferayPortletResponse.getNamespace() + "selectCategories");
@@ -240,7 +238,7 @@ String navigation = ParamUtil.getString(request, "navigation");
 					decimalSeparator: '<%= decimalFormatSymbols.getDecimalSeparator() %>',
 					displayStyle: '<%= HtmlUtil.escapeJS(displayStyle) %>',
 					editEntryUrl:
-						'<portlet:actionURL name="/document_library/edit_entry" />',
+						'<%=((themeDisplay.isSignedIn())?editEntryURL:StringPool.BLANK ) %>',
 					downloadEntryUrl:
 						'<portlet:resourceURL id="/document_library/download_entry"><portlet:param name="folderId" value="<%= String.valueOf(folderId) %>" /></portlet:resourceURL>',
 					folders: {
@@ -270,7 +268,7 @@ String navigation = ParamUtil.getString(request, "navigation");
 					searchContainerId: 'entries',
 					trashEnabled: <%= (scopeGroupId == repositoryId) && dlTrashUtil.isTrashEnabled(scopeGroupId, repositoryId) %>,
 					uploadable: <%= uploadable %>,
-					uploadURL: '<%= uploadURL %>',
+					uploadURL: '<%= (uploadable)?uploadURL:StringPool.BLANK %>',
 					viewFileEntryURL:
 						'<portlet:renderURL><portlet:param name="mvcRenderCommandName" value="/document_library/view_file_entry" /><portlet:param name="redirect" value="<%= currentURL %>" /></portlet:renderURL>',
 					viewFileEntryTypeURL: '<%= viewFileEntryTypeURL %>'

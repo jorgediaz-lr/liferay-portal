@@ -24,7 +24,7 @@
 		cssClass="display-icon entry-display-style"
 		imageUrl="<%= thumbnailSrc %>"
 		title="{title}"
-		url="<%= uploadURL %>"
+		url="<%= (uploadable)?uploadURL:StringPool.BLANK %>"
 	>
 		<liferay-frontend:vertical-card-header>
 			<liferay-ui:message arguments="<%= HtmlUtil.escape(user.getFullName()) %>" key="right-now-by-x" />
@@ -46,7 +46,7 @@
 			</h5>
 
 			<h4>
-				<aui:a href="<%= uploadURL.toString() %>">
+				<aui:a href="<%= (uploadable)?uploadURL.toString():StringPool.BLANK %>">
 					{title}
 				</aui:a>
 			</h4>
