@@ -1,0 +1,43 @@
+{namespace com.liferay.layout.content.page.editor.web.FloatingToolbarFragmentSearchPanel}
+
+/**
+ * FloatingToolbarFragmentSearchPanel
+ */
+{template .render}
+	{@param? _checked: bool}
+	{@param? _handleFragmentNonIndexableOptionChange: any}
+	{@param? _handleFragmentNonIndexableOptionMousedown: any}
+
+	<div class="popover p-3">
+		<div class="form-group">
+			{call .fragmentNonIndexableOptions}
+				{param checked: $_checked ?: false /}
+				{param handleFragmentNonIndexableOptionChange: $_handleFragmentNonIndexableOptionChange /}
+				{param handleFragmentNonIndexableOptionMousedown: $_handleFragmentNonIndexableOptionMousedown /}
+			{/call}
+		</div>
+	</div>
+{/template}
+
+/**
+ * nonIndexable options
+ */
+{template .fragmentNonIndexableOptions}
+	{@param checked: bool}
+	{@param? handleFragmentNonIndexableOptionChange: any}
+	{@param? handleFragmentNonIndexableOptionMousedown: any}
+
+	{let $nonIndexableCheckboxLabel kind="text"}
+		{msg desc=""}hide-content-from-search-results{/msg}
+	{/let}
+
+	{call ClayCheckbox.render}
+		{param checked: $checked /}
+		{param elementClasses: 'mb-0' /}
+		{param events: [
+			'change': $handleFragmentNonIndexableOptionChange,
+			'mousedown': $handleFragmentNonIndexableOptionMousedown
+		] /}
+		{param label: $nonIndexableCheckboxLabel /}
+	{/call}
+{/template}

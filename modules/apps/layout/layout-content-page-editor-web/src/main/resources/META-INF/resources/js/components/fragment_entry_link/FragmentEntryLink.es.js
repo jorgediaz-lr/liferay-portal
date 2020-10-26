@@ -18,6 +18,8 @@ import {Config} from 'metal-state';
 
 import '../floating_toolbar/fragment_configuration/FloatingToolbarFragmentConfigurationPanel.es';
 
+import '../floating_toolbar/fragment_search/FloatingToolbarFragmentSearchPanel.es';
+
 import './FragmentEntryLinkContent.es';
 import {
 	MOVE_FRAGMENT_ENTRY_LINK,
@@ -256,6 +258,8 @@ class FragmentEntryLink extends Component {
 		if (this._shouldShowConfigPanel()) {
 			buttons.push(FLOATING_TOOLBAR_BUTTONS.fragmentConfiguration);
 		}
+
+		buttons.push(FLOATING_TOOLBAR_BUTTONS.fragmentSearch);
 
 		return buttons;
 	}

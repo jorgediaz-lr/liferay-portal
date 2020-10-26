@@ -25,6 +25,7 @@ import {
 const LayoutDataShape = Config.shapeOf({
 	nextColumnId: Config.number(),
 	nextRowId: Config.number(),
+	nonIndexableFragmentEntryLinkIds: Config.arrayOf(Config.string()),
 	structure: Config.arrayOf(
 		Config.shapeOf({
 			columns: Config.arrayOf(

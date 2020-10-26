@@ -40,6 +40,7 @@ import {
 	UPDATE_FRAGMENT_ENTRY_LINK_COMMENT,
 	UPDATE_FRAGMENT_ENTRY_LINK_COMMENT_REPLY,
 	UPDATE_FRAGMENT_ENTRY_LINK_CONTENT,
+	UPDATE_FRAGMENT_ENTRY_LINK_SEARCH_OPTIONS,
 	UPDATE_HOVERED_ITEM,
 	UPDATE_LAST_SAVE_DATE,
 	UPDATE_PAGE_CONTENTS,
@@ -64,7 +65,8 @@ import {
 	updateEditableValueReducer,
 	updateFragmentEntryLinkCommentReducer,
 	updateFragmentEntryLinkConfigReducer,
-	updateFragmentEntryLinkContentReducer
+	updateFragmentEntryLinkContentReducer,
+	updateFragmentEntryLinkSearchOptionsReducer
 } from './fragments.es';
 import {addMappingAssetEntry} from './mapping.es';
 import {
@@ -121,6 +123,7 @@ const reducers = {
 	[UPDATE_FRAGMENT_ENTRY_LINK_COMMENT]: updateFragmentEntryLinkCommentReducer,
 	[UPDATE_FRAGMENT_ENTRY_LINK_COMMENT_REPLY]: updateFragmentEntryLinkCommentReducer,
 	[UPDATE_FRAGMENT_ENTRY_LINK_CONTENT]: updateFragmentEntryLinkContentReducer,
+	[UPDATE_FRAGMENT_ENTRY_LINK_SEARCH_OPTIONS]: updateFragmentEntryLinkSearchOptionsReducer,
 	[UPDATE_HOVERED_ITEM]: updateHoveredItemReducer,
 	[UPDATE_LAST_SAVE_DATE]: saveChangesReducer,
 	[UPDATE_PAGE_CONTENTS]: createSetValueReducer('pageContents'),

@@ -138,6 +138,14 @@ export const FLOATING_TOOLBAR_BUTTONS = {
 		type: 'panel'
 	},
 
+	fragmentSearch: {
+		icon: 'search',
+		id: 'fragment_search',
+		panelId: 'fragment_search',
+		title: Liferay.Language.get('search-options'),
+		type: 'panel'
+	},
+
 	imageProperties: {
 		icon: 'pencil',
 		id: 'image_properties',

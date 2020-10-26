@@ -608,6 +608,42 @@ function updateFragmentEntryLinkContentReducer(state, action) {
 }
 
 /**
+ * @param {object} state
+ * @param {object} action
+ * @param {string} action.fragmentEntryLinkId
+ * @param {boolean} action.nonIndexable
+ * @return {object}
+ * @review
+ */
+function updateFragmentEntryLinkSearchOptionsReducer(state, action) {
+	const {fragmentEntryLinkId, nonIndexable} = action;
+	let nextState = state;
+
+	if (nonIndexable) {
+		nextState = setIn(
+			nextState,
+			['layoutData'],
+			_addFragmentToHiddenContentFromSearch(
+				nextState.layoutData,
+				fragmentEntryLinkId
+			)
+		);
+	}
+	else {
+		nextState = setIn(
+			nextState,
+			['layoutData'],
+			_removeFragmentFromHiddenContentFromSearch(
+				nextState.layoutData,
+				fragmentEntryLinkId
+			)
+		);
+	}
+
+	return nextState;
+}
+
+/**
  * @param {string} addFragmentEntryLinkURL
  * @param {string} fragmentEntryKey
  * @param {string} fragmentName
@@ -693,6 +729,43 @@ function _addFragmentToColumn(
 		fragmentEntryLinkIds =>
 			add(fragmentEntryLinkIds, fragmentEntryLinkId, position)
 	);
+}
+
+/**
+ * Adds a given fragmentEntryLinkId to hidden content from search.
+ *
+ * @param {object} layoutData
+ * @param {string} fragmentEntryLinkId
+ * @return {object} Next layout data
+ * @review
+ */
+function _addFragmentToHiddenContentFromSearch(
+	layoutData,
+	fragmentEntryLinkId
+) {
+	const {nonIndexableFragmentEntryLinkIds} = layoutData;
+
+	let fragmentIndex = -1;
+
+	if (nonIndexableFragmentEntryLinkIds) {
+		fragmentIndex = nonIndexableFragmentEntryLinkIds.indexOf(
+			fragmentEntryLinkId
+		);
+	}
+
+	let nextData = layoutData;
+
+	if (fragmentIndex === -1) {
+		nextData = updateIn(
+			layoutData,
+			['nonIndexableFragmentEntryLinkIds'],
+			nonIndexableFragmentEntryLinkIds =>
+				add(nonIndexableFragmentEntryLinkIds, fragmentEntryLinkId, 0),
+			[]
+		);
+	}
+
+	return nextData;
 }
 
 /**
@@ -858,6 +931,32 @@ function _removeFragment(
 	return nextData;
 }
 
+/**
+ * Removes a given fragmentEntryLinkId to hidden content from search.
+ *
+ * @param {object} layoutData
+ * @param {string} fragmentEntryLinkId
+ * @return {object} Next layout data
+ * @review
+ */
+function _removeFragmentFromHiddenContentFromSearch(
+	layoutData,
+	fragmentEntryLinkId
+) {
+	const {nonIndexableFragmentEntryLinkIds} = layoutData;
+
+	const fragmentIndex = nonIndexableFragmentEntryLinkIds.indexOf(
+		fragmentEntryLinkId
+	);
+
+	return updateIn(
+		layoutData,
+		['nonIndexableFragmentEntryLinkIds'],
+		nonIndexableFragmentEntryLinkIds =>
+			remove(nonIndexableFragmentEntryLinkIds, fragmentIndex)
+	);
+}
+
 export {
 	addFragment,
 	addFragmentEntryLinkReducer,
@@ -870,5 +969,6 @@ export {
 	updateEditableValueReducer,
 	updateFragmentEntryLinkConfigReducer,
 	updateFragmentEntryLinkCommentReducer,
-	updateFragmentEntryLinkContentReducer
+	updateFragmentEntryLinkContentReducer,
+	updateFragmentEntryLinkSearchOptionsReducer
 };
