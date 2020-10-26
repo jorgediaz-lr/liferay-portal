@@ -32,14 +32,18 @@ import com.liferay.osb.provisioning.web.internal.search.AccountSearchTerms;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.Country;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
 import com.liferay.portal.kernel.service.CountryService;
+import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
 import java.util.ArrayList;
@@ -69,7 +73,8 @@ public class AccountSearchDisplayContext {
 		HttpServletRequest httpServletRequest, AccountReader accountReader,
 		AccountWebService accountWebService, CountryService countryService,
 		IdentityProvider identityProvider, ProductWebService productWebService,
-		TeamRoleWebService teamRoleWebService) {
+		TeamRoleWebService teamRoleWebService,
+		UserLocalService userLocalService) {
 
 		_renderRequest = renderRequest;
 		_renderResponse = renderResponse;
@@ -80,6 +85,7 @@ public class AccountSearchDisplayContext {
 		_identityProvider = identityProvider;
 		_productWebService = productWebService;
 		_teamRoleWebService = teamRoleWebService;
+		_userLocalService = userLocalService;
 
 		_currentURLObj = PortletURLUtil.getCurrent(
 			_renderRequest, _renderResponse);
@@ -197,19 +203,8 @@ public class AccountSearchDisplayContext {
 		if (searchTerms.isAdvancedSearch()) {
 			Set<String> subscriptionProductKeys = _getSubscriptionProductKeys();
 
-			String createdByUuid = null;
-
-			String createdByEmailAddress =
-				searchTerms.getCreatedByEmailAddress();
-
-			if (Validator.isNotNull(createdByEmailAddress)) {
-				JSONObject jsonObject = _identityProvider.fetchByEmailAddress(
-					createdByEmailAddress);
-
-				if (jsonObject != null) {
-					createdByUuid = jsonObject.getString("uuid");
-				}
-			}
+			String createdByUuid = _getCreatedByUuid(
+				searchTerms.getCreatedByEmailAddress());
 
 			TeamRole flsTeamRole = _teamRoleWebService.getTeamRole(
 				TeamRoleConstants.NAME_FIRST_LINE_SUPPORT,
@@ -248,6 +243,34 @@ public class AccountSearchDisplayContext {
 		_accountSearch.setTotal(count);
 
 		return _accountSearch;
+	}
+
+	private String _getCreatedByUuid(String createdByEmailAddress)
+		throws Exception {
+
+		if (Validator.isNull(createdByEmailAddress)) {
+			return StringPool.BLANK;
+		}
+
+		ThemeDisplay themeDisplay =
+			(ThemeDisplay)_httpServletRequest.getAttribute(
+				WebKeys.THEME_DISPLAY);
+
+		User user = _userLocalService.fetchUserByEmailAddress(
+			themeDisplay.getCompanyId(), createdByEmailAddress);
+
+		if (user != null) {
+			return user.getUuid();
+		}
+
+		JSONObject jsonObject = _identityProvider.fetchByEmailAddress(
+			createdByEmailAddress);
+
+		if (jsonObject != null) {
+			return jsonObject.getString("uuid");
+		}
+
+		return "not-available";
 	}
 
 	private Set<String> _getSubscriptionProductKeys() throws Exception {
@@ -290,5 +313,6 @@ public class AccountSearchDisplayContext {
 	private final RenderResponse _renderResponse;
 	private Set<String> _subscriptionProductKeys;
 	private final TeamRoleWebService _teamRoleWebService;
+	private final UserLocalService _userLocalService;
 
 }
