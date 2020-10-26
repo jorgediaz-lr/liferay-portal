@@ -28,7 +28,6 @@ import com.liferay.commerce.theme.minium.SiteInitializerDependencyResolverThread
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.instances.exception.InitializationException;
 import com.liferay.portal.instances.initializer.PortalInstanceInitializer;
-import com.liferay.portal.instances.service.PortalInstancesLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -49,7 +48,6 @@ import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.site.initializer.SiteInitializer;
 
@@ -274,12 +272,6 @@ public class OSBCommercePortalInstanceInitializer
 
 	@Reference
 	private GroupLocalService _groupLocalService;
-
-	@Reference
-	private Portal _portal;
-
-	@Reference
-	private PortalInstancesLocalService _portalInstancesLocalService;
 
 	@Reference
 	private ResourcePermissionLocalService _resourcePermissionLocalService;
