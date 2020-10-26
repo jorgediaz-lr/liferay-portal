@@ -37,7 +37,7 @@ public class OSBCommercePortalInstanceImpl
 
 	@Override
 	public String getPortalInstanceURL(String portalInstanceVirtualHostname) {
-		StringBundler sb = new StringBundler(7);
+		StringBundler sb = new StringBundler(6);
 
 		sb.append(
 			_osbCommerceProvisioningConfiguration.
@@ -48,7 +48,6 @@ public class OSBCommercePortalInstanceImpl
 		sb.append(StringPool.COLON);
 		sb.append(
 			_osbCommerceProvisioningConfiguration.osbCommerceInstancePort());
-		sb.append("/group/osb-commerce");
 
 		return sb.toString();
 	}
