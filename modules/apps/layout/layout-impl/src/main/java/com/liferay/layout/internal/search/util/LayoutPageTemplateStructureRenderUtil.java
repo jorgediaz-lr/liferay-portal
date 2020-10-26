@@ -26,8 +26,10 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.util.Validator;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -70,6 +72,12 @@ public class LayoutPageTemplateStructureRenderUtil {
 
 		StringBundler sb = new StringBundler();
 
+		JSONArray nonIndexableFragmentEntryLinkIdsJSONArray =
+			dataJSONObject.getJSONArray("nonIndexableFragmentEntryLinkIds");
+
+		List<String> nonIndexableFragmentEntryLinkIds = JSONUtil.toStringList(
+			nonIndexableFragmentEntryLinkIdsJSONArray);
+
 		for (int i = 0; i < structureJSONArray.length(); i++) {
 			JSONObject rowJSONObject = structureJSONArray.getJSONObject(i);
 
@@ -110,6 +118,14 @@ public class LayoutPageTemplateStructureRenderUtil {
 							fetchFragmentEntryLink(fragmentEntryLinkId);
 
 					if (fragmentEntryLink == null) {
+						continue;
+					}
+
+					if (Objects.equals(
+							mode, FragmentEntryLinkConstants.SEARCH) &&
+						nonIndexableFragmentEntryLinkIds.contains(
+							String.valueOf(fragmentEntryLinkId))) {
+
 						continue;
 					}
 

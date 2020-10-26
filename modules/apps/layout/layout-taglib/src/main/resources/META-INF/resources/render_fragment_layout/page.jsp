@@ -19,6 +19,7 @@
 <%
 Map<String, Object> fieldValues = (Map<String, Object>)request.getAttribute("liferay-layout:render-fragment-layout:fieldValues");
 String mode = (String)request.getAttribute("liferay-layout:render-fragment-layout:mode");
+List<String> nonIndexableFragmentEntryLinkIds = (List<String>)request.getAttribute("liferay-layout:render-fragment-layout:nonIndexableFragmentEntryLinkIds");
 long previewClassPK = (long)request.getAttribute("liferay-layout:render-fragment-layout:previewClassPK");
 int previewType = (int)request.getAttribute("liferay-layout:render-fragment-layout:previewType");
 long[] segmentsExperienceIds = (long[])request.getAttribute("liferay-layout:render-fragment-layout:segmentsExperienceIds");
@@ -102,6 +103,10 @@ RenderFragmentLayoutDisplayContext renderFragmentLayoutDisplayContext = new Rend
 												continue;
 											}
 
+											if (Objects.equals(mode, FragmentEntryLinkConstants.SEARCH) && nonIndexableFragmentEntryLinkIds.contains(String.valueOf(fragmentEntryLinkId))) {
+												continue;
+											}
+
 											FragmentRendererController fragmentRendererController = (FragmentRendererController)request.getAttribute(FragmentActionKeys.FRAGMENT_RENDERER_CONTROLLER);
 
 											DefaultFragmentRendererContext defaultFragmentRendererContext = new DefaultFragmentRendererContext(fragmentEntryLink);
@@ -155,6 +160,10 @@ RenderFragmentLayoutDisplayContext renderFragmentLayoutDisplayContext = new Rend
 								FragmentEntryLink fragmentEntryLink = FragmentEntryLinkLocalServiceUtil.fetchFragmentEntryLink(fragmentEntryLinkId);
 
 								if (fragmentEntryLink == null) {
+									continue;
+								}
+
+								if (Objects.equals(mode, FragmentEntryLinkConstants.SEARCH) && nonIndexableFragmentEntryLinkIds.contains(String.valueOf(fragmentEntryLinkId))) {
 									continue;
 								}
 

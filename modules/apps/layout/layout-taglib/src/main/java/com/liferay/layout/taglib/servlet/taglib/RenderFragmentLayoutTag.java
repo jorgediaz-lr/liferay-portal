@@ -20,6 +20,7 @@ import com.liferay.layout.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
@@ -31,6 +32,8 @@ import com.liferay.segments.constants.SegmentsExperienceConstants;
 import com.liferay.segments.constants.SegmentsWebKeys;
 import com.liferay.taglib.util.IncludeTag;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -112,6 +115,14 @@ public class RenderFragmentLayoutTag extends IncludeTag {
 			"liferay-layout:render-fragment-layout:fieldValues", _fieldValues);
 		httpServletRequest.setAttribute(
 			"liferay-layout:render-fragment-layout:mode", _mode);
+
+		String data = _getData();
+
+		httpServletRequest.setAttribute(
+			"liferay-layout:render-fragment-layout:" +
+				"nonIndexableFragmentEntryLinkIds",
+			_getNonIndexableFragmentEntryLinkIds(data));
+
 		httpServletRequest.setAttribute(
 			"liferay-layout:render-fragment-layout:previewClassPK",
 			_getPreviewClassPK());
@@ -121,9 +132,53 @@ public class RenderFragmentLayoutTag extends IncludeTag {
 		httpServletRequest.setAttribute(
 			"liferay-layout:render-fragment-layout:segmentsExperienceIds",
 			_getSegmentsExperienceIds());
+
 		httpServletRequest.setAttribute(
 			"liferay-layout:render-fragment-layout:structureJSONArray",
-			_getStructureJSONArray());
+			_getStructureJSONArray(data));
+	}
+
+	private String _getData() {
+		try {
+			LayoutPageTemplateStructure layoutPageTemplateStructure =
+				LayoutPageTemplateStructureLocalServiceUtil.
+					fetchLayoutPageTemplateStructure(
+						_groupId,
+						PortalUtil.getClassNameId(Layout.class.getName()),
+						_plid, true);
+
+			long[] segmentsExperienceIds = GetterUtil.getLongValues(
+				request.getAttribute(SegmentsWebKeys.SEGMENTS_EXPERIENCE_IDS),
+				new long[] {SegmentsExperienceConstants.ID_DEFAULT});
+
+			return layoutPageTemplateStructure.getData(segmentsExperienceIds);
+		}
+		catch (Exception exception) {
+			_log.error("Unable to get structure data", exception);
+
+			return "";
+		}
+	}
+
+	private List<String> _getNonIndexableFragmentEntryLinkIds(String data) {
+		try {
+			if (Validator.isNull(data)) {
+				return null;
+			}
+
+			JSONObject dataJSONObject = JSONFactoryUtil.createJSONObject(data);
+
+			JSONArray nonIndexableFragmentEntryLinkIdsJSONArray =
+				dataJSONObject.getJSONArray("nonIndexableFragmentEntryLinkIds");
+
+			return JSONUtil.toStringList(
+				nonIndexableFragmentEntryLinkIdsJSONArray);
+		}
+		catch (Exception exception) {
+			_log.error("Unable to get structure JSON array", exception);
+
+			return Collections.emptyList();
+		}
 	}
 
 	private long _getPreviewClassPK() {
@@ -148,22 +203,8 @@ public class RenderFragmentLayoutTag extends IncludeTag {
 			new long[] {SegmentsExperienceConstants.ID_DEFAULT});
 	}
 
-	private JSONArray _getStructureJSONArray() {
+	private JSONArray _getStructureJSONArray(String data) {
 		try {
-			LayoutPageTemplateStructure layoutPageTemplateStructure =
-				LayoutPageTemplateStructureLocalServiceUtil.
-					fetchLayoutPageTemplateStructure(
-						_groupId,
-						PortalUtil.getClassNameId(Layout.class.getName()),
-						_plid, true);
-
-			long[] segmentsExperienceIds = GetterUtil.getLongValues(
-				request.getAttribute(SegmentsWebKeys.SEGMENTS_EXPERIENCE_IDS),
-				new long[] {SegmentsExperienceConstants.ID_DEFAULT});
-
-			String data = layoutPageTemplateStructure.getData(
-				segmentsExperienceIds);
-
 			if (Validator.isNull(data)) {
 				return null;
 			}
