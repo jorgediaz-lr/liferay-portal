@@ -19,7 +19,6 @@ import com.liferay.petra.encryptor.EncryptorException;
 import com.liferay.petra.lang.HashUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.NoSuchGroupException;
 import com.liferay.portal.kernel.exception.NoSuchLayoutException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -322,10 +321,25 @@ public class FriendlyURLServlet extends HttpServlet {
 		if ((layout != null) &&
 			Objects.equals(layout.getType(), LayoutConstants.TYPE_URL)) {
 
-			actualURL = actualURL.concat(
-				HttpUtil.parameterMapToString(
-					httpServletRequest.getParameterMap(),
-					!actualURL.contains(StringPool.QUESTION)));
+			Map<String, String[]> queryParameters =
+				HttpUtil.parameterMapFromString(
+					HttpUtil.getQueryString(actualURL));
+
+			Map<String, String[]> parameterMap =
+				httpServletRequest.getParameterMap();
+
+			for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
+				String name = entry.getKey();
+
+				if (!queryParameters.containsKey(name)) {
+					String[] values = entry.getValue();
+
+					for (String value : values) {
+						actualURL = HttpUtil.addParameter(
+							actualURL, name, value);
+					}
+				}
+			}
 		}
 
 		return new Redirect(actualURL);
