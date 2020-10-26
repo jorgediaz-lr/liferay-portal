@@ -179,6 +179,41 @@ public class ProductEntryLocalServiceImpl
 		return productEntryPersistence.findByPrimaryKey(productEntryId);
 	}
 
+	public void reindexProductPurchaseView(ProductEntry productEntry)
+		throws PortalException {
+
+		List<ProductPurchase> productPurchases =
+			_productPurchaseLocalService.getProductEntryProductPurchases(
+				productEntry.getProductEntryId());
+
+		Stream<ProductPurchase> productPurchaseStream =
+			productPurchases.stream();
+
+		Set<Long> accountIds = productPurchaseStream.collect(
+			Collectors.mapping(
+				ProductPurchase::getAccountId, Collectors.toSet()));
+
+		for (long accountId : accountIds) {
+			ProductPurchaseView productPurchaseView =
+				new ProductPurchaseViewImpl();
+
+			productPurchaseView.setCompanyId(productEntry.getCompanyId());
+			productPurchaseView.setAccountId(accountId);
+			productPurchaseView.setProductEntryId(
+				productEntry.getProductEntryId());
+
+			TransactionCommitCallbackUtil.registerCallback(
+				() -> {
+					Indexer<ProductPurchaseView> indexer =
+						_indexerRegistry.getIndexer(ProductPurchaseView.class);
+
+					indexer.reindex(productPurchaseView);
+
+					return null;
+				});
+		}
+	}
+
 	public Hits search(
 			long companyId, String keywords, int start, int end, Sort sort)
 		throws PortalException {
@@ -283,41 +318,6 @@ public class ProductEntryLocalServiceImpl
 		}
 
 		return productFieldsMap;
-	}
-
-	protected void reindexProductPurchaseView(ProductEntry productEntry)
-		throws PortalException {
-
-		List<ProductPurchase> productPurchases =
-			_productPurchaseLocalService.getProductEntryProductPurchases(
-				productEntry.getProductEntryId());
-
-		Stream<ProductPurchase> productPurchaseStream =
-			productPurchases.stream();
-
-		Set<Long> accountIds = productPurchaseStream.collect(
-			Collectors.mapping(
-				ProductPurchase::getAccountId, Collectors.toSet()));
-
-		for (long accountId : accountIds) {
-			ProductPurchaseView productPurchaseView =
-				new ProductPurchaseViewImpl();
-
-			productPurchaseView.setCompanyId(productEntry.getCompanyId());
-			productPurchaseView.setAccountId(accountId);
-			productPurchaseView.setProductEntryId(
-				productEntry.getProductEntryId());
-
-			TransactionCommitCallbackUtil.registerCallback(
-				() -> {
-					Indexer<ProductPurchaseView> indexer =
-						_indexerRegistry.getIndexer(ProductPurchaseView.class);
-
-					indexer.reindex(productPurchaseView);
-
-					return null;
-				});
-		}
 	}
 
 	protected void validate(long productEntryId, String name)

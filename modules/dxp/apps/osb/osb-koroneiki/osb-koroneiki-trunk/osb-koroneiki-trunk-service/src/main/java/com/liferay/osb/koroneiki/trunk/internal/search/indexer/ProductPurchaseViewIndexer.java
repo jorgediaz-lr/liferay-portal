@@ -15,6 +15,7 @@
 package com.liferay.osb.koroneiki.trunk.internal.search.indexer;
 
 import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.ContactRole.Type;
+import com.liferay.osb.koroneiki.root.model.ExternalLink;
 import com.liferay.osb.koroneiki.taproot.constants.WorkflowConstants;
 import com.liferay.osb.koroneiki.taproot.model.Account;
 import com.liferay.osb.koroneiki.taproot.model.Contact;
@@ -137,6 +138,7 @@ public class ProductPurchaseViewIndexer
 			searchQuery, searchContext, "productConsumptionIds", false);
 		addSearchTerm(searchQuery, searchContext, "productKey", false);
 		addSearchTerm(searchQuery, searchContext, "productPurchaseIds", false);
+		addSearchTerm(searchQuery, searchContext, "entityIds", false);
 	}
 
 	@Override
@@ -199,7 +201,7 @@ public class ProductPurchaseViewIndexer
 				productPurchaseView.getProductEntryId(), QueryUtil.ALL_POS,
 				QueryUtil.ALL_POS);
 
-		document.add(getProductPurchasesField(productPurchases));
+		getProductPurchasesField(document, productPurchases);
 
 		document.addKeyword("accountId", account.getAccountId());
 		document.addKeyword("accountKey", account.getAccountKey());
@@ -350,8 +352,13 @@ public class ProductPurchaseViewIndexer
 		).toArray();
 	}
 
-	protected FieldArray getProductPurchasesField(
-		List<ProductPurchase> productPurchases) {
+	protected void getProductPurchasesField(
+		Document document, List<ProductPurchase> productPurchases) {
+
+		Set<String> entityIds = new HashSet<>();
+		Set<String> externalLinkDomains = new HashSet<>();
+		Set<String> externalLinkEntityIds = new HashSet<>();
+		Set<String> externalLinkEntityNames = new HashSet<>();
 
 		FieldArray fieldArray = new FieldArray("productPurchases");
 
@@ -405,9 +412,39 @@ public class ProductPurchaseViewIndexer
 			}
 
 			fieldArray.addField(field);
+
+			List<ExternalLink> externalLinks =
+				productPurchase.getExternalLinks();
+
+			for (ExternalLink externalLink : externalLinks) {
+				String entityName =
+					externalLink.getDomain() + StringPool.UNDERLINE +
+						externalLink.getEntityName();
+
+				String entityId =
+					entityName + StringPool.UNDERLINE +
+						externalLink.getEntityId();
+
+				entityIds.add(externalLink.getEntityId());
+				externalLinkDomains.add(externalLink.getDomain());
+				externalLinkEntityIds.add(entityId);
+				externalLinkEntityNames.add(entityName);
+			}
 		}
 
-		return fieldArray;
+		document.addKeyword(
+			"entityIds", ArrayUtil.toStringArray(entityIds.toArray()));
+		document.addKeyword(
+			"externalLinkDomains",
+			ArrayUtil.toStringArray(externalLinkDomains.toArray()));
+		document.addKeyword(
+			"externalLinkEntityIds",
+			ArrayUtil.toStringArray(externalLinkEntityIds.toArray()));
+		document.addKeyword(
+			"externalLinkEntityNames",
+			ArrayUtil.toStringArray(externalLinkEntityNames.toArray()));
+
+		document.add(fieldArray);
 	}
 
 	protected int getProvisionedCount(long accountId, long productEntryId) {
