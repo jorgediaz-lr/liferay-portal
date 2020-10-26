@@ -22,7 +22,7 @@ long commerceOrderItemId = ParamUtil.getLong(request, "commerceOrderItemId");
 TrialRegistrationDisplayContext trialRegistrationDisplayContext = (TrialRegistrationDisplayContext)request.getAttribute(WebKeys.PORTLET_DISPLAY_CONTEXT);
 %>
 
-<div class="container-fluid" id="trial-registration">
+<div class="container" id="trial-registration">
 	<div class="row">
 		<div class="col-md-6 col-xs-12">
 			<div class="punch-line">

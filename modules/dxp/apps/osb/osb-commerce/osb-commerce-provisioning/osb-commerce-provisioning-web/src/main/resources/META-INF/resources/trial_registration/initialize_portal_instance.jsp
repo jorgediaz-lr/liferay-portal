@@ -21,7 +21,7 @@ long commerceOrderItemId = ParamUtil.getLong(request, "commerceOrderItemId");
 String userFirstName = ParamUtil.getString(request, "userFirstName");
 %>
 
-<div class="container-fluid" id="trial-registration">
+<div class="container" id="trial-registration">
 	<div class="row">
 		<div class="col-md-6 col-xs-12">
 			<div class="punch-line">
