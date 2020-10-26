@@ -22,8 +22,14 @@ function Categorization({
 	tierNames
 }) {
 	const binarySelection = [
-		Liferay.Language.get('yes'),
-		Liferay.Language.get('no')
+		{
+			label: Liferay.Language.get('yes'),
+			value: true
+		},
+		{
+			label: Liferay.Language.get('no'),
+			value: false
+		}
 	];
 
 	return (
@@ -142,15 +148,30 @@ function CheckboxGroup({fieldValues, inputName}) {
 				value={values.join()}
 			/>
 
-			{fieldValues.map(field => (
-				<ClayCheckbox
-					aria-label={field}
-					key={field}
-					label={field}
-					onClick={handleOnClick}
-					value={field}
-				/>
-			))}
+			{fieldValues.map(field => {
+				if (!field.label && !field.value) {
+					return (
+						<ClayCheckbox
+							aria-label={field}
+							key={field}
+							label={field}
+							onClick={handleOnClick}
+							value={field}
+						/>
+					);
+				}
+				else {
+					return (
+						<ClayCheckbox
+							aria-label={field.label}
+							key={field.value}
+							label={field.label}
+							onClick={handleOnClick}
+							value={field.value}
+						/>
+					);
+				}
+			})}
 		</>
 	);
 }
