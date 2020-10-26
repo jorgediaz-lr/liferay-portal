@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 
 import java.util.Date;
+import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -50,10 +51,25 @@ public class AssetEntryDocumentContributor implements DocumentContributor {
 			return;
 		}
 
-		long classPK = GetterUtil.getLong(document.get(Field.ENTRY_CLASS_PK));
+		AssetEntry assetEntry;
 
-		AssetEntry assetEntry = assetEntryLocalService.fetchEntry(
-			className, classPK);
+		Map<String, Object> modelAttributes = baseModel.getModelAttributes();
+
+		Date displayDate = (Date)modelAttributes.get(Field.DISPLAY_DATE);
+
+		if (displayDate.getTime() > System.currentTimeMillis()) {
+			String uuid = GetterUtil.getString(modelAttributes.get("uuid"));
+
+			long groupId = GetterUtil.getLong(document.get(Field.GROUP_ID));
+
+			assetEntry = assetEntryLocalService.fetchEntry(groupId, uuid);
+		}
+		else {
+			long classPK = GetterUtil.getLong(
+				document.get(Field.ENTRY_CLASS_PK));
+
+			assetEntry = assetEntryLocalService.fetchEntry(className, classPK);
+		}
 
 		if (assetEntry == null) {
 			return;
