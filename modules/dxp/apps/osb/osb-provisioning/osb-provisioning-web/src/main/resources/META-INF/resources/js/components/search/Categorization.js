@@ -32,6 +32,10 @@ function Categorization({
 		}
 	];
 
+	function simplifySLANames(names) {
+		return names.map(name => name.replace(' Subscription', ''));
+	}
+
 	return (
 		<div className="panel-body">
 			<div className="col-md-3 form-group">
@@ -99,11 +103,11 @@ function Categorization({
 
 			<div className="col-md-3 form-group">
 				<h5 className="form-check-inline">
-					{Liferay.Language.get('sla')}
+					{Liferay.Language.get('subscription-level')}
 				</h5>
 
 				<CheckboxGroup
-					fieldValues={activeSLANames}
+					fieldValues={simplifySLANames(activeSLANames)}
 					inputName="activeSLAs"
 				/>
 			</div>

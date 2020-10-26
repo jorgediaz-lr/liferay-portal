@@ -116,14 +116,14 @@ describe('Account', () => {
 		getByText('Unactivated');
 	});
 
-	it('displays a SLA field', () => {
+	it('displays a Subscription Level field', () => {
 		const {getByText} = renderCategorization();
 
-		getByText('sla');
-		getByText('Gold Subscription');
-		getByText('Limited Subscription');
-		getByText('Platinum Subscription');
-		getByText('Silver Subscription');
+		getByText('subscription-level');
+		getByText('Gold');
+		getByText('Limited');
+		getByText('Platinum');
+		getByText('Silver');
 	});
 
 	it('displays a Support Region field', () => {
