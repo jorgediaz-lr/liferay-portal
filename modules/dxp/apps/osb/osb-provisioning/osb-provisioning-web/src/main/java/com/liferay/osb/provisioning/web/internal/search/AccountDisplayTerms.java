@@ -15,9 +15,7 @@
 package com.liferay.osb.provisioning.web.internal.search;
 
 import com.liferay.portal.kernel.dao.search.DisplayTerms;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.Validator;
 
 import javax.portlet.PortletRequest;
 
@@ -41,7 +39,7 @@ public class AccountDisplayTerms extends DisplayTerms {
 
 	public static final String FLS_TEAM_KEY = "flsTeamKey";
 
-	public static final String INTERNAL = "internal";
+	public static final String INTERNALS = "internals";
 
 	public static final String MODIFIED_DATE_GT = "modifiedDateGT";
 
@@ -51,9 +49,9 @@ public class AccountDisplayTerms extends DisplayTerms {
 
 	public static final String PARENT_ACCOUNT_KEY = "parentAccountKey";
 
-	public static final String PARTNER = "partner";
-
 	public static final String PARTNER_TEAM_KEY = "partnerTeamKey";
+
+	public static final String PARTNERS = "partners";
 
 	public static final String PROVIDES_FLS = "providesFLS";
 
@@ -71,6 +69,7 @@ public class AccountDisplayTerms extends DisplayTerms {
 	public AccountDisplayTerms(PortletRequest portletRequest) {
 		super(portletRequest);
 
+		activeSLAs = ParamUtil.getStringValues(portletRequest, ACTIVE_SLAS);
 		code = ParamUtil.getString(portletRequest, CODE);
 		countryName = ParamUtil.getString(portletRequest, COUNTRY_NAME);
 		createDateGT = ParamUtil.getString(portletRequest, CREATE_DATE_GT);
@@ -78,44 +77,16 @@ public class AccountDisplayTerms extends DisplayTerms {
 		createdByEmailAddress = ParamUtil.getString(
 			portletRequest, CREATED_BY_EMAIL_ADDRESS);
 		flsTeamKey = ParamUtil.getString(portletRequest, FLS_TEAM_KEY);
-
-		String internalString = ParamUtil.getString(portletRequest, INTERNAL);
-
-		if (Validator.isNotNull(internalString)) {
-			internal = GetterUtil.getBoolean(internalString);
-		}
-
+		internals = ParamUtil.getBooleanValues(portletRequest, INTERNALS);
 		modifiedDateGT = ParamUtil.getString(portletRequest, MODIFIED_DATE_GT);
 		modifiedDateLT = ParamUtil.getString(portletRequest, MODIFIED_DATE_LT);
 		name = ParamUtil.getString(portletRequest, NAME);
-
 		parentAccountKey = ParamUtil.getString(
 			portletRequest, PARENT_ACCOUNT_KEY);
-
-		String partnerString = ParamUtil.getString(portletRequest, PARTNER);
-
-		if (Validator.isNotNull(partnerString)) {
-			partner = GetterUtil.getBoolean(partnerString);
-		}
-
+		partners = ParamUtil.getBooleanValues(portletRequest, PARTNERS);
 		partnerTeamKey = ParamUtil.getString(portletRequest, PARTNER_TEAM_KEY);
-
-		String receivesFLSString = ParamUtil.getString(
-			portletRequest, RECEIVES_FLS);
-
-		if (Validator.isNotNull(receivesFLSString)) {
-			receivesFLS = GetterUtil.getBoolean(receivesFLSString);
-		}
-
-		String providesFLSString = ParamUtil.getString(
-			portletRequest, PROVIDES_FLS);
-
-		if (Validator.isNotNull(providesFLSString)) {
-			providesFLS = GetterUtil.getBoolean(providesFLSString);
-		}
-
-		activeSLAs = ParamUtil.getStringValues(portletRequest, ACTIVE_SLAS);
-
+		providesFLS = ParamUtil.getBooleanValues(portletRequest, PROVIDES_FLS);
+		receivesFLS = ParamUtil.getBooleanValues(portletRequest, RECEIVES_FLS);
 		regions = ParamUtil.getStringValues(portletRequest, REGIONS);
 		subscriptionStates = ParamUtil.getStringValues(
 			portletRequest, SUBSCRIPTION_STATES);
@@ -152,8 +123,8 @@ public class AccountDisplayTerms extends DisplayTerms {
 		return flsTeamKey;
 	}
 
-	public Boolean getInternal() {
-		return internal;
+	public boolean[] getInternals() {
+		return internals;
 	}
 
 	public String getModifiedDateGT() {
@@ -172,19 +143,19 @@ public class AccountDisplayTerms extends DisplayTerms {
 		return parentAccountKey;
 	}
 
-	public Boolean getPartner() {
-		return partner;
+	public boolean[] getPartners() {
+		return partners;
 	}
 
 	public String getPartnerTeamKey() {
 		return partnerTeamKey;
 	}
 
-	public Boolean getProvidesFLS() {
+	public boolean[] getProvidesFLS() {
 		return providesFLS;
 	}
 
-	public Boolean getReceiveFLS() {
+	public boolean[] getReceivesFLS() {
 		return receivesFLS;
 	}
 
@@ -211,15 +182,15 @@ public class AccountDisplayTerms extends DisplayTerms {
 	protected String createDateLT;
 	protected String createdByEmailAddress;
 	protected String flsTeamKey;
-	protected Boolean internal;
+	protected boolean[] internals;
 	protected String modifiedDateGT;
 	protected String modifiedDateLT;
 	protected String name;
 	protected String parentAccountKey;
-	protected Boolean partner;
+	protected boolean[] partners;
 	protected String partnerTeamKey;
-	protected Boolean providesFLS;
-	protected Boolean receivesFLS;
+	protected boolean[] providesFLS;
+	protected boolean[] receivesFLS;
 	protected String[] regions;
 	protected String[] subscriptionStates;
 	protected String[] tiers;

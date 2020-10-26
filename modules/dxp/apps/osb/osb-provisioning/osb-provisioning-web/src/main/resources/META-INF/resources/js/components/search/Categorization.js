@@ -41,7 +41,7 @@ function Categorization({
 
 				<CheckboxGroup
 					fieldValues={binarySelection}
-					inputName="partner"
+					inputName="partners"
 				/>
 			</div>
 
@@ -74,7 +74,7 @@ function Categorization({
 
 				<CheckboxGroup
 					fieldValues={binarySelection}
-					inputName="internal"
+					inputName="internals"
 				/>
 			</div>
 

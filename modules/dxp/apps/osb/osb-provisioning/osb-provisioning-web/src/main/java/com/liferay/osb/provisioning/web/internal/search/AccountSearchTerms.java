@@ -167,11 +167,21 @@ public class AccountSearchTerms extends AccountDisplayTerms {
 			sb.append("')");
 		}
 
-		if (internal != null) {
+		if (!ArrayUtil.isEmpty(internals)) {
 			sb.append(_getBooleanOperator(sb));
 
-			sb.append("internal eq ");
-			sb.append(internal);
+			sb.append("(");
+
+			for (int i = 0; i < internals.length; i++) {
+				sb.append("internal eq ");
+				sb.append(internals[i]);
+
+				if ((i + 1) < internals.length) {
+					sb.append(" or ");
+				}
+			}
+
+			sb.append(")");
 		}
 
 		if (Validator.isNotNull(modifiedDateGT)) {
@@ -210,16 +220,26 @@ public class AccountSearchTerms extends AccountDisplayTerms {
 			sb.append("'");
 		}
 
-		if (partner != null) {
+		if (!ArrayUtil.isEmpty(partners)) {
 			sb.append(_getBooleanOperator(sb));
 
-			if (!partner) {
-				sb.append("not ");
+			sb.append("(");
+
+			for (int i = 0; i < partners.length; i++) {
+				if (!partners[i]) {
+					sb.append("not ");
+				}
+
+				sb.append("entitlements/any(s:s eq '");
+				sb.append(EntitlementConstants.PARTNER);
+				sb.append("')");
+
+				if ((i + 1) < partners.length) {
+					sb.append(" or ");
+				}
 			}
 
-			sb.append("entitlements/any(s:s eq '");
-			sb.append(EntitlementConstants.PARTNER);
-			sb.append("')");
+			sb.append(")");
 		}
 
 		if (Validator.isNotNull(partnerTeamKey)) {
@@ -232,29 +252,49 @@ public class AccountSearchTerms extends AccountDisplayTerms {
 			sb.append("')");
 		}
 
-		if (providesFLS != null) {
+		if (!ArrayUtil.isEmpty(providesFLS)) {
 			sb.append(_getBooleanOperator(sb));
 
-			if (!providesFLS) {
-				sb.append("not ");
+			sb.append("(");
+
+			for (int i = 0; i < providesFLS.length; i++) {
+				if (!providesFLS[i]) {
+					sb.append("not ");
+				}
+
+				sb.append("teamsAssignedToAccountKeyTeamRoleKeys/any(s:");
+				sb.append("contains(s, '_");
+				sb.append(flsTeamRoleKey);
+				sb.append("'))");
+
+				if ((i + 1) < providesFLS.length) {
+					sb.append(" or ");
+				}
 			}
 
-			sb.append("teamsAssignedToAccountKeyTeamRoleKeys/any(s:contains(");
-			sb.append("s, '_");
-			sb.append(flsTeamRoleKey);
-			sb.append("'))");
+			sb.append(")");
 		}
 
-		if (receivesFLS != null) {
+		if (!ArrayUtil.isEmpty(receivesFLS)) {
 			sb.append(_getBooleanOperator(sb));
 
-			if (!receivesFLS) {
-				sb.append("not ");
+			sb.append("(");
+
+			for (int i = 0; i < receivesFLS.length; i++) {
+				if (!receivesFLS[i]) {
+					sb.append("not ");
+				}
+
+				sb.append("assignedTeamKeyTeamRoleKeys/any(s:contains(s, '_");
+				sb.append(flsTeamRoleKey);
+				sb.append("'))");
+
+				if ((i + 1) < receivesFLS.length) {
+					sb.append(" or ");
+				}
 			}
 
-			sb.append("assignedTeamKeyTeamRoleKeys/any(s:contains(s, '_");
-			sb.append(flsTeamRoleKey);
-			sb.append("'))");
+			sb.append(")");
 		}
 
 		if (!ArrayUtil.isEmpty(regions)) {
@@ -336,13 +376,17 @@ public class AccountSearchTerms extends AccountDisplayTerms {
 				Validator.isNotNull(createDateGT) ||
 				Validator.isNotNull(createDateLT) ||
 				Validator.isNotNull(createdByEmailAddress) ||
-				Validator.isNotNull(flsTeamKey) || (internal != null) ||
+				Validator.isNotNull(flsTeamKey) ||
+				!ArrayUtil.isEmpty(internals) ||
 				Validator.isNotNull(modifiedDateGT) ||
 				Validator.isNotNull(modifiedDateLT) ||
 				Validator.isNotNull(name) ||
-				Validator.isNotNull(parentAccountKey) || (partner != null) ||
-				Validator.isNotNull(partnerTeamKey) || (providesFLS != null) ||
-				(receivesFLS != null) || !ArrayUtil.isEmpty(regions) ||
+				Validator.isNotNull(parentAccountKey) ||
+				!ArrayUtil.isEmpty(partners) ||
+				Validator.isNotNull(partnerTeamKey) ||
+				!ArrayUtil.isEmpty(providesFLS) ||
+				!ArrayUtil.isEmpty(receivesFLS) ||
+				!ArrayUtil.isEmpty(regions) ||
 				!ArrayUtil.isEmpty(subscriptionStates) ||
 				!ArrayUtil.isEmpty(tiers) ||
 				Validator.isNotNull(workerContactEmailAddress)) {

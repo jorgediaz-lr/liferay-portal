@@ -16,6 +16,7 @@ package com.liferay.osb.provisioning.web.internal.search;
 
 import com.liferay.osb.provisioning.web.internal.display.context.AccountDisplay;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
+import com.liferay.portal.kernel.util.ArrayUtil;
 
 import java.util.Collections;
 
@@ -57,8 +58,8 @@ public class AccountSearch extends SearchContainer<AccountDisplay> {
 		iteratorURL.setParameter(
 			AccountDisplayTerms.FLS_TEAM_KEY, displayTerms.getFLSTeamKey());
 		iteratorURL.setParameter(
-			AccountDisplayTerms.INTERNAL,
-			String.valueOf(displayTerms.internal));
+			AccountDisplayTerms.INTERNALS,
+			ArrayUtil.toStringArray(displayTerms.internals));
 		iteratorURL.setParameter(
 			AccountDisplayTerms.MODIFIED_DATE_GT,
 			displayTerms.getModifiedDateGT());
@@ -71,16 +72,17 @@ public class AccountSearch extends SearchContainer<AccountDisplay> {
 			AccountDisplayTerms.PARENT_ACCOUNT_KEY,
 			displayTerms.getParentAccountKey());
 		iteratorURL.setParameter(
-			AccountDisplayTerms.PARTNER, String.valueOf(displayTerms.partner));
+			AccountDisplayTerms.PARTNERS,
+			ArrayUtil.toStringArray(displayTerms.partners));
 		iteratorURL.setParameter(
 			AccountDisplayTerms.PARTNER_TEAM_KEY,
 			displayTerms.getPartnerTeamKey());
 		iteratorURL.setParameter(
 			AccountDisplayTerms.PROVIDES_FLS,
-			String.valueOf(displayTerms.providesFLS));
+			ArrayUtil.toStringArray(displayTerms.providesFLS));
 		iteratorURL.setParameter(
 			AccountDisplayTerms.RECEIVES_FLS,
-			String.valueOf(displayTerms.receivesFLS));
+			ArrayUtil.toStringArray(displayTerms.receivesFLS));
 		iteratorURL.setParameter(
 			AccountDisplayTerms.REGIONS, displayTerms.getRegions());
 		iteratorURL.setParameter(
