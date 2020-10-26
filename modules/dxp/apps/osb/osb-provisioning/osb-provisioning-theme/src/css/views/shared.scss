@@ -130,10 +130,6 @@
 		border-top-right-radius: $border-radius;
 		margin-bottom: 0 !important;
 
-		& + .subnav-tbar-primary {
-			margin-top: 0;
-		}
-
 		.nav-link {
 			margin: $spacing-sm;
 			padding: $spacing-xs;

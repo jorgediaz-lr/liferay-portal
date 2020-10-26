@@ -72,6 +72,10 @@ table {
 
 .management-bar {
 	margin-bottom: 0;
+
+	+ .subnav-tbar-primary {
+		margin-top: 0;
+	}
 }
 
 .modal-footer {
