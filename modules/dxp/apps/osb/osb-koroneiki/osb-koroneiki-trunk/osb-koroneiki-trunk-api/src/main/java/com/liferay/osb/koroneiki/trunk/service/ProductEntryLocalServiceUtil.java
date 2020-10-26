@@ -353,6 +353,13 @@ public class ProductEntryLocalServiceUtil {
 		return getService().reindex(productEntryId);
 	}
 
+	public static void reindexProductPurchaseView(
+			com.liferay.osb.koroneiki.trunk.model.ProductEntry productEntry)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		getService().reindexProductPurchaseView(productEntry);
+	}
+
 	public static com.liferay.portal.kernel.search.Hits search(
 			long companyId, String keywords, int start, int end,
 			com.liferay.portal.kernel.search.Sort sort)

@@ -373,6 +373,14 @@ public class ProductEntryLocalServiceWrapper
 	}
 
 	@Override
+	public void reindexProductPurchaseView(
+			com.liferay.osb.koroneiki.trunk.model.ProductEntry productEntry)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		_productEntryLocalService.reindexProductPurchaseView(productEntry);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.search.Hits search(
 			long companyId, String keywords, int start, int end,
 			com.liferay.portal.kernel.search.Sort sort)
