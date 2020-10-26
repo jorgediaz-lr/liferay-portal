@@ -43,6 +43,9 @@ function Dates() {
 					name={`${NAMESPACE}createDateGT`}
 					type="date"
 				/>
+				<div className="form-feedback-group">
+					<div className="form-text">{'yyyy-mm-dd'}</div>
+				</div>
 			</div>
 
 			<div className="col-md-6 form-group">
@@ -55,6 +58,9 @@ function Dates() {
 					name={`${NAMESPACE}createDateLT`}
 					type="date"
 				/>
+				<div className="form-feedback-group">
+					<div className="form-text">{'yyyy-mm-dd'}</div>
+				</div>
 			</div>
 
 			<div className="col-md-6 form-group">
@@ -67,6 +73,9 @@ function Dates() {
 					name={`${NAMESPACE}modifiedDateGT`}
 					type="date"
 				/>
+				<div className="form-feedback-group">
+					<div className="form-text">{'yyyy-mm-dd'}</div>
+				</div>
 			</div>
 
 			<div className="col-md-6 form-group">
@@ -79,6 +88,9 @@ function Dates() {
 					name={`${NAMESPACE}modifiedDateLT`}
 					type="date"
 				/>
+				<div className="form-feedback-group">
+					<div className="form-text">{'yyyy-mm-dd'}</div>
+				</div>
 			</div>
 		</div>
 	);
