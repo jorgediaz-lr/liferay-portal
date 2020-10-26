@@ -85,18 +85,30 @@ public class ExternalLinkModelListener extends BaseModelListener<ExternalLink> {
 				_classNameLocalService.getClassNameId(
 					ProductConsumption.class)) {
 
-			_productConsumptionLocalService.reindex(externalLink.getClassPK());
+			ProductConsumption productConsumption =
+				_productConsumptionLocalService.reindex(
+					externalLink.getClassPK());
+
+			_productConsumptionLocalService.reindexProductPurchaseView(
+				productConsumption);
 		}
 		else if (externalLink.getClassNameId() ==
 					_classNameLocalService.getClassNameId(ProductEntry.class)) {
 
-			_productEntryLocalService.reindex(externalLink.getClassPK());
+			ProductEntry productEntry = _productEntryLocalService.reindex(
+				externalLink.getClassPK());
+
+			_productEntryLocalService.reindexProductPurchaseView(productEntry);
 		}
 		else if (externalLink.getClassNameId() ==
 					_classNameLocalService.getClassNameId(
 						ProductPurchase.class)) {
 
-			_productPurchaseLocalService.reindex(externalLink.getClassPK());
+			ProductPurchase productPurchase =
+				_productPurchaseLocalService.reindex(externalLink.getClassPK());
+
+			_productPurchaseLocalService.reindexProductPurchaseView(
+				productPurchase);
 		}
 	}
 
