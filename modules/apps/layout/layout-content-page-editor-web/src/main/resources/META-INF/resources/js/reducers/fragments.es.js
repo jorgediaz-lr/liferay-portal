@@ -464,6 +464,15 @@ function removeFragmentEntryLinkReducer(state, action) {
 		)
 	);
 
+	nextState = setIn(
+		nextState,
+		['layoutData'],
+		_removeFragmentFromHiddenContentFromSearch(
+			nextState.layoutData,
+			fragmentEntryLinkId
+		)
+	);
+
 	if (!action.fragmentEntryLinkIsUsedInOtherExperience) {
 		nextState = updateIn(
 			nextState,
@@ -943,18 +952,23 @@ function _removeFragmentFromHiddenContentFromSearch(
 	layoutData,
 	fragmentEntryLinkId
 ) {
-	const {nonIndexableFragmentEntryLinkIds} = layoutData;
+	const {nonIndexableFragmentEntryLinkIds = []} = layoutData;
 
 	const fragmentIndex = nonIndexableFragmentEntryLinkIds.indexOf(
 		fragmentEntryLinkId
 	);
 
-	return updateIn(
-		layoutData,
-		['nonIndexableFragmentEntryLinkIds'],
-		nonIndexableFragmentEntryLinkIds =>
-			remove(nonIndexableFragmentEntryLinkIds, fragmentIndex)
-	);
+	if (fragmentIndex !== -1) {
+		return updateIn(
+			layoutData,
+			['nonIndexableFragmentEntryLinkIds'],
+			nonIndexableFragmentEntryLinkIds =>
+				remove(nonIndexableFragmentEntryLinkIds, fragmentIndex),
+			[]
+		);
+	}
+
+	return layoutData;
 }
 
 export {
