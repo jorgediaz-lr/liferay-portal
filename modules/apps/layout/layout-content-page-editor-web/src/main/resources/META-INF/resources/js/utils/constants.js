@@ -162,6 +162,14 @@ export const FLOATING_TOOLBAR_BUTTONS = {
 		type: 'panel'
 	},
 
+	layoutSearch: {
+		icon: 'search',
+		id: 'layout_search',
+		panelId: 'layout_search',
+		title: Liferay.Language.get('search-options'),
+		type: 'panel'
+	},
+
 	link: {
 		icon: 'link',
 		id: 'link',

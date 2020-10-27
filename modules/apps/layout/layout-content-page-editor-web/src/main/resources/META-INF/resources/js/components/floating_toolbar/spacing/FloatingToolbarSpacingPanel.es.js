@@ -51,24 +51,6 @@ class FloatingToolbarSpacingPanel extends Component {
 	}
 
 	/**
-	 * Handle container nonIndexable option change
-	 * @param {Event} event
-	 */
-	_handleContainerNonIndexableOptionChange(event) {
-		this._updateRowConfig({
-			[CONFIG_KEYS.nonIndexable]: event.target.checked
-		});
-	}
-
-	/**
-	 * Handle container nonIndexable checkbox mousedown
-	 * @param {Event} event
-	 */
-	_handleContainerNonIndexableOptionMousedown(event) {
-		event.preventDefault();
-	}
-
-	/**
 	 * Handle container option change
 	 * @param {Event} event
 	 */

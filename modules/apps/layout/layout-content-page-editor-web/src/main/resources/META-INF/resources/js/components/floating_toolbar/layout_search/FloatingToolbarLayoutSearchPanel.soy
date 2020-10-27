@@ -1,0 +1,47 @@
+{namespace com.liferay.layout.content.page.editor.web.FloatingToolbarLayoutSearchPanel}
+
+/**
+ * FloatingToolbarLayoutSearchPanel
+ */
+{template .render}
+	{@param item: ?}
+	{@param? _handleLayoutNonIndexableOptionChange: any}
+	{@param? _handleLayoutNonIndexableOptionMousedown: any}
+
+	<div class="popover p-3">
+		<div class="form-group">
+			{call .layoutNonIndexableOptions}
+				{param handleLayoutNonIndexableOptionChange: $_handleLayoutNonIndexableOptionChange /}
+				{param handleLayoutNonIndexableOptionMousedown: $_handleLayoutNonIndexableOptionMousedown /}
+				{param item: $item /}
+			{/call}
+		</div>
+	</div>
+{/template}
+
+/**
+ * nonIndexable options
+ */
+{template .layoutNonIndexableOptions}
+	{@param item: [
+		config: [
+			nonIndexable: bool
+		]
+	]}
+	{@param? handleLayoutNonIndexableOptionChange: any}
+	{@param? handleLayoutNonIndexableOptionMousedown: any}
+
+	{let $nonIndexableCheckboxLabel kind="text"}
+		{msg desc=""}hide-content-from-search-results{/msg}
+	{/let}
+
+	{call ClayCheckbox.render}
+		{param checked: ($item.config and $item.config.nonIndexable) ?: false /}
+		{param elementClasses: 'mb-0' /}
+		{param events: [
+			'change': $handleLayoutNonIndexableOptionChange,
+			'mousedown': $handleLayoutNonIndexableOptionMousedown
+		] /}
+		{param label: $nonIndexableCheckboxLabel /}
+	{/call}
+{/template}

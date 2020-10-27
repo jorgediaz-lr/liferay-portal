@@ -20,6 +20,8 @@ import '../floating_toolbar/background_color/FloatingToolbarBackgroundColorPanel
 
 import '../floating_toolbar/layout_background_image/FloatingToolbarLayoutBackgroundImagePanel.es';
 
+import '../floating_toolbar/layout_search/FloatingToolbarLayoutSearchPanel.es';
+
 import '../floating_toolbar/spacing/FloatingToolbarSpacingPanel.es';
 
 import './ColumnOverlayGrid.es';
@@ -79,6 +81,8 @@ class FragmentEntryLinkListRow extends Component {
 		buttons.push(layoutBackgroundImageButton);
 
 		buttons.push(FLOATING_TOOLBAR_BUTTONS.spacing);
+
+		buttons.push(FLOATING_TOOLBAR_BUTTONS.layoutSearch);
 
 		return buttons;
 	}
