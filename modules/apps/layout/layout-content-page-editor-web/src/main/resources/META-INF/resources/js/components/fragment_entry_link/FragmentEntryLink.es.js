@@ -259,7 +259,9 @@ class FragmentEntryLink extends Component {
 			buttons.push(FLOATING_TOOLBAR_BUTTONS.fragmentConfiguration);
 		}
 
-		buttons.push(FLOATING_TOOLBAR_BUTTONS.fragmentSearch);
+		if (this.isContentPage) {
+			buttons.push(FLOATING_TOOLBAR_BUTTONS.fragmentSearch);
+		}
 
 		return buttons;
 	}
@@ -493,6 +495,7 @@ const ConnectedFragmentEntryLink = getConnectedComponent(FragmentEntryLink, [
 	'hoveredItemId',
 	'hoveredItemType',
 	'imageSelectorURL',
+	'isContentPage',
 	'languageId',
 	'layoutData',
 	'portletNamespace',

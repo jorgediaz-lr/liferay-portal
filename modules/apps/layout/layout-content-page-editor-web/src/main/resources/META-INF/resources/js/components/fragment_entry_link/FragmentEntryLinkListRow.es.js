@@ -60,7 +60,7 @@ class FragmentEntryLinkListRow extends Component {
 	 * @param {object} config
 	 * @return {object[]} Floating toolbar buttons
 	 */
-	static _getFloatingToolbarButtons(config) {
+	static _getFloatingToolbarButtons(config, isContentPage) {
 		const buttons = [];
 
 		buttons.push(FLOATING_TOOLBAR_BUTTONS.backgroundColor);
@@ -82,7 +82,9 @@ class FragmentEntryLinkListRow extends Component {
 
 		buttons.push(FLOATING_TOOLBAR_BUTTONS.spacing);
 
-		buttons.push(FLOATING_TOOLBAR_BUTTONS.layoutSearch);
+		if (isContentPage) {
+			buttons.push(FLOATING_TOOLBAR_BUTTONS.layoutSearch);
+		}
 
 		return buttons;
 	}
@@ -291,7 +293,8 @@ class FragmentEntryLinkListRow extends Component {
 		const config = {
 			anchorElement: this.element,
 			buttons: FragmentEntryLinkListRow._getFloatingToolbarButtons(
-				this.row.config
+				this.row.config,
+				this.isContentPage
 			),
 			item: this.row,
 			itemId: this.rowId,
@@ -648,6 +651,7 @@ const ConnectedFragmentEntryLinkListRow = getConnectedComponent(
 		'getAssetFieldValueURL',
 		'hoveredItemId',
 		'hoveredItemType',
+		'isContentPage',
 		'layoutData',
 		'mappingFieldsURL',
 		'selectedMappingTypes',
