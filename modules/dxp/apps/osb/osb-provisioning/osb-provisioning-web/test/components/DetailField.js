@@ -35,7 +35,7 @@ describe('DetailField', () => {
 		expect(container).toBeTruthy();
 	});
 
-	it('displays name for the field', () => {
+	it('displays label for the field', () => {
 		const {getByText} = renderDetailField();
 
 		getByText('name');

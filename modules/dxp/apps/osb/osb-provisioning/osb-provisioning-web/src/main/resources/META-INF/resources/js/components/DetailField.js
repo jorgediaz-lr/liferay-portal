@@ -26,7 +26,7 @@ import HiddenForm from './HiddenForm';
 import InlineEdit from './InlineEdit';
 
 function DetailField({
-	displayAs,
+	displayAs = 'text',
 	displayValue,
 	externalData,
 	fieldLabel,
@@ -76,7 +76,15 @@ function DetailField({
 				)}
 
 				<div className="list-group-text">
-					{type === FIELD_TYPE_NONEDITABLE && <>{value}</>}
+					{type === FIELD_TYPE_NONEDITABLE &&
+						displayAs === 'text' && <>{value}</>}
+
+					{type === FIELD_TYPE_NONEDITABLE &&
+						displayAs === 'label' && (
+							<span className={`label ${inputStyle}`}>
+								{value}
+							</span>
+						)}
 
 					{type === FIELD_TYPE_EXTERNAL && (
 						<>
