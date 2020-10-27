@@ -110,7 +110,7 @@ AccountDisplay accountDisplay = viewAccountDisplayContext.getAccountDisplay();
 		</portlet:actionURL>
 
 		<aui:form action="<%= syncToLcsURL %>" method="post" name="fm">
-			<aui:button cssClass="btn-secondary" href="<%= syncToLcsURL %>" value="sync-to-lcs" />
+			<aui:button cssClass="btn-secondary btn-sm" href="<%= syncToLcsURL %>" value="sync-to-lcs" />
 		</aui:form>
 	</div>
 
@@ -121,7 +121,7 @@ AccountDisplay accountDisplay = viewAccountDisplayContext.getAccountDisplay();
 		</portlet:actionURL>
 
 		<aui:form action="<%= syncToZendeskURL %>" method="post" name="fm1">
-			<aui:button cssClass="btn-secondary" href="<%= syncToZendeskURL %>" value="sync-to-zendesk" />
+			<aui:button cssClass="btn-secondary btn-sm" href="<%= syncToZendeskURL %>" value="sync-to-zendesk" />
 		</aui:form>
 	</div>
 
