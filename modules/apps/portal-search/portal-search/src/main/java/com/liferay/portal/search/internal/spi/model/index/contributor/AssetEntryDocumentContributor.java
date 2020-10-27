@@ -120,11 +120,11 @@ public class AssetEntryDocumentContributor implements DocumentContributor {
 		document.addKeyword("visible", assetEntry.isVisible());
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		AssetEntryDocumentContributor.class);
-
 	@Reference
 	protected AssetEntryLocalService assetEntryLocalService;
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		AssetEntryDocumentContributor.class);
 
 	@Reference
 	private AssetRendererFactoryLookup _assetRendererFactoryLookup;
