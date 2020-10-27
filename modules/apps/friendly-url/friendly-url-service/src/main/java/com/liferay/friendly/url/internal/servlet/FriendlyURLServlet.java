@@ -96,36 +96,32 @@ public class FriendlyURLServlet extends HttpServlet {
 			return new Redirect();
 		}
 
-		// Group friendly URL
-
-		String friendlyURL = path;
+		String groupFriendlyURL = path;
 
 		int pos = path.indexOf(CharPool.SLASH, 1);
 
 		if (pos != -1) {
-			friendlyURL = path.substring(0, pos);
+			groupFriendlyURL = path.substring(0, pos);
 		}
 
 		long companyId = PortalInstances.getCompanyId(httpServletRequest);
 
-		Group group = _getGroup(path, friendlyURL, companyId);
+		Group group = _getGroup(path, groupFriendlyURL, companyId);
 
 		Locale locale = portal.getLocale(httpServletRequest, null, false);
 
 		SiteFriendlyURL alternativeSiteFriendlyURL =
 			_getAlternativeSiteFriendlyURL(
-				friendlyURL, companyId, group, locale);
+				groupFriendlyURL, companyId, group, locale);
 
-		// Layout friendly URL
-
-		friendlyURL = null;
+		String layoutFriendlyURL = null;
 
 		if ((pos != -1) && ((pos + 1) != path.length())) {
-			friendlyURL = path.substring(pos);
+			layoutFriendlyURL = path.substring(pos);
 
-			if (StringUtil.endsWith(friendlyURL, CharPool.SLASH)) {
-				friendlyURL = friendlyURL.substring(
-					0, friendlyURL.length() - 1);
+			if (StringUtil.endsWith(layoutFriendlyURL, CharPool.SLASH)) {
+				layoutFriendlyURL = layoutFriendlyURL.substring(
+					0, layoutFriendlyURL.length() - 1);
 			}
 		}
 		else {
@@ -153,7 +149,7 @@ public class FriendlyURLServlet extends HttpServlet {
 			LayoutFriendlyURLSeparatorComposite
 				layoutFriendlyURLSeparatorComposite =
 					portal.getLayoutFriendlyURLSeparatorComposite(
-						group.getGroupId(), _private, friendlyURL, params,
+						group.getGroupId(), _private, layoutFriendlyURL, params,
 						requestContext);
 
 			Layout layout = layoutFriendlyURLSeparatorComposite.getLayout();
@@ -228,7 +224,7 @@ public class FriendlyURLServlet extends HttpServlet {
 				LayoutConstants.DEFAULT_PARENT_LAYOUT_ID);
 
 			for (Layout layout : layouts) {
-				if (layout.matches(httpServletRequest, friendlyURL)) {
+				if (layout.matches(httpServletRequest, layoutFriendlyURL)) {
 					String redirect = portal.getLayoutActualURL(
 						layout, Portal.PATH_MAIN);
 
@@ -240,8 +236,8 @@ public class FriendlyURLServlet extends HttpServlet {
 		}
 
 		String actualURL = portal.getActualURL(
-			group.getGroupId(), _private, Portal.PATH_MAIN, friendlyURL, params,
-			requestContext);
+			group.getGroupId(), _private, Portal.PATH_MAIN, layoutFriendlyURL,
+			params, requestContext);
 		String portalURL = portal.getPortalURL(httpServletRequest);
 
 		if (actualURL.startsWith(portalURL)) {
