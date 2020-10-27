@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.model.Image;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.Portlet;
@@ -57,6 +58,7 @@ import com.liferay.segments.service.SegmentsExperienceLocalService;
 import com.liferay.sites.kernel.util.Sites;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -230,6 +232,8 @@ public class LayoutCopyHelperImpl implements LayoutCopyHelper {
 			return;
 		}
 
+		Map<String, String> fragmentEntryLinkIdsMap = new HashMap<>();
+
 		for (int i = 0; i < structureJSONArray.length(); i++) {
 			JSONObject rowJSONObject = structureJSONArray.getJSONObject(i);
 
@@ -278,6 +282,12 @@ public class LayoutCopyHelperImpl implements LayoutCopyHelper {
 						_fragmentEntryLinkLocalService.addFragmentEntryLink(
 							newFragmentEntryLink);
 
+					fragmentEntryLinkIdsMap.put(
+						String.valueOf(
+							fragmentEntryLink.getFragmentEntryLinkId()),
+						String.valueOf(
+							newFragmentEntryLink.getFragmentEntryLinkId()));
+
 					newFragmentEntryLinkIdsJSONArray.put(
 						newFragmentEntryLink.getFragmentEntryLinkId());
 
@@ -293,6 +303,24 @@ public class LayoutCopyHelperImpl implements LayoutCopyHelper {
 					"fragmentEntryLinkIds", newFragmentEntryLinkIdsJSONArray);
 			}
 		}
+
+		JSONArray newNonIndexableFragmentEntryLinkIdsJSONArray =
+			JSONFactoryUtil.createJSONArray();
+
+		JSONArray nonIndexableFragmentEntryLinkIdsJSONArray =
+			dataJSONObject.getJSONArray("nonIndexableFragmentEntryLinkIds");
+
+		List<String> nonIndexableFragmentEntryLinkIds = JSONUtil.toStringList(
+			nonIndexableFragmentEntryLinkIdsJSONArray);
+
+		for (String fragmentEntryLinkId : nonIndexableFragmentEntryLinkIds) {
+			newNonIndexableFragmentEntryLinkIdsJSONArray.put(
+				fragmentEntryLinkIdsMap.get(fragmentEntryLinkId));
+		}
+
+		dataJSONObject.put(
+			"nonIndexableFragmentEntryLinkIds",
+			newNonIndexableFragmentEntryLinkIdsJSONArray);
 
 		_layoutPageTemplateStructureLocalService.
 			updateLayoutPageTemplateStructure(
