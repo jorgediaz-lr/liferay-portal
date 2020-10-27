@@ -48,7 +48,6 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
-import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -276,56 +275,6 @@ public class ViewAccountDisplayContext {
 							labelItem.setLabel(label);
 						});
 				}
-			}
-		};
-	}
-
-	public List<DropdownItem> getHeaderActionDropdownItems() {
-		return new DropdownItemList() {
-			{
-				add(
-					dropdownItem -> {
-						PortletURL workflowURL =
-							renderResponse.createActionURL();
-
-						workflowURL.setParameter(
-							ActionRequest.ACTION_NAME,
-							"/accounts/edit_account");
-						workflowURL.setParameter("redirect", getCurrentURL());
-						workflowURL.setParameter(
-							"accountKey", account.getKey());
-						workflowURL.setParameter("name", account.getName());
-
-						if (account.getStatus() == Account.Status.CLOSED) {
-							workflowURL.setParameter(
-								"status", Account.Status.ACTIVE.toString());
-						}
-						else {
-							workflowURL.setParameter(
-								"status", Account.Status.CLOSED.toString());
-						}
-
-						workflowURL.setParameter(
-							"updateAccount", Boolean.TRUE.toString());
-
-						dropdownItem.setHref(
-							StringBundler.concat(
-								"javascript:", renderResponse.getNamespace(),
-								"updateStatus('",
-								HtmlUtil.escapeJS(workflowURL.toString()),
-								"');"));
-
-						if (account.getStatus() == Account.Status.CLOSED) {
-							dropdownItem.setLabel(
-								LanguageUtil.get(
-									httpServletRequest, "activate-account"));
-						}
-						else {
-							dropdownItem.setLabel(
-								LanguageUtil.get(
-									httpServletRequest, "close-account"));
-						}
-					});
 			}
 		};
 	}
@@ -566,14 +515,6 @@ public class ViewAccountDisplayContext {
 		data.put("updateLanguageIdURL", updateLanguageIdURL.toString());
 
 		return data;
-	}
-
-	public String getWorkflowStep() {
-		if (account.getStatus() == Account.Status.CLOSED) {
-			return "activate";
-		}
-
-		return "close";
 	}
 
 	public void init(
