@@ -988,7 +988,7 @@ definition {
 				locator1 = "WC#ENTRY_LIST_CHECKBOX");
 		}
 
-		Click(locator1 = "Icon#EXPIRE");
+		Click.clickNoMouseOver(locator1 = "Icon#EXPIRE");
 
 		Alert.viewSuccessMessage();
 	}
