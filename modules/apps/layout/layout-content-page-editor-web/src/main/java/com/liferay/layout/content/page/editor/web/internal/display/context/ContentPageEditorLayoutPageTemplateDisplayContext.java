@@ -120,6 +120,11 @@ public class ContentPageEditorLayoutPageTemplateDisplayContext
 		return _fragmentsEditorToolbarSoyContext;
 	}
 
+	@Override
+	protected boolean isContentPage() {
+		return false;
+	}
+
 	private LayoutPageTemplateEntry _getLayoutPageTemplateEntry()
 		throws PortalException {
 

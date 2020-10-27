@@ -475,6 +475,14 @@ const INITIAL_STATE = {
 	imageSelectorURL: Config.string().value(''),
 
 	/**
+	 * Whether the page is a content page or not
+	 * @default true
+	 * @review
+	 * @type {string}
+	 */
+	isContentPage: Config.bool().value(true),
+
+	/**
 	 * Currently selected language id.
 	 * @default ''
 	 * @review

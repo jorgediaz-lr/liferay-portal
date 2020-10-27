@@ -267,6 +267,8 @@ public class ContentPageEditorDisplayContext {
 		).put(
 			"imageSelectorURL", _getItemSelectorURL()
 		).put(
+			"isContentPage", isContentPage()
+		).put(
 			"languageId",
 			LocaleUtil.toLanguageId(themeDisplay.getSiteDefaultLocale())
 		).put(
@@ -427,6 +429,10 @@ public class ContentPageEditorDisplayContext {
 		_sidebarPanelSoyContexts = soyContexts;
 
 		return _sidebarPanelSoyContexts;
+	}
+
+	protected boolean isContentPage() {
+		return true;
 	}
 
 	protected final InfoDisplayContributorTracker infoDisplayContributorTracker;
