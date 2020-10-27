@@ -359,6 +359,9 @@ public class CorpProjectMigration {
 		else if (tier == 4) {
 			return Tier.T2.toString();
 		}
+		else if (tier == 5) {
+			return Tier.T3.toString();
+		}
 
 		return StringPool.BLANK;
 	}
