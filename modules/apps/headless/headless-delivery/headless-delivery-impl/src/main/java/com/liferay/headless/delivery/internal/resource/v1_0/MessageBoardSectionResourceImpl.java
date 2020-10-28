@@ -366,12 +366,6 @@ public class MessageBoardSectionResourceImpl
 	private Portal _portal;
 
 	@Reference
-	private SubscriptionLocalService _subscriptionLocalService;
-
-	@Reference
-	private UserLocalService _userLocalService;
-
-	@Reference
 	private Queries _queries;
 
 	@Reference
@@ -379,5 +373,11 @@ public class MessageBoardSectionResourceImpl
 
 	@Reference
 	private Sorts _sorts;
+
+	@Reference
+	private SubscriptionLocalService _subscriptionLocalService;
+
+	@Reference
+	private UserLocalService _userLocalService;
 
 }
