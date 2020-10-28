@@ -12,10 +12,26 @@
  * details.
  */
 
+import {dom as MetalTestUtil} from 'metal-dom';
+
 import Select from '../../../src/main/resources/META-INF/resources/Select/Select.es';
 
 let component;
 const spritemap = 'icons.svg';
+
+const createOptions = length => {
+	const options = [];
+
+	for (let counter = 1; counter <= length; counter++) {
+		options.push({
+			label: 'label' + counter,
+			name: 'name' + counter,
+			value: 'item' + counter
+		});
+	}
+
+	return options;
+};
 
 describe('Select', () => {
 	beforeEach(() => {
@@ -26,6 +42,60 @@ describe('Select', () => {
 		if (component) {
 			component.dispose();
 		}
+	});
+
+	it('does not render and empty option', () => {
+		const option = {
+			checked: false,
+			disabled: false,
+			id: 'id',
+			inline: false,
+			label: 'label',
+			name: 'name',
+			showLabel: true,
+			value: 'item'
+		};
+
+		component = new Select({
+			options: [option],
+			showEmptyOption: false,
+			spritemap
+		});
+
+		const dropDownItem = component.element.querySelector(
+			'.dropdown-menu .dropdown-item'
+		);
+
+		expect(dropDownItem.innerHTML).toBe(option.label);
+	});
+
+	it('does not show an empty option when the search input is available', () => {
+		const handleFieldEdited = jest.fn();
+
+		const events = {fieldEdited: handleFieldEdited};
+
+		component = new Select({
+			dataSourceType: 'manual',
+			events,
+			multiple: false,
+			options: createOptions(12),
+			showEmptyOption: false,
+			spritemap
+		});
+
+		const dropdownTrigger = component.element.querySelector(
+			'.form-builder-select-field.input-group-container'
+		);
+
+		MetalTestUtil.triggerEvent(dropdownTrigger, 'click');
+
+		jest.runAllTimers();
+
+		const emptyOption = component.element.querySelector(
+			'[label=choose-an-option]'
+		);
+
+		expect(emptyOption).toBeNull();
 	});
 
 	it('is not editable', () => {
@@ -53,6 +123,31 @@ describe('Select', () => {
 		});
 
 		expect(component).toMatchSnapshot();
+	});
+
+	it('renders an empty option', () => {
+		component = new Select({
+			options: [
+				{
+					checked: false,
+					disabled: false,
+					id: 'id',
+					inline: false,
+					label: 'label',
+					name: 'name',
+					showLabel: true,
+					value: 'item'
+				}
+			],
+			showEmptyOption: true,
+			spritemap
+		});
+
+		const dropDownItem = component.element.querySelector(
+			'.dropdown-menu .dropdown-item'
+		);
+
+		expect(dropDownItem.innerHTML).toBe('choose-an-option');
 	});
 
 	it('renders options', () => {
@@ -269,5 +364,34 @@ describe('Select', () => {
 		});
 
 		expect(component).toMatchSnapshot();
+	});
+
+	it('shows an empty option when the search input is available', () => {
+		const handleFieldEdited = jest.fn();
+
+		const events = {fieldEdited: handleFieldEdited};
+
+		component = new Select({
+			dataSourceType: 'manual',
+			events,
+			multiple: false,
+			options: createOptions(12),
+			showEmptyOption: true,
+			spritemap
+		});
+
+		const dropdownTrigger = component.element.querySelector(
+			'.form-builder-select-field.input-group-container'
+		);
+
+		MetalTestUtil.triggerEvent(dropdownTrigger, 'click');
+
+		jest.runAllTimers();
+
+		const emptyOption = component.element.querySelector(
+			'[label=choose-an-option]'
+		);
+
+		expect(emptyOption).not.toBeNull();
 	});
 });
