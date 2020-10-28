@@ -1011,7 +1011,7 @@ definition {
 				locator1 = "WCEditWebContent#VIEW_HISTORY_VERSION_CHECKBOX");
 		}
 
-		ClickNoError(locator1 = "Icon#EXPIRE");
+		ClickNoError.clickNoMouseOver(locator1 = "Icon#EXPIRE");
 
 		AssertConfirm(value1 = "Are you sure you want to expire the selected version?");
 	}
