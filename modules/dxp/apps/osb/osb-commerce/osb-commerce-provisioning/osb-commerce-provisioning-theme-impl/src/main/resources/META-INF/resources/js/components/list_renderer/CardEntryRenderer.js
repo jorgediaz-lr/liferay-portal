@@ -14,21 +14,21 @@ import classnames from 'classnames';
 import {navigate} from 'frontend-js-web';
 import React, {createRef, useEffect, useState} from 'react';
 
-import {TRIAL_SKU, addToOrder, START_TRIAL} from '../../helper/index';
+import {START_TRIAL, TRIAL_SKU, addToOrder} from '../../helper/index';
 import SubscriptionEntry from '../subscription_entry/index';
 
 const PRODUCT_HIGHLIGHT = 'highlightProduct';
 
 function CardEntryRenderer({
-							   checkoutURL,
-							   commerceAccountId,
-							   detailURL,
-							   isFeatured,
-							   namespace,
-							   productId,
-							   sku,
-							   ...entry
-						   }) {
+	checkoutURL,
+	commerceAccountId,
+	detailURL,
+	isFeatured,
+	namespace,
+	productId,
+	sku,
+	...entry
+}) {
 	const [isHighlighted, setIsHighlighted] = useState(isFeatured),
 		cardEntryRef = createRef();
 
@@ -78,9 +78,10 @@ function CardEntryRenderer({
 						onClick={() => {
 							addToOrder(commerceAccountId, productId).then(
 								() => {
-									const to = TRIAL_SKU === sku ? `${
-										Liferay.ThemeDisplay.getCanonicalURL()
-										}/${START_TRIAL}` : checkoutURL;
+									const to =
+										TRIAL_SKU === sku
+											? `${Liferay.ThemeDisplay.getCanonicalURL()}/${START_TRIAL}`
+											: checkoutURL;
 
 									navigate(to);
 								}
