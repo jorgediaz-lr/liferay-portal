@@ -1,5 +1,6 @@
 .osb-commerce-landing {
 	height: 100vh;
+	max-height: 930px;
 	position: relative;
 }
 
