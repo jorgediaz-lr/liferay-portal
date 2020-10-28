@@ -68,7 +68,7 @@ class Select extends Component {
 
 	prepareStateForRender(state) {
 		const {predefinedValue, value} = state;
-		const {fixedOptions, multiple, options} = this;
+		const {fixedOptions, multiple, options, showEmptyOption} = this;
 		const predefinedValueArray = this._getArrayValue(predefinedValue);
 		let valueArray = this._getArrayValue(value);
 
@@ -79,11 +79,6 @@ class Select extends Component {
 		valueArray = valueArray.filter((value, index) => {
 			return multiple ? true : index === 0;
 		});
-
-		const emptyOption = {
-			label: Liferay.Language.get('choose-an-option'),
-			value: ''
-		};
 
 		let newOptions = [...options]
 			.map((option, index) => {
@@ -100,7 +95,12 @@ class Select extends Component {
 			)
 			.filter(({value}) => value !== '');
 
-		if (!multiple) {
+		if (!multiple && showEmptyOption) {
+			const emptyOption = {
+				label: Liferay.Language.get('choose-an-option'),
+				value: ''
+			};
+
 			newOptions = [emptyOption, ...newOptions];
 		}
 
@@ -396,6 +396,14 @@ Select.STATE = {
 	 */
 
 	required: Config.bool().value(false),
+
+	/**
+	 * @default true
+	 * @memberof Select
+	 * @type {?bool}
+	 */
+
+	showEmptyOption: Config.bool().value(true),
 
 	/**
 	 * @default false
