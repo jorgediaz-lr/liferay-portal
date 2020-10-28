@@ -19650,8 +19650,8 @@ public class JournalArticlePersistenceImpl
 
 			if ((list != null) && !list.isEmpty()) {
 				for (JournalArticle journalArticle : list) {
-					if ((displayDate.getTime() <=
-							journalArticle.getDisplayDate().getTime()) ||
+					if ((displayDate.getTime() <= journalArticle.getDisplayDate(
+						).getTime()) ||
 						(status != journalArticle.getStatus())) {
 
 						list = null;

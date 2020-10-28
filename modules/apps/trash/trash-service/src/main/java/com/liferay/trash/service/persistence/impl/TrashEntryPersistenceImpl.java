@@ -1182,8 +1182,8 @@ public class TrashEntryPersistenceImpl
 			if ((list != null) && !list.isEmpty()) {
 				for (TrashEntry trashEntry : list) {
 					if ((groupId != trashEntry.getGroupId()) ||
-						(createDate.getTime() <=
-							trashEntry.getCreateDate().getTime())) {
+						(createDate.getTime() <= trashEntry.getCreateDate(
+						).getTime())) {
 
 						list = null;
 
