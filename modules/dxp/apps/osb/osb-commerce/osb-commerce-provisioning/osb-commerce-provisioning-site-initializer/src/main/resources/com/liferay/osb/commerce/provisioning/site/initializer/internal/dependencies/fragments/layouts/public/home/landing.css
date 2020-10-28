@@ -22,12 +22,11 @@
 }
 
 .osb-commerce-landing-image img {
-	bottom: 0;
 	display: block;
 	height: auto;
-	left: 8%;
-	position: absolute;
-	width: 84%;
+	margin: 0 auto;
+	position: relative;
+	width: 90%;
 }
 
 .osb-commerce-landing-text {
@@ -50,7 +49,7 @@
 .osb-commerce-plans-pricing::before {
 	background-color: #fff;
 	content: '';
-	height: 140%;
+	height: 160%;
 	position: absolute;
 	top: -7rem;
 	width: 100%;

@@ -15,8 +15,8 @@ const ADD_TO_ORDER_ENDPOINT = '/o/commerce-ui/cart-item',
 	MAX_PRODUCT_QUANTITY = '1';
 
 export const GUEST_ID = '-1';
-
 export const TRIAL_SKU = 'TRIAL101';
+export const START_TRIAL = 'start-trial';
 
 export function addToOrder(commerceAccountId, productId, options = '[]') {
 	const formData = new FormData();

@@ -4,7 +4,14 @@
 
 	.punch-line {
 		box-sizing: border-box;
+		margin: 30% auto 0 auto;
+		padding: 1rem;
 		width: 500px;
+
+		@media screen and (orientation: portrait) {
+			margin: 0 auto;
+			padding: 3rem;
+		}
 
 		h1 {
 			font-size: 2.5em;

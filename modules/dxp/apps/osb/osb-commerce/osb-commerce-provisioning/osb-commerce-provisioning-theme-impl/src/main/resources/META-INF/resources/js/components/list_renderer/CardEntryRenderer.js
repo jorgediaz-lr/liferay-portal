@@ -14,21 +14,21 @@ import classnames from 'classnames';
 import {navigate} from 'frontend-js-web';
 import React, {createRef, useEffect, useState} from 'react';
 
-import {TRIAL_SKU, addToOrder} from '../../helper/index';
+import {TRIAL_SKU, addToOrder, START_TRIAL} from '../../helper/index';
 import SubscriptionEntry from '../subscription_entry/index';
 
 const PRODUCT_HIGHLIGHT = 'highlightProduct';
 
 function CardEntryRenderer({
-	checkoutURL,
-	commerceAccountId,
-	detailURL,
-	isFeatured,
-	namespace,
-	productId,
-	sku,
-	...entry
-}) {
+							   checkoutURL,
+							   commerceAccountId,
+							   detailURL,
+							   isFeatured,
+							   namespace,
+							   productId,
+							   sku,
+							   ...entry
+						   }) {
 	const [isHighlighted, setIsHighlighted] = useState(isFeatured),
 		cardEntryRef = createRef();
 
@@ -78,13 +78,17 @@ function CardEntryRenderer({
 						onClick={() => {
 							addToOrder(commerceAccountId, productId).then(
 								() => {
-									navigate(checkoutURL);
+									const to = TRIAL_SKU === sku ? `${
+										Liferay.ThemeDisplay.getCanonicalURL()
+										}/${START_TRIAL}` : checkoutURL;
+
+									navigate(to);
 								}
 							);
 						}}
 					>
 						{Liferay.Language.get(
-							TRIAL_SKU === sku ? 'start-trial' : 'subscribe'
+							TRIAL_SKU === sku ? START_TRIAL : 'subscribe'
 						)}
 					</ClayButton>
 				</div>
