@@ -14,8 +14,8 @@
 
 package com.liferay.headless.osb.commerce.instance.internal.resource.v1_0;
 
-import com.liferay.headless.osb.commerce.dto.v1_0.UserAccount;
-import com.liferay.headless.osb.commerce.resource.v1_0.UserAccountResource;
+import com.liferay.headless.osb.commerce.instance.dto.v1_0.UserAccount;
+import com.liferay.headless.osb.commerce.instance.resource.v1_0.UserAccountResource;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;

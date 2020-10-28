@@ -23,7 +23,7 @@ import com.liferay.commerce.notification.util.CommerceNotificationHelper;
 import com.liferay.commerce.product.service.CommerceChannelLocalService;
 import com.liferay.commerce.service.CommerceOrderLocalService;
 import com.liferay.commerce.service.CommerceSubscriptionEntryLocalService;
-import com.liferay.headless.osb.commerce.client.dto.v1_0.UserAccount;
+import com.liferay.headless.osb.commerce.instance.client.dto.v1_0.UserAccount;
 import com.liferay.osb.commerce.provisioning.OSBCommercePortalInstanceStatus;
 import com.liferay.osb.commerce.provisioning.constants.OSBCommerceNotificationConstants;
 import com.liferay.osb.commerce.provisioning.constants.OSBCommercePortalInstanceConstants;
