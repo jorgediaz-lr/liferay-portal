@@ -25,7 +25,7 @@ TrialRegistrationDisplayContext trialRegistrationDisplayContext = (TrialRegistra
 <div class="container" id="trial-registration">
 	<div class="row">
 		<div class="col-md-6 col-xs-12">
-			<div class="punch-line">
+			<div>
 				<h1><%= LanguageUtil.get(request, "welcome-to-your-demo") %></h1>
 			</div>
 
