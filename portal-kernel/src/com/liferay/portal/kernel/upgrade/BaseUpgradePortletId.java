@@ -230,6 +230,27 @@ public abstract class BaseUpgradePortletId extends UpgradeProcess {
 			String oldRootPortletId, String newRootPortletId)
 		throws Exception {
 
+		runSQL(
+			StringBundler.concat(
+				"update PortletPreferences set portletId = '", newRootPortletId,
+				"' where portletId = '", oldRootPortletId, "'"));
+
+		if (!newRootPortletId.contains("_INSTANCE_")) {
+			runSQL(
+				StringBundler.concat(
+					"update PortletPreferences set portletId = replace(",
+					"portletId, '", oldRootPortletId, "_INSTANCE_', '",
+					newRootPortletId, "_INSTANCE_') where portletId like '",
+					oldRootPortletId, "_INSTANCE_%'"));
+		}
+
+		runSQL(
+			StringBundler.concat(
+				"update PortletPreferences set portletId = replace(portletId, ",
+				"'", oldRootPortletId, "_USER_', '", newRootPortletId,
+				"_USER_') where portletId like '", oldRootPortletId,
+				"_USER_%'"));
+
 		DB db = DBManagerUtil.getDB();
 
 		DBType dbType = db.getDBType();
@@ -242,11 +263,6 @@ public abstract class BaseUpgradePortletId extends UpgradeProcess {
 
 		runSQL(
 			StringBundler.concat(
-				"update PortletPreferences set portletId = '", newRootPortletId,
-				"' where portletId = '", oldRootPortletId, "'"));
-
-		runSQL(
-			StringBundler.concat(
 				"update PortletPreferences set preferences = replace(",
 				preferencesExpression, ", '#portlet_", oldRootPortletId,
 				"', '#portlet_", newRootPortletId, "') where portletId = '",
@@ -255,26 +271,12 @@ public abstract class BaseUpgradePortletId extends UpgradeProcess {
 		if (!newRootPortletId.contains("_INSTANCE_")) {
 			runSQL(
 				StringBundler.concat(
-					"update PortletPreferences set portletId = replace(",
-					"portletId, '", oldRootPortletId, "_INSTANCE_', '",
-					newRootPortletId, "_INSTANCE_') where portletId like '",
-					oldRootPortletId, "_INSTANCE_%'"));
-
-			runSQL(
-				StringBundler.concat(
 					"update PortletPreferences set preferences = replace(",
 					preferencesExpression, ", '#portlet_", oldRootPortletId,
 					"_INSTANCE_', '#portlet_", newRootPortletId,
 					"_INSTANCE_') where portletId like '", newRootPortletId,
 					"_INSTANCE_%'"));
 		}
-
-		runSQL(
-			StringBundler.concat(
-				"update PortletPreferences set portletId = replace(portletId, ",
-				"'", oldRootPortletId, "_USER_', '", newRootPortletId,
-				"_USER_') where portletId like '", oldRootPortletId,
-				"_USER_%'"));
 
 		runSQL(
 			StringBundler.concat(
