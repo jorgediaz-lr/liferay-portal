@@ -153,13 +153,29 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			JSONObject jsonObject)
 		throws Exception {
 
-		JSONObject accountJSONObject = jsonObject.getJSONObject("_account");
-
 		Account account = new Account();
+
+		JSONObject accountJSONObject = jsonObject.getJSONObject("_account");
+		JSONObject projectJSONObject = jsonObject.getJSONObject("_project");
 
 		String accountName = accountJSONObject.getString("_name");
 
-		account.setName(accountName);
+		if (projectJSONObject != null) {
+			Account parentAccount = createParentAccount(accountJSONObject);
+
+			String projectName = projectJSONObject.getString("_name");
+
+			account.setName(projectName);
+			account.setCode(_getCode(accountName, projectName));
+
+			account.setParentAccountKey(parentAccount.getKey());
+		}
+		else {
+			account.setName(accountName);
+			account.setCode(_getCode(accountName, null));
+		}
+
+		accountName = account.getName();
 
 		List<Account> duplicateAccounts = _accountWebService.search(
 			StringPool.BLANK, "name eq '" + accountName + "'", 0, 1, null);
@@ -171,16 +187,6 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		if (accountName.contains(StringPool.PIPE)) {
 			_logWarning("Account name must not contain the | character");
 		}
-
-		JSONObject projectJSONObject = jsonObject.getJSONObject("_project");
-
-		String projectName = null;
-
-		if (projectJSONObject != null) {
-			projectName = projectJSONObject.getString("_name");
-		}
-
-		account.setCode(_getCode(accountName, projectName));
 
 		JSONObject ownerJSONObject = jsonObject.getJSONObject("_owner");
 
@@ -203,6 +209,41 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 		return _accountWebService.addAccount(
 			StringPool.BLANK, StringPool.BLANK, account);
+	}
+
+	protected Account createParentAccount(JSONObject accountJSONObject)
+		throws Exception {
+
+		Account parentAccount = new Account();
+
+		String accountName = accountJSONObject.getString("_name");
+
+		String dossieraAccountKey = accountJSONObject.getString(
+			"_dossieraAccountKey");
+
+		ExternalLink externalLink = new ExternalLink();
+
+		externalLink.setDomain(ExternalLinkDomain.DOSSIERA);
+		externalLink.setEntityName(ExternalLinkEntityName.DOSSIERA_ACCOUNT);
+		externalLink.setEntityId(dossieraAccountKey);
+
+		parentAccount.setName(accountName);
+		parentAccount.setCode(_getCode(accountName, null));
+		parentAccount.setExternalLinks(new ExternalLink[] {externalLink});
+
+		List<Account> duplicateAccounts = _accountWebService.search(
+			StringPool.BLANK, "name eq '" + accountName + "'", 0, 1, null);
+
+		if (!duplicateAccounts.isEmpty()) {
+			_logWarning("Parent Account name must be unique");
+		}
+
+		if (accountName.contains(StringPool.PIPE)) {
+			_logWarning("Parent Account name must not contain the | character");
+		}
+
+		return _accountWebService.addAccount(
+			StringPool.BLANK, StringPool.BLANK, parentAccount);
 	}
 
 	protected void createZendeskTicket(
@@ -413,19 +454,39 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 	}
 
 	protected String getAccountKey(JSONObject jsonObject) throws Exception {
-		JSONObject accountJSONObject = jsonObject.getJSONObject("_account");
+		JSONObject projectJSONObject = jsonObject.getJSONObject("_project");
 
-		String dossieraAccountKey = accountJSONObject.getString(
-			"_dossieraAccountKey");
+		if (projectJSONObject != null) {
+			String dossieraProjectKey = projectJSONObject.getString(
+				"_dossieraProjectKey");
 
-		List<Account> accounts = _accountWebService.getAccounts(
-			ExternalLinkDomain.DOSSIERA,
-			ExternalLinkEntityName.DOSSIERA_ACCOUNT, dossieraAccountKey, 1, 1);
+			List<Account> accounts = _accountWebService.getAccounts(
+				ExternalLinkDomain.DOSSIERA,
+				ExternalLinkEntityName.DOSSIERA_PROJECT, dossieraProjectKey, 1,
+				1);
 
-		if (!accounts.isEmpty()) {
-			Account account = accounts.get(0);
+			if (!accounts.isEmpty()) {
+				Account account = accounts.get(0);
 
-			return account.getKey();
+				return account.getKey();
+			}
+		}
+		else {
+			JSONObject accountJSONObject = jsonObject.getJSONObject("_account");
+
+			String dossieraAccountKey = accountJSONObject.getString(
+				"_dossieraAccountKey");
+
+			List<Account> accounts = _accountWebService.getAccounts(
+				ExternalLinkDomain.DOSSIERA,
+				ExternalLinkEntityName.DOSSIERA_ACCOUNT, dossieraAccountKey, 1,
+				1);
+
+			if (!accounts.isEmpty()) {
+				Account account = accounts.get(0);
+
+				return account.getKey();
+			}
 		}
 
 		return null;
@@ -746,17 +807,30 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			ExternalLinkEntityName.SALESFORCE_ACCOUNT);
 		accountExternalLink.setEntityId(salesforceAccountKey);
 
-		JSONObject accountJSONObject = jsonObject.getJSONObject("_account");
-
-		String dossieraAccountKey = accountJSONObject.getString(
-			"_dossieraAccountKey");
-
 		ExternalLink dossieraExternalLink = new ExternalLink();
 
-		dossieraExternalLink.setDomain(ExternalLinkDomain.DOSSIERA);
-		dossieraExternalLink.setEntityName(
-			ExternalLinkEntityName.DOSSIERA_ACCOUNT);
-		dossieraExternalLink.setEntityId(dossieraAccountKey);
+		JSONObject projectJSONObject = jsonObject.getJSONObject("_project");
+
+		if (projectJSONObject != null) {
+			String dossieraProjectKey = projectJSONObject.getString(
+				"_dossieraProjectKey");
+
+			dossieraExternalLink.setDomain(ExternalLinkDomain.DOSSIERA);
+			dossieraExternalLink.setEntityName(
+				ExternalLinkEntityName.DOSSIERA_PROJECT);
+			dossieraExternalLink.setEntityId(dossieraProjectKey);
+		}
+		else {
+			JSONObject accountJSONObject = jsonObject.getJSONObject("_account");
+
+			String dossieraAccountKey = accountJSONObject.getString(
+				"_dossieraAccountKey");
+
+			dossieraExternalLink.setDomain(ExternalLinkDomain.DOSSIERA);
+			dossieraExternalLink.setEntityName(
+				ExternalLinkEntityName.DOSSIERA_ACCOUNT);
+			dossieraExternalLink.setEntityId(dossieraAccountKey);
+		}
 
 		String salesforceProjectKey = jsonObject.getString(
 			"_salesforceProjectKey");
