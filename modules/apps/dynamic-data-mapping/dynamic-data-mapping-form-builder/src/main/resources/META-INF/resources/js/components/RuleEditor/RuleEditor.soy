@@ -481,6 +481,7 @@
 								{msg desc=""}choose-an-option{/msg}
 							{/param}
 							{param ref: 'action' + $index /}
+							{param showEmptyOption: false /}
 							{param spritemap: $spritemap /}
 							{param value: [$actionSelected] /}
 						{/delcall}
@@ -591,6 +592,7 @@
 			{param options: $options /}
 			{param placeholder: $placeholder /}
 			{param ref: $ref /}
+			{param showEmptyOption: false /}
 			{param spritemap: $spritemap /}
 			{param value: [$value] /}
 		{/delcall}
@@ -662,6 +664,7 @@
 							{/param}
 							{param ref: 'firstOperand' + $index /}
 							{param spritemap: $spritemap /}
+							{param showEmptyOption: false /}
 							{param value: [$firstOperandValueSelected] /}
 						{/delcall}
 					</div>
@@ -705,6 +708,7 @@
 											{/param}
 											{param readOnly: $readOnly /}
 											{param ref: 'secondOperand' + $index /}
+											{param showEmptyOption: false /}
 											{param spritemap: $spritemap /}
 											{param value: [$secondOperandValue] /}
 										{/delcall}
@@ -719,6 +723,7 @@
 												{msg desc=""}choose-an-option{/msg}
 											{/param}
 											{param ref: 'secondOperand' + $index /}
+											{param showEmptyOption: false /}
 											{param spritemap: $spritemap /}
 											{param value: [$secondOperandValue] /}
 										{/delcall}
@@ -731,6 +736,7 @@
 											{param name: $secondOperandFieldName /}
 											{param readOnly: $readOnly /}
 											{param ref: 'secondOperand' + $index /}
+											{param showEmptyOption: false /}
 											{param spritemap: $spritemap /}
 											{param value: $secondOperandValue /}
 										{/delcall}
@@ -807,6 +813,7 @@
 			{/param}
 			{param readOnly: $readOnly /}
 			{param ref: 'conditionOperator' + $index /}
+			{param showEmptyOption: false /}
 			{param spritemap: $spritemap /}
 			{param value: [$selectedOperator] /}
 		{/delcall}
@@ -854,6 +861,7 @@
 					{msg desc=""}choose-an-option{/msg}
 				{/param}
 				{param ref: 'secondOperandTypeSelector' + $index /}
+				{param showEmptyOption: false /}
 				{param spritemap: $spritemap /}
 				{param value: [$value] /}
 				{param visible: $visible /}
@@ -886,6 +894,7 @@
 			{param placeholder kind="text"}
 				{msg desc=""}choose-an-option{/msg}
 			{/param}
+			{param showEmptyOption: false /}
 			{param spritemap: $spritemap /}
 			{param value: [$secondOperandValue] /}
 		{/delcall}
@@ -1085,6 +1094,7 @@
 									{msg desc=""}choose-an-option{/msg}
 								{/param}
 								{param ref: 'action' + $actionIndex + 'dataProviderInput' + $index /}
+								{param showEmptyOption: false /}
 								{param spritemap: $spritemap /}
 								{param value: [$input.value] /}
 							{/delcall}
