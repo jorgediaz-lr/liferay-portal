@@ -5,4 +5,4 @@ application:
     className: "HeadlessOSBCommerceInstanceApplication"
     name: "Liferay.Headless.OSB.Commerce.Instance"
 author: "Ivica Cardic"
-clientDir: "../headless-osb-commerce-instance-client/src/main/java"
+clientDir: "../../../osb-commerce-provisioning/headless/headless-osb-commerce-instance-client/src/main/java"
