@@ -22,6 +22,7 @@ import {
 } from '../utilities/constants';
 import {convertDashToEmptyString} from '../utilities/helpers';
 import EditableField from './EditableField';
+import ExternalSelectField from './ExternalSelectField';
 
 function InlineEdit({
 	deleteFn,
@@ -97,48 +98,12 @@ function InlineEdit({
 			{showEditor && (
 				<>
 					{type === FIELD_TYPE_EXTERNAL && (
-						<div className="external">
-							<label
-								className="form-control-label"
-								htmlFor={namespacedFieldName}
-							>
-								<input
-									className="form-control"
-									disabled
-									id={namespacedFieldName}
-									type="text"
-									value={value}
-								/>
-							</label>
-
-							<button
-								className="btn btn-secondary btn-sm"
-								onClick={handleClick}
-								role="button"
-								title={Liferay.Language.get('select')}
-								type="button"
-							>
-								{Liferay.Language.get('select')}
-							</button>
-
-							<button
-								className="btn btn-icon btn-sm"
-								onClick={handleDelete}
-								role="button"
-								title={Liferay.Language.get('delete')}
-								type="button"
-							>
-								<svg
-									aria-label={Liferay.Language.get(
-										'delete-field-icon'
-									)}
-									className="delete-icon"
-									role="img"
-								>
-									<use xlinkHref="#trash" />
-								</svg>
-							</button>
-						</div>
+						<ExternalSelectField
+							clickFn={handleClick}
+							deleteFn={handleDelete}
+							id={namespacedFieldName}
+							value={value}
+						/>
 					)}
 
 					{type === FIELD_TYPE_SELECT && (

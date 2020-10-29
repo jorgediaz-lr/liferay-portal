@@ -42,7 +42,7 @@ describe('InlineEdit', () => {
 		expect(container).toBeTruthy();
 	});
 
-	it('displays an edit icon when hover over the field', () => {
+	it('displays an Edit icon when the user hovers over the field', () => {
 		const {container} = renderInlineEdit();
 		const {getByLabelText, getByText} = within(container);
 
@@ -154,20 +154,6 @@ describe('InlineEdit', () => {
 		getByText('select');
 		expect(getByText('select').type).toBe('button');
 		getByLabelText('delete-field-icon');
-	});
-
-	it('calls the delete function when the Delete icon on an external field is clicked', () => {
-		const deleteFn = jest.fn();
-		const {container} = renderInlineEdit({
-			deleteFn,
-			type: FIELD_TYPE_EXTERNAL
-		});
-		const {getByLabelText, getByText} = within(container);
-
-		fireEvent.click(getByText('test'));
-		fireEvent.click(getByLabelText('delete-field-icon'));
-
-		expect(deleteFn).toHaveBeenCalled();
 	});
 
 	it('displays an editable select input correctly', () => {

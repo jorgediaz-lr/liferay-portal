@@ -170,6 +170,14 @@
 	}
 }
 
+.external-select-field {
+	display: flex;
+
+	.btn {
+		margin-left: $spacing-md;
+	}
+}
+
 .form-group {
 	.field.table-field {
 		width: 65%;
@@ -219,14 +227,6 @@
 
 		.form-control {
 			padding: $spacing-xxs $spacing-xs;
-		}
-	}
-
-	.external {
-		display: flex;
-
-		.btn {
-			margin-left: $spacing-md;
 		}
 	}
 }
