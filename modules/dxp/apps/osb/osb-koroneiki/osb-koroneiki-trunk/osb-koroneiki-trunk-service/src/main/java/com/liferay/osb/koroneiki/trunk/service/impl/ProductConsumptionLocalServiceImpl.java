@@ -238,30 +238,13 @@ public class ProductConsumptionLocalServiceImpl
 	public ProductConsumption reindex(long productConsumptionId)
 		throws PortalException {
 
-		return productConsumptionPersistence.findByPrimaryKey(
-			productConsumptionId);
-	}
+		ProductConsumption productConsumption =
+			productConsumptionPersistence.findByPrimaryKey(
+				productConsumptionId);
 
-	public void reindexProductPurchaseView(
-			ProductConsumption productConsumption)
-		throws PortalException {
+		reindexProductPurchaseView(productConsumption);
 
-		ProductPurchaseView productPurchaseView = new ProductPurchaseViewImpl();
-
-		productPurchaseView.setCompanyId(productConsumption.getCompanyId());
-		productPurchaseView.setAccountId(productConsumption.getAccountId());
-		productPurchaseView.setProductEntryId(
-			productConsumption.getProductEntryId());
-
-		TransactionCommitCallbackUtil.registerCallback(
-			() -> {
-				Indexer<ProductPurchaseView> indexer =
-					_indexerRegistry.getIndexer(ProductPurchaseView.class);
-
-				indexer.reindex(productPurchaseView);
-
-				return null;
-			});
+		return productConsumption;
 	}
 
 	public Hits search(
@@ -305,6 +288,28 @@ public class ProductConsumptionLocalServiceImpl
 		catch (Exception exception) {
 			throw new PortalException(exception);
 		}
+	}
+
+	protected void reindexProductPurchaseView(
+			ProductConsumption productConsumption)
+		throws PortalException {
+
+		ProductPurchaseView productPurchaseView = new ProductPurchaseViewImpl();
+
+		productPurchaseView.setCompanyId(productConsumption.getCompanyId());
+		productPurchaseView.setAccountId(productConsumption.getAccountId());
+		productPurchaseView.setProductEntryId(
+			productConsumption.getProductEntryId());
+
+		TransactionCommitCallbackUtil.registerCallback(
+			() -> {
+				Indexer<ProductPurchaseView> indexer =
+					_indexerRegistry.getIndexer(ProductPurchaseView.class);
+
+				indexer.reindex(productPurchaseView);
+
+				return null;
+			});
 	}
 
 	protected void validate(
