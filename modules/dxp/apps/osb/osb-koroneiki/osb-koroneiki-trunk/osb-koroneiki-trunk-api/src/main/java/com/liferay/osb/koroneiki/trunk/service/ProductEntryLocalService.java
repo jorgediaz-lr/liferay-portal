@@ -296,10 +296,6 @@ public interface ProductEntryLocalService
 	public ProductEntry reindex(long productEntryId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public void reindexProductPurchaseView(ProductEntry productEntry)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Hits search(
 			long companyId, String keywords, int start, int end, Sort sort)
 		throws PortalException;

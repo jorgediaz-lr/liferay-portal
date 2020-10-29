@@ -323,10 +323,6 @@ public interface ProductPurchaseLocalService
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public void reindexProductPurchaseView(ProductPurchase productPurchase)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Hits search(
 			long companyId, String keywords, int start, int end, Sort sort)
 		throws PortalException;

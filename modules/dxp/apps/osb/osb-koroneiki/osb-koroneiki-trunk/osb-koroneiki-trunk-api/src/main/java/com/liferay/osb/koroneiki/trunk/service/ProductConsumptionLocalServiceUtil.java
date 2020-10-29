@@ -418,14 +418,6 @@ public class ProductConsumptionLocalServiceUtil {
 		return getService().reindex(productConsumptionId);
 	}
 
-	public static void reindexProductPurchaseView(
-			com.liferay.osb.koroneiki.trunk.model.ProductConsumption
-				productConsumption)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		getService().reindexProductPurchaseView(productConsumption);
-	}
-
 	public static com.liferay.portal.kernel.search.Hits search(
 			long companyId, String keywords, int start, int end,
 			com.liferay.portal.kernel.search.Sort sort)
