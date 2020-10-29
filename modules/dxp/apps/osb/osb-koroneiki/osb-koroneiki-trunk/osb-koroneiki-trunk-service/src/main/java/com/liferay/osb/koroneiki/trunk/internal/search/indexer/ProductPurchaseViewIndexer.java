@@ -133,12 +133,12 @@ public class ProductPurchaseViewIndexer
 		throws Exception {
 
 		addSearchTerm(searchQuery, searchContext, "accountKey", false);
+		addSearchTerm(searchQuery, searchContext, "entityIds", false);
 		addSearchTerm(searchQuery, searchContext, "name", true);
 		addSearchTerm(
 			searchQuery, searchContext, "productConsumptionIds", false);
 		addSearchTerm(searchQuery, searchContext, "productKey", false);
 		addSearchTerm(searchQuery, searchContext, "productPurchaseIds", false);
-		addSearchTerm(searchQuery, searchContext, "entityIds", false);
 	}
 
 	@Override
@@ -165,6 +165,102 @@ public class ProductPurchaseViewIndexer
 		catch (Exception exception) {
 			throw new SearchException(exception);
 		}
+	}
+
+	protected void addProductPurchasesFields(
+		Document document, List<ProductPurchase> productPurchases) {
+
+		Set<String> entityIds = new HashSet<>();
+		Set<String> externalLinkDomains = new HashSet<>();
+		Set<String> externalLinkEntityIds = new HashSet<>();
+		Set<String> externalLinkEntityNames = new HashSet<>();
+
+		FieldArray fieldArray = new FieldArray("productPurchases");
+
+		for (ProductPurchase productPurchase : productPurchases) {
+			Field field = new Field(StringPool.BLANK);
+
+			Field statusField = new Field(Field.STATUS);
+
+			statusField.setValue(String.valueOf(productPurchase.getStatus()));
+
+			field.addField(statusField);
+
+			Date endDate = productPurchase.getEndDate();
+
+			if (endDate != null) {
+				Field endDateField = new Field("endDate");
+
+				endDateField.setDates(new Date[] {endDate});
+				endDateField.setValue(dateFormat.format(endDate));
+
+				field.addField(endDateField);
+
+				Field endDateSortableField = new Field("endDate_sortable");
+
+				endDateSortableField.setNumeric(true);
+				endDateSortableField.setNumericClass(Long.class);
+				endDateSortableField.setValue(
+					String.valueOf(endDate.getTime()));
+
+				field.addField(endDateSortableField);
+			}
+
+			Date startDate = productPurchase.getStartDate();
+
+			if (startDate != null) {
+				Field startDateField = new Field("startDate");
+
+				startDateField.setDates(new Date[] {startDate});
+				startDateField.setValue(dateFormat.format(startDate));
+
+				field.addField(startDateField);
+
+				Field startDateSortableField = new Field("startDate_sortable");
+
+				startDateSortableField.setNumeric(true);
+				startDateSortableField.setNumericClass(Long.class);
+				startDateSortableField.setValue(
+					String.valueOf(startDate.getTime()));
+
+				field.addField(startDateSortableField);
+			}
+
+			fieldArray.addField(field);
+
+			List<ExternalLink> externalLinks =
+				productPurchase.getExternalLinks();
+
+			for (ExternalLink externalLink : externalLinks) {
+				String entityName =
+					externalLink.getDomain() + StringPool.UNDERLINE +
+						externalLink.getEntityName();
+
+				String entityId =
+					entityName + StringPool.UNDERLINE +
+						externalLink.getEntityId();
+
+				entityIds.add(externalLink.getEntityId());
+
+				externalLinkDomains.add(externalLink.getDomain());
+				externalLinkEntityIds.add(entityId);
+				externalLinkEntityNames.add(entityName);
+			}
+		}
+
+		document.addKeyword(
+			"entityIds", ArrayUtil.toStringArray(entityIds.toArray()));
+		document.addKeyword(
+			"externalLinkDomains",
+			ArrayUtil.toStringArray(externalLinkDomains.toArray()));
+		document.addKeyword(
+			"externalLinkEntityIds",
+			ArrayUtil.toStringArray(externalLinkEntityIds.toArray()));
+		document.addKeyword(
+			"externalLinkEntityNames",
+			ArrayUtil.toStringArray(externalLinkEntityNames.toArray()));
+
+		document.add(fieldArray);
 	}
 
 	@Override
@@ -201,7 +297,7 @@ public class ProductPurchaseViewIndexer
 				productPurchaseView.getProductEntryId(), QueryUtil.ALL_POS,
 				QueryUtil.ALL_POS);
 
-		getProductPurchasesField(document, productPurchases);
+		addProductPurchasesFields(document, productPurchases);
 
 		document.addKeyword("accountId", account.getAccountId());
 		document.addKeyword("accountKey", account.getAccountKey());
@@ -350,101 +446,6 @@ public class ProductPurchaseViewIndexer
 		return productPurchasesStream.mapToLong(
 			ProductPurchase::getProductPurchaseId
 		).toArray();
-	}
-
-	protected void getProductPurchasesField(
-		Document document, List<ProductPurchase> productPurchases) {
-
-		Set<String> entityIds = new HashSet<>();
-		Set<String> externalLinkDomains = new HashSet<>();
-		Set<String> externalLinkEntityIds = new HashSet<>();
-		Set<String> externalLinkEntityNames = new HashSet<>();
-
-		FieldArray fieldArray = new FieldArray("productPurchases");
-
-		for (ProductPurchase productPurchase : productPurchases) {
-			Field field = new Field(StringPool.BLANK);
-
-			Field statusField = new Field(Field.STATUS);
-
-			statusField.setValue(String.valueOf(productPurchase.getStatus()));
-
-			field.addField(statusField);
-
-			Date endDate = productPurchase.getEndDate();
-
-			if (endDate != null) {
-				Field endDateField = new Field("endDate");
-
-				endDateField.setDates(new Date[] {endDate});
-				endDateField.setValue(dateFormat.format(endDate));
-
-				field.addField(endDateField);
-
-				Field endDateSortableField = new Field("endDate_sortable");
-
-				endDateSortableField.setNumeric(true);
-				endDateSortableField.setNumericClass(Long.class);
-				endDateSortableField.setValue(
-					String.valueOf(endDate.getTime()));
-
-				field.addField(endDateSortableField);
-			}
-
-			Date startDate = productPurchase.getStartDate();
-
-			if (startDate != null) {
-				Field startDateField = new Field("startDate");
-
-				startDateField.setDates(new Date[] {startDate});
-				startDateField.setValue(dateFormat.format(startDate));
-
-				field.addField(startDateField);
-
-				Field startDateSortableField = new Field("startDate_sortable");
-
-				startDateSortableField.setNumeric(true);
-				startDateSortableField.setNumericClass(Long.class);
-				startDateSortableField.setValue(
-					String.valueOf(startDate.getTime()));
-
-				field.addField(startDateSortableField);
-			}
-
-			fieldArray.addField(field);
-
-			List<ExternalLink> externalLinks =
-				productPurchase.getExternalLinks();
-
-			for (ExternalLink externalLink : externalLinks) {
-				String entityName =
-					externalLink.getDomain() + StringPool.UNDERLINE +
-						externalLink.getEntityName();
-
-				String entityId =
-					entityName + StringPool.UNDERLINE +
-						externalLink.getEntityId();
-
-				entityIds.add(externalLink.getEntityId());
-				externalLinkDomains.add(externalLink.getDomain());
-				externalLinkEntityIds.add(entityId);
-				externalLinkEntityNames.add(entityName);
-			}
-		}
-
-		document.addKeyword(
-			"entityIds", ArrayUtil.toStringArray(entityIds.toArray()));
-		document.addKeyword(
-			"externalLinkDomains",
-			ArrayUtil.toStringArray(externalLinkDomains.toArray()));
-		document.addKeyword(
-			"externalLinkEntityIds",
-			ArrayUtil.toStringArray(externalLinkEntityIds.toArray()));
-		document.addKeyword(
-			"externalLinkEntityNames",
-			ArrayUtil.toStringArray(externalLinkEntityNames.toArray()));
-
-		document.add(fieldArray);
 	}
 
 	protected int getProvisionedCount(long accountId, long productEntryId) {
