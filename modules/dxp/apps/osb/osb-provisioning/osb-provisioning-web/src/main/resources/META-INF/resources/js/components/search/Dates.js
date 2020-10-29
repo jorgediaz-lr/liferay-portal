@@ -9,6 +9,7 @@
  * distribution rights of the Software.
  */
 
+import ClayDatePicker from '@clayui/date-picker';
 import React from 'react';
 
 import {NAMESPACE} from '../../utilities/constants';
