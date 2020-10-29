@@ -161,7 +161,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		String accountName = accountJSONObject.getString("_name");
 
 		if (projectJSONObject != null) {
-			Account parentAccount = createParentAccount(accountJSONObject);
+			Account parentAccount = createParentAccount(jsonObject);
 
 			String projectName = projectJSONObject.getString("_name");
 
@@ -211,25 +211,39 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			StringPool.BLANK, StringPool.BLANK, account);
 	}
 
-	protected Account createParentAccount(JSONObject accountJSONObject)
+	protected Account createParentAccount(JSONObject jsonObject)
 		throws Exception {
 
 		Account parentAccount = new Account();
+
+		JSONObject accountJSONObject = jsonObject.getJSONObject("_account");
 
 		String accountName = accountJSONObject.getString("_name");
 
 		String dossieraAccountKey = accountJSONObject.getString(
 			"_dossieraAccountKey");
 
-		ExternalLink externalLink = new ExternalLink();
+		ExternalLink dossieraExternalLink = new ExternalLink();
 
-		externalLink.setDomain(ExternalLinkDomain.DOSSIERA);
-		externalLink.setEntityName(ExternalLinkEntityName.DOSSIERA_ACCOUNT);
-		externalLink.setEntityId(dossieraAccountKey);
+		dossieraExternalLink.setDomain(ExternalLinkDomain.DOSSIERA);
+		dossieraExternalLink.setEntityName(
+			ExternalLinkEntityName.DOSSIERA_ACCOUNT);
+		dossieraExternalLink.setEntityId(dossieraAccountKey);
+
+		String salesforceAccountKey = jsonObject.getString(
+			"_salesforceAccountKey");
+
+		ExternalLink salesforceExternalLink = new ExternalLink();
+
+		salesforceExternalLink.setDomain(ExternalLinkDomain.SALESFORCE);
+		salesforceExternalLink.setEntityName(
+			ExternalLinkEntityName.SALESFORCE_ACCOUNT);
+		salesforceExternalLink.setEntityId(salesforceAccountKey);
 
 		parentAccount.setName(accountName);
 		parentAccount.setCode(_getCode(accountName, null));
-		parentAccount.setExternalLinks(new ExternalLink[] {externalLink});
+		parentAccount.setExternalLinks(
+			new ExternalLink[] {dossieraExternalLink, salesforceExternalLink});
 
 		List<Account> duplicateAccounts = _accountWebService.search(
 			StringPool.BLANK, "name eq '" + accountName + "'", 0, 1, null);
