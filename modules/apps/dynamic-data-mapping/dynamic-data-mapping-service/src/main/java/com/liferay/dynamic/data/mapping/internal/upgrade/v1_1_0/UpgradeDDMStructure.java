@@ -229,6 +229,8 @@ public class UpgradeDDMStructure extends UpgradeProcess {
 			ExpressionParameterValueExtractor.extractParameterValues(
 				visibilityExpression);
 
+		StringBundler sb1 = new StringBundler();
+
 		for (String parameterValue : parameterValues) {
 			if (Validator.isNull(parameterValue) ||
 				Validator.isNumber(parameterValue) ||
@@ -237,19 +239,27 @@ public class UpgradeDDMStructure extends UpgradeProcess {
 				continue;
 			}
 
-			StringBundler sb = new StringBundler(5);
+			StringBundler sb2 = new StringBundler(5);
 
-			sb.append("getValue(");
-			sb.append(StringPool.APOSTROPHE);
-			sb.append(parameterValue);
-			sb.append(StringPool.APOSTROPHE);
-			sb.append(")");
+			sb2.append("getValue(");
+			sb2.append(StringPool.APOSTROPHE);
+			sb2.append(parameterValue);
+			sb2.append(StringPool.APOSTROPHE);
+			sb2.append(")");
 
-			visibilityExpression = StringUtil.replace(
-				visibilityExpression, parameterValue, sb.toString());
+			int index = visibilityExpression.indexOf(parameterValue);
+
+			sb1.append(visibilityExpression.substring(0, index));
+
+			sb1.append(sb2.toString());
+
+			visibilityExpression = visibilityExpression.substring(
+				index + parameterValue.length());
 		}
 
-		return visibilityExpression;
+		sb1.append(visibilityExpression);
+
+		return sb1.toString();
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
