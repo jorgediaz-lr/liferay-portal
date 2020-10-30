@@ -35,4 +35,10 @@ public interface SegmentsServiceConfiguration {
 	)
 	public boolean segmentationEnabled();
 
+	@Meta.AD(
+		deflt = "false", description = "role-segmentation-enabled-description",
+		name = "role-segmentation-enabled-name", required = false
+	)
+	public boolean roleSegmentationEnabled();
+
 }
