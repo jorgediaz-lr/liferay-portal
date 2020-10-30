@@ -123,7 +123,7 @@ definition {
 		property database.types = "db2,mariadb,mysql,oracle,postgresql";
 		property portal.upgrades = "true";
 		property portal.version = "6.2.10.21";
-		property test.assert.warning.exceptions = "true";
+		property test.assert.warning.exceptions = "false";
 
 		Upgrade.viewUpgrade();
 	}
