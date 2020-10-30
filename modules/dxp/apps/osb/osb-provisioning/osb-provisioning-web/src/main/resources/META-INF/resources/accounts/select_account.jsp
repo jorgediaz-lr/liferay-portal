@@ -109,59 +109,51 @@ SearchContainer accountSearchContainer = accountSearchDisplayContext.getSearchCo
 </div>
 
 <aui:script>
-	var searchContainer = document.getElementById(
-		'<portlet:namespace />parentAccountContainerSearchContainer'
-	);
-
-	var table = searchContainer.querySelector('tbody');
-
-	if (table) {
-		var tableRows = table.querySelectorAll('tr');
-
-		tableRows.forEach(<portlet:namespace />selectRow);
+	function <portlet:namespace />resetActiveClass(nodes) {
+		nodes.forEach(function(node) {
+			node.classList.remove('active');
+		});
 	}
 
-	var anchors = document.querySelectorAll('a');
-
-	anchors.forEach(<portlet:namespace />resetAnchor);
-
-	var searchForm = document.querySelector('form');
-
-	if (searchForm) {
-		searchForm.addEventListener('submit', <portlet:namespace />resetData);
-	}
-
-	function <portlet:namespace />resetAnchor(element) {
-		if (!element.classList.contains('dropdown-toggle')) {
-			element.addEventListener('click', <portlet:namespace />resetData);
-		}
-	}
-
-	function <portlet:namespace />resetData() {
+	function <portlet:namespace />resetFormData() {
 		Liferay.Util.getOpener().Liferay.fire('selectedItemChange', {
 			data: ''
 		});
 	}
 
-	function <portlet:namespace />resetRow(row) {
-		row.classList.remove('active');
+	var searchContainer = document.getElementById(
+		'<portlet:namespace />parentAccountContainerSearchContainer'
+	);
+
+	if (searchContainer) {
+		var entries = searchContainer.querySelectorAll('tbody tr');
+
+		entries.forEach(function(entry) {
+			entry.addEventListener('click', function() {
+				<portlet:namespace />resetActiveClass(entries);
+
+				entry.classList.add('active');
+
+				var rowData = entry.dataset;
+
+				if (rowData) {
+					Liferay.Util.getOpener().Liferay.fire('selectedItemChange', {
+						data: rowData.key
+					});
+				}
+			});
+		});
 	}
 
-	function <portlet:namespace />selectRow(row) {
-		row.addEventListener('click', function() {
-			var activeRows = Array.from(document.getElementsByClassName('active'));
+	var paginationPages = document.querySelectorAll('.pagination-bar .page-link');
 
-			activeRows.forEach(<portlet:namespace />resetRow);
+	paginationPages.forEach(function(page) {
+		page.addEventListener('click', <portlet:namespace />resetFormData);
+	});
 
-			this.classList.add('active');
+	var searchForm = document.querySelector('form');
 
-			var rowData = this.dataset;
-
-			if (rowData) {
-				Liferay.Util.getOpener().Liferay.fire('selectedItemChange', {
-					data: rowData.key
-				});
-			}
-		});
+	if (searchForm) {
+		searchForm.addEventListener('submit', <portlet:namespace />resetFormData);
 	}
 </aui:script>
