@@ -41,10 +41,28 @@ describe('Account', () => {
 		getByLabelText('code');
 	});
 
+	it('displays a Parent Account field', () => {
+		const {getByText} = renderAccount();
+
+		getByText('parent-account');
+	});
+
 	it('displays a Project Worker email field', () => {
 		const {getByLabelText} = renderAccount();
 
 		expect(getByLabelText('project-worker').type).toBe('email');
+	});
+
+	it('displays a Partner/Reseller/SI field', () => {
+		const {getByText} = renderAccount();
+
+		getByText('partner-reseller-si');
+	});
+
+	it('displays a First Line Support field', () => {
+		const {getByText} = renderAccount();
+
+		getByText('first-line-support');
 	});
 
 	it('displays a Country dropdown field', () => {

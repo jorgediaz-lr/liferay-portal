@@ -13,6 +13,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import {NAMESPACE} from '../../utilities/constants';
+import ExternalSelectField from '../ExternalSelectField';
 
 function Account({countryNames}) {
 	return (
@@ -40,6 +41,14 @@ function Account({countryNames}) {
 			</div>
 
 			<div className="col-md-6 form-group">
+				<h5 className="form-check-inline">
+					{Liferay.Language.get('parent-account')}
+				</h5>
+
+				<ExternalSelectField clickFn={null} id={'test'} value={'test'} />
+			</div>
+
+			<div className="col-md-6 form-group">
 				<label htmlFor="workerContactEmailAddress">
 					{Liferay.Language.get('project-worker')}
 				</label>
@@ -54,6 +63,22 @@ function Account({countryNames}) {
 						{Liferay.Language.get('users-liferay-email-address')}
 					</div>
 				</div>
+			</div>
+
+			<div className="col-md-6 form-group">
+				<h5 className="form-check-inline">
+					{Liferay.Language.get('partner-reseller-si')}
+				</h5>
+
+				<ExternalSelectField clickFn={null} id={'test'} value={'test'} />
+			</div>
+
+			<div className="col-md-6 form-group">
+				<h5 className="form-check-inline">
+					{Liferay.Language.get('first-line-support')}
+				</h5>
+
+				<ExternalSelectField clickFn={null} id={'test'} value={'test'} />
 			</div>
 
 			<div className="col-md-6 form-group">
