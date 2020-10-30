@@ -610,6 +610,9 @@
 					'/misc/',
 				combine: COMBINE,
 				modules: {
+					svg4everybody: {
+						path: 'svg4everybody.js'
+					},
 					swfobject: {
 						path: 'swfobject.js'
 					},
