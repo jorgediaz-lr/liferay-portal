@@ -32,8 +32,6 @@ public class ProvisioningWebKeys {
 	public static final String PRODUCT_BUNDLE_PRODUCTS =
 		"PRODUCT_BUNDLE_PRODUCTS";
 
-	public static final String PRODUCT_PURCHASE = "PRODUCT_PURCHASE";
-
 	public static final String PRODUCT_PURCHASE_VIEW = "PRODUCT_PURCHASE_VIEW";
 
 	public static final String PRODUCT_PURCHASE_VIEWS =

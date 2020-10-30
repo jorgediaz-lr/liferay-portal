@@ -83,15 +83,8 @@ public class ViewProductPurchasesManagementToolbarDisplayContext
 		return new CreationMenu() {
 			{
 				addDropdownItem(
-					dropdownItem -> {
-						dropdownItem.setHref(
-							StringBundler.concat(
-								"javascript:",
-								liferayPortletResponse.getNamespace(),
-								"assignProducts();"));
-						dropdownItem.setLabel(
-							LanguageUtil.get(request, "add-subscriptions"));
-					});
+					dropdownItem -> dropdownItem.setLabel(
+						LanguageUtil.get(request, "add-subscriptions")));
 			}
 		};
 	}

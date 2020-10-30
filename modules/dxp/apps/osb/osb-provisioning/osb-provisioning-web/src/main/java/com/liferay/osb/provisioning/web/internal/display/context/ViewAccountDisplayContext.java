@@ -181,6 +181,23 @@ public class ViewAccountDisplayContext {
 		return accountDisplay;
 	}
 
+	public AccountEntry getAccountEntry() throws Exception {
+		return accountEntryWebService.fetchAccountEntry(account.getKey());
+	}
+
+	public String getAssignProductsURL() throws Exception {
+		PortletURL portletURL = renderResponse.createRenderURL();
+
+		portletURL.setWindowState(LiferayWindowState.POP_UP);
+
+		portletURL.setParameter(
+			"mvcRenderCommandName", "/accounts/assign_products");
+		portletURL.setParameter("redirect", getCurrentURL());
+		portletURL.setParameter("accountKey", account.getKey());
+
+		return portletURL.toString();
+	}
+
 	public List<AuditEntryDisplay> getAuditEntryDisplays() throws Exception {
 		return TransformUtil.transform(
 			auditEntryWebService.getAccountAuditEntries(

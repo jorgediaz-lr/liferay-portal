@@ -109,17 +109,19 @@ List<ProductPurchaseView> productPurchaseViews = editProductPurchasesDisplayCont
 			'#<portlet:namespace />subscriptionTerm'
 		);
 
+		var selectedProductPurchaseKeys = Array.from(subscriptionTerms, function(
+			term
+		) {
+			return term.value;
+		}).join(',');
+
 		var productPurchaseKeys = form.querySelector(
 			'#<portlet:namespace />productPurchaseKeys'
 		);
 
-		var selectedTerms = [];
-
-		subscriptionTerms.forEach(function(subscriptionTerm) {
-			selectedTerms.push(subscriptionTerm.value);
-		});
-
-		productPurchaseKeys.setAttribute('value', selectedTerms.join(','));
+		if (productPurchaseKeys) {
+			productPurchaseKeys.setAttribute('value', selectedProductPurchaseKeys);
+		}
 
 		form.submit();
 	}

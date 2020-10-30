@@ -65,23 +65,21 @@ SearchContainer searchContainer = assignProductsDisplayContext.getSearchContaine
 	);
 
 	searchContainer.on('rowToggled', function(event) {
-		var selectedItems = event.elements.allSelectedElements;
-
-		var data = [];
-
-		if (selectedItems.size() > 0) {
-			selectedItems.each(function() {
-				var value = this.attr('value').split('_');
-
-				data.push([value[0], value[1]]);
-			});
-		}
-
-		Liferay.Util.getOpener().Liferay.fire(
-			'<portlet:namespace />assignProducts',
-			{
-				data: data
-			}
+		var selectedItems = document.querySelectorAll(
+			'input[name="<portlet:namespace />rowIds"][type="checkbox"]:checked'
 		);
+
+		if (selectedItems) {
+			var data = Array.from(selectedItems, function(item) {
+				return item.value.split('_');
+			});
+
+			Liferay.Util.getOpener().Liferay.fire(
+				'<portlet:namespace />assignProducts',
+				{
+					data: data
+				}
+			);
+		}
 	});
 </aui:script>

@@ -45,6 +45,7 @@ SearchContainer productPurchasesSearchContainer = viewAccountDisplayContext.getP
 		<aui:input name="productPurchaseViewKeys" type="hidden" />
 
 		<clay:management-toolbar
+			componentId="productPurchasesManagementToolbar"
 			displayContext="<%= new ViewProductPurchasesManagementToolbarDisplayContext(liferayPortletRequest, liferayPortletResponse, request, productPurchasesSearchContainer, accountDisplay.getKey()) %>"
 			searchContainerId="productPurchases"
 		/>
@@ -138,75 +139,88 @@ SearchContainer productPurchasesSearchContainer = viewAccountDisplayContext.getP
 	</aui:form>
 </div>
 
-<aui:script use="liferay-search-container">
+<aui:script use="liferay-item-selector-dialog, liferay-search-container">
 	var searchContainer = Liferay.SearchContainer.get(
 		'<portlet:namespace />productPurchases'
 	);
 
 	searchContainer.on('rowToggled', function(event) {
-		var selectedItems = event.elements.allSelectedElements;
+		var selectedItems = document.querySelectorAll(
+			'input[name="<portlet:namespace />rowIds"][type="checkbox"]:checked'
+		);
 
-		var productKeys = [];
+		var productKeys = Array.from(selectedItems, function(item) {
+			return item.value;
+		}).join(',');
 
-		if (selectedItems.size() > 0) {
-			selectedItems.each(function() {
-				var value = this.attr('value');
+		A.one('#<portlet:namespace />productPurchaseViewKeys').val(productKeys);
 
-				productKeys.push(value);
-			});
+		var productPurchaseViewKeys = A.one(
+			'#<portlet:namespace />productPurchaseViewKeys'
+		);
 
-			A.one('#<portlet:namespace />productPurchaseViewKeys').val(
-				productKeys.join(',')
-			);
+		if (productPurchaseViewKeys) {
+			productPurchaseViewKeys.val(productKeys);
 		}
 	});
+
+	var <portlet:namespace />assignProducts = function() {
+		var itemSelectorDialog = new A.LiferayItemSelectorDialog({
+			eventName: '<portlet:namespace />assignProducts',
+			on: {
+				selectedItemChange: function(event) {
+					var selectedItems = event.newVal;
+
+					if (selectedItems) {
+						var productKeys = selectedItems
+							.map(function(item) {
+								return item[0];
+							})
+							.join(',');
+
+						var productKeys = A.one(
+							'#<portlet:namespace />productKeys'
+						);
+
+						if (productKeys) {
+							productKeys.val(productKeys);
+						}
+
+						<portlet:namespace />editProductPurchases();
+					}
+				}
+			},
+			strings: {
+				add: '<liferay-ui:message key="done" />',
+				cancel: '<liferay-ui:message key="cancel" />'
+			},
+			title: '<liferay-ui:message key="select-subscriptions" />',
+			url: '<%= viewAccountDisplayContext.getAssignProductsURL() %>'
+		});
+
+		itemSelectorDialog.open();
+	};
+
+	Liferay.componentReady('productPurchasesManagementToolbar')
+		.then(function(managementToolbar) {
+			managementToolbar.on(
+				'creationButtonClicked',
+				<portlet:namespace />assignProducts
+			);
+		})
+		.catch(function(err) {
+			console.error(err);
+		});
 </aui:script>
 
 <aui:script>
-	Liferay.provide(
-		window,
-		'<portlet:namespace />assignProducts',
-		function() {
-			<portlet:renderURL var="assignProductsURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
-				<portlet:param name="mvcRenderCommandName" value="/accounts/assign_products" />
-				<portlet:param name="redirect" value="<%= currentURL %>" />
-				<portlet:param name="accountKey" value="<%= accountDisplay.getKey() %>" />
-			</portlet:renderURL>
-
-			var A = AUI();
-
-			var itemSelectorDialog = new A.LiferayItemSelectorDialog({
-				eventName: '<portlet:namespace />assignProducts',
-				title: '<liferay-ui:message key="select-subscriptions" />',
-				url: '<%= assignProductsURL.toString() %>'
-			});
-
-			itemSelectorDialog.on('selectedItemChange', function(event) {
-				var selectedItems = event.newVal;
-
-				if (selectedItems) {
-					var productKeys = [];
-
-					selectedItems.forEach(function(selectedItem) {
-						productKeys.push(selectedItem[0]);
-					});
-
-					A.one('#<portlet:namespace />productKeys').val(
-						productKeys.join(',')
-					);
-
-					<portlet:namespace />editProductPurchases();
-				}
-			});
-
-			itemSelectorDialog.open();
-		},
-		['aui-base', 'liferay-item-selector-dialog']
-	);
-
 	function <portlet:namespace />editProductPurchases() {
-		document
-			.getElementById('<portlet:namespace />editProductPurchasesFm')
-			.submit();
+		var editProductPurchasesFm = document.getElementById(
+			'<portlet:namespace />editProductPurchasesFm'
+		);
+
+		if (editProductPurchasesFm) {
+			editProductPurchasesFm.submit();
+		}
 	}
 </aui:script>
