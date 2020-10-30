@@ -23,6 +23,9 @@ function AdvancedSearch({
 	countryNames,
 	formAction,
 	regionNames,
+	selectAccountURL,
+	selectFirstLineSupportURL,
+	selectPartnerURL,
 	subscriptionStateNames,
 	tierNames
 }) {
@@ -92,7 +95,12 @@ function AdvancedSearch({
 					displayType="secondary"
 					showCollapseIcon={true}
 				>
-					<Account countryNames={countryNames} />
+					<Account
+						countryNames={countryNames}
+						selectAccountURL={selectAccountURL}
+						selectFirstLineSupportURL={selectFirstLineSupportURL}
+						selectPartnerURL={selectPartnerURL}
+					/>
 				</ClayPanel>
 
 				<ClayPanel
@@ -145,6 +153,9 @@ AdvancedSearch.propTypes = {
 	countryNames: PropTypes.array.isRequired,
 	formAction: PropTypes.string.isRequired,
 	regionNames: PropTypes.array.isRequired,
+	selectAccountURL: PropTypes.string.isRequired,
+	selectFirstLineSupportURL: PropTypes.string.isRequired,
+	selectPartnerURL: PropTypes.string.isRequired,
 	subscriptionStateNames: PropTypes.array.isRequired,
 	tierNames: PropTypes.array.isRequired
 };

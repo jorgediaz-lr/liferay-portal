@@ -22,6 +22,9 @@ function renderSearch() {
 			countryNames={[]}
 			regionNames={[]}
 			resourceURL="/resource/URL"
+			selectAccountURL="/select/account/url"
+			selectFirstLineSupportURL="/select/fls/url"
+			selectPartnerURL="/select/partner/url"
 			subscriptionStateNames={[]}
 			tierNames={[]}
 		/>

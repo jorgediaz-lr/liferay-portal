@@ -21,6 +21,9 @@ function renderAdvancedSearch() {
 			countryNames={[]}
 			formAction="/url"
 			regionNames={[]}
+			selectAccountURL="/select/account/url"
+			selectFirstLineSupportURL="/select/fls/url"
+			selectPartnerURL="/select/partner/url"
 			subscriptionStateNames={[]}
 			tierNames={[]}
 		/>

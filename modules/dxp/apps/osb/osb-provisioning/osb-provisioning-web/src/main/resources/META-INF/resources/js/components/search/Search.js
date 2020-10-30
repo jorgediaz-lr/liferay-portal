@@ -62,6 +62,9 @@ function Search({
 	countryNames,
 	regionNames,
 	resourceURL,
+	selectAccountURL,
+	selectFirstLineSupportURL,
+	selectPartnerURL,
 	subscriptionStateNames,
 	tierNames
 }) {
@@ -228,6 +231,9 @@ function Search({
 					countryNames={countryNames}
 					formAction={accountsHomeURL}
 					regionNames={regionNames}
+					selectAccountURL={selectAccountURL}
+					selectFirstLineSupportURL={selectFirstLineSupportURL}
+					selectPartnerURL={selectPartnerURL}
 					subscriptionStateNames={subscriptionStateNames}
 					tierNames={tierNames}
 				/>
@@ -242,6 +248,9 @@ Search.propTypes = {
 	countryNames: PropTypes.array.isRequired,
 	regionNames: PropTypes.array.isRequired,
 	resourceURL: PropTypes.string.isRequired,
+	selectAccountURL: PropTypes.string.isRequired,
+	selectFirstLineSupportURL: PropTypes.string.isRequired,
+	selectPartnerURL: PropTypes.string.isRequired,
 	subscriptionStateNames: PropTypes.array.isRequired,
 	tierNames: PropTypes.array.isRequired
 };

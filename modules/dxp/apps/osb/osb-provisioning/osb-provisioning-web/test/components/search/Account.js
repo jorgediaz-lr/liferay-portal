@@ -16,7 +16,12 @@ import Account from '../../../src/main/resources/META-INF/resources/js/component
 
 function renderAccount() {
 	return render(
-		<Account countryNames={['Afghanistan', 'Aland Islands', 'Albania']} />
+		<Account
+			countryNames={['Afghanistan', 'Aland Islands', 'Albania']}
+			selectAccountURL="/select/account/url"
+			selectFirstLineSupportURL="/select/fls/url"
+			selectPartnerURL="/select/partner/url"
+		/>
 	);
 }
 

@@ -10,12 +10,18 @@
  */
 
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {useState} from 'react';
 
 import {FIELD_SIZE_SMALL, NAMESPACE} from '../../utilities/constants';
+import itemSelectorDialogWrapper from '../../utilities/itemSelectorDialogWrapper';
 import ExternalSelectField from '../ExternalSelectField';
 
-function Account({countryNames}) {
+function Account({
+	countryNames,
+	selectAccountURL,
+	selectFirstLineSupportURL,
+	selectPartnerURL
+}) {
 	return (
 		<div className="panel-body">
 			<div className="col-md-6 form-group">
@@ -45,11 +51,14 @@ function Account({countryNames}) {
 					{Liferay.Language.get('parent-account')}
 				</h5>
 
-				<ExternalSelectField
-					clickFn={null}
-					id={'test'}
-					inputSize={FIELD_SIZE_SMALL}
-					value={'test'}
+				<ExternalSelect
+					externalData={{
+						formField: 'parentAccountKey',
+						formName: `${NAMESPACE}editAccountHierarchyFm`,
+						title: Liferay.Language.get('select-parent-account'),
+						url: selectAccountURL
+					}}
+					id="parentAccountKey"
 				/>
 			</div>
 
@@ -75,11 +84,14 @@ function Account({countryNames}) {
 					{Liferay.Language.get('partner-reseller-si')}
 				</h5>
 
-				<ExternalSelectField
-					clickFn={null}
-					id={'test'}
-					inputSize={FIELD_SIZE_SMALL}
-					value={'test'}
+				<ExternalSelect
+					externalData={{
+						formField: 'partnerTeamKey',
+						formName: `${NAMESPACE}updatePartnerFm`,
+						title: Liferay.Language.get('select-partner-team'),
+						url: selectPartnerURL
+					}}
+					id="partnerTeamKey"
 				/>
 			</div>
 
@@ -88,11 +100,16 @@ function Account({countryNames}) {
 					{Liferay.Language.get('first-line-support')}
 				</h5>
 
-				<ExternalSelectField
-					clickFn={null}
-					id={'test'}
-					inputSize={FIELD_SIZE_SMALL}
-					value={'test'}
+				<ExternalSelect
+					externalData={{
+						formField: 'flsTeamKey',
+						formName: `${NAMESPACE}updateFirstLineSupportFm`,
+						title: Liferay.Language.get(
+							'select-first-line-support-team'
+						),
+						url: selectFirstLineSupportURL
+					}}
+					id="flsTeamKey"
 				/>
 			</div>
 
@@ -118,7 +135,29 @@ function Account({countryNames}) {
 }
 
 Account.propTypes = {
-	countryNames: PropTypes.array.isRequired
+	countryNames: PropTypes.array.isRequired,
+	selectAccountURL: PropTypes.string.isRequired,
+	selectFirstLineSupportURL: PropTypes.string.isRequired,
+	selectPartnerURL: PropTypes.string.isRequired
 };
+
+function ExternalSelect({externalData, id}) {
+	const [value, setValue] = useState('');
+
+	function handleClick() {
+		itemSelectorDialogWrapper(externalData);
+
+		setValue('1');
+	}
+
+	return (
+		<ExternalSelectField
+			clickFn={handleClick}
+			id={id}
+			inputSize={FIELD_SIZE_SMALL}
+			value={value}
+		/>
+	);
+}
 
 export default Account;
