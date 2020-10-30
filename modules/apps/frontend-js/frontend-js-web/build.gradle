@@ -1,8 +1,16 @@
+import com.liferay.gradle.util.FileUtil
 import com.liferay.gradle.util.copy.StripPathSegmentsAction
+
+ext {
+	svg4EverybodyVersion = "8bd711049ba3faefb8285ca70c63a67efc35636c"
+
+	svg4EverybodyURL = "https://raw.githubusercontent.com/jonathantneal/svg4everybody/${svg4EverybodyVersion}/lib/svg4everybody.js"
+}
 
 task buildClay(type: Copy)
 task buildLiferayAMDLoader(type: Copy)
 task buildLodash(type: Copy)
+task downloadSvg4Everybody(type: Copy)
 
 File jsDestinationDir = file("tmp/META-INF/resources")
 
@@ -56,4 +64,32 @@ dependencies {
 	compileOnly project(":apps:frontend-js:frontend-js-loader-modules-extender-api")
 	compileOnly project(":core:osgi-service-tracker-collections")
 	compileOnly project(":core:petra:petra-lang")
+}
+
+downloadSvg4Everybody {
+	File svg4EverybodyURLFile = file("src/main/resources/META-INF/resources/misc/svg4everybody.js")
+
+	ext {
+		autoClean = false
+	}
+
+	filter {
+		String line ->
+
+		line.replace "function svg4everybody", "module.exports = function svg4everybody"
+	}
+
+	from {
+		FileUtil.get(project, project.svg4EverybodyURL)
+	}
+
+	into svg4EverybodyURLFile.parentFile
+
+	onlyIf {
+		!svg4EverybodyURLFile.exists()
+	}
+}
+
+processResources {
+	dependsOn downloadSvg4Everybody
 }
