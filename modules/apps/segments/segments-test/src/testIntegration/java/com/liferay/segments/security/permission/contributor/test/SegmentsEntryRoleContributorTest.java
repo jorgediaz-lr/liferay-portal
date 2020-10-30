@@ -15,6 +15,7 @@
 package com.liferay.segments.security.permission.contributor.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.portal.configuration.test.util.ConfigurationTemporarySwapper;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.ResourceConstants;
@@ -36,6 +37,7 @@ import com.liferay.portal.kernel.test.util.RoleTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
+import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.segments.model.SegmentsEntry;
@@ -65,6 +67,15 @@ public class SegmentsEntryRoleContributorTest {
 
 	@Before
 	public void setUp() throws Exception {
+		_configurationTemporarySwapper = new ConfigurationTemporarySwapper(
+			"com.liferay.segments.internal.configuration." +
+				"SegmentsServiceConfiguration",
+			new HashMapDictionary<String, Object>() {
+				{
+					put("roleSegmentationEnabled", true);
+				}
+			});
+
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext();
 
@@ -75,6 +86,8 @@ public class SegmentsEntryRoleContributorTest {
 
 	@After
 	public void tearDown() throws Exception {
+		_configurationTemporarySwapper.close();
+
 		ServiceContextThreadLocal.popServiceContext();
 	}
 
@@ -138,6 +151,8 @@ public class SegmentsEntryRoleContributorTest {
 				TestPropsValues.getGroupId(), Organization.class.getName(),
 				_organization.getOrganizationId(), actionKey));
 	}
+
+	private ConfigurationTemporarySwapper _configurationTemporarySwapper;
 
 	@DeleteAfterTestRun
 	private Organization _organization;
