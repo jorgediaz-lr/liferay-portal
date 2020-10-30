@@ -12,7 +12,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import {NAMESPACE} from '../../utilities/constants';
+import {FIELD_SIZE_SMALL, NAMESPACE} from '../../utilities/constants';
 import ExternalSelectField from '../ExternalSelectField';
 
 function Account({countryNames}) {
@@ -45,7 +45,12 @@ function Account({countryNames}) {
 					{Liferay.Language.get('parent-account')}
 				</h5>
 
-				<ExternalSelectField clickFn={null} id={'test'} value={'test'} />
+				<ExternalSelectField
+					clickFn={null}
+					id={'test'}
+					inputSize={FIELD_SIZE_SMALL}
+					value={'test'}
+				/>
 			</div>
 
 			<div className="col-md-6 form-group">
@@ -70,7 +75,12 @@ function Account({countryNames}) {
 					{Liferay.Language.get('partner-reseller-si')}
 				</h5>
 
-				<ExternalSelectField clickFn={null} id={'test'} value={'test'} />
+				<ExternalSelectField
+					clickFn={null}
+					id={'test'}
+					inputSize={FIELD_SIZE_SMALL}
+					value={'test'}
+				/>
 			</div>
 
 			<div className="col-md-6 form-group">
@@ -78,7 +88,12 @@ function Account({countryNames}) {
 					{Liferay.Language.get('first-line-support')}
 				</h5>
 
-				<ExternalSelectField clickFn={null} id={'test'} value={'test'} />
+				<ExternalSelectField
+					clickFn={null}
+					id={'test'}
+					inputSize={FIELD_SIZE_SMALL}
+					value={'test'}
+				/>
 			</div>
 
 			<div className="col-md-6 form-group">

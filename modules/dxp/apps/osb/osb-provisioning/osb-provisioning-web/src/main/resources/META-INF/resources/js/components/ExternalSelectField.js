@@ -12,7 +12,15 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-function ExternalSelectField({clickFn, deleteFn, id, value}) {
+import {FIELD_SIZE_DEFAULT, FIELD_SIZE_SMALL} from '../utilities/constants';
+
+function ExternalSelectField({
+	clickFn,
+	deleteFn,
+	id,
+	inputSize = FIELD_SIZE_DEFAULT,
+	value
+}) {
 	function handleClick() {
 		clickFn();
 	}
@@ -25,7 +33,9 @@ function ExternalSelectField({clickFn, deleteFn, id, value}) {
 		<div className="external-select-field">
 			<label className="form-control-label" htmlFor={id}>
 				<input
-					className="form-control"
+					className={`form-control ${
+						inputSize === FIELD_SIZE_SMALL ? 'form-control-sm' : ''
+					}`}
 					disabled
 					id={id}
 					type="text"
@@ -68,6 +78,7 @@ ExternalSelectField.propTypes = {
 	clickFn: PropTypes.func.isRequired,
 	deleteFn: PropTypes.func,
 	id: PropTypes.string.isRequired,
+	inputSize: PropTypes.oneOf([FIELD_SIZE_DEFAULT, FIELD_SIZE_SMALL]),
 	value: PropTypes.string.isRequired
 };
 
