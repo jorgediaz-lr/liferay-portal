@@ -13,29 +13,50 @@
  */
 
 const path = require('path');
+const webpack = require('webpack');
 
 const PUBLIC_PATH = '/o/frontend-js-web/liferay/';
 
-module.exports = {
-	context: path.resolve(__dirname),
-	devtool: 'source-map',
-	entry: './src/main/resources/META-INF/resources/liferay/global.es.js',
-	mode: 'production',
-	module: {
-		rules: [
-			{
-				exclude: /node_modules/,
-				test: /\.js$/,
-				use: {
-					loader: 'babel-loader'
+module.exports = [
+	{
+		context: path.resolve(__dirname),
+		devtool: 'source-map',
+		entry: './src/main/resources/META-INF/resources/liferay/global.es.js',
+		mode: 'production',
+		module: {
+			rules: [
+				{
+					exclude: /node_modules/,
+					test: /\.js$/,
+					use: {
+						loader: 'babel-loader'
+					}
 				}
-			}
-		]
+			]
+		},
+		output: {
+			filename: 'global.bundle.js',
+			libraryTarget: 'window',
+			path: path.resolve(
+				'./build/node/packageRunBuild/resources/liferay/'
+			),
+			publicPath: PUBLIC_PATH
+		}
 	},
-	output: {
-		filename: 'global.bundle.js',
-		libraryTarget: 'window',
-		path: path.resolve('./build/node/packageRunBuild/resources/liferay/'),
-		publicPath: PUBLIC_PATH
+	{
+		context: path.resolve(__dirname),
+		devtool: 'source-map',
+		entry: './src/main/resources/META-INF/resources/misc/svg4everybody.js',
+		mode: 'production',
+		output: {
+			filename: 'svg4everybody.js',
+			library: 'svg4everybody',
+			path: path.resolve('./build/node/packageRunBuild/resources/misc/')
+		},
+		plugins: [
+			new webpack.DefinePlugin({
+				LEGACY_SUPPORT: false
+			})
+		]
 	}
-};
+];
