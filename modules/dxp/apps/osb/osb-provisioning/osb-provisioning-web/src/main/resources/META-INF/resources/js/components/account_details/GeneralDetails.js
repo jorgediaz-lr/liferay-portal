@@ -37,11 +37,11 @@ function GeneralDetails({
 		updateAccount: true
 	};
 
-	function createSelectOptions(array) {
-		return array.map(value => {
+	function createSelectOptions(options) {
+		return options.map(option => {
 			return {
-				label: value,
-				value
+				label: option,
+				value: option
 			};
 		});
 	}
