@@ -93,28 +93,31 @@ public class UserMigration {
 	private void _migrateAccountCustomers(Connection connection, long userId)
 		throws Exception {
 
-		StringBundler sb = new StringBundler(13);
+		StringBundler sb = new StringBundler(16);
 
 		sb.append("select CUSTOMER_User.uuid_, CUSTOMER_User.firstName, ");
 		sb.append("CUSTOMER_User.middleName, CUSTOMER_User.lastName, ");
 		sb.append("CUSTOMER_User.emailAddress, CUSTOMER_User.languageId, ");
-		sb.append("CUSTOMER_User.emailAddressVerified, ");
 		sb.append("OSB_AccountEntry.corpProjectUuid, ");
 		sb.append("OSB_AccountCustomer.role, ");
-		sb.append("OSB_AccountCustomer.closedWatcher from ");
-		sb.append("OSB_AccountCustomer inner join OSB_AccountEntry on ");
+		sb.append("OSB_AccountCustomer.closedWatcher, ");
+		sb.append("CUSTOMER_Users_Roles.roleId from OSB_AccountCustomer ");
+		sb.append("inner join OSB_AccountEntry on ");
 		sb.append("OSB_AccountEntry.accountEntryId = ");
 		sb.append("OSB_AccountCustomer.accountEntryId inner join ");
 		sb.append("CUSTOMER_User on CUSTOMER_User.userId = ");
-		sb.append("OSB_AccountCustomer.userId where OSB_AccountEntry.status ");
-		sb.append("!= 500 and OSB_AccountEntry.corpProjectUuid is not null");
+		sb.append("OSB_AccountCustomer.userId left join CUSTOMER_Users_Roles ");
+		sb.append("on CUSTOMER_Users_Roles.userId = CUSTOMER_User.userId and ");
+		sb.append("CUSTOMER_Users_Roles.roleId = 1546579 where ");
+		sb.append("OSB_AccountEntry.status != 500 and ");
+		sb.append("OSB_AccountEntry.corpProjectUuid is not null");
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				sb.toString());
 			ResultSet resultSet = preparedStatement.executeQuery()) {
 
 			while (resultSet.next()) {
-				String corpProjectUuid = resultSet.getString(8);
+				String corpProjectUuid = resultSet.getString(7);
 
 				Account account = _getAccount(corpProjectUuid);
 
@@ -126,7 +129,7 @@ public class UserMigration {
 					continue;
 				}
 
-				int role = resultSet.getInt(9);
+				int role = resultSet.getInt(8);
 
 				Long contactRoleId =
 					_roleMigration.getAccountCustomerContactRoleId(role);
@@ -148,7 +151,12 @@ public class UserMigration {
 					String contactLastName = resultSet.getString(4);
 					String contactEmailAddress = resultSet.getString(5);
 					String contactLanguageId = resultSet.getString(6);
-					boolean emailAddressVerified = resultSet.getBoolean(7);
+
+					boolean emailAddressVerified = false;
+
+					if (resultSet.getLong(10) != 0) {
+						emailAddressVerified = true;
+					}
 
 					contact = _contactLocalService.addContact(
 						contactUuid, userId, contactFirstName,
@@ -160,7 +168,7 @@ public class UserMigration {
 					contact.getContactId(), account.getAccountId(),
 					contactRoleId);
 
-				boolean closedWatcher = resultSet.getBoolean(10);
+				boolean closedWatcher = resultSet.getBoolean(9);
 
 				if (closedWatcher) {
 					_contactAccountRoleLocalService.addContactAccountRole(
@@ -174,17 +182,19 @@ public class UserMigration {
 	private void _migrateAccountWorkers(Connection connection, long userId)
 		throws Exception {
 
-		StringBundler sb = new StringBundler(11);
+		StringBundler sb = new StringBundler(13);
 
 		sb.append("select CUSTOMER_User.uuid_, CUSTOMER_User.firstName, ");
 		sb.append("CUSTOMER_User.middleName, CUSTOMER_User.lastName, ");
 		sb.append("CUSTOMER_User.emailAddress, CUSTOMER_User.languageId, ");
-		sb.append("CUSTOMER_User.emailAddressVerified, ");
-		sb.append("OSB_AccountEntry.corpProjectUuid, OSB_AccountWorker.role ");
-		sb.append("from OSB_AccountWorker inner join OSB_AccountEntry on ");
-		sb.append("OSB_AccountEntry.accountEntryId = ");
-		sb.append("OSB_AccountWorker.accountEntryId inner join CUSTOMER_User ");
-		sb.append("on CUSTOMER_User.userId = OSB_AccountWorker.userId where ");
+		sb.append("OSB_AccountEntry.corpProjectUuid, OSB_AccountWorker.role, ");
+		sb.append("CUSTOMER_Users_Roles.roleId from OSB_AccountWorker inner ");
+		sb.append("join OSB_AccountEntry on OSB_AccountEntry.accountEntryId ");
+		sb.append("= OSB_AccountWorker.accountEntryId inner join ");
+		sb.append("CUSTOMER_User on CUSTOMER_User.userId = ");
+		sb.append("OSB_AccountWorker.userId left join CUSTOMER_Users_Roles ");
+		sb.append("on CUSTOMER_Users_Roles.userId = CUSTOMER_User.userId and ");
+		sb.append("CUSTOMER_Users_Roles.roleId = 1546579 where ");
 		sb.append("OSB_AccountEntry.status != 500 and ");
 		sb.append("OSB_AccountEntry.corpProjectUuid is not null");
 
@@ -193,7 +203,7 @@ public class UserMigration {
 			ResultSet resultSet = preparedStatement.executeQuery()) {
 
 			while (resultSet.next()) {
-				String corpProjectUuid = resultSet.getString(8);
+				String corpProjectUuid = resultSet.getString(7);
 
 				Account account = _getAccount(corpProjectUuid);
 
@@ -205,7 +215,7 @@ public class UserMigration {
 					continue;
 				}
 
-				int role = resultSet.getInt(9);
+				int role = resultSet.getInt(8);
 
 				Long contactRoleId =
 					_roleMigration.getAccountWorkerContactRoleId(role);
@@ -227,7 +237,12 @@ public class UserMigration {
 					String contactLastName = resultSet.getString(4);
 					String contactEmailAddress = resultSet.getString(5);
 					String contactLanguageId = resultSet.getString(6);
-					boolean emailAddressVerified = resultSet.getBoolean(7);
+
+					boolean emailAddressVerified = false;
+
+					if (resultSet.getLong(9) != 0) {
+						emailAddressVerified = true;
+					}
 
 					contact = _contactLocalService.addContact(
 						contactUuid, userId, contactFirstName,
@@ -291,16 +306,19 @@ public class UserMigration {
 	private void _migrateCorpEntries(Connection connection, long userId)
 		throws Exception {
 
-		StringBundler sb = new StringBundler(8);
+		StringBundler sb = new StringBundler(11);
 
 		sb.append("select WEB_User.userId, OSB_CorpEntry.organizationId, ");
 		sb.append("WEB_User.uuid_, WEB_User.firstName, WEB_User.middleName, ");
 		sb.append("WEB_User.lastName, WEB_User.emailAddress, ");
-		sb.append("WEB_User.languageId, WEB_User.emailAddressVerified, ");
-		sb.append("OSB_CorpEntry.corpEntryId from WEB_User inner join ");
-		sb.append("WEB_Users_Orgs on WEB_Users_Orgs.userId = WEB_User.userId ");
-		sb.append("inner join OSB_CorpEntry on OSB_CorpEntry.organizationId ");
-		sb.append("= WEB_Users_Orgs.organizationId");
+		sb.append("WEB_User.languageId, WEB_Users_Roles.roleId, ");
+		sb.append("OSB_CorpEntry.corpEntryId, WEB_Users_Roles.roleId from ");
+		sb.append("WEB_User inner join WEB_Users_Orgs on ");
+		sb.append("WEB_Users_Orgs.userId = WEB_User.userId inner join ");
+		sb.append("OSB_CorpEntry on OSB_CorpEntry.organizationId = ");
+		sb.append("WEB_Users_Orgs.organizationId left join WEB_Users_Roles ");
+		sb.append("on WEB_Users_Roles.userId = WEB_User.userId and ");
+		sb.append("WEB_Users_Roles.roleId = 81492058");
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				sb.toString());
@@ -321,7 +339,12 @@ public class UserMigration {
 					String contactLastName = resultSet.getString(6);
 					String contactEmailAddress = resultSet.getString(7);
 					String contactLanguageId = resultSet.getString(8);
-					boolean emailAddressVerified = resultSet.getBoolean(9);
+
+					boolean emailAddressVerified = false;
+
+					if (resultSet.getLong(9) != 0) {
+						emailAddressVerified = true;
+					}
 
 					contact = _contactLocalService.addContact(
 						contactUuid, userId, contactFirstName,
@@ -339,19 +362,22 @@ public class UserMigration {
 	private void _migrateCorpProjects(Connection connection, long userId)
 		throws Exception {
 
-		StringBundler sb = new StringBundler(11);
+		StringBundler sb = new StringBundler(14);
 
 		sb.append("select WEB_User.userId, OSB_CorpProject.organizationId, ");
 		sb.append("WEB_User.uuid_, WEB_User.firstName, WEB_User.middleName, ");
 		sb.append("WEB_User.lastName, WEB_User.emailAddress, ");
-		sb.append("WEB_User.languageId, WEB_User.emailAddressVerified, ");
+		sb.append("WEB_User.languageId, WEB_Users_Roles.roleId, ");
 		sb.append("OSB_CorpProject.uuid_ from WEB_User inner join ");
 		sb.append("WEB_Users_Orgs on WEB_Users_Orgs.userId = WEB_User.userId ");
 		sb.append("inner join OSB_CorpProject on ");
 		sb.append("OSB_CorpProject.organizationId = ");
 		sb.append("WEB_Users_Orgs.organizationId inner join OSB_AccountEntry ");
 		sb.append("on OSB_AccountEntry.corpProjectUuid = ");
-		sb.append("OSB_CorpProject.uuid_ where OSB_AccountEntry.status != 500");
+		sb.append("OSB_CorpProject.uuid_ left join WEB_Users_Roles on ");
+		sb.append("WEB_Users_Roles.userId = WEB_User.userId and ");
+		sb.append("WEB_Users_Roles.roleId = 81492058 where ");
+		sb.append("OSB_AccountEntry.status != 500");
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				sb.toString());
@@ -381,7 +407,12 @@ public class UserMigration {
 					String contactLastName = resultSet.getString(6);
 					String contactEmailAddress = resultSet.getString(7);
 					String contactLanguageId = resultSet.getString(8);
-					boolean emailAddressVerified = resultSet.getBoolean(9);
+
+					boolean emailAddressVerified = false;
+
+					if (resultSet.getLong(9) != 0) {
+						emailAddressVerified = true;
+					}
 
 					contact = _contactLocalService.addContact(
 						contactUuid, userId, contactFirstName,
