@@ -33,7 +33,10 @@ function Categorization({
 	];
 
 	function simplifySLANames(names) {
-		return names.map(name => name.replace(' Subscription', ''));
+		return names.map(name => ({
+			label: name.replace(' Subscription', ''),
+			value: name
+		}));
 	}
 
 	return (
