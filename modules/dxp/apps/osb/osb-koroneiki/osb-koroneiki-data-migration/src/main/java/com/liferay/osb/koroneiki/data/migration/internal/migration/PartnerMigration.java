@@ -264,18 +264,20 @@ public class PartnerMigration {
 	private void _migratePartnerWorkers(Connection connection, long userId)
 		throws Exception {
 
-		StringBundler sb = new StringBundler(10);
+		StringBundler sb = new StringBundler(12);
 
 		sb.append("select role, dossieraAccountKey, CUSTOMER_User.uuid_, ");
 		sb.append("CUSTOMER_User.firstName, CUSTOMER_User.middleName, ");
 		sb.append("CUSTOMER_User.lastName, CUSTOMER_User.emailAddress, ");
-		sb.append("CUSTOMER_User.languageId, ");
-		sb.append("CUSTOMER_User.emailAddressVerified from OSB_PartnerWorker ");
-		sb.append("inner join CUSTOMER_User on CUSTOMER_User.userId = ");
-		sb.append("OSB_PartnerWorker.userId inner join OSB_PartnerEntry on ");
-		sb.append("OSB_PartnerEntry.partnerEntryId = ");
-		sb.append("OSB_PartnerWorker.partnerEntryId where dossieraAccountKey ");
-		sb.append("!= '' and OSB_PartnerEntry.status = 0");
+		sb.append("CUSTOMER_User.languageId, CUSTOMER_Users_Roles.roleId ");
+		sb.append("from OSB_PartnerWorker inner join CUSTOMER_User on ");
+		sb.append("CUSTOMER_User.userId = OSB_PartnerWorker.userId inner ");
+		sb.append("join OSB_PartnerEntry on OSB_PartnerEntry.partnerEntryId ");
+		sb.append("= OSB_PartnerWorker.partnerEntryId left join ");
+		sb.append("CUSTOMER_Users_Roles on CUSTOMER_Users_Roles.userId = ");
+		sb.append("CUSTOMER_User.userId and CUSTOMER_Users_Roles.roleId = ");
+		sb.append("1546579 where dossieraAccountKey != '' and ");
+		sb.append("OSB_PartnerEntry.status = 0");
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				sb.toString());
@@ -305,7 +307,12 @@ public class PartnerMigration {
 					String contactLastName = resultSet.getString(6);
 					String contactEmailAddress = resultSet.getString(7);
 					String contactLanguageId = resultSet.getString(8);
-					boolean emailAddressVerified = resultSet.getBoolean(9);
+
+					boolean emailAddressVerified = false;
+
+					if (resultSet.getLong(9) != 0) {
+						emailAddressVerified = true;
+					}
 
 					contact = _contactLocalService.addContact(
 						contactUuid, userId, contactFirstName,
