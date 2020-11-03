@@ -31,6 +31,7 @@ SearchContainer searchContainer = teamSearchDisplayContext.getSearchContainer();
 	searchActionURL="<%= currentURL %>"
 	searchContainerId="teamContainer"
 	searchFormName="searchFm"
+	selectable="<%= false %>"
 	showSearch="<%= true %>"
 />
 

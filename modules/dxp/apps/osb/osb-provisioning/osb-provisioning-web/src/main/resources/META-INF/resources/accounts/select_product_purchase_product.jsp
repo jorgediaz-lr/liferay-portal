@@ -26,6 +26,7 @@ SearchContainer productSearchContainer = editProductPurchaseDisplayContext.getPr
 
 <clay:management-toolbar
 	clearResultsURL="<%= editProductPurchaseDisplayContext.getProductPurchaseProductClearResultsURL() %>"
+	elementClasses="full-width"
 	itemsTotal="<%= productSearchContainer.getTotal() %>"
 	searchActionURL="<%= currentURL %>"
 	searchContainerId="selectProduct"
