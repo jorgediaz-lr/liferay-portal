@@ -49,7 +49,13 @@ SearchContainer accountSearchContainer = accountSearchDisplayContext.getSearchCo
 			<%
 			Map<String, Object> accountData = new HashMap<String, Object>();
 
-			accountData.put("key", accountDisplay.getKey());
+			JSONObject jsonObject = JSONUtil.put(
+				"key", accountDisplay.getKey()
+			).put(
+				"name", accountDisplay.getName()
+			);
+
+			accountData.put("key", jsonObject.toJSONString());
 
 			row.setData(accountData);
 

@@ -51,7 +51,13 @@ SearchContainer searchContainer = teamSearchDisplayContext.getSearchContainer();
 			<%
 			Map<String, Object> teamData = new HashMap<String, Object>();
 
-			teamData.put("key", teamDisplay.getKey());
+			JSONObject jsonObject = JSONUtil.put(
+				"key", teamDisplay.getKey()
+			).put(
+				"name", teamDisplay.getName()
+			);
+
+			teamData.put("key", jsonObject.toJSONString());
 
 			row.setData(teamData);
 

@@ -22,15 +22,17 @@ export function itemSelectorDialogSelection({formField, title, url}) {
 				eventName: 'selectedItemChange',
 				on: {
 					selectedItemChange: event => {
-						const selectedItems = event.newVal;
+						const newVal = event.newVal;
 
-						if (selectedItems) {
+						if (newVal) {
+							const selectedItems = JSON.parse(newVal);
+
 							const formInput = document.querySelector(
 								`input[name = "${NAMESPACE}${formField}"]`
 							);
 
 							if (formInput) {
-								formInput.value = selectedItems;
+								formInput.value = selectedItems.key;
 							}
 
 							const displayInput = document.getElementById(
@@ -38,8 +40,7 @@ export function itemSelectorDialogSelection({formField, title, url}) {
 							);
 
 							if (displayInput) {
-								// change later
-								displayInput.value = selectedItems;
+								displayInput.value = selectedItems.name;
 							}
 						}
 					}
@@ -62,12 +63,14 @@ export function itemSelectorDialogWrapper({formField, formName, title, url}) {
 				eventName: 'selectedItemChange',
 				on: {
 					selectedItemChange: event => {
-						const selectedItems = event.newVal;
+						const newVal = event.newVal;
 
-						if (selectedItems) {
+						if (newVal) {
+							const selectedItems = JSON.parse(newVal);
+
 							Liferay.Util.postForm(document[formName], {
 								data: {
-									[`${NAMESPACE}${formField}`]: selectedItems
+									[`${NAMESPACE}${formField}`]: selectedItems.key
 								}
 							});
 						}
