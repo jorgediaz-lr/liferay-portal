@@ -1,9 +1,9 @@
 @component-name = "portal-workflow"
 definition {
 
+	property custom.properties = "default.layout.template.id=1_column${line.separator}company.default.time.zone=America/Los_Angeles";
 	property portal.release = "true";
 	property portal.upstream = "true";
-	property custom.properties = "default.layout.template.id=1_column${line.separator}company.default.time.zone=America/Los_Angeles";
 	property testray.main.component.name = "Workflow";
 
 	setUp {
@@ -78,12 +78,11 @@ definition {
 
 	@priority = "5"
 	test ApproveEventWithInvitedUser {
-		property portal.upstream = "quarantine";
-
 		property app.server.types = "jboss,tcserver,tomcat,weblogic,websphere,wildfly";
 		property database.types = "db2,hypersonic,mariadb,mysql,oracle,postgresql,sqlserver,sybase";
 		property environment.acceptance = "quarantine";
 		property portal.acceptance = "quarantine";
+		property portal.upstream = "quarantine";
 
 		var siteName = TestCase.getSiteName();
 

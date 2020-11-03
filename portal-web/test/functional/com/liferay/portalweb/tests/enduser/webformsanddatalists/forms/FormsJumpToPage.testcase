@@ -123,6 +123,7 @@ definition {
 	@priority = "4"
 	test ViewFormRulesSummary {
 		property test.name.skip.portal.instance = "FormsJumpToPage#ViewFormRulesSummary";
+
 		FormsAdminNavigator.gotoRules();
 
 		FormRules.viewSummary(
@@ -146,6 +147,7 @@ definition {
 	@priority = "5"
 	test ViewPagesAfterJump {
 		property test.name.skip.portal.instance = "FormsJumpToPage#ViewPagesAfterJump";
+
 		Form.publishForm();
 
 		FormsAdminNavigator.openPublishURL(publishFormURL = "${publishedFormPublicURL}");
@@ -195,6 +197,7 @@ definition {
 	@priority = "4"
 	test ViewRuleAfterLabelEdit {
 		property test.name.skip.portal.instance = "FormsJumpToPage#ViewRuleAfterLabelEdit";
+
 		FormsAdminNavigator.gotoEditField(fieldName = "ChooseYourDestiny");
 
 		Form.editFieldLabelMetal(fieldValue = "Edit Label");
@@ -218,6 +221,7 @@ definition {
 	@priority = "3"
 	test ViewRuleAfterOptionValueEdit {
 		property test.name.skip.portal.instance = "FormsJumpToPage#ViewRuleAfterOptionValueEdit";
+
 		FormsAdminNavigator.gotoEditField(fieldName = "ChooseYourDestiny");
 
 		FormFields.editOptionsRow(
@@ -244,6 +248,7 @@ definition {
 	@priority = "4"
 	test ViewRuleAfterPageNameChange {
 		property test.name.skip.portal.instance = "FormsJumpToPage#ViewRuleAfterPageNameChange";
+
 		Form.gotoFormPage(formPageName = "Page 3");
 
 		Form.editPageTitle(formPageName = "Renamed Page");

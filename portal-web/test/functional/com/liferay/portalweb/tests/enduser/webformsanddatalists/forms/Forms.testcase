@@ -72,6 +72,7 @@ definition {
 	@priority = "4"
 	test Add30Fields {
 		property test.name.skip.portal.instance = "Forms#Add30Fields";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -314,8 +315,8 @@ definition {
 
 	@priority = "5"
 	test AddFormInGlobal {
-		property test.name.skip.portal.instance = "Forms#AddFormInGlobal";
 		property portal.acceptance = "true";
+		property test.name.skip.portal.instance = "Forms#AddFormInGlobal";
 		property testray.component.names = "Training";
 
 		Navigator.openURL();
@@ -404,6 +405,7 @@ definition {
 	@priority = "3"
 	test AddFormToUserSiteAndViewNoDuplicates {
 		property test.name.skip.portal.instance = "Forms#AddFormToUserSiteAndViewNoDuplicates";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -526,6 +528,7 @@ definition {
 	@priority = "4"
 	test AddFormWithDuplicateTextFields {
 		property test.name.skip.portal.instance = "Forms#AddFormWithDuplicateTextFields";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -651,6 +654,7 @@ definition {
 	@priority = "4"
 	test ChangeFieldType {
 		property test.name.skip.portal.instance = "Forms#ChangeFieldType";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -1010,6 +1014,7 @@ definition {
 	@priority = "3"
 	test CreateUntitledForm {
 		property test.name.skip.portal.instance = "Forms#CreateUntitledForm";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -1041,6 +1046,7 @@ definition {
 	@priority = "4"
 	test DeleteDateFieldAndViewEntries {
 		property test.name.skip.portal.instance = "Forms#DeleteDateFieldAndViewEntries";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -1145,6 +1151,7 @@ definition {
 	@priority = "5"
 	test DeletePages {
 		property test.name.skip.portal.instance = "Forms#DeletePages";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -1193,6 +1200,7 @@ definition {
 	@priority = "4"
 	test DeleteSelectFromListOptionAndViewEntries {
 		property test.name.skip.portal.instance = "Forms#DeleteSelectFromListOptionAndViewEntries";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -1346,6 +1354,7 @@ definition {
 	@priority = "4"
 	test EditAllFormFieldNames {
 		property test.name.skip.portal.instance = "Forms#EditAllFormFieldNames";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -1940,6 +1949,7 @@ definition {
 	@priority = "5"
 	test NavigateToCorrectForm {
 		property test.name.skip.portal.instance = "Forms#NavigateToCorrectForm";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -2016,10 +2026,10 @@ definition {
 	@description = "This is a use case for LPS-61740"
 	@priority = "5"
 	test PreviewAndPublishForm {
-		property portal.acceptance = "true";
 		property app.server.types = "jboss,tcserver,tomcat,weblogic,websphere,wildfly";
 		property database.types = "db2,hypersonic,mariadb,mysql,oracle,postgresql,sqlserver,sybase";
 		property environment.acceptance = "true";
+		property portal.acceptance = "true";
 
 		Navigator.openURL();
 
@@ -2181,6 +2191,7 @@ definition {
 	@priority = "4"
 	test SearchFormRecordMultipleEntries {
 		property test.name.skip.portal.instance = "Forms#SearchFormRecordMultipleEntries";
+
 		var fieldValueList = "testEntry1,exampleText,sampleAnswer";
 
 		Navigator.openURL();
@@ -2354,8 +2365,8 @@ definition {
 
 	@priority = "5"
 	test SubmitFormAfterEditingFields {
-		property test.name.skip.portal.instance = "Forms#SubmitFormAfterEditingFields";
 		property portal.acceptance = "false";
+		property test.name.skip.portal.instance = "Forms#SubmitFormAfterEditingFields";
 		property testray.component.names = "Training";
 
 		Navigator.openURL();
@@ -2884,8 +2895,8 @@ definition {
 	@description = "This is a use case for LPS-64798."
 	@priority = "5"
 	test SubmitFormWithAllFieldTypesAndThreePages {
-		property test.name.skip.portal.instance = "Forms#SubmitFormWithAllFieldTypesAndThreePages";
 		property portal.acceptance = "false";
+		property test.name.skip.portal.instance = "Forms#SubmitFormWithAllFieldTypesAndThreePages";
 		property testray.component.names = "Training";
 
 		Navigator.openURL();
@@ -3169,6 +3180,7 @@ definition {
 	@priority = "5"
 	test SubmitFormWithCustomTextContainingValidation {
 		property test.name.skip.portal.instance = "Forms#SubmitFormWithCustomTextContainingValidation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -3255,6 +3267,7 @@ definition {
 	@priority = "4"
 	test SubmitFormWithMultipleFieldsAndViewEntriesViaDescriptiveDisplay {
 		property test.name.skip.portal.instance = "Forms#SubmitFormWithMultipleFieldsAndViewEntriesViaDescriptiveDisplay";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -3425,6 +3438,7 @@ definition {
 	@priority = "4"
 	test SubmitFormWithRequiredCheckboxField {
 		property test.name.skip.portal.instance = "Forms#SubmitFormWithRequiredCheckboxField";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -3506,6 +3520,7 @@ definition {
 	@priority = "3"
 	test SubmitFormWithRequiredMultiLineTextField {
 		property test.name.skip.portal.instance = "Forms#SubmitFormWithRequiredMultiLineTextField";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -3585,6 +3600,7 @@ definition {
 	@priority = "4"
 	test SubmitFormWithRequiredRadioField {
 		property test.name.skip.portal.instance = "Forms#SubmitFormWithRequiredRadioField";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -3670,6 +3686,7 @@ definition {
 	@priority = "5"
 	test SubmitFormWithRequiredRepeatingTextField {
 		property test.name.skip.portal.instance = "Forms#SubmitFormWithRequiredRepeatingTextField";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -3746,8 +3763,8 @@ definition {
 	@description = "This is a use case for LPS-58829."
 	@priority = "5"
 	test SubmitFormWithRequiredTextField {
-		property test.name.skip.portal.instance = "Forms#SubmitFormWithRequiredTextField";
 		property portal.acceptance = "true";
+		property test.name.skip.portal.instance = "Forms#SubmitFormWithRequiredTextField";
 		property testray.component.names = "Training";
 
 		Navigator.openURL();
@@ -3826,6 +3843,7 @@ definition {
 	@priority = "4"
 	test SubmitFormWithSwitcherCheckboxField {
 		property test.name.skip.portal.instance = "Forms#SubmitFormWithSwitcherCheckboxField";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -3915,6 +3933,7 @@ definition {
 	@priority = "4"
 	test SubmitFormWithUploadField {
 		property test.name.skip.portal.instance = "Forms#SubmitFormWithUploadField";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -4052,6 +4071,7 @@ definition {
 	@priority = "2"
 	test ViewAltSuccessPagePagination {
 		property test.name.skip.portal.instance = "Forms#ViewAltSuccessPagePagination";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -4118,6 +4138,7 @@ definition {
 	@priority = "3"
 	test ViewBlankLabelWhenAddingNewField {
 		property test.name.skip.portal.instance = "Forms#ViewBlankLabelWhenAddingNewField";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -4189,6 +4210,7 @@ definition {
 	@priority = "4"
 	test ViewDefaultFieldNamesWithPunctuationCharacters {
 		property test.name.skip.portal.instance = "Forms#ViewDefaultFieldNamesWithPunctuationCharacters";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -4266,6 +4288,7 @@ definition {
 	@priority = "4"
 	test ViewFieldValidationIsNotBypassedWhenNextButtonIsHitTwice {
 		property test.name.skip.portal.instance = "Forms#ViewFieldValidationIsNotBypassedWhenNextButtonIsHitTwice";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -4338,6 +4361,7 @@ definition {
 	@priority = "3"
 	test ViewFormWithMultipleSelectionFieldAsASwitcherAndHideLabel {
 		property test.name.skip.portal.instance = "Forms#ViewFormWithMultipleSelectionFieldAsASwitcherAndHideLabel";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -4409,6 +4433,7 @@ definition {
 	@priority = "4"
 	test ViewRepeatableTextFieldLabel {
 		property test.name.skip.portal.instance = "Forms#ViewRepeatableTextFieldLabel";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -4468,6 +4493,7 @@ definition {
 	@priority = "3"
 	test ViewSaveNotification {
 		property test.name.skip.portal.instance = "Forms#ViewSaveNotification";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(

@@ -37,6 +37,7 @@ definition {
 	test ConfigureAutofillRule {
 		property portal.acceptance = "false";
 		property test.name.skip.portal.instance = "FormRules#ConfigureAutofillRule";
+
 		var portalURL = PropsUtil.get("portal.url");
 
 		FormsAdminNavigator.enableLocalNetworkDataProvider();
@@ -162,6 +163,7 @@ definition {
 	test ConfigureCalculateRule {
 		property portal.acceptance = "true";
 		property test.name.skip.portal.instance = "FormRules#ConfigureCalculateRule";
+
 		var portalURL = PropsUtil.get("portal.url");
 
 		Navigator.openURL();
@@ -259,8 +261,9 @@ definition {
 
 	@priority = "5"
 	test ConfigureRequireRule {
-		property test.name.skip.portal.instance = "FormRules#ConfigureRequireRule";
 		property portal.acceptance = "true";
+		property test.name.skip.portal.instance = "FormRules#ConfigureRequireRule";
+
 		var portalURL = PropsUtil.get("portal.url");
 
 		Navigator.openURL();
@@ -344,6 +347,7 @@ definition {
 	test ConfigureShowRuleUsingAndCondition {
 		property portal.acceptance = "true";
 		property test.name.skip.portal.instance = "FormRules#ConfigureShowRuleUsingAndCondition";
+
 		var portalURL = PropsUtil.get("portal.url");
 
 		Navigator.openURL();
@@ -457,6 +461,7 @@ definition {
 	@priority = "4"
 	test ConfigureUserBelongsToRule {
 		property test.name.skip.portal.instance = "FormRules#ConfigureUserBelongsToRule";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -615,6 +620,7 @@ definition {
 	@priority = "5"
 	test EditRule {
 		property test.name.skip.portal.instance = "FormRules#EditRule";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -843,6 +849,7 @@ definition {
 	@priority = "2"
 	test ViewPredefinedValueCanBeUsedToRequireAnotherField {
 		property test.name.skip.portal.instance = "FormRules#ViewPredefinedValueCanBeUsedToRequireAnotherField";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -927,6 +934,7 @@ definition {
 	@priority = "2"
 	test ViewPreviousFormRuleIsCopiedToNewDuplicatedForm {
 		property test.name.skip.portal.instance = "FormRules#ViewPreviousFormRuleIsCopiedToNewDuplicatedForm";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -998,6 +1006,7 @@ definition {
 	@priority = "2"
 	test ViewRuleConditionOperatorFieldOptions {
 		property test.name.skip.portal.instance = "FormRules#ViewRuleConditionOperatorFieldOptions";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -1032,6 +1041,7 @@ definition {
 	@priority = "3"
 	test ViewShowRuleActivationAfterInputtingUnrelatedField {
 		property test.name.skip.portal.instance = "FormRules#ViewShowRuleActivationAfterInputtingUnrelatedField";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(

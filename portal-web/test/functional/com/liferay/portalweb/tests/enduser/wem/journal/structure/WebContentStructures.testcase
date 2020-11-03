@@ -132,6 +132,7 @@ definition {
 	@priority = "4"
 	test AddStructureViaLocaleURL {
 		property test.name.skip.portal.instance = "WebContentStructures#AddStructureViaLocaleURL";
+
 		var portalURL = PropsUtil.get("portal.url");
 
 		Navigator.openSpecificURL(url = "${portalURL}/en/");
@@ -221,8 +222,8 @@ definition {
 
 	@priority = "4"
 	test ValidateDDMNavigation {
-		property testray.component.names = "Web Content Administration";
 		property test.name.skip.portal.instance = "WebContentStructures#ValidateDDMNavigation";
+		property testray.component.names = "Web Content Administration";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",

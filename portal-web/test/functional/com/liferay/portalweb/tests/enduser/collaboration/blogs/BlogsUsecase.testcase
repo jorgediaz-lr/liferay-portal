@@ -4,6 +4,7 @@ definition {
 	property portal.release = "true";
 	property portal.upstream = "true";
 	property testray.main.component.name = "Blogs";
+
 	var pageName = "Blogs Page";
 
 	setUp {
@@ -338,9 +339,9 @@ definition {
 
 	@priority = "4"
 	test DemoTrackbackURL {
-		property portal.acceptance = "quarantine";
 		property custom.properties = "blogs.trackback.enabled=true";
 		property dummy.socket.proxy.disabled = "true";
+		property portal.acceptance = "quarantine";
 		property test.name.skip.portal.instance = "BlogsUsecase#DemoTrackbackURL";
 
 		Blogs.addEntry(
@@ -796,6 +797,7 @@ definition {
 	@priority = "3"
 	test ViewBlogsEntryFriendlyURLViaBlogsPortletAndRecentBloggers {
 		property test.name.skip.portal.instance = "BlogsUsecase#ViewBlogsEntryFriendlyURLViaBlogsPortletAndRecentBloggers";
+
 		var portalURL = PropsUtil.get("portal.url");
 		var entryAuthor = "Test Test";
 		var entryContent = "Blogs Entry Content";

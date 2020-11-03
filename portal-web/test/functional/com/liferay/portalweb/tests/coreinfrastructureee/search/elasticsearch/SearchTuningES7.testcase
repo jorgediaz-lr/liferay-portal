@@ -619,6 +619,7 @@ definition {
 
 	test PinAndHideResultsWithAliases {
 		property portal.acceptance = "true";
+
 		JSONWebcontent.addWebContent(
 			content = "WC WC",
 			groupName = "Guest",
