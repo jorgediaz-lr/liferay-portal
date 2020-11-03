@@ -10,9 +10,50 @@
  */
 
 // Blackbox the AUI dependency Liferay Item Selector Dialog
+
 import {NAMESPACE} from '../utilities/constants';
 
-function itemSelectorDialogWrapper({formField, formName, title, url}) {
+export function itemSelectorDialogSelection({formField, title, url}) {
+	const A = AUI();
+
+	if (A) {
+		A.use('liferay-item-selector-dialog', A => {
+			const itemSelectorDialog = new A.LiferayItemSelectorDialog({
+				eventName: 'selectedItemChange',
+				on: {
+					selectedItemChange: event => {
+						const selectedItems = event.newVal;
+
+						if (selectedItems) {
+							const formInput = document.querySelector(
+								`input[name = "${NAMESPACE}${formField}"]`
+							);
+
+							if (formInput) {
+								formInput.value = selectedItems;
+							}
+
+							const displayInput = document.getElementById(
+								formField
+							);
+
+							if (displayInput) {
+								// change later
+								displayInput.value = selectedItems;
+							}
+						}
+					}
+				},
+				title,
+				url
+			});
+
+			itemSelectorDialog.open();
+		});
+	}
+}
+
+export function itemSelectorDialogWrapper({formField, formName, title, url}) {
 	const A = AUI();
 
 	if (A) {
@@ -40,5 +81,3 @@ function itemSelectorDialogWrapper({formField, formName, title, url}) {
 		});
 	}
 }
-
-export default itemSelectorDialogWrapper;

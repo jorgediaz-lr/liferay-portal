@@ -10,10 +10,10 @@
  */
 
 import PropTypes from 'prop-types';
-import React, {useState} from 'react';
+import React from 'react';
 
 import {FIELD_SIZE_SMALL, NAMESPACE} from '../../utilities/constants';
-import itemSelectorDialogWrapper from '../../utilities/itemSelectorDialogWrapper';
+import {itemSelectorDialogSelection} from '../../utilities/itemSelectorDialogHelper';
 import ExternalSelectField from '../ExternalSelectField';
 
 function Account({
@@ -54,11 +54,9 @@ function Account({
 				<ExternalSelect
 					externalData={{
 						formField: 'parentAccountKey',
-						formName: `${NAMESPACE}editAccountHierarchyFm`,
 						title: Liferay.Language.get('select-parent-account'),
 						url: selectAccountURL
 					}}
-					id="parentAccountKey"
 				/>
 			</div>
 
@@ -87,11 +85,9 @@ function Account({
 				<ExternalSelect
 					externalData={{
 						formField: 'partnerTeamKey',
-						formName: `${NAMESPACE}updatePartnerFm`,
 						title: Liferay.Language.get('select-partner-team'),
 						url: selectPartnerURL
 					}}
-					id="partnerTeamKey"
 				/>
 			</div>
 
@@ -103,13 +99,11 @@ function Account({
 				<ExternalSelect
 					externalData={{
 						formField: 'flsTeamKey',
-						formName: `${NAMESPACE}updateFirstLineSupportFm`,
 						title: Liferay.Language.get(
 							'select-first-line-support-team'
 						),
 						url: selectFirstLineSupportURL
 					}}
-					id="flsTeamKey"
 				/>
 			</div>
 
@@ -141,22 +135,26 @@ Account.propTypes = {
 	selectPartnerURL: PropTypes.string.isRequired
 };
 
-function ExternalSelect({externalData, id}) {
-	const [value, setValue] = useState('');
-
+function ExternalSelect({externalData}) {
 	function handleClick() {
-		itemSelectorDialogWrapper(externalData);
-
-		setValue('1');
+		itemSelectorDialogSelection(externalData);
 	}
 
 	return (
-		<ExternalSelectField
-			clickFn={handleClick}
-			id={id}
-			inputSize={FIELD_SIZE_SMALL}
-			value={value}
-		/>
+		<>
+			<input
+				name={`${NAMESPACE}${externalData.formField}`}
+				type="hidden"
+				value={''}
+			/>
+
+			<ExternalSelectField
+				clickFn={handleClick}
+				id={externalData.formField}
+				inputSize={FIELD_SIZE_SMALL}
+				value={''}
+			/>
+		</>
 	);
 }
 

@@ -21,7 +21,7 @@ import {
 	FIELD_TYPE_TEXTAREA,
 	FIELD_TYPE_TOGGLE
 } from '../utilities/constants';
-import itemSelectorDialogWrapper from '../utilities/itemSelectorDialogWrapper';
+import {itemSelectorDialogWrapper} from '../utilities/itemSelectorDialogHelper';
 import HiddenForm from './HiddenForm';
 import InlineEdit from './InlineEdit';
 
