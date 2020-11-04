@@ -211,6 +211,7 @@ function SegmentsExperimentsSidebar({
 					segmentsExperienceId,
 					segmentsExperimentId,
 					status
+					viewSegmentsExperimentDetailsURL,
 				} = segmentsExperiment;
 
 				openSuccessToast();
@@ -230,6 +231,7 @@ function SegmentsExperimentsSidebar({
 						segmentsExperienceId,
 						segmentsExperimentId,
 						status
+						viewSegmentsExperimentDetailsURL,
 					})
 				);
 			})

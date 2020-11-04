@@ -49,6 +49,9 @@ function SegmentsExperimentsActions({onEditSegmentsExperimentStatus}) {
 
 	const readyToRun = _experimentReady(experiment, variants);
 
+	const viewExperimentDetailsURL =
+		viewExperimentURL || experiment.viewSegmentsExperimentDetailsURL;
+
 	return (
 		<>
 			{experiment.status.value === STATUS_DRAFT && (
@@ -130,11 +133,11 @@ function SegmentsExperimentsActions({onEditSegmentsExperimentStatus}) {
 					visible={reviewModalVisible}
 				/>
 			)}
-			{viewExperimentURL && (
+			{viewExperimentDetailsURL && (
 				<ClayLink
 					className="btn btn-secondary btn-sm mt-3 w-100"
 					displayType="secondary"
-					href={viewExperimentURL}
+					href={viewExperimentDetailsURL}
 					target="_blank"
 				>
 					{Liferay.Language.get('view-data-in-analytics-cloud')}
