@@ -48,6 +48,7 @@ import com.liferay.headless.delivery.internal.dto.v1_0.util.RatingUtil;
 import com.liferay.headless.delivery.internal.dto.v1_0.util.RenderedContentValueUtil;
 import com.liferay.headless.delivery.internal.odata.entity.v1_0.EntityFieldsProvider;
 import com.liferay.headless.delivery.internal.odata.entity.v1_0.StructuredContentEntityModel;
+import com.liferay.headless.delivery.internal.search.aggregation.AggregationUtil;
 import com.liferay.headless.delivery.internal.search.filter.FilterUtil;
 import com.liferay.headless.delivery.internal.search.sort.SortUtil;
 import com.liferay.headless.delivery.resource.v1_0.StructuredContentResource;
@@ -84,8 +85,10 @@ import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.odata.entity.EntityField;
 import com.liferay.portal.odata.entity.EntityModel;
+import com.liferay.portal.search.aggregation.Aggregations;
 import com.liferay.portal.search.legacy.searcher.SearchRequestBuilderFactory;
 import com.liferay.portal.search.query.Queries;
+import com.liferay.portal.search.searcher.SearchRequestBuilder;
 import com.liferay.portal.search.sort.Sorts;
 import com.liferay.portal.vulcan.aggregation.Aggregation;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterRegistry;
@@ -793,12 +796,18 @@ public class StructuredContentResourceImpl
 					searchContext.setGroupIds(new long[] {siteId});
 				}
 
-				_searchRequestBuilderFactory.builder(
-					searchContext
-				).sorts(
-					SortUtil.getFieldSorts(
-						_ddmIndexer, searchContext.getSorts(), _queries, _sorts)
-				);
+				SearchRequestBuilder searchRequestBuilder =
+					_searchRequestBuilderFactory.builder(
+						searchContext
+					).sorts(
+						SortUtil.getFieldSorts(
+							_ddmIndexer, searchContext.getSorts(), _queries,
+							_sorts)
+					);
+
+				AggregationUtil.processVulcanAggregation(
+					_aggregations, _ddmIndexer, _queries, searchRequestBuilder,
+					aggregation);
 			},
 			sorts,
 			document -> _toStructuredContent(
@@ -997,6 +1006,9 @@ public class StructuredContentResourceImpl
 				ddmFormValuesValidationException);
 		}
 	}
+
+	@Reference
+	private Aggregations _aggregations;
 
 	@Reference
 	private DDM _ddm;
