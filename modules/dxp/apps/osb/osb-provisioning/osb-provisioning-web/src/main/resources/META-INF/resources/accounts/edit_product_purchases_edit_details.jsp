@@ -17,10 +17,10 @@
 <%@ include file="/init.jsp" %>
 
 <%
-String redirect = ParamUtil.getString(request, "previous");
+String backURL = ParamUtil.getString(request, "backURL");
 
-if (Validator.isNull(redirect)) {
-	redirect = ParamUtil.getString(request, "redirect");
+if (Validator.isNull(backURL)) {
+	backURL = ParamUtil.getString(request, "redirect");
 }
 
 EditProductPurchasesDisplayContext editProductPurchasesDisplayContext = ProvisioningWebComponentProvider.getEditProductPurchasesDisplayContext(renderRequest, renderResponse, request);
@@ -28,7 +28,7 @@ EditProductPurchasesDisplayContext editProductPurchasesDisplayContext = Provisio
 
 <div class="add-items">
 	<liferay-ui:header
-		backURL="<%= redirect %>"
+		backURL="<%= backURL %>"
 		cssClass="add-items-header"
 		title="<%= editProductPurchasesDisplayContext.getTitle() %>"
 	/>

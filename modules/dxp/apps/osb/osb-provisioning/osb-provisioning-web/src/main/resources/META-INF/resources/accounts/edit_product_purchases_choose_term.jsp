@@ -38,7 +38,7 @@ List<ProductPurchaseView> productPurchaseViews = editProductPurchasesDisplayCont
 	<portlet:renderURL var="editProductPurchasesURL">
 		<portlet:param name="mvcRenderCommandName" value="/accounts/edit_product_purchases" />
 		<portlet:param name="redirect" value="<%= redirect %>" />
-		<portlet:param name="previous" value="<%= currentURL %>" />
+		<portlet:param name="backURL" value="<%= currentURL %>" />
 		<portlet:param name="accountKey" value="<%= accountDisplay.getKey() %>" />
 	</portlet:renderURL>
 

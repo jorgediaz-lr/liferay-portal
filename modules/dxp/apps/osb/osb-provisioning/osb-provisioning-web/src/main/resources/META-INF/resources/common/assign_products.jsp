@@ -47,14 +47,14 @@ SearchContainer searchContainer = assignProductsDisplayContext.getSearchContaine
 		>
 			<liferay-ui:search-container-column-text
 				cssClass="table-cell-expand"
-				name='<%= (Validator.isNotNull(accountKey))? "": "products" %>'
+				name='<%= Validator.isNotNull(accountKey) ? StringPool.BLANK : "products" %>'
 				value="<%= HtmlUtil.escape(assignProductDisplay.getName()) %>"
 			/>
 		</liferay-ui:search-container-row>
 
 		<liferay-ui:search-iterator
 			markupView="lexicon"
-			resultRowSplitter="<%= (Validator.isNotNull(accountKey))? new ProductResultRowSplitter(): null %>"
+			resultRowSplitter="<%= Validator.isNotNull(accountKey) ? new ProductResultRowSplitter() : null %>"
 		/>
 	</liferay-ui:search-container>
 </div>

@@ -108,11 +108,10 @@ public class EditProductPurchasesDisplayContext
 		else {
 			data.put("productPurchases", _getEditProductPurchasesJSONArray());
 
-			String previous = ParamUtil.getString(
-				httpServletRequest, "previous");
+			String backURL = ParamUtil.getString(httpServletRequest, "backURL");
 
-			if (Validator.isNotNull(previous)) {
-				data.put("previous", previous);
+			if (Validator.isNotNull(backURL)) {
+				data.put("backURL", backURL);
 			}
 		}
 
