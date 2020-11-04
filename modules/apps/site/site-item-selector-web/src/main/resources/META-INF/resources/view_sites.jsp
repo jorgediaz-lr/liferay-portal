@@ -86,11 +86,22 @@ String target = ParamUtil.getString(request, "target");
 						colspan="<%= 2 %>"
 					>
 						<h5>
-							<aui:a cssClass="selector-button" data="<%= data %>" href="javascript:;">
-								<%= HtmlUtil.escape(siteItemSelectorViewDisplayContext.getGroupName(group)) %>
-							</aui:a>
+							<c:choose>
+								<c:when test="<%= group.isActive() %>">
+									<aui:a cssClass="selector-button" data="<%= data %>" href="javascript:;">
+										<%= HtmlUtil.escape(siteItemSelectorViewDisplayContext.getGroupName(group)) %>
+									</aui:a>
+								</c:when>
+								<c:otherwise>
+									<span class="disabled selector-button text-muted">
+										<liferay-ui:message arguments="<%= HtmlUtil.escape(siteItemSelectorViewDisplayContext.getGroupName(group)) %>" key="x-inactive" />
+									</span>
+								</c:otherwise>
+							</c:choose>
 
-							<aui:a href="<%= groupURLProvider.getGroupURL(group, liferayPortletRequest) %>" target="_blank" />
+							<c:if test="<%= group.isActive() %>">
+								<aui:a href="<%= groupURLProvider.getGroupURL(group, liferayPortletRequest) %>" target="_blank" />
+							</c:if>
 						</h5>
 
 						<h6 class="text-default">
@@ -132,12 +143,23 @@ String target = ParamUtil.getString(request, "target");
 												<div class="card-title text-truncate">
 													<div class="row">
 														<p class="col font-weight-bold h5 text-truncate">
-															<aui:a cssClass="selector-button" data="<%= data %>" href="javascript:;">
-																<%= siteVerticalCard.getTitle() %>
-															</aui:a>
+															<c:choose>
+																<c:when test="<%= group.isActive() %>">
+																	<aui:a cssClass="selector-button" data="<%= data %>" href="javascript:;">
+																		<%= siteVerticalCard.getTitle() %>
+																	</aui:a>
+																</c:when>
+																<c:otherwise>
+																	<span class="disabled selector-button text-muted">
+																		<liferay-ui:message arguments="<%= siteVerticalCard.getTitle() %>" key="x-inactive" />
+																	</span>
+																</c:otherwise>
+															</c:choose>
 														</p>
 
-														<aui:a cssClass="col-auto" href="<%= siteVerticalCard.getHref() %>" target="_blank" />
+														<c:if test="<%= group.isActive() %>">
+															<aui:a cssClass="col-auto" href="<%= siteVerticalCard.getHref() %>" target="_blank" />
+														</c:if>
 													</div>
 												</div>
 
@@ -169,12 +191,23 @@ String target = ParamUtil.getString(request, "target");
 												<div class="card-title text-truncate">
 													<div class="row">
 														<p class="col font-weight-bold h5 text-truncate">
-															<aui:a cssClass="selector-button" data="<%= data %>" href="javascript:;">
-																<%= siteVerticalCard.getTitle() %>
-															</aui:a>
+															<c:choose>
+																<c:when test="<%= group.isActive() %>">
+																	<aui:a cssClass="selector-button" data="<%= data %>" href="javascript:;">
+																		<%= siteVerticalCard.getTitle() %>
+																	</aui:a>
+																</c:when>
+																<c:otherwise>
+																	<span class="disabled selector-button text-muted">
+																		<liferay-ui:message arguments="<%= siteVerticalCard.getTitle() %>" key="x-inactive" />
+																	</span>
+																</c:otherwise>
+															</c:choose>
 														</p>
 
-														<aui:a cssClass="col-auto" href="<%= siteVerticalCard.getHref() %>" target="_blank" />
+														<c:if test="<%= group.isActive() %>">
+															<aui:a cssClass="col-auto" href="<%= siteVerticalCard.getHref() %>" target="_blank" />
+														</c:if>
 													</div>
 												</div>
 
