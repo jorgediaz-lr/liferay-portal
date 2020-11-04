@@ -34,12 +34,12 @@ export const PIN_NOTE = 'pinNote';
 
 // Inline edit field types
 
+export const FIELD_SIZE_DEFAULT = 'default';
+export const FIELD_SIZE_SMALL = 'small';
+
 export const FIELD_TYPE_EXTERNAL = 'external';
 export const FIELD_TYPE_NONEDITABLE = 'noneditable';
 export const FIELD_TYPE_SELECT = 'select';
 export const FIELD_TYPE_TEXT = 'text';
 export const FIELD_TYPE_TEXTAREA = 'textarea';
 export const FIELD_TYPE_TOGGLE = 'toggle';
-
-export const FIELD_SIZE_DEFAULT = 'default';
-export const FIELD_SIZE_SMALL = 'small';
