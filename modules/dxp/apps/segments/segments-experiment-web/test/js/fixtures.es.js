@@ -12,6 +12,7 @@
 export const segmentsExperiment = {
 	confidenceLevel: 0,
 	description: 'Experiment 1 description',
+	detailsURL: 'www.example.com',
 	editable: true,
 	goal: {
 		label: 'Time On Page',

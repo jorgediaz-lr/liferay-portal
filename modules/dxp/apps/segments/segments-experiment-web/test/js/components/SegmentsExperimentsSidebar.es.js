@@ -89,6 +89,7 @@ describe('SegmentsExperimentsSidebar', () => {
 		expect(createTestHelpMessage).toHaveAttribute('disabled');
 
 		getByText('edit');
+		getByText('view-data-in-analytics-cloud');
 	});
 
 	it('renders modal to create experiment when the user clicks on create test button', async () => {
