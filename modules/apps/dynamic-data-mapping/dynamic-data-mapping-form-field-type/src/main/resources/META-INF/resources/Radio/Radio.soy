@@ -18,7 +18,6 @@
 	{@param? readOnly: bool}
 	{@param? repeatable: bool}
 	{@param? required: bool}
-	{@param? showLabel: bool}
 	{@param? spritemap: string}
 	{@param? tip: string}
 	{@param? valid: bool}
@@ -33,6 +32,7 @@
 				{param _handleValueChanged: $_handleValueChanged /}
 				{param disabled: $readOnly /}
 				{param inline: $inline /}
+				{param label: $label /}
 				{param name: $name /}
 				{param options: $options /}
 				{param predefinedValue: $predefinedValue /}
@@ -47,7 +47,7 @@
 		{param readOnly: $readOnly /}
 		{param repeatable: $repeatable /}
 		{param required: $required /}
-		{param showLabel: $showLabel /}
+		{param showLabel: false /}
 		{param spritemap: $spritemap /}
 		{param tip: $tip /}
 		{param valid: $valid /}
@@ -62,12 +62,15 @@
 	{@param? _handleValueChanged: any}
 	{@param? disabled: bool}
 	{@param? inline: bool}
+	{@param? label: string}
 	{@param? options: list<[
 		label: string,
 		value: string
 	]>}
 	{@param? predefinedValue: string}
 	{@param? value: string}
+
+	<legend class="lfr-ddm-legend">{$label}</legend>
 
 	{if $options}
 		<div
