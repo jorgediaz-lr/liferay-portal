@@ -142,6 +142,10 @@ TeamDisplay teamDisplay = viewTeamDisplayContext.getTeamDisplay();
 						}
 					}
 				},
+				strings: {
+					add: '<liferay-ui:message key="done" />',
+					cancel: '<liferay-ui:message key="cancel" />'
+				},
 				title: '<liferay-ui:message key="select-team-members" />',
 				url: '<%= assignTeamContactsURL %>'
 			});

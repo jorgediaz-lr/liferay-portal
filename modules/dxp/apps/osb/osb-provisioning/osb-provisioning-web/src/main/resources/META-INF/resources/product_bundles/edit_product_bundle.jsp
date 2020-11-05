@@ -143,6 +143,10 @@ if (products != null) {
 
 			var itemSelectorDialog = new A.LiferayItemSelectorDialog({
 				eventName: '<portlet:namespace />assignProducts',
+				strings: {
+					add: '<liferay-ui:message key="done" />',
+					cancel: '<liferay-ui:message key="cancel" />'
+				},
 				title: '<liferay-ui:message key="select-products" />',
 				url: url.toString()
 			});

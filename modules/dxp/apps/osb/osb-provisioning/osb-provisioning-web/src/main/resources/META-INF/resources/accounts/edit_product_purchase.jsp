@@ -378,6 +378,10 @@ if (productPurchase != null) {
 						}
 					}
 				},
+				strings: {
+					add: '<liferay-ui:message key="done" />',
+					cancel: '<liferay-ui:message key="cancel" />'
+				},
 				title: '<liferay-ui:message key="select-subscription" />',
 				url: url.toString()
 			});

@@ -45,6 +45,10 @@ export function itemSelectorDialogSelection({formField, title, url}) {
 						}
 					}
 				},
+				strings: {
+					add: Liferay.Language.get('done'),
+					cancel: Liferay.Language.get('cancel')
+				},
 				title,
 				url
 			});
@@ -75,6 +79,10 @@ export function itemSelectorDialogWrapper({formField, formName, title, url}) {
 							});
 						}
 					}
+				},
+				strings: {
+					add: Liferay.Language.get('done'),
+					cancel: Liferay.Language.get('cancel')
 				},
 				title,
 				url
