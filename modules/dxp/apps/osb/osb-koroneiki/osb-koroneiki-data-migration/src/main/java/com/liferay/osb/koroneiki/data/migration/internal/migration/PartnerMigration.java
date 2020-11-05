@@ -41,7 +41,13 @@ import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Country;
+import com.liferay.portal.kernel.model.Region;
+import com.liferay.portal.kernel.service.AddressLocalService;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
+import com.liferay.portal.kernel.service.CountryService;
+import com.liferay.portal.kernel.service.RegionService;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
@@ -180,6 +186,67 @@ public class PartnerMigration {
 		return StringPool.BLANK;
 	}
 
+	private void _migrateAddress(
+			Connection connection, long userId, long accountId,
+			long partnerEntryId)
+		throws Exception {
+
+		StringBundler sb = new StringBundler(7);
+
+		sb.append("select CUSTOMER_Address.*, CUSTOMER_Country.A2, ");
+		sb.append("CUSTOMER_Region.name as regionName from CUSTOMER_Address ");
+		sb.append("left join CUSTOMER_Country on CUSTOMER_Country.countryId ");
+		sb.append("= CUSTOMER_Address.countryId left join CUSTOMER_Region on ");
+		sb.append("CUSTOMER_Region.regionId = CUSTOMER_Address.regionId ");
+		sb.append("where CUSTOMER_Address.classPK = ");
+		sb.append(partnerEntryId);
+
+		try (PreparedStatement preparedStatement = connection.prepareStatement(
+				sb.toString());
+			ResultSet resultSet = preparedStatement.executeQuery()) {
+
+			if (resultSet.next()) {
+				String countryA2 = resultSet.getString("A2");
+
+				long regionId = 0;
+				long countryId = 0;
+
+				if (Validator.isNotNull(countryA2) && !countryA2.equals("HK")) {
+					Country country = _countryService.getCountryByA2(countryA2);
+
+					countryId = country.getCountryId();
+
+					String regionName = resultSet.getString("regionName");
+
+					if (Validator.isNotNull(regionName)) {
+						List<Region> regions = _regionService.getRegions(
+							countryId);
+
+						for (Region region : regions) {
+							if (regionName.equals(region.getName())) {
+								regionId = region.getRegionId();
+
+								break;
+							}
+						}
+					}
+				}
+
+				_addressLocalService.addAddress(
+					userId, Account.class.getName(), accountId,
+					resultSet.getString("street1"),
+					resultSet.getString("street2"),
+					resultSet.getString("street3"), resultSet.getString("city"),
+					resultSet.getString("zip"), regionId, countryId, 0,
+					resultSet.getBoolean("mailing"),
+					resultSet.getBoolean("primary_"), new ServiceContext());
+			}
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+		}
+	}
+
 	private void _migratePartnerEntries(Connection connection, long userId)
 		throws Exception {
 
@@ -243,6 +310,11 @@ public class PartnerMigration {
 
 				_accountLocalService.updateAccount(account);
 
+				long partnerEntryId = resultSet.getLong(4);
+
+				_migrateAddress(
+					connection, userId, account.getAccountId(), partnerEntryId);
+
 				_accountNoteLocalService.addAccountNote(
 					userId, StringPool.BLANK, StringPool.BLANK,
 					account.getAccountId(), Note.Type.GENERAL.toString(), 2,
@@ -253,8 +325,6 @@ public class PartnerMigration {
 
 				Team team = _teamLocalService.addTeam(
 					userId, account.getAccountId(), code, false);
-
-				long partnerEntryId = resultSet.getLong(4);
 
 				_assignTeam(connection, partnerEntryId, team.getTeamId());
 			}
@@ -349,6 +419,9 @@ public class PartnerMigration {
 	private AccountNoteLocalService _accountNoteLocalService;
 
 	@Reference
+	private AddressLocalService _addressLocalService;
+
+	@Reference
 	private ClassNameLocalService _classNameLocalService;
 
 	@Reference
@@ -364,6 +437,9 @@ public class PartnerMigration {
 	private ContactTeamRoleLocalService _contactTeamRoleLocalService;
 
 	@Reference
+	private CountryService _countryService;
+
+	@Reference
 	private ExternalLinkLocalService _externalLinkLocalService;
 
 	private long _flsTeamRoleId;
@@ -377,6 +453,9 @@ public class PartnerMigration {
 
 	@Reference
 	private ProductPurchaseLocalService _productPurchaseLocalService;
+
+	@Reference
+	private RegionService _regionService;
 
 	@Reference
 	private RoleMigration _roleMigration;

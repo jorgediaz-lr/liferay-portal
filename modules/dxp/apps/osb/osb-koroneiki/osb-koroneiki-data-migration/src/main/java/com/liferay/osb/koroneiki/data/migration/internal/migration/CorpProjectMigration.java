@@ -30,8 +30,13 @@ import com.liferay.osb.koroneiki.trunk.model.ProductPurchase;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Country;
+import com.liferay.portal.kernel.model.Region;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.AddressLocalService;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
+import com.liferay.portal.kernel.service.CountryService;
+import com.liferay.portal.kernel.service.RegionService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -128,6 +133,9 @@ public class CorpProjectMigration {
 					Note.Status.APPROVED.toString());
 
 				long accountEntryId = resultSet.getLong("accountEntryId");
+
+				_migrateAddress(
+					connection, userId, account.getAccountId(), accountEntryId);
 
 				_migrateAuditEntries(
 					connection, userId, account.getAccountId(), accountEntryId);
@@ -366,6 +374,67 @@ public class CorpProjectMigration {
 		return StringPool.BLANK;
 	}
 
+	private void _migrateAddress(
+			Connection connection, long userId, long accountId,
+			long accountEntryId)
+		throws Exception {
+
+		StringBundler sb = new StringBundler(7);
+
+		sb.append("select CUSTOMER_Address.*, CUSTOMER_Country.A2, ");
+		sb.append("CUSTOMER_Region.name as regionName from CUSTOMER_Address ");
+		sb.append("left join CUSTOMER_Country on CUSTOMER_Country.countryId ");
+		sb.append("= CUSTOMER_Address.countryId left join CUSTOMER_Region on ");
+		sb.append("CUSTOMER_Region.regionId = CUSTOMER_Address.regionId ");
+		sb.append("where CUSTOMER_Address.classPK = ");
+		sb.append(accountEntryId);
+
+		try (PreparedStatement preparedStatement = connection.prepareStatement(
+				sb.toString());
+			ResultSet resultSet = preparedStatement.executeQuery()) {
+
+			if (resultSet.next()) {
+				String countryA2 = resultSet.getString("A2");
+
+				long regionId = 0;
+				long countryId = 0;
+
+				if (Validator.isNotNull(countryA2) && !countryA2.equals("HK")) {
+					Country country = _countryService.getCountryByA2(countryA2);
+
+					countryId = country.getCountryId();
+
+					String regionName = resultSet.getString("regionName");
+
+					if (Validator.isNotNull(regionName)) {
+						List<Region> regions = _regionService.getRegions(
+							countryId);
+
+						for (Region region : regions) {
+							if (regionName.equals(region.getName())) {
+								regionId = region.getRegionId();
+
+								break;
+							}
+						}
+					}
+				}
+
+				_addressLocalService.addAddress(
+					userId, Account.class.getName(), accountId,
+					resultSet.getString("street1"),
+					resultSet.getString("street2"),
+					resultSet.getString("street3"), resultSet.getString("city"),
+					resultSet.getString("zip"), regionId, countryId, 0,
+					resultSet.getBoolean("mailing"),
+					resultSet.getBoolean("primary_"), new ServiceContext());
+			}
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+		}
+	}
+
 	private void _migrateAuditEntries(
 			Connection connection, long userId, long accountId,
 			long accountEntryId)
@@ -419,13 +488,22 @@ public class CorpProjectMigration {
 	private AccountNoteLocalService _accountNoteLocalService;
 
 	@Reference
+	private AddressLocalService _addressLocalService;
+
+	@Reference
 	private AuditEntryLocalService _auditEntryLocalService;
 
 	@Reference
 	private ClassNameLocalService _classNameLocalService;
 
 	@Reference
+	private CountryService _countryService;
+
+	@Reference
 	private ExternalLinkLocalService _externalLinkLocalService;
+
+	@Reference
+	private RegionService _regionService;
 
 	@Reference
 	private UserLocalService _userLocalService;
