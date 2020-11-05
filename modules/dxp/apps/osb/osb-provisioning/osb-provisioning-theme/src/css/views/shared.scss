@@ -103,6 +103,16 @@
 	}
 }
 
+.button-holder {
+	&.button-holder-lg {
+		margin: $spacing-default 0;
+	}
+
+	&.button-holder-sm {
+		margin: $spacing-sm 0;
+	}
+}
+
 .details-table {
 	background-color: $body-bg;
 	border: 1px solid $secondary-l3;
@@ -183,13 +193,10 @@
 	}
 }
 
-.form-group {
-	.field.table-field {
-		width: 65%;
-
-		table {
-			margin-bottom: $spacing-default;
-		}
+.full-width {
+	.management-bar .container-fluid-max-xl,
+	.subnav-tbar .container-fluid-max-xl {
+		max-width: unset;
 	}
 }
 
@@ -256,6 +263,15 @@
 	.title-bar {
 		border-radius: $border-radius;
 	}
+}
+
+.secondary-information {
+	color: $secondary;
+	font-size: $h5-font-size;
+}
+
+.semi-bold {
+	font-weight: $font-weight-semi-bold;
 }
 
 .title-bar {

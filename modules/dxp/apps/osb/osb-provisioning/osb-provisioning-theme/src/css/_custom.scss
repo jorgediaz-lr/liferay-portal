@@ -43,26 +43,19 @@ table {
 	}
 }
 
-.button-holder {
-	&.button-holder-lg {
-		margin: $spacing-default 0;
-	}
-
-	&.button-holder-sm {
-		margin: $spacing-sm 0;
-	}
-}
-
 .empty-state {
 	color: $secondary;
 	margin: $spacing-default;
 	text-align: center;
 }
 
-.full-width {
-	.management-bar .container-fluid-max-xl,
-	.subnav-tbar .container-fluid-max-xl {
-		max-width: unset;
+.form-group {
+	.field.table-field {
+		width: 65%;
+
+		table {
+			margin-bottom: $spacing-default;
+		}
 	}
 }
 
@@ -94,15 +87,6 @@ table {
 
 .portlet-body {
 	margin-top: $header-height;
-}
-
-.secondary-information {
-	color: $secondary;
-	font-size: $h5-font-size;
-}
-
-.semi-bold {
-	font-weight: $font-weight-semi-bold;
 }
 
 .table {
