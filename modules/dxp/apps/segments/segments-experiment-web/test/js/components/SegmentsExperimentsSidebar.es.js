@@ -314,7 +314,7 @@ describe('Run and review test', () => {
 			...segmentsExperiment,
 			editable: false,
 			status: {
-				label: 'completed',
+				label: 'running',
 				status: STATUS_RUNNING
 			}
 		};
@@ -386,7 +386,7 @@ describe('Experiment history tab', () => {
 			...segmentsExperiment,
 			editable: false,
 			status: {
-				label: 'completed',
+				label: 'running',
 				value: STATUS_RUNNING
 			}
 		};
@@ -405,6 +405,7 @@ describe('Experiment history tab', () => {
 		expect(window.confirm).toBeCalled();
 		expect(editExperimentStatus).toHaveBeenCalledWith(
 			expect.objectContaining({
+				segmentsExperimentId: segmentsExperiment.segmentsExperimentId,
 				status: STATUS_TERMINATED
 			})
 		);
