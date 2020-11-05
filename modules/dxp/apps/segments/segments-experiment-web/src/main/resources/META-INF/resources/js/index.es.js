@@ -64,9 +64,6 @@ function renderComponent({context, props}) {
 				initialSelectedSegmentsExperienceId={
 					props.selectedSegmentsExperienceId
 				}
-				viewSegmentsExperimentDetailsURL={
-					props.viewSegmentsExperimentDetailsURL
-				}
 				winnerSegmentsVariantId={props.winnerSegmentsVariantId}
 			/>
 		</SegmentsExperimentsContext.Provider>

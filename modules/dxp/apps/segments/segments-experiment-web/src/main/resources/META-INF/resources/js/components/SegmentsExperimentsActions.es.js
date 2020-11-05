@@ -41,16 +41,13 @@ function _experimentReady(experiment, variants) {
 }
 
 function SegmentsExperimentsActions({onEditSegmentsExperimentStatus}) {
-	const {experiment, variants, viewExperimentURL} = useContext(StateContext);
+	const {experiment, variants, viewExperimentDetailsURL} = useContext(StateContext);
 	const dispatch = useContext(DispatchContext);
 
 	const [reviewModalVisible, setReviewModalVisible] = useState(false);
 	const {APIService} = useContext(SegmentsExperimentsContext);
 
 	const readyToRun = _experimentReady(experiment, variants);
-
-	const viewExperimentDetailsURL =
-		viewExperimentURL || experiment.viewSegmentsExperimentDetailsURL;
 
 	return (
 		<>

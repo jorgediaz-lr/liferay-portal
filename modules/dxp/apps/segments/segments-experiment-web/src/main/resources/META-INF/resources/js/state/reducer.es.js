@@ -15,6 +15,7 @@ export function reducer(state, action) {
 			return {
 				...state,
 				experiment: action.payload
+				viewExperimentDetailsURL: action.payload.detailsURL
 			};
 
 		case 'ADD_VARIANT':
@@ -32,7 +33,7 @@ export function reducer(state, action) {
 					...state.experimentHistory
 				],
 				variants: [],
-				viewExperimentURL: undefined
+				viewExperimentDetailsURL: undefined
 			};
 
 		case 'CREATE_EXPERIMENT_FINISH':

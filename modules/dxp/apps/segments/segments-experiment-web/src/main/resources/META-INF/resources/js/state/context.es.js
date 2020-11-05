@@ -27,7 +27,6 @@ export function getInitialState(firstState) {
 		initialSegmentsExperiment,
 		initialSegmentsVariants,
 		initialSelectedSegmentsExperienceId,
-		viewSegmentsExperimentDetailsURL,
 		winnerSegmentsVariantId
 	} = firstState;
 
@@ -44,7 +43,7 @@ export function getInitialState(firstState) {
 
 			return initialVariant;
 		}),
-		viewExperimentURL: viewSegmentsExperimentDetailsURL
+		viewExperimentDetailsURL: initialSegmentsExperiment?.detailsURL || ''
 	};
 
 	return {
