@@ -33,8 +33,6 @@
 		{/if}
 	{/let}
 
-	{let $showLegend: $type and ($type == 'checkbox_multiple' or $type == 'grid' or $type == 'paragraph' or $type == 'radio') /}
-
 	<div class="{$fieldCssClassAttribute}" data-field-name="{$name}">
 		{if $repeatable}
 			<div class="lfr-ddm-form-field-repeatable-toolbar">
@@ -70,33 +68,35 @@
 			{/if}
 		{/let}
 
-		{let $fieldProperties kind="html"}
-			{if $required and $spritemap}
-				<span class="reference-mark">
-					{call ClayIcon.render}
-						{param spritemap: $spritemap /}
-						{param symbol: 'asterisk' /}
-					{/call}
-				</span>
-			{/if}
-
-			{if $tooltip}
-				{call Tooltip.render}
-					{param icon: 'question-circle-full' /}
-					{param spritemap: $spritemap /}
-					{param text: $tooltip /}
-				{/call}
-			{/if}
-		{/let}
-
 		{if $label and $showLabel or $required or $tooltip or $repeatable}
+			{let $fieldProperties kind="html"}
+				{if $required and $spritemap}
+					<span class="reference-mark">
+						{call ClayIcon.render}
+							{param spritemap: $spritemap /}
+							{param symbol: 'asterisk' /}
+						{/call}
+					</span>
+				{/if}
+
+				{if $tooltip}
+					{call Tooltip.render}
+						{param icon: 'question-circle-full' /}
+						{param spritemap: $spritemap /}
+						{param text: $tooltip /}
+					{/call}
+				{/if}
+			{/let}
+
+			{let $showLegend: $type and ($type == 'checkbox_multiple' or $type == 'grid' or $type == 'paragraph' or $type == 'radio') /}
+
 			{if $showLegend}
 				<legend class="lfr-ddm-legend">
-				{if $label and $showLabel}
+					{if $label and $showLabel}
 						{$label}{sp}
 					{/if}
 
-				{$fieldProperties}
+					{$fieldProperties}
 				</legend>
 			{else}
 				<label {$attributes}>
