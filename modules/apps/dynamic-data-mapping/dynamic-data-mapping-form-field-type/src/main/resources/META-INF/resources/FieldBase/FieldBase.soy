@@ -68,7 +68,9 @@
 			{/if}
 		{/let}
 
-		{if $label and $showLabel or $required or $tooltip or $repeatable}
+		{let $renderlabel: ($label and $showLabel) or $required or $tooltip or $repeatable /}
+
+		{if $renderlabel}
 			{let $fieldProperties kind="html"}
 				{if $required and $spritemap}
 					<span class="reference-mark">
@@ -91,13 +93,17 @@
 			{let $showLegend: $type and ($type == 'checkbox_multiple' or $type == 'grid' or $type == 'paragraph' or $type == 'radio') /}
 
 			{if $showLegend}
-				<legend class="lfr-ddm-legend">
-					{if $label and $showLabel}
-						{$label}{sp}
-					{/if}
+				<fieldset>
+					<legend class="lfr-ddm-legend">
+						{if $label and $showLabel}
+							{$label}{sp}
+						{/if}
 
-					{$fieldProperties}
-				</legend>
+						{$fieldProperties}
+					</legend>
+
+					{$contentRenderer}
+				</fieldset>
 			{else}
 				<label {$attributes}>
 					{if $label and $showLabel}
@@ -106,10 +112,12 @@
 
 					{$fieldProperties}
 				</label>
-			{/if}
-		{/if}
 
-		{$contentRenderer}
+				{$contentRenderer}
+			{/if}
+		{else}
+			{$contentRenderer}
+		{/if}
 
 		{if $tip}
 			<span class="form-text">{$tip}</span>
