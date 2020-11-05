@@ -36,11 +36,11 @@ ContactDisplay contactDisplay = viewContactDisplayContext.getContactDisplay();
 		/>
 
 		<h3 class="contact-name">
+			<%= HtmlUtil.escape(contactDisplay.getFullName()) %>
+
 			<span class="email-address">
 				<%= HtmlUtil.escape(contactDisplay.getEmailAddress()) %>
 			</span>
-
-			<%= HtmlUtil.escape(contactDisplay.getFullName()) %>
 		</h3>
 
 		<ul class="header-details">
