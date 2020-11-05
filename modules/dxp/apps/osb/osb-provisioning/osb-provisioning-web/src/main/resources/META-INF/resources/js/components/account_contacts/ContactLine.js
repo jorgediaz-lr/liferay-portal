@@ -159,7 +159,7 @@ function ContactRoleSelect({
 			onActiveChange={setActive}
 			trigger={triggerElement}
 		>
-			<ClayDropDown.ItemList>
+			<ClayDropDown.ItemList className="roles-dropdown">
 				<ClayDropDown.Group>
 					{allContactRoles.map(role => (
 						<ClayDropDown.Item
