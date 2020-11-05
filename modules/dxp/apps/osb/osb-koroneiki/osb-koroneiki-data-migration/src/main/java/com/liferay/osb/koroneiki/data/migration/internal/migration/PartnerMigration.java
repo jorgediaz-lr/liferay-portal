@@ -21,6 +21,7 @@ import com.liferay.osb.koroneiki.root.model.ExternalLink;
 import com.liferay.osb.koroneiki.root.service.ExternalLinkLocalService;
 import com.liferay.osb.koroneiki.taproot.model.Account;
 import com.liferay.osb.koroneiki.taproot.model.Contact;
+import com.liferay.osb.koroneiki.taproot.model.ContactRole;
 import com.liferay.osb.koroneiki.taproot.model.Team;
 import com.liferay.osb.koroneiki.taproot.model.TeamRole;
 import com.liferay.osb.koroneiki.taproot.service.AccountLocalService;
@@ -58,7 +59,9 @@ import java.sql.ResultSet;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.time.StopWatch;
 
@@ -326,6 +329,8 @@ public class PartnerMigration {
 				Team team = _teamLocalService.addTeam(
 					userId, account.getAccountId(), code, false);
 
+				_accountTeamMap.put(account.getAccountId(), team.getTeamId());
+
 				_assignTeam(connection, partnerEntryId, team.getTeamId());
 			}
 		}
@@ -399,6 +404,14 @@ public class PartnerMigration {
 					_contactAccountRoleLocalService.addContactAccountRole(
 						contact.getContactId(), account.getAccountId(),
 						contactRoleId);
+
+					ContactRole teamMember =
+						_contactRoleLocalService.getMemberContactRole("Team");
+
+					_contactTeamRoleLocalService.addContactTeamRole(
+						contact.getContactId(),
+						_accountTeamMap.get(account.getAccountId()),
+						teamMember.getContactRoleId());
 				}
 				else {
 					_log.error(
@@ -417,6 +430,8 @@ public class PartnerMigration {
 
 	@Reference
 	private AccountNoteLocalService _accountNoteLocalService;
+
+	private final Map<Long, Long> _accountTeamMap = new HashMap<>();
 
 	@Reference
 	private AddressLocalService _addressLocalService;
