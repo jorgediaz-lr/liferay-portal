@@ -7,7 +7,6 @@
 	{@param? contentRenderer: any}
 	{@param? displayErrors: bool}
 	{@param? errorMessage: string}
-	{@param? id: string}
 	{@param? tip: string}
 	{@param? label: string}
 	{@param? readOnly: bool}
@@ -59,8 +58,6 @@
 		{/if}
 
 		{let $attributes kind="attributes"}
-			for="{$id ? $id : $name}"
-
 			{if not $showLabel and not $required}
 				class="ddm-empty"
 			{else}
