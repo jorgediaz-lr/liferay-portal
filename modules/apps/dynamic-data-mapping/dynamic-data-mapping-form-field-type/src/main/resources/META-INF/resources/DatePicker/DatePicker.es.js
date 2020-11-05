@@ -275,12 +275,12 @@ class DatePicker extends Component {
 	}
 
 	_handleDayClicked(event) {
-		const ariaLabel = event.target.getAttribute('ariaLabel');
-		const selectedDate = Helpers.formatDate(ariaLabel);
+		const dateString = event.target.getAttribute('dateString');
+		const selectedDate = Helpers.formatDate(dateString);
 
 		this.setState(
 			{
-				_daySelected: ariaLabel,
+				_daySelected: dateString,
 				expanded: false,
 				value: selectedDate
 			},
@@ -291,10 +291,10 @@ class DatePicker extends Component {
 	}
 
 	_handleDayFocus(event) {
-		const ariaLabel = event.target.getAttribute('ariaLabel');
-		const selectedDate = Helpers.formatDate(ariaLabel);
+		const dateString = event.target.getAttribute('dateString');
+		const selectedDate = Helpers.formatDate(dateString);
 
-		this.currentMonth = Helpers.formatDate(ariaLabel);
+		this.currentMonth = Helpers.formatDate(dateString);
 
 		if (selectedDate.getMonth() > this.currentMonth.getMonth()) {
 			this._handleNextMonth();
@@ -306,7 +306,7 @@ class DatePicker extends Component {
 		this._refreshFocus = true;
 
 		this.setState({
-			_daySelected: ariaLabel,
+			_daySelected: dateString,
 			expanded: true,
 			value: selectedDate
 		});
@@ -494,16 +494,6 @@ DatePicker.STATE = {
 	 */
 
 	_year: Config.number().internal(),
-
-	/**
-	 * Aria label attribute for the button element.
-	 * @default undefined
-	 * @instance
-	 * @memberof DatePicker
-	 * @type {?(string|undefined)}
-	 */
-
-	ariaLabel: Config.string(),
 
 	/**
 	 * Indicates the current month rendered on the screen.

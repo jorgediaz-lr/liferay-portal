@@ -9,12 +9,14 @@
 	{@param? errorMessage: string}
 	{@param? tip: string}
 	{@param? label: string}
+	{@param? requiredText: string}
 	{@param? readOnly: bool}
 	{@param? required: bool}
 	{@param? repeatable: bool}
 	{@param? showLabel: bool}
 	{@param? showRepeatableRemoveButton: bool}
 	{@param? spritemap: string}
+	{@param? text: html}
 	{@param? tooltip: string}
 	{@param? type: string}
 	{@param? valid: bool}
@@ -32,7 +34,21 @@
 		{/if}
 	{/let}
 
-	<div class="{$fieldCssClassAttribute}" data-field-name="{$name}">
+	{let $renderlabel: ($label and $showLabel) or $required or $tooltip or $repeatable /}
+
+	{let $divAttributes kind="attributes"}
+		{if not $renderlabel}
+			tabindex="0"
+
+			aria-labelledby="{$name}_label"
+		{/if}
+
+		class="{$fieldCssClassAttribute}"
+
+		data-field-name="{$name}"
+	{/let}
+
+	<div {$divAttributes}>
 		{if $repeatable}
 			<div class="lfr-ddm-form-field-repeatable-toolbar">
 				{if $showRepeatableRemoveButton}
@@ -57,15 +73,19 @@
 			</div>
 		{/if}
 
-		{let $attributes kind="attributes"}
+		{let $fieldDetailsId: $name + '_fieldDetails' /}
+
+		{let $labelAttributes kind="attributes"}
+			tabindex="0"
+
+			aria-labelledby="{$fieldDetailsId}"
+
 			{if not $showLabel and not $required}
 				class="ddm-empty"
 			{else}
 				class="ddm-label"
 			{/if}
 		{/let}
-
-		{let $renderlabel: ($label and $showLabel) or $required or $tooltip or $repeatable /}
 
 		{if $renderlabel}
 			{let $fieldProperties kind="html"}
@@ -102,7 +122,7 @@
 					{$contentRenderer}
 				</fieldset>
 			{else}
-				<label {$attributes}>
+				<label {$labelAttributes}>
 					{if $label and $showLabel}
 						{$label}{sp}
 					{/if}
@@ -116,13 +136,25 @@
 			{$contentRenderer}
 		{/if}
 
+		<span id="{$name}_label" aria-hidden="false" hidden>
+			{let $hasError: $displayErrors and ($errorMessage != null and $errorMessage != '') and not $valid/}
+
+			{if $renderlabel}{$label}{/if}
+
+			{if $tip}{sp}{$tip}{/if}
+
+			{if $text}{sp}{$text}{/if}
+
+			{if $hasError}{sp}{$errorMessage}{elseif $required}{sp}{$requiredText}{/if}
+		</span>
+
 		{if $tip}
-			<span class="form-text">{$tip}</span>
+			<span class="form-text" aria-hidden="true">{$tip}</span>
 		{/if}
 
 		{if $displayErrors and $errorMessage and $valid == false}
 			<div class="form-feedback-group">
-				<div class="form-feedback-item help-block">{$errorMessage}</div>
+				<div class="form-feedback-item help-block" aria-hidden="true">{$errorMessage}</div>
 			</div>
 		{/if}
 	</div>

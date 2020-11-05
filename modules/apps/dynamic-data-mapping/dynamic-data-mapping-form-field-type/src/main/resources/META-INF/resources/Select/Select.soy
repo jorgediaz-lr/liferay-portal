@@ -183,7 +183,7 @@
 	{@param options: list<?>}
 	{@param? multiple: bool}
 
-	<select aria-label="select" class="form-control hide" id="{$name}" name="{$name}" {if $multiple}multiple size="{length($options)}"{/if}>
+	<select aria-hidden="true" class="form-control hide" id="{$name}" name="{$name}" {if $multiple}multiple size="{length($options)}"{/if}>
 		{foreach $currentValue in $displayValues}
 			<option selected="selected" value="{$currentValue}">{$currentValue}</option>
 		{/foreach}

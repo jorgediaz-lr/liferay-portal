@@ -22,7 +22,6 @@
 	{@param? _month: int}
 	{@param? _weeks: list<?>}
 	{@param? _year: int}
-	{@param? ariaLabel: string}
 	{@param? displayErrors: bool}
 	{@param? displayStyle: string}
 	{@param? elementClasses: string}
@@ -64,14 +63,12 @@
 				{param _month: $_month /}
 				{param _weeks: $_weeks /}
 				{param _year: $_year /}
-				{param ariaLabel: $ariaLabel /}
 				{param displayStyle: $displayStyle /}
 				{param elementClasses: $elementClasses /}
 				{param expanded: $expanded /}
 				{param firstDayOfWeek: $firstDayOfWeek /}
 				{param formattedValue: $formattedValue /}
 				{param id: $id /}
-				{param label: $label /}
 				{param months: $months /}
 				{param name: $name /}
 				{param placeholder: $placeholder /}
@@ -120,7 +117,6 @@
 	{@param? _month: int}
 	{@param? _weeks: list<?>}
 	{@param? _year: int}
-	{@param? ariaLabel: string}
 	{@param? elementClasses: string}
 	{@param? expanded: bool}
 	{@param? firstDayOfWeek: int}
@@ -148,11 +144,6 @@
 	<div {$attributes}>
 		<div class="input-group-item">
 			{let $visibleInputAttributes kind="attributes"}
-				{if $ariaLabel}
-					aria-label="{$ariaLabel}"
-				{else}
-					aria-label="date_picker"
-				{/if}
 
 				class="form-control input-group-inset input-group-inset-after"
 				data-onblur="{$_handleInputBlurred}"
@@ -182,7 +173,7 @@
 			<input {$visibleInputAttributes} />
 
 			{let $hiddenInputAttributes kind="attributes"}
-				aria-label="date_picker_hidden"
+				aria-hidden="true"
 				name="{$name}"
 				type="hidden"
 
@@ -333,7 +324,9 @@
 			<div class="rowgroup">
 				{foreach $day in $week}
 					{let $attributes kind="attributes"}
-						ariaLabel="{$day.dateString}"
+						aria-label="{$day.number}"
+
+						dateString="{$day.dateString}"
 
 						class="
 							day

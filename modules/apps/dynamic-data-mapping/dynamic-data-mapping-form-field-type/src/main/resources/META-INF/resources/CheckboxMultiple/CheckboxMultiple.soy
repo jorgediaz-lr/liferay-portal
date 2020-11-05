@@ -156,7 +156,6 @@
 	{@param? _handleFieldBlurred: any}
 	{@param? _handleFieldChanged: any}
 	{@param? _handleFieldFocused: any}
-	{@param? ariaLabelledBy: string}
 	{@param? checked: bool}
 	{@param? disabled: bool}
 	{@param? label: string}
@@ -167,10 +166,6 @@
 
 	<label>
 		{let $inputAttributes kind="attributes"}
-			{if $ariaLabelledBy}
-				aria-labelledby="{$ariaLabelledBy}"
-			{/if}
-
 			{if $checked}
 				checked="checked"
 			{/if}

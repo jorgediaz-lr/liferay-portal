@@ -8,6 +8,7 @@
 	{@param? _handleFieldBlurred: any}
 	{@param? _handleFieldChanged: any}
 	{@param? _handleFieldFocused: any}
+	{@param? columnText: string}
 	{@param? displayErrors: bool}
 	{@param? errorMessage: string}
 	{@param? id: string}
@@ -16,6 +17,7 @@
 	{@param? readOnly: bool}
 	{@param? repeatable: bool}
 	{@param? required: bool}
+	{@param? rowText: string}
 	{@param? showLabel: bool}
 	{@param? spritemap: string}
 	{@param? tip: string}
@@ -30,11 +32,13 @@
 				{param _handleFieldChanged: $_handleFieldChanged /}
 				{param _handleFieldFocused: $_handleFieldFocused /}
 				{param columns: $columns /}
+				{param columnText: $columnText /}
 				{param disabled: $readOnly /}
 				{param id: $id /}
 				{param name: $name /}
 				{param placeholder: $placeholder /}
 				{param rows: $rows /}
+				{param rowText: $rowText /}
 				{param value: $value /}
 			{/call}
 		{/param}
@@ -62,8 +66,10 @@
 	{@param? _handleFieldBlurred: any}
 	{@param? _handleFieldChanged: any}
 	{@param? _handleFieldFocused: any}
+	{@param? columnText: string}
 	{@param? disabled: bool}
 	{@param? readOnly: bool}
+	{@param? rowText: string}
 
 	<div class="liferay-ddm-form-field-grid table-responsive">
 		{if not $readOnly}
@@ -97,7 +103,7 @@
 								{if $column.value}
 									<td>
 										{let $inputAttributes kind="attributes"}
-											aria-label="grid_{index($row)}_{index($column)}"
+											aria-label="{$rowText}: {$row.label}, {$columnText}: {$column.label}"
 											{if $column.value == $value[$row.value]}
 												checked
 											{/if}
@@ -141,7 +147,7 @@
 		{let $inputValue: $value[$row.value] ? $row.value + ';' + $value[$row.value] : '' /}
 
 		<input
-			aria-label="grid_hidden"
+			aria-hidden="true"
 			class="form-control"
 			name="{$name}"
 			type="hidden"

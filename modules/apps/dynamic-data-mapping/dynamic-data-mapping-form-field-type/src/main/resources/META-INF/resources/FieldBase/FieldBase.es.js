@@ -31,6 +31,7 @@ class FieldBase extends Component {
 
 		return {
 			...state,
+			requiredText: Liferay.Language.get('required'),
 			showRepeatableAddButton: this.repeatable,
 			showRepeatableRemoveButton: this.repeatable && repeatedIndex > 0
 		};

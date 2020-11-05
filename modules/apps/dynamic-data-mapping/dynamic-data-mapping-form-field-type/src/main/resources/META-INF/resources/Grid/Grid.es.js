@@ -23,6 +23,14 @@ import {Config} from 'metal-state';
 import templates from './Grid.soy';
 
 class Grid extends Component {
+	prepareStateForRender(state) {
+		return {
+			...state,
+			columnText: Liferay.Language.get('column'),
+			rowText: Liferay.Language.get('row')
+		};
+	}
+
 	_handleFieldBlurred(event) {
 		this.emit('fieldBlurred', {
 			fieldInstance: this,

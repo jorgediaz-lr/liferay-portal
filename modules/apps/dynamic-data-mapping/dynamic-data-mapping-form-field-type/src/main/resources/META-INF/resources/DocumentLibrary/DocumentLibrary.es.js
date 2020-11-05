@@ -56,6 +56,7 @@ class DocumentLibrary extends Component {
 
 		return {
 			...state,
+			clearButtonAriaLabel: Liferay.Language.get('unselect-file'),
 			fileEntryTitle,
 			fileEntryURL,
 			value
