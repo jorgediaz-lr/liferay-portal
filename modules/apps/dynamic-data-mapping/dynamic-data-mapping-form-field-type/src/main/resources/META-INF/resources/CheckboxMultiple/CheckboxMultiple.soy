@@ -20,8 +20,10 @@
 	{@param? repeatable: bool}
 	{@param? required: bool}
 	{@param? showAsSwitcher: bool}
+	{@param? showLabel: bool}
 	{@param? spritemap: string}
 	{@param? tip: string}
+	{@param? type: string}
 	{@param? visible: bool}
 	{@param? valid: bool}
 
@@ -33,7 +35,6 @@
 				{param _handleFieldFocused: $_handleFieldFocused /}
 				{param disabled: $readOnly /}
 				{param inline: $inline /}
-				{param label: $label /}
 				{param name: $name /}
 				{param options: $options /}
 				{param predefinedValue: $predefinedValue /}
@@ -49,9 +50,10 @@
 		{param ref: 'base' /}
 		{param repeatable: $repeatable /}
 		{param required: $required /}
-		{param showLabel: false /}
+		{param showLabel: $showLabel /}
 		{param spritemap: $spritemap /}
 		{param tip: $tip /}
+		{param type: $type /}
 		{param valid: $valid /}
 		{param visible: $visible /}
 	{/call}
@@ -65,7 +67,6 @@
 	{@param? _handleFieldFocused: any}
 	{@param? disabled: bool}
 	{@param? inline: bool}
-	{@param? label: string}
 	{@param? options: list<[
 		label: string,
 		value: string
@@ -74,8 +75,6 @@
 	{@param? showAsSwitcher: bool}
 
 	{let $displayValue: $value and length($value) > 0 ? $value : $predefinedValue /}
-
-	<legend class="lfr-ddm-legend">{$label}</legend>
 
 	<div class="lfr-ddm-checkbox-multiple">
 		{if $options}

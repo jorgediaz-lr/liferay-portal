@@ -124,7 +124,15 @@ FieldBase.STATE = {
 	 * @type {?(string|undefined)}
 	 */
 
-	tooltip: Config.string()
+	tooltip: Config.string(),
+
+	/**
+	 * @default undefined
+	 * @memberof FieldBase
+	 * @type {?(string|undefined)}
+	 */
+
+	type: Config.string()
 };
 
 const composed = compose(withDispatch, withRepetitionControls)(FieldBase);

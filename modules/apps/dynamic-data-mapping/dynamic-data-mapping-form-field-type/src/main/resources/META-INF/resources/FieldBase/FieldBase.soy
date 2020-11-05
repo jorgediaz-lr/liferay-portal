@@ -17,6 +17,7 @@
 	{@param? showRepeatableRemoveButton: bool}
 	{@param? spritemap: string}
 	{@param? tooltip: string}
+	{@param? type: string}
 	{@param? valid: bool}
 	{@param? visible: bool}
 
@@ -31,6 +32,8 @@
 			{sp}hide
 		{/if}
 	{/let}
+
+	{let $showLegend: $type and ($type == 'checkbox_multiple' or $type == 'grid' or $type == 'paragraph' or $type == 'radio') /}
 
 	<div class="{$fieldCssClassAttribute}" data-field-name="{$name}">
 		{if $repeatable}
@@ -67,29 +70,43 @@
 			{/if}
 		{/let}
 
-		{if $label and $showLabel or $required or $tooltip or $repeatable}
-			<label {$attributes}>
-				{if $label and $showLabel}
-					{$label}{sp}
-				{/if}
-
-				{if $required and $spritemap}
-					<span class="reference-mark">
-						{call ClayIcon.render}
-							{param spritemap: $spritemap /}
-							{param symbol: 'asterisk' /}
-						{/call}
-					</span>
-				{/if}
-
-				{if $tooltip}
-					{call Tooltip.render}
-						{param icon: 'question-circle-full' /}
+		{let $fieldProperties kind="html"}
+			{if $required and $spritemap}
+				<span class="reference-mark">
+					{call ClayIcon.render}
 						{param spritemap: $spritemap /}
-						{param text: $tooltip /}
+						{param symbol: 'asterisk' /}
 					{/call}
-				{/if}
-			</label>
+				</span>
+			{/if}
+
+			{if $tooltip}
+				{call Tooltip.render}
+					{param icon: 'question-circle-full' /}
+					{param spritemap: $spritemap /}
+					{param text: $tooltip /}
+				{/call}
+			{/if}
+		{/let}
+
+		{if $label and $showLabel or $required or $tooltip or $repeatable}
+			{if $showLegend}
+				<legend class="lfr-ddm-legend">
+				{if $label and $showLabel}
+						{$label}{sp}
+					{/if}
+
+				{$fieldProperties}
+				</legend>
+			{else}
+				<label {$attributes}>
+					{if $label and $showLabel}
+						{$label}{sp}
+					{/if}
+
+					{$fieldProperties}
+				</label>
+			{/if}
 		{/if}
 
 		{$contentRenderer}
