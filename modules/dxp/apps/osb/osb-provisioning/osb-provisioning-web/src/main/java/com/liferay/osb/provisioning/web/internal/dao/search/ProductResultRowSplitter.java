@@ -14,8 +14,8 @@
 
 package com.liferay.osb.provisioning.web.internal.dao.search;
 
-import com.liferay.osb.provisioning.constants.ProvisioningWebKeys;
-import com.liferay.osb.provisioning.web.internal.display.context.AssignProductDisplay;
+import com.liferay.osb.provisioning.model.ProductBundle;
+import com.liferay.osb.provisioning.web.internal.display.context.ProductDisplay;
 import com.liferay.portal.kernel.dao.search.ResultRow;
 import com.liferay.portal.kernel.dao.search.ResultRowSplitter;
 import com.liferay.portal.kernel.dao.search.ResultRowSplitterEntry;
@@ -37,15 +37,12 @@ public class ProductResultRowSplitter implements ResultRowSplitter {
 		List<ResultRow> productResultRows = new ArrayList<>();
 
 		for (ResultRow resultRow : resultRows) {
-			AssignProductDisplay assignProductDisplay =
-				(AssignProductDisplay)resultRow.getObject();
+			Object object = resultRow.getObject();
 
-			String type = assignProductDisplay.getType();
-
-			if (type.equals(ProvisioningWebKeys.PRODUCT)) {
+			if (object instanceof ProductDisplay) {
 				productResultRows.add(resultRow);
 			}
-			else if (type.equals(ProvisioningWebKeys.PRODUCT_BUNDLE)) {
+			else if (object instanceof ProductBundle) {
 				productBundleResultRows.add(resultRow);
 			}
 		}

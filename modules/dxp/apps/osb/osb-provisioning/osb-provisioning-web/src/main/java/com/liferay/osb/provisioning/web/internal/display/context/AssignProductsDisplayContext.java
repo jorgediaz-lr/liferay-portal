@@ -98,9 +98,7 @@ public class AssignProductsDisplayContext {
 
 			results.addAll(
 				TransformUtil.transform(
-					productBundles,
-					productBundle -> new AssignProductDisplay(
-						_renderRequest, _renderResponse, null, productBundle)));
+					productBundles, productBundle -> productBundle));
 
 			count = results.size();
 		}
@@ -112,8 +110,8 @@ public class AssignProductsDisplayContext {
 		results.addAll(
 			TransformUtil.transform(
 				products,
-				product -> new AssignProductDisplay(
-					_renderRequest, _renderResponse, product, null)));
+				product -> new ProductDisplay(
+					_renderRequest, _renderResponse, product)));
 
 		count += (int)_productWebService.getProductsCount(
 			keywords, StringPool.BLANK);

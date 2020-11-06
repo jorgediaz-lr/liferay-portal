@@ -42,13 +42,29 @@ SearchContainer searchContainer = assignProductsDisplayContext.getSearchContaine
 		var="productsSearchContainer"
 	>
 		<liferay-ui:search-container-row
-			className="com.liferay.osb.provisioning.web.internal.display.context.AssignProductDisplay"
-			modelVar="assignProductDisplay"
+			className="Object"
+			modelVar="result"
 		>
+
+			<%
+			String name = StringPool.BLANK;
+
+			if (result instanceof ProductBundle) {
+				ProductBundle productBundle = (ProductBundle)result;
+
+				name = HtmlUtil.escape(productBundle.getName());
+			}
+			else {
+				ProductDisplay productDisplay = (ProductDisplay)result;
+
+				name = HtmlUtil.escape(productDisplay.getName());
+			}
+			%>
+
 			<liferay-ui:search-container-column-text
 				cssClass="table-cell-expand"
 				name='<%= Validator.isNotNull(accountKey) ? StringPool.BLANK : "products" %>'
-				value="<%= HtmlUtil.escape(assignProductDisplay.getName()) %>"
+				value="<%= name %>"
 			/>
 		</liferay-ui:search-container-row>
 

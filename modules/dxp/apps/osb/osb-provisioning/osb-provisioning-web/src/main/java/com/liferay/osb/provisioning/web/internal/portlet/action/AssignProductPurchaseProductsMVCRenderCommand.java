@@ -18,7 +18,6 @@ import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.servlet.SessionErrors;
-import com.liferay.portal.kernel.util.ParamUtil;
 
 import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
@@ -46,11 +45,6 @@ public class AssignProductPurchaseProductsMVCRenderCommand
 		throws PortletException {
 
 		try {
-			String accountKey = ParamUtil.getString(
-				renderRequest, "accountKey");
-
-			renderRequest.setAttribute("accountKey", accountKey);
-
 			return "/common/assign_products.jsp";
 		}
 		catch (Exception exception) {

@@ -14,7 +14,9 @@
 
 package com.liferay.osb.provisioning.web.internal.dao.search;
 
-import com.liferay.osb.provisioning.web.internal.display.context.AssignProductDisplay;
+import com.liferay.osb.provisioning.model.ProductBundle;
+import com.liferay.osb.provisioning.web.internal.display.context.ProductDisplay;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker;
 import com.liferay.portal.kernel.dao.search.ResultRow;
 import com.liferay.portal.kernel.log.Log;
@@ -44,22 +46,46 @@ public class AssignProductsRowChecker extends EmptyOnClickRowChecker {
 	public String getRowCheckBox(
 		HttpServletRequest httpServletRequest, ResultRow resultRow) {
 
-		AssignProductDisplay assignProductDisplay =
-			(AssignProductDisplay)resultRow.getObject();
+		String primaryKey = StringPool.BLANK;
+
+		if (resultRow.getObject() instanceof ProductBundle) {
+			ProductBundle productBundle = (ProductBundle)resultRow.getObject();
+
+			String productBundleId = HtmlUtil.escape(
+				String.valueOf(productBundle.getProductBundleId()));
+
+			primaryKey =
+				productBundleId + StringPool.UNDERLINE +
+					HtmlUtil.escape(productBundle.getName());
+		}
+		else {
+			ProductDisplay productDisplay =
+				(ProductDisplay)resultRow.getObject();
+
+			primaryKey =
+				HtmlUtil.escape(productDisplay.getKey()) +
+					StringPool.UNDERLINE +
+						HtmlUtil.escape(productDisplay.getName());
+		}
 
 		return getRowCheckBox(
 			httpServletRequest, isChecked(resultRow.getObject()),
-			isDisabled(resultRow.getObject()),
-			HtmlUtil.escape(assignProductDisplay.getKey()) + "_" +
-				HtmlUtil.escape(assignProductDisplay.getName()));
+			isDisabled(resultRow.getObject()), primaryKey);
 	}
 
 	@Override
 	public boolean isChecked(Object obj) {
-		AssignProductDisplay assignProductDisplay = (AssignProductDisplay)obj;
-
 		try {
-			return _productKeys.contains(assignProductDisplay.getKey());
+			if (obj instanceof ProductBundle) {
+				ProductBundle productBundle = (ProductBundle)obj;
+
+				return _productKeys.contains(
+					String.valueOf(productBundle.getProductBundleId()));
+			}
+
+			ProductDisplay productDisplay = (ProductDisplay)obj;
+
+			return _productKeys.contains(productDisplay.getKey());
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
