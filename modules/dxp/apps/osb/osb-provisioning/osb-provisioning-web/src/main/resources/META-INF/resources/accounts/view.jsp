@@ -33,8 +33,6 @@ AccountSearchDisplayContext accountSearchDisplayContext = ProvisioningWebCompone
 		</div>
 	</div>
 
-	<portlet:actionURL name="/search" var="searchURL" />
-
 	<portlet:renderURL var="addAccountURL">
 		<portlet:param name="mvcRenderCommandName" value="/accounts/add_account" />
 		<portlet:param name="redirect" value="<%= currentURL %>" />
