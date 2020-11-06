@@ -41,6 +41,7 @@ SearchContainer productPurchasesSearchContainer = viewAccountDisplayContext.getP
 	</portlet:renderURL>
 
 	<aui:form action="<%= editProductPurchasesURL %>" method="post" name="editProductPurchasesFm">
+		<aui:input name="productBundleIds" type="hidden" />
 		<aui:input name="productKeys" type="hidden" />
 		<aui:input name="productPurchaseViewKeys" type="hidden" />
 

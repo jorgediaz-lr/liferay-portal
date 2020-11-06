@@ -26,7 +26,6 @@ import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.provisioning.service.ProductBundleProductsLocalService;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.servlet.SessionErrors;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 
 import java.util.ArrayList;
@@ -61,6 +60,9 @@ public class EditProductPurchasesMVCRenderCommand implements MVCRenderCommand {
 		try {
 			String accountKey = ParamUtil.getString(
 				renderRequest, "accountKey");
+
+			long[] productBundleIds = ParamUtil.getLongValues(
+				renderRequest, "productBundleIds");
 			String[] productKeys = ParamUtil.getStringValues(
 				renderRequest, "productKeys");
 			String[] productPurchaseKeys = ParamUtil.getStringValues(
@@ -78,14 +80,14 @@ public class EditProductPurchasesMVCRenderCommand implements MVCRenderCommand {
 					if (product != null) {
 						products.add(product);
 					}
-					else {
-						List<Product> productBundleProducts =
-							_productBundleProductsLocalService.
-								getProductBundleAssignedProducts(
-									GetterUtil.getLong(productKey));
+				}
 
-						products.addAll(productBundleProducts);
-					}
+				for (long productBundleId : productBundleIds) {
+					List<Product> productBundleProducts =
+						_productBundleProductsLocalService.
+							getProductBundleAssignedProducts(productBundleId);
+
+					products.addAll(productBundleProducts);
 				}
 
 				renderRequest.setAttribute(
