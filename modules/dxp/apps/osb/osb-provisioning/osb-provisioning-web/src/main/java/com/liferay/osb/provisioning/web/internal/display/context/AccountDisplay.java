@@ -165,7 +165,7 @@ public class AccountDisplay {
 	}
 
 	public String getEWSA() throws Exception {
-		if (_isEWSA()) {
+		if (_accountReader.isEWSA(_account)) {
 			return LanguageUtil.get(_httpServletRequest, "yes");
 		}
 
@@ -456,23 +456,8 @@ public class AccountDisplay {
 		return _getAddExternalLinkURL();
 	}
 
-	private boolean _isEWSA() throws Exception {
-		if (_ancestorAccounts == null) {
-			_ancestorAccounts = _accountReader.getAncestorAccounts(_account);
-		}
-
-		for (Account account : _ancestorAccounts) {
-			if (_accountReader.isEWSA(account)) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
 	private final Account _account;
 	private final AccountReader _accountReader;
-	private List<Account> _ancestorAccounts;
 	private final Format _dateFormat;
 	private final Format _dateTimeFormat;
 	private final Team _firstLineSupportTeam;

@@ -256,23 +256,32 @@ public class AccountReaderImpl implements AccountReader {
 		return state;
 	}
 
-	public boolean isEWSA(Account account) {
-		if (ArrayUtil.isEmpty(account.getProductPurchases())) {
-			return false;
+	public boolean isEWSA(Account account) throws Exception {
+		if (!ArrayUtil.isEmpty(account.getProductPurchases())) {
+			for (ProductPurchase productPurchase :
+					account.getProductPurchases()) {
+
+				if (!_isActive(productPurchase)) {
+					continue;
+				}
+
+				Product product = productPurchase.getProduct();
+
+				String name = product.getName();
+
+				if (name.equals(ProductConstants.NAME_DXP_EWSA) ||
+					name.equals(ProductConstants.NAME_PORTAL_EWSA)) {
+
+					return true;
+				}
+			}
 		}
 
-		for (ProductPurchase productPurchase : account.getProductPurchases()) {
-			if (!_isActive(productPurchase)) {
-				continue;
-			}
+		if (Validator.isNotNull(account.getParentAccountKey())) {
+			Account parentAccount = _accountWebService.fetchAccount(
+				account.getParentAccountKey());
 
-			Product product = productPurchase.getProduct();
-
-			String name = product.getName();
-
-			if (name.equals(ProductConstants.NAME_DXP_EWSA) ||
-				name.equals(ProductConstants.NAME_PORTAL_EWSA)) {
-
+			if (isEWSA(parentAccount)) {
 				return true;
 			}
 		}

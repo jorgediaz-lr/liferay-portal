@@ -40,6 +40,6 @@ public interface AccountReader {
 
 	public String getSubscriptionState(Account account);
 
-	public boolean isEWSA(Account account);
+	public boolean isEWSA(Account account) throws Exception;
 
 }
