@@ -1,7 +1,8 @@
 Bundle-Name: Liferay Segments API
 Bundle-SymbolicName: com.liferay.segments.api
-Bundle-Version: 1.10.6
+Bundle-Version: 1.11.0
 Export-Package:\
+	com.liferay.segments.configuration,\
 	com.liferay.segments.constants,\
 	com.liferay.segments.context,\
 	com.liferay.segments.context.contributor,\

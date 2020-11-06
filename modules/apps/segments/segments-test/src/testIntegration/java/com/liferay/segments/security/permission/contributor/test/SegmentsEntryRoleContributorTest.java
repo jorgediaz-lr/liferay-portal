@@ -68,8 +68,7 @@ public class SegmentsEntryRoleContributorTest {
 	@Before
 	public void setUp() throws Exception {
 		_configurationTemporarySwapper = new ConfigurationTemporarySwapper(
-			"com.liferay.segments.internal.configuration." +
-				"SegmentsServiceConfiguration",
+			"com.liferay.segments.configuration.SegmentsConfiguration",
 			new HashMapDictionary<String, Object>() {
 				{
 					put("roleSegmentationEnabled", true);
@@ -133,8 +132,7 @@ public class SegmentsEntryRoleContributorTest {
 
 		try (ConfigurationTemporarySwapper configurationTemporarySwapper =
 				new ConfigurationTemporarySwapper(
-					"com.liferay.segments.internal.configuration." +
-						"SegmentsServiceConfiguration",
+					"com.liferay.segments.configuration.SegmentsConfiguration",
 					properties)) {
 
 			_role = RoleTestUtil.addRole(RoleConstants.TYPE_REGULAR);
