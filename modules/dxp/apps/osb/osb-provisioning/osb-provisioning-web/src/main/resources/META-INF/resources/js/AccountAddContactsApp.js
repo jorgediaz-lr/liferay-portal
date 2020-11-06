@@ -14,24 +14,8 @@ import React from 'react';
 import ErrorBoundary from './ErrorBoundary';
 import AddContacts from './components/account_contacts/AddContact';
 
-export default ({
-	accountName,
-	allContactRoles,
-	contactRoleKeys,
-	emailAddress,
-	fullName,
-	redirect
-}) => {
-	return (
-		<ErrorBoundary>
-			<AddContacts
-				accountName={accountName}
-				allContactRoles={allContactRoles}
-				initialContactRoleKeys={contactRoleKeys}
-				redirect={redirect}
-				userEmailAddress={emailAddress}
-				userFullName={fullName}
-			/>
-		</ErrorBoundary>
-	);
-};
+export default props => (
+	<ErrorBoundary>
+		<AddContacts {...props} />
+	</ErrorBoundary>
+);

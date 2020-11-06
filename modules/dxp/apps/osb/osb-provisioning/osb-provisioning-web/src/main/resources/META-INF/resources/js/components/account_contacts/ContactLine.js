@@ -17,14 +17,14 @@ import {NAMESPACE} from '../../utilities/constants';
 
 export default function ContactLine({
 	accountName,
-	addContactRoleKeys,
-	addKey,
-	allContactRoles,
+	addFn,
+	allRoles,
+	contactFullName,
 	emailAddress,
 	knownContact,
-	removeKey,
-	setEmailAddress,
-	userFullName
+	newRoles,
+	removeFn,
+	setEmailAddress
 }) {
 	function handleEmailChange(event) {
 		setEmailAddress(event.currentTarget.value);
@@ -36,7 +36,7 @@ export default function ContactLine({
 				<td className="table-cell-expand">
 					<span className="text-truncate-inline">
 						<span className="semi-bold text-truncate">
-							{userFullName}
+							{contactFullName}
 						</span>
 					</span>
 				</td>
@@ -57,10 +57,10 @@ export default function ContactLine({
 			</td>
 			<td className="table-cell-expand">
 				<ContactRoleSelect
-					addContactRoleKeys={addContactRoleKeys}
-					addKey={addKey}
-					allContactRoles={allContactRoles}
-					removeKey={removeKey}
+					addFn={addFn}
+					allRoles={allRoles}
+					newRoles={newRoles}
+					removeFn={removeFn}
 				/>
 			</td>
 			<td className="table-cell-expand">
@@ -74,56 +74,46 @@ export default function ContactLine({
 
 ContactLine.propTypes = {
 	accountName: PropTypes.string,
-	addContactRoleKeys: PropTypes.arrayOf(PropTypes.string),
-	addKey: PropTypes.func,
-	allContactRoles: PropTypes.arrayOf(
+	addFn: PropTypes.func,
+	allRoles: PropTypes.arrayOf(
 		PropTypes.shape({
 			key: PropTypes.string,
 			name: PropTypes.string
 		})
 	),
+	contactFullName: PropTypes.string,
 	emailAddress: PropTypes.string,
 	knownContact: PropTypes.bool,
-	removeKey: PropTypes.func,
+	newRoles: PropTypes.arrayOf(PropTypes.string),
+	removeFn: PropTypes.func,
 	setEmailAddress: PropTypes.func,
-	userFullName: PropTypes.string
 };
 
-function ContactRoleSelect({
-	addContactRoleKeys = [],
-	addKey,
-	allContactRoles = [],
-	removeKey
-}) {
+function ContactRoleSelect({newRoles = [], addFn, allRoles = [], removeFn}) {
 	const [active, setActive] = useState(false);
 
-	const processedAllContactRoles = allContactRoles.reduce(
-		(allRoles, role) => {
-			return {...allRoles, [role.key]: role};
-		},
-		{}
-	);
+	const processedAllContactRoles = allRoles.reduce((roles, role) => {
+		return {...roles, [role.key]: role};
+	}, {});
 
 	const triggerElement = (
 		<div className="input-group input-group-stacked-sm-down">
 			<div className={`input-group-item ${active ? 'input-focus' : ''}`}>
 				<div className="form-control form-control-tag-group input-group-inset input-group-inset-after">
-					{addContactRoleKeys.map(
+					{newRoles.map(
 						roleKey =>
 							processedAllContactRoles[roleKey] && (
 								<ContactRoleLabel
 									key={roleKey}
 									name={
-										processedAllContactRoles[roleKey][
-											'name'
-										]
+										processedAllContactRoles[roleKey].name
 									}
 									removeRole={event => {
 										// Stops the click event on the label's close button from propagating up and triggering the dropdown.
 
 										event.stopPropagation();
 
-										removeKey(roleKey);
+										removeFn(roleKey);
 									}}
 								/>
 							)
@@ -161,10 +151,10 @@ function ContactRoleSelect({
 		>
 			<ClayDropDown.ItemList className="roles-dropdown">
 				<ClayDropDown.Group>
-					{allContactRoles.map(role => (
+					{allRoles.map(role => (
 						<ClayDropDown.Item
 							key={role.key}
-							onClick={() => addKey(role.key)}
+							onClick={() => addFn(role.key)}
 						>
 							{role.name}
 						</ClayDropDown.Item>
@@ -176,15 +166,15 @@ function ContactRoleSelect({
 }
 
 ContactRoleSelect.propTypes = {
-	addContactRoleKeys: PropTypes.arrayOf(PropTypes.string),
-	addKey: PropTypes.func.isRequired,
-	allContactRoles: PropTypes.arrayOf(
+	addFn: PropTypes.func.isRequired,
+	allRoles: PropTypes.arrayOf(
 		PropTypes.shape({
 			key: PropTypes.string,
 			name: PropTypes.string
 		})
 	),
-	removeKey: PropTypes.func.isRequired
+	newRoles: PropTypes.arrayOf(PropTypes.string),
+	removeFn: PropTypes.func.isRequired
 };
 
 function ContactRoleLabel({name, removeRole}) {

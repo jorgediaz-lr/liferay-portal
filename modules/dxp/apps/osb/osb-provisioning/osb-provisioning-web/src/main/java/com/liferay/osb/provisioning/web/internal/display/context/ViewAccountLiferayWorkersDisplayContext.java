@@ -55,13 +55,13 @@ public class ViewAccountLiferayWorkersDisplayContext
 		Map<String, Object> data = new HashMap<>();
 
 		data.put("accountName", account.getName());
-		data.put("allContactRoles", _getContactRoleJSONObjects());
+		data.put("allRoles", _getContactRoleJSONObjects());
 
 		Contact contact = (Contact)renderRequest.getAttribute(
 			ProvisioningWebKeys.CONTACT);
 
 		if (contact != null) {
-			data.put("contactRoleKeys", _getContactRoleKeys(contact));
+			data.put("currentRoles", _getContactRoleKeys(contact));
 		}
 
 		data.put(

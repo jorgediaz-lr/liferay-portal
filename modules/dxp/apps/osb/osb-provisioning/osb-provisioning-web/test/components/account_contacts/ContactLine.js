@@ -19,7 +19,7 @@ const mockRemoveKeyFn = jest.fn();
 const mockSetEmailAddressFn = jest.fn();
 
 function renderContactLine(props) {
-	const allContactRoles = [
+	const allRoles = [
 		{key: 'KEY-100', name: 'Manager'},
 		{key: 'KEY-101', name: 'Member'},
 		{key: 'KEY-102', name: 'Analyst'},
@@ -31,12 +31,12 @@ function renderContactLine(props) {
 			<tbody>
 				<ContactLine
 					accountName={'Test Account'}
-					addContactRoleKeys={[]}
-					addKey={mockAddKeyFn}
-					allContactRoles={allContactRoles}
+					addFn={mockAddKeyFn}
+					allRoles={allRoles}
 					emailAddress={''}
 					knownContact={false}
-					removeKey={mockRemoveKeyFn}
+					newRoles={[]}
+					removeFn={mockRemoveKeyFn}
 					setEmailAddress={mockSetEmailAddressFn}
 					{...props}
 				/>
@@ -62,10 +62,10 @@ describe('AccountAddress', () => {
 
 	it('displays full name and email if provided', () => {
 		const {getByText} = renderContactLine({
-			addContactRoleKeys: ['KEY-100'],
+			contactFullName: 'Test One',
 			emailAddress: 'test1@liferay.com',
 			knownContact: true,
-			userFullName: 'Test One'
+			newRoles: ['KEY-100']
 		});
 
 		getByText('Test One');
@@ -80,10 +80,10 @@ describe('AccountAddress', () => {
 
 	it('hides email as an input if disabled', () => {
 		const {container} = renderContactLine({
-			addContactRoleKeys: ['KEY-100'],
+			contactFullName: 'Test One',
 			emailAddress: 'test1@liferay.com',
 			knownContact: true,
-			userFullName: 'Test One'
+			newRoles: ['KEY-100']
 		});
 
 		expect(container.querySelectorAll('input')[0].type).toBe('hidden');
@@ -99,10 +99,10 @@ describe('AccountAddress', () => {
 
 	it('displays contact roles if provided', () => {
 		const {container} = renderContactLine({
-			addContactRoleKeys: ['KEY-100', 'KEY-101'],
+			contactFullName: 'Test One',
 			emailAddress: 'test1@liferay.com',
 			knownContact: true,
-			userFullName: 'Test One'
+			newRoles: ['KEY-100', 'KEY-101']
 		});
 
 		const {getByText} = within(
@@ -113,7 +113,7 @@ describe('AccountAddress', () => {
 		getByText('Member');
 	});
 
-	it('calls function when contact roles are selected from dropdown', () => {
+	it('calls Add function when contact roles are selected from dropdown', () => {
 		const {getByText, getByTitle} = renderContactLine();
 
 		fireEvent.click(getByTitle('add-roles'));
@@ -123,12 +123,12 @@ describe('AccountAddress', () => {
 		expect(mockAddKeyFn).toHaveBeenCalled();
 	});
 
-	it('calls function when contact roles are removed', () => {
+	it('calls Remove function when contact roles are removed', () => {
 		const {queryAllByTitle} = renderContactLine({
-			addContactRoleKeys: ['KEY-100', 'KEY-101'],
+			contactFullName: 'Test One',
 			emailAddress: 'test1@liferay.com',
 			knownContact: true,
-			userFullName: 'Test One'
+			newRoles: ['KEY-100', 'KEY-101']
 		});
 
 		fireEvent.click(queryAllByTitle('delete')[0]);

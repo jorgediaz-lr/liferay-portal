@@ -17,33 +17,31 @@ import ContactLine from './ContactLine';
 
 export default function AddContact({
 	accountName,
-	allContactRoles,
-	initialContactRoleKeys = [],
-	redirect,
-	userEmailAddress,
-	userFullName
+	allRoles = [],
+	currentRoles = [],
+	emailAddress,
+	fullName,
+	redirect
 }) {
-	const [addContactRoleKeys, setAddContactRoleKeys] = useState(
-		initialContactRoleKeys
+	const [contactEmailAddress, setContactEmailAddress] = useState(
+		emailAddress
 	);
-	const [emailAddress, setEmailAddress] = useState(userEmailAddress);
+	const [newRoles, setNewRoles] = useState(currentRoles);
 
 	const knownContact = !!(
-		userFullName &&
-		userEmailAddress &&
-		initialContactRoleKeys.length !== 0
+		currentRoles.length !== 0 &&
+		emailAddress &&
+		fullName
 	);
 
-	function addKey(key) {
-		if (!addContactRoleKeys.includes(key)) {
-			setAddContactRoleKeys([...addContactRoleKeys, key]);
+	function handleAdd(key) {
+		if (!newRoles.includes(key)) {
+			setNewRoles([...newRoles, key]);
 		}
 	}
 
-	function removeKey(key) {
-		setAddContactRoleKeys(
-			addContactRoleKeys.filter(item => !item.match(key))
-		);
+	function handleRemove(key) {
+		setNewRoles(newRoles.filter(item => !item.match(key)));
 	}
 
 	return (
@@ -51,14 +49,14 @@ export default function AddContact({
 			<input
 				name={`${NAMESPACE}addContactRoleKeys`}
 				type="hidden"
-				value={addContactRoleKeys.join(',')}
+				value={newRoles.join(',')}
 			/>
 			<input
 				name={`${NAMESPACE}deleteContactRoleKeys`}
 				type="hidden"
-				value={allContactRoles
+				value={allRoles
 					.map(item => item.key)
-					.filter(key => !addContactRoleKeys.includes(key))
+					.filter(key => !newRoles.includes(key))
 					.join(',')}
 			/>
 
@@ -106,14 +104,14 @@ export default function AddContact({
 				<tbody>
 					<ContactLine
 						accountName={accountName}
-						addContactRoleKeys={addContactRoleKeys}
-						addKey={addKey}
-						allContactRoles={allContactRoles}
-						emailAddress={emailAddress}
+						addFn={handleAdd}
+						allRoles={allRoles}
+						contactFullName={fullName}
+						emailAddress={contactEmailAddress}
 						knownContact={knownContact}
-						removeKey={removeKey}
-						setEmailAddress={setEmailAddress}
-						userFullName={userFullName}
+						newRoles={newRoles}
+						removeFn={handleRemove}
+						setEmailAddress={setContactEmailAddress}
 					/>
 				</tbody>
 			</table>
@@ -121,7 +119,7 @@ export default function AddContact({
 			<div className="button-holder button-holder-lg" role="group">
 				<button
 					className="btn btn-primary save-btn"
-					disabled={!(addContactRoleKeys.length > 0 && emailAddress)}
+					disabled={!(newRoles.length > 0 && contactEmailAddress)}
 					role="button"
 					type="submit"
 				>
@@ -138,14 +136,14 @@ export default function AddContact({
 
 AddContact.propTypes = {
 	accountName: PropTypes.string,
-	allContactRoles: PropTypes.arrayOf(
+	allRoles: PropTypes.arrayOf(
 		PropTypes.shape({
 			key: PropTypes.string,
 			name: PropTypes.string
 		})
 	),
-	initialContactRoleKeys: PropTypes.arrayOf(PropTypes.string),
-	redirect: PropTypes.string,
-	userEmailAddress: PropTypes.string,
-	userFullName: PropTypes.string
+	currentRoles: PropTypes.arrayOf(PropTypes.string),
+	emailAddress: PropTypes.string,
+	fullName: PropTypes.string,
+	redirect: PropTypes.string
 };

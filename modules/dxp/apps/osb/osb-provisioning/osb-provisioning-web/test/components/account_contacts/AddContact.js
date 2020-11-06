@@ -15,7 +15,7 @@ import React from 'react';
 import AddContact from '../../../src/main/resources/META-INF/resources/js/components/account_contacts/AddContact';
 
 function renderAddContact(props) {
-	const allContactRoles = [
+	const allRoles = [
 		{key: 'KEY-100', name: 'Manager'},
 		{key: 'KEY-101', name: 'Member'},
 		{key: 'KEY-102', name: 'Analyst'},
@@ -25,7 +25,7 @@ function renderAddContact(props) {
 	return render(
 		<AddContact
 			accountName={'Test Account'}
-			allContactRoles={allContactRoles}
+			allRoles={allRoles}
 			redirect="/"
 			{...props}
 		/>
@@ -51,9 +51,9 @@ describe('AccountAddress', () => {
 
 	it('displays full name if name, email, and roles are provided', () => {
 		const {getByText} = renderAddContact({
-			initialContactRoleKeys: ['KEY-100'],
-			userEmailAddress: 'test1@liferay.com',
-			userFullName: 'Test One'
+			currentRoles: ['KEY-100'],
+			emailAddress: 'test1@liferay.com',
+			fullName: 'Test One'
 		});
 
 		getByText('name');
@@ -62,9 +62,9 @@ describe('AccountAddress', () => {
 
 	it('displays contact roles if name, email, and roles are provided', () => {
 		const {container} = renderAddContact({
-			initialContactRoleKeys: ['KEY-100', 'KEY-101'],
-			userEmailAddress: 'test1@liferay.com',
-			userFullName: 'Test One'
+			currentRoles: ['KEY-100', 'KEY-101'],
+			emailAddress: 'test1@liferay.com',
+			fullName: 'Test One'
 		});
 
 		const {getByText} = within(
@@ -77,7 +77,7 @@ describe('AccountAddress', () => {
 
 	it('does not display full name if email and roles are not provided', () => {
 		const {queryByText} = renderAddContact({
-			userFullName: 'Test One'
+			fullName: 'Test One'
 		});
 
 		expect(queryByText('name')).toBeFalsy();
@@ -86,8 +86,8 @@ describe('AccountAddress', () => {
 
 	it('disables save if email is blank', () => {
 		const {getByText} = renderAddContact({
-			initialContactRoleKeys: ['KEY-100', 'KEY-101'],
-			userEmailAddress: ''
+			currentRoles: ['KEY-100', 'KEY-101'],
+			emailAddress: ''
 		});
 
 		expect(getByText('save').disabled).toBeTruthy();
@@ -95,8 +95,8 @@ describe('AccountAddress', () => {
 
 	it('disables save if no contact roles are selected', () => {
 		const {getByText} = renderAddContact({
-			initialContactRoleKeys: [],
-			userEmailAddress: 'test1@liferay.com'
+			currentRoles: [],
+			emailAddress: 'test1@liferay.com'
 		});
 
 		expect(getByText('save').disabled).toBeTruthy();
@@ -104,9 +104,9 @@ describe('AccountAddress', () => {
 
 	it('enables save if email and contact roles are populated', () => {
 		const {getByText} = renderAddContact({
-			initialContactRoleKeys: ['KEY-100', 'KEY-101'],
-			userEmailAddress: 'test1@liferay.com',
-			userFullName: 'Test One'
+			currentRoles: ['KEY-100', 'KEY-101'],
+			emailAddress: 'test1@liferay.com',
+			fullName: 'Test One'
 		});
 
 		expect(getByText('save').disabled).toBeFalsy();
@@ -128,9 +128,9 @@ describe('AccountAddress', () => {
 
 	it('removes contact roles when clicked on close', () => {
 		const {container, queryAllByTitle} = renderAddContact({
-			initialContactRoleKeys: ['KEY-100', 'KEY-101'],
-			userEmailAddress: 'test1@liferay.com',
-			userFullName: 'Test One'
+			currentRoles: ['KEY-100', 'KEY-101'],
+			emailAddress: 'test1@liferay.com',
+			fullName: 'Test One'
 		});
 
 		fireEvent.click(queryAllByTitle('delete')[0]);
