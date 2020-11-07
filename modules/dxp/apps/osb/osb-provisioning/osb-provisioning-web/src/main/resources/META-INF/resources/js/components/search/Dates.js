@@ -10,7 +10,7 @@
  */
 
 import ClayDatePicker from '@clayui/date-picker';
-import React from 'react';
+import React, {useState} from 'react';
 
 import {NAMESPACE} from '../../utilities/constants';
 
@@ -38,11 +38,10 @@ function Dates() {
 				<label htmlFor="createdAfter">
 					{Liferay.Language.get('created-after')}
 				</label>
-				<input
-					className="form-control form-control-sm"
+
+				<DatePicker
 					id="createdAfter"
-					name={`${NAMESPACE}createDateGT`}
-					type="date"
+					inputName={`${NAMESPACE}createDateGT`}
 				/>
 			</div>
 
@@ -50,11 +49,10 @@ function Dates() {
 				<label htmlFor="createdBefore">
 					{Liferay.Language.get('created-before')}
 				</label>
-				<input
-					className="form-control form-control-sm"
+
+				<DatePicker
 					id="createdBefore"
-					name={`${NAMESPACE}createDateLT`}
-					type="date"
+					inputName={`${NAMESPACE}createDateLT`}
 				/>
 			</div>
 
@@ -62,11 +60,10 @@ function Dates() {
 				<label htmlFor="modifiedAfter">
 					{Liferay.Language.get('modified-after')}
 				</label>
-				<input
-					className="form-control form-control-sm"
+
+				<DatePicker
 					id="modifiedAfter"
-					name={`${NAMESPACE}modifiedDateGT`}
-					type="date"
+					inputName={`${NAMESPACE}modifiedDateGT`}
 				/>
 			</div>
 
@@ -74,14 +71,28 @@ function Dates() {
 				<label htmlFor="modifiedBefore">
 					{Liferay.Language.get('modified-before')}
 				</label>
-				<input
-					className="form-control form-control-sm"
+
+				<DatePicker
 					id="modifiedBefore"
-					name={`${NAMESPACE}modifiedDateLT`}
-					type="date"
+					inputName={`${NAMESPACE}modifiedDateLT`}
 				/>
 			</div>
 		</div>
+	);
+}
+
+function DatePicker({id, inputName}) {
+	const [value, setValue] = useState('');
+
+	return (
+		<ClayDatePicker
+			className="form-control-sm"
+			id={id}
+			inputName={inputName}
+			onValueChange={setValue}
+			placeholder="YYYY-MM-DD"
+			value={value}
+		/>
 	);
 }
 

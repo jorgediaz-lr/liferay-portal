@@ -28,6 +28,13 @@ body {
 		text-align: right;
 	}
 
+	.date-picker {
+		input {
+			font-size: $input-font-size-sm;
+			height: $input-height-sm;
+		}
+	}
+
 	.form-group {
 		h5 {
 			color: $dark;

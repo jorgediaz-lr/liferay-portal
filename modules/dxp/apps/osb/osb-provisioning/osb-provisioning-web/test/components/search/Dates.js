@@ -33,27 +33,27 @@ describe('Account', () => {
 		expect(getByLabelText('created-by').type).toBe('email');
 	});
 
-	it('displays a Created After date field', () => {
+	it('displays a Created After field', () => {
 		const {getByLabelText} = renderDates();
 
-		expect(getByLabelText('created-after').type).toBe('date');
+		getByLabelText('created-after');
 	});
 
-	it('displays a Created Before date field', () => {
+	it('displays a Created Before field', () => {
 		const {getByLabelText} = renderDates();
 
-		expect(getByLabelText('created-before').type).toBe('date');
+		getByLabelText('created-before');
 	});
 
-	it('displays a Modified After date field', () => {
+	it('displays a Modified After field', () => {
 		const {getByLabelText} = renderDates();
 
-		expect(getByLabelText('modified-after').type).toBe('date');
+		getByLabelText('modified-after');
 	});
 
-	it('displays a Modified Before date field', () => {
+	it('displays a Modified Before field', () => {
 		const {getByLabelText} = renderDates();
 
-		expect(getByLabelText('modified-before').type).toBe('date');
+		getByLabelText('modified-before');
 	});
 });
