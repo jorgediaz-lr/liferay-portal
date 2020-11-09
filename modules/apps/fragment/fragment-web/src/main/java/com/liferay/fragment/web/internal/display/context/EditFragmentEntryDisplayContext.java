@@ -306,8 +306,11 @@ public class EditFragmentEntryDisplayContext {
 
 		if (fragmentEntry != null) {
 			_cssContent = fragmentEntry.getCss();
+			_htmlContent = fragmentEntry.getHtml();
 
-			if (Validator.isNull(_cssContent)) {
+			if (Validator.isNull(_cssContent) &&
+				Validator.isNull(_htmlContent)) {
+
 				StringBundler sb = new StringBundler(3);
 
 				sb.append(".fragment_");
