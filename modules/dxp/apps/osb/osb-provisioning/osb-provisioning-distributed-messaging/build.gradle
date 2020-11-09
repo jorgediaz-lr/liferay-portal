@@ -4,6 +4,7 @@ dependencies {
 	compileOnly group: "com.liferay", name: "com.liferay.petra.function", version: "3.0.0"
 	compileOnly group: "com.liferay", name: "com.liferay.petra.lang", version: "3.0.0"
 	compileOnly group: "com.liferay", name: "com.liferay.petra.string", version: "3.0.0"
+	compileOnly group: "com.liferay", name: "com.liferay.portal.configuration.metatype.api", version: "2.0.0"
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "4.0.0"
 	compileOnly group: "com.rabbitmq", name: "amqp-client", version: "5.7.3"
 	compileOnly project(":dxp:apps:osb:osb-distributed-messaging:osb-distributed-messaging-api")

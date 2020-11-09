@@ -17,7 +17,10 @@ package com.liferay.osb.provisioning.distributed.messaging.internal.subscribing;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.ProductPurchaseSerDes;
 import com.liferay.osb.provisioning.lcs.web.service.LCSSubscriptionEntryWebService;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -44,6 +47,17 @@ public class ProductPurchaseMessageSubscriber extends BaseMessageSubscriber {
 		_lcsSubscriptionEntryWebService.syncToLCS(
 			productPurchase.getAccountKey());
 	}
+
+	@Override
+	protected void handleError(
+			String routingKey, String message, Exception exception)
+		throws PortalException {
+
+		_log.error(message, exception);
+	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		ProductPurchaseMessageSubscriber.class);
 
 	@Reference
 	private LCSSubscriptionEntryWebService _lcsSubscriptionEntryWebService;

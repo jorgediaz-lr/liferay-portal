@@ -25,8 +25,7 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.PostalAddress;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
-import com.liferay.osb.provisioning.distributed.messaging.internal.configuration.ProvisioningDistributedMessagingConfigurationUtil;
-import com.liferay.osb.provisioning.distributed.messaging.internal.configuration.ProvisioningDistributedMessagingConfigurationValues;
+import com.liferay.osb.provisioning.distributed.messaging.internal.configuration.DistributedMessagingConfiguration;
 import com.liferay.osb.provisioning.distributed.messaging.internal.constants.SalesforceConstants;
 import com.liferay.osb.provisioning.identity.management.provider.IdentityProvider;
 import com.liferay.osb.provisioning.koroneiki.constants.ContactRoleConstants;
@@ -43,7 +42,7 @@ import com.liferay.petra.content.ContentUtil;
 import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.configuration.Filter;
+import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -54,6 +53,7 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.ModelHintsUtil;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.StackTraceUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SubscriptionSender;
 import com.liferay.portal.kernel.util.Validator;
@@ -69,6 +69,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -76,10 +77,18 @@ import org.osgi.service.component.annotations.Reference;
  * @author Kyle Bischof
  */
 @Component(
+	configurationPid = "com.liferay.osb.provisioning.distributed.messaging.internal.configuration.DistributedMessagingConfiguration",
 	immediate = true, property = "topic.pattern=dossiera.provisioning.create",
 	service = DossieraCreateMessageSubscriber.class
 )
 public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
+
+	@Activate
+	protected void activate(Map<String, Object> properties) {
+		_distributedMessagingConfiguration =
+			ConfigurableUtil.createConfigurable(
+				DistributedMessagingConfiguration.class, properties);
+	}
 
 	protected void checkWarnings(
 		String accountKey, Account account, List<Contact> activeContacts,
@@ -271,20 +280,19 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		Map<Long, String> customFields = new HashMap<>();
 
 		customFields.put(
-			ProvisioningDistributedMessagingConfigurationValues.
-				ZENDESK_CUSTOM_FIELD_OPPORTUNITY_OWNER_ID,
+			_distributedMessagingConfiguration.
+				zendeskCustomFieldOpportunityOwnerId(),
 			account.getContactEmailAddress());
 		customFields.put(
-			ProvisioningDistributedMessagingConfigurationValues.
-				ZENDESK_CUSTOM_FIELD_PRIMARY_ADDRESS_COUNTRY_ID,
+			_distributedMessagingConfiguration.
+				zendeskCustomFieldPrimaryAddressCountryId(),
 			postalAddress.getAddressCountry());
 		customFields.put(
-			ProvisioningDistributedMessagingConfigurationValues.
-				ZENDESK_CUSTOM_FIELD_PRODUCT_ID,
+			_distributedMessagingConfiguration.zendeskCustomFieldProductId(),
 			"Provisioning Request");
 		customFields.put(
-			ProvisioningDistributedMessagingConfigurationValues.
-				ZENDESK_CUSTOM_FIELD_SUPPORT_REGION_ID,
+			_distributedMessagingConfiguration.
+				zendeskCustomFieldSupportRegionId(),
 			account.getRegionAsString());
 
 		zendeskTicket.setCustomFields(customFields);
@@ -357,12 +365,12 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		zendeskTicket.setDescription(sb.toString());
 
 		zendeskTicket.setRequesterId(
-			ProvisioningDistributedMessagingConfigurationValues.
-				PROVISIONING_ZENDESK_REQUESTER_ID);
+			_distributedMessagingConfiguration.
+				provisioningZendeskRequesterId());
 		zendeskTicket.setSubject(subject);
 		zendeskTicket.setZendeskOrganizationId(
-			ProvisioningDistributedMessagingConfigurationValues.
-				PROVISIONING_ZENDESK_ORGANIZATION_ID);
+			_distributedMessagingConfiguration.
+				provisioningZendeskOrganizationId());
 
 		_zendeskTicketWebService.createZendeskTicket(zendeskTicket);
 	}
@@ -586,6 +594,46 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		return postalAddress;
 	}
 
+	protected String getProvisioningEmailAddress(String accountRegion) {
+		if (accountRegion.equals(Account.Region.AUSTRALIA.toString())) {
+			return _distributedMessagingConfiguration.
+				provisioningEmailAddressAustralia();
+		}
+		else if (accountRegion.equals(Account.Region.BRAZIL.toString())) {
+			return _distributedMessagingConfiguration.
+				provisioningEmailAddressBrazil();
+		}
+		else if (accountRegion.equals(Account.Region.CHINA.toString())) {
+			return _distributedMessagingConfiguration.
+				provisioningEmailAddressChina();
+		}
+		else if (accountRegion.equals(Account.Region.HUNGARY.toString())) {
+			return _distributedMessagingConfiguration.
+				provisioningEmailAddressHungary();
+		}
+		else if (accountRegion.equals(Account.Region.INDIA.toString())) {
+			return _distributedMessagingConfiguration.
+				provisioningEmailAddressIndia();
+		}
+		else if (accountRegion.equals(Account.Region.JAPAN.toString())) {
+			return _distributedMessagingConfiguration.
+				provisioningEmailAddressJapan();
+		}
+		else if (accountRegion.equals(Account.Region.SPAIN.toString())) {
+			return _distributedMessagingConfiguration.
+				provisioningEmailAddressSpain();
+		}
+		else if (accountRegion.equals(
+					Account.Region.UNITED_STATES.toString())) {
+
+			return _distributedMessagingConfiguration.
+				provisioningEmailAddressUS();
+		}
+
+		return _distributedMessagingConfiguration.
+			provisioningEmailAddressGlobal();
+	}
+
 	protected int getSalesforceOpportunityType(
 		String salesforceOpportunityTypeName) {
 
@@ -677,6 +725,48 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 				countryName, ". Defaulting support region to global."));
 
 		return Account.Region.GLOBAL;
+	}
+
+	@Override
+	protected void handleError(
+			String routingKey, String message, Exception exception)
+		throws PortalException {
+
+		ZendeskTicket zendeskTicket = new ZendeskTicket();
+
+		Map<Long, String> customFields = new HashMap<>();
+
+		customFields.put(
+			_distributedMessagingConfiguration.zendeskCustomFieldProductId(),
+			"Provisioning Request");
+
+		zendeskTicket.setCustomFields(customFields);
+
+		StringBundler sb = new StringBundler(7);
+
+		sb.append("An unexpected error occurred.<br />Routing Key: ");
+		sb.append(routingKey);
+		sb.append("<br />Message:<br /><pre>");
+		sb.append(message);
+		sb.append("</pre><br />Error:<br /><pre>");
+		sb.append(StackTraceUtil.getStackTrace(exception));
+		sb.append("</pre>");
+
+		_log.error("Creating error Zendesk ticket: " + sb.toString());
+
+		zendeskTicket.setDescription(sb.toString());
+
+		zendeskTicket.setGroupId(
+			_distributedMessagingConfiguration.provisioningZendeskGroupId());
+		zendeskTicket.setRequesterId(
+			_distributedMessagingConfiguration.
+				provisioningZendeskRequesterId());
+		zendeskTicket.setSubject("Auto-Provisioning Error");
+		zendeskTicket.setZendeskOrganizationId(
+			_distributedMessagingConfiguration.
+				provisioningZendeskOrganizationId());
+
+		zendeskTicketWebService.createZendeskTicket(zendeskTicket);
 	}
 
 	protected boolean hasAnalyticsCloud(
@@ -1013,19 +1103,8 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		sb.append(
 			"Customer Portal, all of our downloads, and our support system");
 
-		String provisioningEmailAddress =
-			ProvisioningDistributedMessagingConfigurationUtil.get(
-				ProvisioningDistributedMessagingConfigurationValues.
-					PROVISIONING_EMAIL_ADDRESS,
-				new Filter(account.getRegionAsString()));
-
-		if (Validator.isNull(provisioningEmailAddress)) {
-			provisioningEmailAddress =
-				ProvisioningDistributedMessagingConfigurationUtil.get(
-					ProvisioningDistributedMessagingConfigurationValues.
-						PROVISIONING_EMAIL_ADDRESS,
-					new Filter("Global"));
-		}
+		String provisioningEmailAddress = getProvisioningEmailAddress(
+			account.getRegionAsString());
 
 		String body = _getEmailTemplate(
 			"email_provisioning_create_account_body_" +
@@ -1250,6 +1329,9 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 	@Reference
 	private ContactWebService _contactWebService;
+
+	private volatile DistributedMessagingConfiguration
+		_distributedMessagingConfiguration;
 
 	@Reference
 	private GroupLocalService _groupLocalService;
