@@ -62,6 +62,10 @@ AccountSearchDisplayContext accountSearchDisplayContext = ProvisioningWebCompone
 
 			if (resultsBar) {
 				titleBar.classList.add('hide');
+
+				resultsBar.addEventListener('DOMNodeRemoved', function() {
+					titleBar.classList.remove('hide');
+				});
 			}
 		}
 	}
