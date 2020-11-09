@@ -15,12 +15,22 @@
 package com.liferay.osb.provisioning.web.internal.display.context;
 
 import com.liferay.frontend.taglib.clay.servlet.taglib.display.context.SearchContainerManagementToolbarDisplayContext;
-import com.liferay.petra.string.StringPool;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.LabelItem;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.LabelItemList;
+import com.liferay.osb.provisioning.web.internal.search.AccountDisplayTerms;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
+import com.liferay.portal.kernel.portlet.PortletURLUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.StringUtil;
+
+import java.util.List;
+import java.util.Map;
 
 import javax.portlet.PortletURL;
+import javax.portlet.RenderRequest;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -33,21 +43,72 @@ public class ViewAccountsManagementToolbarDisplayContext
 	public ViewAccountsManagementToolbarDisplayContext(
 		LiferayPortletRequest liferayPortletRequest,
 		LiferayPortletResponse liferayPortletResponse,
-		HttpServletRequest httpServletRequest,
+		RenderRequest renderRequest, HttpServletRequest httpServletRequest,
 		SearchContainer searchContainer) {
 
 		super(
 			liferayPortletRequest, liferayPortletResponse, httpServletRequest,
 			searchContainer);
+
+		_renderRequest = renderRequest;
 	}
 
 	@Override
 	public String getClearResultsURL() {
-		PortletURL clearResultsURL = getPortletURL();
-
-		clearResultsURL.setParameter("keywords", StringPool.BLANK);
+		PortletURL clearResultsURL = liferayPortletResponse.createRenderURL();
 
 		return clearResultsURL.toString();
+	}
+
+	@Override
+	public List<LabelItem> getFilterLabelItems() {
+		AccountDisplayTerms accountDsiplayTerms = new AccountDisplayTerms(
+			_renderRequest);
+
+		if (accountDsiplayTerms.isAdvancedSearch()) {
+			return new LabelItemList() {
+				{
+					Map<String, String> terms =
+						accountDsiplayTerms.getAllTerms();
+
+					for (Map.Entry<String, String> entry : terms.entrySet()) {
+						String key = entry.getKey();
+
+						String[] values = StringUtil.split(entry.getValue());
+
+						for (String value : values) {
+							add(
+								labelItem -> {
+									PortletURL removeLabelURL =
+										PortletURLUtil.clone(
+											currentURLObj,
+											liferayPortletResponse);
+
+									String[] removeKeywords = ArrayUtil.remove(
+										values, value);
+
+									removeLabelURL.setParameter(
+										key, StringUtil.merge(removeKeywords));
+
+									labelItem.putData(
+										"removeLabelURL",
+										removeLabelURL.toString());
+
+									labelItem.setCloseable(true);
+
+									String label = String.format(
+										"%s: %s",
+										LanguageUtil.get(request, key), value);
+
+									labelItem.setLabel(label);
+								});
+						}
+					}
+				}
+			};
+		}
+
+		return null;
 	}
 
 	@Override
@@ -66,5 +127,7 @@ public class ViewAccountsManagementToolbarDisplayContext
 	public Boolean isSelectable() {
 		return false;
 	}
+
+	private final RenderRequest _renderRequest;
 
 }

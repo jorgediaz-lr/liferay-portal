@@ -16,6 +16,10 @@ package com.liferay.osb.provisioning.web.internal.search;
 
 import com.liferay.portal.kernel.dao.search.DisplayTerms;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.StringUtil;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.portlet.PortletRequest;
 
@@ -99,6 +103,33 @@ public class AccountDisplayTerms extends DisplayTerms {
 
 	public String[] getActiveSLAs() {
 		return activeSLAs;
+	}
+
+	public Map<String, String> getAllTerms() {
+		Map<String, String> terms = new HashMap<>();
+
+		terms.put(ACTIVE_SLAS, StringUtil.merge(activeSLAs));
+		terms.put(CODE, code);
+		terms.put(COUNTRY_NAME, countryName);
+		terms.put(CREATE_DATE_GT, createDateGT);
+		terms.put(CREATE_DATE_LT, createDateLT);
+		terms.put(CREATED_BY_EMAIL_ADDRESS, createdByEmailAddress);
+		terms.put(FLS_TEAM_KEY, flsTeamKey);
+		terms.put(INTERNALS, StringUtil.merge(internals));
+		terms.put(MODIFIED_DATE_GT, modifiedDateGT);
+		terms.put(MODIFIED_DATE_LT, modifiedDateLT);
+		terms.put(NAME, name);
+		terms.put(PARENT_ACCOUNT_KEY, parentAccountKey);
+		terms.put(PARTNER_TEAM_KEY, partnerTeamKey);
+		terms.put(PARTNERS, StringUtil.merge(partners));
+		terms.put(PROVIDES_FLS, StringUtil.merge(providesFLS));
+		terms.put(RECEIVES_FLS, StringUtil.merge(receivesFLS));
+		terms.put(REGIONS, StringUtil.merge(regions));
+		terms.put(SUBSCRIPTION_STATES, StringUtil.merge(subscriptionStates));
+		terms.put(TIERS, StringUtil.merge(tiers));
+		terms.put(WORKER_CONTACT_EMAIL_ADDRESS, workerContactEmailAddress);
+
+		return terms;
 	}
 
 	public String getCode() {
