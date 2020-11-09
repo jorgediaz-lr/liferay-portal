@@ -34,8 +34,7 @@ public class ProductConstants {
 	public static final String NAME_DXP_CLOUD_SUBSCRIPTION_STD_PRODUCTION =
 		"DXP Cloud Subscription Std Production";
 
-	public static final String NAME_DXP_EWSA =
-		"DXP Enterprise-Wide Subscription";
+	public static final String NAME_DXP_EWSA = "DXP Unlimited Enterprise-Wide";
 
 	public static final String NAME_DXP_PRODUCTION = "DXP Production";
 
