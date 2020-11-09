@@ -41,13 +41,3 @@
 	#
 	sdk/**
 	testIntegration/**
-
-##
-## Third-Party
-##
-
-    #
-    # These are generated third-party files, not intended for editing or
-    # inspection.
-    #
-    apps/frontend-js/frontend-js-web/src/main/resources/META-INF/resources/misc/svg4everybody.js
