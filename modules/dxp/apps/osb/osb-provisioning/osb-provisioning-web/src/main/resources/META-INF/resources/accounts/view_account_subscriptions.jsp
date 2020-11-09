@@ -173,18 +173,38 @@ SearchContainer productPurchasesSearchContainer = viewAccountDisplayContext.getP
 					var selectedItems = event.newVal;
 
 					if (selectedItems) {
-						var productKeys = selectedItems
+						var productBundleIds = selectedItems
+							.filter(function(item) {
+								return !isNaN(parseInt(item));
+							})
 							.map(function(item) {
 								return item[0];
 							})
 							.join(',');
 
-						var productKeys = A.one(
+						var productBundleIdsInput = A.one(
+							'#<portlet:namespace />productBundleIds'
+						);
+
+						if (productBundleIdsInput) {
+							productBundleIdsInput.val(productBundleIds);
+						}
+
+						var productKeys = selectedItems
+							.filter(function(item) {
+								return isNaN(parseInt(item));
+							})
+							.map(function(item) {
+								return item[0];
+							})
+							.join(',');
+
+						var productKeysInput = A.one(
 							'#<portlet:namespace />productKeys'
 						);
 
-						if (productKeys) {
-							productKeys.val(productKeys);
+						if (productKeysInput) {
+							productKeysInput.val(productKeys);
 						}
 
 						<portlet:namespace />editProductPurchases();
