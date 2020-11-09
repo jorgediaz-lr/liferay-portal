@@ -16,6 +16,7 @@
 		"metal-events": "2.16.8",
 		"metal-position": "2.1.2",
 		"metal-soy": "2.16.8",
+		"svg4everybody": "^2.1.8",
 		"uuid": "^3.3.2"
 	},
 	"jest": {
