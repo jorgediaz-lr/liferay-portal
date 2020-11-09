@@ -238,6 +238,13 @@ public class DDMStorageLinkLocalServiceWrapper
 
 	@Override
 	public com.liferay.dynamic.data.mapping.model.DDMStorageLink
+		fetchClassStorageLink(long classPK) {
+
+		return _ddmStorageLinkLocalService.fetchClassStorageLink(classPK);
+	}
+
+	@Override
+	public com.liferay.dynamic.data.mapping.model.DDMStorageLink
 		fetchDDMStorageLink(long storageLinkId) {
 
 		return _ddmStorageLinkLocalService.fetchDDMStorageLink(storageLinkId);
