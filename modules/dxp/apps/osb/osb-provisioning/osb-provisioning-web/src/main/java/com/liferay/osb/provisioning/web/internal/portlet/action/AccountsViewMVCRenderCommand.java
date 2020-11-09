@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.List;
 
@@ -56,7 +57,9 @@ public class AccountsViewMVCRenderCommand implements MVCRenderCommand {
 				ParamUtil.getString(renderRequest, "keywords"),
 				StringPool.SPACE);
 
-			if ((keywords.length == 1) && StringUtil.isUpperCase(keywords[0])) {
+			if ((keywords.length == 1) && Validator.isNotNull(keywords[0]) &&
+				StringUtil.isUpperCase(keywords[0])) {
+
 				List<Account> accounts = _accountWebService.search(
 					StringPool.BLANK, "code eq '" + keywords[0] + "'", 0, 1,
 					null);

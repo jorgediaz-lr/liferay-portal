@@ -29,7 +29,7 @@ import org.osgi.service.component.annotations.Component;
 @Component(
 	property = {
 		"javax.portlet.name=" + ProvisioningPortletKeys.ACCOUNTS,
-		"mvc.command.name=/", "mvc.command.name=/accounts/add_account"
+		"mvc.command.name=/accounts/add_account"
 	},
 	service = MVCRenderCommand.class
 )
