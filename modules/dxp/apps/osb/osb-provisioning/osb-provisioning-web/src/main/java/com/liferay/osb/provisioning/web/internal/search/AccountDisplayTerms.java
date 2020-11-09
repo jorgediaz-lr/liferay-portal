@@ -69,6 +69,8 @@ public class AccountDisplayTerms extends DisplayTerms {
 	public AccountDisplayTerms(PortletRequest portletRequest) {
 		super(portletRequest);
 
+		keywords = ParamUtil.getString(portletRequest, "accountSearchKeywords");
+
 		activeSLAs = ParamUtil.getStringValues(portletRequest, ACTIVE_SLAS);
 		code = ParamUtil.getString(portletRequest, CODE);
 		countryName = ParamUtil.getString(portletRequest, COUNTRY_NAME);

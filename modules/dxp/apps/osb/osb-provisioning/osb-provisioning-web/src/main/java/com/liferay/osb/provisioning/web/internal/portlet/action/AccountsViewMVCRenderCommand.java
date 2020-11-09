@@ -54,7 +54,7 @@ public class AccountsViewMVCRenderCommand implements MVCRenderCommand {
 
 		try {
 			String[] keywords = StringUtil.split(
-				ParamUtil.getString(renderRequest, "keywords"),
+				ParamUtil.getString(renderRequest, "accountSearchKeywords"),
 				StringPool.SPACE);
 
 			if ((keywords.length == 1) && Validator.isNotNull(keywords[0]) &&
