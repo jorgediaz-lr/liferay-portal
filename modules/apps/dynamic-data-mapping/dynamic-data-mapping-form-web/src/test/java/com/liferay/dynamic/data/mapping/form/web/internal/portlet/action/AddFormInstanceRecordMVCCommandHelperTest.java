@@ -153,7 +153,6 @@ public class AddFormInstanceRecordMVCCommandHelperTest extends PowerMockito {
 
 		Assert.assertEquals(
 			new UnlocalizedValue(StringPool.BLANK), getFieldValue());
-
 		Assert.assertFalse(_ddmFormField.isRequired());
 	}
 
@@ -173,7 +172,6 @@ public class AddFormInstanceRecordMVCCommandHelperTest extends PowerMockito {
 
 		Assert.assertEquals(
 			new UnlocalizedValue(_STRING_VALUE), getFieldValue());
-
 		Assert.assertFalse(_ddmFormField.isRequired());
 	}
 
@@ -191,7 +189,6 @@ public class AddFormInstanceRecordMVCCommandHelperTest extends PowerMockito {
 
 		Assert.assertEquals(
 			new UnlocalizedValue(StringPool.BLANK), getFieldValue());
-
 		Assert.assertFalse(_ddmFormField.isRequired());
 	}
 
@@ -209,7 +206,6 @@ public class AddFormInstanceRecordMVCCommandHelperTest extends PowerMockito {
 
 		Assert.assertEquals(
 			new UnlocalizedValue(_STRING_VALUE), getFieldValue());
-
 		Assert.assertTrue(_ddmFormField.isRequired());
 	}
 
