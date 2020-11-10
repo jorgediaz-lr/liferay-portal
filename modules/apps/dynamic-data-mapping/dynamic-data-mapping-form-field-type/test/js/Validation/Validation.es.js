@@ -108,7 +108,7 @@ describe('Validation', () => {
 		});
 
 		component.refs.enableValidation.value = true;
-		component.refs.selectedValidation.value = 'lt';
+		component.refs.selectedValidation.value = 'neq';
 		component.refs.selectedValidation.emit('fieldEdited');
 
 		jest.runAllTimers();
