@@ -62,14 +62,14 @@ public class ViewAccountsManagementToolbarDisplayContext
 
 	@Override
 	public List<LabelItem> getFilterLabelItems() {
-		AccountDisplayTerms accountDsiplayTerms = new AccountDisplayTerms(
+		AccountDisplayTerms accountDisplayTerms = new AccountDisplayTerms(
 			_renderRequest);
 
-		if (accountDsiplayTerms.isAdvancedSearch()) {
+		if (accountDisplayTerms.isAdvancedSearch()) {
 			return new LabelItemList() {
 				{
 					Map<String, String> terms =
-						accountDsiplayTerms.getAllTerms();
+						accountDisplayTerms.getAllTerms();
 
 					for (Map.Entry<String, String> entry : terms.entrySet()) {
 						String key = entry.getKey();
