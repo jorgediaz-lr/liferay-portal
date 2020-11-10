@@ -101,7 +101,7 @@
 /portal/commons-io.jar
 /portal/commons-lang.jar
 /portal/commons-logging.jar
-/portal/dom4j.jar
+/portal/commons-text.jar/portal/dom4j.jar
 /portal/hibernate-core.jar
 /portal/hikaricp.jar
 /portal/httpclient.jar
@@ -113,6 +113,7 @@
 /portal/jackson-annotations.jar
 /portal/jackson-core.jar
 /portal/jackson-databind.jar
+/portal/jackson-dataformat-csv.jar
 /portal/jackson-module-jaxb-annotations.jar
 /portal/javassist.jar
 /portal/jaxb-api.jar
@@ -128,15 +129,18 @@
 /portal/jodd-proxetta.jar
 /portal/jodd-util.jar
 /portal/json-java.jar
+/portal/jsqlparser.jar
 /portal/jws-api.jar
 /portal/log4j-1.2-api.jar
 /portal/log4j-api.jar
 /portal/log4j-core.jar
+/portal/p6spy.jar
 /portal/persistence.jar
 /portal/portlet.jar
 /portal/portletmvc4spring-framework.jar
 /portal/simplecaptcha.jar
 /portal/slf4j-api.jar
+/portal/snakeyaml.jar
 /portal/soap-api.jar
 /portal/spring-aop.jar
 /portal/spring-aspects.jar
