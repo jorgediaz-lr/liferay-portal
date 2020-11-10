@@ -438,6 +438,12 @@ public class JournalArticleLocalServiceImpl
 		Map<String, String> urlTitleMap = _getURLTitleMap(
 			groupId, resourcePrimKey, friendlyURLMap, titleMap);
 
+		long smallImageId = 0L;
+
+		if (smallImage) {
+			smallImageId = counterLocalService.increment();
+		}
+
 		article.setUuid(serviceContext.getUuid());
 		article.setResourcePrimKey(resourcePrimKey);
 		article.setGroupId(groupId);
@@ -461,7 +467,7 @@ public class JournalArticleLocalServiceImpl
 		article.setReviewDate(reviewDate);
 		article.setIndexable(indexable);
 		article.setSmallImage(smallImage);
-		article.setSmallImageId(counterLocalService.increment());
+		article.setSmallImageId(smallImageId);
 		article.setSmallImageURL(smallImageURL);
 
 		Date now = new Date();
@@ -793,10 +799,16 @@ public class JournalArticleLocalServiceImpl
 
 		article.setDefaultLanguageId(LocaleUtil.toLanguageId(locale));
 
+		long smallImageId = 0L;
+
+		if (smallImage) {
+			smallImageId = counterLocalService.increment();
+		}
+
 		article.setLayoutUuid(layoutUuid);
 		article.setIndexable(indexable);
 		article.setSmallImage(smallImage);
-		article.setSmallImageId(counterLocalService.increment());
+		article.setSmallImageId(smallImageId);
 		article.setSmallImageURL(smallImageURL);
 		article.setStatus(WorkflowConstants.STATUS_APPROVED);
 		article.setStatusByUserId(userId);
@@ -1087,6 +1099,12 @@ public class JournalArticleLocalServiceImpl
 			newArticle.setContent(oldArticle.getContent());
 		}
 
+		long smallImageId = 0L;
+
+		if (oldArticle.isSmallImage()) {
+			smallImageId = counterLocalService.increment();
+		}
+
 		newArticle.setDDMStructureKey(oldArticle.getDDMStructureKey());
 		newArticle.setDDMTemplateKey(oldArticle.getDDMTemplateKey());
 		newArticle.setDefaultLanguageId(oldArticle.getDefaultLanguageId());
@@ -1096,7 +1114,7 @@ public class JournalArticleLocalServiceImpl
 		newArticle.setReviewDate(oldArticle.getReviewDate());
 		newArticle.setIndexable(oldArticle.isIndexable());
 		newArticle.setSmallImage(oldArticle.isSmallImage());
-		newArticle.setSmallImageId(counterLocalService.increment());
+		newArticle.setSmallImageId(smallImageId);
 		newArticle.setSmallImageURL(oldArticle.getSmallImageURL());
 
 		WorkflowHandler<?> workflowHandler =
@@ -6321,11 +6339,6 @@ public class JournalArticleLocalServiceImpl
 			article.setIndexable(oldArticle.isIndexable());
 			article.setSmallImage(oldArticle.isSmallImage());
 			article.setSmallImageId(oldArticle.getSmallImageId());
-
-			if (article.getSmallImageId() == 0) {
-				article.setSmallImageId(counterLocalService.increment());
-			}
-
 			article.setSmallImageURL(oldArticle.getSmallImageURL());
 
 			article.setStatus(WorkflowConstants.STATUS_DRAFT);
