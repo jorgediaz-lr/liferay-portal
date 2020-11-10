@@ -1,0 +1,121 @@
+#
+references: [
+    #generic references
+  {origin: {table: ".*", columns: [".*${destTable.PrimaryKey}"]},                                     dest: {table: ".*", columns: ["${destTable.primaryKey}"]}},
+  {origin: {table: ".*", columns: ["${destTable.primaryKey}"]},                                       dest: {table: ".*", columns: ["${destTable.primaryKey}"]}},
+  {origin: {table: ".*", columns: ["groupId", "companyId"], condition: "groupId<>0 and companyId<>0"},dest: {table: "Group_", columns: ["groupId", "companyId"]}},
+  {origin: {table: ".*", columns: ["ddmStorageId"]},                                                  dest: {table: "DDMContent", columns: ["contentId"]}},
+  {origin: {table: ".*", columns: ["layoutId"]},                                                      dest: {table: "Layout", columns: ["layoutId"]}},
+  {origin: {table: ".*", columns: ["layoutUuid"]},                                                    dest: {table: "Layout", columns: ["uuid_"]}, fixAction: "update" },
+  {origin: {table: ".*", columns: [".*layoutPrototypeUuid"]},                                         dest: {table: "LayoutPrototype", columns: ["uuid_"]}, fixAction: "update" },
+  {origin: {table: ".*", columns: [".*layoutSetPrototypeUuid"]},                                      dest: {table: "LayoutSetPrototype", columns: ["uuid_"]}, fixAction: "update" },
+    #groupId
+  {origin: {table: "Group_", columns: [".*${destTable.PrimaryKey}"]},                                 dest: {table: "Group_", columns: ["${destTable.primaryKey}"]}, fixAction: "update" },
+    #folderId
+  {origin: {table: ".*", columns: [".*folderId"], conditionColumns: ["groupId"]}}, #ignore
+  {origin: {table: "KBArticle", columns: ["groupId", "kbFolderId"], condition: "kbFolderId<>0 and status<> 8", conditionColumns: ["status"]}, dest: {table: "KBFolder", columns: ["groupId","kbFolderId"]}, fixAction: "update_no_groupId" },
+  {origin: {table: "KBFolder", columns: ["groupId", "parentKbFolderId"], condition: "parentKbFolderId<>0"}, dest: {table: "KBFolder", columns: ["groupId","kbFolderId"]}, fixAction: "update_no_groupId" },
+  {origin: {table: "^(?!.*Folder\\b|DLFileEntry).*$", columns: ["groupId", "folderId"], condition: "folderId<>0"}, dest: {table: ".*Folder", columns: ["groupId","folderId"]}, fixAction: "update_no_groupId" },
+  {origin: {table: "DLFileEntry", columns: ["fileEntryId", "groupId", "folderId"], condition: "folderId<>0"},      dest: {table: "DLFileVersion", columns: ["fileEntryId", "groupId","folderId"]}},
+  {origin: {table: "^(?!.*Folder\\b).*$", columns: ["groupId", "folderId"], condition: "folderId<>0", conditionColumns: ["status"]}}, #ignore
+  {origin: {table: "^(?!.*Folder\\b).*$", columns: ["groupId", "folderId"], condition: "folderId<>0 and status<> 8", conditionColumns: ["status"]}, dest: {table: ".*Folder", columns: ["groupId","folderId"]}, fixAction: "update_no_groupId" },
+  {origin: {table: ".*", columns: ["groupId", "parentFolderId"], condition: "parentFolderId<>0"},                 dest: {table: ".*Folder", columns: ["groupId","folderId"]}, fixAction: "update_no_groupId" },
+  {origin: {table: ".*", columns: ["groupId", "parentFolderId"], condition: "parentFolderId<>0", conditionColumns: ["status"]}}, #ignore
+  {origin: {table: ".*", columns: ["groupId", "parentFolderId"], condition: "parentFolderId<>0 and status<> 8", conditionColumns: ["status"]}, dest: {table: ".*Folder", columns: ["groupId","folderId"]}, fixAction: "update_no_groupId" },
+  {origin: {table: "^(?!.*Folder\\b|DLFileEntry).*$", columns: ["folderId", "treePath"], condition: "folderId<>0"},                dest: {table: ".*Folder", columns: ["folderId", "treePath"]}},
+  {origin: {table: "DLFileEntry", columns: ["fileEntryId", "folderId", "treePath"], condition: "folderId<>0"},                     dest: {table: "DLFileVersion", columns: ["fileEntryId", "folderId", "treePath"]}},
+  {origin: {table: "^(?!.*Folder\\b).*$", columns: ["folderId", "treePath"], condition: "folderId<>0", conditionColumns: ["status"]}}, #ignore
+  {origin: {table: "^(?!.*Folder\\b).*$", columns: ["folderId", "treePath"], condition: "folderId<>0 and status<> 8", conditionColumns: ["status"]}, dest: {table: ".*Folder", columns: ["folderId", "treePath"]}},
+    #imageId
+  {origin: {table: ".*", columns: ["logoId"]},                                                        dest: {table: "Image", columns: ["imageId"]}},
+  {origin: {table: ".*", columns: ["portraitId"]},                                                    dest: {table: "Image", columns: ["imageId"]}},
+  {origin: {table: ".*", columns: ["smallImageId"], condition: "smallImage=[$TRUE$] and smallImageURL IS NULL", conditionColumns: ["smallImage","smallImageURL"]}, dest: {table: "Image", columns: ["imageId"]}},
+  {origin: {table: ".*", columns: ["smallImageId"]}}, #ignore
+  {origin: {table: "DLFileEntry", columns: [".*imageId"]}}, #ignore
+    #ignore generic references
+  {origin: {table: ".*", columns: ["${origTable.primaryKey}"]}}, #primary keys must not be checked with any other pk
+  {origin: {table: ".*", columns: ["groupId", "${origTable.primaryKey}"], condition: "folderId<>0", conditionColumns: ["folderId"]}}, #primary keys must not be checked with any other pk
+  {origin: {table: ".*", columns: ["${origTable.primaryKey}", "treePath"], condition: "folderId<>0", conditionColumns: ["folderId"]}}, #primary keys must not be checked with any other pk
+  {origin: {table: ".*", columns: ["uuid_"]}}, #ignore
+  {origin: {table: ".*", columns: [".*userId"]}}, #ignore
+  {origin: {table: ".*", columns: [".*statusId"]}}, #ignore
+    #force other references
+  {origin: {table: "AssetCategory",  columns: ["leftCategoryid"]}}, #ignore
+  {origin: {table: "AssetCategory",  columns: ["rightCategoryid"]}}, #ignore
+  {origin: {table: "AssetLink",      columns: ["entryId.*"]},                                         dest: {table: "AssetEntry",  columns: ["entryId"]}},
+  {origin: {table: "DL.*",           columns: ["repositoryId"]}}, #ignore
+  {origin: {table: "^(?!DLContent\\b)DL.*$", columns: ["repositoryId"], condition: "repositoryId<>groupId", conditionColumns: ["groupId"]}, dest: {table: "Repository",      columns: ["repositoryId"]}},
+  {origin: {table: "^(?!DLContent\\b)DL.*$", columns: ["repositoryId"], condition: "repositoryId=groupId", conditionColumns: ["groupId"]},  dest: {table: "Group_",          columns: ["groupId"]}},
+  {origin: {table: "DLFileEntry",    columns: ["fileEntryId","version"]},                            dest: {table: "DLFileVersion",   columns: ["fileEntryId","version"]}},
+  {origin: {table: "KBArticle",      columns: [".*resourcePrimKey"]}}, #ignore
+  {origin: {table: "KBArticle",      columns: ["rootResourcePrimKey"]}, dest: {table: "KBArticle", columns: ["resourcePrimKey"]}},
+  {origin: {table: "KBArticle",      columns: ["parentResourcePrimKey"], condition: "parentResourceClassNameId in (select classNameId from ClassName_ where value='${destTable.className}')", conditionColumns: ["parentResourceClassNameId"]}, dest: {table: "KBArticle", columns: ["resourcePrimKey"]}, fixAction: "update" },
+  {origin: {table: "KBArticle",      columns: ["parentResourcePrimKey", "KBFolderId"], condition: "parentResourcePrimKey <> 0 and parentResourceClassNameId in (select classNameId from ClassName_ where value='${destTable.className}')", conditionColumns: ["parentResourceClassNameId"]}, dest: {table: "KBFolder", columns: ["KBFolderId", "KBFolderId"]}, fixAction: "update" },
+  {origin: {table: "Layout",         columns: ["parentLayoutId"], condition: "parentLayoutId<>0"},   dest: {table: "Layout",          columns: ["layoutId"]}},
+  {origin: {table: "Marketplace_App",columns: ["remoteAppId"]}}, #ignore
+  {origin: {table: "MB.*",           columns: [".*categoryId"]}}, #ignore
+  {origin: {table: "^(?!MBCategory\\b).*$", columns: ["categoryId"], condition: "categoryId<>-1 and categoryId<>0 and status<> 8", conditionColumns: ["status"]}, dest: {table: "MBCategory", columns: ["categoryId"]}, fixAction: "update" },
+  {origin: {table: "MB.*",           columns: [".+categoryId"], condition: "categoryId<>-1 and categoryId<>0 and status<> 8", conditionColumns: ["status"]}, dest: {table: "MBCategory", columns: ["categoryId"]}, fixAction: "update" },
+  {origin: {table: "MB.*",           columns: ["categoryId"], condition: "categoryId<>-1 and categoryId<>0 and status<> 8", conditionColumns: ["status"]}, dest: {table: "MBCategory", columns: ["categoryId"]}, fixAction: "update" },
+  {origin: {table: "JournalArticle", columns: ["groupId","resourcePrimKey","articleId"]}, dest: {table: "JournalArticleResource", columns: ["groupId","resourcePrimKey","articleId"]}, fixAction: "create" },
+  {origin: {table: "JournalArticleResource", columns: ["groupId","resourcePrimKey","articleId"]}, dest: {table: "JournalArticle",  columns: ["groupId","resourcePrimKey","articleId"]}, fixAction: "delete" },
+  {origin: {table: "Journal.*",      columns: ["articleId"]},                                        dest: {table: "JournalArticleResource",  columns: ["articleId"]}},
+  {origin: {table: "Journal.*",      columns: ["parentStructureId"]},                                dest: {table: "JournalStructure", columns: ["structureId"]}},
+  {origin: {table: "Journal.*",      columns: ["structureId"]},                                      dest: {table: "JournalStructure", columns: ["structureId"]}},
+  {origin: {table: "Journal.*",      columns: ["templateId"]},                                       dest: {table: "JournalTemplate", columns: ["templateId"]}},
+  {origin: {table: "JournalStructure", columns: ["structureId"]}}, #ignore
+  {origin: {table: "JournalTemplate", columns: ["templateId"]}}, #ignore
+  {origin: {table: "Repository",     columns: ["dlFolderId"]},                                       dest: {table: "DLFolder",        columns: ["folderId"]}},
+  {origin: {table: "SocialActivity", columns: ["parentClassPk"], condition: "parentclassNameId in (select classNameId from ClassName_ where value='${destTable.className}')"}, dest: {table: ".*",  columns: ["${destTable.primaryKey}"]}, displayRaw: true, hidden: true},
+  {origin: {table: "WikiPage",       columns: ["groupId","resourcePrimKey"]},                        dest: {table: "WikiPageResource", columns: ["groupId","resourcePrimKey"]}},
+  {origin: {table: "SyncDL.*",       columns: [".*${destTable.PrimaryKey}"]},                        dest: {table: "DL.*",             columns: ["${destTable.primaryKey}"]}},
+  {origin: {table: "SyncDLObject",   columns: ["repositoryId"]}}, #ignore
+  {origin: {table: "SyncDLObject",   columns: ["versionId"]},                                        dest: {table: "DLFileVersion", columns: ["fileVersionId"]}},
+    #relations with ListType columns
+  {origin: {table: "Address",  columns: ["typeId"]},         dest: {table: "ListType", columns: ["listTypeId"], condition: "type_ like '%.address'"}},
+  {origin: {table: "EmailAddress",  columns: ["typeId"]},    dest: {table: "ListType", columns: ["listTypeId"], condition: "type_ like '%.emailAddress'"}},
+  {origin: {table: "Phone",  columns: ["typeId"]},           dest: {table: "ListType", columns: ["listTypeId"], condition: "type_ like '%.phone'"}},
+  {origin: {table: "Website",  columns: ["typeId"]},         dest: {table: "ListType", columns: ["listTypeId"], condition: "type_ like '%.website'"}},
+  {origin: {table: "Contact_",  columns: ["prefixId"]},      dest: {table: "ListType", columns: ["listTypeId"], condition: "type_='com.liferay.portal.model.Contact.prefix'"}},
+  {origin: {table: "Contact_",  columns: ["suffixId"]},      dest: {table: "ListType", columns: ["listTypeId"], condition: "type_='com.liferay.portal.model.Contact.suffix'"}},
+  {origin: {table: "OrgLabor", columns: ["typeId"]},         dest: {table: "ListType", columns: ["listTypeId"], condition: "type_='com.liferay.portal.model.Organization.service'"}},
+  {origin: {table: "Organization_",  columns: ["statusId"]}, dest: {table: "ListType", columns: ["listTypeId"], condition: "type_='com.liferay.portal.model.Organization.status'"}},
+    #relations to AssetEntry table
+  {origin: {table: "^(BlogsEntry|BookmarksEntry|BookmarksFolder|CalendarBooking|JournalFolder)$", columns: ["${origTable.primaryKey}"]}, dest: {table: "AssetEntry", columns: ["classPk"], condition: "classNameId in (select classNameId from ClassName_ where value='${origTable.className}')"}, fixAction: "create" },
+  {origin: {table: "MBMessage", columns: ["${origTable.primaryKey}"], condition: "categoryId != -1"}, dest: {table: "AssetEntry", columns: ["classPk"], condition: "classNameId in (select classNameId from ClassName_ where value='${origTable.className}')"}, fixAction: "create" },
+  {origin: {table: "MBMessage", columns: ["${origTable.primaryKey}"], condition: "categoryId = -1"}, dest: {table: "AssetEntry", columns: ["classPk"], condition: "classNameId in (select classNameId from ClassName_ where value='${MBDiscussion.className}')"}, fixAction: "create" },
+  {origin: {table: "MBThread", columns: ["${origTable.primaryKey}"], condition: "categoryId >= 0"}, dest: {table: "AssetEntry", columns: ["classPk"], condition: "classNameId in (select classNameId from ClassName_ where value='${origTable.className}')"}, fixAction: "create" },
+  {origin: {table: "User_",  columns: ["${origTable.primaryKey}"], condition: "defaultUser=[$FALSE$] and status in (0, 2)"}, dest: {table: "AssetEntry", columns: ["classPk"], condition: "classNameId in (select classNameId from ClassName_ where value='${origTable.className}')"}, fixAction: "create" },
+  {origin: {table: "^(JournalArticle|KBArticle|WikiPage)$",  columns: ["resourcePrimKey"], condition: "status = 0", conditionColumns: ["status"]}, dest: {table: "AssetEntry", columns: ["classPk"], condition: "classNameId in (select classNameId from ClassName_ where value='${origTable.className}')"}, fixAction: "create" },
+    #relations using classname+classpk columns
+  {origin: {table: "ExpandoRow", columns: ["classPk"], condition: "tableId in (select tableId from ExpandoTable where classNameId in (select classNameId from ClassName_ where value='${destTable.className}')) and classPk<>0", conditionColumns: ["tableId", "classPk"]}, dest: {table: ".*", columns: ["${destTable.primaryKey}"]}, displayRaw: true, hidden: true},
+  {origin: {table: "ExpandoRow", columns: ["classPk"], condition: "tableId in (select tableId from ExpandoTable where classNameId in (select classNameId from ClassName_ where value='${DLFileEntry.className}')) and classPk<>0", conditionColumns: ["tableId", "classPk"]}, dest: {table: "DLFileVersion", columns: ["${DLFileVersion.primaryKey}"]}, displayRaw: true, hidden: true},
+  {origin: {table: "ExpandoValue", columns: ["classPk"], condition: "classNameId in (select classNameId from ClassName_ where value='${DLFileEntry.className}') and classPk IS NOT NULL", conditionColumns: ["classNameId", "classPk"]}, dest: {table: "DLFileVersion", columns: ["${destTable.primaryKey}"]}, displayRaw: true, hidden: true},
+  {origin: {table: "Group_", columns: ["classPk"], condition: "classNameId in (select classNameId from ClassName_ where value='${destTable.className}') and classPk IS NOT NULL", conditionColumns: ["classNameId", "classPk"]}, dest: {table: "^(Company\\b|Group_\\b|Layout\\b|LayoutPrototype\\b|LayoutSetPrototype\\b|User_\\b|UserGroup\\b|DepotEntry\\b).*$", columns: ["${destTable.primaryKey}"]}, fixAction: "delete" },
+  {origin: {table: "Group_", columns: ["classPk"], condition: "classNameId in (select classNameId from ClassName_ where value='${Organization_.className}') and classPk IS NOT NULL and liveGroupId = 0", conditionColumns: ["classNameId", "classPk", "liveGroupId"]}, dest: {table: "Organization_", columns: ["${destTable.primaryKey}"]}, fixAction: "delete" },
+  {origin: {table: "Group_", columns: ["classPk"], condition: "classNameId in (select classNameId from ClassName_ where value='${Organization_.className}') and classPk IS NOT NULL and liveGroupId <> 0", conditionColumns: ["classNameId", "classPk", "liveGroupId"]}, dest: {table: "Group_", columns: ["${destTable.primaryKey}"]}, fixAction: "delete" },
+  {origin: {table: "Kaleo.*", columns: ["classPk"], condition: "className='${DDLRecord.className}' and classPk IS NOT NULL", conditionColumns: ["className", "classPk"]}, dest: {table: "DDLRecordVersion", columns: ["${destTable.primaryKey}"]}, displayRaw: true, hidden: true},
+  {origin: {table: "Kaleo.*", columns: ["classPk"], condition: "className='${DLFileEntry.className}' and classPk IS NOT NULL", conditionColumns: ["className", "classPk"]}, dest: {table: "DLFileVersion", columns: ["${destTable.primaryKey}"]}, displayRaw: true, hidden: true},
+  {origin: {table: "Kaleo.*", columns: ["assigneeClassPk"], condition: "assigneeClassName='${destTable.className}' and assigneeClassPk<>0", conditionColumns: ["assigneeClassName", "assigneeClassPk"]}, dest: {table: "^(Role_\\b|User_\\b).*$", columns: ["${destTable.primaryKey}"]}},
+  {origin: {table: "Kaleo.*", columns: ["currentAssigneeClassPk"], condition: "currentAssigneeClassName='${destTable.className}' and currentAssigneeClassPk<>0", conditionColumns: ["currentAssigneeClassName", "currentAssigneeClassPk"]}, dest: {table: "^(Role_\\b|User_\\b).*$", columns: ["${destTable.primaryKey}"]}},
+  {origin: {table: "Kaleo.*", columns: ["kaleoClassPk"], condition: "kaleoClassName='${destTable.className}' and kaleoClassPk<>0", conditionColumns: ["kaleoClassName", "kaleoClassPk"]}, dest: {table: "Kaleo.*", columns: ["${destTable.primaryKey}"]}, displayRaw: true, hidden: true},
+  {origin: {table: "Kaleo.*", columns: ["previousAssigneeClassPk"], condition: "previousAssigneeClassName='${destTable.className}' and previousAssigneeClassPk<>0", conditionColumns: ["previousAssigneeClassName", "previousAssigneeClassPk"]}, dest: {table: "^(Role_\\b|User_\\b).*$", columns: ["${destTable.primaryKey}"]}},
+  {origin: {table: "Kaleo.*", columns: ["recipientClassPk"], condition: "recipientClassName='${destTable.className}' and recipientClassPk<>0", conditionColumns: ["recipientClassName", "recipientClassPk"]}, dest: {table: "^(Role_\\b|User_\\b).*$", columns: ["${destTable.primaryKey}"]}},
+  {origin: {table: "Workflow.*", columns: ["classPk"], condition: "classNameId in (select classNameId from ClassName_ where value='${DDLRecord.className}') and classPk IS NOT NULL", conditionColumns: ["classNameId", "classPk"]}, dest: {table: "DDLRecordVersion", columns: ["${destTable.primaryKey}"]}, displayRaw: true, hidden: true},
+  {origin: {table: "Workflow.*", columns: ["classPk"], condition: "classNameId in (select classNameId from ClassName_ where value='${DLFileEntry.className}') and classPk IS NOT NULL", conditionColumns: ["classNameId", "classPk"]}, dest: {table: "DLFileVersion", columns: ["${destTable.primaryKey}"]}, displayRaw: true, hidden: true},
+    #PortalPreferences/PortletPreferences relations
+  {origin: {table: "^(PortalPreferences|PortletPreferences)$", columns: ["ownerId"], condition: "ownerType = 1 and ownerId <> 0"}, dest: {table: "Company", columns: ["${destTable.primaryKey}"]}},
+  {origin: {table: "^(PortalPreferences|PortletPreferences)$", columns: ["ownerId"], condition: "ownerType = 2 and ownerId <> 0"}, dest: {table: "Group_", columns: ["${destTable.primaryKey}"]}},
+  {origin: {table: "^(PortalPreferences|PortletPreferences)$", columns: ["ownerId"], condition: "ownerType = 3 and ownerId <> 0"}, dest: {table: "Group_", columns: ["${destTable.primaryKey}"]}},
+  {origin: {table: "^(PortalPreferences|PortletPreferences)$", columns: ["ownerId"], condition: "ownerType = 4 and ownerId <> 0"}, dest: {table: "User", columns: ["${destTable.primaryKey}"]}},
+  {origin: {table: "^(PortalPreferences|PortletPreferences)$", columns: ["ownerId"], condition: "ownerType = 5 and ownerId <> 0"}, dest: {table: "PortletItem", columns: ["${destTable.primaryKey}"]}},
+  {origin: {table: "^(PortalPreferences|PortletPreferences)$", columns: ["ownerId"], condition: "ownerType = 6 and ownerId <> 0"}, dest: {table: "Organization_", columns: ["${destTable.primaryKey}"]}},
+  {origin: {table: "PortletPreferences", columns: ["plid"]}}, #ignore
+  {origin: {table: "PortletPreferences", columns: ["plid"], condition: "plid not in (select layoutRevisionId from LayoutRevision)"}, dest: {table: "Layout", columns: ["plid"]}},
+    #ResourcePermission relations
+  {origin: {table: "ResourcePermission", columns: ["primKey"], condition: "scope = 1"}, dest: {table: "Company", columns: ["${destTable.primaryKey}"]}},
+  {origin: {table: "ResourcePermission", columns: ["primKey"], condition: "scope = 2"}, dest: {table: "Group_", columns: ["${destTable.primaryKey}"]}},
+  {origin: {table: "ResourcePermission", columns: ["primKey"], condition: "scope = 4 and name='${destTable.className}'"}, dest: {table: ".*", columns: ["${destTable.primaryKey}"]}, displayRaw: true, hidden: true},
+  {origin: {table: "ResourcePermission", columns: ["primKey"], condition: "scope = 4 and name='${destTable.className}'"}, dest: {table: ".*", columns: ["resourcePrimKey"]}, displayRaw: true, hidden: true},
+  {origin: {table: "ResourcePermission", columns: ["primKey"], castings: ["SUBSTR(primKey, 1, INSTR(primKey, '_LAYOUT_')-1 )"], condition: "scope = 4 and primKey like '%\_LAYOUT\_%'"}, dest: {table: "Layout", columns: ["plid"]}}
+]
