@@ -460,6 +460,8 @@
 
 		<Logger level="INFO" name="com.liferay.portlet.webproxy" />
 
+		<Logger level="INFO" name="com.liferay.referenceschecker.listener" />
+
 		<Logger level="INFO" name="com.liferay.resourcesimporter" />
 
 		<Logger level="INFO" name="com.liferay.samplestruts" />
