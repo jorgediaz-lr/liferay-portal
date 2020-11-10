@@ -12,7 +12,7 @@
 import {cleanup, fireEvent, render, within} from '@testing-library/react';
 import React from 'react';
 
-import ContactLine from '../../../src/main/resources/META-INF/resources/js/components/account_contacts/ContactLine';
+import ContactEntry from '../../../src/main/resources/META-INF/resources/js/components/account_contacts/ContactEntry';
 
 const mockAddKeyFn = jest.fn();
 const mockRemoveKeyFn = jest.fn();
@@ -29,7 +29,7 @@ function renderContactLine(props) {
 	return render(
 		<table>
 			<tbody>
-				<ContactLine
+				<ContactEntry
 					accountName={'Test Account'}
 					addFn={mockAddKeyFn}
 					allRoles={allRoles}

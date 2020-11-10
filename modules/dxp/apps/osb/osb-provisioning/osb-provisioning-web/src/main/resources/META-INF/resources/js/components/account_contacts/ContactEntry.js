@@ -15,7 +15,7 @@ import React, {useState} from 'react';
 
 import {NAMESPACE} from '../../utilities/constants';
 
-export default function ContactLine({
+export default function ContactEntry({
 	accountName,
 	addFn,
 	allRoles,
@@ -31,7 +31,7 @@ export default function ContactLine({
 	}
 
 	return (
-		<tr className="contact-line-entry">
+		<tr className="contact-entry">
 			{knownContact && (
 				<td className="table-cell-expand">
 					<span className="text-truncate-inline">
@@ -72,7 +72,7 @@ export default function ContactLine({
 	);
 }
 
-ContactLine.propTypes = {
+ContactEntry.propTypes = {
 	accountName: PropTypes.string,
 	addFn: PropTypes.func,
 	allRoles: PropTypes.arrayOf(

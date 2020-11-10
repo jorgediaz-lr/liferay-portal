@@ -13,7 +13,7 @@ import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 
 import {NAMESPACE} from '../../utilities/constants';
-import ContactLine from './ContactLine';
+import ContactEntry from './ContactEntry';
 
 export default function AddContact({
 	accountName,
@@ -102,7 +102,7 @@ export default function AddContact({
 					</tr>
 				</thead>
 				<tbody>
-					<ContactLine
+					<ContactEntry
 						accountName={accountName}
 						addFn={handleAdd}
 						allRoles={allRoles}
