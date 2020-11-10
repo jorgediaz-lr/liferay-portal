@@ -105,33 +105,6 @@ public class AccountDisplayTerms extends DisplayTerms {
 		return activeSLAs;
 	}
 
-	public Map<String, String> getAllTerms() {
-		Map<String, String> terms = new HashMap<>();
-
-		terms.put(ACTIVE_SLAS, StringUtil.merge(activeSLAs));
-		terms.put(CODE, code);
-		terms.put(COUNTRY_NAME, countryName);
-		terms.put(CREATE_DATE_GT, createDateGT);
-		terms.put(CREATE_DATE_LT, createDateLT);
-		terms.put(CREATED_BY_EMAIL_ADDRESS, createdByEmailAddress);
-		terms.put(FLS_TEAM_KEY, flsTeamKey);
-		terms.put(INTERNALS, StringUtil.merge(internals));
-		terms.put(MODIFIED_DATE_GT, modifiedDateGT);
-		terms.put(MODIFIED_DATE_LT, modifiedDateLT);
-		terms.put(NAME, name);
-		terms.put(PARENT_ACCOUNT_KEY, parentAccountKey);
-		terms.put(PARTNER_TEAM_KEY, partnerTeamKey);
-		terms.put(PARTNERS, StringUtil.merge(partners));
-		terms.put(PROVIDES_FLS, StringUtil.merge(providesFLS));
-		terms.put(RECEIVES_FLS, StringUtil.merge(receivesFLS));
-		terms.put(REGIONS, StringUtil.merge(regions));
-		terms.put(SUBSCRIPTION_STATES, StringUtil.merge(subscriptionStates));
-		terms.put(TIERS, StringUtil.merge(tiers));
-		terms.put(WORKER_CONTACT_EMAIL_ADDRESS, workerContactEmailAddress);
-
-		return terms;
-	}
-
 	public String getCode() {
 		return code;
 	}
@@ -198,6 +171,33 @@ public class AccountDisplayTerms extends DisplayTerms {
 
 	public String[] getSubscriptionStates() {
 		return subscriptionStates;
+	}
+
+	public Map<String, String> getTermsMap() {
+		Map<String, String> termsMap = new HashMap<>();
+
+		termsMap.put(ACTIVE_SLAS, StringUtil.merge(activeSLAs));
+		termsMap.put(CODE, code);
+		termsMap.put(COUNTRY_NAME, countryName);
+		termsMap.put(CREATE_DATE_GT, createDateGT);
+		termsMap.put(CREATE_DATE_LT, createDateLT);
+		termsMap.put(CREATED_BY_EMAIL_ADDRESS, createdByEmailAddress);
+		termsMap.put(FLS_TEAM_KEY, flsTeamKey);
+		termsMap.put(INTERNALS, StringUtil.merge(internals));
+		termsMap.put(MODIFIED_DATE_GT, modifiedDateGT);
+		termsMap.put(MODIFIED_DATE_LT, modifiedDateLT);
+		termsMap.put(NAME, name);
+		termsMap.put(PARENT_ACCOUNT_KEY, parentAccountKey);
+		termsMap.put(PARTNER_TEAM_KEY, partnerTeamKey);
+		termsMap.put(PARTNERS, StringUtil.merge(partners));
+		termsMap.put(PROVIDES_FLS, StringUtil.merge(providesFLS));
+		termsMap.put(RECEIVES_FLS, StringUtil.merge(receivesFLS));
+		termsMap.put(REGIONS, StringUtil.merge(regions));
+		termsMap.put(SUBSCRIPTION_STATES, StringUtil.merge(subscriptionStates));
+		termsMap.put(TIERS, StringUtil.merge(tiers));
+		termsMap.put(WORKER_CONTACT_EMAIL_ADDRESS, workerContactEmailAddress);
+
+		return termsMap;
 	}
 
 	public String[] getTiers() {

@@ -22,7 +22,6 @@ import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
-import com.liferay.portal.kernel.portlet.PortletURLUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
@@ -30,7 +29,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.portlet.PortletURL;
-import javax.portlet.RenderRequest;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -43,14 +41,12 @@ public class ViewAccountsManagementToolbarDisplayContext
 	public ViewAccountsManagementToolbarDisplayContext(
 		LiferayPortletRequest liferayPortletRequest,
 		LiferayPortletResponse liferayPortletResponse,
-		RenderRequest renderRequest, HttpServletRequest httpServletRequest,
+		HttpServletRequest httpServletRequest,
 		SearchContainer searchContainer) {
 
 		super(
 			liferayPortletRequest, liferayPortletResponse, httpServletRequest,
 			searchContainer);
-
-		_renderRequest = renderRequest;
 	}
 
 	@Override
@@ -62,53 +58,50 @@ public class ViewAccountsManagementToolbarDisplayContext
 
 	@Override
 	public List<LabelItem> getFilterLabelItems() {
-		AccountDisplayTerms accountDisplayTerms = new AccountDisplayTerms(
-			_renderRequest);
+		AccountDisplayTerms accountDisplayTerms =
+			(AccountDisplayTerms)searchContainer.getDisplayTerms();
 
-		if (accountDisplayTerms.isAdvancedSearch()) {
-			return new LabelItemList() {
-				{
-					Map<String, String> terms =
-						accountDisplayTerms.getAllTerms();
-
-					for (Map.Entry<String, String> entry : terms.entrySet()) {
-						String key = entry.getKey();
-
-						String[] values = StringUtil.split(entry.getValue());
-
-						for (String value : values) {
-							add(
-								labelItem -> {
-									PortletURL removeLabelURL =
-										PortletURLUtil.clone(
-											currentURLObj,
-											liferayPortletResponse);
-
-									String[] removeKeywords = ArrayUtil.remove(
-										values, value);
-
-									removeLabelURL.setParameter(
-										key, StringUtil.merge(removeKeywords));
-
-									labelItem.putData(
-										"removeLabelURL",
-										removeLabelURL.toString());
-
-									labelItem.setCloseable(true);
-
-									String label = String.format(
-										"%s: %s",
-										LanguageUtil.get(request, key), value);
-
-									labelItem.setLabel(label);
-								});
-						}
-					}
-				}
-			};
+		if (!accountDisplayTerms.isAdvancedSearch()) {
+			return null;
 		}
 
-		return null;
+		return new LabelItemList() {
+			{
+				Map<String, String> termsMap =
+					accountDisplayTerms.getTermsMap();
+
+				for (Map.Entry<String, String> entry : termsMap.entrySet()) {
+					String key = entry.getKey();
+
+					String[] values = StringUtil.split(entry.getValue());
+
+					for (String value : values) {
+						add(
+							labelItem -> {
+								PortletURL removeLabelURL = getPortletURL();
+
+								String[] removeKeywords = ArrayUtil.remove(
+									values, value);
+
+								removeLabelURL.setParameter(
+									key, StringUtil.merge(removeKeywords));
+
+								labelItem.putData(
+									"removeLabelURL",
+									removeLabelURL.toString());
+
+								labelItem.setCloseable(true);
+
+								String label = String.format(
+									"%s: %s", LanguageUtil.get(request, key),
+									value);
+
+								labelItem.setLabel(label);
+							});
+					}
+				}
+			}
+		};
 	}
 
 	@Override
@@ -127,7 +120,5 @@ public class ViewAccountsManagementToolbarDisplayContext
 	public Boolean isSelectable() {
 		return false;
 	}
-
-	private final RenderRequest _renderRequest;
 
 }
