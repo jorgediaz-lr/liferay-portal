@@ -19,6 +19,9 @@
 	{@param? paginationMode: string}
 	{@param? readOnly: bool}
 	{@param? strings: map<string, string>}
+	{@param? hasFieldRequired: bool}
+	{@param? indicatesRequiredFields: string}
+	{@param? isAdminPortletNamespace: bool}
 
 	{let $contentRenderer kind="text"}
 		{if $page.contentRenderer != null and $page.contentRenderer != ''}
@@ -56,6 +59,9 @@
 		{param strings: $strings /}
 		{param submitLabel: $submitLabel /}
 		{param total: $total /}
+		{param hasFieldRequired: $hasFieldRequired /}
+		{param indicatesRequiredFields: $indicatesRequiredFields /}
+		{param isAdminPortletNamespace: $isAdminPortletNamespace /}
 	{/delcall}
 {/template}
 
@@ -72,6 +78,9 @@
 	{@param? editable: bool}
 	{@param? empty: bool}
 	{@param? page: ?}
+	{@param? hasFieldRequired: bool}
+	{@param? indicatesRequiredFields: string}
+	{@param? isAdminPortletNamespace: bool}
 
 	<div class="active ddm-form-page lfr-ddm-form-page">
 		{let $headerRenderer: $page.headerRenderer ?: '' /}
@@ -103,6 +112,18 @@
 				</div>
 			</div>
 		{else}
+			{if $hasFieldRequired and not $isAdminPortletNamespace}
+				<p aria-hidden="true" class="text-secondary row">
+					<span class="c-mx-1 c-mr-1 reference-mark">
+						{call ClayIcon.render}
+							{param spritemap: $spritemap /}
+							{param symbol: 'asterisk' /}
+						{/call}
+					</span>
+					{$indicatesRequiredFields}
+				</p>
+			{/if}
+
 			{foreach $row in $page.rows}
 				{if isFirst($row) and $editable and $activePage == $pageIndex}
 					{call .placeholder}

@@ -17,6 +17,9 @@
 	{@param? page: ?}
 	{@param? readOnly: bool}
 	{@param? strings: map<string, string>}
+	{@param? hasFieldRequired: bool}
+	{@param? indicatesRequiredFields: string}
+	{@param? isAdminPortletNamespace: bool}
 
 	<div class="ddm-form-page-container wizard">
 		{if length($pages) > 1 and $pageIndex == $activePage}
@@ -52,6 +55,9 @@
 					{param paginationMode: 'wizard' /}
 					{param spritemap: $spritemap /}
 					{param total: $total /}
+					{param hasFieldRequired: $hasFieldRequired /}
+					{param indicatesRequiredFields: $indicatesRequiredFields /}
+					{param isAdminPortletNamespace: $isAdminPortletNamespace /}
 				{/call}
 			</div>
 		</div>

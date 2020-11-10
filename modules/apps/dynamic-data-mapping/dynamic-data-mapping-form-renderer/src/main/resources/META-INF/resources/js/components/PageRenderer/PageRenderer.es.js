@@ -25,6 +25,8 @@ import 'clay-button';
 import 'clay-dropdown';
 
 import 'clay-modal';
+
+import 'clay-icon';
 import core from 'metal';
 import Component from 'metal-component';
 import Soy from 'metal-soy';
@@ -32,6 +34,9 @@ import {Config} from 'metal-state';
 
 import * as FormSupport from '../FormRenderer/FormSupport.es';
 import templates from './PageRenderer.soy';
+
+const ADMIN_PORTLET_NAMESPACE =
+	'_com_liferay_dynamic_data_mapping_form_web_portlet_DDMFormAdminPortlet_';
 
 class PageRenderer extends Component {
 	getPage(page) {
@@ -77,10 +82,38 @@ class PageRenderer extends Component {
 		return empty;
 	}
 
+	hasFieldRequired({rows}) {
+		let hasFieldRequired = false;
+
+		if (rows && rows.length) {
+			hasFieldRequired = rows.some(({columns}) => {
+				if (columns && columns.length) {
+					return columns.some(column => {
+						if (column && column.fields.length) {
+							return column.fields.some(field => field.required);
+						}
+
+						return false;
+					});
+				}
+
+				return false;
+			});
+		}
+
+		return hasFieldRequired;
+	}
+
 	prepareStateForRender(states) {
 		return {
 			...states,
 			empty: this.isEmptyPage(states.page),
+			hasFieldRequired: this.hasFieldRequired(states.page),
+			indicatesRequiredFields: Liferay.Language.get(
+				'indicates-required-fields'
+			),
+			isAdminPortletNamespace:
+				ADMIN_PORTLET_NAMESPACE === states.portletNamespace,
 			page: this.getPage(states.page)
 		};
 	}
