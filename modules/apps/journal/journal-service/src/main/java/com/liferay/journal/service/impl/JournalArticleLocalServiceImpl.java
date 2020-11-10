@@ -432,6 +432,12 @@ public class JournalArticleLocalServiceImpl
 		Map<String, String> urlTitleMap = _getURLTitleMap(
 			groupId, resourcePrimKey, friendlyURLMap, titleMap);
 
+		long smallImageId = 0L;
+
+		if (smallImage) {
+			smallImageId = counterLocalService.increment();
+		}
+
 		article.setUuid(serviceContext.getUuid());
 		article.setResourcePrimKey(resourcePrimKey);
 		article.setGroupId(groupId);
@@ -460,7 +466,7 @@ public class JournalArticleLocalServiceImpl
 		article.setReviewDate(reviewDate);
 		article.setIndexable(indexable);
 		article.setSmallImage(smallImage);
-		article.setSmallImageId(counterLocalService.increment());
+		article.setSmallImageId(smallImageId);
 		article.setSmallImageURL(smallImageURL);
 
 		Date now = new Date();
