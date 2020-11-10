@@ -51,11 +51,8 @@ public class AssignProductsRowChecker extends EmptyOnClickRowChecker {
 		if (resultRow.getObject() instanceof ProductBundle) {
 			ProductBundle productBundle = (ProductBundle)resultRow.getObject();
 
-			String productBundleId = HtmlUtil.escape(
-				String.valueOf(productBundle.getProductBundleId()));
-
 			primaryKey =
-				productBundleId + StringPool.UNDERLINE +
+				productBundle.getProductBundleId() + StringPool.UNDERLINE +
 					HtmlUtil.escape(productBundle.getName());
 		}
 		else {
@@ -63,9 +60,8 @@ public class AssignProductsRowChecker extends EmptyOnClickRowChecker {
 				(ProductDisplay)resultRow.getObject();
 
 			primaryKey =
-				HtmlUtil.escape(productDisplay.getKey()) +
-					StringPool.UNDERLINE +
-						HtmlUtil.escape(productDisplay.getName());
+				productDisplay.getKey() + StringPool.UNDERLINE +
+					HtmlUtil.escape(productDisplay.getName());
 		}
 
 		return getRowCheckBox(

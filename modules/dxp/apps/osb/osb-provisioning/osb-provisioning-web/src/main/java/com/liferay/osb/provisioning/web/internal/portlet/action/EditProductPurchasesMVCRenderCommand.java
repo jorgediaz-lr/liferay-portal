@@ -73,6 +73,14 @@ public class EditProductPurchasesMVCRenderCommand implements MVCRenderCommand {
 			if (productKeys.length > 0) {
 				Set<Product> products = new HashSet<>();
 
+				for (long productBundleId : productBundleIds) {
+					List<Product> productBundleProducts =
+						_productBundleProductsLocalService.
+							getProductBundleAssignedProducts(productBundleId);
+
+					products.addAll(productBundleProducts);
+				}
+
 				for (String productKey : productKeys) {
 					Product product = _productWebService.fetchProduct(
 						productKey);
@@ -80,14 +88,6 @@ public class EditProductPurchasesMVCRenderCommand implements MVCRenderCommand {
 					if (product != null) {
 						products.add(product);
 					}
-				}
-
-				for (long productBundleId : productBundleIds) {
-					List<Product> productBundleProducts =
-						_productBundleProductsLocalService.
-							getProductBundleAssignedProducts(productBundleId);
-
-					products.addAll(productBundleProducts);
 				}
 
 				renderRequest.setAttribute(

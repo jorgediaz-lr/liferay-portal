@@ -16,7 +16,6 @@ package com.liferay.osb.provisioning.web.internal.display.context;
 
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
-import com.liferay.osb.provisioning.model.ProductBundle;
 import com.liferay.osb.provisioning.service.ProductBundleLocalServiceUtil;
 import com.liferay.osb.provisioning.web.internal.dao.search.AssignProductsRowChecker;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
@@ -92,13 +91,9 @@ public class AssignProductsDisplayContext {
 		int count = 0;
 
 		if (Validator.isNotNull(_accountKey)) {
-			List<ProductBundle> productBundles =
-				ProductBundleLocalServiceUtil.getProductBundles(
-					searchContainer.getStart(), searchContainer.getEnd());
-
 			results.addAll(
-				TransformUtil.transform(
-					productBundles, productBundle -> productBundle));
+				ProductBundleLocalServiceUtil.getProductBundles(
+					searchContainer.getStart(), searchContainer.getEnd()));
 
 			count = results.size();
 		}

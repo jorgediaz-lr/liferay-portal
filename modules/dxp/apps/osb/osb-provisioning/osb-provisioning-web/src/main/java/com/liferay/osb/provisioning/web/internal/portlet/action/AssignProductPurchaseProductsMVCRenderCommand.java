@@ -15,16 +15,13 @@
 package com.liferay.osb.provisioning.web.internal.portlet.action;
 
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
-import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
-import com.liferay.portal.kernel.servlet.SessionErrors;
 
 import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Yuanyuan Huang
@@ -44,17 +41,7 @@ public class AssignProductPurchaseProductsMVCRenderCommand
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws PortletException {
 
-		try {
-			return "/common/assign_products.jsp";
-		}
-		catch (Exception exception) {
-			SessionErrors.add(renderRequest, exception.getClass(), exception);
-
-			return "/common/error.jsp";
-		}
+		return "/common/assign_products.jsp";
 	}
-
-	@Reference
-	private AccountWebService _accountWebService;
 
 }

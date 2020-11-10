@@ -16,7 +16,6 @@ package com.liferay.osb.provisioning.web.internal.portlet.action;
 
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
-import com.liferay.portal.kernel.servlet.SessionErrors;
 
 import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
@@ -42,14 +41,7 @@ public class AssignProductBundleProductsMVCRenderCommand
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws PortletException {
 
-		try {
-			return "/common/assign_products.jsp";
-		}
-		catch (Exception exception) {
-			SessionErrors.add(renderRequest, exception.getClass(), exception);
-
-			return "/common/error.jsp";
-		}
+		return "/common/assign_products.jsp";
 	}
 
 }

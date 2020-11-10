@@ -39,11 +39,11 @@ public class ProductResultRowSplitter implements ResultRowSplitter {
 		for (ResultRow resultRow : resultRows) {
 			Object object = resultRow.getObject();
 
-			if (object instanceof ProductDisplay) {
-				productResultRows.add(resultRow);
-			}
-			else if (object instanceof ProductBundle) {
+			if (object instanceof ProductBundle) {
 				productBundleResultRows.add(resultRow);
+			}
+			else if (object instanceof ProductDisplay) {
+				productResultRows.add(resultRow);
 			}
 		}
 

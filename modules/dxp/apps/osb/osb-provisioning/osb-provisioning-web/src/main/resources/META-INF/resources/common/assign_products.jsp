@@ -52,19 +52,19 @@ SearchContainer searchContainer = assignProductsDisplayContext.getSearchContaine
 			if (result instanceof ProductBundle) {
 				ProductBundle productBundle = (ProductBundle)result;
 
-				name = HtmlUtil.escape(productBundle.getName());
+				name = productBundle.getName();
 			}
 			else {
 				ProductDisplay productDisplay = (ProductDisplay)result;
 
-				name = HtmlUtil.escape(productDisplay.getName());
+				name = productDisplay.getName();
 			}
 			%>
 
 			<liferay-ui:search-container-column-text
 				cssClass="table-cell-expand"
 				name='<%= Validator.isNotNull(accountKey) ? StringPool.BLANK : "products" %>'
-				value="<%= name %>"
+				value="<%= HtmlUtil.escape(name) %>"
 			/>
 		</liferay-ui:search-container-row>
 
