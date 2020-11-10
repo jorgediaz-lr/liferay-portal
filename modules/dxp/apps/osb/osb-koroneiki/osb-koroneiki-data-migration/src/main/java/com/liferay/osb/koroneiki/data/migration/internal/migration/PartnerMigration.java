@@ -405,13 +405,13 @@ public class PartnerMigration {
 						contact.getContactId(), account.getAccountId(),
 						contactRoleId);
 
-					ContactRole teamMember =
+					ContactRole teamMemberContactRole =
 						_contactRoleLocalService.getMemberContactRole("Team");
 
 					_contactTeamRoleLocalService.addContactTeamRole(
 						contact.getContactId(),
 						_accountTeamMap.get(account.getAccountId()),
-						teamMember.getContactRoleId());
+						teamMemberContactRole.getContactRoleId());
 				}
 				else {
 					_log.error(
