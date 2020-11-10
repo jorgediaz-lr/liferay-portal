@@ -51,6 +51,7 @@ AccountSearchDisplayContext accountSearchDisplayContext = ProvisioningWebCompone
 	<clay:management-toolbar
 		displayContext="<%= new ViewAccountsManagementToolbarDisplayContext(liferayPortletRequest, liferayPortletResponse, request, accountSearchDisplayContext.getSearchContainer()) %>"
 		elementClasses="full-width"
+		searchInputName="accountSearchKeywords"
 		showSearch="<%= false %>"
 	/>
 
