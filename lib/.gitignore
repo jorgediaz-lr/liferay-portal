@@ -116,6 +116,7 @@
 /portal/commons-math3.jar
 /portal/commons-pool.jar
 /portal/commons-validator.jar
+/portal/commons-text.jar
 /portal/crypt.jar
 /portal/dom4j.jar
 /portal/fontbox.jar
@@ -131,6 +132,7 @@
 /portal/jackson-annotations.jar
 /portal/jackson-core.jar
 /portal/jackson-databind.jar
+/portal/jackson-dataformat-csv.jar
 /portal/jackson-module-jaxb-annotations.jar
 /portal/jai-imageio-core.jar
 /portal/jai-imageio-jpeg2000.jar
@@ -160,6 +162,7 @@
 /portal/jodd-proxetta.jar
 /portal/jodd-util.jar
 /portal/json-java.jar
+/portal/jsqlparser.jar
 /portal/juniversalchardet.jar
 /portal/jws-api.jar
 /portal/kxml2.jar
@@ -176,6 +179,7 @@
 /portal/nekohtml.jar
 /portal/netcdf.jar
 /portal/odmg.jar
+/portal/p6spy.jar
 /portal/pdfbox.jar
 /portal/persistence.jar
 /portal/poi-ooxml-schemas.jar
@@ -193,6 +197,7 @@
 /portal/serializer.jar
 /portal/simplecaptcha.jar
 /portal/slf4j-api.jar
+/portal/snakeyaml.jar
 /portal/soap-api.jar
 /portal/soap.jar
 /portal/sparse-bit-set.jar
