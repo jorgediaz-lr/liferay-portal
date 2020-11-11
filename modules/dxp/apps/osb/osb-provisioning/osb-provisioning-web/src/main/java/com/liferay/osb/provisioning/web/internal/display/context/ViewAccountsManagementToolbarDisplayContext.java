@@ -17,9 +17,15 @@ package com.liferay.osb.provisioning.web.internal.display.context;
 import com.liferay.frontend.taglib.clay.servlet.taglib.display.context.SearchContainerManagementToolbarDisplayContext;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.LabelItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.LabelItemList;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
+import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
+import com.liferay.osb.provisioning.koroneiki.web.service.TeamWebService;
 import com.liferay.osb.provisioning.web.internal.search.AccountDisplayTerms;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -41,12 +47,15 @@ public class ViewAccountsManagementToolbarDisplayContext
 	public ViewAccountsManagementToolbarDisplayContext(
 		LiferayPortletRequest liferayPortletRequest,
 		LiferayPortletResponse liferayPortletResponse,
-		HttpServletRequest httpServletRequest,
-		SearchContainer searchContainer) {
+		HttpServletRequest httpServletRequest, SearchContainer searchContainer,
+		AccountWebService accountWebService, TeamWebService teamWebService) {
 
 		super(
 			liferayPortletRequest, liferayPortletResponse, httpServletRequest,
 			searchContainer);
+
+		_accountWebService = accountWebService;
+		_teamWebService = teamWebService;
 	}
 
 	@Override
@@ -92,11 +101,7 @@ public class ViewAccountsManagementToolbarDisplayContext
 
 								labelItem.setCloseable(true);
 
-								String label = String.format(
-									"%s: %s", LanguageUtil.get(request, key),
-									value);
-
-								labelItem.setLabel(label);
+								labelItem.setLabel(_getLabel(key, value));
 							});
 					}
 				}
@@ -120,5 +125,111 @@ public class ViewAccountsManagementToolbarDisplayContext
 	public Boolean isSelectable() {
 		return false;
 	}
+
+	private String _getAccountName(String accountKey) {
+		try {
+			Account account = _accountWebService.getAccount(accountKey);
+
+			return account.getName();
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+
+			return accountKey;
+		}
+	}
+
+	private String _getLabel(String key, String value) {
+		if (key.equals(AccountDisplayTerms.ACTIVE_SLAS)) {
+			key = "subscription-level";
+		}
+
+		if (key.equals(AccountDisplayTerms.COUNTRY_NAME)) {
+			key = "country";
+		}
+
+		if (key.equals(AccountDisplayTerms.CREATE_DATE_GT)) {
+			key = "created-after";
+		}
+
+		if (key.equals(AccountDisplayTerms.CREATE_DATE_LT)) {
+			key = "created-before";
+		}
+
+		if (key.equals(AccountDisplayTerms.CREATED_BY_EMAIL_ADDRESS)) {
+			key = "created-by";
+		}
+
+		if (key.equals(AccountDisplayTerms.FLS_TEAM_KEY)) {
+			key = "first-line-support";
+
+			value = _getTeamName(value);
+		}
+
+		if (key.equals(AccountDisplayTerms.INTERNALS)) {
+			key = "internal";
+		}
+
+		if (key.equals(AccountDisplayTerms.PARENT_ACCOUNT_KEY)) {
+			key = "parent-account";
+
+			value = _getAccountName(value);
+		}
+
+		if (key.equals(AccountDisplayTerms.PARTNER_TEAM_KEY)) {
+			key = "partner-reseller-si";
+
+			value = _getTeamName(value);
+		}
+
+		if (key.equals(AccountDisplayTerms.PARTNERS)) {
+			key = "partner";
+		}
+
+		if (key.equals(AccountDisplayTerms.PROVIDES_FLS)) {
+			key = "provides-fls";
+		}
+
+		if (key.equals(AccountDisplayTerms.RECEIVES_FLS)) {
+			key = "receives-fls";
+		}
+
+		if (key.equals(AccountDisplayTerms.REGIONS)) {
+			key = "support-region";
+		}
+
+		if (key.equals(AccountDisplayTerms.SUBSCRIPTION_STATES)) {
+			key = "subscription-status";
+		}
+
+		if (key.equals(AccountDisplayTerms.TIERS)) {
+			key = "tier";
+		}
+
+		if (key.equals(AccountDisplayTerms.WORKER_CONTACT_EMAIL_ADDRESS)) {
+			key = "project-worker";
+		}
+
+		return String.format("%s: %s", LanguageUtil.get(request, key), value);
+	}
+
+	private String _getTeamName(String teamKey) {
+		try {
+			Team team = _teamWebService.getTeam(teamKey);
+
+			return team.getName();
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+
+			return teamKey;
+		}
+	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		ViewAccountsManagementToolbarDisplayContext.class);
+
+	private final AccountWebService _accountWebService;
+	private final TeamWebService _teamWebService;
 
 }

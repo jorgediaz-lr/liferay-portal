@@ -40,9 +40,13 @@ import com.liferay.osb.provisioning.web.internal.display.context.ViewAccountDisp
 import com.liferay.osb.provisioning.web.internal.display.context.ViewAccountLiferayWorkersDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.ViewAccountRelatedAccountsDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.ViewAccountTeamsDisplayContext;
+import com.liferay.osb.provisioning.web.internal.display.context.ViewAccountsManagementToolbarDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.ViewContactDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.ViewSubscriptionDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.ViewTeamDisplayContext;
+import com.liferay.portal.kernel.dao.search.SearchContainer;
+import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
+import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.service.CountryService;
 import com.liferay.portal.kernel.service.UserLocalService;
 
@@ -180,6 +184,19 @@ public class ProvisioningWebComponentProvider {
 			renderResponse, httpServletRequest);
 	}
 
+	public static ViewAccountsManagementToolbarDisplayContext
+		getViewAccountsManagementToolbarDisplayContext(
+			LiferayPortletRequest liferayPortletRequest,
+			LiferayPortletResponse liferayPortletResponse,
+			HttpServletRequest httpServletRequest,
+			SearchContainer searchContainer) {
+
+		return _provisioningWebComponentProvider.
+			_getViewAccountsManagementToolbarDisplayContext(
+				liferayPortletRequest, liferayPortletResponse,
+				httpServletRequest, searchContainer);
+	}
+
 	public static ViewAccountTeamsDisplayContext
 			getViewAccountTeamsDisplayContext(
 				RenderRequest renderRequest, RenderResponse renderResponse,
@@ -306,6 +323,18 @@ public class ProvisioningWebComponentProvider {
 			clazz.getName(), viewAccountDisplayContext);
 
 		return viewAccountDisplayContext;
+	}
+
+	private ViewAccountsManagementToolbarDisplayContext
+		_getViewAccountsManagementToolbarDisplayContext(
+			LiferayPortletRequest liferayPortletRequest,
+			LiferayPortletResponse liferayPortletResponse,
+			HttpServletRequest httpServletRequest,
+			SearchContainer searchContainer) {
+
+		return new ViewAccountsManagementToolbarDisplayContext(
+			liferayPortletRequest, liferayPortletResponse, httpServletRequest,
+			searchContainer, _accountWebService, _teamWebService);
 	}
 
 	private <T extends ViewContactDisplayContext> T
