@@ -189,6 +189,35 @@ public class PartnerMigration {
 		return StringPool.BLANK;
 	}
 
+	private String _getRegion(long supportRegionId) {
+		if (supportRegionId == 42442481) {
+			return "Australia";
+		}
+		else if (supportRegionId == 42356516) {
+			return "Brazil";
+		}
+		else if (supportRegionId == 42356502) {
+			return "China";
+		}
+		else if (supportRegionId == 70917309) {
+			return "Global";
+		}
+		else if (supportRegionId == 42356493) {
+			return "Hungary";
+		}
+		else if (supportRegionId == 42356498) {
+			return "India";
+		}
+		else if (supportRegionId == 45637701) {
+			return "Japan";
+		}
+		else if (supportRegionId == 42356507) {
+			return "Spain";
+		}
+
+		return "United States";
+	}
+
 	private void _migrateAddress(
 			Connection connection, long userId, long accountId,
 			long partnerEntryId)
@@ -272,11 +301,15 @@ public class PartnerMigration {
 				userId, "Service Partnership", productFields);
 		}
 
-		StringBundler sb = new StringBundler(3);
+		StringBundler sb = new StringBundler(7);
 
-		sb.append("select dossieraAccountKey, code_, notes, partnerEntryId, ");
-		sb.append("parentPartnerEntryId from OSB_PartnerEntry where status = ");
-		sb.append("0");
+		sb.append("select dossieraAccountKey, code_, notes, ");
+		sb.append("OSB_PartnerEntry.partnerEntryId, parentPartnerEntryId, ");
+		sb.append("OSB_PartnerEntries_SupportRegions.supportRegionId from ");
+		sb.append("OSB_PartnerEntry left join ");
+		sb.append("OSB_PartnerEntries_SupportRegions on ");
+		sb.append("OSB_PartnerEntries_SupportRegions.partnerEntryId = ");
+		sb.append("OSB_PartnerEntry.partnerEntryId where status = 0");
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				sb.toString());
@@ -306,12 +339,15 @@ public class PartnerMigration {
 					continue;
 				}
 
+				account.setRegion(
+					_getRegion(resultSet.getLong("supportRegionId")));
+
+				_accountLocalService.updateAccount(account);
+
 				_productPurchaseLocalService.addProductPurchase(
 					userId, account.getAccountId(),
 					productEntry.getProductEntryId(), startDate, endDate,
 					originalEndDate, 1, 0, new ArrayList<>());
-
-				_accountLocalService.updateAccount(account);
 
 				long partnerEntryId = resultSet.getLong(4);
 
