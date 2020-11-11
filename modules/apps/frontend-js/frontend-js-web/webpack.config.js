@@ -29,7 +29,10 @@ module.exports = [
 					exclude: /node_modules/,
 					test: /\.js$/,
 					use: {
-						loader: 'babel-loader'
+						loader: 'babel-loader',
+						options: {
+							presets: ['@babel/preset-env']
+						}
 					}
 				}
 			]
