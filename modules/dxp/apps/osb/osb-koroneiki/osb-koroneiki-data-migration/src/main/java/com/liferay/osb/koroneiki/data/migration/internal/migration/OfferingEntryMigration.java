@@ -78,22 +78,23 @@ public class OfferingEntryMigration {
 
 		_platinumProductEntryId = productEntry.getProductEntryId();
 
-		StringBundler sb = new StringBundler(14);
+		StringBundler sb = new StringBundler(15);
 
-		sb.append("select corpProjectId, OSB_ProductEntry.name, ");
-		sb.append("supportResponseId, startDate, supportEndDate, quantity, ");
-		sb.append("OSB_OfferingEntry.status, licenses, sizing, version, ");
-		sb.append("externalId from OSB_OfferingEntry inner join ");
-		sb.append("OSB_AccountEntry on OSB_OfferingEntry.accountEntryId = ");
+		sb.append("select corpProjectId, OSB_AccountEntry.accountentryid, ");
+		sb.append("OSB_ProductEntry.name, supportResponseId, startDate, ");
+		sb.append("supportEndDate, quantity, OSB_OfferingEntry.status, ");
+		sb.append("licenses, sizing, version, externalId from ");
+		sb.append("OSB_OfferingEntry inner join OSB_AccountEntry on ");
+		sb.append("OSB_OfferingEntry.accountEntryId = ");
 		sb.append("OSB_AccountEntry.accountEntryId inner join ");
 		sb.append("OSB_ProductEntry on OSB_OfferingEntry.productEntryId = ");
 		sb.append("OSB_ProductEntry.productEntryId inner join OSB_OrderEntry ");
 		sb.append("on OSB_OfferingEntry.orderEntryId = ");
-		sb.append("OSB_OrderEntry.orderEntryId inner join ");
+		sb.append("OSB_OrderEntry.orderEntryId left join ");
 		sb.append("OSB_ExternalIdMapper on OSB_OrderEntry.orderEntryId = ");
-		sb.append("OSB_ExternalIdMapper.classPK where ");
-		sb.append("OSB_AccountEntry.status != 500 and ");
-		sb.append("OSB_ExternalIdMapper.classNameId = 4117502");
+		sb.append("OSB_ExternalIdMapper.classPK and ");
+		sb.append("OSB_ExternalIdMapper.classNameId = 4117502 where ");
+		sb.append("OSB_AccountEntry.status != 500 and corpProjectId > 0");
 
 		try (Connection connection = DataAccess.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(
@@ -113,19 +114,19 @@ public class OfferingEntryMigration {
 
 				if (account == null) {
 					_log.error(
-						"Unable to find account with accountId " +
-							corpProjectId);
+						"Unable to find account with accountEntryId " +
+							resultSet.getLong(2));
 
 					continue;
 				}
 
 				String productEntryName = ProductEntryMigration.getNewName(
-					resultSet.getString(2));
-				Date startDate = resultSet.getDate(4);
-				Date endDate = resultSet.getDate(5);
-				int quantity = resultSet.getInt(6);
+					resultSet.getString(3));
+				Date startDate = resultSet.getDate(5);
+				Date endDate = resultSet.getDate(6);
+				int quantity = resultSet.getInt(7);
 
-				int status = resultSet.getInt(7);
+				int status = resultSet.getInt(8);
 
 				if (status != 2) {
 					status = WorkflowConstants.STATUS_APPROVED;
@@ -136,7 +137,7 @@ public class OfferingEntryMigration {
 
 				List<ProductField> productFields = new ArrayList<>();
 
-				for (int i = 8; i < 11; i++) {
+				for (int i = 9; i < 12; i++) {
 					ProductField productField =
 						_productFieldLocalService.createProductField(0);
 
@@ -166,7 +167,7 @@ public class OfferingEntryMigration {
 					continue;
 				}
 
-				long supportResponseId = resultSet.getLong(3);
+				long supportResponseId = resultSet.getLong(4);
 
 				_updateSLASubscription(
 					accountSLASubscriptions, account.getAccountId(),
@@ -183,14 +184,16 @@ public class OfferingEntryMigration {
 							curProductEntry.getProductEntryId(), startDate,
 							endDate, endDate, quantity, status, productFields);
 
-					String externalId = resultSet.getString(11);
+					String externalId = resultSet.getString(12);
 
-					_externalLinkLocalService.addExternalLink(
-						userId, ProductPurchase.class.getName(),
-						productPurchase.getProductPurchaseId(),
-						ExternalLinkDomain.SALESFORCE,
-						ExternalLinkEntityName.SALESFORCE_OPPORTUNITY,
-						externalId);
+					if (Validator.isNotNull(externalId)) {
+						_externalLinkLocalService.addExternalLink(
+							userId, ProductPurchase.class.getName(),
+							productPurchase.getProductPurchaseId(),
+							ExternalLinkDomain.SALESFORCE,
+							ExternalLinkEntityName.SALESFORCE_OPPORTUNITY,
+							externalId);
+					}
 				}
 				catch (Exception exception) {
 					_log.error(exception, exception);
