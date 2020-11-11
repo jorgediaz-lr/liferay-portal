@@ -17,6 +17,7 @@ package com.liferay.osb.provisioning.web.internal.search;
 import com.liferay.portal.kernel.dao.search.DisplayTerms;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -73,7 +74,10 @@ public class AccountDisplayTerms extends DisplayTerms {
 	public AccountDisplayTerms(PortletRequest portletRequest) {
 		super(portletRequest);
 
-		keywords = ParamUtil.getString(portletRequest, "accountSearchKeywords");
+		if (Validator.isNull(keywords)) {
+			keywords = ParamUtil.getString(
+				portletRequest, "accountSearchKeywords");
+		}
 
 		activeSLAs = ParamUtil.getStringValues(portletRequest, ACTIVE_SLAS);
 		code = ParamUtil.getString(portletRequest, CODE);
