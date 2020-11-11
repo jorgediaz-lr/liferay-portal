@@ -26,6 +26,4 @@ dependencies {
 	compileOnly project(":apps:frontend-taglib:frontend-taglib-soy")
 	compileOnly project(":core:petra:petra-lang")
 	compileOnly project(":core:petra:petra-string")
-
-	jsCompile project(":apps:commerce:commerce-frontend-taglib")
 }
