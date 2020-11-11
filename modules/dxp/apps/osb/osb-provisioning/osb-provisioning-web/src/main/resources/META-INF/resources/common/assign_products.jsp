@@ -19,11 +19,12 @@
 <%
 AssignProductsDisplayContext assignProductsDisplayContext = ProvisioningWebComponentProvider.getAssignProductsDisplayContext(renderRequest, renderResponse, request);
 
+long[] productBundleIds = ParamUtil.getLongValues(renderRequest, "productBundleIds");
 String[] productKeys = ParamUtil.getStringValues(renderRequest, "productKeys");
 
 String accountKey = ParamUtil.getString(renderRequest, "accountKey");
 
-SearchContainer searchContainer = assignProductsDisplayContext.getSearchContainer(productKeys);
+SearchContainer searchContainer = assignProductsDisplayContext.getSearchContainer(productBundleIds, productKeys);
 %>
 
 <clay:management-toolbar

@@ -77,7 +77,8 @@ public class AssignProductsDisplayContext {
 		return _currentURLObj.toString();
 	}
 
-	public SearchContainer getSearchContainer(String[] productKeys)
+	public SearchContainer getSearchContainer(
+			long[] productBundleIds, String[] productKeys)
 		throws Exception {
 
 		SearchContainer searchContainer = new SearchContainer(
@@ -115,7 +116,7 @@ public class AssignProductsDisplayContext {
 
 		searchContainer.setRowChecker(
 			new AssignProductsRowChecker(
-				_renderResponse, Arrays.asList(productKeys)));
+				_renderResponse, productBundleIds, Arrays.asList(productKeys)));
 
 		searchContainer.setTotal(count);
 

@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker;
 import com.liferay.portal.kernel.dao.search.ResultRow;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
 
 import java.util.List;
@@ -35,10 +36,12 @@ import javax.servlet.http.HttpServletRequest;
 public class AssignProductsRowChecker extends EmptyOnClickRowChecker {
 
 	public AssignProductsRowChecker(
-		RenderResponse renderResponse, List<String> productKeys) {
+		RenderResponse renderResponse, long[] productBundleIds,
+		List<String> productKeys) {
 
 		super(renderResponse);
 
+		_productBundleIds = productBundleIds;
 		_productKeys = productKeys;
 	}
 
@@ -75,8 +78,8 @@ public class AssignProductsRowChecker extends EmptyOnClickRowChecker {
 			if (obj instanceof ProductBundle) {
 				ProductBundle productBundle = (ProductBundle)obj;
 
-				return _productKeys.contains(
-					String.valueOf(productBundle.getProductBundleId()));
+				return ArrayUtil.contains(
+					_productBundleIds, productBundle.getProductBundleId());
 			}
 
 			ProductDisplay productDisplay = (ProductDisplay)obj;
@@ -93,6 +96,7 @@ public class AssignProductsRowChecker extends EmptyOnClickRowChecker {
 	private static final Log _log = LogFactoryUtil.getLog(
 		AssignProductsRowChecker.class);
 
+	private final long[] _productBundleIds;
 	private final List<String> _productKeys;
 
 }
