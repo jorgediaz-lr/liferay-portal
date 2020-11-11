@@ -18,11 +18,11 @@ import {NAMESPACE} from '../../utilities/constants';
 export default function ContactEntry({
 	accountName,
 	addFn,
-	allRoles,
+	allRoles = [],
 	contactFullName,
 	emailAddress,
 	knownContact,
-	newRoles,
+	newRoles = [],
 	removeFn,
 	setEmailAddress
 }) {
@@ -86,12 +86,13 @@ ContactEntry.propTypes = {
 	knownContact: PropTypes.bool,
 	newRoles: PropTypes.arrayOf(PropTypes.string),
 	removeFn: PropTypes.func,
-	setEmailAddress: PropTypes.func,
+	setEmailAddress: PropTypes.func
 };
 
-function ContactRoleSelect({newRoles = [], addFn, allRoles = [], removeFn}) {
+function ContactRoleSelect({addFn, allRoles = [], newRoles = [], removeFn}) {
 	const [active, setActive] = useState(false);
 
+	const displayRoles = allRoles.filter(role => !newRoles.includes(role.key));
 	const processedAllContactRoles = allRoles.reduce((roles, role) => {
 		return {...roles, [role.key]: role};
 	}, {});
@@ -125,6 +126,7 @@ function ContactRoleSelect({newRoles = [], addFn, allRoles = [], removeFn}) {
 						className="btn btn-unstyled"
 						onClick={event => {
 							event.preventDefault();
+
 							setActive(!active);
 						}}
 						tabIndex="0"
@@ -151,7 +153,7 @@ function ContactRoleSelect({newRoles = [], addFn, allRoles = [], removeFn}) {
 		>
 			<ClayDropDown.ItemList className="roles-dropdown">
 				<ClayDropDown.Group>
-					{allRoles.map(role => (
+					{displayRoles.map(role => (
 						<ClayDropDown.Item
 							key={role.key}
 							onClick={() => addFn(role.key)}
