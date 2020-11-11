@@ -1,5 +1,17 @@
 definition {
 
+	macro getServerVersion {
+		var curl = "http://localhost:${port}";
+
+		var serverInfo = JSONCurlUtil.get("${curl}");
+
+		var serverVersion = RegexUtil.replace("${serverInfo}", "number.*(\d+\.\d+\.\d+)", "1");
+
+		echo("Version of the Elasticsearch server on port ${port}: ${serverVersion}");
+
+		return "${serverVersion}";
+	}
+
 	macro viewClusterStatus {
 		AssertTextPresent(
 			locator1 = "//pre",

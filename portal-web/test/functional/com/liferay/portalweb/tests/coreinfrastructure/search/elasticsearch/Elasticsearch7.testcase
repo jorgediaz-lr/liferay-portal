@@ -133,10 +133,20 @@ definition {
 			panel = "Control Panel",
 			portlet = "Search");
 
-		SearchAdministration.assertEngineVendorAndVersions(
-			clientVersion = "7.9.0",
-			engineVendor = "Elasticsearch",
-			serverVersion = "7.9.0");
+		var serverVersion = Elasticsearch.getServerVersion(port = "9200");
+
+		if (IsTextEqual.isPartialText(locator1 = "SearchAdmin#SEARCH_ENGINE_VENDOR", value1 = "Embedded")) {
+			SearchAdministration.assertEngineVendorAndVersions(
+				clientVersion = "${serverVersion}",
+				engineVendor = "Elasticsearch",
+				serverVersion = "${serverVersion}");
+		}
+		else {
+			SearchAdministration.assertEngineVendorAndVersions(
+				clientVersion = "7.9.0",
+				engineVendor = "Elasticsearch",
+				serverVersion = "${serverVersion}");
+		}
 
 		Navigator.gotoNavItem(navItem = "Field Mappings");
 
@@ -335,10 +345,20 @@ definition {
 			panel = "Control Panel",
 			portlet = "Search");
 
-		SearchAdministration.assertEngineVendorAndVersions(
-			clientVersion = "7.9.0",
-			engineVendor = "Elasticsearch",
-			serverVersion = "7.9.0");
+		var serverVersion = Elasticsearch.getServerVersion(port = "9200");
+
+		if (IsTextEqual.isPartialText(locator1 = "SearchAdmin#SEARCH_ENGINE_VENDOR", value1 = "Embedded")) {
+			SearchAdministration.assertEngineVendorAndVersions(
+				clientVersion = "${serverVersion}",
+				engineVendor = "Elasticsearch",
+				serverVersion = "${serverVersion}");
+		}
+		else {
+			SearchAdministration.assertEngineVendorAndVersions(
+				clientVersion = "7.9.0",
+				engineVendor = "Elasticsearch",
+				serverVersion = "${serverVersion}");
+		}
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
