@@ -145,7 +145,8 @@ public class DDMFormField implements Serializable {
 
 		if ((ddmFormFieldOptions != null) &&
 			Validator.isNotNull(dataSourceType) &&
-			!dataSourceType.equals("manual")) {
+			!dataSourceType.equals("manual") &&
+			!dataSourceType.equals("[\"manual\"]")) {
 
 			Locale defaultLocale = ddmFormFieldOptions.getDefaultLocale();
 
