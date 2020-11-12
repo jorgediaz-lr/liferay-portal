@@ -187,6 +187,10 @@ public class AccountLocalServiceImpl extends AccountLocalServiceBaseImpl {
 		return accountPersistence.fetchByAccountKey(accountKey);
 	}
 
+	public Account fetchAccountByCode(String code) {
+		return accountPersistence.fetchByCode(code);
+	}
+
 	public Account getAccount(String accountKey) throws PortalException {
 		return accountPersistence.findByAccountKey(accountKey);
 	}

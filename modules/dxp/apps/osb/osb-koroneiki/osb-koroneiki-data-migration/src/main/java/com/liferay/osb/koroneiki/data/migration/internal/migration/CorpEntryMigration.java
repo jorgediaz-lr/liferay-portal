@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.sql.Connection;
@@ -79,6 +80,7 @@ public class CorpEntryMigration {
 				account.setAccountKey(
 					ModelKeyGenerator.generate(account.getAccountId()));
 				account.setName(resultSet.getString("name"));
+				account.setCode(_getCode(resultSet.getString("name")));
 
 				Map<Locale, String> descriptionMap =
 					LocalizationUtil.getLocalizationMap(
@@ -119,6 +121,42 @@ public class CorpEntryMigration {
 		if (_log.isInfoEnabled()) {
 			_log.info("Migration took " + stopWatch.getTime() + " ms");
 		}
+	}
+
+	private String _getCode(String accountName) throws Exception {
+		String code = StringUtil.extractChars(accountName);
+
+		if (code.length() > 12) {
+			code = code.substring(0, 12);
+		}
+
+		code = StringUtil.toUpperCase(code);
+
+		if (!_isDuplicateCode(code)) {
+			return code;
+		}
+
+		int i = 1;
+
+		while (true) {
+			String tempCode = code + i;
+
+			if (!_isDuplicateCode(tempCode)) {
+				return tempCode;
+			}
+
+			i++;
+		}
+	}
+
+	private boolean _isDuplicateCode(String code) throws Exception {
+		Account account = _accountLocalService.fetchAccountByCode(code);
+
+		if (account != null) {
+			return true;
+		}
+
+		return false;
 	}
 
 	private void _migrateAddress(
