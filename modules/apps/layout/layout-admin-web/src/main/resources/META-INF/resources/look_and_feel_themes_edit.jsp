@@ -99,6 +99,7 @@ else {
 							themeContainer.setContent(responseData);
 
 							var newCheckboxNames = [];
+
 							var checkboxInputs = themeContainer.all(
 								'input[type=checkbox]'
 							);
