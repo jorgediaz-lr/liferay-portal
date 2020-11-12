@@ -231,11 +231,22 @@ String target = ParamUtil.getString(request, "target");
 						name="name"
 						truncate="<%= true %>"
 					>
-						<aui:a cssClass="selector-button" data="<%= data %>" href="javascript:;">
-							<%= HtmlUtil.escape(siteItemSelectorViewDisplayContext.getGroupName(group)) %>
-						</aui:a>
+						<c:choose>
+							<c:when test="<%= group.isActive() %>">
+								<aui:a cssClass="selector-button" data="<%= data %>" href="javascript:;">
+									<%= HtmlUtil.escape(siteItemSelectorViewDisplayContext.getGroupName(group)) %>
+								</aui:a>
+							</c:when>
+							<c:otherwise>
+								<span class="disabled selector-button text-muted">
+									<liferay-ui:message arguments="<%= HtmlUtil.escape(siteItemSelectorViewDisplayContext.getGroupName(group)) %>" key="x-inactive" />
+								</span>
+							</c:otherwise>
+						</c:choose>
 
-						<aui:a href="<%= groupURLProvider.getGroupURL(group, liferayPortletRequest) %>" target="_blank" />
+						<c:if test="<%= group.isActive() %>">
+							<aui:a href="<%= groupURLProvider.getGroupURL(group, liferayPortletRequest) %>" target="_blank" />
+						</c:if>
 					</liferay-ui:search-container-column-text>
 
 					<c:if test="<%= siteItemSelectorViewDisplayContext.isShowChildSitesLink() %>">
