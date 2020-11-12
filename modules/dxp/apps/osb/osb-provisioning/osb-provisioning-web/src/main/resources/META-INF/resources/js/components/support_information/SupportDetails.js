@@ -62,16 +62,33 @@ function SupportDetails({
 				value={account.region}
 			/>
 
-			<LiveUpdateableField
-				displayValue={language.name}
-				fieldLabel={Liferay.Language.get('support-language')}
-				fieldName="languageId"
-				formAction={updateLanguageIdURL}
-				options={createSelectOptions(languageList)}
-				type={FIELD_TYPE_SELECT}
-				updateFormData={handleUpdateSupportLanguage}
-				value={language.id}
-			/>
+			{!!updateLanguageIdURL && (
+				<LiveUpdateableField
+					displayValue={language.name}
+					fieldLabel={Liferay.Language.get('support-language')}
+					fieldName="languageId"
+					formAction={updateLanguageIdURL}
+					options={createSelectOptions(languageList)}
+					type={FIELD_TYPE_SELECT}
+					updateFormData={handleUpdateSupportLanguage}
+					value={language.id}
+				/>
+			)}
+
+			{!updateLanguageIdURL && (
+				<ClayList.Item flex>
+					<div className="detail-field">
+						<ClayList.ItemTitle>
+							{Liferay.Language.get('support-language')}
+						</ClayList.ItemTitle>
+						<div className="list-group-text text-muted">
+							{Liferay.Language.get(
+								'support-project-does-not-exist'
+							)}
+						</div>
+					</div>
+				</ClayList.Item>
+			)}
 		</ClayList>
 	);
 }

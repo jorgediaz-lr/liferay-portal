@@ -178,10 +178,6 @@ public class ViewAccountDisplayContext {
 		return accountDisplay;
 	}
 
-	public AccountEntry getAccountEntry() throws Exception {
-		return accountEntryWebService.fetchAccountEntry(account.getKey());
-	}
-
 	public List<AuditEntryDisplay> getAuditEntryDisplays() throws Exception {
 		return TransformUtil.transform(
 			auditEntryWebService.getAccountAuditEntries(
@@ -448,24 +444,55 @@ public class ViewAccountDisplayContext {
 
 		data.put("account", getAccountDisplay());
 
-		AccountEntry accountEntry = getAccountEntry();
+		AccountEntry accountEntry = _fetchAccountEntry();
 
-		long accountAttachmentId =
-			accountEntry.getOEMInstructionsAccountAttachmentId();
+		if (accountEntry != null) {
+			long accountAttachmentId =
+				accountEntry.getOEMInstructionsAccountAttachmentId();
 
-		data.put(
-			"accountAttachmentURL",
-			accountEntryWebService.getAccountAttachmentURL(
-				accountAttachmentId));
+			data.put(
+				"accountAttachmentURL",
+				accountEntryWebService.getAccountAttachmentURL(
+					accountAttachmentId));
+
+			data.put(
+				"oemInstructionsFileName",
+				accountEntry.getOEMInstructionsFileName());
+
+			String updateAccountAttachmentURL =
+				accountEntryWebService.getUpdateAccountAttachmentURL();
+
+			updateAccountAttachmentURL = HttpUtil.addParameter(
+				updateAccountAttachmentURL, "redirect", getCurrentURL());
+
+			data.put("updateAccountAttachmentURL", updateAccountAttachmentURL);
+
+			PortletURL updateInstructionsURL = renderResponse.createActionURL();
+
+			updateInstructionsURL.setParameter(
+				ActionRequest.ACTION_NAME, "/edit_account_entry");
+			updateInstructionsURL.setParameter(
+				Constants.CMD, ProvisioningActionKeys.UPDATE_INSTRUCTIONS);
+			updateInstructionsURL.setParameter("redirect", _getPortletURL());
+			updateInstructionsURL.setParameter("accountKey", account.getKey());
+
+			data.put("updateInstructionsURL", updateInstructionsURL.toString());
+
+			PortletURL updateLanguageIdURL = renderResponse.createActionURL();
+
+			updateLanguageIdURL.setParameter(
+				ActionRequest.ACTION_NAME, "/edit_account_entry");
+			updateLanguageIdURL.setParameter(
+				Constants.CMD, ProvisioningActionKeys.UPDATE_LANGUAGE_ID);
+			updateLanguageIdURL.setParameter("redirect", _getPortletURL());
+			updateLanguageIdURL.setParameter("accountKey", account.getKey());
+
+			data.put("updateLanguageIdURL", updateLanguageIdURL.toString());
+		}
 
 		data.put("instructions", _getSupportInstructions(accountEntry));
 		data.put("language", _getSupportLanguage(accountEntry));
-
 		data.put("languageList", _getLanguageList());
-
-		data.put(
-			"oemInstructionsFileName",
-			accountEntry.getOEMInstructionsFileName());
 
 		List<String> regionNames = new ArrayList<>();
 
@@ -475,14 +502,6 @@ public class ViewAccountDisplayContext {
 
 		data.put("regionNames", regionNames);
 
-		String updateAccountAttachmentURL =
-			accountEntryWebService.getUpdateAccountAttachmentURL();
-
-		updateAccountAttachmentURL = HttpUtil.addParameter(
-			updateAccountAttachmentURL, "redirect", getCurrentURL());
-
-		data.put("updateAccountAttachmentURL", updateAccountAttachmentURL);
-
 		PortletURL updateAccountURL = renderResponse.createActionURL();
 
 		updateAccountURL.setParameter(
@@ -491,28 +510,6 @@ public class ViewAccountDisplayContext {
 		updateAccountURL.setParameter("accountKey", account.getKey());
 
 		data.put("updateAccountURL", updateAccountURL.toString());
-
-		PortletURL updateInstructionsURL = renderResponse.createActionURL();
-
-		updateInstructionsURL.setParameter(
-			ActionRequest.ACTION_NAME, "/edit_account_entry");
-		updateInstructionsURL.setParameter(
-			Constants.CMD, ProvisioningActionKeys.UPDATE_INSTRUCTIONS);
-		updateInstructionsURL.setParameter("redirect", _getPortletURL());
-		updateInstructionsURL.setParameter("accountKey", account.getKey());
-
-		data.put("updateInstructionsURL", updateInstructionsURL.toString());
-
-		PortletURL updateLanguageIdURL = renderResponse.createActionURL();
-
-		updateLanguageIdURL.setParameter(
-			ActionRequest.ACTION_NAME, "/edit_account_entry");
-		updateLanguageIdURL.setParameter(
-			Constants.CMD, ProvisioningActionKeys.UPDATE_LANGUAGE_ID);
-		updateLanguageIdURL.setParameter("redirect", _getPortletURL());
-		updateLanguageIdURL.setParameter("accountKey", account.getKey());
-
-		data.put("updateLanguageIdURL", updateLanguageIdURL.toString());
 
 		return data;
 	}
@@ -586,6 +583,10 @@ public class ViewAccountDisplayContext {
 	protected RenderResponse renderResponse;
 	protected TeamWebService teamWebService;
 	protected UserLocalService userLocalService;
+
+	private AccountEntry _fetchAccountEntry() throws Exception {
+		return accountEntryWebService.fetchAccountEntry(account.getKey());
+	}
 
 	private List<DropdownItem> _getFilterCustomerRoleDropdownItems()
 		throws Exception {
@@ -768,7 +769,9 @@ public class ViewAccountDisplayContext {
 	}
 
 	private String _getSupportInstructions(AccountEntry accountEntry) {
-		if (Validator.isNotNull(accountEntry.getInstructions())) {
+		if ((accountEntry != null) &&
+			Validator.isNotNull(accountEntry.getInstructions())) {
+
 			return accountEntry.getInstructions();
 		}
 
@@ -776,7 +779,9 @@ public class ViewAccountDisplayContext {
 	}
 
 	private JSONObject _getSupportLanguage(AccountEntry accountEntry) {
-		if (Validator.isNotNull(accountEntry.getLanguageId())) {
+		if ((accountEntry != null) &&
+			Validator.isNotNull(accountEntry.getLanguageId())) {
+
 			Locale languageLocale = LocaleUtil.fromLanguageId(
 				accountEntry.getLanguageId());
 

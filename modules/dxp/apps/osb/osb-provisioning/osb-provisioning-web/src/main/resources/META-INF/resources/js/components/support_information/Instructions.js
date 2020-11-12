@@ -36,23 +36,37 @@ function Instructions({
 				{Liferay.Language.get('instructions')}
 			</ClayList.Header>
 
-			<FileUpload
-				accountKey={accountKey}
-				fieldLabel={Liferay.Language.get('oem-instructions')}
-				fieldName="oemInstructions"
-				fileName={fileName}
-				fileURL={accountAttachmentURL}
-				formAction={updateAccountAttachmentURL}
-			/>
+			{!!updateAccountAttachmentURL && !!updateInstructionsURL && (
+				<>
+					<FileUpload
+						accountKey={accountKey}
+						fieldLabel={Liferay.Language.get('oem-instructions')}
+						fieldName="oemInstructions"
+						fileName={fileName}
+						fileURL={accountAttachmentURL}
+						formAction={updateAccountAttachmentURL}
+					/>
 
-			<LiveUpdateableField
-				fieldLabel={Liferay.Language.get('support-instructions')}
-				fieldName="instructions"
-				formAction={updateInstructionsURL}
-				type={FIELD_TYPE_TEXTAREA}
-				updateFormData={handleUpdateSupportInstructions}
-				value={instructions}
-			/>
+					<LiveUpdateableField
+						fieldLabel={Liferay.Language.get(
+							'support-instructions'
+						)}
+						fieldName="instructions"
+						formAction={updateInstructionsURL}
+						type={FIELD_TYPE_TEXTAREA}
+						updateFormData={handleUpdateSupportInstructions}
+						value={instructions}
+					/>
+				</>
+			)}
+
+			{!updateAccountAttachmentURL && !updateInstructionsURL && (
+				<ClayList.Item flex>
+					<div className="detail-field list-group-text text-muted">
+						{Liferay.Language.get('support-project-does-not-exist')}
+					</div>
+				</ClayList.Item>
+			)}
 		</ClayList>
 	);
 }
