@@ -140,74 +140,14 @@ public class ViewAccountsManagementToolbarDisplayContext
 	}
 
 	private String _getLabel(String key, String value) {
-		if (key.equals(AccountDisplayTerms.ACTIVE_SLAS)) {
-			key = "subscription-level";
-		}
-
-		if (key.equals(AccountDisplayTerms.COUNTRY_NAME)) {
-			key = "country";
-		}
-
-		if (key.equals(AccountDisplayTerms.CREATE_DATE_GT)) {
-			key = "created-after";
-		}
-
-		if (key.equals(AccountDisplayTerms.CREATE_DATE_LT)) {
-			key = "created-before";
-		}
-
-		if (key.equals(AccountDisplayTerms.CREATED_BY_EMAIL_ADDRESS)) {
-			key = "created-by";
-		}
-
-		if (key.equals(AccountDisplayTerms.FLS_TEAM_KEY)) {
-			key = "first-line-support";
+		if (key.equals("first-line-support") ||
+			key.equals("partner-reseller-si")) {
 
 			value = _getTeamName(value);
 		}
 
-		if (key.equals(AccountDisplayTerms.INTERNALS)) {
-			key = "internal";
-		}
-
-		if (key.equals(AccountDisplayTerms.PARENT_ACCOUNT_KEY)) {
-			key = "parent-account";
-
+		if (key.equals("parent-account")) {
 			value = _getAccountName(value);
-		}
-
-		if (key.equals(AccountDisplayTerms.PARTNER_TEAM_KEY)) {
-			key = "partner-reseller-si";
-
-			value = _getTeamName(value);
-		}
-
-		if (key.equals(AccountDisplayTerms.PARTNERS)) {
-			key = "partner";
-		}
-
-		if (key.equals(AccountDisplayTerms.PROVIDES_FLS)) {
-			key = "provides-fls";
-		}
-
-		if (key.equals(AccountDisplayTerms.RECEIVES_FLS)) {
-			key = "receives-fls";
-		}
-
-		if (key.equals(AccountDisplayTerms.REGIONS)) {
-			key = "support-region";
-		}
-
-		if (key.equals(AccountDisplayTerms.SUBSCRIPTION_STATES)) {
-			key = "subscription-status";
-		}
-
-		if (key.equals(AccountDisplayTerms.TIERS)) {
-			key = "tier";
-		}
-
-		if (key.equals(AccountDisplayTerms.WORKER_CONTACT_EMAIL_ADDRESS)) {
-			key = "project-worker";
 		}
 
 		return String.format("%s: %s", LanguageUtil.get(request, key), value);

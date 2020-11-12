@@ -180,26 +180,27 @@ public class AccountDisplayTerms extends DisplayTerms {
 	public Map<String, String> getTermsMap() {
 		Map<String, String> termsMap = new HashMap<>();
 
-		termsMap.put(ACTIVE_SLAS, StringUtil.merge(activeSLAs));
 		termsMap.put(CODE, code);
-		termsMap.put(COUNTRY_NAME, countryName);
-		termsMap.put(CREATE_DATE_GT, createDateGT);
-		termsMap.put(CREATE_DATE_LT, createDateLT);
-		termsMap.put(CREATED_BY_EMAIL_ADDRESS, createdByEmailAddress);
-		termsMap.put(FLS_TEAM_KEY, flsTeamKey);
-		termsMap.put(INTERNALS, StringUtil.merge(internals));
-		termsMap.put(MODIFIED_DATE_GT, modifiedDateGT);
-		termsMap.put(MODIFIED_DATE_LT, modifiedDateLT);
 		termsMap.put(NAME, name);
-		termsMap.put(PARENT_ACCOUNT_KEY, parentAccountKey);
-		termsMap.put(PARTNER_TEAM_KEY, partnerTeamKey);
-		termsMap.put(PARTNERS, StringUtil.merge(partners));
-		termsMap.put(PROVIDES_FLS, StringUtil.merge(providesFLS));
-		termsMap.put(RECEIVES_FLS, StringUtil.merge(receivesFLS));
-		termsMap.put(REGIONS, StringUtil.merge(regions));
-		termsMap.put(SUBSCRIPTION_STATES, StringUtil.merge(subscriptionStates));
-		termsMap.put(TIERS, StringUtil.merge(tiers));
-		termsMap.put(WORKER_CONTACT_EMAIL_ADDRESS, workerContactEmailAddress);
+		termsMap.put("country", countryName);
+		termsMap.put("created-after", createDateGT);
+		termsMap.put("created-before", createDateLT);
+		termsMap.put("created-by", createdByEmailAddress);
+		termsMap.put("first-line-support", flsTeamKey);
+		termsMap.put("internal", StringUtil.merge(internals));
+		termsMap.put("modified-after", modifiedDateGT);
+		termsMap.put("modified-before", modifiedDateLT);
+		termsMap.put("parent-account", parentAccountKey);
+		termsMap.put("partner", StringUtil.merge(partners));
+		termsMap.put("partner-reseller-si", partnerTeamKey);
+		termsMap.put("project-worker", workerContactEmailAddress);
+		termsMap.put("provides-fls", StringUtil.merge(providesFLS));
+		termsMap.put("receives-fls", StringUtil.merge(receivesFLS));
+		termsMap.put("subscription-level", StringUtil.merge(activeSLAs));
+		termsMap.put(
+			"subscription-status", StringUtil.merge(subscriptionStates));
+		termsMap.put("support-region", StringUtil.merge(regions));
+		termsMap.put("tier", StringUtil.merge(tiers));
 
 		return termsMap;
 	}
