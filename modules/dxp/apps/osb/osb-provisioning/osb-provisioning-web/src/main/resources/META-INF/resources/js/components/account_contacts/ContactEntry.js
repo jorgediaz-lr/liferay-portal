@@ -145,10 +145,16 @@ function ContactRoleSelect({addFn, allRoles = [], newRoles = [], removeFn}) {
 		</div>
 	);
 
+	function handleOnActiveChange(val) {
+		const newVal = displayRoles.length ? val : false;
+
+		setActive(newVal);
+	}
+
 	return (
 		<ClayDropDown
 			active={active}
-			onActiveChange={setActive}
+			onActiveChange={handleOnActiveChange}
 			trigger={triggerElement}
 		>
 			<ClayDropDown.ItemList className="roles-dropdown">
