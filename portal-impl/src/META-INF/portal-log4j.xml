@@ -900,7 +900,7 @@
 		<priority value="INFO" />
 	</category>
 
-	<category name="com.liferay.referenceschecker">
+	<category name="com.liferay.referenceschecker.listener">
 		<priority value="WARN" />
 	</category>
 
