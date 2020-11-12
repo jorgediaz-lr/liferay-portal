@@ -203,6 +203,9 @@ public interface AccountLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Account fetchAccount(String accountKey);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Account fetchAccountByCode(String code);
+
 	/**
 	 * Returns the account with the matching UUID and company.
 	 *
