@@ -43,6 +43,7 @@
 		</finder>
 	</entity>
 	<exceptions>
+		<exception>AccountCode</exception>
 		<exception>ContactRequired</exception>
 		<exception>DuplicateDossieraKey</exception>
 		<exception>MultipleDossieraKeys</exception>

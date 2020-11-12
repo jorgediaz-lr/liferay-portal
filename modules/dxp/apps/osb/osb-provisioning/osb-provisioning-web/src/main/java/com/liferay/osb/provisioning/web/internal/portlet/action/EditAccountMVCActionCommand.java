@@ -18,12 +18,14 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
+import com.liferay.osb.provisioning.exception.AccountCodeException;
 import com.liferay.osb.provisioning.koroneiki.constants.TeamRoleConstants;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamRoleWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.exception.HttpException;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
@@ -68,6 +70,8 @@ public class EditAccountMVCActionCommand extends BaseMVCActionCommand {
 		String code = ParamUtil.getString(actionRequest, "code");
 		String tier = ParamUtil.getString(actionRequest, "tier");
 		String region = ParamUtil.getString(actionRequest, "region");
+
+		validate(code);
 
 		Account account = new Account();
 
@@ -115,26 +119,32 @@ public class EditAccountMVCActionCommand extends BaseMVCActionCommand {
 				actionRequest, actionResponse,
 				getRedirect(actionResponse, accountKey));
 		}
-		catch (HttpException httpException) {
-			_log.error(httpException, httpException);
+		catch (Exception exception) {
+			if (exception instanceof AccountCodeException ||
+				exception instanceof HttpException) {
 
-			SessionErrors.add(
-				actionRequest, httpException.getClass(), httpException);
+				if (_log.isDebugEnabled()) {
+					_log.debug(exception, exception);
+				}
 
-			if (Validator.isNotNull(accountKey)) {
-				sendRedirect(
-					actionRequest, actionResponse,
-					getRedirect(actionResponse, accountKey));
+				SessionErrors.add(
+					actionRequest, exception.getClass(), exception);
+
+				if (Validator.isNotNull(accountKey)) {
+					sendRedirect(
+						actionRequest, actionResponse,
+						getRedirect(actionResponse, accountKey));
+				}
+				else {
+					actionResponse.setRenderParameter(
+						"mvcRenderCommandName", "/accounts/add_account");
+				}
 			}
 			else {
-				actionResponse.setRenderParameter(
-					"mvcRenderCommandName", "/accounts/add_account");
-			}
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
+				_log.error(exception, exception);
 
-			throw exception;
+				throw exception;
+			}
 		}
 	}
 
@@ -168,6 +178,8 @@ public class EditAccountMVCActionCommand extends BaseMVCActionCommand {
 			String code = ParamUtil.getString(actionRequest, "code");
 			String tier = ParamUtil.getString(actionRequest, "tier");
 			String region = ParamUtil.getString(actionRequest, "region");
+
+			validate(code);
 
 			Account account = new Account();
 
@@ -242,6 +254,12 @@ public class EditAccountMVCActionCommand extends BaseMVCActionCommand {
 			_accountWebService.assignTeamRoles(
 				user.getFullName(), user.getUuid(), accountKey, teamKey,
 				new String[] {teamRole.getKey()});
+		}
+	}
+
+	protected void validate(String code) throws PortalException {
+		if (Validator.isNull(code)) {
+			throw new AccountCodeException();
 		}
 	}
 
