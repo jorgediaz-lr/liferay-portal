@@ -23,16 +23,6 @@ AccountSearchDisplayContext accountSearchDisplayContext = ProvisioningWebCompone
 %>
 
 <div class="container-fluid home provisioning-accounts">
-	<div class="advanced-search-alert">
-		<div class="alert alert-info" role="alert">
-			<div class="alert-autofit-row autofit-row">
-				<div>
-					<liferay-ui:message arguments='<%= new String[] {"<a href='https://reports.liferay.com/#/site/support/workbooks/810/views' target='_blank'>", "</a>"} %>' key="advanced-search-is-temporarily-provided-by-the-cas-monitoring-report" translateArguments="<%= false %>" />
-				</div>
-			</div>
-		</div>
-	</div>
-
 	<portlet:renderURL var="addAccountURL">
 		<portlet:param name="mvcRenderCommandName" value="/accounts/add_account" />
 		<portlet:param name="redirect" value="<%= currentURL %>" />
