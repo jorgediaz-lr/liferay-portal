@@ -44,6 +44,8 @@ import com.liferay.portal.util.JarUtil;
 import com.liferay.portal.util.PropsUtil;
 import com.liferay.portal.util.PropsValues;
 
+import com.p6spy.engine.spy.P6DataSource;
+
 import com.zaxxer.hikari.HikariDataSource;
 
 import java.io.Closeable;
@@ -167,7 +169,7 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 			}
 		}
 
-		return dataSource;
+		return new P6DataSource(dataSource);
 	}
 
 	@Override
