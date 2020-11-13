@@ -178,8 +178,8 @@ public class LCSSubscriptionEntryWebServiceImpl
 			String domain = externalLink.getDomain();
 			String entityName = externalLink.getEntityName();
 
-			if (domain.equals(ExternalLinkDomain.WEB) &&
-				entityName.equals(ExternalLinkEntityName.WEB_CORP_PROJECT)) {
+			if (domain.equals(ExternalLinkDomain.LCS) &&
+				entityName.equals(ExternalLinkEntityName.LCS_CORP_PROJECT)) {
 
 				return externalLink.getEntityId();
 			}
