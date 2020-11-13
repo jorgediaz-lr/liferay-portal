@@ -49,6 +49,8 @@ import com.liferay.portal.util.PropsValues;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
+import com.p6spy.engine.spy.P6DataSource;
+
 import com.zaxxer.hikari.HikariDataSource;
 
 import java.io.Closeable;
@@ -240,7 +242,7 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 			}
 		}
 
-		return dataSource;
+		return new P6DataSource(dataSource);
 	}
 
 	@Override
