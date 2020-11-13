@@ -100,12 +100,49 @@ function Search({
 		return `${accountsHomeURL}&${NAMESPACE}accountSearchKeywords=${keywords}`;
 	}
 
+	function formatPlaceholder(filters) {
+		return Object.entries(filters)
+			.map(
+				([key, value]) =>
+					key.charAt(0).toUpperCase() +
+					key.substring(1) +
+					': ' +
+					value
+			)
+			.join(', ');
+	}
+
 	function getSearchParameter() {
 		const searchParams = new URLSearchParams(window.location.search);
 
 		return searchParams.has(`${NAMESPACE}accountSearchKeywords`)
 			? searchParams.get(`${NAMESPACE}accountSearchKeywords`)
 			: '';
+	}
+
+	function getSearchPlaceholder() {
+		const searchParams = new URLSearchParams(window.location.search);
+
+		const searchFilters = {};
+
+		// Suppress eslint false alarm for unused var
+		/* eslint-disable no-unused-vars */
+
+		// Project has no IE11 constraint, prefer to use for...of loop
+		/* eslint-disable-next-line no-for-of-loops/no-for-of-loops */
+		for (const [key, value] of searchParams.entries()) {
+			if (validateParameterNames(key) && value) {
+				searchFilters[key.replace(NAMESPACE, '')] = value;
+			}
+		}
+		/* eslint-enable no-unused-vars */
+
+		if (Object.keys(searchFilters).length) {
+			return formatPlaceholder(searchFilters);
+		}
+		else {
+			return Liferay.Language.get('search-accounts');
+		}
 	}
 
 	function handleKeyDown(event) {
@@ -134,6 +171,16 @@ function Search({
 		event.currentTarget.setAttribute('aria-label', ariaLabel);
 	}
 
+	function validateParameterNames(name) {
+		return (
+			name.startsWith(NAMESPACE) &&
+			!name.endsWith('advancedSearch') &&
+			!name.endsWith('andOperator') &&
+			!name.endsWith('cur') &&
+			!name.endsWith('delta')
+		);
+	}
+
 	return (
 		<>
 			<ClayAutocomplete>
@@ -142,7 +189,7 @@ function Search({
 					disabled={showAdvancedSearch}
 					onChange={handleOnChange}
 					onKeyDown={handleKeyDown}
-					placeholder={Liferay.Language.get('search-accounts')}
+					placeholder={getSearchPlaceholder()}
 					value={keywords}
 				/>
 

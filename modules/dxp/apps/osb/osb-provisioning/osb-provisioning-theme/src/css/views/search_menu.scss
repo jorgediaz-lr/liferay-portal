@@ -156,6 +156,10 @@ body {
 			border-bottom-right-radius: initial;
 			border-right-width: 0;
 			border-top-right-radius: initial;
+
+			&::placeholder {
+				text-overflow: ellipsis;
+			}
 		}
 	}
 
