@@ -106,13 +106,6 @@ public class ProductEntryMigration {
 			}
 		}
 
-		_productEntryLocalService.addProductEntry(
-			userId, _NAME_GOLD, Collections.emptyList());
-		_productEntryLocalService.addProductEntry(
-			userId, _NAME_LIMITED, Collections.emptyList());
-		_productEntryLocalService.addProductEntry(
-			userId, _NAME_PLATINUM, Collections.emptyList());
-
 		if (_log.isInfoEnabled()) {
 			_log.info("Migration took " + stopWatch.getTime() + " ms");
 		}
