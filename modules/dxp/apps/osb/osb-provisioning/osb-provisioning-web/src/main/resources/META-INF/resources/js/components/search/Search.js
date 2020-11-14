@@ -100,6 +100,18 @@ function Search({
 		return `${accountsHomeURL}&${NAMESPACE}accountSearchKeywords=${keywords}`;
 	}
 
+	function formatFilterValue(value) {
+		if (value === 'true') {
+			return Liferay.Language.get('yes');
+		}
+
+		if (value === 'false') {
+			return Liferay.Language.get('no');
+		}
+
+		return value;
+	}
+
 	function formatPlaceholder(filters) {
 		return Object.entries(filters)
 			.map(
@@ -107,7 +119,7 @@ function Search({
 					key.charAt(0).toUpperCase() +
 					key.substring(1) +
 					': ' +
-					value
+					formatFilterValue(value)
 			)
 			.join(', ');
 	}
