@@ -18,6 +18,7 @@ import React, {useRef, useState} from 'react';
 
 import {NAMESPACE} from '../../utilities/constants';
 import {request} from '../../utilities/helpers';
+import {getFilterDisplayName} from '../../utilities/searchFilters';
 import AdvancedSearch from './AdvancedSearch';
 
 const MAX_RESULTS = 7;
@@ -116,10 +117,7 @@ function Search({
 		return Object.entries(filters)
 			.map(
 				([key, value]) =>
-					key.charAt(0).toUpperCase() +
-					key.substring(1) +
-					': ' +
-					formatFilterValue(value)
+					getFilterDisplayName(key) + ': ' + formatFilterValue(value)
 			)
 			.join(', ');
 	}
