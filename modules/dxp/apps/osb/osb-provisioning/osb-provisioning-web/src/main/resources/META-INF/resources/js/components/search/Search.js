@@ -18,7 +18,10 @@ import React, {useRef, useState} from 'react';
 
 import {NAMESPACE} from '../../utilities/constants';
 import {request} from '../../utilities/helpers';
-import {getFilterDisplayName} from '../../utilities/searchFilters';
+import {
+	formatFilterValue,
+	getFilterDisplayName
+} from '../../utilities/searchFilters';
 import AdvancedSearch from './AdvancedSearch';
 
 const MAX_RESULTS = 7;
@@ -99,18 +102,6 @@ function Search({
 
 	function buildSearchResultsURL() {
 		return `${accountsHomeURL}&${NAMESPACE}accountSearchKeywords=${keywords}`;
-	}
-
-	function formatFilterValue(value) {
-		if (value === 'true') {
-			return Liferay.Language.get('yes');
-		}
-
-		if (value === 'false') {
-			return Liferay.Language.get('no');
-		}
-
-		return value;
 	}
 
 	function formatPlaceholder(filters) {

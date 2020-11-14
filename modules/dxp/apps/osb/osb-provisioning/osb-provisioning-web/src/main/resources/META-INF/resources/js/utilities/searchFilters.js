@@ -9,6 +9,22 @@
  * distribution rights of the Software.
  */
 
+export function formatFilterValue(value) {
+	if (value === 'true') {
+		return Liferay.Language.get('yes');
+	}
+
+	if (value === 'true,false') {
+		return Liferay.Language.get('yes') + ', ' + Liferay.Language.get('no');
+	}
+
+	if (value === 'false') {
+		return Liferay.Language.get('no');
+	}
+
+	return value;
+}
+
 export function getFilterDisplayName(name) {
 	let displayName;
 
