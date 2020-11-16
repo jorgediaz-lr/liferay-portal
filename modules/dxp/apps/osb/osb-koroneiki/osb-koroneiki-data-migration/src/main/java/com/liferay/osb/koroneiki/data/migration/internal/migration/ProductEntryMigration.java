@@ -33,7 +33,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.time.StopWatch;
@@ -136,12 +135,6 @@ public class ProductEntryMigration {
 			}
 		}
 	}
-
-	private static final String _NAME_GOLD = "Gold Subscription";
-
-	private static final String _NAME_LIMITED = "Limited Subscription";
-
-	private static final String _NAME_PLATINUM = "Platinum Subscription";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ProductEntryMigration.class);

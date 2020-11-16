@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.sql.Connection;
@@ -103,9 +104,6 @@ public class OfferingEntryMigration {
 
 			ResultSetMetaData metaData = resultSet.getMetaData();
 
-			Map<Long, ProductPurchase> accountSLASubscriptions =
-				new HashMap<>();
-
 			while (resultSet.next()) {
 				long corpProjectId = resultSet.getLong(1);
 
@@ -170,8 +168,8 @@ public class OfferingEntryMigration {
 				long supportResponseId = resultSet.getLong(4);
 
 				_updateSLASubscription(
-					accountSLASubscriptions, account.getAccountId(),
-					supportResponseId, startDate, endDate);
+					account.getAccountId(), supportResponseId, startDate,
+					endDate);
 
 				try {
 					ProductEntry curProductEntry =
@@ -200,23 +198,29 @@ public class OfferingEntryMigration {
 				}
 			}
 
-			for (Map.Entry<Long, ProductPurchase> entry :
-					accountSLASubscriptions.entrySet()) {
+			for (Map.Entry<Long, Map<Long, List<ProductPurchase>>> entry :
+					_accountSLASubscriptions.entrySet()) {
 
 				long accountId = entry.getKey();
-				ProductPurchase productPurchase = entry.getValue();
 
-				try {
-					_productPurchaseLocalService.addProductPurchase(
-						userId, accountId, productPurchase.getProductEntryId(),
-						productPurchase.getStartDate(),
-						productPurchase.getEndDate(),
-						productPurchase.getOriginalEndDate(),
-						productPurchase.getQuantity(),
-						productPurchase.getStatus(), Collections.emptyList());
-				}
-				catch (Exception exception) {
-					_log.error(exception, exception);
+				List<ProductPurchase> slaProductPurchases =
+					_getSLAProductPurchases(entry.getValue());
+
+				for (ProductPurchase productPurchase : slaProductPurchases) {
+					try {
+						_productPurchaseLocalService.addProductPurchase(
+							userId, accountId,
+							productPurchase.getProductEntryId(),
+							productPurchase.getStartDate(),
+							productPurchase.getEndDate(),
+							productPurchase.getOriginalEndDate(),
+							productPurchase.getQuantity(),
+							productPurchase.getStatus(),
+							Collections.emptyList());
+					}
+					catch (Exception exception) {
+						_log.error(exception, exception);
+					}
 				}
 			}
 		}
@@ -237,15 +241,66 @@ public class OfferingEntryMigration {
 		return _limitedProductEntryId;
 	}
 
-	private boolean _isHigherSLA(long productEntryId, long newProductEntryId) {
-		if (newProductEntryId == _platinumProductEntryId) {
-			if (productEntryId != _platinumProductEntryId) {
-				return true;
+	private List<ProductPurchase> _getSLAProductPurchases(
+		Map<Long, List<ProductPurchase>> productPurchasesMap) {
+
+		List<ProductPurchase> productPurchases = new ArrayList<>();
+
+		List<ProductPurchase> platinumProductPurchases =
+			productPurchasesMap.get(_platinumProductEntryId);
+
+		if (platinumProductPurchases != null) {
+			for (ProductPurchase productPurchase : platinumProductPurchases) {
+				if (_isDateCovered(productPurchases, productPurchase)) {
+					continue;
+				}
+
+				productPurchases.add(productPurchase);
 			}
 		}
-		else if (newProductEntryId == _goldProductEntryId) {
-			if ((productEntryId != _platinumProductEntryId) &&
-				(productEntryId != _goldProductEntryId)) {
+
+		List<ProductPurchase> goldProductPurchases = productPurchasesMap.get(
+			_goldProductEntryId);
+
+		if (goldProductPurchases != null) {
+			for (ProductPurchase productPurchase : goldProductPurchases) {
+				if (_isDateCovered(productPurchases, productPurchase)) {
+					continue;
+				}
+
+				productPurchases.add(productPurchase);
+			}
+		}
+
+		List<ProductPurchase> limitedProductPurchases = productPurchasesMap.get(
+			_limitedProductEntryId);
+
+		if (limitedProductPurchases != null) {
+			for (ProductPurchase productPurchase : limitedProductPurchases) {
+				if (_isDateCovered(productPurchases, productPurchase)) {
+					continue;
+				}
+
+				productPurchases.add(productPurchase);
+			}
+		}
+
+		return productPurchases;
+	}
+
+	private boolean _isDateCovered(
+		List<ProductPurchase> productPurchases,
+		ProductPurchase productPurchase) {
+
+		Date startDate = productPurchase.getStartDate();
+		Date endDate = productPurchase.getEndDate();
+
+		for (ProductPurchase curProductPurchase : productPurchases) {
+			Date curStartDate = curProductPurchase.getStartDate();
+			Date curEndDate = curProductPurchase.getEndDate();
+
+			if ((startDate.getTime() >= curStartDate.getTime()) &&
+				(endDate.getTime() <= curEndDate.getTime())) {
 
 				return true;
 			}
@@ -285,54 +340,45 @@ public class OfferingEntryMigration {
 	}
 
 	private void _updateSLASubscription(
-		Map<Long, ProductPurchase> accountSLASubscriptions, long accountId,
-		long supportResponseId, Date startDate, Date endDate) {
+		long accountId, long supportResponseId, Date startDate, Date endDate) {
 
 		if (supportResponseId == _SUPPORT_RESPONSE_FLOATING_ID) {
 			return;
 		}
 
-		ProductPurchase productPurchase = accountSLASubscriptions.get(
-			accountId);
+		Map<Long, List<ProductPurchase>> slaSubscriptionMap =
+			_accountSLASubscriptions.get(accountId);
 
-		if (productPurchase != null) {
-			long productEntryId = _getProductEntryId(supportResponseId);
+		if (slaSubscriptionMap == null) {
+			slaSubscriptionMap = new HashMap<>();
 
-			if (_isHigherSLA(
-					productPurchase.getProductEntryId(), supportResponseId)) {
-
-				productPurchase.setProductEntryId(
-					_getProductEntryId(supportResponseId));
-				productPurchase.setStartDate(startDate);
-				productPurchase.setEndDate(endDate);
-				productPurchase.setOriginalEndDate(endDate);
-			}
-			else if (productEntryId == productPurchase.getProductEntryId()) {
-				if (startDate.before(productPurchase.getStartDate())) {
-					productPurchase.setStartDate(startDate);
-				}
-
-				if (endDate.after(productPurchase.getEndDate())) {
-					productPurchase.setEndDate(endDate);
-					productPurchase.setOriginalEndDate(endDate);
-				}
-			}
+			_accountSLASubscriptions.put(accountId, slaSubscriptionMap);
 		}
-		else {
-			productPurchase =
-				_productPurchaseLocalService.createProductPurchase(0);
 
-			productPurchase.setProductEntryId(
-				_getProductEntryId(supportResponseId));
-			productPurchase.setStartDate(startDate);
-			productPurchase.setEndDate(endDate);
-			productPurchase.setOriginalEndDate(endDate);
-			productPurchase.setQuantity(1);
-			productPurchase.setStatus(
-				WorkflowConstants.getLabelStatus(Status.APPROVED.toString()));
+		long productEntryId = _getProductEntryId(supportResponseId);
 
-			accountSLASubscriptions.put(accountId, productPurchase);
+		List<ProductPurchase> productPurchases = slaSubscriptionMap.get(
+			productEntryId);
+
+		if (productPurchases == null) {
+			productPurchases = new ArrayList<>();
+
+			slaSubscriptionMap.put(productEntryId, productPurchases);
 		}
+
+		ProductPurchase productPurchase =
+			_productPurchaseLocalService.createProductPurchase(0);
+
+		productPurchase.setProductEntryId(productEntryId);
+		productPurchase.setStartDate(startDate);
+		productPurchase.setEndDate(
+			new Date(endDate.getTime() + (30 * Time.DAY)));
+		productPurchase.setOriginalEndDate(endDate);
+		productPurchase.setQuantity(1);
+		productPurchase.setStatus(
+			WorkflowConstants.getLabelStatus(Status.APPROVED.toString()));
+
+		productPurchases.add(productPurchase);
 	}
 
 	private static final String _NAME_GOLD = "Gold Subscription";
@@ -365,6 +411,9 @@ public class OfferingEntryMigration {
 
 	@Reference
 	private AccountLocalService _accountLocalService;
+
+	private final Map<Long, Map<Long, List<ProductPurchase>>>
+		_accountSLASubscriptions = new HashMap<>();
 
 	@Reference
 	private ExternalLinkLocalService _externalLinkLocalService;
