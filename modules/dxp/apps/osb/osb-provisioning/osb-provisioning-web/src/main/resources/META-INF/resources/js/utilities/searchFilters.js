@@ -9,6 +9,11 @@
  * distribution rights of the Software.
  */
 
+/**
+ * This helper formats true or false filter values to yes or no display values
+ * @param {string} value The filter value to be evaluated
+ * @returns {string} New display value
+ */
 export function formatFilterValue(value) {
 	if (value === 'true') {
 		return Liferay.Language.get('yes');
@@ -25,6 +30,12 @@ export function formatFilterValue(value) {
 	return value;
 }
 
+/**
+ * This helper matches a search param name and returns the localized display
+ * name.
+ * @param {string} name The filter name to be evaluated
+ * @returns {string} New display value
+ */
 export function getFilterDisplayName(name) {
 	let displayName;
 

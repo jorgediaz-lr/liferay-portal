@@ -14,6 +14,17 @@ import axios from 'axios';
 import {NAMESPACE} from '../utilities/constants';
 
 /**
+ * Certain empty values are represented by a dash in the UI.
+ * This helper converts that value from its dash representation to its true
+ * value.
+ * @param {string} value The value to be evaluated
+ * @returns {string} The value after it's checked
+ */
+export function convertDashToEmptyString(value) {
+	return value === '-' ? '' : value;
+}
+
+/**
  * Returns a promise of the request data
  * @param {string} endpoint The endpoint to post to
  * @param {object} params The parameters object to post with
@@ -48,15 +59,4 @@ export function request(endpoint, params, encoding = 'json', method = 'get') {
 		params: namespacedParams,
 		url: endpoint
 	});
-}
-
-/**
- * Certain empty values are represented by a dash in the UI.
- * This helper converts that value from its dash representation to its true
- * value.
- * @param {string} value The value to be evaluated
- * @returns {string} The value after it's checked
- */
-export function convertDashToEmptyString(value) {
-	return value === '-' ? '' : value;
 }
