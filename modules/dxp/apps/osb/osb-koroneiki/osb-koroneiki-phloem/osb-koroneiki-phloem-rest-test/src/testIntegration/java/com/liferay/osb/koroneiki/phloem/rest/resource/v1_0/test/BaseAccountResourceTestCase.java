@@ -1213,6 +1213,14 @@ public abstract class BaseAccountResourceTestCase {
 				continue;
 			}
 
+			if (Objects.equals("language", additionalAssertFieldName)) {
+				if (account.getLanguage() == null) {
+					valid = false;
+				}
+
+				continue;
+			}
+
 			if (Objects.equals("logoId", additionalAssertFieldName)) {
 				if (account.getLogoId() == null) {
 					valid = false;
@@ -1531,6 +1539,16 @@ public abstract class BaseAccountResourceTestCase {
 
 			if (Objects.equals("key", additionalAssertFieldName)) {
 				if (!Objects.deepEquals(account1.getKey(), account2.getKey())) {
+					return false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals("language", additionalAssertFieldName)) {
+				if (!Objects.deepEquals(
+						account1.getLanguage(), account2.getLanguage())) {
+
 					return false;
 				}
 
@@ -1876,6 +1894,11 @@ public abstract class BaseAccountResourceTestCase {
 			sb.append("'");
 
 			return sb.toString();
+		}
+
+		if (entityFieldName.equals("language")) {
+			throw new IllegalArgumentException(
+				"Invalid entity field " + entityFieldName);
 		}
 
 		if (entityFieldName.equals("logoId")) {

@@ -302,6 +302,35 @@ public class Account implements Cloneable {
 
 	protected String key;
 
+	public Language getLanguage() {
+		return language;
+	}
+
+	public String getLanguageAsString() {
+		if (language == null) {
+			return null;
+		}
+
+		return language.toString();
+	}
+
+	public void setLanguage(Language language) {
+		this.language = language;
+	}
+
+	public void setLanguage(
+		UnsafeSupplier<Language, Exception> languageUnsafeSupplier) {
+
+		try {
+			language = languageUnsafeSupplier.get();
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected Language language;
+
 	public Long getLogoId() {
 		return logoId;
 	}
@@ -605,6 +634,38 @@ public class Account implements Cloneable {
 
 	public String toString() {
 		return AccountSerDes.toJSON(this);
+	}
+
+	public static enum Language {
+
+		CHINESE("Chinese"), ENGLISH("English"), JAPANESE("Japanese"),
+		PORTUGUESE("Portuguese"), SPANISH("Spanish");
+
+		public static Language create(String value) {
+			for (Language language : values()) {
+				if (Objects.equals(language.getValue(), value)) {
+					return language;
+				}
+			}
+
+			return null;
+		}
+
+		public String getValue() {
+			return _value;
+		}
+
+		@Override
+		public String toString() {
+			return _value;
+		}
+
+		private Language(String value) {
+			_value = value;
+		}
+
+		private final String _value;
+
 	}
 
 	public static enum Region {

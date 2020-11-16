@@ -434,6 +434,44 @@ public class Account {
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	protected String key;
 
+	@Schema(description = "The account's language.")
+	@Valid
+	public Language getLanguage() {
+		return language;
+	}
+
+	@JsonIgnore
+	public String getLanguageAsString() {
+		if (language == null) {
+			return null;
+		}
+
+		return language.toString();
+	}
+
+	public void setLanguage(Language language) {
+		this.language = language;
+	}
+
+	@JsonIgnore
+	public void setLanguage(
+		UnsafeSupplier<Language, Exception> languageUnsafeSupplier) {
+
+		try {
+			language = languageUnsafeSupplier.get();
+		}
+		catch (RuntimeException re) {
+			throw re;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@GraphQLField(description = "The account's language.")
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	protected Language language;
+
 	@Schema(description = "The assetAttachmentId of the account's logo.")
 	public Long getLogoId() {
 		return logoId;
@@ -1040,6 +1078,20 @@ public class Account {
 			sb.append("\"");
 		}
 
+		if (language != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"language\": ");
+
+			sb.append("\"");
+
+			sb.append(language);
+
+			sb.append("\"");
+		}
+
 		if (logoId != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
@@ -1232,6 +1284,41 @@ public class Account {
 		name = "x-class-name"
 	)
 	public String xClassName;
+
+	@GraphQLName("Language")
+	public static enum Language {
+
+		CHINESE("Chinese"), ENGLISH("English"), JAPANESE("Japanese"),
+		PORTUGUESE("Portuguese"), SPANISH("Spanish");
+
+		@JsonCreator
+		public static Language create(String value) {
+			for (Language language : values()) {
+				if (Objects.equals(language.getValue(), value)) {
+					return language;
+				}
+			}
+
+			return null;
+		}
+
+		@JsonValue
+		public String getValue() {
+			return _value;
+		}
+
+		@Override
+		public String toString() {
+			return _value;
+		}
+
+		private Language(String value) {
+			_value = value;
+		}
+
+		private final String _value;
+
+	}
 
 	@GraphQLName("Region")
 	public static enum Region {
