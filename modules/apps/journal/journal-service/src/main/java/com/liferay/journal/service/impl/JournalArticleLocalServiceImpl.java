@@ -1093,6 +1093,18 @@ public class JournalArticleLocalServiceImpl
 		newArticle.setCompanyId(user.getCompanyId());
 		newArticle.setUserId(user.getUserId());
 		newArticle.setUserName(user.getFullName());
+
+		Date modifiedDate = new Date();
+
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
+
+		if (serviceContext != null) {
+			modifiedDate = serviceContext.getModifiedDate(modifiedDate);
+		}
+
+		newArticle.setModifiedDate(modifiedDate);
+
 		newArticle.setFolderId(oldArticle.getFolderId());
 		newArticle.setTreePath(oldArticle.getTreePath());
 		newArticle.setArticleId(newArticleId);
@@ -1138,17 +1150,6 @@ public class JournalArticleLocalServiceImpl
 
 		newArticle.setStatusByUserId(user.getUserId());
 		newArticle.setStatusByUserName(user.getFullName());
-
-		Date modifiedDate = new Date();
-
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
-
-		if (serviceContext != null) {
-			modifiedDate = serviceContext.getModifiedDate(modifiedDate);
-		}
-
-		newArticle.setModifiedDate(modifiedDate);
 		newArticle.setStatusDate(modifiedDate);
 
 		ExpandoBridgeUtil.copyExpandoBridgeAttributes(
@@ -5886,13 +5887,12 @@ public class JournalArticleLocalServiceImpl
 			article.setUserId(user.getUserId());
 			article.setUserName(user.getFullName());
 			article.setCreateDate(latestArticle.getCreateDate());
+			article.setModifiedDate(serviceContext.getModifiedDate(now));
 			article.setClassNameId(latestArticle.getClassNameId());
 			article.setClassPK(latestArticle.getClassPK());
 			article.setArticleId(articleId);
 			article.setVersion(version);
 			article.setSmallImageId(latestArticle.getSmallImageId());
-
-			article.setModifiedDate(serviceContext.getModifiedDate(now));
 			article.setStatusByUserId(user.getUserId());
 			article.setStatusByUserName(user.getFullName());
 			article.setStatusDate(serviceContext.getModifiedDate(now));
