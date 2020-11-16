@@ -44,7 +44,7 @@ export function getFilterDisplayName(name) {
 			displayName = Liferay.Language.get('subscription-level');
 			break;
 		case 'code':
-			displayName = name.charAt(0).toUpperCase() + name.substring(1);
+			displayName = Liferay.Language.get('code');
 			break;
 		case 'countryName':
 			displayName = Liferay.Language.get('country');
