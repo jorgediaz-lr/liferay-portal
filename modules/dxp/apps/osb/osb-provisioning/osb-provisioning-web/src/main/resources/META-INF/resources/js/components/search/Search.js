@@ -106,6 +106,7 @@ function Search({
 
 	function formatPlaceholder(filters) {
 		return Object.entries(filters)
+			.filter(([key]) => getFilterDisplayName(key))
 			.map(
 				([key, value]) =>
 					getFilterDisplayName(key) + ': ' + formatFilterValue(value)

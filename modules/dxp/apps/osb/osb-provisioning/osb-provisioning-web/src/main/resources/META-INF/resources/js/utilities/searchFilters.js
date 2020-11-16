@@ -32,6 +32,9 @@ export function getFilterDisplayName(name) {
 		case 'activeSLAs':
 			displayName = Liferay.Language.get('subscription-level');
 			break;
+		case 'code':
+			displayName = name.charAt(0).toUpperCase() + name.substring(1);
+			break;
 		case 'countryName':
 			displayName = Liferay.Language.get('country');
 			break;
@@ -78,7 +81,7 @@ export function getFilterDisplayName(name) {
 			displayName = Liferay.Language.get('project-worker');
 			break;
 		default:
-			displayName = name.charAt(0).toUpperCase() + name.substring(1);
+			return;
 	}
 
 	return displayName;
