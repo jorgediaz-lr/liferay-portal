@@ -376,6 +376,21 @@ public interface AccountModel
 	public void setRegion(String region);
 
 	/**
+	 * Returns the language of this account.
+	 *
+	 * @return the language of this account
+	 */
+	@AutoEscape
+	public String getLanguage();
+
+	/**
+	 * Sets the language of this account.
+	 *
+	 * @param language the language of this account
+	 */
+	public void setLanguage(String language);
+
+	/**
 	 * Returns the internal of this account.
 	 *
 	 * @return the internal of this account

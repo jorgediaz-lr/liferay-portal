@@ -83,8 +83,8 @@ public interface AccountLocalService
 			long userId, long parentAccountId, String name, String code,
 			String description, long logoId, String contactEmailAddress,
 			String profileEmailAddress, String phoneNumber, String faxNumber,
-			String website, String tier, String region, boolean internal,
-			String status)
+			String website, String tier, String region, String language,
+			boolean internal, String status)
 		throws PortalException;
 
 	/**
@@ -333,8 +333,8 @@ public interface AccountLocalService
 			long accountId, long parentAccountId, String name, String code,
 			String description, long logoId, String contactEmailAddress,
 			String profileEmailAddress, String phoneNumber, String faxNumber,
-			String website, String tier, String region, boolean internal,
-			String status)
+			String website, String tier, String region, String language,
+			boolean internal, String status)
 		throws PortalException;
 
 }

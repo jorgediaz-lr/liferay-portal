@@ -63,6 +63,7 @@ public class AccountWrapper
 		attributes.put("website", getWebsite());
 		attributes.put("tier", getTier());
 		attributes.put("region", getRegion());
+		attributes.put("language", getLanguage());
 		attributes.put("internal", isInternal());
 		attributes.put("status", getStatus());
 
@@ -191,6 +192,12 @@ public class AccountWrapper
 
 		if (region != null) {
 			setRegion(region);
+		}
+
+		String language = (String)attributes.get("language");
+
+		if (language != null) {
+			setLanguage(language);
 		}
 
 		Boolean internal = (Boolean)attributes.get("internal");
@@ -328,6 +335,16 @@ public class AccountWrapper
 	@Override
 	public boolean getInternal() {
 		return model.getInternal();
+	}
+
+	/**
+	 * Returns the language of this account.
+	 *
+	 * @return the language of this account
+	 */
+	@Override
+	public String getLanguage() {
+		return model.getLanguage();
 	}
 
 	/**
@@ -590,6 +607,16 @@ public class AccountWrapper
 	@Override
 	public void setInternal(boolean internal) {
 		model.setInternal(internal);
+	}
+
+	/**
+	 * Sets the language of this account.
+	 *
+	 * @param language the language of this account
+	 */
+	@Override
+	public void setLanguage(String language) {
+		model.setLanguage(language);
 	}
 
 	/**

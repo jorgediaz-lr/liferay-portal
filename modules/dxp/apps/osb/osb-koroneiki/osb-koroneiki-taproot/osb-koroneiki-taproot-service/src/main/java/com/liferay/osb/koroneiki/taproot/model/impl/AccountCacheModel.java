@@ -76,7 +76,7 @@ public class AccountCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(45);
+		StringBundler sb = new StringBundler(47);
 
 		sb.append("{mvccVersion=");
 		sb.append(mvccVersion);
@@ -118,6 +118,8 @@ public class AccountCacheModel
 		sb.append(tier);
 		sb.append(", region=");
 		sb.append(region);
+		sb.append(", language=");
+		sb.append(language);
 		sb.append(", internal=");
 		sb.append(internal);
 		sb.append(", status=");
@@ -239,6 +241,13 @@ public class AccountCacheModel
 			accountImpl.setRegion(region);
 		}
 
+		if (language == null) {
+			accountImpl.setLanguage("");
+		}
+		else {
+			accountImpl.setLanguage(language);
+		}
+
 		accountImpl.setInternal(internal);
 
 		if (status == null) {
@@ -280,6 +289,7 @@ public class AccountCacheModel
 		website = objectInput.readUTF();
 		tier = objectInput.readUTF();
 		region = objectInput.readUTF();
+		language = objectInput.readUTF();
 
 		internal = objectInput.readBoolean();
 		status = objectInput.readUTF();
@@ -385,6 +395,13 @@ public class AccountCacheModel
 			objectOutput.writeUTF(region);
 		}
 
+		if (language == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(language);
+		}
+
 		objectOutput.writeBoolean(internal);
 
 		if (status == null) {
@@ -415,6 +432,7 @@ public class AccountCacheModel
 	public String website;
 	public String tier;
 	public String region;
+	public String language;
 	public boolean internal;
 	public String status;
 

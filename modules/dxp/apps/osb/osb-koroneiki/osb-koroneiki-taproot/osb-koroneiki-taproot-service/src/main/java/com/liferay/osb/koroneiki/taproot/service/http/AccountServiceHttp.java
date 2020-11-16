@@ -56,7 +56,7 @@ public class AccountServiceHttp {
 			String code, String description, long logoId,
 			String contactEmailAddress, String profileEmailAddress,
 			String phoneNumber, String faxNumber, String website, String tier,
-			String region, boolean internal, String status)
+			String region, String language, boolean internal, String status)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		try {
@@ -67,7 +67,7 @@ public class AccountServiceHttp {
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, parentAccountId, name, code, description, logoId,
 				contactEmailAddress, profileEmailAddress, phoneNumber,
-				faxNumber, website, tier, region, internal, status);
+				faxNumber, website, tier, region, language, internal, status);
 
 			Object returnObj = null;
 
@@ -592,7 +592,7 @@ public class AccountServiceHttp {
 			String name, String code, String description, long logoId,
 			String contactEmailAddress, String profileEmailAddress,
 			String phoneNumber, String faxNumber, String website, String tier,
-			String region, boolean internal, String status)
+			String region, String language, boolean internal, String status)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		try {
@@ -603,7 +603,7 @@ public class AccountServiceHttp {
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, accountId, parentAccountId, name, code, description,
 				logoId, contactEmailAddress, profileEmailAddress, phoneNumber,
-				faxNumber, website, tier, region, internal, status);
+				faxNumber, website, tier, region, language, internal, status);
 
 			Object returnObj = null;
 
@@ -638,7 +638,7 @@ public class AccountServiceHttp {
 			long parentAccountId, String name, String code, String description,
 			long logoId, String contactEmailAddress, String profileEmailAddress,
 			String phoneNumber, String faxNumber, String website, String tier,
-			String region, boolean internal, String status)
+			String region, String language, boolean internal, String status)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		try {
@@ -649,7 +649,7 @@ public class AccountServiceHttp {
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, accountKey, parentAccountId, name, code, description,
 				logoId, contactEmailAddress, profileEmailAddress, phoneNumber,
-				faxNumber, website, tier, region, internal, status);
+				faxNumber, website, tier, region, language, internal, status);
 
 			Object returnObj = null;
 
@@ -684,7 +684,7 @@ public class AccountServiceHttp {
 	private static final Class<?>[] _addAccountParameterTypes0 = new Class[] {
 		long.class, String.class, String.class, String.class, long.class,
 		String.class, String.class, String.class, String.class, String.class,
-		String.class, String.class, boolean.class, String.class
+		String.class, String.class, String.class, boolean.class, String.class
 	};
 	private static final Class<?>[] _deleteAccountParameterTypes1 =
 		new Class[] {long.class};
@@ -718,15 +718,15 @@ public class AccountServiceHttp {
 		new Class[] {
 			long.class, long.class, String.class, String.class, String.class,
 			long.class, String.class, String.class, String.class, String.class,
-			String.class, String.class, String.class, boolean.class,
-			String.class
+			String.class, String.class, String.class, String.class,
+			boolean.class, String.class
 		};
 	private static final Class<?>[] _updateAccountParameterTypes14 =
 		new Class[] {
 			String.class, long.class, String.class, String.class, String.class,
 			long.class, String.class, String.class, String.class, String.class,
-			String.class, String.class, String.class, boolean.class,
-			String.class
+			String.class, String.class, String.class, String.class,
+			boolean.class, String.class
 		};
 
 }

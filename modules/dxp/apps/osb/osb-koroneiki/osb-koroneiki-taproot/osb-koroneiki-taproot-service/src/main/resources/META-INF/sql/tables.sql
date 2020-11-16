@@ -19,6 +19,7 @@ create table Koroneiki_Account (
 	website VARCHAR(75) null,
 	tier VARCHAR(75) null,
 	region VARCHAR(75) null,
+	language VARCHAR(75) null,
 	internal_ BOOLEAN,
 	status VARCHAR(75) null
 );
