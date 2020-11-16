@@ -49,8 +49,10 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Address;
+import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.ModelHintsUtil;
+import com.liferay.portal.kernel.service.CountryService;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StackTraceUtil;
@@ -215,6 +217,11 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			soldBy, postalAddress.getAddressCountry());
 
 		account.setRegion(region);
+
+		Country country = _countryService.getCountryByName(
+			postalAddress.getAddressCountry());
+
+		account.setLanguage(getLanguage(jsonObject, country.getA3()));
 
 		String productFamily = jsonObject.getString(
 			"_salesforceOpportunityProductFamily");
@@ -545,6 +552,73 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		}
 
 		return sb.toString();
+	}
+
+	protected Account.Language getLanguage(
+		JSONObject jsonObject, String countryA3) {
+
+		String soldBy = jsonObject.getString("_salesforceOpportunitySoldBy");
+
+		if (Validator.isNull(soldBy)) {
+			_logWarning(
+				"Sold by field is empty. Defaulting support language to " +
+					"English.");
+
+			return Account.Language.ENGLISH;
+		}
+
+		if (soldBy.equals("Liferay Africa") ||
+			soldBy.equals("Liferay Australia") ||
+			soldBy.equals("Liferay Canada") ||
+			soldBy.equals("Liferay France") ||
+			soldBy.equals("Liferay Germany") ||
+			soldBy.equals("Liferay Hungary") ||
+			soldBy.equals("Liferay India") ||
+			soldBy.equals("Liferay International") ||
+			soldBy.equals("Liferay Italy") ||
+			soldBy.equals("Liferay Middle East") ||
+			soldBy.equals("Liferay Netherlands") ||
+			soldBy.equals("Liferay Nordic") ||
+			soldBy.equals("Liferay Singapore") || soldBy.equals("Liferay UK") ||
+			soldBy.equals("Liferay US")) {
+
+			return Account.Language.ENGLISH;
+		}
+		else if (soldBy.equals("Liferay Brazil")) {
+			if (Validator.isNotNull(countryA3) && countryA3.equals("BRA")) {
+				return Account.Language.PORTUGUESE;
+			}
+
+			return Account.Language.SPANISH;
+		}
+		else if (soldBy.equals("Liferay China")) {
+			if (Validator.isNotNull(countryA3) && countryA3.equals("CHN")) {
+				return Account.Language.CHINESE;
+			}
+
+			return Account.Language.ENGLISH;
+		}
+		else if (soldBy.equals("Liferay Japan")) {
+			return Account.Language.JAPANESE;
+		}
+		else if (soldBy.equals("Liferay Spain")) {
+			if (Validator.isNotNull(countryA3) &&
+				(countryA3.equals("CYP") || countryA3.equals("GRC") ||
+				 countryA3.equals("ITA") || countryA3.equals("PRT"))) {
+
+				return Account.Language.ENGLISH;
+			}
+
+			return Account.Language.SPANISH;
+		}
+
+		_logWarning(
+			StringBundler.concat(
+				"Unable to find matching support language for ", soldBy,
+				" and ", countryA3,
+				". Defaulting support language to English."));
+
+		return Account.Language.ENGLISH;
 	}
 
 	protected PostalAddress getPostalAddress(JSONObject jsonObject) {
@@ -1338,6 +1412,9 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 	@Reference
 	private ContactWebService _contactWebService;
+
+	@Reference
+	private CountryService _countryService;
 
 	private volatile DistributedMessagingConfiguration
 		_distributedMessagingConfiguration;
