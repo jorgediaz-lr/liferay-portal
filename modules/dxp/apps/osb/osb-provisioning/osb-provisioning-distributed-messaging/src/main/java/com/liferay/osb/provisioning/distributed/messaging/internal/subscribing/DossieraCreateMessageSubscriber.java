@@ -216,6 +216,13 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 		account.setRegion(region);
 
+		String productFamily = jsonObject.getString(
+			"_salesforceOpportunityProductFamily");
+
+		if (!productFamily.equals("P")) {
+			account.setTier(Account.Tier.T4);
+		}
+
 		return _accountWebService.addAccount(
 			StringPool.BLANK, StringPool.BLANK, account);
 	}
@@ -837,6 +844,8 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		if (Validator.isNull(postalAddress.getPostalCode())) {
 			postalAddress.setPostalCode("N/A");
 		}
+
+		postalAddress.setPrimary(true);
 
 		return postalAddress;
 	}
