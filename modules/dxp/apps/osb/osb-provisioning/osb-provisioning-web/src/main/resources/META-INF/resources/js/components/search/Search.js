@@ -139,7 +139,7 @@ function Search({
 		}
 		/* eslint-enable no-unused-vars */
 
-		if (Object.keys(searchFilters).length) {
+		if (formatPlaceholder(searchFilters)) {
 			return formatPlaceholder(searchFilters);
 		}
 		else {
