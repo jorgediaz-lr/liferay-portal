@@ -19,7 +19,8 @@ function ExternalSelectField({
 	deleteFn,
 	id,
 	inputSize = FIELD_SIZE_DEFAULT,
-	value
+	value,
+	...otherProps
 }) {
 	function handleClick() {
 		clickFn();
@@ -40,6 +41,7 @@ function ExternalSelectField({
 					id={id}
 					type="text"
 					value={value}
+					{...otherProps}
 				/>
 			</label>
 
