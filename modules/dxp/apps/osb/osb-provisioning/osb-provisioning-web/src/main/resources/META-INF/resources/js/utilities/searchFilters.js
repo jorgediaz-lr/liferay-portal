@@ -47,6 +47,9 @@ export function getFilterDisplayName(name) {
 		case 'createdByEmailAddress':
 			displayName = Liferay.Language.get('created-by');
 			break;
+		case 'flsTeamName':
+			displayName = Liferay.Language.get('first-line-support');
+			break;
 		case 'internals':
 			displayName = Liferay.Language.get('internal');
 			break;
@@ -59,8 +62,14 @@ export function getFilterDisplayName(name) {
 		case 'modifiedDateLT':
 			displayName = Liferay.Language.get('modified-before');
 			break;
+		case 'parentAccountName':
+			displayName = Liferay.Language.get('parent-account');
+			break;
 		case 'partners':
 			displayName = Liferay.Language.get('partner');
+			break;
+		case 'partnerTeamName':
+			displayName = Liferay.Language.get('partner-reseller-si');
 			break;
 		case 'providesFLS':
 			displayName = Liferay.Language.get('provides-fls');
