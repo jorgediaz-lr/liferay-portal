@@ -122,6 +122,7 @@ public class EditAccountMVCActionCommand extends BaseMVCActionCommand {
 		String website = ParamUtil.getString(actionRequest, "website");
 		String tier = ParamUtil.getString(actionRequest, "tier");
 		String region = ParamUtil.getString(actionRequest, "region");
+		String language = ParamUtil.getString(actionRequest, "language");
 		boolean internal = ParamUtil.getBoolean(actionRequest, "internal");
 		String status = ParamUtil.getString(actionRequest, "status");
 
@@ -131,13 +132,13 @@ public class EditAccountMVCActionCommand extends BaseMVCActionCommand {
 			account = _accountService.addAccount(
 				parentAccountId, name, code, description, 0,
 				contactEmailAddress, profileEmailAddress, phoneNumber,
-				faxNumber, website, tier, region, internal, status);
+				faxNumber, website, tier, region, language, internal, status);
 		}
 		else {
 			account = _accountService.updateAccount(
 				accountId, parentAccountId, name, code, description, 0,
 				contactEmailAddress, profileEmailAddress, phoneNumber,
-				faxNumber, website, tier, region, internal, status);
+				faxNumber, website, tier, region, language, internal, status);
 		}
 
 		String redirect = ParamUtil.getString(actionRequest, "redirect");

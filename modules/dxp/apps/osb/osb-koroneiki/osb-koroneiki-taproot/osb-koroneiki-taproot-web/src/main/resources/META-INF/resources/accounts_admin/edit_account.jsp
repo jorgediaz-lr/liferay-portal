@@ -123,6 +123,21 @@ renderResponse.setTitle((koroneikiAccount == null) ? LanguageUtil.get(request, "
 
 			</aui:select>
 
+			<aui:select name="language">
+				<aui:option value="" />
+
+				<%
+				for (com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.Account.Language language : com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.Account.Language.values()) {
+				%>
+
+					<aui:option label="<%= language %>" value="<%= language %>" />
+
+				<%
+				}
+				%>
+
+			</aui:select>
+
 			<aui:input checked="<%= (koroneikiAccount != null) && koroneikiAccount.isInternal() %>" name="internal" type="checkbox" />
 
 			<aui:select name="status">

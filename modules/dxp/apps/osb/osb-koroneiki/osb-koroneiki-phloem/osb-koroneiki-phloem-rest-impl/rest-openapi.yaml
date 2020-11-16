@@ -91,6 +91,11 @@ components:
                         The account's key.
                     readOnly: true
                     type: string
+                language:
+                    description:
+                        The account's language.
+                    enum: ["Chinese", "English", "Japanese", "Portuguese", "Spanish"]
+                    type: string
                 logoId:
                     deprecated: true
                     description:

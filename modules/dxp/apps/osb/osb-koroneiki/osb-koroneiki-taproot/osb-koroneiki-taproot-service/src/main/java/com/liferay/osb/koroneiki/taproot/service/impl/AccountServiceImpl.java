@@ -48,7 +48,7 @@ public class AccountServiceImpl extends AccountServiceBaseImpl {
 			long parentAccountId, String name, String code, String description,
 			long logoId, String contactEmailAddress, String profileEmailAddress,
 			String phoneNumber, String faxNumber, String website, String tier,
-			String region, boolean internal, String status)
+			String region, String language, boolean internal, String status)
 		throws PortalException {
 
 		_accountPermission.check(
@@ -57,7 +57,7 @@ public class AccountServiceImpl extends AccountServiceBaseImpl {
 		return accountLocalService.addAccount(
 			getUserId(), parentAccountId, name, code, description, logoId,
 			contactEmailAddress, profileEmailAddress, phoneNumber, faxNumber,
-			website, tier, region, internal, status);
+			website, tier, region, language, internal, status);
 	}
 
 	public Account deleteAccount(long accountId) throws PortalException {
@@ -170,8 +170,8 @@ public class AccountServiceImpl extends AccountServiceBaseImpl {
 			long accountId, long parentAccountId, String name, String code,
 			String description, long logoId, String contactEmailAddress,
 			String profileEmailAddress, String phoneNumber, String faxNumber,
-			String website, String tier, String region, boolean internal,
-			String status)
+			String website, String tier, String region, String language,
+			boolean internal, String status)
 		throws PortalException {
 
 		_accountPermission.check(
@@ -180,15 +180,15 @@ public class AccountServiceImpl extends AccountServiceBaseImpl {
 		return accountLocalService.updateAccount(
 			accountId, parentAccountId, name, code, description, logoId,
 			contactEmailAddress, profileEmailAddress, phoneNumber, faxNumber,
-			website, tier, region, internal, status);
+			website, tier, region, language, internal, status);
 	}
 
 	public Account updateAccount(
 			String accountKey, long parentAccountId, String name, String code,
 			String description, long logoId, String contactEmailAddress,
 			String profileEmailAddress, String phoneNumber, String faxNumber,
-			String website, String tier, String region, boolean internal,
-			String status)
+			String website, String tier, String region, String language,
+			boolean internal, String status)
 		throws PortalException {
 
 		Account account = accountLocalService.getAccount(accountKey);
@@ -199,7 +199,7 @@ public class AccountServiceImpl extends AccountServiceBaseImpl {
 		return accountLocalService.updateAccount(
 			account.getAccountId(), parentAccountId, name, code, description,
 			logoId, contactEmailAddress, profileEmailAddress, phoneNumber,
-			faxNumber, website, tier, region, internal, status);
+			faxNumber, website, tier, region, language, internal, status);
 	}
 
 	@Reference

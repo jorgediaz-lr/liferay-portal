@@ -119,6 +119,7 @@ public class AccountModelDocumentContributor
 		document.addKeyword(
 			"profileEmailAddress", account.getProfileEmailAddress());
 		document.addKeyword("region", account.getRegion());
+		document.addKeyword("language", account.getLanguage());
 		document.addKeyword("tier", account.getTier());
 
 		List<AuditEntry> auditEntries = _auditEntryLocalService.getAuditEntries(
@@ -141,6 +142,7 @@ public class AccountModelDocumentContributor
 		document.addTextSortable("code", account.getCode());
 		document.addTextSortable("name", account.getName());
 		document.addTextSortable("region", account.getRegion());
+		document.addTextSortable("language", account.getLanguage());
 
 		_contributeAddresses(document, account.getAddresses());
 		_contributeContacts(document, account.getAccountId());

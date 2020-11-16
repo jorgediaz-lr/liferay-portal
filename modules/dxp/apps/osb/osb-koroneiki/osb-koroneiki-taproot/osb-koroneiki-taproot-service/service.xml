@@ -31,6 +31,7 @@
 		<column name="website" type="String" />
 		<column name="tier" type="String" />
 		<column name="region" type="String" />
+		<column name="language" type="String" />
 		<column name="internal" type="boolean" />
 		<column name="status" type="String" />
 
