@@ -25,6 +25,7 @@ import com.liferay.osb.koroneiki.taproot.service.AccountLocalService;
 import com.liferay.osb.koroneiki.taproot.service.base.TeamServiceBaseImpl;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 
 import java.util.ArrayList;
@@ -177,6 +178,12 @@ public class TeamServiceImpl extends TeamServiceBaseImpl {
 	}
 
 	public Team updateTeam(long teamId, String name) throws PortalException {
+		Team team = teamLocalService.getTeam(teamId);
+
+		if (team.isSystem()) {
+			throw new PrincipalException();
+		}
+
 		_teamPermission.check(
 			getPermissionChecker(), teamId, ActionKeys.UPDATE);
 
@@ -185,6 +192,10 @@ public class TeamServiceImpl extends TeamServiceBaseImpl {
 
 	public Team updateTeam(String teamKey, String name) throws PortalException {
 		Team team = teamLocalService.getTeam(teamKey);
+
+		if (team.isSystem()) {
+			throw new PrincipalException();
+		}
 
 		_teamPermission.check(getPermissionChecker(), team, ActionKeys.UPDATE);
 
