@@ -13,6 +13,10 @@ import axios from 'axios';
 
 import {NAMESPACE} from '../utilities/constants';
 
+export function addClickOutsideListener(listener) {
+	document.addEventListener('mousedown', listener);
+}
+
 /**
  * Certain empty values are represented by a dash in the UI.
  * This helper converts that value from its dash representation to its true
@@ -22,6 +26,18 @@ import {NAMESPACE} from '../utilities/constants';
  */
 export function convertDashToEmptyString(value) {
 	return value === '-' ? '' : value;
+}
+
+export function handleClickOutside(callback, ref, event) {
+	const clickOutside = ref && !ref.contains(event.target);
+
+	if (clickOutside) {
+		callback();
+	}
+}
+
+export function removeClickOutsideListener(listener) {
+	document.removeEventListener('mousedown', listener);
 }
 
 /**
