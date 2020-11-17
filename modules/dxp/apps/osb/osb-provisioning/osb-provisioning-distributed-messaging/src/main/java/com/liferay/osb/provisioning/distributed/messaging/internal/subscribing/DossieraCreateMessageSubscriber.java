@@ -64,6 +64,7 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import java.net.URL;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -1079,19 +1080,27 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 				ProductPurchase productPurchase = new ProductPurchase();
 
-				Date endDate = _portal.getDate(
-					purchasedProductJSONObject.getInt("_endMonth") - 1,
-					purchasedProductJSONObject.getInt("_endDay"),
-					purchasedProductJSONObject.getInt("_endYear"));
-
-				productPurchase.setEndDate(endDate);
-
 				Date startDate = _portal.getDate(
 					purchasedProductJSONObject.getInt("_startMonth") - 1,
 					purchasedProductJSONObject.getInt("_startDay"),
 					purchasedProductJSONObject.getInt("_startYear"));
 
 				productPurchase.setStartDate(startDate);
+
+				Date originalEndDate = _portal.getDate(
+					purchasedProductJSONObject.getInt("_endMonth") - 1,
+					purchasedProductJSONObject.getInt("_endDay"),
+					purchasedProductJSONObject.getInt("_endYear"));
+
+				productPurchase.setOriginalEndDate(originalEndDate);
+
+				Calendar calendar = Calendar.getInstance();
+
+				calendar.setTime(originalEndDate);
+
+				calendar.add(Calendar.DATE, 30);
+
+				productPurchase.setEndDate(calendar.getTime());
 
 				Product product = _getProduct(
 					purchasedProductJSONObject.getString("_name"));
