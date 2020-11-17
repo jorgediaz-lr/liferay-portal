@@ -107,6 +107,7 @@ public class AccountModelDocumentContributor
 			"contactEmailAddress", account.getContactEmailAddress());
 		document.addKeyword("faxNumber", account.getFaxNumber());
 		document.addKeyword("internal", account.isInternal());
+		document.addKeyword("language", account.getLanguage());
 
 		Account parentAccount = account.getParentAccount();
 
@@ -119,7 +120,6 @@ public class AccountModelDocumentContributor
 		document.addKeyword(
 			"profileEmailAddress", account.getProfileEmailAddress());
 		document.addKeyword("region", account.getRegion());
-		document.addKeyword("language", account.getLanguage());
 		document.addKeyword("tier", account.getTier());
 
 		List<AuditEntry> auditEntries = _auditEntryLocalService.getAuditEntries(
