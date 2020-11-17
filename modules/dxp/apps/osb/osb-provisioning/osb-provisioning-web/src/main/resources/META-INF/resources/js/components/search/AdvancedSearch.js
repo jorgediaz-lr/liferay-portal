@@ -11,14 +11,10 @@
 
 import ClayPanel from '@clayui/panel';
 import PropTypes from 'prop-types';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 
+import {useClickOutside} from '../../hooks/useClickOutside';
 import {NAMESPACE} from '../../utilities/constants';
-import {
-	addClickOutsideListener,
-	handleClickOutside,
-	removeClickOutsideListener
-} from '../../utilities/helpers';
 import Account from './Account';
 import Categorization from './Categorization';
 import Dates from './Dates';
@@ -39,15 +35,7 @@ function AdvancedSearch({
 
 	const advancedSearchRef = useRef();
 
-	useEffect(() => {
-		const onClickOutside = handleClickOutside(() => {
-			setShowAdvancedSearch(false);
-		}, advancedSearchRef.current);
-
-		addClickOutsideListener(onClickOutside);
-
-		return () => removeClickOutsideListener(onClickOutside);
-	}, [setShowAdvancedSearch]);
+	useClickOutside(() => setShowAdvancedSearch(false), advancedSearchRef);
 
 	function handleOnCheck() {
 		setIsAndOperator(!isAndOperator);
