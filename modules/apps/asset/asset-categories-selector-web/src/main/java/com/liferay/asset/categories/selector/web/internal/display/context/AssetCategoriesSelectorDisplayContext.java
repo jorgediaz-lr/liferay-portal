@@ -182,7 +182,7 @@ public class AssetCategoriesSelectorDisplayContext {
 	}
 
 	private JSONArray _getCategoriesJSONArray(
-			long vocabularyId, long categoryId, JSONObject parentObject)
+			long vocabularyId, long categoryId, JSONObject parentJSONObject)
 		throws Exception {
 
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
@@ -199,11 +199,11 @@ public class AssetCategoriesSelectorDisplayContext {
 		for (AssetCategory category : categories) {
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-			JSONArray children = _getCategoriesJSONArray(
+			JSONArray categoriesJSONArray = _getCategoriesJSONArray(
 				vocabularyId, category.getCategoryId(), jsonObject);
 
-			if (children.length() > 0) {
-				jsonObject.put("children", children);
+			if (categoriesJSONArray.length() > 0) {
+				jsonObject.put("children", categoriesJSONArray);
 			}
 
 			jsonObject.put(
@@ -223,7 +223,7 @@ public class AssetCategoriesSelectorDisplayContext {
 			if (jsonObject.getBoolean("expanded") ||
 				jsonObject.getBoolean("selected")) {
 
-				parentObject.put("expanded", true);
+				parentJSONObject.put("expanded", true);
 			}
 
 			jsonArray.put(jsonObject);
@@ -240,11 +240,11 @@ public class AssetCategoriesSelectorDisplayContext {
 		for (long vocabularyId : getVocabularyIds()) {
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-			JSONArray children = _getCategoriesJSONArray(
+			JSONArray categoriesJSONArray = _getCategoriesJSONArray(
 				vocabularyId, 0, jsonObject);
 
 			jsonObject.put(
-				"children", children
+				"children", categoriesJSONArray
 			).put(
 				"disabled", !allowedSelectVocabularies
 			).put(
