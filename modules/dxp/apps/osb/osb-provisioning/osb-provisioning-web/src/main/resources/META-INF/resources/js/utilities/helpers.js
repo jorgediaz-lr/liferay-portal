@@ -28,13 +28,11 @@ export function convertDashToEmptyString(value) {
 	return value === '-' ? '' : value;
 }
 
-export function handleClickOutside(callback, ref, event) {
-	const clickOutside = ref && !ref.contains(event.target);
-
-	if (clickOutside) {
+export const handleClickOutside = (callback, ref) => event => {
+	if (ref && !ref.contains(event.target)) {
 		callback();
 	}
-}
+};
 
 export function removeClickOutsideListener(listener) {
 	document.removeEventListener('mousedown', listener);

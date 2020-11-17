@@ -11,9 +11,14 @@
 
 import ClayPanel from '@clayui/panel';
 import PropTypes from 'prop-types';
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
 import {NAMESPACE} from '../../utilities/constants';
+import {
+	addClickOutsideListener,
+	handleClickOutside,
+	removeClickOutsideListener
+} from '../../utilities/helpers';
 import Account from './Account';
 import Categorization from './Categorization';
 import Dates from './Dates';
@@ -26,17 +31,34 @@ function AdvancedSearch({
 	selectAccountURL,
 	selectFirstLineSupportURL,
 	selectPartnerURL,
+	setShowAdvancedSearch,
 	subscriptionStateNames,
 	tierNames
 }) {
 	const [isAndOperator, setIsAndOperator] = useState(true);
+
+	const advancedSearchRef = useRef();
+
+	useEffect(() => {
+		const onClickOutside = handleClickOutside(() => {
+			setShowAdvancedSearch(false);
+		}, advancedSearchRef.current);
+
+		addClickOutsideListener(onClickOutside);
+
+		return () => removeClickOutsideListener(onClickOutside);
+	}, [setShowAdvancedSearch]);
 
 	function handleOnCheck() {
 		setIsAndOperator(!isAndOperator);
 	}
 
 	return (
-		<div className="advanced-search-container" id="advancedSearch">
+		<div
+			className="advanced-search-container"
+			id="advancedSearch"
+			ref={advancedSearchRef}
+		>
 			<form action={formAction} method="get" name="advancedSearch">
 				<input
 					name="p_p_id"

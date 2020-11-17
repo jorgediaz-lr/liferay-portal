@@ -283,6 +283,7 @@ function Search({
 					selectAccountURL={selectAccountURL}
 					selectFirstLineSupportURL={selectFirstLineSupportURL}
 					selectPartnerURL={selectPartnerURL}
+					setShowAdvancedSearch={setShowAdvancedSearch}
 					subscriptionStateNames={subscriptionStateNames}
 					tierNames={tierNames}
 				/>
