@@ -1123,7 +1123,9 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 				String sizing = purchasedProductJSONObject.getString("_sizing");
 
 				if (Validator.isNotNull(sizing)) {
-					properties.put("sizing", sizing);
+					if (sizing.startsWith("Sizing")) {
+						properties.put("sizing", sizing.substring(7));
+					}
 				}
 
 				if (!properties.isEmpty()) {
