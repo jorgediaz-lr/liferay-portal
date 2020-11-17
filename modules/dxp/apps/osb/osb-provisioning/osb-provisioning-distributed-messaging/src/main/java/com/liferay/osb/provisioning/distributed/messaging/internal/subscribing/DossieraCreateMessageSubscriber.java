@@ -1107,6 +1107,12 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 				productPurchase.setProduct(product);
 
+				int quantity = purchasedProductJSONObject.getInt("_quantity");
+
+				if (quantity > 0) {
+					productPurchase.setQuantity(quantity);
+				}
+
 				Map<String, String> properties = new HashMap<>();
 
 				String environment = purchasedProductJSONObject.getString(
@@ -1121,12 +1127,6 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 				if (Validator.isNotNull(productType)) {
 					properties.put("productType", productType);
-				}
-
-				int quantity = purchasedProductJSONObject.getInt("_quantity");
-
-				if (quantity > 0) {
-					properties.put("quantity", String.valueOf(quantity));
 				}
 
 				String sizing = purchasedProductJSONObject.getString("_sizing");
