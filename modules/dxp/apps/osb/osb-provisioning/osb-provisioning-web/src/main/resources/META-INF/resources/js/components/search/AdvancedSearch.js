@@ -11,7 +11,7 @@
 
 import ClayPanel from '@clayui/panel';
 import PropTypes from 'prop-types';
-import React, {useRef, useState} from 'react';
+import React, {useState} from 'react';
 
 import {useClickOutside} from '../../hooks/useClickOutside';
 import {NAMESPACE} from '../../utilities/constants';
@@ -19,147 +19,152 @@ import Account from './Account';
 import Categorization from './Categorization';
 import Dates from './Dates';
 
-function AdvancedSearch({
-	activeSLANames,
-	countryNames,
-	formAction,
-	regionNames,
-	selectAccountURL,
-	selectFirstLineSupportURL,
-	selectPartnerURL,
-	setShowAdvancedSearch,
-	subscriptionStateNames,
-	tierNames
-}) {
-	const [isAndOperator, setIsAndOperator] = useState(true);
+const AdvancedSearch = React.forwardRef(
+	(
+		{
+			activeSLANames,
+			clickOutsideCallback,
+			countryNames,
+			formAction,
+			regionNames,
+			selectAccountURL,
+			selectFirstLineSupportURL,
+			selectPartnerURL,
+			subscriptionStateNames,
+			tierNames
+		},
+		ref
+	) => {
+		const [isAndOperator, setIsAndOperator] = useState(true);
 
-	const advancedSearchRef = useRef();
+		useClickOutside(clickOutsideCallback, ref);
 
-	useClickOutside(() => setShowAdvancedSearch(false), advancedSearchRef);
+		function handleOnCheck() {
+			setIsAndOperator(!isAndOperator);
+		}
 
-	function handleOnCheck() {
-		setIsAndOperator(!isAndOperator);
+		return (
+			<div className="advanced-search-container" id="advancedSearch">
+				<form action={formAction} method="get" name="advancedSearch">
+					<input
+						name="p_p_id"
+						type="hidden"
+						value="com_liferay_osb_provisioning_web_portlet_AccountsPortlet"
+					/>
+					<input name="p_p_lifecycle" type="hidden" value="0" />
+					<input
+						name={`${NAMESPACE}advancedSearch`}
+						type="hidden"
+						value="true"
+					/>
+
+					<div className="form-group search-match">
+						<h5 className="form-check-inline">
+							{Liferay.Language.get('match')}:
+						</h5>
+
+						<div className="form-check form-check-inline">
+							<label className="form-check-label">
+								<input
+									checked={isAndOperator}
+									className="form-check-input"
+									name={`${NAMESPACE}andOperator`}
+									onChange={() => handleOnCheck()}
+									type="radio"
+									value={true}
+								/>
+								<span className="form-check-label-text">
+									{Liferay.Language.get('all')}
+								</span>
+							</label>
+						</div>
+
+						<div className="form-check form-check-inline">
+							<label className="form-check-label">
+								<input
+									checked={!isAndOperator}
+									className="form-check-input"
+									name={`${NAMESPACE}andOperator`}
+									onChange={() => handleOnCheck()}
+									type="radio"
+									value={false}
+								/>
+								<span className="form-check-label-text">
+									{Liferay.Language.get('any')}
+								</span>
+							</label>
+						</div>
+					</div>
+
+					<ClayPanel
+						collapsable
+						defaultExpanded={true}
+						displayTitle={Liferay.Language.get('account')}
+						displayType="secondary"
+						showCollapseIcon={true}
+					>
+						<Account
+							countryNames={countryNames}
+							selectAccountURL={selectAccountURL}
+							selectFirstLineSupportURL={
+								selectFirstLineSupportURL
+							}
+							selectPartnerURL={selectPartnerURL}
+						/>
+					</ClayPanel>
+
+					<ClayPanel
+						collapsable
+						displayTitle={Liferay.Language.get('categorization')}
+						displayType="secondary"
+						showCollapseIcon={true}
+					>
+						<Categorization
+							activeSLANames={activeSLANames}
+							regionNames={regionNames}
+							subscriptionStateNames={subscriptionStateNames}
+							tierNames={tierNames}
+						/>
+					</ClayPanel>
+
+					<ClayPanel
+						collapsable
+						displayTitle={Liferay.Language.get('dates')}
+						displayType="secondary"
+						showCollapseIcon={true}
+					>
+						<Dates />
+					</ClayPanel>
+
+					<div
+						className="button-holder button-holder-lg"
+						role="group"
+					>
+						<button
+							className="btn btn-secondary"
+							role="button"
+							type="reset"
+						>
+							{Liferay.Language.get('clear')}
+						</button>
+
+						<button
+							className="btn btn-primary"
+							role="button"
+							type="submit"
+						>
+							{Liferay.Language.get('search')}
+						</button>
+					</div>
+				</form>
+			</div>
+		);
 	}
-
-	return (
-		<div
-			className="advanced-search-container"
-			id="advancedSearch"
-			ref={advancedSearchRef}
-		>
-			<form action={formAction} method="get" name="advancedSearch">
-				<input
-					name="p_p_id"
-					type="hidden"
-					value="com_liferay_osb_provisioning_web_portlet_AccountsPortlet"
-				/>
-				<input name="p_p_lifecycle" type="hidden" value="0" />
-				<input
-					name={`${NAMESPACE}advancedSearch`}
-					type="hidden"
-					value="true"
-				/>
-
-				<div className="form-group search-match">
-					<h5 className="form-check-inline">
-						{Liferay.Language.get('match')}:
-					</h5>
-
-					<div className="form-check form-check-inline">
-						<label className="form-check-label">
-							<input
-								checked={isAndOperator}
-								className="form-check-input"
-								name={`${NAMESPACE}andOperator`}
-								onChange={() => handleOnCheck()}
-								type="radio"
-								value={true}
-							/>
-							<span className="form-check-label-text">
-								{Liferay.Language.get('all')}
-							</span>
-						</label>
-					</div>
-
-					<div className="form-check form-check-inline">
-						<label className="form-check-label">
-							<input
-								checked={!isAndOperator}
-								className="form-check-input"
-								name={`${NAMESPACE}andOperator`}
-								onChange={() => handleOnCheck()}
-								type="radio"
-								value={false}
-							/>
-							<span className="form-check-label-text">
-								{Liferay.Language.get('any')}
-							</span>
-						</label>
-					</div>
-				</div>
-
-				<ClayPanel
-					collapsable
-					defaultExpanded={true}
-					displayTitle={Liferay.Language.get('account')}
-					displayType="secondary"
-					showCollapseIcon={true}
-				>
-					<Account
-						countryNames={countryNames}
-						selectAccountURL={selectAccountURL}
-						selectFirstLineSupportURL={selectFirstLineSupportURL}
-						selectPartnerURL={selectPartnerURL}
-					/>
-				</ClayPanel>
-
-				<ClayPanel
-					collapsable
-					displayTitle={Liferay.Language.get('categorization')}
-					displayType="secondary"
-					showCollapseIcon={true}
-				>
-					<Categorization
-						activeSLANames={activeSLANames}
-						regionNames={regionNames}
-						subscriptionStateNames={subscriptionStateNames}
-						tierNames={tierNames}
-					/>
-				</ClayPanel>
-
-				<ClayPanel
-					collapsable
-					displayTitle={Liferay.Language.get('dates')}
-					displayType="secondary"
-					showCollapseIcon={true}
-				>
-					<Dates />
-				</ClayPanel>
-
-				<div className="button-holder button-holder-lg" role="group">
-					<button
-						className="btn btn-secondary"
-						role="button"
-						type="reset"
-					>
-						{Liferay.Language.get('clear')}
-					</button>
-
-					<button
-						className="btn btn-primary"
-						role="button"
-						type="submit"
-					>
-						{Liferay.Language.get('search')}
-					</button>
-				</div>
-			</form>
-		</div>
-	);
-}
+);
 
 AdvancedSearch.propTypes = {
 	activeSLANames: PropTypes.array.isRequired,
+	clickOutsideCallback: PropTypes.func.isRequired,
 	countryNames: PropTypes.array.isRequired,
 	formAction: PropTypes.string.isRequired,
 	regionNames: PropTypes.array.isRequired,

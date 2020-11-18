@@ -18,6 +18,7 @@ function renderAdvancedSearch() {
 	return render(
 		<AdvancedSearch
 			activeSLANames={[]}
+			clickOutsideCallback={jest.fn()}
 			countryNames={[]}
 			formAction="/url"
 			regionNames={[]}

@@ -77,6 +77,7 @@ function Search({
 	const [results, setResults] = useState([]);
 	const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
 
+	const searchRef = useRef();
 	const {current: requestSearchResults} = useRef(
 		debounce(value => {
 			request(resourceURL, {
@@ -147,6 +148,12 @@ function Search({
 		}
 	}
 
+	function handleClickOutside() {
+		setShowAdvancedSearch(false);
+
+		handleOnToggle();
+	}
+
 	function handleKeyDown(event) {
 		if (event.keyCode === 13) {
 			window.location.assign(buildSearchResultsURL());
@@ -159,18 +166,22 @@ function Search({
 		requestSearchResults(event.target.value);
 	}
 
-	function handleOnToggle(event) {
+	function handleOnToggle() {
 		const newState = !showAdvancedSearch;
 
 		setShowAdvancedSearch(newState);
 
-		event.currentTarget.setAttribute('aria-expanded', newState);
+		const advancedSearchBtn = document.getElementById('advancedSearchBtn');
 
-		const ariaLabel = newState
-			? Liferay.Language.get('close-advanced-search')
-			: Liferay.Language.get('open-advanced-search');
+		if (advancedSearchBtn) {
+			advancedSearchBtn.setAttribute('aria-expanded', newState);
 
-		event.currentTarget.setAttribute('aria-label', ariaLabel);
+			const ariaLabel = newState
+				? Liferay.Language.get('close-advanced-search')
+				: Liferay.Language.get('open-advanced-search');
+
+			advancedSearchBtn.setAttribute('aria-label', ariaLabel);
+		}
 	}
 
 	function validateParameterNames(name) {
@@ -184,7 +195,7 @@ function Search({
 	}
 
 	return (
-		<>
+		<div ref={searchRef}>
 			<ClayAutocomplete>
 				<ClayAutocomplete.Input
 					className="search-input"
@@ -203,6 +214,7 @@ function Search({
 							'open-advanced-search'
 						)}
 						className="advanced-search-btn btn btn-monospaced btn-sm"
+						id="advancedSearchBtn"
 						onClick={handleOnToggle}
 					>
 						<svg
@@ -277,18 +289,19 @@ function Search({
 			{showAdvancedSearch && (
 				<AdvancedSearch
 					activeSLANames={activeSLANames}
+					clickOutsideCallback={handleClickOutside}
 					countryNames={countryNames}
 					formAction={accountsHomeURL}
+					ref={searchRef}
 					regionNames={regionNames}
 					selectAccountURL={selectAccountURL}
 					selectFirstLineSupportURL={selectFirstLineSupportURL}
 					selectPartnerURL={selectPartnerURL}
-					setShowAdvancedSearch={setShowAdvancedSearch}
 					subscriptionStateNames={subscriptionStateNames}
 					tierNames={tierNames}
 				/>
 			)}
-		</>
+		</div>
 	);
 }
 
