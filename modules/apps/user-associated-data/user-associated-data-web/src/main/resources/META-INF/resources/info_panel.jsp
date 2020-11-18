@@ -35,6 +35,7 @@ UADInfoPanelDisplay uadInfoPanelDisplay = (UADInfoPanelDisplay)request.getAttrib
 
 			<%
 			UADDisplay uadDisplay = uadInfoPanelDisplay.getUADDisplay();
+
 			UADEntity uadEntity = uadInfoPanelDisplay.getFirstUADEntity();
 
 			Serializable primaryKey = uadEntity.getPrimaryKey();

@@ -20,6 +20,7 @@
 String redirect = ParamUtil.getString(request, "redirect");
 
 Account koroneikiAccount = (Account)request.getAttribute(TaprootWebKeys.ACCOUNT);
+
 AccountNote accountNote = (AccountNote)request.getAttribute(TaprootWebKeys.ACCOUNT_NOTE);
 
 long accountNoteId = BeanParamUtil.getLong(accountNote, request, "accountNoteId");

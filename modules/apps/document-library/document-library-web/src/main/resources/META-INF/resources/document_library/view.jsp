@@ -209,6 +209,7 @@ String navigation = ParamUtil.getString(request, "navigation");
 
 			<%
 			String[] entryColumns = dlPortletInstanceSettingsHelper.getEntryColumns();
+
 			String[] escapedEntryColumns = new String[entryColumns.length];
 
 			for (int i = 0; i < entryColumns.length; i++) {
@@ -313,6 +314,7 @@ String navigation = ParamUtil.getString(request, "navigation");
 		long[] groupIds = PortalUtil.getCurrentAndAncestorSiteGroupIds(scopeGroupId);
 
 		tagsContext.put("groupIds", groupIds);
+
 		tagsContext.put("pathModule", pathModule);
 		tagsContext.put("repositoryId", String.valueOf(repositoryId));
 

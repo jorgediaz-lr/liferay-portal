@@ -39,6 +39,7 @@ context.put(
 			}
 		}
 	});
+
 context.put("videoPosterURL", (String)request.getAttribute(DLPreviewVideoWebKeys.VIDEO_POSTER_URL));
 %>
 

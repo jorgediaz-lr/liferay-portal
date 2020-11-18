@@ -101,6 +101,7 @@ if (Validator.isNotNull(title)) {
 						String tabName = StringUtil.appendParentheticalSuffix(LanguageUtil.get(request, "web-content"), journalDisplayContext.getTotalItems());
 
 						tabsNames = ArrayUtil.append(tabsNames, tabName);
+
 						tabsValues = ArrayUtil.append(tabsValues, "web-content");
 					}
 
@@ -108,6 +109,7 @@ if (Validator.isNotNull(title)) {
 						String tabName = StringUtil.appendParentheticalSuffix(LanguageUtil.get(request, "versions"), journalDisplayContext.getVersionsTotal());
 
 						tabsNames = ArrayUtil.append(tabsNames, tabName);
+
 						tabsValues = ArrayUtil.append(tabsValues, "versions");
 					}
 
@@ -115,6 +117,7 @@ if (Validator.isNotNull(title)) {
 						String tabName = StringUtil.appendParentheticalSuffix(LanguageUtil.get(request, "comments"), journalDisplayContext.getCommentsTotal());
 
 						tabsNames = ArrayUtil.append(tabsNames, tabName);
+
 						tabsValues = ArrayUtil.append(tabsValues, "comments");
 					}
 					%>
