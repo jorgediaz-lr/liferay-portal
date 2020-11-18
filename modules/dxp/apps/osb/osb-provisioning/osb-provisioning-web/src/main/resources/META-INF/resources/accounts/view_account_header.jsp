@@ -22,6 +22,11 @@ ViewAccountDisplayContext viewAccountDisplayContext = ProvisioningWebComponentPr
 AccountDisplay accountDisplay = viewAccountDisplayContext.getAccountDisplay();
 %>
 
+<portlet:renderURL var="partnerURL">
+	<portlet:param name="mvcRenderCommandName" value="/accounts/view_account" />
+	<portlet:param name="accountKey" value="<%= accountDisplay.getPartnerTeamAccountKey() %>" />
+</portlet:renderURL>
+
 <div class="account-header autofit-row provisioning-accounts">
 	<svg class="autofit-col header-icon">
 		<use xlink:href="#account-icon" />
@@ -98,7 +103,16 @@ AccountDisplay accountDisplay = viewAccountDisplayContext.getAccountDisplay();
 					<liferay-ui:message key="partner" />
 				</div>
 
-				<%= HtmlUtil.escape(accountDisplay.getPartnerTeamName()) %>
+				<c:choose>
+					<c:when test="<%= Validator.isNotNull(accountDisplay.getPartnerTeamKey()) %>">
+						<a href="<%= partnerURL %>">
+							<%= HtmlUtil.escape(accountDisplay.getPartnerTeamName()) %>
+						</a>
+					</c:when>
+					<c:otherwise>
+						<%= HtmlUtil.escape(accountDisplay.getPartnerTeamName()) %>
+					</c:otherwise>
+				</c:choose>
 			</li>
 		</ul>
 	</div>

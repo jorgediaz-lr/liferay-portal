@@ -200,6 +200,14 @@ public class AccountDisplay {
 		return _account.getParentAccountKey();
 	}
 
+	public String getPartnerTeamAccountKey() {
+		if (_partnerTeam != null) {
+			return _partnerTeam.getAccountKey();
+		}
+
+		return StringPool.BLANK;
+	}
+
 	public String getPartnerTeamKey() {
 		if (_partnerTeam != null) {
 			return _partnerTeam.getKey();
