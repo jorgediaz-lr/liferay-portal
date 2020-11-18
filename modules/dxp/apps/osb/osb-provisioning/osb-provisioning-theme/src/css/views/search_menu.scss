@@ -19,7 +19,7 @@ body {
 	box-shadow: 0 4px 8px rgba(39, 40, 51, 0.12);
 	max-height: $advanced-search-max-height;
 	max-width: 40.625rem;
-	overflow: scroll;
+	overflow: auto;
 	padding: $spacing-default;
 	position: fixed;
 	width: 100%;
@@ -157,6 +157,7 @@ body {
 			border-right-width: 0;
 			border-top-right-radius: initial;
 
+			&[placeholder],
 			&::placeholder {
 				text-overflow: ellipsis;
 			}
