@@ -547,7 +547,7 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Configuración",
 			panel = "Site Administration",
-			portlet = "Ajustes del sitio");
+			portlet = "Configuración");
 
 		Site.configureCurrentLanguagesCP(
 			currentSiteLanguages = "español (España),alemán (Alemania)",
@@ -584,7 +584,7 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Configuración",
 			panel = "Site Administration",
-			portlet = "Ajustes del sitio");
+			portlet = "Configuración");
 
 		Site.configureCurrentLanguagesCP(
 			currentSiteLanguages = "español (España),alemán (Alemania),inglés (Estados Unidos)",
