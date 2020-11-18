@@ -180,6 +180,7 @@ public class AccountDisplayTerms extends DisplayTerms {
 	public Map<String, String> getTermsMap() {
 		Map<String, String> termsMap = new HashMap<>();
 
+		termsMap.put("account-name", name);
 		termsMap.put("code", code);
 		termsMap.put("country", countryName);
 		termsMap.put("created-after", createDateGT);
@@ -189,7 +190,6 @@ public class AccountDisplayTerms extends DisplayTerms {
 		termsMap.put("internal", StringUtil.merge(internals));
 		termsMap.put("modified-after", modifiedDateGT);
 		termsMap.put("modified-before", modifiedDateLT);
-		termsMap.put("name", name);
 		termsMap.put("parent-account", parentAccountKey);
 		termsMap.put("partner", StringUtil.merge(partners));
 		termsMap.put("partner-reseller-si", partnerTeamKey);
