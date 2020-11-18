@@ -110,10 +110,19 @@ public class EditExternalLinkMVCActionCommand extends BaseMVCActionCommand {
 		String externalLinkKey = ParamUtil.getString(
 			actionRequest, "externalLinkKey");
 
+		String entityId = ParamUtil.getString(actionRequest, "entityId");
+
+		if (Validator.isNotNull(externalLinkKey) &&
+			Validator.isNull(entityId)) {
+
+			deleteExternalLink(actionRequest, user);
+
+			return;
+		}
+
 		String accountKey = ParamUtil.getString(actionRequest, "accountKey");
 		String domain = ParamUtil.getString(actionRequest, "domain");
 		String entityName = ParamUtil.getString(actionRequest, "entityName");
-		String entityId = ParamUtil.getString(actionRequest, "entityId");
 
 		_validate(accountKey, domain, entityName, entityId);
 

@@ -393,6 +393,7 @@ public class AccountDisplay {
 
 		editExternalLinkURL.setParameter("redirect", portletURL.toString());
 
+		editExternalLinkURL.setParameter("accountKey", _account.getKey());
 		editExternalLinkURL.setParameter("externalLinkKey", externalLinkKey);
 
 		return editExternalLinkURL.toString();

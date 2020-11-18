@@ -196,17 +196,6 @@ public class ViewAccountDisplayContext {
 		return currentURLObj.toString();
 	}
 
-	public String getDeleteExternalLinkURL(String externalLinkKey) {
-		PortletURL deleteExternalLinkURL = renderResponse.createActionURL();
-
-		deleteExternalLinkURL.setParameter(
-			ActionRequest.ACTION_NAME, "/edit_external_link");
-		deleteExternalLinkURL.setParameter(Constants.CMD, Constants.DELETE);
-		deleteExternalLinkURL.setParameter("externalLinkKey", externalLinkKey);
-
-		return deleteExternalLinkURL.toString();
-	}
-
 	public String getEditTeamURL(String teamKey) {
 		PortletURL editTeamURL = renderResponse.createActionURL();
 
