@@ -336,12 +336,6 @@ definition {
 			panel = "Control Panel",
 			portlet = "Submissions");
 
-		Workflow.withdrawTaskByActions(
-			workflowAssetTitle = "Site Page Name",
-			workflowAssetType = "Page Revision",
-			workflowDefinition = "Single Approver",
-			workflowTask = "Update");
-
 		Workflow.viewDefaultWorkflowSubmissions();
 	}
 
