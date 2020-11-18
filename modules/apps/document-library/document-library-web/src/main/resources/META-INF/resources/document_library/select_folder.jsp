@@ -20,6 +20,7 @@
 Folder folder = (Folder)request.getAttribute(WebKeys.DOCUMENT_LIBRARY_FOLDER);
 
 long folderId = BeanParamUtil.getLong(folder, request, "folderId", DLFolderConstants.DEFAULT_PARENT_FOLDER_ID);
+long originFolderId = ParamUtil.getLong(request, "originFolderId", DLFolderConstants.DEFAULT_PARENT_FOLDER_ID);
 
 String eventName = ParamUtil.getString(request, "eventName", liferayPortletResponse.getNamespace() + "selectFolder");
 
@@ -67,7 +68,7 @@ DLVisualizationHelper dlVisualizationHelper = new DLVisualizationHelper(dlReques
 			data.put("foldername", folderName);
 			%>
 
-			<aui:button cssClass="selector-button" data="<%= data %>" value="select-this-folder" />
+			<aui:button cssClass="selector-button" data="<%= data %>" disabled="<%= folderId == originFolderId %>" value="select-this-folder" />
 		</aui:button-row>
 
 		<%
@@ -76,6 +77,7 @@ DLVisualizationHelper dlVisualizationHelper = new DLVisualizationHelper(dlReques
 		portletURL.setParameter("mvcRenderCommandName", "/document_library/select_folder");
 		portletURL.setParameter("folderId", String.valueOf(folderId));
 		portletURL.setParameter("ignoreRootFolder", Boolean.TRUE.toString());
+		portletURL.setParameter("originFolderId", String.valueOf(originFolderId));
 		portletURL.setParameter("showMountFolder", String.valueOf(dlVisualizationHelper.isMountFolderVisible()));
 		%>
 
@@ -97,6 +99,7 @@ DLVisualizationHelper dlVisualizationHelper = new DLVisualizationHelper(dlReques
 					<portlet:param name="mvcRenderCommandName" value="/document_library/select_folder" />
 					<portlet:param name="folderId" value="<%= String.valueOf(curFolder.getFolderId()) %>" />
 					<portlet:param name="ignoreRootFolder" value="<%= Boolean.TRUE.toString() %>" />
+					<portlet:param name="originFolderId" value="<%= String.valueOf(originFolderId) %>" />
 					<portlet:param name="showMountFolder" value="<%= String.valueOf(dlVisualizationHelper.isMountFolderVisible()) %>" />
 				</liferay-portlet:renderURL>
 
@@ -160,7 +163,7 @@ DLVisualizationHelper dlVisualizationHelper = new DLVisualizationHelper(dlReques
 						data.put("foldername", curFolder.getName());
 						%>
 
-						<aui:button cssClass="selector-button" data="<%= data %>" value="select" />
+						<aui:button cssClass="selector-button" data="<%= data %>" disabled="<%= curFolder.getFolderId() == originFolderId %>" value="select" />
 					</c:if>
 				</liferay-ui:search-container-column-text>
 			</liferay-ui:search-container-row>
