@@ -49,10 +49,8 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Address;
-import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.ModelHintsUtil;
-import com.liferay.portal.kernel.service.CountryService;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StackTraceUtil;
@@ -219,10 +217,8 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 		account.setRegion(region);
 
-		Country country = _countryService.getCountryByName(
-			postalAddress.getAddressCountry());
-
-		account.setLanguage(getLanguage(jsonObject, country.getA3()));
+		account.setLanguage(
+			getLanguage(jsonObject, postalAddress.getAddressCountry()));
 
 		String productFamily = jsonObject.getString(
 			"_salesforceOpportunityProductFamily");
@@ -556,7 +552,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 	}
 
 	protected Account.Language getLanguage(
-		JSONObject jsonObject, String countryA3) {
+		JSONObject jsonObject, String country) {
 
 		String soldBy = jsonObject.getString("_salesforceOpportunitySoldBy");
 
@@ -586,14 +582,14 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			return Account.Language.ENGLISH;
 		}
 		else if (soldBy.equals("Liferay Brazil")) {
-			if (Validator.isNotNull(countryA3) && countryA3.equals("BRA")) {
+			if (Validator.isNotNull(country) && country.equals("Brazil")) {
 				return Account.Language.PORTUGUESE;
 			}
 
 			return Account.Language.SPANISH;
 		}
 		else if (soldBy.equals("Liferay China")) {
-			if (Validator.isNotNull(countryA3) && countryA3.equals("CHN")) {
+			if (Validator.isNotNull(country) && country.equals("China")) {
 				return Account.Language.CHINESE;
 			}
 
@@ -603,9 +599,9 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			return Account.Language.JAPANESE;
 		}
 		else if (soldBy.equals("Liferay Spain")) {
-			if (Validator.isNotNull(countryA3) &&
-				(countryA3.equals("CYP") || countryA3.equals("GRC") ||
-				 countryA3.equals("ITA") || countryA3.equals("PRT"))) {
+			if (Validator.isNotNull(country) &&
+				(country.equals("Cyprus") || country.equals("Greece") ||
+				 country.equals("Italy") || country.equals("Portugal"))) {
 
 				return Account.Language.ENGLISH;
 			}
@@ -616,8 +612,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		_logWarning(
 			StringBundler.concat(
 				"Unable to find matching support language for ", soldBy,
-				" and ", countryA3,
-				". Defaulting support language to English."));
+				" and ", country, ". Defaulting support language to English."));
 
 		return Account.Language.ENGLISH;
 	}
@@ -1423,9 +1418,6 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 	@Reference
 	private ContactWebService _contactWebService;
-
-	@Reference
-	private CountryService _countryService;
 
 	private volatile DistributedMessagingConfiguration
 		_distributedMessagingConfiguration;
