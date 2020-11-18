@@ -139,6 +139,8 @@ module.exports = function svg4everybody(rawopts) {
 	function oninterval() {
 		// if all <use>s in the array are being bypassed, don't proceed.
 		if (numberOfSvgUseElementsToBypass && uses.length - numberOfSvgUseElementsToBypass <= 0) {
+			numberOfSvgUseElementsToBypass = 0;
+
 			return void requestAnimationFrame(oninterval, 67);
 		}
 
