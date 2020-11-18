@@ -73,6 +73,9 @@ public interface DistributedMessagingConfiguration {
 	public Long zendeskCustomFieldProductId();
 
 	@Meta.AD(required = false)
+	public Long zendeskCustomFieldProvisioningComponentId();
+
+	@Meta.AD(required = false)
 	public Long zendeskCustomFieldSupportRegionId();
 
 }

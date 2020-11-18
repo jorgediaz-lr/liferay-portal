@@ -292,6 +292,10 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 		customFields.put(
 			_distributedMessagingConfiguration.
+				zendeskCustomFieldProvisioningComponentId(),
+			"opportunity_invoiced");
+		customFields.put(
+			_distributedMessagingConfiguration.
 				zendeskCustomFieldOpportunityOwnerId(),
 			account.getContactEmailAddress());
 		customFields.put(
