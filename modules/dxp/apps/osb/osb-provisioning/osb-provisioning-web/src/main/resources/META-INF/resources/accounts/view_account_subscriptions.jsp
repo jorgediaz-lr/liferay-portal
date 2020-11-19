@@ -135,9 +135,9 @@ PortletURL portletURL = viewAccountDisplayContext.getPortletURL();
 
 			<liferay-ui:search-container-column-text
 				href="<%= rowURL %>"
-				name="status"
+				name="state"
 			>
-				<span class="label <%= productPurchaseViewDisplay.getStatusStyle() %>"><%= productPurchaseViewDisplay.getStatus() %></span>
+				<span class="label <%= productPurchaseViewDisplay.getStateStyle() %>"><%= productPurchaseViewDisplay.getState() %></span>
 			</liferay-ui:search-container-column-text>
 		</liferay-ui:search-container-row>
 

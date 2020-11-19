@@ -42,11 +42,11 @@ ProductPurchaseViewDisplay productPurchaseViewDisplay = viewSubscriptionDisplayC
 		<ul class="header-details">
 			<li>
 				<div class="header-label">
-					<liferay-ui:message key="status" />
+					<liferay-ui:message key="state" />
 				</div>
 
-				<span class="label <%= productPurchaseViewDisplay.getStatusStyle() %>">
-					<%= productPurchaseViewDisplay.getStatus() %>
+				<span class="label <%= productPurchaseViewDisplay.getStateStyle() %>">
+					<%= productPurchaseViewDisplay.getState() %>
 				</span>
 			</li>
 			<li>

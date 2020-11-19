@@ -76,21 +76,6 @@ String redirect = ParamUtil.getString(request, "redirect");
 
 			</aui:select>
 
-			<aui:select inlineLabel="left" name="status" required="<%= true %>">
-				<aui:option value="" />
-
-				<%
-				for (Account.Status status : Account.Status.values()) {
-				%>
-
-					<aui:option label="<%= status %>" value="<%= status %>" />
-
-				<%
-				}
-				%>
-
-			</aui:select>
-
 			<aui:button-row>
 				<aui:button type="submit" />
 

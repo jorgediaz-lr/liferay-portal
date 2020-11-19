@@ -68,20 +68,20 @@ public class ProductPurchaseViewDisplay {
 			if (!_inSupportGap && (_perpetual || _startDate.before(now)) &&
 				(_perpetual || _endDate.after(now))) {
 
-				_status = "active";
+				_state = "active";
 			}
 			else if (_endDate.before(now)) {
-				_status = "expired";
+				_state = "expired";
 			}
 			else {
-				_status = "future";
+				_state = "future";
 			}
 		}
 		else if (_purchasedCount == 0) {
-			_status = StringPool.BLANK;
+			_state = StringPool.BLANK;
 		}
 		else {
-			_status = "cancelled";
+			_state = "cancelled";
 		}
 	}
 
@@ -150,23 +150,23 @@ public class ProductPurchaseViewDisplay {
 		return StringPool.BLANK;
 	}
 
-	public String getStatus() {
-		if (Validator.isNotNull(_status)) {
-			return LanguageUtil.get(_httpServletRequest, _status);
+	public String getState() {
+		if (Validator.isNotNull(_state)) {
+			return LanguageUtil.get(_httpServletRequest, _state);
 		}
 
 		return StringPool.DASH;
 	}
 
-	public String getStatusStyle() {
-		if (Validator.isNull(_status)) {
+	public String getStateStyle() {
+		if (Validator.isNull(_state)) {
 			return StringPool.BLANK;
 		}
 
-		if (_status.equals("active")) {
+		if (_state.equals("active")) {
 			return "label-success";
 		}
-		else if (_status.equals("expired") || _status.equals("future")) {
+		else if (_state.equals("expired") || _state.equals("future")) {
 			return "label-warning";
 		}
 		else {
@@ -315,6 +315,7 @@ public class ProductPurchaseViewDisplay {
 	private int _purchasedCount;
 	private int _sizing;
 	private Date _startDate;
+	private final String _state;
 	private String _status;
 
 }
