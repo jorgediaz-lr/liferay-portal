@@ -11,7 +11,7 @@
 
 import ClayPanel from '@clayui/panel';
 import PropTypes from 'prop-types';
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 
 import {useClickOutside} from '../../hooks/useClickOutside';
 import {NAMESPACE} from '../../utilities/constants';
@@ -37,7 +37,15 @@ const AdvancedSearch = React.forwardRef(
 	) => {
 		const [isAndOperator, setIsAndOperator] = useState(true);
 
+		const formRef = useRef();
+
 		useClickOutside(clickOutsideCallback, ref);
+
+		function handleOnKeyDown(event) {
+			if (event.keyCode === 13) {
+				formRef.current.submit();
+			}
+		}
 
 		function handleOnCheck() {
 			setIsAndOperator(!isAndOperator);
@@ -45,7 +53,13 @@ const AdvancedSearch = React.forwardRef(
 
 		return (
 			<div className="advanced-search-container" id="advancedSearch">
-				<form action={formAction} method="get" name="advancedSearch">
+				<form
+					action={formAction}
+					method="get"
+					name="advancedSearch"
+					onKeyDown={handleOnKeyDown}
+					ref={formRef}
+				>
 					<input
 						name="p_p_id"
 						type="hidden"

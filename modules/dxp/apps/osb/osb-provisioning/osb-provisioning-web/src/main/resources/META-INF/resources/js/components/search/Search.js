@@ -168,7 +168,7 @@ function Search({
 		}
 	}
 
-	function handleKeyDown(event) {
+	function handleOnKeyDown(event) {
 		if (event.keyCode === 13) {
 			window.location.assign(buildSearchResultsURL());
 		}
@@ -215,7 +215,7 @@ function Search({
 					className="search-input"
 					disabled={showAdvancedSearch}
 					onChange={handleOnChange}
-					onKeyDown={handleKeyDown}
+					onKeyDown={handleOnKeyDown}
 					placeholder={getSearchPlaceholder()}
 					value={keywords}
 				/>
