@@ -149,14 +149,18 @@ function Search({
 	}
 
 	function handleClickOutside(event) {
+		const activeDatePicker = document.querySelector(
+			'.date-picker-dropdown-menu.show'
+		);
 		const selectedItemChangeContainer = document.getElementById(
 			'selectedItemChange'
 		);
 
 		if (
+			(!activeDatePicker && !selectedItemChangeContainer) ||
+			(activeDatePicker && !activeDatePicker.contains(event.target)) ||
 			(selectedItemChangeContainer &&
-				!selectedItemChangeContainer.contains(event.target)) ||
-			!selectedItemChangeContainer
+				!selectedItemChangeContainer.contains(event.target))
 		) {
 			setShowAdvancedSearch(false);
 
