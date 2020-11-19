@@ -22,11 +22,6 @@ ViewAccountDisplayContext viewAccountDisplayContext = ProvisioningWebComponentPr
 AccountDisplay accountDisplay = viewAccountDisplayContext.getAccountDisplay();
 %>
 
-<portlet:renderURL var="partnerURL">
-	<portlet:param name="mvcRenderCommandName" value="/accounts/view_account" />
-	<portlet:param name="accountKey" value="<%= accountDisplay.getPartnerTeamAccountKey() %>" />
-</portlet:renderURL>
-
 <div class="account-header autofit-row provisioning-accounts">
 	<svg class="autofit-col header-icon">
 		<use xlink:href="#account-icon" />
@@ -105,7 +100,12 @@ AccountDisplay accountDisplay = viewAccountDisplayContext.getAccountDisplay();
 
 				<c:choose>
 					<c:when test="<%= Validator.isNotNull(accountDisplay.getPartnerTeamKey()) %>">
-						<a href="<%= partnerURL %>">
+						<portlet:renderURL var="partnerTeamURL">
+							<portlet:param name="mvcRenderCommandName" value="/accounts/view_team" />
+							<portlet:param name="teamKey" value="<%= accountDisplay.getPartnerTeamKey() %>" />
+						</portlet:renderURL>
+
+						<a href="<%= partnerTeamURL %>">
 							<%= HtmlUtil.escape(accountDisplay.getPartnerTeamName()) %>
 						</a>
 					</c:when>
