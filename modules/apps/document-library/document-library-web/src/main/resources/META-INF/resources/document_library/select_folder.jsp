@@ -20,7 +20,7 @@
 Folder folder = (Folder)request.getAttribute(WebKeys.DOCUMENT_LIBRARY_FOLDER);
 
 long folderId = BeanParamUtil.getLong(folder, request, "folderId", DLFolderConstants.DEFAULT_PARENT_FOLDER_ID);
-long originFolderId = ParamUtil.getLong(request, "originFolderId", DLFolderConstants.DEFAULT_PARENT_FOLDER_ID);
+long originFolderId = ParamUtil.getLong(request, "originFolderId", folderId);
 
 String eventName = ParamUtil.getString(request, "eventName", liferayPortletResponse.getNamespace() + "selectFolder");
 
