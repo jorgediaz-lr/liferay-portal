@@ -141,7 +141,7 @@ public class TeamRoleResourceImpl
 		throws Exception {
 
 		return TeamRoleUtil.toTeamRole(
-			_teamRoleService.getTeamRole(teamRoleType, teamRoleName));
+			_teamRoleService.getTeamRole(teamRoleName, teamRoleType));
 	}
 
 	@Override

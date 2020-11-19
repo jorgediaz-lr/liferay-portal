@@ -231,7 +231,7 @@ public class EditAccountMVCActionCommand extends BaseMVCActionCommand {
 		throws Exception {
 
 		TeamRole teamRole = _teamRoleWebService.getTeamRole(
-			teamRoleName, TeamRole.Type.ACCOUNT.toString());
+			TeamRole.Type.ACCOUNT.toString(), teamRoleName);
 
 		String filterString = StringBundler.concat(
 			"accountKeyTeamRoleKeys/any(s:s eq '", accountKey, "_",
