@@ -146,13 +146,18 @@ public class ViewAccountsManagementToolbarDisplayContext
 
 			value = _getTeamName(value);
 		}
-
-		if (key.equals("parent-account")) {
+		else if (key.equals("parent-account")) {
 			value = _getAccountName(value);
 		}
 
-		return String.format(
-			"%s: %s", LanguageUtil.get(request, key), _getValue(value));
+		if (value.equals(StringPool.TRUE)) {
+			value = LanguageUtil.get(request, "yes");
+		}
+		else if (value.equals(StringPool.FALSE)) {
+			value = LanguageUtil.get(request, "no");
+		}
+
+		return String.format("%s: %s", LanguageUtil.get(request, key), value);
 	}
 
 	private String _getTeamName(String teamKey) {
@@ -165,18 +170,6 @@ public class ViewAccountsManagementToolbarDisplayContext
 			_log.error(exception, exception);
 
 			return teamKey;
-		}
-	}
-
-	private String _getValue(String value) {
-		if (value.equals(StringPool.TRUE)) {
-			return LanguageUtil.get(request, "yes");
-		}
-		else if (value.equals(StringPool.FALSE)) {
-			return LanguageUtil.get(request, "no");
-		}
-		else {
-			return value;
 		}
 	}
 
