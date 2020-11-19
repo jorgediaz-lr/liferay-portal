@@ -45,6 +45,7 @@ public class AccountUtil {
 				faxNumber = account.getFaxNumber();
 				internal = account.getInternal();
 				key = account.getAccountKey();
+				language = Language.create(account.getLanguage());
 				logoId = account.getLogoId();
 				name = account.getName();
 
