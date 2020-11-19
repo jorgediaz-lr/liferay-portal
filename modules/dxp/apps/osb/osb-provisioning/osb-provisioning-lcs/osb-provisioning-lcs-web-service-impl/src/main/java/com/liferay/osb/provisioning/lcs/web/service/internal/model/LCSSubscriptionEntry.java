@@ -14,6 +14,8 @@
 
 package com.liferay.osb.provisioning.lcs.web.service.internal.model;
 
+import com.liferay.portal.kernel.util.StringPool;
+
 import java.util.Date;
 
 /**
@@ -21,12 +23,32 @@ import java.util.Date;
  */
 public class LCSSubscriptionEntry {
 
+	public boolean getActive() {
+		return false;
+	}
+
+	public double getActualPrice() {
+		return 0.0;
+	}
+
+	public String getCurrencyCode() {
+		return StringPool.BLANK;
+	}
+
 	public Date getEndDate() {
 		return _endDate;
 	}
 
 	public int getInstanceSize() {
 		return _instanceSize;
+	}
+
+	public String getPlatform() {
+		return StringPool.BLANK;
+	}
+
+	public String getPlatformVersion() {
+		return StringPool.BLANK;
 	}
 
 	public String getProduct() {
@@ -37,8 +59,16 @@ public class LCSSubscriptionEntry {
 		return _productVersion;
 	}
 
+	public int getQuantity() {
+		return 0;
+	}
+
 	public int getServersAllowed() {
 		return _serversAllowed;
+	}
+
+	public int getServersUsed() {
+		return 0;
 	}
 
 	public Date getStartDate() {
