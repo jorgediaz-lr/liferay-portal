@@ -148,10 +148,20 @@ function Search({
 		}
 	}
 
-	function handleClickOutside() {
-		setShowAdvancedSearch(false);
+	function handleClickOutside(event) {
+		const selectedItemChangeContainer = document.getElementById(
+			'selectedItemChange'
+		);
 
-		handleOnToggle();
+		if (
+			(selectedItemChangeContainer &&
+				!selectedItemChangeContainer.contains(event.target)) ||
+			!selectedItemChangeContainer
+		) {
+			setShowAdvancedSearch(false);
+
+			handleOnToggle();
+		}
 	}
 
 	function handleKeyDown(event) {
