@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.List;
@@ -150,7 +151,8 @@ public class ViewAccountsManagementToolbarDisplayContext
 			value = _getAccountName(value);
 		}
 
-		return String.format("%s: %s", LanguageUtil.get(request, key), value);
+		return String.format(
+			"%s: %s", LanguageUtil.get(request, key), _getValue(value));
 	}
 
 	private String _getTeamName(String teamKey) {
@@ -163,6 +165,18 @@ public class ViewAccountsManagementToolbarDisplayContext
 			_log.error(exception, exception);
 
 			return teamKey;
+		}
+	}
+
+	private String _getValue(String value) {
+		if (value.equals(StringPool.TRUE)) {
+			return LanguageUtil.get(request, "yes");
+		}
+		else if (value.equals(StringPool.FALSE)) {
+			return LanguageUtil.get(request, "no");
+		}
+		else {
+			return value;
 		}
 	}
 
