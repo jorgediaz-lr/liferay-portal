@@ -133,7 +133,7 @@ definition {
 			panel = "Control Panel",
 			portlet = "Search");
 
-		var serverVersion = Elasticsearch.getServerVersion(port = "9200");
+		var serverVersion = Elasticsearch.getServerVersion();
 
 		if (IsTextEqual.isPartialText(locator1 = "SearchAdmin#SEARCH_ENGINE_VENDOR", value1 = "Embedded")) {
 			SearchAdministration.assertEngineVendorAndVersions(
@@ -142,8 +142,10 @@ definition {
 				serverVersion = "${serverVersion}");
 		}
 		else {
+			var clientVersion = Elasticsearch.getClientVersion();
+
 			SearchAdministration.assertEngineVendorAndVersions(
-				clientVersion = "7.9.0",
+				clientVersion = "${clientVersion}",
 				engineVendor = "Elasticsearch",
 				serverVersion = "${serverVersion}");
 		}
@@ -345,7 +347,7 @@ definition {
 			panel = "Control Panel",
 			portlet = "Search");
 
-		var serverVersion = Elasticsearch.getServerVersion(port = "9200");
+		var serverVersion = Elasticsearch.getServerVersion();
 
 		if (IsTextEqual.isPartialText(locator1 = "SearchAdmin#SEARCH_ENGINE_VENDOR", value1 = "Embedded")) {
 			SearchAdministration.assertEngineVendorAndVersions(
@@ -354,8 +356,10 @@ definition {
 				serverVersion = "${serverVersion}");
 		}
 		else {
+			var clientVersion = Elasticsearch.getClientVersion();
+
 			SearchAdministration.assertEngineVendorAndVersions(
-				clientVersion = "7.9.0",
+				clientVersion = "${clientVersion}",
 				engineVendor = "Elasticsearch",
 				serverVersion = "${serverVersion}");
 		}

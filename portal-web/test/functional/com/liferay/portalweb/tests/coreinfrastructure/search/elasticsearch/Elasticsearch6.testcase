@@ -130,18 +130,13 @@ definition {
 			panel = "Control Panel",
 			portlet = "Search");
 
-		if (IsTextEqual.isPartialText(locator1 = "SearchAdmin#SEARCH_ENGINE_VENDOR", value1 = "Embedded")) {
-			SearchAdministration.assertEngineVendorAndVersions(
-				clientVersion = "6.8.6",
-				engineVendor = "Elasticsearch",
-				serverVersion = "6.8.6");
-		}
-		else {
-			SearchAdministration.assertEngineVendorAndVersions(
-				clientVersion = "6.8.6",
-				engineVendor = "Elasticsearch",
-				serverVersion = "6.8.7");
-		}
+		var clientVersion = Elasticsearch.getClientVersion();
+		var serverVersion = Elasticsearch.getServerVersion();
+
+		SearchAdministration.assertEngineVendorAndVersions(
+			clientVersion = "${clientVersion}",
+			engineVendor = "Elasticsearch",
+			serverVersion = "${serverVersion}");
 
 		Navigator.gotoNavItem(navItem = "Field Mappings");
 
