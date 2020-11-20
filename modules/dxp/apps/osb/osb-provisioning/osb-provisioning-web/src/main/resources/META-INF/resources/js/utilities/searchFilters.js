@@ -16,17 +16,17 @@
  */
 export function formatFilterValue(value) {
 	switch (value) {
-		case 'true':
-			return Liferay.Language.get('yes');
-		case 'true,false':
-			return (
-				Liferay.Language.get('yes') + ', ' + Liferay.Language.get('no')
-			);
 		case 'false':
 			return Liferay.Language.get('no');
 		case 'false,true':
 			return (
 				Liferay.Language.get('no') + ', ' + Liferay.Language.get('yes')
+			);
+		case 'true':
+			return Liferay.Language.get('yes');
+		case 'true,false':
+			return (
+				Liferay.Language.get('yes') + ', ' + Liferay.Language.get('no')
 			);
 		default:
 			return value;
