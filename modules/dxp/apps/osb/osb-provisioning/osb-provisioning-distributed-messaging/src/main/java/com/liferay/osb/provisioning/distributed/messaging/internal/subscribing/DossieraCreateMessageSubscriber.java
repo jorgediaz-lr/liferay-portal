@@ -40,6 +40,7 @@ import com.liferay.osb.provisioning.zendesk.model.ZendeskTicket;
 import com.liferay.osb.provisioning.zendesk.web.service.ZendeskTicketWebService;
 import com.liferay.petra.content.ContentUtil;
 import com.liferay.petra.lang.CentralizedThreadLocal;
+import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
@@ -324,10 +325,15 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		customFields.put(
 			_distributedMessagingConfiguration.zendeskCustomFieldProductId(),
 			"Provisioning Request");
+
+		String region = "provisioning_" + account.getRegionAsString();
+
 		customFields.put(
 			_distributedMessagingConfiguration.
 				zendeskCustomFieldSupportRegionId(),
-			account.getRegionAsString());
+			StringUtil.replace(
+				StringUtil.toLowerCase(region), CharPool.SPACE,
+				CharPool.UNDERLINE));
 
 		zendeskTicket.setCustomFields(customFields);
 
