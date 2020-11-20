@@ -15,19 +15,22 @@
  * @returns {string} New display value
  */
 export function formatFilterValue(value) {
-	if (value === 'true') {
-		return Liferay.Language.get('yes');
+	switch (value) {
+		case 'true':
+			return Liferay.Language.get('yes');
+		case 'true,false':
+			return (
+				Liferay.Language.get('yes') + ', ' + Liferay.Language.get('no')
+			);
+		case 'false':
+			return Liferay.Language.get('no');
+		case 'false,true':
+			return (
+				Liferay.Language.get('no') + ', ' + Liferay.Language.get('yes')
+			);
+		default:
+			return value;
 	}
-
-	if (value === 'true,false') {
-		return Liferay.Language.get('yes') + ', ' + Liferay.Language.get('no');
-	}
-
-	if (value === 'false') {
-		return Liferay.Language.get('no');
-	}
-
-	return value;
 }
 
 /**
