@@ -148,31 +148,37 @@ public class EditExternalLinkMVCActionCommand extends BaseMVCActionCommand {
 			String entityId)
 		throws Exception {
 
-		if (domain.equals(ExternalLinkDomain.DOSSIERA)) {
-			List<Account> accounts = _accountWebService.getAccounts(
-				domain, entityName, entityId, 1, 1);
+		if (!domain.equals(ExternalLinkDomain.DOSSIERA)) {
+			return;
+		}
 
-			if (!accounts.isEmpty()) {
-				throw new DuplicateDossieraKeyException();
+		List<Account> accounts = _accountWebService.getAccounts(
+			domain, entityName, entityId, 1, 1);
+
+		if (!accounts.isEmpty()) {
+			throw new DuplicateDossieraKeyException();
+		}
+
+		List<ExternalLink> externalLinks =
+			_externalLinkWebService.getExternalLinks(accountKey, 1, 1000);
+
+		for (ExternalLink externalLink : externalLinks) {
+			String curDomain = externalLink.getDomain();
+
+			if (!curDomain.equals(ExternalLinkDomain.DOSSIERA)) {
+				continue;
 			}
 
-			List<ExternalLink> externalLinks =
-				_externalLinkWebService.getExternalLinks(accountKey, 1, 1000);
+			String curEntityName = externalLink.getEntityName();
 
-			for (ExternalLink externalLink : externalLinks) {
-				String curEntityName = externalLink.getEntityName();
+			if ((entityName.equals(ExternalLinkEntityName.DOSSIERA_ACCOUNT) &&
+				 curEntityName.equals(
+					 ExternalLinkEntityName.DOSSIERA_PROJECT)) ||
+				(entityName.equals(ExternalLinkEntityName.DOSSIERA_PROJECT) &&
+				 curEntityName.equals(
+					 ExternalLinkEntityName.DOSSIERA_ACCOUNT))) {
 
-				if ((entityName.equals(
-						ExternalLinkEntityName.DOSSIERA_ACCOUNT) &&
-					 curEntityName.equals(
-						 ExternalLinkEntityName.DOSSIERA_PROJECT)) ||
-					(entityName.equals(
-						ExternalLinkEntityName.DOSSIERA_PROJECT) &&
-					 curEntityName.equals(
-						 ExternalLinkEntityName.DOSSIERA_ACCOUNT))) {
-
-					throw new MultipleDossieraKeysException();
-				}
+				throw new MultipleDossieraKeysException();
 			}
 		}
 	}
