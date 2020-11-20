@@ -263,6 +263,14 @@ public class TeamLocalServiceWrapper
 	}
 
 	@Override
+	public com.liferay.osb.koroneiki.taproot.model.Team getDefaultTeam(
+			long accountId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _teamLocalService.getDefaultTeam(accountId);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery
 		getExportActionableDynamicQuery(
 			com.liferay.exportimport.kernel.lar.PortletDataContext

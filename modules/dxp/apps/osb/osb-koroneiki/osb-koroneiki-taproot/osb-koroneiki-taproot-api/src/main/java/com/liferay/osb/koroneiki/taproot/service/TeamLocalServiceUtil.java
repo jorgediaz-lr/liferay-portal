@@ -255,6 +255,13 @@ public class TeamLocalServiceUtil {
 		return getService().getContactTeams(contactId, start, end);
 	}
 
+	public static com.liferay.osb.koroneiki.taproot.model.Team getDefaultTeam(
+			long accountId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().getDefaultTeam(accountId);
+	}
+
 	public static com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery
 		getExportActionableDynamicQuery(
 			com.liferay.exportimport.kernel.lar.PortletDataContext
