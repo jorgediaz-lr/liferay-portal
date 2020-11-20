@@ -45,7 +45,7 @@
 .subscription-header,
 .team-header {
 	border-bottom: 1px solid $secondary-l3;
-	padding-top: $spacing-default;
+	padding-top: $spacing-xs;
 
 	.account-code {
 		&:after {
@@ -54,8 +54,13 @@
 	}
 
 	.account-name,
+	.breadcrumb,
 	.contact-name {
 		margin-bottom: 0;
+	}
+
+	.breadcrumb {
+		padding-bottom: $spacing-xs;
 	}
 
 	.email-address {
@@ -88,6 +93,7 @@
 	.header-icon {
 		height: 2rem;
 		margin-right: $spacing-md;
+		margin-top: 1.25rem;
 		width: 2rem;
 	}
 
