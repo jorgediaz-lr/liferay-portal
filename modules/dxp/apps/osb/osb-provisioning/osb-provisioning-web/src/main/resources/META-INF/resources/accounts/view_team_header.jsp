@@ -24,7 +24,7 @@ TeamDisplay teamDisplay = viewTeamDisplayContext.getTeamDisplay();
 
 <div class="autofit-row provisioning-accounts team-header">
 	<svg class="autofit-col header-icon">
-		<use xlink:href="#subscription-icon" />
+		<use xlink:href="#team-icon" />
 	</svg>
 
 	<div class="autofit-col autofit-col-expand">
