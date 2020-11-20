@@ -241,7 +241,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 		Note note = new Note();
 
-		note.setContent(getNotes(jsonObject, account));
+		note.setContent(getNoteContent(jsonObject, account));
 		note.setFormat(Note.Format.PLAIN);
 		note.setStatus(Note.Status.APPROVED);
 		note.setType(Note.Type.SALES);
@@ -642,7 +642,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		return Account.Language.ENGLISH;
 	}
 
-	protected String getNotes(JSONObject jsonObject, Account account)
+	protected String getNoteContent(JSONObject jsonObject, Account account)
 		throws PortalException {
 
 		ProductPurchase[] productPurchases = account.getProductPurchases();
