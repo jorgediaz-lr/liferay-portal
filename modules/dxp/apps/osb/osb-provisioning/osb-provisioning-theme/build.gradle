@@ -1,7 +1,3 @@
 assemble {
 	dependsOn packageRunBuild
 }
-
-gulpBuild {
-	enabled = false
-}
