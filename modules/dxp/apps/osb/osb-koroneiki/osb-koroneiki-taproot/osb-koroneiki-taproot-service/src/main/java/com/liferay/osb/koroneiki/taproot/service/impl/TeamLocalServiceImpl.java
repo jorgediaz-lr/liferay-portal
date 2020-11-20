@@ -155,6 +155,10 @@ public class TeamLocalServiceImpl extends TeamLocalServiceBaseImpl {
 		return teamFinder.findByName(null, params, start, end);
 	}
 
+	public Team getDefaultTeam(long accountId) throws PortalException {
+		return teamPersistence.findByAI_S(accountId, true);
+	}
+
 	public Team getTeam(String teamKey) throws PortalException {
 		return teamPersistence.findByTeamKey(teamKey);
 	}

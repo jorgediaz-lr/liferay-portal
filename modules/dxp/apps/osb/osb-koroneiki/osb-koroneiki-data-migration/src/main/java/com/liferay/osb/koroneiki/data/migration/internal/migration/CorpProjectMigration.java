@@ -26,6 +26,7 @@ import com.liferay.osb.koroneiki.root.util.ModelKeyGenerator;
 import com.liferay.osb.koroneiki.taproot.model.Account;
 import com.liferay.osb.koroneiki.taproot.service.AccountLocalService;
 import com.liferay.osb.koroneiki.taproot.service.AccountNoteLocalService;
+import com.liferay.osb.koroneiki.taproot.service.TeamLocalService;
 import com.liferay.osb.koroneiki.trunk.model.ProductPurchase;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.log.Log;
@@ -125,6 +126,8 @@ public class CorpProjectMigration {
 				account.setStatus(Status.ACTIVE.toString());
 
 				_accountLocalService.addAccount(account);
+
+				_teamLocalService.syncDefaultTeam(account.getAccountId());
 
 				_accountNoteLocalService.addAccountNote(
 					userId, StringPool.BLANK, StringPool.BLANK,
@@ -504,6 +507,9 @@ public class CorpProjectMigration {
 
 	@Reference
 	private RegionService _regionService;
+
+	@Reference
+	private TeamLocalService _teamLocalService;
 
 	@Reference
 	private UserLocalService _userLocalService;

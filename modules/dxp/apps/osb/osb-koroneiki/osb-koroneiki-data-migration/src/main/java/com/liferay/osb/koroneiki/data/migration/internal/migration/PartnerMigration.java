@@ -105,8 +105,11 @@ public class PartnerMigration {
 	}
 
 	private void _assignTeam(
-			Connection connection, long partnerEntryId, long teamId)
+			Connection connection, long userId, long partnerEntryId,
+			Account partnerAccount, String code)
 		throws Exception {
+
+		Team flsTeam = null;
 
 		StringBundler sb = new StringBundler(6);
 
@@ -135,14 +138,28 @@ public class PartnerMigration {
 					continue;
 				}
 
+				Team defaultTeam = _teamLocalService.getDefaultTeam(
+					partnerAccount.getAccountId());
+
 				_teamAccountRoleLocalService.addTeamAccountRole(
-					teamId, account.getAccountId(), _partnerTeamRoleId);
+					defaultTeam.getTeamId(), account.getAccountId(),
+					_partnerTeamRoleId);
 
 				boolean partnerManagedSupport = resultSet.getBoolean(2);
 
 				if (partnerManagedSupport) {
+					if (flsTeam == null) {
+						flsTeam = _teamLocalService.addTeam(
+							userId, partnerAccount.getAccountId(),
+							code + " FLS", false);
+
+						_accountFLSTeamMap.put(
+							partnerAccount.getAccountId(), flsTeam.getTeamId());
+					}
+
 					_teamAccountRoleLocalService.addTeamAccountRole(
-						teamId, account.getAccountId(), _flsTeamRoleId);
+						flsTeam.getTeamId(), account.getAccountId(),
+						_flsTeamRoleId);
 				}
 			}
 		}
@@ -360,14 +377,9 @@ public class PartnerMigration {
 					resultSet.getString(3), Note.Format.PLAIN.toString(),
 					Note.Status.APPROVED.toString());
 
-				String code = resultSet.getString(2) + " FLS";
-
-				Team team = _teamLocalService.addTeam(
-					userId, account.getAccountId(), code, false);
-
-				_accountTeamMap.put(account.getAccountId(), team.getTeamId());
-
-				_assignTeam(connection, partnerEntryId, team.getTeamId());
+				_assignTeam(
+					connection, userId, partnerEntryId, account,
+					resultSet.getString(2));
 			}
 		}
 	}
@@ -441,13 +453,18 @@ public class PartnerMigration {
 						contact.getContactId(), account.getAccountId(),
 						contactRoleId);
 
-					ContactRole teamMemberContactRole =
-						_contactRoleLocalService.getMemberContactRole("Team");
+					if (_accountFLSTeamMap.containsKey(
+							account.getAccountId())) {
 
-					_contactTeamRoleLocalService.addContactTeamRole(
-						contact.getContactId(),
-						_accountTeamMap.get(account.getAccountId()),
-						teamMemberContactRole.getContactRoleId());
+						ContactRole teamMemberContactRole =
+							_contactRoleLocalService.getMemberContactRole(
+								"Team");
+
+						_contactTeamRoleLocalService.addContactTeamRole(
+							contact.getContactId(),
+							_accountFLSTeamMap.get(account.getAccountId()),
+							teamMemberContactRole.getContactRoleId());
+					}
 				}
 				else {
 					_log.error(
@@ -461,13 +478,13 @@ public class PartnerMigration {
 	private static final Log _log = LogFactoryUtil.getLog(
 		PartnerMigration.class);
 
+	private final Map<Long, Long> _accountFLSTeamMap = new HashMap<>();
+
 	@Reference
 	private AccountLocalService _accountLocalService;
 
 	@Reference
 	private AccountNoteLocalService _accountNoteLocalService;
-
-	private final Map<Long, Long> _accountTeamMap = new HashMap<>();
 
 	@Reference
 	private AddressLocalService _addressLocalService;
