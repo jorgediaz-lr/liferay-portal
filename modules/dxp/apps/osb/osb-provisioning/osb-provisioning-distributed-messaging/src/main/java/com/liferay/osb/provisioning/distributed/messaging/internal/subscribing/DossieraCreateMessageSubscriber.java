@@ -52,6 +52,8 @@ import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.ModelHintsUtil;
 import com.liferay.portal.kernel.service.GroupLocalService;
+import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StackTraceUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -61,6 +63,8 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.net.URL;
 
+import java.text.Format;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -69,6 +73,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -229,6 +234,20 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 		return _accountWebService.addAccount(
 			StringPool.BLANK, StringPool.BLANK, account);
+	}
+
+	protected void createAccountNote(JSONObject jsonObject, Account account)
+		throws Exception {
+
+		Note note = new Note();
+
+		note.setContent(getNotes(jsonObject, account));
+		note.setFormat(Note.Format.PLAIN);
+		note.setStatus(Note.Status.APPROVED);
+		note.setType(Note.Type.SALES);
+
+		_noteWebService.addNote(
+			StringPool.BLANK, StringPool.BLANK, account.getKey(), note);
 	}
 
 	protected Account createParentAccount(JSONObject jsonObject)
@@ -468,6 +487,8 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			}
 		}
 
+		createAccountNote(jsonObject, account);
+
 		checkWarnings(
 			accountKey, account, activeContacts, inactiveContacts,
 			missingContacts, salesforceOpportunityTypeName,
@@ -619,6 +640,142 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 				" and ", country, ". Defaulting support language to English."));
 
 		return Account.Language.ENGLISH;
+	}
+
+	protected String getNotes(JSONObject jsonObject, Account account)
+		throws PortalException {
+
+		ProductPurchase[] productPurchases = account.getProductPurchases();
+
+		Map<String, Map<String, Integer>> subscriptionsMap = new TreeMap<>();
+
+		for (ProductPurchase productPurchase : productPurchases) {
+			String key = getNotesDateRange(productPurchase);
+
+			Map<String, Integer> productsMap = subscriptionsMap.get(key);
+
+			if (productsMap == null) {
+				productsMap = new TreeMap<>();
+
+				subscriptionsMap.put(key, productsMap);
+			}
+
+			String productName = getNotesProductName(account, productPurchase);
+
+			int quantity = GetterUtil.getInteger(productsMap.get(productName));
+
+			quantity += productPurchase.getQuantity();
+
+			productsMap.put(productName, quantity);
+		}
+
+		StringBundler sb = new StringBundler();
+
+		for (Map.Entry<String, Map<String, Integer>> entry :
+				subscriptionsMap.entrySet()) {
+
+			String dateRange = entry.getKey();
+			Map<String, Integer> productsMap = entry.getValue();
+
+			sb.append("Subscriptions:");
+			sb.append(StringPool.NEW_LINE);
+
+			for (Map.Entry<String, Integer> productsEntry :
+					productsMap.entrySet()) {
+
+				sb.append(StringPool.TAB);
+				sb.append(productsEntry.getKey());
+				sb.append(" (");
+				sb.append(productsEntry.getValue());
+				sb.append(")");
+				sb.append(StringPool.NEW_LINE);
+			}
+
+			sb.append("Dates: ");
+			sb.append(dateRange);
+			sb.append(StringPool.NEW_LINE);
+			sb.append(StringPool.NEW_LINE);
+		}
+
+		JSONObject ownerJSONObject = jsonObject.getJSONObject("_owner");
+
+		sb.append("Owner: ");
+		sb.append(ownerJSONObject.getString("_firstName"));
+		sb.append(StringPool.SPACE);
+		sb.append(ownerJSONObject.getString("_lastName"));
+		sb.append(StringPool.NEW_LINE);
+
+		sb.append("SFDC: https://login.salesforce.com/");
+		sb.append(jsonObject.getString("_salesforceOpportunityKey"));
+
+		return sb.toString();
+	}
+
+	protected String getNotesDateRange(ProductPurchase productPurchase) {
+		Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
+			"yyyy/MM/dd");
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(dateFormat.format(productPurchase.getStartDate()));
+		sb.append(" - ");
+		sb.append(dateFormat.format(productPurchase.getOriginalEndDate()));
+		sb.append(" (UTC)");
+
+		return sb.toString();
+	}
+
+	protected String getNotesProductName(
+			Account account, ProductPurchase productPurchase)
+		throws PortalException {
+
+		Map<String, String> properties = productPurchase.getProperties();
+
+		String productType = properties.get("type");
+
+		if ((productType != null) &&
+			productType.equals(SalesforceConstants.PRODUCT_TYPE_RENEWAL)) {
+
+			return productType;
+		}
+
+		StringBundler sb = new StringBundler(8);
+
+		if (Validator.isNotNull(productType)) {
+			sb.append(productType);
+			sb.append(StringPool.SPACE);
+		}
+
+		ProductPurchase slaProductPurchase =
+			_accountReader.getSLAProductPurchase(account);
+
+		if (slaProductPurchase != null) {
+			Product slaProduct = slaProductPurchase.getProduct();
+
+			if (slaProduct != null) {
+				sb.append(
+					StringUtil.removeSubstring(
+						slaProduct.getName(), " Subscription"));
+				sb.append(StringPool.SPACE);
+			}
+		}
+
+		Product product = productPurchase.getProduct();
+
+		String productName = product.getName();
+
+		sb.append(productName);
+
+		sb.append(StringPool.SPACE);
+
+		if (!productName.contains("Sizing") &&
+			Validator.isNotNull(properties.get("sizing"))) {
+
+			sb.append("Sizing ");
+			sb.append(properties.get("sizing"));
+		}
+
+		return sb.toString();
 	}
 
 	protected PostalAddress getPostalAddress(JSONObject jsonObject) {

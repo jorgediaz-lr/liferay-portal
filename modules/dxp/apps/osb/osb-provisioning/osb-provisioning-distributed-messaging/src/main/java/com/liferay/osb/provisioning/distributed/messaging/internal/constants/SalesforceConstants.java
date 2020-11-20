@@ -31,6 +31,8 @@ public class SalesforceConstants {
 
 	public static final int OPPORTUNITY_TYPE_RENEWAL = 4;
 
+	public static final String PRODUCT_TYPE_RENEWAL = "Renewal";
+
 	public static String getOpportunityTypeLabel(int opportunityType) {
 		if (opportunityType == OPPORTUNITY_TYPE_EXISTING_BUSINESS) {
 			return "existing-business";
