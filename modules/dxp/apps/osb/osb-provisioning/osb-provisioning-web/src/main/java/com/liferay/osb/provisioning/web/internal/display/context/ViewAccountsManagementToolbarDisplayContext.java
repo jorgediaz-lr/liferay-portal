@@ -77,33 +77,36 @@ public class ViewAccountsManagementToolbarDisplayContext
 
 		return new LabelItemList() {
 			{
-				Map<String, String> termsMap =
-					accountDisplayTerms.getTermsMap();
+				Map<String, Map> termsMap = accountDisplayTerms.getTermsMap();
 
-				for (Map.Entry<String, String> entry : termsMap.entrySet()) {
-					String key = entry.getKey();
+				for (Map.Entry<String, Map> entry : termsMap.entrySet()) {
+					Map<String, String> termMap = entry.getValue();
 
-					String[] values = StringUtil.split(entry.getValue());
+					for (Map.Entry<String, String> term : termMap.entrySet()) {
+						String key = term.getKey();
 
-					for (String value : values) {
-						add(
-							labelItem -> {
-								PortletURL removeLabelURL = getPortletURL();
+						String[] values = StringUtil.split(term.getValue());
 
-								String[] removeKeywords = ArrayUtil.remove(
-									values, value);
+						for (String value : values) {
+							add(
+								labelItem -> {
+									PortletURL removeLabelURL = getPortletURL();
 
-								removeLabelURL.setParameter(
-									key, StringUtil.merge(removeKeywords));
+									String[] removeKeywords = ArrayUtil.remove(
+										values, value);
 
-								labelItem.putData(
-									"removeLabelURL",
-									removeLabelURL.toString());
+									removeLabelURL.setParameter(
+										key, StringUtil.merge(removeKeywords));
 
-								labelItem.setCloseable(true);
+									labelItem.putData(
+										"removeLabelURL",
+										removeLabelURL.toString());
 
-								labelItem.setLabel(_getLabel(key, value));
-							});
+									labelItem.setCloseable(true);
+
+									labelItem.setLabel(_getLabel(key, value));
+								});
+						}
 					}
 				}
 			}

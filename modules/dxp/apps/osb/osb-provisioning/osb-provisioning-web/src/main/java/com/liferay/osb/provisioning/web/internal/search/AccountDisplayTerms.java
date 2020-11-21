@@ -177,30 +177,55 @@ public class AccountDisplayTerms extends DisplayTerms {
 		return subscriptionStates;
 	}
 
-	public Map<String, String> getTermsMap() {
-		Map<String, String> termsMap = new HashMap<>();
+	public Map<String, Map> getTermsMap() {
+		Map<String, Map> termsMap = new HashMap<>();
 
-		termsMap.put("account-name", name);
-		termsMap.put("code", code);
-		termsMap.put("country", countryName);
-		termsMap.put("created-after", createDateGT);
-		termsMap.put("created-before", createDateLT);
-		termsMap.put("created-by", createdByEmailAddress);
-		termsMap.put("first-line-support", flsTeamKey);
-		termsMap.put("internal", StringUtil.merge(internals));
-		termsMap.put("modified-after", modifiedDateGT);
-		termsMap.put("modified-before", modifiedDateLT);
-		termsMap.put("parent-account", parentAccountKey);
-		termsMap.put("partner", StringUtil.merge(partners));
-		termsMap.put("partner-reseller-si", partnerTeamKey);
-		termsMap.put("project-worker", workerContactEmailAddress);
-		termsMap.put("provides-fls", StringUtil.merge(providesFLS));
-		termsMap.put("receives-fls", StringUtil.merge(receivesFLS));
-		termsMap.put("subscription-level", StringUtil.merge(activeSLAs));
+		termsMap.put("account-name", _getTermMap(NAME, name));
+		termsMap.put("code", _getTermMap(CODE, code));
+		termsMap.put("country", _getTermMap(COUNTRY_NAME, countryName));
 		termsMap.put(
-			"subscription-status", StringUtil.merge(subscriptionStates));
-		termsMap.put("support-region", StringUtil.merge(regions));
-		termsMap.put("tier", StringUtil.merge(tiers));
+			"created-after", _getTermMap(CREATE_DATE_GT, createDateGT));
+		termsMap.put(
+			"created-before", _getTermMap(CREATE_DATE_LT, createDateLT));
+		termsMap.put(
+			"created-by",
+			_getTermMap(CREATED_BY_EMAIL_ADDRESS, createdByEmailAddress));
+		termsMap.put(
+			"first-line-support", _getTermMap(FLS_TEAM_KEY, flsTeamKey));
+		termsMap.put(
+			"internal", _getTermMap(INTERNALS, StringUtil.merge(internals)));
+		termsMap.put(
+			"modified-after", _getTermMap(MODIFIED_DATE_GT, modifiedDateGT));
+		termsMap.put(
+			"modified-before", _getTermMap(MODIFIED_DATE_LT, modifiedDateLT));
+		termsMap.put(
+			"parent-account",
+			_getTermMap(PARENT_ACCOUNT_KEY, parentAccountKey));
+		termsMap.put(
+			"partner", _getTermMap(PARTNERS, StringUtil.merge(partners)));
+		termsMap.put(
+			"partner-reseller-si",
+			_getTermMap(PARTNER_TEAM_KEY, partnerTeamKey));
+		termsMap.put(
+			"project-worker",
+			_getTermMap(
+				WORKER_CONTACT_EMAIL_ADDRESS, workerContactEmailAddress));
+		termsMap.put(
+			"provides-fls",
+			_getTermMap(PROVIDES_FLS, StringUtil.merge(providesFLS)));
+		termsMap.put(
+			"receives-fls",
+			_getTermMap(RECEIVES_FLS, StringUtil.merge(receivesFLS)));
+		termsMap.put(
+			"subscription-level",
+			_getTermMap(ACTIVE_SLAS, StringUtil.merge(activeSLAs)));
+		termsMap.put(
+			"subscription-status",
+			_getTermMap(
+				SUBSCRIPTION_STATES, StringUtil.merge(subscriptionStates)));
+		termsMap.put(
+			"support-region", _getTermMap(REGIONS, StringUtil.merge(regions)));
+		termsMap.put("tier", _getTermMap(TIERS, StringUtil.merge(tiers)));
 
 		return termsMap;
 	}
@@ -233,5 +258,13 @@ public class AccountDisplayTerms extends DisplayTerms {
 	protected String[] subscriptionStates;
 	protected String[] tiers;
 	protected String workerContactEmailAddress;
+
+	private Map<String, String> _getTermMap(String key, String value) {
+		Map<String, String> termMap = new HashMap<>();
+
+		termMap.put(key, value);
+
+		return termMap;
+	}
 
 }
