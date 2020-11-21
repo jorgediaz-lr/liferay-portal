@@ -21,6 +21,7 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamWebService;
+import com.liferay.osb.provisioning.web.internal.search.AccountDisplayTerm;
 import com.liferay.osb.provisioning.web.internal.search.AccountDisplayTerms;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -77,36 +78,37 @@ public class ViewAccountsManagementToolbarDisplayContext
 
 		return new LabelItemList() {
 			{
-				Map<String, Map> termsMap = accountDisplayTerms.getTermsMap();
+				Map<String, AccountDisplayTerm> termsMap =
+					accountDisplayTerms.getTermsMap();
 
-				for (Map.Entry<String, Map> entry : termsMap.entrySet()) {
-					Map<String, String> termMap = entry.getValue();
+				for (Map.Entry<String, AccountDisplayTerm> entry :
+						termsMap.entrySet()) {
 
-					for (Map.Entry<String, String> term : termMap.entrySet()) {
-						String key = term.getKey();
+					AccountDisplayTerm term = entry.getValue();
 
-						String[] values = StringUtil.split(term.getValue());
+					String name = term.getName();
 
-						for (String value : values) {
-							add(
-								labelItem -> {
-									PortletURL removeLabelURL = getPortletURL();
+					String[] values = StringUtil.split(term.getValue());
 
-									String[] removeKeywords = ArrayUtil.remove(
-										values, value);
+					for (String value : values) {
+						add(
+							labelItem -> {
+								PortletURL removeLabelURL = getPortletURL();
 
-									removeLabelURL.setParameter(
-										key, StringUtil.merge(removeKeywords));
+								String[] removeKeywords = ArrayUtil.remove(
+									values, value);
 
-									labelItem.putData(
-										"removeLabelURL",
-										removeLabelURL.toString());
+								removeLabelURL.setParameter(
+									name, StringUtil.merge(removeKeywords));
 
-									labelItem.setCloseable(true);
+								labelItem.putData(
+									"removeLabelURL",
+									removeLabelURL.toString());
 
-									labelItem.setLabel(_getLabel(key, value));
-								});
-						}
+								labelItem.setCloseable(true);
+
+								labelItem.setLabel(_getLabel(name, value));
+							});
 					}
 				}
 			}
