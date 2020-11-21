@@ -18,8 +18,9 @@ import com.liferay.portal.kernel.dao.search.DisplayTerms;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.portlet.PortletRequest;
 
@@ -176,11 +177,10 @@ public class AccountDisplayTerms extends DisplayTerms {
 		return subscriptionStates;
 	}
 
-	public Map<String, AccountDisplayTerm> getTermsMap() {
-		Map<String, AccountDisplayTerm> termsMap = new HashMap<>();
+	public List<AccountDisplayTerm> getTermsList() {
+		ArrayList<AccountDisplayTerm> termsList = new ArrayList<>(
+			Arrays.asList(new AccountDisplayTerm("account-name", NAME, name)));
 
-		termsMap.put(
-			"account-name", new AccountDisplayTerm("account-name", NAME, name));
 		//termsMap.put("account-name", _getTermMap(NAME, name));
 
 		// termsMap.put("code", _getTermMap(CODE, code));
@@ -229,7 +229,7 @@ public class AccountDisplayTerms extends DisplayTerms {
 		// 	"support-region", _getTermMap(REGIONS, StringUtil.merge(regions)));
 		// termsMap.put("tier", _getTermMap(TIERS, StringUtil.merge(tiers)));
 
-		return termsMap;
+		return termsList;
 	}
 
 	public String[] getTiers() {

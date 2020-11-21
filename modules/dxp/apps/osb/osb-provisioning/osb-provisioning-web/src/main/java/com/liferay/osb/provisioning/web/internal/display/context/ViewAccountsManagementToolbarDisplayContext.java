@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.portlet.PortletURL;
 
@@ -78,16 +77,10 @@ public class ViewAccountsManagementToolbarDisplayContext
 
 		return new LabelItemList() {
 			{
-				Map<String, AccountDisplayTerm> termsMap =
-					accountDisplayTerms.getTermsMap();
+				List<AccountDisplayTerm> termsList =
+					accountDisplayTerms.getTermsList();
 
-				for (Map.Entry<String, AccountDisplayTerm> entry :
-						termsMap.entrySet()) {
-
-					AccountDisplayTerm term = entry.getValue();
-
-					String name = term.getName();
-
+				for (AccountDisplayTerm term : termsList) {
 					String[] values = StringUtil.split(term.getValue());
 
 					for (String value : values) {
@@ -99,7 +92,8 @@ public class ViewAccountsManagementToolbarDisplayContext
 									values, value);
 
 								removeLabelURL.setParameter(
-									name, StringUtil.merge(removeKeywords));
+									term.getName(),
+									StringUtil.merge(removeKeywords));
 
 								labelItem.putData(
 									"removeLabelURL",
@@ -107,7 +101,8 @@ public class ViewAccountsManagementToolbarDisplayContext
 
 								labelItem.setCloseable(true);
 
-								labelItem.setLabel(_getLabel(name, value));
+								labelItem.setLabel(
+									_getLabel(term.getDisplayName(), value));
 							});
 					}
 				}
