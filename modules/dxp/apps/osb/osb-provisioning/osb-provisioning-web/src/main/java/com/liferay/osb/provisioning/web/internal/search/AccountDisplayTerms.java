@@ -16,6 +16,7 @@ package com.liferay.osb.provisioning.web.internal.search;
 
 import com.liferay.portal.kernel.dao.search.DisplayTerms;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.ArrayList;
@@ -178,58 +179,51 @@ public class AccountDisplayTerms extends DisplayTerms {
 	}
 
 	public List<AccountDisplayTerm> getTermsList() {
-		ArrayList<AccountDisplayTerm> termsList = new ArrayList<>(
-			Arrays.asList(new AccountDisplayTerm("account-name", NAME, name)));
-
-		//termsMap.put("account-name", _getTermMap(NAME, name));
-
-		// termsMap.put("code", _getTermMap(CODE, code));
-		// termsMap.put("country", _getTermMap(COUNTRY_NAME, countryName));
-		// termsMap.put(
-		// 	"created-after", _getTermMap(CREATE_DATE_GT, createDateGT));
-		// termsMap.put(
-		// 	"created-before", _getTermMap(CREATE_DATE_LT, createDateLT));
-		// termsMap.put(
-		// 	"created-by",
-		// 	_getTermMap(CREATED_BY_EMAIL_ADDRESS, createdByEmailAddress));
-		// termsMap.put(
-		// 	"first-line-support", _getTermMap(FLS_TEAM_KEY, flsTeamKey));
-		// termsMap.put(
-		// 	"internal", _getTermMap(INTERNALS, StringUtil.merge(internals)));
-		// termsMap.put(
-		// 	"modified-after", _getTermMap(MODIFIED_DATE_GT, modifiedDateGT));
-		// termsMap.put(
-		// 	"modified-before", _getTermMap(MODIFIED_DATE_LT, modifiedDateLT));
-		// termsMap.put(
-		// 	"parent-account",
-		// 	_getTermMap(PARENT_ACCOUNT_KEY, parentAccountKey));
-		// termsMap.put(
-		// 	"partner", _getTermMap(PARTNERS, StringUtil.merge(partners)));
-		// termsMap.put(
-		// 	"partner-reseller-si",
-		// 	_getTermMap(PARTNER_TEAM_KEY, partnerTeamKey));
-		// termsMap.put(
-		// 	"project-worker",
-		// 	_getTermMap(
-		// 		WORKER_CONTACT_EMAIL_ADDRESS, workerContactEmailAddress));
-		// termsMap.put(
-		// 	"provides-fls",
-		// 	_getTermMap(PROVIDES_FLS, StringUtil.merge(providesFLS)));
-		// termsMap.put(
-		// 	"receives-fls",
-		// 	_getTermMap(RECEIVES_FLS, StringUtil.merge(receivesFLS)));
-		// termsMap.put(
-		// 	"subscription-level",
-		// 	_getTermMap(ACTIVE_SLAS, StringUtil.merge(activeSLAs)));
-		// termsMap.put(
-		// 	"subscription-status",
-		// 	_getTermMap(
-		// 		SUBSCRIPTION_STATES, StringUtil.merge(subscriptionStates)));
-		// termsMap.put(
-		// 	"support-region", _getTermMap(REGIONS, StringUtil.merge(regions)));
-		// termsMap.put("tier", _getTermMap(TIERS, StringUtil.merge(tiers)));
-
-		return termsList;
+		return new ArrayList<>(
+			Arrays.asList(
+				new AccountDisplayTerm("account-name", NAME, name),
+				new AccountDisplayTerm("code", CODE, code),
+				new AccountDisplayTerm("country", COUNTRY_NAME, countryName),
+				new AccountDisplayTerm(
+					"created-after", CREATE_DATE_GT, createDateGT),
+				new AccountDisplayTerm(
+					"created-before", CREATE_DATE_LT, createDateLT),
+				new AccountDisplayTerm(
+					"created-by", CREATED_BY_EMAIL_ADDRESS,
+					createdByEmailAddress),
+				new AccountDisplayTerm(
+					"first-line-support", FLS_TEAM_KEY, flsTeamKey),
+				new AccountDisplayTerm(
+					"internal", INTERNALS, StringUtil.merge(internals)),
+				new AccountDisplayTerm(
+					"modified-after", MODIFIED_DATE_GT, modifiedDateGT),
+				new AccountDisplayTerm(
+					"modified-before", MODIFIED_DATE_LT, modifiedDateLT),
+				new AccountDisplayTerm(
+					"parent-account", PARENT_ACCOUNT_KEY, parentAccountKey),
+				new AccountDisplayTerm(
+					"partner", PARTNERS, StringUtil.merge(partners)),
+				new AccountDisplayTerm(
+					"partner-reseller-si", PARTNER_TEAM_KEY, partnerTeamKey),
+				new AccountDisplayTerm(
+					"project-worker", WORKER_CONTACT_EMAIL_ADDRESS,
+					workerContactEmailAddress),
+				new AccountDisplayTerm(
+					"provides-fls", PROVIDES_FLS,
+					StringUtil.merge(providesFLS)),
+				new AccountDisplayTerm(
+					"receives-fls", RECEIVES_FLS,
+					StringUtil.merge(receivesFLS)),
+				new AccountDisplayTerm(
+					"subscription-level", ACTIVE_SLAS,
+					StringUtil.merge(activeSLAs)),
+				new AccountDisplayTerm(
+					"subscription-status", SUBSCRIPTION_STATES,
+					StringUtil.merge(subscriptionStates)),
+				new AccountDisplayTerm(
+					"support-region", REGIONS, StringUtil.merge(regions)),
+				new AccountDisplayTerm(
+					"tier", TIERS, StringUtil.merge(tiers))));
 	}
 
 	public String[] getTiers() {
