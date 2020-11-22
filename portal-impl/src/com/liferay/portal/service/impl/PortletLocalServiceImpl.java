@@ -1050,7 +1050,7 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 					if (!StringUtil.equals(
 							oldPortletContextName, portlet.getContextName())) {
 
-						_log.warn("Duplicate struts path " + strutsPath);
+						_log.warn("Duplicate Struts path " + strutsPath);
 					}
 				}
 			}
