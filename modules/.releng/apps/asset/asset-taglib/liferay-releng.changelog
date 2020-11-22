@@ -307,3 +307,8 @@ e5abe7f6dafe0d8dc7eec3bfec514b5e91a63ecc^..997307ff9f5cc27d8f7eb10d2838e82f4c0e8
 # Bundle Version 4.2.12
 #
 997307ff9f5cc27d8f7eb10d2838e82f4c0e8fe4^..0d9bcd0e8e880d3f7c3aeeadadfb9cc886b036f1=LRQA-51488
+
+#
+# Bundle Version 4.2.13
+#
+0d9bcd0e8e880d3f7c3aeeadadfb9cc886b036f1^..5385fe4cf093139be065846c796621754f8e16ff=LPS-77699 LPS-105380 LPS-117838
