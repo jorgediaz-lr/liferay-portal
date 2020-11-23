@@ -22,7 +22,7 @@ ViewAccountRelatedAccountsDisplayContext viewAccountRelatedAccountsDisplayContex
 PortletURL portletURL = viewAccountRelatedAccountsDisplayContext.getPortletURL();
 %>
 
-<div class="details-table">
+<div class="details-table table-striped">
 	<liferay-util:include page="/common/tabs.jsp" servletContext="<%= application %>">
 		<liferay-util:param name="names" value="<%= viewAccountRelatedAccountsDisplayContext.getTabsNames() %>" />
 		<liferay-util:param name="param" value="tabs2" />

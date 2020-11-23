@@ -20,7 +20,7 @@
 ViewAccountTeamsDisplayContext viewAccountTeamsDisplayContext = ProvisioningWebComponentProvider.getViewAccountTeamsDisplayContext(renderRequest, renderResponse, request);
 %>
 
-<div class="details-table">
+<div class="details-table table-striped">
 	<liferay-ui:search-container
 		id="teams"
 		searchContainer="<%= viewAccountTeamsDisplayContext.getSearchContainer() %>"
