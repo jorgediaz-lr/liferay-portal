@@ -24,7 +24,7 @@ PortletURL portletURL = viewAccountDisplayContext.getPortletURL();
 
 <div class="details-table table-striped">
 	<liferay-util:include page="/common/tabs.jsp" servletContext="<%= application %>">
-		<liferay-util:param name="names" value="active,inactive,all" />
+		<liferay-util:param name="names" value="<%= viewAccountDisplayContext.getTabsNames() %>" />
 		<liferay-util:param name="param" value="tabs2" />
 		<liferay-util:param name="url" value="<%= portletURL.toString() %>" />
 		<liferay-util:param name="values" value="active,inactive,all" />

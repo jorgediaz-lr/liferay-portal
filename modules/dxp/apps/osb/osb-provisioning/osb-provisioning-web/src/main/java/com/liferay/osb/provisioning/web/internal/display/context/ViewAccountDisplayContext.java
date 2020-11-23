@@ -472,6 +472,39 @@ public class ViewAccountDisplayContext {
 		return data;
 	}
 
+	public String getTabsNames() throws Exception {
+		List<String> tabsNames = new ArrayList<>();
+
+		int allProductPurchaseViews =
+			(int)productPurchaseViewWebService.getProductPurchaseViewsCount(
+				StringPool.BLANK, _getFilter(), 1, 1000, StringPool.BLANK);
+
+		tabsNames.add(
+			_getTabName(
+				LanguageUtil.get(httpServletRequest, "all"),
+				allProductPurchaseViews));
+
+		int activeProductPurchaseViews =
+			(int)productPurchaseViewWebService.getProductPurchaseViewsCount(
+				StringPool.BLANK, _getFilter(), 1, 1000, StringPool.BLANK);
+
+		tabsNames.add(
+			_getTabName(
+				ProductPurchaseConstants.STATE_ACTIVE,
+				activeProductPurchaseViews));
+
+		int inactiveProductPurchaseViews =
+			(int)productPurchaseViewWebService.getProductPurchaseViewsCount(
+				StringPool.BLANK, _getFilter(), 1, 1000, StringPool.BLANK);
+
+		tabsNames.add(
+			_getTabName(
+				LanguageUtil.get(httpServletRequest, "inactive"),
+				inactiveProductPurchaseViews));
+
+		return StringUtil.merge(tabsNames);
+	}
+
 	public void init(
 			RenderRequest renderRequest, RenderResponse renderResponse,
 			HttpServletRequest httpServletRequest, AccountReader accountReader,
@@ -822,6 +855,17 @@ public class ViewAccountDisplayContext {
 		sb.append(") and (supportLifeEndDate le ");
 		sb.append(dateFormat.format(endDate));
 		sb.append("))");
+
+		return sb.toString();
+	}
+
+	private String _getTabName(String label, int count) {
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(label);
+		sb.append(" <span class=\"badge badge-secondary\">");
+		sb.append(count);
+		sb.append("</span>");
 
 		return sb.toString();
 	}
