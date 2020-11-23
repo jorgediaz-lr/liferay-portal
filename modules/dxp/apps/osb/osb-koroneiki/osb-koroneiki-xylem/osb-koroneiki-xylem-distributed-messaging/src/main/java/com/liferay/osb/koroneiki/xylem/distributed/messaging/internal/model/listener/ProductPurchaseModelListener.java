@@ -15,12 +15,15 @@
 package com.liferay.osb.koroneiki.xylem.distributed.messaging.internal.model.listener;
 
 import com.liferay.osb.distributed.messaging.Message;
+import com.liferay.osb.koroneiki.taproot.model.Account;
+import com.liferay.osb.koroneiki.taproot.service.AccountLocalService;
 import com.liferay.osb.koroneiki.trunk.model.ProductPurchase;
 import com.liferay.portal.kernel.model.ModelListener;
 
 import java.util.concurrent.Callable;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Amos Fong
@@ -41,7 +44,15 @@ public class ProductPurchaseModelListener
 	protected Callable<Message> getCallable(ProductPurchase productPurchase)
 		throws Exception {
 
+		Account account = _accountLocalService.getAccount(
+			productPurchase.getAccountId());
+
+		productPurchase.setAccountKey(account.getAccountKey());
+
 		return () -> messageFactory.create(productPurchase);
 	}
+
+	@Reference
+	private AccountLocalService _accountLocalService;
 
 }

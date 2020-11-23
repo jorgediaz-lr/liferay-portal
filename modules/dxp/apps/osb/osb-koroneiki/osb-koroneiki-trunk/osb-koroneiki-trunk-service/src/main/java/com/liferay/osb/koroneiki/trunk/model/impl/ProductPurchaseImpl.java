@@ -44,6 +44,10 @@ public class ProductPurchaseImpl extends ProductPurchaseBaseImpl {
 	}
 
 	public String getAccountKey() throws PortalException {
+		if (_accountKey != null) {
+			return _accountKey;
+		}
+
 		Account account = getAccount();
 
 		return account.getAccountKey();
@@ -95,5 +99,11 @@ public class ProductPurchaseImpl extends ProductPurchaseBaseImpl {
 
 		return true;
 	}
+
+	public void setAccountKey(String accountKey) {
+		_accountKey = accountKey;
+	}
+
+	private String _accountKey;
 
 }

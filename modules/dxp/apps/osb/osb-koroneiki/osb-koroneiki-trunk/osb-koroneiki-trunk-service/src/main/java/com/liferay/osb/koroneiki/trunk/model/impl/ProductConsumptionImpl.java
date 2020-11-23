@@ -46,6 +46,10 @@ public class ProductConsumptionImpl extends ProductConsumptionBaseImpl {
 	}
 
 	public String getAccountKey() throws PortalException {
+		if (_accountKey != null) {
+			return _accountKey;
+		}
+
 		Account account = getAccount();
 
 		return account.getAccountKey();
@@ -92,6 +96,10 @@ public class ProductConsumptionImpl extends ProductConsumptionBaseImpl {
 	}
 
 	public String getProductPurchaseKey() throws PortalException {
+		if (_productPurchaseKey != null) {
+			return _productPurchaseKey;
+		}
+
 		ProductPurchase productPurchase = getProductPurchase();
 
 		if (productPurchase != null) {
@@ -108,5 +116,16 @@ public class ProductConsumptionImpl extends ProductConsumptionBaseImpl {
 
 		return true;
 	}
+
+	public void setAccountKey(String accountKey) {
+		_accountKey = accountKey;
+	}
+
+	public void setProductPurchaseKey(String productPurchaseKey) {
+		_productPurchaseKey = productPurchaseKey;
+	}
+
+	private String _accountKey;
+	private String _productPurchaseKey;
 
 }
