@@ -372,6 +372,11 @@ public class ProductConsumptionWrapper
 		model.setAccountId(accountId);
 	}
 
+	@Override
+	public void setAccountKey(String accountKey) {
+		model.setAccountKey(accountKey);
+	}
+
 	/**
 	 * Sets the company ID of this product consumption.
 	 *
@@ -470,6 +475,11 @@ public class ProductConsumptionWrapper
 	@Override
 	public void setProductPurchaseId(long productPurchaseId) {
 		model.setProductPurchaseId(productPurchaseId);
+	}
+
+	@Override
+	public void setProductPurchaseKey(String productPurchaseKey) {
+		model.setProductPurchaseKey(productPurchaseKey);
 	}
 
 	/**

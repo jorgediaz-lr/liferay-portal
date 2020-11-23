@@ -67,4 +67,6 @@ public interface Team extends PersistedModel, TeamModel {
 	public java.util.List<com.liferay.osb.koroneiki.root.model.ExternalLink>
 		getExternalLinks();
 
+	public void setAccountKey(String accountKey);
+
 }

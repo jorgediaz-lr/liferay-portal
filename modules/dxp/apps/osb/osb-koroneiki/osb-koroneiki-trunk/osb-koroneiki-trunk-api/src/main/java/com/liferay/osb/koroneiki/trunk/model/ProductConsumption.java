@@ -87,4 +87,8 @@ public interface ProductConsumption
 
 	public boolean isPerpetual();
 
+	public void setAccountKey(String accountKey);
+
+	public void setProductPurchaseKey(String productPurchaseKey);
+
 }

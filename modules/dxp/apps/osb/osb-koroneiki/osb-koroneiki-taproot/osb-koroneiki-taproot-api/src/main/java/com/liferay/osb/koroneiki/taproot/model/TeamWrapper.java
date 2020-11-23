@@ -302,6 +302,11 @@ public class TeamWrapper
 		model.setAccountId(accountId);
 	}
 
+	@Override
+	public void setAccountKey(String accountKey) {
+		model.setAccountKey(accountKey);
+	}
+
 	/**
 	 * Sets the company ID of this team.
 	 *

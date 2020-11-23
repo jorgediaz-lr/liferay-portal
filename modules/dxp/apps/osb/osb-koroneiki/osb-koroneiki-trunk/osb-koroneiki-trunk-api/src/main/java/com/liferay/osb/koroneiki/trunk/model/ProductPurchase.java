@@ -81,4 +81,6 @@ public interface ProductPurchase extends PersistedModel, ProductPurchaseModel {
 
 	public boolean isPerpetual();
 
+	public void setAccountKey(String accountKey);
+
 }
