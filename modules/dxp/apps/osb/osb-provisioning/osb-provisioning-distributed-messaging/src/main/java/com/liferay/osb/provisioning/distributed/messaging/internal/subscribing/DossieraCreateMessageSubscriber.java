@@ -775,7 +775,9 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		if (slaProductPurchase != null) {
 			Product slaProduct = slaProductPurchase.getProduct();
 
-			if (slaProduct != null) {
+			if ((slaProduct != null) &&
+				(slaProduct != productPurchase.getProduct())) {
+
 				sb.append(
 					StringUtil.removeSubstring(
 						slaProduct.getName(), " Subscription"));
