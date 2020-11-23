@@ -19,14 +19,14 @@ package com.liferay.osb.provisioning.web.internal.search;
  */
 public class AccountDisplayTerm {
 
-	public AccountDisplayTerm(String displayName, String name, String value) {
-		_displayName = displayName;
+	public AccountDisplayTerm(String label, String name, String value) {
+		_label = label;
 		_name = name;
 		_value = value;
 	}
 
-	public String getDisplayName() {
-		return _displayName;
+	public String getLabel() {
+		return _label;
 	}
 
 	public String getName() {
@@ -37,7 +37,7 @@ public class AccountDisplayTerm {
 		return _value;
 	}
 
-	private final String _displayName;
+	private final String _label;
 	private final String _name;
 	private final String _value;
 

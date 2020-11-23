@@ -77,11 +77,14 @@ public class ViewAccountsManagementToolbarDisplayContext
 
 		return new LabelItemList() {
 			{
-				List<AccountDisplayTerm> termsList =
-					accountDisplayTerms.getTermsList();
+				List<AccountDisplayTerm> accountDisplayTermsList =
+					accountDisplayTerms.getAccountDisplayTermsList();
 
-				for (AccountDisplayTerm term : termsList) {
-					String[] values = StringUtil.split(term.getValue());
+				for (AccountDisplayTerm accountDisplayTerm :
+						accountDisplayTermsList) {
+
+					String[] values = StringUtil.split(
+						accountDisplayTerm.getValue());
 
 					for (String value : values) {
 						add(
@@ -92,7 +95,7 @@ public class ViewAccountsManagementToolbarDisplayContext
 									values, value);
 
 								removeLabelURL.setParameter(
-									term.getName(),
+									accountDisplayTerm.getName(),
 									StringUtil.merge(removeKeywords));
 
 								labelItem.putData(
@@ -102,7 +105,8 @@ public class ViewAccountsManagementToolbarDisplayContext
 								labelItem.setCloseable(true);
 
 								labelItem.setLabel(
-									_getLabel(term.getDisplayName(), value));
+									_getLabel(
+										accountDisplayTerm.getLabel(), value));
 							});
 					}
 				}

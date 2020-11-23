@@ -106,6 +106,54 @@ public class AccountDisplayTerms extends DisplayTerms {
 			portletRequest, WORKER_CONTACT_EMAIL_ADDRESS);
 	}
 
+	public List<AccountDisplayTerm> getAccountDisplayTermsList() {
+		return new ArrayList<>(
+			Arrays.asList(
+				new AccountDisplayTerm("account-name", NAME, name),
+				new AccountDisplayTerm("code", CODE, code),
+				new AccountDisplayTerm("country", COUNTRY_NAME, countryName),
+				new AccountDisplayTerm(
+					"created-after", CREATE_DATE_GT, createDateGT),
+				new AccountDisplayTerm(
+					"created-before", CREATE_DATE_LT, createDateLT),
+				new AccountDisplayTerm(
+					"created-by", CREATED_BY_EMAIL_ADDRESS,
+					createdByEmailAddress),
+				new AccountDisplayTerm(
+					"first-line-support", FLS_TEAM_KEY, flsTeamKey),
+				new AccountDisplayTerm(
+					"internal", INTERNALS, StringUtil.merge(internals)),
+				new AccountDisplayTerm(
+					"modified-after", MODIFIED_DATE_GT, modifiedDateGT),
+				new AccountDisplayTerm(
+					"modified-before", MODIFIED_DATE_LT, modifiedDateLT),
+				new AccountDisplayTerm(
+					"parent-account", PARENT_ACCOUNT_KEY, parentAccountKey),
+				new AccountDisplayTerm(
+					"partner", PARTNERS, StringUtil.merge(partners)),
+				new AccountDisplayTerm(
+					"partner-reseller-si", PARTNER_TEAM_KEY, partnerTeamKey),
+				new AccountDisplayTerm(
+					"project-worker", WORKER_CONTACT_EMAIL_ADDRESS,
+					workerContactEmailAddress),
+				new AccountDisplayTerm(
+					"provides-fls", PROVIDES_FLS,
+					StringUtil.merge(providesFLS)),
+				new AccountDisplayTerm(
+					"receives-fls", RECEIVES_FLS,
+					StringUtil.merge(receivesFLS)),
+				new AccountDisplayTerm(
+					"subscription-level", ACTIVE_SLAS,
+					StringUtil.merge(activeSLAs)),
+				new AccountDisplayTerm(
+					"subscription-status", SUBSCRIPTION_STATES,
+					StringUtil.merge(subscriptionStates)),
+				new AccountDisplayTerm(
+					"support-region", REGIONS, StringUtil.merge(regions)),
+				new AccountDisplayTerm(
+					"tier", TIERS, StringUtil.merge(tiers))));
+	}
+
 	public String[] getActiveSLAs() {
 		return activeSLAs;
 	}
@@ -176,54 +224,6 @@ public class AccountDisplayTerms extends DisplayTerms {
 
 	public String[] getSubscriptionStates() {
 		return subscriptionStates;
-	}
-
-	public List<AccountDisplayTerm> getTermsList() {
-		return new ArrayList<>(
-			Arrays.asList(
-				new AccountDisplayTerm("account-name", NAME, name),
-				new AccountDisplayTerm("code", CODE, code),
-				new AccountDisplayTerm("country", COUNTRY_NAME, countryName),
-				new AccountDisplayTerm(
-					"created-after", CREATE_DATE_GT, createDateGT),
-				new AccountDisplayTerm(
-					"created-before", CREATE_DATE_LT, createDateLT),
-				new AccountDisplayTerm(
-					"created-by", CREATED_BY_EMAIL_ADDRESS,
-					createdByEmailAddress),
-				new AccountDisplayTerm(
-					"first-line-support", FLS_TEAM_KEY, flsTeamKey),
-				new AccountDisplayTerm(
-					"internal", INTERNALS, StringUtil.merge(internals)),
-				new AccountDisplayTerm(
-					"modified-after", MODIFIED_DATE_GT, modifiedDateGT),
-				new AccountDisplayTerm(
-					"modified-before", MODIFIED_DATE_LT, modifiedDateLT),
-				new AccountDisplayTerm(
-					"parent-account", PARENT_ACCOUNT_KEY, parentAccountKey),
-				new AccountDisplayTerm(
-					"partner", PARTNERS, StringUtil.merge(partners)),
-				new AccountDisplayTerm(
-					"partner-reseller-si", PARTNER_TEAM_KEY, partnerTeamKey),
-				new AccountDisplayTerm(
-					"project-worker", WORKER_CONTACT_EMAIL_ADDRESS,
-					workerContactEmailAddress),
-				new AccountDisplayTerm(
-					"provides-fls", PROVIDES_FLS,
-					StringUtil.merge(providesFLS)),
-				new AccountDisplayTerm(
-					"receives-fls", RECEIVES_FLS,
-					StringUtil.merge(receivesFLS)),
-				new AccountDisplayTerm(
-					"subscription-level", ACTIVE_SLAS,
-					StringUtil.merge(activeSLAs)),
-				new AccountDisplayTerm(
-					"subscription-status", SUBSCRIPTION_STATES,
-					StringUtil.merge(subscriptionStates)),
-				new AccountDisplayTerm(
-					"support-region", REGIONS, StringUtil.merge(regions)),
-				new AccountDisplayTerm(
-					"tier", TIERS, StringUtil.merge(tiers))));
 	}
 
 	public String[] getTiers() {
