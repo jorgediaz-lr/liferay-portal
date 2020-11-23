@@ -98,9 +98,10 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 	}
 
 	protected void checkWarnings(
-		String accountKey, Account account, List<Contact> activeContacts,
-		List<Contact> inactiveContacts, List<Contact> missingContacts,
-		String salesforceOpportunityTypeName, int salesforceOpportunityType) {
+			String accountKey, Account account, List<Contact> inactiveContacts,
+			List<Contact> missingContacts, String salesforceOpportunityTypeName,
+			int salesforceOpportunityType)
+		throws Exception {
 
 		if (Validator.isNull(accountKey) &&
 			(salesforceOpportunityType ==
@@ -123,18 +124,35 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 					" and the project already exists");
 		}
 
+		StringBundler sb = new StringBundler(5);
+
+		sb.append("accountKeysContactRoleKeys/any(s:s eq '");
+		sb.append(accountKey);
+		sb.append(StringPool.UNDERLINE);
+
+		ContactRole supportDeveloperContactRole =
+			_contactRoleWebService.getContactRole(
+				ContactRole.Type.ACCOUNT_CUSTOMER.toString(),
+				ContactRoleConstants.NAME_SUPPORT_DEVELOPER);
+
+		sb.append(supportDeveloperContactRole.getKey());
+
+		sb.append("')");
+
+		long curDeveloperCount = _contactWebService.searchCount(
+			StringPool.BLANK, sb.toString());
 		int maxDeveloperCount = _accountReader.getMaxDeveloperCount(account);
 
-		if (activeContacts.size() > maxDeveloperCount) {
+		if (curDeveloperCount > maxDeveloperCount) {
 			_logWarning(
 				StringBundler.concat(
-					"Maximum contacts is ", maxDeveloperCount,
-					" but there are ", activeContacts.size(), " contacts"));
+					"Maximum developer contacts is ", maxDeveloperCount,
+					" but there are ", curDeveloperCount,
+					" developer contacts"));
 		}
 
 		if (!inactiveContacts.isEmpty()) {
-			StringBundler sb = new StringBundler(
-				(2 * inactiveContacts.size()) + 2);
+			sb = new StringBundler((2 * inactiveContacts.size()) + 2);
 
 			sb.append("The following inactive contact(s) cannot be assigned ");
 			sb.append("to the account:<br />");
@@ -148,8 +166,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		}
 
 		if (!missingContacts.isEmpty()) {
-			StringBundler sb = new StringBundler(
-				(2 * missingContacts.size()) + 2);
+			sb = new StringBundler((2 * missingContacts.size()) + 2);
 
 			sb.append("The following missing contact(s) cannot be assigned ");
 			sb.append("to the account:<br />");
@@ -496,9 +513,8 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		createAccountNote(jsonObject, account);
 
 		checkWarnings(
-			accountKey, account, activeContacts, inactiveContacts,
-			missingContacts, salesforceOpportunityTypeName,
-			salesforceOpportunityType);
+			accountKey, account, inactiveContacts, missingContacts,
+			salesforceOpportunityTypeName, salesforceOpportunityType);
 
 		String salesforceOpportunityProductFamily = jsonObject.getString(
 			"_salesforceOpportunityProductFamily");
