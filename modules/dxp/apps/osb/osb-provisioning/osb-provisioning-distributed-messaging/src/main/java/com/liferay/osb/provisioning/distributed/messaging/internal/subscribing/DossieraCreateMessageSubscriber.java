@@ -141,6 +141,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 		long curDeveloperCount = _contactWebService.searchCount(
 			StringPool.BLANK, sb.toString());
+
 		int maxDeveloperCount = _accountReader.getMaxDeveloperCount(account);
 
 		if (curDeveloperCount > maxDeveloperCount) {
