@@ -107,28 +107,11 @@ public class SegmentsEntryRoleContributorTest {
 
 		_user = UserTestUtil.addUser();
 
-		String criteriaString = RandomTestUtil.randomString();
-
-		_user.setLastName(criteriaString);
+		_user.setLastName(RandomTestUtil.randomString());
 
 		_user = _userLocalService.updateUser(_user);
 
-		_segmentsEntry = SegmentsTestUtil.addSegmentsEntry(
-			TestPropsValues.getGroupId(),
-			JSONUtil.put(
-				"criteria",
-				JSONUtil.put(
-					"user",
-					JSONUtil.put(
-						"conjunction", "and"
-					).put(
-						"filterString",
-						String.format("(lastName eq '%s')", criteriaString)
-					).put(
-						"typeValue", "model"
-					))
-			).toString(),
-			User.class.getName());
+		_segmentsEntry = _addSegmentsEntry(_user.getLastName());
 
 		_assertHasPermission(actionKey, false);
 
@@ -186,6 +169,27 @@ public class SegmentsEntryRoleContributorTest {
 					TestPropsValues.getGroupId(), Organization.class.getName(),
 					_organization.getOrganizationId(), actionKey));
 		}
+	}
+
+	private SegmentsEntry _addSegmentsEntry(String userLastName)
+		throws Exception {
+
+		return SegmentsTestUtil.addSegmentsEntry(
+			TestPropsValues.getGroupId(),
+			JSONUtil.put(
+				"criteria",
+				JSONUtil.put(
+					"user",
+					JSONUtil.put(
+						"conjunction", "and"
+					).put(
+						"filterString",
+						String.format("(lastName eq '%s')", userLastName)
+					).put(
+						"typeValue", "model"
+					))
+			).toString(),
+			User.class.getName());
 	}
 
 	private void _assertHasPermission(String actionKey, boolean hasPermission)
