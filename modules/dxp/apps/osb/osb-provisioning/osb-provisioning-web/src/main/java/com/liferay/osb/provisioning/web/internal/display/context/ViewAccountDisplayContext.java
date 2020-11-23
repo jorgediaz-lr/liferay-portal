@@ -368,68 +368,17 @@ public class ViewAccountDisplayContext {
 			renderRequest, currentURLObj, Collections.emptyList(),
 			"no-subscriptions-were-found");
 
-		String tabs2 = ParamUtil.getString(renderRequest, "tabs2", "active");
-
 		String keywords = ParamUtil.getString(renderRequest, "keywords");
-		String[] productKeys = ParamUtil.getStringValues(
-			renderRequest, "productKeys");
-		String[] states = ParamUtil.getStringValues(renderRequest, "states");
-		int startDateMonth = ParamUtil.getInteger(
-			renderRequest, "startDateMonth");
-		int startDateDay = ParamUtil.getInteger(renderRequest, "startDateDay");
-		int startDateYear = ParamUtil.getInteger(
-			renderRequest, "startDateYear");
-		int endDateMonth = ParamUtil.getInteger(renderRequest, "endDateMonth");
-		int endDateDay = ParamUtil.getInteger(renderRequest, "endDateDay");
-		int endDateYear = ParamUtil.getInteger(renderRequest, "endDateYear");
+
 		String orderByCol = ParamUtil.getString(renderRequest, "orderByCol");
 		String orderByType = ParamUtil.getString(
 			renderRequest, "orderByType", "asc");
-
-		StringBundler sb = new StringBundler(13);
-
-		sb.append("(accountKey eq '");
-		sb.append(account.getKey());
-		sb.append("')");
-
-		if (tabs2.equals("active")) {
-			sb.append(" and (state eq '");
-			sb.append(ProductPurchaseConstants.STATE_ACTIVE);
-			sb.append("')");
-		}
-		else if (tabs2.equals("inactive") && (states.length == 0)) {
-			sb.append(" and ((state eq '");
-			sb.append(ProductPurchaseConstants.STATE_CANCELLED);
-			sb.append("') or (state eq '");
-			sb.append(ProductPurchaseConstants.STATE_EXPIRED);
-			sb.append("') or (state eq '");
-			sb.append(ProductPurchaseConstants.STATE_UNACTIVATED);
-			sb.append("'))");
-		}
-
-		if (!tabs2.equals("active") && (states.length > 0)) {
-			sb.append(_getStatesFilter(states));
-		}
-
-		if (productKeys.length > 0) {
-			sb.append(_getProductKeysFilter(productKeys));
-		}
-
-		Date startDate = PortalUtil.getDate(
-			startDateMonth, startDateDay, startDateYear, null);
-
-		Date endDate = PortalUtil.getDate(
-			endDateMonth, endDateDay, endDateYear, null);
-
-		if ((startDate != null) && (endDate != null)) {
-			sb.append(_getSupportLifeFilter(startDate, endDate));
-		}
 
 		String sorts = _getSorts(orderByCol, orderByType);
 
 		List<ProductPurchaseView> productPurchaseViews =
 			productPurchaseViewWebService.getProductPurchaseViews(
-				keywords, sb.toString(), searchContainer.getCur(),
+				keywords, _getFilter(), searchContainer.getCur(),
 				searchContainer.getEnd() - searchContainer.getStart(), sorts);
 
 		searchContainer.setResults(
@@ -440,7 +389,7 @@ public class ViewAccountDisplayContext {
 
 		int count =
 			(int)productPurchaseViewWebService.getProductPurchaseViewsCount(
-				keywords, sb.toString(), searchContainer.getCur(),
+				keywords, _getFilter(), searchContainer.getCur(),
 				searchContainer.getEnd() - searchContainer.getStart(), sorts);
 
 		searchContainer.setTotal(count);
@@ -595,6 +544,63 @@ public class ViewAccountDisplayContext {
 
 	private AccountEntry _fetchAccountEntry() throws Exception {
 		return accountEntryWebService.fetchAccountEntry(account.getKey());
+	}
+
+	private String _getFilter() throws Exception {
+		String tabs2 = ParamUtil.getString(renderRequest, "tabs2", "active");
+
+		String[] productKeys = ParamUtil.getStringValues(
+			renderRequest, "productKeys");
+		String[] states = ParamUtil.getStringValues(renderRequest, "states");
+		int startDateMonth = ParamUtil.getInteger(
+			renderRequest, "startDateMonth");
+		int startDateDay = ParamUtil.getInteger(renderRequest, "startDateDay");
+		int startDateYear = ParamUtil.getInteger(
+			renderRequest, "startDateYear");
+		int endDateMonth = ParamUtil.getInteger(renderRequest, "endDateMonth");
+		int endDateDay = ParamUtil.getInteger(renderRequest, "endDateDay");
+		int endDateYear = ParamUtil.getInteger(renderRequest, "endDateYear");
+
+		Date startDate = PortalUtil.getDate(
+			startDateMonth, startDateDay, startDateYear, null);
+
+		Date endDate = PortalUtil.getDate(
+			endDateMonth, endDateDay, endDateYear, null);
+
+		StringBundler sb = new StringBundler(13);
+
+		sb.append("(accountKey eq '");
+		sb.append(account.getKey());
+		sb.append("')");
+
+		if (tabs2.equals("active")) {
+			sb.append(" and (state eq '");
+			sb.append(ProductPurchaseConstants.STATE_ACTIVE);
+			sb.append("')");
+		}
+		else if (tabs2.equals("inactive") && (states.length == 0)) {
+			sb.append(" and ((state eq '");
+			sb.append(ProductPurchaseConstants.STATE_CANCELLED);
+			sb.append("') or (state eq '");
+			sb.append(ProductPurchaseConstants.STATE_EXPIRED);
+			sb.append("') or (state eq '");
+			sb.append(ProductPurchaseConstants.STATE_UNACTIVATED);
+			sb.append("'))");
+		}
+
+		if (!tabs2.equals("active") && (states.length > 0)) {
+			sb.append(_getStatesFilter(states));
+		}
+
+		if (productKeys.length > 0) {
+			sb.append(_getProductKeysFilter(productKeys));
+		}
+
+		if ((startDate != null) && (endDate != null)) {
+			sb.append(_getSupportLifeFilter(startDate, endDate));
+		}
+
+		return sb.toString();
 	}
 
 	private List<DropdownItem> _getFilterCustomerRoleDropdownItems()
