@@ -166,12 +166,18 @@ class Text extends Component {
 			target.value = value;
 		}
 
-		this.setState(
-			{
-				value
-			},
-			() => this.dispatchEvent(event, 'fieldEdited', value)
-		);
+		if (this.timeout) {
+			clearTimeout(this.timeout);
+		}
+
+		this.timeout = setTimeout(() => {
+			this.setState(
+				{
+					value
+				},
+				() => this.dispatchEvent(event, 'fieldEdited', value)
+			);
+		}, 300);
 	}
 
 	_handleFieldFocused(event) {
