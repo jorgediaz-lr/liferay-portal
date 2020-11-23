@@ -21,6 +21,7 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.LabelItemList;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchaseView;
+import com.liferay.osb.provisioning.constants.AccountLanguageConstants;
 import com.liferay.osb.provisioning.constants.ProvisioningActionKeys;
 import com.liferay.osb.provisioning.constants.ProvisioningWebKeys;
 import com.liferay.osb.provisioning.customer.model.AccountEntry;
@@ -669,7 +670,7 @@ public class ViewAccountDisplayContext {
 	private List<JSONObject> _getLanguageList() {
 		List<JSONObject> languageList = new ArrayList<>();
 
-		for (Locale locale : LanguageUtil.getAvailableLocales()) {
+		for (Locale locale : AccountLanguageConstants.LOCALES_ENABLED) {
 			languageList.add(
 				JSONUtil.put(
 					"id", locale.toString()
