@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.store.s3.configuration.S3StoreConfiguration;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -134,6 +135,50 @@ public class S3FileCacheImpl implements S3FileCache {
 		}
 
 		return cacheFile;
+	}
+
+	@Override
+	public InputStream getCacheFileInputStream(
+		S3Object s3Object, String fileName)
+		throws IOException {
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(getCacheDirName());
+		sb.append(
+			DateUtil.getCurrentDate(
+				_CACHE_DIR_PATTERN, LocaleUtil.getDefault()));
+		sb.append(_s3KeyTransformer.getNormalizedFileName(fileName));
+
+		ObjectMetadata objectMetadata = s3Object.getObjectMetadata();
+
+		Date lastModifiedDate = objectMetadata.getLastModified();
+
+		sb.append(lastModifiedDate.getTime());
+
+		String cacheFileName = sb.toString();
+
+		File cacheFile = new File(cacheFileName);
+
+		try (InputStream inputStream = s3Object.getObjectContent()) {
+			if (cacheFile.exists() &&
+				(cacheFile.lastModified() >= lastModifiedDate.getTime())) {
+
+				return new FileInputStream(cacheFile);
+			}
+
+			if (inputStream == null) {
+				throw new IOException("S3 object input stream is null");
+			}
+
+			FileUtil.mkdirs(cacheFile.getParentFile());
+
+			try (OutputStream outputStream = new FileOutputStream(cacheFile)) {
+				StreamUtil.transfer(inputStream, outputStream);
+			}
+		}
+
+		return new FileInputStream(cacheFile);
 	}
 
 	@Activate
