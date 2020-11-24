@@ -87,9 +87,11 @@ ProductPurchaseViewDisplay productPurchaseViewDisplay = viewSubscriptionDisplayC
 		</ul>
 	</div>
 
-	<div>
-		<a class="btn btn-primary" href="<%= StringUtil.replace(provisioningWebConfiguration.generateLicenseHREF(), "[$ACCOUNT_KEY$]", productPurchaseViewDisplay.getAccountKey()) %>">
-			<span class="lfr-btn-label"><liferay-ui:message key="generate-license" /></span>
-		</a>
+	<div class="header-buttons">
+		<div>
+			<a class="btn btn-primary" href="<%= StringUtil.replace(provisioningWebConfiguration.generateLicenseHREF(), "[$ACCOUNT_KEY$]", productPurchaseViewDisplay.getAccountKey()) %>">
+				<span class="lfr-btn-label"><liferay-ui:message key="generate-license" /></span>
+			</a>
+		</div>
 	</div>
 </div>
