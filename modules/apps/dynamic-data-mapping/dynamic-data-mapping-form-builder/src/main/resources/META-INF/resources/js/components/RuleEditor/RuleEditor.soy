@@ -746,7 +746,7 @@
 											{param value: [$secondOperandValue] /}
 										{/delcall}
 									{elseif $secondOperandType == 'grid'}
-										{call ReactFieldAdapter.render}
+										{delcall PageRenderer.RegisterFieldType variant="$secondOperandType"}
 											{param columns: $firstOperandColumns /}
 											{param dataType: $secondOperandDataType /}
 											{param events: [
@@ -759,7 +759,7 @@
 											{param rows: $firstOperandRows /}
 											{param spritemap: $spritemap /}
 											{param value: $secondOperandValue /}
-										{/call}
+										{/delcall}
 									{else}
 										{delcall PageRenderer.RegisterFieldType variant="$secondOperandType"}
 											{param dataType: $secondOperandDataType /}
