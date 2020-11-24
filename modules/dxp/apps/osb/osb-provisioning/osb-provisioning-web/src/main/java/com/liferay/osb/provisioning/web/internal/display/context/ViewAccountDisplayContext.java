@@ -369,6 +369,7 @@ public class ViewAccountDisplayContext {
 			"no-subscriptions-were-found");
 
 		String keywords = ParamUtil.getString(renderRequest, "keywords");
+		String tabs2 = ParamUtil.getString(renderRequest, "tabs2", "active");
 
 		String orderByCol = ParamUtil.getString(renderRequest, "orderByCol");
 		String orderByType = ParamUtil.getString(
@@ -378,7 +379,7 @@ public class ViewAccountDisplayContext {
 
 		List<ProductPurchaseView> productPurchaseViews =
 			productPurchaseViewWebService.getProductPurchaseViews(
-				keywords, _getFilter(), searchContainer.getCur(),
+				keywords, _getFilter(tabs2), searchContainer.getCur(),
 				searchContainer.getEnd() - searchContainer.getStart(), sorts);
 
 		searchContainer.setResults(
@@ -389,7 +390,7 @@ public class ViewAccountDisplayContext {
 
 		int count =
 			(int)productPurchaseViewWebService.getProductPurchaseViewsCount(
-				keywords, _getFilter(), searchContainer.getCur(),
+				keywords, _getFilter(tabs2), searchContainer.getCur(),
 				searchContainer.getEnd() - searchContainer.getStart(), sorts);
 
 		searchContainer.setTotal(count);
@@ -475,18 +476,10 @@ public class ViewAccountDisplayContext {
 	public String getTabsNames() throws Exception {
 		List<String> tabsNames = new ArrayList<>();
 
-		int allProductPurchaseViews =
-			(int)productPurchaseViewWebService.getProductPurchaseViewsCount(
-				StringPool.BLANK, _getFilter(), 1, 1000, StringPool.BLANK);
-
-		tabsNames.add(
-			_getTabName(
-				LanguageUtil.get(httpServletRequest, "all"),
-				allProductPurchaseViews));
-
 		int activeProductPurchaseViews =
 			(int)productPurchaseViewWebService.getProductPurchaseViewsCount(
-				StringPool.BLANK, _getFilter(), 1, 1000, StringPool.BLANK);
+				StringPool.BLANK, _getFilter("active"), 1, 1000,
+				StringPool.BLANK);
 
 		tabsNames.add(
 			_getTabName(
@@ -495,12 +488,23 @@ public class ViewAccountDisplayContext {
 
 		int inactiveProductPurchaseViews =
 			(int)productPurchaseViewWebService.getProductPurchaseViewsCount(
-				StringPool.BLANK, _getFilter(), 1, 1000, StringPool.BLANK);
+				StringPool.BLANK, _getFilter("inactive"), 1, 1000,
+				StringPool.BLANK);
 
 		tabsNames.add(
 			_getTabName(
 				LanguageUtil.get(httpServletRequest, "inactive"),
 				inactiveProductPurchaseViews));
+
+		int allProductPurchaseViews =
+			(int)productPurchaseViewWebService.getProductPurchaseViewsCount(
+				StringPool.BLANK, _getFilter(StringPool.BLANK), 1, 1000,
+				StringPool.BLANK);
+
+		tabsNames.add(
+			_getTabName(
+				LanguageUtil.get(httpServletRequest, "all"),
+				allProductPurchaseViews));
 
 		return StringUtil.merge(tabsNames);
 	}
@@ -579,9 +583,7 @@ public class ViewAccountDisplayContext {
 		return accountEntryWebService.fetchAccountEntry(account.getKey());
 	}
 
-	private String _getFilter() throws Exception {
-		String tabs2 = ParamUtil.getString(renderRequest, "tabs2", "active");
-
+	private String _getFilter(String tabs2) throws Exception {
 		String[] productKeys = ParamUtil.getStringValues(
 			renderRequest, "productKeys");
 		String[] states = ParamUtil.getStringValues(renderRequest, "states");
