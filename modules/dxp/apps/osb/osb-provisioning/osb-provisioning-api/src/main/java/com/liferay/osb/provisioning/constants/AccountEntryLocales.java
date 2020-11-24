@@ -21,9 +21,9 @@ import java.util.Locale;
 /**
  * @author Jenny Chen
  */
-public class AccountLanguageConstants {
+public class AccountEntryLocales {
 
-	public static final Locale[] LOCALES_ENABLED = {
+	public static final Locale[] VALUES = {
 		LocaleUtil.BRAZIL, LocaleUtil.CHINA, LocaleUtil.JAPAN, LocaleUtil.SPAIN,
 		LocaleUtil.US
 	};
