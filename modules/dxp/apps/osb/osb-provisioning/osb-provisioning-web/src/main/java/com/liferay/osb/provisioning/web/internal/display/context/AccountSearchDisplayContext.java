@@ -207,11 +207,11 @@ public class AccountSearchDisplayContext {
 				searchTerms.getCreatedByEmailAddress());
 
 			TeamRole flsTeamRole = _teamRoleWebService.getTeamRole(
-				TeamRoleConstants.NAME_FIRST_LINE_SUPPORT,
-				TeamRole.Type.ACCOUNT.toString());
+				TeamRole.Type.ACCOUNT.toString(),
+				TeamRoleConstants.NAME_FIRST_LINE_SUPPORT);
 			TeamRole partnerTeamRole = _teamRoleWebService.getTeamRole(
-				TeamRoleConstants.NAME_PARTNER,
-				TeamRole.Type.ACCOUNT.toString());
+				TeamRole.Type.ACCOUNT.toString(),
+				TeamRoleConstants.NAME_PARTNER);
 
 			filter = searchTerms.getAdvancedSearchFilter(
 				subscriptionProductKeys, createdByUuid, flsTeamRole.getKey(),
