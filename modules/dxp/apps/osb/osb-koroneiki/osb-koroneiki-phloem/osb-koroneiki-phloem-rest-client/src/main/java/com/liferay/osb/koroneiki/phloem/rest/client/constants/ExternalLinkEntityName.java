@@ -27,6 +27,8 @@ public class ExternalLinkEntityName {
 
 	public static final String DOSSIERA_PROJECT = "project";
 
+	public static final String JIRA_PROJECT = "project";
+
 	public static final String LCS_CORP_PROJECT = "corp-project";
 
 	public static final String SALESFORCE_ACCOUNT = "account";

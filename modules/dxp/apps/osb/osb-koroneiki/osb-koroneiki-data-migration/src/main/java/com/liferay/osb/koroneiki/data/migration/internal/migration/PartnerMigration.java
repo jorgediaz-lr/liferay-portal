@@ -106,7 +106,7 @@ public class PartnerMigration {
 
 	private void _assignTeam(
 			Connection connection, long userId, long partnerEntryId,
-			Account partnerAccount, String code)
+			Account partnerAccount, String code, String jiraProjectKey)
 		throws Exception {
 
 		Team flsTeam = null;
@@ -152,6 +152,14 @@ public class PartnerMigration {
 						flsTeam = _teamLocalService.addTeam(
 							userId, partnerAccount.getAccountId(),
 							code + " FLS", false);
+
+						if (Validator.isNotNull(jiraProjectKey)) {
+							_externalLinkLocalService.addExternalLink(
+								userId, Team.class.getName(),
+								flsTeam.getTeamId(), ExternalLinkDomain.JIRA,
+								ExternalLinkEntityName.JIRA_PROJECT,
+								jiraProjectKey);
+						}
 
 						_accountFLSTeamMap.put(
 							partnerAccount.getAccountId(), flsTeam.getTeamId());
@@ -318,10 +326,11 @@ public class PartnerMigration {
 				userId, "Service Partnership", productFields);
 		}
 
-		StringBundler sb = new StringBundler(7);
+		StringBundler sb = new StringBundler(8);
 
 		sb.append("select dossieraAccountKey, code_, notes, ");
 		sb.append("OSB_PartnerEntry.partnerEntryId, parentPartnerEntryId, ");
+		sb.append("OSB_PartnerEntry.jiraProjectKey, ");
 		sb.append("OSB_PartnerEntries_SupportRegions.supportRegionId from ");
 		sb.append("OSB_PartnerEntry left join ");
 		sb.append("OSB_PartnerEntries_SupportRegions on ");
@@ -379,7 +388,7 @@ public class PartnerMigration {
 
 				_assignTeam(
 					connection, userId, partnerEntryId, account,
-					resultSet.getString(2));
+					resultSet.getString(2), resultSet.getString(6));
 			}
 		}
 	}

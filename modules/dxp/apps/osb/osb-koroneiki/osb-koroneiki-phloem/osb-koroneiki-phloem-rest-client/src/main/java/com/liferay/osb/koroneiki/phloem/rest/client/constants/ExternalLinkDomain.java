@@ -23,6 +23,8 @@ public class ExternalLinkDomain {
 
 	public static final String DOSSIERA = "dossiera";
 
+	public static final String JIRA = "jira";
+
 	public static final String LCS = "lcs";
 
 	public static final String SALESFORCE = "salesforce";
