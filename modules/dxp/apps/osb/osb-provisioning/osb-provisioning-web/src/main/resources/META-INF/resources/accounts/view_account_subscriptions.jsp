@@ -21,6 +21,8 @@ String tabs2 = ParamUtil.getString(request, "tabs2");
 
 ViewAccountDisplayContext viewAccountDisplayContext = ProvisioningWebComponentProvider.getViewAccountDisplayContext(renderRequest, renderResponse, request);
 
+AccountDisplay accountDisplay = viewAccountDisplayContext.getAccountDisplay();
+
 PortletURL portletURL = viewAccountDisplayContext.getPortletURL();
 
 SearchContainer productPurchasesSearchContainer = viewAccountDisplayContext.getProductPurchaseViewsSearchContainer();
@@ -127,9 +129,9 @@ SearchContainer productPurchasesSearchContainer = viewAccountDisplayContext.getP
 
 				<liferay-ui:search-container-column-text
 					href="<%= rowURL %>"
-					name="status"
+					name="state"
 				>
-					<span class="label <%= productPurchaseViewDisplay.getStatusStyle() %>"><%= productPurchaseViewDisplay.getStatus() %></span>
+					<span class="label <%= productPurchaseViewDisplay.getStateStyle() %>"><%= productPurchaseViewDisplay.getState() %></span>
 				</liferay-ui:search-container-column-text>
 			</liferay-ui:search-container-row>
 
