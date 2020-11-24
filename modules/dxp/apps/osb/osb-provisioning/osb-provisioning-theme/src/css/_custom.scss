@@ -30,12 +30,6 @@
 	padding-top: 0;
 }
 
-table {
-	th {
-		font-size: $h5-font-size;
-	}
-}
-
 .breadcrumb {
 	.active {
 		color: $secondary;
@@ -90,6 +84,11 @@ table {
 }
 
 .table {
+	th {
+		color: $secondary;
+		font-size: $h5-font-size;
+	}
+
 	.highlight-row td {
 		background-color: $primary-l3;
 	}
