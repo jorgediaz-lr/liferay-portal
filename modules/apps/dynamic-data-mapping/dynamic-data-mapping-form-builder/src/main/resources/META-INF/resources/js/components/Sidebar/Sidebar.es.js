@@ -636,7 +636,7 @@ class Sidebar extends Component {
 		});
 	}
 
-	_handleSettingsFieldEdited({fieldInstance, value}) {
+	_handleSettingsFieldEdited({fieldInstance, optionIndex, value}) {
 		if (fieldInstance && !fieldInstance.isDisposed()) {
 			const {editingLanguageId} = this.props;
 			const {fieldName} = fieldInstance;
@@ -644,6 +644,7 @@ class Sidebar extends Component {
 
 			dispatch('fieldEdited', {
 				editingLanguageId,
+				optionIndex,
 				propertyName: fieldName,
 				propertyValue: value
 			});

@@ -23,7 +23,13 @@ export const updatePages = (pages, oldFieldProperties, newFieldProperties) => {
 	return FormSupport.updateField(pages, fieldName, newFieldProperties);
 };
 
-export const updateField = (props, state, fieldName, fieldValue) => {
+export const updateField = (
+	props,
+	state,
+	fieldName,
+	fieldValue,
+	optionIndex
+) => {
 	const {focusedField, pages, rules} = state;
 	const updatedFocusedField = updateFocusedField(
 		props,
@@ -38,17 +44,24 @@ export const updateField = (props, state, fieldName, fieldValue) => {
 		rules: updateRulesReferences(
 			rules || [],
 			focusedField,
-			updatedFocusedField
+			updatedFocusedField,
+			optionIndex
 		)
 	};
 };
 
 export const handleFieldEdited = (props, state, event) => {
-	const {propertyName, propertyValue} = event;
+	const {optionIndex, propertyName, propertyValue} = event;
 	let newState = {};
 
 	if (propertyName !== 'name' || propertyValue !== '') {
-		newState = updateField(props, state, propertyName, propertyValue);
+		newState = updateField(
+			props,
+			state,
+			propertyName,
+			propertyValue,
+			optionIndex
+		);
 	}
 
 	return newState;

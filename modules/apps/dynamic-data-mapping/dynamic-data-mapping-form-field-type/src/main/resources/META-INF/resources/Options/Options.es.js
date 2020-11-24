@@ -325,9 +325,10 @@ class Options extends Component {
 		source.classList.add('ddm-source-dragging');
 	}
 
-	_handleFieldEdited({originalEvent}, value) {
+	_handleFieldEdited({optionIndex, originalEvent}, value) {
 		this.emit('fieldEdited', {
 			fieldInstance: this,
+			optionIndex,
 			originalEvent,
 			value
 		});
@@ -409,7 +410,7 @@ class Options extends Component {
 			{
 				value: newValue
 			},
-			() => this._handleFieldEdited(event, newValue)
+			() => this._handleFieldEdited({...event, optionIndex}, newValue)
 		);
 	}
 

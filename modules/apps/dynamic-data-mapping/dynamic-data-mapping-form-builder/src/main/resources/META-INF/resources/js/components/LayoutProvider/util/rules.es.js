@@ -17,25 +17,12 @@ import {RulesVisitor} from 'dynamic-data-mapping-form-renderer/js/util/visitors.
 import Token from '../../../expressions/Token.es';
 import Tokenizer from '../../../expressions/Tokenizer.es';
 
-export const isEqualLengthOptions = (options1, options2) => {
-	if (!!options1 && !!options2) {
-		return options1.length === options2.length;
-	}
-	else {
-		return false;
-	}
-};
-
 export const isFieldValueOperand = operands => {
 	return (
 		operands.length == 2 &&
 		operands[0].type === 'field' &&
 		operands[1].type == 'string'
 	);
-};
-
-export const isOptionReferencedByOperand = (options, operandValue) => {
-	return options.some(({value}) => operandValue === value);
 };
 
 export const renameFieldInsideExpression = (
@@ -70,7 +57,12 @@ export const renameFieldInsideAutofill = (
 	return object;
 };
 
-export const updateRulesReferences = (rules, oldProperties, newProperties) => {
+export const updateRulesReferences = (
+	rules,
+	oldProperties,
+	newProperties,
+	optionIndex
+) => {
 	const oldFieldName = oldProperties.fieldName;
 	const newFieldName = newProperties.fieldName;
 	const visitor = new RulesVisitor(rules);
@@ -132,22 +124,17 @@ export const updateRulesReferences = (rules, oldProperties, newProperties) => {
 				}
 				else if (
 					index === 1 &&
+					!isNaN(optionIndex) &&
+					optionIndex < oldOptions.length &&
 					isFieldValueOperand(condition.operands) &&
-					isEqualLengthOptions(oldOptions, newOptions) &&
-					isOptionReferencedByOperand(oldOptions, operand.value)
+					oldOptions[optionIndex].value == operand.value &&
+					newOptions[optionIndex].value !=
+						oldOptions[optionIndex].value
 				) {
-					const changedOption = newOptions.find(({value}) => {
-						return !oldOptions.some(
-							option => option.value == value
-						);
-					});
-
-					if (changedOption) {
-						return {
-							...operand,
-							value: changedOption.value
-						};
-					}
+					return {
+						...operand,
+						value: newOptions[optionIndex].value
+					};
 				}
 
 				return operand;
