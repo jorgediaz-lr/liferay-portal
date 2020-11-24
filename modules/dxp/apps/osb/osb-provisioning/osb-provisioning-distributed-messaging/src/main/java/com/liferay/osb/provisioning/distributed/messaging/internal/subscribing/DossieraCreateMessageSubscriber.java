@@ -1149,7 +1149,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			String role = contactJSONObject.getString("_role");
 
 			if (Validator.isNull(role)) {
-				role = ContactRoleConstants.NAME_MEMBER;
+				role = ContactRoleConstants.NAME_SUPPORT_WATCHER;
 			}
 
 			ContactRole contactRole = new ContactRole();
