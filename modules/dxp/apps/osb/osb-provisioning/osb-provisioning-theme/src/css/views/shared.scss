@@ -166,6 +166,10 @@
 				&:after {
 					background-color: transparent;
 				}
+
+				.badge-secondary {
+					background-color: $body-bg;
+				}
 			}
 		}
 
