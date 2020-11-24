@@ -19,8 +19,6 @@
 <%
 ViewAccountDisplayContext viewAccountDisplayContext = ProvisioningWebComponentProvider.getViewAccountDisplayContext(renderRequest, renderResponse, request);
 
-AccountDisplay accountDisplay = viewAccountDisplayContext.getAccountDisplay();
-
 PortletURL portletURL = viewAccountDisplayContext.getPortletURL();
 %>
 
@@ -32,52 +30,20 @@ PortletURL portletURL = viewAccountDisplayContext.getPortletURL();
 		<liferay-util:param name="values" value="active,inactive,all" />
 	</liferay-util:include>
 
-	<div class="management-bar management-bar-light navbar navbar-expand-md">
-		<div class="container-fluid">
-			<div class="navbar-form navbar-form-autofit navbar-overlay navbar-overlay-sm-down">
-				<div class="container-fluid">
-					<aui:form action="<%= portletURL.toString() %>" method="get" name="searchFm">
-						<liferay-portlet:renderURLParams portletURL="<%= portletURL %>" />
-
-						<div class="input-group search-input">
-							<aui:input cssClass="input-group-inset-after" label="" name="keywords" placeholder="search" wrapperCssClass="input-group-item" />
-
-							<span class="input-group-inset-item input-group-inset-item-after">
-								<button aria-label="search" class="btn btn-unstyled" type="submit">
-									<liferay-ui:icon
-										icon="search"
-										markupView="lexicon"
-									/>
-								</button>
-							</span>
-						</div>
-					</aui:form>
-				</div>
-			</div>
-
-			<portlet:renderURL var="editProductPurchaseURL">
-				<portlet:param name="mvcRenderCommandName" value="/accounts/edit_product_purchase" />
-				<portlet:param name="redirect" value="<%= currentURL %>" />
-				<portlet:param name="accountKey" value="<%= accountDisplay.getKey() %>" />
-			</portlet:renderURL>
-
-			<ul class="navbar-nav">
-				<li class="nav-item">
-					<liferay-ui:icon
-						icon="plus"
-						iconCssClass="btn btn-primary nav-btn nav-btn-monospaced"
-						markupView="lexicon"
-						message="add-subscription"
-						url="<%= editProductPurchaseURL %>"
-					/>
-				</li>
-			</ul>
-		</div>
-	</div>
-
 	<liferay-ui:search-container
 		searchContainer="<%= viewAccountDisplayContext.getProductPurchaseViewsSearchContainer() %>"
 	>
+		<clay:management-toolbar
+			clearResultsURL="<%= viewAccountDisplayContext.getClearResultsURL() %>"
+			creationMenu="<%= viewAccountDisplayContext.getCreationMenu() %>"
+			elementClasses="full-width"
+			itemsTotal="<%= searchContainer.getTotal() %>"
+			searchActionURL="<%= viewAccountDisplayContext.getCurrentURL() %>"
+			searchContainerId="account-subscriptions"
+			selectable="<%= false %>"
+			showSearch="<%= true %>"
+		/>
+
 		<liferay-ui:search-container-row
 			className="com.liferay.osb.provisioning.web.internal.display.context.ProductPurchaseViewDisplay"
 			modelVar="productPurchaseViewDisplay"

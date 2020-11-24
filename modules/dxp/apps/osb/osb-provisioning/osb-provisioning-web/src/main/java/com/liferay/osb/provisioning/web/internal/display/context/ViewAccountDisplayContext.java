@@ -14,6 +14,7 @@
 
 package com.liferay.osb.provisioning.web.internal.display.context;
 
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenu;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.LabelItem;
@@ -191,6 +192,24 @@ public class ViewAccountDisplayContext {
 		PortletURL portletURL = getPortletURL();
 
 		return portletURL.toString();
+	}
+
+	public CreationMenu getCreationMenu() {
+		return new CreationMenu() {
+			{
+				addDropdownItem(
+					dropdownItem -> {
+						dropdownItem.setHref(
+							renderResponse.createRenderURL(),
+							"mvcRenderCommandName",
+							"/accounts/edit_product_purchase", "redirect",
+							getCurrentURL(), "accountKey", account.getKey());
+						dropdownItem.setLabel(
+							LanguageUtil.get(
+								httpServletRequest, "add-subscription"));
+					});
+			}
+		};
 	}
 
 	public String getCurrentURL() {
