@@ -118,25 +118,25 @@ describe('RuleList', () => {
 				{
 					action: 'require',
 					label: 'label text 1',
-					target: 'text1',
-				},
+					target: 'text1'
+				}
 			],
 			conditions: [
 				{
 					operands: [
 						{
 							type: 'field',
-							value: 'grid1',
+							value: 'grid1'
 						},
 						{
 							type: 'json',
-							value: '{"value1" : "value2"}',
-						},
+							value: '{"value1" : "value2"}'
+						}
 					],
-					operator: 'equals-to',
-				},
+					operator: 'equals-to'
+				}
 			],
-			['logical-operator']: 'OR',
+			['logical-operator']: 'OR'
 		};
 
 		const config = {
@@ -149,21 +149,21 @@ describe('RuleList', () => {
 									fields: [
 										{
 											fieldName: 'grid1',
-											label: 'label grid 1',
+											label: 'label grid 1'
 										},
 										{
 											fieldName: 'text1',
-											label: 'label text 1',
-										},
-									],
-								},
-							],
-						},
-					],
-				},
+											label: 'label text 1'
+										}
+									]
+								}
+							]
+						}
+					]
+				}
 			],
 			rules: [rule],
-			spritemap,
+			spritemap
 		};
 
 		component = new RuleList(config);
