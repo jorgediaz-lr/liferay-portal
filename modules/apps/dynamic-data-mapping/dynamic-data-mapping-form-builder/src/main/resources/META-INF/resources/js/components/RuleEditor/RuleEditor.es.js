@@ -181,8 +181,12 @@ class RuleEditor extends Component {
 		});
 
 		if (field) {
-			columns = field.columns ?? [];
-			rows = field.rows ?? [];
+			if (field.columns != null) {
+				columns = field.columns;
+			}
+			if (field.rows != null) {
+				rows = field.rows;
+			}
 		}
 
 		return {columns, rows};
