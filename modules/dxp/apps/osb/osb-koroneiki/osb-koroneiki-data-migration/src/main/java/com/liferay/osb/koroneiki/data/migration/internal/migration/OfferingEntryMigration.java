@@ -121,7 +121,12 @@ public class OfferingEntryMigration {
 				String productEntryName = ProductEntryMigration.getNewName(
 					resultSet.getString(3));
 				Date startDate = resultSet.getDate(5);
-				Date endDate = resultSet.getDate(6);
+
+				Date originalEndDate = resultSet.getDate(6);
+
+				Date endDate = new Date(
+					originalEndDate.getTime() + (30 * Time.DAY));
+
 				int quantity = resultSet.getInt(7);
 
 				int status = resultSet.getInt(8);
@@ -180,7 +185,8 @@ public class OfferingEntryMigration {
 						_productPurchaseLocalService.addProductPurchase(
 							userId, account.getAccountId(),
 							curProductEntry.getProductEntryId(), startDate,
-							endDate, endDate, quantity, status, productFields);
+							endDate, originalEndDate, quantity, status,
+							productFields);
 
 					String externalId = resultSet.getString(12);
 
