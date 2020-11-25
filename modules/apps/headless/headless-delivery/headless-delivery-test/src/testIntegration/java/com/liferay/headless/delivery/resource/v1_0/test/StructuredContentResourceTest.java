@@ -331,6 +331,15 @@ public class StructuredContentResourceTest
 		return _journalFolder.getFolderId();
 	}
 
+	@Override
+	protected StructuredContent
+			testGraphQLStructuredContent_addStructuredContent()
+		throws Exception {
+
+		return testPostSiteStructuredContent_addStructuredContent(
+			randomStructuredContent());
+	}
+
 	private DDMStructure _addDDMStructure(Group group, String fileName)
 		throws Exception {
 
