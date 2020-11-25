@@ -132,6 +132,7 @@ import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.systemevent.SystemEventHierarchyEntryThreadLocal;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ContentTypes;
@@ -7190,9 +7191,14 @@ public class JournalArticleLocalServiceImpl
 			}
 		}
 		finally {
-			for (Long tempFileEntryId : tempFileEntryIds) {
-				TempFileEntryUtil.deleteTempFileEntry(tempFileEntryId);
-			}
+			TransactionCommitCallbackUtil.registerCallback(
+				() -> {
+					for (Long tempFileEntryId : tempFileEntryIds) {
+						TempFileEntryUtil.deleteTempFileEntry(tempFileEntryId);
+					}
+
+					return null;
+				});
 		}
 	}
 
