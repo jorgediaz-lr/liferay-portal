@@ -16,6 +16,7 @@ package com.liferay.osb.koroneiki.data.migration.internal.migration;
 
 import com.liferay.osb.koroneiki.phloem.rest.client.constants.ExternalLinkDomain;
 import com.liferay.osb.koroneiki.phloem.rest.client.constants.ExternalLinkEntityName;
+import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.Account.Language;
 import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.Account.Status;
 import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.Account.Tier;
 import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.Note;
@@ -71,18 +72,22 @@ public class CorpProjectMigration {
 
 		User user = _userLocalService.getUser(userId);
 
-		StringBundler sb = new StringBundler(12);
+		StringBundler sb = new StringBundler(16);
 
 		sb.append("select OSB_CorpProject.*, ");
 		sb.append("OSB_AccountEntry.accountEntryId, ");
 		sb.append("OSB_AccountEntry.dossieraAccountKey, ");
 		sb.append("OSB_AccountEntry.code_, OSB_AccountEntry.type_, ");
 		sb.append("OSB_AccountEntry.tier, OSB_AccountEntry.notes, ");
-		sb.append("OSB_AccountEntries_SupportRegions.supportRegionId from ");
-		sb.append("OSB_CorpProject inner join OSB_AccountEntry on ");
+		sb.append("OSB_AccountEntries_SupportRegions.supportRegionId, ");
+		sb.append("OSB_AccountEntryLanguage.languageId from OSB_CorpProject ");
+		sb.append("inner join OSB_AccountEntry on ");
 		sb.append("OSB_AccountEntry.corpProjectUuid = OSB_CorpProject.uuid_ ");
 		sb.append("left join OSB_AccountEntries_SupportRegions on ");
 		sb.append("OSB_AccountEntries_SupportRegions.accountEntryId = ");
+		sb.append("OSB_AccountEntry.accountEntryId left join ");
+		sb.append("OSB_AccountEntryLanguage on ");
+		sb.append("OSB_AccountEntryLanguage.accountEntryId = ");
 		sb.append("OSB_AccountEntry.accountEntryId where ");
 		sb.append("OSB_AccountEntry.status != 500");
 
@@ -111,17 +116,16 @@ public class CorpProjectMigration {
 				account.setModifiedDate(resultSet.getTimestamp("modifiedDate"));
 				account.setAccountKey(
 					ModelKeyGenerator.generate(account.getAccountId()));
-
-				long parentAccountId = _getParentAccountId(
-					resultSet.getString("dossieraAccountKey"));
-
-				account.setParentAccountId(parentAccountId);
-
+				account.setParentAccountId(
+					_getParentAccountId(
+						resultSet.getString("dossieraAccountKey")));
 				account.setName(resultSet.getString("name"));
 				account.setCode(resultSet.getString("code_"));
 				account.setTier(_getTier(resultSet.getInt("tier")));
 				account.setRegion(
 					_getRegion(resultSet.getLong("supportRegionId")));
+				account.setLanguage(
+					_getLanguage(resultSet.getString("languageId")));
 				account.setInternal(_getInternal(resultSet.getInt("type_")));
 				account.setStatus(Status.ACTIVE.toString());
 
@@ -297,6 +301,27 @@ public class CorpProjectMigration {
 		}
 
 		return false;
+	}
+
+	private String _getLanguage(String languageId) {
+		if (Validator.isNull(languageId)) {
+			return StringPool.BLANK;
+		}
+
+		if (languageId.equals("es_ES")) {
+			return Language.SPANISH.toString();
+		}
+		else if (languageId.equals("ja_JP")) {
+			return Language.JAPANESE.toString();
+		}
+		else if (languageId.equals("pt_BR")) {
+			return Language.PORTUGUESE.toString();
+		}
+		else if (languageId.equals("zh_CN")) {
+			return Language.CHINESE.toString();
+		}
+
+		return Language.ENGLISH.toString();
 	}
 
 	private long _getParentAccountId(String dossieraAccountKey)
