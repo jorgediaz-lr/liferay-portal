@@ -105,6 +105,7 @@ List<SiteNavigationMenu> autoSiteNavigationMenus = layoutsAdminDisplayContext.ge
 
 	form.addEventListener('submit', function(event) {
 		event.stopPropagation();
+		event.submitter.disabled = true;
 
 		var formData = new FormData();
 
@@ -160,6 +161,8 @@ List<SiteNavigationMenu> autoSiteNavigationMenus = layoutsAdminDisplayContext.ge
 						message: response.errorMessage,
 						type: 'danger'
 					}).render();
+
+					event.submitter.disabled = false;
 				}
 			});
 	});
