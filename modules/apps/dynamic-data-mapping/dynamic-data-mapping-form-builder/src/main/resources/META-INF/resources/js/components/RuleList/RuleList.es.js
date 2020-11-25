@@ -203,7 +203,7 @@ class RuleList extends Component {
 
 				const operandValueJSON = JSON.parse(operand.value);
 
-				for (const key in operandValueJSON) {
+				Object.entries(operandValueJSON).forEach(([key, value]) => {
 					const keyLabel = this._getPropertyLabel(
 						operands[0].value,
 						'rows',
@@ -213,11 +213,11 @@ class RuleList extends Component {
 					const valueLabel = this._getPropertyLabel(
 						operands[0].value,
 						'columns',
-						operandValueJSON[key]
+						value
 					);
 
 					label += keyLabel + ':' + valueLabel + ', ';
-				}
+				});
 
 				const lastCommaPosition = label.lastIndexOf(', ');
 
