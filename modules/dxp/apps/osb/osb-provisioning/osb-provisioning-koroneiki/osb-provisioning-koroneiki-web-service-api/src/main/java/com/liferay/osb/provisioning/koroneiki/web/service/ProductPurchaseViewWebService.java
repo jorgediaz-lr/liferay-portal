@@ -32,9 +32,7 @@ public interface ProductPurchaseViewWebService {
 			String sortString)
 		throws Exception;
 
-	public long getProductPurchaseViewsCount(
-			String search, String filterString, int page, int pageSize,
-			String sortString)
+	public long getProductPurchaseViewsCount(String search, String filterString)
 		throws Exception;
 
 }

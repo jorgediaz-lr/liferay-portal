@@ -390,8 +390,7 @@ public class ViewAccountDisplayContext {
 
 		int count =
 			(int)productPurchaseViewWebService.getProductPurchaseViewsCount(
-				keywords, _getFilter(tabs2), searchContainer.getCur(),
-				searchContainer.getEnd() - searchContainer.getStart(), sorts);
+				keywords, _getFilter(tabs2));
 
 		searchContainer.setTotal(count);
 
@@ -476,35 +475,24 @@ public class ViewAccountDisplayContext {
 	public String getTabsNames() throws Exception {
 		List<String> tabsNames = new ArrayList<>();
 
-		int activeProductPurchaseViews =
-			(int)productPurchaseViewWebService.getProductPurchaseViewsCount(
-				StringPool.BLANK, _getFilter("active"), 1, 1000,
-				StringPool.BLANK);
+		long activeProductPurchaseViewsCount =
+			productPurchaseViewWebService.getProductPurchaseViewsCount(
+				StringPool.BLANK, _getFilter("active"));
+
+		tabsNames.add(getTabName("active", activeProductPurchaseViewsCount));
+
+		long inactiveProductPurchaseViewsCount =
+			productPurchaseViewWebService.getProductPurchaseViewsCount(
+				StringPool.BLANK, _getFilter("inactive"));
 
 		tabsNames.add(
-			_getTabName(
-				ProductPurchaseConstants.STATE_ACTIVE,
-				activeProductPurchaseViews));
+			getTabName("inactive", inactiveProductPurchaseViewsCount));
 
-		int inactiveProductPurchaseViews =
-			(int)productPurchaseViewWebService.getProductPurchaseViewsCount(
-				StringPool.BLANK, _getFilter("inactive"), 1, 1000,
-				StringPool.BLANK);
+		long allProductPurchaseViewsCount =
+			productPurchaseViewWebService.getProductPurchaseViewsCount(
+				StringPool.BLANK, _getFilter(StringPool.BLANK));
 
-		tabsNames.add(
-			_getTabName(
-				LanguageUtil.get(httpServletRequest, "inactive"),
-				inactiveProductPurchaseViews));
-
-		int allProductPurchaseViews =
-			(int)productPurchaseViewWebService.getProductPurchaseViewsCount(
-				StringPool.BLANK, _getFilter(StringPool.BLANK), 1, 1000,
-				StringPool.BLANK);
-
-		tabsNames.add(
-			_getTabName(
-				LanguageUtil.get(httpServletRequest, "all"),
-				allProductPurchaseViews));
+		tabsNames.add(getTabName("all", allProductPurchaseViewsCount));
 
 		return StringUtil.merge(tabsNames);
 	}
@@ -554,6 +542,17 @@ public class ViewAccountDisplayContext {
 
 		currentURLObj = PortletURLUtil.getCurrent(
 			renderRequest, renderResponse);
+	}
+
+	protected String getTabName(String label, long count) {
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(LanguageUtil.get(httpServletRequest, label));
+		sb.append(" <span class=\"badge badge-secondary\">");
+		sb.append(count);
+		sb.append("</span>");
+
+		return sb.toString();
 	}
 
 	protected Account account;
@@ -857,17 +856,6 @@ public class ViewAccountDisplayContext {
 		sb.append(") and (supportLifeEndDate le ");
 		sb.append(dateFormat.format(endDate));
 		sb.append("))");
-
-		return sb.toString();
-	}
-
-	private String _getTabName(String label, int count) {
-		StringBundler sb = new StringBundler(4);
-
-		sb.append(label);
-		sb.append(" <span class=\"badge badge-secondary\">");
-		sb.append(count);
-		sb.append("</span>");
 
 		return sb.toString();
 	}

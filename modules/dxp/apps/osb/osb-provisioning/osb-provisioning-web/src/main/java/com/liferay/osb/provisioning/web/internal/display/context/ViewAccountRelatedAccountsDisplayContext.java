@@ -17,7 +17,6 @@ package com.liferay.osb.provisioning.web.internal.display.context;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.provisioning.web.internal.dao.search.AccountResultRowSplitter;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
-import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
@@ -106,27 +105,20 @@ public class ViewAccountRelatedAccountsDisplayContext
 	public String getTabsNames() throws Exception {
 		List<String> tabsNames = new ArrayList<>();
 
-		List<Account> accounts = accountWebService.search(
-			StringPool.BLANK, _getFilter(StringPool.BLANK), 1, 1000,
-			StringPool.BLANK);
+		long allAccountsCount = accountWebService.searchCount(
+			StringPool.BLANK, _getFilter(StringPool.BLANK));
 
-		tabsNames.add(
-			_getTabName(
-				LanguageUtil.get(httpServletRequest, "all"), accounts.size()));
+		tabsNames.add(getTabName("all", allAccountsCount));
 
-		accounts = accountWebService.search(
-			StringPool.BLANK, _getFilter(Account.Status.ACTIVE.toString()), 1,
-			1000, StringPool.BLANK);
+		long activeAccountsCount = accountWebService.searchCount(
+			StringPool.BLANK, _getFilter(Account.Status.ACTIVE.toString()));
 
-		tabsNames.add(
-			_getTabName(Account.Status.ACTIVE.toString(), accounts.size()));
+		tabsNames.add(getTabName("active", activeAccountsCount));
 
-		accounts = accountWebService.search(
-			StringPool.BLANK, _getFilter(Account.Status.CLOSED.toString()), 1,
-			1000, StringPool.BLANK);
+		long closedAccountsCount = accountWebService.searchCount(
+			StringPool.BLANK, _getFilter(Account.Status.CLOSED.toString()));
 
-		tabsNames.add(
-			_getTabName(Account.Status.CLOSED.toString(), accounts.size()));
+		tabsNames.add(getTabName("closed", closedAccountsCount));
 
 		return StringUtil.merge(tabsNames);
 	}
@@ -161,17 +153,6 @@ public class ViewAccountRelatedAccountsDisplayContext
 			sb.append(status);
 			sb.append("'");
 		}
-
-		return sb.toString();
-	}
-
-	private String _getTabName(String label, int count) {
-		StringBundler sb = new StringBundler(4);
-
-		sb.append(label);
-		sb.append(" <span class=\"badge badge-secondary\">");
-		sb.append(count);
-		sb.append("</span>");
 
 		return sb.toString();
 	}

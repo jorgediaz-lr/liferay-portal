@@ -23,6 +23,7 @@ import com.liferay.osb.provisioning.koroneiki.web.service.internal.configuration
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -67,38 +68,32 @@ public class ProductPurchaseViewWebServiceImpl
 
 				return new ArrayList<>(productPurchaseViewsPage.getItems());
 			}
-
-			return Collections.emptyList();
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
-
-			return Collections.emptyList();
 		}
+
+		return Collections.emptyList();
 	}
 
-	public long getProductPurchaseViewsCount(
-			String search, String filterString, int page, int pageSize,
-			String sortString)
+	public long getProductPurchaseViewsCount(String search, String filterString)
 		throws Exception {
 
 		try {
 			Page<ProductPurchaseView> productPurchaseViewsPage =
 				_productPurchaseViewResource.getProductPurchaseViewsPage(
-					search, filterString, Pagination.of(page, pageSize),
-					sortString);
+					search, filterString, Pagination.of(1, 1),
+					StringPool.BLANK);
 
 			if (productPurchaseViewsPage != null) {
 				return productPurchaseViewsPage.getTotalCount();
 			}
-
-			return 0;
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
-
-			return 0;
 		}
+
+		return 0;
 	}
 
 	@Activate
