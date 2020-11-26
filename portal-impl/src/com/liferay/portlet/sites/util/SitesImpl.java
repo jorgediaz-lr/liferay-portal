@@ -1125,8 +1125,7 @@ public class SitesImpl implements Sites {
 		if ((lastMergeTime >= modifiedDate.getTime()) &&
 			((lastMergeVersion == 0) ||
 			 (lastMergeVersion == layoutSetPrototype.getMvccVersion())) &&
-			!_isAnyFailedLayoutModifiedSinceLastMerge(
-				layoutSet, lastMergeTime)) {
+			!isAnyFailedLayoutModifiedSinceLastMerge(layoutSet)) {
 
 			return false;
 		}
@@ -1395,8 +1394,6 @@ public class SitesImpl implements Sites {
 
 				return;
 			}
-
-			removeMergeFailFriendlyURLLayouts(layoutSet);
 
 			Map<String, String[]> parameterMap =
 				getLayoutSetPrototypesParameters(importData);
@@ -2100,6 +2097,8 @@ public class SitesImpl implements Sites {
 			return;
 		}
 
+		removeMergeFailFriendlyURLLayouts(layoutSet);
+
 		Map<String, Serializable> importLayoutSettingsMap =
 			ExportImportConfigurationSettingsMapFactoryUtil.
 				buildImportLayoutSettingsMap(
@@ -2117,6 +2116,39 @@ public class SitesImpl implements Sites {
 
 		ExportImportLocalServiceUtil.importLayoutSetPrototypeInBackground(
 			user.getUserId(), exportImportConfiguration, file);
+	}
+
+	protected boolean isAnyFailedLayoutModifiedSinceLastMerge(
+		LayoutSet layoutSet) {
+
+		UnicodeProperties unicodeProperties = layoutSet.getSettingsProperties();
+
+		String uuids = unicodeProperties.getProperty(
+			MERGE_FAIL_FRIENDLY_URL_LAYOUTS);
+
+		if (Validator.isNotNull(uuids)) {
+			for (String uuid : StringUtil.split(uuids)) {
+				Layout layout =
+					LayoutLocalServiceUtil.fetchLayoutByUuidAndGroupId(
+						uuid, layoutSet.getGroupId(),
+						layoutSet.isPrivateLayout());
+
+				if (layout == null) {
+					return true;
+				}
+
+				Date modifiedDate = layout.getModifiedDate();
+
+				long lastMergeTime = GetterUtil.getLong(
+					unicodeProperties.getProperty(LAST_MERGE_TIME));
+
+				if (modifiedDate.getTime() > lastMergeTime) {
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	protected boolean isSkipImport(
@@ -2156,6 +2188,10 @@ public class SitesImpl implements Sites {
 			parameterMap, "lastMergeVersion");
 
 		if (previousLastMergeVersion == lastMergeVersion) {
+			if (isAnyFailedLayoutModifiedSinceLastMerge(layoutSet)) {
+				return false;
+			}
+
 			UnicodeProperties settingsUnicodeProperties =
 				layoutSet.getSettingsProperties();
 
@@ -2312,36 +2348,6 @@ public class SitesImpl implements Sites {
 		}
 
 		return owner;
-	}
-
-	private boolean _isAnyFailedLayoutModifiedSinceLastMerge(
-		LayoutSet layoutSet, long lastMergeTime) {
-
-		UnicodeProperties unicodeProperties = layoutSet.getSettingsProperties();
-
-		String uuids = unicodeProperties.getProperty(
-			MERGE_FAIL_FRIENDLY_URL_LAYOUTS);
-
-		if (Validator.isNotNull(uuids)) {
-			for (String uuid : StringUtil.split(uuids)) {
-				Layout layout =
-					LayoutLocalServiceUtil.fetchLayoutByUuidAndGroupId(
-						uuid, layoutSet.getGroupId(),
-						layoutSet.isPrivateLayout());
-
-				if (layout == null) {
-					return true;
-				}
-
-				Date modifiedDate = layout.getModifiedDate();
-
-				if (modifiedDate.getTime() > lastMergeTime) {
-					return true;
-				}
-			}
-		}
-
-		return false;
 	}
 
 	private void _releaseLock(String className, long classPK, String owner) {
