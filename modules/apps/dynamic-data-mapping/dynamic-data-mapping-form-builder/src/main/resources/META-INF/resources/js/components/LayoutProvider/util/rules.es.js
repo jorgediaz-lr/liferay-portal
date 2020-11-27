@@ -58,10 +58,10 @@ export const renameFieldInsideAutofill = (
 };
 
 export const updateRulesReferences = (
-	rules,
-	oldProperties,
 	newProperties,
-	optionIndex
+	oldProperties,
+	optionIndex,
+	rules
 ) => {
 	const oldFieldName = oldProperties.fieldName;
 	const newFieldName = newProperties.fieldName;

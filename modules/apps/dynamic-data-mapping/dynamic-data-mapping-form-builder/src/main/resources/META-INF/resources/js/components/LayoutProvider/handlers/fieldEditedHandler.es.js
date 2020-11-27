@@ -42,10 +42,10 @@ export const updateField = (
 		focusedField: updatedFocusedField,
 		pages: updatePages(pages, focusedField, updatedFocusedField),
 		rules: updateRulesReferences(
-			rules || [],
-			focusedField,
 			updatedFocusedField,
-			optionIndex
+			focusedField,
+			optionIndex,
+			rules || []
 		)
 	};
 };
