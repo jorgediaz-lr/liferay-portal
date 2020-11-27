@@ -73,6 +73,22 @@ public class CustomFacetSearchContributorImpl
 			ddmStructureField.getDDMStructureNestedFieldName(),
 			ddmStructureField.getDDMStructureFullNestedFieldName());
 
+		FacetConfiguration facetConfiguration = facet.getFacetConfiguration();
+
+		JSONObject dataJSONObject = facetConfiguration.getData();
+
+		int minDocCount = dataJSONObject.getInt("frequencyThreshold");
+
+		if (minDocCount > 0) {
+			termsAggregation.setMinDocCount(minDocCount);
+		}
+
+		int size = dataJSONObject.getInt("maxTerms");
+
+		if (size > 0) {
+			termsAggregation.setSize(size);
+		}
+
 		FilterAggregation filterAggregation = aggregations.filter(
 			ddmStructureField.getDDMStructureFieldName(),
 			queries.term(
