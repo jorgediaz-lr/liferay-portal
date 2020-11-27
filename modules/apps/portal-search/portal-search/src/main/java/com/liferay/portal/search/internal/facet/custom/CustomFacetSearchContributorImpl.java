@@ -18,7 +18,6 @@ import com.liferay.dynamic.data.mapping.util.DDMIndexer;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.facet.config.FacetConfiguration;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -59,35 +58,31 @@ public class CustomFacetSearchContributorImpl
 				return customFacetBuilderImpl.build();
 			});
 
-		searchRequestBuilder.withFacetContext(
-			facetContext -> facetContext.addFacet(facet));
-
 		String fieldName = facet.getFieldName();
 
 		if (ddmIndexer.isLegacyDDMIndexFieldsEnabled() ||
 			!fieldName.startsWith(DDMIndexer.DDM_FIELD_PREFIX)) {
 
-			return;
+			searchRequestBuilder.withFacetContext(
+				facetContext -> facetContext.addFacet(facet));
 		}
 
-		DDMStructureField ddmStructureField = DDMStructureField.from(
-			fieldName);
+		DDMStructureField ddmStructureField = DDMStructureField.from(fieldName);
 
 		TermsAggregation termsAggregation = aggregations.terms(
-				facet.getAggregationName(),
-				ddmStructureField.getDDMStructureNestedFieldName());
+			ddmStructureField.getDDMStructureNestedFieldName(),
+			ddmStructureField.getDDMStructureFullNestedFieldName());
 
 		FilterAggregation filterAggregation = aggregations.filter(
-			"filterAggregation",
+			ddmStructureField.getDDMStructureFieldName(),
 			queries.term(
-				DDMIndexer.DDM_FIELD_ARRAY + "." + DDMIndexer.DDM_FIELD_NAME,
+				ddmStructureField.getNestedFieldName(),
 				ddmStructureField.getDDMStructureFieldName()));
 
 		filterAggregation.addChildAggregation(termsAggregation);
 
 		NestedAggregation nestedAggregation = aggregations.nested(
-			ddmStructureField.getDDMStructureFieldName(),
-			DDMIndexer.DDM_FIELD_ARRAY);
+			facet.getAggregationName(), DDMIndexer.DDM_FIELD_ARRAY);
 
 		nestedAggregation.addChildAggregation(filterAggregation);
 
@@ -128,15 +123,20 @@ public class CustomFacetSearchContributorImpl
 				_locale);
 		}
 
-		public String getDDMStructureNestedFieldName() {
+		public String getDDMStructureFullNestedFieldName() {
 			return StringBundler.concat(
 				DDMIndexer.DDM_FIELD_ARRAY, StringPool.PERIOD,
+				getDDMStructureNestedFieldName());
+		}
+
+		public String getDDMStructureNestedFieldName() {
+			return StringBundler.concat(
 				DDMIndexer.DDM_VALUE_FIELD_NAME_PREFIX,
 				StringUtil.upperCaseFirstLetter(_indexType),
 				StringPool.UNDERLINE, _locale);
 		}
 
-		/*public String getLocale() {
+		public String getLocale() {
 			return _locale;
 		}
 
@@ -144,7 +144,7 @@ public class CustomFacetSearchContributorImpl
 			return StringBundler.concat(
 				DDMIndexer.DDM_FIELD_ARRAY, StringPool.PERIOD,
 				DDMIndexer.DDM_FIELD_NAME);
-		}*/
+		}
 
 		private DDMStructureField(
 			String ddmStructureId, String indexType, String locale,
