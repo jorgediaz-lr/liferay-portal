@@ -14,12 +14,22 @@
 
 package com.liferay.portal.search.internal.facet.custom;
 
+import com.liferay.dynamic.data.mapping.util.DDMIndexer;
+import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.facet.config.FacetConfiguration;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.search.aggregation.Aggregations;
+import com.liferay.portal.search.aggregation.bucket.FilterAggregation;
+import com.liferay.portal.search.aggregation.bucket.NestedAggregation;
+import com.liferay.portal.search.aggregation.bucket.TermsAggregation;
 import com.liferay.portal.search.facet.Facet;
 import com.liferay.portal.search.facet.custom.CustomFacetFactory;
 import com.liferay.portal.search.facet.custom.CustomFacetSearchContributor;
+import com.liferay.portal.search.query.Queries;
 import com.liferay.portal.search.searcher.SearchRequestBuilder;
 
 import java.util.function.Consumer;
@@ -51,14 +61,107 @@ public class CustomFacetSearchContributorImpl
 
 		searchRequestBuilder.withFacetContext(
 			facetContext -> facetContext.addFacet(facet));
+
+		String fieldName = facet.getFieldName();
+
+		if (ddmIndexer.isLegacyDDMIndexFieldsEnabled() ||
+			!fieldName.startsWith(DDMIndexer.DDM_FIELD_PREFIX)) {
+
+			return;
+		}
+
+		DDMStructureField ddmStructureField = DDMStructureField.from(
+			fieldName);
+
+		TermsAggregation termsAggregation = aggregations.terms(
+				facet.getAggregationName(),
+				ddmStructureField.getDDMStructureNestedFieldName());
+
+		FilterAggregation filterAggregation = aggregations.filter(
+			"filterAggregation",
+			queries.term(
+				DDMIndexer.DDM_FIELD_ARRAY + "." + DDMIndexer.DDM_FIELD_NAME,
+				ddmStructureField.getDDMStructureFieldName()));
+
+		filterAggregation.addChildAggregation(termsAggregation);
+
+		NestedAggregation nestedAggregation = aggregations.nested(
+			ddmStructureField.getDDMStructureFieldName(),
+			DDMIndexer.DDM_FIELD_ARRAY);
+
+		nestedAggregation.addChildAggregation(filterAggregation);
+
+		searchRequestBuilder.addAggregation(nestedAggregation);
 	}
 
-	@Reference(unbind = "-")
-	protected void setFacetFactory(CustomFacetFactory customFacetFactory) {
-		_customFacetFactory = customFacetFactory;
-	}
+	@Reference
+	protected Aggregations aggregations;
 
-	private CustomFacetFactory _customFacetFactory;
+	@Reference
+	protected CustomFacetFactory customFacetFactory;
+
+	@Reference
+	protected DDMIndexer ddmIndexer;
+
+	@Reference
+	protected Queries queries;
+
+	private static class DDMStructureField {
+
+		public static DDMStructureField from(String ddmStructureField) {
+			String[] ddmStructureParts = StringUtil.split(
+				ddmStructureField, DDMIndexer.DDM_FIELD_SEPARATOR);
+
+			String[] ddmFieldParts = StringUtil.split(
+				ddmStructureParts[3], StringPool.UNDERLINE);
+
+			return new DDMStructureField(
+				ddmStructureParts[2], ddmStructureParts[1],
+				ddmFieldParts[1] + "_" + ddmFieldParts[2], ddmFieldParts[0]);
+		}
+
+		public String getDDMStructureFieldName() {
+			return StringBundler.concat(
+				DDMIndexer.DDM_FIELD_PREFIX, _indexType,
+				DDMIndexer.DDM_FIELD_SEPARATOR, _ddmStructureId,
+				DDMIndexer.DDM_FIELD_SEPARATOR, _name, StringPool.UNDERLINE,
+				_locale);
+		}
+
+		public String getDDMStructureNestedFieldName() {
+			return StringBundler.concat(
+				DDMIndexer.DDM_FIELD_ARRAY, StringPool.PERIOD,
+				DDMIndexer.DDM_VALUE_FIELD_NAME_PREFIX,
+				StringUtil.upperCaseFirstLetter(_indexType),
+				StringPool.UNDERLINE, _locale);
+		}
+
+		/*public String getLocale() {
+			return _locale;
+		}
+
+		public String getNestedFieldName() {
+			return StringBundler.concat(
+				DDMIndexer.DDM_FIELD_ARRAY, StringPool.PERIOD,
+				DDMIndexer.DDM_FIELD_NAME);
+		}*/
+
+		private DDMStructureField(
+			String ddmStructureId, String indexType, String locale,
+			String name) {
+
+			_ddmStructureId = ddmStructureId;
+			_indexType = indexType;
+			_locale = locale;
+			_name = name;
+		}
+
+		private final String _ddmStructureId;
+		private final String _indexType;
+		private final String _locale;
+		private final String _name;
+
+	}
 
 	private class CustomFacetBuilderImpl implements CustomFacetBuilder {
 
@@ -74,7 +177,7 @@ public class CustomFacetSearchContributorImpl
 		}
 
 		public Facet build() {
-			Facet facet = _customFacetFactory.newInstance(_searchContext);
+			Facet facet = customFacetFactory.newInstance(_searchContext);
 
 			facet.setAggregationName(_aggregationName);
 			facet.setFacetConfiguration(buildFacetConfiguration(facet));
