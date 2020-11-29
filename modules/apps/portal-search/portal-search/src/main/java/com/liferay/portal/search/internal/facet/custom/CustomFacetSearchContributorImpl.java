@@ -20,14 +20,13 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.facet.config.FacetConfiguration;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.search.aggregation.Aggregations;
-import com.liferay.portal.search.aggregation.bucket.FilterAggregation;
-import com.liferay.portal.search.aggregation.bucket.NestedAggregation;
-import com.liferay.portal.search.aggregation.bucket.TermsAggregation;
 import com.liferay.portal.search.facet.Facet;
 import com.liferay.portal.search.facet.custom.CustomFacetFactory;
 import com.liferay.portal.search.facet.custom.CustomFacetSearchContributor;
+import com.liferay.portal.search.internal.facet.NestedFacetImpl;
 import com.liferay.portal.search.query.Queries;
 import com.liferay.portal.search.searcher.SearchRequestBuilder;
 
@@ -58,51 +57,8 @@ public class CustomFacetSearchContributorImpl
 				return customFacetBuilderImpl.build();
 			});
 
-		String fieldName = facet.getFieldName();
-
-		if (ddmIndexer.isLegacyDDMIndexFieldsEnabled() ||
-			!fieldName.startsWith(DDMIndexer.DDM_FIELD_PREFIX)) {
-
-			searchRequestBuilder.withFacetContext(
-				facetContext -> facetContext.addFacet(facet));
-		}
-
-		DDMStructureField ddmStructureField = DDMStructureField.from(fieldName);
-
-		TermsAggregation termsAggregation = aggregations.terms(
-			ddmStructureField.getDDMStructureNestedFieldName(),
-			ddmStructureField.getDDMStructureFullNestedFieldName());
-
-		FacetConfiguration facetConfiguration = facet.getFacetConfiguration();
-
-		JSONObject dataJSONObject = facetConfiguration.getData();
-
-		int minDocCount = dataJSONObject.getInt("frequencyThreshold");
-
-		if (minDocCount > 0) {
-			termsAggregation.setMinDocCount(minDocCount);
-		}
-
-		int size = dataJSONObject.getInt("maxTerms");
-
-		if (size > 0) {
-			termsAggregation.setSize(size);
-		}
-
-		FilterAggregation filterAggregation = aggregations.filter(
-			ddmStructureField.getDDMStructureFieldName(),
-			queries.term(
-				ddmStructureField.getNestedFieldName(),
-				ddmStructureField.getDDMStructureFieldName()));
-
-		filterAggregation.addChildAggregation(termsAggregation);
-
-		NestedAggregation nestedAggregation = aggregations.nested(
-			facet.getAggregationName(), DDMIndexer.DDM_FIELD_ARRAY);
-
-		nestedAggregation.addChildAggregation(filterAggregation);
-
-		searchRequestBuilder.addAggregation(nestedAggregation);
+		searchRequestBuilder.withFacetContext(
+			facetContext -> facetContext.addFacet(facet));
 	}
 
 	@Reference
@@ -116,68 +72,6 @@ public class CustomFacetSearchContributorImpl
 
 	@Reference
 	protected Queries queries;
-
-	private static class DDMStructureField {
-
-		public static DDMStructureField from(String ddmStructureField) {
-			String[] ddmStructureParts = StringUtil.split(
-				ddmStructureField, DDMIndexer.DDM_FIELD_SEPARATOR);
-
-			String[] ddmFieldParts = StringUtil.split(
-				ddmStructureParts[3], StringPool.UNDERLINE);
-
-			return new DDMStructureField(
-				ddmStructureParts[2], ddmStructureParts[1],
-				ddmFieldParts[1] + "_" + ddmFieldParts[2], ddmFieldParts[0]);
-		}
-
-		public String getDDMStructureFieldName() {
-			return StringBundler.concat(
-				DDMIndexer.DDM_FIELD_PREFIX, _indexType,
-				DDMIndexer.DDM_FIELD_SEPARATOR, _ddmStructureId,
-				DDMIndexer.DDM_FIELD_SEPARATOR, _name, StringPool.UNDERLINE,
-				_locale);
-		}
-
-		public String getDDMStructureFullNestedFieldName() {
-			return StringBundler.concat(
-				DDMIndexer.DDM_FIELD_ARRAY, StringPool.PERIOD,
-				getDDMStructureNestedFieldName());
-		}
-
-		public String getDDMStructureNestedFieldName() {
-			return StringBundler.concat(
-				DDMIndexer.DDM_VALUE_FIELD_NAME_PREFIX,
-				StringUtil.upperCaseFirstLetter(_indexType),
-				StringPool.UNDERLINE, _locale);
-		}
-
-		public String getLocale() {
-			return _locale;
-		}
-
-		public String getNestedFieldName() {
-			return StringBundler.concat(
-				DDMIndexer.DDM_FIELD_ARRAY, StringPool.PERIOD,
-				DDMIndexer.DDM_FIELD_NAME);
-		}
-
-		private DDMStructureField(
-			String ddmStructureId, String indexType, String locale,
-			String name) {
-
-			_ddmStructureId = ddmStructureId;
-			_indexType = indexType;
-			_locale = locale;
-			_name = name;
-		}
-
-		private final String _ddmStructureId;
-		private final String _indexType;
-		private final String _locale;
-		private final String _name;
-
-	}
 
 	private class CustomFacetBuilderImpl implements CustomFacetBuilder {
 
@@ -193,6 +87,12 @@ public class CustomFacetSearchContributorImpl
 		}
 
 		public Facet build() {
+			if (!ddmIndexer.isLegacyDDMIndexFieldsEnabled() &&
+				_fieldToAggregate.startsWith(DDMIndexer.DDM_FIELD_PREFIX)) {
+
+				return buildNestedFacet();
+			}
+
 			Facet facet = customFacetFactory.newInstance(_searchContext);
 
 			facet.setAggregationName(_aggregationName);
@@ -249,6 +149,46 @@ public class CustomFacetSearchContributorImpl
 			);
 
 			return facetConfiguration;
+		}
+
+		protected Facet buildNestedFacet() {
+			Facet facet = new NestedFacetImpl(null, _searchContext);
+
+			facet.setAggregationName(_aggregationName);
+			facet.setFacetConfiguration(buildFacetConfiguration(facet));
+			facet.setFieldName(_fieldToAggregate);
+
+			facet.select(_selectedValues);
+
+			FacetConfiguration facetConfiguration =
+				facet.getFacetConfiguration();
+
+			JSONObject jsonObject = facetConfiguration.getData();
+
+			String[] ddmStructureParts = StringUtil.split(
+				_fieldToAggregate, DDMIndexer.DDM_FIELD_SEPARATOR);
+
+			String[] ddmFieldParts = StringUtil.split(
+				ddmStructureParts[3], StringPool.UNDERLINE);
+
+			jsonObject.put(
+				"nestedAggregationName",
+				ddmIndexer.getValueFieldName(
+					ddmStructureParts[1],
+					LocaleUtil.fromLanguageId(
+						ddmFieldParts[1] + "_" + ddmFieldParts[2]))
+			).put(
+				"nestedPath", DDMIndexer.DDM_FIELD_ARRAY
+			).put(
+				"nestedTermFieldName",
+				StringBundler.concat(
+					DDMIndexer.DDM_FIELD_ARRAY, StringPool.PERIOD,
+					DDMIndexer.DDM_FIELD_NAME)
+			).put(
+				"nestedTermValue", _fieldToAggregate
+			);
+
+			return facet;
 		}
 
 		private String _aggregationName;
