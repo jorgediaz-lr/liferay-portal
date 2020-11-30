@@ -1074,12 +1074,24 @@ xpack.monitoring.collection.enabled: true</echo>
 
 		<get-testcase-property property.name="elastic.xpack.enabled" />
 
+		<get-testcase-property property.name="pki.authentication.enabled" />
+
 		<if>
 			<equals arg1="${elastic.xpack.enabled}" arg2="true" />
 			<then>
 				<generate-x-pack-security-certificates />
 
-				<configure-elasticsearch-x-pack-security-properties />
+				<if>
+					<equals arg1="${pki.authentication.enabled}" arg2="true" />
+					<then>
+						<configure-elasticsearch-x-pack-pki-security-properties />
+					</then>
+					<else>
+						<configure-elasticsearch-x-pack-security-properties />
+					</else>
+				</if>
+
+				<configure-portal-x-pack-security-truststore />
 			</then>
 		</if>
 
@@ -1129,9 +1141,25 @@ xpack.monitoring.collection.enabled: true</echo>
 
 				<start-x-pack-trial />
 
-				<configure-portal-x-pack-osgi-properties />
+				<if>
+					<equals arg1="${pki.authentication.enabled}" arg2="true" />
+					<then>
+						<sleep seconds="10" />
 
-				<configure-portal-x-pack-security-truststore />
+						<antcall target="stop-elasticsearch" />
+
+						<configure-elasticsearch-pki-realm-settings />
+
+						<antcall target="start-elasticsearch-node" />
+
+						<sleep seconds="10" />
+
+						<configure-portal-x-pack-pki-osgi-properties />
+					</then>
+					<else>
+						<configure-portal-x-pack-osgi-properties />
+					</else>
+				</if>
 
 				<antcall target="start-kibana" />
 
@@ -1260,12 +1288,22 @@ xpack.monitoring.collection.enabled: true</echo>
 
 		<get-testcase-property property.name="elastic.xpack.enabled" />
 
+		<get-testcase-property property.name="pki.authentication.enabled" />
+
 		<if>
 			<equals arg1="${elastic.xpack.enabled}" arg2="true" />
 			<then>
 				<configure-kibana-properties />
 
-				<configure-kibana-x-pack-security-properties />
+				<if>
+					<equals arg1="${pki.authentication.enabled}" arg2="true" />
+					<then>
+						<configure-kibana-x-pack-pki-security-properties />
+					</then>
+					<else>
+						<configure-kibana-x-pack-security-properties />
+					</else>
+				</if>
 			</then>
 		</if>
 
@@ -1353,8 +1391,15 @@ xpack.monitoring.collection.enabled: true</echo>
 
 		<get-testcase-property property.name="elastic.xpack.enabled" />
 
+		<get-testcase-property property.name="pki.authentication.enabled" />
+
 		<if>
-			<equals arg1="${elastic.xpack.enabled}" arg2="true" />
+			<and>
+				<equals arg1="${elastic.xpack.enabled}" arg2="true" />
+					<not>
+						<contains arg1="${pki.authentication.enabled}" arg2="true" />
+					</not>
+				</and>
 			<then>
 				<print-file file.name="${elastic.kibana.dir}/bin/kibana.log" />
 
