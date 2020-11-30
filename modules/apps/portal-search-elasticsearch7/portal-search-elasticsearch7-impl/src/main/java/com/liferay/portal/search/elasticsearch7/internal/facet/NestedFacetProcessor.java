@@ -58,7 +58,7 @@ public class NestedFacetProcessor
 		String nestedPath = dataJSONObject.getString("nestedPath");
 
 		TermsAggregationBuilder termsAggregationBuilder =
-			AggregationBuilders.terms(nestedAggregationName);
+			AggregationBuilders.terms(FacetUtil.getAggregationName(facet));
 
 		termsAggregationBuilder.field(
 			StringBundler.concat(
@@ -80,7 +80,8 @@ public class NestedFacetProcessor
 			nestedTermFieldName, nestedTermValue);
 
 		FilterAggregationBuilder filterAggregationBuilder =
-			AggregationBuilders.filter(nestedTermValue, termQueryBuilder);
+			AggregationBuilders.filter(
+				FacetUtil.getAggregationName(facet), termQueryBuilder);
 
 		filterAggregationBuilder.subAggregation(termsAggregationBuilder);
 
