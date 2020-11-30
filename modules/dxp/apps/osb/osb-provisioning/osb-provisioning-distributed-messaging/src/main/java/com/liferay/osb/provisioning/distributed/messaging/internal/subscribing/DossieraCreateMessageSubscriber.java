@@ -24,11 +24,14 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Note;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.PostalAddress;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.distributed.messaging.internal.configuration.DistributedMessagingConfiguration;
 import com.liferay.osb.provisioning.distributed.messaging.internal.constants.SalesforceConstants;
 import com.liferay.osb.provisioning.identity.management.provider.IdentityProvider;
 import com.liferay.osb.provisioning.koroneiki.constants.ContactRoleConstants;
+import com.liferay.osb.provisioning.koroneiki.constants.TeamRoleConstants;
 import com.liferay.osb.provisioning.koroneiki.reader.AccountReader;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ContactRoleWebService;
@@ -36,6 +39,8 @@ import com.liferay.osb.provisioning.koroneiki.web.service.ContactWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.NoteWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductPurchaseWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
+import com.liferay.osb.provisioning.koroneiki.web.service.TeamRoleWebService;
+import com.liferay.osb.provisioning.koroneiki.web.service.TeamWebService;
 import com.liferay.osb.provisioning.zendesk.model.ZendeskTicket;
 import com.liferay.osb.provisioning.zendesk.web.service.ZendeskTicketWebService;
 import com.liferay.petra.content.ContentUtil;
@@ -95,6 +100,62 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		_distributedMessagingConfiguration =
 			ConfigurableUtil.createConfigurable(
 				DistributedMessagingConfiguration.class, properties);
+	}
+
+	protected void addPartnerAccount(JSONObject jsonObject, Account account)
+		throws Exception {
+
+		JSONObject partnerAccountJSONObject = jsonObject.getJSONObject(
+			"_partnerAccount");
+
+		if (partnerAccountJSONObject == null) {
+			return;
+		}
+
+		String dossieraAccountKey = partnerAccountJSONObject.getString(
+			"_dossieraAccountKey");
+
+		if (Validator.isNull(dossieraAccountKey)) {
+			return;
+		}
+
+		List<Account> partnerAccounts = _accountWebService.getAccounts(
+			ExternalLinkDomain.DOSSIERA,
+			ExternalLinkEntityName.DOSSIERA_ACCOUNT, dossieraAccountKey, 1, 1);
+
+		if (partnerAccounts.isEmpty()) {
+			return;
+		}
+
+		Account partnerAccount = partnerAccounts.get(0);
+
+		String filterString = StringBundler.concat(
+			"accountKey eq '", partnerAccount.getKey(), "' and name eq '",
+			partnerAccount.getName(), "'");
+
+		List<Team> partnerDefaultTeams = _teamWebService.search(
+			StringPool.BLANK, filterString, 1, 1, StringPool.BLANK);
+
+		if (partnerDefaultTeams.isEmpty()) {
+			return;
+		}
+
+		Team partnerDefaultTeam = partnerDefaultTeams.get(0);
+
+		updateAssignedTeam(
+			account.getKey(), partnerDefaultTeam.getKey(),
+			TeamRoleConstants.NAME_PARTNER);
+
+		boolean partnerFirstLineSupport = jsonObject.getBoolean(
+			"_partnerFirstLineSupport");
+
+		if (!partnerFirstLineSupport) {
+			return;
+		}
+
+		updateAssignedTeam(
+			account.getKey(), partnerDefaultTeam.getKey(),
+			TeamRoleConstants.NAME_FIRST_LINE_SUPPORT);
 	}
 
 	protected void checkWarnings(
@@ -532,6 +593,8 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		for (Contact contact : missingContacts) {
 			sendUserCreationEmail(contact, account, analyticsCloud);
 		}
+
+		addPartnerAccount(jsonObject, account);
 	}
 
 	protected String getAccountKey(JSONObject jsonObject) throws Exception {
@@ -1475,6 +1538,39 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		return account;
 	}
 
+	protected void updateAssignedTeam(
+			String accountKey, String teamKey, String teamRoleName)
+		throws Exception {
+
+		TeamRole teamRole = _teamRoleWebService.getTeamRole(
+			TeamRole.Type.ACCOUNT.toString(), teamRoleName);
+
+		if (teamRole == null) {
+			return;
+		}
+
+		String filterString = StringBundler.concat(
+			"accountKeyTeamRoleKeys/any(s:s eq '", accountKey,
+			StringPool.UNDERLINE, teamRole.getKey(), "')");
+
+		List<Team> teams = _teamWebService.search(
+			StringPool.BLANK, filterString, 1, 1, StringPool.BLANK);
+
+		for (Team team : teams) {
+			if (teamKey.equals(team.getKey())) {
+				return;
+			}
+
+			_accountWebService.unassignTeamRoles(
+				StringPool.BLANK, StringPool.BLANK, accountKey, team.getKey(),
+				new String[] {teamRole.getKey()});
+		}
+
+		_accountWebService.assignTeamRoles(
+			StringPool.BLANK, StringPool.BLANK, accountKey, teamKey,
+			new String[] {teamRole.getKey()});
+	}
+
 	private static String _getEmailTemplate(
 		String templateName, String defaultTemplateName) {
 
@@ -1639,6 +1735,12 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 	@Reference
 	private ProductWebService _productWebService;
+
+	@Reference
+	private TeamRoleWebService _teamRoleWebService;
+
+	@Reference
+	private TeamWebService _teamWebService;
 
 	@Reference
 	private ZendeskTicketWebService _zendeskTicketWebService;
