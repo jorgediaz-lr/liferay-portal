@@ -496,7 +496,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 		if (Validator.isNotNull(accountKey)) {
 			account = updateAccount(
-				accountKey, activeContacts, productPurchases);
+				accountKey, activeContacts, productPurchases, jsonObject);
 		}
 		else {
 			ExternalLink[] externalLinks = parseExternalLinks(jsonObject);
@@ -1414,7 +1414,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 	protected Account updateAccount(
 			String accountKey, List<Contact> contacts,
-			List<ProductPurchase> productPurchases)
+			List<ProductPurchase> productPurchases, JSONObject jsonObject)
 		throws Exception {
 
 		for (Contact contact : contacts) {
@@ -1458,7 +1458,19 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 				productPurchase);
 		}
 
-		return _accountWebService.getAccount(accountKey);
+		Account account = _accountWebService.getAccount(accountKey);
+
+		JSONObject ownerJSONObject = jsonObject.getJSONObject("_owner");
+
+		if (ownerJSONObject == null) {
+			return account;
+		}
+
+		account.setContactEmailAddress(
+			ownerJSONObject.getString("_emailAddress"));
+
+		return _accountWebService.updateAccount(
+			StringPool.BLANK, StringPool.BLANK, accountKey, account);
 	}
 
 	private static String _getEmailTemplate(
