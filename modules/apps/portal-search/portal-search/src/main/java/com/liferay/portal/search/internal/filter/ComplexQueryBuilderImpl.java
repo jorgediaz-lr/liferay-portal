@@ -14,12 +14,18 @@
 
 package com.liferay.portal.search.internal.filter;
 
+import com.liferay.dynamic.data.mapping.util.DDMIndexer;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.filter.ComplexQueryBuilder;
 import com.liferay.portal.search.filter.ComplexQueryPart;
 import com.liferay.portal.search.internal.filter.range.RangeTermQueryValue;
 import com.liferay.portal.search.internal.filter.range.RangeTermQueryValueParser;
+import com.liferay.portal.search.internal.query.NestedQueryImpl;
 import com.liferay.portal.search.internal.util.SearchStringUtil;
 import com.liferay.portal.search.query.BooleanQuery;
 import com.liferay.portal.search.query.Queries;
@@ -37,6 +43,8 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author André de Oliveira
@@ -328,7 +336,41 @@ public class ComplexQueryBuilderImpl implements ComplexQueryBuilder {
 
 			String value = GetterUtil.getString(complexQueryPart.getValue());
 
-			Query query = buildQuery(type, field, value);
+			Query query;
+
+			if (!ddmIndexer.isLegacyDDMIndexFieldsEnabled() &&
+				field.startsWith(DDMIndexer.DDM_FIELD_PREFIX)) {
+
+				String[] ddmStructureParts = StringUtil.split(
+					field, DDMIndexer.DDM_FIELD_SEPARATOR);
+
+				String[] ddmFieldParts = StringUtil.split(
+					ddmStructureParts[3], StringPool.UNDERLINE);
+
+				String valueFieldName = StringBundler.concat(
+					DDMIndexer.DDM_FIELD_ARRAY, StringPool.PERIOD,
+					ddmIndexer.getValueFieldName(
+						ddmStructureParts[1],
+						LocaleUtil.fromLanguageId(
+							ddmFieldParts[1] + "_" + ddmFieldParts[2])));
+
+				BooleanQuery booleanQuery = _queries.booleanQuery();
+
+				booleanQuery.addMustQueryClauses(
+					_queries.term(
+						StringBundler.concat(
+							DDMIndexer.DDM_FIELD_ARRAY, StringPool.PERIOD,
+							DDMIndexer.DDM_FIELD_NAME),
+						field));
+				booleanQuery.addMustQueryClauses(
+					buildQuery(type, valueFieldName, value));
+
+				query = new NestedQueryImpl(
+					DDMIndexer.DDM_FIELD_ARRAY, booleanQuery);
+			}
+			else {
+				query = buildQuery(type, field, value);
+			}
 
 			if (query == null) {
 				return null;
@@ -364,6 +406,9 @@ public class ComplexQueryBuilderImpl implements ComplexQueryBuilder {
 
 			return query;
 		}
+
+		@Reference
+		protected DDMIndexer ddmIndexer;
 
 		private final Map<String, ComplexQueryPart> _complexQueryPartsMap;
 		private final Map<String, Query> _queriesMap = new HashMap<>();
