@@ -14,8 +14,12 @@
 
 package com.liferay.portal.search.elasticsearch7.internal.facet;
 
+import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.search.facet.Facet;
 import com.liferay.portal.kernel.search.facet.RangeFacet;
+import com.liferay.portal.kernel.search.facet.config.FacetConfiguration;
 import com.liferay.portal.kernel.search.facet.util.RangeParserUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 
@@ -24,6 +28,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.lucene.search.join.ScoreMode;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -74,8 +80,37 @@ public class AggregationFilteringFacetProcessorContext
 			}
 		}
 		else {
-			queryBuilders.add(
-				QueryBuilders.termsQuery(fieldName, facet.getSelections()));
+			FacetConfiguration facetConfiguration =
+				facet.getFacetConfiguration();
+
+			JSONObject dataJSONObject = facetConfiguration.getData();
+
+			String nestedPath = dataJSONObject.getString("nestedPath");
+
+			if (nestedPath != null) {
+				BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+
+				boolQueryBuilder.must(
+					QueryBuilders.termsQuery(
+						dataJSONObject.getString("nestedTermFieldName"),
+						dataJSONObject.getString("nestedTermValue")));
+
+				String nestedAggregationName = StringBundler.concat(
+					nestedPath, StringPool.PERIOD,
+					dataJSONObject.getString("nestedAggregationName"));
+
+				boolQueryBuilder.must(
+					QueryBuilders.termsQuery(
+						nestedAggregationName, facet.getSelections()));
+
+				queryBuilders.add(
+					QueryBuilders.nestedQuery(
+						nestedPath, boolQueryBuilder, ScoreMode.Total));
+			}
+			else {
+				queryBuilders.add(
+					QueryBuilders.termsQuery(fieldName, facet.getSelections()));
+			}
 		}
 
 		return queryBuilders;
