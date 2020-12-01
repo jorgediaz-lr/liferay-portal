@@ -36,11 +36,17 @@ public class SortDisplayBuilder {
 	public SortDisplayContext build() {
 		SortDisplayContext sortDisplayContext = new SortDisplayContext();
 
+		List<SortTermDisplayContext> sortTermDisplayContextList =
+			buildTermDisplayContexts();
+
+		sortDisplayContext.setAnySelected(
+			isAnySelected(sortTermDisplayContextList));
+
 		sortDisplayContext.setParameterName(_parameterName);
 		sortDisplayContext.setParameterValue(getParameterValue());
 		sortDisplayContext.setRenderNothing(isRenderNothing());
 		sortDisplayContext.setSortTermDisplayContexts(
-			buildTermDisplayContexts());
+			sortTermDisplayContextList);
 
 		return sortDisplayContext;
 	}
@@ -107,6 +113,20 @@ public class SortDisplayBuilder {
 		}
 
 		return null;
+	}
+
+	protected boolean isAnySelected(
+		List<SortTermDisplayContext> sortTermDisplayContextList) {
+
+		for (SortTermDisplayContext sortTermDisplayContext :
+				sortTermDisplayContextList) {
+
+			if (sortTermDisplayContext.isSelected()) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	protected boolean isRenderNothing() {
