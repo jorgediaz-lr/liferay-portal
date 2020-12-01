@@ -14,6 +14,7 @@
 
 package com.liferay.portal.search.internal.filter;
 
+import com.liferay.dynamic.data.mapping.util.DDMIndexer;
 import com.liferay.portal.search.filter.ComplexQueryBuilder;
 import com.liferay.portal.search.filter.ComplexQueryBuilderFactory;
 import com.liferay.portal.search.query.Queries;
@@ -31,7 +32,7 @@ public class ComplexQueryBuilderFactoryImpl
 
 	@Override
 	public ComplexQueryBuilder builder() {
-		return new ComplexQueryBuilderImpl(_queries, _scripts);
+		return new ComplexQueryBuilderImpl(_queries, _scripts, _ddmIndexer);
 	}
 
 	@Reference(unbind = "-")
@@ -43,6 +44,9 @@ public class ComplexQueryBuilderFactoryImpl
 	protected void setScripts(Scripts scripts) {
 		_scripts = scripts;
 	}
+
+	@Reference
+	private DDMIndexer _ddmIndexer;
 
 	private Queries _queries;
 	private Scripts _scripts;

@@ -44,14 +44,19 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author André de Oliveira
  */
 public class ComplexQueryBuilderImpl implements ComplexQueryBuilder {
 
 	public ComplexQueryBuilderImpl(Queries queries, Scripts scripts) {
+		this(queries, scripts, null);
+	}
+
+	public ComplexQueryBuilderImpl(
+		Queries queries, Scripts scripts, DDMIndexer ddmIndexer) {
+
+		this.ddmIndexer = ddmIndexer;
 		_queries = queries;
 		_scripts = scripts;
 	}
@@ -87,6 +92,8 @@ public class ComplexQueryBuilderImpl implements ComplexQueryBuilder {
 
 		return this;
 	}
+
+	protected DDMIndexer ddmIndexer;
 
 	private BooleanQuery _getRootBooleanQuery() {
 		if (_booleanQuery != null) {
@@ -406,9 +413,6 @@ public class ComplexQueryBuilderImpl implements ComplexQueryBuilder {
 
 			return query;
 		}
-
-		@Reference
-		protected DDMIndexer ddmIndexer;
 
 		private final Map<String, ComplexQueryPart> _complexQueryPartsMap;
 		private final Map<String, Query> _queriesMap = new HashMap<>();
