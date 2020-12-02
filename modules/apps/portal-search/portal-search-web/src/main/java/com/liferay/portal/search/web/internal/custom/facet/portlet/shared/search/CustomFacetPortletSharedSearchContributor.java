@@ -15,6 +15,7 @@
 package com.liferay.portal.search.web.internal.custom.facet.portlet.shared.search;
 
 import com.liferay.portal.search.facet.custom.CustomFacetSearchContributor;
+import com.liferay.portal.search.facet.nested.NestedFacetSearchContributor;
 import com.liferay.portal.search.searcher.SearchRequestBuilder;
 import com.liferay.portal.search.web.internal.custom.facet.constants.CustomFacetPortletKeys;
 import com.liferay.portal.search.web.internal.custom.facet.portlet.CustomFacetPortletPreferences;
@@ -47,28 +48,59 @@ public class CustomFacetPortletSharedSearchContributor
 			new CustomFacetPortletPreferencesImpl(
 				portletSharedSearchSettings.getPortletPreferencesOptional());
 
+		Optional<String> fieldToAggregateOptional =
+			customFacetPortletPreferences.getAggregationFieldOptional();
+
+		if (!fieldToAggregateOptional.isPresent()) {
+			return;
+		}
+
 		SearchRequestBuilder searchRequestBuilder =
 			portletSharedSearchSettings.getFederatedSearchRequestBuilder(
 				customFacetPortletPreferences.getFederatedSearchKeyOptional());
 
-		Optional<String> fieldToAggregateOptional =
-			customFacetPortletPreferences.getAggregationFieldOptional();
+		Optional<String> nestedPathOptional =
+			customFacetPortletPreferences.getNestedPathOptional();
 
-		fieldToAggregateOptional.ifPresent(
-			fieldToAggregate -> customFacetSearchContributor.contribute(
+		if (nestedPathOptional.isPresent()) {
+			nestedFacetSearchContributor.contribute(
 				searchRequestBuilder,
-				customFacetBuilder -> customFacetBuilder.aggregationName(
+				nestedFacetBuilder -> nestedFacetBuilder.aggregationName(
 					portletSharedSearchSettings.getPortletId()
 				).fieldToAggregate(
-					fieldToAggregate
+					fieldToAggregateOptional.get()
+				).filterField(
+					customFacetPortletPreferences.getNestedFilterFieldString()
+				).filterValue(
+					customFacetPortletPreferences.getNestedFilterValueString()
 				).frequencyThreshold(
 					customFacetPortletPreferences.getFrequencyThreshold()
 				).maxTerms(
 					customFacetPortletPreferences.getMaxTerms()
+				).path(
+					nestedPathOptional.get()
 				).selectedValues(
 					portletSharedSearchSettings.getParameterValues(
 						getParameterName(customFacetPortletPreferences))
-				)));
+				));
+
+			return;
+		}
+
+		customFacetSearchContributor.contribute(
+			searchRequestBuilder,
+			customFacetBuilder -> customFacetBuilder.aggregationName(
+				portletSharedSearchSettings.getPortletId()
+			).fieldToAggregate(
+				fieldToAggregateOptional.get()
+			).frequencyThreshold(
+				customFacetPortletPreferences.getFrequencyThreshold()
+			).maxTerms(
+				customFacetPortletPreferences.getMaxTerms()
+			).selectedValues(
+				portletSharedSearchSettings.getParameterValues(
+					getParameterName(customFacetPortletPreferences))
+			));
 	}
 
 	protected String getParameterName(
@@ -88,5 +120,8 @@ public class CustomFacetPortletSharedSearchContributor
 
 	@Reference
 	protected CustomFacetSearchContributor customFacetSearchContributor;
+
+	@Reference
+	protected NestedFacetSearchContributor nestedFacetSearchContributor;
 
 }

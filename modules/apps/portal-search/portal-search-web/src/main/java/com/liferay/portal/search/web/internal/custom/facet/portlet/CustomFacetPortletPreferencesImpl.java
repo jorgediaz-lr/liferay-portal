@@ -85,6 +85,45 @@ public class CustomFacetPortletPreferencesImpl
 	}
 
 	@Override
+	public Optional<String> getNestedFilterFieldOptional() {
+		return _portletPreferencesHelper.getString(
+			CustomFacetPortletPreferences.PREFERENCE_KEY_NESTED_FILTER_FIELD);
+	}
+
+	@Override
+	public String getNestedFilterFieldString() {
+		Optional<String> optional = getNestedFilterFieldOptional();
+
+		return optional.orElse(StringPool.BLANK);
+	}
+
+	@Override
+	public Optional<String> getNestedFilterValueOptional() {
+		return _portletPreferencesHelper.getString(
+			CustomFacetPortletPreferences.PREFERENCE_KEY_NESTED_FILTER_VALUE);
+	}
+
+	@Override
+	public String getNestedFilterValueString() {
+		Optional<String> optional = getNestedFilterValueOptional();
+
+		return optional.orElse(StringPool.BLANK);
+	}
+
+	@Override
+	public Optional<String> getNestedPathOptional() {
+		return _portletPreferencesHelper.getString(
+			CustomFacetPortletPreferences.PREFERENCE_KEY_NESTED_PATH);
+	}
+
+	@Override
+	public String getNestedPathString() {
+		Optional<String> optional = getNestedPathOptional();
+
+		return optional.orElse(StringPool.BLANK);
+	}
+
+	@Override
 	public Optional<String> getParameterNameOptional() {
 		return _portletPreferencesHelper.getString(
 			CustomFacetPortletPreferences.PREFERENCE_KEY_PARAMETER_NAME);
