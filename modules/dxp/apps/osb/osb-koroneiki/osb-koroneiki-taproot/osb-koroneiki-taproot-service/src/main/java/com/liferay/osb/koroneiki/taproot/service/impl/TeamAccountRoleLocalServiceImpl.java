@@ -15,6 +15,7 @@
 package com.liferay.osb.koroneiki.taproot.service.impl;
 
 import com.liferay.osb.koroneiki.taproot.exception.TeamRoleTypeException;
+import com.liferay.osb.koroneiki.taproot.model.Team;
 import com.liferay.osb.koroneiki.taproot.model.TeamAccountRole;
 import com.liferay.osb.koroneiki.taproot.model.TeamRole;
 import com.liferay.osb.koroneiki.taproot.service.AccountLocalService;
@@ -60,7 +61,9 @@ public class TeamAccountRoleLocalServiceImpl
 
 			_accountLocalService.reindex(accountId);
 
-			_teamLocalService.reindex(teamId);
+			Team team = _teamLocalService.reindex(teamId);
+
+			_accountLocalService.reindex(team.getAccountId());
 		}
 
 		return teamAccountRole;
@@ -81,14 +84,24 @@ public class TeamAccountRoleLocalServiceImpl
 
 			_accountLocalService.reindex(accountId);
 
-			_teamLocalService.reindex(teamId);
+			Team team = _teamLocalService.reindex(teamId);
+
+			_accountLocalService.reindex(team.getAccountId());
 		}
 
 		return teamAccountRole;
 	}
 
-	public void deleteTeamAccountRoles(long teamId, long accountId) {
+	public void deleteTeamAccountRoles(long teamId, long accountId)
+		throws PortalException {
+
 		teamAccountRolePersistence.removeByTI_AI(teamId, accountId);
+
+		_accountLocalService.reindex(accountId);
+
+		Team team = _teamLocalService.reindex(teamId);
+
+		_accountLocalService.reindex(team.getAccountId());
 	}
 
 	public List<TeamAccountRole> getTeamAccountRoles(long teamId) {
