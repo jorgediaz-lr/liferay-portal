@@ -14,6 +14,7 @@
 
 package com.liferay.portal.search.web.internal.sort.display.context;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.search.web.internal.sort.portlet.SortPortletPreferences;
@@ -83,7 +84,16 @@ public class SortDisplayBuilder {
 
 		sortTermDisplayContext.setLabel(label);
 		sortTermDisplayContext.setField(field);
-		sortTermDisplayContext.setSelected(_selectedFields.contains(field));
+
+		boolean selected = false;
+
+		if (_selectedFields.contains(field) ||
+			(field.equals(StringPool.BLANK) && _selectedFields.isEmpty())) {
+
+			selected = true;
+		}
+
+		sortTermDisplayContext.setSelected(selected);
 
 		return sortTermDisplayContext;
 	}
