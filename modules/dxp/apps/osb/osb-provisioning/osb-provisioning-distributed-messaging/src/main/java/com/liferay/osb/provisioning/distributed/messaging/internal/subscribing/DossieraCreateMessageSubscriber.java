@@ -1417,6 +1417,20 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			List<ProductPurchase> productPurchases, JSONObject jsonObject)
 		throws Exception {
 
+		Account account = _accountWebService.getAccount(accountKey);
+
+		if (Validator.isNull(account.getContactEmailAddress())) {
+			JSONObject ownerJSONObject = jsonObject.getJSONObject("_owner");
+
+			if (ownerJSONObject != null) {
+				account.setContactEmailAddress(
+					ownerJSONObject.getString("_emailAddress"));
+
+				account = _accountWebService.updateAccount(
+					StringPool.BLANK, StringPool.BLANK, accountKey, account);
+			}
+		}
+
 		for (Contact contact : contacts) {
 			Contact curContact = _contactWebService.fetchContactByEmailAddress(
 				contact.getEmailAddress());
@@ -1456,20 +1470,6 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			_productPurchaseWebService.addProductPurchase(
 				StringPool.BLANK, StringPool.BLANK, accountKey,
 				productPurchase);
-		}
-
-		Account account = _accountWebService.getAccount(accountKey);
-
-		if (Validator.isNull(account.getContactEmailAddress())) {
-			JSONObject ownerJSONObject = jsonObject.getJSONObject("_owner");
-
-			if (ownerJSONObject != null) {
-				account.setContactEmailAddress(
-					ownerJSONObject.getString("_emailAddress"));
-
-				return _accountWebService.updateAccount(
-					StringPool.BLANK, StringPool.BLANK, accountKey, account);
-			}
 		}
 
 		return account;
