@@ -17,9 +17,13 @@ package com.liferay.portal.search.facet.nested;
 import com.liferay.portal.search.facet.Facet;
 
 /**
- * @author André de Oliveira
+ * @author Jorge Díaz
  */
 public interface NestedFacet extends Facet {
+
+	public String getFilterField();
+
+	public String getFilterValue();
 
 	public String getPath();
 
