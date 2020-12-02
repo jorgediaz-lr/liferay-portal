@@ -331,7 +331,7 @@ public class DDMFormInstanceRecordExporterImplTest extends PowerMockito {
 		);
 
 		when(
-			_html.render("value1")
+			_html.extractText("value1")
 		).thenReturn(
 			"value1"
 		);
@@ -356,7 +356,7 @@ public class DDMFormInstanceRecordExporterImplTest extends PowerMockito {
 
 		Mockito.verify(
 			_html, Mockito.times(1)
-		).render(
+		).extractText(
 			"value1"
 		);
 	}
