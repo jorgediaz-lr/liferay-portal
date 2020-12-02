@@ -46,6 +46,8 @@ public class ProductConstants {
 
 	public static final String NAME_PORTAL_EWSA = "Portal Enterprise";
 
+	public static final String NAME_PORTAL_PRODUCTION = "Portal Production";
+
 	public static final String NAME_SERVICE_PARTNERSHIP = "Service Partnership";
 
 	public static final String NAME_SILVER = "Silver Subscription";

@@ -134,7 +134,8 @@ public class AccountReaderImpl implements AccountReader {
 						 ProductConstants.
 							 NAME_DXP_CLOUD_SUBSCRIPTION_STD_PRODUCTION) ||
 					 name.equals(
-						 ProductConstants.NAME_DXP_CLOUD_INSTANCE_PRODUCTION)) {
+						 ProductConstants.NAME_DXP_CLOUD_INSTANCE_PRODUCTION) ||
+					 name.equals(ProductConstants.NAME_PORTAL_PRODUCTION)) {
 
 				productionInstances += productPurchase.getQuantity();
 			}
