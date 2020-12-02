@@ -17,7 +17,7 @@ package com.liferay.portal.search.facet.nested;
 import com.liferay.portal.search.facet.FacetFactory;
 
 /**
- * @author Bryan Engler
+ * @author Jorge Díaz
  */
 public interface NestedFacetFactory extends FacetFactory {
 }

@@ -21,25 +21,32 @@ import java.util.function.Consumer;
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
- * @author André de Oliveira
+ * @author Jorge Díaz
  */
 public interface NestedFacetSearchContributor {
 
 	public void contribute(
 		SearchRequestBuilder searchRequestBuilder,
-		Consumer<NestedFacetBuilder> userFacetBuilderConsumer);
+		Consumer<NestedFacetBuilder> nestedFacetBuilderConsumer);
 
 	@ProviderType
 	public interface NestedFacetBuilder {
 
 		public NestedFacetBuilder aggregationName(String aggregationName);
 
+		public NestedFacetBuilder fieldToAggregate(String fieldToAggregate);
+
+		public NestedFacetBuilder filterField(String filterField);
+
+		public NestedFacetBuilder filterValue(String filterValue);
+
 		public NestedFacetBuilder frequencyThreshold(int frequencyThreshold);
 
 		public NestedFacetBuilder maxTerms(int maxTerms);
 
-		public NestedFacetBuilder selectedUserNames(
-			String... selectedUserNames);
+		public NestedFacetBuilder path(String path);
+
+		public NestedFacetBuilder selectedValues(String... selectedValues);
 
 	}
 
