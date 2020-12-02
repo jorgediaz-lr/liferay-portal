@@ -81,10 +81,12 @@ public class AggregationFilteringFacetProcessorContext
 
 			BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 
-			boolQueryBuilder.must(
-				QueryBuilders.termsQuery(
-					nestedFacet.getFilterField(),
-					nestedFacet.getFilterValue()));
+			if (nestedFacet.getFilterField() != null) {
+				boolQueryBuilder.must(
+					QueryBuilders.termsQuery(
+						nestedFacet.getFilterField(),
+						nestedFacet.getFilterValue()));
+			}
 
 			boolQueryBuilder.must(
 				QueryBuilders.termsQuery(
