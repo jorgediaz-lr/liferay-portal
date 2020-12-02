@@ -14,10 +14,17 @@
 
 package com.liferay.osb.provisioning.web.internal.portlet.action;
 
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
+import com.liferay.osb.provisioning.exception.ContactRequiredException;
+import com.liferay.osb.provisioning.koroneiki.web.service.ContactWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.exception.HttpException;
+import com.liferay.osb.provisioning.zendesk.model.ZendeskTicket;
+import com.liferay.osb.provisioning.zendesk.model.ZendeskUser;
+import com.liferay.osb.provisioning.zendesk.web.service.ZendeskTicketWebService;
+import com.liferay.osb.provisioning.zendesk.web.service.ZendeskUserWebService;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
@@ -30,8 +37,15 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -86,14 +100,20 @@ public class EditTeamMVCActionCommand extends BaseMVCActionCommand {
 					getRedirect(actionResponse, teamKey));
 			}
 		}
-		catch (HttpException httpException) {
-			SessionErrors.add(
-				actionRequest, httpException.getClass(), httpException);
-		}
 		catch (Exception exception) {
-			_log.error(exception, exception);
+			if (exception instanceof ContactRequiredException ||
+				exception instanceof HttpException) {
 
-			throw exception;
+				SessionErrors.add(
+					actionRequest, exception.getClass(), exception);
+
+				sendRedirect(actionRequest, actionResponse);
+			}
+			else {
+				_log.error(exception, exception);
+
+				throw exception;
+			}
 		}
 	}
 
@@ -149,6 +169,8 @@ public class EditTeamMVCActionCommand extends BaseMVCActionCommand {
 		}
 
 		if (!ArrayUtil.isEmpty(deleteEmailAddresses)) {
+			_validateUnassignContacts(teamKey, deleteEmailAddresses);
+
 			_teamWebService.unassignContacts(
 				user.getFullName(), user.getUuid(), teamKey,
 				deleteEmailAddresses);
@@ -157,13 +179,74 @@ public class EditTeamMVCActionCommand extends BaseMVCActionCommand {
 		return teamKey;
 	}
 
+	private void _validateUnassignContacts(
+			String teamKey, String[] deleteEmailAddresses)
+		throws Exception {
+
+		StringBundler sb = new StringBundler(3);
+
+		sb.append("teamKeys/any(s:s eq '");
+		sb.append(teamKey);
+		sb.append("')");
+
+		List<Contact> contacts = _contactWebService.search(
+			StringPool.BLANK, sb.toString(), 1, 1000, StringPool.BLANK);
+
+		Iterator<Contact> iterator = contacts.iterator();
+
+		while (iterator.hasNext()) {
+			Contact contact = iterator.next();
+
+			if (ArrayUtil.contains(
+					deleteEmailAddresses, contact.getEmailAddress())) {
+
+				iterator.remove();
+			}
+		}
+
+		if (!contacts.isEmpty()) {
+			return;
+		}
+
+		for (String emailAddress : deleteEmailAddresses) {
+			ZendeskUser zendeskUser =
+				_zendeskUserWebService.getZendeskUserByEmailAddress(
+					emailAddress);
+
+			if (zendeskUser == null) {
+				continue;
+			}
+
+			Set<String> criteria = new HashSet<>();
+
+			criteria.add("requester:" + zendeskUser.getZendeskUserId());
+			criteria.add("status<closed");
+
+			List<ZendeskTicket> zendeskTickets =
+				_zendeskTicketWebService.getZendeskTickets(criteria);
+
+			if (!zendeskTickets.isEmpty()) {
+				throw new ContactRequiredException();
+			}
+		}
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		EditTeamMVCActionCommand.class);
+
+	@Reference
+	private ContactWebService _contactWebService;
 
 	@Reference
 	private Portal _portal;
 
 	@Reference
 	private TeamWebService _teamWebService;
+
+	@Reference
+	private ZendeskTicketWebService _zendeskTicketWebService;
+
+	@Reference
+	private ZendeskUserWebService _zendeskUserWebService;
 
 }

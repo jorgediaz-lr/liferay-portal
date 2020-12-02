@@ -23,6 +23,8 @@ PortletURL searchURL = viewTeamDisplayContext.getPortletURL();
 TeamDisplay teamDisplay = viewTeamDisplayContext.getTeamDisplay();
 %>
 
+<liferay-ui:error exception="<%= ContactRequiredException.class %>" message="please-reassign-all-of-the-contacts-zendesk-tickets-before-unassigning" />
+
 <div class="management-bar management-bar-light navbar navbar-expand-md">
 	<div class="container-fluid">
 		<div class="navbar-form navbar-form-autofit navbar-overlay navbar-overlay-sm-down">
