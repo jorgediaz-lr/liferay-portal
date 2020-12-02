@@ -26,7 +26,6 @@ components:
                         The teams that are assigned to this account.
                     items:
                         $ref: "#/components/schemas/Team"
-                    readOnly: true
                     type: array
                 code:
                     description:
@@ -905,7 +904,6 @@ components:
                 key:
                     description:
                         The team's key.
-                    readOnly: true
                     type: string
                 name:
                     description:
@@ -921,7 +919,6 @@ components:
                         The team's account team roles.
                     items:
                         $ref: "#/components/schemas/TeamRole"
-                    readOnly: true
                     type: array
             required:
                 - name
@@ -967,7 +964,6 @@ components:
                 key:
                     description:
                         The team role's key.
-                    readOnly: true
                     type: string
                 name:
                     description:

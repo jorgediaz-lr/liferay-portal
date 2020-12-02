@@ -15,6 +15,7 @@
 package com.liferay.osb.koroneiki.phloem.rest.internal.odata.entity.v1_0;
 
 import com.liferay.portal.kernel.search.Field;
+import com.liferay.portal.odata.entity.BooleanEntityField;
 import com.liferay.portal.odata.entity.CollectionEntityField;
 import com.liferay.portal.odata.entity.EntityField;
 import com.liferay.portal.odata.entity.EntityModel;
@@ -61,7 +62,8 @@ public class TeamEntityModel implements EntityModel {
 					"externalLinkEntityNames",
 					locale -> "externalLinkEntityNames")),
 			new StringEntityField(
-				"name", locale -> Field.getSortableFieldName("name_String"))
+				"name", locale -> Field.getSortableFieldName("name_String")),
+			new BooleanEntityField("system", locale -> "system")
 		).collect(
 			Collectors.toMap(EntityField::getName, Function.identity())
 		);

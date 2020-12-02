@@ -21,6 +21,8 @@ import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.ContactRole;
 import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.ExternalLink;
 import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.PostalAddress;
 import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.ProductPurchase;
+import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.Team;
+import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.TeamRole;
 import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.util.AccountUtil;
 import com.liferay.osb.koroneiki.phloem.rest.internal.odata.entity.v1_0.AccountEntityModel;
 import com.liferay.osb.koroneiki.phloem.rest.internal.resource.v1_0.util.PhloemPermissionUtil;
@@ -33,7 +35,6 @@ import com.liferay.osb.koroneiki.phloem.rest.resource.v1_0.PostalAddressResource
 import com.liferay.osb.koroneiki.phloem.rest.resource.v1_0.ProductPurchaseResource;
 import com.liferay.osb.koroneiki.root.identity.management.provider.ContactIdentityProvider;
 import com.liferay.osb.koroneiki.taproot.constants.TaprootActionKeys;
-import com.liferay.osb.koroneiki.taproot.model.Team;
 import com.liferay.osb.koroneiki.taproot.service.AccountLocalService;
 import com.liferay.osb.koroneiki.taproot.service.AccountService;
 import com.liferay.osb.koroneiki.taproot.service.ContactAccountRoleService;
@@ -288,10 +289,7 @@ public class AccountResourceImpl
 		return _entityModel;
 	}
 
-	@NestedField(
-		parentClass = com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.Team.class,
-		value = "account"
-	)
+	@NestedField(parentClass = Team.class, value = "account")
 	public Account getTeamNestedFieldAccount(
 			@NestedFieldId("accountKey") String accountKey)
 		throws Exception {
@@ -305,7 +303,8 @@ public class AccountResourceImpl
 			String teamKey, Pagination pagination)
 		throws Exception {
 
-		Team team = _teamLocalService.getTeam(teamKey);
+		com.liferay.osb.koroneiki.taproot.model.Team team =
+			_teamLocalService.getTeam(teamKey);
 
 		return Page.of(
 			transform(
@@ -423,6 +422,15 @@ public class AccountResourceImpl
 
 				_productPurchaseResource.postAccountAccountKeyProductPurchase(
 					agentName, agentUID, curAccount.getKey(), productPurchase);
+			}
+		}
+
+		if (!ArrayUtil.isEmpty(account.getAssignedTeams())) {
+			for (Team team : account.getAssignedTeams()) {
+				for (TeamRole teamRole : team.getTeamRoles()) {
+					_teamAccountRoleService.addTeamAccountRole(
+						team.getKey(), curAccount.getKey(), teamRole.getKey());
+				}
 			}
 		}
 
