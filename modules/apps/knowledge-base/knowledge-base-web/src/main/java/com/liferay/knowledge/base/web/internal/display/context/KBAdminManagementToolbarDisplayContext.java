@@ -354,9 +354,7 @@ public class KBAdminManagementToolbarDisplayContext {
 	}
 
 	public boolean isShowInfoButton() {
-		String keywords = _getKeywords();
-
-		return Validator.isNull(keywords);
+		return Validator.isNull(_getKeywords());
 	}
 
 	private SearchContainer _createSearchContainer()

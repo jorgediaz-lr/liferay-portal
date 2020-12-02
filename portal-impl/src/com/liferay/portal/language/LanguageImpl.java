@@ -1800,9 +1800,8 @@ public class LanguageImpl implements Language, Serializable {
 		HttpServletRequest httpServletRequest, String pattern,
 		Object[] formattedArguments) {
 
-		Locale locale = _getLocale(httpServletRequest);
-
-		return _decorateMessageFormat(locale, pattern, formattedArguments);
+		return _decorateMessageFormat(
+			_getLocale(httpServletRequest), pattern, formattedArguments);
 	}
 
 	private String _decorateMessageFormat(

@@ -1137,14 +1137,8 @@ public class UIItemsBuilder {
 			return _currentURL;
 		}
 
-		LiferayPortletRequest liferayPortletRequest =
-			_getLiferayPortletRequest();
-
-		LiferayPortletResponse liferayPortletResponse =
-			_getLiferayPortletResponse();
-
 		PortletURL portletURL = PortletURLUtil.getCurrent(
-			liferayPortletRequest, liferayPortletResponse);
+			_getLiferayPortletRequest(), _getLiferayPortletResponse());
 
 		_currentURL = portletURL.toString();
 
