@@ -157,6 +157,7 @@ DLVisualizationHelper dlVisualizationHelper = new DLVisualizationHelper(dlReques
 						<%
 						Map<String, Object> data = new HashMap<String, Object>();
 
+						data.put("entityid", curFolder.getFolderId());
 						data.put("folderid", curFolder.getFolderId());
 						data.put("folderissupportsmetadata", curFolder.isSupportsMetadata());
 						data.put("folderissupportssocial", curFolder.isSupportsSocial());

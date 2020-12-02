@@ -552,6 +552,7 @@ AUI.add(
 								width: 680
 							},
 							id: namespace + 'selectFolder',
+							selectedData: instance.getFolderId(),
 							title: Lang.sub(dialogTitle, [selectedItems]),
 							uri: instance.get('selectFolderURL')
 						},
