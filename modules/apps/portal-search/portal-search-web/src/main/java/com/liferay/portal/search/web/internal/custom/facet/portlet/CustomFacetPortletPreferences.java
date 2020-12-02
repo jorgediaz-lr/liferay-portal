@@ -37,6 +37,14 @@ public interface CustomFacetPortletPreferences {
 
 	public static final String PREFERENCE_KEY_MAX_TERMS = "maxTerms";
 
+	public static final String PREFERENCE_KEY_NESTED_FILTER_FIELD =
+		"nestedFilterField";
+
+	public static final String PREFERENCE_KEY_NESTED_FILTER_VALUE =
+		"nestedFilterValue";
+
+	public static final String PREFERENCE_KEY_NESTED_PATH = "nestedPath";
+
 	public static final String PREFERENCE_KEY_PARAMETER_NAME = "parameterName";
 
 	public Optional<String> getAggregationFieldOptional();
@@ -54,6 +62,18 @@ public interface CustomFacetPortletPreferences {
 	public int getFrequencyThreshold();
 
 	public int getMaxTerms();
+
+	public Optional<String> getNestedFilterFieldOptional();
+
+	public String getNestedFilterFieldString();
+
+	public Optional<String> getNestedFilterValueOptional();
+
+	public String getNestedFilterValueString();
+
+	public Optional<String> getNestedPathOptional();
+
+	public String getNestedPathString();
 
 	public Optional<String> getParameterNameOptional();
 

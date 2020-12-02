@@ -79,6 +79,12 @@ CustomFacetPortletPreferences customFacetPortletPreferences = new CustomFacetPor
 			>
 				<aui:input helpMessage="aggregation-field-help" label="aggregation-field" name="<%= PortletPreferencesJspUtil.getInputName(CustomFacetPortletPreferences.PREFERENCE_KEY_AGGREGATION_FIELD) %>" value="<%= customFacetPortletPreferences.getAggregationFieldString() %>" />
 
+				<aui:input helpMessage="nested-path-help" label="nested-path" name="<%= PortletPreferencesJspUtil.getInputName(CustomFacetPortletPreferences.PREFERENCE_KEY_NESTED_PATH) %>" value="<%= customFacetPortletPreferences.getNestedPathString() %>" />
+
+				<aui:input helpMessage="nested-filter-field-help" label="nested-filter-field" name="<%= PortletPreferencesJspUtil.getInputName(CustomFacetPortletPreferences.PREFERENCE_KEY_NESTED_FILTER_FIELD) %>" value="<%= customFacetPortletPreferences.getNestedFilterFieldString() %>" />
+
+				<aui:input helpMessage="nested-filter-value-help" label="nested-filter-value" name="<%= PortletPreferencesJspUtil.getInputName(CustomFacetPortletPreferences.PREFERENCE_KEY_NESTED_FILTER_VALUE) %>" value="<%= customFacetPortletPreferences.getNestedFilterValueString() %>" />
+
 				<aui:input helpMessage="custom-heading-help" label="custom-heading" name="<%= PortletPreferencesJspUtil.getInputName(CustomFacetPortletPreferences.PREFERENCE_KEY_CUSTOM_HEADING) %>" value="<%= customFacetPortletPreferences.getCustomHeadingString() %>" />
 
 				<aui:input helpMessage="custom-parameter-name-help" label="custom-parameter-name" name="<%= PortletPreferencesJspUtil.getInputName(CustomFacetPortletPreferences.PREFERENCE_KEY_PARAMETER_NAME) %>" value="<%= customFacetPortletPreferences.getParameterNameString() %>" />
