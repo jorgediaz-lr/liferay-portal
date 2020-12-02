@@ -1459,6 +1459,12 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		}
 
 		Account account = _accountWebService.getAccount(accountKey);
+		
+		String curContactEmailAddress = account.getContactEmailAddress();
+		
+		if(Validator.isNotNull(curContactEmailAddress)) {
+			return account;
+		}
 
 		JSONObject ownerJSONObject = jsonObject.getJSONObject("_owner");
 
@@ -1466,11 +1472,15 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			return account;
 		}
 
-		account.setContactEmailAddress(
-			ownerJSONObject.getString("_emailAddress"));
-
-		return _accountWebService.updateAccount(
-			StringPool.BLANK, StringPool.BLANK, accountKey, account);
+		String contactEmailAddress = ownerJSONObject.getString("_emailAddress");
+		
+		if(Validator.isNotNull(contactEmailAddress)) {
+			account.setContactEmailAddress(contactEmailAddress);
+			
+			account = _accountWebService.updateAccount(StringPool.BLANK, StringPool.BLANK, accountKey, account);
+		}
+		
+		return account;
 	}
 
 	private static String _getEmailTemplate(
