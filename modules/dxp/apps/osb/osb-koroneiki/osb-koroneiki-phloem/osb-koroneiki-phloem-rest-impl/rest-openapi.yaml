@@ -582,7 +582,8 @@ components:
             type: object
         PostalAddress:
             description:
-                Represents a mailing address. This follows the [`PostalAddress`](https://www.schema.org/PostalAddress) specification.
+                Represents a mailing address. This follows the [`PostalAddress`](https://www.schema.org/PostalAddress)
+                specification.
             properties:
                 addressCountry:
                     description:
