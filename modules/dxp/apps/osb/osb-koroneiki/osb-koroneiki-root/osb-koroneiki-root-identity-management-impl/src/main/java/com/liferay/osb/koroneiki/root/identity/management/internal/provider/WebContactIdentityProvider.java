@@ -25,6 +25,7 @@ import com.liferay.petra.json.web.service.client.JSONWebServiceClientFactory;
 import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
 import com.liferay.portal.instances.service.PortalInstancesLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
@@ -155,6 +156,26 @@ public class WebContactIdentityProvider implements ContactIdentityProvider {
 		return _defaultUserId;
 	}
 
+	private boolean _getEmailAddressVerified(JSONObject jsonObject)
+		throws Exception {
+
+		JSONArray rolesJSONArray = jsonObject.getJSONArray("roles");
+
+		if (rolesJSONArray != null) {
+			for (int i = 0; i < rolesJSONArray.length(); i++) {
+				JSONObject roleJSONObject = rolesJSONArray.getJSONObject(i);
+
+				String name = roleJSONObject.getString("name");
+
+				if (Validator.isNotNull(name) && name.equals("Verified User")) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
 	private JSONObject _getToJSONObject(
 			String url, Map<String, String> parameters)
 		throws Exception {
@@ -208,7 +229,7 @@ public class WebContactIdentityProvider implements ContactIdentityProvider {
 			jsonObject.getString("middleName"),
 			jsonObject.getString("lastName"), emailAddress,
 			jsonObject.getString("languageId"),
-			jsonObject.getBoolean("emailAddressVerified"));
+			_getEmailAddressVerified(jsonObject));
 	}
 
 	private Contact _importContactByUuid(String uuid) throws Exception {
@@ -225,7 +246,7 @@ public class WebContactIdentityProvider implements ContactIdentityProvider {
 			jsonObject.getString("lastName"),
 			jsonObject.getString("emailAddress"),
 			jsonObject.getString("languageId"),
-			jsonObject.getBoolean("emailAddressVerified"));
+			_getEmailAddressVerified(jsonObject));
 	}
 
 	private void _sendEmail(
