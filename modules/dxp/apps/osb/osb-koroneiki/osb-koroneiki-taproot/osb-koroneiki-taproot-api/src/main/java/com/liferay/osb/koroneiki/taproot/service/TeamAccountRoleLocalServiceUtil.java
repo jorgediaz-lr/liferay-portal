@@ -133,7 +133,9 @@ public class TeamAccountRoleLocalServiceUtil {
 		return getService().deleteTeamAccountRole(teamAccountRolePK);
 	}
 
-	public static void deleteTeamAccountRoles(long teamId, long accountId) {
+	public static void deleteTeamAccountRoles(long teamId, long accountId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
 		getService().deleteTeamAccountRoles(teamId, accountId);
 	}
 

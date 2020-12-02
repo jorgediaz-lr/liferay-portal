@@ -129,7 +129,8 @@ public interface TeamAccountRoleLocalService
 			TeamAccountRolePK teamAccountRolePK)
 		throws PortalException;
 
-	public void deleteTeamAccountRoles(long teamId, long accountId);
+	public void deleteTeamAccountRoles(long teamId, long accountId)
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public DynamicQuery dynamicQuery();

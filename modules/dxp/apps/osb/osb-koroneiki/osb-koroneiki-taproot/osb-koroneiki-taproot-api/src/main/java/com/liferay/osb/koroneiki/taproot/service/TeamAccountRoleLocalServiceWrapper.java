@@ -141,7 +141,9 @@ public class TeamAccountRoleLocalServiceWrapper
 	}
 
 	@Override
-	public void deleteTeamAccountRoles(long teamId, long accountId) {
+	public void deleteTeamAccountRoles(long teamId, long accountId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
 		_teamAccountRoleLocalService.deleteTeamAccountRoles(teamId, accountId);
 	}
 
