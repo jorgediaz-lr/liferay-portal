@@ -153,9 +153,25 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			return;
 		}
 
-		updateAssignedTeam(
-			account.getKey(), partnerDefaultTeam.getKey(),
-			TeamRoleConstants.NAME_FIRST_LINE_SUPPORT);
+		filterString = StringBundler.concat(
+			"accountKey eq '", partnerAccount.getKey(), "' and name eq '",
+			partnerAccount.getName(), " FLS'");
+
+		List<Team> partnerFLSTeams = _teamWebService.search(
+			StringPool.BLANK, filterString, 1, 1, StringPool.BLANK);
+
+		if (!partnerFLSTeams.isEmpty()) {
+			Team partnerFLSTeam = partnerFLSTeams.get(0);
+
+			updateAssignedTeam(
+				account.getKey(), partnerFLSTeam.getKey(),
+				TeamRoleConstants.NAME_FIRST_LINE_SUPPORT);
+		}
+		else {
+			updateAssignedTeam(
+				account.getKey(), partnerDefaultTeam.getKey(),
+				TeamRoleConstants.NAME_FIRST_LINE_SUPPORT);
+		}
 	}
 
 	protected void checkWarnings(
@@ -572,6 +588,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			}
 		}
 
+		addPartnerAccount(jsonObject, account);
 		createAccountNote(jsonObject, account);
 
 		checkWarnings(
@@ -593,8 +610,6 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		for (Contact contact : missingContacts) {
 			sendUserCreationEmail(contact, account, analyticsCloud);
 		}
-
-		addPartnerAccount(jsonObject, account);
 	}
 
 	protected String getAccountKey(JSONObject jsonObject) throws Exception {
