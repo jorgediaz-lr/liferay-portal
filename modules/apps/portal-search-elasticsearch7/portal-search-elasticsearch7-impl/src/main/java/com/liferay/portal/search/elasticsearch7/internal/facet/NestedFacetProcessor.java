@@ -72,20 +72,26 @@ public class NestedFacetProcessor
 			termsAggregationBuilder.size(size);
 		}
 
-		TermQueryBuilder termQueryBuilder = QueryBuilders.termQuery(
-			nestedFacet.getFilterField(), nestedFacet.getFilterValue());
+		AggregationBuilder aggregationBuilder = termsAggregationBuilder;
 
-		FilterAggregationBuilder filterAggregationBuilder =
-			AggregationBuilders.filter(
-				FacetUtil.getAggregationName(facet), termQueryBuilder);
+		if (nestedFacet.getFilterField() != null) {
+			TermQueryBuilder termQueryBuilder = QueryBuilders.termQuery(
+				nestedFacet.getFilterField(), nestedFacet.getFilterValue());
 
-		filterAggregationBuilder.subAggregation(termsAggregationBuilder);
+			FilterAggregationBuilder filterAggregationBuilder =
+				AggregationBuilders.filter(
+					FacetUtil.getAggregationName(facet), termQueryBuilder);
+
+			filterAggregationBuilder.subAggregation(termsAggregationBuilder);
+
+			aggregationBuilder = filterAggregationBuilder;
+		}
 
 		NestedAggregationBuilder nestedAggregationBuilder =
 			AggregationBuilders.nested(
 				FacetUtil.getAggregationName(facet), nestedFacet.getPath());
 
-		nestedAggregationBuilder.subAggregation(filterAggregationBuilder);
+		nestedAggregationBuilder.subAggregation(aggregationBuilder);
 
 		return Optional.of(nestedAggregationBuilder);
 	}
