@@ -95,22 +95,22 @@ AccountDisplay accountDisplay = viewAccountDisplayContext.getAccountDisplay();
 			</li>
 			<li>
 				<div class="header-label">
-					<liferay-ui:message key="partner" />
+					<liferay-ui:message key="fls-partner" />
 				</div>
 
 				<c:choose>
-					<c:when test="<%= Validator.isNotNull(accountDisplay.getPartnerTeamKey()) %>">
-						<portlet:renderURL var="partnerTeamURL">
+					<c:when test="<%= Validator.isNotNull(accountDisplay.getFirstLineSupportTeamKey()) %>">
+						<portlet:renderURL var="firstLineSupportTeamURL">
 							<portlet:param name="mvcRenderCommandName" value="/accounts/view_team" />
-							<portlet:param name="teamKey" value="<%= accountDisplay.getPartnerTeamKey() %>" />
+							<portlet:param name="teamKey" value="<%= accountDisplay.getFirstLineSupportTeamKey() %>" />
 						</portlet:renderURL>
 
-						<a href="<%= partnerTeamURL %>">
-							<%= HtmlUtil.escape(accountDisplay.getPartnerTeamName()) %>
+						<a href="<%= firstLineSupportTeamURL %>">
+							<%= HtmlUtil.escape(accountDisplay.getFirstLineSupportTeamName()) %>
 						</a>
 					</c:when>
 					<c:otherwise>
-						<%= HtmlUtil.escape(accountDisplay.getPartnerTeamName()) %>
+						<%= HtmlUtil.escape(accountDisplay.getFirstLineSupportTeamName()) %>
 					</c:otherwise>
 				</c:choose>
 			</li>
