@@ -83,7 +83,7 @@ public class Account {
 	}
 
 	@GraphQLField(description = "The teams that are assigned to this account.")
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Team[] assignedTeams;
 
 	@Schema(description = "The code of the account.")

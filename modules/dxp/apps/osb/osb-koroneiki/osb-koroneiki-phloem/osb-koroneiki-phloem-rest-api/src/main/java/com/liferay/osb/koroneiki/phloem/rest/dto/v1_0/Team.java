@@ -257,7 +257,7 @@ public class Team {
 	}
 
 	@GraphQLField(description = "The team's key.")
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected String key;
 
 	@Schema(description = "The name of the team.")
@@ -345,7 +345,7 @@ public class Team {
 	}
 
 	@GraphQLField(description = "The team's account team roles.")
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected TeamRole[] teamRoles;
 
 	@Override

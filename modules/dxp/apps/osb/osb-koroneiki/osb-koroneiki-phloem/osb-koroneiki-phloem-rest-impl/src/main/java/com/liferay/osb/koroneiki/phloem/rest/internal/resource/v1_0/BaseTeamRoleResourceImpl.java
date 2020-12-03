@@ -133,7 +133,7 @@ public abstract class BaseTeamRoleResourceImpl implements TeamRoleResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'POST' 'http://localhost:8080/o/koroneiki-rest/v1.0/team-roles' -d $'{"description": ___, "name": ___, "type": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
+	 * curl -X 'POST' 'http://localhost:8080/o/koroneiki-rest/v1.0/team-roles' -d $'{"description": ___, "key": ___, "name": ___, "type": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
 	@Override
 	@Consumes({"application/json", "application/xml"})
@@ -206,7 +206,7 @@ public abstract class BaseTeamRoleResourceImpl implements TeamRoleResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'PUT' 'http://localhost:8080/o/koroneiki-rest/v1.0/team-roles/{teamRoleKey}' -d $'{"description": ___, "name": ___, "type": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
+	 * curl -X 'PUT' 'http://localhost:8080/o/koroneiki-rest/v1.0/team-roles/{teamRoleKey}' -d $'{"description": ___, "key": ___, "name": ___, "type": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
 	@Override
 	@Consumes({"application/json", "application/xml"})

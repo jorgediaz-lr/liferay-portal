@@ -174,7 +174,7 @@ public class TeamRole {
 	}
 
 	@GraphQLField(description = "The team role's key.")
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected String key;
 
 	@Schema(description = "The name of the team role.")

@@ -126,7 +126,7 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'POST' 'http://localhost:8080/o/koroneiki-rest/v1.0/accounts/{accountKey}/teams' -d $'{"name": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
+	 * curl -X 'POST' 'http://localhost:8080/o/koroneiki-rest/v1.0/accounts/{accountKey}/teams' -d $'{"key": ___, "name": ___, "teamRoles": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
 	@Override
 	@Consumes({"application/json", "application/xml"})
@@ -264,7 +264,7 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'PUT' 'http://localhost:8080/o/koroneiki-rest/v1.0/teams/{teamKey}' -d $'{"name": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
+	 * curl -X 'PUT' 'http://localhost:8080/o/koroneiki-rest/v1.0/teams/{teamKey}' -d $'{"key": ___, "name": ___, "teamRoles": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
 	@Override
 	@Consumes({"application/json", "application/xml"})
