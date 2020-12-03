@@ -210,6 +210,13 @@ public class TeamLocalServiceWrapper
 		return _teamLocalService.fetchTeam(teamId);
 	}
 
+	@Override
+	public com.liferay.osb.koroneiki.taproot.model.Team fetchTeam(
+		long accountId, boolean system) {
+
+		return _teamLocalService.fetchTeam(accountId, system);
+	}
+
 	/**
 	 * Returns the team with the matching UUID and company.
 	 *
@@ -387,14 +394,6 @@ public class TeamLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _teamLocalService.search(companyId, keywords, start, end, sort);
-	}
-
-	@Override
-	public com.liferay.osb.koroneiki.taproot.model.Team syncDefaultTeam(
-			long accountId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _teamLocalService.syncDefaultTeam(accountId);
 	}
 
 	@Override

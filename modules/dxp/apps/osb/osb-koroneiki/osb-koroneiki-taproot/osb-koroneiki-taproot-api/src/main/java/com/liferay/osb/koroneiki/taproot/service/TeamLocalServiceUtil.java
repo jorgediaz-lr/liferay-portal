@@ -210,6 +210,12 @@ public class TeamLocalServiceUtil {
 		return getService().fetchTeam(teamId);
 	}
 
+	public static com.liferay.osb.koroneiki.taproot.model.Team fetchTeam(
+		long accountId, boolean system) {
+
+		return getService().fetchTeam(accountId, system);
+	}
+
 	/**
 	 * Returns the team with the matching UUID and company.
 	 *
@@ -371,13 +377,6 @@ public class TeamLocalServiceUtil {
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().search(companyId, keywords, start, end, sort);
-	}
-
-	public static com.liferay.osb.koroneiki.taproot.model.Team syncDefaultTeam(
-			long accountId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return getService().syncDefaultTeam(accountId);
 	}
 
 	public static com.liferay.osb.koroneiki.taproot.model.Team updateTeam(

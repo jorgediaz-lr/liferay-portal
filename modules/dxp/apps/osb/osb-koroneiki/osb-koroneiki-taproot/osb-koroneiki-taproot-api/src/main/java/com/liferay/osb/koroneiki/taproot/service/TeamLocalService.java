@@ -195,6 +195,9 @@ public interface TeamLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Team fetchTeam(long teamId);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Team fetchTeam(long accountId, boolean system);
+
 	/**
 	 * Returns the team with the matching UUID and company.
 	 *
@@ -304,9 +307,6 @@ public interface TeamLocalService
 	public Hits search(
 			long companyId, String keywords, int start, int end, Sort sort)
 		throws PortalException;
-
-	@Indexable(type = IndexableType.REINDEX)
-	public Team syncDefaultTeam(long accountId) throws PortalException;
 
 	@Indexable(type = IndexableType.REINDEX)
 	public Team updateTeam(long teamId, String name) throws PortalException;
