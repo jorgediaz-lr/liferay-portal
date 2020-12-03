@@ -1867,23 +1867,20 @@ public class DLFileEntryLocalServiceImpl
 			(dlFileEntry.getFileEntryTypeId() !=
 				DLFileEntryTypeConstants.FILE_ENTRY_TYPE_ID_BASIC_DOCUMENT)) {
 
-			long classNameId = classNameLocalService.getClassNameId(
-				DLFileEntryMetadata.class);
+			DLFileEntryMetadata dlFileEntryMetadata =
+				dlFileEntryMetadataPersistence.fetchByFileEntryId_Last(
+					fileEntryId, null);
 
 			DDMStructure ddmStructure = DDMStructureManagerUtil.fetchStructure(
-				dlFileEntry.getGroupId(), classNameId,
-				DLUtil.getDDMStructureKey(dlFileEntry.getDLFileEntryType()));
+				dlFileEntryMetadata.getDDMStructureId());
 
-			DLFileVersion dlFileVersion = dlFileEntry.getFileVersion();
-
-			DLFileEntryMetadata dlFileEntryMetadata =
-				dlFileEntryMetadataPersistence.fetchByD_F(
-					ddmStructure.getStructureId(),
-					dlFileVersion.getFileVersionId());
-
-			DDMStructureLinkManagerUtil.deleteStructureLink(
-				classNameId, dlFileEntryMetadata.getFileEntryMetadataId(),
-				ddmStructure.getStructureId());
+			if (ddmStructure != null) {
+				DDMStructureLinkManagerUtil.deleteStructureLink(
+					classNameLocalService.getClassNameId(
+						DLFileEntryMetadata.class),
+					dlFileEntryMetadata.getFileEntryMetadataId(),
+					ddmStructure.getStructureId());
+			}
 		}
 
 		return updateFileEntry(
