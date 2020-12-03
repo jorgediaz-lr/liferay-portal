@@ -10066,13 +10066,4 @@ public class BackgroundTaskPersistenceImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		BackgroundTaskPersistenceImpl.class);
 
-	static {
-		try {
-			Class.forName(BackgroundTaskPersistenceConstants.class.getName());
-		}
-		catch (ClassNotFoundException classNotFoundException) {
-			throw new ExceptionInInitializerError(classNotFoundException);
-		}
-	}
-
 }

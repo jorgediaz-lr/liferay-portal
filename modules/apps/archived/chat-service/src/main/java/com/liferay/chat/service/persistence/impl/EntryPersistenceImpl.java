@@ -5412,13 +5412,4 @@ public class EntryPersistenceImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		EntryPersistenceImpl.class);
 
-	static {
-		try {
-			Class.forName(ChatPersistenceConstants.class.getName());
-		}
-		catch (ClassNotFoundException classNotFoundException) {
-			throw new ExceptionInInitializerError(classNotFoundException);
-		}
-	}
-
 }

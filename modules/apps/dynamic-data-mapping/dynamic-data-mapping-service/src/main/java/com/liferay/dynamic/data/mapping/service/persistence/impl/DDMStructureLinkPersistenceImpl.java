@@ -2752,13 +2752,4 @@ public class DDMStructureLinkPersistenceImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		DDMStructureLinkPersistenceImpl.class);
 
-	static {
-		try {
-			Class.forName(DDMPersistenceConstants.class.getName());
-		}
-		catch (ClassNotFoundException classNotFoundException) {
-			throw new ExceptionInInitializerError(classNotFoundException);
-		}
-	}
-
 }

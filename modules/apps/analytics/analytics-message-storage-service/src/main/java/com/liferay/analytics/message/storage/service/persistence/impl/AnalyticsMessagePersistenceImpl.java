@@ -1263,13 +1263,4 @@ public class AnalyticsMessagePersistenceImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		AnalyticsMessagePersistenceImpl.class);
 
-	static {
-		try {
-			Class.forName(AnalyticsPersistenceConstants.class.getName());
-		}
-		catch (ClassNotFoundException classNotFoundException) {
-			throw new ExceptionInInitializerError(classNotFoundException);
-		}
-	}
-
 }

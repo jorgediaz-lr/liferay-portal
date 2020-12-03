@@ -87,13 +87,4 @@ public abstract class DDLRecordSetFinderBaseImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		DDLRecordSetFinderBaseImpl.class);
 
-	static {
-		try {
-			Class.forName(DDLPersistenceConstants.class.getName());
-		}
-		catch (ClassNotFoundException classNotFoundException) {
-			throw new ExceptionInInitializerError(classNotFoundException);
-		}
-	}
-
 }

@@ -88,13 +88,4 @@ public abstract class AccountFinderBaseImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		AccountFinderBaseImpl.class);
 
-	static {
-		try {
-			Class.forName(KoroneikiPersistenceConstants.class.getName());
-		}
-		catch (ClassNotFoundException classNotFoundException) {
-			throw new ExceptionInInitializerError(classNotFoundException);
-		}
-	}
-
 }

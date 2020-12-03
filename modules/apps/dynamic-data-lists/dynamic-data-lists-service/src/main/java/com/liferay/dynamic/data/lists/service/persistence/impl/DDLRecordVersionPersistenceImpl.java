@@ -3569,13 +3569,4 @@ public class DDLRecordVersionPersistenceImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		DDLRecordVersionPersistenceImpl.class);
 
-	static {
-		try {
-			Class.forName(DDLPersistenceConstants.class.getName());
-		}
-		catch (ClassNotFoundException classNotFoundException) {
-			throw new ExceptionInInitializerError(classNotFoundException);
-		}
-	}
-
 }

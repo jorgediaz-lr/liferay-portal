@@ -66,13 +66,4 @@ public abstract class BackgroundTaskFinderBaseImpl
 	@Reference
 	protected BackgroundTaskPersistence backgroundTaskPersistence;
 
-	static {
-		try {
-			Class.forName(BackgroundTaskPersistenceConstants.class.getName());
-		}
-		catch (ClassNotFoundException classNotFoundException) {
-			throw new ExceptionInInitializerError(classNotFoundException);
-		}
-	}
-
 }

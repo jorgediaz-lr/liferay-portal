@@ -67,13 +67,4 @@ public abstract class KaleoTaskInstanceTokenFinderBaseImpl
 	protected KaleoTaskInstanceTokenPersistence
 		kaleoTaskInstanceTokenPersistence;
 
-	static {
-		try {
-			Class.forName(KaleoPersistenceConstants.class.getName());
-		}
-		catch (ClassNotFoundException classNotFoundException) {
-			throw new ExceptionInInitializerError(classNotFoundException);
-		}
-	}
-
 }

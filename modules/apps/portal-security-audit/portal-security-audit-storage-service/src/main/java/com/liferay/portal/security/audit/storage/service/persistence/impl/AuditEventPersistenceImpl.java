@@ -1245,13 +1245,4 @@ public class AuditEventPersistenceImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		AuditEventPersistenceImpl.class);
 
-	static {
-		try {
-			Class.forName(AuditPersistenceConstants.class.getName());
-		}
-		catch (ClassNotFoundException classNotFoundException) {
-			throw new ExceptionInInitializerError(classNotFoundException);
-		}
-	}
-
 }

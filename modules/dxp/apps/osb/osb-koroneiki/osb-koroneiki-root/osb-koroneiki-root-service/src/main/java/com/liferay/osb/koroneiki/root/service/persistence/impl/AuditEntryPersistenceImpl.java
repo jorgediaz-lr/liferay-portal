@@ -2322,13 +2322,4 @@ public class AuditEntryPersistenceImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		AuditEntryPersistenceImpl.class);
 
-	static {
-		try {
-			Class.forName(KoroneikiPersistenceConstants.class.getName());
-		}
-		catch (ClassNotFoundException classNotFoundException) {
-			throw new ExceptionInInitializerError(classNotFoundException);
-		}
-	}
-
 }

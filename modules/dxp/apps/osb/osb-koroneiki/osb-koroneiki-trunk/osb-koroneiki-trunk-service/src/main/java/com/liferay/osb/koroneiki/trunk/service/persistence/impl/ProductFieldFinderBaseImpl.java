@@ -66,13 +66,4 @@ public abstract class ProductFieldFinderBaseImpl
 	@Reference
 	protected ProductFieldPersistence productFieldPersistence;
 
-	static {
-		try {
-			Class.forName(KoroneikiPersistenceConstants.class.getName());
-		}
-		catch (ClassNotFoundException classNotFoundException) {
-			throw new ExceptionInInitializerError(classNotFoundException);
-		}
-	}
-
 }

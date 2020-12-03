@@ -86,13 +86,4 @@ public abstract class DLFileRankFinderBaseImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		DLFileRankFinderBaseImpl.class);
 
-	static {
-		try {
-			Class.forName(DLPersistenceConstants.class.getName());
-		}
-		catch (ClassNotFoundException classNotFoundException) {
-			throw new ExceptionInInitializerError(classNotFoundException);
-		}
-	}
-
 }

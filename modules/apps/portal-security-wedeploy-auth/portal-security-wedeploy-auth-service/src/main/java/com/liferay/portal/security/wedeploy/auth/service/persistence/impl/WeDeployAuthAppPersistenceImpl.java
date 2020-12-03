@@ -1456,13 +1456,4 @@ public class WeDeployAuthAppPersistenceImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		WeDeployAuthAppPersistenceImpl.class);
 
-	static {
-		try {
-			Class.forName(WeDeployAuthPersistenceConstants.class.getName());
-		}
-		catch (ClassNotFoundException classNotFoundException) {
-			throw new ExceptionInInitializerError(classNotFoundException);
-		}
-	}
-
 }

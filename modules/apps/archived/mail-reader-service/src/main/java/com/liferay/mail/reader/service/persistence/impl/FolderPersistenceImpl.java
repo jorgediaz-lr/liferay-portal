@@ -1588,13 +1588,4 @@ public class FolderPersistenceImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		FolderPersistenceImpl.class);
 
-	static {
-		try {
-			Class.forName(MailPersistenceConstants.class.getName());
-		}
-		catch (ClassNotFoundException classNotFoundException) {
-			throw new ExceptionInInitializerError(classNotFoundException);
-		}
-	}
-
 }

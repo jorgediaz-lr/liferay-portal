@@ -86,13 +86,4 @@ public abstract class TeamFinderBaseImpl extends BasePersistenceImpl<Team> {
 	private static final Log _log = LogFactoryUtil.getLog(
 		TeamFinderBaseImpl.class);
 
-	static {
-		try {
-			Class.forName(KoroneikiPersistenceConstants.class.getName());
-		}
-		catch (ClassNotFoundException classNotFoundException) {
-			throw new ExceptionInInitializerError(classNotFoundException);
-		}
-	}
-
 }

@@ -2234,13 +2234,4 @@ public class DDMDataProviderInstanceLinkPersistenceImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		DDMDataProviderInstanceLinkPersistenceImpl.class);
 
-	static {
-		try {
-			Class.forName(DDMPersistenceConstants.class.getName());
-		}
-		catch (ClassNotFoundException classNotFoundException) {
-			throw new ExceptionInInitializerError(classNotFoundException);
-		}
-	}
-
 }

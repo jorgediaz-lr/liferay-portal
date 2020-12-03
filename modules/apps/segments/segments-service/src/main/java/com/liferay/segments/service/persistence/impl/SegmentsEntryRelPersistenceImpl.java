@@ -2881,13 +2881,4 @@ public class SegmentsEntryRelPersistenceImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		SegmentsEntryRelPersistenceImpl.class);
 
-	static {
-		try {
-			Class.forName(SegmentsPersistenceConstants.class.getName());
-		}
-		catch (ClassNotFoundException classNotFoundException) {
-			throw new ExceptionInInitializerError(classNotFoundException);
-		}
-	}
-
 }

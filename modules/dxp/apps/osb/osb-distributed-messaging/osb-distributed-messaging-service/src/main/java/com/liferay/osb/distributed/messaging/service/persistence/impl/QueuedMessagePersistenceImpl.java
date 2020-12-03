@@ -1332,13 +1332,4 @@ public class QueuedMessagePersistenceImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		QueuedMessagePersistenceImpl.class);
 
-	static {
-		try {
-			Class.forName(DMPersistenceConstants.class.getName());
-		}
-		catch (ClassNotFoundException classNotFoundException) {
-			throw new ExceptionInInitializerError(classNotFoundException);
-		}
-	}
-
 }

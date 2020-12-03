@@ -86,13 +86,4 @@ public abstract class ProductPurchaseFinderBaseImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		ProductPurchaseFinderBaseImpl.class);
 
-	static {
-		try {
-			Class.forName(KoroneikiPersistenceConstants.class.getName());
-		}
-		catch (ClassNotFoundException classNotFoundException) {
-			throw new ExceptionInInitializerError(classNotFoundException);
-		}
-	}
-
 }

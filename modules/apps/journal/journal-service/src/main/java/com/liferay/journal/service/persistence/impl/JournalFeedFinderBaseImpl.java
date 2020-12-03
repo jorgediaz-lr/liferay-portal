@@ -87,13 +87,4 @@ public abstract class JournalFeedFinderBaseImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		JournalFeedFinderBaseImpl.class);
 
-	static {
-		try {
-			Class.forName(JournalPersistenceConstants.class.getName());
-		}
-		catch (ClassNotFoundException classNotFoundException) {
-			throw new ExceptionInInitializerError(classNotFoundException);
-		}
-	}
-
 }

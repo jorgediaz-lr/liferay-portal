@@ -2005,14 +2005,4 @@ public class PushNotificationsDevicePersistenceImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		PushNotificationsDevicePersistenceImpl.class);
 
-	static {
-		try {
-			Class.forName(
-				PushNotificationsPersistenceConstants.class.getName());
-		}
-		catch (ClassNotFoundException classNotFoundException) {
-			throw new ExceptionInInitializerError(classNotFoundException);
-		}
-	}
-
 }

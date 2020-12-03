@@ -3303,13 +3303,4 @@ public class KaleoTaskAssignmentPersistenceImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		KaleoTaskAssignmentPersistenceImpl.class);
 
-	static {
-		try {
-			Class.forName(KaleoPersistenceConstants.class.getName());
-		}
-		catch (ClassNotFoundException classNotFoundException) {
-			throw new ExceptionInInitializerError(classNotFoundException);
-		}
-	}
-
 }
