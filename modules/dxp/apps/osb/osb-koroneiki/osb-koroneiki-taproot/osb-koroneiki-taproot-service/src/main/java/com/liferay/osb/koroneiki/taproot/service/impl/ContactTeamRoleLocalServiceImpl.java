@@ -19,6 +19,7 @@ import com.liferay.osb.koroneiki.taproot.model.ContactRole;
 import com.liferay.osb.koroneiki.taproot.model.ContactTeamRole;
 import com.liferay.osb.koroneiki.taproot.model.Team;
 import com.liferay.osb.koroneiki.taproot.service.ContactLocalService;
+import com.liferay.osb.koroneiki.taproot.service.TeamLocalService;
 import com.liferay.osb.koroneiki.taproot.service.base.ContactTeamRoleLocalServiceBaseImpl;
 import com.liferay.osb.koroneiki.taproot.service.persistence.ContactTeamRolePK;
 import com.liferay.portal.aop.AopService;
@@ -59,6 +60,8 @@ public class ContactTeamRoleLocalServiceImpl
 				contactTeamRole);
 
 			_contactLocalService.reindex(contactId);
+
+			_teamLocalService.reindex(teamId);
 		}
 
 		return contactTeamRole;
@@ -88,6 +91,8 @@ public class ContactTeamRoleLocalServiceImpl
 			deleteContactTeamRole(contactTeamRole);
 
 			_contactLocalService.reindex(contactId);
+
+			_teamLocalService.reindex(teamId);
 		}
 
 		return contactTeamRole;
@@ -99,6 +104,8 @@ public class ContactTeamRoleLocalServiceImpl
 		contactTeamRolePersistence.removeByCI_TI(contactId, teamId);
 
 		_contactLocalService.reindex(contactId);
+
+		_teamLocalService.reindex(teamId);
 	}
 
 	public List<ContactTeamRole> getContactTeamRoles(long contactId) {
@@ -131,5 +138,8 @@ public class ContactTeamRoleLocalServiceImpl
 
 	@Reference
 	private ContactLocalService _contactLocalService;
+
+	@Reference
+	private TeamLocalService _teamLocalService;
 
 }

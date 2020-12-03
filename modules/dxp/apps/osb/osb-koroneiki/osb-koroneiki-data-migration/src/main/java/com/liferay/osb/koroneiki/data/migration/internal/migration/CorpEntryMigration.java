@@ -21,7 +21,6 @@ import com.liferay.osb.koroneiki.root.service.ExternalLinkLocalService;
 import com.liferay.osb.koroneiki.root.util.ModelKeyGenerator;
 import com.liferay.osb.koroneiki.taproot.model.Account;
 import com.liferay.osb.koroneiki.taproot.service.AccountLocalService;
-import com.liferay.osb.koroneiki.taproot.service.TeamLocalService;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -100,8 +99,6 @@ public class CorpEntryMigration {
 				account.setStatus(Status.ACTIVE.toString());
 
 				_accountLocalService.addAccount(account);
-
-				_teamLocalService.syncDefaultTeam(account.getAccountId());
 
 				_externalLinkLocalService.addExternalLink(
 					userId, Account.class.getName(), account.getAccountId(),
@@ -235,9 +232,6 @@ public class CorpEntryMigration {
 
 	@Reference
 	private RegionService _regionService;
-
-	@Reference
-	private TeamLocalService _teamLocalService;
 
 	@Reference
 	private UserLocalService _userLocalService;

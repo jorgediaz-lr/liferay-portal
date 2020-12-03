@@ -15,6 +15,8 @@
 package com.liferay.osb.koroneiki.taproot.service.impl;
 
 import com.liferay.osb.koroneiki.taproot.exception.ContactRoleTypeException;
+import com.liferay.osb.koroneiki.taproot.internal.util.DefaultTeamManager;
+import com.liferay.osb.koroneiki.taproot.model.Account;
 import com.liferay.osb.koroneiki.taproot.model.ContactAccountRole;
 import com.liferay.osb.koroneiki.taproot.model.ContactRole;
 import com.liferay.osb.koroneiki.taproot.service.AccountLocalService;
@@ -61,11 +63,11 @@ public class ContactAccountRoleLocalServiceImpl
 			contactAccountRole = contactAccountRolePersistence.update(
 				contactAccountRole);
 
-			_accountLocalService.reindex(accountId);
+			Account account = _accountLocalService.reindex(accountId);
 
 			_contactLocalService.reindex(contactId);
 
-			_teamLocalService.syncDefaultTeam(accountId);
+			_defaultTeamManager.sync(account);
 		}
 
 		return contactAccountRole;
@@ -85,8 +87,6 @@ public class ContactAccountRoleLocalServiceImpl
 		if (contactAccountRole != null) {
 			deleteContactAccountRole(contactAccountRole);
 
-			_teamLocalService.syncDefaultTeam(accountId);
-
 			int contactAccountRolesCount = getContactAccountRolesCount(
 				contactId, accountId);
 
@@ -95,9 +95,11 @@ public class ContactAccountRoleLocalServiceImpl
 					accountId, contactId);
 			}
 
-			_accountLocalService.reindex(accountId);
+			Account account = _accountLocalService.reindex(accountId);
 
 			_contactLocalService.reindex(contactId);
+
+			_defaultTeamManager.sync(account);
 		}
 
 		return contactAccountRole;
@@ -150,6 +152,9 @@ public class ContactAccountRoleLocalServiceImpl
 
 	@Reference
 	private ContactTeamRoleLocalService _contactTeamRoleLocalService;
+
+	@Reference
+	private DefaultTeamManager _defaultTeamManager;
 
 	@Reference
 	private TeamLocalService _teamLocalService;

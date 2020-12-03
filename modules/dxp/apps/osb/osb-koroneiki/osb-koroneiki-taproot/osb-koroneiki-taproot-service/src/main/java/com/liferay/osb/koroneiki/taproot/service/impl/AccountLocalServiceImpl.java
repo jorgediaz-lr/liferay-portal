@@ -21,6 +21,7 @@ import com.liferay.osb.koroneiki.taproot.exception.AccountCodeException;
 import com.liferay.osb.koroneiki.taproot.exception.AccountNameException;
 import com.liferay.osb.koroneiki.taproot.exception.AccountParentException;
 import com.liferay.osb.koroneiki.taproot.exception.RequiredAccountException;
+import com.liferay.osb.koroneiki.taproot.internal.util.DefaultTeamManager;
 import com.liferay.osb.koroneiki.taproot.model.Account;
 import com.liferay.osb.koroneiki.taproot.model.Team;
 import com.liferay.osb.koroneiki.taproot.service.TeamLocalService;
@@ -62,12 +63,14 @@ public class AccountLocalServiceImpl extends AccountLocalServiceBaseImpl {
 	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public Account addAccount(Account account) {
-		super.addAccount(account);
+		account = super.addAccount(account);
 
 		try {
 			addResources(
 				account.getCompanyId(), account.getUserId(),
 				account.getAccountId());
+
+			_defaultTeamManager.sync(account);
 		}
 		catch (PortalException portalException) {
 			throw new SystemException(portalException);
@@ -124,7 +127,7 @@ public class AccountLocalServiceImpl extends AccountLocalServiceBaseImpl {
 
 		addResources(account.getCompanyId(), userId, account.getAccountId());
 
-		_teamLocalService.syncDefaultTeam(account.getAccountId());
+		_defaultTeamManager.sync(account);
 
 		return account;
 	}
@@ -307,7 +310,7 @@ public class AccountLocalServiceImpl extends AccountLocalServiceBaseImpl {
 
 		account = accountPersistence.update(account);
 
-		_teamLocalService.syncDefaultTeam(accountId);
+		_defaultTeamManager.sync(account);
 
 		return account;
 	}
@@ -354,6 +357,9 @@ public class AccountLocalServiceImpl extends AccountLocalServiceBaseImpl {
 			}
 		}
 	}
+
+	@Reference
+	private DefaultTeamManager _defaultTeamManager;
 
 	@Reference
 	private EntitlementLocalService _entitlementLocalService;
