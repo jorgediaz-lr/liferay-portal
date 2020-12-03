@@ -26,6 +26,8 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
 
+import java.util.Collections;
+
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ServiceScope;
@@ -46,7 +48,11 @@ public class ContactAccountViewResourceImpl
 				String contactUuid, Pagination pagination)
 		throws Exception {
 
-		Contact contact = _contactService.getContactByUuid(contactUuid);
+		Contact contact = _contactService.fetchContactByUuid(contactUuid);
+
+		if (contact == null) {
+			return Page.of(Collections.emptyList(), pagination, 0);
+		}
 
 		return _getContactAccountViewPage(contact, pagination);
 	}

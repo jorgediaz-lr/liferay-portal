@@ -66,6 +66,17 @@ public class ContactServiceImpl extends ContactServiceBaseImpl {
 		return contactLocalService.deleteContact(contactId);
 	}
 
+	public Contact fetchContactByUuid(String uuid) throws PortalException {
+		Contact contact = contactLocalService.fetchContactByUuid(uuid);
+
+		if (contact != null) {
+			_contactPermission.check(
+				getPermissionChecker(), contact, ActionKeys.VIEW);
+		}
+
+		return contact;
+	}
+
 	public List<Contact> getAccountContacts(
 			long accountId, String contactRoleType, int start, int end)
 		throws PortalException {
