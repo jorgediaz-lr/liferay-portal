@@ -55,6 +55,13 @@ public class ContactServiceUtil {
 		return getService().deleteContact(contactId);
 	}
 
+	public static com.liferay.osb.koroneiki.taproot.model.Contact
+			fetchContactByUuid(String uuid)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().fetchContactByUuid(uuid);
+	}
+
 	public static java.util.List
 		<com.liferay.osb.koroneiki.taproot.model.Contact> getAccountContacts(
 				long accountId, String contactRoleType, int start, int end)

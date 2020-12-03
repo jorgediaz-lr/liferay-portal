@@ -51,6 +51,14 @@ public class ContactServiceWrapper
 	}
 
 	@Override
+	public com.liferay.osb.koroneiki.taproot.model.Contact fetchContactByUuid(
+			String uuid)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _contactService.fetchContactByUuid(uuid);
+	}
+
+	@Override
 	public java.util.List<com.liferay.osb.koroneiki.taproot.model.Contact>
 			getAccountContacts(
 				long accountId, String contactRoleType, int start, int end)

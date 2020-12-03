@@ -134,6 +134,45 @@ public class ContactServiceHttp {
 		}
 	}
 
+	public static com.liferay.osb.koroneiki.taproot.model.Contact
+			fetchContactByUuid(HttpPrincipal httpPrincipal, String uuid)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		try {
+			MethodKey methodKey = new MethodKey(
+				ContactServiceUtil.class, "fetchContactByUuid",
+				_fetchContactByUuidParameterTypes2);
+
+			MethodHandler methodHandler = new MethodHandler(methodKey, uuid);
+
+			Object returnObj = null;
+
+			try {
+				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
+				}
+
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
+			}
+
+			return (com.liferay.osb.koroneiki.taproot.model.Contact)returnObj;
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
+
+			_log.error(systemException, systemException);
+
+			throw systemException;
+		}
+	}
+
 	public static java.util.List
 		<com.liferay.osb.koroneiki.taproot.model.Contact> getAccountContacts(
 				HttpPrincipal httpPrincipal, long accountId,
@@ -143,7 +182,7 @@ public class ContactServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				ContactServiceUtil.class, "getAccountContacts",
-				_getAccountContactsParameterTypes2);
+				_getAccountContactsParameterTypes3);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, accountId, contactRoleType, start, end);
@@ -186,7 +225,7 @@ public class ContactServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				ContactServiceUtil.class, "getAccountContacts",
-				_getAccountContactsParameterTypes3);
+				_getAccountContactsParameterTypes4);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, accountKey, contactRoleType, start, end);
@@ -227,7 +266,7 @@ public class ContactServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				ContactServiceUtil.class, "getAccountContactsCount",
-				_getAccountContactsCountParameterTypes4);
+				_getAccountContactsCountParameterTypes5);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, accountId, contactRoleType);
@@ -268,7 +307,7 @@ public class ContactServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				ContactServiceUtil.class, "getAccountContactsCount",
-				_getAccountContactsCountParameterTypes5);
+				_getAccountContactsCountParameterTypes6);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, accountKey, contactRoleType);
@@ -308,7 +347,7 @@ public class ContactServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				ContactServiceUtil.class, "getContact",
-				_getContactParameterTypes6);
+				_getContactParameterTypes7);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, contactId);
@@ -349,7 +388,7 @@ public class ContactServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				ContactServiceUtil.class, "getContactByEmailAddress",
-				_getContactByEmailAddressParameterTypes7);
+				_getContactByEmailAddressParameterTypes8);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, emailAddress);
@@ -389,7 +428,7 @@ public class ContactServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				ContactServiceUtil.class, "getContactByUuid",
-				_getContactByUuidParameterTypes8);
+				_getContactByUuidParameterTypes9);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey, uuid);
 
@@ -429,7 +468,7 @@ public class ContactServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				ContactServiceUtil.class, "getTeamContacts",
-				_getTeamContactsParameterTypes9);
+				_getTeamContactsParameterTypes10);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, teamKey, start, end);
@@ -470,7 +509,7 @@ public class ContactServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				ContactServiceUtil.class, "getTeamContactsCount",
-				_getTeamContactsCountParameterTypes10);
+				_getTeamContactsCountParameterTypes11);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey, teamKey);
 
@@ -512,7 +551,7 @@ public class ContactServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				ContactServiceUtil.class, "updateContact",
-				_updateContactParameterTypes11);
+				_updateContactParameterTypes12);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, contactId, uuid, firstName, middleName, lastName,
@@ -554,26 +593,28 @@ public class ContactServiceHttp {
 	};
 	private static final Class<?>[] _deleteContactParameterTypes1 =
 		new Class[] {long.class};
-	private static final Class<?>[] _getAccountContactsParameterTypes2 =
-		new Class[] {long.class, String.class, int.class, int.class};
+	private static final Class<?>[] _fetchContactByUuidParameterTypes2 =
+		new Class[] {String.class};
 	private static final Class<?>[] _getAccountContactsParameterTypes3 =
+		new Class[] {long.class, String.class, int.class, int.class};
+	private static final Class<?>[] _getAccountContactsParameterTypes4 =
 		new Class[] {String.class, String.class, int.class, int.class};
-	private static final Class<?>[] _getAccountContactsCountParameterTypes4 =
-		new Class[] {long.class, String.class};
 	private static final Class<?>[] _getAccountContactsCountParameterTypes5 =
+		new Class[] {long.class, String.class};
+	private static final Class<?>[] _getAccountContactsCountParameterTypes6 =
 		new Class[] {String.class, String.class};
-	private static final Class<?>[] _getContactParameterTypes6 = new Class[] {
+	private static final Class<?>[] _getContactParameterTypes7 = new Class[] {
 		long.class
 	};
-	private static final Class<?>[] _getContactByEmailAddressParameterTypes7 =
+	private static final Class<?>[] _getContactByEmailAddressParameterTypes8 =
 		new Class[] {String.class};
-	private static final Class<?>[] _getContactByUuidParameterTypes8 =
+	private static final Class<?>[] _getContactByUuidParameterTypes9 =
 		new Class[] {String.class};
-	private static final Class<?>[] _getTeamContactsParameterTypes9 =
+	private static final Class<?>[] _getTeamContactsParameterTypes10 =
 		new Class[] {String.class, int.class, int.class};
-	private static final Class<?>[] _getTeamContactsCountParameterTypes10 =
+	private static final Class<?>[] _getTeamContactsCountParameterTypes11 =
 		new Class[] {String.class};
-	private static final Class<?>[] _updateContactParameterTypes11 =
+	private static final Class<?>[] _updateContactParameterTypes12 =
 		new Class[] {
 			long.class, String.class, String.class, String.class, String.class,
 			String.class, String.class, boolean.class

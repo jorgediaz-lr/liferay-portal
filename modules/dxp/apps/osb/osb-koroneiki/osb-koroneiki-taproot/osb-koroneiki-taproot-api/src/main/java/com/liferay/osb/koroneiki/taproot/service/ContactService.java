@@ -60,6 +60,9 @@ public interface ContactService extends BaseService {
 	public Contact deleteContact(long contactId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Contact fetchContactByUuid(String uuid) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<Contact> getAccountContacts(
 			long accountId, String contactRoleType, int start, int end)
 		throws PortalException;

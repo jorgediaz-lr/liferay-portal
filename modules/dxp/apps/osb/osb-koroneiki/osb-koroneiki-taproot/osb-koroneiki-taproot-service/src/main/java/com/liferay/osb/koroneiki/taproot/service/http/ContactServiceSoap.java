@@ -102,6 +102,24 @@ public class ContactServiceSoap {
 		}
 	}
 
+	public static com.liferay.osb.koroneiki.taproot.model.ContactSoap
+			fetchContactByUuid(String uuid)
+		throws RemoteException {
+
+		try {
+			com.liferay.osb.koroneiki.taproot.model.Contact returnValue =
+				ContactServiceUtil.fetchContactByUuid(uuid);
+
+			return com.liferay.osb.koroneiki.taproot.model.ContactSoap.
+				toSoapModel(returnValue);
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+
+			throw new RemoteException(exception.getMessage());
+		}
+	}
+
 	public static com.liferay.osb.koroneiki.taproot.model.ContactSoap[]
 			getAccountContacts(
 				long accountId, String contactRoleType, int start, int end)
