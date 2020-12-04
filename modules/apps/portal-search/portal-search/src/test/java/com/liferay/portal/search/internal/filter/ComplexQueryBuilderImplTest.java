@@ -21,6 +21,7 @@ import com.liferay.portal.search.internal.query.QueriesImpl;
 import com.liferay.portal.search.query.BooleanQuery;
 import com.liferay.portal.search.query.FuzzyQuery;
 import com.liferay.portal.search.query.MatchQuery;
+import com.liferay.portal.search.query.NestedQuery;
 import com.liferay.portal.search.query.Queries;
 import com.liferay.portal.search.query.Query;
 import com.liferay.portal.search.script.Scripts;
@@ -64,6 +65,16 @@ public class ComplexQueryBuilderImplTest {
 		Query query = _getQuery(complexQueryBuilderImpl, "match", "match-me");
 
 		Assert.assertTrue(query instanceof MatchQuery);
+	}
+
+	@Test
+	public void testFilterNestedQuery() {
+		ComplexQueryBuilderImpl complexQueryBuilderImpl =
+			new ComplexQueryBuilderImpl(_queries, _scripts);
+
+		Query query = _getQuery(complexQueryBuilderImpl, "nested", "path");
+
+		Assert.assertTrue(query instanceof NestedQuery);
 	}
 
 	@Test
