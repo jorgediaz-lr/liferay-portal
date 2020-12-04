@@ -11,9 +11,9 @@
 
 import ClayTable from '@clayui/table';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {useState} from 'react';
 
-function Subscriptions() {
+function Subscriptions({instanceSizes = []}) {
 	return (
 		<ClayTable>
 			<ClayTable.Head>
@@ -46,24 +46,72 @@ function Subscriptions() {
 				</ClayTable.Row>
 			</ClayTable.Head>
 			<ClayTable.Body>
-				<Subscription />
+				<Subscription instanceSizes={instanceSizes} />
 			</ClayTable.Body>
 		</ClayTable>
 	);
 }
 
-function Subscription() {
+Subscriptions.propTypes = {
+	instanceSizes: PropTypes.arrayOf(PropTypes.string)
+};
+
+function Subscription({instanceSizes}) {
+	const [instanceSize, setInstanceSize] = useState('');
+
+	function handleInstanceSizeChange(event) {
+		setInstanceSize(event.currentTarget.value);
+	}
+
+	function handleDeleteSubscription() {
+		// TODO
+	}
+
 	return (
-		<ClayTable.Row>
+		<ClayTable.Row id={1 /* TODO */}>
 			<ClayTable.Cell>{'product name'}</ClayTable.Cell>
 			<ClayTable.Cell>{'input'}</ClayTable.Cell>
 			<ClayTable.Cell>{'input num'}</ClayTable.Cell>
 			<ClayTable.Cell>{'checkbox'}</ClayTable.Cell>
 			<ClayTable.Cell>{'date field'}</ClayTable.Cell>
 			<ClayTable.Cell>{'date'}</ClayTable.Cell>
-			<ClayTable.Cell>{'dropdown'}</ClayTable.Cell>
+			<ClayTable.Cell>
+				<label className="form-control-label" htmlFor="instanceSize">
+					<select
+						className="form-control form-control-sm"
+						disabled={instanceSizes.length === 0}
+						id="instanceSize"
+						onChange={handleInstanceSizeChange}
+						value={instanceSize}
+					>
+						{instanceSizes.map(size => (
+							<option key={size} value={size}>
+								{size}
+							</option>
+						))}
+					</select>
+				</label>
+			</ClayTable.Cell>
 			<ClayTable.Cell>{'account name'}</ClayTable.Cell>
-			<ClayTable.Cell>{'x btn'}</ClayTable.Cell>
+			<ClayTable.Cell>
+				<button
+					className="btn btn-icon btn-sm"
+					onClick={handleDeleteSubscription}
+					role="button"
+					title={Liferay.Language.get('delete')}
+					type="button"
+				>
+					<svg
+						aria-label={Liferay.Language.get(
+							'delete-subscription-icon'
+						)}
+						className="delete-icon"
+						role="img"
+					>
+						<use xlinkHref="#delete-icon" />
+					</svg>
+				</button>
+			</ClayTable.Cell>
 		</ClayTable.Row>
 	);
 }

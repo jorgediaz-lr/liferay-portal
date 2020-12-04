@@ -14,7 +14,7 @@ import React from 'react';
 
 import Subscriptions from './Subscriptions';
 
-function AddSubscriptions(props) {
+function AddSubscriptions({selectProductsURL, sizing}) {
 	return (
 		<div className="subscriptions-container">
 			<div className="subscriptions-header">
@@ -25,7 +25,7 @@ function AddSubscriptions(props) {
 			</div>
 
 			<div className="subscriptions">
-				<Subscriptions />
+				<Subscriptions instanceSizes={sizing} />
 			</div>
 
 			<div className="button-holder">
@@ -40,5 +40,10 @@ function AddSubscriptions(props) {
 		</div>
 	);
 }
+
+AddSubscriptions.propTypes = {
+	selectProductsURL: PropTypes.string,
+	sizing: PropTypes.arrayOf(PropTypes.string)
+};
 
 export default AddSubscriptions;

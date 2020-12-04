@@ -26,4 +26,10 @@ describe('Subscriptions', () => {
 
 		expect(container).toBeTruthy();
 	});
+
+	it('displays a delete subscription icon', () => {
+		const {getByLabelText} = renderSubscriptions();
+
+		expect(getByLabelText('delete-subscription-icon')).toBeTruthy();
+	});
 });

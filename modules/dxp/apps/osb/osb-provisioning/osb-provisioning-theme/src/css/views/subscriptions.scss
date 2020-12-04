@@ -1,6 +1,14 @@
 .subscriptions-container {
 	padding: 0 $spacing-default;
 
+	.subscriptions {
+		.btn-icon svg {
+			fill: $dark-l3;
+			height: $spacing-md;
+			width: $spacing-md;
+		}
+	}
+
 	.subscriptions-header {
 		display: flex;
 		justify-content: space-between;
