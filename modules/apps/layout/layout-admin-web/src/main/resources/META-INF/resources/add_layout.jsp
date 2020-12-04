@@ -93,7 +93,7 @@ List<SiteNavigationMenu> autoSiteNavigationMenus = layoutsAdminDisplayContext.ge
 		</liferay-frontend:edit-form-body>
 
 		<liferay-frontend:edit-form-footer>
-			<aui:button type="submit" value="add" />
+			<aui:button id="addButton" type="submit" value="add" />
 
 			<aui:button type="cancel" value="cancel" />
 		</liferay-frontend:edit-form-footer>
@@ -102,9 +102,17 @@ List<SiteNavigationMenu> autoSiteNavigationMenus = layoutsAdminDisplayContext.ge
 
 <aui:script use="liferay-alert">
 	var form = document.<portlet:namespace />fm;
+	var addButton = document.getElementById('<portlet:namespace />addButton');
 
 	form.addEventListener('submit', function(event) {
+		event.preventDefault();
 		event.stopPropagation();
+
+		if (addButton.disabled) {
+			return;
+		}
+
+		addButton.disabled = true;
 
 		var formData = new FormData();
 
@@ -160,6 +168,8 @@ List<SiteNavigationMenu> autoSiteNavigationMenus = layoutsAdminDisplayContext.ge
 						message: response.errorMessage,
 						type: 'danger'
 					}).render();
+
+					addButton.disabled = false;
 				}
 			});
 	});
