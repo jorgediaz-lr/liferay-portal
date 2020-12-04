@@ -256,7 +256,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			account.setTier(Account.Tier.T4);
 		}
 
-		account.setAssignedTeams(_parsePartnerAccount(jsonObject));
+		account.setAssignedTeams(parsePartnerAccount(jsonObject));
 
 		return _accountWebService.addAccount(
 			StringPool.BLANK, StringPool.BLANK, account);
@@ -1229,6 +1229,82 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		};
 	}
 
+	protected Team[] parsePartnerAccount(JSONObject jsonObject)
+		throws Exception {
+
+		TeamRole partnerTeamRole = _teamRoleWebService.getTeamRole(
+			TeamRole.Type.ACCOUNT.toString(), TeamRoleConstants.NAME_PARTNER);
+
+		JSONObject partnerAccountJSONObject = jsonObject.getJSONObject(
+			"_partnerAccount");
+
+		if ((partnerAccountJSONObject == null) || (partnerTeamRole == null)) {
+			return new Team[0];
+		}
+
+		String dossieraAccountKey = partnerAccountJSONObject.getString(
+			"_dossieraAccountKey");
+
+		if (Validator.isNull(dossieraAccountKey)) {
+			return new Team[0];
+		}
+
+		List<Account> partnerAccounts = _accountWebService.getAccounts(
+			ExternalLinkDomain.DOSSIERA,
+			ExternalLinkEntityName.DOSSIERA_ACCOUNT, dossieraAccountKey, 1, 1);
+
+		if (partnerAccounts.isEmpty()) {
+			return new Team[0];
+		}
+
+		Account partnerAccount = partnerAccounts.get(0);
+
+		String filterString = StringBundler.concat(
+			"accountKey eq '", partnerAccount.getKey(), "' and system eq true");
+
+		List<Team> partnerDefaultTeams = _teamWebService.search(
+			StringPool.BLANK, filterString, 1, 1, StringPool.BLANK);
+
+		if (partnerDefaultTeams.isEmpty()) {
+			return new Team[0];
+		}
+
+		Team partnerDefaultTeam = partnerDefaultTeams.get(0);
+
+		partnerDefaultTeam.setTeamRoles(new TeamRole[] {partnerTeamRole});
+
+		boolean partnerFirstLineSupport = jsonObject.getBoolean(
+			"_partnerFirstLineSupport");
+
+		TeamRole flsTeamRole = _teamRoleWebService.getTeamRole(
+			TeamRole.Type.ACCOUNT.toString(),
+			TeamRoleConstants.NAME_FIRST_LINE_SUPPORT);
+
+		if ((flsTeamRole == null) || !partnerFirstLineSupport) {
+			return new Team[] {partnerDefaultTeam};
+		}
+
+		filterString = StringBundler.concat(
+			"accountKey eq '", partnerAccount.getKey(),
+			"' and contains(name, 'FLS')");
+
+		List<Team> partnerFLSTeams = _teamWebService.search(
+			StringPool.BLANK, filterString, 1, 1, StringPool.BLANK);
+
+		if (!partnerFLSTeams.isEmpty()) {
+			Team partnerFLSTeam = partnerFLSTeams.get(0);
+
+			partnerFLSTeam.setTeamRoles(new TeamRole[] {flsTeamRole});
+
+			return new Team[] {partnerDefaultTeam, partnerFLSTeam};
+		}
+
+		partnerDefaultTeam.setTeamRoles(
+			new TeamRole[] {partnerTeamRole, flsTeamRole});
+
+		return new Team[] {partnerDefaultTeam};
+	}
+
 	protected List<ProductPurchase> parseProductPurchases(JSONObject jsonObject)
 		throws Exception {
 
@@ -1602,82 +1678,6 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		List<String> warningMessages = _warningMessagesThreadLocal.get();
 
 		warningMessages.add(s);
-	}
-
-	private Team[] _parsePartnerAccount(JSONObject jsonObject)
-		throws Exception {
-
-		TeamRole partnerTeamRole = _teamRoleWebService.getTeamRole(
-			TeamRole.Type.ACCOUNT.toString(), TeamRoleConstants.NAME_PARTNER);
-
-		JSONObject partnerAccountJSONObject = jsonObject.getJSONObject(
-			"_partnerAccount");
-
-		if ((partnerAccountJSONObject == null) || (partnerTeamRole == null)) {
-			return new Team[0];
-		}
-
-		String dossieraAccountKey = partnerAccountJSONObject.getString(
-			"_dossieraAccountKey");
-
-		if (Validator.isNull(dossieraAccountKey)) {
-			return new Team[0];
-		}
-
-		List<Account> partnerAccounts = _accountWebService.getAccounts(
-			ExternalLinkDomain.DOSSIERA,
-			ExternalLinkEntityName.DOSSIERA_ACCOUNT, dossieraAccountKey, 1, 1);
-
-		if (partnerAccounts.isEmpty()) {
-			return new Team[0];
-		}
-
-		Account partnerAccount = partnerAccounts.get(0);
-
-		String filterString = StringBundler.concat(
-			"accountKey eq '", partnerAccount.getKey(), "' and system eq true");
-
-		List<Team> partnerDefaultTeams = _teamWebService.search(
-			StringPool.BLANK, filterString, 1, 1, StringPool.BLANK);
-
-		if (partnerDefaultTeams.isEmpty()) {
-			return new Team[0];
-		}
-
-		Team partnerDefaultTeam = partnerDefaultTeams.get(0);
-
-		partnerDefaultTeam.setTeamRoles(new TeamRole[] {partnerTeamRole});
-
-		boolean partnerFirstLineSupport = jsonObject.getBoolean(
-			"_partnerFirstLineSupport");
-
-		TeamRole flsTeamRole = _teamRoleWebService.getTeamRole(
-			TeamRole.Type.ACCOUNT.toString(),
-			TeamRoleConstants.NAME_FIRST_LINE_SUPPORT);
-
-		if ((flsTeamRole == null) || !partnerFirstLineSupport) {
-			return new Team[] {partnerDefaultTeam};
-		}
-
-		filterString = StringBundler.concat(
-			"accountKey eq '", partnerAccount.getKey(),
-			"' and contains(name, 'FLS')");
-
-		List<Team> partnerFLSTeams = _teamWebService.search(
-			StringPool.BLANK, filterString, 1, 1, StringPool.BLANK);
-
-		if (!partnerFLSTeams.isEmpty()) {
-			Team partnerFLSTeam = partnerFLSTeams.get(0);
-
-			partnerFLSTeam.setTeamRoles(new TeamRole[] {flsTeamRole});
-
-			return new Team[] {partnerDefaultTeam, partnerFLSTeam};
-		}
-
-		partnerDefaultTeam.setTeamRoles(
-			new TeamRole[] {partnerTeamRole, flsTeamRole});
-
-		return new Team[] {partnerDefaultTeam};
 	}
 
 	private static final String[] _PRODUCT_FAMILY_TOKENS = {"E", "P", "S"};
