@@ -260,10 +260,13 @@ public class CommerceDataIntegrationProcessLocalServiceImpl
 			return;
 		}
 
+		long existingCommerceDataIntegrationProcessId =
+			commerceDataIntegrationProcess.
+				getCommerceDataIntegrationProcessId();
+
 		if ((commerceDataIntegrationProcessId > 0) &&
-			(commerceDataIntegrationProcess.
-				getCommerceDataIntegrationProcessId() ==
-					commerceDataIntegrationProcessId)) {
+			(existingCommerceDataIntegrationProcessId ==
+				commerceDataIntegrationProcessId)) {
 
 			return;
 		}
