@@ -21,7 +21,11 @@ function Subscriptions({instanceSizes = []}) {
 					<ClayTable.Cell headingCell>
 						{Liferay.Language.get('product')}
 					</ClayTable.Cell>
-					<ClayTable.Cell expanded headingCell>
+					<ClayTable.Cell
+						className="field-required"
+						expanded
+						headingCell
+					>
 						{Liferay.Language.get('salesforce-opportunity-key')}
 					</ClayTable.Cell>
 					<ClayTable.Cell headingCell>
@@ -58,9 +62,21 @@ Subscriptions.propTypes = {
 
 function Subscription({instanceSizes}) {
 	const [instanceSize, setInstanceSize] = useState('');
+	const [purchased, setPurchased] = useState('');
+	const [salesForceOpportunityKey, setSalesForceOpportunityKey] = useState(
+		''
+	);
 
 	function handleInstanceSizeChange(event) {
 		setInstanceSize(event.currentTarget.value);
+	}
+
+	function handlePurchasedChange(event) {
+		setPurchased(event.currentTarget.value);
+	}
+
+	function handleSalesForceOpportunityKeyChange(event) {
+		setSalesForceOpportunityKey(event.currentTarget.value);
 	}
 
 	function handleDeleteSubscription() {
@@ -70,8 +86,32 @@ function Subscription({instanceSizes}) {
 	return (
 		<ClayTable.Row id={1 /* TODO */}>
 			<ClayTable.Cell>{'product name'}</ClayTable.Cell>
-			<ClayTable.Cell>{'input'}</ClayTable.Cell>
-			<ClayTable.Cell>{'input num'}</ClayTable.Cell>
+			<ClayTable.Cell>
+				<label
+					className="form-control-label"
+					htmlFor="salesForceOpportunityKey"
+				>
+					<input
+						className="form-control form-control-sm"
+						id="salesForceOpportunityKey"
+						onChange={handleSalesForceOpportunityKeyChange}
+						type="text"
+						value={salesForceOpportunityKey}
+					/>
+				</label>
+			</ClayTable.Cell>
+			<ClayTable.Cell>
+				<label className="form-control-label" htmlFor="purchased">
+					<input
+						className="form-control form-control-sm"
+						id="purchased"
+						min={0}
+						onChange={handlePurchasedChange}
+						type="number"
+						value={purchased}
+					/>
+				</label>
+			</ClayTable.Cell>
 			<ClayTable.Cell>{'checkbox'}</ClayTable.Cell>
 			<ClayTable.Cell>{'date field'}</ClayTable.Cell>
 			<ClayTable.Cell>{'date'}</ClayTable.Cell>

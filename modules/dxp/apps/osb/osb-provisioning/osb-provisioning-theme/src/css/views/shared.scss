@@ -208,6 +208,13 @@
 	}
 }
 
+.field-required {
+	&:after {
+		content: ' *';
+		color: $danger;
+	}
+}
+
 .full-width {
 	.management-bar .container-fluid-max-xl,
 	.subnav-tbar .container-fluid-max-xl {
