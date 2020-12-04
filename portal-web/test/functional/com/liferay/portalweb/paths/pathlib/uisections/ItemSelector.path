@@ -131,7 +131,7 @@
 <!--SELECT_IMAGE_PREVIEW-->
 <tr>
 	<td>SELECT_IMAGE_PREVIEW</td>
-	<td>//div[contains(@class,'item-selector-preview')]//img</td>
+	<td>//div[contains(@class,'image-viewer-base-image-list')]//img</td>
 	<td></td>
 </tr>
 <tr>
