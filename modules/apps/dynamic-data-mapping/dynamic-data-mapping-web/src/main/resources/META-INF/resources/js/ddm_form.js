@@ -4027,7 +4027,7 @@ AUI.add(
 				_updateNestedLocalizationMaps(fields) {
 					var instance = this;
 
-					fields.forEach((field) => {
+					fields.forEach(field => {
 						var nestedFields = field.get('fields');
 
 						field.updateLocalizationMap(field.get('displayLocale'));
