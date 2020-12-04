@@ -173,9 +173,12 @@ public class AccountSearchDisplayContext {
 		data.put(
 			"selectFirstLineSupportURL", selectFirstLineSupportURL.toString());
 
-		data.put(
-			"subscriptionStateNames",
-			ListUtil.fromArray(ProductPurchaseConstants.STATES));
+		List<String> productPurchaseStates = ListUtil.fromArray(
+			ProductPurchaseConstants.STATES);
+
+		productPurchaseStates.add(ProductPurchaseConstants.STATE_NOT_AVAILABLE);
+
+		data.put("subscriptionStateNames", productPurchaseStates);
 
 		List<String> tierNames = new ArrayList<>();
 

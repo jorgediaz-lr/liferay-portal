@@ -27,6 +27,8 @@ public class ProductPurchaseConstants {
 
 	public static final String STATE_EXPIRED = "Expired";
 
+	public static final String STATE_NOT_AVAILABLE = "N/A";
+
 	public static final String STATE_UNACTIVATED = "Unactivated";
 
 	public static final String[] STATES = {
