@@ -42,11 +42,11 @@ public class SortDisplayBuilder {
 
 		sortDisplayContext.setAnySelected(
 			isAnySelected(sortTermDisplayContexts));
+
 		sortDisplayContext.setParameterName(_parameterName);
 		sortDisplayContext.setParameterValue(getParameterValue());
 		sortDisplayContext.setRenderNothing(isRenderNothing());
-		sortDisplayContext.setSortTermDisplayContexts(
-			sortTermDisplayContexts);
+		sortDisplayContext.setSortTermDisplayContexts(sortTermDisplayContexts);
 
 		return sortDisplayContext;
 	}
