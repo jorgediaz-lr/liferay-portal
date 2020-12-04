@@ -79,7 +79,6 @@ public class TeamModelDocumentContributor
 		document.addKeyword("accountKey", account.getAccountKey());
 
 		document.addKeyword("system", team.isSystem());
-
 		document.addKeyword("teamKey", team.getTeamKey());
 
 		document.addTextSortable(Field.NAME, team.getName());
