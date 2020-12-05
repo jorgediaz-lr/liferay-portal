@@ -101,8 +101,9 @@ List<SiteNavigationMenu> autoSiteNavigationMenus = layoutsAdminDisplayContext.ge
 </div>
 
 <aui:script use="liferay-alert">
-	var form = document.<portlet:namespace />fm;
 	var addButton = document.getElementById('<portlet:namespace />addButton');
+
+	var form = document.<portlet:namespace />fm;
 
 	form.addEventListener('submit', function(event) {
 		event.preventDefault();
