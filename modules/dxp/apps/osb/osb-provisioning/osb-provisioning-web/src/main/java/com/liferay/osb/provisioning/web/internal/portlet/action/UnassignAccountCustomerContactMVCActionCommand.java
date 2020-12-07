@@ -73,35 +73,22 @@ public class UnassignAccountCustomerContactMVCActionCommand
 			ThemeDisplay themeDisplay =
 				(ThemeDisplay)actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
 
-			User user = themeDisplay.getUser();
-
 			String accountKey = ParamUtil.getString(
 				actionRequest, "accountKey");
 			String emailAddress = ParamUtil.getString(
 				actionRequest, "emailAddress");
 
-			if (_getDeveloperCount(accountKey) > 1) {
-				_accountWebService.unassignCustomerContact(
-					user.getFullName(), user.getUuid(), accountKey,
-					emailAddress);
-			}
-			else {
-				List<ZendeskTicket> zendeskTickets = _getZendeskTickets(
-					accountKey, emailAddress);
+			_validateZendeskTickets(accountKey, emailAddress);
 
-				if ((zendeskTickets == null) || zendeskTickets.isEmpty()) {
-					_accountWebService.unassignCustomerContact(
-						user.getFullName(), user.getUuid(), accountKey,
-						emailAddress);
-				}
-				else {
-					SessionErrors.add(
-						actionRequest, ContactRequiredException.class);
-				}
-			}
+			User user = themeDisplay.getUser();
+
+			_accountWebService.unassignCustomerContact(
+				user.getFullName(), user.getUuid(), accountKey, emailAddress);
 		}
 		catch (Exception exception) {
-			_log.error(exception, exception);
+			if (!(exception instanceof ContactRequiredException)) {
+				_log.error(exception, exception);
+			}
 
 			SessionErrors.add(actionRequest, exception.getClass(), exception);
 		}
@@ -128,15 +115,18 @@ public class UnassignAccountCustomerContactMVCActionCommand
 		return _contactWebService.searchCount(StringPool.BLANK, sb.toString());
 	}
 
-	private List<ZendeskTicket> _getZendeskTickets(
-			String accountKey, String emailAddress)
+	private void _validateZendeskTickets(String accountKey, String emailAddress)
 		throws Exception {
+
+		if (_getDeveloperCount(accountKey) > 1) {
+			return;
+		}
 
 		AccountEntry accountEntry = _accountEntryWebService.fetchAccountEntry(
 			accountKey);
 
 		if (accountEntry == null) {
-			return null;
+			return;
 		}
 
 		ZendeskOrganization zendeskOrganization =
@@ -147,7 +137,7 @@ public class UnassignAccountCustomerContactMVCActionCommand
 			_zendeskUserWebService.getZendeskUserByEmailAddress(emailAddress);
 
 		if ((zendeskOrganization == null) || (zendeskUser == null)) {
-			return null;
+			return;
 		}
 
 		Set<String> criteria = new HashSet<>();
@@ -157,7 +147,12 @@ public class UnassignAccountCustomerContactMVCActionCommand
 		criteria.add("requester:" + zendeskUser.getZendeskUserId());
 		criteria.add("status<closed");
 
-		return _zendeskTicketWebService.getZendeskTickets(criteria);
+		List<ZendeskTicket> zendeskTickets =
+			_zendeskTicketWebService.getZendeskTickets(criteria);
+
+		if (!zendeskTickets.isEmpty()) {
+			throw new ContactRequiredException();
+		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
