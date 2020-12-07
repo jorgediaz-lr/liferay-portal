@@ -52,6 +52,7 @@ import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Address;
@@ -60,7 +61,9 @@ import com.liferay.portal.kernel.model.ModelHintsUtil;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.StackTraceUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SubscriptionSender;
@@ -78,7 +81,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.TreeMap;
 
 import org.osgi.service.component.annotations.Activate;
@@ -1425,10 +1430,14 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 				"email_analytics_cloud_welcome_body_" +
 					contact.getLanguageId() + ".tmpl",
 				"email_analytics_cloud_welcome_body.tmpl");
-			String subject = _getEmailTemplate(
-				"email_analytics_cloud_welcome_subject_" +
-					contact.getLanguageId() + ".tmpl",
-				"email_analytics_cloud_welcome_subject.tmpl");
+
+			Locale locale = LocaleUtil.fromLanguageId(contact.getLanguageId());
+
+			ResourceBundle resourceBundle = ResourceBundleUtil.getBundle(
+				"content.Language", locale, getClass());
+
+			String subject = LanguageUtil.get(
+				resourceBundle, "you-have-been-invited-to-analytics-cloud");
 
 			SubscriptionSender subscriptionSender = new SubscriptionSender();
 
@@ -1452,34 +1461,41 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 	protected void sendUserCreationEmail(
 		Contact contact, Account account, boolean analyticsCloud) {
 
-		StringBundler sb = new StringBundler(2);
-
-		if (analyticsCloud) {
-			sb.append("Analytics Cloud, ");
-		}
-
-		sb.append(
-			"Customer Portal, all of our downloads, and our support system");
-
-		String provisioningEmailAddress = getProvisioningEmailAddress(
-			account.getRegionAsString());
-
 		String body = _getEmailTemplate(
 			"email_provisioning_create_account_body_" +
 				contact.getLanguageId() + ".tmpl",
 			"email_provisioning_create_account_body.tmpl");
-		String subject = _getEmailTemplate(
-			"email_provisioning_create_account_subject_" +
-				contact.getLanguageId() + ".tmpl",
-			"email_provisioning_create_account_subject.tmpl");
+
+		Locale locale = LocaleUtil.fromLanguageId(contact.getLanguageId());
+
+		String provisioningEmailAddress = getProvisioningEmailAddress(
+			account.getRegionAsString());
+
+		ResourceBundle resourceBundle = ResourceBundleUtil.getBundle(
+			"content.Language", locale, getClass());
+
+		String subject = LanguageUtil.get(
+			resourceBundle, "welcome-to-liferay-support");
+
+		StringBundler sb = new StringBundler(2);
+
+		if (analyticsCloud) {
+			sb.append("analytics-cloud-");
+		}
+
+		sb.append("help-center-all-of-our-downloads-and-our-support-system");
+
+		String subscriptionServices = LanguageUtil.get(
+			resourceBundle, sb.toString());
 
 		SubscriptionSender subscriptionSender = new SubscriptionSender();
 
 		subscriptionSender.setBody(body);
 		subscriptionSender.setCompanyId(_portal.getDefaultCompanyId());
 		subscriptionSender.setContextAttributes(
+			"[$TO_NAME$]", getContactFullName(contact),
 			"[$ACCOUNT_ENTRY_NAME$]", account.getName(),
-			"[$SUBSCRIPTION_SERVICES$]", sb.toString());
+			"[$SUBSCRIPTION_SERVICES$]", subscriptionServices);
 		subscriptionSender.setFrom(
 			provisioningEmailAddress, "Liferay Provisioning");
 		subscriptionSender.setHtmlFormat(true);
