@@ -14,17 +14,23 @@
 
 package com.liferay.osb.provisioning.web.internal.portlet.action;
 
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.customer.model.AccountEntry;
 import com.liferay.osb.provisioning.customer.web.service.AccountEntryWebService;
 import com.liferay.osb.provisioning.exception.ContactRequiredException;
+import com.liferay.osb.provisioning.koroneiki.constants.ContactRoleConstants;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
+import com.liferay.osb.provisioning.koroneiki.web.service.ContactRoleWebService;
+import com.liferay.osb.provisioning.koroneiki.web.service.ContactWebService;
 import com.liferay.osb.provisioning.zendesk.model.ZendeskOrganization;
 import com.liferay.osb.provisioning.zendesk.model.ZendeskTicket;
 import com.liferay.osb.provisioning.zendesk.model.ZendeskUser;
 import com.liferay.osb.provisioning.zendesk.web.service.ZendeskOrganizationWebService;
 import com.liferay.osb.provisioning.zendesk.web.service.ZendeskTicketWebService;
 import com.liferay.osb.provisioning.zendesk.web.service.ZendeskUserWebService;
+import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
@@ -64,29 +70,34 @@ public class UnassignAccountCustomerContactMVCActionCommand
 		throws Exception {
 
 		try {
+			ThemeDisplay themeDisplay =
+				(ThemeDisplay)actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
+
+			User user = themeDisplay.getUser();
+
 			String accountKey = ParamUtil.getString(
 				actionRequest, "accountKey");
-
 			String emailAddress = ParamUtil.getString(
 				actionRequest, "emailAddress");
 
-			List<ZendeskTicket> zendeskTickets = _getZendeskTickets(
-				accountKey, emailAddress);
-
-			if ((zendeskTickets == null) || zendeskTickets.isEmpty()) {
-				ThemeDisplay themeDisplay =
-					(ThemeDisplay)actionRequest.getAttribute(
-						WebKeys.THEME_DISPLAY);
-
-				User user = themeDisplay.getUser();
-
+			if (_getDeveloperCount(accountKey) > 1) {
 				_accountWebService.unassignCustomerContact(
 					user.getFullName(), user.getUuid(), accountKey,
 					emailAddress);
 			}
 			else {
-				SessionErrors.add(
-					actionRequest, ContactRequiredException.class);
+				List<ZendeskTicket> zendeskTickets = _getZendeskTickets(
+					accountKey, emailAddress);
+
+				if ((zendeskTickets == null) || zendeskTickets.isEmpty()) {
+					_accountWebService.unassignCustomerContact(
+						user.getFullName(), user.getUuid(), accountKey,
+						emailAddress);
+				}
+				else {
+					SessionErrors.add(
+						actionRequest, ContactRequiredException.class);
+				}
 			}
 		}
 		catch (Exception exception) {
@@ -96,6 +107,25 @@ public class UnassignAccountCustomerContactMVCActionCommand
 		}
 
 		sendRedirect(actionRequest, actionResponse);
+	}
+
+	private long _getDeveloperCount(String accountKey) throws Exception {
+		StringBundler sb = new StringBundler(5);
+
+		sb.append("accountKeysContactRoleKeys/any(s:s eq '");
+		sb.append(accountKey);
+		sb.append(StringPool.UNDERLINE);
+
+		ContactRole supportDeveloperContactRole =
+			_contactRoleWebService.getContactRole(
+				ContactRole.Type.ACCOUNT_CUSTOMER.toString(),
+				ContactRoleConstants.NAME_SUPPORT_DEVELOPER);
+
+		sb.append(supportDeveloperContactRole.getKey());
+
+		sb.append("')");
+
+		return _contactWebService.searchCount(StringPool.BLANK, sb.toString());
 	}
 
 	private List<ZendeskTicket> _getZendeskTickets(
@@ -138,6 +168,12 @@ public class UnassignAccountCustomerContactMVCActionCommand
 
 	@Reference
 	private AccountWebService _accountWebService;
+
+	@Reference
+	private ContactRoleWebService _contactRoleWebService;
+
+	@Reference
+	private ContactWebService _contactWebService;
 
 	@Reference
 	private ZendeskOrganizationWebService _zendeskOrganizationWebService;
