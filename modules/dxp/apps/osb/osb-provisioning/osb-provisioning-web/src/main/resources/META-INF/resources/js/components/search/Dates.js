@@ -86,7 +86,6 @@ function DatePicker({id, inputName}) {
 
 	return (
 		<ClayDatePicker
-			className="form-control-sm"
 			id={id}
 			inputName={inputName}
 			onValueChange={setValue}

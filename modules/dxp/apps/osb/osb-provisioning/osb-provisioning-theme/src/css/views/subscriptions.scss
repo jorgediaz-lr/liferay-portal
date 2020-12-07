@@ -7,6 +7,13 @@
 			height: $spacing-md;
 			width: $spacing-md;
 		}
+
+		.date-picker {
+			input {
+				font-size: $input-font-size-sm;
+				height: $input-height-sm;
+			}
+		}
 	}
 
 	.subscriptions-header {
