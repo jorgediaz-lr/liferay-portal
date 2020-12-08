@@ -14,7 +14,7 @@ import React from 'react';
 
 import Subscriptions from './Subscriptions';
 
-function AddSubscriptions({selectProductsURL, sizing}) {
+function AddSubscriptions({productPurchases, selectProductsURL, sizing}) {
 	return (
 		<div className="subscriptions-container">
 			<div className="subscriptions-header">
@@ -42,6 +42,14 @@ function AddSubscriptions({selectProductsURL, sizing}) {
 }
 
 AddSubscriptions.propTypes = {
+	productPurchases: PropTypes.arrayOf(
+		PropTypes.shape({
+			endDate: PropTypes.string,
+			productKey: PropTypes.string,
+			productName: PropTypes.string,
+			startDate: PropTypes.string
+		})
+	),
 	selectProductsURL: PropTypes.string,
 	sizing: PropTypes.arrayOf(PropTypes.string)
 };

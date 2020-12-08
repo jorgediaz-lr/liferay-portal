@@ -70,6 +70,8 @@ public class EditProductPurchasesDisplayContext
 	public Map<String, Object> getEditProductPurchasesData() throws Exception {
 		Map<String, Object> data = new HashMap<>();
 
+		data.put("accountName", account.getName());
+
 		String redirect = ParamUtil.getString(httpServletRequest, "redirect");
 
 		if (Validator.isNull(redirect)) {
@@ -203,21 +205,15 @@ public class EditProductPurchasesDisplayContext
 		for (Product product : _products) {
 			productPurchasesJSONArray.put(
 				JSONUtil.put(
-					"accountName", account.getName()
-				).put(
 					"endDate", _getDate(null, "endDate")
 				).put(
 					"gracePeriodEndDate", _getDate(null, "gracePeriodEndDate")
 				).put(
+					"productKey", product.getKey()
+				).put(
 					"productName", product.getName()
 				).put(
-					"quantity", 1
-				).put(
-					"sizing", 1
-				).put(
-					"startDay", _getDate(null, "startDay")
-				).put(
-					"status", ProductPurchase.Status.APPROVED.toString()
+					"startDate", _getDate(null, "startDate")
 				));
 		}
 
@@ -263,8 +259,6 @@ public class EditProductPurchasesDisplayContext
 
 			productPurchasesJSONArray.put(
 				JSONUtil.put(
-					"accountName", account.getName()
-				).put(
 					"endDate",
 					_getDate(productPurchase.getOriginalEndDate(), "endDate")
 				).put(
@@ -284,7 +278,7 @@ public class EditProductPurchasesDisplayContext
 				).put(
 					"sizing", sizing
 				).put(
-					"startDay",
+					"startDate",
 					_getDate(productPurchase.getStartDate(), "startDate")
 				).put(
 					"status", productPurchase.getStatus()

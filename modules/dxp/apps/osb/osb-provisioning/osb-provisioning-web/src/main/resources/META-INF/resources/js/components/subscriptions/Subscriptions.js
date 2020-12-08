@@ -14,7 +14,7 @@ import ClayTable from '@clayui/table';
 import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 
-function Subscriptions({instanceSizes = []}) {
+function Subscriptions({instanceSizes = [], productPurchases}) {
 	return (
 		<ClayTable>
 			<ClayTable.Head>
@@ -58,14 +58,22 @@ function Subscriptions({instanceSizes = []}) {
 }
 
 Subscriptions.propTypes = {
-	instanceSizes: PropTypes.arrayOf(PropTypes.string)
+	instanceSizes: PropTypes.arrayOf(PropTypes.string),
+	productPurchases: PropTypes.arrayOf(
+		PropTypes.shape({
+			endDate: PropTypes.string,
+			productKey: PropTypes.string,
+			productName: PropTypes.string,
+			startDate: PropTypes.string
+		})
+	)
 };
 
 function Subscription({instanceSizes}) {
 	const [endDate, setEndDate] = useState('');
-	const [instanceSize, setInstanceSize] = useState('');
+	const [instanceSize, setInstanceSize] = useState('1');
 	const [perpetualSubscription, setPerpetualSubscription] = useState(false);
-	const [purchased, setPurchased] = useState('');
+	const [purchased, setPurchased] = useState('1');
 	const [salesForceOpportunityKey, setSalesForceOpportunityKey] = useState(
 		''
 	);
