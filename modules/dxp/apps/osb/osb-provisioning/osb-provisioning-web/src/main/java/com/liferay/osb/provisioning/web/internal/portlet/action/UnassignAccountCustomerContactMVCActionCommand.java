@@ -14,15 +14,21 @@
 
 package com.liferay.osb.provisioning.web.internal.portlet.action;
 
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.customer.model.AccountEntry;
 import com.liferay.osb.provisioning.customer.web.service.AccountEntryWebService;
 import com.liferay.osb.provisioning.exception.ContactRequiredException;
 import com.liferay.osb.provisioning.koroneiki.constants.ContactRoleConstants;
+import com.liferay.osb.provisioning.koroneiki.constants.TeamRoleConstants;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ContactRoleWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ContactWebService;
+import com.liferay.osb.provisioning.koroneiki.web.service.TeamRoleWebService;
+import com.liferay.osb.provisioning.koroneiki.web.service.TeamWebService;
 import com.liferay.osb.provisioning.zendesk.model.ZendeskOrganization;
 import com.liferay.osb.provisioning.zendesk.model.ZendeskTicket;
 import com.liferay.osb.provisioning.zendesk.model.ZendeskUser;
@@ -41,6 +47,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -115,6 +122,57 @@ public class UnassignAccountCustomerContactMVCActionCommand
 		return _contactWebService.searchCount(StringPool.BLANK, sb.toString());
 	}
 
+	private List<Long> _getFLSZendeskOrganizationIds(String accountKey)
+		throws Exception {
+
+		List<Long> zendeskOrganizationIds = new ArrayList<>();
+
+		String filterString = StringBundler.concat(
+			"accountKey eq '", accountKey, "' and system eq true");
+
+		List<Team> teams = _teamWebService.search(
+			StringPool.BLANK, filterString, 1, 1, StringPool.BLANK);
+
+		if (teams.isEmpty()) {
+			return zendeskOrganizationIds;
+		}
+
+		Team defaultTeam = teams.get(0);
+
+		TeamRole flsTeamRole = _teamRoleWebService.getTeamRole(
+			TeamRole.Type.ACCOUNT.toString(),
+			TeamRoleConstants.NAME_FIRST_LINE_SUPPORT);
+
+		StringBundler sb = new StringBundler(5);
+
+		sb.append("assignedTeamKeyTeamRoleKeys/any(s:s eq '");
+		sb.append(defaultTeam.getKey());
+		sb.append("_");
+		sb.append(flsTeamRole.getKey());
+		sb.append("')");
+
+		List<Account> accounts = _accountWebService.search(
+			StringPool.BLANK, sb.toString(), 1, 1000, StringPool.BLANK);
+
+		for (Account account : accounts) {
+			AccountEntry accountEntry =
+				_accountEntryWebService.fetchAccountEntry(account.getKey());
+
+			if (accountEntry == null) {
+				continue;
+			}
+
+			ZendeskOrganization zendeskOrganization =
+				_zendeskOrganizationWebService.getZendeskOrganization(
+					String.valueOf(accountEntry.getAccountEntryId()));
+
+			zendeskOrganizationIds.add(
+				zendeskOrganization.getZendeskOrganizationId());
+		}
+
+		return zendeskOrganizationIds;
+	}
+
 	private void _validateZendeskTickets(String accountKey, String emailAddress)
 		throws Exception {
 
@@ -122,28 +180,40 @@ public class UnassignAccountCustomerContactMVCActionCommand
 			return;
 		}
 
-		AccountEntry accountEntry = _accountEntryWebService.fetchAccountEntry(
-			accountKey);
-
-		if (accountEntry == null) {
-			return;
-		}
-
-		ZendeskOrganization zendeskOrganization =
-			_zendeskOrganizationWebService.getZendeskOrganization(
-				String.valueOf(accountEntry.getAccountEntryId()));
-
 		ZendeskUser zendeskUser =
 			_zendeskUserWebService.getZendeskUserByEmailAddress(emailAddress);
 
-		if ((zendeskOrganization == null) || (zendeskUser == null)) {
+		if (zendeskUser == null) {
+			return;
+		}
+
+		List<Long> zendeskOrganizationIds = _getFLSZendeskOrganizationIds(
+			accountKey);
+
+		AccountEntry accountEntry = _accountEntryWebService.fetchAccountEntry(
+			accountKey);
+
+		if (accountEntry != null) {
+			ZendeskOrganization zendeskOrganization =
+				_zendeskOrganizationWebService.getZendeskOrganization(
+					String.valueOf(accountEntry.getAccountEntryId()));
+
+			if (zendeskOrganization != null) {
+				zendeskOrganizationIds.add(
+					zendeskOrganization.getZendeskOrganizationId());
+			}
+		}
+
+		if (zendeskOrganizationIds.isEmpty()) {
 			return;
 		}
 
 		Set<String> criteria = new HashSet<>();
 
-		criteria.add(
-			"organization:" + zendeskOrganization.getZendeskOrganizationId());
+		for (long zendeskOrganizationId : zendeskOrganizationIds) {
+			criteria.add("organization:" + zendeskOrganizationId);
+		}
+
 		criteria.add("requester:" + zendeskUser.getZendeskUserId());
 		criteria.add("status<closed");
 
@@ -169,6 +239,12 @@ public class UnassignAccountCustomerContactMVCActionCommand
 
 	@Reference
 	private ContactWebService _contactWebService;
+
+	@Reference
+	private TeamRoleWebService _teamRoleWebService;
+
+	@Reference
+	private TeamWebService _teamWebService;
 
 	@Reference
 	private ZendeskOrganizationWebService _zendeskOrganizationWebService;
