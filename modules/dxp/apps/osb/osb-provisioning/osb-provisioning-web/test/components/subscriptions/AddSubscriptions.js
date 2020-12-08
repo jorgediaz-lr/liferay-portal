@@ -14,11 +14,21 @@ import React from 'react';
 
 import AddSubscriptions from '../../../src/main/resources/META-INF/resources/js/components/subscriptions/AddSubscriptions';
 
-function renderAddSubscriptions() {
+function renderAddSubscriptions(props) {
 	return render(
 		<AddSubscriptions
+			accountName="Test Account"
+			details={[
+				{
+					endDate: '12/08/2021',
+					productKey: 'KOR-35746',
+					productName: 'Product 1',
+					startDate: '12/08/2020'
+				}
+			]}
 			selectProductsURL="/select/products/url"
 			sizing={['1', '2', '3', '4']}
+			{...props}
 		/>
 	);
 }

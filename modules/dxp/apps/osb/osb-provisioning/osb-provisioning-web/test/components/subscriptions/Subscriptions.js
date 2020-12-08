@@ -14,8 +14,22 @@ import React from 'react';
 
 import Subscriptions from '../../../src/main/resources/META-INF/resources/js/components/subscriptions/Subscriptions';
 
-function renderSubscriptions() {
-	return render(<Subscriptions instanceSizes={['1', '2', '3', '4']} />);
+function renderSubscriptions(props) {
+	return render(
+		<Subscriptions
+			accountName="Test Account"
+			details={[
+				{
+					endDate: '12/08/2021',
+					productKey: 'KOR-35746',
+					productName: 'Product 1',
+					startDate: '12/08/2020'
+				}
+			]}
+			instanceSizes={['1', '2', '3', '4']}
+			{...props}
+		/>
+	);
 }
 
 describe('Subscriptions', () => {
@@ -31,5 +45,17 @@ describe('Subscriptions', () => {
 		const {getByLabelText} = renderSubscriptions();
 
 		expect(getByLabelText('delete-subscription-icon')).toBeTruthy();
+	});
+
+	it('displays the product name', () => {
+		const {getByText} = renderSubscriptions();
+
+		expect(getByText('Product 1')).toBeTruthy();
+	});
+
+	it('displays the account name', () => {
+		const {getByText} = renderSubscriptions();
+
+		expect(getByText('Test Account')).toBeTruthy();
 	});
 });

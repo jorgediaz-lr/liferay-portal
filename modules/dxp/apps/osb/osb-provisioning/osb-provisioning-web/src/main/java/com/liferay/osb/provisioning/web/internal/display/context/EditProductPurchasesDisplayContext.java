@@ -96,7 +96,7 @@ public class EditProductPurchasesDisplayContext
 		data.put("editProductPurchasesURL", editProductPurchasesURL.toString());
 
 		if (_products != null) {
-			data.put("productPurchases", _getAddProductPurchasesJSONArray());
+			data.put("details", _getAddProductPurchasesJSONArray());
 
 			PortletURL selectProductsURL = renderResponse.createRenderURL();
 
@@ -108,7 +108,7 @@ public class EditProductPurchasesDisplayContext
 			data.put("selectProductsURL", selectProductsURL.toString());
 		}
 		else {
-			data.put("productPurchases", _getEditProductPurchasesJSONArray());
+			data.put("details", _getEditProductPurchasesJSONArray());
 
 			String backURL = ParamUtil.getString(httpServletRequest, "backURL");
 

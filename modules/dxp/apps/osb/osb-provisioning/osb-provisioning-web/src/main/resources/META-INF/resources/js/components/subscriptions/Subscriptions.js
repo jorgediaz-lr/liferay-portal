@@ -14,7 +14,7 @@ import ClayTable from '@clayui/table';
 import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 
-function Subscriptions({instanceSizes = [], productPurchases}) {
+function Subscriptions({accountName, details, instanceSizes = []}) {
 	return (
 		<ClayTable>
 			<ClayTable.Head>
@@ -51,33 +51,41 @@ function Subscriptions({instanceSizes = [], productPurchases}) {
 				</ClayTable.Row>
 			</ClayTable.Head>
 			<ClayTable.Body>
-				<Subscription instanceSizes={instanceSizes} />
+				{details.map(detail => (
+					<Subscription
+						accountName={accountName}
+						detail={detail}
+						instanceSizes={instanceSizes}
+						key={detail.productKey}
+					/>
+				))}
 			</ClayTable.Body>
 		</ClayTable>
 	);
 }
 
 Subscriptions.propTypes = {
-	instanceSizes: PropTypes.arrayOf(PropTypes.string),
-	productPurchases: PropTypes.arrayOf(
+	accountName: PropTypes.string.isRequired,
+	details: PropTypes.arrayOf(
 		PropTypes.shape({
 			endDate: PropTypes.string,
 			productKey: PropTypes.string,
 			productName: PropTypes.string,
 			startDate: PropTypes.string
 		})
-	)
+	),
+	instanceSizes: PropTypes.arrayOf(PropTypes.string)
 };
 
-function Subscription({instanceSizes}) {
-	const [endDate, setEndDate] = useState('');
+function Subscription({accountName, detail, instanceSizes}) {
+	const [endDate, setEndDate] = useState(detail.endDate);
 	const [instanceSize, setInstanceSize] = useState('1');
 	const [perpetualSubscription, setPerpetualSubscription] = useState(false);
 	const [purchased, setPurchased] = useState('1');
 	const [salesForceOpportunityKey, setSalesForceOpportunityKey] = useState(
 		''
 	);
-	const [startDate, setStartDate] = useState('');
+	const [startDate, setStartDate] = useState(detail.startDate);
 
 	function handleInstanceSizeChange(event) {
 		setInstanceSize(event.currentTarget.value);
@@ -103,7 +111,9 @@ function Subscription({instanceSizes}) {
 	}
 
 	function setDisabledAttribute(attributeValue) {
-		const dates = document.querySelectorAll('.date-picker');
+		const dates = document.querySelectorAll(
+			`#${detail.productKey} .date-picker`
+		);
 
 		dates.forEach(date => {
 			const dateBtn = date.querySelector('.date-picker-dropdown-toggle');
@@ -122,8 +132,10 @@ function Subscription({instanceSizes}) {
 	}
 
 	return (
-		<ClayTable.Row id={1 /* TODO */}>
-			<ClayTable.Cell>{'product name'}</ClayTable.Cell>
+		<ClayTable.Row id={detail.productKey}>
+			<ClayTable.Cell className="semi-bold">
+				{detail.productName}
+			</ClayTable.Cell>
 			<ClayTable.Cell>
 				<label htmlFor="salesForceOpportunityKey">
 					<input
@@ -200,7 +212,7 @@ function Subscription({instanceSizes}) {
 					</select>
 				</label>
 			</ClayTable.Cell>
-			<ClayTable.Cell>{'account name'}</ClayTable.Cell>
+			<ClayTable.Cell>{accountName}</ClayTable.Cell>
 			<ClayTable.Cell>
 				<button
 					className="btn btn-icon btn-sm"

@@ -14,7 +14,7 @@ import React from 'react';
 
 import Subscriptions from './Subscriptions';
 
-function AddSubscriptions({productPurchases, selectProductsURL, sizing}) {
+function AddSubscriptions({accountName, details, selectProductsURL, sizing}) {
 	return (
 		<div className="subscriptions-container">
 			<div className="subscriptions-header">
@@ -25,11 +25,19 @@ function AddSubscriptions({productPurchases, selectProductsURL, sizing}) {
 			</div>
 
 			<div className="subscriptions">
-				<Subscriptions instanceSizes={sizing} />
+				<Subscriptions
+					accountName={accountName}
+					details={details}
+					instanceSizes={sizing}
+				/>
 			</div>
 
 			<div className="button-holder">
-				<button className="btn btn-primary" type="submit">
+				<button
+					className="btn btn-primary"
+					disabled={true}
+					type="submit"
+				>
 					{Liferay.Language.get('save')}
 				</button>
 
@@ -42,7 +50,8 @@ function AddSubscriptions({productPurchases, selectProductsURL, sizing}) {
 }
 
 AddSubscriptions.propTypes = {
-	productPurchases: PropTypes.arrayOf(
+	accountName: PropTypes.string.isRequired,
+	details: PropTypes.arrayOf(
 		PropTypes.shape({
 			endDate: PropTypes.string,
 			productKey: PropTypes.string,
