@@ -9,26 +9,49 @@
  * distribution rights of the Software.
  */
 
-import {cleanup, render} from '@testing-library/react';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 import React from 'react';
 
 import Subscriptions from '../../../src/main/resources/META-INF/resources/js/components/subscriptions/Subscriptions';
+import {SubscriptionsProvider} from '../../../src/main/resources/META-INF/resources/js/hooks/subscriptions';
 
-function renderSubscriptions(props) {
+function mockSubscriptions() {
+	return [
+		{
+			endDate: '12/08/2021',
+			productKey: 'KOR-35735',
+			productName: 'Product A',
+			startDate: '12/08/2020'
+		},
+		{
+			endDate: '12/08/2021',
+			productKey: 'KOR-35803',
+			productName: 'Product B',
+			startDate: '12/08/2020'
+		},
+		{
+			endDate: '12/08/2021',
+			productKey: 'KOR-35746',
+			productName: 'Product C',
+			startDate: '12/08/2020'
+		},
+		{
+			endDate: '12/08/2021',
+			productKey: 'KOR-35757',
+			productName: 'Product D',
+			startDate: '12/08/2020'
+		}
+	];
+}
+
+function renderSubscriptions(subscriptions = mockSubscriptions()) {
 	return render(
-		<Subscriptions
-			accountName="Test Account"
-			details={[
-				{
-					endDate: '12/08/2021',
-					productKey: 'KOR-35746',
-					productName: 'Product 1',
-					startDate: '12/08/2020'
-				}
-			]}
-			instanceSizes={['1', '2', '3', '4']}
-			{...props}
-		/>
+		<SubscriptionsProvider initialSubscriptions={subscriptions}>
+			<Subscriptions
+				accountName="Test Account"
+				instanceSizes={['1', '2', '3', '4']}
+			/>
+		</SubscriptionsProvider>
 	);
 }
 
@@ -41,21 +64,60 @@ describe('Subscriptions', () => {
 		expect(container).toBeTruthy();
 	});
 
-	it('displays a delete subscription icon', () => {
-		const {getByLabelText} = renderSubscriptions();
+	it('displays a delete subscription icon for each of the subscriptions', () => {
+		const {getAllByLabelText} = renderSubscriptions();
 
-		expect(getByLabelText('delete-subscription-icon')).toBeTruthy();
+		const allDeleteIcons = getAllByLabelText('delete-subscription-icon');
+
+		expect(allDeleteIcons[0]).toBeTruthy();
+		expect(allDeleteIcons.length).toBe(4);
 	});
 
-	it('displays the product name', () => {
+	it('displays the product name for each of the selected products', () => {
 		const {getByText} = renderSubscriptions();
 
-		expect(getByText('Product 1')).toBeTruthy();
+		expect(getByText('Product A')).toBeTruthy();
+		expect(getByText('Product B')).toBeTruthy();
+		expect(getByText('Product C')).toBeTruthy();
+		expect(getByText('Product D')).toBeTruthy();
 	});
 
-	it('displays the account name', () => {
-		const {getByText} = renderSubscriptions();
+	it('displays the account name for each of the subscriptions', () => {
+		const {getAllByText} = renderSubscriptions();
 
-		expect(getByText('Test Account')).toBeTruthy();
+		const allAccountNames = getAllByText('Test Account');
+
+		expect(allAccountNames[0]).toBeTruthy();
+		expect(allAccountNames.length).toBe(4);
+	});
+
+	it('removes a subscription when the delete icon for that subscription is clicked', () => {
+		const {
+			getAllByLabelText,
+			getByText,
+			queryByText
+		} = renderSubscriptions();
+
+		fireEvent.click(getAllByLabelText('delete-subscription-icon')[0]);
+
+		expect(queryByText('Product A')).toBeFalsy();
+		expect(getByText('Product B')).toBeTruthy();
+		expect(getByText('Product C')).toBeTruthy();
+		expect(getByText('Product D')).toBeTruthy();
+	});
+
+	it('it disables date fields after checking the perpetual checkbox', () => {
+		const {getAllByPlaceholderText, getAllByRole} = renderSubscriptions();
+
+		const dateFields = getAllByPlaceholderText('YYYY-MM-DD');
+		const perpetualCheckboxes = getAllByRole('checkbox');
+
+		expect(dateFields[0].disabled).toBeFalsy();
+		expect(dateFields[1].disabled).toBeFalsy();
+
+		fireEvent.click(perpetualCheckboxes[0]);
+
+		expect(dateFields[0].disabled).toBeTruthy();
+		expect(dateFields[1].disabled).toBeTruthy();
 	});
 });

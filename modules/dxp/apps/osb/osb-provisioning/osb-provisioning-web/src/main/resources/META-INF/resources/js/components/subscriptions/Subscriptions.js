@@ -14,7 +14,11 @@ import ClayTable from '@clayui/table';
 import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 
-function Subscriptions({accountName, details, instanceSizes = []}) {
+import {useSubscriptions} from '../../hooks/subscriptions';
+
+function Subscriptions({accountName, instanceSizes = []}) {
+	const [subscriptions] = useSubscriptions();
+
 	return (
 		<ClayTable>
 			<ClayTable.Head>
@@ -51,7 +55,7 @@ function Subscriptions({accountName, details, instanceSizes = []}) {
 				</ClayTable.Row>
 			</ClayTable.Head>
 			<ClayTable.Body>
-				{details.map(detail => (
+				{subscriptions.toList().map(detail => (
 					<Subscription
 						accountName={accountName}
 						detail={detail}
@@ -66,48 +70,67 @@ function Subscriptions({accountName, details, instanceSizes = []}) {
 
 Subscriptions.propTypes = {
 	accountName: PropTypes.string.isRequired,
-	details: PropTypes.arrayOf(
-		PropTypes.shape({
-			endDate: PropTypes.string,
-			productKey: PropTypes.string,
-			productName: PropTypes.string,
-			startDate: PropTypes.string
-		})
-	),
 	instanceSizes: PropTypes.arrayOf(PropTypes.string)
 };
 
 function Subscription({accountName, detail, instanceSizes}) {
-	const [endDate, setEndDate] = useState(detail.endDate);
-	const [instanceSize, setInstanceSize] = useState('1');
-	const [perpetualSubscription, setPerpetualSubscription] = useState(false);
-	const [purchased, setPurchased] = useState('1');
-	const [salesForceOpportunityKey, setSalesForceOpportunityKey] = useState(
-		''
-	);
-	const [startDate, setStartDate] = useState(detail.startDate);
+	const {
+		endDate,
+		perpetual,
+		productKey,
+		productName,
+		quantity,
+		salesforceOpportunityKey,
+		sizing,
+		startDate
+	} = detail;
 
-	function handleInstanceSizeChange(event) {
-		setInstanceSize(event.currentTarget.value);
-	}
+	const [currentEndDate, setCurrentEndDate] = useState(endDate);
+	const [currentStartDate, setCurrentStartDate] = useState(startDate);
 
-	function handlePerpetualSubscriptionChange() {
-		setPerpetualSubscription(!perpetualSubscription);
+	const [
+		,
+		{
+			deleteSubscription,
+			updateEndDate,
+			updatePerpetual,
+			updateQuantity,
+			updateSalesforceOpportunityKey,
+			updateSizing,
+			updateStartDate
+		}
+	] = useSubscriptions();
 
-		// Source formatter locks @clayui/date-picker at version 3.0.7, which does not provide an API for disabling date picker while later versions do.
-		setDisabledAttribute(!perpetualSubscription);
-	}
-
-	function handlePurchasedChange(event) {
-		setPurchased(event.currentTarget.value);
-	}
-
-	function handleSalesForceOpportunityKeyChange(event) {
-		setSalesForceOpportunityKey(event.currentTarget.value);
+	function handleEndDateChange(event) {
+		updateEndDate(productKey, event.currentTarget.value);
 	}
 
 	function handleDeleteSubscription() {
-		// TODO
+		deleteSubscription(productKey);
+	}
+
+	function handlePerpetualChange() {
+		updatePerpetual(productKey, !perpetual);
+
+		// Source formatter locks @clayui/date-picker at version 3.0.7, which does not provide an API for disabling date picker while later versions do.
+
+		setDisabledAttribute(!perpetual);
+	}
+
+	function handleQuantityChange(event) {
+		updateQuantity(productKey, event.currentTarget.value);
+	}
+
+	function handleSalesforceOpportunityKeyChange(event) {
+		updateSalesforceOpportunityKey(productKey, event.currentTarget.value);
+	}
+
+	function handleSizingChange(event) {
+		updateSizing(productKey, event.currentTarget.value);
+	}
+
+	function handleStartDateChange(event) {
+		updateStartDate(productKey, event.currentTarget.value);
 	}
 
 	function setDisabledAttribute(attributeValue) {
@@ -132,42 +155,42 @@ function Subscription({accountName, detail, instanceSizes}) {
 	}
 
 	return (
-		<ClayTable.Row id={detail.productKey}>
-			<ClayTable.Cell className="semi-bold">
-				{detail.productName}
-			</ClayTable.Cell>
+		<ClayTable.Row id={productKey}>
+			<ClayTable.Cell className="semi-bold">{productName}</ClayTable.Cell>
 			<ClayTable.Cell>
-				<label htmlFor="salesForceOpportunityKey">
+				<label htmlFor="salesforceOpportunityKey">
 					<input
 						className="form-control form-control-sm"
-						id="salesForceOpportunityKey"
-						onChange={handleSalesForceOpportunityKeyChange}
+						id="salesforceOpportunityKey"
+						onChange={handleSalesforceOpportunityKeyChange}
 						type="text"
-						value={salesForceOpportunityKey}
+						value={salesforceOpportunityKey}
 					/>
 				</label>
 			</ClayTable.Cell>
 			<ClayTable.Cell>
-				<label htmlFor="purchased">
+				<label htmlFor="quantity">
 					<input
 						className="form-control form-control-sm"
-						id="purchased"
+						id="quantity"
 						min={0}
-						onChange={handlePurchasedChange}
+						onChange={handleQuantityChange}
 						type="number"
-						value={purchased}
+						value={quantity}
 					/>
 				</label>
 			</ClayTable.Cell>
 			<ClayTable.Cell>
 				<label
 					className="custom-checkbox custom-control"
-					htmlFor="perpetualSubscription"
+					htmlFor="perpetual"
 				>
 					<input
+						aria-checked={perpetual}
 						className="custom-control-input"
-						id="perpetualSubscription"
-						onChange={handlePerpetualSubscriptionChange}
+						id="perpetual"
+						onChange={handlePerpetualChange}
+						role="checkbox"
 						type="checkbox"
 					/>
 					<span className="custom-control-label"></span>
@@ -178,9 +201,10 @@ function Subscription({accountName, detail, instanceSizes}) {
 					<ClayDatePicker
 						id="startDate"
 						inputName="startDate"
-						onValueChange={setStartDate}
+						onChange={handleStartDateChange}
+						onValueChange={setCurrentStartDate}
 						placeholder="YYYY-MM-DD"
-						value={startDate}
+						value={currentStartDate}
 					/>
 				</label>
 			</ClayTable.Cell>
@@ -189,9 +213,10 @@ function Subscription({accountName, detail, instanceSizes}) {
 					<ClayDatePicker
 						id="endDate"
 						inputName="endDate"
-						onValueChange={setEndDate}
+						onChange={handleEndDateChange}
+						onValueChange={setCurrentEndDate}
 						placeholder="YYYY-MM-DD"
-						value={endDate}
+						value={currentEndDate}
 					/>
 				</label>
 			</ClayTable.Cell>
@@ -201,8 +226,8 @@ function Subscription({accountName, detail, instanceSizes}) {
 						className="form-control form-control-sm"
 						disabled={instanceSizes.length === 0}
 						id="instanceSize"
-						onChange={handleInstanceSizeChange}
-						value={instanceSize}
+						onChange={handleSizingChange}
+						value={sizing}
 					>
 						{instanceSizes.map(size => (
 							<option key={size} value={size}>

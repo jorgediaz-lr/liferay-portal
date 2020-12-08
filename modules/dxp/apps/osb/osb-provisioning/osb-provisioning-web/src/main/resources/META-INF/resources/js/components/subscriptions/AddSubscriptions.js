@@ -12,40 +12,42 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import {SubscriptionsProvider} from '../../hooks/subscriptions';
 import Subscriptions from './Subscriptions';
 
-function AddSubscriptions({accountName, details, selectProductsURL, sizing}) {
+function AddSubscriptions({accountName, details, sizing}) {
 	return (
-		<div className="subscriptions-container">
-			<div className="subscriptions-header">
-				<b>{Liferay.Language.get('configure-subscriptions')}</b>
-				<button className="btn btn-secondary" type="button">
-					{Liferay.Language.get('select')}
-				</button>
-			</div>
+		<SubscriptionsProvider initialSubscriptions={details}>
+			<div className="subscriptions-container">
+				<div className="subscriptions-header">
+					<b>{Liferay.Language.get('configure-subscriptions')}</b>
+					<button className="btn btn-secondary" type="button">
+						{Liferay.Language.get('select')}
+					</button>
+				</div>
 
-			<div className="subscriptions">
-				<Subscriptions
-					accountName={accountName}
-					details={details}
-					instanceSizes={sizing}
-				/>
-			</div>
+				<div className="subscriptions">
+					<Subscriptions
+						accountName={accountName}
+						instanceSizes={sizing}
+					/>
+				</div>
 
-			<div className="button-holder">
-				<button
-					className="btn btn-primary"
-					disabled={true}
-					type="submit"
-				>
-					{Liferay.Language.get('save')}
-				</button>
+				<div className="button-holder">
+					<button
+						className="btn btn-primary"
+						disabled={true}
+						type="submit"
+					>
+						{Liferay.Language.get('save')}
+					</button>
 
-				<button className="btn btn-secondary" type="cancel">
-					{Liferay.Language.get('cancel')}
-				</button>
+					<button className="btn btn-secondary" type="cancel">
+						{Liferay.Language.get('cancel')}
+					</button>
+				</div>
 			</div>
-		</div>
+		</SubscriptionsProvider>
 	);
 }
 
