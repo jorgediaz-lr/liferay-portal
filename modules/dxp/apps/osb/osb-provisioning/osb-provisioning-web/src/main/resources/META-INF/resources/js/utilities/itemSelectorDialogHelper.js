@@ -27,12 +27,20 @@ export function itemSelectorDialogSelection({formField, title, url}) {
 						if (newVal) {
 							const selectedItems = JSON.parse(newVal);
 
-							const formInput = document.querySelector(
-								`input[name = "${NAMESPACE}${formField}"]`
+							const formKeyInput = document.querySelector(
+								`input[name = "${NAMESPACE}${formField}Key"]`
 							);
 
-							if (formInput) {
-								formInput.value = selectedItems.key;
+							if (formKeyInput) {
+								formKeyInput.value = selectedItems.key;
+							}
+
+							const formNameInput = document.querySelector(
+								`input[name = "${NAMESPACE}${formField}Name"]`
+							);
+
+							if (formNameInput) {
+								formNameInput.value = selectedItems.name;
 							}
 
 							const displayInput = document.getElementById(

@@ -53,7 +53,7 @@ function Account({
 
 				<ExternalSelect
 					externalData={{
-						formField: 'parentAccountKey',
+						formField: 'parentAccount',
 						title: Liferay.Language.get('select-parent-account'),
 						url: selectAccountURL
 					}}
@@ -84,7 +84,7 @@ function Account({
 
 				<ExternalSelect
 					externalData={{
-						formField: 'partnerTeamKey',
+						formField: 'partnerTeam',
 						title: Liferay.Language.get('select-partner-team'),
 						url: selectPartnerURL
 					}}
@@ -98,7 +98,7 @@ function Account({
 
 				<ExternalSelect
 					externalData={{
-						formField: 'flsTeamKey',
+						formField: 'flsTeam',
 						title: Liferay.Language.get(
 							'select-first-line-support-team'
 						),
@@ -143,11 +143,17 @@ function ExternalSelect({externalData}) {
 	return (
 		<>
 			<input
-				name={`${NAMESPACE}${externalData.formField}`}
+				name={`${NAMESPACE}${externalData.formField}Key`}
 				type="hidden"
 				value={''}
 			/>
 
+			<input
+				name={`${NAMESPACE}${externalData.formField}Name`}
+				type="hidden"
+				value={''}
+			/>
+			
 			<ExternalSelectField
 				clickFn={handleClick}
 				id={externalData.formField}
