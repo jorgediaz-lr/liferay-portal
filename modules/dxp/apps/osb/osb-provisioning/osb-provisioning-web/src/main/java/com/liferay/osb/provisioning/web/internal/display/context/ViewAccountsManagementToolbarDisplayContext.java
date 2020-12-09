@@ -89,18 +89,11 @@ public class ViewAccountsManagementToolbarDisplayContext
 					for (String value : values) {
 						add(
 							labelItem -> {
-								PortletURL removeLabelURL = getPortletURL();
-
-								String[] removeKeywords = ArrayUtil.remove(
-									values, value);
-
-								removeLabelURL.setParameter(
-									accountDisplayTerm.getName(),
-									StringUtil.merge(removeKeywords));
-
 								labelItem.putData(
 									"removeLabelURL",
-									removeLabelURL.toString());
+									_getRemoveLabelURL(
+										accountDisplayTerm.getName(), values,
+										value));
 
 								labelItem.setCloseable(true);
 
@@ -162,6 +155,33 @@ public class ViewAccountsManagementToolbarDisplayContext
 		}
 
 		return String.format("%s: %s", LanguageUtil.get(request, key), value);
+	}
+
+	private String _getRemoveLabelURL(
+		String accountDisplayTermName, String[] values, String value) {
+
+		PortletURL removeLabelURL = getPortletURL();
+
+		String[] removeKeywords = ArrayUtil.remove(values, value);
+
+		removeLabelURL.setParameter(
+			accountDisplayTermName, StringUtil.merge(removeKeywords));
+
+		if (accountDisplayTermName.equals(AccountDisplayTerms.FLS_TEAM_KEY)) {
+			removeLabelURL.setParameter("flsTeamName", StringPool.BLANK);
+		}
+		else if (accountDisplayTermName.equals(
+					AccountDisplayTerms.PARENT_ACCOUNT_KEY)) {
+
+			removeLabelURL.setParameter("parentAccountName", StringPool.BLANK);
+		}
+		else if (accountDisplayTermName.equals(
+					AccountDisplayTerms.PARTNER_TEAM_KEY)) {
+
+			removeLabelURL.setParameter("partnerTeamName", StringPool.BLANK);
+		}
+
+		return removeLabelURL.toString();
 	}
 
 	private String _getTeamName(String teamKey) {
