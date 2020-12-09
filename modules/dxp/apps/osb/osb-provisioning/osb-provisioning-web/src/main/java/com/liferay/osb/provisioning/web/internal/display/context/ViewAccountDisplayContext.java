@@ -224,7 +224,7 @@ public class ViewAccountDisplayContext {
 							getCurrentURL(), "accountKey", account.getKey());
 						dropdownItem.setLabel(
 							LanguageUtil.get(
-								httpServletRequest, "add-subscription"));
+								httpServletRequest, "add-subscriptions"));
 					});
 			}
 		};
