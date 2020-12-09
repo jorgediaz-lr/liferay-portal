@@ -14,26 +14,12 @@
 
 package com.liferay.osb.provisioning.web.internal.portlet.action;
 
-import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
-import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
-import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
-import com.liferay.osb.provisioning.customer.model.AccountEntry;
-import com.liferay.osb.provisioning.customer.web.service.AccountEntryWebService;
 import com.liferay.osb.provisioning.exception.ContactRequiredException;
-import com.liferay.osb.provisioning.koroneiki.constants.TeamRoleConstants;
-import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
-import com.liferay.osb.provisioning.koroneiki.web.service.ContactWebService;
-import com.liferay.osb.provisioning.koroneiki.web.service.TeamRoleWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.exception.HttpException;
-import com.liferay.osb.provisioning.zendesk.model.ZendeskOrganization;
-import com.liferay.osb.provisioning.zendesk.model.ZendeskTicket;
-import com.liferay.osb.provisioning.zendesk.model.ZendeskUser;
-import com.liferay.osb.provisioning.zendesk.web.service.ZendeskOrganizationWebService;
-import com.liferay.osb.provisioning.zendesk.web.service.ZendeskTicketWebService;
-import com.liferay.osb.provisioning.zendesk.web.service.ZendeskUserWebService;
+import com.liferay.osb.provisioning.web.internal.util.ZendeskValidator;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
@@ -46,16 +32,8 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -179,7 +157,10 @@ public class EditTeamMVCActionCommand extends BaseMVCActionCommand {
 		}
 
 		if (!ArrayUtil.isEmpty(deleteEmailAddresses)) {
-			_validateZendeskTickets(teamKey, deleteEmailAddresses);
+			for (String emailAddress : deleteEmailAddresses) {
+				_zendeskValidator.validateFLSPartnerZendeskTickets(
+					teamKey, emailAddress);
+			}
 
 			_teamWebService.unassignContacts(
 				user.getFullName(), user.getUuid(), teamKey,
@@ -189,135 +170,16 @@ public class EditTeamMVCActionCommand extends BaseMVCActionCommand {
 		return teamKey;
 	}
 
-	private List<Long> _getZendeskOrganizationIds(String teamKey)
-		throws Exception {
-
-		List<Long> zendeskOrganizationIds = new ArrayList<>();
-
-		TeamRole flsTeamRole = _teamRoleWebService.getTeamRole(
-			TeamRole.Type.ACCOUNT.toString(),
-			TeamRoleConstants.NAME_FIRST_LINE_SUPPORT);
-
-		StringBundler sb = new StringBundler(5);
-
-		sb.append("assignedTeamKeyTeamRoleKeys/any(s:s eq '");
-		sb.append(teamKey);
-		sb.append("_");
-		sb.append(flsTeamRole.getKey());
-		sb.append("')");
-
-		List<Account> accounts = _accountWebService.search(
-			StringPool.BLANK, sb.toString(), 1, 1000, StringPool.BLANK);
-
-		for (Account account : accounts) {
-			AccountEntry accountEntry =
-				_accountEntryWebService.fetchAccountEntry(account.getKey());
-
-			if (accountEntry == null) {
-				continue;
-			}
-
-			ZendeskOrganization zendeskOrganization =
-				_zendeskOrganizationWebService.getZendeskOrganization(
-					String.valueOf(accountEntry.getAccountEntryId()));
-
-			zendeskOrganizationIds.add(
-				zendeskOrganization.getZendeskOrganizationId());
-		}
-
-		return zendeskOrganizationIds;
-	}
-
-	private void _validateZendeskTickets(
-			String teamKey, String[] deleteEmailAddresses)
-		throws Exception {
-
-		StringBundler sb = new StringBundler(3);
-
-		sb.append("teamKeys/any(s:s eq '");
-		sb.append(teamKey);
-		sb.append("')");
-
-		List<Contact> contacts = _contactWebService.search(
-			StringPool.BLANK, sb.toString(), 1, 1000, StringPool.BLANK);
-
-		Iterator<Contact> iterator = contacts.iterator();
-
-		while (iterator.hasNext()) {
-			Contact contact = iterator.next();
-
-			if (ArrayUtil.contains(
-					deleteEmailAddresses, contact.getEmailAddress())) {
-
-				iterator.remove();
-			}
-		}
-
-		if (!contacts.isEmpty()) {
-			return;
-		}
-
-		List<Long> zendeskOrganizationIds = _getZendeskOrganizationIds(teamKey);
-
-		if (zendeskOrganizationIds.isEmpty()) {
-			return;
-		}
-
-		for (String emailAddress : deleteEmailAddresses) {
-			ZendeskUser zendeskUser =
-				_zendeskUserWebService.getZendeskUserByEmailAddress(
-					emailAddress);
-
-			if (zendeskUser == null) {
-				continue;
-			}
-
-			Set<String> criteria = new HashSet<>();
-
-			for (long zendeskOrganizationId : zendeskOrganizationIds) {
-				criteria.add("organization:" + zendeskOrganizationId);
-			}
-
-			criteria.add("requester:" + zendeskUser.getZendeskUserId());
-			criteria.add("status<closed");
-
-			List<ZendeskTicket> zendeskTickets =
-				_zendeskTicketWebService.getZendeskTickets(criteria);
-
-			if (!zendeskTickets.isEmpty()) {
-				throw new ContactRequiredException();
-			}
-		}
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		EditTeamMVCActionCommand.class);
-
-	@Reference
-	private AccountEntryWebService _accountEntryWebService;
-
-	@Reference
-	private AccountWebService _accountWebService;
-
-	@Reference
-	private ContactWebService _contactWebService;
 
 	@Reference
 	private Portal _portal;
 
 	@Reference
-	private TeamRoleWebService _teamRoleWebService;
-
-	@Reference
 	private TeamWebService _teamWebService;
 
 	@Reference
-	private ZendeskOrganizationWebService _zendeskOrganizationWebService;
-
-	@Reference
-	private ZendeskTicketWebService _zendeskTicketWebService;
-
-	@Reference
-	private ZendeskUserWebService _zendeskUserWebService;
+	private ZendeskValidator _zendeskValidator;
 
 }

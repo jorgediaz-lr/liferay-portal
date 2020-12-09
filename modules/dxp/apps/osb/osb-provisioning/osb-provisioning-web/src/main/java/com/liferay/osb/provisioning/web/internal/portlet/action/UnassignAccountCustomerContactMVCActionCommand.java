@@ -14,10 +14,14 @@
 
 package com.liferay.osb.provisioning.web.internal.portlet.action;
 
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.exception.ContactRequiredException;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
+import com.liferay.osb.provisioning.koroneiki.web.service.TeamWebService;
 import com.liferay.osb.provisioning.web.internal.util.ZendeskValidator;
+import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
@@ -27,6 +31,8 @@ import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
+
+import java.util.List;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -61,7 +67,13 @@ public class UnassignAccountCustomerContactMVCActionCommand
 			String emailAddress = ParamUtil.getString(
 				actionRequest, "emailAddress");
 
-			_zendeskValidator.validateZendeskTickets(accountKey, emailAddress);
+			_zendeskValidator.validateCustomerZendeskTickets(
+				accountKey, emailAddress);
+
+			Team team = _getDefaultTeam(accountKey);
+
+			_zendeskValidator.validateFLSPartnerZendeskTickets(
+				team.getKey(), emailAddress);
 
 			User user = themeDisplay.getUser();
 
@@ -79,11 +91,28 @@ public class UnassignAccountCustomerContactMVCActionCommand
 		sendRedirect(actionRequest, actionResponse);
 	}
 
+	private Team _getDefaultTeam(String accountKey) throws Exception {
+		String filterString = StringBundler.concat(
+			"accountKey eq '", accountKey, "' and system eq true");
+
+		List<Team> teams = _teamWebService.search(
+			StringPool.BLANK, filterString, 1, 1, StringPool.BLANK);
+
+		if (teams.isEmpty()) {
+			throw new ContactRequiredException();
+		}
+
+		return teams.get(0);
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		UnassignAccountCustomerContactMVCActionCommand.class);
 
 	@Reference
 	private AccountWebService _accountWebService;
+
+	@Reference
+	private TeamWebService _teamWebService;
 
 	@Reference
 	private ZendeskValidator _zendeskValidator;

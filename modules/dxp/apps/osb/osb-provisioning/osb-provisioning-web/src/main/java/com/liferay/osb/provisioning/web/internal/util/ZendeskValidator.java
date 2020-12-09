@@ -15,8 +15,8 @@
 package com.liferay.osb.provisioning.web.internal.util;
 
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
-import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
 import com.liferay.osb.provisioning.customer.model.AccountEntry;
 import com.liferay.osb.provisioning.customer.web.service.AccountEntryWebService;
@@ -51,10 +51,11 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = ZendeskValidator.class)
 public class ZendeskValidator {
 
-	public void validateZendeskTickets(String accountKey, String emailAddress)
+	public void validateCustomerZendeskTickets(
+			String accountKey, String emailAddress)
 		throws Exception {
 
-		if (_getDeveloperCount(accountKey) > 1) {
+		if (!_isValidateCustomerZendeskTickets(accountKey, emailAddress)) {
 			return;
 		}
 
@@ -65,8 +66,7 @@ public class ZendeskValidator {
 			return;
 		}
 
-		List<Long> zendeskOrganizationIds = _getFLSZendeskOrganizationIds(
-			accountKey);
+		List<Long> zendeskOrganizationIds = new ArrayList<>();
 
 		AccountEntry accountEntry = _accountEntryWebService.fetchAccountEntry(
 			accountKey);
@@ -82,62 +82,27 @@ public class ZendeskValidator {
 			}
 		}
 
-		if (zendeskOrganizationIds.isEmpty()) {
-			return;
-		}
-
-		Set<String> criteria = new HashSet<>();
-
-		for (long zendeskOrganizationId : zendeskOrganizationIds) {
-			criteria.add("organization:" + zendeskOrganizationId);
-		}
-
-		criteria.add("requester:" + zendeskUser.getZendeskUserId());
-		criteria.add("status<closed");
-
-		List<ZendeskTicket> zendeskTickets =
-			_zendeskTicketWebService.getZendeskTickets(criteria);
-
-		if (!zendeskTickets.isEmpty()) {
+		if (_hasZendeskTickets(zendeskOrganizationIds, zendeskUser)) {
 			throw new ContactRequiredException();
 		}
 	}
 
-	private long _getDeveloperCount(String accountKey) throws Exception {
-		StringBundler sb = new StringBundler(5);
-
-		sb.append("accountKeysContactRoleKeys/any(s:s eq '");
-		sb.append(accountKey);
-		sb.append(StringPool.UNDERLINE);
-
-		ContactRole supportDeveloperContactRole =
-			_contactRoleWebService.getContactRole(
-				ContactRole.Type.ACCOUNT_CUSTOMER.toString(),
-				ContactRoleConstants.NAME_SUPPORT_DEVELOPER);
-
-		sb.append(supportDeveloperContactRole.getKey());
-
-		sb.append("')");
-
-		return _contactWebService.searchCount(StringPool.BLANK, sb.toString());
-	}
-
-	private List<Long> _getFLSZendeskOrganizationIds(String accountKey)
+	public void validateFLSPartnerZendeskTickets(
+			String teamKey, String emailAddress)
 		throws Exception {
 
-		List<Long> zendeskOrganizationIds = new ArrayList<>();
-
-		String filterString = StringBundler.concat(
-			"accountKey eq '", accountKey, "' and system eq true");
-
-		List<Team> teams = _teamWebService.search(
-			StringPool.BLANK, filterString, 1, 1, StringPool.BLANK);
-
-		if (teams.isEmpty()) {
-			return zendeskOrganizationIds;
+		if (!_isValidateFLSPartnerZendeskTickets(teamKey)) {
+			return;
 		}
 
-		Team defaultTeam = teams.get(0);
+		ZendeskUser zendeskUser =
+			_zendeskUserWebService.getZendeskUserByEmailAddress(emailAddress);
+
+		if (zendeskUser == null) {
+			return;
+		}
+
+		List<Long> zendeskOrganizationIds = new ArrayList<>();
 
 		TeamRole flsTeamRole = _teamRoleWebService.getTeamRole(
 			TeamRole.Type.ACCOUNT.toString(),
@@ -146,7 +111,7 @@ public class ZendeskValidator {
 		StringBundler sb = new StringBundler(5);
 
 		sb.append("assignedTeamKeyTeamRoleKeys/any(s:s eq '");
-		sb.append(defaultTeam.getKey());
+		sb.append(teamKey);
 		sb.append("_");
 		sb.append(flsTeamRole.getKey());
 		sb.append("')");
@@ -170,7 +135,96 @@ public class ZendeskValidator {
 				zendeskOrganization.getZendeskOrganizationId());
 		}
 
-		return zendeskOrganizationIds;
+		if (_hasZendeskTickets(zendeskOrganizationIds, zendeskUser)) {
+			throw new ContactRequiredException();
+		}
+	}
+
+	private boolean _hasZendeskTickets(
+			List<Long> zendeskOrganizationIds, ZendeskUser zendeskUser)
+		throws Exception {
+
+		if (zendeskOrganizationIds.isEmpty()) {
+			return false;
+		}
+
+		Set<String> criteria = new HashSet<>();
+
+		for (long zendeskOrganizationId : zendeskOrganizationIds) {
+			criteria.add("organization:" + zendeskOrganizationId);
+		}
+
+		criteria.add("requester:" + zendeskUser.getZendeskUserId());
+		criteria.add("status<closed");
+
+		List<ZendeskTicket> zendeskTickets =
+			_zendeskTicketWebService.getZendeskTickets(criteria);
+
+		if (!zendeskTickets.isEmpty()) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private boolean _isValidateCustomerZendeskTickets(
+			String accountKey, String emailAddress)
+		throws Exception {
+
+		boolean supportDeveloper = false;
+
+		StringBundler sb = new StringBundler(5);
+
+		sb.append("accountKeysContactRoleKeys/any(s:s eq '");
+		sb.append(accountKey);
+		sb.append(StringPool.UNDERLINE);
+
+		ContactRole supportDeveloperContactRole =
+			_contactRoleWebService.getContactRole(
+				ContactRole.Type.ACCOUNT_CUSTOMER.toString(),
+				ContactRoleConstants.NAME_SUPPORT_DEVELOPER);
+
+		sb.append(supportDeveloperContactRole.getKey());
+
+		sb.append("')");
+
+		List<Contact> contacts = _contactWebService.search(
+			StringPool.BLANK, sb.toString(), 1, 1000, StringPool.BLANK);
+
+		for (Contact contact : contacts) {
+			String curEmailAddress = contact.getEmailAddress();
+
+			if (curEmailAddress.equals(emailAddress)) {
+				supportDeveloper = true;
+
+				break;
+			}
+		}
+
+		if (supportDeveloper && (contacts.size() <= 1)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private boolean _isValidateFLSPartnerZendeskTickets(String teamKey)
+		throws Exception {
+
+		StringBundler sb = new StringBundler(3);
+
+		sb.append("teamKeys/any(s:s eq '");
+		sb.append(teamKey);
+		sb.append("')");
+
+		List<Contact> contacts = _contactWebService.search(
+			StringPool.BLANK, sb.toString(), 1, 1000, StringPool.BLANK);
+
+		if (contacts.size() <= 1) {
+			return true;
+		}
+
+		return false;
 	}
 
 	@Reference
