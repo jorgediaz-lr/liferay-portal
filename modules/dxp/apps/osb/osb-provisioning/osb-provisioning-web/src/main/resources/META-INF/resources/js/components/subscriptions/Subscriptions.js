@@ -12,7 +12,7 @@
 import ClayDatePicker from '@clayui/date-picker';
 import ClayTable from '@clayui/table';
 import PropTypes from 'prop-types';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {useSubscriptions} from '../../hooks/subscriptions';
 
@@ -87,9 +87,10 @@ function Subscription({accountName, detail, instanceSizes}) {
 
 	const [currentEndDate, setCurrentEndDate] = useState(endDate);
 	const [currentStartDate, setCurrentStartDate] = useState(startDate);
+	const [disableDelete, setDisableDelete] = useState(false);
 
 	const [
-		,
+		subscriptions,
 		{
 			deleteSubscription,
 			updateEndDate,
@@ -100,6 +101,12 @@ function Subscription({accountName, detail, instanceSizes}) {
 			updateStartDate
 		}
 	] = useSubscriptions();
+
+	useEffect(() => {
+		if (subscriptions.toList().toArray().length === 1) {
+			setDisableDelete(true);
+		}
+	}, [subscriptions]);
 
 	function handleEndDateChange(event) {
 		updateEndDate(productKey, event.currentTarget.value);
@@ -245,6 +252,7 @@ function Subscription({accountName, detail, instanceSizes}) {
 			<ClayTable.Cell>
 				<button
 					className="btn btn-icon btn-sm"
+					disabled={disableDelete}
 					onClick={handleDeleteSubscription}
 					role="button"
 					title={Liferay.Language.get('delete')}

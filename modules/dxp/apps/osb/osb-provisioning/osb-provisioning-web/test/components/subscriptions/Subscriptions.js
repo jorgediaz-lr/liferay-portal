@@ -9,7 +9,7 @@
  * distribution rights of the Software.
  */
 
-import {cleanup, fireEvent, render} from '@testing-library/react';
+import {cleanup, fireEvent, prettyDOM, render} from '@testing-library/react';
 import React from 'react';
 
 import Subscriptions from '../../../src/main/resources/META-INF/resources/js/components/subscriptions/Subscriptions';
@@ -71,6 +71,18 @@ describe('Subscriptions', () => {
 
 		expect(allDeleteIcons[0]).toBeTruthy();
 		expect(allDeleteIcons.length).toBe(4);
+	});
+
+	it('displays a disabled delete subscription icon when there is only one subscription', () => {
+		const {getAllByLabelText, getByText} = renderSubscriptions();
+
+		const allDeleteIcons = getAllByLabelText('delete-subscription-icon');
+
+		allDeleteIcons.forEach(icon => {
+			fireEvent.click(icon);
+		});
+
+		expect(getByText('Product D'));
 	});
 
 	it('displays the product name for each of the selected products', () => {
