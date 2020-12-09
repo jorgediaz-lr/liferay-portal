@@ -42,8 +42,7 @@ public class SerialDestinationPrototype implements DestinationPrototype {
 		serialDestination.setPortalExecutorManager(_portalExecutorManager);
 		serialDestination.setRejectedExecutionHandler(
 			destinationConfiguration.getRejectedExecutionHandler());
-		serialDestination.setWorkersCoreSize(_WORKERS_CORE_SIZE);
-		serialDestination.setWorkersMaxSize(_WORKERS_MAX_SIZE);
+		serialDestination.setWorkersSize(_WORKERS_CORE_SIZE, _WORKERS_MAX_SIZE);
 
 		serialDestination.afterPropertiesSet();
 

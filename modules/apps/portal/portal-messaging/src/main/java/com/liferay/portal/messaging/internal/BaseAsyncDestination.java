@@ -190,6 +190,11 @@ public abstract class BaseAsyncDestination extends BaseDestination {
 		_rejectedExecutionHandler = rejectedExecutionHandler;
 	}
 
+	/**
+	 *   @deprecated As of Cavanaugh (7.4.x), replaced by {@link
+	 *          #setWorkersSize(int, int)}
+	 */
+	@Deprecated
 	public void setWorkersCoreSize(int workersCoreSize) {
 		_workersCoreSize = workersCoreSize;
 
@@ -199,12 +204,27 @@ public abstract class BaseAsyncDestination extends BaseDestination {
 		}
 	}
 
+	/**
+	 *   @deprecated As of Cavanaugh (7.4.x), replaced by {@link
+	 *          #setWorkersSize(int, int)}
+	 */
+	@Deprecated
 	public void setWorkersMaxSize(int workersMaxSize) {
 		_workersMaxSize = workersMaxSize;
 
 		if (_threadPoolExecutor != null) {
 			_threadPoolExecutor.adjustPoolSize(
 				_workersCoreSize, workersMaxSize);
+		}
+	}
+
+	public void setWorkersSize(int workersCoreSize, int workersMaxSize) {
+		_workersCoreSize = workersCoreSize;
+
+		_workersMaxSize = workersMaxSize;
+
+		if (_threadPoolExecutor != null) {
+			_threadPoolExecutor.adjustPoolSize(workersCoreSize, workersMaxSize);
 		}
 	}
 
