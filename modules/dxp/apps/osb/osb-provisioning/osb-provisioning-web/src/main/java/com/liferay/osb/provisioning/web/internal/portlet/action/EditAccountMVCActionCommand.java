@@ -107,6 +107,12 @@ public class EditAccountMVCActionCommand extends BaseMVCActionCommand {
 
 		String accountKey = ParamUtil.getString(actionRequest, "accountKey");
 
+		String tabs1 = ParamUtil.getString(actionRequest, "tabs1");
+
+		if (Validator.isNull(tabs1)) {
+			tabs1 = "details";
+		}
+
 		try {
 			if (Validator.isNotNull(accountKey)) {
 				updateAccount(actionRequest, actionResponse, accountKey, user);
@@ -117,7 +123,7 @@ public class EditAccountMVCActionCommand extends BaseMVCActionCommand {
 
 			sendRedirect(
 				actionRequest, actionResponse,
-				getRedirect(actionResponse, accountKey));
+				getRedirect(actionResponse, accountKey, tabs1));
 		}
 		catch (Exception exception) {
 			if (exception instanceof AccountCodeException ||
@@ -133,7 +139,7 @@ public class EditAccountMVCActionCommand extends BaseMVCActionCommand {
 				if (Validator.isNotNull(accountKey)) {
 					sendRedirect(
 						actionRequest, actionResponse,
-						getRedirect(actionResponse, accountKey));
+						getRedirect(actionResponse, accountKey, tabs1));
 				}
 				else {
 					actionResponse.setRenderParameter(
@@ -149,7 +155,7 @@ public class EditAccountMVCActionCommand extends BaseMVCActionCommand {
 	}
 
 	protected String getRedirect(
-			ActionResponse actionResponse, String accountKey)
+			ActionResponse actionResponse, String accountKey, String tabs1)
 		throws Exception {
 
 		LiferayPortletResponse liferayPortletResponse =
@@ -159,7 +165,7 @@ public class EditAccountMVCActionCommand extends BaseMVCActionCommand {
 
 		portletURL.setParameter(
 			"mvcRenderCommandName", "/accounts/view_account");
-		portletURL.setParameter("tabs1", "details");
+		portletURL.setParameter("tabs1", tabs1);
 		portletURL.setParameter("accountKey", accountKey);
 
 		return portletURL.toString();
