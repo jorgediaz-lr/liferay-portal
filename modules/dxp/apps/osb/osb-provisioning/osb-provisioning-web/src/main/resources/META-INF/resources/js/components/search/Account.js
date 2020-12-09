@@ -136,24 +136,42 @@ Account.propTypes = {
 };
 
 function ExternalSelect({externalData}) {
+	const formFieldKey = `${NAMESPACE}${externalData.formField}Key`;
+	const formFieldName = `${NAMESPACE}${externalData.formField}Name`;
+
 	function handleClick() {
-		itemSelectorDialogSelection(externalData);
+		const assignInputValueFromDialog = fieldData => {
+			const {key, name} = fieldData;
+
+			const keyInput = document.querySelector(
+				`input[name = "${formFieldKey}"]`
+			);
+
+			if (keyInput) {
+				keyInput.value = key;
+			}
+
+			const displayInput = document.getElementById(
+				externalData.formField
+			);
+			const nameInput = document.querySelector(
+				`input[name = "${formFieldName}"]`
+			);
+
+			if (displayInput && nameInput) {
+				displayInput.value = name;
+				nameInput.value = name;
+			}
+		};
+
+		itemSelectorDialogSelection(externalData, assignInputValueFromDialog);
 	}
 
 	return (
 		<>
-			<input
-				name={`${NAMESPACE}${externalData.formField}Key`}
-				type="hidden"
-				value={''}
-			/>
+			<input name={formFieldKey} type="hidden" value={''} />
+			<input name={formFieldName} type="hidden" value={''} />
 
-			<input
-				name={`${NAMESPACE}${externalData.formField}Name`}
-				type="hidden"
-				value={''}
-			/>
-			
 			<ExternalSelectField
 				clickFn={handleClick}
 				id={externalData.formField}
