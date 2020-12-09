@@ -219,6 +219,12 @@ public abstract class BaseAsyncDestination extends BaseDestination {
 	}
 
 	public void setWorkersSize(int workersCoreSize, int workersMaxSize) {
+		if ((workersCoreSize < 0) || (workersMaxSize <= 0) ||
+			(workersMaxSize < workersCoreSize)) {
+
+			throw new IllegalArgumentException();
+		}
+
 		_workersCoreSize = workersCoreSize;
 
 		_workersMaxSize = workersMaxSize;
