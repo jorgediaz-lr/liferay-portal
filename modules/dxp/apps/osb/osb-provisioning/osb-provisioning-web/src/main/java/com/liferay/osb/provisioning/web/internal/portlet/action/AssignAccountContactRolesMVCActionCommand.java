@@ -16,8 +16,12 @@ package com.liferay.osb.provisioning.web.internal.portlet.action;
 
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
+import com.liferay.osb.provisioning.exception.ContactRequiredException;
+import com.liferay.osb.provisioning.koroneiki.constants.ContactRoleConstants;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
+import com.liferay.osb.provisioning.koroneiki.web.service.ContactRoleWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.exception.HttpException;
+import com.liferay.osb.provisioning.web.internal.util.ZendeskValidator;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
@@ -77,6 +81,19 @@ public class AssignAccountContactRolesMVCActionCommand
 			}
 
 			if (!ArrayUtil.isEmpty(deleteContactRoleKeys)) {
+				ContactRole supportDeveloperContactRole =
+					_contactRoleWebService.getContactRole(
+						ContactRole.Type.ACCOUNT_CUSTOMER.toString(),
+						ContactRoleConstants.NAME_SUPPORT_DEVELOPER);
+
+				if (ArrayUtil.contains(
+						deleteContactRoleKeys,
+						supportDeveloperContactRole.getKey())) {
+
+					ZendeskValidator.validateZendeskTickets(
+						accountKey, emailAddress);
+				}
+
 				_accountWebService.unassignContactRoles(
 					user.getFullName(), user.getUuid(), accountKey,
 					emailAddress, deleteContactRoleKeys);
@@ -106,9 +123,17 @@ public class AssignAccountContactRolesMVCActionCommand
 			}
 		}
 		catch (Exception exception) {
-			_log.error(exception, exception);
+			if (exception instanceof ContactRequiredException) {
+				SessionErrors.add(
+					actionRequest, exception.getClass(), exception);
 
-			throw exception;
+				sendRedirect(actionRequest, actionResponse);
+			}
+			else {
+				_log.error(exception, exception);
+
+				throw exception;
+			}
 		}
 	}
 
@@ -117,5 +142,8 @@ public class AssignAccountContactRolesMVCActionCommand
 
 	@Reference
 	private AccountWebService _accountWebService;
+
+	@Reference
+	private ContactRoleWebService _contactRoleWebService;
 
 }
