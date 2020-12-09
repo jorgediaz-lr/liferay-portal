@@ -80,7 +80,6 @@ public class CorpEntryMigration {
 				account.setAccountKey(
 					ModelKeyGenerator.generate(account.getAccountId()));
 				account.setName(resultSet.getString("name"));
-				account.setCode(_getCode(resultSet.getString("name")));
 
 				Map<Locale, String> descriptionMap =
 					LocalizationUtil.getLocalizationMap(
@@ -120,6 +119,32 @@ public class CorpEntryMigration {
 
 		if (_log.isInfoEnabled()) {
 			_log.info("Migration took " + stopWatch.getTime() + " ms");
+		}
+	}
+
+	public void updateAccountCodes() throws Exception {
+		StopWatch stopWatch = new StopWatch();
+
+		stopWatch.start();
+
+		try (Connection connection = DataAccess.getConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(
+				"select * from OSB_CorpEntry");
+			ResultSet resultSet = preparedStatement.executeQuery()) {
+
+			while (resultSet.next()) {
+				Account account = _accountLocalService.getAccount(
+					resultSet.getLong("corpEntryId"));
+
+				account.setCode(_getCode(resultSet.getString("name")));
+
+				_accountLocalService.updateAccount(account);
+			}
+		}
+
+		if (_log.isInfoEnabled()) {
+			_log.info(
+				"Account code update took " + stopWatch.getTime() + " ms");
 		}
 	}
 

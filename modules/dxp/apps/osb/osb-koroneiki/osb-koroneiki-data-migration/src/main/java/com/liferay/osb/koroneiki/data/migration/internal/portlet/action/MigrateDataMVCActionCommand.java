@@ -77,6 +77,9 @@ public class MigrateDataMVCActionCommand extends BaseMVCActionCommand {
 
 			_corpEntryMigration.migrate(themeDisplay.getUserId());
 			_corpProjectMigration.migrate(themeDisplay.getUserId());
+
+			_corpEntryMigration.updateAccountCodes();
+
 			_partnerMigration.migrate(themeDisplay.getUserId());
 			_userMigration.migrate(themeDisplay.getUserId());
 
