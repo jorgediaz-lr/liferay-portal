@@ -227,7 +227,7 @@ public class SharepointExtRepository implements ExtRepository {
 
 			return getExtRepositoryObject(
 				extRepositoryObjectType,
-				_getExtRepositoryObjectPath(
+				_getExtRepositoryObjectKey(
 					newExtRepositoryFolderKey, newTitle));
 		}
 		catch (UnirestException unirestException) {
@@ -584,7 +584,7 @@ public class SharepointExtRepository implements ExtRepository {
 
 			return getExtRepositoryObject(
 				extRepositoryObjectType,
-				_getExtRepositoryObjectPath(
+				_getExtRepositoryObjectKey(
 					newExtRepositoryFolderKey, newTitle));
 		}
 		catch (UnirestException unirestException) {
@@ -741,7 +741,7 @@ public class SharepointExtRepository implements ExtRepository {
 			_getJSONObject(url));
 	}
 
-	private String _getExtRepositoryObjectPath(
+	private String _getExtRepositoryObjectKey(
 		String extRepositoryFolderKey, String title) {
 
 		StringBundler sb = new StringBundler(4);
