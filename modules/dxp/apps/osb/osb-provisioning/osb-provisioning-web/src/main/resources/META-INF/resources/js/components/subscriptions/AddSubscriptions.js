@@ -10,9 +10,12 @@
  */
 
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 
-import {SubscriptionsProvider} from '../../hooks/subscriptions';
+import {
+	SubscriptionsProvider,
+	useSubscriptions
+} from '../../hooks/subscriptions';
 import Subscriptions from './Subscriptions';
 
 function AddSubscriptions({accountName, details, sizing}) {
@@ -33,19 +36,7 @@ function AddSubscriptions({accountName, details, sizing}) {
 					/>
 				</div>
 
-				<div className="button-holder">
-					<button
-						className="btn btn-primary"
-						disabled={true}
-						type="submit"
-					>
-						{Liferay.Language.get('save')}
-					</button>
-
-					<button className="btn btn-secondary" type="cancel">
-						{Liferay.Language.get('cancel')}
-					</button>
-				</div>
+				<SubscriptionActions />
 			</div>
 		</SubscriptionsProvider>
 	);
@@ -64,5 +55,38 @@ AddSubscriptions.propTypes = {
 	selectProductsURL: PropTypes.string,
 	sizing: PropTypes.arrayOf(PropTypes.string)
 };
+
+function SubscriptionActions() {
+	const [subscriptions] = useSubscriptions();
+
+	const [disableSave, setDisableSave] = useState(true);
+
+	useEffect(() => {
+		if (
+			subscriptions
+				.toList()
+				.toArray()
+				.every(subscription => subscription.salesforceOpportunityKey)
+		) {
+			setDisableSave(false);
+		}
+	}, [subscriptions]);
+
+	return (
+		<div className="button-holder">
+			<button
+				className="btn btn-primary"
+				disabled={disableSave}
+				type="submit"
+			>
+				{Liferay.Language.get('save')}
+			</button>
+
+			<button className="btn btn-secondary" type="cancel">
+				{Liferay.Language.get('cancel')}
+			</button>
+		</div>
+	);
+}
 
 export default AddSubscriptions;

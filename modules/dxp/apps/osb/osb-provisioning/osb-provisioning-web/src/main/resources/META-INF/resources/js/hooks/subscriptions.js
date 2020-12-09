@@ -18,7 +18,7 @@ export const SubscriptionRecord = Record({
 	productKey: null,
 	productName: '',
 	quantity: '1',
-	salesForceOpportunityKey: '',
+	salesforceOpportunityKey: '',
 	sizing: '1',
 	startDate: ''
 });
@@ -26,19 +26,9 @@ export const SubscriptionRecord = Record({
 const SubscriptionsContext = React.createContext();
 
 export function SubscriptionsProvider({initialSubscriptions = [], children}) {
-	const processedSubscriptions = initialSubscriptions.map(detail => [
-		detail.productKey,
-		SubscriptionRecord({
-			endDate: detail.endDate,
-			perpetual: detail.perpetual,
-			productKey: detail.productKey,
-			productName: detail.productName,
-			quantity: detail.quantity,
-			salesforceOpportunityKey: detail.quantity,
-			sizing: detail.sizing,
-			startDate: detail.startDate
-		})
-	]);
+	const processedSubscriptions = initialSubscriptions.map(detail => {
+		return [detail.productKey, SubscriptionRecord(detail)];
+	});
 
 	const [subscriptions, setSubscriptions] = useState(
 		Map(processedSubscriptions)

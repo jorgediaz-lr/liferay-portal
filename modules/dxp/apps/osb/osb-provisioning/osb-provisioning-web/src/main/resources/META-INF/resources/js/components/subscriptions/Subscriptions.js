@@ -146,7 +146,8 @@ function Subscription({accountName, detail, instanceSizes}) {
 				if (attributeValue) {
 					dateBtn.setAttribute('disabled', attributeValue);
 					dateInput.setAttribute('disabled', attributeValue);
-				} else {
+				}
+				else {
 					dateBtn.removeAttribute('disabled');
 					dateInput.removeAttribute('disabled');
 				}
@@ -160,6 +161,9 @@ function Subscription({accountName, detail, instanceSizes}) {
 			<ClayTable.Cell>
 				<label htmlFor="salesforceOpportunityKey">
 					<input
+						aria-label={Liferay.Language.get(
+							'salesforce-opportunity-key'
+						)}
 						className="form-control form-control-sm"
 						id="salesforceOpportunityKey"
 						onChange={handleSalesforceOpportunityKeyChange}

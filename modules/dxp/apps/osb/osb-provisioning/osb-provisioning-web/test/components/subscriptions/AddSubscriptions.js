@@ -9,7 +9,7 @@
  * distribution rights of the Software.
  */
 
-import {cleanup, render} from '@testing-library/react';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 import React from 'react';
 
 import AddSubscriptions from '../../../src/main/resources/META-INF/resources/js/components/subscriptions/AddSubscriptions';
@@ -58,5 +58,15 @@ describe('AddSubscriptions', () => {
 		const {getByText} = renderAddSubscriptions();
 
 		expect(getByText('cancel')).toBeTruthy();
+	});
+
+	it('enables the Save button once a Salesforce Opportunity Key is entered', () => {
+		const {getByLabelText, getByText} = renderAddSubscriptions();
+
+		fireEvent.change(getByLabelText('salesforce-opportunity-key'), {
+			target: {value: 'test'}
+		});
+
+		expect(getByText('save').disabled).toBeFalsy();
 	});
 });
