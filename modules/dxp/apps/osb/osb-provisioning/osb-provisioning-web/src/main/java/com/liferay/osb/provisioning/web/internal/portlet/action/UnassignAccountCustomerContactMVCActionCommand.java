@@ -61,7 +61,7 @@ public class UnassignAccountCustomerContactMVCActionCommand
 			String emailAddress = ParamUtil.getString(
 				actionRequest, "emailAddress");
 
-			ZendeskValidator.validateZendeskTickets(accountKey, emailAddress);
+			_zendeskValidator.validateZendeskTickets(accountKey, emailAddress);
 
 			User user = themeDisplay.getUser();
 
@@ -84,5 +84,8 @@ public class UnassignAccountCustomerContactMVCActionCommand
 
 	@Reference
 	private AccountWebService _accountWebService;
+
+	@Reference
+	private ZendeskValidator _zendeskValidator;
 
 }

@@ -90,7 +90,7 @@ public class AssignAccountContactRolesMVCActionCommand
 						deleteContactRoleKeys,
 						supportDeveloperContactRole.getKey())) {
 
-					ZendeskValidator.validateZendeskTickets(
+					_zendeskValidator.validateZendeskTickets(
 						accountKey, emailAddress);
 				}
 
@@ -145,5 +145,8 @@ public class AssignAccountContactRolesMVCActionCommand
 
 	@Reference
 	private ContactRoleWebService _contactRoleWebService;
+
+	@Reference
+	private ZendeskValidator _zendeskValidator;
 
 }

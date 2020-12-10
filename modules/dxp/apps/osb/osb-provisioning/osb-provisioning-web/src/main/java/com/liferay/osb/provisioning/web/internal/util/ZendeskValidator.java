@@ -42,32 +42,65 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Kyle Bischof
  */
-@Component(immediate = true, service = {})
+@Component(immediate = true, service = ZendeskValidator.class)
 public class ZendeskValidator {
 
-	public static void validateZendeskTickets(
-			String accountKey, String emailAddress)
+	public void validateZendeskTickets(String accountKey, String emailAddress)
 		throws Exception {
 
-		_zendeskValidator._validateZendeskTickets(accountKey, emailAddress);
-	}
+		if (_getDeveloperCount(accountKey) > 1) {
+			return;
+		}
 
-	@Activate
-	protected void activate() {
-		_zendeskValidator = this;
-	}
+		ZendeskUser zendeskUser =
+			_zendeskUserWebService.getZendeskUserByEmailAddress(emailAddress);
 
-	@Deactivate
-	protected void deactivate() {
-		_zendeskValidator = null;
+		if (zendeskUser == null) {
+			return;
+		}
+
+		List<Long> zendeskOrganizationIds = _getFLSZendeskOrganizationIds(
+			accountKey);
+
+		AccountEntry accountEntry = _accountEntryWebService.fetchAccountEntry(
+			accountKey);
+
+		if (accountEntry != null) {
+			ZendeskOrganization zendeskOrganization =
+				_zendeskOrganizationWebService.getZendeskOrganization(
+					String.valueOf(accountEntry.getAccountEntryId()));
+
+			if (zendeskOrganization != null) {
+				zendeskOrganizationIds.add(
+					zendeskOrganization.getZendeskOrganizationId());
+			}
+		}
+
+		if (zendeskOrganizationIds.isEmpty()) {
+			return;
+		}
+
+		Set<String> criteria = new HashSet<>();
+
+		for (long zendeskOrganizationId : zendeskOrganizationIds) {
+			criteria.add("organization:" + zendeskOrganizationId);
+		}
+
+		criteria.add("requester:" + zendeskUser.getZendeskUserId());
+		criteria.add("status<closed");
+
+		List<ZendeskTicket> zendeskTickets =
+			_zendeskTicketWebService.getZendeskTickets(criteria);
+
+		if (!zendeskTickets.isEmpty()) {
+			throw new ContactRequiredException();
+		}
 	}
 
 	private long _getDeveloperCount(String accountKey) throws Exception {
@@ -139,60 +172,6 @@ public class ZendeskValidator {
 
 		return zendeskOrganizationIds;
 	}
-
-	private void _validateZendeskTickets(String accountKey, String emailAddress)
-		throws Exception {
-
-		if (_getDeveloperCount(accountKey) > 1) {
-			return;
-		}
-
-		ZendeskUser zendeskUser =
-			_zendeskUserWebService.getZendeskUserByEmailAddress(emailAddress);
-
-		if (zendeskUser == null) {
-			return;
-		}
-
-		List<Long> zendeskOrganizationIds = _getFLSZendeskOrganizationIds(
-			accountKey);
-
-		AccountEntry accountEntry = _accountEntryWebService.fetchAccountEntry(
-			accountKey);
-
-		if (accountEntry != null) {
-			ZendeskOrganization zendeskOrganization =
-				_zendeskOrganizationWebService.getZendeskOrganization(
-					String.valueOf(accountEntry.getAccountEntryId()));
-
-			if (zendeskOrganization != null) {
-				zendeskOrganizationIds.add(
-					zendeskOrganization.getZendeskOrganizationId());
-			}
-		}
-
-		if (zendeskOrganizationIds.isEmpty()) {
-			return;
-		}
-
-		Set<String> criteria = new HashSet<>();
-
-		for (long zendeskOrganizationId : zendeskOrganizationIds) {
-			criteria.add("organization:" + zendeskOrganizationId);
-		}
-
-		criteria.add("requester:" + zendeskUser.getZendeskUserId());
-		criteria.add("status<closed");
-
-		List<ZendeskTicket> zendeskTickets =
-			_zendeskTicketWebService.getZendeskTickets(criteria);
-
-		if (!zendeskTickets.isEmpty()) {
-			throw new ContactRequiredException();
-		}
-	}
-
-	private static ZendeskValidator _zendeskValidator;
 
 	@Reference
 	private AccountEntryWebService _accountEntryWebService;
