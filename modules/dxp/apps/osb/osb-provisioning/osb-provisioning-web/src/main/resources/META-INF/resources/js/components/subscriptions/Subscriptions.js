@@ -70,12 +70,12 @@ function Subscriptions({accountName, instanceSizes = []}) {
 
 Subscriptions.propTypes = {
 	accountName: PropTypes.string.isRequired,
-	instanceSizes: PropTypes.arrayOf(PropTypes.string)
+	instanceSizes: PropTypes.arrayOf(PropTypes.number)
 };
 
 function Subscription({accountName, detail, instanceSizes}) {
 	const {
-		endDate,
+		originalEndDate,
 		perpetual,
 		productKey,
 		productName,
@@ -85,7 +85,7 @@ function Subscription({accountName, detail, instanceSizes}) {
 		startDate
 	} = detail;
 
-	const [currentEndDate, setCurrentEndDate] = useState(endDate);
+	const [currentEndDate, setCurrentEndDate] = useState(originalEndDate);
 	const [currentStartDate, setCurrentStartDate] = useState(startDate);
 	const [disableDelete, setDisableDelete] = useState(false);
 
@@ -93,7 +93,7 @@ function Subscription({accountName, detail, instanceSizes}) {
 		subscriptions,
 		{
 			deleteSubscription,
-			updateEndDate,
+			updateOriginalEndDate,
 			updatePerpetual,
 			updateQuantity,
 			updateSalesforceOpportunityKey,
@@ -108,8 +108,10 @@ function Subscription({accountName, detail, instanceSizes}) {
 		}
 	}, [subscriptions]);
 
-	function handleEndDateChange(event) {
-		updateEndDate(productKey, event.currentTarget.value);
+	function handleEndDateChange(value) {
+		setCurrentEndDate(value);
+
+		updateOriginalEndDate(productKey, value);
 	}
 
 	function handleDeleteSubscription() {
@@ -136,8 +138,10 @@ function Subscription({accountName, detail, instanceSizes}) {
 		updateSizing(productKey, event.currentTarget.value);
 	}
 
-	function handleStartDateChange(event) {
-		updateStartDate(productKey, event.currentTarget.value);
+	function handleStartDateChange(value) {
+		setCurrentStartDate(value);
+
+		updateStartDate(productKey, value);
 	}
 
 	function setDisabledAttribute(attributeValue) {
@@ -212,8 +216,7 @@ function Subscription({accountName, detail, instanceSizes}) {
 					<ClayDatePicker
 						id="startDate"
 						inputName="startDate"
-						onChange={handleStartDateChange}
-						onValueChange={setCurrentStartDate}
+						onValueChange={handleStartDateChange}
 						placeholder="YYYY-MM-DD"
 						value={currentStartDate}
 					/>
@@ -224,8 +227,7 @@ function Subscription({accountName, detail, instanceSizes}) {
 					<ClayDatePicker
 						id="endDate"
 						inputName="endDate"
-						onChange={handleEndDateChange}
-						onValueChange={setCurrentEndDate}
+						onValueChange={handleEndDateChange}
 						placeholder="YYYY-MM-DD"
 						value={currentEndDate}
 					/>

@@ -26,8 +26,10 @@ function renderAddSubscriptions(props) {
 					startDate: '12/08/2020'
 				}
 			]}
+			editProductPurchasesURL="/edit/product/purchases/url"
+			redirect="/back/url"
 			selectProductsURL="/select/products/url"
-			sizing={['1', '2', '3', '4']}
+			sizing={[1, 2, 3, 4]}
 			{...props}
 		/>
 	);

@@ -16,9 +16,16 @@ import {
 	SubscriptionsProvider,
 	useSubscriptions
 } from '../../hooks/subscriptions';
+import {NAMESPACE} from '../../utilities/constants';
 import Subscriptions from './Subscriptions';
 
-function AddSubscriptions({accountName, details, redirect, sizing}) {
+function AddSubscriptions({
+	accountName,
+	details,
+	editProductPurchasesURL,
+	redirect,
+	sizing
+}) {
 	return (
 		<SubscriptionsProvider initialSubscriptions={details}>
 			<div className="subscriptions-container">
@@ -36,7 +43,10 @@ function AddSubscriptions({accountName, details, redirect, sizing}) {
 					/>
 				</div>
 
-				<SubscriptionActions backURL={redirect} />
+				<SubscriptionActions
+					backURL={redirect}
+					formAction={editProductPurchasesURL}
+				/>
 			</div>
 		</SubscriptionsProvider>
 	);
@@ -46,18 +56,19 @@ AddSubscriptions.propTypes = {
 	accountName: PropTypes.string.isRequired,
 	details: PropTypes.arrayOf(
 		PropTypes.shape({
-			endDate: PropTypes.string,
+			originalEndDate: PropTypes.string,
 			productKey: PropTypes.string,
 			productName: PropTypes.string,
 			startDate: PropTypes.string
 		})
 	),
-	redirect: PropTypes.string,
+	editProductPurchasesURL: PropTypes.string.isRequired,
+	redirect: PropTypes.string.isRequired,
 	selectProductsURL: PropTypes.string,
-	sizing: PropTypes.arrayOf(PropTypes.string)
+	sizing: PropTypes.arrayOf(PropTypes.number)
 };
 
-function SubscriptionActions({backURL}) {
+function SubscriptionActions({backURL, formAction}) {
 	const [subscriptions] = useSubscriptions();
 
 	const [disableSave, setDisableSave] = useState(true);
@@ -73,20 +84,48 @@ function SubscriptionActions({backURL}) {
 		}
 	}, [subscriptions]);
 
-	return (
-		<div className="button-holder">
-			<button
-				className="btn btn-primary"
-				disabled={disableSave}
-				type="submit"
-			>
-				{Liferay.Language.get('save')}
-			</button>
+	function processSubmissionData() {
+		const submissionData = subscriptions
+			.toList()
+			.toJS()
+			.map(entry => {
+				entry['externalLinks'] = [
+					{
+						domain: 'salesforce',
+						entityId: entry.salesforceOpportunityKey,
+						entityName: 'opportunity'
+					}
+				];
+				entry['properties'] = {sizing: entry.sizing};
 
-			<a className="btn btn-secondary" href={backURL} type="button">
-				{Liferay.Language.get('cancel')}
-			</a>
-		</div>
+				return entry;
+			});
+
+		return JSON.stringify(submissionData);
+	}
+
+	return (
+		<form action={formAction} method="post">
+			<input
+				name={`${NAMESPACE}data`}
+				type="hidden"
+				value={processSubmissionData()}
+			/>
+
+			<div className="button-holder">
+				<button
+					className="btn btn-primary"
+					disabled={disableSave}
+					type="submit"
+				>
+					{Liferay.Language.get('save')}
+				</button>
+
+				<a className="btn btn-secondary" href={backURL} type="button">
+					{Liferay.Language.get('cancel')}
+				</a>
+			</div>
+		</form>
 	);
 }
 

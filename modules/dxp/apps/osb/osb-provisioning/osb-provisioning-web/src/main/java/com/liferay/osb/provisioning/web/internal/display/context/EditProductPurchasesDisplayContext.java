@@ -205,9 +205,7 @@ public class EditProductPurchasesDisplayContext
 		for (Product product : _products) {
 			productPurchasesJSONArray.put(
 				JSONUtil.put(
-					"endDate", _getDate(null, "endDate")
-				).put(
-					"gracePeriodEndDate", _getDate(null, "gracePeriodEndDate")
+					"originalEndDate", _getDate(null, "endDate")
 				).put(
 					"productKey", product.getKey()
 				).put(

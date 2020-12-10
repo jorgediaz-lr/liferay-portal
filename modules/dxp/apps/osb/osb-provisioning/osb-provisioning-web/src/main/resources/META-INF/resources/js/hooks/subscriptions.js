@@ -12,15 +12,18 @@
 import {Map, Record} from 'immutable';
 import React, {useContext, useState} from 'react';
 
+import {PRODUCT_PURCHASE_STATUS_APPROVED} from '../utilities/constants';
+
 export const SubscriptionRecord = Record({
-	endDate: '',
+	originalEndDate: '',
 	perpetual: false,
 	productKey: null,
 	productName: '',
 	quantity: '1',
 	salesforceOpportunityKey: '',
 	sizing: '1',
-	startDate: ''
+	startDate: '',
+	status: PRODUCT_PURCHASE_STATUS_APPROVED
 });
 
 const SubscriptionsContext = React.createContext();
@@ -50,11 +53,11 @@ export function SubscriptionsProvider({initialSubscriptions = [], children}) {
 					deleteSubscription(productKey) {
 						setSubscriptions(subscriptions.delete(productKey));
 					},
-					updateEndDate(productKey, endDate) {
+					updateOriginalEndDate(productKey, originalEndDate) {
 						setSubscriptions(
 							subscriptions.setIn(
-								[productKey, 'endDate'],
-								endDate
+								[productKey, 'originalEndDate'],
+								originalEndDate
 							)
 						);
 					},

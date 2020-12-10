@@ -49,7 +49,7 @@ function renderSubscriptions(subscriptions = mockSubscriptions()) {
 		<SubscriptionsProvider initialSubscriptions={subscriptions}>
 			<Subscriptions
 				accountName="Test Account"
-				instanceSizes={['1', '2', '3', '4']}
+				instanceSizes={[1, 2, 3, 4]}
 			/>
 		</SubscriptionsProvider>
 	);
