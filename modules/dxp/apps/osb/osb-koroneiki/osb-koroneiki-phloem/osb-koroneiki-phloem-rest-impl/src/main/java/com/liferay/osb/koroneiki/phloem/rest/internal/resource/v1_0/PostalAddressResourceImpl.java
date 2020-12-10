@@ -99,8 +99,6 @@ public class PostalAddressResourceImpl extends BasePostalAddressResourceImpl {
 		long regionId = _getRegionId(
 			countryId, postalAddress.getAddressRegion(), 0);
 
-		long listTypeId = _getListTypeId(postalAddress.getAddressType(), 0);
-
 		return PostalAddressUtil.toPostalAddress(
 			_addressService.addAddress(
 				Account.class.getName(), account.getAccountId(),
@@ -108,7 +106,8 @@ public class PostalAddressResourceImpl extends BasePostalAddressResourceImpl {
 				postalAddress.getStreetAddressLine2(),
 				postalAddress.getStreetAddressLine3(),
 				postalAddress.getAddressLocality(),
-				postalAddress.getPostalCode(), regionId, countryId, listTypeId,
+				postalAddress.getPostalCode(), regionId, countryId,
+				_getListTypeId(postalAddress.getAddressType(), 0),
 				GetterUtil.getBoolean(postalAddress.getMailing()),
 				GetterUtil.getBoolean(postalAddress.getPrimary()),
 				ServiceContextUtil.getServiceContext()));

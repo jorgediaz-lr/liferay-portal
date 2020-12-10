@@ -375,12 +375,11 @@ public class ViewAccountDisplayContext {
 		String orderByType = ParamUtil.getString(
 			renderRequest, "orderByType", "asc");
 
-		String sorts = _getSorts(orderByCol, orderByType);
-
 		List<ProductPurchaseView> productPurchaseViews =
 			productPurchaseViewWebService.getProductPurchaseViews(
 				keywords, _getFilter(tabs2), searchContainer.getCur(),
-				searchContainer.getEnd() - searchContainer.getStart(), sorts);
+				searchContainer.getEnd() - searchContainer.getStart(),
+				_getSorts(orderByCol, orderByType));
 
 		searchContainer.setResults(
 			TransformUtil.transform(

@@ -311,9 +311,7 @@ public class ContentPageLayoutEditorDisplayContext
 	}
 
 	private boolean _hasEditSegmentsEntryPermission() throws PortalException {
-		String editSegmentsEntryURL = _getEditSegmentsEntryURL();
-
-		if (Validator.isNull(editSegmentsEntryURL)) {
+		if (Validator.isNull(_getEditSegmentsEntryURL())) {
 			return false;
 		}
 

@@ -117,9 +117,9 @@ public abstract class BaseAssetDisplayPageFriendlyURLResolver
 		portal.setPageTitle(
 			infoDisplayObjectProvider.getTitle(locale), httpServletRequest);
 
-		AssetEntry assetEntry = _getAssetEntry(infoDisplayObjectProvider);
-
-		httpServletRequest.setAttribute(WebKeys.LAYOUT_ASSET_ENTRY, assetEntry);
+		httpServletRequest.setAttribute(
+			WebKeys.LAYOUT_ASSET_ENTRY,
+			_getAssetEntry(infoDisplayObjectProvider));
 
 		Layout layout = _getInfoDisplayObjectProviderLayout(
 			infoDisplayObjectProvider);
@@ -134,12 +134,9 @@ public abstract class BaseAssetDisplayPageFriendlyURLResolver
 			Map<String, Object> requestContext)
 		throws PortalException {
 
-		InfoDisplayContributor infoDisplayContributor =
-			_getInfoDisplayContributor(friendlyURL);
-
 		InfoDisplayObjectProvider infoDisplayObjectProvider =
 			_getInfoDisplayObjectProvider(
-				infoDisplayContributor, groupId, friendlyURL);
+				_getInfoDisplayContributor(friendlyURL), groupId, friendlyURL);
 
 		if (infoDisplayObjectProvider == null) {
 			throw new PortalException();

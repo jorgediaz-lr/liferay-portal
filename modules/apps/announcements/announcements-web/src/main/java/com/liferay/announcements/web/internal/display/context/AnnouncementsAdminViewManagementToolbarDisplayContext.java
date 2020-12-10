@@ -169,9 +169,7 @@ public class AnnouncementsAdminViewManagementToolbarDisplayContext {
 	public List<LabelItem> getFilterLabelItems() {
 		return new LabelItemList() {
 			{
-				String distributionScope = _getDistributionScope();
-
-				if (Validator.isNotNull(distributionScope)) {
+				if (Validator.isNotNull(_getDistributionScope())) {
 					add(
 						labelItem -> {
 							PortletURL removeLabelURL = PortletURLUtil.clone(

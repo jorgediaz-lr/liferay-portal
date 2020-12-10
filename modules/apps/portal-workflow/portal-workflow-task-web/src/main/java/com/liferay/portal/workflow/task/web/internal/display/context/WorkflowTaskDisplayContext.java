@@ -506,9 +506,7 @@ public class WorkflowTaskDisplayContext {
 			WorkflowLog workflowLog)
 		throws PortalException {
 
-		String actorName = _getActorName(workflowLog);
-
-		return HtmlUtil.escape(actorName);
+		return HtmlUtil.escape(_getActorName(workflowLog));
 	}
 
 	public String getTaskName(WorkflowTask workflowTask) {
@@ -518,9 +516,7 @@ public class WorkflowTaskDisplayContext {
 	public Object getTaskUpdateMessageArguments(WorkflowLog workflowLog)
 		throws PortalException {
 
-		String actorName = _getActorName(workflowLog);
-
-		return HtmlUtil.escape(actorName);
+		return HtmlUtil.escape(_getActorName(workflowLog));
 	}
 
 	public int getTotalItems() throws PortalException {
