@@ -106,12 +106,7 @@ public class EditAccountMVCActionCommand extends BaseMVCActionCommand {
 		User user = themeDisplay.getUser();
 
 		String accountKey = ParamUtil.getString(actionRequest, "accountKey");
-
-		String tabs1 = ParamUtil.getString(actionRequest, "tabs1");
-
-		if (Validator.isNull(tabs1)) {
-			tabs1 = "details";
-		}
+		String tabs1 = ParamUtil.getString(actionRequest, "tabs1", "details");
 
 		try {
 			if (Validator.isNotNull(accountKey)) {
@@ -165,8 +160,8 @@ public class EditAccountMVCActionCommand extends BaseMVCActionCommand {
 
 		portletURL.setParameter(
 			"mvcRenderCommandName", "/accounts/view_account");
-		portletURL.setParameter("tabs1", tabs1);
 		portletURL.setParameter("accountKey", accountKey);
+		portletURL.setParameter("tabs1", tabs1);
 
 		return portletURL.toString();
 	}
