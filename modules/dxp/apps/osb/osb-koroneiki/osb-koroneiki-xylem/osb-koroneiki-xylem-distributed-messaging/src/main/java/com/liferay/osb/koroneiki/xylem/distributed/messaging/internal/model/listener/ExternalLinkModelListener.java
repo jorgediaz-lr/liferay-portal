@@ -30,6 +30,7 @@ import com.liferay.osb.koroneiki.trunk.service.ProductEntryLocalService;
 import com.liferay.osb.koroneiki.trunk.service.ProductPurchaseLocalService;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.concurrent.Callable;
 
@@ -71,6 +72,23 @@ public class ExternalLinkModelListener
 				_productConsumptionLocalService.getProductConsumption(
 					externalLink.getClassPK());
 
+			Account account = _accountLocalService.getAccount(
+				productConsumption.getAccountId());
+
+			productConsumption.setAccountKey(account.getAccountKey());
+
+			if (productConsumption.getProductPurchaseId() > 0) {
+				ProductPurchase productPurchase =
+					_productPurchaseLocalService.getProductPurchase(
+						productConsumption.getProductPurchaseId());
+
+				productConsumption.setProductPurchaseKey(
+					productPurchase.getProductPurchaseKey());
+			}
+			else {
+				productConsumption.setProductPurchaseKey(StringPool.BLANK);
+			}
+
 			return () -> messageFactory.create(productConsumption);
 		}
 		else if (externalLink.getClassNameId() ==
@@ -90,12 +108,22 @@ public class ExternalLinkModelListener
 				_productPurchaseLocalService.getProductPurchase(
 					externalLink.getClassPK());
 
+			Account account = _accountLocalService.getAccount(
+				productPurchase.getAccountId());
+
+			productPurchase.setAccountKey(account.getAccountKey());
+
 			return () -> messageFactory.create(productPurchase);
 		}
 		else if (externalLink.getClassNameId() ==
 					_classNameLocalService.getClassNameId(Team.class)) {
 
 			Team team = _teamLocalService.getTeam(externalLink.getClassPK());
+
+			Account account = _accountLocalService.getAccount(
+				team.getAccountId());
+
+			team.setAccountKey(account.getAccountKey());
 
 			return () -> messageFactory.create(team);
 		}

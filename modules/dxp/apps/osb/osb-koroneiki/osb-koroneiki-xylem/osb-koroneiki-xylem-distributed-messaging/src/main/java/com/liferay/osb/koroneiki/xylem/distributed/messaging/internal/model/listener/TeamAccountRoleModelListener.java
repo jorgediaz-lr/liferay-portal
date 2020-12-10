@@ -19,11 +19,13 @@ import com.liferay.osb.koroneiki.taproot.model.Account;
 import com.liferay.osb.koroneiki.taproot.model.Team;
 import com.liferay.osb.koroneiki.taproot.model.TeamAccountRole;
 import com.liferay.osb.koroneiki.taproot.model.TeamRole;
+import com.liferay.osb.koroneiki.taproot.service.AccountLocalService;
 import com.liferay.portal.kernel.model.ModelListener;
 
 import java.util.concurrent.Callable;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Amos Fong
@@ -44,10 +46,20 @@ public class TeamAccountRoleModelListener
 		throws Exception {
 
 		Account account = teamAccountRole.getAccount();
+
 		Team team = teamAccountRole.getTeam();
+
+		Account teamAccount = _accountLocalService.getAccount(
+			team.getAccountId());
+
+		team.setAccountKey(teamAccount.getAccountKey());
+
 		TeamRole teamRole = teamAccountRole.getTeamRole();
 
 		return () -> messageFactory.create(account, team, teamRole);
 	}
+
+	@Reference
+	private AccountLocalService _accountLocalService;
 
 }

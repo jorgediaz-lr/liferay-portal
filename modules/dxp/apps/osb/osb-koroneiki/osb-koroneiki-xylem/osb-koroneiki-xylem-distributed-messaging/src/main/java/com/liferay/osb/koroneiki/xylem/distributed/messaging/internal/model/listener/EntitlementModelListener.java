@@ -16,6 +16,8 @@ package com.liferay.osb.koroneiki.xylem.distributed.messaging.internal.model.lis
 
 import com.liferay.osb.distributed.messaging.Message;
 import com.liferay.osb.koroneiki.phytohormone.model.Entitlement;
+import com.liferay.osb.koroneiki.phytohormone.model.EntitlementDefinition;
+import com.liferay.osb.koroneiki.phytohormone.service.EntitlementDefinitionLocalService;
 import com.liferay.osb.koroneiki.taproot.model.Account;
 import com.liferay.osb.koroneiki.taproot.model.Contact;
 import com.liferay.osb.koroneiki.taproot.service.AccountLocalService;
@@ -83,6 +85,13 @@ public class EntitlementModelListener
 	@Override
 	protected Callable<Message> getCallable(Entitlement entitlement)
 		throws PortalException {
+
+		EntitlementDefinition entitlementDefinition =
+			_entitlementDefinitionLocalService.getEntitlementDefinition(
+				entitlement.getEntitlementDefinitionId());
+
+		entitlement.setEntitlementDefinitionKey(
+			entitlementDefinition.getEntitlementDefinitionKey());
 
 		if (entitlement.getClassNameId() ==
 				_classNameLocalService.getClassNameId(Account.class)) {
@@ -160,5 +169,9 @@ public class EntitlementModelListener
 
 	@Reference
 	private ContactLocalService _contactLocalService;
+
+	@Reference
+	private EntitlementDefinitionLocalService
+		_entitlementDefinitionLocalService;
 
 }
