@@ -463,9 +463,9 @@ public class ViewAccountDisplayContext {
 
 		updateAccountURL.setParameter(
 			ActionRequest.ACTION_NAME, "/accounts/edit_account");
+		updateAccountURL.setParameter("tabs1", "support");
 		updateAccountURL.setParameter("redirect", _getPortletURL());
 		updateAccountURL.setParameter("accountKey", account.getKey());
-		updateAccountURL.setParameter("tabs1", "support");
 
 		data.put("updateAccountURL", updateAccountURL.toString());
 
