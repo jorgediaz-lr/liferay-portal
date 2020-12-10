@@ -49,6 +49,7 @@ public class MySitesItemSelectorViewDisplayContext
 			itemSelectedEventName, portletURL);
 
 		_groupSearchProvider = groupSearchProvider;
+
 		_portletRequest = getPortletRequest();
 
 		addBreadcrumbEntries();

@@ -83,6 +83,7 @@ public class DDMFormViewFormInstanceRecordsDisplayContext {
 
 		_renderRequest = renderRequest;
 		_renderResponse = renderResponse;
+
 		_ddmFormInstance = formInstance;
 		_ddmFormInstanceRecordLocalService = formInstanceRecordLocalService;
 		_ddmFormFieldTypeServicesTracker = formFieldTypeServicesTracker;

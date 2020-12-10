@@ -1247,6 +1247,7 @@ public class PortletURLImpl
 		_layout = layout;
 		_lifecycle = lifecycle;
 		_copy = copy;
+
 		_parametersIncludedInPath = Collections.emptySet();
 
 		PortletApp portletApp = portlet.getPortletApp();

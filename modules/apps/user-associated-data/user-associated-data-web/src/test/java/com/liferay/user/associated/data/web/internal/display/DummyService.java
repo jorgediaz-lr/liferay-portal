@@ -31,8 +31,9 @@ public class DummyService<T extends UserAssociatedEntity> {
 		long startingId,
 		Supplier<UserAssociatedEntity> userAssociatedEntitySupplier) {
 
-		_currentId = startingId;
 		_userAssociatedEntitySupplier = userAssociatedEntitySupplier;
+
+		_currentId = startingId;
 	}
 
 	public int count(long userId) {

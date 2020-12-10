@@ -49,8 +49,9 @@ public class AdminSubscriptionSender extends SubscriptionSender {
 		ServiceContext serviceContext) {
 
 		_kbArticle = kbArticle;
-		_kbArticleModelResourcePermission = modelResourcePermission;
 		_serviceContext = serviceContext;
+
+		_kbArticleModelResourcePermission = modelResourcePermission;
 	}
 
 	/**

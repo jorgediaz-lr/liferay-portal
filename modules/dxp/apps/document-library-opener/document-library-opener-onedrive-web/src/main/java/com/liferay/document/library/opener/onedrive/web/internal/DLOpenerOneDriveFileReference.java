@@ -63,8 +63,9 @@ public class DLOpenerOneDriveFileReference<E extends PortalException> {
 
 		_fileEntryId = fileEntryId;
 		_titleUnsafeSupplier = titleUnsafeSupplier;
-		_fileUnsafeSupplier = fileSupplier;
 		_backgroundTaskId = backgroundTaskId;
+
+		_fileUnsafeSupplier = fileSupplier;
 	}
 
 	/**

@@ -80,6 +80,7 @@ public class AssignScopesDisplayContext
 			dlURLHelper);
 
 		_applicationDescriptorLocator = applicationDescriptorLocator;
+
 		_companyId = themeDisplay.getCompanyId();
 		_locale = themeDisplay.getLocale();
 

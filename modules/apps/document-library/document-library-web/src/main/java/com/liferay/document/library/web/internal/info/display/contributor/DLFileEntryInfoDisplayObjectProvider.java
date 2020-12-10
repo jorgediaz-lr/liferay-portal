@@ -36,8 +36,9 @@ public class DLFileEntryInfoDisplayObjectProvider
 	implements InfoDisplayObjectProvider<FileEntry> {
 
 	public DLFileEntryInfoDisplayObjectProvider(FileEntry fileEntry) {
-		_assetEntry = _getAssetEntry(fileEntry);
 		_fileEntry = fileEntry;
+
+		_assetEntry = _getAssetEntry(fileEntry);
 	}
 
 	@Override

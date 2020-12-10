@@ -53,6 +53,7 @@ public class DLFileEntryMetadataDDMStructureFixture {
 
 		_dlFixture = dlFixture;
 		_ddmStructureLocalService = ddmStructureLocalService;
+
 		_dlFileEntryTypeLocalService = dlFileEntryTypeService;
 
 		_fileEntrySearchFixture = new FileEntrySearchFixture(dlAppLocalService);

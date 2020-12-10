@@ -48,10 +48,11 @@ public class TrashContentVerticalCard implements VerticalCard {
 
 		_trashedModel = trashedModel;
 		_trashRenderer = trashRenderer;
-		_liferayPortletRequest = PortalUtil.getLiferayPortletRequest(
-			renderRequest);
 		_liferayPortletResponse = liferayPortletResponse;
 		_viewContentURL = viewContentURL;
+
+		_liferayPortletRequest = PortalUtil.getLiferayPortletRequest(
+			renderRequest);
 	}
 
 	@Override

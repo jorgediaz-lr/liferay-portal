@@ -58,6 +58,7 @@ public class ContextExpressionVisitorImpl implements ExpressionVisitor<Object> {
 
 	public ContextExpressionVisitorImpl(EntityModel entityModel) {
 		_entityModel = entityModel;
+
 		_lambdaCollectionEntityField = null;
 	}
 

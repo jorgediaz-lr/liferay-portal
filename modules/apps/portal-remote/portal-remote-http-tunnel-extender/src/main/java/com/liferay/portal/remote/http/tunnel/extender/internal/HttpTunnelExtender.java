@@ -237,6 +237,7 @@ public class HttpTunnelExtender
 				authVerifierFilterServiceRegistration;
 			_servletContextHelperServiceRegistration =
 				servletContextHelperServiceRegistration;
+
 			_tunnelServletServiceRegistration = tunneServletServiceRegistration;
 		}
 

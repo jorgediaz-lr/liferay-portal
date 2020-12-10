@@ -50,10 +50,11 @@ public class TrashEntryVerticalCard extends BaseVerticalCard {
 
 		_trashEntry = trashEntry;
 		_trashRenderer = trashRenderer;
-		_liferayPortletRequest = PortalUtil.getLiferayPortletRequest(
-			renderRequest);
 		_liferayPortletResponse = liferayPortletResponse;
 		_viewContentURL = viewContentURL;
+
+		_liferayPortletRequest = PortalUtil.getLiferayPortletRequest(
+			renderRequest);
 	}
 
 	@Override

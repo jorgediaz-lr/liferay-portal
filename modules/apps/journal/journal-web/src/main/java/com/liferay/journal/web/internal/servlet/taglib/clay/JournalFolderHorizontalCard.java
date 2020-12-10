@@ -46,8 +46,9 @@ public class JournalFolderHorizontalCard extends BaseHorizontalCard {
 		_displayStyle = displayStyle;
 		_renderResponse = renderResponse;
 
-		_folder = (JournalFolder)baseModel;
 		_trashHelper = trashHelper;
+
+		_folder = (JournalFolder)baseModel;
 	}
 
 	@Override
