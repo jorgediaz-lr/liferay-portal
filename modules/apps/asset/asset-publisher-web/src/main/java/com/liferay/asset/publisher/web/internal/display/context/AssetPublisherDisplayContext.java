@@ -91,7 +91,9 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.rss.util.RSSUtil;
+import com.liferay.segments.SegmentsEntryRetriever;
 import com.liferay.segments.constants.SegmentsWebKeys;
+import com.liferay.segments.context.RequestContextMapper;
 
 import java.io.Serializable;
 
@@ -141,7 +143,9 @@ public class AssetPublisherDisplayContext {
 			AssetPublisherWebUtil assetPublisherWebUtil,
 			InfoListProviderTracker infoListProviderTracker,
 			PortletRequest portletRequest, PortletResponse portletResponse,
-			PortletPreferences portletPreferences)
+			PortletPreferences portletPreferences,
+			RequestContextMapper requestContextMapper,
+			SegmentsEntryRetriever segmentsEntryRetriever)
 		throws ConfigurationException {
 
 		_assetEntryActionRegistry = assetEntryActionRegistry;
@@ -155,6 +159,8 @@ public class AssetPublisherDisplayContext {
 		_portletRequest = portletRequest;
 		_portletResponse = portletResponse;
 		_portletPreferences = portletPreferences;
+		_requestContextMapper = requestContextMapper;
+		_segmentsEntryRetriever = segmentsEntryRetriever;
 
 		_themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
@@ -1974,8 +1980,10 @@ public class AssetPublisherDisplayContext {
 	}
 
 	private long[] _getSegmentsEntryIds() {
-		return GetterUtil.getLongValues(
-			_portletRequest.getAttribute(SegmentsWebKeys.SEGMENTS_ENTRY_IDS));
+		return _segmentsEntryRetriever.getSegmentsEntryIds(
+			_themeDisplay.getScopeGroupId(), _themeDisplay.getUserId(),
+			_requestContextMapper.map(
+				PortalUtil.getHttpServletRequest(_portletRequest)));
 	}
 
 	private boolean _isShowRelatedAssets() {
@@ -2050,11 +2058,13 @@ public class AssetPublisherDisplayContext {
 	private String _portletResource;
 	private final PortletResponse _portletResponse;
 	private long[] _referencedModelsGroupIds;
+	private final RequestContextMapper _requestContextMapper;
 	private Integer _rssDelta;
 	private String _rssDisplayStyle;
 	private String _rssFeedType;
 	private String _rssName;
 	private SearchContainer _searchContainer;
+	private final SegmentsEntryRetriever _segmentsEntryRetriever;
 	private String _selectionStyle;
 	private Boolean _showAddContentButton;
 	private Boolean _showAssetTitle;

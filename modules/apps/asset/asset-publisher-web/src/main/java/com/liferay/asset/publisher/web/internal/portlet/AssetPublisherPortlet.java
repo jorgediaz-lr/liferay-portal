@@ -51,6 +51,8 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.segments.SegmentsEntryRetriever;
+import com.liferay.segments.context.RequestContextMapper;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -239,7 +241,8 @@ public class AssetPublisherPortlet extends MVCPortlet {
 					assetPublisherHelper, assetPublisherWebConfiguration,
 					assetPublisherWebUtil, infoListProviderTracker,
 					resourceRequest, resourceResponse,
-					resourceRequest.getPreferences());
+					resourceRequest.getPreferences(), requestContextMapper,
+					segmentsEntryRetriever);
 
 			resourceRequest.setAttribute(
 				AssetPublisherWebKeys.ASSET_PUBLISHER_DISPLAY_CONTEXT,
@@ -337,7 +340,8 @@ public class AssetPublisherPortlet extends MVCPortlet {
 					assetPublisherHelper, assetPublisherWebConfiguration,
 					assetPublisherWebUtil, infoListProviderTracker,
 					renderRequest, renderResponse,
-					renderRequest.getPreferences());
+					renderRequest.getPreferences(), requestContextMapper,
+					segmentsEntryRetriever);
 
 			renderRequest.setAttribute(
 				AssetPublisherWebKeys.ASSET_PUBLISHER_DISPLAY_CONTEXT,
@@ -410,6 +414,12 @@ public class AssetPublisherPortlet extends MVCPortlet {
 		target = "(&(release.bundle.symbolic.name=com.liferay.asset.publisher.web)(&(release.schema.version>=1.0.0)(!(release.schema.version>=2.0.0))))"
 	)
 	protected Release release;
+
+	@Reference
+	protected RequestContextMapper requestContextMapper;
+
+	@Reference
+	protected SegmentsEntryRetriever segmentsEntryRetriever;
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		AssetPublisherPortlet.class);
