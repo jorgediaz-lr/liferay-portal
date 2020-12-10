@@ -57,6 +57,7 @@ public class DDMFormValuesToPropertiesConverter {
 		DDMForm ddmForm = ddmFormValues.getDDMForm();
 
 		_ddmFormFieldsMap = ddmForm.getDDMFormFieldsMap(false);
+
 		_ddmFormFieldValuesMap = ddmFormValues.getDDMFormFieldValuesMap();
 	}
 
