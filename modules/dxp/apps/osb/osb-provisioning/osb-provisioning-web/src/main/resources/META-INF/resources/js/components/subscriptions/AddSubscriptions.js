@@ -18,7 +18,7 @@ import {
 } from '../../hooks/subscriptions';
 import Subscriptions from './Subscriptions';
 
-function AddSubscriptions({accountName, details, sizing}) {
+function AddSubscriptions({accountName, details, redirect, sizing}) {
 	return (
 		<SubscriptionsProvider initialSubscriptions={details}>
 			<div className="subscriptions-container">
@@ -36,7 +36,7 @@ function AddSubscriptions({accountName, details, sizing}) {
 					/>
 				</div>
 
-				<SubscriptionActions />
+				<SubscriptionActions backURL={redirect} />
 			</div>
 		</SubscriptionsProvider>
 	);
@@ -52,11 +52,12 @@ AddSubscriptions.propTypes = {
 			startDate: PropTypes.string
 		})
 	),
+	redirect: PropTypes.string,
 	selectProductsURL: PropTypes.string,
 	sizing: PropTypes.arrayOf(PropTypes.string)
 };
 
-function SubscriptionActions() {
+function SubscriptionActions({backURL}) {
 	const [subscriptions] = useSubscriptions();
 
 	const [disableSave, setDisableSave] = useState(true);
@@ -82,9 +83,9 @@ function SubscriptionActions() {
 				{Liferay.Language.get('save')}
 			</button>
 
-			<button className="btn btn-secondary" type="cancel">
+			<a className="btn btn-secondary" href={backURL} type="button">
 				{Liferay.Language.get('cancel')}
-			</button>
+			</a>
 		</div>
 	);
 }
