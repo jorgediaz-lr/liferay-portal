@@ -20,10 +20,10 @@ function renderAddSubscriptions(props) {
 			accountName="Test Account"
 			details={[
 				{
-					endDate: '12/08/2021',
+					originalEndDate: '2021-12-08',
 					productKey: 'KOR-35746',
 					productName: 'Product 1',
-					startDate: '12/08/2020'
+					startDate: '2020-12-08'
 				}
 			]}
 			editProductPurchasesURL="/edit/product/purchases/url"

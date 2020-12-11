@@ -30,7 +30,14 @@ const SubscriptionsContext = React.createContext();
 
 export function SubscriptionsProvider({initialSubscriptions = [], children}) {
 	const processedSubscriptions = initialSubscriptions.map(detail => {
-		return [detail.productKey, SubscriptionRecord(detail)];
+		return [
+			detail.productKey,
+			SubscriptionRecord({
+				...detail,
+				originalEndDate: new Date(detail.originalEndDate),
+				startDate: new Date(detail.startDate)
+			})
+		];
 	});
 
 	const [subscriptions, setSubscriptions] = useState(

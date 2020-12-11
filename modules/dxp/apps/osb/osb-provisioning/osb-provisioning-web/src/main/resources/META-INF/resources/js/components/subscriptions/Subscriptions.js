@@ -219,6 +219,10 @@ function Subscription({accountName, detail, instanceSizes}) {
 						onValueChange={handleStartDateChange}
 						placeholder="YYYY-MM-DD"
 						value={currentStartDate}
+						years={{
+							end: 2050,
+							start: 1990
+						}}
 					/>
 				</label>
 			</ClayTable.Cell>
@@ -230,6 +234,10 @@ function Subscription({accountName, detail, instanceSizes}) {
 						onValueChange={handleEndDateChange}
 						placeholder="YYYY-MM-DD"
 						value={currentEndDate}
+						years={{
+							end: 2050,
+							start: currentStartDate.getFullYear() + 1
+						}}
 					/>
 				</label>
 			</ClayTable.Cell>
