@@ -70,7 +70,7 @@ public class EditProductPurchasesMVCRenderCommand implements MVCRenderCommand {
 			String[] productPurchaseViewKeys = ParamUtil.getStringValues(
 				renderRequest, "productPurchaseViewKeys");
 
-			if (productKeys.length > 0) {
+			if ((productKeys.length > 0) || (productBundleIds.length > 0)) {
 				Set<Product> products = new HashSet<>();
 
 				for (long productBundleId : productBundleIds) {
