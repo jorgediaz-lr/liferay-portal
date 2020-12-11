@@ -324,6 +324,11 @@ public class EntitlementWrapper
 		model.setEntitlementDefinitionId(entitlementDefinitionId);
 	}
 
+	@Override
+	public void setEntitlementDefinitionKey(String entitlementDefinitionKey) {
+		model.setEntitlementDefinitionKey(entitlementDefinitionKey);
+	}
+
 	/**
 	 * Sets the entitlement ID of this entitlement.
 	 *

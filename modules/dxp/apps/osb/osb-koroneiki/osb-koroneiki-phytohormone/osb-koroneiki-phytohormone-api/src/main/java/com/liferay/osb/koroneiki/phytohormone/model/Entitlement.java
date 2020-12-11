@@ -64,4 +64,6 @@ public interface Entitlement extends EntitlementModel, PersistedModel {
 	public String getEntitlementDefinitionKey()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
+	public void setEntitlementDefinitionKey(String entitlementDefinitionKey);
+
 }
