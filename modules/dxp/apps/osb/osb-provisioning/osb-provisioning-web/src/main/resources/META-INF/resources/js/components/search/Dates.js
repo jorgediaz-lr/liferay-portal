@@ -92,6 +92,7 @@ function DatePicker({id, inputName}) {
 			onValueChange={setValue}
 			placeholder="YYYY-MM-DD"
 			value={value}
+			years={{end: 2050, start: 1990}}
 		/>
 	);
 }
