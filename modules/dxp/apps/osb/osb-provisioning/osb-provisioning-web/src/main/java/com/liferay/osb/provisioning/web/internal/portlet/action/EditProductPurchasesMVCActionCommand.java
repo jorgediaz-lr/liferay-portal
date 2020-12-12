@@ -30,11 +30,13 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -135,6 +137,17 @@ public class EditProductPurchasesMVCActionCommand extends BaseMVCActionCommand {
 			productPurchase.setProperties(properties);
 
 			if (Validator.isNull(productPurchaseKey)) {
+				if (productPurchase.getOriginalEndDate() != null) {
+					Calendar calendar = CalendarFactoryUtil.getCalendar(
+						themeDisplay.getTimeZone(), themeDisplay.getLocale());
+
+					calendar.setTime(productPurchase.getOriginalEndDate());
+
+					calendar.add(Calendar.DATE, 30);
+
+					productPurchase.setEndDate(calendar.getTime());
+				}
+
 				_productPurchaseWebService.addProductPurchase(
 					user.getFullName(), user.getUuid(), accountKey,
 					productPurchase);
