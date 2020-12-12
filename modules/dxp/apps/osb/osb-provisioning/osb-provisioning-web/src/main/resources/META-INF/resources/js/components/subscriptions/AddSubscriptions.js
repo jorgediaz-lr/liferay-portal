@@ -96,12 +96,26 @@ function SubscriptionActions({backURL, formAction}) {
 						entityName: 'opportunity'
 					}
 				];
+				entry['originalEndDate'] = formatDateSecondFormat(
+					entry.originalEndDate
+				);
 				entry['properties'] = {sizing: entry.sizing};
+				entry['startDate'] = formatDateSecondFormat(entry.startDate);
+
+				delete entry['productName'];
+				delete entry['salesforceOpportunityKey'];
+				delete entry['sizing'];
 
 				return entry;
 			});
 
 		return JSON.stringify(submissionData);
+	}
+
+	function formatDateSecondFormat(val) {
+		return JSON.stringify(val)
+			.replace(/.(\d+)Z/g, 'Z')
+			.replace(/"/g, '');
 	}
 
 	return (
