@@ -545,7 +545,7 @@ public class LayoutStagedModelDataHandler
 				uuid, groupId, privateLayout);
 
 			if (SitesUtil.isLayoutModifiedSinceLastMerge(existingLayout) ||
-				!isLayoutOutdated(existingLayout, layout)) {
+				!_isLayoutOutdated(existingLayout, layout)) {
 
 				layouts.put(oldLayoutId, existingLayout);
 
@@ -1779,7 +1779,7 @@ public class LayoutStagedModelDataHandler
 			addGuestPermissions);
 	}
 
-	protected boolean isLayoutOutdated(Layout layout, Layout layoutPrototype) {
+	private boolean _isLayoutOutdated(Layout layout, Layout layoutPrototype) {
 		if ((layout == null) || (layoutPrototype == null)) {
 			return true;
 		}
