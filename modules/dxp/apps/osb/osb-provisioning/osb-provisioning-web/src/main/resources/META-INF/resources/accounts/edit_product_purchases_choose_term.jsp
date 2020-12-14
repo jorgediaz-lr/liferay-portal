@@ -33,76 +33,86 @@ List<ProductPurchaseView> productPurchaseViews = editProductPurchasesDisplayCont
 		title="<%= editProductPurchasesDisplayContext.getTitle() %>"
 	/>
 
-	<h5><liferay-ui:message key="choose-term" /></h5>
+	<div class="subscriptions-step">
+		<span><liferay-ui:message key="select-subscription-terms" /></span>
 
-	<portlet:renderURL var="editProductPurchasesURL">
-		<portlet:param name="mvcRenderCommandName" value="/accounts/edit_product_purchases" />
-		<portlet:param name="redirect" value="<%= redirect %>" />
-		<portlet:param name="backURL" value="<%= currentURL %>" />
-		<portlet:param name="accountKey" value="<%= accountDisplay.getKey() %>" />
-	</portlet:renderURL>
+		<span><liferay-ui:message key="step-1-of-2" /></span>
+	</div>
 
-	<aui:form action="<%= editProductPurchasesURL %>" cssClass="container-fluid container-fluid-max-xl" method="post" name="chooseTermFm" onSubmit='<%= "event.preventDefault(); " + renderResponse.getNamespace() + "submitForm();" %>'>
-		<aui:input name="productPurchaseKeys" type="hidden" />
+	<div class="subscriptions-container">
+		<div class="subscriptions">
+			<portlet:renderURL var="editProductPurchasesURL">
+				<portlet:param name="mvcRenderCommandName" value="/accounts/edit_product_purchases" />
+				<portlet:param name="redirect" value="<%= redirect %>" />
+				<portlet:param name="backURL" value="<%= currentURL %>" />
+				<portlet:param name="accountKey" value="<%= accountDisplay.getKey() %>" />
+			</portlet:renderURL>
 
-		<table class="table table-list">
-			<thead>
-				<tr>
-					<th>
-						<liferay-ui:message key="products" />
-					</th>
-					<th>
-						<liferay-ui:message key="subscription-term" />
-					</th>
-				</tr>
-			</thead>
+			<aui:form action="<%= editProductPurchasesURL %>" method="post" name="chooseTermFm" onSubmit='<%= renderResponse.getNamespace() + "submitForm(event);" %>'>
+				<aui:input name="productPurchaseKeys" type="hidden" />
 
-			<tbody>
+				<table class="table table-autofit table-list">
+					<thead>
+						<tr>
+							<th class="table-cell-expand-small">
+								<liferay-ui:message key="products" />
+							</th>
+							<th class="table-cell-expand">
+								<liferay-ui:message key="subscription-term" />
+							</th>
+						</tr>
+					</thead>
 
-				<%
-				for (ProductPurchaseView productPurchaseView : productPurchaseViews) {
-				%>
+					<tbody>
 
-					<tr>
-						<td>
-							<%= productPurchaseView.getProduct().getName() %>
-						</td>
-						<td class="text-right">
-							<aui:select cssClass="account-edit-subscription" label="" name="subscriptionTerm">
+						<%
+						for (ProductPurchaseView productPurchaseView : productPurchaseViews) {
+						%>
 
-								<%
-								List<ProductPurchaseDisplay> productPurchaseDisplays = editProductPurchasesDisplayContext.getProductPurchaseViewDisplays(productPurchaseView);
+							<tr>
+								<td class="table-cell-expand-small">
+									<%= productPurchaseView.getProduct().getName() %>
+								</td>
+								<td class="table-cell-expand">
+									<aui:select cssClass="account-edit-subscription" label="" name="subscriptionTerm">
 
-								for (ProductPurchaseDisplay productPurchaseDisplay : productPurchaseDisplays) {
-								%>
+										<%
+										List<ProductPurchaseDisplay> productPurchaseDisplays = editProductPurchasesDisplayContext.getProductPurchaseViewDisplays(productPurchaseView);
 
-									<aui:option label="<%= productPurchaseDisplay.getSupportLife() %>" value="<%= productPurchaseDisplay.getKey() %>" />
+										for (ProductPurchaseDisplay productPurchaseDisplay : productPurchaseDisplays) {
+										%>
 
-								<%
-								}
-								%>
+											<aui:option label="<%= productPurchaseDisplay.getSupportLife() %>" value="<%= productPurchaseDisplay.getKey() %>" />
 
-							</aui:select>
-						</td>
-					</tr>
+										<%
+										}
+										%>
 
-				<%
-				}
-				%>
+									</aui:select>
+								</td>
+							</tr>
 
-			</tbody>
-		</table>
+						<%
+						}
+						%>
 
-		<aui:button-row>
-			<aui:button href="<%= redirect %>" type="cancel" />
+					</tbody>
+				</table>
 
-			<aui:button type="submit" value="next" />
-		</aui:button-row>
-	</aui:form>
+				<aui:button-row>
+					<aui:button type="submit" value="next" />
+
+					<aui:button href="<%= redirect %>" type="cancel" />
+				</aui:button-row>
+			</aui:form>
+		</div>
+	</div>
 </div>
 
 <aui:script>
-	function <portlet:namespace />submitForm() {
+	function <portlet:namespace />submitForm(event) {
+		event.preventDefault();
+
 		var form = document.getElementById('<portlet:namespace />chooseTermFm');
 
 		var subscriptionTerms = form.querySelectorAll(
