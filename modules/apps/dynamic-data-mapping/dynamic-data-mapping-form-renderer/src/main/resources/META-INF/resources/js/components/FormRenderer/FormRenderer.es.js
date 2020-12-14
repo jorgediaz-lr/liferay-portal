@@ -39,6 +39,12 @@ class FormRenderer extends Component {
 		Liferay.fire(`${this.portletNamespace}simplecaptcha_attachEvent`);
 	}
 
+	created() {
+		if (!this._getDisplayable()) {
+			this.render = () => {};
+		}
+	}
+
 	_defaultLanguageIdValueFn() {
 		return themeDisplay.getLanguageId();
 	}
@@ -49,7 +55,7 @@ class FormRenderer extends Component {
 		return defaultLanguageId;
 	}
 
-	_getDisplayableFn() {
+	_getDisplayable() {
 		const {containerId, readOnly, viewMode} = this;
 
 		return (
@@ -103,15 +109,6 @@ FormRenderer.STATE = {
 	 */
 
 	defaultLanguageId: Config.string().valueFn('_defaultLanguageIdValueFn'),
-
-	/**
-	 * @default false
-	 * @instance
-	 * @memberof FormRenderer
-	 * @type {?bool}
-	 */
-
-	displayable: Config.bool().valueFn('_getDisplayableFn'),
 
 	/**
 	 * @default false

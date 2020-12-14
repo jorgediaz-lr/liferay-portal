@@ -8,7 +8,6 @@
 	{@param? _handleFieldEdited: any}
 	{@param? _handleFieldFocused: any}
 	{@param? activePage: number}
-	{@param? displayable: bool}
 	{@param? editable: bool}
 	{@param? editingLanguageId: string}
 	{@param? paginationMode: string}
@@ -19,55 +18,53 @@
 	{@param? invalidFormMessage: string}
 	{@param? forceAriaUpdate: number}
 
-	{if $displayable}
-		{let $currentPaginationMode: $paginationMode ?: 'wizard' /}
-		{let $currentPage: $activePage ?: 0 /}
-		{let $total: length($pages) /}
+	{let $currentPaginationMode: $paginationMode ?: 'wizard' /}
+	{let $currentPage: $activePage ?: 0 /}
+	{let $total: length($pages) /}
 
-		{let $classes kind="text"}
-			lfr-ddm-form-container position-relative
+	{let $classes kind="text"}
+		lfr-ddm-form-container position-relative
 
-			{if not $editable}
-				{sp}ddm-user-view-content
-			{/if}
-		{/let}
+		{if not $editable}
+			{sp}ddm-user-view-content
+		{/if}
+	{/let}
 
-		<div class="{$classes}">
-			{if $invalidFormMessage}
-				<span aria-atomic="true" aria-live="polite" aria-hidden="false" hidden>
-				{$invalidFormMessage}
-					<span aria-hidden="true">
-						{$forceAriaUpdate}
-					</span>
+	<div class="{$classes}">
+		{if $invalidFormMessage}
+			<span aria-atomic="true" aria-live="polite" aria-hidden="false" hidden>
+			{$invalidFormMessage}
+				<span aria-hidden="true">
+					{$forceAriaUpdate}
 				</span>
-			{/if}
+			</span>
+		{/if}
 
-			{foreach $page in $pages}
-				{call PageRenderer.render}
-					{param activePage: $activePage /}
-					{param editable: $editable /}
-					{param editingLanguageId: $editingLanguageId /}
-					{param events: [
-						'fieldBlurred': $_handleFieldBlurred,
-						'fieldClicked': $_handleFieldClicked,
-						'fieldEdited': $_handleFieldEdited,
-						'fieldFocused': $_handleFieldFocused
-					] /}
-					{param key: index($page) /}
-					{param page: $page /}
-					{param pageIndex: index($page) /}
-					{param pages: $pages /}
-					{param paginationMode: $currentPaginationMode /}
-					{param readOnly: $readOnly /}
-					{param ref: 'pageRenderer' + index($page) /}
-					{param showSubmitButton: $showSubmitButton != false /}
-					{param spritemap: $spritemap /}
-					{param strings: $strings /}
-					{param submitLabel: $submitLabel ?: 'submit' /}
-					{param total: $total /}
-					{param invalidFormMessage: $invalidFormMessage /}
-				{/call}
-			{/foreach}
-		</div>
-	{/if}
+		{foreach $page in $pages}
+			{call PageRenderer.render}
+				{param activePage: $activePage /}
+				{param editable: $editable /}
+				{param editingLanguageId: $editingLanguageId /}
+				{param events: [
+					'fieldBlurred': $_handleFieldBlurred,
+					'fieldClicked': $_handleFieldClicked,
+					'fieldEdited': $_handleFieldEdited,
+					'fieldFocused': $_handleFieldFocused
+				] /}
+				{param key: index($page) /}
+				{param page: $page /}
+				{param pageIndex: index($page) /}
+				{param pages: $pages /}
+				{param paginationMode: $currentPaginationMode /}
+				{param readOnly: $readOnly /}
+				{param ref: 'pageRenderer' + index($page) /}
+				{param showSubmitButton: $showSubmitButton != false /}
+				{param spritemap: $spritemap /}
+				{param strings: $strings /}
+				{param submitLabel: $submitLabel ?: 'submit' /}
+				{param total: $total /}
+				{param invalidFormMessage: $invalidFormMessage /}
+			{/call}
+		{/foreach}
+	</div>
 {/template}
