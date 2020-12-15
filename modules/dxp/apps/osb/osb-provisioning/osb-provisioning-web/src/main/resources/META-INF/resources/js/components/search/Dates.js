@@ -9,10 +9,10 @@
  * distribution rights of the Software.
  */
 
-import ClayDatePicker from '@clayui/date-picker';
-import React, {useState} from 'react';
+import React from 'react';
 
 import {NAMESPACE} from '../../utilities/constants';
+import DatePicker from '../DatePicker';
 
 function Dates() {
 	return (
@@ -78,21 +78,6 @@ function Dates() {
 				/>
 			</div>
 		</div>
-	);
-}
-
-function DatePicker({id, inputName}) {
-	const [value, setValue] = useState('');
-
-	return (
-		<ClayDatePicker
-			id={id}
-			inputName={inputName}
-			onValueChange={setValue}
-			placeholder="YYYY-MM-DD"
-			value={value}
-			years={{end: 2050, start: 1990}}
-		/>
 	);
 }
 

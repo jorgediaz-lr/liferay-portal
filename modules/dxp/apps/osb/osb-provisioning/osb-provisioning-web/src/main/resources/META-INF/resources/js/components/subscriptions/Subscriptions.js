@@ -9,12 +9,12 @@
  * distribution rights of the Software.
  */
 
-import ClayDatePicker from '@clayui/date-picker';
 import ClayTable from '@clayui/table';
 import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
 
 import {useSubscriptions} from '../../hooks/subscriptions';
+import DatePicker from '../DatePicker';
 
 function Subscriptions({accountName, instanceSizes = []}) {
 	const [subscriptions] = useSubscriptions();
@@ -85,8 +85,6 @@ function Subscription({accountName, detail, instanceSizes}) {
 		startDate
 	} = detail;
 
-	const [currentEndDate, setCurrentEndDate] = useState(originalEndDate);
-	const [currentStartDate, setCurrentStartDate] = useState(startDate);
 	const [disableDelete, setDisableDelete] = useState(false);
 
 	const [
@@ -109,8 +107,6 @@ function Subscription({accountName, detail, instanceSizes}) {
 	}, [subscriptions]);
 
 	function handleEndDateChange(value) {
-		setCurrentEndDate(value);
-
 		updateOriginalEndDate(productKey, value);
 	}
 
@@ -139,8 +135,6 @@ function Subscription({accountName, detail, instanceSizes}) {
 	}
 
 	function handleStartDateChange(value) {
-		setCurrentStartDate(value);
-
 		updateStartDate(productKey, value);
 	}
 
@@ -213,31 +207,21 @@ function Subscription({accountName, detail, instanceSizes}) {
 			</ClayTable.Cell>
 			<ClayTable.Cell>
 				<label htmlFor="startDate">
-					<ClayDatePicker
+					<DatePicker
+						defaultValue={startDate}
 						id="startDate"
 						inputName="startDate"
-						onValueChange={handleStartDateChange}
-						placeholder="YYYY-MM-DD"
-						value={currentStartDate}
-						years={{
-							end: 2050,
-							start: 1990
-						}}
+						updateFn={handleStartDateChange}
 					/>
 				</label>
 			</ClayTable.Cell>
 			<ClayTable.Cell>
 				<label htmlFor="endDate">
-					<ClayDatePicker
+					<DatePicker
+						defaultValue={originalEndDate}
 						id="endDate"
 						inputName="endDate"
-						onValueChange={handleEndDateChange}
-						placeholder="YYYY-MM-DD"
-						value={currentEndDate}
-						years={{
-							end: 2050,
-							start: currentStartDate.getFullYear() + 1
-						}}
+						updateFn={handleEndDateChange}
 					/>
 				</label>
 			</ClayTable.Cell>
