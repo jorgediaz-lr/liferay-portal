@@ -301,7 +301,6 @@ public class AssetPublisherUtilTest {
 			portletPreferences.setValues(
 				"assetListEntryId",
 				String.valueOf(assetListEntry.getAssetListEntryId()));
-
 			portletPreferences.setValue("selectionStyle", "asset-list");
 
 			_assetPublisherHelper.getAssetEntries(
@@ -315,7 +314,6 @@ public class AssetPublisherUtilTest {
 
 			Assert.assertEquals(
 				Arrays.toString(segmentsEntryIds), 2, segmentsEntryIds.length);
-
 			Assert.assertEquals(
 				segmentsEntry.getSegmentsEntryId(), segmentsEntryIds[0]);
 			Assert.assertEquals(
