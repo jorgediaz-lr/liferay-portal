@@ -86,6 +86,7 @@ function Subscription({accountName, detail, instanceSizes}) {
 	} = detail;
 
 	const [disableDelete, setDisableDelete] = useState(false);
+	const [invalidEndDate, setInvalidEndDate] = useState(false);
 
 	const [
 		subscriptions,
@@ -107,6 +108,8 @@ function Subscription({accountName, detail, instanceSizes}) {
 	}, [subscriptions]);
 
 	function handleEndDateChange(value) {
+		setInvalidEndDate(startDate > value);
+
 		updateOriginalEndDate(productKey, value);
 	}
 
@@ -215,7 +218,7 @@ function Subscription({accountName, detail, instanceSizes}) {
 					/>
 				</label>
 			</ClayTable.Cell>
-			<ClayTable.Cell>
+			<ClayTable.Cell className={invalidEndDate ? 'has-error' : ''}>
 				<label htmlFor="endDate">
 					<DatePicker
 						defaultValue={originalEndDate}
