@@ -178,9 +178,9 @@ proxyServletLogEnable="true"</echo>
 			<echo append="true" file="${liferay.home}/osgi/configs/com.liferay.portal.search.elasticsearch7.configuration.XPackSecurityConfiguration.config">certificateFormat="PEM"
 password="${osgi.config.elastic.user.password}"
 requiresAuthentication="true"
-sslCertificateAuthoritiesPaths="${elasticsearch.dir}-1/config/certs/ca/ca.crt"
-sslCertificatePath="${elasticsearch.dir}-1/config/certs/localhost/localhost.crt"
-sslKeyPath="${elasticsearch.dir}-1/config/certs/localhost/localhost.key"
+sslCertificateAuthoritiesPaths="${elasticsearch.dir}-1/config/certs/ca.crt"
+sslCertificatePath="${elasticsearch.dir}-1/config/certs/elastic-certificates.crt"
+sslKeyPath="${elasticsearch.dir}-1/config/certs/elastic-certificates.key"
 transportSSLEnabled="true"</echo>
 		</sequential>
 	</macrodef>
