@@ -1492,9 +1492,9 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		subscriptionSender.setBody(body);
 		subscriptionSender.setCompanyId(_portal.getDefaultCompanyId());
 		subscriptionSender.setContextAttributes(
-			"[$TO_NAME$]", getContactFullName(contact),
 			"[$ACCOUNT_ENTRY_NAME$]", account.getName(),
-			"[$SUBSCRIPTION_SERVICES$]", subscriptionServices);
+			"[$SUBSCRIPTION_SERVICES$]", subscriptionServices, "[$TO_NAME$]",
+			getContactFullName(contact));
 		subscriptionSender.setFrom(
 			provisioningEmailAddress, "Liferay Provisioning");
 		subscriptionSender.setHtmlFormat(true);
