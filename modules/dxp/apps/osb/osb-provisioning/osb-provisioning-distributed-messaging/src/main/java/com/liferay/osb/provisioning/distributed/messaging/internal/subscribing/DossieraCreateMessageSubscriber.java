@@ -1466,16 +1466,13 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 				contact.getLanguageId() + ".tmpl",
 			"email_provisioning_create_account_body.tmpl");
 
-		Locale locale = LocaleUtil.fromLanguageId(contact.getLanguageId());
-
 		String provisioningEmailAddress = getProvisioningEmailAddress(
 			account.getRegionAsString());
 
+		Locale locale = LocaleUtil.fromLanguageId(contact.getLanguageId());
+
 		ResourceBundle resourceBundle = ResourceBundleUtil.getBundle(
 			"content.Language", locale, getClass());
-
-		String subject = LanguageUtil.get(
-			resourceBundle, "welcome-to-liferay-support");
 
 		StringBundler sb = new StringBundler(2);
 
@@ -1487,6 +1484,8 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 		String subscriptionServices = LanguageUtil.get(
 			resourceBundle, sb.toString());
+		String subject = LanguageUtil.get(
+			resourceBundle, "welcome-to-liferay-support");
 
 		SubscriptionSender subscriptionSender = new SubscriptionSender();
 
