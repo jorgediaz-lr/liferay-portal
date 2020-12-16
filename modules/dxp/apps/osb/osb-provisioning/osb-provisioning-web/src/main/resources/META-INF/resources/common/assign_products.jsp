@@ -30,7 +30,7 @@ SearchContainer searchContainer = assignProductsDisplayContext.getSearchContaine
 <clay:management-toolbar
 	clearResultsURL="<%= assignProductsDisplayContext.getClearResultsURL() %>"
 	itemsTotal="<%= searchContainer.getTotal() %>"
-	searchActionURL="<%= assignProductsDisplayContext.getCurrentURL() %>"
+	searchActionURL="<%= assignProductsDisplayContext.getSearchActionURL() %>"
 	searchContainerId="assignProducts"
 	selectable="<%= true %>"
 	showSearch="<%= true %>"
