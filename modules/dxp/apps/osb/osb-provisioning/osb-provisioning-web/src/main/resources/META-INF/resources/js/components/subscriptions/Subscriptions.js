@@ -123,6 +123,10 @@ function Subscription({accountName, detail, instanceSizes}) {
 		// Source formatter locks @clayui/date-picker at version 3.0.7, which does not provide an API for disabling date picker while later versions do.
 
 		setDisabledAttribute(!perpetual);
+
+		if (!perpetual) {
+			setInvalidEndDate(false);
+		}
 	}
 
 	function handleQuantityChange(event) {
@@ -154,8 +158,7 @@ function Subscription({accountName, detail, instanceSizes}) {
 				if (attributeValue) {
 					dateBtn.setAttribute('disabled', attributeValue);
 					dateInput.setAttribute('disabled', attributeValue);
-				}
-				else {
+				} else {
 					dateBtn.removeAttribute('disabled');
 					dateInput.removeAttribute('disabled');
 				}
