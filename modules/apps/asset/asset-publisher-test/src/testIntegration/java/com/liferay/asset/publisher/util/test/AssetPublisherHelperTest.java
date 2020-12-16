@@ -65,7 +65,7 @@ import org.springframework.mock.web.portlet.MockPortletPreferences;
  * @author Eudaldo Alonso
  */
 @RunWith(Arquillian.class)
-public class AssetPublisherUtilTest {
+public class AssetPublisherHelperTest {
 
 	@ClassRule
 	@Rule
