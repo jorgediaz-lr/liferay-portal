@@ -346,18 +346,6 @@ public class DDMFormDisplayContext {
 		return _hasViewPermission;
 	}
 
-	public boolean isRememberMe() {
-		String rememberMe = CookieKeys.getCookie(
-			PortalUtil.getHttpServletRequest(_renderRequest),
-			CookieKeys.REMEMBER_ME);
-
-		if ((rememberMe != null) && rememberMe.equals("true")) {
-			return true;
-		}
-
-		return false;
-	}
-
 	public boolean isAutosaveEnabled() throws PortalException {
 		if (_autosaveEnabled != null) {
 			return _autosaveEnabled;
@@ -446,6 +434,18 @@ public class DDMFormDisplayContext {
 				themeDisplay.getPermissionChecker(), getFormInstanceId(),
 				ActionKeys.UPDATE)) {
 
+			return true;
+		}
+
+		return false;
+	}
+
+	public boolean isRememberMe() {
+		String rememberMe = CookieKeys.getCookie(
+			PortalUtil.getHttpServletRequest(_renderRequest),
+			CookieKeys.REMEMBER_ME);
+
+		if ((rememberMe != null) && rememberMe.equals("true")) {
 			return true;
 		}
 
