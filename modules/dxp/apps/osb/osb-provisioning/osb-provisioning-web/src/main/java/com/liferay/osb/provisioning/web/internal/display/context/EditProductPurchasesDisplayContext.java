@@ -235,7 +235,7 @@ public class EditProductPurchasesDisplayContext
 		}
 
 		Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
-			"MM/dd/yyyy");
+			"yyyy-MM-dd");
 
 		return dateFormat.format(calendar.getTime());
 	}
