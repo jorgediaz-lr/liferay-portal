@@ -1074,7 +1074,7 @@ xpack.monitoring.collection.enabled: true</echo>
 
 		<get-testcase-property property.name="elastic.xpack.enabled" />
 
-		<get-testcase-property property.name="pki.authentication.enabled" />
+		<get-testcase-property property.name="remote.elasticsearch.pki.authentication.enabled" />
 
 		<if>
 			<equals arg1="${elastic.xpack.enabled}" arg2="true" />
@@ -1082,7 +1082,7 @@ xpack.monitoring.collection.enabled: true</echo>
 				<generate-x-pack-security-certificates />
 
 				<if>
-					<equals arg1="${pki.authentication.enabled}" arg2="true" />
+					<equals arg1="${remote.elasticsearch.pki.authentication.enabled}" arg2="true" />
 					<then>
 						<configure-elasticsearch-x-pack-pki-security-properties />
 					</then>
@@ -1142,7 +1142,7 @@ xpack.monitoring.collection.enabled: true</echo>
 				<start-x-pack-trial />
 
 				<if>
-					<equals arg1="${pki.authentication.enabled}" arg2="true" />
+					<equals arg1="${remote.elasticsearch.pki.authentication.enabled}" arg2="true" />
 					<then>
 						<sleep seconds="10" />
 
@@ -1288,7 +1288,7 @@ xpack.monitoring.collection.enabled: true</echo>
 
 		<get-testcase-property property.name="elastic.xpack.enabled" />
 
-		<get-testcase-property property.name="pki.authentication.enabled" />
+		<get-testcase-property property.name="remote.elasticsearch.pki.authentication.enabled" />
 
 		<if>
 			<equals arg1="${elastic.xpack.enabled}" arg2="true" />
@@ -1296,7 +1296,7 @@ xpack.monitoring.collection.enabled: true</echo>
 				<configure-kibana-properties />
 
 				<if>
-					<equals arg1="${pki.authentication.enabled}" arg2="true" />
+					<equals arg1="${remote.elasticsearch.pki.authentication.enabled}" arg2="true" />
 					<then>
 						<configure-kibana-x-pack-pki-security-properties />
 					</then>
