@@ -175,12 +175,15 @@ SearchContainer productPurchasesSearchContainer = viewAccountDisplayContext.getP
 					var selectedItems = event.newVal;
 
 					if (selectedItems) {
-						var productBundleIds = selectedItems
-							.filter(function(item) {
-								return !isNaN(parseInt(item));
-							})
-							.map(function(item) {
-								return item[0];
+						var selectedKeys = selectedItems.map(function(item) {
+							var [key, value] = item;
+
+							return key;
+						});
+
+						var productBundleIds = selectedKeys
+							.filter(function(key) {
+								return !key.startsWith('KOR');
 							})
 							.join(',');
 
@@ -192,12 +195,9 @@ SearchContainer productPurchasesSearchContainer = viewAccountDisplayContext.getP
 							productBundleIdsInput.val(productBundleIds);
 						}
 
-						var productKeys = selectedItems
-							.filter(function(item) {
-								return isNaN(parseInt(item));
-							})
-							.map(function(item) {
-								return item[0];
+						var productKeys = selectedKeys
+							.filter(function(key) {
+								return key.startsWith('KOR');
 							})
 							.join(',');
 
