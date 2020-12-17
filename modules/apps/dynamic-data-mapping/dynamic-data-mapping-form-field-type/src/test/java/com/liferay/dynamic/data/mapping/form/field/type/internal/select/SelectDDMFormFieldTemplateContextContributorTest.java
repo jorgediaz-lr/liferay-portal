@@ -152,15 +152,9 @@ public class SelectDDMFormFieldTemplateContextContributorTest
 	public void testGetOptionsAlphabeticallyOrdered() {
 		List<Object> expectedOptions = new ArrayList<>();
 
-		expectedOptions.add(
-			DDMFormFieldOptionsTestUtil.createOption(
-				"Label 1", "Reference 1", "value 1"));
-		expectedOptions.add(
-			DDMFormFieldOptionsTestUtil.createOption(
-				"Label 2", "Reference 2", "value 2"));
-		expectedOptions.add(
-			DDMFormFieldOptionsTestUtil.createOption(
-				"Label 3", "Reference 3", "value 3"));
+		expectedOptions.add(_createOption("Label 1", "value 1"));
+		expectedOptions.add(_createOption("Label 2", "value 2"));
+		expectedOptions.add(_createOption("Label 3", "value 3"));
 
 		DDMFormField ddmFormField = new DDMFormField("field", "select");
 
@@ -169,8 +163,6 @@ public class SelectDDMFormFieldTemplateContextContributorTest
 		for (int i = 3; i > 0; i--) {
 			ddmFormFieldOptions.addOptionLabel(
 				"value " + i, LocaleUtil.US, "Label " + i);
-			ddmFormFieldOptions.addOptionReference(
-				"value " + i, "Reference " + i);
 		}
 
 		List<Map<String, String>> actualOptions = _getActualOptions(
