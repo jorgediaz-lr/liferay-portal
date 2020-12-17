@@ -368,3 +368,7 @@ private void _createYarnTasks() {
 		}
 	}
 }
+
+formatPython {
+	enabled = false
+}
