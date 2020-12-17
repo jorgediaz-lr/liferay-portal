@@ -24,8 +24,10 @@ import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
+import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.transaction.Isolation;
@@ -62,6 +64,7 @@ public interface ProductBundleLocalService
 	 *
 	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.osb.provisioning.service.impl.ProductBundleLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the product bundle local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link ProductBundleLocalServiceUtil} if injection and service tracking are not available.
 	 */
+	@Indexable(type = IndexableType.REINDEX)
 	public ProductBundle addProductBundle(long userId, String name)
 		throws PortalException;
 
@@ -273,6 +276,12 @@ public interface ProductBundleLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getProductBundlesCount();
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Hits search(
+			long companyId, String keywords, int start, int end, Sort sort)
+		throws PortalException;
+
+	@Indexable(type = IndexableType.REINDEX)
 	public ProductBundle updateProductBundle(long productBundleId, String name)
 		throws PortalException;
 
