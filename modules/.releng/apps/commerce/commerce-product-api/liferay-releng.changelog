@@ -2,3 +2,8 @@
 # Bundle Version 24.0.0
 #
 1e4a9008d41cdc150b8d1f4507784953d8d444a8^..f5a565b8bef6b03deef44df5e5ace92df3354117=COMMERCE-4584
+
+#
+# Bundle Version 24.0.1
+#
+f5a565b8bef6b03deef44df5e5ace92df3354117^..6208485dee96df69b38690f01e960c599021c2a0=LPS-105380
