@@ -17,13 +17,13 @@ package com.liferay.osb.provisioning.web.internal.portlet.action;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
+import com.liferay.osb.koroneiki.phloem.rest.client.problem.Problem;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.exception.AccountCodeException;
 import com.liferay.osb.provisioning.koroneiki.constants.TeamRoleConstants;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamRoleWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamWebService;
-import com.liferay.osb.provisioning.koroneiki.web.service.exception.HttpException;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -123,7 +123,7 @@ public class EditAccountMVCActionCommand extends BaseMVCActionCommand {
 		}
 		catch (Exception exception) {
 			if (exception instanceof AccountCodeException ||
-				exception instanceof HttpException) {
+				exception instanceof Problem.ProblemException) {
 
 				if (_log.isDebugEnabled()) {
 					_log.debug(exception, exception);

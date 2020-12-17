@@ -33,19 +33,19 @@ AccountDisplay accountDisplay = viewAccountContactsDisplayContext.getAccountDisp
 		title="<%= viewAccountContactsDisplayContext.getAssignContactTitle() %>"
 	/>
 
+	<liferay-ui:error exception="<%= Problem.ProblemException.class %>">
+
+		<%
+		Problem.ProblemException problemException = (Problem.ProblemException)errorException;
+		%>
+
+		<%= problemException.getMessage() %>
+	</liferay-ui:error>
+
 	<portlet:actionURL name="/accounts/assign_contact_roles" var="assignContactRolesURL">
 		<portlet:param name="redirect" value="<%= redirect %>" />
 		<portlet:param name="accountKey" value="<%= accountDisplay.getKey() %>" />
 	</portlet:actionURL>
-
-	<liferay-ui:error exception="<%= HttpException.class %>">
-
-		<%
-		HttpException httpException = (HttpException)errorException;
-		%>
-
-		<%= httpException.getMessage() %>
-	</liferay-ui:error>
 
 	<aui:form action="<%= assignContactRolesURL.toString() %>" cssClass="container-fluid container-fluid-max-xl" method="post" name="assignContactFm">
 		<aui:input name="contactRoleType" type="hidden" value="<%= ContactRole.Type.ACCOUNT_CUSTOMER.toString() %>" />

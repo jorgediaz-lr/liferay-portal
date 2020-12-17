@@ -18,11 +18,11 @@ import com.liferay.osb.koroneiki.phloem.rest.client.constants.ExternalLinkDomain
 import com.liferay.osb.koroneiki.phloem.rest.client.constants.ExternalLinkEntityName;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ExternalLink;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
+import com.liferay.osb.koroneiki.phloem.rest.client.problem.Problem;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.exception.ProductPurchaseQuantityException;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductPurchaseWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
-import com.liferay.osb.provisioning.koroneiki.web.service.exception.HttpException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
@@ -69,9 +69,9 @@ public class EditProductPurchaseMVCActionCommand extends BaseMVCActionCommand {
 
 			sendRedirect(actionRequest, actionResponse);
 		}
-		catch (HttpException httpException) {
+		catch (Problem.ProblemException problemException) {
 			SessionErrors.add(
-				actionRequest, httpException.getClass(), httpException);
+				actionRequest, problemException.getClass(), problemException);
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);

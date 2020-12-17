@@ -44,29 +44,20 @@ import org.osgi.service.component.annotations.Reference;
 	configurationPid = "com.liferay.osb.provisioning.koroneiki.web.service.internal.configuration.KoroneikiConfiguration",
 	immediate = true, service = ProductWebService.class
 )
-public class ProductWebServiceImpl
-	extends BaseWebService implements ProductWebService {
+public class ProductWebServiceImpl implements ProductWebService {
 
 	public Product addProduct(
 			String agentName, String agentUID, Product product)
 		throws Exception {
 
-		HttpInvoker.HttpResponse httpResponse =
-			_productResource.postProductHttpResponse(
-				agentName, agentUID, product);
-
-		return processDTO(httpResponse, ProductSerDes::toDTO);
+		return _productResource.postProduct(agentName, agentUID, product);
 	}
 
 	public void deleteProduct(
 			String agentName, String agentUID, String productKey)
 		throws Exception {
 
-		HttpInvoker.HttpResponse httpResponse =
-			_productResource.deleteProductHttpResponse(
-				agentName, agentUID, productKey);
-
-		validateResponse(httpResponse);
+		_productResource.deleteProduct(agentName, agentUID, productKey);
 	}
 
 	public Product fetchProductByName(String name) throws Exception {
@@ -135,11 +126,8 @@ public class ProductWebServiceImpl
 			Product product)
 		throws Exception {
 
-		HttpInvoker.HttpResponse httpResponse =
-			_productResource.putProductHttpResponse(
-				agentName, agentUID, productKey, product);
-
-		return processDTO(httpResponse, ProductSerDes::toDTO);
+		return _productResource.putProduct(
+			agentName, agentUID, productKey, product);
 	}
 
 	@Activate

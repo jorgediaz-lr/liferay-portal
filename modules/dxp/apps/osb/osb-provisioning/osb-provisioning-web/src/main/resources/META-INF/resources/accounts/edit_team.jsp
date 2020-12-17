@@ -35,21 +35,21 @@ Team team = viewTeamDisplayContext.getTeam();
 		title='<%= (team != null) ? "edit-team" : "new-team" %>'
 	/>
 
+	<liferay-ui:error exception="<%= Problem.ProblemException.class %>">
+
+		<%
+		Problem.ProblemException problemException = (Problem.ProblemException)errorException;
+		%>
+
+		<%= problemException.getMessage() %>
+	</liferay-ui:error>
+
 	<portlet:actionURL name="/accounts/edit_team" var="editTeamURL">
 		<portlet:param name="mvcRenderCommandName" value="/accounts/edit_team" />
 		<portlet:param name="redirect" value="<%= redirect %>" />
 		<portlet:param name="accountKey" value="<%= accountDisplay.getKey() %>" />
 		<portlet:param name="teamKey" value='<%= (team != null) ? team.getKey() : "" %>' />
 	</portlet:actionURL>
-
-	<liferay-ui:error exception="<%= HttpException.class %>">
-
-		<%
-		HttpException httpException = (HttpException)errorException;
-		%>
-
-		<%= httpException.getMessage() %>
-	</liferay-ui:error>
 
 	<aui:form action="<%= editTeamURL.toString() %>" cssClass="container-fluid container-fluid-max-xl" method="post" name="editTeamFm">
 		<div class="add-items-sheet sheet sheet-lg">

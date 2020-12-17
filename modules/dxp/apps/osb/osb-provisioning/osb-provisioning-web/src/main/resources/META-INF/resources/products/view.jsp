@@ -38,18 +38,18 @@ ProductSearchDisplayContext productSearchDisplayContext = ProvisioningWebCompone
 </div>
 
 <div class="container-fluid home">
-	<portlet:actionURL name="/search" var="searchURL" />
+	<liferay-ui:error exception="<%= Problem.ProblemException.class %>">
+
+		<%
+		Problem.ProblemException problemException = (Problem.ProblemException)errorException;
+		%>
+
+		<%= problemException.getMessage() %>
+	</liferay-ui:error>
 
 	<liferay-ui:error key="<%= RequiredProductException.class.getName() %>" message="please-remove-the-product-from-all-product-bundles-before-deleting" />
 
-	<liferay-ui:error exception="<%= HttpException.class %>">
-
-		<%
-		HttpException httpException = (HttpException)errorException;
-		%>
-
-		<%= httpException.getMessage() %>
-	</liferay-ui:error>
+	<portlet:actionURL name="/search" var="searchURL" />
 
 	<clay:management-toolbar
 		displayContext="<%= new ViewProductsManagementToolbarDisplayContext(liferayPortletRequest, liferayPortletResponse, request, productSearchDisplayContext.getSearchContainer()) %>"

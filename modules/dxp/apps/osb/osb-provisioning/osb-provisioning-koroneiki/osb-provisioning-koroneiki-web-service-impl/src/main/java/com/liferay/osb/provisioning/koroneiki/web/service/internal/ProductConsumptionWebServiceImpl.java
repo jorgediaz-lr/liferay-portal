@@ -39,7 +39,7 @@ import org.osgi.service.component.annotations.Component;
 	immediate = true, service = ProductConsumptionWebService.class
 )
 public class ProductConsumptionWebServiceImpl
-	extends BaseWebService implements ProductConsumptionWebService {
+	implements ProductConsumptionWebService {
 
 	public List<ProductConsumption> search(
 			String filter, int page, int pageSize, String sort)

@@ -25,4 +25,13 @@
 
 		<%= iae.getMessage() %>
 	</liferay-ui:error>
+
+	<liferay-ui:error exception="<%= Problem.ProblemException.class %>">
+
+		<%
+		Problem.ProblemException problemException = (Problem.ProblemException)errorException;
+		%>
+
+		<%= problemException.getMessage() %>
+	</liferay-ui:error>
 </c:if>

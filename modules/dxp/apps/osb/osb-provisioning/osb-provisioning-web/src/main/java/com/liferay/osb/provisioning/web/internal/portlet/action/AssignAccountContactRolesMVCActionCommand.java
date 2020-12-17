@@ -15,12 +15,12 @@
 package com.liferay.osb.provisioning.web.internal.portlet.action;
 
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
+import com.liferay.osb.koroneiki.phloem.rest.client.problem.Problem;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.exception.ContactRequiredException;
 import com.liferay.osb.provisioning.koroneiki.constants.ContactRoleConstants;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ContactRoleWebService;
-import com.liferay.osb.provisioning.koroneiki.web.service.exception.HttpException;
 import com.liferay.osb.provisioning.web.internal.util.ZendeskValidator;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -101,9 +101,9 @@ public class AssignAccountContactRolesMVCActionCommand
 
 			sendRedirect(actionRequest, actionResponse);
 		}
-		catch (HttpException httpException) {
+		catch (Problem.ProblemException problemException) {
 			SessionErrors.add(
-				actionRequest, httpException.getClass(), httpException);
+				actionRequest, problemException.getClass(), problemException);
 
 			String contactRoleType = ParamUtil.getString(
 				actionRequest, "contactRoleType");

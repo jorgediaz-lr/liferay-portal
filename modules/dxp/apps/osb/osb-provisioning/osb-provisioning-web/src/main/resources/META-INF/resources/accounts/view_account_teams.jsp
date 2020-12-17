@@ -21,6 +21,15 @@ ViewAccountTeamsDisplayContext viewAccountTeamsDisplayContext = ProvisioningWebC
 %>
 
 <div class="details-table table-striped">
+	<liferay-ui:error exception="<%= Problem.ProblemException.class %>">
+
+		<%
+		Problem.ProblemException problemException = (Problem.ProblemException)errorException;
+		%>
+
+		<%= problemException.getMessage() %>
+	</liferay-ui:error>
+
 	<liferay-ui:search-container
 		id="teams"
 		searchContainer="<%= viewAccountTeamsDisplayContext.getSearchContainer() %>"

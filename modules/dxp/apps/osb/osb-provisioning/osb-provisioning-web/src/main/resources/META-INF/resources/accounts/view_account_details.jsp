@@ -22,17 +22,16 @@ ViewAccountDisplayContext viewAccountDisplayContext = ProvisioningWebComponentPr
 
 <liferay-ui:error exception="<%= AccountCodeException.class %>" message="please-enter-a-valid-code" />
 <liferay-ui:error exception="<%= DuplicateDossieraKeyException.class %>" message="dossiera-keys-must-be-unique" />
+<liferay-ui:error exception="<%= MultipleDossieraKeysException.class %>" message="an-account-can-only-have-one-dossiera-key" />
 
-<liferay-ui:error exception="<%= HttpException.class %>">
+<liferay-ui:error exception="<%= Problem.ProblemException.class %>">
 
 	<%
-	HttpException httpException = (HttpException)errorException;
+	Problem.ProblemException problemException = (Problem.ProblemException)errorException;
 	%>
 
-	<%= httpException.getMessage() %>
+	<%= problemException.getMessage() %>
 </liferay-ui:error>
-
-<liferay-ui:error exception="<%= MultipleDossieraKeysException.class %>" message="an-account-can-only-have-one-dossiera-key" />
 
 <div class="account-details details-table" id="accountDetails">
 	<react:component

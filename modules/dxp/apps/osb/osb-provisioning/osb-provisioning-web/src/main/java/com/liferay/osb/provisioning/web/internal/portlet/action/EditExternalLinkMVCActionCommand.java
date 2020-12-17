@@ -18,12 +18,12 @@ import com.liferay.osb.koroneiki.phloem.rest.client.constants.ExternalLinkDomain
 import com.liferay.osb.koroneiki.phloem.rest.client.constants.ExternalLinkEntityName;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ExternalLink;
+import com.liferay.osb.koroneiki.phloem.rest.client.problem.Problem;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.exception.DuplicateDossieraKeyException;
 import com.liferay.osb.provisioning.exception.MultipleDossieraKeysException;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ExternalLinkWebService;
-import com.liferay.osb.provisioning.koroneiki.web.service.exception.HttpException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
@@ -90,8 +90,8 @@ public class EditExternalLinkMVCActionCommand extends BaseMVCActionCommand {
 			_log.error(exception, exception);
 
 			if (exception instanceof DuplicateDossieraKeyException ||
-				exception instanceof HttpException ||
-				exception instanceof MultipleDossieraKeysException) {
+				exception instanceof MultipleDossieraKeysException ||
+				exception instanceof Problem.ProblemException) {
 
 				SessionErrors.add(
 					actionRequest, exception.getClass(), exception);

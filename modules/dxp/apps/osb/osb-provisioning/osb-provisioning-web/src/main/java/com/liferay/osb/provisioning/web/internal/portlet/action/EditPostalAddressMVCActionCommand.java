@@ -15,9 +15,9 @@
 package com.liferay.osb.provisioning.web.internal.portlet.action;
 
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.PostalAddress;
+import com.liferay.osb.koroneiki.phloem.rest.client.problem.Problem;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.koroneiki.web.service.PostalAddressWebService;
-import com.liferay.osb.provisioning.koroneiki.web.service.exception.HttpException;
 import com.liferay.portal.kernel.exception.NoSuchCountryException;
 import com.liferay.portal.kernel.exception.NoSuchListTypeException;
 import com.liferay.portal.kernel.exception.NoSuchRegionException;
@@ -97,10 +97,10 @@ public class EditPostalAddressMVCActionCommand extends BaseMVCActionCommand {
 
 			SessionErrors.add(actionRequest, exception.getClass(), exception);
 
-			if (exception instanceof HttpException ||
-				exception instanceof NoSuchCountryException ||
+			if (exception instanceof NoSuchCountryException ||
 				exception instanceof NoSuchListTypeException ||
-				exception instanceof NoSuchRegionException) {
+				exception instanceof NoSuchRegionException ||
+				exception instanceof Problem.ProblemException) {
 
 				if (postalAddressId > 0) {
 					sendRedirect(actionRequest, actionResponse);

@@ -15,11 +15,9 @@
 package com.liferay.osb.provisioning.koroneiki.web.service.internal;
 
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
-import com.liferay.osb.koroneiki.phloem.rest.client.http.HttpInvoker;
 import com.liferay.osb.koroneiki.phloem.rest.client.pagination.Page;
 import com.liferay.osb.koroneiki.phloem.rest.client.pagination.Pagination;
 import com.liferay.osb.koroneiki.phloem.rest.client.resource.v1_0.TeamRoleResource;
-import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.TeamRoleSerDes;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamRoleWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.internal.configuration.KoroneikiConfiguration;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
@@ -41,15 +39,11 @@ import org.osgi.service.component.annotations.Reference;
 	configurationPid = "com.liferay.osb.provisioning.koroneiki.web.service.internal.configuration.KoroneikiConfiguration",
 	immediate = true, service = TeamRoleWebService.class
 )
-public class TeamRoleWebServiceImpl
-	extends BaseWebService implements TeamRoleWebService {
+public class TeamRoleWebServiceImpl implements TeamRoleWebService {
 
 	public TeamRole getTeamRole(String type, String name) throws Exception {
-		HttpInvoker.HttpResponse httpResponse =
-			_teamRoleResource.getTeamRoleTeamRoleTypeTeamRoleNameHttpResponse(
-				_http.encodePath(type), _http.encodePath(name));
-
-		return processDTO(httpResponse, TeamRoleSerDes::toDTO);
+		return _teamRoleResource.getTeamRoleTeamRoleTypeTeamRoleName(
+			_http.encodePath(type), _http.encodePath(name));
 	}
 
 	public List<TeamRole> getTeamRoles(

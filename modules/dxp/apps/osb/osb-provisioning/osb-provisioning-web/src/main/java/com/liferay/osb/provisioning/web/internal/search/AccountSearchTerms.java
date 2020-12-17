@@ -48,6 +48,8 @@ public class AccountSearchTerms extends AccountDisplayTerms {
 
 		StringBundler sb = new StringBundler();
 
+		sb.append("broken");
+
 		if (!ArrayUtil.isEmpty(subscriptionStates)) {
 			sb.append("(");
 

@@ -49,13 +49,13 @@ if (productPurchase != null) {
 		title='<%= (productPurchase != null) ? "edit-subscription" : "add-subscription" %>'
 	/>
 
-	<liferay-ui:error exception="<%= HttpException.class %>">
+	<liferay-ui:error exception="<%= Problem.ProblemException.class %>">
 
 		<%
-		HttpException httpException = (HttpException)errorException;
+		Problem.ProblemException problemException = (Problem.ProblemException)errorException;
 		%>
 
-		<%= httpException.getMessage() %>
+		<%= problemException.getMessage() %>
 	</liferay-ui:error>
 
 	<liferay-ui:error exception="<%= ProductPurchaseQuantityException.class %>" message="to-remove-a-subscription-change-the-status-to-cancelled-instead" />

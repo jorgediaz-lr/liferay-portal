@@ -15,10 +15,8 @@
 package com.liferay.osb.provisioning.koroneiki.web.service.internal;
 
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.PostalAddress;
-import com.liferay.osb.koroneiki.phloem.rest.client.http.HttpInvoker;
 import com.liferay.osb.koroneiki.phloem.rest.client.pagination.Page;
 import com.liferay.osb.koroneiki.phloem.rest.client.resource.v1_0.PostalAddressResource;
-import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.PostalAddressSerDes;
 import com.liferay.osb.provisioning.koroneiki.web.service.PostalAddressWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.internal.configuration.KoroneikiConfiguration;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
@@ -38,20 +36,15 @@ import org.osgi.service.component.annotations.Component;
 	configurationPid = "com.liferay.osb.provisioning.koroneiki.web.service.internal.configuration.KoroneikiConfiguration",
 	immediate = true, service = PostalAddressWebService.class
 )
-public class PostalAddressWebServiceImpl
-	extends BaseWebService implements PostalAddressWebService {
+public class PostalAddressWebServiceImpl implements PostalAddressWebService {
 
 	public PostalAddress addPostalAddress(
 			String agentName, String agentUID, String accountKey,
 			PostalAddress postalAddress)
 		throws Exception {
 
-		HttpInvoker.HttpResponse httpResponse =
-			_postalAddressResource.
-				postAccountAccountKeyPostalAddressHttpResponse(
-					agentName, agentUID, accountKey, postalAddress);
-
-		return processDTO(httpResponse, PostalAddressSerDes::toDTO);
+		return _postalAddressResource.postAccountAccountKeyPostalAddress(
+			agentName, agentUID, accountKey, postalAddress);
 	}
 
 	public void deletePostalAddress(
@@ -83,11 +76,8 @@ public class PostalAddressWebServiceImpl
 			PostalAddress postalAddress)
 		throws Exception {
 
-		HttpInvoker.HttpResponse httpResponse =
-			_postalAddressResource.putPostalAddressHttpResponse(
-				agentName, agentUID, postalAddressId, postalAddress);
-
-		return processDTO(httpResponse, PostalAddressSerDes::toDTO);
+		return _postalAddressResource.putPostalAddress(
+			agentName, agentUID, postalAddressId, postalAddress);
 	}
 
 	@Activate

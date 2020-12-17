@@ -20,19 +20,19 @@
 Contact koroneikiContact = (Contact)renderRequest.getAttribute(ProvisioningWebKeys.CONTACT);
 %>
 
+<liferay-ui:error exception="<%= Problem.ProblemException.class %>">
+
+	<%
+	Problem.ProblemException problemException = (Problem.ProblemException)errorException;
+	%>
+
+	<%= problemException.getMessage() %>
+</liferay-ui:error>
+
 <portlet:actionURL name="/users/edit_contact" var="editContactURL">
 	<portlet:param name="redirect" value="<%= currentURL %>" />
 	<portlet:param name="emailAddress" value="<%= koroneikiContact.getEmailAddress() %>" />
 </portlet:actionURL>
-
-<liferay-ui:error exception="<%= HttpException.class %>">
-
-	<%
-	HttpException httpException = (HttpException)errorException;
-	%>
-
-	<%= httpException.getMessage() %>
-</liferay-ui:error>
 
 <aui:form action="<%= editContactURL %>" cssClass="container-fluid-1280" method="post" name="fm">
 	<aui:fieldset-group>

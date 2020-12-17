@@ -15,9 +15,9 @@
 package com.liferay.osb.provisioning.web.internal.portlet.action;
 
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
+import com.liferay.osb.koroneiki.phloem.rest.client.problem.Problem;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
-import com.liferay.osb.provisioning.koroneiki.web.service.exception.HttpException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
@@ -100,11 +100,11 @@ public class EditAccountHierarchyMVCActionCommand extends BaseMVCActionCommand {
 				}
 			}
 		}
-		catch (HttpException httpException) {
-			_log.error(httpException, httpException);
+		catch (Problem.ProblemException problemException) {
+			_log.error(problemException, problemException);
 
 			SessionErrors.add(
-				actionRequest, httpException.getClass(), httpException);
+				actionRequest, problemException.getClass(), problemException);
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);

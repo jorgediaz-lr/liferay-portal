@@ -33,13 +33,13 @@ AccountDisplay accountDisplay = viewAccountDisplayContext.getAccountDisplay();
 		title="add-address"
 	/>
 
-	<liferay-ui:error exception="<%= HttpException.class %>">
+	<liferay-ui:error exception="<%= Problem.ProblemException.class %>">
 
 		<%
-		HttpException httpException = (HttpException)errorException;
+		Problem.ProblemException problemException = (Problem.ProblemException)errorException;
 		%>
 
-		<%= httpException.getMessage() %>
+		<%= problemException.getMessage() %>
 	</liferay-ui:error>
 
 	<portlet:actionURL name="/accounts/edit_postal_address" var="editPostalAddressURL" />

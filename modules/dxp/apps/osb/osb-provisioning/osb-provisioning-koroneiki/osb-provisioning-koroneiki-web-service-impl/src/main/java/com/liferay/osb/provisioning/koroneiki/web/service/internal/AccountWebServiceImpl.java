@@ -43,18 +43,13 @@ import org.osgi.service.component.annotations.Component;
 	configurationPid = "com.liferay.osb.provisioning.koroneiki.web.service.internal.configuration.KoroneikiConfiguration",
 	immediate = true, service = AccountWebService.class
 )
-public class AccountWebServiceImpl
-	extends BaseWebService implements AccountWebService {
+public class AccountWebServiceImpl implements AccountWebService {
 
 	public Account addAccount(
 			String agentName, String agentUID, Account account)
 		throws Exception {
 
-		HttpInvoker.HttpResponse httpResponse =
-			_accountResource.postAccountHttpResponse(
-				agentName, agentUID, account);
-
-		return processDTO(httpResponse, AccountSerDes::toDTO);
+		return _accountResource.postAccount(agentName, agentUID, account);
 	}
 
 	public void assignContactRoles(
@@ -62,13 +57,9 @@ public class AccountWebServiceImpl
 			String contactEmailAddress, String[] contactRoleKeys)
 		throws Exception {
 
-		HttpInvoker.HttpResponse httpResponse =
-			_accountResource.
-				putAccountContactByEmailAddresContactEmailAddressRoleHttpResponse(
-					agentName, agentUID, accountKey, contactEmailAddress,
-					contactRoleKeys);
-
-		validateResponse(httpResponse);
+		_accountResource.putAccountContactByEmailAddresContactEmailAddressRole(
+			agentName, agentUID, accountKey, contactEmailAddress,
+			contactRoleKeys);
 	}
 
 	public void assignTeamRoles(
@@ -76,11 +67,8 @@ public class AccountWebServiceImpl
 			String teamKey, String[] teamRoleKeys)
 		throws Exception {
 
-		HttpInvoker.HttpResponse httpResponse =
-			_accountResource.putAccountAssignedTeamTeamKeyRoleHttpResponse(
-				agentName, agentUID, accountKey, teamKey, teamRoleKeys);
-
-		validateResponse(httpResponse);
+		_accountResource.putAccountAssignedTeamTeamKeyRole(
+			agentName, agentUID, accountKey, teamKey, teamRoleKeys);
 	}
 
 	public Account fetchAccount(String accountKey) throws Exception {
@@ -180,11 +168,8 @@ public class AccountWebServiceImpl
 			String teamKey, String[] teamRoleKeys)
 		throws Exception {
 
-		HttpInvoker.HttpResponse httpResponse =
-			_accountResource.deleteAccountAssignedTeamTeamKeyRoleHttpResponse(
-				agentName, agentUID, accountKey, teamKey, teamRoleKeys);
-
-		validateResponse(httpResponse);
+		_accountResource.deleteAccountAssignedTeamTeamKeyRole(
+			agentName, agentUID, accountKey, teamKey, teamRoleKeys);
 	}
 
 	public void unassignWorkerContact(
@@ -202,11 +187,8 @@ public class AccountWebServiceImpl
 			Account account)
 		throws Exception {
 
-		HttpInvoker.HttpResponse httpResponse =
-			_accountResource.putAccountHttpResponse(
-				agentName, agentUID, accountKey, account);
-
-		return processDTO(httpResponse, AccountSerDes::toDTO);
+		return _accountResource.putAccount(
+			agentName, agentUID, accountKey, account);
 	}
 
 	@Activate

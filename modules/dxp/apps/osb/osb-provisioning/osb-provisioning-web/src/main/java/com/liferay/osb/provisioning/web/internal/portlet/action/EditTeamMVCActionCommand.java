@@ -15,10 +15,10 @@
 package com.liferay.osb.provisioning.web.internal.portlet.action;
 
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
+import com.liferay.osb.koroneiki.phloem.rest.client.problem.Problem;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.exception.ContactRequiredException;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamWebService;
-import com.liferay.osb.provisioning.koroneiki.web.service.exception.HttpException;
 import com.liferay.osb.provisioning.web.internal.util.ZendeskValidator;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -90,7 +90,7 @@ public class EditTeamMVCActionCommand extends BaseMVCActionCommand {
 		}
 		catch (Exception exception) {
 			if (exception instanceof ContactRequiredException ||
-				exception instanceof HttpException) {
+				exception instanceof Problem.ProblemException) {
 
 				SessionErrors.add(
 					actionRequest, exception.getClass(), exception);
