@@ -14,15 +14,21 @@ import React, {useContext, useState} from 'react';
 
 import {PRODUCT_PURCHASE_STATUS_APPROVED} from '../utilities/constants';
 
+function generateEndDate() {
+	const newEndYear = new Date().getFullYear() + 1;
+
+	return new Date(new Date().setFullYear(newEndYear));
+}
+
 export const SubscriptionRecord = Record({
-	originalEndDate: '',
+	originalEndDate: generateEndDate(),
 	perpetual: false,
 	productKey: null,
 	productName: '',
 	quantity: '1',
 	salesforceOpportunityKey: '',
 	sizing: '1',
-	startDate: '',
+	startDate: new Date(),
 	status: PRODUCT_PURCHASE_STATUS_APPROVED
 });
 
