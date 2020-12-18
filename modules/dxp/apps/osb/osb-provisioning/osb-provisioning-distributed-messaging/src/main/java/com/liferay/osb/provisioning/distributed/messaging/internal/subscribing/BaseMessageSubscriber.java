@@ -18,6 +18,8 @@ import com.liferay.osb.distributed.messaging.Message;
 import com.liferay.osb.distributed.messaging.subscribing.MessageSubscriber;
 import com.liferay.osb.provisioning.zendesk.web.service.ZendeskTicketWebService;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
@@ -32,10 +34,20 @@ public abstract class BaseMessageSubscriber implements MessageSubscriber {
 
 	public void receive(Message message) {
 		try {
-			JSONObject jsonObject = jsonFactory.createJSONObject(
-				(String)message.getPayload());
+			try {
+				JSONObject jsonObject = jsonFactory.createJSONObject(
+					(String)message.getPayload());
 
-			doParse(jsonObject);
+				doParse(jsonObject);
+			}
+			catch (JSONException jsonException) {
+				JSONArray jsonArray = jsonFactory.createJSONArray(
+					(String)message.getPayload());
+
+				for (int i = 0; i < jsonArray.length(); i++) {
+					doParse(jsonArray.getJSONObject(i));
+				}
+			}
 		}
 		catch (Exception exception) {
 			try {
