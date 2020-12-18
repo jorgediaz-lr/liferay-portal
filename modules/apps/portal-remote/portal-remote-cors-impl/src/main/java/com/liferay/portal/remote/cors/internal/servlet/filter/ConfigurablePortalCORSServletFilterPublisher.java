@@ -36,7 +36,7 @@ import org.osgi.service.component.annotations.Deactivate;
  */
 @Component(
 	configurationPid = "com.liferay.portal.remote.cors.configuration.PortalCORSConfiguration",
-	configurationPolicy = ConfigurationPolicy.OPTIONAL, immediate = true,
+	configurationPolicy = ConfigurationPolicy.REQUIRE, immediate = true,
 	service = {}
 )
 public class ConfigurablePortalCORSServletFilterPublisher {
