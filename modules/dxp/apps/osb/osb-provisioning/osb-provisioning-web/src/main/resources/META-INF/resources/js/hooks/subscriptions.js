@@ -21,6 +21,8 @@ function generateEndDate() {
 }
 
 export const SubscriptionRecord = Record({
+	endDate: null,
+	key: null,
 	originalEndDate: generateEndDate(),
 	perpetual: false,
 	productKey: null,
@@ -37,7 +39,7 @@ const SubscriptionsContext = React.createContext();
 export function SubscriptionsProvider({initialSubscriptions = [], children}) {
 	const processedSubscriptions = initialSubscriptions.map(detail => {
 		return [
-			detail.productKey,
+			detail.key ? detail.key : detail.productKey,
 			SubscriptionRecord({
 				...detail,
 				originalEndDate: new Date(detail.originalEndDate),

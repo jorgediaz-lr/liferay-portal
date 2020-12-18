@@ -18,6 +18,7 @@ function renderAddSubscriptions(props) {
 	return render(
 		<EditSubscriptions
 			accountName="Test Account"
+			addSubscriptions={true}
 			details={[
 				{
 					originalEndDate: '2021-12-08',

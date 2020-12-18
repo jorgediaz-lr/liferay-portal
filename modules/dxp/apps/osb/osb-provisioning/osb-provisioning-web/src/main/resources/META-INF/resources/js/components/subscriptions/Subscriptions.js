@@ -223,11 +223,11 @@ function Subscription({accountName, detail, instanceSizes}) {
 				</label>
 			</ClayTable.Cell>
 			<ClayTable.Cell className={invalidEndDate ? 'has-error' : ''}>
-				<label htmlFor="endDate">
+				<label htmlFor="gracePeriodStartDate">
 					<DatePicker
 						defaultValue={originalEndDate}
-						id="endDate"
-						inputName="endDate"
+						id="gracePeriodStartDate"
+						inputName="gracePeriodStartDate"
 						updateFn={handleEndDateChange}
 					/>
 				</label>

@@ -18,6 +18,7 @@ import Subscriptions from './Subscriptions';
 
 function EditSubscriptions({
 	accountName,
+	addSubscriptions,
 	details,
 	editProductPurchasesURL,
 	redirect,
@@ -51,6 +52,7 @@ function EditSubscriptions({
 
 EditSubscriptions.propTypes = {
 	accountName: PropTypes.string.isRequired,
+	addSubscriptions: PropTypes.bool.isRequired,
 	details: PropTypes.arrayOf(
 		PropTypes.shape({
 			originalEndDate: PropTypes.string,

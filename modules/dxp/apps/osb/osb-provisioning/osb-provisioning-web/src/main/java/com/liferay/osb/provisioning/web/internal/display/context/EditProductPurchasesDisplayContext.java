@@ -72,6 +72,8 @@ public class EditProductPurchasesDisplayContext
 
 		data.put("accountName", account.getName());
 
+		data.put("addSubscriptions", _products != null);
+
 		String redirect = ParamUtil.getString(httpServletRequest, "redirect");
 
 		if (Validator.isNull(redirect)) {
@@ -205,7 +207,7 @@ public class EditProductPurchasesDisplayContext
 		for (Product product : _products) {
 			productPurchasesJSONArray.put(
 				JSONUtil.put(
-					"originalEndDate", _getDate(null, "endDate")
+					"originalEndDate", _getDate(null, "originalEndDate")
 				).put(
 					"productKey", product.getKey()
 				).put(
@@ -222,10 +224,10 @@ public class EditProductPurchasesDisplayContext
 		Calendar calendar = CalendarFactoryUtil.getCalendar(
 			themeDisplay.getTimeZone(), themeDisplay.getLocale());
 
-		if (type.equals("endDate")) {
+		if (type.equals("originalEndDate")) {
 			calendar.add(Calendar.YEAR, 1);
 		}
-		else if (type.equals("gracePeriodEndDate")) {
+		else if (type.equals("endDate")) {
 			calendar.add(Calendar.YEAR, 1);
 			calendar.add(Calendar.DATE, 30);
 		}
@@ -257,17 +259,17 @@ public class EditProductPurchasesDisplayContext
 
 			productPurchasesJSONArray.put(
 				JSONUtil.put(
-					"endDate",
-					_getDate(productPurchase.getOriginalEndDate(), "endDate")
+					"endDate", _getDate(productPurchase.getEndDate(), "endDate")
 				).put(
-					"gracePeriodEndDate",
-					_getDate(productPurchase.getEndDate(), "gracePeriodEndDate")
+					"key", productPurchase.getKey()
+				).put(
+					"originalEndDate",
+					_getDate(
+						productPurchase.getOriginalEndDate(), "originalEndDate")
 				).put(
 					"perpetual", productPurchase.getPerpetual()
 				).put(
 					"productName", productPurchaseDisplay.getProductName()
-				).put(
-					"productPurchaseKey", productPurchase.getKey()
 				).put(
 					"quantity", productPurchase.getQuantity()
 				).put(
@@ -280,8 +282,6 @@ public class EditProductPurchasesDisplayContext
 					_getDate(productPurchase.getStartDate(), "startDate")
 				).put(
 					"status", productPurchase.getStatus()
-				).put(
-					"supportLife", productPurchaseDisplay.getSupportLife()
 				));
 		}
 
