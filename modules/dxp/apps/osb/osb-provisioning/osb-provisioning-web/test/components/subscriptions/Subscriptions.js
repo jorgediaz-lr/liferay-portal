@@ -14,7 +14,12 @@ import React from 'react';
 
 import Subscriptions from '../../../src/main/resources/META-INF/resources/js/components/subscriptions/Subscriptions';
 import {SubscriptionsProvider} from '../../../src/main/resources/META-INF/resources/js/hooks/subscriptions';
-import {ADD_SUBSCRIPTIONS} from '../../../src/main/resources/META-INF/resources/js/utilities/constants';
+import {
+	ADD_SUBSCRIPTIONS,
+	EDIT_SUBSCRIPTIONS,
+	PRODUCT_PURCHASE_STATUS_APPROVED,
+	PRODUCT_PURCHASE_STATUS_CANCELLED
+} from '../../../src/main/resources/META-INF/resources/js/utilities/constants';
 
 function mockAddSubscriptions() {
 	return [
@@ -45,6 +50,23 @@ function mockAddSubscriptions() {
 	];
 }
 
+function mockEditSubscriptions() {
+	return [
+		{
+			endDate: '2022-01-20',
+			key: 'KOR-38323',
+			originalEndDate: '2021-12-21',
+			perpetual: true,
+			productName: 'Product E',
+			quantity: 1,
+			salesforceOpportunityKey: 'salesForceKey123',
+			sizing: 1,
+			startDate: '2020-12-21',
+			status: 'Approved'
+		}
+	];
+}
+
 function renderSubscriptions({
 	subscriptions = mockAddSubscriptions(),
 	...props
@@ -54,6 +76,10 @@ function renderSubscriptions({
 			<Subscriptions
 				accountName="Test Account"
 				instanceSizes={[1, 2, 3, 4]}
+				statusOptions={[
+					PRODUCT_PURCHASE_STATUS_APPROVED,
+					PRODUCT_PURCHASE_STATUS_CANCELLED
+				]}
 				subscriptionsType={ADD_SUBSCRIPTIONS}
 				{...props}
 			/>
@@ -64,78 +90,103 @@ function renderSubscriptions({
 describe('Subscriptions', () => {
 	afterEach(cleanup);
 
-	it('renders', () => {
-		const {container} = renderSubscriptions();
+	describe('New Subscriptions', () => {
+		it('renders', () => {
+			const {container} = renderSubscriptions();
 
-		expect(container).toBeTruthy();
-	});
-
-	it('displays a delete subscription icon for each of the subscriptions', () => {
-		const {getAllByLabelText} = renderSubscriptions();
-
-		const allDeleteIcons = getAllByLabelText('delete-subscription-icon');
-
-		expect(allDeleteIcons[0]).toBeTruthy();
-		expect(allDeleteIcons.length).toBe(4);
-	});
-
-	it('displays a disabled delete subscription icon when there is only one subscription', () => {
-		const {getAllByLabelText, getByText} = renderSubscriptions();
-
-		const allDeleteIcons = getAllByLabelText('delete-subscription-icon');
-
-		allDeleteIcons.forEach(icon => {
-			fireEvent.click(icon);
+			expect(container).toBeTruthy();
 		});
 
-		expect(getByText('Product D'));
+		it('displays a delete subscription icon for each of the subscriptions', () => {
+			const {getAllByLabelText} = renderSubscriptions();
+
+			const allDeleteIcons = getAllByLabelText(
+				'delete-subscription-icon'
+			);
+
+			expect(allDeleteIcons[0]).toBeTruthy();
+			expect(allDeleteIcons.length).toBe(4);
+		});
+
+		it('displays a disabled delete subscription icon when there is only one subscription', () => {
+			const {getAllByLabelText, getByText} = renderSubscriptions();
+
+			const allDeleteIcons = getAllByLabelText(
+				'delete-subscription-icon'
+			);
+
+			allDeleteIcons.forEach(icon => {
+				fireEvent.click(icon);
+			});
+
+			expect(getByText('Product D'));
+		});
+
+		it('displays the product name for each of the selected products', () => {
+			const {getByText} = renderSubscriptions();
+
+			expect(getByText('Product A')).toBeTruthy();
+			expect(getByText('Product B')).toBeTruthy();
+			expect(getByText('Product C')).toBeTruthy();
+			expect(getByText('Product D')).toBeTruthy();
+		});
+
+		it('displays the account name for each of the subscriptions', () => {
+			const {getAllByText} = renderSubscriptions();
+
+			const allAccountNames = getAllByText('Test Account');
+
+			expect(allAccountNames[0]).toBeTruthy();
+			expect(allAccountNames.length).toBe(4);
+		});
+
+		it('removes a subscription when the delete icon for that subscription is clicked', () => {
+			const {
+				getAllByLabelText,
+				getByText,
+				queryByText
+			} = renderSubscriptions();
+
+			fireEvent.click(getAllByLabelText('delete-subscription-icon')[0]);
+
+			expect(queryByText('Product A')).toBeFalsy();
+			expect(getByText('Product B')).toBeTruthy();
+			expect(getByText('Product C')).toBeTruthy();
+			expect(getByText('Product D')).toBeTruthy();
+		});
+
+		it('it disables date fields after checking the perpetual checkbox', () => {
+			const {
+				getAllByPlaceholderText,
+				getAllByRole
+			} = renderSubscriptions();
+
+			const dateFields = getAllByPlaceholderText('YYYY-MM-DD');
+			const perpetualCheckboxes = getAllByRole('checkbox');
+
+			expect(dateFields[0].disabled).toBeFalsy();
+			expect(dateFields[1].disabled).toBeFalsy();
+
+			fireEvent.click(perpetualCheckboxes[0]);
+
+			expect(dateFields[0].disabled).toBeTruthy();
+			expect(dateFields[1].disabled).toBeTruthy();
+		});
 	});
 
-	it('displays the product name for each of the selected products', () => {
-		const {getByText} = renderSubscriptions();
+	describe('Existing Subscriptions', () => {
+		it('displays the date fields as disabled if perpetual checkbox is checked', () => {
+			const {getAllByPlaceholderText, getByRole} = renderSubscriptions({
+				subscriptions: mockEditSubscriptions(),
+				subscriptionsType: EDIT_SUBSCRIPTIONS
+			});
 
-		expect(getByText('Product A')).toBeTruthy();
-		expect(getByText('Product B')).toBeTruthy();
-		expect(getByText('Product C')).toBeTruthy();
-		expect(getByText('Product D')).toBeTruthy();
-	});
+			const dateFields = getAllByPlaceholderText('YYYY-MM-DD');
 
-	it('displays the account name for each of the subscriptions', () => {
-		const {getAllByText} = renderSubscriptions();
-
-		const allAccountNames = getAllByText('Test Account');
-
-		expect(allAccountNames[0]).toBeTruthy();
-		expect(allAccountNames.length).toBe(4);
-	});
-
-	it('removes a subscription when the delete icon for that subscription is clicked', () => {
-		const {
-			getAllByLabelText,
-			getByText,
-			queryByText
-		} = renderSubscriptions();
-
-		fireEvent.click(getAllByLabelText('delete-subscription-icon')[0]);
-
-		expect(queryByText('Product A')).toBeFalsy();
-		expect(getByText('Product B')).toBeTruthy();
-		expect(getByText('Product C')).toBeTruthy();
-		expect(getByText('Product D')).toBeTruthy();
-	});
-
-	it('it disables date fields after checking the perpetual checkbox', () => {
-		const {getAllByPlaceholderText, getAllByRole} = renderSubscriptions();
-
-		const dateFields = getAllByPlaceholderText('YYYY-MM-DD');
-		const perpetualCheckboxes = getAllByRole('checkbox');
-
-		expect(dateFields[0].disabled).toBeFalsy();
-		expect(dateFields[1].disabled).toBeFalsy();
-
-		fireEvent.click(perpetualCheckboxes[0]);
-
-		expect(dateFields[0].disabled).toBeTruthy();
-		expect(dateFields[1].disabled).toBeTruthy();
+			expect(getByRole('checkbox').checked).toBeTruthy();
+			expect(dateFields[0].disabled).toBeTruthy();
+			expect(dateFields[1].disabled).toBeTruthy();
+			expect(dateFields[2].disabled).toBeTruthy();
+		});
 	});
 });

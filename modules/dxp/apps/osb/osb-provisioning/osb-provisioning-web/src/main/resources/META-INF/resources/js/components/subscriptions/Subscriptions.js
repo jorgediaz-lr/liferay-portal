@@ -14,10 +14,23 @@ import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
 
 import {useSubscriptions} from '../../hooks/subscriptions';
-import {ADD_SUBSCRIPTIONS, EDIT_SUBSCRIPTIONS} from '../../utilities/constants';
+import {
+	ADD_SUBSCRIPTIONS,
+	EDIT_SUBSCRIPTIONS,
+	PRODUCT_PURCHASE_STATUS_APPROVED,
+	PRODUCT_PURCHASE_STATUS_CANCELLED
+} from '../../utilities/constants';
 import DatePicker from '../DatePicker';
 
-function Subscriptions({accountName, instanceSizes = []}) {
+function Subscriptions({
+	accountName,
+	instanceSizes = [],
+	statusOptions = [
+		PRODUCT_PURCHASE_STATUS_APPROVED,
+		PRODUCT_PURCHASE_STATUS_CANCELLED
+	],
+	subscriptionsType
+}) {
 	const [subscriptions] = useSubscriptions();
 
 	return (
@@ -49,6 +62,19 @@ function Subscriptions({accountName, instanceSizes = []}) {
 					<ClayTable.Cell headingCell>
 						{Liferay.Language.get('instance-size')}
 					</ClayTable.Cell>
+
+					{subscriptionsType === EDIT_SUBSCRIPTIONS && (
+						<ClayTable.Cell headingCell>
+							{Liferay.Language.get('grace-period-end-date')}
+						</ClayTable.Cell>
+					)}
+
+					{subscriptionsType === EDIT_SUBSCRIPTIONS && (
+						<ClayTable.Cell headingCell>
+							{Liferay.Language.get('status')}
+						</ClayTable.Cell>
+					)}
+
 					<ClayTable.Cell headingCell>
 						{Liferay.Language.get('account-name')}
 					</ClayTable.Cell>
@@ -61,7 +87,13 @@ function Subscriptions({accountName, instanceSizes = []}) {
 						accountName={accountName}
 						detail={detail}
 						instanceSizes={instanceSizes}
-						key={detail.productKey}
+						key={
+							subscriptionsType === EDIT_SUBSCRIPTIONS
+								? detail.key
+								: detail.productKey
+						}
+						statusOptions={statusOptions}
+						subscriptionsType={subscriptionsType}
 					/>
 				))}
 			</ClayTable.Body>
@@ -72,37 +104,62 @@ function Subscriptions({accountName, instanceSizes = []}) {
 Subscriptions.propTypes = {
 	accountName: PropTypes.string.isRequired,
 	instanceSizes: PropTypes.arrayOf(PropTypes.number),
+	statusOptions: PropTypes.arrayOf(PropTypes.string),
 	subscriptionsType: PropTypes.oneOf([ADD_SUBSCRIPTIONS, EDIT_SUBSCRIPTIONS])
 		.isRequired
 };
 
-function Subscription({accountName, detail, instanceSizes}) {
-	const {
-		originalEndDate,
-		perpetual,
-		productKey,
-		productName,
-		quantity,
-		salesforceOpportunityKey,
-		sizing,
-		startDate
-	} = detail;
-
+function Subscription({
+	accountName,
+	detail,
+	instanceSizes,
+	statusOptions,
+	subscriptionsType
+}) {
 	const [disableDelete, setDisableDelete] = useState(false);
+	const [
+		invalidGracePeriodStartDate,
+		setInvalidGracePeriodStartDate
+	] = useState(false);
 	const [invalidEndDate, setInvalidEndDate] = useState(false);
 
 	const [
 		subscriptions,
 		{
 			deleteSubscription,
+			updateEndDate,
 			updateOriginalEndDate,
 			updatePerpetual,
 			updateQuantity,
 			updateSalesforceOpportunityKey,
 			updateSizing,
-			updateStartDate
+			updateStartDate,
+			updateStatus
 		}
 	] = useSubscriptions();
+
+	const {
+		endDate,
+		originalEndDate,
+		perpetual,
+		productName,
+		quantity,
+		salesforceOpportunityKey,
+		sizing,
+		startDate,
+		status
+	} = detail;
+
+	const key =
+		subscriptionsType === EDIT_SUBSCRIPTIONS
+			? detail.key
+			: detail.productKey;
+
+	// Source formatter locks @clayui/date-picker at version 3.0.7, which does not provide an API for disabling date picker while later versions do.
+
+	useEffect(() => {
+		setDisabledAttribute(perpetual);
+	});
 
 	useEffect(() => {
 		if (subscriptions.toList().toArray().length === 1) {
@@ -111,17 +168,23 @@ function Subscription({accountName, detail, instanceSizes}) {
 	}, [subscriptions]);
 
 	function handleEndDateChange(value) {
-		setInvalidEndDate(startDate > value);
+		setInvalidEndDate(originalEndDate > value);
 
-		updateOriginalEndDate(productKey, value);
+		updateEndDate(key, value);
+	}
+
+	function handleGracePeriodStartDateChange(value) {
+		setInvalidGracePeriodStartDate(startDate > value);
+
+		updateOriginalEndDate(key, value);
 	}
 
 	function handleDeleteSubscription() {
-		deleteSubscription(productKey);
+		deleteSubscription(key);
 	}
 
 	function handlePerpetualChange() {
-		updatePerpetual(productKey, !perpetual);
+		updatePerpetual(key, !perpetual);
 
 		// Source formatter locks @clayui/date-picker at version 3.0.7, which does not provide an API for disabling date picker while later versions do.
 
@@ -129,29 +192,34 @@ function Subscription({accountName, detail, instanceSizes}) {
 
 		if (!perpetual) {
 			setInvalidEndDate(false);
+			setInvalidGracePeriodStartDate(false);
 		}
 	}
 
 	function handleQuantityChange(event) {
-		updateQuantity(productKey, event.currentTarget.value);
+		updateQuantity(key, event.currentTarget.value);
 	}
 
 	function handleSalesforceOpportunityKeyChange(event) {
-		updateSalesforceOpportunityKey(productKey, event.currentTarget.value);
+		updateSalesforceOpportunityKey(key, event.currentTarget.value);
 	}
 
 	function handleSizingChange(event) {
-		updateSizing(productKey, event.currentTarget.value);
+		updateSizing(key, event.currentTarget.value);
 	}
 
 	function handleStartDateChange(value) {
-		updateStartDate(productKey, value);
+		setInvalidGracePeriodStartDate(value > originalEndDate);
+
+		updateStartDate(key, value);
+	}
+
+	function handleStatusChange(event) {
+		updateStatus(key, event.currentTarget.value);
 	}
 
 	function setDisabledAttribute(attributeValue) {
-		const dates = document.querySelectorAll(
-			`#${detail.productKey} .date-picker`
-		);
+		const dates = document.querySelectorAll(`#${key} .date-picker`);
 
 		dates.forEach(date => {
 			const dateBtn = date.querySelector('.date-picker-dropdown-toggle');
@@ -161,7 +229,8 @@ function Subscription({accountName, detail, instanceSizes}) {
 				if (attributeValue) {
 					dateBtn.setAttribute('disabled', attributeValue);
 					dateInput.setAttribute('disabled', attributeValue);
-				} else {
+				}
+				else {
 					dateBtn.removeAttribute('disabled');
 					dateInput.removeAttribute('disabled');
 				}
@@ -170,7 +239,7 @@ function Subscription({accountName, detail, instanceSizes}) {
 	}
 
 	return (
-		<ClayTable.Row id={productKey}>
+		<ClayTable.Row id={key}>
 			<ClayTable.Cell className="semi-bold">{productName}</ClayTable.Cell>
 			<ClayTable.Cell>
 				<label htmlFor="salesforceOpportunityKey">
@@ -205,6 +274,7 @@ function Subscription({accountName, detail, instanceSizes}) {
 				>
 					<input
 						aria-checked={perpetual}
+						checked={perpetual}
 						className="custom-control-input"
 						id="perpetual"
 						onChange={handlePerpetualChange}
@@ -224,13 +294,15 @@ function Subscription({accountName, detail, instanceSizes}) {
 					/>
 				</label>
 			</ClayTable.Cell>
-			<ClayTable.Cell className={invalidEndDate ? 'has-error' : ''}>
+			<ClayTable.Cell
+				className={invalidGracePeriodStartDate ? 'has-error' : ''}
+			>
 				<label htmlFor="gracePeriodStartDate">
 					<DatePicker
 						defaultValue={originalEndDate}
 						id="gracePeriodStartDate"
 						inputName="gracePeriodStartDate"
-						updateFn={handleEndDateChange}
+						updateFn={handleGracePeriodStartDateChange}
 					/>
 				</label>
 			</ClayTable.Cell>
@@ -251,6 +323,40 @@ function Subscription({accountName, detail, instanceSizes}) {
 					</select>
 				</label>
 			</ClayTable.Cell>
+
+			{subscriptionsType === EDIT_SUBSCRIPTIONS && (
+				<ClayTable.Cell className={invalidEndDate ? 'has-error' : ''}>
+					<label htmlFor="endDate">
+						<DatePicker
+							defaultValue={endDate}
+							id="endDate"
+							inputName="endDate"
+							updateFn={handleEndDateChange}
+						/>
+					</label>
+				</ClayTable.Cell>
+			)}
+
+			{subscriptionsType === EDIT_SUBSCRIPTIONS && (
+				<ClayTable.Cell>
+					<label htmlFor="status">
+						<select
+							className="form-control form-control-sm"
+							disabled={statusOptions.length === 0}
+							id="status"
+							onChange={handleStatusChange}
+							value={status}
+						>
+							{statusOptions.map(option => (
+								<option key={option} value={option}>
+									{option}
+								</option>
+							))}
+						</select>
+					</label>
+				</ClayTable.Cell>
+			)}
+
 			<ClayTable.Cell>{accountName}</ClayTable.Cell>
 			<ClayTable.Cell>
 				<button

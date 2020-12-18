@@ -24,7 +24,8 @@ function EditSubscriptions({
 	details,
 	editProductPurchasesURL,
 	redirect,
-	sizing
+	sizing,
+	status
 }) {
 	return (
 		<SubscriptionsProvider initialSubscriptions={details}>
@@ -41,6 +42,7 @@ function EditSubscriptions({
 						<Subscriptions
 							accountName={accountName}
 							instanceSizes={sizing}
+							statusOptions={status}
 							subscriptionsType={ADD_SUBSCRIPTIONS}
 						/>
 					</div>
@@ -66,6 +68,7 @@ function EditSubscriptions({
 							<Subscriptions
 								accountName={accountName}
 								instanceSizes={sizing}
+								statusOptions={status}
 								subscriptionsType={EDIT_SUBSCRIPTIONS}
 							/>
 						</div>
@@ -98,7 +101,8 @@ EditSubscriptions.propTypes = {
 	editProductPurchasesURL: PropTypes.string.isRequired,
 	redirect: PropTypes.string.isRequired,
 	selectProductsURL: PropTypes.string,
-	sizing: PropTypes.arrayOf(PropTypes.number)
+	sizing: PropTypes.arrayOf(PropTypes.number),
+	status: PropTypes.arrayOf(PropTypes.string)
 };
 
 export default EditSubscriptions;

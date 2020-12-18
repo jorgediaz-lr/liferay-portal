@@ -30,13 +30,18 @@ function SubscriptionActions({
 	const [disableSave, setDisableSave] = useState(true);
 
 	useEffect(() => {
-		if (
-			subscriptions
+		function validateSalesForceOpportunityKeys() {
+			return subscriptions
 				.toList()
 				.toArray()
-				.every(subscription => subscription.salesforceOpportunityKey)
-		) {
+				.every(subscription => subscription.salesforceOpportunityKey);
+		}
+
+		if (validateSalesForceOpportunityKeys()) {
 			setDisableSave(false);
+		}
+		else {
+			setDisableSave(true);
 		}
 	}, [subscriptions]);
 

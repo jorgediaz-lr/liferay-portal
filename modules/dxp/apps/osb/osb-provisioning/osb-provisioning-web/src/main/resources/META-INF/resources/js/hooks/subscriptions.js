@@ -42,6 +42,7 @@ export function SubscriptionsProvider({initialSubscriptions = [], children}) {
 			detail.key ? detail.key : detail.productKey,
 			SubscriptionRecord({
 				...detail,
+				endDate: new Date(detail.endDate),
 				originalEndDate: new Date(detail.originalEndDate),
 				startDate: new Date(detail.startDate)
 			})
@@ -65,55 +66,56 @@ export function SubscriptionsProvider({initialSubscriptions = [], children}) {
 							)
 						);
 					},
-					deleteSubscription(productKey) {
-						setSubscriptions(subscriptions.delete(productKey));
+					deleteSubscription(key) {
+						setSubscriptions(subscriptions.delete(key));
 					},
-					updateOriginalEndDate(productKey, originalEndDate) {
+					updateEndDate(key, endDate) {
+						setSubscriptions(
+							subscriptions.setIn([key, 'endDate'], endDate)
+						);
+					},
+					updateOriginalEndDate(key, originalEndDate) {
 						setSubscriptions(
 							subscriptions.setIn(
-								[productKey, 'originalEndDate'],
+								[key, 'originalEndDate'],
 								originalEndDate
 							)
 						);
 					},
-					updatePerpetual(productKey, perpetual) {
+					updatePerpetual(key, perpetual) {
 						setSubscriptions(
-							subscriptions.setIn(
-								[productKey, 'perpetual'],
-								perpetual
-							)
+							subscriptions.setIn([key, 'perpetual'], perpetual)
 						);
 					},
-					updateQuantity(productKey, quantity) {
+					updateQuantity(key, quantity) {
 						setSubscriptions(
-							subscriptions.setIn(
-								[productKey, 'quantity'],
-								quantity
-							)
+							subscriptions.setIn([key, 'quantity'], quantity)
 						);
 					},
 					updateSalesforceOpportunityKey(
-						productKey,
+						key,
 						salesforceOpportunityKey
 					) {
 						setSubscriptions(
 							subscriptions.setIn(
-								[productKey, 'salesforceOpportunityKey'],
+								[key, 'salesforceOpportunityKey'],
 								salesforceOpportunityKey
 							)
 						);
 					},
-					updateSizing(productKey, sizing) {
+					updateSizing(key, sizing) {
 						setSubscriptions(
-							subscriptions.setIn([productKey, 'sizing'], sizing)
+							subscriptions.setIn([key, 'sizing'], sizing)
 						);
 					},
-					updateStartDate(productKey, startDate) {
+					updateStartDate(key, startDate) {
 						setSubscriptions(
-							subscriptions.setIn(
-								[productKey, 'startDate'],
-								startDate
-							)
+							subscriptions.setIn([key, 'startDate'], startDate)
+						);
+					},
+					updateStatus(key, status) {
+						setSubscriptions(
+							subscriptions.setIn([key, 'status'], status)
 						);
 					}
 				}

@@ -13,6 +13,10 @@ import {cleanup, fireEvent, render} from '@testing-library/react';
 import React from 'react';
 
 import EditSubscriptions from '../../../src/main/resources/META-INF/resources/js/components/subscriptions/EditSubscriptions';
+import {
+	PRODUCT_PURCHASE_STATUS_APPROVED,
+	PRODUCT_PURCHASE_STATUS_CANCELLED
+} from '../../../src/main/resources/META-INF/resources/js/utilities/constants';
 
 function renderAddSubscriptions(props) {
 	return render(
@@ -23,7 +27,7 @@ function renderAddSubscriptions(props) {
 				{
 					originalEndDate: '2021-12-08',
 					productKey: 'KOR-35746',
-					productName: 'Product 1',
+					productName: 'Product A',
 					startDate: '2020-12-08'
 				}
 			]}
@@ -31,6 +35,10 @@ function renderAddSubscriptions(props) {
 			redirect="/redirect/to/subscriptions/tab"
 			selectProductsURL="/select/products/url"
 			sizing={[1, 2, 3, 4]}
+			status={[
+				PRODUCT_PURCHASE_STATUS_APPROVED,
+				PRODUCT_PURCHASE_STATUS_CANCELLED
+			]}
 			{...props}
 		/>
 	);
@@ -43,16 +51,26 @@ function renderEditSubscriptions(props) {
 			addSubscriptions={false}
 			details={[
 				{
-					originalEndDate: '2021-12-08',
-					productKey: 'KOR-35746',
-					productName: 'Product 1',
-					startDate: '2020-12-08'
+					endDate: '2022-01-20',
+					key: 'KOR-38323',
+					originalEndDate: '2021-12-21',
+					perpetual: true,
+					productName: 'Product B',
+					quantity: 1,
+					salesforceOpportunityKey: 'salesForceKey123',
+					sizing: 1,
+					startDate: '2020-12-21',
+					status: 'Approved'
 				}
 			]}
 			editProductPurchasesURL="/edit/product/purchases/url"
 			redirect="/redirect/to/subscriptions/tab"
 			selectProductsURL="/select/products/url"
 			sizing={[1, 2, 3, 4]}
+			status={[
+				PRODUCT_PURCHASE_STATUS_APPROVED,
+				PRODUCT_PURCHASE_STATUS_CANCELLED
+			]}
 			{...props}
 		/>
 	);
@@ -123,6 +141,18 @@ describe('EditSubscriptions', () => {
 			});
 
 			expect(getByText('previous'));
+		});
+
+		it('disables the Save button if a Salesforce Opportunity key is removed', () => {
+			const {getByLabelText, getByText} = renderEditSubscriptions();
+
+			expect(getByText('save').disabled).toBeFalsy();
+
+			fireEvent.change(getByLabelText('salesforce-opportunity-key'), {
+				target: {value: ''}
+			});
+
+			expect(getByText('save').disabled).toBeTruthy();
 		});
 	});
 });
