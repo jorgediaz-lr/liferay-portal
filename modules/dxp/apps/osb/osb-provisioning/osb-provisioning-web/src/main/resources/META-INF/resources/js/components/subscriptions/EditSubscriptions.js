@@ -1,0 +1,68 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ */
+
+import PropTypes from 'prop-types';
+import React from 'react';
+
+import {SubscriptionsProvider} from '../../hooks/subscriptions';
+import AddSubscriptionActions from './AddSubscriptionActions';
+import Subscriptions from './Subscriptions';
+
+function EditSubscriptions({
+	accountName,
+	details,
+	editProductPurchasesURL,
+	redirect,
+	sizing
+}) {
+	return (
+		<SubscriptionsProvider initialSubscriptions={details}>
+			<div className="subscriptions-container">
+				<div className="subscriptions-header">
+					<b>{Liferay.Language.get('configure-subscriptions')}</b>
+					<button className="btn btn-secondary" type="button">
+						{Liferay.Language.get('select')}
+					</button>
+				</div>
+
+				<div className="subscriptions">
+					<Subscriptions
+						accountName={accountName}
+						instanceSizes={sizing}
+					/>
+				</div>
+
+				<AddSubscriptionActions
+					backURL={redirect}
+					formAction={editProductPurchasesURL}
+				/>
+			</div>
+		</SubscriptionsProvider>
+	);
+}
+
+EditSubscriptions.propTypes = {
+	accountName: PropTypes.string.isRequired,
+	details: PropTypes.arrayOf(
+		PropTypes.shape({
+			originalEndDate: PropTypes.string,
+			productKey: PropTypes.string,
+			productName: PropTypes.string,
+			startDate: PropTypes.string
+		})
+	),
+	editProductPurchasesURL: PropTypes.string.isRequired,
+	redirect: PropTypes.string.isRequired,
+	selectProductsURL: PropTypes.string,
+	sizing: PropTypes.arrayOf(PropTypes.number)
+};
+
+export default EditSubscriptions;

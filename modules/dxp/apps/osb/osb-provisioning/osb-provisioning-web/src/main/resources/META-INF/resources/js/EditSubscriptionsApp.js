@@ -12,10 +12,10 @@
 import React from 'react';
 
 import ErrorBoundary from './ErrorBoundary';
-import AddSubscriptions from './components/subscriptions/AddSubscriptions';
+import EditSubscriptions from './components/subscriptions/EditSubscriptions';
 
 export default props => (
 	<ErrorBoundary>
-		<AddSubscriptions {...props} />
+		<EditSubscriptions {...props} />
 	</ErrorBoundary>
 );

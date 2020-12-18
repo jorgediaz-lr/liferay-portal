@@ -42,10 +42,10 @@ EditProductPurchasesDisplayContext editProductPurchasesDisplayContext = Provisio
 		<%= httpException.getMessage() %>
 	</liferay-ui:error>
 
-	<div id="addSubscription">
+	<div id="editSubscriptions">
 		<react:component
 			data="<%= editProductPurchasesDisplayContext.getEditProductPurchasesData() %>"
-			module="js/AddSubscriptionApp"
+			module="js/EditSubscriptionsApp"
 		/>
 	</div>
 </div>

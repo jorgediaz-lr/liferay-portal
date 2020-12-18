@@ -12,11 +12,11 @@
 import {cleanup, fireEvent, render} from '@testing-library/react';
 import React from 'react';
 
-import AddSubscriptions from '../../../src/main/resources/META-INF/resources/js/components/subscriptions/AddSubscriptions';
+import EditSubscriptions from '../../../src/main/resources/META-INF/resources/js/components/subscriptions/EditSubscriptions';
 
 function renderAddSubscriptions(props) {
 	return render(
-		<AddSubscriptions
+		<EditSubscriptions
 			accountName="Test Account"
 			details={[
 				{
@@ -35,7 +35,7 @@ function renderAddSubscriptions(props) {
 	);
 }
 
-describe('AddSubscriptions', () => {
+describe('EditSubscriptions', () => {
 	afterEach(cleanup);
 
 	it('renders', () => {

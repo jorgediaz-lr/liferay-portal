@@ -12,63 +12,10 @@
 import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
 
-import {
-	SubscriptionsProvider,
-	useSubscriptions
-} from '../../hooks/subscriptions';
+import {useSubscriptions} from '../../hooks/subscriptions';
 import {NAMESPACE} from '../../utilities/constants';
-import Subscriptions from './Subscriptions';
 
-function AddSubscriptions({
-	accountName,
-	details,
-	editProductPurchasesURL,
-	redirect,
-	sizing
-}) {
-	return (
-		<SubscriptionsProvider initialSubscriptions={details}>
-			<div className="subscriptions-container">
-				<div className="subscriptions-header">
-					<b>{Liferay.Language.get('configure-subscriptions')}</b>
-					<button className="btn btn-secondary" type="button">
-						{Liferay.Language.get('select')}
-					</button>
-				</div>
-
-				<div className="subscriptions">
-					<Subscriptions
-						accountName={accountName}
-						instanceSizes={sizing}
-					/>
-				</div>
-
-				<SubscriptionActions
-					backURL={redirect}
-					formAction={editProductPurchasesURL}
-				/>
-			</div>
-		</SubscriptionsProvider>
-	);
-}
-
-AddSubscriptions.propTypes = {
-	accountName: PropTypes.string.isRequired,
-	details: PropTypes.arrayOf(
-		PropTypes.shape({
-			originalEndDate: PropTypes.string,
-			productKey: PropTypes.string,
-			productName: PropTypes.string,
-			startDate: PropTypes.string
-		})
-	),
-	editProductPurchasesURL: PropTypes.string.isRequired,
-	redirect: PropTypes.string.isRequired,
-	selectProductsURL: PropTypes.string,
-	sizing: PropTypes.arrayOf(PropTypes.number)
-};
-
-function SubscriptionActions({backURL, formAction}) {
+function AddSubscriptionActions({backURL, formAction}) {
 	const [subscriptions] = useSubscriptions();
 
 	const [disableSave, setDisableSave] = useState(true);
@@ -143,4 +90,9 @@ function SubscriptionActions({backURL, formAction}) {
 	);
 }
 
-export default AddSubscriptions;
+AddSubscriptionActions.propTypes = {
+	backURL: PropTypes.string.isRequired,
+	formAction: PropTypes.string.isRequired
+};
+
+export default AddSubscriptionActions;
