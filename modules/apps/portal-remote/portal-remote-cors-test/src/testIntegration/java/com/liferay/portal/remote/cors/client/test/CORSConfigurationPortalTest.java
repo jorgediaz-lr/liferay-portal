@@ -42,7 +42,7 @@ public class CORSConfigurationPortalTest extends BaseCORSClientTestCase {
 
 	@Test
 	public void testCORSUsingBasic() throws Exception {
-		assertJsonWSUrl("/user/get-current-user", HttpMethod.OPTIONS, true);
+		assertJsonWSUrl("/user/get-current-user", HttpMethod.OPTIONS, false);
 		assertJsonWSUrl("/user/get-current-user", HttpMethod.GET, false);
 
 		Dictionary<String, Object> properties = new HashMapDictionary<>();
