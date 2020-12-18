@@ -41,8 +41,11 @@ public class ProductPurchaseMessageSubscriber extends BaseMessageSubscriber {
 
 	@Override
 	protected void doParse(JSONObject jsonObject) throws Exception {
+		JSONObject productPurchaseJSONObject = jsonObject.getJSONObject(
+			"productPurchase");
+
 		ProductPurchase productPurchase = ProductPurchaseSerDes.toDTO(
-			jsonObject.toString());
+			productPurchaseJSONObject.toString());
 
 		_lcsSubscriptionEntryWebService.syncToLCS(
 			productPurchase.getAccountKey());
