@@ -28,7 +28,29 @@ function renderAddSubscriptions(props) {
 				}
 			]}
 			editProductPurchasesURL="/edit/product/purchases/url"
-			redirect="/back/url"
+			redirect="/redirect/to/subscriptions/tab"
+			selectProductsURL="/select/products/url"
+			sizing={[1, 2, 3, 4]}
+			{...props}
+		/>
+	);
+}
+
+function renderEditSubscriptions(props) {
+	return render(
+		<EditSubscriptions
+			accountName="Test Account"
+			addSubscriptions={false}
+			details={[
+				{
+					originalEndDate: '2021-12-08',
+					productKey: 'KOR-35746',
+					productName: 'Product 1',
+					startDate: '2020-12-08'
+				}
+			]}
+			editProductPurchasesURL="/edit/product/purchases/url"
+			redirect="/redirect/to/subscriptions/tab"
 			selectProductsURL="/select/products/url"
 			sizing={[1, 2, 3, 4]}
 			{...props}
@@ -39,37 +61,68 @@ function renderAddSubscriptions(props) {
 describe('EditSubscriptions', () => {
 	afterEach(cleanup);
 
-	it('renders', () => {
-		const {container} = renderAddSubscriptions();
+	describe('Add Subscriptions', () => {
+		it('renders', () => {
+			const {container} = renderAddSubscriptions();
 
-		expect(container).toBeTruthy();
-	});
-
-	it('renders a Select button', () => {
-		const {getByText} = renderAddSubscriptions();
-
-		expect(getByText('select')).toBeTruthy();
-	});
-
-	it('renders a disabled Save button', () => {
-		const {getByText} = renderAddSubscriptions();
-
-		expect(getByText('save').disabled).toBeTruthy();
-	});
-
-	it('renders a Cancel button', () => {
-		const {getByText} = renderAddSubscriptions();
-
-		expect(getByText('cancel')).toBeTruthy();
-	});
-
-	it('enables the Save button once a Salesforce Opportunity Key is entered', () => {
-		const {getByLabelText, getByText} = renderAddSubscriptions();
-
-		fireEvent.change(getByLabelText('salesforce-opportunity-key'), {
-			target: {value: 'test'}
+			expect(container).toBeTruthy();
 		});
 
-		expect(getByText('save').disabled).toBeFalsy();
+		it('renders a subtext to describe the action', () => {
+			const {getByText} = renderAddSubscriptions();
+
+			expect(getByText('configure-subscriptions')).toBeTruthy();
+		});
+
+		it('renders a Select button', () => {
+			const {getByText} = renderAddSubscriptions();
+
+			expect(getByText('select')).toBeTruthy();
+		});
+
+		it('renders a disabled Save button', () => {
+			const {getByText} = renderAddSubscriptions();
+
+			expect(getByText('save').disabled).toBeTruthy();
+		});
+
+		it('renders a Cancel button', () => {
+			const {getByText} = renderAddSubscriptions();
+
+			expect(getByText('cancel')).toBeTruthy();
+		});
+
+		it('enables the Save button once a Salesforce Opportunity Key is entered', () => {
+			const {getByLabelText, getByText} = renderAddSubscriptions();
+
+			fireEvent.change(getByLabelText('salesforce-opportunity-key'), {
+				target: {value: 'test'}
+			});
+
+			expect(getByText('save').disabled).toBeFalsy();
+		});
+	});
+
+	describe('Edit Subscriptions', () => {
+		it('renders', () => {
+			const {container} = renderEditSubscriptions();
+
+			expect(container).toBeTruthy();
+		});
+
+		it('renders subtext showing the editing step', () => {
+			const {getByText} = renderEditSubscriptions();
+
+			expect(getByText('edit-details')).toBeTruthy();
+			expect(getByText('step-2-of-2')).toBeTruthy();
+		});
+
+		it('renders a Previous button if a backURL is provided', () => {
+			const {getByText} = renderEditSubscriptions({
+				backURL: '/back/to/previous/page'
+			});
+
+			expect(getByText('previous'));
+		});
 	});
 });

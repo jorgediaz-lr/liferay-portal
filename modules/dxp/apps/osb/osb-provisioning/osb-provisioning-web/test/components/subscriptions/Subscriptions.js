@@ -14,8 +14,9 @@ import React from 'react';
 
 import Subscriptions from '../../../src/main/resources/META-INF/resources/js/components/subscriptions/Subscriptions';
 import {SubscriptionsProvider} from '../../../src/main/resources/META-INF/resources/js/hooks/subscriptions';
+import {ADD_SUBSCRIPTIONS} from '../../../src/main/resources/META-INF/resources/js/utilities/constants';
 
-function mockSubscriptions() {
+function mockAddSubscriptions() {
 	return [
 		{
 			endDate: '12/08/2021',
@@ -44,12 +45,17 @@ function mockSubscriptions() {
 	];
 }
 
-function renderSubscriptions(subscriptions = mockSubscriptions()) {
+function renderSubscriptions({
+	subscriptions = mockAddSubscriptions(),
+	...props
+} = {}) {
 	return render(
 		<SubscriptionsProvider initialSubscriptions={subscriptions}>
 			<Subscriptions
 				accountName="Test Account"
 				instanceSizes={[1, 2, 3, 4]}
+				subscriptionsType={ADD_SUBSCRIPTIONS}
+				{...props}
 			/>
 		</SubscriptionsProvider>
 	);

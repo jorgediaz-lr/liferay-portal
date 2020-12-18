@@ -13,12 +13,14 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import {SubscriptionsProvider} from '../../hooks/subscriptions';
-import AddSubscriptionActions from './AddSubscriptionActions';
+import {ADD_SUBSCRIPTIONS, EDIT_SUBSCRIPTIONS} from '../../utilities/constants';
+import SubscriptionActions from './SubscriptionActions';
 import Subscriptions from './Subscriptions';
 
 function EditSubscriptions({
 	accountName,
 	addSubscriptions,
+	backURL,
 	details,
 	editProductPurchasesURL,
 	redirect,
@@ -26,26 +28,57 @@ function EditSubscriptions({
 }) {
 	return (
 		<SubscriptionsProvider initialSubscriptions={details}>
-			<div className="subscriptions-container">
-				<div className="subscriptions-header">
-					<b>{Liferay.Language.get('configure-subscriptions')}</b>
-					<button className="btn btn-secondary" type="button">
-						{Liferay.Language.get('select')}
-					</button>
-				</div>
+			{addSubscriptions && (
+				<div className="subscriptions-container">
+					<div className="subscriptions-header">
+						<b>{Liferay.Language.get('configure-subscriptions')}</b>
+						<button className="btn btn-secondary" type="button">
+							{Liferay.Language.get('select')}
+						</button>
+					</div>
 
-				<div className="subscriptions">
-					<Subscriptions
-						accountName={accountName}
-						instanceSizes={sizing}
+					<div className="subscriptions">
+						<Subscriptions
+							accountName={accountName}
+							instanceSizes={sizing}
+							subscriptionsType={ADD_SUBSCRIPTIONS}
+						/>
+					</div>
+
+					<SubscriptionActions
+						formAction={editProductPurchasesURL}
+						redirectURL={redirect}
+						subscriptionsType={ADD_SUBSCRIPTIONS}
 					/>
 				</div>
+			)}
 
-				<AddSubscriptionActions
-					backURL={redirect}
-					formAction={editProductPurchasesURL}
-				/>
-			</div>
+			{!addSubscriptions && (
+				<>
+					<div className="subscriptions-step">
+						<span>{Liferay.Language.get('edit-details')}</span>
+
+						<span>{Liferay.Language.get('step-2-of-2')}</span>
+					</div>
+
+					<div className="subscriptions-container">
+						<div className="subscriptions">
+							<Subscriptions
+								accountName={accountName}
+								instanceSizes={sizing}
+								subscriptionsType={EDIT_SUBSCRIPTIONS}
+							/>
+						</div>
+
+						<SubscriptionActions
+							backURL={backURL}
+							formAction={editProductPurchasesURL}
+							redirectURL={redirect}
+							subscriptionsType={EDIT_SUBSCRIPTIONS}
+						/>
+					</div>
+				</>
+			)}
 		</SubscriptionsProvider>
 	);
 }
@@ -53,6 +86,7 @@ function EditSubscriptions({
 EditSubscriptions.propTypes = {
 	accountName: PropTypes.string.isRequired,
 	addSubscriptions: PropTypes.bool.isRequired,
+	backURL: PropTypes.string,
 	details: PropTypes.arrayOf(
 		PropTypes.shape({
 			originalEndDate: PropTypes.string,

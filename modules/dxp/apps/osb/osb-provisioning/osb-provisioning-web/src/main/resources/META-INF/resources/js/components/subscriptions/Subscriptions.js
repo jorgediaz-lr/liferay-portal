@@ -14,6 +14,7 @@ import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
 
 import {useSubscriptions} from '../../hooks/subscriptions';
+import {ADD_SUBSCRIPTIONS, EDIT_SUBSCRIPTIONS} from '../../utilities/constants';
 import DatePicker from '../DatePicker';
 
 function Subscriptions({accountName, instanceSizes = []}) {
@@ -70,7 +71,9 @@ function Subscriptions({accountName, instanceSizes = []}) {
 
 Subscriptions.propTypes = {
 	accountName: PropTypes.string.isRequired,
-	instanceSizes: PropTypes.arrayOf(PropTypes.number)
+	instanceSizes: PropTypes.arrayOf(PropTypes.number),
+	subscriptionsType: PropTypes.oneOf([ADD_SUBSCRIPTIONS, EDIT_SUBSCRIPTIONS])
+		.isRequired
 };
 
 function Subscription({accountName, detail, instanceSizes}) {
@@ -158,8 +161,7 @@ function Subscription({accountName, detail, instanceSizes}) {
 				if (attributeValue) {
 					dateBtn.setAttribute('disabled', attributeValue);
 					dateInput.setAttribute('disabled', attributeValue);
-				}
-				else {
+				} else {
 					dateBtn.removeAttribute('disabled');
 					dateInput.removeAttribute('disabled');
 				}

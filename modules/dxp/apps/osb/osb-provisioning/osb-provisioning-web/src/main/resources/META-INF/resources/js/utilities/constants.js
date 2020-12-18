@@ -46,5 +46,7 @@ export const FIELD_TYPE_TOGGLE = 'toggle';
 
 // Product Purchase status
 
+export const ADD_SUBSCRIPTIONS = 'add';
+export const EDIT_SUBSCRIPTIONS = 'edit';
 export const PRODUCT_PURCHASE_STATUS_APPROVED = 'Approved';
 export const PRODUCT_PURCHASE_STATUS_CANCELLED = 'Cancelled';

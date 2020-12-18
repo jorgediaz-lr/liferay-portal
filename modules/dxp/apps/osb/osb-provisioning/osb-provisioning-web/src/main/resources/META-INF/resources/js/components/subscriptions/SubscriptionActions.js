@@ -13,9 +13,18 @@ import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
 
 import {useSubscriptions} from '../../hooks/subscriptions';
-import {NAMESPACE} from '../../utilities/constants';
+import {
+	ADD_SUBSCRIPTIONS,
+	EDIT_SUBSCRIPTIONS,
+	NAMESPACE
+} from '../../utilities/constants';
 
-function AddSubscriptionActions({backURL, formAction}) {
+function SubscriptionActions({
+	backURL,
+	formAction,
+	redirectURL,
+	subscriptionsType
+}) {
 	const [subscriptions] = useSubscriptions();
 
 	const [disableSave, setDisableSave] = useState(true);
@@ -48,6 +57,10 @@ function AddSubscriptionActions({backURL, formAction}) {
 				);
 				entry['properties'] = {sizing: entry.sizing};
 				entry['startDate'] = formatDateSecondFormat(entry.startDate);
+
+				if (subscriptionsType === EDIT_SUBSCRIPTIONS) {
+					entry['endDate'] = formatDateSecondFormat(entry.endDate);
+				}
 
 				delete entry['productName'];
 				delete entry['salesforceOpportunityKey'];
@@ -82,7 +95,21 @@ function AddSubscriptionActions({backURL, formAction}) {
 					{Liferay.Language.get('save')}
 				</button>
 
-				<a className="btn btn-secondary" href={backURL} type="button">
+				{!!backURL && (
+					<a
+						className="btn btn-secondary"
+						href={backURL}
+						type="button"
+					>
+						{Liferay.Language.get('previous')}
+					</a>
+				)}
+
+				<a
+					className="btn btn-secondary"
+					href={redirectURL}
+					type="button"
+				>
 					{Liferay.Language.get('cancel')}
 				</a>
 			</div>
@@ -90,9 +117,12 @@ function AddSubscriptionActions({backURL, formAction}) {
 	);
 }
 
-AddSubscriptionActions.propTypes = {
-	backURL: PropTypes.string.isRequired,
-	formAction: PropTypes.string.isRequired
+SubscriptionActions.propTypes = {
+	backURL: PropTypes.string,
+	formAction: PropTypes.string.isRequired,
+	redirectURL: PropTypes.string.isRequired,
+	subscriptionsType: PropTypes.oneOf([ADD_SUBSCRIPTIONS, EDIT_SUBSCRIPTIONS])
+		.isRequired
 };
 
-export default AddSubscriptionActions;
+export default SubscriptionActions;
