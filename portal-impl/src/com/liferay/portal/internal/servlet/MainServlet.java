@@ -1029,7 +1029,11 @@ public class MainServlet extends HttpServlet {
 			}
 			catch (Exception exception) {
 				if (_log.isWarnEnabled()) {
-					_log.warn(exception, exception);
+					_log.warn(
+						StringBundler.concat(
+							"Unable to sign in ", remoteUser, " in company ",
+							companyId, " using JAAS: ", exception.getMessage()),
+						exception);
 				}
 			}
 		}
