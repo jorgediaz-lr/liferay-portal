@@ -257,6 +257,8 @@ public class EditProductPurchasesDisplayContext
 				sizing = GetterUtil.getInteger(properties.get("sizing"));
 			}
 
+			ProductPurchase.Status status = productPurchase.getStatus();
+
 			productPurchasesJSONArray.put(
 				JSONUtil.put(
 					"endDate", _getDate(productPurchase.getEndDate(), "endDate")
@@ -281,7 +283,7 @@ public class EditProductPurchasesDisplayContext
 					"startDate",
 					_getDate(productPurchase.getStartDate(), "startDate")
 				).put(
-					"status", productPurchase.getStatus()
+					"status", status.toString()
 				));
 		}
 
