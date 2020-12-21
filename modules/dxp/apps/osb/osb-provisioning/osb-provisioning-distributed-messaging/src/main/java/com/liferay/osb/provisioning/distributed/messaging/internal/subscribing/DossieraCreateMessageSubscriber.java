@@ -474,24 +474,31 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			return;
 		}
 
-		List<Contact> contacts = parseContacts(jsonObject);
-
 		List<Contact> activeContacts = new ArrayList<>();
 		List<Contact> inactiveContacts = new ArrayList<>();
 		List<Contact> missingContacts = new ArrayList<>();
 
-		for (Contact contact : contacts) {
-			Integer status = _identityProvider.fetchStatusByEmailAddress(
-				contact.getEmailAddress());
+		if ((salesforceOpportunityType ==
+				SalesforceConstants.OPPORTUNITY_TYPE_NEW_BUSINESS) ||
+			(salesforceOpportunityType ==
+				SalesforceConstants.
+					OPPORTUNITY_TYPE_NEW_PROJECT_EXISTING_BUSINESS)) {
 
-			if (status == null) {
-				missingContacts.add(contact);
-			}
-			else if (status == WorkflowConstants.STATUS_APPROVED) {
-				activeContacts.add(contact);
-			}
-			else {
-				inactiveContacts.add(contact);
+			List<Contact> contacts = parseContacts(jsonObject);
+
+			for (Contact contact : contacts) {
+				Integer status = _identityProvider.fetchStatusByEmailAddress(
+					contact.getEmailAddress());
+
+				if (status == null) {
+					missingContacts.add(contact);
+				}
+				else if (status == WorkflowConstants.STATUS_APPROVED) {
+					activeContacts.add(contact);
+				}
+				else {
+					inactiveContacts.add(contact);
+				}
 			}
 		}
 
