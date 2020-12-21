@@ -72,7 +72,12 @@ public class EditProductPurchasesDisplayContext
 
 		data.put("accountName", account.getName());
 
-		data.put("addSubscriptions", _products != null);
+		if (_products != null) {
+			data.put("addSubscriptions", true);
+		}
+		else {
+			data.put("addSubscriptions", false);
+		}
 
 		String redirect = ParamUtil.getString(httpServletRequest, "redirect");
 
@@ -224,12 +229,12 @@ public class EditProductPurchasesDisplayContext
 		Calendar calendar = CalendarFactoryUtil.getCalendar(
 			themeDisplay.getTimeZone(), themeDisplay.getLocale());
 
-		if (type.equals("originalEndDate")) {
-			calendar.add(Calendar.YEAR, 1);
-		}
-		else if (type.equals("endDate")) {
+		if (type.equals("endDate")) {
 			calendar.add(Calendar.YEAR, 1);
 			calendar.add(Calendar.DATE, 30);
+		}
+		else if (type.equals("originalEndDate")) {
+			calendar.add(Calendar.YEAR, 1);
 		}
 
 		if (date != null) {
