@@ -183,7 +183,7 @@
 </tr>
 <tr>
 	<td>FRAGMENT_HEADER_DELETE_BUTTON</td>
-	<td>//div[contains(@class,'fragment-entry-link-wrapper')]//ul[contains(.,'${key_fragmentName}')]//button[*[name()='svg'][*[contains(@class,'times-circle-x')]]] | //div[contains(@class,'fragment-entry-link-wrapper')]//ul[contains(.,'${key_fragmentName}')]//button</td>
+	<td>//div[contains(@class,'fragment-entry-link-wrapper')]//ul[contains(.,'${key_fragmentName}')]//button[*[name()='svg'][*[contains(@class,'times-circle-x')]]] | //div[contains(@class,'fragment-entry-link-wrapper')]//ul[contains(.,'${key_fragmentName}')]//li[contains(@class,'tbar-item')][4]/button</td>
 	<td></td>
 </tr>
 </tbody>
