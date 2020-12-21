@@ -176,9 +176,7 @@ SearchContainer productPurchasesSearchContainer = viewAccountDisplayContext.getP
 
 					if (selectedItems) {
 						var selectedKeys = selectedItems.map(function(item) {
-							var [key, value] = item;
-
-							return key;
+							return item[0];
 						});
 
 						var productBundleIds = selectedKeys
