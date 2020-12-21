@@ -28,7 +28,11 @@ import org.osgi.service.component.annotations.Reference;
 	immediate = true,
 	property = {
 		"exchange=is_dossiera_v1", "queue=is_osb_provisioning_queue",
-		"routing.key=dossiera.provisioning.create"
+		"routing.key=dossiera.provisioning.create",
+		"routing.key=koroneiki.product.delete",
+		"routing.key=koroneiki.productpurchase.create",
+		"routing.key=koroneiki.productpurchase.delete",
+		"routing.key=koroneiki.productpurchase.update"
 	},
 	service = LegacyConsumer.class
 )
