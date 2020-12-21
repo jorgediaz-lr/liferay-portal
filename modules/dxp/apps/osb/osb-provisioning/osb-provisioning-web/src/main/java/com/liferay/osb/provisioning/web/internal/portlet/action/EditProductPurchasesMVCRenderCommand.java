@@ -29,9 +29,7 @@ import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.ParamUtil;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
@@ -71,7 +69,7 @@ public class EditProductPurchasesMVCRenderCommand implements MVCRenderCommand {
 				renderRequest, "productPurchaseViewKeys");
 
 			if ((productKeys.length > 0) || (productBundleIds.length > 0)) {
-				Set<Product> products = new HashSet<>();
+				List<Product> products = new ArrayList<>();
 
 				for (long productBundleId : productBundleIds) {
 					List<Product> productBundleProducts =
