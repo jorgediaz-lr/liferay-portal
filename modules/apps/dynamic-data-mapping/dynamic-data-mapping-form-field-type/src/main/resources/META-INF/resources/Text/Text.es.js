@@ -170,12 +170,17 @@ class Text extends Component {
 			clearTimeout(this.timeout);
 		}
 
+		this.cursor = event.target.selectionStart;
+
 		this.timeout = setTimeout(() => {
 			this.setState(
 				{
 					value
 				},
-				() => this.dispatchEvent(event, 'fieldEdited', value)
+				() => {
+					this.dispatchEvent(event, 'fieldEdited', value);
+					event.target.selectionStart = this.cursor;
+				}
 			);
 		}, 300);
 	}
