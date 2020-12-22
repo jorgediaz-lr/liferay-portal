@@ -118,9 +118,9 @@ public class SegmentsServicePreActionTest {
 			TestPropsValues.getUserId(), _group.getGroupId(), false,
 			LayoutConstants.DEFAULT_PARENT_LAYOUT_ID, 0, 0, nameMap, nameMap,
 			Collections.emptyMap(), Collections.emptyMap(),
-			Collections.emptyMap(), LayoutConstants.TYPE_COLLECTION,
+			Collections.emptyMap(), LayoutConstants.TYPE_CONTENT,
 			typeSettingsUnicodeProperties.toString(), false, false,
-			Collections.emptyMap(), 0, serviceContext);
+			Collections.emptyMap(), serviceContext);
 
 		mockHttpServletRequest.setAttribute(
 			WebKeys.THEME_DISPLAY, _getThemeDisplay(layout));
