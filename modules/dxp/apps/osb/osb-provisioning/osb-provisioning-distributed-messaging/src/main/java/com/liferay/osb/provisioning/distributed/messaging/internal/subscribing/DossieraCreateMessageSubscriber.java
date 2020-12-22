@@ -284,14 +284,23 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 	protected Account createParentAccount(JSONObject jsonObject)
 		throws Exception {
 
-		Account parentAccount = new Account();
-
 		JSONObject accountJSONObject = jsonObject.getJSONObject("_account");
-
-		String accountName = accountJSONObject.getString("_name");
 
 		String dossieraAccountKey = accountJSONObject.getString(
 			"_dossieraAccountKey");
+
+		Account parentAccount = fetchAccount(dossieraAccountKey);
+
+		if (parentAccount != null) {
+			return parentAccount;
+		}
+
+		parentAccount = new Account();
+
+		String accountName = accountJSONObject.getString("_name");
+
+		parentAccount.setName(accountName);
+		parentAccount.setCode(_getCode(accountName, null));
 
 		ExternalLink dossieraExternalLink = new ExternalLink();
 
@@ -310,8 +319,6 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			ExternalLinkEntityName.SALESFORCE_ACCOUNT);
 		salesforceExternalLink.setEntityId(salesforceAccountKey);
 
-		parentAccount.setName(accountName);
-		parentAccount.setCode(_getCode(accountName, null));
 		parentAccount.setExternalLinks(
 			new ExternalLink[] {dossieraExternalLink, salesforceExternalLink});
 
@@ -553,6 +560,18 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		}
 	}
 
+	protected Account fetchAccount(String dossieraAccountKey) throws Exception {
+		List<Account> accounts = _accountWebService.getAccounts(
+			ExternalLinkDomain.DOSSIERA,
+			ExternalLinkEntityName.DOSSIERA_ACCOUNT, dossieraAccountKey, 1, 1);
+
+		if (!accounts.isEmpty()) {
+			return accounts.get(0);
+		}
+
+		return null;
+	}
+
 	protected String getAccountKey(JSONObject jsonObject) throws Exception {
 		JSONObject projectJSONObject = jsonObject.getJSONObject("_project");
 
@@ -577,14 +596,9 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			String dossieraAccountKey = accountJSONObject.getString(
 				"_dossieraAccountKey");
 
-			List<Account> accounts = _accountWebService.getAccounts(
-				ExternalLinkDomain.DOSSIERA,
-				ExternalLinkEntityName.DOSSIERA_ACCOUNT, dossieraAccountKey, 1,
-				1);
+			Account account = fetchAccount(dossieraAccountKey);
 
-			if (!accounts.isEmpty()) {
-				Account account = accounts.get(0);
-
+			if (account != null) {
 				return account.getKey();
 			}
 		}
@@ -1261,15 +1275,11 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			return new Team[0];
 		}
 
-		List<Account> partnerAccounts = _accountWebService.getAccounts(
-			ExternalLinkDomain.DOSSIERA,
-			ExternalLinkEntityName.DOSSIERA_ACCOUNT, dossieraAccountKey, 1, 1);
+		Account partnerAccount = fetchAccount(dossieraAccountKey);
 
-		if (partnerAccounts.isEmpty()) {
+		if (partnerAccount == null) {
 			return new Team[0];
 		}
-
-		Account partnerAccount = partnerAccounts.get(0);
 
 		String filterString = StringBundler.concat(
 			"accountKey eq '", partnerAccount.getKey(), "' and system eq true");
