@@ -114,6 +114,10 @@
 	}
 }
 
+.alert-indicator {
+	padding-right: $spacing-xs;
+}
+
 .button-holder {
 	&.button-holder-lg {
 		margin: $spacing-default 0;

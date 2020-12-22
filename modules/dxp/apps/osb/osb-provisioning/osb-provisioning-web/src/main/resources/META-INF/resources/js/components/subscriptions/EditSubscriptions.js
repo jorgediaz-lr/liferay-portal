@@ -9,6 +9,7 @@
  * distribution rights of the Software.
  */
 
+import ClayAlert from '@clayui/alert';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -38,6 +39,12 @@ function EditSubscriptions({
 						</button>
 					</div>
 
+					<InvalidDateAlert
+						message={Liferay.Language.get(
+							'please-make-sure-start-date-is-set-before-end-date'
+						)}
+					/>
+
 					<div className="subscriptions">
 						<Subscriptions
 							accountName={accountName}
@@ -64,6 +71,12 @@ function EditSubscriptions({
 					</div>
 
 					<div className="subscriptions-container">
+						<InvalidDateAlert
+							message={Liferay.Language.get(
+								'please-make-sure-start-date-is-set-before-end-date-and-end-date-is-set-before-grace-period-end-date'
+							)}
+						/>
+
 						<div className="subscriptions">
 							<Subscriptions
 								accountName={accountName}
@@ -104,5 +117,16 @@ EditSubscriptions.propTypes = {
 	sizing: PropTypes.arrayOf(PropTypes.number),
 	status: PropTypes.arrayOf(PropTypes.string)
 };
+
+function InvalidDateAlert({message}) {
+	return (
+		<ClayAlert
+			displayType="danger"
+			title={Liferay.Language.get('invalid-date')}
+		>
+			{message}
+		</ClayAlert>
+	);
+}
 
 export default EditSubscriptions;

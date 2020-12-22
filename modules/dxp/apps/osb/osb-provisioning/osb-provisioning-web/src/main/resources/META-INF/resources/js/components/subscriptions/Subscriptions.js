@@ -121,6 +121,7 @@ function Subscription({
 	subscriptionsType
 }) {
 	const [disableDelete, setDisableDelete] = useState(false);
+	const [invalidStartDate, setInvalidStartDate] = useState(false);
 	const [
 		invalidGracePeriodStartDate,
 		setInvalidGracePeriodStartDate
@@ -172,13 +173,15 @@ function Subscription({
 	}, [subscriptions]);
 
 	function handleEndDateChange(value) {
-		setInvalidEndDate(originalEndDate > value);
+		setInvalidGracePeriodStartDate(originalEndDate > value);
+		setInvalidStartDate(startDate > value);
 
 		updateEndDate(key, value);
 	}
 
 	function handleGracePeriodStartDateChange(value) {
-		setInvalidGracePeriodStartDate(startDate > value);
+		setInvalidStartDate(startDate > value);
+		setInvalidEndDate(value > endDate);
 
 		updateOriginalEndDate(key, value);
 	}
@@ -213,6 +216,7 @@ function Subscription({
 	}
 
 	function handleStartDateChange(value) {
+		setInvalidEndDate(value > endDate);
 		setInvalidGracePeriodStartDate(value > originalEndDate);
 
 		updateStartDate(key, value);
@@ -288,7 +292,7 @@ function Subscription({
 					<span className="custom-control-label"></span>
 				</label>
 			</ClayTable.Cell>
-			<ClayTable.Cell>
+			<ClayTable.Cell className={invalidStartDate ? 'has-error' : ''}>
 				<label htmlFor="startDate">
 					<DatePicker
 						defaultValue={startDate}
