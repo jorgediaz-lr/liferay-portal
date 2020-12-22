@@ -768,17 +768,23 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 	}
 
 	protected String getNotesDateRange(ProductPurchase productPurchase) {
-		Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
-			"yyyy/MM/dd");
+		if ((productPurchase.getStartDate() != null) &&
+			(productPurchase.getOriginalEndDate() != null)) {
 
-		StringBundler sb = new StringBundler(4);
+			Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
+				"yyyy/MM/dd");
 
-		sb.append(dateFormat.format(productPurchase.getStartDate()));
-		sb.append(" - ");
-		sb.append(dateFormat.format(productPurchase.getOriginalEndDate()));
-		sb.append(" (UTC)");
+			StringBundler sb = new StringBundler(4);
 
-		return sb.toString();
+			sb.append(dateFormat.format(productPurchase.getStartDate()));
+			sb.append(" - ");
+			sb.append(dateFormat.format(productPurchase.getOriginalEndDate()));
+			sb.append(" (UTC)");
+
+			return sb.toString();
+		}
+
+		return "Perpetual";
 	}
 
 	protected String getNotesProductName(
@@ -1365,22 +1371,27 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 					purchasedProductJSONObject.getInt("_startDay"),
 					purchasedProductJSONObject.getInt("_startYear"));
 
-				productPurchase.setStartDate(startDate);
-
 				Date originalEndDate = _portal.getDate(
 					purchasedProductJSONObject.getInt("_endMonth") - 1,
 					purchasedProductJSONObject.getInt("_endDay"),
 					purchasedProductJSONObject.getInt("_endYear"));
 
-				productPurchase.setOriginalEndDate(originalEndDate);
+				if ((startDate != null) && (originalEndDate != null)) {
+					productPurchase.setStartDate(startDate);
 
-				Calendar calendar = Calendar.getInstance();
+					productPurchase.setOriginalEndDate(originalEndDate);
 
-				calendar.setTime(originalEndDate);
+					Calendar calendar = Calendar.getInstance();
 
-				calendar.add(Calendar.DATE, 30);
+					calendar.setTime(originalEndDate);
 
-				productPurchase.setEndDate(calendar.getTime());
+					calendar.add(Calendar.DATE, 30);
+
+					productPurchase.setEndDate(calendar.getTime());
+				}
+				else {
+					productPurchase.setPerpetual(true);
+				}
 
 				Product product = _getProduct(
 					purchasedProductJSONObject.getString("_name"));
