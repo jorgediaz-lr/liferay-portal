@@ -103,7 +103,7 @@ public class LCSSubscriptionEntryWebServiceImpl
 		jsonWebServicePproperties.put("hostName", lcsConfiguration.host());
 		jsonWebServicePproperties.put(
 			"hostPort", String.valueOf(lcsConfiguration.port()));
-		jsonWebServicePproperties.put("protocol", lcsConfiguration.scheme());
+		jsonWebServicePproperties.put("protocol", lcsConfiguration.protocol());
 
 		_jsonWebServiceClient = _jsonWebServiceClientFactory.getInstance(
 			jsonWebServicePproperties, false);

@@ -37,6 +37,6 @@ public interface LCSConfiguration {
 	public int port();
 
 	@Meta.AD(deflt = "http", required = false)
-	public String scheme();
+	public String protocol();
 
 }
