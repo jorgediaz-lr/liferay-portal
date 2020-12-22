@@ -2,6 +2,10 @@
 	padding: 0 $spacing-default;
 
 	.subscriptions {
+		label[for='instanceSize'] {
+			display: block;
+		}
+
 		.btn-icon svg {
 			fill: $dark-l3;
 			height: $spacing-md;

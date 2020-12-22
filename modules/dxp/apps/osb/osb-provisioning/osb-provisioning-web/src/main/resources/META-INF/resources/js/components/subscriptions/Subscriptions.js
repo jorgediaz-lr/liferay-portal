@@ -37,7 +37,7 @@ function Subscriptions({
 		<ClayTable>
 			<ClayTable.Head>
 				<ClayTable.Row className="subscriptions-table-heading">
-					<ClayTable.Cell headingCell>
+					<ClayTable.Cell expanded headingCell>
 						{Liferay.Language.get('product')}
 					</ClayTable.Cell>
 					<ClayTable.Cell
@@ -53,10 +53,10 @@ function Subscriptions({
 					<ClayTable.Cell headingCell>
 						{Liferay.Language.get('perpetual-subscription')}
 					</ClayTable.Cell>
-					<ClayTable.Cell headingCell>
+					<ClayTable.Cell expanded headingCell>
 						{Liferay.Language.get('start-date')}
 					</ClayTable.Cell>
-					<ClayTable.Cell headingCell>
+					<ClayTable.Cell expanded headingCell>
 						{Liferay.Language.get('end-date')}
 					</ClayTable.Cell>
 					<ClayTable.Cell headingCell>
@@ -64,18 +64,22 @@ function Subscriptions({
 					</ClayTable.Cell>
 
 					{subscriptionsType === EDIT_SUBSCRIPTIONS && (
-						<ClayTable.Cell headingCell>
+						<ClayTable.Cell expanded headingCell>
 							{Liferay.Language.get('grace-period-end-date')}
 						</ClayTable.Cell>
 					)}
 
 					{subscriptionsType === EDIT_SUBSCRIPTIONS && (
-						<ClayTable.Cell headingCell>
+						<ClayTable.Cell
+							className="table-cell-expand-smallest"
+							expanded
+							headingCell
+						>
 							{Liferay.Language.get('status')}
 						</ClayTable.Cell>
 					)}
 
-					<ClayTable.Cell headingCell>
+					<ClayTable.Cell expanded headingCell>
 						{Liferay.Language.get('account-name')}
 					</ClayTable.Cell>
 					<ClayTable.Cell headingCell></ClayTable.Cell>
