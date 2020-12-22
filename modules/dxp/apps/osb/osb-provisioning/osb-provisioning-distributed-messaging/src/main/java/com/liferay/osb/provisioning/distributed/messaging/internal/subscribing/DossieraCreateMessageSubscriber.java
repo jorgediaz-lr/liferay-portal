@@ -1179,11 +1179,9 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			contact.setEmailAddress(
 				contactJSONObject.getString("_emailAddress"));
 
-			String role = ContactRoleConstants.NAME_SUPPORT_WATCHER;
-
 			ContactRole contactRole = new ContactRole();
 
-			contactRole.setName(role);
+			contactRole.setName(ContactRoleConstants.NAME_SUPPORT_WATCHER);
 			contactRole.setType(ContactRole.Type.ACCOUNT_CUSTOMER);
 
 			contact.setContactRoles(new ContactRole[] {contactRole});
