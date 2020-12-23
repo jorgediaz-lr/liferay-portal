@@ -14,7 +14,7 @@ export function reducer(state, action) {
 		case 'ADD_EXPERIMENT':
 			return {
 				...state,
-				experiment: action.payload
+				experiment: action.payload,
 				viewExperimentDetailsURL: action.payload.detailsURL
 			};
 
