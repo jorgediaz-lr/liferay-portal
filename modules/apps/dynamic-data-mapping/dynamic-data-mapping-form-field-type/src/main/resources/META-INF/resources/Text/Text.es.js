@@ -170,7 +170,9 @@ class Text extends Component {
 			clearTimeout(this.timeout);
 		}
 
-		this.cursor = event.target.selectionStart;
+		if (Liferay.Browser.isEdge()) {
+			this.cursor = event.target.selectionStart;
+		}
 
 		this.timeout = setTimeout(() => {
 			this.setState(
@@ -179,7 +181,10 @@ class Text extends Component {
 				},
 				() => {
 					this.dispatchEvent(event, 'fieldEdited', value);
-					event.target.selectionStart = this.cursor;
+
+					if (this.cursor) {
+						event.target.selectionStart = this.cursor;
+					}
 				}
 			);
 		}, 300);
