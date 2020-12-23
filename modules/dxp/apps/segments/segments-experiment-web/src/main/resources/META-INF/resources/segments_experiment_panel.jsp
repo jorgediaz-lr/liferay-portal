@@ -71,8 +71,6 @@ SegmentsExperimentDisplayContext segmentsExperimentDisplayContext = (SegmentsExp
 						segmentsExperimentGoals: <%= segmentsExperimentDisplayContext.getSegmentsExperimentGoalsJSONArray(locale) %>,
 						selectedSegmentsExperienceId:
 							'<%= segmentsExperimentDisplayContext.getSelectedSegmentsExperienceId() %>',
-						viewSegmentsExperimentDetailsURL:
-							'<%= segmentsExperimentDisplayContext.getViewSegmentsExperimentDetailsURL() %>',
 						winnerSegmentsVariantId:
 							'<%= segmentsExperimentDisplayContext.getWinnerSegmentsExperienceId() %>'
 					}
