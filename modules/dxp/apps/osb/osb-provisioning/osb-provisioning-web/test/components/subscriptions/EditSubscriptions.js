@@ -119,6 +119,37 @@ describe('EditSubscriptions', () => {
 
 			expect(getByText('save').disabled).toBeFalsy();
 		});
+
+		it('disables the Save button if a date field is invalid', () => {
+			const {
+				getAllByPlaceholderText,
+				getByText
+			} = renderAddSubscriptions();
+
+			const firstStartDate = getAllByPlaceholderText('YYYY-MM-DD')[0];
+
+			fireEvent.change(firstStartDate, {
+				target: {value: '2022-12-08'}
+			});
+
+			expect(getByText('save').disabled).toBeTruthy();
+		});
+
+		it('renders an error message if a date field is invalid', () => {
+			const {
+				getAllByPlaceholderText,
+				getByText
+			} = renderAddSubscriptions();
+
+			const firstStartDate = getAllByPlaceholderText('YYYY-MM-DD')[0];
+
+			fireEvent.change(firstStartDate, {
+				target: {value: '2022-12-08'}
+			});
+
+			getByText('invalid-date');
+			getByText('please-make-sure-start-date-is-set-before-end-date');
+		});
 	});
 
 	describe('Edit Subscriptions', () => {

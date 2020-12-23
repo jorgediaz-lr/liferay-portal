@@ -31,7 +31,8 @@ export const SubscriptionRecord = Record({
 	salesforceOpportunityKey: '',
 	sizing: '1',
 	startDate: new Date(),
-	status: PRODUCT_PURCHASE_STATUS_APPROVED
+	status: PRODUCT_PURCHASE_STATUS_APPROVED,
+	validDates: true
 });
 
 const SubscriptionsContext = React.createContext();
@@ -42,7 +43,7 @@ export function SubscriptionsProvider({initialSubscriptions = [], children}) {
 			detail.key ? detail.key : detail.productKey,
 			SubscriptionRecord({
 				...detail,
-				endDate: new Date(detail.endDate),
+				endDate: detail.endDate ? new Date(detail.endDate) : null,
 				originalEndDate: new Date(detail.originalEndDate),
 				startDate: new Date(detail.startDate)
 			})
@@ -116,6 +117,11 @@ export function SubscriptionsProvider({initialSubscriptions = [], children}) {
 					updateStatus(key, status) {
 						setSubscriptions(
 							subscriptions.setIn([key, 'status'], status)
+						);
+					},
+					updateValidDates(key, valid) {
+						setSubscriptions(
+							subscriptions.setIn([key, 'validDates'], valid)
 						);
 					}
 				}

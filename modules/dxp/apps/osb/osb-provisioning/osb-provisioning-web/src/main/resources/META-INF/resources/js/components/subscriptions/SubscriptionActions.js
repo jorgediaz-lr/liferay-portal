@@ -30,14 +30,18 @@ function SubscriptionActions({
 	const [disableSave, setDisableSave] = useState(true);
 
 	useEffect(() => {
-		function validateSalesForceOpportunityKeys() {
+		function validateEnableSave() {
 			return subscriptions
 				.toList()
 				.toArray()
-				.every(subscription => subscription.salesforceOpportunityKey);
+				.every(
+					subscription =>
+						subscription.salesforceOpportunityKey &&
+						subscription.validDates
+				);
 		}
 
-		if (validateSalesForceOpportunityKeys()) {
+		if (validateEnableSave()) {
 			setDisableSave(false);
 		}
 		else {
@@ -70,6 +74,7 @@ function SubscriptionActions({
 				delete entry['productName'];
 				delete entry['salesforceOpportunityKey'];
 				delete entry['sizing'];
+				delete entry['validDates'];
 
 				return entry;
 			});

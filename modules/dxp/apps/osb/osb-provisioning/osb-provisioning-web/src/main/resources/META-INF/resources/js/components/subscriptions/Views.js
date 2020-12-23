@@ -11,8 +11,9 @@
 
 import ClayAlert from '@clayui/alert';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 
+import {useSubscriptions} from '../../hooks/subscriptions';
 import {ADD_SUBSCRIPTIONS, EDIT_SUBSCRIPTIONS} from '../../utilities/constants';
 import SubscriptionActions from './SubscriptionActions';
 import Subscriptions from './Subscriptions';
@@ -23,6 +24,10 @@ export function AddView({
 	redirect,
 	sizing
 }) {
+	const [displayAlert, setDisplayAlert] = useState(false);
+
+	useSetDisplayAlert(setDisplayAlert);
+
 	return (
 		<div className="subscriptions-container">
 			<div className="subscriptions-header">
@@ -32,11 +37,13 @@ export function AddView({
 				</button>
 			</div>
 
-			<InvalidDateAlert
-				message={Liferay.Language.get(
-					'please-make-sure-start-date-is-set-before-end-date'
-				)}
-			/>
+			{displayAlert && (
+				<InvalidDateAlert
+					message={Liferay.Language.get(
+						'please-make-sure-start-date-is-set-before-end-date'
+					)}
+				/>
+			)}
 
 			<div className="subscriptions">
 				<Subscriptions
@@ -71,6 +78,10 @@ export function EditView({
 	sizing,
 	status
 }) {
+	const [displayAlert, setDisplayAlert] = useState(false);
+
+	useSetDisplayAlert(setDisplayAlert);
+
 	return (
 		<>
 			<div className="subscriptions-step">
@@ -80,11 +91,13 @@ export function EditView({
 			</div>
 
 			<div className="subscriptions-container">
-				<InvalidDateAlert
-					message={Liferay.Language.get(
-						'please-make-sure-start-date-is-set-before-end-date-and-end-date-is-set-before-grace-period-end-date'
-					)}
-				/>
+				{displayAlert && (
+					<InvalidDateAlert
+						message={Liferay.Language.get(
+							'please-make-sure-start-date-is-set-before-end-date-and-end-date-is-set-before-grace-period-end-date'
+						)}
+					/>
+				)}
 
 				<div className="subscriptions">
 					<Subscriptions
@@ -124,4 +137,24 @@ function InvalidDateAlert({message}) {
 			{message}
 		</ClayAlert>
 	);
+}
+
+function useSetDisplayAlert(callback) {
+	const [subscriptions] = useSubscriptions();
+
+	return useEffect(() => {
+		function validateDateFields() {
+			return subscriptions
+				.toList()
+				.toArray()
+				.every(subscription => subscription.validDates);
+		}
+
+		if (validateDateFields()) {
+			callback(false);
+		}
+		else {
+			callback(true);
+		}
+	}, [callback, subscriptions]);
 }

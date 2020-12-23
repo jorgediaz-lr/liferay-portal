@@ -139,7 +139,8 @@ function Subscription({
 			updateSalesforceOpportunityKey,
 			updateSizing,
 			updateStartDate,
-			updateStatus
+			updateStatus,
+			updateValidDates
 		}
 	] = useSubscriptions();
 
@@ -172,6 +173,25 @@ function Subscription({
 		}
 	}, [subscriptions]);
 
+	useEffect(() => {
+		if (
+			!invalidEndDate &&
+			!invalidGracePeriodStartDate &&
+			!invalidStartDate
+		) {
+			updateValidDates(key, true);
+		}
+		else {
+			updateValidDates(key, false);
+		}
+	}, [
+		invalidEndDate,
+		invalidGracePeriodStartDate,
+		invalidStartDate,
+		key,
+		updateValidDates
+	]);
+
 	function handleEndDateChange(value) {
 		setInvalidGracePeriodStartDate(originalEndDate > value);
 		setInvalidStartDate(startDate > value);
@@ -181,7 +201,10 @@ function Subscription({
 
 	function handleGracePeriodStartDateChange(value) {
 		setInvalidStartDate(startDate > value);
-		setInvalidEndDate(value > endDate);
+
+		if (endDate) {
+			setInvalidEndDate(value > endDate);
+		}
 
 		updateOriginalEndDate(key, value);
 	}
@@ -216,7 +239,10 @@ function Subscription({
 	}
 
 	function handleStartDateChange(value) {
-		setInvalidEndDate(value > endDate);
+		if (endDate) {
+			setInvalidEndDate(value > endDate);
+		}
+
 		setInvalidGracePeriodStartDate(value > originalEndDate);
 
 		updateStartDate(key, value);
