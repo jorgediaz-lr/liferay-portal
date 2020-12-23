@@ -322,24 +322,6 @@ public class SegmentsExperimentDisplayContext {
 		return _segmentsExperienceId;
 	}
 
-	public String getViewSegmentsExperimentDetailsURL() throws PortalException {
-		SegmentsExperiment segmentsExperiment = _getSegmentsExperiment();
-
-		if (segmentsExperiment == null) {
-			return StringPool.BLANK;
-		}
-
-		String liferayAnalyticsURL = getLiferayAnalyticsURL(
-			segmentsExperiment.getCompanyId());
-
-		if (Validator.isNull(liferayAnalyticsURL)) {
-			return StringPool.BLANK;
-		}
-
-		return liferayAnalyticsURL + "/tests/overview/" +
-			segmentsExperiment.getSegmentsExperimentKey();
-	}
-
 	public String getWinnerSegmentsExperienceId() {
 		if (_segmentsExperiment == null) {
 			return StringPool.BLANK;
