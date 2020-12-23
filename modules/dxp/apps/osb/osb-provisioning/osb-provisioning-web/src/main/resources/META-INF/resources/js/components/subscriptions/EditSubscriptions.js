@@ -9,14 +9,11 @@
  * distribution rights of the Software.
  */
 
-import ClayAlert from '@clayui/alert';
 import PropTypes from 'prop-types';
 import React from 'react';
 
 import {SubscriptionsProvider} from '../../hooks/subscriptions';
-import {ADD_SUBSCRIPTIONS, EDIT_SUBSCRIPTIONS} from '../../utilities/constants';
-import SubscriptionActions from './SubscriptionActions';
-import Subscriptions from './Subscriptions';
+import {AddView, EditView} from './Views';
 
 function EditSubscriptions({
 	accountName,
@@ -25,75 +22,31 @@ function EditSubscriptions({
 	details,
 	editProductPurchasesURL,
 	redirect,
+	selectProductsURL,
 	sizing,
 	status
 }) {
 	return (
 		<SubscriptionsProvider initialSubscriptions={details}>
 			{addSubscriptions && (
-				<div className="subscriptions-container">
-					<div className="subscriptions-header">
-						<b>{Liferay.Language.get('configure-subscriptions')}</b>
-						<button className="btn btn-secondary" type="button">
-							{Liferay.Language.get('select')}
-						</button>
-					</div>
-
-					<InvalidDateAlert
-						message={Liferay.Language.get(
-							'please-make-sure-start-date-is-set-before-end-date'
-						)}
-					/>
-
-					<div className="subscriptions">
-						<Subscriptions
-							accountName={accountName}
-							instanceSizes={sizing}
-							statusOptions={status}
-							subscriptionsType={ADD_SUBSCRIPTIONS}
-						/>
-					</div>
-
-					<SubscriptionActions
-						formAction={editProductPurchasesURL}
-						redirectURL={redirect}
-						subscriptionsType={ADD_SUBSCRIPTIONS}
-					/>
-				</div>
+				<AddView
+					accountName={accountName}
+					editProductPurchasesURL={editProductPurchasesURL}
+					redirect={redirect}
+					selectProductsURL={selectProductsURL}
+					sizing={sizing}
+				/>
 			)}
 
 			{!addSubscriptions && (
-				<>
-					<div className="subscriptions-step">
-						<span>{Liferay.Language.get('edit-details')}</span>
-
-						<span>{Liferay.Language.get('step-2-of-2')}</span>
-					</div>
-
-					<div className="subscriptions-container">
-						<InvalidDateAlert
-							message={Liferay.Language.get(
-								'please-make-sure-start-date-is-set-before-end-date-and-end-date-is-set-before-grace-period-end-date'
-							)}
-						/>
-
-						<div className="subscriptions">
-							<Subscriptions
-								accountName={accountName}
-								instanceSizes={sizing}
-								statusOptions={status}
-								subscriptionsType={EDIT_SUBSCRIPTIONS}
-							/>
-						</div>
-
-						<SubscriptionActions
-							backURL={backURL}
-							formAction={editProductPurchasesURL}
-							redirectURL={redirect}
-							subscriptionsType={EDIT_SUBSCRIPTIONS}
-						/>
-					</div>
-				</>
+				<EditView
+					accountName={accountName}
+					backURL={backURL}
+					editProductPurchasesURL={editProductPurchasesURL}
+					redirect={redirect}
+					sizing={sizing}
+					status={status}
+				/>
 			)}
 		</SubscriptionsProvider>
 	);
@@ -117,16 +70,5 @@ EditSubscriptions.propTypes = {
 	sizing: PropTypes.arrayOf(PropTypes.number),
 	status: PropTypes.arrayOf(PropTypes.string)
 };
-
-function InvalidDateAlert({message}) {
-	return (
-		<ClayAlert
-			displayType="danger"
-			title={Liferay.Language.get('invalid-date')}
-		>
-			{message}
-		</ClayAlert>
-	);
-}
 
 export default EditSubscriptions;
