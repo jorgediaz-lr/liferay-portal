@@ -239,9 +239,7 @@ public class AddSegmentsExperimentMVCActionCommandTest {
 	@DeleteAfterTestRun
 	private Group _group;
 
-	@Inject(
-		filter = "mvc.command.name=/segments_experiment/add_segments_experiment"
-	)
+	@Inject(filter = "mvc.command.name=/add_segments_experiment")
 	private MVCActionCommand _mvcActionCommand;
 
 	@Inject
