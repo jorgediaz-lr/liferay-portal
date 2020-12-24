@@ -152,7 +152,7 @@ public class MockLiferayPortletRenderResponse
 	}
 
 	@Override
-	public MockLiferayPortletURL createRenderURL() {
+	public PortletURL createRenderURL() {
 		return new MockLiferayPortletURL();
 	}
 
