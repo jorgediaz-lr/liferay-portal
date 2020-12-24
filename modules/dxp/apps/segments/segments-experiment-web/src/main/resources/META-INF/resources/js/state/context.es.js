@@ -43,7 +43,10 @@ export function getInitialState(firstState) {
 
 			return initialVariant;
 		}),
-		viewExperimentDetailsURL: initialSegmentsExperiment?.detailsURL || ''
+		viewExperimentDetailsURL:
+			(initialSegmentsExperiment &&
+				initialSegmentsExperiment.detailsURL) ||
+			''
 	};
 
 	return {
