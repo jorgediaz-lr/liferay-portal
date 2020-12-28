@@ -266,6 +266,24 @@ definition {
 				key_position = "2",
 				locator1 = "Fragment#FRAGMENT");
 		}
+
+		task ("Assert the web content article displays through the display page in the staging site after switching to staging view") {
+			AssertClick.assertPartialTextClickAt(
+				locator1 = "Staging#STAGING_BUTTON",
+				value1 = "Staging");
+
+			AssertVisible(
+				key_content = "Webcontent Title",
+				key_fragmentClass = "header",
+				key_position = "1",
+				locator1 = "Fragment#FRAGMENT");
+
+			AssertVisible(
+				key_content = "Webcontent Content",
+				key_fragmentClass = "rich-text",
+				key_position = "2",
+				locator1 = "Fragment#FRAGMENT");
+		}
 	}
 
 	@description = "Edits to display pages should not reflect in the live site until published."
