@@ -19,6 +19,7 @@ import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.provisioning.model.ProductBundle;
 import com.liferay.osb.provisioning.service.ProductBundleLocalService;
 import com.liferay.osb.provisioning.web.internal.dao.search.AssignProductsRowChecker;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
@@ -155,7 +156,8 @@ public class AssignProductsDisplayContext {
 				}
 
 				List<Product> products = _productWebService.getProducts(
-					keywords, StringPool.BLANK, -1, -1, "name");
+					keywords, StringPool.BLANK, QueryUtil.ALL_POS,
+					QueryUtil.ALL_POS, "name");
 
 				results.addAll(
 					TransformUtil.transform(
