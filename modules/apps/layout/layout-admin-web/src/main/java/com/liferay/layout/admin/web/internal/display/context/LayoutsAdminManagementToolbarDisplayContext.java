@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.util.List;
@@ -224,7 +225,7 @@ public class LayoutsAdminManagementToolbarDisplayContext
 
 			return LanguageUtil.format(
 				request, "add-child-page-of-x",
-				layout.getName(themeDisplay.getLocale()));
+				HtmlUtil.escape(layout.getName(themeDisplay.getLocale())));
 		}
 
 		if (_isSiteTemplate()) {
