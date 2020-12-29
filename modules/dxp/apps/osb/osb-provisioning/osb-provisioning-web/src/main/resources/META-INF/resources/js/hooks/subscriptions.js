@@ -20,7 +20,7 @@ function generateEndDate() {
 	return new Date(new Date().setFullYear(newEndYear));
 }
 
-export const SubscriptionRecord = Record({
+export class Subscription extends Record({
 	endDate: null,
 	key: null,
 	originalEndDate: generateEndDate(),
@@ -31,9 +31,64 @@ export const SubscriptionRecord = Record({
 	salesforceOpportunityKey: '',
 	sizing: '1',
 	startDate: new Date(),
-	status: PRODUCT_PURCHASE_STATUS_APPROVED,
-	validDates: true
-});
+	status: PRODUCT_PURCHASE_STATUS_APPROVED
+}) {
+	validateAllDates() {
+		return (
+			this.validateEndDate() &&
+			this.validateGracePeriodStartDate() &&
+			this.validateEndDate()
+		);
+	}
+
+	validateEndDate() {
+		if (this.perpetual) {
+			return true;
+		}
+
+		if (this.endDate) {
+			return (
+				this.startDate < this.endDate &&
+				this.originalEndDate < this.endDate
+			);
+		}
+		else {
+			return true;
+		}
+	}
+
+	validateGracePeriodStartDate() {
+		if (this.perpetual) {
+			return true;
+		}
+
+		if (this.endDate) {
+			return (
+				this.startDate < this.originalEndDate &&
+				this.originalEndDate < this.endDate
+			);
+		}
+		else {
+			return this.startDate < this.originalEndDate;
+		}
+	}
+
+	validateStartDate() {
+		if (this.perpetual) {
+			return true;
+		}
+
+		if (this.endDate) {
+			return (
+				this.startDate < this.originalEndDate &&
+				this.startDate < this.endDate
+			);
+		}
+		else {
+			return this.startDate < this.originalEndDate;
+		}
+	}
+}
 
 const SubscriptionsContext = React.createContext();
 
@@ -41,7 +96,7 @@ export function SubscriptionsProvider({initialSubscriptions = [], children}) {
 	const processedSubscriptions = initialSubscriptions.map(detail => {
 		return [
 			detail.key ? detail.key : detail.productKey,
-			SubscriptionRecord({
+			new Subscription({
 				...detail,
 				endDate: detail.endDate ? new Date(detail.endDate) : null,
 				originalEndDate: new Date(detail.originalEndDate),
@@ -69,9 +124,6 @@ export function SubscriptionsProvider({initialSubscriptions = [], children}) {
 					},
 					deleteSubscription(key) {
 						setSubscriptions(subscriptions.delete(key));
-					},
-					getFieldValue(key, fieldName) {
-						return subscriptions.getIn([key, fieldName]);
 					},
 					updateEndDate(key, endDate) {
 						setSubscriptions(
@@ -120,11 +172,6 @@ export function SubscriptionsProvider({initialSubscriptions = [], children}) {
 					updateStatus(key, status) {
 						setSubscriptions(
 							subscriptions.setIn([key, 'status'], status)
-						);
-					},
-					updateValidDates(key, valid) {
-						setSubscriptions(
-							subscriptions.setIn([key, 'validDates'], valid)
 						);
 					}
 				}

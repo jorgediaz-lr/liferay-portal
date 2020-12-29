@@ -36,7 +36,7 @@ function SubscriptionActions({
 				.every(
 					subscription =>
 						subscription.salesforceOpportunityKey &&
-						subscription.validDates
+						subscription.validateAllDates()
 				);
 		}
 
@@ -73,7 +73,6 @@ function SubscriptionActions({
 				delete entry['productName'];
 				delete entry['salesforceOpportunityKey'];
 				delete entry['sizing'];
-				delete entry['validDates'];
 
 				return entry;
 			});

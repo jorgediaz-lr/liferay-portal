@@ -86,17 +86,17 @@ function Subscriptions({
 				</ClayTable.Row>
 			</ClayTable.Head>
 			<ClayTable.Body>
-				{subscriptions.toList().map(detail => (
+				{subscriptions.toList().map(subscription => (
 					<Subscription
 						accountName={accountName}
-						detail={detail}
 						instanceSizes={instanceSizes}
 						key={
 							subscriptionsType === EDIT_SUBSCRIPTIONS
-								? detail.key
-								: detail.productKey
+								? subscription.key
+								: subscription.productKey
 						}
 						statusOptions={statusOptions}
+						subscription={subscription}
 						subscriptionsType={subscriptionsType}
 					/>
 				))}
@@ -115,24 +115,17 @@ Subscriptions.propTypes = {
 
 function Subscription({
 	accountName,
-	detail,
 	instanceSizes,
 	statusOptions,
+	subscription,
 	subscriptionsType
 }) {
 	const [disableDelete, setDisableDelete] = useState(false);
-	const [invalidStartDate, setInvalidStartDate] = useState(false);
-	const [
-		invalidGracePeriodStartDate,
-		setInvalidGracePeriodStartDate
-	] = useState(false);
-	const [invalidEndDate, setInvalidEndDate] = useState(false);
 
 	const [
 		subscriptions,
 		{
 			deleteSubscription,
-			getFieldValue,
 			updateEndDate,
 			updateOriginalEndDate,
 			updatePerpetual,
@@ -140,8 +133,7 @@ function Subscription({
 			updateSalesforceOpportunityKey,
 			updateSizing,
 			updateStartDate,
-			updateStatus,
-			updateValidDates
+			updateStatus
 		}
 	] = useSubscriptions();
 
@@ -155,12 +147,12 @@ function Subscription({
 		sizing,
 		startDate,
 		status
-	} = detail;
+	} = subscription;
 
 	const key =
 		subscriptionsType === EDIT_SUBSCRIPTIONS
-			? detail.key
-			: detail.productKey;
+			? subscription.key
+			: subscription.productKey;
 
 	// Source formatter locks @clayui/date-picker at version 3.0.7, which does not provide an API for disabling date picker while later versions do.
 
@@ -174,45 +166,11 @@ function Subscription({
 		}
 	}, [subscriptions]);
 
-	useEffect(() => {
-		if (
-			!invalidEndDate &&
-			!invalidGracePeriodStartDate &&
-			!invalidStartDate
-		) {
-			updateValidDates(key, true);
-		}
-		else {
-			updateValidDates(key, false);
-		}
-	}, [
-		invalidEndDate,
-		invalidGracePeriodStartDate,
-		invalidStartDate,
-		key,
-		updateValidDates
-	]);
-
 	function handleEndDateChange(value) {
-		setInvalidEndDate(false);
-
-		setInvalidGracePeriodStartDate(
-			getFieldValue(key, 'originalEndDate') > value
-		);
-		setInvalidStartDate(getFieldValue(key, 'startDate') > value);
-
 		updateEndDate(key, value);
 	}
 
 	function handleGracePeriodStartDateChange(value) {
-		setInvalidGracePeriodStartDate(false);
-
-		setInvalidStartDate(getFieldValue(key, 'startDate') > value);
-
-		if (subscriptionsType === EDIT_SUBSCRIPTIONS) {
-			setInvalidEndDate(value > getFieldValue(key, 'endDate'));
-		}
-
 		updateOriginalEndDate(key, value);
 	}
 
@@ -226,11 +184,6 @@ function Subscription({
 		// Source formatter locks @clayui/date-picker at version 3.0.7, which does not provide an API for disabling date picker while later versions do.
 
 		setDisabledAttribute(!perpetual);
-
-		if (!perpetual) {
-			setInvalidEndDate(false);
-			setInvalidGracePeriodStartDate(false);
-		}
 	}
 
 	function handleQuantityChange(event) {
@@ -246,16 +199,6 @@ function Subscription({
 	}
 
 	function handleStartDateChange(value) {
-		setInvalidStartDate(false);
-
-		if (subscriptionsType === EDIT_SUBSCRIPTIONS) {
-			setInvalidEndDate(value > getFieldValue(key, 'endDate'));
-		}
-
-		setInvalidGracePeriodStartDate(
-			value > getFieldValue(key, 'originalEndDate')
-		);
-
 		updateStartDate(key, value);
 	}
 
@@ -329,7 +272,9 @@ function Subscription({
 					<span className="custom-control-label"></span>
 				</label>
 			</ClayTable.Cell>
-			<ClayTable.Cell className={invalidStartDate ? 'has-error' : ''}>
+			<ClayTable.Cell
+				className={subscription.validateStartDate() ? '' : 'has-error'}
+			>
 				<label htmlFor="startDate">
 					<DatePicker
 						defaultValue={startDate}
@@ -340,7 +285,11 @@ function Subscription({
 				</label>
 			</ClayTable.Cell>
 			<ClayTable.Cell
-				className={invalidGracePeriodStartDate ? 'has-error' : ''}
+				className={
+					subscription.validateGracePeriodStartDate()
+						? ''
+						: 'has-error'
+				}
 			>
 				<label htmlFor="gracePeriodStartDate">
 					<DatePicker
@@ -370,7 +319,11 @@ function Subscription({
 			</ClayTable.Cell>
 
 			{subscriptionsType === EDIT_SUBSCRIPTIONS && (
-				<ClayTable.Cell className={invalidEndDate ? 'has-error' : ''}>
+				<ClayTable.Cell
+					className={
+						subscription.validateEndDate() ? '' : 'has-error'
+					}
+				>
 					<label htmlFor="endDate">
 						<DatePicker
 							defaultValue={endDate}
