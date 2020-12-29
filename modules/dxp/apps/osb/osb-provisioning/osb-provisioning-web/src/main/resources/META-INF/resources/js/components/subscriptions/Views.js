@@ -146,7 +146,6 @@ function useSetDisplayAlert(callback) {
 		function validateDateFields() {
 			return subscriptions
 				.toList()
-				.toArray()
 				.every(subscription => subscription.validDates);
 		}
 

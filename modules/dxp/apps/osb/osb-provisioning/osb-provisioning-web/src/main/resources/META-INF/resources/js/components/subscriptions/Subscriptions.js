@@ -132,6 +132,7 @@ function Subscription({
 		subscriptions,
 		{
 			deleteSubscription,
+			getFieldValue,
 			updateEndDate,
 			updateOriginalEndDate,
 			updatePerpetual,
@@ -193,17 +194,23 @@ function Subscription({
 	]);
 
 	function handleEndDateChange(value) {
-		setInvalidGracePeriodStartDate(originalEndDate > value);
-		setInvalidStartDate(startDate > value);
+		setInvalidEndDate(false);
+
+		setInvalidGracePeriodStartDate(
+			getFieldValue(key, 'originalEndDate') > value
+		);
+		setInvalidStartDate(getFieldValue(key, 'startDate') > value);
 
 		updateEndDate(key, value);
 	}
 
 	function handleGracePeriodStartDateChange(value) {
-		setInvalidStartDate(startDate > value);
+		setInvalidGracePeriodStartDate(false);
 
-		if (endDate) {
-			setInvalidEndDate(value > endDate);
+		setInvalidStartDate(getFieldValue(key, 'startDate') > value);
+
+		if (subscriptionsType === EDIT_SUBSCRIPTIONS) {
+			setInvalidEndDate(value > getFieldValue(key, 'endDate'));
 		}
 
 		updateOriginalEndDate(key, value);
@@ -239,11 +246,15 @@ function Subscription({
 	}
 
 	function handleStartDateChange(value) {
-		if (endDate) {
-			setInvalidEndDate(value > endDate);
+		setInvalidStartDate(false);
+
+		if (subscriptionsType === EDIT_SUBSCRIPTIONS) {
+			setInvalidEndDate(value > getFieldValue(key, 'endDate'));
 		}
 
-		setInvalidGracePeriodStartDate(value > originalEndDate);
+		setInvalidGracePeriodStartDate(
+			value > getFieldValue(key, 'originalEndDate')
+		);
 
 		updateStartDate(key, value);
 	}

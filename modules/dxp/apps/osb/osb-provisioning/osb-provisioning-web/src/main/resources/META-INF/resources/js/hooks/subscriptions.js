@@ -70,6 +70,9 @@ export function SubscriptionsProvider({initialSubscriptions = [], children}) {
 					deleteSubscription(key) {
 						setSubscriptions(subscriptions.delete(key));
 					},
+					getFieldValue(key, fieldName) {
+						return subscriptions.getIn([key, fieldName]);
+					},
 					updateEndDate(key, endDate) {
 						setSubscriptions(
 							subscriptions.setIn([key, 'endDate'], endDate)

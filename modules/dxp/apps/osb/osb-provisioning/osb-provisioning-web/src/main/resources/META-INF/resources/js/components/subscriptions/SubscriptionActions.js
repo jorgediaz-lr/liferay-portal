@@ -33,7 +33,6 @@ function SubscriptionActions({
 		function validateEnableSave() {
 			return subscriptions
 				.toList()
-				.toArray()
 				.every(
 					subscription =>
 						subscription.salesforceOpportunityKey &&
