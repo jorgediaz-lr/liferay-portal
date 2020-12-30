@@ -11,7 +11,7 @@
 
 import ClayTable from '@clayui/table';
 import PropTypes from 'prop-types';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 
 import {useSubscriptions} from '../../hooks/subscriptions';
 import {
@@ -89,6 +89,9 @@ function Subscriptions({
 				{subscriptions.toList().map(subscription => (
 					<Subscription
 						accountName={accountName}
+						disableDelete={
+							subscriptions.toList().toArray().length === 1
+						}
 						instanceSizes={instanceSizes}
 						key={
 							subscriptionsType === EDIT_SUBSCRIPTIONS
@@ -115,15 +118,14 @@ Subscriptions.propTypes = {
 
 function Subscription({
 	accountName,
+	disableDelete,
 	instanceSizes,
 	statusOptions,
 	subscription,
 	subscriptionsType
 }) {
-	const [disableDelete, setDisableDelete] = useState(false);
-
 	const [
-		subscriptions,
+		,
 		{
 			deleteSubscription,
 			updateEndDate,
@@ -159,12 +161,6 @@ function Subscription({
 	useEffect(() => {
 		setDisabledAttribute(perpetual);
 	});
-
-	useEffect(() => {
-		if (subscriptions.toList().toArray().length === 1) {
-			setDisableDelete(true);
-		}
-	}, [subscriptions]);
 
 	function handleEndDateChange(value) {
 		updateEndDate(key, value);
