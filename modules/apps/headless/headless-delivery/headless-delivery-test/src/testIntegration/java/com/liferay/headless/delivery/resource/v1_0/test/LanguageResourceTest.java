@@ -37,18 +37,6 @@ public class LanguageResourceTest extends BaseLanguageResourceTestCase {
 
 	@Override
 	@Test
-	public void testGetAssetLibraryLanguagesPage() throws Exception {
-		Page<Language> page = languageResource.getAssetLibraryLanguagesPage(
-			testGetAssetLibraryLanguagesPage_getAssetLibraryId());
-
-		Assert.assertEquals(
-			_getAvailableLocalesSize(
-				testGetAssetLibraryLanguagesPage_getAssetLibraryId()),
-			page.getTotalCount());
-	}
-
-	@Override
-	@Test
 	public void testGetSiteLanguagesPage() throws Exception {
 		Page<Language> page = languageResource.getSiteLanguagesPage(
 			testGetSiteLanguagesPage_getSiteId());
