@@ -148,7 +148,7 @@ describe('EditSubscriptions', () => {
 			});
 
 			getByText('invalid-date');
-			getByText('please-make-sure-start-date-is-set-before-end-date');
+			getByText('please-make-sure-the-start-date-is-before-the-end-date');
 		});
 	});
 

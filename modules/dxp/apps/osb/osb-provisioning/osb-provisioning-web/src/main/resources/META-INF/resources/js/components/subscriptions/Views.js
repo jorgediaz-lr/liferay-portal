@@ -40,7 +40,7 @@ export function AddView({
 			{displayAlert && (
 				<InvalidDateAlert
 					message={Liferay.Language.get(
-						'please-make-sure-start-date-is-set-before-end-date'
+						'please-make-sure-the-start-date-is-before-the-end-date'
 					)}
 				/>
 			)}
@@ -94,7 +94,7 @@ export function EditView({
 				{displayAlert && (
 					<InvalidDateAlert
 						message={Liferay.Language.get(
-							'please-make-sure-start-date-is-set-before-end-date-and-end-date-is-set-before-grace-period-end-date'
+							'please-make-sure-the-start-date-is-before-the-end-date-and-the-end-date-is-before-the-grace-period-end-date'
 						)}
 					/>
 				)}
