@@ -30,7 +30,8 @@ import com.liferay.osb.provisioning.koroneiki.web.service.TeamRoleWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamWebService;
 import com.liferay.osb.provisioning.service.ProductBundleLocalService;
 import com.liferay.osb.provisioning.web.internal.display.context.AccountSearchDisplayContext;
-import com.liferay.osb.provisioning.web.internal.display.context.AssignProductsDisplayContext;
+import com.liferay.osb.provisioning.web.internal.display.context.AssignProductBundleProductsDisplayContext;
+import com.liferay.osb.provisioning.web.internal.display.context.AssignProductPurchaseProductsDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.AssignTeamContactsDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.ContactSearchDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.EditProductPurchasesDisplayContext;
@@ -76,13 +77,25 @@ public class ProvisioningWebComponentProvider {
 				renderRequest, renderResponse, httpServletRequest);
 	}
 
-	public static AssignProductsDisplayContext getAssignProductsDisplayContext(
-			RenderRequest renderRequest, RenderResponse renderResponse,
-			HttpServletRequest httpServletRequest)
+	public static AssignProductBundleProductsDisplayContext
+			getAssignProductBundleProductsDisplayContext(
+				RenderRequest renderRequest, RenderResponse renderResponse,
+				HttpServletRequest httpServletRequest)
 		throws Exception {
 
 		return _provisioningWebComponentProvider.
-			_getAssignProductsDisplayContext(
+			_getAssignProductBundleProductsDisplayContext(
+				renderRequest, renderResponse, httpServletRequest);
+	}
+
+	public static AssignProductPurchaseProductsDisplayContext
+			getAssignProductPurchaseProductsDisplayContext(
+				RenderRequest renderRequest, RenderResponse renderResponse,
+				HttpServletRequest httpServletRequest)
+		throws Exception {
+
+		return _provisioningWebComponentProvider.
+			_getAssignProductPurchaseProductsDisplayContext(
 				renderRequest, renderResponse, httpServletRequest);
 	}
 
@@ -259,11 +272,22 @@ public class ProvisioningWebComponentProvider {
 			_productWebService, _teamRoleWebService, _userLocalService);
 	}
 
-	private AssignProductsDisplayContext _getAssignProductsDisplayContext(
-		RenderRequest renderRequest, RenderResponse renderResponse,
-		HttpServletRequest httpServletRequest) {
+	private AssignProductBundleProductsDisplayContext
+		_getAssignProductBundleProductsDisplayContext(
+			RenderRequest renderRequest, RenderResponse renderResponse,
+			HttpServletRequest httpServletRequest) {
 
-		return new AssignProductsDisplayContext(
+		return new AssignProductBundleProductsDisplayContext(
+			renderRequest, renderResponse, httpServletRequest,
+			_productWebService);
+	}
+
+	private AssignProductPurchaseProductsDisplayContext
+		_getAssignProductPurchaseProductsDisplayContext(
+			RenderRequest renderRequest, RenderResponse renderResponse,
+			HttpServletRequest httpServletRequest) {
+
+		return new AssignProductPurchaseProductsDisplayContext(
 			renderRequest, renderResponse, httpServletRequest,
 			_productBundleLocalService, _productWebService);
 	}

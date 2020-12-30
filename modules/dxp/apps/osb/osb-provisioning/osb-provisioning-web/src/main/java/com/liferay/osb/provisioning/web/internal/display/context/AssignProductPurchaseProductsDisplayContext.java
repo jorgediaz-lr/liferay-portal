@@ -19,7 +19,6 @@ import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.provisioning.model.ProductBundle;
 import com.liferay.osb.provisioning.service.ProductBundleLocalService;
 import com.liferay.osb.provisioning.web.internal.dao.search.AssignProductsRowChecker;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
@@ -31,7 +30,6 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
@@ -49,9 +47,9 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @author Yuanyuan Huang
  */
-public class AssignProductsDisplayContext {
+public class AssignProductPurchaseProductsDisplayContext {
 
-	public AssignProductsDisplayContext(
+	public AssignProductPurchaseProductsDisplayContext(
 		RenderRequest renderRequest, RenderResponse renderResponse,
 		HttpServletRequest httpServletRequest,
 		ProductBundleLocalService productBundleLocalService,
@@ -70,29 +68,23 @@ public class AssignProductsDisplayContext {
 
 		_themeDisplay = (ThemeDisplay)_httpServletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
+
+		_productBundleIds = ParamUtil.getLongValues(
+			renderRequest, "productBundleIds");
+		_productKeys = ParamUtil.getStringValues(renderRequest, "productKeys");
 	}
 
 	public String getClearResultsURL() {
 		PortletURL portletURL = _renderResponse.createRenderURL();
 
-		if (Validator.isNotNull(_accountKey)) {
-			portletURL.setParameter(
-				"mvcRenderCommandName", "/accounts/assign_products");
-			portletURL.setParameter("accountKey", _accountKey);
-		}
-		else {
-			portletURL.setParameter(
-				"mvcRenderCommandName", "/product_bundles/assign_products");
-		}
+		portletURL.setParameter(
+			"mvcRenderCommandName", "/accounts/assign_products");
+		portletURL.setParameter("accountKey", _accountKey);
 
 		return portletURL.toString();
 	}
 
 	public String getSearchActionURL() throws Exception {
-		if (Validator.isNull(_accountKey)) {
-			return _currentURLObj.toString();
-		}
-
 		PortletURL portletURL = _renderResponse.createRenderURL();
 
 		portletURL.setParameter(
@@ -103,10 +95,7 @@ public class AssignProductsDisplayContext {
 		return portletURL.toString();
 	}
 
-	public SearchContainer getSearchContainer(
-			long[] productBundleIds, String[] productKeys)
-		throws Exception {
-
+	public SearchContainer getSearchContainer() throws Exception {
 		SearchContainer searchContainer = new SearchContainer(
 			_renderRequest, _currentURLObj, Collections.emptyList(),
 			"no-products-were-found");
@@ -118,73 +107,88 @@ public class AssignProductsDisplayContext {
 
 		List<Object> results = new ArrayList<>();
 
-		if (Validator.isNotNull(_accountKey)) {
-			Hits hits = _productBundleLocalService.search(
-				_themeDisplay.getCompanyId(), keywords,
-				searchContainer.getStart(), searchContainer.getEnd(),
-				new Sort(Field.NAME, false));
+		Hits hits = _productBundleLocalService.search(
+			_themeDisplay.getCompanyId(), keywords, searchContainer.getStart(),
+			searchContainer.getEnd(), new Sort(Field.NAME, false));
 
-			int previousPageCount =
-				(searchContainer.getCur() - 1) * searchContainer.getDelta();
+		int previousPageCount =
+			(searchContainer.getCur() - 1) * searchContainer.getDelta();
 
-			if (hits.getLength() > previousPageCount) {
-				List<ProductBundle> productBundleResults = new ArrayList<>();
+		if ((hits.getLength() > 0) && (hits.getLength() > previousPageCount)) {
+			List<ProductBundle> productBundleResults = new ArrayList<>();
 
-				for (Document document : hits.getDocs()) {
-					long productBundleId = GetterUtil.getLong(
-						document.get(Field.ENTRY_CLASS_PK));
+			for (Document document : hits.getDocs()) {
+				long productBundleId = GetterUtil.getLong(
+					document.get(Field.ENTRY_CLASS_PK));
 
-					productBundleResults.add(
-						_productBundleLocalService.getProductBundle(
-							productBundleId));
-				}
-
-				results.addAll(productBundleResults);
+				productBundleResults.add(
+					_productBundleLocalService.getProductBundle(
+						productBundleId));
 			}
 
+			results.addAll(productBundleResults);
+
 			if (results.size() < searchContainer.getDelta()) {
-				int start = previousPageCount - hits.getLength();
-
-				if (start < 0) {
-					start = 0;
-				}
-
-				int end = start + (searchContainer.getDelta() - results.size());
-
-				if (end > count) {
-					end = count;
-				}
-
 				List<Product> products = _productWebService.getProducts(
-					keywords, StringPool.BLANK, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, "name");
+					keywords, StringPool.BLANK, 1,
+					searchContainer.getDelta() - results.size(), "name");
 
 				results.addAll(
 					TransformUtil.transform(
-						products.subList(start, end),
+						products,
 						product -> new ProductDisplay(
 							_renderRequest, _renderResponse, product)));
 			}
-
-			count += hits.getLength();
 		}
 		else {
+			int start = previousPageCount - hits.getLength();
+
+			int end = start + searchContainer.getDelta();
+
+			if (end > count) {
+				end = count;
+			}
+
+			int size = searchContainer.getDelta();
+
+			int startPage = (int)Math.ceil((start + 1) * 1.0 / size);
+
+			int endPage = (int)Math.ceil(end * 1.0 / size);
+
+			while (startPage != endPage) {
+				size += 1;
+
+				startPage = (int)Math.ceil((start + 1) * 1.0 / size);
+
+				endPage = (int)Math.ceil(end * 1.0 / size);
+			}
+
 			List<Product> products = _productWebService.getProducts(
-				keywords, StringPool.BLANK, searchContainer.getCur(),
-				searchContainer.getDelta(), "name");
+				keywords, StringPool.BLANK, endPage, size, "name");
+
+			start = start % size;
+
+			end = start + searchContainer.getDelta();
+
+			if (end > products.size()) {
+				end = products.size();
+			}
 
 			results.addAll(
 				TransformUtil.transform(
-					products,
+					products.subList(start, end),
 					product -> new ProductDisplay(
 						_renderRequest, _renderResponse, product)));
 		}
+
+		count += hits.getLength();
 
 		searchContainer.setResults(results);
 
 		searchContainer.setRowChecker(
 			new AssignProductsRowChecker(
-				_renderResponse, productBundleIds, Arrays.asList(productKeys)));
+				_renderResponse, _productBundleIds,
+				Arrays.asList(_productKeys)));
 
 		searchContainer.setTotal(count);
 
@@ -194,7 +198,9 @@ public class AssignProductsDisplayContext {
 	private final String _accountKey;
 	private final PortletURL _currentURLObj;
 	private final HttpServletRequest _httpServletRequest;
+	private final long[] _productBundleIds;
 	private final ProductBundleLocalService _productBundleLocalService;
+	private final String[] _productKeys;
 	private final ProductWebService _productWebService;
 	private final RenderRequest _renderRequest;
 	private final RenderResponse _renderResponse;

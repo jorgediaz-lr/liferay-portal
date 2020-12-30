@@ -17,20 +17,32 @@
 <%@ include file="/init.jsp" %>
 
 <%
-AssignProductsDisplayContext assignProductsDisplayContext = ProvisioningWebComponentProvider.getAssignProductsDisplayContext(renderRequest, renderResponse, request);
-
-long[] productBundleIds = ParamUtil.getLongValues(renderRequest, "productBundleIds");
-String[] productKeys = ParamUtil.getStringValues(renderRequest, "productKeys");
-
 String accountKey = ParamUtil.getString(renderRequest, "accountKey");
 
-SearchContainer searchContainer = assignProductsDisplayContext.getSearchContainer(productBundleIds, productKeys);
+String clearResultsURL = StringPool.BLANK;
+String searchActionURL = StringPool.BLANK;
+SearchContainer searchContainer = null;
+
+if (Validator.isNotNull(accountKey)) {
+	AssignProductPurchaseProductsDisplayContext assignProductPurchaseProductsDisplayContext = ProvisioningWebComponentProvider.getAssignProductPurchaseProductsDisplayContext(renderRequest, renderResponse, request);
+
+	clearResultsURL = assignProductPurchaseProductsDisplayContext.getClearResultsURL();
+	searchActionURL = assignProductPurchaseProductsDisplayContext.getSearchActionURL();
+	searchContainer = assignProductPurchaseProductsDisplayContext.getSearchContainer();
+}
+else {
+	AssignProductBundleProductsDisplayContext assignProductBundleProductsDisplayContext = ProvisioningWebComponentProvider.getAssignProductBundleProductsDisplayContext(renderRequest, renderResponse, request);
+
+	clearResultsURL = assignProductBundleProductsDisplayContext.getClearResultsURL();
+	searchActionURL = assignProductBundleProductsDisplayContext.getSearchActionURL();
+	searchContainer = assignProductBundleProductsDisplayContext.getSearchContainer();
+}
 %>
 
 <clay:management-toolbar
-	clearResultsURL="<%= assignProductsDisplayContext.getClearResultsURL() %>"
+	clearResultsURL="<%= clearResultsURL %>"
 	itemsTotal="<%= searchContainer.getTotal() %>"
-	searchActionURL="<%= assignProductsDisplayContext.getSearchActionURL() %>"
+	searchActionURL="<%= searchActionURL %>"
 	searchContainerId="assignProducts"
 	selectable="<%= true %>"
 	showSearch="<%= true %>"
