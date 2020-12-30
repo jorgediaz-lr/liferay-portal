@@ -14,6 +14,7 @@
 
 package com.liferay.asset.display.page.internal.upgrade.v2_2_2;
 
+import com.liferay.asset.display.page.constants.AssetDisplayPageConstants;
 import com.liferay.portal.kernel.dao.jdbc.AutoBatchPreparedStatementUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -68,10 +69,10 @@ public class UpgradeAssetDisplayPageEntry extends UpgradeProcess {
 		sb2.append("?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
 		try (PreparedStatement ps1 = connection.prepareStatement(
-			sb1.toString());
-			 PreparedStatement ps2 =
-				 AutoBatchPreparedStatementUtil.concurrentAutoBatch(
-					 connection, sb2.toString())) {
+				sb1.toString());
+			PreparedStatement ps2 =
+				AutoBatchPreparedStatementUtil.concurrentAutoBatch(
+					connection, sb2.toString())) {
 
 			try (ResultSet rs = ps1.executeQuery()) {
 				while (rs.next()) {
@@ -88,7 +89,7 @@ public class UpgradeAssetDisplayPageEntry extends UpgradeProcess {
 					ps2.setLong(9, rs.getLong("classNameId"));
 					ps2.setLong(10, rs.getLong("classPK"));
 					ps2.setLong(11, 0);
-					ps2.setLong(12, 1);
+					ps2.setLong(12, AssetDisplayPageConstants.TYPE_DEFAULT);
 					ps2.setLong(13, 0);
 
 					ps2.addBatch();
