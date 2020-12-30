@@ -214,7 +214,7 @@ long formInstanceId = ddmFormDisplayContext.getFormInstanceId();
 								<portlet:param name="preview" value="<%= String.valueOf(ddmFormDisplayContext.isPreview()) %>" />
 							</liferay-portlet:resourceURL>
 
-							Liferay.on('sessionExpired', function (event) {
+							Liferay.on('sessionExpired', function(event) {
 								<portlet:namespace />clearInterval(<portlet:namespace />intervalId);
 							});
 
@@ -287,7 +287,7 @@ long formInstanceId = ddmFormDisplayContext.getFormInstanceId();
 						var rememberMe = true;
 					</c:if>
 
-					<portlet:namespace />sessionIntervalId = setInterval(function () {
+					<portlet:namespace />sessionIntervalId = setInterval(function() {
 						if (Liferay.Session || rememberMe) {
 							clearInterval(<portlet:namespace />sessionIntervalId);
 
