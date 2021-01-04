@@ -60,6 +60,8 @@ import javax.portlet.PortletContext;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequestDispatcher;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -98,12 +100,17 @@ public class AssetPublisherDisplayContextTest {
 		MockLiferayPortletRenderRequest mockLiferayPortletRenderRequest =
 			_getMockLiferayPortletRenderRequest(assetListEntry);
 
+		HttpServletRequest httpServletRequest =
+			mockLiferayPortletRenderRequest.getHttpServletRequest();
+
+		httpServletRequest.setAttribute(
+			WebKeys.USER, TestPropsValues.getUser());
+
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(
 				_group, TestPropsValues.getUserId());
 
-		serviceContext.setRequest(
-			mockLiferayPortletRenderRequest.getHttpServletRequest());
+		serviceContext.setRequest(httpServletRequest);
 
 		ServiceContextThreadLocal.pushServiceContext(serviceContext);
 

@@ -19,8 +19,8 @@ import com.liferay.asset.list.constants.AssetListEntryTypeConstants;
 import com.liferay.asset.list.model.AssetListEntry;
 import com.liferay.asset.list.service.AssetListEntryLocalService;
 import com.liferay.asset.publisher.util.AssetPublisherHelper;
-import com.liferay.petra.lang.HashUtil;
 import com.liferay.layout.test.util.LayoutTestUtil;
+import com.liferay.petra.lang.HashUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
@@ -51,6 +51,8 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.portlet.PortletPreferences;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -282,12 +284,17 @@ public class AssetPublisherHelperTest {
 		mockLiferayPortletRenderRequest.setAttribute(
 			WebKeys.THEME_DISPLAY, themeDisplay);
 
+		HttpServletRequest httpServletRequest =
+			mockLiferayPortletRenderRequest.getHttpServletRequest();
+
+		httpServletRequest.setAttribute(
+			WebKeys.USER, TestPropsValues.getUser());
+
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(
 				_group, TestPropsValues.getUserId());
 
-		serviceContext.setRequest(
-			mockLiferayPortletRenderRequest.getHttpServletRequest());
+		serviceContext.setRequest(httpServletRequest);
 
 		ServiceContextThreadLocal.pushServiceContext(serviceContext);
 

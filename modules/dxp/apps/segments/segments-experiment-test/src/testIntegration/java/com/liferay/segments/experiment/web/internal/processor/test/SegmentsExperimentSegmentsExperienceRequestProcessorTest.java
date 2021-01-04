@@ -553,6 +553,8 @@ public class SegmentsExperimentSegmentsExperienceRequestProcessorTest {
 
 		mockHttpServletRequest.setAttribute(
 			WebKeys.THEME_DISPLAY, _getThemeDisplay());
+		mockHttpServletRequest.setAttribute(
+			WebKeys.USER, TestPropsValues.getUser());
 
 		return mockHttpServletRequest;
 	}
