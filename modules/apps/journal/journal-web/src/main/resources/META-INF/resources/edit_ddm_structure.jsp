@@ -141,15 +141,6 @@ if (ddmStructure != null) {
 					<liferay-ui:message arguments="<%= HtmlUtil.escape(msvcffn.getFieldName()) %>" key="invalid-characters-were-defined-for-field-name-x" translateArguments="<%= false %>" />
 				</liferay-ui:error>
 
-				<liferay-ui:error exception="<%= InvalidDDMStructureFieldNameException.class %>">
-
-					<%
-					InvalidDDMStructureFieldNameException iddmsfne = (InvalidDDMStructureFieldNameException)errorException;
-					%>
-
-					<liferay-ui:message arguments="<%= HtmlUtil.escape(iddmsfne.getFieldName()) %>" key="you-cannot-use-x-as-a-field-name" translateArguments="<%= false %>" />
-				</liferay-ui:error>
-
 				<liferay-ui:error exception="<%= LocaleException.class %>">
 
 					<%
