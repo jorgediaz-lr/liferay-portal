@@ -162,6 +162,17 @@ function Subscription({
 		setDisabledAttribute(perpetual);
 	});
 
+	function displayUTCDate(value) {
+		const match = JSON.stringify(value).match(/"(?<utcDate>\d+-\d+-\d+)T/);
+
+		if (match) {
+			return match.groups.utcDate;
+		}
+		else {
+			return value;
+		}
+	}
+
 	function handleEndDateChange(value) {
 		updateEndDate(key, value);
 	}
@@ -273,7 +284,7 @@ function Subscription({
 			>
 				<label htmlFor="startDate">
 					<DatePicker
-						defaultValue={startDate}
+						defaultValue={displayUTCDate(startDate)}
 						id="startDate"
 						inputName="startDate"
 						updateFn={handleStartDateChange}
@@ -289,7 +300,7 @@ function Subscription({
 			>
 				<label htmlFor="gracePeriodStartDate">
 					<DatePicker
-						defaultValue={originalEndDate}
+						defaultValue={displayUTCDate(originalEndDate)}
 						id="gracePeriodStartDate"
 						inputName="gracePeriodStartDate"
 						updateFn={handleGracePeriodStartDateChange}
@@ -322,7 +333,7 @@ function Subscription({
 				>
 					<label htmlFor="endDate">
 						<DatePicker
-							defaultValue={endDate}
+							defaultValue={displayUTCDate(endDate)}
 							id="endDate"
 							inputName="endDate"
 							updateFn={handleEndDateChange}
