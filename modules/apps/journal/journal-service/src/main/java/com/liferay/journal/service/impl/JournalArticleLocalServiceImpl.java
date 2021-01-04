@@ -14,6 +14,8 @@
 
 package com.liferay.journal.service.impl;
 
+import com.liferay.asset.display.page.constants.AssetDisplayPageConstants;
+import com.liferay.asset.display.page.service.AssetDisplayPageEntryLocalService;
 import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.model.AssetLink;
@@ -70,6 +72,8 @@ import com.liferay.journal.util.JournalDefaultTemplateProvider;
 import com.liferay.journal.util.JournalHelper;
 import com.liferay.journal.util.comparator.ArticleIDComparator;
 import com.liferay.journal.util.comparator.ArticleVersionComparator;
+import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
+import com.liferay.layout.page.template.service.LayoutPageTemplateEntryService;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.petra.xml.XMLUtil;
@@ -503,6 +507,9 @@ public class JournalArticleLocalServiceImpl
 			serviceContext.getAssetTagNames(),
 			serviceContext.getAssetLinkEntryIds(),
 			serviceContext.getAssetPriority());
+
+		_setDefaultAssetDisplayPage(
+			userId, groupId, resourcePrimKey, ddmStructureKey, serviceContext);
 
 		// Dynamic data mapping
 
@@ -9298,6 +9305,32 @@ public class JournalArticleLocalServiceImpl
 				article, folder.getFolderId(), fileEntry));
 	}
 
+	private void _setDefaultAssetDisplayPage(
+			long userId, long groupId, long resourcePrimKey,
+			String ddmStructureKey, ServiceContext serviceContext)
+		throws PortalException {
+
+		DDMStructure ddmStructure = ddmStructureLocalService.getStructure(
+			_portal.getSiteGroupId(groupId),
+			classNameLocalService.getClassNameId(JournalArticle.class),
+			ddmStructureKey, true);
+
+		LayoutPageTemplateEntry defaultAssetDisplayPage =
+			_layoutPageTemplateEntryService.fetchDefaultLayoutPageTemplateEntry(
+				serviceContext.getScopeGroupId(),
+				classNameLocalService.getClassNameId(JournalArticle.class),
+				ddmStructure.getStructureId());
+
+		if (defaultAssetDisplayPage != null) {
+			_assetDisplayPageEntryLocalService.addAssetDisplayPageEntry(
+				userId, groupId,
+				classNameLocalService.getClassNameId(JournalArticle.class),
+				resourcePrimKey,
+				defaultAssetDisplayPage.getLayoutPageTemplateEntryId(),
+				AssetDisplayPageConstants.TYPE_DEFAULT, serviceContext);
+		}
+	}
+
 	private List<JournalArticleLocalization> _updateArticleLocalizedFields(
 		long companyId, long articleId, Map<Locale, String> titleMap,
 		Map<Locale, String> descriptionMap) {
@@ -9348,6 +9381,10 @@ public class JournalArticleLocalServiceImpl
 		JournalArticleLocalServiceImpl.class);
 
 	@Reference
+	private AssetDisplayPageEntryLocalService
+		_assetDisplayPageEntryLocalService;
+
+	@Reference
 	private AttachmentContentUpdater _attachmentContentUpdater;
 
 	@Reference
@@ -9371,6 +9408,9 @@ public class JournalArticleLocalServiceImpl
 
 	@Reference
 	private JournalHelper _journalHelper;
+
+	@Reference
+	private LayoutPageTemplateEntryService _layoutPageTemplateEntryService;
 
 	@Reference
 	private Portal _portal;
