@@ -165,12 +165,7 @@ function Subscription({
 	function displayUTCDate(value) {
 		const match = JSON.stringify(value).match(/"(?<utcDate>\d+-\d+-\d+)T/);
 
-		if (match) {
-			return match.groups.utcDate;
-		}
-		else {
-			return value;
-		}
+		return (match && match.groups.utcDate) || value;
 	}
 
 	function handleEndDateChange(value) {
