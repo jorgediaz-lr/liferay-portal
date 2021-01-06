@@ -93,14 +93,16 @@ export class Subscription extends Record({
 const SubscriptionsContext = React.createContext();
 
 export function SubscriptionsProvider({initialSubscriptions = [], children}) {
-	const processedSubscriptions = initialSubscriptions.map(detail => {
+	const processedSubscriptions = initialSubscriptions.map(subscription => {
 		return [
-			detail.key ? detail.key : detail.productKey,
+			subscription.key ? subscription.key : subscription.productKey,
 			new Subscription({
-				...detail,
-				endDate: detail.endDate ? new Date(detail.endDate) : null,
-				originalEndDate: new Date(detail.originalEndDate),
-				startDate: new Date(detail.startDate)
+				...subscription,
+				endDate: subscription.endDate
+					? new Date(subscription.endDate)
+					: null,
+				originalEndDate: new Date(subscription.originalEndDate),
+				startDate: new Date(subscription.startDate)
 			})
 		];
 	});
