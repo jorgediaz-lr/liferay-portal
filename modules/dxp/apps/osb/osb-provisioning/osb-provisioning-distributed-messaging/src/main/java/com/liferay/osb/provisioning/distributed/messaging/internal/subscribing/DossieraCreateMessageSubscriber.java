@@ -454,6 +454,10 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 	@Override
 	protected void doParse(JSONObject jsonObject) throws Exception {
+		if (_log.isDebugEnabled()) {
+			_log.debug("Parsing message: " + jsonObject.toString());
+		}
+
 		if (!hasOpportunityProductFamily(jsonObject)) {
 			return;
 		}
