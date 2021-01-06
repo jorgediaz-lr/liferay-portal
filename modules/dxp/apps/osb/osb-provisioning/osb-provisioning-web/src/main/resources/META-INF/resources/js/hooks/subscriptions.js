@@ -22,6 +22,7 @@ function generateEndDate() {
 
 export class Subscription extends Record({
 	endDate: null,
+	index: 0,
 	key: null,
 	originalEndDate: generateEndDate(),
 	perpetual: false,
@@ -93,14 +94,30 @@ export class Subscription extends Record({
 const SubscriptionsContext = React.createContext();
 
 export function SubscriptionsProvider({initialSubscriptions = [], children}) {
+	const duplicateSubscriptions = {};
+
 	const processedSubscriptions = initialSubscriptions.map(subscription => {
+		const key = subscription.key
+			? subscription.key
+			: subscription.productKey;
+
+		if (duplicateSubscriptions[key] !== undefined) {
+			duplicateSubscriptions[key] = duplicateSubscriptions[key] + 1;
+		}
+		else {
+			duplicateSubscriptions[key] = 0;
+		}
+
+		const index = duplicateSubscriptions[key];
+
 		return [
-			subscription.key ? subscription.key : subscription.productKey,
+			`${key}-${index}`,
 			new Subscription({
 				...subscription,
 				endDate: subscription.endDate
 					? new Date(subscription.endDate)
 					: null,
+				index,
 				originalEndDate: new Date(subscription.originalEndDate),
 				startDate: new Date(subscription.startDate)
 			})

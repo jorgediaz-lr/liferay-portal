@@ -70,6 +70,7 @@ function SubscriptionActions({
 					entry['endDate'] = formatDateSecondFormat(entry.endDate);
 				}
 
+				delete entry['index'];
 				delete entry['productName'];
 				delete entry['salesforceOpportunityKey'];
 				delete entry['sizing'];

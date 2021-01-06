@@ -150,6 +150,27 @@ describe('EditSubscriptions', () => {
 			getByText('invalid-date');
 			getByText('please-make-sure-the-start-date-is-before-the-end-date');
 		});
+
+		it('allows the user to add a duplicate subscription', () => {
+			const {getAllByText} = renderAddSubscriptions({
+				details: [
+					{
+						originalEndDate: '2021-01-07',
+						productKey: 'KOR-11111',
+						productName: 'Product B',
+						startDate: '2020-01-07'
+					},
+					{
+						originalEndDate: '2021-01-07',
+						productKey: 'KOR-11111',
+						productName: 'Product B',
+						startDate: '2020-01-07'
+					}
+				]
+			});
+
+			expect(getAllByText('Product B').length).toBe(2);
+		});
 	});
 
 	describe('Edit Subscriptions', () => {

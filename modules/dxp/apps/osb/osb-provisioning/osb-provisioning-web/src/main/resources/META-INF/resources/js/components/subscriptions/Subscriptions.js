@@ -89,14 +89,12 @@ function Subscriptions({
 				{subscriptions.toList().map(subscription => (
 					<Subscription
 						accountName={accountName}
-						disableDelete={
-							subscriptions.toList().toArray().length === 1
-						}
+						disableDelete={subscriptions.size === 1}
 						instanceSizes={instanceSizes}
 						key={
 							subscriptionsType === EDIT_SUBSCRIPTIONS
-								? subscription.key
-								: subscription.productKey
+								? `${subscription.key}-${subscription.index}`
+								: `${subscription.productKey}-${subscription.index}`
 						}
 						statusOptions={statusOptions}
 						subscription={subscription}
@@ -141,6 +139,7 @@ function Subscription({
 
 	const {
 		endDate,
+		index,
 		originalEndDate,
 		perpetual,
 		productName,
@@ -153,8 +152,8 @@ function Subscription({
 
 	const key =
 		subscriptionsType === EDIT_SUBSCRIPTIONS
-			? subscription.key
-			: subscription.productKey;
+			? `${subscription.key}-${index}`
+			: `${subscription.productKey}-${index}`;
 
 	// Source formatter locks @clayui/date-picker at version 3.0.7, which does not provide an API for disabling date picker while later versions do.
 
