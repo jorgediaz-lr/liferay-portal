@@ -16,7 +16,6 @@ package com.liferay.osb.provisioning.web.internal.display.context;
 
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
-import com.liferay.osb.provisioning.model.ProductBundle;
 import com.liferay.osb.provisioning.service.ProductBundleLocalService;
 import com.liferay.osb.provisioning.web.internal.dao.search.AssignProductsRowChecker;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
@@ -64,11 +63,10 @@ public class AssignProductPurchaseProductsDisplayContext {
 		_currentURLObj = PortletURLUtil.getCurrent(
 			_renderRequest, _renderResponse);
 
-		_accountKey = ParamUtil.getString(renderRequest, "accountKey");
-
 		_themeDisplay = (ThemeDisplay)_httpServletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
+		_accountKey = ParamUtil.getString(renderRequest, "accountKey");
 		_productBundleIds = ParamUtil.getLongValues(
 			renderRequest, "productBundleIds");
 		_productKeys = ParamUtil.getStringValues(renderRequest, "productKeys");
@@ -115,18 +113,14 @@ public class AssignProductPurchaseProductsDisplayContext {
 			(searchContainer.getCur() - 1) * searchContainer.getDelta();
 
 		if ((hits.getLength() > 0) && (hits.getLength() > previousPageCount)) {
-			List<ProductBundle> productBundleResults = new ArrayList<>();
-
 			for (Document document : hits.getDocs()) {
 				long productBundleId = GetterUtil.getLong(
 					document.get(Field.ENTRY_CLASS_PK));
 
-				productBundleResults.add(
+				results.add(
 					_productBundleLocalService.getProductBundle(
 						productBundleId));
 			}
-
-			results.addAll(productBundleResults);
 
 			if (results.size() < searchContainer.getDelta()) {
 				List<Product> products = _productWebService.getProducts(
