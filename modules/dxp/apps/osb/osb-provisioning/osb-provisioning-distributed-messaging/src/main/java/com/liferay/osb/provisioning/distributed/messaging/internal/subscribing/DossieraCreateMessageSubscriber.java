@@ -519,14 +519,14 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 		PostalAddress postalAddress = parseAddress(jsonObject);
 
-		Account account = null;
-
-		String accountKey = getAccountKey(jsonObject);
-
 		Account.Language language = getLanguage(
 			jsonObject, postalAddress.getAddressCountry());
 
 		String languageId = _getLanguageId(language);
+
+		Account account = null;
+
+		String accountKey = getAccountKey(jsonObject);
 
 		if (Validator.isNotNull(accountKey)) {
 			account = updateAccount(
