@@ -591,8 +591,6 @@ definition {
 
 		Button.clickPublish();
 
-		Pause(locator1 = "30000");
-
 		BlogsNavigator.gotoEntryCP(entryTitle = "Blogs Entry Title");
 
 		BlogsEntry.viewEntry(
@@ -600,6 +598,10 @@ definition {
 			entrySubtitle = "Blogs Entry Subtitle",
 			entryTitle = "Blogs Entry Title",
 			uploadFileName = "Document_1");
+
+		BlogsNavigator.gotoBrowseImage();
+
+		Refresh();
 
 		BlogsNavigator.gotoBrowseImage();
 
