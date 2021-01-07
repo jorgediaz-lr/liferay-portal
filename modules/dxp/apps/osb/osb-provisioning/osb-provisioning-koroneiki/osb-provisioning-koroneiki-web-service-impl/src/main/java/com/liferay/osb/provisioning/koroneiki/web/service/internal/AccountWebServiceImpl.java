@@ -23,6 +23,7 @@ import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.AccountSerDes;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.internal.configuration.KoroneikiConfiguration;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
+import com.liferay.portal.kernel.exception.NoSuchContactException;
 import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.ArrayList;
@@ -57,9 +58,19 @@ public class AccountWebServiceImpl implements AccountWebService {
 			String contactEmailAddress, String[] contactRoleKeys)
 		throws Exception {
 
-		_accountResource.putAccountContactByEmailAddresContactEmailAddressRole(
-			agentName, agentUID, accountKey, contactEmailAddress,
-			contactRoleKeys);
+		HttpInvoker.HttpResponse httpResponse =
+			_accountResource.
+				putAccountContactByEmailAddresContactEmailAddressRoleHttpResponse(
+					agentName, agentUID, accountKey, contactEmailAddress,
+					contactRoleKeys);
+
+		if ((httpResponse.getStatusCode() ==
+				HttpServletResponse.SC_BAD_REQUEST) ||
+			(httpResponse.getStatusCode() ==
+				HttpServletResponse.SC_NOT_FOUND)) {
+
+			throw new NoSuchContactException();
+		}
 	}
 
 	public void assignTeamRoles(

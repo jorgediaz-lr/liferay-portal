@@ -22,6 +22,7 @@ import com.liferay.osb.provisioning.koroneiki.constants.ContactRoleConstants;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ContactRoleWebService;
 import com.liferay.osb.provisioning.web.internal.util.ZendeskValidator;
+import com.liferay.portal.kernel.exception.NoSuchContactException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
@@ -123,7 +124,9 @@ public class AssignAccountContactRolesMVCActionCommand
 			}
 		}
 		catch (Exception exception) {
-			if (exception instanceof ContactRequiredException) {
+			if (exception instanceof ContactRequiredException ||
+				exception instanceof NoSuchContactException) {
+
 				SessionErrors.add(
 					actionRequest, exception.getClass(), exception);
 
