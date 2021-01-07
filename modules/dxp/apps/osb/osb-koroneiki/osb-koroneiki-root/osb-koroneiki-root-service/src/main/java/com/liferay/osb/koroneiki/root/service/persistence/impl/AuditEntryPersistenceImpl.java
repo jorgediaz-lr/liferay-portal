@@ -2212,7 +2212,8 @@ public class AuditEntryPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_C",
 			new String[] {Long.class.getName(), Long.class.getName()},
 			AuditEntryModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			AuditEntryModelImpl.CLASSPK_COLUMN_BITMASK);
+			AuditEntryModelImpl.CLASSPK_COLUMN_BITMASK |
+			AuditEntryModelImpl.CREATEDATE_COLUMN_BITMASK);
 
 		_finderPathCountByC_C = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
@@ -2239,7 +2240,8 @@ public class AuditEntryPersistenceImpl
 			AuditEntryModelImpl.CLASSNAMEID_COLUMN_BITMASK |
 			AuditEntryModelImpl.CLASSPK_COLUMN_BITMASK |
 			AuditEntryModelImpl.FIELDCLASSNAMEID_COLUMN_BITMASK |
-			AuditEntryModelImpl.FIELDCLASSPK_COLUMN_BITMASK);
+			AuditEntryModelImpl.FIELDCLASSPK_COLUMN_BITMASK |
+			AuditEntryModelImpl.CREATEDATE_COLUMN_BITMASK);
 
 		_finderPathCountByC_C_FC_FC = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
