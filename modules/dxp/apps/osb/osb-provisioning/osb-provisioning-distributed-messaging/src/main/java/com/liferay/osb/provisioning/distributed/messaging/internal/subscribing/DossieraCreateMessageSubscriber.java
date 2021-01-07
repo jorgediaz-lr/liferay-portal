@@ -192,9 +192,9 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 	}
 
 	protected Account createAccount(
-			PostalAddress postalAddress, Contact[] contacts,
-			ExternalLink[] externalLinks, ProductPurchase[] productPurchases,
-			JSONObject jsonObject)
+			Contact[] contacts, ExternalLink[] externalLinks,
+			Account.Language language, PostalAddress postalAddress,
+			ProductPurchase[] productPurchases, JSONObject jsonObject)
 		throws Exception {
 
 		Account account = new Account();
@@ -251,8 +251,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 		account.setRegion(region);
 
-		account.setLanguage(
-			getLanguage(jsonObject, postalAddress.getAddressCountry()));
+		account.setLanguage(language);
 
 		String productFamily = jsonObject.getString(
 			"_salesforceOpportunityProductFamily");
@@ -524,6 +523,11 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 		String accountKey = getAccountKey(jsonObject);
 
+		Account.Language language = getLanguage(
+			jsonObject, postalAddress.getAddressCountry());
+
+		String languageId = _getLanguageId(language);
+
 		if (Validator.isNotNull(accountKey)) {
 			account = updateAccount(
 				accountKey, activeContacts, productPurchases, jsonObject);
@@ -532,12 +536,12 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			ExternalLink[] externalLinks = parseExternalLinks(jsonObject);
 
 			account = createAccount(
-				postalAddress, activeContacts.toArray(new Contact[0]),
-				externalLinks, productPurchases.toArray(new ProductPurchase[0]),
+				activeContacts.toArray(new Contact[0]), externalLinks, language,
+				postalAddress, productPurchases.toArray(new ProductPurchase[0]),
 				jsonObject);
 
 			if (analyticsCloud) {
-				sendAnalyticsCloudWelcomeEmail(activeContacts);
+				sendAnalyticsCloudWelcomeEmail(activeContacts, languageId);
 			}
 		}
 
@@ -560,7 +564,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		}
 
 		for (Contact contact : missingContacts) {
-			sendUserCreationEmail(contact, account, analyticsCloud);
+			sendUserCreationEmail(contact, account, analyticsCloud, languageId);
 		}
 	}
 
@@ -1448,16 +1452,16 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		return productPurchases;
 	}
 
-	protected void sendAnalyticsCloudWelcomeEmail(List<Contact> contacts)
+	protected void sendAnalyticsCloudWelcomeEmail(
+			List<Contact> contacts, String languageId)
 		throws PortalException {
 
 		for (Contact contact : contacts) {
 			String body = _getEmailTemplate(
-				"email_analytics_cloud_welcome_body_" +
-					contact.getLanguageId() + ".tmpl",
+				"email_analytics_cloud_welcome_body_" + languageId + ".tmpl",
 				"email_analytics_cloud_welcome_body.tmpl");
 
-			Locale locale = LocaleUtil.fromLanguageId(contact.getLanguageId());
+			Locale locale = LocaleUtil.fromLanguageId(languageId);
 
 			ResourceBundle resourceBundle = ResourceBundleUtil.getBundle(
 				"content.Language", locale, getClass());
@@ -1485,17 +1489,17 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 	}
 
 	protected void sendUserCreationEmail(
-		Contact contact, Account account, boolean analyticsCloud) {
+		Contact contact, Account account, boolean analyticsCloud,
+		String languageId) {
 
 		String body = _getEmailTemplate(
-			"email_provisioning_create_account_body_" +
-				contact.getLanguageId() + ".tmpl",
+			"email_provisioning_create_account_body_" + languageId + ".tmpl",
 			"email_provisioning_create_account_body.tmpl");
 
 		String provisioningEmailAddress = getProvisioningEmailAddress(
 			account.getRegionAsString());
 
-		Locale locale = LocaleUtil.fromLanguageId(contact.getLanguageId());
+		Locale locale = LocaleUtil.fromLanguageId(languageId);
 
 		ResourceBundle resourceBundle = ResourceBundleUtil.getBundle(
 			"content.Language", locale, getClass());
@@ -1656,6 +1660,25 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 			i++;
 		}
+	}
+
+	private String _getLanguageId(Account.Language accountLanguage) {
+		String language = accountLanguage.toString();
+
+		if (language.equals(Account.Language.SPANISH.toString())) {
+			return "es_ES";
+		}
+		else if (language.equals(Account.Language.JAPANESE.toString())) {
+			return "ja_JP";
+		}
+		else if (language.equals(Account.Language.PORTUGUESE.toString())) {
+			return "pt_BR";
+		}
+		else if (language.equals(Account.Language.CHINESE.toString())) {
+			return "zh_CN";
+		}
+
+		return StringPool.BLANK;
 	}
 
 	private Product _getProduct(String productName) throws Exception {
