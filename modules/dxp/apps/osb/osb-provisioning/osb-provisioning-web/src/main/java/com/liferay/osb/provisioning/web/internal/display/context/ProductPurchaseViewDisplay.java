@@ -50,18 +50,10 @@ public class ProductPurchaseViewDisplay {
 			"MMM dd, yyyy");
 		_product = productPurchaseView.getProduct();
 
-		ProductConsumption[] productConsumptions =
-			productPurchaseView.getProductConsumptions();
-
-		if (productConsumptions != null) {
-			_provisionedCount = productConsumptions.length;
-		}
-		else {
-			_provisionedCount = 0;
-		}
-
 		Date now = new Date();
 
+		_initProductConsumptions(
+			productPurchaseView.getProductConsumptions(), now);
 		_initProductPurchases(productPurchaseView.getProductPurchases(), now);
 
 		if (StringUtil.equalsIgnoreCase(_status, "approved")) {
@@ -77,7 +69,7 @@ public class ProductPurchaseViewDisplay {
 				_state = "future";
 			}
 		}
-		else if (_purchasedCount == 0) {
+		else if (_totalPurchasedCount == 0) {
 			_state = StringPool.BLANK;
 		}
 		else {
@@ -87,6 +79,18 @@ public class ProductPurchaseViewDisplay {
 
 	public String getAccountKey() {
 		return _account.getKey();
+	}
+
+	public String getApprovedPurchasedCount() {
+		return String.valueOf(_approvedPurchasedCount);
+	}
+
+	public String getCurrentProvisionedCount() {
+		return String.valueOf(_currentProvisionedCount);
+	}
+
+	public String getCurrentPurchasedCount() {
+		return String.valueOf(_currentPurchasedCount);
 	}
 
 	public String getGracePeriod() {
@@ -109,6 +113,10 @@ public class ProductPurchaseViewDisplay {
 		return sb.toString();
 	}
 
+	public String getLatestPurchasedCount() {
+		return String.valueOf(_latestPurchasedCount);
+	}
+
 	public String getName() {
 		return _product.getName();
 	}
@@ -127,10 +135,6 @@ public class ProductPurchaseViewDisplay {
 
 	public String getProvisionedCount() {
 		return String.valueOf(_provisionedCount);
-	}
-
-	public String getPurchasedCount() {
-		return String.valueOf(_purchasedCount);
 	}
 
 	public String getSizing() {
@@ -220,10 +224,31 @@ public class ProductPurchaseViewDisplay {
 		return false;
 	}
 
+	private void _initProductConsumptions(
+		ProductConsumption[] productConsumptions, Date now) {
+
+		if (productConsumptions != null) {
+			_provisionedCount = productConsumptions.length;
+
+			for (ProductConsumption productConsumption : productConsumptions) {
+				if ((productConsumption.getEndDate() == null) ||
+					now.before(productConsumption.getEndDate())) {
+
+					_currentProvisionedCount += 1;
+				}
+			}
+		}
+		else {
+			_provisionedCount = 0;
+		}
+	}
+
 	private void _initProductPurchases(
 		ProductPurchase[] productPurchases, Date now) {
 
 		_inSupportGap = true;
+
+		Date latestEndDate = null;
 
 		for (ProductPurchase productPurchase : productPurchases) {
 			Date startDate = productPurchase.getStartDate();
@@ -279,7 +304,7 @@ public class ProductPurchaseViewDisplay {
 
 			Map<String, String> properties = productPurchase.getProperties();
 
-			if (properties != null) {
+			if (approved && (properties != null)) {
 				int sizing = GetterUtil.getInteger(properties.get("sizing"));
 
 				if ((sizing > _sizing) &&
@@ -290,7 +315,26 @@ public class ProductPurchaseViewDisplay {
 				}
 			}
 
-			_purchasedCount += productPurchase.getQuantity();
+			_totalPurchasedCount += productPurchase.getQuantity();
+
+			if (approved) {
+				_approvedPurchasedCount += productPurchase.getQuantity();
+
+				if (((startDate == null) || startDate.before(now)) &&
+					((endDate == null) || endDate.after(now))) {
+
+					_currentPurchasedCount += productPurchase.getQuantity();
+				}
+			}
+
+			if ((latestEndDate == null) || endDate.after(latestEndDate)) {
+				latestEndDate = endDate;
+
+				_latestPurchasedCount = productPurchase.getQuantity();
+			}
+			else if (endDate.equals(latestEndDate)) {
+				_latestPurchasedCount += productPurchase.getQuantity();
+			}
 
 			if (!StringUtil.equalsIgnoreCase(_status, "approved")) {
 				_status = productPurchase.getStatusAsString();
@@ -303,19 +347,23 @@ public class ProductPurchaseViewDisplay {
 	}
 
 	private final Account _account;
+	private int _approvedPurchasedCount;
+	private int _currentProvisionedCount;
+	private int _currentPurchasedCount;
 	private final Format _dateFormat;
 	private Date _endDate;
 	private final HttpServletRequest _httpServletRequest;
 	private boolean _inSupportGap;
+	private int _latestPurchasedCount;
 	private Date _nextTermStartDate;
 	private Date _originalEndDate;
 	private boolean _perpetual;
 	private final Product _product;
-	private final int _provisionedCount;
-	private int _purchasedCount;
+	private int _provisionedCount;
 	private int _sizing;
 	private Date _startDate;
 	private final String _state;
 	private String _status;
+	private int _totalPurchasedCount;
 
 }

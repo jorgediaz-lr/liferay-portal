@@ -20,6 +20,8 @@
 ViewAccountDisplayContext viewAccountDisplayContext = ProvisioningWebComponentProvider.getViewAccountDisplayContext(renderRequest, renderResponse, request);
 
 PortletURL portletURL = viewAccountDisplayContext.getPortletURL();
+
+String tabs2 = ParamUtil.getString(request, "tabs2");
 %>
 
 <div class="details-table table-striped">
@@ -88,15 +90,29 @@ PortletURL portletURL = viewAccountDisplayContext.getPortletURL();
 			<liferay-ui:search-container-column-text
 				cssClass="semi-bold"
 				href="<%= licenseManagerHREF %>"
-				name="provisioned"
-				value="<%= productPurchaseViewDisplay.getProvisionedCount() %>"
+				name='<%= tabs2.equals("all") ? "provisioned" : "current-provisioned" %>'
+				value='<%= tabs2.equals("all") ? productPurchaseViewDisplay.getProvisionedCount() : productPurchaseViewDisplay.getCurrentProvisionedCount() %>'
 			/>
+
+			<%
+			String columnName = "current-purchased";
+			String columnCount = productPurchaseViewDisplay.getCurrentPurchasedCount();
+
+			if (tabs2.equals("inactive")) {
+				columnName = "latest-purchased";
+				columnCount = productPurchaseViewDisplay.getLatestPurchasedCount();
+			}
+			else if (tabs2.equals("all")) {
+				columnName = "approved-purchased";
+				columnCount = productPurchaseViewDisplay.getApprovedPurchasedCount();
+			}
+			%>
 
 			<liferay-ui:search-container-column-text
 				cssClass="semi-bold"
 				href="<%= rowURL %>"
-				name="purchased"
-				value="<%= productPurchaseViewDisplay.getPurchasedCount() %>"
+				name="<%= columnName %>"
+				value="<%= columnCount %>"
 			/>
 
 			<liferay-ui:search-container-column-text
