@@ -226,8 +226,7 @@ public class EditProductPurchasesDisplayContext
 	}
 
 	private String _getDate(Date date, String type) {
-		Calendar calendar = CalendarFactoryUtil.getCalendar(
-			themeDisplay.getTimeZone(), themeDisplay.getLocale());
+		Calendar calendar = CalendarFactoryUtil.getCalendar();
 
 		if (type.equals("endDate")) {
 			calendar.add(Calendar.YEAR, 1);

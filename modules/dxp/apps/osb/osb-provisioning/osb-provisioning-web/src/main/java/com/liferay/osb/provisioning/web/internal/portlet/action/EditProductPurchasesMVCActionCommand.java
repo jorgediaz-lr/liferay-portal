@@ -138,8 +138,7 @@ public class EditProductPurchasesMVCActionCommand extends BaseMVCActionCommand {
 
 			if (Validator.isNull(productPurchaseKey)) {
 				if (productPurchase.getOriginalEndDate() != null) {
-					Calendar calendar = CalendarFactoryUtil.getCalendar(
-						themeDisplay.getTimeZone(), themeDisplay.getLocale());
+					Calendar calendar = CalendarFactoryUtil.getCalendar();
 
 					calendar.setTime(productPurchase.getOriginalEndDate());
 
