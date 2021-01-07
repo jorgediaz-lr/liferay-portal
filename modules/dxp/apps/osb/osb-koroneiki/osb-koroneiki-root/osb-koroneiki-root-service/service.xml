@@ -34,6 +34,12 @@
 		<column name="newValue" type="String" />
 		<column name="description" type="String" />
 
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="createDate" />
+		</order>
+
 		<!-- Finder methods -->
 
 		<finder name="AuditEntryKey" return-type="AuditEntry" unique="true">
