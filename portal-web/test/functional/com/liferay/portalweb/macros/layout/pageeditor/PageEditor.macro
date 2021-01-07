@@ -323,7 +323,19 @@ definition {
 			locator1 = "MenuItem#ANY_MENU_ITEM",
 			value1 = "Delete");
 
-		Click(locator1 = "Button#DELETE_FRAGMENT_COMMENT");
+		if (IsElementPresent(locator1 = "Button#DELETE_FRAGMENT_COMMENT")) {
+			Click(locator1 = "Button#DELETE_FRAGMENT_COMMENT");
+		}
+		else {
+			Click(locator1 = "PageEditor#FRAGMENT_SIDEBAR_ELLIPSIS");
+
+			AssertClickNoError(
+				key_menuItem = "Delete",
+				locator1 = "MenuItem#ANY_MENU_ITEM",
+				value1 = "Delete");
+
+			Click(locator1 = "Button#DELETE_FRAGMENT_COMMENT");
+		}
 
 		AssertTextNotPresent(value1 = "${fragmentComment}");
 	}
