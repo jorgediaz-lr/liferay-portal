@@ -15,6 +15,8 @@
 package com.liferay.journal.service.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.asset.display.page.model.AssetDisplayPageEntry;
+import com.liferay.asset.display.page.service.AssetDisplayPageEntryLocalService;
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.service.AssetEntryLocalService;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
@@ -32,6 +34,9 @@ import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalFolderConstants;
 import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.journal.test.util.JournalTestUtil;
+import com.liferay.layout.page.template.constants.LayoutPageTemplateEntryTypeConstants;
+import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
+import com.liferay.layout.page.template.service.LayoutPageTemplateEntryLocalService;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.Group;
@@ -45,6 +50,7 @@ import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -133,6 +139,46 @@ public class JournalArticleLocalServiceTest {
 				oldResourcePermission.isViewActionId(),
 				newResourcePermission.isViewActionId());
 		}
+	}
+
+	@Test
+	public void testDefaultAssetDisplayPageSetForNewJournalArticles()
+		throws Exception {
+
+		DDMStructure ddmStructure = DDMStructureTestUtil.addStructure(
+			_group.getGroupId(), JournalArticle.class.getName());
+
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(_group.getGroupId());
+
+		LayoutPageTemplateEntry layoutPageTemplateEntry =
+			_layoutPageTemplateEntryLocalService.addLayoutPageTemplateEntry(
+				_group.getCreatorUserId(), _group.getGroupId(), 0,
+				PortalUtil.getClassNameId(JournalArticle.class.getName()),
+				ddmStructure.getStructureId(), RandomTestUtil.randomString(),
+				LayoutPageTemplateEntryTypeConstants.TYPE_DISPLAY_PAGE, true, 0,
+				0, 0, 0, serviceContext);
+
+		JournalArticle journalArticle = JournalTestUtil.addArticle(
+			_group.getGroupId(),
+			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID, 0,
+			StringPool.BLANK, true, RandomTestUtil.randomLocaleStringMap(),
+			RandomTestUtil.randomLocaleStringMap(),
+			RandomTestUtil.randomLocaleStringMap(), ddmStructure, null,
+			LocaleUtil.getSiteDefault(), null, null, true, true,
+			serviceContext);
+
+		AssetDisplayPageEntry assetDisplayPageEntry =
+			_assetDisplayPageEntryLocalService.fetchAssetDisplayPageEntry(
+				_group.getGroupId(),
+				PortalUtil.getClassNameId(JournalArticle.class.getName()),
+				journalArticle.getResourcePrimKey());
+
+		Assert.assertNotNull(assetDisplayPageEntry);
+
+		Assert.assertEquals(
+			layoutPageTemplateEntry.getLayoutPageTemplateEntryId(),
+			assetDisplayPageEntry.getLayoutPageTemplateEntryId());
 	}
 
 	@Test
@@ -374,6 +420,10 @@ public class JournalArticleLocalServiceTest {
 	}
 
 	@Inject
+	private AssetDisplayPageEntryLocalService
+		_assetDisplayPageEntryLocalService;
+
+	@Inject
 	private AssetEntryLocalService _assetEntryLocalService;
 
 	@Inject
@@ -390,6 +440,10 @@ public class JournalArticleLocalServiceTest {
 
 	@Inject
 	private JournalArticleLocalService _journalArticleLocalService;
+
+	@Inject
+	private LayoutPageTemplateEntryLocalService
+		_layoutPageTemplateEntryLocalService;
 
 	@Inject
 	private ResourcePermissionLocalService _resourcePermissionLocalService;
