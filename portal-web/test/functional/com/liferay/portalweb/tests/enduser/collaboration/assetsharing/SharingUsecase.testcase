@@ -87,11 +87,7 @@ definition {
 			key_text = "Share",
 			locator1 = "Button#ANY");
 
-		BlogsNavigator.openBlogsAdmin(siteURLKey = "guest");
-
-		LexiconEntry.changeDisplayStyle(displayStyle = "list");
-
-		Blogs.addEntry(
+		JSONBlog.addEntry(
 			entryContent = "Blogs Entry Content",
 			entryTitle = "Blogs with sharing disabled");
 
@@ -162,11 +158,7 @@ definition {
 			key_text = "Share",
 			locator1 = "Button#ANY");
 
-		BlogsNavigator.openBlogsAdmin(siteURLKey = "guest");
-
-		LexiconEntry.changeDisplayStyle(displayStyle = "list");
-
-		Blogs.addEntry(
+		JSONBlog.addEntry(
 			entryContent = "Blogs Entry Content",
 			entryTitle = "Blogs with sharing disabled");
 
@@ -215,9 +207,7 @@ definition {
 			userEmailAddress = "userea@liferay.com",
 			userName = "userfn userln");
 
-		BlogsNavigator.openBlogsAdmin(siteURLKey = "guest");
-
-		Blogs.addEntry(
+		JSONBlog.addEntry(
 			entryContent = "Blogs Entry Content",
 			entryTitle = "Blogs Entry Title");
 
@@ -345,9 +335,7 @@ definition {
 			userEmailAddress = "userea@liferay.com",
 			userName = "userfn userln");
 
-		BlogsNavigator.openBlogsAdmin(siteURLKey = "guest");
-
-		Blogs.addEntry(
+		JSONBlog.addEntry(
 			entryContent = "Blogs Entry Content",
 			entryTitle = "Blogs Entry Title");
 

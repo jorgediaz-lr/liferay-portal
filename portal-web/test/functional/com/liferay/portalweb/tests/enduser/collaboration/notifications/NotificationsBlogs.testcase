@@ -294,7 +294,7 @@ definition {
 
 		Blogs.subscribePG();
 
-		Blogs.addEntry(
+		JSONBlog.addEntry(
 			entryContent = "Blogs Entry Content",
 			entryTitle = "Blogs Entry Title");
 
@@ -334,11 +334,11 @@ definition {
 	@description = "This test covers LPS-103502. It ensures that notifications are displayed correctly after being mentioned."
 	@priority = "3"
 	test ViewWebsiteNotificationdForMention {
-		Navigator.gotoPage(pageName = "Blogs Page");
-
-		Blogs.addEntry(
+		JSONBlog.addEntry(
 			entryContent = "Blogs Entry Content",
 			entryTitle = "Blogs Entry Title");
+
+		Navigator.gotoPage(pageName = "Blogs Page");
 
 		BlogsNavigator.gotoEntryPG(
 			entryContent = "Blogs Entry Content",
@@ -455,11 +455,11 @@ definition {
 
 	@priority = "4"
 	test ViewWebsiteNotificationForNewCommentViaBlogs {
-		Navigator.gotoPage(pageName = "Blogs Page");
-
-		Blogs.addEntry(
+		JSONBlog.addEntry(
 			entryContent = "Blogs Entry Content",
 			entryTitle = "Blogs Entry Title");
+
+		Navigator.gotoPage(pageName = "Blogs Page");
 
 		BlogsNavigator.gotoEntryPG(
 			entryContent = "Blogs Entry Content",
