@@ -35,7 +35,8 @@ function HiddenFields({fields}) {
 
 HiddenForm.propTypes = {
 	fields: PropTypes.object,
-	formAction: PropTypes.string
+	formAction: PropTypes.string,
+	formName: PropTypes.string
 };
 
 export default HiddenForm;

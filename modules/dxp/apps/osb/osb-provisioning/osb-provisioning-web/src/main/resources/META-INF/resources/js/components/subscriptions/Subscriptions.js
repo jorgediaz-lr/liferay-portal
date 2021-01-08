@@ -93,8 +93,8 @@ function Subscriptions({
 						instanceSizes={instanceSizes}
 						key={
 							subscriptionsType === EDIT_SUBSCRIPTIONS
-								? `${subscription.key}-${subscription.index}`
-								: `${subscription.productKey}-${subscription.index}`
+								? `${subscription.key}_${subscription.index}`
+								: `${subscription.productKey}_${subscription.index}`
 						}
 						statusOptions={statusOptions}
 						subscription={subscription}
@@ -152,8 +152,8 @@ function Subscription({
 
 	const key =
 		subscriptionsType === EDIT_SUBSCRIPTIONS
-			? `${subscription.key}-${index}`
-			: `${subscription.productKey}-${index}`;
+			? `${subscription.key}_${index}`
+			: `${subscription.productKey}_${index}`;
 
 	// Source formatter locks @clayui/date-picker at version 3.0.7, which does not provide an API for disabling date picker while later versions do.
 

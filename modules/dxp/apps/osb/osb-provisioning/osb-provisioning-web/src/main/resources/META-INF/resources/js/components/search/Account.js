@@ -141,13 +141,13 @@ function ExternalSelect({externalData}) {
 
 	function handleClick() {
 		const assignInputValueFromDialog = fieldData => {
-			const {key, name} = fieldData;
+			const {key, name} = JSON.parse(fieldData);
 
 			const keyInput = document.querySelector(
 				`input[name = "${formFieldKey}"]`
 			);
 
-			if (keyInput) {
+			if (key && keyInput) {
 				keyInput.value = key;
 			}
 
@@ -158,7 +158,7 @@ function ExternalSelect({externalData}) {
 				`input[name = "${formFieldName}"]`
 			);
 
-			if (displayInput && nameInput) {
+			if (displayInput && name && nameInput) {
 				displayInput.value = name;
 				nameInput.value = name;
 			}

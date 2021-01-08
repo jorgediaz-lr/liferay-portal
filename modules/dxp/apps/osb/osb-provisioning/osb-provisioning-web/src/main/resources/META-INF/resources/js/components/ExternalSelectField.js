@@ -32,18 +32,22 @@ function ExternalSelectField({
 
 	return (
 		<div className="external-select-field">
-			<label className="form-control-label" htmlFor={id}>
-				<input
-					className={`form-control ${
-						inputSize === FIELD_SIZE_SMALL ? 'form-control-sm' : ''
-					}`}
-					disabled
-					id={id}
-					type="text"
-					value={value}
-					{...otherProps}
-				/>
-			</label>
+			{!!id && (
+				<label className="form-control-label" htmlFor={id}>
+					<input
+						className={`form-control ${
+							inputSize === FIELD_SIZE_SMALL
+								? 'form-control-sm'
+								: ''
+						}`}
+						disabled
+						id={id}
+						type="text"
+						value={value}
+						{...otherProps}
+					/>
+				</label>
+			)}
 
 			<button
 				className="btn btn-secondary btn-sm"
@@ -79,9 +83,9 @@ function ExternalSelectField({
 ExternalSelectField.propTypes = {
 	clickFn: PropTypes.func.isRequired,
 	deleteFn: PropTypes.func,
-	id: PropTypes.string.isRequired,
+	id: PropTypes.string,
 	inputSize: PropTypes.oneOf([FIELD_SIZE_DEFAULT, FIELD_SIZE_SMALL]),
-	value: PropTypes.string.isRequired
+	value: PropTypes.string
 };
 
 export default ExternalSelectField;

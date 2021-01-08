@@ -25,11 +25,7 @@ export function itemSelectorDialogSelection({title, url}, callback) {
 						const newVal = event.newVal;
 
 						if (newVal) {
-							const selectedItems = JSON.parse(newVal);
-
-							if (selectedItems) {
-								callback(selectedItems);
-							}
+							callback(newVal);
 						}
 					}
 				},

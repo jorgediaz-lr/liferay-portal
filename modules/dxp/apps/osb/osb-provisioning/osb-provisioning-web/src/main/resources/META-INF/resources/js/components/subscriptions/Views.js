@@ -11,10 +11,13 @@
 
 import ClayAlert from '@clayui/alert';
 import PropTypes from 'prop-types';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
 import {useSubscriptions} from '../../hooks/subscriptions';
 import {ADD_SUBSCRIPTIONS, EDIT_SUBSCRIPTIONS} from '../../utilities/constants';
+import {itemSelectorDialogSelection} from '../../utilities/itemSelectorDialogHelper';
+import ExternalSelectField from '../ExternalSelectField';
+import HiddenForm from '../HiddenForm';
 import SubscriptionActions from './SubscriptionActions';
 import Subscriptions from './Subscriptions';
 
@@ -22,19 +25,37 @@ export function AddView({
 	accountName,
 	editProductPurchasesURL,
 	redirect,
+	selectProductsURL,
 	sizing
 }) {
 	const [displayAlert, setDisplayAlert] = useState(false);
 
 	useSetDisplayAlert(setDisplayAlert);
 
+	const [subscriptions] = useSubscriptions();
+
+	const getInitialProductKeys = () => {
+		const productsKeys = subscriptions.keySeq().toJS();
+
+		return productsKeys
+			.map(product => {
+				const [key] = product.split('_');
+
+				return key;
+			})
+			.join(',');
+	};
+
 	return (
 		<div className="subscriptions-container">
 			<div className="subscriptions-header">
 				<b>{Liferay.Language.get('configure-subscriptions')}</b>
-				<button className="btn btn-secondary" type="button">
-					{Liferay.Language.get('select')}
-				</button>
+
+				<ProductSelection
+					formAction={editProductPurchasesURL}
+					initialProductKeys={getInitialProductKeys()}
+					selectionURL={selectProductsURL}
+				/>
 			</div>
 
 			{displayAlert && (
@@ -175,9 +196,69 @@ function useSetDisplayAlert(callback) {
 
 		if (validateDateFields()) {
 			callback(false);
-		}
-		else {
+		} else {
 			callback(true);
 		}
 	}, [callback, subscriptions]);
+}
+
+function ProductSelection({formAction, initialProductKeys, selectionURL}) {
+	const formRef = useRef();
+
+	const [productBundleIds, setProductBundleIds] = useState('');
+	const [productKeys, setProductKeys] = useState(initialProductKeys);
+
+	useEffect(() => {
+		if (
+			formRef.current &&
+			(productKeys !== initialProductKeys || productBundleIds !== '')
+		) {
+			formRef.current.submit();
+		}
+	}, [initialProductKeys, productBundleIds, productKeys]);
+
+	function handleSelectMoreSubscriptions() {
+		const addselectionFromDialog = selectionData => {
+			const selectionKeys = selectionData.map(data => {
+				const [key] = data.split('_');
+
+				return key;
+			});
+
+			setProductBundleIds(
+				selectionKeys.filter(key => !key.startsWith('KOR')).join(',')
+			);
+
+			setProductKeys(
+				productKeys.concat(
+					',',
+					selectionKeys.filter(key => key.startsWith('KOR')).join(',')
+				)
+			);
+		};
+
+		itemSelectorDialogSelection(
+			{
+				title: Liferay.Language.get('select-subscriptions'),
+				url: selectionURL
+			},
+			addselectionFromDialog
+		);
+	}
+
+	return (
+		<>
+			<HiddenForm
+				fields={{
+					productBundleIds,
+					productKeys
+				}}
+				formAction={formAction}
+				formName="addProductPurchasesFm"
+				ref={formRef}
+			/>
+
+			<ExternalSelectField clickFn={handleSelectMoreSubscriptions} />
+		</>
+	);
 }

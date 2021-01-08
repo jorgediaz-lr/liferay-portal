@@ -111,7 +111,7 @@ export function SubscriptionsProvider({initialSubscriptions = [], children}) {
 		const index = duplicateSubscriptions[key];
 
 		return [
-			`${key}-${index}`,
+			`${key}_${index}`,
 			new Subscription({
 				...subscription,
 				endDate: subscription.endDate
