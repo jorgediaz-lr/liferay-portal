@@ -2144,11 +2144,16 @@ public class LayoutStagedModelDataHandler
 					_portal.getClassNameId(Layout.class.getName()),
 					layout.getPlid());
 
-		if (layoutPageTemplateStructure != null) {
-			StagedModelDataHandlerUtil.exportReferenceStagedModel(
-				portletDataContext, layout, layoutPageTemplateStructure,
-				PortletDataContext.REFERENCE_TYPE_DEPENDENCY);
+		if (layoutPageTemplateStructure == null) {
+			layoutPageTemplateStructure =
+				_layoutPageTemplateStructureLocalService.
+					rebuildLayoutPageTemplateStructure(
+						layout.getGroupId(), layout.getPlid());
 		}
+
+		StagedModelDataHandlerUtil.exportReferenceStagedModel(
+			portletDataContext, layout, layoutPageTemplateStructure,
+			PortletDataContext.REFERENCE_TYPE_DEPENDENCY);
 	}
 
 	private String _getLayoutPrototypeUuid(
