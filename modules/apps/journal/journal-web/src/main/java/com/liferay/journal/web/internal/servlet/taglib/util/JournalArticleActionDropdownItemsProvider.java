@@ -173,7 +173,7 @@ public class JournalArticleActionDropdownItemsProvider {
 				if (JournalArticlePermission.contains(
 						_themeDisplay.getPermissionChecker(), _article,
 						ActionKeys.EXPIRE) &&
-					_article.hasApprovedVersion()) {
+					(_article.hasApprovedVersion() || _article.isScheduled())) {
 
 					add(
 						_getExpireArticleActionConsumer(
@@ -236,8 +236,8 @@ public class JournalArticleActionDropdownItemsProvider {
 				if (JournalArticlePermission.contains(
 						_themeDisplay.getPermissionChecker(), _article,
 						ActionKeys.EXPIRE) &&
-					(_article.getStatus() ==
-						WorkflowConstants.STATUS_APPROVED)) {
+					((_article.getStatus() == WorkflowConstants.STATUS_APPROVED) ||
+					 (_article.getStatus() == WorkflowConstants.STATUS_SCHEDULED))) {
 
 					add(
 						_getExpireArticleActionConsumer(
