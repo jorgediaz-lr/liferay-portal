@@ -43,13 +43,13 @@ List<ProductPurchaseView> productPurchaseViews = editProductPurchasesDisplayCont
 		<div class="subscriptions">
 			<portlet:renderURL var="editProductPurchasesURL">
 				<portlet:param name="mvcRenderCommandName" value="/accounts/edit_product_purchases" />
-				<portlet:param name="redirect" value="<%= redirect %>" />
-				<portlet:param name="backURL" value="<%= currentURL %>" />
-				<portlet:param name="accountKey" value="<%= accountDisplay.getKey() %>" />
 			</portlet:renderURL>
 
 			<aui:form action="<%= editProductPurchasesURL %>" method="post" name="chooseTermFm" onSubmit='<%= renderResponse.getNamespace() + "submitForm(event);" %>'>
+				<aui:input name="accountKey" type="hidden" value="<%= accountDisplay.getKey() %>" />
+				<aui:input name="backURL" type="hidden" value="<%= currentURL %>" />
 				<aui:input name="productPurchaseKeys" type="hidden" />
+				<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 
 				<table class="table table-autofit table-list">
 					<thead>
