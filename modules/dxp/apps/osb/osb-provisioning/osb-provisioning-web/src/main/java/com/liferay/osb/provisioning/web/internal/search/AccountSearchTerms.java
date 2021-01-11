@@ -414,6 +414,12 @@ public class AccountSearchTerms extends AccountDisplayTerms {
 			}
 		}
 
+		if (isParent) {
+			sb.append(_getBooleanOperator(sb));
+
+			sb.append("isParent eq true");
+		}
+
 		return sb.toString();
 	}
 

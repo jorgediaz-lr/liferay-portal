@@ -47,6 +47,8 @@ public class AccountDisplayTerms extends DisplayTerms {
 
 	public static final String INTERNALS = "internals";
 
+	public static final String IS_PARENT = "isParent";
+
 	public static final String MODIFIED_DATE_GT = "modifiedDateGT";
 
 	public static final String MODIFIED_DATE_LT = "modifiedDateLT";
@@ -89,6 +91,7 @@ public class AccountDisplayTerms extends DisplayTerms {
 			portletRequest, CREATED_BY_EMAIL_ADDRESS);
 		flsTeamKey = ParamUtil.getString(portletRequest, FLS_TEAM_KEY);
 		internals = ParamUtil.getBooleanValues(portletRequest, INTERNALS);
+		isParent = ParamUtil.getBoolean(portletRequest, IS_PARENT);
 		modifiedDateGT = ParamUtil.getString(portletRequest, MODIFIED_DATE_GT);
 		modifiedDateLT = ParamUtil.getString(portletRequest, MODIFIED_DATE_LT);
 		name = ParamUtil.getString(portletRequest, NAME);
@@ -123,6 +126,8 @@ public class AccountDisplayTerms extends DisplayTerms {
 					"first-line-support", FLS_TEAM_KEY, flsTeamKey),
 				new AccountDisplayTerm(
 					"internal", INTERNALS, StringUtil.merge(internals)),
+				new AccountDisplayTerm(
+					"isParent", IS_PARENT, String.valueOf(isParent)),
 				new AccountDisplayTerm(
 					"modified-after", MODIFIED_DATE_GT, modifiedDateGT),
 				new AccountDisplayTerm(
@@ -186,6 +191,10 @@ public class AccountDisplayTerms extends DisplayTerms {
 		return internals;
 	}
 
+	public boolean getIsParent() {
+		return isParent;
+	}
+
 	public String getModifiedDateGT() {
 		return modifiedDateGT;
 	}
@@ -242,6 +251,7 @@ public class AccountDisplayTerms extends DisplayTerms {
 	protected String createdByEmailAddress;
 	protected String flsTeamKey;
 	protected boolean[] internals;
+	protected boolean isParent;
 	protected String modifiedDateGT;
 	protected String modifiedDateLT;
 	protected String name;

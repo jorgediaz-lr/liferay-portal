@@ -145,6 +145,7 @@ public class AccountSearchDisplayContext {
 
 		selectAccountURL.setParameter(
 			"mvcRenderCommandName", "/accounts/select_account");
+		selectAccountURL.setParameter("isParent", Boolean.TRUE.toString());
 		selectAccountURL.setWindowState(LiferayWindowState.POP_UP);
 
 		data.put("selectAccountURL", selectAccountURL.toString());
