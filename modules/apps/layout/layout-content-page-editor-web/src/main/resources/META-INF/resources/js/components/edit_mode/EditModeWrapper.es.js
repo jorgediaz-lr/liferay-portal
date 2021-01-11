@@ -172,15 +172,13 @@ class EditModeWrapper extends Component {
 
 		history.replaceState(null, document.head.title, this._url.href);
 
-		requestAnimationFrame(() => {
-			if (
-				Liferay.SPA &&
-				Liferay.SPA.app &&
-				typeof skipLoadPopstate === 'boolean'
-			) {
-				Liferay.SPA.app.skipLoadPopstate = skipLoadPopstate;
-			}
-		});
+		if (
+			Liferay.SPA &&
+			Liferay.SPA.app &&
+			typeof skipLoadPopstate === 'boolean'
+		) {
+			Liferay.SPA.app.skipLoadPopstate = skipLoadPopstate;
+		}
 	}
 
 	/**
