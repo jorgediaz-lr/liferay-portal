@@ -105,6 +105,8 @@ if (stageableGroup.isLayout()) {
 						).put(
 							"fragments-editor-item-type", "fragments-editor-mapped-item"
 						).build();
+
+						String title = assetRenderer.getTitle(LocaleUtil.fromLanguageId(LanguageUtil.getLanguageId(request)));
 					%>
 
 						<tr class="<%= (previewAssetEntryId == assetEntry.getEntryId()) ? "table-active" : StringPool.BLANK %>" <%= AUIUtil.buildData(fragmentsEditorData) %>>
@@ -114,12 +116,12 @@ if (stageableGroup.isLayout()) {
 								<c:choose>
 									<c:when test="<%= Validator.isNotNull(viewURL) %>">
 										<a class="text-truncate-inline" href="<%= viewURL %>">
-											<span class="text-truncate"><%= HtmlUtil.escape(assetRenderer.getTitle(locale)) %></span>
+											<span class="text-truncate"><%= HtmlUtil.escape(title) %></span>
 										</a>
 									</c:when>
 									<c:otherwise>
 										<span class="text-truncate-inline">
-											<span class="text-truncate"><%= HtmlUtil.escape(assetRenderer.getTitle(locale)) %></span>
+											<span class="text-truncate"><%= HtmlUtil.escape(title) %></span>
 										</span>
 									</c:otherwise>
 								</c:choose>
