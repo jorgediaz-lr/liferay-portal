@@ -14,8 +14,6 @@
 
 package com.liferay.portal.vulcan.util;
 
-import static com.liferay.portal.vulcan.yaml.graphql.GraphQLNamingUtil.getGraphQLMutationName;
-
 import com.liferay.oauth2.provider.scope.ScopeChecker;
 import com.liferay.oauth2.provider.scope.liferay.OAuth2ProviderScopeLiferayAccessControlContext;
 import com.liferay.portal.kernel.model.GroupedModel;
@@ -190,7 +188,8 @@ public class ActionUtil {
 				type = "query";
 			}
 			else {
-				operation = getGraphQLMutationName(methodName);
+				operation = GraphQLNamingUtil.getGraphQLMutationName(
+					methodName);
 				type = "mutation";
 			}
 
