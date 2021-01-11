@@ -46,10 +46,10 @@ List<ProductPurchaseView> productPurchaseViews = editProductPurchasesDisplayCont
 			</portlet:renderURL>
 
 			<aui:form action="<%= editProductPurchasesURL %>" method="post" name="chooseTermFm" onSubmit='<%= renderResponse.getNamespace() + "submitForm(event);" %>'>
-				<aui:input name="accountKey" type="hidden" value="<%= accountDisplay.getKey() %>" />
-				<aui:input name="backURL" type="hidden" value="<%= currentURL %>" />
-				<aui:input name="productPurchaseKeys" type="hidden" />
 				<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
+				<aui:input name="backURL" type="hidden" value="<%= currentURL %>" />
+				<aui:input name="accountKey" type="hidden" value="<%= accountDisplay.getKey() %>" />
+				<aui:input name="productPurchaseKeys" type="hidden" />
 
 				<table class="table table-autofit table-list">
 					<thead>
