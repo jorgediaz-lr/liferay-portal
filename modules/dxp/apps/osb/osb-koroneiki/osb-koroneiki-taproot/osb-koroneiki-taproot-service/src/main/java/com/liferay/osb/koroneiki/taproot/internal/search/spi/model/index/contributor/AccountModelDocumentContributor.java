@@ -109,6 +109,12 @@ public class AccountModelDocumentContributor
 		document.addKeyword("internal", account.isInternal());
 		document.addKeyword("language", account.getLanguage());
 
+		List<Account> childAccounts = account.getChildAccounts();
+
+		if (!childAccounts.isEmpty()) {
+			document.addKeyword("isParent", true);
+		}
+
 		Account parentAccount = account.getParentAccount();
 
 		if (parentAccount != null) {
