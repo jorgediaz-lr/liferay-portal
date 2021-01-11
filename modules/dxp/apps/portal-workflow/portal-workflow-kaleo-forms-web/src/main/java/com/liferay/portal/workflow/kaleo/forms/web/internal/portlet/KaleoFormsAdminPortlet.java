@@ -30,6 +30,7 @@ import com.liferay.dynamic.data.mapping.io.DDMFormDeserializerDeserializeRequest
 import com.liferay.dynamic.data.mapping.io.DDMFormDeserializerDeserializeResponse;
 import com.liferay.dynamic.data.mapping.io.DDMFormDeserializerTracker;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
+import com.liferay.dynamic.data.mapping.model.DDMFormField;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.storage.DDMFormFieldValue;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
@@ -715,8 +716,13 @@ public class KaleoFormsAdminPortlet extends MVCPortlet {
 					beforeReviewDDMFormFieldValue.getInstanceId());
 
 			if (actualDDMFormFieldValue == null) {
-				removedByReviewerDDMFormFieldValues.add(
-					beforeReviewDDMFormFieldValue);
+				DDMFormField ddmFormField =
+					beforeReviewDDMFormFieldValue.getDDMFormField();
+
+				if (!ddmFormField.isReadOnly()) {
+					removedByReviewerDDMFormFieldValues.add(
+						beforeReviewDDMFormFieldValue);
+				}
 			}
 			else {
 				List<DDMFormFieldValue>
