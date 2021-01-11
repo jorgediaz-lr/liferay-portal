@@ -231,6 +231,19 @@
 	padding: $spacing-default;
 }
 
+.info {
+	color: $secondary;
+	font-size: $mid-font-size;
+	margin-bottom: $spacing-default;
+
+	svg {
+		fill: $secondary;
+		margin-right: $spacing-xs;
+		vertical-align: middle;
+		width: $spacing-md;
+	}
+}
+
 .inline-edit {
 	display: inline-block;
 

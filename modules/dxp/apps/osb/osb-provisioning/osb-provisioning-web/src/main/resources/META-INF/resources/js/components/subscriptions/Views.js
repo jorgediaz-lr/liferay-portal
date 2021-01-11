@@ -45,6 +45,18 @@ export function AddView({
 				/>
 			)}
 
+			<div className="info">
+				<svg
+					aria-label={Liferay.Language.get('info-icon')}
+					className="lexicon-icon-info-circle-full"
+					role="img"
+				>
+					<use xlinkHref="#info-circle-full" />
+				</svg>
+
+				{Liferay.Language.get('date-and-time-displayed-in-utc')}
+			</div>
+
 			<div className="subscriptions">
 				<Subscriptions
 					accountName={accountName}
@@ -98,6 +110,18 @@ export function EditView({
 						)}
 					/>
 				)}
+
+				<div className="info">
+					<svg
+						aria-label={Liferay.Language.get('info-icon')}
+						className="lexicon-icon-info-circle-full"
+						role="img"
+					>
+						<use xlinkHref="#info-circle-full" />
+					</svg>
+
+					{Liferay.Language.get('date-and-time-displayed-in-utc')}
+				</div>
 
 				<div className="subscriptions">
 					<Subscriptions
