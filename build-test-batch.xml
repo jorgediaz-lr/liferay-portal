@@ -1855,7 +1855,9 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 
 							<antcall inheritAll="false" target="prepare-system-ext-properties" />
 
-							<ant dir="modules" inheritAll="false" target="build-app-lpkg-base" />
+							<ant dir="modules" inheritAll="false" target="build-app-lpkg-base">
+								<property name="liferay.home" value="${liferay.home}" />
+							</ant>
 
 							<delete dir="${liferay.home}/osgi/deploy" />
 							<delete dir="${liferay.home}/osgi/modules" />
@@ -2025,7 +2027,9 @@ com.liferay.portal.kernel.util.ServiceProxyFactory.timeout=300000</echo>
 
 							<antcall inheritAll="false" target="prepare-system-ext-properties" />
 
-							<ant dir="modules" inheritAll="false" target="build-app-lpkg-base" />
+							<ant dir="modules" inheritAll="false" target="build-app-lpkg-base">
+								<property name="liferay.home" value="${liferay.home}" />
+							</ant>
 
 							<for param="app.dir">
 								<path>
@@ -2081,6 +2085,7 @@ com.liferay.portal.kernel.util.ServiceProxyFactory.timeout=300000</echo>
 											<ant dir="modules" inheritAll="false" target="build-app-lpkg">
 												<property name="app.name" value="${app.name}" />
 												<property name="hot.deploy.test" value="true" />
+												<property name="liferay.home" value="${liferay.home}" />
 												<property name="lpkg.container" value="true" />
 												<property name="output.dir" value="${app.server.parent.dir}/osgi/temp" />
 											</ant>
@@ -2095,6 +2100,7 @@ com.liferay.portal.kernel.util.ServiceProxyFactory.timeout=300000</echo>
 									<ant dir="modules" inheritAll="false" target="build-app-lpkg">
 										<property name="app.name" value="portal-mobile-device-detection-fiftyonedegrees" />
 										<property name="hot.deploy.test" value="true" />
+										<property name="liferay.home" value="${liferay.home}" />
 										<property name="lpkg.container" value="false" />
 										<property name="output.dir" value="${app.server.parent.dir}/osgi/temp" />
 									</ant>
@@ -2102,6 +2108,7 @@ com.liferay.portal.kernel.util.ServiceProxyFactory.timeout=300000</echo>
 									<ant dir="modules" inheritAll="false" target="build-app-lpkg">
 										<property name="app.name" value="portal-mobile-device-detection-fiftyonedegrees-enterprise" />
 										<property name="hot.deploy.test" value="true" />
+										<property name="liferay.home" value="${liferay.home}" />
 										<property name="lpkg.container" value="false" />
 										<property name="output.dir" value="${app.server.parent.dir}/osgi/temp" />
 									</ant>
@@ -2220,7 +2227,9 @@ com.liferay.portal.kernel.util.ServiceProxyFactory.timeout=300000</echo>
 
 							<antcall inheritAll="false" target="prepare-system-ext-properties" />
 
-							<ant dir="modules" inheritAll="false" target="build-app-lpkg-base" />
+							<ant dir="modules" inheritAll="false" target="build-app-lpkg-base">
+								<property name="liferay.home" value="${liferay.home}" />
+							</ant>
 
 							<for param="app.dir">
 								<path>
@@ -2272,6 +2281,7 @@ com.liferay.portal.kernel.util.ServiceProxyFactory.timeout=300000</echo>
 										<then>
 											<ant dir="modules" inheritAll="false" target="build-app-lpkg">
 												<property name="app.name" value="${app.name}" />
+												<property name="liferay.home" value="${liferay.home}" />
 												<property name="output.dir" value="${app.server.parent.dir}/osgi/temp/${app.name}" />
 											</ant>
 										</then>
@@ -2562,7 +2572,9 @@ log.sanitizer.enabled=false</echo>
 
 							<antcall inheritAll="false" target="prepare-system-ext-properties" />
 
-							<ant dir="modules" inheritAll="false" target="build-app-lpkg-release" />
+							<ant dir="modules" inheritAll="false" target="build-app-lpkg-release">
+								<property name="liferay.home" value="${liferay.home}" />
+							</ant>
 
 							<delete dir="${liferay.home}/osgi/deploy" />
 							<delete dir="${liferay.home}/osgi/modules" />
@@ -3166,6 +3178,7 @@ log.sanitizer.enabled=false</echo>
 
 			<ant dir="modules" inheritAll="false" target="build-app-lpkg-all">
 				<property name="app.server.parent.dir" value="${project.dir}/bundles" />
+				<property name="liferay.home" value="${liferay.home}" />
 				<property name="osgi.dir" value="${app.server.parent.dir}/osgi" />
 			</ant>
 		</sequential>
