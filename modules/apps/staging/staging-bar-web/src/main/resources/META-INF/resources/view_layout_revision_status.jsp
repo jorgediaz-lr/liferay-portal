@@ -61,7 +61,15 @@ else {
 
 			<aui:model-context bean="<%= layoutRevision %>" model="<%= LayoutRevision.class %>" />
 
-			<aui:workflow-status markupView="lexicon" showIcon="<%= false %>" showLabel="<%= false %>" status="<%= layoutRevision.getStatus() %>" statusMessage='<%= layoutRevision.isHead() ? "ready-for-publication" : null %>' />
+			<%
+			int status = layoutRevision.getStatus();
+
+			if (Objects.equals(layout.getType(), LayoutConstants.TYPE_CONTENT)) {
+				status = WorkflowConstants.STATUS_APPROVED;
+			}
+			%>
+
+			<aui:workflow-status markupView="lexicon" showIcon="<%= false %>" showLabel="<%= false %>" status="<%= status %>" statusMessage='<%= layoutRevision.isHead() ? "ready-for-publication" : null %>' />
 		</div>
 	</div>
 </span>
