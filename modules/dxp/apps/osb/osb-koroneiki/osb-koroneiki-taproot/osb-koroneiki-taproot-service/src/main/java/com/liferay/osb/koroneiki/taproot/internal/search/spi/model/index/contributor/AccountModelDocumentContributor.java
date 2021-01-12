@@ -112,7 +112,10 @@ public class AccountModelDocumentContributor
 		List<Account> childAccounts = account.getChildAccounts();
 
 		if (!childAccounts.isEmpty()) {
-			document.addKeyword("isParent", true);
+			document.addKeyword("parent", true);
+		}
+		else {
+			document.addKeyword("parent", false);
 		}
 
 		Account parentAccount = account.getParentAccount();

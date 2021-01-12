@@ -96,9 +96,9 @@ public class AccountEntityModel implements EntityModel {
 					"externalLinkEntityNames",
 					locale -> "externalLinkEntityNames")),
 			new BooleanEntityField("internal", locale -> "internal"),
-			new BooleanEntityField("isParent", locale -> "isParent"),
 			new StringEntityField(
 				"name", locale -> Field.getSortableFieldName("name_String")),
+			new BooleanEntityField("parent", locale -> "parent"),
 			new StringEntityField(
 				"parentAccountKey", locale -> "parentAccountKey"),
 			new CollectionEntityField(

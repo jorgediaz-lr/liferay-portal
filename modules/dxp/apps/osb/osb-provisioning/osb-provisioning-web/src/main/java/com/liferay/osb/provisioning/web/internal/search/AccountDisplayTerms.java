@@ -47,13 +47,13 @@ public class AccountDisplayTerms extends DisplayTerms {
 
 	public static final String INTERNALS = "internals";
 
-	public static final String IS_PARENT = "isParent";
-
 	public static final String MODIFIED_DATE_GT = "modifiedDateGT";
 
 	public static final String MODIFIED_DATE_LT = "modifiedDateLT";
 
 	public static final String NAME = "name";
+
+	public static final String PARENT = "parent";
 
 	public static final String PARENT_ACCOUNT_KEY = "parentAccountKey";
 
@@ -91,10 +91,10 @@ public class AccountDisplayTerms extends DisplayTerms {
 			portletRequest, CREATED_BY_EMAIL_ADDRESS);
 		flsTeamKey = ParamUtil.getString(portletRequest, FLS_TEAM_KEY);
 		internals = ParamUtil.getBooleanValues(portletRequest, INTERNALS);
-		isParent = ParamUtil.getBoolean(portletRequest, IS_PARENT);
 		modifiedDateGT = ParamUtil.getString(portletRequest, MODIFIED_DATE_GT);
 		modifiedDateLT = ParamUtil.getString(portletRequest, MODIFIED_DATE_LT);
 		name = ParamUtil.getString(portletRequest, NAME);
+		parent = ParamUtil.getBoolean(portletRequest, PARENT);
 		parentAccountKey = ParamUtil.getString(
 			portletRequest, PARENT_ACCOUNT_KEY);
 		partners = ParamUtil.getBooleanValues(portletRequest, PARTNERS);
@@ -127,11 +127,11 @@ public class AccountDisplayTerms extends DisplayTerms {
 				new AccountDisplayTerm(
 					"internal", INTERNALS, StringUtil.merge(internals)),
 				new AccountDisplayTerm(
-					"isParent", IS_PARENT, String.valueOf(isParent)),
-				new AccountDisplayTerm(
 					"modified-after", MODIFIED_DATE_GT, modifiedDateGT),
 				new AccountDisplayTerm(
 					"modified-before", MODIFIED_DATE_LT, modifiedDateLT),
+				new AccountDisplayTerm(
+					"parent", PARENT, String.valueOf(parent)),
 				new AccountDisplayTerm(
 					"parent-account", PARENT_ACCOUNT_KEY, parentAccountKey),
 				new AccountDisplayTerm(
@@ -191,10 +191,6 @@ public class AccountDisplayTerms extends DisplayTerms {
 		return internals;
 	}
 
-	public boolean getIsParent() {
-		return isParent;
-	}
-
 	public String getModifiedDateGT() {
 		return modifiedDateGT;
 	}
@@ -243,6 +239,10 @@ public class AccountDisplayTerms extends DisplayTerms {
 		return workerContactEmailAddress;
 	}
 
+	public boolean isParent() {
+		return parent;
+	}
+
 	protected String[] activeSLAs;
 	protected String code;
 	protected String countryName;
@@ -251,10 +251,10 @@ public class AccountDisplayTerms extends DisplayTerms {
 	protected String createdByEmailAddress;
 	protected String flsTeamKey;
 	protected boolean[] internals;
-	protected boolean isParent;
 	protected String modifiedDateGT;
 	protected String modifiedDateLT;
 	protected String name;
+	protected boolean parent;
 	protected String parentAccountKey;
 	protected boolean[] partners;
 	protected String partnerTeamKey;
