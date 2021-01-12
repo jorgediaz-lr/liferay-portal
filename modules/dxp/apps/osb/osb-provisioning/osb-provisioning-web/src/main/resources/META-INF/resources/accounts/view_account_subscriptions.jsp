@@ -17,11 +17,11 @@
 <%@ include file="/init.jsp" %>
 
 <%
+String tabs2 = ParamUtil.getString(request, "tabs2");
+
 ViewAccountDisplayContext viewAccountDisplayContext = ProvisioningWebComponentProvider.getViewAccountDisplayContext(renderRequest, renderResponse, request);
 
 PortletURL portletURL = viewAccountDisplayContext.getPortletURL();
-
-String tabs2 = ParamUtil.getString(request, "tabs2");
 %>
 
 <div class="details-table table-striped">
