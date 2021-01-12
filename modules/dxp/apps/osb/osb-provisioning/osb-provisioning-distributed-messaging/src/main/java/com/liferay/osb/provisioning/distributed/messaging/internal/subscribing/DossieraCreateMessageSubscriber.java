@@ -807,7 +807,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 		Map<String, String> properties = productPurchase.getProperties();
 
-		String productType = properties.get("type");
+		String productType = properties.get("productType");
 
 		if ((productType != null) &&
 			productType.equals(SalesforceConstants.PRODUCT_TYPE_RENEWAL)) {
@@ -1616,7 +1616,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 				account.setContactEmailAddress(
 					ownerJSONObject.getString("_emailAddress"));
 
-				account = _accountWebService.updateAccount(
+				_accountWebService.updateAccount(
 					StringPool.BLANK, StringPool.BLANK, accountKey, account);
 			}
 		}
@@ -1662,7 +1662,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 				productPurchase);
 		}
 
-		return account;
+		return _accountWebService.getAccount(accountKey);
 	}
 
 	private static String _getEmailTemplate(
