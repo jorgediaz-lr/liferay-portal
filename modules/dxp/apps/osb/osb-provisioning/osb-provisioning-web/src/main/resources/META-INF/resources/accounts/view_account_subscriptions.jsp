@@ -149,15 +149,13 @@ SearchContainer productPurchasesSearchContainer = viewAccountDisplayContext.getP
 
 	if (searchContainer) {
 		searchContainer.on('rowToggled', function(event) {
-			var selectedItems = document.querySelectorAll(
-				'input[name="<portlet:namespace />rowIds"][type="checkbox"]:checked'
-			);
+			var productKeys = '';
 
-			var productKeys = Array.from(selectedItems, function(item) {
-				return item.value;
-			}).join(',');
+			var selectedItems = event.elements.allSelectedElements;
 
-			A.one('#<portlet:namespace />productPurchaseViewKeys').val(productKeys);
+			if (selectedItems && selectedItems.size() > 0) {
+				productKeys = selectedItems.attr('value').join(',');
+			}
 
 			var productPurchaseViewKeys = A.one(
 				'#<portlet:namespace />productPurchaseViewKeys'
@@ -178,7 +176,7 @@ SearchContainer productPurchasesSearchContainer = viewAccountDisplayContext.getP
 
 					if (selectedItems) {
 						var selectedKeys = selectedItems.map(function(item) {
-							return item[0];
+							return item.split('_')[0];
 						});
 
 						var productBundleIds = selectedKeys

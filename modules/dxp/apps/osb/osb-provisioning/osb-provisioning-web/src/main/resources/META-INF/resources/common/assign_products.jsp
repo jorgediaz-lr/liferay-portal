@@ -94,15 +94,11 @@ else {
 	);
 
 	if (searchContainer) {
-		searchContainer.on('rowToggled', function() {
-			var selectedItems = document.querySelectorAll(
-				'input[name="<portlet:namespace />rowIds"][type="checkbox"]:checked'
-			);
+		searchContainer.on('rowToggled', function(event) {
+			var selectedItems = event.elements.allSelectedElements;
 
-			if (selectedItems) {
-				var data = Array.from(selectedItems, function(item) {
-					return item.value.split('_');
-				});
+			if (selectedItems && selectedItems.size() > 0) {
+				var data = selectedItems.attr('value');
 
 				Liferay.Util.getOpener().Liferay.fire('selectedItemChange', {
 					data: data

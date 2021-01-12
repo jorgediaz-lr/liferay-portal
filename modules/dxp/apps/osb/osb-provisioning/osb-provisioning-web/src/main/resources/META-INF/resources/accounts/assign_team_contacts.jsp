@@ -83,16 +83,16 @@ SearchContainer searchContainer = assignTeamContactsDisplayContext.getSearchCont
 	searchContainer.on('rowToggled', function(event) {
 		var selectedItems = event.elements.allSelectedElements;
 
-		var data = [];
+		var data = '';
 
 		if (selectedItems && selectedItems.size() > 0) {
-			data = selectedItems.attr('value');
+			data = selectedItems.attr('value').join(',');
 		}
 
 		Liferay.Util.getOpener().Liferay.fire(
 			'<portlet:namespace />assignContacts',
 			{
-				data: data.join(',')
+				data: data
 			}
 		);
 	});
