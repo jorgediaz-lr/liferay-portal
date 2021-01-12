@@ -35,6 +35,8 @@ public interface ProductPurchaseWebService {
 			String filterString, int page, int pageSize, String sortString)
 		throws Exception;
 
+	public long getProductPurchasesCount(String filterString) throws Exception;
+
 	public ProductPurchase updateProductPurchase(
 			String agentName, String agentUID, String productPurchaseKey,
 			ProductPurchase productPurchase)

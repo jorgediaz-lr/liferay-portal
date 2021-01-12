@@ -34,6 +34,10 @@ public abstract class BaseMessageSubscriber implements MessageSubscriber {
 
 	public void receive(Message message) {
 		try {
+			if (!isParseMessage(message)) {
+				return;
+			}
+
 			try {
 				JSONObject jsonObject = jsonFactory.createJSONObject(
 					(String)message.getPayload());
@@ -61,6 +65,9 @@ public abstract class BaseMessageSubscriber implements MessageSubscriber {
 				_log.error(portalException, portalException);
 			}
 		}
+		finally {
+			postParseMessage(message);
+		}
 	}
 
 	protected abstract void doParse(JSONObject jsonObject) throws Exception;
@@ -68,6 +75,13 @@ public abstract class BaseMessageSubscriber implements MessageSubscriber {
 	protected abstract void handleError(
 			String routingKey, String message, Exception exception)
 		throws PortalException;
+
+	protected boolean isParseMessage(Message message) throws Exception {
+		return true;
+	}
+
+	protected void postParseMessage(Message message) {
+	}
 
 	@Reference
 	protected JSONFactory jsonFactory;

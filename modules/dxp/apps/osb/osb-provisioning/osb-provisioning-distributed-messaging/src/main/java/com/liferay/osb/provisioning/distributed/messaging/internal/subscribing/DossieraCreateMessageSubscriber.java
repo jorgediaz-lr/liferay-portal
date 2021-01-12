@@ -14,6 +14,7 @@
 
 package com.liferay.osb.provisioning.distributed.messaging.internal.subscribing;
 
+import com.liferay.osb.distributed.messaging.Message;
 import com.liferay.osb.koroneiki.phloem.rest.client.constants.ExternalLinkDomain;
 import com.liferay.osb.koroneiki.phloem.rest.client.constants.ExternalLinkEntityName;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
@@ -49,8 +50,11 @@ import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
+import com.liferay.portal.kernel.cluster.ClusterExecutorUtil;
+import com.liferay.portal.kernel.cluster.ClusterNode;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -69,6 +73,8 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SubscriptionSender;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.lock.model.Lock;
+import com.liferay.portal.lock.service.LockLocalService;
 
 import java.net.URL;
 
@@ -1118,6 +1124,50 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		return false;
 	}
 
+	@Override
+	protected boolean isParseMessage(Message message) throws Exception {
+		String salesforceOpportunityKey = _getSalesforceOpportunityKey(message);
+
+		if (Validator.isNull(salesforceOpportunityKey)) {
+			return false;
+		}
+
+		String owner = null;
+
+		ClusterNode localClusterNode =
+			ClusterExecutorUtil.getLocalClusterNode();
+
+		if (localClusterNode != null) {
+			owner = localClusterNode.getClusterNodeId();
+		}
+
+		Lock lock = _lockLocalService.lock(
+			Message.class.getName(), salesforceOpportunityKey, owner);
+
+		if (!lock.isNew()) {
+			return false;
+		}
+
+		StringBundler sb = new StringBundler(7);
+
+		sb.append("externalLinkEntityIds/any(s:s eq '");
+		sb.append(ExternalLinkDomain.SALESFORCE);
+		sb.append(StringPool.UNDERLINE);
+		sb.append(ExternalLinkEntityName.SALESFORCE_OPPORTUNITY);
+		sb.append(StringPool.UNDERLINE);
+		sb.append(salesforceOpportunityKey);
+		sb.append("')");
+
+		long productPurchaseCount =
+			_productPurchaseWebService.getProductPurchasesCount(sb.toString());
+
+		if (productPurchaseCount > 0) {
+			return false;
+		}
+
+		return true;
+	}
+
 	protected PostalAddress parseAddress(JSONObject jsonObject) {
 		JSONObject billingAddressJSONObject = jsonObject.getJSONObject(
 			"_billingAddress");
@@ -1452,6 +1502,18 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		return productPurchases;
 	}
 
+	@Override
+	protected void postParseMessage(Message message) {
+		String salesforceOpportunityKey = _getSalesforceOpportunityKey(message);
+
+		if (Validator.isNull(salesforceOpportunityKey)) {
+			return;
+		}
+
+		_lockLocalService.unlock(
+			Message.class.getName(), salesforceOpportunityKey);
+	}
+
 	protected void sendAnalyticsCloudWelcomeEmail(
 			List<Contact> contacts, String languageId)
 		throws PortalException {
@@ -1705,6 +1767,31 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		return product;
 	}
 
+	private String _getSalesforceOpportunityKey(Message message) {
+		try {
+			JSONObject jsonObject = jsonFactory.createJSONObject(
+				(String)message.getPayload());
+
+			return jsonObject.getString("_salesforceOpportunityKey");
+		}
+		catch (JSONException jsonException1) {
+			try {
+				JSONArray jsonArray = jsonFactory.createJSONArray(
+					(String)message.getPayload());
+
+				for (int i = 0; i < jsonArray.length(); i++) {
+					JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+					return jsonObject.getString("_salesforceOpportunityKey");
+				}
+			}
+			catch (JSONException jsonException2) {
+			}
+		}
+
+		return StringPool.BLANK;
+	}
+
 	private boolean _isDuplicateCode(String code) throws Exception {
 		List<Account> accounts = _accountWebService.search(
 			StringPool.BLANK, "code eq '" + code + "'", 1, 1, null);
@@ -1774,6 +1861,9 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 	@Reference
 	private IdentityProvider _identityProvider;
+
+	@Reference
+	private LockLocalService _lockLocalService;
 
 	@Reference
 	private NoteWebService _noteWebService;

@@ -74,6 +74,19 @@ public class ProductPurchaseWebServiceImpl
 		return Collections.emptyList();
 	}
 
+	public long getProductPurchasesCount(String filterString) throws Exception {
+		Page<ProductPurchase> productPurchasesPage =
+			_productPurchaseResource.getProductPurchasesPage(
+				StringPool.BLANK, filterString, Pagination.of(1, 1),
+				StringPool.BLANK);
+
+		if (productPurchasesPage != null) {
+			return productPurchasesPage.getTotalCount();
+		}
+
+		return 0;
+	}
+
 	public ProductPurchase updateProductPurchase(
 			String agentName, String agentUID, String productPurchaseKey,
 			ProductPurchase productPurchase)
