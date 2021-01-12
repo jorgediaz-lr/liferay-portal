@@ -205,7 +205,7 @@ if (liveLayout != null) {
 														</div>
 
 														<div class="staging-bar-flex-column">
-															<c:if test="<%= !layoutRevision.isIncomplete() %>">
+															<c:if test="<%= !layoutRevision.isIncomplete() && !Objects.equals(layout.getType(), LayoutConstants.TYPE_CONTENT) %>">
 																<liferay-util:include page="/view_layout_branch_details.jsp" servletContext="<%= application %>" />
 															</c:if>
 														</div>
