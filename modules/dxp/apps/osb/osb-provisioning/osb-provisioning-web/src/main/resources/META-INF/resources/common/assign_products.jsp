@@ -93,19 +93,21 @@ else {
 		'<portlet:namespace />assignProducts'
 	);
 
-	searchContainer.on('rowToggled', function() {
-		var selectedItems = document.querySelectorAll(
-			'input[name="<portlet:namespace />rowIds"][type="checkbox"]:checked'
-		);
+	if (searchContainer) {
+		searchContainer.on('rowToggled', function() {
+			var selectedItems = document.querySelectorAll(
+				'input[name="<portlet:namespace />rowIds"][type="checkbox"]:checked'
+			);
 
-		if (selectedItems) {
-			var data = Array.from(selectedItems, function(item) {
-				return item.value.split('_');
-			});
+			if (selectedItems) {
+				var data = Array.from(selectedItems, function(item) {
+					return item.value.split('_');
+				});
 
-			Liferay.Util.getOpener().Liferay.fire('selectedItemChange', {
-				data: data
-			});
-		}
-	});
+				Liferay.Util.getOpener().Liferay.fire('selectedItemChange', {
+					data: data
+				});
+			}
+		});
+	}
 </aui:script>

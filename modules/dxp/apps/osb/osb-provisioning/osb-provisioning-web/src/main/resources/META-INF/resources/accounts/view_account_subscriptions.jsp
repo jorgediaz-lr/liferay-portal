@@ -147,25 +147,27 @@ SearchContainer productPurchasesSearchContainer = viewAccountDisplayContext.getP
 		'<portlet:namespace />productPurchases'
 	);
 
-	searchContainer.on('rowToggled', function(event) {
-		var selectedItems = document.querySelectorAll(
-			'input[name="<portlet:namespace />rowIds"][type="checkbox"]:checked'
-		);
+	if (searchContainer) {
+		searchContainer.on('rowToggled', function(event) {
+			var selectedItems = document.querySelectorAll(
+				'input[name="<portlet:namespace />rowIds"][type="checkbox"]:checked'
+			);
 
-		var productKeys = Array.from(selectedItems, function(item) {
-			return item.value;
-		}).join(',');
+			var productKeys = Array.from(selectedItems, function(item) {
+				return item.value;
+			}).join(',');
 
-		A.one('#<portlet:namespace />productPurchaseViewKeys').val(productKeys);
+			A.one('#<portlet:namespace />productPurchaseViewKeys').val(productKeys);
 
-		var productPurchaseViewKeys = A.one(
-			'#<portlet:namespace />productPurchaseViewKeys'
-		);
+			var productPurchaseViewKeys = A.one(
+				'#<portlet:namespace />productPurchaseViewKeys'
+			);
 
-		if (productPurchaseViewKeys) {
-			productPurchaseViewKeys.val(productKeys);
-		}
-	});
+			if (productPurchaseViewKeys) {
+				productPurchaseViewKeys.val(productKeys);
+			}
+		});
+	}
 
 	var selectedItemChange = function() {
 		var itemSelectorDialog = new A.LiferayItemSelectorDialog({
