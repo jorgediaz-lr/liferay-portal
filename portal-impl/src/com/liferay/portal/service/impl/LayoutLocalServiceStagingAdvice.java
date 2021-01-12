@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
-import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.model.LayoutRevision;
 import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.LayoutStagingHandler;
@@ -564,15 +563,9 @@ public class LayoutLocalServiceStagingAdvice implements BeanFactoryAware {
 
 		Layout firstLayout = layouts.get(0);
 
-		boolean firstLayoutIsTypeContent = LayoutConstants.TYPE_CONTENT.equals(
-			firstLayout.getType());
+		Layout wrappedFirstLayout = wrapLayout(firstLayout);
 
-		if ((!firstLayoutIsTypeContent &&
-			 (wrapLayout(firstLayout) == firstLayout)) ||
-			(firstLayoutIsTypeContent &&
-			 !LayoutStagingUtil.isBranchingLayoutSet(
-				 firstLayout.getGroup(), firstLayout.isPrivateLayout()))) {
-
+		if (wrappedFirstLayout == firstLayout) {
 			return layouts;
 		}
 
@@ -603,12 +596,6 @@ public class LayoutLocalServiceStagingAdvice implements BeanFactoryAware {
 		List<Layout> wrappedLayouts = new ArrayList<>(layouts.size());
 
 		for (Layout layout : layouts) {
-			if (LayoutConstants.TYPE_CONTENT.equals(layout.getType())) {
-				wrappedLayouts.add(layout);
-
-				continue;
-			}
-
 			Layout wrappedLayout = wrapLayout(layout);
 
 			if (showIncomplete ||
