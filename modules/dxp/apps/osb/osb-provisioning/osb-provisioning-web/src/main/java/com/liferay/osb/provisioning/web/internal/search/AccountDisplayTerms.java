@@ -114,33 +114,18 @@ public class AccountDisplayTerms extends DisplayTerms {
 			Arrays.asList(
 				new AccountDisplayTerm("account-name", NAME, name),
 				new AccountDisplayTerm("code", CODE, code),
-				new AccountDisplayTerm("country", COUNTRY_NAME, countryName),
-				new AccountDisplayTerm(
-					"created-after", CREATE_DATE_GT, createDateGT),
-				new AccountDisplayTerm(
-					"created-before", CREATE_DATE_LT, createDateLT),
-				new AccountDisplayTerm(
-					"created-by", CREATED_BY_EMAIL_ADDRESS,
-					createdByEmailAddress),
-				new AccountDisplayTerm(
-					"first-line-support", FLS_TEAM_KEY, flsTeamKey),
-				new AccountDisplayTerm(
-					"internal", INTERNALS, StringUtil.merge(internals)),
-				new AccountDisplayTerm(
-					"modified-after", MODIFIED_DATE_GT, modifiedDateGT),
-				new AccountDisplayTerm(
-					"modified-before", MODIFIED_DATE_LT, modifiedDateLT),
-				new AccountDisplayTerm(
-					"parent", PARENT, String.valueOf(parent)),
 				new AccountDisplayTerm(
 					"parent-account", PARENT_ACCOUNT_KEY, parentAccountKey),
 				new AccountDisplayTerm(
-					"partner", PARTNERS, StringUtil.merge(partners)),
+					"project-worker", WORKER_CONTACT_EMAIL_ADDRESS,
+					workerContactEmailAddress),
 				new AccountDisplayTerm(
 					"partner-reseller-si", PARTNER_TEAM_KEY, partnerTeamKey),
 				new AccountDisplayTerm(
-					"project-worker", WORKER_CONTACT_EMAIL_ADDRESS,
-					workerContactEmailAddress),
+					"first-line-support", FLS_TEAM_KEY, flsTeamKey),
+				new AccountDisplayTerm("country", COUNTRY_NAME, countryName),
+				new AccountDisplayTerm(
+					"partner", PARTNERS, StringUtil.merge(partners)),
 				new AccountDisplayTerm(
 					"provides-fls", PROVIDES_FLS,
 					StringUtil.merge(providesFLS)),
@@ -148,15 +133,27 @@ public class AccountDisplayTerms extends DisplayTerms {
 					"receives-fls", RECEIVES_FLS,
 					StringUtil.merge(receivesFLS)),
 				new AccountDisplayTerm(
-					"subscription-level", ACTIVE_SLAS,
-					StringUtil.merge(activeSLAs)),
+					"internal", INTERNALS, StringUtil.merge(internals)),
+				new AccountDisplayTerm("tier", TIERS, StringUtil.merge(tiers)),
 				new AccountDisplayTerm(
 					"subscription-status", SUBSCRIPTION_STATES,
 					StringUtil.merge(subscriptionStates)),
 				new AccountDisplayTerm(
+					"subscription-level", ACTIVE_SLAS,
+					StringUtil.merge(activeSLAs)),
+				new AccountDisplayTerm(
 					"support-region", REGIONS, StringUtil.merge(regions)),
 				new AccountDisplayTerm(
-					"tier", TIERS, StringUtil.merge(tiers))));
+					"created-by", CREATED_BY_EMAIL_ADDRESS,
+					createdByEmailAddress),
+				new AccountDisplayTerm(
+					"created-after", CREATE_DATE_GT, createDateGT),
+				new AccountDisplayTerm(
+					"created-before", CREATE_DATE_LT, createDateLT),
+				new AccountDisplayTerm(
+					"modified-after", MODIFIED_DATE_GT, modifiedDateGT),
+				new AccountDisplayTerm(
+					"modified-before", MODIFIED_DATE_LT, modifiedDateLT)));
 	}
 
 	public String[] getActiveSLAs() {
