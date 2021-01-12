@@ -93,7 +93,7 @@ else {
 		'<portlet:namespace />assignProducts'
 	);
 
-	searchContainer.on('rowToggled', function(event) {
+	searchContainer.on('rowToggled', function() {
 		var selectedItems = document.querySelectorAll(
 			'input[name="<portlet:namespace />rowIds"][type="checkbox"]:checked'
 		);
@@ -103,12 +103,9 @@ else {
 				return item.value.split('_');
 			});
 
-			Liferay.Util.getOpener().Liferay.fire(
-				'<portlet:namespace />assignProducts',
-				{
-					data: data
-				}
-			);
+			Liferay.Util.getOpener().Liferay.fire('selectedItemChange', {
+				data: data
+			});
 		}
 	});
 </aui:script>

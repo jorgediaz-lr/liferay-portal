@@ -167,9 +167,9 @@ SearchContainer productPurchasesSearchContainer = viewAccountDisplayContext.getP
 		}
 	});
 
-	var <portlet:namespace />assignProducts = function() {
+	var selectedItemChange = function() {
 		var itemSelectorDialog = new A.LiferayItemSelectorDialog({
-			eventName: '<portlet:namespace />assignProducts',
+			eventName: 'selectedItemChange',
 			on: {
 				selectedItemChange: function(event) {
 					var selectedItems = event.newVal;
@@ -224,10 +224,7 @@ SearchContainer productPurchasesSearchContainer = viewAccountDisplayContext.getP
 
 	Liferay.componentReady('productPurchasesManagementToolbar')
 		.then(function(managementToolbar) {
-			managementToolbar.on(
-				'creationButtonClicked',
-				<portlet:namespace />assignProducts
-			);
+			managementToolbar.on('creationButtonClicked', selectedItemChange);
 		})
 		.catch(function(err) {
 			console.error(err);
