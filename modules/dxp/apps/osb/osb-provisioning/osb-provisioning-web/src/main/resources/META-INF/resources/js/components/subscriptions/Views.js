@@ -28,13 +28,13 @@ export function AddView({
 	selectProductsURL,
 	sizing
 }) {
-	const [displayAlert, setDisplayAlert] = useState(false);
-
-	useSetDisplayAlert(setDisplayAlert);
-
 	const [subscriptions] = useSubscriptions();
 
-	const getInitialProductKeys = () => {
+	const [displayAlert, setDisplayAlert] = useState(false);
+
+	useSetDisplayAlert(setDisplayAlert, subscriptions.toList());
+
+	function getInitialProductKeys() {
 		const productsKeys = subscriptions.keySeq().toJS();
 
 		return productsKeys
@@ -44,7 +44,7 @@ export function AddView({
 				return key;
 			})
 			.join(',');
-	};
+	}
 
 	return (
 		<div className="subscriptions-container">
@@ -111,9 +111,11 @@ export function EditView({
 	sizing,
 	status
 }) {
+	const [subscriptions] = useSubscriptions();
+
 	const [displayAlert, setDisplayAlert] = useState(false);
 
-	useSetDisplayAlert(setDisplayAlert);
+	useSetDisplayAlert(setDisplayAlert, subscriptions.toList());
 
 	return (
 		<>
@@ -184,19 +186,18 @@ function InvalidDateAlert({message}) {
 	);
 }
 
-function useSetDisplayAlert(callback) {
-	const [subscriptions] = useSubscriptions();
-
+function useSetDisplayAlert(callback, subscriptions) {
 	return useEffect(() => {
 		function validateDateFields() {
-			return subscriptions
-				.toList()
-				.every(subscription => subscription.validateAllDates());
+			return subscriptions.every(subscription =>
+				subscription.validateAllDates()
+			);
 		}
 
 		if (validateDateFields()) {
 			callback(false);
-		} else {
+		}
+		else {
 			callback(true);
 		}
 	}, [callback, subscriptions]);
