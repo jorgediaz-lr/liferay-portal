@@ -59,6 +59,10 @@ public class SearchBarPortletDisplayContext {
 		return _destinationUnreachable;
 	}
 
+	public boolean isDisplayWarningIgnoredConfiguration() {
+		return _displayWarningIgnoredConfiguration;
+	}
+
 	public boolean isEmptySearchEnabled() {
 		return _emptySearchEnabled;
 	}
@@ -96,6 +100,17 @@ public class SearchBarPortletDisplayContext {
 		_destinationUnreachable = destinationUnreachable;
 	}
 
+	public void setDisplayStyleGroupId(long displayStyleGroupId) {
+		_displayStyleGroupId = displayStyleGroupId;
+	}
+
+	public void setDisplayWarningIgnoredConfiguration(
+		boolean displayWarningIgnoredConfiguration) {
+
+		_displayWarningIgnoredConfiguration =
+			displayWarningIgnoredConfiguration;
+	}
+
 	public void setEmptySearchEnabled(boolean emptySearchEnabled) {
 		_emptySearchEnabled = emptySearchEnabled;
 	}
@@ -105,6 +120,10 @@ public class SearchBarPortletDisplayContext {
 
 		_everythingSearchScopeParameterString =
 			searchScopeEverythingParameterString;
+	}
+
+	public void setInputPlaceholder(String inputPlaceholder) {
+		_inputPlaceholder = inputPlaceholder;
 	}
 
 	public void setKeywords(String keywords) {
@@ -158,8 +177,11 @@ public class SearchBarPortletDisplayContext {
 	private boolean _availableEverythingSearchScope;
 	private String _currentSiteSearchScopeParameterString;
 	private boolean _destinationUnreachable;
+	private long _displayStyleGroupId;
+	private boolean _displayWarningIgnoredConfiguration;
 	private boolean _emptySearchEnabled;
 	private String _everythingSearchScopeParameterString;
+	private String _inputPlaceholder;
 	private String _keywords;
 	private String _keywordsParameterName;
 	private boolean _letTheUserChooseTheSearchScope;
