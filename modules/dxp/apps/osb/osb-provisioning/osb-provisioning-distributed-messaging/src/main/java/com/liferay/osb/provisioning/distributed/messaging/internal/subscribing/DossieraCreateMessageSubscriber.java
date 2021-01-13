@@ -199,8 +199,9 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 	protected Account createAccount(
 			Contact[] contacts, ExternalLink[] externalLinks,
-			Account.Language language, PostalAddress postalAddress,
-			ProductPurchase[] productPurchases, JSONObject jsonObject)
+			Account.Language language, Account.Region region,
+			PostalAddress postalAddress, ProductPurchase[] productPurchases,
+			JSONObject jsonObject)
 		throws Exception {
 
 		Account account = new Account();
@@ -249,14 +250,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		account.setExternalLinks(externalLinks);
 		account.setPostalAddresses(new PostalAddress[] {postalAddress});
 		account.setProductPurchases(productPurchases);
-
-		String soldBy = jsonObject.getString("_salesforceOpportunitySoldBy");
-
-		Account.Region region = getSupportRegion(
-			soldBy, postalAddress.getAddressCountry());
-
 		account.setRegion(region);
-
 		account.setLanguage(language);
 
 		String productFamily = jsonObject.getString(
@@ -530,21 +524,27 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 		String languageId = _getLanguageId(language);
 
+		String soldBy = jsonObject.getString("_salesforceOpportunitySoldBy");
+
+		Account.Region region = getSupportRegion(
+			soldBy, postalAddress.getAddressCountry());
+
 		Account account = null;
 
 		String accountKey = getAccountKey(jsonObject);
 
 		if (Validator.isNotNull(accountKey)) {
 			account = updateAccount(
-				accountKey, activeContacts, productPurchases, jsonObject);
+				accountKey, activeContacts, region, productPurchases,
+				jsonObject);
 		}
 		else {
 			ExternalLink[] externalLinks = parseExternalLinks(jsonObject);
 
 			account = createAccount(
 				activeContacts.toArray(new Contact[0]), externalLinks, language,
-				postalAddress, productPurchases.toArray(new ProductPurchase[0]),
-				jsonObject);
+				region, postalAddress,
+				productPurchases.toArray(new ProductPurchase[0]), jsonObject);
 
 			if (analyticsCloud) {
 				sendAnalyticsCloudWelcomeEmail(activeContacts, languageId);
@@ -1603,22 +1603,30 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 	}
 
 	protected Account updateAccount(
-			String accountKey, List<Contact> contacts,
+			String accountKey, List<Contact> contacts, Account.Region region,
 			List<ProductPurchase> productPurchases, JSONObject jsonObject)
 		throws Exception {
 
 		Account account = _accountWebService.getAccount(accountKey);
 
-		if (Validator.isNull(account.getContactEmailAddress())) {
-			JSONObject ownerJSONObject = jsonObject.getJSONObject("_owner");
+		if (Validator.isNull(account.getContactEmailAddress()) ||
+			Validator.isNull(account.getRegion())) {
 
-			if (ownerJSONObject != null) {
-				account.setContactEmailAddress(
-					ownerJSONObject.getString("_emailAddress"));
+			if (Validator.isNull(account.getContactEmailAddress())) {
+				JSONObject ownerJSONObject = jsonObject.getJSONObject("_owner");
 
-				_accountWebService.updateAccount(
-					StringPool.BLANK, StringPool.BLANK, accountKey, account);
+				if (ownerJSONObject != null) {
+					account.setContactEmailAddress(
+						ownerJSONObject.getString("_emailAddress"));
+				}
 			}
+
+			if (Validator.isNull(account.getRegion())) {
+				account.setRegion(region);
+			}
+
+			_accountWebService.updateAccount(
+				StringPool.BLANK, StringPool.BLANK, accountKey, account);
 		}
 
 		for (Contact contact : contacts) {
@@ -1727,8 +1735,11 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 	private String _getLanguageId(Account.Language accountLanguage) {
 		String language = accountLanguage.toString();
 
-		if (language.equals(Account.Language.SPANISH.toString())) {
-			return "es_ES";
+		if (language.equals(Account.Language.CHINESE.toString())) {
+			return "zh_CN";
+		}
+		else if (language.equals(Account.Language.ENGLISH.toString())) {
+			return "en_US";
 		}
 		else if (language.equals(Account.Language.JAPANESE.toString())) {
 			return "ja_JP";
@@ -1736,11 +1747,12 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		else if (language.equals(Account.Language.PORTUGUESE.toString())) {
 			return "pt_BR";
 		}
-		else if (language.equals(Account.Language.CHINESE.toString())) {
-			return "zh_CN";
+		else if (language.equals(Account.Language.SPANISH.toString())) {
+			return "es_ES";
 		}
-
-		return StringPool.BLANK;
+		else {
+			return StringPool.BLANK;
+		}
 	}
 
 	private Product _getProduct(String productName) throws Exception {
