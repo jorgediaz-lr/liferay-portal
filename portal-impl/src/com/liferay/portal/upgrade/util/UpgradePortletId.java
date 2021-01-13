@@ -17,6 +17,9 @@ package com.liferay.portal.upgrade.util;
 import com.liferay.exportimport.kernel.staging.StagingConstants;
 import com.liferay.layout.admin.kernel.model.LayoutTypePortletConstants;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.dao.db.DB;
+import com.liferay.portal.kernel.dao.db.DBManagerUtil;
+import com.liferay.portal.kernel.dao.db.DBType;
 import com.liferay.portal.kernel.dao.jdbc.AutoBatchPreparedStatementUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -214,13 +217,6 @@ public class UpgradePortletId extends UpgradeProcess {
 				"update PortletPreferences set portletId = '", newRootPortletId,
 				"' where portletId = '", oldRootPortletId, "'"));
 
-		runSQL(
-			StringBundler.concat(
-				"update PortletPreferences set preferences = replace(",
-				"preferences, '#portlet_", oldRootPortletId, "', '#portlet_",
-				newRootPortletId, "') where portletId = '", newRootPortletId,
-				"'"));
-
 		if (!newRootPortletId.contains("_INSTANCE_")) {
 			runSQL(
 				StringBundler.concat(
@@ -228,13 +224,6 @@ public class UpgradePortletId extends UpgradeProcess {
 					"portletId, '", oldRootPortletId, "_INSTANCE_', '",
 					newRootPortletId, "_INSTANCE_') where portletId like '",
 					oldRootPortletId, "_INSTANCE_%'"));
-
-			runSQL(
-				StringBundler.concat(
-					"update PortletPreferences set preferences = replace(",
-					"preferences, '#portlet_", oldRootPortletId, "_INSTANCE_',",
-					"'#portlet_", newRootPortletId, "_INSTANCE_') where ",
-					"portletId like '", newRootPortletId, "_INSTANCE_%'"));
 		}
 
 		runSQL(
@@ -244,12 +233,63 @@ public class UpgradePortletId extends UpgradeProcess {
 				"_USER_') where portletId like '", oldRootPortletId,
 				"_USER_%'"));
 
+		DB db = DBManagerUtil.getDB();
+
+		DBType dbType = db.getDBType();
+
+		String preferencesExpression = "preferences";
+
+		if (dbType == DBType.SYBASE) {
+			preferencesExpression = "CAST_TEXT(preferences)";
+		}
+
 		runSQL(
 			StringBundler.concat(
 				"update PortletPreferences set preferences = replace(",
-				"preferences, '#portlet_", oldRootPortletId, "_USER_', ",
-				"'#portlet_", newRootPortletId, "_USER_') where portletId ",
-				"like '", newRootPortletId, "_USER_%'"));
+				preferencesExpression, ", '#p_p_id_", oldRootPortletId,
+				"', '#p_p_id_", newRootPortletId, "') where portletId = '",
+				newRootPortletId, "'"));
+
+		runSQL(
+			StringBundler.concat(
+				"update PortletPreferences set preferences = replace(",
+				preferencesExpression, ", '#portlet_", oldRootPortletId,
+				"', '#portlet_", newRootPortletId, "') where portletId = '",
+				newRootPortletId, "'"));
+
+		if (!newRootPortletId.contains("_INSTANCE_")) {
+			runSQL(
+				StringBundler.concat(
+					"update PortletPreferences set preferences = replace(",
+					preferencesExpression, ", '#p_p_id_", oldRootPortletId,
+					"_INSTANCE_', '#p_p_id_", newRootPortletId,
+					"_INSTANCE_') where portletId like '", newRootPortletId,
+					"_INSTANCE_%'"));
+
+			runSQL(
+				StringBundler.concat(
+					"update PortletPreferences set preferences = replace(",
+					preferencesExpression, ", '#portlet_", oldRootPortletId,
+					"_INSTANCE_', '#portlet_", newRootPortletId,
+					"_INSTANCE_') where portletId like '", newRootPortletId,
+					"_INSTANCE_%'"));
+		}
+
+		runSQL(
+			StringBundler.concat(
+				"update PortletPreferences set preferences = replace(",
+				preferencesExpression, ", '#p_p_id_", oldRootPortletId,
+				"_USER_', '#p_p_id_", newRootPortletId,
+				"_USER_') where portletId like '", newRootPortletId,
+				"_USER_%'"));
+
+		runSQL(
+			StringBundler.concat(
+				"update PortletPreferences set preferences = replace(",
+				preferencesExpression, ", '#portlet_", oldRootPortletId,
+				"_USER_', '#portlet_", newRootPortletId,
+				"_USER_') where portletId like '", newRootPortletId,
+				"_USER_%'"));
 	}
 
 	protected void updateLayout(long plid, String typeSettings)
