@@ -102,7 +102,7 @@ if (portletTitleBasedNavigation) {
 <div class="container-fluid-1280" id="<portlet:namespace />FileEntry">
 	</c:when>
 	<c:otherwise>
-<div class="closed container-fluid-1280 sidenav-container sidenav-right" id="<portlet:namespace />infoPanelId">
+<div class="closed container-fluid-1280 sidenav-container sidenav-right" id='<%= liferayPortletResponse.getNamespace() + "infoPanelId" + StringPool.UNDERLINE + fileEntry.getFileEntryId() %>'>
 	</c:otherwise>
 </c:choose>
 
@@ -159,6 +159,7 @@ if (portletTitleBasedNavigation) {
 			<div class="file-entry-actions">
 				<liferay-frontend:management-bar-sidenav-toggler-button
 					label="info"
+					sidenavId='<%= liferayPortletResponse.getNamespace() + "infoPanelId" + StringPool.UNDERLINE + fileEntry.getFileEntryId() %>'
 				/>
 
 				<c:if test="<%= dlPortletInstanceSettingsHelper.isShowActions() %>">
