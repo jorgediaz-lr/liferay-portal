@@ -158,7 +158,7 @@
 					{param title: $warning /}
 				{/call}
 
-				{let $notDefaultExperienceLength: (length($availableSegmentsExperiences) - 2) /}
+				{let $notDefaultExperienceLength: (length($availableSegmentsExperiences) - 1) /}
 				{if length($availableSegmentsExperiences) > 1}
 					<ul class="list-unstyled mt-4">
 						{foreach $experience in $availableSegmentsExperiences}
