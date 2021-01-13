@@ -196,8 +196,6 @@ class SegmentsExperienceSelector extends Component {
 
 		const availableSegmentsEntries = Object.values(
 			state.availableSegmentsEntries || []
-		).filter(
-			segment => segment.segmentsEntryId !== state.defaultSegmentsEntryId
 		);
 
 		const innerState = {
