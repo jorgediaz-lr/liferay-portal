@@ -311,6 +311,7 @@ export default Component => {
 			const visitor = new PagesVisitor(pages);
 
 			let firstInvalidFieldLabel = null;
+			let firstInvalidFieldInput = null;
 
 			const updatedPages = visitor.mapFields(
 				(
@@ -330,6 +331,9 @@ export default Component => {
 						firstInvalidFieldLabel == null
 					) {
 						firstInvalidFieldLabel = field.label;
+						firstInvalidFieldInput = document.querySelector(
+							`[name='${field.name}']`
+						);
 					}
 
 					return {
@@ -347,6 +351,10 @@ export default Component => {
 				),
 				pages: updatedPages
 			});
+
+			if (firstInvalidFieldInput) {
+				firstInvalidFieldInput.focus();
+			}
 		}
 
 		_handlePaginationItemClicked({pageIndex}) {

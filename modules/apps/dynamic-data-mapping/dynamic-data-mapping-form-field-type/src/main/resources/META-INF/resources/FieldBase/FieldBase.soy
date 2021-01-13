@@ -34,13 +34,15 @@
 		{/if}
 	{/let}
 
+	{let $fieldDetailsId: $name + '_fieldDetails' /}
+
 	{let $renderlabel: ($label and $showLabel) or $required or $tooltip or $repeatable /}
 
 	{let $divAttributes kind="attributes"}
 		{if not $renderlabel}
 			tabindex="0"
 
-			aria-labelledby="{$name}_label"
+			aria-labelledby="{$fieldDetailsId}"
 		{/if}
 
 		class="{$fieldCssClassAttribute}"
@@ -83,12 +85,10 @@
 			</div>
 		{/if}
 
-		{let $fieldDetailsId: $name + '_fieldDetails' /}
-
 		{let $labelAttributes kind="attributes"}
 			tabindex="0"
 
-			aria-labelledby="{$fieldDetailsId}"
+			aria-describedby="{$fieldDetailsId}"
 
 			{if not $showLabel and not $required}
 				class="ddm-empty"
@@ -147,7 +147,7 @@
 			{$contentRenderer}
 		{/if}
 
-		<span id="{$name}_label" aria-hidden="false" hidden>
+		<span id="{$fieldDetailsId}" class="sr-only">
 			{let $hasError: $displayErrors and ($errorMessage != null and $errorMessage != '') and not $valid/}
 
 			{if $renderlabel}{$label}{/if}
