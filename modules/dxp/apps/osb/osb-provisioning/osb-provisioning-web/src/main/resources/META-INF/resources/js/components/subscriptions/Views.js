@@ -23,7 +23,8 @@ import Subscriptions from './Subscriptions';
 
 export function AddView({
 	accountName,
-	editProductPurchasesURL,
+	editProductPurchasesActionURL,
+	editProductPurchasesRenderURL,
 	redirect,
 	selectProductsURL,
 	sizing
@@ -52,7 +53,7 @@ export function AddView({
 				<b>{Liferay.Language.get('configure-subscriptions')}</b>
 
 				<ProductSelection
-					formAction={editProductPurchasesURL}
+					formAction={editProductPurchasesRenderURL}
 					initialProductKeys={getInitialProductKeys()}
 					selectionURL={selectProductsURL}
 				/>
@@ -87,7 +88,7 @@ export function AddView({
 			</div>
 
 			<SubscriptionActions
-				formAction={editProductPurchasesURL}
+				formAction={editProductPurchasesActionURL}
 				redirectURL={redirect}
 				subscriptionsType={ADD_SUBSCRIPTIONS}
 			/>
@@ -97,7 +98,8 @@ export function AddView({
 
 AddView.propTypes = {
 	accountName: PropTypes.string.isRequired,
-	editProductPurchasesURL: PropTypes.string.isRequired,
+	editProductPurchasesActionURL: PropTypes.string.isRequired,
+	editProductPurchasesRenderURL: PropTypes.string.isRequired,
 	redirect: PropTypes.string.isRequired,
 	selectProductsURL: PropTypes.string,
 	sizing: PropTypes.arrayOf(PropTypes.number)
@@ -106,7 +108,7 @@ AddView.propTypes = {
 export function EditView({
 	accountName,
 	backURL,
-	editProductPurchasesURL,
+	editProductPurchasesActionURL,
 	redirect,
 	sizing,
 	status
@@ -157,7 +159,7 @@ export function EditView({
 
 				<SubscriptionActions
 					backURL={backURL}
-					formAction={editProductPurchasesURL}
+					formAction={editProductPurchasesActionURL}
 					redirectURL={redirect}
 					subscriptionsType={EDIT_SUBSCRIPTIONS}
 				/>
@@ -169,7 +171,7 @@ export function EditView({
 EditView.propTypes = {
 	accountName: PropTypes.string.isRequired,
 	backURL: PropTypes.string,
-	editProductPurchasesURL: PropTypes.string.isRequired,
+	editProductPurchasesActionURL: PropTypes.string.isRequired,
 	redirect: PropTypes.string.isRequired,
 	sizing: PropTypes.arrayOf(PropTypes.number),
 	status: PropTypes.arrayOf(PropTypes.string)

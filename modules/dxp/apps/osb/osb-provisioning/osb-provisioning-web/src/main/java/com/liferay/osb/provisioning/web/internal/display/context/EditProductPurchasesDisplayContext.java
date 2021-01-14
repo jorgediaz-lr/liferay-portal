@@ -93,14 +93,31 @@ public class EditProductPurchasesDisplayContext
 
 		data.put("redirect", redirect);
 
-		PortletURL editProductPurchasesURL = renderResponse.createActionURL();
+		PortletURL editProductPurchasesActionURL =
+			renderResponse.createActionURL();
 
-		editProductPurchasesURL.setParameter(
+		editProductPurchasesActionURL.setParameter(
 			ActionRequest.ACTION_NAME, "/accounts/edit_product_purchases");
-		editProductPurchasesURL.setParameter("redirect", redirect);
-		editProductPurchasesURL.setParameter("accountKey", account.getKey());
+		editProductPurchasesActionURL.setParameter("redirect", redirect);
+		editProductPurchasesActionURL.setParameter(
+			"accountKey", account.getKey());
 
-		data.put("editProductPurchasesURL", editProductPurchasesURL.toString());
+		data.put(
+			"editProductPurchasesActionURL",
+			editProductPurchasesActionURL.toString());
+
+		PortletURL editProductPurchasesRenderURL =
+			renderResponse.createRenderURL();
+
+		editProductPurchasesRenderURL.setParameter(
+			"mvcRenderCommandName", "/accounts/edit_product_purchases");
+		editProductPurchasesRenderURL.setParameter("redirect", redirect);
+		editProductPurchasesRenderURL.setParameter(
+			"accountKey", account.getKey());
+
+		data.put(
+			"editProductPurchasesRenderURL",
+			editProductPurchasesRenderURL.toString());
 
 		if (_products != null) {
 			data.put("details", _getAddProductPurchasesJSONArray());
