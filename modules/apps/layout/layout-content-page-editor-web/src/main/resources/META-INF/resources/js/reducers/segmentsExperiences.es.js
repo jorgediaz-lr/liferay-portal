@@ -19,7 +19,11 @@ import {
 	updatePageEditorLayoutData
 } from '../utils/FragmentsEditorFetchUtils.es';
 import {getRowFragmentEntryLinkIds} from '../utils/FragmentsEditorGetUtils.es';
-import {setIn, updateUsedWidgets} from '../utils/FragmentsEditorUpdateUtils.es';
+import {
+	setIn,
+	updateIn,
+	updateUsedWidgets
+} from '../utils/FragmentsEditorUpdateUtils.es';
 import {
 	containsFragmentEntryLinkId,
 	getEmptyLayoutData,
@@ -29,6 +33,9 @@ import {getFragmentEntryLinkContent} from './fragments.es';
 
 const EDIT_SEGMENTS_EXPERIENCE_URL =
 	'/segments.segmentsexperience/update-segments-experience';
+
+const GET_SEGMENTS_EXPERIENCES_URL =
+	'/segments.segmentsexperience/get-segments-experiences';
 
 const UPDATE_SEGMENTS_EXPERIENCE_PRIORITY_URL =
 	'/segments.segmentsexperience/update-segments-experience-priority';
@@ -570,43 +577,48 @@ function updateSegmentsExperiencePriorityReducer(state, action) {
 			segmentsExperienceId
 		})
 			.then(() => {
-				const availableSegmentsExperiencesArray = Object.values(
-					nextState.availableSegmentsExperiences
-				);
+				Liferay.Service(GET_SEGMENTS_EXPERIENCES_URL, {
+					active: true,
+					classNameId: state.classNameId,
+					classPK: state.classPK,
+					groupId: state.groupId
+				})
+					.then(response => {
+						nextState = updateIn(
+							nextState,
+							['availableSegmentsExperiences'],
+							availableSegmentsExperiences => {
+								const nextAvailableSegmentsExperiences = {};
 
-				const subTargetExperience = availableSegmentsExperiencesArray.find(
-					experience => {
-						return experience.priority === newPriority;
-					}
-				);
+								Object.keys(
+									availableSegmentsExperiences
+								).forEach(key => {
+									const availableSegmentsExperience =
+										availableSegmentsExperiences[key];
 
-				const targetExperience = availableSegmentsExperiencesArray.find(
-					experience => {
-						return experience.priority === priority;
-					}
-				);
+									nextAvailableSegmentsExperiences[key] = {
+										...availableSegmentsExperience,
+										priority:
+											availableSegmentsExperience.segmentsExperienceId ===
+											'0'
+												? -1
+												: response.find(
+														experience =>
+															experience.segmentsExperienceId ===
+															availableSegmentsExperience.segmentsExperienceId
+												  ).priority
+									};
+								});
 
-				nextState = setIn(
-					nextState,
-					[
-						'availableSegmentsExperiences',
-						targetExperience.segmentsExperienceId,
-						'priority'
-					],
-					newPriority
-				);
+								return nextAvailableSegmentsExperiences;
+							}
+						);
 
-				nextState = setIn(
-					nextState,
-					[
-						'availableSegmentsExperiences',
-						subTargetExperience.segmentsExperienceId,
-						'priority'
-					],
-					priority
-				);
-
-				resolve(nextState);
+						resolve(nextState);
+					})
+					.catch(error => {
+						reject(error);
+					});
 			})
 			.catch(error => {
 				reject(error);

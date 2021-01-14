@@ -451,6 +451,14 @@ const INITIAL_STATE = {
 	getPageContentsURL: Config.string().value(''),
 
 	/**
+	 * Group id.
+	 * @default ''
+	 * @review
+	 * @type {string}
+	 */
+	groupId: Config.string().value(''),
+
+	/**
 	 * Id of the last element that was hovered
 	 * @default ''
 	 * @review

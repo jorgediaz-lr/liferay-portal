@@ -265,6 +265,8 @@ public class ContentPageEditorDisplayContext {
 			"getPageContentsURL",
 			_getResourceURL("/content_layout/get_page_contents")
 		).put(
+			"groupId", getGroupId()
+		).put(
 			"imageSelectorURL", _getItemSelectorURL()
 		).put(
 			"isContentPage", isContentPage()
