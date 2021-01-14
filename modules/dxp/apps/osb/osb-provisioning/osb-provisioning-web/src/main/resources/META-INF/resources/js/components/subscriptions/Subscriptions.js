@@ -21,6 +21,7 @@ import {
 	PRODUCT_PURCHASE_STATUS_CANCELLED
 } from '../../utilities/constants';
 import DatePicker from '../DatePicker';
+import BulkInput from './BulkInput';
 
 function Subscriptions({
 	accountName,
@@ -86,6 +87,13 @@ function Subscriptions({
 				</ClayTable.Row>
 			</ClayTable.Head>
 			<ClayTable.Body>
+				<BulkInput
+					accountName={accountName}
+					instanceSizes={instanceSizes}
+					statusOptions={statusOptions}
+					subscriptionsType={subscriptionsType}
+				/>
+
 				{subscriptions.toList().map(subscription => (
 					<Subscription
 						accountName={accountName}
@@ -218,8 +226,7 @@ function Subscription({
 				if (attributeValue) {
 					dateBtn.setAttribute('disabled', attributeValue);
 					dateInput.setAttribute('disabled', attributeValue);
-				}
-				else {
+				} else {
 					dateBtn.removeAttribute('disabled');
 					dateInput.removeAttribute('disabled');
 				}
@@ -247,6 +254,7 @@ function Subscription({
 			<ClayTable.Cell>
 				<label htmlFor="quantity">
 					<input
+						aria-label={Liferay.Language.get('purchased')}
 						className="form-control form-control-sm"
 						id="quantity"
 						min={0}
@@ -263,6 +271,9 @@ function Subscription({
 				>
 					<input
 						aria-checked={perpetual}
+						aria-label={Liferay.Language.get(
+							'perpetual-subscription'
+						)}
 						checked={perpetual}
 						className="custom-control-input"
 						id="perpetual"
@@ -304,8 +315,9 @@ function Subscription({
 			<ClayTable.Cell>
 				<label htmlFor="instanceSize">
 					<select
+						aria-label={Liferay.Language.get('instance-size')}
 						className="form-control form-control-sm"
-						disabled={instanceSizes.length === 0}
+						disabled={!instanceSizes.length}
 						id="instanceSize"
 						onChange={handleSizingChange}
 						value={sizing}
@@ -340,6 +352,7 @@ function Subscription({
 				<ClayTable.Cell>
 					<label htmlFor="status">
 						<select
+							aria-label={Liferay.Language.get('status')}
 							className="form-control form-control-sm"
 							disabled={statusOptions.length === 0}
 							id="status"

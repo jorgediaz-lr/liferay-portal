@@ -1,8 +1,27 @@
 .subscriptions-container {
 	padding: 0 $spacing-default;
 
+	.bulk-input {
+		td {
+			background-color: $light;
+		}
+
+		.form-control {
+			background-color: $body-bg;
+
+			&[disabled] {
+				background-color: $light;
+			}
+		}
+
+		.input-title {
+			color: $secondary;
+		}
+	}
+
 	.subscriptions {
-		label[for='instanceSize'] {
+		label[for='instanceSize'],
+		label[for='instanceSizeBulkInput'] {
 			display: block;
 		}
 

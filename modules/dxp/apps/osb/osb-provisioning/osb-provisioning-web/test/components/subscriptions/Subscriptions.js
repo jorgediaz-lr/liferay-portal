@@ -132,13 +132,13 @@ describe('Subscriptions', () => {
 			expect(getByText('Product D')).toBeTruthy();
 		});
 
-		it('displays the account name for each of the subscriptions', () => {
+		it('displays the account name for each of the subscriptions and the bulk input', () => {
 			const {getAllByText} = renderSubscriptions();
 
 			const allAccountNames = getAllByText('Test Account');
 
 			expect(allAccountNames[0]).toBeTruthy();
-			expect(allAccountNames.length).toBe(4);
+			expect(allAccountNames.length).toBe(5);
 		});
 
 		it('removes a subscription when the delete icon for that subscription is clicked', () => {
@@ -157,10 +157,18 @@ describe('Subscriptions', () => {
 		});
 
 		it('it disables date fields after checking the perpetual checkbox', () => {
-			const {
-				getAllByPlaceholderText,
-				getAllByRole
-			} = renderSubscriptions();
+			const {getAllByPlaceholderText, getAllByRole} = renderSubscriptions(
+				{
+					subscriptions: [
+						{
+							endDate: '2021-12-08',
+							productKey: 'KOR-35735',
+							productName: 'Product A',
+							startDate: '2020-12-08'
+						}
+					]
+				}
+			);
 
 			const dateFields = getAllByPlaceholderText('YYYY-MM-DD');
 			const perpetualCheckboxes = getAllByRole('checkbox');
@@ -173,26 +181,34 @@ describe('Subscriptions', () => {
 			expect(dateFields[0].disabled).toBeTruthy();
 			expect(dateFields[1].disabled).toBeTruthy();
 		});
-
-		it('displays the start date correctly', () => {
-			const {getAllByPlaceholderText} = renderSubscriptions();
-
-			const dateFields = getAllByPlaceholderText('YYYY-MM-DD');
-
-			expect(dateFields[0].value).toBe('2020-12-08');
-		});
 	});
 
 	describe('Existing Subscriptions', () => {
-		it('displays the date fields as disabled if perpetual checkbox is checked', () => {
-			const {getAllByPlaceholderText, getByRole} = renderSubscriptions({
+		it('displays the start date correctly', () => {
+			const {getAllByPlaceholderText} = renderSubscriptions({
 				subscriptions: mockEditSubscriptions(),
 				subscriptionsType: EDIT_SUBSCRIPTIONS
 			});
 
 			const dateFields = getAllByPlaceholderText('YYYY-MM-DD');
 
-			expect(getByRole('checkbox').checked).toBeTruthy();
+			expect(dateFields[0].value).toBe('2020-12-21');
+		});
+
+		it('displays the date fields as disabled if perpetual checkbox is checked', () => {
+			const {
+				getAllByPlaceholderText,
+				getByLabelText
+			} = renderSubscriptions({
+				subscriptions: mockEditSubscriptions(),
+				subscriptionsType: EDIT_SUBSCRIPTIONS
+			});
+
+			const dateFields = getAllByPlaceholderText('YYYY-MM-DD');
+
+			expect(
+				getByLabelText('perpetual-subscription').checked
+			).toBeTruthy();
 			expect(dateFields[0].disabled).toBeTruthy();
 			expect(dateFields[1].disabled).toBeTruthy();
 			expect(dateFields[2].disabled).toBeTruthy();
