@@ -85,7 +85,7 @@ SearchContainer searchContainer = assignTeamContactsDisplayContext.getSearchCont
 
 		var data = '';
 
-		if (selectedItems && selectedItems.size() > 0) {
+		if (selectedItems && selectedItems.size()) {
 			data = selectedItems.attr('value').join(',');
 		}
 

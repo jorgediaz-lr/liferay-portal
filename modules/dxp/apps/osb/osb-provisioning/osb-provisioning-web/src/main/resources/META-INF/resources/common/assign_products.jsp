@@ -97,7 +97,7 @@ else {
 		searchContainer.on('rowToggled', function(event) {
 			var selectedItems = event.elements.allSelectedElements;
 
-			if (selectedItems && selectedItems.size() > 0) {
+			if (selectedItems && selectedItems.size()) {
 				var data = selectedItems.attr('value');
 
 				Liferay.Util.getOpener().Liferay.fire('selectedItemChange', {

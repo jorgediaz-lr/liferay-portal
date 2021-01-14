@@ -153,7 +153,7 @@ SearchContainer productPurchasesSearchContainer = viewAccountDisplayContext.getP
 
 			var selectedItems = event.elements.allSelectedElements;
 
-			if (selectedItems && selectedItems.size() > 0) {
+			if (selectedItems && selectedItems.size()) {
 				productKeys = selectedItems.attr('value').join(',');
 			}
 
