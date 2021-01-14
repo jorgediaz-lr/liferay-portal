@@ -268,8 +268,9 @@ public interface DataLayoutResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/data-engine/v1.0/data-definitions/{dataDefinitionId}/data-layouts",
-				dataDefinitionId);
+						"/o/data-engine/v1.0/data-definitions/{dataDefinitionId}/data-layouts");
+
+			httpInvoker.path("dataDefinitionId", dataDefinitionId);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -336,8 +337,9 @@ public interface DataLayoutResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/data-engine/v1.0/data-definitions/{dataDefinitionId}/data-layouts",
-				dataDefinitionId);
+						"/o/data-engine/v1.0/data-definitions/{dataDefinitionId}/data-layouts");
+
+			httpInvoker.path("dataDefinitionId", dataDefinitionId);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -398,8 +400,9 @@ public interface DataLayoutResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/data-engine/v1.0/data-definitions/{dataDefinitionId}/data-layouts/batch",
-				dataDefinitionId);
+						"/o/data-engine/v1.0/data-definitions/{dataDefinitionId}/data-layouts/batch");
+
+			httpInvoker.path("dataDefinitionId", dataDefinitionId);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -459,8 +462,9 @@ public interface DataLayoutResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/data-engine/v1.0/data-layouts/{dataLayoutId}",
-				dataLayoutId);
+						"/o/data-engine/v1.0/data-layouts/{dataLayoutId}");
+
+			httpInvoker.path("dataLayoutId", dataLayoutId);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -575,8 +579,9 @@ public interface DataLayoutResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/data-engine/v1.0/data-layouts/{dataLayoutId}",
-				dataLayoutId);
+						"/o/data-engine/v1.0/data-layouts/{dataLayoutId}");
+
+			httpInvoker.path("dataLayoutId", dataLayoutId);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -641,8 +646,9 @@ public interface DataLayoutResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/data-engine/v1.0/data-layouts/{dataLayoutId}",
-				dataLayoutId);
+						"/o/data-engine/v1.0/data-layouts/{dataLayoutId}");
+
+			httpInvoker.path("dataLayoutId", dataLayoutId);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -773,8 +779,9 @@ public interface DataLayoutResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/data-engine/v1.0/data-layouts/{dataLayoutId}/data-layout-permissions",
-				dataLayoutId);
+						"/o/data-engine/v1.0/data-layouts/{dataLayoutId}/data-layout-permissions");
+
+			httpInvoker.path("dataLayoutId", dataLayoutId);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -848,8 +855,9 @@ public interface DataLayoutResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/data-engine/v1.0/sites/{siteId}/data-layout-permissions",
-				siteId);
+						"/o/data-engine/v1.0/sites/{siteId}/data-layout-permissions");
+
+			httpInvoker.path("siteId", siteId);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -930,8 +938,9 @@ public interface DataLayoutResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/data-engine/v1.0/sites/{siteId}/data-layouts",
-				siteId);
+						"/o/data-engine/v1.0/sites/{siteId}/data-layouts");
+
+			httpInvoker.path("siteId", siteId);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -993,8 +1002,10 @@ public interface DataLayoutResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/data-engine/v1.0/sites/{siteId}/data-layouts/{dataLayoutKey}",
-				siteId, dataLayoutKey);
+						"/o/data-engine/v1.0/sites/{siteId}/data-layouts/{dataLayoutKey}");
+
+			httpInvoker.path("siteId", siteId);
+			httpInvoker.path("dataLayoutKey", dataLayoutKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);

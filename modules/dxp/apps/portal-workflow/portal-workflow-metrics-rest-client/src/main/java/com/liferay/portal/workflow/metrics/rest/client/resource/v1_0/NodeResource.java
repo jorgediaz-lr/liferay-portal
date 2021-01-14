@@ -152,8 +152,9 @@ public interface NodeResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/portal-workflow-metrics/v1.0/processes/{processId}/nodes",
-				processId);
+						"/o/portal-workflow-metrics/v1.0/processes/{processId}/nodes");
+
+			httpInvoker.path("processId", processId);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
