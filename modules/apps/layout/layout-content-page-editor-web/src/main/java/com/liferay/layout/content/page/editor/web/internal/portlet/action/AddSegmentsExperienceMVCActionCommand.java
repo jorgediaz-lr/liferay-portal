@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -199,6 +200,14 @@ public class AddSegmentsExperienceMVCActionCommand
 
 				segmentsEntryId = segmentsExperience.getSegmentsEntryId();
 			}
+
+			return _segmentsExperienceService.appendSegmentsExperience(
+				segmentsEntryId, classNameId, classPK,
+				HashMapBuilder.put(
+					LocaleUtil.getSiteDefault(),
+					ParamUtil.getString(actionRequest, "name")
+				).build(),
+				active, ServiceContextFactory.getInstance(actionRequest));
 		}
 
 		return _segmentsExperienceService.addSegmentsExperience(
