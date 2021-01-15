@@ -27,17 +27,20 @@ ContactSearchDisplayContext contactSearchDisplayContext = ProvisioningWebCompone
 </div>
 
 <div class="container-fluid home">
-	<portlet:actionURL name="/search" var="searchURL" />
-
-	<clay:management-toolbar
-		displayContext="<%= new ViewContactsManagementToolbarDisplayContext(liferayPortletRequest, liferayPortletResponse, request, contactSearchDisplayContext.getSearchContainer()) %>"
-		elementClasses="full-width"
-	/>
-
 	<liferay-ui:search-container
 		cssClass="table-hover"
 		searchContainer="<%= contactSearchDisplayContext.getSearchContainer() %>"
 	>
+		<clay:management-toolbar
+			clearResultsURL="<%= contactSearchDisplayContext.getClearResultsURL() %>"
+			elementClasses="full-width"
+			itemsTotal="<%= searchContainer.getTotal() %>"
+			searchActionURL="<%= contactSearchDisplayContext.getCurrentURL() %>"
+			searchContainerId="contacts"
+			selectable="<%= false %>"
+			showSearch="<%= true %>"
+		/>
+
 		<liferay-ui:search-container-row
 			className="com.liferay.osb.provisioning.web.internal.display.context.ContactDisplay"
 			keyProperty="contactKey"
