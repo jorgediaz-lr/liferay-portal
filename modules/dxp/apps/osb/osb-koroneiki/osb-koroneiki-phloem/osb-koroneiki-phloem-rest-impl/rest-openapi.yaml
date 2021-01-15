@@ -243,6 +243,12 @@ components:
             description:
                 Represents a contact.
             properties:
+                accounts:
+                    description:
+                        The accounts that the contact is assigned to.
+                    items:
+                        $ref: "#/components/schemas/Account"
+                    type: array
                 contactRoles:
                     description:
                         The contact's roles.

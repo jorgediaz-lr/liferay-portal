@@ -43,6 +43,7 @@ import com.liferay.osb.koroneiki.taproot.service.ContactRoleLocalService;
 import com.liferay.osb.koroneiki.taproot.service.ContactService;
 import com.liferay.osb.koroneiki.taproot.service.TeamAccountRoleService;
 import com.liferay.osb.koroneiki.taproot.service.TeamLocalService;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Sort;
@@ -282,6 +283,20 @@ public class AccountResourceImpl
 				account -> AccountUtil.toAccount(account)),
 			pagination,
 			_accountService.getContactAccountsCount(contact.getContactId()));
+	}
+
+	@NestedField(parentClass = Contact.class, value = "accounts")
+	public List<Account> getContactNestedFieldAccounts(
+			@NestedFieldId("key") String contactKey)
+		throws Exception {
+
+		com.liferay.osb.koroneiki.taproot.model.Contact contact =
+			_contactLocalService.getContactByContactKey(contactKey);
+
+		return transform(
+			_accountLocalService.getContactAccounts(
+				contact.getContactId(), QueryUtil.ALL_POS, QueryUtil.ALL_POS),
+			account -> AccountUtil.toAccount(account));
 	}
 
 	@Override
