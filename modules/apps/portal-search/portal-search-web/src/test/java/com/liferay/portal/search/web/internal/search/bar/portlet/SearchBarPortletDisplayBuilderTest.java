@@ -16,6 +16,8 @@ package com.liferay.portal.search.web.internal.search.bar.portlet;
 
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
@@ -34,6 +36,8 @@ import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.util.Optional;
 
+import javax.portlet.RenderRequest;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Assert;
@@ -46,7 +50,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import javax.portlet.RenderRequest;
+import org.powermock.api.mockito.PowerMockito;
 
 /**
  * @author Adam Brandizzi
@@ -61,10 +65,10 @@ public class SearchBarPortletDisplayBuilderTest {
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
-
 		setUpHttp();
-		setUpThemeDisplay();
+		setUpLanguageUtil();
 		setUpPortal();
+		setUpThemeDisplay();
 	}
 
 	@Test
@@ -265,16 +269,6 @@ public class SearchBarPortletDisplayBuilderTest {
 		return url.substring(0, pos);
 	}
 
-	protected void setUpPortal() {
-		Mockito.doReturn(
-			createLiferayPortletRequest()
-		).when(
-			_portal
-		).getLiferayPortletRequest(
-			Mockito.anyObject()
-		);
-	}
-
 	protected void setUpHttp() {
 		Mockito.doAnswer(
 			invocation -> getPath(invocation.getArgumentAt(0, String.class))
@@ -282,6 +276,22 @@ public class SearchBarPortletDisplayBuilderTest {
 			_http
 		).getPath(
 			Mockito.anyString()
+		);
+	}
+
+	protected void setUpLanguageUtil() {
+		LanguageUtil languageUtil = new LanguageUtil();
+
+		languageUtil.setLanguage(PowerMockito.mock(Language.class));
+	}
+
+	protected void setUpPortal() {
+		Mockito.doReturn(
+			createLiferayPortletRequest()
+		).when(
+			_portal
+		).getLiferayPortletRequest(
+			Mockito.anyObject()
 		);
 	}
 
@@ -333,6 +343,9 @@ public class SearchBarPortletDisplayBuilderTest {
 
 	@Mock
 	private Portal _portal;
+
+	@Mock
+	private PortletDisplay _portletDisplay;
 
 	@Mock
 	private ThemeDisplay _themeDisplay;
