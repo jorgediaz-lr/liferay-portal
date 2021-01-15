@@ -92,7 +92,7 @@ public class ViewTeamDisplayContext extends ViewAccountDisplayContext {
 							1000);
 
 					return new ContactDisplay(
-						httpServletRequest, 0, contact, contactRoles);
+						httpServletRequest, contact, contactRoles);
 				}));
 
 		int count = (int)contactWebService.searchCount(keywords, sb.toString());

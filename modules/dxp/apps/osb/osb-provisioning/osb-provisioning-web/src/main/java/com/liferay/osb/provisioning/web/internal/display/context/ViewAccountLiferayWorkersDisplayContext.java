@@ -70,7 +70,7 @@ public class ViewAccountLiferayWorkersDisplayContext
 
 		if (contact != null) {
 			ContactDisplay contactDisplay = new ContactDisplay(
-				httpServletRequest, 0, contact, null);
+				httpServletRequest, contact, null);
 
 			data.put("fullName", contactDisplay.getFullName());
 		}
@@ -213,7 +213,7 @@ public class ViewAccountLiferayWorkersDisplayContext
 							1000);
 
 					return new ContactDisplay(
-						httpServletRequest, 0, contact, contactRoles);
+						httpServletRequest, contact, contactRoles);
 				}));
 
 		int count = (int)contactWebService.searchCount(keywords, sb.toString());

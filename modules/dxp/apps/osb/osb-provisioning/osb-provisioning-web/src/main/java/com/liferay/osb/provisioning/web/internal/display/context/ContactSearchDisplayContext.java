@@ -53,6 +53,18 @@ public class ContactSearchDisplayContext {
 			_renderRequest, _renderResponse);
 	}
 
+	public String getClearResultsURL() {
+		PortletURL clearResultsURL = _currentURLObj;
+
+		clearResultsURL.setParameter("keywords", StringPool.BLANK);
+
+		return clearResultsURL.toString();
+	}
+
+	public String getCurrentURL() {
+		return _currentURLObj.toString();
+	}
+
 	public SearchContainer getSearchContainer() throws Exception {
 		SearchContainer searchContainer = new SearchContainer(
 			_renderRequest, _currentURLObj, Collections.emptyList(),
@@ -69,10 +81,7 @@ public class ContactSearchDisplayContext {
 			TransformUtil.transform(
 				contacts,
 				contact -> new ContactDisplay(
-					_httpServletRequest,
-					_accountWebService.getContactAccountsCount(
-						contact.getUuid()),
-					contact, null)));
+					_httpServletRequest, contact, null)));
 
 		int count = (int)_contactWebService.searchCount(
 			keywords, StringPool.BLANK);

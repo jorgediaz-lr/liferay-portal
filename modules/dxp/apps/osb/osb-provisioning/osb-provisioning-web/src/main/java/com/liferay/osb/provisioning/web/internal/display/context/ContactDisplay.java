@@ -14,6 +14,7 @@
 
 package com.liferay.osb.provisioning.web.internal.display.context;
 
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Entitlement;
@@ -35,17 +36,22 @@ import javax.servlet.http.HttpServletRequest;
 public class ContactDisplay {
 
 	public ContactDisplay(
-		HttpServletRequest httpServletRequest, long accountsCount,
-		Contact contact, List<ContactRole> contactRoles) {
+		HttpServletRequest httpServletRequest, Contact contact,
+		List<ContactRole> contactRoles) {
 
 		_httpServletRequest = httpServletRequest;
-		_accountsCount = accountsCount;
 		_contact = contact;
 		_contactRoles = contactRoles;
 	}
 
 	public String getAccountsCount() {
-		return String.valueOf(_accountsCount);
+		Account[] accounts = _contact.getAccounts();
+
+		if (accounts != null) {
+			return String.valueOf(accounts.length);
+		}
+
+		return String.valueOf(0);
 	}
 
 	public List<String> getContactRoleNames() {
@@ -136,7 +142,6 @@ public class ContactDisplay {
 		return "label label-danger";
 	}
 
-	private final long _accountsCount;
 	private final Contact _contact;
 	private final List<ContactRole> _contactRoles;
 	private final HttpServletRequest _httpServletRequest;
