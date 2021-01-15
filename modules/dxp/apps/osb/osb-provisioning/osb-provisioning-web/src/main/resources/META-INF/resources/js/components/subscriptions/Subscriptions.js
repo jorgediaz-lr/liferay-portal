@@ -87,12 +87,14 @@ function Subscriptions({
 				</ClayTable.Row>
 			</ClayTable.Head>
 			<ClayTable.Body>
-				<BulkInput
-					accountName={accountName}
-					instanceSizes={instanceSizes}
-					statusOptions={statusOptions}
-					subscriptionsType={subscriptionsType}
-				/>
+				{subscriptions.size > 1 && (
+					<BulkInput
+						accountName={accountName}
+						instanceSizes={instanceSizes}
+						statusOptions={statusOptions}
+						subscriptionsType={subscriptionsType}
+					/>
+				)}
 
 				{subscriptions.toList().map(subscription => (
 					<Subscription

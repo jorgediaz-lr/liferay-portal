@@ -132,13 +132,29 @@ describe('Subscriptions', () => {
 			expect(getByText('Product D')).toBeTruthy();
 		});
 
-		it('displays the account name for each of the subscriptions and the bulk input', () => {
+		it('displays the account name for each of the subscriptions and the Bulk Input', () => {
 			const {getAllByText} = renderSubscriptions();
 
 			const allAccountNames = getAllByText('Test Account');
 
-			expect(allAccountNames[0]).toBeTruthy();
 			expect(allAccountNames.length).toBe(5);
+		});
+
+		it('does not display Bulk Input when there is only one subscription', () => {
+			const {getAllByText} = renderSubscriptions({
+				subscriptions: [
+					{
+						endDate: '2021-12-08',
+						productKey: 'KOR-35735',
+						productName: 'Product A',
+						startDate: '2020-12-08'
+					}
+				]
+			});
+
+			const allAccountNames = getAllByText('Test Account');
+
+			expect(allAccountNames.length).toBe(1);
 		});
 
 		it('removes a subscription when the delete icon for that subscription is clicked', () => {
@@ -212,6 +228,53 @@ describe('Subscriptions', () => {
 			expect(dateFields[0].disabled).toBeTruthy();
 			expect(dateFields[1].disabled).toBeTruthy();
 			expect(dateFields[2].disabled).toBeTruthy();
+		});
+
+		it('does not display Bulk Input when there is only one subscription', () => {
+			const {getAllByText} = renderSubscriptions({
+				subscriptions: mockEditSubscriptions(),
+				subscriptionsType: EDIT_SUBSCRIPTIONS
+			});
+
+			const allAccountNames = getAllByText('Test Account');
+
+			expect(allAccountNames.length).toBe(1);
+		});
+
+		it('displays the account name for each of the subscriptions and the Bulk Input', () => {
+			const {getAllByText} = renderSubscriptions({
+				subscriptions: [
+					{
+						endDate: '2022-01-20',
+						key: 'KOR-38323',
+						originalEndDate: '2021-12-21',
+						perpetual: true,
+						productName: 'Product E',
+						quantity: 1,
+						salesforceOpportunityKey: 'salesForceKey123',
+						sizing: 1,
+						startDate: '2020-12-21',
+						status: 'Approved'
+					},
+					{
+						endDate: '2022-01-20',
+						key: 'KOR-38323',
+						originalEndDate: '2021-12-21',
+						perpetual: true,
+						productName: 'Product E',
+						quantity: 1,
+						salesforceOpportunityKey: 'salesForceKey456',
+						sizing: 1,
+						startDate: '2020-12-21',
+						status: 'Approved'
+					}
+				],
+				subscriptionsType: EDIT_SUBSCRIPTIONS
+			});
+
+			const allAccountNames = getAllByText('Test Account');
+
+			expect(allAccountNames.length).toBe(3);
 		});
 	});
 });
