@@ -51,7 +51,7 @@ public class ContactDisplay {
 			return String.valueOf(accounts.length);
 		}
 
-		return String.valueOf(0);
+		return "0";
 	}
 
 	public List<String> getContactRoleNames() {

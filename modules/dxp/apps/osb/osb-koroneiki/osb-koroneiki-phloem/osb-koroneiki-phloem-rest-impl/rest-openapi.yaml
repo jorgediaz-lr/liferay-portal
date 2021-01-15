@@ -23,7 +23,7 @@ components:
             properties:
                 assignedTeams:
                     description:
-                        The teams that are assigned to this account.
+                        The teams that are assigned to this account. Optional field that can retrieved with nestedFields.
                     items:
                         $ref: "#/components/schemas/Team"
                     type: array
@@ -37,13 +37,13 @@ components:
                     type: string
                 contacts:
                     description:
-                        The account's contacts.
+                        The account's contacts. Optional field that can retrieved with nestedFields.
                     items:
                         $ref: "#/components/schemas/Contact"
                     type: array
                 customerContacts:
                     description:
-                        The account's customer contacts.
+                        The account's customer contacts. Optional field that can retrieved with nestedFields.
                     items:
                         $ref: "#/components/schemas/Contact"
                     readOnly: true
@@ -121,7 +121,7 @@ components:
                     type: array
                 productPurchases:
                     description:
-                        The products that the account has purchased.
+                        The products that the account has purchased. Optional field that can retrieved with nestedFields.
                     items:
                         $ref: "#/components/schemas/ProductPurchase"
                     type: array
@@ -150,7 +150,7 @@ components:
                     type: string
                 workerContacts:
                     description:
-                        The account's worker contacts.
+                        The account's worker contacts. Optional field that can retrieved with nestedFields.
                     items:
                         $ref: "#/components/schemas/Contact"
                     readOnly: true
@@ -245,13 +245,13 @@ components:
             properties:
                 accounts:
                     description:
-                        The accounts that the contact is assigned to.
+                        The accounts that the contact is assigned to. Optional field that can retrieved with nestedFields.
                     items:
                         $ref: "#/components/schemas/Account"
                     type: array
                 contactRoles:
                     description:
-                        The contact's roles.
+                        The contact's roles. Optional field that can retrieved along with the account nestedField.
                     items:
                         $ref: "#/components/schemas/ContactRole"
                     type: array
@@ -872,7 +872,7 @@ components:
             properties:
                 account:
                     description:
-                        The team's account.
+                        The team's account. Optional field that can retrieved with nestedFields.
                     items:
                         $ref: "#/components/schemas/Account"
                     readOnly: true
@@ -884,7 +884,7 @@ components:
                     type: string
                 contacts:
                     description:
-                        The team's contacts.
+                        The team's contacts. Optional field that can retrieved with nestedFields.
                     items:
                         $ref: "#/components/schemas/Contact"
                     readOnly: true
@@ -923,7 +923,7 @@ components:
                     type: boolean
                 teamRoles:
                     description:
-                        The team's account team roles.
+                        The team's account team roles. Optional field that can retrieved with nestedFields.
                     items:
                         $ref: "#/components/schemas/TeamRole"
                     type: array
