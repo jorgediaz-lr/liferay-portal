@@ -60,7 +60,42 @@ public class Contact {
 		return ObjectMapperUtil.readValue(Contact.class, json);
 	}
 
-	@Schema(description = "The contact's roles.")
+	@Schema(
+		description = "The accounts that the contact is assigned to. Optional field that can retrieved with nestedFields."
+	)
+	@Valid
+	public Account[] getAccounts() {
+		return accounts;
+	}
+
+	public void setAccounts(Account[] accounts) {
+		this.accounts = accounts;
+	}
+
+	@JsonIgnore
+	public void setAccounts(
+		UnsafeSupplier<Account[], Exception> accountsUnsafeSupplier) {
+
+		try {
+			accounts = accountsUnsafeSupplier.get();
+		}
+		catch (RuntimeException re) {
+			throw re;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@GraphQLField(
+		description = "The accounts that the contact is assigned to. Optional field that can retrieved with nestedFields."
+	)
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	protected Account[] accounts;
+
+	@Schema(
+		description = "The contact's roles. Optional field that can retrieved along with the account nestedField."
+	)
 	@Valid
 	public ContactRole[] getContactRoles() {
 		return contactRoles;
@@ -85,7 +120,9 @@ public class Contact {
 		}
 	}
 
-	@GraphQLField(description = "The contact's roles.")
+	@GraphQLField(
+		description = "The contact's roles. Optional field that can retrieved along with the account nestedField."
+	)
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected ContactRole[] contactRoles;
 
@@ -498,6 +535,26 @@ public class Contact {
 
 		DateFormat liferayToJSONDateFormat = new SimpleDateFormat(
 			"yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+		if (accounts != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"accounts\": ");
+
+			sb.append("[");
+
+			for (int i = 0; i < accounts.length; i++) {
+				sb.append(String.valueOf(accounts[i]));
+
+				if ((i + 1) < accounts.length) {
+					sb.append(", ");
+				}
+			}
+
+			sb.append("]");
+		}
 
 		if (contactRoles != null) {
 			if (sb.length() > 1) {

@@ -33,6 +33,27 @@ public class Contact implements Cloneable {
 		return ContactSerDes.toDTO(json);
 	}
 
+	public Account[] getAccounts() {
+		return accounts;
+	}
+
+	public void setAccounts(Account[] accounts) {
+		this.accounts = accounts;
+	}
+
+	public void setAccounts(
+		UnsafeSupplier<Account[], Exception> accountsUnsafeSupplier) {
+
+		try {
+			accounts = accountsUnsafeSupplier.get();
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected Account[] accounts;
+
 	public ContactRole[] getContactRoles() {
 		return contactRoles;
 	}

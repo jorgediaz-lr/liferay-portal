@@ -57,7 +57,9 @@ public class Team {
 		return ObjectMapperUtil.readValue(Team.class, json);
 	}
 
-	@Schema(description = "The team's account.")
+	@Schema(
+		description = "The team's account. Optional field that can retrieved with nestedFields."
+	)
 	@Valid
 	public Account getAccount() {
 		return account;
@@ -82,7 +84,9 @@ public class Team {
 		}
 	}
 
-	@GraphQLField(description = "The team's account.")
+	@GraphQLField(
+		description = "The team's account. Optional field that can retrieved with nestedFields."
+	)
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	protected Account account;
 
@@ -114,7 +118,9 @@ public class Team {
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	protected String accountKey;
 
-	@Schema(description = "The team's contacts.")
+	@Schema(
+		description = "The team's contacts. Optional field that can retrieved with nestedFields."
+	)
 	@Valid
 	public Contact[] getContacts() {
 		return contacts;
@@ -139,7 +145,9 @@ public class Team {
 		}
 	}
 
-	@GraphQLField(description = "The team's contacts.")
+	@GraphQLField(
+		description = "The team's contacts. Optional field that can retrieved with nestedFields."
+	)
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	protected Contact[] contacts;
 
@@ -319,7 +327,9 @@ public class Team {
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	protected Boolean system;
 
-	@Schema(description = "The team's account team roles.")
+	@Schema(
+		description = "The team's account team roles. Optional field that can retrieved with nestedFields."
+	)
 	@Valid
 	public TeamRole[] getTeamRoles() {
 		return teamRoles;
@@ -344,7 +354,9 @@ public class Team {
 		}
 	}
 
-	@GraphQLField(description = "The team's account team roles.")
+	@GraphQLField(
+		description = "The team's account team roles. Optional field that can retrieved with nestedFields."
+	)
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected TeamRole[] teamRoles;
 

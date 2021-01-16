@@ -529,7 +529,7 @@ public class Query {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {contactByEmailAddresEmailAddress(emailAddress: ___){contactRoles, dateCreated, dateModified, emailAddress, emailAddressVerified, entitlements, externalLinks, firstName, key, languageId, lastName, middleName, teams, uuid}}"}' -u 'test@liferay.com:test'
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {contactByEmailAddresEmailAddress(emailAddress: ___){accounts, contactRoles, dateCreated, dateModified, emailAddress, emailAddressVerified, entitlements, externalLinks, firstName, key, languageId, lastName, middleName, teams, uuid}}"}' -u 'test@liferay.com:test'
 	 */
 	@GraphQLField(description = "Retrieves the contact.")
 	public Contact contactByEmailAddresEmailAddress(
@@ -547,7 +547,7 @@ public class Query {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {contactByUuidContactUuid(contactUuid: ___){contactRoles, dateCreated, dateModified, emailAddress, emailAddressVerified, entitlements, externalLinks, firstName, key, languageId, lastName, middleName, teams, uuid}}"}' -u 'test@liferay.com:test'
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {contactByUuidContactUuid(contactUuid: ___){accounts, contactRoles, dateCreated, dateModified, emailAddress, emailAddressVerified, entitlements, externalLinks, firstName, key, languageId, lastName, middleName, teams, uuid}}"}' -u 'test@liferay.com:test'
 	 */
 	@GraphQLField(description = "Retrieves the contact.")
 	public Contact contactByUuidContactUuid(

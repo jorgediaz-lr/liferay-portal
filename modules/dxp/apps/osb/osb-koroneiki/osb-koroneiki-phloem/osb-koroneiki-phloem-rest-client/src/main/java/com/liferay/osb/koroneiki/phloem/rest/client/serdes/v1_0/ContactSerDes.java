@@ -14,6 +14,7 @@
 
 package com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0;
 
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Entitlement;
@@ -63,6 +64,26 @@ public class ContactSerDes {
 
 		DateFormat liferayToJSONDateFormat = new SimpleDateFormat(
 			"yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+		if (contact.getAccounts() != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"accounts\": ");
+
+			sb.append("[");
+
+			for (int i = 0; i < contact.getAccounts().length; i++) {
+				sb.append(String.valueOf(contact.getAccounts()[i]));
+
+				if ((i + 1) < contact.getAccounts().length) {
+					sb.append(", ");
+				}
+			}
+
+			sb.append("]");
+		}
 
 		if (contact.getContactRoles() != null) {
 			if (sb.length() > 1) {
@@ -302,6 +323,13 @@ public class ContactSerDes {
 		DateFormat liferayToJSONDateFormat = new SimpleDateFormat(
 			"yyyy-MM-dd'T'HH:mm:ss'Z'");
 
+		if (contact.getAccounts() == null) {
+			map.put("accounts", null);
+		}
+		else {
+			map.put("accounts", String.valueOf(contact.getAccounts()));
+		}
+
 		if (contact.getContactRoles() == null) {
 			map.put("contactRoles", null);
 		}
@@ -427,7 +455,19 @@ public class ContactSerDes {
 			Contact contact, String jsonParserFieldName,
 			Object jsonParserFieldValue) {
 
-			if (Objects.equals(jsonParserFieldName, "contactRoles")) {
+			if (Objects.equals(jsonParserFieldName, "accounts")) {
+				if (jsonParserFieldValue != null) {
+					contact.setAccounts(
+						Stream.of(
+							toStrings((Object[])jsonParserFieldValue)
+						).map(
+							object -> AccountSerDes.toDTO((String)object)
+						).toArray(
+							size -> new Account[size]
+						));
+				}
+			}
+			else if (Objects.equals(jsonParserFieldName, "contactRoles")) {
 				if (jsonParserFieldValue != null) {
 					contact.setContactRoles(
 						Stream.of(

@@ -57,7 +57,9 @@ public class Account {
 		return ObjectMapperUtil.readValue(Account.class, json);
 	}
 
-	@Schema(description = "The teams that are assigned to this account.")
+	@Schema(
+		description = "The teams that are assigned to this account. Optional field that can retrieved with nestedFields."
+	)
 	@Valid
 	public Team[] getAssignedTeams() {
 		return assignedTeams;
@@ -82,7 +84,9 @@ public class Account {
 		}
 	}
 
-	@GraphQLField(description = "The teams that are assigned to this account.")
+	@GraphQLField(
+		description = "The teams that are assigned to this account. Optional field that can retrieved with nestedFields."
+	)
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Team[] assignedTeams;
 
@@ -140,7 +144,9 @@ public class Account {
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected String contactEmailAddress;
 
-	@Schema(description = "The account's contacts.")
+	@Schema(
+		description = "The account's contacts. Optional field that can retrieved with nestedFields."
+	)
 	@Valid
 	public Contact[] getContacts() {
 		return contacts;
@@ -165,11 +171,15 @@ public class Account {
 		}
 	}
 
-	@GraphQLField(description = "The account's contacts.")
+	@GraphQLField(
+		description = "The account's contacts. Optional field that can retrieved with nestedFields."
+	)
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Contact[] contacts;
 
-	@Schema(description = "The account's customer contacts.")
+	@Schema(
+		description = "The account's customer contacts. Optional field that can retrieved with nestedFields."
+	)
 	@Valid
 	public Contact[] getCustomerContacts() {
 		return customerContacts;
@@ -194,7 +204,9 @@ public class Account {
 		}
 	}
 
-	@GraphQLField(description = "The account's customer contacts.")
+	@GraphQLField(
+		description = "The account's customer contacts. Optional field that can retrieved with nestedFields."
+	)
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	protected Contact[] customerContacts;
 
@@ -613,7 +625,9 @@ public class Account {
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected PostalAddress[] postalAddresses;
 
-	@Schema(description = "The products that the account has purchased.")
+	@Schema(
+		description = "The products that the account has purchased. Optional field that can retrieved with nestedFields."
+	)
 	@Valid
 	public ProductPurchase[] getProductPurchases() {
 		return productPurchases;
@@ -639,7 +653,9 @@ public class Account {
 		}
 	}
 
-	@GraphQLField(description = "The products that the account has purchased.")
+	@GraphQLField(
+		description = "The products that the account has purchased. Optional field that can retrieved with nestedFields."
+	)
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected ProductPurchase[] productPurchases;
 
@@ -811,7 +827,9 @@ public class Account {
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected String website;
 
-	@Schema(description = "The account's worker contacts.")
+	@Schema(
+		description = "The account's worker contacts. Optional field that can retrieved with nestedFields."
+	)
 	@Valid
 	public Contact[] getWorkerContacts() {
 		return workerContacts;
@@ -836,7 +854,9 @@ public class Account {
 		}
 	}
 
-	@GraphQLField(description = "The account's worker contacts.")
+	@GraphQLField(
+		description = "The account's worker contacts. Optional field that can retrieved with nestedFields."
+	)
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	protected Contact[] workerContacts;
 
