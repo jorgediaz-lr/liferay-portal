@@ -39,7 +39,6 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -53,7 +52,7 @@ import com.liferay.segments.service.SegmentsExperienceService;
 import com.liferay.segments.service.SegmentsExperimentRelService;
 import com.liferay.segments.service.SegmentsExperimentService;
 
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -181,15 +180,8 @@ public class AddSegmentsExperienceMVCActionCommand
 			SegmentsExperiment segmentsExperiment)
 		throws PortalException {
 
-		boolean active = ParamUtil.getBoolean(actionRequest, "active", true);
-
-		long segmentsEntryId = ParamUtil.getLong(
-			actionRequest, "segmentsEntryId");
-
 		if (segmentsExperiment != null) {
-			active = false;
-
-			segmentsEntryId = SegmentsEntryConstants.ID_DEFAULT;
+			long segmentsEntryId = SegmentsEntryConstants.ID_DEFAULT;
 
 			if (segmentsExperiment.getSegmentsExperienceId() !=
 					SegmentsExperienceConstants.ID_DEFAULT) {
@@ -203,23 +195,20 @@ public class AddSegmentsExperienceMVCActionCommand
 
 			return _segmentsExperienceService.appendSegmentsExperience(
 				segmentsEntryId, classNameId, classPK,
-				HashMapBuilder.put(
+				Collections.singletonMap(
 					LocaleUtil.getSiteDefault(),
-					ParamUtil.getString(actionRequest, "name")
-				).build(),
-				active, ServiceContextFactory.getInstance(actionRequest));
+					ParamUtil.getString(actionRequest, "name")),
+				false, ServiceContextFactory.getInstance(actionRequest));
 		}
 
 		return _segmentsExperienceService.addSegmentsExperience(
-			segmentsEntryId, classNameId, classPK,
-			new HashMap<Locale, String>() {
-				{
-					put(
-						LocaleUtil.getSiteDefault(),
-						ParamUtil.getString(actionRequest, "name"));
-				}
-			},
-			active, ServiceContextFactory.getInstance(actionRequest));
+			ParamUtil.getLong(actionRequest, "segmentsEntryId"), classNameId,
+			classPK,
+			Collections.singletonMap(
+				LocaleUtil.getSiteDefault(),
+				ParamUtil.getString(actionRequest, "name")),
+			ParamUtil.getBoolean(actionRequest, "active", true),
+			ServiceContextFactory.getInstance(actionRequest));
 	}
 
 	private SegmentsExperimentRel _addSegmentsExperimentRel(
