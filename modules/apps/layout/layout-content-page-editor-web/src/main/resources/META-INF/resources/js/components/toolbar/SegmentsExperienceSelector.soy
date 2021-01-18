@@ -6,6 +6,7 @@
 {template .render}
 	{@param? activeSegmentsExperienceName: string }
 	{@param? availableSegmentsExperiences: list<[
+		active: bool,
 		segmentsExperienceId: string,
 		hasSegmentsExperiment: bool,
 		name: string,
@@ -174,26 +175,49 @@
 							<li class="{$experienceClasses}" key="{$experience.segmentsExperienceId}">
 								<span class="overflow-hidden p-2 w-100">
 									<button
-										class="title p-1 w-100 btn btn-unstyled d-flex justify-content-between align-items-baseline text-dark"
+										class="btn btn-unstyled p-1 text-dark w100"
 										data-onclick="{$_handleSegmentsExperienceClick}"
 										data-segments-experience-id="{$experience.segmentsExperienceId}"
 										ref="selectExperienceButton{$experience.segmentsExperienceId}"
 										tabindex="0"
 										type="button"
 									>
-										<span class="d-flex flex-column flex-grow-1 truncate-text">
-											<strong class="truncate-text">{$experience.name}</strong>
+										<div class="autofit-row">
+											<strong class="text-truncate">
+												{$experience.name}
+											</strong>
 
-											<span class="audience d-block truncate-text">
-												<span class="text-secondary">
-													{msg desc=""}audience{/msg}
-													{sp}-{sp}
+											{let $activeLabel kind="text"}
+												{msg desc=""}active{/msg}
+											{/let}
+
+											{if $experience.active }
+												{call ClayLabel.render}
+													{param elementClasses: 'inline-item-after' /}
+													{param label: $activeLabel /}
+													{param style: 'success' /}
+												{/call}
+											{/if}
+										</div>
+
+										<div class="autofit-row">
+											<div class="autofit-col">
+												{msg desc=""}audience{/msg}
+											</div>
+
+											<div class="autofit-col">
+												<span class="mx-1">-</span>
+											</div>
+
+											<div class="autofit-col autofit-col-expand">
+												<span class="text-truncate-inline">
+													<span class="text-secondary text-truncate">
+														{$experience.segmentsEntryName}
+													</span>
 												</span>
-
-												{$experience.segmentsEntryName}
-											</span>
-										</span>
-									</button>
+											</div>
+										</div>
+								</button>
 								</span>
 
 								{if ($defaultSegmentsExperienceId != $experience.segmentsExperienceId) and not $experience.hasSegmentsExperiment}
