@@ -263,7 +263,6 @@ function createSegmentsExperienceReducer(state, action) {
 				segmentsExperience
 			}) {
 				const {
-					active,
 					name,
 					priority,
 					segmentsEntryId,
@@ -274,7 +273,6 @@ function createSegmentsExperienceReducer(state, action) {
 					nextState,
 					['availableSegmentsExperiences', segmentsExperienceId],
 					{
-						active,
 						name,
 						priority,
 						segmentsEntryId,
@@ -520,7 +518,6 @@ function editSegmentsExperienceReducer(state, action) {
 			},
 			obj => {
 				const {
-					active,
 					nameCurrentValue,
 					priority,
 					segmentsEntryId,
@@ -531,7 +528,6 @@ function editSegmentsExperienceReducer(state, action) {
 					nextState,
 					['availableSegmentsExperiences', segmentsExperienceId],
 					{
-						active,
 						name: nameCurrentValue,
 						priority,
 						segmentsEntryId,
