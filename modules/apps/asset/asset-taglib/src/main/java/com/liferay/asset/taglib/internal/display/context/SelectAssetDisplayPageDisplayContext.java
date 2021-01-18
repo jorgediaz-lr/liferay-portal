@@ -261,13 +261,14 @@ public class SelectAssetDisplayPageDisplayContext {
 			(ThemeDisplay)_httpServletRequest.getAttribute(
 				WebKeys.THEME_DISPLAY);
 
-		AssetRendererFactory assetRendererFactory =
+		AssetRendererFactory<?> assetRendererFactory =
 			AssetRendererFactoryRegistryUtil.
 				getAssetRendererFactoryByClassNameId(_classNameId);
 
 		try {
-			AssetRenderer assetRenderer = assetRendererFactory.getAssetRenderer(
-				_classPK, AssetRendererFactory.TYPE_LATEST);
+			AssetRenderer<?> assetRenderer =
+				assetRendererFactory.getAssetRenderer(
+					_classPK, AssetRendererFactory.TYPE_LATEST);
 
 			String viewInContextURL = assetRenderer.getURLViewInContext(
 				_liferayPortletRequest, _liferayPortletResponse,
