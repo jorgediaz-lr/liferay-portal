@@ -16,6 +16,7 @@ package com.liferay.layout.content.page.editor.web.internal.display.context;
 
 import com.liferay.fragment.renderer.FragmentRendererController;
 import com.liferay.layout.content.page.editor.sidebar.panel.ContentPageEditorSidebarPanel;
+import com.liferay.layout.content.page.editor.web.internal.segments.SegmentsExperienceUtil;
 import com.liferay.layout.page.template.model.LayoutPageTemplateStructure;
 import com.liferay.layout.page.template.model.LayoutPageTemplateStructureRel;
 import com.liferay.layout.page.template.service.LayoutPageTemplateStructureLocalServiceUtil;
@@ -40,7 +41,6 @@ import com.liferay.segments.model.SegmentsEntry;
 import com.liferay.segments.model.SegmentsExperience;
 import com.liferay.segments.service.SegmentsEntryServiceUtil;
 import com.liferay.segments.service.SegmentsExperienceLocalServiceUtil;
-import com.liferay.segments.service.SegmentsExperienceServiceUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -176,85 +176,6 @@ public class ContentPageLayoutEditorDisplayContext
 		return availableSegmentsEntriesSoyContext;
 	}
 
-	private SoyContext _getAvailableSegmentsExperiencesSoyContext()
-		throws PortalException {
-
-		SoyContext availableSegmentsExperiencesSoyContext =
-			SoyContextFactoryUtil.createSoyContext();
-
-		List<SegmentsExperience> segmentsExperiences =
-			SegmentsExperienceServiceUtil.getSegmentsExperiences(
-				getGroupId(), PortalUtil.getClassNameId(Layout.class.getName()),
-				themeDisplay.getPlid(), true);
-
-		boolean addedDefault = false;
-
-		for (SegmentsExperience segmentsExperience : segmentsExperiences) {
-			if ((segmentsExperience.getPriority() <
-					SegmentsExperienceConstants.PRIORITY_DEFAULT) &&
-				!addedDefault) {
-
-				availableSegmentsExperiencesSoyContext.put(
-					String.valueOf(SegmentsExperienceConstants.ID_DEFAULT),
-					_getDefaultSegmentsExperienceSoyContext());
-
-				addedDefault = true;
-			}
-
-			SoyContext segmentsExperienceSoyContext =
-				SoyContextFactoryUtil.createSoyContext();
-
-			segmentsExperienceSoyContext.put(
-				"hasSegmentsExperiment",
-				segmentsExperience.hasSegmentsExperiment()
-			).put(
-				"name", segmentsExperience.getName(themeDisplay.getLocale())
-			).put(
-				"priority", segmentsExperience.getPriority()
-			).put(
-				"segmentsEntryId",
-				String.valueOf(segmentsExperience.getSegmentsEntryId())
-			).put(
-				"segmentsExperienceId",
-				String.valueOf(segmentsExperience.getSegmentsExperienceId())
-			);
-
-			availableSegmentsExperiencesSoyContext.put(
-				String.valueOf(segmentsExperience.getSegmentsExperienceId()),
-				segmentsExperienceSoyContext);
-		}
-
-		if (!addedDefault) {
-			availableSegmentsExperiencesSoyContext.put(
-				String.valueOf(SegmentsExperienceConstants.ID_DEFAULT),
-				_getDefaultSegmentsExperienceSoyContext());
-		}
-
-		return availableSegmentsExperiencesSoyContext;
-	}
-
-	private SoyContext _getDefaultSegmentsExperienceSoyContext() {
-		SoyContext defaultSegmentsExperienceSoyContext =
-			SoyContextFactoryUtil.createSoyContext();
-
-		defaultSegmentsExperienceSoyContext.put(
-			"hasSegmentsExperiment", false
-		).put(
-			"name",
-			SegmentsExperienceConstants.getDefaultSegmentsExperienceName(
-				themeDisplay.getLocale())
-		).put(
-			"priority", SegmentsExperienceConstants.PRIORITY_DEFAULT
-		).put(
-			"segmentsEntryId", String.valueOf(SegmentsEntryConstants.ID_DEFAULT)
-		).put(
-			"segmentsExperienceId",
-			String.valueOf(SegmentsExperienceConstants.ID_DEFAULT)
-		);
-
-		return defaultSegmentsExperienceSoyContext;
-	}
-
 	private String _getEditSegmentsEntryURL() throws PortalException {
 		if (_editSegmentsEntryURL != null) {
 			return _editSegmentsEntryURL;
@@ -376,7 +297,8 @@ public class ContentPageLayoutEditorDisplayContext
 			"availableSegmentsEntries", _getAvailableSegmentsEntriesSoyContext()
 		).put(
 			"availableSegmentsExperiences",
-			_getAvailableSegmentsExperiencesSoyContext()
+			SegmentsExperienceUtil.getAvailableSegmentsExperiencesSoyContext(
+				themeDisplay)
 		).put(
 			"defaultSegmentsEntryId", SegmentsEntryConstants.ID_DEFAULT
 		).put(

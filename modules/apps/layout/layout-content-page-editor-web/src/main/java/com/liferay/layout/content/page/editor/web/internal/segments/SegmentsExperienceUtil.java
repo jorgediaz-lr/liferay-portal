@@ -22,12 +22,20 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.PortletPreferences;
 import com.liferay.portal.kernel.service.PortletLocalService;
 import com.liferay.portal.kernel.service.PortletPreferencesLocalService;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
+import com.liferay.portal.template.soy.util.SoyContext;
+import com.liferay.portal.template.soy.util.SoyContextFactoryUtil;
+import com.liferay.segments.constants.SegmentsEntryConstants;
 import com.liferay.segments.constants.SegmentsExperienceConstants;
+import com.liferay.segments.model.SegmentsExperience;
+import com.liferay.segments.service.SegmentsExperienceServiceUtil;
 import com.liferay.segments.util.SegmentsExperiencePortletUtil;
 
 import java.util.HashMap;
@@ -239,6 +247,89 @@ public class SegmentsExperienceUtil {
 		copyPortletPreferences(
 			classPK, portletLocalService, portletPreferencesLocalService,
 			sourceSegmentsExperienceId, targetSegmentsExperienceId);
+	}
+
+	public static SoyContext getAvailableSegmentsExperiencesSoyContext(
+			ThemeDisplay themeDisplay)
+		throws PortalException {
+
+		SoyContext availableSegmentsExperiencesSoyContext =
+			SoyContextFactoryUtil.createSoyContext();
+
+		List<SegmentsExperience> segmentsExperiences =
+			SegmentsExperienceServiceUtil.getSegmentsExperiences(
+				themeDisplay.getScopeGroupId(),
+				PortalUtil.getClassNameId(Layout.class.getName()),
+				themeDisplay.getPlid(), true);
+
+		boolean addedDefault = false;
+
+		for (SegmentsExperience segmentsExperience : segmentsExperiences) {
+			if ((segmentsExperience.getPriority() <
+					SegmentsExperienceConstants.PRIORITY_DEFAULT) &&
+				!addedDefault) {
+
+				availableSegmentsExperiencesSoyContext.put(
+					String.valueOf(SegmentsExperienceConstants.ID_DEFAULT),
+					_getDefaultSegmentsExperienceSoyContext(themeDisplay));
+
+				addedDefault = true;
+			}
+
+			SoyContext segmentsExperienceSoyContext =
+				SoyContextFactoryUtil.createSoyContext();
+
+			segmentsExperienceSoyContext.put(
+				"hasSegmentsExperiment",
+				segmentsExperience.hasSegmentsExperiment()
+			).put(
+				"name", segmentsExperience.getName(themeDisplay.getLocale())
+			).put(
+				"priority", segmentsExperience.getPriority()
+			).put(
+				"segmentsEntryId",
+				String.valueOf(segmentsExperience.getSegmentsEntryId())
+			).put(
+				"segmentsExperienceId",
+				String.valueOf(segmentsExperience.getSegmentsExperienceId())
+			);
+
+			availableSegmentsExperiencesSoyContext.put(
+				String.valueOf(segmentsExperience.getSegmentsExperienceId()),
+				segmentsExperienceSoyContext);
+		}
+
+		if (!addedDefault) {
+			availableSegmentsExperiencesSoyContext.put(
+				String.valueOf(SegmentsExperienceConstants.ID_DEFAULT),
+				_getDefaultSegmentsExperienceSoyContext(themeDisplay));
+		}
+
+		return availableSegmentsExperiencesSoyContext;
+	}
+
+	private static SoyContext _getDefaultSegmentsExperienceSoyContext(
+		ThemeDisplay themeDisplay) {
+
+		SoyContext defaultSegmentsExperienceSoyContext =
+			SoyContextFactoryUtil.createSoyContext();
+
+		defaultSegmentsExperienceSoyContext.put(
+			"hasSegmentsExperiment", false
+		).put(
+			"name",
+			SegmentsExperienceConstants.getDefaultSegmentsExperienceName(
+				themeDisplay.getLocale())
+		).put(
+			"priority", SegmentsExperienceConstants.PRIORITY_DEFAULT
+		).put(
+			"segmentsEntryId", String.valueOf(SegmentsEntryConstants.ID_DEFAULT)
+		).put(
+			"segmentsExperienceId",
+			String.valueOf(SegmentsExperienceConstants.ID_DEFAULT)
+		);
+
+		return defaultSegmentsExperienceSoyContext;
 	}
 
 	private SegmentsExperienceUtil() {
