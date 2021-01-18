@@ -238,14 +238,13 @@
 												'priority': $experience.priority,
 												'segmentsExperienceId': $experience.segmentsExperienceId
 											]/}
-											{param elementClasses: 'btn-borderless ml-2 mr-0 text-dark' /}
+											{param elementClasses: 'btn-borderless mx-1 text-dark' /}
 											{param events: [
 												'click': $_handleMoveExperienceUpButtonClick,
 											] /}
 											{param icon: 'angle-up' /}
 											{param monospaced: true /}
 											{param ref: $priorityUpButtonRef /}
-											{param size: 'sm' /}
 											{param spritemap: $spritemap /}
 											{param style: 'unstyled' /}
 										{/call}
@@ -261,14 +260,13 @@
 												'priority': $experience.priority,
 												'segmentsExperienceId': $experience.segmentsExperienceId
 											]/}
-											{param elementClasses: 'btn-borderless ml-0 mr-2 text-dark' /}
+											{param elementClasses: 'btn-borderless mx-1 text-dark' /}
 											{param events: [
 												'click': $_handleMoveExperienceDownButtonClick
 											] /}
 											{param icon: 'angle-down' /}
 											{param monospaced: true /}
 											{param ref: $priorityDownButtonRef /}
-											{param size: 'sm' /}
 											{param spritemap: $spritemap /}
 											{param style: 'unstyled' /}
 										{/call}
@@ -284,7 +282,7 @@
 												'name': $experience.name,
 												'segmentsEntryId': $experience.segmentsEntryId
 											]/}
-											{param elementClasses: 'btn-borderless mx-2 text-dark' /}
+											{param elementClasses: 'btn-borderless mx-1 text-dark' /}
 											{param events: [
 												'click': $_handleEditButtonClick,
 											] /}
@@ -303,7 +301,7 @@
 											{param data: [
 												'segmentsExperienceId': $experience.segmentsExperienceId
 											]/}
-											{param elementClasses: 'btn-borderless mx-2 text-dark' /}
+											{param elementClasses: 'btn-borderless mx-1 text-dark' /}
 											{param events: [
 												'click': $_handleDeleteButtonClick,
 											] /}
