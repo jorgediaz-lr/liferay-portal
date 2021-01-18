@@ -93,6 +93,14 @@ public class ProductPurchaseViewDisplay {
 		return String.valueOf(_currentPurchasedCount);
 	}
 
+	public String getEndDate() {
+		if (_endDate != null) {
+			return _dateFormat.format(_endDate);
+		}
+
+		return StringPool.DASH;
+	}
+
 	public String getGracePeriod() {
 		if (_perpetual || (_originalEndDate == null)) {
 			return StringPool.DASH;
@@ -192,8 +200,8 @@ public class ProductPurchaseViewDisplay {
 		sb.append(_dateFormat.format(_startDate));
 		sb.append(" - ");
 
-		if (_endDate != null) {
-			sb.append(_dateFormat.format(_endDate));
+		if (_originalEndDate != null) {
+			sb.append(_dateFormat.format(_originalEndDate));
 		}
 		else {
 			sb.append(LanguageUtil.get(_httpServletRequest, "perpetual"));
@@ -222,6 +230,10 @@ public class ProductPurchaseViewDisplay {
 		}
 
 		return false;
+	}
+
+	public boolean isPerpetual() {
+		return _perpetual;
 	}
 
 	private void _initProductConsumptions(

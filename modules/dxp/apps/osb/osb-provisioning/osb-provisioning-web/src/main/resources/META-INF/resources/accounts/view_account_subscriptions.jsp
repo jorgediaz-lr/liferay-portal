@@ -86,11 +86,18 @@ SearchContainer productPurchasesSearchContainer = viewAccountDisplayContext.getP
 				>
 					<%= productPurchaseViewDisplay.getSupportLife() %>
 
-					<c:if test="<%= productPurchaseViewDisplay.isInSupportGap() && Validator.isNotNull(productPurchaseViewDisplay.getNextTermStartDate()) %>">
-						<div class="secondary-information">
-							<liferay-ui:message key="next-term-starts" />: <%= productPurchaseViewDisplay.getNextTermStartDate() %>
-						</div>
-					</c:if>
+					<c:choose>
+						<c:when test="<%= productPurchaseViewDisplay.isInSupportGap() && Validator.isNotNull(productPurchaseViewDisplay.getNextTermStartDate()) %>">
+							<div class="secondary-information">
+								<liferay-ui:message key="next-term-starts" />: <%= productPurchaseViewDisplay.getNextTermStartDate() %>
+							</div>
+						</c:when>
+						<c:when test="<%= !productPurchaseViewDisplay.isPerpetual() %>">
+							<div class="secondary-information">
+								<liferay-ui:message key="grace-period-end-date" />: <%= productPurchaseViewDisplay.getEndDate() %>
+							</div>
+						</c:when>
+					</c:choose>
 				</liferay-ui:search-container-column-text>
 
 				<%

@@ -166,8 +166,9 @@ public class ProductPurchaseDisplay {
 		sb.append(_dateFormat.format(_productPurchase.getStartDate()));
 		sb.append(" - ");
 
-		if (_productPurchase.getEndDate() != null) {
-			sb.append(_dateFormat.format(_productPurchase.getEndDate()));
+		if (_productPurchase.getOriginalEndDate() != null) {
+			sb.append(
+				_dateFormat.format(_productPurchase.getOriginalEndDate()));
 		}
 		else {
 			sb.append(LanguageUtil.get(_httpServletRequest, "perpetual"));
