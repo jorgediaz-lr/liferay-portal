@@ -187,7 +187,20 @@ public class ContentPageLayoutEditorDisplayContext
 				getGroupId(), PortalUtil.getClassNameId(Layout.class.getName()),
 				themeDisplay.getPlid(), true);
 
+		boolean addedDefault = false;
+
 		for (SegmentsExperience segmentsExperience : segmentsExperiences) {
+			if ((segmentsExperience.getPriority() <
+					SegmentsExperienceConstants.PRIORITY_DEFAULT) &&
+				!addedDefault) {
+
+				availableSegmentsExperiencesSoyContext.put(
+					String.valueOf(SegmentsExperienceConstants.ID_DEFAULT),
+					_getDefaultSegmentsExperienceSoyContext());
+
+				addedDefault = true;
+			}
+
 			SoyContext segmentsExperienceSoyContext =
 				SoyContextFactoryUtil.createSoyContext();
 
@@ -211,6 +224,16 @@ public class ContentPageLayoutEditorDisplayContext
 				segmentsExperienceSoyContext);
 		}
 
+		if (!addedDefault) {
+			availableSegmentsExperiencesSoyContext.put(
+				String.valueOf(SegmentsExperienceConstants.ID_DEFAULT),
+				_getDefaultSegmentsExperienceSoyContext());
+		}
+
+		return availableSegmentsExperiencesSoyContext;
+	}
+
+	private SoyContext _getDefaultSegmentsExperienceSoyContext() {
 		SoyContext defaultSegmentsExperienceSoyContext =
 			SoyContextFactoryUtil.createSoyContext();
 
@@ -229,11 +252,7 @@ public class ContentPageLayoutEditorDisplayContext
 			String.valueOf(SegmentsExperienceConstants.ID_DEFAULT)
 		);
 
-		availableSegmentsExperiencesSoyContext.put(
-			String.valueOf(SegmentsExperienceConstants.ID_DEFAULT),
-			defaultSegmentsExperienceSoyContext);
-
-		return availableSegmentsExperiencesSoyContext;
+		return defaultSegmentsExperienceSoyContext;
 	}
 
 	private String _getEditSegmentsEntryURL() throws PortalException {
