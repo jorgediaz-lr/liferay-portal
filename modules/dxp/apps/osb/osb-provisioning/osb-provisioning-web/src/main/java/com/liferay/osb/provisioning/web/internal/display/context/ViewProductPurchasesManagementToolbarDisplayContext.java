@@ -62,7 +62,8 @@ public class ViewProductPurchasesManagementToolbarDisplayContext
 								liferayPortletResponse.getNamespace(),
 								"editProductPurchases();"));
 						dropdownItem.setIcon("pencil");
-						dropdownItem.setLabel("Edit");
+						dropdownItem.setLabel(
+							LanguageUtil.get(request, "edit"));
 						dropdownItem.setQuickAction(true);
 					});
 			}

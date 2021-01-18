@@ -22,8 +22,6 @@ String redirect = ParamUtil.getString(request, "redirect");
 EditProductPurchasesDisplayContext editProductPurchasesDisplayContext = ProvisioningWebComponentProvider.getEditProductPurchasesDisplayContext(renderRequest, renderResponse, request);
 
 AccountDisplay accountDisplay = editProductPurchasesDisplayContext.getAccountDisplay();
-
-List<ProductPurchaseView> productPurchaseViews = editProductPurchasesDisplayContext.getProductPurchaseViews();
 %>
 
 <div class="add-items">
@@ -66,6 +64,8 @@ List<ProductPurchaseView> productPurchaseViews = editProductPurchasesDisplayCont
 					<tbody>
 
 						<%
+						List<ProductPurchaseView> productPurchaseViews = editProductPurchasesDisplayContext.getProductPurchaseViews();
+
 						for (ProductPurchaseView productPurchaseView : productPurchaseViews) {
 						%>
 
