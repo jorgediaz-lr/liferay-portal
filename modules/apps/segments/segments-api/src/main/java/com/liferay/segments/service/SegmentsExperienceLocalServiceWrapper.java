@@ -76,6 +76,19 @@ public class SegmentsExperienceLocalServiceWrapper
 			segmentsExperience);
 	}
 
+	@Override
+	public com.liferay.segments.model.SegmentsExperience
+			appendSegmentsExperience(
+				long segmentsEntryId, long classNameId, long classPK,
+				java.util.Map<java.util.Locale, String> nameMap, boolean active,
+				com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _segmentsExperienceLocalService.appendSegmentsExperience(
+			segmentsEntryId, classNameId, classPK, nameMap, active,
+			serviceContext);
+	}
+
 	/**
 	 * Creates a new segments experience with the primary key. Does not add the segments experience to the database.
 	 *
