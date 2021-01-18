@@ -135,6 +135,15 @@ public class SortDisplayBuilder {
 			}
 		}
 
+		if (!sortTermDisplayContexts.isEmpty()) {
+			SortTermDisplayContext sortTermDisplayContext =
+				sortTermDisplayContexts.get(0);
+
+			sortTermDisplayContext.setSelected(true);
+
+			return true;
+		}
+
 		return false;
 	}
 
