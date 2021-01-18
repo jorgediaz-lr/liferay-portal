@@ -172,15 +172,28 @@ class SegmentsExperienceSelector extends Component {
 			state.availableSegmentsExperiences || []
 		)
 			.sort(comparePriority)
-			.map(experience => {
+			.map((experience, _, availableSegmentsExperiencesArray) => {
 				const segmentEntry =
 					state.availableSegmentsEntries[experience.segmentsEntryId];
 				const name = segmentEntry && segmentEntry.name;
 
-				const updatedExperience = setIn(
+				let updatedExperience = setIn(
 					experience,
 					['segmentsEntryName'],
 					name
+				);
+
+				const firstExperience = availableSegmentsExperiencesArray.find(
+					exp =>
+						exp.segmentsEntryId === experience.segmentsEntryId ||
+						exp.segmentsEntryId === state.defaultSegmentsEntryId
+				);
+
+				updatedExperience = setIn(
+					updatedExperience,
+					['active'],
+					firstExperience.segmentsExperienceId ===
+						experience.segmentsExperienceId
 				);
 
 				return updatedExperience;
