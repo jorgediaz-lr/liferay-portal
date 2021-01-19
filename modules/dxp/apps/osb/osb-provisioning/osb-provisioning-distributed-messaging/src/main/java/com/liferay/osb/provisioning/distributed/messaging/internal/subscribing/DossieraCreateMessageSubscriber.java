@@ -825,22 +825,25 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		ProductPurchase slaProductPurchase =
 			_accountReader.getSLAProductPurchase(account);
 
-		if (slaProductPurchase != null) {
-			Product slaProduct = slaProductPurchase.getProduct();
-
-			if ((slaProduct != null) &&
-				(slaProduct != productPurchase.getProduct())) {
-
-				sb.append(
-					StringUtil.removeSubstring(
-						slaProduct.getName(), " Subscription"));
-				sb.append(StringPool.SPACE);
-			}
-		}
-
 		Product product = productPurchase.getProduct();
 
 		String productName = product.getName();
+
+		if (slaProductPurchase != null) {
+			Product slaProduct = slaProductPurchase.getProduct();
+
+			if (slaProduct != null) {
+				String slaProductName = slaProduct.getName();
+
+				if (!slaProductName.equals(productName)) {
+					sb.append(
+						StringUtil.removeSubstring(
+							slaProductName, " Subscription"));
+
+					sb.append(StringPool.SPACE);
+				}
+			}
+		}
 
 		sb.append(productName);
 
