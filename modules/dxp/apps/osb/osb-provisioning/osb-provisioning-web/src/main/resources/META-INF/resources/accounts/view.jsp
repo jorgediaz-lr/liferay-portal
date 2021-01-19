@@ -38,6 +38,13 @@ AccountSearchDisplayContext accountSearchDisplayContext = ProvisioningWebCompone
 		</a>
 	</div>
 
+	<clay:management-toolbar
+		displayContext="<%= ProvisioningWebComponentProvider.getViewAccountsManagementToolbarDisplayContext(liferayPortletRequest, liferayPortletResponse, request, accountSearchDisplayContext.getSearchContainer()) %>"
+		elementClasses="full-width"
+		searchInputName="accountSearchKeywords"
+		showSearch="<%= false %>"
+	/>
+
 	<liferay-ui:search-container
 		cssClass="table-hover"
 		searchContainer="<%= accountSearchDisplayContext.getSearchContainer() %>"
