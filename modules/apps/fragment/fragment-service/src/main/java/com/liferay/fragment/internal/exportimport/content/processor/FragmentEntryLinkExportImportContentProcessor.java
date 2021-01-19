@@ -118,35 +118,33 @@ public class FragmentEntryLinkExportImportContentProcessor
 			editableValuesJSONObject.getJSONObject(
 				_KEY_EDITABLE_FRAGMENT_ENTRY_PROCESSOR);
 
-		if ((editableProcessorJSONObject == null) ||
-			(editableProcessorJSONObject.length() <= 0)) {
+		if ((editableProcessorJSONObject != null) &&
+			(editableProcessorJSONObject.length() > 0)) {
 
-			return content;
-		}
+			Iterator<String> editableKeysIterator =
+				editableProcessorJSONObject.keys();
 
-		Iterator<String> editableKeysIterator =
-			editableProcessorJSONObject.keys();
+			while (editableKeysIterator.hasNext()) {
+				String editableKey = editableKeysIterator.next();
 
-		while (editableKeysIterator.hasNext()) {
-			String editableKey = editableKeysIterator.next();
+				JSONObject editableJSONObject =
+					editableProcessorJSONObject.getJSONObject(editableKey);
 
-			JSONObject editableJSONObject =
-				editableProcessorJSONObject.getJSONObject(editableKey);
+				_replaceMappedFieldExportContentReferences(
+					portletDataContext, stagedModel, editableJSONObject,
+					exportReferencedContent);
 
-			_replaceMappedFieldExportContentReferences(
-				portletDataContext, stagedModel, editableJSONObject,
-				exportReferencedContent);
-
-			_replaceSegmentsExperienceExportContentReferences(
-				portletDataContext, stagedModel, editableJSONObject);
+				_replaceSegmentsExperienceExportContentReferences(
+					portletDataContext, stagedModel, editableJSONObject);
+			}
 		}
 
 		JSONObject freeMarkerProcessorJSONObject =
 			editableValuesJSONObject.getJSONObject(
 				_KEY_FREEMARKER_FRAGMENT_ENTRY_PROCESSOR);
 
-		if ((freeMarkerProcessorJSONObject == null) ||
-			(freeMarkerProcessorJSONObject.length() <= 0)) {
+		if ((freeMarkerProcessorJSONObject != null) &&
+			(freeMarkerProcessorJSONObject.length() > 0)) {
 
 			_replaceSegmentsExperienceExportContentReferences(
 				portletDataContext, stagedModel, editableProcessorJSONObject);
@@ -197,34 +195,32 @@ public class FragmentEntryLinkExportImportContentProcessor
 			editableValuesJSONObject.getJSONObject(
 				_KEY_EDITABLE_FRAGMENT_ENTRY_PROCESSOR);
 
-		if ((editableProcessorJSONObject == null) ||
-			(editableProcessorJSONObject.length() <= 0)) {
+		if ((editableProcessorJSONObject != null) &&
+			(editableProcessorJSONObject.length() > 0)) {
 
-			return content;
-		}
+			Iterator<String> editableKeysIterator =
+				editableProcessorJSONObject.keys();
 
-		Iterator<String> editableKeysIterator =
-			editableProcessorJSONObject.keys();
+			while (editableKeysIterator.hasNext()) {
+				String editableKey = editableKeysIterator.next();
 
-		while (editableKeysIterator.hasNext()) {
-			String editableKey = editableKeysIterator.next();
+				JSONObject editableJSONObject =
+					editableProcessorJSONObject.getJSONObject(editableKey);
 
-			JSONObject editableJSONObject =
-				editableProcessorJSONObject.getJSONObject(editableKey);
+				_replaceMappedFieldImportContentReferences(
+					portletDataContext, editableJSONObject);
 
-			_replaceMappedFieldImportContentReferences(
-				portletDataContext, editableJSONObject);
-
-			_replaceSegmentsExperienceImportContentReferences(
-				portletDataContext, editableJSONObject);
+				_replaceSegmentsExperienceImportContentReferences(
+					portletDataContext, editableJSONObject);
+			}
 		}
 
 		JSONObject freeMarkerProcessorJSONObject =
 			editableValuesJSONObject.getJSONObject(
 				_KEY_FREEMARKER_FRAGMENT_ENTRY_PROCESSOR);
 
-		if ((freeMarkerProcessorJSONObject == null) ||
-			(freeMarkerProcessorJSONObject.length() <= 0)) {
+		if ((freeMarkerProcessorJSONObject != null) &&
+			(freeMarkerProcessorJSONObject.length() > 0)) {
 
 			_replaceSegmentsExperienceImportContentReferences(
 				portletDataContext, freeMarkerProcessorJSONObject);
