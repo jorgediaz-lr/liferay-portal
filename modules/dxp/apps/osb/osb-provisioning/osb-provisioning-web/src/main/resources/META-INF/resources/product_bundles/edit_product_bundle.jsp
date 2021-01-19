@@ -146,9 +146,13 @@ if (products != null) {
 				eventName: 'selectedItemChange',
 				on: {
 					selectedItemChange: function(event) {
-						var selectedItems = event.newVal;
+						var selectionData = event.newVal;
 
-						if (selectedItems) {
+						if (selectionData) {
+							var selectedItems = selectionData.map(function(data) {
+								return data.split('_');
+							});
+
 							var productKeys = [];
 
 							var display =
