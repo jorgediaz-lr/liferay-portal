@@ -209,16 +209,13 @@ function ProductSelection({formAction, initialProductKeys, selectionURL}) {
 	const formRef = useRef();
 
 	const [productBundleIds, setProductBundleIds] = useState('');
-	const [productKeys, setProductKeys] = useState(initialProductKeys);
+	const [productKeys, setProductKeys] = useState('');
 
 	useEffect(() => {
-		if (
-			formRef.current &&
-			(productKeys !== initialProductKeys || productBundleIds !== '')
-		) {
+		if (formRef.current && productKeys) {
 			formRef.current.submit();
 		}
-	}, [initialProductKeys, productBundleIds, productKeys]);
+	}, [productBundleIds, productKeys]);
 
 	function handleSelectMoreSubscriptions() {
 		const addselectionFromDialog = selectionData => {
@@ -232,12 +229,16 @@ function ProductSelection({formAction, initialProductKeys, selectionURL}) {
 				selectionKeys.filter(key => !key.startsWith('KOR')).join(',')
 			);
 
-			setProductKeys(
-				productKeys.concat(
-					',',
-					selectionKeys.filter(key => key.startsWith('KOR')).join(',')
-				)
-			);
+			const newKeys = selectionKeys.filter(key => key.startsWith('KOR'));
+
+			if (newKeys.length) {
+				setProductKeys(
+					initialProductKeys.concat(',', newKeys.join(','))
+				);
+			}
+			else {
+				setProductKeys(initialProductKeys);
+			}
 		};
 
 		itemSelectorDialogSelection(
