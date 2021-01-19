@@ -71,6 +71,10 @@ public class AccountLocalServiceImpl extends AccountLocalServiceBaseImpl {
 				account.getAccountId());
 
 			_defaultTeamManager.sync(account);
+
+			if (account.getParentAccountId() > 0) {
+				accountLocalService.reindex(account.getParentAccountId());
+			}
 		}
 		catch (PortalException portalException) {
 			throw new SystemException(portalException);
@@ -128,6 +132,10 @@ public class AccountLocalServiceImpl extends AccountLocalServiceBaseImpl {
 		addResources(account.getCompanyId(), userId, account.getAccountId());
 
 		_defaultTeamManager.sync(account);
+
+		if (parentAccountId > 0) {
+			accountLocalService.reindex(parentAccountId);
+		}
 
 		return account;
 	}
@@ -292,6 +300,8 @@ public class AccountLocalServiceImpl extends AccountLocalServiceBaseImpl {
 
 		Account account = accountPersistence.findByPrimaryKey(accountId);
 
+		long oldParentAccountId = account.getParentAccountId();
+
 		account.setParentAccountId(parentAccountId);
 		account.setName(name);
 		account.setCode(code);
@@ -311,6 +321,10 @@ public class AccountLocalServiceImpl extends AccountLocalServiceBaseImpl {
 		account = accountPersistence.update(account);
 
 		_defaultTeamManager.sync(account);
+
+		if (oldParentAccountId != parentAccountId) {
+			accountLocalService.reindex(parentAccountId);
+		}
 
 		return account;
 	}
