@@ -348,7 +348,4 @@ public class SegmentsExperienceUtil {
 		return defaultSegmentsExperienceSoyContext;
 	}
 
-	private SegmentsExperienceUtil() {
-	}
-
 }
