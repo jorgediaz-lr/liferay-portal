@@ -143,7 +143,7 @@ if (products != null) {
 			);
 
 			var itemSelectorDialog = new A.LiferayItemSelectorDialog({
-				eventName: '<portlet:namespace />assignProducts',
+				eventName: 'selectedItemChange',
 				on: {
 					selectedItemChange: function(event) {
 						var selectedItems = event.newVal;
