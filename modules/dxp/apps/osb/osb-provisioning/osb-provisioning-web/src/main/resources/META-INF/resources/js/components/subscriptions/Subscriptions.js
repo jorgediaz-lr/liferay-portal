@@ -168,11 +168,11 @@ function Subscription({
 	}
 
 	function handleEndDateChange(value) {
-		updateEndDate(key, value);
+		updateEndDate(key, new Date(value));
 	}
 
 	function handleGracePeriodStartDateChange(value) {
-		updateOriginalEndDate(key, value);
+		updateOriginalEndDate(key, new Date(value));
 	}
 
 	function handleDeleteSubscription() {
@@ -200,7 +200,7 @@ function Subscription({
 	}
 
 	function handleStartDateChange(value) {
-		updateStartDate(key, value);
+		updateStartDate(key, new Date(value));
 	}
 
 	function handleStatusChange(event) {
