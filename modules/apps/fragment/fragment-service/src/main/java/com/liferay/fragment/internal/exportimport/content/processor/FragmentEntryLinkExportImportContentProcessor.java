@@ -215,8 +215,8 @@ public class FragmentEntryLinkExportImportContentProcessor
 			_replaceMappedFieldImportContentReferences(
 				portletDataContext, editableJSONObject);
 
-			_replaceSegmentsExperienceExportContentReferences(
-				portletDataContext, stagedModel, editableJSONObject);
+			_replaceSegmentsExperienceImportContentReferences(
+				portletDataContext, editableJSONObject);
 		}
 
 		JSONObject freeMarkerProcessorJSONObject =
