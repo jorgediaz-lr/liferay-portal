@@ -44,6 +44,10 @@ if (products != null) {
 		<portlet:param name="productBundleId" value='<%= (productBundle != null) ? String.valueOf(productBundle.getProductBundleId()) : "" %>' />
 	</portlet:actionURL>
 
+	<portlet:renderURL var="assignProductsURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+		<portlet:param name="mvcRenderCommandName" value="/product_bundles/assign_products" />
+	</portlet:renderURL>
+
 	<aui:form action="<%= editProductBundleURL %>" cssClass="container-fluid container-fluid-max-xl" method="post" name="fm">
 		<div class="add-items-sheet sheet sheet-lg">
 			<aui:input name="productKeys" type="hidden" value="<%= StringUtil.merge(productKeys) %>" />
@@ -126,60 +130,61 @@ if (products != null) {
 		window,
 		'<portlet:namespace />assignProducts',
 		function() {
-			<portlet:renderURL var="assignProductsURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
-				<portlet:param name="mvcRenderCommandName" value="/product_bundles/assign_products" />
-			</portlet:renderURL>
+			var A = AUI();
 
-			var url = Liferay.Util.PortletURL.createPortletURL(
+			var productKeys = A.one('#<portlet:namespace />productKeys');
+			var productName = A.one('#<portlet:namespace />productName');
+
+			var assignProductsURL = Liferay.Util.PortletURL.createPortletURL(
 				'<%= assignProductsURL.toString() %>',
 				{
-					productKeys: document.getElementById(
-						'<portlet:namespace />productKeys'
-					).value
+					productKeys: productKeys.val()
 				}
 			);
 
-			var A = AUI();
-
 			var itemSelectorDialog = new A.LiferayItemSelectorDialog({
 				eventName: '<portlet:namespace />assignProducts',
+				on: {
+					selectedItemChange: function(event) {
+						var selectedItems = event.newVal;
+
+						if (selectedItems) {
+							var productKeys = [];
+
+							var display =
+								'<table class="table table-list"><thead><tr><th><liferay-ui:message key="name" /></th><th></th></tr></thead><tbody>';
+
+							for (var i = 0; i < selectedItems.length; i++) {
+								var selectItem = selectedItems[i];
+
+								productKeys.push(selectItem[0]);
+
+								display +=
+									'<tr><td>' +
+									selectItem[1] +
+									'</td><td class=" text-right" id="' +
+									selectItem[0] +
+									'"><button type="button" class="btn" onclick="<portlet:namespace />removeName(this);"><svg class="lexicon-icon lexicon-icon-times-circle"><use xlink:href="#delete-icon" /></svg></button></td></tr>';
+							}
+
+							display += '</tbody></table>';
+
+							if (productKeys) {
+								productKeys.val(productKeys.join(','));
+							}
+
+							if (productName) {
+								productName.html(display);
+							}
+						}
+					}
+				},
 				strings: {
 					add: '<liferay-ui:message key="done" />',
 					cancel: '<liferay-ui:message key="cancel" />'
 				},
 				title: '<liferay-ui:message key="select-products" />',
-				url: url.toString()
-			});
-
-			itemSelectorDialog.on('selectedItemChange', function(event) {
-				var selectedItems = event.newVal;
-
-				if (selectedItems) {
-					var productKeys = [];
-
-					var display =
-						'<table class="table table-list"><thead><tr><th><liferay-ui:message key="name" /></th><th></th></tr></thead><tbody>';
-
-					for (var i = 0; i < selectedItems.length; i++) {
-						var selectItem = selectedItems[i];
-
-						productKeys.push(selectItem[0]);
-
-						display +=
-							'<tr><td>' +
-							selectItem[1] +
-							'</td><td class=" text-right" id="' +
-							selectItem[0] +
-							'"><button type="button" class="btn" onclick="<portlet:namespace />removeName(this);"><svg class="lexicon-icon lexicon-icon-times-circle"><use xlink:href="#delete-icon" /></svg></button></td></tr>';
-					}
-
-					display += '</tbody></table>';
-
-					A.one('#<portlet:namespace />productName').html(display);
-					A.one('#<portlet:namespace />productKeys').val(
-						productKeys.join(',')
-					);
-				}
+				url: assignProductsURL.toString()
 			});
 
 			itemSelectorDialog.open();
@@ -208,9 +213,8 @@ if (products != null) {
 				.join(',');
 		}
 
-		if (productKeys && productKeys.value == '') {
-			document.getElementById('<portlet:namespace />productName').innerHTML =
-				'';
+		if (productKeys && productKeys.value === '' && productName) {
+			productName.innerHTML = '';
 		}
 		else {
 			object.parentElement.parentElement.remove();
