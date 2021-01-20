@@ -18,8 +18,6 @@ import com.liferay.osb.koroneiki.taproot.exception.ContactRoleTypeException;
 import com.liferay.osb.koroneiki.taproot.model.ContactRole;
 import com.liferay.osb.koroneiki.taproot.model.ContactTeamRole;
 import com.liferay.osb.koroneiki.taproot.model.Team;
-import com.liferay.osb.koroneiki.taproot.service.ContactLocalService;
-import com.liferay.osb.koroneiki.taproot.service.TeamLocalService;
 import com.liferay.osb.koroneiki.taproot.service.base.ContactTeamRoleLocalServiceBaseImpl;
 import com.liferay.osb.koroneiki.taproot.service.persistence.ContactTeamRolePK;
 import com.liferay.portal.aop.AopService;
@@ -28,7 +26,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Kyle Bischof
@@ -58,10 +55,6 @@ public class ContactTeamRoleLocalServiceImpl
 
 			contactTeamRole = contactTeamRolePersistence.update(
 				contactTeamRole);
-
-			_contactLocalService.reindex(contactId);
-
-			_teamLocalService.reindex(teamId);
 		}
 
 		return contactTeamRole;
@@ -89,10 +82,6 @@ public class ContactTeamRoleLocalServiceImpl
 
 		if (contactTeamRole != null) {
 			deleteContactTeamRole(contactTeamRole);
-
-			_contactLocalService.reindex(contactId);
-
-			_teamLocalService.reindex(teamId);
 		}
 
 		return contactTeamRole;
@@ -102,10 +91,6 @@ public class ContactTeamRoleLocalServiceImpl
 		throws PortalException {
 
 		contactTeamRolePersistence.removeByCI_TI(contactId, teamId);
-
-		_contactLocalService.reindex(contactId);
-
-		_teamLocalService.reindex(teamId);
 	}
 
 	public List<ContactTeamRole> getContactTeamRoles(long contactId) {
@@ -135,11 +120,5 @@ public class ContactTeamRoleLocalServiceImpl
 			throw new ContactRoleTypeException();
 		}
 	}
-
-	@Reference
-	private ContactLocalService _contactLocalService;
-
-	@Reference
-	private TeamLocalService _teamLocalService;
 
 }

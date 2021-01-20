@@ -25,12 +25,14 @@ import com.liferay.osb.koroneiki.taproot.model.Account;
 import com.liferay.osb.koroneiki.taproot.model.Contact;
 import com.liferay.osb.koroneiki.taproot.model.ContactAccountRole;
 import com.liferay.osb.koroneiki.taproot.model.ContactRole;
+import com.liferay.osb.koroneiki.taproot.model.ContactTeamRole;
 import com.liferay.osb.koroneiki.taproot.model.Team;
 import com.liferay.osb.koroneiki.taproot.model.TeamAccountRole;
 import com.liferay.osb.koroneiki.taproot.model.TeamRole;
 import com.liferay.osb.koroneiki.taproot.service.ContactAccountRoleLocalService;
 import com.liferay.osb.koroneiki.taproot.service.ContactLocalService;
 import com.liferay.osb.koroneiki.taproot.service.ContactRoleLocalService;
+import com.liferay.osb.koroneiki.taproot.service.ContactTeamRoleLocalService;
 import com.liferay.osb.koroneiki.taproot.service.TeamAccountRoleLocalService;
 import com.liferay.osb.koroneiki.taproot.service.TeamLocalService;
 import com.liferay.osb.koroneiki.trunk.model.ProductEntry;
@@ -52,6 +54,7 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -354,6 +357,8 @@ public class AccountModelDocumentContributor
 		throws PortalException {
 
 		Set<String> assignedTeamKeyTeamRoleKeys = new HashSet<>();
+		Set<String> assignedTeamKeyTeamRoleKeyContactUuidContactRoleKeys =
+			new HashSet<>();
 
 		List<TeamAccountRole> teamAccountRoles =
 			_teamAccountRoleLocalService.getTeamAccountRolesByAccountId(
@@ -363,14 +368,44 @@ public class AccountModelDocumentContributor
 			Team team = teamAccountRole.getTeam();
 			TeamRole teamRole = teamAccountRole.getTeamRole();
 
-			assignedTeamKeyTeamRoleKeys.add(
+			String assignedTeamKeyTeamRoleKey =
 				team.getTeamKey() + StringPool.UNDERLINE +
-					teamRole.getTeamRoleKey());
+					teamRole.getTeamRoleKey();
+
+			assignedTeamKeyTeamRoleKeys.add(assignedTeamKeyTeamRoleKey);
+
+			List<ContactTeamRole> contactTeamRoles =
+				_contactTeamRoleLocalService.getContactTeamRolesByTeamId(
+					team.getTeamId());
+
+			for (ContactTeamRole contactTeamRole : contactTeamRoles) {
+				Contact contact = _contactLocalService.getContact(
+					contactTeamRole.getContactId());
+				ContactRole contactRole =
+					_contactRoleLocalService.getContactRole(
+						contactTeamRole.getContactRoleId());
+
+				StringBundler sb = new StringBundler(5);
+
+				sb.append(assignedTeamKeyTeamRoleKey);
+				sb.append(StringPool.UNDERLINE);
+				sb.append(contact.getUuid());
+				sb.append(StringPool.UNDERLINE);
+				sb.append(contactRole.getContactRoleKey());
+
+				assignedTeamKeyTeamRoleKeyContactUuidContactRoleKeys.add(
+					sb.toString());
+			}
 		}
 
 		document.addKeyword(
 			"assignedTeamKeyTeamRoleKeys",
 			ArrayUtil.toStringArray(assignedTeamKeyTeamRoleKeys.toArray()));
+		document.addKeyword(
+			"assignedTeamKeyTeamRoleKeyContactUuidContactRoleKeys",
+			ArrayUtil.toStringArray(
+				assignedTeamKeyTeamRoleKeyContactUuidContactRoleKeys.
+					toArray()));
 
 		Set<String> teamsAssignedToAccountKeyTeamRoleKeys = new HashSet<>();
 
@@ -477,6 +512,9 @@ public class AccountModelDocumentContributor
 
 	@Reference
 	private ContactRoleLocalService _contactRoleLocalService;
+
+	@Reference
+	private ContactTeamRoleLocalService _contactTeamRoleLocalService;
 
 	private final Format _dateFormat =
 		FastDateFormatFactoryUtil.getSimpleDateFormat(

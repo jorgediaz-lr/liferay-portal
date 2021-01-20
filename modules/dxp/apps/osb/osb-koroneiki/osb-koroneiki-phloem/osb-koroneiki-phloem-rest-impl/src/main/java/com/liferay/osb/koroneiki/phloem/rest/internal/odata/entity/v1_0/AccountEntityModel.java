@@ -42,11 +42,17 @@ public class AccountEntityModel implements EntityModel {
 					"activeProductKeys", locale -> "activeProductKeys")),
 			new CollectionEntityField(
 				new StringEntityField(
-					"cancelledProductKeys", locale -> "cancelledProductKeys")),
-			new CollectionEntityField(
-				new StringEntityField(
 					"assignedTeamKeyTeamRoleKeys",
 					locale -> "assignedTeamKeyTeamRoleKeys")),
+			new CollectionEntityField(
+				new StringEntityField(
+					"assignedTeamKeyTeamRoleKeyContactUuidContactRoleKeys",
+					locale ->
+						"assignedTeamKeyTeamRoleKeyContactUuidContact" +
+							"RoleKeys")),
+			new CollectionEntityField(
+				new StringEntityField(
+					"cancelledProductKeys", locale -> "cancelledProductKeys")),
 			new EntityField(
 				"code", EntityField.Type.STRING,
 				locale -> Field.getSortableFieldName("code_String"),
