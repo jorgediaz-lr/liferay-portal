@@ -95,7 +95,7 @@ if (products != null) {
 												<%= HtmlUtil.escape(product.getName()) %>
 											</td>
 											<td class="text-right" id="<%= product.getKey() %>">
-												<button class="btn" onclick="<portlet:namespace />removeName(this);" type="button">
+												<button class="btn" onclick="<portlet:namespace />removeProduct(this);" type="button">
 													<svg class="lexicon-icon lexicon-icon-times-circle">
 														<use xlink:href="#delete-icon" />
 													</svg>
@@ -153,7 +153,7 @@ if (products != null) {
 								return data.split('_');
 							});
 
-							var productKeys = [];
+							var keys = [];
 
 							var display =
 								'<table class="table table-list"><thead><tr><th><liferay-ui:message key="name" /></th><th></th></tr></thead><tbody>';
@@ -161,20 +161,20 @@ if (products != null) {
 							for (var i = 0; i < selectedItems.length; i++) {
 								var selectItem = selectedItems[i];
 
-								productKeys.push(selectItem[0]);
+								keys.push(selectItem[0]);
 
 								display +=
 									'<tr><td>' +
 									selectItem[1] +
 									'</td><td class=" text-right" id="' +
 									selectItem[0] +
-									'"><button type="button" class="btn" onclick="<portlet:namespace />removeName(this);"><svg class="lexicon-icon lexicon-icon-times-circle"><use xlink:href="#delete-icon" /></svg></button></td></tr>';
+									'"><button type="button" class="btn" onclick="<portlet:namespace />removeProduct(this);"><svg class="lexicon-icon lexicon-icon-times-circle"><use xlink:href="#delete-icon" /></svg></button></td></tr>';
 							}
 
 							display += '</tbody></table>';
 
 							if (productKeys) {
-								productKeys.val(productKeys.join(','));
+								productKeys.val(keys.join(','));
 							}
 
 							if (productName) {
@@ -200,7 +200,7 @@ if (products != null) {
 		return key !== value;
 	}
 
-	function <portlet:namespace />removeName(object) {
+	function <portlet:namespace />removeProduct(name) {
 		var productKeys = document.getElementById(
 			'<portlet:namespace />productKeys'
 		);
@@ -211,7 +211,7 @@ if (products != null) {
 				.filter(
 					<portlet:namespace />removeKey.bind(
 						this,
-						object.parentElement.id
+						name.parentElement.id
 					)
 				)
 				.join(',');
@@ -221,8 +221,8 @@ if (products != null) {
 			productName.innerHTML = '';
 		}
 		else {
-			object.parentElement.parentElement.remove();
-			object.parentElement.remove();
+			name.parentElement.parentElement.remove();
+			name.parentElement.remove();
 		}
 	}
 </aui:script>
