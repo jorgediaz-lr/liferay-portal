@@ -138,7 +138,7 @@ if (products != null) {
 			var assignProductsURL = Liferay.Util.PortletURL.createPortletURL(
 				'<%= assignProductsURL.toString() %>',
 				{
-					productKeys: productKeys.val()
+					productKeys: productKeys ? productKeys.val() : ''
 				}
 			);
 
