@@ -332,14 +332,18 @@ public class ProductPurchaseViewDisplay {
 			if (approved) {
 				_approvedPurchasedCount += productPurchase.getQuantity();
 
-				if (((startDate == null) || startDate.before(now)) &&
-					((endDate == null) || endDate.after(now))) {
+				if (_perpetual ||
+					(((startDate == null) || startDate.before(now)) &&
+					 ((endDate == null) || endDate.after(now)))) {
 
 					_currentPurchasedCount += productPurchase.getQuantity();
 				}
 			}
 
-			if ((latestEndDate == null) || endDate.after(latestEndDate)) {
+			if ((endDate == null) ||
+				((latestEndDate == null) && (_latestPurchasedCount == 0)) ||
+				((latestEndDate != null) && endDate.after(latestEndDate))) {
+
 				latestEndDate = endDate;
 
 				_latestPurchasedCount = productPurchase.getQuantity();

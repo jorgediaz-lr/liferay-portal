@@ -422,9 +422,7 @@ public class AccountReaderImpl implements AccountReader {
 			return true;
 		}
 
-		if (!productPurchase.getPerpetual() &&
-			curProductPurchase.getPerpetual()) {
-
+		if (curProductPurchase.getPerpetual()) {
 			return false;
 		}
 

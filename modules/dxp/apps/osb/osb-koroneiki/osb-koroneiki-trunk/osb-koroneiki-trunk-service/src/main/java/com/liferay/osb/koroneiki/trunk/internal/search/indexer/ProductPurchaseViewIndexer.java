@@ -186,6 +186,13 @@ public class ProductPurchaseViewIndexer
 
 			field.addField(statusField);
 
+			Field perpetualField = new Field("perpetual");
+
+			perpetualField.setValue(
+				String.valueOf(productPurchase.isPerpetual()));
+
+			field.addField(perpetualField);
+
 			Date endDate = productPurchase.getEndDate();
 
 			if (endDate != null) {
@@ -597,11 +604,16 @@ public class ProductPurchaseViewIndexer
 
 		BooleanFilter activeDateFilter = new BooleanFilter();
 
-		BooleanFilter perpetualFilter = new BooleanFilter();
+		BooleanQuery perpetualQuery = new BooleanQueryImpl();
 
-		perpetualFilter.addRequiredTerm("perpetual", true);
+		perpetualQuery.addRequiredTerm(
+			"productPurchases.status", WorkflowConstants.STATUS_APPROVED);
+		perpetualQuery.addRequiredTerm("productPurchases.perpetual", true);
 
-		activeDateFilter.add(perpetualFilter, BooleanClauseOccur.SHOULD);
+		activeDateFilter.add(
+			new QueryFilter(
+				new NestedQuery("productPurchases", perpetualQuery)),
+			BooleanClauseOccur.SHOULD);
 
 		long now = System.currentTimeMillis();
 
@@ -640,7 +652,7 @@ public class ProductPurchaseViewIndexer
 		return booleanFilter;
 	}
 
-	private BooleanFilter _getExpiredFilter() {
+	private BooleanFilter _getExpiredFilter() throws ParseException {
 		BooleanFilter booleanFilter = new BooleanFilter();
 
 		booleanFilter.addRequiredTerm(
@@ -651,6 +663,8 @@ public class ProductPurchaseViewIndexer
 			String.valueOf(System.currentTimeMillis()));
 
 		booleanFilter.add(rangeTermFilter, BooleanClauseOccur.MUST);
+
+		booleanFilter.add(_getActiveFilter(), BooleanClauseOccur.MUST_NOT);
 
 		return booleanFilter;
 	}
