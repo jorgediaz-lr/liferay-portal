@@ -423,7 +423,7 @@ public class SegmentsExperienceLocalServiceTest {
 				segmentsExperience1.getSegmentsExperienceId());
 
 		Assert.assertEquals(
-			SegmentsExperienceConstants.PRIORITY_DEFAULT + 3,
+			SegmentsExperienceConstants.PRIORITY_DEFAULT + 2,
 			segmentsExperience1.getPriority());
 
 		segmentsExperience2 =
@@ -431,7 +431,7 @@ public class SegmentsExperienceLocalServiceTest {
 				segmentsExperience2.getSegmentsExperienceId());
 
 		Assert.assertEquals(
-			SegmentsExperienceConstants.PRIORITY_DEFAULT + 2,
+			SegmentsExperienceConstants.PRIORITY_DEFAULT + 3,
 			segmentsExperience2.getPriority());
 	}
 
