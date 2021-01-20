@@ -244,9 +244,9 @@ public class DefaultSegmentsEntryProvider implements SegmentsEntryProvider {
 			segmentsEntry, Criteria.Type.CONTEXT);
 
 		if (context != null) {
-			if (Validator.isNotNull(contextFilterString)) {
-				boolean matchesContext = false;
+			boolean matchesContext = false;
 
+			if (Validator.isNotNull(contextFilterString)) {
 				try {
 					matchesContext = _oDataMatcher.matches(
 						contextFilterString, context);
@@ -269,7 +269,7 @@ public class DefaultSegmentsEntryProvider implements SegmentsEntryProvider {
 			}
 
 			if (!GetterUtil.getBoolean(context.get(Context.SIGNED_IN))) {
-				return false;
+				return matchesContext;
 			}
 		}
 
