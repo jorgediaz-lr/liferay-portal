@@ -1924,13 +1924,4 @@ public class ProductBundleProductsPersistenceImpl
 	private static final Set<String> _compoundPKColumnNames = SetUtil.fromArray(
 		new String[] {"productBundleId", "productKey"});
 
-	static {
-		try {
-			Class.forName(ProvisioningPersistenceConstants.class.getName());
-		}
-		catch (ClassNotFoundException classNotFoundException) {
-			throw new ExceptionInInitializerError(classNotFoundException);
-		}
-	}
-
 }
