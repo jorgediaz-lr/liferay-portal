@@ -90,12 +90,12 @@ if (products != null) {
 									for (Product product : products) {
 									%>
 
-										<tr>
+										<tr id="<%= product.getKey() %>">
 											<td>
 												<%= HtmlUtil.escape(product.getName()) %>
 											</td>
-											<td class="text-right" id="<%= product.getKey() %>">
-												<button class="btn" onclick="<portlet:namespace />removeProduct(this);" type="button">
+											<td class="text-right">
+												<button class="btn" onclick="<portlet:namespace />removeProduct(event);" type="button">
 													<svg class="lexicon-icon lexicon-icon-times-circle">
 														<use xlink:href="#delete-icon" />
 													</svg>
@@ -164,11 +164,11 @@ if (products != null) {
 								keys.push(selectItem[0]);
 
 								display +=
-									'<tr><td>' +
-									selectItem[1] +
-									'</td><td class=" text-right" id="' +
+									'<tr id="' +
 									selectItem[0] +
-									'"><button type="button" class="btn" onclick="<portlet:namespace />removeProduct(this);"><svg class="lexicon-icon lexicon-icon-times-circle"><use xlink:href="#delete-icon" /></svg></button></td></tr>';
+									'"><td>' +
+									selectItem[1] +
+									'</td><td class="text-right"><button type="button" class="btn" onclick="<portlet:namespace />removeProduct(event);"><svg class="lexicon-icon lexicon-icon-times-circle"><use xlink:href="#delete-icon" /></svg></button></td></tr>';
 							}
 
 							display += '</tbody></table>';
@@ -196,33 +196,32 @@ if (products != null) {
 		['aui-base', 'liferay-item-selector-dialog']
 	);
 
-	function <portlet:namespace />removeKey(key, value) {
-		return key !== value;
-	}
+	function <portlet:namespace />removeProduct(event) {
+		var currentTarget = event.currentTarget;
 
-	function <portlet:namespace />removeProduct(name) {
 		var productKeys = document.getElementById(
 			'<portlet:namespace />productKeys'
 		);
+		var productName = document.getElementById(
+			'<portlet:namespace />productName'
+		);
 
-		if (productKeys) {
-			productKeys.value = productKeys.value
+		if (productKeys && productName) {
+			var currentProductKeys = productKeys.value
 				.split(',')
-				.filter(
-					<portlet:namespace />removeKey.bind(
-						this,
-						name.parentElement.id
-					)
-				)
+				.filter(function(key) {
+					return key !== currentTarget.closest('tr').id;
+				})
 				.join(',');
-		}
 
-		if (productKeys && productKeys.value === '' && productName) {
-			productName.innerHTML = '';
-		}
-		else {
-			name.parentElement.parentElement.remove();
-			name.parentElement.remove();
+			productKeys.value = currentProductKeys;
+
+			if (!currentProductKeys) {
+				productName.innerHTML = '';
+			}
+			else {
+				currentTarget.closest('tr').remove();
+			}
 		}
 	}
 </aui:script>
