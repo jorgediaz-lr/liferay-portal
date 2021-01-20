@@ -53,10 +53,12 @@ public class ProductPurchaseDisplay {
 			productPurchase);
 
 		if (externalLink != null) {
+			_externalLinkKey = externalLink.getKey();
 			_salesforceOpportunityKey = externalLink.getEntityId();
 			_salesforceOpportunityURL = externalLink.getUrl();
 		}
 		else {
+			_externalLinkKey = StringPool.BLANK;
 			_salesforceOpportunityKey = StringPool.BLANK;
 			_salesforceOpportunityURL = StringPool.BLANK;
 		}
@@ -77,6 +79,10 @@ public class ProductPurchaseDisplay {
 
 	public Date getEndDate() {
 		return _productPurchase.getEndDate();
+	}
+
+	public String getExternalLinkKey() {
+		return _externalLinkKey;
 	}
 
 	public String getGracePeriod() {
@@ -208,6 +214,7 @@ public class ProductPurchaseDisplay {
 	}
 
 	private final Format _dateFormat;
+	private final String _externalLinkKey;
 	private final HttpServletRequest _httpServletRequest;
 	private final ProductPurchase _productPurchase;
 	private final long _provisionedCount;

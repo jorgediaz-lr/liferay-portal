@@ -284,6 +284,9 @@ public class EditProductPurchasesDisplayContext
 				JSONUtil.put(
 					"endDate", _getDate(productPurchase.getEndDate(), "endDate")
 				).put(
+					"externalLinkKey",
+					productPurchaseDisplay.getExternalLinkKey()
+				).put(
 					"key", productPurchase.getKey()
 				).put(
 					"originalEndDate",

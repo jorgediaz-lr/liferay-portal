@@ -324,10 +324,29 @@ public class ProductPurchaseResourceImpl
 			productPurchase.getProperties(),
 			curProductPurchase.getProductFields());
 
-		return ProductPurchaseUtil.toProductPurchase(
-			_productPurchaseService.updateProductPurchase(
-				curProductPurchase.getProductPurchaseId(), startDate, endDate,
-				originalEndDate, quantity, status, productFields));
+		curProductPurchase = _productPurchaseService.updateProductPurchase(
+			curProductPurchase.getProductPurchaseId(), startDate, endDate,
+			originalEndDate, quantity, status, productFields);
+
+		if (!ArrayUtil.isEmpty(productPurchase.getExternalLinks())) {
+			for (ExternalLink externalLink :
+					productPurchase.getExternalLinks()) {
+
+				if (Validator.isNull(externalLink.getKey())) {
+					_externalLinkResource.
+						postProductPurchaseProductPurchaseKeyExternalLink(
+							agentName, agentUID, productPurchase.getKey(),
+							externalLink);
+				}
+				else {
+					_externalLinkResource.putExternalLink(
+						agentName, agentUID, externalLink.getKey(),
+						externalLink);
+				}
+			}
+		}
+
+		return ProductPurchaseUtil.toProductPurchase(curProductPurchase);
 	}
 
 	@Override
