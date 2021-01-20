@@ -308,6 +308,22 @@ public class SegmentsExperienceUtil {
 		return availableSegmentsExperiencesSoyContext;
 	}
 
+	public static JSONObject getSegmentsExperienceJSONObject(
+		SegmentsExperience segmentsExperience) {
+
+		return JSONUtil.put(
+			"active", segmentsExperience.isActive()
+		).put(
+			"name", segmentsExperience.getNameCurrentValue()
+		).put(
+			"priority", segmentsExperience.getPriority()
+		).put(
+			"segmentsEntryId", segmentsExperience.getSegmentsEntryId()
+		).put(
+			"segmentsExperienceId", segmentsExperience.getSegmentsExperienceId()
+		);
+	}
+
 	private static SoyContext _getDefaultSegmentsExperienceSoyContext(
 		ThemeDisplay themeDisplay) {
 

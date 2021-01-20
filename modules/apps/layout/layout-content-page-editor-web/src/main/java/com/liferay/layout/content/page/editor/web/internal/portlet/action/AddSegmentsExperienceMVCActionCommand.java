@@ -300,18 +300,8 @@ public class AddSegmentsExperienceMVCActionCommand
 
 		jsonObject.put(
 			"segmentsExperience",
-			JSONUtil.put(
-				"active", segmentsExperience.isActive()
-			).put(
-				"name", segmentsExperience.getNameCurrentValue()
-			).put(
-				"priority", segmentsExperience.getPriority()
-			).put(
-				"segmentsEntryId", segmentsExperience.getSegmentsEntryId()
-			).put(
-				"segmentsExperienceId",
-				segmentsExperience.getSegmentsExperienceId()
-			));
+			SegmentsExperienceUtil.getSegmentsExperienceJSONObject(
+				segmentsExperience));
 	}
 
 	private void _populateSegmentsSegmentsExperimentRelJSONObject(

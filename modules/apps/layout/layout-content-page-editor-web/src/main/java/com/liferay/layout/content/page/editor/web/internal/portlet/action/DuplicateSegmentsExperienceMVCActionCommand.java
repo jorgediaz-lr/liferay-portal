@@ -217,20 +217,10 @@ public class DuplicateSegmentsExperienceMVCActionCommand
 	private void _populateSegmentsExperienceJSONObject(
 		JSONObject jsonObject, SegmentsExperience segmentsExperience) {
 
-				jsonObject.put(
+		jsonObject.put(
 			"segmentsExperience",
-			JSONUtil.put(
-				"active", segmentsExperience.isActive()
-			).put(
-				"name", segmentsExperience.getNameCurrentValue()
-			).put(
-				"priority", segmentsExperience.getPriority()
-			).put(
-				"segmentsEntryId", segmentsExperience.getSegmentsEntryId()
-			).put(
-				"segmentsExperienceId",
-				segmentsExperience.getSegmentsExperienceId()
-			));
+			SegmentsExperienceUtil.getSegmentsExperienceJSONObject(
+				segmentsExperience));
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
