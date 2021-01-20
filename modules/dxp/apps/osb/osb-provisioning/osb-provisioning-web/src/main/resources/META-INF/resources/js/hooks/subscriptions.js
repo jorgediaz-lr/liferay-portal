@@ -22,6 +22,7 @@ function generateEndDate() {
 
 export class Subscription extends Record({
 	endDate: null,
+	externalLinkKey: null,
 	index: 0,
 	key: null,
 	originalEndDate: generateEndDate(),

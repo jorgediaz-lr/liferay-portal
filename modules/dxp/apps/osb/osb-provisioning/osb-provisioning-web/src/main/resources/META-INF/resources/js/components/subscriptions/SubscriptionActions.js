@@ -55,6 +55,7 @@ function SubscriptionActions({
 			.map(entry => {
 				entry['externalLinks'] = [
 					{
+						key:  entry.externalLinkKey,
 						domain: 'salesforce',
 						entityId: entry.salesforceOpportunityKey,
 						entityName: 'opportunity'
@@ -70,6 +71,7 @@ function SubscriptionActions({
 					entry['endDate'] = formatDateSecondFormat(entry.endDate);
 				}
 
+				delete entry['externalLinkKey'];
 				delete entry['index'];
 				delete entry['productName'];
 				delete entry['salesforceOpportunityKey'];
