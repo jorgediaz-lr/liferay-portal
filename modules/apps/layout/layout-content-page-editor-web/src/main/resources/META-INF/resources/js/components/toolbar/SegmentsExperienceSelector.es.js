@@ -21,6 +21,7 @@ import 'clay-label';
 import {
 	CREATE_SEGMENTS_EXPERIENCE,
 	DELETE_SEGMENTS_EXPERIENCE,
+	DUPLICATE_SEGMENTS_EXPERIENCE,
 	EDIT_SEGMENTS_EXPERIENCE,
 	SELECT_SEGMENTS_EXPERIENCE,
 	UPDATE_SEGMENTS_EXPERIENCE_PRIORITY
@@ -338,6 +339,34 @@ class SegmentsExperienceSelector extends Component {
 	}
 
 	/**
+	 * Dispatches action to delete an experience
+	 * @memberof SegmentsExperienceSelector
+	 * @param {!string} segmentsExperienceId
+	 * @private
+	 * @review
+	 */
+	_duplicateSegmentsExperience(segmentsExperienceId) {
+		this.store
+			.dispatch({
+				sourceSegmentsExperienceId: segmentsExperienceId,
+				type: DUPLICATE_SEGMENTS_EXPERIENCE
+			})
+			.done(() => {
+				Liferay.Util.openToast({
+					title: Liferay.Language.get(
+						'the-experience-was-duplicated-successfully'
+					),
+					type: 'success'
+				});
+			})
+			.failed(() => {
+				this._experiencesErrorHandler({
+					edition: true
+				});
+			});
+	}
+
+	/**
 	 * Clears the creation error with a `DISMISS_ALERT_ANIMATION_WAIT` miliseconds wait,
 	 * so the dismissable alert can complete its animation
 	 * @memberof SegmentsExperienceSelector
@@ -455,6 +484,21 @@ class SegmentsExperienceSelector extends Component {
 			);
 			this._deleteSegmentsExperience(segmentsExperienceId);
 		}
+	}
+
+	/**
+	 * Callback that is executed on duplicate button click
+	 * @memberof SegmentsExperienceSelector
+	 * @param {!Event} event
+	 * @review
+	 * @private
+	 */
+	_handleDuplicateButtonClick(event) {
+		const segmentsExperienceId = event.currentTarget.getAttribute(
+			'data-segmentsExperienceId'
+		);
+
+		this._duplicateSegmentsExperience(segmentsExperienceId);
 	}
 
 	/**

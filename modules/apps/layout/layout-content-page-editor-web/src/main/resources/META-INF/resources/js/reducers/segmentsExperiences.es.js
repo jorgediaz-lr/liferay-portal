@@ -14,6 +14,7 @@
 
 import {
 	addSegmentsExperience,
+	duplicateSegmentsExperience,
 	getExperienceUsedPortletIds,
 	removeExperience,
 	updatePageEditorLayoutData
@@ -351,6 +352,77 @@ function _updateFragmentEntryLinksEditableValues(
 
 /**
  * @param {object} state
+ * @param {object} action
+ * @param {string} action.segmentsExperienceId
+ * @param {string} action.type
+ * @returns {Promise}
+ */
+function duplicateSegmentsExperienceReducer(state, action) {
+	return new Promise((resolve, reject) => {
+		const {sourceSegmentsExperienceId} = action;
+		let nextState = state;
+
+		duplicateSegmentsExperience(sourceSegmentsExperienceId)
+			.then(
+				({
+					availableSegmentsExperiences,
+					fragmentEntryLinks,
+					layoutData,
+					segmentsExperience
+				}) => {
+					const {segmentsExperienceId} = segmentsExperience;
+
+					nextState = setIn(
+						nextState,
+						['availableSegmentsExperiences'],
+						availableSegmentsExperiences
+					);
+
+					nextState = _storeNewLayoutData(
+						nextState,
+						segmentsExperienceId,
+						layoutData
+					);
+
+					nextState = _updateFragmentEntryLinksEditableValues(
+						nextState,
+						fragmentEntryLinks
+					);
+
+					_switchLayoutDataList(nextState, segmentsExperienceId)
+						.then(newState =>
+							setIn(
+								newState,
+								['segmentsExperienceId'],
+								segmentsExperienceId
+							)
+						)
+						.then(nextNewState =>
+							_updateFragmentEntryLinks(
+								nextNewState,
+								segmentsExperienceId
+							)
+						)
+						.then(nextNewState =>
+							_setUsedWidgets(
+								nextNewState,
+								action.segmentsExperienceId
+							)
+						)
+						.then(nextNewState => {
+							resolve(nextNewState);
+						})
+						.catch(e => {
+							reject(e);
+						});
+				}
+			)
+			.catch(error => reject(error));
+	});
+}
+
+/**
+ * @param {object} state
  * @param {Array} state.availableSegmentsExperiences
  * @param {string} state.defaultSegmentsExperienceId
  * @param {{structure: Array}} state.layoutData
@@ -625,6 +697,7 @@ function updateSegmentsExperiencePriorityReducer(state, action) {
 export {
 	createSegmentsExperienceReducer,
 	deleteSegmentsExperienceReducer,
+	duplicateSegmentsExperienceReducer,
 	editSegmentsExperienceReducer,
 	updateSegmentsExperiencePriorityReducer,
 	selectSegmentsExperienceReducer

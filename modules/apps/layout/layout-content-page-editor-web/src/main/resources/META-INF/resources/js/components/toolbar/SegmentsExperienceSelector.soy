@@ -22,6 +22,7 @@
 	{@param? _dismissDeletionError: any }
 	{@param? _dismissEditionError: any }
 	{@param? _handleDeleteButtonClick: any }
+	{@param? _handleDuplicateButtonClick: any }
 	{@param? _handleMoveExperienceDownButtonClick: any }
 	{@param? _handleMoveExperienceUpButtonClick: any }
 	{@param? _handleEditButtonClick: any }
@@ -302,6 +303,9 @@
 												'segmentsExperienceId': $experience.segmentsExperienceId,
 											]/}
 											{param elementClasses: 'btn-borderless mx-1 text-dark' /}
+											{param events: [
+												'click': $_handleDuplicateButtonClick,
+											] /}
 											{param icon: 'paste' /}
 											{param monospaced: true /}
 											{param spritemap: $spritemap /}

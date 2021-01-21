@@ -25,6 +25,7 @@ import {
 	DELETE_FRAGMENT_ENTRY_LINK_COMMENT,
 	DELETE_SEGMENTS_EXPERIENCE,
 	DUPLICATE_FRAGMENT_ENTRY_LINK,
+	DUPLICATE_SEGMENTS_EXPERIENCE,
 	EDIT_SEGMENTS_EXPERIENCE,
 	MOVE_FRAGMENT_ENTRY_LINK,
 	MOVE_ROW,
@@ -85,6 +86,7 @@ import {
 import {
 	createSegmentsExperienceReducer,
 	deleteSegmentsExperienceReducer,
+	duplicateSegmentsExperienceReducer,
 	editSegmentsExperienceReducer,
 	selectSegmentsExperienceReducer,
 	updateSegmentsExperiencePriorityReducer
@@ -108,6 +110,7 @@ const reducers = {
 	[DELETE_FRAGMENT_ENTRY_LINK_COMMENT]: deleteFragmentEntryLinkCommentReducer,
 	[DELETE_SEGMENTS_EXPERIENCE]: deleteSegmentsExperienceReducer,
 	[DUPLICATE_FRAGMENT_ENTRY_LINK]: duplicateFragmentEntryLinkReducer,
+	[DUPLICATE_SEGMENTS_EXPERIENCE]: duplicateSegmentsExperienceReducer,
 	[EDIT_SEGMENTS_EXPERIENCE]: editSegmentsExperienceReducer,
 	[MOVE_FRAGMENT_ENTRY_LINK]: moveFragmentEntryLinkReducer,
 	[MOVE_ROW]: moveRowReducer,
