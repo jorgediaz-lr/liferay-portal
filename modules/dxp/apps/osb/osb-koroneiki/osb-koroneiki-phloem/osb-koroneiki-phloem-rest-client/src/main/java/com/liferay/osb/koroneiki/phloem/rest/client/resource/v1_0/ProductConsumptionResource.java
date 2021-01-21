@@ -176,8 +176,8 @@ public interface ProductConsumptionResource {
 		private Map<String, String> _headers = new LinkedHashMap<>();
 		private String _host = "localhost";
 		private Locale _locale;
-		private String _login = "test@liferay.com";
-		private String _password = "test";
+		private String _login = "";
+		private String _password = "";
 		private Map<String, String> _parameters = new LinkedHashMap<>();
 		private int _port = 8080;
 		private String _scheme = "http";
@@ -252,8 +252,9 @@ public interface ProductConsumptionResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/product-consumptions",
-				accountKey);
+						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/product-consumptions");
+
+			httpInvoker.path("accountKey", accountKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -330,8 +331,9 @@ public interface ProductConsumptionResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/product-consumptions",
-				accountKey);
+						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/product-consumptions");
+
+			httpInvoker.path("accountKey", accountKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -404,8 +406,9 @@ public interface ProductConsumptionResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/contacts/by-uuid/{contactUuid}/product-consumptions",
-				contactUuid);
+						"/o/koroneiki-rest/v1.0/contacts/by-uuid/{contactUuid}/product-consumptions");
+
+			httpInvoker.path("contactUuid", contactUuid);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -565,8 +568,11 @@ public interface ProductConsumptionResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/product-consumptions/by-external-link/{domain}/{entityName}/{entityId}",
-				domain, entityName, entityId);
+						"/o/koroneiki-rest/v1.0/product-consumptions/by-external-link/{domain}/{entityName}/{entityId}");
+
+			httpInvoker.path("domain", domain);
+			httpInvoker.path("entityName", entityName);
+			httpInvoker.path("entityId", entityId);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -638,8 +644,9 @@ public interface ProductConsumptionResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/product-consumptions/{productConsumptionKey}",
-				productConsumptionKey);
+						"/o/koroneiki-rest/v1.0/product-consumptions/{productConsumptionKey}");
+
+			httpInvoker.path("productConsumptionKey", productConsumptionKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -702,8 +709,9 @@ public interface ProductConsumptionResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/product-consumptions/{productConsumptionKey}",
-				productConsumptionKey);
+						"/o/koroneiki-rest/v1.0/product-consumptions/{productConsumptionKey}");
+
+			httpInvoker.path("productConsumptionKey", productConsumptionKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -780,8 +788,9 @@ public interface ProductConsumptionResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/product-consumptions/{productConsumptionKey}/product-consumption-permissions",
-				productConsumptionKey);
+						"/o/koroneiki-rest/v1.0/product-consumptions/{productConsumptionKey}/product-consumption-permissions");
+
+			httpInvoker.path("productConsumptionKey", productConsumptionKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -861,8 +870,9 @@ public interface ProductConsumptionResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/product-consumptions/{productConsumptionKey}/product-consumption-permissions",
-				productConsumptionKey);
+						"/o/koroneiki-rest/v1.0/product-consumptions/{productConsumptionKey}/product-consumption-permissions");
+
+			httpInvoker.path("productConsumptionKey", productConsumptionKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);

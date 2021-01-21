@@ -26,6 +26,8 @@ import com.liferay.portal.vulcan.util.ObjectMapperUtil;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.io.Serializable;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
@@ -53,7 +55,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 	description = "Represents a link to an entity in a different domain."
 )
 @XmlRootElement(name = "ExternalLink")
-public class ExternalLink {
+public class ExternalLink implements Serializable {
 
 	public static ExternalLink toDTO(String json) {
 		return ObjectMapperUtil.readValue(ExternalLink.class, json);
@@ -197,7 +199,7 @@ public class ExternalLink {
 	}
 
 	@GraphQLField(description = "The external link's key.")
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected String key;
 
 	@Schema(description = "The url of the external entity.")
@@ -357,6 +359,16 @@ public class ExternalLink {
 		return string.replaceAll("\"", "\\\\\"");
 	}
 
+	private static boolean _isArray(Object value) {
+		if (value == null) {
+			return false;
+		}
+
+		Class<?> clazz = value.getClass();
+
+		return clazz.isArray();
+	}
+
 	private static String _toJSON(Map<String, ?> map) {
 		StringBuilder sb = new StringBuilder("{");
 
@@ -375,9 +387,7 @@ public class ExternalLink {
 
 			Object value = entry.getValue();
 
-			Class<?> clazz = value.getClass();
-
-			if (clazz.isArray()) {
+			if (_isArray(value)) {
 				sb.append("[");
 
 				Object[] valueArray = (Object[])value;

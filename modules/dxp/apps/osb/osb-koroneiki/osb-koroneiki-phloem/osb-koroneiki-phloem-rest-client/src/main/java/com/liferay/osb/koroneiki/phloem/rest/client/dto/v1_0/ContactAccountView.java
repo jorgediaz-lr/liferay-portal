@@ -17,6 +17,8 @@ package com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0;
 import com.liferay.osb.koroneiki.phloem.rest.client.function.UnsafeSupplier;
 import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.ContactAccountViewSerDes;
 
+import java.io.Serializable;
+
 import java.util.Objects;
 
 import javax.annotation.Generated;
@@ -26,7 +28,7 @@ import javax.annotation.Generated;
  * @generated
  */
 @Generated("")
-public class ContactAccountView implements Cloneable {
+public class ContactAccountView implements Cloneable, Serializable {
 
 	public static ContactAccountView toDTO(String json) {
 		return ContactAccountViewSerDes.toDTO(json);

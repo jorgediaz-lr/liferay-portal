@@ -17,6 +17,8 @@ package com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0;
 import com.liferay.osb.koroneiki.phloem.rest.client.function.UnsafeSupplier;
 import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.ContactRolePermissionSerDes;
 
+import java.io.Serializable;
+
 import java.util.Objects;
 
 import javax.annotation.Generated;
@@ -26,7 +28,7 @@ import javax.annotation.Generated;
  * @generated
  */
 @Generated("")
-public class ContactRolePermission implements Cloneable {
+public class ContactRolePermission implements Cloneable, Serializable {
 
 	public static ContactRolePermission toDTO(String json) {
 		return ContactRolePermissionSerDes.toDTO(json);

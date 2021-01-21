@@ -109,7 +109,9 @@ public abstract class BaseAuditEntryResourceTestCase {
 
 		AuditEntryResource.Builder builder = AuditEntryResource.builder();
 
-		auditEntryResource = builder.locale(
+		auditEntryResource = builder.authentication(
+			"test@liferay.com", "test"
+		).locale(
 			LocaleUtil.getDefault()
 		).build();
 	}
@@ -862,7 +864,7 @@ public abstract class BaseAuditEntryResourceTestCase {
 		}
 	}
 
-	protected void assertValid(AuditEntry auditEntry) {
+	protected void assertValid(AuditEntry auditEntry) throws Exception {
 		boolean valid = true;
 
 		if (auditEntry.getDateCreated() == null) {
@@ -1183,9 +1185,11 @@ public abstract class BaseAuditEntryResourceTestCase {
 					return false;
 				}
 			}
+
+			return true;
 		}
 
-		return true;
+		return false;
 	}
 
 	protected java.util.Collection<EntityField> getEntityFields()

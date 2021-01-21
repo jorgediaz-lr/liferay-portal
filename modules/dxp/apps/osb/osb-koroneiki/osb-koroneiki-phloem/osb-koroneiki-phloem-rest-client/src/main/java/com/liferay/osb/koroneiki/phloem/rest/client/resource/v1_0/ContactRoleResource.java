@@ -243,8 +243,8 @@ public interface ContactRoleResource {
 		private Map<String, String> _headers = new LinkedHashMap<>();
 		private String _host = "localhost";
 		private Locale _locale;
-		private String _login = "test@liferay.com";
-		private String _password = "test";
+		private String _login = "";
+		private String _password = "";
 		private Map<String, String> _parameters = new LinkedHashMap<>();
 		private int _port = 8080;
 		private String _scheme = "http";
@@ -320,8 +320,10 @@ public interface ContactRoleResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/contacts/by-email-address/{contactEmailAddress}/roles",
-				accountKey, contactEmailAddress);
+						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/contacts/by-email-address/{contactEmailAddress}/roles");
+
+			httpInvoker.path("accountKey", accountKey);
+			httpInvoker.path("contactEmailAddress", contactEmailAddress);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -396,8 +398,10 @@ public interface ContactRoleResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/contacts/by-uuid/{contactUuid}/roles",
-				accountKey, contactUuid);
+						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/contacts/by-uuid/{contactUuid}/roles");
+
+			httpInvoker.path("accountKey", accountKey);
+			httpInvoker.path("contactUuid", contactUuid);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -472,8 +476,10 @@ public interface ContactRoleResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/customer-contacts/by-email-address/{contactEmailAddress}/roles",
-				accountKey, contactEmailAddress);
+						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/customer-contacts/by-email-address/{contactEmailAddress}/roles");
+
+			httpInvoker.path("accountKey", accountKey);
+			httpInvoker.path("contactEmailAddress", contactEmailAddress);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -548,8 +554,10 @@ public interface ContactRoleResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/customer-contacts/by-uuid/{contactUuid}/roles",
-				accountKey, contactUuid);
+						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/customer-contacts/by-uuid/{contactUuid}/roles");
+
+			httpInvoker.path("accountKey", accountKey);
+			httpInvoker.path("contactUuid", contactUuid);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -624,8 +632,10 @@ public interface ContactRoleResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/worker-contacts/by-email-address/{contactEmailAddress}/roles",
-				accountKey, contactEmailAddress);
+						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/worker-contacts/by-email-address/{contactEmailAddress}/roles");
+
+			httpInvoker.path("accountKey", accountKey);
+			httpInvoker.path("contactEmailAddress", contactEmailAddress);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -700,8 +710,10 @@ public interface ContactRoleResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/worker-contacts/by-uuid/{contactUuid}/roles",
-				accountKey, contactUuid);
+						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/worker-contacts/by-uuid/{contactUuid}/roles");
+
+			httpInvoker.path("accountKey", accountKey);
+			httpInvoker.path("contactUuid", contactUuid);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -929,8 +941,9 @@ public interface ContactRoleResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/contact-roles/{contactRoleKey}",
-				contactRoleKey);
+						"/o/koroneiki-rest/v1.0/contact-roles/{contactRoleKey}");
+
+			httpInvoker.path("contactRoleKey", contactRoleKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -992,8 +1005,9 @@ public interface ContactRoleResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/contact-roles/{contactRoleKey}",
-				contactRoleKey);
+						"/o/koroneiki-rest/v1.0/contact-roles/{contactRoleKey}");
+
+			httpInvoker.path("contactRoleKey", contactRoleKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -1068,8 +1082,9 @@ public interface ContactRoleResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/contact-roles/{contactRoleKey}",
-				contactRoleKey);
+						"/o/koroneiki-rest/v1.0/contact-roles/{contactRoleKey}");
+
+			httpInvoker.path("contactRoleKey", contactRoleKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -1144,8 +1159,9 @@ public interface ContactRoleResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/contact-roles/{contactRoleKey}/contact-role-permissions",
-				contactRoleKey);
+						"/o/koroneiki-rest/v1.0/contact-roles/{contactRoleKey}/contact-role-permissions");
+
+			httpInvoker.path("contactRoleKey", contactRoleKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -1223,8 +1239,9 @@ public interface ContactRoleResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/contact-roles/{contactRoleKey}/contact-role-permissions",
-				contactRoleKey);
+						"/o/koroneiki-rest/v1.0/contact-roles/{contactRoleKey}/contact-role-permissions");
+
+			httpInvoker.path("contactRoleKey", contactRoleKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -1289,8 +1306,10 @@ public interface ContactRoleResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/contact-roles/{contactRoleType}/{contactRoleName}",
-				contactRoleType, contactRoleName);
+						"/o/koroneiki-rest/v1.0/contact-roles/{contactRoleType}/{contactRoleName}");
+
+			httpInvoker.path("contactRoleType", contactRoleType);
+			httpInvoker.path("contactRoleName", contactRoleName);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -1362,8 +1381,10 @@ public interface ContactRoleResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/teams/{teamKey}/contacts/by-email-address/{emailAddress}/roles",
-				teamKey, emailAddress);
+						"/o/koroneiki-rest/v1.0/teams/{teamKey}/contacts/by-email-address/{emailAddress}/roles");
+
+			httpInvoker.path("teamKey", teamKey);
+			httpInvoker.path("emailAddress", emailAddress);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -1436,8 +1457,10 @@ public interface ContactRoleResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/teams/{teamKey}/contacts/by-uuid/{contactUuid}/roles",
-				teamKey, contactUuid);
+						"/o/koroneiki-rest/v1.0/teams/{teamKey}/contacts/by-uuid/{contactUuid}/roles");
+
+			httpInvoker.path("teamKey", teamKey);
+			httpInvoker.path("contactUuid", contactUuid);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);

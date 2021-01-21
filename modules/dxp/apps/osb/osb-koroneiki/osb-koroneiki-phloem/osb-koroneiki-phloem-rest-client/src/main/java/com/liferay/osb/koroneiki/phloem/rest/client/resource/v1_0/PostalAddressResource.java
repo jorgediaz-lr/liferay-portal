@@ -129,8 +129,8 @@ public interface PostalAddressResource {
 		private Map<String, String> _headers = new LinkedHashMap<>();
 		private String _host = "localhost";
 		private Locale _locale;
-		private String _login = "test@liferay.com";
-		private String _password = "test";
+		private String _login = "";
+		private String _password = "";
 		private Map<String, String> _parameters = new LinkedHashMap<>();
 		private int _port = 8080;
 		private String _scheme = "http";
@@ -196,8 +196,9 @@ public interface PostalAddressResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/postal-addresses",
-				accountKey);
+						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/postal-addresses");
+
+			httpInvoker.path("accountKey", accountKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -274,8 +275,9 @@ public interface PostalAddressResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/postal-addresses",
-				accountKey);
+						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/postal-addresses");
+
+			httpInvoker.path("accountKey", accountKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -347,8 +349,9 @@ public interface PostalAddressResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/postal-addresses/{postalAddressId}",
-				postalAddressId);
+						"/o/koroneiki-rest/v1.0/postal-addresses/{postalAddressId}");
+
+			httpInvoker.path("postalAddressId", postalAddressId);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -410,8 +413,9 @@ public interface PostalAddressResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/postal-addresses/{postalAddressId}",
-				postalAddressId);
+						"/o/koroneiki-rest/v1.0/postal-addresses/{postalAddressId}");
+
+			httpInvoker.path("postalAddressId", postalAddressId);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -487,8 +491,9 @@ public interface PostalAddressResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/postal-addresses/{postalAddressId}",
-				postalAddressId);
+						"/o/koroneiki-rest/v1.0/postal-addresses/{postalAddressId}");
+
+			httpInvoker.path("postalAddressId", postalAddressId);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);

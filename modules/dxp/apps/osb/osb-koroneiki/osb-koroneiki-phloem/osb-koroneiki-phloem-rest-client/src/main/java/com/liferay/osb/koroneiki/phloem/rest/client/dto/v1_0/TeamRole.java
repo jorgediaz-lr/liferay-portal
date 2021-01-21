@@ -17,6 +17,8 @@ package com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0;
 import com.liferay.osb.koroneiki.phloem.rest.client.function.UnsafeSupplier;
 import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.TeamRoleSerDes;
 
+import java.io.Serializable;
+
 import java.util.Date;
 import java.util.Objects;
 
@@ -27,7 +29,7 @@ import javax.annotation.Generated;
  * @generated
  */
 @Generated("")
-public class TeamRole implements Cloneable {
+public class TeamRole implements Cloneable, Serializable {
 
 	public static TeamRole toDTO(String json) {
 		return TeamRoleSerDes.toDTO(json);

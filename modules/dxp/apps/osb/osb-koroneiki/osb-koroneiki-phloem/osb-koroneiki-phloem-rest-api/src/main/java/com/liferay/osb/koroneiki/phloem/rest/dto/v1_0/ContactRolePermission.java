@@ -26,6 +26,8 @@ import com.liferay.portal.vulcan.util.ObjectMapperUtil;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.io.Serializable;
+
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
@@ -43,7 +45,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @GraphQLName("ContactRolePermission")
 @JsonFilter("Liferay.Vulcan")
 @XmlRootElement(name = "ContactRolePermission")
-public class ContactRolePermission {
+public class ContactRolePermission implements Serializable {
 
 	public static ContactRolePermission toDTO(String json) {
 		return ObjectMapperUtil.readValue(ContactRolePermission.class, json);
@@ -334,6 +336,16 @@ public class ContactRolePermission {
 		return string.replaceAll("\"", "\\\\\"");
 	}
 
+	private static boolean _isArray(Object value) {
+		if (value == null) {
+			return false;
+		}
+
+		Class<?> clazz = value.getClass();
+
+		return clazz.isArray();
+	}
+
 	private static String _toJSON(Map<String, ?> map) {
 		StringBuilder sb = new StringBuilder("{");
 
@@ -352,9 +364,7 @@ public class ContactRolePermission {
 
 			Object value = entry.getValue();
 
-			Class<?> clazz = value.getClass();
-
-			if (clazz.isArray()) {
+			if (_isArray(value)) {
 				sb.append("[");
 
 				Object[] valueArray = (Object[])value;

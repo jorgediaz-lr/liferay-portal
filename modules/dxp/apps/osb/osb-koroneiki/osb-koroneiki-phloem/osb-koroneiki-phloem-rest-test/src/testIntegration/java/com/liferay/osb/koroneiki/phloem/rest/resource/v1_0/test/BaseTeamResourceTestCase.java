@@ -115,7 +115,9 @@ public abstract class BaseTeamResourceTestCase {
 
 		TeamResource.Builder builder = TeamResource.builder();
 
-		teamResource = builder.locale(
+		teamResource = builder.authentication(
+			"test@liferay.com", "test"
+		).locale(
 			LocaleUtil.getDefault()
 		).build();
 	}
@@ -935,7 +937,7 @@ public abstract class BaseTeamResourceTestCase {
 		}
 	}
 
-	protected void assertValid(Team team) {
+	protected void assertValid(Team team) throws Exception {
 		boolean valid = true;
 
 		if (team.getDateCreated() == null) {
@@ -1224,9 +1226,11 @@ public abstract class BaseTeamResourceTestCase {
 					return false;
 				}
 			}
+
+			return true;
 		}
 
-		return true;
+		return false;
 	}
 
 	protected java.util.Collection<EntityField> getEntityFields()

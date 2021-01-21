@@ -109,7 +109,9 @@ public abstract class BaseExternalLinkResourceTestCase {
 
 		ExternalLinkResource.Builder builder = ExternalLinkResource.builder();
 
-		externalLinkResource = builder.locale(
+		externalLinkResource = builder.authentication(
+			"test@liferay.com", "test"
+		).locale(
 			LocaleUtil.getDefault()
 		).build();
 	}
@@ -1167,7 +1169,7 @@ public abstract class BaseExternalLinkResourceTestCase {
 		}
 	}
 
-	protected void assertValid(ExternalLink externalLink) {
+	protected void assertValid(ExternalLink externalLink) throws Exception {
 		boolean valid = true;
 
 		if (externalLink.getDateCreated() == null) {
@@ -1399,9 +1401,11 @@ public abstract class BaseExternalLinkResourceTestCase {
 					return false;
 				}
 			}
+
+			return true;
 		}
 
-		return true;
+		return false;
 	}
 
 	protected java.util.Collection<EntityField> getEntityFields()

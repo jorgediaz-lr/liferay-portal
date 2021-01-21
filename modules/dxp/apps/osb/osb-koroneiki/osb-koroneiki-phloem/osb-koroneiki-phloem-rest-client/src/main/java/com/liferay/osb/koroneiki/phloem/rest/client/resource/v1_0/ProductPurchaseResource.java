@@ -185,8 +185,8 @@ public interface ProductPurchaseResource {
 		private Map<String, String> _headers = new LinkedHashMap<>();
 		private String _host = "localhost";
 		private Locale _locale;
-		private String _login = "test@liferay.com";
-		private String _password = "test";
+		private String _login = "";
+		private String _password = "";
 		private Map<String, String> _parameters = new LinkedHashMap<>();
 		private int _port = 8080;
 		private String _scheme = "http";
@@ -260,8 +260,9 @@ public interface ProductPurchaseResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/product-purchases",
-				accountKey);
+						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/product-purchases");
+
+			httpInvoker.path("accountKey", accountKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -338,8 +339,9 @@ public interface ProductPurchaseResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/product-purchases",
-				accountKey);
+						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/product-purchases");
+
+			httpInvoker.path("accountKey", accountKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -412,8 +414,9 @@ public interface ProductPurchaseResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/contacts/by-uuid/{contactUuid}/product-purchases",
-				contactUuid);
+						"/o/koroneiki-rest/v1.0/contacts/by-uuid/{contactUuid}/product-purchases");
+
+			httpInvoker.path("contactUuid", contactUuid);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -573,8 +576,11 @@ public interface ProductPurchaseResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/product-purchases/by-external-link/{domain}/{entityName}/{entityId}",
-				domain, entityName, entityId);
+						"/o/koroneiki-rest/v1.0/product-purchases/by-external-link/{domain}/{entityName}/{entityId}");
+
+			httpInvoker.path("domain", domain);
+			httpInvoker.path("entityName", entityName);
+			httpInvoker.path("entityId", entityId);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -646,8 +652,9 @@ public interface ProductPurchaseResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/product-purchases/{productPurchaseKey}",
-				productPurchaseKey);
+						"/o/koroneiki-rest/v1.0/product-purchases/{productPurchaseKey}");
+
+			httpInvoker.path("productPurchaseKey", productPurchaseKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -709,8 +716,9 @@ public interface ProductPurchaseResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/product-purchases/{productPurchaseKey}",
-				productPurchaseKey);
+						"/o/koroneiki-rest/v1.0/product-purchases/{productPurchaseKey}");
+
+			httpInvoker.path("productPurchaseKey", productPurchaseKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -786,8 +794,9 @@ public interface ProductPurchaseResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/product-purchases/{productPurchaseKey}",
-				productPurchaseKey);
+						"/o/koroneiki-rest/v1.0/product-purchases/{productPurchaseKey}");
+
+			httpInvoker.path("productPurchaseKey", productPurchaseKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -864,8 +873,9 @@ public interface ProductPurchaseResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/product-purchases/{productPurchaseKey}/product-purchase-permissions",
-				productPurchaseKey);
+						"/o/koroneiki-rest/v1.0/product-purchases/{productPurchaseKey}/product-purchase-permissions");
+
+			httpInvoker.path("productPurchaseKey", productPurchaseKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -945,8 +955,9 @@ public interface ProductPurchaseResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/product-purchases/{productPurchaseKey}/product-purchase-permissions",
-				productPurchaseKey);
+						"/o/koroneiki-rest/v1.0/product-purchases/{productPurchaseKey}/product-purchase-permissions");
+
+			httpInvoker.path("productPurchaseKey", productPurchaseKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);

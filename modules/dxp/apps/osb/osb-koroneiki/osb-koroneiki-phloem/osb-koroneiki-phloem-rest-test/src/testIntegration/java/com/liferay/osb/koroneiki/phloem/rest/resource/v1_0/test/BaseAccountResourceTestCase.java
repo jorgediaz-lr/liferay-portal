@@ -115,7 +115,9 @@ public abstract class BaseAccountResourceTestCase {
 
 		AccountResource.Builder builder = AccountResource.builder();
 
-		accountResource = builder.locale(
+		accountResource = builder.authentication(
+			"test@liferay.com", "test"
+		).locale(
 			LocaleUtil.getDefault()
 		).build();
 	}
@@ -1109,7 +1111,7 @@ public abstract class BaseAccountResourceTestCase {
 		}
 	}
 
-	protected void assertValid(Account account) {
+	protected void assertValid(Account account) throws Exception {
 		boolean valid = true;
 
 		if (account.getDateCreated() == null) {
@@ -1709,9 +1711,11 @@ public abstract class BaseAccountResourceTestCase {
 					return false;
 				}
 			}
+
+			return true;
 		}
 
-		return true;
+		return false;
 	}
 
 	protected java.util.Collection<EntityField> getEntityFields()

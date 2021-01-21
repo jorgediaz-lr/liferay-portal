@@ -107,7 +107,9 @@ public abstract class BaseContactAccountViewResourceTestCase {
 		ContactAccountViewResource.Builder builder =
 			ContactAccountViewResource.builder();
 
-		contactAccountViewResource = builder.locale(
+		contactAccountViewResource = builder.authentication(
+			"test@liferay.com", "test"
+		).locale(
 			LocaleUtil.getDefault()
 		).build();
 	}
@@ -381,7 +383,9 @@ public abstract class BaseContactAccountViewResourceTestCase {
 		}
 	}
 
-	protected void assertValid(ContactAccountView contactAccountView) {
+	protected void assertValid(ContactAccountView contactAccountView)
+		throws Exception {
+
 		boolean valid = true;
 
 		for (String additionalAssertFieldName :
@@ -573,9 +577,11 @@ public abstract class BaseContactAccountViewResourceTestCase {
 					return false;
 				}
 			}
+
+			return true;
 		}
 
-		return true;
+		return false;
 	}
 
 	protected java.util.Collection<EntityField> getEntityFields()

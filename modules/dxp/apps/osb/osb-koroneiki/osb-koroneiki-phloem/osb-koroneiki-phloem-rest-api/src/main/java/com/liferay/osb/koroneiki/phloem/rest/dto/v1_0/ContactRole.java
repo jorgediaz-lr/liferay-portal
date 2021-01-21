@@ -28,6 +28,8 @@ import com.liferay.portal.vulcan.util.ObjectMapperUtil;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.io.Serializable;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
@@ -57,7 +59,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 	description = "Represents a contact role."
 )
 @XmlRootElement(name = "ContactRole")
-public class ContactRole {
+public class ContactRole implements Serializable {
 
 	public static ContactRole toDTO(String json) {
 		return ObjectMapperUtil.readValue(ContactRole.class, json);
@@ -449,6 +451,16 @@ public class ContactRole {
 		return string.replaceAll("\"", "\\\\\"");
 	}
 
+	private static boolean _isArray(Object value) {
+		if (value == null) {
+			return false;
+		}
+
+		Class<?> clazz = value.getClass();
+
+		return clazz.isArray();
+	}
+
 	private static String _toJSON(Map<String, ?> map) {
 		StringBuilder sb = new StringBuilder("{");
 
@@ -467,9 +479,7 @@ public class ContactRole {
 
 			Object value = entry.getValue();
 
-			Class<?> clazz = value.getClass();
-
-			if (clazz.isArray()) {
+			if (_isArray(value)) {
 				sb.append("[");
 
 				Object[] valueArray = (Object[])value;
