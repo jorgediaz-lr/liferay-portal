@@ -32,6 +32,7 @@ import com.liferay.osb.provisioning.distributed.messaging.internal.configuration
 import com.liferay.osb.provisioning.distributed.messaging.internal.constants.SalesforceConstants;
 import com.liferay.osb.provisioning.identity.management.provider.IdentityProvider;
 import com.liferay.osb.provisioning.koroneiki.constants.ContactRoleConstants;
+import com.liferay.osb.provisioning.koroneiki.constants.ProductConstants;
 import com.liferay.osb.provisioning.koroneiki.constants.TeamRoleConstants;
 import com.liferay.osb.provisioning.koroneiki.reader.AccountReader;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
@@ -63,6 +64,7 @@ import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.ModelHintsUtil;
 import com.liferay.portal.kernel.service.GroupLocalService;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -822,23 +824,23 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			sb.append(StringPool.SPACE);
 		}
 
-		ProductPurchase slaProductPurchase =
-			_accountReader.getSLAProductPurchase(account);
-
 		Product product = productPurchase.getProduct();
 
 		String productName = product.getName();
 
-		if (slaProductPurchase != null) {
-			Product slaProduct = slaProductPurchase.getProduct();
+		if (!ArrayUtil.contains(
+				ProductConstants.NAMES_SUBSCRIPTION, productName)) {
 
-			if (slaProduct != null) {
-				String slaProductName = slaProduct.getName();
+			ProductPurchase slaProductPurchase =
+				_accountReader.getSLAProductPurchase(account);
 
-				if (!slaProductName.equals(productName)) {
+			if (slaProductPurchase != null) {
+				Product slaProduct = slaProductPurchase.getProduct();
+
+				if (slaProduct != null) {
 					sb.append(
 						StringUtil.removeSubstring(
-							slaProductName, " Subscription"));
+							slaProduct.getName(), " Subscription"));
 
 					sb.append(StringPool.SPACE);
 				}
