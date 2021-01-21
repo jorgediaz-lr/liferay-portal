@@ -66,11 +66,18 @@ EditSubscriptions.propTypes = {
 	backURL: PropTypes.string,
 	details: PropTypes.arrayOf(
 		PropTypes.shape({
+			endDate: PropTypes.string,
 			externalLinkKey: PropTypes.string,
+			key: PropTypes.string,
 			originalEndDate: PropTypes.string,
+			perpetual: PropTypes.bool,
 			productKey: PropTypes.string,
 			productName: PropTypes.string,
-			startDate: PropTypes.string
+			quantity: PropTypes.number,
+			salesforceOpportunityKey: PropTypes.string,
+			sizing: PropTypes.number,
+			startDate: PropTypes.string,
+			status: PropTypes.string
 		})
 	),
 	editProductPurchasesActionURL: PropTypes.string.isRequired,
