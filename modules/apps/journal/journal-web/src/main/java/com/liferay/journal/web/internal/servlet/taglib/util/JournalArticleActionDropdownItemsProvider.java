@@ -236,8 +236,10 @@ public class JournalArticleActionDropdownItemsProvider {
 				if (JournalArticlePermission.contains(
 						_themeDisplay.getPermissionChecker(), _article,
 						ActionKeys.EXPIRE) &&
-					((_article.getStatus() == WorkflowConstants.STATUS_APPROVED) ||
-					 (_article.getStatus() == WorkflowConstants.STATUS_SCHEDULED))) {
+					((_article.getStatus() ==
+						WorkflowConstants.STATUS_APPROVED) ||
+					 (_article.getStatus() ==
+						 WorkflowConstants.STATUS_SCHEDULED))) {
 
 					add(
 						_getExpireArticleActionConsumer(
