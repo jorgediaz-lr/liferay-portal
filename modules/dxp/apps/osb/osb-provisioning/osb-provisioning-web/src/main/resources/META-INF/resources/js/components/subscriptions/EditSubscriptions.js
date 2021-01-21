@@ -66,6 +66,7 @@ EditSubscriptions.propTypes = {
 	backURL: PropTypes.string,
 	details: PropTypes.arrayOf(
 		PropTypes.shape({
+			externalLinkKey: PropTypes.string,
 			originalEndDate: PropTypes.string,
 			productKey: PropTypes.string,
 			productName: PropTypes.string,

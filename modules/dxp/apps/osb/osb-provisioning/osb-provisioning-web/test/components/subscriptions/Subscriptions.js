@@ -54,6 +54,7 @@ function mockEditSubscriptions() {
 	return [
 		{
 			endDate: '2022-01-20',
+			externalLinkKey: 'KOR-35727',
 			key: 'KOR-38323',
 			originalEndDate: '2021-12-21',
 			perpetual: true,
