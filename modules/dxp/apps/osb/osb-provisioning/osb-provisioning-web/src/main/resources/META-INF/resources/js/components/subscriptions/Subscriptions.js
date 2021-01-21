@@ -259,7 +259,7 @@ function Subscription({
 						aria-label={Liferay.Language.get('purchased')}
 						className="form-control form-control-sm"
 						id="quantity"
-						min={0}
+						min={1}
 						onChange={handleQuantityChange}
 						type="number"
 						value={quantity}

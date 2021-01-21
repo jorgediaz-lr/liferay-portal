@@ -54,7 +54,7 @@ function BulkInput({
 					<input
 						className="form-control form-control-sm"
 						id="quantityBulkInput"
-						min={0}
+						min={1}
 						onChange={() => {}}
 						type="number"
 						value={1}
