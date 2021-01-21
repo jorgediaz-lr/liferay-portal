@@ -292,6 +292,22 @@
 											{param style: 'unstyled' /}
 										{/call}
 
+										{let $duplicateLabel kind="text"}
+											{msg desc=""}duplicate-experience{/msg}
+										{/let}
+
+										{call ClayButton.render}
+											{param ariaLabel: $duplicateLabel /}
+											{param data: [
+												'segmentsExperienceId': $experience.segmentsExperienceId,
+											]/}
+											{param elementClasses: 'btn-borderless mx-1 text-dark' /}
+											{param icon: 'paste' /}
+											{param monospaced: true /}
+											{param spritemap: $spritemap /}
+											{param style: 'unstyled' /}
+										{/call}
+
 										{let $deleteLabel kind="text"}
 											{msg desc=""}delete-experience{/msg}
 										{/let}
