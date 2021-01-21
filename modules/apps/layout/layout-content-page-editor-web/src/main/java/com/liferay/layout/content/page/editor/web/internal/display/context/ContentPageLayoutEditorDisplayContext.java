@@ -309,6 +309,10 @@ public class ContentPageLayoutEditorDisplayContext
 			getFragmentEntryActionURL(
 				"/content_layout/delete_segments_experience")
 		).put(
+			"duplicateSegmentsExperienceURL",
+			getFragmentEntryActionURL(
+				"/content_layout/duplicate_segments_experience")
+		).put(
 			"editSegmentsEntryURL", _getEditSegmentsEntryURL()
 		).put(
 			"hasEditSegmentsEntryPermission", _hasEditSegmentsEntryPermission()

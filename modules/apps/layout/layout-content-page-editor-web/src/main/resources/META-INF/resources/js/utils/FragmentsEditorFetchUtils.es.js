@@ -255,6 +255,20 @@ function removeExperience(
 
 /**
  * @param {string} segmentsExperienceId
+ * @return {Promise<Response>}
+ */
+function duplicateSegmentsExperience(segmentsExperienceId) {
+	const state = _store.getState();
+
+	const body = {
+		segmentsExperienceId
+	};
+
+	return _fetch(state.duplicateSegmentsExperienceURL, body);
+}
+
+/**
+ * @param {string} segmentsExperienceId
  * @param {Array<string>} [fragmentEntryLinkIds=[]]
  * @return {Promise<Response>}
  */
@@ -363,6 +377,7 @@ export {
 	addStructuredContent,
 	deleteFragmentEntryLinkComment,
 	duplicateFragmentEntryLink,
+	duplicateSegmentsExperience,
 	editFragmentEntryLinkComment,
 	getAssetFieldValue,
 	getAssetMappingFields,

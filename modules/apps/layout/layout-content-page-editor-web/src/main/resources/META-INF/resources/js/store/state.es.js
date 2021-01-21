@@ -302,6 +302,14 @@ const INITIAL_STATE = {
 	duplicateFragmentEntryLinkURL: Config.string().value(''),
 
 	/**
+	 * URL for duplicating a segmentsExperience
+	 * @default ''
+	 * @review
+	 * @type {string}
+	 */
+	duplicateSegmentsExperienceURL: Config.string().value(''),
+
+	/**
 	 * URL for editing a comment to a FragmentEntryLink
 	 * @default ''
 	 * @review
