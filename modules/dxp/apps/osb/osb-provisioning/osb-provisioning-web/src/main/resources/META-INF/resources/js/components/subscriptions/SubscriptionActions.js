@@ -55,10 +55,10 @@ function SubscriptionActions({
 			.map(entry => {
 				entry['externalLinks'] = [
 					{
-						key:  entry.externalLinkKey,
 						domain: 'salesforce',
 						entityId: entry.salesforceOpportunityKey,
-						entityName: 'opportunity'
+						entityName: 'opportunity',
+						key: entry.externalLinkKey
 					}
 				];
 				entry['originalEndDate'] = formatDateSecondFormat(
