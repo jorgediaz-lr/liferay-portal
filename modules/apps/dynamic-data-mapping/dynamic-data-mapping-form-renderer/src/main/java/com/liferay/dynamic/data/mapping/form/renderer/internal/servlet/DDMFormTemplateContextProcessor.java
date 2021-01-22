@@ -102,17 +102,10 @@ public class DDMFormTemplateContextProcessor {
 
 		DDMFormField ddmFormField = new DDMFormField(name, type);
 
-		setDDMFormFieldAlphabeticalOrder(
-			jsonObject.getBoolean("alphabeticalOrder"), ddmFormField);
 		setDDMFormFieldCustomProperties(jsonObject, ddmFormField);
-		setDDMFormFieldDataProviderSettings(
-			jsonObject.getLong("ddmDataProviderInstanceId"),
-			jsonObject.getString("ddmDataProviderInstanceOutput"),
-			ddmFormField);
 		setDDMFormFieldDataType(jsonObject.getString("dataType"), ddmFormField);
 		setDDMFormFieldFieldName(
 			jsonObject.getString("fieldName"), ddmFormField);
-		setDDMFormFieldInline(jsonObject.getBoolean("inline"), ddmFormField);
 		setDDMFormFieldLabel(jsonObject.getString("label"), ddmFormField);
 		setDDMFormFieldLocalizable(
 			jsonObject.getBoolean("localizable", false), ddmFormField);
@@ -130,8 +123,6 @@ public class DDMFormTemplateContextProcessor {
 			jsonObject.getBoolean("repeatable", false), ddmFormField);
 		setDDMFormFieldRequired(
 			jsonObject.getBoolean("required", false), ddmFormField);
-		setDDMFormFieldShowAsSwitcher(
-			jsonObject.getBoolean("showAsSwitcher"), ddmFormField);
 		setDDMFormFieldText(jsonObject.getJSONObject("text"), ddmFormField);
 		setDDMFormFieldTooltip(jsonObject.getString("tooltip"), ddmFormField);
 		setDDMFormFieldValid(
@@ -234,12 +225,6 @@ public class DDMFormTemplateContextProcessor {
 		_ddmForm.setDefaultLocale(_locale);
 	}
 
-	protected void setDDMFormFieldAlphabeticalOrder(
-		boolean alphabeticalOrder, DDMFormField ddmFormField) {
-
-		ddmFormField.setProperty("alphabeticalOrder", alphabeticalOrder);
-	}
-
 	protected void setDDMFormFieldCustomProperties(
 		JSONObject jsonObject, DDMFormField ddmFormField) {
 
@@ -256,16 +241,6 @@ public class DDMFormTemplateContextProcessor {
 		}
 	}
 
-	protected void setDDMFormFieldDataProviderSettings(
-		long ddmDataProviderInstanceId, String ddmDataProviderInstanceOutput,
-		DDMFormField ddmFormField) {
-
-		ddmFormField.setProperty(
-			"ddmDataProviderInstanceId", ddmDataProviderInstanceId);
-		ddmFormField.setProperty(
-			"ddmDataProviderInstanceOutput", ddmDataProviderInstanceOutput);
-	}
-
 	protected void setDDMFormFieldDataType(
 		String dataType, DDMFormField ddmFormField) {
 
@@ -276,12 +251,6 @@ public class DDMFormTemplateContextProcessor {
 		String fieldName, DDMFormField ddmFormField) {
 
 		ddmFormField.setName(GetterUtil.getString(fieldName));
-	}
-
-	protected void setDDMFormFieldInline(
-		boolean inline, DDMFormField ddmFormField) {
-
-		ddmFormField.setProperty("inline", inline);
 	}
 
 	protected void setDDMFormFieldLabel(
@@ -363,12 +332,6 @@ public class DDMFormTemplateContextProcessor {
 		boolean required, DDMFormField ddmFormField) {
 
 		ddmFormField.setRequired(required);
-	}
-
-	protected void setDDMFormFieldShowAsSwitcher(
-		boolean showAsSwitcher, DDMFormField ddmFormField) {
-
-		ddmFormField.setProperty("showAsSwitcher", showAsSwitcher);
 	}
 
 	protected void setDDMFormFieldText(
