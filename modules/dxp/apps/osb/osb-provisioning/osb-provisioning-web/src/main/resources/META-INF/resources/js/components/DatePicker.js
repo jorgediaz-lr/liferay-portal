@@ -20,6 +20,7 @@ function DatePicker({
 	endYearOffset = YEAR_OFFSET,
 	id,
 	inputName,
+	placeholder = 'YYYY-MM-DD',
 	startYearOffset = YEAR_OFFSET,
 	updateFn
 }) {
@@ -40,7 +41,7 @@ function DatePicker({
 			id={id}
 			inputName={inputName}
 			onValueChange={handleOnValueChange}
-			placeholder="YYYY-MM-DD"
+			placeholder={placeholder}
 			value={value}
 			years={{
 				end: currentYear + endYearOffset,
@@ -55,6 +56,7 @@ DatePicker.propTypes = {
 	endYearOffset: PropTypes.number,
 	id: PropTypes.string,
 	inputName: PropTypes.string,
+	placeholder: PropTypes.string,
 	startYearOffset: PropTypes.number,
 	updateFn: PropTypes.func
 };

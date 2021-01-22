@@ -48,7 +48,12 @@ function Subscriptions({
 					>
 						{Liferay.Language.get('salesforce-opportunity-key')}
 					</ClayTable.Cell>
-					<ClayTable.Cell headingCell>
+					<ClayTable.Cell
+						className={
+							subscriptions.size > 1 ? 'table-cell-expand' : ''
+						}
+						headingCell
+					>
 						{Liferay.Language.get('purchased')}
 					</ClayTable.Cell>
 					<ClayTable.Cell headingCell>
@@ -60,7 +65,12 @@ function Subscriptions({
 					<ClayTable.Cell expanded headingCell>
 						{Liferay.Language.get('end-date')}
 					</ClayTable.Cell>
-					<ClayTable.Cell headingCell>
+					<ClayTable.Cell
+						className={
+							subscriptions.size > 1 ? 'table-cell-expand' : ''
+						}
+						headingCell
+					>
 						{Liferay.Language.get('instance-size')}
 					</ClayTable.Cell>
 
@@ -228,7 +238,8 @@ function Subscription({
 				if (attributeValue) {
 					dateBtn.setAttribute('disabled', attributeValue);
 					dateInput.setAttribute('disabled', attributeValue);
-				} else {
+				}
+				else {
 					dateBtn.removeAttribute('disabled');
 					dateInput.removeAttribute('disabled');
 				}

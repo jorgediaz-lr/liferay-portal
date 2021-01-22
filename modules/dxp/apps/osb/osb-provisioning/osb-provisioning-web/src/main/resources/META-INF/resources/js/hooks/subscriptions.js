@@ -29,9 +29,9 @@ export class Subscription extends Record({
 	perpetual: false,
 	productKey: null,
 	productName: '',
-	quantity: '1',
+	quantity: 1,
 	salesforceOpportunityKey: '',
-	sizing: '1',
+	sizing: 1,
 	startDate: new Date(),
 	status: PRODUCT_PURCHASE_STATUS_APPROVED
 }) {

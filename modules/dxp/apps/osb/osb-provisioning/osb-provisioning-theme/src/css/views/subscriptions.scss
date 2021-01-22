@@ -12,16 +12,24 @@
 			&[disabled] {
 				background-color: $light;
 			}
+
+			&[placeholder],
+			&::placeholder {
+				color: $dark;
+			}
 		}
 
 		.input-title {
 			color: $secondary;
 		}
+
+		.varied-data {
+			text-align: left;
+		}
 	}
 
 	.subscriptions {
-		label[for='instanceSize'],
-		label[for='instanceSizeBulkInput'] {
+		label {
 			display: block;
 		}
 
