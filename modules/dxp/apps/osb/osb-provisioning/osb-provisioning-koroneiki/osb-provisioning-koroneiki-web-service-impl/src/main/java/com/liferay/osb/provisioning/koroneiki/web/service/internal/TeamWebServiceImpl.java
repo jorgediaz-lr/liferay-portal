@@ -15,6 +15,7 @@
 package com.liferay.osb.provisioning.koroneiki.web.service.internal;
 
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
+import com.liferay.osb.koroneiki.phloem.rest.client.http.HttpInvoker;
 import com.liferay.osb.koroneiki.phloem.rest.client.pagination.Page;
 import com.liferay.osb.koroneiki.phloem.rest.client.pagination.Pagination;
 import com.liferay.osb.koroneiki.phloem.rest.client.resource.v1_0.TeamResource;
@@ -38,7 +39,8 @@ import org.osgi.service.component.annotations.Component;
 	configurationPid = "com.liferay.osb.provisioning.koroneiki.web.service.internal.configuration.KoroneikiConfiguration",
 	immediate = true, service = TeamWebService.class
 )
-public class TeamWebServiceImpl implements TeamWebService {
+public class TeamWebServiceImpl
+	extends BaseWebService implements TeamWebService {
 
 	public Team addTeam(
 			String agentName, String agentUID, String accountKey, Team team)
@@ -53,14 +55,20 @@ public class TeamWebServiceImpl implements TeamWebService {
 			String[] contactEmailAddresses)
 		throws Exception {
 
-		_teamResource.putTeamContactByEmailAddress(
-			agentName, agentUID, teamKey, contactEmailAddresses);
+		HttpInvoker.HttpResponse httpResponse =
+			_teamResource.putTeamContactByEmailAddressHttpResponse(
+				agentName, agentUID, teamKey, contactEmailAddresses);
+
+		validateResponse(httpResponse);
 	}
 
 	public void deleteTeam(String agentName, String agentUID, String teamKey)
 		throws Exception {
 
-		_teamResource.deleteTeam(agentName, agentUID, teamKey);
+		HttpInvoker.HttpResponse httpResponse =
+			_teamResource.deleteTeamHttpResponse(agentName, agentUID, teamKey);
+
+		validateResponse(httpResponse);
 	}
 
 	public Team getTeam(String teamKey) throws Exception {
@@ -100,8 +108,11 @@ public class TeamWebServiceImpl implements TeamWebService {
 			String[] contactEmailAddresses)
 		throws Exception {
 
-		_teamResource.deleteTeamContactByEmailAddress(
-			agentName, agentUID, teamKey, contactEmailAddresses);
+		HttpInvoker.HttpResponse httpResponse =
+			_teamResource.deleteTeamContactByEmailAddressHttpResponse(
+				agentName, agentUID, teamKey, contactEmailAddresses);
+
+		validateResponse(httpResponse);
 	}
 
 	public Team updateTeam(

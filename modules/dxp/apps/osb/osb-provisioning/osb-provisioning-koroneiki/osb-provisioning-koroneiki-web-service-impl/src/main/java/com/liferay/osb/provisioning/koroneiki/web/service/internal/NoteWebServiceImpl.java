@@ -15,6 +15,7 @@
 package com.liferay.osb.provisioning.koroneiki.web.service.internal;
 
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Note;
+import com.liferay.osb.koroneiki.phloem.rest.client.http.HttpInvoker;
 import com.liferay.osb.koroneiki.phloem.rest.client.pagination.Page;
 import com.liferay.osb.koroneiki.phloem.rest.client.pagination.Pagination;
 import com.liferay.osb.koroneiki.phloem.rest.client.resource.v1_0.NoteResource;
@@ -37,7 +38,8 @@ import org.osgi.service.component.annotations.Component;
 	configurationPid = "com.liferay.osb.provisioning.koroneiki.web.service.internal.configuration.KoroneikiConfiguration",
 	immediate = true, service = NoteWebService.class
 )
-public class NoteWebServiceImpl implements NoteWebService {
+public class NoteWebServiceImpl
+	extends BaseWebService implements NoteWebService {
 
 	public Note addNote(
 			String agentName, String agentUID, String accountKey, Note note)
@@ -50,7 +52,10 @@ public class NoteWebServiceImpl implements NoteWebService {
 	public void deleteNote(String agentName, String agentUID, String noteKey)
 		throws Exception {
 
-		_noteResource.deleteNote(agentName, agentUID, noteKey);
+		HttpInvoker.HttpResponse httpResponse =
+			_noteResource.deleteNoteHttpResponse(agentName, agentUID, noteKey);
+
+		validateResponse(httpResponse);
 	}
 
 	public List<Note> getNotes(

@@ -44,7 +44,8 @@ import org.osgi.service.component.annotations.Component;
 	configurationPid = "com.liferay.osb.provisioning.koroneiki.web.service.internal.configuration.KoroneikiConfiguration",
 	immediate = true, service = AccountWebService.class
 )
-public class AccountWebServiceImpl implements AccountWebService {
+public class AccountWebServiceImpl
+	extends BaseWebService implements AccountWebService {
 
 	public Account addAccount(
 			String agentName, String agentUID, Account account)
@@ -71,6 +72,8 @@ public class AccountWebServiceImpl implements AccountWebService {
 
 			throw new NoSuchContactException();
 		}
+
+		validateResponse(httpResponse);
 	}
 
 	public void assignTeamRoles(
@@ -78,8 +81,11 @@ public class AccountWebServiceImpl implements AccountWebService {
 			String teamKey, String[] teamRoleKeys)
 		throws Exception {
 
-		_accountResource.putAccountAssignedTeamTeamKeyRole(
-			agentName, agentUID, accountKey, teamKey, teamRoleKeys);
+		HttpInvoker.HttpResponse httpResponse =
+			_accountResource.putAccountAssignedTeamTeamKeyRoleHttpResponse(
+				agentName, agentUID, accountKey, teamKey, teamRoleKeys);
+
+		validateResponse(httpResponse);
 	}
 
 	public Account fetchAccount(String accountKey) throws Exception {
@@ -158,10 +164,13 @@ public class AccountWebServiceImpl implements AccountWebService {
 			String contactEmailAddress, String[] contactRoleKeys)
 		throws Exception {
 
-		_accountResource.
-			deleteAccountContactByEmailAddresContactEmailAddressRole(
-				agentName, agentUID, accountKey, contactEmailAddress,
-				contactRoleKeys);
+		HttpInvoker.HttpResponse httpResponse =
+			_accountResource.
+				deleteAccountContactByEmailAddresContactEmailAddressRoleHttpResponse(
+					agentName, agentUID, accountKey, contactEmailAddress,
+					contactRoleKeys);
+
+		validateResponse(httpResponse);
 	}
 
 	public void unassignCustomerContact(
@@ -169,9 +178,13 @@ public class AccountWebServiceImpl implements AccountWebService {
 			String contactEmailAddress)
 		throws Exception {
 
-		_accountResource.deleteAccountCustomerContactByEmailAddres(
-			agentName, agentUID, accountKey,
-			new String[] {contactEmailAddress});
+		HttpInvoker.HttpResponse httpResponse =
+			_accountResource.
+				deleteAccountCustomerContactByEmailAddresHttpResponse(
+					agentName, agentUID, accountKey,
+					new String[] {contactEmailAddress});
+
+		validateResponse(httpResponse);
 	}
 
 	public void unassignTeamRoles(
@@ -179,8 +192,11 @@ public class AccountWebServiceImpl implements AccountWebService {
 			String teamKey, String[] teamRoleKeys)
 		throws Exception {
 
-		_accountResource.deleteAccountAssignedTeamTeamKeyRole(
-			agentName, agentUID, accountKey, teamKey, teamRoleKeys);
+		HttpInvoker.HttpResponse httpResponse =
+			_accountResource.deleteAccountAssignedTeamTeamKeyRoleHttpResponse(
+				agentName, agentUID, accountKey, teamKey, teamRoleKeys);
+
+		validateResponse(httpResponse);
 	}
 
 	public void unassignWorkerContact(

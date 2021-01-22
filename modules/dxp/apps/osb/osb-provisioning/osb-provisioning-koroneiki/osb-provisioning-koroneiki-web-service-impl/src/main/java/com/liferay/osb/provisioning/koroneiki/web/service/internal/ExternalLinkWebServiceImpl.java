@@ -15,6 +15,7 @@
 package com.liferay.osb.provisioning.koroneiki.web.service.internal;
 
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ExternalLink;
+import com.liferay.osb.koroneiki.phloem.rest.client.http.HttpInvoker;
 import com.liferay.osb.koroneiki.phloem.rest.client.pagination.Page;
 import com.liferay.osb.koroneiki.phloem.rest.client.pagination.Pagination;
 import com.liferay.osb.koroneiki.phloem.rest.client.resource.v1_0.ExternalLinkResource;
@@ -37,7 +38,8 @@ import org.osgi.service.component.annotations.Component;
 	configurationPid = "com.liferay.osb.provisioning.koroneiki.web.service.internal.configuration.KoroneikiConfiguration",
 	immediate = true, service = ExternalLinkWebService.class
 )
-public class ExternalLinkWebServiceImpl implements ExternalLinkWebService {
+public class ExternalLinkWebServiceImpl
+	extends BaseWebService implements ExternalLinkWebService {
 
 	public ExternalLink addAccountExternalLink(
 			String agentName, String agentUID, String accountKey,
@@ -61,8 +63,11 @@ public class ExternalLinkWebServiceImpl implements ExternalLinkWebService {
 			String agentName, String agentUID, String externalLinkKey)
 		throws Exception {
 
-		_externalLinkResource.deleteExternalLink(
-			agentName, agentUID, externalLinkKey);
+		HttpInvoker.HttpResponse httpResponse =
+			_externalLinkResource.deleteExternalLinkHttpResponse(
+				agentName, agentUID, externalLinkKey);
+
+		validateResponse(httpResponse);
 	}
 
 	public List<ExternalLink> getExternalLinks(
