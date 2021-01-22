@@ -67,7 +67,9 @@ public class AsahFaroBackendClientImpl implements AsahFaroBackendClient {
 			_headers.put("OSB-Asah-Project-ID", asahProjectId);
 		}
 
-		_jsonWebServiceClient.setBaseURI(asahFaroBackendURL);
+		_url = asahFaroBackendURL;
+
+		_jsonWebServiceClient.setBaseURI(_url);
 	}
 
 	@Override
@@ -219,6 +221,11 @@ public class AsahFaroBackendClientImpl implements AsahFaroBackendClient {
 				"Unable to handle JSON response: " + ioException.getMessage(),
 				ioException);
 		}
+	}
+
+	@Override
+	public String getURL() {
+		return _url;
 	}
 
 	@Override
