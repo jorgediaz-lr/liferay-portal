@@ -28,11 +28,13 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.segments.asah.connector.internal.client.AsahFaroBackendClient;
 import com.liferay.segments.asah.connector.internal.client.AsahFaroBackendClientFactory;
 import com.liferay.segments.asah.connector.internal.client.model.DXPVariantSettings;
 import com.liferay.segments.asah.connector.internal.client.model.ExperimentSettings;
+import com.liferay.segments.asah.connector.internal.util.AsahUtil;
 import com.liferay.segments.constants.SegmentsPortletKeys;
 import com.liferay.segments.model.SegmentsExperiment;
 import com.liferay.segments.model.SegmentsExperimentRel;
@@ -108,7 +110,12 @@ public class CalculateSegmentsExperimentEstimatedDurationMVCActionCommand
 		double confidenceLevel, SegmentsExperiment segmentsExperiment,
 		Map<String, Double> segmentsExperienceKeySplitMap) {
 
-		if (_asahFaroBackendClient == null) {
+		if ((_asahFaroBackendClient == null) ||
+			!StringUtil.equalsIgnoreCase(
+				_asahFaroBackendClient.getURL(),
+				AsahUtil.getAsahFaroBackendURL(
+					_portal.getDefaultCompanyId()))) {
+
 			Optional<AsahFaroBackendClient> asahFaroBackendClientOptional =
 				_asahFaroBackendClientFactory.createAsahFaroBackendClient();
 

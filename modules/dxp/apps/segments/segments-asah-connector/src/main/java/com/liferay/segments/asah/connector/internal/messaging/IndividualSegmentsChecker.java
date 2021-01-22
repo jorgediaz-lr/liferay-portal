@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.segments.asah.connector.internal.cache.AsahSegmentsEntryCache;
 import com.liferay.segments.asah.connector.internal.client.AsahFaroBackendClient;
 import com.liferay.segments.asah.connector.internal.client.AsahFaroBackendClientFactory;
@@ -35,6 +36,7 @@ import com.liferay.segments.asah.connector.internal.client.model.Individual;
 import com.liferay.segments.asah.connector.internal.client.model.IndividualSegment;
 import com.liferay.segments.asah.connector.internal.client.model.Results;
 import com.liferay.segments.asah.connector.internal.client.util.OrderByField;
+import com.liferay.segments.asah.connector.internal.util.AsahUtil;
 import com.liferay.segments.constants.SegmentsEntryConstants;
 import com.liferay.segments.model.SegmentsEntry;
 import com.liferay.segments.model.SegmentsEntryModel;
@@ -79,7 +81,12 @@ public class IndividualSegmentsChecker {
 			return;
 		}
 
-		if (_asahFaroBackendClient == null) {
+		if ((_asahFaroBackendClient == null) ||
+			!StringUtil.equalsIgnoreCase(
+				_asahFaroBackendClient.getURL(),
+				AsahUtil.getAsahFaroBackendURL(
+					_portal.getDefaultCompanyId()))) {
+
 			Optional<AsahFaroBackendClient> asahFaroBackendClientOptional =
 				_asahFaroBackendClientFactory.createAsahFaroBackendClient();
 

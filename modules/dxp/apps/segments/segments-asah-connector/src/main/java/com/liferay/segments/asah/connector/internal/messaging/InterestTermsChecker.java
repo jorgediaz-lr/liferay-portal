@@ -19,12 +19,14 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.segments.asah.connector.internal.cache.AsahInterestTermCache;
 import com.liferay.segments.asah.connector.internal.client.AsahFaroBackendClient;
 import com.liferay.segments.asah.connector.internal.client.AsahFaroBackendClientFactory;
 import com.liferay.segments.asah.connector.internal.client.model.Results;
 import com.liferay.segments.asah.connector.internal.client.model.Topic;
+import com.liferay.segments.asah.connector.internal.util.AsahUtil;
 
 import java.util.List;
 import java.util.Optional;
@@ -44,7 +46,12 @@ public class InterestTermsChecker {
 			return;
 		}
 
-		if (_asahFaroBackendClient == null) {
+		if ((_asahFaroBackendClient == null) ||
+			!StringUtil.equalsIgnoreCase(
+				_asahFaroBackendClient.getURL(),
+				AsahUtil.getAsahFaroBackendURL(
+					_portal.getDefaultCompanyId()))) {
+
 			Optional<AsahFaroBackendClient> asahFaroBackendClientOptional =
 				_asahFaroBackendClientFactory.createAsahFaroBackendClient();
 
@@ -118,5 +125,8 @@ public class InterestTermsChecker {
 
 	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED)
 	private ModuleServiceLifecycle _moduleServiceLifecycle;
+
+	@Reference
+	private Portal _portal;
 
 }
