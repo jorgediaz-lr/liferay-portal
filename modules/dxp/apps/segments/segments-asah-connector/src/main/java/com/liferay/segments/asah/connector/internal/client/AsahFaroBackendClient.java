@@ -113,6 +113,13 @@ public interface AsahFaroBackendClient {
 	public Results<Topic> getInterestTermsResults(String userId);
 
 	/**
+	 * Returns the URL of the client.
+	 *
+	 * @return the URL of the client
+	 */
+	public String getURL();
+
+	/**
 	 * Updates an {@link Experiment}.
 	 *
 	 * @param  experiment experiment to be updated
