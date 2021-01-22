@@ -1209,7 +1209,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 	}
 
 	protected List<Contact> parseContacts(JSONObject jsonObject)
-		throws PortalException {
+		throws Exception {
 
 		List<Contact> contacts = new ArrayList<>();
 
@@ -1222,10 +1222,9 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			contact.setLastName(ownerJSONObject.getString("_lastName"));
 			contact.setEmailAddress(ownerJSONObject.getString("_emailAddress"));
 
-			ContactRole contactRole = new ContactRole();
-
-			contactRole.setName(ContactRoleConstants.NAME_LIFERAY_SALES);
-			contactRole.setType(ContactRole.Type.ACCOUNT_WORKER);
+			ContactRole contactRole = _contactRoleWebService.fetchContactRole(
+				ContactRole.Type.ACCOUNT_WORKER.toString(),
+				ContactRoleConstants.NAME_LIFERAY_SALES);
 
 			contact.setContactRoles(new ContactRole[] {contactRole});
 
@@ -1248,10 +1247,9 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			contact.setEmailAddress(
 				contactJSONObject.getString("_emailAddress"));
 
-			ContactRole contactRole = new ContactRole();
-
-			contactRole.setName(ContactRoleConstants.NAME_SUPPORT_WATCHER);
-			contactRole.setType(ContactRole.Type.ACCOUNT_CUSTOMER);
+			ContactRole contactRole = _contactRoleWebService.fetchContactRole(
+				ContactRole.Type.ACCOUNT_CUSTOMER.toString(),
+				ContactRoleConstants.NAME_SUPPORT_WATCHER);
 
 			contact.setContactRoles(new ContactRole[] {contactRole});
 
@@ -1650,18 +1648,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			for (int i = 0; i < contactRoles.length; i++) {
 				ContactRole contactRole = contactRoles[i];
 
-				ContactRole.Type type = contactRole.getType();
-
-				ContactRole curContactRole =
-					_contactRoleWebService.fetchContactRole(
-						type.toString(), contactRole.getName());
-
-				if (curContactRole == null) {
-					curContactRole = _contactRoleWebService.addContactRole(
-						StringPool.BLANK, StringPool.BLANK, contactRole);
-				}
-
-				contactRoleKeys[i] = curContactRole.getKey();
+				contactRoleKeys[i] = contactRole.getKey();
 			}
 
 			_accountWebService.assignContactRoles(
