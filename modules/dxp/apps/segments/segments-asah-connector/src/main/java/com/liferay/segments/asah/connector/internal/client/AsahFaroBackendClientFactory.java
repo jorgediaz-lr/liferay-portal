@@ -51,7 +51,8 @@ public class AsahFaroBackendClientFactory {
 				AsahUtil.getAsahFaroBackendDataSourceId(company.getCompanyId()),
 				AsahUtil.getAsahFaroBackendSecuritySignature(
 					company.getCompanyId()),
-				AsahUtil.getAsahFaroBackendURL(company.getCompanyId())));
+				AsahUtil.getAsahFaroBackendURL(company.getCompanyId()),
+				AsahUtil.getAsahProjectId(company.getCompanyId())));
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

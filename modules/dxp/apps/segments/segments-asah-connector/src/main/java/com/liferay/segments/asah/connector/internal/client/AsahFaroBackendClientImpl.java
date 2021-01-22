@@ -52,7 +52,8 @@ public class AsahFaroBackendClientImpl implements AsahFaroBackendClient {
 	public AsahFaroBackendClientImpl(
 		JSONWebServiceClient jsonWebServiceClient,
 		String asahFaroBackendDataSourceId,
-		String asahFaroBackendSecuritySignature, String asahFaroBackendURL) {
+		String asahFaroBackendSecuritySignature, String asahFaroBackendURL,
+		String asahProjectId) {
 
 		_jsonWebServiceClient = jsonWebServiceClient;
 
@@ -61,6 +62,10 @@ public class AsahFaroBackendClientImpl implements AsahFaroBackendClient {
 		_headers.put(
 			"OSB-Asah-Faro-Backend-Security-Signature",
 			asahFaroBackendSecuritySignature);
+
+		if (asahProjectId != null) {
+			_headers.put("OSB-Asah-Project-ID", asahProjectId);
+		}
 
 		_jsonWebServiceClient.setBaseURI(asahFaroBackendURL);
 	}
@@ -345,5 +350,6 @@ public class AsahFaroBackendClientImpl implements AsahFaroBackendClient {
 	private final String _dataSourceId;
 	private final Map<String, String> _headers = new HashMap<>();
 	private final JSONWebServiceClient _jsonWebServiceClient;
+	private final String _url;
 
 }
