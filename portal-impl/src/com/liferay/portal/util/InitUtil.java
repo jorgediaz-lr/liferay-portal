@@ -131,14 +131,6 @@ public class InitUtil {
 
 		com.liferay.portal.kernel.util.PropsUtil.setProps(new PropsImpl());
 
-		// Log4J
-
-		if (GetterUtil.getBoolean(
-				SystemProperties.get("log4j.configure.on.startup"), true)) {
-
-			Log4JUtil.configureLog4J(InitUtil.class.getClassLoader());
-		}
-
 		// Shared log
 
 		try {
@@ -146,6 +138,14 @@ public class InitUtil {
 		}
 		catch (Exception exception) {
 			exception.printStackTrace();
+		}
+
+		// Log4J
+
+		if (GetterUtil.getBoolean(
+				SystemProperties.get("log4j.configure.on.startup"), true)) {
+
+			Log4JUtil.configureLog4J(InitUtil.class.getClassLoader());
 		}
 
 		// Log sanitizer
