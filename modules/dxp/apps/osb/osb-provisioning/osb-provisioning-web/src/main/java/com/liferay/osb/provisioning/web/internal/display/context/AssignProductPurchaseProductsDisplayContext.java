@@ -143,36 +143,38 @@ public class AssignProductPurchaseProductsDisplayContext {
 				end = count;
 			}
 
-			int size = searchContainer.getDelta();
+			if (end > 0) {
+				int size = searchContainer.getDelta();
 
-			int startPage = (int)Math.ceil((start + 1) * 1.0 / size);
+				int startPage = (int)Math.ceil((start + 1) * 1.0 / size);
 
-			int endPage = (int)Math.ceil(end * 1.0 / size);
+				int endPage = (int)Math.ceil(end * 1.0 / size);
 
-			while (startPage != endPage) {
-				size += 1;
+				while (startPage != endPage) {
+					size += 1;
 
-				startPage = (int)Math.ceil((start + 1) * 1.0 / size);
+					startPage = (int)Math.ceil((start + 1) * 1.0 / size);
 
-				endPage = (int)Math.ceil(end * 1.0 / size);
+					endPage = (int)Math.ceil(end * 1.0 / size);
+				}
+
+				List<Product> products = _productWebService.getProducts(
+					keywords, StringPool.BLANK, endPage, size, "name");
+
+				start = start % size;
+
+				end = start + searchContainer.getDelta();
+
+				if (end > products.size()) {
+					end = products.size();
+				}
+
+				results.addAll(
+					TransformUtil.transform(
+						products.subList(start, end),
+						product -> new ProductDisplay(
+							_renderRequest, _renderResponse, product)));
 			}
-
-			List<Product> products = _productWebService.getProducts(
-				keywords, StringPool.BLANK, endPage, size, "name");
-
-			start = start % size;
-
-			end = start + searchContainer.getDelta();
-
-			if (end > products.size()) {
-				end = products.size();
-			}
-
-			results.addAll(
-				TransformUtil.transform(
-					products.subList(start, end),
-					product -> new ProductDisplay(
-						_renderRequest, _renderResponse, product)));
 		}
 
 		count += hits.getLength();
