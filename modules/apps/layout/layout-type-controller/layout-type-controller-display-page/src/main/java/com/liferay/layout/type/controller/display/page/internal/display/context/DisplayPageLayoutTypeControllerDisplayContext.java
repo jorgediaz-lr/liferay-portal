@@ -163,7 +163,7 @@ public class DisplayPageLayoutTypeControllerDisplayContext {
 
 	private final HttpServletRequest _httpServletRequest;
 	private final InfoDisplayContributor _infoDisplayContributor;
-	private Map<Long, Map<String, Object>> _infoDisplayFieldsValuesMap =
+	private final Map<Long, Map<String, Object>> _infoDisplayFieldsValuesMap =
 		new HashMap<>();
 	private final InfoDisplayObjectProvider _infoDisplayObjectProvider;
 

@@ -412,7 +412,7 @@ public class ConfigurationModelToDDMFormConverter {
 	private final ConfigurationModel _configurationModel;
 	private final Locale _locale;
 
-	private Predicate<AttributeDefinition> _requiredInputPredicate =
+	private final Predicate<AttributeDefinition> _requiredInputPredicate =
 		attributeDefinition -> {
 			Map<String, String> extensionAttributes = _getExtensionAttributes(
 				attributeDefinition);
