@@ -332,9 +332,8 @@ public class ProductPurchaseViewDisplay {
 			if (approved) {
 				_approvedPurchasedCount += productPurchase.getQuantity();
 
-				if (_perpetual ||
-					(((startDate == null) || startDate.before(now)) &&
-					 ((endDate == null) || endDate.after(now)))) {
+				if (((startDate == null) || startDate.before(now)) &&
+					 ((endDate == null) || endDate.after(now))) {
 
 					_currentPurchasedCount += productPurchase.getQuantity();
 				}
