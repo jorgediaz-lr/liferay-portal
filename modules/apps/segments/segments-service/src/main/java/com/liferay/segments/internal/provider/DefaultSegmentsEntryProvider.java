@@ -268,7 +268,7 @@ public class DefaultSegmentsEntryProvider implements SegmentsEntryProvider {
 				}
 			}
 
-			if (context.containsKey(Context.SIGNED_IN) &&
+			if ((context.get(Context.SIGNED_IN) != null) &&
 				!GetterUtil.getBoolean(context.get(Context.SIGNED_IN))) {
 
 				return matchesContext;
