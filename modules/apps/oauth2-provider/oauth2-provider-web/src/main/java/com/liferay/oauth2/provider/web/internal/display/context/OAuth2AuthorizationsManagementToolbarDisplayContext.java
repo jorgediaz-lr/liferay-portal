@@ -83,7 +83,7 @@ public class OAuth2AuthorizationsManagementToolbarDisplayContext
 
 		String columnName = "createDate";
 
-		for (String orderByColumn : _orderByColumns) {
+		for (String orderByColumn : _ORDER_BY_COLUMNS) {
 			if (orderByCol.equals(orderByColumn)) {
 				columnName = orderByColumn;
 			}
@@ -96,7 +96,7 @@ public class OAuth2AuthorizationsManagementToolbarDisplayContext
 	private List<DropdownItem> _getOrderByDropdownItems() {
 		return new DropdownItemList() {
 			{
-				for (String orderByCol : _orderByColumns) {
+				for (String orderByCol : _ORDER_BY_COLUMNS) {
 					add(
 						dropdownItem -> {
 							dropdownItem.setActive(
@@ -113,7 +113,7 @@ public class OAuth2AuthorizationsManagementToolbarDisplayContext
 		};
 	}
 
-	private static final String[] _orderByColumns = {
+	private static final String[] _ORDER_BY_COLUMNS = {
 		"createDate", "userId", "userName", "accessTokenCreateDate",
 		"accessTokenExpirationDate", "refreshTokenCreateDate",
 		"refreshTokenExpirationDate", "remoteIPInfo"
