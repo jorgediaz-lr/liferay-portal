@@ -25,6 +25,18 @@ export function convertDashToEmptyString(value) {
 }
 
 /**
+ * Date objects are by default in Pacific Standard Time (PST).
+ * This helper ensures dates are displayed in UTC.
+ * @param {object} date The date object.
+ * @returns {string} The string reprensetation of the UTC date.
+ */
+export function displayUTCDate(date) {
+	const match = JSON.stringify(date).match(/"(?<utcDate>\d+-\d+-\d+)T/);
+
+	return (match && match.groups.utcDate) || date;
+}
+
+/**
  * Returns a promise of the request data
  * @param {string} endpoint The endpoint to post to
  * @param {object} params The parameters object to post with
@@ -58,5 +70,33 @@ export function request(endpoint, params, encoding = 'json', method = 'get') {
 		method,
 		params: namespacedParams,
 		url: endpoint
+	});
+}
+
+/**
+ * Source formatter locks @clayui/date-picker at version 3.0.7,
+ * which does not provide an API for disabling/enabling date picker
+ * while later versions do.
+ * This helper manually disables/enables the date picker.
+ * @param {boolean} attributeValue The value, whether to disable or enable.
+ * @param {string} identifier The target to disable.
+ */
+export function setDisabledAttribute(attributeValue, identifier) {
+	const dates = document.querySelectorAll(`#${identifier} .date-picker`);
+
+	dates.forEach(date => {
+		const dateBtn = date.querySelector('.date-picker-dropdown-toggle');
+		const dateInput = date.querySelector('input.form-control');
+
+		if (dateBtn && dateInput) {
+			if (attributeValue) {
+				dateBtn.setAttribute('disabled', attributeValue);
+				dateInput.setAttribute('disabled', attributeValue);
+			}
+			else {
+				dateBtn.removeAttribute('disabled');
+				dateInput.removeAttribute('disabled');
+			}
+		}
 	});
 }

@@ -20,6 +20,7 @@ import {
 	PRODUCT_PURCHASE_STATUS_APPROVED,
 	PRODUCT_PURCHASE_STATUS_CANCELLED
 } from '../../utilities/constants';
+import {displayUTCDate, setDisabledAttribute} from '../../utilities/helpers';
 import DatePicker from '../DatePicker';
 import BulkInput from './BulkInput';
 
@@ -178,14 +179,8 @@ function Subscription({
 	// Source formatter locks @clayui/date-picker at version 3.0.7, which does not provide an API for disabling date picker while later versions do.
 
 	useEffect(() => {
-		setDisabledAttribute(perpetual);
+		setDisabledAttribute(perpetual, key);
 	});
-
-	function displayUTCDate(value) {
-		const match = JSON.stringify(value).match(/"(?<utcDate>\d+-\d+-\d+)T/);
-
-		return (match && match.groups.utcDate) || value;
-	}
 
 	function handleEndDateChange(value) {
 		updateEndDate(key, new Date(value));
@@ -204,7 +199,7 @@ function Subscription({
 
 		// Source formatter locks @clayui/date-picker at version 3.0.7, which does not provide an API for disabling date picker while later versions do.
 
-		setDisabledAttribute(!perpetual);
+		setDisabledAttribute(!perpetual, key);
 	}
 
 	function handleQuantityChange(event) {
@@ -225,26 +220,6 @@ function Subscription({
 
 	function handleStatusChange(event) {
 		updateStatus(key, event.currentTarget.value);
-	}
-
-	function setDisabledAttribute(attributeValue) {
-		const dates = document.querySelectorAll(`#${key} .date-picker`);
-
-		dates.forEach(date => {
-			const dateBtn = date.querySelector('.date-picker-dropdown-toggle');
-			const dateInput = date.querySelector('input.form-control');
-
-			if (dateBtn && dateInput) {
-				if (attributeValue) {
-					dateBtn.setAttribute('disabled', attributeValue);
-					dateInput.setAttribute('disabled', attributeValue);
-				}
-				else {
-					dateBtn.removeAttribute('disabled');
-					dateInput.removeAttribute('disabled');
-				}
-			}
-		});
 	}
 
 	return (

@@ -21,6 +21,7 @@ import {
 	PRODUCT_PURCHASE_STATUS_APPROVED,
 	PRODUCT_PURCHASE_STATUS_CANCELLED
 } from '../../utilities/constants';
+import {displayUTCDate} from '../../utilities/helpers';
 import DatePicker from '../DatePicker';
 
 function BulkInput({
@@ -123,7 +124,7 @@ function BulkInput({
 					<DatePicker
 						defaultValue={
 							identicalValues('startDate')
-								? getDisplayValue('startDate')
+								? displayUTCDate(getDisplayValue('startDate'))
 								: ''
 						}
 						id="startDateBulkInput"
@@ -138,7 +139,9 @@ function BulkInput({
 					<DatePicker
 						defaultValue={
 							identicalValues('originalEndDate')
-								? getDisplayValue('originalEndDate')
+								? displayUTCDate(
+										getDisplayValue('originalEndDate')
+								  )
 								: ''
 						}
 						id="gracePeriodStartDateBulkInput"
@@ -176,7 +179,7 @@ function BulkInput({
 						<DatePicker
 							defaultValue={
 								identicalValues('endDate')
-									? getDisplayValue('endDate')
+									? displayUTCDate(getDisplayValue('endDate'))
 									: ''
 							}
 							id="endDateBulkInput"
