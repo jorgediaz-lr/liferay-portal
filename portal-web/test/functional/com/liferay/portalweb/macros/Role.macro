@@ -676,6 +676,14 @@ definition {
 				locator1 = "RolesPermissionsSummary#PERMISSION_TABLE_REMOVE",
 				value1 = "Remove");
 		}
+
+		if (isSet(assigneeName)) {
+			Navigator.gotoNavItem(navItem = "Assignees");
+
+			RoleNavigator.gotoAssigneeType(assigneeType = "${assigneeType}");
+
+			LexiconEntry.viewEntryName(rowEntry = "${assigneeName}");
+		}
 	}
 
 	macro viewPermissionPG {
