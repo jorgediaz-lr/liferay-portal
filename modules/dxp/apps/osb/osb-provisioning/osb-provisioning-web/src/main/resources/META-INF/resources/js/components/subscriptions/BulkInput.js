@@ -12,7 +12,7 @@
 import {ClayCheckbox} from '@clayui/form';
 import ClayTable from '@clayui/table';
 import PropTypes from 'prop-types';
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
 import {useSubscriptions} from '../../hooks/subscriptions';
 import {
@@ -35,6 +35,11 @@ function BulkInput({
 }) {
 	const [subscriptions] = useSubscriptions();
 
+	const quantityRef = useRef();
+	const salesforceOpportunityKeyRef = useRef();
+	const sizingRef = useRef();
+	const statusRef = useRef();
+
 	const [showField, setShowField] = useState({
 		quantity: identicalValues('quantity'),
 		salesforceOpportunityKey: identicalValues('salesforceOpportunityKey'),
@@ -42,8 +47,32 @@ function BulkInput({
 		status: identicalValues('status')
 	});
 
+	useEffect(() => {
+		if (quantityRef.current) {
+			quantityRef.current.focus();
+		}
+	}, [showField.quantity]);
+
+	useEffect(() => {
+		if (salesforceOpportunityKeyRef.current) {
+			salesforceOpportunityKeyRef.current.focus();
+		}
+	}, [showField.salesforceOpportunityKey]);
+
+	useEffect(() => {
+		if (sizingRef.current) {
+			sizingRef.current.focus();
+		}
+	}, [showField.sizing]);
+
+	useEffect(() => {
+		if (statusRef.current) {
+			statusRef.current.focus();
+		}
+	}, [showField.status]);
+
 	function getDatePickerDisplayValue(fieldName) {
-		if (identicalValues('perpetual') && identicalValues(fieldName)) {
+		if (identicalValues('perpetual')) {
 			return displayUTCDate(getDisplayValue(fieldName));
 		}
 		else {
@@ -52,7 +81,28 @@ function BulkInput({
 	}
 
 	function getDisplayValue(fieldName) {
-		return subscriptions.toList().first()[fieldName];
+		if (identicalValues(fieldName)) {
+			return subscriptions.toList().first()[fieldName];
+		}
+		else {
+			return '';
+		}
+	}
+
+	function handleOnClickQuantity() {
+		setShowField({...showField, quantity: true});
+	}
+
+	function handleOnClickSalesforceOpportunityKey() {
+		setShowField({...showField, salesforceOpportunityKey: true});
+	}
+
+	function handleOnClickSizing() {
+		setShowField({...showField, sizing: true});
+	}
+
+	function handleOnClickStatus() {
+		setShowField({...showField, status: true});
 	}
 
 	function identicalValues(fieldName) {
@@ -79,8 +129,14 @@ function BulkInput({
 			</ClayTable.Cell>
 			<ClayTable.Cell>
 				{showField.salesforceOpportunityKey && (
-					<label htmlFor="salesforceOpportunityKeyBulkInput">
+					<label
+						htmlFor="salesforceOpportunityKeyBulkInput"
+						ref={salesforceOpportunityKeyRef}
+					>
 						<input
+							aria-label={Liferay.Language.get(
+								'salesforce-opportunity-key-bulk-input'
+							)}
 							className="form-control form-control-sm"
 							id="salesforceOpportunityKeyBulkInput"
 							onChange={() => {}}
@@ -90,12 +146,22 @@ function BulkInput({
 					</label>
 				)}
 
-				{!showField.salesforceOpportunityKey && <VariedData />}
+				{!showField.salesforceOpportunityKey && (
+					<VariedData
+						clickFn={handleOnClickSalesforceOpportunityKey}
+						name={Liferay.Language.get(
+							'salesforce-opportunity-key-bulk-input'
+						)}
+					/>
+				)}
 			</ClayTable.Cell>
 			<ClayTable.Cell>
 				{showField.quantity && (
-					<label htmlFor="quantityBulkInput">
+					<label htmlFor="quantityBulkInput" ref={quantityRef}>
 						<input
+							aria-label={Liferay.Language.get(
+								'purchased-bulk-input'
+							)}
 							className="form-control form-control-sm"
 							id="quantityBulkInput"
 							min={1}
@@ -106,7 +172,12 @@ function BulkInput({
 					</label>
 				)}
 
-				{!showField.quantity && <VariedData />}
+				{!showField.quantity && (
+					<VariedData
+						clickFn={handleOnClickQuantity}
+						name={Liferay.Language.get('purchased-bulk-input')}
+					/>
+				)}
 			</ClayTable.Cell>
 			<ClayTable.Cell>
 				<label
@@ -116,6 +187,9 @@ function BulkInput({
 					{identicalValues('perpetual') && (
 						<ClayCheckbox
 							aria-checked={getDisplayValue('perpetual')}
+							aria-label={Liferay.Language.get(
+								'perpetual-subscription-bulk-input'
+							)}
 							checked={getDisplayValue('perpetual')}
 							className="custom-control-input"
 							id="perpetualBulkInput"
@@ -126,6 +200,9 @@ function BulkInput({
 
 					{!identicalValues('perpetual') && (
 						<ClayCheckbox
+							aria-label={Liferay.Language.get(
+								'perpetual-subscription-bulk-input'
+							)}
 							className="custom-control-input"
 							id="perpetualBulkInput"
 							indeterminate
@@ -161,8 +238,11 @@ function BulkInput({
 			</ClayTable.Cell>
 			<ClayTable.Cell>
 				{showField.sizing && (
-					<label htmlFor="instanceSizeBulkInput">
+					<label htmlFor="instanceSizeBulkInput" ref={sizingRef}>
 						<select
+							aria-label={Liferay.Language.get(
+								'instance-size-bulk-input'
+							)}
 							className="form-control form-control-sm"
 							disabled={!instanceSizes.length}
 							id="instanceSizeBulkInput"
@@ -178,7 +258,12 @@ function BulkInput({
 					</label>
 				)}
 
-				{!showField.sizing && <VariedData />}
+				{!showField.sizing && (
+					<VariedData
+						clickFn={handleOnClickSizing}
+						name={Liferay.Language.get('instance-size-bulk-input')}
+					/>
+				)}
 			</ClayTable.Cell>
 
 			{subscriptionsType === EDIT_SUBSCRIPTIONS && (
@@ -198,8 +283,11 @@ function BulkInput({
 			{subscriptionsType === EDIT_SUBSCRIPTIONS && (
 				<ClayTable.Cell>
 					{showField.status && (
-						<label htmlFor="statusBulkInput">
+						<label htmlFor="statusBulkInput" ref={statusRef}>
 							<select
+								aria-label={Liferay.Language.get(
+									'subscription-status-bulk-input'
+								)}
 								className="form-control form-control-sm"
 								disabled={statusOptions.length === 0}
 								id="status"
@@ -215,7 +303,14 @@ function BulkInput({
 						</label>
 					)}
 
-					{!showField.status && <VariedData />}
+					{!showField.status && (
+						<VariedData
+							clickFn={handleOnClickStatus}
+							name={Liferay.Language.get(
+								'subscription-status-bulk-input'
+							)}
+						/>
+					)}
 				</ClayTable.Cell>
 			)}
 
@@ -233,10 +328,12 @@ BulkInput.protoTypes = {
 		.isRequired
 };
 
-function VariedData() {
+function VariedData({clickFn, name = ''}) {
 	return (
 		<button
 			className="form-control form-control-sm varied-data"
+			name={name}
+			onClick={clickFn}
 			type="button"
 		>
 			{Liferay.Language.get('varied-data')}

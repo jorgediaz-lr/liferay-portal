@@ -9,7 +9,7 @@
  * distribution rights of the Software.
  */
 
-import {cleanup, render} from '@testing-library/react';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 import React from 'react';
 
 import BulkInput from '../../../src/main/resources/META-INF/resources/js/components/subscriptions/BulkInput';
@@ -177,6 +177,15 @@ describe('Subscriptions', () => {
 			expect(queryAllByDisplayValue('2021-12-21').length).toBeFalsy();
 			expect(queryAllByDisplayValue('2022-01-21').length).toBeFalsy();
 			expect(getAllByPlaceholderText('varied-data').length).toBe(3);
+		});
+
+		it('reveals an input for user input when Varied Data is clicked', () => {
+			const {getAllByText, getByLabelText} = renderBulkInput();
+
+			fireEvent.click(getAllByText('varied-data')[0]);
+
+			getByLabelText('salesforce-opportunity-key-bulk-input');
+			expect(getAllByText('varied-data').length).toBe(3);
 		});
 	});
 });
