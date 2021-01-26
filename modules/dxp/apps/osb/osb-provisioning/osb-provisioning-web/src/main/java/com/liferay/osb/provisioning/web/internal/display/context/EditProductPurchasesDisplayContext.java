@@ -82,13 +82,7 @@ public class EditProductPurchasesDisplayContext
 		String redirect = ParamUtil.getString(httpServletRequest, "redirect");
 
 		if (Validator.isNull(redirect)) {
-			PortletURL portletURL = renderResponse.createRenderURL();
-
-			portletURL.setParameter(
-				"mvcRenderCommandName", "/accounts/view_account");
-			portletURL.setParameter("accountKey", account.getKey());
-
-			redirect = portletURL.toString();
+			redirect = getRedirectURL();
 		}
 
 		data.put("redirect", redirect);
@@ -213,6 +207,16 @@ public class EditProductPurchasesDisplayContext
 
 	public List<ProductPurchaseView> getProductPurchaseViews() {
 		return _productPurchaseViews;
+	}
+
+	public String getRedirectURL() {
+		PortletURL portletURL = renderResponse.createRenderURL();
+
+		portletURL.setParameter(
+			"mvcRenderCommandName", "/accounts/view_account");
+		portletURL.setParameter("accountKey", account.getKey());
+
+		return portletURL.toString();
 	}
 
 	public String getTitle() {

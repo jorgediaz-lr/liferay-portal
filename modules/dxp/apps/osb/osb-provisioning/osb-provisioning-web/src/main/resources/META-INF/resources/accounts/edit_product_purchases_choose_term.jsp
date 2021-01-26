@@ -17,9 +17,9 @@
 <%@ include file="/init.jsp" %>
 
 <%
-String redirect = ParamUtil.getString(request, "redirect");
-
 EditProductPurchasesDisplayContext editProductPurchasesDisplayContext = ProvisioningWebComponentProvider.getEditProductPurchasesDisplayContext(renderRequest, renderResponse, request);
+
+String redirect = editProductPurchasesDisplayContext.getRedirectURL();
 
 AccountDisplay accountDisplay = editProductPurchasesDisplayContext.getAccountDisplay();
 %>
@@ -39,9 +39,7 @@ AccountDisplay accountDisplay = editProductPurchasesDisplayContext.getAccountDis
 
 	<div class="subscriptions-container">
 		<div class="subscriptions">
-			<portlet:renderURL var="editProductPurchasesURL">
-				<portlet:param name="mvcRenderCommandName" value="/accounts/edit_product_purchases" />
-			</portlet:renderURL>
+			<portlet:actionURL name="/accounts/edit_product_purchases_choose_term" var="editProductPurchasesURL" />
 
 			<aui:form action="<%= editProductPurchasesURL %>" method="post" name="chooseTermFm" onSubmit='<%= renderResponse.getNamespace() + "submitForm(event);" %>'>
 				<aui:input name="redirect" type="hidden" value="<%= redirect %>" />

@@ -19,11 +19,11 @@
 <%
 String backURL = ParamUtil.getString(request, "backURL");
 
-if (Validator.isNull(backURL)) {
-	backURL = ParamUtil.getString(request, "redirect");
-}
-
 EditProductPurchasesDisplayContext editProductPurchasesDisplayContext = ProvisioningWebComponentProvider.getEditProductPurchasesDisplayContext(renderRequest, renderResponse, request);
+
+if (Validator.isNull(backURL)) {
+	backURL = editProductPurchasesDisplayContext.getRedirectURL();
+}
 %>
 
 <div class="add-items">
