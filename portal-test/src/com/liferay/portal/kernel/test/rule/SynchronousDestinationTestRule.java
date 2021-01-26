@@ -173,6 +173,7 @@ public class SynchronousDestinationTestRule
 			replaceDestination("liferay/kaleo_graph_walker");
 			replaceDestination("liferay/report_request");
 			replaceDestination("liferay/reports_admin");
+			replaceDestination("liferay/tensorflow_model_download");
 
 			if (_sync != null) {
 				for (String name : _sync.destinationNames()) {
