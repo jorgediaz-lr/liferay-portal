@@ -327,7 +327,7 @@ public class AccountDisplay {
 				return LanguageUtil.get(_httpServletRequest, "perpetual");
 			}
 
-			return _dateFormat.format(slaProductPurchase.getEndDate());
+			return _dateFormat.format(slaProductPurchase.getOriginalEndDate());
 		}
 
 		return StringPool.BLANK;
