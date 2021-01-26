@@ -25,6 +25,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Property;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.User;
@@ -221,9 +222,21 @@ public class AssetEntriesCheckerUtil {
 			_assetPublisherHelper.getAssetEntryQuery(
 				portletPreferences, layout.getGroupId(), layout, null, null);
 
-		assetEntryQuery.setEnd(
-			assetPublisherWebConfiguration.dynamicSubscriptionLimit());
-		assetEntryQuery.setStart(0);
+		int end = assetPublisherWebConfiguration.dynamicSubscriptionLimit();
+
+		if (end == 0) {
+			end = QueryUtil.ALL_POS;
+		}
+
+		assetEntryQuery.setEnd(end);
+
+		int start = 0;
+
+		if (end == 0) {
+			start = QueryUtil.ALL_POS;
+		}
+
+		assetEntryQuery.setStart(start);
 
 		try {
 			SearchContext searchContext = SearchContextFactory.getInstance(
@@ -234,8 +247,7 @@ public class AssetEntriesCheckerUtil {
 
 			BaseModelSearchResult<AssetEntry> baseModelSearchResult =
 				_assetHelper.searchAssetEntries(
-					searchContext, assetEntryQuery, 0,
-					assetPublisherWebConfiguration.dynamicSubscriptionLimit());
+					searchContext, assetEntryQuery, start, end);
 
 			return baseModelSearchResult.getBaseModels();
 		}
