@@ -12,7 +12,7 @@
 import {ClayCheckbox} from '@clayui/form';
 import ClayTable from '@clayui/table';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {useState} from 'react';
 
 import {useSubscriptions} from '../../hooks/subscriptions';
 import {
@@ -34,6 +34,22 @@ function BulkInput({
 	subscriptionsType
 }) {
 	const [subscriptions] = useSubscriptions();
+
+	const [showField, setShowField] = useState({
+		quantity: identicalValues('quantity'),
+		salesforceOpportunityKey: identicalValues('salesforceOpportunityKey'),
+		sizing: identicalValues('sizing'),
+		status: identicalValues('status')
+	});
+
+	function getDatePickerDisplayValue(fieldName) {
+		if (identicalValues('perpetual') && identicalValues(fieldName)) {
+			return displayUTCDate(getDisplayValue(fieldName));
+		}
+		else {
+			return '';
+		}
+	}
 
 	function getDisplayValue(fieldName) {
 		return subscriptions.toList().first()[fieldName];
@@ -62,7 +78,7 @@ function BulkInput({
 				{Liferay.Language.get('bulk-input')}
 			</ClayTable.Cell>
 			<ClayTable.Cell>
-				{identicalValues('salesforceOpportunityKey') && (
+				{showField.salesforceOpportunityKey && (
 					<label htmlFor="salesforceOpportunityKeyBulkInput">
 						<input
 							className="form-control form-control-sm"
@@ -74,10 +90,10 @@ function BulkInput({
 					</label>
 				)}
 
-				{!identicalValues('salesforceOpportunityKey') && <VariedData />}
+				{!showField.salesforceOpportunityKey && <VariedData />}
 			</ClayTable.Cell>
 			<ClayTable.Cell>
-				{identicalValues('quantity') && (
+				{showField.quantity && (
 					<label htmlFor="quantityBulkInput">
 						<input
 							className="form-control form-control-sm"
@@ -90,7 +106,7 @@ function BulkInput({
 					</label>
 				)}
 
-				{!identicalValues('quantity') && <VariedData />}
+				{!showField.quantity && <VariedData />}
 			</ClayTable.Cell>
 			<ClayTable.Cell>
 				<label
@@ -122,11 +138,7 @@ function BulkInput({
 			<ClayTable.Cell>
 				<label htmlFor="startDateBulkInput">
 					<DatePicker
-						defaultValue={
-							identicalValues('startDate')
-								? displayUTCDate(getDisplayValue('startDate'))
-								: ''
-						}
+						defaultValue={getDatePickerDisplayValue('startDate')}
 						id="startDateBulkInput"
 						inputName="startDateBulkInput"
 						placeholder={Liferay.Language.get('varied-data')}
@@ -137,13 +149,9 @@ function BulkInput({
 			<ClayTable.Cell>
 				<label htmlFor="gracePeriodStartDateBulkInput">
 					<DatePicker
-						defaultValue={
-							identicalValues('originalEndDate')
-								? displayUTCDate(
-										getDisplayValue('originalEndDate')
-								  )
-								: ''
-						}
+						defaultValue={getDatePickerDisplayValue(
+							'originalEndDate'
+						)}
 						id="gracePeriodStartDateBulkInput"
 						inputName="gracePeriodStartDateBulkInput"
 						placeholder={Liferay.Language.get('varied-data')}
@@ -152,7 +160,7 @@ function BulkInput({
 				</label>
 			</ClayTable.Cell>
 			<ClayTable.Cell>
-				{identicalValues('sizing') && (
+				{showField.sizing && (
 					<label htmlFor="instanceSizeBulkInput">
 						<select
 							className="form-control form-control-sm"
@@ -170,18 +178,14 @@ function BulkInput({
 					</label>
 				)}
 
-				{!identicalValues('sizing') && <VariedData />}
+				{!showField.sizing && <VariedData />}
 			</ClayTable.Cell>
 
 			{subscriptionsType === EDIT_SUBSCRIPTIONS && (
 				<ClayTable.Cell>
 					<label htmlFor="endDateBulkInput">
 						<DatePicker
-							defaultValue={
-								identicalValues('endDate')
-									? displayUTCDate(getDisplayValue('endDate'))
-									: ''
-							}
+							defaultValue={getDatePickerDisplayValue('endDate')}
 							id="endDateBulkInput"
 							inputName="endDateBulkInput"
 							placeholder={Liferay.Language.get('varied-data')}
@@ -193,7 +197,7 @@ function BulkInput({
 
 			{subscriptionsType === EDIT_SUBSCRIPTIONS && (
 				<ClayTable.Cell>
-					{identicalValues('status') && (
+					{showField.status && (
 						<label htmlFor="statusBulkInput">
 							<select
 								className="form-control form-control-sm"
@@ -211,7 +215,7 @@ function BulkInput({
 						</label>
 					)}
 
-					{!identicalValues('status') && <VariedData />}
+					{!showField.status && <VariedData />}
 				</ClayTable.Cell>
 			)}
 

@@ -137,5 +137,46 @@ describe('Subscriptions', () => {
 			getAllByDisplayValue('2021-12-21');
 			getByDisplayValue('Approved');
 		});
+
+		it('renders Varied Data for the three date fields when subscriptions do not have identical perpetual values even when dates are identical', () => {
+			const {
+				getAllByPlaceholderText,
+				queryAllByDisplayValue
+			} = renderBulkInput({
+				subscriptions: [
+					{
+						endDate: '2022-01-21',
+						externalLinkKey: 'KOR-35727',
+						key: 'KOR-38323',
+						originalEndDate: '2021-12-21',
+						perpetual: false,
+						productName: 'Product B',
+						quantity: 1,
+						salesforceOpportunityKey: 'salesForceKey456',
+						sizing: 2,
+						startDate: '2020-12-21',
+						status: 'Approved'
+					},
+					{
+						endDate: '2022-01-21',
+						externalLinkKey: 'KOR-35727',
+						key: 'KOR-38323',
+						originalEndDate: '2021-12-21',
+						perpetual: true,
+						productName: 'Product B',
+						quantity: 2,
+						salesforceOpportunityKey: 'salesForceKey456',
+						sizing: 1,
+						startDate: '2020-12-21',
+						status: 'Approved'
+					}
+				]
+			});
+
+			expect(queryAllByDisplayValue('2020-12-21').length).toBeFalsy();
+			expect(queryAllByDisplayValue('2021-12-21').length).toBeFalsy();
+			expect(queryAllByDisplayValue('2022-01-21').length).toBeFalsy();
+			expect(getAllByPlaceholderText('varied-data').length).toBe(3);
+		});
 	});
 });
