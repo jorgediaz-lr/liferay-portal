@@ -249,6 +249,7 @@ class Select extends Component {
 			...option,
 			active: !multiple && included,
 			checked: multiple && included,
+			label: Liferay.Util.escapeHTML(option.label),
 			type: multiple ? 'checkbox' : 'item'
 		};
 	}
