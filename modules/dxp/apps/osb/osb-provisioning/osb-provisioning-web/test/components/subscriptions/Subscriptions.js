@@ -330,5 +330,58 @@ describe('Subscriptions', () => {
 
 			expect(getAllByDisplayValue('test').length).toBe(3);
 		});
+
+		it('shows changes in the Bulk Input field when the values for subscriptions change', () => {
+			const {
+				getAllByDisplayValue,
+				getAllByLabelText,
+				getByText,
+				queryByText
+			} = renderSubscriptions({
+				subscriptions: [
+					{
+						endDate: '2022-01-20',
+						key: 'KOR-38323',
+						originalEndDate: '2021-12-21',
+						perpetual: true,
+						productName: 'Product E',
+						quantity: 1,
+						salesforceOpportunityKey: 'salesForceKey123',
+						sizing: 3,
+						startDate: '2020-12-21',
+						status: 'Approved'
+					},
+					{
+						endDate: '2022-01-20',
+						key: 'KOR-38323',
+						originalEndDate: '2021-12-21',
+						perpetual: true,
+						productName: 'Product E',
+						quantity: 1,
+						salesforceOpportunityKey: 'salesForceKey123',
+						sizing: 3,
+						startDate: '2020-12-21',
+						status: 'Approved'
+					}
+				],
+				subscriptionsType: EDIT_SUBSCRIPTIONS
+			});
+
+			expect(getAllByDisplayValue('1').length).toBe(3);
+
+			fireEvent.change(getAllByLabelText('purchased')[0], {
+				target: {value: '2'}
+			});
+
+			expect(getByText('varied-data')).toBeTruthy();
+			expect(getAllByDisplayValue('1').length).toBe(1);
+
+			fireEvent.change(getAllByLabelText('purchased')[1], {
+				target: {value: '2'}
+			});
+
+			expect(queryByText('varied-data')).toBeFalsy();
+			expect(getAllByDisplayValue('2').length).toBe(3);
+		});
 	});
 });

@@ -12,7 +12,7 @@
 import {ClayCheckbox} from '@clayui/form';
 import ClayTable from '@clayui/table';
 import PropTypes from 'prop-types';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 
 import {useSubscriptions} from '../../hooks/subscriptions';
 import {
@@ -39,6 +39,38 @@ function BulkInput({
 	const salesforceOpportunityKeyRef = useRef();
 	const sizingRef = useRef();
 	const statusRef = useRef();
+
+	const getDisplayValue = useCallback(
+		fieldName => {
+			if (identicalValues(fieldName)) {
+				return subscriptions.toList().first()[fieldName];
+			}
+			else {
+				return '';
+			}
+		},
+		[identicalValues, subscriptions]
+	);
+
+	const identicalValues = useCallback(
+		fieldName => {
+			const fieldValues = new Set(
+				subscriptions.toList().map(subscription => {
+					const field = subscription[fieldName];
+
+					if (field instanceof Date) {
+						return field.toJSON();
+					}
+					else {
+						return field;
+					}
+				})
+			);
+
+			return fieldValues.size === 1;
+		},
+		[subscriptions]
+	);
 
 	const [quantity, setQuantity] = useState(getDisplayValue('quantity'));
 	const [salesforceOpportunityKey, setSalesforceOpportunityKey] = useState(
@@ -77,18 +109,27 @@ function BulkInput({
 		}
 	}, [showField.status]);
 
+	useEffect(() => {
+		setShowField({
+			quantity: identicalValues('quantity'),
+			salesforceOpportunityKey: identicalValues(
+				'salesforceOpportunityKey'
+			),
+			sizing: identicalValues('sizing'),
+			status: identicalValues('status')
+		});
+
+		setQuantity(getDisplayValue('quantity'));
+		setSalesforceOpportunityKey(
+			getDisplayValue('salesforceOpportunityKey')
+		);
+		setSizing(getDisplayValue('sizing'));
+		setStatus(getDisplayValue('status'));
+	}, [getDisplayValue, identicalValues, subscriptions]);
+
 	function getDatePickerDisplayValue(fieldName) {
 		if (identicalValues('perpetual')) {
 			return displayUTCDate(getDisplayValue(fieldName));
-		}
-		else {
-			return '';
-		}
-	}
-
-	function getDisplayValue(fieldName) {
-		if (identicalValues(fieldName)) {
-			return subscriptions.toList().first()[fieldName];
 		}
 		else {
 			return '';
@@ -144,23 +185,6 @@ function BulkInput({
 
 	function handleSaveStatus() {
 		updateAllValuesByFieldName('status', status);
-	}
-
-	function identicalValues(fieldName) {
-		const fieldValues = new Set(
-			subscriptions.toList().map(subscription => {
-				const field = subscription[fieldName];
-
-				if (field instanceof Date) {
-					return field.toJSON();
-				}
-				else {
-					return field;
-				}
-			})
-		);
-
-		return fieldValues.size === 1;
 	}
 
 	return (
