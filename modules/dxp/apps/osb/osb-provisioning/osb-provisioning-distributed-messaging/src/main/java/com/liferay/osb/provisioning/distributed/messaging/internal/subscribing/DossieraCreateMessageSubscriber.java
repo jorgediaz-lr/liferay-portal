@@ -1656,10 +1656,60 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 				contact.getEmailAddress(), contactRoleKeys);
 		}
 
+		StringBundler sb = new StringBundler(3);
+
+		sb.append("accountKey eq '");
+		sb.append(accountKey);
+		sb.append("' and state eq 'Active'");
+
+		List<ProductPurchase> curProductPurchases =
+			_productPurchaseWebService.getProductPurchases(
+				sb.toString(), 1, 1000, StringPool.BLANK);
+
+		Date newStartDate = new Date();
+
+		boolean renewal = false;
+
 		for (ProductPurchase productPurchase : productPurchases) {
+			Map<String, String> properties = productPurchase.getProperties();
+
+			if (!renewal &&
+				ArrayUtil.contains(
+					SalesforceConstants.PRODUCT_TYPES_RENEWAL,
+					properties.get("productType"))) {
+
+				renewal = true;
+			}
+
+			if (renewal) {
+				Product product = productPurchase.getProduct();
+
+				if (ArrayUtil.contains(
+						ProductConstants.NAMES_PARTNERSHIP,
+						product.getName()) ||
+					ArrayUtil.contains(
+						ProductConstants.NAMES_SUBSCRIPTION,
+						product.getName())) {
+
+					newStartDate = productPurchase.getStartDate();
+				}
+			}
+
 			_productPurchaseWebService.addProductPurchase(
 				StringPool.BLANK, StringPool.BLANK, accountKey,
 				productPurchase);
+		}
+
+		if (renewal) {
+			for (ProductPurchase productPurchase : curProductPurchases) {
+				if (newStartDate.before(productPurchase.getEndDate())) {
+					productPurchase.setEndDate(newStartDate);
+
+					_productPurchaseWebService.updateProductPurchase(
+						StringPool.BLANK, StringPool.BLANK,
+						productPurchase.getKey(), productPurchase);
+				}
+			}
 		}
 
 		return _accountWebService.getAccount(accountKey);

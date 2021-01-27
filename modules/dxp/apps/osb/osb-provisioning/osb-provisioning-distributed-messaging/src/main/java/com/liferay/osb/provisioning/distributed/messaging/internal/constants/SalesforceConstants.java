@@ -33,6 +33,19 @@ public class SalesforceConstants {
 
 	public static final String PRODUCT_TYPE_RENEWAL = "Renewal";
 
+	public static final String PRODUCT_TYPE_RENEWAL_DOWNGRADE =
+		"Renewal Downgrade";
+
+	public static final String PRODUCT_TYPE_RENEWAL_MIGRATION =
+		"Renewal Migration";
+
+	public static final String PRODUCT_TYPE_RENEWAL_UPGRADE = "Renewal Upgrade";
+
+	public static final String[] PRODUCT_TYPES_RENEWAL = {
+		PRODUCT_TYPE_RENEWAL, PRODUCT_TYPE_RENEWAL_DOWNGRADE,
+		PRODUCT_TYPE_RENEWAL_MIGRATION, PRODUCT_TYPE_RENEWAL_UPGRADE
+	};
+
 	public static String getOpportunityTypeLabel(int opportunityType) {
 		if (opportunityType == OPPORTUNITY_TYPE_EXISTING_BUSINESS) {
 			return "existing-business";
