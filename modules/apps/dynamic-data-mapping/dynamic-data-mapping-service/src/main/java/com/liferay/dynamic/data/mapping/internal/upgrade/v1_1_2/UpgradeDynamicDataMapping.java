@@ -256,6 +256,10 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			String dataSourceType = GetterUtil.getString(
 				ddmFormField.getProperty("dataSourceType"), "manual");
 
+			if (Validator.isNull(dataSourceType)) {
+				return;
+			}
+
 			if (!dataSourceType.startsWith(StringPool.OPEN_BRACKET) ||
 				!dataSourceType.endsWith(StringPool.CLOSE_BRACKET)) {
 
