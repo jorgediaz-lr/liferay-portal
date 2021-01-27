@@ -116,9 +116,7 @@ public abstract class BaseProductPurchaseResourceTestCase {
 		ProductPurchaseResource.Builder builder =
 			ProductPurchaseResource.builder();
 
-		productPurchaseResource = builder.authentication(
-			"test@liferay.com", "test"
-		).locale(
+		productPurchaseResource = builder.locale(
 			LocaleUtil.getDefault()
 		).build();
 	}
@@ -1034,9 +1032,7 @@ public abstract class BaseProductPurchaseResourceTestCase {
 		}
 	}
 
-	protected void assertValid(ProductPurchase productPurchase)
-		throws Exception {
-
+	protected void assertValid(ProductPurchase productPurchase) {
 		boolean valid = true;
 
 		if (productPurchase.getDateCreated() == null) {
@@ -1404,11 +1400,9 @@ public abstract class BaseProductPurchaseResourceTestCase {
 					return false;
 				}
 			}
-
-			return true;
 		}
 
-		return false;
+		return true;
 	}
 
 	protected java.util.Collection<EntityField> getEntityFields()

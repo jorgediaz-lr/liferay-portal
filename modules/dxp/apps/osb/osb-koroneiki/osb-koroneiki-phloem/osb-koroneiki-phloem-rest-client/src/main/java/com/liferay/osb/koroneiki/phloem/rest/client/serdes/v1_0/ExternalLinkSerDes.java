@@ -264,8 +264,9 @@ public class ExternalLinkSerDes {
 					externalLink.setUrl((String)jsonParserFieldValue);
 				}
 			}
-			else if (jsonParserFieldName.equals("status")) {
-				throw new IllegalArgumentException();
+			else {
+				throw new IllegalArgumentException(
+					"Unsupported field name " + jsonParserFieldName);
 			}
 		}
 

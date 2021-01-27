@@ -220,8 +220,9 @@ public class ContactAccountViewSerDes {
 						));
 				}
 			}
-			else if (jsonParserFieldName.equals("status")) {
-				throw new IllegalArgumentException();
+			else {
+				throw new IllegalArgumentException(
+					"Unsupported field name " + jsonParserFieldName);
 			}
 		}
 

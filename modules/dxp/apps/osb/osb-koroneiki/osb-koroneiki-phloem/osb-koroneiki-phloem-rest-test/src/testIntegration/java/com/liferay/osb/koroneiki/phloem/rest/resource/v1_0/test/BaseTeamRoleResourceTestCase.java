@@ -115,9 +115,7 @@ public abstract class BaseTeamRoleResourceTestCase {
 
 		TeamRoleResource.Builder builder = TeamRoleResource.builder();
 
-		teamRoleResource = builder.authentication(
-			"test@liferay.com", "test"
-		).locale(
+		teamRoleResource = builder.locale(
 			LocaleUtil.getDefault()
 		).build();
 	}
@@ -708,7 +706,7 @@ public abstract class BaseTeamRoleResourceTestCase {
 		}
 	}
 
-	protected void assertValid(TeamRole teamRole) throws Exception {
+	protected void assertValid(TeamRole teamRole) {
 		boolean valid = true;
 
 		if (teamRole.getDateCreated() == null) {
@@ -934,11 +932,9 @@ public abstract class BaseTeamRoleResourceTestCase {
 					return false;
 				}
 			}
-
-			return true;
 		}
 
-		return false;
+		return true;
 	}
 
 	protected java.util.Collection<EntityField> getEntityFields()

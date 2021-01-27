@@ -49,8 +49,6 @@ import com.liferay.osb.koroneiki.phloem.rest.resource.v1_0.TeamRoleResource;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.search.Sort;
-import com.liferay.portal.kernel.service.GroupLocalService;
-import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
 import com.liferay.portal.vulcan.graphql.annotation.GraphQLField;
 import com.liferay.portal.vulcan.graphql.annotation.GraphQLName;
@@ -1554,8 +1552,6 @@ public class Mutation {
 		accountResource.setContextHttpServletResponse(_httpServletResponse);
 		accountResource.setContextUriInfo(_uriInfo);
 		accountResource.setContextUser(_user);
-		accountResource.setGroupLocalService(_groupLocalService);
-		accountResource.setRoleLocalService(_roleLocalService);
 	}
 
 	private void _populateResourceContext(ContactResource contactResource)
@@ -1567,8 +1563,6 @@ public class Mutation {
 		contactResource.setContextHttpServletResponse(_httpServletResponse);
 		contactResource.setContextUriInfo(_uriInfo);
 		contactResource.setContextUser(_user);
-		contactResource.setGroupLocalService(_groupLocalService);
-		contactResource.setRoleLocalService(_roleLocalService);
 	}
 
 	private void _populateResourceContext(
@@ -1581,8 +1575,6 @@ public class Mutation {
 		contactRoleResource.setContextHttpServletResponse(_httpServletResponse);
 		contactRoleResource.setContextUriInfo(_uriInfo);
 		contactRoleResource.setContextUser(_user);
-		contactRoleResource.setGroupLocalService(_groupLocalService);
-		contactRoleResource.setRoleLocalService(_roleLocalService);
 	}
 
 	private void _populateResourceContext(
@@ -1597,8 +1589,6 @@ public class Mutation {
 			_httpServletResponse);
 		entitlementDefinitionResource.setContextUriInfo(_uriInfo);
 		entitlementDefinitionResource.setContextUser(_user);
-		entitlementDefinitionResource.setGroupLocalService(_groupLocalService);
-		entitlementDefinitionResource.setRoleLocalService(_roleLocalService);
 	}
 
 	private void _populateResourceContext(
@@ -1612,8 +1602,6 @@ public class Mutation {
 			_httpServletResponse);
 		externalLinkResource.setContextUriInfo(_uriInfo);
 		externalLinkResource.setContextUser(_user);
-		externalLinkResource.setGroupLocalService(_groupLocalService);
-		externalLinkResource.setRoleLocalService(_roleLocalService);
 	}
 
 	private void _populateResourceContext(NoteResource noteResource)
@@ -1625,8 +1613,6 @@ public class Mutation {
 		noteResource.setContextHttpServletResponse(_httpServletResponse);
 		noteResource.setContextUriInfo(_uriInfo);
 		noteResource.setContextUser(_user);
-		noteResource.setGroupLocalService(_groupLocalService);
-		noteResource.setRoleLocalService(_roleLocalService);
 	}
 
 	private void _populateResourceContext(
@@ -1640,8 +1626,6 @@ public class Mutation {
 			_httpServletResponse);
 		postalAddressResource.setContextUriInfo(_uriInfo);
 		postalAddressResource.setContextUser(_user);
-		postalAddressResource.setGroupLocalService(_groupLocalService);
-		postalAddressResource.setRoleLocalService(_roleLocalService);
 	}
 
 	private void _populateResourceContext(ProductResource productResource)
@@ -1653,8 +1637,6 @@ public class Mutation {
 		productResource.setContextHttpServletResponse(_httpServletResponse);
 		productResource.setContextUriInfo(_uriInfo);
 		productResource.setContextUser(_user);
-		productResource.setGroupLocalService(_groupLocalService);
-		productResource.setRoleLocalService(_roleLocalService);
 	}
 
 	private void _populateResourceContext(
@@ -1669,8 +1651,6 @@ public class Mutation {
 			_httpServletResponse);
 		productConsumptionResource.setContextUriInfo(_uriInfo);
 		productConsumptionResource.setContextUser(_user);
-		productConsumptionResource.setGroupLocalService(_groupLocalService);
-		productConsumptionResource.setRoleLocalService(_roleLocalService);
 	}
 
 	private void _populateResourceContext(
@@ -1685,8 +1665,6 @@ public class Mutation {
 			_httpServletResponse);
 		productPurchaseResource.setContextUriInfo(_uriInfo);
 		productPurchaseResource.setContextUser(_user);
-		productPurchaseResource.setGroupLocalService(_groupLocalService);
-		productPurchaseResource.setRoleLocalService(_roleLocalService);
 	}
 
 	private void _populateResourceContext(TeamResource teamResource)
@@ -1698,8 +1676,6 @@ public class Mutation {
 		teamResource.setContextHttpServletResponse(_httpServletResponse);
 		teamResource.setContextUriInfo(_uriInfo);
 		teamResource.setContextUser(_user);
-		teamResource.setGroupLocalService(_groupLocalService);
-		teamResource.setRoleLocalService(_roleLocalService);
 	}
 
 	private void _populateResourceContext(TeamRoleResource teamRoleResource)
@@ -1711,8 +1687,6 @@ public class Mutation {
 		teamRoleResource.setContextHttpServletResponse(_httpServletResponse);
 		teamRoleResource.setContextUriInfo(_uriInfo);
 		teamRoleResource.setContextUser(_user);
-		teamRoleResource.setGroupLocalService(_groupLocalService);
-		teamRoleResource.setRoleLocalService(_roleLocalService);
 	}
 
 	private static ComponentServiceObjects<AccountResource>
@@ -1742,12 +1716,10 @@ public class Mutation {
 
 	private AcceptLanguage _acceptLanguage;
 	private com.liferay.portal.kernel.model.Company _company;
-	private GroupLocalService _groupLocalService;
+	private BiFunction<Object, String, Sort[]> _sortsBiFunction;
+	private com.liferay.portal.kernel.model.User _user;
 	private HttpServletRequest _httpServletRequest;
 	private HttpServletResponse _httpServletResponse;
-	private RoleLocalService _roleLocalService;
-	private BiFunction<Object, String, Sort[]> _sortsBiFunction;
 	private UriInfo _uriInfo;
-	private com.liferay.portal.kernel.model.User _user;
 
 }

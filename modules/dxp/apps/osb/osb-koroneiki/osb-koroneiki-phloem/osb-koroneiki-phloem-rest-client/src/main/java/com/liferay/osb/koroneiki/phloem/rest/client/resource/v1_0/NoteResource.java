@@ -123,8 +123,8 @@ public interface NoteResource {
 		private Map<String, String> _headers = new LinkedHashMap<>();
 		private String _host = "localhost";
 		private Locale _locale;
-		private String _login = "";
-		private String _password = "";
+		private String _login = "test@liferay.com";
+		private String _password = "test";
 		private Map<String, String> _parameters = new LinkedHashMap<>();
 		private int _port = 8080;
 		private String _scheme = "http";
@@ -211,9 +211,8 @@ public interface NoteResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/notes");
-
-			httpInvoker.path("accountKey", accountKey);
+						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/notes",
+				accountKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -287,9 +286,8 @@ public interface NoteResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/notes");
-
-			httpInvoker.path("accountKey", accountKey);
+						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/notes",
+				accountKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -359,9 +357,8 @@ public interface NoteResource {
 
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
-					_builder._port + "/o/koroneiki-rest/v1.0/notes/{noteKey}");
-
-			httpInvoker.path("noteKey", noteKey);
+					_builder._port + "/o/koroneiki-rest/v1.0/notes/{noteKey}",
+				noteKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -419,9 +416,8 @@ public interface NoteResource {
 
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
-					_builder._port + "/o/koroneiki-rest/v1.0/notes/{noteKey}");
-
-			httpInvoker.path("noteKey", noteKey);
+					_builder._port + "/o/koroneiki-rest/v1.0/notes/{noteKey}",
+				noteKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -493,9 +489,8 @@ public interface NoteResource {
 
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
-					_builder._port + "/o/koroneiki-rest/v1.0/notes/{noteKey}");
-
-			httpInvoker.path("noteKey", noteKey);
+					_builder._port + "/o/koroneiki-rest/v1.0/notes/{noteKey}",
+				noteKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);

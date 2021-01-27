@@ -151,8 +151,8 @@ public interface EntitlementDefinitionResource {
 		private Map<String, String> _headers = new LinkedHashMap<>();
 		private String _host = "localhost";
 		private Locale _locale;
-		private String _login = "";
-		private String _password = "";
+		private String _login = "test@liferay.com";
+		private String _password = "test";
 		private Map<String, String> _parameters = new LinkedHashMap<>();
 		private int _port = 8080;
 		private String _scheme = "http";
@@ -536,10 +536,8 @@ public interface EntitlementDefinitionResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/entitlement-definitions/{entitlementDefinitionKey}");
-
-			httpInvoker.path(
-				"entitlementDefinitionKey", entitlementDefinitionKey);
+						"/o/koroneiki-rest/v1.0/entitlement-definitions/{entitlementDefinitionKey}",
+				entitlementDefinitionKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -602,10 +600,8 @@ public interface EntitlementDefinitionResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/entitlement-definitions/{entitlementDefinitionKey}");
-
-			httpInvoker.path(
-				"entitlementDefinitionKey", entitlementDefinitionKey);
+						"/o/koroneiki-rest/v1.0/entitlement-definitions/{entitlementDefinitionKey}",
+				entitlementDefinitionKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -683,10 +679,8 @@ public interface EntitlementDefinitionResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/entitlement-definitions/{entitlementDefinitionKey}/synchronize");
-
-			httpInvoker.path(
-				"entitlementDefinitionKey", entitlementDefinitionKey);
+						"/o/koroneiki-rest/v1.0/entitlement-definitions/{entitlementDefinitionKey}/synchronize",
+				entitlementDefinitionKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);

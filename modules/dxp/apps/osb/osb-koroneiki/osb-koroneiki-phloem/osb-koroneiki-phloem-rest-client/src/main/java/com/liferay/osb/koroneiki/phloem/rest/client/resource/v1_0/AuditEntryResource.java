@@ -135,8 +135,8 @@ public interface AuditEntryResource {
 		private Map<String, String> _headers = new LinkedHashMap<>();
 		private String _host = "localhost";
 		private Locale _locale;
-		private String _login = "";
-		private String _password = "";
+		private String _login = "test@liferay.com";
+		private String _password = "test";
 		private Map<String, String> _parameters = new LinkedHashMap<>();
 		private int _port = 8080;
 		private String _scheme = "http";
@@ -209,9 +209,8 @@ public interface AuditEntryResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/audit-entries");
-
-			httpInvoker.path("accountKey", accountKey);
+						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/audit-entries",
+				accountKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -271,9 +270,8 @@ public interface AuditEntryResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/audit-entries/{auditEntryKey}");
-
-			httpInvoker.path("auditEntryKey", auditEntryKey);
+						"/o/koroneiki-rest/v1.0/audit-entries/{auditEntryKey}",
+				auditEntryKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -345,9 +343,8 @@ public interface AuditEntryResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/contact-roles/{contactRoleKey}/audit-entries");
-
-			httpInvoker.path("contactRoleKey", contactRoleKey);
+						"/o/koroneiki-rest/v1.0/contact-roles/{contactRoleKey}/audit-entries",
+				contactRoleKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -419,9 +416,8 @@ public interface AuditEntryResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/contacts/by-uuid/{contactUuid}/audit-entries");
-
-			httpInvoker.path("contactUuid", contactUuid);
+						"/o/koroneiki-rest/v1.0/contacts/by-uuid/{contactUuid}/audit-entries",
+				contactUuid);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -493,9 +489,8 @@ public interface AuditEntryResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/team-roles/{teamRoleKey}/audit-entries");
-
-			httpInvoker.path("teamRoleKey", teamRoleKey);
+						"/o/koroneiki-rest/v1.0/team-roles/{teamRoleKey}/audit-entries",
+				teamRoleKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -566,9 +561,8 @@ public interface AuditEntryResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/teams/{teamKey}/audit-entries");
-
-			httpInvoker.path("teamKey", teamKey);
+						"/o/koroneiki-rest/v1.0/teams/{teamKey}/audit-entries",
+				teamKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);

@@ -110,9 +110,7 @@ public abstract class BaseEntitlementDefinitionResourceTestCase {
 		EntitlementDefinitionResource.Builder builder =
 			EntitlementDefinitionResource.builder();
 
-		entitlementDefinitionResource = builder.authentication(
-			"test@liferay.com", "test"
-		).locale(
+		entitlementDefinitionResource = builder.locale(
 			LocaleUtil.getDefault()
 		).build();
 	}
@@ -519,9 +517,7 @@ public abstract class BaseEntitlementDefinitionResourceTestCase {
 		}
 	}
 
-	protected void assertValid(EntitlementDefinition entitlementDefinition)
-		throws Exception {
-
+	protected void assertValid(EntitlementDefinition entitlementDefinition) {
 		boolean valid = true;
 
 		if (entitlementDefinition.getDateCreated() == null) {
@@ -792,11 +788,9 @@ public abstract class BaseEntitlementDefinitionResourceTestCase {
 					return false;
 				}
 			}
-
-			return true;
 		}
 
-		return false;
+		return true;
 	}
 
 	protected java.util.Collection<EntityField> getEntityFields()

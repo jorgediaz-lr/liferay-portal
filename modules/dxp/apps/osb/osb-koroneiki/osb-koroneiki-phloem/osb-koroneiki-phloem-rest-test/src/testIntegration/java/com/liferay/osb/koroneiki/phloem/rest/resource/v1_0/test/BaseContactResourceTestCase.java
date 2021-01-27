@@ -115,9 +115,7 @@ public abstract class BaseContactResourceTestCase {
 
 		ContactResource.Builder builder = ContactResource.builder();
 
-		contactResource = builder.authentication(
-			"test@liferay.com", "test"
-		).locale(
+		contactResource = builder.locale(
 			LocaleUtil.getDefault()
 		).build();
 	}
@@ -1021,7 +1019,7 @@ public abstract class BaseContactResourceTestCase {
 		}
 	}
 
-	protected void assertValid(Contact contact) throws Exception {
+	protected void assertValid(Contact contact) {
 		boolean valid = true;
 
 		if (contact.getDateCreated() == null) {
@@ -1414,11 +1412,9 @@ public abstract class BaseContactResourceTestCase {
 					return false;
 				}
 			}
-
-			return true;
 		}
 
-		return false;
+		return true;
 	}
 
 	protected java.util.Collection<EntityField> getEntityFields()

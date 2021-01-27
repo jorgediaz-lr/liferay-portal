@@ -111,9 +111,7 @@ public abstract class BasePostalAddressResourceTestCase {
 
 		PostalAddressResource.Builder builder = PostalAddressResource.builder();
 
-		postalAddressResource = builder.authentication(
-			"test@liferay.com", "test"
-		).locale(
+		postalAddressResource = builder.locale(
 			LocaleUtil.getDefault()
 		).build();
 	}
@@ -524,7 +522,7 @@ public abstract class BasePostalAddressResourceTestCase {
 		}
 	}
 
-	protected void assertValid(PostalAddress postalAddress) throws Exception {
+	protected void assertValid(PostalAddress postalAddress) {
 		boolean valid = true;
 
 		if (postalAddress.getId() == null) {
@@ -865,11 +863,9 @@ public abstract class BasePostalAddressResourceTestCase {
 					return false;
 				}
 			}
-
-			return true;
 		}
 
-		return false;
+		return true;
 	}
 
 	protected java.util.Collection<EntityField> getEntityFields()

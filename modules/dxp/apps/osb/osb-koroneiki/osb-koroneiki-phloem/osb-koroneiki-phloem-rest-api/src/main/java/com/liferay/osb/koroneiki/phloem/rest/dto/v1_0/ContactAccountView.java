@@ -26,8 +26,6 @@ import com.liferay.portal.vulcan.util.ObjectMapperUtil;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.io.Serializable;
-
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
@@ -47,7 +45,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @GraphQLName("ContactAccountView")
 @JsonFilter("Liferay.Vulcan")
 @XmlRootElement(name = "ContactAccountView")
-public class ContactAccountView implements Serializable {
+public class ContactAccountView {
 
 	public static ContactAccountView toDTO(String json) {
 		return ObjectMapperUtil.readValue(ContactAccountView.class, json);
@@ -236,16 +234,6 @@ public class ContactAccountView implements Serializable {
 		return string.replaceAll("\"", "\\\\\"");
 	}
 
-	private static boolean _isArray(Object value) {
-		if (value == null) {
-			return false;
-		}
-
-		Class<?> clazz = value.getClass();
-
-		return clazz.isArray();
-	}
-
 	private static String _toJSON(Map<String, ?> map) {
 		StringBuilder sb = new StringBuilder("{");
 
@@ -264,7 +252,9 @@ public class ContactAccountView implements Serializable {
 
 			Object value = entry.getValue();
 
-			if (_isArray(value)) {
+			Class<?> clazz = value.getClass();
+
+			if (clazz.isArray()) {
 				sb.append("[");
 
 				Object[] valueArray = (Object[])value;

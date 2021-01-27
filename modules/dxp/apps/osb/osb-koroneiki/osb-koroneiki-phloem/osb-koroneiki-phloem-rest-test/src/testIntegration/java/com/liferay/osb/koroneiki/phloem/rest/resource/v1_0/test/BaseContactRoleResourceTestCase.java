@@ -115,9 +115,7 @@ public abstract class BaseContactRoleResourceTestCase {
 
 		ContactRoleResource.Builder builder = ContactRoleResource.builder();
 
-		contactRoleResource = builder.authentication(
-			"test@liferay.com", "test"
-		).locale(
+		contactRoleResource = builder.locale(
 			LocaleUtil.getDefault()
 		).build();
 	}
@@ -1799,7 +1797,7 @@ public abstract class BaseContactRoleResourceTestCase {
 		}
 	}
 
-	protected void assertValid(ContactRole contactRole) throws Exception {
+	protected void assertValid(ContactRole contactRole) {
 		boolean valid = true;
 
 		if (contactRole.getDateCreated() == null) {
@@ -2045,11 +2043,9 @@ public abstract class BaseContactRoleResourceTestCase {
 					return false;
 				}
 			}
-
-			return true;
 		}
 
-		return false;
+		return true;
 	}
 
 	protected java.util.Collection<EntityField> getEntityFields()

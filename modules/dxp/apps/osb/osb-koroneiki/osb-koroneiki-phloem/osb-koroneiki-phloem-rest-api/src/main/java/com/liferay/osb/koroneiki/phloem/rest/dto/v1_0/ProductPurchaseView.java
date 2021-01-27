@@ -26,8 +26,6 @@ import com.liferay.portal.vulcan.util.ObjectMapperUtil;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.io.Serializable;
-
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
@@ -47,7 +45,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @GraphQLName("ProductPurchaseView")
 @JsonFilter("Liferay.Vulcan")
 @XmlRootElement(name = "ProductPurchaseView")
-public class ProductPurchaseView implements Serializable {
+public class ProductPurchaseView {
 
 	public static ProductPurchaseView toDTO(String json) {
 		return ObjectMapperUtil.readValue(ProductPurchaseView.class, json);
@@ -238,16 +236,6 @@ public class ProductPurchaseView implements Serializable {
 		return string.replaceAll("\"", "\\\\\"");
 	}
 
-	private static boolean _isArray(Object value) {
-		if (value == null) {
-			return false;
-		}
-
-		Class<?> clazz = value.getClass();
-
-		return clazz.isArray();
-	}
-
 	private static String _toJSON(Map<String, ?> map) {
 		StringBuilder sb = new StringBuilder("{");
 
@@ -266,7 +254,9 @@ public class ProductPurchaseView implements Serializable {
 
 			Object value = entry.getValue();
 
-			if (_isArray(value)) {
+			Class<?> clazz = value.getClass();
+
+			if (clazz.isArray()) {
 				sb.append("[");
 
 				Object[] valueArray = (Object[])value;

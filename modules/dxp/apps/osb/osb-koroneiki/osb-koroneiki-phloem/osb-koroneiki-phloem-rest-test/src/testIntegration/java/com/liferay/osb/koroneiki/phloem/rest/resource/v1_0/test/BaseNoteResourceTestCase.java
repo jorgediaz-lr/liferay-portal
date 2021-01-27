@@ -109,9 +109,7 @@ public abstract class BaseNoteResourceTestCase {
 
 		NoteResource.Builder builder = NoteResource.builder();
 
-		noteResource = builder.authentication(
-			"test@liferay.com", "test"
-		).locale(
+		noteResource = builder.locale(
 			LocaleUtil.getDefault()
 		).build();
 	}
@@ -395,7 +393,7 @@ public abstract class BaseNoteResourceTestCase {
 		}
 	}
 
-	protected void assertValid(Note note) throws Exception {
+	protected void assertValid(Note note) {
 		boolean valid = true;
 
 		if (note.getDateCreated() == null) {
@@ -718,11 +716,9 @@ public abstract class BaseNoteResourceTestCase {
 					return false;
 				}
 			}
-
-			return true;
 		}
 
-		return false;
+		return true;
 	}
 
 	protected java.util.Collection<EntityField> getEntityFields()

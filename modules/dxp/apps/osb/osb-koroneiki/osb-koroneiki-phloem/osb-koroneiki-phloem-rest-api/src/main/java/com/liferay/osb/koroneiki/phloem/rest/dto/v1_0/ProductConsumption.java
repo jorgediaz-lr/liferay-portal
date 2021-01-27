@@ -26,8 +26,6 @@ import com.liferay.portal.vulcan.util.ObjectMapperUtil;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.io.Serializable;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
@@ -56,7 +54,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 	description = "Represents a product consumption."
 )
 @XmlRootElement(name = "ProductConsumption")
-public class ProductConsumption implements Serializable {
+public class ProductConsumption {
 
 	public static ProductConsumption toDTO(String json) {
 		return ObjectMapperUtil.readValue(ProductConsumption.class, json);
@@ -503,16 +501,6 @@ public class ProductConsumption implements Serializable {
 		return string.replaceAll("\"", "\\\\\"");
 	}
 
-	private static boolean _isArray(Object value) {
-		if (value == null) {
-			return false;
-		}
-
-		Class<?> clazz = value.getClass();
-
-		return clazz.isArray();
-	}
-
 	private static String _toJSON(Map<String, ?> map) {
 		StringBuilder sb = new StringBuilder("{");
 
@@ -531,7 +519,9 @@ public class ProductConsumption implements Serializable {
 
 			Object value = entry.getValue();
 
-			if (_isArray(value)) {
+			Class<?> clazz = value.getClass();
+
+			if (clazz.isArray()) {
 				sb.append("[");
 
 				Object[] valueArray = (Object[])value;

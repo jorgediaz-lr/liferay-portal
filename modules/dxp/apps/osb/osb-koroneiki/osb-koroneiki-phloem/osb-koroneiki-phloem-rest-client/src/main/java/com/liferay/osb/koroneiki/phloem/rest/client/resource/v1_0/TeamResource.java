@@ -258,8 +258,8 @@ public interface TeamResource {
 		private Map<String, String> _headers = new LinkedHashMap<>();
 		private String _host = "localhost";
 		private Locale _locale;
-		private String _login = "";
-		private String _password = "";
+		private String _login = "test@liferay.com";
+		private String _password = "test";
 		private Map<String, String> _parameters = new LinkedHashMap<>();
 		private int _port = 8080;
 		private String _scheme = "http";
@@ -332,9 +332,8 @@ public interface TeamResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/assigned-teams");
-
-			httpInvoker.path("accountKey", accountKey);
+						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/assigned-teams",
+				accountKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -406,9 +405,8 @@ public interface TeamResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/teams");
-
-			httpInvoker.path("accountKey", accountKey);
+						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/teams",
+				accountKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -482,9 +480,8 @@ public interface TeamResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/teams");
-
-			httpInvoker.path("accountKey", accountKey);
+						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/teams",
+				accountKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -641,11 +638,8 @@ public interface TeamResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/teams/by-external-link/{domain}/{entityName}/{entityId}");
-
-			httpInvoker.path("domain", domain);
-			httpInvoker.path("entityName", entityName);
-			httpInvoker.path("entityId", entityId);
+						"/o/koroneiki-rest/v1.0/teams/by-external-link/{domain}/{entityName}/{entityId}",
+				domain, entityName, entityId);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -715,9 +709,8 @@ public interface TeamResource {
 
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
-					_builder._port + "/o/koroneiki-rest/v1.0/teams/{teamKey}");
-
-			httpInvoker.path("teamKey", teamKey);
+					_builder._port + "/o/koroneiki-rest/v1.0/teams/{teamKey}",
+				teamKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -775,9 +768,8 @@ public interface TeamResource {
 
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
-					_builder._port + "/o/koroneiki-rest/v1.0/teams/{teamKey}");
-
-			httpInvoker.path("teamKey", teamKey);
+					_builder._port + "/o/koroneiki-rest/v1.0/teams/{teamKey}",
+				teamKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -849,9 +841,8 @@ public interface TeamResource {
 
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
-					_builder._port + "/o/koroneiki-rest/v1.0/teams/{teamKey}");
-
-			httpInvoker.path("teamKey", teamKey);
+					_builder._port + "/o/koroneiki-rest/v1.0/teams/{teamKey}",
+				teamKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -933,9 +924,8 @@ public interface TeamResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/teams/{teamKey}/contacts/by-email-address");
-
-			httpInvoker.path("teamKey", teamKey);
+						"/o/koroneiki-rest/v1.0/teams/{teamKey}/contacts/by-email-address",
+				teamKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -1027,9 +1017,8 @@ public interface TeamResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/teams/{teamKey}/contacts/by-email-address");
-
-			httpInvoker.path("teamKey", teamKey);
+						"/o/koroneiki-rest/v1.0/teams/{teamKey}/contacts/by-email-address",
+				teamKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -1112,10 +1101,8 @@ public interface TeamResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/teams/{teamKey}/contacts/by-email-address/{emailAddress}/roles");
-
-			httpInvoker.path("teamKey", teamKey);
-			httpInvoker.path("emailAddress", emailAddress);
+						"/o/koroneiki-rest/v1.0/teams/{teamKey}/contacts/by-email-address/{emailAddress}/roles",
+				teamKey, emailAddress);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -1208,10 +1195,8 @@ public interface TeamResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/teams/{teamKey}/contacts/by-email-address/{emailAddress}/roles");
-
-			httpInvoker.path("teamKey", teamKey);
-			httpInvoker.path("emailAddress", emailAddress);
+						"/o/koroneiki-rest/v1.0/teams/{teamKey}/contacts/by-email-address/{emailAddress}/roles",
+				teamKey, emailAddress);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -1292,9 +1277,8 @@ public interface TeamResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/teams/{teamKey}/contacts/by-uuid");
-
-			httpInvoker.path("teamKey", teamKey);
+						"/o/koroneiki-rest/v1.0/teams/{teamKey}/contacts/by-uuid",
+				teamKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -1385,9 +1369,8 @@ public interface TeamResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/teams/{teamKey}/contacts/by-uuid");
-
-			httpInvoker.path("teamKey", teamKey);
+						"/o/koroneiki-rest/v1.0/teams/{teamKey}/contacts/by-uuid",
+				teamKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -1469,10 +1452,8 @@ public interface TeamResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/teams/{teamKey}/contacts/by-uuid/{contactUuid}/roles");
-
-			httpInvoker.path("teamKey", teamKey);
-			httpInvoker.path("contactUuid", contactUuid);
+						"/o/koroneiki-rest/v1.0/teams/{teamKey}/contacts/by-uuid/{contactUuid}/roles",
+				teamKey, contactUuid);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -1564,10 +1545,8 @@ public interface TeamResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/teams/{teamKey}/contacts/by-uuid/{contactUuid}/roles");
-
-			httpInvoker.path("teamKey", teamKey);
-			httpInvoker.path("contactUuid", contactUuid);
+						"/o/koroneiki-rest/v1.0/teams/{teamKey}/contacts/by-uuid/{contactUuid}/roles",
+				teamKey, contactUuid);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -1641,9 +1620,8 @@ public interface TeamResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/teams/{teamKey}/team-permissions");
-
-			httpInvoker.path("teamKey", teamKey);
+						"/o/koroneiki-rest/v1.0/teams/{teamKey}/team-permissions",
+				teamKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -1719,9 +1697,8 @@ public interface TeamResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/teams/{teamKey}/team-permissions");
-
-			httpInvoker.path("teamKey", teamKey);
+						"/o/koroneiki-rest/v1.0/teams/{teamKey}/team-permissions",
+				teamKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);

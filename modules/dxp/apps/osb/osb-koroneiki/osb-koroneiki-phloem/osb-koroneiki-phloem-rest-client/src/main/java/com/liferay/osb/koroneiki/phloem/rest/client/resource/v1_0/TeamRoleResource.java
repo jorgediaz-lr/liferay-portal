@@ -166,8 +166,8 @@ public interface TeamRoleResource {
 		private Map<String, String> _headers = new LinkedHashMap<>();
 		private String _host = "localhost";
 		private Locale _locale;
-		private String _login = "";
-		private String _password = "";
+		private String _login = "test@liferay.com";
+		private String _password = "test";
 		private Map<String, String> _parameters = new LinkedHashMap<>();
 		private int _port = 8080;
 		private String _scheme = "http";
@@ -240,10 +240,8 @@ public interface TeamRoleResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/assigned-teams/{teamKey}/roles");
-
-			httpInvoker.path("accountKey", accountKey);
-			httpInvoker.path("teamKey", teamKey);
+						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/assigned-teams/{teamKey}/roles",
+				accountKey, teamKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -470,9 +468,8 @@ public interface TeamRoleResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/team-roles/{teamRoleKey}");
-
-			httpInvoker.path("teamRoleKey", teamRoleKey);
+						"/o/koroneiki-rest/v1.0/team-roles/{teamRoleKey}",
+				teamRoleKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -532,9 +529,8 @@ public interface TeamRoleResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/team-roles/{teamRoleKey}");
-
-			httpInvoker.path("teamRoleKey", teamRoleKey);
+						"/o/koroneiki-rest/v1.0/team-roles/{teamRoleKey}",
+				teamRoleKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -609,9 +605,8 @@ public interface TeamRoleResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/team-roles/{teamRoleKey}");
-
-			httpInvoker.path("teamRoleKey", teamRoleKey);
+						"/o/koroneiki-rest/v1.0/team-roles/{teamRoleKey}",
+				teamRoleKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -686,9 +681,8 @@ public interface TeamRoleResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/team-roles/{teamRoleKey}/team-role-permissions");
-
-			httpInvoker.path("teamRoleKey", teamRoleKey);
+						"/o/koroneiki-rest/v1.0/team-roles/{teamRoleKey}/team-role-permissions",
+				teamRoleKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -765,9 +759,8 @@ public interface TeamRoleResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/team-roles/{teamRoleKey}/team-role-permissions");
-
-			httpInvoker.path("teamRoleKey", teamRoleKey);
+						"/o/koroneiki-rest/v1.0/team-roles/{teamRoleKey}/team-role-permissions",
+				teamRoleKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -832,10 +825,8 @@ public interface TeamRoleResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/team-roles/{teamRoleType}/{teamRoleName}");
-
-			httpInvoker.path("teamRoleType", teamRoleType);
-			httpInvoker.path("teamRoleName", teamRoleName);
+						"/o/koroneiki-rest/v1.0/team-roles/{teamRoleType}/{teamRoleName}",
+				teamRoleType, teamRoleName);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
