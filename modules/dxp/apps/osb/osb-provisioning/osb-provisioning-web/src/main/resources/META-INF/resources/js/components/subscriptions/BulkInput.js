@@ -168,6 +168,30 @@ function BulkInput({
 		setShowField({...showField, status: true});
 	}
 
+	function handleOnKeyDownQuantity(event) {
+		if (event.keyCode === 13) {
+			handleSaveQuantity();
+		}
+	}
+
+	function handleOnKeyDownSalesforceOpportunityKey(event) {
+		if (event.keyCode === 13) {
+			handleSaveSalesforceOpportunityKey();
+		}
+	}
+
+	function handleOnKeyDownSizing(event) {
+		if (event.keyCode === 13) {
+			handleSaveSizing();
+		}
+	}
+
+	function handleOnKeyDownStatus(event) {
+		if (event.keyCode === 13) {
+			handleSaveStatus();
+		}
+	}
+
 	function handleSaveQuantity() {
 		updateAllValuesByFieldName('quantity', quantity);
 	}
@@ -206,6 +230,7 @@ function BulkInput({
 							id="salesforceOpportunityKeyBulkInput"
 							onBlur={handleSaveSalesforceOpportunityKey}
 							onChange={handleOnChangeSalesforceOpportunityKey}
+							onKeyDown={handleOnKeyDownSalesforceOpportunityKey}
 							type="text"
 							value={salesforceOpportunityKey}
 						/>
@@ -233,6 +258,7 @@ function BulkInput({
 							min={1}
 							onBlur={handleSaveQuantity}
 							onChange={handleOnChangeQuantity}
+							onKeyDown={handleOnKeyDownQuantity}
 							type="number"
 							value={quantity}
 						/>
@@ -315,6 +341,7 @@ function BulkInput({
 							id="instanceSizeBulkInput"
 							onBlur={handleSaveSizing}
 							onChange={handleOnChangeSizing}
+							onKeyDown={handleOnKeyDownSizing}
 							value={sizing}
 						>
 							{instanceSizes.map(size => (
@@ -361,6 +388,7 @@ function BulkInput({
 								id="status"
 								onBlur={handleSaveStatus}
 								onChange={handleOnChangeStatus}
+								onKeyDown={handleOnKeyDownStatus}
 								value={status}
 							>
 								{statusOptions.map(option => (
