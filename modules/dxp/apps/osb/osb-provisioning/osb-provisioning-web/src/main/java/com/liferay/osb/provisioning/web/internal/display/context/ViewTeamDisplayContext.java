@@ -14,14 +14,18 @@
 
 package com.liferay.osb.provisioning.web.internal.display.context;
 
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
 import com.liferay.osb.provisioning.constants.ProvisioningWebKeys;
+import com.liferay.osb.provisioning.koroneiki.constants.TeamRoleConstants;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
 import java.util.Collections;
@@ -56,7 +60,8 @@ public class ViewTeamDisplayContext extends ViewAccountDisplayContext {
 
 		team = (Team)renderRequest.getAttribute(ProvisioningWebKeys.TEAM);
 
-		teamDisplay = new TeamDisplay(renderRequest, renderResponse, team);
+		teamDisplay = new TeamDisplay(
+			renderRequest, renderResponse, team, 0, 0);
 	}
 
 	public SearchContainer getContactsSearchContainer() throws Exception {
@@ -96,6 +101,83 @@ public class ViewTeamDisplayContext extends ViewAccountDisplayContext {
 				}));
 
 		int count = (int)contactWebService.searchCount(keywords, sb.toString());
+
+		searchContainer.setTotal(count);
+
+		return searchContainer;
+	}
+
+	public SearchContainer getFLSAssignedAccountsSearchContainer()
+		throws Exception {
+
+		String keywords = ParamUtil.getString(renderRequest, "keywords");
+
+		SearchContainer searchContainer = new SearchContainer(
+			renderRequest, currentURLObj, Collections.emptyList(),
+			"no-accounts-were-found");
+
+		TeamRole teamRole = teamRoleWebService.getTeamRole(
+			TeamRole.Type.ACCOUNT.toString(),
+			TeamRoleConstants.NAME_FIRST_LINE_SUPPORT);
+
+		StringBundler sb = new StringBundler(5);
+
+		sb.append("assignedTeamKeyTeamRoleKeys/any(s:s eq '");
+		sb.append(team.getKey());
+		sb.append("_");
+		sb.append(teamRole.getKey());
+		sb.append("')");
+
+		List<Account> accounts = accountWebService.search(
+			keywords, sb.toString(), searchContainer.getCur(),
+			searchContainer.getEnd() - searchContainer.getStart(),
+			StringPool.BLANK);
+
+		searchContainer.setResults(
+			TransformUtil.transform(
+				accounts,
+				account -> new AccountDisplay(
+					renderRequest, renderResponse, accountReader, account)));
+
+		int count = (int)accountWebService.searchCount(keywords, sb.toString());
+
+		searchContainer.setTotal(count);
+
+		return searchContainer;
+	}
+
+	public SearchContainer getPartnerAssignedAccountsSearchContainer()
+		throws Exception {
+
+		String keywords = ParamUtil.getString(renderRequest, "keywords");
+
+		SearchContainer searchContainer = new SearchContainer(
+			renderRequest, currentURLObj, Collections.emptyList(),
+			"no-accounts-were-found");
+
+		TeamRole teamRole = teamRoleWebService.getTeamRole(
+			TeamRole.Type.ACCOUNT.toString(), TeamRoleConstants.NAME_PARTNER);
+
+		StringBundler sb = new StringBundler(5);
+
+		sb.append("assignedTeamKeyTeamRoleKeys/any(s:s eq '");
+		sb.append(team.getKey());
+		sb.append("_");
+		sb.append(teamRole.getKey());
+		sb.append("')");
+
+		List<Account> accounts = accountWebService.search(
+			keywords, sb.toString(), searchContainer.getCur(),
+			searchContainer.getEnd() - searchContainer.getStart(),
+			StringPool.BLANK);
+
+		searchContainer.setResults(
+			TransformUtil.transform(
+				accounts,
+				account -> new AccountDisplay(
+					renderRequest, renderResponse, accountReader, account)));
+
+		int count = (int)accountWebService.searchCount(keywords, sb.toString());
 
 		searchContainer.setTotal(count);
 

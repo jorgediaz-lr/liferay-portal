@@ -68,9 +68,8 @@ SearchContainer searchContainer = teamSearchDisplayContext.getSearchContainer();
 
 			<liferay-ui:search-container-column-text
 				name="team-name"
-			>
-				<%= HtmlUtil.escape(teamDisplay.getName()) %>
-			</liferay-ui:search-container-column-text>
+				value="<%= HtmlUtil.escape(teamDisplay.getName()) %>"
+			/>
 
 			<%
 			Account teamAccount = teamDisplay.getAccount();
@@ -78,15 +77,23 @@ SearchContainer searchContainer = teamSearchDisplayContext.getSearchContainer();
 
 			<liferay-ui:search-container-column-text
 				name="account-name"
-			>
-				<%= HtmlUtil.escape(teamAccount.getName()) %>
-			</liferay-ui:search-container-column-text>
+				value="<%= HtmlUtil.escape(teamAccount.getName()) %>"
+			/>
 
 			<liferay-ui:search-container-column-text
 				name="account-code"
-			>
-				<%= HtmlUtil.escape(teamAccount.getCode()) %>
-			</liferay-ui:search-container-column-text>
+				value="<%= HtmlUtil.escape(teamAccount.getCode()) %>"
+			/>
+
+			<liferay-ui:search-container-column-text
+				name="partner-reseller-si-accounts"
+				value="<%= teamDisplay.getPartnerAssignedAccountsCount() %>"
+			/>
+
+			<liferay-ui:search-container-column-text
+				name="first-line-support-accounts"
+				value="<%= teamDisplay.getFLSAssignedAccountsCount() %>"
+			/>
 		</liferay-ui:search-container-row>
 
 		<liferay-ui:search-iterator

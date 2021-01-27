@@ -38,6 +38,7 @@ import com.liferay.osb.provisioning.koroneiki.web.service.NoteWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductConsumptionWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductPurchaseViewWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
+import com.liferay.osb.provisioning.koroneiki.web.service.TeamRoleWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamWebService;
 import com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
@@ -527,8 +528,9 @@ public class ViewAccountDisplayContext {
 			NoteWebService noteWebService,
 			ProductConsumptionWebService productConsumptionWebService,
 			ProductPurchaseViewWebService productPurchaseViewWebService,
-			ProductWebService productWebService, TeamWebService teamWebService,
-			UserLocalService userLocalService)
+			ProductWebService productWebService,
+			TeamRoleWebService teamRoleWebService,
+			TeamWebService teamWebService, UserLocalService userLocalService)
 		throws Exception {
 
 		this.renderRequest = renderRequest;
@@ -545,6 +547,7 @@ public class ViewAccountDisplayContext {
 		this.productConsumptionWebService = productConsumptionWebService;
 		this.productPurchaseViewWebService = productPurchaseViewWebService;
 		this.productWebService = productWebService;
+		this.teamRoleWebService = teamRoleWebService;
 		this.teamWebService = teamWebService;
 		this.userLocalService = userLocalService;
 
@@ -596,6 +599,7 @@ public class ViewAccountDisplayContext {
 	protected ProductWebService productWebService;
 	protected RenderRequest renderRequest;
 	protected RenderResponse renderResponse;
+	protected TeamRoleWebService teamRoleWebService;
 	protected TeamWebService teamWebService;
 	protected ThemeDisplay themeDisplay;
 	protected UserLocalService userLocalService;

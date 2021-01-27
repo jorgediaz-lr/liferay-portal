@@ -105,7 +105,7 @@ public class ViewContactDisplayContext {
 		for (Team team : teams) {
 			if (accountKey.equals(team.getAccountKey())) {
 				teamDisplays.add(
-					new TeamDisplay(renderRequest, renderResponse, team));
+					new TeamDisplay(renderRequest, renderResponse, team, 0, 0));
 			}
 		}
 

@@ -315,7 +315,8 @@ public class ProvisioningWebComponentProvider {
 		HttpServletRequest httpServletRequest) {
 
 		return new TeamSearchDisplayContext(
-			renderRequest, renderResponse, httpServletRequest, _teamWebService);
+			renderRequest, renderResponse, httpServletRequest,
+			_accountWebService, _teamRoleWebService, _teamWebService);
 	}
 
 	private <T extends ViewAccountDisplayContext> T
@@ -339,8 +340,8 @@ public class ProvisioningWebComponentProvider {
 			_accountEntryWebService, _accountWebService, _auditEntryWebService,
 			_contactRoleWebService, _contactWebService, _externalLinkWebService,
 			_noteWebService, _productConsumptionWebService,
-			_productPurchaseViewWebService, _productWebService, _teamWebService,
-			_userLocalService);
+			_productPurchaseViewWebService, _productWebService,
+			_teamRoleWebService, _teamWebService, _userLocalService);
 
 		httpServletRequest.setAttribute(
 			clazz.getName(), viewAccountDisplayContext);

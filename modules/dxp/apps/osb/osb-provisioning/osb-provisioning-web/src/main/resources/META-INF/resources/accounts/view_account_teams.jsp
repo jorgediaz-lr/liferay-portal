@@ -86,6 +86,18 @@ ViewAccountTeamsDisplayContext viewAccountTeamsDisplayContext = ProvisioningWebC
 				<%= teamDisplay.getDateModified() %>
 			</liferay-ui:search-container-column-text>
 
+			<liferay-ui:search-container-column-text
+				href="<%= rowURL %>"
+				name="partner-reseller-si-accounts"
+				value="<%= teamDisplay.getPartnerAssignedAccountsCount() %>"
+			/>
+
+			<liferay-ui:search-container-column-text
+				href="<%= rowURL %>"
+				name="first-line-support-accounts"
+				value="<%= teamDisplay.getFLSAssignedAccountsCount() %>"
+			/>
+
 			<liferay-ui:search-container-column-jsp
 				align="right"
 				path="/accounts/team_action.jsp"

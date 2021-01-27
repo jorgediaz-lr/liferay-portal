@@ -41,11 +41,14 @@ public class TeamDisplay {
 
 	public TeamDisplay(
 		PortletRequest portletRequest, PortletResponse portletResponse,
-		Team team) {
+		Team team, long flsAssignedAccountsCount,
+		long partnerAssignedAccountsCount) {
 
 		_portletRequest = portletRequest;
 		_portletResponse = portletResponse;
 		_team = team;
+		_flsAssignedAccountsCount = flsAssignedAccountsCount;
+		_partnerAssignedAccountsCount = partnerAssignedAccountsCount;
 
 		_dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
 			"MMM dd, yyyy hh:mm a");
@@ -104,6 +107,10 @@ public class TeamDisplay {
 		return deleteTeamURL.toString();
 	}
 
+	public String getFLSAssignedAccountsCount() {
+		return String.valueOf(_flsAssignedAccountsCount);
+	}
+
 	public String getKey() {
 		return _team.getKey();
 	}
@@ -112,13 +119,19 @@ public class TeamDisplay {
 		return _team.getName();
 	}
 
+	public String getPartnerAssignedAccountsCount() {
+		return String.valueOf(_partnerAssignedAccountsCount);
+	}
+
 	public boolean isSystem() {
 		return _team.getSystem();
 	}
 
 	private final Format _dateFormat;
+	private final long _flsAssignedAccountsCount;
 	private final HttpServletRequest _httpServletRequest;
 	private final LiferayPortletResponse _liferayPortletResponse;
+	private final long _partnerAssignedAccountsCount;
 	private final PortletRequest _portletRequest;
 	private final PortletResponse _portletResponse;
 	private final Team _team;
