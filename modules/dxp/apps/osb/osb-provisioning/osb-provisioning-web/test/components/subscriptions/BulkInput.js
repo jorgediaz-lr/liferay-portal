@@ -75,117 +75,115 @@ function renderBulkInput({
 	);
 }
 
-describe('Subscriptions', () => {
+describe('Bulk Input', () => {
 	afterEach(cleanup);
 
-	describe('New Subscriptions', () => {
-		it('renders', () => {
-			const {container} = renderBulkInput();
+	it('renders', () => {
+		const {container} = renderBulkInput();
 
-			expect(container).toBeTruthy();
+		expect(container).toBeTruthy();
+	});
+
+	it('renders Varied Data for Salesforce Opportunity Key, Purchased, Instant Size, and Status fields when the subscriptions to be edited contain different values for these fields', () => {
+		const {getAllByText} = renderBulkInput();
+
+		expect(getAllByText('varied-data').length).toBe(4);
+	});
+
+	it('renders Varied Data for the three date fields when the subscriptions to be edited contain different values for these fields', () => {
+		const {getAllByPlaceholderText} = renderBulkInput();
+
+		expect(getAllByPlaceholderText('varied-data').length).toBe(3);
+	});
+
+	it('renders the field value when the subscriptions contain identical values for the said fields', () => {
+		const {getAllByDisplayValue, getByDisplayValue} = renderBulkInput({
+			subscriptions: [
+				{
+					endDate: '2022-01-21',
+					externalLinkKey: 'KOR-35727',
+					key: 'KOR-38323',
+					originalEndDate: '2021-12-21',
+					perpetual: true,
+					productName: 'Product B',
+					quantity: 2,
+					salesforceOpportunityKey: 'salesForceKey456',
+					sizing: 1,
+					startDate: '2020-12-21',
+					status: 'Approved'
+				},
+				{
+					endDate: '2022-01-21',
+					externalLinkKey: 'KOR-35727',
+					key: 'KOR-38323',
+					originalEndDate: '2021-12-21',
+					perpetual: true,
+					productName: 'Product B',
+					quantity: 2,
+					salesforceOpportunityKey: 'salesForceKey456',
+					sizing: 1,
+					startDate: '2020-12-21',
+					status: 'Approved'
+				}
+			]
 		});
 
-		it('renders Varied Data for Salesforce Opportunity Key, Purchased, Instant Size, and Status fields when the subscriptions to be edited contain different values for these fields', () => {
-			const {getAllByText} = renderBulkInput();
+		getByDisplayValue('salesForceKey456');
+		getByDisplayValue('2');
+		getAllByDisplayValue('2020-12-21');
+		getAllByDisplayValue('2022-01-21');
+		getByDisplayValue('1');
+		getAllByDisplayValue('2021-12-21');
+		getByDisplayValue('Approved');
+	});
 
-			expect(getAllByText('varied-data').length).toBe(4);
+	it('renders Varied Data for the three date fields when subscriptions do not have identical perpetual values even when dates are identical', () => {
+		const {
+			getAllByPlaceholderText,
+			queryAllByDisplayValue
+		} = renderBulkInput({
+			subscriptions: [
+				{
+					endDate: '2022-01-21',
+					externalLinkKey: 'KOR-35727',
+					key: 'KOR-38323',
+					originalEndDate: '2021-12-21',
+					perpetual: false,
+					productName: 'Product B',
+					quantity: 1,
+					salesforceOpportunityKey: 'salesForceKey456',
+					sizing: 2,
+					startDate: '2020-12-21',
+					status: 'Approved'
+				},
+				{
+					endDate: '2022-01-21',
+					externalLinkKey: 'KOR-35727',
+					key: 'KOR-38323',
+					originalEndDate: '2021-12-21',
+					perpetual: true,
+					productName: 'Product B',
+					quantity: 2,
+					salesforceOpportunityKey: 'salesForceKey456',
+					sizing: 1,
+					startDate: '2020-12-21',
+					status: 'Approved'
+				}
+			]
 		});
 
-		it('renders Varied Data for the three date fields when the subscriptions to be edited contain different values for these fields', () => {
-			const {getAllByPlaceholderText} = renderBulkInput();
+		expect(queryAllByDisplayValue('2020-12-21').length).toBeFalsy();
+		expect(queryAllByDisplayValue('2021-12-21').length).toBeFalsy();
+		expect(queryAllByDisplayValue('2022-01-21').length).toBeFalsy();
+		expect(getAllByPlaceholderText('varied-data').length).toBe(3);
+	});
 
-			expect(getAllByPlaceholderText('varied-data').length).toBe(3);
-		});
+	it('reveals an input for user input when Varied Data is clicked', () => {
+		const {getAllByText, getByLabelText} = renderBulkInput();
 
-		it('renders the field value when the subscriptions contain identical values for the said fields', () => {
-			const {getAllByDisplayValue, getByDisplayValue} = renderBulkInput({
-				subscriptions: [
-					{
-						endDate: '2022-01-21',
-						externalLinkKey: 'KOR-35727',
-						key: 'KOR-38323',
-						originalEndDate: '2021-12-21',
-						perpetual: true,
-						productName: 'Product B',
-						quantity: 2,
-						salesforceOpportunityKey: 'salesForceKey456',
-						sizing: 1,
-						startDate: '2020-12-21',
-						status: 'Approved'
-					},
-					{
-						endDate: '2022-01-21',
-						externalLinkKey: 'KOR-35727',
-						key: 'KOR-38323',
-						originalEndDate: '2021-12-21',
-						perpetual: true,
-						productName: 'Product B',
-						quantity: 2,
-						salesforceOpportunityKey: 'salesForceKey456',
-						sizing: 1,
-						startDate: '2020-12-21',
-						status: 'Approved'
-					}
-				]
-			});
+		fireEvent.click(getAllByText('varied-data')[0]);
 
-			getByDisplayValue('salesForceKey456');
-			getByDisplayValue('2');
-			getAllByDisplayValue('2020-12-21');
-			getAllByDisplayValue('2022-01-21');
-			getByDisplayValue('1');
-			getAllByDisplayValue('2021-12-21');
-			getByDisplayValue('Approved');
-		});
-
-		it('renders Varied Data for the three date fields when subscriptions do not have identical perpetual values even when dates are identical', () => {
-			const {
-				getAllByPlaceholderText,
-				queryAllByDisplayValue
-			} = renderBulkInput({
-				subscriptions: [
-					{
-						endDate: '2022-01-21',
-						externalLinkKey: 'KOR-35727',
-						key: 'KOR-38323',
-						originalEndDate: '2021-12-21',
-						perpetual: false,
-						productName: 'Product B',
-						quantity: 1,
-						salesforceOpportunityKey: 'salesForceKey456',
-						sizing: 2,
-						startDate: '2020-12-21',
-						status: 'Approved'
-					},
-					{
-						endDate: '2022-01-21',
-						externalLinkKey: 'KOR-35727',
-						key: 'KOR-38323',
-						originalEndDate: '2021-12-21',
-						perpetual: true,
-						productName: 'Product B',
-						quantity: 2,
-						salesforceOpportunityKey: 'salesForceKey456',
-						sizing: 1,
-						startDate: '2020-12-21',
-						status: 'Approved'
-					}
-				]
-			});
-
-			expect(queryAllByDisplayValue('2020-12-21').length).toBeFalsy();
-			expect(queryAllByDisplayValue('2021-12-21').length).toBeFalsy();
-			expect(queryAllByDisplayValue('2022-01-21').length).toBeFalsy();
-			expect(getAllByPlaceholderText('varied-data').length).toBe(3);
-		});
-
-		it('reveals an input for user input when Varied Data is clicked', () => {
-			const {getAllByText, getByLabelText} = renderBulkInput();
-
-			fireEvent.click(getAllByText('varied-data')[0]);
-
-			getByLabelText('salesforce-opportunity-key-bulk-input');
-			expect(getAllByText('varied-data').length).toBe(3);
-		});
+		getByLabelText('salesforce-opportunity-key-bulk-input');
+		expect(getAllByText('varied-data').length).toBe(3);
 	});
 });

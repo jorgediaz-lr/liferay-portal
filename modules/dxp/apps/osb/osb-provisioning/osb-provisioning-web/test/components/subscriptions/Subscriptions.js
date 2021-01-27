@@ -277,4 +277,58 @@ describe('Subscriptions', () => {
 			expect(allAccountNames.length).toBe(3);
 		});
 	});
+
+	describe('Subscriptions with Bulk Edit', () => {
+		it('updates all subscriptions values for a given field when Bulk Edit is used', () => {
+			const {
+				getAllByDisplayValue,
+				getByLabelText,
+				getByText,
+				queryByDisplayValue
+			} = renderSubscriptions({
+				subscriptions: [
+					{
+						endDate: '2022-01-20',
+						key: 'KOR-38323',
+						originalEndDate: '2021-12-21',
+						perpetual: true,
+						productName: 'Product E',
+						quantity: 1,
+						salesforceOpportunityKey: 'salesForceKey123',
+						sizing: 1,
+						startDate: '2020-12-21',
+						status: 'Approved'
+					},
+					{
+						endDate: '2022-01-20',
+						key: 'KOR-38323',
+						originalEndDate: '2021-12-21',
+						perpetual: true,
+						productName: 'Product E',
+						quantity: 1,
+						salesforceOpportunityKey: 'salesForceKey456',
+						sizing: 1,
+						startDate: '2020-12-21',
+						status: 'Approved'
+					}
+				],
+				subscriptionsType: EDIT_SUBSCRIPTIONS
+			});
+
+			expect(queryByDisplayValue('test')).toBeFalsy();
+
+			fireEvent.click(getByText('varied-data'));
+			fireEvent.change(
+				getByLabelText('salesforce-opportunity-key-bulk-input'),
+				{
+					target: {value: 'test'}
+				}
+			);
+			fireEvent.blur(
+				getByLabelText('salesforce-opportunity-key-bulk-input')
+			);
+
+			expect(getAllByDisplayValue('test').length).toBe(3);
+		});
+	});
 });

@@ -33,19 +33,25 @@ function BulkInput({
 	],
 	subscriptionsType
 }) {
-	const [subscriptions] = useSubscriptions();
+	const [subscriptions, {updateAllValuesByFieldName}] = useSubscriptions();
 
 	const quantityRef = useRef();
 	const salesforceOpportunityKeyRef = useRef();
 	const sizingRef = useRef();
 	const statusRef = useRef();
 
+	const [quantity, setQuantity] = useState(getDisplayValue('quantity'));
+	const [salesforceOpportunityKey, setSalesforceOpportunityKey] = useState(
+		getDisplayValue('salesforceOpportunityKey')
+	);
 	const [showField, setShowField] = useState({
 		quantity: identicalValues('quantity'),
 		salesforceOpportunityKey: identicalValues('salesforceOpportunityKey'),
 		sizing: identicalValues('sizing'),
 		status: identicalValues('status')
 	});
+	const [sizing, setSizing] = useState(getDisplayValue('sizing'));
+	const [status, setStatus] = useState(getDisplayValue('status'));
 
 	useEffect(() => {
 		if (quantityRef.current) {
@@ -89,6 +95,22 @@ function BulkInput({
 		}
 	}
 
+	function handleOnChangeQuantity(event) {
+		setQuantity(event.currentTarget.value);
+	}
+
+	function handleOnChangeSalesforceOpportunityKey(event) {
+		setSalesforceOpportunityKey(event.currentTarget.value);
+	}
+
+	function handleOnChangeSizing(event) {
+		setSizing(event.currentTarget.value);
+	}
+
+	function handleOnChangeStatus(event) {
+		setStatus(event.currentTarget.value);
+	}
+
 	function handleOnClickQuantity() {
 		setShowField({...showField, quantity: true});
 	}
@@ -103,6 +125,25 @@ function BulkInput({
 
 	function handleOnClickStatus() {
 		setShowField({...showField, status: true});
+	}
+
+	function handleSaveQuantity() {
+		updateAllValuesByFieldName('quantity', quantity);
+	}
+
+	function handleSaveSalesforceOpportunityKey() {
+		updateAllValuesByFieldName(
+			'salesforceOpportunityKey',
+			salesforceOpportunityKey
+		);
+	}
+
+	function handleSaveSizing() {
+		updateAllValuesByFieldName('sizing', sizing);
+	}
+
+	function handleSaveStatus() {
+		updateAllValuesByFieldName('status', status);
 	}
 
 	function identicalValues(fieldName) {
@@ -139,9 +180,10 @@ function BulkInput({
 							)}
 							className="form-control form-control-sm"
 							id="salesforceOpportunityKeyBulkInput"
-							onChange={() => {}}
+							onBlur={handleSaveSalesforceOpportunityKey}
+							onChange={handleOnChangeSalesforceOpportunityKey}
 							type="text"
-							value={getDisplayValue('salesforceOpportunityKey')}
+							value={salesforceOpportunityKey}
 						/>
 					</label>
 				)}
@@ -165,9 +207,10 @@ function BulkInput({
 							className="form-control form-control-sm"
 							id="quantityBulkInput"
 							min={1}
-							onChange={() => {}}
+							onBlur={handleSaveQuantity}
+							onChange={handleOnChangeQuantity}
 							type="number"
-							value={getDisplayValue('quantity')}
+							value={quantity}
 						/>
 					</label>
 				)}
@@ -246,8 +289,9 @@ function BulkInput({
 							className="form-control form-control-sm"
 							disabled={!instanceSizes.length}
 							id="instanceSizeBulkInput"
-							onChange={() => {}}
-							value={getDisplayValue('sizing')}
+							onBlur={handleSaveSizing}
+							onChange={handleOnChangeSizing}
+							value={sizing}
 						>
 							{instanceSizes.map(size => (
 								<option key={size} value={size}>
@@ -291,8 +335,9 @@ function BulkInput({
 								className="form-control form-control-sm"
 								disabled={statusOptions.length === 0}
 								id="status"
-								onChange={() => {}}
-								value={getDisplayValue('status')}
+								onBlur={handleSaveStatus}
+								onChange={handleOnChangeStatus}
+								value={status}
 							>
 								{statusOptions.map(option => (
 									<option key={option} value={option}>

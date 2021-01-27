@@ -145,6 +145,13 @@ export function SubscriptionsProvider({initialSubscriptions = [], children}) {
 					deleteSubscription(key) {
 						setSubscriptions(subscriptions.delete(key));
 					},
+					updateAllValuesByFieldName(fieldName, newValue) {
+						setSubscriptions(
+							subscriptions.map(subscription =>
+								subscription.set(fieldName, newValue)
+							)
+						);
+					},
 					updateEndDate(key, endDate) {
 						setSubscriptions(
 							subscriptions.setIn([key, 'endDate'], endDate)
