@@ -86,20 +86,16 @@ public class UpgradeDiscussionSubscriptionClassName extends UpgradeProcess {
 	}
 
 	public enum DeletionMode {
-
-		/**
-		 * @deprecated As of Athanasius (7.3.x), replaced by {@link #UPDATE}
-		 */
-		@Deprecated
-		ADD_NEW,
-		DELETE_OLD, UPDATE
-
+		ADD_NEW, DELETE_OLD, UPDATE
 	}
 
 	@Override
 	protected void doUpgrade() throws Exception {
 		if (_customFunction != null) {
 			_customFunction.apply(_oldSubscriptionClassName);
+		}
+		else if (_deletionMode == DeletionMode.ADD_NEW) {
+			_addSubscriptions();
 		}
 		else if (_deletionMode == DeletionMode.DELETE_OLD) {
 			_deleteSubscriptions();
@@ -122,6 +118,28 @@ public class UpgradeDiscussionSubscriptionClassName extends UpgradeProcess {
 		_oldSubscriptionClassName = oldSubscriptionClassName;
 		_deletionMode = deletionMode;
 		_customFunction = customFunction;
+	}
+
+	private void _addSubscriptions() throws PortalException {
+		String newSubscriptionClassName =
+			MBDiscussion.class.getName() + StringPool.UNDERLINE +
+			_oldSubscriptionClassName;
+
+		ActionableDynamicQuery actionableDynamicQuery =
+			_subscriptionLocalService.getActionableDynamicQuery();
+
+		actionableDynamicQuery.setAddCriteriaMethod(
+			dynamicQuery -> dynamicQuery.add(
+				RestrictionsFactoryUtil.eq(
+					"classNameId",
+					_classNameLocalService.getClassNameId(
+						_oldSubscriptionClassName))));
+		actionableDynamicQuery.setPerformActionMethod(
+			(Subscription subscription) ->
+				_subscriptionLocalService.addSubscription(
+					subscription.getUserId(), subscription.getGroupId(),
+					newSubscriptionClassName, subscription.getClassPK()));
+		actionableDynamicQuery.performActions();
 	}
 
 	private void _deleteSubscriptions() throws PortalException {
