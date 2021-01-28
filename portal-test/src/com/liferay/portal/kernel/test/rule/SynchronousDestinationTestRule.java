@@ -144,12 +144,14 @@ public class SynchronousDestinationTestRule
 				DestinationNames.DOCUMENT_LIBRARY_RAW_METADATA_PROCESSOR);
 			Filter subscrpitionSenderFilter = _registerDestinationFilter(
 				DestinationNames.SUBSCRIPTION_SENDER);
+			Filter tensorflowModelDownloadFilter = _registerDestinationFilter(
+				"liferay/tensorflow_model_download");
 
 			_waitForDependencies(
 				auditFilter, asyncFilter, backgroundTaskFilter,
 				backgroundTaskStatusFilter, kaleoGraphWalkerFilter, mailFilter,
 				pdfProcessorFilter, rawMetaDataProcessorFilter,
-				subscrpitionSenderFilter);
+				subscrpitionSenderFilter, tensorflowModelDownloadFilter);
 
 			_destinations = ReflectionTestUtil.getFieldValue(
 				MessageBusUtil.getMessageBus(), "_destinations");
