@@ -323,7 +323,13 @@ public class AccountLocalServiceImpl extends AccountLocalServiceBaseImpl {
 		_defaultTeamManager.sync(account);
 
 		if (oldParentAccountId != parentAccountId) {
-			accountLocalService.reindex(parentAccountId);
+			if (oldParentAccountId > 0) {
+				accountLocalService.reindex(oldParentAccountId);
+			}
+
+			if (parentAccountId > 0) {
+				accountLocalService.reindex(parentAccountId);
+			}
 		}
 
 		return account;
