@@ -30,13 +30,11 @@ import com.liferay.portal.kernel.portlet.configuration.icon.BasePortletConfigura
 import com.liferay.portal.kernel.portlet.configuration.icon.PortletConfigurationIcon;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.LayoutLocalService;
-import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.service.permission.LayoutPermissionUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.taglib.security.PermissionsURLTag;
 
@@ -109,16 +107,16 @@ public class PermissionsPortletConfigurationIcon
 		}
 
 		LayoutPageTemplateEntry layoutPageTemplate =
-			_layoutPageTemplateEntryLocalService
-				.fetchLayoutPageTemplateEntryByPlid(layout.getPlid());
+			_layoutPageTemplateEntryLocalService.
+				fetchLayoutPageTemplateEntryByPlid(layout.getPlid());
 
-		if(Validator.isNotNull(layoutPageTemplate)){
-			return  false;
+		if (layoutPageTemplate != null) {
+			return false;
 		}
 
 		if (Objects.equals(layout.getType(), LayoutConstants.TYPE_CONTENT)) {
-			Layout draftLayout = LayoutLocalServiceUtil.fetchLayout(
-				PortalUtil.getClassNameId(Layout.class), layout.getPlid());
+			Layout draftLayout = _layoutLocalService.fetchLayout(
+				_portal.getClassNameId(Layout.class), layout.getPlid());
 
 			Date modifiedDate = draftLayout.getModifiedDate();
 
@@ -184,7 +182,11 @@ public class PermissionsPortletConfigurationIcon
 	private LayoutLocalService _layoutLocalService;
 
 	@Reference
-	private LayoutPageTemplateEntryLocalService	_layoutPageTemplateEntryLocalService;
+	private LayoutPageTemplateEntryLocalService
+		_layoutPageTemplateEntryLocalService;
+
+	@Reference
+	private Portal _portal;
 
 	@Reference
 	private Staging _staging;
