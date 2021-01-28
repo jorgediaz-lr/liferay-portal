@@ -16,6 +16,8 @@ package com.liferay.layout.admin.web.internal.portlet.configuration.icon;
 
 import com.liferay.exportimport.kernel.staging.Staging;
 import com.liferay.layout.admin.constants.LayoutAdminPortletKeys;
+import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
+import com.liferay.layout.page.template.service.LayoutPageTemplateEntryLocalService;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -28,13 +30,18 @@ import com.liferay.portal.kernel.portlet.configuration.icon.BasePortletConfigura
 import com.liferay.portal.kernel.portlet.configuration.icon.PortletConfigurationIcon;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.LayoutLocalService;
+import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.service.permission.LayoutPermissionUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.taglib.security.PermissionsURLTag;
+
+import java.util.Date;
+import java.util.Objects;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
@@ -101,8 +108,29 @@ public class PermissionsPortletConfigurationIcon
 			return false;
 		}
 
-		if (layout.getStatus() == WorkflowConstants.STATUS_DRAFT) {
-			return false;
+		LayoutPageTemplateEntry layoutPageTemplate =
+			_layoutPageTemplateEntryLocalService
+				.fetchLayoutPageTemplateEntryByPlid(layout.getPlid());
+
+		if(Validator.isNotNull(layoutPageTemplate)){
+			return  false;
+		}
+
+		if (Objects.equals(layout.getType(), LayoutConstants.TYPE_CONTENT)) {
+			Layout draftLayout = LayoutLocalServiceUtil.fetchLayout(
+				PortalUtil.getClassNameId(Layout.class), layout.getPlid());
+
+			Date modifiedDate = draftLayout.getModifiedDate();
+
+			Date publishDate = layout.getPublishDate();
+
+			if (publishDate == null) {
+				publishDate = modifiedDate;
+			}
+
+			if (modifiedDate.getTime() > publishDate.getTime()) {
+				return false;
+			}
 		}
 
 		if (_staging.isIncomplete(layout)) {
@@ -154,6 +182,9 @@ public class PermissionsPortletConfigurationIcon
 
 	@Reference
 	private LayoutLocalService _layoutLocalService;
+
+	@Reference
+	private LayoutPageTemplateEntryLocalService	_layoutPageTemplateEntryLocalService;
 
 	@Reference
 	private Staging _staging;
