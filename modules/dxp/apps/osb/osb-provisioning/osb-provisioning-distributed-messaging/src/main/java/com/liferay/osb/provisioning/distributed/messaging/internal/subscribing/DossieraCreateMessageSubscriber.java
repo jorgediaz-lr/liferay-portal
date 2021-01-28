@@ -87,11 +87,13 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.TreeMap;
 
 import org.osgi.service.component.annotations.Activate;
@@ -377,8 +379,10 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 		StringBundler sb = new StringBundler(14);
 
+		String accountName = account.getName();
+
 		sb.append("Account Name: ");
-		sb.append(account.getName());
+		sb.append(accountName);
 		sb.append("<br />Account Code: ");
 		sb.append(account.getCode());
 		sb.append("<br />Opportunity Type: ");
@@ -410,7 +414,8 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		sb.append(salesforceOpportunityKey);
 		sb.append("'>Salesforce Opportunity</a>");
 
-		String subject = "New Subscription for " + account.getName();
+		StringBundler subjectSB = new StringBundler(
+			5 + (_productTypes.size() * 2));
 
 		List<String> warningMessages = _warningMessagesThreadLocal.get();
 
@@ -422,7 +427,34 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 				sb.append(warningMessage);
 			}
 
-			subject = StringUtil.insert(subject, "[Warning] ", 0);
+			subjectSB = subjectSB.append("[Warning] ");
+		}
+
+		subjectSB.append(salesforceOpportunityTypeName);
+		subjectSB.append(": ");
+
+		List<String> prodcutTypes = new ArrayList<>(_productTypes);
+
+		if (!prodcutTypes.isEmpty()) {
+			for (int i = 0; i < (prodcutTypes.size() - 1); i++) {
+				subjectSB.append(prodcutTypes.get(i));
+				subjectSB.append(", ");
+			}
+
+			subjectSB.append(prodcutTypes.get(prodcutTypes.size() - 1));
+			subjectSB.append(StringPool.SPACE);
+		}
+
+		subjectSB.append("Subscription(s) for ");
+
+		int maxLength = 150 - subjectSB.length();
+
+		if (accountName.length() > maxLength) {
+			subjectSB.append(
+				accountName.substring(0, maxLength - accountName.length()));
+		}
+		else {
+			subjectSB.append(accountName);
 		}
 
 		List<Note> pinnedNotes = _noteWebService.getNotes(
@@ -445,7 +477,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		zendeskTicket.setRequesterId(
 			_distributedMessagingConfiguration.
 				provisioningZendeskRequesterId());
-		zendeskTicket.setSubject(subject);
+		zendeskTicket.setSubject(subjectSB.toString());
 		zendeskTicket.setZendeskOrganizationId(
 			_distributedMessagingConfiguration.
 				provisioningZendeskOrganizationId());
@@ -1479,6 +1511,8 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 				if (Validator.isNotNull(productType)) {
 					properties.put("productType", productType);
+
+					_productTypes.add(productType);
 				}
 
 				String sizing = purchasedProductJSONObject.getString("_sizing");
@@ -1927,6 +1961,8 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 	@Reference
 	private ProductPurchaseWebService _productPurchaseWebService;
+
+	private final Set<String> _productTypes = new HashSet<>();
 
 	@Reference
 	private ProductWebService _productWebService;
