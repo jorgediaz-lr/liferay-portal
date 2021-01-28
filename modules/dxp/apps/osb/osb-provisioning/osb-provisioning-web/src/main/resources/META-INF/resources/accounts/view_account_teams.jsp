@@ -81,13 +81,6 @@ ViewAccountTeamsDisplayContext viewAccountTeamsDisplayContext = ProvisioningWebC
 
 			<liferay-ui:search-container-column-text
 				href="<%= rowURL %>"
-				name="last-modified"
-			>
-				<%= teamDisplay.getDateModified() %>
-			</liferay-ui:search-container-column-text>
-
-			<liferay-ui:search-container-column-text
-				href="<%= rowURL %>"
 				name="partner-reseller-si-accounts"
 				value="<%= teamDisplay.getPartnerAssignedAccountsCount() %>"
 			/>
