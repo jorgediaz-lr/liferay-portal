@@ -86,17 +86,15 @@ public class LayoutCopyHelperImpl implements LayoutCopyHelper {
 		Callable<Layout> callable = new CopyLayoutCallable(
 			sourceLayout, targetLayout);
 
-		ServiceContext currentServiceContext =
-			ServiceContextThreadLocal.getServiceContext();
-
 		boolean copyLayout = CopyLayoutThreadLocal.isCopyLayout();
-
 		boolean stagingAdvicesThreadLocalEnabled =
 			StagingAdvicesThreadLocal.isEnabled();
 
+		ServiceContext currentServiceContext =
+			ServiceContextThreadLocal.getServiceContext();
+
 		try {
 			CopyLayoutThreadLocal.setCopyLayout(true);
-
 			StagingAdvicesThreadLocal.setEnabled(false);
 
 			return TransactionInvokerUtil.invoke(_transactionConfig, callable);
@@ -105,12 +103,11 @@ public class LayoutCopyHelperImpl implements LayoutCopyHelper {
 			throw new Exception(t);
 		}
 		finally {
-			ServiceContextThreadLocal.pushServiceContext(currentServiceContext);
-
+			CopyLayoutThreadLocal.setCopyLayout(copyLayout);
 			StagingAdvicesThreadLocal.setEnabled(
 				stagingAdvicesThreadLocalEnabled);
 
-			CopyLayoutThreadLocal.setCopyLayout(copyLayout);
+			ServiceContextThreadLocal.pushServiceContext(currentServiceContext);
 		}
 	}
 
