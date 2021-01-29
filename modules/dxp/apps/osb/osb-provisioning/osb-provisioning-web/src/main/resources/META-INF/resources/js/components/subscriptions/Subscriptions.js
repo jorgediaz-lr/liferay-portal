@@ -176,8 +176,6 @@ function Subscription({
 			? `${subscription.key}_${index}`
 			: `${subscription.productKey}_${index}`;
 
-	// Source formatter locks @clayui/date-picker at version 3.0.7, which does not provide an API for disabling date picker while later versions do.
-
 	useEffect(() => {
 		setDisabledAttribute(perpetual, key);
 	});
@@ -196,8 +194,6 @@ function Subscription({
 
 	function handlePerpetualChange() {
 		updatePerpetual(key, !perpetual);
-
-		// Source formatter locks @clayui/date-picker at version 3.0.7, which does not provide an API for disabling date picker while later versions do.
 
 		setDisabledAttribute(!perpetual, key);
 	}

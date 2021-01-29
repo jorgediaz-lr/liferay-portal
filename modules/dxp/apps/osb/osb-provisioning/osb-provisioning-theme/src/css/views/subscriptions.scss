@@ -11,6 +11,11 @@
 
 			&[disabled] {
 				background-color: $light;
+
+				&[placeholder],
+				&::placeholder {
+					color: $input-disabled-color;
+				}
 			}
 
 			&[placeholder],
@@ -31,6 +36,11 @@
 	.subscriptions {
 		label {
 			display: block;
+
+			&.custom-checkbox {
+				display: inline-block;
+				vertical-align: middle;
+			}
 		}
 
 		.btn-icon svg {

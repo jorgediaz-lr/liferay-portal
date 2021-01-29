@@ -140,23 +140,6 @@ describe('Subscriptions', () => {
 			expect(allAccountNames.length).toBe(5);
 		});
 
-		it('does not display Bulk Input when there is only one subscription', () => {
-			const {getAllByText} = renderSubscriptions({
-				subscriptions: [
-					{
-						endDate: '2021-12-08',
-						productKey: 'KOR-35735',
-						productName: 'Product A',
-						startDate: '2020-12-08'
-					}
-				]
-			});
-
-			const allAccountNames = getAllByText('Test Account');
-
-			expect(allAccountNames.length).toBe(1);
-		});
-
 		it('removes a subscription when the delete icon for that subscription is clicked', () => {
 			const {
 				getAllByLabelText,
@@ -230,17 +213,6 @@ describe('Subscriptions', () => {
 			expect(dateFields[2].disabled).toBeTruthy();
 		});
 
-		it('does not display Bulk Input when there is only one subscription', () => {
-			const {getAllByText} = renderSubscriptions({
-				subscriptions: mockEditSubscriptions(),
-				subscriptionsType: EDIT_SUBSCRIPTIONS
-			});
-
-			const allAccountNames = getAllByText('Test Account');
-
-			expect(allAccountNames.length).toBe(1);
-		});
-
 		it('displays the account name for each of the subscriptions and the Bulk Input', () => {
 			const {getAllByText} = renderSubscriptions({
 				subscriptions: [
@@ -279,7 +251,35 @@ describe('Subscriptions', () => {
 	});
 
 	describe('Subscriptions with Bulk Edit', () => {
-		it('updates all subscriptions values for a given field when Bulk Edit is used', () => {
+		it('does not display Bulk Input when adding only one subscription', () => {
+			const {getAllByText} = renderSubscriptions({
+				subscriptions: [
+					{
+						endDate: '2021-12-08',
+						productKey: 'KOR-35735',
+						productName: 'Product A',
+						startDate: '2020-12-08'
+					}
+				]
+			});
+
+			const allAccountNames = getAllByText('Test Account');
+
+			expect(allAccountNames.length).toBe(1);
+		});
+
+		it('does not display Bulk Input when editing only one subscription', () => {
+			const {getAllByText} = renderSubscriptions({
+				subscriptions: mockEditSubscriptions(),
+				subscriptionsType: EDIT_SUBSCRIPTIONS
+			});
+
+			const allAccountNames = getAllByText('Test Account');
+
+			expect(allAccountNames.length).toBe(1);
+		});
+
+		it('updates all subscriptions values for a given field when its Bulk Edit field is modified', () => {
 			const {
 				getAllByDisplayValue,
 				getByLabelText,
@@ -331,7 +331,7 @@ describe('Subscriptions', () => {
 			expect(getAllByDisplayValue('test').length).toBe(3);
 		});
 
-		it('shows changes in the Bulk Input field when the values for subscriptions change', () => {
+		it('shows changes in the Bulk Input field when the corresponding values for subscriptions change', () => {
 			const {
 				getAllByDisplayValue,
 				getAllByLabelText,

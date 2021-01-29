@@ -21,7 +21,7 @@ import {
 	PRODUCT_PURCHASE_STATUS_APPROVED,
 	PRODUCT_PURCHASE_STATUS_CANCELLED
 } from '../../utilities/constants';
-import {displayUTCDate} from '../../utilities/helpers';
+import {displayUTCDate, setDisabledAttribute} from '../../utilities/helpers';
 import DatePicker from '../DatePicker';
 
 function BulkInput({
@@ -72,18 +72,44 @@ function BulkInput({
 		[subscriptions]
 	);
 
-	const [quantity, setQuantity] = useState(getDisplayValue('quantity'));
-	const [salesforceOpportunityKey, setSalesforceOpportunityKey] = useState(
-		getDisplayValue('salesforceOpportunityKey')
-	);
 	const [showField, setShowField] = useState({
+		perpetual: identicalValues('perpetual'),
 		quantity: identicalValues('quantity'),
 		salesforceOpportunityKey: identicalValues('salesforceOpportunityKey'),
 		sizing: identicalValues('sizing'),
 		status: identicalValues('status')
 	});
+
+	const [perpetual, setPerpetual] = useState(getDisplayValue('perpetual'));
+	const [quantity, setQuantity] = useState(getDisplayValue('quantity'));
+	const [salesforceOpportunityKey, setSalesforceOpportunityKey] = useState(
+		getDisplayValue('salesforceOpportunityKey')
+	);
 	const [sizing, setSizing] = useState(getDisplayValue('sizing'));
 	const [status, setStatus] = useState(getDisplayValue('status'));
+
+	useEffect(() => {
+		setDisabledAttribute(perpetual, 'bulkInput');
+	});
+
+	useEffect(() => {
+		setShowField({
+			perpetual: identicalValues('perpetual'),
+			quantity: identicalValues('quantity'),
+			salesforceOpportunityKey: identicalValues(
+				'salesforceOpportunityKey'
+			),
+			sizing: identicalValues('sizing'),
+			status: identicalValues('status')
+		});
+
+		setQuantity(getDisplayValue('quantity'));
+		setSalesforceOpportunityKey(
+			getDisplayValue('salesforceOpportunityKey')
+		);
+		setSizing(getDisplayValue('sizing'));
+		setStatus(getDisplayValue('status'));
+	}, [getDisplayValue, identicalValues, subscriptions]);
 
 	useEffect(() => {
 		if (quantityRef.current) {
@@ -109,24 +135,6 @@ function BulkInput({
 		}
 	}, [showField.status]);
 
-	useEffect(() => {
-		setShowField({
-			quantity: identicalValues('quantity'),
-			salesforceOpportunityKey: identicalValues(
-				'salesforceOpportunityKey'
-			),
-			sizing: identicalValues('sizing'),
-			status: identicalValues('status')
-		});
-
-		setQuantity(getDisplayValue('quantity'));
-		setSalesforceOpportunityKey(
-			getDisplayValue('salesforceOpportunityKey')
-		);
-		setSizing(getDisplayValue('sizing'));
-		setStatus(getDisplayValue('status'));
-	}, [getDisplayValue, identicalValues, subscriptions]);
-
 	function getDatePickerDisplayValue(fieldName) {
 		if (identicalValues('perpetual')) {
 			return displayUTCDate(getDisplayValue(fieldName));
@@ -134,6 +142,11 @@ function BulkInput({
 		else {
 			return '';
 		}
+	}
+
+	function handleOnChangePerpetual() {
+		setDisabledAttribute(!perpetual, 'bulkInput');
+		setPerpetual(!perpetual);
 	}
 
 	function handleOnChangeQuantity(event) {
@@ -152,6 +165,10 @@ function BulkInput({
 		setStatus(event.currentTarget.value);
 	}
 
+	function handleOnClickPerpetual() {
+		setShowField({...showField, perpetual: true});
+	}
+
 	function handleOnClickQuantity() {
 		setShowField({...showField, quantity: true});
 	}
@@ -166,6 +183,12 @@ function BulkInput({
 
 	function handleOnClickStatus() {
 		setShowField({...showField, status: true});
+	}
+
+	function handleOnKeyDownPerpetual(event) {
+		if (event.keyCode === 13) {
+			handleSavePerpetual();
+		}
 	}
 
 	function handleOnKeyDownQuantity(event) {
@@ -190,6 +213,10 @@ function BulkInput({
 		if (event.keyCode === 13) {
 			handleSaveStatus();
 		}
+	}
+
+	function handleSavePerpetual() {
+		updateAllValuesByFieldName('perpetual', perpetual);
 	}
 
 	function handleSaveQuantity() {
@@ -273,37 +300,34 @@ function BulkInput({
 				)}
 			</ClayTable.Cell>
 			<ClayTable.Cell>
-				<label
-					className="custom-checkbox custom-control"
-					htmlFor="perpetualBulkInput"
-				>
-					{identicalValues('perpetual') && (
-						<ClayCheckbox
-							aria-checked={getDisplayValue('perpetual')}
-							aria-label={Liferay.Language.get(
-								'perpetual-subscription-bulk-input'
-							)}
-							checked={getDisplayValue('perpetual')}
-							className="custom-control-input"
-							id="perpetualBulkInput"
-							onChange={() => {}}
-							role="checkbox"
-						/>
-					)}
+				{showField.perpetual && (
+					<ClayCheckbox
+						aria-checked={perpetual}
+						aria-label={Liferay.Language.get(
+							'perpetual-subscription-bulk-input'
+						)}
+						checked={perpetual}
+						className="custom-control-input"
+						id="perpetualBulkInput"
+						onBlur={handleSavePerpetual}
+						onChange={handleOnChangePerpetual}
+						onKeyDown={handleOnKeyDownPerpetual}
+						role="checkbox"
+					/>
+				)}
 
-					{!identicalValues('perpetual') && (
-						<ClayCheckbox
-							aria-label={Liferay.Language.get(
-								'perpetual-subscription-bulk-input'
-							)}
-							className="custom-control-input"
-							id="perpetualBulkInput"
-							indeterminate
-							onChange={() => {}}
-							role="checkbox"
-						/>
-					)}
-				</label>
+				{!showField.perpetual && (
+					<ClayCheckbox
+						aria-label={Liferay.Language.get(
+							'perpetual-subscription-bulk-input'
+						)}
+						className="custom-control-input"
+						id="perpetualBulkInput"
+						indeterminate
+						onChange={handleOnClickPerpetual}
+						role="checkbox"
+					/>
+				)}
 			</ClayTable.Cell>
 			<ClayTable.Cell>
 				<label htmlFor="startDateBulkInput">

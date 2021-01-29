@@ -186,4 +186,98 @@ describe('Bulk Input', () => {
 		getByLabelText('salesforce-opportunity-key-bulk-input');
 		expect(getAllByText('varied-data').length).toBe(3);
 	});
+
+	it('displays date bulk inputs as disabled when Perpetual Subscription is checked', () => {
+		const {getAllByPlaceholderText, getByLabelText} = renderBulkInput();
+
+		const dateFields = getAllByPlaceholderText('varied-data');
+
+		expect(
+			getByLabelText('perpetual-subscription-bulk-input').checked
+		).toBeTruthy();
+
+		expect(dateFields[0].disabled).toBeTruthy();
+		expect(dateFields[1].disabled).toBeTruthy();
+		expect(dateFields[2].disabled).toBeTruthy();
+	});
+
+	it('displays date bulk inputs as enabled when Perpetual Subscription is unchecked', () => {
+		const {getAllByPlaceholderText, getByLabelText} = renderBulkInput({
+			subscriptions: [
+				{
+					endDate: '2022-01-20',
+					externalLinkKey: 'KOR-35727',
+					key: 'KOR-38322',
+					originalEndDate: '2021-12-20',
+					perpetual: false,
+					productName: 'Product A',
+					quantity: 1,
+					salesforceOpportunityKey: 'salesForceKey123',
+					sizing: 1,
+					startDate: '2020-12-20',
+					status: 'Cancelled'
+				},
+				{
+					endDate: '2022-01-21',
+					externalLinkKey: 'KOR-35727',
+					key: 'KOR-38323',
+					originalEndDate: '2021-12-21',
+					perpetual: false,
+					productName: 'Product B',
+					quantity: 2,
+					salesforceOpportunityKey: 'salesForceKey456',
+					sizing: 1,
+					startDate: '2020-12-21',
+					status: 'Approved'
+				}
+			]
+		});
+
+		const dateFields = getAllByPlaceholderText('varied-data');
+
+		expect(
+			getByLabelText('perpetual-subscription-bulk-input').checked
+		).toBeFalsy();
+
+		expect(dateFields[0].disabled).toBeFalsy();
+		expect(dateFields[1].disabled).toBeFalsy();
+		expect(dateFields[2].disabled).toBeFalsy();
+	});
+
+	it('displays the indeterminate state of Perpetual Subscription when subscriptions contain varying values', () => {
+		const {getByLabelText} = renderBulkInput({
+			subscriptions: [
+				{
+					endDate: '2022-01-21',
+					externalLinkKey: 'KOR-35727',
+					key: 'KOR-38323',
+					originalEndDate: '2021-12-21',
+					perpetual: false,
+					productName: 'Product B',
+					quantity: 1,
+					salesforceOpportunityKey: 'salesForceKey456',
+					sizing: 2,
+					startDate: '2020-12-21',
+					status: 'Approved'
+				},
+				{
+					endDate: '2022-01-21',
+					externalLinkKey: 'KOR-35727',
+					key: 'KOR-38323',
+					originalEndDate: '2021-12-21',
+					perpetual: true,
+					productName: 'Product B',
+					quantity: 2,
+					salesforceOpportunityKey: 'salesForceKey456',
+					sizing: 1,
+					startDate: '2020-12-21',
+					status: 'Approved'
+				}
+			]
+		});
+
+		expect(
+			getByLabelText('perpetual-subscription-bulk-input').indeterminate
+		).toBeTruthy();
+	});
 });
