@@ -118,7 +118,8 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 	}
 
 	protected void checkWarnings(
-			String accountKey, Account account, List<Contact> inactiveContacts,
+			String accountKey, Account account, Account partnerAccount,
+			boolean partnerFirstLineSupport, List<Contact> inactiveContacts,
 			List<Contact> missingContacts, String salesforceOpportunityTypeName,
 			int salesforceOpportunityType)
 		throws Exception {
@@ -199,13 +200,55 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 			_logWarning(sb.toString());
 		}
+
+		Team oldPartnerTeam = _accountReader.getPartnerTeam(account);
+
+		String oldPartnerAccountKey = StringPool.BLANK;
+
+		if ((oldPartnerTeam != null) &&
+			Validator.isNotNull(oldPartnerTeam.getAccountKey())) {
+
+			oldPartnerAccountKey = oldPartnerTeam.getAccountKey();
+		}
+
+		String partnerAccountKey = StringPool.BLANK;
+
+		if (partnerAccount != null) {
+			partnerAccountKey = partnerAccount.getKey();
+		}
+
+		if (!oldPartnerAccountKey.equals(partnerAccountKey)) {
+			_logWarning(
+				"The partner account is different from the existing partner " +
+					"account.");
+		}
+
+		Team oldFLSTeam = _accountReader.getFirstLineSupportTeam(account);
+
+		String oldFLSAccountKey = StringPool.BLANK;
+
+		if ((oldFLSTeam != null) &&
+			Validator.isNotNull(oldFLSTeam.getAccountKey())) {
+
+			oldFLSAccountKey = oldFLSTeam.getAccountKey();
+		}
+
+		if (((oldFLSTeam == null) && partnerFirstLineSupport) ||
+			((oldFLSTeam != null) &&
+			 (!partnerFirstLineSupport ||
+			  !oldFLSAccountKey.equals(partnerAccountKey)))) {
+
+			_logWarning(
+				"The FLS partner account is different from the existing FLS " +
+					"partner account.");
+		}
 	}
 
 	protected Account createAccount(
 			Contact[] contacts, ExternalLink[] externalLinks,
 			Account.Language language, Account.Region region,
 			PostalAddress postalAddress, ProductPurchase[] productPurchases,
-			JSONObject jsonObject)
+			Team[] partnerTeams, JSONObject jsonObject)
 		throws Exception {
 
 		Account account = new Account();
@@ -264,7 +307,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			account.setTier(Account.Tier.T4);
 		}
 
-		account.setAssignedTeams(parsePartnerAccount(jsonObject));
+		account.setAssignedTeams(partnerTeams);
 
 		return _accountWebService.addAccount(
 			StringPool.BLANK, StringPool.BLANK, account);
@@ -600,6 +643,14 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 		String accountKey = getAccountKey(jsonObject);
 
+		Account partnerAccount = parsePartnerAccount(jsonObject);
+
+		boolean partnerFirstLineSupport = jsonObject.getBoolean(
+			"_partnerFirstLineSupport");
+
+		Team[] partnerTeams = parsePartnerTeams(
+			partnerAccount, partnerFirstLineSupport);
+
 		if (Validator.isNotNull(accountKey)) {
 			account = updateAccount(
 				accountKey, activeContacts, region, productPurchases,
@@ -611,7 +662,8 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			account = createAccount(
 				activeContacts.toArray(new Contact[0]), externalLinks, language,
 				region, postalAddress,
-				productPurchases.toArray(new ProductPurchase[0]), jsonObject);
+				productPurchases.toArray(new ProductPurchase[0]), partnerTeams,
+				jsonObject);
 
 			if (analyticsCloud) {
 				sendAnalyticsCloudWelcomeEmail(activeContacts, languageId);
@@ -621,8 +673,9 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		createAccountNote(jsonObject, account);
 
 		checkWarnings(
-			accountKey, account, inactiveContacts, missingContacts,
-			salesforceOpportunityTypeName, salesforceOpportunityType);
+			accountKey, account, partnerAccount, partnerFirstLineSupport,
+			inactiveContacts, missingContacts, salesforceOpportunityTypeName,
+			salesforceOpportunityType);
 
 		String salesforceOpportunityProductFamily = jsonObject.getString(
 			"_salesforceOpportunityProductFamily");
@@ -1381,29 +1434,34 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		};
 	}
 
-	protected Team[] parsePartnerAccount(JSONObject jsonObject)
+	protected Account parsePartnerAccount(JSONObject jsonObject)
 		throws Exception {
-
-		TeamRole partnerTeamRole = _teamRoleWebService.getTeamRole(
-			TeamRole.Type.ACCOUNT.toString(), TeamRoleConstants.NAME_PARTNER);
 
 		JSONObject partnerAccountJSONObject = jsonObject.getJSONObject(
 			"_partnerAccount");
 
-		if ((partnerAccountJSONObject == null) || (partnerTeamRole == null)) {
-			return new Team[0];
+		if (partnerAccountJSONObject == null) {
+			return null;
 		}
 
 		String dossieraAccountKey = partnerAccountJSONObject.getString(
 			"_dossieraAccountKey");
 
 		if (Validator.isNull(dossieraAccountKey)) {
-			return new Team[0];
+			return null;
 		}
 
-		Account partnerAccount = fetchAccount(dossieraAccountKey);
+		return fetchAccount(dossieraAccountKey);
+	}
 
-		if (partnerAccount == null) {
+	protected Team[] parsePartnerTeams(
+			Account partnerAccount, boolean partnerFirstLineSupport)
+		throws Exception {
+
+		TeamRole partnerTeamRole = _teamRoleWebService.getTeamRole(
+			TeamRole.Type.ACCOUNT.toString(), TeamRoleConstants.NAME_PARTNER);
+
+		if ((partnerAccount == null) || (partnerTeamRole == null)) {
 			return new Team[0];
 		}
 
@@ -1420,9 +1478,6 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		Team partnerDefaultTeam = partnerDefaultTeams.get(0);
 
 		partnerDefaultTeam.setTeamRoles(new TeamRole[] {partnerTeamRole});
-
-		boolean partnerFirstLineSupport = jsonObject.getBoolean(
-			"_partnerFirstLineSupport");
 
 		TeamRole flsTeamRole = _teamRoleWebService.getTeamRole(
 			TeamRole.Type.ACCOUNT.toString(),
