@@ -342,6 +342,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 	protected void createZendeskTicket(
 			Account account, PostalAddress postalAddress,
+			List<ProductPurchase> productPurchases,
 			String salesforceOpportunityTypeName,
 			String salesforceOpportunityKey)
 		throws Exception {
@@ -415,7 +416,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		sb.append("'>Salesforce Opportunity</a>");
 
 		StringBundler subjectSB = new StringBundler(
-			5 + (_productTypes.size() * 2));
+			5 + (productPurchases.size() * 2));
 
 		List<String> warningMessages = _warningMessagesThreadLocal.get();
 
@@ -428,33 +429,6 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			}
 
 			subjectSB = subjectSB.append("[Warning] ");
-		}
-
-		subjectSB.append(salesforceOpportunityTypeName);
-		subjectSB.append(": ");
-
-		List<String> prodcutTypes = new ArrayList<>(_productTypes);
-
-		if (!prodcutTypes.isEmpty()) {
-			for (int i = 0; i < (prodcutTypes.size() - 1); i++) {
-				subjectSB.append(prodcutTypes.get(i));
-				subjectSB.append(", ");
-			}
-
-			subjectSB.append(prodcutTypes.get(prodcutTypes.size() - 1));
-			subjectSB.append(StringPool.SPACE);
-		}
-
-		subjectSB.append("Subscription(s) for ");
-
-		int maxLength = 150 - subjectSB.length();
-
-		if (accountName.length() > maxLength) {
-			subjectSB.append(
-				accountName.substring(0, maxLength - accountName.length()));
-		}
-		else {
-			subjectSB.append(accountName);
 		}
 
 		List<Note> pinnedNotes = _noteWebService.getNotes(
@@ -470,6 +444,67 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 				sb.append("<br />");
 				sb.append(pinnedNote.getContent());
 			}
+		}
+
+		subjectSB.append(salesforceOpportunityTypeName);
+		subjectSB.append(": ");
+
+		Set<String> productTypes = new HashSet<>();
+
+		sb.append("<br /><br />Products Purchased in This Opportunity:");
+
+		for (ProductPurchase productPurchase : productPurchases) {
+			Product product = productPurchase.getProduct();
+
+			sb.append("<br /><br />");
+			sb.append(product.getName());
+			sb.append("<br />Start Date - End Date: ");
+			sb.append(getDateRange(productPurchase));
+
+			Map<String, String> properties = productPurchase.getProperties();
+
+			if (properties != null) {
+				String productType = properties.get("productType");
+
+				if ((productType != null) &&
+					!productTypes.contains(productType)) {
+
+					if (!productTypes.isEmpty()) {
+						subjectSB.append(", ");
+					}
+
+					subjectSB.append(productType);
+
+					productTypes.add(productType);
+				}
+			}
+		}
+
+		if (!productTypes.isEmpty()) {
+			subjectSB.append(StringPool.SPACE);
+		}
+
+		subjectSB.append("Subscription(s) for ");
+
+		int maxLength = 150 - subjectSB.length();
+
+		if (accountName.length() > maxLength) {
+			subjectSB.append(
+				accountName.substring(0, maxLength - accountName.length()));
+		}
+		else {
+			subjectSB.append(accountName);
+		}
+
+		String accountRegion = account.getRegionAsString();
+
+		if (accountRegion.equals(Account.Region.UNITED_STATES.toString())) {
+			sb.append(
+				StringBundler.concat(
+					"<br /><br />US Provisioning - Working with 2019 H2 ",
+					"Pricing Promotions: <a href='https://grow.liferay.com",
+					"/people/US+Provisioning+-+Working+with+2019+H2+Pricing",
+					"+Promotions'>Grow Link</a>"));
 		}
 
 		zendeskTicket.setDescription(sb.toString());
@@ -599,8 +634,8 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 				"_salesforceOpportunityKey");
 
 			createZendeskTicket(
-				account, postalAddress, salesforceOpportunityTypeName,
-				salesforceOpportunityKey);
+				account, postalAddress, productPurchases,
+				salesforceOpportunityTypeName, salesforceOpportunityKey);
 		}
 
 		for (Contact contact : missingContacts) {
@@ -680,6 +715,26 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		return sb.toString();
 	}
 
+	protected String getDateRange(ProductPurchase productPurchase) {
+		if ((productPurchase.getStartDate() != null) &&
+			(productPurchase.getOriginalEndDate() != null)) {
+
+			Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
+				"yyyy/MM/dd");
+
+			StringBundler sb = new StringBundler(4);
+
+			sb.append(dateFormat.format(productPurchase.getStartDate()));
+			sb.append(" - ");
+			sb.append(dateFormat.format(productPurchase.getOriginalEndDate()));
+			sb.append(" (UTC)");
+
+			return sb.toString();
+		}
+
+		return "Perpetual";
+	}
+
 	protected Account.Language getLanguage(
 		JSONObject jsonObject, String country) {
 
@@ -754,7 +809,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		Map<String, Map<String, Integer>> subscriptionsMap = new TreeMap<>();
 
 		for (ProductPurchase productPurchase : productPurchases) {
-			String key = getNotesDateRange(productPurchase);
+			String key = getDateRange(productPurchase);
 
 			Map<String, Integer> productsMap = subscriptionsMap.get(key);
 
@@ -813,26 +868,6 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		sb.append(jsonObject.getString("_salesforceOpportunityKey"));
 
 		return sb.toString();
-	}
-
-	protected String getNotesDateRange(ProductPurchase productPurchase) {
-		if ((productPurchase.getStartDate() != null) &&
-			(productPurchase.getOriginalEndDate() != null)) {
-
-			Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
-				"yyyy/MM/dd");
-
-			StringBundler sb = new StringBundler(4);
-
-			sb.append(dateFormat.format(productPurchase.getStartDate()));
-			sb.append(" - ");
-			sb.append(dateFormat.format(productPurchase.getOriginalEndDate()));
-			sb.append(" (UTC)");
-
-			return sb.toString();
-		}
-
-		return "Perpetual";
 	}
 
 	protected String getNotesProductName(
@@ -1511,8 +1546,6 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 				if (Validator.isNotNull(productType)) {
 					properties.put("productType", productType);
-
-					_productTypes.add(productType);
 				}
 
 				String sizing = purchasedProductJSONObject.getString("_sizing");
@@ -1961,8 +1994,6 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 	@Reference
 	private ProductPurchaseWebService _productPurchaseWebService;
-
-	private final Set<String> _productTypes = new HashSet<>();
 
 	@Reference
 	private ProductWebService _productWebService;
