@@ -22,7 +22,9 @@ import com.liferay.portal.kernel.template.TemplateResource;
 import com.liferay.portal.kernel.template.TemplateResourceCache;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.template.TemplateContextHelper;
+import com.liferay.portal.util.PropsImpl;
 
 import freemarker.cache.TemplateCache;
 
@@ -56,6 +58,8 @@ public class FreeMarkerTemplateTest {
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
+		PropsUtil.setProps(new PropsImpl());
+
 		_templateResourceCache = new FreeMarkerTemplateResourceCache() {
 
 			@Override
