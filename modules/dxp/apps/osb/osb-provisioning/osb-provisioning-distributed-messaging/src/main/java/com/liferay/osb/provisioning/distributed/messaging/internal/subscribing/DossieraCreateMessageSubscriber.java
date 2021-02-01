@@ -496,9 +496,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			subjectSB.append(accountName);
 		}
 
-		String accountRegion = account.getRegionAsString();
-
-		if (accountRegion.equals(Account.Region.UNITED_STATES.toString())) {
+		if (account.getRegion() == Account.Region.UNITED_STATES) {
 			sb.append(
 				StringBundler.concat(
 					"<br /><br />US Provisioning - Working with 2019 H2 ",
