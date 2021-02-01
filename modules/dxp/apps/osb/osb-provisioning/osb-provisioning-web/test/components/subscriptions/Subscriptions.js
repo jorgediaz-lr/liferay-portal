@@ -324,9 +324,6 @@ describe('Subscriptions', () => {
 					target: {value: 'test'}
 				}
 			);
-			fireEvent.blur(
-				getByLabelText('salesforce-opportunity-key-bulk-input')
-			);
 
 			expect(getAllByDisplayValue('test').length).toBe(3);
 		});
@@ -382,54 +379,6 @@ describe('Subscriptions', () => {
 
 			expect(queryByText('varied-data')).toBeFalsy();
 			expect(getAllByDisplayValue('2').length).toBe(3);
-		});
-
-		it('allows Bulk Input changes to be applied via the Enter key', () => {
-			const {
-				getAllByDisplayValue,
-				getByLabelText,
-				getByText,
-				queryByText
-			} = renderSubscriptions({
-				subscriptions: [
-					{
-						endDate: '2022-01-20',
-						key: 'KOR-38323',
-						originalEndDate: '2021-12-21',
-						perpetual: true,
-						productName: 'Product E',
-						quantity: 1,
-						salesforceOpportunityKey: 'salesForceKey123',
-						sizing: 3,
-						startDate: '2020-12-21',
-						status: 'Approved'
-					},
-					{
-						endDate: '2022-01-20',
-						key: 'KOR-38323',
-						originalEndDate: '2021-12-21',
-						perpetual: true,
-						productName: 'Product E',
-						quantity: 2,
-						salesforceOpportunityKey: 'salesForceKey123',
-						sizing: 3,
-						startDate: '2020-12-21',
-						status: 'Approved'
-					}
-				],
-				subscriptionsType: EDIT_SUBSCRIPTIONS
-			});
-
-			fireEvent.click(getByText('varied-data'));
-			fireEvent.change(getByLabelText('purchased-bulk-input'), {
-				target: {value: '4'}
-			});
-			fireEvent.keyDown(getByLabelText('purchased-bulk-input'), {
-				keyCode: '13'
-			});
-
-			expect(queryByText('varied-data')).toBeFalsy();
-			expect(getAllByDisplayValue('4').length).toBe(3);
 		});
 	});
 });

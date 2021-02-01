@@ -128,29 +128,11 @@ function BulkInput({
 		}
 	}
 
-	function handleOnChangePerpetual() {
-		setDisabledAttribute(!perpetual, 'bulkInput');
-		setPerpetual(!perpetual);
-	}
-
-	function handleOnChangeQuantity(event) {
-		setQuantity(event.currentTarget.value);
-	}
-
-	function handleOnChangeSalesforceOpportunityKey(event) {
-		setSalesforceOpportunityKey(event.currentTarget.value);
-	}
-
-	function handleOnChangeSizing(event) {
-		setSizing(event.currentTarget.value);
-	}
-
-	function handleOnChangeStatus(event) {
-		setStatus(event.currentTarget.value);
-	}
-
 	function handleOnClickPerpetual() {
 		setShowField({...showField, perpetual: true});
+		setPerpetual(false);
+
+		updateAllValuesByFieldName('perpetual', false);
 	}
 
 	function handleOnClickQuantity() {
@@ -169,36 +151,6 @@ function BulkInput({
 		setShowField({...showField, status: true});
 	}
 
-	function handleOnKeyDownPerpetual(event) {
-		if (event.keyCode === 13) {
-			handleSavePerpetual();
-		}
-	}
-
-	function handleOnKeyDownQuantity(event) {
-		if (event.keyCode === 13) {
-			handleSaveQuantity();
-		}
-	}
-
-	function handleOnKeyDownSalesforceOpportunityKey(event) {
-		if (event.keyCode === 13) {
-			handleSaveSalesforceOpportunityKey();
-		}
-	}
-
-	function handleOnKeyDownSizing(event) {
-		if (event.keyCode === 13) {
-			handleSaveSizing();
-		}
-	}
-
-	function handleOnKeyDownStatus(event) {
-		if (event.keyCode === 13) {
-			handleSaveStatus();
-		}
-	}
-
 	function handleSaveEndDate(value) {
 		updateAllValuesByFieldName('endDate', value);
 	}
@@ -208,30 +160,33 @@ function BulkInput({
 	}
 
 	function handleSavePerpetual() {
-		updateAllValuesByFieldName('perpetual', perpetual);
+		setDisabledAttribute(!perpetual, 'bulkInput');
+		setPerpetual(!perpetual);
+
+		updateAllValuesByFieldName('perpetual', !perpetual);
 	}
 
-	function handleSaveQuantity() {
-		updateAllValuesByFieldName('quantity', quantity);
+	function handleSaveQuantity(event) {
+		updateAllValuesByFieldName('quantity', event.currentTarget.value);
 	}
 
-	function handleSaveSalesforceOpportunityKey() {
+	function handleSaveSalesforceOpportunityKey(event) {
 		updateAllValuesByFieldName(
 			'salesforceOpportunityKey',
-			salesforceOpportunityKey
+			event.currentTarget.value
 		);
 	}
 
-	function handleSaveSizing() {
-		updateAllValuesByFieldName('sizing', sizing);
+	function handleSaveSizing(event) {
+		updateAllValuesByFieldName('sizing', event.currentTarget.value);
 	}
 
 	function handleSaveStartDate(value) {
 		updateAllValuesByFieldName('startDate', value);
 	}
 
-	function handleSaveStatus() {
-		updateAllValuesByFieldName('status', status);
+	function handleSaveStatus(event) {
+		updateAllValuesByFieldName('status', event.currentTarget.value);
 	}
 
 	return (
@@ -251,9 +206,7 @@ function BulkInput({
 							)}
 							className="form-control form-control-sm"
 							id="salesforceOpportunityKeyBulkInput"
-							onBlur={handleSaveSalesforceOpportunityKey}
-							onChange={handleOnChangeSalesforceOpportunityKey}
-							onKeyDown={handleOnKeyDownSalesforceOpportunityKey}
+							onChange={handleSaveSalesforceOpportunityKey}
 							type="text"
 							value={salesforceOpportunityKey}
 						/>
@@ -279,9 +232,7 @@ function BulkInput({
 							className="form-control form-control-sm"
 							id="quantityBulkInput"
 							min={1}
-							onBlur={handleSaveQuantity}
-							onChange={handleOnChangeQuantity}
-							onKeyDown={handleOnKeyDownQuantity}
+							onChange={handleSaveQuantity}
 							type="number"
 							value={quantity}
 						/>
@@ -305,9 +256,7 @@ function BulkInput({
 						checked={perpetual}
 						className="custom-control-input"
 						id="perpetualBulkInput"
-						onBlur={handleSavePerpetual}
-						onChange={handleOnChangePerpetual}
-						onKeyDown={handleOnKeyDownPerpetual}
+						onChange={handleSavePerpetual}
 						role="checkbox"
 					/>
 				)}
@@ -359,9 +308,7 @@ function BulkInput({
 							className="form-control form-control-sm"
 							disabled={!instanceSizes.length}
 							id="instanceSizeBulkInput"
-							onBlur={handleSaveSizing}
-							onChange={handleOnChangeSizing}
-							onKeyDown={handleOnKeyDownSizing}
+							onChange={handleSaveSizing}
 							value={sizing}
 						>
 							{instanceSizes.map(size => (
@@ -406,9 +353,7 @@ function BulkInput({
 								className="form-control form-control-sm"
 								disabled={statusOptions.length === 0}
 								id="status"
-								onBlur={handleSaveStatus}
-								onChange={handleOnChangeStatus}
-								onKeyDown={handleOnKeyDownStatus}
+								onChange={handleSaveStatus}
 								value={status}
 							>
 								{statusOptions.map(option => (
