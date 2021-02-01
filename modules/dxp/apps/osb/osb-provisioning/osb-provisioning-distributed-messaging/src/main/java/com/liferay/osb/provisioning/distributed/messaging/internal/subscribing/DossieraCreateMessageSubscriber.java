@@ -416,7 +416,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		sb.append("'>Salesforce Opportunity</a>");
 
 		StringBundler subjectSB = new StringBundler(
-			5 + (productPurchases.size() * 2));
+			6 + (productPurchases.size() * 2));
 
 		List<String> warningMessages = _warningMessagesThreadLocal.get();
 
