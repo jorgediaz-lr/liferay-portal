@@ -384,7 +384,9 @@ public class ProductPurchaseViewIndexer
 
 	@Override
 	protected void doReindex(String className, long classPK) throws Exception {
-		throw new UnsupportedOperationException();
+		Account account = _accountLocalService.getAccount(classPK);
+
+		_reindexAccountProductPurchaseViews(account.getCompanyId(), account);
 	}
 
 	@Override
@@ -518,28 +520,7 @@ public class ProductPurchaseViewIndexer
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
 		for (Account account : accounts) {
-			List<ProductPurchase> productPurchases =
-				_productPurchaseLocalService.getAccountProductPurchases(
-					account.getAccountId(), QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS);
-
-			Stream<ProductPurchase> productPurchaseStream =
-				productPurchases.stream();
-
-			Set<Long> productEntryIds = productPurchaseStream.collect(
-				Collectors.mapping(
-					ProductPurchase::getProductEntryId, Collectors.toSet()));
-
-			for (long productEntryId : productEntryIds) {
-				ProductPurchaseView productPurchaseView =
-					new ProductPurchaseViewImpl();
-
-				productPurchaseView.setCompanyId(companyId);
-				productPurchaseView.setAccountId(account.getAccountId());
-				productPurchaseView.setProductEntryId(productEntryId);
-
-				reindex(productPurchaseView);
-			}
+			_reindexAccountProductPurchaseViews(companyId, account);
 		}
 	}
 
@@ -762,6 +743,33 @@ public class ProductPurchaseViewIndexer
 			_processBooleanClauses(
 				booleanFilter, booleanFilter.getShouldBooleanClauses(),
 				BooleanClauseOccur.SHOULD);
+		}
+	}
+
+	private void _reindexAccountProductPurchaseViews(
+			long companyId, Account account)
+		throws SearchException {
+
+		List<ProductPurchase> productPurchases =
+			_productPurchaseLocalService.getAccountProductPurchases(
+				account.getAccountId(), QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+
+		Stream<ProductPurchase> productPurchaseStream =
+			productPurchases.stream();
+
+		Set<Long> productEntryIds = productPurchaseStream.collect(
+			Collectors.mapping(
+				ProductPurchase::getProductEntryId, Collectors.toSet()));
+
+		for (long productEntryId : productEntryIds) {
+			ProductPurchaseView productPurchaseView =
+				new ProductPurchaseViewImpl();
+
+			productPurchaseView.setCompanyId(companyId);
+			productPurchaseView.setAccountId(account.getAccountId());
+			productPurchaseView.setProductEntryId(productEntryId);
+
+			reindex(productPurchaseView);
 		}
 	}
 

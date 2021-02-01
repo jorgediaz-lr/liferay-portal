@@ -25,8 +25,12 @@ import com.liferay.osb.koroneiki.taproot.service.ContactTeamRoleLocalService;
 import com.liferay.osb.koroneiki.taproot.service.TeamLocalService;
 import com.liferay.osb.koroneiki.taproot.service.base.ContactAccountRoleLocalServiceBaseImpl;
 import com.liferay.osb.koroneiki.taproot.service.persistence.ContactAccountRolePK;
+import com.liferay.osb.koroneiki.trunk.model.view.ProductPurchaseView;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistry;
+import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 
 import java.util.List;
 
@@ -68,6 +72,8 @@ public class ContactAccountRoleLocalServiceImpl
 			_contactLocalService.reindex(contactId);
 
 			_defaultTeamManager.sync(account);
+
+			reindexProductPurchaseViews(account);
 		}
 
 		return contactAccountRole;
@@ -100,6 +106,8 @@ public class ContactAccountRoleLocalServiceImpl
 			_contactLocalService.reindex(contactId);
 
 			_defaultTeamManager.sync(account);
+
+			reindexProductPurchaseViews(account);
 		}
 
 		return contactAccountRole;
@@ -119,6 +127,21 @@ public class ContactAccountRoleLocalServiceImpl
 
 	public int getContactAccountRolesCount(long contactId, long accountId) {
 		return contactAccountRolePersistence.countByCI_AI(contactId, accountId);
+	}
+
+	protected void reindexProductPurchaseViews(Account account)
+		throws PortalException {
+
+		TransactionCommitCallbackUtil.registerCallback(
+			() -> {
+				Indexer<ProductPurchaseView> indexer =
+					_indexerRegistry.getIndexer(ProductPurchaseView.class);
+
+				indexer.reindex(
+					Account.class.getName(), account.getAccountId());
+
+				return null;
+			});
 	}
 
 	protected void validate(long contactId, long accountId, long contactRoleId)
@@ -155,6 +178,9 @@ public class ContactAccountRoleLocalServiceImpl
 
 	@Reference
 	private DefaultTeamManager _defaultTeamManager;
+
+	@Reference
+	private IndexerRegistry _indexerRegistry;
 
 	@Reference
 	private TeamLocalService _teamLocalService;
