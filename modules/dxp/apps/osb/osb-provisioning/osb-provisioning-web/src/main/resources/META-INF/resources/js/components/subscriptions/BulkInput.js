@@ -111,29 +111,13 @@ function BulkInput({
 		setStatus(getDisplayValue('status'));
 	}, [getDisplayValue, identicalValues, subscriptions]);
 
-	useEffect(() => {
-		if (quantityRef.current) {
-			quantityRef.current.focus();
-		}
-	}, [showField.quantity]);
-
-	useEffect(() => {
-		if (salesforceOpportunityKeyRef.current) {
-			salesforceOpportunityKeyRef.current.focus();
-		}
-	}, [showField.salesforceOpportunityKey]);
-
-	useEffect(() => {
-		if (sizingRef.current) {
-			sizingRef.current.focus();
-		}
-	}, [showField.sizing]);
-
-	useEffect(() => {
-		if (statusRef.current) {
-			statusRef.current.focus();
-		}
-	}, [showField.status]);
+	useSetFocus(quantityRef, showField.quantity);
+	useSetFocus(
+		salesforceOpportunityKeyRef,
+		showField.salesforceOpportunityKey
+	);
+	useSetFocus(sizingRef, showField.sizing);
+	useSetFocus(statusRef, showField.status);
 
 	function getDatePickerDisplayValue(fieldName) {
 		if (identicalValues('perpetual')) {
@@ -448,6 +432,14 @@ BulkInput.protoTypes = {
 	subscriptionsType: PropTypes.oneOf([ADD_SUBSCRIPTIONS, EDIT_SUBSCRIPTIONS])
 		.isRequired
 };
+
+function useSetFocus(ref, state) {
+	return useEffect(() => {
+		if (ref.current) {
+			ref.current.focus();
+		}
+	}, [ref, state]);
+}
 
 function VariedData({clickFn, name = ''}) {
 	return (
