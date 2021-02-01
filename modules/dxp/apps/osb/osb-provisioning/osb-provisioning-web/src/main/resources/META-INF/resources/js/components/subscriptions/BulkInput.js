@@ -199,6 +199,14 @@ function BulkInput({
 		}
 	}
 
+	function handleSaveEndDate(value) {
+		updateAllValuesByFieldName('endDate', value);
+	}
+
+	function handleSaveGracePeriodStartDate(value) {
+		updateAllValuesByFieldName('originalEndDate', value);
+	}
+
 	function handleSavePerpetual() {
 		updateAllValuesByFieldName('perpetual', perpetual);
 	}
@@ -216,6 +224,10 @@ function BulkInput({
 
 	function handleSaveSizing() {
 		updateAllValuesByFieldName('sizing', sizing);
+	}
+
+	function handleSaveStartDate(value) {
+		updateAllValuesByFieldName('startDate', value);
 	}
 
 	function handleSaveStatus() {
@@ -320,7 +332,7 @@ function BulkInput({
 						id="startDateBulkInput"
 						inputName="startDateBulkInput"
 						placeholder={Liferay.Language.get('varied-data')}
-						updateFn={() => {}}
+						updateFn={handleSaveStartDate}
 					/>
 				</label>
 			</ClayTable.Cell>
@@ -333,7 +345,7 @@ function BulkInput({
 						id="gracePeriodStartDateBulkInput"
 						inputName="gracePeriodStartDateBulkInput"
 						placeholder={Liferay.Language.get('varied-data')}
-						updateFn={() => {}}
+						updateFn={handleSaveGracePeriodStartDate}
 					/>
 				</label>
 			</ClayTable.Cell>
@@ -377,7 +389,7 @@ function BulkInput({
 							id="endDateBulkInput"
 							inputName="endDateBulkInput"
 							placeholder={Liferay.Language.get('varied-data')}
-							updateFn={() => {}}
+							updateFn={handleSaveEndDate}
 						/>
 					</label>
 				</ClayTable.Cell>
