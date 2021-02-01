@@ -162,6 +162,11 @@
 </tr>
 <!--IMAGE_FIELD-->
 <tr>
+	<td>IMAGE_FIELD_CLEAR</td>
+	<td>//div[@class='button-holder']//span[contains(.,'Clear')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>IMAGE_FIELD_SELECT</td>
 	<td>//div[@class='button-holder']//span[contains(.,'Select')]</td>
 	<td></td>
