@@ -22,7 +22,11 @@ String backURL = ParamUtil.getString(request, "backURL");
 EditProductPurchasesDisplayContext editProductPurchasesDisplayContext = ProvisioningWebComponentProvider.getEditProductPurchasesDisplayContext(renderRequest, renderResponse, request);
 
 if (Validator.isNull(backURL)) {
-	backURL = editProductPurchasesDisplayContext.getRedirectURL();
+	backURL = ParamUtil.getString(request, "redirect");
+
+	if (Validator.isNull(backURL)) {
+		backURL = editProductPurchasesDisplayContext.getRedirectURL();
+	}
 }
 %>
 
@@ -41,6 +45,8 @@ if (Validator.isNull(backURL)) {
 
 		<%= problemException.getMessage() %>
 	</liferay-ui:error>
+
+	<liferay-ui:error exception="<%= ProductPurchaseQuantityException.class %>" message="to-remove-a-subscription-change-the-status-to-cancelled-instead" />
 
 	<div id="editSubscriptions">
 		<react:component

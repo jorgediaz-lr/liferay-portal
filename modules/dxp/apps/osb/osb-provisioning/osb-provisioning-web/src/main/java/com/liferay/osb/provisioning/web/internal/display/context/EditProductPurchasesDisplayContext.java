@@ -72,13 +72,6 @@ public class EditProductPurchasesDisplayContext
 
 		data.put("accountName", account.getName());
 
-		if (_products != null) {
-			data.put("addSubscriptions", true);
-		}
-		else {
-			data.put("addSubscriptions", false);
-		}
-
 		String redirect = ParamUtil.getString(httpServletRequest, "redirect");
 
 		if (Validator.isNull(redirect)) {
@@ -86,19 +79,6 @@ public class EditProductPurchasesDisplayContext
 		}
 
 		data.put("redirect", redirect);
-
-		PortletURL editProductPurchasesActionURL =
-			renderResponse.createActionURL();
-
-		editProductPurchasesActionURL.setParameter(
-			ActionRequest.ACTION_NAME, "/accounts/edit_product_purchases");
-		editProductPurchasesActionURL.setParameter("redirect", redirect);
-		editProductPurchasesActionURL.setParameter(
-			"accountKey", account.getKey());
-
-		data.put(
-			"editProductPurchasesActionURL",
-			editProductPurchasesActionURL.toString());
 
 		PortletURL editProductPurchasesRenderURL =
 			renderResponse.createRenderURL();
@@ -113,7 +93,28 @@ public class EditProductPurchasesDisplayContext
 			"editProductPurchasesRenderURL",
 			editProductPurchasesRenderURL.toString());
 
+		PortletURL editProductPurchasesActionURL =
+			renderResponse.createActionURL();
+
+		editProductPurchasesActionURL.setParameter(
+			ActionRequest.ACTION_NAME, "/accounts/edit_product_purchases");
+		editProductPurchasesActionURL.setParameter("redirect", redirect);
+		editProductPurchasesActionURL.setParameter(
+			"accountKey", account.getKey());
+
 		if (_products != null) {
+			editProductPurchasesActionURL.setParameter(
+				"productBundleIds",
+				ParamUtil.getString(renderRequest, "productBundleIds"));
+
+			editProductPurchasesActionURL.setParameter(
+				"productKeys",
+				ParamUtil.getString(renderRequest, "productKeys"));
+
+			editProductPurchasesActionURL.setParameter("redirect", redirect);
+
+			data.put("addSubscriptions", true);
+
 			data.put("details", _getAddProductPurchasesJSONArray());
 
 			PortletURL selectProductsURL = renderResponse.createRenderURL();
@@ -126,14 +127,26 @@ public class EditProductPurchasesDisplayContext
 			data.put("selectProductsURL", selectProductsURL.toString());
 		}
 		else {
+			editProductPurchasesActionURL.setParameter(
+				"productPurchaseKeys",
+				ParamUtil.getString(renderRequest, "productPurchaseKeys"));
+
+			data.put("addSubscriptions", false);
+
 			data.put("details", _getEditProductPurchasesJSONArray());
 
 			String backURL = ParamUtil.getString(httpServletRequest, "backURL");
 
 			if (Validator.isNotNull(backURL)) {
 				data.put("backURL", backURL);
+
+				editProductPurchasesActionURL.setParameter("backURL", backURL);
 			}
 		}
+
+		data.put(
+			"editProductPurchasesActionURL",
+			editProductPurchasesActionURL.toString());
 
 		List<Integer> sizing = new ArrayList<>();
 

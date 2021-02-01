@@ -15,8 +15,6 @@
 package com.liferay.osb.provisioning.web.internal.portlet.action;
 
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
-import com.liferay.osb.provisioning.koroneiki.web.service.ProductPurchaseWebService;
-import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
@@ -116,11 +114,5 @@ public class EditProductPurchasesChooseTermMVCActionCommand
 
 	@Reference
 	private Portal _portal;
-
-	@Reference
-	private ProductPurchaseWebService _productPurchaseWebService;
-
-	@Reference
-	private ProductWebService _productWebService;
 
 }

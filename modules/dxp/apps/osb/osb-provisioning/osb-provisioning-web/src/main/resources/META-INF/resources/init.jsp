@@ -48,6 +48,7 @@ page import="com.liferay.osb.provisioning.exception.ContactRequiredException" %>
 page import="com.liferay.osb.provisioning.exception.DuplicateDossieraKeyException" %><%@
 page import="com.liferay.osb.provisioning.exception.MultipleDossieraKeysException" %><%@
 page import="com.liferay.osb.provisioning.exception.ProductBundleNameException" %><%@
+page import="com.liferay.osb.provisioning.exception.ProductPurchaseQuantityException" %><%@
 page import="com.liferay.osb.provisioning.exception.RequiredProductException" %><%@
 page import="com.liferay.osb.provisioning.model.ProductBundle" %><%@
 page import="com.liferay.osb.provisioning.service.ProductBundleLocalServiceUtil" %><%@

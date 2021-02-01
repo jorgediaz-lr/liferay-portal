@@ -68,16 +68,21 @@ public class EditProductPurchasesMVCActionCommand extends BaseMVCActionCommand {
 
 			sendRedirect(actionRequest, actionResponse);
 		}
-		catch (Problem.ProblemException problemException) {
-			_log.error(problemException, problemException);
-
-			SessionErrors.add(
-				actionRequest, problemException.getClass(), problemException);
-		}
 		catch (Exception exception) {
-			_log.error(exception, exception);
+			if (exception instanceof Problem.ProblemException ||
+				exception instanceof ProductPurchaseQuantityException) {
 
-			throw exception;
+				SessionErrors.add(
+					actionRequest, exception.getClass(), exception);
+
+				actionResponse.setRenderParameter(
+					"mvcRenderCommandName", "/accounts/edit_product_purchases");
+			}
+			else {
+				_log.error(exception, exception);
+
+				throw exception;
+			}
 		}
 	}
 
