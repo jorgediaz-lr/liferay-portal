@@ -35,19 +35,19 @@ String tabs1 = ParamUtil.getString(request, "tabs1");
 			portletURL="<%= viewTeamDisplayContext.getPortletURL() %>"
 		/>
 
-		<c:choose>
-			<c:when test='<%= tabs1.equals("first-line-support-accounts") %>'>
-				<liferay-util:include page="/accounts/view_team_first_line_support_accounts.jsp" servletContext="<%= application %>" />
-			</c:when>
-			<c:when test='<%= tabs1.equals("partner-reseller-si-accounts") %>'>
-				<liferay-util:include page="/accounts/view_team_partner_reseller_si_accounts.jsp" servletContext="<%= application %>" />
-			</c:when>
-			<c:otherwise>
-				<div class="details-table member-details" id="memberDetails">
+		<div class="details-table member-details">
+			<c:choose>
+				<c:when test='<%= tabs1.equals("first-line-support-accounts") %>'>
+					<liferay-util:include page="/accounts/view_team_first_line_support_accounts.jsp" servletContext="<%= application %>" />
+				</c:when>
+				<c:when test='<%= tabs1.equals("partner-reseller-si-accounts") %>'>
+					<liferay-util:include page="/accounts/view_team_partner_reseller_si_accounts.jsp" servletContext="<%= application %>" />
+				</c:when>
+				<c:otherwise>
 					<liferay-util:include page="/accounts/view_team_members.jsp" servletContext="<%= application %>" />
-				</div>
-			</c:otherwise>
-		</c:choose>
+				</c:otherwise>
+			</c:choose>
+		</div>
 	</div>
 
 	<div class="side-panel" id="sidePanel">
