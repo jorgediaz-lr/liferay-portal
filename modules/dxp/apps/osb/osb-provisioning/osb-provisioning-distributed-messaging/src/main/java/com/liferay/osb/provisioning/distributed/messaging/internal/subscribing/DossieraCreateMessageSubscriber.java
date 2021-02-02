@@ -227,9 +227,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 		String oldFLSAccountKey = StringPool.BLANK;
 
-		if ((oldFLSTeam != null) &&
-			Validator.isNotNull(oldFLSTeam.getAccountKey())) {
-
+		if (oldFLSTeam != null) {
 			oldFLSAccountKey = oldFLSTeam.getAccountKey();
 		}
 
