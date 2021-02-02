@@ -32,25 +32,31 @@ public class UpgradeAssetDisplayPageEntry extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		long blogsClassNameId = PortalUtil.getClassNameId(
-			"com.liferay.blogs.kernel.model.BlogsEntry");
-
-		long dlFileEntryClassNameId = PortalUtil.getClassNameId(
-			"com.liferay.document.library.kernel.model.DLFileEntry");
-
-		long journalArticleClassNameId = PortalUtil.getClassNameId(
-			"com.liferay.journal.model.JournalArticle");
-
 		StringBundler sb1 = new StringBundler(16);
 
 		sb1.append("select groupId, companyId, userId, userName, ");
 		sb1.append("classNameId, classPK from AssetEntry where classNameId ");
 		sb1.append("in (");
+
+		long blogsClassNameId = PortalUtil.getClassNameId(
+			"com.liferay.blogs.kernel.model.BlogsEntry");
+
 		sb1.append(blogsClassNameId);
+
 		sb1.append(", ");
+
 		sb1.append(dlFileEntryClassNameId);
+
+		long dlFileEntryClassNameId = PortalUtil.getClassNameId(
+			"com.liferay.document.library.kernel.model.DLFileEntry");
+
 		sb1.append(", ");
+
+		long journalArticleClassNameId = PortalUtil.getClassNameId(
+			"com.liferay.journal.model.JournalArticle");
+
 		sb1.append(journalArticleClassNameId);
+
 		sb1.append(") and classPK not in (select classPK from ");
 		sb1.append("AssetDisplayPageEntry where classNameId in (");
 		sb1.append(blogsClassNameId);
