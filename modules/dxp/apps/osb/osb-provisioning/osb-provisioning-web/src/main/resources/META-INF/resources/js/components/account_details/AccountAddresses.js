@@ -55,8 +55,8 @@ function AccountAddresses({accountKey, addURL, addresses}) {
 			{addresses.map((address, index) => (
 				<Address
 					accountKey={accountKey}
-					address={address}
 					addURL={addURL}
+					address={address}
 					count={index + 1}
 					countryOptions={countryOptions}
 					key={address.id}

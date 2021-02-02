@@ -18,6 +18,7 @@ function renderAccountAddress(props) {
 	return render(
 		<AccountAddresses
 			accountKey="key123"
+			addURL="/"
 			addresses={[
 				{
 					addressCountry: 'United States',
@@ -56,7 +57,6 @@ function renderAccountAddress(props) {
 					streetAddressLine3: '-'
 				}
 			]}
-			addURL="/"
 			{...props}
 		/>
 	);

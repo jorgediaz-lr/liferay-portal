@@ -18,6 +18,7 @@ function renderAddress(props) {
 	return render(
 		<Address
 			accountKey="key123"
+			addURL="/"
 			address={{
 				addressCountry: 'United States',
 				addressLocality: 'Diamond Bar',
@@ -31,7 +32,6 @@ function renderAddress(props) {
 				streetAddressLine2: '-',
 				streetAddressLine3: '-'
 			}}
-			addURL="/"
 			count={1}
 			countryOptions={[
 				{
