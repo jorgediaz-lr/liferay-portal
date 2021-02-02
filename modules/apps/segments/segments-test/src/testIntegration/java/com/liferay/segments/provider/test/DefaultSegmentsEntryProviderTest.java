@@ -248,27 +248,6 @@ public class DefaultSegmentsEntryProviderTest {
 
 		Assert.assertArrayEquals(
 			new long[] {segmentsEntry.getSegmentsEntryId()}, segmentsEntryIds);
-
-		context = new Context();
-
-		context.put(Context.LANGUAGE_ID, "es");
-		context.put(Context.SIGNED_IN, false);
-
-		segmentsEntryIds = _segmentsEntryProvider.getSegmentsEntryIds(
-			_group.getGroupId(), User.class.getName(), defaultUser.getUserId(),
-			context);
-
-		Assert.assertArrayEquals(new long[0], segmentsEntryIds);
-
-		context = new Context();
-
-		context.put(Context.LANGUAGE_ID, "es");
-
-		segmentsEntryIds = _segmentsEntryProvider.getSegmentsEntryIds(
-			_group.getGroupId(), User.class.getName(), defaultUser.getUserId(),
-			context);
-
-		Assert.assertArrayEquals(new long[0], segmentsEntryIds);
 	}
 
 	@Test
@@ -462,6 +441,46 @@ public class DefaultSegmentsEntryProviderTest {
 					segmentsEntry2.getSegmentsEntryId()
 				},
 				segmentsEntryIds));
+	}
+
+	@Test
+	public void testGetSegmentsEntryIdsWithNonmatchingContextCriterionAndDefaultUser()
+		throws Exception {
+
+		Criteria criteria = new Criteria();
+
+		_contextSegmentsCriteriaContributor.contribute(
+			criteria, "(languageId eq 'en')", Criteria.Conjunction.AND);
+
+		SegmentsTestUtil.addSegmentsEntry(
+			_group.getGroupId(), CriteriaSerializer.serialize(criteria),
+			User.class.getName());
+
+		Company company = _companyLocalService.getCompany(
+			TestPropsValues.getCompanyId());
+
+		User defaultUser = company.getDefaultUser();
+
+		Context context = new Context();
+
+		context.put(Context.LANGUAGE_ID, "es");
+		context.put(Context.SIGNED_IN, false);
+
+		long[] segmentsEntryIds = _segmentsEntryProvider.getSegmentsEntryIds(
+			_group.getGroupId(), User.class.getName(), defaultUser.getUserId(),
+			context);
+
+		Assert.assertArrayEquals(new long[0], segmentsEntryIds);
+
+		context = new Context();
+
+		context.put(Context.LANGUAGE_ID, "es");
+
+		segmentsEntryIds = _segmentsEntryProvider.getSegmentsEntryIds(
+			_group.getGroupId(), User.class.getName(), defaultUser.getUserId(),
+			context);
+
+		Assert.assertArrayEquals(new long[0], segmentsEntryIds);
 	}
 
 	@Test
