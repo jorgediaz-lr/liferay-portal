@@ -331,7 +331,7 @@ public class ProductPurchaseResourceImpl
 				if (Validator.isNull(externalLink.getKey())) {
 					_externalLinkResource.
 						postProductPurchaseProductPurchaseKeyExternalLink(
-							agentName, agentUID, productPurchase.getKey(),
+							agentName, agentUID, productPurchaseKey,
 							externalLink);
 				}
 				else {
