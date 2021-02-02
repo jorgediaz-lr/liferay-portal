@@ -240,7 +240,10 @@ public abstract class BaseSegmentsEntryProvider
 				guestUser = true;
 			}
 
-			if (guestUser && Validator.isNotNull(modelFilterString)) {
+			if (guestUser &&
+				contextConjunction.equals(Criteria.Conjunction.AND) &&
+				Validator.isNotNull(modelFilterString)) {
+
 				return false;
 			}
 
