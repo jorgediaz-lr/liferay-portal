@@ -94,8 +94,6 @@ public class EditTeamMVCActionCommand extends BaseMVCActionCommand {
 
 				SessionErrors.add(
 					actionRequest, exception.getClass(), exception);
-
-				sendRedirect(actionRequest, actionResponse);
 			}
 			else {
 				_log.error(exception, exception);
