@@ -232,13 +232,8 @@ public abstract class BaseSegmentsEntryProvider
 			segmentsEntry, Criteria.Type.MODEL);
 
 		if (context != null) {
-			boolean defaultUser = false;
-
-			if (context.containsKey(Context.SIGNED_IN) &&
-				!GetterUtil.getBoolean(context.get(Context.SIGNED_IN))) {
-
-				defaultUser = true;
-			}
+			boolean defaultUser = !GetterUtil.getBoolean(
+				context.get(Context.SIGNED_IN), true);
 
 			if (contextConjunction.equals(Criteria.Conjunction.AND) &&
 				defaultUser && Validator.isNotNull(modelFilterString)) {
