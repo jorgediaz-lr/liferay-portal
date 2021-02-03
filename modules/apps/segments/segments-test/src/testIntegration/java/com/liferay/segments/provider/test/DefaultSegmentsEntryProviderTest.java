@@ -332,11 +332,6 @@ public class DefaultSegmentsEntryProviderTest {
 	public void testGetSegmentsEntryIdsWithContextCriterionAndModelCriterionAndDefaultUser()
 		throws Exception {
 
-		Company company = _companyLocalService.getCompany(
-			TestPropsValues.getCompanyId());
-
-		User defaultUser = company.getDefaultUser();
-
 		Criteria criteria = new Criteria();
 
 		_contextSegmentsCriteriaContributor.contribute(
@@ -350,6 +345,11 @@ public class DefaultSegmentsEntryProviderTest {
 		SegmentsTestUtil.addSegmentsEntry(
 			_group.getGroupId(), CriteriaSerializer.serialize(criteria),
 			User.class.getName());
+
+		Company company = _companyLocalService.getCompany(
+			TestPropsValues.getCompanyId());
+
+		User defaultUser = company.getDefaultUser();
 
 		Context context = new Context();
 
@@ -367,11 +367,6 @@ public class DefaultSegmentsEntryProviderTest {
 	public void testGetSegmentsEntryIdsWithContextCriterionAndModelCriterionAndDefaultUserWithoutSignedInContext()
 		throws Exception {
 
-		Company company = _companyLocalService.getCompany(
-			TestPropsValues.getCompanyId());
-
-		User defaultUser = company.getDefaultUser();
-
 		Criteria criteria = new Criteria();
 
 		_contextSegmentsCriteriaContributor.contribute(
@@ -385,6 +380,11 @@ public class DefaultSegmentsEntryProviderTest {
 		SegmentsTestUtil.addSegmentsEntry(
 			_group.getGroupId(), CriteriaSerializer.serialize(criteria),
 			User.class.getName());
+
+		Company company = _companyLocalService.getCompany(
+			TestPropsValues.getCompanyId());
+
+		User defaultUser = company.getDefaultUser();
 
 		Context context = new Context();
 
@@ -401,11 +401,6 @@ public class DefaultSegmentsEntryProviderTest {
 	public void testGetSegmentsEntryIdsWithContextCriterionOrModelCriterionAndDefaultUser()
 		throws Exception {
 
-		Company company = _companyLocalService.getCompany(
-			TestPropsValues.getCompanyId());
-
-		User defaultUser = company.getDefaultUser();
-
 		Criteria criteria = new Criteria();
 
 		_contextSegmentsCriteriaContributor.contribute(
@@ -419,6 +414,11 @@ public class DefaultSegmentsEntryProviderTest {
 		SegmentsEntry segmentsEntry = SegmentsTestUtil.addSegmentsEntry(
 			_group.getGroupId(), CriteriaSerializer.serialize(criteria),
 			User.class.getName());
+
+		Company company = _companyLocalService.getCompany(
+			TestPropsValues.getCompanyId());
+
+		User defaultUser = company.getDefaultUser();
 
 		Context context = new Context();
 
@@ -437,11 +437,6 @@ public class DefaultSegmentsEntryProviderTest {
 	public void testGetSegmentsEntryIdsWithContextCriterionOrModelCriterionAndDefaultUserWithoutSignedInContext()
 		throws Exception {
 
-		Company company = _companyLocalService.getCompany(
-			TestPropsValues.getCompanyId());
-
-		User defaultUser = company.getDefaultUser();
-
 		Criteria criteria = new Criteria();
 
 		_contextSegmentsCriteriaContributor.contribute(
@@ -455,6 +450,11 @@ public class DefaultSegmentsEntryProviderTest {
 		SegmentsEntry segmentsEntry = SegmentsTestUtil.addSegmentsEntry(
 			_group.getGroupId(), CriteriaSerializer.serialize(criteria),
 			User.class.getName());
+
+		Company company = _companyLocalService.getCompany(
+			TestPropsValues.getCompanyId());
+
+		User defaultUser = company.getDefaultUser();
 
 		Context context = new Context();
 
@@ -472,11 +472,6 @@ public class DefaultSegmentsEntryProviderTest {
 	public void testGetSegmentsEntryIdsWithModelCriterionAndDefaultUser()
 		throws Exception {
 
-		Company company = _companyLocalService.getCompany(
-			TestPropsValues.getCompanyId());
-
-		User defaultUser = company.getDefaultUser();
-
 		Criteria criteria = new Criteria();
 
 		_userSegmentsCriteriaContributor.contribute(
@@ -487,6 +482,11 @@ public class DefaultSegmentsEntryProviderTest {
 		SegmentsTestUtil.addSegmentsEntry(
 			_group.getGroupId(), CriteriaSerializer.serialize(criteria),
 			User.class.getName());
+
+		Company company = _companyLocalService.getCompany(
+			TestPropsValues.getCompanyId());
+
+		User defaultUser = company.getDefaultUser();
 
 		Context context = new Context();
 
@@ -651,11 +651,6 @@ public class DefaultSegmentsEntryProviderTest {
 	public void testGetSegmentsEntryIdsWithNonmatchingContextCriterionAndModelCriterionAndDefaultUser()
 		throws Exception {
 
-		Company company = _companyLocalService.getCompany(
-			TestPropsValues.getCompanyId());
-
-		User defaultUser = company.getDefaultUser();
-
 		Criteria criteria = new Criteria();
 
 		_contextSegmentsCriteriaContributor.contribute(
@@ -669,6 +664,11 @@ public class DefaultSegmentsEntryProviderTest {
 		SegmentsTestUtil.addSegmentsEntry(
 			_group.getGroupId(), CriteriaSerializer.serialize(criteria),
 			User.class.getName());
+
+		Company company = _companyLocalService.getCompany(
+			TestPropsValues.getCompanyId());
+
+		User defaultUser = company.getDefaultUser();
 
 		Context context = new Context();
 
@@ -686,11 +686,6 @@ public class DefaultSegmentsEntryProviderTest {
 	public void testGetSegmentsEntryIdsWithNonmatchingContextCriterionAndModelCriterionAndDefaultUserWithoutSignedInContext()
 		throws Exception {
 
-		Company company = _companyLocalService.getCompany(
-			TestPropsValues.getCompanyId());
-
-		User defaultUser = company.getDefaultUser();
-
 		Criteria criteria = new Criteria();
 
 		_contextSegmentsCriteriaContributor.contribute(
@@ -705,6 +700,11 @@ public class DefaultSegmentsEntryProviderTest {
 			_group.getGroupId(), CriteriaSerializer.serialize(criteria),
 			User.class.getName());
 
+		Company company = _companyLocalService.getCompany(
+			TestPropsValues.getCompanyId());
+
+		User defaultUser = company.getDefaultUser();
+	
 		Context context = new Context();
 
 		context.put(Context.LANGUAGE_ID, "es");
@@ -720,11 +720,6 @@ public class DefaultSegmentsEntryProviderTest {
 	public void testGetSegmentsEntryIdsWithNonmatchingContextCriterionOrModelCriterionAndDefaultUser()
 		throws Exception {
 
-		Company company = _companyLocalService.getCompany(
-			TestPropsValues.getCompanyId());
-
-		User defaultUser = company.getDefaultUser();
-
 		Criteria criteria = new Criteria();
 
 		_contextSegmentsCriteriaContributor.contribute(
@@ -738,6 +733,11 @@ public class DefaultSegmentsEntryProviderTest {
 		SegmentsTestUtil.addSegmentsEntry(
 			_group.getGroupId(), CriteriaSerializer.serialize(criteria),
 			User.class.getName());
+
+		Company company = _companyLocalService.getCompany(
+			TestPropsValues.getCompanyId());
+
+		User defaultUser = company.getDefaultUser();
 
 		Context context = new Context();
 
@@ -755,11 +755,6 @@ public class DefaultSegmentsEntryProviderTest {
 	public void testGetSegmentsEntryIdsWithNonmatchingContextCriterionOrModelCriterionAndDefaultUserWithoutSignedInContext()
 		throws Exception {
 
-		Company company = _companyLocalService.getCompany(
-			TestPropsValues.getCompanyId());
-
-		User defaultUser = company.getDefaultUser();
-
 		Criteria criteria = new Criteria();
 
 		_contextSegmentsCriteriaContributor.contribute(
@@ -773,6 +768,11 @@ public class DefaultSegmentsEntryProviderTest {
 		SegmentsTestUtil.addSegmentsEntry(
 			_group.getGroupId(), CriteriaSerializer.serialize(criteria),
 			User.class.getName());
+
+		Company company = _companyLocalService.getCompany(
+			TestPropsValues.getCompanyId());
+
+		User defaultUser = company.getDefaultUser();
 
 		Context context = new Context();
 
