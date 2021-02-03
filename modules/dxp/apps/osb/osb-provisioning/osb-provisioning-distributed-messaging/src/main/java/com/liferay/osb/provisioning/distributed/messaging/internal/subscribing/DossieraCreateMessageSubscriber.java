@@ -205,9 +205,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 		String oldPartnerAccountKey = StringPool.BLANK;
 
-		if ((oldPartnerTeam != null) &&
-			Validator.isNotNull(oldPartnerTeam.getAccountKey())) {
-
+		if (oldPartnerTeam != null) {
 			oldPartnerAccountKey = oldPartnerTeam.getAccountKey();
 		}
 
@@ -646,9 +644,6 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		boolean partnerFirstLineSupport = jsonObject.getBoolean(
 			"_partnerFirstLineSupport");
 
-		Team[] partnerTeams = parsePartnerTeams(
-			partnerAccount, partnerFirstLineSupport);
-
 		if (Validator.isNotNull(accountKey)) {
 			account = updateAccount(
 				accountKey, activeContacts, region, productPurchases,
@@ -656,6 +651,9 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		}
 		else {
 			ExternalLink[] externalLinks = parseExternalLinks(jsonObject);
+
+			Team[] partnerTeams = parsePartnerTeams(
+				partnerAccount, partnerFirstLineSupport);
 
 			account = createAccount(
 				activeContacts.toArray(new Contact[0]), externalLinks, language,
