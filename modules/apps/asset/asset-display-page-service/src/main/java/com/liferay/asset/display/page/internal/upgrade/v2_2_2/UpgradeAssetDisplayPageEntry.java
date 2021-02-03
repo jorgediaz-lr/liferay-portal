@@ -45,10 +45,10 @@ public class UpgradeAssetDisplayPageEntry extends UpgradeProcess {
 
 		sb1.append(", ");
 
-		sb1.append(dlFileEntryClassNameId);
-
 		long dlFileEntryClassNameId = PortalUtil.getClassNameId(
 			"com.liferay.document.library.kernel.model.DLFileEntry");
+
+		sb1.append(dlFileEntryClassNameId);
 
 		sb1.append(", ");
 
