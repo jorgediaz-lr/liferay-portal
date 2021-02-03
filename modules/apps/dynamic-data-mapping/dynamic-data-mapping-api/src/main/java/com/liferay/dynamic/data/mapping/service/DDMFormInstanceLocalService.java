@@ -125,6 +125,12 @@ public interface DDMFormInstanceLocalService
 			String[] guestPermissions)
 		throws PortalException;
 
+	public DDMFormInstance copyFormInstance(
+			long userId, long groupId, Map<Locale, String> nameMap,
+			DDMFormInstance ddmFormInstance,
+			DDMFormValues settingsDDMFormValues, ServiceContext serviceContext)
+		throws PortalException;
+
 	/**
 	 * Creates a new ddm form instance with the primary key. Does not add the ddm form instance to the database.
 	 *
