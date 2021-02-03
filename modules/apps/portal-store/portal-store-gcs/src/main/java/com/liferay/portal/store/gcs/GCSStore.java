@@ -40,6 +40,8 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.store.gcs.configuration.GCSStoreConfiguration;
 
 import java.io.File;
@@ -61,6 +63,7 @@ import java.util.stream.StreamSupport;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
@@ -71,7 +74,7 @@ import org.threeten.bp.Duration;
  */
 @Component(
 	configurationPid = "com.liferay.portal.store.gcs.configuration.GCSStoreConfiguration",
-	immediate = true,
+	configurationPolicy = ConfigurationPolicy.REQUIRE, immediate = true,
 	property = "store.type=com.liferay.portal.store.gcs.GCSStore",
 	service = Store.class
 )
@@ -95,6 +98,15 @@ public class GCSStore extends BaseStore {
 			long companyId, long repositoryId, String fileName, InputStream is)
 		throws PortalException {
 
+		addFile(companyId, repositoryId, fileName, VERSION_DEFAULT, is);
+	}
+
+	@Override
+	public void addFile(
+			long companyId, long repositoryId, String fileName,
+			String versionLabel, InputStream is)
+		throws PortalException {
+
 		if (_log.isDebugEnabled()) {
 			String fileKey = _keyTransformer.getFileKey(
 				companyId, repositoryId, fileName);
@@ -102,8 +114,38 @@ public class GCSStore extends BaseStore {
 			_log.debug("Creating file with default version for: " + fileKey);
 		}
 
-		addFileWithVersion(
-			companyId, repositoryId, fileName, VERSION_DEFAULT, is);
+		String fileVersionKey = _keyTransformer.getFileVersionKey(
+			companyId, repositoryId, fileName, versionLabel);
+
+		if (_log.isTraceEnabled()) {
+			_log.trace("Attempting to create new file");
+			_log.trace("Constructed key: " + fileVersionKey);
+		}
+
+		BlobInfo.Builder builder = BlobInfo.newBuilder(
+			_getBucketInfo(), fileVersionKey);
+
+		BlobInfo blobInfo = builder.build();
+
+		try (WriteChannel writer = _getWriter(blobInfo)) {
+			_writeInputStream(is, writer);
+		}
+		catch (IOException ioe) {
+			if (_log.isDebugEnabled()) {
+				_log.debug("Unable to write out to buffer", ioe);
+			}
+
+			throw new PortalException(ioe);
+		}
+		finally {
+			if (_log.isTraceEnabled()) {
+				_log.trace("Done writing out to buffer");
+			}
+		}
+
+		if (_log.isDebugEnabled()) {
+			_log.debug("Blob for a folder was created at: " + fileVersionKey);
+		}
 	}
 
 	@Override
@@ -136,7 +178,7 @@ public class GCSStore extends BaseStore {
 			stopwatch = Stopwatch.createStarted();
 		}
 
-		Page<Blob> blobPages = _gcsStore.list(
+		Page<Blob> blobPage = _gcsStore.list(
 			_getBucketName(), Storage.BlobListOption.prefix(path));
 
 		if (_log.isTraceEnabled()) {
@@ -149,7 +191,7 @@ public class GCSStore extends BaseStore {
 					"Listing for delete took ", elapsed, " milliseconds"));
 		}
 
-		Iterable<Blob> blobs = blobPages.iterateAll();
+		Iterable<Blob> blobs = blobPage.iterateAll();
 
 		blobs.forEach(this::_logAndDeleteBlob);
 	}
@@ -168,7 +210,7 @@ public class GCSStore extends BaseStore {
 		long companyId, long repositoryId, String fileName,
 		String versionLabel) {
 
-		String filePath = _determineVersionFilePath(
+		String filePath = _getHeadVersionLabel(
 			companyId, repositoryId, fileName, versionLabel);
 
 		_deleteFile(filePath);
@@ -179,7 +221,7 @@ public class GCSStore extends BaseStore {
 		long companyId, long repositoryId, String fileName,
 		String versionLabel) {
 
-		String filePath = _determineVersionFilePath(
+		String filePath = _getHeadVersionLabel(
 			companyId, repositoryId, fileName, versionLabel);
 
 		if (_log.isTraceEnabled()) {
@@ -206,7 +248,7 @@ public class GCSStore extends BaseStore {
 
 		String path = null;
 
-		if ((dirName == null) || dirName.isEmpty() ||
+		if (Validator.isNull(dirName) ||
 			dirName.equals(StringPool.FORWARD_SLASH)) {
 
 			path = _keyTransformer.getRepositoryKey(companyId, repositoryId);
@@ -251,9 +293,13 @@ public class GCSStore extends BaseStore {
 		);
 
 		if (_log.isTraceEnabled()) {
-			_log.trace("Listing content with prefix: " + path);
+			StringBuilder sb = new StringBuilder();
 
-			_log.trace("    " + String.join("\n   ", fileNames));
+			sb.append("Listing content with prefix: " + path);
+			sb.append("\n    ");
+			sb.append(StringUtil.merge(fileNames, StringPool.NEW_LINE));
+
+			_log.trace(sb.toString());
 		}
 
 		return fileNames;
@@ -270,9 +316,7 @@ public class GCSStore extends BaseStore {
 			_log.trace("Getting file size for: " + pathName);
 		}
 
-		BlobId blobId = _getBlobId(pathName);
-
-		Blob blob = _getBlob(blobId);
+		Blob blob = _getBlob(_getBlobId(pathName));
 
 		if (blob == null) {
 			if (_log.isDebugEnabled()) {
@@ -290,6 +334,25 @@ public class GCSStore extends BaseStore {
 		}
 
 		return size;
+	}
+
+	@Override
+	public String[] getFileVersions(
+		long companyId, long repositoryId, String fileName) {
+
+		String[] fileNames = getFileNames(companyId, repositoryId, fileName);
+
+		String[] versions = new String[fileNames.length];
+
+		for (int i = 0; i < fileNames.length; i++) {
+			String version = _getVersionFromFullPath(fileNames[i]);
+
+			versions[i] = version;
+		}
+
+		Arrays.sort(versions);
+
+		return versions;
 	}
 
 	@Override
@@ -410,33 +473,6 @@ public class GCSStore extends BaseStore {
 			_log.trace(msg);
 		}
 
-		addFileWithVersion(companyId, repositoryId, fileName, versionLabel, is);
-	}
-
-	@Activate
-	@Modified
-	protected void activate(Map<String, Object> properties) {
-		_gcsStoreConfiguration = ConfigurableUtil.createConfigurable(
-			GCSStoreConfiguration.class, properties);
-
-		try {
-			_gcsStore = null;
-
-			_setupEncryptedCommunication();
-
-			_setGcsStore();
-		}
-		catch (PortalException pe) {
-			throw new IllegalStateException(
-				"Unable to initialize GCS store", pe);
-		}
-	}
-
-	protected void addFileWithVersion(
-			long companyId, long repositoryId, String fileName,
-			String versionLabel, InputStream is)
-		throws PortalException {
-
 		String fileVersionKey = _keyTransformer.getFileVersionKey(
 			companyId, repositoryId, fileName, versionLabel);
 
@@ -471,6 +507,25 @@ public class GCSStore extends BaseStore {
 		}
 	}
 
+	@Activate
+	@Modified
+	protected void activate(Map<String, Object> properties) {
+		_gcsStoreConfiguration = ConfigurableUtil.createConfigurable(
+			GCSStoreConfiguration.class, properties);
+
+		try {
+			_gcsStore = null;
+
+			_setupEncryptedCommunication();
+
+			_setGcsStore();
+		}
+		catch (PortalException portalException) {
+			throw new IllegalStateException(
+				"Unable to initialize GCS store", portalException);
+		}
+	}
+
 	protected void setCredentials() throws PortalException {
 		if (_log.isTraceEnabled()) {
 			_log.trace("Initializing credentials");
@@ -480,9 +535,9 @@ public class GCSStore extends BaseStore {
 			googleCredentials = ServiceAccountCredentials.fromStream(
 				inputStream);
 		}
-		catch (IOException ioe) {
+		catch (IOException ioException) {
 			throw new PortalException(
-				"Unable to authenticate with authentication file", ioe);
+				"Unable to authenticate with authentication file", ioException);
 		}
 	}
 
@@ -551,9 +606,7 @@ public class GCSStore extends BaseStore {
 	}
 
 	private void _deleteFile(String filePath) {
-		BlobId blobId = _getBlobId(filePath);
-
-		boolean deleted = _gcsStore.delete(blobId);
+		boolean deleted = _gcsStore.delete(_getBlobId(filePath));
 
 		if (!deleted && _log.isWarnEnabled()) {
 			_log.warn(
@@ -565,23 +618,6 @@ public class GCSStore extends BaseStore {
 				StringBundler.concat(
 					"Deleted \"", filePath, "\" from file store"));
 		}
-	}
-
-	private String _determineVersionFilePath(
-		long companyId, long repositoryId, String fileName,
-		String versionLabel) {
-
-		String filePath = null;
-
-		if ((versionLabel == null) || versionLabel.isEmpty()) {
-			filePath = _getHeadVersionLabel(companyId, repositoryId, fileName);
-		}
-		else {
-			filePath = _keyTransformer.getFileVersionKey(
-				companyId, repositoryId, fileName, versionLabel);
-		}
-
-		return filePath;
 	}
 
 	private Blob _getBlob(BlobId blobId) {
@@ -615,9 +651,7 @@ public class GCSStore extends BaseStore {
 		String path = _keyTransformer.getFileVersionKey(
 			companyId, repositoryId, fileName, versionLabel);
 
-		BlobId blobId = _getBlobId(path);
-
-		return _getBlob(blobId);
+		return _getBlob(_getBlobId(path));
 	}
 
 	private BlobId _getBlobId(String pathName) {
@@ -633,7 +667,7 @@ public class GCSStore extends BaseStore {
 			BucketInfo.Builder builder = BucketInfo.newBuilder(
 				_getBucketName());
 
-			return builder.build();
+			_bucketInfo = builder.build();
 		}
 
 		return _bucketInfo;
@@ -675,6 +709,18 @@ public class GCSStore extends BaseStore {
 
 	private String _getHeadVersionLabel(
 		long companyId, long repositoryId, String fileName) {
+
+		return _getHeadVersionLabel(companyId, repositoryId, fileName, null);
+	}
+
+	private String _getHeadVersionLabel(
+		long companyId, long repositoryId, String fileName,
+		String versionLabel) {
+
+		if (Validator.isNotNull(versionLabel)) {
+			return _keyTransformer.getFileVersionKey(
+				companyId, repositoryId, fileName, versionLabel);
+		}
 
 		String key = _keyTransformer.getFileKey(
 			companyId, repositoryId, fileName);
@@ -855,6 +901,7 @@ public class GCSStore extends BaseStore {
 		Stopwatch outputWatch = null;
 		Stopwatch overallClock = null;
 		long totalWriteTimeNanoSec = 0;
+		int writtenBytes = 0;
 		int writtenTotal = 0;
 
 		if (_log.isTraceEnabled()) {
@@ -871,8 +918,7 @@ public class GCSStore extends BaseStore {
 					outputWatch.start();
 				}
 
-				int writtenBytes = writer.write(
-					ByteBuffer.wrap(buffer, 0, limit));
+				writtenBytes = writer.write(ByteBuffer.wrap(buffer, 0, limit));
 
 				if (_log.isTraceEnabled()) {
 					outputWatch.stop();
@@ -886,8 +932,8 @@ public class GCSStore extends BaseStore {
 					outputWatch.reset();
 				}
 			}
-			catch (IOException ioe) {
-				throw new PortalException(ioe);
+			catch (IOException ioException) {
+				throw new PortalException(ioException);
 			}
 		}
 
