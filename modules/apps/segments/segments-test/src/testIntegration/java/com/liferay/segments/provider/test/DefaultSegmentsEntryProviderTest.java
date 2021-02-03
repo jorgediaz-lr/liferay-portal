@@ -337,6 +337,11 @@ public class DefaultSegmentsEntryProviderTest {
 		_contextSegmentsCriteriaContributor.contribute(
 			criteria, "(languageId eq 'en')", Criteria.Conjunction.AND);
 
+		Company company = _companyLocalService.getCompany(
+			TestPropsValues.getCompanyId());
+
+		User defaultUser = company.getDefaultUser();
+
 		_userSegmentsCriteriaContributor.contribute(
 			criteria,
 			String.format("(firstName eq '%s')", defaultUser.getFirstName()),
@@ -345,11 +350,6 @@ public class DefaultSegmentsEntryProviderTest {
 		SegmentsTestUtil.addSegmentsEntry(
 			_group.getGroupId(), CriteriaSerializer.serialize(criteria),
 			User.class.getName());
-
-		Company company = _companyLocalService.getCompany(
-			TestPropsValues.getCompanyId());
-
-		User defaultUser = company.getDefaultUser();
 
 		Context context = new Context();
 
@@ -372,6 +372,11 @@ public class DefaultSegmentsEntryProviderTest {
 		_contextSegmentsCriteriaContributor.contribute(
 			criteria, "(languageId eq 'en')", Criteria.Conjunction.AND);
 
+		Company company = _companyLocalService.getCompany(
+			TestPropsValues.getCompanyId());
+
+		User defaultUser = company.getDefaultUser();
+
 		_userSegmentsCriteriaContributor.contribute(
 			criteria,
 			String.format("(firstName eq '%s')", defaultUser.getFirstName()),
@@ -380,11 +385,6 @@ public class DefaultSegmentsEntryProviderTest {
 		SegmentsTestUtil.addSegmentsEntry(
 			_group.getGroupId(), CriteriaSerializer.serialize(criteria),
 			User.class.getName());
-
-		Company company = _companyLocalService.getCompany(
-			TestPropsValues.getCompanyId());
-
-		User defaultUser = company.getDefaultUser();
 
 		Context context = new Context();
 
@@ -406,6 +406,11 @@ public class DefaultSegmentsEntryProviderTest {
 		_contextSegmentsCriteriaContributor.contribute(
 			criteria, "(languageId eq 'en')", Criteria.Conjunction.OR);
 
+		Company company = _companyLocalService.getCompany(
+			TestPropsValues.getCompanyId());
+
+		User defaultUser = company.getDefaultUser();
+
 		_userSegmentsCriteriaContributor.contribute(
 			criteria,
 			String.format("(firstName eq '%s')", defaultUser.getFirstName()),
@@ -414,11 +419,6 @@ public class DefaultSegmentsEntryProviderTest {
 		SegmentsEntry segmentsEntry = SegmentsTestUtil.addSegmentsEntry(
 			_group.getGroupId(), CriteriaSerializer.serialize(criteria),
 			User.class.getName());
-
-		Company company = _companyLocalService.getCompany(
-			TestPropsValues.getCompanyId());
-
-		User defaultUser = company.getDefaultUser();
 
 		Context context = new Context();
 
@@ -442,6 +442,11 @@ public class DefaultSegmentsEntryProviderTest {
 		_contextSegmentsCriteriaContributor.contribute(
 			criteria, "(languageId eq 'en')", Criteria.Conjunction.OR);
 
+		Company company = _companyLocalService.getCompany(
+			TestPropsValues.getCompanyId());
+
+		User defaultUser = company.getDefaultUser();
+
 		_userSegmentsCriteriaContributor.contribute(
 			criteria,
 			String.format("(firstName eq '%s')", defaultUser.getFirstName()),
@@ -450,11 +455,6 @@ public class DefaultSegmentsEntryProviderTest {
 		SegmentsEntry segmentsEntry = SegmentsTestUtil.addSegmentsEntry(
 			_group.getGroupId(), CriteriaSerializer.serialize(criteria),
 			User.class.getName());
-
-		Company company = _companyLocalService.getCompany(
-			TestPropsValues.getCompanyId());
-
-		User defaultUser = company.getDefaultUser();
 
 		Context context = new Context();
 
@@ -472,6 +472,11 @@ public class DefaultSegmentsEntryProviderTest {
 	public void testGetSegmentsEntryIdsWithModelCriterionAndDefaultUser()
 		throws Exception {
 
+		Company company = _companyLocalService.getCompany(
+			TestPropsValues.getCompanyId());
+
+		User defaultUser = company.getDefaultUser();
+
 		Criteria criteria = new Criteria();
 
 		_userSegmentsCriteriaContributor.contribute(
@@ -482,11 +487,6 @@ public class DefaultSegmentsEntryProviderTest {
 		SegmentsTestUtil.addSegmentsEntry(
 			_group.getGroupId(), CriteriaSerializer.serialize(criteria),
 			User.class.getName());
-
-		Company company = _companyLocalService.getCompany(
-			TestPropsValues.getCompanyId());
-
-		User defaultUser = company.getDefaultUser();
 
 		Context context = new Context();
 
@@ -656,6 +656,11 @@ public class DefaultSegmentsEntryProviderTest {
 		_contextSegmentsCriteriaContributor.contribute(
 			criteria, "(languageId eq 'en')", Criteria.Conjunction.AND);
 
+		Company company = _companyLocalService.getCompany(
+			TestPropsValues.getCompanyId());
+
+		User defaultUser = company.getDefaultUser();
+
 		_userSegmentsCriteriaContributor.contribute(
 			criteria,
 			String.format("(firstName eq '%s')", defaultUser.getFirstName()),
@@ -664,11 +669,6 @@ public class DefaultSegmentsEntryProviderTest {
 		SegmentsTestUtil.addSegmentsEntry(
 			_group.getGroupId(), CriteriaSerializer.serialize(criteria),
 			User.class.getName());
-
-		Company company = _companyLocalService.getCompany(
-			TestPropsValues.getCompanyId());
-
-		User defaultUser = company.getDefaultUser();
 
 		Context context = new Context();
 
@@ -691,6 +691,11 @@ public class DefaultSegmentsEntryProviderTest {
 		_contextSegmentsCriteriaContributor.contribute(
 			criteria, "(languageId eq 'en')", Criteria.Conjunction.AND);
 
+		Company company = _companyLocalService.getCompany(
+			TestPropsValues.getCompanyId());
+
+		User defaultUser = company.getDefaultUser();
+
 		_userSegmentsCriteriaContributor.contribute(
 			criteria,
 			String.format("(firstName eq '%s')", defaultUser.getFirstName()),
@@ -700,11 +705,6 @@ public class DefaultSegmentsEntryProviderTest {
 			_group.getGroupId(), CriteriaSerializer.serialize(criteria),
 			User.class.getName());
 
-		Company company = _companyLocalService.getCompany(
-			TestPropsValues.getCompanyId());
-
-		User defaultUser = company.getDefaultUser();
-	
 		Context context = new Context();
 
 		context.put(Context.LANGUAGE_ID, "es");
@@ -725,6 +725,11 @@ public class DefaultSegmentsEntryProviderTest {
 		_contextSegmentsCriteriaContributor.contribute(
 			criteria, "(languageId eq 'en')", Criteria.Conjunction.OR);
 
+		Company company = _companyLocalService.getCompany(
+			TestPropsValues.getCompanyId());
+
+		User defaultUser = company.getDefaultUser();
+
 		_userSegmentsCriteriaContributor.contribute(
 			criteria,
 			String.format("(firstName eq '%s')", defaultUser.getFirstName()),
@@ -733,11 +738,6 @@ public class DefaultSegmentsEntryProviderTest {
 		SegmentsTestUtil.addSegmentsEntry(
 			_group.getGroupId(), CriteriaSerializer.serialize(criteria),
 			User.class.getName());
-
-		Company company = _companyLocalService.getCompany(
-			TestPropsValues.getCompanyId());
-
-		User defaultUser = company.getDefaultUser();
 
 		Context context = new Context();
 
@@ -760,6 +760,11 @@ public class DefaultSegmentsEntryProviderTest {
 		_contextSegmentsCriteriaContributor.contribute(
 			criteria, "(languageId eq 'en')", Criteria.Conjunction.OR);
 
+		Company company = _companyLocalService.getCompany(
+			TestPropsValues.getCompanyId());
+
+		User defaultUser = company.getDefaultUser();
+
 		_userSegmentsCriteriaContributor.contribute(
 			criteria,
 			String.format("(firstName eq '%s')", defaultUser.getFirstName()),
@@ -768,11 +773,6 @@ public class DefaultSegmentsEntryProviderTest {
 		SegmentsTestUtil.addSegmentsEntry(
 			_group.getGroupId(), CriteriaSerializer.serialize(criteria),
 			User.class.getName());
-
-		Company company = _companyLocalService.getCompany(
-			TestPropsValues.getCompanyId());
-
-		User defaultUser = company.getDefaultUser();
 
 		Context context = new Context();
 
