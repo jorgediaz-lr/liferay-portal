@@ -13,7 +13,7 @@ import {ClayCheckbox} from '@clayui/form';
 import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 
-import {NAMESPACE} from '../../utilities/constants';
+import {NAMESPACE} from '../../../utilities/constants';
 
 function Categorization({
 	activeSLANames,

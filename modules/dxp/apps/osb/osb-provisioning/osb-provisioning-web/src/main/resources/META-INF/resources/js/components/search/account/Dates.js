@@ -11,8 +11,8 @@
 
 import React from 'react';
 
-import {NAMESPACE} from '../../utilities/constants';
-import DatePicker from '../DatePicker';
+import {NAMESPACE} from '../../../utilities/constants';
+import DatePicker from '../../DatePicker';
 
 function Dates() {
 	return (

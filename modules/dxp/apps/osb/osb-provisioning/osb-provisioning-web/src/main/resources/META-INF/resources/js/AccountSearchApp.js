@@ -12,7 +12,7 @@
 import React from 'react';
 
 import ErrorBoundary from './ErrorBoundary';
-import Search from './components/search/Search';
+import Search from './components/search/account/Search';
 
 export default props => (
 	<ErrorBoundary>

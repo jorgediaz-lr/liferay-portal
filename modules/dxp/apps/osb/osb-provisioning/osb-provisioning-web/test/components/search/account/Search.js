@@ -12,7 +12,7 @@
 import {cleanup, fireEvent, render} from '@testing-library/react';
 import React from 'react';
 
-import Search from '../../../src/main/resources/META-INF/resources/js/components/search/Search';
+import Search from '../../../../src/main/resources/META-INF/resources/js/components/search/account/Search';
 
 function renderSearch() {
 	return render(
@@ -31,7 +31,7 @@ function renderSearch() {
 	);
 }
 
-describe('Search', () => {
+describe('Account Search', () => {
 	afterEach(cleanup);
 
 	it('renders', () => {

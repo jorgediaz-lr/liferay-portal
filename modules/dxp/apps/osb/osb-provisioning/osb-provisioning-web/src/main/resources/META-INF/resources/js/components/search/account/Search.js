@@ -16,12 +16,12 @@ import debounce from 'lodash.debounce';
 import PropTypes from 'prop-types';
 import React, {useRef, useState} from 'react';
 
-import {NAMESPACE} from '../../utilities/constants';
-import {request} from '../../utilities/helpers';
+import {NAMESPACE} from '../../../utilities/constants';
+import {request} from '../../../utilities/helpers';
 import {
 	formatFilterValue,
 	getFilterDisplayName
-} from '../../utilities/searchFilters';
+} from '../../../utilities/searchFilters';
 import AdvancedSearch from './AdvancedSearch';
 
 const MAX_RESULTS = 7;
@@ -185,7 +185,9 @@ function Search({
 
 		setShowAdvancedSearch(newState);
 
-		const advancedSearchBtn = document.getElementById('advancedSearchBtn');
+		const advancedSearchBtn = document.getElementById(
+			'accountAdvancedSearchBtn'
+		);
 
 		if (advancedSearchBtn) {
 			advancedSearchBtn.setAttribute('aria-expanded', newState);
@@ -228,7 +230,7 @@ function Search({
 							'open-advanced-search'
 						)}
 						className="advanced-search-btn btn btn-monospaced btn-sm"
-						id="advancedSearchBtn"
+						id="accountAdvancedSearchBtn"
 						onClick={handleOnToggle}
 					>
 						<svg

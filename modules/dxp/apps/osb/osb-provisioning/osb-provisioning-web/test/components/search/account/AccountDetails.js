@@ -12,11 +12,11 @@
 import {cleanup, render} from '@testing-library/react';
 import React from 'react';
 
-import Account from '../../../src/main/resources/META-INF/resources/js/components/search/Account';
+import AccountDetails from '../../../../src/main/resources/META-INF/resources/js/components/search/account/AccountDetails';
 
 function renderAccount() {
 	return render(
-		<Account
+		<AccountDetails
 			countryNames={['Afghanistan', 'Aland Islands', 'Albania']}
 			selectAccountURL="/select/account/url"
 			selectFirstLineSupportURL="/select/fls/url"
@@ -25,7 +25,7 @@ function renderAccount() {
 	);
 }
 
-describe('Account', () => {
+describe('AccountDetails', () => {
 	afterEach(cleanup);
 
 	it('renders', () => {

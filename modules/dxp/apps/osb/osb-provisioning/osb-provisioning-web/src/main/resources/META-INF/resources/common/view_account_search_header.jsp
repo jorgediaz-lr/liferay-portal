@@ -33,7 +33,7 @@ AccountSearchDisplayContext accountSearchDisplayContext = ProvisioningWebCompone
 			<li class="account-search hide">
 				<react:component
 					data="<%= accountSearchDisplayContext.getData() %>"
-					module="js/SearchApp"
+					module="js/AccountSearchApp"
 				/>
 			</li>
 		</ul>

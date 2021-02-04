@@ -12,7 +12,7 @@
 import {cleanup, fireEvent, render} from '@testing-library/react';
 import React from 'react';
 
-import Categorization from '../../../src/main/resources/META-INF/resources/js/components/search/Categorization';
+import Categorization from '../../../../src/main/resources/META-INF/resources/js/components/search/account/Categorization';
 
 function renderCategorization() {
 	return render(
@@ -45,7 +45,7 @@ function renderCategorization() {
 	);
 }
 
-describe('Account', () => {
+describe('Account Search Categorization', () => {
 	afterEach(cleanup);
 
 	it('renders', () => {

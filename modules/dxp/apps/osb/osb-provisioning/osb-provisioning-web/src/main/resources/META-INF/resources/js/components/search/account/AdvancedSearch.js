@@ -13,9 +13,9 @@ import ClayPanel from '@clayui/panel';
 import PropTypes from 'prop-types';
 import React, {useRef, useState} from 'react';
 
-import {useClickOutside} from '../../hooks/useClickOutside';
-import {NAMESPACE} from '../../utilities/constants';
-import Account from './Account';
+import {useClickOutside} from '../../../hooks/useClickOutside';
+import {NAMESPACE} from '../../../utilities/constants';
+import AccountDetails from './AccountDetails';
 import Categorization from './Categorization';
 import Dates from './Dates';
 
@@ -117,7 +117,7 @@ const AdvancedSearch = React.forwardRef(
 						displayType="secondary"
 						showCollapseIcon={true}
 					>
-						<Account
+						<AccountDetails
 							countryNames={countryNames}
 							selectAccountURL={selectAccountURL}
 							selectFirstLineSupportURL={

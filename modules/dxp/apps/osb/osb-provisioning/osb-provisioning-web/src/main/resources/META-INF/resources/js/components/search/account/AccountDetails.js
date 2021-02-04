@@ -12,11 +12,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import {FIELD_SIZE_SMALL, NAMESPACE} from '../../utilities/constants';
-import {itemSelectorDialogSelection} from '../../utilities/itemSelectorDialogHelper';
-import ExternalSelectField from '../ExternalSelectField';
+import {FIELD_SIZE_SMALL, NAMESPACE} from '../../../utilities/constants';
+import {itemSelectorDialogSelection} from '../../../utilities/itemSelectorDialogHelper';
+import ExternalSelectField from '../../ExternalSelectField';
 
-function Account({
+function AccountDetails({
 	countryNames,
 	selectAccountURL,
 	selectFirstLineSupportURL,
@@ -128,7 +128,7 @@ function Account({
 	);
 }
 
-Account.propTypes = {
+AccountDetails.propTypes = {
 	countryNames: PropTypes.array.isRequired,
 	selectAccountURL: PropTypes.string.isRequired,
 	selectFirstLineSupportURL: PropTypes.string.isRequired,
@@ -182,4 +182,4 @@ function ExternalSelect({externalData}) {
 	);
 }
 
-export default Account;
+export default AccountDetails;

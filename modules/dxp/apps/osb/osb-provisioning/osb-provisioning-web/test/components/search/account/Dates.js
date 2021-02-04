@@ -12,13 +12,13 @@
 import {cleanup, render} from '@testing-library/react';
 import React from 'react';
 
-import Dates from '../../../src/main/resources/META-INF/resources/js/components/search/Dates';
+import Dates from '../../../../src/main/resources/META-INF/resources/js/components/search/account/Dates';
 
 function renderDates() {
 	return render(<Dates />);
 }
 
-describe('Account', () => {
+describe('Account Search Dates', () => {
 	afterEach(cleanup);
 
 	it('renders', () => {

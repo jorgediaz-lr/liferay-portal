@@ -12,7 +12,7 @@
 import {cleanup, fireEvent, render} from '@testing-library/react';
 import React from 'react';
 
-import AdvancedSearch from '../../../src/main/resources/META-INF/resources/js/components/search/AdvancedSearch';
+import AdvancedSearch from '../../../../src/main/resources/META-INF/resources/js/components/search/account/AdvancedSearch';
 
 function renderAdvancedSearch() {
 	return render(
@@ -31,7 +31,7 @@ function renderAdvancedSearch() {
 	);
 }
 
-describe('AdvancedSearch', () => {
+describe('Account AdvancedSearch', () => {
 	afterEach(cleanup);
 
 	it('renders', () => {
