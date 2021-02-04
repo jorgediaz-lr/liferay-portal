@@ -187,6 +187,9 @@ public class OpenIdConnectServiceHandlerImpl
 
 		openIdConnectSessionImpl.setOpenIdConnectFlowState(
 			OpenIdConnectFlowState.AUTH_COMPLETE);
+
+		OpenIdConnectUtil.setOpenIdConnectSession(
+			httpSession, openIdConnectSessionImpl);
 	}
 
 	@Override
@@ -207,8 +210,8 @@ public class OpenIdConnectServiceHandlerImpl
 			getOpenIdConnectSessionImpl(httpSession, openIdConnectProviderName);
 
 		if (openIdConnectSessionImpl == null) {
-			openIdConnectSessionImpl = createAndSetOpenIdConnectSession(
-				httpSession, openIdConnectProviderName);
+			openIdConnectSessionImpl = new OpenIdConnectSessionImpl(
+				openIdConnectProviderName, new Nonce(), new State());
 		}
 
 		URI authenticationRequestURI = getAuthenticationRequestURI(
@@ -223,6 +226,9 @@ public class OpenIdConnectServiceHandlerImpl
 
 			openIdConnectSessionImpl.setOpenIdConnectFlowState(
 				OpenIdConnectFlowState.AUTH_REQUESTED);
+
+			OpenIdConnectUtil.setOpenIdConnectSession(
+				httpSession, openIdConnectSessionImpl);
 		}
 		catch (IOException ioException) {
 			throw new SystemException(
@@ -232,19 +238,6 @@ public class OpenIdConnectServiceHandlerImpl
 					ioException.getMessage()),
 				ioException);
 		}
-	}
-
-	protected OpenIdConnectSessionImpl createAndSetOpenIdConnectSession(
-		HttpSession httpSession, String openIdConnectProviderName) {
-
-		OpenIdConnectSessionImpl openIdConnectSessionImpl =
-			new OpenIdConnectSessionImpl(
-				openIdConnectProviderName, new Nonce(), new State());
-
-		OpenIdConnectUtil.setOpenIdConnectSession(
-			httpSession, openIdConnectSessionImpl);
-
-		return openIdConnectSessionImpl;
 	}
 
 	protected URI getAuthenticationRequestURI(
