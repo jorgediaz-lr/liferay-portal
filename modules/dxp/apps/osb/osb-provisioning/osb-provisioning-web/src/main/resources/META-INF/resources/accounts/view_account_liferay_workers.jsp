@@ -21,17 +21,7 @@ ViewAccountLiferayWorkersDisplayContext viewAccountLiferayWorkersDisplayContext 
 %>
 
 <div class="details-table table-striped">
-	<liferay-ui:error exception="<%= ContactRequiredException.class %>" message="please-reassign-all-of-the-contacts-zendesk-tickets-before-unassigning" />
 	<liferay-ui:error exception="<%= NoSuchContactException.class %>" message="contact-does-not-exist" />
-
-	<liferay-ui:error exception="<%= JSONWebServiceException.class %>">
-
-		<%
-		JSONWebServiceException jsonWebServiceException = (JSONWebServiceException)errorException;
-		%>
-
-		<%= jsonWebServiceException.getMessage() %>
-	</liferay-ui:error>
 
 	<liferay-ui:search-container
 		id="liferay-workers"
