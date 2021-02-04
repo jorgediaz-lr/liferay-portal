@@ -42,8 +42,8 @@ function AccountDetails({
 
 			<AccountAddresses
 				accountKey={details.key}
-				addURL={details.addPostalAddressURL}
 				addresses={details.postalAddressDisplays}
+				addURL={details.addPostalAddressURL}
 			/>
 
 			<ExternalAccountKeys details={details} />
