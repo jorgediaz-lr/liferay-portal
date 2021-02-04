@@ -69,6 +69,8 @@ public class EditTeamMVCActionCommand extends BaseMVCActionCommand {
 
 		String cmd = ParamUtil.getString(actionRequest, Constants.CMD);
 
+		String name = ParamUtil.getString(actionRequest, "name");
+
 		try {
 			ThemeDisplay themeDisplay =
 				(ThemeDisplay)actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
@@ -81,7 +83,7 @@ public class EditTeamMVCActionCommand extends BaseMVCActionCommand {
 				sendRedirect(actionRequest, actionResponse);
 			}
 			else {
-				String teamKey = updateTeam(actionRequest, user);
+				String teamKey = updateTeam(actionRequest, user, name);
 
 				sendRedirect(
 					actionRequest, actionResponse,
@@ -94,6 +96,10 @@ public class EditTeamMVCActionCommand extends BaseMVCActionCommand {
 
 				SessionErrors.add(
 					actionRequest, exception.getClass(), exception);
+
+				if (Validator.isNull(name)) {
+					sendRedirect(actionRequest, actionResponse);
+				}
 			}
 			else {
 				_log.error(exception, exception);
@@ -117,12 +123,11 @@ public class EditTeamMVCActionCommand extends BaseMVCActionCommand {
 		return portletURL.toString();
 	}
 
-	protected String updateTeam(ActionRequest actionRequest, User user)
+	protected String updateTeam(
+			ActionRequest actionRequest, User user, String name)
 		throws Exception {
 
 		String teamKey = ParamUtil.getString(actionRequest, "teamKey");
-
-		String name = ParamUtil.getString(actionRequest, "name");
 
 		if (Validator.isNotNull(name)) {
 			Team team = new Team();
