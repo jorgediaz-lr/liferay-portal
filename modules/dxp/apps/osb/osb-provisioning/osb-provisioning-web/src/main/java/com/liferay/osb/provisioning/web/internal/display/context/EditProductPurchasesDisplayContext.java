@@ -109,7 +109,6 @@ public class EditProductPurchasesDisplayContext
 			editProductPurchasesActionURL.setParameter(
 				"productKeys",
 				ParamUtil.getString(renderRequest, "productKeys"));
-			editProductPurchasesActionURL.setParameter("redirect", redirect);
 
 			data.put("addSubscriptions", true);
 			data.put("details", _getAddProductPurchasesJSONArray());
@@ -118,8 +117,8 @@ public class EditProductPurchasesDisplayContext
 
 			selectProductsURL.setParameter(
 				"mvcRenderCommandName", "/accounts/assign_products");
-			selectProductsURL.setWindowState(LiferayWindowState.POP_UP);
 			selectProductsURL.setParameter("accountKey", account.getKey());
+			selectProductsURL.setWindowState(LiferayWindowState.POP_UP);
 
 			data.put("selectProductsURL", selectProductsURL.toString());
 		}
