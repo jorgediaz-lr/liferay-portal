@@ -106,15 +106,12 @@ public class EditProductPurchasesDisplayContext
 			editProductPurchasesActionURL.setParameter(
 				"productBundleIds",
 				ParamUtil.getString(renderRequest, "productBundleIds"));
-
 			editProductPurchasesActionURL.setParameter(
 				"productKeys",
 				ParamUtil.getString(renderRequest, "productKeys"));
-
 			editProductPurchasesActionURL.setParameter("redirect", redirect);
 
 			data.put("addSubscriptions", true);
-
 			data.put("details", _getAddProductPurchasesJSONArray());
 
 			PortletURL selectProductsURL = renderResponse.createRenderURL();
@@ -132,7 +129,6 @@ public class EditProductPurchasesDisplayContext
 				ParamUtil.getString(renderRequest, "productPurchaseKeys"));
 
 			data.put("addSubscriptions", false);
-
 			data.put("details", _getEditProductPurchasesJSONArray());
 
 			String backURL = ParamUtil.getString(httpServletRequest, "backURL");
