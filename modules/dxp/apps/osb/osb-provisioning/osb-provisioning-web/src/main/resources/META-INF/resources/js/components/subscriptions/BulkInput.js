@@ -152,11 +152,11 @@ function BulkInput({
 	}
 
 	function handleSaveEndDate(value) {
-		updateAllValuesByFieldName('endDate', value);
+		updateAllValuesByFieldName('endDate', new Date(value));
 	}
 
 	function handleSaveGracePeriodStartDate(value) {
-		updateAllValuesByFieldName('originalEndDate', value);
+		updateAllValuesByFieldName('originalEndDate', new Date(value));
 	}
 
 	function handleSavePerpetual() {
@@ -182,7 +182,7 @@ function BulkInput({
 	}
 
 	function handleSaveStartDate(value) {
-		updateAllValuesByFieldName('startDate', value);
+		updateAllValuesByFieldName('startDate', new Date(value));
 	}
 
 	function handleSaveStatus(event) {
