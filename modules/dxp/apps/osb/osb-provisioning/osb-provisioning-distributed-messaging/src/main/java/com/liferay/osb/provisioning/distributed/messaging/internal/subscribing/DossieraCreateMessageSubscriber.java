@@ -201,12 +201,12 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			_logWarning(sb.toString());
 		}
 
-		Team oldPartnerTeam = _accountReader.getPartnerTeam(account);
+		Team curPartnerTeam = _accountReader.getPartnerTeam(account);
 
-		String oldPartnerAccountKey = StringPool.BLANK;
+		String curPartnerAccountKey = StringPool.BLANK;
 
-		if (oldPartnerTeam != null) {
-			oldPartnerAccountKey = oldPartnerTeam.getAccountKey();
+		if (curPartnerTeam != null) {
+			curPartnerAccountKey = curPartnerTeam.getAccountKey();
 		}
 
 		String partnerAccountKey = StringPool.BLANK;
@@ -215,28 +215,74 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			partnerAccountKey = partnerAccount.getKey();
 		}
 
-		if (!oldPartnerAccountKey.equals(partnerAccountKey)) {
-			_logWarning(
-				"The partner account is different from the existing partner " +
-					"account.");
+		if (!curPartnerAccountKey.equals(partnerAccountKey)) {
+			sb = new StringBundler(5);
+
+			sb.append("The partner account (");
+
+			if (partnerAccount != null) {
+				sb.append(partnerAccount.getName());
+			}
+			else {
+				sb.append("N/A");
+			}
+
+			sb.append(") is different from the existing partner account (");
+
+			if (curPartnerTeam != null) {
+				Account curPartnerAccount = _accountWebService.getAccount(
+					curPartnerTeam.getAccountKey());
+
+				sb.append(curPartnerAccount.getName());
+			}
+			else {
+				sb.append("N/A");
+			}
+
+			sb.append(").");
+
+			_logWarning(sb.toString());
 		}
 
-		Team oldFLSTeam = _accountReader.getFirstLineSupportTeam(account);
+		Team curFLSTeam = _accountReader.getFirstLineSupportTeam(account);
 
-		String oldFLSAccountKey = StringPool.BLANK;
+		String curFLSAccountKey = StringPool.BLANK;
 
-		if (oldFLSTeam != null) {
-			oldFLSAccountKey = oldFLSTeam.getAccountKey();
+		if (curFLSTeam != null) {
+			curFLSAccountKey = curFLSTeam.getAccountKey();
 		}
 
-		if (((oldFLSTeam == null) && partnerFirstLineSupport) ||
-			((oldFLSTeam != null) &&
+		if (((curFLSTeam == null) && partnerFirstLineSupport) ||
+			((curFLSTeam != null) &&
 			 (!partnerFirstLineSupport ||
-			  !oldFLSAccountKey.equals(partnerAccountKey)))) {
+			  !curFLSAccountKey.equals(partnerAccountKey)))) {
 
-			_logWarning(
-				"The FLS partner account is different from the existing FLS " +
-					"partner account.");
+			sb = new StringBundler(5);
+
+			sb.append("The FLS partner account (");
+
+			if (partnerAccount != null) {
+				sb.append(partnerAccount.getName());
+			}
+			else {
+				sb.append("N/A");
+			}
+
+			sb.append(") is different from the existing FLS partner account (");
+
+			if (curFLSTeam != null) {
+				Account curFLSAccount = _accountWebService.getAccount(
+					curFLSTeam.getAccountKey());
+
+				sb.append(curFLSAccount.getName());
+			}
+			else {
+				sb.append("N/A");
+			}
+
+			sb.append(").");
+
+			_logWarning(sb.toString());
 		}
 	}
 
