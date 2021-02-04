@@ -192,6 +192,12 @@ public class LCSSubscriptionEntryWebServiceImpl
 		Date endDate = _START_DATE_PERPETUAL;
 
 		for (ProductPurchase productPurchase : productPurchases) {
+			if (productPurchase.getStatus() ==
+					ProductPurchase.Status.CANCELLED) {
+
+				continue;
+			}
+
 			Date curEndDate = productPurchase.getEndDate();
 
 			if (curEndDate == null) {
@@ -212,6 +218,12 @@ public class LCSSubscriptionEntryWebServiceImpl
 		int instanceSize = 0;
 
 		for (ProductPurchase productPurchase : productPurchases) {
+			if (productPurchase.getStatus() ==
+					ProductPurchase.Status.CANCELLED) {
+
+				continue;
+			}
+
 			Map<String, String> properties = productPurchase.getProperties();
 
 			if (properties != null) {
@@ -355,6 +367,12 @@ public class LCSSubscriptionEntryWebServiceImpl
 		for (ProductPurchase productPurchase :
 				productPurchaseView.getProductPurchases()) {
 
+			if (productPurchase.getStatus() ==
+					ProductPurchase.Status.CANCELLED) {
+
+				continue;
+			}
+
 			Date startDate = productPurchase.getStartDate();
 			Date endDate = productPurchase.getEndDate();
 
@@ -412,6 +430,12 @@ public class LCSSubscriptionEntryWebServiceImpl
 		Date startDate = _END_DATE_PERPETUAL;
 
 		for (ProductPurchase productPurchase : productPurchases) {
+			if (productPurchase.getStatus() ==
+					ProductPurchase.Status.CANCELLED) {
+
+				continue;
+			}
+
 			Date curStartDate = productPurchase.getStartDate();
 
 			if (curStartDate == null) {
