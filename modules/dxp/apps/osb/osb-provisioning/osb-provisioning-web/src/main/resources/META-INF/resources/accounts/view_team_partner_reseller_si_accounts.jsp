@@ -79,6 +79,7 @@ PortletURL searchURL = viewTeamDisplayContext.getPortletURL();
 		/>
 
 		<liferay-ui:search-container-column-text
+			href="<%= rowURL %>"
 			name="region"
 		>
 			<%= accountDisplay.getRegion() %>
@@ -96,6 +97,7 @@ PortletURL searchURL = viewTeamDisplayContext.getPortletURL();
 		</liferay-ui:search-container-column-text>
 
 		<liferay-ui:search-container-column-text
+			href="<%= rowURL %>"
 			name="account-state"
 		>
 			<span class="label <%= accountDisplay.getSubscriptionStateStyle() %>"><%= accountDisplay.getSubscriptionState() %></span>
