@@ -1,4 +1,3 @@
-<%--
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
@@ -8,21 +7,15 @@
  * contacting Liferay, Inc. See the License for the specific language governing
  * permissions and limitations under the License, including but not limited to
  * distribution rights of the Software.
- *
- *
- *
  */
---%>
 
-<%@ include file="/init.jsp" %>
+import React from 'react';
 
-<liferay-util:include page="/common/view_account_search_header.jsp" servletContext="<%= application %>" />
+import ErrorBoundary from './ErrorBoundary';
+import Search from './components/search/license/Search';
 
-<div class="container-fluid home">
-	<div class="custom-search">
-		<react:component
-			data="<%= new HashMap<>() %>"
-			module="js/LicenseSearchApp"
-		/>
-	</div>
-</div>
+export default props => (
+	<ErrorBoundary>
+		<Search {...props} />
+	</ErrorBoundary>
+);

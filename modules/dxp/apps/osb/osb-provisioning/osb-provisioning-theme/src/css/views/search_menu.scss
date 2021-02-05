@@ -12,6 +12,10 @@ body {
 	}
 }
 
+#accountSearch {
+	max-width: 40.625rem;
+}
+
 .advanced-search-container {
 	background: $white;
 	border: 1px solid $divider;
@@ -94,6 +98,58 @@ body {
 	}
 }
 
+.custom-search {
+	margin: 0 auto;
+	width: 100%;
+
+	.advanced-search-btn,
+	.advanced-search-trigger {
+		background-color: $light;
+	}
+
+	.advanced-search-btn {
+		margin-right: $spacing-xxs;
+		margin-top: $spacing-xxs;
+
+		&[aria-expanded='true'] {
+			svg {
+				transform: rotate(180deg);
+			}
+		}
+
+		&:hover {
+			background-color: $light-d1;
+		}
+	}
+
+	.advanced-search-trigger {
+		border-bottom: 1px solid $secondary-l3;
+		border-top: 1px solid $secondary-l3;
+	}
+
+	.input-group-item {
+		flex-wrap: nowrap;
+	}
+
+	.search-btn {
+		border-bottom-left-radius: initial;
+		border-color: $divider;
+		border-left-width: 0;
+		border-top-left-radius: initial;
+	}
+
+	.search-input {
+		border-bottom-right-radius: initial;
+		border-right-width: 0;
+		border-top-right-radius: initial;
+
+		&[placeholder],
+		&::placeholder {
+			text-overflow: ellipsis;
+		}
+	}
+}
+
 .search-match {
 	.form-check-input {
 		vertical-align: middle;
@@ -110,59 +166,6 @@ body {
 	top: $header-offset;
 	transition: padding 0.5s ease;
 	z-index: 988;
-
-	.account-search {
-		margin: 0 auto;
-		max-width: 40.625rem;
-		width: 100%;
-
-		.advanced-search-btn,
-		.advanced-search-trigger {
-			background-color: $light;
-		}
-
-		.advanced-search-btn {
-			margin-right: $spacing-xxs;
-			margin-top: $spacing-xxs;
-
-			&[aria-expanded='true'] {
-				svg {
-					transform: rotate(180deg);
-				}
-			}
-
-			&:hover {
-				background-color: $light-d1;
-			}
-		}
-
-		.advanced-search-trigger {
-			border-bottom: 1px solid $secondary-l3;
-			border-top: 1px solid $secondary-l3;
-		}
-
-		.input-group-item {
-			flex-wrap: nowrap;
-		}
-
-		.search-btn {
-			border-bottom-left-radius: initial;
-			border-color: $divider;
-			border-left-width: 0;
-			border-top-left-radius: initial;
-		}
-
-		.search-input {
-			border-bottom-right-radius: initial;
-			border-right-width: 0;
-			border-top-right-radius: initial;
-
-			&[placeholder],
-			&::placeholder {
-				text-overflow: ellipsis;
-			}
-		}
-	}
 
 	.company-logo {
 		height: $spacing-lg;

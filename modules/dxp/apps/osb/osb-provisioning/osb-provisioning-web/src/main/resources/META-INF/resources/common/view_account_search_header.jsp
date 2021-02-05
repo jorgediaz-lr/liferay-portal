@@ -30,7 +30,7 @@ AccountSearchDisplayContext accountSearchDisplayContext = ProvisioningWebCompone
 
 				<h3>Raysource</h3>
 			</li>
-			<li class="account-search hide">
+			<li class="custom-search hide" id="accountSearch">
 				<react:component
 					data="<%= accountSearchDisplayContext.getData() %>"
 					module="js/AccountSearchApp"
@@ -44,7 +44,7 @@ AccountSearchDisplayContext accountSearchDisplayContext = ProvisioningWebCompone
 	var accounts = document.querySelector('.provisioning-accounts');
 
 	if (accounts) {
-		var accountSearch = document.querySelector('.account-search');
+		var accountSearch = document.getElementById('accountSearch');
 
 		if (accountSearch) {
 			accountSearch.classList.remove('hide');
