@@ -242,7 +242,6 @@ public class DefaultSegmentsEntryProvider implements SegmentsEntryProvider {
 			segmentsEntry, Criteria.Type.CONTEXT);
 		String contextFilterString = _getFilterString(
 			segmentsEntry, Criteria.Type.CONTEXT);
-
 		String modelFilterString = _getFilterString(
 			segmentsEntry, Criteria.Type.MODEL);
 
