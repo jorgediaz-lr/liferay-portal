@@ -41,6 +41,8 @@ public class UpgradeLayout extends UpgradeProcess {
 				"from TEMP_TABLE where Layout.plid = TEMP_TABLE.plid)");
 
 		runSQL("drop table TEMP_TABLE");
+
+		runSQL("update Layout set classNameId = 0 where classNameId is null");
 	}
 
 }
