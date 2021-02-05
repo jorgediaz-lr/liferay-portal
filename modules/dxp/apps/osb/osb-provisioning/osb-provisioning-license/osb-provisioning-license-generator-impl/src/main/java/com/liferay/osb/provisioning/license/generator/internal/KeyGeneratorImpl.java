@@ -12,12 +12,12 @@
  *
  */
 
-package com.liferay.osb.customer.license.generator.internal;
+package com.liferay.osb.provisioning.license.generator.internal;
 
-import com.liferay.osb.customer.admin.constants.LicenseEntryConstants;
-import com.liferay.osb.customer.admin.constants.ProductEntryConstants;
-import com.liferay.osb.customer.license.constants.LicenseKeyConstants;
-import com.liferay.osb.customer.license.generator.KeyGenerator;
+import com.liferay.osb.provisioning.license.generator.KeyGenerator;
+import com.liferay.osb.provisioning.license.helper.constants.LicenseSizing;
+import com.liferay.osb.provisioning.license.helper.constants.LicenseType;
+import com.liferay.osb.provisioning.license.helper.constants.ProductId;
 import com.liferay.petra.encryptor.Encryptor;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
@@ -107,7 +107,7 @@ public class KeyGeneratorImpl implements KeyGenerator {
 
 		properties.put("version", String.valueOf(licenseVersion));
 
-		if (!licenseEntryType.equals(LicenseEntryConstants.TYPE_TRIAL)) {
+		if (!licenseEntryType.equals(LicenseType.TRIAL)) {
 			properties.put("startDate", String.valueOf(startDate.getTime()));
 		}
 
@@ -119,9 +119,8 @@ public class KeyGeneratorImpl implements KeyGenerator {
 			properties.put("lifetime", String.valueOf(lifetime));
 			properties.put("productVersion", productVersionLabel);
 
-			if (licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER) ||
-				licenseEntryType.equals(
-					LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER)) {
+			if (licenseEntryType.equals(LicenseType.CLUSTER) ||
+				licenseEntryType.equals(LicenseType.DEVELOPER_CLUSTER)) {
 
 				for (int i = 0; i < serverIds.length; i++) {
 					String serverId = StringUtil.replace(
@@ -144,7 +143,7 @@ public class KeyGeneratorImpl implements KeyGenerator {
 			properties.put("productEntryName", productEntryName);
 			properties.put("productVersion", productVersionLabel);
 
-			if (licenseEntryType.equals(LicenseEntryConstants.TYPE_TRIAL)) {
+			if (licenseEntryType.equals(LicenseType.TRIAL)) {
 				properties.put("lifetime", String.valueOf(lifetime));
 			}
 			else {
@@ -152,25 +151,21 @@ public class KeyGeneratorImpl implements KeyGenerator {
 					"expirationDate", String.valueOf(expirationDate.getTime()));
 			}
 
-			if (licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER) ||
-				licenseEntryType.equals(
-					LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER)) {
+			if (licenseEntryType.equals(LicenseType.CLUSTER) ||
+				licenseEntryType.equals(LicenseType.DEVELOPER_CLUSTER)) {
 
 				properties.put("maxServers", String.valueOf(maxServers));
 			}
 
-			if (licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER) ||
-				licenseEntryType.equals(
-					LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER) ||
-				licenseEntryType.equals(LicenseEntryConstants.TYPE_TRIAL)) {
+			if (licenseEntryType.equals(LicenseType.DEVELOPER) ||
+				licenseEntryType.equals(LicenseType.DEVELOPER_CLUSTER) ||
+				licenseEntryType.equals(LicenseType.TRIAL)) {
 
 				properties.put(
 					"maxHttpSessions", String.valueOf(maxHttpSessions));
 			}
 
-			if (licenseEntryType.equals(
-					LicenseEntryConstants.TYPE_PRODUCTION)) {
-
+			if (licenseEntryType.equals(LicenseType.PRODUCTION)) {
 				String serverIdsList = StringUtil.merge(serverIds);
 
 				serverIdsList = StringUtil.toLowerCase(serverIdsList);
@@ -181,7 +176,7 @@ public class KeyGeneratorImpl implements KeyGenerator {
 			}
 		}
 		else if (licenseVersion >= 3) {
-			if (productId.equals(ProductEntryConstants.PRODUCT_ID_PORTAL)) {
+			if (productId.equals(ProductId.PORTAL)) {
 				properties.put("accountEntryName", accountEntryName);
 				properties.put("licenseEntryName", licenseEntryName);
 				properties.put("productVersion", productVersionLabel);
@@ -195,24 +190,22 @@ public class KeyGeneratorImpl implements KeyGenerator {
 				"expirationDate", String.valueOf(expirationDate.getTime()));
 			properties.put("productEntryName", productEntryName);
 
-			if (licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER) ||
+			if (licenseEntryType.equals(LicenseType.CLUSTER) ||
 				((licenseVersion >= 4) &&
-				 (licenseEntryType.equals(LicenseEntryConstants.TYPE_LIMITED) ||
-				  licenseEntryType.equals(
-					  LicenseEntryConstants.TYPE_PRODUCTION)))) {
+				 (licenseEntryType.equals(LicenseType.LIMITED) ||
+				  licenseEntryType.equals(LicenseType.PRODUCTION)))) {
 
 				properties.put("maxServers", String.valueOf(maxServers));
 			}
 
-			if (licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER) ||
-				licenseEntryType.equals(
-					LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER)) {
+			if (licenseEntryType.equals(LicenseType.DEVELOPER) ||
+				licenseEntryType.equals(LicenseType.DEVELOPER_CLUSTER)) {
 
 				properties.put(
 					"maxHttpSessions", String.valueOf(maxHttpSessions));
 			}
 
-			if (licenseEntryType.equals(LicenseEntryConstants.TYPE_PER_USER)) {
+			if (licenseEntryType.equals(LicenseType.PER_USER)) {
 				if (maxConcurrentUsers > 0) {
 					properties.put(
 						"maxConcurrentUsers",
@@ -228,15 +221,13 @@ public class KeyGeneratorImpl implements KeyGenerator {
 				properties.put(
 					"instanceSize",
 					LanguageUtil.get(
-						LocaleUtil.US,
-						LicenseKeyConstants.getSizingLabel(sizing)));
+						LocaleUtil.US, LicenseSizing.getSizingLabel(sizing)));
 			}
 
-			if (licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER) ||
-				licenseEntryType.equals(LicenseEntryConstants.TYPE_LIMITED) ||
-				licenseEntryType.equals(LicenseEntryConstants.TYPE_PER_USER) ||
-				licenseEntryType.equals(
-					LicenseEntryConstants.TYPE_PRODUCTION)) {
+			if (licenseEntryType.equals(LicenseType.CLUSTER) ||
+				licenseEntryType.equals(LicenseType.LIMITED) ||
+				licenseEntryType.equals(LicenseType.PER_USER) ||
+				licenseEntryType.equals(LicenseType.PRODUCTION)) {
 
 				properties.put("hostNames", hostNames);
 				properties.put("ipAddresses", ipAddresses);
@@ -297,8 +288,8 @@ public class KeyGeneratorImpl implements KeyGenerator {
 			String[] keys = StringUtil.split(
 				StringUtil.read(
 					clazz.getClassLoader(),
-					"com/liferay/osb/customer/license/generator/dependencies" +
-						"/keys.txt"),
+					"com/liferay/osb/provisioning/license/generator" +
+						"/dependencies/keys.txt"),
 				StringPool.NEW_LINE);
 
 			_keys[0] = (Key)Base64.stringToObject(keys[175]);
@@ -394,9 +385,7 @@ public class KeyGeneratorImpl implements KeyGenerator {
 		for (int i = 0; i < keys.size(); i++) {
 			String text = properties.get(keys.get(i));
 
-			String algorithm = _getAlgorithm(productId, i);
-
-			String digest = _digest(text, algorithm);
+			String digest = _digest(text, _getAlgorithm(productId, i));
 
 			digests.add(digest);
 		}
@@ -408,14 +397,10 @@ public class KeyGeneratorImpl implements KeyGenerator {
 
 			String algorithm = _getAlgorithm(productId, i);
 
-			digest = _digest(digest, algorithm);
-
-			digests.set(i, digest);
+			digests.set(i, _digest(digest, algorithm));
 		}
 
-		if (Validator.isNull(productId) ||
-			productId.equals(ProductEntryConstants.PRODUCT_ID_PORTAL)) {
-
+		if (Validator.isNull(productId) || productId.equals(ProductId.PORTAL)) {
 			return _interweaveDigest(digests);
 		}
 
@@ -423,9 +408,7 @@ public class KeyGeneratorImpl implements KeyGenerator {
 	}
 
 	private String _getAlgorithm(String productId, int i) {
-		if (Validator.isNull(productId) ||
-			productId.equals(ProductEntryConstants.PRODUCT_ID_PORTAL)) {
-
+		if (Validator.isNull(productId) || productId.equals(ProductId.PORTAL)) {
 			return _ALGORITHMS[i % _ALGORITHMS.length];
 		}
 

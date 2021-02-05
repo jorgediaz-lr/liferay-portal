@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.customer.license.generator;
+package com.liferay.osb.provisioning.license.generator;
 
 import java.util.Date;
 import java.util.Map;
