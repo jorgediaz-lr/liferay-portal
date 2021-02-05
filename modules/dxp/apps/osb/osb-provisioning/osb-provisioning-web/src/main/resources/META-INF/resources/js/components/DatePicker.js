@@ -29,7 +29,14 @@ function DatePicker({
 	const currentYear = new Date().getFullYear();
 
 	useEffect(() => {
-		setValue(defaultValue);
+		// When date is invalid, a Date object is returned
+
+		if (defaultValue instanceof Date) {
+			return;
+		}
+		else {
+			setValue(defaultValue);
+		}
 	}, [defaultValue]);
 
 	function handleOnValueChange(value) {
