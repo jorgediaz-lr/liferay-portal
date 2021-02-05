@@ -18,15 +18,25 @@ import com.liferay.application.list.BasePanelApp;
 import com.liferay.application.list.PanelApp;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.web.internal.application.list.constants.ProvisioningPanelCategoryKeys;
+import com.liferay.osb.provisioning.web.internal.configuration.ProvisioningWebConfiguration;
+import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Portlet;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
 
+import java.util.Map;
+
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Yuanyuan Huang
  */
 @Component(
+	configurationPid = "com.liferay.osb.provisioning.web.internal.configuration.ProvisioningWebConfiguration",
 	immediate = true,
 	property = {
 		"panel.app.order:Integer=50",
@@ -42,6 +52,17 @@ public class LicensesPanelApp extends BasePanelApp {
 	}
 
 	@Override
+	public boolean isShow(PermissionChecker permissionChecker, Group group)
+		throws PortalException {
+
+		if (_provisioningWebConfiguration.licensesPortletEnabled()) {
+			return true;
+		}
+
+		return false;
+	}
+
+	@Override
 	@Reference(
 		target = "(javax.portlet.name=" + ProvisioningPortletKeys.LICENSES + ")",
 		unbind = "-"
@@ -49,5 +70,14 @@ public class LicensesPanelApp extends BasePanelApp {
 	public void setPortlet(Portlet portlet) {
 		super.setPortlet(portlet);
 	}
+
+	@Activate
+	@Modified
+	protected void activate(Map<String, Object> properties) {
+		_provisioningWebConfiguration = ConfigurableUtil.createConfigurable(
+			ProvisioningWebConfiguration.class, properties);
+	}
+
+	private volatile ProvisioningWebConfiguration _provisioningWebConfiguration;
 
 }

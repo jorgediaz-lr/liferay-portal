@@ -30,6 +30,9 @@ public interface ProvisioningWebConfiguration {
 	@Meta.AD(required = false)
 	public String generateLicenseHREF();
 
+	@Meta.AD(deflt = "false", required = false)
+	public boolean licensesPortletEnabled();
+
 	@Meta.AD(required = false)
 	public String licenseManagerHREF();
 
