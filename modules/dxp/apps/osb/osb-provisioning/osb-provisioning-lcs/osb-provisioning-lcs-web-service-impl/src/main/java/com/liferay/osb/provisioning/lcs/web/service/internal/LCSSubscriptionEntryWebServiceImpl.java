@@ -29,7 +29,7 @@ import com.liferay.osb.provisioning.koroneiki.web.service.ProductPurchaseViewWeb
 import com.liferay.osb.provisioning.lcs.web.service.LCSSubscriptionEntryWebService;
 import com.liferay.osb.provisioning.lcs.web.service.internal.configuration.LCSConfiguration;
 import com.liferay.osb.provisioning.lcs.web.service.internal.model.LCSSubscriptionEntry;
-import com.liferay.osb.provisioning.license.constants.LicenseType;
+import com.liferay.osb.provisioning.license.helper.constants.LicenseType;
 import com.liferay.petra.json.web.service.client.JSONWebServiceClient;
 import com.liferay.petra.json.web.service.client.JSONWebServiceClientFactory;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
