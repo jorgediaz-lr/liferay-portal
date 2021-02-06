@@ -20,7 +20,11 @@ import {
 	PRODUCT_PURCHASE_STATUS_APPROVED,
 	PRODUCT_PURCHASE_STATUS_CANCELLED
 } from '../../utilities/constants';
-import {displayUTCDate, setDisabledAttribute} from '../../utilities/helpers';
+import {
+	displayUTCDate,
+	setDisabledAttribute,
+	validateDateFieldValue
+} from '../../utilities/helpers';
 import DatePicker from '../DatePicker';
 import BulkInput from './BulkInput';
 
@@ -181,11 +185,15 @@ function Subscription({
 	});
 
 	function handleEndDateChange(value) {
-		updateEndDate(key, new Date(value));
+		if (validateDateFieldValue(value)) {
+			updateEndDate(key, new Date(value));
+		}
 	}
 
 	function handleGracePeriodStartDateChange(value) {
-		updateOriginalEndDate(key, new Date(value));
+		if (validateDateFieldValue(value)) {
+			updateOriginalEndDate(key, new Date(value));
+		}
 	}
 
 	function handleDeleteSubscription() {
@@ -211,7 +219,9 @@ function Subscription({
 	}
 
 	function handleStartDateChange(value) {
-		updateStartDate(key, new Date(value));
+		if (validateDateFieldValue(value)) {
+			updateStartDate(key, new Date(value));
+		}
 	}
 
 	function handleStatusChange(event) {

@@ -74,9 +74,8 @@ export function request(endpoint, params, encoding = 'json', method = 'get') {
 }
 
 /**
- * Source formatter locks @clayui/date-picker at version 3.0.7,
- * which does not provide an API for disabling/enabling date picker
- * while later versions do.
+ * Source formatter locks @clayui/date-picker at version 3.0.7, which does not
+ * provide an API for disabling/enabling date picker while later versions do.
  * This helper manually disables/enables the date picker.
  * @param {boolean} attributeValue The value, whether to disable or enable.
  * @param {string} identifier The target to disable.
@@ -99,4 +98,20 @@ export function setDisabledAttribute(attributeValue, identifier) {
 			}
 		}
 	});
+}
+
+/**
+ * Validates user input from the Date picker, which could be either manual
+ * input (string) in the format of YYYY-MM-DD or selection through the date
+ * picker (date object).
+ * This helper is used to ensure date fields contain valid value before saving.
+ * @param {Object|string} value Date value from user input.
+ */
+export function validateDateFieldValue(value) {
+	if (typeof value === 'string' && value !== '') {
+		return /\d{4}-\d{2}-\d{2}/.test(value);
+	}
+	else {
+		return true;
+	}
 }

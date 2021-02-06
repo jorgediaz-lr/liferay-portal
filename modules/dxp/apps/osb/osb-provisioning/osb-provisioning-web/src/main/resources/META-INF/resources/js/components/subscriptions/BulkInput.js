@@ -21,7 +21,11 @@ import {
 	PRODUCT_PURCHASE_STATUS_APPROVED,
 	PRODUCT_PURCHASE_STATUS_CANCELLED
 } from '../../utilities/constants';
-import {displayUTCDate, setDisabledAttribute} from '../../utilities/helpers';
+import {
+	displayUTCDate,
+	setDisabledAttribute,
+	validateDateFieldValue
+} from '../../utilities/helpers';
 import DatePicker from '../DatePicker';
 
 function BulkInput({
@@ -152,11 +156,15 @@ function BulkInput({
 	}
 
 	function handleSaveEndDate(value) {
-		updateAllValuesByFieldName('endDate', new Date(value));
+		if (validateDateFieldValue(value)) {
+			updateAllValuesByFieldName('endDate', new Date(value));
+		}
 	}
 
 	function handleSaveGracePeriodStartDate(value) {
-		updateAllValuesByFieldName('originalEndDate', new Date(value));
+		if (validateDateFieldValue(value)) {
+			updateAllValuesByFieldName('originalEndDate', new Date(value));
+		}
 	}
 
 	function handleSavePerpetual() {
@@ -182,7 +190,9 @@ function BulkInput({
 	}
 
 	function handleSaveStartDate(value) {
-		updateAllValuesByFieldName('startDate', new Date(value));
+		if (validateDateFieldValue(value)) {
+			updateAllValuesByFieldName('startDate', new Date(value));
+		}
 	}
 
 	function handleSaveStatus(event) {
