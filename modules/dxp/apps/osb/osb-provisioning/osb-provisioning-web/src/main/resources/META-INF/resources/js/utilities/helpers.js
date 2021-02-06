@@ -108,7 +108,7 @@ export function setDisabledAttribute(attributeValue, identifier) {
  * @param {Object|string} value Date value from user input.
  */
 export function validateDateFieldValue(value) {
-	if (typeof value === 'string' && value !== '') {
+	if (typeof value === 'string') {
 		return /\d{4}-\d{2}-\d{2}/.test(value);
 	}
 	else {
