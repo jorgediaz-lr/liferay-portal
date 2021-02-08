@@ -169,7 +169,7 @@ public class AssetCategoryServiceTest {
 
 		Collections.shuffle(callables);
 
-		ExecutorService executorService = Executors.newFixedThreadPool(3);
+		ExecutorService executorService = Executors.newFixedThreadPool(2);
 
 		executorService.invokeAll(callables);
 
