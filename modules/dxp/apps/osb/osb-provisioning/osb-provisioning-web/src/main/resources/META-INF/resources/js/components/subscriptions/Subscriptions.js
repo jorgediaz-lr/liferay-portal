@@ -21,7 +21,6 @@ import {
 	PRODUCT_PURCHASE_STATUS_CANCELLED
 } from '../../utilities/constants';
 import {
-	displayUTCDate,
 	setDisabledAttribute,
 	validateDateFieldValue
 } from '../../utilities/helpers';
@@ -186,13 +185,13 @@ function Subscription({
 
 	function handleEndDateChange(value) {
 		if (validateDateFieldValue(value)) {
-			updateEndDate(key, new Date(value));
+			updateEndDate(key, value);
 		}
 	}
 
 	function handleGracePeriodStartDateChange(value) {
 		if (validateDateFieldValue(value)) {
-			updateOriginalEndDate(key, new Date(value));
+			updateOriginalEndDate(key, value);
 		}
 	}
 
@@ -220,7 +219,7 @@ function Subscription({
 
 	function handleStartDateChange(value) {
 		if (validateDateFieldValue(value)) {
-			updateStartDate(key, new Date(value));
+			updateStartDate(key, value);
 		}
 	}
 
@@ -283,7 +282,7 @@ function Subscription({
 			>
 				<label htmlFor="startDate">
 					<DatePicker
-						defaultValue={displayUTCDate(startDate)}
+						defaultValue={startDate}
 						id="startDate"
 						inputName="startDate"
 						updateFn={handleStartDateChange}
@@ -299,7 +298,7 @@ function Subscription({
 			>
 				<label htmlFor="gracePeriodStartDate">
 					<DatePicker
-						defaultValue={displayUTCDate(originalEndDate)}
+						defaultValue={originalEndDate}
 						id="gracePeriodStartDate"
 						inputName="gracePeriodStartDate"
 						updateFn={handleGracePeriodStartDateChange}
@@ -333,7 +332,7 @@ function Subscription({
 				>
 					<label htmlFor="endDate">
 						<DatePicker
-							defaultValue={displayUTCDate(endDate)}
+							defaultValue={endDate}
 							id="endDate"
 							inputName="endDate"
 							updateFn={handleEndDateChange}

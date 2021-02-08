@@ -15,13 +15,24 @@ import {NAMESPACE} from '../utilities/constants';
 
 /**
  * Certain empty values are represented by a dash in the UI.
- * This helper converts that value from its dash representation to its true
+ * This helper converts that value from its dash representation to its actual
  * value.
  * @param {string} value The value to be evaluated
  * @returns {string} The value after it's checked
  */
 export function convertDashToEmptyString(value) {
 	return value === '-' ? '' : value;
+}
+
+/**
+ * This helper takes the incoming value and converts any non empty string value
+ * to a Date object.
+ * @param {Object|string} value Date value from user input, could be a date
+ * object from selecting a date picker or a string from manual input.
+ * @returns {Object|string} Date object or empty string.
+ */
+export function convertInputToDate(value) {
+	return value === '' ? '' : new Date(value);
 }
 
 /**
@@ -104,11 +115,13 @@ export function setDisabledAttribute(attributeValue, identifier) {
  * Validates user input from the Date picker, which could be either manual
  * input (string) in the format of YYYY-MM-DD or selection through the date
  * picker (date object).
- * This helper is used to ensure date fields contain valid value before saving.
+ * This helper is used to verify the user has finished inputting the expected
+ * the date in the input fields before attempting to save.
  * @param {Object|string} value Date value from user input.
+ * @returns {boolean}
  */
 export function validateDateFieldValue(value) {
-	if (typeof value === 'string') {
+	if (typeof value === 'string' && value !== '') {
 		return /\d{4}-\d{2}-\d{2}/.test(value);
 	}
 	else {

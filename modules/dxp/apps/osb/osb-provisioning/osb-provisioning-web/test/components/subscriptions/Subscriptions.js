@@ -155,7 +155,7 @@ describe('Subscriptions', () => {
 			expect(getByText('Product D')).toBeTruthy();
 		});
 
-		it('it disables date fields after checking the perpetual checkbox', () => {
+		it('disables date fields after checking the perpetual checkbox', () => {
 			const {getAllByPlaceholderText, getAllByRole} = renderSubscriptions(
 				{
 					subscriptions: [
@@ -179,6 +179,27 @@ describe('Subscriptions', () => {
 
 			expect(dateFields[0].disabled).toBeTruthy();
 			expect(dateFields[1].disabled).toBeTruthy();
+		});
+
+		it('displays a warning to the user when an invalid date is entered in the date input', () => {
+			const {getAllByPlaceholderText} = renderSubscriptions({
+				subscriptions: [
+					{
+						endDate: '2021-12-08',
+						productKey: 'KOR-35735',
+						productName: 'Product A',
+						startDate: '2020-12-08'
+					}
+				]
+			});
+
+			const dateFields = getAllByPlaceholderText('YYYY-MM-DD');
+
+			fireEvent.change(dateFields[0], {
+				target: {value: '2021-02-29'}
+			});
+
+			expect(dateFields[1].value).toBe('Invalid Date');
 		});
 	});
 

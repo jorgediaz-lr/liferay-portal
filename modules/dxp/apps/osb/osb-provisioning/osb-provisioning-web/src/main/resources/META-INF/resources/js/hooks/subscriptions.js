@@ -13,6 +13,7 @@ import {Map, Record} from 'immutable';
 import React, {useContext, useState} from 'react';
 
 import {PRODUCT_PURCHASE_STATUS_APPROVED} from '../utilities/constants';
+import {convertInputToDate} from '../utilities/helpers';
 
 function generateEndDate() {
 	const newEndYear = new Date().getFullYear() + 1;
@@ -54,6 +55,9 @@ export class Subscription extends Record({
 				this.originalEndDate < this.endDate
 			);
 		}
+		else if (this.endDate === '') {
+			return false;
+		}
 		else {
 			return true;
 		}
@@ -64,7 +68,10 @@ export class Subscription extends Record({
 			return true;
 		}
 
-		if (this.endDate) {
+		if (!this.originalEndDate) {
+			return false;
+		}
+		else if (this.endDate) {
 			return (
 				this.startDate < this.originalEndDate &&
 				this.originalEndDate < this.endDate
@@ -80,7 +87,10 @@ export class Subscription extends Record({
 			return true;
 		}
 
-		if (this.endDate) {
+		if (!this.startDate) {
+			return false;
+		}
+		else if (this.endDate) {
 			return (
 				this.startDate < this.originalEndDate &&
 				this.startDate < this.endDate
@@ -154,14 +164,17 @@ export function SubscriptionsProvider({initialSubscriptions = [], children}) {
 					},
 					updateEndDate(key, endDate) {
 						setSubscriptions(
-							subscriptions.setIn([key, 'endDate'], endDate)
+							subscriptions.setIn(
+								[key, 'endDate'],
+								convertInputToDate(endDate)
+							)
 						);
 					},
 					updateOriginalEndDate(key, originalEndDate) {
 						setSubscriptions(
 							subscriptions.setIn(
 								[key, 'originalEndDate'],
-								originalEndDate
+								convertInputToDate(originalEndDate)
 							)
 						);
 					},
@@ -193,7 +206,10 @@ export function SubscriptionsProvider({initialSubscriptions = [], children}) {
 					},
 					updateStartDate(key, startDate) {
 						setSubscriptions(
-							subscriptions.setIn([key, 'startDate'], startDate)
+							subscriptions.setIn(
+								[key, 'startDate'],
+								convertInputToDate(startDate)
+							)
 						);
 					},
 					updateStatus(key, status) {

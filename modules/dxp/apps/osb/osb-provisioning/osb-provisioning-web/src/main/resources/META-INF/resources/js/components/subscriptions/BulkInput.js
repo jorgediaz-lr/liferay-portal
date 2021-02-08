@@ -22,7 +22,6 @@ import {
 	PRODUCT_PURCHASE_STATUS_CANCELLED
 } from '../../utilities/constants';
 import {
-	displayUTCDate,
 	setDisabledAttribute,
 	validateDateFieldValue
 } from '../../utilities/helpers';
@@ -125,7 +124,7 @@ function BulkInput({
 
 	function getDatePickerDisplayValue(fieldName) {
 		if (identicalValues('perpetual')) {
-			return displayUTCDate(getDisplayValue(fieldName));
+			return getDisplayValue(fieldName);
 		}
 		else {
 			return '';
@@ -157,13 +156,13 @@ function BulkInput({
 
 	function handleSaveEndDate(value) {
 		if (validateDateFieldValue(value)) {
-			updateAllValuesByFieldName('endDate', new Date(value));
+			updateAllValuesByFieldName('endDate', value);
 		}
 	}
 
 	function handleSaveGracePeriodStartDate(value) {
 		if (validateDateFieldValue(value)) {
-			updateAllValuesByFieldName('originalEndDate', new Date(value));
+			updateAllValuesByFieldName('originalEndDate', value);
 		}
 	}
 
@@ -191,7 +190,7 @@ function BulkInput({
 
 	function handleSaveStartDate(value) {
 		if (validateDateFieldValue(value)) {
-			updateAllValuesByFieldName('startDate', new Date(value));
+			updateAllValuesByFieldName('startDate', value);
 		}
 	}
 
