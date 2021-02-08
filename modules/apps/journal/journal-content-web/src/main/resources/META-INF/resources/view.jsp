@@ -201,7 +201,6 @@ if (journalContentDisplayContext.isShowArticle()) {
 		<div class="separator"><!-- --></div>
 
 		<div class="autofit-float autofit-row autofit-row-center mb-4 user-tool-asset-addon-entries">
-
 			<c:if test="<%= ratingsContentMetadataAssetAddonEntry != null %>">
 				<div class="autofit-col">
 					<liferay-asset:asset-addon-entry-display
