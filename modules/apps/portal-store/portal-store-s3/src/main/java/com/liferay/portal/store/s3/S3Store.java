@@ -225,11 +225,10 @@ public class S3Store extends BaseStore {
 			String versionLabel)
 		throws PortalException {
 
-		try {
-			_s3FileCache.cleanUpCacheFiles();
+		_s3FileCache.cleanUpCacheFiles();
 
-			S3Object s3Object = getS3Object(
-				companyId, repositoryId, fileName, versionLabel);
+		try (S3Object s3Object = getS3Object(
+				companyId, repositoryId, fileName, versionLabel)) {
 
 			return _s3FileCache.getCacheFileInputStream(s3Object, fileName);
 		}
