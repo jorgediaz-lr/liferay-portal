@@ -1,4 +1,0 @@
-Bundle-Name: Liferay OSB Provisioning License Helper
-Bundle-SymbolicName: com.liferay.osb.provisioning.license.helper
-Bundle-Version: 1.0.0
-Export-Package: com.liferay.osb.provisioning.license.helper.constants

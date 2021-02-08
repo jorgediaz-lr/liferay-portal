@@ -221,7 +221,7 @@ public class KeyGeneratorImpl implements KeyGenerator {
 				properties.put(
 					"instanceSize",
 					LanguageUtil.get(
-						LocaleUtil.US, LicenseSizing.getSizingLabel(sizing)));
+						LocaleUtil.US, LicenseSizing.getLabel(sizing)));
 			}
 
 			if (licenseEntryType.equals(LicenseType.CLUSTER) ||
