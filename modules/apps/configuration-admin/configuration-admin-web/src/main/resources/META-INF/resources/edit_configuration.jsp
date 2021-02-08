@@ -207,6 +207,8 @@ renderResponse.setTitle(categoryDisplayName);
 						</aui:alert>
 					</c:if>
 
+					<liferay-util:dynamic-include key='<%= "com.liferay.configuration.admin.web#/edit_configuration.jsp#" + configurationModel.getFactoryPid() + "#pre" %>' />
+
 					<%
 					String configurationModelDescription = (componentResourceBundle != null) ? LanguageUtil.format(componentResourceBundle, configurationModel.getDescription(), configurationModel.getDescriptionArguments()) : configurationModel.getDescription();
 					%>
@@ -222,6 +224,8 @@ renderResponse.setTitle(categoryDisplayName);
 
 					configurationFormRenderer.render(request, PipingServletResponse.createPipingServletResponse(pageContext));
 					%>
+
+					<liferay-util:dynamic-include key='<%= "com.liferay.configuration.admin.web#/edit_configuration.jsp#" + configurationModel.getFactoryPid() + "#post" %>' />
 
 					<aui:button-row>
 						<c:choose>
