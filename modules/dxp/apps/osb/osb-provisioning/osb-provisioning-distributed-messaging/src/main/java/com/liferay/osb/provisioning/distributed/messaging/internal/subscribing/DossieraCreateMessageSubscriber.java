@@ -261,7 +261,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 			sb.append("The FLS partner account (");
 
-			if (partnerAccount != null) {
+			if ((partnerAccount != null) && partnerFirstLineSupport) {
 				sb.append(partnerAccount.getName());
 			}
 			else {
