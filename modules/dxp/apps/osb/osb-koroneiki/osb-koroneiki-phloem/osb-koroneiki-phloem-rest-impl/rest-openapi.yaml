@@ -49,6 +49,11 @@ components:
                         $ref: "#/components/schemas/Contact"
                     readOnly: true
                     type: array
+                dataRegion:
+                    description:
+                        The region where we should store the account's customer owned data.
+                    enum: ["Brazil", "Hungary", "Japan", "United States"]
+                    type: string
                 dateCreated:
                     description:
                         The account's creation date.

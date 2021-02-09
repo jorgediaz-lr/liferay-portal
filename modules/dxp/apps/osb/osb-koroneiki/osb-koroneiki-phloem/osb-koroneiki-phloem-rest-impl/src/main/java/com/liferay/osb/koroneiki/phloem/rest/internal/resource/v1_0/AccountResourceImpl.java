@@ -362,6 +362,14 @@ public class AccountResourceImpl
 			region = accountRegion.toString();
 		}
 
+		String dataRegion = StringPool.BLANK;
+
+		Account.DataRegion accountDataRegion = account.getDataRegion();
+
+		if (accountDataRegion != null) {
+			dataRegion = accountDataRegion.toString();
+		}
+
 		String language = StringPool.BLANK;
 
 		Account.Language accountLanguage = account.getLanguage();
@@ -386,8 +394,8 @@ public class AccountResourceImpl
 				account.getContactEmailAddress(),
 				account.getProfileEmailAddress(), account.getPhoneNumber(),
 				account.getFaxNumber(), account.getWebsite(), tier, region,
-				language, GetterUtil.getBoolean(account.getInternal()),
-				status));
+				dataRegion, language,
+				GetterUtil.getBoolean(account.getInternal()), status));
 
 		if (!ArrayUtil.isEmpty(account.getContacts())) {
 			for (Contact contact : account.getContacts()) {
@@ -515,6 +523,14 @@ public class AccountResourceImpl
 			region = accountRegion.toString();
 		}
 
+		String dataRegion = curAccount.getDataRegion();
+
+		Account.DataRegion accountDataRegion = account.getDataRegion();
+
+		if (accountDataRegion != null) {
+			dataRegion = accountDataRegion.toString();
+		}
+
 		String language = curAccount.getLanguage();
 
 		Account.Language accountLanguage = account.getLanguage();
@@ -538,7 +554,8 @@ public class AccountResourceImpl
 			_accountService.updateAccount(
 				accountKey, parentAccountId, name, code, description, logoId,
 				contactEmailAddress, profileEmailAddress, phoneNumber,
-				faxNumber, website, tier, region, language, internal, status));
+				faxNumber, website, tier, region, dataRegion, language,
+				internal, status));
 	}
 
 	@Override

@@ -108,6 +108,7 @@ public class AccountModelDocumentContributor
 		document.addText("code", account.getCode());
 		document.addKeyword(
 			"contactEmailAddress", account.getContactEmailAddress());
+		document.addKeyword("dataRegion", account.getDataRegion());
 		document.addKeyword("faxNumber", account.getFaxNumber());
 		document.addKeyword("internal", account.isInternal());
 		document.addKeyword("language", account.getLanguage());

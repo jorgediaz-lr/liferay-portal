@@ -123,6 +123,21 @@ renderResponse.setTitle((koroneikiAccount == null) ? LanguageUtil.get(request, "
 
 			</aui:select>
 
+			<aui:select name="dataRegion">
+				<aui:option value="" />
+
+				<%
+				for (com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.Account.DataRegion dataRegion : com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.Account.DataRegion.values()) {
+				%>
+
+					<aui:option label="<%= dataRegion %>" value="<%= dataRegion %>" />
+
+				<%
+				}
+				%>
+
+			</aui:select>
+
 			<aui:select name="language">
 				<aui:option value="" />
 

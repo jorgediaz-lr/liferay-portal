@@ -76,6 +76,7 @@ public class AccountEntityModel implements EntityModel {
 			new CollectionEntityField(
 				new StringEntityField(
 					"customerContactUuids", locale -> "customerContactUuids")),
+			new StringEntityField("dataRegion", locale -> "dataRegion"),
 			new DateTimeEntityField(
 				"dateCreated",
 				locale -> Field.getSortableFieldName(Field.CREATE_DATE),

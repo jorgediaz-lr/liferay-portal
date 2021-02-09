@@ -36,6 +36,7 @@ public class AccountUtil {
 					account.getAssignedTeams(), TeamUtil::toTeam, Team.class);
 				code = account.getCode();
 				contactEmailAddress = account.getContactEmailAddress();
+				dataRegion = DataRegion.create(account.getDataRegion());
 				dateCreated = account.getCreateDate();
 				dateModified = account.getModifiedDate();
 				description = account.getDescription();

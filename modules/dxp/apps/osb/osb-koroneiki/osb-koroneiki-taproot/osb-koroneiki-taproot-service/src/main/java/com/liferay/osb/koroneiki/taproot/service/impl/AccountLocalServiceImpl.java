@@ -88,8 +88,8 @@ public class AccountLocalServiceImpl extends AccountLocalServiceBaseImpl {
 			long userId, long parentAccountId, String name, String code,
 			String description, long logoId, String contactEmailAddress,
 			String profileEmailAddress, String phoneNumber, String faxNumber,
-			String website, String tier, String region, String language,
-			boolean internal, String status)
+			String website, String tier, String region, String dataRegion,
+			String language, boolean internal, String status)
 		throws PortalException {
 
 		User user = userLocalService.getUser(userId);
@@ -123,6 +123,7 @@ public class AccountLocalServiceImpl extends AccountLocalServiceBaseImpl {
 		account.setWebsite(website);
 		account.setTier(tier);
 		account.setRegion(region);
+		account.setDataRegion(dataRegion);
 		account.setLanguage(language);
 		account.setInternal(internal);
 		account.setStatus(status);
@@ -290,8 +291,8 @@ public class AccountLocalServiceImpl extends AccountLocalServiceBaseImpl {
 			long accountId, long parentAccountId, String name, String code,
 			String description, long logoId, String contactEmailAddress,
 			String profileEmailAddress, String phoneNumber, String faxNumber,
-			String website, String tier, String region, String language,
-			boolean internal, String status)
+			String website, String tier, String region, String dataRegion,
+			String language, boolean internal, String status)
 		throws PortalException {
 
 		code = StringUtil.toUpperCase(code);
@@ -314,6 +315,7 @@ public class AccountLocalServiceImpl extends AccountLocalServiceBaseImpl {
 		account.setWebsite(website);
 		account.setTier(tier);
 		account.setRegion(region);
+		account.setDataRegion(dataRegion);
 		account.setLanguage(language);
 		account.setInternal(internal);
 		account.setStatus(status);

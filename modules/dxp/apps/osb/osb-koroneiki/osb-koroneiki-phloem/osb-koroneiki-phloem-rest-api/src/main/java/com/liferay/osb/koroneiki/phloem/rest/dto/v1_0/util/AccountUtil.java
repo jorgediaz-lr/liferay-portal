@@ -33,6 +33,7 @@ public class AccountUtil {
 			{
 				code = account.getCode();
 				contactEmailAddress = account.getContactEmailAddress();
+				dataRegion = DataRegion.create(account.getDataRegion());
 				dateCreated = account.getCreateDate();
 				dateModified = account.getModifiedDate();
 				description = account.getDescription();
