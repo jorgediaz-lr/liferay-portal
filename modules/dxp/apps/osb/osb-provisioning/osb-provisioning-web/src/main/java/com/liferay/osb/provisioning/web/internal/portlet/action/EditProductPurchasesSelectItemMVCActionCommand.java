@@ -37,11 +37,11 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	property = {
 		"javax.portlet.name=" + ProvisioningPortletKeys.ACCOUNTS,
-		"mvc.command.name=/accounts/edit_product_purchases_choose_term"
+		"mvc.command.name=/accounts/edit_product_purchases_select_item"
 	},
 	service = MVCActionCommand.class
 )
-public class EditProductPurchasesChooseTermMVCActionCommand
+public class EditProductPurchasesSelectItemMVCActionCommand
 	extends BaseMVCActionCommand {
 
 	@Override
@@ -110,7 +110,7 @@ public class EditProductPurchasesChooseTermMVCActionCommand
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		EditProductPurchasesChooseTermMVCActionCommand.class);
+		EditProductPurchasesSelectItemMVCActionCommand.class);
 
 	@Reference
 	private Portal _portal;

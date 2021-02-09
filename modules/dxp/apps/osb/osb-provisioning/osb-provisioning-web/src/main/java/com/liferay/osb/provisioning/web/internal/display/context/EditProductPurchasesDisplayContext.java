@@ -80,18 +80,20 @@ public class EditProductPurchasesDisplayContext
 
 		data.put("redirect", redirect);
 
-		PortletURL editProductPurchasesRenderURL =
-			renderResponse.createRenderURL();
+		PortletURL editProductPurchasesSelectItemActionURL =
+			renderResponse.createActionURL();
 
-		editProductPurchasesRenderURL.setParameter(
-			"mvcRenderCommandName", "/accounts/edit_product_purchases");
-		editProductPurchasesRenderURL.setParameter("redirect", redirect);
-		editProductPurchasesRenderURL.setParameter(
+		editProductPurchasesSelectItemActionURL.setParameter(
+			ActionRequest.ACTION_NAME,
+			"/accounts/edit_product_purchases_select_item");
+		editProductPurchasesSelectItemActionURL.setParameter(
+			"redirect", redirect);
+		editProductPurchasesSelectItemActionURL.setParameter(
 			"accountKey", account.getKey());
 
 		data.put(
-			"editProductPurchasesRenderURL",
-			editProductPurchasesRenderURL.toString());
+			"editProductPurchasesSelectItemActionURL",
+			editProductPurchasesSelectItemActionURL.toString());
 
 		PortletURL editProductPurchasesActionURL =
 			renderResponse.createActionURL();
