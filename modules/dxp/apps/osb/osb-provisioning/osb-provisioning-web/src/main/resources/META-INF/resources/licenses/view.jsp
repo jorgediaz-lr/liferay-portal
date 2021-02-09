@@ -18,6 +18,10 @@
 
 <liferay-util:include page="/common/view_account_search_header.jsp" servletContext="<%= application %>" />
 
+<div class="title-bar">
+	<h3><liferay-ui:message key="licenses" /></h3>
+</div>
+
 <div class="container-fluid home">
 	<div class="custom-search">
 		<react:component
