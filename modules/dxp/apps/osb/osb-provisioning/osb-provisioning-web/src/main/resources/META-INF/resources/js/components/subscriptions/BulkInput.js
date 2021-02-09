@@ -22,6 +22,7 @@ import {
 	PRODUCT_PURCHASE_STATUS_CANCELLED
 } from '../../utilities/constants';
 import {
+	convertInputToDate,
 	setDisabledAttribute,
 	validateDateFieldValue
 } from '../../utilities/helpers';
@@ -156,13 +157,16 @@ function BulkInput({
 
 	function handleSaveEndDate(value) {
 		if (validateDateFieldValue(value)) {
-			updateAllValuesByFieldName('endDate', value);
+			updateAllValuesByFieldName('endDate', convertInputToDate(value));
 		}
 	}
 
 	function handleSaveGracePeriodStartDate(value) {
 		if (validateDateFieldValue(value)) {
-			updateAllValuesByFieldName('originalEndDate', value);
+			updateAllValuesByFieldName(
+				'originalEndDate',
+				convertInputToDate(value)
+			);
 		}
 	}
 
@@ -190,7 +194,7 @@ function BulkInput({
 
 	function handleSaveStartDate(value) {
 		if (validateDateFieldValue(value)) {
-			updateAllValuesByFieldName('startDate', value);
+			updateAllValuesByFieldName('startDate', convertInputToDate(value));
 		}
 	}
 
