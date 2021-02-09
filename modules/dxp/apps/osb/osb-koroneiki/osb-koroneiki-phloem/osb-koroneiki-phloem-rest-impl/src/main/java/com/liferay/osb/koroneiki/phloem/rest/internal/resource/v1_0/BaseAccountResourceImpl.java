@@ -104,7 +104,7 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'POST' 'http://localhost:8080/o/koroneiki-rest/v1.0/accounts' -d $'{"assignedTeams": ___, "code": ___, "contactEmailAddress": ___, "contacts": ___, "description": ___, "externalLinks": ___, "faxNumber": ___, "internal": ___, "language": ___, "logoId": ___, "name": ___, "parentAccountKey": ___, "phoneNumber": ___, "postalAddresses": ___, "productPurchases": ___, "profileEmailAddress": ___, "region": ___, "status": ___, "tier": ___, "website": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
+	 * curl -X 'POST' 'http://localhost:8080/o/koroneiki-rest/v1.0/accounts' -d $'{"assignedTeams": ___, "code": ___, "contactEmailAddress": ___, "contacts": ___, "dataRegion": ___, "description": ___, "externalLinks": ___, "faxNumber": ___, "internal": ___, "language": ___, "logoId": ___, "name": ___, "parentAccountKey": ___, "phoneNumber": ___, "postalAddresses": ___, "productPurchases": ___, "profileEmailAddress": ___, "region": ___, "status": ___, "tier": ___, "website": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
 	@Consumes({"application/json", "application/xml"})
 	@Override
@@ -210,7 +210,7 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'PUT' 'http://localhost:8080/o/koroneiki-rest/v1.0/accounts/{accountKey}' -d $'{"assignedTeams": ___, "code": ___, "contactEmailAddress": ___, "contacts": ___, "description": ___, "externalLinks": ___, "faxNumber": ___, "internal": ___, "language": ___, "logoId": ___, "name": ___, "parentAccountKey": ___, "phoneNumber": ___, "postalAddresses": ___, "productPurchases": ___, "profileEmailAddress": ___, "region": ___, "status": ___, "tier": ___, "website": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
+	 * curl -X 'PUT' 'http://localhost:8080/o/koroneiki-rest/v1.0/accounts/{accountKey}' -d $'{"assignedTeams": ___, "code": ___, "contactEmailAddress": ___, "contacts": ___, "dataRegion": ___, "description": ___, "externalLinks": ___, "faxNumber": ___, "internal": ___, "language": ___, "logoId": ___, "name": ___, "parentAccountKey": ___, "phoneNumber": ___, "postalAddresses": ___, "productPurchases": ___, "profileEmailAddress": ___, "region": ___, "status": ___, "tier": ___, "website": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
 	@Consumes({"application/json", "application/xml"})
 	@Override

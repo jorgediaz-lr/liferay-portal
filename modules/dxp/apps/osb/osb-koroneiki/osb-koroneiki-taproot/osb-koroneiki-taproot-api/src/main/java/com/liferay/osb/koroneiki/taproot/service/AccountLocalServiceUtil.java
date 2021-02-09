@@ -62,14 +62,14 @@ public class AccountLocalServiceUtil {
 			long userId, long parentAccountId, String name, String code,
 			String description, long logoId, String contactEmailAddress,
 			String profileEmailAddress, String phoneNumber, String faxNumber,
-			String website, String tier, String region, String language,
-			boolean internal, String status)
+			String website, String tier, String region, String dataRegion,
+			String language, boolean internal, String status)
 		throws PortalException {
 
 		return getService().addAccount(
 			userId, parentAccountId, name, code, description, logoId,
 			contactEmailAddress, profileEmailAddress, phoneNumber, faxNumber,
-			website, tier, region, language, internal, status);
+			website, tier, region, dataRegion, language, internal, status);
 	}
 
 	/**
@@ -379,14 +379,14 @@ public class AccountLocalServiceUtil {
 			long accountId, long parentAccountId, String name, String code,
 			String description, long logoId, String contactEmailAddress,
 			String profileEmailAddress, String phoneNumber, String faxNumber,
-			String website, String tier, String region, String language,
-			boolean internal, String status)
+			String website, String tier, String region, String dataRegion,
+			String language, boolean internal, String status)
 		throws PortalException {
 
 		return getService().updateAccount(
 			accountId, parentAccountId, name, code, description, logoId,
 			contactEmailAddress, profileEmailAddress, phoneNumber, faxNumber,
-			website, tier, region, language, internal, status);
+			website, tier, region, dataRegion, language, internal, status);
 	}
 
 	public static AccountLocalService getService() {

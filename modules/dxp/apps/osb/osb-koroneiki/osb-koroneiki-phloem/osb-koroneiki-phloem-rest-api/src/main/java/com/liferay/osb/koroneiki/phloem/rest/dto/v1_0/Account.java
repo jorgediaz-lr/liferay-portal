@@ -212,6 +212,48 @@ public class Account implements Serializable {
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	protected Contact[] customerContacts;
 
+	@Schema(
+		description = "The region where we should store the account's customer owned data."
+	)
+	@Valid
+	public DataRegion getDataRegion() {
+		return dataRegion;
+	}
+
+	@JsonIgnore
+	public String getDataRegionAsString() {
+		if (dataRegion == null) {
+			return null;
+		}
+
+		return dataRegion.toString();
+	}
+
+	public void setDataRegion(DataRegion dataRegion) {
+		this.dataRegion = dataRegion;
+	}
+
+	@JsonIgnore
+	public void setDataRegion(
+		UnsafeSupplier<DataRegion, Exception> dataRegionUnsafeSupplier) {
+
+		try {
+			dataRegion = dataRegionUnsafeSupplier.get();
+		}
+		catch (RuntimeException re) {
+			throw re;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@GraphQLField(
+		description = "The region where we should store the account's customer owned data."
+	)
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	protected DataRegion dataRegion;
+
 	@Schema(description = "The account's creation date.")
 	public Date getDateCreated() {
 		return dateCreated;
@@ -983,6 +1025,20 @@ public class Account implements Serializable {
 			sb.append("]");
 		}
 
+		if (dataRegion != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"dataRegion\": ");
+
+			sb.append("\"");
+
+			sb.append(dataRegion);
+
+			sb.append("\"");
+		}
+
 		if (dateCreated != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
@@ -1310,6 +1366,41 @@ public class Account implements Serializable {
 		name = "x-class-name"
 	)
 	public String xClassName;
+
+	@GraphQLName("DataRegion")
+	public static enum DataRegion {
+
+		BRAZIL("Brazil"), HUNGARY("Hungary"), JAPAN("Japan"),
+		UNITED_STATES("United States");
+
+		@JsonCreator
+		public static DataRegion create(String value) {
+			for (DataRegion dataRegion : values()) {
+				if (Objects.equals(dataRegion.getValue(), value)) {
+					return dataRegion;
+				}
+			}
+
+			return null;
+		}
+
+		@JsonValue
+		public String getValue() {
+			return _value;
+		}
+
+		@Override
+		public String toString() {
+			return _value;
+		}
+
+		private DataRegion(String value) {
+			_value = value;
+		}
+
+		private final String _value;
+
+	}
 
 	@GraphQLName("Language")
 	public static enum Language {

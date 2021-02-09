@@ -376,6 +376,21 @@ public interface AccountModel
 	public void setRegion(String region);
 
 	/**
+	 * Returns the data region of this account.
+	 *
+	 * @return the data region of this account
+	 */
+	@AutoEscape
+	public String getDataRegion();
+
+	/**
+	 * Sets the data region of this account.
+	 *
+	 * @param dataRegion the data region of this account
+	 */
+	public void setDataRegion(String dataRegion);
+
+	/**
 	 * Returns the language of this account.
 	 *
 	 * @return the language of this account

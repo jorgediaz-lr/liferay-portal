@@ -84,8 +84,8 @@ public class AccountModelImpl
 		{"profileEmailAddress", Types.VARCHAR}, {"phoneNumber", Types.VARCHAR},
 		{"faxNumber", Types.VARCHAR}, {"website", Types.VARCHAR},
 		{"tier", Types.VARCHAR}, {"region", Types.VARCHAR},
-		{"language", Types.VARCHAR}, {"internal_", Types.BOOLEAN},
-		{"status", Types.VARCHAR}
+		{"dataRegion", Types.VARCHAR}, {"language", Types.VARCHAR},
+		{"internal_", Types.BOOLEAN}, {"status", Types.VARCHAR}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -112,13 +112,14 @@ public class AccountModelImpl
 		TABLE_COLUMNS_MAP.put("website", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("tier", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("region", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("dataRegion", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("language", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("internal_", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("status", Types.VARCHAR);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table Koroneiki_Account (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,accountId LONG not null primary key,companyId LONG,userId LONG,createDate DATE null,modifiedDate DATE null,accountKey VARCHAR(75) null,parentAccountId LONG,name VARCHAR(150) null,code_ VARCHAR(75) null,description STRING null,logoId LONG,contactEmailAddress VARCHAR(75) null,profileEmailAddress VARCHAR(75) null,phoneNumber VARCHAR(75) null,faxNumber VARCHAR(75) null,website VARCHAR(75) null,tier VARCHAR(75) null,region VARCHAR(75) null,language VARCHAR(75) null,internal_ BOOLEAN,status VARCHAR(75) null)";
+		"create table Koroneiki_Account (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,accountId LONG not null primary key,companyId LONG,userId LONG,createDate DATE null,modifiedDate DATE null,accountKey VARCHAR(75) null,parentAccountId LONG,name VARCHAR(150) null,code_ VARCHAR(75) null,description STRING null,logoId LONG,contactEmailAddress VARCHAR(75) null,profileEmailAddress VARCHAR(75) null,phoneNumber VARCHAR(75) null,faxNumber VARCHAR(75) null,website VARCHAR(75) null,tier VARCHAR(75) null,region VARCHAR(75) null,dataRegion VARCHAR(75) null,language VARCHAR(75) null,internal_ BOOLEAN,status VARCHAR(75) null)";
 
 	public static final String TABLE_SQL_DROP = "drop table Koroneiki_Account";
 
@@ -189,6 +190,7 @@ public class AccountModelImpl
 		model.setWebsite(soapModel.getWebsite());
 		model.setTier(soapModel.getTier());
 		model.setRegion(soapModel.getRegion());
+		model.setDataRegion(soapModel.getDataRegion());
 		model.setLanguage(soapModel.getLanguage());
 		model.setInternal(soapModel.isInternal());
 		model.setStatus(soapModel.getStatus());
@@ -410,6 +412,9 @@ public class AccountModelImpl
 		attributeGetterFunctions.put("region", Account::getRegion);
 		attributeSetterBiConsumers.put(
 			"region", (BiConsumer<Account, String>)Account::setRegion);
+		attributeGetterFunctions.put("dataRegion", Account::getDataRegion);
+		attributeSetterBiConsumers.put(
+			"dataRegion", (BiConsumer<Account, String>)Account::setDataRegion);
 		attributeGetterFunctions.put("language", Account::getLanguage);
 		attributeSetterBiConsumers.put(
 			"language", (BiConsumer<Account, String>)Account::setLanguage);
@@ -794,6 +799,22 @@ public class AccountModelImpl
 
 	@JSON
 	@Override
+	public String getDataRegion() {
+		if (_dataRegion == null) {
+			return "";
+		}
+		else {
+			return _dataRegion;
+		}
+	}
+
+	@Override
+	public void setDataRegion(String dataRegion) {
+		_dataRegion = dataRegion;
+	}
+
+	@JSON
+	@Override
 	public String getLanguage() {
 		if (_language == null) {
 			return "";
@@ -903,6 +924,7 @@ public class AccountModelImpl
 		accountImpl.setWebsite(getWebsite());
 		accountImpl.setTier(getTier());
 		accountImpl.setRegion(getRegion());
+		accountImpl.setDataRegion(getDataRegion());
 		accountImpl.setLanguage(getLanguage());
 		accountImpl.setInternal(isInternal());
 		accountImpl.setStatus(getStatus());
@@ -1120,6 +1142,14 @@ public class AccountModelImpl
 			accountCacheModel.region = null;
 		}
 
+		accountCacheModel.dataRegion = getDataRegion();
+
+		String dataRegion = accountCacheModel.dataRegion;
+
+		if ((dataRegion != null) && (dataRegion.length() == 0)) {
+			accountCacheModel.dataRegion = null;
+		}
+
 		accountCacheModel.language = getLanguage();
 
 		String language = accountCacheModel.language;
@@ -1243,6 +1273,7 @@ public class AccountModelImpl
 	private String _website;
 	private String _tier;
 	private String _region;
+	private String _dataRegion;
 	private String _language;
 	private boolean _internal;
 	private String _status;

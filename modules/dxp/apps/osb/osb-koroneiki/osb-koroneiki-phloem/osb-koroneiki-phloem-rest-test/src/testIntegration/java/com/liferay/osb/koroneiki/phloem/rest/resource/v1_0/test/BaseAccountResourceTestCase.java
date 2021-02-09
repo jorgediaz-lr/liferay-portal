@@ -1167,6 +1167,14 @@ public abstract class BaseAccountResourceTestCase {
 				continue;
 			}
 
+			if (Objects.equals("dataRegion", additionalAssertFieldName)) {
+				if (account.getDataRegion() == null) {
+					valid = false;
+				}
+
+				continue;
+			}
+
 			if (Objects.equals("description", additionalAssertFieldName)) {
 				if (account.getDescription() == null) {
 					valid = false;
@@ -1459,6 +1467,16 @@ public abstract class BaseAccountResourceTestCase {
 				if (!Objects.deepEquals(
 						account1.getCustomerContacts(),
 						account2.getCustomerContacts())) {
+
+					return false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals("dataRegion", additionalAssertFieldName)) {
+				if (!Objects.deepEquals(
+						account1.getDataRegion(), account2.getDataRegion())) {
 
 					return false;
 				}
@@ -1795,6 +1813,11 @@ public abstract class BaseAccountResourceTestCase {
 		}
 
 		if (entityFieldName.equals("customerContacts")) {
+			throw new IllegalArgumentException(
+				"Invalid entity field " + entityFieldName);
+		}
+
+		if (entityFieldName.equals("dataRegion")) {
 			throw new IllegalArgumentException(
 				"Invalid entity field " + entityFieldName);
 		}

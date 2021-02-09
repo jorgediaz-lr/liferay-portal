@@ -63,6 +63,7 @@ public class AccountWrapper
 		attributes.put("website", getWebsite());
 		attributes.put("tier", getTier());
 		attributes.put("region", getRegion());
+		attributes.put("dataRegion", getDataRegion());
 		attributes.put("language", getLanguage());
 		attributes.put("internal", isInternal());
 		attributes.put("status", getStatus());
@@ -194,6 +195,12 @@ public class AccountWrapper
 			setRegion(region);
 		}
 
+		String dataRegion = (String)attributes.get("dataRegion");
+
+		if (dataRegion != null) {
+			setDataRegion(dataRegion);
+		}
+
 		String language = (String)attributes.get("language");
 
 		if (language != null) {
@@ -290,6 +297,16 @@ public class AccountWrapper
 	@Override
 	public Date getCreateDate() {
 		return model.getCreateDate();
+	}
+
+	/**
+	 * Returns the data region of this account.
+	 *
+	 * @return the data region of this account
+	 */
+	@Override
+	public String getDataRegion() {
+		return model.getDataRegion();
 	}
 
 	/**
@@ -577,6 +594,16 @@ public class AccountWrapper
 	@Override
 	public void setCreateDate(Date createDate) {
 		model.setCreateDate(createDate);
+	}
+
+	/**
+	 * Sets the data region of this account.
+	 *
+	 * @param dataRegion the data region of this account
+	 */
+	@Override
+	public void setDataRegion(String dataRegion) {
+		model.setDataRegion(dataRegion);
 	}
 
 	/**

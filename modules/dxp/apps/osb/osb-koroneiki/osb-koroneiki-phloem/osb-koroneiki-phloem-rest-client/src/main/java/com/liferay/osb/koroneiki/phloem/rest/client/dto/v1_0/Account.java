@@ -138,6 +138,35 @@ public class Account implements Cloneable, Serializable {
 
 	protected Contact[] customerContacts;
 
+	public DataRegion getDataRegion() {
+		return dataRegion;
+	}
+
+	public String getDataRegionAsString() {
+		if (dataRegion == null) {
+			return null;
+		}
+
+		return dataRegion.toString();
+	}
+
+	public void setDataRegion(DataRegion dataRegion) {
+		this.dataRegion = dataRegion;
+	}
+
+	public void setDataRegion(
+		UnsafeSupplier<DataRegion, Exception> dataRegionUnsafeSupplier) {
+
+		try {
+			dataRegion = dataRegionUnsafeSupplier.get();
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected DataRegion dataRegion;
+
 	public Date getDateCreated() {
 		return dateCreated;
 	}
@@ -636,6 +665,38 @@ public class Account implements Cloneable, Serializable {
 
 	public String toString() {
 		return AccountSerDes.toJSON(this);
+	}
+
+	public static enum DataRegion {
+
+		BRAZIL("Brazil"), HUNGARY("Hungary"), JAPAN("Japan"),
+		UNITED_STATES("United States");
+
+		public static DataRegion create(String value) {
+			for (DataRegion dataRegion : values()) {
+				if (Objects.equals(dataRegion.getValue(), value)) {
+					return dataRegion;
+				}
+			}
+
+			return null;
+		}
+
+		public String getValue() {
+			return _value;
+		}
+
+		@Override
+		public String toString() {
+			return _value;
+		}
+
+		private DataRegion(String value) {
+			_value = value;
+		}
+
+		private final String _value;
+
 	}
 
 	public static enum Language {

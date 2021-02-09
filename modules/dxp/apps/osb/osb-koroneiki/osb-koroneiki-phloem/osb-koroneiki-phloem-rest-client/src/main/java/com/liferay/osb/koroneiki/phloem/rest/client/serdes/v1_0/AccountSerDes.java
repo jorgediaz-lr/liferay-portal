@@ -154,6 +154,20 @@ public class AccountSerDes {
 			sb.append("]");
 		}
 
+		if (account.getDataRegion() != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"dataRegion\": ");
+
+			sb.append("\"");
+
+			sb.append(account.getDataRegion());
+
+			sb.append("\"");
+		}
+
 		if (account.getDateCreated() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
@@ -532,6 +546,13 @@ public class AccountSerDes {
 				String.valueOf(account.getCustomerContacts()));
 		}
 
+		if (account.getDataRegion() == null) {
+			map.put("dataRegion", null);
+		}
+		else {
+			map.put("dataRegion", String.valueOf(account.getDataRegion()));
+		}
+
 		if (account.getDateCreated() == null) {
 			map.put("dateCreated", null);
 		}
@@ -760,6 +781,13 @@ public class AccountSerDes {
 						).toArray(
 							size -> new Contact[size]
 						));
+				}
+			}
+			else if (Objects.equals(jsonParserFieldName, "dataRegion")) {
+				if (jsonParserFieldValue != null) {
+					account.setDataRegion(
+						Account.DataRegion.create(
+							(String)jsonParserFieldValue));
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "dateCreated")) {

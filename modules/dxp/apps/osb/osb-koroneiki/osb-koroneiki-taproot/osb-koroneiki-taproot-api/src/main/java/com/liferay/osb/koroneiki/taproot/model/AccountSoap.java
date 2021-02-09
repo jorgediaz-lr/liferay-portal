@@ -51,6 +51,7 @@ public class AccountSoap implements Serializable {
 		soapModel.setWebsite(model.getWebsite());
 		soapModel.setTier(model.getTier());
 		soapModel.setRegion(model.getRegion());
+		soapModel.setDataRegion(model.getDataRegion());
 		soapModel.setLanguage(model.getLanguage());
 		soapModel.setInternal(model.isInternal());
 		soapModel.setStatus(model.getStatus());
@@ -267,6 +268,14 @@ public class AccountSoap implements Serializable {
 		_region = region;
 	}
 
+	public String getDataRegion() {
+		return _dataRegion;
+	}
+
+	public void setDataRegion(String dataRegion) {
+		_dataRegion = dataRegion;
+	}
+
 	public String getLanguage() {
 		return _language;
 	}
@@ -315,6 +324,7 @@ public class AccountSoap implements Serializable {
 	private String _website;
 	private String _tier;
 	private String _region;
+	private String _dataRegion;
 	private String _language;
 	private boolean _internal;
 	private String _status;

@@ -42,13 +42,14 @@ public class AccountServiceUtil {
 			long parentAccountId, String name, String code, String description,
 			long logoId, String contactEmailAddress, String profileEmailAddress,
 			String phoneNumber, String faxNumber, String website, String tier,
-			String region, String language, boolean internal, String status)
+			String region, String dataRegion, String language, boolean internal,
+			String status)
 		throws PortalException {
 
 		return getService().addAccount(
 			parentAccountId, name, code, description, logoId,
 			contactEmailAddress, profileEmailAddress, phoneNumber, faxNumber,
-			website, tier, region, language, internal, status);
+			website, tier, region, dataRegion, language, internal, status);
 	}
 
 	public static Account deleteAccount(long accountId) throws PortalException {
@@ -134,28 +135,28 @@ public class AccountServiceUtil {
 			long accountId, long parentAccountId, String name, String code,
 			String description, long logoId, String contactEmailAddress,
 			String profileEmailAddress, String phoneNumber, String faxNumber,
-			String website, String tier, String region, String language,
-			boolean internal, String status)
+			String website, String tier, String region, String dataRegion,
+			String language, boolean internal, String status)
 		throws PortalException {
 
 		return getService().updateAccount(
 			accountId, parentAccountId, name, code, description, logoId,
 			contactEmailAddress, profileEmailAddress, phoneNumber, faxNumber,
-			website, tier, region, language, internal, status);
+			website, tier, region, dataRegion, language, internal, status);
 	}
 
 	public static Account updateAccount(
 			String accountKey, long parentAccountId, String name, String code,
 			String description, long logoId, String contactEmailAddress,
 			String profileEmailAddress, String phoneNumber, String faxNumber,
-			String website, String tier, String region, String language,
-			boolean internal, String status)
+			String website, String tier, String region, String dataRegion,
+			String language, boolean internal, String status)
 		throws PortalException {
 
 		return getService().updateAccount(
 			accountKey, parentAccountId, name, code, description, logoId,
 			contactEmailAddress, profileEmailAddress, phoneNumber, faxNumber,
-			website, tier, region, language, internal, status);
+			website, tier, region, dataRegion, language, internal, status);
 	}
 
 	public static AccountService getService() {
