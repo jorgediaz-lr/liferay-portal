@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.DocumentImpl;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.generic.BooleanQueryImpl;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchFixture;
@@ -41,6 +42,7 @@ import com.liferay.portal.search.engine.adapter.document.UpdateByQueryDocumentRe
 import com.liferay.portal.search.engine.adapter.document.UpdateDocumentRequest;
 import com.liferay.portal.search.engine.adapter.document.UpdateDocumentResponse;
 import com.liferay.portal.search.test.util.indexing.DocumentFixture;
+import com.liferay.portal.util.PropsImpl;
 
 import java.util.List;
 import java.util.Map;
@@ -71,6 +73,8 @@ public class ElasticsearchSearchEngineAdapterDocumentRequestTest {
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
+		PropsUtil.setProps(new PropsImpl());
+
 		_elasticsearchFixture = new ElasticsearchFixture(
 			ElasticsearchSearchEngineAdapterDocumentRequestTest.class);
 
