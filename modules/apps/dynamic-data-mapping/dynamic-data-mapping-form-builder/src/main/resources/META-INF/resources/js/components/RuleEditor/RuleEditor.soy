@@ -569,9 +569,14 @@
 
 		<div class="container-trash">
 			{call ClayButton.render}
+				{let $delete kind="text"}
+					{msg desc=""}delete{/msg}
+				{/let}
+
 				{param events: [
 					'click': $_handleDeleteAction
 				] /}
+				{param ariaLabel: $delete /}
 				{param data: ['index': $index] /}
 				{param icon: 'trash' /}
 				{param monospaced: true /}
@@ -809,9 +814,14 @@
 
 		<div class="container-trash">
 			{call ClayButton.render}
+				{let $delete kind="text"}
+					{msg desc=""}delete{/msg}
+				{/let}
+
 				{param events: [
 					'click': $_handleDeleteCondition
 				] /}
+				{param ariaLabel: $delete /}
 				{param data: ['index': $index] /}
 				{param icon: 'trash' /}
 				{param monospaced: true /}
@@ -1012,9 +1022,14 @@
 	<div class="addbutton-timeline-item">
 		<div class="add-item timeline-increment-icon">
 			{call ClayButton.render}
+				{let $duplicate kind="text"}
+					{msg desc=""}duplicate{/msg}
+				{/let}
+
 				{param events: [
 					'click': $_handleItemAdded
 				] /}
+				{param ariaLabel: $duplicate /}
 				{param elementClasses: 'rounded-circle' /}
 				{param icon: 'plus' /}
 				{param monospaced: true /}

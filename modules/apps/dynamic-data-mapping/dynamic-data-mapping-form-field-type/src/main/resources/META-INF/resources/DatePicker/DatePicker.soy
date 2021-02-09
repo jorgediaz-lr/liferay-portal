@@ -187,7 +187,12 @@
 			<input {$hiddenInputAttributes} />
 
 			<div class="input-group-inset-item input-group-inset-item-after">
+				{let $calendar kind="text"}
+					{msg desc=""}date-field-type-description{/msg}
+				{/let}
+
 				{call ClayButton.render}
+					{param ariaLabel: $calendar /}
 					{param disabled: $readOnly /}
 					{param elementClasses: 'd-none d-md-inline-block' /}
 					{param events: ['click': $_handleToggle] /}
@@ -279,8 +284,21 @@
 		</form>
 
 		<div class="navigation">
+			{let $previous kind="text"}
+				{msg desc=""}previous{/msg}
+			{/let}
+
+			{let $today kind="text"}
+				{msg desc=""}today{/msg}
+			{/let}
+
+			{let $next kind="text"}
+				{msg desc=""}next{/msg}
+			{/let}
+
 			{call ClayButton.render}
 				{param events: ['click': $_handlePreviousMonth] /}
+				{param ariaLabel: $previous /}
 				{param icon: 'angle-left' /}
 				{param monospaced: true /}
 				{param size: 'sm' /}
@@ -290,6 +308,7 @@
 			{/call}
 			{call ClayButton.render}
 				{param events: ['click': $_handleDotClicked] /}
+				{param ariaLabel: $today /}
 				{param icon: 'live' /}
 				{param monospaced: true /}
 				{param size: 'sm' /}
@@ -299,6 +318,7 @@
 			{/call}
 			{call ClayButton.render}
 				{param events: ['click': $_handleNextMonth] /}
+				{param ariaLabel: $next /}
 				{param icon: 'angle-right' /}
 				{param monospaced: true /}
 				{param size: 'sm' /}

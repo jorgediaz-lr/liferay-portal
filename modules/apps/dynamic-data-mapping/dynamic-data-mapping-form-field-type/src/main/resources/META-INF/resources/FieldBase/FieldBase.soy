@@ -52,7 +52,12 @@
 		{if $repeatable}
 			<div class="lfr-ddm-form-field-repeatable-toolbar">
 				{if $showRepeatableRemoveButton}
+					{let $delete kind="text"}
+						{msg desc=""}delete{/msg}
+					{/let}
+
 					{call ClayButton.render}
+						{param ariaLabel: $delete /}
 						{param disabled: $readOnly /}
 						{param elementClasses: 'btn-xs ddm-form-field-repeatable-delete-button p-0' /}
 						{param events: ['click': $_handleRemoveRepeatedFieldButtonClicked] /}
@@ -62,7 +67,12 @@
 					{/call}
 				{/if}
 
+				{let $duplicate kind="text"}
+					{msg desc=""}duplicate{/msg}
+				{/let}
+
 				{call ClayButton.render}
+					{param ariaLabel: $duplicate /}
 					{param disabled: $readOnly /}
 					{param elementClasses: 'btn-xs ddm-form-field-repeatable-add-button p-0' /}
 					{param events: ['click': $_handleAddRepeatedFieldButtonClicked] /}
@@ -100,6 +110,7 @@
 
 				{if $tooltip}
 					{call Tooltip.render}
+						{param ariaLabel: $tooltip /}
 						{param icon: 'question-circle-full' /}
 						{param spritemap: $spritemap /}
 						{param text: $tooltip /}
