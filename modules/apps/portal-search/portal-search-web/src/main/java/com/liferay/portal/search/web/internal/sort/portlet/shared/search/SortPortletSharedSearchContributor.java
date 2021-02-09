@@ -14,18 +14,32 @@
 
 package com.liferay.portal.search.web.internal.sort.portlet.shared.search;
 
+import com.liferay.dynamic.data.mapping.model.DDMFormField;
+import com.liferay.dynamic.data.mapping.model.DDMFormFieldType;
+import com.liferay.dynamic.data.mapping.model.DDMStructure;
+import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
+import com.liferay.dynamic.data.mapping.util.DDMIndexer;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
+import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.search.query.Queries;
 import com.liferay.portal.search.searcher.SearchRequestBuilder;
+import com.liferay.portal.search.sort.FieldSort;
+import com.liferay.portal.search.sort.NestedSort;
 import com.liferay.portal.search.sort.Sort;
 import com.liferay.portal.search.sort.SortBuilder;
 import com.liferay.portal.search.sort.SortBuilderFactory;
 import com.liferay.portal.search.sort.SortOrder;
+import com.liferay.portal.search.sort.Sorts;
 import com.liferay.portal.search.web.internal.sort.constants.SortPortletKeys;
 import com.liferay.portal.search.web.internal.sort.portlet.SortPortletPreferences;
 import com.liferay.portal.search.web.internal.sort.portlet.SortPortletPreferencesImpl;
@@ -35,6 +49,7 @@ import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchSe
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -71,25 +86,36 @@ public class SortPortletSharedSearchContributor
 	}
 
 	protected Sort buildSort(String fieldValue, Locale locale) {
-		SortBuilder sortBuilder = _sortBuilderFactory.getSortBuilder();
+		SortOrder sortOrder = SortOrder.ASC;
 
 		if (fieldValue.endsWith("+")) {
-			sortBuilder.field(fieldValue.substring(0, fieldValue.length() - 1));
+			fieldValue = fieldValue.substring(0, fieldValue.length() - 1);
 		}
 		else if (fieldValue.endsWith("-")) {
-			sortBuilder.field(
-				fieldValue.substring(0, fieldValue.length() - 1)
-			).sortOrder(
-				SortOrder.DESC
-			);
-		}
-		else {
-			sortBuilder.field(fieldValue);
+			fieldValue = fieldValue.substring(0, fieldValue.length() - 1);
+			sortOrder = SortOrder.DESC;
 		}
 
-		return sortBuilder.locale(
-			locale
-		).build();
+		if (!fieldValue.startsWith(DDMIndexer.DDM_FIELD_PREFIX) ||
+			ddmIndexer.isLegacyDDMIndexFieldsEnabled()) {
+
+			SortBuilder sortBuilder = _sortBuilderFactory.getSortBuilder();
+
+			return sortBuilder.field(
+				fieldValue
+			).sortOrder(
+				sortOrder
+			).locale(
+				locale
+			).build();
+		}
+
+		try {
+			return _buildNestedSort(fieldValue, locale, sortOrder);
+		}
+		catch (Exception exception) {
+			throw new RuntimeException(exception);
+		}
 	}
 
 	protected Stream<Sort> buildSorts(
@@ -150,6 +176,100 @@ public class SortPortletSharedSearchContributor
 	}
 
 	@Reference
+	protected DDMIndexer ddmIndexer;
+
+	private Sort _buildNestedSort(
+		String fieldValue, Locale locale, SortOrder sortOrder) {
+
+		DDMFormField ddmFormField = _getDDMFormField(fieldValue);
+
+		StringBundler sb = new StringBundler(3);
+
+		sb.append(fieldValue);
+
+		if (GetterUtil.getBoolean(ddmFormField.getProperty("localizable"))) {
+			sb.append(StringPool.UNDERLINE);
+			sb.append(LocaleUtil.toLanguageId(locale));
+		}
+		else {
+			locale = null;
+		}
+
+		NestedSort nestedSort = _sorts.nested(DDMIndexer.DDM_FIELD_ARRAY);
+
+		nestedSort.setFilterQuery(
+			_queries.term(
+				StringBundler.concat(
+					DDMIndexer.DDM_FIELD_ARRAY, StringPool.PERIOD,
+					DDMIndexer.DDM_FIELD_NAME),
+				sb.toString()));
+
+		FieldSort fieldSort = _sorts.field(
+			_getDDMStructureNestedSortableFieldName(
+				fieldValue, ddmFormField.getType(), locale),
+			sortOrder);
+
+		fieldSort.setNestedSort(nestedSort);
+
+		return fieldSort;
+	}
+
+	private DDMFormField _getDDMFormField(String sortField) {
+		String[] sortFields = sortField.split(DDMIndexer.DDM_FIELD_SEPARATOR);
+
+		long ddmStructureId = GetterUtil.getLong(sortFields[2]);
+		String fieldName = sortFields[3];
+
+		try {
+			DDMStructure ddmStructure = _ddmStructureLocalService.getStructure(
+				ddmStructureId);
+
+			return ddmStructure.getDDMFormField(fieldName);
+		}
+		catch (PortalException portalException) {
+			throw new RuntimeException(portalException);
+		}
+	}
+
+	private String _getDDMStructureNestedSortableFieldName(
+		String ddmFormField, String ddmFormFieldType, Locale locale) {
+
+		StringBundler sb = new StringBundler(5);
+
+		sb.append(DDMIndexer.DDM_FIELD_ARRAY);
+		sb.append(StringPool.PERIOD);
+
+		String indexType =
+			ddmFormField.split(DDMIndexer.DDM_FIELD_SEPARATOR)[1];
+
+		sb.append(ddmIndexer.getValueFieldName(indexType, locale));
+
+		sb.append(StringPool.UNDERLINE);
+
+		if (Objects.equals(ddmFormFieldType, DDMFormFieldType.DECIMAL) ||
+			Objects.equals(ddmFormFieldType, DDMFormFieldType.INTEGER) ||
+			Objects.equals(ddmFormFieldType, DDMFormFieldType.NUMBER) ||
+			Objects.equals(ddmFormFieldType, DDMFormFieldType.NUMERIC)) {
+
+			sb.append("Number");
+		}
+		else {
+			sb.append("String");
+		}
+
+		return Field.getSortableFieldName(sb.toString());
+	}
+
+	@Reference
+	private DDMStructureLocalService _ddmStructureLocalService;
+
+	@Reference
+	private Queries _queries;
+
+	@Reference
 	private SortBuilderFactory _sortBuilderFactory;
+
+	@Reference
+	private Sorts _sorts;
 
 }
