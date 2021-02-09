@@ -32,7 +32,7 @@ function renderAddSubscriptions(props) {
 				}
 			]}
 			editProductPurchasesActionURL="/edit/product/purcahses/url"
-			editProductPurchasesRenderURL="/edit/product/purchases/url"
+			editProductPurchasesSelectItemActionURL="/edit/product/purchases/url"
 			redirect="/redirect/to/subscriptions/tab"
 			selectProductsURL="/select/products/url"
 			sizing={[1, 2, 3, 4]}
@@ -66,7 +66,7 @@ function renderEditSubscriptions(props) {
 				}
 			]}
 			editProductPurchasesActionURL="/edit/product/purchases/url"
-			editProductPurchasesRenderURL="/edit/product/purchases/url"
+			editProductPurchasesSelectItemActionURL="/edit/product/purchases/url"
 			redirect="/redirect/to/subscriptions/tab"
 			selectProductsURL="/select/products/url"
 			sizing={[1, 2, 3, 4]}

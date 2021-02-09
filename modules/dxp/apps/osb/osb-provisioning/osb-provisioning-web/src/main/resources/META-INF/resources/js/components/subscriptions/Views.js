@@ -24,7 +24,7 @@ import Subscriptions from './Subscriptions';
 export function AddView({
 	accountName,
 	editProductPurchasesActionURL,
-	editProductPurchasesRenderURL,
+	editProductPurchasesSelectItemActionURL,
 	redirect,
 	selectProductsURL,
 	sizing
@@ -53,7 +53,7 @@ export function AddView({
 				<b>{Liferay.Language.get('configure-subscriptions')}</b>
 
 				<ProductSelection
-					formAction={editProductPurchasesRenderURL}
+					formAction={editProductPurchasesSelectItemActionURL}
 					initialProductKeys={getInitialProductKeys()}
 					selectionURL={selectProductsURL}
 				/>
@@ -99,7 +99,7 @@ export function AddView({
 AddView.propTypes = {
 	accountName: PropTypes.string.isRequired,
 	editProductPurchasesActionURL: PropTypes.string.isRequired,
-	editProductPurchasesRenderURL: PropTypes.string.isRequired,
+	editProductPurchasesSelectItemActionURL: PropTypes.string.isRequired,
 	redirect: PropTypes.string.isRequired,
 	selectProductsURL: PropTypes.string,
 	sizing: PropTypes.arrayOf(PropTypes.number)

@@ -21,7 +21,7 @@ function EditSubscriptions({
 	backURL,
 	details,
 	editProductPurchasesActionURL,
-	editProductPurchasesRenderURL,
+	editProductPurchasesSelectItemActionURL,
 	redirect,
 	selectProductsURL,
 	sizing,
@@ -35,8 +35,8 @@ function EditSubscriptions({
 					editProductPurchasesActionURL={
 						editProductPurchasesActionURL
 					}
-					editProductPurchasesRenderURL={
-						editProductPurchasesRenderURL
+					editProductPurchasesSelectItemActionURL={
+						editProductPurchasesSelectItemActionURL
 					}
 					redirect={redirect}
 					selectProductsURL={selectProductsURL}
@@ -81,7 +81,7 @@ EditSubscriptions.propTypes = {
 		})
 	),
 	editProductPurchasesActionURL: PropTypes.string.isRequired,
-	editProductPurchasesRenderURL: PropTypes.string.isRequired,
+	editProductPurchasesSelectItemActionURL: PropTypes.string.isRequired,
 	redirect: PropTypes.string.isRequired,
 	selectProductsURL: PropTypes.string,
 	sizing: PropTypes.arrayOf(PropTypes.number),
