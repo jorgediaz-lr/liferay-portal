@@ -1,4 +1,6 @@
 Bundle-Name: Liferay OSB Provisioning License Helper API
 Bundle-SymbolicName: com.liferay.osb.provisioning.license.helper.api
 Bundle-Version: 1.0.0
-Export-Package: com.liferay.osb.provisioning.license.helper.constants
+Export-Package: \
+    com.liferay.osb.provisioning.license.helper.constants,\
+    com.liferay.osb.provisioning.license.helper.util

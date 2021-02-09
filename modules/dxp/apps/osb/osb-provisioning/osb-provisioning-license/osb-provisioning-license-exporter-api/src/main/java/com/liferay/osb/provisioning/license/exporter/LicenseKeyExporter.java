@@ -14,12 +14,10 @@
 
 package com.liferay.osb.provisioning.license.exporter;
 
-import com.liferay.osb.customer.license.model.LicenseKey;
-
 import java.io.File;
 import java.io.IOException;
 
-import java.util.List;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -27,17 +25,39 @@ import java.util.Map;
  */
 public interface LicenseKeyExporter {
 
-    public String getFileName(LicenseKey licenseKey);
+    public String getFileName(String productName, String productVersion);
 
-    public String toEncodedLicenseFile(LicenseKey licenseKey) throws Exception;
+    public String toEncodedLicenseFile(String serverId, String key);
 
-    public File toFile(LicenseKey licenseKey) throws Exception;
+    public File toFile(
+            String key, String accountName, String licenseEntryName,
+            String licenseType, int licenseVersion, String productName,
+            String productId, int productVersion, String owner, int maxServers,
+            int maxHttpSessions, long maxConcurrentUsers, long maxUsers,
+            int sizing, String description, String hostNames,
+            String ipAddresses, String macAddresses, String[] serverIds,
+            Date startDate, Date expirationDate, Date createDate)
+        throws Exception;
 
-    public String toLI(LicenseKey licenseKey) throws IOException;
+    public String toLI(
+            String key, String accountName, String licenseEntryName,
+            String licenseType, int licenseVersion, String productName,
+            String productId, int productVersion, String owner, int maxServers,
+            int maxHttpSessions, long maxConcurrentUsers, long maxUsers,
+            int sizing, String description, String hostName, String ipAddresses,
+            String macAddresses, String serverId, Date startDate,
+            Date expirationDate)
+        throws Exception;
 
-    public String toXML(LicenseKey licenseKey) throws Exception;
-
-    public String toXML(List<LicenseKey> licenseKeys) throws Exception;
+    public String toXML(
+            String key, String accountName, String licenseEntryName,
+            String licenseType, int licenseVersion, String productName,
+            String productId, int productVersion, String owner, int maxServers,
+            int maxHttpSessions, long maxConcurrentUsers, long maxUsers,
+            int sizing, String description, String hostNames,
+            String ipAddresses, String macAddresses, String[] serverIds,
+            Date startDate, Date expirationDate, Date createDate)
+        throws Exception;
 
     public String toXML(Map<String, String> properties, String key)
         throws Exception;

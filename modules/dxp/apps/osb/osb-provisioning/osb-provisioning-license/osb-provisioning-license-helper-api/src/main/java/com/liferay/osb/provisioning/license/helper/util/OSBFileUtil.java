@@ -12,10 +12,9 @@
  *
  */
 
-package com.liferay.osb.customer.license.internal.util;
+package com.liferay.osb.provisioning.license.helper.util;
 
 import com.liferay.document.library.kernel.store.DLStoreUtil;
-import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -58,7 +57,6 @@ public class OSBFileUtil {
     }
 
     private static final String _TEMP_DIR =
-        PropsUtil.get(PropsKeys.LIFERAY_HOME) + "/data/" +
-            OSBCustomerConstants.TEMP_DIR;
+        PropsUtil.get(PropsKeys.LIFERAY_HOME) + "/data/osb/temp/";
 
 }
