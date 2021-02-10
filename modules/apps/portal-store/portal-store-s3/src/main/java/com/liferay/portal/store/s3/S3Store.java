@@ -230,7 +230,11 @@ public class S3Store extends BaseStore {
 		try (S3Object s3Object = getS3Object(
 				companyId, repositoryId, fileName, versionLabel)) {
 
-			return _s3FileCache.getCacheFileInputStream(s3Object, fileName);
+			ObjectMetadata objectMetadata = s3Object.getObjectMetadata();
+
+			return _s3FileCache.getCacheFileInputStream(
+				fileName, s3Object::getObjectContent,
+				objectMetadata.getLastModified());
 		}
 		catch (IOException ioException) {
 			throw new SystemException(ioException);
