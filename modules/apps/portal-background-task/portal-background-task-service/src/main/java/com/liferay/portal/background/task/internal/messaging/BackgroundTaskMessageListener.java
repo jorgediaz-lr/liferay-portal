@@ -133,14 +133,14 @@ public class BackgroundTaskMessageListener extends BaseMessageListener {
 			status = backgroundTaskResult.getStatus();
 			statusMessage = backgroundTaskResult.getStatusMessage();
 		}
-		catch (DuplicateLockException duplicateLockException) {
+		catch (DuplicateLockException dle) {
 			status = BackgroundTaskConstants.STATUS_QUEUED;
 
 			if (_log.isDebugEnabled()) {
 				_log.debug(
 					"Unable to acquire lock, queuing background task " +
 						backgroundTaskId,
-					duplicateLockException);
+					dle);
 			}
 			else if (_log.isInfoEnabled()) {
 				_log.info(
@@ -148,33 +148,33 @@ public class BackgroundTaskMessageListener extends BaseMessageListener {
 						backgroundTaskId);
 			}
 		}
-		catch (Exception exception) {
+		catch (Exception e) {
 			status = BackgroundTaskConstants.STATUS_FAILED;
 
-			if (exception instanceof SystemException) {
-				Throwable cause = exception.getCause();
+			if (e instanceof SystemException) {
+				Throwable cause = e.getCause();
 
 				if (cause instanceof Exception) {
-					exception = (Exception)cause;
+					e = (Exception)cause;
 				}
 			}
 
 			if (backgroundTaskExecutor != null) {
 				statusMessage = backgroundTaskExecutor.handleException(
-					backgroundTask, exception);
+					backgroundTask, e);
 			}
 
 			if (_log.isInfoEnabled()) {
 				if (statusMessage != null) {
 					statusMessage = statusMessage.concat(
-						StackTraceUtil.getStackTrace(exception));
+						StackTraceUtil.getStackTrace(e));
 				}
 				else {
-					statusMessage = StackTraceUtil.getStackTrace(exception);
+					statusMessage = StackTraceUtil.getStackTrace(e);
 				}
 			}
 
-			_log.error("Unable to execute background task", exception);
+			_log.error("Unable to execute background task", e);
 		}
 		finally {
 			if (_log.isDebugEnabled()) {
@@ -245,11 +245,11 @@ public class BackgroundTaskMessageListener extends BaseMessageListener {
 					(BackgroundTaskExecutor)InstanceFactory.newInstance(
 						classLoader, backgroundTask.getTaskExecutorClassName());
 			}
-			catch (Exception exception) {
+			catch (Exception e) {
 				throw new IllegalStateException(
 					"Cannot instantiate BackgroundTaskExecutor: " +
 						backgroundTask.getTaskExecutorClassName(),
-					exception);
+					e);
 			}
 		}
 
