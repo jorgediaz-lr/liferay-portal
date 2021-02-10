@@ -121,7 +121,9 @@ function InlineEdit({
 								{options.map(option => (
 									<option
 										key={option.value}
-										value={option.value}
+										value={convertDashToEmptyString(
+											option.value
+										)}
 									>
 										{option.label}
 									</option>
