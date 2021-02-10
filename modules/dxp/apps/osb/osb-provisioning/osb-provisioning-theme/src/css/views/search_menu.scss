@@ -14,6 +14,11 @@ body {
 
 #accountSearch {
 	max-width: 40.625rem;
+
+	.advanced-search-container {
+		left: initial;
+		max-width: 40.625rem;
+	}
 }
 
 .advanced-search-container {
@@ -21,8 +26,9 @@ body {
 	border: 1px solid $divider;
 	border-radius: $border-radius;
 	box-shadow: 0 4px 8px rgba(39, 40, 51, 0.12);
+	left: 10vw;
 	max-height: $advanced-search-max-height;
-	max-width: 40.625rem;
+	max-width: 80vw;
 	overflow: auto;
 	padding: $spacing-default;
 	position: fixed;

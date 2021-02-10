@@ -17,6 +17,7 @@ import {
 	formatFilterValue,
 	getFilterDisplayName
 } from '../../../utilities/searchFilters';
+import AdvancedSearch from './AdvancedSearch';
 
 function Search({licenseHomeURL = ''}) {
 	const [keywords, setKeywords] = useState(getSearchParameter());
@@ -67,6 +68,10 @@ function Search({licenseHomeURL = ''}) {
 		else {
 			return Liferay.Language.get('search-licenses');
 		}
+	}
+
+	function handleClickOutside() {
+		// TODO
 	}
 
 	function handleOnChange(event) {
@@ -162,6 +167,13 @@ function Search({licenseHomeURL = ''}) {
 					</a>
 				</div>
 			</div>
+
+			{showAdvancedSearch && (
+				<AdvancedSearch
+					clickOutsideCallback={handleClickOutside}
+					formAction={licenseHomeURL}
+				/>
+			)}
 		</>
 	);
 }

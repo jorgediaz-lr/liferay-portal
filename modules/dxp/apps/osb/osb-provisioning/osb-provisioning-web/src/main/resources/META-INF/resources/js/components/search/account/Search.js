@@ -168,16 +168,16 @@ function Search({
 		}
 	}
 
-	function handleOnKeyDown(event) {
-		if (event.keyCode === 13) {
-			window.location.assign(buildSearchResultsURL());
-		}
-	}
-
 	function handleOnChange(event) {
 		setKeywords(event.target.value);
 
 		requestSearchResults(event.target.value);
+	}
+
+	function handleOnKeyDown(event) {
+		if (event.keyCode === 13) {
+			window.location.assign(buildSearchResultsURL());
+		}
 	}
 
 	function handleOnToggle() {
