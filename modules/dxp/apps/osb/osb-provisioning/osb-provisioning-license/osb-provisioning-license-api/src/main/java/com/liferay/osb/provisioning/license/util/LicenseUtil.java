@@ -12,21 +12,12 @@
  *
  */
 
-package com.liferay.osb.customer.license.util;
+package com.liferay.osb.provisioning.license.util;
 
-import com.liferay.osb.customer.admin.constants.LicenseEntryConstants;
-import com.liferay.osb.customer.license.model.LicenseKey;
-import com.liferay.osb.customer.license.service.LicenseKeyLocalServiceUtil;
-import com.liferay.osb.customer.license.util.comparator.LicenseKeyExpirationDateComparator;
-import com.liferay.osb.customer.license.util.comparator.LicenseKeyStartDateComparator;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.util.DateUtil;
-import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.osb.provisioning.license.util.comparator.LicenseKeyExpirationDateComparator;
+import com.liferay.osb.provisioning.license.util.comparator.LicenseKeyStartDateComparator;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
 import java.util.StringTokenizer;
 
 /**
@@ -57,118 +48,6 @@ public class LicenseUtil {
 		}
 
 		return orderByComparator;
-	}
-
-	public static boolean isAggregate(long licenseKeySetId)
-		throws PortalException {
-
-		List<LicenseKey> licenseKeys =
-			LicenseKeyLocalServiceUtil.getLicenseKeySetLicenseKeys(
-				licenseKeySetId);
-
-		licenseKeys = ListUtil.copy(licenseKeys);
-
-		Iterator<LicenseKey> itr = licenseKeys.iterator();
-
-		while (itr.hasNext()) {
-			LicenseKey licenseKey = itr.next();
-
-			if (!licenseKey.isActive()) {
-				itr.remove();
-			}
-		}
-
-		if (licenseKeys.isEmpty() || (licenseKeys.size() <= 1)) {
-			return false;
-		}
-
-		LicenseKey firstLicenseKey = licenseKeys.get(0);
-
-		String licenseEntryType = firstLicenseKey.getLicenseEntryType();
-		Date startDate = firstLicenseKey.getStartDate();
-		Date expirationDate = firstLicenseKey.getExpirationDate();
-
-		for (LicenseKey licenseKey : licenseKeys) {
-			if (licenseKey.getLicenseVersion() < 3) {
-				return false;
-			}
-
-			String curLicenseEntryType = licenseKey.getLicenseEntryType();
-
-			if (!curLicenseEntryType.equals(
-					LicenseEntryConstants.TYPE_PER_USER) &&
-				!curLicenseEntryType.equals(
-					LicenseEntryConstants.TYPE_PRODUCTION)) {
-
-				return false;
-			}
-
-			if (curLicenseEntryType.equals(
-					LicenseEntryConstants.TYPE_PER_USER)) {
-
-				if (firstLicenseKey.getMaxConcurrentUsers() !=
-						licenseKey.getMaxConcurrentUsers()) {
-
-					return false;
-				}
-
-				if (firstLicenseKey.getMaxUsers() != licenseKey.getMaxUsers()) {
-					return false;
-				}
-			}
-
-			if (!licenseEntryType.equals(curLicenseEntryType)) {
-				return false;
-			}
-
-			if (!DateUtil.equals(startDate, licenseKey.getStartDate())) {
-				return false;
-			}
-
-			if (!DateUtil.equals(
-					expirationDate, licenseKey.getExpirationDate())) {
-
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	public static boolean isRenewAggregate(long licenseKeySetId)
-		throws PortalException {
-
-		if (!isAggregate(licenseKeySetId)) {
-			return false;
-		}
-
-		List<LicenseKey> licenseKeys =
-			LicenseKeyLocalServiceUtil.getLicenseKeySetLicenseKeys(
-				licenseKeySetId);
-
-		licenseKeys = ListUtil.copy(licenseKeys);
-
-		Iterator<LicenseKey> itr = licenseKeys.iterator();
-
-		while (itr.hasNext()) {
-			LicenseKey licenseKey = itr.next();
-
-			if (!licenseKey.isActive()) {
-				itr.remove();
-			}
-		}
-
-		if (licenseKeys.isEmpty()) {
-			return false;
-		}
-
-		LicenseKey firstLicenseKey = licenseKeys.get(0);
-
-		if (!firstLicenseKey.canRenew()) {
-			return false;
-		}
-
-		return true;
 	}
 
 	public static String trimText(String text) {

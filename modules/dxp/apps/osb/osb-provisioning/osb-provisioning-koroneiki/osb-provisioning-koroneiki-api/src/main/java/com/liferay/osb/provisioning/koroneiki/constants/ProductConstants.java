@@ -22,8 +22,17 @@ public class ProductConstants {
 	public static final String NAME_BASIC_RESELLER_PARTNERSHIP =
 		"Basic Reseller Partnership";
 
+	public static final String NAME_COMMERCE_SUBSCRIPTION =
+		"Commerce Subscription";
+
 	public static final String NAME_DESIGNATED_CONTACT_ADD_ON =
 		"Designated Contact Add-on";
+
+	public static final String NAME_DIGITAL_ENTERPRISE = "Digital Enterprise";
+
+	public static final String NAME_DXP = "DXP";
+
+	public static final String NAME_DXP_CLOUD = "DXP Cloud";
 
 	public static final String NAME_DXP_CLOUD_INSTANCE_PRODUCTION =
 		"DXP Cloud Instance - Production";
@@ -43,6 +52,8 @@ public class ProductConstants {
 	public static final String NAME_LIMITED = "Limited Subscription";
 
 	public static final String NAME_PLATINUM = "Platinum Subscription";
+
+	public static final String NAME_PORTAL = "Portal";
 
 	public static final String NAME_PORTAL_EWSA = "Portal Enterprise";
 

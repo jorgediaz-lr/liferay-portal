@@ -12,14 +12,10 @@
  *
  */
 
-package com.liferay.osb.customer.license.model.impl;
+package com.liferay.osb.provisioning.license.model.impl;
 
-import com.liferay.osb.customer.admin.model.AccountEntry;
-import com.liferay.osb.customer.admin.model.LicenseEntry;
-import com.liferay.osb.customer.admin.service.AccountEntryLocalServiceUtil;
-import com.liferay.osb.customer.admin.service.LicenseEntryLocalServiceUtil;
-import com.liferay.osb.customer.license.model.LicenseKeySet;
-import com.liferay.osb.customer.license.service.LicenseKeySetLocalServiceUtil;
+import com.liferay.osb.provisioning.license.model.LicenseEntry;
+import com.liferay.osb.provisioning.license.service.LicenseEntryLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.Time;
 
@@ -55,19 +51,9 @@ public class LicenseKeyImpl extends LicenseKeyBaseImpl {
 		return true;
 	}
 
-	public AccountEntry getAccountEntry() throws PortalException {
-		return AccountEntryLocalServiceUtil.getAccountEntry(
-			getAccountEntryId());
-	}
-
 	public LicenseEntry getLicenseEntry() throws PortalException {
 		return LicenseEntryLocalServiceUtil.getLicenseEntry(
 			getLicenseEntryId());
-	}
-
-	public LicenseKeySet getLicenseKeySet() throws PortalException {
-		return LicenseKeySetLocalServiceUtil.getLicenseKeySet(
-			getLicenseKeySetId());
 	}
 
 	public boolean isExpired() {

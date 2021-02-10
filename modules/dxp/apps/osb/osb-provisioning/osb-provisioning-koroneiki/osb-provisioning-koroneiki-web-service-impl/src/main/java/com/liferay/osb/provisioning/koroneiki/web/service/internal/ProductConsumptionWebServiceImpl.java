@@ -41,6 +41,44 @@ import org.osgi.service.component.annotations.Component;
 public class ProductConsumptionWebServiceImpl
 	implements ProductConsumptionWebService {
 
+	public ProductConsumption addProductConsumption(
+			String agentName, String agentUID, String accountKey,
+			ProductConsumption productConsumption)
+		throws Exception {
+
+		return _productConsumptionResource.
+			postAccountAccountKeyProductConsumption(
+				agentName, agentUID, accountKey, productConsumption);
+	}
+
+	public void deleteProductConsumption(
+			String agentName, String agentUID, String productConsumptionKey)
+		throws Exception {
+
+		_productConsumptionResource.deleteProductConsumption(
+			agentName, agentUID, productConsumptionKey);
+	}
+
+	public List<ProductConsumption> getProductConsumptions(
+			String domain, String entityName, String entityId, int page,
+			int pageSize)
+		throws Exception {
+
+		Page<ProductConsumption> productConsumptionsPage =
+			_productConsumptionResource.
+				getProductConsumptionByExternalLinkDomainEntityNameEntityPage(
+					domain, entityName, entityId,
+					Pagination.of(page, pageSize));
+
+		if ((productConsumptionsPage != null) &&
+			(productConsumptionsPage.getItems() != null)) {
+
+			return new ArrayList<>(productConsumptionsPage.getItems());
+		}
+
+		return Collections.emptyList();
+	}
+
 	public List<ProductConsumption> search(
 			String filter, int page, int pageSize, String sort)
 		throws Exception {

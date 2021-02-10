@@ -23,6 +23,20 @@ import java.util.List;
  */
 public interface ProductConsumptionWebService {
 
+	public ProductConsumption addProductConsumption(
+			String agentName, String agentUID, String accountKey,
+			ProductConsumption productConsumption)
+		throws Exception;
+
+	public void deleteProductConsumption(
+			String agentName, String agentUID, String productConsumptionKey)
+		throws Exception;
+
+	public List<ProductConsumption> getProductConsumptions(
+			String domain, String entityName, String entityId, int page,
+			int pageSize)
+		throws Exception;
+
 	public List<ProductConsumption> search(
 			String filter, int page, int pageSize, String sort)
 		throws Exception;

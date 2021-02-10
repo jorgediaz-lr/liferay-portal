@@ -12,37 +12,28 @@
  *
  */
 
-package com.liferay.osb.customer.license.service.impl;
+package com.liferay.osb.provisioning.license.service.impl;
 
-import com.liferay.osb.customer.admin.constants.LicenseEntryConstants;
-import com.liferay.osb.customer.admin.constants.ProductEntryConstants;
-import com.liferay.osb.customer.admin.model.AccountEntry;
-import com.liferay.osb.customer.admin.model.LicenseEntry;
-import com.liferay.osb.customer.admin.model.ProductEntry;
-import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
-import com.liferay.osb.customer.admin.service.LicenseEntryLocalService;
-import com.liferay.osb.customer.admin.service.ProductEntryLocalService;
-import com.liferay.osb.customer.admin.service.permission.AccountEntryPermission;
-import com.liferay.osb.customer.constants.OSBActionKeys;
-import com.liferay.osb.customer.constants.OSBCustomerConstants;
-import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
-import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseViewWebService;
-import com.liferay.osb.customer.license.constants.LicenseKeyConstants;
-import com.liferay.osb.customer.license.model.LicenseKey;
-import com.liferay.osb.customer.license.service.base.LicenseKeyServiceBaseImpl;
-import com.liferay.osb.customer.license.service.permission.AssetReceiptPermission;
-import com.liferay.osb.customer.license.service.permission.LicenseKeyPermission;
-import com.liferay.osb.customer.license.util.LicenseKeyExporter;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchaseView;
+import com.liferay.osb.provisioning.koroneiki.constants.ProductConstants;
+import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
+import com.liferay.osb.provisioning.koroneiki.web.service.ProductPurchaseViewWebService;
+import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
+import com.liferay.osb.provisioning.license.helper.constants.LicenseType;
+import com.liferay.osb.provisioning.license.helper.constants.LicenseVersion;
+import com.liferay.osb.provisioning.license.model.LicenseEntry;
+import com.liferay.osb.provisioning.license.model.LicenseKey;
+import com.liferay.osb.provisioning.license.service.LicenseEntryLocalService;
+import com.liferay.osb.provisioning.license.service.base.LicenseKeyServiceBaseImpl;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.instances.service.PortalInstancesLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
-import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -51,7 +42,6 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -62,13 +52,10 @@ import java.util.List;
 public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 	public LicenseKey addDeveloperLicenseKey(
-			long accountEntryId, long productEntryId, int productMinorVersion)
+			String accountKey, String productKey, int productMinorVersion)
 		throws Exception {
 
-		AccountEntry accountEntry = _accountEntryLocalService.getAccountEntry(
-			accountEntryId);
-		ProductEntry productEntry = _productEntryLocalService.getProductEntry(
-			productEntryId);
+		Product product = _productWebService.getProduct(productKey);
 
 		try {
 			User user = getUser();
@@ -76,7 +63,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			StringBundler sb = new StringBundler(7);
 
 			sb.append("accountKey eq '");
-			sb.append(accountEntry.getKoroneikiAccountKey());
+			sb.append(accountKey);
 			sb.append("' and customerContactUuids/any(s:s eq '");
 			sb.append(user.getUuid());
 			sb.append("') and state eq 'active' and (property_type eq ");
@@ -89,22 +76,31 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 			boolean hasActiveProduct = false;
 
+			String productName = product.getName();
+
 			for (ProductPurchaseView productPurchaseView :
 					productPurchaseViews) {
 
-				Product product = productPurchaseView.getProduct();
+				Product curProduct = productPurchaseView.getProduct();
 
-				ProductEntry curProductEntry =
-					_productEntryLocalService.getProductEntryByKoroneikiKey(
-						product.getKey());
+				String curProductName = curProduct.getName();
 
-				if ((curProductEntry.isCommerceSubscription() &&
-					 productEntry.isCommerceSubscription()) ||
-					(curProductEntry.isDigitalEnterprise() &&
-					 productEntry.isDigitalEnterprise()) ||
-					(curProductEntry.isDigitalEnterprise() &&
-					 productEntry.isDXPCloud()) ||
-					(curProductEntry.isPortal() && productEntry.isPortal())) {
+				if ((curProductName.contains(
+						ProductConstants.NAME_COMMERCE_SUBSCRIPTION) &&
+					 productName.contains(
+						 ProductConstants.NAME_COMMERCE_SUBSCRIPTION)) ||
+					((curProductName.contains(
+						ProductConstants.NAME_DIGITAL_ENTERPRISE) ||
+					  curProductName.startsWith(ProductConstants.NAME_DXP)) &&
+					 (productName.contains(
+						 ProductConstants.NAME_DIGITAL_ENTERPRISE) ||
+					  productName.startsWith(ProductConstants.NAME_DXP))) ||
+					((curProductName.contains(
+						ProductConstants.NAME_DIGITAL_ENTERPRISE) ||
+					  curProductName.startsWith(ProductConstants.NAME_DXP)) &&
+					 productName.contains(ProductConstants.NAME_DXP_CLOUD)) ||
+					(curProductName.contains(ProductConstants.NAME_PORTAL) &&
+					 productName.contains(ProductConstants.NAME_PORTAL))) {
 
 					hasActiveProduct = true;
 				}
@@ -119,68 +115,58 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		}
 
 		return licenseKeyLocalService.addDeveloperLicenseKey(
-			getUserId(), accountEntryId, productEntryId, productMinorVersion);
+			getUserId(), accountKey, productKey, productMinorVersion);
 	}
 
 	public LicenseKey addLicenseKey(
-			long userId, long licenseKeySetId, String name, long licenseEntryId,
-			long productEntryId, String koroneikiAccountKey,
-			String koroneikiProductPurchaseKey, String accountEntryName,
-			int productVersion, long clusterId, String owner, int maxServers,
-			int maxHttpSessions, int maxConcurrentUsers, int maxUsers,
-			int sizing, String description, String[] hostNames,
-			String[] ipAddresses, String[] macAddresses, String[] serverIds,
-			Date startDate, Date expirationDate, boolean complimentary,
-			boolean active)
+			long userId, String name, long licenseEntryId, String productKey,
+			String accountKey, String productPurchaseKey, String accountCode,
+			String accountName, int productVersion, long clusterId,
+			String owner, int maxServers, int maxHttpSessions,
+			int maxConcurrentUsers, int maxUsers, int sizing,
+			String description, String[] hostNames, String[] ipAddresses,
+			String[] macAddresses, String[] serverIds, Date startDate,
+			Date expirationDate, boolean complimentary, boolean active)
 		throws Exception {
 
-		AccountEntryPermission.check(
-			getPermissionChecker(), koroneikiAccountKey,
-			OSBActionKeys.ADD_LICENSE);
+		//TODO: add permission check
 
 		LicenseEntry licenseEntry = _licenseEntryLocalService.getLicenseEntry(
 			licenseEntryId);
 
-		ProductEntry productEntry = null;
+		Product product = null;
 
-		if (productEntryId > 0) {
-			productEntry = _productEntryLocalService.getProductEntry(
-				productEntryId);
+		if (Validator.isNotNull(productKey)) {
+			product = _productWebService.getProduct(productKey);
 		}
 		else {
-			productEntry = _productEntryLocalService.getProductEntry(
-				licenseEntry.getProductEntryId());
+			product = _productWebService.getProduct(
+				licenseEntry.getProductKey());
 		}
 
 		String licenseEntryType = licenseEntry.getType();
 
-		if ((LicenseKeyConstants.getLicenseVersion(
-				productEntry, productVersion) >= 3) &&
-			(licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER) ||
-			 licenseEntryType.equals(
-				 LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER)) &&
-			(maxHttpSessions != 5) &&
-			!_roleLocalService.hasUserRole(
-				getUserId(), OSBCustomerConstants.ROLE_OSB_ACCOUNT_ADMIN_ID) &&
-			!_roleLocalService.hasUserRole(
-				getUserId(), OSBCustomerConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
+		if ((LicenseVersion.getLicenseVersion(
+				product.getName(), productVersion) >= 3) &&
+			(licenseEntryType.equals(LicenseType.DEVELOPER) ||
+			 licenseEntryType.equals(LicenseType.DEVELOPER_CLUSTER)) &&
+			(maxHttpSessions != 5)) {
 
 			throw new PrincipalException();
 		}
 
 		return licenseKeyLocalService.addLicenseKey(
-			userId, licenseKeySetId, name, licenseEntryId, productEntryId,
-			koroneikiAccountKey, koroneikiProductPurchaseKey, accountEntryName,
-			productVersion, clusterId, owner, maxServers, maxHttpSessions,
-			maxConcurrentUsers, maxUsers, sizing, description, hostNames,
-			ipAddresses, macAddresses, serverIds, startDate, expirationDate,
-			complimentary, true);
+			userId, name, licenseEntryId, productKey, accountKey,
+			productPurchaseKey, accountCode, accountName, productVersion,
+			clusterId, owner, maxServers, maxHttpSessions, maxConcurrentUsers,
+			maxUsers, sizing, description, hostNames, ipAddresses, macAddresses,
+			serverIds, startDate, expirationDate, complimentary, true);
 	}
 
 	@JSONWebService
 	public LicenseKey addLicenseKey(
 			String userUuid, String assetReceiptLicenseUuid,
-			String licenseEntryType, String productEntryName, String productId,
+			String licenseEntryType, String productName, String productId,
 			int productVersion, String owner, long maxUsers, String description,
 			String hostName, String ipAddresses, String macAddresses,
 			String serverId, Date startDate, Date expirationDate)
@@ -188,12 +174,13 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 		validateJSONWebServicePermissions();
 
-		User user = userLocalService.getUserByUuidAndCompanyId(
-			userUuid, OSBCustomerConstants.COMPANY_ID);
+		long companyId = _portalInstancesLocalService.getDefaultCompanyId();
+
+		User user = userLocalService.getDefaultUser(companyId);
 
 		return licenseKeyLocalService.addLicenseKey(
 			user.getUserId(), assetReceiptLicenseUuid, licenseEntryType,
-			productEntryName, productId, productVersion, owner, maxUsers,
+			productName, productId, productVersion, owner, maxUsers,
 			description, hostName, ipAddresses, macAddresses, serverId,
 			startDate, expirationDate);
 	}
@@ -203,18 +190,9 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			String owner, Date startDate, long licenseLifetime)
 		throws Exception {
 
-		validateJSONWebServicePermissions();
+		//TODO: add permission check and implementation
 
-		Date expirationDate = new Date(startDate.getTime() + licenseLifetime);
-
-		LicenseKey licenseKey = licenseKeyLocalService.addLicenseKey(
-			getUserId(), StringPool.BLANK,
-			LicenseEntryConstants.TYPE_ENTERPRISE, "Liferay Commerce",
-			ProductEntryConstants.PRODUCT_ID_COMMERCE, 1, owner, 0,
-			"Trial Activation Key", StringPool.BLANK, StringPool.BLANK,
-			StringPool.BLANK, StringPool.BLANK, startDate, expirationDate);
-
-		return _licenseKeyExporter.toLI(licenseKey);
+		return StringPool.BLANK;
 	}
 
 	@JSONWebService
@@ -222,31 +200,9 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			String owner, Date startDate, long licenseLifetime)
 		throws Exception {
 
-		validateJSONWebServicePermissions();
+		//TODO: add permission check and implementation
 
-		AccountEntry accountEntry = _accountEntryLocalService.getAccountEntry(
-			OSBCustomerConstants.ACCOUNT_ENTRY_WEDEPLOY_ID);
-
-		ProductEntry productEntry = _productEntryLocalService.getProductEntry(
-			OSBCustomerConstants.PRODUCT_ENTRY_DIGITAL_ENTERPRISE_DEVELOPER_ID);
-
-		LicenseEntry licenseEntry = _licenseEntryLocalService.getLicenseEntry(
-			productEntry.getProductEntryId(),
-			LicenseEntryConstants.TYPE_DEVELOPER);
-
-		Date expirationDate = new Date(startDate.getTime() + licenseLifetime);
-
-		LicenseKey licenseKey = licenseKeyLocalService.addLicenseKey(
-			getUserId(), null, "Trial Activation Key", licenseEntry,
-			productEntry, accountEntry.getKoroneikiAccountKey(),
-			StringPool.BLANK, accountEntry.getName(),
-			ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7_0_10, 0, owner,
-			0, 5, 0, 0, 1, "Trial Activation Key", new String[0], new String[0],
-			new String[0],
-			new String[] {LicenseKeyConstants.SERVER_ID_DEVELOPER}, startDate,
-			expirationDate, StringPool.BLANK, true, true);
-
-		return _licenseKeyExporter.toXML(licenseKey);
+		return StringPool.BLANK;
 	}
 
 	@JSONWebService
@@ -274,19 +230,9 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 	}
 
 	public LicenseKey getLicenseKey(long licenseKeyId) throws PortalException {
-		LicenseKey licenseKey = licenseKeyLocalService.getLicenseKey(
-			licenseKeyId);
+		//TODO: add permission check
 
-		if (Validator.isNotNull(licenseKey.getAssetReceiptLicenseUuid())) {
-			AssetReceiptPermission.check(
-				getPermissionChecker(), OSBActionKeys.VIEW);
-		}
-		else {
-			LicenseKeyPermission.check(
-				getPermissionChecker(), licenseKey, ActionKeys.VIEW);
-		}
-
-		return licenseKey;
+		return licenseKeyLocalService.getLicenseKey(licenseKeyId);
 	}
 
 	@JSONWebService
@@ -329,67 +275,46 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 	@JSONWebService
 	public List<LicenseKey> getLicenseKeysByName(
-			String productEntryName, String serverId, boolean active, int start,
+			String productName, String serverId, boolean active, int start,
 			int end, OrderByComparator obc)
 		throws PortalException {
 
 		validateJSONWebServicePermissions();
 
 		return licenseKeyLocalService.getLicenseKeysByName(
-			productEntryName, serverId, active, start, end, obc);
+			productName, serverId, active, start, end, obc);
 	}
 
-	public List<LicenseKey> getLicenseKeySetLicenseKeys(long licenseKeySetId)
-		throws PortalException {
-
-		List<LicenseKey> licenseKeys =
-			licenseKeyPersistence.findByLicenseKeySetId(licenseKeySetId);
-
-		return filterLicenseKeys(licenseKeys);
-	}
-
-	public List<LicenseKey> getOfferingEntryGroupLicenseKeys(
-			long[] offeringEntryIds, boolean complimentary, boolean active,
+	public List<LicenseKey> getProductPurchaseGroupLicenseKeys(
+			String[] productPurchaseKeys, boolean complimentary, boolean active,
 			int start, int end, OrderByComparator obc)
 		throws PortalException {
 
-		if (!isAccountAdmin(getUserId()) &&
-			!_roleLocalService.hasUserRole(
-				getUserId(),
-				OSBCustomerConstants.ROLE_OSB_TRIAL_LICENSE_ADMIN_ID)) {
+		//TODO: add permission check
 
-			throw new PrincipalException();
-		}
-
-		return licenseKeyLocalService.getOfferingEntryGroupLicenseKeys(
-			offeringEntryIds, complimentary, active, start, end, obc);
+		return licenseKeyLocalService.getProductPurchaseGroupLicenseKeys(
+			productPurchaseKeys, complimentary, active, start, end, obc);
 	}
 
-	public int getOfferingEntryGroupLicenseKeysCount(
-			long[] offeringEntryIds, boolean complimentary, boolean active)
+	public int getProductPurchaseGroupLicenseKeysCount(
+			String[] productPurchaseKeys, boolean complimentary, boolean active)
 		throws PortalException {
 
-		if (!isAccountAdmin(getUserId()) &&
-			!_roleLocalService.hasUserRole(
-				getUserId(),
-				OSBCustomerConstants.ROLE_OSB_TRIAL_LICENSE_ADMIN_ID)) {
+		//TODO: add permission check
 
-			throw new PrincipalException();
-		}
-
-		return licenseKeyLocalService.getOfferingEntryGroupLicenseKeysCount(
-			offeringEntryIds, complimentary, active);
+		return licenseKeyLocalService.getProductPurchaseGroupLicenseKeysCount(
+			productPurchaseKeys, complimentary, active);
 	}
 
 	@JSONWebService
-	public int getOfferingEntryLicenseKeysCount(
-			long offeringEntryId, boolean complimentary, boolean active)
+	public int getProductPurchaseLicenseKeysCount(
+			String productPurchaseKey, boolean complimentary, boolean active)
 		throws PortalException {
 
 		validateJSONWebServicePermissions();
 
-		return licenseKeyLocalService.getOfferingEntryLicenseKeysCount(
-			offeringEntryId, complimentary, active);
+		return licenseKeyLocalService.getProductPurchaseLicenseKeysCount(
+			productPurchaseKey, complimentary, active);
 	}
 
 	@JSONWebService
@@ -403,8 +328,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		params.put("active", true);
 
 		int activeLicensesCount = licenseKeyLocalService.searchCount(
-			null, 0, 0, 0, 0, 0, 0, null, 0, 0, 0, 0, 0, 0, null, null, null,
-			null, 0, 0, 0, 0, 0, 0, new long[0], new long[0], null, productId,
+			null, 0, 0, 0, 0, 0, 0, null, 0, 0, 0, 0, 0, 0, null, null, null, 0,
+			0, 0, 0, 0, 0, new long[0], new String[0], null, productId,
 			new int[0], null, null, null, null, null, serverId, key, 0, 0, 0, 0,
 			0, 0, params, true);
 
@@ -417,7 +342,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 	@JSONWebService
 	public LicenseKey registerLicenseKey(
-			String orderEntryUuid, String productEntryName, int liferayVersion,
+			String orderEntryUuid, String productName, int liferayVersion,
 			int maxServers, String hostName, String ipAddresses,
 			String macAddresses, String serverId)
 		throws PortalException {
@@ -429,12 +354,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			long licenseKeyId, Date startDate, int renewTime)
 		throws Exception {
 
-		LicenseKey licenseKey = licenseKeyLocalService.getLicenseKey(
-			licenseKeyId);
-
-		AccountEntryPermission.check(
-			getPermissionChecker(), licenseKey.getKoroneikiAccountKey(),
-			OSBActionKeys.ADD_LICENSE);
+		//TODO: add permission check
 
 		return licenseKeyLocalService.renewLicenseKey(
 			getUserId(), licenseKeyId, startDate, renewTime);
@@ -461,19 +381,18 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
 			int modifiedDateGTMonth, int modifiedDateGTYear,
 			int modifiedDateLTDay, int modifiedDateLTMonth,
-			int modifiedDateLTYear, String koroneikiAccountKey,
-			String koroneikiProductPurchaseKey, String accountEntryName,
-			String licenseKeySetName, int startDateGTDay, int startDateGTMonth,
-			int startDateGTYear, int startDateLTDay, int startDateLTMonth,
-			int startDateLTYear, long[] licenseEntryIds, long[] productEntryIds,
-			String productEntryName, String productId, int[] productVersions,
-			String owner, String description, String hostName, String ipAddress,
-			String macAddress, String serverId, String key,
-			int expirationDateGTDay, int expirationDateGTMonth,
-			int expirationDateGTYear, int expirationDateLTDay,
-			int expirationDateLTMonth, int expirationDateLTYear,
-			LinkedHashMap<String, Object> params, boolean andSearch, int start,
-			int end, OrderByComparator obc)
+			int modifiedDateLTYear, String accountKey,
+			String productPurchaseKey, String accountName, int startDateGTDay,
+			int startDateGTMonth, int startDateGTYear, int startDateLTDay,
+			int startDateLTMonth, int startDateLTYear, long[] licenseEntryIds,
+			String[] productKeys, String productName, String productId,
+			int[] productVersions, String owner, String description,
+			String hostName, String ipAddress, String macAddress,
+			String serverId, String key, int expirationDateGTDay,
+			int expirationDateGTMonth, int expirationDateGTYear,
+			int expirationDateLTDay, int expirationDateLTMonth,
+			int expirationDateLTYear, LinkedHashMap<String, Object> params,
+			boolean andSearch, int start, int end, OrderByComparator obc)
 		throws Exception {
 
 		addPermissionParams(params);
@@ -483,11 +402,10 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			createDateLTDay, createDateLTMonth, createDateLTYear,
 			modifiedUserId, modifiedDateGTDay, modifiedDateGTMonth,
 			modifiedDateGTYear, modifiedDateLTDay, modifiedDateLTMonth,
-			modifiedDateLTYear, koroneikiAccountKey,
-			koroneikiProductPurchaseKey, accountEntryName, licenseKeySetName,
+			modifiedDateLTYear, accountKey, productPurchaseKey, accountName,
 			startDateGTDay, startDateGTMonth, startDateGTYear, startDateLTDay,
-			startDateLTMonth, startDateLTYear, licenseEntryIds, productEntryIds,
-			productEntryName, productId, productVersions, owner, description,
+			startDateLTMonth, startDateLTYear, licenseEntryIds, productKeys,
+			productName, productId, productVersions, owner, description,
 			hostName, ipAddress, macAddress, serverId, key, expirationDateGTDay,
 			expirationDateGTMonth, expirationDateGTYear, expirationDateLTDay,
 			expirationDateLTMonth, expirationDateLTYear, params, andSearch,
@@ -510,18 +428,18 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
 			int modifiedDateGTMonth, int modifiedDateGTYear,
 			int modifiedDateLTDay, int modifiedDateLTMonth,
-			int modifiedDateLTYear, String koroneikiAccountKey,
-			String koroneikiProductPurchaseKey, String accountEntryName,
-			String licenseKeySetName, int startDateGTDay, int startDateGTMonth,
-			int startDateGTYear, int startDateLTDay, int startDateLTMonth,
-			int startDateLTYear, long[] licenseEntryIds, long[] productEntryIds,
-			String productEntryName, String productId, int[] productVersions,
-			String owner, String description, String hostName, String ipAddress,
-			String macAddress, String serverId, String key,
-			int expirationDateGTDay, int expirationDateGTMonth,
-			int expirationDateGTYear, int expirationDateLTDay,
-			int expirationDateLTMonth, int expirationDateLTYear,
-			LinkedHashMap<String, Object> params, boolean andSearch)
+			int modifiedDateLTYear, String accountKey,
+			String productPurchaseKey, String accountName, int startDateGTDay,
+			int startDateGTMonth, int startDateGTYear, int startDateLTDay,
+			int startDateLTMonth, int startDateLTYear, long[] licenseEntryIds,
+			String[] productKeys, String productName, String productId,
+			int[] productVersions, String owner, String description,
+			String hostName, String ipAddress, String macAddress,
+			String serverId, String key, int expirationDateGTDay,
+			int expirationDateGTMonth, int expirationDateGTYear,
+			int expirationDateLTDay, int expirationDateLTMonth,
+			int expirationDateLTYear, LinkedHashMap<String, Object> params,
+			boolean andSearch)
 		throws Exception {
 
 		addPermissionParams(params);
@@ -531,11 +449,10 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			createDateLTDay, createDateLTMonth, createDateLTYear,
 			modifiedUserId, modifiedDateGTDay, modifiedDateGTMonth,
 			modifiedDateGTYear, modifiedDateLTDay, modifiedDateLTMonth,
-			modifiedDateLTYear, koroneikiAccountKey,
-			koroneikiProductPurchaseKey, accountEntryName, licenseKeySetName,
+			modifiedDateLTYear, accountKey, productPurchaseKey, accountName,
 			startDateGTDay, startDateGTMonth, startDateGTYear, startDateLTDay,
-			startDateLTMonth, startDateLTYear, licenseEntryIds, productEntryIds,
-			productEntryName, productId, productVersions, owner, description,
+			startDateLTMonth, startDateLTYear, licenseEntryIds, productKeys,
+			productName, productId, productVersions, owner, description,
 			hostName, ipAddress, macAddress, serverId, key, expirationDateGTDay,
 			expirationDateGTMonth, expirationDateGTYear, expirationDateLTDay,
 			expirationDateLTMonth, expirationDateLTYear, params, andSearch);
@@ -553,56 +470,21 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 	public void updateLicenseKey(long userId, long licenseKeyId, boolean active)
 		throws Exception {
 
-		LicenseKey licenseKey = licenseKeyLocalService.getLicenseKey(
-			licenseKeyId);
-
-		if (licenseKey.isActive() != active) {
-			if (Validator.isNull(licenseKey.getServerId())) {
-				LicenseKeyPermission.check(
-					getPermissionChecker(), licenseKey,
-					OSBActionKeys.UPDATE_ADVANCED);
-			}
-			else {
-				AssetReceiptPermission.check(
-					getPermissionChecker(), OSBActionKeys.MANAGE);
-			}
-		}
-		else {
-			LicenseKeyPermission.check(
-				getPermissionChecker(), licenseKey, OSBActionKeys.UPDATE_BASIC);
-		}
+		//TODO: add permission check
 
 		licenseKeyLocalService.updateLicenseKey(userId, licenseKeyId, active);
 	}
 
 	public LicenseKey updateLicenseKey(
-			long licenseKeyId, long licenseKeySetId,
-			String koroneikiProductPurchaseKey, String name,
+			long licenseKeyId, String productPurchaseKey, String name,
 			boolean complimentary, boolean active)
 		throws Exception {
 
-		LicenseKey licenseKey = licenseKeyLocalService.getLicenseKey(
-			licenseKeyId);
-
-		if (!koroneikiProductPurchaseKey.equals(
-				licenseKey.getKoroneikiProductPurchaseKey())) {
-
-			LicenseKeyPermission.check(
-				getPermissionChecker(), licenseKey, OSBActionKeys.UPDATE_ADMIN);
-		}
-		else if (licenseKey.isActive() != active) {
-			LicenseKeyPermission.check(
-				getPermissionChecker(), licenseKey,
-				OSBActionKeys.UPDATE_ADVANCED);
-		}
-		else {
-			LicenseKeyPermission.check(
-				getPermissionChecker(), licenseKey, OSBActionKeys.UPDATE_BASIC);
-		}
+		//TODO: add permission check
 
 		return licenseKeyLocalService.updateLicenseKey(
-			getUserId(), licenseKeyId, licenseKeySetId,
-			koroneikiProductPurchaseKey, name, complimentary, active);
+			getUserId(), licenseKeyId, productPurchaseKey, name, complimentary,
+			active);
 	}
 
 	@JSONWebService
@@ -611,8 +493,9 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 		validateJSONWebServicePermissions();
 
-		User user = userLocalService.getUserByUuidAndCompanyId(
-			userUuid, OSBCustomerConstants.COMPANY_ID);
+		long companyId = _portalInstancesLocalService.getDefaultCompanyId();
+
+		User user = userLocalService.getDefaultUser(companyId);
 
 		LicenseKey licenseKey = licenseKeyLocalService.getLicenseKeyByUuid(
 			uuid);
@@ -659,15 +542,15 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			params.put("accountMembership", new String[] {StringPool.BLANK});
 		}
 		else {
-			String[] koroneikiAccountKeys = new String[accounts.size()];
+			String[] accountKeys = new String[accounts.size()];
 
 			for (int i = 0; i < accounts.size(); i++) {
 				Account account = accounts.get(i);
 
-				koroneikiAccountKeys[i] = account.getKey();
+				accountKeys[i] = account.getKey();
 			}
 
-			params.put("accountMembership", koroneikiAccountKeys);
+			params.put("accountMembership", accountKeys);
 		}
 
 		params.put("active", Boolean.TRUE);
@@ -677,49 +560,20 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 	protected List<LicenseKey> filterLicenseKeys(List<LicenseKey> licenseKeys)
 		throws PortalException {
 
-		List<LicenseKey> filteredLicenseKeys = ListUtil.copy(licenseKeys);
+		//TODO: add permission check
 
-		Iterator<LicenseKey> itr = filteredLicenseKeys.iterator();
-
-		while (itr.hasNext()) {
-			LicenseKey licenseKey = itr.next();
-
-			if (!LicenseKeyPermission.contains(
-					getPermissionChecker(), licenseKey, ActionKeys.VIEW)) {
-
-				itr.remove();
-			}
-		}
-
-		return filteredLicenseKeys;
+		return ListUtil.copy(licenseKeys);
 	}
 
 	protected boolean isAccountAdmin(long userId) {
-		if (_roleLocalService.hasUserRole(
-				userId, OSBCustomerConstants.ROLE_OSB_ACCOUNT_ADMIN_ID)) {
+		//TODO: add permission check
 
-			return true;
-		}
-
-		if (_roleLocalService.hasUserRole(
-				userId, OSBCustomerConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
-
-			return true;
-		}
-
-		return false;
+		return true;
 	}
 
 	protected void validateJSONWebServicePermissions() throws PortalException {
-		if (!_roleLocalService.hasUserRole(
-				getUserId(), OSBCustomerConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
-
-			throw new PrincipalException();
-		}
+		//TODO: add permission check
 	}
-
-	@ServiceReference(type = AccountEntryLocalService.class)
-	private AccountEntryLocalService _accountEntryLocalService;
 
 	@ServiceReference(type = AccountWebService.class)
 	private AccountWebService _accountWebService;
@@ -727,14 +581,14 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 	@ServiceReference(type = LicenseEntryLocalService.class)
 	private LicenseEntryLocalService _licenseEntryLocalService;
 
-	@ServiceReference(type = LicenseKeyExporter.class)
-	private LicenseKeyExporter _licenseKeyExporter;
-
-	@ServiceReference(type = ProductEntryLocalService.class)
-	private ProductEntryLocalService _productEntryLocalService;
+	@ServiceReference(type = PortalInstancesLocalService.class)
+	private PortalInstancesLocalService _portalInstancesLocalService;
 
 	@ServiceReference(type = ProductPurchaseViewWebService.class)
 	private ProductPurchaseViewWebService _productPurchaseViewWebService;
+
+	@ServiceReference(type = ProductWebService.class)
+	private ProductWebService _productWebService;
 
 	@ServiceReference(type = RoleLocalService.class)
 	private RoleLocalService _roleLocalService;

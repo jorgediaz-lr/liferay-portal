@@ -12,13 +12,11 @@
  *
  */
 
-package com.liferay.osb.customer.license.service.permission;
+package com.liferay.osb.provisioning.license.service.permission;
 
-import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
-import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 
 /**
  * @author Amos Fong
@@ -38,14 +36,9 @@ public class AssetReceiptPermission {
 			PermissionChecker permissionChecker, String actionId)
 		throws PortalException {
 
-		if (RoleLocalServiceUtil.hasUserRole(
-				permissionChecker.getUserId(),
-				OSBCustomerConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
+		//TODO
 
-			return true;
-		}
-
-		return false;
+		return true;
 	}
 
 }

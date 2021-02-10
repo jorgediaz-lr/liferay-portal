@@ -12,12 +12,12 @@
  *
  */
 
-package com.liferay.osb.customer.admin.service.impl;
+package com.liferay.osb.provisioning.license.service.impl;
 
-import com.liferay.osb.customer.admin.exception.LicenseEntryNameException;
-import com.liferay.osb.customer.admin.exception.LicenseEntryVersionException;
-import com.liferay.osb.customer.admin.model.LicenseEntry;
-import com.liferay.osb.customer.admin.service.base.LicenseEntryLocalServiceBaseImpl;
+import com.liferay.osb.provisioning.license.exception.LicenseEntryNameException;
+import com.liferay.osb.provisioning.license.exception.LicenseEntryVersionException;
+import com.liferay.osb.provisioning.license.model.LicenseEntry;
+import com.liferay.osb.provisioning.license.service.base.LicenseEntryLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -35,7 +35,7 @@ public class LicenseEntryLocalServiceImpl
 	extends LicenseEntryLocalServiceBaseImpl {
 
 	public LicenseEntry addLicenseEntry(
-			long userId, long productEntryId, String name, String type,
+			long userId, String productKey, String name, String type,
 			int versionMin, int versionMax)
 		throws PortalException {
 
@@ -53,7 +53,7 @@ public class LicenseEntryLocalServiceImpl
 		licenseEntry.setUserName(user.getFullName());
 		licenseEntry.setCreateDate(now);
 		licenseEntry.setModifiedDate(now);
-		licenseEntry.setProductEntryId(productEntryId);
+		licenseEntry.setProductKey(productKey);
 		licenseEntry.setName(name);
 		licenseEntry.setType(type);
 		licenseEntry.setVersionMin(versionMin);
@@ -62,15 +62,15 @@ public class LicenseEntryLocalServiceImpl
 		return licenseEntryPersistence.update(licenseEntry);
 	}
 
-	public List<LicenseEntry> getLicenseEntries(long productEntryId) {
-		return licenseEntryPersistence.findByProductEntryId(productEntryId);
+	public List<LicenseEntry> getLicenseEntries(String productKey) {
+		return licenseEntryPersistence.findByProductKey(productKey);
 	}
 
 	public List<LicenseEntry> getLicenseEntries(
-		long productEntryId, int version) {
+		String productKey, int version) {
 
-		List<LicenseEntry> licenseEntries = licenseEntryPersistence.findByPEI_V(
-			productEntryId, version);
+		List<LicenseEntry> licenseEntries = licenseEntryPersistence.findByPK_V(
+			productKey, version);
 
 		licenseEntries = ListUtil.copy(licenseEntries);
 
@@ -89,14 +89,14 @@ public class LicenseEntryLocalServiceImpl
 		return licenseEntries;
 	}
 
-	public LicenseEntry getLicenseEntry(long productEntryId, String type)
+	public LicenseEntry getLicenseEntry(String productKey, String type)
 		throws PortalException {
 
-		return licenseEntryPersistence.findByPEI_T(productEntryId, type);
+		return licenseEntryPersistence.findByPK_T(productKey, type);
 	}
 
 	public LicenseEntry updateLicenseEntry(
-			long licenseEntryId, long productEntryId, String name, String type,
+			long licenseEntryId, String productKey, String name, String type,
 			int versionMin, int versionMax)
 		throws PortalException {
 
@@ -106,7 +106,7 @@ public class LicenseEntryLocalServiceImpl
 			licenseEntryId);
 
 		licenseEntry.setModifiedDate(new Date());
-		licenseEntry.setProductEntryId(productEntryId);
+		licenseEntry.setProductKey(productKey);
 		licenseEntry.setName(name);
 		licenseEntry.setType(type);
 		licenseEntry.setVersionMin(versionMin);

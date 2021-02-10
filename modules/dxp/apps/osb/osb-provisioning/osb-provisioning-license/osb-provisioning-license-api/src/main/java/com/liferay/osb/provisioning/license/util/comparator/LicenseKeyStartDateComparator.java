@@ -12,9 +12,9 @@
  *
  */
 
-package com.liferay.osb.customer.license.util.comparator;
+package com.liferay.osb.provisioning.license.util.comparator;
 
-import com.liferay.osb.customer.license.model.LicenseKey;
+import com.liferay.osb.provisioning.license.model.LicenseKey;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
