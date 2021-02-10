@@ -369,7 +369,7 @@ public class JournalEditArticleDisplayContext {
 			siteDefaultLocale = LocaleUtil.getSiteDefault();
 		}
 
-		if (_article == null) {
+		if (Validator.isNull(getArticleId())) {
 			_defaultArticleLanguageId = LocaleUtil.toLanguageId(
 				siteDefaultLocale);
 		}
