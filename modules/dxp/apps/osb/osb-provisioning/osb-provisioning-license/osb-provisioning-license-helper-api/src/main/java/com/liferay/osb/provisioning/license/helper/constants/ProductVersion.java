@@ -25,7 +25,7 @@ public class ProductVersion {
 
 	public static final int PORTAL_VERSION_6_1_10 = 20060;
 
-	public static String getProductVersionLabel(int productVersion) {
+	public static String getLabel(int productVersion) {
 		try {
 			ListType listType = ListTypeServiceUtil.getListType(productVersion);
 

@@ -481,11 +481,10 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 
 		Map<String, String> properties = _keyGenerator.getProperties(
 			accountName, licenseEntryName, licenseType, licenseVersion,
-			productName, productId,
-			ProductVersion.getProductVersionLabel(productVersion), owner,
-			maxServers, maxHttpSessions, maxConcurrentUsers, maxUsers, sizing,
-			description, hostNames, ipAddresses, macAddresses, serverIds,
-			startDate, expirationDate);
+			productName, productId, ProductVersion.getLabel(productVersion),
+			owner, maxServers, maxHttpSessions, maxConcurrentUsers, maxUsers,
+			sizing, description, hostNames, ipAddresses, macAddresses,
+			serverIds, startDate, expirationDate);
 
 		// See LRDCOM-2568
 
