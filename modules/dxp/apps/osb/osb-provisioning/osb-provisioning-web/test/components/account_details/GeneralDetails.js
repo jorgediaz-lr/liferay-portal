@@ -17,8 +17,10 @@ import GeneralDetails from '../../../src/main/resources/META-INF/resources/js/co
 function renderGeneralDetails(props) {
 	return render(
 		<GeneralDetails
+			dataRegions={['Brazil', 'Hungary', 'Japan', 'United States']}
 			details={{
 				code: '123',
+				dataRegion: 'Brazil',
 				dateCreated: new Date().toLocaleString('en-US'),
 				dateModified: new Date().toLocaleString('en-US'),
 				firstLineSupportTeamName: 'Test Support Team',

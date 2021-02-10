@@ -17,9 +17,11 @@ import AccountDetails from '../../../src/main/resources/META-INF/resources/js/co
 function renderAccountDetails(props) {
 	return render(
 		<AccountDetails
+			dataRegionNames={['Brazil', 'Hungary', 'Japan', 'United States']}
 			details={{
 				addPostalAddressURL: '',
 				code: '123',
+				dataRegion: 'Brazil',
 				dateCreated: new Date().toLocaleString('en-US'),
 				dateModified: new Date().toLocaleString('en-US'),
 				dossieraAccountKey: 'testDossieraAccountKey',
