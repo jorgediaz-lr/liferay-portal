@@ -21,13 +21,13 @@ import com.liferay.petra.string.StringPool;
  */
 public class LicenseSizing {
 
-	public static final int ONE = 1;
+	public static final int FOUR = 4;
 
-	public static final int TWO = 2;
+	public static final int ONE = 1;
 
 	public static final int THREE = 3;
 
-	public static final int FOUR = 4;
+	public static final int TWO = 2;
 
 	public static String getLabel(int sizing) {
 		if (sizing == ONE) {

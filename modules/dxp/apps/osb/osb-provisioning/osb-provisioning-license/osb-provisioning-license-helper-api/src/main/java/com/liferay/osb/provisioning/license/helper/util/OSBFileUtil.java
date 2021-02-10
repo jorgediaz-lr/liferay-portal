@@ -28,35 +28,35 @@ import java.io.File;
  */
 public class OSBFileUtil {
 
-    public static File createTempFile(String fileName) throws Exception {
-        cleanUpDir(new File(_TEMP_DIR), System.currentTimeMillis() - Time.DAY);
+	public static File createTempFile(String fileName) throws Exception {
+		cleanUpDir(new File(_TEMP_DIR), System.currentTimeMillis() - Time.DAY);
 
-        DLStoreUtil.validate(fileName, false);
+		DLStoreUtil.validate(fileName, false);
 
-        return createFile(new File(_TEMP_DIR + fileName));
-    }
+		return createFile(new File(_TEMP_DIR + fileName));
+	}
 
-    protected static void cleanUpDir(File dir, long timeInterval) {
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
+	protected static void cleanUpDir(File dir, long timeInterval) {
+		if (!dir.exists()) {
+			dir.mkdirs();
+		}
 
-        File[] files = dir.listFiles();
+		File[] files = dir.listFiles();
 
-        for (File file : files) {
-            if (file.lastModified() < timeInterval) {
-                FileUtil.delete(file);
-            }
-        }
-    }
+		for (File file : files) {
+			if (file.lastModified() < timeInterval) {
+				FileUtil.delete(file);
+			}
+		}
+	}
 
-    protected static File createFile(File file) throws Exception {
-        file.createNewFile();
+	protected static File createFile(File file) throws Exception {
+		file.createNewFile();
 
-        return file;
-    }
+		return file;
+	}
 
-    private static final String _TEMP_DIR =
-        PropsUtil.get(PropsKeys.LIFERAY_HOME) + "/data/osb/temp/";
+	private static final String _TEMP_DIR =
+		PropsUtil.get(PropsKeys.LIFERAY_HOME) + "/data/osb/temp/";
 
 }
