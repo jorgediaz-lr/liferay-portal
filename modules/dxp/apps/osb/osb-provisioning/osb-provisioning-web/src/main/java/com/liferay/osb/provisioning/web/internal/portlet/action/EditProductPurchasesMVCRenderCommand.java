@@ -134,7 +134,7 @@ public class EditProductPurchasesMVCRenderCommand implements MVCRenderCommand {
 				ProvisioningWebKeys.PRODUCT_PURCHASE_VIEWS,
 				productPurchaseViews);
 
-			return "/accounts/edit_product_purchases_choose_terms.jsp";
+			return "/accounts/edit_product_purchases_select_terms.jsp";
 		}
 		catch (Exception exception) {
 			SessionErrors.add(renderRequest, exception.getClass(), exception);

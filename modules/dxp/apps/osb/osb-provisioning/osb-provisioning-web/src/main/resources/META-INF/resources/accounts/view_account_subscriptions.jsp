@@ -36,7 +36,7 @@ SearchContainer productPurchasesSearchContainer = viewAccountDisplayContext.getP
 		<liferay-util:param name="values" value="active,inactive,all" />
 	</liferay-util:include>
 
-	<portlet:actionURL name="/accounts/edit_product_purchases_choose_terms" var="editProductPurchasesURL">
+	<portlet:actionURL name="/accounts/edit_product_purchases_select_terms" var="editProductPurchasesURL">
 		<portlet:param name="accountKey" value="<%= accountDisplay.getKey() %>" />
 		<portlet:param name="redirect" value="<%= currentURL %>" />
 	</portlet:actionURL>
