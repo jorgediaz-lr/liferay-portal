@@ -1,0 +1,7 @@
+Bundle-Activator: com.liferay.osb.customer.license.internal.activator.OSBCustomerLicenseServiceBundleActivator
+Bundle-Name: Liferay OSB Customer License Service
+Bundle-SymbolicName: com.liferay.osb.customer.license.service
+Bundle-Version: 1.0.0
+Export-Package: com.liferay.osb.customer.license.service.permission
+Liferay-Require-SchemaVersion: 1.0.0
+Liferay-Service: true

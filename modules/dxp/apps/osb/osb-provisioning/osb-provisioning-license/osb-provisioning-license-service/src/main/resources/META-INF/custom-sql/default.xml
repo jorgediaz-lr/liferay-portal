@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+
+<custom-sql>
+	<sql id="com.liferay.osb.customer.license.service.persistence.LicenseKeyFinder.countByU_C_M_M_KA_KPP_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A">
+		<![CDATA[
+			SELECT
+				DISTINCT OSB_LicenseKey.licenseKeyId
+			FROM
+				OSB_LicenseKey
+			LEFT JOIN
+				OSB_AccountEntry ON
+					OSB_AccountEntry.accountEntryId = OSB_LicenseKey.accountEntryId
+			LEFT JOIN
+				OSB_LicenseKeySet ON
+					OSB_LicenseKeySet.licenseKeySetId = OSB_LicenseKey.licenseKeySetId
+			[$JOIN$]
+			WHERE
+				[$WHERE$]
+				(
+					(OSB_LicenseKey.userId = ?) [$AND_OR_CONNECTOR$]
+					(OSB_LicenseKey.createDate > ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(OSB_LicenseKey.createDate < ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(OSB_LicenseKey.modifiedUserId = ?) [$AND_OR_CONNECTOR$]
+					(OSB_LicenseKey.modifiedDate > ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(OSB_LicenseKey.modifiedDate < ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(OSB_LicenseKey.koroneikiAccountKey = ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(OSB_LicenseKey.koroneikiProductPurchaseKey = ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(
+						(LOWER(OSB_AccountEntry.name) LIKE ? [$AND_OR_NULL_CHECK$]) OR
+						(LOWER(OSB_AccountEntry.code_) LIKE ? [$AND_OR_NULL_CHECK$])
+					) [$AND_OR_CONNECTOR$]
+					(LOWER(OSB_LicenseKeySet.name) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(OSB_LicenseKey.startDate > ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(OSB_LicenseKey.startDate < ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(OSB_LicenseKey.licenseEntryId = ?) [$AND_OR_CONNECTOR$]
+					(OSB_LicenseKey.productEntryId = ?) [$AND_OR_CONNECTOR$]
+					(LOWER(OSB_LicenseKey.productEntryName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(LOWER(OSB_LicenseKey.productId) = ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(OSB_LicenseKey.productVersion = ?) [$AND_OR_CONNECTOR$]
+					(LOWER(OSB_LicenseKey.owner) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(LOWER(OSB_LicenseKey.description) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(LOWER(OSB_LicenseKey.hostName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(LOWER(OSB_LicenseKey.ipAddresses) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(LOWER(OSB_LicenseKey.macAddresses) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(LOWER(OSB_LicenseKey.serverId) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(LOWER(OSB_LicenseKey.key_) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(OSB_LicenseKey.expirationDate > ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(OSB_LicenseKey.expirationDate < ? [$AND_OR_NULL_CHECK$])
+				)
+		]]>
+	</sql>
+	<sql id="com.liferay.osb.customer.license.service.persistence.LicenseKeyFinder.findByU_C_M_M_KA_KPP_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A">
+		<![CDATA[
+			SELECT
+				DISTINCT OSB_LicenseKey.licenseKeyId, OSB_LicenseKey.startDate, OSB_LicenseKey.expirationDate
+			FROM
+				OSB_LicenseKey
+			LEFT JOIN
+				OSB_AccountEntry ON
+					OSB_AccountEntry.accountEntryId = OSB_LicenseKey.accountEntryId
+			INNER JOIN
+				OSB_LicenseKeySet ON
+					OSB_LicenseKeySet.licenseKeySetId = OSB_LicenseKey.licenseKeySetId
+			[$JOIN$]
+			WHERE
+				[$WHERE$]
+				(
+					(OSB_LicenseKey.userId = ?) [$AND_OR_CONNECTOR$]
+					(OSB_LicenseKey.createDate > ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(OSB_LicenseKey.createDate < ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(OSB_LicenseKey.modifiedUserId = ?) [$AND_OR_CONNECTOR$]
+					(OSB_LicenseKey.modifiedDate > ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(OSB_LicenseKey.modifiedDate < ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(OSB_LicenseKey.koroneikiAccountKey = ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(OSB_LicenseKey.koroneikiProductPurchaseKey = ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(
+						(LOWER(OSB_AccountEntry.name) LIKE ? [$AND_OR_NULL_CHECK$]) OR
+						(LOWER(OSB_AccountEntry.code_) LIKE ? [$AND_OR_NULL_CHECK$])
+					) [$AND_OR_CONNECTOR$]
+					(LOWER(OSB_LicenseKeySet.name) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(OSB_LicenseKey.startDate > ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(OSB_LicenseKey.startDate < ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(OSB_LicenseKey.licenseEntryId = ?) [$AND_OR_CONNECTOR$]
+					(OSB_LicenseKey.productEntryId = ?) [$AND_OR_CONNECTOR$]
+					(LOWER(OSB_LicenseKey.productEntryName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(LOWER(OSB_LicenseKey.productId) = ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(OSB_LicenseKey.productVersion = ?) [$AND_OR_CONNECTOR$]
+					(LOWER(OSB_LicenseKey.owner) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(LOWER(OSB_LicenseKey.description) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(LOWER(OSB_LicenseKey.hostName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(LOWER(OSB_LicenseKey.ipAddresses) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(LOWER(OSB_LicenseKey.macAddresses) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(LOWER(OSB_LicenseKey.serverId) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(LOWER(OSB_LicenseKey.key_) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(OSB_LicenseKey.expirationDate > ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(OSB_LicenseKey.expirationDate < ? [$AND_OR_NULL_CHECK$])
+				)
+		]]>
+	</sql>
+	<sql id="com.liferay.osb.customer.license.service.persistence.LicenseKeyFinder.joinByAccountMembership">
+		<![CDATA[
+			WHERE
+				OSB_LicenseKey.koroneikiAccountKey = ?
+		]]>
+	</sql>
+	<sql id="com.liferay.osb.customer.license.service.persistence.LicenseKeyFinder.joinByActive">
+		<![CDATA[
+			WHERE
+				OSB_LicenseKey.active_ = ?
+		]]>
+	</sql>
+	<sql id="com.liferay.osb.customer.license.service.persistence.LicenseKeyFinder.joinByAssetReceiptLicense">
+		<![CDATA[
+			WHERE
+				OSB_LicenseKey.assetReceiptLicenseId >= ?
+		]]>
+	</sql>
+	<sql id="com.liferay.osb.customer.license.service.persistence.LicenseKeyFinder.joinByUser">
+		<![CDATA[
+			WHERE
+				OSB_LicenseKey.userId = ?
+		]]>
+	</sql>
+</custom-sql>

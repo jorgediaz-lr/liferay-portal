@@ -1,0 +1,11 @@
+Bundle-Name: Liferay OSB Customer License API
+Bundle-SymbolicName: com.liferay.osb.customer.license.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.liferay.osb.customer.license.constants,\
+	com.liferay.osb.customer.license.exception,\
+	com.liferay.osb.customer.license.model,\
+	com.liferay.osb.customer.license.service,\
+	com.liferay.osb.customer.license.service.persistence,\
+	com.liferay.osb.customer.license.util,\
+	com.liferay.osb.customer.license.util.comparator

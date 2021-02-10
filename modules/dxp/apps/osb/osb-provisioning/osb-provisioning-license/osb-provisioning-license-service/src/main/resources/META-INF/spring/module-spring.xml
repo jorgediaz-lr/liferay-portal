@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<beans
+	default-destroy-method="destroy"
+	default-init-method="afterPropertiesSet"
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+>
+	<bean class="com.liferay.osb.customer.license.service.impl.LicenseKeyLocalServiceImpl" id="com.liferay.osb.customer.license.service.LicenseKeyLocalService" />
+	<bean class="com.liferay.osb.customer.license.service.impl.LicenseKeyServiceImpl" id="com.liferay.osb.customer.license.service.LicenseKeyService" />
+	<bean class="com.liferay.osb.customer.license.service.persistence.impl.LicenseKeyPersistenceImpl" id="com.liferay.osb.customer.license.service.persistence.LicenseKeyPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.customer.license.service.persistence.impl.LicenseKeyFinderImpl" id="com.liferay.osb.customer.license.service.persistence.LicenseKeyFinder" parent="basePersistence" />
+	<bean class="com.liferay.osb.customer.license.service.impl.LicenseKeySetLocalServiceImpl" id="com.liferay.osb.customer.license.service.LicenseKeySetLocalService" />
+	<bean class="com.liferay.osb.customer.license.service.impl.LicenseKeySetServiceImpl" id="com.liferay.osb.customer.license.service.LicenseKeySetService" />
+	<bean class="com.liferay.osb.customer.license.service.persistence.impl.LicenseKeySetPersistenceImpl" id="com.liferay.osb.customer.license.service.persistence.LicenseKeySetPersistence" parent="basePersistence" />
+</beans>

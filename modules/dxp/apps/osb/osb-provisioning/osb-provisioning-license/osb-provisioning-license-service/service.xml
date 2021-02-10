@@ -1,0 +1,217 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.0.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_0_0.dtd">
+
+<service-builder database-name-max-length="64" package-path="com.liferay.osb.customer.license">
+	<namespace>OSB</namespace>
+	<entity local-service="true" name="LicenseKey" remote-service="true" uuid="true">
+
+		<!-- PK fields -->
+
+		<column name="licenseKeyId" primary="true" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedUserId" type="long" />
+		<column name="modifiedUserName" type="String" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="licenseKeySetId" type="long" />
+		<column name="assetReceiptLicenseUuid" type="String" />
+		<column name="koroneikiAccountKey" type="String" />
+		<column name="koroneikiProductPurchaseKey" type="String" />
+		<column name="accountEntryId" type="long" />
+		<column name="orderEntryId" type="long" />
+		<column name="offeringEntryId" type="long" />
+		<column name="licenseEntryId" type="long" />
+		<column name="productEntryId" type="long" />
+		<column name="supportResponseId" type="long" />
+		<column name="accountEntryName" type="String" />
+		<column name="licenseEntryName" type="String" />
+		<column name="licenseEntryType" type="String" />
+		<column name="licenseVersion" type="int" />
+		<column name="productEntryName" type="String" />
+		<column name="productId" type="String" />
+		<column name="productVersion" type="int" />
+		<column name="productVersionLabel" type="String" />
+		<column name="clusterId" type="long" />
+		<column name="owner" type="String" />
+		<column name="maxServers" type="int" />
+		<column name="maxConcurrentUsers" type="long" />
+		<column name="maxUsers" type="long" />
+		<column name="maxHttpSessions" type="int" />
+		<column name="sizing" type="int" />
+		<column name="description" type="String" />
+		<column name="hostName" type="String" />
+		<column name="ipAddresses" type="String" />
+		<column name="macAddresses" type="String" />
+		<column name="serverId" type="String" />
+		<column name="key" type="String" />
+		<column name="startDate" type="Date" />
+		<column name="expirationDate" type="Date" />
+		<column name="additionalInfo" type="String" />
+		<column name="complimentary" type="boolean" />
+		<column name="active" type="boolean" />
+
+		<!-- Order -->
+
+		<order>
+			<order-column name="active" order-by="desc" />
+			<order-column name="licenseKeyId" order-by="asc" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="LicenseKeySetId" return-type="Collection">
+			<finder-column name="licenseKeySetId" />
+		</finder>
+		<finder name="KoroneikiProductPurchaseKey" return-type="Collection">
+			<finder-column name="koroneikiProductPurchaseKey" />
+		</finder>
+		<finder name="AccountEntryId" return-type="Collection">
+			<finder-column name="accountEntryId" />
+		</finder>
+		<finder name="OfferingEntryId" return-type="Collection">
+			<finder-column name="offeringEntryId" />
+		</finder>
+		<finder name="U_AEI" return-type="Collection">
+			<finder-column name="userId" />
+			<finder-column name="accountEntryId" />
+		</finder>
+		<finder name="U_PI" return-type="Collection">
+			<finder-column name="userId" />
+			<finder-column name="productId" />
+		</finder>
+		<finder name="ARLU_A" return-type="Collection">
+			<finder-column name="assetReceiptLicenseUuid" />
+			<finder-column name="active" />
+		</finder>
+		<finder name="KA_PEI" return-type="Collection">
+			<finder-column name="koroneikiAccountKey" />
+			<finder-column name="productEntryId" />
+		</finder>
+		<finder name="KPP_CI" return-type="Collection">
+			<finder-column name="koroneikiProductPurchaseKey" />
+			<finder-column name="clusterId" />
+		</finder>
+		<finder name="OEI_CI" return-type="Collection">
+			<finder-column name="offeringEntryId" />
+			<finder-column name="clusterId" />
+		</finder>
+		<finder name="PI_SI" return-type="Collection">
+			<finder-column name="productId" />
+			<finder-column name="serverId" />
+		</finder>
+		<finder name="ARLU_C_A" return-type="Collection">
+			<finder-column name="assetReceiptLicenseUuid" />
+			<finder-column name="complimentary" />
+			<finder-column name="active" />
+		</finder>
+		<finder name="OEI_CI_A" return-type="Collection">
+			<finder-column name="offeringEntryId" />
+			<finder-column name="clusterId" />
+			<finder-column name="active" />
+		</finder>
+		<finder name="OEI_C_A" return-type="Collection">
+			<finder-column arrayable-operator="OR" name="offeringEntryId" />
+			<finder-column name="complimentary" />
+			<finder-column name="active" />
+		</finder>
+		<finder name="PEN_SI_A" return-type="Collection">
+			<finder-column name="productEntryName" />
+			<finder-column name="serverId" />
+			<finder-column name="active" />
+		</finder>
+		<finder name="ARLU_PI_SI_A" return-type="Collection">
+			<finder-column name="assetReceiptLicenseUuid" />
+			<finder-column name="productId" />
+			<finder-column name="serverId" />
+			<finder-column name="active" />
+		</finder>
+		<finder name="OEI_LET_C_A" return-type="Collection">
+			<finder-column name="offeringEntryId" />
+			<finder-column name="licenseEntryType" />
+			<finder-column name="complimentary" />
+			<finder-column name="active" />
+		</finder>
+		<finder name="OEI_NotLET_C_A" return-type="Collection">
+			<finder-column name="offeringEntryId" />
+			<finder-column comparator="!=" name="licenseEntryType" />
+			<finder-column name="complimentary" />
+			<finder-column name="active" />
+		</finder>
+
+		<!-- References -->
+
+		<reference entity="ListType" package-path="com.liferay.portal" />
+	</entity>
+	<entity local-service="true" name="LicenseKeySet" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="licenseKeySetId" primary="true" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="koroneikiAccountKey" type="String" />
+		<column name="accountEntryId" type="long" />
+		<column name="name" type="String" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column case-sensitive="false" name="name" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="AccountEntryId" return-type="Collection">
+			<finder-column name="accountEntryId" />
+		</finder>
+		<finder name="KA_N" return-type="Collection">
+			<finder-column name="koroneikiAccountKey" />
+			<finder-column name="name" />
+		</finder>
+		<finder name="U_AEI_N" return-type="Collection">
+			<finder-column name="userId" />
+			<finder-column name="accountEntryId" />
+			<finder-column name="name" />
+		</finder>
+	</entity>
+	<exceptions>
+		<exception>DuplicateHostName</exception>
+		<exception>DuplicateIPAddress</exception>
+		<exception>DuplicateMACAddress</exception>
+		<exception>LicenseKeyActive</exception>
+		<exception>LicenseKeyDescription</exception>
+		<exception>LicenseKeyHostName</exception>
+		<exception>LicenseKeyIPAddress</exception>
+		<exception>LicenseKeyMACAddress</exception>
+		<exception>LicenseKeyMaxServers</exception>
+		<exception>LicenseKeyOwner</exception>
+		<exception>LicenseKeyProductEntry</exception>
+		<exception>LicenseKeyProductVersion</exception>
+		<exception>LicenseKeyRegistration</exception>
+		<exception>LicenseKeyRenew</exception>
+		<exception>LicenseKeyServerId</exception>
+		<exception>LicenseKeyServerInfo</exception>
+		<exception>LicenseKeySetName</exception>
+		<exception>MaximumLicenseKey</exception>
+		<exception>RequiredOfferingDefinition</exception>
+		<exception>RequiredOfferingEntry</exception>
+		<exception>RequiredPartnerEntry</exception>
+		<exception>RequiredProductEntry</exception>
+		<exception>RequiredSupportResponse</exception>
+	</exceptions>
+</service-builder>

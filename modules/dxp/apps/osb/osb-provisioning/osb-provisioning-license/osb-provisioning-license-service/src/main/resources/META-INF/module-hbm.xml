@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="false" default-lazy="false">
+	<import class="com.liferay.osb.customer.license.model.LicenseKey" />
+	<import class="com.liferay.osb.customer.license.model.LicenseKeySet" />
+	<class name="com.liferay.osb.customer.license.model.impl.LicenseKeyImpl" table="OSB_LicenseKey">
+		<id name="licenseKeyId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property column="uuid_" name="uuid" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="modifiedUserId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="modifiedUserName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
+		<property name="licenseKeySetId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="assetReceiptLicenseUuid" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="koroneikiAccountKey" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="koroneikiProductPurchaseKey" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="accountEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="orderEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="offeringEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="licenseEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="productEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="supportResponseId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="accountEntryName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="licenseEntryName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="licenseEntryType" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="licenseVersion" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="productEntryName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="productId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="productVersion" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="productVersionLabel" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="clusterId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="owner" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="maxServers" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="maxConcurrentUsers" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="maxUsers" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="maxHttpSessions" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="sizing" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="hostName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="ipAddresses" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="macAddresses" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="serverId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property column="key_" name="key" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="startDate" type="org.hibernate.type.TimestampType" />
+		<property name="expirationDate" type="org.hibernate.type.TimestampType" />
+		<property name="additionalInfo" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="complimentary" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property column="active_" name="active" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+	</class>
+	<class name="com.liferay.osb.customer.license.model.impl.LicenseKeySetImpl" table="OSB_LicenseKeySet">
+		<id name="licenseKeySetId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
+		<property name="koroneikiAccountKey" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="accountEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+</hibernate-mapping>
