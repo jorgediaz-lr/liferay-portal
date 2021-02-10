@@ -20,10 +20,10 @@ function EditSubscriptions({
 	addSubscriptions,
 	backURL,
 	details,
-	editProductPurchasesActionURL,
-	editProductPurchasesSelectItemActionURL,
+	editProductPurchasesURL,
 	redirect,
-	selectProductsURL,
+	selectProductsActionURL,
+	selectProductsRenderURL,
 	sizing,
 	status
 }) {
@@ -32,14 +32,10 @@ function EditSubscriptions({
 			{addSubscriptions && (
 				<AddView
 					accountName={accountName}
-					editProductPurchasesActionURL={
-						editProductPurchasesActionURL
-					}
-					editProductPurchasesSelectItemActionURL={
-						editProductPurchasesSelectItemActionURL
-					}
+					editProductPurchasesURL={editProductPurchasesURL}
 					redirect={redirect}
-					selectProductsURL={selectProductsURL}
+					selectProductsActionURL={selectProductsActionURL}
+					selectProductsRenderURL={selectProductsRenderURL}
 					sizing={sizing}
 				/>
 			)}
@@ -48,9 +44,7 @@ function EditSubscriptions({
 				<EditView
 					accountName={accountName}
 					backURL={backURL}
-					editProductPurchasesActionURL={
-						editProductPurchasesActionURL
-					}
+					editProductPurchasesURL={editProductPurchasesURL}
 					redirect={redirect}
 					sizing={sizing}
 					status={status}
@@ -80,10 +74,10 @@ EditSubscriptions.propTypes = {
 			status: PropTypes.string
 		})
 	),
-	editProductPurchasesActionURL: PropTypes.string.isRequired,
-	editProductPurchasesSelectItemActionURL: PropTypes.string.isRequired,
+	editProductPurchasesURL: PropTypes.string.isRequired,
 	redirect: PropTypes.string.isRequired,
-	selectProductsURL: PropTypes.string,
+	selectProductsActionURL: PropTypes.string.isRequired,
+	selectProductsRenderURL: PropTypes.string,
 	sizing: PropTypes.arrayOf(PropTypes.number),
 	status: PropTypes.arrayOf(PropTypes.string)
 };

@@ -31,10 +31,10 @@ function renderAddSubscriptions(props) {
 					startDate: '2020-12-08'
 				}
 			]}
-			editProductPurchasesActionURL="/edit/product/purcahses/url"
-			editProductPurchasesSelectItemActionURL="/edit/product/purchases/url"
+			editProductPurchasesURL="/edit/product/purcahses/url"
 			redirect="/redirect/to/subscriptions/tab"
-			selectProductsURL="/select/products/url"
+			selectProductsActionURL="/select/products/url"
+			selectProductsRenderURL="/select/products/url"
 			sizing={[1, 2, 3, 4]}
 			status={[
 				PRODUCT_PURCHASE_STATUS_APPROVED,
@@ -65,10 +65,10 @@ function renderEditSubscriptions(props) {
 					status: 'Approved'
 				}
 			]}
-			editProductPurchasesActionURL="/edit/product/purchases/url"
-			editProductPurchasesSelectItemActionURL="/edit/product/purchases/url"
+			editProductPurchasesURL="/edit/product/purchases/url"
 			redirect="/redirect/to/subscriptions/tab"
-			selectProductsURL="/select/products/url"
+			selectProductsActionURL="/select/products/url"
+			selectProductsRenderURL="/select/products/url"
 			sizing={[1, 2, 3, 4]}
 			status={[
 				PRODUCT_PURCHASE_STATUS_APPROVED,

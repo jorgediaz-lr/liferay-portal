@@ -23,10 +23,10 @@ import Subscriptions from './Subscriptions';
 
 export function AddView({
 	accountName,
-	editProductPurchasesActionURL,
-	editProductPurchasesSelectItemActionURL,
+	editProductPurchasesURL,
 	redirect,
-	selectProductsURL,
+	selectProductsActionURL,
+	selectProductsRenderURL,
 	sizing
 }) {
 	const [subscriptions] = useSubscriptions();
@@ -53,9 +53,9 @@ export function AddView({
 				<b>{Liferay.Language.get('configure-subscriptions')}</b>
 
 				<ProductSelection
-					formAction={editProductPurchasesSelectItemActionURL}
+					formAction={selectProductsActionURL}
 					initialProductKeys={getInitialProductKeys()}
-					selectionURL={selectProductsURL}
+					selectionURL={selectProductsRenderURL}
 				/>
 			</div>
 
@@ -88,7 +88,7 @@ export function AddView({
 			</div>
 
 			<SubscriptionActions
-				formAction={editProductPurchasesActionURL}
+				formAction={editProductPurchasesURL}
 				redirectURL={redirect}
 				subscriptionsType={ADD_SUBSCRIPTIONS}
 			/>
@@ -98,17 +98,17 @@ export function AddView({
 
 AddView.propTypes = {
 	accountName: PropTypes.string.isRequired,
-	editProductPurchasesActionURL: PropTypes.string.isRequired,
-	editProductPurchasesSelectItemActionURL: PropTypes.string.isRequired,
+	editProductPurchasesURL: PropTypes.string.isRequired,
 	redirect: PropTypes.string.isRequired,
-	selectProductsURL: PropTypes.string,
+	selectProductsActionURL: PropTypes.string.isRequired,
+	selectProductsRenderURL: PropTypes.string,
 	sizing: PropTypes.arrayOf(PropTypes.number)
 };
 
 export function EditView({
 	accountName,
 	backURL,
-	editProductPurchasesActionURL,
+	editProductPurchasesURL,
 	redirect,
 	sizing,
 	status
@@ -159,7 +159,7 @@ export function EditView({
 
 				<SubscriptionActions
 					backURL={backURL}
-					formAction={editProductPurchasesActionURL}
+					formAction={editProductPurchasesURL}
 					redirectURL={redirect}
 					subscriptionsType={EDIT_SUBSCRIPTIONS}
 				/>
@@ -171,7 +171,7 @@ export function EditView({
 EditView.propTypes = {
 	accountName: PropTypes.string.isRequired,
 	backURL: PropTypes.string,
-	editProductPurchasesActionURL: PropTypes.string.isRequired,
+	editProductPurchasesURL: PropTypes.string.isRequired,
 	redirect: PropTypes.string.isRequired,
 	sizing: PropTypes.arrayOf(PropTypes.number),
 	status: PropTypes.arrayOf(PropTypes.string)
