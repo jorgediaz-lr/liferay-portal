@@ -96,26 +96,19 @@ public class SortPortletSharedSearchContributor
 			sortOrder = SortOrder.DESC;
 		}
 
-		if (!fieldValue.startsWith(DDMIndexer.DDM_FIELD_PREFIX) ||
-			ddmIndexer.isLegacyDDMIndexFieldsEnabled()) {
-
-			SortBuilder sortBuilder = _sortBuilderFactory.getSortBuilder();
-
-			return sortBuilder.field(
-				fieldValue
-			).sortOrder(
-				sortOrder
-			).locale(
-				locale
-			).build();
+		if (fieldValue.startsWith(DDMIndexer.DDM_FIELD_PREFIX)) {
+			return _buildDDMFieldSort(fieldValue, locale, sortOrder);
 		}
 
-		try {
-			return _buildNestedSort(fieldValue, locale, sortOrder);
-		}
-		catch (Exception exception) {
-			throw new RuntimeException(exception);
-		}
+		SortBuilder sortBuilder = _sortBuilderFactory.getSortBuilder();
+
+		return sortBuilder.field(
+			fieldValue
+		).sortOrder(
+			sortOrder
+		).locale(
+			locale
+		).build();
 	}
 
 	protected Stream<Sort> buildSorts(
@@ -178,24 +171,34 @@ public class SortPortletSharedSearchContributor
 	@Reference
 	protected DDMIndexer ddmIndexer;
 
-	private Sort _buildNestedSort(
+	private Sort _buildDDMFieldSort(
 		String fieldValue, Locale locale, SortOrder sortOrder) {
 
 		DDMFormField ddmFormField = _getDDMFormField(fieldValue);
+
+		if (!GetterUtil.getBoolean(ddmFormField.getProperty("localizable"))) {
+			locale = null;
+		}
+
+		FieldSort fieldSort = _sorts.field(
+			_getDDMStructureSortableFieldName(
+				fieldValue, ddmFormField.getType(), locale),
+			sortOrder);
+
+		if (ddmIndexer.isLegacyDDMIndexFieldsEnabled()) {
+			return fieldSort;
+		}
+
+		NestedSort nestedSort = _sorts.nested(DDMIndexer.DDM_FIELD_ARRAY);
 
 		StringBundler sb = new StringBundler(3);
 
 		sb.append(fieldValue);
 
-		if (GetterUtil.getBoolean(ddmFormField.getProperty("localizable"))) {
+		if (locale != null) {
 			sb.append(StringPool.UNDERLINE);
 			sb.append(LocaleUtil.toLanguageId(locale));
 		}
-		else {
-			locale = null;
-		}
-
-		NestedSort nestedSort = _sorts.nested(DDMIndexer.DDM_FIELD_ARRAY);
 
 		nestedSort.setFilterQuery(
 			_queries.term(
@@ -203,11 +206,6 @@ public class SortPortletSharedSearchContributor
 					DDMIndexer.DDM_FIELD_ARRAY, StringPool.PERIOD,
 					DDMIndexer.DDM_FIELD_NAME),
 				sb.toString()));
-
-		FieldSort fieldSort = _sorts.field(
-			_getDDMStructureNestedSortableFieldName(
-				fieldValue, ddmFormField.getType(), locale),
-			sortOrder);
 
 		fieldSort.setNestedSort(nestedSort);
 
@@ -231,20 +229,31 @@ public class SortPortletSharedSearchContributor
 		}
 	}
 
-	private String _getDDMStructureNestedSortableFieldName(
+	private String _getDDMStructureSortableFieldName(
 		String ddmFormField, String ddmFormFieldType, Locale locale) {
 
 		StringBundler sb = new StringBundler(5);
 
-		sb.append(DDMIndexer.DDM_FIELD_ARRAY);
-		sb.append(StringPool.PERIOD);
+		if (ddmIndexer.isLegacyDDMIndexFieldsEnabled()) {
+			sb.append(ddmFormField);
+			sb.append(StringPool.UNDERLINE);
 
-		String indexType =
-			ddmFormField.split(DDMIndexer.DDM_FIELD_SEPARATOR)[1];
+			if (locale != null) {
+				sb.append(LocaleUtil.toLanguageId(locale));
+				sb.append(StringPool.UNDERLINE);
+			}
+		}
+		else {
+			sb.append(DDMIndexer.DDM_FIELD_ARRAY);
+			sb.append(StringPool.PERIOD);
 
-		sb.append(ddmIndexer.getValueFieldName(indexType, locale));
+			String indexType =
+				ddmFormField.split(DDMIndexer.DDM_FIELD_SEPARATOR)[1];
 
-		sb.append(StringPool.UNDERLINE);
+			sb.append(ddmIndexer.getValueFieldName(indexType, locale));
+
+			sb.append(StringPool.UNDERLINE);
+		}
 
 		if (Objects.equals(ddmFormFieldType, DDMFormFieldType.DECIMAL) ||
 			Objects.equals(ddmFormFieldType, DDMFormFieldType.INTEGER) ||
