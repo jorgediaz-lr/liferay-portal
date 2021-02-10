@@ -21,6 +21,7 @@ function AccountDetails({
 	assignFirstLineSupportTeamURL,
 	assignParentAccountURL,
 	assignPartnerTeamURL,
+	dataRegionNames,
 	details,
 	parentAccountName,
 	tierNames
@@ -29,6 +30,7 @@ function AccountDetails({
 		<>
 			<GeneralDetails
 				assignParentAccountURL={assignParentAccountURL}
+				dataRegions={dataRegionNames}
 				details={details}
 				parentAccountName={parentAccountName}
 				tiers={tierNames}
@@ -55,9 +57,11 @@ AccountDetails.propTypes = {
 	assignFirstLineSupportTeamURL: PropTypes.string,
 	assignParentAccountURL: PropTypes.string,
 	assignPartnerTeamURL: PropTypes.string,
+	dataRegionNames: PropTypes.arrayOf(PropTypes.string),
 	details: PropTypes.shape({
 		addPostalAddressURL: PropTypes.string,
 		code: PropTypes.string,
+		dataRegion: PropTypes.string,
 		dateCreated: PropTypes.string,
 		dateModified: PropTypes.string,
 		dossieraAccountKey: PropTypes.string,

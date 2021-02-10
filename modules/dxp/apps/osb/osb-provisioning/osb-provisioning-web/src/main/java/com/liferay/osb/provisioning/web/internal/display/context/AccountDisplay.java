@@ -99,6 +99,16 @@ public class AccountDisplay {
 		return StringPool.DASH;
 	}
 
+	public String getDataRegion() {
+		Account.DataRegion dataRegion = _account.getDataRegion();
+
+		if (dataRegion != null) {
+			return dataRegion.toString();
+		}
+
+		return StringPool.DASH;
+	}
+
 	public String getDateCreated() {
 		return _dateTimeFormat.format(_account.getDateCreated());
 	}

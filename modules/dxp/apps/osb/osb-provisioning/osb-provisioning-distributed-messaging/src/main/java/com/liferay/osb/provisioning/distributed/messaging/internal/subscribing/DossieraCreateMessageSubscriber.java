@@ -45,6 +45,7 @@ import com.liferay.osb.provisioning.koroneiki.web.service.ProductPurchaseWebServ
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamRoleWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamWebService;
+import com.liferay.osb.provisioning.util.DataRegionUtil;
 import com.liferay.osb.provisioning.zendesk.model.ZendeskTicket;
 import com.liferay.osb.provisioning.zendesk.web.service.ZendeskTicketWebService;
 import com.liferay.petra.content.ContentUtil;
@@ -386,6 +387,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		account.setPostalAddresses(new PostalAddress[] {postalAddress});
 		account.setProductPurchases(productPurchases);
 		account.setRegion(region);
+		account.setDataRegion(DataRegionUtil.getDataRegion(region));
 		account.setLanguage(language);
 
 		String productFamily = jsonObject.getString(

@@ -24,6 +24,7 @@ import DetailField from '../DetailField';
 
 function GeneralDetails({
 	assignParentAccountURL,
+	dataRegions,
 	details,
 	parentAccountName,
 	tiers
@@ -31,6 +32,7 @@ function GeneralDetails({
 	const parentAccountFormData = {parentAccountKey: ''};
 	const formData = {
 		code: convertDashToEmptyString(details.code),
+		dataRegion: convertDashToEmptyString(details.dataRegion),
 		name: convertDashToEmptyString(details.name),
 		region: convertDashToEmptyString(details.region),
 		tier: convertDashToEmptyString(details.tier),
@@ -44,6 +46,10 @@ function GeneralDetails({
 				value: option
 			};
 		});
+	}
+
+	if (details.dataRegion === '-') {
+		dataRegions.unshift(details.dataRegion);
 	}
 
 	return (
@@ -111,14 +117,26 @@ function GeneralDetails({
 				type={FIELD_TYPE_EXTERNAL}
 				value={parentAccountName}
 			/>
+
+			<DetailField
+				fieldLabel={Liferay.Language.get('data-region')}
+				fieldName="dataRegion"
+				formAction={details.editAccountURL}
+				formData={formData}
+				options={createSelectOptions(dataRegions)}
+				type={FIELD_TYPE_SELECT}
+				value={details.dataRegion}
+			/>
 		</ClayList>
 	);
 }
 
 GeneralDetails.propTypes = {
 	assignParentAccountURL: PropTypes.string,
+	dataRegions: PropTypes.arrayOf(PropTypes.string).isRequired,
 	details: PropTypes.shape({
 		code: PropTypes.string,
+		dataRegion: PropTypes.string,
 		dateCreated: PropTypes.string,
 		dateModified: PropTypes.string,
 		editAccountHierarchyURL: PropTypes.string,

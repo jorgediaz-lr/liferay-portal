@@ -24,6 +24,7 @@ import com.liferay.osb.provisioning.koroneiki.constants.TeamRoleConstants;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamRoleWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamWebService;
+import com.liferay.osb.provisioning.util.DataRegionUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -86,7 +87,11 @@ public class EditAccountMVCActionCommand extends BaseMVCActionCommand {
 		}
 
 		if (Validator.isNotNull(region)) {
-			account.setRegion(Account.Region.create(region));
+			Account.Region accountRegion = Account.Region.create(region);
+
+			account.setRegion(accountRegion);
+
+			account.setDataRegion(DataRegionUtil.getDataRegion(accountRegion));
 		}
 
 		Account newAccount = _accountWebService.addAccount(
@@ -180,6 +185,8 @@ public class EditAccountMVCActionCommand extends BaseMVCActionCommand {
 			String code = ParamUtil.getString(actionRequest, "code");
 			String tier = ParamUtil.getString(actionRequest, "tier");
 			String region = ParamUtil.getString(actionRequest, "region");
+			String dataRegion = ParamUtil.getString(
+				actionRequest, "dataRegion");
 
 			validate(code);
 
@@ -197,6 +204,10 @@ public class EditAccountMVCActionCommand extends BaseMVCActionCommand {
 
 			if (Validator.isNotNull(region)) {
 				account.setRegion(Account.Region.create(region));
+			}
+
+			if (Validator.isNotNull(dataRegion)) {
+				account.setDataRegion(Account.DataRegion.create(dataRegion));
 			}
 
 			_accountWebService.updateAccount(

@@ -165,8 +165,15 @@ public class ViewAccountDisplayContext {
 			"assignFirstLineSupportTeamURL",
 			assignFirstLineSupportTeamURL.toString());
 
-		data.put("details", getAccountDisplay());
+		List<String> dataRegionNames = new ArrayList<>();
 
+		for (Account.DataRegion dataRegion : Account.DataRegion.values()) {
+			dataRegionNames.add(dataRegion.toString());
+		}
+
+		data.put("dataRegionNames", dataRegionNames);
+
+		data.put("details", getAccountDisplay());
 		data.put("parentAccountName", getParentAccountName());
 
 		List<String> tierNames = new ArrayList<>();
