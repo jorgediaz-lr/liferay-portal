@@ -31,7 +31,7 @@ import com.liferay.portal.security.sso.openid.connect.OpenIdConnectProviderRegis
 import com.liferay.portal.security.sso.openid.connect.OpenIdConnectServiceException;
 import com.liferay.portal.security.sso.openid.connect.OpenIdConnectServiceHandler;
 import com.liferay.portal.security.sso.openid.connect.constants.OpenIdConnectConstants;
-import com.liferay.portal.security.sso.openid.connect.util.OpenIdConnectUtil;
+import com.liferay.portal.security.sso.openid.connect.internal.util.OpenIdConnectSessionHelperImpl;
 
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.proc.BadJOSEException;
@@ -188,7 +188,7 @@ public class OpenIdConnectServiceHandlerImpl
 		openIdConnectSessionImpl.setOpenIdConnectFlowState(
 			OpenIdConnectFlowState.AUTH_COMPLETE);
 
-		OpenIdConnectUtil.setOpenIdConnectSession(
+		_openIdConnectSessionHelperImpl.setOpenIdConnectSession(
 			httpSession, openIdConnectSessionImpl);
 	}
 
@@ -227,7 +227,7 @@ public class OpenIdConnectServiceHandlerImpl
 			openIdConnectSessionImpl.setOpenIdConnectFlowState(
 				OpenIdConnectFlowState.AUTH_REQUESTED);
 
-			OpenIdConnectUtil.setOpenIdConnectSession(
+			_openIdConnectSessionHelperImpl.setOpenIdConnectSession(
 				httpSession, openIdConnectSessionImpl);
 		}
 		catch (IOException ioException) {
@@ -355,7 +355,8 @@ public class OpenIdConnectServiceHandlerImpl
 		HttpSession httpSession, String expectedProviderName) {
 
 		Object openIdConnectSessionObject =
-			OpenIdConnectUtil.getOpenIdConnectSession(httpSession);
+			_openIdConnectSessionHelperImpl.getOpenIdConnectSession(
+				httpSession);
 
 		if (openIdConnectSessionObject instanceof OpenIdConnectSessionImpl) {
 			OpenIdConnectSessionImpl openIdConnectSessionImpl =
@@ -662,6 +663,9 @@ public class OpenIdConnectServiceHandlerImpl
 	private OpenIdConnectProviderRegistry
 		<OIDCClientMetadata, OIDCProviderMetadata>
 			_openIdConnectProviderRegistry;
+
+	@Reference
+	private OpenIdConnectSessionHelperImpl _openIdConnectSessionHelperImpl;
 
 	@Reference
 	private OpenIdConnectUserInfoProcessor _openIdConnectUserInfoProcessor;
