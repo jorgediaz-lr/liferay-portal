@@ -13,6 +13,7 @@ import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
 
 import {
+	DASH,
 	FIELD_TYPE_EXTERNAL,
 	FIELD_TYPE_SELECT,
 	FIELD_TYPE_TEXT,
@@ -118,12 +119,16 @@ function InlineEdit({
 								onChange={handleChange}
 								value={value}
 							>
+								{value === DASH && (
+									<option key={DASH} value="">
+										{DASH}
+									</option>
+								)}
+
 								{options.map(option => (
 									<option
 										key={option.value}
-										value={convertDashToEmptyString(
-											option.value
-										)}
+										value={option.value}
 									>
 										{option.label}
 									</option>
@@ -193,7 +198,7 @@ function InlineEdit({
 						<button
 							className="btn btn-primary btn-sm save-btn"
 							disabled={
-								fieldValue !== '-' && value === fieldValue
+								fieldValue !== DASH && value === fieldValue
 							}
 							onClick={handleClick}
 							role="button"

@@ -12,6 +12,7 @@
 import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
 
+import {DASH} from '../../utilities/constants';
 import Address from './Address';
 
 function AccountAddresses({accountKey, addURL, addresses}) {
@@ -37,16 +38,16 @@ function AccountAddresses({accountKey, addURL, addresses}) {
 
 	if (addresses.length === 0) {
 		addresses.push({
-			addressCountry: '-',
-			addressLocality: '-',
-			addressRegion: '-',
+			addressCountry: DASH,
+			addressLocality: DASH,
+			addressRegion: DASH,
 			id: '',
-			postalCode: '-',
+			postalCode: DASH,
 			primary: false,
 			readOnly: true,
-			streetAddressLine1: '-',
-			streetAddressLine2: '-',
-			streetAddressLine3: '-'
+			streetAddressLine1: DASH,
+			streetAddressLine2: DASH,
+			streetAddressLine3: DASH
 		});
 	}
 

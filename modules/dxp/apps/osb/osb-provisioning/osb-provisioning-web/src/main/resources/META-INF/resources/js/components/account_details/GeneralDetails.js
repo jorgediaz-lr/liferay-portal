@@ -48,10 +48,6 @@ function GeneralDetails({
 		});
 	}
 
-	if (details.dataRegion === '-') {
-		dataRegions.unshift(details.dataRegion);
-	}
-
 	return (
 		<ClayList>
 			<ClayList.Header>

@@ -20,6 +20,8 @@ export const BINARY_SELECTION = [
 	}
 ];
 
+export const DASH = '-';
+
 // Namespaces
 
 export const ACCOUNTS_PORTLET_NAMESPACE =
