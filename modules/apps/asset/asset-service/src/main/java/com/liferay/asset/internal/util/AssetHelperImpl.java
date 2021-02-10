@@ -691,7 +691,9 @@ public class AssetHelperImpl implements AssetHelper {
 			String orderByType, String sortField, Locale locale)
 		throws Exception {
 
-		Sort sort = _getSort(orderByType, sortField, locale);
+		Sort sort = SortFactoryUtil.getSort(
+			AssetEntry.class, _getSortType(sortField),
+			_getOrderByCol(sortField, locale), true, orderByType);
 
 		FieldSort fieldSort = _sorts.field(sort.getFieldName());
 
@@ -699,9 +701,28 @@ public class AssetHelperImpl implements AssetHelper {
 			fieldSort.setSortOrder(SortOrder.DESC);
 		}
 
-		if (!sortField.startsWith(DDMIndexer.DDM_FIELD_PREFIX) ||
-			_ddmIndexer.isLegacyDDMIndexFieldsEnabled()) {
+		if (!sortField.startsWith(DDMIndexer.DDM_FIELD_PREFIX)) {
+			return fieldSort;
+		}
 
+		DDMFormField ddmFormField = _getDDMFormField(sortField);
+
+		int sortType = _getDDMFormFieldTypeSortType(ddmFormField);
+
+		sort = SortFactoryUtil.getSort(
+			AssetEntry.class, sortType,
+			_getDDMFormFieldTypeOrderByCol(
+				ddmFormField, sortField,
+				_getDDMFormFieldLocalizable(sortField), sortType, locale),
+			false, orderByType);
+
+		fieldSort = _sorts.field(sort.getFieldName());
+
+		if (sort.isReverse()) {
+			fieldSort.setSortOrder(SortOrder.DESC);
+		}
+
+		if (_ddmIndexer.isLegacyDDMIndexFieldsEnabled()) {
 			return fieldSort;
 		}
 
@@ -740,27 +761,6 @@ public class AssetHelperImpl implements AssetHelper {
 			locale);
 
 		return new com.liferay.portal.search.sort.Sort[] {sort1, sort2};
-	}
-
-	private Sort _getSort(String orderByType, String sortField, Locale locale)
-		throws Exception {
-
-		if (sortField.startsWith(DDMIndexer.DDM_FIELD_PREFIX)) {
-			DDMFormField ddmFormField = _getDDMFormField(sortField);
-
-			int sortType = _getDDMFormFieldTypeSortType(ddmFormField);
-
-			return SortFactoryUtil.getSort(
-				AssetEntry.class, sortType,
-				_getDDMFormFieldTypeOrderByCol(
-					ddmFormField, sortField,
-					_getDDMFormFieldLocalizable(sortField), sortType, locale),
-				false, orderByType);
-		}
-
-		return SortFactoryUtil.getSort(
-			AssetEntry.class, _getSortType(sortField),
-			_getOrderByCol(sortField, locale), true, orderByType);
 	}
 
 	private int _getSortType(String fieldType) {
