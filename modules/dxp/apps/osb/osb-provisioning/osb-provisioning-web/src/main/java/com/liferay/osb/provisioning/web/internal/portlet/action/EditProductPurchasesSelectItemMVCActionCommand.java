@@ -37,7 +37,8 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	property = {
 		"javax.portlet.name=" + ProvisioningPortletKeys.ACCOUNTS,
-		"mvc.command.name=/accounts/edit_product_purchases_select_item"
+		"mvc.command.name=/accounts/edit_product_purchases_choose_terms",
+		"mvc.command.name=/accounts/edit_product_purchases_select_products"
 	},
 	service = MVCActionCommand.class
 )

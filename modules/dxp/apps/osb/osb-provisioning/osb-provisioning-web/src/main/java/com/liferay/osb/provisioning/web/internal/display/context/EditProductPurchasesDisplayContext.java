@@ -80,52 +80,48 @@ public class EditProductPurchasesDisplayContext
 
 		data.put("redirect", redirect);
 
-		PortletURL editProductPurchasesSelectItemActionURL =
-			renderResponse.createActionURL();
+		PortletURL selectProductsActionURL = renderResponse.createActionURL();
 
-		editProductPurchasesSelectItemActionURL.setParameter(
+		selectProductsActionURL.setParameter(
 			ActionRequest.ACTION_NAME,
-			"/accounts/edit_product_purchases_select_item");
-		editProductPurchasesSelectItemActionURL.setParameter(
-			"redirect", redirect);
-		editProductPurchasesSelectItemActionURL.setParameter(
-			"accountKey", account.getKey());
+			"/accounts/edit_product_purchases_select_products");
+		selectProductsActionURL.setParameter("redirect", redirect);
+		selectProductsActionURL.setParameter("accountKey", account.getKey());
 
-		data.put(
-			"editProductPurchasesSelectItemActionURL",
-			editProductPurchasesSelectItemActionURL.toString());
+		data.put("selectProductsActionURL", selectProductsActionURL.toString());
 
-		PortletURL editProductPurchasesActionURL =
-			renderResponse.createActionURL();
+		PortletURL editProductPurchasesURL = renderResponse.createActionURL();
 
-		editProductPurchasesActionURL.setParameter(
+		editProductPurchasesURL.setParameter(
 			ActionRequest.ACTION_NAME, "/accounts/edit_product_purchases");
-		editProductPurchasesActionURL.setParameter("redirect", redirect);
-		editProductPurchasesActionURL.setParameter(
-			"accountKey", account.getKey());
+		editProductPurchasesURL.setParameter("redirect", redirect);
+		editProductPurchasesURL.setParameter("accountKey", account.getKey());
 
 		if (_products != null) {
-			editProductPurchasesActionURL.setParameter(
+			editProductPurchasesURL.setParameter(
 				"productBundleIds",
 				ParamUtil.getString(renderRequest, "productBundleIds"));
-			editProductPurchasesActionURL.setParameter(
+			editProductPurchasesURL.setParameter(
 				"productKeys",
 				ParamUtil.getString(renderRequest, "productKeys"));
 
 			data.put("addSubscriptions", true);
 			data.put("details", _getAddProductPurchasesJSONArray());
 
-			PortletURL selectProductsURL = renderResponse.createRenderURL();
+			PortletURL selectProductsRenderURL =
+				renderResponse.createRenderURL();
 
-			selectProductsURL.setParameter(
+			selectProductsRenderURL.setParameter(
 				"mvcRenderCommandName", "/accounts/assign_products");
-			selectProductsURL.setParameter("accountKey", account.getKey());
-			selectProductsURL.setWindowState(LiferayWindowState.POP_UP);
+			selectProductsRenderURL.setParameter(
+				"accountKey", account.getKey());
+			selectProductsRenderURL.setWindowState(LiferayWindowState.POP_UP);
 
-			data.put("selectProductsURL", selectProductsURL.toString());
+			data.put(
+				"selectProductsRenderURL", selectProductsRenderURL.toString());
 		}
 		else {
-			editProductPurchasesActionURL.setParameter(
+			editProductPurchasesURL.setParameter(
 				"productPurchaseKeys",
 				ParamUtil.getString(renderRequest, "productPurchaseKeys"));
 
@@ -137,13 +133,11 @@ public class EditProductPurchasesDisplayContext
 			if (Validator.isNotNull(backURL)) {
 				data.put("backURL", backURL);
 
-				editProductPurchasesActionURL.setParameter("backURL", backURL);
+				editProductPurchasesURL.setParameter("backURL", backURL);
 			}
 		}
 
-		data.put(
-			"editProductPurchasesActionURL",
-			editProductPurchasesActionURL.toString());
+		data.put("editProductPurchasesURL", editProductPurchasesURL.toString());
 
 		List<Integer> sizing = new ArrayList<>();
 
