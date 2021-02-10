@@ -31,7 +31,7 @@ function renderAddSubscriptions(props) {
 					startDate: '2020-12-08'
 				}
 			]}
-			editProductPurchasesURL="/edit/product/purcahses/url"
+			editProductPurchasesURL="/edit/product/purchases/url"
 			redirect="/redirect/to/subscriptions/tab"
 			selectProductsActionURL="/select/products/url"
 			selectProductsRenderURL="/select/products/url"
