@@ -107,6 +107,7 @@ function BulkInput({
 			status: identicalValues('status')
 		});
 
+		setPerpetual(getDisplayValue('perpetual'));
 		setQuantity(getDisplayValue('quantity'));
 		setSalesforceOpportunityKey(
 			getDisplayValue('salesforceOpportunityKey')
