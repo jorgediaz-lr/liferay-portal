@@ -15,6 +15,7 @@ import React, {useRef, useState} from 'react';
 
 import {useClickOutside} from '../../../hooks/useClickOutside';
 import {NAMESPACE} from '../../../utilities/constants';
+import LicenseDetails from './LicenseDetails';
 
 const AdvancedSearch = React.forwardRef(
 	({clickOutsideCallback, formAction}, ref) => {
@@ -100,7 +101,7 @@ const AdvancedSearch = React.forwardRef(
 						displayType="secondary"
 						showCollapseIcon={true}
 					>
-						{/* TODO */}
+						<LicenseDetails />
 					</ClayPanel>
 
 					<ClayPanel
