@@ -568,11 +568,11 @@
 		</div>
 
 		<div class="container-trash">
-			{call ClayButton.render}
-				{let $delete kind="text"}
-					{msg desc=""}delete{/msg}
-				{/let}
+			{let $delete kind="text"}
+				{msg desc=""}delete{/msg}
+			{/let}
 
+			{call ClayButton.render}
 				{param events: [
 					'click': $_handleDeleteAction
 				] /}
@@ -813,11 +813,11 @@
 		</div>
 
 		<div class="container-trash">
-			{call ClayButton.render}
-				{let $delete kind="text"}
-					{msg desc=""}delete{/msg}
-				{/let}
+			{let $delete kind="text"}
+				{msg desc=""}delete{/msg}
+			{/let}
 
+			{call ClayButton.render}
 				{param events: [
 					'click': $_handleDeleteCondition
 				] /}
@@ -1021,11 +1021,11 @@
 
 	<div class="addbutton-timeline-item">
 		<div class="add-item timeline-increment-icon">
-			{call ClayButton.render}
-				{let $duplicate kind="text"}
-					{msg desc=""}duplicate{/msg}
-				{/let}
+			{let $duplicate kind="text"}
+				{msg desc=""}duplicate{/msg}
+			{/let}
 
+			{call ClayButton.render}
 				{param events: [
 					'click': $_handleItemAdded
 				] /}
