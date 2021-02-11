@@ -77,6 +77,8 @@ import com.liferay.segments.service.SegmentsEntryLocalServiceUtil;
 import com.liferay.segments.service.SegmentsEntryServiceUtil;
 import com.liferay.site.item.selector.criteria.SiteItemSelectorReturnType;
 import com.liferay.site.item.selector.criterion.SiteItemSelectorCriterion;
+import com.liferay.staging.StagingGroupHelper;
+import com.liferay.staging.StagingGroupHelperUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -980,6 +982,34 @@ public class EditAssetListDisplayContext {
 		return _anyAssetType;
 	}
 
+	public boolean isLiveGroup() {
+		if (_liveGroup != null) {
+			return _liveGroup;
+		}
+
+		Group group = _themeDisplay.getScopeGroup();
+
+		if (group.isLayout()) {
+			group = group.getParentGroup();
+		}
+
+		StagingGroupHelper stagingGroupHelper =
+			StagingGroupHelperUtil.getStagingGroupHelper();
+
+		if (stagingGroupHelper.isLiveGroup(group) &&
+			stagingGroupHelper.isStagedPortlet(
+				group, AssetListPortletKeys.ASSET_LIST)) {
+
+			_liveGroup = true;
+
+			return _liveGroup;
+		}
+
+		_liveGroup = false;
+
+		return _liveGroup;
+	}
+
 	public boolean isShowSubtypeFieldsFilter() {
 		return true;
 	}
@@ -1139,6 +1169,7 @@ public class EditAssetListDisplayContext {
 	private String _ddmStructureFieldName;
 	private String _ddmStructureFieldValue;
 	private final HttpServletRequest _httpServletRequest;
+	private Boolean _liveGroup;
 	private String _orderByColumn1;
 	private String _orderByColumn2;
 	private String _orderByType1;

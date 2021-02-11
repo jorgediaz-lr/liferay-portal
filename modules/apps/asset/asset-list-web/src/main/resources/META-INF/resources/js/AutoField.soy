@@ -5,6 +5,7 @@
  */
 {template .render}
 	{@param categorySelectorURL: string}
+	{@param disabled: bool}
 	{@param groupIds: list<string>}
 	{@param id: string}
 	{@param? namespace: string}
@@ -45,6 +46,7 @@
 					{let $ruleIndex: index($rule) /}
 					{call .rule}
 						{param categorySelectorURL: $categorySelectorURL /}
+						{param disabled: $disabled /}
 						{param groupIds: $groupIds /}
 						{param index: $ruleIndex /}
 						{param namespace: $namespace /}
@@ -58,9 +60,11 @@
 			{/if}
 		</ul>
 
-		{call .addRuleButton}
-			{param pathThemeImages: $pathThemeImages /}
-		{/call}
+		{if not $disabled}
+			{call .addRuleButton}
+				{param pathThemeImages: $pathThemeImages /}
+			{/call}
+		{/if}
 	</div>
 {/template}
 
@@ -90,6 +94,7 @@
  */
 {template .rule}
 	{@param categorySelectorURL: string}
+	{@param disabled: bool}
 	{@param groupIds: list<string>}
 	{@param index: int}
 	{@param? namespace: string}
@@ -193,10 +198,12 @@
 			</div>
 		</div>
 
-		{call .trashButton}
-			{param pathThemeImages: $pathThemeImages /}
-			{param ruleId: $index /}
-		{/call}
+		{if not $disabled}
+			{call .trashButton}
+				{param pathThemeImages: $pathThemeImages /}
+				{param ruleId: $index /}
+			{/call}
+		{/if}
 	</li>
 {/template}
 

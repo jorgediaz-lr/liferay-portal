@@ -50,35 +50,38 @@
 						<liferay-ui:message key="asset-entries" />
 					</span>
 				</span>
-				<span class="autofit-col">
-					<liferay-ui:icon-menu
-						direction="right"
-						message="select"
-						showArrow="<%= false %>"
-						showWhenSingleIcon="<%= true %>"
-						triggerCssClass="btn-sm"
-					>
 
-						<%
-						Map<String, Map<String, Object>> manualAddIconDataMap = editAssetListDisplayContext.getManualAddIconDataMap();
+				<c:if test="<%= !editAssetListDisplayContext.isLiveGroup() %>">
+					<span class="autofit-col">
+						<liferay-ui:icon-menu
+							direction="right"
+							message="select"
+							showArrow="<%= false %>"
+							showWhenSingleIcon="<%= true %>"
+							triggerCssClass="btn-sm"
+						>
 
-						for (Map.Entry<String, Map<String, Object>> entry : manualAddIconDataMap.entrySet()) {
-						%>
+							<%
+							Map<String, Map<String, Object>> manualAddIconDataMap = editAssetListDisplayContext.getManualAddIconDataMap();
 
-							<liferay-ui:icon
-								cssClass="asset-selector"
-								data="<%= entry.getValue() %>"
-								id="<%= themeDisplay.getScopeGroupId() + HtmlUtil.getAUICompatibleId(entry.getKey()) %>"
-								message="<%= HtmlUtil.escape(entry.getKey()) %>"
-								url="javascript:;"
-							/>
+							for (Map.Entry<String, Map<String, Object>> entry : manualAddIconDataMap.entrySet()) {
+							%>
 
-						<%
-						}
-						%>
+								<liferay-ui:icon
+									cssClass="asset-selector"
+									data="<%= entry.getValue() %>"
+									id="<%= themeDisplay.getScopeGroupId() + HtmlUtil.getAUICompatibleId(entry.getKey()) %>"
+									message="<%= HtmlUtil.escape(entry.getKey()) %>"
+									url="javascript:;"
+								/>
 
-					</liferay-ui:icon-menu>
-				</span>
+							<%
+							}
+							%>
+
+						</liferay-ui:icon-menu>
+					</span>
+				</c:if>
 			</span>
 		</h3>
 
@@ -130,17 +133,19 @@
 					value="<%= assetEntry.getModifiedDate() %>"
 				/>
 
-				<liferay-ui:search-container-column-jsp
-					path="/asset_list/asset_selection_order_up_action.jsp"
-				/>
+				<c:if test="<%= !editAssetListDisplayContext.isLiveGroup() %>">
+					<liferay-ui:search-container-column-jsp
+						path="/asset_list/asset_selection_order_up_action.jsp"
+					/>
 
-				<liferay-ui:search-container-column-jsp
-					path="/asset_list/asset_selection_order_down_action.jsp"
-				/>
+					<liferay-ui:search-container-column-jsp
+						path="/asset_list/asset_selection_order_down_action.jsp"
+					/>
 
-				<liferay-ui:search-container-column-jsp
-					path="/asset_list/asset_selection_action.jsp"
-				/>
+					<liferay-ui:search-container-column-jsp
+						path="/asset_list/asset_selection_action.jsp"
+					/>
+				</c:if>
 			</liferay-ui:search-container-row>
 
 			<liferay-ui:search-iterator

@@ -17,7 +17,9 @@
 <%@ include file="/init.jsp" %>
 
 <liferay-frontend:fieldset-group>
-	<liferay-frontend:fieldset>
+	<liferay-frontend:fieldset
+		disabled="<%= editAssetListDisplayContext.isLiveGroup() %>"
+	>
 		<liferay-asset:asset-tags-error />
 
 		<liferay-ui:error exception="<%= DuplicateQueryRuleException.class %>">
@@ -43,6 +45,8 @@
 			context='<%=
 				HashMapBuilder.<String, Object>put(
 					"categorySelectorURL", editAssetListDisplayContext.getCategorySelectorURL()
+				).put(
+					"disabled", editAssetListDisplayContext.isLiveGroup()
 				).put(
 					"groupIds", ListUtil.toList(editAssetListDisplayContext.getReferencedModelsGroupIds())
 				).put(
