@@ -28,7 +28,7 @@ import com.liferay.asset.kernel.service.AssetTagLocalService;
 import com.liferay.asset.kernel.service.persistence.AssetEntryQuery;
 import com.liferay.asset.util.AssetHelper;
 import com.liferay.asset.util.AssetPublisherAddItemHolder;
-import com.liferay.dynamic.data.mapping.form.field.type.constants.DDMFormFieldTypeConstants;
+import com.liferay.dynamic.data.mapping.model.DDMFormFieldType;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
@@ -595,16 +595,15 @@ public class AssetHelperImpl implements AssetHelper {
 	}
 
 	private String _getDDMFormFieldTypeOrderByCol(
-		DDMFormField ddmFormField, String sortField, boolean fieldLocalizable,
-		int sortType, Locale locale) {
+		String ddmFormField, String ddmFormFieldType, Locale locale) {
 
 		StringBundler sb = new StringBundler(5);
-
+		
 		if (_ddmIndexer.isLegacyDDMIndexFieldsEnabled()) {
-			sb.append(sortField);
+			sb.append(ddmFormField);
 			sb.append(StringPool.UNDERLINE);
-
-			if (fieldLocalizable) {
+		
+			if (locale != null) {
 				sb.append(LocaleUtil.toLanguageId(locale));
 				sb.append(StringPool.UNDERLINE);
 			}
@@ -612,69 +611,37 @@ public class AssetHelperImpl implements AssetHelper {
 		else {
 			sb.append(DDMIndexer.DDM_FIELD_ARRAY);
 			sb.append(StringPool.PERIOD);
-
+		
 			try {
 				String indexType =
-					sortField.split(DDMIndexer.DDM_FIELD_SEPARATOR)[1];
-
-				if (fieldLocalizable) {
-					sb.append(_ddmIndexer.getValueFieldName(indexType, locale));
-					sb.append(StringPool.UNDERLINE);
-				}
-				else {
-					sb.append(_ddmIndexer.getValueFieldName(indexType));
-					sb.append(StringPool.UNDERLINE);
-				}
+					ddmFormField.split(DDMIndexer.DDM_FIELD_SEPARATOR)[1];
+		
+				sb.append(_ddmIndexer.getValueFieldName(indexType, locale));
+				sb.append(StringPool.UNDERLINE);
 			}
 			catch (ArrayIndexOutOfBoundsException
 						arrayIndexOutOfBoundsException) {
-
+		
 				_log.error(
 					"Unable to get order by column",
 					arrayIndexOutOfBoundsException);
-
+		
 				throw arrayIndexOutOfBoundsException;
 			}
 		}
+		
+		if (Objects.equals(ddmFormFieldType, DDMFormFieldType.DECIMAL) ||
+			Objects.equals(ddmFormFieldType, DDMFormFieldType.INTEGER) ||
+			Objects.equals(ddmFormFieldType, DDMFormFieldType.NUMBER) ||
+			Objects.equals(ddmFormFieldType, DDMFormFieldType.NUMERIC)) {
 
-		String suffix = "String";
-
-		if (!Objects.equals(
-				ddmFormField.getType(), DDMFormFieldTypeConstants.DATE) &&
-			((sortType == Sort.DOUBLE_TYPE) || (sortType == Sort.FLOAT_TYPE) ||
-			 (sortType == Sort.INT_TYPE) || (sortType == Sort.LONG_TYPE))) {
-
-			suffix = "Number";
+			sb.append("Number");
 		}
-
-		sb.append(suffix);
+		else {
+			sb.append("String");
+		}
 
 		return Field.getSortableFieldName(sb.toString());
-	}
-
-	private int _getDDMFormFieldTypeSortType(DDMFormField ddmFormField) {
-		int sortType = Sort.STRING_TYPE;
-
-		if (Objects.equals(
-				ddmFormField.getType(), DDMFormFieldTypeConstants.DATE)) {
-
-			sortType = Sort.LONG_TYPE;
-		}
-		else if (Objects.equals(
-					ddmFormField.getType(),
-					DDMFormFieldTypeConstants.NUMERIC)) {
-
-			if (Objects.equals(
-					ddmFormField.getDataType(), FieldConstants.INTEGER)) {
-
-				sortType = Sort.INT_TYPE;
-			}
-			else {
-				sortType = Sort.DOUBLE_TYPE;
-			}
-		}
-
-		return sortType;
 	}
 
 	private String _getOrderByCol(String sortField, Locale locale) {
@@ -716,11 +683,12 @@ public class AssetHelperImpl implements AssetHelper {
 
 		DDMFormField ddmFormField = _getDDMFormField(sortField);
 
-		int sortType = _getDDMFormFieldTypeSortType(ddmFormField);
+		if (!_getDDMFormFieldLocalizable(sortField)) {
+			locale = null;
+		}
 
 		String orderByCol = _getDDMFormFieldTypeOrderByCol(
-			ddmFormField, sortField,
-			_getDDMFormFieldLocalizable(sortField), sortType, locale);
+			sortField, ddmFormField.getType(), locale);
 
 		FieldSort fieldSort = _sorts.field(orderByCol);
 
@@ -738,7 +706,7 @@ public class AssetHelperImpl implements AssetHelper {
 
 		sb.append(sortField);
 
-		if (_getDDMFormFieldLocalizable(sortField)) {
+		if (locale != null) {
 			sb.append(StringPool.UNDERLINE);
 			sb.append(LocaleUtil.toLanguageId(locale));
 		}
