@@ -187,21 +187,21 @@ public class DDMIndexerImpl implements DDMIndexer {
 			locale = null;
 		}
 
-		if (isLegacyDDMIndexFieldsEnabled()) {
-			return sorts.field(
-				encodeName(ddmStructure.getStructureId(), fieldName, locale),
-				sortOrder);
-		}
-
 		StringBundler sb = new StringBundler(5);
 
-		sb.append(DDMIndexer.DDM_FIELD_ARRAY);
-		sb.append(StringPool.PERIOD);
+		if (isLegacyDDMIndexFieldsEnabled()) {
+			sb.append(
+				encodeName(ddmStructure.getStructureId(), fieldName, locale));
+		}
+		else {
+			sb.append(DDMIndexer.DDM_FIELD_ARRAY);
+			sb.append(StringPool.PERIOD);
 
-		String indexType = ddmStructure.getFieldProperty(
-			fieldName, "indexType");
+			String indexType = ddmStructure.getFieldProperty(
+				fieldName, "indexType");
 
-		sb.append(getValueFieldName(indexType, locale));
+			sb.append(getValueFieldName(indexType, locale));
+		}
 
 		sb.append(StringPool.UNDERLINE);
 
@@ -222,6 +222,10 @@ public class DDMIndexerImpl implements DDMIndexer {
 			com.liferay.portal.kernel.search.Field.getSortableFieldName(
 				sb.toString()),
 			sortOrder);
+
+		if (isLegacyDDMIndexFieldsEnabled()) {
+			return fieldSort;
+		}
 
 		NestedSort nestedSort = sorts.nested(DDMIndexer.DDM_FIELD_ARRAY);
 
