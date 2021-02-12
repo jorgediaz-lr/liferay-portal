@@ -25,14 +25,14 @@ const AdvancedSearch = React.forwardRef(
 
 		useClickOutside(clickOutsideCallback, ref);
 
+		function handleOnCheck() {
+			setIsAndOperator(!isAndOperator);
+		}
+
 		function handleOnKeyDown(event) {
 			if (event.keyCode === 13) {
 				formRef.current.submit();
 			}
-		}
-
-		function handleOnCheck() {
-			setIsAndOperator(!isAndOperator);
 		}
 
 		return (

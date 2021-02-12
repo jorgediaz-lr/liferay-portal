@@ -45,6 +45,10 @@ function InlineEdit({
 
 	const namespacedFieldName = `${NAMESPACE}${fieldName}`;
 
+	function getDisplayValue() {
+		return displayValue ? displayValue : value;
+	}
+
 	function handleChange(event) {
 		setValue(event.currentTarget.value);
 	}
@@ -60,18 +64,14 @@ function InlineEdit({
 		deleteFn();
 	}
 
-	function handleToggle() {
-		setValue(!convertDashToEmptyString(value));
-	}
-
 	function handleReset() {
 		setFieldEditable(false);
 		setShowEditor(false);
 		setValue(fieldValue);
 	}
 
-	function getDisplayValue() {
-		return displayValue ? displayValue : value;
+	function handleToggle() {
+		setValue(!convertDashToEmptyString(value));
 	}
 
 	return (
