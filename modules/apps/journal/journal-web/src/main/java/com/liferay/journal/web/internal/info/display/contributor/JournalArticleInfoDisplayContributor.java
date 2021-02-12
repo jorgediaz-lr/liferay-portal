@@ -37,6 +37,7 @@ import com.liferay.info.display.field.InfoDisplayFieldProvider;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalArticleDisplay;
 import com.liferay.journal.service.JournalArticleLocalService;
+import com.liferay.journal.service.JournalArticleService;
 import com.liferay.journal.util.JournalContent;
 import com.liferay.journal.util.JournalConverter;
 import com.liferay.journal.web.internal.asset.JournalArticleDDMFormValuesReader;
@@ -156,6 +157,10 @@ public class JournalArticleInfoDisplayContributor
 		JournalArticle article = journalArticleLocalService.fetchLatestArticle(
 			classPK);
 
+		if (article == null) {
+			article = journalArticleService.getArticle(classPK);
+		}
+
 		if ((article == null) || article.isInTrash()) {
 			return null;
 		}
@@ -257,6 +262,9 @@ public class JournalArticleInfoDisplayContributor
 
 	@Reference
 	protected JournalArticleLocalService journalArticleLocalService;
+
+	@Reference
+	protected JournalArticleService journalArticleService;
 
 	@Reference
 	protected JournalContent journalContent;

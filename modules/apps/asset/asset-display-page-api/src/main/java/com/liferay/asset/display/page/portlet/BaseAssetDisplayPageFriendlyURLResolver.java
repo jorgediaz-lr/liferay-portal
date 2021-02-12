@@ -256,6 +256,13 @@ public abstract class BaseAssetDisplayPageFriendlyURLResolver
 			String friendlyURL)
 		throws PortalException {
 
+		long versionClassPK = _getVersionClassPK(friendlyURL);
+
+		if (versionClassPK > 0) {
+			return infoDisplayContributor.getInfoDisplayObjectProvider(
+				versionClassPK);
+		}
+
 		return infoDisplayContributor.getInfoDisplayObjectProvider(
 			groupId, _getUrlTitle(friendlyURL));
 	}
