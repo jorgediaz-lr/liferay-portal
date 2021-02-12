@@ -9,6 +9,16 @@
  * distribution rights of the Software.
  */
 
+export const BINARY_SELECTION = [
+	{
+		label: Liferay.Language.get('yes'),
+		value: true
+	},
+	{
+		label: Liferay.Language.get('no'),
+		value: false
+	}
+];
 export const NAMESPACE = window.ProvisioningConstants.namespace;
 
 // Note properties

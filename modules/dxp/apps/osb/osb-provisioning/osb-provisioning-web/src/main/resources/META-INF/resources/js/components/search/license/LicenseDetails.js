@@ -11,7 +11,8 @@
 
 import React from 'react';
 
-import {NAMESPACE} from '../../../utilities/constants';
+import {BINARY_SELECTION, NAMESPACE} from '../../../utilities/constants';
+import CheckboxGroup from '../CheckboxGroup';
 
 function LicenseDetails() {
 	return (
@@ -154,6 +155,17 @@ function LicenseDetails() {
 						{Liferay.Language.get('users-email-address')}
 					</div>
 				</div>
+			</div>
+
+			<div className="col-md-4 form-group">
+				<h5 className="form-check-inline">
+					{Liferay.Language.get('active')}
+				</h5>
+
+				<CheckboxGroup
+					fieldValues={BINARY_SELECTION}
+					inputName="active"
+				/>
 			</div>
 		</div>
 	);

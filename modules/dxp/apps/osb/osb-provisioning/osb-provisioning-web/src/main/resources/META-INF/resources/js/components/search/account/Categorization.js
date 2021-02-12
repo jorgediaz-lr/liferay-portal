@@ -12,6 +12,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import {BINARY_SELECTION} from '../../../utilities/constants';
 import CheckboxGroup from '../CheckboxGroup';
 
 function Categorization({
@@ -20,17 +21,6 @@ function Categorization({
 	subscriptionStateNames,
 	tierNames
 }) {
-	const binarySelection = [
-		{
-			label: Liferay.Language.get('yes'),
-			value: true
-		},
-		{
-			label: Liferay.Language.get('no'),
-			value: false
-		}
-	];
-
 	function simplifySLANames(names) {
 		return names.map(name => ({
 			label: name.replace(' Subscription', ''),
@@ -46,7 +36,7 @@ function Categorization({
 				</h5>
 
 				<CheckboxGroup
-					fieldValues={binarySelection}
+					fieldValues={BINARY_SELECTION}
 					inputName="partners"
 				/>
 			</div>
@@ -57,7 +47,7 @@ function Categorization({
 				</h5>
 
 				<CheckboxGroup
-					fieldValues={binarySelection}
+					fieldValues={BINARY_SELECTION}
 					inputName="providesFLS"
 				/>
 			</div>
@@ -68,7 +58,7 @@ function Categorization({
 				</h5>
 
 				<CheckboxGroup
-					fieldValues={binarySelection}
+					fieldValues={BINARY_SELECTION}
 					inputName="receivesFLS"
 				/>
 			</div>
@@ -79,7 +69,7 @@ function Categorization({
 				</h5>
 
 				<CheckboxGroup
-					fieldValues={binarySelection}
+					fieldValues={BINARY_SELECTION}
 					inputName="internals"
 				/>
 			</div>
