@@ -16,11 +16,11 @@ package com.liferay.headless.delivery.internal.search.sort;
 
 import com.liferay.dynamic.data.mapping.util.DDMIndexer;
 import com.liferay.headless.delivery.internal.dynamic.data.mapping.DDMStructureField;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.search.query.Queries;
 import com.liferay.portal.search.searcher.SearchRequestBuilder;
-import com.liferay.portal.search.sort.FieldSort;
-import com.liferay.portal.search.sort.NestedSort;
 import com.liferay.portal.search.sort.SortOrder;
 import com.liferay.portal.search.sort.Sorts;
 
@@ -36,7 +36,8 @@ public class SortUtil {
 		DDMIndexer ddmIndexer, SearchRequestBuilder searchRequestBuilder,
 		Sort[] oldSorts, Queries queries, Sorts sorts) {
 
-		List<FieldSort> fieldSorts = new ArrayList<>();
+		List<com.liferay.portal.search.sort.Sort> searchSorts =
+			new ArrayList<>();
 
 		for (Sort oldSort : oldSorts) {
 			String sortFieldName = oldSort.getFieldName();
@@ -46,7 +47,7 @@ public class SortUtil {
 			if (!sortFieldName.startsWith(DDMIndexer.DDM_FIELD_PREFIX) ||
 				ddmIndexer.isLegacyDDMIndexFieldsEnabled()) {
 
-				fieldSorts.add(sorts.field(sortFieldName, sortOrder));
+				searchSorts.add(sorts.field(sortFieldName, sortOrder));
 
 				continue;
 			}
@@ -54,23 +55,20 @@ public class SortUtil {
 			DDMStructureField ddmStructureField = DDMStructureField.from(
 				sortFieldName);
 
-			FieldSort fieldSort = sorts.field(
-				ddmStructureField.getDDMStructureNestedTypeSortableFieldName(),
-				sortOrder);
-
-			NestedSort nestedSort = sorts.nested(DDMIndexer.DDM_FIELD_ARRAY);
-
-			nestedSort.setFilterQuery(
-				queries.term(
-					DDMStructureField.getNestedFieldName(),
-					ddmStructureField.getDDMStructureFieldName()));
-
-			fieldSort.setNestedSort(nestedSort);
-
-			fieldSorts.add(fieldSort);
+			try {
+				searchSorts.add(
+					ddmIndexer.createDDMStructureFieldSort(
+						ddmStructureField.getDDMStructureFieldName(),
+						LanguageUtil.getLocale(ddmStructureField.getLocale()),
+						sortOrder));
+			}
+			catch (PortalException portalException) {
+				throw new RuntimeException(portalException);
+			}
 		}
 
-		searchRequestBuilder.sorts(fieldSorts.toArray(new FieldSort[0]));
+		searchRequestBuilder.sorts(
+			searchSorts.toArray(new com.liferay.portal.search.sort.Sort[0]));
 	}
 
 }
