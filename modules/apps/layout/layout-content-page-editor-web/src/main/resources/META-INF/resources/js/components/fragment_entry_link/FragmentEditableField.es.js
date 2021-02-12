@@ -118,8 +118,11 @@ class FragmentEditableField extends PortletBase {
 			this.editableValues[defaultSegmentsExperienceId] ||
 			this.editableValues;
 
+		const segmentDefaultValue = this.editableValues;
+
 		const translatedValue =
 			segmentedValue[this.languageId] ||
+			segmentDefaultValue[this.languageId] ||
 			segmentedValue[this.defaultLanguageId];
 
 		const mapped = editableIsMapped(this.editableValues);
