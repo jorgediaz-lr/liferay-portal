@@ -251,7 +251,10 @@ public class DDMIndexerImpl implements DDMIndexer {
 
 		long ddmStructureId = GetterUtil.getLong(ddmStructureFieldNameParts[2]);
 
-		String fieldName = ddmStructureFieldNameParts[3];
+		String fieldName = StringUtil.replaceLast(
+			ddmStructureFieldNameParts[3],
+			StringPool.UNDERLINE.concat(LocaleUtil.toLanguageId(locale)),
+			StringPool.BLANK);
 
 		DDMStructure ddmStructure = _ddmStructureLocalService.getStructure(
 			ddmStructureId);
