@@ -17,8 +17,11 @@ package com.liferay.dynamic.data.mapping.util;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.filter.QueryFilter;
+import com.liferay.portal.search.sort.Sort;
+import com.liferay.portal.search.sort.SortOrder;
 
 import java.io.Serializable;
 
@@ -53,6 +56,10 @@ public interface DDMIndexer {
 			String ddmStructureFieldName, Serializable ddmStructureFieldValue,
 			Locale locale)
 		throws Exception;
+
+	public Sort createDDMStructureFieldSort(
+			String ddmStructureFieldName,Locale locale, SortOrder sortOrder)
+		throws PortalException;
 
 	public String encodeName(long ddmStructureId, String fieldName);
 

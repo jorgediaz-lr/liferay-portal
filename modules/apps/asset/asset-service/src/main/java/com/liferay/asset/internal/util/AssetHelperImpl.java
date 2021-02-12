@@ -573,68 +573,6 @@ public class AssetHelperImpl implements AssetHelper {
 		return assetSearcher;
 	}
 
-	private DDMFormField _getDDMFormField(String sortField) throws Exception {
-		String[] sortFields = sortField.split(DDMIndexer.DDM_FIELD_SEPARATOR);
-
-		long ddmStructureId = GetterUtil.getLong(sortFields[2]);
-		String fieldName = sortFields[3];
-
-		DDMStructure ddmStructure = _ddmStructureLocalService.getStructure(
-			ddmStructureId);
-
-		return ddmStructure.getDDMFormField(fieldName);
-	}
-
-	private String _getDDMFormFieldTypeOrderByCol(
-		String ddmFormField, String ddmFormFieldType, Locale locale) {
-
-		StringBundler sb = new StringBundler(5);
-		
-		if (_ddmIndexer.isLegacyDDMIndexFieldsEnabled()) {
-			sb.append(ddmFormField);
-			sb.append(StringPool.UNDERLINE);
-		
-			if (locale != null) {
-				sb.append(LocaleUtil.toLanguageId(locale));
-				sb.append(StringPool.UNDERLINE);
-			}
-		}
-		else {
-			sb.append(DDMIndexer.DDM_FIELD_ARRAY);
-			sb.append(StringPool.PERIOD);
-		
-			try {
-				String indexType =
-					ddmFormField.split(DDMIndexer.DDM_FIELD_SEPARATOR)[1];
-		
-				sb.append(_ddmIndexer.getValueFieldName(indexType, locale));
-				sb.append(StringPool.UNDERLINE);
-			}
-			catch (ArrayIndexOutOfBoundsException
-						arrayIndexOutOfBoundsException) {
-		
-				_log.error(
-					"Unable to get order by column",
-					arrayIndexOutOfBoundsException);
-		
-				throw arrayIndexOutOfBoundsException;
-			}
-		}
-		
-		if (Objects.equals(ddmFormFieldType, DDMFormFieldType.DECIMAL) ||
-			Objects.equals(ddmFormFieldType, DDMFormFieldType.INTEGER) ||
-			Objects.equals(ddmFormFieldType, DDMFormFieldType.NUMBER) ||
-			Objects.equals(ddmFormFieldType, DDMFormFieldType.NUMERIC)) {
-
-			sb.append("Number");
-		}
-		else {
-			sb.append("String");
-		}
-
-		return Field.getSortableFieldName(sb.toString());
-	}
-
 	private String _getOrderByCol(String sortField, Locale locale) {
 		if (sortField.equals("modifiedDate")) {
 			sortField = Field.MODIFIED_DATE;
@@ -652,7 +590,16 @@ public class AssetHelperImpl implements AssetHelper {
 		throws Exception {
 
 		if (sortField.startsWith(DDMIndexer.DDM_FIELD_PREFIX)) {
-			return _getSearchSortDDMField(orderByType, sortField, locale);
+			SortOrder sortOrder = SortOrder.ASC;
+
+			if (Validator.isNotNull(orderByType) &&
+				!StringUtil.equalsIgnoreCase(orderByType, "asc")) {
+
+				sortOrder = SortOrder.DESC;
+			}
+
+			return _ddmIndexer.createDDMStructureFieldSort(
+					sortField, locale, sortOrder);
 		}
 
 		Sort sort = SortFactoryUtil.getSort(
@@ -664,60 +611,6 @@ public class AssetHelperImpl implements AssetHelper {
 		if (sort.isReverse()) {
 			fieldSort.setSortOrder(SortOrder.DESC);
 		}
-
-		return fieldSort;
-	}
-
-	private com.liferay.portal.search.sort.Sort _getSearchSortDDMField(
-			String orderByType, String sortField, Locale locale)
-		throws Exception {
-
-		DDMFormField ddmFormField = _getDDMFormField(sortField);
-
-		if (GetterUtil.getBoolean(ddmFormField.getProperty("localizable"))) {
-			if (locale == null) {
-				throw new IllegalArgumentException(
-					"Locale cannot be null if the ddmFormField is localizable");
-			}
-		}
-		else {
-			locale = null;
-		}
-
-		String orderByCol = _getDDMFormFieldTypeOrderByCol(
-			sortField, ddmFormField.getType(), locale);
-
-		FieldSort fieldSort = _sorts.field(orderByCol);
-
-		if (Validator.isNotNull(orderByType) &&
-			!StringUtil.equalsIgnoreCase(orderByType, "asc")) {
-
-			fieldSort.setSortOrder(SortOrder.DESC);
-		}
-
-		if (_ddmIndexer.isLegacyDDMIndexFieldsEnabled()) {
-			return fieldSort;
-		}
-
-		NestedSort nestedSort = _sorts.nested(DDMIndexer.DDM_FIELD_ARRAY);
-
-		StringBundler sb = new StringBundler(3);
-
-		sb.append(sortField);
-
-		if (locale != null) {
-			sb.append(StringPool.UNDERLINE);
-			sb.append(LocaleUtil.toLanguageId(locale));
-		}
-
-		nestedSort.setFilterQuery(
-			_queries.term(
-				StringBundler.concat(
-					DDMIndexer.DDM_FIELD_ARRAY, StringPool.PERIOD,
-					DDMIndexer.DDM_FIELD_NAME),
-				sb.toString()));
-
-		fieldSort.setNestedSort(nestedSort);
 
 		return fieldSort;
 	}
