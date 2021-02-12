@@ -9,11 +9,10 @@
  * distribution rights of the Software.
  */
 
-import {ClayCheckbox} from '@clayui/form';
 import PropTypes from 'prop-types';
-import React, {useState} from 'react';
+import React from 'react';
 
-import {NAMESPACE} from '../../../utilities/constants';
+import CheckboxGroup from '../CheckboxGroup';
 
 function Categorization({
 	activeSLANames,
@@ -132,55 +131,5 @@ Categorization.propTypes = {
 	subscriptionStateNames: PropTypes.array.isRequired,
 	tierNames: PropTypes.array.isRequired
 };
-
-function CheckboxGroup({fieldValues, inputName}) {
-	const [values, setValues] = useState([]);
-
-	function handleOnClick(event) {
-		const currentValue = event.currentTarget.value;
-
-		if (!values.includes(currentValue)) {
-			setValues([...values, currentValue]);
-		}
-		else {
-			setValues(values.filter(value => value !== currentValue));
-		}
-	}
-
-	return (
-		<>
-			<input
-				name={`${NAMESPACE}${inputName}`}
-				type="hidden"
-				value={values.join()}
-			/>
-
-			{fieldValues.map(field => {
-				if (!field.label && !field.value) {
-					return (
-						<ClayCheckbox
-							aria-label={field}
-							key={field}
-							label={field}
-							onClick={handleOnClick}
-							value={field}
-						/>
-					);
-				}
-				else {
-					return (
-						<ClayCheckbox
-							aria-label={field.label}
-							key={field.value}
-							label={field.label}
-							onClick={handleOnClick}
-							value={field.value}
-						/>
-					);
-				}
-			})}
-		</>
-	);
-}
 
 export default Categorization;
