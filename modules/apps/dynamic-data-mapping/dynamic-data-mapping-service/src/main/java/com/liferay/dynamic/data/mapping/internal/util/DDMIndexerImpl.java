@@ -17,8 +17,8 @@ package com.liferay.dynamic.data.mapping.internal.util;
 import com.liferay.dynamic.data.mapping.configuration.DDMIndexerConfiguration;
 import com.liferay.dynamic.data.mapping.form.field.type.constants.DDMFormFieldTypeConstants;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
-import com.liferay.dynamic.data.mapping.model.DDMFormFieldType;
 import com.liferay.dynamic.data.mapping.model.DDMFormFieldOptions;
+import com.liferay.dynamic.data.mapping.model.DDMFormFieldType;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.model.LocalizedValue;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
@@ -170,6 +170,103 @@ public class DDMIndexerImpl implements DDMIndexer {
 	}
 
 	@Override
+	public Sort createDDMStructureFieldSort(
+			DDMStructure ddmStructure, String fieldName, Locale locale,
+			SortOrder sortOrder)
+		throws PortalException {
+
+		DDMFormField ddmFormField = ddmStructure.getDDMFormField(fieldName);
+
+		if (GetterUtil.getBoolean(ddmFormField.getProperty("localizable"))) {
+			if (locale == null) {
+				throw new IllegalArgumentException(
+					"Locale cannot be null if the ddmFormField is localizable");
+			}
+		}
+		else {
+			locale = null;
+		}
+
+		if (isLegacyDDMIndexFieldsEnabled()) {
+			return sorts.field(
+				encodeName(ddmStructure.getStructureId(), fieldName, locale),
+				sortOrder);
+		}
+
+		StringBundler sb = new StringBundler(5);
+
+		sb.append(DDMIndexer.DDM_FIELD_ARRAY);
+		sb.append(StringPool.PERIOD);
+
+		String indexType = ddmStructure.getFieldProperty(
+			fieldName, "indexType");
+
+		sb.append(getValueFieldName(indexType, locale));
+
+		sb.append(StringPool.UNDERLINE);
+
+		String ddmFormFieldType = ddmFormField.getType();
+
+		if (Objects.equals(ddmFormFieldType, DDMFormFieldType.DECIMAL) ||
+			Objects.equals(ddmFormFieldType, DDMFormFieldType.INTEGER) ||
+			Objects.equals(ddmFormFieldType, DDMFormFieldType.NUMBER) ||
+			Objects.equals(ddmFormFieldType, DDMFormFieldType.NUMERIC)) {
+
+			sb.append("Number");
+		}
+		else {
+			sb.append("String");
+		}
+
+		FieldSort fieldSort = sorts.field(
+			com.liferay.portal.kernel.search.Field.getSortableFieldName(
+				sb.toString()),
+			sortOrder);
+
+		NestedSort nestedSort = sorts.nested(DDMIndexer.DDM_FIELD_ARRAY);
+
+		nestedSort.setFilterQuery(
+			queries.term(
+				StringBundler.concat(
+					DDMIndexer.DDM_FIELD_ARRAY, StringPool.PERIOD,
+					DDMIndexer.DDM_FIELD_NAME),
+				encodeName(ddmStructure.getStructureId(), fieldName, locale)));
+
+		fieldSort.setNestedSort(nestedSort);
+
+		return fieldSort;
+	}
+
+	@Override
+	public Sort createDDMStructureFieldSort(
+			String ddmStructureFieldName, Locale locale, SortOrder sortOrder)
+		throws PortalException {
+
+		String[] ddmStructureFieldNameParts = StringUtil.split(
+			ddmStructureFieldName, DDM_FIELD_SEPARATOR);
+
+		long ddmStructureId = GetterUtil.getLong(ddmStructureFieldNameParts[2]);
+
+		String fieldName = ddmStructureFieldNameParts[3];
+
+		DDMStructure ddmStructure = _ddmStructureLocalService.getStructure(
+			ddmStructureId);
+
+		return createDDMStructureFieldSort(
+			ddmStructure, fieldName, locale, sortOrder);
+	}
+
+	public QueryFilter createFieldValueQueryFilter(
+			DDMStructure ddmStructure, String fieldName, String value,
+			Locale locale)
+		throws Exception {
+
+		return createFieldValueQueryFilter(
+			encodeName(ddmStructure.getStructureId(), fieldName, locale), value,
+			locale);
+	}
+
+	@Override
 	public QueryFilter createFieldValueQueryFilter(
 			String ddmStructureFieldName, Serializable ddmStructureFieldValue,
 			Locale locale)
@@ -216,104 +313,6 @@ public class DDMIndexerImpl implements DDMIndexer {
 		}
 
 		return new QueryFilter(new NestedQuery(DDM_FIELD_ARRAY, booleanQuery));
-	}
-
-	public QueryFilter createFieldValueQueryFilter(
-			DDMStructure ddmStructure, String fieldName, String value,
-			Locale locale)
-		throws Exception {
-		return createFieldValueQueryFilter(
-			encodeName(
-				ddmStructure.getStructureId(), fieldName,
-				locale),
-			value, locale);
-	}
-
-	@Override
-	public Sort createDDMStructureFieldSort(
-			String ddmStructureFieldName, Locale locale, SortOrder sortOrder)
-		throws PortalException {
-		
-		String[] ddmStructureFieldNameParts = StringUtil.split(
-					ddmStructureFieldName, DDM_FIELD_SEPARATOR);
-
-		long ddmStructureId = GetterUtil.getLong(ddmStructureFieldNameParts[2]);
-		
-		String fieldName = ddmStructureFieldNameParts[3];
-		
-		DDMStructure ddmStructure = _ddmStructureLocalService.getStructure(
-			ddmStructureId);
-
-		return createDDMStructureFieldSort(
-			ddmStructure, fieldName, locale, sortOrder);
-	}
-
-	@Override
-	public Sort createDDMStructureFieldSort(
-			DDMStructure ddmStructure, String fieldName, Locale locale,
-			SortOrder sortOrder)
-		throws PortalException {
-
-		DDMFormField ddmFormField = ddmStructure.getDDMFormField(fieldName);
-
-		if (GetterUtil.getBoolean(ddmFormField.getProperty("localizable"))) {
-			if (locale == null) {
-				throw new IllegalArgumentException(
-					"Locale cannot be null if the ddmFormField is localizable");
-			}
-		}
-		else {
-			locale = null;
-		}
-
-		if (isLegacyDDMIndexFieldsEnabled()) {
-			return sorts.field(
-				encodeName(
-					ddmStructure.getStructureId(), fieldName, locale),
-				sortOrder);
-		}
-
-		StringBundler sb = new StringBundler(5);
-
-		sb.append(DDMIndexer.DDM_FIELD_ARRAY);
-		sb.append(StringPool.PERIOD);
-
-		String indexType =
-			ddmStructure.getFieldProperty(fieldName, "indexType");
-
-		sb.append(getValueFieldName(indexType, locale));
-
-		sb.append(StringPool.UNDERLINE);
-
-		String ddmFormFieldType = ddmFormField.getType();
-
-		if (Objects.equals(ddmFormFieldType, DDMFormFieldType.DECIMAL) ||
-			Objects.equals(ddmFormFieldType, DDMFormFieldType.INTEGER) ||
-			Objects.equals(ddmFormFieldType, DDMFormFieldType.NUMBER) ||
-			Objects.equals(ddmFormFieldType, DDMFormFieldType.NUMERIC)) {
-
-			sb.append("Number");
-		}
-		else {
-			sb.append("String");
-		}
-
-		FieldSort fieldSort = sorts.field(
-			com.liferay.portal.kernel.search.Field.getSortableFieldName(
-				sb.toString()), sortOrder);
-
-		NestedSort nestedSort = sorts.nested(DDMIndexer.DDM_FIELD_ARRAY);
-
-		nestedSort.setFilterQuery(
-			queries.term(
-				StringBundler.concat(
-					DDMIndexer.DDM_FIELD_ARRAY, StringPool.PERIOD,
-					DDMIndexer.DDM_FIELD_NAME),
-				encodeName(ddmStructure.getStructureId(), fieldName, locale)));
-
-		fieldSort.setNestedSort(nestedSort);
-
-		return fieldSort;
 	}
 
 	@Override
@@ -691,15 +690,6 @@ public class DDMIndexerImpl implements DDMIndexer {
 		return sb.toString();
 	}
 
-	@Reference
-	protected Queries queries;
-
-	@Reference
-	protected SortBuilderFactory sortBuilderFactory;
-
-	@Reference
-	protected Sorts sorts;
-
 	@Reference(unbind = "-")
 	protected void setDDM(DDM ddm) {
 		_ddm = ddm;
@@ -733,6 +723,15 @@ public class DDMIndexerImpl implements DDMIndexer {
 
 		return new Fields();
 	}
+
+	@Reference
+	protected Queries queries;
+
+	@Reference
+	protected SortBuilderFactory sortBuilderFactory;
+
+	@Reference
+	protected Sorts sorts;
 
 	private void _createSortableTextField(
 		Document document, String name, String sortableValueString) {
