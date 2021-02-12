@@ -263,56 +263,31 @@ public class DDMIndexerImpl implements DDMIndexer {
 			ddmStructure, fieldName, locale, sortOrder);
 	}
 
+	@Override
 	public QueryFilter createFieldValueQueryFilter(
 			DDMStructure ddmStructure, String fieldName, Serializable value,
 			Locale locale)
 		throws Exception {
 
-		return createFieldValueQueryFilter(
-			encodeName(ddmStructure.getStructureId(), fieldName, locale), value,
-			locale);
-	}
-
-	@Override
-	public QueryFilter createFieldValueQueryFilter(
-			String ddmStructureFieldName, Serializable ddmStructureFieldValue,
-			Locale locale)
-		throws Exception {
-
 		BooleanQuery booleanQuery = new BooleanQueryImpl();
 
-		String[] ddmStructureFieldNameParts = StringUtil.split(
-			ddmStructureFieldName, DDM_FIELD_SEPARATOR);
-
-		DDMStructure structure = _ddmStructureLocalService.getStructure(
-			GetterUtil.getLong(ddmStructureFieldNameParts[2]));
-
-		String fieldName = StringUtil.replaceLast(
-			ddmStructureFieldNameParts[3],
-			StringPool.UNDERLINE.concat(LocaleUtil.toLanguageId(locale)),
-			StringPool.BLANK);
-
-		if (structure.hasField(fieldName)) {
-			ddmStructureFieldValue = _ddm.getIndexedFieldValue(
-				ddmStructureFieldValue, structure.getFieldType(fieldName));
+		if (ddmStructure.hasField(fieldName)) {
+			value = _ddm.getIndexedFieldValue(
+				value, ddmStructure.getFieldType(fieldName));
 		}
 
-		if (ddmStructureFieldValue instanceof String[]) {
-			String[] ddmStructureFieldValueArray =
-				(String[])ddmStructureFieldValue;
+		if (value instanceof String[]) {
+			String[] array = (String[])value;
 
-			for (String ddmStructureFieldValueString :
-					ddmStructureFieldValueArray) {
-
+			for (String string : array) {
 				addFieldValueRequiredTerm(
-					booleanQuery, ddmStructureFieldName,
-					ddmStructureFieldValueString, locale);
+					booleanQuery, ddmStructure, fieldName, string, locale);
 			}
 		}
 		else {
 			addFieldValueRequiredTerm(
-				booleanQuery, ddmStructureFieldName,
-				String.valueOf(ddmStructureFieldValue), locale);
+				booleanQuery, ddmStructure, fieldName, String.valueOf(value),
+				locale);
 		}
 
 		if (isLegacyDDMIndexFieldsEnabled()) {
@@ -320,6 +295,26 @@ public class DDMIndexerImpl implements DDMIndexer {
 		}
 
 		return new QueryFilter(new NestedQuery(DDM_FIELD_ARRAY, booleanQuery));
+	}
+
+	@Override
+	public QueryFilter createFieldValueQueryFilter(
+			String ddmStructureFieldName, Serializable value, Locale locale)
+		throws Exception {
+
+		String[] ddmStructureFieldNameParts = StringUtil.split(
+			ddmStructureFieldName, DDM_FIELD_SEPARATOR);
+
+		DDMStructure ddmStructure = _ddmStructureLocalService.getStructure(
+			GetterUtil.getLong(ddmStructureFieldNameParts[2]));
+
+		String fieldName = StringUtil.replaceLast(
+			ddmStructureFieldNameParts[3],
+			StringPool.UNDERLINE.concat(LocaleUtil.toLanguageId(locale)),
+			StringPool.BLANK);
+
+		return createFieldValueQueryFilter(
+			ddmStructure, fieldName, value, locale);
 	}
 
 	@Override
@@ -483,31 +478,31 @@ public class DDMIndexerImpl implements DDMIndexer {
 	}
 
 	protected void addFieldValueRequiredTerm(
-		BooleanQuery booleanQuery, String ddmStructureFieldName,
-		String ddmStructureFieldValue, Locale locale) {
+			BooleanQuery booleanQuery, DDMStructure ddmStructure,
+			String fieldName, String value, Locale locale)
+		throws PortalException {
 
 		if (isLegacyDDMIndexFieldsEnabled()) {
 			booleanQuery.addRequiredTerm(
-				ddmStructureFieldName,
-				StringPool.QUOTE + ddmStructureFieldValue + StringPool.QUOTE);
+				encodeName(ddmStructure.getStructureId(), fieldName, locale),
+				StringPool.QUOTE + value + StringPool.QUOTE);
 
 			return;
 		}
 
-		String[] ddmStructureFieldNameParts = StringUtil.split(
-			ddmStructureFieldName, DDM_FIELD_SEPARATOR);
+		String indexType = ddmStructure.getFieldProperty(
+			fieldName, "indexType");
 
-		String valueFieldName = getValueFieldName(
-			ddmStructureFieldNameParts[1], locale);
+		String valueFieldName = getValueFieldName(indexType, locale);
 
 		booleanQuery.addRequiredTerm(
 			StringBundler.concat(
 				DDM_FIELD_ARRAY, StringPool.PERIOD, DDM_FIELD_NAME),
-			ddmStructureFieldName);
+			encodeName(ddmStructure.getStructureId(), fieldName, locale));
 		booleanQuery.addRequiredTerm(
 			StringBundler.concat(
 				DDM_FIELD_ARRAY, StringPool.PERIOD, valueFieldName),
-			StringPool.QUOTE + ddmStructureFieldValue + StringPool.QUOTE);
+			StringPool.QUOTE + value + StringPool.QUOTE);
 	}
 
 	protected void addToDocument(
