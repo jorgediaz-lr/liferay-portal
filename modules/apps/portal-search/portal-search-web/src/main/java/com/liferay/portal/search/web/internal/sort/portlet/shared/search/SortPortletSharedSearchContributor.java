@@ -14,32 +14,19 @@
 
 package com.liferay.portal.search.web.internal.sort.portlet.shared.search;
 
-import com.liferay.dynamic.data.mapping.model.DDMFormField;
-import com.liferay.dynamic.data.mapping.model.DDMFormFieldType;
-import com.liferay.dynamic.data.mapping.model.DDMStructure;
-import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.dynamic.data.mapping.util.DDMIndexer;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
-import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.search.query.Queries;
 import com.liferay.portal.search.searcher.SearchRequestBuilder;
-import com.liferay.portal.search.sort.FieldSort;
-import com.liferay.portal.search.sort.NestedSort;
 import com.liferay.portal.search.sort.Sort;
 import com.liferay.portal.search.sort.SortBuilder;
 import com.liferay.portal.search.sort.SortBuilderFactory;
 import com.liferay.portal.search.sort.SortOrder;
-import com.liferay.portal.search.sort.Sorts;
 import com.liferay.portal.search.web.internal.sort.constants.SortPortletKeys;
 import com.liferay.portal.search.web.internal.sort.portlet.SortPortletPreferences;
 import com.liferay.portal.search.web.internal.sort.portlet.SortPortletPreferencesImpl;
@@ -49,7 +36,6 @@ import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchSe
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -99,7 +85,7 @@ public class SortPortletSharedSearchContributor
 		if (fieldValue.startsWith(DDMIndexer.DDM_FIELD_PREFIX)) {
 			try {
 				return ddmIndexer.createDDMStructureFieldSort(
-						fieldValue, locale, sortOrder);
+					fieldValue, locale, sortOrder);
 			}
 			catch (PortalException portalException) {
 				throw new RuntimeException(portalException);
