@@ -264,8 +264,7 @@ public class OrganizationIndexerIndexedFieldsTest {
 		).put(
 			"region", regionName
 		).put(
-			Field.getSortableFieldName(
-				StringBundler.concat("type", StringPool.UNDERLINE, "String")),
+			Field.getSortableFieldName(StringBundler.concat("type_String")),
 			organization.getType()
 		).build();
 	}
