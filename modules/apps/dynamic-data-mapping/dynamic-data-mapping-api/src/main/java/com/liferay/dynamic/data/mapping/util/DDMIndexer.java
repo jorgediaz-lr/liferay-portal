@@ -57,8 +57,18 @@ public interface DDMIndexer {
 			Locale locale)
 		throws Exception;
 
+	public QueryFilter createFieldValueQueryFilter(
+			DDMStructure ddmStructure, String fieldName, String value,
+			Locale locale)
+		throws Exception;
+
 	public Sort createDDMStructureFieldSort(
 			String ddmStructureFieldName,Locale locale, SortOrder sortOrder)
+		throws PortalException;
+
+	public Sort createDDMStructureFieldSort(
+			DDMStructure ddmStructure, String fieldName, Locale locale,
+			SortOrder sortOrder)
 		throws PortalException;
 
 	public String encodeName(long ddmStructureId, String fieldName);

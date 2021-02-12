@@ -218,46 +218,74 @@ public class DDMIndexerImpl implements DDMIndexer {
 		return new QueryFilter(new NestedQuery(DDM_FIELD_ARRAY, booleanQuery));
 	}
 
-	private DDMFormField _getDDMFormField(String ddmStructureFieldName) 
+	public QueryFilter createFieldValueQueryFilter(
+			DDMStructure ddmStructure, String fieldName, String value,
+			Locale locale)
+		throws Exception {
+		return createFieldValueQueryFilter(
+			encodeName(
+				ddmStructure.getStructureId(), fieldName,
+				locale),
+			value, locale);
+	}
+
+	@Override
+	public Sort createDDMStructureFieldSort(
+			String ddmStructureFieldName, Locale locale, SortOrder sortOrder)
 		throws PortalException {
+		
 		String[] ddmStructureFieldNameParts = StringUtil.split(
-				ddmStructureFieldName, DDM_FIELD_SEPARATOR);
+					ddmStructureFieldName, DDM_FIELD_SEPARATOR);
 
 		long ddmStructureId = GetterUtil.getLong(ddmStructureFieldNameParts[2]);
-
+		
 		String fieldName = ddmStructureFieldNameParts[3];
-
+		
 		DDMStructure ddmStructure = _ddmStructureLocalService.getStructure(
 			ddmStructureId);
 
-		return ddmStructure.getDDMFormField(fieldName);
+		return createDDMStructureFieldSort(
+			ddmStructure, fieldName, locale, sortOrder);
 	}
 
-	private String _getDDMStructureSortableFieldName(
-		String ddmFormField, String ddmFormFieldType, Locale locale) {
+	@Override
+	public Sort createDDMStructureFieldSort(
+			DDMStructure ddmStructure, String fieldName, Locale locale,
+			SortOrder sortOrder)
+		throws PortalException {
 
-		StringBundler sb = new StringBundler(5);
+		DDMFormField ddmFormField = ddmStructure.getDDMFormField(fieldName);
 
-		if (isLegacyDDMIndexFieldsEnabled()) {
-			sb.append(ddmFormField);
-			sb.append(StringPool.UNDERLINE);
-
-			if (locale != null) {
-				sb.append(LocaleUtil.toLanguageId(locale));
-				sb.append(StringPool.UNDERLINE);
+		if (GetterUtil.getBoolean(ddmFormField.getProperty("localizable"))) {
+			if (locale == null) {
+				throw new IllegalArgumentException(
+					"Locale cannot be null if the ddmFormField is localizable");
 			}
 		}
 		else {
-			sb.append(DDMIndexer.DDM_FIELD_ARRAY);
-			sb.append(StringPool.PERIOD);
-
-			String indexType =
-				ddmFormField.split(DDMIndexer.DDM_FIELD_SEPARATOR)[1];
-
-			sb.append(getValueFieldName(indexType, locale));
-
-			sb.append(StringPool.UNDERLINE);
+			locale = null;
 		}
+
+		if (isLegacyDDMIndexFieldsEnabled()) {
+			return sorts.field(
+				encodeName(
+					ddmStructure.getStructureId(), fieldName, locale),
+				sortOrder);
+		}
+
+		StringBundler sb = new StringBundler(5);
+
+		sb.append(DDMIndexer.DDM_FIELD_ARRAY);
+		sb.append(StringPool.PERIOD);
+
+		String indexType =
+			ddmStructure.getFieldProperty(fieldName, "indexType");
+
+		sb.append(getValueFieldName(indexType, locale));
+
+		sb.append(StringPool.UNDERLINE);
+
+		String ddmFormFieldType = ddmFormField.getType();
 
 		if (Objects.equals(ddmFormFieldType, DDMFormFieldType.DECIMAL) ||
 			Objects.equals(ddmFormFieldType, DDMFormFieldType.INTEGER) ||
@@ -270,53 +298,18 @@ public class DDMIndexerImpl implements DDMIndexer {
 			sb.append("String");
 		}
 
-		return com.liferay.portal.kernel.search.Field.getSortableFieldName(
-				sb.toString());
-	}
-
-	@Override
-	public Sort createDDMStructureFieldSort(
-			String ddmStructureFieldName,Locale locale, SortOrder sortOrder)
-		throws PortalException {
-		
-		DDMFormField ddmFormField = _getDDMFormField(ddmStructureFieldName);
-
-		if (GetterUtil.getBoolean(ddmFormField.getProperty("localizable"))) {
-			if (locale == null) {
-				throw new IllegalArgumentException(
-					"Locale cannot be null if the ddmFormField is localizable");
-			}
-		}
-		else {
-			locale = null;
-		}
-
 		FieldSort fieldSort = sorts.field(
-			_getDDMStructureSortableFieldName(
-				ddmStructureFieldName, ddmFormField.getType(), locale),
-			sortOrder);
-
-		if (isLegacyDDMIndexFieldsEnabled()) {
-			return fieldSort;
-		}
+			com.liferay.portal.kernel.search.Field.getSortableFieldName(
+				sb.toString()), sortOrder);
 
 		NestedSort nestedSort = sorts.nested(DDMIndexer.DDM_FIELD_ARRAY);
-
-		StringBundler sb = new StringBundler(3);
-
-		sb.append(ddmStructureFieldName);
-
-		if (locale != null) {
-			sb.append(StringPool.UNDERLINE);
-			sb.append(LocaleUtil.toLanguageId(locale));
-		}
 
 		nestedSort.setFilterQuery(
 			queries.term(
 				StringBundler.concat(
 					DDMIndexer.DDM_FIELD_ARRAY, StringPool.PERIOD,
 					DDMIndexer.DDM_FIELD_NAME),
-				sb.toString()));
+				encodeName(ddmStructure.getStructureId(), fieldName, locale)));
 
 		fieldSort.setNestedSort(nestedSort);
 

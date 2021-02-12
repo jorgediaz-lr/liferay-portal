@@ -231,7 +231,7 @@ public class DataRecordResourceImpl
 					_searchRequestBuilderFactory.builder(
 						searchContext
 					).sorts(
-						_getFieldSorts(ddlRecordSet.getDDMStructure(), sorts)
+						_getSearchSorts(ddlRecordSet.getDDMStructure(), sorts)
 					);
 				}
 
@@ -443,10 +443,8 @@ public class DataRecordResourceImpl
 
 				fieldBooleanFilter.add(
 					_ddmIndexer.createFieldValueQueryFilter(
-						_getIndexFieldName(
-							ddmStructure.getStructureId(), fieldName,
-							contextAcceptLanguage.getPreferredLocale()),
-						value, contextAcceptLanguage.getPreferredLocale()),
+						ddmStructure, fieldName, value,
+						contextAcceptLanguage.getPreferredLocale()),
 					BooleanClauseOccur.SHOULD);
 			}
 
@@ -484,76 +482,30 @@ public class DataRecordResourceImpl
 		return ddlRecordSet.getRecordSetId();
 	}
 
-	private FieldSort[] _getFieldSorts(DDMStructure ddmStructure, Sort[] sorts)
+	private com.liferay.portal.search.sort.Sort[] _getSearchSorts(
+			DDMStructure ddmStructure, Sort[] sorts)
 		throws PortalException {
 
-		List<FieldSort> fieldSorts = new ArrayList<>();
+		List<com.liferay.portal.search.sort.Sort> searchSorts = new ArrayList<>();
 
 		for (Sort sort : sorts) {
 			String fieldName = sort.getFieldName();
 
-			FieldSort fieldSort = _sorts.field(
-				_getSortableFieldName(ddmStructure, fieldName));
+			SortOrder sortOrder = SortOrder.ASC;
 
 			if (sort.isReverse()) {
-				fieldSort.setSortOrder(SortOrder.DESC);
+				sortOrder = SortOrder.DESC;
 			}
 
-			NestedSort nestedSort = _sorts.nested(DDMIndexer.DDM_FIELD_ARRAY);
+			com.liferay.portal.search.sort.Sort searchSort =
+				_ddmIndexer.createDDMStructureFieldSort(
+					ddmStructure, fieldName,
+					contextAcceptLanguage.getPreferredLocale(), sortOrder);
 
-			nestedSort.setFilterQuery(
-				_queries.term(
-					StringBundler.concat(
-						DDMIndexer.DDM_FIELD_ARRAY, StringPool.PERIOD,
-						DDMIndexer.DDM_FIELD_NAME),
-					_getIndexFieldName(
-						ddmStructure.getStructureId(), fieldName,
-						contextAcceptLanguage.getPreferredLocale())));
-
-			fieldSort.setNestedSort(nestedSort);
-
-			fieldSorts.add(fieldSort);
+			searchSorts.add(searchSort);
 		}
 
-		return fieldSorts.toArray(new FieldSort[0]);
-	}
-
-	private String _getIndexFieldName(
-		long ddmStructureId, String fieldName, Locale locale) {
-
-		return _ddmIndexer.encodeName(ddmStructureId, fieldName, locale);
-	}
-
-	private String _getSortableFieldName(
-			DDMStructure ddmStructure, String fieldName)
-		throws PortalException {
-
-		StringBundler sb = new StringBundler(5);
-
-		sb.append(DDMIndexer.DDM_FIELD_ARRAY);
-		sb.append(StringPool.PERIOD);
-		sb.append(
-			_ddmIndexer.getValueFieldName(
-				ddmStructure.getFieldProperty(fieldName, "indexType"),
-				contextAcceptLanguage.getPreferredLocale()));
-		sb.append(StringPool.UNDERLINE);
-
-		DDMFormField ddmFormField = ddmStructure.getDDMFormField(fieldName);
-
-		String ddmFormFieldType = ddmFormField.getType();
-
-		if (StringUtil.equals(ddmFormFieldType, DDMFormFieldType.DECIMAL) ||
-			StringUtil.equals(ddmFormFieldType, DDMFormFieldType.INTEGER) ||
-			StringUtil.equals(ddmFormFieldType, DDMFormFieldType.NUMBER) ||
-			StringUtil.equals(ddmFormFieldType, DDMFormFieldType.NUMERIC)) {
-
-			sb.append("Number");
-		}
-		else {
-			sb.append("String");
-		}
-
-		return Field.getSortableFieldName(sb.toString());
+		return searchSorts.toArray(new FieldSort[0]);
 	}
 
 	private DataRecord _toDataRecord(DDLRecord ddlRecord) throws Exception {
