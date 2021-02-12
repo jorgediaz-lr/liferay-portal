@@ -689,7 +689,9 @@ public class AssetHelperImpl implements AssetHelper {
 
 		FieldSort fieldSort = _sorts.field(orderByCol);
 
-		if (!StringUtil.equalsIgnoreCase(orderByType, "asc")) {
+		if (Validator.isNotNull(orderByType) &&
+			!StringUtil.equalsIgnoreCase(orderByType, "asc")) {
+
 			fieldSort.setSortOrder(SortOrder.DESC);
 		}
 
