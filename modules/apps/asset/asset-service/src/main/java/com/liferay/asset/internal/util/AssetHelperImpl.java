@@ -28,11 +28,10 @@ import com.liferay.asset.kernel.service.AssetTagLocalService;
 import com.liferay.asset.kernel.service.persistence.AssetEntryQuery;
 import com.liferay.asset.util.AssetHelper;
 import com.liferay.asset.util.AssetPublisherAddItemHolder;
-import com.liferay.dynamic.data.mapping.model.DDMFormFieldType;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
+import com.liferay.dynamic.data.mapping.model.DDMFormFieldType;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
-import com.liferay.dynamic.data.mapping.storage.constants.FieldConstants;
 import com.liferay.dynamic.data.mapping.util.DDMIndexer;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -675,7 +674,13 @@ public class AssetHelperImpl implements AssetHelper {
 
 		DDMFormField ddmFormField = _getDDMFormField(sortField);
 
-		if (!GetterUtil.getBoolean(ddmFormField.getProperty("localizable"))) {
+		if (GetterUtil.getBoolean(ddmFormField.getProperty("localizable"))) {
+			if (locale == null) {
+				throw new IllegalArgumentException(
+					"Locale cannot be null if the ddmFormField is localizable");
+			}
+		}
+		else {
 			locale = null;
 		}
 
