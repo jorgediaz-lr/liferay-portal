@@ -15,7 +15,7 @@ import React, {useState} from 'react';
 
 import {NAMESPACE} from '../../utilities/constants';
 
-function CheckboxGroup({fieldValues, inputName}) {
+function CheckboxGroups({fieldValues, inputName}) {
 	const [values, setValues] = useState([]);
 
 	function handleOnClick(event) {
@@ -65,7 +65,7 @@ function CheckboxGroup({fieldValues, inputName}) {
 	);
 }
 
-CheckboxGroup.propTypes = {
+CheckboxGroups.propTypes = {
 	fieldValues: PropTypes.arrayOf(
 		PropTypes.oneOfType([
 			PropTypes.string,
@@ -79,4 +79,4 @@ CheckboxGroup.propTypes = {
 	inputName: PropTypes.string.isRequired
 };
 
-export default CheckboxGroup;
+export default CheckboxGroups;

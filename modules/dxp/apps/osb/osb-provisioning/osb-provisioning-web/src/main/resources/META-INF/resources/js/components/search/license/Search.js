@@ -19,7 +19,12 @@ import {
 } from '../../../utilities/searchFilters';
 import AdvancedSearch from './AdvancedSearch';
 
-function Search({licenseHomeURL = ''}) {
+function Search({
+	licenseHomeURL = '',
+	licenseTypes,
+	productNames,
+	productVersions
+}) {
 	const [keywords, setKeywords] = useState(getSearchParameter());
 	const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
 
@@ -172,6 +177,9 @@ function Search({licenseHomeURL = ''}) {
 				<AdvancedSearch
 					clickOutsideCallback={handleClickOutside}
 					formAction={licenseHomeURL}
+					licenseTypes={licenseTypes}
+					productNames={productNames}
+					productVersions={productVersions}
 				/>
 			)}
 		</>
@@ -179,7 +187,25 @@ function Search({licenseHomeURL = ''}) {
 }
 
 Search.propTypes = {
-	licenseHomeURL: PropTypes.string.isRequired
+	licenseHomeURL: PropTypes.string.isRequired,
+	licenseTypes: PropTypes.arrayOf(
+		PropTypes.shape({
+			label: PropTypes.string,
+			value: PropTypes.oneOfType[(PropTypes.number, PropTypes.string)]
+		})
+	),
+	productNames: PropTypes.arrayOf(
+		PropTypes.shape({
+			label: PropTypes.string,
+			value: PropTypes.oneOfType[(PropTypes.number, PropTypes.string)]
+		})
+	),
+	productVersions: PropTypes.arrayOf(
+		PropTypes.shape({
+			label: PropTypes.string,
+			value: PropTypes.oneOfType[(PropTypes.number, PropTypes.string)]
+		})
+	)
 };
 
 export default Search;

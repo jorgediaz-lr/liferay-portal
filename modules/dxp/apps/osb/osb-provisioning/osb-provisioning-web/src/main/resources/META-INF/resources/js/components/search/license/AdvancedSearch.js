@@ -15,10 +15,20 @@ import React, {useRef, useState} from 'react';
 
 import {useClickOutside} from '../../../hooks/useClickOutside';
 import {NAMESPACE} from '../../../utilities/constants';
+import CheckboxGroups from '../CheckboxGroups';
 import LicenseDetails from './LicenseDetails';
 
 const AdvancedSearch = React.forwardRef(
-	({clickOutsideCallback, formAction}, ref) => {
+	(
+		{
+			clickOutsideCallback,
+			formAction,
+			licenseTypes,
+			productNames,
+			productVersions
+		},
+		ref
+	) => {
 		const [isAndOperator, setIsAndOperator] = useState(true);
 
 		const formRef = useRef();
@@ -104,32 +114,55 @@ const AdvancedSearch = React.forwardRef(
 						<LicenseDetails />
 					</ClayPanel>
 
-					<ClayPanel
-						collapsable
-						displayTitle={Liferay.Language.get('license-type')}
-						displayType="secondary"
-						showCollapseIcon={true}
-					>
-						{/* TODO */}
-					</ClayPanel>
+					{licenseTypes.length && (
+						<ClayPanel
+							collapsable
+							displayTitle={Liferay.Language.get('license-type')}
+							displayType="secondary"
+							showCollapseIcon={true}
+						>
+							<div className="panel-body">
+								<CheckboxGroups
+									fieldValues={licenseTypes}
+									inputName="types"
+								/>
+							</div>
+						</ClayPanel>
+					)}
 
-					<ClayPanel
-						collapsable
-						displayTitle={Liferay.Language.get('product')}
-						displayType="secondary"
-						showCollapseIcon={true}
-					>
-						{/* TODO */}
-					</ClayPanel>
+					{productNames.length && (
+						<ClayPanel
+							collapsable
+							displayTitle={Liferay.Language.get('product')}
+							displayType="secondary"
+							showCollapseIcon={true}
+						>
+							<div className="panel-body">
+								<CheckboxGroups
+									fieldValues={productNames}
+									inputName="productNames"
+								/>
+							</div>
+						</ClayPanel>
+					)}
 
-					<ClayPanel
-						collapsable
-						displayTitle={Liferay.Language.get('product-version')}
-						displayType="secondary"
-						showCollapseIcon={true}
-					>
-						{/* TODO */}
-					</ClayPanel>
+					{productVersions.length && (
+						<ClayPanel
+							collapsable
+							displayTitle={Liferay.Language.get(
+								'product-version'
+							)}
+							displayType="secondary"
+							showCollapseIcon={true}
+						>
+							<div className="panel-body">
+								<CheckboxGroups
+									fieldValues={productVersions}
+									inputName="productVersions"
+								/>
+							</div>
+						</ClayPanel>
+					)}
 
 					<ClayPanel
 						collapsable
@@ -168,7 +201,13 @@ const AdvancedSearch = React.forwardRef(
 
 AdvancedSearch.propTypes = {
 	clickOutsideCallback: PropTypes.func.isRequired,
-	formAction: PropTypes.string.isRequired
+	formAction: PropTypes.string.isRequired,
+	licenseTypes: PropTypes.arrayOf(
+		PropTypes.shape({
+			label: PropTypes.string,
+			value: PropTypes.oneOfType[(PropTypes.number, PropTypes.string)]
+		})
+	)
 };
 
 export default AdvancedSearch;

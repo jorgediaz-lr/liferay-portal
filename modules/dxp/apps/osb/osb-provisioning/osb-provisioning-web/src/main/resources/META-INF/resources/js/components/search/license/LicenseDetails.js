@@ -12,7 +12,7 @@
 import React from 'react';
 
 import {BINARY_SELECTION, NAMESPACE} from '../../../utilities/constants';
-import CheckboxGroup from '../CheckboxGroup';
+import CheckboxGroups from '../CheckboxGroups';
 
 function LicenseDetails() {
 	return (
@@ -162,9 +162,9 @@ function LicenseDetails() {
 					{Liferay.Language.get('active')}
 				</h5>
 
-				<CheckboxGroup
+				<CheckboxGroups
 					fieldValues={BINARY_SELECTION}
-					inputName="active"
+					inputName="activeLicenses"
 				/>
 			</div>
 		</div>

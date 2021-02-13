@@ -9,6 +9,7 @@
  * distribution rights of the Software.
  */
 
+import times from 'lodash.times';
 import {cleanup, fireEvent, render} from '@testing-library/react';
 import React from 'react';
 
@@ -32,8 +33,22 @@ function renderAccountSearch() {
 	);
 }
 
+const dummyData = index => {
+	return {
+		label: `name ${index}`,
+		value: `value${index}`
+	};
+};
+
 function renderLicenseSearch() {
-	return render(<LicenseSearch licenseHomeURL="/license/home/URL" />);
+	return render(
+		<LicenseSearch
+			licenseHomeURL="/license/home/URL"
+			licenseTypes={times(Math.random() * 100, dummyData)}
+			productNames={times(Math.random() * 100, dummyData)}
+			productVersions={times(Math.random() * 100, dummyData)}
+		/>
+	);
 }
 
 describe('Search', () => {

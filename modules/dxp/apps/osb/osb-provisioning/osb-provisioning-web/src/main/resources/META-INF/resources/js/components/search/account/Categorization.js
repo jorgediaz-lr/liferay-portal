@@ -13,7 +13,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import {BINARY_SELECTION} from '../../../utilities/constants';
-import CheckboxGroup from '../CheckboxGroup';
+import CheckboxGroups from '../CheckboxGroups';
 
 function Categorization({
 	activeSLANames,
@@ -35,7 +35,7 @@ function Categorization({
 					{Liferay.Language.get('partner')}
 				</h5>
 
-				<CheckboxGroup
+				<CheckboxGroups
 					fieldValues={BINARY_SELECTION}
 					inputName="partners"
 				/>
@@ -46,7 +46,7 @@ function Categorization({
 					{Liferay.Language.get('provides-fls')}
 				</h5>
 
-				<CheckboxGroup
+				<CheckboxGroups
 					fieldValues={BINARY_SELECTION}
 					inputName="providesFLS"
 				/>
@@ -57,7 +57,7 @@ function Categorization({
 					{Liferay.Language.get('receives-fls')}
 				</h5>
 
-				<CheckboxGroup
+				<CheckboxGroups
 					fieldValues={BINARY_SELECTION}
 					inputName="receivesFLS"
 				/>
@@ -68,7 +68,7 @@ function Categorization({
 					{Liferay.Language.get('internal')}
 				</h5>
 
-				<CheckboxGroup
+				<CheckboxGroups
 					fieldValues={BINARY_SELECTION}
 					inputName="internals"
 				/>
@@ -79,7 +79,7 @@ function Categorization({
 					{Liferay.Language.get('tier')}
 				</h5>
 
-				<CheckboxGroup fieldValues={tierNames} inputName="tiers" />
+				<CheckboxGroups fieldValues={tierNames} inputName="tiers" />
 			</div>
 
 			<div className="col-md-3 form-group">
@@ -87,7 +87,7 @@ function Categorization({
 					{Liferay.Language.get('subscription-status')}
 				</h5>
 
-				<CheckboxGroup
+				<CheckboxGroups
 					fieldValues={subscriptionStateNames}
 					inputName="subscriptionStates"
 				/>
@@ -98,7 +98,7 @@ function Categorization({
 					{Liferay.Language.get('subscription-level')}
 				</h5>
 
-				<CheckboxGroup
+				<CheckboxGroups
 					fieldValues={simplifySLANames(activeSLANames)}
 					inputName="activeSLAs"
 				/>
@@ -109,7 +109,7 @@ function Categorization({
 					{Liferay.Language.get('support-region')}
 				</h5>
 
-				<CheckboxGroup fieldValues={regionNames} inputName="regions" />
+				<CheckboxGroups fieldValues={regionNames} inputName="regions" />
 			</div>
 		</div>
 	);
