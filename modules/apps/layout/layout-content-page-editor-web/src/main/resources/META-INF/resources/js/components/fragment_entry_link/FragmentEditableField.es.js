@@ -585,9 +585,9 @@ FragmentEditableField.STATE = {
 	 * @memberOf FragmentEditableField
 	 * @private
 	 * @review
-	 * @type {string}
+	 * @type {any}
 	 */
-	_initialValue: Config.internal().string(),
+	_initialValue: Config.any(),
 
 	/**
 	 * Translated label of the mapped field
