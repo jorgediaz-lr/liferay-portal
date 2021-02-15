@@ -67,8 +67,7 @@ public interface DDMIndexer {
 		throws Exception;
 
 	public QueryFilter createFieldValueQueryFilter(
-			String ddmStructureFieldName, Serializable ddmStructureFieldValue,
-			Locale locale)
+			String ddmStructureFieldName, Serializable value, Locale locale)
 		throws Exception;
 
 	public String encodeName(long ddmStructureId, String fieldName);
