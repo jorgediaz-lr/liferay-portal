@@ -26,7 +26,6 @@ SearchContainer searchContainer = teamSearchDisplayContext.getSearchContainer();
 
 <clay:management-toolbar
 	clearResultsURL="<%= teamSearchDisplayContext.getClearResultsURL() %>"
-	elementClasses="full-width"
 	itemsTotal="<%= searchContainer.getTotal() %>"
 	searchActionURL="<%= currentURL %>"
 	searchContainerId="teamContainer"
