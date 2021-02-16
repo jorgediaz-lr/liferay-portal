@@ -21,17 +21,17 @@ function Categorization({
 	subscriptionStateNames,
 	tierNames
 }) {
-	function simplifySLANames(names) {
-		return names.map(name => ({
-			label: name.replace(' Subscription', ''),
-			value: name
-		}));
-	}
-
 	function processCheckboxGroupFieldValues(fieldValues) {
 		return fieldValues.map(value => ({
 			label: value,
 			value
+		}));
+	}
+
+	function simplifySLANames(names) {
+		return names.map(name => ({
+			label: name.replace(' Subscription', ''),
+			value: name
 		}));
 	}
 
