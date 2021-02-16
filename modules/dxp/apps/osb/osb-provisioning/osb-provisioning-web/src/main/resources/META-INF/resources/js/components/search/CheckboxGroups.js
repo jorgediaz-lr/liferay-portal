@@ -15,7 +15,9 @@ import React, {useState} from 'react';
 
 import {NAMESPACE} from '../../utilities/constants';
 
-function CheckboxGroups({fieldValues, inputName}) {
+const BOOTSTRAP_GRID_COL_NUM = 12;
+
+function CheckboxGroups({columns = 1, fieldValues, inputName}) {
 	const [values, setValues] = useState([]);
 
 	function handleOnClick(event) {
@@ -37,20 +39,27 @@ function CheckboxGroups({fieldValues, inputName}) {
 				value={values.join()}
 			/>
 
-			{fieldValues.map(field => (
-				<ClayCheckbox
-					aria-label={field.label}
-					key={field.value}
-					label={field.label}
-					onClick={handleOnClick}
-					value={field.value}
-				/>
-			))}
+			<div className="row">
+				{fieldValues.map(field => (
+					<div
+						className={`col-md-${BOOTSTRAP_GRID_COL_NUM / columns}`}
+						key={field.value}
+					>
+						<ClayCheckbox
+							aria-label={field.label}
+							label={field.label}
+							onClick={handleOnClick}
+							value={field.value}
+						/>
+					</div>
+				))}
+			</div>
 		</>
 	);
 }
 
 CheckboxGroups.propTypes = {
+	columns: PropTypes.number,
 	fieldValues: PropTypes.arrayOf(
 		PropTypes.shape({
 			label: PropTypes.string,

@@ -122,10 +122,13 @@ const AdvancedSearch = React.forwardRef(
 							showCollapseIcon={true}
 						>
 							<div className="panel-body">
-								<CheckboxGroups
-									fieldValues={licenseTypes}
-									inputName="types"
-								/>
+								<div className="form-group">
+									<CheckboxGroups
+										columns={4}
+										fieldValues={licenseTypes}
+										inputName="types"
+									/>
+								</div>
 							</div>
 						</ClayPanel>
 					)}
@@ -138,10 +141,13 @@ const AdvancedSearch = React.forwardRef(
 							showCollapseIcon={true}
 						>
 							<div className="panel-body">
-								<CheckboxGroups
-									fieldValues={productNames}
-									inputName="productNames"
-								/>
+								<div className="form-group">
+									<CheckboxGroups
+										columns={4}
+										fieldValues={productNames}
+										inputName="productNames"
+									/>
+								</div>
 							</div>
 						</ClayPanel>
 					)}
@@ -156,10 +162,13 @@ const AdvancedSearch = React.forwardRef(
 							showCollapseIcon={true}
 						>
 							<div className="panel-body">
-								<CheckboxGroups
-									fieldValues={productVersions}
-									inputName="productVersions"
-								/>
+								<div className="form-group">
+									<CheckboxGroups
+										columns={4}
+										fieldValues={productVersions}
+										inputName="productVersions"
+									/>
+								</div>
 							</div>
 						</ClayPanel>
 					)}
