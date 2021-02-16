@@ -73,7 +73,7 @@ public class BlogsServiceUpgrade implements UpgradeStepRegistrator {
 			new UpgradeDiscussionSubscriptionClassName(
 				_assetEntryLocalService, _classNameLocalService,
 				_subscriptionLocalService, BlogsEntry.class.getName(),
-				_updateBlogsEntryCommentSubscriptions()));
+				_getUpgradeDiscussionSubscriptionClassNameUnsafeFunction()));
 
 		registry.register(
 			"1.1.3", "2.0.0",
@@ -97,7 +97,7 @@ public class BlogsServiceUpgrade implements UpgradeStepRegistrator {
 	}
 
 	private UnsafeFunction<String, Boolean, Exception>
-		_updateBlogsEntryCommentSubscriptions() {
+		_getUpgradeDiscussionSubscriptionClassNameUnsafeFunction() {
 
 		return className -> {
 			DynamicQuery groupDynamicQuery = _groupLocalService.dynamicQuery();
