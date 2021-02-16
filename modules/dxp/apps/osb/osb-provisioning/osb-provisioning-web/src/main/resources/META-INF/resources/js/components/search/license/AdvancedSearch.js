@@ -207,6 +207,18 @@ AdvancedSearch.propTypes = {
 			label: PropTypes.string,
 			value: PropTypes.oneOfType[(PropTypes.number, PropTypes.string)]
 		})
+	),
+	productNames: PropTypes.arrayOf(
+		PropTypes.shape({
+			label: PropTypes.string,
+			value: PropTypes.oneOfType[(PropTypes.number, PropTypes.string)]
+		})
+	),
+	productVersions: PropTypes.arrayOf(
+		PropTypes.shape({
+			label: PropTypes.string,
+			value: PropTypes.oneOfType[(PropTypes.number, PropTypes.string)]
+		})
 	)
 };
 

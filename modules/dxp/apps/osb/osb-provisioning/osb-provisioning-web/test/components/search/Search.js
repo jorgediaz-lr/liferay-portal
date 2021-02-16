@@ -9,8 +9,8 @@
  * distribution rights of the Software.
  */
 
-import times from 'lodash.times';
 import {cleanup, fireEvent, render} from '@testing-library/react';
+import times from 'lodash.times';
 import React from 'react';
 
 import {default as AccountSearch} from '../../../src/main/resources/META-INF/resources/js/components/search/account/Search';

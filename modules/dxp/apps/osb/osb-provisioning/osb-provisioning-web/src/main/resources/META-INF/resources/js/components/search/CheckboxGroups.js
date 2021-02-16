@@ -37,44 +37,25 @@ function CheckboxGroups({fieldValues, inputName}) {
 				value={values.join()}
 			/>
 
-			{fieldValues.map(field => {
-				if (!field.label && !field.value) {
-					return (
-						<ClayCheckbox
-							aria-label={field}
-							key={field}
-							label={field}
-							onClick={handleOnClick}
-							value={field}
-						/>
-					);
-				}
-				else {
-					return (
-						<ClayCheckbox
-							aria-label={field.label}
-							key={field.value}
-							label={field.label}
-							onClick={handleOnClick}
-							value={field.value}
-						/>
-					);
-				}
-			})}
+			{fieldValues.map(field => (
+				<ClayCheckbox
+					aria-label={field.label}
+					key={field.value}
+					label={field.label}
+					onClick={handleOnClick}
+					value={field.value}
+				/>
+			))}
 		</>
 	);
 }
 
 CheckboxGroups.propTypes = {
 	fieldValues: PropTypes.arrayOf(
-		PropTypes.oneOfType([
-			PropTypes.string,
-			PropTypes.shape({
-				label: PropTypes.string,
-				value: PropTypes.oneOfType([PropTypes.bool, PropTypes.string])
-			})
-		]),
-		PropTypes.arrayOf(PropTypes.string)
+		PropTypes.shape({
+			label: PropTypes.string,
+			value: PropTypes.oneOfType([PropTypes.bool, PropTypes.string])
+		})
 	),
 	inputName: PropTypes.string.isRequired
 };

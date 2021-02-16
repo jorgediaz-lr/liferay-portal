@@ -28,6 +28,13 @@ function Categorization({
 		}));
 	}
 
+	function processCheckboxGroupFieldValues(fieldValues) {
+		return fieldValues.map(value => ({
+			label: value,
+			value
+		}));
+	}
+
 	return (
 		<div className="panel-body">
 			<div className="col-md-3 form-group">
@@ -79,7 +86,10 @@ function Categorization({
 					{Liferay.Language.get('tier')}
 				</h5>
 
-				<CheckboxGroups fieldValues={tierNames} inputName="tiers" />
+				<CheckboxGroups
+					fieldValues={processCheckboxGroupFieldValues(tierNames)}
+					inputName="tiers"
+				/>
 			</div>
 
 			<div className="col-md-3 form-group">
@@ -88,7 +98,9 @@ function Categorization({
 				</h5>
 
 				<CheckboxGroups
-					fieldValues={subscriptionStateNames}
+					fieldValues={processCheckboxGroupFieldValues(
+						subscriptionStateNames
+					)}
 					inputName="subscriptionStates"
 				/>
 			</div>
@@ -109,7 +121,10 @@ function Categorization({
 					{Liferay.Language.get('support-region')}
 				</h5>
 
-				<CheckboxGroups fieldValues={regionNames} inputName="regions" />
+				<CheckboxGroups
+					fieldValues={processCheckboxGroupFieldValues(regionNames)}
+					inputName="regions"
+				/>
 			</div>
 		</div>
 	);
