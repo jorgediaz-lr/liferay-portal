@@ -31,7 +31,7 @@ public class ProductVersion {
 
 			return listType.getName();
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			return StringPool.BLANK;
 		}
 	}

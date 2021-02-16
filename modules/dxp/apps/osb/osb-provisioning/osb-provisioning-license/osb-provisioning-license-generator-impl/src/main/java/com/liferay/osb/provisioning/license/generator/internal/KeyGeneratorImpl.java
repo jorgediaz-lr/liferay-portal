@@ -273,8 +273,8 @@ public class KeyGeneratorImpl implements KeyGenerator {
 
 			return Base64.objectToString(bytes);
 		}
-		catch (Exception e) {
-			_log.error(e, e);
+		catch (Exception exception) {
+			_log.error(exception, exception);
 		}
 
 		return StringPool.BLANK;
@@ -296,8 +296,8 @@ public class KeyGeneratorImpl implements KeyGenerator {
 			_keys[1] = (Key)Base64.stringToObject(keys[542]);
 			_keys[2] = (Key)Base64.stringToObject(keys[706]);
 		}
-		catch (Exception e) {
-			_log.error(e, e);
+		catch (Exception exception) {
+			_log.error(exception, exception);
 		}
 	}
 
@@ -342,8 +342,8 @@ public class KeyGeneratorImpl implements KeyGenerator {
 				return _encryptVersion2(productId, properties);
 			}
 		}
-		catch (Exception e) {
-			_log.error(e, e);
+		catch (Exception exception) {
+			_log.error(exception, exception);
 		}
 
 		return StringPool.BLANK;
