@@ -1865,7 +1865,15 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		if (renewal) {
 			for (ProductPurchase productPurchase : curProductPurchases) {
 				if (newStartDate.before(productPurchase.getEndDate())) {
-					productPurchase.setEndDate(newStartDate);
+					if (newStartDate.before(
+							productPurchase.getOriginalEndDate())) {
+
+						productPurchase.setEndDate(
+							productPurchase.getOriginalEndDate());
+					}
+					else {
+						productPurchase.setEndDate(newStartDate);
+					}
 
 					_productPurchaseWebService.updateProductPurchase(
 						StringPool.BLANK, StringPool.BLANK,
