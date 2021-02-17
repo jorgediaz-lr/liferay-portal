@@ -987,10 +987,10 @@ xpack.monitoring.collection.enabled: true</echo>
 
 		<prepare-elasticsearch-analyzers />
 
-		<get-testcase-property property.name="remote.elasticsearch.ltr.enabled" />
+		<get-testcase-property property.name="elasticsearch.ltr.enabled" />
 
 		<if>
-			<equals arg1="${remote.elasticsearch.ltr.enabled}" arg2="true" />
+			<equals arg1="${elasticsearch.ltr.enabled}" arg2="true" />
 			<then>
 				<prepare-elasticsearch-ltr />
 
