@@ -5392,7 +5392,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 
 	<macrodef name="stop-remote-search-engine">
 		<sequential>
-			<get-testcase-property property.name="remote.elasticsearch.ccr.enabled" />
+			<get-testcase-property property.name="elasticsearch.multiple.connections" />
 			<get-testcase-property property.name="remote.elasticsearch.enabled" />
 			<get-testcase-property property.name="remote.elasticsearch7.enabled" />
 			<get-testcase-property property.name="test.name.skip.portal.instance" />
@@ -5420,7 +5420,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 
 					<if>
 						<and>
-							<equals arg1="${remote.elasticsearch.ccr.enabled}" arg2="true" />
+							<equals arg1="${elasticsearch.multiple.connections}" arg2="true" />
 							<not>
 								<contains string="${test.name.skip.portal.instance}" substring="Smoke" />
 							</not>
