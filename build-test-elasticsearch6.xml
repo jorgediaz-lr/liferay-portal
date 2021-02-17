@@ -674,7 +674,7 @@ ${line.separator}CATALINA_OPTS="${CATALINA_OPTS} -Djavax.net.ssl.trustStore=${el
 	<target name="configure-elasticsearch-cluster-properties">
 		<math
 			datatype="int"
-			operand1="${remote.elasticsearch.cluster.size}"
+			operand1="${elasticsearch.cluster.size}"
 			operand2="2"
 			operation="/"
 			result="elasticsearch.master-eligible.nodes.quorum"
@@ -695,7 +695,7 @@ xpack.monitoring.collection.enabled: true</echo>
 	<target name="prepare-additional-elasticsearch-dirs">
 		<var name="elasticsearch.node.number" value="0" />
 
-		<antelope:repeat count="${remote.elasticsearch.cluster.size}">
+		<antelope:repeat count="${elasticsearch.cluster.size}">
 			<math
 				datatype="int"
 				operand1="${elasticsearch.node.number}"
@@ -831,14 +831,14 @@ xpack.monitoring.collection.enabled: true</echo>
 
 		<configure-portal-remote-elasticsearch-osgi-properties />
 
-		<get-testcase-property property.name="remote.elasticsearch.cluster.size" />
+		<get-testcase-property property.name="elasticsearch.cluster.size" />
 
 		<if>
 			<not>
-				<isset property="remote.elasticsearch.cluster.size" />
+				<isset property="elasticsearch.cluster.size" />
 			</not>
 			<then>
-				<property name="remote.elasticsearch.cluster.size" value="1" />
+				<property name="elasticsearch.cluster.size" value="1" />
 			</then>
 		</if>
 
@@ -874,7 +874,7 @@ xpack.monitoring.collection.enabled: true</echo>
 
 				<var name="elasticsearch.node.number" value="0" />
 
-				<antelope:repeat count="${remote.elasticsearch.cluster.size}">
+				<antelope:repeat count="${elasticsearch.cluster.size}">
 					<math
 						datatype="int"
 						operand1="${elasticsearch.node.number}"
@@ -899,7 +899,7 @@ xpack.monitoring.collection.enabled: true</echo>
 
 			<get-java-jdk-home />
 
-			<antelope:repeat count="${remote.elasticsearch.cluster.size}">
+			<antelope:repeat count="${elasticsearch.cluster.size}">
 				<math
 					datatype="int"
 					operand1="${elasticsearch.node.number}"
@@ -992,20 +992,20 @@ xpack.monitoring.collection.enabled: true</echo>
 	</target>
 
 	<target name="stop-elasticsearch">
-		<get-testcase-property property.name="remote.elasticsearch.cluster.size" />
+		<get-testcase-property property.name="elasticsearch.cluster.size" />
 
 		<if>
 			<not>
-				<isset property="remote.elasticsearch.cluster.size" />
+				<isset property="elasticsearch.cluster.size" />
 			</not>
 			<then>
-				<property name="remote.elasticsearch.cluster.size" value="1" />
+				<property name="elasticsearch.cluster.size" value="1" />
 			</then>
 		</if>
 
 		<var name="elasticsearch.node.number" value="0" />
 
-		<antelope:repeat count="${remote.elasticsearch.cluster.size}">
+		<antelope:repeat count="${elasticsearch.cluster.size}">
 			<math
 				datatype="int"
 				operand1="${elasticsearch.node.number}"
