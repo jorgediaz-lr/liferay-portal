@@ -30,18 +30,4 @@ definition {
 			locator1 = "Header#H2_TITLE");
 	}
 
-	macro viewPkiPG {
-		SelectFrame.selectFrameNoLoading(locator1 = "IFrame#XPACK_MONITORING");
-
-		AssertTextPresent(
-			locator1 = "XPackMonitoring#CLUSTER_NAME",
-			value1 = "LiferayElasticsearchCluster");
-
-		AssertElementPresent(locator1 = "XPackMonitoring#MONITORING_CLUSTER_OVERVIEW");
-
-		AssertElementPresent(
-			key_title = "Elasticsearch",
-			locator1 = "Header#H2_TITLE");
-	}
-
 }

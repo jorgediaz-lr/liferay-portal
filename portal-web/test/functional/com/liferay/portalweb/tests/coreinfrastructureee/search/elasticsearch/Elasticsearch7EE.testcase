@@ -1014,7 +1014,7 @@ definition {
 
 		Portlet.addPG(portletName = "X-Pack Monitoring");
 
-		XPackMonitoring.viewPkiPG();
+		XPackMonitoring.viewPG();
 	}
 
 	@priority = "5"
