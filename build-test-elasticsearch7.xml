@@ -67,6 +67,15 @@
 		</sequential>
 	</macrodef>
 
+	<macrodef name="configure-elasticsearch-local-cluster-properties">
+		<sequential>
+			<echo file="${elasticsearch.dir}-2/config/elasticsearch.yml">${line.separator}bootstrap.system_call_filter: false
+cluster.name: LiferayElasticsearchClusterTwo
+http.port: 9202
+transport.port: 9500-9600</echo>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="configure-elasticsearch-ltr-properties">
 		<sequential>
 			<echo append="true" file="${elasticsearch.dir}/config/elasticsearch.yml">${line.separator}xpack.ml.enabled: false
@@ -103,15 +112,6 @@ kibana_system:
 		<sequential>
 			<echo append="true" file="${elasticsearch.dir}/config/elasticsearch.yml">${line.separator}bootstrap.system_call_filter: false
 cluster.name: LiferayElasticsearchCluster</echo>
-		</sequential>
-	</macrodef>
-
-	<macrodef name="configure-elasticsearch-second-cluster-properties">
-		<sequential>
-			<echo file="${elasticsearch.dir}-2/config/elasticsearch.yml">${line.separator}bootstrap.system_call_filter: false
-cluster.name: LiferayElasticsearchClusterTwo
-http.port: 9202
-transport.port: 9500-9600</echo>
 		</sequential>
 	</macrodef>
 
@@ -662,6 +662,29 @@ ${line.separator}CATALINA_OPTS="${CATALINA_OPTS} -Djavax.net.ssl.trustStore=${el
 		</sequential>
 	</macrodef>
 
+	<macrodef name="start-elasticsearch-with-ccr">
+		<sequential>
+			<prepare-additional-elasticsearch-bundles total.bundles="2" />
+
+			<configure-elasticsearch-local-cluster-properties />
+
+			<antcall target="start-elasticsearch-node">
+				<param name="elasticsearch.bundle.number" value="1" />
+			</antcall>
+
+			<antcall target="start-elasticsearch-node">
+				<param name="elasticsearch.bundle.number" value="2" />
+				<param name="elasticsearch.port" value="9202" />
+			</antcall>
+
+			<start-elastic-trial />
+
+			<start-elastic-trial elasticsearch.port="9202" />
+
+			<configure-portal-ccr-osgi-properties />
+		</sequential>
+	</macrodef>
+
 	<macrodef name="start-elasticsearch-with-clustering">
 		<sequential>
 			<configure-elasticsearch-clustering-properties />
@@ -722,36 +745,6 @@ ${line.separator}CATALINA_OPTS="${CATALINA_OPTS} -Djavax.net.ssl.trustStore=${el
 			</chmod>
 
 			<antcall target="start-elasticsearch-node" />
-		</sequential>
-	</macrodef>
-
-	<macrodef name="start-elasticsearch-with-multiple-connections">
-		<sequential>
-			<prepare-additional-elasticsearch-bundles total.bundles="2" />
-
-			<configure-elasticsearch-second-cluster-properties />
-
-			<antcall target="start-elasticsearch-node">
-				<param name="elasticsearch.bundle.number" value="1" />
-			</antcall>
-
-			<antcall target="start-elasticsearch-node">
-				<param name="elasticsearch.bundle.number" value="2" />
-				<param name="elasticsearch.port" value="9202" />
-			</antcall>
-
-			<get-testcase-property property.name="osgi.app.includes" />
-
-			<if>
-				<contains string="${osgi.app.includes}" substring="portal-search-elasticsearch-cross-cluster-replication" />
-				<then>
-					<start-elastic-trial />
-
-					<start-elastic-trial elasticsearch.port="9202" />
-
-					<configure-portal-ccr-osgi-properties />
-				</then>
-			</if>
 		</sequential>
 	</macrodef>
 
@@ -1125,31 +1118,31 @@ ${line.separator}CATALINA_OPTS="${CATALINA_OPTS} -Djavax.net.ssl.trustStore=${el
 			<isset property="env.JENKINS_HOME" />
 			<then>
 				<get-testcase-property property.name="elastic.xpack.enabled" />
+				<get-testcase-property property.name="elasticsearch.ccr.enabled" />
 				<get-testcase-property property.name="elasticsearch.cluster.size" />
 				<get-testcase-property property.name="elasticsearch.ltr.enabled" />
-				<get-testcase-property property.name="elasticsearch.multiple.connections" />
 			</then>
 		</if>
 
 		<local name="setup.type" />
 
 		<property if:true="${elastic.xpack.enabled}" name="setup.type" value="elastic.xpack.enabled" />
+		<property if:true="${elasticsearch.ccr.enabled}" name="setup.type" value="elasticsearch.ccr.enabled" />
 		<property if:set="elasticsearch.cluster.size" name="setup.type" value="elasticsearch.cluster.size" />
 		<property if:true="${elasticsearch.ltr.enabled}" name="setup.type" value="elasticsearch.ltr.enabled" />
-		<property if:true="${elasticsearch.multiple.connections}" name="setup.type" value="elasticsearch.multiple.connections" />
 
 		<switch value="${setup.type}">
 			<case value="elastic.xpack.enabled">
 				<start-elasticsearch-with-xpack />
+			</case>
+			<case value="elasticsearch.ccr.enabled">
+				<start-elasticsearch-with-ccr />
 			</case>
 			<case value="elasticsearch.cluster.size">
 				<start-elasticsearch-with-clustering />
 			</case>
 			<case value="elasticsearch.ltr.enabled">
 				<start-elasticsearch-with-ltr />
-			</case>
-			<case value="elasticsearch.multiple.connections">
-				<start-elasticsearch-with-multiple-connections />
 			</case>
 			<default>
 				<antcall target="start-elasticsearch-node" />

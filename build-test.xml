@@ -5424,8 +5424,8 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 
 	<macrodef name="stop-remote-search-engine">
 		<sequential>
+			<get-testcase-property property.name="elasticsearch.ccr.enabled" />
 			<get-testcase-property property.name="elasticsearch.cluster.size" />
-			<get-testcase-property property.name="elasticsearch.multiple.connections" />
 			<get-testcase-property property.name="remote.elasticsearch.enabled" />
 			<get-testcase-property property.name="remote.elasticsearch7.enabled" />
 			<propertycopy from="search.engine[${env.CI_TEST_SUITE}]" name="suite.search.engine" silent="true" />
@@ -5450,8 +5450,8 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 				<then>
 					<condition else="true" property="stop.standard.elasticsearch" value="false">
 						<or>
+							<isset property="elasticsearch.ccr.enabled" />
 							<isset property="elasticsearch.cluster.size" />
-							<isset property="elasticsearch.multiple.connections" />
 						</or>
 					</condition>
 
@@ -5484,7 +5484,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 					</if>
 
 					<if>
-						<equals arg1="${elasticsearch.multiple.connections}" arg2="true" />
+						<equals arg1="${elasticsearch.ccr.enabled}" arg2="true" />
 						<then>
 							<var name="elasticsearch.cluster.number" value="1" />
 
