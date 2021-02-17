@@ -156,6 +156,14 @@ body {
 	}
 }
 
+.panel-dates {
+	h4 {
+		color: $dark;
+		margin-bottom: $spacing-sm;
+		margin-top: $spacing-xs;
+	}
+}
+
 .search-match {
 	.form-check-input {
 		vertical-align: middle;

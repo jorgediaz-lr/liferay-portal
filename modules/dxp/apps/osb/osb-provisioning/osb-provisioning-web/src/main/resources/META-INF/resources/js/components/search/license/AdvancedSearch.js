@@ -16,6 +16,7 @@ import React, {useRef, useState} from 'react';
 import {useClickOutside} from '../../../hooks/useClickOutside';
 import {NAMESPACE} from '../../../utilities/constants';
 import CheckboxGroups from '../CheckboxGroups';
+import Dates from './Dates';
 import LicenseDetails from './LicenseDetails';
 
 const AdvancedSearch = React.forwardRef(
@@ -179,7 +180,7 @@ const AdvancedSearch = React.forwardRef(
 						displayType="secondary"
 						showCollapseIcon={true}
 					>
-						{/* TODO */}
+						<Dates />
 					</ClayPanel>
 
 					<div
