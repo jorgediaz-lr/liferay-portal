@@ -1144,10 +1144,15 @@ ${line.separator}CATALINA_OPTS="${CATALINA_OPTS} -Djavax.net.ssl.trustStore=${el
 
 		<configure-portal-remote-elasticsearch-osgi-properties />
 
-		<get-testcase-property property.name="elastic.xpack.enabled" />
-		<get-testcase-property property.name="elasticsearch.cluster.size" />
-		<get-testcase-property property.name="elasticsearch.ltr.enabled" />
-		<get-testcase-property property.name="elasticsearch.multiple.connections" />
+		<if>
+			<isset property="env.JENKINS_HOME" />
+			<then>
+				<get-testcase-property property.name="elastic.xpack.enabled" />
+				<get-testcase-property property.name="elasticsearch.cluster.size" />
+				<get-testcase-property property.name="elasticsearch.ltr.enabled" />
+				<get-testcase-property property.name="elasticsearch.multiple.connections" />
+			</then>
+		</if>
 
 		<condition else="true" property="start.standard.elasticsearch" value="false">
 			<or>
@@ -1162,6 +1167,8 @@ ${line.separator}CATALINA_OPTS="${CATALINA_OPTS} -Djavax.net.ssl.trustStore=${el
 			<equals arg1="${elastic.xpack.enabled}" arg2="true" />
 			<then>
 				<start-elasticsearch-with-xpack />
+
+				<property name="started.nonstandard.elasticsearch" value="true" />
 			</then>
 		</if>
 
@@ -1169,6 +1176,8 @@ ${line.separator}CATALINA_OPTS="${CATALINA_OPTS} -Djavax.net.ssl.trustStore=${el
 			<isset property="elasticsearch.cluster.size" />
 			<then>
 				<start-elasticsearch-with-clustering />
+
+				<property name="started.nonstandard.elasticsearch" value="true" />
 			</then>
 		</if>
 
@@ -1176,6 +1185,8 @@ ${line.separator}CATALINA_OPTS="${CATALINA_OPTS} -Djavax.net.ssl.trustStore=${el
 			<equals arg1="${elasticsearch.ltr.enabled}" arg2="true" />
 			<then>
 				<start-elasticsearch-with-ltr />
+
+				<property name="started.nonstandard.elasticsearch" value="true" />
 			</then>
 		</if>
 
@@ -1183,11 +1194,15 @@ ${line.separator}CATALINA_OPTS="${CATALINA_OPTS} -Djavax.net.ssl.trustStore=${el
 			<equals arg1="${elasticsearch.multiple.connections}" arg2="true" />
 			<then>
 				<start-elasticsearch-with-multiple-connections />
+
+				<property name="started.nonstandard.elasticsearch" value="true" />
 			</then>
 		</if>
 
 		<if>
-			<istrue value="${start.standard.elasticsearch}" />
+			<not>
+				<istrue value="${started.nonstandard.elasticsearch}" />
+			</not>
 			<then>
 				<antcall target="start-elasticsearch-node" />
 			</then>
@@ -1265,9 +1280,13 @@ ${line.separator}CATALINA_OPTS="${CATALINA_OPTS} -Djavax.net.ssl.trustStore=${el
 
 		<unzip-kibana />
 
-		<get-testcase-property property.name="elastic.xpack.enabled" />
-
-		<get-testcase-property property.name="remote.elasticsearch.pki.authentication.enabled" />
+		<if>
+			<isset property="env.JENKINS_HOME" />
+			<then>
+				<get-testcase-property property.name="elastic.xpack.enabled" />
+				<get-testcase-property property.name="remote.elasticsearch.pki.authentication.enabled" />
+			</then>
+		</if>
 
 		<if>
 			<equals arg1="${elastic.xpack.enabled}" arg2="true" />
