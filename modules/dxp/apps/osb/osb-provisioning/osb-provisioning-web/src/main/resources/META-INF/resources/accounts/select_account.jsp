@@ -27,7 +27,6 @@ SearchContainer accountSearchContainer = accountSearchDisplayContext.getSearchCo
 <div class="container-fluid container-fluid-max-xl">
 	<clay:management-toolbar
 		clearResultsURL="<%= accountSearchDisplayContext.getClearResultsURL() %>"
-		elementClasses="full-width"
 		itemsTotal="<%= accountSearchContainer.getTotal() %>"
 		searchActionURL="<%= currentURL %>"
 		searchContainerId="parentAccountContainer"

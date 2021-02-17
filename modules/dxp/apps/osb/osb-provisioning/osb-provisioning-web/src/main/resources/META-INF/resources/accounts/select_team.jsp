@@ -24,17 +24,17 @@ TeamSearchDisplayContext teamSearchDisplayContext = ProvisioningWebComponentProv
 SearchContainer searchContainer = teamSearchDisplayContext.getSearchContainer();
 %>
 
-<clay:management-toolbar
-	clearResultsURL="<%= teamSearchDisplayContext.getClearResultsURL() %>"
-	itemsTotal="<%= searchContainer.getTotal() %>"
-	searchActionURL="<%= currentURL %>"
-	searchContainerId="teamContainer"
-	searchFormName="searchFm"
-	selectable="<%= false %>"
-	showSearch="<%= true %>"
-/>
-
 <div class="container-fluid container-fluid-max-xl">
+	<clay:management-toolbar
+		clearResultsURL="<%= teamSearchDisplayContext.getClearResultsURL() %>"
+		itemsTotal="<%= searchContainer.getTotal() %>"
+		searchActionURL="<%= currentURL %>"
+		searchContainerId="teamContainer"
+		searchFormName="searchFm"
+		selectable="<%= false %>"
+		showSearch="<%= true %>"
+	/>
+
 	<liferay-ui:search-container
 		cssClass="details-search-container"
 		id="teamContainer"
