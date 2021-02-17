@@ -5424,8 +5424,6 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 
 	<macrodef name="stop-remote-search-engine">
 		<sequential>
-			<get-testcase-property property.name="elasticsearch.ccr.enabled" />
-			<get-testcase-property property.name="elasticsearch.cluster.size" />
 			<get-testcase-property property.name="remote.elasticsearch.enabled" />
 			<get-testcase-property property.name="remote.elasticsearch7.enabled" />
 			<propertycopy from="search.engine[${env.CI_TEST_SUITE}]" name="suite.search.engine" silent="true" />
@@ -5448,68 +5446,46 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 					<equals arg1="${suite.search.engine}" arg2="remote-elasticsearch7-jdk11" />
 				</or>
 				<then>
-					<condition else="true" property="stop.standard.elasticsearch" value="false">
+					<get-testcase-property property.name="elasticsearch.ccr.enabled" />
+					<get-testcase-property property.name="elasticsearch.cluster.size" />
+
+					<if>
 						<or>
 							<isset property="elasticsearch.ccr.enabled" />
 							<isset property="elasticsearch.cluster.size" />
 						</or>
-					</condition>
-
-					<if>
-						<istrue value="${stop.standard.elasticsearch}" />
 						<then>
+							<condition else="2" property="elasticsearch.total.bundles" value="${elasticsearch.cluster.size}">
+								<isset property="elasticsearch.cluster.size" />
+							</condition>
+
+							<var name="elasticsearch.bundle.count" value="${elasticsearch.total.bundles}" />
+
+							<antelope:repeat count="${elasticsearch.total.bundles}">
+								<ant antfile="build-test-elasticsearch7.xml" target="stop-elasticsearch">
+									<property name="elasticsearch.bundle.number" value="${elasticsearch.bundle.count}" />
+								</ant>
+
+								<math
+									datatype="int"
+									operand1="${elasticsearch.bundle.count}"
+									operand2="1"
+									operation="-"
+									result="elasticsearch.bundle.count"
+								/>
+							</antelope:repeat>
+						</then>
+						<else>
 							<ant antfile="build-test-elasticsearch7.xml" target="stop-elasticsearch" />
-						</then>
+						</else>
 					</if>
 
 					<if>
-						<isset property="elasticsearch.cluster.size" />
+						<socket port="5601" server="localhost" />
 						<then>
-							<var name="elasticsearch.node.number" value="2" />
-
-							<antelope:repeat count="${elasticsearch.cluster.size}">
-								<ant antfile="build-test-elasticsearch7.xml" target="stop-elasticsearch">
-									<property name="elasticsearch.bundle.number" value="${elasticsearch.node.number}" />
-								</ant>
-
-								<math
-									datatype="int"
-									operand1="${elasticsearch.node.number}"
-									operand2="1"
-									operation="-"
-									result="elasticsearch.node.number"
-								/>
-							</antelope:repeat>
+							<ant antfile="build-test-elasticsearch7.xml" target="stop-kibana" />
 						</then>
 					</if>
-
-					<if>
-						<equals arg1="${elasticsearch.ccr.enabled}" arg2="true" />
-						<then>
-							<var name="elasticsearch.cluster.number" value="2" />
-
-							<antelope:repeat count="2">
-								<ant antfile="build-test-elasticsearch7.xml" target="stop-elasticsearch">
-									<property name="elasticsearch.bundle.number" value="${elasticsearch.cluster.number}" />
-								</ant>
-
-								<math
-									datatype="int"
-									operand1="${elasticsearch.cluster.number}"
-									operand2="1"
-									operation="-"
-									result="elasticsearch.cluster.number"
-								/>
-							</antelope:repeat>
-						</then>
-					</if>
-				</then>
-			</if>
-
-			<if>
-				<socket port="5601" server="localhost" />
-				<then>
-					<ant antfile="build-test-elasticsearch7.xml" target="stop-kibana" />
 				</then>
 			</if>
 
