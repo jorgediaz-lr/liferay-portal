@@ -664,17 +664,7 @@ ${line.separator}CATALINA_OPTS="${CATALINA_OPTS} -Djavax.net.ssl.trustStore=${el
 
 	<macrodef name="start-elasticsearch-with-clustering">
 		<sequential>
-			<unzip-elasticsearch />
-
-			<set-jdk jdk.version="${jdk.version}" />
-
-			<prepare-elasticsearch-analyzers />
-
-			<configure-elasticsearch-properties />
-
 			<configure-elasticsearch-clustering-properties />
-
-			<configure-portal-remote-elasticsearch-osgi-properties />
 
 			<prepare-additional-elasticsearch-bundles total.bundles="${elasticsearch.cluster.size}" />
 
@@ -708,12 +698,6 @@ ${line.separator}CATALINA_OPTS="${CATALINA_OPTS} -Djavax.net.ssl.trustStore=${el
 
 	<macrodef name="start-elasticsearch-with-ltr">
 		<sequential>
-			<unzip-elasticsearch />
-
-			<set-jdk jdk.version="${jdk.version}" />
-
-			<prepare-elasticsearch-analyzers />
-
 			<configure-elasticsearch-ltr-properties />
 
 			<prepare-elasticsearch-ltr />
@@ -737,26 +721,12 @@ ${line.separator}CATALINA_OPTS="${CATALINA_OPTS} -Djavax.net.ssl.trustStore=${el
 				/>
 			</chmod>
 
-			<configure-elasticsearch-properties />
-
-			<configure-portal-remote-elasticsearch-osgi-properties />
-
 			<antcall target="start-elasticsearch-node" />
 		</sequential>
 	</macrodef>
 
 	<macrodef name="start-elasticsearch-with-multiple-connections">
 		<sequential>
-			<unzip-elasticsearch />
-
-			<set-jdk jdk.version="${jdk.version}" />
-
-			<prepare-elasticsearch-analyzers />
-
-			<configure-elasticsearch-properties />
-
-			<configure-portal-remote-elasticsearch-osgi-properties />
-
 			<prepare-additional-elasticsearch-bundles total.bundles="2" />
 
 			<configure-elasticsearch-second-cluster-properties />
@@ -783,16 +753,6 @@ ${line.separator}CATALINA_OPTS="${CATALINA_OPTS} -Djavax.net.ssl.trustStore=${el
 
 	<macrodef name="start-elasticsearch-with-xpack">
 		<sequential>
-			<unzip-elasticsearch />
-
-			<set-jdk jdk.version="${jdk.version}" />
-
-			<prepare-elasticsearch-analyzers />
-
-			<configure-elasticsearch-properties />
-
-			<configure-portal-remote-elasticsearch-osgi-properties />
-
 			<configure-elasticsearch-monitoring-property />
 
 			<generate-x-pack-security-certificates />
@@ -1174,6 +1134,16 @@ ${line.separator}CATALINA_OPTS="${CATALINA_OPTS} -Djavax.net.ssl.trustStore=${el
 	<target name="start-elasticsearch">
 		<lstopwatch action="start" name="start.elasticsearch" />
 
+		<unzip-elasticsearch />
+
+		<set-jdk jdk.version="${jdk.version}" />
+
+		<prepare-elasticsearch-analyzers />
+
+		<configure-elasticsearch-properties />
+
+		<configure-portal-remote-elasticsearch-osgi-properties />
+
 		<get-testcase-property property.name="elastic.xpack.enabled" />
 		<get-testcase-property property.name="elasticsearch.cluster.size" />
 		<get-testcase-property property.name="elasticsearch.ltr.enabled" />
@@ -1219,16 +1189,6 @@ ${line.separator}CATALINA_OPTS="${CATALINA_OPTS} -Djavax.net.ssl.trustStore=${el
 		<if>
 			<istrue value="${start.standard.elasticsearch}" />
 			<then>
-				<unzip-elasticsearch />
-
-				<set-jdk jdk.version="${jdk.version}" />
-
-				<prepare-elasticsearch-analyzers />
-
-				<configure-elasticsearch-properties />
-
-				<configure-portal-remote-elasticsearch-osgi-properties />
-
 				<antcall target="start-elasticsearch-node" />
 			</then>
 		</if>
