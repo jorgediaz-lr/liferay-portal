@@ -195,7 +195,7 @@ public class SearchRequestExecutorFixture {
 	}
 
 	protected static FacetTranslator createFacetTranslator(
-		FacetProcessor<?> facetProcessor,
+		FacetProcessor facetProcessor,
 		QueryTranslator<QueryBuilder> queryTranslator) {
 
 		return new DefaultFacetTranslator() {
