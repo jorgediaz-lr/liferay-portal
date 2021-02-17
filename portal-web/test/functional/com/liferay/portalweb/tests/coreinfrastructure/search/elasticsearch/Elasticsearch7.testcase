@@ -488,8 +488,6 @@ definition {
 			locator1 = "build-test-elasticsearch7.xml",
 			value1 = "start-elasticsearch-node -Delasticsearch.dir=${liferayHome}/elasticsearch-${elasticsearchVersion} -Dremote.elasticsearch.cluster.size=1");
 
-		Pause(locator1 = "30000");
-
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
