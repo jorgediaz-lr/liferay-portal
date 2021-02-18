@@ -72,32 +72,32 @@ public class KeyGeneratorImpl implements KeyGenerator {
 	}
 
 	public String generate(
-		String accountEntryName, String licenseEntryName,
-		String licenseEntryType, int licenseVersion, String productEntryName,
-		String productId, String productVersionLabel, String owner,
-		int maxServers, int maxHttpSessions, long maxConcurrentUsers,
-		long maxUsers, int sizing, String description, String hostName,
-		String ipAddresses, String macAddresses, String[] serverIds,
-		Date startDate, Date expirationDate) {
+		String accountName, String licenseEntryName, String licenseEntryType,
+		int licenseVersion, String productName, String productId,
+		String productVersionLabel, String owner, int maxServers,
+		int maxHttpSessions, long maxConcurrentUsers, long maxUsers, int sizing,
+		String description, String hostName, String ipAddresses,
+		String macAddresses, String[] serverIds, Date startDate,
+		Date expirationDate) {
 
 		Map<String, String> properties = getProperties(
-			accountEntryName, licenseEntryName, licenseEntryType,
-			licenseVersion, productEntryName, productId, productVersionLabel,
-			owner, maxServers, maxHttpSessions, maxConcurrentUsers, maxUsers,
-			sizing, description, hostName, ipAddresses, macAddresses, serverIds,
-			startDate, expirationDate);
+			accountName, licenseEntryName, licenseEntryType, licenseVersion,
+			productName, productId, productVersionLabel, owner, maxServers,
+			maxHttpSessions, maxConcurrentUsers, maxUsers, sizing, description,
+			hostName, ipAddresses, macAddresses, serverIds, startDate,
+			expirationDate);
 
 		return _encrypt(properties);
 	}
 
 	public Map<String, String> getProperties(
-		String accountEntryName, String licenseEntryName,
-		String licenseEntryType, int licenseVersion, String productEntryName,
-		String productId, String productVersionLabel, String owner,
-		int maxServers, int maxHttpSessions, long maxConcurrentUsers,
-		long maxUsers, int sizing, String description, String hostNames,
-		String ipAddresses, String macAddresses, String[] serverIds,
-		Date startDate, Date expirationDate) {
+		String accountName, String licenseEntryName, String licenseEntryType,
+		int licenseVersion, String productName, String productId,
+		String productVersionLabel, String owner, int maxServers,
+		int maxHttpSessions, long maxConcurrentUsers, long maxUsers, int sizing,
+		String description, String hostNames, String ipAddresses,
+		String macAddresses, String[] serverIds, Date startDate,
+		Date expirationDate) {
 
 		Arrays.sort(serverIds);
 
@@ -138,9 +138,9 @@ public class KeyGeneratorImpl implements KeyGenerator {
 			}
 		}
 		else if (licenseVersion == 2) {
-			properties.put("accountEntryName", accountEntryName);
+			properties.put("accountName", accountName);
 			properties.put("licenseEntryName", licenseEntryName);
-			properties.put("productEntryName", productEntryName);
+			properties.put("productName", productName);
 			properties.put("productVersion", productVersionLabel);
 
 			if (licenseEntryType.equals(LicenseType.TRIAL)) {
@@ -177,7 +177,7 @@ public class KeyGeneratorImpl implements KeyGenerator {
 		}
 		else if (licenseVersion >= 3) {
 			if (productId.equals(ProductId.PORTAL)) {
-				properties.put("accountEntryName", accountEntryName);
+				properties.put("accountName", accountName);
 				properties.put("licenseEntryName", licenseEntryName);
 				properties.put("productVersion", productVersionLabel);
 			}
@@ -188,7 +188,7 @@ public class KeyGeneratorImpl implements KeyGenerator {
 
 			properties.put(
 				"expirationDate", String.valueOf(expirationDate.getTime()));
-			properties.put("productEntryName", productEntryName);
+			properties.put("productName", productName);
 
 			if (licenseEntryType.equals(LicenseType.CLUSTER) ||
 				((licenseVersion >= 4) &&
