@@ -835,8 +835,8 @@ public class S3Store extends BaseStore {
 	}
 
 	protected void putObject(
-		long companyId, long repositoryId, String fileName,
-		String versionLabel, File file) {
+		long companyId, long repositoryId, String fileName, String versionLabel,
+		File file) {
 
 		Upload upload = null;
 
