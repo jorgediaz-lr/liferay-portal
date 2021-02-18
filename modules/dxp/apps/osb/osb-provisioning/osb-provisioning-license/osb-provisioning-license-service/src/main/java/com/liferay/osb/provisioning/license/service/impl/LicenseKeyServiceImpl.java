@@ -94,11 +94,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 					  curProductName.startsWith(ProductConstants.NAME_DXP)) &&
 					 (productName.contains(
 						 ProductConstants.NAME_DIGITAL_ENTERPRISE) ||
-					  productName.startsWith(ProductConstants.NAME_DXP))) ||
-					((curProductName.contains(
-						ProductConstants.NAME_DIGITAL_ENTERPRISE) ||
-					  curProductName.startsWith(ProductConstants.NAME_DXP)) &&
-					 productName.contains(ProductConstants.NAME_DXP_CLOUD)) ||
+					  productName.startsWith(ProductConstants.NAME_DXP) ||
+					  productName.contains(ProductConstants.NAME_DXP_CLOUD))) ||
 					(curProductName.contains(ProductConstants.NAME_PORTAL) &&
 					 productName.contains(ProductConstants.NAME_PORTAL))) {
 
@@ -183,26 +180,6 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			productName, productId, productVersion, owner, maxUsers,
 			description, hostName, ipAddresses, macAddresses, serverId,
 			startDate, expirationDate);
-	}
-
-	@JSONWebService
-	public String generateCommerceLicenseKey(
-			String owner, Date startDate, long licenseLifetime)
-		throws Exception {
-
-		//TODO: add permission check and implementation
-
-		return StringPool.BLANK;
-	}
-
-	@JSONWebService
-	public String generateWeDeployLicenseKey(
-			String owner, Date startDate, long licenseLifetime)
-		throws Exception {
-
-		//TODO: add permission check and implementation
-
-		return StringPool.BLANK;
 	}
 
 	@JSONWebService

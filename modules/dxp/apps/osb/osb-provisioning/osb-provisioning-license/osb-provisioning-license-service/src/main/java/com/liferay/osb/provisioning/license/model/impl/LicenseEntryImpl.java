@@ -25,7 +25,7 @@ package com.liferay.osb.provisioning.license.model.impl;
  */
 public class LicenseEntryImpl extends LicenseEntryBaseImpl {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never reference this class directly. All methods that expect a license entry model instance should use the {@link com.liferay.osb.provisioning.license.model.LicenseEntry} interface instead.

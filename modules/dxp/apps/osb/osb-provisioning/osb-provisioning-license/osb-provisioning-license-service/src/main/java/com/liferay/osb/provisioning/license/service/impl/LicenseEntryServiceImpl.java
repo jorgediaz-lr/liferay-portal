@@ -41,9 +41,10 @@ import org.osgi.service.component.annotations.Component;
 )
 public class LicenseEntryServiceImpl extends LicenseEntryServiceBaseImpl {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never reference this class directly. Always use <code>com.liferay.osb.provisioning.license.service.LicenseEntryServiceUtil</code> to access the license entry remote service.
 	 */
+
 }

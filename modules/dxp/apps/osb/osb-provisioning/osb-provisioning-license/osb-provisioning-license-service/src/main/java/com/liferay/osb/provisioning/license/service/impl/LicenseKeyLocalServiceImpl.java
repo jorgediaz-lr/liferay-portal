@@ -144,12 +144,11 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		validate(
 			licenseEntry, licenseVersion, product, productVersion, owner,
-			maxServers, description, hostNames, ipAddresses, macAddresses,
-			serverIds, complimentary);
+			description, serverIds, complimentary);
 
 		if (licenseVersion >= 3) {
 			return doAddLicenseKeyVersion3_4(
-				now, user, name, licenseEntry, product, accountKey,
+				now, user, licenseEntry, product, accountKey,
 				productPurchaseKey, accountCode, accountName, licenseEntryType,
 				licenseVersion, productVersion, clusterId, owner, maxServers,
 				maxHttpSessions, maxConcurrentUsers, maxUsers, sizing,
@@ -159,11 +158,11 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		}
 
 		return doAddLicenseKey(
-			now, user, name, licenseEntry, product, accountKey,
-			productPurchaseKey, accountCode, accountName, licenseEntryType,
-			licenseVersion, productVersion, clusterId, owner, maxServers,
-			maxConcurrentUsers, maxUsers, description, serverIds, startDate,
-			expirationDate, additionalInfo, complimentary, active);
+			now, user, licenseEntry, product, accountKey, productPurchaseKey,
+			accountCode, accountName, licenseEntryType, licenseVersion,
+			productVersion, clusterId, owner, maxServers, description,
+			serverIds, startDate, expirationDate, additionalInfo, complimentary,
+			active);
 	}
 
 	public LicenseKey addLicenseKey(
@@ -493,21 +492,20 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		licenseKey = licenseKeyPersistence.update(licenseKey);
 
-		String description = String.valueOf(renewTime) + "-Day License";
+		String description = renewTime + "-Day License";
 
 		Date expirationDate = new Date(
 			startDate.getTime() + (renewTime * Time.DAY));
 
 		return doAddLicenseKeyVersion3_4(
-			new Date(), user, StringPool.BLANK, licenseKey.getLicenseEntry(),
-			product, licenseKey.getAccountKey(),
-			licenseKey.getProductPurchaseKey(), licenseKey.getAccountCode(),
-			licenseKey.getAccountName(), licenseEntry.getType(),
-			licenseKey.getLicenseVersion(), licenseKey.getProductVersion(),
-			licenseKey.getClusterId(), licenseKey.getOwner(),
-			licenseKey.getMaxServers(), licenseKey.getMaxHttpSessions(),
-			licenseKey.getMaxConcurrentUsers(), licenseKey.getMaxUsers(),
-			licenseKey.getSizing(), description,
+			new Date(), user, licenseKey.getLicenseEntry(), product,
+			licenseKey.getAccountKey(), licenseKey.getProductPurchaseKey(),
+			licenseKey.getAccountCode(), licenseKey.getAccountName(),
+			licenseEntry.getType(), licenseKey.getLicenseVersion(),
+			licenseKey.getProductVersion(), licenseKey.getClusterId(),
+			licenseKey.getOwner(), licenseKey.getMaxServers(),
+			licenseKey.getMaxHttpSessions(), licenseKey.getMaxConcurrentUsers(),
+			licenseKey.getMaxUsers(), licenseKey.getSizing(), description,
 			new String[] {licenseKey.getHostName()},
 			new String[] {licenseKey.getIpAddresses()},
 			new String[] {licenseKey.getMacAddresses()},
@@ -660,12 +658,12 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		if (licenseKey.getLicenseVersion() >= 3) {
 			doUpdateLicenseKeyVersion3(
 				new Date(), licenseKey, productPurchaseKey, clusterLicenseKeys,
-				userId, licenseKeyId, name, complimentary, active);
+				userId, complimentary, active);
 		}
 		else {
 			doUpdateLicenseKey(
 				new Date(), licenseKey, productPurchaseKey, clusterLicenseKeys,
-				userId, licenseKeyId, name, complimentary, active);
+				userId, complimentary, active);
 		}
 
 		return licenseKey;
@@ -685,11 +683,10 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 	}
 
 	protected LicenseKey doAddLicenseKey(
-			Date now, User user, String name, LicenseEntry licenseEntry,
-			Product product, String accountKey, String productPurchaseKey,
-			String accountCode, String accountName, String licenseEntryType,
-			int licenseVersion, int productVersion, long clusterId,
-			String owner, int maxServers, int maxConcurrentUsers, int maxUsers,
+			Date now, User user, LicenseEntry licenseEntry, Product product,
+			String accountKey, String productPurchaseKey, String accountCode,
+			String accountName, String licenseEntryType, int licenseVersion,
+			int productVersion, long clusterId, String owner, int maxServers,
 			String description, String[] serverIds, Date startDate,
 			Date expirationDate, String additionalInfo, boolean complimentary,
 			boolean active)
@@ -836,16 +833,15 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 	}
 
 	protected LicenseKey doAddLicenseKeyVersion3_4(
-			Date now, User user, String name, LicenseEntry licenseEntry,
-			Product product, String accountKey, String productPurchaseKey,
-			String accountCode, String accountName, String licenseEntryType,
-			int licenseVersion, int productVersion, long clusterId,
-			String owner, int maxServers, int maxHttpSessions,
-			long maxConcurrentUsers, long maxUsers, int sizing,
-			String description, String[] hostNames, String[] ipAddresses,
-			String[] macAddresses, String[] serverIds, Date startDate,
-			Date expirationDate, String additionalInfo, boolean complimentary,
-			boolean active)
+			Date now, User user, LicenseEntry licenseEntry, Product product,
+			String accountKey, String productPurchaseKey, String accountCode,
+			String accountName, String licenseEntryType, int licenseVersion,
+			int productVersion, long clusterId, String owner, int maxServers,
+			int maxHttpSessions, long maxConcurrentUsers, long maxUsers,
+			int sizing, String description, String[] hostNames,
+			String[] ipAddresses, String[] macAddresses, String[] serverIds,
+			Date startDate, Date expirationDate, String additionalInfo,
+			boolean complimentary, boolean active)
 		throws Exception {
 
 		accountName = LicenseUtil.trimText(accountName);
@@ -961,8 +957,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 	protected void doUpdateLicenseKey(
 			Date now, LicenseKey licenseKey, String productPurchaseKey,
-			List<LicenseKey> clusterLicenseKeys, long userId, long licenseKeyId,
-			String name, boolean complimentary, boolean active)
+			List<LicenseKey> clusterLicenseKeys, long userId,
+			boolean complimentary, boolean active)
 		throws Exception {
 
 		User user = userLocalService.getUser(userId);
@@ -1031,8 +1027,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 	protected void doUpdateLicenseKeyVersion3(
 			Date now, LicenseKey licenseKey, String productPurchaseKey,
-			List<LicenseKey> clusterLicenseKeys, long userId, long licenseKeyId,
-			String name, boolean complimentary, boolean active)
+			List<LicenseKey> clusterLicenseKeys, long userId,
+			boolean complimentary, boolean active)
 		throws Exception {
 
 		User user = userLocalService.getUser(userId);
@@ -1202,9 +1198,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 	protected void validate(
 			LicenseEntry licenseEntry, int licenseVersion, Product product,
-			int productVersion, String owner, int maxServers,
-			String description, String[] hostNames, String[] ipAddresses,
-			String[] macAddresses, String[] serverIds, boolean complimentary)
+			int productVersion, String owner, String description,
+			String[] serverIds, boolean complimentary)
 		throws PortalException {
 
 		if (productVersion <= 0) {
