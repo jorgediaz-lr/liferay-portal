@@ -1955,6 +1955,10 @@ public class PropsValues {
 			PropsUtil.get(
 				PropsKeys.MODULE_FRAMEWORK_EXPORT_PASSWORD_ATTRIBUTES));
 
+	public static final boolean MODULE_FRAMEWORK_FILE_INSTALL_ENABLE_CFG =
+		GetterUtil.getBoolean(
+			PropsUtil.get(PropsKeys.MODULE_FRAMEWORK_FILE_INSTALL_ENABLE_CFG));
+
 	/**
 	 * @deprecated As of Judson (7.1.x), with no direct replacement
 	 */
