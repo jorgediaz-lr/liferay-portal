@@ -46,18 +46,7 @@ public class LicenseVersion {
 			return 4;
 		}
 
-		if (productVersion >= ProductVersion.PORTAL_VERSION_6_1_10) {
-			return 3;
-		}
-
-		if ((productVersion >= ProductVersion.PORTAL_VERSION_5_2_9) ||
-			((productVersion >= ProductVersion.PORTAL_VERSION_5_1_9) &&
-			 (productVersion < ProductVersion.PORTAL_VERSION_5_2_4))) {
-
-			return 2;
-		}
-
-		return 1;
+		return 3;
 	}
 
 }

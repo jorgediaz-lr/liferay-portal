@@ -68,21 +68,9 @@ public class ProductVersion {
 	public static final String LIST_TYPE_PORTAL_MAJOR_VERSIONS =
 		Product.class.getName() + ".portalMajorVersions";
 
-	public static final int PORTAL_MINOR_VERSION_5_2 = 22001;
-
-	public static final int PORTAL_MINOR_VERSION_6_0 = 22002;
-
 	public static final int PORTAL_MINOR_VERSION_6_1 = 22003;
 
 	public static final int PORTAL_MINOR_VERSION_6_2 = 22004;
-
-	public static final int PORTAL_VERSION_5_1_9 = 20007;
-
-	public static final int PORTAL_VERSION_5_2_4 = 20020;
-
-	public static final int PORTAL_VERSION_5_2_9 = 20025;
-
-	public static final int PORTAL_VERSION_6_0_10 = 20040;
 
 	public static final int PORTAL_VERSION_6_1_10 = 20060;
 

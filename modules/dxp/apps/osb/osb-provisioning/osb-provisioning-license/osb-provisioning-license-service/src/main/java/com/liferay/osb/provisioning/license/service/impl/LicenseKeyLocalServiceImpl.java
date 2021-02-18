@@ -33,7 +33,6 @@ import com.liferay.osb.provisioning.license.exception.LicenseKeyMACAddressExcept
 import com.liferay.osb.provisioning.license.exception.LicenseKeyOwnerException;
 import com.liferay.osb.provisioning.license.exception.LicenseKeyProductVersionException;
 import com.liferay.osb.provisioning.license.exception.LicenseKeyRenewException;
-import com.liferay.osb.provisioning.license.exception.LicenseKeyServerIdException;
 import com.liferay.osb.provisioning.license.exception.LicenseKeyServerInfoException;
 import com.liferay.osb.provisioning.license.exception.NoSuchLicenseKeyException;
 import com.liferay.osb.provisioning.license.generator.KeyGenerator;
@@ -142,27 +141,15 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			startDate = now;
 		}
 
-		validate(
-			licenseEntry, licenseVersion, product, productVersion, owner,
-			description, serverIds, complimentary);
+		validate(product, productVersion, owner, description);
 
-		if (licenseVersion >= 3) {
-			return doAddLicenseKeyVersion3_4(
-				now, user, licenseEntry, product, accountKey,
-				productPurchaseKey, accountCode, accountName, licenseEntryType,
-				licenseVersion, productVersion, clusterId, owner, maxServers,
-				maxHttpSessions, maxConcurrentUsers, maxUsers, sizing,
-				description, hostNames, ipAddresses, macAddresses, serverIds,
-				startDate, expirationDate, additionalInfo, complimentary,
-				active);
-		}
-
-		return doAddLicenseKey(
+		return doAddLicenseKeyVersion3_4(
 			now, user, licenseEntry, product, accountKey, productPurchaseKey,
 			accountCode, accountName, licenseEntryType, licenseVersion,
-			productVersion, clusterId, owner, maxServers, description,
-			serverIds, startDate, expirationDate, additionalInfo, complimentary,
-			active);
+			productVersion, clusterId, owner, maxServers, maxHttpSessions,
+			maxConcurrentUsers, maxUsers, sizing, description, hostNames,
+			ipAddresses, macAddresses, serverIds, startDate, expirationDate,
+			additionalInfo, complimentary, active);
 	}
 
 	public LicenseKey addLicenseKey(
@@ -655,16 +642,9 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		List<LicenseKey> clusterLicenseKeys = getClusterLicenseKeys(
 			licenseKey, type);
 
-		if (licenseKey.getLicenseVersion() >= 3) {
-			doUpdateLicenseKeyVersion3(
-				new Date(), licenseKey, productPurchaseKey, clusterLicenseKeys,
-				userId, complimentary, active);
-		}
-		else {
-			doUpdateLicenseKey(
-				new Date(), licenseKey, productPurchaseKey, clusterLicenseKeys,
-				userId, complimentary, active);
-		}
+		doUpdateLicenseKeyVersion3(
+			new Date(), licenseKey, productPurchaseKey, clusterLicenseKeys,
+			userId, complimentary, active);
 
 		return licenseKey;
 	}
@@ -680,94 +660,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		licenseKey.setProductPurchaseKey(productPurchaseKey);
 
 		return licenseKeyPersistence.update(licenseKey);
-	}
-
-	protected LicenseKey doAddLicenseKey(
-			Date now, User user, LicenseEntry licenseEntry, Product product,
-			String accountKey, String productPurchaseKey, String accountCode,
-			String accountName, String licenseEntryType, int licenseVersion,
-			int productVersion, long clusterId, String owner, int maxServers,
-			String description, String[] serverIds, Date startDate,
-			Date expirationDate, String additionalInfo, boolean complimentary,
-			boolean active)
-		throws Exception {
-
-		if (clusterId <= 0) {
-			clusterId = counterLocalService.increment(
-				getCounterName(
-					accountKey, product.getKey(), productPurchaseKey));
-		}
-
-		accountName = LicenseUtil.trimText(accountName);
-		String licenseEntryName = LicenseUtil.trimText(licenseEntry.getName());
-		String productName = LicenseUtil.trimText(product.getName());
-
-		String productId = ProductId.PORTAL;
-
-		if (productName.contains(ProductConstants.NAME_COMMERCE_SUBSCRIPTION)) {
-			productId = ProductId.COMMERCE;
-		}
-
-		String productVersionLabel = LicenseUtil.trimText(
-			ProductVersion.getLabel(productVersion));
-
-		owner = LicenseUtil.trimText(owner);
-
-		if ((licenseVersion != 2) ||
-			(!licenseEntryType.equals(LicenseType.CLUSTER) &&
-			 !licenseEntryType.equals(LicenseType.DEVELOPER_CLUSTER))) {
-
-			maxServers = 1;
-		}
-
-		description = LicenseUtil.trimText(description);
-
-		int maxHttpSessions = 0;
-
-		if (licenseEntryType.equals(LicenseType.DEVELOPER) ||
-			licenseEntryType.equals(LicenseType.DEVELOPER_CLUSTER) ||
-			licenseEntryType.equals(LicenseType.TRIAL)) {
-
-			maxHttpSessions = 10;
-		}
-
-		String[] macAddresses = null;
-
-		if (((licenseVersion == 2) &&
-			 licenseEntryType.equals(LicenseType.PRODUCTION)) ||
-			((licenseVersion != 2) &&
-			 (licenseEntryType.equals(LicenseType.CLUSTER) ||
-			  licenseEntryType.equals(LicenseType.DEVELOPER_CLUSTER)))) {
-
-			macAddresses = serverIds;
-		}
-		else {
-			macAddresses = new String[serverIds.length];
-		}
-
-		startDate = DateUtils.round(startDate, Calendar.SECOND);
-		expirationDate = DateUtils.round(expirationDate, Calendar.SECOND);
-
-		String key = _keyGenerator.generate(
-			accountName, licenseEntryName, licenseEntryType, licenseVersion,
-			productName, productId, productVersionLabel, owner, maxServers,
-			maxHttpSessions, 0, 0, 0, description, null, null, null, serverIds,
-			startDate, expirationDate);
-
-		LicenseKey licenseKey = null;
-
-		for (int i = 0; i < serverIds.length; i++) {
-			licenseKey = doAddLicenseKey(
-				user, now, licenseEntry, accountKey, productPurchaseKey,
-				accountCode, accountName, licenseEntryName, licenseEntryType,
-				licenseVersion, productName, productId, productVersion,
-				productVersionLabel, clusterId, owner, maxServers, 0, 0,
-				maxHttpSessions, 0, description, StringPool.BLANK,
-				StringPool.BLANK, macAddresses[i], serverIds[i], key, startDate,
-				expirationDate, additionalInfo, complimentary, active);
-		}
-
-		return licenseKey;
 	}
 
 	protected LicenseKey doAddLicenseKey(
@@ -955,76 +847,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		return licenseKey;
 	}
 
-	protected void doUpdateLicenseKey(
-			Date now, LicenseKey licenseKey, String productPurchaseKey,
-			List<LicenseKey> clusterLicenseKeys, long userId,
-			boolean complimentary, boolean active)
-		throws Exception {
-
-		User user = userLocalService.getUser(userId);
-
-		long clusterId = licenseKey.getClusterId();
-
-		if (!productPurchaseKey.equals(licenseKey.getProductPurchaseKey())) {
-			Product product = _productWebService.getProduct(
-				licenseKey.getProductKey());
-
-			clusterId = counterLocalService.increment(
-				getCounterName(
-					licenseKey.getAccountKey(), product.getKey(),
-					productPurchaseKey));
-		}
-
-		for (LicenseKey clusterLicenseKey : clusterLicenseKeys) {
-			boolean updateProductPurchaseKey = false;
-			boolean updateComplimentary = false;
-			boolean updateActive = false;
-
-			if (!productPurchaseKey.equals(
-					clusterLicenseKey.getProductPurchaseKey())) {
-
-				updateProductPurchaseKey = true;
-			}
-
-			if (complimentary != clusterLicenseKey.isComplimentary()) {
-				updateComplimentary = true;
-			}
-
-			if (active != clusterLicenseKey.isActive()) {
-				updateActive = true;
-			}
-
-			clusterLicenseKey.setModifiedUserId(user.getUserId());
-			clusterLicenseKey.setModifiedUserName(user.getFullName());
-			clusterLicenseKey.setModifiedDate(now);
-			clusterLicenseKey.setProductPurchaseKey(productPurchaseKey);
-			clusterLicenseKey.setClusterId(clusterId);
-			clusterLicenseKey.setComplimentary(complimentary);
-			clusterLicenseKey.setActive(active);
-
-			clusterLicenseKey = licenseKeyPersistence.update(clusterLicenseKey);
-
-			if (updateProductPurchaseKey) {
-				_deleteProductConsumption(user, clusterLicenseKey);
-
-				if (active && !complimentary) {
-					_addProductConsumption(user, clusterLicenseKey);
-				}
-			}
-			else if (active) {
-				if (!complimentary && (updateComplimentary || updateActive)) {
-					_addProductConsumption(user, licenseKey);
-				}
-				else if (complimentary && updateComplimentary) {
-					_deleteProductConsumption(user, licenseKey);
-				}
-			}
-			else if (updateActive) {
-				_deleteProductConsumption(user, licenseKey);
-			}
-		}
-	}
-
 	protected void doUpdateLicenseKeyVersion3(
 			Date now, LicenseKey licenseKey, String productPurchaseKey,
 			List<LicenseKey> clusterLicenseKeys, long userId,
@@ -1182,24 +1004,13 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 			return ProductVersion.PORTAL_VERSION_6_1_10;
 		}
-		else if (productMinorVersion ==
-					ProductVersion.PORTAL_MINOR_VERSION_6_0) {
-
-			return ProductVersion.PORTAL_VERSION_6_0_10;
-		}
-		else if (productMinorVersion ==
-					ProductVersion.PORTAL_MINOR_VERSION_5_2) {
-
-			return ProductVersion.PORTAL_VERSION_5_2_9;
-		}
 
 		return 0;
 	}
 
 	protected void validate(
-			LicenseEntry licenseEntry, int licenseVersion, Product product,
-			int productVersion, String owner, String description,
-			String[] serverIds, boolean complimentary)
+			Product product, int productVersion, String owner,
+			String description)
 		throws PortalException {
 
 		if (productVersion <= 0) {
@@ -1233,42 +1044,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		if (Validator.isNull(description)) {
 			throw new LicenseKeyDescriptionException();
-		}
-
-		if (licenseVersion <= 2) {
-			if (serverIds.length == 0) {
-				throw new LicenseKeyServerIdException();
-			}
-
-			String type = licenseEntry.getType();
-
-			for (String serverId : serverIds) {
-				if (type.equals(LicenseType.ENTERPRISE) ||
-					type.equals(LicenseType.OEM)) {
-
-					continue;
-				}
-
-				if (Validator.isNull(serverId)) {
-					throw new LicenseKeyServerIdException();
-				}
-
-				if (serverId.equals(LicenseType.DEVELOPER) &&
-					(complimentary || type.equals(LicenseType.DEVELOPER))) {
-
-					continue;
-				}
-
-				if (serverId.length() == 44) {
-					validateServerId(serverId);
-				}
-				else if (serverId.length() == 17) {
-					validateMacAddress(serverId);
-				}
-				else {
-					//throw new LicenseKeyServerIdException();
-				}
-			}
 		}
 	}
 
@@ -1353,23 +1128,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 					throw new LicenseKeyMACAddressException();
 				}
-			}
-		}
-	}
-
-	protected void validateServerId(String serverId) throws PortalException {
-		char[] charArray = serverId.toCharArray();
-
-		for (int i = 0; i < charArray.length; i++) {
-			char c = charArray[i];
-
-			if (((i + 1) % 5) == 0) {
-				if (c != CharPool.DASH) {
-					throw new LicenseKeyServerIdException();
-				}
-			}
-			else if (!Validator.isDigit(c) && !Validator.isChar(c)) {
-				throw new LicenseKeyServerIdException();
 			}
 		}
 	}
