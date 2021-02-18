@@ -91,7 +91,6 @@ public class LabelItem extends HashMap<String, Object> {
 			LanguageUtil.get(
 				LocaleUtil.getMostRelevantLocale(),
 				WorkflowConstants.getStatusLabel(status)));
-
 		setStyle(getStyleFromWorkflowStatus(status));
 	}
 
