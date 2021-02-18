@@ -92,7 +92,9 @@ public class S3FileCache {
 		}
 	}
 
-	public File getCacheFile(S3Object s3Object, String fileName)
+	public File getCacheFile(
+			String fileName, Supplier<InputStream> inputStreamSupplier,
+			Date lastModifiedDate)
 		throws IOException {
 
 		StringBundler sb = new StringBundler(4);
@@ -103,17 +105,13 @@ public class S3FileCache {
 				_CACHE_DIR_PATTERN, LocaleUtil.getDefault()));
 		sb.append(_s3KeyTransformer.getNormalizedFileName(fileName));
 
-		ObjectMetadata objectMetadata = s3Object.getObjectMetadata();
-
-		Date lastModifiedDate = objectMetadata.getLastModified();
-
 		sb.append(lastModifiedDate.getTime());
 
 		String cacheFileName = sb.toString();
 
 		File cacheFile = new File(cacheFileName);
 
-		try (InputStream inputStream = s3Object.getObjectContent()) {
+		try (InputStream inputStream = inputStreamSupplier.get()) {
 			if (cacheFile.exists() &&
 				(cacheFile.lastModified() >= lastModifiedDate.getTime())) {
 
