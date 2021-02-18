@@ -23,9 +23,12 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.portlet.PortalPreferences;
+import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.List;
 
@@ -49,6 +52,9 @@ public class JournalHistoryDisplayContext {
 		_article = article;
 
 		_httpServletRequest = PortalUtil.getHttpServletRequest(renderRequest);
+
+		_portalPreferences = PortletPreferencesFactoryUtil.getPortalPreferences(
+			_httpServletRequest);
 	}
 
 	public SearchContainer getArticleSearchContainer() {
@@ -136,8 +142,18 @@ public class JournalHistoryDisplayContext {
 			return _orderByType;
 		}
 
-		_orderByType = ParamUtil.getString(
-			_renderRequest, "orderByType", "asc");
+		String orderByType = ParamUtil.getString(_renderRequest, "orderByType");
+
+		if (Validator.isNotNull(orderByType)) {
+			_portalPreferences.setValue(
+				JournalPortletKeys.JOURNAL, "orderByType", orderByType);
+		}
+		else {
+			orderByType = _portalPreferences.getValue(
+				JournalPortletKeys.JOURNAL, "orderByType", "asc");
+		}
+
+		_orderByType = orderByType;
 
 		return _orderByType;
 	}
@@ -187,6 +203,7 @@ public class JournalHistoryDisplayContext {
 	private final HttpServletRequest _httpServletRequest;
 	private String _orderByCol;
 	private String _orderByType;
+	private final PortalPreferences _portalPreferences;
 	private String _redirect;
 	private String _referringPortletResource;
 	private final RenderRequest _renderRequest;
