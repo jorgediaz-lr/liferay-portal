@@ -12,14 +12,11 @@
  *
  */
 
-package com.liferay.osb.customer.license.service;
+package com.liferay.osb.provisioning.license.service;
 
-import aQute.bnd.annotation.ProviderType;
-
-import com.liferay.osb.customer.admin.model.LicenseEntry;
-import com.liferay.osb.customer.admin.model.ProductEntry;
-import com.liferay.osb.customer.license.model.LicenseKey;
-import com.liferay.osb.customer.license.model.LicenseKeySet;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
+import com.liferay.osb.provisioning.license.model.LicenseEntry;
+import com.liferay.osb.provisioning.license.model.LicenseKey;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
@@ -42,6 +39,8 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import org.osgi.annotation.versioning.ProviderType;
+
 /**
  * Provides the local service interface for LicenseKey. Methods of this
  * service will not have security checks based on the propagated JAAS
@@ -63,10 +62,10 @@ public interface LicenseKeyLocalService
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.osb.customer.license.service.impl.LicenseKeyLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the license key local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link LicenseKeyLocalServiceUtil} if injection and service tracking are not available.
+	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.osb.provisioning.license.service.impl.LicenseKeyLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the license key local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link LicenseKeyLocalServiceUtil} if injection and service tracking are not available.
 	 */
 	public LicenseKey addDeveloperLicenseKey(
-			long userId, long accountEntryId, long productEntryId,
+			long userId, String accountKey, String productKey,
 			int productMinorVersion)
 		throws Exception;
 
@@ -84,11 +83,10 @@ public interface LicenseKeyLocalService
 	public LicenseKey addLicenseKey(LicenseKey licenseKey);
 
 	public LicenseKey addLicenseKey(
-			long userId, LicenseKeySet licenseKeySet, String name,
-			LicenseEntry licenseEntry, ProductEntry productEntry,
-			String koroneikiAccountKey, String koroneikiProductPurchaseKey,
-			String accountEntryName, int productVersion, long clusterId,
-			String owner, int maxServers, int maxHttpSessions,
+			long userId, String name, LicenseEntry licenseEntry,
+			Product product, String accountKey, String productPurchaseKey,
+			String accountCode, String accountName, int productVersion,
+			long clusterId, String owner, int maxServers, int maxHttpSessions,
 			int maxConcurrentUsers, int maxUsers, int sizing,
 			String description, String[] hostNames, String[] ipAddresses,
 			String[] macAddresses, String[] serverIds, Date startDate,
@@ -97,20 +95,19 @@ public interface LicenseKeyLocalService
 		throws Exception;
 
 	public LicenseKey addLicenseKey(
-			long userId, long licenseKeySetId, String name, long licenseEntryId,
-			long productEntryId, String koroneikiAccountKey,
-			String koroneikiProductPurchaseKey, String accountEntryName,
-			int productVersion, long clusterId, String owner, int maxServers,
-			int maxHttpSessions, int maxConcurrentUsers, int maxUsers,
-			int sizing, String description, String[] hostNames,
-			String[] ipAddresses, String[] macAddresses, String[] serverIds,
-			Date startDate, Date expirationDate, boolean complimentary,
-			boolean active)
+			long userId, String name, long licenseEntryId, String productKey,
+			String accountKey, String productPurchaseKey, String accountCode,
+			String accountName, int productVersion, long clusterId,
+			String owner, int maxServers, int maxHttpSessions,
+			int maxConcurrentUsers, int maxUsers, int sizing,
+			String description, String[] hostNames, String[] ipAddresses,
+			String[] macAddresses, String[] serverIds, Date startDate,
+			Date expirationDate, boolean complimentary, boolean active)
 		throws Exception;
 
 	public LicenseKey addLicenseKey(
 			long userId, String assetReceiptLicenseUuid,
-			String licenseEntryType, String productEntryName, String productId,
+			String licenseEntryType, String productName, String productId,
 			int productVersion, String owner, long maxUsers, String description,
 			String hostName, String ipAddresses, String macAddresses,
 			String serverId, Date startDate, Date expirationDate)
@@ -176,7 +173,7 @@ public interface LicenseKeyLocalService
 	 * Performs a dynamic query on the database and returns a range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.customer.license.model.impl.LicenseKeyModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.provisioning.license.model.impl.LicenseKeyModelImpl</code>.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -192,7 +189,7 @@ public interface LicenseKeyLocalService
 	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.customer.license.model.impl.LicenseKeyModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.provisioning.license.model.impl.LicenseKeyModelImpl</code>.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -230,7 +227,7 @@ public interface LicenseKeyLocalService
 	public LicenseKey fetchLicenseKey(long licenseKeyId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<LicenseKey> getAccountEntryLicenseKeys(long accountEntryId);
+	public List<LicenseKey> getAccountLicenseKeys(String accountKey);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -249,7 +246,7 @@ public interface LicenseKeyLocalService
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public LicenseKey getFirstLicenseKey(
-			long accountEntryId, OrderByComparator obc)
+			String accountKey, OrderByComparator obc)
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -259,7 +256,7 @@ public interface LicenseKeyLocalService
 	 * Returns a range of all the license keies.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.customer.license.model.impl.LicenseKeyModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.provisioning.license.model.impl.LicenseKeyModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of license keies
@@ -291,25 +288,22 @@ public interface LicenseKeyLocalService
 	public LicenseKey getLicenseKeyByUuid(String uuid) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<LicenseKey> getLicenseKeys(long userId, long accountEntryId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<LicenseKey> getLicenseKeys(long userId, String productId);
+	public List<LicenseKey> getLicenseKeys(long userId, String accountKey);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getLicenseKeys(
-		String koroneikiProductPurchaseKey, int start, int end);
+		String productPurchaseKey, int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getLicenseKeys(
-		String koroneikiProductPurchaseKey, long clusterId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<LicenseKey> getLicenseKeys(
-		String koroneikiAccountKey, long productEntryId, int start, int end);
+		String productPurchaseKey, long clusterId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getLicenseKeys(String productId, String serverId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<LicenseKey> getLicenseKeys(
+		String accountKey, String productKey, int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getLicenseKeys(
@@ -318,57 +312,18 @@ public interface LicenseKeyLocalService
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getLicenseKeysByName(
-		String productEntryName, String serverId, boolean active, int start,
-		int end, OrderByComparator obc);
+		String productName, String serverId, boolean active, int start, int end,
+		OrderByComparator obc);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getLicenseKeysCount(String koroneikiProductPurchaseKey);
+	public List<LicenseKey> getLicenseKeysByUserIdProductId(
+		long userId, String productId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getLicenseKeysCount(
-		String koroneikiAccountKey, long productEntryId);
+	public int getLicenseKeysCount(String productPurchaseKey);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<LicenseKey> getLicenseKeySetLicenseKeys(long licenseKeySetId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<LicenseKey> getOfferingEntryGroupLicenseKeys(
-		long[] offeringEntryIds, boolean complimentary, boolean active,
-		int start, int end, OrderByComparator obc);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getOfferingEntryGroupLicenseKeysCount(
-		long[] offeringEntryIds, boolean complimentary, boolean active);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<LicenseKey> getOfferingEntryLicenseKeys(long offeringEntryId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<LicenseKey> getOfferingEntryLicenseKeys(
-		long offeringEntryId, boolean complimentary, boolean active);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<LicenseKey> getOfferingEntryLicenseKeys(
-		long offeringEntryId, long clusterId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<LicenseKey> getOfferingEntryLicenseKeys(
-		long offeringEntryId, long clusterId, boolean active);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getOfferingEntryLicenseKeysCount(long offeringEntryId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getOfferingEntryLicenseKeysCount(
-		long offeringEntryId, boolean complimentary, boolean active);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getOfferingEntryLicenseKeysCount(
-		long offeringEntryId, long clusterId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getOfferingEntryLicenseKeysCount(
-		long offeringEntryId, long clusterId, boolean active);
+	public int getLicenseKeysCount(String accountKey, String productKey);
 
 	/**
 	 * Returns the OSGi service identifier.
@@ -386,7 +341,47 @@ public interface LicenseKeyLocalService
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getUserLicenseKeysCount(long userId, long accountEntryId);
+	public List<LicenseKey> getProductPurchaseGroupLicenseKeys(
+		String[] productPurchaseKeys, boolean complimentary, boolean active,
+		int start, int end, OrderByComparator obc);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getProductPurchaseGroupLicenseKeysCount(
+		String[] productPurchaseKeys, boolean complimentary, boolean active);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<LicenseKey> getProductPurchaseLicenseKeys(
+		String productPurchaseKey);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<LicenseKey> getProductPurchaseLicenseKeys(
+		String productPurchaseKey, boolean complimentary, boolean active);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<LicenseKey> getProductPurchaseLicenseKeys(
+		String productPurchaseKey, long clusterId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<LicenseKey> getProductPurchaseLicenseKeys(
+		String productPurchaseKey, long clusterId, boolean active);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getProductPurchaseLicenseKeysCount(String productPurchaseKey);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getProductPurchaseLicenseKeysCount(
+		String productPurchaseKey, boolean complimentary, boolean active);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getProductPurchaseLicenseKeysCount(
+		String productPurchaseKey, long clusterId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getProductPurchaseLicenseKeysCount(
+		String productPurchaseKey, long clusterId, boolean active);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getUserLicenseKeysCount(long userId, String accountKey);
 
 	public LicenseKey renewLicenseKey(
 			long userId, long licenseKeyId, Date startDate, Date expirationDate)
@@ -402,12 +397,11 @@ public interface LicenseKeyLocalService
 		int createDateGTYear, int createDateLTDay, int createDateLTMonth,
 		int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
 		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
-		int modifiedDateLTMonth, int modifiedDateLTYear,
-		String koroneikiAccountKey, String koroneikiProductPurchaseKey,
-		String accountEntryName, String licenseKeySetName, int startDateGTDay,
+		int modifiedDateLTMonth, int modifiedDateLTYear, String accountKey,
+		String productPurchaseKey, String accountName, int startDateGTDay,
 		int startDateGTMonth, int startDateGTYear, int startDateLTDay,
 		int startDateLTMonth, int startDateLTYear, long[] licenseEntryIds,
-		long[] productEntryIds, String productEntryName, String productId,
+		String[] productKeys, String productName, String productId,
 		int[] productVersions, String owner, String description,
 		String hostName, String ipAddress, String macAddress, String serverId,
 		String key, int expirationDateGTDay, int expirationDateGTMonth,
@@ -427,12 +421,11 @@ public interface LicenseKeyLocalService
 		int createDateGTYear, int createDateLTDay, int createDateLTMonth,
 		int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
 		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
-		int modifiedDateLTMonth, int modifiedDateLTYear,
-		String koroneikiAccountKey, String koroneikiProductPurchaseKey,
-		String accountEntryName, String licenseKeySetName, int startDateGTDay,
+		int modifiedDateLTMonth, int modifiedDateLTYear, String accountKey,
+		String productPurchaseKey, String accountName, int startDateGTDay,
 		int startDateGTMonth, int startDateGTYear, int startDateLTDay,
 		int startDateLTMonth, int startDateLTYear, long[] licenseEntryIds,
-		long[] productEntryIds, String productEntryName, String productId,
+		String[] productKeys, String productName, String productId,
 		int[] productVersions, String owner, String description,
 		String hostName, String ipAddress, String macAddress, String serverId,
 		String key, int expirationDateGTDay, int expirationDateGTMonth,
@@ -461,14 +454,12 @@ public interface LicenseKeyLocalService
 		throws Exception;
 
 	public LicenseKey updateLicenseKey(
-			long licenseKeyId, long accountEntryId, long offeringEntryId,
-			long orderEntryId)
-		throws PortalException;
+			long userId, long licenseKeyId, String productPurchaseKey,
+			String name, boolean complimentary, boolean active)
+		throws Exception;
 
 	public LicenseKey updateLicenseKey(
-			long userId, long licenseKeyId, long licenseKeySetId,
-			String koroneikiProductPurchaseKey, String name,
-			boolean complimentary, boolean active)
-		throws Exception;
+			long licenseKeyId, String accountKey, String productPurchaseKey)
+		throws PortalException;
 
 }

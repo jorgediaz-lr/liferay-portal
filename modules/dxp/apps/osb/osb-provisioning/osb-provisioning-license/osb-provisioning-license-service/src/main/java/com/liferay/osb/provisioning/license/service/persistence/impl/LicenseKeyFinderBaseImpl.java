@@ -12,26 +12,31 @@
  *
  */
 
-package com.liferay.osb.customer.license.service.persistence.impl;
+package com.liferay.osb.provisioning.license.service.persistence.impl;
 
-import com.liferay.osb.customer.license.model.LicenseKey;
-import com.liferay.osb.customer.license.service.persistence.LicenseKeyPersistence;
-import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.osb.provisioning.license.model.LicenseKey;
+import com.liferay.osb.provisioning.license.service.persistence.LicenseKeyPersistence;
+import com.liferay.osb.provisioning.license.service.persistence.impl.constants.ProvisioningPersistenceConstants;
+import com.liferay.portal.kernel.configuration.Configuration;
+import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
-
-import java.lang.reflect.Field;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import javax.sql.DataSource;
+
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Brian Wing Shun Chan
  * @generated
  */
-public class LicenseKeyFinderBaseImpl extends BasePersistenceImpl<LicenseKey> {
+public abstract class LicenseKeyFinderBaseImpl
+	extends BasePersistenceImpl<LicenseKey> {
 
 	public LicenseKeyFinderBaseImpl() {
 		setModelClass(LicenseKey.class);
@@ -42,47 +47,42 @@ public class LicenseKeyFinderBaseImpl extends BasePersistenceImpl<LicenseKey> {
 		dbColumnNames.put("key", "key_");
 		dbColumnNames.put("active", "active_");
 
-		try {
-			Field field = BasePersistenceImpl.class.getDeclaredField(
-				"_dbColumnNames");
-
-			field.setAccessible(true);
-
-			field.set(this, dbColumnNames);
-		}
-		catch (Exception exception) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(exception, exception);
-			}
-		}
+		setDBColumnNames(dbColumnNames);
 	}
 
 	@Override
 	public Set<String> getBadColumnNames() {
-		return getLicenseKeyPersistence().getBadColumnNames();
+		return licenseKeyPersistence.getBadColumnNames();
 	}
 
-	/**
-	 * Returns the license key persistence.
-	 *
-	 * @return the license key persistence
-	 */
-	public LicenseKeyPersistence getLicenseKeyPersistence() {
-		return licenseKeyPersistence;
+	@Override
+	@Reference(
+		target = ProvisioningPersistenceConstants.SERVICE_CONFIGURATION_FILTER,
+		unbind = "-"
+	)
+	public void setConfiguration(Configuration configuration) {
+		super.setConfiguration(configuration);
 	}
 
-	/**
-	 * Sets the license key persistence.
-	 *
-	 * @param licenseKeyPersistence the license key persistence
-	 */
-	public void setLicenseKeyPersistence(
-		LicenseKeyPersistence licenseKeyPersistence) {
-
-		this.licenseKeyPersistence = licenseKeyPersistence;
+	@Override
+	@Reference(
+		target = ProvisioningPersistenceConstants.ORIGIN_BUNDLE_SYMBOLIC_NAME_FILTER,
+		unbind = "-"
+	)
+	public void setDataSource(DataSource dataSource) {
+		super.setDataSource(dataSource);
 	}
 
-	@BeanReference(type = LicenseKeyPersistence.class)
+	@Override
+	@Reference(
+		target = ProvisioningPersistenceConstants.ORIGIN_BUNDLE_SYMBOLIC_NAME_FILTER,
+		unbind = "-"
+	)
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		super.setSessionFactory(sessionFactory);
+	}
+
+	@Reference
 	protected LicenseKeyPersistence licenseKeyPersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(

@@ -12,12 +12,13 @@
  *
  */
 
-package com.liferay.osb.customer.license.model.impl;
+package com.liferay.osb.provisioning.license.model.impl;
 
-import com.liferay.osb.customer.license.model.LicenseKey;
+import com.liferay.osb.provisioning.license.model.LicenseKey;
+import com.liferay.petra.lang.HashUtil;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.model.CacheModel;
-import com.liferay.portal.kernel.util.HashUtil;
-import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.model.MVCCModel;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -33,7 +34,7 @@ import java.util.Date;
  * @generated
  */
 public class LicenseKeyCacheModel
-	implements CacheModel<LicenseKey>, Externalizable {
+	implements CacheModel<LicenseKey>, Externalizable, MVCCModel {
 
 	@Override
 	public boolean equals(Object object) {
@@ -48,7 +49,9 @@ public class LicenseKeyCacheModel
 		LicenseKeyCacheModel licenseKeyCacheModel =
 			(LicenseKeyCacheModel)object;
 
-		if (licenseKeyId == licenseKeyCacheModel.licenseKeyId) {
+		if ((licenseKeyId == licenseKeyCacheModel.licenseKeyId) &&
+			(mvccVersion == licenseKeyCacheModel.mvccVersion)) {
+
 			return true;
 		}
 
@@ -57,14 +60,28 @@ public class LicenseKeyCacheModel
 
 	@Override
 	public int hashCode() {
-		return HashUtil.hash(0, licenseKeyId);
+		int hashCode = HashUtil.hash(0, licenseKeyId);
+
+		return HashUtil.hash(hashCode, mvccVersion);
+	}
+
+	@Override
+	public long getMvccVersion() {
+		return mvccVersion;
+	}
+
+	@Override
+	public void setMvccVersion(long mvccVersion) {
+		this.mvccVersion = mvccVersion;
 	}
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(89);
+		StringBundler sb = new StringBundler(83);
 
-		sb.append("{uuid=");
+		sb.append("{mvccVersion=");
+		sb.append(mvccVersion);
+		sb.append(", uuid=");
 		sb.append(uuid);
 		sb.append(", licenseKeyId=");
 		sb.append(licenseKeyId);
@@ -80,36 +97,28 @@ public class LicenseKeyCacheModel
 		sb.append(modifiedUserName);
 		sb.append(", modifiedDate=");
 		sb.append(modifiedDate);
-		sb.append(", licenseKeySetId=");
-		sb.append(licenseKeySetId);
 		sb.append(", assetReceiptLicenseUuid=");
 		sb.append(assetReceiptLicenseUuid);
-		sb.append(", koroneikiAccountKey=");
-		sb.append(koroneikiAccountKey);
-		sb.append(", koroneikiProductPurchaseKey=");
-		sb.append(koroneikiProductPurchaseKey);
-		sb.append(", accountEntryId=");
-		sb.append(accountEntryId);
-		sb.append(", orderEntryId=");
-		sb.append(orderEntryId);
-		sb.append(", offeringEntryId=");
-		sb.append(offeringEntryId);
+		sb.append(", accountKey=");
+		sb.append(accountKey);
+		sb.append(", productPurchaseKey=");
+		sb.append(productPurchaseKey);
 		sb.append(", licenseEntryId=");
 		sb.append(licenseEntryId);
-		sb.append(", productEntryId=");
-		sb.append(productEntryId);
-		sb.append(", supportResponseId=");
-		sb.append(supportResponseId);
-		sb.append(", accountEntryName=");
-		sb.append(accountEntryName);
+		sb.append(", productKey=");
+		sb.append(productKey);
+		sb.append(", accountCode=");
+		sb.append(accountCode);
+		sb.append(", accountName=");
+		sb.append(accountName);
 		sb.append(", licenseEntryName=");
 		sb.append(licenseEntryName);
 		sb.append(", licenseEntryType=");
 		sb.append(licenseEntryType);
 		sb.append(", licenseVersion=");
 		sb.append(licenseVersion);
-		sb.append(", productEntryName=");
-		sb.append(productEntryName);
+		sb.append(", productName=");
+		sb.append(productName);
 		sb.append(", productId=");
 		sb.append(productId);
 		sb.append(", productVersion=");
@@ -161,6 +170,8 @@ public class LicenseKeyCacheModel
 	public LicenseKey toEntityModel() {
 		LicenseKeyImpl licenseKeyImpl = new LicenseKeyImpl();
 
+		licenseKeyImpl.setMvccVersion(mvccVersion);
+
 		if (uuid == null) {
 			licenseKeyImpl.setUuid("");
 		}
@@ -201,8 +212,6 @@ public class LicenseKeyCacheModel
 			licenseKeyImpl.setModifiedDate(new Date(modifiedDate));
 		}
 
-		licenseKeyImpl.setLicenseKeySetId(licenseKeySetId);
-
 		if (assetReceiptLicenseUuid == null) {
 			licenseKeyImpl.setAssetReceiptLicenseUuid("");
 		}
@@ -210,33 +219,41 @@ public class LicenseKeyCacheModel
 			licenseKeyImpl.setAssetReceiptLicenseUuid(assetReceiptLicenseUuid);
 		}
 
-		if (koroneikiAccountKey == null) {
-			licenseKeyImpl.setKoroneikiAccountKey("");
+		if (accountKey == null) {
+			licenseKeyImpl.setAccountKey("");
 		}
 		else {
-			licenseKeyImpl.setKoroneikiAccountKey(koroneikiAccountKey);
+			licenseKeyImpl.setAccountKey(accountKey);
 		}
 
-		if (koroneikiProductPurchaseKey == null) {
-			licenseKeyImpl.setKoroneikiProductPurchaseKey("");
+		if (productPurchaseKey == null) {
+			licenseKeyImpl.setProductPurchaseKey("");
 		}
 		else {
-			licenseKeyImpl.setKoroneikiProductPurchaseKey(
-				koroneikiProductPurchaseKey);
+			licenseKeyImpl.setProductPurchaseKey(productPurchaseKey);
 		}
 
-		licenseKeyImpl.setAccountEntryId(accountEntryId);
-		licenseKeyImpl.setOrderEntryId(orderEntryId);
-		licenseKeyImpl.setOfferingEntryId(offeringEntryId);
 		licenseKeyImpl.setLicenseEntryId(licenseEntryId);
-		licenseKeyImpl.setProductEntryId(productEntryId);
-		licenseKeyImpl.setSupportResponseId(supportResponseId);
 
-		if (accountEntryName == null) {
-			licenseKeyImpl.setAccountEntryName("");
+		if (productKey == null) {
+			licenseKeyImpl.setProductKey("");
 		}
 		else {
-			licenseKeyImpl.setAccountEntryName(accountEntryName);
+			licenseKeyImpl.setProductKey(productKey);
+		}
+
+		if (accountCode == null) {
+			licenseKeyImpl.setAccountCode("");
+		}
+		else {
+			licenseKeyImpl.setAccountCode(accountCode);
+		}
+
+		if (accountName == null) {
+			licenseKeyImpl.setAccountName("");
+		}
+		else {
+			licenseKeyImpl.setAccountName(accountName);
 		}
 
 		if (licenseEntryName == null) {
@@ -255,11 +272,11 @@ public class LicenseKeyCacheModel
 
 		licenseKeyImpl.setLicenseVersion(licenseVersion);
 
-		if (productEntryName == null) {
-			licenseKeyImpl.setProductEntryName("");
+		if (productName == null) {
+			licenseKeyImpl.setProductName("");
 		}
 		else {
-			licenseKeyImpl.setProductEntryName(productEntryName);
+			licenseKeyImpl.setProductName(productName);
 		}
 
 		if (productId == null) {
@@ -366,6 +383,7 @@ public class LicenseKeyCacheModel
 
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
+		mvccVersion = objectInput.readLong();
 		uuid = objectInput.readUTF();
 
 		licenseKeyId = objectInput.readLong();
@@ -377,29 +395,19 @@ public class LicenseKeyCacheModel
 		modifiedUserId = objectInput.readLong();
 		modifiedUserName = objectInput.readUTF();
 		modifiedDate = objectInput.readLong();
-
-		licenseKeySetId = objectInput.readLong();
 		assetReceiptLicenseUuid = objectInput.readUTF();
-		koroneikiAccountKey = objectInput.readUTF();
-		koroneikiProductPurchaseKey = objectInput.readUTF();
-
-		accountEntryId = objectInput.readLong();
-
-		orderEntryId = objectInput.readLong();
-
-		offeringEntryId = objectInput.readLong();
+		accountKey = objectInput.readUTF();
+		productPurchaseKey = objectInput.readUTF();
 
 		licenseEntryId = objectInput.readLong();
-
-		productEntryId = objectInput.readLong();
-
-		supportResponseId = objectInput.readLong();
-		accountEntryName = objectInput.readUTF();
+		productKey = objectInput.readUTF();
+		accountCode = objectInput.readUTF();
+		accountName = objectInput.readUTF();
 		licenseEntryName = objectInput.readUTF();
 		licenseEntryType = objectInput.readUTF();
 
 		licenseVersion = objectInput.readInt();
-		productEntryName = objectInput.readUTF();
+		productName = objectInput.readUTF();
 		productId = objectInput.readUTF();
 
 		productVersion = objectInput.readInt();
@@ -434,6 +442,8 @@ public class LicenseKeyCacheModel
 
 	@Override
 	public void writeExternal(ObjectOutput objectOutput) throws IOException {
+		objectOutput.writeLong(mvccVersion);
+
 		if (uuid == null) {
 			objectOutput.writeUTF("");
 		}
@@ -465,8 +475,6 @@ public class LicenseKeyCacheModel
 
 		objectOutput.writeLong(modifiedDate);
 
-		objectOutput.writeLong(licenseKeySetId);
-
 		if (assetReceiptLicenseUuid == null) {
 			objectOutput.writeUTF("");
 		}
@@ -474,37 +482,41 @@ public class LicenseKeyCacheModel
 			objectOutput.writeUTF(assetReceiptLicenseUuid);
 		}
 
-		if (koroneikiAccountKey == null) {
+		if (accountKey == null) {
 			objectOutput.writeUTF("");
 		}
 		else {
-			objectOutput.writeUTF(koroneikiAccountKey);
+			objectOutput.writeUTF(accountKey);
 		}
 
-		if (koroneikiProductPurchaseKey == null) {
+		if (productPurchaseKey == null) {
 			objectOutput.writeUTF("");
 		}
 		else {
-			objectOutput.writeUTF(koroneikiProductPurchaseKey);
+			objectOutput.writeUTF(productPurchaseKey);
 		}
-
-		objectOutput.writeLong(accountEntryId);
-
-		objectOutput.writeLong(orderEntryId);
-
-		objectOutput.writeLong(offeringEntryId);
 
 		objectOutput.writeLong(licenseEntryId);
 
-		objectOutput.writeLong(productEntryId);
-
-		objectOutput.writeLong(supportResponseId);
-
-		if (accountEntryName == null) {
+		if (productKey == null) {
 			objectOutput.writeUTF("");
 		}
 		else {
-			objectOutput.writeUTF(accountEntryName);
+			objectOutput.writeUTF(productKey);
+		}
+
+		if (accountCode == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(accountCode);
+		}
+
+		if (accountName == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(accountName);
 		}
 
 		if (licenseEntryName == null) {
@@ -523,11 +535,11 @@ public class LicenseKeyCacheModel
 
 		objectOutput.writeInt(licenseVersion);
 
-		if (productEntryName == null) {
+		if (productName == null) {
 			objectOutput.writeUTF("");
 		}
 		else {
-			objectOutput.writeUTF(productEntryName);
+			objectOutput.writeUTF(productName);
 		}
 
 		if (productId == null) {
@@ -622,6 +634,7 @@ public class LicenseKeyCacheModel
 		objectOutput.writeBoolean(active);
 	}
 
+	public long mvccVersion;
 	public String uuid;
 	public long licenseKeyId;
 	public long userId;
@@ -630,21 +643,17 @@ public class LicenseKeyCacheModel
 	public long modifiedUserId;
 	public String modifiedUserName;
 	public long modifiedDate;
-	public long licenseKeySetId;
 	public String assetReceiptLicenseUuid;
-	public String koroneikiAccountKey;
-	public String koroneikiProductPurchaseKey;
-	public long accountEntryId;
-	public long orderEntryId;
-	public long offeringEntryId;
+	public String accountKey;
+	public String productPurchaseKey;
 	public long licenseEntryId;
-	public long productEntryId;
-	public long supportResponseId;
-	public String accountEntryName;
+	public String productKey;
+	public String accountCode;
+	public String accountName;
 	public String licenseEntryName;
 	public String licenseEntryType;
 	public int licenseVersion;
-	public String productEntryName;
+	public String productName;
 	public String productId;
 	public int productVersion;
 	public String productVersionLabel;

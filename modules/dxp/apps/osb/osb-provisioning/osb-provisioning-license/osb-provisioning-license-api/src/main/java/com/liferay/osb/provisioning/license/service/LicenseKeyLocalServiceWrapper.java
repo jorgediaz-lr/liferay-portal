@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.customer.license.service;
+package com.liferay.osb.provisioning.license.service;
 
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
@@ -33,14 +33,14 @@ public class LicenseKeyLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.osb.customer.license.model.LicenseKey
+	public com.liferay.osb.provisioning.license.model.LicenseKey
 			addDeveloperLicenseKey(
-				long userId, long accountEntryId, long productEntryId,
+				long userId, String accountKey, String productKey,
 				int productMinorVersion)
 		throws Exception {
 
 		return _licenseKeyLocalService.addDeveloperLicenseKey(
-			userId, accountEntryId, productEntryId, productMinorVersion);
+			userId, accountKey, productKey, productMinorVersion);
 	}
 
 	/**
@@ -54,21 +54,21 @@ public class LicenseKeyLocalServiceWrapper
 	 * @return the license key that was added
 	 */
 	@Override
-	public com.liferay.osb.customer.license.model.LicenseKey addLicenseKey(
-		com.liferay.osb.customer.license.model.LicenseKey licenseKey) {
+	public com.liferay.osb.provisioning.license.model.LicenseKey addLicenseKey(
+		com.liferay.osb.provisioning.license.model.LicenseKey licenseKey) {
 
 		return _licenseKeyLocalService.addLicenseKey(licenseKey);
 	}
 
 	@Override
-	public com.liferay.osb.customer.license.model.LicenseKey addLicenseKey(
-			long userId,
-			com.liferay.osb.customer.license.model.LicenseKeySet licenseKeySet,
-			String name,
-			com.liferay.osb.customer.admin.model.LicenseEntry licenseEntry,
-			com.liferay.osb.customer.admin.model.ProductEntry productEntry,
-			String koroneikiAccountKey, String koroneikiProductPurchaseKey,
-			String accountEntryName, int productVersion, long clusterId,
+	public com.liferay.osb.provisioning.license.model.LicenseKey addLicenseKey(
+			long userId, String name,
+			com.liferay.osb.provisioning.license.model.LicenseEntry
+				licenseEntry,
+			com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product
+				product,
+			String accountKey, String productPurchaseKey, String accountCode,
+			String accountName, int productVersion, long clusterId,
 			String owner, int maxServers, int maxHttpSessions,
 			int maxConcurrentUsers, int maxUsers, int sizing,
 			String description, String[] hostNames, String[] ipAddresses,
@@ -78,40 +78,38 @@ public class LicenseKeyLocalServiceWrapper
 		throws Exception {
 
 		return _licenseKeyLocalService.addLicenseKey(
-			userId, licenseKeySet, name, licenseEntry, productEntry,
-			koroneikiAccountKey, koroneikiProductPurchaseKey, accountEntryName,
-			productVersion, clusterId, owner, maxServers, maxHttpSessions,
-			maxConcurrentUsers, maxUsers, sizing, description, hostNames,
-			ipAddresses, macAddresses, serverIds, startDate, expirationDate,
-			additionalInfo, complimentary, active);
+			userId, name, licenseEntry, product, accountKey, productPurchaseKey,
+			accountCode, accountName, productVersion, clusterId, owner,
+			maxServers, maxHttpSessions, maxConcurrentUsers, maxUsers, sizing,
+			description, hostNames, ipAddresses, macAddresses, serverIds,
+			startDate, expirationDate, additionalInfo, complimentary, active);
 	}
 
 	@Override
-	public com.liferay.osb.customer.license.model.LicenseKey addLicenseKey(
-			long userId, long licenseKeySetId, String name, long licenseEntryId,
-			long productEntryId, String koroneikiAccountKey,
-			String koroneikiProductPurchaseKey, String accountEntryName,
-			int productVersion, long clusterId, String owner, int maxServers,
-			int maxHttpSessions, int maxConcurrentUsers, int maxUsers,
-			int sizing, String description, String[] hostNames,
-			String[] ipAddresses, String[] macAddresses, String[] serverIds,
-			java.util.Date startDate, java.util.Date expirationDate,
-			boolean complimentary, boolean active)
+	public com.liferay.osb.provisioning.license.model.LicenseKey addLicenseKey(
+			long userId, String name, long licenseEntryId, String productKey,
+			String accountKey, String productPurchaseKey, String accountCode,
+			String accountName, int productVersion, long clusterId,
+			String owner, int maxServers, int maxHttpSessions,
+			int maxConcurrentUsers, int maxUsers, int sizing,
+			String description, String[] hostNames, String[] ipAddresses,
+			String[] macAddresses, String[] serverIds, java.util.Date startDate,
+			java.util.Date expirationDate, boolean complimentary,
+			boolean active)
 		throws Exception {
 
 		return _licenseKeyLocalService.addLicenseKey(
-			userId, licenseKeySetId, name, licenseEntryId, productEntryId,
-			koroneikiAccountKey, koroneikiProductPurchaseKey, accountEntryName,
-			productVersion, clusterId, owner, maxServers, maxHttpSessions,
-			maxConcurrentUsers, maxUsers, sizing, description, hostNames,
-			ipAddresses, macAddresses, serverIds, startDate, expirationDate,
-			complimentary, active);
+			userId, name, licenseEntryId, productKey, accountKey,
+			productPurchaseKey, accountCode, accountName, productVersion,
+			clusterId, owner, maxServers, maxHttpSessions, maxConcurrentUsers,
+			maxUsers, sizing, description, hostNames, ipAddresses, macAddresses,
+			serverIds, startDate, expirationDate, complimentary, active);
 	}
 
 	@Override
-	public com.liferay.osb.customer.license.model.LicenseKey addLicenseKey(
+	public com.liferay.osb.provisioning.license.model.LicenseKey addLicenseKey(
 			long userId, String assetReceiptLicenseUuid,
-			String licenseEntryType, String productEntryName, String productId,
+			String licenseEntryType, String productName, String productId,
 			int productVersion, String owner, long maxUsers, String description,
 			String hostName, String ipAddresses, String macAddresses,
 			String serverId, java.util.Date startDate,
@@ -119,7 +117,7 @@ public class LicenseKeyLocalServiceWrapper
 		throws Exception {
 
 		return _licenseKeyLocalService.addLicenseKey(
-			userId, assetReceiptLicenseUuid, licenseEntryType, productEntryName,
+			userId, assetReceiptLicenseUuid, licenseEntryType, productName,
 			productId, productVersion, owner, maxUsers, description, hostName,
 			ipAddresses, macAddresses, serverId, startDate, expirationDate);
 	}
@@ -131,8 +129,8 @@ public class LicenseKeyLocalServiceWrapper
 	 * @return the new license key
 	 */
 	@Override
-	public com.liferay.osb.customer.license.model.LicenseKey createLicenseKey(
-		long licenseKeyId) {
+	public com.liferay.osb.provisioning.license.model.LicenseKey
+		createLicenseKey(long licenseKeyId) {
 
 		return _licenseKeyLocalService.createLicenseKey(licenseKeyId);
 	}
@@ -148,8 +146,9 @@ public class LicenseKeyLocalServiceWrapper
 	 * @return the license key that was removed
 	 */
 	@Override
-	public com.liferay.osb.customer.license.model.LicenseKey deleteLicenseKey(
-		com.liferay.osb.customer.license.model.LicenseKey licenseKey) {
+	public com.liferay.osb.provisioning.license.model.LicenseKey
+		deleteLicenseKey(
+			com.liferay.osb.provisioning.license.model.LicenseKey licenseKey) {
 
 		return _licenseKeyLocalService.deleteLicenseKey(licenseKey);
 	}
@@ -166,8 +165,8 @@ public class LicenseKeyLocalServiceWrapper
 	 * @throws PortalException if a license key with the primary key could not be found
 	 */
 	@Override
-	public com.liferay.osb.customer.license.model.LicenseKey deleteLicenseKey(
-			long licenseKeyId)
+	public com.liferay.osb.provisioning.license.model.LicenseKey
+			deleteLicenseKey(long licenseKeyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _licenseKeyLocalService.deleteLicenseKey(licenseKeyId);
@@ -206,7 +205,7 @@ public class LicenseKeyLocalServiceWrapper
 	 * Performs a dynamic query on the database and returns a range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.customer.license.model.impl.LicenseKeyModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.provisioning.license.model.impl.LicenseKeyModelImpl</code>.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -226,7 +225,7 @@ public class LicenseKeyLocalServiceWrapper
 	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.customer.license.model.impl.LicenseKeyModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.provisioning.license.model.impl.LicenseKeyModelImpl</code>.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -275,18 +274,17 @@ public class LicenseKeyLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.osb.customer.license.model.LicenseKey fetchLicenseKey(
-		long licenseKeyId) {
+	public com.liferay.osb.provisioning.license.model.LicenseKey
+		fetchLicenseKey(long licenseKeyId) {
 
 		return _licenseKeyLocalService.fetchLicenseKey(licenseKeyId);
 	}
 
 	@Override
-	public java.util.List<com.liferay.osb.customer.license.model.LicenseKey>
-		getAccountEntryLicenseKeys(long accountEntryId) {
+	public java.util.List<com.liferay.osb.provisioning.license.model.LicenseKey>
+		getAccountLicenseKeys(String accountKey) {
 
-		return _licenseKeyLocalService.getAccountEntryLicenseKeys(
-			accountEntryId);
+		return _licenseKeyLocalService.getAccountLicenseKeys(accountKey);
 	}
 
 	@Override
@@ -297,7 +295,7 @@ public class LicenseKeyLocalServiceWrapper
 	}
 
 	@Override
-	public java.util.List<com.liferay.osb.customer.license.model.LicenseKey>
+	public java.util.List<com.liferay.osb.provisioning.license.model.LicenseKey>
 		getAssetReceiptLicenseLicenseKeys(
 			String assetReceiptLicenseUuid, boolean active) {
 
@@ -306,7 +304,7 @@ public class LicenseKeyLocalServiceWrapper
 	}
 
 	@Override
-	public java.util.List<com.liferay.osb.customer.license.model.LicenseKey>
+	public java.util.List<com.liferay.osb.provisioning.license.model.LicenseKey>
 		getAssetReceiptLicenseLicenseKeys(
 			String assetReceiptLicenseUuid, boolean complimentary,
 			boolean active) {
@@ -324,12 +322,13 @@ public class LicenseKeyLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.osb.customer.license.model.LicenseKey getFirstLicenseKey(
-			long accountEntryId,
-			com.liferay.portal.kernel.util.OrderByComparator obc)
+	public com.liferay.osb.provisioning.license.model.LicenseKey
+			getFirstLicenseKey(
+				String accountKey,
+				com.liferay.portal.kernel.util.OrderByComparator obc)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
-		return _licenseKeyLocalService.getFirstLicenseKey(accountEntryId, obc);
+		return _licenseKeyLocalService.getFirstLicenseKey(accountKey, obc);
 	}
 
 	@Override
@@ -343,7 +342,7 @@ public class LicenseKeyLocalServiceWrapper
 	 * Returns a range of all the license keies.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.customer.license.model.impl.LicenseKeyModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.provisioning.license.model.impl.LicenseKeyModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of license keies
@@ -351,7 +350,7 @@ public class LicenseKeyLocalServiceWrapper
 	 * @return the range of license keies
 	 */
 	@Override
-	public java.util.List<com.liferay.osb.customer.license.model.LicenseKey>
+	public java.util.List<com.liferay.osb.provisioning.license.model.LicenseKey>
 		getLicenseKeies(int start, int end) {
 
 		return _licenseKeyLocalService.getLicenseKeies(start, end);
@@ -375,7 +374,7 @@ public class LicenseKeyLocalServiceWrapper
 	 * @throws PortalException if a license key with the primary key could not be found
 	 */
 	@Override
-	public com.liferay.osb.customer.license.model.LicenseKey getLicenseKey(
+	public com.liferay.osb.provisioning.license.model.LicenseKey getLicenseKey(
 			long licenseKeyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -383,7 +382,7 @@ public class LicenseKeyLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.osb.customer.license.model.LicenseKey
+	public com.liferay.osb.provisioning.license.model.LicenseKey
 			getLicenseKeyByUuid(String uuid)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -391,54 +390,46 @@ public class LicenseKeyLocalServiceWrapper
 	}
 
 	@Override
-	public java.util.List<com.liferay.osb.customer.license.model.LicenseKey>
-		getLicenseKeys(long userId, long accountEntryId) {
+	public java.util.List<com.liferay.osb.provisioning.license.model.LicenseKey>
+		getLicenseKeys(long userId, String accountKey) {
 
-		return _licenseKeyLocalService.getLicenseKeys(userId, accountEntryId);
+		return _licenseKeyLocalService.getLicenseKeys(userId, accountKey);
 	}
 
 	@Override
-	public java.util.List<com.liferay.osb.customer.license.model.LicenseKey>
-		getLicenseKeys(long userId, String productId) {
-
-		return _licenseKeyLocalService.getLicenseKeys(userId, productId);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.customer.license.model.LicenseKey>
-		getLicenseKeys(String koroneikiProductPurchaseKey, int start, int end) {
+	public java.util.List<com.liferay.osb.provisioning.license.model.LicenseKey>
+		getLicenseKeys(String productPurchaseKey, int start, int end) {
 
 		return _licenseKeyLocalService.getLicenseKeys(
-			koroneikiProductPurchaseKey, start, end);
+			productPurchaseKey, start, end);
 	}
 
 	@Override
-	public java.util.List<com.liferay.osb.customer.license.model.LicenseKey>
-		getLicenseKeys(String koroneikiProductPurchaseKey, long clusterId) {
+	public java.util.List<com.liferay.osb.provisioning.license.model.LicenseKey>
+		getLicenseKeys(String productPurchaseKey, long clusterId) {
 
 		return _licenseKeyLocalService.getLicenseKeys(
-			koroneikiProductPurchaseKey, clusterId);
+			productPurchaseKey, clusterId);
 	}
 
 	@Override
-	public java.util.List<com.liferay.osb.customer.license.model.LicenseKey>
-		getLicenseKeys(
-			String koroneikiAccountKey, long productEntryId, int start,
-			int end) {
-
-		return _licenseKeyLocalService.getLicenseKeys(
-			koroneikiAccountKey, productEntryId, start, end);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.customer.license.model.LicenseKey>
+	public java.util.List<com.liferay.osb.provisioning.license.model.LicenseKey>
 		getLicenseKeys(String productId, String serverId) {
 
 		return _licenseKeyLocalService.getLicenseKeys(productId, serverId);
 	}
 
 	@Override
-	public java.util.List<com.liferay.osb.customer.license.model.LicenseKey>
+	public java.util.List<com.liferay.osb.provisioning.license.model.LicenseKey>
+		getLicenseKeys(
+			String accountKey, String productKey, int start, int end) {
+
+		return _licenseKeyLocalService.getLicenseKeys(
+			accountKey, productKey, start, end);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.provisioning.license.model.LicenseKey>
 		getLicenseKeys(
 			String assetReceiptLicenseUuid, String productId, String serverId,
 			boolean active, int start, int end,
@@ -450,118 +441,32 @@ public class LicenseKeyLocalServiceWrapper
 	}
 
 	@Override
-	public java.util.List<com.liferay.osb.customer.license.model.LicenseKey>
+	public java.util.List<com.liferay.osb.provisioning.license.model.LicenseKey>
 		getLicenseKeysByName(
-			String productEntryName, String serverId, boolean active, int start,
+			String productName, String serverId, boolean active, int start,
 			int end, com.liferay.portal.kernel.util.OrderByComparator obc) {
 
 		return _licenseKeyLocalService.getLicenseKeysByName(
-			productEntryName, serverId, active, start, end, obc);
+			productName, serverId, active, start, end, obc);
 	}
 
 	@Override
-	public int getLicenseKeysCount(String koroneikiProductPurchaseKey) {
+	public java.util.List<com.liferay.osb.provisioning.license.model.LicenseKey>
+		getLicenseKeysByUserIdProductId(long userId, String productId) {
+
+		return _licenseKeyLocalService.getLicenseKeysByUserIdProductId(
+			userId, productId);
+	}
+
+	@Override
+	public int getLicenseKeysCount(String productPurchaseKey) {
+		return _licenseKeyLocalService.getLicenseKeysCount(productPurchaseKey);
+	}
+
+	@Override
+	public int getLicenseKeysCount(String accountKey, String productKey) {
 		return _licenseKeyLocalService.getLicenseKeysCount(
-			koroneikiProductPurchaseKey);
-	}
-
-	@Override
-	public int getLicenseKeysCount(
-		String koroneikiAccountKey, long productEntryId) {
-
-		return _licenseKeyLocalService.getLicenseKeysCount(
-			koroneikiAccountKey, productEntryId);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.customer.license.model.LicenseKey>
-		getLicenseKeySetLicenseKeys(long licenseKeySetId) {
-
-		return _licenseKeyLocalService.getLicenseKeySetLicenseKeys(
-			licenseKeySetId);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.customer.license.model.LicenseKey>
-		getOfferingEntryGroupLicenseKeys(
-			long[] offeringEntryIds, boolean complimentary, boolean active,
-			int start, int end,
-			com.liferay.portal.kernel.util.OrderByComparator obc) {
-
-		return _licenseKeyLocalService.getOfferingEntryGroupLicenseKeys(
-			offeringEntryIds, complimentary, active, start, end, obc);
-	}
-
-	@Override
-	public int getOfferingEntryGroupLicenseKeysCount(
-		long[] offeringEntryIds, boolean complimentary, boolean active) {
-
-		return _licenseKeyLocalService.getOfferingEntryGroupLicenseKeysCount(
-			offeringEntryIds, complimentary, active);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.customer.license.model.LicenseKey>
-		getOfferingEntryLicenseKeys(long offeringEntryId) {
-
-		return _licenseKeyLocalService.getOfferingEntryLicenseKeys(
-			offeringEntryId);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.customer.license.model.LicenseKey>
-		getOfferingEntryLicenseKeys(
-			long offeringEntryId, boolean complimentary, boolean active) {
-
-		return _licenseKeyLocalService.getOfferingEntryLicenseKeys(
-			offeringEntryId, complimentary, active);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.customer.license.model.LicenseKey>
-		getOfferingEntryLicenseKeys(long offeringEntryId, long clusterId) {
-
-		return _licenseKeyLocalService.getOfferingEntryLicenseKeys(
-			offeringEntryId, clusterId);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.customer.license.model.LicenseKey>
-		getOfferingEntryLicenseKeys(
-			long offeringEntryId, long clusterId, boolean active) {
-
-		return _licenseKeyLocalService.getOfferingEntryLicenseKeys(
-			offeringEntryId, clusterId, active);
-	}
-
-	@Override
-	public int getOfferingEntryLicenseKeysCount(long offeringEntryId) {
-		return _licenseKeyLocalService.getOfferingEntryLicenseKeysCount(
-			offeringEntryId);
-	}
-
-	@Override
-	public int getOfferingEntryLicenseKeysCount(
-		long offeringEntryId, boolean complimentary, boolean active) {
-
-		return _licenseKeyLocalService.getOfferingEntryLicenseKeysCount(
-			offeringEntryId, complimentary, active);
-	}
-
-	@Override
-	public int getOfferingEntryLicenseKeysCount(
-		long offeringEntryId, long clusterId) {
-
-		return _licenseKeyLocalService.getOfferingEntryLicenseKeysCount(
-			offeringEntryId, clusterId);
-	}
-
-	@Override
-	public int getOfferingEntryLicenseKeysCount(
-		long offeringEntryId, long clusterId, boolean active) {
-
-		return _licenseKeyLocalService.getOfferingEntryLicenseKeysCount(
-			offeringEntryId, clusterId, active);
+			accountKey, productKey);
 	}
 
 	/**
@@ -586,15 +491,100 @@ public class LicenseKeyLocalServiceWrapper
 	}
 
 	@Override
-	public int getUserLicenseKeysCount(long userId, long accountEntryId) {
-		return _licenseKeyLocalService.getUserLicenseKeysCount(
-			userId, accountEntryId);
+	public java.util.List<com.liferay.osb.provisioning.license.model.LicenseKey>
+		getProductPurchaseGroupLicenseKeys(
+			String[] productPurchaseKeys, boolean complimentary, boolean active,
+			int start, int end,
+			com.liferay.portal.kernel.util.OrderByComparator obc) {
+
+		return _licenseKeyLocalService.getProductPurchaseGroupLicenseKeys(
+			productPurchaseKeys, complimentary, active, start, end, obc);
 	}
 
 	@Override
-	public com.liferay.osb.customer.license.model.LicenseKey renewLicenseKey(
-			long userId, long licenseKeyId, java.util.Date startDate,
-			java.util.Date expirationDate)
+	public int getProductPurchaseGroupLicenseKeysCount(
+		String[] productPurchaseKeys, boolean complimentary, boolean active) {
+
+		return _licenseKeyLocalService.getProductPurchaseGroupLicenseKeysCount(
+			productPurchaseKeys, complimentary, active);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.provisioning.license.model.LicenseKey>
+		getProductPurchaseLicenseKeys(String productPurchaseKey) {
+
+		return _licenseKeyLocalService.getProductPurchaseLicenseKeys(
+			productPurchaseKey);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.provisioning.license.model.LicenseKey>
+		getProductPurchaseLicenseKeys(
+			String productPurchaseKey, boolean complimentary, boolean active) {
+
+		return _licenseKeyLocalService.getProductPurchaseLicenseKeys(
+			productPurchaseKey, complimentary, active);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.provisioning.license.model.LicenseKey>
+		getProductPurchaseLicenseKeys(
+			String productPurchaseKey, long clusterId) {
+
+		return _licenseKeyLocalService.getProductPurchaseLicenseKeys(
+			productPurchaseKey, clusterId);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.provisioning.license.model.LicenseKey>
+		getProductPurchaseLicenseKeys(
+			String productPurchaseKey, long clusterId, boolean active) {
+
+		return _licenseKeyLocalService.getProductPurchaseLicenseKeys(
+			productPurchaseKey, clusterId, active);
+	}
+
+	@Override
+	public int getProductPurchaseLicenseKeysCount(String productPurchaseKey) {
+		return _licenseKeyLocalService.getProductPurchaseLicenseKeysCount(
+			productPurchaseKey);
+	}
+
+	@Override
+	public int getProductPurchaseLicenseKeysCount(
+		String productPurchaseKey, boolean complimentary, boolean active) {
+
+		return _licenseKeyLocalService.getProductPurchaseLicenseKeysCount(
+			productPurchaseKey, complimentary, active);
+	}
+
+	@Override
+	public int getProductPurchaseLicenseKeysCount(
+		String productPurchaseKey, long clusterId) {
+
+		return _licenseKeyLocalService.getProductPurchaseLicenseKeysCount(
+			productPurchaseKey, clusterId);
+	}
+
+	@Override
+	public int getProductPurchaseLicenseKeysCount(
+		String productPurchaseKey, long clusterId, boolean active) {
+
+		return _licenseKeyLocalService.getProductPurchaseLicenseKeysCount(
+			productPurchaseKey, clusterId, active);
+	}
+
+	@Override
+	public int getUserLicenseKeysCount(long userId, String accountKey) {
+		return _licenseKeyLocalService.getUserLicenseKeysCount(
+			userId, accountKey);
+	}
+
+	@Override
+	public com.liferay.osb.provisioning.license.model.LicenseKey
+			renewLicenseKey(
+				long userId, long licenseKeyId, java.util.Date startDate,
+				java.util.Date expirationDate)
 		throws Exception {
 
 		return _licenseKeyLocalService.renewLicenseKey(
@@ -602,9 +592,10 @@ public class LicenseKeyLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.osb.customer.license.model.LicenseKey renewLicenseKey(
-			long userId, long licenseKeyId, java.util.Date startDate,
-			int renewTime)
+	public com.liferay.osb.provisioning.license.model.LicenseKey
+			renewLicenseKey(
+				long userId, long licenseKeyId, java.util.Date startDate,
+				int renewTime)
 		throws Exception {
 
 		return _licenseKeyLocalService.renewLicenseKey(
@@ -612,24 +603,24 @@ public class LicenseKeyLocalServiceWrapper
 	}
 
 	@Override
-	public java.util.List<com.liferay.osb.customer.license.model.LicenseKey>
+	public java.util.List<com.liferay.osb.provisioning.license.model.LicenseKey>
 		search(
 			Long createUserId, int createDateGTDay, int createDateGTMonth,
 			int createDateGTYear, int createDateLTDay, int createDateLTMonth,
 			int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
 			int modifiedDateGTMonth, int modifiedDateGTYear,
 			int modifiedDateLTDay, int modifiedDateLTMonth,
-			int modifiedDateLTYear, String koroneikiAccountKey,
-			String koroneikiProductPurchaseKey, String accountEntryName,
-			String licenseKeySetName, int startDateGTDay, int startDateGTMonth,
-			int startDateGTYear, int startDateLTDay, int startDateLTMonth,
-			int startDateLTYear, long[] licenseEntryIds, long[] productEntryIds,
-			String productEntryName, String productId, int[] productVersions,
-			String owner, String description, String hostName, String ipAddress,
-			String macAddress, String serverId, String key,
-			int expirationDateGTDay, int expirationDateGTMonth,
-			int expirationDateGTYear, int expirationDateLTDay,
-			int expirationDateLTMonth, int expirationDateLTYear,
+			int modifiedDateLTYear, String accountKey,
+			String productPurchaseKey, String accountName, int startDateGTDay,
+			int startDateGTMonth, int startDateGTYear, int startDateLTDay,
+			int startDateLTMonth, int startDateLTYear, long[] licenseEntryIds,
+			String[] productKeys, String productName, String productId,
+			int[] productVersions, String owner, String description,
+			String hostName, String ipAddress, String macAddress,
+			String serverId, String key, int expirationDateGTDay,
+			int expirationDateGTMonth, int expirationDateGTYear,
+			int expirationDateLTDay, int expirationDateLTMonth,
+			int expirationDateLTYear,
 			java.util.LinkedHashMap<String, Object> params, boolean andSearch,
 			int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator obc) {
@@ -639,11 +630,10 @@ public class LicenseKeyLocalServiceWrapper
 			createDateLTDay, createDateLTMonth, createDateLTYear,
 			modifiedUserId, modifiedDateGTDay, modifiedDateGTMonth,
 			modifiedDateGTYear, modifiedDateLTDay, modifiedDateLTMonth,
-			modifiedDateLTYear, koroneikiAccountKey,
-			koroneikiProductPurchaseKey, accountEntryName, licenseKeySetName,
+			modifiedDateLTYear, accountKey, productPurchaseKey, accountName,
 			startDateGTDay, startDateGTMonth, startDateGTYear, startDateLTDay,
-			startDateLTMonth, startDateLTYear, licenseEntryIds, productEntryIds,
-			productEntryName, productId, productVersions, owner, description,
+			startDateLTMonth, startDateLTYear, licenseEntryIds, productKeys,
+			productName, productId, productVersions, owner, description,
 			hostName, ipAddress, macAddress, serverId, key, expirationDateGTDay,
 			expirationDateGTMonth, expirationDateGTYear, expirationDateLTDay,
 			expirationDateLTMonth, expirationDateLTYear, params, andSearch,
@@ -651,7 +641,7 @@ public class LicenseKeyLocalServiceWrapper
 	}
 
 	@Override
-	public java.util.List<com.liferay.osb.customer.license.model.LicenseKey>
+	public java.util.List<com.liferay.osb.provisioning.license.model.LicenseKey>
 		search(
 			String keywords, java.util.LinkedHashMap<String, Object> params,
 			int start, int end,
@@ -667,12 +657,11 @@ public class LicenseKeyLocalServiceWrapper
 		int createDateGTYear, int createDateLTDay, int createDateLTMonth,
 		int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
 		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
-		int modifiedDateLTMonth, int modifiedDateLTYear,
-		String koroneikiAccountKey, String koroneikiProductPurchaseKey,
-		String accountEntryName, String licenseKeySetName, int startDateGTDay,
+		int modifiedDateLTMonth, int modifiedDateLTYear, String accountKey,
+		String productPurchaseKey, String accountName, int startDateGTDay,
 		int startDateGTMonth, int startDateGTYear, int startDateLTDay,
 		int startDateLTMonth, int startDateLTYear, long[] licenseEntryIds,
-		long[] productEntryIds, String productEntryName, String productId,
+		String[] productKeys, String productName, String productId,
 		int[] productVersions, String owner, String description,
 		String hostName, String ipAddress, String macAddress, String serverId,
 		String key, int expirationDateGTDay, int expirationDateGTMonth,
@@ -685,11 +674,10 @@ public class LicenseKeyLocalServiceWrapper
 			createDateLTDay, createDateLTMonth, createDateLTYear,
 			modifiedUserId, modifiedDateGTDay, modifiedDateGTMonth,
 			modifiedDateGTYear, modifiedDateLTDay, modifiedDateLTMonth,
-			modifiedDateLTYear, koroneikiAccountKey,
-			koroneikiProductPurchaseKey, accountEntryName, licenseKeySetName,
+			modifiedDateLTYear, accountKey, productPurchaseKey, accountName,
 			startDateGTDay, startDateGTMonth, startDateGTYear, startDateLTDay,
-			startDateLTMonth, startDateLTYear, licenseEntryIds, productEntryIds,
-			productEntryName, productId, productVersions, owner, description,
+			startDateLTMonth, startDateLTYear, licenseEntryIds, productKeys,
+			productName, productId, productVersions, owner, description,
 			hostName, ipAddress, macAddress, serverId, key, expirationDateGTDay,
 			expirationDateGTMonth, expirationDateGTYear, expirationDateLTDay,
 			expirationDateLTMonth, expirationDateLTYear, params, andSearch);
@@ -713,8 +701,9 @@ public class LicenseKeyLocalServiceWrapper
 	 * @return the license key that was updated
 	 */
 	@Override
-	public com.liferay.osb.customer.license.model.LicenseKey updateLicenseKey(
-		com.liferay.osb.customer.license.model.LicenseKey licenseKey) {
+	public com.liferay.osb.provisioning.license.model.LicenseKey
+		updateLicenseKey(
+			com.liferay.osb.provisioning.license.model.LicenseKey licenseKey) {
 
 		return _licenseKeyLocalService.updateLicenseKey(licenseKey);
 	}
@@ -727,25 +716,25 @@ public class LicenseKeyLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.osb.customer.license.model.LicenseKey updateLicenseKey(
-			long licenseKeyId, long accountEntryId, long offeringEntryId,
-			long orderEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _licenseKeyLocalService.updateLicenseKey(
-			licenseKeyId, accountEntryId, offeringEntryId, orderEntryId);
-	}
-
-	@Override
-	public com.liferay.osb.customer.license.model.LicenseKey updateLicenseKey(
-			long userId, long licenseKeyId, long licenseKeySetId,
-			String koroneikiProductPurchaseKey, String name,
-			boolean complimentary, boolean active)
+	public com.liferay.osb.provisioning.license.model.LicenseKey
+			updateLicenseKey(
+				long userId, long licenseKeyId, String productPurchaseKey,
+				String name, boolean complimentary, boolean active)
 		throws Exception {
 
 		return _licenseKeyLocalService.updateLicenseKey(
-			userId, licenseKeyId, licenseKeySetId, koroneikiProductPurchaseKey,
-			name, complimentary, active);
+			userId, licenseKeyId, productPurchaseKey, name, complimentary,
+			active);
+	}
+
+	@Override
+	public com.liferay.osb.provisioning.license.model.LicenseKey
+			updateLicenseKey(
+				long licenseKeyId, String accountKey, String productPurchaseKey)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _licenseKeyLocalService.updateLicenseKey(
+			licenseKeyId, accountKey, productPurchaseKey);
 	}
 
 	@Override

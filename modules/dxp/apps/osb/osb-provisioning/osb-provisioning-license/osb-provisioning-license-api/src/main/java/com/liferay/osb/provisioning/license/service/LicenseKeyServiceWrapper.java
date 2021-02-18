@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.customer.license.service;
+package com.liferay.osb.provisioning.license.service;
 
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
@@ -31,42 +31,40 @@ public class LicenseKeyServiceWrapper
 	}
 
 	@Override
-	public com.liferay.osb.customer.license.model.LicenseKey
+	public com.liferay.osb.provisioning.license.model.LicenseKey
 			addDeveloperLicenseKey(
-				long accountEntryId, long productEntryId,
-				int productMinorVersion)
+				String accountKey, String productKey, int productMinorVersion)
 		throws Exception {
 
 		return _licenseKeyService.addDeveloperLicenseKey(
-			accountEntryId, productEntryId, productMinorVersion);
+			accountKey, productKey, productMinorVersion);
 	}
 
 	@Override
-	public com.liferay.osb.customer.license.model.LicenseKey addLicenseKey(
-			long userId, long licenseKeySetId, String name, long licenseEntryId,
-			long productEntryId, String koroneikiAccountKey,
-			String koroneikiProductPurchaseKey, String accountEntryName,
-			int productVersion, long clusterId, String owner, int maxServers,
-			int maxHttpSessions, int maxConcurrentUsers, int maxUsers,
-			int sizing, String description, String[] hostNames,
-			String[] ipAddresses, String[] macAddresses, String[] serverIds,
-			java.util.Date startDate, java.util.Date expirationDate,
-			boolean complimentary, boolean active)
+	public com.liferay.osb.provisioning.license.model.LicenseKey addLicenseKey(
+			long userId, String name, long licenseEntryId, String productKey,
+			String accountKey, String productPurchaseKey, String accountCode,
+			String accountName, int productVersion, long clusterId,
+			String owner, int maxServers, int maxHttpSessions,
+			int maxConcurrentUsers, int maxUsers, int sizing,
+			String description, String[] hostNames, String[] ipAddresses,
+			String[] macAddresses, String[] serverIds, java.util.Date startDate,
+			java.util.Date expirationDate, boolean complimentary,
+			boolean active)
 		throws Exception {
 
 		return _licenseKeyService.addLicenseKey(
-			userId, licenseKeySetId, name, licenseEntryId, productEntryId,
-			koroneikiAccountKey, koroneikiProductPurchaseKey, accountEntryName,
-			productVersion, clusterId, owner, maxServers, maxHttpSessions,
-			maxConcurrentUsers, maxUsers, sizing, description, hostNames,
-			ipAddresses, macAddresses, serverIds, startDate, expirationDate,
-			complimentary, active);
+			userId, name, licenseEntryId, productKey, accountKey,
+			productPurchaseKey, accountCode, accountName, productVersion,
+			clusterId, owner, maxServers, maxHttpSessions, maxConcurrentUsers,
+			maxUsers, sizing, description, hostNames, ipAddresses, macAddresses,
+			serverIds, startDate, expirationDate, complimentary, active);
 	}
 
 	@Override
-	public com.liferay.osb.customer.license.model.LicenseKey addLicenseKey(
+	public com.liferay.osb.provisioning.license.model.LicenseKey addLicenseKey(
 			String userUuid, String assetReceiptLicenseUuid,
-			String licenseEntryType, String productEntryName, String productId,
+			String licenseEntryType, String productName, String productId,
 			int productVersion, String owner, long maxUsers, String description,
 			String hostName, String ipAddresses, String macAddresses,
 			String serverId, java.util.Date startDate,
@@ -74,32 +72,13 @@ public class LicenseKeyServiceWrapper
 		throws Exception {
 
 		return _licenseKeyService.addLicenseKey(
-			userUuid, assetReceiptLicenseUuid, licenseEntryType,
-			productEntryName, productId, productVersion, owner, maxUsers,
-			description, hostName, ipAddresses, macAddresses, serverId,
-			startDate, expirationDate);
+			userUuid, assetReceiptLicenseUuid, licenseEntryType, productName,
+			productId, productVersion, owner, maxUsers, description, hostName,
+			ipAddresses, macAddresses, serverId, startDate, expirationDate);
 	}
 
 	@Override
-	public String generateCommerceLicenseKey(
-			String owner, java.util.Date startDate, long licenseLifetime)
-		throws Exception {
-
-		return _licenseKeyService.generateCommerceLicenseKey(
-			owner, startDate, licenseLifetime);
-	}
-
-	@Override
-	public String generateWeDeployLicenseKey(
-			String owner, java.util.Date startDate, long licenseLifetime)
-		throws Exception {
-
-		return _licenseKeyService.generateWeDeployLicenseKey(
-			owner, startDate, licenseLifetime);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.customer.license.model.LicenseKey>
+	public java.util.List<com.liferay.osb.provisioning.license.model.LicenseKey>
 			getAssetReceiptLicenseLicenseKeys(
 				String assetReceiptLicenseUuid, boolean complimentary,
 				boolean active)
@@ -120,7 +99,7 @@ public class LicenseKeyServiceWrapper
 	}
 
 	@Override
-	public com.liferay.osb.customer.license.model.LicenseKey getLicenseKey(
+	public com.liferay.osb.provisioning.license.model.LicenseKey getLicenseKey(
 			long licenseKeyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -128,7 +107,7 @@ public class LicenseKeyServiceWrapper
 	}
 
 	@Override
-	public com.liferay.osb.customer.license.model.LicenseKey getLicenseKey(
+	public com.liferay.osb.provisioning.license.model.LicenseKey getLicenseKey(
 			String uuid)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -136,7 +115,7 @@ public class LicenseKeyServiceWrapper
 	}
 
 	@Override
-	public java.util.List<com.liferay.osb.customer.license.model.LicenseKey>
+	public java.util.List<com.liferay.osb.provisioning.license.model.LicenseKey>
 			getLicenseKeys(long userId, String productId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -144,7 +123,7 @@ public class LicenseKeyServiceWrapper
 	}
 
 	@Override
-	public java.util.List<com.liferay.osb.customer.license.model.LicenseKey>
+	public java.util.List<com.liferay.osb.provisioning.license.model.LicenseKey>
 			getLicenseKeys(String productId, String serverId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -152,7 +131,7 @@ public class LicenseKeyServiceWrapper
 	}
 
 	@Override
-	public java.util.List<com.liferay.osb.customer.license.model.LicenseKey>
+	public java.util.List<com.liferay.osb.provisioning.license.model.LicenseKey>
 			getLicenseKeys(
 				String assetReceiptLicenseUuid, String productId,
 				String serverId, boolean active, int start, int end,
@@ -165,53 +144,14 @@ public class LicenseKeyServiceWrapper
 	}
 
 	@Override
-	public java.util.List<com.liferay.osb.customer.license.model.LicenseKey>
+	public java.util.List<com.liferay.osb.provisioning.license.model.LicenseKey>
 			getLicenseKeysByName(
-				String productEntryName, String serverId, boolean active,
-				int start, int end,
-				com.liferay.portal.kernel.util.OrderByComparator obc)
+				String productName, String serverId, boolean active, int start,
+				int end, com.liferay.portal.kernel.util.OrderByComparator obc)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _licenseKeyService.getLicenseKeysByName(
-			productEntryName, serverId, active, start, end, obc);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.customer.license.model.LicenseKey>
-			getLicenseKeySetLicenseKeys(long licenseKeySetId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _licenseKeyService.getLicenseKeySetLicenseKeys(licenseKeySetId);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.customer.license.model.LicenseKey>
-			getOfferingEntryGroupLicenseKeys(
-				long[] offeringEntryIds, boolean complimentary, boolean active,
-				int start, int end,
-				com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _licenseKeyService.getOfferingEntryGroupLicenseKeys(
-			offeringEntryIds, complimentary, active, start, end, obc);
-	}
-
-	@Override
-	public int getOfferingEntryGroupLicenseKeysCount(
-			long[] offeringEntryIds, boolean complimentary, boolean active)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _licenseKeyService.getOfferingEntryGroupLicenseKeysCount(
-			offeringEntryIds, complimentary, active);
-	}
-
-	@Override
-	public int getOfferingEntryLicenseKeysCount(
-			long offeringEntryId, boolean complimentary, boolean active)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _licenseKeyService.getOfferingEntryLicenseKeysCount(
-			offeringEntryId, complimentary, active);
+			productName, serverId, active, start, end, obc);
 	}
 
 	/**
@@ -225,6 +165,36 @@ public class LicenseKeyServiceWrapper
 	}
 
 	@Override
+	public java.util.List<com.liferay.osb.provisioning.license.model.LicenseKey>
+			getProductPurchaseGroupLicenseKeys(
+				String[] productPurchaseKeys, boolean complimentary,
+				boolean active, int start, int end,
+				com.liferay.portal.kernel.util.OrderByComparator obc)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _licenseKeyService.getProductPurchaseGroupLicenseKeys(
+			productPurchaseKeys, complimentary, active, start, end, obc);
+	}
+
+	@Override
+	public int getProductPurchaseGroupLicenseKeysCount(
+			String[] productPurchaseKeys, boolean complimentary, boolean active)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _licenseKeyService.getProductPurchaseGroupLicenseKeysCount(
+			productPurchaseKeys, complimentary, active);
+	}
+
+	@Override
+	public int getProductPurchaseLicenseKeysCount(
+			String productPurchaseKey, boolean complimentary, boolean active)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _licenseKeyService.getProductPurchaseLicenseKeysCount(
+			productPurchaseKey, complimentary, active);
+	}
+
+	@Override
 	public boolean isActive(String serverId, String productId, String key)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -232,20 +202,22 @@ public class LicenseKeyServiceWrapper
 	}
 
 	@Override
-	public com.liferay.osb.customer.license.model.LicenseKey registerLicenseKey(
-			String orderEntryUuid, String productEntryName, int liferayVersion,
-			int maxServers, String hostName, String ipAddresses,
-			String macAddresses, String serverId)
+	public com.liferay.osb.provisioning.license.model.LicenseKey
+			registerLicenseKey(
+				String orderEntryUuid, String productName, int liferayVersion,
+				int maxServers, String hostName, String ipAddresses,
+				String macAddresses, String serverId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _licenseKeyService.registerLicenseKey(
-			orderEntryUuid, productEntryName, liferayVersion, maxServers,
-			hostName, ipAddresses, macAddresses, serverId);
+			orderEntryUuid, productName, liferayVersion, maxServers, hostName,
+			ipAddresses, macAddresses, serverId);
 	}
 
 	@Override
-	public com.liferay.osb.customer.license.model.LicenseKey renewLicenseKey(
-			long licenseKeyId, java.util.Date startDate, int renewTime)
+	public com.liferay.osb.provisioning.license.model.LicenseKey
+			renewLicenseKey(
+				long licenseKeyId, java.util.Date startDate, int renewTime)
 		throws Exception {
 
 		return _licenseKeyService.renewLicenseKey(
@@ -253,9 +225,10 @@ public class LicenseKeyServiceWrapper
 	}
 
 	@Override
-	public com.liferay.osb.customer.license.model.LicenseKey renewLicenseKey(
-			String uuid, java.util.Date startDate,
-			java.util.Date expirationDate)
+	public com.liferay.osb.provisioning.license.model.LicenseKey
+			renewLicenseKey(
+				String uuid, java.util.Date startDate,
+				java.util.Date expirationDate)
 		throws Exception {
 
 		return _licenseKeyService.renewLicenseKey(
@@ -263,7 +236,7 @@ public class LicenseKeyServiceWrapper
 	}
 
 	@Override
-	public java.util.List<com.liferay.osb.customer.license.model.LicenseKey>
+	public java.util.List<com.liferay.osb.provisioning.license.model.LicenseKey>
 			search(
 				Long createUserId, int createDateGTDay, int createDateGTMonth,
 				int createDateGTYear, int createDateLTDay,
@@ -271,19 +244,17 @@ public class LicenseKeyServiceWrapper
 				Long modifiedUserId, int modifiedDateGTDay,
 				int modifiedDateGTMonth, int modifiedDateGTYear,
 				int modifiedDateLTDay, int modifiedDateLTMonth,
-				int modifiedDateLTYear, String koroneikiAccountKey,
-				String koroneikiProductPurchaseKey, String accountEntryName,
-				String licenseKeySetName, int startDateGTDay,
-				int startDateGTMonth, int startDateGTYear, int startDateLTDay,
-				int startDateLTMonth, int startDateLTYear,
-				long[] licenseEntryIds, long[] productEntryIds,
-				String productEntryName, String productId,
-				int[] productVersions, String owner, String description,
-				String hostName, String ipAddress, String macAddress,
-				String serverId, String key, int expirationDateGTDay,
-				int expirationDateGTMonth, int expirationDateGTYear,
-				int expirationDateLTDay, int expirationDateLTMonth,
-				int expirationDateLTYear,
+				int modifiedDateLTYear, String accountKey,
+				String productPurchaseKey, String accountName,
+				int startDateGTDay, int startDateGTMonth, int startDateGTYear,
+				int startDateLTDay, int startDateLTMonth, int startDateLTYear,
+				long[] licenseEntryIds, String[] productKeys,
+				String productName, String productId, int[] productVersions,
+				String owner, String description, String hostName,
+				String ipAddress, String macAddress, String serverId,
+				String key, int expirationDateGTDay, int expirationDateGTMonth,
+				int expirationDateGTYear, int expirationDateLTDay,
+				int expirationDateLTMonth, int expirationDateLTYear,
 				java.util.LinkedHashMap<String, Object> params,
 				boolean andSearch, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator obc)
@@ -294,11 +265,10 @@ public class LicenseKeyServiceWrapper
 			createDateLTDay, createDateLTMonth, createDateLTYear,
 			modifiedUserId, modifiedDateGTDay, modifiedDateGTMonth,
 			modifiedDateGTYear, modifiedDateLTDay, modifiedDateLTMonth,
-			modifiedDateLTYear, koroneikiAccountKey,
-			koroneikiProductPurchaseKey, accountEntryName, licenseKeySetName,
+			modifiedDateLTYear, accountKey, productPurchaseKey, accountName,
 			startDateGTDay, startDateGTMonth, startDateGTYear, startDateLTDay,
-			startDateLTMonth, startDateLTYear, licenseEntryIds, productEntryIds,
-			productEntryName, productId, productVersions, owner, description,
+			startDateLTMonth, startDateLTYear, licenseEntryIds, productKeys,
+			productName, productId, productVersions, owner, description,
 			hostName, ipAddress, macAddress, serverId, key, expirationDateGTDay,
 			expirationDateGTMonth, expirationDateGTYear, expirationDateLTDay,
 			expirationDateLTMonth, expirationDateLTYear, params, andSearch,
@@ -306,7 +276,7 @@ public class LicenseKeyServiceWrapper
 	}
 
 	@Override
-	public java.util.List<com.liferay.osb.customer.license.model.LicenseKey>
+	public java.util.List<com.liferay.osb.provisioning.license.model.LicenseKey>
 			search(
 				String keywords, java.util.LinkedHashMap<String, Object> params,
 				int start, int end,
@@ -323,17 +293,17 @@ public class LicenseKeyServiceWrapper
 			int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
 			int modifiedDateGTMonth, int modifiedDateGTYear,
 			int modifiedDateLTDay, int modifiedDateLTMonth,
-			int modifiedDateLTYear, String koroneikiAccountKey,
-			String koroneikiProductPurchaseKey, String accountEntryName,
-			String licenseKeySetName, int startDateGTDay, int startDateGTMonth,
-			int startDateGTYear, int startDateLTDay, int startDateLTMonth,
-			int startDateLTYear, long[] licenseEntryIds, long[] productEntryIds,
-			String productEntryName, String productId, int[] productVersions,
-			String owner, String description, String hostName, String ipAddress,
-			String macAddress, String serverId, String key,
-			int expirationDateGTDay, int expirationDateGTMonth,
-			int expirationDateGTYear, int expirationDateLTDay,
-			int expirationDateLTMonth, int expirationDateLTYear,
+			int modifiedDateLTYear, String accountKey,
+			String productPurchaseKey, String accountName, int startDateGTDay,
+			int startDateGTMonth, int startDateGTYear, int startDateLTDay,
+			int startDateLTMonth, int startDateLTYear, long[] licenseEntryIds,
+			String[] productKeys, String productName, String productId,
+			int[] productVersions, String owner, String description,
+			String hostName, String ipAddress, String macAddress,
+			String serverId, String key, int expirationDateGTDay,
+			int expirationDateGTMonth, int expirationDateGTYear,
+			int expirationDateLTDay, int expirationDateLTMonth,
+			int expirationDateLTYear,
 			java.util.LinkedHashMap<String, Object> params, boolean andSearch)
 		throws Exception {
 
@@ -342,11 +312,10 @@ public class LicenseKeyServiceWrapper
 			createDateLTDay, createDateLTMonth, createDateLTYear,
 			modifiedUserId, modifiedDateGTDay, modifiedDateGTMonth,
 			modifiedDateGTYear, modifiedDateLTDay, modifiedDateLTMonth,
-			modifiedDateLTYear, koroneikiAccountKey,
-			koroneikiProductPurchaseKey, accountEntryName, licenseKeySetName,
+			modifiedDateLTYear, accountKey, productPurchaseKey, accountName,
 			startDateGTDay, startDateGTMonth, startDateGTYear, startDateLTDay,
-			startDateLTMonth, startDateLTYear, licenseEntryIds, productEntryIds,
-			productEntryName, productId, productVersions, owner, description,
+			startDateLTMonth, startDateLTYear, licenseEntryIds, productKeys,
+			productName, productId, productVersions, owner, description,
 			hostName, ipAddress, macAddress, serverId, key, expirationDateGTDay,
 			expirationDateGTMonth, expirationDateGTYear, expirationDateLTDay,
 			expirationDateLTMonth, expirationDateLTYear, params, andSearch);
@@ -368,15 +337,14 @@ public class LicenseKeyServiceWrapper
 	}
 
 	@Override
-	public com.liferay.osb.customer.license.model.LicenseKey updateLicenseKey(
-			long licenseKeyId, long licenseKeySetId,
-			String koroneikiProductPurchaseKey, String name,
-			boolean complimentary, boolean active)
+	public com.liferay.osb.provisioning.license.model.LicenseKey
+			updateLicenseKey(
+				long licenseKeyId, String productPurchaseKey, String name,
+				boolean complimentary, boolean active)
 		throws Exception {
 
 		return _licenseKeyService.updateLicenseKey(
-			licenseKeyId, licenseKeySetId, koroneikiProductPurchaseKey, name,
-			complimentary, active);
+			licenseKeyId, productPurchaseKey, name, complimentary, active);
 	}
 
 	@Override

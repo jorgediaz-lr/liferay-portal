@@ -12,17 +12,14 @@
  *
  */
 
-package com.liferay.osb.customer.license.service;
+package com.liferay.osb.provisioning.license.service;
 
-import aQute.bnd.annotation.ProviderType;
-
-import com.liferay.osb.customer.license.model.LicenseKey;
+import com.liferay.osb.provisioning.license.model.LicenseKey;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.service.BaseService;
-import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -31,6 +28,8 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
+
+import org.osgi.annotation.versioning.ProviderType;
 
 /**
  * Provides the remote service interface for LicenseKey. Methods of this
@@ -43,13 +42,6 @@ import java.util.List;
  */
 @AccessControlled
 @JSONWebService
-@OSGiBeanProperties(
-	property = {
-		"json.web.service.context.name=osb",
-		"json.web.service.context.path=LicenseKey"
-	},
-	service = LicenseKeyService.class
-)
 @ProviderType
 @Transactional(
 	isolation = Isolation.PORTAL,
@@ -60,41 +52,30 @@ public interface LicenseKeyService extends BaseService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.osb.customer.license.service.impl.LicenseKeyServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the license key remote service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link LicenseKeyServiceUtil} if injection and service tracking are not available.
+	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.osb.provisioning.license.service.impl.LicenseKeyServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the license key remote service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link LicenseKeyServiceUtil} if injection and service tracking are not available.
 	 */
 	public LicenseKey addDeveloperLicenseKey(
-			long accountEntryId, long productEntryId, int productMinorVersion)
+			String accountKey, String productKey, int productMinorVersion)
 		throws Exception;
 
 	public LicenseKey addLicenseKey(
-			long userId, long licenseKeySetId, String name, long licenseEntryId,
-			long productEntryId, String koroneikiAccountKey,
-			String koroneikiProductPurchaseKey, String accountEntryName,
-			int productVersion, long clusterId, String owner, int maxServers,
-			int maxHttpSessions, int maxConcurrentUsers, int maxUsers,
-			int sizing, String description, String[] hostNames,
-			String[] ipAddresses, String[] macAddresses, String[] serverIds,
-			Date startDate, Date expirationDate, boolean complimentary,
-			boolean active)
+			long userId, String name, long licenseEntryId, String productKey,
+			String accountKey, String productPurchaseKey, String accountCode,
+			String accountName, int productVersion, long clusterId,
+			String owner, int maxServers, int maxHttpSessions,
+			int maxConcurrentUsers, int maxUsers, int sizing,
+			String description, String[] hostNames, String[] ipAddresses,
+			String[] macAddresses, String[] serverIds, Date startDate,
+			Date expirationDate, boolean complimentary, boolean active)
 		throws Exception;
 
 	@JSONWebService
 	public LicenseKey addLicenseKey(
 			String userUuid, String assetReceiptLicenseUuid,
-			String licenseEntryType, String productEntryName, String productId,
+			String licenseEntryType, String productName, String productId,
 			int productVersion, String owner, long maxUsers, String description,
 			String hostName, String ipAddresses, String macAddresses,
 			String serverId, Date startDate, Date expirationDate)
-		throws Exception;
-
-	@JSONWebService
-	public String generateCommerceLicenseKey(
-			String owner, Date startDate, long licenseLifetime)
-		throws Exception;
-
-	@JSONWebService
-	public String generateWeDeployLicenseKey(
-			String owner, Date startDate, long licenseLifetime)
 		throws Exception;
 
 	@JSONWebService
@@ -137,29 +118,8 @@ public interface LicenseKeyService extends BaseService {
 	@JSONWebService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getLicenseKeysByName(
-			String productEntryName, String serverId, boolean active, int start,
+			String productName, String serverId, boolean active, int start,
 			int end, OrderByComparator obc)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<LicenseKey> getLicenseKeySetLicenseKeys(long licenseKeySetId)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<LicenseKey> getOfferingEntryGroupLicenseKeys(
-			long[] offeringEntryIds, boolean complimentary, boolean active,
-			int start, int end, OrderByComparator obc)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getOfferingEntryGroupLicenseKeysCount(
-			long[] offeringEntryIds, boolean complimentary, boolean active)
-		throws PortalException;
-
-	@JSONWebService
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getOfferingEntryLicenseKeysCount(
-			long offeringEntryId, boolean complimentary, boolean active)
 		throws PortalException;
 
 	/**
@@ -169,6 +129,23 @@ public interface LicenseKeyService extends BaseService {
 	 */
 	public String getOSGiServiceIdentifier();
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<LicenseKey> getProductPurchaseGroupLicenseKeys(
+			String[] productPurchaseKeys, boolean complimentary, boolean active,
+			int start, int end, OrderByComparator obc)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getProductPurchaseGroupLicenseKeysCount(
+			String[] productPurchaseKeys, boolean complimentary, boolean active)
+		throws PortalException;
+
+	@JSONWebService
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getProductPurchaseLicenseKeysCount(
+			String productPurchaseKey, boolean complimentary, boolean active)
+		throws PortalException;
+
 	@JSONWebService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public boolean isActive(String serverId, String productId, String key)
@@ -176,7 +153,7 @@ public interface LicenseKeyService extends BaseService {
 
 	@JSONWebService
 	public LicenseKey registerLicenseKey(
-			String orderEntryUuid, String productEntryName, int liferayVersion,
+			String orderEntryUuid, String productName, int liferayVersion,
 			int maxServers, String hostName, String ipAddresses,
 			String macAddresses, String serverId)
 		throws PortalException;
@@ -197,19 +174,18 @@ public interface LicenseKeyService extends BaseService {
 			int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
 			int modifiedDateGTMonth, int modifiedDateGTYear,
 			int modifiedDateLTDay, int modifiedDateLTMonth,
-			int modifiedDateLTYear, String koroneikiAccountKey,
-			String koroneikiProductPurchaseKey, String accountEntryName,
-			String licenseKeySetName, int startDateGTDay, int startDateGTMonth,
-			int startDateGTYear, int startDateLTDay, int startDateLTMonth,
-			int startDateLTYear, long[] licenseEntryIds, long[] productEntryIds,
-			String productEntryName, String productId, int[] productVersions,
-			String owner, String description, String hostName, String ipAddress,
-			String macAddress, String serverId, String key,
-			int expirationDateGTDay, int expirationDateGTMonth,
-			int expirationDateGTYear, int expirationDateLTDay,
-			int expirationDateLTMonth, int expirationDateLTYear,
-			LinkedHashMap<String, Object> params, boolean andSearch, int start,
-			int end, OrderByComparator obc)
+			int modifiedDateLTYear, String accountKey,
+			String productPurchaseKey, String accountName, int startDateGTDay,
+			int startDateGTMonth, int startDateGTYear, int startDateLTDay,
+			int startDateLTMonth, int startDateLTYear, long[] licenseEntryIds,
+			String[] productKeys, String productName, String productId,
+			int[] productVersions, String owner, String description,
+			String hostName, String ipAddress, String macAddress,
+			String serverId, String key, int expirationDateGTDay,
+			int expirationDateGTMonth, int expirationDateGTYear,
+			int expirationDateLTDay, int expirationDateLTMonth,
+			int expirationDateLTYear, LinkedHashMap<String, Object> params,
+			boolean andSearch, int start, int end, OrderByComparator obc)
 		throws Exception;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -225,18 +201,18 @@ public interface LicenseKeyService extends BaseService {
 			int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
 			int modifiedDateGTMonth, int modifiedDateGTYear,
 			int modifiedDateLTDay, int modifiedDateLTMonth,
-			int modifiedDateLTYear, String koroneikiAccountKey,
-			String koroneikiProductPurchaseKey, String accountEntryName,
-			String licenseKeySetName, int startDateGTDay, int startDateGTMonth,
-			int startDateGTYear, int startDateLTDay, int startDateLTMonth,
-			int startDateLTYear, long[] licenseEntryIds, long[] productEntryIds,
-			String productEntryName, String productId, int[] productVersions,
-			String owner, String description, String hostName, String ipAddress,
-			String macAddress, String serverId, String key,
-			int expirationDateGTDay, int expirationDateGTMonth,
-			int expirationDateGTYear, int expirationDateLTDay,
-			int expirationDateLTMonth, int expirationDateLTYear,
-			LinkedHashMap<String, Object> params, boolean andSearch)
+			int modifiedDateLTYear, String accountKey,
+			String productPurchaseKey, String accountName, int startDateGTDay,
+			int startDateGTMonth, int startDateGTYear, int startDateLTDay,
+			int startDateLTMonth, int startDateLTYear, long[] licenseEntryIds,
+			String[] productKeys, String productName, String productId,
+			int[] productVersions, String owner, String description,
+			String hostName, String ipAddress, String macAddress,
+			String serverId, String key, int expirationDateGTDay,
+			int expirationDateGTMonth, int expirationDateGTYear,
+			int expirationDateLTDay, int expirationDateLTMonth,
+			int expirationDateLTYear, LinkedHashMap<String, Object> params,
+			boolean andSearch)
 		throws Exception;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -248,8 +224,7 @@ public interface LicenseKeyService extends BaseService {
 		throws Exception;
 
 	public LicenseKey updateLicenseKey(
-			long licenseKeyId, long licenseKeySetId,
-			String koroneikiProductPurchaseKey, String name,
+			long licenseKeyId, String productPurchaseKey, String name,
 			boolean complimentary, boolean active)
 		throws Exception;
 

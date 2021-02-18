@@ -12,18 +12,14 @@
  *
  */
 
-package com.liferay.osb.customer.license.model;
+package com.liferay.osb.provisioning.license.model;
 
-import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.portal.kernel.model.ModelWrapper;
-import com.liferay.portal.kernel.service.ServiceContext;
-
-import java.io.Serializable;
+import com.liferay.portal.kernel.model.wrapper.BaseModelWrapper;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * <p>
@@ -34,26 +30,19 @@ import java.util.Objects;
  * @see LicenseKey
  * @generated
  */
-public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
+public class LicenseKeyWrapper
+	extends BaseModelWrapper<LicenseKey>
+	implements LicenseKey, ModelWrapper<LicenseKey> {
 
 	public LicenseKeyWrapper(LicenseKey licenseKey) {
-		_licenseKey = licenseKey;
-	}
-
-	@Override
-	public Class<?> getModelClass() {
-		return LicenseKey.class;
-	}
-
-	@Override
-	public String getModelClassName() {
-		return LicenseKey.class.getName();
+		super(licenseKey);
 	}
 
 	@Override
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
+		attributes.put("mvccVersion", getMvccVersion());
 		attributes.put("uuid", getUuid());
 		attributes.put("licenseKeyId", getLicenseKeyId());
 		attributes.put("userId", getUserId());
@@ -62,22 +51,17 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 		attributes.put("modifiedUserId", getModifiedUserId());
 		attributes.put("modifiedUserName", getModifiedUserName());
 		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("licenseKeySetId", getLicenseKeySetId());
 		attributes.put("assetReceiptLicenseUuid", getAssetReceiptLicenseUuid());
-		attributes.put("koroneikiAccountKey", getKoroneikiAccountKey());
-		attributes.put(
-			"koroneikiProductPurchaseKey", getKoroneikiProductPurchaseKey());
-		attributes.put("accountEntryId", getAccountEntryId());
-		attributes.put("orderEntryId", getOrderEntryId());
-		attributes.put("offeringEntryId", getOfferingEntryId());
+		attributes.put("accountKey", getAccountKey());
+		attributes.put("productPurchaseKey", getProductPurchaseKey());
 		attributes.put("licenseEntryId", getLicenseEntryId());
-		attributes.put("productEntryId", getProductEntryId());
-		attributes.put("supportResponseId", getSupportResponseId());
-		attributes.put("accountEntryName", getAccountEntryName());
+		attributes.put("productKey", getProductKey());
+		attributes.put("accountCode", getAccountCode());
+		attributes.put("accountName", getAccountName());
 		attributes.put("licenseEntryName", getLicenseEntryName());
 		attributes.put("licenseEntryType", getLicenseEntryType());
 		attributes.put("licenseVersion", getLicenseVersion());
-		attributes.put("productEntryName", getProductEntryName());
+		attributes.put("productName", getProductName());
 		attributes.put("productId", getProductId());
 		attributes.put("productVersion", getProductVersion());
 		attributes.put("productVersionLabel", getProductVersionLabel());
@@ -105,6 +89,12 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
+		Long mvccVersion = (Long)attributes.get("mvccVersion");
+
+		if (mvccVersion != null) {
+			setMvccVersion(mvccVersion);
+		}
+
 		String uuid = (String)attributes.get("uuid");
 
 		if (uuid != null) {
@@ -153,12 +143,6 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 			setModifiedDate(modifiedDate);
 		}
 
-		Long licenseKeySetId = (Long)attributes.get("licenseKeySetId");
-
-		if (licenseKeySetId != null) {
-			setLicenseKeySetId(licenseKeySetId);
-		}
-
 		String assetReceiptLicenseUuid = (String)attributes.get(
 			"assetReceiptLicenseUuid");
 
@@ -166,36 +150,17 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 			setAssetReceiptLicenseUuid(assetReceiptLicenseUuid);
 		}
 
-		String koroneikiAccountKey = (String)attributes.get(
-			"koroneikiAccountKey");
+		String accountKey = (String)attributes.get("accountKey");
 
-		if (koroneikiAccountKey != null) {
-			setKoroneikiAccountKey(koroneikiAccountKey);
+		if (accountKey != null) {
+			setAccountKey(accountKey);
 		}
 
-		String koroneikiProductPurchaseKey = (String)attributes.get(
-			"koroneikiProductPurchaseKey");
+		String productPurchaseKey = (String)attributes.get(
+			"productPurchaseKey");
 
-		if (koroneikiProductPurchaseKey != null) {
-			setKoroneikiProductPurchaseKey(koroneikiProductPurchaseKey);
-		}
-
-		Long accountEntryId = (Long)attributes.get("accountEntryId");
-
-		if (accountEntryId != null) {
-			setAccountEntryId(accountEntryId);
-		}
-
-		Long orderEntryId = (Long)attributes.get("orderEntryId");
-
-		if (orderEntryId != null) {
-			setOrderEntryId(orderEntryId);
-		}
-
-		Long offeringEntryId = (Long)attributes.get("offeringEntryId");
-
-		if (offeringEntryId != null) {
-			setOfferingEntryId(offeringEntryId);
+		if (productPurchaseKey != null) {
+			setProductPurchaseKey(productPurchaseKey);
 		}
 
 		Long licenseEntryId = (Long)attributes.get("licenseEntryId");
@@ -204,22 +169,22 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 			setLicenseEntryId(licenseEntryId);
 		}
 
-		Long productEntryId = (Long)attributes.get("productEntryId");
+		String productKey = (String)attributes.get("productKey");
 
-		if (productEntryId != null) {
-			setProductEntryId(productEntryId);
+		if (productKey != null) {
+			setProductKey(productKey);
 		}
 
-		Long supportResponseId = (Long)attributes.get("supportResponseId");
+		String accountCode = (String)attributes.get("accountCode");
 
-		if (supportResponseId != null) {
-			setSupportResponseId(supportResponseId);
+		if (accountCode != null) {
+			setAccountCode(accountCode);
 		}
 
-		String accountEntryName = (String)attributes.get("accountEntryName");
+		String accountName = (String)attributes.get("accountName");
 
-		if (accountEntryName != null) {
-			setAccountEntryName(accountEntryName);
+		if (accountName != null) {
+			setAccountName(accountName);
 		}
 
 		String licenseEntryName = (String)attributes.get("licenseEntryName");
@@ -240,10 +205,10 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 			setLicenseVersion(licenseVersion);
 		}
 
-		String productEntryName = (String)attributes.get("productEntryName");
+		String productName = (String)attributes.get("productName");
 
-		if (productEntryName != null) {
-			setProductEntryName(productEntryName);
+		if (productName != null) {
+			setProductName(productName);
 		}
 
 		String productId = (String)attributes.get("productId");
@@ -378,44 +343,37 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	public boolean canRenew()
 		throws com.liferay.portal.kernel.exception.PortalException {
 
-		return _licenseKey.canRenew();
-	}
-
-	@Override
-	public Object clone() {
-		return new LicenseKeyWrapper((LicenseKey)_licenseKey.clone());
-	}
-
-	@Override
-	public int compareTo(LicenseKey licenseKey) {
-		return _licenseKey.compareTo(licenseKey);
-	}
-
-	@Override
-	public com.liferay.osb.customer.admin.model.AccountEntry getAccountEntry()
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _licenseKey.getAccountEntry();
+		return model.canRenew();
 	}
 
 	/**
-	 * Returns the account entry ID of this license key.
+	 * Returns the account code of this license key.
 	 *
-	 * @return the account entry ID of this license key
+	 * @return the account code of this license key
 	 */
 	@Override
-	public long getAccountEntryId() {
-		return _licenseKey.getAccountEntryId();
+	public String getAccountCode() {
+		return model.getAccountCode();
 	}
 
 	/**
-	 * Returns the account entry name of this license key.
+	 * Returns the account key of this license key.
 	 *
-	 * @return the account entry name of this license key
+	 * @return the account key of this license key
 	 */
 	@Override
-	public String getAccountEntryName() {
-		return _licenseKey.getAccountEntryName();
+	public String getAccountKey() {
+		return model.getAccountKey();
+	}
+
+	/**
+	 * Returns the account name of this license key.
+	 *
+	 * @return the account name of this license key
+	 */
+	@Override
+	public String getAccountName() {
+		return model.getAccountName();
 	}
 
 	/**
@@ -425,7 +383,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public boolean getActive() {
-		return _licenseKey.getActive();
+		return model.getActive();
 	}
 
 	/**
@@ -435,7 +393,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public String getAdditionalInfo() {
-		return _licenseKey.getAdditionalInfo();
+		return model.getAdditionalInfo();
 	}
 
 	/**
@@ -445,7 +403,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public String getAssetReceiptLicenseUuid() {
-		return _licenseKey.getAssetReceiptLicenseUuid();
+		return model.getAssetReceiptLicenseUuid();
 	}
 
 	/**
@@ -455,7 +413,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public long getClusterId() {
-		return _licenseKey.getClusterId();
+		return model.getClusterId();
 	}
 
 	/**
@@ -465,7 +423,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public boolean getComplimentary() {
-		return _licenseKey.getComplimentary();
+		return model.getComplimentary();
 	}
 
 	/**
@@ -475,7 +433,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public Date getCreateDate() {
-		return _licenseKey.getCreateDate();
+		return model.getCreateDate();
 	}
 
 	/**
@@ -485,12 +443,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public String getDescription() {
-		return _licenseKey.getDescription();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _licenseKey.getExpandoBridge();
+		return model.getDescription();
 	}
 
 	/**
@@ -500,7 +453,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public Date getExpirationDate() {
-		return _licenseKey.getExpirationDate();
+		return model.getExpirationDate();
 	}
 
 	/**
@@ -510,7 +463,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public String getHostName() {
-		return _licenseKey.getHostName();
+		return model.getHostName();
 	}
 
 	/**
@@ -520,7 +473,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public String getIpAddresses() {
-		return _licenseKey.getIpAddresses();
+		return model.getIpAddresses();
 	}
 
 	/**
@@ -530,34 +483,14 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public String getKey() {
-		return _licenseKey.getKey();
-	}
-
-	/**
-	 * Returns the koroneiki account key of this license key.
-	 *
-	 * @return the koroneiki account key of this license key
-	 */
-	@Override
-	public String getKoroneikiAccountKey() {
-		return _licenseKey.getKoroneikiAccountKey();
-	}
-
-	/**
-	 * Returns the koroneiki product purchase key of this license key.
-	 *
-	 * @return the koroneiki product purchase key of this license key
-	 */
-	@Override
-	public String getKoroneikiProductPurchaseKey() {
-		return _licenseKey.getKoroneikiProductPurchaseKey();
+		return model.getKey();
 	}
 
 	@Override
-	public com.liferay.osb.customer.admin.model.LicenseEntry getLicenseEntry()
+	public LicenseEntry getLicenseEntry()
 		throws com.liferay.portal.kernel.exception.PortalException {
 
-		return _licenseKey.getLicenseEntry();
+		return model.getLicenseEntry();
 	}
 
 	/**
@@ -567,7 +500,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public long getLicenseEntryId() {
-		return _licenseKey.getLicenseEntryId();
+		return model.getLicenseEntryId();
 	}
 
 	/**
@@ -577,7 +510,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public String getLicenseEntryName() {
-		return _licenseKey.getLicenseEntryName();
+		return model.getLicenseEntryName();
 	}
 
 	/**
@@ -587,7 +520,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public String getLicenseEntryType() {
-		return _licenseKey.getLicenseEntryType();
+		return model.getLicenseEntryType();
 	}
 
 	/**
@@ -597,24 +530,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public long getLicenseKeyId() {
-		return _licenseKey.getLicenseKeyId();
-	}
-
-	@Override
-	public LicenseKeySet getLicenseKeySet()
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _licenseKey.getLicenseKeySet();
-	}
-
-	/**
-	 * Returns the license key set ID of this license key.
-	 *
-	 * @return the license key set ID of this license key
-	 */
-	@Override
-	public long getLicenseKeySetId() {
-		return _licenseKey.getLicenseKeySetId();
+		return model.getLicenseKeyId();
 	}
 
 	/**
@@ -624,7 +540,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public int getLicenseVersion() {
-		return _licenseKey.getLicenseVersion();
+		return model.getLicenseVersion();
 	}
 
 	/**
@@ -634,7 +550,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public String getMacAddresses() {
-		return _licenseKey.getMacAddresses();
+		return model.getMacAddresses();
 	}
 
 	/**
@@ -644,7 +560,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public long getMaxConcurrentUsers() {
-		return _licenseKey.getMaxConcurrentUsers();
+		return model.getMaxConcurrentUsers();
 	}
 
 	/**
@@ -654,7 +570,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public int getMaxHttpSessions() {
-		return _licenseKey.getMaxHttpSessions();
+		return model.getMaxHttpSessions();
 	}
 
 	/**
@@ -664,7 +580,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public int getMaxServers() {
-		return _licenseKey.getMaxServers();
+		return model.getMaxServers();
 	}
 
 	/**
@@ -674,7 +590,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public long getMaxUsers() {
-		return _licenseKey.getMaxUsers();
+		return model.getMaxUsers();
 	}
 
 	/**
@@ -684,7 +600,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public Date getModifiedDate() {
-		return _licenseKey.getModifiedDate();
+		return model.getModifiedDate();
 	}
 
 	/**
@@ -694,7 +610,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public long getModifiedUserId() {
-		return _licenseKey.getModifiedUserId();
+		return model.getModifiedUserId();
 	}
 
 	/**
@@ -704,7 +620,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public String getModifiedUserName() {
-		return _licenseKey.getModifiedUserName();
+		return model.getModifiedUserName();
 	}
 
 	/**
@@ -714,27 +630,17 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public String getModifiedUserUuid() {
-		return _licenseKey.getModifiedUserUuid();
+		return model.getModifiedUserUuid();
 	}
 
 	/**
-	 * Returns the offering entry ID of this license key.
+	 * Returns the mvcc version of this license key.
 	 *
-	 * @return the offering entry ID of this license key
+	 * @return the mvcc version of this license key
 	 */
 	@Override
-	public long getOfferingEntryId() {
-		return _licenseKey.getOfferingEntryId();
-	}
-
-	/**
-	 * Returns the order entry ID of this license key.
-	 *
-	 * @return the order entry ID of this license key
-	 */
-	@Override
-	public long getOrderEntryId() {
-		return _licenseKey.getOrderEntryId();
+	public long getMvccVersion() {
+		return model.getMvccVersion();
 	}
 
 	/**
@@ -744,7 +650,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public String getOwner() {
-		return _licenseKey.getOwner();
+		return model.getOwner();
 	}
 
 	/**
@@ -754,32 +660,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public long getPrimaryKey() {
-		return _licenseKey.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _licenseKey.getPrimaryKeyObj();
-	}
-
-	/**
-	 * Returns the product entry ID of this license key.
-	 *
-	 * @return the product entry ID of this license key
-	 */
-	@Override
-	public long getProductEntryId() {
-		return _licenseKey.getProductEntryId();
-	}
-
-	/**
-	 * Returns the product entry name of this license key.
-	 *
-	 * @return the product entry name of this license key
-	 */
-	@Override
-	public String getProductEntryName() {
-		return _licenseKey.getProductEntryName();
+		return model.getPrimaryKey();
 	}
 
 	/**
@@ -789,7 +670,37 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public String getProductId() {
-		return _licenseKey.getProductId();
+		return model.getProductId();
+	}
+
+	/**
+	 * Returns the product key of this license key.
+	 *
+	 * @return the product key of this license key
+	 */
+	@Override
+	public String getProductKey() {
+		return model.getProductKey();
+	}
+
+	/**
+	 * Returns the product name of this license key.
+	 *
+	 * @return the product name of this license key
+	 */
+	@Override
+	public String getProductName() {
+		return model.getProductName();
+	}
+
+	/**
+	 * Returns the product purchase key of this license key.
+	 *
+	 * @return the product purchase key of this license key
+	 */
+	@Override
+	public String getProductPurchaseKey() {
+		return model.getProductPurchaseKey();
 	}
 
 	/**
@@ -799,7 +710,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public int getProductVersion() {
-		return _licenseKey.getProductVersion();
+		return model.getProductVersion();
 	}
 
 	/**
@@ -809,7 +720,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public String getProductVersionLabel() {
-		return _licenseKey.getProductVersionLabel();
+		return model.getProductVersionLabel();
 	}
 
 	/**
@@ -819,7 +730,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public String getServerId() {
-		return _licenseKey.getServerId();
+		return model.getServerId();
 	}
 
 	/**
@@ -829,7 +740,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public int getSizing() {
-		return _licenseKey.getSizing();
+		return model.getSizing();
 	}
 
 	/**
@@ -839,17 +750,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public Date getStartDate() {
-		return _licenseKey.getStartDate();
-	}
-
-	/**
-	 * Returns the support response ID of this license key.
-	 *
-	 * @return the support response ID of this license key
-	 */
-	@Override
-	public long getSupportResponseId() {
-		return _licenseKey.getSupportResponseId();
+		return model.getStartDate();
 	}
 
 	/**
@@ -859,7 +760,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public long getUserId() {
-		return _licenseKey.getUserId();
+		return model.getUserId();
 	}
 
 	/**
@@ -869,7 +770,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public String getUserName() {
-		return _licenseKey.getUserName();
+		return model.getUserName();
 	}
 
 	/**
@@ -879,7 +780,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public String getUserUuid() {
-		return _licenseKey.getUserUuid();
+		return model.getUserUuid();
 	}
 
 	/**
@@ -889,12 +790,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public String getUuid() {
-		return _licenseKey.getUuid();
-	}
-
-	@Override
-	public int hashCode() {
-		return _licenseKey.hashCode();
+		return model.getUuid();
 	}
 
 	/**
@@ -904,12 +800,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public boolean isActive() {
-		return _licenseKey.isActive();
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return _licenseKey.isCachedModel();
+		return model.isActive();
 	}
 
 	/**
@@ -919,47 +810,47 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public boolean isComplimentary() {
-		return _licenseKey.isComplimentary();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _licenseKey.isEscapedModel();
+		return model.isComplimentary();
 	}
 
 	@Override
 	public boolean isExpired() {
-		return _licenseKey.isExpired();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _licenseKey.isNew();
+		return model.isExpired();
 	}
 
 	@Override
 	public void persist() {
-		_licenseKey.persist();
+		model.persist();
 	}
 
 	/**
-	 * Sets the account entry ID of this license key.
+	 * Sets the account code of this license key.
 	 *
-	 * @param accountEntryId the account entry ID of this license key
+	 * @param accountCode the account code of this license key
 	 */
 	@Override
-	public void setAccountEntryId(long accountEntryId) {
-		_licenseKey.setAccountEntryId(accountEntryId);
+	public void setAccountCode(String accountCode) {
+		model.setAccountCode(accountCode);
 	}
 
 	/**
-	 * Sets the account entry name of this license key.
+	 * Sets the account key of this license key.
 	 *
-	 * @param accountEntryName the account entry name of this license key
+	 * @param accountKey the account key of this license key
 	 */
 	@Override
-	public void setAccountEntryName(String accountEntryName) {
-		_licenseKey.setAccountEntryName(accountEntryName);
+	public void setAccountKey(String accountKey) {
+		model.setAccountKey(accountKey);
+	}
+
+	/**
+	 * Sets the account name of this license key.
+	 *
+	 * @param accountName the account name of this license key
+	 */
+	@Override
+	public void setAccountName(String accountName) {
+		model.setAccountName(accountName);
 	}
 
 	/**
@@ -969,7 +860,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public void setActive(boolean active) {
-		_licenseKey.setActive(active);
+		model.setActive(active);
 	}
 
 	/**
@@ -979,7 +870,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public void setAdditionalInfo(String additionalInfo) {
-		_licenseKey.setAdditionalInfo(additionalInfo);
+		model.setAdditionalInfo(additionalInfo);
 	}
 
 	/**
@@ -989,12 +880,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public void setAssetReceiptLicenseUuid(String assetReceiptLicenseUuid) {
-		_licenseKey.setAssetReceiptLicenseUuid(assetReceiptLicenseUuid);
-	}
-
-	@Override
-	public void setCachedModel(boolean cachedModel) {
-		_licenseKey.setCachedModel(cachedModel);
+		model.setAssetReceiptLicenseUuid(assetReceiptLicenseUuid);
 	}
 
 	/**
@@ -1004,7 +890,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public void setClusterId(long clusterId) {
-		_licenseKey.setClusterId(clusterId);
+		model.setClusterId(clusterId);
 	}
 
 	/**
@@ -1014,7 +900,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public void setComplimentary(boolean complimentary) {
-		_licenseKey.setComplimentary(complimentary);
+		model.setComplimentary(complimentary);
 	}
 
 	/**
@@ -1024,7 +910,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public void setCreateDate(Date createDate) {
-		_licenseKey.setCreateDate(createDate);
+		model.setCreateDate(createDate);
 	}
 
 	/**
@@ -1034,24 +920,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public void setDescription(String description) {
-		_licenseKey.setDescription(description);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-
-		_licenseKey.setExpandoBridgeAttributes(baseModel);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_licenseKey.setExpandoBridgeAttributes(expandoBridge);
-	}
-
-	@Override
-	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
-		_licenseKey.setExpandoBridgeAttributes(serviceContext);
+		model.setDescription(description);
 	}
 
 	/**
@@ -1061,7 +930,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public void setExpirationDate(Date expirationDate) {
-		_licenseKey.setExpirationDate(expirationDate);
+		model.setExpirationDate(expirationDate);
 	}
 
 	/**
@@ -1071,7 +940,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public void setHostName(String hostName) {
-		_licenseKey.setHostName(hostName);
+		model.setHostName(hostName);
 	}
 
 	/**
@@ -1081,7 +950,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public void setIpAddresses(String ipAddresses) {
-		_licenseKey.setIpAddresses(ipAddresses);
+		model.setIpAddresses(ipAddresses);
 	}
 
 	/**
@@ -1091,29 +960,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public void setKey(String key) {
-		_licenseKey.setKey(key);
-	}
-
-	/**
-	 * Sets the koroneiki account key of this license key.
-	 *
-	 * @param koroneikiAccountKey the koroneiki account key of this license key
-	 */
-	@Override
-	public void setKoroneikiAccountKey(String koroneikiAccountKey) {
-		_licenseKey.setKoroneikiAccountKey(koroneikiAccountKey);
-	}
-
-	/**
-	 * Sets the koroneiki product purchase key of this license key.
-	 *
-	 * @param koroneikiProductPurchaseKey the koroneiki product purchase key of this license key
-	 */
-	@Override
-	public void setKoroneikiProductPurchaseKey(
-		String koroneikiProductPurchaseKey) {
-
-		_licenseKey.setKoroneikiProductPurchaseKey(koroneikiProductPurchaseKey);
+		model.setKey(key);
 	}
 
 	/**
@@ -1123,7 +970,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public void setLicenseEntryId(long licenseEntryId) {
-		_licenseKey.setLicenseEntryId(licenseEntryId);
+		model.setLicenseEntryId(licenseEntryId);
 	}
 
 	/**
@@ -1133,7 +980,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public void setLicenseEntryName(String licenseEntryName) {
-		_licenseKey.setLicenseEntryName(licenseEntryName);
+		model.setLicenseEntryName(licenseEntryName);
 	}
 
 	/**
@@ -1143,7 +990,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public void setLicenseEntryType(String licenseEntryType) {
-		_licenseKey.setLicenseEntryType(licenseEntryType);
+		model.setLicenseEntryType(licenseEntryType);
 	}
 
 	/**
@@ -1153,17 +1000,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public void setLicenseKeyId(long licenseKeyId) {
-		_licenseKey.setLicenseKeyId(licenseKeyId);
-	}
-
-	/**
-	 * Sets the license key set ID of this license key.
-	 *
-	 * @param licenseKeySetId the license key set ID of this license key
-	 */
-	@Override
-	public void setLicenseKeySetId(long licenseKeySetId) {
-		_licenseKey.setLicenseKeySetId(licenseKeySetId);
+		model.setLicenseKeyId(licenseKeyId);
 	}
 
 	/**
@@ -1173,7 +1010,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public void setLicenseVersion(int licenseVersion) {
-		_licenseKey.setLicenseVersion(licenseVersion);
+		model.setLicenseVersion(licenseVersion);
 	}
 
 	/**
@@ -1183,7 +1020,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public void setMacAddresses(String macAddresses) {
-		_licenseKey.setMacAddresses(macAddresses);
+		model.setMacAddresses(macAddresses);
 	}
 
 	/**
@@ -1193,7 +1030,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public void setMaxConcurrentUsers(long maxConcurrentUsers) {
-		_licenseKey.setMaxConcurrentUsers(maxConcurrentUsers);
+		model.setMaxConcurrentUsers(maxConcurrentUsers);
 	}
 
 	/**
@@ -1203,7 +1040,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public void setMaxHttpSessions(int maxHttpSessions) {
-		_licenseKey.setMaxHttpSessions(maxHttpSessions);
+		model.setMaxHttpSessions(maxHttpSessions);
 	}
 
 	/**
@@ -1213,7 +1050,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public void setMaxServers(int maxServers) {
-		_licenseKey.setMaxServers(maxServers);
+		model.setMaxServers(maxServers);
 	}
 
 	/**
@@ -1223,7 +1060,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public void setMaxUsers(long maxUsers) {
-		_licenseKey.setMaxUsers(maxUsers);
+		model.setMaxUsers(maxUsers);
 	}
 
 	/**
@@ -1233,7 +1070,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
-		_licenseKey.setModifiedDate(modifiedDate);
+		model.setModifiedDate(modifiedDate);
 	}
 
 	/**
@@ -1243,7 +1080,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public void setModifiedUserId(long modifiedUserId) {
-		_licenseKey.setModifiedUserId(modifiedUserId);
+		model.setModifiedUserId(modifiedUserId);
 	}
 
 	/**
@@ -1253,7 +1090,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public void setModifiedUserName(String modifiedUserName) {
-		_licenseKey.setModifiedUserName(modifiedUserName);
+		model.setModifiedUserName(modifiedUserName);
 	}
 
 	/**
@@ -1263,32 +1100,17 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public void setModifiedUserUuid(String modifiedUserUuid) {
-		_licenseKey.setModifiedUserUuid(modifiedUserUuid);
-	}
-
-	@Override
-	public void setNew(boolean n) {
-		_licenseKey.setNew(n);
+		model.setModifiedUserUuid(modifiedUserUuid);
 	}
 
 	/**
-	 * Sets the offering entry ID of this license key.
+	 * Sets the mvcc version of this license key.
 	 *
-	 * @param offeringEntryId the offering entry ID of this license key
+	 * @param mvccVersion the mvcc version of this license key
 	 */
 	@Override
-	public void setOfferingEntryId(long offeringEntryId) {
-		_licenseKey.setOfferingEntryId(offeringEntryId);
-	}
-
-	/**
-	 * Sets the order entry ID of this license key.
-	 *
-	 * @param orderEntryId the order entry ID of this license key
-	 */
-	@Override
-	public void setOrderEntryId(long orderEntryId) {
-		_licenseKey.setOrderEntryId(orderEntryId);
+	public void setMvccVersion(long mvccVersion) {
+		model.setMvccVersion(mvccVersion);
 	}
 
 	/**
@@ -1298,7 +1120,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public void setOwner(String owner) {
-		_licenseKey.setOwner(owner);
+		model.setOwner(owner);
 	}
 
 	/**
@@ -1308,32 +1130,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
-		_licenseKey.setPrimaryKey(primaryKey);
-	}
-
-	@Override
-	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
-		_licenseKey.setPrimaryKeyObj(primaryKeyObj);
-	}
-
-	/**
-	 * Sets the product entry ID of this license key.
-	 *
-	 * @param productEntryId the product entry ID of this license key
-	 */
-	@Override
-	public void setProductEntryId(long productEntryId) {
-		_licenseKey.setProductEntryId(productEntryId);
-	}
-
-	/**
-	 * Sets the product entry name of this license key.
-	 *
-	 * @param productEntryName the product entry name of this license key
-	 */
-	@Override
-	public void setProductEntryName(String productEntryName) {
-		_licenseKey.setProductEntryName(productEntryName);
+		model.setPrimaryKey(primaryKey);
 	}
 
 	/**
@@ -1343,7 +1140,37 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public void setProductId(String productId) {
-		_licenseKey.setProductId(productId);
+		model.setProductId(productId);
+	}
+
+	/**
+	 * Sets the product key of this license key.
+	 *
+	 * @param productKey the product key of this license key
+	 */
+	@Override
+	public void setProductKey(String productKey) {
+		model.setProductKey(productKey);
+	}
+
+	/**
+	 * Sets the product name of this license key.
+	 *
+	 * @param productName the product name of this license key
+	 */
+	@Override
+	public void setProductName(String productName) {
+		model.setProductName(productName);
+	}
+
+	/**
+	 * Sets the product purchase key of this license key.
+	 *
+	 * @param productPurchaseKey the product purchase key of this license key
+	 */
+	@Override
+	public void setProductPurchaseKey(String productPurchaseKey) {
+		model.setProductPurchaseKey(productPurchaseKey);
 	}
 
 	/**
@@ -1353,7 +1180,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public void setProductVersion(int productVersion) {
-		_licenseKey.setProductVersion(productVersion);
+		model.setProductVersion(productVersion);
 	}
 
 	/**
@@ -1363,7 +1190,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public void setProductVersionLabel(String productVersionLabel) {
-		_licenseKey.setProductVersionLabel(productVersionLabel);
+		model.setProductVersionLabel(productVersionLabel);
 	}
 
 	/**
@@ -1373,7 +1200,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public void setServerId(String serverId) {
-		_licenseKey.setServerId(serverId);
+		model.setServerId(serverId);
 	}
 
 	/**
@@ -1383,7 +1210,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public void setSizing(int sizing) {
-		_licenseKey.setSizing(sizing);
+		model.setSizing(sizing);
 	}
 
 	/**
@@ -1393,17 +1220,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public void setStartDate(Date startDate) {
-		_licenseKey.setStartDate(startDate);
-	}
-
-	/**
-	 * Sets the support response ID of this license key.
-	 *
-	 * @param supportResponseId the support response ID of this license key
-	 */
-	@Override
-	public void setSupportResponseId(long supportResponseId) {
-		_licenseKey.setSupportResponseId(supportResponseId);
+		model.setStartDate(startDate);
 	}
 
 	/**
@@ -1413,7 +1230,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public void setUserId(long userId) {
-		_licenseKey.setUserId(userId);
+		model.setUserId(userId);
 	}
 
 	/**
@@ -1423,7 +1240,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public void setUserName(String userName) {
-		_licenseKey.setUserName(userName);
+		model.setUserName(userName);
 	}
 
 	/**
@@ -1433,7 +1250,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public void setUserUuid(String userUuid) {
-		_licenseKey.setUserUuid(userUuid);
+		model.setUserUuid(userUuid);
 	}
 
 	/**
@@ -1443,75 +1260,12 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	 */
 	@Override
 	public void setUuid(String uuid) {
-		_licenseKey.setUuid(uuid);
+		model.setUuid(uuid);
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<LicenseKey>
-		toCacheModel() {
-
-		return _licenseKey.toCacheModel();
+	protected LicenseKeyWrapper wrap(LicenseKey licenseKey) {
+		return new LicenseKeyWrapper(licenseKey);
 	}
-
-	@Override
-	public LicenseKey toEscapedModel() {
-		return new LicenseKeyWrapper(_licenseKey.toEscapedModel());
-	}
-
-	@Override
-	public String toString() {
-		return _licenseKey.toString();
-	}
-
-	@Override
-	public LicenseKey toUnescapedModel() {
-		return new LicenseKeyWrapper(_licenseKey.toUnescapedModel());
-	}
-
-	@Override
-	public String toXmlString() {
-		return _licenseKey.toXmlString();
-	}
-
-	@Override
-	public boolean equals(Object object) {
-		if (this == object) {
-			return true;
-		}
-
-		if (!(object instanceof LicenseKeyWrapper)) {
-			return false;
-		}
-
-		LicenseKeyWrapper licenseKeyWrapper = (LicenseKeyWrapper)object;
-
-		if (Objects.equals(_licenseKey, licenseKeyWrapper._licenseKey)) {
-			return true;
-		}
-
-		return false;
-	}
-
-	@Override
-	public LicenseKey getWrappedModel() {
-		return _licenseKey;
-	}
-
-	@Override
-	public boolean isEntityCacheEnabled() {
-		return _licenseKey.isEntityCacheEnabled();
-	}
-
-	@Override
-	public boolean isFinderCacheEnabled() {
-		return _licenseKey.isFinderCacheEnabled();
-	}
-
-	@Override
-	public void resetOriginalValues() {
-		_licenseKey.resetOriginalValues();
-	}
-
-	private final LicenseKey _licenseKey;
 
 }

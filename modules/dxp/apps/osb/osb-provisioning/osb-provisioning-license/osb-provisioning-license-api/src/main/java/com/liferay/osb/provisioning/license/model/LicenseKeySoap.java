@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.customer.license.model;
+package com.liferay.osb.provisioning.license.model;
 
 import java.io.Serializable;
 
@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * This class is used by SOAP remote services, specifically {@link com.liferay.osb.customer.license.service.http.LicenseKeyServiceSoap}.
+ * This class is used by SOAP remote services, specifically {@link com.liferay.osb.provisioning.license.service.http.LicenseKeyServiceSoap}.
  *
  * @author Brian Wing Shun Chan
  * @generated
@@ -31,6 +31,7 @@ public class LicenseKeySoap implements Serializable {
 	public static LicenseKeySoap toSoapModel(LicenseKey model) {
 		LicenseKeySoap soapModel = new LicenseKeySoap();
 
+		soapModel.setMvccVersion(model.getMvccVersion());
 		soapModel.setUuid(model.getUuid());
 		soapModel.setLicenseKeyId(model.getLicenseKeyId());
 		soapModel.setUserId(model.getUserId());
@@ -39,23 +40,18 @@ public class LicenseKeySoap implements Serializable {
 		soapModel.setModifiedUserId(model.getModifiedUserId());
 		soapModel.setModifiedUserName(model.getModifiedUserName());
 		soapModel.setModifiedDate(model.getModifiedDate());
-		soapModel.setLicenseKeySetId(model.getLicenseKeySetId());
 		soapModel.setAssetReceiptLicenseUuid(
 			model.getAssetReceiptLicenseUuid());
-		soapModel.setKoroneikiAccountKey(model.getKoroneikiAccountKey());
-		soapModel.setKoroneikiProductPurchaseKey(
-			model.getKoroneikiProductPurchaseKey());
-		soapModel.setAccountEntryId(model.getAccountEntryId());
-		soapModel.setOrderEntryId(model.getOrderEntryId());
-		soapModel.setOfferingEntryId(model.getOfferingEntryId());
+		soapModel.setAccountKey(model.getAccountKey());
+		soapModel.setProductPurchaseKey(model.getProductPurchaseKey());
 		soapModel.setLicenseEntryId(model.getLicenseEntryId());
-		soapModel.setProductEntryId(model.getProductEntryId());
-		soapModel.setSupportResponseId(model.getSupportResponseId());
-		soapModel.setAccountEntryName(model.getAccountEntryName());
+		soapModel.setProductKey(model.getProductKey());
+		soapModel.setAccountCode(model.getAccountCode());
+		soapModel.setAccountName(model.getAccountName());
 		soapModel.setLicenseEntryName(model.getLicenseEntryName());
 		soapModel.setLicenseEntryType(model.getLicenseEntryType());
 		soapModel.setLicenseVersion(model.getLicenseVersion());
-		soapModel.setProductEntryName(model.getProductEntryName());
+		soapModel.setProductName(model.getProductName());
 		soapModel.setProductId(model.getProductId());
 		soapModel.setProductVersion(model.getProductVersion());
 		soapModel.setProductVersionLabel(model.getProductVersionLabel());
@@ -130,6 +126,14 @@ public class LicenseKeySoap implements Serializable {
 		setLicenseKeyId(pk);
 	}
 
+	public long getMvccVersion() {
+		return _mvccVersion;
+	}
+
+	public void setMvccVersion(long mvccVersion) {
+		_mvccVersion = mvccVersion;
+	}
+
 	public String getUuid() {
 		return _uuid;
 	}
@@ -194,14 +198,6 @@ public class LicenseKeySoap implements Serializable {
 		_modifiedDate = modifiedDate;
 	}
 
-	public long getLicenseKeySetId() {
-		return _licenseKeySetId;
-	}
-
-	public void setLicenseKeySetId(long licenseKeySetId) {
-		_licenseKeySetId = licenseKeySetId;
-	}
-
 	public String getAssetReceiptLicenseUuid() {
 		return _assetReceiptLicenseUuid;
 	}
@@ -210,46 +206,20 @@ public class LicenseKeySoap implements Serializable {
 		_assetReceiptLicenseUuid = assetReceiptLicenseUuid;
 	}
 
-	public String getKoroneikiAccountKey() {
-		return _koroneikiAccountKey;
+	public String getAccountKey() {
+		return _accountKey;
 	}
 
-	public void setKoroneikiAccountKey(String koroneikiAccountKey) {
-		_koroneikiAccountKey = koroneikiAccountKey;
+	public void setAccountKey(String accountKey) {
+		_accountKey = accountKey;
 	}
 
-	public String getKoroneikiProductPurchaseKey() {
-		return _koroneikiProductPurchaseKey;
+	public String getProductPurchaseKey() {
+		return _productPurchaseKey;
 	}
 
-	public void setKoroneikiProductPurchaseKey(
-		String koroneikiProductPurchaseKey) {
-
-		_koroneikiProductPurchaseKey = koroneikiProductPurchaseKey;
-	}
-
-	public long getAccountEntryId() {
-		return _accountEntryId;
-	}
-
-	public void setAccountEntryId(long accountEntryId) {
-		_accountEntryId = accountEntryId;
-	}
-
-	public long getOrderEntryId() {
-		return _orderEntryId;
-	}
-
-	public void setOrderEntryId(long orderEntryId) {
-		_orderEntryId = orderEntryId;
-	}
-
-	public long getOfferingEntryId() {
-		return _offeringEntryId;
-	}
-
-	public void setOfferingEntryId(long offeringEntryId) {
-		_offeringEntryId = offeringEntryId;
+	public void setProductPurchaseKey(String productPurchaseKey) {
+		_productPurchaseKey = productPurchaseKey;
 	}
 
 	public long getLicenseEntryId() {
@@ -260,28 +230,28 @@ public class LicenseKeySoap implements Serializable {
 		_licenseEntryId = licenseEntryId;
 	}
 
-	public long getProductEntryId() {
-		return _productEntryId;
+	public String getProductKey() {
+		return _productKey;
 	}
 
-	public void setProductEntryId(long productEntryId) {
-		_productEntryId = productEntryId;
+	public void setProductKey(String productKey) {
+		_productKey = productKey;
 	}
 
-	public long getSupportResponseId() {
-		return _supportResponseId;
+	public String getAccountCode() {
+		return _accountCode;
 	}
 
-	public void setSupportResponseId(long supportResponseId) {
-		_supportResponseId = supportResponseId;
+	public void setAccountCode(String accountCode) {
+		_accountCode = accountCode;
 	}
 
-	public String getAccountEntryName() {
-		return _accountEntryName;
+	public String getAccountName() {
+		return _accountName;
 	}
 
-	public void setAccountEntryName(String accountEntryName) {
-		_accountEntryName = accountEntryName;
+	public void setAccountName(String accountName) {
+		_accountName = accountName;
 	}
 
 	public String getLicenseEntryName() {
@@ -308,12 +278,12 @@ public class LicenseKeySoap implements Serializable {
 		_licenseVersion = licenseVersion;
 	}
 
-	public String getProductEntryName() {
-		return _productEntryName;
+	public String getProductName() {
+		return _productName;
 	}
 
-	public void setProductEntryName(String productEntryName) {
-		_productEntryName = productEntryName;
+	public void setProductName(String productName) {
+		_productName = productName;
 	}
 
 	public String getProductId() {
@@ -492,6 +462,7 @@ public class LicenseKeySoap implements Serializable {
 		_active = active;
 	}
 
+	private long _mvccVersion;
 	private String _uuid;
 	private long _licenseKeyId;
 	private long _userId;
@@ -500,21 +471,17 @@ public class LicenseKeySoap implements Serializable {
 	private long _modifiedUserId;
 	private String _modifiedUserName;
 	private Date _modifiedDate;
-	private long _licenseKeySetId;
 	private String _assetReceiptLicenseUuid;
-	private String _koroneikiAccountKey;
-	private String _koroneikiProductPurchaseKey;
-	private long _accountEntryId;
-	private long _orderEntryId;
-	private long _offeringEntryId;
+	private String _accountKey;
+	private String _productPurchaseKey;
 	private long _licenseEntryId;
-	private long _productEntryId;
-	private long _supportResponseId;
-	private String _accountEntryName;
+	private String _productKey;
+	private String _accountCode;
+	private String _accountName;
 	private String _licenseEntryName;
 	private String _licenseEntryType;
 	private int _licenseVersion;
-	private String _productEntryName;
+	private String _productName;
 	private String _productId;
 	private int _productVersion;
 	private String _productVersionLabel;
