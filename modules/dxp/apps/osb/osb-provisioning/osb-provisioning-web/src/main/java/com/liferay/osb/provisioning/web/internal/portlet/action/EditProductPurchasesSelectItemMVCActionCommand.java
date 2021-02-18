@@ -63,6 +63,7 @@ public class EditProductPurchasesSelectItemMVCActionCommand
 			String productPurchaseViewKeys = ParamUtil.getString(
 				actionRequest, "productPurchaseViewKeys");
 			String redirect = ParamUtil.getString(actionRequest, "redirect");
+			String tabs2 = ParamUtil.getString(actionRequest, "tabs2");
 
 			LiferayPortletResponse liferayPortletResponse =
 				_portal.getLiferayPortletResponse(actionResponse);
@@ -94,6 +95,10 @@ public class EditProductPurchasesSelectItemMVCActionCommand
 			if (Validator.isNotNull(productPurchaseViewKeys)) {
 				portletURL.setParameter(
 					"productPurchaseViewKeys", productPurchaseViewKeys);
+			}
+
+			if (Validator.isNotNull(tabs2)) {
+				portletURL.setParameter("tabs2", tabs2);
 			}
 
 			portletURL.setParameter(

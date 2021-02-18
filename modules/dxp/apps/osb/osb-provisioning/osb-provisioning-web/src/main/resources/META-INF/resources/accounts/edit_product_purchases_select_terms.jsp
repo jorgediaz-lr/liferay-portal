@@ -39,7 +39,9 @@ AccountDisplay accountDisplay = editProductPurchasesDisplayContext.getAccountDis
 
 	<div class="subscriptions-container">
 		<div class="subscriptions">
-			<portlet:actionURL name="/accounts/edit_product_purchases_select_terms" var="editProductPurchasesURL" />
+			<portlet:actionURL name="/accounts/edit_product_purchases_select_terms" var="editProductPurchasesURL">
+				<portlet:param name="tabs2" value='<%= ParamUtil.getString(request, "tabs2") %>' />
+			</portlet:actionURL>
 
 			<aui:form action="<%= editProductPurchasesURL %>" method="post" name="chooseTermFm" onSubmit='<%= renderResponse.getNamespace() + "submitForm(event);" %>'>
 				<aui:input name="redirect" type="hidden" value="<%= redirect %>" />

@@ -220,6 +220,12 @@ public class EditProductPurchasesDisplayContext
 			"mvcRenderCommandName", "/accounts/view_account");
 		portletURL.setParameter("accountKey", account.getKey());
 
+		String tabs2 = ParamUtil.getString(httpServletRequest, "tabs2");
+
+		if (Validator.isNotNull(tabs2)) {
+			portletURL.setParameter("tabs2", tabs2);
+		}
+
 		return portletURL.toString();
 	}
 

@@ -39,6 +39,7 @@ SearchContainer productPurchasesSearchContainer = viewAccountDisplayContext.getP
 	<portlet:actionURL name="/accounts/edit_product_purchases_select_terms" var="editProductPurchasesURL">
 		<portlet:param name="accountKey" value="<%= accountDisplay.getKey() %>" />
 		<portlet:param name="redirect" value="<%= currentURL %>" />
+		<portlet:param name="tabs2" value="<%= tabs2 %>" />
 	</portlet:actionURL>
 
 	<aui:form action="<%= editProductPurchasesURL %>" method="post" name="editProductPurchasesFm">
