@@ -28,6 +28,7 @@ import com.ibm.cloud.objectstorage.regions.Regions;
 import com.ibm.cloud.objectstorage.services.s3.AmazonS3;
 import com.ibm.cloud.objectstorage.services.s3.AmazonS3Client;
 import com.ibm.cloud.objectstorage.services.s3.S3ClientOptions;
+import com.ibm.cloud.objectstorage.services.s3.model.CopyObjectRequest;
 import com.ibm.cloud.objectstorage.services.s3.model.DeleteObjectRequest;
 import com.ibm.cloud.objectstorage.services.s3.model.DeleteObjectsRequest;
 import com.ibm.cloud.objectstorage.services.s3.model.GetObjectMetadataRequest;
@@ -44,9 +45,10 @@ import com.ibm.cloud.objectstorage.services.s3.transfer.TransferManagerConfigura
 import com.ibm.cloud.objectstorage.services.s3.transfer.Upload;
 
 import com.liferay.document.library.kernel.exception.AccessDeniedException;
+import com.liferay.document.library.kernel.exception.DuplicateFileException;
 import com.liferay.document.library.kernel.exception.NoSuchFileException;
+import com.liferay.document.library.kernel.store.BaseStore;
 import com.liferay.document.library.kernel.store.Store;
-import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -96,31 +98,68 @@ import org.osgi.service.component.annotations.Reference;
 	service = Store.class
 )
 @Generated("")
-public class IBMS3Store implements Store {
+public class IBMS3Store extends BaseStore {
+
+	@Override
+	public void addDirectory(
+		long companyId, long repositoryId, String dirName) {
+	}
+
+	@Override
+	public void addFile(
+			long companyId, long repositoryId, String fileName, File file)
+		throws PortalException {
+
+		updateFile(companyId, repositoryId, fileName, VERSION_DEFAULT, file);
+	}
+
+	@Override
+	public void addFile(
+			long companyId, long repositoryId, String fileName, InputStream is)
+		throws PortalException {
+
+		updateFile(companyId, repositoryId, fileName, VERSION_DEFAULT, is);
+	}
 
 	@Override
 	public void addFile(
 			long companyId, long repositoryId, String fileName,
-			String versionLabel, InputStream inputStream)
+			String versionLabel, InputStream is)
 		throws PortalException {
 
-		if (hasFile(companyId, repositoryId, fileName, versionLabel)) {
-			deleteFile(companyId, repositoryId, fileName, versionLabel);
+		updateFile(companyId, repositoryId, fileName, versionLabel, is);
+	}
+
+	@Override
+	public void checkRoot(long companyId) {
+	}
+
+	@Override
+	public void copyFileVersion(
+			long companyId, long repositoryId, String fileName,
+			String fromVersionLabel, String toVersionLabel)
+		throws PortalException {
+
+		String oldKey = _s3KeyTransformer.getFileVersionKey(
+			companyId, repositoryId, fileName, fromVersionLabel);
+
+		if (!_amazonS3.doesObjectExist(_bucketName, oldKey)) {
+			throw new NoSuchFileException(
+				companyId, repositoryId, fileName, fromVersionLabel);
 		}
 
-		File file = null;
+		String newKey = _s3KeyTransformer.getFileVersionKey(
+			companyId, repositoryId, fileName, toVersionLabel);
 
-		try {
-			file = FileUtil.createTempFile(inputStream);
+		if (_amazonS3.doesObjectExist(_bucketName, newKey)) {
+			throw new DuplicateFileException(
+				companyId, repositoryId, fileName, toVersionLabel);
+		}
 
-			putObject(companyId, repositoryId, fileName, versionLabel, file);
-		}
-		catch (IOException ioException) {
-			throw new SystemException(ioException);
-		}
-		finally {
-			FileUtil.delete(file);
-		}
+		CopyObjectRequest copyObjectRequest = new CopyObjectRequest(
+			_bucketName, oldKey, _bucketName, newKey);
+
+		_amazonS3.copyObject(copyObjectRequest);
 	}
 
 	@Override
@@ -129,6 +168,14 @@ public class IBMS3Store implements Store {
 
 		String key = _s3KeyTransformer.getDirectoryKey(
 			companyId, repositoryId, dirName);
+
+		deleteObjects(key);
+	}
+
+	@Override
+	public void deleteFile(long companyId, long repositoryId, String fileName) {
+		String key = _s3KeyTransformer.getFileKey(
+			companyId, repositoryId, fileName);
 
 		deleteObjects(key);
 	}
@@ -157,6 +204,29 @@ public class IBMS3Store implements Store {
 	}
 
 	@Override
+	public File getFile(
+			long companyId, long repositoryId, String fileName,
+			String versionLabel)
+		throws PortalException {
+
+		try {
+			_s3FileCache.cleanUpCacheFiles();
+
+			S3Object s3Object = getS3Object(
+				companyId, repositoryId, fileName, versionLabel);
+
+			ObjectMetadata objectMetadata = s3Object.getObjectMetadata();
+
+			return _s3FileCache.getCacheFile(
+				fileName, s3Object::getObjectContent,
+				objectMetadata.getLastModified());
+		}
+		catch (IOException ioException) {
+			throw new SystemException(ioException);
+		}
+	}
+
+	@Override
 	public InputStream getFileAsStream(
 			long companyId, long repositoryId, String fileName,
 			String versionLabel)
@@ -176,6 +246,11 @@ public class IBMS3Store implements Store {
 		catch (IOException ioException) {
 			throw new SystemException(ioException);
 		}
+	}
+
+	@Override
+	public String[] getFileNames(long companyId, long repositoryId) {
+		return getFileNames(companyId, repositoryId, StringPool.BLANK);
 	}
 
 	@Override
@@ -209,18 +284,14 @@ public class IBMS3Store implements Store {
 	}
 
 	@Override
-	public long getFileSize(
-			long companyId, long repositoryId, String fileName,
-			String versionLabel)
+	public long getFileSize(long companyId, long repositoryId, String fileName)
 		throws PortalException {
 
-		if (Validator.isNull(versionLabel)) {
-			versionLabel = getHeadVersionLabel(
-				companyId, repositoryId, fileName);
-		}
+		String headVersionLabel = getHeadVersionLabel(
+			companyId, repositoryId, fileName);
 
 		String key = _s3KeyTransformer.getFileVersionKey(
-			companyId, repositoryId, fileName, versionLabel);
+			companyId, repositoryId, fileName, headVersionLabel);
 
 		GetObjectMetadataRequest getObjectMetadataRequest =
 			new GetObjectMetadataRequest(_bucketName, key);
@@ -237,7 +308,8 @@ public class IBMS3Store implements Store {
 
 	@Override
 	public String[] getFileVersions(
-		long companyId, long repositoryId, String fileName) {
+			long companyId, long repositoryId, String fileName)
+		throws PortalException {
 
 		String key = _s3KeyTransformer.getFileKey(
 			companyId, repositoryId, fileName);
@@ -259,13 +331,20 @@ public class IBMS3Store implements Store {
 				versionKey.lastIndexOf(CharPool.SLASH) + 1);
 		}
 
-		Arrays.sort(versions, DLUtil::compareVersions);
+		Arrays.sort(versions);
 
 		return versions;
 	}
 
 	public TransferManager getTransferManager() {
 		return _transferManager;
+	}
+
+	@Override
+	public boolean hasDirectory(
+		long companyId, long repositoryId, String dirName) {
+
+		return true;
 	}
 
 	@Override
@@ -301,6 +380,97 @@ public class IBMS3Store implements Store {
 
 			return false;
 		}
+	}
+
+	@Override
+	public void updateFile(
+			long companyId, long repositoryId, long newRepositoryId,
+			String fileName)
+		throws PortalException {
+
+		if (repositoryId == newRepositoryId) {
+			throw new DuplicateFileException(
+				companyId, newRepositoryId, fileName);
+		}
+
+		String oldKey = _s3KeyTransformer.getFileKey(
+			companyId, repositoryId, fileName);
+		String newKey = _s3KeyTransformer.getFileKey(
+			companyId, newRepositoryId, fileName);
+
+		moveObjects(oldKey, newKey);
+	}
+
+	@Override
+	public void updateFile(
+			long companyId, long repositoryId, String fileName,
+			String newFileName)
+		throws PortalException {
+
+		if (fileName.equals(newFileName)) {
+			throw new DuplicateFileException(companyId, repositoryId, fileName);
+		}
+
+		String oldKey = _s3KeyTransformer.getFileKey(
+			companyId, repositoryId, fileName);
+		String newKey = _s3KeyTransformer.getFileKey(
+			companyId, repositoryId, newFileName);
+
+		moveObjects(oldKey, newKey);
+	}
+
+	@Override
+	public void updateFile(
+			long companyId, long repositoryId, String fileName,
+			String versionLabel, File file)
+		throws PortalException {
+
+		if (hasFile(companyId, repositoryId, fileName, versionLabel)) {
+			throw new DuplicateFileException(
+				companyId, repositoryId, fileName, versionLabel);
+		}
+
+		putObject(companyId, repositoryId, fileName, versionLabel, file);
+	}
+
+	@Override
+	public void updateFile(
+			long companyId, long repositoryId, String fileName,
+			String versionLabel, InputStream is)
+		throws PortalException {
+
+		if (hasFile(companyId, repositoryId, fileName, versionLabel)) {
+			throw new DuplicateFileException(
+				companyId, repositoryId, fileName, versionLabel);
+		}
+
+		File file = null;
+
+		try {
+			file = FileUtil.createTempFile(is);
+
+			putObject(companyId, repositoryId, fileName, versionLabel, file);
+		}
+		catch (IOException ioException) {
+			throw new SystemException(ioException);
+		}
+		finally {
+			FileUtil.delete(file);
+		}
+	}
+
+	@Override
+	public void updateFileVersion(
+			long companyId, long repositoryId, String fileName,
+			String fromVersionLabel, String toVersionLabel)
+		throws PortalException {
+
+		String oldKey = _s3KeyTransformer.getFileVersionKey(
+			companyId, repositoryId, fileName, fromVersionLabel);
+		String newKey = _s3KeyTransformer.getFileVersionKey(
+			companyId, repositoryId, fileName, toVersionLabel);
+
+		moveObjects(oldKey, newKey);
 	}
 
 	@Activate
@@ -658,6 +828,47 @@ public class IBMS3Store implements Store {
 		activate(properties);
 	}
 
+	protected void moveObjects(String oldPrefix, String newPrefix)
+		throws DuplicateFileException {
+
+		ObjectListing objectListing = _amazonS3.listObjects(
+			_bucketName, newPrefix);
+
+		List<S3ObjectSummary> newS3ObjectSummaries =
+			objectListing.getObjectSummaries();
+
+		if (!newS3ObjectSummaries.isEmpty()) {
+			throw new DuplicateFileException(
+				StringBundler.concat(
+					"Duplicate S3 object found when moving files from ",
+					oldPrefix, " to ", newPrefix));
+		}
+
+		List<S3ObjectSummary> oldS3ObjectSummaries = getS3ObjectSummaries(
+			oldPrefix);
+
+		for (S3ObjectSummary s3ObjectSummary : oldS3ObjectSummaries) {
+			String oldKey = s3ObjectSummary.getKey();
+
+			String newKey = _s3KeyTransformer.moveKey(
+				oldKey, oldPrefix, newPrefix);
+
+			CopyObjectRequest copyObjectRequest = new CopyObjectRequest(
+				_bucketName, oldKey, _bucketName, newKey);
+
+			_amazonS3.copyObject(copyObjectRequest);
+		}
+
+		for (S3ObjectSummary objectSummary : oldS3ObjectSummaries) {
+			String oldKey = objectSummary.getKey();
+
+			DeleteObjectRequest deleteObjectRequest = new DeleteObjectRequest(
+				_bucketName, oldKey);
+
+			_amazonS3.deleteObject(deleteObjectRequest);
+		}
+	}
+
 	protected void putObject(
 			long companyId, long repositoryId, String fileName,
 			String versionLabel, File file)
@@ -682,10 +893,6 @@ public class IBMS3Store implements Store {
 			throw transform(amazonClientException);
 		}
 		catch (InterruptedException interruptedException) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(interruptedException, interruptedException);
-			}
-
 			upload.abort();
 
 			Thread thread = Thread.currentThread();
