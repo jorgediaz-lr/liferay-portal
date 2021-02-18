@@ -204,7 +204,7 @@ describe('Subscriptions', () => {
 	});
 
 	describe('Existing Subscriptions', () => {
-		it('displays the start date correctly', () => {
+		it('displays the start date correctly in UTC', () => {
 			const {getAllByPlaceholderText} = renderSubscriptions({
 				subscriptions: mockEditSubscriptions(),
 				subscriptionsType: EDIT_SUBSCRIPTIONS

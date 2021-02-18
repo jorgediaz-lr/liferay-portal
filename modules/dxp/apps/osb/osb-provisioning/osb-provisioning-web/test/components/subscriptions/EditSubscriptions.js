@@ -138,7 +138,7 @@ describe('EditSubscriptions', () => {
 			expect(getByText('save').disabled).toBeTruthy();
 		});
 
-		it('renders an error message if a date field is invalid', () => {
+		it('displays an error message if the user selects a Start Date that is later than the End Date', () => {
 			const {
 				getAllByPlaceholderText,
 				getByText

@@ -52,7 +52,7 @@ export class Subscription extends Record({
 		if (this.endDate) {
 			return (
 				this.startDate < this.endDate &&
-				this.originalEndDate < this.endDate
+				this.originalEndDate <= this.endDate
 			);
 		}
 		else if (this.endDate === '') {
@@ -74,7 +74,7 @@ export class Subscription extends Record({
 		else if (this.endDate) {
 			return (
 				this.startDate < this.originalEndDate &&
-				this.originalEndDate < this.endDate
+				this.originalEndDate <= this.endDate
 			);
 		}
 		else {
