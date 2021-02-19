@@ -2268,8 +2268,8 @@ public interface PropsKeys {
 	public static final String MODULE_FRAMEWORK_EXPORT_PASSWORD_ATTRIBUTES =
 		"module.framework.export.password.attributes";
 
-	public static final String MODULE_FRAMEWORK_FILE_INSTALL_ENABLE_CFG =
-		"module.framework.file.install.enable.cfg";
+	public static final String MODULE_FRAMEWORK_FILE_INSTALL_CFG_ENABLED =
+		"module.framework.file.install.cfg.enabled";
 
 	/**
 	 * @deprecated As of Judson (7.1.x), with no direct replacement
