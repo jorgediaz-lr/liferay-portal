@@ -138,9 +138,9 @@ public class KeyGeneratorImpl implements KeyGenerator {
 			}
 		}
 		else if (licenseVersion == 2) {
-			properties.put("accountName", accountName);
+			properties.put("accountEntryName", accountName);
 			properties.put("licenseEntryName", licenseEntryName);
-			properties.put("productName", productName);
+			properties.put("productEntryName", productName);
 			properties.put("productVersion", productVersionLabel);
 
 			if (licenseEntryType.equals(LicenseType.TRIAL)) {
@@ -177,7 +177,7 @@ public class KeyGeneratorImpl implements KeyGenerator {
 		}
 		else if (licenseVersion >= 3) {
 			if (productId.equals(ProductId.PORTAL)) {
-				properties.put("accountName", accountName);
+				properties.put("accountEntryName", accountName);
 				properties.put("licenseEntryName", licenseEntryName);
 				properties.put("productVersion", productVersionLabel);
 			}
@@ -188,7 +188,7 @@ public class KeyGeneratorImpl implements KeyGenerator {
 
 			properties.put(
 				"expirationDate", String.valueOf(expirationDate.getTime()));
-			properties.put("productName", productName);
+			properties.put("productEntryName", productName);
 
 			if (licenseEntryType.equals(LicenseType.CLUSTER) ||
 				((licenseVersion >= 4) &&
