@@ -51,6 +51,7 @@ page import="com.liferay.portal.kernel.model.PortletItem" %><%@
 page import="com.liferay.portal.kernel.portlet.LiferayPortletURL" %><%@
 page import="com.liferay.portal.kernel.portlet.LiferayWindowState" %><%@
 page import="com.liferay.portal.kernel.portlet.PortletConfigFactoryUtil" %><%@
+page import="com.liferay.portal.kernel.portlet.PortletIdCodec" %><%@
 page import="com.liferay.portal.kernel.portlet.PortletProvider" %><%@
 page import="com.liferay.portal.kernel.portlet.PortletProviderUtil" %><%@
 page import="com.liferay.portal.kernel.portlet.PortletURLFactoryUtil" %><%@
