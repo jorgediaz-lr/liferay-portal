@@ -15,9 +15,9 @@
 package com.liferay.frontend.taglib.servlet.taglib.soy;
 
 import com.liferay.frontend.taglib.soy.servlet.taglib.ComponentRendererTag;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.diff.DiffVersion;
 import com.liferay.portal.kernel.diff.DiffVersionsInfo;
-import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -85,9 +85,9 @@ public class DiffVersionComparatorTag extends ComponentRendererTag {
 
 		diffVersionJSONObject.put("targetURL", targetURL.toString());
 
-		try {
-			User user = UserLocalServiceUtil.getUser(diffVersion.getUserId());
+		User user = UserLocalServiceUtil.fetchUser(diffVersion.getUserId());
 
+		if (user != null) {
 			diffVersionJSONObject.put(
 				"userInitials", user.getInitials()
 			).put(
@@ -96,11 +96,11 @@ public class DiffVersionComparatorTag extends ComponentRendererTag {
 				"version", diffVersionString
 			);
 		}
-		catch (NoSuchUserException noSuchUserException) {
+		else {
 			diffVersionJSONObject.put(
-				"userInitials", "Deleted User"
+				"userInitials", StringPool.BLANK
 			).put(
-				"userName", "Deleted User"
+				"userName", StringPool.BLANK
 			).put(
 				"version", diffVersionString
 			);
