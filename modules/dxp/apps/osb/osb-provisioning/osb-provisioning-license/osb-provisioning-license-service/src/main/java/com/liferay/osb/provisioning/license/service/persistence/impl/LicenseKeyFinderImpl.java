@@ -32,7 +32,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.sql.Timestamp;
 
@@ -43,9 +42,13 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Amos Fong
  */
+@Component(service = LicenseKeyFinder.class)
 public class LicenseKeyFinderImpl
 	extends LicenseKeyFinderBaseImpl implements LicenseKeyFinder {
 
@@ -296,8 +299,8 @@ public class LicenseKeyFinderImpl
 
 			return 0;
 		}
-		catch (Exception e) {
-			throw new SystemException(e);
+		catch (Exception exception) {
+			throw new SystemException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -388,8 +391,8 @@ public class LicenseKeyFinderImpl
 
 			return licenseKeys;
 		}
-		catch (Exception e) {
-			throw new SystemException(e);
+		catch (Exception exception) {
+			throw new SystemException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -652,7 +655,7 @@ public class LicenseKeyFinderImpl
 	private static final String _USER_ID_SQL =
 		"(Provisioning_LicenseKey.userId = ?) [$AND_OR_CONNECTOR$]";
 
-	@ServiceReference(type = OSBCustomSQL.class)
+	@Reference
 	private OSBCustomSQL _osbCustomSQL;
 
 }

@@ -18,6 +18,7 @@ import com.liferay.osb.provisioning.license.exception.LicenseEntryNameException;
 import com.liferay.osb.provisioning.license.exception.LicenseEntryVersionException;
 import com.liferay.osb.provisioning.license.model.LicenseEntry;
 import com.liferay.osb.provisioning.license.service.base.LicenseEntryLocalServiceBaseImpl;
+import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -27,10 +28,16 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import org.osgi.service.component.annotations.Component;
+
 /**
  * @author Brian Wing Shun Chan
  * @author Amos Fong
  */
+@Component(
+	property = "model.class.name=com.liferay.osb.provisioning.license.model.LicenseEntry",
+	service = AopService.class
+)
 public class LicenseEntryLocalServiceImpl
 	extends LicenseEntryLocalServiceBaseImpl {
 

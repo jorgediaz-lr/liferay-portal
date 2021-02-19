@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.provisioning.license.service.permission;
+package com.liferay.osb.provisioning.license.internal.permission;
 
 import com.liferay.osb.provisioning.koroneiki.web.service.ContactRoleWebService;
 import com.liferay.osb.provisioning.license.model.LicenseKey;

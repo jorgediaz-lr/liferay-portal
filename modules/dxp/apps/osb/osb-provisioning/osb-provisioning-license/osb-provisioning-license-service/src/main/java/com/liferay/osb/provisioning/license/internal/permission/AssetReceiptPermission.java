@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.provisioning.license.service.permission;
+package com.liferay.osb.provisioning.license.internal.permission;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.auth.PrincipalException;

@@ -30,7 +30,9 @@
 		<field name="licenseEntryId" type="long" />
 		<field name="productKey" type="String" />
 		<field name="accountCode" type="String" />
-		<field name="accountName" type="String" />
+		<field name="accountName" type="String">
+			<hint name="max-length">500</hint>
+		</field>
 		<field name="licenseEntryName" type="String" />
 		<field name="licenseEntryType" type="String" />
 		<field name="licenseVersion" type="int" />
@@ -45,15 +47,27 @@
 		<field name="maxUsers" type="long" />
 		<field name="maxHttpSessions" type="int" />
 		<field name="sizing" type="int" />
-		<field name="description" type="String" />
+		<field name="description" type="String">
+			<hint name="max-length">255</hint>
+		</field>
 		<field name="hostName" type="String" />
-		<field name="ipAddresses" type="String" />
-		<field name="macAddresses" type="String" />
-		<field name="serverId" type="String" />
-		<field name="key" type="String" />
+		<field name="ipAddresses" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field name="macAddresses" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field name="serverId" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field name="key" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
 		<field name="startDate" type="Date" />
 		<field name="expirationDate" type="Date" />
-		<field name="additionalInfo" type="String" />
+		<field name="additionalInfo" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
 		<field name="complimentary" type="boolean" />
 		<field name="active" type="boolean" />
 	</model>

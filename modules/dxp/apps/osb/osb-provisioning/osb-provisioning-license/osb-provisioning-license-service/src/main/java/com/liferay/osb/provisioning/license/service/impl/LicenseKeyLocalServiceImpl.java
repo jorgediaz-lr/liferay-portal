@@ -40,6 +40,7 @@ import com.liferay.osb.provisioning.license.helper.constants.LicenseType;
 import com.liferay.osb.provisioning.license.helper.constants.LicenseVersion;
 import com.liferay.osb.provisioning.license.helper.constants.ProductId;
 import com.liferay.osb.provisioning.license.helper.constants.ProductVersion;
+import com.liferay.osb.provisioning.license.internal.constants.LicenseKeyConstants;
 import com.liferay.osb.provisioning.license.model.LicenseEntry;
 import com.liferay.osb.provisioning.license.model.LicenseKey;
 import com.liferay.osb.provisioning.license.service.LicenseEntryLocalService;
@@ -48,18 +49,18 @@ import com.liferay.osb.provisioning.license.util.LicenseUtil;
 import com.liferay.osb.provisioning.license.util.comparator.LicenseKeyExpirationDateComparator;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -72,14 +73,18 @@ import java.util.Set;
 
 import org.apache.commons.lang.time.DateUtils;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Brian Wing Shun Chan
  * @author Amos Fong
  */
+@Component(
+	property = "model.class.name=com.liferay.osb.provisioning.license.model.LicenseKey",
+	service = AopService.class
+)
 public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
-
-	public static final long LIFETIME_INDEFINITE_VALUE =
-		36500 * 1440 * Time.MINUTE;
 
 	public LicenseKey addDeveloperLicenseKey(
 			long userId, String accountKey, String productKey,
@@ -99,7 +104,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		Date startDate = new Date();
 
 		Date expirationDate = new Date(
-			startDate.getTime() + LIFETIME_INDEFINITE_VALUE);
+			startDate.getTime() +
+				LicenseKeyConstants.LIFETIME_INDEFINITE_VALUE);
 
 		return addLicenseKey(
 			userId, name, licenseEntry, product, accountKey, StringPool.BLANK,
@@ -518,21 +524,21 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		LinkedHashMap<String, Object> params, boolean andSearch, int start,
 		int end, OrderByComparator obc) {
 
-		Date createDateGT = PortalUtil.getDate(
+		Date createDateGT = _portal.getDate(
 			createDateGTMonth, createDateGTDay, createDateGTYear);
-		Date createDateLT = PortalUtil.getDate(
+		Date createDateLT = _portal.getDate(
 			createDateLTMonth, createDateLTDay, createDateLTYear);
-		Date modifiedDateGT = PortalUtil.getDate(
+		Date modifiedDateGT = _portal.getDate(
 			modifiedDateGTMonth, modifiedDateGTDay, modifiedDateGTYear);
-		Date modifiedDateLT = PortalUtil.getDate(
+		Date modifiedDateLT = _portal.getDate(
 			modifiedDateLTMonth, modifiedDateLTDay, modifiedDateLTYear);
-		Date startDateGT = PortalUtil.getDate(
+		Date startDateGT = _portal.getDate(
 			startDateGTMonth, startDateGTDay, startDateGTYear);
-		Date startDateLT = PortalUtil.getDate(
+		Date startDateLT = _portal.getDate(
 			startDateLTMonth, startDateLTDay, startDateLTYear);
-		Date expirationDateGT = PortalUtil.getDate(
+		Date expirationDateGT = _portal.getDate(
 			expirationDateGTMonth, expirationDateGTDay, expirationDateGTYear);
-		Date expirationDateLT = PortalUtil.getDate(
+		Date expirationDateLT = _portal.getDate(
 			expirationDateLTMonth, expirationDateLTDay, expirationDateLTYear);
 
 		return licenseKeyFinder.
@@ -571,21 +577,21 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		int expirationDateLTMonth, int expirationDateLTYear,
 		LinkedHashMap<String, Object> params, boolean andSearch) {
 
-		Date createDateGT = PortalUtil.getDate(
+		Date createDateGT = _portal.getDate(
 			createDateGTMonth, createDateGTDay, createDateGTYear);
-		Date createDateLT = PortalUtil.getDate(
+		Date createDateLT = _portal.getDate(
 			createDateLTMonth, createDateLTDay, createDateLTYear);
-		Date modifiedDateGT = PortalUtil.getDate(
+		Date modifiedDateGT = _portal.getDate(
 			modifiedDateGTMonth, modifiedDateGTDay, modifiedDateGTYear);
-		Date modifiedDateLT = PortalUtil.getDate(
+		Date modifiedDateLT = _portal.getDate(
 			modifiedDateLTMonth, modifiedDateLTDay, modifiedDateLTYear);
-		Date startDateGT = PortalUtil.getDate(
+		Date startDateGT = _portal.getDate(
 			startDateGTMonth, startDateGTDay, startDateGTYear);
-		Date startDateLT = PortalUtil.getDate(
+		Date startDateLT = _portal.getDate(
 			startDateLTMonth, startDateLTDay, startDateLTYear);
-		Date expirationDateGT = PortalUtil.getDate(
+		Date expirationDateGT = _portal.getDate(
 			expirationDateGTMonth, expirationDateGTDay, expirationDateGTYear);
-		Date expirationDateLT = PortalUtil.getDate(
+		Date expirationDateLT = _portal.getDate(
 			expirationDateLTMonth, expirationDateLTDay, expirationDateLTYear);
 
 		return licenseKeyFinder.
@@ -1180,19 +1186,22 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		}
 	}
 
-	@ServiceReference(type = AccountWebService.class)
+	@Reference
 	private AccountWebService _accountWebService;
 
-	@ServiceReference(type = KeyGenerator.class)
+	@Reference
 	private KeyGenerator _keyGenerator;
 
-	@ServiceReference(type = LicenseEntryLocalService.class)
+	@Reference
 	private LicenseEntryLocalService _licenseEntryLocalService;
 
-	@ServiceReference(type = ProductConsumptionWebService.class)
+	@Reference
+	private Portal _portal;
+
+	@Reference
 	private ProductConsumptionWebService _productConsumptionWebService;
 
-	@ServiceReference(type = ProductWebService.class)
+	@Reference
 	private ProductWebService _productWebService;
 
 }

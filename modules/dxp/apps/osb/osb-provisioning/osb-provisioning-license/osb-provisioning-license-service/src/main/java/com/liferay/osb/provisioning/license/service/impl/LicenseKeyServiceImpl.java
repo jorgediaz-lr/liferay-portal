@@ -28,10 +28,10 @@ import com.liferay.osb.provisioning.license.model.LicenseKey;
 import com.liferay.osb.provisioning.license.service.LicenseEntryLocalService;
 import com.liferay.osb.provisioning.license.service.base.LicenseKeyServiceBaseImpl;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.aop.AopService;
 import com.liferay.portal.instances.service.PortalInstancesLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
-import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.service.RoleLocalService;
@@ -39,16 +39,24 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Amos Fong
  */
-@JSONWebService(mode = JSONWebServiceMode.MANUAL)
+@Component(
+	property = {
+		"json.web.service.context.name=provisioning",
+		"json.web.service.context.path=LicenseKey"
+	},
+	service = AopService.class
+)
 public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 	public LicenseKey addDeveloperLicenseKey(
@@ -107,8 +115,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 				throw new PrincipalException();
 			}
 		}
-		catch (Exception e) {
-			throw new PortalException(e);
+		catch (Exception exception) {
+			throw new PortalException(exception);
 		}
 
 		return licenseKeyLocalService.addDeveloperLicenseKey(
@@ -143,8 +151,10 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 		String licenseEntryType = licenseEntry.getType();
 
-		if ((LicenseVersion.getLicenseVersion(
-				product.getName(), productVersion) >= 3) &&
+		int licenseVersion = LicenseVersion.getLicenseVersion(
+			product.getName(), productVersion);
+
+		if ((licenseVersion >= 3) &&
 			(licenseEntryType.equals(LicenseType.DEVELOPER) ||
 			 licenseEntryType.equals(LicenseType.DEVELOPER_CLUSTER)) &&
 			(maxHttpSessions != 5)) {
@@ -552,22 +562,22 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		//TODO: add permission check
 	}
 
-	@ServiceReference(type = AccountWebService.class)
+	@Reference
 	private AccountWebService _accountWebService;
 
-	@ServiceReference(type = LicenseEntryLocalService.class)
+	@Reference
 	private LicenseEntryLocalService _licenseEntryLocalService;
 
-	@ServiceReference(type = PortalInstancesLocalService.class)
+	@Reference
 	private PortalInstancesLocalService _portalInstancesLocalService;
 
-	@ServiceReference(type = ProductPurchaseViewWebService.class)
+	@Reference
 	private ProductPurchaseViewWebService _productPurchaseViewWebService;
 
-	@ServiceReference(type = ProductWebService.class)
+	@Reference
 	private ProductWebService _productWebService;
 
-	@ServiceReference(type = RoleLocalService.class)
+	@Reference
 	private RoleLocalService _roleLocalService;
 
 }

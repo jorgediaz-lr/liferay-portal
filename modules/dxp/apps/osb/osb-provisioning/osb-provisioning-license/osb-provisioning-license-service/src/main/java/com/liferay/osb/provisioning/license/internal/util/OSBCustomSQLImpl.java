@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.provisioning.license.service.util;
+package com.liferay.osb.provisioning.license.internal.util;
 
 import com.liferay.osb.provisioning.license.util.OSBCustomSQL;
 import com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil;
