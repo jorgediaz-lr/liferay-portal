@@ -17,6 +17,7 @@ package com.liferay.frontend.taglib.servlet.taglib.soy;
 import com.liferay.frontend.taglib.soy.servlet.taglib.ComponentRendererTag;
 import com.liferay.portal.kernel.diff.DiffVersion;
 import com.liferay.portal.kernel.diff.DiffVersionsInfo;
+import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -84,15 +85,26 @@ public class DiffVersionComparatorTag extends ComponentRendererTag {
 
 		diffVersionJSONObject.put("targetURL", targetURL.toString());
 
-		User user = UserLocalServiceUtil.getUser(diffVersion.getUserId());
+		try {
+			User user = UserLocalServiceUtil.getUser(diffVersion.getUserId());
 
-		diffVersionJSONObject.put(
-			"userInitials", user.getInitials()
-		).put(
-			"userName", user.getFullName()
-		).put(
-			"version", diffVersionString
-		);
+			diffVersionJSONObject.put(
+				"userInitials", user.getInitials()
+			).put(
+				"userName", user.getFullName()
+			).put(
+				"version", diffVersionString
+			);
+		}
+		catch (NoSuchUserException noSuchUserException) {
+			diffVersionJSONObject.put(
+				"userInitials", "Deleted User"
+			).put(
+				"userName", "Deleted User"
+			).put(
+				"version", diffVersionString
+			);
+		}
 
 		return diffVersionJSONObject;
 	}
