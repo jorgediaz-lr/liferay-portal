@@ -21,6 +21,7 @@ import {
 	PRODUCT_PURCHASE_STATUS_CANCELLED
 } from '../../utilities/constants';
 import {
+	convertInputToDate,
 	setDisabledAttribute,
 	validateDateFieldValue
 } from '../../utilities/helpers';
@@ -185,13 +186,13 @@ function Subscription({
 
 	function handleEndDateChange(value) {
 		if (validateDateFieldValue(value)) {
-			updateEndDate(key, value);
+			updateEndDate(key, convertInputToDate(value));
 		}
 	}
 
 	function handleGracePeriodStartDateChange(value) {
 		if (validateDateFieldValue(value)) {
-			updateOriginalEndDate(key, value);
+			updateOriginalEndDate(key, convertInputToDate(value));
 		}
 	}
 
@@ -219,7 +220,7 @@ function Subscription({
 
 	function handleStartDateChange(value) {
 		if (validateDateFieldValue(value)) {
-			updateStartDate(key, value);
+			updateStartDate(key, convertInputToDate(value));
 		}
 	}
 
