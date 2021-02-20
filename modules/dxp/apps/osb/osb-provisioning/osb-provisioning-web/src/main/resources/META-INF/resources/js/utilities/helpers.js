@@ -25,26 +25,28 @@ export function convertDashToEmptyString(value) {
 }
 
 /**
- * This helper takes the incoming value and converts any non empty string value
- * to a Date object.
- * @param {Object|string} value Date value from user input, could be a date
- * object from selecting a date picker or a string from manual input.
- * @returns {Object|string} Date object or empty string.
+ * This helper takes a date object and converts it to a UTC date with the hour
+ * set at midnight.
+ * @param {Object} Date A date object.
+ * @returns {Object} A new Date object representing UTC
  */
-export function convertInputToDate(value) {
-	return value === '' ? '' : new Date(value);
+export function convertDateToUTCDate(date) {
+	const year = date.getUTCFullYear();
+	const month = date.getUTCMonth();
+	const day = date.getUTCDate();
+
+	return new Date(year, month, day);
 }
 
 /**
- * Date objects are by default in Pacific Standard Time (PST).
- * This helper ensures dates are displayed in UTC.
- * @param {object} date The date object.
- * @returns {string} The string reprensetation of the UTC date.
+ * This helper takes the incoming value, date or string and converts them to a
+ * new Date object representing UTC with the hour set at midnight.
+ * @param {Object|string} value Date value from user input, could be a date
+ * object from selecting a date picker or a string value from manual input.
+ * @returns {Object|string} Date object or empty string.
  */
-export function displayUTCDate(date) {
-	const match = JSON.stringify(date).match(/"(?<utcDate>\d+-\d+-\d+)T/);
-
-	return (match && match.groups.utcDate) || date;
+export function convertInputToDate(value) {
+	return value === '' ? '' : convertDateToUTCDate(new Date(value));
 }
 
 /**

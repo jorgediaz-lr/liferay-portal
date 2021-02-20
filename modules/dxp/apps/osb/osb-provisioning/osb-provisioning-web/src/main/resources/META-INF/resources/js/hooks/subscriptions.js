@@ -13,12 +13,12 @@ import {Map, Record} from 'immutable';
 import React, {useContext, useState} from 'react';
 
 import {PRODUCT_PURCHASE_STATUS_APPROVED} from '../utilities/constants';
-import {convertInputToDate} from '../utilities/helpers';
+import {convertDateToUTCDate, convertInputToDate} from '../utilities/helpers';
 
 function generateEndDate() {
-	const newEndYear = new Date().getFullYear() + 1;
+	const newEndYear = new Date().getUTCFullYear() + 1;
 
-	return new Date(new Date().setFullYear(newEndYear));
+	return convertDateToUTCDate(new Date(new Date().setFullYear(newEndYear)));
 }
 
 export class Subscription extends Record({
@@ -33,7 +33,7 @@ export class Subscription extends Record({
 	quantity: 1,
 	salesforceOpportunityKey: '',
 	sizing: 1,
-	startDate: new Date(),
+	startDate: convertDateToUTCDate(new Date()),
 	status: PRODUCT_PURCHASE_STATUS_APPROVED
 }) {
 	validateAllDates() {
@@ -126,11 +126,15 @@ export function SubscriptionsProvider({initialSubscriptions = [], children}) {
 			new Subscription({
 				...subscription,
 				endDate: subscription.endDate
-					? new Date(subscription.endDate)
+					? convertDateToUTCDate(new Date(subscription.endDate))
 					: null,
 				index,
-				originalEndDate: new Date(subscription.originalEndDate),
-				startDate: new Date(subscription.startDate)
+				originalEndDate: convertDateToUTCDate(
+					new Date(subscription.originalEndDate)
+				),
+				startDate: convertDateToUTCDate(
+					new Date(subscription.startDate)
+				)
 			})
 		];
 	});
