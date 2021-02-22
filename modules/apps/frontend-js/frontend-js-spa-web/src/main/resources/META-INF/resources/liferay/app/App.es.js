@@ -278,6 +278,8 @@ class LiferayApp extends App {
 			);
 		}
 
+		this._adjustScrollTop();
+
 		AUI().Get._insertCache = {};
 
 		Liferay.DOMTaskRunner.reset();
@@ -371,6 +373,24 @@ class LiferayApp extends App {
 
 	setValidStatusCodes(validStatusCodes) {
 		this.validStatusCodes = validStatusCodes;
+	}
+
+	/**
+	 * Adjust scroll position to account for Control Menu.
+	 */
+
+	_adjustScrollTop() {
+		if (Liferay.ControlMenu) {
+			const controlMenu = document.getElementById(
+				Liferay.ControlMenu._namespace + 'ControlMenu'
+			);
+
+			if (controlMenu) {
+				const controlMenuScroll = controlMenu.offsetHeight || 0;
+
+				window.scrollBy(0, -controlMenuScroll);
+			}
+		}
 	}
 
 	/**
