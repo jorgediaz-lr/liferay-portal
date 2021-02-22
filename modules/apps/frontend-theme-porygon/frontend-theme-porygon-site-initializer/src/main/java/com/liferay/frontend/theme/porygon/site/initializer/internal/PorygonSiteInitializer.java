@@ -14,7 +14,6 @@
 
 package com.liferay.frontend.theme.porygon.site.initializer.internal;
 
-import com.liferay.asset.display.page.constants.AssetDisplayPageConstants;
 import com.liferay.asset.display.page.service.AssetDisplayPageEntryLocalService;
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.document.library.kernel.model.DLFolderConstants;
@@ -565,12 +564,6 @@ public class PorygonSiteInitializer implements SiteInitializer {
 				).build(),
 				null, content, "PORYGON_ENTRY", "PORYGON_ENTRY",
 				serviceContext);
-
-			_assetDisplayPageEntryLocalService.addAssetDisplayPageEntry(
-				serviceContext.getUserId(), serviceContext.getScopeGroupId(),
-				_portal.getClassNameId(JournalArticle.class),
-				article.getResourcePrimKey(), 0,
-				AssetDisplayPageConstants.TYPE_DEFAULT, serviceContext);
 
 			journalArticles.add(article);
 		}
