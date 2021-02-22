@@ -118,7 +118,7 @@ public class DDMFormDisplayExportImportTest
 		).build();
 
 		PortletPreferences importedPortletPreferences =
-			getImportedPortletPreferences(preferenceMap, false, true);
+			getImportedPortletPreferences(preferenceMap, false);
 
 		DDMFormInstance importedDDMFormInstance =
 			DDMFormInstanceLocalServiceUtil.
