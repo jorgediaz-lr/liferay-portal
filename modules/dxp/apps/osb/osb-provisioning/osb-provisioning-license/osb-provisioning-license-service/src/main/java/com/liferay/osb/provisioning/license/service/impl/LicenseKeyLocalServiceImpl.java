@@ -40,7 +40,6 @@ import com.liferay.osb.provisioning.license.helper.constants.LicenseLifetime;
 import com.liferay.osb.provisioning.license.helper.constants.LicenseType;
 import com.liferay.osb.provisioning.license.helper.constants.LicenseVersion;
 import com.liferay.osb.provisioning.license.helper.constants.ProductId;
-import com.liferay.osb.provisioning.license.helper.constants.ProductVersion;
 import com.liferay.osb.provisioning.license.model.LicenseEntry;
 import com.liferay.osb.provisioning.license.model.LicenseKey;
 import com.liferay.osb.provisioning.license.service.LicenseEntryLocalService;
@@ -51,7 +50,6 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -67,7 +65,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
@@ -88,7 +85,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 	public LicenseKey addDeveloperLicenseKey(
 			long userId, String accountKey, String productKey,
-			int productMinorVersion)
+			String productVersion)
 		throws Exception {
 
 		User user = userLocalService.getUser(userId);
@@ -108,18 +105,17 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		return addLicenseKey(
 			userId, name, licenseEntry, product, accountKey, StringPool.BLANK,
-			account.getCode(), account.getName(),
-			getProductVersion(productMinorVersion), 0, user.getFullName(), 1, 5,
-			0, 0, 0, account.getName() + " Developer Activation Keys",
-			new String[0], new String[0], new String[0],
-			new String[] {LicenseType.DEVELOPER}, startDate, expirationDate,
-			StringPool.BLANK, true, true);
+			account.getCode(), account.getName(), productVersion, 0,
+			user.getFullName(), 1, 5, 0, 0, 0,
+			account.getName() + " Developer Activation Keys", new String[0],
+			new String[0], new String[0], new String[] {LicenseType.DEVELOPER},
+			startDate, expirationDate, StringPool.BLANK, true, true);
 	}
 
 	public LicenseKey addLicenseKey(
 			long userId, String name, LicenseEntry licenseEntry,
 			Product product, String accountKey, String productPurchaseKey,
-			String accountCode, String accountName, int productVersion,
+			String accountCode, String accountName, String productVersion,
 			long clusterId, String owner, int maxServers, int maxHttpSessions,
 			int maxConcurrentUsers, int maxUsers, int sizing,
 			String description, String[] hostNames, String[] ipAddresses,
@@ -146,7 +142,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			startDate = now;
 		}
 
-		validate(product, productVersion, owner, description);
+		validate(productVersion, owner, description);
 
 		return doAddLicenseKeyVersion3_4(
 			now, user, licenseEntry, product, accountKey, productPurchaseKey,
@@ -160,7 +156,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 	public LicenseKey addLicenseKey(
 			long userId, String name, long licenseEntryId, String productKey,
 			String accountKey, String productPurchaseKey, String accountCode,
-			String accountName, int productVersion, long clusterId,
+			String accountName, String productVersion, long clusterId,
 			String owner, int maxServers, int maxHttpSessions,
 			int maxConcurrentUsers, int maxUsers, int sizing,
 			String description, String[] hostNames, String[] ipAddresses,
@@ -184,9 +180,10 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 	public LicenseKey addLicenseKey(
 			long userId, String assetReceiptLicenseUuid,
 			String licenseEntryType, String productName, String productId,
-			int productVersion, String owner, long maxUsers, String description,
-			String hostName, String ipAddresses, String macAddresses,
-			String serverId, Date startDate, Date expirationDate)
+			String productVersion, String owner, long maxUsers,
+			String description, String hostName, String ipAddresses,
+			String macAddresses, String serverId, Date startDate,
+			Date expirationDate)
 		throws Exception {
 
 		User user = userLocalService.getUser(userId);
@@ -205,9 +202,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		String key = _keyGenerator.generate(
 			StringPool.BLANK, StringPool.BLANK, licenseEntryType,
-			licenseVersion, productName, productId,
-			String.valueOf(productVersion), owner, 0, 0, 0, maxUsers, 0,
-			description, hostName, ipAddresses, macAddresses,
+			licenseVersion, productName, productId, productVersion, owner, 0, 0,
+			0, maxUsers, 0, description, hostName, ipAddresses, macAddresses,
 			new String[] {serverId}, startDate, expirationDate);
 
 		long licenseKeyId = counterLocalService.increment();
@@ -226,7 +222,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		licenseKey.setProductName(productName);
 		licenseKey.setProductId(productId);
 		licenseKey.setProductVersion(productVersion);
-		licenseKey.setProductVersionLabel(String.valueOf(productVersion));
 		licenseKey.setOwner(owner);
 		licenseKey.setMaxUsers(maxUsers);
 		licenseKey.setDescription(description);
@@ -515,7 +510,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		int startDateGTMonth, int startDateGTYear, int startDateLTDay,
 		int startDateLTMonth, int startDateLTYear, long[] licenseEntryIds,
 		String[] productKeys, String productName, String productId,
-		int[] productVersions, String owner, String description,
+		String[] productVersions, String owner, String description,
 		String hostName, String ipAddress, String macAddress, String serverId,
 		String key, int expirationDateGTDay, int expirationDateGTMonth,
 		int expirationDateGTYear, int expirationDateLTDay,
@@ -569,7 +564,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		int startDateGTMonth, int startDateGTYear, int startDateLTDay,
 		int startDateLTMonth, int startDateLTYear, long[] licenseEntryIds,
 		String[] productKeys, String productName, String productId,
-		int[] productVersions, String owner, String description,
+		String[] productVersions, String owner, String description,
 		String hostName, String ipAddress, String macAddress, String serverId,
 		String key, int expirationDateGTDay, int expirationDateGTMonth,
 		int expirationDateGTYear, int expirationDateLTDay,
@@ -693,12 +688,12 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			String productPurchaseKey, String accountCode, String accountName,
 			String licenseEntryName, String licenseEntryType,
 			int licenseVersion, String productName, String productId,
-			int productVersion, String productVersionLabel, long clusterId,
-			String owner, int maxServers, long maxConcurrentUsers,
-			long maxUsers, int maxHttpSessions, int sizing, String description,
-			String hostName, String ipAddresses, String macAddresses,
-			String serverId, String key, Date startDate, Date expirationDate,
-			String additionalInfo, boolean complimentary, boolean active)
+			String productVersion, long clusterId, String owner, int maxServers,
+			long maxConcurrentUsers, long maxUsers, int maxHttpSessions,
+			int sizing, String description, String hostName, String ipAddresses,
+			String macAddresses, String serverId, String key, Date startDate,
+			Date expirationDate, String additionalInfo, boolean complimentary,
+			boolean active)
 		throws Exception {
 
 		long licenseKeyId = counterLocalService.increment();
@@ -723,7 +718,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		licenseKey.setProductName(productName);
 		licenseKey.setProductId(productId);
 		licenseKey.setProductVersion(productVersion);
-		licenseKey.setProductVersionLabel(productVersionLabel);
 		licenseKey.setClusterId(clusterId);
 		licenseKey.setOwner(owner);
 		licenseKey.setMaxServers(maxServers);
@@ -754,7 +748,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			Date now, User user, LicenseEntry licenseEntry, Product product,
 			String accountKey, String productPurchaseKey, String accountCode,
 			String accountName, String licenseEntryType, int licenseVersion,
-			int productVersion, long clusterId, String owner, int maxServers,
+			String productVersion, long clusterId, String owner, int maxServers,
 			int maxHttpSessions, long maxConcurrentUsers, long maxUsers,
 			int sizing, String description, String[] hostNames,
 			String[] ipAddresses, String[] macAddresses, String[] serverIds,
@@ -772,9 +766,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		if (productName.contains(ProductConstants.NAME_COMMERCE_SUBSCRIPTION)) {
 			productId = ProductId.COMMERCE;
 		}
-
-		String productVersionLabel = trimText(
-			ProductVersion.getLabel(productVersion));
 
 		owner = trimText(owner);
 
@@ -854,7 +845,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 			String key = _keyGenerator.generate(
 				accountName, licenseEntryName, licenseEntryType, licenseVersion,
-				productName, productId, productVersionLabel, owner, maxServers,
+				productName, productId, productVersion, owner, maxServers,
 				maxHttpSessions, maxConcurrentUsers, maxUsers, sizing,
 				description, hostName, curIpAddresses, curMacAddresses,
 				new String[] {serverId}, startDate, expirationDate);
@@ -863,11 +854,10 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 				user, now, licenseEntry, accountKey, productPurchaseKey,
 				accountCode, accountName, licenseEntryName, licenseEntryType,
 				licenseVersion, productName, productId, productVersion,
-				productVersionLabel, clusterId, owner, maxServers,
-				maxConcurrentUsers, maxUsers, maxHttpSessions, sizing,
-				description, hostName, curIpAddresses, curMacAddresses,
-				serverId, key, startDate, expirationDate, additionalInfo,
-				complimentary, active);
+				clusterId, owner, maxServers, maxConcurrentUsers, maxUsers,
+				maxHttpSessions, sizing, description, hostName, curIpAddresses,
+				curMacAddresses, serverId, key, startDate, expirationDate,
+				additionalInfo, complimentary, active);
 		}
 
 		return licenseKey;
@@ -991,76 +981,11 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		return sb.toString();
 	}
 
-	protected int getProductVersion(int productMinorVersion) {
-		if (productMinorVersion == ProductVersion.COMMERCE_LICENSE_VERSION_1) {
-			return productMinorVersion;
-		}
-		else if (productMinorVersion ==
-					ProductVersion.DIGITAL_ENTERPRISE_MINOR_VERSION_7_4) {
-
-			return ProductVersion.DIGITAL_ENTERPRISE_VERSION_7_4_10;
-		}
-		else if (productMinorVersion ==
-					ProductVersion.DIGITAL_ENTERPRISE_MINOR_VERSION_7_3) {
-
-			return ProductVersion.DIGITAL_ENTERPRISE_VERSION_7_3_10;
-		}
-		else if (productMinorVersion ==
-					ProductVersion.DIGITAL_ENTERPRISE_MINOR_VERSION_7_2) {
-
-			return ProductVersion.DIGITAL_ENTERPRISE_VERSION_7_2_10;
-		}
-		else if (productMinorVersion ==
-					ProductVersion.DIGITAL_ENTERPRISE_MINOR_VERSION_7_1) {
-
-			return ProductVersion.DIGITAL_ENTERPRISE_VERSION_7_1_10;
-		}
-		else if (productMinorVersion ==
-					ProductVersion.DIGITAL_ENTERPRISE_MINOR_VERSION_7_0) {
-
-			return ProductVersion.DIGITAL_ENTERPRISE_VERSION_7_0_10;
-		}
-		else if (productMinorVersion ==
-					ProductVersion.PORTAL_MINOR_VERSION_6_2) {
-
-			return ProductVersion.PORTAL_VERSION_6_2_10;
-		}
-		else if (productMinorVersion ==
-					ProductVersion.PORTAL_MINOR_VERSION_6_1) {
-
-			return ProductVersion.PORTAL_VERSION_6_1_10;
-		}
-
-		return 0;
-	}
-
 	protected void validate(
-			Product product, int productVersion, String owner,
-			String description)
+			String productVersion, String owner, String description)
 		throws PortalException {
 
-		if (productVersion <= 0) {
-			throw new LicenseKeyProductVersionException();
-		}
-
-		ListType listType = listTypeLocalService.fetchListType(productVersion);
-
-		String version = StringPool.BLANK;
-
-		Map<String, String> properties = product.getProperties();
-
-		if (properties != null) {
-			String curVersion = properties.get("version");
-
-			if (Validator.isNotNull(curVersion)) {
-				version = curVersion;
-			}
-		}
-
-		String listTypeType = ProductVersion.getAllListType(
-			Product.class.getName() + StringPool.PERIOD + version);
-
-		if ((listType == null) || !listTypeType.equals(listType.getType())) {
+		if (Validator.isNull(productVersion)) {
 			throw new LicenseKeyProductVersionException();
 		}
 

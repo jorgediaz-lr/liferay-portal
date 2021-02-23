@@ -24,25 +24,27 @@ public class LicenseVersion {
 	}
 
 	public static int getLicenseVersion(
-		String productName, int productVersion) {
+		String productName, String productVersion) {
 
 		if (productName.contains("Commerce")) {
 			return getAppLicenseVersion();
 		}
 
-		if (productVersion >=
-				ProductVersion.DIGITAL_ENTERPRISE_VERSION_7_1_10) {
+		if (productVersion.equals(ProductVersion.DXP_VERSION_7_1) ||
+			productVersion.equals(ProductVersion.DXP_VERSION_7_2) ||
+			productVersion.equals(ProductVersion.DXP_VERSION_7_3) ||
+			productVersion.equals(ProductVersion.DXP_VERSION_7_4)) {
 
 			return 6;
 		}
 
-		if (productVersion >=
-				ProductVersion.DIGITAL_ENTERPRISE_VERSION_7_0_10) {
-
+		if (productVersion.equals(ProductVersion.DXP_VERSION_7_0)) {
 			return 5;
 		}
 
-		if (productVersion >= ProductVersion.PORTAL_VERSION_6_1_20) {
+		if (productVersion.equals(ProductVersion.PORTAL_VERSION_6_1_20) ||
+			productVersion.equals(ProductVersion.PORTAL_VERSION_6_2_10)) {
+
 			return 4;
 		}
 

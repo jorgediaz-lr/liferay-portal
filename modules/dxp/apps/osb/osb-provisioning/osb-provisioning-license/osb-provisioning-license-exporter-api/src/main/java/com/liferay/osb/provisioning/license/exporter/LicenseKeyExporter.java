@@ -31,9 +31,9 @@ public interface LicenseKeyExporter {
 	public File toFile(
 			String key, String accountName, String licenseEntryName,
 			String licenseType, int licenseVersion, String productName,
-			String productId, int productVersion, String owner, int maxServers,
-			int maxHttpSessions, long maxConcurrentUsers, long maxUsers,
-			int sizing, String description, String hostNames,
+			String productId, String productVersion, String owner,
+			int maxServers, int maxHttpSessions, long maxConcurrentUsers,
+			long maxUsers, int sizing, String description, String hostNames,
 			String ipAddresses, String macAddresses, String[] serverIds,
 			Date startDate, Date expirationDate, Date createDate)
 		throws Exception;
@@ -41,11 +41,11 @@ public interface LicenseKeyExporter {
 	public String toLI(
 			String key, String accountName, String licenseEntryName,
 			String licenseType, int licenseVersion, String productName,
-			String productId, int productVersion, String owner, int maxServers,
-			int maxHttpSessions, long maxConcurrentUsers, long maxUsers,
-			int sizing, String description, String hostName, String ipAddresses,
-			String macAddresses, String serverId, Date startDate,
-			Date expirationDate)
+			String productId, String productVersion, String owner,
+			int maxServers, int maxHttpSessions, long maxConcurrentUsers,
+			long maxUsers, int sizing, String description, String hostName,
+			String ipAddresses, String macAddresses, String serverId,
+			Date startDate, Date expirationDate)
 		throws Exception;
 
 	public String toXML(Map<String, String> properties, String key)
@@ -54,9 +54,9 @@ public interface LicenseKeyExporter {
 	public String toXML(
 			String key, String accountName, String licenseEntryName,
 			String licenseType, int licenseVersion, String productName,
-			String productId, int productVersion, String owner, int maxServers,
-			int maxHttpSessions, long maxConcurrentUsers, long maxUsers,
-			int sizing, String description, String hostNames,
+			String productId, String productVersion, String owner,
+			int maxServers, int maxHttpSessions, long maxConcurrentUsers,
+			long maxUsers, int sizing, String description, String hostNames,
 			String ipAddresses, String macAddresses, String[] serverIds,
 			Date startDate, Date expirationDate, Date createDate)
 		throws Exception;

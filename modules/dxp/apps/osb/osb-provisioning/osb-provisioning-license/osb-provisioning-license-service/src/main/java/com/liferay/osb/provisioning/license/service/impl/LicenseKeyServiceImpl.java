@@ -60,7 +60,7 @@ import org.osgi.service.component.annotations.Reference;
 public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 	public LicenseKey addDeveloperLicenseKey(
-			String accountKey, String productKey, int productMinorVersion)
+			String accountKey, String productKey, String productVersion)
 		throws Exception {
 
 		Product product = _productWebService.getProduct(productKey);
@@ -120,13 +120,13 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		}
 
 		return licenseKeyLocalService.addDeveloperLicenseKey(
-			getUserId(), accountKey, productKey, productMinorVersion);
+			getUserId(), accountKey, productKey, productVersion);
 	}
 
 	public LicenseKey addLicenseKey(
 			long userId, String name, long licenseEntryId, String productKey,
 			String accountKey, String productPurchaseKey, String accountCode,
-			String accountName, int productVersion, long clusterId,
+			String accountName, String productVersion, long clusterId,
 			String owner, int maxServers, int maxHttpSessions,
 			int maxConcurrentUsers, int maxUsers, int sizing,
 			String description, String[] hostNames, String[] ipAddresses,
@@ -174,9 +174,10 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 	public LicenseKey addLicenseKey(
 			String userUuid, String assetReceiptLicenseUuid,
 			String licenseEntryType, String productName, String productId,
-			int productVersion, String owner, long maxUsers, String description,
-			String hostName, String ipAddresses, String macAddresses,
-			String serverId, Date startDate, Date expirationDate)
+			String productVersion, String owner, long maxUsers,
+			String description, String hostName, String ipAddresses,
+			String macAddresses, String serverId, Date startDate,
+			Date expirationDate)
 		throws Exception {
 
 		validateJSONWebServicePermissions();
@@ -317,8 +318,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		int activeLicensesCount = licenseKeyLocalService.searchCount(
 			null, 0, 0, 0, 0, 0, 0, null, 0, 0, 0, 0, 0, 0, null, null, null, 0,
 			0, 0, 0, 0, 0, new long[0], new String[0], null, productId,
-			new int[0], null, null, null, null, null, serverId, key, 0, 0, 0, 0,
-			0, 0, params, true);
+			new String[0], null, null, null, null, null, serverId, key, 0, 0, 0,
+			0, 0, 0, params, true);
 
 		if (activeLicensesCount > 0) {
 			return true;
@@ -373,7 +374,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			int startDateGTMonth, int startDateGTYear, int startDateLTDay,
 			int startDateLTMonth, int startDateLTYear, long[] licenseEntryIds,
 			String[] productKeys, String productName, String productId,
-			int[] productVersions, String owner, String description,
+			String[] productVersions, String owner, String description,
 			String hostName, String ipAddress, String macAddress,
 			String serverId, String key, int expirationDateGTDay,
 			int expirationDateGTMonth, int expirationDateGTYear,
@@ -420,7 +421,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			int startDateGTMonth, int startDateGTYear, int startDateLTDay,
 			int startDateLTMonth, int startDateLTYear, long[] licenseEntryIds,
 			String[] productKeys, String productName, String productId,
-			int[] productVersions, String owner, String description,
+			String[] productVersions, String owner, String description,
 			String hostName, String ipAddress, String macAddress,
 			String serverId, String key, int expirationDateGTDay,
 			int expirationDateGTMonth, int expirationDateGTYear,

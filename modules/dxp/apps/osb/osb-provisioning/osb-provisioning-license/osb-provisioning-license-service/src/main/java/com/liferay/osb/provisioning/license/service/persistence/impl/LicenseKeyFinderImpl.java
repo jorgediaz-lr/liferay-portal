@@ -108,7 +108,7 @@ public class LicenseKeyFinderImpl
 		return countByU_C_M_M_AK_PPK_A_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
 			null, null, null, null, null, null, keywords, keywords,
 			accountNames, null, null, new long[0], new String[0], productNames,
-			productIds, new int[0], owners, descriptions, hostNames,
+			productIds, new String[0], owners, descriptions, hostNames,
 			ipAddresses, macAddresses, serverIds, keys, null, null, params,
 			andOperator);
 	}
@@ -119,7 +119,7 @@ public class LicenseKeyFinderImpl
 		String accountKey, String productPurchaseKey, String accountName,
 		Date startDateGT, Date startDateLT, long[] licenseEntryIds,
 		String[] productKeys, String productName, String productId,
-		int[] productVersions, String owner, String description,
+		String[] productVersions, String owner, String description,
 		String hostName, String ipAddress, String macAddress, String serverId,
 		String key, Date expirationDateGT, Date expirationDateLT,
 		LinkedHashMap<String, Object> params, boolean andOperator) {
@@ -179,7 +179,7 @@ public class LicenseKeyFinderImpl
 		return findByU_C_M_M_AK_PPK_A_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
 			null, null, null, null, null, null, keywords, keywords,
 			accountNames, null, null, new long[0], new String[0], productNames,
-			productIds, new int[0], owners, descriptions, hostNames,
+			productIds, new String[0], owners, descriptions, hostNames,
 			ipAddresses, macAddresses, serverIds, keys, null, null, params,
 			andOperator, start, end, obc);
 	}
@@ -190,7 +190,7 @@ public class LicenseKeyFinderImpl
 		String accountKey, String productPurchaseKey, String accountName,
 		Date startDateGT, Date startDateLT, long[] licenseEntryIds,
 		String[] productKeys, String productName, String productId,
-		int[] productVersions, String owner, String description,
+		String[] productVersions, String owner, String description,
 		String hostName, String ipAddress, String macAddress, String serverId,
 		String key, Date expirationDateGT, Date expirationDateLT,
 		LinkedHashMap<String, Object> params, boolean andOperator, int start,
@@ -222,7 +222,7 @@ public class LicenseKeyFinderImpl
 		String accountKey, String productPurchaseKey, String[] accountNames,
 		Date startDateGT, Date startDateLT, long[] licenseEntryIds,
 		String[] productKeys, String[] productNames, String[] productIds,
-		int[] productVersions, String[] owners, String[] descriptions,
+		String[] productVersions, String[] owners, String[] descriptions,
 		String[] hostNames, String[] ipAddresses, String[] macAddresses,
 		String[] serverIds, String[] keys, Date expirationDateGT,
 		Date expirationDateLT, LinkedHashMap<String, Object> params,
@@ -314,7 +314,7 @@ public class LicenseKeyFinderImpl
 			String accountKey, String productPurchaseKey, String[] accountNames,
 			Date startDateGT, Date startDateLT, long[] licenseEntryIds,
 			String[] productKeys, String[] productNames, String[] productIds,
-			int[] productVersions, String[] owners, String[] descriptions,
+			String[] productVersions, String[] owners, String[] descriptions,
 			String[] hostNames, String[] ipAddresses, String[] macAddresses,
 			String[] serverIds, String[] keys, Date expirationDateGT,
 			Date expirationDateLT, LinkedHashMap<String, Object> params,
@@ -471,7 +471,7 @@ public class LicenseKeyFinderImpl
 	protected String replaceSQL(
 		String sql, Long createUserId, Long modifiedUserId,
 		String[] accountNames, long[] licenseEntryIds, String[] productKeys,
-		String[] productNames, String[] productIds, int[] productVersions,
+		String[] productNames, String[] productIds, String[] productVersions,
 		String[] owners, String[] descriptions, String[] hostNames,
 		String[] ipAddresses, String[] macAddresses, String[] serverIds,
 		String[] keys, LinkedHashMap<String, Object> params,
@@ -504,8 +504,8 @@ public class LicenseKeyFinderImpl
 			sql, "LOWER(Provisioning_LicenseKey.productId)", StringPool.EQUAL,
 			false, productIds);
 		sql = CustomSQLUtil.replaceKeywords(
-			sql, "Provisioning_LicenseKey.productVersion", false,
-			productVersions);
+			sql, "Provisioning_LicenseKey.productVersion", StringPool.EQUAL,
+			false, productVersions);
 		sql = CustomSQLUtil.replaceKeywords(
 			sql, "LOWER(Provisioning_LicenseKey.owner)", StringPool.LIKE, false,
 			owners);
@@ -597,7 +597,7 @@ public class LicenseKeyFinderImpl
 		Timestamp modifiedDateGT, Timestamp modifiedDateLT, String accountKey,
 		String productPurchaseKey, String[] accountNames, Timestamp startDateGT,
 		Timestamp startDateLT, long[] licenseEntryIds, String[] productKeys,
-		String[] productNames, String[] productIds, int[] productVersions,
+		String[] productNames, String[] productIds, String[] productVersions,
 		String[] owners, String[] descriptions, String[] hostNames,
 		String[] ipAddresses, String[] macAddresses, String[] serverIds,
 		String[] keys, Timestamp expirationDateGT, Timestamp expirationDateLT) {

@@ -73,8 +73,7 @@
 		<column name="licenseVersion" type="int" />
 		<column name="productName" type="String" />
 		<column name="productId" type="String" />
-		<column name="productVersion" type="int" />
-		<column name="productVersionLabel" type="String" />
+		<column name="productVersion" type="String" />
 		<column name="clusterId" type="long" />
 		<column name="owner" type="String" />
 		<column name="maxServers" type="int" />
@@ -171,10 +170,6 @@
 			<finder-column name="complimentary" />
 			<finder-column name="active" />
 		</finder>
-
-		<!-- References -->
-
-		<reference entity="ListType" package-path="com.liferay.portal" />
 	</entity>
 	<exceptions>
 		<exception>DuplicateIPAddress</exception>

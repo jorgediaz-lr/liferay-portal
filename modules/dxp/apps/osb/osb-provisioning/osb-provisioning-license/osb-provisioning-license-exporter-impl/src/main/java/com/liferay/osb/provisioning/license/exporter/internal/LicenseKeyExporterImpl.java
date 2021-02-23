@@ -94,15 +94,15 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 	public File toFile(
 			String key, String accountName, String licenseEntryName,
 			String licenseType, int licenseVersion, String productName,
-			String productId, int productVersion, String owner, int maxServers,
-			int maxHttpSessions, long maxConcurrentUsers, long maxUsers,
-			int sizing, String description, String hostNames,
+			String productId, String productVersion, String owner,
+			int maxServers, int maxHttpSessions, long maxConcurrentUsers,
+			long maxUsers, int sizing, String description, String hostNames,
 			String ipAddresses, String macAddresses, String[] serverIds,
 			Date startDate, Date expirationDate, Date createDate)
 		throws Exception {
 
 		File file = OSBFileUtil.createTempFile(
-			getFileName(productName, String.valueOf(productVersion)));
+			getFileName(productName, productVersion));
 
 		FileUtil.write(
 			file,
@@ -119,11 +119,11 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 	public String toLI(
 			String key, String accountName, String licenseEntryName,
 			String licenseType, int licenseVersion, String productName,
-			String productId, int productVersion, String owner, int maxServers,
-			int maxHttpSessions, long maxConcurrentUsers, long maxUsers,
-			int sizing, String description, String hostName, String ipAddresses,
-			String macAddresses, String serverId, Date startDate,
-			Date expirationDate)
+			String productId, String productVersion, String owner,
+			int maxServers, int maxHttpSessions, long maxConcurrentUsers,
+			long maxUsers, int sizing, String description, String hostName,
+			String ipAddresses, String macAddresses, String serverId,
+			Date startDate, Date expirationDate)
 		throws IOException {
 
 		UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
@@ -168,7 +168,7 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 			objectOutputStream.writeUTF(GetterUtil.getString(owner));
 			objectOutputStream.writeUTF(GetterUtil.getString(productName));
 			objectOutputStream.writeUTF(GetterUtil.getString(productId));
-			objectOutputStream.writeUTF(String.valueOf(productVersion));
+			objectOutputStream.writeUTF(productVersion);
 
 			String[] serverIds = null;
 
@@ -209,9 +209,9 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 	public String toXML(
 			String key, String accountName, String licenseEntryName,
 			String licenseType, int licenseVersion, String productName,
-			String productId, int productVersion, String owner, int maxServers,
-			int maxHttpSessions, long maxConcurrentUsers, long maxUsers,
-			int sizing, String description, String hostNames,
+			String productId, String productVersion, String owner,
+			int maxServers, int maxHttpSessions, long maxConcurrentUsers,
+			long maxUsers, int sizing, String description, String hostNames,
 			String ipAddresses, String macAddresses, String[] serverIds,
 			Date startDate, Date expirationDate, Date createDate)
 		throws Exception {
@@ -473,22 +473,22 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 	private Map<String, String> _getProperties(
 		String accountName, String licenseEntryName, String licenseType,
 		int licenseVersion, String productName, String productId,
-		int productVersion, String owner, int maxServers, int maxHttpSessions,
-		long maxConcurrentUsers, long maxUsers, int sizing, String description,
-		String hostNames, String ipAddresses, String macAddresses,
-		String[] serverIds, Date startDate, Date expirationDate,
-		Date createDate) {
+		String productVersion, String owner, int maxServers,
+		int maxHttpSessions, long maxConcurrentUsers, long maxUsers, int sizing,
+		String description, String hostNames, String ipAddresses,
+		String macAddresses, String[] serverIds, Date startDate,
+		Date expirationDate, Date createDate) {
 
 		Map<String, String> properties = _keyGenerator.getProperties(
 			accountName, licenseEntryName, licenseType, licenseVersion,
-			productName, productId, ProductVersion.getLabel(productVersion),
-			owner, maxServers, maxHttpSessions, maxConcurrentUsers, maxUsers,
-			sizing, description, hostNames, ipAddresses, macAddresses,
-			serverIds, startDate, expirationDate);
+			productName, productId, productVersion, owner, maxServers,
+			maxHttpSessions, maxConcurrentUsers, maxUsers, sizing, description,
+			hostNames, ipAddresses, macAddresses, serverIds, startDate,
+			expirationDate);
 
 		// See LRDCOM-2568
 
-		if (productVersion == ProductVersion.PORTAL_VERSION_6_1_10) {
+		if (productVersion.equals(ProductVersion.PORTAL_VERSION_6_1_10)) {
 			Calendar cal = Calendar.getInstance();
 
 			cal.set(Calendar.DAY_OF_MONTH, 31);
