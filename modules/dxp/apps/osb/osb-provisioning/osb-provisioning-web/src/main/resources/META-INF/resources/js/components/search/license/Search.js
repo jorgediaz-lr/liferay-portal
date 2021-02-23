@@ -10,7 +10,7 @@
  */
 
 import PropTypes from 'prop-types';
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 
 import {NAMESPACE} from '../../../utilities/constants';
 import {
@@ -28,6 +28,8 @@ function Search({
 	const [keywords, setKeywords] = useState(getSearchParameter());
 	const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
 
+	const searchRef = useRef();
+
 	function buildSearchResultsURL() {
 		return `${licenseHomeURL}&${NAMESPACE}licenseSearchKeywords=${keywords}`;
 	}
@@ -37,7 +39,9 @@ function Search({
 			.filter(([key]) => getLicenseFilterDisplayName(key))
 			.map(
 				([key, value]) =>
-					getLicenseFilterDisplayName(key) + ': ' + formatFilterValue(value)
+					getLicenseFilterDisplayName(key) +
+					': ' +
+					formatFilterValue(value)
 			)
 			.join(', ');
 	}
@@ -75,8 +79,19 @@ function Search({
 		}
 	}
 
-	function handleClickOutside() {
-		// TODO
+	function handleClickOutside(event) {
+		const activeDatePicker = document.querySelector(
+			'.date-picker-dropdown-menu.show'
+		);
+
+		if (
+			!activeDatePicker ||
+			(activeDatePicker && !activeDatePicker.contains(event.target))
+		) {
+			setShowAdvancedSearch(false);
+
+			handleOnToggle();
+		}
 	}
 
 	function handleOnChange(event) {
@@ -120,7 +135,7 @@ function Search({
 	}
 
 	return (
-		<>
+		<div ref={searchRef}>
 			<div className="input-group">
 				<div className="input-group-item">
 					<input
@@ -180,9 +195,10 @@ function Search({
 					licenseTypes={licenseTypes}
 					productNames={productNames}
 					productVersions={productVersions}
+					ref={searchRef}
 				/>
 			)}
-		</>
+		</div>
 	);
 }
 

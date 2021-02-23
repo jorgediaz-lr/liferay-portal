@@ -110,7 +110,9 @@ function Search({
 			.filter(([key]) => getAccountFilterDisplayName(key))
 			.map(
 				([key, value]) =>
-					getAccountFilterDisplayName(key) + ': ' + formatFilterValue(value)
+					getAccountFilterDisplayName(key) +
+					': ' +
+					formatFilterValue(value)
 			)
 			.join(', ');
 	}
