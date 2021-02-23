@@ -51,11 +51,6 @@ AccountSearchDisplayContext accountSearchDisplayContext = ProvisioningWebCompone
 			'.subnav-tbar'
 		);
 
-		if (resultsBar) {
-			titleBar.classList.add('hide');
-		}
-		else {
-			titleBar.classList.remove('hide');
-		}
+		titleBar.classList.toggle('hide', resultsBar);
 	}
 </aui:script>
