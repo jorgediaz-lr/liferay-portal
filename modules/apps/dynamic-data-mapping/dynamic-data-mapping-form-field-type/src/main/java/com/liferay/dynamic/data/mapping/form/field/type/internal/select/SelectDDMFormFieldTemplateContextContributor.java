@@ -28,11 +28,14 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.AggregateResourceBundle;
+import com.liferay.portal.kernel.util.CollatorUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.WebKeys;
+
+import java.text.Collator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -184,12 +187,14 @@ public class SelectDDMFormFieldTemplateContextContributor
 			ddmFormField.getProperty("alphabeticalOrder"));
 
 		if (alphabeticalOrder) {
+			Collator collator = CollatorUtil.getInstance(locale);
+
 			options.sort(
 				(map1, map2) -> {
 					String label1 = map1.get("label");
 					String label2 = map2.get("label");
 
-					return label1.compareTo(label2);
+					return collator.compare(label1, label2);
 				});
 		}
 
