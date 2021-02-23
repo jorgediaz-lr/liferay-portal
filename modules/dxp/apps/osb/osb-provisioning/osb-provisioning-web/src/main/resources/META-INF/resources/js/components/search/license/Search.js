@@ -193,19 +193,19 @@ Search.propTypes = {
 			label: PropTypes.string,
 			value: PropTypes.oneOfType[(PropTypes.number, PropTypes.string)]
 		})
-	),
+	).isRequired,
 	productNames: PropTypes.arrayOf(
 		PropTypes.shape({
 			label: PropTypes.string,
 			value: PropTypes.oneOfType[(PropTypes.number, PropTypes.string)]
 		})
-	),
+	).isRequired,
 	productVersions: PropTypes.arrayOf(
 		PropTypes.shape({
 			label: PropTypes.string,
 			value: PropTypes.oneOfType[(PropTypes.number, PropTypes.string)]
 		})
-	)
+	).isRequired
 };
 
 export default Search;

@@ -12,21 +12,20 @@
 import {cleanup, fireEvent, render} from '@testing-library/react';
 import React from 'react';
 
-import AdvancedSearch from '../../../../src/main/resources/META-INF/resources/js/components/search/account/AdvancedSearch';
+import AdvancedSearch from '../../../../src/main/resources/META-INF/resources/js/components/search/license/AdvancedSearch';
 
-function renderAdvancedSearch() {
+function renderAdvancedSearch(props) {
 	return render(
 		<AdvancedSearch
-			activeSLANames={[]}
 			clickOutsideCallback={jest.fn()}
-			countryNames={[]}
 			formAction="/url"
-			regionNames={[]}
-			selectAccountURL="/select/account/url"
-			selectFirstLineSupportURL="/select/fls/url"
-			selectPartnerURL="/select/partner/url"
-			subscriptionStateNames={[]}
-			tierNames={[]}
+			licenseTypes={[{label: 'type1', value: 'l-1'}]}
+			productNames={[
+				{label: 'name1', value: 'n-1'},
+				{label: 'name2', value: 'n-2'}
+			]}
+			productVersions={[{label: 'version1', value: 'v-1'}]}
+			{...props}
 		/>
 	);
 }
@@ -66,11 +65,13 @@ describe('Account AdvancedSearch', () => {
 		expect(getByLabelText('all').checked).toBeFalsy();
 	});
 
-	it('displays an Account section, a Categorization section, and a Dates section', () => {
+	it('displays a General Details section, a License Type section, a Product section, a Product Version section, and a Dates section if all props are supplied', () => {
 		const {getByText} = renderAdvancedSearch();
 
-		getByText('account');
-		getByText('categorization');
+		getByText('general-details');
+		getByText('license-type');
+		getByText('product');
+		getByText('product-version');
 		getByText('dates');
 	});
 });
