@@ -20,7 +20,7 @@ import {NAMESPACE} from '../../../utilities/constants';
 import {request} from '../../../utilities/helpers';
 import {
 	formatFilterValue,
-	getFilterDisplayName
+	getAccountFilterDisplayName
 } from '../../../utilities/searchFilters';
 import AdvancedSearch from './AdvancedSearch';
 
@@ -107,10 +107,10 @@ function Search({
 
 	function formatPlaceholder(filters) {
 		return Object.entries(filters)
-			.filter(([key]) => getFilterDisplayName(key))
+			.filter(([key]) => getAccountFilterDisplayName(key))
 			.map(
 				([key, value]) =>
-					getFilterDisplayName(key) + ': ' + formatFilterValue(value)
+					getAccountFilterDisplayName(key) + ': ' + formatFilterValue(value)
 			)
 			.join(', ');
 	}

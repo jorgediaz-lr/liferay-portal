@@ -15,7 +15,7 @@ import React, {useState} from 'react';
 import {NAMESPACE} from '../../../utilities/constants';
 import {
 	formatFilterValue,
-	getFilterDisplayName
+	getLicenseFilterDisplayName
 } from '../../../utilities/searchFilters';
 import AdvancedSearch from './AdvancedSearch';
 
@@ -34,10 +34,10 @@ function Search({
 
 	function formatPlaceholder(filters) {
 		return Object.entries(filters)
-			.filter(([key]) => getFilterDisplayName(key))
+			.filter(([key]) => getLicenseFilterDisplayName(key))
 			.map(
 				([key, value]) =>
-					getFilterDisplayName(key) + ': ' + formatFilterValue(value)
+					getLicenseFilterDisplayName(key) + ': ' + formatFilterValue(value)
 			)
 			.join(', ');
 	}

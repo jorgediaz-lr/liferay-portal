@@ -34,12 +34,12 @@ export function formatFilterValue(value) {
 }
 
 /**
- * This helper matches a search param name and returns the localized display
- * name.
+ * This helper matches a search param name for account search and returns the
+ * localized display name.
  * @param {string} name The filter name to be evaluated
  * @returns {string} New display value
  */
-export function getFilterDisplayName(name) {
+export function getAccountFilterDisplayName(name) {
 	let displayName;
 
 	switch (name) {
@@ -102,6 +102,94 @@ export function getFilterDisplayName(name) {
 			break;
 		case 'workerContactEmailAddress':
 			displayName = Liferay.Language.get('project-worker');
+			break;
+		default:
+			return;
+	}
+
+	return displayName;
+}
+
+/**
+ * This helper matches a search param name for license search and returns the
+ * localized display name.
+ * @param {string} name The filter name to be evaluated
+ * @returns {string} New display value
+ */
+export function getLicenseSearchFilterDisplayName(name) {
+	let displayName;
+
+	switch (name) {
+		case 'accountName':
+			displayName = Liferay.Language.get('account');
+			break;
+		case 'activeLicenses':
+			displayName = Liferay.Language.get('active');
+			break;
+		case 'createDateGT':
+			displayName = Liferay.Language.get('created-after');
+			break;
+		case 'createDateLT':
+			displayName = Liferay.Language.get('created-before');
+			break;
+		case 'creatorEmailAddress':
+			displayName = Liferay.Language.get('created-by');
+			break;
+		case 'editorEmailAddress':
+			displayName = Liferay.Language.get('last-edited-by');
+			break;
+		case 'expireDateGT':
+			displayName = Liferay.Language.get('expires-after');
+			break;
+		case 'expireDateLT':
+			displayName = Liferay.Language.get('expires-before');
+			break;
+		case 'hostName':
+			displayName = Liferay.Language.get('host-name');
+			break;
+		case 'ipAddress':
+			displayName = Liferay.Language.get('ip-address');
+			break;
+		case 'koroneikiAccountKey':
+			displayName = Liferay.Language.get('koroneiki-account-key');
+			break;
+		case 'koroneikiProductPurchaseKey':
+			displayName = Liferay.Language.get(
+				'koroneiki-product-purchase-key'
+			);
+			break;
+		case 'licenseKey':
+			displayName = Liferay.Language.get('key');
+			break;
+		case 'licenseTypes':
+			displayName = Liferay.Language.get('license-type');
+			break;
+		case 'macAddress':
+			displayName = Liferay.Language.get('mac-address');
+			break;
+		case 'modifiedDateGT':
+			displayName = Liferay.Language.get('modified-after');
+			break;
+		case 'modifiedDateLT':
+			displayName = Liferay.Language.get('modified-before');
+			break;
+		case 'owner':
+			displayName = Liferay.Language.get('owner');
+			break;
+		case 'productNames':
+			displayName = Liferay.Language.get('product');
+			break;
+		case 'productVersions':
+			displayName = Liferay.Language.get('product-version');
+			break;
+		case 'serverId':
+			displayName = Liferay.Language.get('server-id');
+			break;
+		case 'startDateGT':
+			displayName = Liferay.Language.get('started-after');
+			break;
+		case 'startDateLT':
+			displayName = Liferay.Language.get('started-before');
 			break;
 		default:
 			return;
