@@ -16,7 +16,7 @@ import debounce from 'lodash.debounce';
 import PropTypes from 'prop-types';
 import React, {useRef, useState} from 'react';
 
-import {NAMESPACE} from '../../../utilities/constants';
+import {ACCOUNTS_PORTLET_NAMESPACE as NAMESPACE} from '../../../utilities/constants';
 import {request} from '../../../utilities/helpers';
 import {
 	formatFilterValue,

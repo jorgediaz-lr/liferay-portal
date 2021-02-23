@@ -12,7 +12,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import {FIELD_SIZE_SMALL, NAMESPACE} from '../../../utilities/constants';
+import {
+	ACCOUNTS_PORTLET_NAMESPACE as NAMESPACE,
+	FIELD_SIZE_SMALL
+} from '../../../utilities/constants';
 import {itemSelectorDialogSelection} from '../../../utilities/itemSelectorDialogHelper';
 import ExternalSelectField from '../../ExternalSelectField';
 

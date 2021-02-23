@@ -14,7 +14,7 @@ import PropTypes from 'prop-types';
 import React, {useRef, useState} from 'react';
 
 import {useClickOutside} from '../../../hooks/useClickOutside';
-import {NAMESPACE} from '../../../utilities/constants';
+import {ACCOUNTS_PORTLET_NAMESPACE as NAMESPACE} from '../../../utilities/constants';
 import AccountDetails from './AccountDetails';
 import Categorization from './Categorization';
 import Dates from './Dates';

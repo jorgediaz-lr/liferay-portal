@@ -17,7 +17,12 @@ import {NAMESPACE} from '../../utilities/constants';
 
 const BOOTSTRAP_GRID_COL_NUM = 12;
 
-function CheckboxGroups({columns = 1, fieldValues, inputName}) {
+function CheckboxGroups({
+	columns = 1,
+	fieldValues,
+	inputName,
+	namespace = NAMESPACE
+}) {
 	const [values, setValues] = useState([]);
 
 	function handleOnClick(event) {
@@ -34,7 +39,7 @@ function CheckboxGroups({columns = 1, fieldValues, inputName}) {
 	return (
 		<>
 			<input
-				name={`${NAMESPACE}${inputName}`}
+				name={`${namespace}${inputName}`}
 				type="hidden"
 				value={values.join()}
 			/>
@@ -66,7 +71,8 @@ CheckboxGroups.propTypes = {
 			value: PropTypes.oneOfType([PropTypes.bool, PropTypes.string])
 		})
 	),
-	inputName: PropTypes.string.isRequired
+	inputName: PropTypes.string.isRequired,
+	namespace: PropTypes.string
 };
 
 export default CheckboxGroups;

@@ -12,7 +12,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import {BINARY_SELECTION} from '../../../utilities/constants';
+import {
+	ACCOUNTS_PORTLET_NAMESPACE,
+	BINARY_SELECTION
+} from '../../../utilities/constants';
 import CheckboxGroups from '../CheckboxGroups';
 
 function Categorization({
@@ -45,6 +48,7 @@ function Categorization({
 				<CheckboxGroups
 					fieldValues={BINARY_SELECTION}
 					inputName="partners"
+					namespace={ACCOUNTS_PORTLET_NAMESPACE}
 				/>
 			</div>
 
@@ -56,6 +60,7 @@ function Categorization({
 				<CheckboxGroups
 					fieldValues={BINARY_SELECTION}
 					inputName="providesFLS"
+					namespace={ACCOUNTS_PORTLET_NAMESPACE}
 				/>
 			</div>
 
@@ -67,6 +72,7 @@ function Categorization({
 				<CheckboxGroups
 					fieldValues={BINARY_SELECTION}
 					inputName="receivesFLS"
+					namespace={ACCOUNTS_PORTLET_NAMESPACE}
 				/>
 			</div>
 
@@ -78,6 +84,7 @@ function Categorization({
 				<CheckboxGroups
 					fieldValues={BINARY_SELECTION}
 					inputName="internals"
+					namespace={ACCOUNTS_PORTLET_NAMESPACE}
 				/>
 			</div>
 
@@ -89,6 +96,7 @@ function Categorization({
 				<CheckboxGroups
 					fieldValues={processCheckboxGroupFieldValues(tierNames)}
 					inputName="tiers"
+					namespace={ACCOUNTS_PORTLET_NAMESPACE}
 				/>
 			</div>
 
@@ -102,6 +110,7 @@ function Categorization({
 						subscriptionStateNames
 					)}
 					inputName="subscriptionStates"
+					namespace={ACCOUNTS_PORTLET_NAMESPACE}
 				/>
 			</div>
 
@@ -113,6 +122,7 @@ function Categorization({
 				<CheckboxGroups
 					fieldValues={simplifySLANames(activeSLANames)}
 					inputName="activeSLAs"
+					namespace={ACCOUNTS_PORTLET_NAMESPACE}
 				/>
 			</div>
 
@@ -124,6 +134,7 @@ function Categorization({
 				<CheckboxGroups
 					fieldValues={processCheckboxGroupFieldValues(regionNames)}
 					inputName="regions"
+					namespace={ACCOUNTS_PORTLET_NAMESPACE}
 				/>
 			</div>
 		</div>

@@ -11,7 +11,7 @@
 
 import React from 'react';
 
-import {NAMESPACE} from '../../../utilities/constants';
+import {ACCOUNTS_PORTLET_NAMESPACE as NAMESPACE} from '../../../utilities/constants';
 import DatePicker from '../../DatePicker';
 
 function Dates() {

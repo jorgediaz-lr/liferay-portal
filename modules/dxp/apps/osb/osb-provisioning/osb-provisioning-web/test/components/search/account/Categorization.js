@@ -96,13 +96,17 @@ describe('Account Search Categorization', () => {
 		fireEvent.click(getByText('Strategic'));
 
 		expect(
-			container.querySelector('input[name = "namespacetiers"]').value
+			container.querySelector(
+				'input[name = "_com_liferay_osb_provisioning_web_portlet_AccountsPortlet_tiers"]'
+			).value
 		).toBe('OEM,Regular,Strategic');
 
 		fireEvent.click(getByText('Strategic'));
 
 		expect(
-			container.querySelector('input[name = "namespacetiers"]').value
+			container.querySelector(
+				'input[name = "_com_liferay_osb_provisioning_web_portlet_AccountsPortlet_tiers"]'
+			).value
 		).toBe('OEM,Regular');
 	});
 
