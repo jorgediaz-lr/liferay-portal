@@ -21,7 +21,7 @@ import {request} from '../../../utilities/helpers';
 import {
 	formatFilterValue,
 	getAccountFilterDisplayName
-} from '../../../utilities/searchFilters';
+} from '../../../utilities/search';
 import AdvancedSearch from './AdvancedSearch';
 
 const MAX_RESULTS = 7;

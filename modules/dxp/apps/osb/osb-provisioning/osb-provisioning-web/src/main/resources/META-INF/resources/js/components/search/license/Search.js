@@ -16,7 +16,7 @@ import {NAMESPACE} from '../../../utilities/constants';
 import {
 	formatFilterValue,
 	getLicenseFilterDisplayName
-} from '../../../utilities/searchFilters';
+} from '../../../utilities/search';
 import AdvancedSearch from './AdvancedSearch';
 
 function Search({
