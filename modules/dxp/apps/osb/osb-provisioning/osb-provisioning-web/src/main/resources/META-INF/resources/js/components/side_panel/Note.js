@@ -30,7 +30,16 @@ function Note({note}) {
 	const [showActionMenu, setShowActionMenu] = useState(false);
 	const [, {archiveNote, pinNote}] = useNotes();
 
-	const {content, format, id, pinned, status, type, updateURL} = note;
+	const {
+		content,
+		format,
+		htmlContent,
+		id,
+		pinned,
+		status,
+		type,
+		updateURL
+	} = note;
 
 	const noteData = prop => {
 		return {
@@ -159,7 +168,7 @@ function Note({note}) {
 			) : (
 				<section
 					className="note-content"
-					dangerouslySetInnerHTML={{__html: content}}
+					dangerouslySetInnerHTML={{__html: htmlContent}}
 				/>
 			)}
 		</div>

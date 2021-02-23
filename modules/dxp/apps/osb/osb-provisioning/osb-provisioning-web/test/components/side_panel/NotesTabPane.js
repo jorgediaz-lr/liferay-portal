@@ -25,6 +25,7 @@ import {
 function mockNotes({type}) {
 	return [
 		{
+			content: 'a pinned note',
 			createDate: 'Apr 30, 2020 11:53 PM',
 			creatorName: 'Jane Doe',
 			creatorPortraitURL: '/',
@@ -38,6 +39,7 @@ function mockNotes({type}) {
 			updateNoteURL: '/'
 		},
 		{
+			content: 'top most note',
 			createDate: 'May 01, 2020 12:10 AM',
 			creatorName: 'Jane Doe',
 			creatorPortraitURL: '/',
@@ -51,6 +53,7 @@ function mockNotes({type}) {
 			updateNoteURL: '/'
 		},
 		{
+			content: 'an unpinned note',
 			createDate: new Date().toLocaleString('en-US'),
 			creatorName: 'Jane Doe',
 			creatorPortraitURL: '/',
@@ -64,6 +67,7 @@ function mockNotes({type}) {
 			updateNoteURL: '/'
 		},
 		{
+			content: 'an archived note',
 			createDate: new Date().toLocaleString('en-US'),
 			creatorName: 'Jane Doe',
 			creatorPortraitURL: '/',

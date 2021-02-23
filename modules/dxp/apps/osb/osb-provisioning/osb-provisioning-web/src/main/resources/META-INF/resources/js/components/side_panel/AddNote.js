@@ -72,12 +72,13 @@ function AddNote({
 		request(actionURL, noteData, 'formData', 'post')
 			.then(({data}) => {
 				const noteFromAPI = NoteRecord({
-					content: data.note.htmlContent,
+					content: data.note.content,
 					createDate: data.note.createDate,
 					creatorName: data.note.creatorName,
 					creatorPortraitURL: data.note.creatorPortraitURL,
 					edited: data.note.edited,
 					format: data.note.format,
+					htmlContent: data.note.htmlContent,
 					id: data.note.key,
 					pinned: data.note.pinned,
 					status: data.note.status,
@@ -89,6 +90,7 @@ function AddNote({
 					editNote(
 						noteFromAPI.id,
 						noteFromAPI.content,
+						noteFromAPI.htmlContent,
 						noteFromAPI.edited
 					);
 				}

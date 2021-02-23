@@ -167,6 +167,7 @@ SidePanel.propTypes = {
 	),
 	notes: PropTypes.arrayOf(
 		PropTypes.shape({
+			content: PropTypes.string.isRequired,
 			createDate: PropTypes.string.isRequired,
 			creatorName: PropTypes.string.isRequired,
 			creatorPortraitURL: PropTypes.string,

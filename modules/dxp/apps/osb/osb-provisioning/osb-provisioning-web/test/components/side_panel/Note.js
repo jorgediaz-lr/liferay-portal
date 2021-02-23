@@ -44,6 +44,7 @@ function renderNote(props) {
 		<NotesProvider
 			initialNotes={[
 				{
+					content: 'pinned note',
 					createDate: new Date().toLocaleString('en-US'),
 					creatorName: 'Jane Doe',
 					creatorPortraitURL: '/',

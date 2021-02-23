@@ -27,6 +27,7 @@ export const NoteRecord = Record({
 	creatorPortraitURL: null,
 	edited: false,
 	format: NOTE_FORMAT_PLAIN,
+	htmlContent: '',
 	id: null,
 	pinned: false,
 	status: NOTE_STATUS_APPROVED,
@@ -40,12 +41,13 @@ export function NotesProvider({initialNotes = [], children}) {
 	const processedNotes = initialNotes.map(note => [
 		note.key,
 		NoteRecord({
-			content: note.htmlContent,
+			content: note.content,
 			createDate: note.createDate,
 			creatorName: note.creatorName,
 			creatorPortraitURL: note.creatorPortraitURL,
 			edited: note.edited,
 			format: note.format,
+			htmlContent: note.htmlContent,
 			id: note.key,
 			pinned: note.pinned,
 			status: note.status,
@@ -69,10 +71,11 @@ export function NotesProvider({initialNotes = [], children}) {
 					archiveNote(id, status) {
 						setNotes(notes.setIn([id, 'status'], status));
 					},
-					editNote(id, content, edited) {
+					editNote(id, content, htmlContent, edited) {
 						setNotes(
 							notes
 								.setIn([id, 'content'], content)
+								.setIn([id, 'htmlContent'], htmlContent)
 								.setIn([id, 'edited'], edited)
 						);
 					},

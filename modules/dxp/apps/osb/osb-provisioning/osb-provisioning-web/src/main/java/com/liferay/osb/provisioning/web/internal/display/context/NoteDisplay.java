@@ -59,6 +59,10 @@ public class NoteDisplay {
 			portletResponse);
 	}
 
+	public String getContent() {
+		return _note.getContent();
+	}
+
 	public String getCreateDate() {
 		return _dateFormat.format(_note.getDateCreated());
 	}
