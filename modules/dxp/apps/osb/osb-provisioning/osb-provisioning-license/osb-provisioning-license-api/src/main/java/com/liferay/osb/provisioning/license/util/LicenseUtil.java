@@ -18,8 +18,6 @@ import com.liferay.osb.provisioning.license.util.comparator.LicenseKeyExpiration
 import com.liferay.osb.provisioning.license.util.comparator.LicenseKeyStartDateComparator;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
-import java.util.StringTokenizer;
-
 /**
  * @author Amos Fong
  */
@@ -48,27 +46,6 @@ public class LicenseUtil {
 		}
 
 		return orderByComparator;
-	}
-
-	public static String trimText(String text) {
-
-		// Copied from org.dom4j.tree.AbstractBranch.getTextTrim()
-
-		StringBuffer textContent = new StringBuffer();
-
-		StringTokenizer tokenizer = new StringTokenizer(text);
-
-		while (tokenizer.hasMoreTokens()) {
-			String str = tokenizer.nextToken();
-
-			textContent.append(str);
-
-			if (tokenizer.hasMoreTokens()) {
-				textContent.append(" ");
-			}
-		}
-
-		return textContent.toString();
 	}
 
 }

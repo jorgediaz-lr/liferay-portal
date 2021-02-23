@@ -12,16 +12,15 @@
  *
  */
 
-package com.liferay.osb.provisioning.license.internal.constants;
+package com.liferay.osb.provisioning.license.helper.constants;
 
 import com.liferay.portal.kernel.util.Time;
 
 /**
  * @author Kyle Bischof
  */
-public class LicenseKeyConstants {
+public class LicenseLifetime {
 
-	public static final long LIFETIME_INDEFINITE_VALUE =
-		36500 * 1440 * Time.MINUTE;
+	public static final long INDEFINITE = 36500 * 1440 * Time.MINUTE;
 
 }

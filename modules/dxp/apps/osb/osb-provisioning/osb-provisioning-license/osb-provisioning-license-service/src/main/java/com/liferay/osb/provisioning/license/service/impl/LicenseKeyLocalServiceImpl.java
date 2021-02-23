@@ -36,16 +36,15 @@ import com.liferay.osb.provisioning.license.exception.LicenseKeyRenewException;
 import com.liferay.osb.provisioning.license.exception.LicenseKeyServerInfoException;
 import com.liferay.osb.provisioning.license.exception.NoSuchLicenseKeyException;
 import com.liferay.osb.provisioning.license.generator.KeyGenerator;
+import com.liferay.osb.provisioning.license.helper.constants.LicenseLifetime;
 import com.liferay.osb.provisioning.license.helper.constants.LicenseType;
 import com.liferay.osb.provisioning.license.helper.constants.LicenseVersion;
 import com.liferay.osb.provisioning.license.helper.constants.ProductId;
 import com.liferay.osb.provisioning.license.helper.constants.ProductVersion;
-import com.liferay.osb.provisioning.license.internal.constants.LicenseKeyConstants;
 import com.liferay.osb.provisioning.license.model.LicenseEntry;
 import com.liferay.osb.provisioning.license.model.LicenseKey;
 import com.liferay.osb.provisioning.license.service.LicenseEntryLocalService;
 import com.liferay.osb.provisioning.license.service.base.LicenseKeyLocalServiceBaseImpl;
-import com.liferay.osb.provisioning.license.util.LicenseUtil;
 import com.liferay.osb.provisioning.license.util.comparator.LicenseKeyExpirationDateComparator;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
@@ -70,6 +69,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 import org.apache.commons.lang.time.DateUtils;
 
@@ -104,8 +104,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		Date startDate = new Date();
 
 		Date expirationDate = new Date(
-			startDate.getTime() +
-				LicenseKeyConstants.LIFETIME_INDEFINITE_VALUE);
+			startDate.getTime() + LicenseLifetime.INDEFINITE);
 
 		return addLicenseKey(
 			userId, name, licenseEntry, product, accountKey, StringPool.BLANK,
@@ -194,9 +193,9 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		Date now = new Date();
 		int licenseVersion = 3;
 
-		productName = LicenseUtil.trimText(productName);
-		owner = LicenseUtil.trimText(owner);
-		description = LicenseUtil.trimText(description);
+		productName = trimText(productName);
+		owner = trimText(owner);
+		description = trimText(description);
 		startDate = DateUtils.round(startDate, Calendar.SECOND);
 		expirationDate = DateUtils.round(expirationDate, Calendar.SECOND);
 
@@ -668,6 +667,27 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		return licenseKeyPersistence.update(licenseKey);
 	}
 
+	protected static String trimText(String text) {
+
+		// Copied from org.dom4j.tree.AbstractBranch.getTextTrim()
+
+		StringBuffer textContent = new StringBuffer();
+
+		StringTokenizer tokenizer = new StringTokenizer(text);
+
+		while (tokenizer.hasMoreTokens()) {
+			String str = tokenizer.nextToken();
+
+			textContent.append(str);
+
+			if (tokenizer.hasMoreTokens()) {
+				textContent.append(" ");
+			}
+		}
+
+		return textContent.toString();
+	}
+
 	protected LicenseKey doAddLicenseKey(
 			User user, Date now, LicenseEntry licenseEntry, String accountKey,
 			String productPurchaseKey, String accountCode, String accountName,
@@ -742,10 +762,10 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			boolean complimentary, boolean active)
 		throws Exception {
 
-		accountName = LicenseUtil.trimText(accountName);
+		accountName = trimText(accountName);
 
-		String licenseEntryName = LicenseUtil.trimText(licenseEntry.getName());
-		String productName = LicenseUtil.trimText(product.getName());
+		String licenseEntryName = trimText(licenseEntry.getName());
+		String productName = trimText(product.getName());
 
 		String productId = ProductId.PORTAL;
 
@@ -753,16 +773,16 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			productId = ProductId.COMMERCE;
 		}
 
-		String productVersionLabel = LicenseUtil.trimText(
+		String productVersionLabel = trimText(
 			ProductVersion.getLabel(productVersion));
 
-		owner = LicenseUtil.trimText(owner);
+		owner = trimText(owner);
 
 		if (!licenseEntryType.equals(LicenseType.CLUSTER)) {
 			maxServers = 1;
 		}
 
-		description = LicenseUtil.trimText(description);
+		description = trimText(description);
 
 		if (licenseEntryType.equals(LicenseType.DEVELOPER) ||
 			licenseEntryType.equals(LicenseType.DEVELOPER_CLUSTER)) {
