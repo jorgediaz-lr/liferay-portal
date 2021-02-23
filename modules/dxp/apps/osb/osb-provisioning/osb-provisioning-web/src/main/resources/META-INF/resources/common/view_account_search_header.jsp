@@ -30,7 +30,7 @@ AccountSearchDisplayContext accountSearchDisplayContext = ProvisioningWebCompone
 
 				<h3>Raysource</h3>
 			</li>
-			<li class="custom-search hide" id="accountSearch">
+			<li class="custom-search" id="accountSearch">
 				<react:component
 					data="<%= accountSearchDisplayContext.getData() %>"
 					module="js/AccountSearchApp"
@@ -41,31 +41,21 @@ AccountSearchDisplayContext accountSearchDisplayContext = ProvisioningWebCompone
 </div>
 
 <aui:script>
-	var accounts = document.querySelector('.provisioning-accounts');
+	var accountSearchManagementToolbar = document.getElementById(
+		'accountSearchManagementToolbar'
+	);
+	var titleBar = document.querySelector('.title-bar');
 
-	if (accounts) {
-		var accountSearch = document.getElementById('accountSearch');
-
-		if (accountSearch) {
-			accountSearch.classList.remove('hide');
-		}
-
-		var accountSearchManagementToolbar = document.getElementById(
-			'accountSearchManagementToolbar'
+	if (accountSearchManagementToolbar && titleBar) {
+		var resultsBar = accountSearchManagementToolbar.querySelector(
+			'.subnav-tbar'
 		);
-		var titleBar = document.querySelector('.title-bar');
 
-		if (accountSearchManagementToolbar && titleBar) {
-			var resultsBar = accountSearchManagementToolbar.querySelector(
-				'.subnav-tbar'
-			);
-
-			if (resultsBar) {
-				titleBar.classList.add('hide');
-			}
-			else {
-				titleBar.classList.remove('hide');
-			}
+		if (resultsBar) {
+			titleBar.classList.add('hide');
+		}
+		else {
+			titleBar.classList.remove('hide');
 		}
 	}
 </aui:script>
