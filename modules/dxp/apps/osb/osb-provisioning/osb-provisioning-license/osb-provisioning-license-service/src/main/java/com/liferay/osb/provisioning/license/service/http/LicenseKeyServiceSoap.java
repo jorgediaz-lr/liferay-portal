@@ -63,13 +63,13 @@ public class LicenseKeyServiceSoap {
 
 	public static com.liferay.osb.provisioning.license.model.LicenseKeySoap
 			addDeveloperLicenseKey(
-				String accountKey, String productKey, int productMinorVersion)
+				String accountKey, String productKey, String productVersion)
 		throws RemoteException {
 
 		try {
 			com.liferay.osb.provisioning.license.model.LicenseKey returnValue =
 				LicenseKeyServiceUtil.addDeveloperLicenseKey(
-					accountKey, productKey, productMinorVersion);
+					accountKey, productKey, productVersion);
 
 			return com.liferay.osb.provisioning.license.model.LicenseKeySoap.
 				toSoapModel(returnValue);
@@ -85,7 +85,7 @@ public class LicenseKeyServiceSoap {
 			addLicenseKey(
 				long userId, String name, long licenseEntryId,
 				String productKey, String accountKey, String productPurchaseKey,
-				String accountCode, String accountName, int productVersion,
+				String accountCode, String accountName, String productVersion,
 				long clusterId, String owner, int maxServers,
 				int maxHttpSessions, int maxConcurrentUsers, int maxUsers,
 				int sizing, String description, String[] hostNames,
@@ -119,7 +119,7 @@ public class LicenseKeyServiceSoap {
 			addLicenseKey(
 				String userUuid, String assetReceiptLicenseUuid,
 				String licenseEntryType, String productName, String productId,
-				int productVersion, String owner, long maxUsers,
+				String productVersion, String owner, long maxUsers,
 				String description, String hostName, String ipAddresses,
 				String macAddresses, String serverId, java.util.Date startDate,
 				java.util.Date expirationDate)

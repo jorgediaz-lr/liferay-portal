@@ -36,11 +36,11 @@ public class LicenseKeyLocalServiceWrapper
 	public com.liferay.osb.provisioning.license.model.LicenseKey
 			addDeveloperLicenseKey(
 				long userId, String accountKey, String productKey,
-				int productMinorVersion)
+				String productVersion)
 		throws Exception {
 
 		return _licenseKeyLocalService.addDeveloperLicenseKey(
-			userId, accountKey, productKey, productMinorVersion);
+			userId, accountKey, productKey, productVersion);
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class LicenseKeyLocalServiceWrapper
 			com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product
 				product,
 			String accountKey, String productPurchaseKey, String accountCode,
-			String accountName, int productVersion, long clusterId,
+			String accountName, String productVersion, long clusterId,
 			String owner, int maxServers, int maxHttpSessions,
 			int maxConcurrentUsers, int maxUsers, int sizing,
 			String description, String[] hostNames, String[] ipAddresses,
@@ -89,7 +89,7 @@ public class LicenseKeyLocalServiceWrapper
 	public com.liferay.osb.provisioning.license.model.LicenseKey addLicenseKey(
 			long userId, String name, long licenseEntryId, String productKey,
 			String accountKey, String productPurchaseKey, String accountCode,
-			String accountName, int productVersion, long clusterId,
+			String accountName, String productVersion, long clusterId,
 			String owner, int maxServers, int maxHttpSessions,
 			int maxConcurrentUsers, int maxUsers, int sizing,
 			String description, String[] hostNames, String[] ipAddresses,
@@ -110,9 +110,9 @@ public class LicenseKeyLocalServiceWrapper
 	public com.liferay.osb.provisioning.license.model.LicenseKey addLicenseKey(
 			long userId, String assetReceiptLicenseUuid,
 			String licenseEntryType, String productName, String productId,
-			int productVersion, String owner, long maxUsers, String description,
-			String hostName, String ipAddresses, String macAddresses,
-			String serverId, java.util.Date startDate,
+			String productVersion, String owner, long maxUsers,
+			String description, String hostName, String ipAddresses,
+			String macAddresses, String serverId, java.util.Date startDate,
 			java.util.Date expirationDate)
 		throws Exception {
 
@@ -615,7 +615,7 @@ public class LicenseKeyLocalServiceWrapper
 			int startDateGTMonth, int startDateGTYear, int startDateLTDay,
 			int startDateLTMonth, int startDateLTYear, long[] licenseEntryIds,
 			String[] productKeys, String productName, String productId,
-			int[] productVersions, String owner, String description,
+			String[] productVersions, String owner, String description,
 			String hostName, String ipAddress, String macAddress,
 			String serverId, String key, int expirationDateGTDay,
 			int expirationDateGTMonth, int expirationDateGTYear,
@@ -662,7 +662,7 @@ public class LicenseKeyLocalServiceWrapper
 		int startDateGTMonth, int startDateGTYear, int startDateLTDay,
 		int startDateLTMonth, int startDateLTYear, long[] licenseEntryIds,
 		String[] productKeys, String productName, String productId,
-		int[] productVersions, String owner, String description,
+		String[] productVersions, String owner, String description,
 		String hostName, String ipAddress, String macAddress, String serverId,
 		String key, int expirationDateGTDay, int expirationDateGTMonth,
 		int expirationDateGTYear, int expirationDateLTDay,

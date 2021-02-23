@@ -77,7 +77,7 @@ public class LicenseKeyCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(83);
+		StringBundler sb = new StringBundler(81);
 
 		sb.append("{mvccVersion=");
 		sb.append(mvccVersion);
@@ -123,8 +123,6 @@ public class LicenseKeyCacheModel
 		sb.append(productId);
 		sb.append(", productVersion=");
 		sb.append(productVersion);
-		sb.append(", productVersionLabel=");
-		sb.append(productVersionLabel);
 		sb.append(", clusterId=");
 		sb.append(clusterId);
 		sb.append(", owner=");
@@ -286,13 +284,11 @@ public class LicenseKeyCacheModel
 			licenseKeyImpl.setProductId(productId);
 		}
 
-		licenseKeyImpl.setProductVersion(productVersion);
-
-		if (productVersionLabel == null) {
-			licenseKeyImpl.setProductVersionLabel("");
+		if (productVersion == null) {
+			licenseKeyImpl.setProductVersion("");
 		}
 		else {
-			licenseKeyImpl.setProductVersionLabel(productVersionLabel);
+			licenseKeyImpl.setProductVersion(productVersion);
 		}
 
 		licenseKeyImpl.setClusterId(clusterId);
@@ -409,9 +405,7 @@ public class LicenseKeyCacheModel
 		licenseVersion = objectInput.readInt();
 		productName = objectInput.readUTF();
 		productId = objectInput.readUTF();
-
-		productVersion = objectInput.readInt();
-		productVersionLabel = objectInput.readUTF();
+		productVersion = objectInput.readUTF();
 
 		clusterId = objectInput.readLong();
 		owner = objectInput.readUTF();
@@ -549,13 +543,11 @@ public class LicenseKeyCacheModel
 			objectOutput.writeUTF(productId);
 		}
 
-		objectOutput.writeInt(productVersion);
-
-		if (productVersionLabel == null) {
+		if (productVersion == null) {
 			objectOutput.writeUTF("");
 		}
 		else {
-			objectOutput.writeUTF(productVersionLabel);
+			objectOutput.writeUTF(productVersion);
 		}
 
 		objectOutput.writeLong(clusterId);
@@ -655,8 +647,7 @@ public class LicenseKeyCacheModel
 	public int licenseVersion;
 	public String productName;
 	public String productId;
-	public int productVersion;
-	public String productVersionLabel;
+	public String productVersion;
 	public long clusterId;
 	public String owner;
 	public int maxServers;

@@ -84,8 +84,7 @@ public class LicenseKeyModelImpl
 		{"licenseEntryName", Types.VARCHAR},
 		{"licenseEntryType", Types.VARCHAR}, {"licenseVersion", Types.INTEGER},
 		{"productName", Types.VARCHAR}, {"productId", Types.VARCHAR},
-		{"productVersion", Types.INTEGER},
-		{"productVersionLabel", Types.VARCHAR}, {"clusterId", Types.BIGINT},
+		{"productVersion", Types.VARCHAR}, {"clusterId", Types.BIGINT},
 		{"owner", Types.VARCHAR}, {"maxServers", Types.INTEGER},
 		{"maxConcurrentUsers", Types.BIGINT}, {"maxUsers", Types.BIGINT},
 		{"maxHttpSessions", Types.INTEGER}, {"sizing", Types.INTEGER},
@@ -122,8 +121,7 @@ public class LicenseKeyModelImpl
 		TABLE_COLUMNS_MAP.put("licenseVersion", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("productName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("productId", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("productVersion", Types.INTEGER);
-		TABLE_COLUMNS_MAP.put("productVersionLabel", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("productVersion", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("clusterId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("owner", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("maxServers", Types.INTEGER);
@@ -145,7 +143,7 @@ public class LicenseKeyModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table Provisioning_LicenseKey (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,licenseKeyId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedUserId LONG,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,assetReceiptLicenseUuid VARCHAR(75) null,accountKey VARCHAR(75) null,productPurchaseKey VARCHAR(75) null,licenseEntryId LONG,productKey VARCHAR(75) null,accountCode VARCHAR(75) null,accountName VARCHAR(75) null,licenseEntryName VARCHAR(75) null,licenseEntryType VARCHAR(75) null,licenseVersion INTEGER,productName VARCHAR(75) null,productId VARCHAR(75) null,productVersion INTEGER,productVersionLabel VARCHAR(75) null,clusterId LONG,owner VARCHAR(75) null,maxServers INTEGER,maxConcurrentUsers LONG,maxUsers LONG,maxHttpSessions INTEGER,sizing INTEGER,description VARCHAR(75) null,hostName VARCHAR(75) null,ipAddresses VARCHAR(75) null,macAddresses VARCHAR(75) null,serverId VARCHAR(75) null,key_ VARCHAR(75) null,startDate DATE null,expirationDate DATE null,additionalInfo VARCHAR(75) null,complimentary BOOLEAN,active_ BOOLEAN)";
+		"create table Provisioning_LicenseKey (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,licenseKeyId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedUserId LONG,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,assetReceiptLicenseUuid VARCHAR(75) null,accountKey VARCHAR(75) null,productPurchaseKey VARCHAR(75) null,licenseEntryId LONG,productKey VARCHAR(75) null,accountCode VARCHAR(75) null,accountName VARCHAR(500) null,licenseEntryName VARCHAR(75) null,licenseEntryType VARCHAR(75) null,licenseVersion INTEGER,productName VARCHAR(75) null,productId VARCHAR(75) null,productVersion VARCHAR(75) null,clusterId LONG,owner VARCHAR(75) null,maxServers INTEGER,maxConcurrentUsers LONG,maxUsers LONG,maxHttpSessions INTEGER,sizing INTEGER,description VARCHAR(255) null,hostName VARCHAR(75) null,ipAddresses STRING null,macAddresses STRING null,serverId STRING null,key_ STRING null,startDate DATE null,expirationDate DATE null,additionalInfo STRING null,complimentary BOOLEAN,active_ BOOLEAN)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table Provisioning_LicenseKey";
@@ -234,7 +232,6 @@ public class LicenseKeyModelImpl
 		model.setProductName(soapModel.getProductName());
 		model.setProductId(soapModel.getProductId());
 		model.setProductVersion(soapModel.getProductVersion());
-		model.setProductVersionLabel(soapModel.getProductVersionLabel());
 		model.setClusterId(soapModel.getClusterId());
 		model.setOwner(soapModel.getOwner());
 		model.setMaxServers(soapModel.getMaxServers());
@@ -500,12 +497,7 @@ public class LicenseKeyModelImpl
 			"productVersion", LicenseKey::getProductVersion);
 		attributeSetterBiConsumers.put(
 			"productVersion",
-			(BiConsumer<LicenseKey, Integer>)LicenseKey::setProductVersion);
-		attributeGetterFunctions.put(
-			"productVersionLabel", LicenseKey::getProductVersionLabel);
-		attributeSetterBiConsumers.put(
-			"productVersionLabel",
-			(BiConsumer<LicenseKey, String>)LicenseKey::setProductVersionLabel);
+			(BiConsumer<LicenseKey, String>)LicenseKey::setProductVersion);
 		attributeGetterFunctions.put("clusterId", LicenseKey::getClusterId);
 		attributeSetterBiConsumers.put(
 			"clusterId",
@@ -631,6 +623,8 @@ public class LicenseKeyModelImpl
 
 	@Override
 	public void setLicenseKeyId(long licenseKeyId) {
+		_columnBitmask = -1L;
+
 		_licenseKeyId = licenseKeyId;
 	}
 
@@ -1014,29 +1008,18 @@ public class LicenseKeyModelImpl
 
 	@JSON
 	@Override
-	public int getProductVersion() {
-		return _productVersion;
-	}
-
-	@Override
-	public void setProductVersion(int productVersion) {
-		_productVersion = productVersion;
-	}
-
-	@JSON
-	@Override
-	public String getProductVersionLabel() {
-		if (_productVersionLabel == null) {
+	public String getProductVersion() {
+		if (_productVersion == null) {
 			return "";
 		}
 		else {
-			return _productVersionLabel;
+			return _productVersion;
 		}
 	}
 
 	@Override
-	public void setProductVersionLabel(String productVersionLabel) {
-		_productVersionLabel = productVersionLabel;
+	public void setProductVersion(String productVersion) {
+		_productVersion = productVersion;
 	}
 
 	@JSON
@@ -1320,7 +1303,7 @@ public class LicenseKeyModelImpl
 
 	@Override
 	public void setActive(boolean active) {
-		_columnBitmask |= ACTIVE_COLUMN_BITMASK;
+		_columnBitmask = -1L;
 
 		if (!_setOriginalActive) {
 			_setOriginalActive = true;
@@ -1393,7 +1376,6 @@ public class LicenseKeyModelImpl
 		licenseKeyImpl.setProductName(getProductName());
 		licenseKeyImpl.setProductId(getProductId());
 		licenseKeyImpl.setProductVersion(getProductVersion());
-		licenseKeyImpl.setProductVersionLabel(getProductVersionLabel());
 		licenseKeyImpl.setClusterId(getClusterId());
 		licenseKeyImpl.setOwner(getOwner());
 		licenseKeyImpl.setMaxServers(getMaxServers());
@@ -1670,14 +1652,10 @@ public class LicenseKeyModelImpl
 
 		licenseKeyCacheModel.productVersion = getProductVersion();
 
-		licenseKeyCacheModel.productVersionLabel = getProductVersionLabel();
+		String productVersion = licenseKeyCacheModel.productVersion;
 
-		String productVersionLabel = licenseKeyCacheModel.productVersionLabel;
-
-		if ((productVersionLabel != null) &&
-			(productVersionLabel.length() == 0)) {
-
-			licenseKeyCacheModel.productVersionLabel = null;
+		if ((productVersion != null) && (productVersion.length() == 0)) {
+			licenseKeyCacheModel.productVersion = null;
 		}
 
 		licenseKeyCacheModel.clusterId = getClusterId();
@@ -1886,8 +1864,7 @@ public class LicenseKeyModelImpl
 	private String _originalProductName;
 	private String _productId;
 	private String _originalProductId;
-	private int _productVersion;
-	private String _productVersionLabel;
+	private String _productVersion;
 	private long _clusterId;
 	private long _originalClusterId;
 	private boolean _setOriginalClusterId;

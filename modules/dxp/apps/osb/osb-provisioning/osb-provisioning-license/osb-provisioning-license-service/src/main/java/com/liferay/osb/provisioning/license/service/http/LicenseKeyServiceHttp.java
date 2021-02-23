@@ -54,7 +54,7 @@ public class LicenseKeyServiceHttp {
 	public static com.liferay.osb.provisioning.license.model.LicenseKey
 			addDeveloperLicenseKey(
 				HttpPrincipal httpPrincipal, String accountKey,
-				String productKey, int productMinorVersion)
+				String productKey, String productVersion)
 		throws Exception {
 
 		try {
@@ -63,7 +63,7 @@ public class LicenseKeyServiceHttp {
 				_addDeveloperLicenseKeyParameterTypes0);
 
 			MethodHandler methodHandler = new MethodHandler(
-				methodKey, accountKey, productKey, productMinorVersion);
+				methodKey, accountKey, productKey, productVersion);
 
 			Object returnObj = null;
 
@@ -96,7 +96,7 @@ public class LicenseKeyServiceHttp {
 				HttpPrincipal httpPrincipal, long userId, String name,
 				long licenseEntryId, String productKey, String accountKey,
 				String productPurchaseKey, String accountCode,
-				String accountName, int productVersion, long clusterId,
+				String accountName, String productVersion, long clusterId,
 				String owner, int maxServers, int maxHttpSessions,
 				int maxConcurrentUsers, int maxUsers, int sizing,
 				String description, String[] hostNames, String[] ipAddresses,
@@ -148,7 +148,7 @@ public class LicenseKeyServiceHttp {
 			addLicenseKey(
 				HttpPrincipal httpPrincipal, String userUuid,
 				String assetReceiptLicenseUuid, String licenseEntryType,
-				String productName, String productId, int productVersion,
+				String productName, String productId, String productVersion,
 				String owner, long maxUsers, String description,
 				String hostName, String ipAddresses, String macAddresses,
 				String serverId, java.util.Date startDate,
@@ -852,7 +852,7 @@ public class LicenseKeyServiceHttp {
 				int startDateGTDay, int startDateGTMonth, int startDateGTYear,
 				int startDateLTDay, int startDateLTMonth, int startDateLTYear,
 				long[] licenseEntryIds, String[] productKeys,
-				String productName, String productId, int[] productVersions,
+				String productName, String productId, String[] productVersions,
 				String owner, String description, String hostName,
 				String ipAddress, String macAddress, String serverId,
 				String key, int expirationDateGTDay, int expirationDateGTMonth,
@@ -962,7 +962,7 @@ public class LicenseKeyServiceHttp {
 			int startDateGTMonth, int startDateGTYear, int startDateLTDay,
 			int startDateLTMonth, int startDateLTYear, long[] licenseEntryIds,
 			String[] productKeys, String productName, String productId,
-			int[] productVersions, String owner, String description,
+			String[] productVersions, String owner, String description,
 			String hostName, String ipAddress, String macAddress,
 			String serverId, String key, int expirationDateGTDay,
 			int expirationDateGTMonth, int expirationDateGTYear,
@@ -1202,11 +1202,11 @@ public class LicenseKeyServiceHttp {
 		LicenseKeyServiceHttp.class);
 
 	private static final Class<?>[] _addDeveloperLicenseKeyParameterTypes0 =
-		new Class[] {String.class, String.class, int.class};
+		new Class[] {String.class, String.class, String.class};
 	private static final Class<?>[] _addLicenseKeyParameterTypes1 =
 		new Class[] {
 			long.class, String.class, long.class, String.class, String.class,
-			String.class, String.class, String.class, int.class, long.class,
+			String.class, String.class, String.class, String.class, long.class,
 			String.class, int.class, int.class, int.class, int.class, int.class,
 			String.class, String[].class, String[].class, String[].class,
 			String[].class, java.util.Date.class, java.util.Date.class,
@@ -1215,7 +1215,7 @@ public class LicenseKeyServiceHttp {
 	private static final Class<?>[] _addLicenseKeyParameterTypes2 =
 		new Class[] {
 			String.class, String.class, String.class, String.class,
-			String.class, int.class, String.class, long.class, String.class,
+			String.class, String.class, String.class, long.class, String.class,
 			String.class, String.class, String.class, String.class,
 			java.util.Date.class, java.util.Date.class
 		};
@@ -1275,11 +1275,11 @@ public class LicenseKeyServiceHttp {
 		int.class, Long.class, int.class, int.class, int.class, int.class,
 		int.class, int.class, String.class, String.class, String.class,
 		int.class, int.class, int.class, int.class, int.class, int.class,
-		long[].class, String[].class, String.class, String.class, int[].class,
-		String.class, String.class, String.class, String.class, String.class,
-		String.class, String.class, int.class, int.class, int.class, int.class,
-		int.class, int.class, java.util.LinkedHashMap.class, boolean.class,
-		int.class, int.class,
+		long[].class, String[].class, String.class, String.class,
+		String[].class, String.class, String.class, String.class, String.class,
+		String.class, String.class, String.class, int.class, int.class,
+		int.class, int.class, int.class, int.class,
+		java.util.LinkedHashMap.class, boolean.class, int.class, int.class,
 		com.liferay.portal.kernel.util.OrderByComparator.class
 	};
 	private static final Class<?>[] _searchParameterTypes19 = new Class[] {
@@ -1291,10 +1291,11 @@ public class LicenseKeyServiceHttp {
 		int.class, Long.class, int.class, int.class, int.class, int.class,
 		int.class, int.class, String.class, String.class, String.class,
 		int.class, int.class, int.class, int.class, int.class, int.class,
-		long[].class, String[].class, String.class, String.class, int[].class,
-		String.class, String.class, String.class, String.class, String.class,
-		String.class, String.class, int.class, int.class, int.class, int.class,
-		int.class, int.class, java.util.LinkedHashMap.class, boolean.class
+		long[].class, String[].class, String.class, String.class,
+		String[].class, String.class, String.class, String.class, String.class,
+		String.class, String.class, String.class, int.class, int.class,
+		int.class, int.class, int.class, int.class,
+		java.util.LinkedHashMap.class, boolean.class
 	};
 	private static final Class<?>[] _searchCountParameterTypes21 = new Class[] {
 		String.class, java.util.LinkedHashMap.class

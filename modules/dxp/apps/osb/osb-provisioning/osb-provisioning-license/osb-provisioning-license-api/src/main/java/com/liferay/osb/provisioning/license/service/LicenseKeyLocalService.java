@@ -66,7 +66,7 @@ public interface LicenseKeyLocalService
 	 */
 	public LicenseKey addDeveloperLicenseKey(
 			long userId, String accountKey, String productKey,
-			int productMinorVersion)
+			String productVersion)
 		throws Exception;
 
 	/**
@@ -85,7 +85,7 @@ public interface LicenseKeyLocalService
 	public LicenseKey addLicenseKey(
 			long userId, String name, LicenseEntry licenseEntry,
 			Product product, String accountKey, String productPurchaseKey,
-			String accountCode, String accountName, int productVersion,
+			String accountCode, String accountName, String productVersion,
 			long clusterId, String owner, int maxServers, int maxHttpSessions,
 			int maxConcurrentUsers, int maxUsers, int sizing,
 			String description, String[] hostNames, String[] ipAddresses,
@@ -97,7 +97,7 @@ public interface LicenseKeyLocalService
 	public LicenseKey addLicenseKey(
 			long userId, String name, long licenseEntryId, String productKey,
 			String accountKey, String productPurchaseKey, String accountCode,
-			String accountName, int productVersion, long clusterId,
+			String accountName, String productVersion, long clusterId,
 			String owner, int maxServers, int maxHttpSessions,
 			int maxConcurrentUsers, int maxUsers, int sizing,
 			String description, String[] hostNames, String[] ipAddresses,
@@ -108,9 +108,10 @@ public interface LicenseKeyLocalService
 	public LicenseKey addLicenseKey(
 			long userId, String assetReceiptLicenseUuid,
 			String licenseEntryType, String productName, String productId,
-			int productVersion, String owner, long maxUsers, String description,
-			String hostName, String ipAddresses, String macAddresses,
-			String serverId, Date startDate, Date expirationDate)
+			String productVersion, String owner, long maxUsers,
+			String description, String hostName, String ipAddresses,
+			String macAddresses, String serverId, Date startDate,
+			Date expirationDate)
 		throws Exception;
 
 	/**
@@ -402,7 +403,7 @@ public interface LicenseKeyLocalService
 		int startDateGTMonth, int startDateGTYear, int startDateLTDay,
 		int startDateLTMonth, int startDateLTYear, long[] licenseEntryIds,
 		String[] productKeys, String productName, String productId,
-		int[] productVersions, String owner, String description,
+		String[] productVersions, String owner, String description,
 		String hostName, String ipAddress, String macAddress, String serverId,
 		String key, int expirationDateGTDay, int expirationDateGTMonth,
 		int expirationDateGTYear, int expirationDateLTDay,
@@ -426,7 +427,7 @@ public interface LicenseKeyLocalService
 		int startDateGTMonth, int startDateGTYear, int startDateLTDay,
 		int startDateLTMonth, int startDateLTYear, long[] licenseEntryIds,
 		String[] productKeys, String productName, String productId,
-		int[] productVersions, String owner, String description,
+		String[] productVersions, String owner, String description,
 		String hostName, String ipAddress, String macAddress, String serverId,
 		String key, int expirationDateGTDay, int expirationDateGTMonth,
 		int expirationDateGTYear, int expirationDateLTDay,

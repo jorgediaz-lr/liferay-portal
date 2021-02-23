@@ -33,18 +33,18 @@ public class LicenseKeyServiceWrapper
 	@Override
 	public com.liferay.osb.provisioning.license.model.LicenseKey
 			addDeveloperLicenseKey(
-				String accountKey, String productKey, int productMinorVersion)
+				String accountKey, String productKey, String productVersion)
 		throws Exception {
 
 		return _licenseKeyService.addDeveloperLicenseKey(
-			accountKey, productKey, productMinorVersion);
+			accountKey, productKey, productVersion);
 	}
 
 	@Override
 	public com.liferay.osb.provisioning.license.model.LicenseKey addLicenseKey(
 			long userId, String name, long licenseEntryId, String productKey,
 			String accountKey, String productPurchaseKey, String accountCode,
-			String accountName, int productVersion, long clusterId,
+			String accountName, String productVersion, long clusterId,
 			String owner, int maxServers, int maxHttpSessions,
 			int maxConcurrentUsers, int maxUsers, int sizing,
 			String description, String[] hostNames, String[] ipAddresses,
@@ -65,9 +65,9 @@ public class LicenseKeyServiceWrapper
 	public com.liferay.osb.provisioning.license.model.LicenseKey addLicenseKey(
 			String userUuid, String assetReceiptLicenseUuid,
 			String licenseEntryType, String productName, String productId,
-			int productVersion, String owner, long maxUsers, String description,
-			String hostName, String ipAddresses, String macAddresses,
-			String serverId, java.util.Date startDate,
+			String productVersion, String owner, long maxUsers,
+			String description, String hostName, String ipAddresses,
+			String macAddresses, String serverId, java.util.Date startDate,
 			java.util.Date expirationDate)
 		throws Exception {
 
@@ -249,7 +249,7 @@ public class LicenseKeyServiceWrapper
 				int startDateGTDay, int startDateGTMonth, int startDateGTYear,
 				int startDateLTDay, int startDateLTMonth, int startDateLTYear,
 				long[] licenseEntryIds, String[] productKeys,
-				String productName, String productId, int[] productVersions,
+				String productName, String productId, String[] productVersions,
 				String owner, String description, String hostName,
 				String ipAddress, String macAddress, String serverId,
 				String key, int expirationDateGTDay, int expirationDateGTMonth,
@@ -298,7 +298,7 @@ public class LicenseKeyServiceWrapper
 			int startDateGTMonth, int startDateGTYear, int startDateLTDay,
 			int startDateLTMonth, int startDateLTYear, long[] licenseEntryIds,
 			String[] productKeys, String productName, String productId,
-			int[] productVersions, String owner, String description,
+			String[] productVersions, String owner, String description,
 			String hostName, String ipAddress, String macAddress,
 			String serverId, String key, int expirationDateGTDay,
 			int expirationDateGTMonth, int expirationDateGTYear,

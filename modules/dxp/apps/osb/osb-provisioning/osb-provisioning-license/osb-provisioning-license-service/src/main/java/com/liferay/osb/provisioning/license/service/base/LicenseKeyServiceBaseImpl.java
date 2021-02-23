@@ -136,13 +136,6 @@ public abstract class LicenseKeyServiceBaseImpl
 		classNameService;
 
 	@Reference
-	protected com.liferay.portal.kernel.service.ListTypeLocalService
-		listTypeLocalService;
-
-	@Reference
-	protected com.liferay.portal.kernel.service.ListTypeService listTypeService;
-
-	@Reference
 	protected com.liferay.portal.kernel.service.ResourceLocalService
 		resourceLocalService;
 

@@ -40,11 +40,11 @@ public class LicenseKeyLocalServiceUtil {
 	public static com.liferay.osb.provisioning.license.model.LicenseKey
 			addDeveloperLicenseKey(
 				long userId, String accountKey, String productKey,
-				int productMinorVersion)
+				String productVersion)
 		throws Exception {
 
 		return getService().addDeveloperLicenseKey(
-			userId, accountKey, productKey, productMinorVersion);
+			userId, accountKey, productKey, productVersion);
 	}
 
 	/**
@@ -72,7 +72,7 @@ public class LicenseKeyLocalServiceUtil {
 				com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product
 					product,
 				String accountKey, String productPurchaseKey,
-				String accountCode, String accountName, int productVersion,
+				String accountCode, String accountName, String productVersion,
 				long clusterId, String owner, int maxServers,
 				int maxHttpSessions, int maxConcurrentUsers, int maxUsers,
 				int sizing, String description, String[] hostNames,
@@ -93,7 +93,7 @@ public class LicenseKeyLocalServiceUtil {
 			addLicenseKey(
 				long userId, String name, long licenseEntryId,
 				String productKey, String accountKey, String productPurchaseKey,
-				String accountCode, String accountName, int productVersion,
+				String accountCode, String accountName, String productVersion,
 				long clusterId, String owner, int maxServers,
 				int maxHttpSessions, int maxConcurrentUsers, int maxUsers,
 				int sizing, String description, String[] hostNames,
@@ -114,7 +114,7 @@ public class LicenseKeyLocalServiceUtil {
 			addLicenseKey(
 				long userId, String assetReceiptLicenseUuid,
 				String licenseEntryType, String productName, String productId,
-				int productVersion, String owner, long maxUsers,
+				String productVersion, String owner, long maxUsers,
 				String description, String hostName, String ipAddresses,
 				String macAddresses, String serverId, java.util.Date startDate,
 				java.util.Date expirationDate)
@@ -587,7 +587,7 @@ public class LicenseKeyLocalServiceUtil {
 			int startDateGTMonth, int startDateGTYear, int startDateLTDay,
 			int startDateLTMonth, int startDateLTYear, long[] licenseEntryIds,
 			String[] productKeys, String productName, String productId,
-			int[] productVersions, String owner, String description,
+			String[] productVersions, String owner, String description,
 			String hostName, String ipAddress, String macAddress,
 			String serverId, String key, int expirationDateGTDay,
 			int expirationDateGTMonth, int expirationDateGTYear,
@@ -631,7 +631,7 @@ public class LicenseKeyLocalServiceUtil {
 		int startDateGTMonth, int startDateGTYear, int startDateLTDay,
 		int startDateLTMonth, int startDateLTYear, long[] licenseEntryIds,
 		String[] productKeys, String productName, String productId,
-		int[] productVersions, String owner, String description,
+		String[] productVersions, String owner, String description,
 		String hostName, String ipAddress, String macAddress, String serverId,
 		String key, int expirationDateGTDay, int expirationDateGTMonth,
 		int expirationDateGTYear, int expirationDateLTDay,

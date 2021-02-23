@@ -398,29 +398,15 @@ public interface LicenseKeyModel extends BaseModel<LicenseKey>, MVCCModel {
 	 *
 	 * @return the product version of this license key
 	 */
-	public int getProductVersion();
+	@AutoEscape
+	public String getProductVersion();
 
 	/**
 	 * Sets the product version of this license key.
 	 *
 	 * @param productVersion the product version of this license key
 	 */
-	public void setProductVersion(int productVersion);
-
-	/**
-	 * Returns the product version label of this license key.
-	 *
-	 * @return the product version label of this license key
-	 */
-	@AutoEscape
-	public String getProductVersionLabel();
-
-	/**
-	 * Sets the product version label of this license key.
-	 *
-	 * @param productVersionLabel the product version label of this license key
-	 */
-	public void setProductVersionLabel(String productVersionLabel);
+	public void setProductVersion(String productVersion);
 
 	/**
 	 * Returns the cluster ID of this license key.

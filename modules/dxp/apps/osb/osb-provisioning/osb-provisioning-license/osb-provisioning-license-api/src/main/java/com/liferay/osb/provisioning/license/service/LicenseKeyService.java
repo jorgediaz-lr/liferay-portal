@@ -55,13 +55,13 @@ public interface LicenseKeyService extends BaseService {
 	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.osb.provisioning.license.service.impl.LicenseKeyServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the license key remote service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link LicenseKeyServiceUtil} if injection and service tracking are not available.
 	 */
 	public LicenseKey addDeveloperLicenseKey(
-			String accountKey, String productKey, int productMinorVersion)
+			String accountKey, String productKey, String productVersion)
 		throws Exception;
 
 	public LicenseKey addLicenseKey(
 			long userId, String name, long licenseEntryId, String productKey,
 			String accountKey, String productPurchaseKey, String accountCode,
-			String accountName, int productVersion, long clusterId,
+			String accountName, String productVersion, long clusterId,
 			String owner, int maxServers, int maxHttpSessions,
 			int maxConcurrentUsers, int maxUsers, int sizing,
 			String description, String[] hostNames, String[] ipAddresses,
@@ -73,9 +73,10 @@ public interface LicenseKeyService extends BaseService {
 	public LicenseKey addLicenseKey(
 			String userUuid, String assetReceiptLicenseUuid,
 			String licenseEntryType, String productName, String productId,
-			int productVersion, String owner, long maxUsers, String description,
-			String hostName, String ipAddresses, String macAddresses,
-			String serverId, Date startDate, Date expirationDate)
+			String productVersion, String owner, long maxUsers,
+			String description, String hostName, String ipAddresses,
+			String macAddresses, String serverId, Date startDate,
+			Date expirationDate)
 		throws Exception;
 
 	@JSONWebService
@@ -179,7 +180,7 @@ public interface LicenseKeyService extends BaseService {
 			int startDateGTMonth, int startDateGTYear, int startDateLTDay,
 			int startDateLTMonth, int startDateLTYear, long[] licenseEntryIds,
 			String[] productKeys, String productName, String productId,
-			int[] productVersions, String owner, String description,
+			String[] productVersions, String owner, String description,
 			String hostName, String ipAddress, String macAddress,
 			String serverId, String key, int expirationDateGTDay,
 			int expirationDateGTMonth, int expirationDateGTYear,
@@ -206,7 +207,7 @@ public interface LicenseKeyService extends BaseService {
 			int startDateGTMonth, int startDateGTYear, int startDateLTDay,
 			int startDateLTMonth, int startDateLTYear, long[] licenseEntryIds,
 			String[] productKeys, String productName, String productId,
-			int[] productVersions, String owner, String description,
+			String[] productVersions, String owner, String description,
 			String hostName, String ipAddress, String macAddress,
 			String serverId, String key, int expirationDateGTDay,
 			int expirationDateGTMonth, int expirationDateGTYear,

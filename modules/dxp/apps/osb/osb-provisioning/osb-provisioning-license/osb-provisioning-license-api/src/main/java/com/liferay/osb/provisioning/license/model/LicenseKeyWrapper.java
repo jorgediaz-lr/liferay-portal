@@ -64,7 +64,6 @@ public class LicenseKeyWrapper
 		attributes.put("productName", getProductName());
 		attributes.put("productId", getProductId());
 		attributes.put("productVersion", getProductVersion());
-		attributes.put("productVersionLabel", getProductVersionLabel());
 		attributes.put("clusterId", getClusterId());
 		attributes.put("owner", getOwner());
 		attributes.put("maxServers", getMaxServers());
@@ -217,17 +216,10 @@ public class LicenseKeyWrapper
 			setProductId(productId);
 		}
 
-		Integer productVersion = (Integer)attributes.get("productVersion");
+		String productVersion = (String)attributes.get("productVersion");
 
 		if (productVersion != null) {
 			setProductVersion(productVersion);
-		}
-
-		String productVersionLabel = (String)attributes.get(
-			"productVersionLabel");
-
-		if (productVersionLabel != null) {
-			setProductVersionLabel(productVersionLabel);
 		}
 
 		Long clusterId = (Long)attributes.get("clusterId");
@@ -709,18 +701,8 @@ public class LicenseKeyWrapper
 	 * @return the product version of this license key
 	 */
 	@Override
-	public int getProductVersion() {
+	public String getProductVersion() {
 		return model.getProductVersion();
-	}
-
-	/**
-	 * Returns the product version label of this license key.
-	 *
-	 * @return the product version label of this license key
-	 */
-	@Override
-	public String getProductVersionLabel() {
-		return model.getProductVersionLabel();
 	}
 
 	/**
@@ -1179,18 +1161,8 @@ public class LicenseKeyWrapper
 	 * @param productVersion the product version of this license key
 	 */
 	@Override
-	public void setProductVersion(int productVersion) {
+	public void setProductVersion(String productVersion) {
 		model.setProductVersion(productVersion);
-	}
-
-	/**
-	 * Sets the product version label of this license key.
-	 *
-	 * @param productVersionLabel the product version label of this license key
-	 */
-	@Override
-	public void setProductVersionLabel(String productVersionLabel) {
-		model.setProductVersionLabel(productVersionLabel);
 	}
 
 	/**
