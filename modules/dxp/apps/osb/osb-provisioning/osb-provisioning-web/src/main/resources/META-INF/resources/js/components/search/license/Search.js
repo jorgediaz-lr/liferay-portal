@@ -16,7 +16,8 @@ import {NAMESPACE} from '../../../utilities/constants';
 import {
 	getLicenseSearchFilterDisplayName,
 	getSearchParameter,
-	getSearchPlaceholder
+	getSearchPlaceholder,
+	setAdvancedSearchAriaAttributes
 } from '../../../utilities/search';
 import AdvancedSearch from './AdvancedSearch';
 
@@ -67,19 +68,7 @@ function Search({
 
 		setShowAdvancedSearch(newState);
 
-		const advancedSearchBtn = document.getElementById(
-			'licenseAdvancedSearchBtn'
-		);
-
-		if (advancedSearchBtn) {
-			advancedSearchBtn.setAttribute('aria-expanded', newState);
-
-			const ariaLabel = newState
-				? Liferay.Language.get('close-advanced-search')
-				: Liferay.Language.get('open-advanced-search');
-
-			advancedSearchBtn.setAttribute('aria-label', ariaLabel);
-		}
+		setAdvancedSearchAriaAttributes('licenseAdvancedSearchBtn', newState);
 	}
 
 	return (

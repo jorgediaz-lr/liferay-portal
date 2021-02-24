@@ -12,7 +12,7 @@
 import {NAMESPACE} from './constants';
 
 /**
- * This helper formats true or false filter values to yes or no display values
+ * Formats true or false filter values to yes or no display values
  * @param {string} value The filter value to be evaluated
  * @returns {string} New display value
  */
@@ -225,7 +225,7 @@ export function getSearchParameter(param) {
 }
 
 /**
- * This helper displays placeholder text in the search input based on the
+ * Generates placeholder text in the search input based on the
  * search params and results conducted  via the advanced search.
  * @param {function} getFilterDisplayNameCallback The function that constructs
  * the placeholder text.
@@ -259,6 +259,25 @@ export function getSearchPlaceholder(
 	}
 	else {
 		return defaultPlaceholder;
+	}
+}
+
+/**
+ * Updates the aria attributes on the advanced search component when it's opened
+ * or closed.
+ * @param {bool} state
+ */
+export function setAdvancedSearchAriaAttributes(id, state) {
+	const advancedSearchBtn = document.getElementById(id);
+
+	if (advancedSearchBtn) {
+		advancedSearchBtn.setAttribute('aria-expanded', state);
+
+		const ariaLabel = state
+			? Liferay.Language.get('close-advanced-search')
+			: Liferay.Language.get('open-advanced-search');
+
+		advancedSearchBtn.setAttribute('aria-label', ariaLabel);
 	}
 }
 

@@ -21,7 +21,8 @@ import {request} from '../../../utilities/helpers';
 import {
 	getAccountSearchFilterDisplayName,
 	getSearchParameter,
-	getSearchPlaceholder
+	getSearchPlaceholder,
+	setAdvancedSearchAriaAttributes
 } from '../../../utilities/search';
 import AdvancedSearch from './AdvancedSearch';
 
@@ -145,19 +146,7 @@ function Search({
 
 		setShowAdvancedSearch(newState);
 
-		const advancedSearchBtn = document.getElementById(
-			'accountAdvancedSearchBtn'
-		);
-
-		if (advancedSearchBtn) {
-			advancedSearchBtn.setAttribute('aria-expanded', newState);
-
-			const ariaLabel = newState
-				? Liferay.Language.get('close-advanced-search')
-				: Liferay.Language.get('open-advanced-search');
-
-			advancedSearchBtn.setAttribute('aria-label', ariaLabel);
-		}
+		setAdvancedSearchAriaAttributes('accountAdvancedSearchBtn', newState);
 	}
 
 	return (
