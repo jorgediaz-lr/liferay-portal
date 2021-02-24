@@ -20,7 +20,8 @@ import {ACCOUNTS_PORTLET_NAMESPACE as NAMESPACE} from '../../../utilities/consta
 import {request} from '../../../utilities/helpers';
 import {
 	formatFilterValue,
-	getAccountFilterDisplayName
+	getAccountSearchFilterDisplayName,
+	getSearchParameter
 } from '../../../utilities/search';
 import AdvancedSearch from './AdvancedSearch';
 
@@ -73,7 +74,9 @@ function Search({
 	tierNames
 }) {
 	const [error, setError] = useState(false);
-	const [keywords, setKeywords] = useState(getSearchParameter());
+	const [keywords, setKeywords] = useState(
+		getSearchParameter(`${NAMESPACE}accountSearchKeywords`)
+	);
 	const [results, setResults] = useState([]);
 	const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
 
@@ -107,22 +110,14 @@ function Search({
 
 	function formatPlaceholder(filters) {
 		return Object.entries(filters)
-			.filter(([key]) => getAccountFilterDisplayName(key))
+			.filter(([key]) => getAccountSearchFilterDisplayName(key))
 			.map(
 				([key, value]) =>
-					getAccountFilterDisplayName(key) +
+					getAccountSearchFilterDisplayName(key) +
 					': ' +
 					formatFilterValue(value)
 			)
 			.join(', ');
-	}
-
-	function getSearchParameter() {
-		const searchParams = new URLSearchParams(window.location.search);
-
-		return searchParams.has(`${NAMESPACE}accountSearchKeywords`)
-			? searchParams.get(`${NAMESPACE}accountSearchKeywords`)
-			: '';
 	}
 
 	function getSearchPlaceholder() {

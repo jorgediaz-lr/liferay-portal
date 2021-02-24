@@ -39,7 +39,7 @@ export function formatFilterValue(value) {
  * @param {string} name The filter name to be evaluated
  * @returns {string} New display value
  */
-export function getAccountFilterDisplayName(name) {
+export function getAccountSearchFilterDisplayName(name) {
 	let displayName;
 
 	switch (name) {
@@ -196,4 +196,16 @@ export function getLicenseSearchFilterDisplayName(name) {
 	}
 
 	return displayName;
+}
+
+/**
+ * This helper looks for the provided search parameter and returns its value if
+ * there is any.
+ * @param {string} param The name of the search parameter
+ * @returns {string} The value of the search parameter.
+ */
+export function getSearchParameter(param) {
+	const searchParams = new URLSearchParams(window.location.search);
+
+	return searchParams.has(param) ? searchParams.get(param) : '';
 }

@@ -15,7 +15,8 @@ import React, {useRef, useState} from 'react';
 import {NAMESPACE} from '../../../utilities/constants';
 import {
 	formatFilterValue,
-	getLicenseFilterDisplayName
+	getLicenseSearchFilterDisplayName,
+	getSearchParameter
 } from '../../../utilities/search';
 import AdvancedSearch from './AdvancedSearch';
 
@@ -25,7 +26,9 @@ function Search({
 	productNames,
 	productVersions
 }) {
-	const [keywords, setKeywords] = useState(getSearchParameter());
+	const [keywords, setKeywords] = useState(
+		getSearchParameter(`${NAMESPACE}licenseSearchKeywords`)
+	);
 	const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
 
 	const searchRef = useRef();
@@ -36,22 +39,14 @@ function Search({
 
 	function formatPlaceholder(filters) {
 		return Object.entries(filters)
-			.filter(([key]) => getLicenseFilterDisplayName(key))
+			.filter(([key]) => getLicenseSearchFilterDisplayName(key))
 			.map(
 				([key, value]) =>
-					getLicenseFilterDisplayName(key) +
+					getLicenseSearchFilterDisplayName(key) +
 					': ' +
 					formatFilterValue(value)
 			)
 			.join(', ');
-	}
-
-	function getSearchParameter() {
-		const searchParams = new URLSearchParams(window.location.search);
-
-		return searchParams.has(`${NAMESPACE}licenseSearchKeywords`)
-			? searchParams.get(`${NAMESPACE}licenseSearchKeywords`)
-			: '';
 	}
 
 	function getSearchPlaceholder() {
