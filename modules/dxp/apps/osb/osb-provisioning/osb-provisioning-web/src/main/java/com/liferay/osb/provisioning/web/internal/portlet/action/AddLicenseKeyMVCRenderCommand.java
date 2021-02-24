@@ -15,32 +15,57 @@
 package com.liferay.osb.provisioning.web.internal.portlet.action;
 
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
+import com.liferay.osb.provisioning.constants.ProvisioningWebKeys;
+import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
+import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
- * @author Amos Fong
+ * @author Yuanyuan Huang
  */
 @Component(
 	property = {
-		"javax.portlet.name=" + ProvisioningPortletKeys.ACCOUNTS,
-		"mvc.command.name=/accounts/select_account"
+		"javax.portlet.name=" + ProvisioningPortletKeys.LICENSES,
+		"mvc.command.name=/licenses/add_license_key"
 	},
 	service = MVCRenderCommand.class
 )
-public class SelectAccountMVCRenderCommand implements MVCRenderCommand {
+public class AddLicenseKeyMVCRenderCommand implements MVCRenderCommand {
 
 	@Override
 	public String render(
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws PortletException {
 
-		return "/common/select_account.jsp";
+		try {
+			String accountKey = ParamUtil.getString(
+				renderRequest, "accountKey");
+
+			if (Validator.isNotNull(accountKey)) {
+				renderRequest.setAttribute(
+					ProvisioningWebKeys.ACCOUNT,
+					_accountWebService.getAccount(accountKey));
+			}
+
+			return "/licenses/add_license_key.jsp";
+		}
+		catch (Exception exception) {
+			SessionErrors.add(renderRequest, exception.getClass(), exception);
+
+			return "/common/error.jsp";
+		}
 	}
+
+	@Reference
+	private AccountWebService _accountWebService;
 
 }

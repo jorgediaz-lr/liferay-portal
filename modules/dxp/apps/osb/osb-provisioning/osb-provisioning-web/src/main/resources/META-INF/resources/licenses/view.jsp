@@ -24,6 +24,15 @@ LicenseKeySearchDisplayContext licenseKeySearchDisplayContext = ProvisioningWebC
 
 <div class="title-bar">
 	<h3><liferay-ui:message key="licenses" /></h3>
+
+	<portlet:renderURL var="addLicenseKeyURL">
+		<portlet:param name="mvcRenderCommandName" value="/licenses/add_license_key" />
+		<portlet:param name="redirect" value="<%= currentURL %>" />
+	</portlet:renderURL>
+
+	<a class="btn btn-primary" href="<%= addLicenseKeyURL %>">
+		<span class="lfr-btn-label"><liferay-ui:message key="generate-license" /></span>
+	</a>
 </div>
 
 <div class="container-fluid home">

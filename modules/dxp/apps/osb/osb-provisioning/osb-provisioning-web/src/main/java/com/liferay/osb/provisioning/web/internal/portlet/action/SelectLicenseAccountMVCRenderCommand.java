@@ -24,16 +24,16 @@ import javax.portlet.RenderResponse;
 import org.osgi.service.component.annotations.Component;
 
 /**
- * @author Amos Fong
+ * @author Yuanyuan Huang
  */
 @Component(
 	property = {
-		"javax.portlet.name=" + ProvisioningPortletKeys.ACCOUNTS,
-		"mvc.command.name=/accounts/select_account"
+		"javax.portlet.name=" + ProvisioningPortletKeys.LICENSES,
+		"mvc.command.name=/licenses/select_account"
 	},
 	service = MVCRenderCommand.class
 )
-public class SelectAccountMVCRenderCommand implements MVCRenderCommand {
+public class SelectLicenseAccountMVCRenderCommand implements MVCRenderCommand {
 
 	@Override
 	public String render(

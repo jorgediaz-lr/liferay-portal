@@ -29,14 +29,14 @@ SearchContainer accountSearchContainer = accountSearchDisplayContext.getSearchCo
 		clearResultsURL="<%= accountSearchDisplayContext.getClearResultsURL() %>"
 		itemsTotal="<%= accountSearchContainer.getTotal() %>"
 		searchActionURL="<%= currentURL %>"
-		searchContainerId="parentAccountContainer"
+		searchContainerId="accountContainer"
 		selectable="<%= false %>"
 		showSearch="<%= true %>"
 	/>
 
 	<liferay-ui:search-container
 		cssClass="details-search-container"
-		id="parentAccountContainer"
+		id="accountContainer"
 		searchContainer="<%= accountSearchContainer %>"
 	>
 		<liferay-ui:search-container-row
@@ -58,7 +58,7 @@ SearchContainer accountSearchContainer = accountSearchDisplayContext.getSearchCo
 
 			row.setData(accountData);
 
-			if (parentAccountKey.equals(accountDisplay.getKey())) {
+			if (Validator.isNotNull(parentAccountKey) && parentAccountKey.equals(accountDisplay.getKey())) {
 				row.setCssClass("active");
 			}
 			%>
@@ -127,7 +127,7 @@ SearchContainer accountSearchContainer = accountSearchDisplayContext.getSearchCo
 	}
 
 	var searchContainer = document.getElementById(
-		'<portlet:namespace />parentAccountContainerSearchContainer'
+		'<portlet:namespace />accountContainerSearchContainer'
 	);
 
 	if (searchContainer) {

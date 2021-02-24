@@ -32,6 +32,7 @@ import com.liferay.osb.provisioning.license.service.LicenseEntryLocalService;
 import com.liferay.osb.provisioning.license.service.LicenseKeyLocalService;
 import com.liferay.osb.provisioning.service.ProductBundleLocalService;
 import com.liferay.osb.provisioning.web.internal.display.context.AccountSearchDisplayContext;
+import com.liferay.osb.provisioning.web.internal.display.context.AddLicenseKeyDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.AssignProductBundleProductsDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.AssignProductPurchaseProductsDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.AssignTeamContactsDisplayContext;
@@ -78,6 +79,15 @@ public class ProvisioningWebComponentProvider {
 
 		return _provisioningWebComponentProvider.
 			_getAccountSearchDisplayContext(
+				renderRequest, renderResponse, httpServletRequest);
+	}
+
+	public static AddLicenseKeyDisplayContext getAddLicenseKeyDisplayContext(
+		RenderRequest renderRequest, RenderResponse renderResponse,
+		HttpServletRequest httpServletRequest) {
+
+		return _provisioningWebComponentProvider.
+			_getAddLicenseKeyDisplayContext(
 				renderRequest, renderResponse, httpServletRequest);
 	}
 
@@ -297,6 +307,16 @@ public class ProvisioningWebComponentProvider {
 			renderRequest, renderResponse, httpServletRequest, _accountReader,
 			_accountWebService, _countryService, _identityProvider,
 			_productWebService, _teamRoleWebService, _userLocalService);
+	}
+
+	private AddLicenseKeyDisplayContext _getAddLicenseKeyDisplayContext(
+		RenderRequest renderRequest, RenderResponse renderResponse,
+		HttpServletRequest httpServletRequest) {
+
+		return new AddLicenseKeyDisplayContext(
+			renderRequest, renderResponse, httpServletRequest,
+			_licenseEntryLocalService, _productConsumptionWebService,
+			_productWebService, _productPurchaseViewWebService);
 	}
 
 	private AssignProductBundleProductsDisplayContext
