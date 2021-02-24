@@ -134,6 +134,7 @@ function AddNote({
 							? Liferay.Language.get('write-a-note')
 							: Liferay.Language.get('write-sales-info')
 					}
+					rows={showButtons ? 10 : ''}
 					value={localContent}
 				/>
 			</label>
