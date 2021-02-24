@@ -15,6 +15,7 @@ import React, {useRef, useState} from 'react';
 
 import {useClickOutside} from '../../../hooks/useClickOutside';
 import {ACCOUNTS_PORTLET_NAMESPACE as NAMESPACE} from '../../../utilities/constants';
+import {submitOnEnter} from '../../../utilities/helpers';
 import AccountDetails from './AccountDetails';
 import Categorization from './Categorization';
 import Dates from './Dates';
@@ -46,9 +47,7 @@ const AdvancedSearch = React.forwardRef(
 		}
 
 		function handleOnKeyDown(event) {
-			if (event.keyCode === 13) {
-				formRef.current.submit();
-			}
+			submitOnEnter(event, formRef);
 		}
 
 		return (

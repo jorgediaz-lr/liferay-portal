@@ -60,3 +60,14 @@ export function request(endpoint, params, encoding = 'json', method = 'get') {
 		url: endpoint
 	});
 }
+
+/**
+ * Submits a form when the user presses the Enter key
+ * @param {object} event The event to check the key that was pressed.
+ * @param {object} formRef Ref of the form to be submitted.
+ */
+export function submitOnEnter(event, formRef) {
+	if (event.keyCode === 13) {
+		formRef.current.submit();
+	}
+}
