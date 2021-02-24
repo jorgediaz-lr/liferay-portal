@@ -9,6 +9,8 @@
  * distribution rights of the Software.
  */
 
+import {NAMESPACE} from './constants';
+
 /**
  * This helper formats true or false filter values to yes or no display values
  * @param {string} value The filter value to be evaluated
@@ -31,6 +33,18 @@ export function formatFilterValue(value) {
 		default:
 			return value;
 	}
+}
+
+function formatPlaceholder(filters, getFilterDisplayNameCallback) {
+	return Object.entries(filters)
+		.filter(([key]) => getFilterDisplayNameCallback(key))
+		.map(
+			([key, value]) =>
+				getFilterDisplayNameCallback(key) +
+				': ' +
+				formatFilterValue(value)
+		)
+		.join(', ');
 }
 
 /**
@@ -208,4 +222,52 @@ export function getSearchParameter(param) {
 	const searchParams = new URLSearchParams(window.location.search);
 
 	return searchParams.has(param) ? searchParams.get(param) : '';
+}
+
+/**
+ * This helper displays placeholder text in the search input based on the
+ * search params and results conducted  via the advanced search.
+ * @param {function} getFilterDisplayNameCallback The function that constructs
+ * the placeholder text.
+ * @param {string} defaultPlaceholder The default search placeholder.
+ * @param {string} namespace The namespace on the query params.
+ * @returns {string} The final placeholder text to be displayed.
+ */
+export function getSearchPlaceholder(
+	getFilterDisplayNameCallback,
+	defaultPlaceholder = Liferay.Language.get('search'),
+	namespace = NAMESPACE
+) {
+	const searchParams = new URLSearchParams(window.location.search);
+
+	const searchFilters = {};
+
+	// Suppress eslint false alarm for unused var
+	/* eslint-disable no-unused-vars */
+
+	// Project has no IE11 constraint, prefer to use for...of loop
+	/* eslint-disable-next-line no-for-of-loops/no-for-of-loops */
+	for (const [key, value] of searchParams.entries()) {
+		if (validateParameterNames(key, namespace) && value) {
+			searchFilters[key.replace(namespace, '')] = value;
+		}
+	}
+	/* eslint-enable no-unused-vars */
+
+	if (formatPlaceholder(searchFilters, getFilterDisplayNameCallback)) {
+		return formatPlaceholder(searchFilters, getFilterDisplayNameCallback);
+	}
+	else {
+		return defaultPlaceholder;
+	}
+}
+
+function validateParameterNames(name, namespace = NAMESPACE) {
+	return (
+		name.startsWith(namespace) &&
+		!name.endsWith('advancedSearch') &&
+		!name.endsWith('andOperator') &&
+		!name.endsWith('cur') &&
+		!name.endsWith('delta')
+	);
 }

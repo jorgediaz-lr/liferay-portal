@@ -19,9 +19,9 @@ import React, {useRef, useState} from 'react';
 import {ACCOUNTS_PORTLET_NAMESPACE as NAMESPACE} from '../../../utilities/constants';
 import {request} from '../../../utilities/helpers';
 import {
-	formatFilterValue,
 	getAccountSearchFilterDisplayName,
-	getSearchParameter
+	getSearchParameter,
+	getSearchPlaceholder
 } from '../../../utilities/search';
 import AdvancedSearch from './AdvancedSearch';
 
@@ -108,43 +108,6 @@ function Search({
 		return `${accountsHomeURL}&${NAMESPACE}accountSearchKeywords=${keywords}`;
 	}
 
-	function formatPlaceholder(filters) {
-		return Object.entries(filters)
-			.filter(([key]) => getAccountSearchFilterDisplayName(key))
-			.map(
-				([key, value]) =>
-					getAccountSearchFilterDisplayName(key) +
-					': ' +
-					formatFilterValue(value)
-			)
-			.join(', ');
-	}
-
-	function getSearchPlaceholder() {
-		const searchParams = new URLSearchParams(window.location.search);
-
-		const searchFilters = {};
-
-		// Suppress eslint false alarm for unused var
-		/* eslint-disable no-unused-vars */
-
-		// Project has no IE11 constraint, prefer to use for...of loop
-		/* eslint-disable-next-line no-for-of-loops/no-for-of-loops */
-		for (const [key, value] of searchParams.entries()) {
-			if (validateParameterNames(key) && value) {
-				searchFilters[key.replace(NAMESPACE, '')] = value;
-			}
-		}
-		/* eslint-enable no-unused-vars */
-
-		if (formatPlaceholder(searchFilters)) {
-			return formatPlaceholder(searchFilters);
-		}
-		else {
-			return Liferay.Language.get('search-accounts');
-		}
-	}
-
 	function handleClickOutside(event) {
 		const activeDatePicker = document.querySelector(
 			'.date-picker-dropdown-menu.show'
@@ -197,16 +160,6 @@ function Search({
 		}
 	}
 
-	function validateParameterNames(name) {
-		return (
-			name.startsWith(NAMESPACE) &&
-			!name.endsWith('advancedSearch') &&
-			!name.endsWith('andOperator') &&
-			!name.endsWith('cur') &&
-			!name.endsWith('delta')
-		);
-	}
-
 	return (
 		<div ref={searchRef}>
 			<ClayAutocomplete>
@@ -215,7 +168,11 @@ function Search({
 					disabled={showAdvancedSearch}
 					onChange={handleOnChange}
 					onKeyDown={handleOnKeyDown}
-					placeholder={getSearchPlaceholder()}
+					placeholder={getSearchPlaceholder(
+						getAccountSearchFilterDisplayName,
+						Liferay.Language.get('search-accounts'),
+						NAMESPACE
+					)}
 					value={keywords}
 				/>
 

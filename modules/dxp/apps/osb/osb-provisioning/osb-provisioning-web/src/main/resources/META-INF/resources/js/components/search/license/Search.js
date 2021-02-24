@@ -14,9 +14,9 @@ import React, {useRef, useState} from 'react';
 
 import {NAMESPACE} from '../../../utilities/constants';
 import {
-	formatFilterValue,
 	getLicenseSearchFilterDisplayName,
-	getSearchParameter
+	getSearchParameter,
+	getSearchPlaceholder
 } from '../../../utilities/search';
 import AdvancedSearch from './AdvancedSearch';
 
@@ -35,43 +35,6 @@ function Search({
 
 	function buildSearchResultsURL() {
 		return `${licenseHomeURL}&${NAMESPACE}licenseSearchKeywords=${keywords}`;
-	}
-
-	function formatPlaceholder(filters) {
-		return Object.entries(filters)
-			.filter(([key]) => getLicenseSearchFilterDisplayName(key))
-			.map(
-				([key, value]) =>
-					getLicenseSearchFilterDisplayName(key) +
-					': ' +
-					formatFilterValue(value)
-			)
-			.join(', ');
-	}
-
-	function getSearchPlaceholder() {
-		const searchParams = new URLSearchParams(window.location.search);
-
-		const searchFilters = {};
-
-		// Suppress eslint false alarm for unused var
-		/* eslint-disable no-unused-vars */
-
-		// Project has no IE11 constraint, prefer to use for...of loop
-		/* eslint-disable-next-line no-for-of-loops/no-for-of-loops */
-		for (const [key, value] of searchParams.entries()) {
-			if (validateParameterNames(key) && value) {
-				searchFilters[key.replace(NAMESPACE, '')] = value;
-			}
-		}
-		/* eslint-enable no-unused-vars */
-
-		if (formatPlaceholder(searchFilters)) {
-			return formatPlaceholder(searchFilters);
-		}
-		else {
-			return Liferay.Language.get('search-licenses');
-		}
 	}
 
 	function handleClickOutside(event) {
@@ -119,16 +82,6 @@ function Search({
 		}
 	}
 
-	function validateParameterNames(name) {
-		return (
-			name.startsWith(NAMESPACE) &&
-			!name.endsWith('advancedSearch') &&
-			!name.endsWith('andOperator') &&
-			!name.endsWith('cur') &&
-			!name.endsWith('delta')
-		);
-	}
-
 	return (
 		<div ref={searchRef}>
 			<div className="input-group">
@@ -138,7 +91,10 @@ function Search({
 						disabled={showAdvancedSearch}
 						onChange={handleOnChange}
 						onKeyDown={handleOnKeyDown}
-						placeholder={getSearchPlaceholder()}
+						placeholder={getSearchPlaceholder(
+							getLicenseSearchFilterDisplayName,
+							Liferay.Language.get('search-licenses')
+						)}
 						type=""
 						value={keywords}
 					/>
