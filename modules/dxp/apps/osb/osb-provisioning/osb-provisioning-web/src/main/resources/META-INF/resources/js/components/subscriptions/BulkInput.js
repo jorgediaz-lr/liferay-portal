@@ -25,7 +25,7 @@ import {
 	convertInputToDate,
 	setDisabledAttribute,
 	validateDateFieldValue
-} from '../../utilities/helpers';
+} from '../../utilities/date';
 import DatePicker from '../DatePicker';
 
 function BulkInput({

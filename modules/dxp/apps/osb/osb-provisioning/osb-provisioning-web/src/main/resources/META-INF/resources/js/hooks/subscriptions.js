@@ -13,7 +13,7 @@ import {Map, Record} from 'immutable';
 import React, {useContext, useState} from 'react';
 
 import {PRODUCT_PURCHASE_STATUS_APPROVED} from '../utilities/constants';
-import {convertDateToUTCDate, convertInputToDate} from '../utilities/helpers';
+import {convertDateToUTCDate, convertInputToDate} from '../utilities/date';
 
 function generateEndDate() {
 	const newEndYear = new Date().getUTCFullYear() + 1;
