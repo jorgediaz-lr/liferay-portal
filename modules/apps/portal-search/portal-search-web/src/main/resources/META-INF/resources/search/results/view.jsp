@@ -23,6 +23,7 @@ taglib uri="http://liferay.com/tld/aui" prefix="aui" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
 <%@ page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
+page import="com.liferay.portal.kernel.model.User" %><%@
 page import="com.liferay.portal.kernel.util.HtmlUtil" %><%@
 page import="com.liferay.portal.kernel.util.WebKeys" %><%@
 page import="com.liferay.portal.search.web.internal.result.display.context.SearchResultFieldDisplayContext" %><%@
@@ -92,18 +93,21 @@ com.liferay.portal.kernel.dao.search.SearchContainer<com.liferay.portal.kernel.s
 		<c:choose>
 			<c:when test="<%= !searchResultSummaryDisplayContext.isTemporarilyUnavailable() %>">
 				<liferay-ui:search-container-column-text>
-					<c:if test="<%= searchResultSummaryDisplayContext.isUserPortraitVisible() %>">
-						<liferay-ui:user-portrait
-							userId="<%= searchResultSummaryDisplayContext.getAssetEntryUserId() %>"
-						/>
-					</c:if>
-
 					<c:choose>
 						<c:when test="<%= searchResultSummaryDisplayContext.isThumbnailVisible() %>">
-							<img alt="<%= LanguageUtil.get(locale, "thumbnail") %>" class="img-rounded search-result-thumbnail-img" src="<%= searchResultSummaryDisplayContext.getThumbnailURLString() %>" />
+							<span class="sticker">
+								<span class="sticker-overlay">
+									<img alt="<%= LanguageUtil.get(locale, "thumbnail") %>" class="sticker-img" src="<%= searchResultSummaryDisplayContext.getThumbnailURLString() %>" />
+								</span>
+							</span>
+						</c:when>
+						<c:when test="<%= searchResultSummaryDisplayContext.isUserPortraitVisible() && java.util.Objects.equals(searchResultSummaryDisplayContext.getClassName(), User.class.getName()) %>">
+							<liferay-ui:user-portrait
+								userId="<%= searchResultSummaryDisplayContext.getAssetEntryUserId() %>"
+							/>
 						</c:when>
 						<c:when test="<%= searchResultSummaryDisplayContext.isIconVisible() %>">
-							<span class="search-asset-type-sticker sticker sticker-rounded sticker-secondary sticker-static">
+							<span class="sticker sticker-rounded sticker-secondary sticker-static">
 								<svg class="lexicon-icon">
 									<use xlink:href="<%= searchResultSummaryDisplayContext.getPathThemeImages() %>/lexicon/icons.svg#<%= searchResultSummaryDisplayContext.getIconId() %>" />
 
