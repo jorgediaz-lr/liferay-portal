@@ -79,7 +79,6 @@ public class SoyTemplate extends BaseTemplate {
 		}
 
 		_templateContextHelper = templateContextHelper;
-
 		_soyTofuCacheHandler = soyTofuCacheHandler;
 		_soyTemplateResourceFactory = soyTemplateResourceFactory;
 
