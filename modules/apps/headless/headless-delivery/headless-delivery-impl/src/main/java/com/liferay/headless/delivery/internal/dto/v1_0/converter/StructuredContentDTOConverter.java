@@ -237,7 +237,7 @@ public class StructuredContentDTOConverter
 						BaseStructuredContentResourceImpl.class,
 						"getStructuredContentRenderedContentTemplate", uriInfo,
 						journalArticle.getResourcePrimKey(),
-						ddmTemplate.getTemplateKey());
+						ddmTemplate.getTemplateId());
 
 					templateName = ddmTemplate.getName(locale);
 					templateName_i18n = LocalizedMapUtil.getI18nMap(
