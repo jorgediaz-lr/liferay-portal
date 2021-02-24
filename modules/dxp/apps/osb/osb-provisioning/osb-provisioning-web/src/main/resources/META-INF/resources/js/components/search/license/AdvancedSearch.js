@@ -123,7 +123,7 @@ const AdvancedSearch = React.forwardRef(
 							showCollapseIcon={true}
 						>
 							<div className="panel-body">
-								<div className="form-group">
+								<div className="col-md-12 form-group">
 									<CheckboxGroups
 										columns={4}
 										fieldValues={licenseTypes}
@@ -142,7 +142,7 @@ const AdvancedSearch = React.forwardRef(
 							showCollapseIcon={true}
 						>
 							<div className="panel-body">
-								<div className="form-group">
+								<div className="col-md-12 form-group">
 									<CheckboxGroups
 										columns={4}
 										fieldValues={productNames}
@@ -163,7 +163,7 @@ const AdvancedSearch = React.forwardRef(
 							showCollapseIcon={true}
 						>
 							<div className="panel-body">
-								<div className="form-group">
+								<div className="col-md-12 form-group">
 									<CheckboxGroups
 										columns={4}
 										fieldValues={productVersions}
