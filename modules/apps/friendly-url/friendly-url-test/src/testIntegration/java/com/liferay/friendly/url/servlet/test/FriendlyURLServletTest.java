@@ -317,7 +317,7 @@ public class FriendlyURLServletTest {
 				"GET",
 				StringBundler.concat(
 					PropsValues.LAYOUT_FRIENDLY_URL_PUBLIC_SERVLET_MAPPING,
-					group.getFriendlyURL(), StringPool.SLASH, "home")),
+					group.getFriendlyURL(), "/home")),
 			mockHttpServletResponse, getPath(group, homeLayout) + "/home",
 			Portal.PATH_MAIN,
 			_redirectConstructor1.newInstance(getURL(homeLayout)));

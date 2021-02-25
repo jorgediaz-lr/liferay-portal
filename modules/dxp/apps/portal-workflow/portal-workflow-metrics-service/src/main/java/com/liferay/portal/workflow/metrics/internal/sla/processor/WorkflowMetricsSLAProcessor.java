@@ -220,8 +220,7 @@ public class WorkflowMetricsSLAProcessor {
 		searchSearchRequest.addSorts(
 			_sorts.field(
 				Field.getSortableFieldName(
-					StringBundler.concat(
-						"createDate", StringPool.UNDERLINE, "Number")),
+					StringBundler.concat("createDate_Number")),
 				SortOrder.ASC));
 		searchSearchRequest.setIndexNames(
 			_tokenWorkflowMetricsIndexNameBuilder.getIndexName(companyId));

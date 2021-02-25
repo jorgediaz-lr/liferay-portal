@@ -37,7 +37,6 @@ import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.StackTraceUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.nio.charset.StandardCharsets;
@@ -521,8 +520,7 @@ public class ZendeskBaseWebServiceImpl
 
 	private String _getCredentials() {
 		String zendeskCredentials = StringBundler.concat(
-			_emailAddress, StringPool.SLASH, "token", StringPool.COLON,
-			_apiToken);
+			_emailAddress, "/token/", _apiToken);
 
 		return "Basic " + Base64.encode(zendeskCredentials.getBytes());
 	}
