@@ -108,7 +108,7 @@ public class GroupSelectorTag extends IncludeTag {
 			ItemSelectorUtil.getItemSelector());
 	}
 
-	private List<Group> _filterGroups(List<Group> groups, int delta)
+	private List<Group> _filterGroups(List<Group> groups)
 		throws PortalException {
 
 		List<Group> filteredGroups = new ArrayList<>();
@@ -122,10 +122,6 @@ public class GroupSelectorTag extends IncludeTag {
 					permissionChecker, group, ActionKeys.VIEW)) {
 
 				filteredGroups.add(group);
-			}
-
-			if (filteredGroups.size() == delta) {
-				return filteredGroups;
 			}
 		}
 
@@ -153,8 +149,7 @@ public class GroupSelectorTag extends IncludeTag {
 			List<Group> groups = _filterGroups(
 				GroupLocalServiceUtil.search(
 					themeDisplay.getCompanyId(), _CLASS_NAME_IDS, keywords,
-					groupParams, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null),
-				delta);
+					groupParams, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null));
 
 			int cur = ParamUtil.getInteger(
 				httpServletRequest, SearchContainer.DEFAULT_CUR_PARAM,
