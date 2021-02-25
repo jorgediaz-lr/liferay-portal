@@ -22,20 +22,18 @@ AssignTeamContactsDisplayContext assignTeamContactsDisplayContext = Provisioning
 SearchContainer searchContainer = assignTeamContactsDisplayContext.getSearchContainer();
 %>
 
-<clay:management-toolbar
-	clearResultsURL="<%= assignTeamContactsDisplayContext.getClearResultsURL() %>"
-	elementClasses="full-width"
-	filterDropdownItems="<%= assignTeamContactsDisplayContext.getFilterCustomerRoleDropdownItems() %>"
-	filterLabelItems="<%= assignTeamContactsDisplayContext.getFilterCustomerRoleLabelItems() %>"
-	itemsTotal="<%= searchContainer.getTotal() %>"
-	searchActionURL="<%= assignTeamContactsDisplayContext.getCurrentURL() %>"
-	searchContainerId="assignContacts"
-	searchFormName="searchFm"
-	selectable="<%= true %>"
-	showSearch="<%= true %>"
-/>
-
 <div class="container-fluid container-fluid-max-xl">
+	<clay:management-toolbar
+		clearResultsURL="<%= assignTeamContactsDisplayContext.getClearResultsURL() %>"
+		filterDropdownItems="<%= assignTeamContactsDisplayContext.getFilterCustomerRoleDropdownItems() %>"
+		filterLabelItems="<%= assignTeamContactsDisplayContext.getFilterCustomerRoleLabelItems() %>"
+		itemsTotal="<%= searchContainer.getTotal() %>"
+		searchActionURL="<%= assignTeamContactsDisplayContext.getCurrentURL() %>"
+		searchContainerId="assignContacts"
+		searchFormName="searchFm"
+		showSearch="<%= true %>"
+	/>
+
 	<liferay-ui:search-container
 		id="assignContacts"
 		searchContainer="<%= searchContainer %>"
