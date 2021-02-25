@@ -59,9 +59,14 @@ export const FIELD_TYPE_TEXT = 'text';
 export const FIELD_TYPE_TEXTAREA = 'textarea';
 export const FIELD_TYPE_TOGGLE = 'toggle';
 
-// Product Purchase status
+// Action types for interacting with Product Purchases
 
 export const ADD_SUBSCRIPTIONS = 'add';
 export const EDIT_SUBSCRIPTIONS = 'edit';
-export const PRODUCT_PURCHASE_STATUS_APPROVED = 'Approved';
-export const PRODUCT_PURCHASE_STATUS_CANCELLED = 'Cancelled';
+
+// Product Purchase Statuses
+
+export const PRODUCT_PURCHASE_STATUS_APPROVED =
+	window.ProvisioningConstants.productPurchaseStatus.approved;
+export const PRODUCT_PURCHASE_STATUS_CANCELLED =
+	window.ProvisioningConstants.productPurchaseStatus.cancelled;

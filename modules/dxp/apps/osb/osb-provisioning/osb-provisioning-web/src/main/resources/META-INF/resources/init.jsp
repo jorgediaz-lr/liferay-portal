@@ -37,6 +37,7 @@ page import="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Entitlement" 
 page import="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ExternalLink" %><%@
 page import="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Note" %><%@
 page import="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product" %><%@
+page import="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase" %><%@
 page import="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchaseView" %><%@
 page import="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team" %><%@
 page import="com.liferay.osb.koroneiki.phloem.rest.client.problem.Problem" %><%@
@@ -136,6 +137,10 @@ ProvisioningWebConfiguration provisioningWebConfiguration = (ProvisioningWebConf
 		noteType: {
 			general: '<%= Note.Type.GENERAL %>',
 			sales: '<%= Note.Type.SALES %>'
+		},
+		productPurchaseStatus: {
+			approved: '<%= ProductPurchase.Status.APPROVED %>',
+			cancelled: '<%= ProductPurchase.Status.CANCELLED %>'
 		}
 	};
 </aui:script>

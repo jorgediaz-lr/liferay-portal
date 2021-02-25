@@ -39,6 +39,10 @@ window.ProvisioningConstants = {
 	noteType: {
 		general: 'General',
 		sales: 'Sales'
+	},
+	productPurchaseStatus: {
+		approved: 'Approved',
+		cancelled: 'Cancelled'
 	}
 };
 
