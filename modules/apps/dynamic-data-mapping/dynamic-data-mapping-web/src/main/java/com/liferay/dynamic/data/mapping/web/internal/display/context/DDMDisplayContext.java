@@ -318,6 +318,18 @@ public class DDMDisplayContext {
 			_ddmWebRequestHelper.getPortletName());
 	}
 
+	public String getScopedStructureLabel() {
+		String scopeTitle = ParamUtil.getString(_renderRequest, "scopeTitle");
+
+		if (Validator.isNull(scopeTitle)) {
+			DDMDisplay ddmDisplay = getDDMDisplay();
+
+			return ddmDisplay.getTitle(_ddmWebRequestHelper.getLocale());
+		}
+
+		return scopeTitle;
+	}
+
 	public CreationMenu getSelectStructureCreationMenu()
 		throws PortalException {
 
@@ -903,18 +915,6 @@ public class DDMDisplayContext {
 		}
 
 		return resourceClassNameId;
-	}
-
-	protected String getScopedStructureLabel() {
-		String scopeTitle = ParamUtil.getString(_renderRequest, "scopeTitle");
-
-		if (Validator.isNull(scopeTitle)) {
-			DDMDisplay ddmDisplay = getDDMDisplay();
-
-			return ddmDisplay.getTitle(_ddmWebRequestHelper.getLocale());
-		}
-
-		return scopeTitle;
 	}
 
 	protected long getSearchRestrictionClassNameId() {
