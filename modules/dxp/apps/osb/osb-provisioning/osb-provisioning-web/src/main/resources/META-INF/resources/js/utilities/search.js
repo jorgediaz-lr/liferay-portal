@@ -226,7 +226,7 @@ export function getSearchParameter(param) {
 
 /**
  * Generates placeholder text in the search input based on the
- * search params and results conducted  via the advanced search.
+ * search params and results conducted via the advanced search.
  * @param {function} getFilterDisplayNameCallback The function that constructs
  * the placeholder text.
  * @param {string} defaultPlaceholder The default search placeholder.
