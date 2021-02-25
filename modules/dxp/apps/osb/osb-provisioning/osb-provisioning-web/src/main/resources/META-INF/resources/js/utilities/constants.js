@@ -9,8 +9,6 @@
  * distribution rights of the Software.
  */
 
-export const ACCOUNTS_PORTLET_NAMESPACE =
-	'_com_liferay_osb_provisioning_web_portlet_AccountsPortlet_';
 export const BINARY_SELECTION = [
 	{
 		label: Liferay.Language.get('yes'),
@@ -21,6 +19,11 @@ export const BINARY_SELECTION = [
 		value: false
 	}
 ];
+
+// Namespaces
+
+export const ACCOUNTS_PORTLET_NAMESPACE =
+	window.ProvisioningConstants.accountsPortletNamespace;
 export const NAMESPACE = window.ProvisioningConstants.namespace;
 
 // Note properties

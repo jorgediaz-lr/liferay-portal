@@ -25,6 +25,8 @@ window.Liferay = {
  * Mocks the portlet constants.
  */
 window.ProvisioningConstants = {
+	accountsPortletNamespace:
+		'_com_liferay_osb_provisioning_web_portlet_AccountsPortlet_',
 	namespace: 'namespace',
 	noteFormat: {
 		html: 'HTML',

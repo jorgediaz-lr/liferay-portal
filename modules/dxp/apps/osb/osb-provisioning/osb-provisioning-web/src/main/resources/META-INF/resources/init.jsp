@@ -95,6 +95,7 @@ page import="com.liferay.portal.kernel.servlet.SessionErrors" %><%@
 page import="com.liferay.portal.kernel.util.Constants" %><%@
 page import="com.liferay.portal.kernel.util.HtmlUtil" %><%@
 page import="com.liferay.portal.kernel.util.ParamUtil" %><%@
+page import="com.liferay.portal.kernel.util.PortalUtil" %><%@
 page import="com.liferay.portal.kernel.util.StringBundler" %><%@
 page import="com.liferay.portal.kernel.util.StringUtil" %><%@
 page import="com.liferay.portal.kernel.util.Validator" %><%@
@@ -121,6 +122,8 @@ ProvisioningWebConfiguration provisioningWebConfiguration = (ProvisioningWebConf
 
 <aui:script>
 	window.ProvisioningConstants = {
+		accountsPortletNamespace:
+			'<%= PortalUtil.getPortletNamespace(ProvisioningPortletKeys.ACCOUNTS) %>',
 		namespace: '${renderResponse.namespace}',
 		noteFormat: {
 			html: '<%= Note.Format.HTML %>',
