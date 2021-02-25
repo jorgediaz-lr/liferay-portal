@@ -15,7 +15,6 @@
 package com.liferay.portal.workflow.metrics.internal.sla.processor;
 
 import com.liferay.petra.string.CharPool;
-import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.petra.string.StringUtil;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
@@ -219,8 +218,7 @@ public class WorkflowMetricsSLAProcessor {
 
 		searchSearchRequest.addSorts(
 			_sorts.field(
-				Field.getSortableFieldName(
-					StringBundler.concat("createDate_Number")),
+				Field.getSortableFieldName("createDate_Number"),
 				SortOrder.ASC));
 		searchSearchRequest.setIndexNames(
 			_tokenWorkflowMetricsIndexNameBuilder.getIndexName(companyId));
