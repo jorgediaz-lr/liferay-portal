@@ -6844,7 +6844,9 @@ public class JournalArticleLocalServiceImpl
 
 		article = journalArticlePersistence.update(article);
 
-		if (isExpireAllArticleVersions(article.getCompanyId())) {
+		if (isExpireAllArticleVersions(article.getCompanyId()) &&
+			(expirationDate != null) && expirationDate.before(now)) {
+
 			article = setArticlesExpirationDate(article);
 		}
 
@@ -7367,9 +7369,8 @@ public class JournalArticleLocalServiceImpl
 							new ArticleVersionComparator(true));
 
 					for (JournalArticle currentArticle : currentArticles) {
-						if ((currentArticle.getExpirationDate() == null) ||
-							(currentArticle.getVersion() >
-								article.getVersion())) {
+						if (currentArticle.getVersion() >
+								article.getVersion()) {
 
 							continue;
 						}
