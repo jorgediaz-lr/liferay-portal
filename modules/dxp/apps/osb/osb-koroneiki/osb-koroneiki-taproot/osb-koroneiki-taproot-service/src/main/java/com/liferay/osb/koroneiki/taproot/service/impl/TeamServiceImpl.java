@@ -60,6 +60,12 @@ public class TeamServiceImpl extends TeamServiceBaseImpl {
 	}
 
 	public Team deleteTeam(long teamId) throws PortalException {
+		Team team = teamLocalService.getTeam(teamId);
+
+		if (team.isSystem()) {
+			throw new PrincipalException();
+		}
+
 		_teamPermission.check(
 			getPermissionChecker(), teamId, ActionKeys.DELETE);
 
@@ -68,6 +74,10 @@ public class TeamServiceImpl extends TeamServiceBaseImpl {
 
 	public Team deleteTeam(String teamKey) throws PortalException {
 		Team team = teamLocalService.getTeam(teamKey);
+
+		if (team.isSystem()) {
+			throw new PrincipalException();
+		}
 
 		_teamPermission.check(getPermissionChecker(), team, ActionKeys.DELETE);
 
