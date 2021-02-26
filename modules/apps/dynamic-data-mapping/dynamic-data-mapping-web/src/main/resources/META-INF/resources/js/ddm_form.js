@@ -712,17 +712,14 @@ AUI.add(
 								['.', ','].includes(sourceDecimalSeparator) &&
 								['.', ','].includes(targetDecimalSeparator)
 							) {
-								number = number.replace(
-									/[,.]/g,
-									(separator) => {
-										if (targetDecimalSeparator === '.') {
-											return separator === '.' ? '' : '.';
-										}
-										else {
-											return separator === '.' ? ',' : '';
-										}
+								number = number.replace(/[,.]/g, separator => {
+									if (targetDecimalSeparator === '.') {
+										return separator === '.' ? '' : '.';
 									}
-								);
+									else {
+										return separator === '.' ? ',' : '';
+									}
+								});
 							}
 						}
 					}
