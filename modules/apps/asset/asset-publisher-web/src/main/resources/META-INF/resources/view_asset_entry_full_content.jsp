@@ -64,7 +64,7 @@ fragmentsEditorData.put("fragments-editor-item-type", "fragments-editor-mapped-i
 %>
 
 <div class="asset-full-content clearfix mb-5 <%= assetPublisherDisplayContext.isDefaultAssetPublisher() ? "default-asset-publisher" : StringPool.BLANK %> <%= assetPublisherDisplayContext.isShowAssetTitle() ? "show-asset-title" : "no-title" %> <%= (previewAssetEntryId == assetEntry.getEntryId()) ? "p-1 preview-asset-entry" : StringPool.BLANK %>" <%= AUIUtil.buildData(fragmentsEditorData) %>>
-	<div class="mb-2 d-flex align-items-center">
+	<div class="align-items-center d-flex mb-2">
 		<p class="component-title h4">
 			<c:if test="<%= showBackURL && Validator.isNotNull(redirect) %>">
 				<liferay-ui:icon
@@ -85,18 +85,18 @@ fragmentsEditorData.put("fragments-editor-item-type", "fragments-editor-mapped-i
 		<c:if test="<%= !print %>">
 
 			<%
-				String fullContentRedirect = currentURL;
+			String fullContentRedirect = currentURL;
 
-				if (WorkflowDefinitionLinkLocalServiceUtil.hasWorkflowDefinitionLink(assetEntry.getCompanyId(), assetEntry.getGroupId(), assetEntry.getClassName())) {
-					fullContentRedirect = redirect;
-				}
+			if (WorkflowDefinitionLinkLocalServiceUtil.hasWorkflowDefinitionLink(assetEntry.getCompanyId(), assetEntry.getGroupId(), assetEntry.getClassName())) {
+				fullContentRedirect = redirect;
+			}
 
-				request.setAttribute("view.jsp-fullContentRedirect", fullContentRedirect);
+			request.setAttribute("view.jsp-fullContentRedirect", fullContentRedirect);
 			%>
 
 			<span class="d-inline-flex">
-					<liferay-util:include page="/asset_actions.jsp" servletContext="<%= application %>" />
-				</span>
+				<liferay-util:include page="/asset_actions.jsp" servletContext="<%= application %>" />
+			</span>
 		</c:if>
 	</div>
 
