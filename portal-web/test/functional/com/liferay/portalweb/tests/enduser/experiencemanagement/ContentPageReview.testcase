@@ -651,7 +651,7 @@ definition {
 
 		PageEditor.changeExperience(newExperience = "Default");
 
-		PageEditor.removeFragment(fragmentName = "Title");
+		PageEditor.removeFragmentWithContentPageCommentEnable(fragmentName = "Title");
 
 		AssertTextEquals(
 			locator1 = "PageEditor#FRAGMENT_SIDEBAR_CENTER_TEXT",

@@ -596,6 +596,22 @@ definition {
 		PageEditor.waitForAutoSave();
 	}
 
+	macro removeFragmentWithContentPageCommentEnable {
+		MouseOver.mouseOverNotVisible(
+			key_fragmentName = "${fragmentName}",
+			locator1 = "Fragment#FRAGMENT_HEADER");
+
+		Click(
+			key_fragmentName = "${fragmentName}",
+			locator1 = "Fragment#FRAGMENT_HEADER_DELETE_BUTTON_WITH_CONTENT_PAGE_COMMENT_ENABLE");
+
+		AssertElementNotPresent(
+			key_fragmentName = "${fragmentName}",
+			locator1 = "Fragment#FRAGMENT_HEADER");
+
+		PageEditor.waitForAutoSave();
+	}
+
 	macro removeSection {
 		MouseOver.mouseOverNotVisible(
 			key_position = "${position}",
