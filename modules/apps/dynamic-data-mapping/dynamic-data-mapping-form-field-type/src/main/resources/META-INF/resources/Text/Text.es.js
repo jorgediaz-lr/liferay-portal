@@ -75,6 +75,22 @@ class Text extends Component {
 		};
 	}
 
+	rendered() {
+		const {element} = this;
+
+		const target = element.querySelector('.ddm-field-text');
+
+		if (this.isMultilineTextRenderedByIE({target})) {
+			if (this.value === '') {
+				const currentTargetValue = target.value;
+
+				target.value = ' ';
+				target.value = currentTargetValue;
+				target.blur();
+			}
+		}
+	}
+
 	shouldUpdate(changes) {
 		return Object.keys(changes || {}).some(key => {
 			if (key === 'events') {
