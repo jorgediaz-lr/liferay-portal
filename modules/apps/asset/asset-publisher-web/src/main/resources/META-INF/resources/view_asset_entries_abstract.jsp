@@ -66,7 +66,7 @@ for (AssetEntry assetEntry : assetEntryResult.getAssetEntries()) {
 
 		<div class="asset-abstract mb-5 <%= assetPublisherWebUtil.isDefaultAssetPublisher(layout, portletDisplay.getId(), assetPublisherDisplayContext.getPortletResource()) ? "default-asset-publisher" : StringPool.BLANK %> <%= (previewAssetEntryId == assetEntry.getEntryId()) ? "p-1 preview-asset-entry" : StringPool.BLANK %>" <%= AUIUtil.buildData(fragmentsEditorData) %>>
 			<div class="mb-2">
-				<h4 class="component-title">
+				<p class="component-title h4">
 					<c:choose>
 						<c:when test="<%= assetPublisherDisplayContext.isShowContextLink() %>">
 							<a class="asset-title d-inline" href="<%= viewURL %>">
@@ -83,7 +83,7 @@ for (AssetEntry assetEntry : assetEntryResult.getAssetEntries()) {
 					<span class="d-inline-flex">
 						<liferay-util:include page="/asset_actions.jsp" servletContext="<%= application %>" />
 					</span>
-				</h4>
+				</p>
 			</div>
 
 			<span class="asset-anchor lfr-asset-anchor" id="<%= assetEntry.getEntryId() %>"></span>

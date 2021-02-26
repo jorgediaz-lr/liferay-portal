@@ -65,7 +65,7 @@ fragmentsEditorData.put("fragments-editor-item-type", "fragments-editor-mapped-i
 
 <div class="asset-full-content clearfix mb-5 <%= assetPublisherDisplayContext.isDefaultAssetPublisher() ? "default-asset-publisher" : StringPool.BLANK %> <%= assetPublisherDisplayContext.isShowAssetTitle() ? "show-asset-title" : "no-title" %> <%= (previewAssetEntryId == assetEntry.getEntryId()) ? "p-1 preview-asset-entry" : StringPool.BLANK %>" <%= AUIUtil.buildData(fragmentsEditorData) %>>
 	<div class="mb-2">
-		<h4 class="component-title">
+		<p class="component-title h4">
 			<c:if test="<%= showBackURL && Validator.isNotNull(redirect) %>">
 				<liferay-ui:icon
 					cssClass="header-back-to"
@@ -97,7 +97,7 @@ fragmentsEditorData.put("fragments-editor-item-type", "fragments-editor-mapped-i
 					<liferay-util:include page="/asset_actions.jsp" servletContext="<%= application %>" />
 				</span>
 			</c:if>
-		</h4>
+		</p>
 	</div>
 
 	<span class="asset-anchor lfr-asset-anchor" id="<%= assetEntry.getEntryId() %>"></span>
