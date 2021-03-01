@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.language.LanguageImpl;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
@@ -29,6 +30,7 @@ import com.liferay.registry.RegistryUtil;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
@@ -60,6 +62,15 @@ public class FragmentEntryConfigUtilTest {
 		languageUtil.setLanguage(new LanguageImpl());
 
 		RegistryUtil.setRegistry(new BasicRegistryImpl());
+
+		_classLoader = PortalClassLoaderUtil.getClassLoader();
+
+		PortalClassLoaderUtil.setClassLoader(null);
+	}
+
+	@AfterClass
+	public static void tearDownClass() {
+		PortalClassLoaderUtil.setClassLoader(_classLoader);
 	}
 
 	@Test
@@ -118,5 +129,7 @@ public class FragmentEntryConfigUtilTest {
 			FragmentEntryConfigUtil.translateConfiguration(
 				configurationJSONOjbect, _getResourceBundle(language)));
 	}
+
+	private static ClassLoader _classLoader;
 
 }
