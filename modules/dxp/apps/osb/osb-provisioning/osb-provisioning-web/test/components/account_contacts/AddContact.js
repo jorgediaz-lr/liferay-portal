@@ -115,7 +115,7 @@ describe('AccountAddress', () => {
 	it('adds contact roles when selected from dropdown', () => {
 		const {container, getByText, getByTitle} = renderAddContact();
 
-		fireEvent.click(getByTitle('add-roles'));
+		fireEvent.click(getByTitle('add'));
 
 		fireEvent.click(getByText('Manager'));
 

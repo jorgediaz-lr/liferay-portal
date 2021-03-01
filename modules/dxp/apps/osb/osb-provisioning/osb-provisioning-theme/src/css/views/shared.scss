@@ -282,6 +282,10 @@
 	}
 }
 
+.multi-select-dropdown {
+	max-height: 25vh;
+}
+
 .page-content {
 	margin: $spacing-default;
 
@@ -302,10 +306,6 @@
 	.title-bar {
 		border-radius: $border-radius;
 	}
-}
-
-.roles-dropdown {
-	max-height: 25vh;
 }
 
 .secondary-information {

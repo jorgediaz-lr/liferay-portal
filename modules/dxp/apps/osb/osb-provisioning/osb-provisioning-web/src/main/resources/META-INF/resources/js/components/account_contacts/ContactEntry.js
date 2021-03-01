@@ -9,11 +9,11 @@
  * distribution rights of the Software.
  */
 
-import ClayDropDown from '@clayui/drop-down';
 import PropTypes from 'prop-types';
-import React, {useState} from 'react';
+import React from 'react';
 
 import {NAMESPACE} from '../../utilities/constants';
+import DropdownMultiSelect from '../DropdownMultiSelect';
 
 export default function ContactEntry({
 	accountName,
@@ -56,10 +56,10 @@ export default function ContactEntry({
 				/>
 			</td>
 			<td className="table-cell-expand">
-				<ContactRoleSelect
+				<DropdownMultiSelect
 					addFn={addFn}
-					allRoles={allRoles}
-					newRoles={newRoles}
+					allOptions={allRoles}
+					newOptions={newRoles}
 					removeFn={removeFn}
 				/>
 			</td>
@@ -87,130 +87,4 @@ ContactEntry.propTypes = {
 	newRoles: PropTypes.arrayOf(PropTypes.string),
 	removeFn: PropTypes.func,
 	setEmailAddress: PropTypes.func
-};
-
-function ContactRoleSelect({addFn, allRoles = [], newRoles = [], removeFn}) {
-	const [active, setActive] = useState(false);
-
-	const displayRoles = allRoles.filter(role => !newRoles.includes(role.key));
-	const processedAllContactRoles = allRoles.reduce((roles, role) => {
-		return {...roles, [role.key]: role};
-	}, {});
-
-	const triggerElement = (
-		<div className="input-group input-group-stacked-sm-down">
-			<div className={`input-group-item ${active ? 'input-focus' : ''}`}>
-				<div className="form-control form-control-tag-group input-group-inset input-group-inset-after">
-					{newRoles.map(
-						roleKey =>
-							processedAllContactRoles[roleKey] && (
-								<ContactRoleLabel
-									key={roleKey}
-									name={
-										processedAllContactRoles[roleKey].name
-									}
-									removeRole={event => {
-										// Stops the click event on the label's close button from propagating up and triggering the dropdown.
-
-										event.stopPropagation();
-
-										removeFn(roleKey);
-									}}
-								/>
-							)
-					)}
-				</div>
-
-				<div className="input-group-inset-item input-group-inset-item-after">
-					<button
-						className="btn btn-unstyled"
-						onClick={event => {
-							event.preventDefault();
-
-							setActive(!active);
-						}}
-						tabIndex="0"
-						title={Liferay.Language.get('add-roles')}
-					>
-						<svg
-							aria-label={Liferay.Language.get('select')}
-							className="lexicon-icon lexicon-icon-caret-double"
-							role="img"
-						>
-							<use xlinkHref="#caret-double" />
-						</svg>
-					</button>
-				</div>
-			</div>
-		</div>
-	);
-
-	function handleOnActiveChange(val) {
-		const newVal = displayRoles.length ? val : false;
-
-		setActive(newVal);
-	}
-
-	return (
-		<ClayDropDown
-			active={active}
-			onActiveChange={handleOnActiveChange}
-			trigger={triggerElement}
-		>
-			<ClayDropDown.ItemList className="roles-dropdown">
-				<ClayDropDown.Group>
-					{displayRoles.map(role => (
-						<ClayDropDown.Item
-							key={role.key}
-							onClick={() => addFn(role.key)}
-						>
-							{role.name}
-						</ClayDropDown.Item>
-					))}
-				</ClayDropDown.Group>
-			</ClayDropDown.ItemList>
-		</ClayDropDown>
-	);
-}
-
-ContactRoleSelect.propTypes = {
-	addFn: PropTypes.func.isRequired,
-	allRoles: PropTypes.arrayOf(
-		PropTypes.shape({
-			key: PropTypes.string,
-			name: PropTypes.string
-		})
-	),
-	newRoles: PropTypes.arrayOf(PropTypes.string),
-	removeFn: PropTypes.func.isRequired
-};
-
-function ContactRoleLabel({name, removeRole}) {
-	return (
-		<span className="label label-lg label-secondary">
-			<span className="label-item label-item-expand">{name}</span>
-			<span className="label-item label-item-after">
-				<button
-					className="close"
-					onClick={removeRole}
-					tabIndex="0"
-					title={Liferay.Language.get('delete')}
-					type="button"
-				>
-					<svg
-						aria-label={Liferay.Language.get('close')}
-						className="lexicon-icon lexicon-icon-times reference-mark"
-						role="img"
-					>
-						<use xlinkHref="#times" />
-					</svg>
-				</button>
-			</span>
-		</span>
-	);
-}
-
-ContactRoleLabel.propTypes = {
-	name: PropTypes.string.isRequired,
-	removeRole: PropTypes.func.isRequired
 };
