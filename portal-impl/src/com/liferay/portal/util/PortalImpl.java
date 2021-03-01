@@ -1420,12 +1420,13 @@ public class PortalImpl implements Portal {
 
 		Group siteGroup = themeDisplay.getSiteGroup();
 
-		if ((!layout.isFirstParent() || Validator.isNotNull(parametersURL)) &&
-			(groupFriendlyURL.contains(
-				siteGroup.getFriendlyURL() +
-					themeDisplay.getLayoutFriendlyURL(layout)) ||
-			 groupFriendlyURL.contains(
-				 StringPool.SLASH + layout.getLayoutId()))) {
+		if (((!layout.isFirstParent() || Validator.isNotNull(parametersURL)) &&
+			 _needLayoutFriendlyURL(
+				 siteGroup.getFriendlyURL(),
+				 themeDisplay.getLayoutFriendlyURL(layout),
+				 groupFriendlyURL)) ||
+			groupFriendlyURL.endsWith(
+				StringPool.SLASH + layout.getLayoutId())) {
 
 			canonicalLayoutFriendlyURL = defaultLayoutFriendlyURL;
 		}
@@ -8970,8 +8971,32 @@ public class PortalImpl implements Portal {
 		return group;
 	}
 
-	private static final Log _logWebServerServlet = LogFactoryUtil.getLog(
-		WebServerServlet.class);
+	private boolean _needLayoutFriendlyURL(
+		String siteGroupFriendlyURL, String layoutFriendlyURL,
+		String groupFriendlyURL) {
+
+		boolean groupFriendlyURlContainsPubicFriendlyURLPath =
+			groupFriendlyURL.contains("/web");
+
+		boolean
+			groupFriendlyURLContainsLayoutFriendlyURLandSiteGroupFriendlyURL =
+				groupFriendlyURL.contains(
+					"/web" + siteGroupFriendlyURL + layoutFriendlyURL);
+
+		if (groupFriendlyURlContainsPubicFriendlyURLPath &&
+			groupFriendlyURLContainsLayoutFriendlyURLandSiteGroupFriendlyURL) {
+
+			return true;
+		}
+
+		if (!groupFriendlyURlContainsPubicFriendlyURLPath &&
+			groupFriendlyURL.contains(layoutFriendlyURL)) {
+
+			return true;
+		}
+
+		return false;
+	}
 
 	private static final String _J_SECURITY_CHECK = "j_security_check";
 
@@ -9001,6 +9026,8 @@ public class PortalImpl implements Portal {
 		new ConcurrentHashMap<>();
 	private static final Map<Long, String> _cdnHostHttpsMap =
 		new ConcurrentHashMap<>();
+	private static final Log _logWebServerServlet = LogFactoryUtil.getLog(
+		WebServerServlet.class);
 	private static final MethodHandler _resetCDNHostsMethodHandler =
 		new MethodHandler(new MethodKey(PortalUtil.class, "resetCDNHosts"));
 	private static final Date _upTime = new Date();
