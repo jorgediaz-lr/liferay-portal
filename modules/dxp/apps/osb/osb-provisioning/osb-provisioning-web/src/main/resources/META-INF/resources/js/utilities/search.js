@@ -265,7 +265,8 @@ export function getSearchPlaceholder(
 /**
  * Updates the aria attributes on the advanced search component when it's opened
  * or closed.
- * @param {bool} state
+ * @param {string} id Identifier for the attribute
+ * @param {bool} state Aria state to set
  */
 export function setAdvancedSearchAriaAttributes(id, state) {
 	const advancedSearchBtn = document.getElementById(id);

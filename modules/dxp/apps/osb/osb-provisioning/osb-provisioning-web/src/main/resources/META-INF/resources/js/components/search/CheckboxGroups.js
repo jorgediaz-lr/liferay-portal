@@ -44,21 +44,24 @@ function CheckboxGroups({
 				value={values.join()}
 			/>
 
-			<div className="row">
-				{fieldValues.map(field => (
-					<div
-						className={`col-md-${BOOTSTRAP_GRID_COL_NUM / columns}`}
-						key={field.value}
-					>
-						<ClayCheckbox
-							aria-label={field.label}
-							label={field.label}
-							onClick={handleOnClick}
-							value={field.value}
-						/>
-					</div>
-				))}
-			</div>
+			{!!fieldValues && (
+				<div className="row">
+					{fieldValues.map(field => (
+						<div
+							className={`col-md-${BOOTSTRAP_GRID_COL_NUM /
+								columns}`}
+							key={field.value}
+						>
+							<ClayCheckbox
+								aria-label={field.label}
+								label={field.label}
+								onClick={handleOnClick}
+								value={field.value}
+							/>
+						</div>
+					))}
+				</div>
+			)}
 		</>
 	);
 }
@@ -70,7 +73,7 @@ CheckboxGroups.propTypes = {
 			label: PropTypes.string,
 			value: PropTypes.oneOfType([PropTypes.bool, PropTypes.string])
 		})
-	),
+	).isRequired,
 	inputName: PropTypes.string.isRequired,
 	namespace: PropTypes.string
 };
