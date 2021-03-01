@@ -34,6 +34,14 @@ export default function AddContact({
 		fullName
 	);
 
+	function disableSave() {
+		if (newRoles.length > 0 && contactEmailAddress) {
+			return false;
+		}
+
+		return true;
+	}
+
 	function handleAdd(key) {
 		if (!newRoles.includes(key)) {
 			setNewRoles([...newRoles, key]);
@@ -119,7 +127,7 @@ export default function AddContact({
 			<div className="button-holder button-holder-lg" role="group">
 				<button
 					className="btn btn-primary save-btn"
-					disabled={!(newRoles.length > 0 && contactEmailAddress)}
+					disabled={disableSave()}
 					role="button"
 					type="submit"
 				>
