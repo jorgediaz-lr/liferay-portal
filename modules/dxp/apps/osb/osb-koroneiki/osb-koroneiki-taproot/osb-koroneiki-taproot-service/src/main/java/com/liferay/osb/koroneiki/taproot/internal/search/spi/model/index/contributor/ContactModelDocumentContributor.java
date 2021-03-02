@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.search.spi.model.index.contributor.ModelDocumentContributor;
 
 import java.util.HashSet;
@@ -73,13 +74,15 @@ public class ContactModelDocumentContributor
 		document.addDate(Field.MODIFIED_DATE, contact.getModifiedDate());
 
 		document.addKeyword("contactKey", contact.getContactKey());
-		document.addText("emailAddress", contact.getEmailAddress());
+		document.addText(
+			"emailAddress", StringUtil.toLowerCase(contact.getEmailAddress()));
 		document.addText("firstName", contact.getFirstName());
 		document.addText("lastName", contact.getLastName());
 		document.addText("middleName", contact.getMiddleName());
 		document.addKeyword("uuid", contact.getUuid());
 
-		document.addTextSortable("emailAddress", contact.getEmailAddress());
+		document.addTextSortable(
+			"emailAddress", StringUtil.toLowerCase(contact.getEmailAddress()));
 		document.addTextSortable("firstName", contact.getFirstName());
 		document.addTextSortable("lastName", contact.getLastName());
 
