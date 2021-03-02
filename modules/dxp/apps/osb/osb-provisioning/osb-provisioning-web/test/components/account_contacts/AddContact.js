@@ -19,7 +19,11 @@ function renderAddContact(props) {
 		{key: 'KEY-100', name: 'Manager'},
 		{key: 'KEY-101', name: 'Member'},
 		{key: 'KEY-102', name: 'Analyst'},
-		{key: 'KEY-103', name: 'Designer'}
+		{key: 'KEY-103', name: 'Designer'},
+		{key: 'KEY-SUPPORT1', name: 'Support Watcher'},
+		{key: 'KEY-SUPPORT2', name: 'Support Developer'},
+		{key: 'KEY-PARTNER1', name: 'Partner Member'},
+		{key: 'KEY-PARTNER2', name: 'Partner Watcher'}
 	];
 
 	return render(
@@ -84,34 +88,6 @@ describe('AccountAddress', () => {
 		expect(queryByText('Test One')).toBeFalsy();
 	});
 
-	it('disables save if email is blank', () => {
-		const {getByText} = renderAddContact({
-			currentRoles: ['KEY-100', 'KEY-101'],
-			emailAddress: ''
-		});
-
-		expect(getByText('save').disabled).toBeTruthy();
-	});
-
-	it('disables save if no contact roles are selected', () => {
-		const {getByText} = renderAddContact({
-			currentRoles: [],
-			emailAddress: 'test1@liferay.com'
-		});
-
-		expect(getByText('save').disabled).toBeTruthy();
-	});
-
-	it('enables save if email and contact roles are populated', () => {
-		const {getByText} = renderAddContact({
-			currentRoles: ['KEY-100', 'KEY-101'],
-			emailAddress: 'test1@liferay.com',
-			fullName: 'Test One'
-		});
-
-		expect(getByText('save').disabled).toBeFalsy();
-	});
-
 	it('adds contact roles when selected from dropdown', () => {
 		const {container, getByText, getByTitle} = renderAddContact();
 
@@ -127,18 +103,96 @@ describe('AccountAddress', () => {
 	});
 
 	it('removes contact roles when clicked on close', () => {
-		const {container, queryAllByTitle} = renderAddContact({
+		const {container, getAllByTitle} = renderAddContact({
 			currentRoles: ['KEY-100', 'KEY-101'],
 			emailAddress: 'test1@liferay.com',
 			fullName: 'Test One'
 		});
 
-		fireEvent.click(queryAllByTitle('delete')[0]);
+		fireEvent.click(getAllByTitle('delete')[0]);
 
 		expect(
 			within(container.querySelector('.input-group-item')).queryByText(
 				'Manager'
 			)
 		).toBeFalsy();
+	});
+
+	it('disables Save button if email is blank', () => {
+		const {getByText} = renderAddContact({
+			currentRoles: ['KEY-100', 'KEY-101'],
+			emailAddress: ''
+		});
+
+		expect(getByText('save').disabled).toBeTruthy();
+	});
+
+	it('disables Save button if no contact roles are selected', () => {
+		const {getByText} = renderAddContact({
+			currentRoles: [],
+			emailAddress: 'test1@liferay.com'
+		});
+
+		expect(getByText('save').disabled).toBeTruthy();
+	});
+
+	it('disables Save button if more than one Support roles are selected', () => {
+		const {getByText} = renderAddContact({
+			currentRoles: ['KEY-SUPPORT1', 'KEY-SUPPORT2'],
+			emailAddress: 'test1@liferay.com'
+		});
+
+		expect(getByText('save').disabled).toBeTruthy();
+	});
+
+	it('disables Save button if more than one Partner roles are selected', () => {
+		const {getByText} = renderAddContact({
+			currentRoles: ['KEY-PARTNER1', 'KEY-PARTNER2'],
+			emailAddress: 'test1@liferay.com'
+		});
+
+		expect(getByText('save').disabled).toBeTruthy();
+	});
+
+	it('enables Save button if email and contact roles are populated', () => {
+		const {getByText} = renderAddContact({
+			currentRoles: ['KEY-100', 'KEY-101'],
+			emailAddress: 'test1@liferay.com',
+			fullName: 'Test One'
+		});
+
+		expect(getByText('save').disabled).toBeFalsy();
+	});
+
+	it('enables Save button if all the duplicate Partner and Support roles are removed', () => {
+		const {getAllByTitle, getByText} = renderAddContact({
+			currentRoles: ['KEY-SUPPORT1', 'KEY-PARTNER1', 'KEY-PARTNER2'],
+			emailAddress: 'test1@liferay.com'
+		});
+
+		fireEvent.click(getAllByTitle('delete')[0]);
+		fireEvent.click(getAllByTitle('delete')[1]);
+
+		expect(getByText('save').disabled).toBeFalsy();
+	});
+
+	it('displays a warning message if more than one Partner roles are selected', () => {
+		const {getByText} = renderAddContact({
+			currentRoles: ['KEY-PARTNER1', 'KEY-PARTNER2'],
+			emailAddress: 'test1@liferay.com'
+		});
+
+		getByText('overlapping-roles');
+	});
+
+	it('removes the a warning message if overlapping roles are removed', () => {
+		const {getAllByTitle, queryByText} = renderAddContact({
+			currentRoles: ['KEY-SUPPORT1', 'KEY-SUPPORT2'],
+			emailAddress: 'test1@liferay.com'
+		});
+
+		fireEvent.click(getAllByTitle('delete')[0]);
+
+		expect(queryByText('overlapping-roles')).toBeFalsy();
 	});
 });

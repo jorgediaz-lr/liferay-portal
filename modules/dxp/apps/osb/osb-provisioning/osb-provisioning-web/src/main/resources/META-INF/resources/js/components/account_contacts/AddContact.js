@@ -9,8 +9,10 @@
  * distribution rights of the Software.
  */
 
+import ClayAlert from '@clayui/alert';
+import {Set} from 'immutable';
 import PropTypes from 'prop-types';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {NAMESPACE} from '../../utilities/constants';
 import ContactEntry from './ContactEntry';
@@ -27,6 +29,7 @@ export default function AddContact({
 		emailAddress
 	);
 	const [newRoles, setNewRoles] = useState(currentRoles);
+	const [valid, setValid] = useState(true);
 
 	const knownContact = !!(
 		currentRoles.length !== 0 &&
@@ -34,8 +37,35 @@ export default function AddContact({
 		fullName
 	);
 
+	const validationRoleIds = {
+		partner: allRoles
+			.filter(role => role.name.startsWith('Partner'))
+			.map(partner => partner.key),
+		support: allRoles
+			.filter(role => role.name.startsWith('Support'))
+			.map(support => support.key)
+	};
+
+	useEffect(() => {
+		const currentSelection = Set(newRoles);
+
+		const partnerIntersection = currentSelection.intersect(
+			validationRoleIds.partner
+		);
+		const supportIntersection = currentSelection.intersect(
+			validationRoleIds.support
+		);
+
+		if (partnerIntersection.size > 1 || supportIntersection.size > 1) {
+			setValid(false);
+		}
+		else {
+			setValid(true);
+		}
+	}, [newRoles, validationRoleIds.partner, validationRoleIds.support]);
+
 	function disableSave() {
-		if (newRoles.length > 0 && contactEmailAddress) {
+		if (newRoles.length > 0 && contactEmailAddress && valid) {
 			return false;
 		}
 
@@ -67,6 +97,17 @@ export default function AddContact({
 					.filter(key => !newRoles.includes(key))
 					.join(',')}
 			/>
+
+			{!valid && (
+				<ClayAlert
+					displayType="danger"
+					title={Liferay.Language.get('overlapping-roles')}
+				>
+					{Liferay.Language.get(
+						'please-only-select-one-support-role-or--one-partner-role'
+					)}
+				</ClayAlert>
+			)}
 
 			<table className="table table-autofit table-list table-nowrap">
 				<thead>
