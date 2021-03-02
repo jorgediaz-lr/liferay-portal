@@ -35,6 +35,10 @@ public abstract class BaseMessageSubscriber implements MessageSubscriber {
 	public void receive(Message message) {
 		try {
 			if (!isParseMessage(message)) {
+				if (_log.isDebugEnabled()) {
+					_log.debug("Skip Parsing Message: " + message.getPayload());
+				}
+
 				return;
 			}
 
