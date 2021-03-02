@@ -8977,7 +8977,8 @@ public class PortalImpl implements Portal {
 
 		if (groupFriendlyURL.contains("/web")) {
 			if (groupFriendlyURL.contains(
-					"/web" + siteGroupFriendlyURL + layoutFriendlyURL)) {
+					StringBundler.concat(
+						"/web", siteGroupFriendlyURL, layoutFriendlyURL))) {
 
 				return true;
 			}
