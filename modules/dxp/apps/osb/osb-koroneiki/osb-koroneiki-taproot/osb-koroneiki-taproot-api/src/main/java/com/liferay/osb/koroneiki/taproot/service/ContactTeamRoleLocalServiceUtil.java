@@ -14,9 +14,15 @@
 
 package com.liferay.osb.koroneiki.taproot.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.koroneiki.taproot.model.ContactTeamRole;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for ContactTeamRole. This utility wraps
@@ -48,17 +54,15 @@ public class ContactTeamRoleLocalServiceUtil {
 	 * @param contactTeamRole the contact team role
 	 * @return the contact team role that was added
 	 */
-	public static com.liferay.osb.koroneiki.taproot.model.ContactTeamRole
-		addContactTeamRole(
-			com.liferay.osb.koroneiki.taproot.model.ContactTeamRole
-				contactTeamRole) {
+	public static ContactTeamRole addContactTeamRole(
+		ContactTeamRole contactTeamRole) {
 
 		return getService().addContactTeamRole(contactTeamRole);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.ContactTeamRole
-			addContactTeamRole(long contactId, long teamId, long contactRoleId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ContactTeamRole addContactTeamRole(
+			long contactId, long teamId, long contactRoleId)
+		throws PortalException {
 
 		return getService().addContactTeamRole(
 			contactId, teamId, contactRoleId);
@@ -70,16 +74,15 @@ public class ContactTeamRoleLocalServiceUtil {
 	 * @param contactTeamRolePK the primary key for the new contact team role
 	 * @return the new contact team role
 	 */
-	public static com.liferay.osb.koroneiki.taproot.model.ContactTeamRole
-		createContactTeamRole(
-			com.liferay.osb.koroneiki.taproot.service.persistence.
-				ContactTeamRolePK contactTeamRolePK) {
+	public static ContactTeamRole createContactTeamRole(
+		com.liferay.osb.koroneiki.taproot.service.persistence.ContactTeamRolePK
+			contactTeamRolePK) {
 
 		return getService().createContactTeamRole(contactTeamRolePK);
 	}
 
 	public static void deleteAccountTeamContact(long accountId, long contactId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().deleteAccountTeamContact(accountId, contactId);
 	}
@@ -94,10 +97,8 @@ public class ContactTeamRoleLocalServiceUtil {
 	 * @param contactTeamRole the contact team role
 	 * @return the contact team role that was removed
 	 */
-	public static com.liferay.osb.koroneiki.taproot.model.ContactTeamRole
-		deleteContactTeamRole(
-			com.liferay.osb.koroneiki.taproot.model.ContactTeamRole
-				contactTeamRole) {
+	public static ContactTeamRole deleteContactTeamRole(
+		ContactTeamRole contactTeamRole) {
 
 		return getService().deleteContactTeamRole(contactTeamRole);
 	}
@@ -113,26 +114,24 @@ public class ContactTeamRoleLocalServiceUtil {
 	 * @return the contact team role that was removed
 	 * @throws PortalException if a contact team role with the primary key could not be found
 	 */
-	public static com.liferay.osb.koroneiki.taproot.model.ContactTeamRole
-			deleteContactTeamRole(
-				com.liferay.osb.koroneiki.taproot.service.persistence.
-					ContactTeamRolePK contactTeamRolePK)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ContactTeamRole deleteContactTeamRole(
+			com.liferay.osb.koroneiki.taproot.service.persistence.
+				ContactTeamRolePK contactTeamRolePK)
+		throws PortalException {
 
 		return getService().deleteContactTeamRole(contactTeamRolePK);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.ContactTeamRole
-			deleteContactTeamRole(
-				long contactId, long teamId, long contactRoleId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ContactTeamRole deleteContactTeamRole(
+			long contactId, long teamId, long contactRoleId)
+		throws PortalException {
 
 		return getService().deleteContactTeamRole(
 			contactId, teamId, contactRoleId);
 	}
 
 	public static void deleteContactTeamRoles(long contactId, long teamId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().deleteContactTeamRoles(contactId, teamId);
 	}
@@ -140,17 +139,14 @@ public class ContactTeamRoleLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -160,9 +156,7 @@ public class ContactTeamRoleLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -178,9 +172,8 @@ public class ContactTeamRoleLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -198,10 +191,9 @@ public class ContactTeamRoleLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -213,9 +205,7 @@ public class ContactTeamRoleLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -227,16 +217,15 @@ public class ContactTeamRoleLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.ContactTeamRole
-		fetchContactTeamRole(
-			com.liferay.osb.koroneiki.taproot.service.persistence.
-				ContactTeamRolePK contactTeamRolePK) {
+	public static ContactTeamRole fetchContactTeamRole(
+		com.liferay.osb.koroneiki.taproot.service.persistence.ContactTeamRolePK
+			contactTeamRolePK) {
 
 		return getService().fetchContactTeamRole(contactTeamRolePK);
 	}
@@ -254,11 +243,10 @@ public class ContactTeamRoleLocalServiceUtil {
 	 * @return the contact team role
 	 * @throws PortalException if a contact team role with the primary key could not be found
 	 */
-	public static com.liferay.osb.koroneiki.taproot.model.ContactTeamRole
-			getContactTeamRole(
-				com.liferay.osb.koroneiki.taproot.service.persistence.
-					ContactTeamRolePK contactTeamRolePK)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ContactTeamRole getContactTeamRole(
+			com.liferay.osb.koroneiki.taproot.service.persistence.
+				ContactTeamRolePK contactTeamRolePK)
+		throws PortalException {
 
 		return getService().getContactTeamRole(contactTeamRolePK);
 	}
@@ -274,23 +262,18 @@ public class ContactTeamRoleLocalServiceUtil {
 	 * @param end the upper bound of the range of contact team roles (not inclusive)
 	 * @return the range of contact team roles
 	 */
-	public static java.util.List
-		<com.liferay.osb.koroneiki.taproot.model.ContactTeamRole>
-			getContactTeamRoles(int start, int end) {
+	public static List<ContactTeamRole> getContactTeamRoles(
+		int start, int end) {
 
 		return getService().getContactTeamRoles(start, end);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.taproot.model.ContactTeamRole>
-			getContactTeamRoles(long contactId) {
-
+	public static List<ContactTeamRole> getContactTeamRoles(long contactId) {
 		return getService().getContactTeamRoles(contactId);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.taproot.model.ContactTeamRole>
-			getContactTeamRolesByTeamId(long teamId) {
+	public static List<ContactTeamRole> getContactTeamRolesByTeamId(
+		long teamId) {
 
 		return getService().getContactTeamRolesByTeamId(teamId);
 	}
@@ -323,9 +306,8 @@ public class ContactTeamRoleLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -340,36 +322,16 @@ public class ContactTeamRoleLocalServiceUtil {
 	 * @param contactTeamRole the contact team role
 	 * @return the contact team role that was updated
 	 */
-	public static com.liferay.osb.koroneiki.taproot.model.ContactTeamRole
-		updateContactTeamRole(
-			com.liferay.osb.koroneiki.taproot.model.ContactTeamRole
-				contactTeamRole) {
+	public static ContactTeamRole updateContactTeamRole(
+		ContactTeamRole contactTeamRole) {
 
 		return getService().updateContactTeamRole(contactTeamRole);
 	}
 
 	public static ContactTeamRoleLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<ContactTeamRoleLocalService, ContactTeamRoleLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			ContactTeamRoleLocalService.class);
-
-		ServiceTracker<ContactTeamRoleLocalService, ContactTeamRoleLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<ContactTeamRoleLocalService, ContactTeamRoleLocalService>(
-						bundle.getBundleContext(),
-						ContactTeamRoleLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ContactTeamRoleLocalService _service;
 
 }

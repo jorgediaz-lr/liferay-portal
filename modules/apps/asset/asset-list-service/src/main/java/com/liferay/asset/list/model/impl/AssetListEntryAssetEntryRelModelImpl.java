@@ -585,7 +585,7 @@ public class AssetListEntryAssetEntryRelModelImpl
 
 	@Override
 	public void setPosition(int position) {
-		_columnBitmask |= POSITION_COLUMN_BITMASK;
+		_columnBitmask = -1L;
 
 		if (!_setOriginalPosition) {
 			_setOriginalPosition = true;

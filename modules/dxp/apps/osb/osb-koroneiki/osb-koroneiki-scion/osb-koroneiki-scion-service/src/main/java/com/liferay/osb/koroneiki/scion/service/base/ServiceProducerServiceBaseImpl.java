@@ -16,6 +16,7 @@ package com.liferay.osb.koroneiki.scion.service.base;
 
 import com.liferay.osb.koroneiki.scion.model.ServiceProducer;
 import com.liferay.osb.koroneiki.scion.service.ServiceProducerService;
+import com.liferay.osb.koroneiki.scion.service.ServiceProducerServiceUtil;
 import com.liferay.osb.koroneiki.scion.service.persistence.AuthenticationTokenPersistence;
 import com.liferay.osb.koroneiki.scion.service.persistence.ServiceProducerPersistence;
 import com.liferay.portal.aop.AopService;
@@ -28,8 +29,11 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
+import java.lang.reflect.Field;
+
 import javax.sql.DataSource;
 
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -50,8 +54,13 @@ public abstract class ServiceProducerServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ServiceProducerService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.koroneiki.scion.service.ServiceProducerServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ServiceProducerService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ServiceProducerServiceUtil</code>.
 	 */
+	@Deactivate
+	protected void deactivate() {
+		_setServiceUtilService(null);
+	}
+
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
@@ -62,6 +71,8 @@ public abstract class ServiceProducerServiceBaseImpl
 	@Override
 	public void setAopProxy(Object aopProxy) {
 		serviceProducerService = (ServiceProducerService)aopProxy;
+
+		_setServiceUtilService(serviceProducerService);
 	}
 
 	/**
@@ -103,6 +114,22 @@ public abstract class ServiceProducerServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(
+		ServiceProducerService serviceProducerService) {
+
+		try {
+			Field field = ServiceProducerServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, serviceProducerService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

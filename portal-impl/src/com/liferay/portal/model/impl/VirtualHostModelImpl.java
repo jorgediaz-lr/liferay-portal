@@ -310,6 +310,8 @@ public class VirtualHostModelImpl
 
 	@Override
 	public void setVirtualHostId(long virtualHostId) {
+		_columnBitmask = -1L;
+
 		_virtualHostId = virtualHostId;
 	}
 

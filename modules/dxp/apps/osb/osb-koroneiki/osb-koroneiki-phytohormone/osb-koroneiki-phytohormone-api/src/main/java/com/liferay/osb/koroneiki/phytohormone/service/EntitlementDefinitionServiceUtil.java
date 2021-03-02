@@ -14,9 +14,8 @@
 
 package com.liferay.osb.koroneiki.phytohormone.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.koroneiki.phytohormone.model.EntitlementDefinition;
+import com.liferay.portal.kernel.exception.PortalException;
 
 /**
  * Provides the remote service utility for EntitlementDefinition. This utility wraps
@@ -37,21 +36,18 @@ public class EntitlementDefinitionServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.osb.koroneiki.phytohormone.service.impl.EntitlementDefinitionServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static
-		com.liferay.osb.koroneiki.phytohormone.model.EntitlementDefinition
-				addEntitlementDefinition(
-					long classNameId, String name, String description,
-					String definition, int status)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static EntitlementDefinition addEntitlementDefinition(
+			long classNameId, String name, String description,
+			String definition, int status)
+		throws PortalException {
 
 		return getService().addEntitlementDefinition(
 			classNameId, name, description, definition, status);
 	}
 
-	public static
-		com.liferay.osb.koroneiki.phytohormone.model.EntitlementDefinition
-				deleteEntitlementDefinition(long entitlementDefinitionId)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static EntitlementDefinition deleteEntitlementDefinition(
+			long entitlementDefinitionId)
+		throws PortalException {
 
 		return getService().deleteEntitlementDefinition(
 			entitlementDefinitionId);
@@ -74,29 +70,9 @@ public class EntitlementDefinitionServiceUtil {
 	}
 
 	public static EntitlementDefinitionService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<EntitlementDefinitionService, EntitlementDefinitionService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			EntitlementDefinitionService.class);
-
-		ServiceTracker
-			<EntitlementDefinitionService, EntitlementDefinitionService>
-				serviceTracker =
-					new ServiceTracker
-						<EntitlementDefinitionService,
-						 EntitlementDefinitionService>(
-							 bundle.getBundleContext(),
-							 EntitlementDefinitionService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile EntitlementDefinitionService _service;
 
 }

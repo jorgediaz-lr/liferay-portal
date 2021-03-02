@@ -21,6 +21,7 @@ import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.osb.koroneiki.trunk.model.ProductConsumption;
 import com.liferay.osb.koroneiki.trunk.service.ProductConsumptionLocalService;
+import com.liferay.osb.koroneiki.trunk.service.ProductConsumptionLocalServiceUtil;
 import com.liferay.osb.koroneiki.trunk.service.persistence.ProductConsumptionFinder;
 import com.liferay.osb.koroneiki.trunk.service.persistence.ProductConsumptionPersistence;
 import com.liferay.osb.koroneiki.trunk.service.persistence.ProductEntryPersistence;
@@ -55,10 +56,13 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -80,7 +84,7 @@ public abstract class ProductConsumptionLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ProductConsumptionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.koroneiki.trunk.service.ProductConsumptionLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ProductConsumptionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ProductConsumptionLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -482,6 +486,11 @@ public abstract class ProductConsumptionLocalServiceBaseImpl
 		return productConsumptionPersistence.update(productConsumption);
 	}
 
+	@Deactivate
+	protected void deactivate() {
+		_setLocalServiceUtilService(null);
+	}
+
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
@@ -494,6 +503,8 @@ public abstract class ProductConsumptionLocalServiceBaseImpl
 	public void setAopProxy(Object aopProxy) {
 		productConsumptionLocalService =
 			(ProductConsumptionLocalService)aopProxy;
+
+		_setLocalServiceUtilService(productConsumptionLocalService);
 	}
 
 	/**
@@ -536,6 +547,23 @@ public abstract class ProductConsumptionLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		ProductConsumptionLocalService productConsumptionLocalService) {
+
+		try {
+			Field field =
+				ProductConsumptionLocalServiceUtil.class.getDeclaredField(
+					"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, productConsumptionLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

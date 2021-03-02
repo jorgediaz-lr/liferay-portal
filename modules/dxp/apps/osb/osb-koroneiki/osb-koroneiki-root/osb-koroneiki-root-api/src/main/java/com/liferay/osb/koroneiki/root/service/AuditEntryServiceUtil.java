@@ -14,9 +14,10 @@
 
 package com.liferay.osb.koroneiki.root.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.koroneiki.root.model.AuditEntry;
+import com.liferay.portal.kernel.exception.PortalException;
+
+import java.util.List;
 
 /**
  * Provides the remote service utility for AuditEntry. This utility wraps
@@ -37,26 +38,24 @@ public class AuditEntryServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.osb.koroneiki.root.service.impl.AuditEntryServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static java.util.List
-		<com.liferay.osb.koroneiki.root.model.AuditEntry> getAuditEntries(
-				long classNameId, long classPK, int start, int end)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<AuditEntry> getAuditEntries(
+			long classNameId, long classPK, int start, int end)
+		throws PortalException {
 
 		return getService().getAuditEntries(classNameId, classPK, start, end);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.root.model.AuditEntry> getAuditEntries(
-				long classNameId, long classPK, long fieldClassNameId,
-				long fieldClassPK, int start, int end)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<AuditEntry> getAuditEntries(
+			long classNameId, long classPK, long fieldClassNameId,
+			long fieldClassPK, int start, int end)
+		throws PortalException {
 
 		return getService().getAuditEntries(
 			classNameId, classPK, fieldClassNameId, fieldClassPK, start, end);
 	}
 
 	public static int getAuditEntriesCount(long classNameId, long classPK)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getAuditEntriesCount(classNameId, classPK);
 	}
@@ -64,22 +63,20 @@ public class AuditEntryServiceUtil {
 	public static int getAuditEntriesCount(
 			long classNameId, long classPK, long fieldClassNameId,
 			long fieldClassPK)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getAuditEntriesCount(
 			classNameId, classPK, fieldClassNameId, fieldClassPK);
 	}
 
-	public static com.liferay.osb.koroneiki.root.model.AuditEntry getAuditEntry(
-			long auditEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AuditEntry getAuditEntry(long auditEntryId)
+		throws PortalException {
 
 		return getService().getAuditEntry(auditEntryId);
 	}
 
-	public static com.liferay.osb.koroneiki.root.model.AuditEntry getAuditEntry(
-			String auditEntryKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AuditEntry getAuditEntry(String auditEntryKey)
+		throws PortalException {
 
 		return getService().getAuditEntry(auditEntryKey);
 	}
@@ -94,22 +91,9 @@ public class AuditEntryServiceUtil {
 	}
 
 	public static AuditEntryService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker<AuditEntryService, AuditEntryService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(AuditEntryService.class);
-
-		ServiceTracker<AuditEntryService, AuditEntryService> serviceTracker =
-			new ServiceTracker<AuditEntryService, AuditEntryService>(
-				bundle.getBundleContext(), AuditEntryService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AuditEntryService _service;
 
 }

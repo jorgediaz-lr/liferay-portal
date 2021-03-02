@@ -16,6 +16,7 @@ package com.liferay.osb.koroneiki.trunk.service.base;
 
 import com.liferay.osb.koroneiki.trunk.model.ProductPurchase;
 import com.liferay.osb.koroneiki.trunk.service.ProductPurchaseService;
+import com.liferay.osb.koroneiki.trunk.service.ProductPurchaseServiceUtil;
 import com.liferay.osb.koroneiki.trunk.service.persistence.ProductConsumptionFinder;
 import com.liferay.osb.koroneiki.trunk.service.persistence.ProductConsumptionPersistence;
 import com.liferay.osb.koroneiki.trunk.service.persistence.ProductEntryPersistence;
@@ -33,8 +34,11 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
+import java.lang.reflect.Field;
+
 import javax.sql.DataSource;
 
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -55,8 +59,13 @@ public abstract class ProductPurchaseServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ProductPurchaseService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.koroneiki.trunk.service.ProductPurchaseServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ProductPurchaseService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ProductPurchaseServiceUtil</code>.
 	 */
+	@Deactivate
+	protected void deactivate() {
+		_setServiceUtilService(null);
+	}
+
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
@@ -67,6 +76,8 @@ public abstract class ProductPurchaseServiceBaseImpl
 	@Override
 	public void setAopProxy(Object aopProxy) {
 		productPurchaseService = (ProductPurchaseService)aopProxy;
+
+		_setServiceUtilService(productPurchaseService);
 	}
 
 	/**
@@ -108,6 +119,22 @@ public abstract class ProductPurchaseServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(
+		ProductPurchaseService productPurchaseService) {
+
+		try {
+			Field field = ProductPurchaseServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, productPurchaseService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

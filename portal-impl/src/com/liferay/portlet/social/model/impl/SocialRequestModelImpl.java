@@ -430,6 +430,8 @@ public class SocialRequestModelImpl
 
 	@Override
 	public void setRequestId(long requestId) {
+		_columnBitmask = -1L;
+
 		_requestId = requestId;
 	}
 

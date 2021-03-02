@@ -17,6 +17,7 @@ package com.liferay.osb.distributed.messaging.service.base;
 import com.liferay.osb.distributed.messaging.model.QueuedMessage;
 import com.liferay.osb.distributed.messaging.model.QueuedMessageMessageObjectBlobModel;
 import com.liferay.osb.distributed.messaging.service.QueuedMessageLocalService;
+import com.liferay.osb.distributed.messaging.service.QueuedMessageLocalServiceUtil;
 import com.liferay.osb.distributed.messaging.service.persistence.QueuedMessagePersistence;
 import com.liferay.petra.io.AutoDeleteFileInputStream;
 import com.liferay.portal.aop.AopService;
@@ -50,6 +51,8 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import java.io.InputStream;
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.sql.Blob;
 
 import java.util.List;
@@ -57,6 +60,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -77,7 +81,7 @@ public abstract class QueuedMessageLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>QueuedMessageLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.distributed.messaging.service.QueuedMessageLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>QueuedMessageLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>QueuedMessageLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -422,6 +426,11 @@ public abstract class QueuedMessageLocalServiceBaseImpl
 		}
 	}
 
+	@Deactivate
+	protected void deactivate() {
+		_setLocalServiceUtilService(null);
+	}
+
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
@@ -433,6 +442,8 @@ public abstract class QueuedMessageLocalServiceBaseImpl
 	@Override
 	public void setAopProxy(Object aopProxy) {
 		queuedMessageLocalService = (QueuedMessageLocalService)aopProxy;
+
+		_setLocalServiceUtilService(queuedMessageLocalService);
 	}
 
 	/**
@@ -474,6 +485,22 @@ public abstract class QueuedMessageLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		QueuedMessageLocalService queuedMessageLocalService) {
+
+		try {
+			Field field = QueuedMessageLocalServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, queuedMessageLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

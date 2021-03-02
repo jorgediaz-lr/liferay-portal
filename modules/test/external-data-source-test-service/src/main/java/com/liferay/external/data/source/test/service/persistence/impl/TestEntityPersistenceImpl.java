@@ -19,6 +19,7 @@ import com.liferay.external.data.source.test.model.TestEntity;
 import com.liferay.external.data.source.test.model.impl.TestEntityImpl;
 import com.liferay.external.data.source.test.model.impl.TestEntityModelImpl;
 import com.liferay.external.data.source.test.service.persistence.TestEntityPersistence;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -30,17 +31,11 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.SetUtil;
-import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -82,21 +77,13 @@ public class TestEntityPersistenceImpl
 		dbColumnNames.put("id", "id_");
 		dbColumnNames.put("data", "data_");
 
-		try {
-			Field field = BasePersistenceImpl.class.getDeclaredField(
-				"_dbColumnNames");
-
-			field.setAccessible(true);
-
-			field.set(this, dbColumnNames);
-		}
-		catch (Exception exception) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(exception, exception);
-			}
-		}
+		setDBColumnNames(dbColumnNames);
 
 		setModelClass(TestEntity.class);
+
+		setModelImplClass(TestEntityImpl.class);
+		setModelPKClass(long.class);
+		setEntityCacheEnabled(TestEntityModelImpl.ENTITY_CACHE_ENABLED);
 	}
 
 	/**
@@ -373,161 +360,12 @@ public class TestEntityPersistenceImpl
 	/**
 	 * Returns the test entity with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param primaryKey the primary key of the test entity
-	 * @return the test entity, or <code>null</code> if a test entity with the primary key could not be found
-	 */
-	@Override
-	public TestEntity fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(
-			TestEntityModelImpl.ENTITY_CACHE_ENABLED, TestEntityImpl.class,
-			primaryKey);
-
-		if (serializable == nullModel) {
-			return null;
-		}
-
-		TestEntity testEntity = (TestEntity)serializable;
-
-		if (testEntity == null) {
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				testEntity = (TestEntity)session.get(
-					TestEntityImpl.class, primaryKey);
-
-				if (testEntity != null) {
-					cacheResult(testEntity);
-				}
-				else {
-					entityCache.putResult(
-						TestEntityModelImpl.ENTITY_CACHE_ENABLED,
-						TestEntityImpl.class, primaryKey, nullModel);
-				}
-			}
-			catch (Exception exception) {
-				entityCache.removeResult(
-					TestEntityModelImpl.ENTITY_CACHE_ENABLED,
-					TestEntityImpl.class, primaryKey);
-
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return testEntity;
-	}
-
-	/**
-	 * Returns the test entity with the primary key or returns <code>null</code> if it could not be found.
-	 *
 	 * @param id the primary key of the test entity
 	 * @return the test entity, or <code>null</code> if a test entity with the primary key could not be found
 	 */
 	@Override
 	public TestEntity fetchByPrimaryKey(long id) {
 		return fetchByPrimaryKey((Serializable)id);
-	}
-
-	@Override
-	public Map<Serializable, TestEntity> fetchByPrimaryKeys(
-		Set<Serializable> primaryKeys) {
-
-		if (primaryKeys.isEmpty()) {
-			return Collections.emptyMap();
-		}
-
-		Map<Serializable, TestEntity> map =
-			new HashMap<Serializable, TestEntity>();
-
-		if (primaryKeys.size() == 1) {
-			Iterator<Serializable> iterator = primaryKeys.iterator();
-
-			Serializable primaryKey = iterator.next();
-
-			TestEntity testEntity = fetchByPrimaryKey(primaryKey);
-
-			if (testEntity != null) {
-				map.put(primaryKey, testEntity);
-			}
-
-			return map;
-		}
-
-		Set<Serializable> uncachedPrimaryKeys = null;
-
-		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(
-				TestEntityModelImpl.ENTITY_CACHE_ENABLED, TestEntityImpl.class,
-				primaryKey);
-
-			if (serializable != nullModel) {
-				if (serializable == null) {
-					if (uncachedPrimaryKeys == null) {
-						uncachedPrimaryKeys = new HashSet<Serializable>();
-					}
-
-					uncachedPrimaryKeys.add(primaryKey);
-				}
-				else {
-					map.put(primaryKey, (TestEntity)serializable);
-				}
-			}
-		}
-
-		if (uncachedPrimaryKeys == null) {
-			return map;
-		}
-
-		StringBundler sb = new StringBundler(
-			(uncachedPrimaryKeys.size() * 2) + 1);
-
-		sb.append(_SQL_SELECT_TESTENTITY_WHERE_PKS_IN);
-
-		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			sb.append((long)primaryKey);
-
-			sb.append(",");
-		}
-
-		sb.setIndex(sb.index() - 1);
-
-		sb.append(")");
-
-		String sql = sb.toString();
-
-		Session session = null;
-
-		try {
-			session = openSession();
-
-			Query query = session.createQuery(sql);
-
-			for (TestEntity testEntity : (List<TestEntity>)query.list()) {
-				map.put(testEntity.getPrimaryKeyObj(), testEntity);
-
-				cacheResult(testEntity);
-
-				uncachedPrimaryKeys.remove(testEntity.getPrimaryKeyObj());
-			}
-
-			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(
-					TestEntityModelImpl.ENTITY_CACHE_ENABLED,
-					TestEntityImpl.class, primaryKey, nullModel);
-			}
-		}
-		catch (Exception exception) {
-			throw processException(exception);
-		}
-		finally {
-			closeSession(session);
-		}
-
-		return map;
 	}
 
 	/**
@@ -722,6 +560,21 @@ public class TestEntityPersistenceImpl
 	}
 
 	@Override
+	protected EntityCache getEntityCache() {
+		return entityCache;
+	}
+
+	@Override
+	protected String getPKDBName() {
+		return "id_";
+	}
+
+	@Override
+	protected String getSelectSQL() {
+		return _SQL_SELECT_TESTENTITY;
+	}
+
+	@Override
 	protected Map<String, Integer> getTableColumnsMap() {
 		return TestEntityModelImpl.TABLE_COLUMNS_MAP;
 	}
@@ -764,9 +617,6 @@ public class TestEntityPersistenceImpl
 
 	private static final String _SQL_SELECT_TESTENTITY =
 		"SELECT testEntity FROM TestEntity testEntity";
-
-	private static final String _SQL_SELECT_TESTENTITY_WHERE_PKS_IN =
-		"SELECT testEntity FROM TestEntity testEntity WHERE id_ IN (";
 
 	private static final String _SQL_COUNT_TESTENTITY =
 		"SELECT COUNT(testEntity) FROM TestEntity testEntity";

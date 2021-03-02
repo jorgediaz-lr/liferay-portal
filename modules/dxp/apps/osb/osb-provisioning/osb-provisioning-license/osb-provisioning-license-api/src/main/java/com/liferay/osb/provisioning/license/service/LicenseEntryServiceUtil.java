@@ -14,10 +14,6 @@
 
 package com.liferay.osb.provisioning.license.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for LicenseEntry. This utility wraps
  * <code>com.liferay.osb.provisioning.license.service.impl.LicenseEntryServiceImpl</code> and is an
@@ -43,28 +39,14 @@ public class LicenseEntryServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static LicenseEntryService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker<LicenseEntryService, LicenseEntryService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(LicenseEntryService.class);
-
-		ServiceTracker<LicenseEntryService, LicenseEntryService>
-			serviceTracker =
-				new ServiceTracker<LicenseEntryService, LicenseEntryService>(
-					bundle.getBundleContext(), LicenseEntryService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile LicenseEntryService _service;
 
 }

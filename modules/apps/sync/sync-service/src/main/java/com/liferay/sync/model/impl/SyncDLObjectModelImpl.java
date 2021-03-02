@@ -568,7 +568,7 @@ public class SyncDLObjectModelImpl
 
 	@Override
 	public void setModifiedTime(long modifiedTime) {
-		_columnBitmask |= MODIFIEDTIME_COLUMN_BITMASK;
+		_columnBitmask = -1L;
 
 		if (!_setOriginalModifiedTime) {
 			_setOriginalModifiedTime = true;
@@ -591,7 +591,7 @@ public class SyncDLObjectModelImpl
 
 	@Override
 	public void setRepositoryId(long repositoryId) {
-		_columnBitmask |= REPOSITORYID_COLUMN_BITMASK;
+		_columnBitmask = -1L;
 
 		if (!_setOriginalRepositoryId) {
 			_setOriginalRepositoryId = true;

@@ -14,9 +14,8 @@
 
 package com.liferay.osb.koroneiki.trunk.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.koroneiki.trunk.model.ProductField;
+import com.liferay.portal.kernel.exception.PortalException;
 
 /**
  * Provides the remote service utility for ProductField. This utility wraps
@@ -37,17 +36,15 @@ public class ProductFieldServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.osb.koroneiki.trunk.service.impl.ProductFieldServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.osb.koroneiki.trunk.model.ProductField
-			addProductField(
-				long classNameId, long classPK, String name, String value)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductField addProductField(
+			long classNameId, long classPK, String name, String value)
+		throws PortalException {
 
 		return getService().addProductField(classNameId, classPK, name, value);
 	}
 
-	public static com.liferay.osb.koroneiki.trunk.model.ProductField
-			deleteProductField(long productFieldId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductField deleteProductField(long productFieldId)
+		throws PortalException {
 
 		return getService().deleteProductField(productFieldId);
 	}
@@ -61,31 +58,17 @@ public class ProductFieldServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.osb.koroneiki.trunk.model.ProductField
-			updateProductField(long productFieldId, String value)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductField updateProductField(
+			long productFieldId, String value)
+		throws PortalException {
 
 		return getService().updateProductField(productFieldId, value);
 	}
 
 	public static ProductFieldService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker<ProductFieldService, ProductFieldService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(ProductFieldService.class);
-
-		ServiceTracker<ProductFieldService, ProductFieldService>
-			serviceTracker =
-				new ServiceTracker<ProductFieldService, ProductFieldService>(
-					bundle.getBundleContext(), ProductFieldService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ProductFieldService _service;
 
 }

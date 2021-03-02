@@ -16,6 +16,7 @@ package com.liferay.osb.koroneiki.trunk.service.base;
 
 import com.liferay.osb.koroneiki.trunk.model.ProductEntry;
 import com.liferay.osb.koroneiki.trunk.service.ProductEntryService;
+import com.liferay.osb.koroneiki.trunk.service.ProductEntryServiceUtil;
 import com.liferay.osb.koroneiki.trunk.service.persistence.ProductConsumptionFinder;
 import com.liferay.osb.koroneiki.trunk.service.persistence.ProductConsumptionPersistence;
 import com.liferay.osb.koroneiki.trunk.service.persistence.ProductEntryPersistence;
@@ -33,8 +34,11 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
+import java.lang.reflect.Field;
+
 import javax.sql.DataSource;
 
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -55,8 +59,13 @@ public abstract class ProductEntryServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ProductEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.koroneiki.trunk.service.ProductEntryServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ProductEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ProductEntryServiceUtil</code>.
 	 */
+	@Deactivate
+	protected void deactivate() {
+		_setServiceUtilService(null);
+	}
+
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
@@ -67,6 +76,8 @@ public abstract class ProductEntryServiceBaseImpl
 	@Override
 	public void setAopProxy(Object aopProxy) {
 		productEntryService = (ProductEntryService)aopProxy;
+
+		_setServiceUtilService(productEntryService);
 	}
 
 	/**
@@ -108,6 +119,22 @@ public abstract class ProductEntryServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(
+		ProductEntryService productEntryService) {
+
+		try {
+			Field field = ProductEntryServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, productEntryService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

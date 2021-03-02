@@ -14,9 +14,15 @@
 
 package com.liferay.osb.koroneiki.scion.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.koroneiki.scion.model.ServiceProducer;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for ServiceProducer. This utility wraps
@@ -37,9 +43,9 @@ public class ServiceProducerLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.osb.koroneiki.scion.service.impl.ServiceProducerLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.osb.koroneiki.scion.model.ServiceProducer
-			addServiceProducer(long userId, String name, String description)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ServiceProducer addServiceProducer(
+			long userId, String name, String description)
+		throws PortalException {
 
 		return getService().addServiceProducer(userId, name, description);
 	}
@@ -54,10 +60,8 @@ public class ServiceProducerLocalServiceUtil {
 	 * @param serviceProducer the service producer
 	 * @return the service producer that was added
 	 */
-	public static com.liferay.osb.koroneiki.scion.model.ServiceProducer
-		addServiceProducer(
-			com.liferay.osb.koroneiki.scion.model.ServiceProducer
-				serviceProducer) {
+	public static ServiceProducer addServiceProducer(
+		ServiceProducer serviceProducer) {
 
 		return getService().addServiceProducer(serviceProducer);
 	}
@@ -68,8 +72,8 @@ public class ServiceProducerLocalServiceUtil {
 	 * @param serviceProducerId the primary key for the new service producer
 	 * @return the new service producer
 	 */
-	public static com.liferay.osb.koroneiki.scion.model.ServiceProducer
-		createServiceProducer(long serviceProducerId) {
+	public static ServiceProducer createServiceProducer(
+		long serviceProducerId) {
 
 		return getService().createServiceProducer(serviceProducerId);
 	}
@@ -77,10 +81,9 @@ public class ServiceProducerLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -96,9 +99,8 @@ public class ServiceProducerLocalServiceUtil {
 	 * @return the service producer that was removed
 	 * @throws PortalException if a service producer with the primary key could not be found
 	 */
-	public static com.liferay.osb.koroneiki.scion.model.ServiceProducer
-			deleteServiceProducer(long serviceProducerId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ServiceProducer deleteServiceProducer(long serviceProducerId)
+		throws PortalException {
 
 		return getService().deleteServiceProducer(serviceProducerId);
 	}
@@ -114,18 +116,14 @@ public class ServiceProducerLocalServiceUtil {
 	 * @return the service producer that was removed
 	 * @throws PortalException
 	 */
-	public static com.liferay.osb.koroneiki.scion.model.ServiceProducer
-			deleteServiceProducer(
-				com.liferay.osb.koroneiki.scion.model.ServiceProducer
-					serviceProducer)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ServiceProducer deleteServiceProducer(
+			ServiceProducer serviceProducer)
+		throws PortalException {
 
 		return getService().deleteServiceProducer(serviceProducer);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -135,9 +133,7 @@ public class ServiceProducerLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -153,9 +149,8 @@ public class ServiceProducerLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -173,10 +168,9 @@ public class ServiceProducerLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -188,9 +182,7 @@ public class ServiceProducerLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -202,21 +194,19 @@ public class ServiceProducerLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.koroneiki.scion.model.ServiceProducer
-		fetchAuthorizedServiceProducer(long authorizationUserId) {
+	public static ServiceProducer fetchAuthorizedServiceProducer(
+		long authorizationUserId) {
 
 		return getService().fetchAuthorizedServiceProducer(authorizationUserId);
 	}
 
-	public static com.liferay.osb.koroneiki.scion.model.ServiceProducer
-		fetchServiceProducer(long serviceProducerId) {
-
+	public static ServiceProducer fetchServiceProducer(long serviceProducerId) {
 		return getService().fetchServiceProducer(serviceProducerId);
 	}
 
@@ -227,8 +217,8 @@ public class ServiceProducerLocalServiceUtil {
 	 * @param companyId the primary key of the company
 	 * @return the matching service producer, or <code>null</code> if a matching service producer could not be found
 	 */
-	public static com.liferay.osb.koroneiki.scion.model.ServiceProducer
-		fetchServiceProducerByUuidAndCompanyId(String uuid, long companyId) {
+	public static ServiceProducer fetchServiceProducerByUuidAndCompanyId(
+		String uuid, long companyId) {
 
 		return getService().fetchServiceProducerByUuidAndCompanyId(
 			uuid, companyId);
@@ -240,9 +230,9 @@ public class ServiceProducerLocalServiceUtil {
 		return getService().getActionableDynamicQuery();
 	}
 
-	public static com.liferay.osb.koroneiki.scion.model.ServiceProducer
-			getAuthorizedServiceProducer(long authorizationUserId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ServiceProducer getAuthorizedServiceProducer(
+			long authorizationUserId)
+		throws PortalException {
 
 		return getService().getAuthorizedServiceProducer(authorizationUserId);
 	}
@@ -266,9 +256,8 @@ public class ServiceProducerLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -280,9 +269,8 @@ public class ServiceProducerLocalServiceUtil {
 	 * @return the service producer
 	 * @throws PortalException if a service producer with the primary key could not be found
 	 */
-	public static com.liferay.osb.koroneiki.scion.model.ServiceProducer
-			getServiceProducer(long serviceProducerId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ServiceProducer getServiceProducer(long serviceProducerId)
+		throws PortalException {
 
 		return getService().getServiceProducer(serviceProducerId);
 	}
@@ -295,9 +283,9 @@ public class ServiceProducerLocalServiceUtil {
 	 * @return the matching service producer
 	 * @throws PortalException if a matching service producer could not be found
 	 */
-	public static com.liferay.osb.koroneiki.scion.model.ServiceProducer
-			getServiceProducerByUuidAndCompanyId(String uuid, long companyId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ServiceProducer getServiceProducerByUuidAndCompanyId(
+			String uuid, long companyId)
+		throws PortalException {
 
 		return getService().getServiceProducerByUuidAndCompanyId(
 			uuid, companyId);
@@ -314,9 +302,8 @@ public class ServiceProducerLocalServiceUtil {
 	 * @param end the upper bound of the range of service producers (not inclusive)
 	 * @return the range of service producers
 	 */
-	public static java.util.List
-		<com.liferay.osb.koroneiki.scion.model.ServiceProducer>
-			getServiceProducers(int start, int end) {
+	public static List<ServiceProducer> getServiceProducers(
+		int start, int end) {
 
 		return getService().getServiceProducers(start, end);
 	}
@@ -330,10 +317,9 @@ public class ServiceProducerLocalServiceUtil {
 		return getService().getServiceProducersCount();
 	}
 
-	public static com.liferay.osb.koroneiki.scion.model.ServiceProducer
-			updateServiceProducer(
-				long serviceProducerId, String name, String description)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ServiceProducer updateServiceProducer(
+			long serviceProducerId, String name, String description)
+		throws PortalException {
 
 		return getService().updateServiceProducer(
 			serviceProducerId, name, description);
@@ -349,36 +335,16 @@ public class ServiceProducerLocalServiceUtil {
 	 * @param serviceProducer the service producer
 	 * @return the service producer that was updated
 	 */
-	public static com.liferay.osb.koroneiki.scion.model.ServiceProducer
-		updateServiceProducer(
-			com.liferay.osb.koroneiki.scion.model.ServiceProducer
-				serviceProducer) {
+	public static ServiceProducer updateServiceProducer(
+		ServiceProducer serviceProducer) {
 
 		return getService().updateServiceProducer(serviceProducer);
 	}
 
 	public static ServiceProducerLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<ServiceProducerLocalService, ServiceProducerLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			ServiceProducerLocalService.class);
-
-		ServiceTracker<ServiceProducerLocalService, ServiceProducerLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<ServiceProducerLocalService, ServiceProducerLocalService>(
-						bundle.getBundleContext(),
-						ServiceProducerLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ServiceProducerLocalService _service;
 
 }

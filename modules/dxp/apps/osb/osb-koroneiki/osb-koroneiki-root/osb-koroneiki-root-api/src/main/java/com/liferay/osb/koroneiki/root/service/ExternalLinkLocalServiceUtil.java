@@ -14,9 +14,15 @@
 
 package com.liferay.osb.koroneiki.root.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.koroneiki.root.model.ExternalLink;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for ExternalLink. This utility wraps
@@ -48,28 +54,23 @@ public class ExternalLinkLocalServiceUtil {
 	 * @param externalLink the external link
 	 * @return the external link that was added
 	 */
-	public static com.liferay.osb.koroneiki.root.model.ExternalLink
-		addExternalLink(
-			com.liferay.osb.koroneiki.root.model.ExternalLink externalLink) {
-
+	public static ExternalLink addExternalLink(ExternalLink externalLink) {
 		return getService().addExternalLink(externalLink);
 	}
 
-	public static com.liferay.osb.koroneiki.root.model.ExternalLink
-			addExternalLink(
-				long userId, long classNameId, long classPK, String domain,
-				String entityName, String entityId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ExternalLink addExternalLink(
+			long userId, long classNameId, long classPK, String domain,
+			String entityName, String entityId)
+		throws PortalException {
 
 		return getService().addExternalLink(
 			userId, classNameId, classPK, domain, entityName, entityId);
 	}
 
-	public static com.liferay.osb.koroneiki.root.model.ExternalLink
-			addExternalLink(
-				long userId, String className, long classPK, String domain,
-				String entityName, String entityId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ExternalLink addExternalLink(
+			long userId, String className, long classPK, String domain,
+			String entityName, String entityId)
+		throws PortalException {
 
 		return getService().addExternalLink(
 			userId, className, classPK, domain, entityName, entityId);
@@ -81,9 +82,7 @@ public class ExternalLinkLocalServiceUtil {
 	 * @param externalLinkId the primary key for the new external link
 	 * @return the new external link
 	 */
-	public static com.liferay.osb.koroneiki.root.model.ExternalLink
-		createExternalLink(long externalLinkId) {
-
+	public static ExternalLink createExternalLink(long externalLinkId) {
 		return getService().createExternalLink(externalLinkId);
 	}
 
@@ -97,10 +96,7 @@ public class ExternalLinkLocalServiceUtil {
 	 * @param externalLink the external link
 	 * @return the external link that was removed
 	 */
-	public static com.liferay.osb.koroneiki.root.model.ExternalLink
-		deleteExternalLink(
-			com.liferay.osb.koroneiki.root.model.ExternalLink externalLink) {
-
+	public static ExternalLink deleteExternalLink(ExternalLink externalLink) {
 		return getService().deleteExternalLink(externalLink);
 	}
 
@@ -115,9 +111,8 @@ public class ExternalLinkLocalServiceUtil {
 	 * @return the external link that was removed
 	 * @throws PortalException if a external link with the primary key could not be found
 	 */
-	public static com.liferay.osb.koroneiki.root.model.ExternalLink
-			deleteExternalLink(long externalLinkId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ExternalLink deleteExternalLink(long externalLinkId)
+		throws PortalException {
 
 		return getService().deleteExternalLink(externalLinkId);
 	}
@@ -129,17 +124,14 @@ public class ExternalLinkLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -149,9 +141,7 @@ public class ExternalLinkLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -167,9 +157,8 @@ public class ExternalLinkLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -187,10 +176,9 @@ public class ExternalLinkLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -202,9 +190,7 @@ public class ExternalLinkLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -216,15 +202,13 @@ public class ExternalLinkLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.koroneiki.root.model.ExternalLink
-		fetchExternalLink(long externalLinkId) {
-
+	public static ExternalLink fetchExternalLink(long externalLinkId) {
 		return getService().fetchExternalLink(externalLinkId);
 	}
 
@@ -241,16 +225,14 @@ public class ExternalLinkLocalServiceUtil {
 	 * @return the external link
 	 * @throws PortalException if a external link with the primary key could not be found
 	 */
-	public static com.liferay.osb.koroneiki.root.model.ExternalLink
-			getExternalLink(long externalLinkId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ExternalLink getExternalLink(long externalLinkId)
+		throws PortalException {
 
 		return getService().getExternalLink(externalLinkId);
 	}
 
-	public static com.liferay.osb.koroneiki.root.model.ExternalLink
-			getExternalLink(String externalLinkKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ExternalLink getExternalLink(String externalLinkKey)
+		throws PortalException {
 
 		return getService().getExternalLink(externalLinkKey);
 	}
@@ -266,33 +248,27 @@ public class ExternalLinkLocalServiceUtil {
 	 * @param end the upper bound of the range of external links (not inclusive)
 	 * @return the range of external links
 	 */
-	public static java.util.List
-		<com.liferay.osb.koroneiki.root.model.ExternalLink> getExternalLinks(
-			int start, int end) {
-
+	public static List<ExternalLink> getExternalLinks(int start, int end) {
 		return getService().getExternalLinks(start, end);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.root.model.ExternalLink> getExternalLinks(
-			long classNameId, long classPK, int start, int end) {
+	public static List<ExternalLink> getExternalLinks(
+		long classNameId, long classPK, int start, int end) {
 
 		return getService().getExternalLinks(classNameId, classPK, start, end);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.root.model.ExternalLink> getExternalLinks(
-				long classNameId, String domain, String entityName,
-				String entityId, int start, int end)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<ExternalLink> getExternalLinks(
+			long classNameId, String domain, String entityName, String entityId,
+			int start, int end)
+		throws PortalException {
 
 		return getService().getExternalLinks(
 			classNameId, domain, entityName, entityId, start, end);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.root.model.ExternalLink> getExternalLinks(
-			String className, long classPK, int start, int end) {
+	public static List<ExternalLink> getExternalLinks(
+		String className, long classPK, int start, int end) {
 
 		return getService().getExternalLinks(className, classPK, start, end);
 	}
@@ -312,7 +288,7 @@ public class ExternalLinkLocalServiceUtil {
 
 	public static int getExternalLinksCount(
 			long classNameId, String domain, String entityName, String entityId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getExternalLinksCount(
 			classNameId, domain, entityName, entityId);
@@ -341,20 +317,17 @@ public class ExternalLinkLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static java.util.List<String> search(String domain) {
+	public static List<String> search(String domain) {
 		return getService().search(domain);
 	}
 
-	public static java.util.List<String> search(
-		String domain, String entityName) {
-
+	public static List<String> search(String domain, String entityName) {
 		return getService().search(domain, entityName);
 	}
 
@@ -368,40 +341,21 @@ public class ExternalLinkLocalServiceUtil {
 	 * @param externalLink the external link
 	 * @return the external link that was updated
 	 */
-	public static com.liferay.osb.koroneiki.root.model.ExternalLink
-		updateExternalLink(
-			com.liferay.osb.koroneiki.root.model.ExternalLink externalLink) {
-
+	public static ExternalLink updateExternalLink(ExternalLink externalLink) {
 		return getService().updateExternalLink(externalLink);
 	}
 
-	public static com.liferay.osb.koroneiki.root.model.ExternalLink
-			updateExternalLink(long externalLinkId, String entityId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ExternalLink updateExternalLink(
+			long externalLinkId, String entityId)
+		throws PortalException {
 
 		return getService().updateExternalLink(externalLinkId, entityId);
 	}
 
 	public static ExternalLinkLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<ExternalLinkLocalService, ExternalLinkLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(ExternalLinkLocalService.class);
-
-		ServiceTracker<ExternalLinkLocalService, ExternalLinkLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<ExternalLinkLocalService, ExternalLinkLocalService>(
-						bundle.getBundleContext(),
-						ExternalLinkLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ExternalLinkLocalService _service;
 
 }

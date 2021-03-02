@@ -14,9 +14,15 @@
 
 package com.liferay.osb.koroneiki.taproot.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.koroneiki.taproot.model.Team;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for Team. This utility wraps
@@ -37,9 +43,9 @@ public class TeamLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.osb.koroneiki.taproot.service.impl.TeamLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.osb.koroneiki.taproot.model.Team addTeam(
+	public static Team addTeam(
 			long userId, long accountId, String name, boolean system)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().addTeam(userId, accountId, name, system);
 	}
@@ -54,9 +60,7 @@ public class TeamLocalServiceUtil {
 	 * @param team the team
 	 * @return the team that was added
 	 */
-	public static com.liferay.osb.koroneiki.taproot.model.Team addTeam(
-		com.liferay.osb.koroneiki.taproot.model.Team team) {
-
+	public static Team addTeam(Team team) {
 		return getService().addTeam(team);
 	}
 
@@ -66,19 +70,16 @@ public class TeamLocalServiceUtil {
 	 * @param teamId the primary key for the new team
 	 * @return the new team
 	 */
-	public static com.liferay.osb.koroneiki.taproot.model.Team createTeam(
-		long teamId) {
-
+	public static Team createTeam(long teamId) {
 		return getService().createTeam(teamId);
 	}
 
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -94,10 +95,7 @@ public class TeamLocalServiceUtil {
 	 * @return the team that was removed
 	 * @throws PortalException if a team with the primary key could not be found
 	 */
-	public static com.liferay.osb.koroneiki.taproot.model.Team deleteTeam(
-			long teamId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static Team deleteTeam(long teamId) throws PortalException {
 		return getService().deleteTeam(teamId);
 	}
 
@@ -112,16 +110,11 @@ public class TeamLocalServiceUtil {
 	 * @return the team that was removed
 	 * @throws PortalException
 	 */
-	public static com.liferay.osb.koroneiki.taproot.model.Team deleteTeam(
-			com.liferay.osb.koroneiki.taproot.model.Team team)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static Team deleteTeam(Team team) throws PortalException {
 		return getService().deleteTeam(team);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -131,9 +124,7 @@ public class TeamLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -149,9 +140,8 @@ public class TeamLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -169,10 +159,9 @@ public class TeamLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -184,9 +173,7 @@ public class TeamLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -198,21 +185,17 @@ public class TeamLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.Team fetchTeam(
-		long teamId) {
-
+	public static Team fetchTeam(long teamId) {
 		return getService().fetchTeam(teamId);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.Team fetchTeam(
-		long accountId, boolean system) {
-
+	public static Team fetchTeam(long accountId, boolean system) {
 		return getService().fetchTeam(accountId, system);
 	}
 
@@ -223,14 +206,14 @@ public class TeamLocalServiceUtil {
 	 * @param companyId the primary key of the company
 	 * @return the matching team, or <code>null</code> if a matching team could not be found
 	 */
-	public static com.liferay.osb.koroneiki.taproot.model.Team
-		fetchTeamByUuidAndCompanyId(String uuid, long companyId) {
+	public static Team fetchTeamByUuidAndCompanyId(
+		String uuid, long companyId) {
 
 		return getService().fetchTeamByUuidAndCompanyId(uuid, companyId);
 	}
 
-	public static java.util.List<com.liferay.osb.koroneiki.taproot.model.Team>
-		getAccountAssignedTeams(long accountId, int start, int end) {
+	public static List<Team> getAccountAssignedTeams(
+		long accountId, int start, int end) {
 
 		return getService().getAccountAssignedTeams(accountId, start, end);
 	}
@@ -239,8 +222,8 @@ public class TeamLocalServiceUtil {
 		return getService().getAccountAssignedTeamsCount(accountId);
 	}
 
-	public static java.util.List<com.liferay.osb.koroneiki.taproot.model.Team>
-		getAccountTeams(long accountId, int start, int end) {
+	public static List<Team> getAccountTeams(
+		long accountId, int start, int end) {
 
 		return getService().getAccountTeams(accountId, start, end);
 	}
@@ -255,16 +238,13 @@ public class TeamLocalServiceUtil {
 		return getService().getActionableDynamicQuery();
 	}
 
-	public static java.util.List<com.liferay.osb.koroneiki.taproot.model.Team>
-		getContactTeams(long contactId, int start, int end) {
+	public static List<Team> getContactTeams(
+		long contactId, int start, int end) {
 
 		return getService().getContactTeams(contactId, start, end);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.Team getDefaultTeam(
-			long accountId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static Team getDefaultTeam(long accountId) throws PortalException {
 		return getService().getDefaultTeam(accountId);
 	}
 
@@ -295,9 +275,8 @@ public class TeamLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -309,17 +288,11 @@ public class TeamLocalServiceUtil {
 	 * @return the team
 	 * @throws PortalException if a team with the primary key could not be found
 	 */
-	public static com.liferay.osb.koroneiki.taproot.model.Team getTeam(
-			long teamId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static Team getTeam(long teamId) throws PortalException {
 		return getService().getTeam(teamId);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.Team getTeam(
-			String teamKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static Team getTeam(String teamKey) throws PortalException {
 		return getService().getTeam(teamKey);
 	}
 
@@ -331,9 +304,8 @@ public class TeamLocalServiceUtil {
 	 * @return the matching team
 	 * @throws PortalException if a matching team could not be found
 	 */
-	public static com.liferay.osb.koroneiki.taproot.model.Team
-			getTeamByUuidAndCompanyId(String uuid, long companyId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static Team getTeamByUuidAndCompanyId(String uuid, long companyId)
+		throws PortalException {
 
 		return getService().getTeamByUuidAndCompanyId(uuid, companyId);
 	}
@@ -349,9 +321,7 @@ public class TeamLocalServiceUtil {
 	 * @param end the upper bound of the range of teams (not inclusive)
 	 * @return the range of teams
 	 */
-	public static java.util.List<com.liferay.osb.koroneiki.taproot.model.Team>
-		getTeams(int start, int end) {
-
+	public static List<Team> getTeams(int start, int end) {
 		return getService().getTeams(start, end);
 	}
 
@@ -364,24 +334,20 @@ public class TeamLocalServiceUtil {
 		return getService().getTeamsCount();
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.Team reindex(
-			long teamId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static Team reindex(long teamId) throws PortalException {
 		return getService().reindex(teamId);
 	}
 
 	public static com.liferay.portal.kernel.search.Hits search(
 			long companyId, String keywords, int start, int end,
 			com.liferay.portal.kernel.search.Sort sort)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().search(companyId, keywords, start, end, sort);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.Team updateTeam(
-			long teamId, String name)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static Team updateTeam(long teamId, String name)
+		throws PortalException {
 
 		return getService().updateTeam(teamId, name);
 	}
@@ -396,29 +362,14 @@ public class TeamLocalServiceUtil {
 	 * @param team the team
 	 * @return the team that was updated
 	 */
-	public static com.liferay.osb.koroneiki.taproot.model.Team updateTeam(
-		com.liferay.osb.koroneiki.taproot.model.Team team) {
-
+	public static Team updateTeam(Team team) {
 		return getService().updateTeam(team);
 	}
 
 	public static TeamLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker<TeamLocalService, TeamLocalService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(TeamLocalService.class);
-
-		ServiceTracker<TeamLocalService, TeamLocalService> serviceTracker =
-			new ServiceTracker<TeamLocalService, TeamLocalService>(
-				bundle.getBundleContext(), TeamLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile TeamLocalService _service;
 
 }

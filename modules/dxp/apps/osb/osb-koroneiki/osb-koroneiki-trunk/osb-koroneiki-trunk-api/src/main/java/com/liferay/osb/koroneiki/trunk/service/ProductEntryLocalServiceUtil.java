@@ -14,9 +14,15 @@
 
 package com.liferay.osb.koroneiki.trunk.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.koroneiki.trunk.model.ProductEntry;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for ProductEntry. This utility wraps
@@ -37,13 +43,11 @@ public class ProductEntryLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.osb.koroneiki.trunk.service.impl.ProductEntryLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.osb.koroneiki.trunk.model.ProductEntry
-			addProductEntry(
-				long userId, String name,
-				java.util.List
-					<com.liferay.osb.koroneiki.trunk.model.ProductField>
-						productFields)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductEntry addProductEntry(
+			long userId, String name,
+			List<com.liferay.osb.koroneiki.trunk.model.ProductField>
+				productFields)
+		throws PortalException {
 
 		return getService().addProductEntry(userId, name, productFields);
 	}
@@ -58,10 +62,7 @@ public class ProductEntryLocalServiceUtil {
 	 * @param productEntry the product entry
 	 * @return the product entry that was added
 	 */
-	public static com.liferay.osb.koroneiki.trunk.model.ProductEntry
-		addProductEntry(
-			com.liferay.osb.koroneiki.trunk.model.ProductEntry productEntry) {
-
+	public static ProductEntry addProductEntry(ProductEntry productEntry) {
 		return getService().addProductEntry(productEntry);
 	}
 
@@ -71,19 +72,16 @@ public class ProductEntryLocalServiceUtil {
 	 * @param productEntryId the primary key for the new product entry
 	 * @return the new product entry
 	 */
-	public static com.liferay.osb.koroneiki.trunk.model.ProductEntry
-		createProductEntry(long productEntryId) {
-
+	public static ProductEntry createProductEntry(long productEntryId) {
 		return getService().createProductEntry(productEntryId);
 	}
 
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -99,9 +97,8 @@ public class ProductEntryLocalServiceUtil {
 	 * @return the product entry that was removed
 	 * @throws PortalException if a product entry with the primary key could not be found
 	 */
-	public static com.liferay.osb.koroneiki.trunk.model.ProductEntry
-			deleteProductEntry(long productEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductEntry deleteProductEntry(long productEntryId)
+		throws PortalException {
 
 		return getService().deleteProductEntry(productEntryId);
 	}
@@ -117,17 +114,13 @@ public class ProductEntryLocalServiceUtil {
 	 * @return the product entry that was removed
 	 * @throws PortalException
 	 */
-	public static com.liferay.osb.koroneiki.trunk.model.ProductEntry
-			deleteProductEntry(
-				com.liferay.osb.koroneiki.trunk.model.ProductEntry productEntry)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductEntry deleteProductEntry(ProductEntry productEntry)
+		throws PortalException {
 
 		return getService().deleteProductEntry(productEntry);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -137,9 +130,7 @@ public class ProductEntryLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -155,9 +146,8 @@ public class ProductEntryLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -175,10 +165,9 @@ public class ProductEntryLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -190,9 +179,7 @@ public class ProductEntryLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -204,21 +191,17 @@ public class ProductEntryLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.koroneiki.trunk.model.ProductEntry
-		fetchProductEntry(long productEntryId) {
-
+	public static ProductEntry fetchProductEntry(long productEntryId) {
 		return getService().fetchProductEntry(productEntryId);
 	}
 
-	public static com.liferay.osb.koroneiki.trunk.model.ProductEntry
-		fetchProductEntryByName(String name) {
-
+	public static ProductEntry fetchProductEntryByName(String name) {
 		return getService().fetchProductEntryByName(name);
 	}
 
@@ -229,8 +212,8 @@ public class ProductEntryLocalServiceUtil {
 	 * @param companyId the primary key of the company
 	 * @return the matching product entry, or <code>null</code> if a matching product entry could not be found
 	 */
-	public static com.liferay.osb.koroneiki.trunk.model.ProductEntry
-		fetchProductEntryByUuidAndCompanyId(String uuid, long companyId) {
+	public static ProductEntry fetchProductEntryByUuidAndCompanyId(
+		String uuid, long companyId) {
 
 		return getService().fetchProductEntryByUuidAndCompanyId(
 			uuid, companyId);
@@ -269,9 +252,8 @@ public class ProductEntryLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -287,10 +269,7 @@ public class ProductEntryLocalServiceUtil {
 	 * @param end the upper bound of the range of product entries (not inclusive)
 	 * @return the range of product entries
 	 */
-	public static java.util.List
-		<com.liferay.osb.koroneiki.trunk.model.ProductEntry> getProductEntries(
-			int start, int end) {
-
+	public static List<ProductEntry> getProductEntries(int start, int end) {
 		return getService().getProductEntries(start, end);
 	}
 
@@ -310,23 +289,20 @@ public class ProductEntryLocalServiceUtil {
 	 * @return the product entry
 	 * @throws PortalException if a product entry with the primary key could not be found
 	 */
-	public static com.liferay.osb.koroneiki.trunk.model.ProductEntry
-			getProductEntry(long productEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductEntry getProductEntry(long productEntryId)
+		throws PortalException {
 
 		return getService().getProductEntry(productEntryId);
 	}
 
-	public static com.liferay.osb.koroneiki.trunk.model.ProductEntry
-			getProductEntry(String productEntryKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductEntry getProductEntry(String productEntryKey)
+		throws PortalException {
 
 		return getService().getProductEntry(productEntryKey);
 	}
 
-	public static com.liferay.osb.koroneiki.trunk.model.ProductEntry
-			getProductEntryByName(String name)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductEntry getProductEntryByName(String name)
+		throws PortalException {
 
 		return getService().getProductEntryByName(name);
 	}
@@ -339,16 +315,15 @@ public class ProductEntryLocalServiceUtil {
 	 * @return the matching product entry
 	 * @throws PortalException if a matching product entry could not be found
 	 */
-	public static com.liferay.osb.koroneiki.trunk.model.ProductEntry
-			getProductEntryByUuidAndCompanyId(String uuid, long companyId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductEntry getProductEntryByUuidAndCompanyId(
+			String uuid, long companyId)
+		throws PortalException {
 
 		return getService().getProductEntryByUuidAndCompanyId(uuid, companyId);
 	}
 
-	public static com.liferay.osb.koroneiki.trunk.model.ProductEntry reindex(
-			long productEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductEntry reindex(long productEntryId)
+		throws PortalException {
 
 		return getService().reindex(productEntryId);
 	}
@@ -356,18 +331,16 @@ public class ProductEntryLocalServiceUtil {
 	public static com.liferay.portal.kernel.search.Hits search(
 			long companyId, String keywords, int start, int end,
 			com.liferay.portal.kernel.search.Sort sort)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().search(companyId, keywords, start, end, sort);
 	}
 
-	public static com.liferay.osb.koroneiki.trunk.model.ProductEntry
-			updateProductEntry(
-				long userId, long productEntryId, String name,
-				java.util.List
-					<com.liferay.osb.koroneiki.trunk.model.ProductField>
-						productFields)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductEntry updateProductEntry(
+			long userId, long productEntryId, String name,
+			List<com.liferay.osb.koroneiki.trunk.model.ProductField>
+				productFields)
+		throws PortalException {
 
 		return getService().updateProductEntry(
 			userId, productEntryId, name, productFields);
@@ -383,33 +356,14 @@ public class ProductEntryLocalServiceUtil {
 	 * @param productEntry the product entry
 	 * @return the product entry that was updated
 	 */
-	public static com.liferay.osb.koroneiki.trunk.model.ProductEntry
-		updateProductEntry(
-			com.liferay.osb.koroneiki.trunk.model.ProductEntry productEntry) {
-
+	public static ProductEntry updateProductEntry(ProductEntry productEntry) {
 		return getService().updateProductEntry(productEntry);
 	}
 
 	public static ProductEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<ProductEntryLocalService, ProductEntryLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(ProductEntryLocalService.class);
-
-		ServiceTracker<ProductEntryLocalService, ProductEntryLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<ProductEntryLocalService, ProductEntryLocalService>(
-						bundle.getBundleContext(),
-						ProductEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ProductEntryLocalService _service;
 
 }

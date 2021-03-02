@@ -345,6 +345,8 @@ public class KaleoConditionModelImpl
 
 	@Override
 	public void setKaleoConditionId(long kaleoConditionId) {
+		_columnBitmask = -1L;
+
 		_kaleoConditionId = kaleoConditionId;
 	}
 

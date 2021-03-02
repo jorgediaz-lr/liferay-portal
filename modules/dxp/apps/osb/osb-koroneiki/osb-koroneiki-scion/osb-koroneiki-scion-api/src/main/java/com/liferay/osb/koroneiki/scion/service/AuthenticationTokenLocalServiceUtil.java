@@ -14,9 +14,15 @@
 
 package com.liferay.osb.koroneiki.scion.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.koroneiki.scion.model.AuthenticationToken;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for AuthenticationToken. This utility wraps
@@ -48,18 +54,15 @@ public class AuthenticationTokenLocalServiceUtil {
 	 * @param authenticationToken the authentication token
 	 * @return the authentication token that was added
 	 */
-	public static com.liferay.osb.koroneiki.scion.model.AuthenticationToken
-		addAuthenticationToken(
-			com.liferay.osb.koroneiki.scion.model.AuthenticationToken
-				authenticationToken) {
+	public static AuthenticationToken addAuthenticationToken(
+		AuthenticationToken authenticationToken) {
 
 		return getService().addAuthenticationToken(authenticationToken);
 	}
 
-	public static com.liferay.osb.koroneiki.scion.model.AuthenticationToken
-			addAuthenticationToken(
-				long userId, long serviceProducerId, String name, String token)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AuthenticationToken addAuthenticationToken(
+			long userId, long serviceProducerId, String name, String token)
+		throws PortalException {
 
 		return getService().addAuthenticationToken(
 			userId, serviceProducerId, name, token);
@@ -71,8 +74,8 @@ public class AuthenticationTokenLocalServiceUtil {
 	 * @param authenticationTokenId the primary key for the new authentication token
 	 * @return the new authentication token
 	 */
-	public static com.liferay.osb.koroneiki.scion.model.AuthenticationToken
-		createAuthenticationToken(long authenticationTokenId) {
+	public static AuthenticationToken createAuthenticationToken(
+		long authenticationTokenId) {
 
 		return getService().createAuthenticationToken(authenticationTokenId);
 	}
@@ -88,11 +91,9 @@ public class AuthenticationTokenLocalServiceUtil {
 	 * @return the authentication token that was removed
 	 * @throws PortalException
 	 */
-	public static com.liferay.osb.koroneiki.scion.model.AuthenticationToken
-			deleteAuthenticationToken(
-				com.liferay.osb.koroneiki.scion.model.AuthenticationToken
-					authenticationToken)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AuthenticationToken deleteAuthenticationToken(
+			AuthenticationToken authenticationToken)
+		throws PortalException {
 
 		return getService().deleteAuthenticationToken(authenticationToken);
 	}
@@ -108,9 +109,9 @@ public class AuthenticationTokenLocalServiceUtil {
 	 * @return the authentication token that was removed
 	 * @throws PortalException if a authentication token with the primary key could not be found
 	 */
-	public static com.liferay.osb.koroneiki.scion.model.AuthenticationToken
-			deleteAuthenticationToken(long authenticationTokenId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AuthenticationToken deleteAuthenticationToken(
+			long authenticationTokenId)
+		throws PortalException {
 
 		return getService().deleteAuthenticationToken(authenticationTokenId);
 	}
@@ -118,17 +119,14 @@ public class AuthenticationTokenLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -138,9 +136,7 @@ public class AuthenticationTokenLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -156,9 +152,8 @@ public class AuthenticationTokenLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -176,10 +171,9 @@ public class AuthenticationTokenLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -191,9 +185,7 @@ public class AuthenticationTokenLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -205,20 +197,20 @@ public class AuthenticationTokenLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.koroneiki.scion.model.AuthenticationToken
-		fetchAuthenticationToken(long authenticationTokenId) {
+	public static AuthenticationToken fetchAuthenticationToken(
+		long authenticationTokenId) {
 
 		return getService().fetchAuthenticationToken(authenticationTokenId);
 	}
 
-	public static com.liferay.osb.koroneiki.scion.model.AuthenticationToken
-		fetchAuthenticationToken(String digest, int status) {
+	public static AuthenticationToken fetchAuthenticationToken(
+		String digest, int status) {
 
 		return getService().fetchAuthenticationToken(digest, status);
 	}
@@ -236,9 +228,9 @@ public class AuthenticationTokenLocalServiceUtil {
 	 * @return the authentication token
 	 * @throws PortalException if a authentication token with the primary key could not be found
 	 */
-	public static com.liferay.osb.koroneiki.scion.model.AuthenticationToken
-			getAuthenticationToken(long authenticationTokenId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AuthenticationToken getAuthenticationToken(
+			long authenticationTokenId)
+		throws PortalException {
 
 		return getService().getAuthenticationToken(authenticationTokenId);
 	}
@@ -254,17 +246,14 @@ public class AuthenticationTokenLocalServiceUtil {
 	 * @param end the upper bound of the range of authentication tokens (not inclusive)
 	 * @return the range of authentication tokens
 	 */
-	public static java.util.List
-		<com.liferay.osb.koroneiki.scion.model.AuthenticationToken>
-			getAuthenticationTokens(int start, int end) {
+	public static List<AuthenticationToken> getAuthenticationTokens(
+		int start, int end) {
 
 		return getService().getAuthenticationTokens(start, end);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.scion.model.AuthenticationToken>
-			getAuthenticationTokens(
-				long serviceProducerId, int start, int end) {
+	public static List<AuthenticationToken> getAuthenticationTokens(
+		long serviceProducerId, int start, int end) {
 
 		return getService().getAuthenticationTokens(
 			serviceProducerId, start, end);
@@ -302,9 +291,8 @@ public class AuthenticationTokenLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -319,53 +307,31 @@ public class AuthenticationTokenLocalServiceUtil {
 	 * @param authenticationToken the authentication token
 	 * @return the authentication token that was updated
 	 */
-	public static com.liferay.osb.koroneiki.scion.model.AuthenticationToken
-		updateAuthenticationToken(
-			com.liferay.osb.koroneiki.scion.model.AuthenticationToken
-				authenticationToken) {
+	public static AuthenticationToken updateAuthenticationToken(
+		AuthenticationToken authenticationToken) {
 
 		return getService().updateAuthenticationToken(authenticationToken);
 	}
 
-	public static com.liferay.osb.koroneiki.scion.model.AuthenticationToken
-			updateAuthenticationToken(long authenticationTokenId, String name)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AuthenticationToken updateAuthenticationToken(
+			long authenticationTokenId, String name)
+		throws PortalException {
 
 		return getService().updateAuthenticationToken(
 			authenticationTokenId, name);
 	}
 
-	public static com.liferay.osb.koroneiki.scion.model.AuthenticationToken
-			updateStatus(long authenticationTokenId, int status)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AuthenticationToken updateStatus(
+			long authenticationTokenId, int status)
+		throws PortalException {
 
 		return getService().updateStatus(authenticationTokenId, status);
 	}
 
 	public static AuthenticationTokenLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<AuthenticationTokenLocalService, AuthenticationTokenLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			AuthenticationTokenLocalService.class);
-
-		ServiceTracker
-			<AuthenticationTokenLocalService, AuthenticationTokenLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<AuthenticationTokenLocalService,
-						 AuthenticationTokenLocalService>(
-							 bundle.getBundleContext(),
-							 AuthenticationTokenLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AuthenticationTokenLocalService _service;
 
 }

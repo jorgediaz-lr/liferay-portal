@@ -16,6 +16,7 @@ package com.liferay.data.engine.service.base;
 
 import com.liferay.data.engine.model.DEDataListView;
 import com.liferay.data.engine.service.DEDataListViewLocalService;
+import com.liferay.data.engine.service.DEDataListViewLocalServiceUtil;
 import com.liferay.data.engine.service.persistence.DEDataListViewPersistence;
 import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
 import com.liferay.exportimport.kernel.lar.ManifestSummary;
@@ -49,10 +50,13 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -73,7 +77,7 @@ public abstract class DEDataListViewLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>DEDataListViewLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.data.engine.service.DEDataListViewLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>DEDataListViewLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>DEDataListViewLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -485,6 +489,11 @@ public abstract class DEDataListViewLocalServiceBaseImpl
 		return deDataListViewPersistence.update(deDataListView);
 	}
 
+	@Deactivate
+	protected void deactivate() {
+		_setLocalServiceUtilService(null);
+	}
+
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
@@ -496,6 +505,8 @@ public abstract class DEDataListViewLocalServiceBaseImpl
 	@Override
 	public void setAopProxy(Object aopProxy) {
 		deDataListViewLocalService = (DEDataListViewLocalService)aopProxy;
+
+		_setLocalServiceUtilService(deDataListViewLocalService);
 	}
 
 	/**
@@ -537,6 +548,22 @@ public abstract class DEDataListViewLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		DEDataListViewLocalService deDataListViewLocalService) {
+
+		try {
+			Field field = DEDataListViewLocalServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, deDataListViewLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

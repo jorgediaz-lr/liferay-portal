@@ -16,6 +16,7 @@ package com.liferay.osb.provisioning.license.service.base;
 
 import com.liferay.osb.provisioning.license.model.LicenseEntry;
 import com.liferay.osb.provisioning.license.service.LicenseEntryLocalService;
+import com.liferay.osb.provisioning.license.service.LicenseEntryLocalServiceUtil;
 import com.liferay.osb.provisioning.license.service.persistence.LicenseEntryPersistence;
 import com.liferay.osb.provisioning.license.service.persistence.LicenseKeyFinder;
 import com.liferay.osb.provisioning.license.service.persistence.LicenseKeyPersistence;
@@ -45,10 +46,13 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -69,7 +73,7 @@ public abstract class LicenseEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>LicenseEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.provisioning.license.service.LicenseEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>LicenseEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>LicenseEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -352,6 +356,11 @@ public abstract class LicenseEntryLocalServiceBaseImpl
 		return licenseEntryPersistence.update(licenseEntry);
 	}
 
+	@Deactivate
+	protected void deactivate() {
+		_setLocalServiceUtilService(null);
+	}
+
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
@@ -363,6 +372,8 @@ public abstract class LicenseEntryLocalServiceBaseImpl
 	@Override
 	public void setAopProxy(Object aopProxy) {
 		licenseEntryLocalService = (LicenseEntryLocalService)aopProxy;
+
+		_setLocalServiceUtilService(licenseEntryLocalService);
 	}
 
 	/**
@@ -404,6 +415,22 @@ public abstract class LicenseEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		LicenseEntryLocalService licenseEntryLocalService) {
+
+		try {
+			Field field = LicenseEntryLocalServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, licenseEntryLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

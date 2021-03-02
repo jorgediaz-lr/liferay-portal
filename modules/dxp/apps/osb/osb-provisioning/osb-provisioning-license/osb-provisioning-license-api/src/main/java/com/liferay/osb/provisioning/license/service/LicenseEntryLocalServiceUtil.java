@@ -14,9 +14,15 @@
 
 package com.liferay.osb.provisioning.license.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.provisioning.license.model.LicenseEntry;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for LicenseEntry. This utility wraps
@@ -48,19 +54,14 @@ public class LicenseEntryLocalServiceUtil {
 	 * @param licenseEntry the license entry
 	 * @return the license entry that was added
 	 */
-	public static com.liferay.osb.provisioning.license.model.LicenseEntry
-		addLicenseEntry(
-			com.liferay.osb.provisioning.license.model.LicenseEntry
-				licenseEntry) {
-
+	public static LicenseEntry addLicenseEntry(LicenseEntry licenseEntry) {
 		return getService().addLicenseEntry(licenseEntry);
 	}
 
-	public static com.liferay.osb.provisioning.license.model.LicenseEntry
-			addLicenseEntry(
-				long userId, String productKey, String name, String type,
-				int versionMin, int versionMax)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static LicenseEntry addLicenseEntry(
+			long userId, String productKey, String name, String type,
+			int versionMin, int versionMax)
+		throws PortalException {
 
 		return getService().addLicenseEntry(
 			userId, productKey, name, type, versionMin, versionMax);
@@ -72,9 +73,7 @@ public class LicenseEntryLocalServiceUtil {
 	 * @param licenseEntryId the primary key for the new license entry
 	 * @return the new license entry
 	 */
-	public static com.liferay.osb.provisioning.license.model.LicenseEntry
-		createLicenseEntry(long licenseEntryId) {
-
+	public static LicenseEntry createLicenseEntry(long licenseEntryId) {
 		return getService().createLicenseEntry(licenseEntryId);
 	}
 
@@ -88,11 +87,7 @@ public class LicenseEntryLocalServiceUtil {
 	 * @param licenseEntry the license entry
 	 * @return the license entry that was removed
 	 */
-	public static com.liferay.osb.provisioning.license.model.LicenseEntry
-		deleteLicenseEntry(
-			com.liferay.osb.provisioning.license.model.LicenseEntry
-				licenseEntry) {
-
+	public static LicenseEntry deleteLicenseEntry(LicenseEntry licenseEntry) {
 		return getService().deleteLicenseEntry(licenseEntry);
 	}
 
@@ -107,9 +102,8 @@ public class LicenseEntryLocalServiceUtil {
 	 * @return the license entry that was removed
 	 * @throws PortalException if a license entry with the primary key could not be found
 	 */
-	public static com.liferay.osb.provisioning.license.model.LicenseEntry
-			deleteLicenseEntry(long licenseEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static LicenseEntry deleteLicenseEntry(long licenseEntryId)
+		throws PortalException {
 
 		return getService().deleteLicenseEntry(licenseEntryId);
 	}
@@ -117,17 +111,14 @@ public class LicenseEntryLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -137,9 +128,7 @@ public class LicenseEntryLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -155,9 +144,8 @@ public class LicenseEntryLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -175,10 +163,9 @@ public class LicenseEntryLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -190,9 +177,7 @@ public class LicenseEntryLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -204,15 +189,13 @@ public class LicenseEntryLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.provisioning.license.model.LicenseEntry
-		fetchLicenseEntry(long licenseEntryId) {
-
+	public static LicenseEntry fetchLicenseEntry(long licenseEntryId) {
 		return getService().fetchLicenseEntry(licenseEntryId);
 	}
 
@@ -240,23 +223,16 @@ public class LicenseEntryLocalServiceUtil {
 	 * @param end the upper bound of the range of license entries (not inclusive)
 	 * @return the range of license entries
 	 */
-	public static java.util.List
-		<com.liferay.osb.provisioning.license.model.LicenseEntry>
-			getLicenseEntries(int start, int end) {
-
+	public static List<LicenseEntry> getLicenseEntries(int start, int end) {
 		return getService().getLicenseEntries(start, end);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.provisioning.license.model.LicenseEntry>
-			getLicenseEntries(String productKey) {
-
+	public static List<LicenseEntry> getLicenseEntries(String productKey) {
 		return getService().getLicenseEntries(productKey);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.provisioning.license.model.LicenseEntry>
-			getLicenseEntries(String productKey, int version) {
+	public static List<LicenseEntry> getLicenseEntries(
+		String productKey, int version) {
 
 		return getService().getLicenseEntries(productKey, version);
 	}
@@ -277,16 +253,14 @@ public class LicenseEntryLocalServiceUtil {
 	 * @return the license entry
 	 * @throws PortalException if a license entry with the primary key could not be found
 	 */
-	public static com.liferay.osb.provisioning.license.model.LicenseEntry
-			getLicenseEntry(long licenseEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static LicenseEntry getLicenseEntry(long licenseEntryId)
+		throws PortalException {
 
 		return getService().getLicenseEntry(licenseEntryId);
 	}
 
-	public static com.liferay.osb.provisioning.license.model.LicenseEntry
-			getLicenseEntry(String productKey, String type)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static LicenseEntry getLicenseEntry(String productKey, String type)
+		throws PortalException {
 
 		return getService().getLicenseEntry(productKey, type);
 	}
@@ -303,9 +277,8 @@ public class LicenseEntryLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -320,44 +293,23 @@ public class LicenseEntryLocalServiceUtil {
 	 * @param licenseEntry the license entry
 	 * @return the license entry that was updated
 	 */
-	public static com.liferay.osb.provisioning.license.model.LicenseEntry
-		updateLicenseEntry(
-			com.liferay.osb.provisioning.license.model.LicenseEntry
-				licenseEntry) {
-
+	public static LicenseEntry updateLicenseEntry(LicenseEntry licenseEntry) {
 		return getService().updateLicenseEntry(licenseEntry);
 	}
 
-	public static com.liferay.osb.provisioning.license.model.LicenseEntry
-			updateLicenseEntry(
-				long licenseEntryId, String productKey, String name,
-				String type, int versionMin, int versionMax)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static LicenseEntry updateLicenseEntry(
+			long licenseEntryId, String productKey, String name, String type,
+			int versionMin, int versionMax)
+		throws PortalException {
 
 		return getService().updateLicenseEntry(
 			licenseEntryId, productKey, name, type, versionMin, versionMax);
 	}
 
 	public static LicenseEntryLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<LicenseEntryLocalService, LicenseEntryLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(LicenseEntryLocalService.class);
-
-		ServiceTracker<LicenseEntryLocalService, LicenseEntryLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<LicenseEntryLocalService, LicenseEntryLocalService>(
-						bundle.getBundleContext(),
-						LicenseEntryLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile LicenseEntryLocalService _service;
 
 }

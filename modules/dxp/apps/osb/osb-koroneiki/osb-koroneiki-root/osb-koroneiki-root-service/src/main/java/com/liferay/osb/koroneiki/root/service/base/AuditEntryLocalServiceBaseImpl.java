@@ -16,6 +16,7 @@ package com.liferay.osb.koroneiki.root.service.base;
 
 import com.liferay.osb.koroneiki.root.model.AuditEntry;
 import com.liferay.osb.koroneiki.root.service.AuditEntryLocalService;
+import com.liferay.osb.koroneiki.root.service.AuditEntryLocalServiceUtil;
 import com.liferay.osb.koroneiki.root.service.persistence.AuditEntryPersistence;
 import com.liferay.osb.koroneiki.root.service.persistence.ExternalLinkFinder;
 import com.liferay.osb.koroneiki.root.service.persistence.ExternalLinkPersistence;
@@ -45,10 +46,13 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -69,7 +73,7 @@ public abstract class AuditEntryLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AuditEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.koroneiki.root.service.AuditEntryLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>AuditEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>AuditEntryLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -350,6 +354,11 @@ public abstract class AuditEntryLocalServiceBaseImpl
 		return auditEntryPersistence.update(auditEntry);
 	}
 
+	@Deactivate
+	protected void deactivate() {
+		_setLocalServiceUtilService(null);
+	}
+
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
@@ -361,6 +370,8 @@ public abstract class AuditEntryLocalServiceBaseImpl
 	@Override
 	public void setAopProxy(Object aopProxy) {
 		auditEntryLocalService = (AuditEntryLocalService)aopProxy;
+
+		_setLocalServiceUtilService(auditEntryLocalService);
 	}
 
 	/**
@@ -402,6 +413,22 @@ public abstract class AuditEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		AuditEntryLocalService auditEntryLocalService) {
+
+		try {
+			Field field = AuditEntryLocalServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, auditEntryLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

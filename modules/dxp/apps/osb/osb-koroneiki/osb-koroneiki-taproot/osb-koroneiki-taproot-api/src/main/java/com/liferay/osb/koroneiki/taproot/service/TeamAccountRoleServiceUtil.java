@@ -14,9 +14,8 @@
 
 package com.liferay.osb.koroneiki.taproot.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.koroneiki.taproot.model.TeamAccountRole;
+import com.liferay.portal.kernel.exception.PortalException;
 
 /**
  * Provides the remote service utility for TeamAccountRole. This utility wraps
@@ -37,41 +36,39 @@ public class TeamAccountRoleServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.osb.koroneiki.taproot.service.impl.TeamAccountRoleServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.osb.koroneiki.taproot.model.TeamAccountRole
-			addTeamAccountRole(long teamId, long accountId, long teamRoleId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static TeamAccountRole addTeamAccountRole(
+			long teamId, long accountId, long teamRoleId)
+		throws PortalException {
 
 		return getService().addTeamAccountRole(teamId, accountId, teamRoleId);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.TeamAccountRole
-			addTeamAccountRole(
-				String teamKey, String accountKey, String teamRoleKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static TeamAccountRole addTeamAccountRole(
+			String teamKey, String accountKey, String teamRoleKey)
+		throws PortalException {
 
 		return getService().addTeamAccountRole(
 			teamKey, accountKey, teamRoleKey);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.TeamAccountRole
-			deleteTeamAccountRole(long teamId, long accountId, long teamRoleId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static TeamAccountRole deleteTeamAccountRole(
+			long teamId, long accountId, long teamRoleId)
+		throws PortalException {
 
 		return getService().deleteTeamAccountRole(
 			teamId, accountId, teamRoleId);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.TeamAccountRole
-			deleteTeamAccountRole(
-				String teamKey, String accountKey, String teamRoleKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static TeamAccountRole deleteTeamAccountRole(
+			String teamKey, String accountKey, String teamRoleKey)
+		throws PortalException {
 
 		return getService().deleteTeamAccountRole(
 			teamKey, accountKey, teamRoleKey);
 	}
 
 	public static void deleteTeamAccountRoles(long teamId, long accountId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().deleteTeamAccountRoles(teamId, accountId);
 	}
@@ -86,25 +83,9 @@ public class TeamAccountRoleServiceUtil {
 	}
 
 	public static TeamAccountRoleService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<TeamAccountRoleService, TeamAccountRoleService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(TeamAccountRoleService.class);
-
-		ServiceTracker<TeamAccountRoleService, TeamAccountRoleService>
-			serviceTracker =
-				new ServiceTracker
-					<TeamAccountRoleService, TeamAccountRoleService>(
-						bundle.getBundleContext(), TeamAccountRoleService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile TeamAccountRoleService _service;
 
 }

@@ -16,6 +16,7 @@ package com.liferay.osb.koroneiki.taproot.service.base;
 
 import com.liferay.osb.koroneiki.taproot.model.ContactTeamRole;
 import com.liferay.osb.koroneiki.taproot.service.ContactTeamRoleService;
+import com.liferay.osb.koroneiki.taproot.service.ContactTeamRoleServiceUtil;
 import com.liferay.osb.koroneiki.taproot.service.persistence.AccountFinder;
 import com.liferay.osb.koroneiki.taproot.service.persistence.AccountNotePersistence;
 import com.liferay.osb.koroneiki.taproot.service.persistence.AccountPersistence;
@@ -40,8 +41,11 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
+import java.lang.reflect.Field;
+
 import javax.sql.DataSource;
 
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -62,8 +66,13 @@ public abstract class ContactTeamRoleServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ContactTeamRoleService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.koroneiki.taproot.service.ContactTeamRoleServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ContactTeamRoleService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ContactTeamRoleServiceUtil</code>.
 	 */
+	@Deactivate
+	protected void deactivate() {
+		_setServiceUtilService(null);
+	}
+
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
@@ -74,6 +83,8 @@ public abstract class ContactTeamRoleServiceBaseImpl
 	@Override
 	public void setAopProxy(Object aopProxy) {
 		contactTeamRoleService = (ContactTeamRoleService)aopProxy;
+
+		_setServiceUtilService(contactTeamRoleService);
 	}
 
 	/**
@@ -115,6 +126,22 @@ public abstract class ContactTeamRoleServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(
+		ContactTeamRoleService contactTeamRoleService) {
+
+		try {
+			Field field = ContactTeamRoleServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, contactTeamRoleService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

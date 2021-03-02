@@ -14,9 +14,15 @@
 
 package com.liferay.osb.koroneiki.trunk.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.koroneiki.trunk.model.ProductPurchase;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for ProductPurchase. This utility wraps
@@ -37,15 +43,13 @@ public class ProductPurchaseLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.osb.koroneiki.trunk.service.impl.ProductPurchaseLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.osb.koroneiki.trunk.model.ProductPurchase
-			addProductPurchase(
-				long userId, long accountId, long productEntryId,
-				java.util.Date startDate, java.util.Date endDate,
-				java.util.Date originalEndDate, int quantity, int status,
-				java.util.List
-					<com.liferay.osb.koroneiki.trunk.model.ProductField>
-						productFields)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductPurchase addProductPurchase(
+			long userId, long accountId, long productEntryId,
+			java.util.Date startDate, java.util.Date endDate,
+			java.util.Date originalEndDate, int quantity, int status,
+			List<com.liferay.osb.koroneiki.trunk.model.ProductField>
+				productFields)
+		throws PortalException {
 
 		return getService().addProductPurchase(
 			userId, accountId, productEntryId, startDate, endDate,
@@ -62,10 +66,8 @@ public class ProductPurchaseLocalServiceUtil {
 	 * @param productPurchase the product purchase
 	 * @return the product purchase that was added
 	 */
-	public static com.liferay.osb.koroneiki.trunk.model.ProductPurchase
-		addProductPurchase(
-			com.liferay.osb.koroneiki.trunk.model.ProductPurchase
-				productPurchase) {
+	public static ProductPurchase addProductPurchase(
+		ProductPurchase productPurchase) {
 
 		return getService().addProductPurchase(productPurchase);
 	}
@@ -76,8 +78,8 @@ public class ProductPurchaseLocalServiceUtil {
 	 * @param productPurchaseId the primary key for the new product purchase
 	 * @return the new product purchase
 	 */
-	public static com.liferay.osb.koroneiki.trunk.model.ProductPurchase
-		createProductPurchase(long productPurchaseId) {
+	public static ProductPurchase createProductPurchase(
+		long productPurchaseId) {
 
 		return getService().createProductPurchase(productPurchaseId);
 	}
@@ -85,10 +87,9 @@ public class ProductPurchaseLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -104,9 +105,8 @@ public class ProductPurchaseLocalServiceUtil {
 	 * @return the product purchase that was removed
 	 * @throws PortalException if a product purchase with the primary key could not be found
 	 */
-	public static com.liferay.osb.koroneiki.trunk.model.ProductPurchase
-			deleteProductPurchase(long productPurchaseId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductPurchase deleteProductPurchase(long productPurchaseId)
+		throws PortalException {
 
 		return getService().deleteProductPurchase(productPurchaseId);
 	}
@@ -121,17 +121,13 @@ public class ProductPurchaseLocalServiceUtil {
 	 * @param productPurchase the product purchase
 	 * @return the product purchase that was removed
 	 */
-	public static com.liferay.osb.koroneiki.trunk.model.ProductPurchase
-		deleteProductPurchase(
-			com.liferay.osb.koroneiki.trunk.model.ProductPurchase
-				productPurchase) {
+	public static ProductPurchase deleteProductPurchase(
+		ProductPurchase productPurchase) {
 
 		return getService().deleteProductPurchase(productPurchase);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -141,9 +137,7 @@ public class ProductPurchaseLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -159,9 +153,8 @@ public class ProductPurchaseLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -179,10 +172,9 @@ public class ProductPurchaseLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -194,9 +186,7 @@ public class ProductPurchaseLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -208,15 +198,13 @@ public class ProductPurchaseLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.koroneiki.trunk.model.ProductPurchase
-		fetchProductPurchase(long productPurchaseId) {
-
+	public static ProductPurchase fetchProductPurchase(long productPurchaseId) {
 		return getService().fetchProductPurchase(productPurchaseId);
 	}
 
@@ -227,17 +215,15 @@ public class ProductPurchaseLocalServiceUtil {
 	 * @param companyId the primary key of the company
 	 * @return the matching product purchase, or <code>null</code> if a matching product purchase could not be found
 	 */
-	public static com.liferay.osb.koroneiki.trunk.model.ProductPurchase
-		fetchProductPurchaseByUuidAndCompanyId(String uuid, long companyId) {
+	public static ProductPurchase fetchProductPurchaseByUuidAndCompanyId(
+		String uuid, long companyId) {
 
 		return getService().fetchProductPurchaseByUuidAndCompanyId(
 			uuid, companyId);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.trunk.model.ProductPurchase>
-			getAccountProductEntryProductPurchases(
-				long accountId, long productEntryId, int start, int end) {
+	public static List<ProductPurchase> getAccountProductEntryProductPurchases(
+		long accountId, long productEntryId, int start, int end) {
 
 		return getService().getAccountProductEntryProductPurchases(
 			accountId, productEntryId, start, end);
@@ -250,9 +236,8 @@ public class ProductPurchaseLocalServiceUtil {
 			accountId, productEntryId);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.trunk.model.ProductPurchase>
-			getAccountProductPurchases(long accountId, int start, int end) {
+	public static List<ProductPurchase> getAccountProductPurchases(
+		long accountId, int start, int end) {
 
 		return getService().getAccountProductPurchases(accountId, start, end);
 	}
@@ -267,9 +252,8 @@ public class ProductPurchaseLocalServiceUtil {
 		return getService().getActionableDynamicQuery();
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.trunk.model.ProductPurchase>
-			getContactProductPurchases(long contactId, int start, int end) {
+	public static List<ProductPurchase> getContactProductPurchases(
+		long contactId, int start, int end) {
 
 		return getService().getContactProductPurchases(contactId, start, end);
 	}
@@ -305,23 +289,21 @@ public class ProductPurchaseLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.trunk.model.ProductPurchase>
-				getProductEntryProductPurchases(long productEntryId)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<ProductPurchase> getProductEntryProductPurchases(
+			long productEntryId)
+		throws PortalException {
 
 		return getService().getProductEntryProductPurchases(productEntryId);
 	}
 
 	public static int getProductEntryProductPurchasesCount(long productEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getProductEntryProductPurchasesCount(
 			productEntryId);
@@ -334,16 +316,14 @@ public class ProductPurchaseLocalServiceUtil {
 	 * @return the product purchase
 	 * @throws PortalException if a product purchase with the primary key could not be found
 	 */
-	public static com.liferay.osb.koroneiki.trunk.model.ProductPurchase
-			getProductPurchase(long productPurchaseId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductPurchase getProductPurchase(long productPurchaseId)
+		throws PortalException {
 
 		return getService().getProductPurchase(productPurchaseId);
 	}
 
-	public static com.liferay.osb.koroneiki.trunk.model.ProductPurchase
-			getProductPurchase(String productPurchaseKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductPurchase getProductPurchase(String productPurchaseKey)
+		throws PortalException {
 
 		return getService().getProductPurchase(productPurchaseKey);
 	}
@@ -356,9 +336,9 @@ public class ProductPurchaseLocalServiceUtil {
 	 * @return the matching product purchase
 	 * @throws PortalException if a matching product purchase could not be found
 	 */
-	public static com.liferay.osb.koroneiki.trunk.model.ProductPurchase
-			getProductPurchaseByUuidAndCompanyId(String uuid, long companyId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductPurchase getProductPurchaseByUuidAndCompanyId(
+			String uuid, long companyId)
+		throws PortalException {
 
 		return getService().getProductPurchaseByUuidAndCompanyId(
 			uuid, companyId);
@@ -375,9 +355,8 @@ public class ProductPurchaseLocalServiceUtil {
 	 * @param end the upper bound of the range of product purchases (not inclusive)
 	 * @return the range of product purchases
 	 */
-	public static java.util.List
-		<com.liferay.osb.koroneiki.trunk.model.ProductPurchase>
-			getProductPurchases(int start, int end) {
+	public static List<ProductPurchase> getProductPurchases(
+		int start, int end) {
 
 		return getService().getProductPurchases(start, end);
 	}
@@ -391,9 +370,8 @@ public class ProductPurchaseLocalServiceUtil {
 		return getService().getProductPurchasesCount();
 	}
 
-	public static com.liferay.osb.koroneiki.trunk.model.ProductPurchase reindex(
-			long productPurchaseId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductPurchase reindex(long productPurchaseId)
+		throws PortalException {
 
 		return getService().reindex(productPurchaseId);
 	}
@@ -401,20 +379,18 @@ public class ProductPurchaseLocalServiceUtil {
 	public static com.liferay.portal.kernel.search.Hits search(
 			long companyId, String keywords, int start, int end,
 			com.liferay.portal.kernel.search.Sort sort)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().search(companyId, keywords, start, end, sort);
 	}
 
-	public static com.liferay.osb.koroneiki.trunk.model.ProductPurchase
-			updateProductPurchase(
-				long userId, long productPurchaseId, java.util.Date startDate,
-				java.util.Date endDate, java.util.Date originalEndDate,
-				int quantity, int status,
-				java.util.List
-					<com.liferay.osb.koroneiki.trunk.model.ProductField>
-						productFields)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductPurchase updateProductPurchase(
+			long userId, long productPurchaseId, java.util.Date startDate,
+			java.util.Date endDate, java.util.Date originalEndDate,
+			int quantity, int status,
+			List<com.liferay.osb.koroneiki.trunk.model.ProductField>
+				productFields)
+		throws PortalException {
 
 		return getService().updateProductPurchase(
 			userId, productPurchaseId, startDate, endDate, originalEndDate,
@@ -431,36 +407,16 @@ public class ProductPurchaseLocalServiceUtil {
 	 * @param productPurchase the product purchase
 	 * @return the product purchase that was updated
 	 */
-	public static com.liferay.osb.koroneiki.trunk.model.ProductPurchase
-		updateProductPurchase(
-			com.liferay.osb.koroneiki.trunk.model.ProductPurchase
-				productPurchase) {
+	public static ProductPurchase updateProductPurchase(
+		ProductPurchase productPurchase) {
 
 		return getService().updateProductPurchase(productPurchase);
 	}
 
 	public static ProductPurchaseLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<ProductPurchaseLocalService, ProductPurchaseLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			ProductPurchaseLocalService.class);
-
-		ServiceTracker<ProductPurchaseLocalService, ProductPurchaseLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<ProductPurchaseLocalService, ProductPurchaseLocalService>(
-						bundle.getBundleContext(),
-						ProductPurchaseLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ProductPurchaseLocalService _service;
 
 }

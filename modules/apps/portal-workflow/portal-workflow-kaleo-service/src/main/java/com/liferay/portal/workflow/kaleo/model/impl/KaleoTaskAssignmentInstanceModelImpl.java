@@ -423,6 +423,8 @@ public class KaleoTaskAssignmentInstanceModelImpl
 	public void setKaleoTaskAssignmentInstanceId(
 		long kaleoTaskAssignmentInstanceId) {
 
+		_columnBitmask = -1L;
+
 		_kaleoTaskAssignmentInstanceId = kaleoTaskAssignmentInstanceId;
 	}
 

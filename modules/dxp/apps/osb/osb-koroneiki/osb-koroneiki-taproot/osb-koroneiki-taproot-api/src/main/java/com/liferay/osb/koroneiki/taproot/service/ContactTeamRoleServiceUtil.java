@@ -14,9 +14,8 @@
 
 package com.liferay.osb.koroneiki.taproot.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.koroneiki.taproot.model.ContactTeamRole;
+import com.liferay.portal.kernel.exception.PortalException;
 
 /**
  * Provides the remote service utility for ContactTeamRole. This utility wraps
@@ -37,25 +36,24 @@ public class ContactTeamRoleServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.osb.koroneiki.taproot.service.impl.ContactTeamRoleServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.osb.koroneiki.taproot.model.ContactTeamRole
-			addContactTeamRole(long contactId, long teamId, long contactRoleId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ContactTeamRole addContactTeamRole(
+			long contactId, long teamId, long contactRoleId)
+		throws PortalException {
 
 		return getService().addContactTeamRole(
 			contactId, teamId, contactRoleId);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.ContactTeamRole
-			deleteContactTeamRole(
-				long contactId, long teamId, long contactRoleId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ContactTeamRole deleteContactTeamRole(
+			long contactId, long teamId, long contactRoleId)
+		throws PortalException {
 
 		return getService().deleteContactTeamRole(
 			contactId, teamId, contactRoleId);
 	}
 
 	public static void deleteContactTeamRoles(long contactId, long teamId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().deleteContactTeamRoles(contactId, teamId);
 	}
@@ -70,25 +68,9 @@ public class ContactTeamRoleServiceUtil {
 	}
 
 	public static ContactTeamRoleService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<ContactTeamRoleService, ContactTeamRoleService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(ContactTeamRoleService.class);
-
-		ServiceTracker<ContactTeamRoleService, ContactTeamRoleService>
-			serviceTracker =
-				new ServiceTracker
-					<ContactTeamRoleService, ContactTeamRoleService>(
-						bundle.getBundleContext(), ContactTeamRoleService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ContactTeamRoleService _service;
 
 }

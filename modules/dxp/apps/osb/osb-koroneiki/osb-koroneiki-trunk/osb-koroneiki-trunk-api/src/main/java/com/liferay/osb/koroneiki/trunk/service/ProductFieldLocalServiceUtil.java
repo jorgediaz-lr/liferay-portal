@@ -14,9 +14,15 @@
 
 package com.liferay.osb.koroneiki.trunk.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.koroneiki.trunk.model.ProductField;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for ProductField. This utility wraps
@@ -37,21 +43,19 @@ public class ProductFieldLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.osb.koroneiki.trunk.service.impl.ProductFieldLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.osb.koroneiki.trunk.model.ProductField
-			addProductField(
-				long userId, long classNameId, long classPK, String name,
-				String value)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductField addProductField(
+			long userId, long classNameId, long classPK, String name,
+			String value)
+		throws PortalException {
 
 		return getService().addProductField(
 			userId, classNameId, classPK, name, value);
 	}
 
-	public static com.liferay.osb.koroneiki.trunk.model.ProductField
-			addProductField(
-				long userId, String className, long classPK, String name,
-				String value)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductField addProductField(
+			long userId, String className, long classPK, String name,
+			String value)
+		throws PortalException {
 
 		return getService().addProductField(
 			userId, className, classPK, name, value);
@@ -67,10 +71,7 @@ public class ProductFieldLocalServiceUtil {
 	 * @param productField the product field
 	 * @return the product field that was added
 	 */
-	public static com.liferay.osb.koroneiki.trunk.model.ProductField
-		addProductField(
-			com.liferay.osb.koroneiki.trunk.model.ProductField productField) {
-
+	public static ProductField addProductField(ProductField productField) {
 		return getService().addProductField(productField);
 	}
 
@@ -80,19 +81,16 @@ public class ProductFieldLocalServiceUtil {
 	 * @param productFieldId the primary key for the new product field
 	 * @return the new product field
 	 */
-	public static com.liferay.osb.koroneiki.trunk.model.ProductField
-		createProductField(long productFieldId) {
-
+	public static ProductField createProductField(long productFieldId) {
 		return getService().createProductField(productFieldId);
 	}
 
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -108,9 +106,8 @@ public class ProductFieldLocalServiceUtil {
 	 * @return the product field that was removed
 	 * @throws PortalException if a product field with the primary key could not be found
 	 */
-	public static com.liferay.osb.koroneiki.trunk.model.ProductField
-			deleteProductField(long productFieldId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductField deleteProductField(long productFieldId)
+		throws PortalException {
 
 		return getService().deleteProductField(productFieldId);
 	}
@@ -125,16 +122,11 @@ public class ProductFieldLocalServiceUtil {
 	 * @param productField the product field
 	 * @return the product field that was removed
 	 */
-	public static com.liferay.osb.koroneiki.trunk.model.ProductField
-		deleteProductField(
-			com.liferay.osb.koroneiki.trunk.model.ProductField productField) {
-
+	public static ProductField deleteProductField(ProductField productField) {
 		return getService().deleteProductField(productField);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -144,9 +136,7 @@ public class ProductFieldLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -162,9 +152,8 @@ public class ProductFieldLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -182,10 +171,9 @@ public class ProductFieldLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -197,9 +185,7 @@ public class ProductFieldLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -211,15 +197,13 @@ public class ProductFieldLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.koroneiki.trunk.model.ProductField
-		fetchProductField(long productFieldId) {
-
+	public static ProductField fetchProductField(long productFieldId) {
 		return getService().fetchProductField(productFieldId);
 	}
 
@@ -248,9 +232,8 @@ public class ProductFieldLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -262,16 +245,13 @@ public class ProductFieldLocalServiceUtil {
 	 * @return the product field
 	 * @throws PortalException if a product field with the primary key could not be found
 	 */
-	public static com.liferay.osb.koroneiki.trunk.model.ProductField
-			getProductField(long productFieldId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductField getProductField(long productFieldId)
+		throws PortalException {
 
 		return getService().getProductField(productFieldId);
 	}
 
-	public static java.util.List<String> getProductFieldNames(
-		long classNameId) {
-
+	public static List<String> getProductFieldNames(long classNameId) {
 		return getService().getProductFieldNames(classNameId);
 	}
 
@@ -286,23 +266,18 @@ public class ProductFieldLocalServiceUtil {
 	 * @param end the upper bound of the range of product fields (not inclusive)
 	 * @return the range of product fields
 	 */
-	public static java.util.List
-		<com.liferay.osb.koroneiki.trunk.model.ProductField> getProductFields(
-			int start, int end) {
-
+	public static List<ProductField> getProductFields(int start, int end) {
 		return getService().getProductFields(start, end);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.trunk.model.ProductField> getProductFields(
-			long classNameId, long classPK) {
+	public static List<ProductField> getProductFields(
+		long classNameId, long classPK) {
 
 		return getService().getProductFields(classNameId, classPK);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.trunk.model.ProductField> getProductFields(
-			String className, long classPK) {
+	public static List<ProductField> getProductFields(
+		String className, long classPK) {
 
 		return getService().getProductFields(className, classPK);
 	}
@@ -316,9 +291,9 @@ public class ProductFieldLocalServiceUtil {
 		return getService().getProductFieldsCount();
 	}
 
-	public static com.liferay.osb.koroneiki.trunk.model.ProductField
-			updateProductField(long productFieldId, String value)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductField updateProductField(
+			long productFieldId, String value)
+		throws PortalException {
 
 		return getService().updateProductField(productFieldId, value);
 	}
@@ -333,33 +308,14 @@ public class ProductFieldLocalServiceUtil {
 	 * @param productField the product field
 	 * @return the product field that was updated
 	 */
-	public static com.liferay.osb.koroneiki.trunk.model.ProductField
-		updateProductField(
-			com.liferay.osb.koroneiki.trunk.model.ProductField productField) {
-
+	public static ProductField updateProductField(ProductField productField) {
 		return getService().updateProductField(productField);
 	}
 
 	public static ProductFieldLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<ProductFieldLocalService, ProductFieldLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(ProductFieldLocalService.class);
-
-		ServiceTracker<ProductFieldLocalService, ProductFieldLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<ProductFieldLocalService, ProductFieldLocalService>(
-						bundle.getBundleContext(),
-						ProductFieldLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ProductFieldLocalService _service;
 
 }

@@ -16,6 +16,7 @@ package com.liferay.osb.koroneiki.root.service.base;
 
 import com.liferay.osb.koroneiki.root.model.ExternalLink;
 import com.liferay.osb.koroneiki.root.service.ExternalLinkLocalService;
+import com.liferay.osb.koroneiki.root.service.ExternalLinkLocalServiceUtil;
 import com.liferay.osb.koroneiki.root.service.persistence.AuditEntryPersistence;
 import com.liferay.osb.koroneiki.root.service.persistence.ExternalLinkFinder;
 import com.liferay.osb.koroneiki.root.service.persistence.ExternalLinkPersistence;
@@ -45,10 +46,13 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -69,7 +73,7 @@ public abstract class ExternalLinkLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ExternalLinkLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.koroneiki.root.service.ExternalLinkLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ExternalLinkLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ExternalLinkLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -352,6 +356,11 @@ public abstract class ExternalLinkLocalServiceBaseImpl
 		return externalLinkPersistence.update(externalLink);
 	}
 
+	@Deactivate
+	protected void deactivate() {
+		_setLocalServiceUtilService(null);
+	}
+
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
@@ -363,6 +372,8 @@ public abstract class ExternalLinkLocalServiceBaseImpl
 	@Override
 	public void setAopProxy(Object aopProxy) {
 		externalLinkLocalService = (ExternalLinkLocalService)aopProxy;
+
+		_setLocalServiceUtilService(externalLinkLocalService);
 	}
 
 	/**
@@ -404,6 +415,22 @@ public abstract class ExternalLinkLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		ExternalLinkLocalService externalLinkLocalService) {
+
+		try {
+			Field field = ExternalLinkLocalServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, externalLinkLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

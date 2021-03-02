@@ -14,9 +14,15 @@
 
 package com.liferay.osb.koroneiki.phytohormone.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.koroneiki.phytohormone.model.Entitlement;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for Entitlement. This utility wraps
@@ -48,19 +54,14 @@ public class EntitlementLocalServiceUtil {
 	 * @param entitlement the entitlement
 	 * @return the entitlement that was added
 	 */
-	public static com.liferay.osb.koroneiki.phytohormone.model.Entitlement
-		addEntitlement(
-			com.liferay.osb.koroneiki.phytohormone.model.Entitlement
-				entitlement) {
-
+	public static Entitlement addEntitlement(Entitlement entitlement) {
 		return getService().addEntitlement(entitlement);
 	}
 
-	public static com.liferay.osb.koroneiki.phytohormone.model.Entitlement
-			addEntitlement(
-				long userId, long entitlementDefinitionId, long classNameId,
-				long classPK)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static Entitlement addEntitlement(
+			long userId, long entitlementDefinitionId, long classNameId,
+			long classPK)
+		throws PortalException {
 
 		return getService().addEntitlement(
 			userId, entitlementDefinitionId, classNameId, classPK);
@@ -72,9 +73,7 @@ public class EntitlementLocalServiceUtil {
 	 * @param entitlementId the primary key for the new entitlement
 	 * @return the new entitlement
 	 */
-	public static com.liferay.osb.koroneiki.phytohormone.model.Entitlement
-		createEntitlement(long entitlementId) {
-
+	public static Entitlement createEntitlement(long entitlementId) {
 		return getService().createEntitlement(entitlementId);
 	}
 
@@ -88,11 +87,7 @@ public class EntitlementLocalServiceUtil {
 	 * @param entitlement the entitlement
 	 * @return the entitlement that was removed
 	 */
-	public static com.liferay.osb.koroneiki.phytohormone.model.Entitlement
-		deleteEntitlement(
-			com.liferay.osb.koroneiki.phytohormone.model.Entitlement
-				entitlement) {
-
+	public static Entitlement deleteEntitlement(Entitlement entitlement) {
 		return getService().deleteEntitlement(entitlement);
 	}
 
@@ -107,9 +102,8 @@ public class EntitlementLocalServiceUtil {
 	 * @return the entitlement that was removed
 	 * @throws PortalException if a entitlement with the primary key could not be found
 	 */
-	public static com.liferay.osb.koroneiki.phytohormone.model.Entitlement
-			deleteEntitlement(long entitlementId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static Entitlement deleteEntitlement(long entitlementId)
+		throws PortalException {
 
 		return getService().deleteEntitlement(entitlementId);
 	}
@@ -121,17 +115,14 @@ public class EntitlementLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -141,9 +132,7 @@ public class EntitlementLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -159,9 +148,8 @@ public class EntitlementLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -179,10 +167,9 @@ public class EntitlementLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -194,9 +181,7 @@ public class EntitlementLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -208,15 +193,13 @@ public class EntitlementLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.koroneiki.phytohormone.model.Entitlement
-		fetchEntitlement(long entitlementId) {
-
+	public static Entitlement fetchEntitlement(long entitlementId) {
 		return getService().fetchEntitlement(entitlementId);
 	}
 
@@ -233,9 +216,8 @@ public class EntitlementLocalServiceUtil {
 	 * @return the entitlement
 	 * @throws PortalException if a entitlement with the primary key could not be found
 	 */
-	public static com.liferay.osb.koroneiki.phytohormone.model.Entitlement
-			getEntitlement(long entitlementId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static Entitlement getEntitlement(long entitlementId)
+		throws PortalException {
 
 		return getService().getEntitlement(entitlementId);
 	}
@@ -251,25 +233,18 @@ public class EntitlementLocalServiceUtil {
 	 * @param end the upper bound of the range of entitlements (not inclusive)
 	 * @return the range of entitlements
 	 */
-	public static java.util.List
-		<com.liferay.osb.koroneiki.phytohormone.model.Entitlement>
-			getEntitlements(int start, int end) {
-
+	public static List<Entitlement> getEntitlements(int start, int end) {
 		return getService().getEntitlements(start, end);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.phytohormone.model.Entitlement>
-			getEntitlements(
-				long classNameId, long classPK, int start, int end) {
+	public static List<Entitlement> getEntitlements(
+		long classNameId, long classPK, int start, int end) {
 
 		return getService().getEntitlements(classNameId, classPK, start, end);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.phytohormone.model.Entitlement>
-			getEntitlements(
-				String className, long classPK, int start, int end) {
+	public static List<Entitlement> getEntitlements(
+		String className, long classPK, int start, int end) {
 
 		return getService().getEntitlements(className, classPK, start, end);
 	}
@@ -302,9 +277,8 @@ public class EntitlementLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -319,34 +293,14 @@ public class EntitlementLocalServiceUtil {
 	 * @param entitlement the entitlement
 	 * @return the entitlement that was updated
 	 */
-	public static com.liferay.osb.koroneiki.phytohormone.model.Entitlement
-		updateEntitlement(
-			com.liferay.osb.koroneiki.phytohormone.model.Entitlement
-				entitlement) {
-
+	public static Entitlement updateEntitlement(Entitlement entitlement) {
 		return getService().updateEntitlement(entitlement);
 	}
 
 	public static EntitlementLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<EntitlementLocalService, EntitlementLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(EntitlementLocalService.class);
-
-		ServiceTracker<EntitlementLocalService, EntitlementLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<EntitlementLocalService, EntitlementLocalService>(
-						bundle.getBundleContext(),
-						EntitlementLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile EntitlementLocalService _service;
 
 }

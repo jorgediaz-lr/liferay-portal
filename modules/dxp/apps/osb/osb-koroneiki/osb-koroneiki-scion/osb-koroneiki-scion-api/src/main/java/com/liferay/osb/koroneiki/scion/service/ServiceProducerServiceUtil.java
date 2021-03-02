@@ -14,10 +14,6 @@
 
 package com.liferay.osb.koroneiki.scion.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * Provides the remote service utility for ServiceProducer. This utility wraps
  * <code>com.liferay.osb.koroneiki.scion.service.impl.ServiceProducerServiceImpl</code> and is an
@@ -43,30 +39,14 @@ public class ServiceProducerServiceUtil {
 	 *
 	 * @return the OSGi service identifier
 	 */
-	public static String getOSGiServiceIdentifier() {
+	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static ServiceProducerService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<ServiceProducerService, ServiceProducerService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(ServiceProducerService.class);
-
-		ServiceTracker<ServiceProducerService, ServiceProducerService>
-			serviceTracker =
-				new ServiceTracker
-					<ServiceProducerService, ServiceProducerService>(
-						bundle.getBundleContext(), ServiceProducerService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ServiceProducerService _service;
 
 }

@@ -14,9 +14,8 @@
 
 package com.liferay.layout.page.template.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.layout.page.template.model.LayoutPageTemplateStructure;
+import com.liferay.portal.kernel.exception.PortalException;
 
 /**
  * Provides the remote service utility for LayoutPageTemplateStructure. This utility wraps
@@ -47,41 +46,19 @@ public class LayoutPageTemplateStructureServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static
-		com.liferay.layout.page.template.model.LayoutPageTemplateStructure
-				updateLayoutPageTemplateStructure(
-					long groupId, long classNameId, long classPK,
-					long segmentsExperienceId, String data)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static LayoutPageTemplateStructure updateLayoutPageTemplateStructure(
+			long groupId, long classNameId, long classPK,
+			long segmentsExperienceId, String data)
+		throws PortalException {
 
 		return getService().updateLayoutPageTemplateStructure(
 			groupId, classNameId, classPK, segmentsExperienceId, data);
 	}
 
 	public static LayoutPageTemplateStructureService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<LayoutPageTemplateStructureService, LayoutPageTemplateStructureService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			LayoutPageTemplateStructureService.class);
-
-		ServiceTracker
-			<LayoutPageTemplateStructureService,
-			 LayoutPageTemplateStructureService> serviceTracker =
-				new ServiceTracker
-					<LayoutPageTemplateStructureService,
-					 LayoutPageTemplateStructureService>(
-						 bundle.getBundleContext(),
-						 LayoutPageTemplateStructureService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile LayoutPageTemplateStructureService _service;
 
 }

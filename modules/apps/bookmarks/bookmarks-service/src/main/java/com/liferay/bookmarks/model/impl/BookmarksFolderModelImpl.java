@@ -619,7 +619,7 @@ public class BookmarksFolderModelImpl
 
 	@Override
 	public void setParentFolderId(long parentFolderId) {
-		_columnBitmask |= PARENTFOLDERID_COLUMN_BITMASK;
+		_columnBitmask = -1L;
 
 		if (!_setOriginalParentFolderId) {
 			_setOriginalParentFolderId = true;
@@ -663,6 +663,8 @@ public class BookmarksFolderModelImpl
 
 	@Override
 	public void setName(String name) {
+		_columnBitmask = -1L;
+
 		_name = name;
 	}
 

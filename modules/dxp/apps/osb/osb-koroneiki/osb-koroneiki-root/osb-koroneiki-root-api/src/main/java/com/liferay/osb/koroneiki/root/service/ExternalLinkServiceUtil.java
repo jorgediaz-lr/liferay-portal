@@ -14,9 +14,10 @@
 
 package com.liferay.osb.koroneiki.root.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.koroneiki.root.model.ExternalLink;
+import com.liferay.portal.kernel.exception.PortalException;
+
+import java.util.List;
 
 /**
  * Provides the remote service utility for ExternalLink. This utility wraps
@@ -37,54 +38,48 @@ public class ExternalLinkServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.osb.koroneiki.root.service.impl.ExternalLinkServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.osb.koroneiki.root.model.ExternalLink
-			addExternalLink(
-				long classNameId, long classPK, String domain,
-				String entityName, String entityId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ExternalLink addExternalLink(
+			long classNameId, long classPK, String domain, String entityName,
+			String entityId)
+		throws PortalException {
 
 		return getService().addExternalLink(
 			classNameId, classPK, domain, entityName, entityId);
 	}
 
-	public static com.liferay.osb.koroneiki.root.model.ExternalLink
-			deleteExternalLink(long externalLinkId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ExternalLink deleteExternalLink(long externalLinkId)
+		throws PortalException {
 
 		return getService().deleteExternalLink(externalLinkId);
 	}
 
-	public static com.liferay.osb.koroneiki.root.model.ExternalLink
-			deleteExternalLink(String externalLinkKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ExternalLink deleteExternalLink(String externalLinkKey)
+		throws PortalException {
 
 		return getService().deleteExternalLink(externalLinkKey);
 	}
 
-	public static com.liferay.osb.koroneiki.root.model.ExternalLink
-			getExternalLink(long externalLinkId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ExternalLink getExternalLink(long externalLinkId)
+		throws PortalException {
 
 		return getService().getExternalLink(externalLinkId);
 	}
 
-	public static com.liferay.osb.koroneiki.root.model.ExternalLink
-			getExternalLink(String externalLinkKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ExternalLink getExternalLink(String externalLinkKey)
+		throws PortalException {
 
 		return getService().getExternalLink(externalLinkKey);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.root.model.ExternalLink> getExternalLinks(
-				long classNameId, long classPK, int start, int end)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<ExternalLink> getExternalLinks(
+			long classNameId, long classPK, int start, int end)
+		throws PortalException {
 
 		return getService().getExternalLinks(classNameId, classPK, start, end);
 	}
 
 	public static int getExternalLinksCount(long classNameId, long classPK)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getExternalLinksCount(classNameId, classPK);
 	}
@@ -98,31 +93,17 @@ public class ExternalLinkServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.osb.koroneiki.root.model.ExternalLink
-			updateExternalLink(long externalLinkId, String entityId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ExternalLink updateExternalLink(
+			long externalLinkId, String entityId)
+		throws PortalException {
 
 		return getService().updateExternalLink(externalLinkId, entityId);
 	}
 
 	public static ExternalLinkService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker<ExternalLinkService, ExternalLinkService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(ExternalLinkService.class);
-
-		ServiceTracker<ExternalLinkService, ExternalLinkService>
-			serviceTracker =
-				new ServiceTracker<ExternalLinkService, ExternalLinkService>(
-					bundle.getBundleContext(), ExternalLinkService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ExternalLinkService _service;
 
 }

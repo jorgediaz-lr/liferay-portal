@@ -632,7 +632,7 @@ public class BookmarksEntryModelImpl
 
 	@Override
 	public void setFolderId(long folderId) {
-		_columnBitmask |= FOLDERID_COLUMN_BITMASK;
+		_columnBitmask = -1L;
 
 		if (!_setOriginalFolderId) {
 			_setOriginalFolderId = true;
@@ -676,6 +676,8 @@ public class BookmarksEntryModelImpl
 
 	@Override
 	public void setName(String name) {
+		_columnBitmask = -1L;
+
 		_name = name;
 	}
 

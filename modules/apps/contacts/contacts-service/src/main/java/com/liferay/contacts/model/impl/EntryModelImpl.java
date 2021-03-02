@@ -398,6 +398,8 @@ public class EntryModelImpl extends BaseModelImpl<Entry> implements EntryModel {
 
 	@Override
 	public void setFullName(String fullName) {
+		_columnBitmask = -1L;
+
 		_fullName = fullName;
 	}
 

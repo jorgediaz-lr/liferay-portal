@@ -21,6 +21,7 @@ import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.osb.provisioning.model.ProductBundle;
 import com.liferay.osb.provisioning.service.ProductBundleLocalService;
+import com.liferay.osb.provisioning.service.ProductBundleLocalServiceUtil;
 import com.liferay.osb.provisioning.service.persistence.ProductBundlePersistence;
 import com.liferay.osb.provisioning.service.persistence.ProductBundleProductsPersistence;
 import com.liferay.portal.aop.AopService;
@@ -50,10 +51,13 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -74,7 +78,7 @@ public abstract class ProductBundleLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ProductBundleLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.provisioning.service.ProductBundleLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ProductBundleLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ProductBundleLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -455,6 +459,11 @@ public abstract class ProductBundleLocalServiceBaseImpl
 		return productBundlePersistence.update(productBundle);
 	}
 
+	@Deactivate
+	protected void deactivate() {
+		_setLocalServiceUtilService(null);
+	}
+
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
@@ -466,6 +475,8 @@ public abstract class ProductBundleLocalServiceBaseImpl
 	@Override
 	public void setAopProxy(Object aopProxy) {
 		productBundleLocalService = (ProductBundleLocalService)aopProxy;
+
+		_setLocalServiceUtilService(productBundleLocalService);
 	}
 
 	/**
@@ -507,6 +518,22 @@ public abstract class ProductBundleLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		ProductBundleLocalService productBundleLocalService) {
+
+		try {
+			Field field = ProductBundleLocalServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, productBundleLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

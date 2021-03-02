@@ -16,6 +16,7 @@ package com.liferay.osb.koroneiki.scion.service.base;
 
 import com.liferay.osb.koroneiki.scion.model.AuthenticationToken;
 import com.liferay.osb.koroneiki.scion.service.AuthenticationTokenLocalService;
+import com.liferay.osb.koroneiki.scion.service.AuthenticationTokenLocalServiceUtil;
 import com.liferay.osb.koroneiki.scion.service.persistence.AuthenticationTokenPersistence;
 import com.liferay.osb.koroneiki.scion.service.persistence.ServiceProducerPersistence;
 import com.liferay.portal.aop.AopService;
@@ -44,10 +45,13 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -69,7 +73,7 @@ public abstract class AuthenticationTokenLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AuthenticationTokenLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.koroneiki.scion.service.AuthenticationTokenLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>AuthenticationTokenLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>AuthenticationTokenLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -377,6 +381,11 @@ public abstract class AuthenticationTokenLocalServiceBaseImpl
 		return authenticationTokenPersistence.update(authenticationToken);
 	}
 
+	@Deactivate
+	protected void deactivate() {
+		_setLocalServiceUtilService(null);
+	}
+
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
@@ -389,6 +398,8 @@ public abstract class AuthenticationTokenLocalServiceBaseImpl
 	public void setAopProxy(Object aopProxy) {
 		authenticationTokenLocalService =
 			(AuthenticationTokenLocalService)aopProxy;
+
+		_setLocalServiceUtilService(authenticationTokenLocalService);
 	}
 
 	/**
@@ -431,6 +442,23 @@ public abstract class AuthenticationTokenLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		AuthenticationTokenLocalService authenticationTokenLocalService) {
+
+		try {
+			Field field =
+				AuthenticationTokenLocalServiceUtil.class.getDeclaredField(
+					"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, authenticationTokenLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

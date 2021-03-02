@@ -14,9 +14,15 @@
 
 package com.liferay.osb.provisioning.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.provisioning.model.ProductBundle;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for ProductBundle. This utility wraps
@@ -37,9 +43,8 @@ public class ProductBundleLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.osb.provisioning.service.impl.ProductBundleLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.osb.provisioning.model.ProductBundle
-			addProductBundle(long userId, String name)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductBundle addProductBundle(long userId, String name)
+		throws PortalException {
 
 		return getService().addProductBundle(userId, name);
 	}
@@ -54,10 +59,7 @@ public class ProductBundleLocalServiceUtil {
 	 * @param productBundle the product bundle
 	 * @return the product bundle that was added
 	 */
-	public static com.liferay.osb.provisioning.model.ProductBundle
-		addProductBundle(
-			com.liferay.osb.provisioning.model.ProductBundle productBundle) {
-
+	public static ProductBundle addProductBundle(ProductBundle productBundle) {
 		return getService().addProductBundle(productBundle);
 	}
 
@@ -67,19 +69,16 @@ public class ProductBundleLocalServiceUtil {
 	 * @param productBundleId the primary key for the new product bundle
 	 * @return the new product bundle
 	 */
-	public static com.liferay.osb.provisioning.model.ProductBundle
-		createProductBundle(long productBundleId) {
-
+	public static ProductBundle createProductBundle(long productBundleId) {
 		return getService().createProductBundle(productBundleId);
 	}
 
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -95,9 +94,8 @@ public class ProductBundleLocalServiceUtil {
 	 * @return the product bundle that was removed
 	 * @throws PortalException if a product bundle with the primary key could not be found
 	 */
-	public static com.liferay.osb.provisioning.model.ProductBundle
-			deleteProductBundle(long productBundleId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductBundle deleteProductBundle(long productBundleId)
+		throws PortalException {
 
 		return getService().deleteProductBundle(productBundleId);
 	}
@@ -112,16 +110,13 @@ public class ProductBundleLocalServiceUtil {
 	 * @param productBundle the product bundle
 	 * @return the product bundle that was removed
 	 */
-	public static com.liferay.osb.provisioning.model.ProductBundle
-		deleteProductBundle(
-			com.liferay.osb.provisioning.model.ProductBundle productBundle) {
+	public static ProductBundle deleteProductBundle(
+		ProductBundle productBundle) {
 
 		return getService().deleteProductBundle(productBundle);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -131,9 +126,7 @@ public class ProductBundleLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -149,9 +142,8 @@ public class ProductBundleLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -169,10 +161,9 @@ public class ProductBundleLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -184,9 +175,7 @@ public class ProductBundleLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -198,15 +187,13 @@ public class ProductBundleLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.provisioning.model.ProductBundle
-		fetchProductBundle(long productBundleId) {
-
+	public static ProductBundle fetchProductBundle(long productBundleId) {
 		return getService().fetchProductBundle(productBundleId);
 	}
 
@@ -217,8 +204,8 @@ public class ProductBundleLocalServiceUtil {
 	 * @param companyId the primary key of the company
 	 * @return the matching product bundle, or <code>null</code> if a matching product bundle could not be found
 	 */
-	public static com.liferay.osb.provisioning.model.ProductBundle
-		fetchProductBundleByUuidAndCompanyId(String uuid, long companyId) {
+	public static ProductBundle fetchProductBundleByUuidAndCompanyId(
+		String uuid, long companyId) {
 
 		return getService().fetchProductBundleByUuidAndCompanyId(
 			uuid, companyId);
@@ -257,9 +244,8 @@ public class ProductBundleLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -271,9 +257,8 @@ public class ProductBundleLocalServiceUtil {
 	 * @return the product bundle
 	 * @throws PortalException if a product bundle with the primary key could not be found
 	 */
-	public static com.liferay.osb.provisioning.model.ProductBundle
-			getProductBundle(long productBundleId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductBundle getProductBundle(long productBundleId)
+		throws PortalException {
 
 		return getService().getProductBundle(productBundleId);
 	}
@@ -286,9 +271,9 @@ public class ProductBundleLocalServiceUtil {
 	 * @return the matching product bundle
 	 * @throws PortalException if a matching product bundle could not be found
 	 */
-	public static com.liferay.osb.provisioning.model.ProductBundle
-			getProductBundleByUuidAndCompanyId(String uuid, long companyId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductBundle getProductBundleByUuidAndCompanyId(
+			String uuid, long companyId)
+		throws PortalException {
 
 		return getService().getProductBundleByUuidAndCompanyId(uuid, companyId);
 	}
@@ -304,10 +289,7 @@ public class ProductBundleLocalServiceUtil {
 	 * @param end the upper bound of the range of product bundles (not inclusive)
 	 * @return the range of product bundles
 	 */
-	public static java.util.List
-		<com.liferay.osb.provisioning.model.ProductBundle> getProductBundles(
-			int start, int end) {
-
+	public static List<ProductBundle> getProductBundles(int start, int end) {
 		return getService().getProductBundles(start, end);
 	}
 
@@ -323,14 +305,14 @@ public class ProductBundleLocalServiceUtil {
 	public static com.liferay.portal.kernel.search.Hits search(
 			long companyId, String keywords, int start, int end,
 			com.liferay.portal.kernel.search.Sort sort)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().search(companyId, keywords, start, end, sort);
 	}
 
-	public static com.liferay.osb.provisioning.model.ProductBundle
-			updateProductBundle(long productBundleId, String name)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductBundle updateProductBundle(
+			long productBundleId, String name)
+		throws PortalException {
 
 		return getService().updateProductBundle(productBundleId, name);
 	}
@@ -345,34 +327,16 @@ public class ProductBundleLocalServiceUtil {
 	 * @param productBundle the product bundle
 	 * @return the product bundle that was updated
 	 */
-	public static com.liferay.osb.provisioning.model.ProductBundle
-		updateProductBundle(
-			com.liferay.osb.provisioning.model.ProductBundle productBundle) {
+	public static ProductBundle updateProductBundle(
+		ProductBundle productBundle) {
 
 		return getService().updateProductBundle(productBundle);
 	}
 
 	public static ProductBundleLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<ProductBundleLocalService, ProductBundleLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			ProductBundleLocalService.class);
-
-		ServiceTracker<ProductBundleLocalService, ProductBundleLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<ProductBundleLocalService, ProductBundleLocalService>(
-						bundle.getBundleContext(),
-						ProductBundleLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ProductBundleLocalService _service;
 
 }

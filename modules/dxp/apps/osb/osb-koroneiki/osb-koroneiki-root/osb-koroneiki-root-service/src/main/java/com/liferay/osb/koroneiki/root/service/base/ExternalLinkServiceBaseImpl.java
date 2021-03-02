@@ -16,6 +16,7 @@ package com.liferay.osb.koroneiki.root.service.base;
 
 import com.liferay.osb.koroneiki.root.model.ExternalLink;
 import com.liferay.osb.koroneiki.root.service.ExternalLinkService;
+import com.liferay.osb.koroneiki.root.service.ExternalLinkServiceUtil;
 import com.liferay.osb.koroneiki.root.service.persistence.AuditEntryPersistence;
 import com.liferay.osb.koroneiki.root.service.persistence.ExternalLinkFinder;
 import com.liferay.osb.koroneiki.root.service.persistence.ExternalLinkPersistence;
@@ -29,8 +30,11 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
+import java.lang.reflect.Field;
+
 import javax.sql.DataSource;
 
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -51,8 +55,13 @@ public abstract class ExternalLinkServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ExternalLinkService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.koroneiki.root.service.ExternalLinkServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ExternalLinkService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ExternalLinkServiceUtil</code>.
 	 */
+	@Deactivate
+	protected void deactivate() {
+		_setServiceUtilService(null);
+	}
+
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
@@ -63,6 +72,8 @@ public abstract class ExternalLinkServiceBaseImpl
 	@Override
 	public void setAopProxy(Object aopProxy) {
 		externalLinkService = (ExternalLinkService)aopProxy;
+
+		_setServiceUtilService(externalLinkService);
 	}
 
 	/**
@@ -104,6 +115,22 @@ public abstract class ExternalLinkServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(
+		ExternalLinkService externalLinkService) {
+
+		try {
+			Field field = ExternalLinkServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, externalLinkService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

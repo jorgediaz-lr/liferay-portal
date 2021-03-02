@@ -14,9 +14,10 @@
 
 package com.liferay.osb.koroneiki.trunk.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.koroneiki.trunk.model.ProductConsumption;
+import com.liferay.portal.kernel.exception.PortalException;
+
+import java.util.List;
 
 /**
  * Provides the remote service utility for ProductConsumption. This utility wraps
@@ -37,110 +38,99 @@ public class ProductConsumptionServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.osb.koroneiki.trunk.service.impl.ProductConsumptionServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.osb.koroneiki.trunk.model.ProductConsumption
-			addProductConsumption(
-				long accountId, long productEntryId, long productPurchaseId,
-				java.util.Date startDate, java.util.Date endDate,
-				java.util.List
-					<com.liferay.osb.koroneiki.trunk.model.ProductField>
-						productFields)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductConsumption addProductConsumption(
+			long accountId, long productEntryId, long productPurchaseId,
+			java.util.Date startDate, java.util.Date endDate,
+			List<com.liferay.osb.koroneiki.trunk.model.ProductField>
+				productFields)
+		throws PortalException {
 
 		return getService().addProductConsumption(
 			accountId, productEntryId, productPurchaseId, startDate, endDate,
 			productFields);
 	}
 
-	public static com.liferay.osb.koroneiki.trunk.model.ProductConsumption
-			addProductConsumption(
-				String accountKey, String productEntryKey,
-				String productPurchaseKey, java.util.Date startDate,
-				java.util.Date endDate,
-				java.util.List
-					<com.liferay.osb.koroneiki.trunk.model.ProductField>
-						productFields)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductConsumption addProductConsumption(
+			String accountKey, String productEntryKey,
+			String productPurchaseKey, java.util.Date startDate,
+			java.util.Date endDate,
+			List<com.liferay.osb.koroneiki.trunk.model.ProductField>
+				productFields)
+		throws PortalException {
 
 		return getService().addProductConsumption(
 			accountKey, productEntryKey, productPurchaseKey, startDate, endDate,
 			productFields);
 	}
 
-	public static com.liferay.osb.koroneiki.trunk.model.ProductConsumption
-			deleteProductConsumption(long productConsumptionId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductConsumption deleteProductConsumption(
+			long productConsumptionId)
+		throws PortalException {
 
 		return getService().deleteProductConsumption(productConsumptionId);
 	}
 
-	public static com.liferay.osb.koroneiki.trunk.model.ProductConsumption
-			deleteProductConsumption(long accountId, long productEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductConsumption deleteProductConsumption(
+			long accountId, long productEntryId)
+		throws PortalException {
 
 		return getService().deleteProductConsumption(accountId, productEntryId);
 	}
 
-	public static com.liferay.osb.koroneiki.trunk.model.ProductConsumption
-			deleteProductConsumption(String productConsumptionKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductConsumption deleteProductConsumption(
+			String productConsumptionKey)
+		throws PortalException {
 
 		return getService().deleteProductConsumption(productConsumptionKey);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.trunk.model.ProductConsumption>
-				getAccountProductConsumptions(
-					long accountId, int start, int end)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<ProductConsumption> getAccountProductConsumptions(
+			long accountId, int start, int end)
+		throws PortalException {
 
 		return getService().getAccountProductConsumptions(
 			accountId, start, end);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.trunk.model.ProductConsumption>
-				getAccountProductConsumptions(
-					String accountKey, int start, int end)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<ProductConsumption> getAccountProductConsumptions(
+			String accountKey, int start, int end)
+		throws PortalException {
 
 		return getService().getAccountProductConsumptions(
 			accountKey, start, end);
 	}
 
 	public static int getAccountProductConsumptionsCount(long accountId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getAccountProductConsumptionsCount(accountId);
 	}
 
 	public static int getAccountProductConsumptionsCount(String accountKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getAccountProductConsumptionsCount(accountKey);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.trunk.model.ProductConsumption>
-				getAccountProductEntryProductConsumptions(
-					long accountId, long productEntryId)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<ProductConsumption>
+			getAccountProductEntryProductConsumptions(
+				long accountId, long productEntryId)
+		throws PortalException {
 
 		return getService().getAccountProductEntryProductConsumptions(
 			accountId, productEntryId);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.trunk.model.ProductConsumption>
-				getContactProductConsumptions(
-					long contactId, int start, int end)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<ProductConsumption> getContactProductConsumptions(
+			long contactId, int start, int end)
+		throws PortalException {
 
 		return getService().getContactProductConsumptions(
 			contactId, start, end);
 	}
 
 	public static int getContactProductConsumptionsCount(long contactId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getContactProductConsumptionsCount(contactId);
 	}
@@ -154,26 +144,24 @@ public class ProductConsumptionServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.osb.koroneiki.trunk.model.ProductConsumption
-			getProductConsumption(long productConsumptionId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductConsumption getProductConsumption(
+			long productConsumptionId)
+		throws PortalException {
 
 		return getService().getProductConsumption(productConsumptionId);
 	}
 
-	public static com.liferay.osb.koroneiki.trunk.model.ProductConsumption
-			getProductConsumption(String productConsumptionKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductConsumption getProductConsumption(
+			String productConsumptionKey)
+		throws PortalException {
 
 		return getService().getProductConsumption(productConsumptionKey);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.trunk.model.ProductConsumption>
-				getProductConsumptions(
-					String domain, String entityName, String entityId,
-					int start, int end)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<ProductConsumption> getProductConsumptions(
+			String domain, String entityName, String entityId, int start,
+			int end)
+		throws PortalException {
 
 		return getService().getProductConsumptions(
 			domain, entityName, entityId, start, end);
@@ -181,33 +169,16 @@ public class ProductConsumptionServiceUtil {
 
 	public static int getProductConsumptionsCount(
 			String domain, String entityName, String entityId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getProductConsumptionsCount(
 			domain, entityName, entityId);
 	}
 
 	public static ProductConsumptionService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<ProductConsumptionService, ProductConsumptionService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			ProductConsumptionService.class);
-
-		ServiceTracker<ProductConsumptionService, ProductConsumptionService>
-			serviceTracker =
-				new ServiceTracker
-					<ProductConsumptionService, ProductConsumptionService>(
-						bundle.getBundleContext(),
-						ProductConsumptionService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ProductConsumptionService _service;
 
 }

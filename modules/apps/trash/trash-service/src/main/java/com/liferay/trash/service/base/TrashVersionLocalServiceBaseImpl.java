@@ -39,14 +39,18 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.trash.model.TrashVersion;
 import com.liferay.trash.service.TrashVersionLocalService;
+import com.liferay.trash.service.TrashVersionLocalServiceUtil;
 import com.liferay.trash.service.persistence.TrashVersionPersistence;
 
 import java.io.Serializable;
+
+import java.lang.reflect.Field;
 
 import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -67,7 +71,7 @@ public abstract class TrashVersionLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>TrashVersionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.trash.service.TrashVersionLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>TrashVersionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>TrashVersionLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -347,6 +351,11 @@ public abstract class TrashVersionLocalServiceBaseImpl
 		return trashVersionPersistence.update(trashVersion);
 	}
 
+	@Deactivate
+	protected void deactivate() {
+		_setLocalServiceUtilService(null);
+	}
+
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
@@ -358,6 +367,8 @@ public abstract class TrashVersionLocalServiceBaseImpl
 	@Override
 	public void setAopProxy(Object aopProxy) {
 		trashVersionLocalService = (TrashVersionLocalService)aopProxy;
+
+		_setLocalServiceUtilService(trashVersionLocalService);
 	}
 
 	/**
@@ -399,6 +410,22 @@ public abstract class TrashVersionLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		TrashVersionLocalService trashVersionLocalService) {
+
+		try {
+			Field field = TrashVersionLocalServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, trashVersionLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

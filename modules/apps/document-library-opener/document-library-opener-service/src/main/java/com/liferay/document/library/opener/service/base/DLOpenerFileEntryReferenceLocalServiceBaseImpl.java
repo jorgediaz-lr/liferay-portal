@@ -16,6 +16,7 @@ package com.liferay.document.library.opener.service.base;
 
 import com.liferay.document.library.opener.model.DLOpenerFileEntryReference;
 import com.liferay.document.library.opener.service.DLOpenerFileEntryReferenceLocalService;
+import com.liferay.document.library.opener.service.DLOpenerFileEntryReferenceLocalServiceUtil;
 import com.liferay.document.library.opener.service.persistence.DLOpenerFileEntryReferencePersistence;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -43,10 +44,13 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -68,7 +72,7 @@ public abstract class DLOpenerFileEntryReferenceLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>DLOpenerFileEntryReferenceLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.document.library.opener.service.DLOpenerFileEntryReferenceLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>DLOpenerFileEntryReferenceLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>DLOpenerFileEntryReferenceLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -381,6 +385,11 @@ public abstract class DLOpenerFileEntryReferenceLocalServiceBaseImpl
 			dlOpenerFileEntryReference);
 	}
 
+	@Deactivate
+	protected void deactivate() {
+		_setLocalServiceUtilService(null);
+	}
+
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
@@ -393,6 +402,8 @@ public abstract class DLOpenerFileEntryReferenceLocalServiceBaseImpl
 	public void setAopProxy(Object aopProxy) {
 		dlOpenerFileEntryReferenceLocalService =
 			(DLOpenerFileEntryReferenceLocalService)aopProxy;
+
+		_setLocalServiceUtilService(dlOpenerFileEntryReferenceLocalService);
 	}
 
 	/**
@@ -435,6 +446,24 @@ public abstract class DLOpenerFileEntryReferenceLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		DLOpenerFileEntryReferenceLocalService
+			dlOpenerFileEntryReferenceLocalService) {
+
+		try {
+			Field field =
+				DLOpenerFileEntryReferenceLocalServiceUtil.class.
+					getDeclaredField("_service");
+
+			field.setAccessible(true);
+
+			field.set(null, dlOpenerFileEntryReferenceLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

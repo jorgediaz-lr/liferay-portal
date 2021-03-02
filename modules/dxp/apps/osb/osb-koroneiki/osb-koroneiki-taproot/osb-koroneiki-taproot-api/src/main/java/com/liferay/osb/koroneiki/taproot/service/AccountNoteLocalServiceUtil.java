@@ -14,9 +14,15 @@
 
 package com.liferay.osb.koroneiki.taproot.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.koroneiki.taproot.model.AccountNote;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for AccountNote. This utility wraps
@@ -48,19 +54,15 @@ public class AccountNoteLocalServiceUtil {
 	 * @param accountNote the account note
 	 * @return the account note that was added
 	 */
-	public static com.liferay.osb.koroneiki.taproot.model.AccountNote
-		addAccountNote(
-			com.liferay.osb.koroneiki.taproot.model.AccountNote accountNote) {
-
+	public static AccountNote addAccountNote(AccountNote accountNote) {
 		return getService().addAccountNote(accountNote);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.AccountNote
-			addAccountNote(
-				long userId, String creatorUID, String creatorName,
-				long accountId, String type, int priority, String content,
-				String format, String status)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AccountNote addAccountNote(
+			long userId, String creatorUID, String creatorName, long accountId,
+			String type, int priority, String content, String format,
+			String status)
+		throws PortalException {
 
 		return getService().addAccountNote(
 			userId, creatorUID, creatorName, accountId, type, priority, content,
@@ -73,9 +75,7 @@ public class AccountNoteLocalServiceUtil {
 	 * @param accountNoteId the primary key for the new account note
 	 * @return the new account note
 	 */
-	public static com.liferay.osb.koroneiki.taproot.model.AccountNote
-		createAccountNote(long accountNoteId) {
-
+	public static AccountNote createAccountNote(long accountNoteId) {
 		return getService().createAccountNote(accountNoteId);
 	}
 
@@ -89,10 +89,7 @@ public class AccountNoteLocalServiceUtil {
 	 * @param accountNote the account note
 	 * @return the account note that was removed
 	 */
-	public static com.liferay.osb.koroneiki.taproot.model.AccountNote
-		deleteAccountNote(
-			com.liferay.osb.koroneiki.taproot.model.AccountNote accountNote) {
-
+	public static AccountNote deleteAccountNote(AccountNote accountNote) {
 		return getService().deleteAccountNote(accountNote);
 	}
 
@@ -107,9 +104,8 @@ public class AccountNoteLocalServiceUtil {
 	 * @return the account note that was removed
 	 * @throws PortalException if a account note with the primary key could not be found
 	 */
-	public static com.liferay.osb.koroneiki.taproot.model.AccountNote
-			deleteAccountNote(long accountNoteId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AccountNote deleteAccountNote(long accountNoteId)
+		throws PortalException {
 
 		return getService().deleteAccountNote(accountNoteId);
 	}
@@ -117,17 +113,14 @@ public class AccountNoteLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -137,9 +130,7 @@ public class AccountNoteLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -155,9 +146,8 @@ public class AccountNoteLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -175,10 +165,9 @@ public class AccountNoteLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -190,9 +179,7 @@ public class AccountNoteLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -204,15 +191,13 @@ public class AccountNoteLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.AccountNote
-		fetchAccountNote(long accountNoteId) {
-
+	public static AccountNote fetchAccountNote(long accountNoteId) {
 		return getService().fetchAccountNote(accountNoteId);
 	}
 
@@ -223,8 +208,8 @@ public class AccountNoteLocalServiceUtil {
 	 * @param companyId the primary key of the company
 	 * @return the matching account note, or <code>null</code> if a matching account note could not be found
 	 */
-	public static com.liferay.osb.koroneiki.taproot.model.AccountNote
-		fetchAccountNoteByUuidAndCompanyId(String uuid, long companyId) {
+	public static AccountNote fetchAccountNoteByUuidAndCompanyId(
+		String uuid, long companyId) {
 
 		return getService().fetchAccountNoteByUuidAndCompanyId(uuid, companyId);
 	}
@@ -236,16 +221,14 @@ public class AccountNoteLocalServiceUtil {
 	 * @return the account note
 	 * @throws PortalException if a account note with the primary key could not be found
 	 */
-	public static com.liferay.osb.koroneiki.taproot.model.AccountNote
-			getAccountNote(long accountNoteId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AccountNote getAccountNote(long accountNoteId)
+		throws PortalException {
 
 		return getService().getAccountNote(accountNoteId);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.AccountNote
-			getAccountNote(String accountNoteKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AccountNote getAccountNote(String accountNoteKey)
+		throws PortalException {
 
 		return getService().getAccountNote(accountNoteKey);
 	}
@@ -258,9 +241,9 @@ public class AccountNoteLocalServiceUtil {
 	 * @return the matching account note
 	 * @throws PortalException if a matching account note could not be found
 	 */
-	public static com.liferay.osb.koroneiki.taproot.model.AccountNote
-			getAccountNoteByUuidAndCompanyId(String uuid, long companyId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AccountNote getAccountNoteByUuidAndCompanyId(
+			String uuid, long companyId)
+		throws PortalException {
 
 		return getService().getAccountNoteByUuidAndCompanyId(uuid, companyId);
 	}
@@ -276,24 +259,19 @@ public class AccountNoteLocalServiceUtil {
 	 * @param end the upper bound of the range of account notes (not inclusive)
 	 * @return the range of account notes
 	 */
-	public static java.util.List
-		<com.liferay.osb.koroneiki.taproot.model.AccountNote> getAccountNotes(
-			int start, int end) {
-
+	public static List<AccountNote> getAccountNotes(int start, int end) {
 		return getService().getAccountNotes(start, end);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.taproot.model.AccountNote> getAccountNotes(
-			long accountId, int start, int end) {
+	public static List<AccountNote> getAccountNotes(
+		long accountId, int start, int end) {
 
 		return getService().getAccountNotes(accountId, start, end);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.taproot.model.AccountNote> getAccountNotes(
-			long accountId, String[] types, int[] priorities, String[] statuses,
-			int start, int end) {
+	public static List<AccountNote> getAccountNotes(
+		long accountId, String[] types, int[] priorities, String[] statuses,
+		int start, int end) {
 
 		return getService().getAccountNotes(
 			accountId, types, priorities, statuses, start, end);
@@ -352,9 +330,8 @@ public class AccountNoteLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -369,18 +346,14 @@ public class AccountNoteLocalServiceUtil {
 	 * @param accountNote the account note
 	 * @return the account note that was updated
 	 */
-	public static com.liferay.osb.koroneiki.taproot.model.AccountNote
-		updateAccountNote(
-			com.liferay.osb.koroneiki.taproot.model.AccountNote accountNote) {
-
+	public static AccountNote updateAccountNote(AccountNote accountNote) {
 		return getService().updateAccountNote(accountNote);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.AccountNote
-			updateAccountNote(
-				long accountNoteId, String modifierUID, String modifierName,
-				int priority, String content, String format, String status)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AccountNote updateAccountNote(
+			long accountNoteId, String modifierUID, String modifierName,
+			int priority, String content, String format, String status)
+		throws PortalException {
 
 		return getService().updateAccountNote(
 			accountNoteId, modifierUID, modifierName, priority, content, format,
@@ -388,25 +361,9 @@ public class AccountNoteLocalServiceUtil {
 	}
 
 	public static AccountNoteLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<AccountNoteLocalService, AccountNoteLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(AccountNoteLocalService.class);
-
-		ServiceTracker<AccountNoteLocalService, AccountNoteLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<AccountNoteLocalService, AccountNoteLocalService>(
-						bundle.getBundleContext(),
-						AccountNoteLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AccountNoteLocalService _service;
 
 }

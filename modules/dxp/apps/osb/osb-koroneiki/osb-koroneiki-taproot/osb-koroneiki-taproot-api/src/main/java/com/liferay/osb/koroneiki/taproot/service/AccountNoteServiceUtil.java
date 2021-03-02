@@ -14,9 +14,10 @@
 
 package com.liferay.osb.koroneiki.taproot.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.koroneiki.taproot.model.AccountNote;
+import com.liferay.portal.kernel.exception.PortalException;
+
+import java.util.List;
 
 /**
  * Provides the remote service utility for AccountNote. This utility wraps
@@ -37,37 +38,32 @@ public class AccountNoteServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.osb.koroneiki.taproot.service.impl.AccountNoteServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.osb.koroneiki.taproot.model.AccountNote
-			addAccountNote(
-				String creatorUID, String creatorName, long accountId,
-				String type, int priority, String content, String format,
-				String status)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AccountNote addAccountNote(
+			String creatorUID, String creatorName, long accountId, String type,
+			int priority, String content, String format, String status)
+		throws PortalException {
 
 		return getService().addAccountNote(
 			creatorUID, creatorName, accountId, type, priority, content, format,
 			status);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.AccountNote
-			deleteAccountNote(String accountNoteKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AccountNote deleteAccountNote(String accountNoteKey)
+		throws PortalException {
 
 		return getService().deleteAccountNote(accountNoteKey);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.AccountNote
-			getAccountNote(String accountNoteKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AccountNote getAccountNote(String accountNoteKey)
+		throws PortalException {
 
 		return getService().getAccountNote(accountNoteKey);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.taproot.model.AccountNote> getAccountNotes(
-				long accountId, String[] types, int[] priorities,
-				String[] statuses, int start, int end)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<AccountNote> getAccountNotes(
+			long accountId, String[] types, int[] priorities, String[] statuses,
+			int start, int end)
+		throws PortalException {
 
 		return getService().getAccountNotes(
 			accountId, types, priorities, statuses, start, end);
@@ -75,7 +71,7 @@ public class AccountNoteServiceUtil {
 
 	public static int getAccountNotesCount(
 			long accountId, String[] types, int[] priorities, String[] statuses)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getAccountNotesCount(
 			accountId, types, priorities, statuses);
@@ -90,11 +86,10 @@ public class AccountNoteServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.AccountNote
-			updateAccountNote(
-				long accountNoteId, String modifierUID, String modifierName,
-				int priority, String content, String format, String status)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AccountNote updateAccountNote(
+			long accountNoteId, String modifierUID, String modifierName,
+			int priority, String content, String format, String status)
+		throws PortalException {
 
 		return getService().updateAccountNote(
 			accountNoteId, modifierUID, modifierName, priority, content, format,
@@ -102,22 +97,9 @@ public class AccountNoteServiceUtil {
 	}
 
 	public static AccountNoteService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker<AccountNoteService, AccountNoteService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(AccountNoteService.class);
-
-		ServiceTracker<AccountNoteService, AccountNoteService> serviceTracker =
-			new ServiceTracker<AccountNoteService, AccountNoteService>(
-				bundle.getBundleContext(), AccountNoteService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AccountNoteService _service;
 
 }

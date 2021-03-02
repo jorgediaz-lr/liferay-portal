@@ -14,9 +14,10 @@
 
 package com.liferay.osb.koroneiki.taproot.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.koroneiki.taproot.model.Contact;
+import com.liferay.portal.kernel.exception.PortalException;
+
+import java.util.List;
 
 /**
  * Provides the remote service utility for Contact. This utility wraps
@@ -37,44 +38,38 @@ public class ContactServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.osb.koroneiki.taproot.service.impl.ContactServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.osb.koroneiki.taproot.model.Contact addContact(
+	public static Contact addContact(
 			String uuid, String firstName, String middleName, String lastName,
 			String emailAddress, String languageId,
 			boolean emailAddressVerified)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().addContact(
 			uuid, firstName, middleName, lastName, emailAddress, languageId,
 			emailAddressVerified);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.Contact deleteContact(
-			long contactId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static Contact deleteContact(long contactId) throws PortalException {
 		return getService().deleteContact(contactId);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.Contact
-			fetchContactByUuid(String uuid)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static Contact fetchContactByUuid(String uuid)
+		throws PortalException {
 
 		return getService().fetchContactByUuid(uuid);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.taproot.model.Contact> getAccountContacts(
-				long accountId, String contactRoleType, int start, int end)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<Contact> getAccountContacts(
+			long accountId, String contactRoleType, int start, int end)
+		throws PortalException {
 
 		return getService().getAccountContacts(
 			accountId, contactRoleType, start, end);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.taproot.model.Contact> getAccountContacts(
-				String accountKey, String contactRoleType, int start, int end)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<Contact> getAccountContacts(
+			String accountKey, String contactRoleType, int start, int end)
+		throws PortalException {
 
 		return getService().getAccountContacts(
 			accountKey, contactRoleType, start, end);
@@ -82,37 +77,30 @@ public class ContactServiceUtil {
 
 	public static int getAccountContactsCount(
 			long accountId, String contactRoleType)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getAccountContactsCount(accountId, contactRoleType);
 	}
 
 	public static int getAccountContactsCount(
 			String accountKey, String contactRoleType)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getAccountContactsCount(
 			accountKey, contactRoleType);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.Contact getContact(
-			long contactId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static Contact getContact(long contactId) throws PortalException {
 		return getService().getContact(contactId);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.Contact
-			getContactByEmailAddress(String emailAddress)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static Contact getContactByEmailAddress(String emailAddress)
+		throws PortalException {
 
 		return getService().getContactByEmailAddress(emailAddress);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.Contact
-			getContactByUuid(String uuid)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static Contact getContactByUuid(String uuid) throws PortalException {
 		return getService().getContactByUuid(uuid);
 	}
 
@@ -125,25 +113,24 @@ public class ContactServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.taproot.model.Contact> getTeamContacts(
-				String teamKey, int start, int end)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<Contact> getTeamContacts(
+			String teamKey, int start, int end)
+		throws PortalException {
 
 		return getService().getTeamContacts(teamKey, start, end);
 	}
 
 	public static int getTeamContactsCount(String teamKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getTeamContactsCount(teamKey);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.Contact updateContact(
+	public static Contact updateContact(
 			long contactId, String uuid, String firstName, String middleName,
 			String lastName, String emailAddress, String languageId,
 			boolean emailAddressVerified)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().updateContact(
 			contactId, uuid, firstName, middleName, lastName, emailAddress,
@@ -151,22 +138,9 @@ public class ContactServiceUtil {
 	}
 
 	public static ContactService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker<ContactService, ContactService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(ContactService.class);
-
-		ServiceTracker<ContactService, ContactService> serviceTracker =
-			new ServiceTracker<ContactService, ContactService>(
-				bundle.getBundleContext(), ContactService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ContactService _service;
 
 }

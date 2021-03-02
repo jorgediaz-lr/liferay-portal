@@ -16,6 +16,7 @@ package com.liferay.osb.koroneiki.scion.service.base;
 
 import com.liferay.osb.koroneiki.scion.model.ServiceProducer;
 import com.liferay.osb.koroneiki.scion.service.ServiceProducerLocalService;
+import com.liferay.osb.koroneiki.scion.service.ServiceProducerLocalServiceUtil;
 import com.liferay.osb.koroneiki.scion.service.persistence.AuthenticationTokenPersistence;
 import com.liferay.osb.koroneiki.scion.service.persistence.ServiceProducerPersistence;
 import com.liferay.portal.aop.AopService;
@@ -44,10 +45,13 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -69,7 +73,7 @@ public abstract class ServiceProducerLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ServiceProducerLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.koroneiki.scion.service.ServiceProducerLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ServiceProducerLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ServiceProducerLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -390,6 +394,11 @@ public abstract class ServiceProducerLocalServiceBaseImpl
 		return serviceProducerPersistence.update(serviceProducer);
 	}
 
+	@Deactivate
+	protected void deactivate() {
+		_setLocalServiceUtilService(null);
+	}
+
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
@@ -401,6 +410,8 @@ public abstract class ServiceProducerLocalServiceBaseImpl
 	@Override
 	public void setAopProxy(Object aopProxy) {
 		serviceProducerLocalService = (ServiceProducerLocalService)aopProxy;
+
+		_setLocalServiceUtilService(serviceProducerLocalService);
 	}
 
 	/**
@@ -442,6 +453,23 @@ public abstract class ServiceProducerLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		ServiceProducerLocalService serviceProducerLocalService) {
+
+		try {
+			Field field =
+				ServiceProducerLocalServiceUtil.class.getDeclaredField(
+					"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, serviceProducerLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

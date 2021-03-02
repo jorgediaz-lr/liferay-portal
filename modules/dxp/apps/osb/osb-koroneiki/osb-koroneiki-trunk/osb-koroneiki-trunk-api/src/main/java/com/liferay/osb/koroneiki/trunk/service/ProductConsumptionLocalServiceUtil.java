@@ -14,9 +14,15 @@
 
 package com.liferay.osb.koroneiki.trunk.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.koroneiki.trunk.model.ProductConsumption;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for ProductConsumption. This utility wraps
@@ -37,15 +43,13 @@ public class ProductConsumptionLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.osb.koroneiki.trunk.service.impl.ProductConsumptionLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.osb.koroneiki.trunk.model.ProductConsumption
-			addProductConsumption(
-				long userId, long accountId, long productEntryId,
-				long productPurchaseId, java.util.Date startDate,
-				java.util.Date endDate,
-				java.util.List
-					<com.liferay.osb.koroneiki.trunk.model.ProductField>
-						productFields)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductConsumption addProductConsumption(
+			long userId, long accountId, long productEntryId,
+			long productPurchaseId, java.util.Date startDate,
+			java.util.Date endDate,
+			List<com.liferay.osb.koroneiki.trunk.model.ProductField>
+				productFields)
+		throws PortalException {
 
 		return getService().addProductConsumption(
 			userId, accountId, productEntryId, productPurchaseId, startDate,
@@ -62,10 +66,8 @@ public class ProductConsumptionLocalServiceUtil {
 	 * @param productConsumption the product consumption
 	 * @return the product consumption that was added
 	 */
-	public static com.liferay.osb.koroneiki.trunk.model.ProductConsumption
-		addProductConsumption(
-			com.liferay.osb.koroneiki.trunk.model.ProductConsumption
-				productConsumption) {
+	public static ProductConsumption addProductConsumption(
+		ProductConsumption productConsumption) {
 
 		return getService().addProductConsumption(productConsumption);
 	}
@@ -76,8 +78,8 @@ public class ProductConsumptionLocalServiceUtil {
 	 * @param productConsumptionId the primary key for the new product consumption
 	 * @return the new product consumption
 	 */
-	public static com.liferay.osb.koroneiki.trunk.model.ProductConsumption
-		createProductConsumption(long productConsumptionId) {
+	public static ProductConsumption createProductConsumption(
+		long productConsumptionId) {
 
 		return getService().createProductConsumption(productConsumptionId);
 	}
@@ -85,10 +87,9 @@ public class ProductConsumptionLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -104,17 +105,16 @@ public class ProductConsumptionLocalServiceUtil {
 	 * @return the product consumption that was removed
 	 * @throws PortalException if a product consumption with the primary key could not be found
 	 */
-	public static com.liferay.osb.koroneiki.trunk.model.ProductConsumption
-			deleteProductConsumption(long productConsumptionId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductConsumption deleteProductConsumption(
+			long productConsumptionId)
+		throws PortalException {
 
 		return getService().deleteProductConsumption(productConsumptionId);
 	}
 
-	public static com.liferay.osb.koroneiki.trunk.model.ProductConsumption
-			deleteProductConsumption(
-				long userId, long accountId, long productEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductConsumption deleteProductConsumption(
+			long userId, long accountId, long productEntryId)
+		throws PortalException {
 
 		return getService().deleteProductConsumption(
 			userId, accountId, productEntryId);
@@ -131,18 +131,14 @@ public class ProductConsumptionLocalServiceUtil {
 	 * @return the product consumption that was removed
 	 * @throws PortalException
 	 */
-	public static com.liferay.osb.koroneiki.trunk.model.ProductConsumption
-			deleteProductConsumption(
-				com.liferay.osb.koroneiki.trunk.model.ProductConsumption
-					productConsumption)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductConsumption deleteProductConsumption(
+			ProductConsumption productConsumption)
+		throws PortalException {
 
 		return getService().deleteProductConsumption(productConsumption);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -152,9 +148,7 @@ public class ProductConsumptionLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -170,9 +164,8 @@ public class ProductConsumptionLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -190,10 +183,9 @@ public class ProductConsumptionLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -205,9 +197,7 @@ public class ProductConsumptionLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -219,14 +209,14 @@ public class ProductConsumptionLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.koroneiki.trunk.model.ProductConsumption
-		fetchProductConsumption(long productConsumptionId) {
+	public static ProductConsumption fetchProductConsumption(
+		long productConsumptionId) {
 
 		return getService().fetchProductConsumption(productConsumptionId);
 	}
@@ -238,33 +228,30 @@ public class ProductConsumptionLocalServiceUtil {
 	 * @param companyId the primary key of the company
 	 * @return the matching product consumption, or <code>null</code> if a matching product consumption could not be found
 	 */
-	public static com.liferay.osb.koroneiki.trunk.model.ProductConsumption
-		fetchProductConsumptionByUuidAndCompanyId(String uuid, long companyId) {
+	public static ProductConsumption fetchProductConsumptionByUuidAndCompanyId(
+		String uuid, long companyId) {
 
 		return getService().fetchProductConsumptionByUuidAndCompanyId(
 			uuid, companyId);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.trunk.model.ProductConsumption>
-				getAccountProductConsumptions(
-					long accountId, int start, int end)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<ProductConsumption> getAccountProductConsumptions(
+			long accountId, int start, int end)
+		throws PortalException {
 
 		return getService().getAccountProductConsumptions(
 			accountId, start, end);
 	}
 
 	public static int getAccountProductConsumptionsCount(long accountId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getAccountProductConsumptionsCount(accountId);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.trunk.model.ProductConsumption>
-			getAccountProductEntryProductConsumptions(
-				long accountId, long productEntryId) {
+	public static List<ProductConsumption>
+		getAccountProductEntryProductConsumptions(
+			long accountId, long productEntryId) {
 
 		return getService().getAccountProductEntryProductConsumptions(
 			accountId, productEntryId);
@@ -283,9 +270,8 @@ public class ProductConsumptionLocalServiceUtil {
 		return getService().getActionableDynamicQuery();
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.trunk.model.ProductConsumption>
-			getContactProductConsumptions(long contactId, int start, int end) {
+	public static List<ProductConsumption> getContactProductConsumptions(
+		long contactId, int start, int end) {
 
 		return getService().getContactProductConsumptions(
 			contactId, start, end);
@@ -322,9 +308,8 @@ public class ProductConsumptionLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -336,16 +321,16 @@ public class ProductConsumptionLocalServiceUtil {
 	 * @return the product consumption
 	 * @throws PortalException if a product consumption with the primary key could not be found
 	 */
-	public static com.liferay.osb.koroneiki.trunk.model.ProductConsumption
-			getProductConsumption(long productConsumptionId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductConsumption getProductConsumption(
+			long productConsumptionId)
+		throws PortalException {
 
 		return getService().getProductConsumption(productConsumptionId);
 	}
 
-	public static com.liferay.osb.koroneiki.trunk.model.ProductConsumption
-			getProductConsumption(String productConsumptionKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductConsumption getProductConsumption(
+			String productConsumptionKey)
+		throws PortalException {
 
 		return getService().getProductConsumption(productConsumptionKey);
 	}
@@ -358,9 +343,9 @@ public class ProductConsumptionLocalServiceUtil {
 	 * @return the matching product consumption
 	 * @throws PortalException if a matching product consumption could not be found
 	 */
-	public static com.liferay.osb.koroneiki.trunk.model.ProductConsumption
-			getProductConsumptionByUuidAndCompanyId(String uuid, long companyId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductConsumption getProductConsumptionByUuidAndCompanyId(
+			String uuid, long companyId)
+		throws PortalException {
 
 		return getService().getProductConsumptionByUuidAndCompanyId(
 			uuid, companyId);
@@ -377,18 +362,15 @@ public class ProductConsumptionLocalServiceUtil {
 	 * @param end the upper bound of the range of product consumptions (not inclusive)
 	 * @return the range of product consumptions
 	 */
-	public static java.util.List
-		<com.liferay.osb.koroneiki.trunk.model.ProductConsumption>
-			getProductConsumptions(int start, int end) {
+	public static List<ProductConsumption> getProductConsumptions(
+		int start, int end) {
 
 		return getService().getProductConsumptions(start, end);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.trunk.model.ProductConsumption>
-				getProductConsumptions(
-					long userId, long accountId, long productEntryId)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<ProductConsumption> getProductConsumptions(
+			long userId, long accountId, long productEntryId)
+		throws PortalException {
 
 		return getService().getProductConsumptions(
 			userId, accountId, productEntryId);
@@ -405,15 +387,14 @@ public class ProductConsumptionLocalServiceUtil {
 
 	public static int getProductEntryProductConsumptionsCount(
 			long productEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getProductEntryProductConsumptionsCount(
 			productEntryId);
 	}
 
-	public static com.liferay.osb.koroneiki.trunk.model.ProductConsumption
-			reindex(long productConsumptionId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductConsumption reindex(long productConsumptionId)
+		throws PortalException {
 
 		return getService().reindex(productConsumptionId);
 	}
@@ -421,7 +402,7 @@ public class ProductConsumptionLocalServiceUtil {
 	public static com.liferay.portal.kernel.search.Hits search(
 			long companyId, String keywords, int start, int end,
 			com.liferay.portal.kernel.search.Sort sort)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().search(companyId, keywords, start, end, sort);
 	}
@@ -436,38 +417,16 @@ public class ProductConsumptionLocalServiceUtil {
 	 * @param productConsumption the product consumption
 	 * @return the product consumption that was updated
 	 */
-	public static com.liferay.osb.koroneiki.trunk.model.ProductConsumption
-		updateProductConsumption(
-			com.liferay.osb.koroneiki.trunk.model.ProductConsumption
-				productConsumption) {
+	public static ProductConsumption updateProductConsumption(
+		ProductConsumption productConsumption) {
 
 		return getService().updateProductConsumption(productConsumption);
 	}
 
 	public static ProductConsumptionLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<ProductConsumptionLocalService, ProductConsumptionLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			ProductConsumptionLocalService.class);
-
-		ServiceTracker
-			<ProductConsumptionLocalService, ProductConsumptionLocalService>
-				serviceTracker =
-					new ServiceTracker
-						<ProductConsumptionLocalService,
-						 ProductConsumptionLocalService>(
-							 bundle.getBundleContext(),
-							 ProductConsumptionLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ProductConsumptionLocalService _service;
 
 }

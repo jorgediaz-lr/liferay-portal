@@ -16,6 +16,7 @@ package com.liferay.osb.koroneiki.trunk.service.base;
 
 import com.liferay.osb.koroneiki.trunk.model.ProductConsumption;
 import com.liferay.osb.koroneiki.trunk.service.ProductConsumptionService;
+import com.liferay.osb.koroneiki.trunk.service.ProductConsumptionServiceUtil;
 import com.liferay.osb.koroneiki.trunk.service.persistence.ProductConsumptionFinder;
 import com.liferay.osb.koroneiki.trunk.service.persistence.ProductConsumptionPersistence;
 import com.liferay.osb.koroneiki.trunk.service.persistence.ProductEntryPersistence;
@@ -33,8 +34,11 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.PortalUtil;
 
+import java.lang.reflect.Field;
+
 import javax.sql.DataSource;
 
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -55,8 +59,13 @@ public abstract class ProductConsumptionServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ProductConsumptionService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.koroneiki.trunk.service.ProductConsumptionServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ProductConsumptionService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ProductConsumptionServiceUtil</code>.
 	 */
+	@Deactivate
+	protected void deactivate() {
+		_setServiceUtilService(null);
+	}
+
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
@@ -67,6 +76,8 @@ public abstract class ProductConsumptionServiceBaseImpl
 	@Override
 	public void setAopProxy(Object aopProxy) {
 		productConsumptionService = (ProductConsumptionService)aopProxy;
+
+		_setServiceUtilService(productConsumptionService);
 	}
 
 	/**
@@ -109,6 +120,22 @@ public abstract class ProductConsumptionServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setServiceUtilService(
+		ProductConsumptionService productConsumptionService) {
+
+		try {
+			Field field = ProductConsumptionServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, productConsumptionService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

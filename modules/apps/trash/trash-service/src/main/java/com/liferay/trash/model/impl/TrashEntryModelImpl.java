@@ -481,7 +481,7 @@ public class TrashEntryModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
-		_columnBitmask |= CREATEDATE_COLUMN_BITMASK;
+		_columnBitmask = -1L;
 
 		if (_originalCreateDate == null) {
 			_originalCreateDate = _createDate;

@@ -16,6 +16,7 @@ package com.liferay.changeset.service.base;
 
 import com.liferay.changeset.model.ChangesetCollection;
 import com.liferay.changeset.service.ChangesetCollectionLocalService;
+import com.liferay.changeset.service.ChangesetCollectionLocalServiceUtil;
 import com.liferay.changeset.service.persistence.ChangesetCollectionPersistence;
 import com.liferay.changeset.service.persistence.ChangesetEntryPersistence;
 import com.liferay.portal.aop.AopService;
@@ -44,10 +45,13 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -69,7 +73,7 @@ public abstract class ChangesetCollectionLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ChangesetCollectionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.changeset.service.ChangesetCollectionLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ChangesetCollectionLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ChangesetCollectionLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -375,6 +379,11 @@ public abstract class ChangesetCollectionLocalServiceBaseImpl
 		return changesetCollectionPersistence.update(changesetCollection);
 	}
 
+	@Deactivate
+	protected void deactivate() {
+		_setLocalServiceUtilService(null);
+	}
+
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
@@ -387,6 +396,8 @@ public abstract class ChangesetCollectionLocalServiceBaseImpl
 	public void setAopProxy(Object aopProxy) {
 		changesetCollectionLocalService =
 			(ChangesetCollectionLocalService)aopProxy;
+
+		_setLocalServiceUtilService(changesetCollectionLocalService);
 	}
 
 	/**
@@ -429,6 +440,23 @@ public abstract class ChangesetCollectionLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		ChangesetCollectionLocalService changesetCollectionLocalService) {
+
+		try {
+			Field field =
+				ChangesetCollectionLocalServiceUtil.class.getDeclaredField(
+					"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, changesetCollectionLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

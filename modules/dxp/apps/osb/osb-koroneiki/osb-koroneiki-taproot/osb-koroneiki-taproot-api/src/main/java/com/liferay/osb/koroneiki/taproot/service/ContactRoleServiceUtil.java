@@ -14,9 +14,10 @@
 
 package com.liferay.osb.koroneiki.taproot.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.koroneiki.taproot.model.ContactRole;
+import com.liferay.portal.kernel.exception.PortalException;
+
+import java.util.List;
 
 /**
  * Provides the remote service utility for ContactRole. This utility wraps
@@ -37,33 +38,28 @@ public class ContactRoleServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.osb.koroneiki.taproot.service.impl.ContactRoleServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.osb.koroneiki.taproot.model.ContactRole
-			addContactRole(String name, String description, String type)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ContactRole addContactRole(
+			String name, String description, String type)
+		throws PortalException {
 
 		return getService().addContactRole(name, description, type);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.ContactRole
-			deleteContactRole(long contactRoleId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ContactRole deleteContactRole(long contactRoleId)
+		throws PortalException {
 
 		return getService().deleteContactRole(contactRoleId);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.ContactRole
-			deleteContactRole(String contactRoleKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ContactRole deleteContactRole(String contactRoleKey)
+		throws PortalException {
 
 		return getService().deleteContactRole(contactRoleKey);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.taproot.model.ContactRole>
-				getContactAccountContactRoles(
-					long accountId, long contactId, String[] types, int start,
-					int end)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<ContactRole> getContactAccountContactRoles(
+			long accountId, long contactId, String[] types, int start, int end)
+		throws PortalException {
 
 		return getService().getContactAccountContactRoles(
 			accountId, contactId, types, start, end);
@@ -71,47 +67,40 @@ public class ContactRoleServiceUtil {
 
 	public static int getContactAccountContactRolesCount(
 			long accountId, long contactId, String[] types)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getContactAccountContactRolesCount(
 			accountId, contactId, types);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.taproot.model.ContactRole>
-				getContactContactRoles(long contactId, int start, int end)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<ContactRole> getContactContactRoles(
+			long contactId, int start, int end)
+		throws PortalException {
 
 		return getService().getContactContactRoles(contactId, start, end);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.ContactRole
-			getContactRole(long contactRoleId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ContactRole getContactRole(long contactRoleId)
+		throws PortalException {
 
 		return getService().getContactRole(contactRoleId);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.ContactRole
-			getContactRole(String contactRoleKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ContactRole getContactRole(String contactRoleKey)
+		throws PortalException {
 
 		return getService().getContactRole(contactRoleKey);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.ContactRole
-			getContactRole(String name, String type)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ContactRole getContactRole(String name, String type)
+		throws PortalException {
 
 		return getService().getContactRole(name, type);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.taproot.model.ContactRole>
-				getContactTeamContactRoles(
-					long teamId, long contactId, String[] types, int start,
-					int end)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<ContactRole> getContactTeamContactRoles(
+			long teamId, long contactId, String[] types, int start, int end)
+		throws PortalException {
 
 		return getService().getContactTeamContactRoles(
 			teamId, contactId, types, start, end);
@@ -119,7 +108,7 @@ public class ContactRoleServiceUtil {
 
 	public static int getContactTeamContactRolesCount(
 			long teamId, long contactId, String[] types)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getContactTeamContactRolesCount(
 			teamId, contactId, types);
@@ -134,31 +123,17 @@ public class ContactRoleServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.ContactRole
-			updateContactRole(
-				long contactRoleId, String name, String description)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ContactRole updateContactRole(
+			long contactRoleId, String name, String description)
+		throws PortalException {
 
 		return getService().updateContactRole(contactRoleId, name, description);
 	}
 
 	public static ContactRoleService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker<ContactRoleService, ContactRoleService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(ContactRoleService.class);
-
-		ServiceTracker<ContactRoleService, ContactRoleService> serviceTracker =
-			new ServiceTracker<ContactRoleService, ContactRoleService>(
-				bundle.getBundleContext(), ContactRoleService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ContactRoleService _service;
 
 }

@@ -14,9 +14,15 @@
 
 package com.liferay.layout.page.template.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.layout.page.template.model.LayoutPageTemplateStructureRel;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for LayoutPageTemplateStructureRel. This utility wraps
@@ -48,26 +54,20 @@ public class LayoutPageTemplateStructureRelLocalServiceUtil {
 	 * @param layoutPageTemplateStructureRel the layout page template structure rel
 	 * @return the layout page template structure rel that was added
 	 */
-	public static
-		com.liferay.layout.page.template.model.LayoutPageTemplateStructureRel
-			addLayoutPageTemplateStructureRel(
-				com.liferay.layout.page.template.model.
-					LayoutPageTemplateStructureRel
-						layoutPageTemplateStructureRel) {
+	public static LayoutPageTemplateStructureRel
+		addLayoutPageTemplateStructureRel(
+			LayoutPageTemplateStructureRel layoutPageTemplateStructureRel) {
 
 		return getService().addLayoutPageTemplateStructureRel(
 			layoutPageTemplateStructureRel);
 	}
 
-	public static
-		com.liferay.layout.page.template.model.LayoutPageTemplateStructureRel
-				addLayoutPageTemplateStructureRel(
-					long userId, long groupId,
-					long layoutPageTemplateStructureId,
-					long segmentsExperienceId, String data,
-					com.liferay.portal.kernel.service.ServiceContext
-						serviceContext)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static LayoutPageTemplateStructureRel
+			addLayoutPageTemplateStructureRel(
+				long userId, long groupId, long layoutPageTemplateStructureId,
+				long segmentsExperienceId, String data,
+				com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws PortalException {
 
 		return getService().addLayoutPageTemplateStructureRel(
 			userId, groupId, layoutPageTemplateStructureId,
@@ -80,10 +80,9 @@ public class LayoutPageTemplateStructureRelLocalServiceUtil {
 	 * @param layoutPageTemplateStructureRelId the primary key for the new layout page template structure rel
 	 * @return the new layout page template structure rel
 	 */
-	public static
-		com.liferay.layout.page.template.model.LayoutPageTemplateStructureRel
-			createLayoutPageTemplateStructureRel(
-				long layoutPageTemplateStructureRelId) {
+	public static LayoutPageTemplateStructureRel
+		createLayoutPageTemplateStructureRel(
+			long layoutPageTemplateStructureRelId) {
 
 		return getService().createLayoutPageTemplateStructureRel(
 			layoutPageTemplateStructureRelId);
@@ -99,12 +98,9 @@ public class LayoutPageTemplateStructureRelLocalServiceUtil {
 	 * @param layoutPageTemplateStructureRel the layout page template structure rel
 	 * @return the layout page template structure rel that was removed
 	 */
-	public static
-		com.liferay.layout.page.template.model.LayoutPageTemplateStructureRel
-			deleteLayoutPageTemplateStructureRel(
-				com.liferay.layout.page.template.model.
-					LayoutPageTemplateStructureRel
-						layoutPageTemplateStructureRel) {
+	public static LayoutPageTemplateStructureRel
+		deleteLayoutPageTemplateStructureRel(
+			LayoutPageTemplateStructureRel layoutPageTemplateStructureRel) {
 
 		return getService().deleteLayoutPageTemplateStructureRel(
 			layoutPageTemplateStructureRel);
@@ -121,22 +117,19 @@ public class LayoutPageTemplateStructureRelLocalServiceUtil {
 	 * @return the layout page template structure rel that was removed
 	 * @throws PortalException if a layout page template structure rel with the primary key could not be found
 	 */
-	public static
-		com.liferay.layout.page.template.model.LayoutPageTemplateStructureRel
-				deleteLayoutPageTemplateStructureRel(
-					long layoutPageTemplateStructureRelId)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static LayoutPageTemplateStructureRel
+			deleteLayoutPageTemplateStructureRel(
+				long layoutPageTemplateStructureRelId)
+		throws PortalException {
 
 		return getService().deleteLayoutPageTemplateStructureRel(
 			layoutPageTemplateStructureRelId);
 	}
 
-	public static
-		com.liferay.layout.page.template.model.LayoutPageTemplateStructureRel
-				deleteLayoutPageTemplateStructureRel(
-					long layoutPageTemplateStructureId,
-					long segmentsExperienceId)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static LayoutPageTemplateStructureRel
+			deleteLayoutPageTemplateStructureRel(
+				long layoutPageTemplateStructureId, long segmentsExperienceId)
+		throws PortalException {
 
 		return getService().deleteLayoutPageTemplateStructureRel(
 			layoutPageTemplateStructureId, segmentsExperienceId);
@@ -161,17 +154,14 @@ public class LayoutPageTemplateStructureRelLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -181,9 +171,7 @@ public class LayoutPageTemplateStructureRelLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -199,9 +187,8 @@ public class LayoutPageTemplateStructureRelLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -219,10 +206,9 @@ public class LayoutPageTemplateStructureRelLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -234,9 +220,7 @@ public class LayoutPageTemplateStructureRelLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -248,25 +232,23 @@ public class LayoutPageTemplateStructureRelLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static
-		com.liferay.layout.page.template.model.LayoutPageTemplateStructureRel
-			fetchLayoutPageTemplateStructureRel(
-				long layoutPageTemplateStructureRelId) {
+	public static LayoutPageTemplateStructureRel
+		fetchLayoutPageTemplateStructureRel(
+			long layoutPageTemplateStructureRelId) {
 
 		return getService().fetchLayoutPageTemplateStructureRel(
 			layoutPageTemplateStructureRelId);
 	}
 
-	public static
-		com.liferay.layout.page.template.model.LayoutPageTemplateStructureRel
-			fetchLayoutPageTemplateStructureRel(
-				long layoutPageTemplateStructureId, long segmentsExperienceId) {
+	public static LayoutPageTemplateStructureRel
+		fetchLayoutPageTemplateStructureRel(
+			long layoutPageTemplateStructureId, long segmentsExperienceId) {
 
 		return getService().fetchLayoutPageTemplateStructureRel(
 			layoutPageTemplateStructureId, segmentsExperienceId);
@@ -279,10 +261,9 @@ public class LayoutPageTemplateStructureRelLocalServiceUtil {
 	 * @param groupId the primary key of the group
 	 * @return the matching layout page template structure rel, or <code>null</code> if a matching layout page template structure rel could not be found
 	 */
-	public static
-		com.liferay.layout.page.template.model.LayoutPageTemplateStructureRel
-			fetchLayoutPageTemplateStructureRelByUuidAndGroupId(
-				String uuid, long groupId) {
+	public static LayoutPageTemplateStructureRel
+		fetchLayoutPageTemplateStructureRelByUuidAndGroupId(
+			String uuid, long groupId) {
 
 		return getService().fetchLayoutPageTemplateStructureRelByUuidAndGroupId(
 			uuid, groupId);
@@ -316,11 +297,10 @@ public class LayoutPageTemplateStructureRelLocalServiceUtil {
 	 * @return the layout page template structure rel
 	 * @throws PortalException if a layout page template structure rel with the primary key could not be found
 	 */
-	public static
-		com.liferay.layout.page.template.model.LayoutPageTemplateStructureRel
-				getLayoutPageTemplateStructureRel(
-					long layoutPageTemplateStructureRelId)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static LayoutPageTemplateStructureRel
+			getLayoutPageTemplateStructureRel(
+				long layoutPageTemplateStructureRelId)
+		throws PortalException {
 
 		return getService().getLayoutPageTemplateStructureRel(
 			layoutPageTemplateStructureRelId);
@@ -334,11 +314,10 @@ public class LayoutPageTemplateStructureRelLocalServiceUtil {
 	 * @return the matching layout page template structure rel
 	 * @throws PortalException if a matching layout page template structure rel could not be found
 	 */
-	public static
-		com.liferay.layout.page.template.model.LayoutPageTemplateStructureRel
-				getLayoutPageTemplateStructureRelByUuidAndGroupId(
-					String uuid, long groupId)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static LayoutPageTemplateStructureRel
+			getLayoutPageTemplateStructureRelByUuidAndGroupId(
+				String uuid, long groupId)
+		throws PortalException {
 
 		return getService().getLayoutPageTemplateStructureRelByUuidAndGroupId(
 			uuid, groupId);
@@ -355,26 +334,22 @@ public class LayoutPageTemplateStructureRelLocalServiceUtil {
 	 * @param end the upper bound of the range of layout page template structure rels (not inclusive)
 	 * @return the range of layout page template structure rels
 	 */
-	public static java.util.List
-		<com.liferay.layout.page.template.model.LayoutPageTemplateStructureRel>
-			getLayoutPageTemplateStructureRels(int start, int end) {
+	public static List<LayoutPageTemplateStructureRel>
+		getLayoutPageTemplateStructureRels(int start, int end) {
 
 		return getService().getLayoutPageTemplateStructureRels(start, end);
 	}
 
-	public static java.util.List
-		<com.liferay.layout.page.template.model.LayoutPageTemplateStructureRel>
-			getLayoutPageTemplateStructureRels(
-				long layoutPageTemplateStructureId) {
+	public static List<LayoutPageTemplateStructureRel>
+		getLayoutPageTemplateStructureRels(long layoutPageTemplateStructureId) {
 
 		return getService().getLayoutPageTemplateStructureRels(
 			layoutPageTemplateStructureId);
 	}
 
-	public static java.util.List
-		<com.liferay.layout.page.template.model.LayoutPageTemplateStructureRel>
-			getLayoutPageTemplateStructureRelsBySegmentsExperienceId(
-				long segmentsExperienceId) {
+	public static List<LayoutPageTemplateStructureRel>
+		getLayoutPageTemplateStructureRelsBySegmentsExperienceId(
+			long segmentsExperienceId) {
 
 		return getService().
 			getLayoutPageTemplateStructureRelsBySegmentsExperienceId(
@@ -388,10 +363,9 @@ public class LayoutPageTemplateStructureRelLocalServiceUtil {
 	 * @param companyId the primary key of the company
 	 * @return the matching layout page template structure rels, or an empty list if no matches were found
 	 */
-	public static java.util.List
-		<com.liferay.layout.page.template.model.LayoutPageTemplateStructureRel>
-			getLayoutPageTemplateStructureRelsByUuidAndCompanyId(
-				String uuid, long companyId) {
+	public static List<LayoutPageTemplateStructureRel>
+		getLayoutPageTemplateStructureRelsByUuidAndCompanyId(
+			String uuid, long companyId) {
 
 		return getService().
 			getLayoutPageTemplateStructureRelsByUuidAndCompanyId(
@@ -408,13 +382,11 @@ public class LayoutPageTemplateStructureRelLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the range of matching layout page template structure rels, or an empty list if no matches were found
 	 */
-	public static java.util.List
-		<com.liferay.layout.page.template.model.LayoutPageTemplateStructureRel>
-			getLayoutPageTemplateStructureRelsByUuidAndCompanyId(
-				String uuid, long companyId, int start, int end,
-				com.liferay.portal.kernel.util.OrderByComparator
-					<com.liferay.layout.page.template.model.
-						LayoutPageTemplateStructureRel> orderByComparator) {
+	public static List<LayoutPageTemplateStructureRel>
+		getLayoutPageTemplateStructureRelsByUuidAndCompanyId(
+			String uuid, long companyId, int start, int end,
+			OrderByComparator<LayoutPageTemplateStructureRel>
+				orderByComparator) {
 
 		return getService().
 			getLayoutPageTemplateStructureRelsByUuidAndCompanyId(
@@ -442,9 +414,8 @@ public class LayoutPageTemplateStructureRelLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -459,53 +430,28 @@ public class LayoutPageTemplateStructureRelLocalServiceUtil {
 	 * @param layoutPageTemplateStructureRel the layout page template structure rel
 	 * @return the layout page template structure rel that was updated
 	 */
-	public static
-		com.liferay.layout.page.template.model.LayoutPageTemplateStructureRel
-			updateLayoutPageTemplateStructureRel(
-				com.liferay.layout.page.template.model.
-					LayoutPageTemplateStructureRel
-						layoutPageTemplateStructureRel) {
+	public static LayoutPageTemplateStructureRel
+		updateLayoutPageTemplateStructureRel(
+			LayoutPageTemplateStructureRel layoutPageTemplateStructureRel) {
 
 		return getService().updateLayoutPageTemplateStructureRel(
 			layoutPageTemplateStructureRel);
 	}
 
-	public static
-		com.liferay.layout.page.template.model.LayoutPageTemplateStructureRel
-				updateLayoutPageTemplateStructureRel(
-					long layoutPageTemplateStructureId,
-					long segmentsExperienceId, String data)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static LayoutPageTemplateStructureRel
+			updateLayoutPageTemplateStructureRel(
+				long layoutPageTemplateStructureId, long segmentsExperienceId,
+				String data)
+		throws PortalException {
 
 		return getService().updateLayoutPageTemplateStructureRel(
 			layoutPageTemplateStructureId, segmentsExperienceId, data);
 	}
 
 	public static LayoutPageTemplateStructureRelLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<LayoutPageTemplateStructureRelLocalService,
-		 LayoutPageTemplateStructureRelLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			LayoutPageTemplateStructureRelLocalService.class);
-
-		ServiceTracker
-			<LayoutPageTemplateStructureRelLocalService,
-			 LayoutPageTemplateStructureRelLocalService> serviceTracker =
-				new ServiceTracker
-					<LayoutPageTemplateStructureRelLocalService,
-					 LayoutPageTemplateStructureRelLocalService>(
-						 bundle.getBundleContext(),
-						 LayoutPageTemplateStructureRelLocalService.class,
-						 null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile LayoutPageTemplateStructureRelLocalService _service;
 
 }

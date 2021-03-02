@@ -16,6 +16,7 @@ package com.liferay.mail.reader.service.base;
 
 import com.liferay.mail.reader.model.Message;
 import com.liferay.mail.reader.service.MessageLocalService;
+import com.liferay.mail.reader.service.MessageLocalServiceUtil;
 import com.liferay.mail.reader.service.persistence.AccountPersistence;
 import com.liferay.mail.reader.service.persistence.AttachmentPersistence;
 import com.liferay.mail.reader.service.persistence.FolderPersistence;
@@ -46,10 +47,13 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -70,7 +74,7 @@ public abstract class MessageLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>MessageLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.mail.reader.service.MessageLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>MessageLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>MessageLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -348,6 +352,11 @@ public abstract class MessageLocalServiceBaseImpl
 		return messagePersistence.update(message);
 	}
 
+	@Deactivate
+	protected void deactivate() {
+		_setLocalServiceUtilService(null);
+	}
+
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
@@ -359,6 +368,8 @@ public abstract class MessageLocalServiceBaseImpl
 	@Override
 	public void setAopProxy(Object aopProxy) {
 		messageLocalService = (MessageLocalService)aopProxy;
+
+		_setLocalServiceUtilService(messageLocalService);
 	}
 
 	/**
@@ -400,6 +411,22 @@ public abstract class MessageLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		MessageLocalService messageLocalService) {
+
+		try {
+			Field field = MessageLocalServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, messageLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

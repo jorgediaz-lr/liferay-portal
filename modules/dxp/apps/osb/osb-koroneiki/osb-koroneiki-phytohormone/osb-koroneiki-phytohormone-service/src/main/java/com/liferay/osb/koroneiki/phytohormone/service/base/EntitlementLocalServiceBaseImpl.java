@@ -16,6 +16,7 @@ package com.liferay.osb.koroneiki.phytohormone.service.base;
 
 import com.liferay.osb.koroneiki.phytohormone.model.Entitlement;
 import com.liferay.osb.koroneiki.phytohormone.service.EntitlementLocalService;
+import com.liferay.osb.koroneiki.phytohormone.service.EntitlementLocalServiceUtil;
 import com.liferay.osb.koroneiki.phytohormone.service.persistence.EntitlementDefinitionPersistence;
 import com.liferay.osb.koroneiki.phytohormone.service.persistence.EntitlementPersistence;
 import com.liferay.portal.aop.AopService;
@@ -44,10 +45,13 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -68,7 +72,7 @@ public abstract class EntitlementLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>EntitlementLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.koroneiki.phytohormone.service.EntitlementLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>EntitlementLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>EntitlementLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -351,6 +355,11 @@ public abstract class EntitlementLocalServiceBaseImpl
 		return entitlementPersistence.update(entitlement);
 	}
 
+	@Deactivate
+	protected void deactivate() {
+		_setLocalServiceUtilService(null);
+	}
+
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
@@ -362,6 +371,8 @@ public abstract class EntitlementLocalServiceBaseImpl
 	@Override
 	public void setAopProxy(Object aopProxy) {
 		entitlementLocalService = (EntitlementLocalService)aopProxy;
+
+		_setLocalServiceUtilService(entitlementLocalService);
 	}
 
 	/**
@@ -403,6 +414,22 @@ public abstract class EntitlementLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		EntitlementLocalService entitlementLocalService) {
+
+		try {
+			Field field = EntitlementLocalServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, entitlementLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

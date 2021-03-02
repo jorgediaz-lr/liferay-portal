@@ -14,9 +14,15 @@
 
 package com.liferay.portal.workflow.metrics.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.workflow.metrics.model.WorkflowMetricsSLADefinitionVersion;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for WorkflowMetricsSLADefinitionVersion. This utility wraps
@@ -48,12 +54,10 @@ public class WorkflowMetricsSLADefinitionVersionLocalServiceUtil {
 	 * @param workflowMetricsSLADefinitionVersion the workflow metrics sla definition version
 	 * @return the workflow metrics sla definition version that was added
 	 */
-	public static com.liferay.portal.workflow.metrics.model.
-		WorkflowMetricsSLADefinitionVersion
-			addWorkflowMetricsSLADefinitionVersion(
-				com.liferay.portal.workflow.metrics.model.
-					WorkflowMetricsSLADefinitionVersion
-						workflowMetricsSLADefinitionVersion) {
+	public static WorkflowMetricsSLADefinitionVersion
+		addWorkflowMetricsSLADefinitionVersion(
+			WorkflowMetricsSLADefinitionVersion
+				workflowMetricsSLADefinitionVersion) {
 
 		return getService().addWorkflowMetricsSLADefinitionVersion(
 			workflowMetricsSLADefinitionVersion);
@@ -65,10 +69,9 @@ public class WorkflowMetricsSLADefinitionVersionLocalServiceUtil {
 	 * @param workflowMetricsSLADefinitionVersionId the primary key for the new workflow metrics sla definition version
 	 * @return the new workflow metrics sla definition version
 	 */
-	public static com.liferay.portal.workflow.metrics.model.
-		WorkflowMetricsSLADefinitionVersion
-			createWorkflowMetricsSLADefinitionVersion(
-				long workflowMetricsSLADefinitionVersionId) {
+	public static WorkflowMetricsSLADefinitionVersion
+		createWorkflowMetricsSLADefinitionVersion(
+			long workflowMetricsSLADefinitionVersionId) {
 
 		return getService().createWorkflowMetricsSLADefinitionVersion(
 			workflowMetricsSLADefinitionVersionId);
@@ -77,10 +80,9 @@ public class WorkflowMetricsSLADefinitionVersionLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -96,11 +98,10 @@ public class WorkflowMetricsSLADefinitionVersionLocalServiceUtil {
 	 * @return the workflow metrics sla definition version that was removed
 	 * @throws PortalException if a workflow metrics sla definition version with the primary key could not be found
 	 */
-	public static com.liferay.portal.workflow.metrics.model.
-		WorkflowMetricsSLADefinitionVersion
-				deleteWorkflowMetricsSLADefinitionVersion(
-					long workflowMetricsSLADefinitionVersionId)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static WorkflowMetricsSLADefinitionVersion
+			deleteWorkflowMetricsSLADefinitionVersion(
+				long workflowMetricsSLADefinitionVersionId)
+		throws PortalException {
 
 		return getService().deleteWorkflowMetricsSLADefinitionVersion(
 			workflowMetricsSLADefinitionVersionId);
@@ -116,20 +117,16 @@ public class WorkflowMetricsSLADefinitionVersionLocalServiceUtil {
 	 * @param workflowMetricsSLADefinitionVersion the workflow metrics sla definition version
 	 * @return the workflow metrics sla definition version that was removed
 	 */
-	public static com.liferay.portal.workflow.metrics.model.
-		WorkflowMetricsSLADefinitionVersion
-			deleteWorkflowMetricsSLADefinitionVersion(
-				com.liferay.portal.workflow.metrics.model.
-					WorkflowMetricsSLADefinitionVersion
-						workflowMetricsSLADefinitionVersion) {
+	public static WorkflowMetricsSLADefinitionVersion
+		deleteWorkflowMetricsSLADefinitionVersion(
+			WorkflowMetricsSLADefinitionVersion
+				workflowMetricsSLADefinitionVersion) {
 
 		return getService().deleteWorkflowMetricsSLADefinitionVersion(
 			workflowMetricsSLADefinitionVersion);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -139,9 +136,7 @@ public class WorkflowMetricsSLADefinitionVersionLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -157,9 +152,8 @@ public class WorkflowMetricsSLADefinitionVersionLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -177,10 +171,9 @@ public class WorkflowMetricsSLADefinitionVersionLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -192,9 +185,7 @@ public class WorkflowMetricsSLADefinitionVersionLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -206,16 +197,15 @@ public class WorkflowMetricsSLADefinitionVersionLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.portal.workflow.metrics.model.
-		WorkflowMetricsSLADefinitionVersion
-			fetchWorkflowMetricsSLADefinitionVersion(
-				long workflowMetricsSLADefinitionVersionId) {
+	public static WorkflowMetricsSLADefinitionVersion
+		fetchWorkflowMetricsSLADefinitionVersion(
+			long workflowMetricsSLADefinitionVersionId) {
 
 		return getService().fetchWorkflowMetricsSLADefinitionVersion(
 			workflowMetricsSLADefinitionVersionId);
@@ -228,10 +218,9 @@ public class WorkflowMetricsSLADefinitionVersionLocalServiceUtil {
 	 * @param groupId the primary key of the group
 	 * @return the matching workflow metrics sla definition version, or <code>null</code> if a matching workflow metrics sla definition version could not be found
 	 */
-	public static com.liferay.portal.workflow.metrics.model.
-		WorkflowMetricsSLADefinitionVersion
-			fetchWorkflowMetricsSLADefinitionVersionByUuidAndGroupId(
-				String uuid, long groupId) {
+	public static WorkflowMetricsSLADefinitionVersion
+		fetchWorkflowMetricsSLADefinitionVersionByUuidAndGroupId(
+			String uuid, long groupId) {
 
 		return getService().
 			fetchWorkflowMetricsSLADefinitionVersionByUuidAndGroupId(
@@ -271,9 +260,8 @@ public class WorkflowMetricsSLADefinitionVersionLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -285,22 +273,20 @@ public class WorkflowMetricsSLADefinitionVersionLocalServiceUtil {
 	 * @return the workflow metrics sla definition version
 	 * @throws PortalException if a workflow metrics sla definition version with the primary key could not be found
 	 */
-	public static com.liferay.portal.workflow.metrics.model.
-		WorkflowMetricsSLADefinitionVersion
-				getWorkflowMetricsSLADefinitionVersion(
-					long workflowMetricsSLADefinitionVersionId)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static WorkflowMetricsSLADefinitionVersion
+			getWorkflowMetricsSLADefinitionVersion(
+				long workflowMetricsSLADefinitionVersionId)
+		throws PortalException {
 
 		return getService().getWorkflowMetricsSLADefinitionVersion(
 			workflowMetricsSLADefinitionVersionId);
 	}
 
-	public static com.liferay.portal.workflow.metrics.model.
-		WorkflowMetricsSLADefinitionVersion
-				getWorkflowMetricsSLADefinitionVersion(
-					long workflowMetricsSLADefinitionId, String version)
-			throws com.liferay.portal.workflow.metrics.exception.
-				NoSuchSLADefinitionVersionException {
+	public static WorkflowMetricsSLADefinitionVersion
+			getWorkflowMetricsSLADefinitionVersion(
+				long workflowMetricsSLADefinitionId, String version)
+		throws com.liferay.portal.workflow.metrics.exception.
+			NoSuchSLADefinitionVersionException {
 
 		return getService().getWorkflowMetricsSLADefinitionVersion(
 			workflowMetricsSLADefinitionId, version);
@@ -314,11 +300,10 @@ public class WorkflowMetricsSLADefinitionVersionLocalServiceUtil {
 	 * @return the matching workflow metrics sla definition version
 	 * @throws PortalException if a matching workflow metrics sla definition version could not be found
 	 */
-	public static com.liferay.portal.workflow.metrics.model.
-		WorkflowMetricsSLADefinitionVersion
-				getWorkflowMetricsSLADefinitionVersionByUuidAndGroupId(
-					String uuid, long groupId)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static WorkflowMetricsSLADefinitionVersion
+			getWorkflowMetricsSLADefinitionVersionByUuidAndGroupId(
+				String uuid, long groupId)
+		throws PortalException {
 
 		return getService().
 			getWorkflowMetricsSLADefinitionVersionByUuidAndGroupId(
@@ -336,29 +321,23 @@ public class WorkflowMetricsSLADefinitionVersionLocalServiceUtil {
 	 * @param end the upper bound of the range of workflow metrics sla definition versions (not inclusive)
 	 * @return the range of workflow metrics sla definition versions
 	 */
-	public static java.util.List
-		<com.liferay.portal.workflow.metrics.model.
-			WorkflowMetricsSLADefinitionVersion>
-				getWorkflowMetricsSLADefinitionVersions(int start, int end) {
+	public static List<WorkflowMetricsSLADefinitionVersion>
+		getWorkflowMetricsSLADefinitionVersions(int start, int end) {
 
 		return getService().getWorkflowMetricsSLADefinitionVersions(start, end);
 	}
 
-	public static java.util.List
-		<com.liferay.portal.workflow.metrics.model.
-			WorkflowMetricsSLADefinitionVersion>
-				getWorkflowMetricsSLADefinitionVersions(
-					long workflowMetricsSLADefinitionId) {
+	public static List<WorkflowMetricsSLADefinitionVersion>
+		getWorkflowMetricsSLADefinitionVersions(
+			long workflowMetricsSLADefinitionId) {
 
 		return getService().getWorkflowMetricsSLADefinitionVersions(
 			workflowMetricsSLADefinitionId);
 	}
 
-	public static java.util.List
-		<com.liferay.portal.workflow.metrics.model.
-			WorkflowMetricsSLADefinitionVersion>
-				getWorkflowMetricsSLADefinitionVersions(
-					long companyId, java.util.Date createDate, int status) {
+	public static List<WorkflowMetricsSLADefinitionVersion>
+		getWorkflowMetricsSLADefinitionVersions(
+			long companyId, java.util.Date createDate, int status) {
 
 		return getService().getWorkflowMetricsSLADefinitionVersions(
 			companyId, createDate, status);
@@ -371,11 +350,9 @@ public class WorkflowMetricsSLADefinitionVersionLocalServiceUtil {
 	 * @param companyId the primary key of the company
 	 * @return the matching workflow metrics sla definition versions, or an empty list if no matches were found
 	 */
-	public static java.util.List
-		<com.liferay.portal.workflow.metrics.model.
-			WorkflowMetricsSLADefinitionVersion>
-				getWorkflowMetricsSLADefinitionVersionsByUuidAndCompanyId(
-					String uuid, long companyId) {
+	public static List<WorkflowMetricsSLADefinitionVersion>
+		getWorkflowMetricsSLADefinitionVersionsByUuidAndCompanyId(
+			String uuid, long companyId) {
 
 		return getService().
 			getWorkflowMetricsSLADefinitionVersionsByUuidAndCompanyId(
@@ -392,15 +369,11 @@ public class WorkflowMetricsSLADefinitionVersionLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the range of matching workflow metrics sla definition versions, or an empty list if no matches were found
 	 */
-	public static java.util.List
-		<com.liferay.portal.workflow.metrics.model.
-			WorkflowMetricsSLADefinitionVersion>
-				getWorkflowMetricsSLADefinitionVersionsByUuidAndCompanyId(
-					String uuid, long companyId, int start, int end,
-					com.liferay.portal.kernel.util.OrderByComparator
-						<com.liferay.portal.workflow.metrics.model.
-							WorkflowMetricsSLADefinitionVersion>
-								orderByComparator) {
+	public static List<WorkflowMetricsSLADefinitionVersion>
+		getWorkflowMetricsSLADefinitionVersionsByUuidAndCompanyId(
+			String uuid, long companyId, int start, int end,
+			OrderByComparator<WorkflowMetricsSLADefinitionVersion>
+				orderByComparator) {
 
 		return getService().
 			getWorkflowMetricsSLADefinitionVersionsByUuidAndCompanyId(
@@ -426,42 +399,20 @@ public class WorkflowMetricsSLADefinitionVersionLocalServiceUtil {
 	 * @param workflowMetricsSLADefinitionVersion the workflow metrics sla definition version
 	 * @return the workflow metrics sla definition version that was updated
 	 */
-	public static com.liferay.portal.workflow.metrics.model.
-		WorkflowMetricsSLADefinitionVersion
-			updateWorkflowMetricsSLADefinitionVersion(
-				com.liferay.portal.workflow.metrics.model.
-					WorkflowMetricsSLADefinitionVersion
-						workflowMetricsSLADefinitionVersion) {
+	public static WorkflowMetricsSLADefinitionVersion
+		updateWorkflowMetricsSLADefinitionVersion(
+			WorkflowMetricsSLADefinitionVersion
+				workflowMetricsSLADefinitionVersion) {
 
 		return getService().updateWorkflowMetricsSLADefinitionVersion(
 			workflowMetricsSLADefinitionVersion);
 	}
 
 	public static WorkflowMetricsSLADefinitionVersionLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<WorkflowMetricsSLADefinitionVersionLocalService,
-		 WorkflowMetricsSLADefinitionVersionLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			WorkflowMetricsSLADefinitionVersionLocalService.class);
-
-		ServiceTracker
-			<WorkflowMetricsSLADefinitionVersionLocalService,
-			 WorkflowMetricsSLADefinitionVersionLocalService> serviceTracker =
-				new ServiceTracker
-					<WorkflowMetricsSLADefinitionVersionLocalService,
-					 WorkflowMetricsSLADefinitionVersionLocalService>(
-						 bundle.getBundleContext(),
-						 WorkflowMetricsSLADefinitionVersionLocalService.class,
-						 null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile WorkflowMetricsSLADefinitionVersionLocalService
+		_service;
 
 }

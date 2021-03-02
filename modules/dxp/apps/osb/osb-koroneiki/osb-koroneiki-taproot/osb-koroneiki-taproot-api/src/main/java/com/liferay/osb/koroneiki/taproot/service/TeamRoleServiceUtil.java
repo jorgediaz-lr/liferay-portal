@@ -14,9 +14,10 @@
 
 package com.liferay.osb.koroneiki.taproot.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.koroneiki.taproot.model.TeamRole;
+import com.liferay.portal.kernel.exception.PortalException;
+
+import java.util.List;
 
 /**
  * Provides the remote service utility for TeamRole. This utility wraps
@@ -37,23 +38,21 @@ public class TeamRoleServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.osb.koroneiki.taproot.service.impl.TeamRoleServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.osb.koroneiki.taproot.model.TeamRole addTeamRole(
+	public static TeamRole addTeamRole(
 			String name, String description, String type)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().addTeamRole(name, description, type);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.TeamRole
-			deleteTeamRole(long teamRoleId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static TeamRole deleteTeamRole(long teamRoleId)
+		throws PortalException {
 
 		return getService().deleteTeamRole(teamRoleId);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.TeamRole
-			deleteTeamRole(String teamRoleKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static TeamRole deleteTeamRole(String teamRoleKey)
+		throws PortalException {
 
 		return getService().deleteTeamRole(teamRoleKey);
 	}
@@ -67,67 +66,47 @@ public class TeamRoleServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.taproot.model.TeamRole>
-				getTeamAccountTeamRoles(
-					long accountId, long teamId, int start, int end)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<TeamRole> getTeamAccountTeamRoles(
+			long accountId, long teamId, int start, int end)
+		throws PortalException {
 
 		return getService().getTeamAccountTeamRoles(
 			accountId, teamId, start, end);
 	}
 
 	public static int getTeamAccountTeamRolesCount(long accountId, long teamId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getTeamAccountTeamRolesCount(accountId, teamId);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.TeamRole getTeamRole(
-			long teamRoleId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static TeamRole getTeamRole(long teamRoleId) throws PortalException {
 		return getService().getTeamRole(teamRoleId);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.TeamRole getTeamRole(
-			String teamRoleKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static TeamRole getTeamRole(String teamRoleKey)
+		throws PortalException {
 
 		return getService().getTeamRole(teamRoleKey);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.TeamRole getTeamRole(
-			String name, String type)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static TeamRole getTeamRole(String name, String type)
+		throws PortalException {
 
 		return getService().getTeamRole(name, type);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.TeamRole
-			updateTeamRole(long teamRoleId, String name, String description)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static TeamRole updateTeamRole(
+			long teamRoleId, String name, String description)
+		throws PortalException {
 
 		return getService().updateTeamRole(teamRoleId, name, description);
 	}
 
 	public static TeamRoleService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker<TeamRoleService, TeamRoleService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(TeamRoleService.class);
-
-		ServiceTracker<TeamRoleService, TeamRoleService> serviceTracker =
-			new ServiceTracker<TeamRoleService, TeamRoleService>(
-				bundle.getBundleContext(), TeamRoleService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile TeamRoleService _service;
 
 }

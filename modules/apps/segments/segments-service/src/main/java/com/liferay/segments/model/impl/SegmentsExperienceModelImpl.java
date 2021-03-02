@@ -842,7 +842,7 @@ public class SegmentsExperienceModelImpl
 
 	@Override
 	public void setPriority(int priority) {
-		_columnBitmask |= PRIORITY_COLUMN_BITMASK;
+		_columnBitmask = -1L;
 
 		if (!_setOriginalPriority) {
 			_setOriginalPriority = true;

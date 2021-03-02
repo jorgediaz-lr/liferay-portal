@@ -21,6 +21,7 @@ import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.osb.koroneiki.taproot.model.AccountNote;
 import com.liferay.osb.koroneiki.taproot.service.AccountNoteLocalService;
+import com.liferay.osb.koroneiki.taproot.service.AccountNoteLocalServiceUtil;
 import com.liferay.osb.koroneiki.taproot.service.persistence.AccountFinder;
 import com.liferay.osb.koroneiki.taproot.service.persistence.AccountNotePersistence;
 import com.liferay.osb.koroneiki.taproot.service.persistence.AccountPersistence;
@@ -62,10 +63,13 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -86,7 +90,7 @@ public abstract class AccountNoteLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>AccountNoteLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.koroneiki.taproot.service.AccountNoteLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>AccountNoteLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>AccountNoteLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -466,6 +470,11 @@ public abstract class AccountNoteLocalServiceBaseImpl
 		return accountNotePersistence.update(accountNote);
 	}
 
+	@Deactivate
+	protected void deactivate() {
+		_setLocalServiceUtilService(null);
+	}
+
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
@@ -477,6 +486,8 @@ public abstract class AccountNoteLocalServiceBaseImpl
 	@Override
 	public void setAopProxy(Object aopProxy) {
 		accountNoteLocalService = (AccountNoteLocalService)aopProxy;
+
+		_setLocalServiceUtilService(accountNoteLocalService);
 	}
 
 	/**
@@ -518,6 +529,22 @@ public abstract class AccountNoteLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		AccountNoteLocalService accountNoteLocalService) {
+
+		try {
+			Field field = AccountNoteLocalServiceUtil.class.getDeclaredField(
+				"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, accountNoteLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

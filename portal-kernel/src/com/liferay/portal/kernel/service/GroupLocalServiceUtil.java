@@ -14,7 +14,16 @@
 
 package com.liferay.portal.kernel.service;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Provides the local service utility for Group. This utility wraps
@@ -46,20 +55,18 @@ public class GroupLocalServiceUtil {
 	 * @param group the group
 	 * @return the group that was added
 	 */
-	public static com.liferay.portal.kernel.model.Group addGroup(
-		com.liferay.portal.kernel.model.Group group) {
-
+	public static Group addGroup(Group group) {
 		return getService().addGroup(group);
 	}
 
-	public static com.liferay.portal.kernel.model.Group addGroup(
+	public static Group addGroup(
 			long userId, long parentGroupId, String className, long classPK,
-			long liveGroupId, java.util.Map<java.util.Locale, String> nameMap,
-			java.util.Map<java.util.Locale, String> descriptionMap, int type,
+			long liveGroupId, Map<java.util.Locale, String> nameMap,
+			Map<java.util.Locale, String> descriptionMap, int type,
 			boolean manualMembership, int membershipRestriction,
 			String friendlyURL, boolean site, boolean inheritContent,
 			boolean active, ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().addGroup(
 			userId, parentGroupId, className, classPK, liveGroupId, nameMap,
@@ -67,14 +74,14 @@ public class GroupLocalServiceUtil {
 			friendlyURL, site, inheritContent, active, serviceContext);
 	}
 
-	public static com.liferay.portal.kernel.model.Group addGroup(
+	public static Group addGroup(
 			long userId, long parentGroupId, String className, long classPK,
-			long liveGroupId, java.util.Map<java.util.Locale, String> nameMap,
-			java.util.Map<java.util.Locale, String> descriptionMap, int type,
+			long liveGroupId, Map<java.util.Locale, String> nameMap,
+			Map<java.util.Locale, String> descriptionMap, int type,
 			boolean manualMembership, int membershipRestriction,
 			String friendlyURL, boolean site, boolean active,
 			ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().addGroup(
 			userId, parentGroupId, className, classPK, liveGroupId, nameMap,
@@ -82,9 +89,7 @@ public class GroupLocalServiceUtil {
 			friendlyURL, site, active, serviceContext);
 	}
 
-	public static void addOrganizationGroup(
-		long organizationId, com.liferay.portal.kernel.model.Group group) {
-
+	public static void addOrganizationGroup(long organizationId, Group group) {
 		getService().addOrganizationGroup(organizationId, group);
 	}
 
@@ -93,8 +98,7 @@ public class GroupLocalServiceUtil {
 	}
 
 	public static void addOrganizationGroups(
-		long organizationId,
-		java.util.List<com.liferay.portal.kernel.model.Group> groups) {
+		long organizationId, List<Group> groups) {
 
 		getService().addOrganizationGroups(organizationId, groups);
 	}
@@ -105,9 +109,7 @@ public class GroupLocalServiceUtil {
 		getService().addOrganizationGroups(organizationId, groupIds);
 	}
 
-	public static void addRoleGroup(
-		long roleId, com.liferay.portal.kernel.model.Group group) {
-
+	public static void addRoleGroup(long roleId, Group group) {
 		getService().addRoleGroup(roleId, group);
 	}
 
@@ -115,10 +117,7 @@ public class GroupLocalServiceUtil {
 		getService().addRoleGroup(roleId, groupId);
 	}
 
-	public static void addRoleGroups(
-		long roleId,
-		java.util.List<com.liferay.portal.kernel.model.Group> groups) {
-
+	public static void addRoleGroups(long roleId, List<Group> groups) {
 		getService().addRoleGroups(roleId, groups);
 	}
 
@@ -126,9 +125,7 @@ public class GroupLocalServiceUtil {
 		getService().addRoleGroups(roleId, groupIds);
 	}
 
-	public static void addUserGroup(
-		long userId, com.liferay.portal.kernel.model.Group group) {
-
+	public static void addUserGroup(long userId, Group group) {
 		getService().addUserGroup(userId, group);
 	}
 
@@ -136,9 +133,7 @@ public class GroupLocalServiceUtil {
 		getService().addUserGroup(userId, groupId);
 	}
 
-	public static void addUserGroupGroup(
-		long userGroupId, com.liferay.portal.kernel.model.Group group) {
-
+	public static void addUserGroupGroup(long userGroupId, Group group) {
 		getService().addUserGroupGroup(userGroupId, group);
 	}
 
@@ -147,8 +142,7 @@ public class GroupLocalServiceUtil {
 	}
 
 	public static void addUserGroupGroups(
-		long userGroupId,
-		java.util.List<com.liferay.portal.kernel.model.Group> groups) {
+		long userGroupId, List<Group> groups) {
 
 		getService().addUserGroupGroups(userGroupId, groups);
 	}
@@ -157,10 +151,7 @@ public class GroupLocalServiceUtil {
 		getService().addUserGroupGroups(userGroupId, groupIds);
 	}
 
-	public static void addUserGroups(
-		long userId,
-		java.util.List<com.liferay.portal.kernel.model.Group> groups) {
-
+	public static void addUserGroups(long userId, List<Group> groups) {
 		getService().addUserGroups(userId, groups);
 	}
 
@@ -176,14 +167,14 @@ public class GroupLocalServiceUtil {
 	 * @throws PortalException if a portal exception occurred
 	 */
 	public static void checkCompanyGroup(long companyId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().checkCompanyGroup(companyId);
 	}
 
-	public static com.liferay.portal.kernel.model.Group checkScopeGroup(
+	public static Group checkScopeGroup(
 			com.liferay.portal.kernel.model.Layout layout, long userId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().checkScopeGroup(layout, userId);
 	}
@@ -197,7 +188,7 @@ public class GroupLocalServiceUtil {
 	 * @throws PortalException if a portal exception occurred
 	 */
 	public static void checkSystemGroups(long companyId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().checkSystemGroups(companyId);
 	}
@@ -224,9 +215,7 @@ public class GroupLocalServiceUtil {
 	 * @param groupId the primary key for the new group
 	 * @return the new group
 	 */
-	public static com.liferay.portal.kernel.model.Group createGroup(
-		long groupId) {
-
+	public static Group createGroup(long groupId) {
 		return getService().createGroup(groupId);
 	}
 
@@ -241,10 +230,7 @@ public class GroupLocalServiceUtil {
 	 * @return the group that was removed
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.Group deleteGroup(
-			com.liferay.portal.kernel.model.Group group)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static Group deleteGroup(Group group) throws PortalException {
 		return getService().deleteGroup(group);
 	}
 
@@ -259,15 +245,12 @@ public class GroupLocalServiceUtil {
 	 * @return the group that was removed
 	 * @throws PortalException if a group with the primary key could not be found
 	 */
-	public static com.liferay.portal.kernel.model.Group deleteGroup(
-			long groupId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static Group deleteGroup(long groupId) throws PortalException {
 		return getService().deleteGroup(groupId);
 	}
 
 	public static void deleteOrganizationGroup(
-		long organizationId, com.liferay.portal.kernel.model.Group group) {
+		long organizationId, Group group) {
 
 		getService().deleteOrganizationGroup(organizationId, group);
 	}
@@ -279,8 +262,7 @@ public class GroupLocalServiceUtil {
 	}
 
 	public static void deleteOrganizationGroups(
-		long organizationId,
-		java.util.List<com.liferay.portal.kernel.model.Group> groups) {
+		long organizationId, List<Group> groups) {
 
 		getService().deleteOrganizationGroups(organizationId, groups);
 	}
@@ -294,17 +276,14 @@ public class GroupLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static void deleteRoleGroup(
-		long roleId, com.liferay.portal.kernel.model.Group group) {
-
+	public static void deleteRoleGroup(long roleId, Group group) {
 		getService().deleteRoleGroup(roleId, group);
 	}
 
@@ -312,10 +291,7 @@ public class GroupLocalServiceUtil {
 		getService().deleteRoleGroup(roleId, groupId);
 	}
 
-	public static void deleteRoleGroups(
-		long roleId,
-		java.util.List<com.liferay.portal.kernel.model.Group> groups) {
-
+	public static void deleteRoleGroups(long roleId, List<Group> groups) {
 		getService().deleteRoleGroups(roleId, groups);
 	}
 
@@ -323,9 +299,7 @@ public class GroupLocalServiceUtil {
 		getService().deleteRoleGroups(roleId, groupIds);
 	}
 
-	public static void deleteUserGroup(
-		long userId, com.liferay.portal.kernel.model.Group group) {
-
+	public static void deleteUserGroup(long userId, Group group) {
 		getService().deleteUserGroup(userId, group);
 	}
 
@@ -333,9 +307,7 @@ public class GroupLocalServiceUtil {
 		getService().deleteUserGroup(userId, groupId);
 	}
 
-	public static void deleteUserGroupGroup(
-		long userGroupId, com.liferay.portal.kernel.model.Group group) {
-
+	public static void deleteUserGroupGroup(long userGroupId, Group group) {
 		getService().deleteUserGroupGroup(userGroupId, group);
 	}
 
@@ -344,8 +316,7 @@ public class GroupLocalServiceUtil {
 	}
 
 	public static void deleteUserGroupGroups(
-		long userGroupId,
-		java.util.List<com.liferay.portal.kernel.model.Group> groups) {
+		long userGroupId, List<Group> groups) {
 
 		getService().deleteUserGroupGroups(userGroupId, groups);
 	}
@@ -356,10 +327,7 @@ public class GroupLocalServiceUtil {
 		getService().deleteUserGroupGroups(userGroupId, groupIds);
 	}
 
-	public static void deleteUserGroups(
-		long userId,
-		java.util.List<com.liferay.portal.kernel.model.Group> groups) {
-
+	public static void deleteUserGroups(long userId, List<Group> groups) {
 		getService().deleteUserGroups(userId, groups);
 	}
 
@@ -367,15 +335,11 @@ public class GroupLocalServiceUtil {
 		getService().deleteUserGroups(userId, groupIds);
 	}
 
-	public static void disableStaging(long groupId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static void disableStaging(long groupId) throws PortalException {
 		getService().disableStaging(groupId);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -385,9 +349,7 @@ public class GroupLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -403,9 +365,8 @@ public class GroupLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -423,10 +384,9 @@ public class GroupLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -438,9 +398,7 @@ public class GroupLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -452,15 +410,13 @@ public class GroupLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static void enableStaging(long groupId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static void enableStaging(long groupId) throws PortalException {
 		getService().enableStaging(groupId);
 	}
 
@@ -471,9 +427,7 @@ public class GroupLocalServiceUtil {
 	 * @return the company's group, or <code>null</code> if a matching group
 	 could not be found
 	 */
-	public static com.liferay.portal.kernel.model.Group fetchCompanyGroup(
-		long companyId) {
-
+	public static Group fetchCompanyGroup(long companyId) {
 		return getService().fetchCompanyGroup(companyId);
 	}
 
@@ -485,19 +439,17 @@ public class GroupLocalServiceUtil {
 	 * @return the group with the friendly URL, or <code>null</code> if a
 	 matching group could not be found
 	 */
-	public static com.liferay.portal.kernel.model.Group fetchFriendlyURLGroup(
+	public static Group fetchFriendlyURLGroup(
 		long companyId, String friendlyURL) {
 
 		return getService().fetchFriendlyURLGroup(companyId, friendlyURL);
 	}
 
-	public static com.liferay.portal.kernel.model.Group fetchGroup(
-		long groupId) {
-
+	public static Group fetchGroup(long groupId) {
 		return getService().fetchGroup(groupId);
 	}
 
-	public static com.liferay.portal.kernel.model.Group fetchGroup(
+	public static Group fetchGroup(
 		long companyId, long classNameId, long classPK) {
 
 		return getService().fetchGroup(companyId, classNameId, classPK);
@@ -512,9 +464,7 @@ public class GroupLocalServiceUtil {
 	 * @return the group with the group key and associated company, or
 	 <code>null</code> if a matching group could not be found
 	 */
-	public static com.liferay.portal.kernel.model.Group fetchGroup(
-		long companyId, String groupKey) {
-
+	public static Group fetchGroup(long companyId, String groupKey) {
 		return getService().fetchGroup(companyId, groupKey);
 	}
 
@@ -525,21 +475,17 @@ public class GroupLocalServiceUtil {
 	 * @param companyId the primary key of the company
 	 * @return the matching group, or <code>null</code> if a matching group could not be found
 	 */
-	public static com.liferay.portal.kernel.model.Group
-		fetchGroupByUuidAndCompanyId(String uuid, long companyId) {
+	public static Group fetchGroupByUuidAndCompanyId(
+		String uuid, long companyId) {
 
 		return getService().fetchGroupByUuidAndCompanyId(uuid, companyId);
 	}
 
-	public static com.liferay.portal.kernel.model.Group fetchStagingGroup(
-		long liveGroupId) {
-
+	public static Group fetchStagingGroup(long liveGroupId) {
 		return getService().fetchStagingGroup(liveGroupId);
 	}
 
-	public static com.liferay.portal.kernel.model.Group fetchUserGroup(
-		long companyId, long userId) {
-
+	public static Group fetchUserGroup(long companyId, long userId) {
 		return getService().fetchUserGroup(companyId, userId);
 	}
 
@@ -551,9 +497,8 @@ public class GroupLocalServiceUtil {
 	 matching group could not be found
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.portal.kernel.model.Group
-			fetchUserPersonalSiteGroup(long companyId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static Group fetchUserPersonalSiteGroup(long companyId)
+		throws PortalException {
 
 		return getService().fetchUserPersonalSiteGroup(companyId);
 	}
@@ -564,7 +509,7 @@ public class GroupLocalServiceUtil {
 		return getService().getActionableDynamicQuery();
 	}
 
-	public static java.util.List<Long> getActiveGroupIds(long userId) {
+	public static List<Long> getActiveGroupIds(long userId) {
 		return getService().getActiveGroupIds(userId);
 	}
 
@@ -576,9 +521,7 @@ public class GroupLocalServiceUtil {
 	 groups
 	 * @return the active or inactive groups
 	 */
-	public static java.util.List<com.liferay.portal.kernel.model.Group>
-		getActiveGroups(long companyId, boolean active) {
-
+	public static List<Group> getActiveGroups(long companyId, boolean active) {
 		return getService().getActiveGroups(companyId, active);
 	}
 
@@ -606,11 +549,9 @@ public class GroupLocalServiceUtil {
 	 <code>null</code>)
 	 * @return the active or inactive groups
 	 */
-	public static java.util.List<com.liferay.portal.kernel.model.Group>
-		getActiveGroups(
-			long companyId, boolean site, boolean active, int start, int end,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<com.liferay.portal.kernel.model.Group> obc) {
+	public static List<Group> getActiveGroups(
+		long companyId, boolean site, boolean active, int start, int end,
+		OrderByComparator<Group> obc) {
 
 		return getService().getActiveGroups(
 			companyId, site, active, start, end, obc);
@@ -638,11 +579,9 @@ public class GroupLocalServiceUtil {
 	 <code>null</code>)
 	 * @return the active or inactive groups
 	 */
-	public static java.util.List<com.liferay.portal.kernel.model.Group>
-		getActiveGroups(
-			long companyId, boolean active, int start, int end,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<com.liferay.portal.kernel.model.Group> obc) {
+	public static List<Group> getActiveGroups(
+		long companyId, boolean active, int start, int end,
+		OrderByComparator<Group> obc) {
 
 		return getService().getActiveGroups(companyId, active, start, end, obc);
 	}
@@ -683,10 +622,7 @@ public class GroupLocalServiceUtil {
 	 * @return the group associated with the company
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.portal.kernel.model.Group getCompanyGroup(
-			long companyId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static Group getCompanyGroup(long companyId) throws PortalException {
 		return getService().getCompanyGroup(companyId);
 	}
 
@@ -708,8 +644,8 @@ public class GroupLocalServiceUtil {
 	 inclusive)
 	 * @return the range of groups associated with the company
 	 */
-	public static java.util.List<com.liferay.portal.kernel.model.Group>
-		getCompanyGroups(long companyId, int start, int end) {
+	public static List<Group> getCompanyGroups(
+		long companyId, int start, int end) {
 
 		return getService().getCompanyGroups(companyId, start, end);
 	}
@@ -732,9 +668,8 @@ public class GroupLocalServiceUtil {
 	 * @return the group with the friendly URL
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.portal.kernel.model.Group getFriendlyURLGroup(
-			long companyId, String friendlyURL)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static Group getFriendlyURLGroup(long companyId, String friendlyURL)
+		throws PortalException {
 
 		return getService().getFriendlyURLGroup(companyId, friendlyURL);
 	}
@@ -746,9 +681,7 @@ public class GroupLocalServiceUtil {
 	 * @return the group
 	 * @throws PortalException if a group with the primary key could not be found
 	 */
-	public static com.liferay.portal.kernel.model.Group getGroup(long groupId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static Group getGroup(long groupId) throws PortalException {
 		return getService().getGroup(groupId);
 	}
 
@@ -760,9 +693,8 @@ public class GroupLocalServiceUtil {
 	 * @return the group with the group key
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.portal.kernel.model.Group getGroup(
-			long companyId, String groupKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static Group getGroup(long companyId, String groupKey)
+		throws PortalException {
 
 		return getService().getGroup(companyId, groupKey);
 	}
@@ -775,16 +707,13 @@ public class GroupLocalServiceUtil {
 	 * @return the matching group
 	 * @throws PortalException if a matching group could not be found
 	 */
-	public static com.liferay.portal.kernel.model.Group
-			getGroupByUuidAndCompanyId(String uuid, long companyId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static Group getGroupByUuidAndCompanyId(String uuid, long companyId)
+		throws PortalException {
 
 		return getService().getGroupByUuidAndCompanyId(uuid, companyId);
 	}
 
-	public static java.util.List<Long> getGroupIds(
-		long companyId, boolean active) {
-
+	public static List<Long> getGroupIds(long companyId, boolean active) {
 		return getService().getGroupIds(companyId, active);
 	}
 
@@ -799,9 +728,7 @@ public class GroupLocalServiceUtil {
 	 * @param end the upper bound of the range of groups (not inclusive)
 	 * @return the range of groups
 	 */
-	public static java.util.List<com.liferay.portal.kernel.model.Group>
-		getGroups(int start, int end) {
-
+	public static List<Group> getGroups(int start, int end) {
 		return getService().getGroups(start, end);
 	}
 
@@ -814,41 +741,37 @@ public class GroupLocalServiceUtil {
 	 * @return the matching groups, or <code>null</code> if no matches were
 	 found
 	 */
-	public static java.util.List<com.liferay.portal.kernel.model.Group>
-		getGroups(long companyId, long parentGroupId, boolean site) {
+	public static List<Group> getGroups(
+		long companyId, long parentGroupId, boolean site) {
 
 		return getService().getGroups(companyId, parentGroupId, site);
 	}
 
-	public static java.util.List<com.liferay.portal.kernel.model.Group>
-		getGroups(
-			long companyId, long parentGroupId, boolean site,
-			boolean inheritContent) {
+	public static List<Group> getGroups(
+		long companyId, long parentGroupId, boolean site,
+		boolean inheritContent) {
 
 		return getService().getGroups(
 			companyId, parentGroupId, site, inheritContent);
 	}
 
-	public static java.util.List<com.liferay.portal.kernel.model.Group>
-		getGroups(
-			long companyId, long parentGroupId, boolean site, int start,
-			int end) {
+	public static List<Group> getGroups(
+		long companyId, long parentGroupId, boolean site, int start, int end) {
 
 		return getService().getGroups(
 			companyId, parentGroupId, site, start, end);
 	}
 
-	public static java.util.List<com.liferay.portal.kernel.model.Group>
-		getGroups(
-			long companyId, long parentGroupId, String name, boolean site,
-			int start, int end) {
+	public static List<Group> getGroups(
+		long companyId, long parentGroupId, String name, boolean site,
+		int start, int end) {
 
 		return getService().getGroups(
 			companyId, parentGroupId, name, site, start, end);
 	}
 
-	public static java.util.List<com.liferay.portal.kernel.model.Group>
-		getGroups(long companyId, String treePath, boolean site) {
+	public static List<Group> getGroups(
+		long companyId, String treePath, boolean site) {
 
 		return getService().getGroups(companyId, treePath, site);
 	}
@@ -863,8 +786,8 @@ public class GroupLocalServiceUtil {
 	 * @return the matching groups, or <code>null</code> if no matches were
 	 found
 	 */
-	public static java.util.List<com.liferay.portal.kernel.model.Group>
-		getGroups(long companyId, String className, long parentGroupId) {
+	public static List<Group> getGroups(
+		long companyId, String className, long parentGroupId) {
 
 		return getService().getGroups(companyId, className, parentGroupId);
 	}
@@ -880,10 +803,9 @@ public class GroupLocalServiceUtil {
 	 * @param end the upper bound of the range of results (not inclusive)
 	 * @return the range of matching groups
 	 */
-	public static java.util.List<com.liferay.portal.kernel.model.Group>
-		getGroups(
-			long companyId, String className, long parentGroupId, int start,
-			int end) {
+	public static List<Group> getGroups(
+		long companyId, String className, long parentGroupId, int start,
+		int end) {
 
 		return getService().getGroups(
 			companyId, className, parentGroupId, start, end);
@@ -896,9 +818,8 @@ public class GroupLocalServiceUtil {
 	 * @return the groups with the primary keys
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static java.util.List<com.liferay.portal.kernel.model.Group>
-			getGroups(long[] groupIds)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<Group> getGroups(long[] groupIds)
+		throws PortalException {
 
 		return getService().getGroups(groupIds);
 	}
@@ -964,9 +885,8 @@ public class GroupLocalServiceUtil {
 	 * @return the group associated with the layout
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.portal.kernel.model.Group getLayoutGroup(
-			long companyId, long plid)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static Group getLayoutGroup(long companyId, long plid)
+		throws PortalException {
 
 		return getService().getLayoutGroup(companyId, plid);
 	}
@@ -979,9 +899,9 @@ public class GroupLocalServiceUtil {
 	 * @return the group associated with the layout prototype
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.portal.kernel.model.Group getLayoutPrototypeGroup(
+	public static Group getLayoutPrototypeGroup(
 			long companyId, long layoutPrototypeId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getLayoutPrototypeGroup(
 			companyId, layoutPrototypeId);
@@ -995,10 +915,9 @@ public class GroupLocalServiceUtil {
 	 * @return the group associated with the layout set prototype
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.portal.kernel.model.Group
-			getLayoutSetPrototypeGroup(
-				long companyId, long layoutSetPrototypeId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static Group getLayoutSetPrototypeGroup(
+			long companyId, long layoutSetPrototypeId)
+		throws PortalException {
 
 		return getService().getLayoutSetPrototypeGroup(
 			companyId, layoutSetPrototypeId);
@@ -1030,12 +949,9 @@ public class GroupLocalServiceUtil {
 	 * @return the range of matching groups ordered by comparator
 	 <code>obc</code>
 	 */
-	public static java.util.List<com.liferay.portal.kernel.model.Group>
-		getLayoutsGroups(
-			long companyId, long parentGroupId, boolean site, boolean active,
-			int start, int end,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<com.liferay.portal.kernel.model.Group> obc) {
+	public static List<Group> getLayoutsGroups(
+		long companyId, long parentGroupId, boolean site, boolean active,
+		int start, int end, OrderByComparator<Group> obc) {
 
 		return getService().getLayoutsGroups(
 			companyId, parentGroupId, site, active, start, end, obc);
@@ -1065,12 +981,9 @@ public class GroupLocalServiceUtil {
 	 * @return the range of matching groups ordered by comparator
 	 <code>obc</code>
 	 */
-	public static java.util.List<com.liferay.portal.kernel.model.Group>
-		getLayoutsGroups(
-			long companyId, long parentGroupId, boolean site, int start,
-			int end,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<com.liferay.portal.kernel.model.Group> obc) {
+	public static List<Group> getLayoutsGroups(
+		long companyId, long parentGroupId, boolean site, int start, int end,
+		OrderByComparator<Group> obc) {
 
 		return getService().getLayoutsGroups(
 			companyId, parentGroupId, site, start, end, obc);
@@ -1115,9 +1028,7 @@ public class GroupLocalServiceUtil {
 	 *
 	 * @return all live groups
 	 */
-	public static java.util.List<com.liferay.portal.kernel.model.Group>
-		getLiveGroups() {
-
+	public static List<Group> getLiveGroups() {
 		return getService().getLiveGroups();
 	}
 
@@ -1142,9 +1053,8 @@ public class GroupLocalServiceUtil {
 	 inclusive)
 	 * @return the range of matching groups
 	 */
-	public static java.util.List<com.liferay.portal.kernel.model.Group>
-		getNoLayoutsGroups(
-			String className, boolean privateLayout, int start, int end) {
+	public static List<Group> getNoLayoutsGroups(
+		String className, boolean privateLayout, int start, int end) {
 
 		return getService().getNoLayoutsGroups(
 			className, privateLayout, start, end);
@@ -1159,9 +1069,7 @@ public class GroupLocalServiceUtil {
 	 * @deprecated As of Judson (7.1.x), with no direct replacement
 	 */
 	@Deprecated
-	public static java.util.List<com.liferay.portal.kernel.model.Group>
-		getNullFriendlyURLGroups() {
-
+	public static List<Group> getNullFriendlyURLGroups() {
 		return getService().getNullFriendlyURLGroups();
 	}
 
@@ -1173,30 +1081,26 @@ public class GroupLocalServiceUtil {
 	 * @return the group associated with the organization
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.portal.kernel.model.Group getOrganizationGroup(
+	public static Group getOrganizationGroup(
 			long companyId, long organizationId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getOrganizationGroup(companyId, organizationId);
 	}
 
-	public static java.util.List<com.liferay.portal.kernel.model.Group>
-		getOrganizationGroups(long organizationId) {
-
+	public static List<Group> getOrganizationGroups(long organizationId) {
 		return getService().getOrganizationGroups(organizationId);
 	}
 
-	public static java.util.List<com.liferay.portal.kernel.model.Group>
-		getOrganizationGroups(long organizationId, int start, int end) {
+	public static List<Group> getOrganizationGroups(
+		long organizationId, int start, int end) {
 
 		return getService().getOrganizationGroups(organizationId, start, end);
 	}
 
-	public static java.util.List<com.liferay.portal.kernel.model.Group>
-		getOrganizationGroups(
-			long organizationId, int start, int end,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<com.liferay.portal.kernel.model.Group> orderByComparator) {
+	public static List<Group> getOrganizationGroups(
+		long organizationId, int start, int end,
+		OrderByComparator<Group> orderByComparator) {
 
 		return getService().getOrganizationGroups(
 			organizationId, start, end, orderByComparator);
@@ -1222,10 +1126,8 @@ public class GroupLocalServiceUtil {
 	 * @param organizations the organizations
 	 * @return the groups associated with the organizations
 	 */
-	public static java.util.List<com.liferay.portal.kernel.model.Group>
-		getOrganizationsGroups(
-			java.util.List<com.liferay.portal.kernel.model.Organization>
-				organizations) {
+	public static List<Group> getOrganizationsGroups(
+		List<com.liferay.portal.kernel.model.Organization> organizations) {
 
 		return getService().getOrganizationsGroups(organizations);
 	}
@@ -1236,10 +1138,8 @@ public class GroupLocalServiceUtil {
 	 * @param organizations the organizations
 	 * @return the groups related to the organizations
 	 */
-	public static java.util.List<com.liferay.portal.kernel.model.Group>
-		getOrganizationsRelatedGroups(
-			java.util.List<com.liferay.portal.kernel.model.Organization>
-				organizations) {
+	public static List<Group> getOrganizationsRelatedGroups(
+		List<com.liferay.portal.kernel.model.Organization> organizations) {
 
 		return getService().getOrganizationsRelatedGroups(organizations);
 	}
@@ -1262,9 +1162,8 @@ public class GroupLocalServiceUtil {
 	 ancestor
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static java.util.List<com.liferay.portal.kernel.model.Group>
-			getParentGroups(long groupId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<Group> getParentGroups(long groupId)
+		throws PortalException {
 
 		return getService().getParentGroups(groupId);
 	}
@@ -1272,30 +1171,23 @@ public class GroupLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static java.util.List<com.liferay.portal.kernel.model.Group>
-		getRoleGroups(long roleId) {
-
+	public static List<Group> getRoleGroups(long roleId) {
 		return getService().getRoleGroups(roleId);
 	}
 
-	public static java.util.List<com.liferay.portal.kernel.model.Group>
-		getRoleGroups(long roleId, int start, int end) {
-
+	public static List<Group> getRoleGroups(long roleId, int start, int end) {
 		return getService().getRoleGroups(roleId, start, end);
 	}
 
-	public static java.util.List<com.liferay.portal.kernel.model.Group>
-		getRoleGroups(
-			long roleId, int start, int end,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<com.liferay.portal.kernel.model.Group> orderByComparator) {
+	public static List<Group> getRoleGroups(
+		long roleId, int start, int end,
+		OrderByComparator<Group> orderByComparator) {
 
 		return getService().getRoleGroups(
 			roleId, start, end, orderByComparator);
@@ -1315,9 +1207,7 @@ public class GroupLocalServiceUtil {
 		return getService().getRolePrimaryKeys(groupId);
 	}
 
-	public static java.util.List<com.liferay.portal.kernel.model.Group>
-		getStagedSites() {
-
+	public static List<Group> getStagedSites() {
 		return getService().getStagedSites();
 	}
 
@@ -1328,9 +1218,8 @@ public class GroupLocalServiceUtil {
 	 * @return the staging group
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.portal.kernel.model.Group getStagingGroup(
-			long liveGroupId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static Group getStagingGroup(long liveGroupId)
+		throws PortalException {
 
 		return getService().getStagingGroup(liveGroupId);
 	}
@@ -1343,9 +1232,8 @@ public class GroupLocalServiceUtil {
 	 * @return the group directly associated with the user
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.portal.kernel.model.Group getUserGroup(
-			long companyId, long userId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static Group getUserGroup(long companyId, long userId)
+		throws PortalException {
 
 		return getService().getUserGroup(companyId, userId);
 	}
@@ -1359,30 +1247,25 @@ public class GroupLocalServiceUtil {
 	 * @return the group associated with the user group
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.portal.kernel.model.Group getUserGroupGroup(
-			long companyId, long userGroupId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static Group getUserGroupGroup(long companyId, long userGroupId)
+		throws PortalException {
 
 		return getService().getUserGroupGroup(companyId, userGroupId);
 	}
 
-	public static java.util.List<com.liferay.portal.kernel.model.Group>
-		getUserGroupGroups(long userGroupId) {
-
+	public static List<Group> getUserGroupGroups(long userGroupId) {
 		return getService().getUserGroupGroups(userGroupId);
 	}
 
-	public static java.util.List<com.liferay.portal.kernel.model.Group>
-		getUserGroupGroups(long userGroupId, int start, int end) {
+	public static List<Group> getUserGroupGroups(
+		long userGroupId, int start, int end) {
 
 		return getService().getUserGroupGroups(userGroupId, start, end);
 	}
 
-	public static java.util.List<com.liferay.portal.kernel.model.Group>
-		getUserGroupGroups(
-			long userGroupId, int start, int end,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<com.liferay.portal.kernel.model.Group> orderByComparator) {
+	public static List<Group> getUserGroupGroups(
+		long userGroupId, int start, int end,
+		OrderByComparator<Group> orderByComparator) {
 
 		return getService().getUserGroupGroups(
 			userGroupId, start, end, orderByComparator);
@@ -1402,9 +1285,7 @@ public class GroupLocalServiceUtil {
 		return getService().getUserGroupPrimaryKeys(groupId);
 	}
 
-	public static java.util.List<com.liferay.portal.kernel.model.Group>
-		getUserGroups(long userId) {
-
+	public static List<Group> getUserGroups(long userId) {
 		return getService().getUserGroups(userId);
 	}
 
@@ -1419,9 +1300,8 @@ public class GroupLocalServiceUtil {
 	 * @return the user's groups and immediate organization groups
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static java.util.List<com.liferay.portal.kernel.model.Group>
-			getUserGroups(long userId, boolean inherit)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<Group> getUserGroups(long userId, boolean inherit)
+		throws PortalException {
 
 		return getService().getUserGroups(userId, inherit);
 	}
@@ -1451,28 +1331,24 @@ public class GroupLocalServiceUtil {
 	 ordered by name
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static java.util.List<com.liferay.portal.kernel.model.Group>
-			getUserGroups(long userId, boolean inherit, int start, int end)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<Group> getUserGroups(
+			long userId, boolean inherit, int start, int end)
+		throws PortalException {
 
 		return getService().getUserGroups(userId, inherit, start, end);
 	}
 
-	public static java.util.List<com.liferay.portal.kernel.model.Group>
-		getUserGroups(long userId, int start, int end) {
-
+	public static List<Group> getUserGroups(long userId, int start, int end) {
 		return getService().getUserGroups(userId, start, end);
 	}
 
 	/**
 	 * @throws PortalException
 	 */
-	public static java.util.List<com.liferay.portal.kernel.model.Group>
-			getUserGroups(
-				long userId, int start, int end,
-				com.liferay.portal.kernel.util.OrderByComparator
-					<com.liferay.portal.kernel.model.Group> orderByComparator)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<Group> getUserGroups(
+			long userId, int start, int end,
+			OrderByComparator<Group> orderByComparator)
+		throws PortalException {
 
 		return getService().getUserGroups(
 			userId, start, end, orderByComparator);
@@ -1489,11 +1365,9 @@ public class GroupLocalServiceUtil {
 	 * @return the groups associated with the user groups
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static java.util.List<com.liferay.portal.kernel.model.Group>
-			getUserGroupsGroups(
-				java.util.List<com.liferay.portal.kernel.model.UserGroup>
-					userGroups)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<Group> getUserGroupsGroups(
+			List<com.liferay.portal.kernel.model.UserGroup> userGroups)
+		throws PortalException {
 
 		return getService().getUserGroupsGroups(userGroups);
 	}
@@ -1504,10 +1378,8 @@ public class GroupLocalServiceUtil {
 	 * @param userGroups the user groups
 	 * @return the groups related to the user groups
 	 */
-	public static java.util.List<com.liferay.portal.kernel.model.Group>
-		getUserGroupsRelatedGroups(
-			java.util.List<com.liferay.portal.kernel.model.UserGroup>
-				userGroups) {
+	public static List<Group> getUserGroupsRelatedGroups(
+		List<com.liferay.portal.kernel.model.UserGroup> userGroups) {
 
 		return getService().getUserGroupsRelatedGroups(userGroups);
 	}
@@ -1535,9 +1407,9 @@ public class GroupLocalServiceUtil {
 	 groups
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static java.util.List<com.liferay.portal.kernel.model.Group>
-			getUserOrganizationsGroups(long userId, int start, int end)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<Group> getUserOrganizationsGroups(
+			long userId, int start, int end)
+		throws PortalException {
 
 		return getService().getUserOrganizationsGroups(userId, start, end);
 	}
@@ -1549,9 +1421,8 @@ public class GroupLocalServiceUtil {
 	 * @return the default user's personal site group
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.portal.kernel.model.Group
-			getUserPersonalSiteGroup(long companyId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static Group getUserPersonalSiteGroup(long companyId)
+		throws PortalException {
 
 		return getService().getUserPersonalSiteGroup(companyId);
 	}
@@ -1566,23 +1437,22 @@ public class GroupLocalServiceUtil {
 		return getService().getUserPrimaryKeys(groupId);
 	}
 
-	public static java.util.List<com.liferay.portal.kernel.model.Group>
-			getUserSitesGroups(long userId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<Group> getUserSitesGroups(long userId)
+		throws PortalException {
 
 		return getService().getUserSitesGroups(userId);
 	}
 
-	public static java.util.List<com.liferay.portal.kernel.model.Group>
-			getUserSitesGroups(long userId, boolean includeAdministrative)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<Group> getUserSitesGroups(
+			long userId, boolean includeAdministrative)
+		throws PortalException {
 
 		return getService().getUserSitesGroups(userId, includeAdministrative);
 	}
 
-	public static java.util.List<com.liferay.portal.kernel.model.Group>
-			getUserSitesGroups(long userId, int start, int end)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<Group> getUserSitesGroups(
+			long userId, int start, int end)
+		throws PortalException {
 
 		return getService().getUserSitesGroups(userId, start, end);
 	}
@@ -1650,9 +1520,7 @@ public class GroupLocalServiceUtil {
 		return getService().hasUserGroups(userId);
 	}
 
-	public static boolean isLiveGroupActive(
-		com.liferay.portal.kernel.model.Group group) {
-
+	public static boolean isLiveGroupActive(Group group) {
 		return getService().isLiveGroupActive(group);
 	}
 
@@ -1665,9 +1533,7 @@ public class GroupLocalServiceUtil {
 	 * @return the group with the group key and associated company, or
 	 <code>null</code> if a matching group could not be found
 	 */
-	public static com.liferay.portal.kernel.model.Group loadFetchGroup(
-		long companyId, String groupKey) {
-
+	public static Group loadFetchGroup(long companyId, String groupKey) {
 		return getService().loadFetchGroup(companyId, groupKey);
 	}
 
@@ -1679,9 +1545,8 @@ public class GroupLocalServiceUtil {
 	 * @return the group with the group key and associated company
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.portal.kernel.model.Group loadGetGroup(
-			long companyId, String groupKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static Group loadGetGroup(long companyId, String groupKey)
+		throws PortalException {
 
 		return getService().loadGetGroup(companyId, groupKey);
 	}
@@ -1698,9 +1563,7 @@ public class GroupLocalServiceUtil {
 	 * @param companyId the primary key of the group's company
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static void rebuildTree(long companyId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static void rebuildTree(long companyId) throws PortalException {
 		getService().rebuildTree(companyId);
 	}
 
@@ -1731,7 +1594,7 @@ public class GroupLocalServiceUtil {
 	 inclusive)
 	 * @return the matching groups ordered by name
 	 */
-	public static java.util.List<com.liferay.portal.kernel.model.Group> search(
+	public static List<Group> search(
 		long companyId, java.util.LinkedHashMap<String, Object> params,
 		int start, int end) {
 
@@ -1768,7 +1631,7 @@ public class GroupLocalServiceUtil {
 	 inclusive)
 	 * @return the matching groups ordered by name
 	 */
-	public static java.util.List<com.liferay.portal.kernel.model.Group> search(
+	public static List<Group> search(
 		long companyId, long parentGroupId, String keywords,
 		java.util.LinkedHashMap<String, Object> params, int start, int end) {
 
@@ -1808,11 +1671,10 @@ public class GroupLocalServiceUtil {
 	 <code>null</code>)
 	 * @return the matching groups ordered by comparator <code>obc</code>
 	 */
-	public static java.util.List<com.liferay.portal.kernel.model.Group> search(
+	public static List<Group> search(
 		long companyId, long parentGroupId, String keywords,
 		java.util.LinkedHashMap<String, Object> params, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator
-			<com.liferay.portal.kernel.model.Group> obc) {
+		OrderByComparator<Group> obc) {
 
 		return getService().search(
 			companyId, parentGroupId, keywords, params, start, end, obc);
@@ -1851,7 +1713,7 @@ public class GroupLocalServiceUtil {
 	 inclusive)
 	 * @return the matching groups ordered by name
 	 */
-	public static java.util.List<com.liferay.portal.kernel.model.Group> search(
+	public static List<Group> search(
 		long companyId, long parentGroupId, String name, String description,
 		java.util.LinkedHashMap<String, Object> params, boolean andOperator,
 		int start, int end) {
@@ -1896,12 +1758,10 @@ public class GroupLocalServiceUtil {
 	 <code>null</code>)
 	 * @return the matching groups ordered by comparator <code>obc</code>
 	 */
-	public static java.util.List<com.liferay.portal.kernel.model.Group> search(
+	public static List<Group> search(
 		long companyId, long parentGroupId, String name, String description,
 		java.util.LinkedHashMap<String, Object> params, boolean andOperator,
-		int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator
-			<com.liferay.portal.kernel.model.Group> obc) {
+		int start, int end, OrderByComparator<Group> obc) {
 
 		return getService().search(
 			companyId, parentGroupId, name, description, params, andOperator,
@@ -1941,7 +1801,7 @@ public class GroupLocalServiceUtil {
 	 inclusive)
 	 * @return the matching groups ordered by name
 	 */
-	public static java.util.List<com.liferay.portal.kernel.model.Group> search(
+	public static List<Group> search(
 		long companyId, long[] classNameIds, long parentGroupId,
 		String keywords, java.util.LinkedHashMap<String, Object> params,
 		int start, int end) {
@@ -1986,12 +1846,10 @@ public class GroupLocalServiceUtil {
 	 <code>null</code>)
 	 * @return the matching groups ordered by comparator <code>obc</code>
 	 */
-	public static java.util.List<com.liferay.portal.kernel.model.Group> search(
+	public static List<Group> search(
 		long companyId, long[] classNameIds, long parentGroupId,
 		String keywords, java.util.LinkedHashMap<String, Object> params,
-		int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator
-			<com.liferay.portal.kernel.model.Group> obc) {
+		int start, int end, OrderByComparator<Group> obc) {
 
 		return getService().search(
 			companyId, classNameIds, parentGroupId, keywords, params, start,
@@ -2034,7 +1892,7 @@ public class GroupLocalServiceUtil {
 	 inclusive)
 	 * @return the matching groups ordered by name
 	 */
-	public static java.util.List<com.liferay.portal.kernel.model.Group> search(
+	public static List<Group> search(
 		long companyId, long[] classNameIds, long parentGroupId, String name,
 		String description, java.util.LinkedHashMap<String, Object> params,
 		boolean andOperator, int start, int end) {
@@ -2082,12 +1940,10 @@ public class GroupLocalServiceUtil {
 	 <code>null</code>)
 	 * @return the matching groups ordered by comparator <code>obc</code>
 	 */
-	public static java.util.List<com.liferay.portal.kernel.model.Group> search(
+	public static List<Group> search(
 		long companyId, long[] classNameIds, long parentGroupId, String name,
 		String description, java.util.LinkedHashMap<String, Object> params,
-		boolean andOperator, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator
-			<com.liferay.portal.kernel.model.Group> obc) {
+		boolean andOperator, int start, int end, OrderByComparator<Group> obc) {
 
 		return getService().search(
 			companyId, classNameIds, parentGroupId, name, description, params,
@@ -2125,7 +1981,7 @@ public class GroupLocalServiceUtil {
 	 inclusive)
 	 * @return the matching groups ordered by name
 	 */
-	public static java.util.List<com.liferay.portal.kernel.model.Group> search(
+	public static List<Group> search(
 		long companyId, long[] classNameIds, String keywords,
 		java.util.LinkedHashMap<String, Object> params, int start, int end) {
 
@@ -2166,11 +2022,10 @@ public class GroupLocalServiceUtil {
 	 <code>null</code>)
 	 * @return the matching groups ordered by comparator <code>obc</code>
 	 */
-	public static java.util.List<com.liferay.portal.kernel.model.Group> search(
+	public static List<Group> search(
 		long companyId, long[] classNameIds, String keywords,
 		java.util.LinkedHashMap<String, Object> params, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator
-			<com.liferay.portal.kernel.model.Group> obc) {
+		OrderByComparator<Group> obc) {
 
 		return getService().search(
 			companyId, classNameIds, keywords, params, start, end, obc);
@@ -2211,7 +2066,7 @@ public class GroupLocalServiceUtil {
 	 inclusive)
 	 * @return the matching groups ordered by name
 	 */
-	public static java.util.List<com.liferay.portal.kernel.model.Group> search(
+	public static List<Group> search(
 		long companyId, long[] classNameIds, String name, String description,
 		java.util.LinkedHashMap<String, Object> params, boolean andOperator,
 		int start, int end) {
@@ -2258,12 +2113,10 @@ public class GroupLocalServiceUtil {
 	 <code>null</code>)
 	 * @return the matching groups ordered by comparator <code>obc</code>
 	 */
-	public static java.util.List<com.liferay.portal.kernel.model.Group> search(
+	public static List<Group> search(
 		long companyId, long[] classNameIds, String name, String description,
 		java.util.LinkedHashMap<String, Object> params, boolean andOperator,
-		int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator
-			<com.liferay.portal.kernel.model.Group> obc) {
+		int start, int end, OrderByComparator<Group> obc) {
 
 		return getService().search(
 			companyId, classNameIds, name, description, params, andOperator,
@@ -2298,7 +2151,7 @@ public class GroupLocalServiceUtil {
 	 inclusive)
 	 * @return the matching groups ordered by name
 	 */
-	public static java.util.List<com.liferay.portal.kernel.model.Group> search(
+	public static List<Group> search(
 		long companyId, String keywords,
 		java.util.LinkedHashMap<String, Object> params, int start, int end) {
 
@@ -2335,11 +2188,10 @@ public class GroupLocalServiceUtil {
 	 <code>null</code>)
 	 * @return the matching groups ordered by comparator <code>obc</code>
 	 */
-	public static java.util.List<com.liferay.portal.kernel.model.Group> search(
+	public static List<Group> search(
 		long companyId, String keywords,
 		java.util.LinkedHashMap<String, Object> params, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator
-			<com.liferay.portal.kernel.model.Group> obc) {
+		OrderByComparator<Group> obc) {
 
 		return getService().search(
 			companyId, keywords, params, start, end, obc);
@@ -2377,7 +2229,7 @@ public class GroupLocalServiceUtil {
 	 inclusive)
 	 * @return the matching groups ordered by name
 	 */
-	public static java.util.List<com.liferay.portal.kernel.model.Group> search(
+	public static List<Group> search(
 		long companyId, String name, String description,
 		java.util.LinkedHashMap<String, Object> params, boolean andOperator,
 		int start, int end) {
@@ -2420,12 +2272,10 @@ public class GroupLocalServiceUtil {
 	 <code>null</code>)
 	 * @return the matching groups ordered by comparator <code>obc</code>
 	 */
-	public static java.util.List<com.liferay.portal.kernel.model.Group> search(
+	public static List<Group> search(
 		long companyId, String name, String description,
 		java.util.LinkedHashMap<String, Object> params, boolean andOperator,
-		int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator
-			<com.liferay.portal.kernel.model.Group> obc) {
+		int start, int end, OrderByComparator<Group> obc) {
 
 		return getService().search(
 			companyId, name, description, params, andOperator, start, end, obc);
@@ -2701,9 +2551,9 @@ public class GroupLocalServiceUtil {
 	 * @throws PortalException if a portal exception occurred
 	 */
 	public static void updateAsset(
-			long userId, com.liferay.portal.kernel.model.Group group,
-			long[] assetCategoryIds, String[] assetTagNames)
-		throws com.liferay.portal.kernel.exception.PortalException {
+			long userId, Group group, long[] assetCategoryIds,
+			String[] assetTagNames)
+		throws PortalException {
 
 		getService().updateAsset(
 			userId, group, assetCategoryIds, assetTagNames);
@@ -2718,9 +2568,8 @@ public class GroupLocalServiceUtil {
 	 * @return the group
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.portal.kernel.model.Group updateFriendlyURL(
-			long groupId, String friendlyURL)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static Group updateFriendlyURL(long groupId, String friendlyURL)
+		throws PortalException {
 
 		return getService().updateFriendlyURL(groupId, friendlyURL);
 	}
@@ -2735,20 +2584,18 @@ public class GroupLocalServiceUtil {
 	 * @param group the group
 	 * @return the group that was updated
 	 */
-	public static com.liferay.portal.kernel.model.Group updateGroup(
-		com.liferay.portal.kernel.model.Group group) {
-
+	public static Group updateGroup(Group group) {
 		return getService().updateGroup(group);
 	}
 
-	public static com.liferay.portal.kernel.model.Group updateGroup(
+	public static Group updateGroup(
 			long groupId, long parentGroupId,
-			java.util.Map<java.util.Locale, String> nameMap,
-			java.util.Map<java.util.Locale, String> descriptionMap, int type,
+			Map<java.util.Locale, String> nameMap,
+			Map<java.util.Locale, String> descriptionMap, int type,
 			boolean manualMembership, int membershipRestriction,
 			String friendlyURL, boolean inheritContent, boolean active,
 			ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().updateGroup(
 			groupId, parentGroupId, nameMap, descriptionMap, type,
@@ -2765,9 +2612,8 @@ public class GroupLocalServiceUtil {
 	 * @return the group
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.portal.kernel.model.Group updateGroup(
-			long groupId, String typeSettings)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static Group updateGroup(long groupId, String typeSettings)
+		throws PortalException {
 
 		return getService().updateGroup(groupId, typeSettings);
 	}
@@ -2780,9 +2626,8 @@ public class GroupLocalServiceUtil {
 	 * @return the group
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.portal.kernel.model.Group updateSite(
-			long groupId, boolean site)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static Group updateSite(long groupId, boolean site)
+		throws PortalException {
 
 		return getService().updateSite(groupId, site);
 	}
@@ -2791,7 +2636,7 @@ public class GroupLocalServiceUtil {
 			long groupId, String remoteAddress, int remotePort,
 			String remotePathContext, boolean secureConnection,
 			long remoteGroupId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().validateRemote(
 			groupId, remoteAddress, remotePort, remotePathContext,
@@ -2799,14 +2644,9 @@ public class GroupLocalServiceUtil {
 	}
 
 	public static GroupLocalService getService() {
-		if (_service == null) {
-			_service = (GroupLocalService)PortalBeanLocatorUtil.locate(
-				GroupLocalService.class.getName());
-		}
-
 		return _service;
 	}
 
-	private static GroupLocalService _service;
+	private static volatile GroupLocalService _service;
 
 }

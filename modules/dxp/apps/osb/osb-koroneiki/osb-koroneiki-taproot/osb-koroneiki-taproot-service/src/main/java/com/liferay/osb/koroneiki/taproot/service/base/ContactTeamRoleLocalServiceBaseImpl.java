@@ -16,6 +16,7 @@ package com.liferay.osb.koroneiki.taproot.service.base;
 
 import com.liferay.osb.koroneiki.taproot.model.ContactTeamRole;
 import com.liferay.osb.koroneiki.taproot.service.ContactTeamRoleLocalService;
+import com.liferay.osb.koroneiki.taproot.service.ContactTeamRoleLocalServiceUtil;
 import com.liferay.osb.koroneiki.taproot.service.persistence.AccountFinder;
 import com.liferay.osb.koroneiki.taproot.service.persistence.AccountNotePersistence;
 import com.liferay.osb.koroneiki.taproot.service.persistence.AccountPersistence;
@@ -57,10 +58,13 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
+
 import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -82,7 +86,7 @@ public abstract class ContactTeamRoleLocalServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Use <code>ContactTeamRoleLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.koroneiki.taproot.service.ContactTeamRoleLocalServiceUtil</code>.
+	 * Never modify or reference this class directly. Use <code>ContactTeamRoleLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>ContactTeamRoleLocalServiceUtil</code>.
 	 */
 
 	/**
@@ -377,6 +381,11 @@ public abstract class ContactTeamRoleLocalServiceBaseImpl
 		return contactTeamRolePersistence.update(contactTeamRole);
 	}
 
+	@Deactivate
+	protected void deactivate() {
+		_setLocalServiceUtilService(null);
+	}
+
 	@Override
 	public Class<?>[] getAopInterfaces() {
 		return new Class<?>[] {
@@ -388,6 +397,8 @@ public abstract class ContactTeamRoleLocalServiceBaseImpl
 	@Override
 	public void setAopProxy(Object aopProxy) {
 		contactTeamRoleLocalService = (ContactTeamRoleLocalService)aopProxy;
+
+		_setLocalServiceUtilService(contactTeamRoleLocalService);
 	}
 
 	/**
@@ -429,6 +440,23 @@ public abstract class ContactTeamRoleLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
+		}
+	}
+
+	private void _setLocalServiceUtilService(
+		ContactTeamRoleLocalService contactTeamRoleLocalService) {
+
+		try {
+			Field field =
+				ContactTeamRoleLocalServiceUtil.class.getDeclaredField(
+					"_service");
+
+			field.setAccessible(true);
+
+			field.set(null, contactTeamRoleLocalService);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -14,9 +14,10 @@
 
 package com.liferay.osb.koroneiki.trunk.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.koroneiki.trunk.model.ProductPurchase;
+import com.liferay.portal.kernel.exception.PortalException;
+
+import java.util.List;
 
 /**
  * Provides the remote service utility for ProductPurchase. This utility wraps
@@ -37,99 +38,88 @@ public class ProductPurchaseServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.osb.koroneiki.trunk.service.impl.ProductPurchaseServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.osb.koroneiki.trunk.model.ProductPurchase
-			addProductPurchase(
-				long accountId, long productEntryId, java.util.Date startDate,
-				java.util.Date endDate, java.util.Date originalEndDate,
-				int quantity, int status,
-				java.util.List
-					<com.liferay.osb.koroneiki.trunk.model.ProductField>
-						productFields)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductPurchase addProductPurchase(
+			long accountId, long productEntryId, java.util.Date startDate,
+			java.util.Date endDate, java.util.Date originalEndDate,
+			int quantity, int status,
+			List<com.liferay.osb.koroneiki.trunk.model.ProductField>
+				productFields)
+		throws PortalException {
 
 		return getService().addProductPurchase(
 			accountId, productEntryId, startDate, endDate, originalEndDate,
 			quantity, status, productFields);
 	}
 
-	public static com.liferay.osb.koroneiki.trunk.model.ProductPurchase
-			addProductPurchase(
-				String accountKey, String productEntryKey,
-				java.util.Date startDate, java.util.Date endDate,
-				java.util.Date originalEndDate, int quantity, int status,
-				java.util.List
-					<com.liferay.osb.koroneiki.trunk.model.ProductField>
-						productFields)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductPurchase addProductPurchase(
+			String accountKey, String productEntryKey, java.util.Date startDate,
+			java.util.Date endDate, java.util.Date originalEndDate,
+			int quantity, int status,
+			List<com.liferay.osb.koroneiki.trunk.model.ProductField>
+				productFields)
+		throws PortalException {
 
 		return getService().addProductPurchase(
 			accountKey, productEntryKey, startDate, endDate, originalEndDate,
 			quantity, status, productFields);
 	}
 
-	public static com.liferay.osb.koroneiki.trunk.model.ProductPurchase
-			deleteProductPurchase(long productPurchaseId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductPurchase deleteProductPurchase(long productPurchaseId)
+		throws PortalException {
 
 		return getService().deleteProductPurchase(productPurchaseId);
 	}
 
-	public static com.liferay.osb.koroneiki.trunk.model.ProductPurchase
-			deleteProductPurchase(String productPurchaseKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductPurchase deleteProductPurchase(
+			String productPurchaseKey)
+		throws PortalException {
 
 		return getService().deleteProductPurchase(productPurchaseKey);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.trunk.model.ProductPurchase>
-				getAccountProductEntryProductPurchases(
-					long accountId, long productEntryId, int start, int end)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<ProductPurchase> getAccountProductEntryProductPurchases(
+			long accountId, long productEntryId, int start, int end)
+		throws PortalException {
 
 		return getService().getAccountProductEntryProductPurchases(
 			accountId, productEntryId, start, end);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.trunk.model.ProductPurchase>
-				getAccountProductPurchases(long accountId, int start, int end)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<ProductPurchase> getAccountProductPurchases(
+			long accountId, int start, int end)
+		throws PortalException {
 
 		return getService().getAccountProductPurchases(accountId, start, end);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.trunk.model.ProductPurchase>
-				getAccountProductPurchases(
-					String accountKey, int start, int end)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<ProductPurchase> getAccountProductPurchases(
+			String accountKey, int start, int end)
+		throws PortalException {
 
 		return getService().getAccountProductPurchases(accountKey, start, end);
 	}
 
 	public static int getAccountProductPurchasesCount(long accountId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getAccountProductPurchasesCount(accountId);
 	}
 
 	public static int getAccountProductPurchasesCount(String accountKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getAccountProductPurchasesCount(accountKey);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.trunk.model.ProductPurchase>
-				getContactProductPurchases(long contactId, int start, int end)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<ProductPurchase> getContactProductPurchases(
+			long contactId, int start, int end)
+		throws PortalException {
 
 		return getService().getContactProductPurchases(contactId, start, end);
 	}
 
 	public static int getContactProductPurchasesCount(long contactId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getContactProductPurchasesCount(contactId);
 	}
@@ -143,26 +133,22 @@ public class ProductPurchaseServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.osb.koroneiki.trunk.model.ProductPurchase
-			getProductPurchase(long productPurchaseId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductPurchase getProductPurchase(long productPurchaseId)
+		throws PortalException {
 
 		return getService().getProductPurchase(productPurchaseId);
 	}
 
-	public static com.liferay.osb.koroneiki.trunk.model.ProductPurchase
-			getProductPurchase(String productPurchaseKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductPurchase getProductPurchase(String productPurchaseKey)
+		throws PortalException {
 
 		return getService().getProductPurchase(productPurchaseKey);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.trunk.model.ProductPurchase>
-				getProductPurchases(
-					String domain, String entityName, String entityId,
-					int start, int end)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<ProductPurchase> getProductPurchases(
+			String domain, String entityName, String entityId, int start,
+			int end)
+		throws PortalException {
 
 		return getService().getProductPurchases(
 			domain, entityName, entityId, start, end);
@@ -170,21 +156,19 @@ public class ProductPurchaseServiceUtil {
 
 	public static int getProductPurchasesCount(
 			String domain, String entityName, String entityId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getProductPurchasesCount(
 			domain, entityName, entityId);
 	}
 
-	public static com.liferay.osb.koroneiki.trunk.model.ProductPurchase
-			updateProductPurchase(
-				long productPurchaseId, java.util.Date startDate,
-				java.util.Date endDate, java.util.Date originalEndDate,
-				int quantity, int status,
-				java.util.List
-					<com.liferay.osb.koroneiki.trunk.model.ProductField>
-						productFields)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductPurchase updateProductPurchase(
+			long productPurchaseId, java.util.Date startDate,
+			java.util.Date endDate, java.util.Date originalEndDate,
+			int quantity, int status,
+			List<com.liferay.osb.koroneiki.trunk.model.ProductField>
+				productFields)
+		throws PortalException {
 
 		return getService().updateProductPurchase(
 			productPurchaseId, startDate, endDate, originalEndDate, quantity,
@@ -192,25 +176,9 @@ public class ProductPurchaseServiceUtil {
 	}
 
 	public static ProductPurchaseService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<ProductPurchaseService, ProductPurchaseService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(ProductPurchaseService.class);
-
-		ServiceTracker<ProductPurchaseService, ProductPurchaseService>
-			serviceTracker =
-				new ServiceTracker
-					<ProductPurchaseService, ProductPurchaseService>(
-						bundle.getBundleContext(), ProductPurchaseService.class,
-						null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ProductPurchaseService _service;
 
 }

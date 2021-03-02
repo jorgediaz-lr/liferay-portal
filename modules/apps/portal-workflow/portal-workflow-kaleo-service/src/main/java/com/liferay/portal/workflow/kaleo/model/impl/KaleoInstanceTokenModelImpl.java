@@ -397,6 +397,8 @@ public class KaleoInstanceTokenModelImpl
 
 	@Override
 	public void setKaleoInstanceTokenId(long kaleoInstanceTokenId) {
+		_columnBitmask = -1L;
+
 		_kaleoInstanceTokenId = kaleoInstanceTokenId;
 	}
 

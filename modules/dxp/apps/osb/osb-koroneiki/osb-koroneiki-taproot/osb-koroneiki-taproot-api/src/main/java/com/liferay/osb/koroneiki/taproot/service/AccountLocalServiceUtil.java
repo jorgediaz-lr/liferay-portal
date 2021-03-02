@@ -14,9 +14,15 @@
 
 package com.liferay.osb.koroneiki.taproot.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.koroneiki.taproot.model.Account;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for Account. This utility wraps
@@ -48,19 +54,17 @@ public class AccountLocalServiceUtil {
 	 * @param account the account
 	 * @return the account that was added
 	 */
-	public static com.liferay.osb.koroneiki.taproot.model.Account addAccount(
-		com.liferay.osb.koroneiki.taproot.model.Account account) {
-
+	public static Account addAccount(Account account) {
 		return getService().addAccount(account);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.Account addAccount(
+	public static Account addAccount(
 			long userId, long parentAccountId, String name, String code,
 			String description, long logoId, String contactEmailAddress,
 			String profileEmailAddress, String phoneNumber, String faxNumber,
 			String website, String tier, String region, String language,
 			boolean internal, String status)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().addAccount(
 			userId, parentAccountId, name, code, description, logoId,
@@ -74,9 +78,7 @@ public class AccountLocalServiceUtil {
 	 * @param accountId the primary key for the new account
 	 * @return the new account
 	 */
-	public static com.liferay.osb.koroneiki.taproot.model.Account createAccount(
-		long accountId) {
-
+	public static Account createAccount(long accountId) {
 		return getService().createAccount(accountId);
 	}
 
@@ -91,9 +93,8 @@ public class AccountLocalServiceUtil {
 	 * @return the account that was removed
 	 * @throws PortalException
 	 */
-	public static com.liferay.osb.koroneiki.taproot.model.Account deleteAccount(
-			com.liferay.osb.koroneiki.taproot.model.Account account)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static Account deleteAccount(Account account)
+		throws PortalException {
 
 		return getService().deleteAccount(account);
 	}
@@ -109,27 +110,21 @@ public class AccountLocalServiceUtil {
 	 * @return the account that was removed
 	 * @throws PortalException if a account with the primary key could not be found
 	 */
-	public static com.liferay.osb.koroneiki.taproot.model.Account deleteAccount(
-			long accountId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static Account deleteAccount(long accountId) throws PortalException {
 		return getService().deleteAccount(accountId);
 	}
 
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -139,9 +134,7 @@ public class AccountLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -157,9 +150,8 @@ public class AccountLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -177,10 +169,9 @@ public class AccountLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -192,9 +183,7 @@ public class AccountLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -206,27 +195,21 @@ public class AccountLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.Account fetchAccount(
-		long accountId) {
-
+	public static Account fetchAccount(long accountId) {
 		return getService().fetchAccount(accountId);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.Account fetchAccount(
-		String accountKey) {
-
+	public static Account fetchAccount(String accountKey) {
 		return getService().fetchAccount(accountKey);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.Account
-		fetchAccountByCode(String code) {
-
+	public static Account fetchAccountByCode(String code) {
 		return getService().fetchAccountByCode(code);
 	}
 
@@ -237,8 +220,8 @@ public class AccountLocalServiceUtil {
 	 * @param companyId the primary key of the company
 	 * @return the matching account, or <code>null</code> if a matching account could not be found
 	 */
-	public static com.liferay.osb.koroneiki.taproot.model.Account
-		fetchAccountByUuidAndCompanyId(String uuid, long companyId) {
+	public static Account fetchAccountByUuidAndCompanyId(
+		String uuid, long companyId) {
 
 		return getService().fetchAccountByUuidAndCompanyId(uuid, companyId);
 	}
@@ -250,17 +233,11 @@ public class AccountLocalServiceUtil {
 	 * @return the account
 	 * @throws PortalException if a account with the primary key could not be found
 	 */
-	public static com.liferay.osb.koroneiki.taproot.model.Account getAccount(
-			long accountId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static Account getAccount(long accountId) throws PortalException {
 		return getService().getAccount(accountId);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.Account getAccount(
-			String accountKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static Account getAccount(String accountKey) throws PortalException {
 		return getService().getAccount(accountKey);
 	}
 
@@ -272,9 +249,9 @@ public class AccountLocalServiceUtil {
 	 * @return the matching account
 	 * @throws PortalException if a matching account could not be found
 	 */
-	public static com.liferay.osb.koroneiki.taproot.model.Account
-			getAccountByUuidAndCompanyId(String uuid, long companyId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static Account getAccountByUuidAndCompanyId(
+			String uuid, long companyId)
+		throws PortalException {
 
 		return getService().getAccountByUuidAndCompanyId(uuid, companyId);
 	}
@@ -290,16 +267,12 @@ public class AccountLocalServiceUtil {
 	 * @param end the upper bound of the range of accounts (not inclusive)
 	 * @return the range of accounts
 	 */
-	public static java.util.List
-		<com.liferay.osb.koroneiki.taproot.model.Account> getAccounts(
-			int start, int end) {
-
+	public static List<Account> getAccounts(int start, int end) {
 		return getService().getAccounts(start, end);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.taproot.model.Account> getAccounts(
-			long parentAccountId, int start, int end) {
+	public static List<Account> getAccounts(
+		long parentAccountId, int start, int end) {
 
 		return getService().getAccounts(parentAccountId, start, end);
 	}
@@ -323,9 +296,8 @@ public class AccountLocalServiceUtil {
 		return getService().getActionableDynamicQuery();
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.taproot.model.Account> getContactAccounts(
-			long contactId, int start, int end) {
+	public static List<Account> getContactAccounts(
+		long contactId, int start, int end) {
 
 		return getService().getContactAccounts(contactId, start, end);
 	}
@@ -361,16 +333,14 @@ public class AccountLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.taproot.model.Account> getTeamAccounts(
-			long teamId, int start, int end) {
+	public static List<Account> getTeamAccounts(
+		long teamId, int start, int end) {
 
 		return getService().getTeamAccounts(teamId, start, end);
 	}
@@ -379,17 +349,14 @@ public class AccountLocalServiceUtil {
 		return getService().getTeamAccountsCount(teamId);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.Account reindex(
-			long accountId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static Account reindex(long accountId) throws PortalException {
 		return getService().reindex(accountId);
 	}
 
 	public static com.liferay.portal.kernel.search.Hits search(
 			long companyId, String keywords, int start, int end,
 			com.liferay.portal.kernel.search.Sort sort)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().search(companyId, keywords, start, end, sort);
 	}
@@ -404,19 +371,17 @@ public class AccountLocalServiceUtil {
 	 * @param account the account
 	 * @return the account that was updated
 	 */
-	public static com.liferay.osb.koroneiki.taproot.model.Account updateAccount(
-		com.liferay.osb.koroneiki.taproot.model.Account account) {
-
+	public static Account updateAccount(Account account) {
 		return getService().updateAccount(account);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.Account updateAccount(
+	public static Account updateAccount(
 			long accountId, long parentAccountId, String name, String code,
 			String description, long logoId, String contactEmailAddress,
 			String profileEmailAddress, String phoneNumber, String faxNumber,
 			String website, String tier, String region, String language,
 			boolean internal, String status)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().updateAccount(
 			accountId, parentAccountId, name, code, description, logoId,
@@ -425,23 +390,9 @@ public class AccountLocalServiceUtil {
 	}
 
 	public static AccountLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker<AccountLocalService, AccountLocalService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(AccountLocalService.class);
-
-		ServiceTracker<AccountLocalService, AccountLocalService>
-			serviceTracker =
-				new ServiceTracker<AccountLocalService, AccountLocalService>(
-					bundle.getBundleContext(), AccountLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AccountLocalService _service;
 
 }

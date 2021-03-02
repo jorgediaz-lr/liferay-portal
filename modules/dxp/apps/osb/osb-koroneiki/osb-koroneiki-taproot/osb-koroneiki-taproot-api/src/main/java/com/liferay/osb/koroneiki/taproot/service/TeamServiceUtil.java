@@ -14,9 +14,10 @@
 
 package com.liferay.osb.koroneiki.taproot.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.koroneiki.taproot.model.Team;
+import com.liferay.portal.kernel.exception.PortalException;
+
+import java.util.List;
 
 /**
  * Provides the remote service utility for Team. This utility wraps
@@ -37,69 +38,60 @@ public class TeamServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.osb.koroneiki.taproot.service.impl.TeamServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.osb.koroneiki.taproot.model.Team addTeam(
-			long accountId, String name)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static Team addTeam(long accountId, String name)
+		throws PortalException {
 
 		return getService().addTeam(accountId, name);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.Team addTeam(
-			String accountKey, String name)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static Team addTeam(String accountKey, String name)
+		throws PortalException {
 
 		return getService().addTeam(accountKey, name);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.Team deleteTeam(
-			long teamId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static Team deleteTeam(long teamId) throws PortalException {
 		return getService().deleteTeam(teamId);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.Team deleteTeam(
-			String teamKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static Team deleteTeam(String teamKey) throws PortalException {
 		return getService().deleteTeam(teamKey);
 	}
 
-	public static java.util.List<com.liferay.osb.koroneiki.taproot.model.Team>
-			getAccountAssignedTeams(String accountKey, int start, int end)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<Team> getAccountAssignedTeams(
+			String accountKey, int start, int end)
+		throws PortalException {
 
 		return getService().getAccountAssignedTeams(accountKey, start, end);
 	}
 
 	public static int getAccountAssignedTeamsCount(String accountKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getAccountAssignedTeamsCount(accountKey);
 	}
 
-	public static java.util.List<com.liferay.osb.koroneiki.taproot.model.Team>
-			getAccountTeams(long accountId, int start, int end)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<Team> getAccountTeams(long accountId, int start, int end)
+		throws PortalException {
 
 		return getService().getAccountTeams(accountId, start, end);
 	}
 
-	public static java.util.List<com.liferay.osb.koroneiki.taproot.model.Team>
-			getAccountTeams(String accountKey, int start, int end)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<Team> getAccountTeams(
+			String accountKey, int start, int end)
+		throws PortalException {
 
 		return getService().getAccountTeams(accountKey, start, end);
 	}
 
 	public static int getAccountTeamsCount(long accountId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getAccountTeamsCount(accountId);
 	}
 
 	public static int getAccountTeamsCount(String accountKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getAccountTeamsCount(accountKey);
 	}
@@ -113,66 +105,45 @@ public class TeamServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.Team getTeam(
-			long teamId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static Team getTeam(long teamId) throws PortalException {
 		return getService().getTeam(teamId);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.Team getTeam(
-			String teamKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static Team getTeam(String teamKey) throws PortalException {
 		return getService().getTeam(teamKey);
 	}
 
-	public static java.util.List<com.liferay.osb.koroneiki.taproot.model.Team>
-			getTeams(
-				String domain, String entityName, String entityId, int start,
-				int end)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<Team> getTeams(
+			String domain, String entityName, String entityId, int start,
+			int end)
+		throws PortalException {
 
 		return getService().getTeams(domain, entityName, entityId, start, end);
 	}
 
 	public static int getTeamsCount(
 			String domain, String entityName, String entityId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getTeamsCount(domain, entityName, entityId);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.Team updateTeam(
-			long teamId, String name)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static Team updateTeam(long teamId, String name)
+		throws PortalException {
 
 		return getService().updateTeam(teamId, name);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.Team updateTeam(
-			String teamKey, String name)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static Team updateTeam(String teamKey, String name)
+		throws PortalException {
 
 		return getService().updateTeam(teamKey, name);
 	}
 
 	public static TeamService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker<TeamService, TeamService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(TeamService.class);
-
-		ServiceTracker<TeamService, TeamService> serviceTracker =
-			new ServiceTracker<TeamService, TeamService>(
-				bundle.getBundleContext(), TeamService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile TeamService _service;
 
 }

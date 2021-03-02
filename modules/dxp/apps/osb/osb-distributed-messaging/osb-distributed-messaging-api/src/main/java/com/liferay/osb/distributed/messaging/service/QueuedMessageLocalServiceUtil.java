@@ -14,9 +14,16 @@
 
 package com.liferay.osb.distributed.messaging.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.distributed.messaging.model.QueuedMessage;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.InputStream;
+import java.io.Serializable;
+
+import java.util.List;
 
 /**
  * Provides the local service utility for QueuedMessage. This utility wraps
@@ -48,19 +55,14 @@ public class QueuedMessageLocalServiceUtil {
 	 * @param queuedMessage the queued message
 	 * @return the queued message that was added
 	 */
-	public static com.liferay.osb.distributed.messaging.model.QueuedMessage
-		addQueuedMessage(
-			com.liferay.osb.distributed.messaging.model.QueuedMessage
-				queuedMessage) {
-
+	public static QueuedMessage addQueuedMessage(QueuedMessage queuedMessage) {
 		return getService().addQueuedMessage(queuedMessage);
 	}
 
-	public static com.liferay.osb.distributed.messaging.model.QueuedMessage
-			addQueuedMessage(
-				String messageBrokerClassName, String topic,
-				com.liferay.osb.distributed.messaging.Message message)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static QueuedMessage addQueuedMessage(
+			String messageBrokerClassName, String topic,
+			com.liferay.osb.distributed.messaging.Message message)
+		throws PortalException {
 
 		return getService().addQueuedMessage(
 			messageBrokerClassName, topic, message);
@@ -72,19 +74,16 @@ public class QueuedMessageLocalServiceUtil {
 	 * @param queuedMessageId the primary key for the new queued message
 	 * @return the new queued message
 	 */
-	public static com.liferay.osb.distributed.messaging.model.QueuedMessage
-		createQueuedMessage(long queuedMessageId) {
-
+	public static QueuedMessage createQueuedMessage(long queuedMessageId) {
 		return getService().createQueuedMessage(queuedMessageId);
 	}
 
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
@@ -100,9 +99,8 @@ public class QueuedMessageLocalServiceUtil {
 	 * @return the queued message that was removed
 	 * @throws PortalException if a queued message with the primary key could not be found
 	 */
-	public static com.liferay.osb.distributed.messaging.model.QueuedMessage
-			deleteQueuedMessage(long queuedMessageId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static QueuedMessage deleteQueuedMessage(long queuedMessageId)
+		throws PortalException {
 
 		return getService().deleteQueuedMessage(queuedMessageId);
 	}
@@ -117,17 +115,13 @@ public class QueuedMessageLocalServiceUtil {
 	 * @param queuedMessage the queued message
 	 * @return the queued message that was removed
 	 */
-	public static com.liferay.osb.distributed.messaging.model.QueuedMessage
-		deleteQueuedMessage(
-			com.liferay.osb.distributed.messaging.model.QueuedMessage
-				queuedMessage) {
+	public static QueuedMessage deleteQueuedMessage(
+		QueuedMessage queuedMessage) {
 
 		return getService().deleteQueuedMessage(queuedMessage);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -137,9 +131,7 @@ public class QueuedMessageLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -155,9 +147,8 @@ public class QueuedMessageLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -175,10 +166,9 @@ public class QueuedMessageLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -190,9 +180,7 @@ public class QueuedMessageLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -204,15 +192,13 @@ public class QueuedMessageLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.distributed.messaging.model.QueuedMessage
-		fetchQueuedMessage(long queuedMessageId) {
-
+	public static QueuedMessage fetchQueuedMessage(long queuedMessageId) {
 		return getService().fetchQueuedMessage(queuedMessageId);
 	}
 
@@ -231,7 +217,7 @@ public class QueuedMessageLocalServiceUtil {
 
 	public static com.liferay.osb.distributed.messaging.model.
 		QueuedMessageMessageObjectBlobModel getMessageObjectBlobModel(
-			java.io.Serializable primaryKey) {
+			Serializable primaryKey) {
 
 		return getService().getMessageObjectBlobModel(primaryKey);
 	}
@@ -248,9 +234,8 @@ public class QueuedMessageLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -262,9 +247,8 @@ public class QueuedMessageLocalServiceUtil {
 	 * @return the queued message
 	 * @throws PortalException if a queued message with the primary key could not be found
 	 */
-	public static com.liferay.osb.distributed.messaging.model.QueuedMessage
-			getQueuedMessage(long queuedMessageId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static QueuedMessage getQueuedMessage(long queuedMessageId)
+		throws PortalException {
 
 		return getService().getQueuedMessage(queuedMessageId);
 	}
@@ -280,16 +264,12 @@ public class QueuedMessageLocalServiceUtil {
 	 * @param end the upper bound of the range of queued messages (not inclusive)
 	 * @return the range of queued messages
 	 */
-	public static java.util.List
-		<com.liferay.osb.distributed.messaging.model.QueuedMessage>
-			getQueuedMessages(int start, int end) {
-
+	public static List<QueuedMessage> getQueuedMessages(int start, int end) {
 		return getService().getQueuedMessages(start, end);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.distributed.messaging.model.QueuedMessage>
-			getQueuedMessages(String messageBrokerClassName) {
+	public static List<QueuedMessage> getQueuedMessages(
+		String messageBrokerClassName) {
 
 		return getService().getQueuedMessages(messageBrokerClassName);
 	}
@@ -303,7 +283,7 @@ public class QueuedMessageLocalServiceUtil {
 		return getService().getQueuedMessagesCount();
 	}
 
-	public static java.io.InputStream openMessageObjectInputStream(
+	public static InputStream openMessageObjectInputStream(
 		long queuedMessageId) {
 
 		return getService().openMessageObjectInputStream(queuedMessageId);
@@ -319,35 +299,16 @@ public class QueuedMessageLocalServiceUtil {
 	 * @param queuedMessage the queued message
 	 * @return the queued message that was updated
 	 */
-	public static com.liferay.osb.distributed.messaging.model.QueuedMessage
-		updateQueuedMessage(
-			com.liferay.osb.distributed.messaging.model.QueuedMessage
-				queuedMessage) {
+	public static QueuedMessage updateQueuedMessage(
+		QueuedMessage queuedMessage) {
 
 		return getService().updateQueuedMessage(queuedMessage);
 	}
 
 	public static QueuedMessageLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<QueuedMessageLocalService, QueuedMessageLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			QueuedMessageLocalService.class);
-
-		ServiceTracker<QueuedMessageLocalService, QueuedMessageLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<QueuedMessageLocalService, QueuedMessageLocalService>(
-						bundle.getBundleContext(),
-						QueuedMessageLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile QueuedMessageLocalService _service;
 
 }

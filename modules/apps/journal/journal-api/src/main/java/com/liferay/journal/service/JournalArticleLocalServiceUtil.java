@@ -14,9 +14,16 @@
 
 package com.liferay.journal.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.journal.model.JournalArticle;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.io.Serializable;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Provides the local service utility for JournalArticle. This utility wraps
@@ -136,25 +143,24 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the web content article
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.journal.model.JournalArticle addArticle(
+	public static JournalArticle addArticle(
 			long userId, long groupId, long folderId, long classNameId,
 			long classPK, String articleId, boolean autoArticleId,
-			double version, java.util.Map<java.util.Locale, String> titleMap,
-			java.util.Map<java.util.Locale, String> descriptionMap,
-			java.util.Map<java.util.Locale, String> friendlyURLMap,
-			String content, String ddmStructureKey, String ddmTemplateKey,
-			String layoutUuid, int displayDateMonth, int displayDateDay,
-			int displayDateYear, int displayDateHour, int displayDateMinute,
-			int expirationDateMonth, int expirationDateDay,
-			int expirationDateYear, int expirationDateHour,
-			int expirationDateMinute, boolean neverExpire, int reviewDateMonth,
-			int reviewDateDay, int reviewDateYear, int reviewDateHour,
-			int reviewDateMinute, boolean neverReview, boolean indexable,
-			boolean smallImage, String smallImageURL,
-			java.io.File smallImageFile, java.util.Map<String, byte[]> images,
-			String articleURL,
+			double version, Map<java.util.Locale, String> titleMap,
+			Map<java.util.Locale, String> descriptionMap,
+			Map<java.util.Locale, String> friendlyURLMap, String content,
+			String ddmStructureKey, String ddmTemplateKey, String layoutUuid,
+			int displayDateMonth, int displayDateDay, int displayDateYear,
+			int displayDateHour, int displayDateMinute, int expirationDateMonth,
+			int expirationDateDay, int expirationDateYear,
+			int expirationDateHour, int expirationDateMinute,
+			boolean neverExpire, int reviewDateMonth, int reviewDateDay,
+			int reviewDateYear, int reviewDateHour, int reviewDateMinute,
+			boolean neverReview, boolean indexable, boolean smallImage,
+			String smallImageURL, java.io.File smallImageFile,
+			Map<String, byte[]> images, String articleURL,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().addArticle(
 			userId, groupId, folderId, classNameId, classPK, articleId,
@@ -265,24 +271,23 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the web content article
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.journal.model.JournalArticle addArticle(
+	public static JournalArticle addArticle(
 			long userId, long groupId, long folderId, long classNameId,
 			long classPK, String articleId, boolean autoArticleId,
-			double version, java.util.Map<java.util.Locale, String> titleMap,
-			java.util.Map<java.util.Locale, String> descriptionMap,
-			String content, String ddmStructureKey, String ddmTemplateKey,
-			String layoutUuid, int displayDateMonth, int displayDateDay,
-			int displayDateYear, int displayDateHour, int displayDateMinute,
-			int expirationDateMonth, int expirationDateDay,
-			int expirationDateYear, int expirationDateHour,
-			int expirationDateMinute, boolean neverExpire, int reviewDateMonth,
-			int reviewDateDay, int reviewDateYear, int reviewDateHour,
-			int reviewDateMinute, boolean neverReview, boolean indexable,
-			boolean smallImage, String smallImageURL,
-			java.io.File smallImageFile, java.util.Map<String, byte[]> images,
-			String articleURL,
+			double version, Map<java.util.Locale, String> titleMap,
+			Map<java.util.Locale, String> descriptionMap, String content,
+			String ddmStructureKey, String ddmTemplateKey, String layoutUuid,
+			int displayDateMonth, int displayDateDay, int displayDateYear,
+			int displayDateHour, int displayDateMinute, int expirationDateMonth,
+			int expirationDateDay, int expirationDateYear,
+			int expirationDateHour, int expirationDateMinute,
+			boolean neverExpire, int reviewDateMonth, int reviewDateDay,
+			int reviewDateYear, int reviewDateHour, int reviewDateMinute,
+			boolean neverReview, boolean indexable, boolean smallImage,
+			String smallImageURL, java.io.File smallImageFile,
+			Map<String, byte[]> images, String articleURL,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().addArticle(
 			userId, groupId, folderId, classNameId, classPK, articleId,
@@ -325,29 +330,28 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the web content article
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.journal.model.JournalArticle addArticle(
+	public static JournalArticle addArticle(
 			long userId, long groupId, long folderId,
-			java.util.Map<java.util.Locale, String> titleMap,
-			java.util.Map<java.util.Locale, String> descriptionMap,
-			String content, String ddmStructureKey, String ddmTemplateKey,
+			Map<java.util.Locale, String> titleMap,
+			Map<java.util.Locale, String> descriptionMap, String content,
+			String ddmStructureKey, String ddmTemplateKey,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().addArticle(
 			userId, groupId, folderId, titleMap, descriptionMap, content,
 			ddmStructureKey, ddmTemplateKey, serviceContext);
 	}
 
-	public static com.liferay.journal.model.JournalArticle
-			addArticleDefaultValues(
-				long userId, long groupId, long classNameId, long classPK,
-				java.util.Map<java.util.Locale, String> titleMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
-				String content, String ddmStructureKey, String ddmTemplateKey,
-				String layoutUuid, boolean indexable, boolean smallImage,
-				String smallImageURL, java.io.File smallImageFile,
-				com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static JournalArticle addArticleDefaultValues(
+			long userId, long groupId, long classNameId, long classPK,
+			Map<java.util.Locale, String> titleMap,
+			Map<java.util.Locale, String> descriptionMap, String content,
+			String ddmStructureKey, String ddmTemplateKey, String layoutUuid,
+			boolean indexable, boolean smallImage, String smallImageURL,
+			java.io.File smallImageFile,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws PortalException {
 
 		return getService().addArticleDefaultValues(
 			userId, groupId, classNameId, classPK, titleMap, descriptionMap,
@@ -364,9 +368,9 @@ public class JournalArticleLocalServiceUtil {
 	 * @throws PortalException if a portal exception occurred
 	 */
 	public static void addArticleResources(
-			com.liferay.journal.model.JournalArticle article,
-			boolean addGroupPermissions, boolean addGuestPermissions)
-		throws com.liferay.portal.kernel.exception.PortalException {
+			JournalArticle article, boolean addGroupPermissions,
+			boolean addGuestPermissions)
+		throws PortalException {
 
 		getService().addArticleResources(
 			article, addGroupPermissions, addGuestPermissions);
@@ -380,10 +384,10 @@ public class JournalArticleLocalServiceUtil {
 	 * @throws PortalException if a portal exception occurred
 	 */
 	public static void addArticleResources(
-			com.liferay.journal.model.JournalArticle article,
+			JournalArticle article,
 			com.liferay.portal.kernel.service.permission.ModelPermissions
 				modelPermissions)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().addArticleResources(article, modelPermissions);
 	}
@@ -400,9 +404,9 @@ public class JournalArticleLocalServiceUtil {
 	 */
 	@Deprecated
 	public static void addArticleResources(
-			com.liferay.journal.model.JournalArticle article,
-			String[] groupPermissions, String[] guestPermissions)
-		throws com.liferay.portal.kernel.exception.PortalException {
+			JournalArticle article, String[] groupPermissions,
+			String[] guestPermissions)
+		throws PortalException {
 
 		getService().addArticleResources(
 			article, groupPermissions, guestPermissions);
@@ -420,7 +424,7 @@ public class JournalArticleLocalServiceUtil {
 	public static void addArticleResources(
 			long groupId, String articleId, boolean addGroupPermissions,
 			boolean addGuestPermissions)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().addArticleResources(
 			groupId, articleId, addGroupPermissions, addGuestPermissions);
@@ -442,7 +446,7 @@ public class JournalArticleLocalServiceUtil {
 	public static void addArticleResources(
 			long groupId, String articleId, String[] groupPermissions,
 			String[] guestPermissions)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().addArticleResources(
 			groupId, articleId, groupPermissions, guestPermissions);
@@ -458,8 +462,8 @@ public class JournalArticleLocalServiceUtil {
 	 * @param journalArticle the journal article
 	 * @return the journal article that was added
 	 */
-	public static com.liferay.journal.model.JournalArticle addJournalArticle(
-		com.liferay.journal.model.JournalArticle journalArticle) {
+	public static JournalArticle addJournalArticle(
+		JournalArticle journalArticle) {
 
 		return getService().addJournalArticle(journalArticle);
 	}
@@ -475,10 +479,9 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the matching web content article
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.journal.model.JournalArticle
-			checkArticleResourcePrimKey(
-				long groupId, String articleId, double version)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static JournalArticle checkArticleResourcePrimKey(
+			long groupId, String articleId, double version)
+		throws PortalException {
 
 		return getService().checkArticleResourcePrimKey(
 			groupId, articleId, version);
@@ -488,9 +491,7 @@ public class JournalArticleLocalServiceUtil {
 	 * Checks all web content articles by handling their expirations and sending
 	 * review notifications based on their current workflow.
 	 */
-	public static void checkArticles()
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static void checkArticles() throws PortalException {
 		getService().checkArticles();
 	}
 
@@ -506,7 +507,7 @@ public class JournalArticleLocalServiceUtil {
 	 */
 	public static void checkNewLine(
 			long groupId, String articleId, double version)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().checkNewLine(groupId, articleId, version);
 	}
@@ -523,7 +524,7 @@ public class JournalArticleLocalServiceUtil {
 	 */
 	public static void checkStructure(
 			long groupId, String articleId, double version)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().checkStructure(groupId, articleId, version);
 	}
@@ -542,10 +543,10 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the new web content article
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.journal.model.JournalArticle copyArticle(
+	public static JournalArticle copyArticle(
 			long userId, long groupId, String oldArticleId, String newArticleId,
 			boolean autoArticleId, double version)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().copyArticle(
 			userId, groupId, oldArticleId, newArticleId, autoArticleId,
@@ -558,9 +559,7 @@ public class JournalArticleLocalServiceUtil {
 	 * @param id the primary key for the new journal article
 	 * @return the new journal article
 	 */
-	public static com.liferay.journal.model.JournalArticle createJournalArticle(
-		long id) {
-
+	public static JournalArticle createJournalArticle(long id) {
 		return getService().createJournalArticle(id);
 	}
 
@@ -571,9 +570,8 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the deleted web content article
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.journal.model.JournalArticle deleteArticle(
-			com.liferay.journal.model.JournalArticle article)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static JournalArticle deleteArticle(JournalArticle article)
+		throws PortalException {
 
 		return getService().deleteArticle(article);
 	}
@@ -592,10 +590,10 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the deleted web content article
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.journal.model.JournalArticle deleteArticle(
-			com.liferay.journal.model.JournalArticle article, String articleURL,
+	public static JournalArticle deleteArticle(
+			JournalArticle article, String articleURL,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().deleteArticle(article, articleURL, serviceContext);
 	}
@@ -615,10 +613,10 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the deleted web content article
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.journal.model.JournalArticle deleteArticle(
+	public static JournalArticle deleteArticle(
 			long groupId, String articleId, double version, String articleURL,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().deleteArticle(
 			groupId, articleId, version, articleURL, serviceContext);
@@ -639,14 +637,14 @@ public class JournalArticleLocalServiceUtil {
 	public static void deleteArticle(
 			long groupId, String articleId,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().deleteArticle(groupId, articleId, serviceContext);
 	}
 
 	public static void deleteArticleDefaultValues(
 			long groupId, String articleId, String ddmStructureKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().deleteArticleDefaultValues(
 			groupId, articleId, ddmStructureKey);
@@ -658,9 +656,7 @@ public class JournalArticleLocalServiceUtil {
 	 * @param groupId the primary key of the web content article's group
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static void deleteArticles(long groupId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static void deleteArticles(long groupId) throws PortalException {
 		getService().deleteArticles(groupId);
 	}
 
@@ -673,7 +669,7 @@ public class JournalArticleLocalServiceUtil {
 	 * @throws PortalException if a portal exception occurred
 	 */
 	public static void deleteArticles(long groupId, long folderId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().deleteArticles(groupId, folderId);
 	}
@@ -690,7 +686,7 @@ public class JournalArticleLocalServiceUtil {
 	 */
 	public static void deleteArticles(
 			long groupId, long folderId, boolean includeTrashedEntries)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().deleteArticles(groupId, folderId, includeTrashedEntries);
 	}
@@ -713,7 +709,7 @@ public class JournalArticleLocalServiceUtil {
 	 */
 	public static void deleteArticles(
 			long groupId, String className, long classPK)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().deleteArticles(groupId, className, classPK);
 	}
@@ -728,8 +724,8 @@ public class JournalArticleLocalServiceUtil {
 	 * @param journalArticle the journal article
 	 * @return the journal article that was removed
 	 */
-	public static com.liferay.journal.model.JournalArticle deleteJournalArticle(
-		com.liferay.journal.model.JournalArticle journalArticle) {
+	public static JournalArticle deleteJournalArticle(
+		JournalArticle journalArticle) {
 
 		return getService().deleteJournalArticle(journalArticle);
 	}
@@ -745,9 +741,8 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the journal article that was removed
 	 * @throws PortalException if a journal article with the primary key could not be found
 	 */
-	public static com.liferay.journal.model.JournalArticle deleteJournalArticle(
-			long id)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static JournalArticle deleteJournalArticle(long id)
+		throws PortalException {
 
 		return getService().deleteJournalArticle(id);
 	}
@@ -769,17 +764,14 @@ public class JournalArticleLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			deletePersistedModel(
-				com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel deletePersistedModel(
+			PersistedModel persistedModel)
+		throws PortalException {
 
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
-		dynamicQuery() {
-
+	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
 
@@ -789,9 +781,7 @@ public class JournalArticleLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
@@ -807,9 +797,8 @@ public class JournalArticleLocalServiceUtil {
 	 * @param end the upper bound of the range of model instances (not inclusive)
 	 * @return the range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
@@ -827,10 +816,9 @@ public class JournalArticleLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching rows
 	 */
-	public static <T> java.util.List<T> dynamicQuery(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+	public static <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
 
 		return getService().dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -842,9 +830,7 @@ public class JournalArticleLocalServiceUtil {
 	 * @param dynamicQuery the dynamic query
 	 * @return the number of rows matching the dynamic query
 	 */
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-
+	public static long dynamicQueryCount(DynamicQuery dynamicQuery) {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
@@ -856,7 +842,7 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the number of rows matching the dynamic query
 	 */
 	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
 		return getService().dynamicQueryCount(dynamicQuery, projection);
@@ -882,11 +868,11 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the web content article
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.journal.model.JournalArticle expireArticle(
+	public static JournalArticle expireArticle(
 			long userId, long groupId, String articleId, double version,
 			String articleURL,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().expireArticle(
 			userId, groupId, articleId, version, articleURL, serviceContext);
@@ -915,7 +901,7 @@ public class JournalArticleLocalServiceUtil {
 	public static void expireArticle(
 			long userId, long groupId, String articleId, String articleURL,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().expireArticle(
 			userId, groupId, articleId, articleURL, serviceContext);
@@ -927,15 +913,11 @@ public class JournalArticleLocalServiceUtil {
 	 * @param id the primary key of the web content article
 	 * @return the web content article with the ID
 	 */
-	public static com.liferay.journal.model.JournalArticle fetchArticle(
-		long id) {
-
+	public static JournalArticle fetchArticle(long id) {
 		return getService().fetchArticle(id);
 	}
 
-	public static com.liferay.journal.model.JournalArticle fetchArticle(
-		long groupId, String articleId) {
-
+	public static JournalArticle fetchArticle(long groupId, String articleId) {
 		return getService().fetchArticle(groupId, articleId);
 	}
 
@@ -950,33 +932,31 @@ public class JournalArticleLocalServiceUtil {
 	 version, or <code>null</code> if no web content article could be
 	 found
 	 */
-	public static com.liferay.journal.model.JournalArticle fetchArticle(
+	public static JournalArticle fetchArticle(
 		long groupId, String articleId, double version) {
 
 		return getService().fetchArticle(groupId, articleId, version);
 	}
 
-	public static com.liferay.journal.model.JournalArticle
-		fetchArticleByUrlTitle(long groupId, String urlTitle) {
+	public static JournalArticle fetchArticleByUrlTitle(
+		long groupId, String urlTitle) {
 
 		return getService().fetchArticleByUrlTitle(groupId, urlTitle);
 	}
 
-	public static com.liferay.journal.model.JournalArticle
-		fetchArticleByUrlTitle(long groupId, String urlTitle, double version) {
+	public static JournalArticle fetchArticleByUrlTitle(
+		long groupId, String urlTitle, double version) {
 
 		return getService().fetchArticleByUrlTitle(groupId, urlTitle, version);
 	}
 
-	public static com.liferay.journal.model.JournalArticle fetchDisplayArticle(
+	public static JournalArticle fetchDisplayArticle(
 		long groupId, String articleId) {
 
 		return getService().fetchDisplayArticle(groupId, articleId);
 	}
 
-	public static com.liferay.journal.model.JournalArticle fetchJournalArticle(
-		long id) {
-
+	public static JournalArticle fetchJournalArticle(long id) {
 		return getService().fetchJournalArticle(id);
 	}
 
@@ -987,19 +967,17 @@ public class JournalArticleLocalServiceUtil {
 	 * @param groupId the primary key of the group
 	 * @return the matching journal article, or <code>null</code> if a matching journal article could not be found
 	 */
-	public static com.liferay.journal.model.JournalArticle
-		fetchJournalArticleByUuidAndGroupId(String uuid, long groupId) {
+	public static JournalArticle fetchJournalArticleByUuidAndGroupId(
+		String uuid, long groupId) {
 
 		return getService().fetchJournalArticleByUuidAndGroupId(uuid, groupId);
 	}
 
-	public static com.liferay.journal.model.JournalArticle fetchLatestArticle(
-		long resourcePrimKey) {
-
+	public static JournalArticle fetchLatestArticle(long resourcePrimKey) {
 		return getService().fetchLatestArticle(resourcePrimKey);
 	}
 
-	public static com.liferay.journal.model.JournalArticle fetchLatestArticle(
+	public static JournalArticle fetchLatestArticle(
 		long resourcePrimKey, int status) {
 
 		return getService().fetchLatestArticle(resourcePrimKey, status);
@@ -1023,14 +1001,14 @@ public class JournalArticleLocalServiceUtil {
 	 approved workflow status, or <code>null</code> if no matching web
 	 content article could be found
 	 */
-	public static com.liferay.journal.model.JournalArticle fetchLatestArticle(
+	public static JournalArticle fetchLatestArticle(
 		long resourcePrimKey, int status, boolean preferApproved) {
 
 		return getService().fetchLatestArticle(
 			resourcePrimKey, status, preferApproved);
 	}
 
-	public static com.liferay.journal.model.JournalArticle fetchLatestArticle(
+	public static JournalArticle fetchLatestArticle(
 		long resourcePrimKey, int[] statuses) {
 
 		return getService().fetchLatestArticle(resourcePrimKey, statuses);
@@ -1048,15 +1026,14 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the latest matching web content article, or <code>null</code> if
 	 no matching web content article could be found
 	 */
-	public static com.liferay.journal.model.JournalArticle fetchLatestArticle(
+	public static JournalArticle fetchLatestArticle(
 		long groupId, String articleId, int status) {
 
 		return getService().fetchLatestArticle(groupId, articleId, status);
 	}
 
-	public static com.liferay.journal.model.JournalArticle
-		fetchLatestArticleByUrlTitle(
-			long groupId, String urlTitle, int status) {
+	public static JournalArticle fetchLatestArticleByUrlTitle(
+		long groupId, String urlTitle, int status) {
 
 		return getService().fetchLatestArticleByUrlTitle(
 			groupId, urlTitle, status);
@@ -1071,8 +1048,8 @@ public class JournalArticleLocalServiceUtil {
 	 primary key, or <code>null</code> if no matching web content
 	 article could be found
 	 */
-	public static com.liferay.journal.model.JournalArticle
-		fetchLatestIndexableArticle(long resourcePrimKey) {
+	public static JournalArticle fetchLatestIndexableArticle(
+		long resourcePrimKey) {
 
 		return getService().fetchLatestIndexableArticle(resourcePrimKey);
 	}
@@ -1090,9 +1067,7 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the web content article with the ID
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.journal.model.JournalArticle getArticle(long id)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static JournalArticle getArticle(long id) throws PortalException {
 		return getService().getArticle(id);
 	}
 
@@ -1106,9 +1081,8 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the matching web content article
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.journal.model.JournalArticle getArticle(
-			long groupId, String articleId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static JournalArticle getArticle(long groupId, String articleId)
+		throws PortalException {
 
 		return getService().getArticle(groupId, articleId);
 	}
@@ -1123,9 +1097,9 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the matching web content article
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.journal.model.JournalArticle getArticle(
+	public static JournalArticle getArticle(
 			long groupId, String articleId, double version)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getArticle(groupId, articleId, version);
 	}
@@ -1147,9 +1121,9 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the matching web content article
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.journal.model.JournalArticle getArticle(
+	public static JournalArticle getArticle(
 			long groupId, String className, long classPK)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getArticle(groupId, className, classPK);
 	}
@@ -1164,9 +1138,9 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the matching web content article
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.journal.model.JournalArticle getArticleByUrlTitle(
+	public static JournalArticle getArticleByUrlTitle(
 			long groupId, String urlTitle)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getArticleByUrlTitle(groupId, urlTitle);
 	}
@@ -1187,12 +1161,12 @@ public class JournalArticleLocalServiceUtil {
 	 * @throws PortalException if a portal exception occurred
 	 */
 	public static String getArticleContent(
-			com.liferay.journal.model.JournalArticle article,
-			String ddmTemplateKey, String viewMode, String languageId,
+			JournalArticle article, String ddmTemplateKey, String viewMode,
+			String languageId,
 			com.liferay.portal.kernel.portlet.PortletRequestModel
 				portletRequestModel,
 			com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getArticleContent(
 			article, ddmTemplateKey, viewMode, languageId, portletRequestModel,
@@ -1217,10 +1191,10 @@ public class JournalArticleLocalServiceUtil {
 	 */
 	@Deprecated
 	public static String getArticleContent(
-			com.liferay.journal.model.JournalArticle article,
-			String ddmTemplateKey, String viewMode, String languageId,
+			JournalArticle article, String ddmTemplateKey, String viewMode,
+			String languageId,
 			com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getArticleContent(
 			article, ddmTemplateKey, viewMode, languageId, themeDisplay);
@@ -1249,7 +1223,7 @@ public class JournalArticleLocalServiceUtil {
 			com.liferay.portal.kernel.portlet.PortletRequestModel
 				portletRequestModel,
 			com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getArticleContent(
 			groupId, articleId, version, viewMode, ddmTemplateKey, languageId,
@@ -1281,7 +1255,7 @@ public class JournalArticleLocalServiceUtil {
 			long groupId, String articleId, double version, String viewMode,
 			String ddmTemplateKey, String languageId,
 			com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getArticleContent(
 			groupId, articleId, version, viewMode, ddmTemplateKey, languageId,
@@ -1309,7 +1283,7 @@ public class JournalArticleLocalServiceUtil {
 			long groupId, String articleId, double version, String viewMode,
 			String languageId,
 			com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getArticleContent(
 			groupId, articleId, version, viewMode, languageId, themeDisplay);
@@ -1337,7 +1311,7 @@ public class JournalArticleLocalServiceUtil {
 			com.liferay.portal.kernel.portlet.PortletRequestModel
 				portletRequestModel,
 			com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getArticleContent(
 			groupId, articleId, viewMode, ddmTemplateKey, languageId,
@@ -1366,7 +1340,7 @@ public class JournalArticleLocalServiceUtil {
 			long groupId, String articleId, String viewMode,
 			String ddmTemplateKey, String languageId,
 			com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getArticleContent(
 			groupId, articleId, viewMode, ddmTemplateKey, languageId,
@@ -1392,7 +1366,7 @@ public class JournalArticleLocalServiceUtil {
 	public static String getArticleContent(
 			long groupId, String articleId, String viewMode, String languageId,
 			com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getArticleContent(
 			groupId, articleId, viewMode, languageId, themeDisplay);
@@ -1410,8 +1384,8 @@ public class JournalArticleLocalServiceUtil {
 		return getService().getArticleDescription(articlePK, languageId);
 	}
 
-	public static java.util.Map<java.util.Locale, String>
-		getArticleDescriptionMap(long articlePK) {
+	public static Map<java.util.Locale, String> getArticleDescriptionMap(
+		long articlePK) {
 
 		return getService().getArticleDescriptionMap(articlePK);
 	}
@@ -1437,13 +1411,12 @@ public class JournalArticleLocalServiceUtil {
 	 */
 	public static com.liferay.journal.model.JournalArticleDisplay
 			getArticleDisplay(
-				com.liferay.journal.model.JournalArticle article,
-				String ddmTemplateKey, String viewMode, String languageId,
-				int page,
+				JournalArticle article, String ddmTemplateKey, String viewMode,
+				String languageId, int page,
 				com.liferay.portal.kernel.portlet.PortletRequestModel
 					portletRequestModel,
 				com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getArticleDisplay(
 			article, ddmTemplateKey, viewMode, languageId, page,
@@ -1479,7 +1452,7 @@ public class JournalArticleLocalServiceUtil {
 				com.liferay.portal.kernel.portlet.PortletRequestModel
 					portletRequestModel,
 				com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getArticleDisplay(
 			groupId, articleId, version, ddmTemplateKey, viewMode, languageId,
@@ -1510,7 +1483,7 @@ public class JournalArticleLocalServiceUtil {
 				long groupId, String articleId, double version,
 				String ddmTemplateKey, String viewMode, String languageId,
 				com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getArticleDisplay(
 			groupId, articleId, version, ddmTemplateKey, viewMode, languageId,
@@ -1542,7 +1515,7 @@ public class JournalArticleLocalServiceUtil {
 				com.liferay.portal.kernel.portlet.PortletRequestModel
 					portletRequestModel,
 				com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getArticleDisplay(
 			groupId, articleId, viewMode, languageId, page, portletRequestModel,
@@ -1576,7 +1549,7 @@ public class JournalArticleLocalServiceUtil {
 				com.liferay.portal.kernel.portlet.PortletRequestModel
 					portletRequestModel,
 				com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getArticleDisplay(
 			groupId, articleId, ddmTemplateKey, viewMode, languageId, page,
@@ -1606,7 +1579,7 @@ public class JournalArticleLocalServiceUtil {
 				long groupId, String articleId, String ddmTemplateKey,
 				String viewMode, String languageId,
 				com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getArticleDisplay(
 			groupId, articleId, ddmTemplateKey, viewMode, languageId,
@@ -1634,13 +1607,13 @@ public class JournalArticleLocalServiceUtil {
 				long groupId, String articleId, String viewMode,
 				String languageId,
 				com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getArticleDisplay(
 			groupId, articleId, viewMode, languageId, themeDisplay);
 	}
 
-	public static java.util.List<String> getArticleLocalizationLanguageIds(
+	public static List<String> getArticleLocalizationLanguageIds(
 		long articlePK) {
 
 		return getService().getArticleLocalizationLanguageIds(articlePK);
@@ -1651,9 +1624,7 @@ public class JournalArticleLocalServiceUtil {
 	 *
 	 * @return the web content articles present in the system
 	 */
-	public static java.util.List<com.liferay.journal.model.JournalArticle>
-		getArticles() {
-
+	public static List<JournalArticle> getArticles() {
 		return getService().getArticles();
 	}
 
@@ -1663,9 +1634,7 @@ public class JournalArticleLocalServiceUtil {
 	 * @param groupId the primary key of the web content article's group
 	 * @return the web content articles belonging to the group
 	 */
-	public static java.util.List<com.liferay.journal.model.JournalArticle>
-		getArticles(long groupId) {
-
+	public static List<JournalArticle> getArticles(long groupId) {
 		return getService().getArticles(groupId);
 	}
 
@@ -1688,8 +1657,8 @@ public class JournalArticleLocalServiceUtil {
 	 return (not inclusive)
 	 * @return the range of matching web content articles
 	 */
-	public static java.util.List<com.liferay.journal.model.JournalArticle>
-		getArticles(long groupId, int start, int end) {
+	public static List<JournalArticle> getArticles(
+		long groupId, int start, int end) {
 
 		return getService().getArticles(groupId, start, end);
 	}
@@ -1716,11 +1685,9 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the range of matching web content articles ordered by the
 	 comparator
 	 */
-	public static java.util.List<com.liferay.journal.model.JournalArticle>
-		getArticles(
-			long groupId, int start, int end,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<com.liferay.journal.model.JournalArticle> obc) {
+	public static List<JournalArticle> getArticles(
+		long groupId, int start, int end,
+		OrderByComparator<JournalArticle> obc) {
 
 		return getService().getArticles(groupId, start, end, obc);
 	}
@@ -1732,8 +1699,8 @@ public class JournalArticleLocalServiceUtil {
 	 * @param folderId the primary key of the web content article folder
 	 * @return the matching web content articles
 	 */
-	public static java.util.List<com.liferay.journal.model.JournalArticle>
-		getArticles(long groupId, long folderId) {
+	public static List<JournalArticle> getArticles(
+		long groupId, long folderId) {
 
 		return getService().getArticles(groupId, folderId);
 	}
@@ -1759,8 +1726,8 @@ public class JournalArticleLocalServiceUtil {
 	 return (not inclusive)
 	 * @return the range of matching web content articles
 	 */
-	public static java.util.List<com.liferay.journal.model.JournalArticle>
-		getArticles(long groupId, long folderId, int start, int end) {
+	public static List<JournalArticle> getArticles(
+		long groupId, long folderId, int start, int end) {
 
 		return getService().getArticles(groupId, folderId, start, end);
 	}
@@ -1789,9 +1756,8 @@ public class JournalArticleLocalServiceUtil {
 	 return (not inclusive)
 	 * @return the range of matching web content articles
 	 */
-	public static java.util.List<com.liferay.journal.model.JournalArticle>
-		getArticles(
-			long groupId, long folderId, int status, int start, int end) {
+	public static List<JournalArticle> getArticles(
+		long groupId, long folderId, int status, int start, int end) {
 
 		return getService().getArticles(groupId, folderId, status, start, end);
 	}
@@ -1820,11 +1786,9 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the range of matching web content articles ordered by the
 	 comparator
 	 */
-	public static java.util.List<com.liferay.journal.model.JournalArticle>
-		getArticles(
-			long groupId, long folderId, int start, int end,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<com.liferay.journal.model.JournalArticle> orderByComparator) {
+	public static List<JournalArticle> getArticles(
+		long groupId, long folderId, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator) {
 
 		return getService().getArticles(
 			groupId, folderId, start, end, orderByComparator);
@@ -1837,17 +1801,15 @@ public class JournalArticleLocalServiceUtil {
 	 * @param articleId the primary key of the web content article
 	 * @return the matching web content articles
 	 */
-	public static java.util.List<com.liferay.journal.model.JournalArticle>
-		getArticles(long groupId, String articleId) {
+	public static List<JournalArticle> getArticles(
+		long groupId, String articleId) {
 
 		return getService().getArticles(groupId, articleId);
 	}
 
-	public static java.util.List<com.liferay.journal.model.JournalArticle>
-		getArticles(
-			long groupId, String articleId, int start, int end,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<com.liferay.journal.model.JournalArticle> orderByComparator) {
+	public static List<JournalArticle> getArticles(
+		long groupId, String articleId, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator) {
 
 		return getService().getArticles(
 			groupId, articleId, start, end, orderByComparator);
@@ -1859,8 +1821,8 @@ public class JournalArticleLocalServiceUtil {
 	 * @param resourcePrimKey the primary key of the resource instance
 	 * @return the web content articles matching the resource primary key
 	 */
-	public static java.util.List<com.liferay.journal.model.JournalArticle>
-		getArticlesByResourcePrimKey(long resourcePrimKey) {
+	public static List<JournalArticle> getArticlesByResourcePrimKey(
+		long resourcePrimKey) {
 
 		return getService().getArticlesByResourcePrimKey(resourcePrimKey);
 	}
@@ -1872,62 +1834,49 @@ public class JournalArticleLocalServiceUtil {
 	 image
 	 * @return the web content articles matching the small image ID
 	 */
-	public static java.util.List<com.liferay.journal.model.JournalArticle>
-		getArticlesBySmallImageId(long smallImageId) {
+	public static List<JournalArticle> getArticlesBySmallImageId(
+		long smallImageId) {
 
 		return getService().getArticlesBySmallImageId(smallImageId);
 	}
 
-	public static java.util.List<com.liferay.journal.model.JournalArticle>
-		getArticlesByStructureId(
-			long groupId, long classNameId, String ddmStructureKey, int status,
-			int start, int end,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<com.liferay.journal.model.JournalArticle> obc) {
+	public static List<JournalArticle> getArticlesByStructureId(
+		long groupId, long classNameId, String ddmStructureKey, int status,
+		int start, int end, OrderByComparator<JournalArticle> obc) {
 
 		return getService().getArticlesByStructureId(
 			groupId, classNameId, ddmStructureKey, status, start, end, obc);
 	}
 
-	public static java.util.List<com.liferay.journal.model.JournalArticle>
-		getArticlesByStructureId(
-			long groupId, long classNameId, String ddmStructureKey,
-			java.util.Locale locale, int status, int start, int end,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<com.liferay.journal.model.JournalArticle> obc) {
+	public static List<JournalArticle> getArticlesByStructureId(
+		long groupId, long classNameId, String ddmStructureKey,
+		java.util.Locale locale, int status, int start, int end,
+		OrderByComparator<JournalArticle> obc) {
 
 		return getService().getArticlesByStructureId(
 			groupId, classNameId, ddmStructureKey, locale, status, start, end,
 			obc);
 	}
 
-	public static java.util.List<com.liferay.journal.model.JournalArticle>
-		getArticlesByStructureId(
-			long groupId, String ddmStructureKey, int status, int start,
-			int end,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<com.liferay.journal.model.JournalArticle> obc) {
+	public static List<JournalArticle> getArticlesByStructureId(
+		long groupId, String ddmStructureKey, int status, int start, int end,
+		OrderByComparator<JournalArticle> obc) {
 
 		return getService().getArticlesByStructureId(
 			groupId, ddmStructureKey, status, start, end, obc);
 	}
 
-	public static java.util.List<com.liferay.journal.model.JournalArticle>
-		getArticlesByStructureId(
-			long groupId, String ddmStructureKey, int start, int end,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<com.liferay.journal.model.JournalArticle> obc) {
+	public static List<JournalArticle> getArticlesByStructureId(
+		long groupId, String ddmStructureKey, int start, int end,
+		OrderByComparator<JournalArticle> obc) {
 
 		return getService().getArticlesByStructureId(
 			groupId, ddmStructureKey, start, end, obc);
 	}
 
-	public static java.util.List<com.liferay.journal.model.JournalArticle>
-		getArticlesByStructureId(
-			long groupId, String ddmStructureKey, java.util.Locale locale,
-			int status, int start, int end,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<com.liferay.journal.model.JournalArticle> obc) {
+	public static List<JournalArticle> getArticlesByStructureId(
+		long groupId, String ddmStructureKey, java.util.Locale locale,
+		int status, int start, int end, OrderByComparator<JournalArticle> obc) {
 
 		return getService().getArticlesByStructureId(
 			groupId, ddmStructureKey, locale, status, start, end, obc);
@@ -1985,7 +1934,7 @@ public class JournalArticleLocalServiceUtil {
 		return getService().getArticleTitle(articlePK, languageId);
 	}
 
-	public static java.util.Map<java.util.Locale, String> getArticleTitleMap(
+	public static Map<java.util.Locale, String> getArticleTitleMap(
 		long articlePK) {
 
 		return getService().getArticleTitleMap(articlePK);
@@ -2015,9 +1964,8 @@ public class JournalArticleLocalServiceUtil {
 	 return (not inclusive)
 	 * @return the range of matching web content articles ordered by article ID
 	 */
-	public static java.util.List<com.liferay.journal.model.JournalArticle>
-		getCompanyArticles(
-			long companyId, double version, int status, int start, int end) {
+	public static List<JournalArticle> getCompanyArticles(
+		long companyId, double version, int status, int start, int end) {
 
 		return getService().getCompanyArticles(
 			companyId, version, status, start, end);
@@ -2046,8 +1994,8 @@ public class JournalArticleLocalServiceUtil {
 	 return (not inclusive)
 	 * @return the range of matching web content articles ordered by article ID
 	 */
-	public static java.util.List<com.liferay.journal.model.JournalArticle>
-		getCompanyArticles(long companyId, int status, int start, int end) {
+	public static List<JournalArticle> getCompanyArticles(
+		long companyId, int status, int start, int end) {
 
 		return getService().getCompanyArticles(companyId, status, start, end);
 	}
@@ -2108,9 +2056,9 @@ public class JournalArticleLocalServiceUtil {
 	 displayed
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.journal.model.JournalArticle getDisplayArticle(
+	public static JournalArticle getDisplayArticle(
 			long groupId, String articleId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getDisplayArticle(groupId, articleId);
 	}
@@ -2126,9 +2074,9 @@ public class JournalArticleLocalServiceUtil {
 	 article is currently displayed
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.journal.model.JournalArticle
-			getDisplayArticleByUrlTitle(long groupId, String urlTitle)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static JournalArticle getDisplayArticleByUrlTitle(
+			long groupId, String urlTitle)
+		throws PortalException {
 
 		return getService().getDisplayArticleByUrlTitle(groupId, urlTitle);
 	}
@@ -2148,16 +2096,15 @@ public class JournalArticleLocalServiceUtil {
 		return getService().getIndexableActionableDynamicQuery();
 	}
 
-	public static java.util.List<com.liferay.journal.model.JournalArticle>
-		getIndexableArticlesByDDMStructureKey(String[] ddmStructureKeys) {
+	public static List<JournalArticle> getIndexableArticlesByDDMStructureKey(
+		String[] ddmStructureKeys) {
 
 		return getService().getIndexableArticlesByDDMStructureKey(
 			ddmStructureKeys);
 	}
 
-	public static java.util.List<com.liferay.journal.model.JournalArticle>
-		getIndexableArticlesByDDMStructureKey(
-			String[] ddmStructureKeys, java.util.Locale locale) {
+	public static List<JournalArticle> getIndexableArticlesByDDMStructureKey(
+		String[] ddmStructureKeys, java.util.Locale locale) {
 
 		return getService().getIndexableArticlesByDDMStructureKey(
 			ddmStructureKeys, locale);
@@ -2171,8 +2118,8 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the indexable web content articles matching the resource primary
 	 key
 	 */
-	public static java.util.List<com.liferay.journal.model.JournalArticle>
-		getIndexableArticlesByResourcePrimKey(long resourcePrimKey) {
+	public static List<JournalArticle> getIndexableArticlesByResourcePrimKey(
+		long resourcePrimKey) {
 
 		return getService().getIndexableArticlesByResourcePrimKey(
 			resourcePrimKey);
@@ -2185,9 +2132,8 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the journal article
 	 * @throws PortalException if a journal article with the primary key could not be found
 	 */
-	public static com.liferay.journal.model.JournalArticle getJournalArticle(
-			long id)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static JournalArticle getJournalArticle(long id)
+		throws PortalException {
 
 		return getService().getJournalArticle(id);
 	}
@@ -2200,9 +2146,9 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the matching journal article
 	 * @throws PortalException if a matching journal article could not be found
 	 */
-	public static com.liferay.journal.model.JournalArticle
-			getJournalArticleByUuidAndGroupId(String uuid, long groupId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static JournalArticle getJournalArticleByUuidAndGroupId(
+			String uuid, long groupId)
+		throws PortalException {
 
 		return getService().getJournalArticleByUuidAndGroupId(uuid, groupId);
 	}
@@ -2218,9 +2164,7 @@ public class JournalArticleLocalServiceUtil {
 	 * @param end the upper bound of the range of journal articles (not inclusive)
 	 * @return the range of journal articles
 	 */
-	public static java.util.List<com.liferay.journal.model.JournalArticle>
-		getJournalArticles(int start, int end) {
-
+	public static List<JournalArticle> getJournalArticles(int start, int end) {
 		return getService().getJournalArticles(start, end);
 	}
 
@@ -2231,8 +2175,8 @@ public class JournalArticleLocalServiceUtil {
 	 * @param companyId the primary key of the company
 	 * @return the matching journal articles, or an empty list if no matches were found
 	 */
-	public static java.util.List<com.liferay.journal.model.JournalArticle>
-		getJournalArticlesByUuidAndCompanyId(String uuid, long companyId) {
+	public static List<JournalArticle> getJournalArticlesByUuidAndCompanyId(
+		String uuid, long companyId) {
 
 		return getService().getJournalArticlesByUuidAndCompanyId(
 			uuid, companyId);
@@ -2248,11 +2192,9 @@ public class JournalArticleLocalServiceUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the range of matching journal articles, or an empty list if no matches were found
 	 */
-	public static java.util.List<com.liferay.journal.model.JournalArticle>
-		getJournalArticlesByUuidAndCompanyId(
-			String uuid, long companyId, int start, int end,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<com.liferay.journal.model.JournalArticle> orderByComparator) {
+	public static List<JournalArticle> getJournalArticlesByUuidAndCompanyId(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator) {
 
 		return getService().getJournalArticlesByUuidAndCompanyId(
 			uuid, companyId, start, end, orderByComparator);
@@ -2276,9 +2218,8 @@ public class JournalArticleLocalServiceUtil {
 	 preferring articles with approved workflow status
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.journal.model.JournalArticle getLatestArticle(
-			long resourcePrimKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static JournalArticle getLatestArticle(long resourcePrimKey)
+		throws PortalException {
 
 		return getService().getLatestArticle(resourcePrimKey);
 	}
@@ -2296,9 +2237,9 @@ public class JournalArticleLocalServiceUtil {
 	 status
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.journal.model.JournalArticle getLatestArticle(
+	public static JournalArticle getLatestArticle(
 			long resourcePrimKey, int status)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getLatestArticle(resourcePrimKey, status);
 	}
@@ -2321,9 +2262,9 @@ public class JournalArticleLocalServiceUtil {
 	 workflow status
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.journal.model.JournalArticle getLatestArticle(
+	public static JournalArticle getLatestArticle(
 			long resourcePrimKey, int status, boolean preferApproved)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getLatestArticle(
 			resourcePrimKey, status, preferApproved);
@@ -2337,9 +2278,9 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the latest matching web content article
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.journal.model.JournalArticle getLatestArticle(
+	public static JournalArticle getLatestArticle(
 			long groupId, String articleId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getLatestArticle(groupId, articleId);
 	}
@@ -2356,9 +2297,9 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the latest matching web content article
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.journal.model.JournalArticle getLatestArticle(
+	public static JournalArticle getLatestArticle(
 			long groupId, String articleId, int status)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getLatestArticle(groupId, articleId, status);
 	}
@@ -2379,9 +2320,9 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the latest matching web content article
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.journal.model.JournalArticle getLatestArticle(
+	public static JournalArticle getLatestArticle(
 			long groupId, String className, long classPK)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getLatestArticle(groupId, className, classPK);
 	}
@@ -2398,10 +2339,9 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the latest matching web content article
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.journal.model.JournalArticle
-			getLatestArticleByUrlTitle(
-				long groupId, String urlTitle, int status)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static JournalArticle getLatestArticleByUrlTitle(
+			long groupId, String urlTitle, int status)
+		throws PortalException {
 
 		return getService().getLatestArticleByUrlTitle(
 			groupId, urlTitle, status);
@@ -2417,7 +2357,7 @@ public class JournalArticleLocalServiceUtil {
 	 * @throws PortalException if a portal exception occurred
 	 */
 	public static double getLatestVersion(long groupId, String articleId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getLatestVersion(groupId, articleId);
 	}
@@ -2436,20 +2376,16 @@ public class JournalArticleLocalServiceUtil {
 	 */
 	public static double getLatestVersion(
 			long groupId, String articleId, int status)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getLatestVersion(groupId, articleId, status);
 	}
 
-	public static java.util.List<com.liferay.journal.model.JournalArticle>
-		getNoAssetArticles() {
-
+	public static List<JournalArticle> getNoAssetArticles() {
 		return getService().getNoAssetArticles();
 	}
 
-	public static java.util.List<com.liferay.journal.model.JournalArticle>
-		getNoPermissionArticles() {
-
+	public static List<JournalArticle> getNoPermissionArticles() {
 		return getService().getNoPermissionArticles();
 	}
 
@@ -2472,9 +2408,9 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the oldest matching web content article
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.journal.model.JournalArticle getOldestArticle(
+	public static JournalArticle getOldestArticle(
 			long groupId, String articleId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getOldestArticle(groupId, articleId);
 	}
@@ -2491,9 +2427,9 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the oldest matching web content article
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.journal.model.JournalArticle getOldestArticle(
+	public static JournalArticle getOldestArticle(
 			long groupId, String articleId, int status)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getOldestArticle(groupId, articleId, status);
 	}
@@ -2507,10 +2443,9 @@ public class JournalArticleLocalServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static java.util.List
-		<? extends com.liferay.portal.kernel.model.PersistedModel>
-				getPersistedModel(long resourcePrimKey)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<? extends PersistedModel> getPersistedModel(
+			long resourcePrimKey)
+		throws PortalException {
 
 		return getService().getPersistedModel(resourcePrimKey);
 	}
@@ -2518,9 +2453,8 @@ public class JournalArticleLocalServiceUtil {
 	/**
 	 * @throws PortalException
 	 */
-	public static com.liferay.portal.kernel.model.PersistedModel
-			getPersistedModel(java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException {
 
 		return getService().getPersistedModel(primaryKeyObj);
 	}
@@ -2535,9 +2469,8 @@ public class JournalArticleLocalServiceUtil {
 	 the current web content article if there are no previously
 	 approved web content articles
 	 */
-	public static com.liferay.journal.model.JournalArticle
-		getPreviousApprovedArticle(
-			com.liferay.journal.model.JournalArticle article) {
+	public static JournalArticle getPreviousApprovedArticle(
+		JournalArticle article) {
 
 		return getService().getPreviousApprovedArticle(article);
 	}
@@ -2551,8 +2484,8 @@ public class JournalArticleLocalServiceUtil {
 	 structure
 	 * @return the matching web content articles
 	 */
-	public static java.util.List<com.liferay.journal.model.JournalArticle>
-		getStructureArticles(long groupId, String ddmStructureKey) {
+	public static List<JournalArticle> getStructureArticles(
+		long groupId, String ddmStructureKey) {
 
 		return getService().getStructureArticles(groupId, ddmStructureKey);
 	}
@@ -2581,11 +2514,9 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the range of matching web content articles ordered by the
 	 comparator
 	 */
-	public static java.util.List<com.liferay.journal.model.JournalArticle>
-		getStructureArticles(
-			long groupId, String ddmStructureKey, int start, int end,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<com.liferay.journal.model.JournalArticle> obc) {
+	public static List<JournalArticle> getStructureArticles(
+		long groupId, String ddmStructureKey, int start, int end,
+		OrderByComparator<JournalArticle> obc) {
 
 		return getService().getStructureArticles(
 			groupId, ddmStructureKey, start, end, obc);
@@ -2598,8 +2529,8 @@ public class JournalArticleLocalServiceUtil {
 	 DDM structures
 	 * @return the web content articles matching the DDM structure keys
 	 */
-	public static java.util.List<com.liferay.journal.model.JournalArticle>
-		getStructureArticles(String[] ddmStructureKeys) {
+	public static List<JournalArticle> getStructureArticles(
+		String[] ddmStructureKeys) {
 
 		return getService().getStructureArticles(ddmStructureKeys);
 	}
@@ -2637,8 +2568,8 @@ public class JournalArticleLocalServiceUtil {
 	 template
 	 * @return the matching web content articles
 	 */
-	public static java.util.List<com.liferay.journal.model.JournalArticle>
-		getTemplateArticles(long groupId, String ddmTemplateKey) {
+	public static List<JournalArticle> getTemplateArticles(
+		long groupId, String ddmTemplateKey) {
 
 		return getService().getTemplateArticles(groupId, ddmTemplateKey);
 	}
@@ -2667,11 +2598,9 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the range of matching web content articles ordered by the
 	 comparator
 	 */
-	public static java.util.List<com.liferay.journal.model.JournalArticle>
-		getTemplateArticles(
-			long groupId, String ddmTemplateKey, int start, int end,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<com.liferay.journal.model.JournalArticle> obc) {
+	public static List<JournalArticle> getTemplateArticles(
+		long groupId, String ddmTemplateKey, int start, int end,
+		OrderByComparator<JournalArticle> obc) {
 
 		return getService().getTemplateArticles(
 			groupId, ddmTemplateKey, start, end, obc);
@@ -2703,7 +2632,7 @@ public class JournalArticleLocalServiceUtil {
 	 */
 	public static String getUniqueUrlTitle(
 			long groupId, String articleId, String urlTitle)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getUniqueUrlTitle(groupId, articleId, urlTitle);
 	}
@@ -2733,7 +2662,7 @@ public class JournalArticleLocalServiceUtil {
 	 */
 	public static boolean isLatestVersion(
 			long groupId, String articleId, double version)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().isLatestVersion(groupId, articleId, version);
 	}
@@ -2754,20 +2683,18 @@ public class JournalArticleLocalServiceUtil {
 	 */
 	public static boolean isLatestVersion(
 			long groupId, String articleId, double version, int status)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().isLatestVersion(
 			groupId, articleId, version, status);
 	}
 
-	public static boolean isListable(
-		com.liferay.journal.model.JournalArticle article) {
-
+	public static boolean isListable(JournalArticle article) {
 		return getService().isListable(article);
 	}
 
 	public static boolean isRenderable(
-		com.liferay.journal.model.JournalArticle article,
+		JournalArticle article,
 		com.liferay.portal.kernel.portlet.PortletRequestModel
 			portletRequestModel,
 		com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay) {
@@ -2791,9 +2718,9 @@ public class JournalArticleLocalServiceUtil {
 	 #moveArticle(long, String, long, ServiceContext)}
 	 */
 	@Deprecated
-	public static com.liferay.journal.model.JournalArticle moveArticle(
+	public static JournalArticle moveArticle(
 			long groupId, String articleId, long newFolderId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().moveArticle(groupId, articleId, newFolderId);
 	}
@@ -2817,10 +2744,10 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the updated web content article, which was moved to a new folder
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.journal.model.JournalArticle moveArticle(
+	public static JournalArticle moveArticle(
 			long groupId, String articleId, long newFolderId,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().moveArticle(
 			groupId, articleId, newFolderId, serviceContext);
@@ -2846,11 +2773,10 @@ public class JournalArticleLocalServiceUtil {
 	 Bin to a new folder
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.journal.model.JournalArticle moveArticleFromTrash(
-			long userId, long groupId,
-			com.liferay.journal.model.JournalArticle article, long newFolderId,
+	public static JournalArticle moveArticleFromTrash(
+			long userId, long groupId, JournalArticle article, long newFolderId,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().moveArticleFromTrash(
 			userId, groupId, article, newFolderId, serviceContext);
@@ -2867,9 +2793,9 @@ public class JournalArticleLocalServiceUtil {
 	 Bin
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.journal.model.JournalArticle moveArticleToTrash(
-			long userId, com.liferay.journal.model.JournalArticle article)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static JournalArticle moveArticleToTrash(
+			long userId, JournalArticle article)
+		throws PortalException {
 
 		return getService().moveArticleToTrash(userId, article);
 	}
@@ -2886,9 +2812,9 @@ public class JournalArticleLocalServiceUtil {
 	 article was found
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.journal.model.JournalArticle moveArticleToTrash(
+	public static JournalArticle moveArticleToTrash(
 			long userId, long groupId, String articleId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().moveArticleToTrash(userId, groupId, articleId);
 	}
@@ -2911,9 +2837,7 @@ public class JournalArticleLocalServiceUtil {
 	 * @param companyId the primary key of the web content article's company
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static void rebuildTree(long companyId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static void rebuildTree(long companyId) throws PortalException {
 		getService().rebuildTree(companyId);
 	}
 
@@ -2928,9 +2852,9 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the updated web content article with the locale removed
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.journal.model.JournalArticle removeArticleLocale(
+	public static JournalArticle removeArticleLocale(
 			long groupId, String articleId, double version, String languageId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().removeArticleLocale(
 			groupId, articleId, version, languageId);
@@ -2945,10 +2869,9 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the restored web content article from the Recycle Bin
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.journal.model.JournalArticle
-			restoreArticleFromTrash(
-				long userId, com.liferay.journal.model.JournalArticle article)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static JournalArticle restoreArticleFromTrash(
+			long userId, JournalArticle article)
+		throws PortalException {
 
 		return getService().restoreArticleFromTrash(userId, article);
 	}
@@ -2985,18 +2908,15 @@ public class JournalArticleLocalServiceUtil {
 	 start, int end)}
 	 */
 	@Deprecated
-	public static java.util.List<com.liferay.journal.model.JournalArticle>
-		search(
-			long groupId, java.util.List<Long> folderIds, int status, int start,
-			int end) {
+	public static List<JournalArticle> search(
+		long groupId, List<Long> folderIds, int status, int start, int end) {
 
 		return getService().search(groupId, folderIds, status, start, end);
 	}
 
-	public static java.util.List<com.liferay.journal.model.JournalArticle>
-		search(
-			long groupId, java.util.List<Long> folderIds,
-			java.util.Locale locale, int status, int start, int end) {
+	public static List<JournalArticle> search(
+		long groupId, List<Long> folderIds, java.util.Locale locale, int status,
+		int start, int end) {
 
 		return getService().search(
 			groupId, folderIds, locale, status, start, end);
@@ -3028,8 +2948,8 @@ public class JournalArticleLocalServiceUtil {
 	 return (not inclusive)
 	 * @return the matching web content articles
 	 */
-	public static java.util.List<com.liferay.journal.model.JournalArticle>
-		search(long groupId, long folderId, int status, int start, int end) {
+	public static List<JournalArticle> search(
+		long groupId, long folderId, int status, int start, int end) {
 
 		return getService().search(groupId, folderId, status, start, end);
 	}
@@ -3092,15 +3012,12 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the range of matching web content articles ordered by the
 	 comparator
 	 */
-	public static java.util.List<com.liferay.journal.model.JournalArticle>
-		search(
-			long companyId, long groupId, java.util.List<Long> folderIds,
-			long classNameId, String keywords, Double version,
-			String ddmStructureKey, String ddmTemplateKey,
-			java.util.Date displayDateGT, java.util.Date displayDateLT,
-			int status, java.util.Date reviewDate, int start, int end,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<com.liferay.journal.model.JournalArticle> obc) {
+	public static List<JournalArticle> search(
+		long companyId, long groupId, List<Long> folderIds, long classNameId,
+		String keywords, Double version, String ddmStructureKey,
+		String ddmTemplateKey, java.util.Date displayDateGT,
+		java.util.Date displayDateLT, int status, java.util.Date reviewDate,
+		int start, int end, OrderByComparator<JournalArticle> obc) {
 
 		return getService().search(
 			companyId, groupId, folderIds, classNameId, keywords, version,
@@ -3173,16 +3090,13 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the range of matching web content articles ordered by the
 	 comparator
 	 */
-	public static java.util.List<com.liferay.journal.model.JournalArticle>
-		search(
-			long companyId, long groupId, java.util.List<Long> folderIds,
-			long classNameId, String articleId, Double version, String title,
-			String description, String content, String ddmStructureKey,
-			String ddmTemplateKey, java.util.Date displayDateGT,
-			java.util.Date displayDateLT, int status, java.util.Date reviewDate,
-			boolean andOperator, int start, int end,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<com.liferay.journal.model.JournalArticle> obc) {
+	public static List<JournalArticle> search(
+		long companyId, long groupId, List<Long> folderIds, long classNameId,
+		String articleId, Double version, String title, String description,
+		String content, String ddmStructureKey, String ddmTemplateKey,
+		java.util.Date displayDateGT, java.util.Date displayDateLT, int status,
+		java.util.Date reviewDate, boolean andOperator, int start, int end,
+		OrderByComparator<JournalArticle> obc) {
 
 		return getService().search(
 			companyId, groupId, folderIds, classNameId, articleId, version,
@@ -3255,16 +3169,13 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the range of matching web content articles ordered by the
 	 comparator
 	 */
-	public static java.util.List<com.liferay.journal.model.JournalArticle>
-		search(
-			long companyId, long groupId, java.util.List<Long> folderIds,
-			long classNameId, String articleId, Double version, String title,
-			String description, String content, String[] ddmStructureKeys,
-			String[] ddmTemplateKeys, java.util.Date displayDateGT,
-			java.util.Date displayDateLT, int status, java.util.Date reviewDate,
-			boolean andOperator, int start, int end,
-			com.liferay.portal.kernel.util.OrderByComparator
-				<com.liferay.journal.model.JournalArticle> obc) {
+	public static List<JournalArticle> search(
+		long companyId, long groupId, List<Long> folderIds, long classNameId,
+		String articleId, Double version, String title, String description,
+		String content, String[] ddmStructureKeys, String[] ddmTemplateKeys,
+		java.util.Date displayDateGT, java.util.Date displayDateLT, int status,
+		java.util.Date reviewDate, boolean andOperator, int start, int end,
+		OrderByComparator<JournalArticle> obc) {
 
 		return getService().search(
 			companyId, groupId, folderIds, classNameId, articleId, version,
@@ -3319,10 +3230,10 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the matching web content articles ordered by <code>sort</code>
 	 */
 	public static com.liferay.portal.kernel.search.Hits search(
-		long companyId, long groupId, java.util.List<Long> folderIds,
-		long classNameId, String ddmStructureKey, String ddmTemplateKey,
-		String keywords, java.util.LinkedHashMap<String, Object> params,
-		int start, int end, com.liferay.portal.kernel.search.Sort sort) {
+		long companyId, long groupId, List<Long> folderIds, long classNameId,
+		String ddmStructureKey, String ddmTemplateKey, String keywords,
+		java.util.LinkedHashMap<String, Object> params, int start, int end,
+		com.liferay.portal.kernel.search.Sort sort) {
 
 		return getService().search(
 			companyId, groupId, folderIds, classNameId, ddmStructureKey,
@@ -3387,12 +3298,11 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the matching web content articles ordered by <code>sort</code>
 	 */
 	public static com.liferay.portal.kernel.search.Hits search(
-		long companyId, long groupId, java.util.List<Long> folderIds,
-		long classNameId, String articleId, String title, String description,
-		String content, int status, String ddmStructureKey,
-		String ddmTemplateKey, java.util.LinkedHashMap<String, Object> params,
-		boolean andSearch, int start, int end,
-		com.liferay.portal.kernel.search.Sort sort) {
+		long companyId, long groupId, List<Long> folderIds, long classNameId,
+		String articleId, String title, String description, String content,
+		int status, String ddmStructureKey, String ddmTemplateKey,
+		java.util.LinkedHashMap<String, Object> params, boolean andSearch,
+		int start, int end, com.liferay.portal.kernel.search.Sort sort) {
 
 		return getService().search(
 			companyId, groupId, folderIds, classNameId, articleId, title,
@@ -3407,12 +3317,12 @@ public class JournalArticleLocalServiceUtil {
 	 */
 	@Deprecated
 	public static com.liferay.portal.kernel.search.Hits search(
-		long companyId, long groupId, java.util.List<Long> folderIds,
-		long classNameId, String articleId, String title, String description,
-		String content, String type, String statusString,
-		String ddmStructureKey, String ddmTemplateKey,
-		java.util.LinkedHashMap<String, Object> params, boolean andSearch,
-		int start, int end, com.liferay.portal.kernel.search.Sort sort) {
+		long companyId, long groupId, List<Long> folderIds, long classNameId,
+		String articleId, String title, String description, String content,
+		String type, String statusString, String ddmStructureKey,
+		String ddmTemplateKey, java.util.LinkedHashMap<String, Object> params,
+		boolean andSearch, int start, int end,
+		com.liferay.portal.kernel.search.Sort sort) {
 
 		return getService().search(
 			companyId, groupId, folderIds, classNameId, articleId, title,
@@ -3453,7 +3363,7 @@ public class JournalArticleLocalServiceUtil {
 	public static com.liferay.portal.kernel.search.Hits search(
 			long groupId, long userId, long creatorUserId, int status,
 			int start, int end)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().search(
 			groupId, userId, creatorUserId, status, start, end);
@@ -3472,7 +3382,7 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the number of matching web content articles
 	 */
 	public static int searchCount(
-		long groupId, java.util.List<Long> folderIds, int status) {
+		long groupId, List<Long> folderIds, int status) {
 
 		return getService().searchCount(groupId, folderIds, status);
 	}
@@ -3533,11 +3443,10 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the number of matching web content articles
 	 */
 	public static int searchCount(
-		long companyId, long groupId, java.util.List<Long> folderIds,
-		long classNameId, String keywords, Double version,
-		String ddmStructureKey, String ddmTemplateKey,
-		java.util.Date displayDateGT, java.util.Date displayDateLT, int status,
-		java.util.Date reviewDate) {
+		long companyId, long groupId, List<Long> folderIds, long classNameId,
+		String keywords, Double version, String ddmStructureKey,
+		String ddmTemplateKey, java.util.Date displayDateGT,
+		java.util.Date displayDateLT, int status, java.util.Date reviewDate) {
 
 		return getService().searchCount(
 			companyId, groupId, folderIds, classNameId, keywords, version,
@@ -3592,12 +3501,11 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the number of matching web content articles
 	 */
 	public static int searchCount(
-		long companyId, long groupId, java.util.List<Long> folderIds,
-		long classNameId, String articleId, Double version, String title,
-		String description, String content, String ddmStructureKey,
-		String ddmTemplateKey, java.util.Date displayDateGT,
-		java.util.Date displayDateLT, int status, java.util.Date reviewDate,
-		boolean andOperator) {
+		long companyId, long groupId, List<Long> folderIds, long classNameId,
+		String articleId, Double version, String title, String description,
+		String content, String ddmStructureKey, String ddmTemplateKey,
+		java.util.Date displayDateGT, java.util.Date displayDateLT, int status,
+		java.util.Date reviewDate, boolean andOperator) {
 
 		return getService().searchCount(
 			companyId, groupId, folderIds, classNameId, articleId, version,
@@ -3654,12 +3562,11 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the number of matching web content articles
 	 */
 	public static int searchCount(
-		long companyId, long groupId, java.util.List<Long> folderIds,
-		long classNameId, String articleId, Double version, String title,
-		String description, String content, String[] ddmStructureKeys,
-		String[] ddmTemplateKeys, java.util.Date displayDateGT,
-		java.util.Date displayDateLT, int status, java.util.Date reviewDate,
-		boolean andOperator) {
+		long companyId, long groupId, List<Long> folderIds, long classNameId,
+		String articleId, Double version, String title, String description,
+		String content, String[] ddmStructureKeys, String[] ddmTemplateKeys,
+		java.util.Date displayDateGT, java.util.Date displayDateLT, int status,
+		java.util.Date reviewDate, boolean andOperator) {
 
 		return getService().searchCount(
 			companyId, groupId, folderIds, classNameId, articleId, version,
@@ -3721,12 +3628,12 @@ public class JournalArticleLocalServiceUtil {
 	 * @throws PortalException if a portal exception occurred
 	 */
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult
-		<com.liferay.journal.model.JournalArticle> searchJournalArticles(
-				long companyId, long groupId, java.util.List<Long> folderIds,
+		<JournalArticle> searchJournalArticles(
+				long companyId, long groupId, List<Long> folderIds,
 				long classNameId, String ddmStructureKey, String ddmTemplateKey,
 				String keywords, java.util.LinkedHashMap<String, Object> params,
 				int start, int end, com.liferay.portal.kernel.search.Sort sort)
-			throws com.liferay.portal.kernel.exception.PortalException {
+			throws PortalException {
 
 		return getService().searchJournalArticles(
 			companyId, groupId, folderIds, classNameId, ddmStructureKey,
@@ -3799,15 +3706,15 @@ public class JournalArticleLocalServiceUtil {
 	 * @throws PortalException if a portal exception occurred
 	 */
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult
-		<com.liferay.journal.model.JournalArticle> searchJournalArticles(
-				long companyId, long groupId, java.util.List<Long> folderIds,
+		<JournalArticle> searchJournalArticles(
+				long companyId, long groupId, List<Long> folderIds,
 				long classNameId, String articleId, String title,
 				String description, String content, int status,
 				String ddmStructureKey, String ddmTemplateKey,
 				java.util.LinkedHashMap<String, Object> params,
 				boolean andSearch, int start, int end,
 				com.liferay.portal.kernel.search.Sort sort)
-			throws com.liferay.portal.kernel.exception.PortalException {
+			throws PortalException {
 
 		return getService().searchJournalArticles(
 			companyId, groupId, folderIds, classNameId, articleId, title,
@@ -3855,10 +3762,10 @@ public class JournalArticleLocalServiceUtil {
 	 * @throws PortalException if a portal exception occurred
 	 */
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult
-		<com.liferay.journal.model.JournalArticle> searchJournalArticles(
+		<JournalArticle> searchJournalArticles(
 				long groupId, long userId, long creatorUserId, int status,
 				int start, int end)
-			throws com.liferay.portal.kernel.exception.PortalException {
+			throws PortalException {
 
 		return getService().searchJournalArticles(
 			groupId, userId, creatorUserId, status, start, end);
@@ -3877,7 +3784,7 @@ public class JournalArticleLocalServiceUtil {
 
 	public static void setTreePaths(
 			long folderId, String treePath, boolean reindex)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().setTreePaths(folderId, treePath, reindex);
 	}
@@ -3892,7 +3799,7 @@ public class JournalArticleLocalServiceUtil {
 	 * @throws PortalException if a portal exception occurred
 	 */
 	public static void subscribe(long userId, long groupId, long articleId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().subscribe(userId, groupId, articleId);
 	}
@@ -3908,7 +3815,7 @@ public class JournalArticleLocalServiceUtil {
 	 */
 	public static void subscribeStructure(
 			long groupId, long userId, long ddmStructureId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().subscribeStructure(groupId, userId, ddmStructureId);
 	}
@@ -3923,7 +3830,7 @@ public class JournalArticleLocalServiceUtil {
 	 * @throws PortalException if a portal exception occurred
 	 */
 	public static void unsubscribe(long userId, long groupId, long articleId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().unsubscribe(userId, groupId, articleId);
 	}
@@ -3939,7 +3846,7 @@ public class JournalArticleLocalServiceUtil {
 	 */
 	public static void unsubscribeStructure(
 			long groupId, long userId, long ddmStructureId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().unsubscribeStructure(groupId, userId, ddmStructureId);
 	}
@@ -4029,24 +3936,23 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the updated web content article
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.journal.model.JournalArticle updateArticle(
+	public static JournalArticle updateArticle(
 			long userId, long groupId, long folderId, String articleId,
-			double version, java.util.Map<java.util.Locale, String> titleMap,
-			java.util.Map<java.util.Locale, String> descriptionMap,
-			java.util.Map<java.util.Locale, String> friendlyURLMap,
-			String content, String ddmStructureKey, String ddmTemplateKey,
-			String layoutUuid, int displayDateMonth, int displayDateDay,
-			int displayDateYear, int displayDateHour, int displayDateMinute,
-			int expirationDateMonth, int expirationDateDay,
-			int expirationDateYear, int expirationDateHour,
-			int expirationDateMinute, boolean neverExpire, int reviewDateMonth,
-			int reviewDateDay, int reviewDateYear, int reviewDateHour,
-			int reviewDateMinute, boolean neverReview, boolean indexable,
-			boolean smallImage, String smallImageURL,
-			java.io.File smallImageFile, java.util.Map<String, byte[]> images,
-			String articleURL,
+			double version, Map<java.util.Locale, String> titleMap,
+			Map<java.util.Locale, String> descriptionMap,
+			Map<java.util.Locale, String> friendlyURLMap, String content,
+			String ddmStructureKey, String ddmTemplateKey, String layoutUuid,
+			int displayDateMonth, int displayDateDay, int displayDateYear,
+			int displayDateHour, int displayDateMinute, int expirationDateMonth,
+			int expirationDateDay, int expirationDateYear,
+			int expirationDateHour, int expirationDateMinute,
+			boolean neverExpire, int reviewDateMonth, int reviewDateDay,
+			int reviewDateYear, int reviewDateHour, int reviewDateMinute,
+			boolean neverReview, boolean indexable, boolean smallImage,
+			String smallImageURL, java.io.File smallImageFile,
+			Map<String, byte[]> images, String articleURL,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().updateArticle(
 			userId, groupId, folderId, articleId, version, titleMap,
@@ -4093,13 +3999,13 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the updated web content article
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.journal.model.JournalArticle updateArticle(
+	public static JournalArticle updateArticle(
 			long userId, long groupId, long folderId, String articleId,
-			double version, java.util.Map<java.util.Locale, String> titleMap,
-			java.util.Map<java.util.Locale, String> descriptionMap,
-			String content, String layoutUuid,
+			double version, Map<java.util.Locale, String> titleMap,
+			Map<java.util.Locale, String> descriptionMap, String content,
+			String layoutUuid,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().updateArticle(
 			userId, groupId, folderId, articleId, version, titleMap,
@@ -4189,23 +4095,22 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the updated web content article
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.journal.model.JournalArticle updateArticle(
+	public static JournalArticle updateArticle(
 			long userId, long groupId, long folderId, String articleId,
-			double version, java.util.Map<java.util.Locale, String> titleMap,
-			java.util.Map<java.util.Locale, String> descriptionMap,
-			String content, String ddmStructureKey, String ddmTemplateKey,
-			String layoutUuid, int displayDateMonth, int displayDateDay,
-			int displayDateYear, int displayDateHour, int displayDateMinute,
-			int expirationDateMonth, int expirationDateDay,
-			int expirationDateYear, int expirationDateHour,
-			int expirationDateMinute, boolean neverExpire, int reviewDateMonth,
-			int reviewDateDay, int reviewDateYear, int reviewDateHour,
-			int reviewDateMinute, boolean neverReview, boolean indexable,
-			boolean smallImage, String smallImageURL,
-			java.io.File smallImageFile, java.util.Map<String, byte[]> images,
-			String articleURL,
+			double version, Map<java.util.Locale, String> titleMap,
+			Map<java.util.Locale, String> descriptionMap, String content,
+			String ddmStructureKey, String ddmTemplateKey, String layoutUuid,
+			int displayDateMonth, int displayDateDay, int displayDateYear,
+			int displayDateHour, int displayDateMinute, int expirationDateMonth,
+			int expirationDateDay, int expirationDateYear,
+			int expirationDateHour, int expirationDateMinute,
+			boolean neverExpire, int reviewDateMonth, int reviewDateDay,
+			int reviewDateYear, int reviewDateHour, int reviewDateMinute,
+			boolean neverReview, boolean indexable, boolean smallImage,
+			String smallImageURL, java.io.File smallImageFile,
+			Map<String, byte[]> images, String articleURL,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().updateArticle(
 			userId, groupId, folderId, articleId, version, titleMap,
@@ -4247,11 +4152,11 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the updated web content article
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.journal.model.JournalArticle updateArticle(
+	public static JournalArticle updateArticle(
 			long userId, long groupId, long folderId, String articleId,
 			double version, String content,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().updateArticle(
 			userId, groupId, folderId, articleId, version, content,
@@ -4266,23 +4171,21 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the updated web content article
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.journal.model.JournalArticle updateArticle(
-			long id, String urlTitle)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static JournalArticle updateArticle(long id, String urlTitle)
+		throws PortalException {
 
 		return getService().updateArticle(id, urlTitle);
 	}
 
-	public static com.liferay.journal.model.JournalArticle
-			updateArticleDefaultValues(
-				long userId, long groupId, String articleId,
-				java.util.Map<java.util.Locale, String> titleMap,
-				java.util.Map<java.util.Locale, String> descriptionMap,
-				String content, String ddmStructureKey, String ddmTemplateKey,
-				String layoutUuid, boolean indexable, boolean smallImage,
-				String smallImageURL, java.io.File smallImageFile,
-				com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static JournalArticle updateArticleDefaultValues(
+			long userId, long groupId, String articleId,
+			Map<java.util.Locale, String> titleMap,
+			Map<java.util.Locale, String> descriptionMap, String content,
+			String ddmStructureKey, String ddmTemplateKey, String layoutUuid,
+			boolean indexable, boolean smallImage, String smallImageURL,
+			java.io.File smallImageFile,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws PortalException {
 
 		return getService().updateArticleDefaultValues(
 			userId, groupId, articleId, titleMap, descriptionMap, content,
@@ -4311,13 +4214,12 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the updated web content article
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.journal.model.JournalArticle
-			updateArticleTranslation(
-				long groupId, String articleId, double version,
-				java.util.Locale locale, String title, String description,
-				String content, java.util.Map<String, byte[]> images,
-				com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static JournalArticle updateArticleTranslation(
+			long groupId, String articleId, double version,
+			java.util.Locale locale, String title, String description,
+			String content, Map<String, byte[]> images,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws PortalException {
 
 		return getService().updateArticleTranslation(
 			groupId, articleId, version, locale, title, description, content,
@@ -4342,10 +4244,9 @@ public class JournalArticleLocalServiceUtil {
 	 */
 	@Deprecated
 	public static void updateAsset(
-			long userId, com.liferay.journal.model.JournalArticle article,
-			long[] assetCategoryIds, String[] assetTagNames,
-			long[] assetLinkEntryIds)
-		throws com.liferay.portal.kernel.exception.PortalException {
+			long userId, JournalArticle article, long[] assetCategoryIds,
+			String[] assetTagNames, long[] assetLinkEntryIds)
+		throws PortalException {
 
 		getService().updateAsset(
 			userId, article, assetCategoryIds, assetTagNames,
@@ -4366,10 +4267,9 @@ public class JournalArticleLocalServiceUtil {
 	 * @throws PortalException if a portal exception occurred
 	 */
 	public static void updateAsset(
-			long userId, com.liferay.journal.model.JournalArticle article,
-			long[] assetCategoryIds, String[] assetTagNames,
-			long[] assetLinkEntryIds, Double priority)
-		throws com.liferay.portal.kernel.exception.PortalException {
+			long userId, JournalArticle article, long[] assetCategoryIds,
+			String[] assetTagNames, long[] assetLinkEntryIds, Double priority)
+		throws PortalException {
 
 		getService().updateAsset(
 			userId, article, assetCategoryIds, assetTagNames, assetLinkEntryIds,
@@ -4392,9 +4292,9 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the updated web content article
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.journal.model.JournalArticle updateContent(
+	public static JournalArticle updateContent(
 			long groupId, String articleId, double version, String content)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().updateContent(groupId, articleId, version, content);
 	}
@@ -4432,8 +4332,8 @@ public class JournalArticleLocalServiceUtil {
 	 * @param journalArticle the journal article
 	 * @return the journal article that was updated
 	 */
-	public static com.liferay.journal.model.JournalArticle updateJournalArticle(
-		com.liferay.journal.model.JournalArticle journalArticle) {
+	public static JournalArticle updateJournalArticle(
+		JournalArticle journalArticle) {
 
 		return getService().updateJournalArticle(journalArticle);
 	}
@@ -4459,12 +4359,11 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the updated web content article
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.journal.model.JournalArticle updateStatus(
-			long userId, com.liferay.journal.model.JournalArticle article,
-			int status, String articleURL,
+	public static JournalArticle updateStatus(
+			long userId, JournalArticle article, int status, String articleURL,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext,
-			java.util.Map<String, java.io.Serializable> workflowContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+			Map<String, Serializable> workflowContext)
+		throws PortalException {
 
 		return getService().updateStatus(
 			userId, article, status, articleURL, serviceContext,
@@ -4490,11 +4389,11 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the updated web content article
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.journal.model.JournalArticle updateStatus(
+	public static JournalArticle updateStatus(
 			long userId, long classPK, int status,
-			java.util.Map<String, java.io.Serializable> workflowContext,
+			Map<String, Serializable> workflowContext,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().updateStatus(
 			userId, classPK, status, workflowContext, serviceContext);
@@ -4520,12 +4419,12 @@ public class JournalArticleLocalServiceUtil {
 	 * @return the updated web content article
 	 * @throws PortalException if a portal exception occurred
 	 */
-	public static com.liferay.journal.model.JournalArticle updateStatus(
+	public static JournalArticle updateStatus(
 			long userId, long groupId, String articleId, double version,
 			int status, String articleURL,
-			java.util.Map<String, java.io.Serializable> workflowContext,
+			Map<String, Serializable> workflowContext,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().updateStatus(
 			userId, groupId, articleId, version, status, articleURL,
@@ -4559,27 +4458,9 @@ public class JournalArticleLocalServiceUtil {
 	}
 
 	public static JournalArticleLocalService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<JournalArticleLocalService, JournalArticleLocalService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			JournalArticleLocalService.class);
-
-		ServiceTracker<JournalArticleLocalService, JournalArticleLocalService>
-			serviceTracker =
-				new ServiceTracker
-					<JournalArticleLocalService, JournalArticleLocalService>(
-						bundle.getBundleContext(),
-						JournalArticleLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile JournalArticleLocalService _service;
 
 }

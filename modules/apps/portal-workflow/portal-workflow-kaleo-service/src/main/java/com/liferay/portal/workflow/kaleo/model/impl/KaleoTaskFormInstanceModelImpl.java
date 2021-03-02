@@ -413,6 +413,8 @@ public class KaleoTaskFormInstanceModelImpl
 
 	@Override
 	public void setKaleoTaskFormInstanceId(long kaleoTaskFormInstanceId) {
+		_columnBitmask = -1L;
+
 		_kaleoTaskFormInstanceId = kaleoTaskFormInstanceId;
 	}
 

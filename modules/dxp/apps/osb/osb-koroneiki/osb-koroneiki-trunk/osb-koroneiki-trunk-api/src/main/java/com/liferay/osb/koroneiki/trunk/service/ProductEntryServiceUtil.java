@@ -14,9 +14,10 @@
 
 package com.liferay.osb.koroneiki.trunk.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.koroneiki.trunk.model.ProductEntry;
+import com.liferay.portal.kernel.exception.PortalException;
+
+import java.util.List;
 
 /**
  * Provides the remote service utility for ProductEntry. This utility wraps
@@ -37,27 +38,23 @@ public class ProductEntryServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.osb.koroneiki.trunk.service.impl.ProductEntryServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.osb.koroneiki.trunk.model.ProductEntry
-			addProductEntry(
-				String name,
-				java.util.List
-					<com.liferay.osb.koroneiki.trunk.model.ProductField>
-						productFields)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductEntry addProductEntry(
+			String name,
+			List<com.liferay.osb.koroneiki.trunk.model.ProductField>
+				productFields)
+		throws PortalException {
 
 		return getService().addProductEntry(name, productFields);
 	}
 
-	public static com.liferay.osb.koroneiki.trunk.model.ProductEntry
-			deleteProductEntry(long productEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductEntry deleteProductEntry(long productEntryId)
+		throws PortalException {
 
 		return getService().deleteProductEntry(productEntryId);
 	}
 
-	public static com.liferay.osb.koroneiki.trunk.model.ProductEntry
-			deleteProductEntry(String productEntryKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductEntry deleteProductEntry(String productEntryKey)
+		throws PortalException {
 
 		return getService().deleteProductEntry(productEntryKey);
 	}
@@ -71,101 +68,75 @@ public class ProductEntryServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.trunk.model.ProductEntry> getProductEntries(
-				int start, int end)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<ProductEntry> getProductEntries(int start, int end)
+		throws PortalException {
 
 		return getService().getProductEntries(start, end);
 	}
 
-	public static java.util.List
-		<com.liferay.osb.koroneiki.trunk.model.ProductEntry> getProductEntries(
-				String domain, String entityName, String entityId, int start,
-				int end)
-			throws com.liferay.portal.kernel.exception.PortalException {
+	public static List<ProductEntry> getProductEntries(
+			String domain, String entityName, String entityId, int start,
+			int end)
+		throws PortalException {
 
 		return getService().getProductEntries(
 			domain, entityName, entityId, start, end);
 	}
 
-	public static int getProductEntriesCount()
-		throws com.liferay.portal.kernel.exception.PortalException {
-
+	public static int getProductEntriesCount() throws PortalException {
 		return getService().getProductEntriesCount();
 	}
 
 	public static int getProductEntriesCount(
 			String domain, String entityName, String entityId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		return getService().getProductEntriesCount(
 			domain, entityName, entityId);
 	}
 
-	public static com.liferay.osb.koroneiki.trunk.model.ProductEntry
-			getProductEntry(long productEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductEntry getProductEntry(long productEntryId)
+		throws PortalException {
 
 		return getService().getProductEntry(productEntryId);
 	}
 
-	public static com.liferay.osb.koroneiki.trunk.model.ProductEntry
-			getProductEntry(String productEntryKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductEntry getProductEntry(String productEntryKey)
+		throws PortalException {
 
 		return getService().getProductEntry(productEntryKey);
 	}
 
-	public static com.liferay.osb.koroneiki.trunk.model.ProductEntry
-			getProductEntryByName(String name)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductEntry getProductEntryByName(String name)
+		throws PortalException {
 
 		return getService().getProductEntryByName(name);
 	}
 
-	public static com.liferay.osb.koroneiki.trunk.model.ProductEntry
-			updateProductEntry(
-				long productEntryId, String name,
-				java.util.List
-					<com.liferay.osb.koroneiki.trunk.model.ProductField>
-						productFields)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductEntry updateProductEntry(
+			long productEntryId, String name,
+			List<com.liferay.osb.koroneiki.trunk.model.ProductField>
+				productFields)
+		throws PortalException {
 
 		return getService().updateProductEntry(
 			productEntryId, name, productFields);
 	}
 
-	public static com.liferay.osb.koroneiki.trunk.model.ProductEntry
-			updateProductEntry(
-				String productEntryKey, String name,
-				java.util.List
-					<com.liferay.osb.koroneiki.trunk.model.ProductField>
-						productFields)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ProductEntry updateProductEntry(
+			String productEntryKey, String name,
+			List<com.liferay.osb.koroneiki.trunk.model.ProductField>
+				productFields)
+		throws PortalException {
 
 		return getService().updateProductEntry(
 			productEntryKey, name, productFields);
 	}
 
 	public static ProductEntryService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker<ProductEntryService, ProductEntryService>
-		_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(ProductEntryService.class);
-
-		ServiceTracker<ProductEntryService, ProductEntryService>
-			serviceTracker =
-				new ServiceTracker<ProductEntryService, ProductEntryService>(
-					bundle.getBundleContext(), ProductEntryService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ProductEntryService _service;
 
 }

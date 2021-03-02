@@ -14,9 +14,8 @@
 
 package com.liferay.osb.koroneiki.scion.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.koroneiki.scion.model.AuthenticationToken;
+import com.liferay.portal.kernel.exception.PortalException;
 
 /**
  * Provides the remote service utility for AuthenticationToken. This utility wraps
@@ -37,18 +36,17 @@ public class AuthenticationTokenServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.osb.koroneiki.scion.service.impl.AuthenticationTokenServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.osb.koroneiki.scion.model.AuthenticationToken
-			addAuthenticationToken(
-				long serviceProducerId, String name, String token)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AuthenticationToken addAuthenticationToken(
+			long serviceProducerId, String name, String token)
+		throws PortalException {
 
 		return getService().addAuthenticationToken(
 			serviceProducerId, name, token);
 	}
 
-	public static com.liferay.osb.koroneiki.scion.model.AuthenticationToken
-			deleteAuthenticationToken(long authenticationTokenId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AuthenticationToken deleteAuthenticationToken(
+			long authenticationTokenId)
+		throws PortalException {
 
 		return getService().deleteAuthenticationToken(authenticationTokenId);
 	}
@@ -62,43 +60,25 @@ public class AuthenticationTokenServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.osb.koroneiki.scion.model.AuthenticationToken
-			updateAuthenticationToken(long authenticationTokenId, String name)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AuthenticationToken updateAuthenticationToken(
+			long authenticationTokenId, String name)
+		throws PortalException {
 
 		return getService().updateAuthenticationToken(
 			authenticationTokenId, name);
 	}
 
-	public static com.liferay.osb.koroneiki.scion.model.AuthenticationToken
-			updateStatus(long authenticationTokenId, int status)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static AuthenticationToken updateStatus(
+			long authenticationTokenId, int status)
+		throws PortalException {
 
 		return getService().updateStatus(authenticationTokenId, status);
 	}
 
 	public static AuthenticationTokenService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<AuthenticationTokenService, AuthenticationTokenService>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			AuthenticationTokenService.class);
-
-		ServiceTracker<AuthenticationTokenService, AuthenticationTokenService>
-			serviceTracker =
-				new ServiceTracker
-					<AuthenticationTokenService, AuthenticationTokenService>(
-						bundle.getBundleContext(),
-						AuthenticationTokenService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile AuthenticationTokenService _service;
 
 }

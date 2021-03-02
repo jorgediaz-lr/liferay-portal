@@ -14,9 +14,8 @@
 
 package com.liferay.osb.koroneiki.taproot.service;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
+import com.liferay.osb.koroneiki.taproot.model.ContactAccountRole;
+import com.liferay.portal.kernel.exception.PortalException;
 
 /**
  * Provides the remote service utility for ContactAccountRole. This utility wraps
@@ -37,19 +36,17 @@ public class ContactAccountRoleServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.osb.koroneiki.taproot.service.impl.ContactAccountRoleServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.osb.koroneiki.taproot.model.ContactAccountRole
-			addContactAccountRole(
-				long contactId, long accountId, long contactRoleId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ContactAccountRole addContactAccountRole(
+			long contactId, long accountId, long contactRoleId)
+		throws PortalException {
 
 		return getService().addContactAccountRole(
 			contactId, accountId, contactRoleId);
 	}
 
-	public static com.liferay.osb.koroneiki.taproot.model.ContactAccountRole
-			deleteContactAccountRole(
-				long contactId, long accountId, long contactRoleId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static ContactAccountRole deleteContactAccountRole(
+			long contactId, long accountId, long contactRoleId)
+		throws PortalException {
 
 		return getService().deleteContactAccountRole(
 			contactId, accountId, contactRoleId);
@@ -57,7 +54,7 @@ public class ContactAccountRoleServiceUtil {
 
 	public static void deleteContactAccountRoles(
 			long contactId, long accountId, String contactRoleType)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws PortalException {
 
 		getService().deleteContactAccountRoles(
 			contactId, accountId, contactRoleType);
@@ -73,26 +70,9 @@ public class ContactAccountRoleServiceUtil {
 	}
 
 	public static ContactAccountRoleService getService() {
-		return _serviceTracker.getService();
+		return _service;
 	}
 
-	private static ServiceTracker
-		<ContactAccountRoleService, ContactAccountRoleService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			ContactAccountRoleService.class);
-
-		ServiceTracker<ContactAccountRoleService, ContactAccountRoleService>
-			serviceTracker =
-				new ServiceTracker
-					<ContactAccountRoleService, ContactAccountRoleService>(
-						bundle.getBundleContext(),
-						ContactAccountRoleService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ContactAccountRoleService _service;
 
 }
