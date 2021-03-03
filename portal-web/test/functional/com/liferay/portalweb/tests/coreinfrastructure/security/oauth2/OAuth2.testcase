@@ -467,6 +467,18 @@ definition {
 	test AuthorizeExternalApplication {
 		property custom.properties = "virtual.hosts.default.site.name=Guest";
 
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "System Settings");
+
+		SystemSettings.gotoConfiguration(
+			configurationCategory = "Security Tools",
+			configurationName = "Portal Cross-Origin Resource Sharing (CORS)",
+			configurationScope = "System Scope");
+
+		SystemSettings.addDefaultPortalCORS();
+
 		var clientId = "abc123";
 		var clientSecret = "abc123";
 		var portalURL = PropsUtil.get("portal.url");

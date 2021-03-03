@@ -45,6 +45,12 @@ definition {
 		Button.clickSave();
 	}
 
+	macro addDefaultPortalCORS {
+		Button.clickAdd();
+
+		Button.clickSave();
+	}
+
 	macro configureDisplayStyle {
 		Click(locator1 = "Dropdown#TRIGGER");
 
