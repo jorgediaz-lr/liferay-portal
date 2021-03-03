@@ -16,16 +16,16 @@ package com.liferay.osb.provisioning.license.service.impl;
 
 import com.liferay.osb.provisioning.license.exception.LicenseEntryNameException;
 import com.liferay.osb.provisioning.license.exception.LicenseEntryVersionException;
+import com.liferay.osb.provisioning.license.helper.constants.ProductVersion;
 import com.liferay.osb.provisioning.license.model.LicenseEntry;
 import com.liferay.osb.provisioning.license.service.base.LicenseEntryLocalServiceBaseImpl;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Validator;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
@@ -76,18 +76,19 @@ public class LicenseEntryLocalServiceImpl
 	public List<LicenseEntry> getLicenseEntriesByVersion(
 		String productKey, String version) {
 
-		List<LicenseEntry> licenseEntries = licenseEntryPersistence.findByProductKey(
-			productKey);
-		
+		List<LicenseEntry> licenseEntries =
+			licenseEntryPersistence.findByProductKey(productKey);
+
 		List<LicenseEntry> curlicenseEntries = new ArrayList<>();
-		
-		for(LicenseEntry licenseEntry : licenseEntries) {
-			if((Validator.isNull(licenseEntries.getVersionMin())|| 
-				ProductVersion.getOrder(licenseEntries.getVersionMin()) <= 
-				ProductVersion.getOrder(version)) && 
-				(Validator.isNull(licenseEntries.getVersionMax()) ||
-				ProductVersion.getOrder(version) <= 
-				ProductVersion.getOrder(licenseEntries.getVersionMax()))) {
+
+		for (LicenseEntry licenseEntry : licenseEntries) {
+			if ((Validator.isNull(licenseEntry.getVersionMin()) ||
+				 (ProductVersion.getOrder(licenseEntry.getVersionMin()) <=
+					 ProductVersion.getOrder(version))) &&
+				(Validator.isNull(licenseEntry.getVersionMax()) ||
+				 (ProductVersion.getOrder(version) <= ProductVersion.getOrder(
+					 licenseEntry.getVersionMax())))) {
+
 				curlicenseEntries.add(licenseEntry);
 			}
 		}

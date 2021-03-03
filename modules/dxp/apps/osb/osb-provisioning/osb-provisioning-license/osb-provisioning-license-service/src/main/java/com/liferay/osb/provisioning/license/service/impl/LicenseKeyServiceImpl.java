@@ -124,7 +124,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 	}
 
 	public LicenseKey addLicenseKey(
-			long userId, String name, long licenseEntryId, String productKey,
+			long userId, long licenseEntryId, String productKey,
 			String accountKey, String productPurchaseKey, String accountCode,
 			String accountName, String productVersion, long clusterId,
 			String owner, int maxServers, int maxHttpSessions,
@@ -163,11 +163,11 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		}
 
 		return licenseKeyLocalService.addLicenseKey(
-			userId, name, licenseEntryId, productKey, accountKey,
-			productPurchaseKey, accountCode, accountName, productVersion,
-			clusterId, owner, maxServers, maxHttpSessions, maxConcurrentUsers,
-			maxUsers, sizing, description, hostNames, ipAddresses, macAddresses,
-			serverIds, startDate, expirationDate, complimentary, true);
+			userId, licenseEntryId, productKey, accountKey, productPurchaseKey,
+			accountCode, accountName, productVersion, clusterId, owner,
+			maxServers, maxHttpSessions, maxConcurrentUsers, maxUsers, sizing,
+			description, hostNames, ipAddresses, macAddresses, serverIds,
+			startDate, expirationDate, complimentary, true);
 	}
 
 	@JSONWebService
@@ -437,14 +437,14 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 	}
 
 	public LicenseKey updateLicenseKey(
-			long licenseKeyId, String productPurchaseKey, String name,
-			boolean complimentary, boolean active)
+			long licenseKeyId, String productPurchaseKey, boolean complimentary,
+			boolean active)
 		throws Exception {
 
 		//TODO: add permission check
 
 		return licenseKeyLocalService.updateLicenseKey(
-			getUserId(), licenseKeyId, productPurchaseKey, name, complimentary,
+			getUserId(), licenseKeyId, productPurchaseKey, complimentary,
 			active);
 	}
 
