@@ -104,7 +104,7 @@ export default function AddContact({
 					title={Liferay.Language.get('overlapping-roles')}
 				>
 					{Liferay.Language.get(
-						'please-only-select-one-support-role-or--one-partner-role'
+						'please-only-select-one-support-role-or-one-partner-role'
 					)}
 				</ClayAlert>
 			)}
