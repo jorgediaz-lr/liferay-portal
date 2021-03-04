@@ -20,11 +20,11 @@ function renderAdvancedSearch(props) {
 			clickOutsideCallback={jest.fn()}
 			formAction="/url"
 			licenseTypes={[{label: 'type1', value: 'l-1'}]}
-			productNames={[
+			productVersions={[{label: 'version1', value: 'v-1'}]}
+			products={[
 				{label: 'name1', value: 'n-1'},
 				{label: 'name2', value: 'n-2'}
 			]}
-			productVersions={[{label: 'version1', value: 'v-1'}]}
 			{...props}
 		/>
 	);

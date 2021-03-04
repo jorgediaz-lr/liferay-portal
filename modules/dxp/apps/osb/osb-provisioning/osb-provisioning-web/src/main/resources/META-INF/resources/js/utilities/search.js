@@ -149,7 +149,7 @@ export function getLicenseSearchFilterDisplayName(name) {
 		case 'creatorEmailAddress':
 			displayName = Liferay.Language.get('created-by');
 			break;
-		case 'editorEmailAddress':
+		case 'modifiedEmailAddress':
 			displayName = Liferay.Language.get('last-edited-by');
 			break;
 		case 'expireDateGT':
@@ -164,13 +164,11 @@ export function getLicenseSearchFilterDisplayName(name) {
 		case 'ipAddress':
 			displayName = Liferay.Language.get('ip-address');
 			break;
-		case 'koroneikiAccountKey':
-			displayName = Liferay.Language.get('koroneiki-account-key');
+		case 'accountKey':
+			displayName = Liferay.Language.get('account-key');
 			break;
-		case 'koroneikiProductPurchaseKey':
-			displayName = Liferay.Language.get(
-				'koroneiki-product-purchase-key'
-			);
+		case 'productPurchaseKey':
+			displayName = Liferay.Language.get('product-purchase-key');
 			break;
 		case 'licenseKey':
 			displayName = Liferay.Language.get('key');
@@ -190,11 +188,11 @@ export function getLicenseSearchFilterDisplayName(name) {
 		case 'owner':
 			displayName = Liferay.Language.get('owner');
 			break;
-		case 'productNames':
-			displayName = Liferay.Language.get('product');
-			break;
 		case 'productVersions':
 			displayName = Liferay.Language.get('product-version');
+			break;
+		case 'products':
+			displayName = Liferay.Language.get('product');
 			break;
 		case 'serverId':
 			displayName = Liferay.Language.get('server-id');

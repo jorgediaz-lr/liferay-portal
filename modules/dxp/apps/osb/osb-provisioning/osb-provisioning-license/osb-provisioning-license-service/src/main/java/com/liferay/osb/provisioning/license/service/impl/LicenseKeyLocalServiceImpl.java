@@ -501,39 +501,16 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 	}
 
 	public List<LicenseKey> search(
-		Long createUserId, int createDateGTDay, int createDateGTMonth,
-		int createDateGTYear, int createDateLTDay, int createDateLTMonth,
-		int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
-		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
-		int modifiedDateLTMonth, int modifiedDateLTYear, String accountKey,
-		String productPurchaseKey, String accountName, int startDateGTDay,
-		int startDateGTMonth, int startDateGTYear, int startDateLTDay,
-		int startDateLTMonth, int startDateLTYear, long[] licenseEntryIds,
+		Long createUserId, Date createDateGT, Date createDateLT,
+		Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
+		String accountKey, String productPurchaseKey, String accountName,
+		Date startDateGT, Date startDateLT, long[] licenseEntryIds,
 		String[] productKeys, String productName, String productId,
 		String[] productVersions, String owner, String description,
 		String hostName, String ipAddress, String macAddress, String serverId,
-		String key, int expirationDateGTDay, int expirationDateGTMonth,
-		int expirationDateGTYear, int expirationDateLTDay,
-		int expirationDateLTMonth, int expirationDateLTYear,
+		String key, Date expireDateGT, Date expireDateLT,
 		LinkedHashMap<String, Object> params, boolean andSearch, int start,
 		int end, OrderByComparator obc) {
-
-		Date createDateGT = _portal.getDate(
-			createDateGTMonth, createDateGTDay, createDateGTYear);
-		Date createDateLT = _portal.getDate(
-			createDateLTMonth, createDateLTDay, createDateLTYear);
-		Date modifiedDateGT = _portal.getDate(
-			modifiedDateGTMonth, modifiedDateGTDay, modifiedDateGTYear);
-		Date modifiedDateLT = _portal.getDate(
-			modifiedDateLTMonth, modifiedDateLTDay, modifiedDateLTYear);
-		Date startDateGT = _portal.getDate(
-			startDateGTMonth, startDateGTDay, startDateGTYear);
-		Date startDateLT = _portal.getDate(
-			startDateLTMonth, startDateLTDay, startDateLTYear);
-		Date expirationDateGT = _portal.getDate(
-			expirationDateGTMonth, expirationDateGTDay, expirationDateGTYear);
-		Date expirationDateLT = _portal.getDate(
-			expirationDateLTMonth, expirationDateLTDay, expirationDateLTYear);
 
 		return licenseKeyFinder.
 			findByU_C_M_M_AK_PPK_A_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
@@ -542,8 +519,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 				accountName, startDateGT, startDateLT, licenseEntryIds,
 				productKeys, productName, productId, productVersions, owner,
 				description, hostName, ipAddress, macAddress, serverId, key,
-				expirationDateGT, expirationDateLT, params, andSearch, start,
-				end, obc);
+				expireDateGT, expireDateLT, params, andSearch, start, end, obc);
 	}
 
 	public List<LicenseKey> search(
@@ -555,38 +531,15 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 	}
 
 	public int searchCount(
-		Long createUserId, int createDateGTDay, int createDateGTMonth,
-		int createDateGTYear, int createDateLTDay, int createDateLTMonth,
-		int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
-		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
-		int modifiedDateLTMonth, int modifiedDateLTYear, String accountKey,
-		String productPurchaseKey, String accountName, int startDateGTDay,
-		int startDateGTMonth, int startDateGTYear, int startDateLTDay,
-		int startDateLTMonth, int startDateLTYear, long[] licenseEntryIds,
+		Long createUserId, Date createDateGT, Date createDateLT,
+		Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
+		String accountKey, String productPurchaseKey, String accountName,
+		Date startDateGT, Date startDateLT, long[] licenseEntryIds,
 		String[] productKeys, String productName, String productId,
 		String[] productVersions, String owner, String description,
 		String hostName, String ipAddress, String macAddress, String serverId,
-		String key, int expirationDateGTDay, int expirationDateGTMonth,
-		int expirationDateGTYear, int expirationDateLTDay,
-		int expirationDateLTMonth, int expirationDateLTYear,
+		String key, Date expireDateGT, Date expireDateLT,
 		LinkedHashMap<String, Object> params, boolean andSearch) {
-
-		Date createDateGT = _portal.getDate(
-			createDateGTMonth, createDateGTDay, createDateGTYear);
-		Date createDateLT = _portal.getDate(
-			createDateLTMonth, createDateLTDay, createDateLTYear);
-		Date modifiedDateGT = _portal.getDate(
-			modifiedDateGTMonth, modifiedDateGTDay, modifiedDateGTYear);
-		Date modifiedDateLT = _portal.getDate(
-			modifiedDateLTMonth, modifiedDateLTDay, modifiedDateLTYear);
-		Date startDateGT = _portal.getDate(
-			startDateGTMonth, startDateGTDay, startDateGTYear);
-		Date startDateLT = _portal.getDate(
-			startDateLTMonth, startDateLTDay, startDateLTYear);
-		Date expirationDateGT = _portal.getDate(
-			expirationDateGTMonth, expirationDateGTDay, expirationDateGTYear);
-		Date expirationDateLT = _portal.getDate(
-			expirationDateLTMonth, expirationDateLTDay, expirationDateLTYear);
 
 		return licenseKeyFinder.
 			countByU_C_M_M_AK_PPK_A_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
@@ -595,7 +548,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 				accountName, startDateGT, startDateLT, licenseEntryIds,
 				productKeys, productName, productId, productVersions, owner,
 				description, hostName, ipAddress, macAddress, serverId, key,
-				expirationDateGT, expirationDateLT, params, andSearch);
+				expireDateGT, expireDateLT, params, andSearch);
 	}
 
 	public int searchCount(

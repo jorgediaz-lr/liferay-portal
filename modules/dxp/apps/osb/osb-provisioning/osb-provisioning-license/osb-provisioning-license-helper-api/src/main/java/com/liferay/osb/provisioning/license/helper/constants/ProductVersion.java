@@ -31,6 +31,11 @@ public class ProductVersion {
 
 	public static final String DXP_VERSION_7_4 = "7.4";
 
+	public static final String[] DXP_VERSIONS = {
+		DXP_VERSION_7_0, DXP_VERSION_7_1, DXP_VERSION_7_2, DXP_VERSION_7_3,
+		DXP_VERSION_7_4
+	};
+
 	public static final String PORTAL_MINOR_VERSION_6_1 = "6.1";
 
 	public static final String PORTAL_MINOR_VERSION_6_2 = "6.2";
@@ -40,5 +45,9 @@ public class ProductVersion {
 	public static final String PORTAL_VERSION_6_1_20 = "6.1 GA2";
 
 	public static final String PORTAL_VERSION_6_2_10 = "6.2 EE";
+
+	public static final String[] PORTAL_VERSIONS = {
+		PORTAL_VERSION_6_1_10, PORTAL_VERSION_6_1_20, PORTAL_VERSION_6_2_10
+	};
 
 }

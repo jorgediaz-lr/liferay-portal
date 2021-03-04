@@ -34,10 +34,7 @@ public class LicenseUtil {
 
 		OrderByComparator orderByComparator = null;
 
-		if (orderByCol.equals("start-date")) {
-			orderByComparator = new LicenseKeyStartDateComparator(orderByAsc);
-		}
-		else if (orderByCol.equals("expiration-date")) {
+		if (orderByCol.equals("expiration-date")) {
 			orderByComparator = new LicenseKeyExpirationDateComparator(
 				orderByAsc);
 		}

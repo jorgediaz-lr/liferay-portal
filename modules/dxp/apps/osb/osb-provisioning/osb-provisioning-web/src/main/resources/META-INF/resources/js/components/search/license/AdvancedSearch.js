@@ -26,8 +26,8 @@ const AdvancedSearch = React.forwardRef(
 			clickOutsideCallback,
 			formAction,
 			licenseTypes,
-			productNames,
-			productVersions
+			productVersions,
+			products
 		},
 		ref
 	) => {
@@ -133,7 +133,7 @@ const AdvancedSearch = React.forwardRef(
 						</ClayPanel>
 					)}
 
-					{productNames.length && (
+					{products.length && (
 						<ClayPanel
 							collapsable
 							displayTitle={Liferay.Language.get('product')}
@@ -144,8 +144,8 @@ const AdvancedSearch = React.forwardRef(
 								<div className="col-md-12 form-group">
 									<CheckboxGroups
 										columns={4}
-										fieldValues={productNames}
-										inputName="productNames"
+										fieldValues={products}
+										inputName="products"
 									/>
 								</div>
 							</div>
@@ -217,13 +217,13 @@ AdvancedSearch.propTypes = {
 			value: PropTypes.oneOfType[(PropTypes.number, PropTypes.string)]
 		})
 	).isRequired,
-	productNames: PropTypes.arrayOf(
+	productVersions: PropTypes.arrayOf(
 		PropTypes.shape({
 			label: PropTypes.string,
 			value: PropTypes.oneOfType[(PropTypes.number, PropTypes.string)]
 		})
 	).isRequired,
-	productVersions: PropTypes.arrayOf(
+	products: PropTypes.arrayOf(
 		PropTypes.shape({
 			label: PropTypes.string,
 			value: PropTypes.oneOfType[(PropTypes.number, PropTypes.string)]

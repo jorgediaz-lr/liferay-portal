@@ -19,7 +19,7 @@ import com.liferay.osb.provisioning.license.service.persistence.LicenseKeyFinder
 import com.liferay.osb.provisioning.license.service.persistence.LicenseKeyUtil;
 import com.liferay.osb.provisioning.license.util.OSBCustomSQL;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil;
+import com.liferay.portal.dao.orm.custom.sql.CustomSQL;
 import com.liferay.portal.kernel.dao.orm.PortalCustomSQLUtil;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.dao.orm.SQLQuery;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.Type;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CalendarUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -90,16 +91,16 @@ public class LicenseKeyFinderImpl
 		boolean andOperator = false;
 
 		if (Validator.isNotNull(keywords)) {
-			accountNames = CustomSQLUtil.keywords(keywords);
-			productNames = CustomSQLUtil.keywords(keywords);
-			productIds = CustomSQLUtil.keywords(keywords);
-			owners = CustomSQLUtil.keywords(keywords);
-			descriptions = CustomSQLUtil.keywords(keywords);
-			hostNames = CustomSQLUtil.keywords(keywords);
-			ipAddresses = CustomSQLUtil.keywords(keywords);
-			macAddresses = CustomSQLUtil.keywords(keywords);
-			serverIds = CustomSQLUtil.keywords(keywords);
-			keys = CustomSQLUtil.keywords(keywords);
+			accountNames = _customSQL.keywords(keywords);
+			productNames = _customSQL.keywords(keywords);
+			productIds = _customSQL.keywords(keywords);
+			owners = _customSQL.keywords(keywords);
+			descriptions = _customSQL.keywords(keywords);
+			hostNames = _customSQL.keywords(keywords);
+			ipAddresses = _customSQL.keywords(keywords);
+			macAddresses = _customSQL.keywords(keywords);
+			serverIds = _customSQL.keywords(keywords);
+			keys = _customSQL.keywords(keywords);
 		}
 		else {
 			andOperator = true;
@@ -125,14 +126,14 @@ public class LicenseKeyFinderImpl
 		LinkedHashMap<String, Object> params, boolean andOperator) {
 
 		String[] accountNames = _osbCustomSQL.keywords(accountName);
-		String[] productNames = CustomSQLUtil.keywords(productName);
-		String[] owners = CustomSQLUtil.keywords(owner);
-		String[] descriptions = CustomSQLUtil.keywords(description);
-		String[] hostNames = CustomSQLUtil.keywords(hostName);
-		String[] ipAddresses = CustomSQLUtil.keywords(ipAddress);
-		String[] macAddresses = CustomSQLUtil.keywords(macAddress);
-		String[] serverIds = CustomSQLUtil.keywords(serverId);
-		String[] keys = CustomSQLUtil.keywords(key);
+		String[] productNames = _customSQL.keywords(productName);
+		String[] owners = _customSQL.keywords(owner);
+		String[] descriptions = _customSQL.keywords(description);
+		String[] hostNames = _customSQL.keywords(hostName);
+		String[] ipAddresses = _customSQL.keywords(ipAddress);
+		String[] macAddresses = _customSQL.keywords(macAddress);
+		String[] serverIds = _customSQL.keywords(serverId);
+		String[] keys = _customSQL.keywords(key);
 
 		return countByU_C_M_M_AK_PPK_A_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
 			createUserId, createDateGT, createDateLT, modifiedUserId,
@@ -161,16 +162,16 @@ public class LicenseKeyFinderImpl
 		boolean andOperator = false;
 
 		if (Validator.isNotNull(keywords)) {
-			accountNames = CustomSQLUtil.keywords(keywords);
-			productNames = CustomSQLUtil.keywords(keywords);
-			productIds = CustomSQLUtil.keywords(keywords);
-			owners = CustomSQLUtil.keywords(keywords);
-			descriptions = CustomSQLUtil.keywords(keywords);
-			hostNames = CustomSQLUtil.keywords(keywords);
-			ipAddresses = CustomSQLUtil.keywords(keywords);
-			macAddresses = CustomSQLUtil.keywords(keywords);
-			serverIds = CustomSQLUtil.keywords(keywords);
-			keys = CustomSQLUtil.keywords(keywords);
+			accountNames = _customSQL.keywords(keywords);
+			productNames = _customSQL.keywords(keywords);
+			productIds = _customSQL.keywords(keywords);
+			owners = _customSQL.keywords(keywords);
+			descriptions = _customSQL.keywords(keywords);
+			hostNames = _customSQL.keywords(keywords);
+			ipAddresses = _customSQL.keywords(keywords);
+			macAddresses = _customSQL.keywords(keywords);
+			serverIds = _customSQL.keywords(keywords);
+			keys = _customSQL.keywords(keywords);
 		}
 		else {
 			andOperator = true;
@@ -197,14 +198,14 @@ public class LicenseKeyFinderImpl
 		int end, OrderByComparator obc) {
 
 		String[] accountNames = _osbCustomSQL.keywords(accountName);
-		String[] productNames = CustomSQLUtil.keywords(productName);
-		String[] owners = CustomSQLUtil.keywords(owner);
-		String[] descriptions = CustomSQLUtil.keywords(description);
-		String[] hostNames = CustomSQLUtil.keywords(hostName);
-		String[] ipAddresses = CustomSQLUtil.keywords(ipAddress);
-		String[] macAddresses = CustomSQLUtil.keywords(macAddress);
-		String[] serverIds = CustomSQLUtil.keywords(serverId);
-		String[] keys = CustomSQLUtil.keywords(key);
+		String[] productNames = _customSQL.keywords(productName);
+		String[] owners = _customSQL.keywords(owner);
+		String[] descriptions = _customSQL.keywords(description);
+		String[] hostNames = _customSQL.keywords(hostName);
+		String[] ipAddresses = _customSQL.keywords(ipAddress);
+		String[] macAddresses = _customSQL.keywords(macAddress);
+		String[] serverIds = _customSQL.keywords(serverId);
+		String[] keys = _customSQL.keywords(key);
 
 		return findByU_C_M_M_AK_PPK_A_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
 			createUserId, createDateGT, createDateLT, modifiedUserId,
@@ -233,27 +234,27 @@ public class LicenseKeyFinderImpl
 		Timestamp modifiedDateGT_TS = CalendarUtil.getTimestamp(modifiedDateGT);
 		Timestamp modifiedDateLT_TS = CalendarUtil.getTimestamp(modifiedDateLT);
 
-		accountNames = CustomSQLUtil.keywords(accountNames);
+		accountNames = _customSQL.keywords(accountNames);
 
 		Timestamp startDateGT_TS = CalendarUtil.getTimestamp(startDateGT);
 		Timestamp startDateLT_TS = CalendarUtil.getTimestamp(startDateLT);
 
-		productNames = CustomSQLUtil.keywords(productNames);
-		productIds = CustomSQLUtil.keywords(productIds);
-		owners = CustomSQLUtil.keywords(owners);
-		descriptions = CustomSQLUtil.keywords(descriptions);
-		hostNames = CustomSQLUtil.keywords(hostNames);
-		ipAddresses = CustomSQLUtil.keywords(ipAddresses);
-		macAddresses = CustomSQLUtil.keywords(macAddresses);
-		serverIds = CustomSQLUtil.keywords(serverIds);
-		keys = CustomSQLUtil.keywords(keys);
+		productNames = _customSQL.keywords(productNames);
+		productIds = _customSQL.keywords(productIds);
+		owners = _customSQL.keywords(owners);
+		descriptions = _customSQL.keywords(descriptions);
+		hostNames = _customSQL.keywords(hostNames);
+		ipAddresses = _customSQL.keywords(ipAddresses);
+		macAddresses = _customSQL.keywords(macAddresses);
+		serverIds = _customSQL.keywords(serverIds);
+		keys = _customSQL.keywords(keys);
 
 		Timestamp expirationDateGT_TS = CalendarUtil.getTimestamp(
 			expirationDateGT);
 		Timestamp expirationDateLT_TS = CalendarUtil.getTimestamp(
 			expirationDateLT);
 
-		String sql = CustomSQLUtil.get(
+		String sql = _customSQL.get(
 			getClass(), COUNT_BY_U_C_M_M_AK_PPK_A_S_L_P_P_P_P_O_D_H_I_M_S_E_A);
 
 		sql = replaceSQL(
@@ -325,27 +326,27 @@ public class LicenseKeyFinderImpl
 		Timestamp modifiedDateGT_TS = CalendarUtil.getTimestamp(modifiedDateGT);
 		Timestamp modifiedDateLT_TS = CalendarUtil.getTimestamp(modifiedDateLT);
 
-		accountNames = CustomSQLUtil.keywords(accountNames);
+		accountNames = _customSQL.keywords(accountNames);
 
 		Timestamp startDateGT_TS = CalendarUtil.getTimestamp(startDateGT);
 		Timestamp startDateLT_TS = CalendarUtil.getTimestamp(startDateLT);
 
-		productNames = CustomSQLUtil.keywords(productNames);
-		productIds = CustomSQLUtil.keywords(productIds);
-		owners = CustomSQLUtil.keywords(owners);
-		descriptions = CustomSQLUtil.keywords(descriptions);
-		hostNames = CustomSQLUtil.keywords(hostNames);
-		ipAddresses = CustomSQLUtil.keywords(ipAddresses);
-		macAddresses = CustomSQLUtil.keywords(macAddresses);
-		serverIds = CustomSQLUtil.keywords(serverIds);
-		keys = CustomSQLUtil.keywords(keys);
+		productNames = _customSQL.keywords(productNames);
+		productIds = _customSQL.keywords(productIds);
+		owners = _customSQL.keywords(owners);
+		descriptions = _customSQL.keywords(descriptions);
+		hostNames = _customSQL.keywords(hostNames);
+		ipAddresses = _customSQL.keywords(ipAddresses);
+		macAddresses = _customSQL.keywords(macAddresses);
+		serverIds = _customSQL.keywords(serverIds);
+		keys = _customSQL.keywords(keys);
 
 		Timestamp expirationDateGT_TS = CalendarUtil.getTimestamp(
 			expirationDateGT);
 		Timestamp expirationDateLT_TS = CalendarUtil.getTimestamp(
 			expirationDateLT);
 
-		String sql = CustomSQLUtil.get(
+		String sql = _customSQL.get(
 			getClass(), FIND_BY_U_C_M_M_AK_PPK_A_S_L_P_P_P_P_O_D_H_I_M_S_E_A);
 
 		sql = replaceSQL(
@@ -354,7 +355,7 @@ public class LicenseKeyFinderImpl
 			descriptions, hostNames, ipAddresses, macAddresses, serverIds, keys,
 			params, andOperator);
 
-		sql = CustomSQLUtil.replaceOrderBy(sql, obc);
+		sql = _customSQL.replaceOrderBy(sql, obc);
 
 		Session session = null;
 
@@ -399,6 +400,42 @@ public class LicenseKeyFinderImpl
 		}
 	}
 
+	protected String getJoin(LinkedHashMap<String, Object> params) {
+		if (params.isEmpty()) {
+			return StringPool.BLANK;
+		}
+
+		StringBundler sb = new StringBundler(params.size());
+
+		for (Map.Entry<String, Object> entry : params.entrySet()) {
+			Object value = entry.getValue();
+
+			if (Validator.isNotNull(value)) {
+				sb.append(getJoin(entry.getKey(), value));
+			}
+		}
+
+		return sb.toString();
+	}
+
+	protected String getJoin(String key, Object value) {
+		String join = StringPool.BLANK;
+
+		if (key.equals("active")) {
+			join = _customSQL.get(getClass(), JOIN_BY_ACTIVE);
+		}
+
+		if (Validator.isNotNull(join)) {
+			int pos = join.indexOf("WHERE");
+
+			if (pos != -1) {
+				join = join.substring(0, pos);
+			}
+		}
+
+		return join;
+	}
+
 	protected String getWhere(LinkedHashMap<String, Object> params) {
 		if (params.isEmpty()) {
 			return StringPool.BLANK;
@@ -423,7 +460,7 @@ public class LicenseKeyFinderImpl
 		if (key.equals("accountMembership")) {
 			String[] valueArray = (String[])value;
 
-			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACCOUNT_MEMBERSHIP);
+			join = _customSQL.get(getClass(), JOIN_BY_ACCOUNT_MEMBERSHIP);
 
 			StringBundler sb = new StringBundler((valueArray.length * 2) + 2);
 
@@ -443,13 +480,13 @@ public class LicenseKeyFinderImpl
 				join, "Provisioning_LicenseKey.accountKey = ?", sb.toString());
 		}
 		else if (key.equals("active")) {
-			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACTIVE);
+			join = _customSQL.get(getClass(), JOIN_BY_ACTIVE);
 		}
 		else if (key.equals("assetReceiptLicense")) {
-			join = CustomSQLUtil.get(getClass(), JOIN_BY_ASSET_RECEIPT_ITEM);
+			join = _customSQL.get(getClass(), JOIN_BY_ASSET_RECEIPT_ITEM);
 		}
 		else if (key.equals("user")) {
-			join = CustomSQLUtil.get(getClass(), JOIN_BY_USER);
+			join = _customSQL.get(getClass(), JOIN_BY_USER);
 		}
 
 		if (Validator.isNotNull(join)) {
@@ -485,51 +522,64 @@ public class LicenseKeyFinderImpl
 			sql = StringUtil.removeSubstring(sql, _MODIFIED_USER_ID_SQL);
 		}
 
-		sql = CustomSQLUtil.replaceKeywords(
+		if (ArrayUtil.isEmpty(productKeys)) {
+			sql = StringUtil.removeSubstring(sql, _PRODUCT_KEY_SQL);
+		}
+		else {
+			sql = _customSQL.replaceKeywords(
+				sql, "Provisioning_LicenseKey.productKey", StringPool.EQUAL,
+				false, productKeys);
+		}
+
+		if (ArrayUtil.isEmpty(productVersions)) {
+			sql = StringUtil.removeSubstring(sql, _PRODUCT_VERSION_SQL);
+		}
+		else {
+			sql = _customSQL.replaceKeywords(
+				sql, "Provisioning_LicenseKey.productVersion", StringPool.EQUAL,
+				false, productVersions);
+		}
+
+		sql = _customSQL.replaceKeywords(
 			sql, "LOWER(Provisioning_LicenseKey.accountName)", StringPool.LIKE,
 			true, accountNames);
-		sql = CustomSQLUtil.replaceKeywords(
+		sql = _customSQL.replaceKeywords(
 			sql, "LOWER(Provisioning_LicenseKey.accountCode)", StringPool.LIKE,
 			true, accountNames);
-		sql = CustomSQLUtil.replaceKeywords(
+		sql = _customSQL.replaceKeywords(
 			sql, "Provisioning_LicenseKey.licenseEntryId", false,
 			licenseEntryIds);
-		sql = CustomSQLUtil.replaceKeywords(
-			sql, "Provisioning_LicenseKey.productKey", StringPool.EQUAL, false,
-			productKeys);
-		sql = CustomSQLUtil.replaceKeywords(
+		sql = _customSQL.replaceKeywords(
 			sql, "LOWER(Provisioning_LicenseKey.productName)", StringPool.LIKE,
 			false, productNames);
-		sql = CustomSQLUtil.replaceKeywords(
+		sql = _customSQL.replaceKeywords(
 			sql, "LOWER(Provisioning_LicenseKey.productId)", StringPool.EQUAL,
 			false, productIds);
-		sql = CustomSQLUtil.replaceKeywords(
-			sql, "Provisioning_LicenseKey.productVersion", StringPool.EQUAL,
-			false, productVersions);
-		sql = CustomSQLUtil.replaceKeywords(
+		sql = _customSQL.replaceKeywords(
 			sql, "LOWER(Provisioning_LicenseKey.owner)", StringPool.LIKE, false,
 			owners);
-		sql = CustomSQLUtil.replaceKeywords(
+		sql = _customSQL.replaceKeywords(
 			sql, "LOWER(Provisioning_LicenseKey.description)", StringPool.LIKE,
 			false, descriptions);
-		sql = CustomSQLUtil.replaceKeywords(
+		sql = _customSQL.replaceKeywords(
 			sql, "LOWER(Provisioning_LicenseKey.hostName)", StringPool.LIKE,
 			false, hostNames);
-		sql = CustomSQLUtil.replaceKeywords(
+		sql = _customSQL.replaceKeywords(
 			sql, "LOWER(Provisioning_LicenseKey.ipAddresses)", StringPool.LIKE,
 			false, ipAddresses);
-		sql = CustomSQLUtil.replaceKeywords(
+		sql = _customSQL.replaceKeywords(
 			sql, "LOWER(Provisioning_LicenseKey.macAddresses)", StringPool.LIKE,
 			false, macAddresses);
-		sql = CustomSQLUtil.replaceKeywords(
+		sql = _customSQL.replaceKeywords(
 			sql, "LOWER(Provisioning_LicenseKey.serverId)", StringPool.LIKE,
 			false, serverIds);
-		sql = CustomSQLUtil.replaceKeywords(
+		sql = _customSQL.replaceKeywords(
 			sql, "LOWER(Provisioning_LicenseKey.key_)", StringPool.LIKE, false,
 			keys);
 
+		sql = StringUtil.replace(sql, "[$JOIN$]", getJoin(params));
 		sql = StringUtil.replace(sql, "[$WHERE$]", getWhere(params));
-		sql = CustomSQLUtil.replaceAndOperator(sql, andOperator);
+		sql = _customSQL.replaceAndOperator(sql, andOperator);
 
 		return sql;
 	}
@@ -632,10 +682,10 @@ public class LicenseKeyFinderImpl
 		qPos.add(startDateLT);
 		qPos.add(startDateLT);
 		qPos.add(licenseEntryIds);
-		qPos.add(productKeys);
+		qPos.add(productKeys, 2);
 		qPos.add(productNames, 2);
 		qPos.add(productIds, 2);
-		qPos.add(productVersions);
+		qPos.add(productVersions, 2);
 		qPos.add(owners, 2);
 		qPos.add(descriptions, 2);
 		qPos.add(hostNames, 2);
@@ -652,8 +702,19 @@ public class LicenseKeyFinderImpl
 	private static final String _MODIFIED_USER_ID_SQL =
 		"(Provisioning_LicenseKey.modifiedUserId = ?) [$AND_OR_CONNECTOR$]";
 
+	private static final String _PRODUCT_KEY_SQL =
+		"(Provisioning_LicenseKey.productKey = ? [$AND_OR_NULL_CHECK$]) " +
+			"[$AND_OR_CONNECTOR$]";
+
+	private static final String _PRODUCT_VERSION_SQL =
+		"(Provisioning_LicenseKey.productVersion = ? [$AND_OR_NULL_CHECK$]) " +
+			"[$AND_OR_CONNECTOR$]";
+
 	private static final String _USER_ID_SQL =
 		"(Provisioning_LicenseKey.userId = ?) [$AND_OR_CONNECTOR$]";
+
+	@Reference
+	private CustomSQL _customSQL;
 
 	@Reference
 	private OSBCustomSQL _osbCustomSQL;

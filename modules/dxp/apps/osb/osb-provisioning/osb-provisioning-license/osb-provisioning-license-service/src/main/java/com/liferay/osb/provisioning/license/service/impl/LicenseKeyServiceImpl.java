@@ -316,10 +316,9 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		params.put("active", true);
 
 		int activeLicensesCount = licenseKeyLocalService.searchCount(
-			null, 0, 0, 0, 0, 0, 0, null, 0, 0, 0, 0, 0, 0, null, null, null, 0,
-			0, 0, 0, 0, 0, new long[0], new String[0], null, productId,
-			new String[0], null, null, null, null, null, serverId, key, 0, 0, 0,
-			0, 0, 0, params, true);
+			null, null, null, null, null, null, null, null, null, null, null,
+			new long[0], new String[0], null, productId, new String[0], null,
+			null, null, null, null, serverId, key, null, null, params, true);
 
 		if (activeLicensesCount > 0) {
 			return true;
@@ -364,40 +363,27 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 	}
 
 	public List<LicenseKey> search(
-			Long createUserId, int createDateGTDay, int createDateGTMonth,
-			int createDateGTYear, int createDateLTDay, int createDateLTMonth,
-			int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
-			int modifiedDateGTMonth, int modifiedDateGTYear,
-			int modifiedDateLTDay, int modifiedDateLTMonth,
-			int modifiedDateLTYear, String accountKey,
-			String productPurchaseKey, String accountName, int startDateGTDay,
-			int startDateGTMonth, int startDateGTYear, int startDateLTDay,
-			int startDateLTMonth, int startDateLTYear, long[] licenseEntryIds,
+			Long createUserId, Date createDateGT, Date createDateLT,
+			Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
+			String accountKey, String productPurchaseKey, String accountName,
+			Date startDateGT, Date startDateLT, long[] licenseEntryIds,
 			String[] productKeys, String productName, String productId,
 			String[] productVersions, String owner, String description,
 			String hostName, String ipAddress, String macAddress,
-			String serverId, String key, int expirationDateGTDay,
-			int expirationDateGTMonth, int expirationDateGTYear,
-			int expirationDateLTDay, int expirationDateLTMonth,
-			int expirationDateLTYear, LinkedHashMap<String, Object> params,
-			boolean andSearch, int start, int end, OrderByComparator obc)
+			String serverId, String key, Date expireDateGT, Date expireDateLT,
+			LinkedHashMap<String, Object> params, boolean andSearch, int start,
+			int end, OrderByComparator obc)
 		throws Exception {
 
 		addPermissionParams(params);
 
 		return licenseKeyLocalService.search(
-			createUserId, createDateGTDay, createDateGTMonth, createDateGTYear,
-			createDateLTDay, createDateLTMonth, createDateLTYear,
-			modifiedUserId, modifiedDateGTDay, modifiedDateGTMonth,
-			modifiedDateGTYear, modifiedDateLTDay, modifiedDateLTMonth,
-			modifiedDateLTYear, accountKey, productPurchaseKey, accountName,
-			startDateGTDay, startDateGTMonth, startDateGTYear, startDateLTDay,
-			startDateLTMonth, startDateLTYear, licenseEntryIds, productKeys,
+			createUserId, createDateGT, createDateLT, modifiedUserId,
+			modifiedDateGT, modifiedDateLT, accountKey, productPurchaseKey,
+			accountName, startDateGT, startDateLT, licenseEntryIds, productKeys,
 			productName, productId, productVersions, owner, description,
-			hostName, ipAddress, macAddress, serverId, key, expirationDateGTDay,
-			expirationDateGTMonth, expirationDateGTYear, expirationDateLTDay,
-			expirationDateLTMonth, expirationDateLTYear, params, andSearch,
-			start, end, obc);
+			hostName, ipAddress, macAddress, serverId, key, expireDateGT,
+			expireDateLT, params, andSearch, start, end, obc);
 	}
 
 	public List<LicenseKey> search(
@@ -411,39 +397,26 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 	}
 
 	public int searchCount(
-			Long createUserId, int createDateGTDay, int createDateGTMonth,
-			int createDateGTYear, int createDateLTDay, int createDateLTMonth,
-			int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
-			int modifiedDateGTMonth, int modifiedDateGTYear,
-			int modifiedDateLTDay, int modifiedDateLTMonth,
-			int modifiedDateLTYear, String accountKey,
-			String productPurchaseKey, String accountName, int startDateGTDay,
-			int startDateGTMonth, int startDateGTYear, int startDateLTDay,
-			int startDateLTMonth, int startDateLTYear, long[] licenseEntryIds,
+			Long createUserId, Date createDateGT, Date createDateLT,
+			Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
+			String accountKey, String productPurchaseKey, String accountName,
+			Date startDateGT, Date startDateLT, long[] licenseEntryIds,
 			String[] productKeys, String productName, String productId,
 			String[] productVersions, String owner, String description,
 			String hostName, String ipAddress, String macAddress,
-			String serverId, String key, int expirationDateGTDay,
-			int expirationDateGTMonth, int expirationDateGTYear,
-			int expirationDateLTDay, int expirationDateLTMonth,
-			int expirationDateLTYear, LinkedHashMap<String, Object> params,
-			boolean andSearch)
+			String serverId, String key, Date expireDateGT, Date expireDateLT,
+			LinkedHashMap<String, Object> params, boolean andSearch)
 		throws Exception {
 
 		addPermissionParams(params);
 
 		return licenseKeyLocalService.searchCount(
-			createUserId, createDateGTDay, createDateGTMonth, createDateGTYear,
-			createDateLTDay, createDateLTMonth, createDateLTYear,
-			modifiedUserId, modifiedDateGTDay, modifiedDateGTMonth,
-			modifiedDateGTYear, modifiedDateLTDay, modifiedDateLTMonth,
-			modifiedDateLTYear, accountKey, productPurchaseKey, accountName,
-			startDateGTDay, startDateGTMonth, startDateGTYear, startDateLTDay,
-			startDateLTMonth, startDateLTYear, licenseEntryIds, productKeys,
+			createUserId, createDateGT, createDateLT, modifiedUserId,
+			modifiedDateGT, modifiedDateLT, accountKey, productPurchaseKey,
+			accountName, startDateGT, startDateLT, licenseEntryIds, productKeys,
 			productName, productId, productVersions, owner, description,
-			hostName, ipAddress, macAddress, serverId, key, expirationDateGTDay,
-			expirationDateGTMonth, expirationDateGTYear, expirationDateLTDay,
-			expirationDateLTMonth, expirationDateLTYear, params, andSearch);
+			hostName, ipAddress, macAddress, serverId, key, expireDateGT,
+			expireDateLT, params, andSearch);
 	}
 
 	public int searchCount(

@@ -45,7 +45,7 @@ function renderLicenseSearch() {
 		<LicenseSearch
 			licenseHomeURL="/license/home/URL"
 			licenseTypes={times(Math.random() * 100, dummyData)}
-			productNames={times(Math.random() * 100, dummyData)}
+			products={times(Math.random() * 100, dummyData)}
 			productVersions={times(Math.random() * 100, dummyData)}
 		/>
 	);

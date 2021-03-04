@@ -28,6 +28,8 @@ import com.liferay.osb.provisioning.koroneiki.web.service.ProductPurchaseViewWeb
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamRoleWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamWebService;
+import com.liferay.osb.provisioning.license.service.LicenseEntryLocalService;
+import com.liferay.osb.provisioning.license.service.LicenseKeyLocalService;
 import com.liferay.osb.provisioning.service.ProductBundleLocalService;
 import com.liferay.osb.provisioning.web.internal.display.context.AccountSearchDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.AssignProductBundleProductsDisplayContext;
@@ -35,6 +37,7 @@ import com.liferay.osb.provisioning.web.internal.display.context.AssignProductPu
 import com.liferay.osb.provisioning.web.internal.display.context.AssignTeamContactsDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.ContactSearchDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.EditProductPurchasesDisplayContext;
+import com.liferay.osb.provisioning.web.internal.display.context.LicenseSearchDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.ProductSearchDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.TeamSearchDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.ViewAccountContactsDisplayContext;
@@ -128,6 +131,15 @@ public class ProvisioningWebComponentProvider {
 		return _provisioningWebComponentProvider._getViewAccountDisplayContext(
 			EditProductPurchasesDisplayContext.class, renderRequest,
 			renderResponse, httpServletRequest);
+	}
+
+	public static LicenseSearchDisplayContext getLicenseSearchDisplayContext(
+		RenderRequest renderRequest, RenderResponse renderResponse,
+		HttpServletRequest httpServletRequest) {
+
+		return _provisioningWebComponentProvider.
+			_getLicenseSearchDisplayContext(
+				renderRequest, renderResponse, httpServletRequest);
 	}
 
 	public static ProductSearchDisplayContext getProductSearchDisplayContext(
@@ -301,6 +313,16 @@ public class ProvisioningWebComponentProvider {
 			_accountWebService, _contactWebService);
 	}
 
+	private LicenseSearchDisplayContext _getLicenseSearchDisplayContext(
+		RenderRequest renderRequest, RenderResponse renderResponse,
+		HttpServletRequest httpServletRequest) {
+
+		return new LicenseSearchDisplayContext(
+			renderRequest, renderResponse, httpServletRequest,
+			_licenseEntryLocalService, _licenseKeyLocalService,
+			_productWebService);
+	}
+
 	private ProductSearchDisplayContext _getProductSearchDisplayContext(
 		RenderRequest renderRequest, RenderResponse renderResponse,
 		HttpServletRequest httpServletRequest) {
@@ -416,6 +438,12 @@ public class ProvisioningWebComponentProvider {
 
 	@Reference
 	private IdentityProvider _identityProvider;
+
+	@Reference
+	private LicenseEntryLocalService _licenseEntryLocalService;
+
+	@Reference
+	private LicenseKeyLocalService _licenseKeyLocalService;
 
 	@Reference
 	private NoteWebService _noteWebService;

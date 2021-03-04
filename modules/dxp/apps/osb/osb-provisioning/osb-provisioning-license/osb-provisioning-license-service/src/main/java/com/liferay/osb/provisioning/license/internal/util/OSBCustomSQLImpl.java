@@ -15,7 +15,7 @@
 package com.liferay.osb.provisioning.license.internal.util;
 
 import com.liferay.osb.provisioning.license.util.OSBCustomSQL;
-import com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil;
+import com.liferay.portal.dao.orm.custom.sql.CustomSQL;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Amos Fong
@@ -38,7 +39,7 @@ public class OSBCustomSQLImpl implements OSBCustomSQL {
 
 			List<String> keywordsList = new ArrayList<>();
 
-			String[] keywordsArray = CustomSQLUtil.keywords(keywords);
+			String[] keywordsArray = _customSQL.keywords(keywords);
 
 			for (String curKeywords : keywordsArray) {
 				if (Validator.isNull(curKeywords)) {
@@ -57,5 +58,8 @@ public class OSBCustomSQLImpl implements OSBCustomSQL {
 
 		return new String[] {StringUtil.quote(keywords, StringPool.PERCENT)};
 	}
+
+	@Reference
+	private CustomSQL _customSQL;
 
 }

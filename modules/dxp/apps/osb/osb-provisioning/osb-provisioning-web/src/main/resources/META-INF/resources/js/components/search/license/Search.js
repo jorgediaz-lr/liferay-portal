@@ -24,8 +24,8 @@ import AdvancedSearch from './AdvancedSearch';
 function Search({
 	licenseHomeURL = '',
 	licenseTypes,
-	productNames,
-	productVersions
+	productVersions,
+	products
 }) {
 	const [keywords, setKeywords] = useState(
 		getSearchParameter(`${NAMESPACE}licenseSearchKeywords`)
@@ -133,8 +133,8 @@ function Search({
 					clickOutsideCallback={handleClickOutside}
 					formAction={licenseHomeURL}
 					licenseTypes={licenseTypes}
-					productNames={productNames}
 					productVersions={productVersions}
+					products={products}
 					ref={searchRef}
 				/>
 			)}
@@ -150,13 +150,13 @@ Search.propTypes = {
 			value: PropTypes.oneOfType[(PropTypes.number, PropTypes.string)]
 		})
 	).isRequired,
-	productNames: PropTypes.arrayOf(
+	productVersions: PropTypes.arrayOf(
 		PropTypes.shape({
 			label: PropTypes.string,
 			value: PropTypes.oneOfType[(PropTypes.number, PropTypes.string)]
 		})
 	).isRequired,
-	productVersions: PropTypes.arrayOf(
+	products: PropTypes.arrayOf(
 		PropTypes.shape({
 			label: PropTypes.string,
 			value: PropTypes.oneOfType[(PropTypes.number, PropTypes.string)]

@@ -18,25 +18,25 @@ function LicenseDetails() {
 	return (
 		<div className="panel-body">
 			<div className="col-md-6 form-group">
-				<label htmlFor="koroneikiAccountKey">
-					{Liferay.Language.get('koroneiki-account-key')}
+				<label htmlFor="accountKey">
+					{Liferay.Language.get('account-key')}
 				</label>
 				<input
 					className="form-control form-control-sm"
-					id="koroneikiAccountKey"
-					name={`${NAMESPACE}koroneikiAccountKey`}
+					id="accountKey"
+					name={`${NAMESPACE}accountKey`}
 					type="text"
 				/>
 			</div>
 
 			<div className="col-md-6 form-group">
-				<label htmlFor="koroneikiProductPurchaseKey">
-					{Liferay.Language.get('koroneiki-product-purchase-key')}
+				<label htmlFor="productPurchaseKey">
+					{Liferay.Language.get('product-purchase-key')}
 				</label>
 				<input
 					className="form-control form-control-sm"
-					id="koroneikiProductPurchaseKey"
-					name={`${NAMESPACE}koroneikiProductPurchaseKey`}
+					id="productPurchaseKey"
+					name={`${NAMESPACE}productPurchaseKey`}
 					type="text"
 				/>
 			</div>
@@ -141,13 +141,13 @@ function LicenseDetails() {
 			</div>
 
 			<div className="col-md-4 form-group">
-				<label htmlFor="editorEmailAddress">
+				<label htmlFor="modifiedEmailAddress">
 					{Liferay.Language.get('last-edited-by')}
 				</label>
 				<input
 					className="form-control form-control-sm"
-					id="editorEmailAddress"
-					name={`${NAMESPACE}editorEmailAddress`}
+					id="modifiedEmailAddress"
+					name={`${NAMESPACE}modifiedEmailAddress`}
 					type="email"
 				/>
 				<div className="form-feedback-group">
