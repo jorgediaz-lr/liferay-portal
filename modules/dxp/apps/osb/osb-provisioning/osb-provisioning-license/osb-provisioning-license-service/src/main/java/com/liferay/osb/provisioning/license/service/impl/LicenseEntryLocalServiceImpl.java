@@ -43,7 +43,7 @@ public class LicenseEntryLocalServiceImpl
 
 	public LicenseEntry addLicenseEntry(
 			long userId, String productKey, String name, String type,
-			int versionMin, int versionMax)
+			String versionMin, String versionMax)
 		throws PortalException {
 
 		User user = userLocalService.getUser(userId);
@@ -73,27 +73,26 @@ public class LicenseEntryLocalServiceImpl
 		return licenseEntryPersistence.findByProductKey(productKey);
 	}
 
-	public List<LicenseEntry> getLicenseEntries(
-		String productKey, int version) {
+	public List<LicenseEntry> getLicenseEntriesByVersion(
+		String productKey, String version) {
 
-		List<LicenseEntry> licenseEntries = licenseEntryPersistence.findByPK_V(
-			productKey, version);
-
-		licenseEntries = ListUtil.copy(licenseEntries);
-
-		Iterator<LicenseEntry> itr = licenseEntries.iterator();
-
-		while (itr.hasNext()) {
-			LicenseEntry licenseEntry = itr.next();
-
-			if ((licenseEntry.getVersionMax() != 0) &&
-				(version > licenseEntry.getVersionMax())) {
-
-				itr.remove();
+		List<LicenseEntry> licenseEntries = licenseEntryPersistence.findByProductKey(
+			productKey);
+		
+		List<LicenseEntry> curlicenseEntries = new ArrayList<>();
+		
+		for(LicenseEntry licenseEntry : licenseEntries) {
+			if((Validator.isNull(licenseEntries.getVersionMin())|| 
+				ProductVersion.getOrder(licenseEntries.getVersionMin()) <= 
+				ProductVersion.getOrder(version)) && 
+				(Validator.isNull(licenseEntries.getVersionMax()) ||
+				ProductVersion.getOrder(version) <= 
+				ProductVersion.getOrder(licenseEntries.getVersionMax()))) {
+				curlicenseEntries.add(licenseEntry);
 			}
 		}
 
-		return licenseEntries;
+		return curlicenseEntries;
 	}
 
 	public LicenseEntry getLicenseEntry(String productKey, String type)
@@ -104,7 +103,7 @@ public class LicenseEntryLocalServiceImpl
 
 	public LicenseEntry updateLicenseEntry(
 			long licenseEntryId, String productKey, String name, String type,
-			int versionMin, int versionMax)
+			String versionMin, String versionMax)
 		throws PortalException {
 
 		validate(name, versionMin, versionMax);
@@ -122,14 +121,14 @@ public class LicenseEntryLocalServiceImpl
 		return licenseEntryPersistence.update(licenseEntry);
 	}
 
-	protected void validate(String name, int versionMin, int versionMax)
+	protected void validate(String name, String versionMin, String versionMax)
 		throws PortalException {
 
 		if (Validator.isNull(name)) {
 			throw new LicenseEntryNameException();
 		}
 
-		if ((versionMax != 0) && (versionMin >= versionMax)) {
+		if (Validator.isNull(versionMin) || Validator.isNull(versionMax)) {
 			throw new LicenseEntryVersionException();
 		}
 	}

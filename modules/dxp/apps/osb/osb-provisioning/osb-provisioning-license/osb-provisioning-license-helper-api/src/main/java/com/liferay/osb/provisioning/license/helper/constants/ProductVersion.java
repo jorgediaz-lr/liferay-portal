@@ -14,6 +14,9 @@
 
 package com.liferay.osb.provisioning.license.helper.constants;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author Kyle Bischof
  */
@@ -49,5 +52,32 @@ public class ProductVersion {
 	public static final String[] PORTAL_VERSIONS = {
 		PORTAL_VERSION_6_1_10, PORTAL_VERSION_6_1_20, PORTAL_VERSION_6_2_10
 	};
+
+	public static final Map<String, Integer> productVersionMap =
+		new HashMap<String, Integer>() {
+			{
+				put(COMMERCE_LICENSE_VERSION_1, 10);
+				put(DXP_VERSION_7_0, 5);
+				put(DXP_VERSION_7_1, 6);
+				put(DXP_VERSION_7_2, 7);
+				put(DXP_VERSION_7_3, 8);
+				put(DXP_VERSION_7_4, 9);
+				put(PORTAL_MINOR_VERSION_6_1, 0);
+				put(PORTAL_MINOR_VERSION_6_2, 3);
+				put(PORTAL_VERSION_6_1_10, 1);
+				put(PORTAL_VERSION_6_1_20, 2);
+				put(PORTAL_VERSION_6_2_10, 4);
+			}
+		};
+
+	public static final int getOrder(String productVersion) {
+		int order = -1;
+
+		if (productVersionMap.get(productVersion) != null) {
+			order = productVersionMap.get(productVersion);
+		}
+
+		return order;
+	}
 
 }

@@ -21,8 +21,8 @@
 		<column name="productKey" type="String" />
 		<column name="name" type="String" />
 		<column name="type" type="String" />
-		<column name="versionMin" type="int" />
-		<column name="versionMax" type="int" />
+		<column name="versionMin" type="String" />
+		<column name="versionMax" type="String" />
 
 		<!-- Order -->
 
@@ -38,10 +38,6 @@
 		<finder name="PK_T" return-type="LicenseEntry" unique="true">
 			<finder-column name="productKey" />
 			<finder-column name="type" />
-		</finder>
-		<finder name="PK_V" return-type="Collection">
-			<finder-column name="productKey" />
-			<finder-column comparator="&lt;=" name="versionMin" />
 		</finder>
 	</entity>
 	<entity local-service="true" name="LicenseKey" remote-service="true" uuid="true">
