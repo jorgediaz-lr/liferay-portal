@@ -16,7 +16,6 @@ body {
 	max-width: 40.625rem;
 
 	.advanced-search-container {
-		left: initial;
 		max-width: 40.625rem;
 	}
 }
@@ -26,12 +25,10 @@ body {
 	border: 1px solid $divider;
 	border-radius: $border-radius;
 	box-shadow: 0 4px 8px rgba(39, 40, 51, 0.12);
-	left: 10vw;
 	max-height: $advanced-search-max-height;
-	max-width: 80vw;
 	overflow: auto;
 	padding: $spacing-default;
-	position: fixed;
+	position: absolute;
 	width: 100%;
 
 	.button-holder {
@@ -106,7 +103,9 @@ body {
 
 .custom-search {
 	margin: 0 auto;
+	position: relative;
 	width: 100%;
+	z-index: 1;
 
 	.advanced-search-btn,
 	.advanced-search-trigger {
