@@ -20,7 +20,7 @@
 		{/let}
 
 		{call ClayDropdown.render}
-			{param contentRenderer: 'item' /}
+			{param contentRenderer: 'changeDefaultLanguage' /}
 			{param elementClasses: 'mt-2' /}
 			{param events: [
 				'itemClicked': $_itemClicked
@@ -36,7 +36,7 @@
 /**
  *
  */
-{deltemplate ClayDropdownItem.Item variant="'item'"}
+{deltemplate ClayDropdownItem.Item variant="'changeDefaultLanguage'"}
 	{@param label: string}
 	{@param? _handleItemClick: any}
 	{@param? active: bool}
