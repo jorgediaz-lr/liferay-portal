@@ -133,8 +133,8 @@ function Search({
 					clickOutsideCallback={handleClickOutside}
 					formAction={licenseHomeURL}
 					licenseTypes={licenseTypes}
-					productVersions={productVersions}
 					products={products}
+					productVersions={productVersions}
 					ref={searchRef}
 				/>
 			)}
