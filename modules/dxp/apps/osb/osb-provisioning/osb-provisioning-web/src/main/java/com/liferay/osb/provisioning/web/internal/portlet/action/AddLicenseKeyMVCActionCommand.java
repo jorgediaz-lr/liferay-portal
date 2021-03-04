@@ -17,6 +17,9 @@ package com.liferay.osb.provisioning.web.internal.portlet.action;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.license.helper.constants.LicenseServerId;
 import com.liferay.osb.provisioning.license.service.LicenseKeyService;
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
@@ -100,20 +103,20 @@ public class AddLicenseKeyMVCActionCommand extends BaseMVCActionCommand {
 			List<String> ipAddresses = new ArrayList<>();
 			List<String> macAddresses = new ArrayList<>();
 
-			int[] serverIdsIndexes = StringUtil.split(
-				ParamUtil.getString(actionRequest, "serverIdsIndexes"), 0);
+			JSONArray serverIdsJSONArray = JSONFactoryUtil.createJSONArray(
+				ParamUtil.getString(actionRequest, "serverIds"));
 
-			for (int serverIdsIndex : serverIdsIndexes) {
-				String hostName = ParamUtil.getString(
-					actionRequest, "hostName" + serverIdsIndex);
+			for (int i = 0; i < serverIdsJSONArray.length(); i++) {
+				JSONObject serverIdJSONObject =
+					serverIdsJSONArray.getJSONObject(i);
+
+				String hostName = serverIdJSONObject.getString("hostName");
 
 				String[] curIpAddresses = StringUtil.split(
-					ParamUtil.getString(
-						actionRequest, "ipAddresses" + serverIdsIndex),
+					serverIdJSONObject.getString("ipAddresses"),
 					StringPool.NEW_LINE);
 				String[] curMacAddresses = StringUtil.split(
-					ParamUtil.getString(
-						actionRequest, "macAddresses" + serverIdsIndex),
+					serverIdJSONObject.getString("macAddresses"),
 					StringPool.NEW_LINE);
 
 				curIpAddresses = ArrayUtil.distinct(curIpAddresses);

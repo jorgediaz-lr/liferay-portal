@@ -128,7 +128,7 @@ public class AddLicenseKeyDisplayContext {
 
 		data.put("addLicenseKeyURL", addLicenseKeyURL.toString());
 
-		data.put("allProducts", _getAllProductJSONArray());
+		data.put("allProducts", _getAllProductsJSONArray());
 		data.put("purchasedProducts", _getPurchasedProdctJSONArray());
 
 		List<Integer> maxHttpSessions = new ArrayList<>();
@@ -150,7 +150,7 @@ public class AddLicenseKeyDisplayContext {
 		return data;
 	}
 
-	private JSONArray _getAllProductJSONArray() throws Exception {
+	private JSONArray _getAllProductsJSONArray() throws Exception {
 		JSONArray allProductsJSONArray = JSONFactoryUtil.createJSONArray();
 
 		List<Product> products = _productWebService.getProducts(
