@@ -30,13 +30,13 @@ describe('License Search General Details', () => {
 	it('displays a Koroneiki Account Key Name field', () => {
 		const {getByLabelText} = renderDetails();
 
-		getByLabelText('koroneiki-account-key');
+		getByLabelText('account-key');
 	});
 
 	it('displays a Koroneiki Product Purchase Key field', () => {
 		const {getByLabelText} = renderDetails();
 
-		getByLabelText('koroneiki-product-purchase-key');
+		getByLabelText('product-purchase-key');
 	});
 
 	it('displays a Created By email field', () => {
