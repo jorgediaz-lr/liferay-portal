@@ -605,39 +605,27 @@ public class LicenseKeyLocalServiceWrapper
 	@Override
 	public java.util.List<com.liferay.osb.provisioning.license.model.LicenseKey>
 		search(
-			Long createUserId, int createDateGTDay, int createDateGTMonth,
-			int createDateGTYear, int createDateLTDay, int createDateLTMonth,
-			int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
-			int modifiedDateGTMonth, int modifiedDateGTYear,
-			int modifiedDateLTDay, int modifiedDateLTMonth,
-			int modifiedDateLTYear, String accountKey,
-			String productPurchaseKey, String accountName, int startDateGTDay,
-			int startDateGTMonth, int startDateGTYear, int startDateLTDay,
-			int startDateLTMonth, int startDateLTYear, long[] licenseEntryIds,
-			String[] productKeys, String productName, String productId,
-			String[] productVersions, String owner, String description,
-			String hostName, String ipAddress, String macAddress,
-			String serverId, String key, int expirationDateGTDay,
-			int expirationDateGTMonth, int expirationDateGTYear,
-			int expirationDateLTDay, int expirationDateLTMonth,
-			int expirationDateLTYear,
+			Long createUserId, java.util.Date createDateGT,
+			java.util.Date createDateLT, Long modifiedUserId,
+			java.util.Date modifiedDateGT, java.util.Date modifiedDateLT,
+			String accountKey, String productPurchaseKey, String accountName,
+			java.util.Date startDateGT, java.util.Date startDateLT,
+			long[] licenseEntryIds, String[] productKeys, String productName,
+			String productId, String[] productVersions, String owner,
+			String description, String hostName, String ipAddress,
+			String macAddress, String serverId, String key,
+			java.util.Date expireDateGT, java.util.Date expireDateLT,
 			java.util.LinkedHashMap<String, Object> params, boolean andSearch,
 			int start, int end,
 			com.liferay.portal.kernel.util.OrderByComparator obc) {
 
 		return _licenseKeyLocalService.search(
-			createUserId, createDateGTDay, createDateGTMonth, createDateGTYear,
-			createDateLTDay, createDateLTMonth, createDateLTYear,
-			modifiedUserId, modifiedDateGTDay, modifiedDateGTMonth,
-			modifiedDateGTYear, modifiedDateLTDay, modifiedDateLTMonth,
-			modifiedDateLTYear, accountKey, productPurchaseKey, accountName,
-			startDateGTDay, startDateGTMonth, startDateGTYear, startDateLTDay,
-			startDateLTMonth, startDateLTYear, licenseEntryIds, productKeys,
+			createUserId, createDateGT, createDateLT, modifiedUserId,
+			modifiedDateGT, modifiedDateLT, accountKey, productPurchaseKey,
+			accountName, startDateGT, startDateLT, licenseEntryIds, productKeys,
 			productName, productId, productVersions, owner, description,
-			hostName, ipAddress, macAddress, serverId, key, expirationDateGTDay,
-			expirationDateGTMonth, expirationDateGTYear, expirationDateLTDay,
-			expirationDateLTMonth, expirationDateLTYear, params, andSearch,
-			start, end, obc);
+			hostName, ipAddress, macAddress, serverId, key, expireDateGT,
+			expireDateLT, params, andSearch, start, end, obc);
 	}
 
 	@Override
@@ -653,34 +641,25 @@ public class LicenseKeyLocalServiceWrapper
 
 	@Override
 	public int searchCount(
-		Long createUserId, int createDateGTDay, int createDateGTMonth,
-		int createDateGTYear, int createDateLTDay, int createDateLTMonth,
-		int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
-		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
-		int modifiedDateLTMonth, int modifiedDateLTYear, String accountKey,
-		String productPurchaseKey, String accountName, int startDateGTDay,
-		int startDateGTMonth, int startDateGTYear, int startDateLTDay,
-		int startDateLTMonth, int startDateLTYear, long[] licenseEntryIds,
-		String[] productKeys, String productName, String productId,
-		String[] productVersions, String owner, String description,
-		String hostName, String ipAddress, String macAddress, String serverId,
-		String key, int expirationDateGTDay, int expirationDateGTMonth,
-		int expirationDateGTYear, int expirationDateLTDay,
-		int expirationDateLTMonth, int expirationDateLTYear,
+		Long createUserId, java.util.Date createDateGT,
+		java.util.Date createDateLT, Long modifiedUserId,
+		java.util.Date modifiedDateGT, java.util.Date modifiedDateLT,
+		String accountKey, String productPurchaseKey, String accountName,
+		java.util.Date startDateGT, java.util.Date startDateLT,
+		long[] licenseEntryIds, String[] productKeys, String productName,
+		String productId, String[] productVersions, String owner,
+		String description, String hostName, String ipAddress,
+		String macAddress, String serverId, String key,
+		java.util.Date expireDateGT, java.util.Date expireDateLT,
 		java.util.LinkedHashMap<String, Object> params, boolean andSearch) {
 
 		return _licenseKeyLocalService.searchCount(
-			createUserId, createDateGTDay, createDateGTMonth, createDateGTYear,
-			createDateLTDay, createDateLTMonth, createDateLTYear,
-			modifiedUserId, modifiedDateGTDay, modifiedDateGTMonth,
-			modifiedDateGTYear, modifiedDateLTDay, modifiedDateLTMonth,
-			modifiedDateLTYear, accountKey, productPurchaseKey, accountName,
-			startDateGTDay, startDateGTMonth, startDateGTYear, startDateLTDay,
-			startDateLTMonth, startDateLTYear, licenseEntryIds, productKeys,
+			createUserId, createDateGT, createDateLT, modifiedUserId,
+			modifiedDateGT, modifiedDateLT, accountKey, productPurchaseKey,
+			accountName, startDateGT, startDateLT, licenseEntryIds, productKeys,
 			productName, productId, productVersions, owner, description,
-			hostName, ipAddress, macAddress, serverId, key, expirationDateGTDay,
-			expirationDateGTMonth, expirationDateGTYear, expirationDateLTDay,
-			expirationDateLTMonth, expirationDateLTYear, params, andSearch);
+			hostName, ipAddress, macAddress, serverId, key, expireDateGT,
+			expireDateLT, params, andSearch);
 	}
 
 	@Override

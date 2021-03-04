@@ -170,23 +170,16 @@ public interface LicenseKeyService extends BaseService {
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> search(
-			Long createUserId, int createDateGTDay, int createDateGTMonth,
-			int createDateGTYear, int createDateLTDay, int createDateLTMonth,
-			int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
-			int modifiedDateGTMonth, int modifiedDateGTYear,
-			int modifiedDateLTDay, int modifiedDateLTMonth,
-			int modifiedDateLTYear, String accountKey,
-			String productPurchaseKey, String accountName, int startDateGTDay,
-			int startDateGTMonth, int startDateGTYear, int startDateLTDay,
-			int startDateLTMonth, int startDateLTYear, long[] licenseEntryIds,
+			Long createUserId, Date createDateGT, Date createDateLT,
+			Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
+			String accountKey, String productPurchaseKey, String accountName,
+			Date startDateGT, Date startDateLT, long[] licenseEntryIds,
 			String[] productKeys, String productName, String productId,
 			String[] productVersions, String owner, String description,
 			String hostName, String ipAddress, String macAddress,
-			String serverId, String key, int expirationDateGTDay,
-			int expirationDateGTMonth, int expirationDateGTYear,
-			int expirationDateLTDay, int expirationDateLTMonth,
-			int expirationDateLTYear, LinkedHashMap<String, Object> params,
-			boolean andSearch, int start, int end, OrderByComparator obc)
+			String serverId, String key, Date expireDateGT, Date expireDateLT,
+			LinkedHashMap<String, Object> params, boolean andSearch, int start,
+			int end, OrderByComparator obc)
 		throws Exception;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -197,23 +190,15 @@ public interface LicenseKeyService extends BaseService {
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int searchCount(
-			Long createUserId, int createDateGTDay, int createDateGTMonth,
-			int createDateGTYear, int createDateLTDay, int createDateLTMonth,
-			int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
-			int modifiedDateGTMonth, int modifiedDateGTYear,
-			int modifiedDateLTDay, int modifiedDateLTMonth,
-			int modifiedDateLTYear, String accountKey,
-			String productPurchaseKey, String accountName, int startDateGTDay,
-			int startDateGTMonth, int startDateGTYear, int startDateLTDay,
-			int startDateLTMonth, int startDateLTYear, long[] licenseEntryIds,
+			Long createUserId, Date createDateGT, Date createDateLT,
+			Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
+			String accountKey, String productPurchaseKey, String accountName,
+			Date startDateGT, Date startDateLT, long[] licenseEntryIds,
 			String[] productKeys, String productName, String productId,
 			String[] productVersions, String owner, String description,
 			String hostName, String ipAddress, String macAddress,
-			String serverId, String key, int expirationDateGTDay,
-			int expirationDateGTMonth, int expirationDateGTYear,
-			int expirationDateLTDay, int expirationDateLTMonth,
-			int expirationDateLTYear, LinkedHashMap<String, Object> params,
-			boolean andSearch)
+			String serverId, String key, Date expireDateGT, Date expireDateLT,
+			LinkedHashMap<String, Object> params, boolean andSearch)
 		throws Exception;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
