@@ -114,7 +114,7 @@ const AdvancedSearch = React.forwardRef(
 						<LicenseDetails />
 					</ClayPanel>
 
-					{licenseTypes.length && (
+					{!!licenseTypes.length && (
 						<ClayPanel
 							collapsable
 							displayTitle={Liferay.Language.get('license-type')}
@@ -133,7 +133,7 @@ const AdvancedSearch = React.forwardRef(
 						</ClayPanel>
 					)}
 
-					{products.length && (
+					{!!products.length && (
 						<ClayPanel
 							collapsable
 							displayTitle={Liferay.Language.get('product')}
@@ -152,7 +152,7 @@ const AdvancedSearch = React.forwardRef(
 						</ClayPanel>
 					)}
 
-					{productVersions.length && (
+					{!!productVersions.length && (
 						<ClayPanel
 							collapsable
 							displayTitle={Liferay.Language.get(
