@@ -59,11 +59,11 @@ public class LicenseKeySearch extends SearchContainer<LicenseKeyDisplay> {
 			LicenseKeyDisplayTerms.CREATOR_EMAIL_ADDRESS,
 			displayTerms.getCreatorEmailAddress());
 		iteratorURL.setParameter(
-			LicenseKeyDisplayTerms.EXPIRE_DATE_GT,
-			displayTerms.getExpireDateGT());
+			LicenseKeyDisplayTerms.EXPIRATION_DATE_GT,
+			displayTerms.getExpirationDateGT());
 		iteratorURL.setParameter(
-			LicenseKeyDisplayTerms.EXPIRE_DATE_LT,
-			displayTerms.getExpireDateLT());
+			LicenseKeyDisplayTerms.EXPIRATION_DATE_LT,
+			displayTerms.getExpirationDateLT());
 		iteratorURL.setParameter(
 			LicenseKeyDisplayTerms.HOST_NAME, displayTerms.getHostName());
 		iteratorURL.setParameter(

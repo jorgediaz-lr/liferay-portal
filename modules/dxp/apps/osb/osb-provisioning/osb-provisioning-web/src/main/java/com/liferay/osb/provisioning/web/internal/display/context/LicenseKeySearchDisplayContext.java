@@ -164,7 +164,7 @@ public class LicenseKeySearchDisplayContext {
 				searchTerms.getOwner(), null, searchTerms.getHostName(),
 				searchTerms.getIpAddress(), searchTerms.getMacAddress(),
 				searchTerms.getServerId(), searchTerms.getKey(),
-				searchTerms.getDate(searchTerms.getExpireDateGT()),
+				searchTerms.getDate(searchTerms.getExpirationDateGT()),
 				searchTerms.getDate(searchTerms.getStartDateLT()),
 				searchTerms.getParams(), false, _licenseKeySearch.getStart(),
 				_licenseKeySearch.getEnd(),
@@ -188,7 +188,7 @@ public class LicenseKeySearchDisplayContext {
 				searchTerms.getOwner(), null, searchTerms.getHostName(),
 				searchTerms.getIpAddress(), searchTerms.getMacAddress(),
 				searchTerms.getServerId(), searchTerms.getKey(),
-				searchTerms.getDate(searchTerms.getExpireDateGT()),
+				searchTerms.getDate(searchTerms.getExpirationDateGT()),
 				searchTerms.getDate(searchTerms.getStartDateLT()),
 				searchTerms.getParams(), false);
 		}

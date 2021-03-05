@@ -370,9 +370,9 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			String[] productKeys, String productName, String productId,
 			String[] productVersions, String owner, String description,
 			String hostName, String ipAddress, String macAddress,
-			String serverId, String key, Date expireDateGT, Date expireDateLT,
-			LinkedHashMap<String, Object> params, boolean andSearch, int start,
-			int end, OrderByComparator obc)
+			String serverId, String key, Date expirationDateGT,
+			Date expirationDateLT, LinkedHashMap<String, Object> params,
+			boolean andSearch, int start, int end, OrderByComparator obc)
 		throws Exception {
 
 		addPermissionParams(params);
@@ -382,8 +382,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			modifiedDateGT, modifiedDateLT, accountKey, productPurchaseKey,
 			accountName, startDateGT, startDateLT, licenseEntryIds, productKeys,
 			productName, productId, productVersions, owner, description,
-			hostName, ipAddress, macAddress, serverId, key, expireDateGT,
-			expireDateLT, params, andSearch, start, end, obc);
+			hostName, ipAddress, macAddress, serverId, key, expirationDateGT,
+			expirationDateLT, params, andSearch, start, end, obc);
 	}
 
 	public List<LicenseKey> search(
@@ -404,8 +404,9 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			String[] productKeys, String productName, String productId,
 			String[] productVersions, String owner, String description,
 			String hostName, String ipAddress, String macAddress,
-			String serverId, String key, Date expireDateGT, Date expireDateLT,
-			LinkedHashMap<String, Object> params, boolean andSearch)
+			String serverId, String key, Date expirationDateGT,
+			Date expirationDateLT, LinkedHashMap<String, Object> params,
+			boolean andSearch)
 		throws Exception {
 
 		addPermissionParams(params);
@@ -415,8 +416,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			modifiedDateGT, modifiedDateLT, accountKey, productPurchaseKey,
 			accountName, startDateGT, startDateLT, licenseEntryIds, productKeys,
 			productName, productId, productVersions, owner, description,
-			hostName, ipAddress, macAddress, serverId, key, expireDateGT,
-			expireDateLT, params, andSearch);
+			hostName, ipAddress, macAddress, serverId, key, expirationDateGT,
+			expirationDateLT, params, andSearch);
 	}
 
 	public int searchCount(

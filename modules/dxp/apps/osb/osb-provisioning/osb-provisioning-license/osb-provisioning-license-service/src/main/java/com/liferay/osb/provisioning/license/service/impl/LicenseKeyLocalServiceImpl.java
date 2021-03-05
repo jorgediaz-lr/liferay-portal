@@ -505,7 +505,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		String[] productKeys, String productName, String productId,
 		String[] productVersions, String owner, String description,
 		String hostName, String ipAddress, String macAddress, String serverId,
-		String key, Date expireDateGT, Date expireDateLT,
+		String key, Date expirationDateGT, Date expirationDateLT,
 		LinkedHashMap<String, Object> params, boolean andSearch, int start,
 		int end, OrderByComparator obc) {
 
@@ -516,7 +516,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 				accountName, startDateGT, startDateLT, licenseEntryIds,
 				productKeys, productName, productId, productVersions, owner,
 				description, hostName, ipAddress, macAddress, serverId, key,
-				expireDateGT, expireDateLT, params, andSearch, start, end, obc);
+				expirationDateGT, expirationDateLT, params, andSearch, start,
+				end, obc);
 	}
 
 	public List<LicenseKey> search(
@@ -535,7 +536,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		String[] productKeys, String productName, String productId,
 		String[] productVersions, String owner, String description,
 		String hostName, String ipAddress, String macAddress, String serverId,
-		String key, Date expireDateGT, Date expireDateLT,
+		String key, Date expirationDateGT, Date expirationDateLT,
 		LinkedHashMap<String, Object> params, boolean andSearch) {
 
 		return licenseKeyFinder.
@@ -545,7 +546,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 				accountName, startDateGT, startDateLT, licenseEntryIds,
 				productKeys, productName, productId, productVersions, owner,
 				description, hostName, ipAddress, macAddress, serverId, key,
-				expireDateGT, expireDateLT, params, andSearch);
+				expirationDateGT, expirationDateLT, params, andSearch);
 	}
 
 	public int searchCount(

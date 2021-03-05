@@ -152,10 +152,10 @@ export function getLicenseKeySearchFilterDisplayName(name) {
 		case 'creatorEmailAddress':
 			displayName = Liferay.Language.get('created-by');
 			break;
-		case 'expireDateGT':
+		case 'expirationDateGT':
 			displayName = Liferay.Language.get('expires-after');
 			break;
-		case 'expireDateLT':
+		case 'expirationDateLT':
 			displayName = Liferay.Language.get('expires-before');
 			break;
 		case 'hostName':

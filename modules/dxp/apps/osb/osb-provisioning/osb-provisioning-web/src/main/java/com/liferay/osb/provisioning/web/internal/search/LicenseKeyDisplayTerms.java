@@ -42,9 +42,9 @@ public class LicenseKeyDisplayTerms extends DisplayTerms {
 
 	public static final String CREATOR_EMAIL_ADDRESS = "creatorEmailAddress";
 
-	public static final String EXPIRE_DATE_GT = "expireDateGT";
+	public static final String EXPIRATION_DATE_GT = "expirationDateGT";
 
-	public static final String EXPIRE_DATE_LT = "expireDateLT";
+	public static final String EXPIRATION_DATE_LT = "expirationDateLT";
 
 	public static final String HOST_NAME = "hostName";
 
@@ -92,8 +92,10 @@ public class LicenseKeyDisplayTerms extends DisplayTerms {
 		createDateLT = ParamUtil.getString(portletRequest, CREATE_DATE_LT);
 		creatorEmailAddress = ParamUtil.getString(
 			portletRequest, CREATOR_EMAIL_ADDRESS);
-		expireDateGT = ParamUtil.getString(portletRequest, EXPIRE_DATE_GT);
-		expireDateLT = ParamUtil.getString(portletRequest, EXPIRE_DATE_LT);
+		expirationDateGT = ParamUtil.getString(
+			portletRequest, EXPIRATION_DATE_GT);
+		expirationDateLT = ParamUtil.getString(
+			portletRequest, EXPIRATION_DATE_LT);
 		hostName = ParamUtil.getString(portletRequest, HOST_NAME);
 		ipAddress = ParamUtil.getString(portletRequest, IP_ADDRESS);
 		key = ParamUtil.getString(portletRequest, KEY);
@@ -150,8 +152,10 @@ public class LicenseKeyDisplayTerms extends DisplayTerms {
 				new DisplayTerm("created-before", CREATE_DATE_LT, createDateLT),
 				new DisplayTerm(
 					"created-by", CREATOR_EMAIL_ADDRESS, creatorEmailAddress),
-				new DisplayTerm("expires-after", EXPIRE_DATE_GT, expireDateGT),
-				new DisplayTerm("expires-before", EXPIRE_DATE_LT, expireDateLT),
+				new DisplayTerm(
+					"expires-after", EXPIRATION_DATE_GT, expirationDateGT),
+				new DisplayTerm(
+					"expires-before", EXPIRATION_DATE_LT, expirationDateLT),
 				new DisplayTerm("host-name", HOST_NAME, hostName),
 				new DisplayTerm("ip-address", IP_ADDRESS, ipAddress),
 				new DisplayTerm("key", KEY, key),
@@ -178,12 +182,12 @@ public class LicenseKeyDisplayTerms extends DisplayTerms {
 				new DisplayTerm("type", TYPES, StringUtil.merge(types))));
 	}
 
-	public String getExpireDateGT() {
-		return expireDateGT;
+	public String getExpirationDateGT() {
+		return expirationDateGT;
 	}
 
-	public String getExpireDateLT() {
-		return expireDateLT;
+	public String getExpirationDateLT() {
+		return expirationDateLT;
 	}
 
 	public String getHostName() {
@@ -252,8 +256,8 @@ public class LicenseKeyDisplayTerms extends DisplayTerms {
 	protected String createDateGT;
 	protected String createDateLT;
 	protected String creatorEmailAddress;
-	protected String expireDateGT;
-	protected String expireDateLT;
+	protected String expirationDateGT;
+	protected String expirationDateLT;
 	protected String hostName;
 	protected String ipAddress;
 	protected String key;

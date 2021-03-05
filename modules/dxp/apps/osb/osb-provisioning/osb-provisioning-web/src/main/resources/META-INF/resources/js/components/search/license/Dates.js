@@ -112,7 +112,7 @@ function Dates() {
 
 						<DatePicker
 							id="expiresAfter"
-							inputName={`${NAMESPACE}expireDateGT`}
+							inputName={`${NAMESPACE}expirationDateGT`}
 						/>
 					</div>
 
@@ -123,7 +123,7 @@ function Dates() {
 
 						<DatePicker
 							id="expiresBefore"
-							inputName={`${NAMESPACE}expireDateLT`}
+							inputName={`${NAMESPACE}expirationDateLT`}
 						/>
 					</div>
 				</div>
