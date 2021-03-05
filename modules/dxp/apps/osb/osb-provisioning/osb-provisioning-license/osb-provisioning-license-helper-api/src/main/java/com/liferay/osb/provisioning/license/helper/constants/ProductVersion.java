@@ -71,13 +71,11 @@ public class ProductVersion {
 		};
 
 	public static final int getOrder(String productVersion) {
-		int order = -1;
-
 		if (productVersionMap.get(productVersion) != null) {
-			order = productVersionMap.get(productVersion);
+			return productVersionMap.get(productVersion);
 		}
 
-		return order;
+		return -1;
 	}
 
 }

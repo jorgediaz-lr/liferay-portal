@@ -128,8 +128,8 @@ public class AddLicenseKeyDisplayContext {
 
 		data.put("addLicenseKeyURL", addLicenseKeyURL.toString());
 
-		data.put("allProducts", _getAllProductsJSONArray());
-		data.put("purchasedProducts", _getPurchasedProdctJSONArray());
+		data.put("licenseProducts", _getLicenseProductsJSONArray());
+		data.put("purchasedProducts", _getPurchasedProductsJSONArray());
 
 		List<Integer> maxHttpSessions = new ArrayList<>();
 
@@ -150,8 +150,55 @@ public class AddLicenseKeyDisplayContext {
 		return data;
 	}
 
-	private JSONArray _getAllProductsJSONArray() throws Exception {
-		JSONArray allProductsJSONArray = JSONFactoryUtil.createJSONArray();
+	private String _getDate(Date date, String type) throws Exception {
+		Calendar calendar = Calendar.getInstance(
+			_themeDisplay.getTimeZone(), _themeDisplay.getLocale());
+
+		if (type.equals("expirationDate")) {
+			calendar.add(Calendar.YEAR, 1);
+		}
+
+		if (date != null) {
+			calendar.setTime(date);
+		}
+
+		Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
+			"yyyy-MM-dd");
+
+		return dateFormat.format(calendar.getTime());
+	}
+
+	private JSONObject _getDetachedDetails(String productKey) throws Exception {
+		StringBundler sb = new StringBundler(5);
+
+		sb.append("accountKey eq '");
+		sb.append(_account.getKey());
+		sb.append("' and productKey eq '");
+		sb.append(productKey);
+		sb.append("' and productPurchaseKey eq null");
+
+		long productConsumptionsCount =
+			_productConsumptionWebService.searchCount(sb.toString());
+
+		List<Integer> sizing = new ArrayList<>();
+
+		for (int i = 1; i <= 4; i++) {
+			sizing.add(i);
+		}
+
+		return JSONUtil.put(
+			"expirationDate", _getDate(null, "expirationDate")
+		).put(
+			"licenseKeysGenerated", productConsumptionsCount
+		).put(
+			"sizing", sizing
+		).put(
+			"startDate", _getDate(null, "startDate")
+		);
+	}
+
+	private JSONArray _getLicenseProductsJSONArray() throws Exception {
+		JSONArray licenseProductsJSONArray = JSONFactoryUtil.createJSONArray();
 
 		List<Product> products = _productWebService.getProducts(
 			StringPool.BLANK, "property_licenses eq 'true'", 1, 1000,
@@ -193,7 +240,7 @@ public class AddLicenseKeyDisplayContext {
 					JSONUtil.put(version, licenseEntriesJSONArray));
 			}
 
-			allProductsJSONArray.put(
+			licenseProductsJSONArray.put(
 				JSONUtil.put(
 					"detached", _getDetachedDetails(product.getKey())
 				).put(
@@ -207,57 +254,10 @@ public class AddLicenseKeyDisplayContext {
 				));
 		}
 
-		return allProductsJSONArray;
+		return licenseProductsJSONArray;
 	}
 
-	private String _getDate(Date date, String type) throws Exception {
-		Calendar calendar = Calendar.getInstance(
-			_themeDisplay.getTimeZone(), _themeDisplay.getLocale());
-
-		if (type.equals("expirationDate")) {
-			calendar.add(Calendar.YEAR, 1);
-		}
-
-		if (date != null) {
-			calendar.setTime(date);
-		}
-
-		Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
-			"yyyy-MM-dd");
-
-		return dateFormat.format(calendar.getTime());
-	}
-
-	private JSONObject _getDetachedDetails(String productKey) throws Exception {
-		StringBundler sb = new StringBundler(5);
-
-		sb.append("accountKey eq '");
-		sb.append(_account.getKey());
-		sb.append("' and productKey eq '");
-		sb.append(productKey);
-		sb.append("' and productPurchaseKey eq null");
-
-		long licenseKeyGenerated = _productConsumptionWebService.searchCount(
-			sb.toString());
-
-		List<Integer> sizing = new ArrayList<>();
-
-		for (int i = 1; i <= 4; i++) {
-			sizing.add(i);
-		}
-
-		return JSONUtil.put(
-			"expirationDate", _getDate(null, "expirationDate")
-		).put(
-			"licenseKeyGenerated", licenseKeyGenerated
-		).put(
-			"sizing", sizing
-		).put(
-			"startDate", _getDate(null, "startDate")
-		);
-	}
-
-	private JSONArray _getPurchasedProdctJSONArray() throws Exception {
+	private JSONArray _getPurchasedProductsJSONArray() throws Exception {
 		StringBundler sb = new StringBundler(3);
 
 		sb.append("accountKey eq '");
@@ -330,7 +330,7 @@ public class AddLicenseKeyDisplayContext {
 							provisionedCount = productConsumptions.size();
 						}
 
-						String licenseKeyGenerated =
+						String licenseKeysGenerated =
 							provisionedCount + " / " +
 								productPurchase.getQuantity();
 
@@ -341,7 +341,7 @@ public class AddLicenseKeyDisplayContext {
 									productPurchase.getEndDate(),
 									"expirationDate")
 							).put(
-								"licenseKeyGenerated", licenseKeyGenerated
+								"licenseKeysGenerated", licenseKeysGenerated
 							).put(
 								"productPurchaseKey", productPurchaseKey
 							).put(

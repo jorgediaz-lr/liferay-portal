@@ -76,10 +76,10 @@ public class LicenseEntryLocalServiceImpl
 	public List<LicenseEntry> getLicenseEntriesByVersion(
 		String productKey, String version) {
 
+		List<LicenseEntry> curLicenseEntries = new ArrayList<>();
+
 		List<LicenseEntry> licenseEntries =
 			licenseEntryPersistence.findByProductKey(productKey);
-
-		List<LicenseEntry> curlicenseEntries = new ArrayList<>();
 
 		for (LicenseEntry licenseEntry : licenseEntries) {
 			if ((Validator.isNull(licenseEntry.getVersionMin()) ||
@@ -89,11 +89,11 @@ public class LicenseEntryLocalServiceImpl
 				 (ProductVersion.getOrder(version) <= ProductVersion.getOrder(
 					 licenseEntry.getVersionMax())))) {
 
-				curlicenseEntries.add(licenseEntry);
+				curLicenseEntries.add(licenseEntry);
 			}
 		}
 
-		return curlicenseEntries;
+		return curLicenseEntries;
 	}
 
 	public LicenseEntry getLicenseEntry(String productKey, String type)

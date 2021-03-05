@@ -18,17 +18,9 @@
 
 <liferay-util:include page="/common/view_account_search_header.jsp" servletContext="<%= application %>" />
 
-<%
-String redirect = ParamUtil.getString(request, "redirect");
-
-AddLicenseKeyDisplayContext addLicenseKeyDisplayContext = ProvisioningWebComponentProvider.getAddLicenseKeyDisplayContext(renderRequest, renderResponse, request);
-
-addLicenseKeyDisplayContext.getAddLicenseKeyData();
-%>
-
 <div class="add-items">
 	<liferay-ui:header
-		backURL="<%= redirect %>"
+		backURL='<%= ParamUtil.getString(request, "redirect") %>'
 		cssClass="add-items-header"
 		title='<%= LanguageUtil.get(request, "generate-license") %>'
 	/>
