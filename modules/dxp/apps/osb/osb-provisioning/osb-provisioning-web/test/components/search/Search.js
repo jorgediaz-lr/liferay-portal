@@ -14,7 +14,7 @@ import times from 'lodash.times';
 import React from 'react';
 
 import {default as AccountSearch} from '../../../src/main/resources/META-INF/resources/js/components/search/account/Search';
-import {default as LicenseSearch} from '../../../src/main/resources/META-INF/resources/js/components/search/license/Search';
+import {default as LicenseKeySearch} from '../../../src/main/resources/META-INF/resources/js/components/search/license/Search';
 
 function renderAccountSearch() {
 	return render(
@@ -40,9 +40,9 @@ const dummyData = index => {
 	};
 };
 
-function renderLicenseSearch() {
+function renderLicenseKeySearch() {
 	return render(
-		<LicenseSearch
+		<LicenseKeySearch
 			licenseHomeURL="/license/home/URL"
 			licenseTypes={times(Math.random() * 100, dummyData)}
 			products={times(Math.random() * 100, dummyData)}
@@ -107,25 +107,25 @@ describe('Search', () => {
 
 	describe('License Search', () => {
 		it('renders', () => {
-			const {container} = renderLicenseSearch();
+			const {container} = renderLicenseKeySearch();
 
 			expect(container).toBeTruthy();
 		});
 
 		it('displays a search input', () => {
-			const {getByPlaceholderText} = renderLicenseSearch();
+			const {getByPlaceholderText} = renderLicenseKeySearch();
 
 			getByPlaceholderText('search-licenses');
 		});
 
 		it('displays a search icon', () => {
-			const {getByLabelText} = renderLicenseSearch();
+			const {getByLabelText} = renderLicenseKeySearch();
 
 			getByLabelText('search-icon');
 		});
 
 		it('displays a caret to trigger Advanced Search', () => {
-			const {getByLabelText} = renderLicenseSearch();
+			const {getByLabelText} = renderLicenseKeySearch();
 
 			getByLabelText('advanced-search-icon');
 		});
@@ -134,7 +134,7 @@ describe('Search', () => {
 			const {
 				getByLabelText,
 				getByPlaceholderText
-			} = renderLicenseSearch();
+			} = renderLicenseKeySearch();
 
 			fireEvent.click(getByLabelText('advanced-search-icon'));
 
@@ -142,7 +142,7 @@ describe('Search', () => {
 		});
 
 		it('opens the Advanced Search when the caret is clicked', () => {
-			const {getByLabelText} = renderLicenseSearch();
+			const {getByLabelText} = renderLicenseKeySearch();
 
 			fireEvent.click(getByLabelText('advanced-search-icon'));
 

@@ -23,8 +23,8 @@ import com.liferay.osb.provisioning.license.model.LicenseKey;
 import com.liferay.osb.provisioning.license.service.LicenseEntryLocalService;
 import com.liferay.osb.provisioning.license.service.LicenseKeyLocalService;
 import com.liferay.osb.provisioning.license.util.LicenseUtil;
-import com.liferay.osb.provisioning.web.internal.search.LicenseSearch;
-import com.liferay.osb.provisioning.web.internal.search.LicenseSearchTerms;
+import com.liferay.osb.provisioning.web.internal.search.LicenseKeySearch;
+import com.liferay.osb.provisioning.web.internal.search.LicenseKeySearchTerms;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
@@ -50,9 +50,9 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @author Kyle Bischof
  */
-public class LicenseSearchDisplayContext {
+public class LicenseKeySearchDisplayContext {
 
-	public LicenseSearchDisplayContext(
+	public LicenseKeySearchDisplayContext(
 		RenderRequest renderRequest, RenderResponse renderResponse,
 		HttpServletRequest httpServletRequest,
 		LicenseEntryLocalService licenseEntryLocalService,
@@ -132,14 +132,15 @@ public class LicenseSearchDisplayContext {
 	}
 
 	public SearchContainer getSearchContainer() throws Exception {
-		if (_licenseSearch != null) {
-			return _licenseSearch;
+		if (_licenseKeySearch != null) {
+			return _licenseKeySearch;
 		}
 
-		_licenseSearch = new LicenseSearch(_renderRequest, _currentURLObj);
+		_licenseKeySearch = new LicenseKeySearch(
+			_renderRequest, _currentURLObj);
 
-		LicenseSearchTerms searchTerms =
-			(LicenseSearchTerms)_licenseSearch.getSearchTerms();
+		LicenseKeySearchTerms searchTerms =
+			(LicenseKeySearchTerms)_licenseKeySearch.getSearchTerms();
 
 		List<LicenseKey> licenseKeys = null;
 
@@ -165,8 +166,8 @@ public class LicenseSearchDisplayContext {
 				searchTerms.getServerId(), searchTerms.getKey(),
 				searchTerms.getDate(searchTerms.getExpireDateGT()),
 				searchTerms.getDate(searchTerms.getStartDateLT()),
-				searchTerms.getParams(), false, _licenseSearch.getStart(),
-				_licenseSearch.getEnd(),
+				searchTerms.getParams(), false, _licenseKeySearch.getStart(),
+				_licenseKeySearch.getEnd(),
 				LicenseUtil.getLicenseKeyOrderByComparator(
 					"expiration-date", "desc"));
 
@@ -194,7 +195,7 @@ public class LicenseSearchDisplayContext {
 		else {
 			licenseKeys = _licenseKeyLocalService.search(
 				searchTerms.getKeywords(), searchTerms.getParams(),
-				_licenseSearch.getStart(), _licenseSearch.getEnd(),
+				_licenseKeySearch.getStart(), _licenseKeySearch.getEnd(),
 				LicenseUtil.getLicenseKeyOrderByComparator(
 					"expiration-date", "desc"));
 
@@ -202,22 +203,22 @@ public class LicenseSearchDisplayContext {
 				searchTerms.getKeywords(), searchTerms.getParams());
 		}
 
-		_licenseSearch.setResults(
+		_licenseKeySearch.setResults(
 			TransformUtil.transform(
 				licenseKeys,
-				licenseKey -> new LicenseDisplay(
+				licenseKey -> new LicenseKeyDisplay(
 					_renderRequest, _renderResponse, licenseKey)));
 
-		_licenseSearch.setTotal(count);
+		_licenseKeySearch.setTotal(count);
 
-		return _licenseSearch;
+		return _licenseKeySearch;
 	}
 
 	private final PortletURL _currentURLObj;
 	private final HttpServletRequest _httpServletRequest;
 	private final LicenseEntryLocalService _licenseEntryLocalService;
 	private final LicenseKeyLocalService _licenseKeyLocalService;
-	private LicenseSearch _licenseSearch;
+	private LicenseKeySearch _licenseKeySearch;
 	private final ProductWebService _productWebService;
 	private final RenderRequest _renderRequest;
 	private final RenderResponse _renderResponse;

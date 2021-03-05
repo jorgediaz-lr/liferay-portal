@@ -31,16 +31,15 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @author Kyle Bischof
  */
-public class LicenseDisplay {
+public class LicenseKeyDisplay {
 
-	public LicenseDisplay(
+	public LicenseKeyDisplay(
 			PortletRequest portletRequest, PortletResponse portletResponse,
 			LicenseKey licenseKey)
 		throws Exception {
 
 		_portletRequest = portletRequest;
 		_portletResponse = portletResponse;
-
 		_licenseKey = licenseKey;
 
 		_httpServletRequest = PortalUtil.getHttpServletRequest(portletRequest);

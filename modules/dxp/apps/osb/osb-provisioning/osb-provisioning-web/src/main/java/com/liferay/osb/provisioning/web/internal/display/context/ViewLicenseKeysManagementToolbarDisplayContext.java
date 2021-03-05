@@ -22,7 +22,7 @@ import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.provisioning.license.model.LicenseEntry;
 import com.liferay.osb.provisioning.license.service.LicenseEntryLocalService;
 import com.liferay.osb.provisioning.web.internal.search.DisplayTerm;
-import com.liferay.osb.provisioning.web.internal.search.LicenseDisplayTerms;
+import com.liferay.osb.provisioning.web.internal.search.LicenseKeyDisplayTerms;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -71,17 +71,17 @@ public class ViewLicenseKeysManagementToolbarDisplayContext
 
 	@Override
 	public List<LabelItem> getFilterLabelItems() {
-		LicenseDisplayTerms licenseDisplayTerms =
-			(LicenseDisplayTerms)searchContainer.getDisplayTerms();
+		LicenseKeyDisplayTerms licenseKeyDisplayTerms =
+			(LicenseKeyDisplayTerms)searchContainer.getDisplayTerms();
 
-		if (!licenseDisplayTerms.isAdvancedSearch()) {
+		if (!licenseKeyDisplayTerms.isAdvancedSearch()) {
 			return null;
 		}
 
 		return new LabelItemList() {
 			{
 				List<DisplayTerm> displayTermsList =
-					licenseDisplayTerms.getDisplayTermsList();
+					licenseKeyDisplayTerms.getDisplayTermsList();
 
 				for (DisplayTerm displayTerm : displayTermsList) {
 					String[] values = StringUtil.split(displayTerm.getValue());
@@ -114,7 +114,7 @@ public class ViewLicenseKeysManagementToolbarDisplayContext
 
 	@Override
 	public String getSearchContainerId() {
-		return "licenseSearch";
+		return "licenseKeySearch";
 	}
 
 	@Override
@@ -172,7 +172,7 @@ public class ViewLicenseKeysManagementToolbarDisplayContext
 		removeLabelURL.setParameter(
 			displayTermName, StringUtil.merge(removeKeywords));
 
-		if (displayTermName.equals(LicenseDisplayTerms.PRODUCTS)) {
+		if (displayTermName.equals(LicenseKeyDisplayTerms.PRODUCTS)) {
 			removeLabelURL.setParameter(
 				"product", com.liferay.portal.kernel.util.StringPool.BLANK);
 		}

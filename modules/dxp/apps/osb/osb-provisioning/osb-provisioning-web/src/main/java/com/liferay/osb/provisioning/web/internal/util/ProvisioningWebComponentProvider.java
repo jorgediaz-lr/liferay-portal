@@ -37,7 +37,7 @@ import com.liferay.osb.provisioning.web.internal.display.context.AssignProductPu
 import com.liferay.osb.provisioning.web.internal.display.context.AssignTeamContactsDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.ContactSearchDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.EditProductPurchasesDisplayContext;
-import com.liferay.osb.provisioning.web.internal.display.context.LicenseSearchDisplayContext;
+import com.liferay.osb.provisioning.web.internal.display.context.LicenseKeySearchDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.ProductSearchDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.TeamSearchDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.ViewAccountContactsDisplayContext;
@@ -134,12 +134,13 @@ public class ProvisioningWebComponentProvider {
 			renderResponse, httpServletRequest);
 	}
 
-	public static LicenseSearchDisplayContext getLicenseSearchDisplayContext(
-		RenderRequest renderRequest, RenderResponse renderResponse,
-		HttpServletRequest httpServletRequest) {
+	public static LicenseKeySearchDisplayContext
+		getLicenseKeySearchDisplayContext(
+			RenderRequest renderRequest, RenderResponse renderResponse,
+			HttpServletRequest httpServletRequest) {
 
 		return _provisioningWebComponentProvider.
-			_getLicenseSearchDisplayContext(
+			_getLicenseKeySearchDisplayContext(
 				renderRequest, renderResponse, httpServletRequest);
 	}
 
@@ -327,11 +328,11 @@ public class ProvisioningWebComponentProvider {
 			_accountWebService, _contactWebService);
 	}
 
-	private LicenseSearchDisplayContext _getLicenseSearchDisplayContext(
+	private LicenseKeySearchDisplayContext _getLicenseKeySearchDisplayContext(
 		RenderRequest renderRequest, RenderResponse renderResponse,
 		HttpServletRequest httpServletRequest) {
 
-		return new LicenseSearchDisplayContext(
+		return new LicenseKeySearchDisplayContext(
 			renderRequest, renderResponse, httpServletRequest,
 			_licenseEntryLocalService, _licenseKeyLocalService,
 			_productWebService);

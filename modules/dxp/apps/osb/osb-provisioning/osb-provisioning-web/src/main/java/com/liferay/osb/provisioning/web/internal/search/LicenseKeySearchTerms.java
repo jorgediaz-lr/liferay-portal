@@ -32,9 +32,9 @@ import javax.portlet.PortletRequest;
 /**
  * @author Kyle Bischof
  */
-public class LicenseSearchTerms extends LicenseDisplayTerms {
+public class LicenseKeySearchTerms extends LicenseKeyDisplayTerms {
 
-	public LicenseSearchTerms(PortletRequest portletRequest) {
+	public LicenseKeySearchTerms(PortletRequest portletRequest) {
 		super(portletRequest);
 	}
 

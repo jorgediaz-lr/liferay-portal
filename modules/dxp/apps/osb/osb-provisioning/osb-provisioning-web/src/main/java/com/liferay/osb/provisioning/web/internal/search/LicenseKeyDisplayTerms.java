@@ -28,7 +28,7 @@ import javax.portlet.PortletRequest;
 /**
  * @author Kyle Bischof
  */
-public class LicenseDisplayTerms extends DisplayTerms {
+public class LicenseKeyDisplayTerms extends DisplayTerms {
 
 	public static final String ACCOUNT_KEY = "accountKey";
 
@@ -76,12 +76,12 @@ public class LicenseDisplayTerms extends DisplayTerms {
 
 	public static final String TYPES = "types";
 
-	public LicenseDisplayTerms(PortletRequest portletRequest) {
+	public LicenseKeyDisplayTerms(PortletRequest portletRequest) {
 		super(portletRequest);
 
 		if (Validator.isNull(keywords)) {
 			keywords = ParamUtil.getString(
-				portletRequest, "licenseSearchKeywords");
+				portletRequest, "licenseKeySearchKeywords");
 		}
 
 		accountKey = ParamUtil.getString(portletRequest, ACCOUNT_KEY);
@@ -103,9 +103,9 @@ public class LicenseDisplayTerms extends DisplayTerms {
 		modifiedEmailAddress = ParamUtil.getString(
 			portletRequest, MODIFIED_EMAIL_ADDRESS);
 		owner = ParamUtil.getString(portletRequest, OWNER);
-		products = ParamUtil.getStringValues(portletRequest, PRODUCTS);
 		productPurchaseKey = ParamUtil.getString(
 			portletRequest, PRODUCT_PURCHASE_KEY);
+		products = ParamUtil.getStringValues(portletRequest, PRODUCTS);
 		productVersions = ParamUtil.getStringValues(
 			portletRequest, PRODUCT_VERSIONS);
 		serverId = ParamUtil.getString(portletRequest, SERVER_ID);

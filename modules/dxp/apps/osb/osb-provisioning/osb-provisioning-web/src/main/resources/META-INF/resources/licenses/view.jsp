@@ -19,7 +19,7 @@
 <liferay-util:include page="/common/view_account_search_header.jsp" servletContext="<%= application %>" />
 
 <%
-LicenseSearchDisplayContext licenseSearchDisplayContext = ProvisioningWebComponentProvider.getLicenseSearchDisplayContext(renderRequest, renderResponse, request);
+LicenseKeySearchDisplayContext licenseKeySearchDisplayContext = ProvisioningWebComponentProvider.getLicenseKeySearchDisplayContext(renderRequest, renderResponse, request);
 %>
 
 <div class="title-bar">
@@ -30,72 +30,72 @@ LicenseSearchDisplayContext licenseSearchDisplayContext = ProvisioningWebCompone
 	<div class="licenses">
 		<div class="custom-search license-search">
 			<react:component
-				data="<%= licenseSearchDisplayContext.getData() %>"
-				module="js/LicenseSearchApp"
+				data="<%= licenseKeySearchDisplayContext.getData() %>"
+				module="js/LicenseKeySearchApp"
 			/>
 		</div>
 
 		<clay:management-toolbar
-			displayContext="<%= ProvisioningWebComponentProvider.getViewLicenseKeysManagementToolbarDisplayContext(liferayPortletRequest, liferayPortletResponse, request, licenseSearchDisplayContext.getSearchContainer()) %>"
+			displayContext="<%= ProvisioningWebComponentProvider.getViewLicenseKeysManagementToolbarDisplayContext(liferayPortletRequest, liferayPortletResponse, request, licenseKeySearchDisplayContext.getSearchContainer()) %>"
 			elementClasses="full-width"
-			searchInputName="licenseSearchKeywords"
+			searchInputName="licenseKeySearchKeywords"
 			showSearch="<%= false %>"
 		/>
 
 		<liferay-ui:search-container
 			cssClass="table-hover"
-			searchContainer="<%= licenseSearchDisplayContext.getSearchContainer() %>"
+			searchContainer="<%= licenseKeySearchDisplayContext.getSearchContainer() %>"
 		>
 			<liferay-ui:search-container-row
-				className="com.liferay.osb.provisioning.web.internal.display.context.LicenseDisplay"
+				className="com.liferay.osb.provisioning.web.internal.display.context.LicenseKeyDisplay"
 				keyProperty="licenseKeyId"
-				modelVar="licenseDisplay"
+				modelVar="licenseKeyDisplay"
 			>
 				<portlet:renderURL var="rowURL">
 					<portlet:param name="mvcRenderCommandName" value="/licenses/view_license" />
 					<portlet:param name="redirect" value="<%= currentURL %>" />
-					<portlet:param name="licenseKeyId" value="<%= licenseDisplay.getLicenseKeyId() %>" />
+					<portlet:param name="licenseKeyId" value="<%= licenseKeyDisplay.getLicenseKeyId() %>" />
 				</portlet:renderURL>
 
 				<liferay-ui:search-container-column-text
 					href="<%= rowURL %>"
 					name="name-description"
 				>
-					<%= HtmlUtil.escape(licenseDisplay.getName()) %>
+					<%= HtmlUtil.escape(licenseKeyDisplay.getName()) %>
 
 					<div class="secondary-information">
-						<%= HtmlUtil.escape(licenseDisplay.getDescription()) %>
+						<%= HtmlUtil.escape(licenseKeyDisplay.getDescription()) %>
 					</div>
 				</liferay-ui:search-container-column-text>
 
 				<liferay-ui:search-container-column-text
 					href="<%= rowURL %>"
 					name="account"
-					value="<%= licenseDisplay.getAccountName() %>"
+					value="<%= licenseKeyDisplay.getAccountName() %>"
 				/>
 
 				<liferay-ui:search-container-column-text
 					href="<%= rowURL %>"
 					name="end-date"
-					value="<%= HtmlUtil.escape(licenseDisplay.getEndDate()) %>"
+					value="<%= HtmlUtil.escape(licenseKeyDisplay.getEndDate()) %>"
 				/>
 
 				<liferay-ui:search-container-column-text
 					href="<%= rowURL %>"
 					name="product"
-					value="<%= licenseDisplay.getProductName() %>"
+					value="<%= licenseKeyDisplay.getProductName() %>"
 				/>
 
 				<liferay-ui:search-container-column-text
 					href="<%= rowURL %>"
 					name="type"
-					value="<%= licenseDisplay.getType() %>"
+					value="<%= licenseKeyDisplay.getType() %>"
 				/>
 
 				<liferay-ui:search-container-column-text
 					href="<%= rowURL %>"
 					name="host-name"
-					value="<%= licenseDisplay.getHostName() %>"
+					value="<%= licenseKeyDisplay.getHostName() %>"
 				/>
 			</liferay-ui:search-container-row>
 

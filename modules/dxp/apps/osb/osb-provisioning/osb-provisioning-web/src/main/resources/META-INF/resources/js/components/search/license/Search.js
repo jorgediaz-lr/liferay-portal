@@ -14,7 +14,7 @@ import React, {useRef, useState} from 'react';
 
 import {NAMESPACE} from '../../../utilities/constants';
 import {
-	getLicenseSearchFilterDisplayName,
+	getLicenseKeySearchFilterDisplayName,
 	getSearchParameter,
 	getSearchPlaceholder,
 	setAdvancedSearchAriaAttributes
@@ -28,14 +28,14 @@ function Search({
 	products
 }) {
 	const [keywords, setKeywords] = useState(
-		getSearchParameter(`${NAMESPACE}licenseSearchKeywords`)
+		getSearchParameter(`${NAMESPACE}licenseKeySearchKeywords`)
 	);
 	const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
 
 	const searchRef = useRef();
 
 	function buildSearchResultsURL() {
-		return `${licenseHomeURL}&${NAMESPACE}licenseSearchKeywords=${keywords}`;
+		return `${licenseHomeURL}&${NAMESPACE}licenseKeySearchKeywords=${keywords}`;
 	}
 
 	function handleClickOutside(event) {
@@ -81,7 +81,7 @@ function Search({
 						onChange={handleOnChange}
 						onKeyDown={handleOnKeyDown}
 						placeholder={getSearchPlaceholder(
-							getLicenseSearchFilterDisplayName,
+							getLicenseKeySearchFilterDisplayName,
 							Liferay.Language.get('search-licenses')
 						)}
 						type=""

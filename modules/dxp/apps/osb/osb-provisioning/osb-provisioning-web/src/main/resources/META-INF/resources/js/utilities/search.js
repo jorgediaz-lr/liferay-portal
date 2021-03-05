@@ -130,10 +130,13 @@ export function getAccountSearchFilterDisplayName(name) {
  * @param {string} name The filter name to be evaluated
  * @returns {string} New display value
  */
-export function getLicenseSearchFilterDisplayName(name) {
+export function getLicenseKeySearchFilterDisplayName(name) {
 	let displayName;
 
 	switch (name) {
+		case 'accountKey':
+			displayName = Liferay.Language.get('account-key');
+			break;
 		case 'accountName':
 			displayName = Liferay.Language.get('account');
 			break;
@@ -149,9 +152,6 @@ export function getLicenseSearchFilterDisplayName(name) {
 		case 'creatorEmailAddress':
 			displayName = Liferay.Language.get('created-by');
 			break;
-		case 'modifiedEmailAddress':
-			displayName = Liferay.Language.get('last-edited-by');
-			break;
 		case 'expireDateGT':
 			displayName = Liferay.Language.get('expires-after');
 			break;
@@ -163,12 +163,6 @@ export function getLicenseSearchFilterDisplayName(name) {
 			break;
 		case 'ipAddress':
 			displayName = Liferay.Language.get('ip-address');
-			break;
-		case 'accountKey':
-			displayName = Liferay.Language.get('account-key');
-			break;
-		case 'productPurchaseKey':
-			displayName = Liferay.Language.get('product-purchase-key');
 			break;
 		case 'licenseKey':
 			displayName = Liferay.Language.get('key');
@@ -185,14 +179,20 @@ export function getLicenseSearchFilterDisplayName(name) {
 		case 'modifiedDateLT':
 			displayName = Liferay.Language.get('modified-before');
 			break;
+		case 'modifiedEmailAddress':
+			displayName = Liferay.Language.get('last-edited-by');
+			break;
 		case 'owner':
 			displayName = Liferay.Language.get('owner');
 			break;
-		case 'productVersions':
-			displayName = Liferay.Language.get('product-version');
+		case 'productPurchaseKey':
+			displayName = Liferay.Language.get('product-purchase-key');
 			break;
 		case 'products':
 			displayName = Liferay.Language.get('product');
+			break;
+		case 'productVersions':
+			displayName = Liferay.Language.get('product-version');
 			break;
 		case 'serverId':
 			displayName = Liferay.Language.get('server-id');

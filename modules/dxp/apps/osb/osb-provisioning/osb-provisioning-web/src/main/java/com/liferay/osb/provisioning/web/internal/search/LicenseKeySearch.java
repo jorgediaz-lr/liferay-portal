@@ -14,7 +14,7 @@
 
 package com.liferay.osb.provisioning.web.internal.search;
 
-import com.liferay.osb.provisioning.web.internal.display.context.LicenseDisplay;
+import com.liferay.osb.provisioning.web.internal.display.context.LicenseKeyDisplay;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.util.ArrayUtil;
 
@@ -26,75 +26,81 @@ import javax.portlet.PortletURL;
 /**
  * @author Kyle Bischof
  */
-public class LicenseSearch extends SearchContainer<LicenseDisplay> {
+public class LicenseKeySearch extends SearchContainer<LicenseKeyDisplay> {
 
 	public static final String EMPTY_RESULTS_MESSAGE = "no-licenses-were-found";
 
-	public LicenseSearch(
+	public LicenseKeySearch(
 		PortletRequest portletRequest, PortletURL iteratorURL) {
 
 		super(
-			portletRequest, new LicenseDisplayTerms(portletRequest),
-			new LicenseSearchTerms(portletRequest), DEFAULT_CUR_PARAM,
+			portletRequest, new LicenseKeyDisplayTerms(portletRequest),
+			new LicenseKeySearchTerms(portletRequest), DEFAULT_CUR_PARAM,
 			DEFAULT_DELTA, iteratorURL, Collections.emptyList(),
 			EMPTY_RESULTS_MESSAGE);
 
-		LicenseDisplayTerms displayTerms =
-			(LicenseDisplayTerms)getDisplayTerms();
+		LicenseKeyDisplayTerms displayTerms =
+			(LicenseKeyDisplayTerms)getDisplayTerms();
 
 		iteratorURL.setParameter(
-			LicenseDisplayTerms.ACCOUNT_KEY, displayTerms.getAccountKey());
+			LicenseKeyDisplayTerms.ACCOUNT_KEY, displayTerms.getAccountKey());
 		iteratorURL.setParameter(
-			LicenseDisplayTerms.ACCOUNT_NAME, displayTerms.getAccountName());
+			LicenseKeyDisplayTerms.ACCOUNT_NAME, displayTerms.getAccountName());
 		iteratorURL.setParameter(
-			LicenseDisplayTerms.ACTIVE_LICENSES,
+			LicenseKeyDisplayTerms.ACTIVE_LICENSES,
 			ArrayUtil.toStringArray(displayTerms.getActiveLicenses()));
 		iteratorURL.setParameter(
-			LicenseDisplayTerms.CREATE_DATE_GT, displayTerms.getCreateDateGT());
+			LicenseKeyDisplayTerms.CREATE_DATE_GT,
+			displayTerms.getCreateDateGT());
 		iteratorURL.setParameter(
-			LicenseDisplayTerms.CREATE_DATE_LT, displayTerms.getCreateDateLT());
+			LicenseKeyDisplayTerms.CREATE_DATE_LT,
+			displayTerms.getCreateDateLT());
 		iteratorURL.setParameter(
-			LicenseDisplayTerms.CREATOR_EMAIL_ADDRESS,
+			LicenseKeyDisplayTerms.CREATOR_EMAIL_ADDRESS,
 			displayTerms.getCreatorEmailAddress());
 		iteratorURL.setParameter(
-			LicenseDisplayTerms.EXPIRE_DATE_GT, displayTerms.getExpireDateGT());
+			LicenseKeyDisplayTerms.EXPIRE_DATE_GT,
+			displayTerms.getExpireDateGT());
 		iteratorURL.setParameter(
-			LicenseDisplayTerms.EXPIRE_DATE_LT, displayTerms.getExpireDateLT());
+			LicenseKeyDisplayTerms.EXPIRE_DATE_LT,
+			displayTerms.getExpireDateLT());
 		iteratorURL.setParameter(
-			LicenseDisplayTerms.HOST_NAME, displayTerms.getHostName());
+			LicenseKeyDisplayTerms.HOST_NAME, displayTerms.getHostName());
 		iteratorURL.setParameter(
-			LicenseDisplayTerms.IP_ADDRESS, displayTerms.getIpAddress());
+			LicenseKeyDisplayTerms.IP_ADDRESS, displayTerms.getIpAddress());
 		iteratorURL.setParameter(
-			LicenseDisplayTerms.KEY, displayTerms.getKey());
+			LicenseKeyDisplayTerms.KEY, displayTerms.getKey());
 		iteratorURL.setParameter(
-			LicenseDisplayTerms.MAC_ADDRESS, displayTerms.getMacAddress());
+			LicenseKeyDisplayTerms.MAC_ADDRESS, displayTerms.getMacAddress());
 		iteratorURL.setParameter(
-			LicenseDisplayTerms.MODIFIED_DATE_GT,
+			LicenseKeyDisplayTerms.MODIFIED_DATE_GT,
 			displayTerms.getModifiedDateGT());
 		iteratorURL.setParameter(
-			LicenseDisplayTerms.MODIFIED_DATE_LT,
+			LicenseKeyDisplayTerms.MODIFIED_DATE_LT,
 			displayTerms.getModifiedDateLT());
 		iteratorURL.setParameter(
-			LicenseDisplayTerms.MODIFIED_EMAIL_ADDRESS,
+			LicenseKeyDisplayTerms.MODIFIED_EMAIL_ADDRESS,
 			displayTerms.getModifiedEmailAddress());
 		iteratorURL.setParameter(
-			LicenseDisplayTerms.OWNER, displayTerms.getOwner());
+			LicenseKeyDisplayTerms.OWNER, displayTerms.getOwner());
 		iteratorURL.setParameter(
-			LicenseDisplayTerms.PRODUCTS, displayTerms.getProducts());
-		iteratorURL.setParameter(
-			LicenseDisplayTerms.PRODUCT_PURCHASE_KEY,
+			LicenseKeyDisplayTerms.PRODUCT_PURCHASE_KEY,
 			displayTerms.getProductPurchaseKey());
 		iteratorURL.setParameter(
-			LicenseDisplayTerms.PRODUCT_VERSIONS,
+			LicenseKeyDisplayTerms.PRODUCT_VERSIONS,
 			displayTerms.getProductVersions());
 		iteratorURL.setParameter(
-			LicenseDisplayTerms.SERVER_ID, displayTerms.getServerId());
+			LicenseKeyDisplayTerms.PRODUCTS, displayTerms.getProducts());
 		iteratorURL.setParameter(
-			LicenseDisplayTerms.START_DATE_GT, displayTerms.getStartDateGT());
+			LicenseKeyDisplayTerms.SERVER_ID, displayTerms.getServerId());
 		iteratorURL.setParameter(
-			LicenseDisplayTerms.START_DATE_LT, displayTerms.getStartDateLT());
+			LicenseKeyDisplayTerms.START_DATE_GT,
+			displayTerms.getStartDateGT());
 		iteratorURL.setParameter(
-			LicenseDisplayTerms.TYPES, displayTerms.getTypes());
+			LicenseKeyDisplayTerms.START_DATE_LT,
+			displayTerms.getStartDateLT());
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.TYPES, displayTerms.getTypes());
 	}
 
 }
