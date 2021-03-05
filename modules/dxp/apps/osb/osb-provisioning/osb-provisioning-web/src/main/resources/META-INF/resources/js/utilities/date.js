@@ -10,8 +10,8 @@
  */
 
 /**
- * This helper takes a date object and converts it to a UTC date with the hour
- * set at midnight.
+ * This helper takes a date object and converts it to a UTC date with the day
+ * starts at midnight.
  * @param {Object} Date A date object.
  * @returns {Object} A new Date object representing UTC
  */
@@ -24,6 +24,21 @@ export function convertDateToUTCDate(date) {
 }
 
 /**
+ * This helper takes a date object and converts it to the start of the day with
+ * the hour set at midnight. Note, this is to get around Clay Date Picker
+ * setting date at noon.
+ * @param {Object} Date A date object.
+ * @returns {Object} A new Date object starting at midnight
+ */
+export function convertDateToStartOfDate(date) {
+	const year = date.getFullYear();
+	const month = date.getMonth();
+	const day = date.getDate();
+
+	return new Date(year, month, day);
+}
+
+/**
  * This helper takes the incoming value, date or string and converts them to a
  * new Date object representing UTC with the hour set at midnight.
  * @param {Object|string} value Date value from user input, could be a date
@@ -31,7 +46,7 @@ export function convertDateToUTCDate(date) {
  * @returns {Object|string} Date object or empty string.
  */
 export function convertInputToDate(value) {
-	return value === '' ? '' : convertDateToUTCDate(new Date(value));
+	return value === '' ? '' : convertDateToStartOfDate(new Date(value));
 }
 
 /**
