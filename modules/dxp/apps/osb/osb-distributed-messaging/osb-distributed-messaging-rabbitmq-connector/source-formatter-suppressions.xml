@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+
+<suppressions>
+	<source-check>
+		<suppress checks="JavaMultiPlusConcatCheck" files="src/main/java/com/liferay/osb/distributed/messaging/rabbitmq/connector/BaseConnection\.java" />
+		<suppress checks="JavaMultiPlusConcatCheck" files="src/main/java/com/liferay/osb/distributed/messaging/rabbitmq/connector/consumer/BaseConsumer\.java" />
+	</source-check>
+</suppressions>

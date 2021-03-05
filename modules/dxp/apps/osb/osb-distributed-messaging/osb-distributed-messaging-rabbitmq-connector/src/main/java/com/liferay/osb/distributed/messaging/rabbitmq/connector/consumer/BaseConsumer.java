@@ -20,11 +20,10 @@ import com.liferay.osb.distributed.messaging.rabbitmq.connector.message.Attribut
 import com.liferay.osb.distributed.messaging.rabbitmq.connector.messaging.ExclusiveConsumerCheckMessageListener;
 import com.liferay.osb.distributed.messaging.subscribing.router.MessageRouter;
 import com.liferay.osgi.util.StringPlus;
-import com.liferay.petra.string.StringBundler;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
 import com.rabbitmq.client.AMQP;
@@ -78,25 +77,20 @@ public abstract class BaseConsumer implements Consumer {
 
 	public void handleCancel(String consumerTag) throws IOException {
 		if (_log.isInfoEnabled()) {
-			_log.info(
-				StringBundler.concat(
-					"Consumer cancelled for ", consumerTag, " on ", queue));
+			_log.info("Consumer cancelled for " + consumerTag + " on " + queue);
 		}
 	}
 
 	public void handleCancelOk(String consumerTag) {
 		if (_log.isInfoEnabled()) {
-			_log.info(
-				StringBundler.concat(
-					"Consumer cancelled for ", consumerTag, " on ", queue));
+			_log.info("Consumer cancelled for " + consumerTag + " on " + queue);
 		}
 	}
 
 	public void handleConsumeOk(String consumerTag) {
 		if (_log.isInfoEnabled()) {
 			_log.info(
-				StringBundler.concat(
-					"Consumer registered for ", consumerTag, " on ", queue));
+				"Consumer registered for " + consumerTag + " on " + queue);
 		}
 	}
 
@@ -107,9 +101,8 @@ public abstract class BaseConsumer implements Consumer {
 
 		if (_log.isDebugEnabled()) {
 			_log.debug(
-				StringBundler.concat(
-					"Received message ", envelope.getDeliveryTag(),
-					" with routing key ", envelope.getRoutingKey()));
+				"Received message " + envelope.getDeliveryTag() +
+					" with routing key " + envelope.getRoutingKey());
 		}
 
 		String payload = null;
@@ -145,8 +138,7 @@ public abstract class BaseConsumer implements Consumer {
 	public void handleRecoverOk(String consumerTag) {
 		if (_log.isInfoEnabled()) {
 			_log.info(
-				StringBundler.concat(
-					"Recovered connection for ", consumerTag, " on ", queue));
+				"Recovered connection for " + consumerTag + " on " + queue);
 		}
 	}
 
@@ -154,9 +146,8 @@ public abstract class BaseConsumer implements Consumer {
 		String consumerTag, ShutdownSignalException shutdownSignalException) {
 
 		_log.error(
-			StringBundler.concat(
-				"Shutdown signal for ", consumerTag, " on ", queue),
-			shutdownSignalException);
+			"Shutdown signal for " + consumerTag + " on " + queue +
+				shutdownSignalException);
 	}
 
 	@Activate
