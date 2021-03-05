@@ -144,7 +144,7 @@ public class LicenseKeyDisplayTerms extends DisplayTerms {
 				new DisplayTerm("account-key", ACCOUNT_KEY, accountKey),
 				new DisplayTerm("account-name", ACCOUNT_NAME, accountName),
 				new DisplayTerm(
-					"active-licenses", ACTIVE_LICENSES,
+					"active", ACTIVE_LICENSES,
 					StringUtil.merge(activeLicenses)),
 				new DisplayTerm("created-after", CREATE_DATE_GT, createDateGT),
 				new DisplayTerm("created-before", CREATE_DATE_LT, createDateLT),
@@ -161,13 +161,13 @@ public class LicenseKeyDisplayTerms extends DisplayTerms {
 				new DisplayTerm(
 					"modified-before", MODIFIED_DATE_LT, modifiedDateLT),
 				new DisplayTerm(
-					"modified-by", MODIFIED_EMAIL_ADDRESS,
+					"last-edited-by", MODIFIED_EMAIL_ADDRESS,
 					modifiedEmailAddress),
 				new DisplayTerm("owner", OWNER, owner),
 				new DisplayTerm(
 					"product", PRODUCTS, StringUtil.merge(products)),
 				new DisplayTerm(
-					"product-purchase", PRODUCT_PURCHASE_KEY,
+					"product-purchase-key", PRODUCT_PURCHASE_KEY,
 					productPurchaseKey),
 				new DisplayTerm(
 					"product-version", PRODUCT_VERSIONS,
