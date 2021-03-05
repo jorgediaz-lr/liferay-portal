@@ -131,9 +131,8 @@ public class AccountSearchDisplayContext {
 
 		data.put("regionNames", regionNames);
 
-		ResourceURL autocompleteAccountURL = PortletURLFactoryUtil.create(
-			_httpServletRequest, ProvisioningPortletKeys.ACCOUNTS,
-			PortletRequest.RESOURCE_PHASE);
+		ResourceURL autocompleteAccountURL =
+			_renderResponse.createResourceURL();
 
 		autocompleteAccountURL.setResourceID("/accounts/autocomplete");
 
