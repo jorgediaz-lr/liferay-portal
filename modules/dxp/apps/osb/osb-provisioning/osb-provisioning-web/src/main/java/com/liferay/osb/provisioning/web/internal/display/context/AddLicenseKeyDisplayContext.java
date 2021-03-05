@@ -232,6 +232,8 @@ public class AddLicenseKeyDisplayContext {
 						JSONUtil.put(
 							"licenseEntryId", licenseEntry.getLicenseEntryId()
 						).put(
+							"licenseEntryName", licenseEntry.getName()
+						).put(
 							"licenseEntryType", licenseEntry.getType()
 						));
 				}
