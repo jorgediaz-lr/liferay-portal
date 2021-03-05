@@ -8,8 +8,8 @@ create table Provisioning_LicenseEntry (
 	productKey VARCHAR(75) null,
 	name VARCHAR(75) null,
 	type_ VARCHAR(75) null,
-	versionMin INTEGER,
-	versionMax INTEGER
+	versionMin VARCHAR(75) null,
+	versionMax VARCHAR(75) null
 );
 
 create table Provisioning_LicenseKey (

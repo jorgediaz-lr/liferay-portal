@@ -207,27 +207,29 @@ public interface LicenseEntryModel extends BaseModel<LicenseEntry>, MVCCModel {
 	 *
 	 * @return the version min of this license entry
 	 */
-	public int getVersionMin();
+	@AutoEscape
+	public String getVersionMin();
 
 	/**
 	 * Sets the version min of this license entry.
 	 *
 	 * @param versionMin the version min of this license entry
 	 */
-	public void setVersionMin(int versionMin);
+	public void setVersionMin(String versionMin);
 
 	/**
 	 * Returns the version max of this license entry.
 	 *
 	 * @return the version max of this license entry
 	 */
-	public int getVersionMax();
+	@AutoEscape
+	public String getVersionMax();
 
 	/**
 	 * Sets the version max of this license entry.
 	 *
 	 * @param versionMax the version max of this license entry
 	 */
-	public void setVersionMax(int versionMax);
+	public void setVersionMax(String versionMax);
 
 }

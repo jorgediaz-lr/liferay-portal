@@ -76,8 +76,8 @@ public class LicenseEntryModelImpl
 		{"userId", Types.BIGINT}, {"userName", Types.VARCHAR},
 		{"createDate", Types.TIMESTAMP}, {"modifiedDate", Types.TIMESTAMP},
 		{"productKey", Types.VARCHAR}, {"name", Types.VARCHAR},
-		{"type_", Types.VARCHAR}, {"versionMin", Types.INTEGER},
-		{"versionMax", Types.INTEGER}
+		{"type_", Types.VARCHAR}, {"versionMin", Types.VARCHAR},
+		{"versionMax", Types.VARCHAR}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -93,12 +93,12 @@ public class LicenseEntryModelImpl
 		TABLE_COLUMNS_MAP.put("productKey", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("type_", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("versionMin", Types.INTEGER);
-		TABLE_COLUMNS_MAP.put("versionMax", Types.INTEGER);
+		TABLE_COLUMNS_MAP.put("versionMin", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("versionMax", Types.VARCHAR);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table Provisioning_LicenseEntry (mvccVersion LONG default 0 not null,licenseEntryId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,productKey VARCHAR(75) null,name VARCHAR(75) null,type_ VARCHAR(75) null,versionMin INTEGER,versionMax INTEGER)";
+		"create table Provisioning_LicenseEntry (mvccVersion LONG default 0 not null,licenseEntryId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,productKey VARCHAR(75) null,name VARCHAR(75) null,type_ VARCHAR(75) null,versionMin VARCHAR(75) null,versionMax VARCHAR(75) null)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table Provisioning_LicenseEntry";
@@ -119,9 +119,7 @@ public class LicenseEntryModelImpl
 
 	public static final long TYPE_COLUMN_BITMASK = 2L;
 
-	public static final long VERSIONMIN_COLUMN_BITMASK = 4L;
-
-	public static final long NAME_COLUMN_BITMASK = 8L;
+	public static final long NAME_COLUMN_BITMASK = 4L;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -346,11 +344,11 @@ public class LicenseEntryModelImpl
 		attributeGetterFunctions.put("versionMin", LicenseEntry::getVersionMin);
 		attributeSetterBiConsumers.put(
 			"versionMin",
-			(BiConsumer<LicenseEntry, Integer>)LicenseEntry::setVersionMin);
+			(BiConsumer<LicenseEntry, String>)LicenseEntry::setVersionMin);
 		attributeGetterFunctions.put("versionMax", LicenseEntry::getVersionMax);
 		attributeSetterBiConsumers.put(
 			"versionMax",
-			(BiConsumer<LicenseEntry, Integer>)LicenseEntry::setVersionMax);
+			(BiConsumer<LicenseEntry, String>)LicenseEntry::setVersionMax);
 
 		_attributeGetterFunctions = Collections.unmodifiableMap(
 			attributeGetterFunctions);
@@ -523,35 +521,33 @@ public class LicenseEntryModelImpl
 
 	@JSON
 	@Override
-	public int getVersionMin() {
-		return _versionMin;
+	public String getVersionMin() {
+		if (_versionMin == null) {
+			return "";
+		}
+		else {
+			return _versionMin;
+		}
 	}
 
 	@Override
-	public void setVersionMin(int versionMin) {
-		_columnBitmask |= VERSIONMIN_COLUMN_BITMASK;
-
-		if (!_setOriginalVersionMin) {
-			_setOriginalVersionMin = true;
-
-			_originalVersionMin = _versionMin;
-		}
-
+	public void setVersionMin(String versionMin) {
 		_versionMin = versionMin;
-	}
-
-	public int getOriginalVersionMin() {
-		return _originalVersionMin;
 	}
 
 	@JSON
 	@Override
-	public int getVersionMax() {
-		return _versionMax;
+	public String getVersionMax() {
+		if (_versionMax == null) {
+			return "";
+		}
+		else {
+			return _versionMax;
+		}
 	}
 
 	@Override
-	public void setVersionMax(int versionMax) {
+	public void setVersionMax(String versionMax) {
 		_versionMax = versionMax;
 	}
 
@@ -665,10 +661,6 @@ public class LicenseEntryModelImpl
 
 		_originalType = _type;
 
-		_originalVersionMin = _versionMin;
-
-		_setOriginalVersionMin = false;
-
 		_columnBitmask = 0;
 	}
 
@@ -735,7 +727,19 @@ public class LicenseEntryModelImpl
 
 		licenseEntryCacheModel.versionMin = getVersionMin();
 
+		String versionMin = licenseEntryCacheModel.versionMin;
+
+		if ((versionMin != null) && (versionMin.length() == 0)) {
+			licenseEntryCacheModel.versionMin = null;
+		}
+
 		licenseEntryCacheModel.versionMax = getVersionMax();
+
+		String versionMax = licenseEntryCacheModel.versionMax;
+
+		if ((versionMax != null) && (versionMax.length() == 0)) {
+			licenseEntryCacheModel.versionMax = null;
+		}
 
 		return licenseEntryCacheModel;
 	}
@@ -825,10 +829,8 @@ public class LicenseEntryModelImpl
 	private String _name;
 	private String _type;
 	private String _originalType;
-	private int _versionMin;
-	private int _originalVersionMin;
-	private boolean _setOriginalVersionMin;
-	private int _versionMax;
+	private String _versionMin;
+	private String _versionMax;
 	private long _columnBitmask;
 	private LicenseEntry _escapedModel;
 

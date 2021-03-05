@@ -113,13 +113,13 @@ public class LicenseEntryWrapper
 			setType(type);
 		}
 
-		Integer versionMin = (Integer)attributes.get("versionMin");
+		String versionMin = (String)attributes.get("versionMin");
 
 		if (versionMin != null) {
 			setVersionMin(versionMin);
 		}
 
-		Integer versionMax = (Integer)attributes.get("versionMax");
+		String versionMax = (String)attributes.get("versionMax");
 
 		if (versionMax != null) {
 			setVersionMax(versionMax);
@@ -242,7 +242,7 @@ public class LicenseEntryWrapper
 	 * @return the version max of this license entry
 	 */
 	@Override
-	public int getVersionMax() {
+	public String getVersionMax() {
 		return model.getVersionMax();
 	}
 
@@ -252,7 +252,7 @@ public class LicenseEntryWrapper
 	 * @return the version min of this license entry
 	 */
 	@Override
-	public int getVersionMin() {
+	public String getVersionMin() {
 		return model.getVersionMin();
 	}
 
@@ -377,7 +377,7 @@ public class LicenseEntryWrapper
 	 * @param versionMax the version max of this license entry
 	 */
 	@Override
-	public void setVersionMax(int versionMax) {
+	public void setVersionMax(String versionMax) {
 		model.setVersionMax(versionMax);
 	}
 
@@ -387,7 +387,7 @@ public class LicenseEntryWrapper
 	 * @param versionMin the version min of this license entry
 	 */
 	@Override
-	public void setVersionMin(int versionMin) {
+	public void setVersionMin(String versionMin) {
 		model.setVersionMin(versionMin);
 	}
 

@@ -93,14 +93,13 @@ public class LicenseKeyServiceHttp {
 
 	public static com.liferay.osb.provisioning.license.model.LicenseKey
 			addLicenseKey(
-				HttpPrincipal httpPrincipal, long userId, String name,
-				long licenseEntryId, String productKey, String accountKey,
-				String productPurchaseKey, String accountCode,
-				String accountName, String productVersion, long clusterId,
-				String owner, int maxServers, int maxHttpSessions,
-				int maxConcurrentUsers, int maxUsers, int sizing,
-				String description, String[] hostNames, String[] ipAddresses,
-				String[] macAddresses, String[] serverIds,
+				HttpPrincipal httpPrincipal, long userId, long licenseEntryId,
+				String productKey, String accountKey, String productPurchaseKey,
+				String accountCode, String accountName, String productVersion,
+				long clusterId, String owner, int maxServers,
+				int maxHttpSessions, int maxConcurrentUsers, int maxUsers,
+				int sizing, String description, String[] hostNames,
+				String[] ipAddresses, String[] macAddresses, String[] serverIds,
 				java.util.Date startDate, java.util.Date expirationDate,
 				boolean complimentary, boolean active)
 		throws Exception {
@@ -111,7 +110,7 @@ public class LicenseKeyServiceHttp {
 				_addLicenseKeyParameterTypes1);
 
 			MethodHandler methodHandler = new MethodHandler(
-				methodKey, userId, name, licenseEntryId, productKey, accountKey,
+				methodKey, userId, licenseEntryId, productKey, accountKey,
 				productPurchaseKey, accountCode, accountName, productVersion,
 				clusterId, owner, maxServers, maxHttpSessions,
 				maxConcurrentUsers, maxUsers, sizing, description, hostNames,
@@ -850,8 +849,8 @@ public class LicenseKeyServiceHttp {
 				String productName, String productId, String[] productVersions,
 				String owner, String description, String hostName,
 				String ipAddress, String macAddress, String serverId,
-				String key, java.util.Date expireDateGT,
-				java.util.Date expireDateLT,
+				String key, java.util.Date expirationDateGT,
+				java.util.Date expirationDateLT,
 				java.util.LinkedHashMap<String, Object> params,
 				boolean andSearch, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator obc)
@@ -867,8 +866,8 @@ public class LicenseKeyServiceHttp {
 				productPurchaseKey, accountName, startDateGT, startDateLT,
 				licenseEntryIds, productKeys, productName, productId,
 				productVersions, owner, description, hostName, ipAddress,
-				macAddress, serverId, key, expireDateGT, expireDateLT, params,
-				andSearch, start, end, obc);
+				macAddress, serverId, key, expirationDateGT, expirationDateLT,
+				params, andSearch, start, end, obc);
 
 			Object returnObj = null;
 
@@ -949,7 +948,7 @@ public class LicenseKeyServiceHttp {
 			String productId, String[] productVersions, String owner,
 			String description, String hostName, String ipAddress,
 			String macAddress, String serverId, String key,
-			java.util.Date expireDateGT, java.util.Date expireDateLT,
+			java.util.Date expirationDateGT, java.util.Date expirationDateLT,
 			java.util.LinkedHashMap<String, Object> params, boolean andSearch)
 		throws Exception {
 
@@ -964,8 +963,8 @@ public class LicenseKeyServiceHttp {
 				productPurchaseKey, accountName, startDateGT, startDateLT,
 				licenseEntryIds, productKeys, productName, productId,
 				productVersions, owner, description, hostName, ipAddress,
-				macAddress, serverId, key, expireDateGT, expireDateLT, params,
-				andSearch);
+				macAddress, serverId, key, expirationDateGT, expirationDateLT,
+				params, andSearch);
 
 			Object returnObj = null;
 
@@ -1067,7 +1066,7 @@ public class LicenseKeyServiceHttp {
 	public static com.liferay.osb.provisioning.license.model.LicenseKey
 			updateLicenseKey(
 				HttpPrincipal httpPrincipal, long licenseKeyId,
-				String productPurchaseKey, String name, boolean complimentary,
+				String productPurchaseKey, boolean complimentary,
 				boolean active)
 		throws Exception {
 
@@ -1077,8 +1076,8 @@ public class LicenseKeyServiceHttp {
 				_updateLicenseKeyParameterTypes23);
 
 			MethodHandler methodHandler = new MethodHandler(
-				methodKey, licenseKeyId, productPurchaseKey, name,
-				complimentary, active);
+				methodKey, licenseKeyId, productPurchaseKey, complimentary,
+				active);
 
 			Object returnObj = null;
 
@@ -1181,12 +1180,12 @@ public class LicenseKeyServiceHttp {
 		new Class[] {String.class, String.class, String.class};
 	private static final Class<?>[] _addLicenseKeyParameterTypes1 =
 		new Class[] {
-			long.class, String.class, long.class, String.class, String.class,
-			String.class, String.class, String.class, String.class, long.class,
-			String.class, int.class, int.class, int.class, int.class, int.class,
-			String.class, String[].class, String[].class, String[].class,
-			String[].class, java.util.Date.class, java.util.Date.class,
-			boolean.class, boolean.class
+			long.class, long.class, String.class, String.class, String.class,
+			String.class, String.class, String.class, long.class, String.class,
+			int.class, int.class, int.class, int.class, int.class, String.class,
+			String[].class, String[].class, String[].class, String[].class,
+			java.util.Date.class, java.util.Date.class, boolean.class,
+			boolean.class
 		};
 	private static final Class<?>[] _addLicenseKeyParameterTypes2 =
 		new Class[] {
@@ -1275,9 +1274,7 @@ public class LicenseKeyServiceHttp {
 	private static final Class<?>[] _updateLicenseKeyParameterTypes22 =
 		new Class[] {long.class, long.class, boolean.class};
 	private static final Class<?>[] _updateLicenseKeyParameterTypes23 =
-		new Class[] {
-			long.class, String.class, String.class, boolean.class, boolean.class
-		};
+		new Class[] {long.class, String.class, boolean.class, boolean.class};
 	private static final Class<?>[] _updateLicenseKeyParameterTypes24 =
 		new Class[] {String.class, String.class, boolean.class};
 	private static final Class<?>[] _updateLicenseKeysParameterTypes25 =

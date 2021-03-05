@@ -167,19 +167,19 @@ public class LicenseEntrySoap implements Serializable {
 		_type = type;
 	}
 
-	public int getVersionMin() {
+	public String getVersionMin() {
 		return _versionMin;
 	}
 
-	public void setVersionMin(int versionMin) {
+	public void setVersionMin(String versionMin) {
 		_versionMin = versionMin;
 	}
 
-	public int getVersionMax() {
+	public String getVersionMax() {
 		return _versionMax;
 	}
 
-	public void setVersionMax(int versionMax) {
+	public void setVersionMax(String versionMax) {
 		_versionMax = versionMax;
 	}
 
@@ -192,7 +192,7 @@ public class LicenseEntrySoap implements Serializable {
 	private String _productKey;
 	private String _name;
 	private String _type;
-	private int _versionMin;
-	private int _versionMax;
+	private String _versionMin;
+	private String _versionMax;
 
 }

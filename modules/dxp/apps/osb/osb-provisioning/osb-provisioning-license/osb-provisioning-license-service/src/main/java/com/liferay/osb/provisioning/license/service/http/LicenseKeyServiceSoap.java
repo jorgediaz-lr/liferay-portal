@@ -83,8 +83,8 @@ public class LicenseKeyServiceSoap {
 
 	public static com.liferay.osb.provisioning.license.model.LicenseKeySoap
 			addLicenseKey(
-				long userId, String name, long licenseEntryId,
-				String productKey, String accountKey, String productPurchaseKey,
+				long userId, long licenseEntryId, String productKey,
+				String accountKey, String productPurchaseKey,
 				String accountCode, String accountName, String productVersion,
 				long clusterId, String owner, int maxServers,
 				int maxHttpSessions, int maxConcurrentUsers, int maxUsers,
@@ -97,7 +97,7 @@ public class LicenseKeyServiceSoap {
 		try {
 			com.liferay.osb.provisioning.license.model.LicenseKey returnValue =
 				LicenseKeyServiceUtil.addLicenseKey(
-					userId, name, licenseEntryId, productKey, accountKey,
+					userId, licenseEntryId, productKey, accountKey,
 					productPurchaseKey, accountCode, accountName,
 					productVersion, clusterId, owner, maxServers,
 					maxHttpSessions, maxConcurrentUsers, maxUsers, sizing,
@@ -467,15 +467,14 @@ public class LicenseKeyServiceSoap {
 
 	public static com.liferay.osb.provisioning.license.model.LicenseKeySoap
 			updateLicenseKey(
-				long licenseKeyId, String productPurchaseKey, String name,
+				long licenseKeyId, String productPurchaseKey,
 				boolean complimentary, boolean active)
 		throws RemoteException {
 
 		try {
 			com.liferay.osb.provisioning.license.model.LicenseKey returnValue =
 				LicenseKeyServiceUtil.updateLicenseKey(
-					licenseKeyId, productPurchaseKey, name, complimentary,
-					active);
+					licenseKeyId, productPurchaseKey, complimentary, active);
 
 			return com.liferay.osb.provisioning.license.model.LicenseKeySoap.
 				toSoapModel(returnValue);

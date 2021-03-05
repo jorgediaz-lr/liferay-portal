@@ -48,7 +48,7 @@ public class LicenseKeyServiceUtil {
 	}
 
 	public static LicenseKey addLicenseKey(
-			long userId, String name, long licenseEntryId, String productKey,
+			long userId, long licenseEntryId, String productKey,
 			String accountKey, String productPurchaseKey, String accountCode,
 			String accountName, String productVersion, long clusterId,
 			String owner, int maxServers, int maxHttpSessions,
@@ -60,11 +60,11 @@ public class LicenseKeyServiceUtil {
 		throws Exception {
 
 		return getService().addLicenseKey(
-			userId, name, licenseEntryId, productKey, accountKey,
-			productPurchaseKey, accountCode, accountName, productVersion,
-			clusterId, owner, maxServers, maxHttpSessions, maxConcurrentUsers,
-			maxUsers, sizing, description, hostNames, ipAddresses, macAddresses,
-			serverIds, startDate, expirationDate, complimentary, active);
+			userId, licenseEntryId, productKey, accountKey, productPurchaseKey,
+			accountCode, accountName, productVersion, clusterId, owner,
+			maxServers, maxHttpSessions, maxConcurrentUsers, maxUsers, sizing,
+			description, hostNames, ipAddresses, macAddresses, serverIds,
+			startDate, expirationDate, complimentary, active);
 	}
 
 	public static LicenseKey addLicenseKey(
@@ -219,7 +219,7 @@ public class LicenseKeyServiceUtil {
 			String productId, String[] productVersions, String owner,
 			String description, String hostName, String ipAddress,
 			String macAddress, String serverId, String key,
-			java.util.Date expireDateGT, java.util.Date expireDateLT,
+			java.util.Date expirationDateGT, java.util.Date expirationDateLT,
 			java.util.LinkedHashMap<String, Object> params, boolean andSearch,
 			int start, int end, OrderByComparator obc)
 		throws Exception {
@@ -229,8 +229,8 @@ public class LicenseKeyServiceUtil {
 			modifiedDateGT, modifiedDateLT, accountKey, productPurchaseKey,
 			accountName, startDateGT, startDateLT, licenseEntryIds, productKeys,
 			productName, productId, productVersions, owner, description,
-			hostName, ipAddress, macAddress, serverId, key, expireDateGT,
-			expireDateLT, params, andSearch, start, end, obc);
+			hostName, ipAddress, macAddress, serverId, key, expirationDateGT,
+			expirationDateLT, params, andSearch, start, end, obc);
 	}
 
 	public static List<LicenseKey> search(
@@ -251,7 +251,7 @@ public class LicenseKeyServiceUtil {
 			String productId, String[] productVersions, String owner,
 			String description, String hostName, String ipAddress,
 			String macAddress, String serverId, String key,
-			java.util.Date expireDateGT, java.util.Date expireDateLT,
+			java.util.Date expirationDateGT, java.util.Date expirationDateLT,
 			java.util.LinkedHashMap<String, Object> params, boolean andSearch)
 		throws Exception {
 
@@ -260,8 +260,8 @@ public class LicenseKeyServiceUtil {
 			modifiedDateGT, modifiedDateLT, accountKey, productPurchaseKey,
 			accountName, startDateGT, startDateLT, licenseEntryIds, productKeys,
 			productName, productId, productVersions, owner, description,
-			hostName, ipAddress, macAddress, serverId, key, expireDateGT,
-			expireDateLT, params, andSearch);
+			hostName, ipAddress, macAddress, serverId, key, expirationDateGT,
+			expirationDateLT, params, andSearch);
 	}
 
 	public static int searchCount(
@@ -279,12 +279,12 @@ public class LicenseKeyServiceUtil {
 	}
 
 	public static LicenseKey updateLicenseKey(
-			long licenseKeyId, String productPurchaseKey, String name,
-			boolean complimentary, boolean active)
+			long licenseKeyId, String productPurchaseKey, boolean complimentary,
+			boolean active)
 		throws Exception {
 
 		return getService().updateLicenseKey(
-			licenseKeyId, productPurchaseKey, name, complimentary, active);
+			licenseKeyId, productPurchaseKey, complimentary, active);
 	}
 
 	public static void updateLicenseKey(

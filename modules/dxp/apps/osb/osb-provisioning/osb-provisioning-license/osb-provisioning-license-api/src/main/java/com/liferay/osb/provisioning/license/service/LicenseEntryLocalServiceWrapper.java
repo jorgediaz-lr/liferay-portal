@@ -56,7 +56,7 @@ public class LicenseEntryLocalServiceWrapper
 	public com.liferay.osb.provisioning.license.model.LicenseEntry
 			addLicenseEntry(
 				long userId, String productKey, String name, String type,
-				int versionMin, int versionMax)
+				String versionMin, String versionMax)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _licenseEntryLocalService.addLicenseEntry(
@@ -266,9 +266,10 @@ public class LicenseEntryLocalServiceWrapper
 	@Override
 	public java.util.List
 		<com.liferay.osb.provisioning.license.model.LicenseEntry>
-			getLicenseEntries(String productKey, int version) {
+			getLicenseEntriesByVersion(String productKey, String version) {
 
-		return _licenseEntryLocalService.getLicenseEntries(productKey, version);
+		return _licenseEntryLocalService.getLicenseEntriesByVersion(
+			productKey, version);
 	}
 
 	/**
@@ -348,7 +349,7 @@ public class LicenseEntryLocalServiceWrapper
 	public com.liferay.osb.provisioning.license.model.LicenseEntry
 			updateLicenseEntry(
 				long licenseEntryId, String productKey, String name,
-				String type, int versionMin, int versionMax)
+				String type, String versionMin, String versionMax)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _licenseEntryLocalService.updateLicenseEntry(

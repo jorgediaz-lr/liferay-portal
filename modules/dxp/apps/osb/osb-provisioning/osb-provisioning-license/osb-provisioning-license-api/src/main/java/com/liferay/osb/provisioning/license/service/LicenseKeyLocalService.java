@@ -83,10 +83,10 @@ public interface LicenseKeyLocalService
 	public LicenseKey addLicenseKey(LicenseKey licenseKey);
 
 	public LicenseKey addLicenseKey(
-			long userId, String name, LicenseEntry licenseEntry,
-			Product product, String accountKey, String productPurchaseKey,
-			String accountCode, String accountName, String productVersion,
-			long clusterId, String owner, int maxServers, int maxHttpSessions,
+			long userId, LicenseEntry licenseEntry, Product product,
+			String accountKey, String productPurchaseKey, String accountCode,
+			String accountName, String productVersion, long clusterId,
+			String owner, int maxServers, int maxHttpSessions,
 			int maxConcurrentUsers, int maxUsers, int sizing,
 			String description, String[] hostNames, String[] ipAddresses,
 			String[] macAddresses, String[] serverIds, Date startDate,
@@ -95,7 +95,7 @@ public interface LicenseKeyLocalService
 		throws Exception;
 
 	public LicenseKey addLicenseKey(
-			long userId, String name, long licenseEntryId, String productKey,
+			long userId, long licenseEntryId, String productKey,
 			String accountKey, String productPurchaseKey, String accountCode,
 			String accountName, String productVersion, long clusterId,
 			String owner, int maxServers, int maxHttpSessions,
@@ -401,7 +401,7 @@ public interface LicenseKeyLocalService
 		String[] productKeys, String productName, String productId,
 		String[] productVersions, String owner, String description,
 		String hostName, String ipAddress, String macAddress, String serverId,
-		String key, Date expireDateGT, Date expireDateLT,
+		String key, Date expirationDateGT, Date expirationDateLT,
 		LinkedHashMap<String, Object> params, boolean andSearch, int start,
 		int end, OrderByComparator obc);
 
@@ -419,7 +419,7 @@ public interface LicenseKeyLocalService
 		String[] productKeys, String productName, String productId,
 		String[] productVersions, String owner, String description,
 		String hostName, String ipAddress, String macAddress, String serverId,
-		String key, Date expireDateGT, Date expireDateLT,
+		String key, Date expirationDateGT, Date expirationDateLT,
 		LinkedHashMap<String, Object> params, boolean andSearch);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -444,7 +444,7 @@ public interface LicenseKeyLocalService
 
 	public LicenseKey updateLicenseKey(
 			long userId, long licenseKeyId, String productPurchaseKey,
-			String name, boolean complimentary, boolean active)
+			boolean complimentary, boolean active)
 		throws Exception;
 
 	public LicenseKey updateLicenseKey(

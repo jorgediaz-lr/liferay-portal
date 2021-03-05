@@ -60,7 +60,7 @@ public class LicenseEntryLocalServiceUtil {
 
 	public static LicenseEntry addLicenseEntry(
 			long userId, String productKey, String name, String type,
-			int versionMin, int versionMax)
+			String versionMin, String versionMax)
 		throws PortalException {
 
 		return getService().addLicenseEntry(
@@ -231,10 +231,10 @@ public class LicenseEntryLocalServiceUtil {
 		return getService().getLicenseEntries(productKey);
 	}
 
-	public static List<LicenseEntry> getLicenseEntries(
-		String productKey, int version) {
+	public static List<LicenseEntry> getLicenseEntriesByVersion(
+		String productKey, String version) {
 
-		return getService().getLicenseEntries(productKey, version);
+		return getService().getLicenseEntriesByVersion(productKey, version);
 	}
 
 	/**
@@ -299,7 +299,7 @@ public class LicenseEntryLocalServiceUtil {
 
 	public static LicenseEntry updateLicenseEntry(
 			long licenseEntryId, String productKey, String name, String type,
-			int versionMin, int versionMax)
+			String versionMin, String versionMax)
 		throws PortalException {
 
 		return getService().updateLicenseEntry(

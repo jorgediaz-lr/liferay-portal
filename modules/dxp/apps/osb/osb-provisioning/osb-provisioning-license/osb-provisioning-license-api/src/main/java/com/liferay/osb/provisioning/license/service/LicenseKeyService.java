@@ -59,7 +59,7 @@ public interface LicenseKeyService extends BaseService {
 		throws Exception;
 
 	public LicenseKey addLicenseKey(
-			long userId, String name, long licenseEntryId, String productKey,
+			long userId, long licenseEntryId, String productKey,
 			String accountKey, String productPurchaseKey, String accountCode,
 			String accountName, String productVersion, long clusterId,
 			String owner, int maxServers, int maxHttpSessions,
@@ -177,9 +177,9 @@ public interface LicenseKeyService extends BaseService {
 			String[] productKeys, String productName, String productId,
 			String[] productVersions, String owner, String description,
 			String hostName, String ipAddress, String macAddress,
-			String serverId, String key, Date expireDateGT, Date expireDateLT,
-			LinkedHashMap<String, Object> params, boolean andSearch, int start,
-			int end, OrderByComparator obc)
+			String serverId, String key, Date expirationDateGT,
+			Date expirationDateLT, LinkedHashMap<String, Object> params,
+			boolean andSearch, int start, int end, OrderByComparator obc)
 		throws Exception;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -197,8 +197,9 @@ public interface LicenseKeyService extends BaseService {
 			String[] productKeys, String productName, String productId,
 			String[] productVersions, String owner, String description,
 			String hostName, String ipAddress, String macAddress,
-			String serverId, String key, Date expireDateGT, Date expireDateLT,
-			LinkedHashMap<String, Object> params, boolean andSearch)
+			String serverId, String key, Date expirationDateGT,
+			Date expirationDateLT, LinkedHashMap<String, Object> params,
+			boolean andSearch)
 		throws Exception;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -210,8 +211,8 @@ public interface LicenseKeyService extends BaseService {
 		throws Exception;
 
 	public LicenseKey updateLicenseKey(
-			long licenseKeyId, String productPurchaseKey, String name,
-			boolean complimentary, boolean active)
+			long licenseKeyId, String productPurchaseKey, boolean complimentary,
+			boolean active)
 		throws Exception;
 
 	@JSONWebService

@@ -67,7 +67,7 @@ public class LicenseKeyLocalServiceUtil {
 	}
 
 	public static LicenseKey addLicenseKey(
-			long userId, String name,
+			long userId,
 			com.liferay.osb.provisioning.license.model.LicenseEntry
 				licenseEntry,
 			com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product
@@ -83,7 +83,7 @@ public class LicenseKeyLocalServiceUtil {
 		throws Exception {
 
 		return getService().addLicenseKey(
-			userId, name, licenseEntry, product, accountKey, productPurchaseKey,
+			userId, licenseEntry, product, accountKey, productPurchaseKey,
 			accountCode, accountName, productVersion, clusterId, owner,
 			maxServers, maxHttpSessions, maxConcurrentUsers, maxUsers, sizing,
 			description, hostNames, ipAddresses, macAddresses, serverIds,
@@ -91,7 +91,7 @@ public class LicenseKeyLocalServiceUtil {
 	}
 
 	public static LicenseKey addLicenseKey(
-			long userId, String name, long licenseEntryId, String productKey,
+			long userId, long licenseEntryId, String productKey,
 			String accountKey, String productPurchaseKey, String accountCode,
 			String accountName, String productVersion, long clusterId,
 			String owner, int maxServers, int maxHttpSessions,
@@ -103,11 +103,11 @@ public class LicenseKeyLocalServiceUtil {
 		throws Exception {
 
 		return getService().addLicenseKey(
-			userId, name, licenseEntryId, productKey, accountKey,
-			productPurchaseKey, accountCode, accountName, productVersion,
-			clusterId, owner, maxServers, maxHttpSessions, maxConcurrentUsers,
-			maxUsers, sizing, description, hostNames, ipAddresses, macAddresses,
-			serverIds, startDate, expirationDate, complimentary, active);
+			userId, licenseEntryId, productKey, accountKey, productPurchaseKey,
+			accountCode, accountName, productVersion, clusterId, owner,
+			maxServers, maxHttpSessions, maxConcurrentUsers, maxUsers, sizing,
+			description, hostNames, ipAddresses, macAddresses, serverIds,
+			startDate, expirationDate, complimentary, active);
 	}
 
 	public static LicenseKey addLicenseKey(
@@ -528,7 +528,7 @@ public class LicenseKeyLocalServiceUtil {
 		String productId, String[] productVersions, String owner,
 		String description, String hostName, String ipAddress,
 		String macAddress, String serverId, String key,
-		java.util.Date expireDateGT, java.util.Date expireDateLT,
+		java.util.Date expirationDateGT, java.util.Date expirationDateLT,
 		java.util.LinkedHashMap<String, Object> params, boolean andSearch,
 		int start, int end, OrderByComparator obc) {
 
@@ -537,8 +537,8 @@ public class LicenseKeyLocalServiceUtil {
 			modifiedDateGT, modifiedDateLT, accountKey, productPurchaseKey,
 			accountName, startDateGT, startDateLT, licenseEntryIds, productKeys,
 			productName, productId, productVersions, owner, description,
-			hostName, ipAddress, macAddress, serverId, key, expireDateGT,
-			expireDateLT, params, andSearch, start, end, obc);
+			hostName, ipAddress, macAddress, serverId, key, expirationDateGT,
+			expirationDateLT, params, andSearch, start, end, obc);
 	}
 
 	public static List<LicenseKey> search(
@@ -558,7 +558,7 @@ public class LicenseKeyLocalServiceUtil {
 		String productId, String[] productVersions, String owner,
 		String description, String hostName, String ipAddress,
 		String macAddress, String serverId, String key,
-		java.util.Date expireDateGT, java.util.Date expireDateLT,
+		java.util.Date expirationDateGT, java.util.Date expirationDateLT,
 		java.util.LinkedHashMap<String, Object> params, boolean andSearch) {
 
 		return getService().searchCount(
@@ -566,8 +566,8 @@ public class LicenseKeyLocalServiceUtil {
 			modifiedDateGT, modifiedDateLT, accountKey, productPurchaseKey,
 			accountName, startDateGT, startDateLT, licenseEntryIds, productKeys,
 			productName, productId, productVersions, owner, description,
-			hostName, ipAddress, macAddress, serverId, key, expireDateGT,
-			expireDateLT, params, andSearch);
+			hostName, ipAddress, macAddress, serverId, key, expirationDateGT,
+			expirationDateLT, params, andSearch);
 	}
 
 	public static int searchCount(
@@ -599,12 +599,11 @@ public class LicenseKeyLocalServiceUtil {
 
 	public static LicenseKey updateLicenseKey(
 			long userId, long licenseKeyId, String productPurchaseKey,
-			String name, boolean complimentary, boolean active)
+			boolean complimentary, boolean active)
 		throws Exception {
 
 		return getService().updateLicenseKey(
-			userId, licenseKeyId, productPurchaseKey, name, complimentary,
-			active);
+			userId, licenseKeyId, productPurchaseKey, complimentary, active);
 	}
 
 	public static LicenseKey updateLicenseKey(

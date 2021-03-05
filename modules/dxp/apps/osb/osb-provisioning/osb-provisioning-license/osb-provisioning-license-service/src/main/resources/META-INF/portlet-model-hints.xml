@@ -11,8 +11,8 @@
 		<field name="productKey" type="String" />
 		<field name="name" type="String" />
 		<field name="type" type="String" />
-		<field name="versionMin" type="int" />
-		<field name="versionMax" type="int" />
+		<field name="versionMin" type="String" />
+		<field name="versionMax" type="String" />
 	</model>
 	<model name="com.liferay.osb.provisioning.license.model.LicenseKey">
 		<field name="mvccVersion" type="long" />

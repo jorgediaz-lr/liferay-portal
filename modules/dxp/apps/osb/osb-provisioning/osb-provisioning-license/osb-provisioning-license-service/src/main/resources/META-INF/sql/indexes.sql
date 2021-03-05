@@ -1,5 +1,5 @@
 create unique index IX_CDCDE588 on Provisioning_LicenseEntry (productKey[$COLUMN_LENGTH:75$], type_[$COLUMN_LENGTH:75$]);
-create index IX_CB38227B on Provisioning_LicenseEntry (productKey[$COLUMN_LENGTH:75$], versionMin);
+create index IX_CB38227B on Provisioning_LicenseEntry (productKey[$COLUMN_LENGTH:75$], versionMin[$COLUMN_LENGTH:75$]);
 
 create index IX_658CA000 on Provisioning_LicenseKey (accountKey[$COLUMN_LENGTH:75$], productKey[$COLUMN_LENGTH:75$]);
 create index IX_8C69FD3B on Provisioning_LicenseKey (assetReceiptLicenseUuid[$COLUMN_LENGTH:75$], active_);

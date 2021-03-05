@@ -156,8 +156,19 @@ public class LicenseEntryCacheModel
 			licenseEntryImpl.setType(type);
 		}
 
-		licenseEntryImpl.setVersionMin(versionMin);
-		licenseEntryImpl.setVersionMax(versionMax);
+		if (versionMin == null) {
+			licenseEntryImpl.setVersionMin("");
+		}
+		else {
+			licenseEntryImpl.setVersionMin(versionMin);
+		}
+
+		if (versionMax == null) {
+			licenseEntryImpl.setVersionMax("");
+		}
+		else {
+			licenseEntryImpl.setVersionMax(versionMax);
+		}
 
 		licenseEntryImpl.resetOriginalValues();
 
@@ -177,10 +188,8 @@ public class LicenseEntryCacheModel
 		productKey = objectInput.readUTF();
 		name = objectInput.readUTF();
 		type = objectInput.readUTF();
-
-		versionMin = objectInput.readInt();
-
-		versionMax = objectInput.readInt();
+		versionMin = objectInput.readUTF();
+		versionMax = objectInput.readUTF();
 	}
 
 	@Override
@@ -222,9 +231,19 @@ public class LicenseEntryCacheModel
 			objectOutput.writeUTF(type);
 		}
 
-		objectOutput.writeInt(versionMin);
+		if (versionMin == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(versionMin);
+		}
 
-		objectOutput.writeInt(versionMax);
+		if (versionMax == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(versionMax);
+		}
 	}
 
 	public long mvccVersion;
@@ -236,7 +255,7 @@ public class LicenseEntryCacheModel
 	public String productKey;
 	public String name;
 	public String type;
-	public int versionMin;
-	public int versionMax;
+	public String versionMin;
+	public String versionMax;
 
 }
