@@ -47,6 +47,7 @@ import com.liferay.osb.provisioning.web.internal.display.context.ViewAccountRela
 import com.liferay.osb.provisioning.web.internal.display.context.ViewAccountTeamsDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.ViewAccountsManagementToolbarDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.ViewContactDisplayContext;
+import com.liferay.osb.provisioning.web.internal.display.context.ViewLicenseKeysManagementToolbarDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.ViewSubscriptionDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.ViewTeamDisplayContext;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
@@ -243,6 +244,19 @@ public class ProvisioningWebComponentProvider {
 			httpServletRequest);
 	}
 
+	public static ViewLicenseKeysManagementToolbarDisplayContext
+		getViewLicenseKeysManagementToolbarDisplayContext(
+			LiferayPortletRequest liferayPortletRequest,
+			LiferayPortletResponse liferayPortletResponse,
+			HttpServletRequest httpServletRequest,
+			SearchContainer searchContainer) {
+
+		return _provisioningWebComponentProvider.
+			_getViewLicenseKeysManagementToolbarDisplayContext(
+				liferayPortletRequest, liferayPortletResponse,
+				httpServletRequest, searchContainer);
+	}
+
 	public static ViewSubscriptionDisplayContext
 			getViewSubscriptionDisplayContext(
 				RenderRequest renderRequest, RenderResponse renderResponse,
@@ -407,6 +421,18 @@ public class ProvisioningWebComponentProvider {
 			clazz.getName(), viewContactDisplayContext);
 
 		return viewContactDisplayContext;
+	}
+
+	private ViewLicenseKeysManagementToolbarDisplayContext
+		_getViewLicenseKeysManagementToolbarDisplayContext(
+			LiferayPortletRequest liferayPortletRequest,
+			LiferayPortletResponse liferayPortletResponse,
+			HttpServletRequest httpServletRequest,
+			SearchContainer searchContainer) {
+
+		return new ViewLicenseKeysManagementToolbarDisplayContext(
+			liferayPortletRequest, liferayPortletResponse, httpServletRequest,
+			searchContainer, _licenseEntryLocalService, _productWebService);
 	}
 
 	private static ProvisioningWebComponentProvider

@@ -109,53 +109,6 @@ public class AccountDisplayTerms extends DisplayTerms {
 			portletRequest, WORKER_CONTACT_EMAIL_ADDRESS);
 	}
 
-	public List<AccountDisplayTerm> getAccountDisplayTermsList() {
-		return new ArrayList<>(
-			Arrays.asList(
-				new AccountDisplayTerm("account-name", NAME, name),
-				new AccountDisplayTerm("code", CODE, code),
-				new AccountDisplayTerm(
-					"parent-account", PARENT_ACCOUNT_KEY, parentAccountKey),
-				new AccountDisplayTerm(
-					"project-worker", WORKER_CONTACT_EMAIL_ADDRESS,
-					workerContactEmailAddress),
-				new AccountDisplayTerm(
-					"partner-reseller-si", PARTNER_TEAM_KEY, partnerTeamKey),
-				new AccountDisplayTerm(
-					"first-line-support", FLS_TEAM_KEY, flsTeamKey),
-				new AccountDisplayTerm("country", COUNTRY_NAME, countryName),
-				new AccountDisplayTerm(
-					"partner", PARTNERS, StringUtil.merge(partners)),
-				new AccountDisplayTerm(
-					"provides-fls", PROVIDES_FLS,
-					StringUtil.merge(providesFLS)),
-				new AccountDisplayTerm(
-					"receives-fls", RECEIVES_FLS,
-					StringUtil.merge(receivesFLS)),
-				new AccountDisplayTerm(
-					"internal", INTERNALS, StringUtil.merge(internals)),
-				new AccountDisplayTerm("tier", TIERS, StringUtil.merge(tiers)),
-				new AccountDisplayTerm(
-					"subscription-status", SUBSCRIPTION_STATES,
-					StringUtil.merge(subscriptionStates)),
-				new AccountDisplayTerm(
-					"subscription-level", ACTIVE_SLAS,
-					StringUtil.merge(activeSLAs)),
-				new AccountDisplayTerm(
-					"support-region", REGIONS, StringUtil.merge(regions)),
-				new AccountDisplayTerm(
-					"created-by", CREATED_BY_EMAIL_ADDRESS,
-					createdByEmailAddress),
-				new AccountDisplayTerm(
-					"created-after", CREATE_DATE_GT, createDateGT),
-				new AccountDisplayTerm(
-					"created-before", CREATE_DATE_LT, createDateLT),
-				new AccountDisplayTerm(
-					"modified-after", MODIFIED_DATE_GT, modifiedDateGT),
-				new AccountDisplayTerm(
-					"modified-before", MODIFIED_DATE_LT, modifiedDateLT)));
-	}
-
 	public String[] getActiveSLAs() {
 		return activeSLAs;
 	}
@@ -178,6 +131,50 @@ public class AccountDisplayTerms extends DisplayTerms {
 
 	public String getCreatedByEmailAddress() {
 		return createdByEmailAddress;
+	}
+
+	public List<DisplayTerm> getDisplayTermsList() {
+		return new ArrayList<>(
+			Arrays.asList(
+				new DisplayTerm("account-name", NAME, name),
+				new DisplayTerm("code", CODE, code),
+				new DisplayTerm(
+					"parent-account", PARENT_ACCOUNT_KEY, parentAccountKey),
+				new DisplayTerm(
+					"project-worker", WORKER_CONTACT_EMAIL_ADDRESS,
+					workerContactEmailAddress),
+				new DisplayTerm(
+					"partner-reseller-si", PARTNER_TEAM_KEY, partnerTeamKey),
+				new DisplayTerm("first-line-support", FLS_TEAM_KEY, flsTeamKey),
+				new DisplayTerm("country", COUNTRY_NAME, countryName),
+				new DisplayTerm(
+					"partner", PARTNERS, StringUtil.merge(partners)),
+				new DisplayTerm(
+					"provides-fls", PROVIDES_FLS,
+					StringUtil.merge(providesFLS)),
+				new DisplayTerm(
+					"receives-fls", RECEIVES_FLS,
+					StringUtil.merge(receivesFLS)),
+				new DisplayTerm(
+					"internal", INTERNALS, StringUtil.merge(internals)),
+				new DisplayTerm("tier", TIERS, StringUtil.merge(tiers)),
+				new DisplayTerm(
+					"subscription-status", SUBSCRIPTION_STATES,
+					StringUtil.merge(subscriptionStates)),
+				new DisplayTerm(
+					"subscription-level", ACTIVE_SLAS,
+					StringUtil.merge(activeSLAs)),
+				new DisplayTerm(
+					"support-region", REGIONS, StringUtil.merge(regions)),
+				new DisplayTerm(
+					"created-by", CREATED_BY_EMAIL_ADDRESS,
+					createdByEmailAddress),
+				new DisplayTerm("created-after", CREATE_DATE_GT, createDateGT),
+				new DisplayTerm("created-before", CREATE_DATE_LT, createDateLT),
+				new DisplayTerm(
+					"modified-after", MODIFIED_DATE_GT, modifiedDateGT),
+				new DisplayTerm(
+					"modified-before", MODIFIED_DATE_LT, modifiedDateLT)));
 	}
 
 	public String getFLSTeamKey() {

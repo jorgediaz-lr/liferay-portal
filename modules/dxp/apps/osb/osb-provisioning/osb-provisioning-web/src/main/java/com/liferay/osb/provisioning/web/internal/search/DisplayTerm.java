@@ -17,9 +17,9 @@ package com.liferay.osb.provisioning.web.internal.search;
 /**
  * @author Rebecca Dai
  */
-public class AccountDisplayTerm {
+public class DisplayTerm {
 
-	public AccountDisplayTerm(String label, String name, String value) {
+	public DisplayTerm(String label, String name, String value) {
 		_label = label;
 		_name = name;
 		_value = value;

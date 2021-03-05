@@ -16,7 +16,12 @@ package com.liferay.osb.provisioning.web.internal.search;
 
 import com.liferay.portal.kernel.dao.search.DisplayTerms;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.portlet.PortletRequest;
 
@@ -131,6 +136,46 @@ public class LicenseDisplayTerms extends DisplayTerms {
 
 	public String getCreatorEmailAddress() {
 		return creatorEmailAddress;
+	}
+
+	public List<DisplayTerm> getDisplayTermsList() {
+		return new ArrayList<>(
+			Arrays.asList(
+				new DisplayTerm("account-key", ACCOUNT_KEY, accountKey),
+				new DisplayTerm("account-name", ACCOUNT_NAME, accountName),
+				new DisplayTerm(
+					"active-licenses", ACTIVE_LICENSES,
+					StringUtil.merge(activeLicenses)),
+				new DisplayTerm("created-after", CREATE_DATE_GT, createDateGT),
+				new DisplayTerm("created-before", CREATE_DATE_LT, createDateLT),
+				new DisplayTerm(
+					"created-by", CREATOR_EMAIL_ADDRESS, creatorEmailAddress),
+				new DisplayTerm("expires-after", EXPIRE_DATE_GT, expireDateGT),
+				new DisplayTerm("expires-before", EXPIRE_DATE_LT, expireDateLT),
+				new DisplayTerm("host-name", HOST_NAME, hostName),
+				new DisplayTerm("ip-address", IP_ADDRESS, ipAddress),
+				new DisplayTerm("key", KEY, key),
+				new DisplayTerm("mac-address", MAC_ADDRESS, macAddress),
+				new DisplayTerm(
+					"modified-after", MODIFIED_DATE_GT, modifiedDateGT),
+				new DisplayTerm(
+					"modified-before", MODIFIED_DATE_LT, modifiedDateLT),
+				new DisplayTerm(
+					"modified-by", MODIFIED_EMAIL_ADDRESS,
+					modifiedEmailAddress),
+				new DisplayTerm("owner", OWNER, owner),
+				new DisplayTerm(
+					"product", PRODUCTS, StringUtil.merge(products)),
+				new DisplayTerm(
+					"product-purchase", PRODUCT_PURCHASE_KEY,
+					productPurchaseKey),
+				new DisplayTerm(
+					"product-version", PRODUCT_VERSIONS,
+					StringUtil.merge(productVersions)),
+				new DisplayTerm("server-id", SERVER_ID, serverId),
+				new DisplayTerm("started-after", START_DATE_GT, startDateGT),
+				new DisplayTerm("started-before", START_DATE_LT, startDateLT),
+				new DisplayTerm("type", TYPES, StringUtil.merge(types))));
 	}
 
 	public String getExpireDateGT() {

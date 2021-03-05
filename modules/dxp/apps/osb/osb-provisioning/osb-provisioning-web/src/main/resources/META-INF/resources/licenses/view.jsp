@@ -35,6 +35,13 @@ LicenseSearchDisplayContext licenseSearchDisplayContext = ProvisioningWebCompone
 			/>
 		</div>
 
+		<clay:management-toolbar
+			displayContext="<%= ProvisioningWebComponentProvider.getViewLicenseKeysManagementToolbarDisplayContext(liferayPortletRequest, liferayPortletResponse, request, licenseSearchDisplayContext.getSearchContainer()) %>"
+			elementClasses="full-width"
+			searchInputName="licenseSearchKeywords"
+			showSearch="<%= false %>"
+		/>
+
 		<liferay-ui:search-container
 			cssClass="table-hover"
 			searchContainer="<%= licenseSearchDisplayContext.getSearchContainer() %>"

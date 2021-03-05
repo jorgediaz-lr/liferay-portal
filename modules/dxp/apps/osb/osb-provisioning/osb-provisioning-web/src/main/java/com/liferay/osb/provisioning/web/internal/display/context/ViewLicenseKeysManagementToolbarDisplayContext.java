@@ -17,12 +17,13 @@ package com.liferay.osb.provisioning.web.internal.display.context;
 import com.liferay.frontend.taglib.clay.servlet.taglib.display.context.SearchContainerManagementToolbarDisplayContext;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.LabelItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.LabelItemList;
-import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
-import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
-import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
-import com.liferay.osb.provisioning.koroneiki.web.service.TeamWebService;
-import com.liferay.osb.provisioning.web.internal.search.AccountDisplayTerms;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
+import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
+import com.liferay.osb.provisioning.license.model.LicenseEntry;
+import com.liferay.osb.provisioning.license.service.LicenseEntryLocalService;
 import com.liferay.osb.provisioning.web.internal.search.DisplayTerm;
+import com.liferay.osb.provisioning.web.internal.search.LicenseDisplayTerms;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -30,7 +31,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.List;
@@ -42,43 +42,46 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @author Kyle Bischof
  */
-public class ViewAccountsManagementToolbarDisplayContext
+public class ViewLicenseKeysManagementToolbarDisplayContext
 	extends SearchContainerManagementToolbarDisplayContext {
 
-	public ViewAccountsManagementToolbarDisplayContext(
+	public ViewLicenseKeysManagementToolbarDisplayContext(
 		LiferayPortletRequest liferayPortletRequest,
 		LiferayPortletResponse liferayPortletResponse,
 		HttpServletRequest httpServletRequest, SearchContainer searchContainer,
-		AccountWebService accountWebService, TeamWebService teamWebService) {
+		LicenseEntryLocalService licenseEntryLocalService,
+		ProductWebService productWebService) {
 
 		super(
 			liferayPortletRequest, liferayPortletResponse, httpServletRequest,
 			searchContainer);
 
-		_accountWebService = accountWebService;
-		_teamWebService = teamWebService;
+		_licenseEntryLocalService = licenseEntryLocalService;
+		_productWebService = productWebService;
 	}
 
 	@Override
 	public String getClearResultsURL() {
-		PortletURL clearResultsURL = liferayPortletResponse.createRenderURL();
+		PortletURL clearResultsURL = getPortletURL();
+
+		clearResultsURL.setParameter("keywords", StringPool.BLANK);
 
 		return clearResultsURL.toString();
 	}
 
 	@Override
 	public List<LabelItem> getFilterLabelItems() {
-		AccountDisplayTerms accountDisplayTerms =
-			(AccountDisplayTerms)searchContainer.getDisplayTerms();
+		LicenseDisplayTerms licenseDisplayTerms =
+			(LicenseDisplayTerms)searchContainer.getDisplayTerms();
 
-		if (!accountDisplayTerms.isAdvancedSearch()) {
+		if (!licenseDisplayTerms.isAdvancedSearch()) {
 			return null;
 		}
 
 		return new LabelItemList() {
 			{
 				List<DisplayTerm> displayTermsList =
-					accountDisplayTerms.getDisplayTermsList();
+					licenseDisplayTerms.getDisplayTermsList();
 
 				for (DisplayTerm displayTerm : displayTermsList) {
 					String[] values = StringUtil.split(displayTerm.getValue());
@@ -111,7 +114,7 @@ public class ViewAccountsManagementToolbarDisplayContext
 
 	@Override
 	public String getSearchContainerId() {
-		return "accountSearch";
+		return "licenseSearch";
 	}
 
 	@Override
@@ -119,37 +122,44 @@ public class ViewAccountsManagementToolbarDisplayContext
 		return false;
 	}
 
-	private String _getAccountName(String accountKey) {
-		try {
-			Account account = _accountWebService.getAccount(accountKey);
+	private String _getLabel(String key, String value) {
+		if (key.equals("product")) {
+			value = _getProductName(value);
+		}
 
-			return account.getName();
+		if (key.equals("type")) {
+			value = _getLicenseType(value);
+		}
+
+		return String.format("%s: %s", LanguageUtil.get(request, key), value);
+	}
+
+	private String _getLicenseType(String licenseTypeId) {
+		try {
+			LicenseEntry licenseEntry =
+				_licenseEntryLocalService.getLicenseEntry(
+					Long.valueOf(licenseTypeId));
+
+			return licenseEntry.getName();
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
 
-			return accountKey;
+			return licenseTypeId;
 		}
 	}
 
-	private String _getLabel(String key, String value) {
-		if (key.equals("first-line-support") ||
-			key.equals("partner-reseller-si")) {
+	private String _getProductName(String productKey) {
+		try {
+			Product product = _productWebService.getProduct(productKey);
 
-			value = _getTeamName(value);
+			return product.getName();
 		}
-		else if (key.equals("parent-account")) {
-			value = _getAccountName(value);
-		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
 
-		if (value.equals(StringPool.TRUE)) {
-			value = LanguageUtil.get(request, "yes");
+			return productKey;
 		}
-		else if (value.equals(StringPool.FALSE)) {
-			value = LanguageUtil.get(request, "no");
-		}
-
-		return String.format("%s: %s", LanguageUtil.get(request, key), value);
 	}
 
 	private String _getRemoveLabelURL(
@@ -162,38 +172,18 @@ public class ViewAccountsManagementToolbarDisplayContext
 		removeLabelURL.setParameter(
 			displayTermName, StringUtil.merge(removeKeywords));
 
-		if (displayTermName.equals(AccountDisplayTerms.FLS_TEAM_KEY)) {
-			removeLabelURL.setParameter("flsTeamName", StringPool.BLANK);
-		}
-		else if (displayTermName.equals(
-					AccountDisplayTerms.PARENT_ACCOUNT_KEY)) {
-
-			removeLabelURL.setParameter("parentAccountName", StringPool.BLANK);
-		}
-		else if (displayTermName.equals(AccountDisplayTerms.PARTNER_TEAM_KEY)) {
-			removeLabelURL.setParameter("partnerTeamName", StringPool.BLANK);
+		if (displayTermName.equals(LicenseDisplayTerms.PRODUCTS)) {
+			removeLabelURL.setParameter(
+				"product", com.liferay.portal.kernel.util.StringPool.BLANK);
 		}
 
 		return removeLabelURL.toString();
 	}
 
-	private String _getTeamName(String teamKey) {
-		try {
-			Team team = _teamWebService.getTeam(teamKey);
-
-			return team.getName();
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-
-			return teamKey;
-		}
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
-		ViewAccountsManagementToolbarDisplayContext.class);
+		ViewLicenseKeysManagementToolbarDisplayContext.class);
 
-	private final AccountWebService _accountWebService;
-	private final TeamWebService _teamWebService;
+	private final LicenseEntryLocalService _licenseEntryLocalService;
+	private final ProductWebService _productWebService;
 
 }
