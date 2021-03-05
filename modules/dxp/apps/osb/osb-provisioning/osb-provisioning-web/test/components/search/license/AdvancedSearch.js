@@ -30,7 +30,7 @@ function renderAdvancedSearch(props) {
 	);
 }
 
-describe('Account AdvancedSearch', () => {
+describe('License AdvancedSearch', () => {
 	afterEach(cleanup);
 
 	it('renders', () => {
