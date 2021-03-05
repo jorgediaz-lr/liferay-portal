@@ -164,11 +164,8 @@ export function getLicenseKeySearchFilterDisplayName(name) {
 		case 'ipAddress':
 			displayName = Liferay.Language.get('ip-address');
 			break;
-		case 'licenseKey':
+		case 'key':
 			displayName = Liferay.Language.get('key');
-			break;
-		case 'licenseTypes':
-			displayName = Liferay.Language.get('license-type');
 			break;
 		case 'macAddress':
 			displayName = Liferay.Language.get('mac-address');
@@ -202,6 +199,9 @@ export function getLicenseKeySearchFilterDisplayName(name) {
 			break;
 		case 'startDateLT':
 			displayName = Liferay.Language.get('started-before');
+			break;
+		case 'types':
+			displayName = Liferay.Language.get('license-type');
 			break;
 		default:
 			return;
