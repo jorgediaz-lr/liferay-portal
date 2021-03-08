@@ -34,7 +34,8 @@ config = {
 		MODULE_PATH: true
 	},
 	rules: {
-		'no-empty': ['error', {allowEmptyCatch: true}]
+		'no-empty': ['error', {allowEmptyCatch: true}],
+		'no-for-of-loops/no-for-of-loops': 'error'
 	}
 };
 
