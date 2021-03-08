@@ -131,6 +131,13 @@ public class ViewLicenseKeysManagementToolbarDisplayContext
 			value = _getLicenseType(value);
 		}
 
+		if (value.equals(StringPool.TRUE)) {
+			value = LanguageUtil.get(request, "yes");
+		}
+		else if (value.equals(StringPool.FALSE)) {
+			value = LanguageUtil.get(request, "no");
+		}
+
 		return String.format("%s: %s", LanguageUtil.get(request, key), value);
 	}
 
