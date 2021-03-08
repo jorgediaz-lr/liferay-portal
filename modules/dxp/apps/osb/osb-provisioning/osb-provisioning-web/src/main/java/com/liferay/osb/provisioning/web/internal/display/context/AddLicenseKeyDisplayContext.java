@@ -117,8 +117,6 @@ public class AddLicenseKeyDisplayContext {
 		data.put("accountCode", _account.getCode());
 		data.put("accountKey", _account.getKey());
 		data.put("accountName", _account.getName());
-		data.put("description", _account.getName());
-		data.put("owner", _account.getName());
 
 		PortletURL addLicenseKeyURL = _renderResponse.createActionURL();
 
@@ -128,8 +126,8 @@ public class AddLicenseKeyDisplayContext {
 
 		data.put("addLicenseKeyURL", addLicenseKeyURL.toString());
 
+		data.put("description", _account.getName());
 		data.put("licenseProducts", _getLicenseProductsJSONArray());
-		data.put("purchasedProducts", _getPurchasedProductsJSONArray());
 
 		List<Integer> maxHttpSessions = new ArrayList<>();
 
@@ -146,6 +144,9 @@ public class AddLicenseKeyDisplayContext {
 		}
 
 		data.put("maxServers", maxServers);
+
+		data.put("owner", _account.getName());
+		data.put("purchasedProducts", _getPurchasedProductsJSONArray());
 
 		return data;
 	}
@@ -207,11 +208,11 @@ public class AddLicenseKeyDisplayContext {
 		for (Product product : products) {
 			Map<String, String> properties = product.getProperties();
 
-			if ((properties == null) || (properties.get("version") == null)) {
+			if ((properties == null) || (properties.get("versions") == null)) {
 				continue;
 			}
 
-			String[] versions = StringUtil.split(properties.get("version"));
+			String[] versions = StringUtil.split(properties.get("versions"));
 
 			if (versions.length < 1) {
 				continue;
@@ -247,8 +248,6 @@ public class AddLicenseKeyDisplayContext {
 					"detached", _getDetachedDetails(product.getKey())
 				).put(
 					"productKey", product.getKey()
-				).put(
-					"productName", product.getName()
 				).put(
 					"productName", product.getName()
 				).put(
@@ -321,14 +320,11 @@ public class AddLicenseKeyDisplayContext {
 
 						int provisionedCount = 0;
 
-						String productPurchaseKey = productPurchase.getKey();
-
 						List<ProductConsumption> productConsumptions =
-							productConsumptionsMap.get(productPurchaseKey);
+							productConsumptionsMap.get(
+								productPurchase.getKey());
 
-						if (productConsumptionsMap.get(productPurchaseKey) !=
-								null) {
-
+						if (productConsumptions != null) {
 							provisionedCount = productConsumptions.size();
 						}
 
@@ -345,7 +341,7 @@ public class AddLicenseKeyDisplayContext {
 							).put(
 								"licenseKeysGenerated", licenseKeysGenerated
 							).put(
-								"productPurchaseKey", productPurchaseKey
+								"productPurchaseKey", productPurchase.getKey()
 							).put(
 								"sizing", sizing
 							).put(

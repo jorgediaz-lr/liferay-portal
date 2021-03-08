@@ -57,12 +57,10 @@ public class SelectLicenseAccountMVCActionCommand extends BaseMVCActionCommand {
 
 			PortletURL portletURL = liferayPortletResponse.createRenderURL();
 
-			portletURL.setParameter("accountKey", accountKey);
-
-			portletURL.setParameter("redirect", redirect);
-
 			portletURL.setParameter(
 				"mvcRenderCommandName", "/licenses/add_license_key");
+			portletURL.setParameter("redirect", redirect);
+			portletURL.setParameter("accountKey", accountKey);
 
 			hideDefaultSuccessMessage(actionRequest);
 
