@@ -1421,7 +1421,7 @@ public class PortalImpl implements Portal {
 		Group siteGroup = themeDisplay.getSiteGroup();
 
 		if (((!layout.isFirstParent() || Validator.isNotNull(parametersURL)) &&
-			 _needLayoutFriendlyURL(
+			 _requiresLayoutFriendlyURL(
 				 siteGroup.getFriendlyURL(),
 				 themeDisplay.getLayoutFriendlyURL(layout),
 				 groupFriendlyURL)) ||
@@ -6860,8 +6860,8 @@ public class PortalImpl implements Portal {
 		}
 
 		if (exception instanceof NoSuchImageException) {
-			if (_logWebServerServlet.isWarnEnabled()) {
-				_logWebServerServlet.warn(exception, exception);
+			if (_webServerServletLog.isWarnEnabled()) {
+				_webServerServletLog.warn(exception, exception);
 			}
 		}
 		else if (exception instanceof PortalException) {
@@ -8971,7 +8971,7 @@ public class PortalImpl implements Portal {
 		return group;
 	}
 
-	private boolean _needLayoutFriendlyURL(
+	private boolean _requiresLayoutFriendlyURL(
 		String siteGroupFriendlyURL, String layoutFriendlyURL,
 		String groupFriendlyURL) {
 
@@ -9018,7 +9018,7 @@ public class PortalImpl implements Portal {
 		new ConcurrentHashMap<>();
 	private static final Map<Long, String> _cdnHostHttpsMap =
 		new ConcurrentHashMap<>();
-	private static final Log _logWebServerServlet = LogFactoryUtil.getLog(
+	private static final Log _webServerServletLog = LogFactoryUtil.getLog(
 		WebServerServlet.class);
 	private static final MethodHandler _resetCDNHostsMethodHandler =
 		new MethodHandler(new MethodKey(PortalUtil.class, "resetCDNHosts"));
