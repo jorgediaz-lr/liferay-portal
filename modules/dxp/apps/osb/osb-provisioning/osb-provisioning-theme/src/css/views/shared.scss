@@ -303,6 +303,17 @@
 	}
 }
 
+.page-steps {
+	background-color: $body-bg;
+	border-bottom: 1px solid $secondary-l3;
+	color: $dark-l3;
+	display: flex;
+	font-size: $mid-font-size;
+	justify-content: space-between;
+	margin-bottom: $spacing-default;
+	padding: $spacing-xxs $spacing-default;
+}
+
 .provisioning-accounts {
 	.title-bar {
 		border-radius: $border-radius;

@@ -33,7 +33,7 @@ AccountDisplay accountDisplay = editProductPurchasesDisplayContext.getAccountDis
 		title="<%= editProductPurchasesDisplayContext.getTitle() %>"
 	/>
 
-	<div class="subscriptions-step">
+	<div class="page-steps">
 		<span><liferay-ui:message key="select-subscription-terms" /></span>
 
 		<span><liferay-ui:message key="step-1-of-2" /></span>

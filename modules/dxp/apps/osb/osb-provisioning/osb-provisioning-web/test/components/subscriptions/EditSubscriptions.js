@@ -183,7 +183,7 @@ describe('EditSubscriptions', () => {
 			expect(container).toBeTruthy();
 		});
 
-		it('renders subtext showing the editing step', () => {
+		it('renders sub heading showing the editing step', () => {
 			const {getByText} = renderEditSubscriptions();
 
 			expect(getByText('edit-details')).toBeTruthy();

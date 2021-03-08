@@ -18,6 +18,10 @@
 
 <liferay-util:include page="/common/view_account_search_header.jsp" servletContext="<%= application %>" />
 
+<%
+AddLicenseKeyDisplayContext addLicenseKeyDisplayContext = ProvisioningWebComponentProvider.getAddLicenseKeyDisplayContext(renderRequest, renderResponse, request);
+%>
+
 <div class="add-items">
 	<liferay-ui:header
 		backURL='<%= ParamUtil.getString(request, "redirect") %>'
@@ -25,5 +29,10 @@
 		title='<%= LanguageUtil.get(request, "generate-license") %>'
 	/>
 
-	//TODO: pass addLicenseKeyDisplayContext.getAddLicenseKeyData() for data
+	<div id="generateLicense">
+		<react:component
+			data="<%= addLicenseKeyDisplayContext.getAddLicenseKeyData() %>"
+			module="js/GenerateLicenseApp"
+		/>
+	</div>
 </div>

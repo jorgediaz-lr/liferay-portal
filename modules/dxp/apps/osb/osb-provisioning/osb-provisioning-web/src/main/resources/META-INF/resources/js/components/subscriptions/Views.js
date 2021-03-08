@@ -121,7 +121,7 @@ export function EditView({
 
 	return (
 		<>
-			<div className="subscriptions-step">
+			<div className="page-steps">
 				<span>{Liferay.Language.get('edit-details')}</span>
 
 				<span>{Liferay.Language.get('step-2-of-2')}</span>
