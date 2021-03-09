@@ -43,6 +43,7 @@ import com.liferay.osb.provisioning.web.internal.display.context.ProductSearchDi
 import com.liferay.osb.provisioning.web.internal.display.context.TeamSearchDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.ViewAccountContactsDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.ViewAccountDisplayContext;
+import com.liferay.osb.provisioning.web.internal.display.context.ViewAccountLicenseKeysDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.ViewAccountLiferayWorkersDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.ViewAccountRelatedAccountsDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.ViewAccountTeamsDisplayContext;
@@ -197,6 +198,17 @@ public class ProvisioningWebComponentProvider {
 		return _provisioningWebComponentProvider._getViewAccountDisplayContext(
 			ViewAccountDisplayContext.class, renderRequest, renderResponse,
 			httpServletRequest);
+	}
+
+	public static ViewAccountLicenseKeysDisplayContext
+			getViewAccountLicenseKeysDisplayContext(
+				RenderRequest renderRequest, RenderResponse renderResponse,
+				HttpServletRequest httpServletRequest)
+		throws Exception {
+
+		return _provisioningWebComponentProvider._getViewAccountDisplayContext(
+			ViewAccountLicenseKeysDisplayContext.class, renderRequest,
+			renderResponse, httpServletRequest);
 	}
 
 	public static ViewAccountLiferayWorkersDisplayContext
@@ -396,9 +408,10 @@ public class ProvisioningWebComponentProvider {
 			renderRequest, renderResponse, httpServletRequest, _accountReader,
 			_accountEntryWebService, _accountWebService, _auditEntryWebService,
 			_contactRoleWebService, _contactWebService, _externalLinkWebService,
-			_noteWebService, _productConsumptionWebService,
-			_productPurchaseViewWebService, _productWebService,
-			_teamRoleWebService, _teamWebService, _userLocalService);
+			_licenseKeyLocalService, _noteWebService,
+			_productConsumptionWebService, _productPurchaseViewWebService,
+			_productWebService, _teamRoleWebService, _teamWebService,
+			_userLocalService);
 
 		httpServletRequest.setAttribute(
 			clazz.getName(), viewAccountDisplayContext);

@@ -40,6 +40,7 @@ import com.liferay.osb.provisioning.koroneiki.web.service.ProductPurchaseViewWeb
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamRoleWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamWebService;
+import com.liferay.osb.provisioning.license.service.LicenseKeyLocalService;
 import com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -525,6 +526,7 @@ public class ViewAccountDisplayContext {
 			ContactRoleWebService contactRoleWebService,
 			ContactWebService contactWebService,
 			ExternalLinkWebService externalLinkWebService,
+			LicenseKeyLocalService licenseKeyLocalService,
 			NoteWebService noteWebService,
 			ProductConsumptionWebService productConsumptionWebService,
 			ProductPurchaseViewWebService productPurchaseViewWebService,
@@ -543,6 +545,7 @@ public class ViewAccountDisplayContext {
 		this.contactRoleWebService = contactRoleWebService;
 		this.contactWebService = contactWebService;
 		this.externalLinkWebService = externalLinkWebService;
+		this.licenseKeyLocalService = licenseKeyLocalService;
 		this.noteWebService = noteWebService;
 		this.productConsumptionWebService = productConsumptionWebService;
 		this.productPurchaseViewWebService = productPurchaseViewWebService;
@@ -593,6 +596,7 @@ public class ViewAccountDisplayContext {
 			"yyyy-MM-dd'T'HH:mm:ss'Z'");
 	protected ExternalLinkWebService externalLinkWebService;
 	protected HttpServletRequest httpServletRequest;
+	protected LicenseKeyLocalService licenseKeyLocalService;
 	protected NoteWebService noteWebService;
 	protected ProductConsumptionWebService productConsumptionWebService;
 	protected ProductPurchaseViewWebService productPurchaseViewWebService;
