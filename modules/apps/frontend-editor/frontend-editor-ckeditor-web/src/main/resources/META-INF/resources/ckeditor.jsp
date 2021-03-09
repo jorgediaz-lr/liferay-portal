@@ -611,7 +611,9 @@ name = HtmlUtil.escapeJS(name);
 
 		ckEditor.on('drop', function(event) {
 			var data = event.data.dataTransfer.getData('text/html');
+
 			var fragment = CKEDITOR.htmlParser.fragment.fromHtml(data);
+
 			var element = fragment.children[0];
 
 			if (element.hasClass('cke_widget_image')) {
