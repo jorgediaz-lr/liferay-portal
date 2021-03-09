@@ -57,5 +57,25 @@
 				</comments>
 			</library>
 		</libraries>
+		<library>
+			<file-name>lib/portal/database-access-0.6.0.jar</file-name>
+			<version>0.6.0</version>
+		</library>
+		<library>
+			<file-name>lib/portal/queries-listener-0.6.0.jar</file-name>
+			<version>0.6.0</version>
+		</library>
+		<library>
+			<file-name>lib/portal/references-checker-0.6.0.jar</file-name>
+			<version>0.6.0</version>
+		</library>
+		<library>
+			<file-name>lib/portal/references-checker-listener-0.6.0.jar</file-name>
+			<version>0.6.0</version>
+		</library>
+		<library>
+			<file-name>lib/portal/references-service-0.6.0.jar</file-name>
+			<version>0.6.0</version>
+		</library>
 	</version>
 </versions>
