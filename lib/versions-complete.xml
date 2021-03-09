@@ -6872,6 +6872,10 @@
 				</licenses>
 			</library>
 			<library>
+				<file-name>lib/portal/commons-text.jar</file-name>
+				<version>1.3</version>
+			</library>
+			<library>
 				<file-name>lib/portal/crypt.jar</file-name>
 				<version>1.0</version>
 				<project-name>Manticore UFC Crypt</project-name>
@@ -6882,6 +6886,10 @@
 						<license-url>http://www.gnu.org/licenses/lgpl-2.1.html</license-url>
 					</license>
 				</licenses>
+			</library>
+			<library>
+				<file-name>lib/portal/database-access-0.6.0.jar</file-name>
+				<version>0.6.0</version>
 			</library>
 			<library>
 				<file-name>lib/portal/dom4j.jar</file-name>
@@ -6982,6 +6990,10 @@
 				<comments>Removed org.json.* because it json-java.jar. See LPS-78517.</comments>
 			</library>
 			<library>
+				<file-name>lib/portal/jackson-core.jar</file-name>
+				<version>2.10.5</version>
+			</library>
+			<library>
 				<file-name>lib/portal/jackson-databind.jar</file-name>
 				<version>2.12.4</version>
 				<project-name>Jackson Databind</project-name>
@@ -6990,6 +7002,22 @@
 					<license>
 						<license-name>Apache License 2.0</license-name>
 						<license-url>http://www.apache.org/licenses/LICENSE-2.0</license-url>
+					</license>
+				</licenses>
+			</library>
+			<library>
+				<file-name>lib/portal/jackson-dataformat-csv.jar</file-name>
+				<version>2.10.5</version>
+			</library>
+			<library>
+				<file-name>lib/portal/jai-imageio-core.jar</file-name>
+				<version>1.4.0</version>
+				<project-name>Java Advanced Imaging Image I/O Tools API Core (standalone)</project-name>
+				<project-url>https://github.com/jai-imageio/jai-imageio-core</project-url>
+				<licenses>
+					<license>
+						<license-name>BSD Style License</license-name>
+						<license-url>http://en.wikipedia.org/wiki/BSD_licenses</license-url>
 					</license>
 				</licenses>
 			</library>
@@ -7191,6 +7219,10 @@
 				<comments>See the Ant target "build-json-java-jar" in portal-impl/build.xml.</comments>
 			</library>
 			<library>
+				<file-name>lib/portal/jsqlparser.jar</file-name>
+				<version>1.2</version>
+			</library>
+			<library>
 				<file-name>lib/portal/jws-api.jar</file-name>
 				<version>1.1</version>
 				<project-name>Java EE Web Services Metadata API</project-name>
@@ -7263,6 +7295,10 @@
 				</licenses>
 			</library>
 			<library>
+				<file-name>lib/portal/p6spy.jar</file-name>
+				<version>3.9.1</version>
+			</library>
+			<library>
 				<file-name>lib/portal/persistence.jar</file-name>
 				<version>2.2.1</version>
 				<project-name>Java Persistence</project-name>
@@ -7297,6 +7333,22 @@
 						<license-url>http://www.apache.org/licenses/LICENSE-2.0</license-url>
 					</license>
 				</licenses>
+			</library>
+			<library>
+				<file-name>lib/portal/queries-listener-0.6.0.jar</file-name>
+				<version>0.6.0</version>
+			</library>
+			<library>
+				<file-name>lib/portal/references-checker-0.6.0.jar</file-name>
+				<version>0.6.0</version>
+			</library>
+			<library>
+				<file-name>lib/portal/references-checker-listener-0.6.0.jar</file-name>
+				<version>0.6.0</version>
+			</library>
+			<library>
+				<file-name>lib/portal/references-service-0.6.0.jar</file-name>
+				<version>0.6.0</version>
 			</library>
 			<library>
 				<file-name>lib/portal/rometools-utils.jar</file-name>
@@ -7383,6 +7435,10 @@
 						<copyright-notice>Copyright (c) 2004-2007 QOS.ch</copyright-notice>
 					</license>
 				</licenses>
+			</library>
+			<library>
+				<file-name>lib/portal/snakeyaml.jar</file-name>
+				<version>1.18</version>
 			</library>
 			<library>
 				<file-name>lib/portal/soap-api.jar</file-name>
