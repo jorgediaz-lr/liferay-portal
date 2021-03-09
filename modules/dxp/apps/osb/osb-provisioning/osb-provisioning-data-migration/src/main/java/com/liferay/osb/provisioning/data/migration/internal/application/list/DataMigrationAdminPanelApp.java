@@ -12,50 +12,42 @@
  *
  */
 
-package com.liferay.osb.provisioning.web.internal.application.list;
+package com.liferay.osb.provisioning.data.migration.internal.application.list;
 
 import com.liferay.application.list.BasePanelApp;
 import com.liferay.application.list.PanelApp;
-import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
-import com.liferay.osb.provisioning.web.internal.application.list.constants.ProvisioningPanelCategoryKeys;
-import com.liferay.osb.provisioning.web.internal.configuration.ProvisioningWebConfiguration;
-import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
+import com.liferay.osb.provisioning.data.migration.internal.constants.DataMigrationPortletKeys;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 
-import java.util.Map;
-
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Yuanyuan Huang
  */
 @Component(
-	configurationPid = "com.liferay.osb.provisioning.web.internal.configuration.ProvisioningWebConfiguration",
 	immediate = true,
 	property = {
 		"panel.app.order:Integer=60",
-		"panel.category.key=" + ProvisioningPanelCategoryKeys.CONTROL_PANEL_PROVISIONING
+		"panel.category.key=control_panel.provisioning"
 	},
 	service = PanelApp.class
 )
-public class DataMigrationPanelApp extends BasePanelApp {
+public class DataMigrationAdminPanelApp extends BasePanelApp {
 
 	@Override
 	public String getPortletId() {
-		return ProvisioningPortletKeys.DATA_MIGRATION;
+		return DataMigrationPortletKeys.ADMIN;
 	}
 
 	@Override
 	public boolean isShow(PermissionChecker permissionChecker, Group group)
 		throws PortalException {
 
-		if (_provisioningWebConfiguration.dataMigrationPortletEnabled()) {
+		if (permissionChecker.isOmniadmin()) {
 			return true;
 		}
 
@@ -64,20 +56,11 @@ public class DataMigrationPanelApp extends BasePanelApp {
 
 	@Override
 	@Reference(
-		target = "(javax.portlet.name=" + ProvisioningPortletKeys.DATA_MIGRATION + ")",
+		target = "(javax.portlet.name=" + DataMigrationPortletKeys.ADMIN + ")",
 		unbind = "-"
 	)
 	public void setPortlet(Portlet portlet) {
 		super.setPortlet(portlet);
 	}
-
-	@Activate
-	@Modified
-	protected void activate(Map<String, Object> properties) {
-		_provisioningWebConfiguration = ConfigurableUtil.createConfigurable(
-			ProvisioningWebConfiguration.class, properties);
-	}
-
-	private volatile ProvisioningWebConfiguration _provisioningWebConfiguration;
 
 }

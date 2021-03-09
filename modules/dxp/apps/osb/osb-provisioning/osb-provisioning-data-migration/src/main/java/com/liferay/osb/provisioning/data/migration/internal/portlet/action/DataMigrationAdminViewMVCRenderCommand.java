@@ -12,9 +12,9 @@
  *
  */
 
-package com.liferay.osb.provisioning.web.internal.portlet.action;
+package com.liferay.osb.provisioning.data.migration.internal.portlet.action;
 
-import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
+import com.liferay.osb.provisioning.data.migration.internal.constants.DataMigrationPortletKeys;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 
 import javax.portlet.PortletException;
@@ -28,19 +28,20 @@ import org.osgi.service.component.annotations.Component;
  */
 @Component(
 	property = {
-		"javax.portlet.name=" + ProvisioningPortletKeys.DATA_MIGRATION,
+		"javax.portlet.name=" + DataMigrationPortletKeys.ADMIN,
 		"mvc.command.name=/", "mvc.command.name=/view"
 	},
 	service = MVCRenderCommand.class
 )
-public class DataMigrationViewMVCRenderCommand implements MVCRenderCommand {
+public class DataMigrationAdminViewMVCRenderCommand
+	implements MVCRenderCommand {
 
 	@Override
 	public String render(
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws PortletException {
 
-		return "/data_migration/view.jsp";
+		return "/view.jsp";
 	}
 
 }

@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.provisioning.data.migration.util;
+package com.liferay.osb.provisioning.data.migration.internal.migration;
 
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
@@ -58,10 +58,10 @@ public class LicenseEntryMigration {
 		StringBundler sb = new StringBundler(5);
 
 		sb.append("select OSB_LicenseEntry.name, OSB_LicenseEntry.type_,");
-		sb.append("a.name, b.name from OSB_LicenseEntry left join ");
-		sb.append("Customer_Listtype a on OSB_LicenseEntry.versionMin = ");
-		sb.append("a.listTypeId left join Customer_Listtype b on ");
-		sb.append("OSB_LicenseEntry.versionMax = b.listTypeId;");
+		sb.append("min.name, max.name from OSB_LicenseEntry left join ");
+		sb.append("CUSTOMER_ListType min on OSB_LicenseEntry.versionMin = ");
+		sb.append("min.listTypeId left join CUSTOMER_ListType max on ");
+		sb.append("OSB_LicenseEntry.versionMax = max.listTypeId;");
 
 		try (Connection connection = DataAccess.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(

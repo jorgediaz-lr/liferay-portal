@@ -14,12 +14,14 @@
  */
 --%>
 
-<%@ include file="/init.jsp" %>
+<%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
 
-<portlet:actionURL name="/migrate_data" var="migrateDataURL" />
+<%@ taglib uri="http://liferay.com/tld/aui" prefix="aui" %><%@
+taglib uri="http://liferay.com/tld/frontend" prefix="liferay-frontend" %><%@
+taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %>
 
-<aui:form action="<%= migrateDataURL %>" method="post" name="fm">
-	<aui:input name="migrateLicenseEntry" type="hidden" value="<%= true %>" />
+<liferay-frontend:defineObjects />
 
-	<aui:button type="submit" value="migrate license entry" />
-</aui:form>
+<liferay-theme:defineObjects />
+
+<portlet:defineObjects />

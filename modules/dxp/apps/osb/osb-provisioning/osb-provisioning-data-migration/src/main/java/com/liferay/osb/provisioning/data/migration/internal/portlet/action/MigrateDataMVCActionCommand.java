@@ -12,18 +12,16 @@
  *
  */
 
-package com.liferay.osb.provisioning.web.internal.portlet.action;
+package com.liferay.osb.provisioning.data.migration.internal.portlet.action;
 
-import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
-import com.liferay.osb.provisioning.data.migration.util.LicenseEntryMigration;
+import com.liferay.osb.provisioning.data.migration.internal.constants.DataMigrationPortletKeys;
+import com.liferay.osb.provisioning.data.migration.internal.migration.LicenseEntryMigration;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.search.index.IndexStatusManager;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -38,7 +36,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"javax.portlet.name=" + ProvisioningPortletKeys.DATA_MIGRATION,
+		"javax.portlet.name=" + DataMigrationPortletKeys.ADMIN,
 		"mvc.command.name=/migrate_data"
 	},
 	service = MVCActionCommand.class
@@ -55,15 +53,10 @@ public class MigrateDataMVCActionCommand extends BaseMVCActionCommand {
 
 			stopWatch.start();
 
-			_indexStatusManager.setIndexReadOnly(true);
+			ThemeDisplay themeDisplay =
+				(ThemeDisplay)actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
 
-			if (ParamUtil.getBoolean(actionRequest, "migrateLicenseEntry")) {
-				ThemeDisplay themeDisplay =
-					(ThemeDisplay)actionRequest.getAttribute(
-						WebKeys.THEME_DISPLAY);
-
-				_licenseEntryMigration.migrate(themeDisplay.getUserId());
-			}
+			_licenseEntryMigration.migrate(themeDisplay.getUserId());
 
 			if (_log.isInfoEnabled()) {
 				_log.info("Migration took " + stopWatch.getTime() + " ms");
@@ -76,16 +69,10 @@ public class MigrateDataMVCActionCommand extends BaseMVCActionCommand {
 
 			throw exception;
 		}
-		finally {
-			_indexStatusManager.setIndexReadOnly(false);
-		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		MigrateDataMVCActionCommand.class);
-
-	@Reference
-	private IndexStatusManager _indexStatusManager;
 
 	@Reference
 	private LicenseEntryMigration _licenseEntryMigration;
