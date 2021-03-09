@@ -15,7 +15,6 @@
 package com.liferay.osb.provisioning.license.service.impl;
 
 import com.liferay.osb.provisioning.license.exception.LicenseEntryNameException;
-import com.liferay.osb.provisioning.license.exception.LicenseEntryVersionException;
 import com.liferay.osb.provisioning.license.helper.constants.ProductVersion;
 import com.liferay.osb.provisioning.license.model.LicenseEntry;
 import com.liferay.osb.provisioning.license.service.base.LicenseEntryLocalServiceBaseImpl;
@@ -49,7 +48,7 @@ public class LicenseEntryLocalServiceImpl
 		User user = userLocalService.getUser(userId);
 		Date now = new Date();
 
-		validate(name, versionMin, versionMax);
+		validate(name);
 
 		long licenseEntryId = counterLocalService.increment();
 
@@ -107,7 +106,7 @@ public class LicenseEntryLocalServiceImpl
 			String versionMin, String versionMax)
 		throws PortalException {
 
-		validate(name, versionMin, versionMax);
+		validate(name);
 
 		LicenseEntry licenseEntry = licenseEntryPersistence.findByPrimaryKey(
 			licenseEntryId);
@@ -122,15 +121,9 @@ public class LicenseEntryLocalServiceImpl
 		return licenseEntryPersistence.update(licenseEntry);
 	}
 
-	protected void validate(String name, String versionMin, String versionMax)
-		throws PortalException {
-
+	protected void validate(String name) throws PortalException {
 		if (Validator.isNull(name)) {
 			throw new LicenseEntryNameException();
-		}
-
-		if (Validator.isNull(versionMin) || Validator.isNull(versionMax)) {
-			throw new LicenseEntryVersionException();
 		}
 	}
 
