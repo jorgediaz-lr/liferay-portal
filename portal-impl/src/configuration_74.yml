@@ -58,7 +58,8 @@ references: [
   {origin: {table: "OrgLabor", columns: ["typeId"]},         dest: {table: "ListType", columns: ["listTypeId"], condition: "type_='com.liferay.portal.kernel.model.Organization.service'"}},
   {origin: {table: "Organization_",  columns: ["statusId"]}, dest: {table: "ListType", columns: ["listTypeId"], condition: "type_='com.liferay.portal.kernel.model.Organization.status'"}},
     #relations to AssetEntry table
-  {origin: {table: "^(BlogsEntry|BookmarksEntry|BookmarksFolder|CalendarBooking|DLFileEntry|JournalFolder|KBArticle)$", columns: ["${origTable.primaryKey}"]}, dest: {table: "AssetEntry", columns: ["classPk"], condition: "classNameId in (select classNameId from ClassName_ where value='${origTable.className}')"}},
+  {origin: {table: "^(BlogsEntry|BookmarksEntry|BookmarksFolder|CalendarBooking|JournalFolder|KBArticle)$", columns: ["${origTable.primaryKey}"]}, dest: {table: "AssetEntry", columns: ["classPk"], condition: "classNameId in (select classNameId from ClassName_ where value='${origTable.className}')"}},
+  {origin: {table: "DLFileEntry", columns: ["${origTable.primaryKey}"], condition: "repositoryId = groupId"}, dest: {table: "AssetEntry", columns: ["classPk"], condition: "classNameId in (select classNameId from ClassName_ where value='${origTable.className}')"}},
   {origin: {table: "MBMessage", columns: ["${origTable.primaryKey}"], condition: "categoryId != -1"}, dest: {table: "AssetEntry", columns: ["classPk"], condition: "classNameId in (select classNameId from ClassName_ where value='${origTable.className}')"}},
   {origin: {table: "MBMessage", columns: ["${origTable.primaryKey}"], condition: "categoryId = -1"}, dest: {table: "AssetEntry", columns: ["classPk"], condition: "classNameId in (select classNameId from ClassName_ where value='${MBDiscussion.className}')"}},
   {origin: {table: "MBThread", columns: ["${origTable.primaryKey}"], condition: "categoryId >= 0"}, dest: {table: "AssetEntry", columns: ["classPk"], condition: "classNameId in (select classNameId from ClassName_ where value='${origTable.className}')"}},
@@ -75,8 +76,9 @@ references: [
   {origin: {table: "ResourcePermission", columns: ["primKeyId"], condition: "scope = 1"}, dest: {table: "Company", columns: ["${destTable.primaryKey}"]}},
   {origin: {table: "ResourcePermission", columns: ["primKeyId"], condition: "scope = 2"}, dest: {table: "Group_", columns: ["${destTable.primaryKey}"]}},
   {origin: {table: "ResourcePermission", columns: ["primKeyId"], condition: "scope = 4 and name='${destTable.className}'"}, dest: {table: ".*", columns: ["${destTable.primaryKey}"]}, displayRaw: true, hidden: true},
-  {origin: {table: "ResourcePermission", columns: ["primKeyId"], condition: "scope = 4 and name='${destTable.className}'"}, dest: {table: ".*", columns: ["resourcePrimKey"]}, displayRaw: true, hidden: true},
-  {origin: {table: "ResourcePermission", columns: ["primKey"], castings: ["SUBSTR(primkey, 1, INSTR(primKey, '_LAYOUT_')-1 )"], condition: "scope = 4 and primKeyId = 0 and primKey like '%_LAYOUT_%'"}, dest: {table: "Layout", columns: ["plid"]}}
+  {origin: {table: "ResourcePermission", columns: ["primKeyId"], condition: "scope = 4 and name='${destTable.className}'"}, dest: {table: ".*", columns: ["resourcePrimKey"]}, displayRaw: true, hidden: true}
+##,
+##  {origin: {table: "ResourcePermission", columns: ["primKey"], castings: ["SUBSTR(primkey, 1, INSTR(primKey, '_LAYOUT_')-1 )"], condition: "scope = 4 and primKeyId = 0 and primKey like '%_LAYOUT_%'"}, dest: {table: "Layout", columns: ["plid"]}}
  ]
 tableToClassNameMapping : {
     "AMImageEntry" : "com.liferay.adaptive.media.image.model.AMImageEntry",
