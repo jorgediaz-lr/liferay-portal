@@ -27,7 +27,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	immediate = true,
 	property = {
-		"exchange=is_dossiera_v1", "queue=is_osb_provisioning_queue",
+		"exchange=is_dossiera_v1", "queue=is_osb_provisioning_dossiera_queue",
 		"routing.key=dossiera.provisioning.create"
 	},
 	service = DossieraLegacyConsumer.class
