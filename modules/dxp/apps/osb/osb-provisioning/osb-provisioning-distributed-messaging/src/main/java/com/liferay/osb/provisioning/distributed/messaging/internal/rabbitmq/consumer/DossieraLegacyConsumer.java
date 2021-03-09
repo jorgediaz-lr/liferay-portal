@@ -30,9 +30,9 @@ import org.osgi.service.component.annotations.Reference;
 		"exchange=is_dossiera_v1", "queue=is_osb_provisioning_queue",
 		"routing.key=dossiera.provisioning.create"
 	},
-	service = LegacyConsumer.class
+	service = DossieraLegacyConsumer.class
 )
-public class LegacyConsumer extends BaseConsumer {
+public class DossieraLegacyConsumer extends BaseConsumer {
 
 	@Override
 	protected Connection getConnection() {
