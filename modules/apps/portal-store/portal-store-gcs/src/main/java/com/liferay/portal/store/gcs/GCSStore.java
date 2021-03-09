@@ -65,7 +65,6 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Modified;
-import org.osgi.service.component.annotations.Reference;
 
 import org.threeten.bp.Duration;
 
@@ -966,9 +965,8 @@ public class GCSStore extends BaseStore {
 	private BucketInfo _bucketInfo;
 	private Storage _gcsStore;
 	private GCSStoreConfiguration _gcsStoreConfiguration;
-
-	@Reference
-	private GCSKeyTransformer _keyTransformer;
+	private final GCSKeyTransformerImpl _keyTransformer =
+		new GCSKeyTransformerImpl();
 
 	private Storage.BlobSourceOption _storageDecryptionSourceOption;
 
