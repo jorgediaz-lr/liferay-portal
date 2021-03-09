@@ -27,6 +27,9 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
 )
 public interface ProvisioningWebConfiguration {
 
+	@Meta.AD(deflt = "false", required = false)
+	public boolean dataMigrationPortletEnabled();
+
 	@Meta.AD(required = false)
 	public String generateLicenseHREF();
 
