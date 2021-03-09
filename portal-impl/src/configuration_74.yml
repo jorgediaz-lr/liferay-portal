@@ -1,5 +1,7 @@
+#
 ignoreColumns: [actionId]
 ignoreTables: [audit_auditevent, counter, cyrusUser, cyrusVirtual, systemEvent]
+#
 references: [
     #generic references
   {origin: {table: ".*", columns: [".*${destTable.PrimaryKey}"]},                                     dest: {table: ".*", columns: ["${destTable.primaryKey}"]}},
@@ -77,9 +79,10 @@ references: [
   {origin: {table: "ResourcePermission", columns: ["primKeyId"], condition: "scope = 2"}, dest: {table: "Group_", columns: ["${destTable.primaryKey}"]}},
   {origin: {table: "ResourcePermission", columns: ["primKeyId"], condition: "scope = 4 and name='${destTable.className}'"}, dest: {table: ".*", columns: ["${destTable.primaryKey}"]}, displayRaw: true, hidden: true},
   {origin: {table: "ResourcePermission", columns: ["primKeyId"], condition: "scope = 4 and name='${destTable.className}'"}, dest: {table: ".*", columns: ["resourcePrimKey"]}, displayRaw: true, hidden: true}
-##,
-##  {origin: {table: "ResourcePermission", columns: ["primKey"], castings: ["SUBSTR(primkey, 1, INSTR(primKey, '_LAYOUT_')-1 )"], condition: "scope = 4 and primKeyId = 0 and primKey like '%_LAYOUT_%'"}, dest: {table: "Layout", columns: ["plid"]}}
+    ##,
+    ##  {origin: {table: "ResourcePermission", columns: ["primKey"], castings: ["SUBSTR(primkey, 1, INSTR(primKey, '_LAYOUT_')-1 )"], condition: "scope = 4 and primKeyId = 0 and primKey like '%_LAYOUT_%'"}, dest: {table: "Layout", columns: ["plid"]}}
  ]
+#
 tableToClassNameMapping : {
     "AMImageEntry" : "com.liferay.adaptive.media.image.model.AMImageEntry",
     "Account_" : "com.liferay.portal.kernel.model.Account",
@@ -313,7 +316,7 @@ tableToClassNameMapping : {
     "WikiPageResource" : "com.liferay.wiki.model.WikiPageResource",
     "WorkflowDefinitionLink" : "com.liferay.portal.kernel.model.WorkflowDefinitionLink",
     "WorkflowInstanceLink" : "com.liferay.portal.kernel.model.WorkflowInstanceLink",
-#tables without className
+    #tables without className
     "AssetEntries_AssetCategories" : "",
     "AssetEntries_AssetTags" : "",
     "Configuration_" : "",
@@ -339,7 +342,7 @@ tableToClassNameMapping : {
     "Users_Roles" : "",
     "Users_Teams" : "",
     "Users_UserGroups" : "",
-#new 72 tables
+    #new 72 tables
     "AnalyticsMessage" : "com.liferay.analytics.message.storage.model.AnalyticsMessage",
     "AssetAutoTaggerEntry" : "com.liferay.asset.auto.tagger.model.AssetAutoTaggerEntry",
     "AssetListEntry" : "com.liferay.asset.list.model.AssetListEntry",
@@ -373,7 +376,7 @@ tableToClassNameMapping : {
     "CTCollection_CTEntryAggregate" : "",
     "CTCollections_CTEntries" : "",
     "CTEntryAggregates_CTEntries" : "",
-#new 73 tables
+    #new 73 tables
     "AccountEntry" : "com.liferay.account.model.AccountEntry",
     "AccountEntryOrganizationRel" : "com.liferay.account.model.AccountEntryOrganizationRel",
     "AccountEntryUserRel" : "com.liferay.account.model.AccountEntryUserRel",
@@ -395,27 +398,27 @@ tableToClassNameMapping : {
     "MFAEmailOTPEntry" : "com.liferay.multi.factor.authentication.email.otp.model.MFAEmailOTPEntry",
     "ViewCountEntry" : "com.liferay.view.count.model.ViewCountEntry"
 }
+#
 #tableRank is used to calculate fixAction:
 # 1. table rank is not set => default value=0
 # 2. (originRank < destinationRank) => "delete"
 # 3. (originRank == 0) => "???" (unless its table className is "" => "delete"
 # 4. ((destinationRank == 0)||(originRank == destinationRank)) => "???"
 # 5. (originRank > destinationRank) => "update"
-#
 tableRank : {
-#Root tables
+    #Root tables
     "ClassName_" : 100,
     "Company" : 99,
     "Group_" : 98,
     "LayoutSet" : 80,
-#Main entities, don't delete
+    #Main entities, don't delete
     "BlogsEntry" : 50,
     "DLFileEntry" : 50,
     "DLFileVersion" : 50,
     "JournalArticle" : 50,
     "JournalArticleResource" : 50,
     "Layout" : 50,
-#Other entities
+    #Other entities
     "DDMStructureLink" : -20,
     "DDMTemplate" : -10,
     "DDMTemplateLink" : -20,
@@ -429,7 +432,7 @@ tableRank : {
     "JournalContentSearch" : 20,
     "JournalFeed" : 20,
     "JournalFolder" : 20,
-#Auxiliary tables, safe to delete
+    #Auxiliary tables, safe to delete
     "AssetEntry" : -10,
     "AssetLink" : -20,
     "AssetTagStats" : -10,
