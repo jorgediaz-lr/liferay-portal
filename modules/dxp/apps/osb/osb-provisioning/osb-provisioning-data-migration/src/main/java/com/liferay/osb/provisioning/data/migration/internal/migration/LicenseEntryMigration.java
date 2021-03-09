@@ -39,17 +39,6 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = LicenseEntryMigration.class)
 public class LicenseEntryMigration {
 
-	public static String getNewName(String name) {
-		String newName = StringUtil.replace(name, "Digital Enterprise", "DXP");
-
-		if (newName.startsWith("Liferay ")) {
-			newName = StringUtil.replaceFirst(
-				newName, "Liferay ", StringPool.BLANK);
-		}
-
-		return newName;
-	}
-
 	public void migrate(long userId) throws Exception {
 		StopWatch stopWatch = new StopWatch();
 
@@ -69,7 +58,7 @@ public class LicenseEntryMigration {
 			ResultSet resultSet = preparedStatement.executeQuery()) {
 
 			while (resultSet.next()) {
-				String name = getNewName(resultSet.getString(1));
+				String name = _getNewName(resultSet.getString(1));
 
 				Product product = _productWebService.fetchProductByName(name);
 
@@ -92,6 +81,17 @@ public class LicenseEntryMigration {
 		if (_log.isInfoEnabled()) {
 			_log.info("Migration took " + stopWatch.getTime() + " ms");
 		}
+	}
+
+	private static String _getNewName(String name) {
+		String newName = StringUtil.replace(name, "Digital Enterprise", "DXP");
+
+		if (newName.startsWith("Liferay ")) {
+			newName = StringUtil.replaceFirst(
+				newName, "Liferay ", StringPool.BLANK);
+		}
+
+		return newName;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
