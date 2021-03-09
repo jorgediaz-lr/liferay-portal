@@ -17,12 +17,15 @@ package com.liferay.osb.distributed.messaging.rabbitmq.connector.consumer;
 import com.liferay.osb.distributed.messaging.Message;
 import com.liferay.osb.distributed.messaging.rabbitmq.connector.Connection;
 import com.liferay.osb.distributed.messaging.rabbitmq.connector.message.AttributeTranslator;
+import com.liferay.osb.distributed.messaging.rabbitmq.connector.messaging.ExclusiveConsumerCheckMessageListener;
 import com.liferay.osb.distributed.messaging.subscribing.router.MessageRouter;
 import com.liferay.osgi.util.StringPlus;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
@@ -44,6 +47,30 @@ import org.osgi.service.component.annotations.Reference;
  * @author Amos Fong
  */
 public abstract class BaseConsumer implements Consumer {
+
+	public void checkConsumer() {
+		try {
+			if (channel.isOpen() && Validator.isNotNull(_consumerTag)) {
+				return;
+			}
+
+			if (!channel.isOpen()) {
+				Connection connection = getConnection();
+
+				channel = connection.createChannel(prefetchCount);
+			}
+
+			if (exclusive && (channel.consumerCount(queue) > 0)) {
+				return;
+			}
+
+			_consumerTag = channel.basicConsume(
+				queue, false, StringPool.BLANK, false, exclusive, null, this);
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+		}
+	}
 
 	public Channel getChannel() {
 		return channel;
@@ -135,9 +162,10 @@ public abstract class BaseConsumer implements Consumer {
 	@Activate
 	protected void activate(Map<String, Object> properties) throws Exception {
 		exchange = GetterUtil.getString(properties.get("exchange"));
-		queue = GetterUtil.getString(properties.get("queue"));
+		exclusive = GetterUtil.getBoolean(properties.get("exclusive"));
 		prefetchCount = GetterUtil.getInteger(
 			properties.get("prefetch.count"), 20);
+		queue = GetterUtil.getString(properties.get("queue"));
 		routingKeys = StringPlus.asList(properties.get("routing.key"));
 
 		Connection connection = getConnection();
@@ -150,7 +178,14 @@ public abstract class BaseConsumer implements Consumer {
 			channel.queueBind(queue, exchange, routingKey);
 		}
 
-		channel.basicConsume(queue, false, this);
+		if (exclusive) {
+			checkConsumer();
+
+			exclusiveConsumerCheckMessageListener.register(this);
+		}
+		else {
+			_consumerTag = channel.basicConsume(queue, false, this);
+		}
 	}
 
 	protected void basicAck(Envelope envelope) {
@@ -176,12 +211,21 @@ public abstract class BaseConsumer implements Consumer {
 		if (channel != null) {
 			channel.close();
 		}
+
+		if (exclusive) {
+			exclusiveConsumerCheckMessageListener.unregister(this);
+		}
 	}
 
 	protected abstract Connection getConnection();
 
 	protected Channel channel;
 	protected String exchange;
+	protected boolean exclusive;
+
+	@Reference
+	protected ExclusiveConsumerCheckMessageListener
+		exclusiveConsumerCheckMessageListener;
 
 	@Reference
 	protected MessageRouter messageRouter;
@@ -191,5 +235,7 @@ public abstract class BaseConsumer implements Consumer {
 	protected List<String> routingKeys;
 
 	private static final Log _log = LogFactoryUtil.getLog(BaseConsumer.class);
+
+	private String _consumerTag;
 
 }

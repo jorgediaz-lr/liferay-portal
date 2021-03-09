@@ -4,4 +4,5 @@ Bundle-Version: 1.0.0
 Export-Package:\
 	com.liferay.osb.distributed.messaging.rabbitmq.connector,\
 	com.liferay.osb.distributed.messaging.rabbitmq.connector.broker,\
-	com.liferay.osb.distributed.messaging.rabbitmq.connector.consumer
+	com.liferay.osb.distributed.messaging.rabbitmq.connector.consumer,\
+	com.liferay.osb.distributed.messaging.rabbitmq.connector.messaging
