@@ -46,7 +46,12 @@ export function convertDateToStartOfDate(date) {
  * @returns {Object|string} Date object or empty string.
  */
 export function convertInputToDate(value) {
-	return value === '' ? '' : convertDateToStartOfDate(new Date(value));
+	if (typeof value === 'string') {
+		return value === '' ? '' : convertDateToUTCDate(new Date(value));
+	}
+	else {
+		return convertDateToStartOfDate(value);
+	}
 }
 
 /**
