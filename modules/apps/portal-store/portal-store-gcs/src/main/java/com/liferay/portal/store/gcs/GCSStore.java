@@ -113,6 +113,10 @@ public class GCSStore extends BaseStore {
 			_log.debug("Creating file with default version for: " + fileKey);
 		}
 
+		if (hasFile(companyId, repositoryId, fileName, versionLabel)) {
+			deleteFile(companyId, repositoryId, fileName, versionLabel);
+		}
+
 		String fileVersionKey = _keyTransformer.getFileVersionKey(
 			companyId, repositoryId, fileName, versionLabel);
 
