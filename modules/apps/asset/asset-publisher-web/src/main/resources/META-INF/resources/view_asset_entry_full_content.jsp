@@ -94,9 +94,9 @@ fragmentsEditorData.put("fragments-editor-item-type", "fragments-editor-mapped-i
 			request.setAttribute("view.jsp-fullContentRedirect", fullContentRedirect);
 			%>
 
-			<span class="d-inline-flex">
+			<div class="d-inline-flex">
 				<liferay-util:include page="/asset_actions.jsp" servletContext="<%= application %>" />
-			</span>
+			</div>
 		</c:if>
 	</div>
 
