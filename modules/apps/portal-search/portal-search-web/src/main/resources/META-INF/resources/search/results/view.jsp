@@ -98,19 +98,20 @@ com.liferay.portal.kernel.dao.search.SearchContainer<com.liferay.portal.kernel.s
 						/>
 					</c:if>
 
-					<c:if test="<%= searchResultSummaryDisplayContext.isThumbnailVisible() %>">
-						<img alt="<%= LanguageUtil.get(locale, "thumbnail") %>" class="img-rounded search-result-thumbnail-img" src="<%= searchResultSummaryDisplayContext.getThumbnailURLString() %>" />
-					</c:if>
+					<c:choose>
+						<c:when test="<%= searchResultSummaryDisplayContext.isThumbnailVisible() %>">
+							<img alt="<%= LanguageUtil.get(locale, "thumbnail") %>" class="img-rounded search-result-thumbnail-img" src="<%= searchResultSummaryDisplayContext.getThumbnailURLString() %>" />
+						</c:when>
+						<c:when test="<%= searchResultSummaryDisplayContext.isIconVisible() %>">
+							<span class="search-asset-type-sticker sticker sticker-rounded sticker-secondary sticker-static">
+								<svg class="lexicon-icon">
+									<use xlink:href="<%= searchResultSummaryDisplayContext.getPathThemeImages() %>/lexicon/icons.svg#<%= searchResultSummaryDisplayContext.getIconId() %>" />
 
-					<c:if test="<%= searchResultSummaryDisplayContext.isIconVisible() %>">
-						<span class="search-asset-type-sticker sticker sticker-rounded sticker-secondary sticker-static">
-							<svg class="lexicon-icon">
-								<use xlink:href="<%= searchResultSummaryDisplayContext.getPathThemeImages() %>/lexicon/icons.svg#<%= searchResultSummaryDisplayContext.getIconId() %>" />
-
-								<title><%= searchResultSummaryDisplayContext.getIconId() %></title>
-							</svg>
-						</span>
-					</c:if>
+									<title><%= searchResultSummaryDisplayContext.getIconId() %></title>
+								</svg>
+							</span>
+						</c:when>
+					</c:choose>
 				</liferay-ui:search-container-column-text>
 
 				<liferay-ui:search-container-column-text
