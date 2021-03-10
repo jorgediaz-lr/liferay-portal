@@ -38,8 +38,10 @@ import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.search.engine.SearchEngineInformation;
 import com.liferay.portal.search.query.Queries;
 import com.liferay.portal.search.searcher.SearchRequestBuilder;
 import com.liferay.portal.search.searcher.SearchRequestBuilderFactory;
@@ -78,11 +80,15 @@ public class SynonymSearchTest {
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
+		if (isSearchEngine("Elasticsearch", "7")) {
+			_elasticsearchVersion = "elasticsearch7";
+		}
+
 		try (ConfigurationTemporarySwapper
-				elasticSearchConfigurationTemporarySwapper =
+				elasticsearchConfigurationTemporarySwapper =
 					new ConfigurationTemporarySwapper(
-						"com.liferay.portal.search.elasticsearch7." +
-							"configuration.ElasticsearchConfiguration",
+						"com.liferay.portal.search." + _elasticsearchVersion +
+							".configuration.ElasticsearchConfiguration",
 						new HashMapDictionary<String, Object>() {
 							{
 								put(
@@ -92,22 +98,21 @@ public class SynonymSearchTest {
 									"overrideTypeMappings",
 									loadOverrideTypeMappings());
 							}
-				});
-
+						});
 			ConfigurationTemporarySwapper synonymConfigurationTemporarySwapper =
-			new ConfigurationTemporarySwapper(
-				"com.liferay.portal.search.tuning.synonyms.web.internal." +
-					"configuration.SynonymsConfiguration",
-				new HashMapDictionary<String, Object>() {
-					{
-						put(
-							"filterNames",
-							new String[] {
-								"liferay_filter_synonym_en",
-								"liferay_filter_synonym_es",
-								"custom-synonym-filter-fr"
-							});
-					}
+				new ConfigurationTemporarySwapper(
+					"com.liferay.portal.search.tuning.synonyms.web.internal." +
+						"configuration.SynonymsConfiguration",
+					new HashMapDictionary<String, Object>() {
+						{
+							put(
+								"filterNames",
+								new String[] {
+									"liferay_filter_synonym_en",
+									"liferay_filter_synonym_es",
+									"custom-synonym-filter-fr"
+								});
+						}
 					})) {
 
 			_company = CompanyTestUtil.addCompany();
@@ -214,6 +219,18 @@ public class SynonymSearchTest {
 		}
 	}
 
+	protected static boolean isSearchEngine(String engine, String version) {
+		String vendor = searchEngineInformation.getVendorString();
+
+		String clientVersion = searchEngineInformation.getClientVersionString();
+
+		if (vendor.startsWith(engine) && clientVersion.startsWith(version)) {
+			return true;
+		}
+
+		return false;
+	}
+
 	protected static String loadAdditionalIndexConfigurations() {
 		try {
 			return getResourceAsString(
@@ -230,8 +247,9 @@ public class SynonymSearchTest {
 		try {
 			return getResourceAsString(
 				SynonymSearchTest.class,
-				SynonymSearchTest.class.getSimpleName() +
-					"-overrideTypeMappings.json");
+				StringBundler.concat(
+					SynonymSearchTest.class.getSimpleName(),
+					"-overrideTypeMappings-", _elasticsearchVersion, ".json"));
 		}
 		catch (Exception exception) {
 			throw new RuntimeException(exception);
@@ -267,11 +285,15 @@ public class SynonymSearchTest {
 			expectedCount);
 	}
 
+	@Inject
+	protected static SearchEngineInformation searchEngineInformation;
+
 	private static Company _company;
 
 	@Inject
 	private static CompanyLocalService _companyLocalService;
 
+	private static String _elasticsearchVersion = "elasticsearch6";
 	private static Group _group;
 
 	@Inject(

@@ -523,14 +523,6 @@
 				"store": true,
 				"type": "keyword"
 			},
-			"assetInternalCategoryId": {
-				"store": true,
-				"type": "keyword"
-			},
-			"assetInternalCategoryIds": {
-				"store": true,
-				"type": "keyword"
-			},
 			"assetTagId": {
 				"store": true,
 				"type": "keyword"
@@ -634,10 +626,6 @@
 				"type": "date"
 			},
 			"emailAddress": {
-				"store": true,
-				"type": "keyword"
-			},
-			"emailAddressDomain": {
 				"store": true,
 				"type": "keyword"
 			},
