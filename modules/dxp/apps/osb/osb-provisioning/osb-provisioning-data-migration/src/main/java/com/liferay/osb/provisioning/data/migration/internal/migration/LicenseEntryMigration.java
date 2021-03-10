@@ -50,7 +50,7 @@ public class LicenseEntryMigration {
 		sb.append("min.name, max.name from OSB_LicenseEntry left join ");
 		sb.append("CUSTOMER_ListType min on OSB_LicenseEntry.versionMin = ");
 		sb.append("min.listTypeId left join CUSTOMER_ListType max on ");
-		sb.append("OSB_LicenseEntry.versionMax = max.listTypeId;");
+		sb.append("OSB_LicenseEntry.versionMax = max.listTypeId");
 
 		try (Connection connection = DataAccess.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(
