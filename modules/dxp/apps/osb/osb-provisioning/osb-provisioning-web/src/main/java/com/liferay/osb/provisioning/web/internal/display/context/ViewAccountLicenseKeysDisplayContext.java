@@ -69,22 +69,6 @@ public class ViewAccountLicenseKeysDisplayContext
 				new String[0], null, null, null, null, null, null, null, now,
 				null, params, true);
 		}
-		else if (tabs2.equals("expired")) {
-			licenseKeys = licenseKeyLocalService.search(
-				null, null, null, null, null, null, account.getKey(), null,
-				null, null, null, new long[0], new String[0], null, null,
-				new String[0], null, null, null, null, null, null, null, null,
-				now, new LinkedHashMap<>(), true, searchContainer.getStart(),
-				searchContainer.getEnd(),
-				LicenseUtil.getLicenseKeyOrderByComparator(
-					"expiration-date", "desc"));
-
-			count = licenseKeyLocalService.searchCount(
-				null, null, null, null, null, null, account.getKey(), null,
-				null, null, null, new long[0], new String[0], null, null,
-				new String[0], null, null, null, null, null, null, null, null,
-				now, new LinkedHashMap<>(), true);
-		}
 		else if (tabs2.equals("deactivated")) {
 			LinkedHashMap<String, Object> params = new LinkedHashMap<>();
 
@@ -104,6 +88,22 @@ public class ViewAccountLicenseKeysDisplayContext
 				null, null, null, new long[0], new String[0], null, null,
 				new String[0], null, null, null, null, null, null, null, null,
 				null, params, true);
+		}
+		else if (tabs2.equals("expired")) {
+			licenseKeys = licenseKeyLocalService.search(
+				null, null, null, null, null, null, account.getKey(), null,
+				null, null, null, new long[0], new String[0], null, null,
+				new String[0], null, null, null, null, null, null, null, null,
+				now, new LinkedHashMap<>(), true, searchContainer.getStart(),
+				searchContainer.getEnd(),
+				LicenseUtil.getLicenseKeyOrderByComparator(
+					"expiration-date", "desc"));
+
+			count = licenseKeyLocalService.searchCount(
+				null, null, null, null, null, null, account.getKey(), null,
+				null, null, null, new long[0], new String[0], null, null,
+				new String[0], null, null, null, null, null, null, null, null,
+				now, new LinkedHashMap<>(), true);
 		}
 		else {
 			licenseKeys = licenseKeyLocalService.search(
