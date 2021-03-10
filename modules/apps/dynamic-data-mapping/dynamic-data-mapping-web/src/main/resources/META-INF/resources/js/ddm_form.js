@@ -1263,7 +1263,7 @@ AUI.add(
 
 						if (
 							locale === defaultLocale ||
-							(localizationMap[defaultLocale] &&
+							(localizationMap[defaultLocale] !== undefined &&
 								value !== localizationMap[defaultLocale]) ||
 							localizationMap[locale]
 						) {
