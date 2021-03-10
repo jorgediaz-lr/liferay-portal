@@ -101,7 +101,7 @@ fragmentsEditorData.put("fragments-editor-item-type", "fragments-editor-mapped-i
 			</liferay-util:buffer>
 
 			<c:if test="<%= Validator.isNotNull(assetActions) %>">
-				<div class="d-inline-flex">
+				<div class="d-inline-flex pt-2">
 					<%= assetActions %>
 				</div>
 			</c:if>
