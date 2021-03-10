@@ -16,6 +16,7 @@ package com.liferay.osb.provisioning.data.migration.internal.portlet.action;
 
 import com.liferay.osb.provisioning.data.migration.internal.constants.DataMigrationPortletKeys;
 import com.liferay.osb.provisioning.data.migration.internal.migration.LicenseEntryMigration;
+import com.liferay.osb.provisioning.data.migration.internal.migration.ProductLicensesMigration;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
@@ -58,6 +59,8 @@ public class MigrateDataMVCActionCommand extends BaseMVCActionCommand {
 
 			_licenseEntryMigration.migrate(themeDisplay.getUserId());
 
+			_productLicensesMigration.migrate(themeDisplay.getUserId());
+
 			if (_log.isInfoEnabled()) {
 				_log.info("Migration took " + stopWatch.getTime() + " ms");
 			}
@@ -76,5 +79,8 @@ public class MigrateDataMVCActionCommand extends BaseMVCActionCommand {
 
 	@Reference
 	private LicenseEntryMigration _licenseEntryMigration;
+
+	@Reference
+	private ProductLicensesMigration _productLicensesMigration;
 
 }
