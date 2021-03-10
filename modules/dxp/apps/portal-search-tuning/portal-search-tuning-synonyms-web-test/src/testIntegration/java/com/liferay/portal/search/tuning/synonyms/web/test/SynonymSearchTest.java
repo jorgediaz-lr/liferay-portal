@@ -245,14 +245,15 @@ public class SynonymSearchTest {
 
 		SearchRequestBuilder searchRequestBuilder =
 			_searchRequestBuilderFactory.builder(
-			).companyId(
-				_company.getCompanyId()
 			).entryClassNames(
 				JournalArticle.class.getName()
-			).groupIds(
-				_group.getGroupId()
 			).queryString(
 				keyword
+			).withSearchContext(
+				searchContext -> {
+					searchContext.setCompanyId(_company.getCompanyId());
+					searchContext.setGroupIds(new long[] {_group.getGroupId()});
+				}
 			);
 
 		SearchResponse searchResponse = _searcher.search(
@@ -274,7 +275,7 @@ public class SynonymSearchTest {
 	private static Group _group;
 
 	@Inject(
-		filter = "mvc.command.name=/synonyms/edit_synonym_sets",
+		filter = "mvc.command.name=editSynonymSet",
 		type = MVCActionCommand.class
 	)
 	private static MVCActionCommand _mvcActionCommand;
