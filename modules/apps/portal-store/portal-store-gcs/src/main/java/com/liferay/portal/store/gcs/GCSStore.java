@@ -348,7 +348,7 @@ public class GCSStore extends BaseStore {
 
 			_gcsStore = null;
 
-			_initCryptOptions();
+			_initEncryption();
 
 			_initGCSStore();
 		}
@@ -493,30 +493,25 @@ public class GCSStore extends BaseStore {
 		return _gcsStore.writer(blobInfo, _blobEncryptWriteOption);
 	}
 
-	private void _initCryptOptions() {
-		String key = PropsUtil.get(_DL_STORE_GCS_AES_256_KEY);
+	private void _initEncryption() {
+		String key = PropsUtil.get("dl.store.gcs.aes256.key");
 
 		if (Validator.isNull(key)) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
-					"Property \"dl.store.gcs.aes256.key\" should be set to " +
-						"encrypt stored files. Using default storage. The " +
-							"key must be AES 256bit key, encoded in Base64.");
+					"Files are not encrypted because the portal property " +
+						"\"dl.store.gcs.aes256.key\" is not set");
 			}
 
 			_blobDecryptSourceOption = null;
-
 			_blobEncryptWriteOption = null;
 		}
 		else {
 			_storageDecryptionSourceOption =
 				Storage.BlobSourceOption.decryptionKey(key);
-
 			_blobDecryptSourceOption = Blob.BlobSourceOption.decryptionKey(key);
-
 			_blobEncryptWriteOption = Storage.BlobWriteOption.encryptionKey(
 				key);
-
 			_blobEncryptTargetOption = Storage.BlobTargetOption.encryptionKey(
 				key);
 		}
@@ -591,9 +586,6 @@ public class GCSStore extends BaseStore {
 
 		_deleteBlob(oldBlob);
 	}
-
-	private static final String _DL_STORE_GCS_AES_256_KEY =
-		"dl.store.gcs.aes256.key";
 
 	private static final Log _log = LogFactoryUtil.getLog(GCSStore.class);
 
