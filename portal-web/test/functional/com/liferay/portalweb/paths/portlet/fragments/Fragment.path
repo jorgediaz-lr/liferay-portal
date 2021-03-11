@@ -14,8 +14,18 @@
 	<td></td>
 </tr>
 <tr>
+	<td>FRAGMENT_BASIC_COMPONENT</td>
+	<td>//div[contains(@class,'layout-content')]//*[contains(@class,'component-${key_fragmentName}')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>FRAGMENT_IMAGE</td>
 	<td>//div[contains(@class,'layout-content')]//section[${key_position}]//*[contains(@class,'fragment-${key_fragmentClass}')]//img[contains(@src,'${key_image}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>FRAGMENT_LINK</td>
+	<td>//a[contains(@href,'${key_URL}')]${key_append}</td>
 	<td></td>
 </tr>
 <tr>
