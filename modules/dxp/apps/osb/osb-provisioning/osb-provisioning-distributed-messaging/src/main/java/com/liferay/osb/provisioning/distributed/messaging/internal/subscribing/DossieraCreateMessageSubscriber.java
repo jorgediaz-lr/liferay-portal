@@ -636,6 +636,13 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			return;
 		}
 
+		List<ProductPurchase> productPurchases = parseProductPurchases(
+			jsonObject);
+
+		if (productPurchases.isEmpty()) {
+			return;
+		}
+
 		List<Contact> activeContacts = new ArrayList<>();
 		List<Contact> inactiveContacts = new ArrayList<>();
 		List<Contact> missingContacts = new ArrayList<>();
@@ -663,9 +670,6 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 				}
 			}
 		}
-
-		List<ProductPurchase> productPurchases = parseProductPurchases(
-			jsonObject);
 
 		boolean analyticsCloud = hasAnalyticsCloud(productPurchases);
 
@@ -1587,6 +1591,13 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 				JSONObject purchasedProductJSONObject =
 					purchasedProductsJSONArray.getJSONObject(j);
 
+				Product product = _getProduct(
+					purchasedProductJSONObject.getString("_name"));
+
+				if (product == null) {
+					continue;
+				}
+
 				ProductPurchase productPurchase = new ProductPurchase();
 
 				Date startDate = _portal.getDate(
@@ -1615,9 +1626,6 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 				else {
 					productPurchase.setPerpetual(true);
 				}
-
-				Product product = _getProduct(
-					purchasedProductJSONObject.getString("_name"));
 
 				productPurchase.setProduct(product);
 
@@ -1976,19 +1984,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			return products.get(0);
 		}
 
-		Product product = new Product();
-
-		product.setName(productName);
-
-		ExternalLink externalLink = new ExternalLink();
-
-		externalLink.setDomain(ExternalLinkDomain.DOSSIERA);
-		externalLink.setEntityName(ExternalLinkEntityName.DOSSIERA_PRODUCT);
-		externalLink.setEntityId(productName);
-
-		product.setExternalLinks(new ExternalLink[] {externalLink});
-
-		return product;
+		return null;
 	}
 
 	private String _getSalesforceOpportunityKey(Message message) {
