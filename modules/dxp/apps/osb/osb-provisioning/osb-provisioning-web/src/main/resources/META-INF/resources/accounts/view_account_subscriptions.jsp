@@ -144,6 +144,7 @@ SearchContainer productPurchasesSearchContainer = viewAccountDisplayContext.getP
 
 			<liferay-ui:search-iterator
 				markupView="lexicon"
+				resultRowSplitter="<%= new ProductPurchaseViewResultRowSplitter() %>"
 			/>
 		</liferay-ui:search-container>
 	</aui:form>

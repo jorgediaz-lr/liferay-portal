@@ -54,6 +54,7 @@ page import="com.liferay.osb.provisioning.exception.RequiredProductException" %>
 page import="com.liferay.osb.provisioning.model.ProductBundle" %><%@
 page import="com.liferay.osb.provisioning.service.ProductBundleLocalServiceUtil" %><%@
 page import="com.liferay.osb.provisioning.web.internal.configuration.ProvisioningWebConfiguration" %><%@
+page import="com.liferay.osb.provisioning.web.internal.dao.search.ProductPurchaseViewResultRowSplitter" %><%@
 page import="com.liferay.osb.provisioning.web.internal.dao.search.ProductResultRowSplitter" %><%@
 page import="com.liferay.osb.provisioning.web.internal.display.context.AccountDisplay" %><%@
 page import="com.liferay.osb.provisioning.web.internal.display.context.AccountSearchDisplayContext" %><%@
