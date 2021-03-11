@@ -97,7 +97,7 @@ com.liferay.portal.kernel.dao.search.SearchContainer<com.liferay.portal.kernel.s
 						<c:when test="<%= searchResultSummaryDisplayContext.isThumbnailVisible() %>">
 							<span class="sticker">
 								<span class="sticker-overlay">
-									<img alt="<%= LanguageUtil.get(locale, "thumbnail") %>" class="sticker-img" src="<%= searchResultSummaryDisplayContext.getThumbnailURLString() %>" />
+									<img alt="<liferay-ui:message key="thumbnail" />" class="sticker-img" src="<%= searchResultSummaryDisplayContext.getThumbnailURLString() %>" />
 								</span>
 							</span>
 						</c:when>
