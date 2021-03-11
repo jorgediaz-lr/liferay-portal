@@ -346,8 +346,6 @@ public class GCSStore extends BaseStore {
 			_gcsStoreConfiguration = ConfigurableUtil.createConfigurable(
 				GCSStoreConfiguration.class, properties);
 
-			_gcsStore = null;
-
 			_initEncryption();
 
 			_initGCSStore();
@@ -515,10 +513,6 @@ public class GCSStore extends BaseStore {
 	}
 
 	private void _initGCSStore() throws PortalException {
-		if (_gcsStore != null) {
-			return;
-		}
-
 		try (InputStream inputStream = new FileInputStream(
 				_gcsStoreConfiguration.authFileLocation())) {
 
