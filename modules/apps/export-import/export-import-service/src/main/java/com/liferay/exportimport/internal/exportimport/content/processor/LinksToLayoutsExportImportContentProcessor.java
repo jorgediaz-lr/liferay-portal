@@ -85,6 +85,24 @@ public class LinksToLayoutsExportImportContentProcessor
 		}
 	}
 
+	protected Layout fetchImportedLayout(
+		PortletDataContext portletDataContext, long layoutId) {
+
+		Map<Long, Layout> layouts =
+			(Map<Long, Layout>)portletDataContext.getNewPrimaryKeysMap(
+				Layout.class + ".layout");
+
+		Layout layout = layouts.get(layoutId);
+
+		if (layout == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn("Unable to find layout with ID " + layoutId);
+			}
+		}
+
+		return layout;
+	}
+
 	protected boolean isValidateLinksToLayoutsReferences() {
 		try {
 			ExportImportServiceConfiguration configuration =
@@ -242,6 +260,10 @@ public class LinksToLayoutsExportImportContentProcessor
 			long newLayoutId = oldLayoutId;
 
 			Layout layout = _layoutLocalService.fetchLayout(newPlid);
+
+			if (layout == null) {
+				layout = fetchImportedLayout(portletDataContext, oldLayoutId);
+			}
 
 			if (layout != null) {
 				newGroupId = layout.getGroupId();
