@@ -530,7 +530,7 @@ public class GCSStore extends BaseStore {
 		}
 		catch (IOException ioException) {
 			throw new PortalException(
-				"Unable to authenticate with authentication file", ioException);
+				"Unable to authenticate with GCS", ioException);
 		}
 
 		RetrySettings retrySettings = RetrySettings.newBuilder(
