@@ -10,48 +10,43 @@
  */
 
 /**
- * This helper takes a date object and converts it to a UTC date with the day
- * starts at midnight.
- * @param {Object} Date A date object.
- * @returns {Object} A new Date object representing UTC
- */
-export function convertDateToUTCDate(date) {
-	const year = date.getUTCFullYear();
-	const month = date.getUTCMonth();
-	const day = date.getUTCDate();
-
-	return new Date(year, month, day);
-}
-
-/**
- * This helper takes a date object and converts it to the start of the day with
- * the hour set at midnight. Note, this is to get around Clay Date Picker
- * setting date at noon.
- * @param {Object} Date A date object.
- * @returns {Object} A new Date object starting at midnight
- */
-export function convertDateToStartOfDate(date) {
-	const year = date.getFullYear();
-	const month = date.getMonth();
-	const day = date.getDate();
-
-	return new Date(year, month, day);
-}
-
-/**
- * This helper takes the incoming value, date or string and converts them to a
- * new Date object representing UTC with the hour set at midnight.
+ * Takes the possible incoming value, date or string, and converts
+ * it to a Date object. Except in the case of an empty string, in which case it
+ * passes through.
  * @param {Object|string} value Date value from user input, could be a date
- * object from selecting a date picker or a string value from manual input.
+ * object from the dropdown date picker or string from input field.
  * @returns {Object|string} Date object or empty string.
  */
 export function convertInputToDate(value) {
-	if (typeof value === 'string') {
-		return value === '' ? '' : convertDateToUTCDate(new Date(value));
+	return value === '' ? '' : new Date(value);
+}
+
+/**
+ * Takes a valid Date object and formats it to the YYYY-MM-DD pattern. Does
+ * nothingn when an invalid Date or non Date types are provided.
+ * @param {Object|string} date Valid or invalid Date object or string
+ * @returns {string|Object} Date string following the YYYY-MM-DD format or the
+ * original input.
+ */
+export function formatDate(date) {
+	if (date instanceof Date && !isNaN(date)) {
+		const day = new Intl.DateTimeFormat('en-US', {
+			day: '2-digit',
+			timeZone: 'UTC'
+		}).format(date);
+		const month = new Intl.DateTimeFormat('en-US', {
+			month: '2-digit',
+			timeZone: 'UTC'
+		}).format(date);
+		const year = new Intl.DateTimeFormat('en-US', {
+			timeZone: 'UTC',
+			year: 'numeric'
+		}).format(date);
+
+		return `${year}-${month}-${day}`;
 	}
-	else {
-		return convertDateToStartOfDate(value);
-	}
+
+	return date;
 }
 
 /**

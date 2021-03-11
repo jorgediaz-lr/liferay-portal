@@ -13,7 +13,7 @@ import ClayDatePicker from '@clayui/date-picker';
 import PropTypes from 'prop-types';
 import React, {useCallback, useEffect, useState} from 'react';
 
-import {convertInputToDate} from '../utilities/date';
+import {convertInputToDate, formatDate} from '../utilities/date';
 
 const YEAR_OFFSET = 30;
 
@@ -30,12 +30,12 @@ function DatePicker({
 		defaultValue
 	]);
 
-	const [value, setValue] = useState(initialValue);
+	const [value, setValue] = useState(formatDate(initialValue));
 
 	const currentYear = new Date().getFullYear();
 
 	useEffect(() => {
-		setValue(initialValue);
+		setValue(formatDate(initialValue));
 	}, [initialValue]);
 
 	function handleOnValueChange(value) {

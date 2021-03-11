@@ -13,12 +13,11 @@ import {Map, Record} from 'immutable';
 import React, {useContext, useState} from 'react';
 
 import {PRODUCT_PURCHASE_STATUS_APPROVED} from '../utilities/constants';
-import {convertDateToUTCDate, convertInputToDate} from '../utilities/date';
 
 function generateEndDate() {
 	const newEndYear = new Date().getUTCFullYear() + 1;
 
-	return convertDateToUTCDate(new Date(new Date().setFullYear(newEndYear)));
+	return new Date(new Date().setFullYear(newEndYear));
 }
 
 export class Subscription extends Record({
@@ -33,7 +32,7 @@ export class Subscription extends Record({
 	quantity: 1,
 	salesforceOpportunityKey: '',
 	sizing: 1,
-	startDate: convertDateToUTCDate(new Date()),
+	startDate: new Date(),
 	status: PRODUCT_PURCHASE_STATUS_APPROVED
 }) {
 	validateAllDates() {
@@ -126,15 +125,11 @@ export function SubscriptionsProvider({initialSubscriptions = [], children}) {
 			new Subscription({
 				...subscription,
 				endDate: subscription.endDate
-					? convertDateToUTCDate(new Date(subscription.endDate))
+					? new Date(subscription.endDate)
 					: null,
 				index,
-				originalEndDate: convertDateToUTCDate(
-					new Date(subscription.originalEndDate)
-				),
-				startDate: convertDateToUTCDate(
-					new Date(subscription.startDate)
-				)
+				originalEndDate: new Date(subscription.originalEndDate),
+				startDate: new Date(subscription.startDate)
 			})
 		];
 	});
@@ -168,17 +163,14 @@ export function SubscriptionsProvider({initialSubscriptions = [], children}) {
 					},
 					updateEndDate(key, endDate) {
 						setSubscriptions(
-							subscriptions.setIn(
-								[key, 'endDate'],
-								convertInputToDate(endDate)
-							)
+							subscriptions.setIn([key, 'endDate'], endDate)
 						);
 					},
 					updateOriginalEndDate(key, originalEndDate) {
 						setSubscriptions(
 							subscriptions.setIn(
 								[key, 'originalEndDate'],
-								convertInputToDate(originalEndDate)
+								originalEndDate
 							)
 						);
 					},
@@ -210,10 +202,7 @@ export function SubscriptionsProvider({initialSubscriptions = [], children}) {
 					},
 					updateStartDate(key, startDate) {
 						setSubscriptions(
-							subscriptions.setIn(
-								[key, 'startDate'],
-								convertInputToDate(startDate)
-							)
+							subscriptions.setIn([key, 'startDate'], startDate)
 						);
 					},
 					updateStatus(key, status) {
