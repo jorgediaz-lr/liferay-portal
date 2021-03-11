@@ -29,9 +29,6 @@ import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.subscription.model.Subscription;
 import com.liferay.subscription.service.SubscriptionLocalService;
 
-import java.io.IOException;
-
-import java.sql.SQLException;
 import java.sql.Connection;
 
 /**
@@ -140,7 +137,7 @@ public class UpgradeDiscussionSubscriptionClassName extends UpgradeProcess {
 		actionableDynamicQuery.performActions();
 	}
 
-	private void _deleteSubscriptions() throws PortalException {
+	private void _deleteSubscriptions() throws Exception {
 		ActionableDynamicQuery actionableDynamicQuery =
 			_subscriptionLocalService.getActionableDynamicQuery();
 
@@ -158,9 +155,7 @@ public class UpgradeDiscussionSubscriptionClassName extends UpgradeProcess {
 		actionableDynamicQuery.performActions();
 	}
 
-	private void _updateSubscriptions()
-		throws IOException, PortalException, SQLException {
-
+	private void _updateSubscriptions() throws Exception {
 		String newSubscriptionClassName =
 			MBDiscussion.class.getName() + StringPool.UNDERLINE +
 				_oldSubscriptionClassName;
