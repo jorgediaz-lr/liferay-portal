@@ -189,6 +189,8 @@ public class GCSStore extends BaseStore {
 	public String[] getFileNames(
 		long companyId, long repositoryId, String dirName) {
 
+		Bucket bucket = _gcsStore.get(_gcsStoreConfiguration.bucketName());
+
 		String path = null;
 
 		if (Validator.isNull(dirName) ||
@@ -199,8 +201,6 @@ public class GCSStore extends BaseStore {
 		else {
 			path = _getDirectoryKey(companyId, repositoryId, dirName);
 		}
-
-		Bucket bucket = _gcsStore.get(_gcsStoreConfiguration.bucketName());
 
 		Page<Blob> blobPage = bucket.list(Storage.BlobListOption.prefix(path));
 
