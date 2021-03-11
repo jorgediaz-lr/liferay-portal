@@ -518,47 +518,48 @@ public class GCSStore extends BaseStore {
 	}
 
 	private void _initGCSStore() throws PortalException {
-		if (_gcsStore == null) {
-			try (InputStream inputStream = new FileInputStream(
-					_gcsStoreConfiguration.authFileLocation())) {
-
-				_googleCredentials = ServiceAccountCredentials.fromStream(
-					inputStream);
-			}
-			catch (IOException ioException) {
-				throw new PortalException(
-					"Unable to authenticate with authentication file",
-					ioException);
-			}
-
-			RetrySettings retrySettings = RetrySettings.newBuilder(
-			).setInitialRetryDelay(
-				Duration.ofMillis(_gcsStoreConfiguration.initialRetryDelay())
-			).setInitialRpcTimeout(
-				Duration.ofMillis(_gcsStoreConfiguration.initialRPCTimeout())
-			).setJittered(
-				_gcsStoreConfiguration.retryJitter()
-			).setMaxAttempts(
-				_gcsStoreConfiguration.maxRetryAttempts()
-			).setMaxRetryDelay(
-				Duration.ofMillis(_gcsStoreConfiguration.maxRetryDelay())
-			).setMaxRpcTimeout(
-				Duration.ofMillis(_gcsStoreConfiguration.maxRPCTimeout())
-			).setRetryDelayMultiplier(
-				_gcsStoreConfiguration.retryDelayMultiplier()
-			).setRpcTimeoutMultiplier(
-				_gcsStoreConfiguration.rpcTimeoutMultiplier()
-			).build();
-
-			StorageOptions storageOptions = StorageOptions.newBuilder(
-			).setCredentials(
-				_googleCredentials
-			).setRetrySettings(
-				retrySettings
-			).build();
-
-			_gcsStore = storageOptions.getService();
+		if (_gcsStore != null) {
+			return;
 		}
+
+		try (InputStream inputStream = new FileInputStream(
+				_gcsStoreConfiguration.authFileLocation())) {
+
+			_googleCredentials = ServiceAccountCredentials.fromStream(
+				inputStream);
+		}
+		catch (IOException ioException) {
+			throw new PortalException(
+				"Unable to authenticate with authentication file", ioException);
+		}
+
+		RetrySettings retrySettings = RetrySettings.newBuilder(
+		).setInitialRetryDelay(
+			Duration.ofMillis(_gcsStoreConfiguration.initialRetryDelay())
+		).setInitialRpcTimeout(
+			Duration.ofMillis(_gcsStoreConfiguration.initialRPCTimeout())
+		).setJittered(
+			_gcsStoreConfiguration.retryJitter()
+		).setMaxAttempts(
+			_gcsStoreConfiguration.maxRetryAttempts()
+		).setMaxRetryDelay(
+			Duration.ofMillis(_gcsStoreConfiguration.maxRetryDelay())
+		).setMaxRpcTimeout(
+			Duration.ofMillis(_gcsStoreConfiguration.maxRPCTimeout())
+		).setRetryDelayMultiplier(
+			_gcsStoreConfiguration.retryDelayMultiplier()
+		).setRpcTimeoutMultiplier(
+			_gcsStoreConfiguration.rpcTimeoutMultiplier()
+		).build();
+
+		StorageOptions storageOptions = StorageOptions.newBuilder(
+		).setCredentials(
+			_googleCredentials
+		).setRetrySettings(
+			retrySettings
+		).build();
+
+		_gcsStore = storageOptions.getService();
 	}
 
 	private void _move(Blob oldBlob, String newPath) {
