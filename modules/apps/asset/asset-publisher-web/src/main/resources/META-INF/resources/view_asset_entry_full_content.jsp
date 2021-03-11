@@ -85,7 +85,7 @@ fragmentsEditorData.put("fragments-editor-item-type", "fragments-editor-mapped-i
 		<c:if test="<%= !print %>">
 
 			<%
-			String fullContentRedirect = currentURL;
+			String fullContentRedirect = themeDisplay.getURLCurrent();
 
 			if (WorkflowDefinitionLinkLocalServiceUtil.hasWorkflowDefinitionLink(assetEntry.getCompanyId(), assetEntry.getGroupId(), assetEntry.getClassName())) {
 				fullContentRedirect = redirect;
