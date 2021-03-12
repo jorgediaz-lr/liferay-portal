@@ -346,7 +346,8 @@ public class LicenseKeyLocalServiceUtil {
 	}
 
 	public static List<LicenseKey> getLicenseKeys(
-		long userId, String accountKey) {
+			long userId, String accountKey)
+		throws PortalException {
 
 		return getService().getLicenseKeys(userId, accountKey);
 	}
@@ -393,7 +394,8 @@ public class LicenseKeyLocalServiceUtil {
 	}
 
 	public static List<LicenseKey> getLicenseKeysByUserIdProductId(
-		long userId, String productId) {
+			long userId, String productId)
+		throws PortalException {
 
 		return getService().getLicenseKeysByUserIdProductId(userId, productId);
 	}
@@ -496,7 +498,9 @@ public class LicenseKeyLocalServiceUtil {
 			productPurchaseKey, clusterId, active);
 	}
 
-	public static int getUserLicenseKeysCount(long userId, String accountKey) {
+	public static int getUserLicenseKeysCount(long userId, String accountKey)
+		throws PortalException {
+
 		return getService().getUserLicenseKeysCount(userId, accountKey);
 	}
 
@@ -519,8 +523,8 @@ public class LicenseKeyLocalServiceUtil {
 	}
 
 	public static List<LicenseKey> search(
-		Long createUserId, java.util.Date createDateGT,
-		java.util.Date createDateLT, Long modifiedUserId,
+		String createUserUuid, java.util.Date createDateGT,
+		java.util.Date createDateLT, String modifiedUserUuid,
 		java.util.Date modifiedDateGT, java.util.Date modifiedDateLT,
 		String accountKey, String productPurchaseKey, String accountName,
 		java.util.Date startDateGT, java.util.Date startDateLT,
@@ -533,7 +537,7 @@ public class LicenseKeyLocalServiceUtil {
 		int start, int end, OrderByComparator obc) {
 
 		return getService().search(
-			createUserId, createDateGT, createDateLT, modifiedUserId,
+			createUserUuid, createDateGT, createDateLT, modifiedUserUuid,
 			modifiedDateGT, modifiedDateLT, accountKey, productPurchaseKey,
 			accountName, startDateGT, startDateLT, licenseEntryIds, productKeys,
 			productName, productId, productVersions, owner, description,
@@ -549,8 +553,8 @@ public class LicenseKeyLocalServiceUtil {
 	}
 
 	public static int searchCount(
-		Long createUserId, java.util.Date createDateGT,
-		java.util.Date createDateLT, Long modifiedUserId,
+		String createUserUuid, java.util.Date createDateGT,
+		java.util.Date createDateLT, String modifiedUserUuid,
 		java.util.Date modifiedDateGT, java.util.Date modifiedDateLT,
 		String accountKey, String productPurchaseKey, String accountName,
 		java.util.Date startDateGT, java.util.Date startDateLT,
@@ -562,7 +566,7 @@ public class LicenseKeyLocalServiceUtil {
 		java.util.LinkedHashMap<String, Object> params, boolean andSearch) {
 
 		return getService().searchCount(
-			createUserId, createDateGT, createDateLT, modifiedUserId,
+			createUserUuid, createDateGT, createDateLT, modifiedUserUuid,
 			modifiedDateGT, modifiedDateLT, accountKey, productPurchaseKey,
 			accountName, startDateGT, startDateLT, licenseEntryIds, productKeys,
 			productName, productId, productVersions, owner, description,

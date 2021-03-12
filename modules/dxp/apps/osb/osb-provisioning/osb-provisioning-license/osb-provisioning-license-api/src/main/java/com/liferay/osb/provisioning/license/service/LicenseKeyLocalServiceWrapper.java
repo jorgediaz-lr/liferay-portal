@@ -391,7 +391,8 @@ public class LicenseKeyLocalServiceWrapper
 
 	@Override
 	public java.util.List<com.liferay.osb.provisioning.license.model.LicenseKey>
-		getLicenseKeys(long userId, String accountKey) {
+			getLicenseKeys(long userId, String accountKey)
+		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _licenseKeyLocalService.getLicenseKeys(userId, accountKey);
 	}
@@ -452,7 +453,8 @@ public class LicenseKeyLocalServiceWrapper
 
 	@Override
 	public java.util.List<com.liferay.osb.provisioning.license.model.LicenseKey>
-		getLicenseKeysByUserIdProductId(long userId, String productId) {
+			getLicenseKeysByUserIdProductId(long userId, String productId)
+		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _licenseKeyLocalService.getLicenseKeysByUserIdProductId(
 			userId, productId);
@@ -575,7 +577,9 @@ public class LicenseKeyLocalServiceWrapper
 	}
 
 	@Override
-	public int getUserLicenseKeysCount(long userId, String accountKey) {
+	public int getUserLicenseKeysCount(long userId, String accountKey)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
 		return _licenseKeyLocalService.getUserLicenseKeysCount(
 			userId, accountKey);
 	}
@@ -605,8 +609,8 @@ public class LicenseKeyLocalServiceWrapper
 	@Override
 	public java.util.List<com.liferay.osb.provisioning.license.model.LicenseKey>
 		search(
-			Long createUserId, java.util.Date createDateGT,
-			java.util.Date createDateLT, Long modifiedUserId,
+			String createUserUuid, java.util.Date createDateGT,
+			java.util.Date createDateLT, String modifiedUserUuid,
 			java.util.Date modifiedDateGT, java.util.Date modifiedDateLT,
 			String accountKey, String productPurchaseKey, String accountName,
 			java.util.Date startDateGT, java.util.Date startDateLT,
@@ -620,7 +624,7 @@ public class LicenseKeyLocalServiceWrapper
 			com.liferay.portal.kernel.util.OrderByComparator obc) {
 
 		return _licenseKeyLocalService.search(
-			createUserId, createDateGT, createDateLT, modifiedUserId,
+			createUserUuid, createDateGT, createDateLT, modifiedUserUuid,
 			modifiedDateGT, modifiedDateLT, accountKey, productPurchaseKey,
 			accountName, startDateGT, startDateLT, licenseEntryIds, productKeys,
 			productName, productId, productVersions, owner, description,
@@ -641,8 +645,8 @@ public class LicenseKeyLocalServiceWrapper
 
 	@Override
 	public int searchCount(
-		Long createUserId, java.util.Date createDateGT,
-		java.util.Date createDateLT, Long modifiedUserId,
+		String createUserUuid, java.util.Date createDateGT,
+		java.util.Date createDateLT, String modifiedUserUuid,
 		java.util.Date modifiedDateGT, java.util.Date modifiedDateLT,
 		String accountKey, String productPurchaseKey, String accountName,
 		java.util.Date startDateGT, java.util.Date startDateLT,
@@ -654,7 +658,7 @@ public class LicenseKeyLocalServiceWrapper
 		java.util.LinkedHashMap<String, Object> params, boolean andSearch) {
 
 		return _licenseKeyLocalService.searchCount(
-			createUserId, createDateGT, createDateLT, modifiedUserId,
+			createUserUuid, createDateGT, createDateLT, modifiedUserUuid,
 			modifiedDateGT, modifiedDateLT, accountKey, productPurchaseKey,
 			accountName, startDateGT, startDateLT, licenseEntryIds, productKeys,
 			productName, productId, productVersions, owner, description,

@@ -210,8 +210,8 @@ public class LicenseKeyServiceUtil {
 	}
 
 	public static List<LicenseKey> search(
-			Long createUserId, java.util.Date createDateGT,
-			java.util.Date createDateLT, Long modifiedUserId,
+			String createUserUuid, java.util.Date createDateGT,
+			java.util.Date createDateLT, String modifiedUserUuid,
 			java.util.Date modifiedDateGT, java.util.Date modifiedDateLT,
 			String accountKey, String productPurchaseKey, String accountName,
 			java.util.Date startDateGT, java.util.Date startDateLT,
@@ -225,7 +225,7 @@ public class LicenseKeyServiceUtil {
 		throws Exception {
 
 		return getService().search(
-			createUserId, createDateGT, createDateLT, modifiedUserId,
+			createUserUuid, createDateGT, createDateLT, modifiedUserUuid,
 			modifiedDateGT, modifiedDateLT, accountKey, productPurchaseKey,
 			accountName, startDateGT, startDateLT, licenseEntryIds, productKeys,
 			productName, productId, productVersions, owner, description,
@@ -242,8 +242,8 @@ public class LicenseKeyServiceUtil {
 	}
 
 	public static int searchCount(
-			Long createUserId, java.util.Date createDateGT,
-			java.util.Date createDateLT, Long modifiedUserId,
+			String createUserUuid, java.util.Date createDateGT,
+			java.util.Date createDateLT, String modifiedUserUuid,
 			java.util.Date modifiedDateGT, java.util.Date modifiedDateLT,
 			String accountKey, String productPurchaseKey, String accountName,
 			java.util.Date startDateGT, java.util.Date startDateLT,
@@ -256,7 +256,7 @@ public class LicenseKeyServiceUtil {
 		throws Exception {
 
 		return getService().searchCount(
-			createUserId, createDateGT, createDateLT, modifiedUserId,
+			createUserUuid, createDateGT, createDateLT, modifiedUserUuid,
 			modifiedDateGT, modifiedDateLT, accountKey, productPurchaseKey,
 			accountName, startDateGT, startDateLT, licenseEntryIds, productKeys,
 			productName, productId, productVersions, owner, description,

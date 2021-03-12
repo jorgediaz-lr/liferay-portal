@@ -85,14 +85,14 @@ public class LicenseKeyCacheModel
 		sb.append(uuid);
 		sb.append(", licenseKeyId=");
 		sb.append(licenseKeyId);
-		sb.append(", userId=");
-		sb.append(userId);
+		sb.append(", userUuid=");
+		sb.append(userUuid);
 		sb.append(", userName=");
 		sb.append(userName);
 		sb.append(", createDate=");
 		sb.append(createDate);
-		sb.append(", modifiedUserId=");
-		sb.append(modifiedUserId);
+		sb.append(", modifiedUserUuid=");
+		sb.append(modifiedUserUuid);
 		sb.append(", modifiedUserName=");
 		sb.append(modifiedUserName);
 		sb.append(", modifiedDate=");
@@ -178,7 +178,13 @@ public class LicenseKeyCacheModel
 		}
 
 		licenseKeyImpl.setLicenseKeyId(licenseKeyId);
-		licenseKeyImpl.setUserId(userId);
+
+		if (userUuid == null) {
+			licenseKeyImpl.setUserUuid("");
+		}
+		else {
+			licenseKeyImpl.setUserUuid(userUuid);
+		}
 
 		if (userName == null) {
 			licenseKeyImpl.setUserName("");
@@ -194,7 +200,12 @@ public class LicenseKeyCacheModel
 			licenseKeyImpl.setCreateDate(new Date(createDate));
 		}
 
-		licenseKeyImpl.setModifiedUserId(modifiedUserId);
+		if (modifiedUserUuid == null) {
+			licenseKeyImpl.setModifiedUserUuid("");
+		}
+		else {
+			licenseKeyImpl.setModifiedUserUuid(modifiedUserUuid);
+		}
 
 		if (modifiedUserName == null) {
 			licenseKeyImpl.setModifiedUserName("");
@@ -383,12 +394,10 @@ public class LicenseKeyCacheModel
 		uuid = objectInput.readUTF();
 
 		licenseKeyId = objectInput.readLong();
-
-		userId = objectInput.readLong();
+		userUuid = objectInput.readUTF();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
-
-		modifiedUserId = objectInput.readLong();
+		modifiedUserUuid = objectInput.readUTF();
 		modifiedUserName = objectInput.readUTF();
 		modifiedDate = objectInput.readLong();
 		assetReceiptLicenseUuid = objectInput.readUTF();
@@ -447,7 +456,12 @@ public class LicenseKeyCacheModel
 
 		objectOutput.writeLong(licenseKeyId);
 
-		objectOutput.writeLong(userId);
+		if (userUuid == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(userUuid);
+		}
 
 		if (userName == null) {
 			objectOutput.writeUTF("");
@@ -458,7 +472,12 @@ public class LicenseKeyCacheModel
 
 		objectOutput.writeLong(createDate);
 
-		objectOutput.writeLong(modifiedUserId);
+		if (modifiedUserUuid == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(modifiedUserUuid);
+		}
 
 		if (modifiedUserName == null) {
 			objectOutput.writeUTF("");
@@ -629,10 +648,10 @@ public class LicenseKeyCacheModel
 	public long mvccVersion;
 	public String uuid;
 	public long licenseKeyId;
-	public long userId;
+	public String userUuid;
 	public String userName;
 	public long createDate;
-	public long modifiedUserId;
+	public String modifiedUserUuid;
 	public String modifiedUserName;
 	public long modifiedDate;
 	public String assetReceiptLicenseUuid;

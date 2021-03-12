@@ -21,14 +21,11 @@ import com.liferay.osb.provisioning.license.model.LicenseKeyModel;
 import com.liferay.osb.provisioning.license.model.LicenseKeySoap;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
-import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
@@ -73,10 +70,10 @@ public class LicenseKeyModelImpl
 
 	public static final Object[][] TABLE_COLUMNS = {
 		{"mvccVersion", Types.BIGINT}, {"uuid_", Types.VARCHAR},
-		{"licenseKeyId", Types.BIGINT}, {"userId", Types.BIGINT},
+		{"licenseKeyId", Types.BIGINT}, {"userUuid", Types.VARCHAR},
 		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
-		{"modifiedUserId", Types.BIGINT}, {"modifiedUserName", Types.VARCHAR},
-		{"modifiedDate", Types.TIMESTAMP},
+		{"modifiedUserUuid", Types.VARCHAR},
+		{"modifiedUserName", Types.VARCHAR}, {"modifiedDate", Types.TIMESTAMP},
 		{"assetReceiptLicenseUuid", Types.VARCHAR},
 		{"accountKey", Types.VARCHAR}, {"productPurchaseKey", Types.VARCHAR},
 		{"licenseEntryId", Types.BIGINT}, {"productKey", Types.VARCHAR},
@@ -103,10 +100,10 @@ public class LicenseKeyModelImpl
 		TABLE_COLUMNS_MAP.put("mvccVersion", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("uuid_", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("licenseKeyId", Types.BIGINT);
-		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("userUuid", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
-		TABLE_COLUMNS_MAP.put("modifiedUserId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("modifiedUserUuid", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("modifiedUserName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("assetReceiptLicenseUuid", Types.VARCHAR);
@@ -143,7 +140,7 @@ public class LicenseKeyModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table Provisioning_LicenseKey (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,licenseKeyId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedUserId LONG,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,assetReceiptLicenseUuid VARCHAR(75) null,accountKey VARCHAR(75) null,productPurchaseKey VARCHAR(75) null,licenseEntryId LONG,productKey VARCHAR(75) null,accountCode VARCHAR(75) null,accountName VARCHAR(500) null,licenseEntryName VARCHAR(75) null,licenseEntryType VARCHAR(75) null,licenseVersion INTEGER,productName VARCHAR(75) null,productId VARCHAR(75) null,productVersion VARCHAR(75) null,clusterId LONG,owner VARCHAR(75) null,maxServers INTEGER,maxConcurrentUsers LONG,maxUsers LONG,maxHttpSessions INTEGER,sizing INTEGER,description VARCHAR(255) null,hostName VARCHAR(75) null,ipAddresses STRING null,macAddresses STRING null,serverId STRING null,key_ STRING null,startDate DATE null,expirationDate DATE null,additionalInfo STRING null,complimentary BOOLEAN,active_ BOOLEAN)";
+		"create table Provisioning_LicenseKey (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,licenseKeyId LONG not null primary key,userUuid VARCHAR(75) null,userName VARCHAR(75) null,createDate DATE null,modifiedUserUuid VARCHAR(75) null,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,assetReceiptLicenseUuid VARCHAR(75) null,accountKey VARCHAR(75) null,productPurchaseKey VARCHAR(75) null,licenseEntryId LONG,productKey VARCHAR(75) null,accountCode VARCHAR(75) null,accountName VARCHAR(500) null,licenseEntryName VARCHAR(75) null,licenseEntryType VARCHAR(75) null,licenseVersion INTEGER,productName VARCHAR(75) null,productId VARCHAR(75) null,productVersion VARCHAR(75) null,clusterId LONG,owner VARCHAR(75) null,maxServers INTEGER,maxConcurrentUsers LONG,maxUsers LONG,maxHttpSessions INTEGER,sizing INTEGER,description VARCHAR(255) null,hostName VARCHAR(75) null,ipAddresses STRING null,macAddresses STRING null,serverId STRING null,key_ STRING null,startDate DATE null,expirationDate DATE null,additionalInfo STRING null,complimentary BOOLEAN,active_ BOOLEAN)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table Provisioning_LicenseKey";
@@ -182,7 +179,7 @@ public class LicenseKeyModelImpl
 
 	public static final long SERVERID_COLUMN_BITMASK = 1024L;
 
-	public static final long USERID_COLUMN_BITMASK = 2048L;
+	public static final long USERUUID_COLUMN_BITMASK = 2048L;
 
 	public static final long UUID_COLUMN_BITMASK = 4096L;
 
@@ -212,10 +209,10 @@ public class LicenseKeyModelImpl
 		model.setMvccVersion(soapModel.getMvccVersion());
 		model.setUuid(soapModel.getUuid());
 		model.setLicenseKeyId(soapModel.getLicenseKeyId());
-		model.setUserId(soapModel.getUserId());
+		model.setUserUuid(soapModel.getUserUuid());
 		model.setUserName(soapModel.getUserName());
 		model.setCreateDate(soapModel.getCreateDate());
-		model.setModifiedUserId(soapModel.getModifiedUserId());
+		model.setModifiedUserUuid(soapModel.getModifiedUserUuid());
 		model.setModifiedUserName(soapModel.getModifiedUserName());
 		model.setModifiedDate(soapModel.getModifiedDate());
 		model.setAssetReceiptLicenseUuid(
@@ -412,9 +409,10 @@ public class LicenseKeyModelImpl
 		attributeSetterBiConsumers.put(
 			"licenseKeyId",
 			(BiConsumer<LicenseKey, Long>)LicenseKey::setLicenseKeyId);
-		attributeGetterFunctions.put("userId", LicenseKey::getUserId);
+		attributeGetterFunctions.put("userUuid", LicenseKey::getUserUuid);
 		attributeSetterBiConsumers.put(
-			"userId", (BiConsumer<LicenseKey, Long>)LicenseKey::setUserId);
+			"userUuid",
+			(BiConsumer<LicenseKey, String>)LicenseKey::setUserUuid);
 		attributeGetterFunctions.put("userName", LicenseKey::getUserName);
 		attributeSetterBiConsumers.put(
 			"userName",
@@ -424,10 +422,10 @@ public class LicenseKeyModelImpl
 			"createDate",
 			(BiConsumer<LicenseKey, Date>)LicenseKey::setCreateDate);
 		attributeGetterFunctions.put(
-			"modifiedUserId", LicenseKey::getModifiedUserId);
+			"modifiedUserUuid", LicenseKey::getModifiedUserUuid);
 		attributeSetterBiConsumers.put(
-			"modifiedUserId",
-			(BiConsumer<LicenseKey, Long>)LicenseKey::setModifiedUserId);
+			"modifiedUserUuid",
+			(BiConsumer<LicenseKey, String>)LicenseKey::setModifiedUserUuid);
 		attributeGetterFunctions.put(
 			"modifiedUserName", LicenseKey::getModifiedUserName);
 		attributeSetterBiConsumers.put(
@@ -630,41 +628,28 @@ public class LicenseKeyModelImpl
 
 	@JSON
 	@Override
-	public long getUserId() {
-		return _userId;
-	}
-
-	@Override
-	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
-
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
-		}
-
-		_userId = userId;
-	}
-
-	@Override
 	public String getUserUuid() {
-		try {
-			User user = UserLocalServiceUtil.getUserById(getUserId());
-
-			return user.getUuid();
-		}
-		catch (PortalException portalException) {
+		if (_userUuid == null) {
 			return "";
+		}
+		else {
+			return _userUuid;
 		}
 	}
 
 	@Override
 	public void setUserUuid(String userUuid) {
+		_columnBitmask |= USERUUID_COLUMN_BITMASK;
+
+		if (_originalUserUuid == null) {
+			_originalUserUuid = _userUuid;
+		}
+
+		_userUuid = userUuid;
 	}
 
-	public long getOriginalUserId() {
-		return _originalUserId;
+	public String getOriginalUserUuid() {
+		return GetterUtil.getString(_originalUserUuid);
 	}
 
 	@JSON
@@ -696,29 +681,18 @@ public class LicenseKeyModelImpl
 
 	@JSON
 	@Override
-	public long getModifiedUserId() {
-		return _modifiedUserId;
-	}
-
-	@Override
-	public void setModifiedUserId(long modifiedUserId) {
-		_modifiedUserId = modifiedUserId;
-	}
-
-	@Override
 	public String getModifiedUserUuid() {
-		try {
-			User user = UserLocalServiceUtil.getUserById(getModifiedUserId());
-
-			return user.getUuid();
-		}
-		catch (PortalException portalException) {
+		if (_modifiedUserUuid == null) {
 			return "";
+		}
+		else {
+			return _modifiedUserUuid;
 		}
 	}
 
 	@Override
 	public void setModifiedUserUuid(String modifiedUserUuid) {
+		_modifiedUserUuid = modifiedUserUuid;
 	}
 
 	@JSON
@@ -1357,10 +1331,10 @@ public class LicenseKeyModelImpl
 		licenseKeyImpl.setMvccVersion(getMvccVersion());
 		licenseKeyImpl.setUuid(getUuid());
 		licenseKeyImpl.setLicenseKeyId(getLicenseKeyId());
-		licenseKeyImpl.setUserId(getUserId());
+		licenseKeyImpl.setUserUuid(getUserUuid());
 		licenseKeyImpl.setUserName(getUserName());
 		licenseKeyImpl.setCreateDate(getCreateDate());
-		licenseKeyImpl.setModifiedUserId(getModifiedUserId());
+		licenseKeyImpl.setModifiedUserUuid(getModifiedUserUuid());
 		licenseKeyImpl.setModifiedUserName(getModifiedUserName());
 		licenseKeyImpl.setModifiedDate(getModifiedDate());
 		licenseKeyImpl.setAssetReceiptLicenseUuid(getAssetReceiptLicenseUuid());
@@ -1470,9 +1444,7 @@ public class LicenseKeyModelImpl
 	public void resetOriginalValues() {
 		_originalUuid = _uuid;
 
-		_originalUserId = _userId;
-
-		_setOriginalUserId = false;
+		_originalUserUuid = _userUuid;
 
 		_setModifiedDate = false;
 		_originalAssetReceiptLicenseUuid = _assetReceiptLicenseUuid;
@@ -1522,7 +1494,13 @@ public class LicenseKeyModelImpl
 
 		licenseKeyCacheModel.licenseKeyId = getLicenseKeyId();
 
-		licenseKeyCacheModel.userId = getUserId();
+		licenseKeyCacheModel.userUuid = getUserUuid();
+
+		String userUuid = licenseKeyCacheModel.userUuid;
+
+		if ((userUuid != null) && (userUuid.length() == 0)) {
+			licenseKeyCacheModel.userUuid = null;
+		}
 
 		licenseKeyCacheModel.userName = getUserName();
 
@@ -1541,7 +1519,13 @@ public class LicenseKeyModelImpl
 			licenseKeyCacheModel.createDate = Long.MIN_VALUE;
 		}
 
-		licenseKeyCacheModel.modifiedUserId = getModifiedUserId();
+		licenseKeyCacheModel.modifiedUserUuid = getModifiedUserUuid();
+
+		String modifiedUserUuid = licenseKeyCacheModel.modifiedUserUuid;
+
+		if ((modifiedUserUuid != null) && (modifiedUserUuid.length() == 0)) {
+			licenseKeyCacheModel.modifiedUserUuid = null;
+		}
 
 		licenseKeyCacheModel.modifiedUserName = getModifiedUserName();
 
@@ -1836,12 +1820,11 @@ public class LicenseKeyModelImpl
 	private String _uuid;
 	private String _originalUuid;
 	private long _licenseKeyId;
-	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
+	private String _userUuid;
+	private String _originalUserUuid;
 	private String _userName;
 	private Date _createDate;
-	private long _modifiedUserId;
+	private String _modifiedUserUuid;
 	private String _modifiedUserName;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;

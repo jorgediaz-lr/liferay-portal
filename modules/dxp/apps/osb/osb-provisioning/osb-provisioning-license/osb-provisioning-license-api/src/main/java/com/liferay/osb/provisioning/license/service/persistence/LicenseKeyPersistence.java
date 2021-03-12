@@ -471,39 +471,39 @@ public interface LicenseKeyPersistence extends BasePersistence<LicenseKey> {
 	public int countByProductPurchaseKey(String productPurchaseKey);
 
 	/**
-	 * Returns all the license keies where userId = &#63; and accountKey = &#63;.
+	 * Returns all the license keies where userUuid = &#63; and accountKey = &#63;.
 	 *
-	 * @param userId the user ID
+	 * @param userUuid the user uuid
 	 * @param accountKey the account key
 	 * @return the matching license keies
 	 */
 	public java.util.List<LicenseKey> findByU_AK(
-		long userId, String accountKey);
+		String userUuid, String accountKey);
 
 	/**
-	 * Returns a range of all the license keies where userId = &#63; and accountKey = &#63;.
+	 * Returns a range of all the license keies where userUuid = &#63; and accountKey = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LicenseKeyModelImpl</code>.
 	 * </p>
 	 *
-	 * @param userId the user ID
+	 * @param userUuid the user uuid
 	 * @param accountKey the account key
 	 * @param start the lower bound of the range of license keies
 	 * @param end the upper bound of the range of license keies (not inclusive)
 	 * @return the range of matching license keies
 	 */
 	public java.util.List<LicenseKey> findByU_AK(
-		long userId, String accountKey, int start, int end);
+		String userUuid, String accountKey, int start, int end);
 
 	/**
-	 * Returns an ordered range of all the license keies where userId = &#63; and accountKey = &#63;.
+	 * Returns an ordered range of all the license keies where userUuid = &#63; and accountKey = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LicenseKeyModelImpl</code>.
 	 * </p>
 	 *
-	 * @param userId the user ID
+	 * @param userUuid the user uuid
 	 * @param accountKey the account key
 	 * @param start the lower bound of the range of license keies
 	 * @param end the upper bound of the range of license keies (not inclusive)
@@ -511,18 +511,18 @@ public interface LicenseKeyPersistence extends BasePersistence<LicenseKey> {
 	 * @return the ordered range of matching license keies
 	 */
 	public java.util.List<LicenseKey> findByU_AK(
-		long userId, String accountKey, int start, int end,
+		String userUuid, String accountKey, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<LicenseKey>
 			orderByComparator);
 
 	/**
-	 * Returns an ordered range of all the license keies where userId = &#63; and accountKey = &#63;.
+	 * Returns an ordered range of all the license keies where userUuid = &#63; and accountKey = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LicenseKeyModelImpl</code>.
 	 * </p>
 	 *
-	 * @param userId the user ID
+	 * @param userUuid the user uuid
 	 * @param accountKey the account key
 	 * @param start the lower bound of the range of license keies
 	 * @param end the upper bound of the range of license keies (not inclusive)
@@ -531,133 +531,134 @@ public interface LicenseKeyPersistence extends BasePersistence<LicenseKey> {
 	 * @return the ordered range of matching license keies
 	 */
 	public java.util.List<LicenseKey> findByU_AK(
-		long userId, String accountKey, int start, int end,
+		String userUuid, String accountKey, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<LicenseKey>
 			orderByComparator,
 		boolean useFinderCache);
 
 	/**
-	 * Returns the first license key in the ordered set where userId = &#63; and accountKey = &#63;.
+	 * Returns the first license key in the ordered set where userUuid = &#63; and accountKey = &#63;.
 	 *
-	 * @param userId the user ID
+	 * @param userUuid the user uuid
 	 * @param accountKey the account key
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching license key
 	 * @throws NoSuchLicenseKeyException if a matching license key could not be found
 	 */
 	public LicenseKey findByU_AK_First(
-			long userId, String accountKey,
+			String userUuid, String accountKey,
 			com.liferay.portal.kernel.util.OrderByComparator<LicenseKey>
 				orderByComparator)
 		throws NoSuchLicenseKeyException;
 
 	/**
-	 * Returns the first license key in the ordered set where userId = &#63; and accountKey = &#63;.
+	 * Returns the first license key in the ordered set where userUuid = &#63; and accountKey = &#63;.
 	 *
-	 * @param userId the user ID
+	 * @param userUuid the user uuid
 	 * @param accountKey the account key
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching license key, or <code>null</code> if a matching license key could not be found
 	 */
 	public LicenseKey fetchByU_AK_First(
-		long userId, String accountKey,
+		String userUuid, String accountKey,
 		com.liferay.portal.kernel.util.OrderByComparator<LicenseKey>
 			orderByComparator);
 
 	/**
-	 * Returns the last license key in the ordered set where userId = &#63; and accountKey = &#63;.
+	 * Returns the last license key in the ordered set where userUuid = &#63; and accountKey = &#63;.
 	 *
-	 * @param userId the user ID
+	 * @param userUuid the user uuid
 	 * @param accountKey the account key
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching license key
 	 * @throws NoSuchLicenseKeyException if a matching license key could not be found
 	 */
 	public LicenseKey findByU_AK_Last(
-			long userId, String accountKey,
+			String userUuid, String accountKey,
 			com.liferay.portal.kernel.util.OrderByComparator<LicenseKey>
 				orderByComparator)
 		throws NoSuchLicenseKeyException;
 
 	/**
-	 * Returns the last license key in the ordered set where userId = &#63; and accountKey = &#63;.
+	 * Returns the last license key in the ordered set where userUuid = &#63; and accountKey = &#63;.
 	 *
-	 * @param userId the user ID
+	 * @param userUuid the user uuid
 	 * @param accountKey the account key
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching license key, or <code>null</code> if a matching license key could not be found
 	 */
 	public LicenseKey fetchByU_AK_Last(
-		long userId, String accountKey,
+		String userUuid, String accountKey,
 		com.liferay.portal.kernel.util.OrderByComparator<LicenseKey>
 			orderByComparator);
 
 	/**
-	 * Returns the license keies before and after the current license key in the ordered set where userId = &#63; and accountKey = &#63;.
+	 * Returns the license keies before and after the current license key in the ordered set where userUuid = &#63; and accountKey = &#63;.
 	 *
 	 * @param licenseKeyId the primary key of the current license key
-	 * @param userId the user ID
+	 * @param userUuid the user uuid
 	 * @param accountKey the account key
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next license key
 	 * @throws NoSuchLicenseKeyException if a license key with the primary key could not be found
 	 */
 	public LicenseKey[] findByU_AK_PrevAndNext(
-			long licenseKeyId, long userId, String accountKey,
+			long licenseKeyId, String userUuid, String accountKey,
 			com.liferay.portal.kernel.util.OrderByComparator<LicenseKey>
 				orderByComparator)
 		throws NoSuchLicenseKeyException;
 
 	/**
-	 * Removes all the license keies where userId = &#63; and accountKey = &#63; from the database.
+	 * Removes all the license keies where userUuid = &#63; and accountKey = &#63; from the database.
 	 *
-	 * @param userId the user ID
+	 * @param userUuid the user uuid
 	 * @param accountKey the account key
 	 */
-	public void removeByU_AK(long userId, String accountKey);
+	public void removeByU_AK(String userUuid, String accountKey);
 
 	/**
-	 * Returns the number of license keies where userId = &#63; and accountKey = &#63;.
+	 * Returns the number of license keies where userUuid = &#63; and accountKey = &#63;.
 	 *
-	 * @param userId the user ID
+	 * @param userUuid the user uuid
 	 * @param accountKey the account key
 	 * @return the number of matching license keies
 	 */
-	public int countByU_AK(long userId, String accountKey);
+	public int countByU_AK(String userUuid, String accountKey);
 
 	/**
-	 * Returns all the license keies where userId = &#63; and productId = &#63;.
+	 * Returns all the license keies where userUuid = &#63; and productId = &#63;.
 	 *
-	 * @param userId the user ID
+	 * @param userUuid the user uuid
 	 * @param productId the product ID
 	 * @return the matching license keies
 	 */
-	public java.util.List<LicenseKey> findByU_PI(long userId, String productId);
+	public java.util.List<LicenseKey> findByU_PI(
+		String userUuid, String productId);
 
 	/**
-	 * Returns a range of all the license keies where userId = &#63; and productId = &#63;.
+	 * Returns a range of all the license keies where userUuid = &#63; and productId = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LicenseKeyModelImpl</code>.
 	 * </p>
 	 *
-	 * @param userId the user ID
+	 * @param userUuid the user uuid
 	 * @param productId the product ID
 	 * @param start the lower bound of the range of license keies
 	 * @param end the upper bound of the range of license keies (not inclusive)
 	 * @return the range of matching license keies
 	 */
 	public java.util.List<LicenseKey> findByU_PI(
-		long userId, String productId, int start, int end);
+		String userUuid, String productId, int start, int end);
 
 	/**
-	 * Returns an ordered range of all the license keies where userId = &#63; and productId = &#63;.
+	 * Returns an ordered range of all the license keies where userUuid = &#63; and productId = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LicenseKeyModelImpl</code>.
 	 * </p>
 	 *
-	 * @param userId the user ID
+	 * @param userUuid the user uuid
 	 * @param productId the product ID
 	 * @param start the lower bound of the range of license keies
 	 * @param end the upper bound of the range of license keies (not inclusive)
@@ -665,18 +666,18 @@ public interface LicenseKeyPersistence extends BasePersistence<LicenseKey> {
 	 * @return the ordered range of matching license keies
 	 */
 	public java.util.List<LicenseKey> findByU_PI(
-		long userId, String productId, int start, int end,
+		String userUuid, String productId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<LicenseKey>
 			orderByComparator);
 
 	/**
-	 * Returns an ordered range of all the license keies where userId = &#63; and productId = &#63;.
+	 * Returns an ordered range of all the license keies where userUuid = &#63; and productId = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LicenseKeyModelImpl</code>.
 	 * </p>
 	 *
-	 * @param userId the user ID
+	 * @param userUuid the user uuid
 	 * @param productId the product ID
 	 * @param start the lower bound of the range of license keies
 	 * @param end the upper bound of the range of license keies (not inclusive)
@@ -685,99 +686,99 @@ public interface LicenseKeyPersistence extends BasePersistence<LicenseKey> {
 	 * @return the ordered range of matching license keies
 	 */
 	public java.util.List<LicenseKey> findByU_PI(
-		long userId, String productId, int start, int end,
+		String userUuid, String productId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<LicenseKey>
 			orderByComparator,
 		boolean useFinderCache);
 
 	/**
-	 * Returns the first license key in the ordered set where userId = &#63; and productId = &#63;.
+	 * Returns the first license key in the ordered set where userUuid = &#63; and productId = &#63;.
 	 *
-	 * @param userId the user ID
+	 * @param userUuid the user uuid
 	 * @param productId the product ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching license key
 	 * @throws NoSuchLicenseKeyException if a matching license key could not be found
 	 */
 	public LicenseKey findByU_PI_First(
-			long userId, String productId,
+			String userUuid, String productId,
 			com.liferay.portal.kernel.util.OrderByComparator<LicenseKey>
 				orderByComparator)
 		throws NoSuchLicenseKeyException;
 
 	/**
-	 * Returns the first license key in the ordered set where userId = &#63; and productId = &#63;.
+	 * Returns the first license key in the ordered set where userUuid = &#63; and productId = &#63;.
 	 *
-	 * @param userId the user ID
+	 * @param userUuid the user uuid
 	 * @param productId the product ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching license key, or <code>null</code> if a matching license key could not be found
 	 */
 	public LicenseKey fetchByU_PI_First(
-		long userId, String productId,
+		String userUuid, String productId,
 		com.liferay.portal.kernel.util.OrderByComparator<LicenseKey>
 			orderByComparator);
 
 	/**
-	 * Returns the last license key in the ordered set where userId = &#63; and productId = &#63;.
+	 * Returns the last license key in the ordered set where userUuid = &#63; and productId = &#63;.
 	 *
-	 * @param userId the user ID
+	 * @param userUuid the user uuid
 	 * @param productId the product ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching license key
 	 * @throws NoSuchLicenseKeyException if a matching license key could not be found
 	 */
 	public LicenseKey findByU_PI_Last(
-			long userId, String productId,
+			String userUuid, String productId,
 			com.liferay.portal.kernel.util.OrderByComparator<LicenseKey>
 				orderByComparator)
 		throws NoSuchLicenseKeyException;
 
 	/**
-	 * Returns the last license key in the ordered set where userId = &#63; and productId = &#63;.
+	 * Returns the last license key in the ordered set where userUuid = &#63; and productId = &#63;.
 	 *
-	 * @param userId the user ID
+	 * @param userUuid the user uuid
 	 * @param productId the product ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching license key, or <code>null</code> if a matching license key could not be found
 	 */
 	public LicenseKey fetchByU_PI_Last(
-		long userId, String productId,
+		String userUuid, String productId,
 		com.liferay.portal.kernel.util.OrderByComparator<LicenseKey>
 			orderByComparator);
 
 	/**
-	 * Returns the license keies before and after the current license key in the ordered set where userId = &#63; and productId = &#63;.
+	 * Returns the license keies before and after the current license key in the ordered set where userUuid = &#63; and productId = &#63;.
 	 *
 	 * @param licenseKeyId the primary key of the current license key
-	 * @param userId the user ID
+	 * @param userUuid the user uuid
 	 * @param productId the product ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next license key
 	 * @throws NoSuchLicenseKeyException if a license key with the primary key could not be found
 	 */
 	public LicenseKey[] findByU_PI_PrevAndNext(
-			long licenseKeyId, long userId, String productId,
+			long licenseKeyId, String userUuid, String productId,
 			com.liferay.portal.kernel.util.OrderByComparator<LicenseKey>
 				orderByComparator)
 		throws NoSuchLicenseKeyException;
 
 	/**
-	 * Removes all the license keies where userId = &#63; and productId = &#63; from the database.
+	 * Removes all the license keies where userUuid = &#63; and productId = &#63; from the database.
 	 *
-	 * @param userId the user ID
+	 * @param userUuid the user uuid
 	 * @param productId the product ID
 	 */
-	public void removeByU_PI(long userId, String productId);
+	public void removeByU_PI(String userUuid, String productId);
 
 	/**
-	 * Returns the number of license keies where userId = &#63; and productId = &#63;.
+	 * Returns the number of license keies where userUuid = &#63; and productId = &#63;.
 	 *
-	 * @param userId the user ID
+	 * @param userUuid the user uuid
 	 * @param productId the product ID
 	 * @return the number of matching license keies
 	 */
-	public int countByU_PI(long userId, String productId);
+	public int countByU_PI(String userUuid, String productId);
 
 	/**
 	 * Returns all the license keies where assetReceiptLicenseUuid = &#63; and active = &#63;.

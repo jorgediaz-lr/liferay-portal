@@ -238,8 +238,8 @@ public class LicenseKeyServiceWrapper
 	@Override
 	public java.util.List<com.liferay.osb.provisioning.license.model.LicenseKey>
 			search(
-				Long createUserId, java.util.Date createDateGT,
-				java.util.Date createDateLT, Long modifiedUserId,
+				String createUserUuid, java.util.Date createDateGT,
+				java.util.Date createDateLT, String modifiedUserUuid,
 				java.util.Date modifiedDateGT, java.util.Date modifiedDateLT,
 				String accountKey, String productPurchaseKey,
 				String accountName, java.util.Date startDateGT,
@@ -255,7 +255,7 @@ public class LicenseKeyServiceWrapper
 		throws Exception {
 
 		return _licenseKeyService.search(
-			createUserId, createDateGT, createDateLT, modifiedUserId,
+			createUserUuid, createDateGT, createDateLT, modifiedUserUuid,
 			modifiedDateGT, modifiedDateLT, accountKey, productPurchaseKey,
 			accountName, startDateGT, startDateLT, licenseEntryIds, productKeys,
 			productName, productId, productVersions, owner, description,
@@ -276,8 +276,8 @@ public class LicenseKeyServiceWrapper
 
 	@Override
 	public int searchCount(
-			Long createUserId, java.util.Date createDateGT,
-			java.util.Date createDateLT, Long modifiedUserId,
+			String createUserUuid, java.util.Date createDateGT,
+			java.util.Date createDateLT, String modifiedUserUuid,
 			java.util.Date modifiedDateGT, java.util.Date modifiedDateLT,
 			String accountKey, String productPurchaseKey, String accountName,
 			java.util.Date startDateGT, java.util.Date startDateLT,
@@ -290,7 +290,7 @@ public class LicenseKeyServiceWrapper
 		throws Exception {
 
 		return _licenseKeyService.searchCount(
-			createUserId, createDateGT, createDateLT, modifiedUserId,
+			createUserUuid, createDateGT, createDateLT, modifiedUserUuid,
 			modifiedDateGT, modifiedDateLT, accountKey, productPurchaseKey,
 			accountName, startDateGT, startDateLT, licenseEntryIds, productKeys,
 			productName, productId, productVersions, owner, description,

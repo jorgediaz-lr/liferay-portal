@@ -289,7 +289,8 @@ public interface LicenseKeyLocalService
 	public LicenseKey getLicenseKeyByUuid(String uuid) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<LicenseKey> getLicenseKeys(long userId, String accountKey);
+	public List<LicenseKey> getLicenseKeys(long userId, String accountKey)
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getLicenseKeys(
@@ -318,7 +319,8 @@ public interface LicenseKeyLocalService
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getLicenseKeysByUserIdProductId(
-		long userId, String productId);
+			long userId, String productId)
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getLicenseKeysCount(String productPurchaseKey);
@@ -382,7 +384,8 @@ public interface LicenseKeyLocalService
 		String productPurchaseKey, long clusterId, boolean active);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getUserLicenseKeysCount(long userId, String accountKey);
+	public int getUserLicenseKeysCount(long userId, String accountKey)
+		throws PortalException;
 
 	public LicenseKey renewLicenseKey(
 			long userId, long licenseKeyId, Date startDate, Date expirationDate)
@@ -394,8 +397,8 @@ public interface LicenseKeyLocalService
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> search(
-		Long createUserId, Date createDateGT, Date createDateLT,
-		Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
+		String createUserUuid, Date createDateGT, Date createDateLT,
+		String modifiedUserUuid, Date modifiedDateGT, Date modifiedDateLT,
 		String accountKey, String productPurchaseKey, String accountName,
 		Date startDateGT, Date startDateLT, long[] licenseEntryIds,
 		String[] productKeys, String productName, String productId,
@@ -412,8 +415,8 @@ public interface LicenseKeyLocalService
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int searchCount(
-		Long createUserId, Date createDateGT, Date createDateLT,
-		Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
+		String createUserUuid, Date createDateGT, Date createDateLT,
+		String modifiedUserUuid, Date modifiedDateGT, Date modifiedDateLT,
 		String accountKey, String productPurchaseKey, String accountName,
 		Date startDateGT, Date startDateLT, long[] licenseEntryIds,
 		String[] productKeys, String productName, String productId,

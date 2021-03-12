@@ -34,10 +34,10 @@ public class LicenseKeySoap implements Serializable {
 		soapModel.setMvccVersion(model.getMvccVersion());
 		soapModel.setUuid(model.getUuid());
 		soapModel.setLicenseKeyId(model.getLicenseKeyId());
-		soapModel.setUserId(model.getUserId());
+		soapModel.setUserUuid(model.getUserUuid());
 		soapModel.setUserName(model.getUserName());
 		soapModel.setCreateDate(model.getCreateDate());
-		soapModel.setModifiedUserId(model.getModifiedUserId());
+		soapModel.setModifiedUserUuid(model.getModifiedUserUuid());
 		soapModel.setModifiedUserName(model.getModifiedUserName());
 		soapModel.setModifiedDate(model.getModifiedDate());
 		soapModel.setAssetReceiptLicenseUuid(
@@ -149,12 +149,12 @@ public class LicenseKeySoap implements Serializable {
 		_licenseKeyId = licenseKeyId;
 	}
 
-	public long getUserId() {
-		return _userId;
+	public String getUserUuid() {
+		return _userUuid;
 	}
 
-	public void setUserId(long userId) {
-		_userId = userId;
+	public void setUserUuid(String userUuid) {
+		_userUuid = userUuid;
 	}
 
 	public String getUserName() {
@@ -173,12 +173,12 @@ public class LicenseKeySoap implements Serializable {
 		_createDate = createDate;
 	}
 
-	public long getModifiedUserId() {
-		return _modifiedUserId;
+	public String getModifiedUserUuid() {
+		return _modifiedUserUuid;
 	}
 
-	public void setModifiedUserId(long modifiedUserId) {
-		_modifiedUserId = modifiedUserId;
+	public void setModifiedUserUuid(String modifiedUserUuid) {
+		_modifiedUserUuid = modifiedUserUuid;
 	}
 
 	public String getModifiedUserName() {
@@ -456,10 +456,10 @@ public class LicenseKeySoap implements Serializable {
 	private long _mvccVersion;
 	private String _uuid;
 	private long _licenseKeyId;
-	private long _userId;
+	private String _userUuid;
 	private String _userName;
 	private Date _createDate;
-	private long _modifiedUserId;
+	private String _modifiedUserUuid;
 	private String _modifiedUserName;
 	private Date _modifiedDate;
 	private String _assetReceiptLicenseUuid;

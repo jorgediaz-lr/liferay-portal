@@ -45,10 +45,10 @@ public class LicenseKeyWrapper
 		attributes.put("mvccVersion", getMvccVersion());
 		attributes.put("uuid", getUuid());
 		attributes.put("licenseKeyId", getLicenseKeyId());
-		attributes.put("userId", getUserId());
+		attributes.put("userUuid", getUserUuid());
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedUserId", getModifiedUserId());
+		attributes.put("modifiedUserUuid", getModifiedUserUuid());
 		attributes.put("modifiedUserName", getModifiedUserName());
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("assetReceiptLicenseUuid", getAssetReceiptLicenseUuid());
@@ -106,10 +106,10 @@ public class LicenseKeyWrapper
 			setLicenseKeyId(licenseKeyId);
 		}
 
-		Long userId = (Long)attributes.get("userId");
+		String userUuid = (String)attributes.get("userUuid");
 
-		if (userId != null) {
-			setUserId(userId);
+		if (userUuid != null) {
+			setUserUuid(userUuid);
 		}
 
 		String userName = (String)attributes.get("userName");
@@ -124,10 +124,10 @@ public class LicenseKeyWrapper
 			setCreateDate(createDate);
 		}
 
-		Long modifiedUserId = (Long)attributes.get("modifiedUserId");
+		String modifiedUserUuid = (String)attributes.get("modifiedUserUuid");
 
-		if (modifiedUserId != null) {
-			setModifiedUserId(modifiedUserId);
+		if (modifiedUserUuid != null) {
+			setModifiedUserUuid(modifiedUserUuid);
 		}
 
 		String modifiedUserName = (String)attributes.get("modifiedUserName");
@@ -596,16 +596,6 @@ public class LicenseKeyWrapper
 	}
 
 	/**
-	 * Returns the modified user ID of this license key.
-	 *
-	 * @return the modified user ID of this license key
-	 */
-	@Override
-	public long getModifiedUserId() {
-		return model.getModifiedUserId();
-	}
-
-	/**
 	 * Returns the modified user name of this license key.
 	 *
 	 * @return the modified user name of this license key
@@ -733,16 +723,6 @@ public class LicenseKeyWrapper
 	@Override
 	public Date getStartDate() {
 		return model.getStartDate();
-	}
-
-	/**
-	 * Returns the user ID of this license key.
-	 *
-	 * @return the user ID of this license key
-	 */
-	@Override
-	public long getUserId() {
-		return model.getUserId();
 	}
 
 	/**
@@ -1056,16 +1036,6 @@ public class LicenseKeyWrapper
 	}
 
 	/**
-	 * Sets the modified user ID of this license key.
-	 *
-	 * @param modifiedUserId the modified user ID of this license key
-	 */
-	@Override
-	public void setModifiedUserId(long modifiedUserId) {
-		model.setModifiedUserId(modifiedUserId);
-	}
-
-	/**
 	 * Sets the modified user name of this license key.
 	 *
 	 * @param modifiedUserName the modified user name of this license key
@@ -1193,16 +1163,6 @@ public class LicenseKeyWrapper
 	@Override
 	public void setStartDate(Date startDate) {
 		model.setStartDate(startDate);
-	}
-
-	/**
-	 * Sets the user ID of this license key.
-	 *
-	 * @param userId the user ID of this license key
-	 */
-	@Override
-	public void setUserId(long userId) {
-		model.setUserId(userId);
 	}
 
 	/**

@@ -102,24 +102,11 @@ public interface LicenseKeyModel extends BaseModel<LicenseKey>, MVCCModel {
 	public void setLicenseKeyId(long licenseKeyId);
 
 	/**
-	 * Returns the user ID of this license key.
-	 *
-	 * @return the user ID of this license key
-	 */
-	public long getUserId();
-
-	/**
-	 * Sets the user ID of this license key.
-	 *
-	 * @param userId the user ID of this license key
-	 */
-	public void setUserId(long userId);
-
-	/**
 	 * Returns the user uuid of this license key.
 	 *
 	 * @return the user uuid of this license key
 	 */
+	@AutoEscape
 	public String getUserUuid();
 
 	/**
@@ -159,24 +146,11 @@ public interface LicenseKeyModel extends BaseModel<LicenseKey>, MVCCModel {
 	public void setCreateDate(Date createDate);
 
 	/**
-	 * Returns the modified user ID of this license key.
-	 *
-	 * @return the modified user ID of this license key
-	 */
-	public long getModifiedUserId();
-
-	/**
-	 * Sets the modified user ID of this license key.
-	 *
-	 * @param modifiedUserId the modified user ID of this license key
-	 */
-	public void setModifiedUserId(long modifiedUserId);
-
-	/**
 	 * Returns the modified user uuid of this license key.
 	 *
 	 * @return the modified user uuid of this license key
 	 */
+	@AutoEscape
 	public String getModifiedUserUuid();
 
 	/**

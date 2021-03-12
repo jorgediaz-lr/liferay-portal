@@ -18,10 +18,10 @@
 		<field name="mvccVersion" type="long" />
 		<field name="uuid" type="String" />
 		<field name="licenseKeyId" type="long" />
-		<field name="userId" type="long" />
+		<field name="userUuid" type="String" />
 		<field name="userName" type="String" />
 		<field name="createDate" type="Date" />
-		<field name="modifiedUserId" type="long" />
+		<field name="modifiedUserUuid" type="String" />
 		<field name="modifiedUserName" type="String" />
 		<field name="modifiedDate" type="Date" />
 		<field name="assetReceiptLicenseUuid" type="String" />

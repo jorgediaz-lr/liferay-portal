@@ -839,9 +839,9 @@ public class LicenseKeyServiceHttp {
 
 	public static java.util.List
 		<com.liferay.osb.provisioning.license.model.LicenseKey> search(
-				HttpPrincipal httpPrincipal, Long createUserId,
+				HttpPrincipal httpPrincipal, String createUserUuid,
 				java.util.Date createDateGT, java.util.Date createDateLT,
-				Long modifiedUserId, java.util.Date modifiedDateGT,
+				String modifiedUserUuid, java.util.Date modifiedDateGT,
 				java.util.Date modifiedDateLT, String accountKey,
 				String productPurchaseKey, String accountName,
 				java.util.Date startDateGT, java.util.Date startDateLT,
@@ -861,8 +861,8 @@ public class LicenseKeyServiceHttp {
 				LicenseKeyServiceUtil.class, "search", _searchParameterTypes18);
 
 			MethodHandler methodHandler = new MethodHandler(
-				methodKey, createUserId, createDateGT, createDateLT,
-				modifiedUserId, modifiedDateGT, modifiedDateLT, accountKey,
+				methodKey, createUserUuid, createDateGT, createDateLT,
+				modifiedUserUuid, modifiedDateGT, modifiedDateLT, accountKey,
 				productPurchaseKey, accountName, startDateGT, startDateLT,
 				licenseEntryIds, productKeys, productName, productId,
 				productVersions, owner, description, hostName, ipAddress,
@@ -938,9 +938,9 @@ public class LicenseKeyServiceHttp {
 	}
 
 	public static int searchCount(
-			HttpPrincipal httpPrincipal, Long createUserId,
+			HttpPrincipal httpPrincipal, String createUserUuid,
 			java.util.Date createDateGT, java.util.Date createDateLT,
-			Long modifiedUserId, java.util.Date modifiedDateGT,
+			String modifiedUserUuid, java.util.Date modifiedDateGT,
 			java.util.Date modifiedDateLT, String accountKey,
 			String productPurchaseKey, String accountName,
 			java.util.Date startDateGT, java.util.Date startDateLT,
@@ -958,8 +958,8 @@ public class LicenseKeyServiceHttp {
 				_searchCountParameterTypes20);
 
 			MethodHandler methodHandler = new MethodHandler(
-				methodKey, createUserId, createDateGT, createDateLT,
-				modifiedUserId, modifiedDateGT, modifiedDateLT, accountKey,
+				methodKey, createUserUuid, createDateGT, createDateLT,
+				modifiedUserUuid, modifiedDateGT, modifiedDateLT, accountKey,
 				productPurchaseKey, accountName, startDateGT, startDateLT,
 				licenseEntryIds, productKeys, productName, productId,
 				productVersions, owner, description, hostName, ipAddress,
@@ -1246,7 +1246,7 @@ public class LicenseKeyServiceHttp {
 	private static final Class<?>[] _renewLicenseKeyParameterTypes17 =
 		new Class[] {String.class, java.util.Date.class, java.util.Date.class};
 	private static final Class<?>[] _searchParameterTypes18 = new Class[] {
-		Long.class, java.util.Date.class, java.util.Date.class, Long.class,
+		String.class, java.util.Date.class, java.util.Date.class, String.class,
 		java.util.Date.class, java.util.Date.class, String.class, String.class,
 		String.class, java.util.Date.class, java.util.Date.class, long[].class,
 		String[].class, String.class, String.class, String[].class,
@@ -1260,7 +1260,7 @@ public class LicenseKeyServiceHttp {
 		com.liferay.portal.kernel.util.OrderByComparator.class
 	};
 	private static final Class<?>[] _searchCountParameterTypes20 = new Class[] {
-		Long.class, java.util.Date.class, java.util.Date.class, Long.class,
+		String.class, java.util.Date.class, java.util.Date.class, String.class,
 		java.util.Date.class, java.util.Date.class, String.class, String.class,
 		String.class, java.util.Date.class, java.util.Date.class, long[].class,
 		String[].class, String.class, String.class, String[].class,

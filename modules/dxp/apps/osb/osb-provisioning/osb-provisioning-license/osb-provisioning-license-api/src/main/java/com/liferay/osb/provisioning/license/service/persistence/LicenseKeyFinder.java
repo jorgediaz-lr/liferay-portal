@@ -27,8 +27,8 @@ public interface LicenseKeyFinder {
 		String keywords, java.util.LinkedHashMap<String, Object> params);
 
 	public int countByU_C_M_M_AK_PPK_A_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
-		Long createUserId, java.util.Date createDateGT,
-		java.util.Date createDateLT, Long modifiedUserId,
+		String createUserUuid, java.util.Date createDateGT,
+		java.util.Date createDateLT, String modifiedUserUuid,
 		java.util.Date modifiedDateGT, java.util.Date modifiedDateLT,
 		String accountKey, String productPurchaseKey, String accountName,
 		java.util.Date startDateGT, java.util.Date startDateLT,
@@ -47,8 +47,8 @@ public interface LicenseKeyFinder {
 
 	public java.util.List<com.liferay.osb.provisioning.license.model.LicenseKey>
 		findByU_C_M_M_AK_PPK_A_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
-			Long createUserId, java.util.Date createDateGT,
-			java.util.Date createDateLT, Long modifiedUserId,
+			String createUserUuid, java.util.Date createDateGT,
+			java.util.Date createDateLT, String modifiedUserUuid,
 			java.util.Date modifiedDateGT, java.util.Date modifiedDateLT,
 			String accountKey, String productPurchaseKey, String accountName,
 			java.util.Date startDateGT, java.util.Date startDateLT,

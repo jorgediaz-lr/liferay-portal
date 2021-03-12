@@ -170,8 +170,8 @@ public interface LicenseKeyService extends BaseService {
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> search(
-			Long createUserId, Date createDateGT, Date createDateLT,
-			Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
+			String createUserUuid, Date createDateGT, Date createDateLT,
+			String modifiedUserUuid, Date modifiedDateGT, Date modifiedDateLT,
 			String accountKey, String productPurchaseKey, String accountName,
 			Date startDateGT, Date startDateLT, long[] licenseEntryIds,
 			String[] productKeys, String productName, String productId,
@@ -190,8 +190,8 @@ public interface LicenseKeyService extends BaseService {
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int searchCount(
-			Long createUserId, Date createDateGT, Date createDateLT,
-			Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
+			String createUserUuid, Date createDateGT, Date createDateLT,
+			String modifiedUserUuid, Date modifiedDateGT, Date modifiedDateLT,
 			String accountKey, String productPurchaseKey, String accountName,
 			Date startDateGT, Date startDateLT, long[] licenseEntryIds,
 			String[] productKeys, String productName, String productId,
