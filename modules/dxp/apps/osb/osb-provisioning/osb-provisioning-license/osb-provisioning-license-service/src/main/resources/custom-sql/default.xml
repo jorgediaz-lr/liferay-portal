@@ -11,10 +11,10 @@
 			WHERE
 				[$WHERE$]
 				(
-					(Provisioning_LicenseKey.userId = ?) [$AND_OR_CONNECTOR$]
+					(Provisioning_LicenseKey.userUuid = ?) [$AND_OR_CONNECTOR$]
 					(Provisioning_LicenseKey.createDate > ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
 					(Provisioning_LicenseKey.createDate < ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(Provisioning_LicenseKey.modifiedUserId = ?) [$AND_OR_CONNECTOR$]
+					(Provisioning_LicenseKey.modifiedUserUuid = ?) [$AND_OR_CONNECTOR$]
 					(Provisioning_LicenseKey.modifiedDate > ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
 					(Provisioning_LicenseKey.modifiedDate < ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
 					(Provisioning_LicenseKey.accountKey = ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
@@ -52,10 +52,10 @@
 			WHERE
 				[$WHERE$]
 				(
-					(Provisioning_LicenseKey.userId = ?) [$AND_OR_CONNECTOR$]
+					(Provisioning_LicenseKey.userUuid = ?) [$AND_OR_CONNECTOR$]
 					(Provisioning_LicenseKey.createDate > ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
 					(Provisioning_LicenseKey.createDate < ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(Provisioning_LicenseKey.modifiedUserId = ?) [$AND_OR_CONNECTOR$]
+					(Provisioning_LicenseKey.modifiedUserUuid = ?) [$AND_OR_CONNECTOR$]
 					(Provisioning_LicenseKey.modifiedDate > ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
 					(Provisioning_LicenseKey.modifiedDate < ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
 					(Provisioning_LicenseKey.accountKey = ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
@@ -104,7 +104,7 @@
 	<sql id="com.liferay.osb.provisioning.license.service.persistence.LicenseKeyFinder.joinByUser">
 		<![CDATA[
 			WHERE
-				Provisioning_LicenseKey.userId = ?
+				Provisioning_LicenseKey.userUuid = ?
 		]]>
 	</sql>
 </custom-sql>

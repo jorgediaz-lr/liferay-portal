@@ -207,10 +207,10 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		LicenseKey licenseKey = licenseKeyPersistence.create(licenseKeyId);
 
-		licenseKey.setUserId(user.getUserId());
+		licenseKey.setUserUuid(user.getUserUuid());
 		licenseKey.setUserName(user.getFullName());
 		licenseKey.setCreateDate(now);
-		licenseKey.setModifiedUserId(user.getUserId());
+		licenseKey.setModifiedUserUuid(user.getUserUuid());
 		licenseKey.setModifiedUserName(user.getFullName());
 		licenseKey.setModifiedDate(now);
 		licenseKey.setAssetReceiptLicenseUuid(assetReceiptLicenseUuid);
@@ -279,8 +279,12 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		return licenseKeys.get(0);
 	}
 
-	public List<LicenseKey> getLicenseKeys(long userId, String accountKey) {
-		return licenseKeyPersistence.findByU_AK(userId, accountKey);
+	public List<LicenseKey> getLicenseKeys(long userId, String accountKey)
+		throws PortalException {
+
+		User user = userLocalService.getUser(userId);
+
+		return licenseKeyPersistence.findByU_AK(user.getUuid(), accountKey);
 	}
 
 	public List<LicenseKey> getLicenseKeys(
@@ -326,9 +330,12 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 	}
 
 	public List<LicenseKey> getLicenseKeysByUserIdProductId(
-		long userId, String productId) {
+			long userId, String productId)
+		throws PortalException {
 
-		return licenseKeyPersistence.findByU_PI(userId, productId);
+		User user = userLocalService.getUser(userId);
+
+		return licenseKeyPersistence.findByU_PI(user.getUuid(), productId);
 	}
 
 	public int getLicenseKeysCount(String productPurchaseKey) {
@@ -428,8 +435,12 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			productPurchaseKey, clusterId, active);
 	}
 
-	public int getUserLicenseKeysCount(long userId, String accountKey) {
-		return licenseKeyPersistence.countByU_AK(userId, accountKey);
+	public int getUserLicenseKeysCount(long userId, String accountKey)
+		throws PortalException {
+
+		User user = userLocalService.getUser(userId);
+
+		return licenseKeyPersistence.countByU_AK(user.getUuid(), accountKey);
 	}
 
 	public LicenseKey renewLicenseKey(
@@ -498,8 +509,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 	}
 
 	public List<LicenseKey> search(
-		Long createUserId, Date createDateGT, Date createDateLT,
-		Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
+		String createUserUuid, Date createDateGT, Date createDateLT,
+		String modifiedUserUuid, Date modifiedDateGT, Date modifiedDateLT,
 		String accountKey, String productPurchaseKey, String accountName,
 		Date startDateGT, Date startDateLT, long[] licenseEntryIds,
 		String[] productKeys, String productName, String productId,
@@ -511,7 +522,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		return licenseKeyFinder.
 			findByU_C_M_M_AK_PPK_A_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
-				createUserId, createDateGT, createDateLT, modifiedUserId,
+				createUserUuid, createDateGT, createDateLT, modifiedUserUuid,
 				modifiedDateGT, modifiedDateLT, accountKey, productPurchaseKey,
 				accountName, startDateGT, startDateLT, licenseEntryIds,
 				productKeys, productName, productId, productVersions, owner,
@@ -529,8 +540,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 	}
 
 	public int searchCount(
-		Long createUserId, Date createDateGT, Date createDateLT,
-		Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
+		String createUserUuid, Date createDateGT, Date createDateLT,
+		String modifiedUserUuid, Date modifiedDateGT, Date modifiedDateLT,
 		String accountKey, String productPurchaseKey, String accountName,
 		Date startDateGT, Date startDateLT, long[] licenseEntryIds,
 		String[] productKeys, String productName, String productId,
@@ -541,7 +552,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		return licenseKeyFinder.
 			countByU_C_M_M_AK_PPK_A_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
-				createUserId, createDateGT, createDateLT, modifiedUserId,
+				createUserUuid, createDateGT, createDateLT, modifiedUserUuid,
 				modifiedDateGT, modifiedDateLT, accountKey, productPurchaseKey,
 				accountName, startDateGT, startDateLT, licenseEntryIds,
 				productKeys, productName, productId, productVersions, owner,
@@ -572,7 +583,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			_deleteProductConsumption(user, licenseKey);
 		}
 
-		licenseKey.setModifiedUserId(user.getUserId());
+		licenseKey.setModifiedUserUuid(user.getUuid());
 		licenseKey.setModifiedUserName(user.getFullName());
 		licenseKey.setModifiedDate(new Date());
 		licenseKey.setActive(active);
@@ -651,10 +662,10 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		LicenseKey licenseKey = licenseKeyPersistence.create(licenseKeyId);
 
-		licenseKey.setUserId(user.getUserId());
+		licenseKey.setUserUuid(user.getUserUuid());
 		licenseKey.setUserName(user.getFullName());
 		licenseKey.setCreateDate(now);
-		licenseKey.setModifiedUserId(user.getUserId());
+		licenseKey.setModifiedUserUuid(user.getUserUuid());
 		licenseKey.setModifiedUserName(user.getFullName());
 		licenseKey.setModifiedDate(now);
 		licenseKey.setAccountKey(accountKey);
@@ -859,7 +870,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 				clusterLicenseKey.setActive(active);
 			}
 
-			clusterLicenseKey.setModifiedUserId(user.getUserId());
+			clusterLicenseKey.setModifiedUserUuid(user.getUserUuid());
 			clusterLicenseKey.setModifiedUserName(user.getFullName());
 			clusterLicenseKey.setModifiedDate(now);
 			clusterLicenseKey.setProductPurchaseKey(productPurchaseKey);

@@ -48,10 +48,10 @@
 
 		<!-- Audit fields -->
 
-		<column name="userId" type="long" />
+		<column name="userUuid" type="String" />
 		<column name="userName" type="String" />
 		<column name="createDate" type="Date" />
-		<column name="modifiedUserId" type="long" />
+		<column name="modifiedUserUuid" type="String" />
 		<column name="modifiedUserName" type="String" />
 		<column name="modifiedDate" type="Date" />
 
@@ -105,11 +105,11 @@
 			<finder-column name="productPurchaseKey" />
 		</finder>
 		<finder name="U_AK" return-type="Collection">
-			<finder-column name="userId" />
+			<finder-column name="userUuid" />
 			<finder-column name="accountKey" />
 		</finder>
 		<finder name="U_PI" return-type="Collection">
-			<finder-column name="userId" />
+			<finder-column name="userUuid" />
 			<finder-column name="productId" />
 		</finder>
 		<finder name="ARLU_A" return-type="Collection">

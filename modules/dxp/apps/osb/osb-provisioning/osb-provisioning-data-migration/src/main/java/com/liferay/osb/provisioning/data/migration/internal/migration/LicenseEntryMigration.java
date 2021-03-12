@@ -16,6 +16,7 @@ package com.liferay.osb.provisioning.data.migration.internal.migration;
 
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
+import com.liferay.osb.provisioning.license.model.LicenseEntry;
 import com.liferay.osb.provisioning.license.service.LicenseEntryLocalService;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.log.Log;
@@ -44,10 +45,11 @@ public class LicenseEntryMigration {
 
 		stopWatch.start();
 
-		StringBundler sb = new StringBundler(5);
+		StringBundler sb = new StringBundler(6);
 
-		sb.append("select OSB_LicenseEntry.name, OSB_LicenseEntry.type_,");
-		sb.append("min.name, max.name from OSB_LicenseEntry left join ");
+		sb.append("select OSB_LicenseEntry.licenseEntryId, ");
+		sb.append("OSB_LicenseEntry.name, OSB_LicenseEntry.type_, min.name, ");
+		sb.append("max.name from OSB_LicenseEntry left join ");
 		sb.append("CUSTOMER_ListType min on OSB_LicenseEntry.versionMin = ");
 		sb.append("min.listTypeId left join CUSTOMER_ListType max on ");
 		sb.append("OSB_LicenseEntry.versionMax = max.listTypeId");
@@ -58,7 +60,7 @@ public class LicenseEntryMigration {
 			ResultSet resultSet = preparedStatement.executeQuery()) {
 
 			while (resultSet.next()) {
-				String name = _getNewName(resultSet.getString(1));
+				String name = _getNewName(resultSet.getString(2));
 
 				Product product = _productWebService.fetchProductByName(name);
 
@@ -68,13 +70,18 @@ public class LicenseEntryMigration {
 					continue;
 				}
 
-				String type = resultSet.getString(2);
-				String versionMin = resultSet.getString(3);
-				String versionMax = resultSet.getString(4);
+				LicenseEntry licenseEntry =
+					_licenseEntryLocalService.createLicenseEntry(
+						resultSet.getLong(1));
 
-				_licenseEntryLocalService.addLicenseEntry(
-					userId, product.getKey(), name, type, versionMin,
-					versionMax);
+				licenseEntry.setUserId(userId);
+				licenseEntry.setProductKey(product.getKey());
+				licenseEntry.setName(name);
+				licenseEntry.setType(resultSet.getString(3));
+				licenseEntry.setVersionMin(resultSet.getString(4));
+				licenseEntry.setVersionMax(resultSet.getString(5));
+
+				_licenseEntryLocalService.addLicenseEntry(licenseEntry);
 			}
 		}
 

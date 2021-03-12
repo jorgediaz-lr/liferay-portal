@@ -1,0 +1,151 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package com.liferay.osb.provisioning.data.migration.internal.migration;
+
+import com.liferay.osb.provisioning.license.model.LicenseKey;
+import com.liferay.osb.provisioning.license.service.LicenseKeyLocalService;
+import com.liferay.portal.kernel.dao.jdbc.DataAccess;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.StringBundler;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+import org.apache.commons.lang.time.StopWatch;
+
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
+/**
+ * @author Amos Fong
+ */
+@Component(immediate = true, service = LicenseKeyMigration.class)
+public class LicenseKeyMigration {
+
+	public void migrate(long userId) throws Exception {
+		StopWatch stopWatch = new StopWatch();
+
+		stopWatch.start();
+
+		_migrate(0, 1000);
+
+		if (_log.isInfoEnabled()) {
+			_log.info("Migration took " + stopWatch.getTime() + " ms");
+		}
+	}
+
+	private void _migrate(int start, int batchSize) throws Exception {
+		StringBundler sb = new StringBundler(12);
+
+		sb.append("select OSB_LicenseKey.*, ");
+		sb.append("OSB_ProductEntry.koroneikiProductKey, user1.uuid_ as ");
+		sb.append("userUuid, user2.uuid_ as modifiedUserUuid from ");
+		sb.append("OSB_LicenseKey left join OSB_ProductEntry on ");
+		sb.append("OSB_ProductEntry.productEntryId = ");
+		sb.append("OSB_LicenseKey.productEntryId left join CUSTOMER_User ");
+		sb.append("user1 on user1.userId = OSB_LicenseKey.userId left join ");
+		sb.append("CUSTOMER_User user2 on user2.userId = ");
+		sb.append("OSB_LicenseKey.modifiedUserId order by licenseKeyId limit ");
+		sb.append(start);
+		sb.append(",");
+		sb.append(batchSize);
+
+		try (Connection connection = DataAccess.getConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(
+				sb.toString());
+			ResultSet resultSet = preparedStatement.executeQuery()) {
+
+			if (!resultSet.isBeforeFirst()) {
+				return;
+			}
+
+			while (resultSet.next()) {
+				LicenseKey licenseKey =
+					_licenseKeyLocalService.createLicenseKey(
+						resultSet.getLong("licenseKeyId"));
+
+				licenseKey.setUuid(resultSet.getString("uuid_"));
+				licenseKey.setUserUuid(resultSet.getString("userUuid"));
+				licenseKey.setUserName(resultSet.getString("userName"));
+				licenseKey.setCreateDate(resultSet.getTimestamp("createDate"));
+				licenseKey.setModifiedUserUuid(
+					resultSet.getString("modifiedUserUuid"));
+				licenseKey.setModifiedUserName(
+					resultSet.getString("modifiedUserName"));
+				licenseKey.setModifiedDate(
+					resultSet.getTimestamp("modifiedDate"));
+				licenseKey.setAssetReceiptLicenseUuid(
+					resultSet.getString("assetReceiptLicenseUuid"));
+				licenseKey.setAccountKey(
+					resultSet.getString("koroneikiAccountKey"));
+				licenseKey.setProductPurchaseKey(
+					resultSet.getString("koroneikiProductPurchaseKey"));
+				licenseKey.setLicenseEntryId(
+					resultSet.getLong("licenseEntryId"));
+				licenseKey.setProductKey(
+					resultSet.getString("koroneikiProductKey"));
+				licenseKey.setAccountName(
+					resultSet.getString("accountEntryName"));
+				licenseKey.setLicenseEntryName(
+					resultSet.getString("licenseEntryName"));
+				licenseKey.setLicenseEntryType(
+					resultSet.getString("licenseEntryType"));
+				licenseKey.setLicenseVersion(
+					resultSet.getInt("licenseVersion"));
+				licenseKey.setProductName(
+					resultSet.getString("productEntryName"));
+				licenseKey.setProductId(resultSet.getString("productId"));
+				licenseKey.setProductVersion(
+					resultSet.getString("productVersionLabel"));
+				licenseKey.setClusterId(resultSet.getLong("clusterId"));
+				licenseKey.setOwner(resultSet.getString("owner"));
+				licenseKey.setMaxServers(resultSet.getInt("maxServers"));
+				licenseKey.setMaxConcurrentUsers(
+					resultSet.getLong("maxConcurrentUsers"));
+				licenseKey.setMaxUsers(resultSet.getLong("maxUsers"));
+				licenseKey.setMaxHttpSessions(
+					resultSet.getInt("maxHttpSessions"));
+				licenseKey.setSizing(resultSet.getInt("sizing"));
+				licenseKey.setDescription(resultSet.getString("description"));
+				licenseKey.setHostName(resultSet.getString("hostName"));
+				licenseKey.setIpAddresses(resultSet.getString("ipAddresses"));
+				licenseKey.setMacAddresses(resultSet.getString("macAddresses"));
+				licenseKey.setServerId(resultSet.getString("serverId"));
+				licenseKey.setKey(resultSet.getString("key_"));
+				licenseKey.setStartDate(resultSet.getTimestamp("startDate"));
+				licenseKey.setExpirationDate(
+					resultSet.getTimestamp("expirationDate"));
+				licenseKey.setAdditionalInfo(
+					resultSet.getString("additionalInfo"));
+				licenseKey.setComplimentary(
+					resultSet.getBoolean("complimentary"));
+				licenseKey.setActive(resultSet.getBoolean("active_"));
+
+				_licenseKeyLocalService.addLicenseKey(licenseKey);
+			}
+		}
+
+		_migrate(start + batchSize, batchSize);
+	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		LicenseKeyMigration.class);
+
+	@Reference
+	private LicenseKeyLocalService _licenseKeyLocalService;
+
+}

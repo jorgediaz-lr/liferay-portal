@@ -115,8 +115,8 @@ public class LicenseKeyFinderImpl
 	}
 
 	public int countByU_C_M_M_AK_PPK_A_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
-		Long createUserId, Date createDateGT, Date createDateLT,
-		Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
+		String createUserUuid, Date createDateGT, Date createDateLT,
+		String modifiedUserUuid, Date modifiedDateGT, Date modifiedDateLT,
 		String accountKey, String productPurchaseKey, String accountName,
 		Date startDateGT, Date startDateLT, long[] licenseEntryIds,
 		String[] productKeys, String productName, String productId,
@@ -136,7 +136,7 @@ public class LicenseKeyFinderImpl
 		String[] keys = _customSQL.keywords(key);
 
 		return countByU_C_M_M_AK_PPK_A_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
-			createUserId, createDateGT, createDateLT, modifiedUserId,
+			createUserUuid, createDateGT, createDateLT, modifiedUserUuid,
 			modifiedDateGT, modifiedDateLT, accountKey, productPurchaseKey,
 			accountNames, createDateGT, createDateLT, licenseEntryIds,
 			productKeys, productNames, new String[] {productId},
@@ -186,8 +186,8 @@ public class LicenseKeyFinderImpl
 	}
 
 	public List<LicenseKey> findByU_C_M_M_AK_PPK_A_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
-		Long createUserId, Date createDateGT, Date createDateLT,
-		Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
+		String createUserUuid, Date createDateGT, Date createDateLT,
+		String modifiedUserUuid, Date modifiedDateGT, Date modifiedDateLT,
 		String accountKey, String productPurchaseKey, String accountName,
 		Date startDateGT, Date startDateLT, long[] licenseEntryIds,
 		String[] productKeys, String productName, String productId,
@@ -208,7 +208,7 @@ public class LicenseKeyFinderImpl
 		String[] keys = _customSQL.keywords(key);
 
 		return findByU_C_M_M_AK_PPK_A_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
-			createUserId, createDateGT, createDateLT, modifiedUserId,
+			createUserUuid, createDateGT, createDateLT, modifiedUserUuid,
 			modifiedDateGT, modifiedDateLT, accountKey, productPurchaseKey,
 			accountNames, createDateGT, createDateLT, licenseEntryIds,
 			productKeys, productNames, new String[] {productId},
@@ -218,8 +218,8 @@ public class LicenseKeyFinderImpl
 	}
 
 	protected int countByU_C_M_M_AK_PPK_A_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
-		Long createUserId, Date createDateGT, Date createDateLT,
-		Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
+		String createUserUuid, Date createDateGT, Date createDateLT,
+		String modifiedUserUuid, Date modifiedDateGT, Date modifiedDateLT,
 		String accountKey, String productPurchaseKey, String[] accountNames,
 		Date startDateGT, Date startDateLT, long[] licenseEntryIds,
 		String[] productKeys, String[] productNames, String[] productIds,
@@ -258,10 +258,10 @@ public class LicenseKeyFinderImpl
 			getClass(), COUNT_BY_U_C_M_M_AK_PPK_A_S_L_P_P_P_P_O_D_H_I_M_S_E_A);
 
 		sql = replaceSQL(
-			sql, createUserId, modifiedUserId, accountNames, licenseEntryIds,
-			productKeys, productNames, productIds, productVersions, owners,
-			descriptions, hostNames, ipAddresses, macAddresses, serverIds, keys,
-			params, andOperator);
+			sql, createUserUuid, modifiedUserUuid, accountNames,
+			licenseEntryIds, productKeys, productNames, productIds,
+			productVersions, owners, descriptions, hostNames, ipAddresses,
+			macAddresses, serverIds, keys, params, andOperator);
 
 		String selectSql = PortalCustomSQLUtil.get(
 			"com.liferay.util.dao.orm.CustomSQL.countBySelectSQL");
@@ -280,8 +280,8 @@ public class LicenseKeyFinderImpl
 			QueryPos qPos = QueryPos.getInstance(q);
 
 			setJoin(
-				qPos, params, createUserId, createDateGT_TS, createDateLT_TS,
-				modifiedUserId, modifiedDateGT_TS, modifiedDateLT_TS,
+				qPos, params, createUserUuid, createDateGT_TS, createDateLT_TS,
+				modifiedUserUuid, modifiedDateGT_TS, modifiedDateLT_TS,
 				accountKey, productPurchaseKey, accountNames, startDateGT_TS,
 				startDateLT_TS, licenseEntryIds, productKeys, productNames,
 				productIds, productVersions, owners, descriptions, hostNames,
@@ -310,8 +310,8 @@ public class LicenseKeyFinderImpl
 
 	protected List<LicenseKey>
 		findByU_C_M_M_AK_PPK_A_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
-			Long createUserId, Date createDateGT, Date createDateLT,
-			Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
+			String createUserUuid, Date createDateGT, Date createDateLT,
+			String modifiedUserUuid, Date modifiedDateGT, Date modifiedDateLT,
 			String accountKey, String productPurchaseKey, String[] accountNames,
 			Date startDateGT, Date startDateLT, long[] licenseEntryIds,
 			String[] productKeys, String[] productNames, String[] productIds,
@@ -350,10 +350,10 @@ public class LicenseKeyFinderImpl
 			getClass(), FIND_BY_U_C_M_M_AK_PPK_A_S_L_P_P_P_P_O_D_H_I_M_S_E_A);
 
 		sql = replaceSQL(
-			sql, createUserId, modifiedUserId, accountNames, licenseEntryIds,
-			productKeys, productNames, productIds, productVersions, owners,
-			descriptions, hostNames, ipAddresses, macAddresses, serverIds, keys,
-			params, andOperator);
+			sql, createUserUuid, modifiedUserUuid, accountNames,
+			licenseEntryIds, productKeys, productNames, productIds,
+			productVersions, owners, descriptions, hostNames, ipAddresses,
+			macAddresses, serverIds, keys, params, andOperator);
 
 		sql = _customSQL.replaceOrderBy(sql, obc);
 
@@ -369,8 +369,8 @@ public class LicenseKeyFinderImpl
 			QueryPos qPos = QueryPos.getInstance(q);
 
 			setJoin(
-				qPos, params, createUserId, createDateGT_TS, createDateLT_TS,
-				modifiedUserId, modifiedDateGT_TS, modifiedDateLT_TS,
+				qPos, params, createUserUuid, createDateGT_TS, createDateLT_TS,
+				modifiedUserUuid, modifiedDateGT_TS, modifiedDateLT_TS,
 				accountKey, productPurchaseKey, accountNames, startDateGT_TS,
 				startDateLT_TS, licenseEntryIds, productKeys, productNames,
 				productIds, productVersions, owners, descriptions, hostNames,
@@ -506,7 +506,7 @@ public class LicenseKeyFinderImpl
 	}
 
 	protected String replaceSQL(
-		String sql, Long createUserId, Long modifiedUserId,
+		String sql, String createUserUuid, String modifiedUserUuid,
 		String[] accountNames, long[] licenseEntryIds, String[] productKeys,
 		String[] productNames, String[] productIds, String[] productVersions,
 		String[] owners, String[] descriptions, String[] hostNames,
@@ -514,11 +514,11 @@ public class LicenseKeyFinderImpl
 		String[] keys, LinkedHashMap<String, Object> params,
 		boolean andOperator) {
 
-		if (createUserId == null) {
+		if (Validator.isNull(createUserUuid)) {
 			sql = StringUtil.removeSubstring(sql, _USER_ID_SQL);
 		}
 
-		if (modifiedUserId == null) {
+		if (Validator.isNull(modifiedUserUuid)) {
 			sql = StringUtil.removeSubstring(sql, _MODIFIED_USER_ID_SQL);
 		}
 
@@ -642,20 +642,21 @@ public class LicenseKeyFinderImpl
 	}
 
 	protected void setJoin(
-		QueryPos qPos, LinkedHashMap<String, Object> params, Long createUserId,
-		Timestamp createDateGT, Timestamp createDateLT, Long modifiedUserId,
-		Timestamp modifiedDateGT, Timestamp modifiedDateLT, String accountKey,
-		String productPurchaseKey, String[] accountNames, Timestamp startDateGT,
-		Timestamp startDateLT, long[] licenseEntryIds, String[] productKeys,
-		String[] productNames, String[] productIds, String[] productVersions,
-		String[] owners, String[] descriptions, String[] hostNames,
-		String[] ipAddresses, String[] macAddresses, String[] serverIds,
-		String[] keys, Timestamp expirationDateGT, Timestamp expirationDateLT) {
+		QueryPos qPos, LinkedHashMap<String, Object> params,
+		String createUserUuid, Timestamp createDateGT, Timestamp createDateLT,
+		String modifiedUserUuid, Timestamp modifiedDateGT,
+		Timestamp modifiedDateLT, String accountKey, String productPurchaseKey,
+		String[] accountNames, Timestamp startDateGT, Timestamp startDateLT,
+		long[] licenseEntryIds, String[] productKeys, String[] productNames,
+		String[] productIds, String[] productVersions, String[] owners,
+		String[] descriptions, String[] hostNames, String[] ipAddresses,
+		String[] macAddresses, String[] serverIds, String[] keys,
+		Timestamp expirationDateGT, Timestamp expirationDateLT) {
 
 		setJoin(qPos, params);
 
-		if (createUserId != null) {
-			qPos.add(createUserId);
+		if (Validator.isNotNull(createUserUuid)) {
+			qPos.add(createUserUuid);
 		}
 
 		qPos.add(createDateGT);
@@ -663,8 +664,8 @@ public class LicenseKeyFinderImpl
 		qPos.add(createDateLT);
 		qPos.add(createDateLT);
 
-		if (modifiedUserId != null) {
-			qPos.add(modifiedUserId);
+		if (Validator.isNotNull(modifiedUserUuid)) {
+			qPos.add(modifiedUserUuid);
 		}
 
 		qPos.add(modifiedDateGT);
@@ -700,7 +701,7 @@ public class LicenseKeyFinderImpl
 	}
 
 	private static final String _MODIFIED_USER_ID_SQL =
-		"(Provisioning_LicenseKey.modifiedUserId = ?) [$AND_OR_CONNECTOR$]";
+		"(Provisioning_LicenseKey.modifiedUserUuid = ?) [$AND_OR_CONNECTOR$]";
 
 	private static final String _PRODUCT_KEY_SQL =
 		"(Provisioning_LicenseKey.productKey = ? [$AND_OR_NULL_CHECK$]) " +
@@ -711,7 +712,7 @@ public class LicenseKeyFinderImpl
 			"[$AND_OR_CONNECTOR$]";
 
 	private static final String _USER_ID_SQL =
-		"(Provisioning_LicenseKey.userId = ?) [$AND_OR_CONNECTOR$]";
+		"(Provisioning_LicenseKey.userUuid = ?) [$AND_OR_CONNECTOR$]";
 
 	@Reference
 	private CustomSQL _customSQL;

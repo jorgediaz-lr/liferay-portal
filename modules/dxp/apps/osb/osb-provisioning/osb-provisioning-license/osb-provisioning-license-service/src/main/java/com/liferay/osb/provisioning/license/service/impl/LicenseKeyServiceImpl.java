@@ -363,8 +363,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 	}
 
 	public List<LicenseKey> search(
-			Long createUserId, Date createDateGT, Date createDateLT,
-			Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
+			String createUserUuid, Date createDateGT, Date createDateLT,
+			String modifiedUserUuid, Date modifiedDateGT, Date modifiedDateLT,
 			String accountKey, String productPurchaseKey, String accountName,
 			Date startDateGT, Date startDateLT, long[] licenseEntryIds,
 			String[] productKeys, String productName, String productId,
@@ -378,7 +378,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		addPermissionParams(params);
 
 		return licenseKeyLocalService.search(
-			createUserId, createDateGT, createDateLT, modifiedUserId,
+			createUserUuid, createDateGT, createDateLT, modifiedUserUuid,
 			modifiedDateGT, modifiedDateLT, accountKey, productPurchaseKey,
 			accountName, startDateGT, startDateLT, licenseEntryIds, productKeys,
 			productName, productId, productVersions, owner, description,
@@ -397,8 +397,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 	}
 
 	public int searchCount(
-			Long createUserId, Date createDateGT, Date createDateLT,
-			Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
+			String createUserUuid, Date createDateGT, Date createDateLT,
+			String modifiedUserUuid, Date modifiedDateGT, Date modifiedDateLT,
 			String accountKey, String productPurchaseKey, String accountName,
 			Date startDateGT, Date startDateLT, long[] licenseEntryIds,
 			String[] productKeys, String productName, String productId,
@@ -412,7 +412,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		addPermissionParams(params);
 
 		return licenseKeyLocalService.searchCount(
-			createUserId, createDateGT, createDateLT, modifiedUserId,
+			createUserUuid, createDateGT, createDateLT, modifiedUserUuid,
 			modifiedDateGT, modifiedDateLT, accountKey, productPurchaseKey,
 			accountName, startDateGT, startDateLT, licenseEntryIds, productKeys,
 			productName, productId, productVersions, owner, description,
