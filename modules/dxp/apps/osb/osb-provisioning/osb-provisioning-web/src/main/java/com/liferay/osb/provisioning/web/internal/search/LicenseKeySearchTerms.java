@@ -38,13 +38,13 @@ public class LicenseKeySearchTerms extends LicenseKeyDisplayTerms {
 		super(portletRequest);
 	}
 
-	public Long getCreatorUserId() throws PortalException {
+	public String getCreatorUserUuid() throws PortalException {
 		if (Validator.isNotNull(creatorEmailAddress)) {
 			User user = UserLocalServiceUtil.fetchUserByEmailAddress(
 				PortalUtil.getDefaultCompanyId(), creatorEmailAddress);
 
 			if (user != null) {
-				return user.getUserId();
+				return user.getUuid();
 			}
 		}
 
@@ -69,13 +69,13 @@ public class LicenseKeySearchTerms extends LicenseKeyDisplayTerms {
 		return licenseEntryIds;
 	}
 
-	public Long getModifiedUserId() throws PortalException {
+	public String getModifiedUserUuid() throws PortalException {
 		if (Validator.isNotNull(modifiedEmailAddress)) {
 			User user = UserLocalServiceUtil.fetchUserByEmailAddress(
 				PortalUtil.getDefaultCompanyId(), modifiedEmailAddress);
 
 			if (user != null) {
-				return user.getUserId();
+				return user.getUuid();
 			}
 		}
 

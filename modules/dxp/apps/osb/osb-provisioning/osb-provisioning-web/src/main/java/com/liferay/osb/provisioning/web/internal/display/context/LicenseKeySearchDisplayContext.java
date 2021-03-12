@@ -148,10 +148,10 @@ public class LicenseKeySearchDisplayContext {
 
 		if (searchTerms.isAdvancedSearch()) {
 			licenseKeys = _licenseKeyLocalService.search(
-				searchTerms.getCreatorUserId(),
+				searchTerms.getCreatorUserUuid(),
 				searchTerms.getDate(searchTerms.getCreateDateGT()),
 				searchTerms.getDate(searchTerms.getCreateDateLT()),
-				searchTerms.getModifiedUserId(),
+				searchTerms.getModifiedUserUuid(),
 				searchTerms.getDate(searchTerms.getModifiedDateGT()),
 				searchTerms.getDate(searchTerms.getModifiedDateLT()),
 				searchTerms.getAccountKey(),
@@ -172,10 +172,10 @@ public class LicenseKeySearchDisplayContext {
 					"expiration-date", "desc"));
 
 			count = _licenseKeyLocalService.searchCount(
-				searchTerms.getCreatorUserId(),
+				searchTerms.getCreatorUserUuid(),
 				searchTerms.getDate(searchTerms.getCreateDateGT()),
 				searchTerms.getDate(searchTerms.getCreateDateLT()),
-				searchTerms.getModifiedUserId(),
+				searchTerms.getModifiedUserUuid(),
 				searchTerms.getDate(searchTerms.getModifiedDateGT()),
 				searchTerms.getDate(searchTerms.getModifiedDateLT()),
 				searchTerms.getAccountKey(),
