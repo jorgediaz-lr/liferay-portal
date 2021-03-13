@@ -39,11 +39,23 @@ function DatePicker({
 	}, [initialValue]);
 
 	function handleOnValueChange(value) {
-		setValue(value);
+		const newVal = value instanceof Date ? setDateToUTC(value) : value;
+
+		setValue(newVal);
 
 		if (updateFn) {
-			updateFn(value);
+			updateFn(newVal);
 		}
+	}
+
+	// Date returned from date picker is in the user's timezone, however date from converting input string is in UTC. For the sake of uniformity, convert date picker value to UTC.
+
+	function setDateToUTC(date) {
+		const day = date.getDate();
+		const month = date.getMonth();
+		const year = date.getFullYear();
+
+		return new Date(Date.UTC(year, month, day));
 	}
 
 	return (
