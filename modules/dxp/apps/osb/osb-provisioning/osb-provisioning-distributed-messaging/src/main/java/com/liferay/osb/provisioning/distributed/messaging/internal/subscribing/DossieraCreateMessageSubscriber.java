@@ -24,6 +24,7 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ExternalLink;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Note;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.PostalAddress;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductConsumption;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
@@ -39,6 +40,7 @@ import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ContactRoleWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ContactWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.NoteWebService;
+import com.liferay.osb.provisioning.koroneiki.web.service.ProductConsumptionWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductPurchaseWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamRoleWebService;
@@ -120,8 +122,9 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 	protected void checkWarnings(
 			String accountKey, Account account, Account partnerAccount,
 			boolean partnerFirstLineSupport, List<Contact> inactiveContacts,
-			List<Contact> missingContacts, String salesforceOpportunityTypeName,
-			int salesforceOpportunityType)
+			List<Contact> missingContacts,
+			List<ProductPurchase> productPurchases,
+			String salesforceOpportunityTypeName, int salesforceOpportunityType)
 		throws Exception {
 
 		if (Validator.isNull(accountKey) &&
@@ -283,6 +286,54 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			sb.append(").");
 
 			_logWarning(sb.toString());
+		}
+
+		Date now = new Date();
+
+		for (ProductPurchase productPurchase : productPurchases) {
+			Map<String, String> properties = productPurchase.getProperties();
+
+			if (properties != null) {
+				String productType = properties.get("productType");
+
+				if ((productType == null) ||
+					!ArrayUtil.contains(
+						SalesforceConstants.PRODUCT_TYPES_RENEWAL,
+						productType)) {
+
+					continue;
+				}
+			}
+
+			Product product = productPurchase.getProduct();
+
+			sb = new StringBundler(4);
+
+			sb.append("accountKey eq '");
+			sb.append(accountKey);
+			sb.append("' and productKey eq '");
+			sb.append(product.getKey());
+			sb.append("'");
+
+			List<ProductConsumption> productConsumptions =
+				_productConsumptionWebService.search(
+					sb.toString(), 1, 1000, StringPool.BLANK);
+
+			int currentProvisionedCount = 0;
+
+			for (ProductConsumption productConsumption : productConsumptions) {
+				if ((productConsumption.getEndDate() == null) ||
+					now.before(productConsumption.getEndDate())) {
+
+					currentProvisionedCount += 1;
+				}
+			}
+
+			if (currentProvisionedCount > productPurchase.getQuantity()) {
+				_logWarning(
+					"The new purchase quantity of " + product.getName() +
+						" is lower than the current provisioned amount.");
+			}
 		}
 	}
 
@@ -720,8 +771,8 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 		checkWarnings(
 			accountKey, account, partnerAccount, partnerFirstLineSupport,
-			inactiveContacts, missingContacts, salesforceOpportunityTypeName,
-			salesforceOpportunityType);
+			inactiveContacts, missingContacts, productPurchases,
+			salesforceOpportunityTypeName, salesforceOpportunityType);
 
 		String salesforceOpportunityProductFamily = jsonObject.getString(
 			"_salesforceOpportunityProductFamily");
@@ -2090,6 +2141,9 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 	@Reference
 	private Portal _portal;
+
+	@Reference
+	private ProductConsumptionWebService _productConsumptionWebService;
 
 	@Reference
 	private ProductPurchaseWebService _productPurchaseWebService;
