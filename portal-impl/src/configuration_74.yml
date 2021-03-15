@@ -1,6 +1,6 @@
 #
 ignoreColumns: [actionId]
-ignoreTables: [audit_auditevent, counter, cyrusUser, cyrusVirtual, systemEvent]
+ignoreTables: [audit_auditevent, counter, cyrusUser, cyrusVirtual, systemEvent, CTEntry]
 #
 references: [
     #generic references
