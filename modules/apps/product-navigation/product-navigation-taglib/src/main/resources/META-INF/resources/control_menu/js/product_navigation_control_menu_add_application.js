@@ -72,7 +72,7 @@ AUI.add(
 						'.drag-content-item[data-plid=' +
 							event.plid +
 							'][data-portlet-id=' +
-							event.portletId +
+							event.portletId.replace(/_USER_(.*)/, '') +
 							'][data-instanceable=false]'
 					);
 
