@@ -71,7 +71,7 @@ import javax.ws.rs.core.UriInfo;
 @Generated("")
 @Path("/v1.0")
 public abstract class BaseMetricResourceImpl
-	implements MetricResource, EntityModelResource,
+	implements EntityModelResource, MetricResource,
 			   VulcanBatchEngineTaskItemDelegate<Metric> {
 
 	/**
@@ -79,8 +79,8 @@ public abstract class BaseMetricResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/portal-workflow-metrics/v1.0/processes/{processId}/metric'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "processId"),
@@ -93,12 +93,12 @@ public abstract class BaseMetricResourceImpl
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Metric")})
 	public Metric getProcessMetric(
-			@NotNull @Parameter(hidden = true) @PathParam("processId") Long
-				processId,
-			@Parameter(hidden = true) @QueryParam("dateEnd") java.util.Date
-				dateEnd,
-			@Parameter(hidden = true) @QueryParam("dateStart") java.util.Date
-				dateStart,
+			@NotNull @Parameter(hidden = true) @PathParam("processId")
+				Long processId,
+			@Parameter(hidden = true) @QueryParam("dateEnd")
+				java.util.Date dateEnd,
+			@Parameter(hidden = true) @QueryParam("dateStart")
+				java.util.Date dateStart,
 			@NotNull @Parameter(hidden = true) @QueryParam("unit") String unit)
 		throws Exception {
 

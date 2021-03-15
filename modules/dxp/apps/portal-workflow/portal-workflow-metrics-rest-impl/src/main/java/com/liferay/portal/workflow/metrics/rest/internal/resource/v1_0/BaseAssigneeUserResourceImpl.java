@@ -79,15 +79,15 @@ public abstract class BaseAssigneeUserResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/portal-workflow-metrics/v1.0/processes/{processId}/assignee-users'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
+	@Override
 	@Parameters(value = {@Parameter(in = ParameterIn.PATH, name = "processId")})
 	@Path("/processes/{processId}/assignee-users")
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "AssigneeUser")})
 	public Page<AssigneeUser> getProcessAssigneeUsersPage(
-			@NotNull @Parameter(hidden = true) @PathParam("processId") Long
-				processId)
+			@NotNull @Parameter(hidden = true) @PathParam("processId")
+				Long processId)
 		throws Exception {
 
 		return Page.of(Collections.emptyList());

@@ -156,8 +156,8 @@ public class Mutation {
 	public boolean createDataDefinitionDataDefinitionPermission(
 			@GraphQLName("dataDefinitionId") Long dataDefinitionId,
 			@GraphQLName("operation") String operation,
-			@GraphQLName("dataDefinitionPermission") DataDefinitionPermission
-				dataDefinitionPermission)
+			@GraphQLName("dataDefinitionPermission")
+				DataDefinitionPermission dataDefinitionPermission)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
@@ -175,8 +175,8 @@ public class Mutation {
 	public boolean createSiteDataDefinitionPermission(
 			@GraphQLName("siteKey") @NotEmpty String siteKey,
 			@GraphQLName("operation") String operation,
-			@GraphQLName("dataDefinitionPermission") DataDefinitionPermission
-				dataDefinitionPermission)
+			@GraphQLName("dataDefinitionPermission")
+				DataDefinitionPermission dataDefinitionPermission)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
@@ -305,8 +305,8 @@ public class Mutation {
 	public boolean createDataLayoutDataLayoutPermission(
 			@GraphQLName("dataLayoutId") Long dataLayoutId,
 			@GraphQLName("operation") String operation,
-			@GraphQLName("dataLayoutPermission") DataLayoutPermission
-				dataLayoutPermission)
+			@GraphQLName("dataLayoutPermission")
+				DataLayoutPermission dataLayoutPermission)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
@@ -323,8 +323,8 @@ public class Mutation {
 	public boolean createSiteDataLayoutPermission(
 			@GraphQLName("siteKey") @NotEmpty String siteKey,
 			@GraphQLName("operation") String operation,
-			@GraphQLName("dataLayoutPermission") DataLayoutPermission
-				dataLayoutPermission)
+			@GraphQLName("dataLayoutPermission")
+				DataLayoutPermission dataLayoutPermission)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
@@ -534,8 +534,8 @@ public class Mutation {
 	@GraphQLField
 	public DataRecordCollection createDataDefinitionDataRecordCollection(
 			@GraphQLName("dataDefinitionId") Long dataDefinitionId,
-			@GraphQLName("dataRecordCollection") DataRecordCollection
-				dataRecordCollection)
+			@GraphQLName("dataRecordCollection")
+				DataRecordCollection dataRecordCollection)
 		throws Exception {
 
 		return _applyComponentServiceObjects(
@@ -595,8 +595,8 @@ public class Mutation {
 	@GraphQLField
 	public DataRecordCollection updateDataRecordCollection(
 			@GraphQLName("dataRecordCollectionId") Long dataRecordCollectionId,
-			@GraphQLName("dataRecordCollection") DataRecordCollection
-				dataRecordCollection)
+			@GraphQLName("dataRecordCollection")
+				DataRecordCollection dataRecordCollection)
 		throws Exception {
 
 		return _applyComponentServiceObjects(

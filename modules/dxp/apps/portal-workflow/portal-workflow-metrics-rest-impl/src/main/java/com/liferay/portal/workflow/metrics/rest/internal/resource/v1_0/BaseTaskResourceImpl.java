@@ -73,7 +73,7 @@ import javax.ws.rs.core.UriInfo;
 @Generated("")
 @Path("/v1.0")
 public abstract class BaseTaskResourceImpl
-	implements TaskResource, EntityModelResource,
+	implements EntityModelResource, TaskResource,
 			   VulcanBatchEngineTaskItemDelegate<Task> {
 
 	/**
@@ -81,8 +81,8 @@ public abstract class BaseTaskResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/portal-workflow-metrics/v1.0/processes/{processId}/tasks'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "processId"),
@@ -99,14 +99,14 @@ public abstract class BaseTaskResourceImpl
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Task")})
 	public Page<Task> getProcessTasksPage(
-			@NotNull @Parameter(hidden = true) @PathParam("processId") Long
-				processId,
-			@Parameter(hidden = true) @QueryParam("completed") Boolean
-				completed,
-			@Parameter(hidden = true) @QueryParam("dateEnd") java.util.Date
-				dateEnd,
-			@Parameter(hidden = true) @QueryParam("dateStart") java.util.Date
-				dateStart,
+			@NotNull @Parameter(hidden = true) @PathParam("processId")
+				Long processId,
+			@Parameter(hidden = true) @QueryParam("completed")
+				Boolean completed,
+			@Parameter(hidden = true) @QueryParam("dateEnd")
+				java.util.Date dateEnd,
+			@Parameter(hidden = true) @QueryParam("dateStart")
+				java.util.Date dateStart,
 			@Parameter(hidden = true) @QueryParam("key") String key,
 			@Context Pagination pagination, @Context Sort[] sorts)
 		throws Exception {

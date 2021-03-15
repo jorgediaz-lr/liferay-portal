@@ -74,7 +74,7 @@ import javax.ws.rs.core.UriInfo;
 @Generated("")
 @Path("/v1.0")
 public abstract class BaseProcessResourceImpl
-	implements ProcessResource, EntityModelResource,
+	implements EntityModelResource, ProcessResource,
 			   VulcanBatchEngineTaskItemDelegate<Process> {
 
 	/**
@@ -82,8 +82,8 @@ public abstract class BaseProcessResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/portal-workflow-metrics/v1.0/processes'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "title"),
@@ -108,8 +108,8 @@ public abstract class BaseProcessResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/portal-workflow-metrics/v1.0/processes/{processId}'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "processId"),
@@ -122,14 +122,14 @@ public abstract class BaseProcessResourceImpl
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Process")})
 	public Process getProcess(
-			@NotNull @Parameter(hidden = true) @PathParam("processId") Long
-				processId,
-			@Parameter(hidden = true) @QueryParam("completed") Boolean
-				completed,
-			@Parameter(hidden = true) @QueryParam("dateEnd") java.util.Date
-				dateEnd,
-			@Parameter(hidden = true) @QueryParam("dateStart") java.util.Date
-				dateStart)
+			@NotNull @Parameter(hidden = true) @PathParam("processId")
+				Long processId,
+			@Parameter(hidden = true) @QueryParam("completed")
+				Boolean completed,
+			@Parameter(hidden = true) @QueryParam("dateEnd")
+				java.util.Date dateEnd,
+			@Parameter(hidden = true) @QueryParam("dateStart")
+				java.util.Date dateStart)
 		throws Exception {
 
 		return new Process();
@@ -140,15 +140,15 @@ public abstract class BaseProcessResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/portal-workflow-metrics/v1.0/processes/{processId}/title'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
+	@Override
 	@Parameters(value = {@Parameter(in = ParameterIn.PATH, name = "processId")})
 	@Path("/processes/{processId}/title")
 	@Produces("text/plain")
 	@Tags(value = {@Tag(name = "Process")})
 	public String getProcessTitle(
-			@NotNull @Parameter(hidden = true) @PathParam("processId") Long
-				processId)
+			@NotNull @Parameter(hidden = true) @PathParam("processId")
+				Long processId)
 		throws Exception {
 
 		return StringPool.BLANK;

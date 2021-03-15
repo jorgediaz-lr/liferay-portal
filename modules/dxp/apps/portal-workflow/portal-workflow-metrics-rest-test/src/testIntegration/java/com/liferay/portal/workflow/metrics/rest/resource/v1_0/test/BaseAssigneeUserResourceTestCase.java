@@ -204,7 +204,7 @@ public abstract class BaseAssigneeUserResourceTestCase {
 		Long irrelevantProcessId =
 			testGetProcessAssigneeUsersPage_getIrrelevantProcessId();
 
-		if ((irrelevantProcessId != null)) {
+		if (irrelevantProcessId != null) {
 			AssigneeUser irrelevantAssigneeUser =
 				testGetProcessAssigneeUsersPage_addAssigneeUser(
 					irrelevantProcessId, randomIrrelevantAssigneeUser());

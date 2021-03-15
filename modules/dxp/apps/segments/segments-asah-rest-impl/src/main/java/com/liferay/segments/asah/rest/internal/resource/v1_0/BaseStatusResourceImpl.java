@@ -72,7 +72,7 @@ import javax.ws.rs.core.UriInfo;
 @Generated("")
 @Path("/v1.0")
 public abstract class BaseStatusResourceImpl
-	implements StatusResource, EntityModelResource,
+	implements EntityModelResource, StatusResource,
 			   VulcanBatchEngineTaskItemDelegate<Status> {
 
 	/**
@@ -80,18 +80,18 @@ public abstract class BaseStatusResourceImpl
 	 *
 	 * curl -X 'POST' 'http://localhost:8080/o/segments-asah/v1.0/experiments/{experimentId}/status' -d $'{"status": ___, "winnerVariantId": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Consumes({"application/json", "application/xml"})
-	@POST
+	@Override
 	@Parameters(
 		value = {@Parameter(in = ParameterIn.PATH, name = "experimentId")}
 	)
 	@Path("/experiments/{experimentId}/status")
+	@POST
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Status")})
 	public Experiment postExperimentStatus(
-			@NotNull @Parameter(hidden = true) @PathParam("experimentId") Long
-				experimentId,
+			@NotNull @Parameter(hidden = true) @PathParam("experimentId")
+				Long experimentId,
 			Status status)
 		throws Exception {
 

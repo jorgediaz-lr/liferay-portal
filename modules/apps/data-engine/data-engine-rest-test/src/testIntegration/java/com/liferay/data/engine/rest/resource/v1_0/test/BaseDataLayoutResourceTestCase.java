@@ -214,7 +214,7 @@ public abstract class BaseDataLayoutResourceTestCase {
 		Long irrelevantDataDefinitionId =
 			testGetDataDefinitionDataLayoutsPage_getIrrelevantDataDefinitionId();
 
-		if ((irrelevantDataDefinitionId != null)) {
+		if (irrelevantDataDefinitionId != null) {
 			DataLayout irrelevantDataLayout =
 				testGetDataDefinitionDataLayoutsPage_addDataLayout(
 					irrelevantDataDefinitionId, randomIrrelevantDataLayout());
@@ -663,7 +663,7 @@ public abstract class BaseDataLayoutResourceTestCase {
 		Long irrelevantSiteId =
 			testGetSiteDataLayoutsPage_getIrrelevantSiteId();
 
-		if ((irrelevantSiteId != null)) {
+		if (irrelevantSiteId != null) {
 			DataLayout irrelevantDataLayout =
 				testGetSiteDataLayoutsPage_addDataLayout(
 					irrelevantSiteId, randomIrrelevantDataLayout());

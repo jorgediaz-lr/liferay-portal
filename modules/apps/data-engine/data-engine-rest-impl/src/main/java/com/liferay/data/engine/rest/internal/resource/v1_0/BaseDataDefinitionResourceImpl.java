@@ -88,8 +88,8 @@ public abstract class BaseDataDefinitionResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/data-engine/v1.0/data-definitions/data-definition-fields/field-types'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
+	@Override
 	@Path("/data-definitions/data-definition-fields/field-types")
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "DataDefinition")})
@@ -104,8 +104,8 @@ public abstract class BaseDataDefinitionResourceImpl
 	 *
 	 * curl -X 'DELETE' 'http://localhost:8080/o/data-engine/v1.0/data-definitions/{dataDefinitionId}'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@DELETE
+	@Override
 	@Parameters(
 		value = {@Parameter(in = ParameterIn.PATH, name = "dataDefinitionId")}
 	)
@@ -123,9 +123,9 @@ public abstract class BaseDataDefinitionResourceImpl
 	 *
 	 * curl -X 'DELETE' 'http://localhost:8080/o/data-engine/v1.0/data-definitions/batch'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Consumes("application/json")
 	@DELETE
+	@Override
 	@Parameters(
 		value = {@Parameter(in = ParameterIn.QUERY, name = "callbackURL")}
 	)
@@ -133,8 +133,8 @@ public abstract class BaseDataDefinitionResourceImpl
 	@Produces("application/json")
 	@Tags(value = {@Tag(name = "DataDefinition")})
 	public Response deleteDataDefinitionBatch(
-			@Parameter(hidden = true) @QueryParam("callbackURL") String
-				callbackURL,
+			@Parameter(hidden = true) @QueryParam("callbackURL")
+				String callbackURL,
 			Object object)
 		throws Exception {
 
@@ -159,8 +159,8 @@ public abstract class BaseDataDefinitionResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/data-engine/v1.0/data-definitions/{dataDefinitionId}'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
+	@Override
 	@Parameters(
 		value = {@Parameter(in = ParameterIn.PATH, name = "dataDefinitionId")}
 	)
@@ -180,14 +180,14 @@ public abstract class BaseDataDefinitionResourceImpl
 	 *
 	 * curl -X 'PUT' 'http://localhost:8080/o/data-engine/v1.0/data-definitions/{dataDefinitionId}' -d $'{"availableLanguageIds": ___, "dataDefinitionFields": ___, "dataDefinitionKey": ___, "dataDefinitionRules": ___, "dateCreated": ___, "dateModified": ___, "defaultLanguageId": ___, "description": ___, "id": ___, "name": ___, "siteId": ___, "storageType": ___, "userId": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Consumes({"application/json", "application/xml"})
-	@PUT
+	@Override
 	@Parameters(
 		value = {@Parameter(in = ParameterIn.PATH, name = "dataDefinitionId")}
 	)
 	@Path("/data-definitions/{dataDefinitionId}")
 	@Produces({"application/json", "application/xml"})
+	@PUT
 	@Tags(value = {@Tag(name = "DataDefinition")})
 	public DataDefinition putDataDefinition(
 			@NotNull @Parameter(hidden = true) @PathParam("dataDefinitionId")
@@ -203,18 +203,18 @@ public abstract class BaseDataDefinitionResourceImpl
 	 *
 	 * curl -X 'PUT' 'http://localhost:8080/o/data-engine/v1.0/data-definitions/batch'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Consumes("application/json")
-	@PUT
+	@Override
 	@Parameters(
 		value = {@Parameter(in = ParameterIn.QUERY, name = "callbackURL")}
 	)
 	@Path("/data-definitions/batch")
 	@Produces("application/json")
+	@PUT
 	@Tags(value = {@Tag(name = "DataDefinition")})
 	public Response putDataDefinitionBatch(
-			@Parameter(hidden = true) @QueryParam("callbackURL") String
-				callbackURL,
+			@Parameter(hidden = true) @QueryParam("callbackURL")
+				String callbackURL,
 			Object object)
 		throws Exception {
 
@@ -239,9 +239,8 @@ public abstract class BaseDataDefinitionResourceImpl
 	 *
 	 * curl -X 'POST' 'http://localhost:8080/o/data-engine/v1.0/data-definitions/{dataDefinitionId}/data-definition-permissions' -d $'{"addDataDefinition": ___, "definePermissions": ___, "delete": ___, "roleNames": ___, "update": ___, "view": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Consumes({"application/json", "application/xml"})
-	@POST
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "dataDefinitionId"),
@@ -249,13 +248,14 @@ public abstract class BaseDataDefinitionResourceImpl
 		}
 	)
 	@Path("/data-definitions/{dataDefinitionId}/data-definition-permissions")
+	@POST
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "DataDefinition")})
 	public void postDataDefinitionDataDefinitionPermission(
 			@NotNull @Parameter(hidden = true) @PathParam("dataDefinitionId")
 				Long dataDefinitionId,
-			@NotNull @Parameter(hidden = true) @QueryParam("operation") String
-				operation,
+			@NotNull @Parameter(hidden = true) @QueryParam("operation")
+				String operation,
 			DataDefinitionPermission dataDefinitionPermission)
 		throws Exception {
 	}
@@ -265,9 +265,8 @@ public abstract class BaseDataDefinitionResourceImpl
 	 *
 	 * curl -X 'POST' 'http://localhost:8080/o/data-engine/v1.0/sites/{siteId}/data-definition-permissions' -d $'{"addDataDefinition": ___, "definePermissions": ___, "delete": ___, "roleNames": ___, "update": ___, "view": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Consumes({"application/json", "application/xml"})
-	@POST
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "siteId"),
@@ -275,12 +274,13 @@ public abstract class BaseDataDefinitionResourceImpl
 		}
 	)
 	@Path("/sites/{siteId}/data-definition-permissions")
+	@POST
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "DataDefinition")})
 	public void postSiteDataDefinitionPermission(
 			@NotNull @Parameter(hidden = true) @PathParam("siteId") Long siteId,
-			@NotNull @Parameter(hidden = true) @QueryParam("operation") String
-				operation,
+			@NotNull @Parameter(hidden = true) @QueryParam("operation")
+				String operation,
 			DataDefinitionPermission dataDefinitionPermission)
 		throws Exception {
 	}
@@ -290,8 +290,8 @@ public abstract class BaseDataDefinitionResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/data-engine/v1.0/sites/{siteId}/data-definitions'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "siteId"),
@@ -318,11 +318,11 @@ public abstract class BaseDataDefinitionResourceImpl
 	 *
 	 * curl -X 'POST' 'http://localhost:8080/o/data-engine/v1.0/sites/{siteId}/data-definitions' -d $'{"availableLanguageIds": ___, "dataDefinitionFields": ___, "dataDefinitionKey": ___, "dataDefinitionRules": ___, "dateCreated": ___, "dateModified": ___, "defaultLanguageId": ___, "description": ___, "id": ___, "name": ___, "siteId": ___, "storageType": ___, "userId": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Consumes({"application/json", "application/xml"})
-	@POST
+	@Override
 	@Parameters(value = {@Parameter(in = ParameterIn.PATH, name = "siteId")})
 	@Path("/sites/{siteId}/data-definitions")
+	@POST
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "DataDefinition")})
 	public DataDefinition postSiteDataDefinition(
@@ -338,9 +338,8 @@ public abstract class BaseDataDefinitionResourceImpl
 	 *
 	 * curl -X 'POST' 'http://localhost:8080/o/data-engine/v1.0/sites/{siteId}/data-definitions/batch'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Consumes("application/json")
-	@POST
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "siteId"),
@@ -348,12 +347,13 @@ public abstract class BaseDataDefinitionResourceImpl
 		}
 	)
 	@Path("/sites/{siteId}/data-definitions/batch")
+	@POST
 	@Produces("application/json")
 	@Tags(value = {@Tag(name = "DataDefinition")})
 	public Response postSiteDataDefinitionBatch(
 			@NotNull @Parameter(hidden = true) @PathParam("siteId") Long siteId,
-			@Parameter(hidden = true) @QueryParam("callbackURL") String
-				callbackURL,
+			@Parameter(hidden = true) @QueryParam("callbackURL")
+				String callbackURL,
 			Object object)
 		throws Exception {
 
@@ -378,8 +378,8 @@ public abstract class BaseDataDefinitionResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/data-engine/v1.0/sites/{siteId}/data-definitions/{dataDefinitionKey}'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "siteId"),
@@ -479,7 +479,7 @@ public abstract class BaseDataDefinitionResourceImpl
 		for (DataDefinition dataDefinition : dataDefinitions) {
 			putDataDefinition(
 				dataDefinition.getId() != null ? dataDefinition.getId() :
-				(Long)parameters.get("dataDefinitionId"),
+					(Long)parameters.get("dataDefinitionId"),
 				dataDefinition);
 		}
 	}

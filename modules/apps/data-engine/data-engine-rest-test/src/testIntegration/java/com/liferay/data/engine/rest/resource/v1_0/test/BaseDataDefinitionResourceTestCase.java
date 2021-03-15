@@ -431,7 +431,7 @@ public abstract class BaseDataDefinitionResourceTestCase {
 		Long irrelevantSiteId =
 			testGetSiteDataDefinitionsPage_getIrrelevantSiteId();
 
-		if ((irrelevantSiteId != null)) {
+		if (irrelevantSiteId != null) {
 			DataDefinition irrelevantDataDefinition =
 				testGetSiteDataDefinitionsPage_addDataDefinition(
 					irrelevantSiteId, randomIrrelevantDataDefinition());

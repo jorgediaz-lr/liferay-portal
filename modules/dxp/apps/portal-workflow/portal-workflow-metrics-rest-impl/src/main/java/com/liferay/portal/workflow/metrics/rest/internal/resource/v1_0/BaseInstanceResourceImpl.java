@@ -73,7 +73,7 @@ import javax.ws.rs.core.UriInfo;
 @Generated("")
 @Path("/v1.0")
 public abstract class BaseInstanceResourceImpl
-	implements InstanceResource, EntityModelResource,
+	implements EntityModelResource, InstanceResource,
 			   VulcanBatchEngineTaskItemDelegate<Instance> {
 
 	/**
@@ -81,8 +81,8 @@ public abstract class BaseInstanceResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/portal-workflow-metrics/v1.0/processes/{processId}/instances'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "processId"),
@@ -100,16 +100,16 @@ public abstract class BaseInstanceResourceImpl
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Instance")})
 	public Page<Instance> getProcessInstancesPage(
-			@NotNull @Parameter(hidden = true) @PathParam("processId") Long
-				processId,
-			@Parameter(hidden = true) @QueryParam("assigneeUserIds") Long[]
-				assigneeUserIds,
-			@Parameter(hidden = true) @QueryParam("dateEnd") java.util.Date
-				dateEnd,
-			@Parameter(hidden = true) @QueryParam("dateStart") java.util.Date
-				dateStart,
-			@Parameter(hidden = true) @QueryParam("slaStatuses") String[]
-				slaStatuses,
+			@NotNull @Parameter(hidden = true) @PathParam("processId")
+				Long processId,
+			@Parameter(hidden = true) @QueryParam("assigneeUserIds")
+				Long[] assigneeUserIds,
+			@Parameter(hidden = true) @QueryParam("dateEnd")
+				java.util.Date dateEnd,
+			@Parameter(hidden = true) @QueryParam("dateStart")
+				java.util.Date dateStart,
+			@Parameter(hidden = true) @QueryParam("slaStatuses")
+				String[] slaStatuses,
 			@Parameter(hidden = true) @QueryParam("statuses") String[] statuses,
 			@Parameter(hidden = true) @QueryParam("taskKeys") String[] taskKeys,
 			@Context Pagination pagination)
@@ -123,8 +123,8 @@ public abstract class BaseInstanceResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/portal-workflow-metrics/v1.0/processes/{processId}/instances/{instanceId}'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "processId"),
@@ -135,10 +135,10 @@ public abstract class BaseInstanceResourceImpl
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Instance")})
 	public Instance getProcessInstance(
-			@NotNull @Parameter(hidden = true) @PathParam("processId") Long
-				processId,
-			@NotNull @Parameter(hidden = true) @PathParam("instanceId") Long
-				instanceId)
+			@NotNull @Parameter(hidden = true) @PathParam("processId")
+				Long processId,
+			@NotNull @Parameter(hidden = true) @PathParam("instanceId")
+				Long instanceId)
 		throws Exception {
 
 		return new Instance();
