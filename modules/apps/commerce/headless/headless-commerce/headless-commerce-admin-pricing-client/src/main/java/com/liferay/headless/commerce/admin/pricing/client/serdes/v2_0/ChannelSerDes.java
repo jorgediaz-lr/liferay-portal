@@ -188,9 +188,6 @@ public class ChannelSerDes {
 					channel.setType((String)jsonParserFieldValue);
 				}
 			}
-			else if (jsonParserFieldName.equals("status")) {
-				throw new IllegalArgumentException();
-			}
 		}
 
 	}

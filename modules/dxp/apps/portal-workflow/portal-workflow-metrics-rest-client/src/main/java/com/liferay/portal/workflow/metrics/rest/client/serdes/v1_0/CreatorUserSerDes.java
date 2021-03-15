@@ -144,9 +144,6 @@ public class CreatorUserSerDes {
 					creatorUser.setName((String)jsonParserFieldValue);
 				}
 			}
-			else if (jsonParserFieldName.equals("status")) {
-				throw new IllegalArgumentException();
-			}
 		}
 
 	}
