@@ -42,6 +42,9 @@ public class PortletConfigurationTemplatesManagementToolbarDisplayContext
 			liferayPortletRequest, liferayPortletResponse, httpServletRequest,
 			portletConfigurationTemplatesDisplayContext.
 				getArchivedSettingsSearchContainer());
+
+		_portletConfigurationTemplatesDisplayContext =
+			portletConfigurationTemplatesDisplayContext;
 	}
 
 	@Override
@@ -78,6 +81,11 @@ public class PortletConfigurationTemplatesManagementToolbarDisplayContext
 	}
 
 	@Override
+	protected String getDisplayStyle() {
+		return _portletConfigurationTemplatesDisplayContext.getDisplayStyle();
+	}
+
+	@Override
 	protected String[] getDisplayViews() {
 		return new String[] {"list", "descriptive", "icon"};
 	}
@@ -91,5 +99,8 @@ public class PortletConfigurationTemplatesManagementToolbarDisplayContext
 	protected String[] getOrderByKeys() {
 		return new String[] {"name", "modified-date"};
 	}
+
+	private final PortletConfigurationTemplatesDisplayContext
+		_portletConfigurationTemplatesDisplayContext;
 
 }
