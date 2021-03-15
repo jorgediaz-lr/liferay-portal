@@ -22,34 +22,6 @@ export function convertInputToDate(value) {
 }
 
 /**
- * Takes a valid Date object and formats it to the YYYY-MM-DD pattern. Does
- * nothingn when an invalid Date or non Date types are provided.
- * @param {Object|string} date Valid or invalid Date object or string
- * @returns {string|Object} Date string following the YYYY-MM-DD format or the
- * original input.
- */
-export function formatDate(date) {
-	if (date instanceof Date && !isNaN(date)) {
-		const day = new Intl.DateTimeFormat('en-US', {
-			day: '2-digit',
-			timeZone: 'UTC'
-		}).format(date);
-		const month = new Intl.DateTimeFormat('en-US', {
-			month: '2-digit',
-			timeZone: 'UTC'
-		}).format(date);
-		const year = new Intl.DateTimeFormat('en-US', {
-			timeZone: 'UTC',
-			year: 'numeric'
-		}).format(date);
-
-		return `${year}-${month}-${day}`;
-	}
-
-	return date;
-}
-
-/**
  * Source formatter locks @clayui/date-picker at version 3.0.7, which does not
  * provide an API for disabling/enabling date picker while later versions do.
  * This helper manually disables/enables the date picker.

@@ -13,7 +13,7 @@ import ClayDatePicker from '@clayui/date-picker';
 import PropTypes from 'prop-types';
 import React, {useCallback, useEffect, useState} from 'react';
 
-import {convertInputToDate, formatDate} from '../utilities/date';
+import {convertInputToDate} from '../utilities/date';
 
 const YEAR_OFFSET = 30;
 
@@ -30,12 +30,12 @@ function DatePicker({
 		defaultValue
 	]);
 
-	const [value, setValue] = useState(formatDate(initialValue));
+	const [value, setValue] = useState(initialValue);
 
 	const currentYear = new Date().getFullYear();
 
 	useEffect(() => {
-		setValue(formatDate(initialValue));
+		setValue(initialValue);
 	}, [initialValue]);
 
 	function handleOnValueChange(value) {
@@ -46,6 +46,21 @@ function DatePicker({
 		if (updateFn) {
 			updateFn(newVal);
 		}
+	}
+
+	function getUTCAdjustedDate() {
+		if (value instanceof Date) {
+			const utcAdjustedDate = new Date(value.getTime());
+
+			utcAdjustedDate.setHours(
+				utcAdjustedDate.getHours() +
+					utcAdjustedDate.getTimezoneOffset() / 60
+			);
+
+			return utcAdjustedDate;
+		}
+
+		return value;
 	}
 
 	// Date returned from date picker is in the user's timezone, however date from converting input string is in UTC. For the sake of uniformity, convert date picker value to UTC.
@@ -64,7 +79,7 @@ function DatePicker({
 			inputName={inputName}
 			onValueChange={handleOnValueChange}
 			placeholder={placeholder}
-			value={value}
+			value={getUTCAdjustedDate()}
 			years={{
 				end: currentYear + endYearOffset,
 				start: currentYear - startYearOffset
