@@ -94,7 +94,7 @@ public class AddLicenseKeyDisplayContext {
 
 		data.put("redirect", redirect);
 
-		PortletURL selectAccountActionURL = _renderResponse.createRenderURL();
+		PortletURL selectAccountActionURL = _renderResponse.createActionURL();
 
 		selectAccountActionURL.setParameter(
 			ActionRequest.ACTION_NAME, "/licenses/select_account");

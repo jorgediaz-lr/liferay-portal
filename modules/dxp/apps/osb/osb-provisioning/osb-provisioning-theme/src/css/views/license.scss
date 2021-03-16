@@ -1,5 +1,13 @@
 .generate-license-container {
 	margin-bottom: $spacing-default;
+
+	h3 {
+		margin-bottom: $spacing-default;
+	}
+}
+
+.generate-license-sheet {
+	margin: $spacing-default auto $spacing-lg;
 }
 
 .licenses {

@@ -208,6 +208,10 @@
 .external-select-field {
 	display: flex;
 
+	label {
+		width: 100%;
+	}
+
 	.btn {
 		margin-left: $spacing-md;
 	}

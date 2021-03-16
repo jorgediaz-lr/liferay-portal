@@ -12,7 +12,13 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-function GeneralInformation({redirect}) {
+import SelectAccount from './SelectAccount';
+
+function GeneralInformation({
+	redirect,
+	selectAccountActionURL,
+	selectAccountRenderURL
+}) {
 	return (
 		<>
 			<div className="page-steps">
@@ -21,9 +27,22 @@ function GeneralInformation({redirect}) {
 				<span>{Liferay.Language.get('step-1-of-2')}</span>
 			</div>
 
-			<div className="add-items-sheet sheet sheet-lg">
+			<div className="container-fluid-max-xl generate-license-sheet sheet">
 				<div className="generate-license-container">
 					<h3>{Liferay.Language.get('general-information')}</h3>
+
+					<div className="row">
+						<div className="col-md-6 form-group">
+							<h5 className="form-check-inline">
+								{Liferay.Language.get('account')}
+							</h5>
+
+							<SelectAccount
+								actionURL={selectAccountActionURL}
+								dialogURL={selectAccountRenderURL}
+							/>
+						</div>
+					</div>
 
 					<a className="btn btn-secondary" href={redirect}>
 						{Liferay.Language.get('cancel')}
