@@ -10,7 +10,7 @@
  */
 
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {useState} from 'react';
 
 import {
 	ACCOUNTS_PORTLET_NAMESPACE as NAMESPACE,
@@ -139,31 +139,19 @@ AccountDetails.propTypes = {
 };
 
 function ExternalSelect({externalData}) {
-	const formFieldKey = `${NAMESPACE}${externalData.formField}Key`;
-	const formFieldName = `${NAMESPACE}${externalData.formField}Name`;
+	const [fieldKey, setFieldKey] = useState('');
+	const [fieldValue, setFieldValue] = useState('');
 
 	function handleClick() {
 		const assignInputValueFromDialog = fieldData => {
 			const {key, name} = JSON.parse(fieldData);
 
-			const keyInput = document.querySelector(
-				`input[name = "${formFieldKey}"]`
-			);
-
-			if (key && keyInput) {
-				keyInput.value = key;
+			if (key) {
+				setFieldKey(key);
 			}
 
-			const displayInput = document.getElementById(
-				externalData.formField
-			);
-			const nameInput = document.querySelector(
-				`input[name = "${formFieldName}"]`
-			);
-
-			if (displayInput && name && nameInput) {
-				displayInput.value = name;
-				nameInput.value = name;
+			if (name) {
+				setFieldValue(name);
 			}
 		};
 
@@ -172,14 +160,22 @@ function ExternalSelect({externalData}) {
 
 	return (
 		<>
-			<input name={formFieldKey} type="hidden" value={''} />
-			<input name={formFieldName} type="hidden" value={''} />
+			<input
+				name={`${NAMESPACE}${externalData.formField}Key`}
+				type="hidden"
+				value={fieldKey}
+			/>
+			<input
+				name={`${NAMESPACE}${externalData.formField}Name`}
+				type="hidden"
+				value={fieldValue}
+			/>
 
 			<ExternalSelectField
 				clickFn={handleClick}
 				id={externalData.formField}
 				inputSize={FIELD_SIZE_SMALL}
-				value={''}
+				value={fieldValue}
 			/>
 		</>
 	);
