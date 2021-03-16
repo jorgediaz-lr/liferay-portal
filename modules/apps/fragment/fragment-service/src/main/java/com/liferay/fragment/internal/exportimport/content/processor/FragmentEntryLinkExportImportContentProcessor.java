@@ -118,6 +118,10 @@ public class FragmentEntryLinkExportImportContentProcessor
 			editableValuesJSONObject.getJSONObject(
 				_KEY_EDITABLE_FRAGMENT_ENTRY_PROCESSOR);
 
+		_replaceEditableExportContentReferences(
+			editableProcessorJSONObject, exportReferencedContent,
+			portletDataContext, stagedModel);
+
 		if ((editableProcessorJSONObject != null) &&
 			(editableProcessorJSONObject.length() > 0)) {
 
@@ -129,10 +133,6 @@ public class FragmentEntryLinkExportImportContentProcessor
 
 				JSONObject editableJSONObject =
 					editableProcessorJSONObject.getJSONObject(editableKey);
-
-				_replaceMappedFieldExportContentReferences(
-					portletDataContext, stagedModel, editableJSONObject,
-					exportReferencedContent);
 
 				_replaceSegmentsExperienceExportContentReferences(
 					portletDataContext, stagedModel, editableJSONObject);
@@ -195,6 +195,9 @@ public class FragmentEntryLinkExportImportContentProcessor
 			editableValuesJSONObject.getJSONObject(
 				_KEY_EDITABLE_FRAGMENT_ENTRY_PROCESSOR);
 
+		_replaceEditableImportContentReferences(
+			editableProcessorJSONObject, portletDataContext);
+
 		if ((editableProcessorJSONObject != null) &&
 			(editableProcessorJSONObject.length() > 0)) {
 
@@ -206,9 +209,6 @@ public class FragmentEntryLinkExportImportContentProcessor
 
 				JSONObject editableJSONObject =
 					editableProcessorJSONObject.getJSONObject(editableKey);
-
-				_replaceMappedFieldImportContentReferences(
-					portletDataContext, editableJSONObject);
 
 				_replaceSegmentsExperienceImportContentReferences(
 					portletDataContext, editableJSONObject);
@@ -310,6 +310,64 @@ public class FragmentEntryLinkExportImportContentProcessor
 						portletPreferences.getPreferences());
 				}
 			}
+		}
+	}
+
+	private void _replaceEditableExportContentReferences(
+			JSONObject editableProcessorJSONObject,
+			boolean exportReferencedContent,
+			PortletDataContext portletDataContext, StagedModel stagedModel)
+		throws Exception {
+
+		if ((editableProcessorJSONObject == null) ||
+			(editableProcessorJSONObject.length() <= 0)) {
+
+			return;
+		}
+
+		_replaceMappedFieldExportContentReferences(
+			portletDataContext, stagedModel, editableProcessorJSONObject,
+			exportReferencedContent);
+
+		Iterator<String> editableKeysIterator =
+			editableProcessorJSONObject.keys();
+
+		while (editableKeysIterator.hasNext()) {
+			String editableKey = editableKeysIterator.next();
+
+			JSONObject editableJSONObject =
+				editableProcessorJSONObject.getJSONObject(editableKey);
+
+			_replaceEditableExportContentReferences(
+				editableJSONObject, exportReferencedContent, portletDataContext,
+				stagedModel);
+		}
+	}
+
+	private void _replaceEditableImportContentReferences(
+		JSONObject editableProcessorJSONObject,
+		PortletDataContext portletDataContext) {
+
+		if ((editableProcessorJSONObject == null) ||
+			(editableProcessorJSONObject.length() <= 0)) {
+
+			return;
+		}
+
+		_replaceMappedFieldImportContentReferences(
+			portletDataContext, editableProcessorJSONObject);
+
+		Iterator<String> editableKeysIterator =
+			editableProcessorJSONObject.keys();
+
+		while (editableKeysIterator.hasNext()) {
+			String editableKey = editableKeysIterator.next();
+
+			JSONObject editableJSONObject =
+				editableProcessorJSONObject.getJSONObject(editableKey);
+
+			_replaceEditableImportContentReferences(
+				editableJSONObject, portletDataContext);
 		}
 	}
 
