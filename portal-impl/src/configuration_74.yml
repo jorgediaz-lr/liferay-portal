@@ -2,6 +2,11 @@
 ignoreColumns: [actionId]
 ignoreTables: [audit_auditevent, counter, cyrusUser, cyrusVirtual, systemEvent]
 #
+listener : {
+  ignoredClasses: ["DataGuardTestRule", "DeleteAfterTestRunMethodTestRule", "UpgradeProcess"],
+  ignoredMethods: ["Test.setUp", "TestCase.setUp", "TestUtil.setUp", "Fixture.setUp", "Test.tearDown", "TestCase.tearDown", "TestUtil.tearDown", "Fixture.tearDown"]
+}
+#
 references: [
     #generic references
   {origin: {table: ".*", columns: [".*${destTable.PrimaryKey}"]},                                     dest: {table: ".*", columns: ["${destTable.primaryKey}"]}},
