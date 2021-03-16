@@ -306,8 +306,6 @@ public class SPAUtil {
 		new CopyOnWriteArrayList<>();
 	private static volatile String _navigationExceptionSelectorsString;
 
-	private long _cacheExpirationTime;
-
 	static {
 		Class<?> clazz = ServletResponseConstants.class;
 
@@ -329,6 +327,7 @@ public class SPAUtil {
 		_REDIRECT_PARAM_NAME = portletNamespace.concat("redirect");
 	}
 
+	private long _cacheExpirationTime;
 	private ServiceTracker<Object, Object> _navigationExceptionSelectorTracker;
 
 	@Reference
