@@ -317,7 +317,9 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			int productConsumptionCount =
 				(int)_productConsumptionWebService.searchCount(sb.toString());
 
-			if (productConsumptionCount > productPurchase.getQuantity()) {
+			if ((productPurchase.getQuantity() != null) &&
+				(productConsumptionCount > productPurchase.getQuantity())) {
+
 				_logWarning(
 					StringBundler.concat(
 						"The new purchase quantity of ", product.getName(),
@@ -633,6 +635,9 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		}
 
 		zendeskTicket.setDescription(sb.toString());
+
+		zendeskTicket.setEmailCCs(
+			new String[] {account.getContactEmailAddress()});
 
 		zendeskTicket.setRequesterId(
 			_distributedMessagingConfiguration.

@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.Validator;
@@ -79,6 +80,21 @@ public class DefaultZendeskTicketWebService implements ZendeskTicketWebService {
 		}
 
 		ticketJSONObject.put("custom_fields", customFieldsJSONArray);
+
+		if (!ArrayUtil.isEmpty(zendeskTicket.getEmailCCs())) {
+			JSONArray emailCCsJSONArray = JSONFactoryUtil.createJSONArray();
+
+			for (String emailAddress : zendeskTicket.getEmailCCs()) {
+				emailCCsJSONArray.put(
+					JSONUtil.put(
+						"action", "put"
+					).put(
+						"user_email", emailAddress
+					));
+			}
+
+			ticketJSONObject.put("email_ccs", emailCCsJSONArray);
+		}
 
 		if (zendeskTicket.getGroupId() > 0) {
 			ticketJSONObject.put("group_id", zendeskTicket.getGroupId());

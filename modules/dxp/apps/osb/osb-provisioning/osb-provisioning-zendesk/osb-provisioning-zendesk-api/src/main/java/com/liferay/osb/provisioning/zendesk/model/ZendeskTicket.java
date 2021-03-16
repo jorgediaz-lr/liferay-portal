@@ -32,6 +32,10 @@ public class ZendeskTicket {
 		return _description;
 	}
 
+	public String[] getEmailCCs() {
+		return _emailCCs;
+	}
+
 	public long getGroupId() {
 		return _groupId;
 	}
@@ -64,6 +68,10 @@ public class ZendeskTicket {
 		_description = description;
 	}
 
+	public void setEmailCCs(String[] emailCCs) {
+		_emailCCs = emailCCs;
+	}
+
 	public void setGroupId(long groupId) {
 		_groupId = groupId;
 	}
@@ -90,6 +98,7 @@ public class ZendeskTicket {
 
 	private Map<Long, String> _customFields;
 	private String _description;
+	private String[] _emailCCs;
 	private long _groupId;
 	private long _requesterId;
 	private String _status;
