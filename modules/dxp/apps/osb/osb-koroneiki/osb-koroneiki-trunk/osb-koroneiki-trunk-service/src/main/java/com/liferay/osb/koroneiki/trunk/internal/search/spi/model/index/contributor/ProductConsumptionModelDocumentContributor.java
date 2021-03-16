@@ -87,9 +87,9 @@ public class ProductConsumptionModelDocumentContributor
 				"productPurchaseKey", productPurchase.getProductPurchaseKey());
 		}
 
-		document.addTextSortable(Field.NAME, productEntry.getName());
-
 		document.addDate("startDate", productConsumption.getStartDate());
+
+		document.addTextSortable(Field.NAME, productEntry.getName());
 
 		_contributeExternalLinks(
 			document, productConsumption.getProductConsumptionId());
