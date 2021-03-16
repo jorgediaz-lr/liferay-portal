@@ -552,6 +552,7 @@ definition {
 			nodePort = "9080");
 	}
 
+	@description = "This is a use case for LPS-128578 and LPS-69388"
 	@priority = "4"
 	test AssertSSOWithSignAuthnRequests {
 		property test.name.skip.portal.instance = "SAML#AssertSSOWithSignAuthnRequests";
@@ -566,6 +567,8 @@ definition {
 		SAMLNavigation.gotoIdentityProvider();
 
 		SAMLPortlet.configureIdentityProvider(authnRequestSignatureRequired = "disable");
+
+		takeScreenshot();
 
 		SAML.configureLiferaySAMLAsSP(
 			samlEntityID = "samlsp",
@@ -600,7 +603,11 @@ definition {
 
 		User.logoutPG();
 
+		SAML.waitForSLO();
+
 		User.viewLoggedOutPG();
+
+		takeScreenshot();
 
 		SAML.executeSPInitiatedSSO(
 			password = "test",
@@ -637,6 +644,8 @@ definition {
 		User.logoutPG(specificURL = "http://www.able.com:9080");
 
 		User.viewLoggedOutPG();
+
+		takeScreenshot();
 
 		SAML.executeSPInitiatedSSO(
 			password = "test",
