@@ -1584,12 +1584,6 @@ public class DDMTemplateLocalServiceImpl
 
 		long templateId = counterLocalService.increment();
 
-		long smallImageId = 0L;
-
-		if (smallImage) {
-			smallImageId = counterLocalService.increment();
-		}
-
 		DDMTemplate template = ddmTemplatePersistence.create(templateId);
 
 		template.setUuid(serviceContext.getUuid());
@@ -1612,7 +1606,7 @@ public class DDMTemplateLocalServiceImpl
 		template.setScript(script);
 		template.setCacheable(cacheable);
 		template.setSmallImage(smallImage);
-		template.setSmallImageId(smallImageId);
+		template.setSmallImageId(counterLocalService.increment());
 		template.setSmallImageURL(smallImageURL);
 
 		return ddmTemplatePersistence.update(template);
