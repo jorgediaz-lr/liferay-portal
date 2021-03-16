@@ -24,7 +24,6 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ExternalLink;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Note;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.PostalAddress;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
-import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductConsumption;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
@@ -288,8 +287,6 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			_logWarning(sb.toString());
 		}
 
-		Date now = new Date();
-
 		for (ProductPurchase productPurchase : productPurchases) {
 			Map<String, String> properties = productPurchase.getProperties();
 
@@ -307,29 +304,23 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 			Product product = productPurchase.getProduct();
 
+			Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
+				"yyyy-MM-dd'T'HH:mm:ss'Z'");
+
 			sb = new StringBundler(4);
 
 			sb.append("accountKey eq '");
 			sb.append(accountKey);
 			sb.append("' and productKey eq '");
 			sb.append(product.getKey());
-			sb.append("'");
+			sb.append("' and (endDate eq null or endDate le ");
+			sb.append(dateFormat.format(new Date()));
+			sb.append(")");
 
-			List<ProductConsumption> productConsumptions =
-				_productConsumptionWebService.search(
-					sb.toString(), 1, 1000, StringPool.BLANK);
+			int productConsumptionCount =
+				(int)_productConsumptionWebService.searchCount(sb.toString());
 
-			int currentProvisionedCount = 0;
-
-			for (ProductConsumption productConsumption : productConsumptions) {
-				if ((productConsumption.getEndDate() == null) ||
-					now.before(productConsumption.getEndDate())) {
-
-					currentProvisionedCount += 1;
-				}
-			}
-
-			if (currentProvisionedCount > productPurchase.getQuantity()) {
+			if (productConsumptionCount > productPurchase.getQuantity()) {
 				_logWarning(
 					"The new purchase quantity of " + product.getName() +
 						" is lower than the current provisioned amount.");
