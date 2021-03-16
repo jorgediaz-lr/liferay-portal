@@ -304,17 +304,14 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 			Product product = productPurchase.getProduct();
 
-			Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
-				"yyyy-MM-dd'T'HH:mm:ss'Z'");
-
-			sb = new StringBundler(4);
+			sb = new StringBundler(7);
 
 			sb.append("accountKey eq '");
 			sb.append(accountKey);
 			sb.append("' and productKey eq '");
 			sb.append(product.getKey());
 			sb.append("' and (endDate eq null or endDate le ");
-			sb.append(dateFormat.format(new Date()));
+			sb.append(_dateFormat.format(new Date()));
 			sb.append(")");
 
 			int productConsumptionCount =
@@ -322,8 +319,11 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 			if (productConsumptionCount > productPurchase.getQuantity()) {
 				_logWarning(
-					"The new purchase quantity of " + product.getName() +
-						" is lower than the current provisioned amount.");
+					StringBundler.concat(
+						"The new purchase quantity of ", product.getName(),
+						" is ", productPurchase.getQuantity(),
+						" which is lower than the current provisioned amount ",
+						"of ", productConsumptionCount));
 			}
 		}
 	}
@@ -2115,6 +2115,9 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 	@Reference
 	private ContactWebService _contactWebService;
 
+	private final Format _dateFormat =
+		FastDateFormatFactoryUtil.getSimpleDateFormat(
+			"yyyy-MM-dd'T'HH:mm:ss'Z'");
 	private volatile DistributedMessagingConfiguration
 		_distributedMessagingConfiguration;
 
