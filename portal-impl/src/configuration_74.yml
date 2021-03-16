@@ -20,6 +20,7 @@ references: [
   {origin: {table: ".*", columns: ["portraitId"]},                                                    dest: {table: "Image", columns: ["imageId"]}},
   {origin: {table: ".*", columns: ["smallImageId"], condition: "smallImage=[$TRUE$]", conditionColumns: ["smallImage"]}, dest: {table: "Image", columns: ["imageId"]}},
   {origin: {table: ".*", columns: ["smallImageId"]}}, #ignore
+  {origin: {table: "DLFileEntry", columns: [".*imageId"]}}, #ignore
     #userId
   {origin: {table: "^(?!Contact_\\b).*$", columns: ["^(userId|completionUserId|creatorUserId|lastPostByUserId|lockUserId|receiverUserId|replierUserId|rootMessageUserId|statusByUserId|versionUserId)$"]}},
   {origin: {table: ".*", columns: ["userId.+"]}},
