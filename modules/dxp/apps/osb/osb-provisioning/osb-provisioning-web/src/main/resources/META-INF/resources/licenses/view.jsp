@@ -20,6 +20,8 @@
 
 <%
 LicenseKeySearchDisplayContext licenseKeySearchDisplayContext = ProvisioningWebComponentProvider.getLicenseKeySearchDisplayContext(renderRequest, renderResponse, request);
+
+ViewLicenseKeysManagementToolbarDisplayContext viewLicenseKeysManagementToolbarDisplayContext = ProvisioningWebComponentProvider.getViewLicenseKeysManagementToolbarDisplayContext(liferayPortletRequest, liferayPortletResponse, request, licenseKeySearchDisplayContext.getSearchContainer());
 %>
 
 <div class="title-bar">
@@ -45,7 +47,8 @@ LicenseKeySearchDisplayContext licenseKeySearchDisplayContext = ProvisioningWebC
 		</div>
 
 		<clay:management-toolbar
-			displayContext="<%= ProvisioningWebComponentProvider.getViewLicenseKeysManagementToolbarDisplayContext(liferayPortletRequest, liferayPortletResponse, request, licenseKeySearchDisplayContext.getSearchContainer()) %>"
+			clearResultsURL="<%= viewLicenseKeysManagementToolbarDisplayContext.getClearResultsURL() %>"
+			displayContext="<%= viewLicenseKeysManagementToolbarDisplayContext %>"
 			elementClasses="full-width"
 			searchInputName="licenseKeySearchKeywords"
 			showSearch="<%= false %>"

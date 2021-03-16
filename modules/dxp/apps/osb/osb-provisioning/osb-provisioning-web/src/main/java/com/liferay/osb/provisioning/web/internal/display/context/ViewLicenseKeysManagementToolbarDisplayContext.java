@@ -64,7 +64,8 @@ public class ViewLicenseKeysManagementToolbarDisplayContext
 	public String getClearResultsURL() {
 		PortletURL clearResultsURL = getPortletURL();
 
-		clearResultsURL.setParameter("keywords", StringPool.BLANK);
+		clearResultsURL.setParameter(
+			"licenseKeySearchKeywords", StringPool.BLANK);
 
 		return clearResultsURL.toString();
 	}
