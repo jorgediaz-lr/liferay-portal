@@ -16,6 +16,7 @@ package com.liferay.osb.koroneiki.phloem.rest.internal.odata.entity.v1_0;
 
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.odata.entity.CollectionEntityField;
+import com.liferay.portal.odata.entity.DateTimeEntityField;
 import com.liferay.portal.odata.entity.EntityField;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.odata.entity.StringEntityField;
@@ -36,6 +37,9 @@ public class ProductConsumptionEntityModel implements EntityModel {
 	public ProductConsumptionEntityModel(List<String> productFieldNames) {
 		_entityFieldsMap = Stream.of(
 			new StringEntityField("accountKey", locale -> "accountKey"),
+			new DateTimeEntityField(
+				"endDate", locale -> Field.getSortableFieldName("endDate"),
+				locale -> "endDate"),
 			new CollectionEntityField(
 				new StringEntityField(
 					"externalLinkDomains", locale -> "externalLinkDomains")),
@@ -51,7 +55,10 @@ public class ProductConsumptionEntityModel implements EntityModel {
 				"name", locale -> Field.getSortableFieldName("name_String")),
 			new StringEntityField("productKey", locale -> "productEntryKey"),
 			new StringEntityField(
-				"productPurchaseKey", locale -> "productPurchaseKey")
+				"productPurchaseKey", locale -> "productPurchaseKey"),
+			new DateTimeEntityField(
+				"startDate", locale -> Field.getSortableFieldName("startDate"),
+				locale -> "startDate")
 		).collect(
 			Collectors.toMap(EntityField::getName, Function.identity())
 		);
