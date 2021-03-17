@@ -53,10 +53,6 @@ public class LiferayUnitTestRule extends AggregateTestRule {
 
 	private static class LazyInstanceTestRule implements TestRule {
 
-		public LazyInstanceTestRule(String testRuleName) {
-			_testRuleName = testRuleName;
-		}
-
 		@Override
 		public Statement apply(Statement statement, Description description) {
 			ClassLoader classLoader =
@@ -79,6 +75,10 @@ public class LiferayUnitTestRule extends AggregateTestRule {
 			}
 
 			return null;
+		}
+
+		private LazyInstanceTestRule(String testRuleName) {
+			_testRuleName = testRuleName;
 		}
 
 		private final String _testRuleName;
