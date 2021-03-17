@@ -44,10 +44,44 @@ function GeneralInformation({
 						</div>
 					</div>
 
-					<a className="btn btn-secondary" href={redirect}>
-						{Liferay.Language.get('cancel')}
-					</a>
+					<div className="row">
+						<div className="col-md-6 form-group">
+							<h5 className="form-check-inline">
+								{Liferay.Language.get('product')}
+							</h5>
+
+							<select
+								className="form-control"
+								id="product"
+							></select>
+						</div>
+					</div>
+
+					<div className="row">
+						<div className="col-md-6 form-group">
+							<h5 className="form-check-inline">
+								{Liferay.Language.get('version')}
+							</h5>
+
+							<select
+								className="form-control"
+								id="version"
+							></select>
+						</div>
+
+						<div className="col-md-6 form-group">
+							<h5 className="form-check-inline">
+								{Liferay.Language.get('type')}
+							</h5>
+
+							<select className="form-control" id="type"></select>
+						</div>
+					</div>
 				</div>
+
+				<a className="btn btn-secondary" href={redirect}>
+					{Liferay.Language.get('cancel')}
+				</a>
 			</div>
 		</>
 	);
