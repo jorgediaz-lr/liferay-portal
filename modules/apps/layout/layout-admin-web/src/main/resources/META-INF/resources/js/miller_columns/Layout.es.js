@@ -467,7 +467,7 @@ class Layout extends Component {
 	 */
 	_handleTooltipHovered(event) {
 		const element = event.delegateTarget;
-		const tooltip = element.dataset.tooltip;
+		const tooltip = Liferay.Util.escape(element.dataset.tooltip);
 
 		if (tooltip && element.offsetWidth < element.scrollWidth) {
 			element.setAttribute('title', tooltip);
