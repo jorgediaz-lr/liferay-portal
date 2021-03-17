@@ -14,7 +14,7 @@ import React from 'react';
 
 import EditableField from '../../src/main/resources/META-INF/resources/js/components/EditableField';
 
-describe('InlineEdit', () => {
+describe('EditableField', () => {
 	afterEach(cleanup);
 
 	it('renders', () => {

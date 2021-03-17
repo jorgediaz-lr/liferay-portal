@@ -9,10 +9,37 @@
  * distribution rights of the Software.
  */
 
-import {cleanup, render} from '@testing-library/react';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 import React from 'react';
 
 import GeneralInformation from '../../../src/main/resources/META-INF/resources/js/components/license_generation/GeneralInformation';
+
+const licensableProducts = [
+	{
+		productKey: '123',
+		productName: 'Product A',
+		productVersions: [
+			{
+				6.1: [
+					{
+						licenseEntryId: '98765',
+						licenseEntryName: 'Portal Backup',
+						licenseEntryType: 'production'
+					}
+				]
+			},
+			{
+				6.2: [
+					{
+						licenseEntryId: '98765',
+						licenseEntryName: 'Portal Backup',
+						licenseEntryType: 'production'
+					}
+				]
+			}
+		]
+	}
+];
 
 function renderGeneralInformation(props) {
 	return render(
@@ -45,5 +72,59 @@ describe('GeneralInformation', () => {
 		const {getByText} = renderGeneralInformation();
 
 		expect(getByText('cancel')).toBeTruthy();
+	});
+
+	it('displays a disabled Product select if account has not been selected', () => {
+		const {getByLabelText} = renderGeneralInformation();
+
+		expect(getByLabelText('product').disabled).toBeTruthy();
+	});
+
+	it('displays a disabled Type select if account has not been selected', () => {
+		const {getByLabelText} = renderGeneralInformation();
+
+		expect(getByLabelText('type').disabled).toBeTruthy();
+	});
+
+	it('displays a disabled Version select if account has not been selected', () => {
+		const {getByLabelText} = renderGeneralInformation();
+
+		expect(getByLabelText('version').disabled).toBeTruthy();
+	});
+
+	it('displays the account name if one is provided', () => {
+		const {getByDisplayValue} = renderGeneralInformation({
+			accountName: 'Test Account'
+		});
+
+		getByDisplayValue('Test Account');
+	});
+
+	it('populates the Product select with options if a list of licensable products is provided', () => {
+		const {getByLabelText, getByText} = renderGeneralInformation({
+			accountName: 'Test Account',
+			licensableProducts
+		});
+
+		getByText('Product A');
+		expect(getByLabelText('product').disabled).toBeFalsy();
+		expect(getByLabelText('type').disabled).toBeTruthy();
+		expect(getByLabelText('version').disabled).toBeTruthy();
+	});
+
+	it('populates the Version select with options based on the Product selected', () => {
+		const {getByLabelText, getByText} = renderGeneralInformation({
+			accountName: 'Test Account',
+			licensableProducts
+		});
+
+		fireEvent.change(getByLabelText('product'), {
+			target: {value: '123'}
+		});
+
+		getByText('6.1');
+		getByText('6.2');
+		expect(getByLabelText('version').disabled).toBeFalsy();
+		expect(getByLabelText('type').disabled).toBeTruthy();
 	});
 });

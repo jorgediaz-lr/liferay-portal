@@ -16,28 +16,37 @@ import {NAMESPACE} from '../../utilities/constants';
 import {itemSelectorDialogSelection} from '../../utilities/itemSelectorDialogHelper';
 import ExternalSelectField from '../ExternalSelectField';
 
-function SelectAccount({actionURL, dialogURL}) {
+function SelectAccount({
+	accountKey = '',
+	accountName = '',
+	actionURL,
+	dialogURL
+}) {
 	const formRef = useRef();
 
-	const [accountKey, setAccountKey] = useState('');
-	const [accountName, setAccountName] = useState('');
+	const [selectedAccountKey, setSelectedAccountKey] = useState(accountKey);
+	const [selectedAccountName, setSelectedAccountName] = useState(accountName);
 
 	useEffect(() => {
-		if (formRef.current && accountKey !== '') {
+		if (
+			formRef.current &&
+			selectedAccountKey !== '' &&
+			selectedAccountKey !== accountKey
+		) {
 			formRef.current.submit();
 		}
-	}, [accountKey]);
+	}, [accountKey, selectedAccountKey]);
 
 	function handleClick() {
 		const assignInputValueFromDialog = fieldData => {
 			const {key, name} = JSON.parse(fieldData);
 
 			if (key) {
-				setAccountKey(key);
+				setSelectedAccountKey(key);
 			}
 
 			if (name) {
-				setAccountName(name);
+				setSelectedAccountName(name);
 			}
 		};
 
@@ -61,13 +70,13 @@ function SelectAccount({actionURL, dialogURL}) {
 			<input
 				name={`${NAMESPACE}accountKey`}
 				type="hidden"
-				value={accountKey}
+				value={selectedAccountKey}
 			/>
 
 			<ExternalSelectField
 				clickFn={handleClick}
 				id={'accountName'}
-				value={accountName}
+				value={selectedAccountName}
 			/>
 		</form>
 	);

@@ -10,15 +10,29 @@
  */
 
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {useState} from 'react';
 
 import SelectAccount from './SelectAccount';
 
 function GeneralInformation({
+	accountKey = '',
+	accountName = '',
+	licensableProducts = [],
 	redirect,
 	selectAccountActionURL,
 	selectAccountRenderURL
 }) {
+	const [selectedProductKey, setSelectedProductKey] = useState('');
+	const [selectedVersion, setSelectedVersion] = useState('');
+
+	function handleProductOnChange(event) {
+		setSelectedProductKey(event.target.value);
+	}
+
+	function handleVersionOnChange(event) {
+		setSelectedVersion(event.target.value);
+	}
+
 	return (
 		<>
 			<div className="page-steps">
@@ -38,6 +52,8 @@ function GeneralInformation({
 							</h5>
 
 							<SelectAccount
+								accountKey={accountKey}
+								accountName={accountName}
 								actionURL={selectAccountActionURL}
 								dialogURL={selectAccountRenderURL}
 							/>
@@ -46,35 +62,81 @@ function GeneralInformation({
 
 					<div className="row">
 						<div className="col-md-6 form-group">
-							<h5 className="form-check-inline">
+							<label htmlFor="product">
 								{Liferay.Language.get('product')}
-							</h5>
+							</label>
 
 							<select
 								className="form-control"
+								disabled={!licensableProducts.length}
 								id="product"
-							></select>
+								onChange={handleProductOnChange}
+							>
+								{!!licensableProducts.length && (
+									<>
+										<option value=""></option>
+										{licensableProducts.map(product => (
+											<option
+												key={product.productKey}
+												value={product.productKey}
+											>
+												{product.productName}
+											</option>
+										))}
+									</>
+								)}
+							</select>
 						</div>
 					</div>
 
 					<div className="row">
 						<div className="col-md-6 form-group">
-							<h5 className="form-check-inline">
+							<label htmlFor="version">
 								{Liferay.Language.get('version')}
-							</h5>
+							</label>
 
 							<select
 								className="form-control"
+								disabled={!selectedProductKey}
 								id="version"
-							></select>
+								onChange={handleVersionOnChange}
+							>
+								{!!selectedProductKey && (
+									<>
+										<option value=""></option>
+										{licensableProducts
+											.find(
+												product =>
+													product.productKey ===
+													selectedProductKey
+											)
+											.productVersions.map(version =>
+												Object.keys(version)
+											)
+											.flat()
+											.map((version, index) => (
+												<option
+													key={index}
+													value={version}
+												>
+													{version}
+												</option>
+											))}
+									</>
+								)}
+							</select>
 						</div>
 
 						<div className="col-md-6 form-group">
-							<h5 className="form-check-inline">
+							<label htmlFor="type">
 								{Liferay.Language.get('type')}
-							</h5>
+							</label>
 
-							<select className="form-control" id="type"></select>
+							<select
+								className="form-control"
+								disabled={!selectedVersion}
+								id="type"
+							></select>
 						</div>
 					</div>
 				</div>
@@ -88,6 +150,15 @@ function GeneralInformation({
 }
 
 GeneralInformation.propTypes = {
+	accountKey: PropTypes.string,
+	accountName: PropTypes.string,
+	licensableProducts: PropTypes.arrayOf(
+		PropTypes.shape({
+			productKey: PropTypes.string,
+			productName: PropTypes.string,
+			productVersions: PropTypes.array
+		})
+	),
 	redirect: PropTypes.string.isRequired,
 	selectAccountActionURL: PropTypes.string.isRequired,
 	selectAccountRenderURL: PropTypes.string.isRequired

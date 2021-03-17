@@ -127,7 +127,7 @@ public class AddLicenseKeyDisplayContext {
 		data.put("addLicenseKeyURL", addLicenseKeyURL.toString());
 
 		data.put("description", _account.getName());
-		data.put("licenseProducts", _getLicenseProductsJSONArray());
+		data.put("licensableProducts", _getLicensableProductsJSONArray());
 
 		List<Integer> maxHttpSessions = new ArrayList<>();
 
@@ -198,8 +198,8 @@ public class AddLicenseKeyDisplayContext {
 		);
 	}
 
-	private JSONArray _getLicenseProductsJSONArray() throws Exception {
-		JSONArray licenseProductsJSONArray = JSONFactoryUtil.createJSONArray();
+	private JSONArray _getLicensableProductsJSONArray() throws Exception {
+		JSONArray licensableProductsJSONArray = JSONFactoryUtil.createJSONArray();
 
 		List<Product> products = _productWebService.getProducts(
 			StringPool.BLANK, "property_licenses eq 'true'", 1, 1000,
@@ -243,7 +243,7 @@ public class AddLicenseKeyDisplayContext {
 					JSONUtil.put(version, licenseEntriesJSONArray));
 			}
 
-			licenseProductsJSONArray.put(
+			licensableProductsJSONArray.put(
 				JSONUtil.put(
 					"detached", _getDetachedDetails(product.getKey())
 				).put(
@@ -251,11 +251,11 @@ public class AddLicenseKeyDisplayContext {
 				).put(
 					"productName", product.getName()
 				).put(
-					"productVersion", versionJSONArray
+					"productVersions", versionJSONArray
 				));
 		}
 
-		return licenseProductsJSONArray;
+		return licensableProductsJSONArray;
 	}
 
 	private JSONArray _getPurchasedProductsJSONArray() throws Exception {
