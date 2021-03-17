@@ -507,7 +507,8 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 		zendeskTicket.setCustomFields(customFields);
 
-		StringBundler sb = new StringBundler(14);
+		StringBundler sb = new StringBundler(
+			15 + (productPurchases.size() * 9));
 
 		String accountName = account.getName();
 
@@ -586,27 +587,38 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			Product product = productPurchase.getProduct();
 
 			sb.append("<br /><br />");
-			sb.append(product.getName());
-			sb.append("<br />Start Date - End Date: ");
-			sb.append(getDateRange(productPurchase));
 
 			Map<String, String> properties = productPurchase.getProperties();
 
 			if (properties != null) {
 				String productType = properties.get("productType");
 
-				if ((productType != null) &&
-					!productTypes.contains(productType)) {
+				if (productType != null) {
+					sb.append(properties.get("productType"));
+					sb.append(StringPool.SPACE);
 
-					if (!productTypes.isEmpty()) {
-						subjectSB.append(", ");
+					if (!productTypes.contains(productType)) {
+						if (!productTypes.isEmpty()) {
+							subjectSB.append(", ");
+						}
+
+						subjectSB.append(productType);
+
+						productTypes.add(productType);
 					}
-
-					subjectSB.append(productType);
-
-					productTypes.add(productType);
 				}
 			}
+
+			sb.append(product.getName());
+
+			if (productPurchase.getQuantity() != null) {
+				sb.append(" (");
+				sb.append(productPurchase.getQuantity());
+				sb.append(")");
+			}
+
+			sb.append("<br />Start Date - End Date: ");
+			sb.append(getDateRange(productPurchase));
 		}
 
 		if (!productTypes.isEmpty()) {
