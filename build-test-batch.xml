@@ -3409,20 +3409,14 @@ log.sanitizer.enabled=false</echo>
 	<macrodef name="stop-suite-search-engine">
 		<sequential>
 			<if>
-				<or>
-					<equals arg1="${suite.search.engine}" arg2="remote-elasticsearch6" />
-					<equals arg1="${suite.search.engine}" arg2="remote-elasticsearch6-jdk11" />
-				</or>
+				<contains string="${suite.search.engine}" substring="remote-elasticsearch6" />
 				<then>
 					<ant antfile="build-test-elasticsearch6.xml" target="stop-elasticsearch" />
 				</then>
 			</if>
 
 			<if>
-				<or>
-					<equals arg1="${suite.search.engine}" arg2="remote-elasticsearch7" />
-					<equals arg1="${suite.search.engine}" arg2="remote-elasticsearch7-jdk11" />
-				</or>
+				<contains string="${suite.search.engine}" substring="remote-elasticsearch7" />
 				<then>
 					<ant antfile="build-test-elasticsearch7.xml" target="stop-elasticsearch" />
 				</then>
