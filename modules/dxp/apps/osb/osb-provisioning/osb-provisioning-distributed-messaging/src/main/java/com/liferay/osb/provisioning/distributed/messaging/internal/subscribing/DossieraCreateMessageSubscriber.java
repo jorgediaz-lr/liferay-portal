@@ -1493,38 +1493,33 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			dossieraExternalLink.setEntityName(
 				ExternalLinkEntityName.DOSSIERA_PROJECT);
 			dossieraExternalLink.setEntityId(dossieraProjectKey);
-		}
-		else {
-			JSONObject accountJSONObject = jsonObject.getJSONObject("_account");
 
-			String dossieraAccountKey = accountJSONObject.getString(
-				"_dossieraAccountKey");
+			String salesforceProjectKey = projectJSONObject.getString(
+				"_salesforceProjectKey");
 
-			dossieraExternalLink.setDomain(ExternalLinkDomain.DOSSIERA);
-			dossieraExternalLink.setEntityName(
-				ExternalLinkEntityName.DOSSIERA_ACCOUNT);
-			dossieraExternalLink.setEntityId(dossieraAccountKey);
-		}
+			ExternalLink projectExternalLink = new ExternalLink();
 
-		String salesforceProjectKey = jsonObject.getString(
-			"_salesforceProjectKey");
+			projectExternalLink.setDomain(ExternalLinkDomain.SALESFORCE);
+			projectExternalLink.setEntityName(
+				ExternalLinkEntityName.SALESFORCE_PROJECT);
+			projectExternalLink.setEntityId(salesforceProjectKey);
 
-		if (Validator.isNull(salesforceProjectKey)) {
 			return new ExternalLink[] {
-				accountExternalLink, dossieraExternalLink
+				accountExternalLink, dossieraExternalLink, projectExternalLink
 			};
 		}
 
-		ExternalLink projectExternalLink = new ExternalLink();
+		JSONObject accountJSONObject = jsonObject.getJSONObject("_account");
 
-		projectExternalLink.setDomain(ExternalLinkDomain.SALESFORCE);
-		projectExternalLink.setEntityName(
-			ExternalLinkEntityName.SALESFORCE_PROJECT);
-		projectExternalLink.setEntityId(salesforceProjectKey);
+		String dossieraAccountKey = accountJSONObject.getString(
+			"_dossieraAccountKey");
 
-		return new ExternalLink[] {
-			accountExternalLink, dossieraExternalLink, projectExternalLink
-		};
+		dossieraExternalLink.setDomain(ExternalLinkDomain.DOSSIERA);
+		dossieraExternalLink.setEntityName(
+			ExternalLinkEntityName.DOSSIERA_ACCOUNT);
+		dossieraExternalLink.setEntityId(dossieraAccountKey);
+
+		return new ExternalLink[] {accountExternalLink, dossieraExternalLink};
 	}
 
 	protected Account parsePartnerAccount(JSONObject jsonObject)
