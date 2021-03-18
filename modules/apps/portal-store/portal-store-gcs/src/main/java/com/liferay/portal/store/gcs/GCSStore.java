@@ -44,7 +44,7 @@ import com.liferay.portal.kernel.util.DigesterUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.store.gcs.configuration.GCSStoreConfiguration;
 
-import java.io.FileInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -512,8 +512,10 @@ public class GCSStore extends BaseStore {
 	}
 
 	private void _initGCSStore() throws PortalException {
-		try (InputStream inputStream = new FileInputStream(
-				_gcsStoreConfiguration.authFileLocation())) {
+		String serviceAccountKey = _gcsStoreConfiguration.serviceAccountKey();
+
+		try (InputStream inputStream = new ByteArrayInputStream(
+				serviceAccountKey.getBytes())) {
 
 			_googleCredentials = ServiceAccountCredentials.fromStream(
 				inputStream);
