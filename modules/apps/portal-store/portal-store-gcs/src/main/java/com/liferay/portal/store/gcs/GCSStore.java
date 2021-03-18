@@ -41,7 +41,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Digester;
 import com.liferay.portal.kernel.util.DigesterUtil;
-import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.store.gcs.configuration.GCSStoreConfiguration;
 
@@ -489,7 +488,7 @@ public class GCSStore extends BaseStore {
 	}
 
 	private void _initEncryption() {
-		String key = PropsUtil.get("dl.store.gcs.aes256.key");
+		String key = _gcsStoreConfiguration.aes256Key();
 
 		if (Validator.isNull(key)) {
 			if (_log.isWarnEnabled()) {
