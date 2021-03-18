@@ -19,6 +19,7 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchaseView;
 import com.liferay.osb.provisioning.constants.ProvisioningWebKeys;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
+import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.vulcan.util.TransformUtil;
@@ -69,6 +70,8 @@ public class ViewSubscriptionDisplayContext extends ViewAccountDisplayContext {
 			"accountKey", _productPurchaseViewDisplay.getAccountKey());
 		portletURL.setParameter(
 			"productKey", _productPurchaseViewDisplay.getProductKey());
+		portletURL.setParameter(
+			"tabs1", ParamUtil.getString(renderRequest, "tabs1"));
 
 		return portletURL;
 	}

@@ -20,6 +20,8 @@
 ViewSubscriptionDisplayContext viewSubscriptionDisplayContext = ProvisioningWebComponentProvider.getViewSubscriptionDisplayContext(renderRequest, renderResponse, request);
 
 viewSubscriptionDisplayContext.addPortletBreadcrumbEntries();
+
+String tabs1 = ParamUtil.getString(request, "tabs1");
 %>
 
 <liferay-util:include page="/accounts/view_subscription_header.jsp" servletContext="<%= application %>" />
@@ -27,11 +29,18 @@ viewSubscriptionDisplayContext.addPortletBreadcrumbEntries();
 <div class="subscription" id="account">
 	<div class="subscription-content">
 		<liferay-ui:tabs
-			names="terms"
+			names="subscription-terms,licenses"
 			portletURL="<%= viewSubscriptionDisplayContext.getPortletURL() %>"
 		/>
 
-		<liferay-util:include page="/accounts/view_subscription_terms.jsp" servletContext="<%= application %>" />
+		<c:choose>
+			<c:when test='<%= tabs1.equals("licenses") %>'>
+				<liferay-util:include page="/accounts/view_account_license_keys.jsp" servletContext="<%= application %>" />
+			</c:when>
+			<c:otherwise>
+				<liferay-util:include page="/accounts/view_subscription_terms.jsp" servletContext="<%= application %>" />
+			</c:otherwise>
+		</c:choose>
 	</div>
 
 	<div class="side-panel" id="sidePanel">

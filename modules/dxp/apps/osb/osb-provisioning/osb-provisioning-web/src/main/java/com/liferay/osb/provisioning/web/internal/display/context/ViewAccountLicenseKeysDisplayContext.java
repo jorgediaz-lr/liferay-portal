@@ -27,6 +27,8 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import javax.portlet.PortletURL;
+
 /**
  * @author Kyle Bischof
  */
@@ -34,6 +36,31 @@ public class ViewAccountLicenseKeysDisplayContext
 	extends ViewAccountDisplayContext {
 
 	public ViewAccountLicenseKeysDisplayContext() {
+	}
+
+	@Override
+	public void doInit() throws Exception {
+		super.doInit();
+
+		_productKeys = ParamUtil.getStringValues(renderRequest, "productKey");
+	}
+
+	@Override
+	public PortletURL getPortletURL() {
+		if (_productKeys.length > 0) {
+			PortletURL portletURL = renderResponse.createRenderURL();
+
+			portletURL.setParameter(
+				"mvcRenderCommandName", "/accounts/view_subscription");
+			portletURL.setParameter(
+				"tabs1", ParamUtil.getString(renderRequest, "tabs1"));
+			portletURL.setParameter("accountKey", account.getKey());
+			portletURL.setParameter("productKey", _productKeys[0]);
+
+			return portletURL;
+		}
+
+		return super.getPortletURL();
 	}
 
 	public SearchContainer getSearchContainer() throws Exception {
@@ -56,7 +83,7 @@ public class ViewAccountLicenseKeysDisplayContext
 
 			licenseKeys = licenseKeyLocalService.search(
 				null, null, null, null, null, null, account.getKey(), null,
-				null, null, now, new long[0], new String[0], null, null,
+				null, null, now, new long[0], _productKeys, null, null,
 				new String[0], null, null, null, null, null, null, null, now,
 				null, params, true, searchContainer.getStart(),
 				searchContainer.getEnd(),
@@ -65,7 +92,7 @@ public class ViewAccountLicenseKeysDisplayContext
 
 			count = licenseKeyLocalService.searchCount(
 				null, null, null, null, null, null, account.getKey(), null,
-				null, null, null, new long[0], new String[0], null, null,
+				null, null, null, new long[0], _productKeys, null, null,
 				new String[0], null, null, null, null, null, null, null, now,
 				null, params, true);
 		}
@@ -76,7 +103,7 @@ public class ViewAccountLicenseKeysDisplayContext
 
 			licenseKeys = licenseKeyLocalService.search(
 				null, null, null, null, null, null, account.getKey(), null,
-				null, null, null, new long[0], new String[0], null, null,
+				null, null, null, new long[0], _productKeys, null, null,
 				new String[0], null, null, null, null, null, null, null, null,
 				null, params, true, searchContainer.getStart(),
 				searchContainer.getEnd(),
@@ -85,14 +112,14 @@ public class ViewAccountLicenseKeysDisplayContext
 
 			count = licenseKeyLocalService.searchCount(
 				null, null, null, null, null, null, account.getKey(), null,
-				null, null, null, new long[0], new String[0], null, null,
+				null, null, null, new long[0], _productKeys, null, null,
 				new String[0], null, null, null, null, null, null, null, null,
 				null, params, true);
 		}
 		else if (tabs2.equals("expired")) {
 			licenseKeys = licenseKeyLocalService.search(
 				null, null, null, null, null, null, account.getKey(), null,
-				null, null, null, new long[0], new String[0], null, null,
+				null, null, null, new long[0], _productKeys, null, null,
 				new String[0], null, null, null, null, null, null, null, null,
 				now, new LinkedHashMap<>(), true, searchContainer.getStart(),
 				searchContainer.getEnd(),
@@ -101,25 +128,25 @@ public class ViewAccountLicenseKeysDisplayContext
 
 			count = licenseKeyLocalService.searchCount(
 				null, null, null, null, null, null, account.getKey(), null,
-				null, null, null, new long[0], new String[0], null, null,
+				null, null, null, new long[0], _productKeys, null, null,
 				new String[0], null, null, null, null, null, null, null, null,
 				now, new LinkedHashMap<>(), true);
 		}
 		else {
 			licenseKeys = licenseKeyLocalService.search(
 				null, null, null, null, null, null, account.getKey(), null,
-				null, null, null, new long[0], new String[0], null, null,
+				null, null, null, new long[0], _productKeys, null, null,
 				new String[0], null, null, null, null, null, null, null, null,
-				null, new LinkedHashMap<>(), false, searchContainer.getStart(),
+				null, new LinkedHashMap<>(), true, searchContainer.getStart(),
 				searchContainer.getEnd(),
 				LicenseUtil.getLicenseKeyOrderByComparator(
 					"expiration-date", "desc"));
 
 			count = licenseKeyLocalService.searchCount(
 				null, null, null, null, null, null, account.getKey(), null,
-				null, null, null, new long[0], new String[0], null, null,
+				null, null, null, new long[0], _productKeys, null, null,
 				new String[0], null, null, null, null, null, null, null, null,
-				null, new LinkedHashMap<>(), false);
+				null, new LinkedHashMap<>(), true);
 		}
 
 		searchContainer.setResults(
@@ -143,40 +170,40 @@ public class ViewAccountLicenseKeysDisplayContext
 		params.put("active", true);
 
 		int activeLicenseKeysCount = licenseKeyLocalService.searchCount(
-			null, null, null, null, null, null, account.getKey(), null,
-			account.getName(), null, null, new long[0], new String[0], null,
-			null, new String[0], null, null, null, null, null, null, null, now,
-			null, params, true);
+			null, null, null, null, null, null, account.getKey(), null, null,
+			null, null, new long[0], _productKeys, null, null, new String[0],
+			null, null, null, null, null, null, null, now, null, params, true);
 
 		tabsNames.add(getTabName("active", activeLicenseKeysCount));
 
 		int expiredLicenseKeysCount = licenseKeyLocalService.searchCount(
-			null, null, null, null, null, null, account.getKey(), null,
-			account.getName(), null, null, new long[0], new String[0], null,
-			null, new String[0], null, null, null, null, null, null, null, null,
-			now, new LinkedHashMap<>(), true);
+			null, null, null, null, null, null, account.getKey(), null, null,
+			null, null, new long[0], _productKeys, null, null, new String[0],
+			null, null, null, null, null, null, null, null, now,
+			new LinkedHashMap<>(), true);
 
 		tabsNames.add(getTabName("expired", expiredLicenseKeysCount));
 
 		params.put("active", false);
 
 		int deactivatedLicenseKeysCount = licenseKeyLocalService.searchCount(
-			null, null, null, null, null, null, account.getKey(), null,
-			account.getName(), null, null, new long[0], new String[0], null,
-			null, new String[0], null, null, null, null, null, null, null, null,
-			null, params, true);
+			null, null, null, null, null, null, account.getKey(), null, null,
+			null, null, new long[0], _productKeys, null, null, new String[0],
+			null, null, null, null, null, null, null, null, null, params, true);
 
 		tabsNames.add(getTabName("deactivated", deactivatedLicenseKeysCount));
 
 		int allLicenseKeysCount = licenseKeyLocalService.searchCount(
-			null, null, null, null, null, null, account.getKey(), null,
-			account.getName(), null, null, new long[0], new String[0], null,
-			null, new String[0], null, null, null, null, null, null, null, null,
-			null, new LinkedHashMap<>(), false);
+			null, null, null, null, null, null, account.getKey(), null, null,
+			null, null, new long[0], _productKeys, null, null, new String[0],
+			null, null, null, null, null, null, null, null, null,
+			new LinkedHashMap<>(), true);
 
 		tabsNames.add(getTabName("all", allLicenseKeysCount));
 
 		return StringUtil.merge(tabsNames);
 	}
+
+	private String[] _productKeys;
 
 }
