@@ -24,6 +24,12 @@ ViewAccountDisplayContext viewAccountDisplayContext = ProvisioningWebComponentPr
 viewAccountDisplayContext.addPortletBreadcrumbEntries();
 
 String tabs1 = ParamUtil.getString(request, "tabs1");
+
+String tabNames = "subscriptions,details,contacts,liferay-workers,teams,related-accounts,support,history";
+
+if (provisioningWebConfiguration.licensesPortletEnabled()) {
+	tabNames = StringUtil.insert(tabNames, "licenses,", 47);
+}
 %>
 
 <liferay-util:include page="/accounts/view_account_header.jsp" servletContext="<%= application %>" />
@@ -31,7 +37,7 @@ String tabs1 = ParamUtil.getString(request, "tabs1");
 <div class="account" id="account">
 	<div class="account-content">
 		<liferay-ui:tabs
-			names="subscriptions,details,contacts,liferay-workers,licenses,teams,related-accounts,support,history"
+			names="<%= tabNames %>"
 			portletURL="<%= viewAccountDisplayContext.getPortletURL() %>"
 		/>
 
