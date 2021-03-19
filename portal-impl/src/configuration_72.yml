@@ -15,7 +15,7 @@ references: [
   {origin: {table: ".*", columns: ["groupId", "companyId"], condition: "groupId<>0"},                 dest: {table: "Group_", columns: ["groupId", "companyId"]}},
   {origin: {table: ".*", columns: ["groupId", "folderId"], condition: "folderId<>0"},                 dest: {table: ".*Folder", columns: ["groupId","folderId"]}},
   {origin: {table: ".*", columns: ["folderId", "treePath"], condition: "folderId<>0"},                dest: {table: ".*Folder", columns: ["folderId", "treePath"]}},
-  {origin: {table: ".*", columns: [".*storageId"]},                                                   dest: {table: "DDMField", columns: ["storageId"]}},
+  {origin: {table: ".*", columns: ["ddmStorageId"]},                                                  dest: {table: "DDMContent", columns: ["contentId"]}},
   {origin: {table: ".*", columns: [".*FileEntryId"]},                                                 dest: {table: "DLFileEntry", columns: ["fileEntryId"]}},
   {origin: {table: ".*", columns: ["layoutId"]},                                                      dest: {table: "Layout", columns: ["layoutId"]}},
   {origin: {table: ".*", columns: ["layoutUuid"]},                                                    dest: {table: "Layout", columns: ["uuid_"]}, fixAction: "update" },
@@ -48,6 +48,9 @@ references: [
   {origin: {table: "AssetCategory",  columns: ["leftCategoryid"]}}, #ignore
   {origin: {table: "AssetCategory",  columns: ["rightCategoryid"]}}, #ignore
   {origin: {table: "AssetLink",      columns: ["entryId.*"]},                                         dest: {table: "AssetEntry",  columns: ["entryId"]}},
+  {origin: {table: "DDMStorageLink", columns: ["structureVersionId"]}}, #ignore
+  {origin: {table: "DDMStorageLink", columns: ["structureVersionId"], condition: "classNameId in (select classNameId from ClassName_ where value<>'${JournalArticle.className}')"}, dest: {table: "DDMStructureVersion", columns: ["structureVersionId"]}},
+  {origin: {table: "DDMStorageLink", columns: ["structureVersionId"], condition: "classNameId in (select classNameId from ClassName_ where value='${JournalArticle.className}')"}, dest: {table: "DDMStructureVersion", columns: ["structureId"]}},
   {origin: {table: "DL.*",           columns: ["repositoryId"]}}, #ignore
   {origin: {table: "DL.*",           columns: ["repositoryId"], condition: "repositoryId<>groupId", conditionColumns: ["groupId"]}, dest: {table: "Repository",      columns: ["repositoryId"]}},
   {origin: {table: "DL.*",           columns: ["repositoryId"], condition: "repositoryId=groupId", conditionColumns: ["groupId"]},  dest: {table: "Group_",          columns: ["groupId"]}},
@@ -174,10 +177,9 @@ tableToClassNameMapping : {
     "DDLRecordSet" : "com.liferay.dynamic.data.lists.model.DDLRecordSet",
     "DDLRecordSetVersion" : "com.liferay.dynamic.data.lists.model.DDLRecordSetVersion",
     "DDLRecordVersion" : "com.liferay.dynamic.data.lists.model.DDLRecordVersion",
+    "DDMContent" : "com.liferay.dynamic.data.mapping.model.DDMContent",
     "DDMDataProviderInstance" : "com.liferay.dynamic.data.mapping.model.DDMDataProviderInstance",
     "DDMDataProviderInstanceLink" : "com.liferay.dynamic.data.mapping.model.DDMDataProviderInstanceLink",
-    "DDMField" : "com.liferay.dynamic.data.mapping.model.DDMField",
-    "DDMFieldAttribute" : "com.liferay.dynamic.data.mapping.model.DDMFieldAttribute",
     "DDMFormInstance" : "com.liferay.dynamic.data.mapping.model.DDMFormInstance",
     "DDMFormInstanceRecord" : "com.liferay.dynamic.data.mapping.model.DDMFormInstanceRecord",
     "DDMFormInstanceRecordVersion" : "com.liferay.dynamic.data.mapping.model.DDMFormInstanceRecordVersion",
@@ -301,7 +303,6 @@ tableToClassNameMapping : {
     "Portlet" : "com.liferay.portal.kernel.model.Portlet",
     "PortletItem" : "com.liferay.portal.kernel.model.PortletItem",
     "PortletPreferences" : "com.liferay.portal.kernel.model.PortletPreferences",
-    "PortletPreferenceValue" : "com.liferay.portal.kernel.model.PortletPreferenceValue",
     "PushNotificationsDevice" : "com.liferay.push.notifications.model.PushNotificationsDevice",
     "RatingsEntry" : "com.liferay.ratings.kernel.model.RatingsEntry",
     "RatingsStats" : "com.liferay.ratings.kernel.model.RatingsStats",
@@ -428,28 +429,7 @@ tableToClassNameMapping : {
     "SharingEntry" : "com.liferay.sharing.model.SharingEntry",
     "CTCollection_CTEntryAggregate" : "",
     "CTCollections_CTEntries" : "",
-    "CTEntryAggregates_CTEntries" : "",
-    #new 73 tables
-    "AccountEntry" : "com.liferay.account.model.AccountEntry",
-    "AccountEntryOrganizationRel" : "com.liferay.account.model.AccountEntryOrganizationRel",
-    "AccountEntryUserRel" : "com.liferay.account.model.AccountEntryUserRel",
-    "AccountRole" : "com.liferay.account.model.AccountRole",
-    "AppBuilderApp" : "com.liferay.app.builder.model.AppBuilderApp",
-    "AppBuilderAppDeployment" : "com.liferay.app.builder.model.AppBuilderAppDeployment",
-    "CTAutoResolutionInfo" : "com.liferay.change.tracking.model.CTAutoResolutionInfo",
-    "CTMessage" : "com.liferay.change.tracking.model.CTMessage",
-    "CTPreferences" : "com.liferay.change.tracking.model.CTPreferences",
-    "CTSContent" : "com.liferay.change.tracking.store.model.CTSContent",
-    "DepotAppCustomization" : "com.liferay.depot.model.DepotAppCustomization",
-    "DepotEntry" : "com.liferay.depot.model.DepotEntry",
-    "DepotEntryGroupRel" : "com.liferay.depot.model.DepotEntryGroupRel",
-    "CompanyInfo" : "com.liferay.portal.kernel.model.CompanyInfo",
-    "AssetCategoryProperty" : "com.liferay.asset.category.property.model.AssetCategoryProperty",
-    "FragmentComposition" : "com.liferay.fragment.model.FragmentComposition",
-    "LayoutClassedModelUsage" : "com.liferay.layout.model.LayoutClassedModelUsage",
-    "LayoutSEOSite" : "com.liferay.layout.seo.model.LayoutSEOSite",
-    "MFAEmailOTPEntry" : "com.liferay.multi.factor.authentication.email.otp.model.MFAEmailOTPEntry",
-    "ViewCountEntry" : "com.liferay.view.count.model.ViewCountEntry"
+    "CTEntryAggregates_CTEntries" : ""
 }
 #
 #tableRank is used to calculate fixAction:
