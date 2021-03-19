@@ -238,12 +238,13 @@ public class AddLicenseKeyDisplayContext {
 	private JSONObject _getProductVersionsJSONObject(
 		String[] versions, String productKey) {
 
-		JSONObject productVersionsJSONObject = JSONFactoryUtil.createJSONObject();
+		JSONObject productVersionsJSONObject =
+			JSONFactoryUtil.createJSONObject();
 
 		for (String version : versions) {
 			List<LicenseEntry> licenseEntries =
 				_licenseEntryLocalService.getLicenseEntriesByVersion(
-					productKey, version);
+					productKey, version.trim());
 
 			JSONArray licenseEntriesJSONArray =
 				JSONFactoryUtil.createJSONArray();
@@ -259,7 +260,8 @@ public class AddLicenseKeyDisplayContext {
 					));
 			}
 
-			productVersionsJSONObject.put(version, licenseEntriesJSONArray);
+			productVersionsJSONObject.put(
+				version.trim(), licenseEntriesJSONArray);
 		}
 
 		return productVersionsJSONObject;
