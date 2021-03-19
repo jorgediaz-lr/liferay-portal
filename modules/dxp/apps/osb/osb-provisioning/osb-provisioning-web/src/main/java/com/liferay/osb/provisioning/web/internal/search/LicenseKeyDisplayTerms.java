@@ -117,11 +117,19 @@ public class LicenseKeyDisplayTerms extends DisplayTerms {
 	}
 
 	public String getAccountKey() {
-		return accountKey;
+		if (Validator.isNotNull(accountKey)) {
+			return accountKey;
+		}
+
+		return null;
 	}
 
 	public String getAccountName() {
-		return accountName;
+		if (Validator.isNotNull(accountName)) {
+			return accountName;
+		}
+
+		return null;
 	}
 
 	public boolean[] getActiveLicenses() {
@@ -129,15 +137,27 @@ public class LicenseKeyDisplayTerms extends DisplayTerms {
 	}
 
 	public String getCreateDateGT() {
-		return createDateGT;
+		if (Validator.isNotNull(createDateGT)) {
+			return createDateGT;
+		}
+
+		return null;
 	}
 
 	public String getCreateDateLT() {
-		return createDateLT;
+		if (Validator.isNotNull(createDateLT)) {
+			return createDateLT;
+		}
+
+		return null;
 	}
 
 	public String getCreatorEmailAddress() {
-		return creatorEmailAddress;
+		if (Validator.isNotNull(creatorEmailAddress)) {
+			return creatorEmailAddress;
+		}
+
+		return null;
 	}
 
 	public List<DisplayTerm> getDisplayTermsList() {
@@ -183,47 +203,91 @@ public class LicenseKeyDisplayTerms extends DisplayTerms {
 	}
 
 	public String getExpirationDateGT() {
-		return expirationDateGT;
+		if (Validator.isNotNull(expirationDateGT)) {
+			return expirationDateGT;
+		}
+
+		return null;
 	}
 
 	public String getExpirationDateLT() {
-		return expirationDateLT;
+		if (Validator.isNotNull(expirationDateLT)) {
+			return expirationDateLT;
+		}
+
+		return null;
 	}
 
 	public String getHostName() {
-		return hostName;
+		if (Validator.isNotNull(hostName)) {
+			return hostName;
+		}
+
+		return null;
 	}
 
 	public String getIpAddress() {
-		return ipAddress;
+		if (Validator.isNotNull(ipAddress)) {
+			return ipAddress;
+		}
+
+		return null;
 	}
 
 	public String getKey() {
-		return key;
+		if (Validator.isNotNull(key)) {
+			return key;
+		}
+
+		return null;
 	}
 
 	public String getMacAddress() {
-		return macAddress;
+		if (Validator.isNotNull(macAddress)) {
+			return macAddress;
+		}
+
+		return null;
 	}
 
 	public String getModifiedDateGT() {
-		return modifiedDateGT;
+		if (Validator.isNotNull(modifiedDateGT)) {
+			return modifiedDateGT;
+		}
+
+		return null;
 	}
 
 	public String getModifiedDateLT() {
-		return modifiedDateLT;
+		if (Validator.isNotNull(modifiedDateLT)) {
+			return modifiedDateLT;
+		}
+
+		return null;
 	}
 
 	public String getModifiedEmailAddress() {
-		return modifiedEmailAddress;
+		if (Validator.isNotNull(modifiedEmailAddress)) {
+			return modifiedEmailAddress;
+		}
+
+		return null;
 	}
 
 	public String getOwner() {
-		return owner;
+		if (Validator.isNotNull(owner)) {
+			return owner;
+		}
+
+		return null;
 	}
 
 	public String getProductPurchaseKey() {
-		return productPurchaseKey;
+		if (Validator.isNotNull(productPurchaseKey)) {
+			return productPurchaseKey;
+		}
+
+		return null;
 	}
 
 	public String[] getProducts() {
@@ -235,15 +299,27 @@ public class LicenseKeyDisplayTerms extends DisplayTerms {
 	}
 
 	public String getServerId() {
-		return serverId;
+		if (Validator.isNotNull(serverId)) {
+			return serverId;
+		}
+
+		return null;
 	}
 
 	public String getStartDateGT() {
-		return startDateGT;
+		if (Validator.isNotNull(startDateGT)) {
+			return startDateGT;
+		}
+
+		return null;
 	}
 
 	public String getStartDateLT() {
-		return startDateLT;
+		if (Validator.isNotNull(startDateLT)) {
+			return startDateLT;
+		}
+
+		return null;
 	}
 
 	public String[] getTypes() {

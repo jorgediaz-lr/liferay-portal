@@ -166,8 +166,8 @@ public class LicenseKeySearchDisplayContext {
 				searchTerms.getServerId(), searchTerms.getKey(),
 				searchTerms.getDate(searchTerms.getExpirationDateGT()),
 				searchTerms.getDate(searchTerms.getStartDateLT()),
-				searchTerms.getParams(), false, _licenseKeySearch.getStart(),
-				_licenseKeySearch.getEnd(),
+				searchTerms.getParams(), searchTerms.isAndOperator(),
+				_licenseKeySearch.getStart(), _licenseKeySearch.getEnd(),
 				LicenseUtil.getLicenseKeyOrderByComparator(
 					"expiration-date", "desc"));
 
@@ -190,7 +190,7 @@ public class LicenseKeySearchDisplayContext {
 				searchTerms.getServerId(), searchTerms.getKey(),
 				searchTerms.getDate(searchTerms.getExpirationDateGT()),
 				searchTerms.getDate(searchTerms.getStartDateLT()),
-				searchTerms.getParams(), false);
+				searchTerms.getParams(), searchTerms.isAndOperator());
 		}
 		else {
 			licenseKeys = _licenseKeyLocalService.search(
