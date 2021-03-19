@@ -92,45 +92,16 @@ public class LayoutsAdminManagementToolbarDisplayContext
 
 	@Override
 	public CreationMenu getCreationMenu() {
-		return new CreationMenu() {
-			{
-				long firstLayoutPageTemplateCollectionId =
-					_layoutsAdminDisplayContext.
-						getFirstLayoutPageTemplateCollectionId();
-				long selPlid = _layoutsAdminDisplayContext.getSelPlid();
-
-				if (_layoutsAdminDisplayContext.isShowPublicPages() &&
-					(!_layoutsAdminDisplayContext.isPrivateLayout() ||
-					 _layoutsAdminDisplayContext.isFirstColumn() ||
-					 !_layoutsAdminDisplayContext.hasLayouts())) {
-
-					addPrimaryDropdownItem(
-						dropdownItem -> {
-							dropdownItem.setHref(
-								_layoutsAdminDisplayContext.
-									getSelectLayoutPageTemplateEntryURL(
-										firstLayoutPageTemplateCollectionId,
-										selPlid, false));
-							dropdownItem.setLabel(_getLabel(false));
-						});
-				}
-
-				if (_layoutsAdminDisplayContext.isPrivateLayout() ||
-					_layoutsAdminDisplayContext.isFirstColumn() ||
-					!_layoutsAdminDisplayContext.hasLayouts()) {
-
-					addPrimaryDropdownItem(
-						dropdownItem -> {
-							dropdownItem.setHref(
-								_layoutsAdminDisplayContext.
-									getSelectLayoutPageTemplateEntryURL(
-										firstLayoutPageTemplateCollectionId,
-										selPlid, true));
-							dropdownItem.setLabel(_getLabel(true));
-						});
-				}
+		try {
+			return _getCreationMenu();
+		}
+		catch (PortalException portalException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug("Unable to get creation menu", portalException);
 			}
-		};
+		}
+
+		return null;
 	}
 
 	@Override
@@ -213,6 +184,49 @@ public class LayoutsAdminManagementToolbarDisplayContext
 		}
 
 		return null;
+	}
+
+	private CreationMenu _getCreationMenu() throws PortalException {
+		return new CreationMenu() {
+			{
+				long firstLayoutPageTemplateCollectionId =
+					_layoutsAdminDisplayContext.
+						getFirstLayoutPageTemplateCollectionId();
+				long selPlid = _layoutsAdminDisplayContext.getSelPlid();
+
+				if (_layoutsAdminDisplayContext.isShowPublicPages() &&
+					(!_layoutsAdminDisplayContext.isPrivateLayout() ||
+					 _layoutsAdminDisplayContext.isFirstColumn() ||
+					 !_layoutsAdminDisplayContext.hasLayouts())) {
+
+					addPrimaryDropdownItem(
+						dropdownItem -> {
+							dropdownItem.setHref(
+								_layoutsAdminDisplayContext.
+									getSelectLayoutPageTemplateEntryURL(
+										firstLayoutPageTemplateCollectionId,
+										selPlid, false));
+							dropdownItem.setLabel(_getLabel(false));
+						});
+				}
+
+				if (_layoutsAdminDisplayContext.isShowPrivatePages() &&
+					(_layoutsAdminDisplayContext.isPrivateLayout() ||
+					 _layoutsAdminDisplayContext.isFirstColumn() ||
+					 !_layoutsAdminDisplayContext.hasLayouts())) {
+
+					addPrimaryDropdownItem(
+						dropdownItem -> {
+							dropdownItem.setHref(
+								_layoutsAdminDisplayContext.
+									getSelectLayoutPageTemplateEntryURL(
+										firstLayoutPageTemplateCollectionId,
+										selPlid, true));
+							dropdownItem.setLabel(_getLabel(true));
+						});
+				}
+			}
+		};
 	}
 
 	private String _getLabel(boolean privateLayout) {

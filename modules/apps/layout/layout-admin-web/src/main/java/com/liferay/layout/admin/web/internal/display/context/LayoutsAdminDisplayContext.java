@@ -61,6 +61,7 @@ import com.liferay.portal.kernel.model.LayoutSetBranch;
 import com.liferay.portal.kernel.model.LayoutType;
 import com.liferay.portal.kernel.model.LayoutTypeController;
 import com.liferay.portal.kernel.model.LayoutTypePortletConstants;
+import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
@@ -70,6 +71,7 @@ import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutServiceUtil;
 import com.liferay.portal.kernel.service.LayoutSetBranchLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutSetLocalServiceUtil;
+import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.service.permission.GroupPermissionUtil;
@@ -1545,6 +1547,29 @@ public class LayoutsAdminDisplayContext {
 		return LayoutPermissionUtil.contains(
 			_themeDisplay.getPermissionChecker(), layout,
 			ActionKeys.PERMISSIONS);
+	}
+
+	public boolean isShowPrivatePages() throws PortalException {
+		Group selGroup = getSelGroup();
+
+		if (selGroup.isUser()) {
+			if (!PropsValues.LAYOUT_USER_PRIVATE_LAYOUTS_ENABLED) {
+				return false;
+			}
+			else if (PropsValues.
+						LAYOUT_USER_PRIVATE_LAYOUTS_POWER_USER_REQUIRED) {
+
+				boolean hasPowerUserRole = RoleLocalServiceUtil.hasUserRole(
+					selGroup.getClassPK(), selGroup.getCompanyId(),
+					RoleConstants.POWER_USER, true);
+
+				if (!hasPowerUserRole) {
+					return false;
+				}
+			}
+		}
+
+		return true;
 	}
 
 	public boolean isShowPublicPages() {
