@@ -34,8 +34,6 @@ import com.liferay.portal.kernel.exception.UserIdException;
 import com.liferay.portal.kernel.exception.UserReminderQueryException;
 import com.liferay.portal.kernel.exception.UserScreenNameException;
 import com.liferay.portal.kernel.language.LanguageUtil;
-import com.liferay.portal.kernel.messaging.proxy.ProxyModeThreadLocal;
-import com.liferay.portal.kernel.messaging.proxy.ProxyModeThreadLocalCloseable;
 import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Contact;
@@ -169,31 +167,24 @@ public class EditUserMVCActionCommand extends BaseMVCActionCommand {
 		long[] deleteUserIds = StringUtil.split(
 			ParamUtil.getString(actionRequest, "deleteUserIds"), 0L);
 
-		try (ProxyModeThreadLocalCloseable proxyModeThreadLocalCloseable =
-				new ProxyModeThreadLocalCloseable()) {
+		for (long deleteUserId : deleteUserIds) {
+			if (cmd.equals(Constants.DEACTIVATE) ||
+				cmd.equals(Constants.RESTORE)) {
 
-			ProxyModeThreadLocal.setForceSync(true);
+				int status = WorkflowConstants.STATUS_APPROVED;
 
-			for (long deleteUserId : deleteUserIds) {
-				if (cmd.equals(Constants.DEACTIVATE) ||
-					cmd.equals(Constants.RESTORE)) {
-
-					int status = WorkflowConstants.STATUS_APPROVED;
-
-					if (cmd.equals(Constants.DEACTIVATE)) {
-						status = WorkflowConstants.STATUS_INACTIVE;
-					}
-
-					ServiceContext serviceContext =
-						ServiceContextFactory.getInstance(
-							User.class.getName(), actionRequest);
-
-					_userService.updateStatus(
-						deleteUserId, status, serviceContext);
+				if (cmd.equals(Constants.DEACTIVATE)) {
+					status = WorkflowConstants.STATUS_INACTIVE;
 				}
-				else {
-					_userService.deleteUser(deleteUserId);
-				}
+
+				ServiceContext serviceContext =
+					ServiceContextFactory.getInstance(
+						User.class.getName(), actionRequest);
+
+				_userService.updateStatus(deleteUserId, status, serviceContext);
+			}
+			else {
+				_userService.deleteUser(deleteUserId);
 			}
 		}
 	}
