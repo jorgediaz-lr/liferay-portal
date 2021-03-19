@@ -199,7 +199,8 @@ public class AddLicenseKeyDisplayContext {
 	}
 
 	private JSONArray _getLicensableProductsJSONArray() throws Exception {
-		JSONArray licensableProductsJSONArray = JSONFactoryUtil.createJSONArray();
+		JSONArray licensableProductsJSONArray =
+			JSONFactoryUtil.createJSONArray();
 
 		List<Product> products = _productWebService.getProducts(
 			StringPool.BLANK, "property_licenses eq 'true'", 1, 1000,
@@ -218,31 +219,6 @@ public class AddLicenseKeyDisplayContext {
 				continue;
 			}
 
-			JSONArray versionJSONArray = JSONFactoryUtil.createJSONArray();
-
-			for (String version : versions) {
-				List<LicenseEntry> licenseEntries =
-					_licenseEntryLocalService.getLicenseEntriesByVersion(
-						product.getKey(), version);
-
-				JSONArray licenseEntriesJSONArray =
-					JSONFactoryUtil.createJSONArray();
-
-				for (LicenseEntry licenseEntry : licenseEntries) {
-					licenseEntriesJSONArray.put(
-						JSONUtil.put(
-							"licenseEntryId", licenseEntry.getLicenseEntryId()
-						).put(
-							"licenseEntryName", licenseEntry.getName()
-						).put(
-							"licenseEntryType", licenseEntry.getType()
-						));
-				}
-
-				versionJSONArray.put(
-					JSONUtil.put(version, licenseEntriesJSONArray));
-			}
-
 			licensableProductsJSONArray.put(
 				JSONUtil.put(
 					"detached", _getDetachedDetails(product.getKey())
@@ -251,11 +227,42 @@ public class AddLicenseKeyDisplayContext {
 				).put(
 					"productName", product.getName()
 				).put(
-					"productVersions", versionJSONArray
+					"productVersions",
+					_getProductVersionsJSONObject(versions, product.getKey())
 				));
 		}
 
 		return licensableProductsJSONArray;
+	}
+
+	private JSONObject _getProductVersionsJSONObject(
+		String[] versions, String productKey) {
+
+		JSONObject productVersionsJSONObject = JSONFactoryUtil.createJSONObject();
+
+		for (String version : versions) {
+			List<LicenseEntry> licenseEntries =
+				_licenseEntryLocalService.getLicenseEntriesByVersion(
+					productKey, version);
+
+			JSONArray licenseEntriesJSONArray =
+				JSONFactoryUtil.createJSONArray();
+
+			for (LicenseEntry licenseEntry : licenseEntries) {
+				licenseEntriesJSONArray.put(
+					JSONUtil.put(
+						"licenseEntryId", licenseEntry.getLicenseEntryId()
+					).put(
+						"licenseEntryName", licenseEntry.getName()
+					).put(
+						"licenseEntryType", licenseEntry.getType()
+					));
+			}
+
+			productVersionsJSONObject.put(version, licenseEntriesJSONArray);
+		}
+
+		return productVersionsJSONObject;
 	}
 
 	private JSONArray _getPurchasedProductsJSONArray() throws Exception {
