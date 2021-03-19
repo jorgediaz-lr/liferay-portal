@@ -25,6 +25,16 @@ function GeneralInformation({
 	const [selectedProductKey, setSelectedProductKey] = useState('');
 	const [selectedVersion, setSelectedVersion] = useState('');
 
+	function getAvailableVersions() {
+		const selectedProduct = licensableProducts.find(
+			product => product.productKey === selectedProductKey
+		);
+
+		if (selectedProduct) {
+			return Object.keys(selectedProduct.productVersions);
+		}
+	}
+
 	function handleProductOnChange(event) {
 		setSelectedProductKey(event.target.value);
 	}
@@ -104,24 +114,17 @@ function GeneralInformation({
 								{!!selectedProductKey && (
 									<>
 										<option value=""></option>
-										{licensableProducts
-											.find(
-												product =>
-													product.productKey ===
-													selectedProductKey
-											)
-											.productVersions.map(version =>
-												Object.keys(version)
-											)
-											.flat()
-											.map((version, index) => (
-												<option
-													key={index}
-													value={version}
-												>
-													{version}
-												</option>
-											))}
+										{!!getAvailableVersions() &&
+											getAvailableVersions().map(
+												version => (
+													<option
+														key={version}
+														value={version}
+													>
+														{version}
+													</option>
+												)
+											)}
 									</>
 								)}
 							</select>
@@ -156,7 +159,15 @@ GeneralInformation.propTypes = {
 		PropTypes.shape({
 			productKey: PropTypes.string,
 			productName: PropTypes.string,
-			productVersions: PropTypes.array
+			productVersions: PropTypes.shape({
+				[PropTypes.string]: PropTypes.arrayOf(
+					PropTypes.shape({
+						licenseEntryId: PropTypes.number,
+						licenseEntryName: PropTypes.string,
+						licenseEntryType: PropTypes.string
+					})
+				)
+			})
 		})
 	),
 	redirect: PropTypes.string.isRequired,

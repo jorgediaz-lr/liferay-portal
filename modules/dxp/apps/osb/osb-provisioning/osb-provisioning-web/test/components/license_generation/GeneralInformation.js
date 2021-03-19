@@ -16,28 +16,34 @@ import GeneralInformation from '../../../src/main/resources/META-INF/resources/j
 
 const licensableProducts = [
 	{
-		productKey: '123',
+		productKey: 'KEY-123',
 		productName: 'Product A',
-		productVersions: [
-			{
-				6.1: [
-					{
-						licenseEntryId: '98765',
-						licenseEntryName: 'Portal Backup',
-						licenseEntryType: 'production'
-					}
-				]
-			},
-			{
-				6.2: [
-					{
-						licenseEntryId: '98765',
-						licenseEntryName: 'Portal Backup',
-						licenseEntryType: 'production'
-					}
-				]
-			}
-		]
+		productVersions: {
+			6.1: [
+				{
+					licenseEntryId: 98765,
+					licenseEntryName: 'Portal Backup',
+					licenseEntryType: 'production'
+				},
+				{
+					licenseEntryId: 87654,
+					licenseEntryName: 'Portal Backup',
+					licenseEntryType: 'development'
+				}
+			],
+			6.2: [
+				{
+					licenseEntryId: 98765,
+					licenseEntryName: 'Portal Backup',
+					licenseEntryType: 'production'
+				},
+				{
+					licenseEntryId: 87654,
+					licenseEntryName: 'Portal Backup',
+					licenseEntryType: 'development'
+				}
+			]
+		}
 	}
 ];
 
@@ -119,7 +125,7 @@ describe('GeneralInformation', () => {
 		});
 
 		fireEvent.change(getByLabelText('product'), {
-			target: {value: '123'}
+			target: {value: 'KEY-123'}
 		});
 
 		getByText('6.1');
