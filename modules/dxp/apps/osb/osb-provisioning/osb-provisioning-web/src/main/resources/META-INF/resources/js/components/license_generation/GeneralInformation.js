@@ -9,6 +9,7 @@
  * distribution rights of the Software.
  */
 
+import capitalize from 'lodash.capitalize';
 import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 
@@ -22,21 +23,34 @@ function GeneralInformation({
 	selectAccountActionURL,
 	selectAccountRenderURL
 }) {
-	const [selectedProductKey, setSelectedProductKey] = useState('');
+	const [selectedProduct, setSelectedProduct] = useState(null);
+	const [selectedType, setSelectedType] = useState('');
 	const [selectedVersion, setSelectedVersion] = useState('');
 
-	function getAvailableVersions() {
-		const selectedProduct = licensableProducts.find(
-			product => product.productKey === selectedProductKey
-		);
+	function getAvailableTypes() {
+		if (selectedProduct && selectedVersion) {
+			return selectedProduct.productVersions[selectedVersion];
+		}
+	}
 
+	function getAvailableVersions() {
 		if (selectedProduct) {
 			return Object.keys(selectedProduct.productVersions);
 		}
 	}
 
 	function handleProductOnChange(event) {
-		setSelectedProductKey(event.target.value);
+		const selectedProductKey = event.target.value;
+
+		setSelectedProduct(
+			licensableProducts.find(
+				product => product.productKey === selectedProductKey
+			)
+		);
+	}
+
+	function handleTypeOnChange(event) {
+		setSelectedType(event.target.value);
 	}
 
 	function handleVersionOnChange(event) {
@@ -107,11 +121,11 @@ function GeneralInformation({
 
 							<select
 								className="form-control"
-								disabled={!selectedProductKey}
+								disabled={selectedProduct === null}
 								id="version"
 								onChange={handleVersionOnChange}
 							>
-								{!!selectedProductKey && (
+								{!!selectedProduct && (
 									<>
 										<option value=""></option>
 										{!!getAvailableVersions() &&
@@ -139,7 +153,25 @@ function GeneralInformation({
 								className="form-control"
 								disabled={!selectedVersion}
 								id="type"
-							></select>
+								onChange={handleTypeOnChange}
+							>
+								{!!selectedVersion && (
+									<>
+										<option value=""></option>
+										{!!getAvailableTypes() &&
+											getAvailableTypes().map(type => (
+												<option
+													key={type.licenseEntryId}
+													value={type.licenseEntryId}
+												>
+													{capitalize(
+														type.licenseEntryType
+													)}
+												</option>
+											))}
+									</>
+								)}
+							</select>
 						</div>
 					</div>
 				</div>

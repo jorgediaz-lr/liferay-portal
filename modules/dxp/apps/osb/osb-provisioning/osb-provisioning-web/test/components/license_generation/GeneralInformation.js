@@ -133,4 +133,22 @@ describe('GeneralInformation', () => {
 		expect(getByLabelText('version').disabled).toBeFalsy();
 		expect(getByLabelText('type').disabled).toBeTruthy();
 	});
+
+	it('populates the Type select with options based on the Product and Version selected', () => {
+		const {getByLabelText, getByText} = renderGeneralInformation({
+			accountName: 'Test Account',
+			licensableProducts
+		});
+
+		fireEvent.change(getByLabelText('product'), {
+			target: {value: 'KEY-123'}
+		});
+		fireEvent.change(getByLabelText('version'), {
+			target: {value: '6.1'}
+		});
+
+		getByText('Production');
+		getByText('Development');
+		expect(getByLabelText('type').disabled).toBeFalsy();
+	});
 });
