@@ -147,8 +147,33 @@ describe('GeneralInformation', () => {
 			target: {value: '6.1'}
 		});
 
-		getByText('Production');
-		getByText('Development');
+		getByText('Portal Backup (Production)');
+		getByText('Portal Backup (Development)');
 		expect(getByLabelText('type').disabled).toBeFalsy();
+	});
+
+	it('displays the Choose Purchase section after Product, Version, and Type have been selected', () => {
+		const {
+			getByLabelText,
+			getByText,
+			queryByText
+		} = renderGeneralInformation({
+			accountName: 'Test Account',
+			licensableProducts
+		});
+
+		expect(queryByText('choose-purchase')).toBeFalsy();
+
+		fireEvent.change(getByLabelText('product'), {
+			target: {value: 'KEY-123'}
+		});
+		fireEvent.change(getByLabelText('version'), {
+			target: {value: '6.1'}
+		});
+		fireEvent.change(getByLabelText('type'), {
+			target: {value: 98765}
+		});
+
+		getByText('choose-purchase');
 	});
 });

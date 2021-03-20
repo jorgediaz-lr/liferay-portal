@@ -13,12 +13,14 @@ import capitalize from 'lodash.capitalize';
 import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 
+import Purchases from './Purchases';
 import SelectAccount from './SelectAccount';
 
 function GeneralInformation({
 	accountKey = '',
 	accountName = '',
 	licensableProducts = [],
+	purchasedProducts,
 	redirect,
 	selectAccountActionURL,
 	selectAccountRenderURL
@@ -164,9 +166,11 @@ function GeneralInformation({
 													key={type.licenseEntryId}
 													value={type.licenseEntryId}
 												>
-													{capitalize(
+													{`${
+														type.licenseEntryName
+													} (${capitalize(
 														type.licenseEntryType
-													)}
+													)})`}
 												</option>
 											))}
 									</>
@@ -175,6 +179,8 @@ function GeneralInformation({
 						</div>
 					</div>
 				</div>
+
+				{!!selectedType && <Purchases purchased={purchasedProducts} />}
 
 				<a className="btn btn-secondary" href={redirect}>
 					{Liferay.Language.get('cancel')}
@@ -202,6 +208,7 @@ GeneralInformation.propTypes = {
 			})
 		})
 	),
+	purchasedProducts: PropTypes.array,
 	redirect: PropTypes.string.isRequired,
 	selectAccountActionURL: PropTypes.string.isRequired,
 	selectAccountRenderURL: PropTypes.string.isRequired

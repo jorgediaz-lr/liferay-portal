@@ -7,6 +7,10 @@
 .generate-license-sheet {
 	margin: $spacing-default auto $spacing-lg;
 	padding-bottom: $spacing-default;
+
+	.choose-purchase {
+		margin-bottom: $spacing-default;
+	}
 }
 
 .licenses {
