@@ -29,6 +29,10 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
+import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import org.junit.Test;
 
 import org.mockito.Mockito;

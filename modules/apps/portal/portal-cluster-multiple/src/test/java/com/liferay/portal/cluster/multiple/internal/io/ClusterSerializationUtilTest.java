@@ -16,7 +16,9 @@ package com.liferay.portal.cluster.multiple.internal.io;
 
 import com.liferay.petra.io.Deserializer;
 import com.liferay.petra.io.Serializer;
+import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -29,6 +31,7 @@ import java.util.Date;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
 
 /**
@@ -37,8 +40,10 @@ import org.junit.Test;
 public class ClusterSerializationUtilTest {
 
 	@ClassRule
-	public static final CodeCoverageAssertor codeCoverageAssertor =
-		CodeCoverageAssertor.INSTANCE;
+	@Rule
+	public static final AggregateTestRule aggregateTestRule =
+		new AggregateTestRule(
+			CodeCoverageAssertor.INSTANCE, LiferayUnitTestRule.INSTANCE);
 
 	@Test
 	public void testConstructor() {
