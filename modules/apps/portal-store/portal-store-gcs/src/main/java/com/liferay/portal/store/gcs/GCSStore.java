@@ -491,9 +491,9 @@ public class GCSStore extends BaseStore {
 	}
 
 	private void _initEncryption() {
-		String key = _gcsStoreConfiguration.aes256Key();
+		String aes256Key = _gcsStoreConfiguration.aes256Key();
 
-		if (Validator.isNull(key)) {
+		if (Validator.isNull(aes256Key)) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
 					"Files are not encrypted because the portal property " +
@@ -505,12 +505,12 @@ public class GCSStore extends BaseStore {
 		}
 		else {
 			_storageDecryptionSourceOption =
-				Storage.BlobSourceOption.decryptionKey(key);
-			_blobDecryptSourceOption = Blob.BlobSourceOption.decryptionKey(key);
+				Storage.BlobSourceOption.decryptionKey(aes256Key);
+			_blobDecryptSourceOption = Blob.BlobSourceOption.decryptionKey(aes256Key);
 			_blobEncryptWriteOption = Storage.BlobWriteOption.encryptionKey(
-				key);
+				aes256Key);
 			_blobEncryptTargetOption = Storage.BlobTargetOption.encryptionKey(
-				key);
+				aes256Key);
 		}
 	}
 
