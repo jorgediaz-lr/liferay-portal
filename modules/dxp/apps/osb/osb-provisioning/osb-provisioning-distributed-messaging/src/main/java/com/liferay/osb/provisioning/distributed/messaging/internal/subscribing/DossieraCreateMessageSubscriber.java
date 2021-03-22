@@ -594,7 +594,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 				String productType = properties.get("productType");
 
 				if (productType != null) {
-					sb.append(properties.get("productType"));
+					sb.append(productType);
 					sb.append(StringPool.SPACE);
 
 					if (!productTypes.contains(productType)) {
