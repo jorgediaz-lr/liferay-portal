@@ -48,6 +48,11 @@
 	<td>//*[@id='_com_liferay_segments_web_internal_portlet_SegmentsPortlet_segmentsEntriesSearchContainer']//td</td>
 	<td></td>
 </tr>
+<tr>
+	<td>SEGMENT_FIELDS_TYPE</td>
+	<td>//*[contains(@class, 'd-flex') and contains(@class, 'justify-content-between') and contains(@class, 'sidebar-collapse-header') and contains(text(),'${key_typeName}')]</td>
+	<td></td>
+</tr>
 </tbody>
 </table>
 </body>
