@@ -152,6 +152,10 @@ public class AddLicenseKeyDisplayContext {
 	}
 
 	private String _getDate(Date date, String type) throws Exception {
+		if ((date == null) && type.equals("expirationDate")) {
+			return StringPool.BLANK;
+		}
+
 		Calendar calendar = Calendar.getInstance(
 			_themeDisplay.getTimeZone(), _themeDisplay.getLocale());
 
@@ -188,8 +192,6 @@ public class AddLicenseKeyDisplayContext {
 		}
 
 		return JSONUtil.put(
-			"expirationDate", _getDate(null, "expirationDate")
-		).put(
 			"licenseKeysGenerated", productConsumptionsCount
 		).put(
 			"sizing", sizing
