@@ -146,7 +146,7 @@ public class AddLicenseKeyDisplayContext {
 		data.put("maxServers", maxServers);
 
 		data.put("owner", _account.getName());
-		data.put("purchasedProducts", _getPurchasedProductsJSONArray());
+		data.put("purchasedProducts", _getPurchasedProductsJSONObject());
 
 		return data;
 	}
@@ -269,7 +269,7 @@ public class AddLicenseKeyDisplayContext {
 		return productVersionsJSONObject;
 	}
 
-	private JSONArray _getPurchasedProductsJSONArray() throws Exception {
+	private JSONObject _getPurchasedProductsJSONObject() throws Exception {
 		StringBundler sb = new StringBundler(3);
 
 		sb.append("accountKey eq '");
@@ -280,11 +280,11 @@ public class AddLicenseKeyDisplayContext {
 			_productPurchaseViewWebService.getProductPurchaseViews(
 				StringPool.BLANK, sb.toString(), 1, 1000, StringPool.BLANK);
 
-		JSONArray purchasedProductsJSONArray =
-			JSONFactoryUtil.createJSONArray();
+		JSONObject purchasedProductsJSONObject =
+			JSONFactoryUtil.createJSONObject();
 
 		if (productPurchaseViews.isEmpty()) {
-			return purchasedProductsJSONArray;
+			return purchasedProductsJSONObject;
 		}
 
 		for (ProductPurchaseView productPurchaseView : productPurchaseViews) {
@@ -362,14 +362,13 @@ public class AddLicenseKeyDisplayContext {
 							));
 					}
 
-					purchasedProductsJSONArray.put(
-						JSONUtil.put(
-							product.getKey(), productPurchasesJSONArray));
+					purchasedProductsJSONObject.put(
+						product.getKey(), productPurchasesJSONArray);
 				}
 			}
 		}
 
-		return purchasedProductsJSONArray;
+		return purchasedProductsJSONObject;
 	}
 
 	private final Account _account;
