@@ -14,6 +14,8 @@ import ClayTableCell from '@clayui/table/lib/Cell';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import Purchase from './Purchase';
+
 function Purchases({purchased}) {
 	return (
 		<div className="choose-purchase">
@@ -38,40 +40,42 @@ function Purchases({purchased}) {
 					</ClayTable.Row>
 				</ClayTable.Head>
 				<ClayTable.Body>
-					<Purchase />
-					<Purchase dividerTitle={Liferay.Language.get('detached')} />
+					<Purchased purchased={purchased} />
+					<Detached />
 				</ClayTable.Body>
 			</ClayTable>
 		</div>
 	);
 }
 
-function Purchase({dividerTitle}) {
+function Detached() {
+	return <Purchase dividerTitle={Liferay.Language.get('detached')} />;
+}
+
+function Purchased({purchased}) {
 	return (
 		<>
-			{!!dividerTitle && (
-				<ClayTable.Row divider={true}>
-					<ClayTableCell colSpan={5}>{dividerTitle}</ClayTableCell>
-				</ClayTable.Row>
-			)}
-
-			<ClayTable.Row>
-				<ClayTableCell>{''}</ClayTableCell>
-				<ClayTableCell>{''}</ClayTableCell>
-				<ClayTableCell>{''}</ClayTableCell>
-				<ClayTableCell>{''}</ClayTableCell>
-				<ClayTableCell>
-					<button className="btn btn-secondary btn-sm">
-						{Liferay.Language.get('choose')}
-					</button>
-				</ClayTableCell>
-			</ClayTable.Row>
+			{!!purchased &&
+				purchased.map((item, index) => (
+					<Purchase
+						key={item.productPurchaseKey || index}
+						{...item}
+					/>
+				))}
 		</>
 	);
 }
 
 Purchases.protoType = {
-	purchased: PropTypes.array
+	purchased: PropTypes.arrayOf(
+		PropTypes.shape({
+			expirationDate: PropTypes.string,
+			licenseKeysGenerated: PropTypes.string,
+			productPurchaseKey: PropTypes.string,
+			sizing: PropTypes.number,
+			startDate: PropTypes.string
+		})
+	)
 };
 
 export default Purchases;

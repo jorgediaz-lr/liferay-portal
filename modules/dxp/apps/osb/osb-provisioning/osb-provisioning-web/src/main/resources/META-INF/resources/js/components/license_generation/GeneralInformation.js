@@ -20,7 +20,7 @@ function GeneralInformation({
 	accountKey = '',
 	accountName = '',
 	licensableProducts = [],
-	purchasedProducts,
+	purchasedProducts = {},
 	redirect,
 	selectAccountActionURL,
 	selectAccountRenderURL
@@ -180,7 +180,13 @@ function GeneralInformation({
 					</div>
 				</div>
 
-				{!!selectedType && <Purchases purchased={purchasedProducts} />}
+				{!!selectedType && (
+					<Purchases
+						purchased={
+							purchasedProducts[selectedProduct.productKey]
+						}
+					/>
+				)}
 
 				<a className="btn btn-secondary" href={redirect}>
 					{Liferay.Language.get('cancel')}
@@ -208,7 +214,17 @@ GeneralInformation.propTypes = {
 			})
 		})
 	),
-	purchasedProducts: PropTypes.array,
+	purchasedProducts: PropTypes.shape({
+		[PropTypes.string]: PropTypes.arrayOf(
+			PropTypes.shape({
+				expirationDate: PropTypes.string,
+				licenseKeysGenerated: PropTypes.string,
+				productPurchaseKey: PropTypes.string,
+				sizing: PropTypes.number,
+				startDate: PropTypes.string
+			})
+		)
+	}),
 	redirect: PropTypes.string.isRequired,
 	selectAccountActionURL: PropTypes.string.isRequired,
 	selectAccountRenderURL: PropTypes.string.isRequired

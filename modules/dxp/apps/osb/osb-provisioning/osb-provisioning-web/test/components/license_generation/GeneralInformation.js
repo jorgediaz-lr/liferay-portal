@@ -44,8 +44,49 @@ const licensableProducts = [
 				}
 			]
 		}
+	},
+	{
+		productKey: 'KEY-456',
+		productName: 'Product B',
+		productVersions: {
+			7.0: [
+				{
+					licenseEntryId: 76543,
+					licenseEntryName: 'Test Entry',
+					licenseEntryType: 'developer'
+				}
+			]
+		}
 	}
 ];
+
+const purchasedProducts = {
+	'KEY-123': [
+		{
+			expirationDate: '2022-04-16',
+			licenseKeysGenerated: '0 / 1',
+			productPurchaseKey: 'PURCHKEY-123',
+			sizing: 1,
+			startDate: '2021-03-17'
+		},
+		{
+			expirationDate: '-',
+			licenseKeysGenerated: '1 / 1',
+			productPurchaseKey: 'PURCHKEY-321',
+			sizing: 1,
+			startDate: '2021-03-18'
+		}
+	],
+	'KEY-456': [
+		{
+			expirationDate: '-',
+			licenseKeysGenerated: '1 / 1',
+			productPurchaseKey: 'PURCHKEY-456',
+			sizing: 1,
+			startDate: '2021-03-19'
+		}
+	]
+};
 
 function renderGeneralInformation(props) {
 	return render(
@@ -175,5 +216,28 @@ describe('GeneralInformation', () => {
 		});
 
 		getByText('choose-purchase');
+	});
+
+	it('displays the Non-detached section correctly based on the Product Selected', () => {
+		const {getByLabelText, getByText} = renderGeneralInformation({
+			accountName: 'Test Account',
+			licensableProducts,
+			purchasedProducts
+		});
+
+		fireEvent.change(getByLabelText('product'), {
+			target: {value: 'KEY-123'}
+		});
+		fireEvent.change(getByLabelText('version'), {
+			target: {value: '6.1'}
+		});
+		fireEvent.change(getByLabelText('type'), {
+			target: {value: 98765}
+		});
+
+		getByText('2022-04-16');
+		getByText('2021-03-17');
+
+		getByText('2021-03-18');
 	});
 });
