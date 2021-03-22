@@ -15,11 +15,14 @@
 package com.liferay.portal.kernel.model;
 
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portlet.util.test.PortletKeys;
 
 import java.security.InvalidParameterException;
 
 import org.junit.Assert;
+import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
 
 /**
@@ -29,6 +32,11 @@ import org.junit.Test;
  */
 @Deprecated
 public class PortletInstanceTest {
+
+	@ClassRule
+	@Rule
+	public static final LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
 
 	@Test
 	public void testFromPortletNameAndUserIdAndInstanceId() {

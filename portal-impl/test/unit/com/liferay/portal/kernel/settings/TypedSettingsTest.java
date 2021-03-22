@@ -16,6 +16,7 @@ package com.liferay.portal.kernel.settings;
 
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.util.LocalizationImpl;
 
 import java.util.Arrays;
@@ -23,12 +24,19 @@ import java.util.List;
 import java.util.Locale;
 
 import org.junit.Assert;
+import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
 
 /**
  * @author Iván Zaera
  */
 public class TypedSettingsTest {
+
+	@ClassRule
+	@Rule
+	public static final LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
 
 	public TypedSettingsTest() {
 		LocalizationUtil localizationUtil = new LocalizationUtil();

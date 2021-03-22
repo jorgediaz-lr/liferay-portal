@@ -44,14 +44,14 @@ public class SolrIndexSearcherLogExceptionsOnlyTest
 
 	@Test
 	public void testExceptionOnlyLoggedWhenQueryMalformedSearch() {
-		//		expectedLogTestRule.expectMessage("Cannot parse '+f^eld:text'");
+		expectedLogTestRule.expectMessage("Cannot parse '+f^eld:text'");
 
 		search(createSearchContext(), getMalformedQuery());
 	}
 
 	@Test
 	public void testExceptionOnlyLoggedWhenQueryMalformedSearchCount() {
-		//		expectedLogTestRule.expectMessage("Cannot parse '+f^eld:text'");
+		expectedLogTestRule.expectMessage("Cannot parse '+f^eld:text'");
 
 		searchCount(createSearchContext(), getMalformedQuery());
 	}
