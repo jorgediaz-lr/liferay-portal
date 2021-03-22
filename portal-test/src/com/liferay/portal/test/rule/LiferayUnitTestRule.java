@@ -38,7 +38,6 @@ public class LiferayUnitTestRule extends AggregateTestRule {
 		List<TestRule> testRules = new ArrayList<>();
 
 		testRules.add(InitializeKernelUtilTestRule.INSTANCE);
-		testRules.add(AspectJNewEnvTestRule.INSTANCE);
 		testRules.add(NewEnvTestRule.INSTANCE);
 
 		return testRules.toArray(new TestRule[0]);
