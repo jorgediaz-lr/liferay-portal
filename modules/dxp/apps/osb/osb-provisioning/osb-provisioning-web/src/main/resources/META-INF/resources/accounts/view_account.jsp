@@ -53,7 +53,7 @@ if (provisioningWebConfiguration.licensesPortletEnabled()) {
 					<liferay-util:include page="/accounts/view_account_history.jsp" servletContext="<%= application %>" />
 				</div>
 			</c:when>
-			<c:when test='<%= tabs1.equals("licenses") %>'>
+			<c:when test='<%= tabs1.equals("licenses") && provisioningWebConfiguration.licensesPortletEnabled() %>'>
 				<liferay-util:include page="/accounts/view_account_license_keys.jsp" servletContext="<%= application %>" />
 			</c:when>
 			<c:when test='<%= tabs1.equals("liferay-workers") %>'>

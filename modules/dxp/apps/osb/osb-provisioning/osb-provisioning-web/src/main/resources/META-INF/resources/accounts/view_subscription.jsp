@@ -28,13 +28,23 @@ String tabs1 = ParamUtil.getString(request, "tabs1");
 
 <div class="subscription" id="account">
 	<div class="subscription-content">
-		<liferay-ui:tabs
-			names="subscription-terms,licenses"
-			portletURL="<%= viewSubscriptionDisplayContext.getPortletURL() %>"
-		/>
+		<c:choose>
+			<c:when test="<%= provisioningWebConfiguration.licensesPortletEnabled() %>">
+				<liferay-ui:tabs
+					names="subscription-terms,licenses"
+					portletURL="<%= viewSubscriptionDisplayContext.getPortletURL() %>"
+				/>
+			</c:when>
+			<c:otherwise>
+				<liferay-ui:tabs
+					names="subscription-terms"
+					portletURL="<%= viewSubscriptionDisplayContext.getPortletURL() %>"
+				/>
+			</c:otherwise>
+		</c:choose>
 
 		<c:choose>
-			<c:when test='<%= tabs1.equals("licenses") %>'>
+			<c:when test='<%= tabs1.equals("licenses") && provisioningWebConfiguration.licensesPortletEnabled() %>'>
 				<liferay-util:include page="/accounts/view_account_license_keys.jsp" servletContext="<%= application %>" />
 			</c:when>
 			<c:otherwise>
