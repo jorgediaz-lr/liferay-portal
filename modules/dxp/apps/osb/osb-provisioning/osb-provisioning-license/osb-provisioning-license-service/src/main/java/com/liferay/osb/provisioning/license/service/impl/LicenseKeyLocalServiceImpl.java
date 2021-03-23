@@ -26,7 +26,6 @@ import com.liferay.osb.provisioning.koroneiki.web.service.ProductConsumptionWebS
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.provisioning.license.exception.DuplicateIPAddressException;
 import com.liferay.osb.provisioning.license.exception.DuplicateMACAddressException;
-import com.liferay.osb.provisioning.license.exception.LicenseKeyActiveException;
 import com.liferay.osb.provisioning.license.exception.LicenseKeyDescriptionException;
 import com.liferay.osb.provisioning.license.exception.LicenseKeyIPAddressException;
 import com.liferay.osb.provisioning.license.exception.LicenseKeyMACAddressException;
@@ -447,29 +446,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			long userId, long licenseKeyId, Date startDate, Date expirationDate)
 		throws Exception {
 
-		LicenseKey licenseKey = licenseKeyPersistence.findByPrimaryKey(
-			licenseKeyId);
-
-		if (!licenseKey.isActive()) {
-			throw new LicenseKeyActiveException();
-		}
-
-		updateLicenseKey(userId, licenseKeyId, false);
-
-		return addLicenseKey(
-			userId, licenseKey.getAssetReceiptLicenseUuid(),
-			licenseKey.getLicenseEntryType(), licenseKey.getProductName(),
-			licenseKey.getProductId(), licenseKey.getProductVersion(),
-			licenseKey.getOwner(), licenseKey.getMaxUsers(),
-			licenseKey.getDescription(), licenseKey.getHostName(),
-			licenseKey.getIpAddresses(), licenseKey.getMacAddresses(),
-			licenseKey.getServerId(), startDate, expirationDate);
-	}
-
-	public LicenseKey renewLicenseKey(
-			long userId, long licenseKeyId, Date startDate, int renewTime)
-		throws Exception {
-
 		User user = userLocalService.getUser(userId);
 
 		LicenseKey licenseKey = licenseKeyPersistence.findByPrimaryKey(
@@ -487,10 +463,10 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		licenseKey = licenseKeyPersistence.update(licenseKey);
 
-		String description = renewTime + "-Day License";
+		int renewTime =
+			(int)((expirationDate.getTime() - startDate.getTime()) / Time.DAY);
 
-		Date expirationDate = new Date(
-			startDate.getTime() + (renewTime * Time.DAY));
+		String description = renewTime + "-Day License";
 
 		return doAddLicenseKeyVersion3_4(
 			new Date(), user, licenseKey.getLicenseEntry(), product,

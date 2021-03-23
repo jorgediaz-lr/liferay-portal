@@ -338,28 +338,13 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 	}
 
 	public LicenseKey renewLicenseKey(
-			long licenseKeyId, Date startDate, int renewTime)
+			long licenseKeyId, Date startDate, Date expirationDate)
 		throws Exception {
 
 		//TODO: add permission check
 
 		return licenseKeyLocalService.renewLicenseKey(
-			getUserId(), licenseKeyId, startDate, renewTime);
-	}
-
-	@JSONWebService
-	public LicenseKey renewLicenseKey(
-			String uuid, Date startDate, Date expirationDate)
-		throws Exception {
-
-		validateJSONWebServicePermissions();
-
-		LicenseKey licenseKey = licenseKeyLocalService.getLicenseKeyByUuid(
-			uuid);
-
-		return licenseKeyLocalService.renewLicenseKey(
-			getUserId(), licenseKey.getLicenseKeyId(), startDate,
-			expirationDate);
+			getUserId(), licenseKeyId, startDate, expirationDate);
 	}
 
 	public List<LicenseKey> search(

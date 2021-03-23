@@ -120,7 +120,7 @@ public class AddLicenseKeyDisplayContext {
 		PortletURL addLicenseKeyURL = _renderResponse.createActionURL();
 
 		addLicenseKeyURL.setParameter(
-			ActionRequest.ACTION_NAME, "/licenses/add_license_key");
+			ActionRequest.ACTION_NAME, "/licenses/edit_license_key");
 		addLicenseKeyURL.setParameter("redirect", redirect);
 
 		data.put("addLicenseKeyURL", addLicenseKeyURL.toString());

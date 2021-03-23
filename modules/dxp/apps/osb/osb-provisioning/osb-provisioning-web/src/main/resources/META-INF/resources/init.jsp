@@ -51,6 +51,8 @@ page import="com.liferay.osb.provisioning.exception.MultipleDossieraKeysExceptio
 page import="com.liferay.osb.provisioning.exception.ProductBundleNameException" %><%@
 page import="com.liferay.osb.provisioning.exception.ProductPurchaseQuantityException" %><%@
 page import="com.liferay.osb.provisioning.exception.RequiredProductException" %><%@
+page import="com.liferay.osb.provisioning.license.helper.constants.LicenseType" %><%@
+page import="com.liferay.osb.provisioning.license.model.LicenseKey" %><%@
 page import="com.liferay.osb.provisioning.model.ProductBundle" %><%@
 page import="com.liferay.osb.provisioning.service.ProductBundleLocalServiceUtil" %><%@
 page import="com.liferay.osb.provisioning.web.internal.configuration.ProvisioningWebConfiguration" %><%@
@@ -66,6 +68,7 @@ page import="com.liferay.osb.provisioning.web.internal.display.context.AuditEntr
 page import="com.liferay.osb.provisioning.web.internal.display.context.ContactDisplay" %><%@
 page import="com.liferay.osb.provisioning.web.internal.display.context.ContactSearchDisplayContext" %><%@
 page import="com.liferay.osb.provisioning.web.internal.display.context.EditProductPurchasesDisplayContext" %><%@
+page import="com.liferay.osb.provisioning.web.internal.display.context.LicenseKeyDisplay" %><%@
 page import="com.liferay.osb.provisioning.web.internal.display.context.LicenseKeySearchDisplayContext" %><%@
 page import="com.liferay.osb.provisioning.web.internal.display.context.ProductDisplay" %><%@
 page import="com.liferay.osb.provisioning.web.internal.display.context.ProductPurchaseDisplay" %><%@
@@ -107,6 +110,8 @@ page import="com.liferay.portal.kernel.util.StringUtil" %><%@
 page import="com.liferay.portal.kernel.util.Validator" %><%@
 page import="com.liferay.portal.kernel.util.WebKeys" %><%@
 page import="com.liferay.portal.vulcan.util.TransformUtil" %>
+
+<%@ page import="java.text.Format" %>
 
 <%@ page import="java.util.ArrayList" %><%@
 page import="java.util.Arrays" %><%@

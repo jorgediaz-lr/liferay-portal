@@ -64,7 +64,7 @@ ViewLicenseKeysManagementToolbarDisplayContext viewLicenseKeysManagementToolbarD
 				modelVar="licenseKeyDisplay"
 			>
 				<portlet:renderURL var="rowURL">
-					<portlet:param name="mvcRenderCommandName" value="/licenses/view_license" />
+					<portlet:param name="mvcRenderCommandName" value="/licenses/edit_license_key" />
 					<portlet:param name="redirect" value="<%= currentURL %>" />
 					<portlet:param name="licenseKeyId" value="<%= licenseKeyDisplay.getLicenseKeyId() %>" />
 				</portlet:renderURL>
