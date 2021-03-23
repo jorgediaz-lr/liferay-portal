@@ -62,10 +62,7 @@ public class ViewLicenseKeysManagementToolbarDisplayContext
 
 	@Override
 	public String getClearResultsURL() {
-		PortletURL clearResultsURL = getPortletURL();
-
-		clearResultsURL.setParameter(
-			"licenseKeySearchKeywords", StringPool.BLANK);
+		PortletURL clearResultsURL = liferayPortletResponse.createRenderURL();
 
 		return clearResultsURL.toString();
 	}
@@ -181,8 +178,7 @@ public class ViewLicenseKeysManagementToolbarDisplayContext
 			displayTermName, StringUtil.merge(removeKeywords));
 
 		if (displayTermName.equals(LicenseKeyDisplayTerms.PRODUCTS)) {
-			removeLabelURL.setParameter(
-				"product", com.liferay.portal.kernel.util.StringPool.BLANK);
+			removeLabelURL.setParameter("product", StringPool.BLANK);
 		}
 
 		return removeLabelURL.toString();
