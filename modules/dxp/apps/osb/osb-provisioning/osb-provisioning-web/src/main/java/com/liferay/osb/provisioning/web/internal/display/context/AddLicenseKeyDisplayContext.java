@@ -43,7 +43,6 @@ import com.liferay.portal.kernel.util.WebKeys;
 import java.text.Format;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -151,26 +150,15 @@ public class AddLicenseKeyDisplayContext {
 		return data;
 	}
 
-	private String _getDate(Date date, String type) throws Exception {
-		if ((date == null) && type.equals("expirationDate")) {
-			return StringPool.BLANK;
-		}
-
-		Calendar calendar = Calendar.getInstance(
-			_themeDisplay.getTimeZone(), _themeDisplay.getLocale());
-
-		if (type.equals("expirationDate")) {
-			calendar.add(Calendar.YEAR, 1);
-		}
-
+	private String _formatDate(Date date) {
 		if (date != null) {
-			calendar.setTime(date);
+			Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
+				"yyyy-MM-dd");
+
+			return dateFormat.format(date);
 		}
 
-		Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
-			"yyyy-MM-dd");
-
-		return dateFormat.format(calendar.getTime());
+		return StringPool.BLANK;
 	}
 
 	private JSONObject _getDetachedDetails(String productKey) throws Exception {
@@ -195,8 +183,6 @@ public class AddLicenseKeyDisplayContext {
 			"instanceSizes", sizing
 		).put(
 			"licenseKeysGenerated", productConsumptionsCount
-		).put(
-			"startDate", _getDate(null, "startDate")
 		);
 	}
 
@@ -346,9 +332,7 @@ public class AddLicenseKeyDisplayContext {
 						productPurchasesJSONArray.put(
 							JSONUtil.put(
 								"expirationDate",
-								_getDate(
-									productPurchase.getEndDate(),
-									"expirationDate")
+								_formatDate(productPurchase.getEndDate())
 							).put(
 								"instanceSize", sizing
 							).put(
@@ -357,8 +341,7 @@ public class AddLicenseKeyDisplayContext {
 								"productPurchaseKey", productPurchase.getKey()
 							).put(
 								"startDate",
-								_getDate(
-									productPurchase.getStartDate(), "startDate")
+								_formatDate(productPurchase.getStartDate())
 							));
 					}
 
