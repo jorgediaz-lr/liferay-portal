@@ -338,6 +338,8 @@ public class AddLicenseKeyDisplayContext {
 							).put(
 								"licenseKeysGenerated", licenseKeysGenerated
 							).put(
+								"perpetual", productPurchase.getPerpetual()
+							).put(
 								"productPurchaseKey", productPurchase.getKey()
 							).put(
 								"startDate",
