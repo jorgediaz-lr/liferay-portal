@@ -182,6 +182,7 @@ function GeneralInformation({
 
 				{!!selectedType && (
 					<Purchases
+						detached={selectedProduct.detached}
 						purchased={
 							purchasedProducts[selectedProduct.productKey]
 						}

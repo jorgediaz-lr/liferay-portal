@@ -9,7 +9,7 @@
  * distribution rights of the Software.
  */
 
-import {cleanup, render} from '@testing-library/react';
+import {cleanup, render, within} from '@testing-library/react';
 import React from 'react';
 
 import Purchases from '../../../src/main/resources/META-INF/resources/js/components/license_generation/Purchases';
@@ -71,15 +71,31 @@ describe('Purchases', () => {
 		getByText('license-key-generated');
 	});
 
-	it('displays a Detached section', () => {
+	it('always displays a Detached section', () => {
 		const {getByText} = renderPurchases();
 
 		getByText('detached');
 	});
 
-	it('only renders the Detached section if no purchased product is provided', () => {
+	it('only renders the Detached section with default values (dashes) if no purchased product is provided', () => {
 		const {getAllByText} = renderPurchases({purchased: []});
 
 		expect(getAllByText('-').length).toBe(4);
+	});
+
+	it('allows the user to select an Instance Size from a list of choices in the Detached section', () => {
+		const {getAllByText, getByLabelText} = renderPurchases({
+			detached: {
+				instanceSizes: [1, 2, 3, 4],
+				licenseKeysGenerated: '0',
+				startDate: '2021-03-22'
+			}
+		});
+
+		expect(getAllByText('2021-03-22').length).toBe(2);
+		within(getByLabelText('instance-size')).getByText('1');
+		within(getByLabelText('instance-size')).getByText('2');
+		within(getByLabelText('instance-size')).getByText('3');
+		within(getByLabelText('instance-size')).getByText('4');
 	});
 });

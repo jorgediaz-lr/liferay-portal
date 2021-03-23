@@ -192,9 +192,9 @@ public class AddLicenseKeyDisplayContext {
 		}
 
 		return JSONUtil.put(
-			"licenseKeysGenerated", productConsumptionsCount
+			"instanceSizes", sizing
 		).put(
-			"sizing", sizing
+			"licenseKeysGenerated", productConsumptionsCount
 		).put(
 			"startDate", _getDate(null, "startDate")
 		);
@@ -350,11 +350,11 @@ public class AddLicenseKeyDisplayContext {
 									productPurchase.getEndDate(),
 									"expirationDate")
 							).put(
+								"instanceSize", sizing
+							).put(
 								"licenseKeysGenerated", licenseKeysGenerated
 							).put(
 								"productPurchaseKey", productPurchase.getKey()
-							).put(
-								"sizing", sizing
 							).put(
 								"startDate",
 								_getDate(

@@ -16,7 +16,7 @@ import React from 'react';
 
 import Purchase from './Purchase';
 
-function Purchases({purchased}) {
+function Purchases({detached, purchased}) {
 	return (
 		<div className="choose-purchase">
 			<h4>{Liferay.Language.get('choose-purchase')}</h4>
@@ -41,15 +41,20 @@ function Purchases({purchased}) {
 				</ClayTable.Head>
 				<ClayTable.Body>
 					<Purchased purchased={purchased} />
-					<Detached />
+					<Detached detached={detached} />
 				</ClayTable.Body>
 			</ClayTable>
 		</div>
 	);
 }
 
-function Detached() {
-	return <Purchase dividerTitle={Liferay.Language.get('detached')} />;
+function Detached({detached}) {
+	return (
+		<Purchase
+			dividerTitle={Liferay.Language.get('detached')}
+			{...detached}
+		/>
+	);
 }
 
 function Purchased({purchased}) {
@@ -67,6 +72,11 @@ function Purchased({purchased}) {
 }
 
 Purchases.protoType = {
+	detached: PropTypes.shape({
+		instanceSize: PropTypes.arrayOf(PropTypes.number),
+		licenseKeysGenerated: PropTypes.number,
+		startDate: PropTypes.string
+	}),
 	purchased: PropTypes.arrayOf(
 		PropTypes.shape({
 			expirationDate: PropTypes.string,

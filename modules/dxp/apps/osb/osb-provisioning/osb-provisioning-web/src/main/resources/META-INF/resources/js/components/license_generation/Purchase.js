@@ -12,17 +12,24 @@
 import ClayTable from '@clayui/table';
 import ClayTableCell from '@clayui/table/lib/Cell';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {useState} from 'react';
 
 const DASH = '-';
 
 function Purchase({
 	dividerTitle,
 	expirationDate = DASH,
+	instanceSize = DASH,
+	instanceSizes,
 	licenseKeysGenerated = DASH,
-	sizing = DASH,
 	startDate = DASH
 }) {
+	const [sizing, setSizing] = useState();
+
+	function handleSizingChange(event) {
+		setSizing(event.currentTarget.value);
+	}
+
 	return (
 		<>
 			{!!dividerTitle && (
@@ -36,7 +43,30 @@ function Purchase({
 				<ClayTableCell className="semi-bold">
 					{expirationDate}
 				</ClayTableCell>
-				<ClayTableCell>{sizing}</ClayTableCell>
+				<ClayTableCell>
+					{instanceSizes ? (
+						<label htmlFor="instanceSize">
+							<select
+								aria-label={Liferay.Language.get(
+									'instance-size'
+								)}
+								className="form-control form-control-sm"
+								disabled={!instanceSizes.length}
+								id="instanceSize"
+								onChange={handleSizingChange}
+								value={sizing}
+							>
+								{instanceSizes.map(size => (
+									<option key={size} value={size}>
+										{size}
+									</option>
+								))}
+							</select>
+						</label>
+					) : (
+						instanceSize
+					)}
+				</ClayTableCell>
 				<ClayTableCell>{licenseKeysGenerated}</ClayTableCell>
 				<ClayTableCell>
 					<button className="btn btn-secondary btn-sm">
@@ -51,8 +81,9 @@ function Purchase({
 Purchase.protoType = {
 	dividerTitle: PropTypes.string,
 	expirationDate: PropTypes.string,
+	instanceSize: PropTypes.number,
+	instanceSizes: PropTypes.arrayOf(PropTypes.number),
 	licenseKeysGenerated: PropTypes.string,
-	sizing: PropTypes.number,
 	startDate: PropTypes.string
 };
 
