@@ -41,6 +41,18 @@ function GeneralInformation({
 		}
 	}
 
+	function getType() {
+		const availableTypes = getAvailableTypes();
+
+		if (availableTypes && selectedType) {
+			const type = availableTypes.find(
+				type => type.licenseEntryId === Number(selectedType)
+			);
+
+			return type ? type.licenseEntryType : undefined;
+		}
+	}
+
 	function handleProductOnChange(event) {
 		const selectedProductKey = event.target.value;
 
@@ -186,6 +198,7 @@ function GeneralInformation({
 						purchased={
 							purchasedProducts[selectedProduct.productKey]
 						}
+						type={getType()}
 					/>
 				)}
 
@@ -202,6 +215,10 @@ GeneralInformation.propTypes = {
 	accountName: PropTypes.string,
 	licensableProducts: PropTypes.arrayOf(
 		PropTypes.shape({
+			detached: PropTypes.shape({
+				instanceSizes: PropTypes.arrayOf(PropTypes.number),
+				licenseKeysGenerated: PropTypes.number
+			}),
 			productKey: PropTypes.string,
 			productName: PropTypes.string,
 			productVersions: PropTypes.shape({
@@ -220,6 +237,7 @@ GeneralInformation.propTypes = {
 			PropTypes.shape({
 				expirationDate: PropTypes.string,
 				licenseKeysGenerated: PropTypes.string,
+				perpetual: PropTypes.bool,
 				productPurchaseKey: PropTypes.string,
 				sizing: PropTypes.number,
 				startDate: PropTypes.string

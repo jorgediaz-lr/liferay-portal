@@ -22,6 +22,61 @@ export function convertInputToDate(value) {
 }
 
 /**
+ * Displays a date object in the MDY format.
+ * @param {Object} date Date to be formatted.
+ * @returns {string} String representation of the date in MDY format
+ */
+export function displayInMDYDateFormat(date) {
+	return new Intl.DateTimeFormat('en-US', {
+		day: 'numeric',
+		month: 'long',
+		year: 'numeric'
+	}).format(date);
+}
+
+/**
+ * Generates a new date based on the starting point and the offset in years
+ * indicated.
+ * @param {Object|string} startDate Starting point in which to generate the new
+ * date from. If invalid or missing, will default to today's date.
+ * @param {number} offset Offset in years (positive or negative) from the
+ * starting date.
+ * @returns {Object} Date object.
+ */
+export function generateNewDate(startDate = new Date(), offset = 1) {
+	let startDateCopy = new Date(startDate);
+
+	if (isNaN(startDateCopy)) {
+		startDateCopy = new Date();
+	}
+
+	const newEndYear = startDateCopy.getUTCFullYear() + offset;
+
+	return new Date(startDateCopy.setFullYear(newEndYear));
+}
+
+/**
+ * Generates a new date adjusted for UTC.
+ * @param {*} value Any value intended to represent a date.
+ * @returns {*} New date object adjusted for UTC or the original input value if
+ * not a valid Date object.
+ */
+export function getUTCAdjustedDate(value) {
+	if (value instanceof Date) {
+		const utcAdjustedDate = new Date(value.getTime());
+
+		utcAdjustedDate.setHours(
+			utcAdjustedDate.getHours() +
+				utcAdjustedDate.getTimezoneOffset() / 60
+		);
+
+		return utcAdjustedDate;
+	}
+
+	return value;
+}
+
+/**
  * Source formatter locks @clayui/date-picker at version 3.0.7, which does not
  * provide an API for disabling/enabling date picker while later versions do.
  * This helper manually disables/enables the date picker.

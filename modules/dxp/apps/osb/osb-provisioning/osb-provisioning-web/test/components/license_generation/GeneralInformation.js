@@ -16,6 +16,10 @@ import GeneralInformation from '../../../src/main/resources/META-INF/resources/j
 
 const licensableProducts = [
 	{
+		detached: {
+			instanceSizes: [1, 2, 3, 4],
+			licenseKeysGenerated: 0
+		},
 		productKey: 'KEY-123',
 		productName: 'Product A',
 		productVersions: {
@@ -64,26 +68,29 @@ const purchasedProducts = {
 	'KEY-123': [
 		{
 			expirationDate: '2022-04-16',
+			instanceSize: 1,
 			licenseKeysGenerated: '0 / 1',
+			perpetual: false,
 			productPurchaseKey: 'PURCHKEY-123',
-			sizing: 1,
 			startDate: '2021-03-17'
 		},
 		{
-			expirationDate: '-',
+			expirationDate: '',
+			instanceSize: 1,
 			licenseKeysGenerated: '1 / 1',
+			perpetual: true,
 			productPurchaseKey: 'PURCHKEY-321',
-			sizing: 1,
-			startDate: '2021-03-18'
+			startDate: ''
 		}
 	],
 	'KEY-456': [
 		{
-			expirationDate: '-',
+			expirationDate: '',
+			instanceSize: 1,
 			licenseKeysGenerated: '1 / 1',
+			perpetual: true,
 			productPurchaseKey: 'PURCHKEY-456',
-			sizing: 1,
-			startDate: '2021-03-19'
+			startDate: ''
 		}
 	]
 };
@@ -235,9 +242,6 @@ describe('GeneralInformation', () => {
 			target: {value: 98765}
 		});
 
-		getByText('2022-04-16');
-		getByText('2021-03-17');
-
-		getByText('2021-03-18');
+		getByText('March 17, 2021');
 	});
 });

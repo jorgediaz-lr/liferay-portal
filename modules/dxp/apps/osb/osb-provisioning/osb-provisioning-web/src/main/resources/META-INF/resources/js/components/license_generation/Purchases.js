@@ -14,9 +14,16 @@ import ClayTableCell from '@clayui/table/lib/Cell';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import {
+	displayInMDYDateFormat,
+	generateNewDate,
+	getUTCAdjustedDate
+} from '../../utilities/date';
 import Purchase from './Purchase';
 
-function Purchases({detached, purchased}) {
+const TYPE_DEVELOPER = 'developer';
+
+function Purchases({detached, purchased, type}) {
 	return (
 		<div className="choose-purchase">
 			<h4>{Liferay.Language.get('choose-purchase')}</h4>
@@ -40,7 +47,7 @@ function Purchases({detached, purchased}) {
 					</ClayTable.Row>
 				</ClayTable.Head>
 				<ClayTable.Body>
-					<Purchased purchased={purchased} />
+					<Purchased purchased={purchased} selectedType={type} />
 					<Detached detached={detached} />
 				</ClayTable.Body>
 			</ClayTable>
@@ -49,24 +56,68 @@ function Purchases({detached, purchased}) {
 }
 
 function Detached({detached}) {
+	const formattedDates = {};
+
+	if (detached) {
+		const startDate = getUTCAdjustedDate(new Date());
+		const expirationDate = generateNewDate(startDate);
+
+		formattedDates.expirationDate = displayInMDYDateFormat(expirationDate);
+		formattedDates.startDate = displayInMDYDateFormat(startDate);
+	}
+
 	return (
 		<Purchase
 			dividerTitle={Liferay.Language.get('detached')}
 			{...detached}
+			{...formattedDates}
 		/>
 	);
 }
 
-function Purchased({purchased}) {
+function Purchased({purchased, selectedType}) {
 	return (
 		<>
 			{!!purchased &&
-				purchased.map((item, index) => (
-					<Purchase
-						key={item.productPurchaseKey || index}
-						{...item}
-					/>
-				))}
+				purchased.map((item, index) => {
+					let expirationDate;
+					let startDate;
+
+					if (item.perpetual) {
+						startDate = getUTCAdjustedDate(new Date());
+
+						expirationDate = generateNewDate(startDate, 100);
+					}
+					else {
+						startDate = getUTCAdjustedDate(
+							new Date(item.startDate)
+						);
+
+						expirationDate = getUTCAdjustedDate(
+							new Date(item.expirationDate)
+						);
+
+						if (selectedType !== TYPE_DEVELOPER) {
+							expirationDate = generateNewDate(
+								expirationDate,
+								100
+							);
+						}
+					}
+
+					const formattedDates = {
+						expirationDate: displayInMDYDateFormat(expirationDate),
+						startDate: displayInMDYDateFormat(startDate)
+					};
+
+					return (
+						<Purchase
+							key={item.productPurchaseKey || index}
+							{...item}
+							{...formattedDates}
+						/>
+					);
+				})}
 		</>
 	);
 }
@@ -81,11 +132,13 @@ Purchases.protoType = {
 		PropTypes.shape({
 			expirationDate: PropTypes.string,
 			licenseKeysGenerated: PropTypes.string,
+			perpetual: PropTypes.bool,
 			productPurchaseKey: PropTypes.string,
 			sizing: PropTypes.number,
 			startDate: PropTypes.string
 		})
-	)
+	),
+	type: PropTypes.string
 };
 
 export default Purchases;
