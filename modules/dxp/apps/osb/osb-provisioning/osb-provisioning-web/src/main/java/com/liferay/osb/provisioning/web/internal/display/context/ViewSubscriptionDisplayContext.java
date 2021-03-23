@@ -67,11 +67,11 @@ public class ViewSubscriptionDisplayContext extends ViewAccountDisplayContext {
 		portletURL.setParameter(
 			"mvcRenderCommandName", "/accounts/view_subscription");
 		portletURL.setParameter(
+			"tabs1", ParamUtil.getString(renderRequest, "tabs1"));
+		portletURL.setParameter(
 			"accountKey", _productPurchaseViewDisplay.getAccountKey());
 		portletURL.setParameter(
 			"productKey", _productPurchaseViewDisplay.getProductKey());
-		portletURL.setParameter(
-			"tabs1", ParamUtil.getString(renderRequest, "tabs1"));
 
 		return portletURL;
 	}
