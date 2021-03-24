@@ -37,14 +37,14 @@ const licensableProducts = [
 			],
 			6.2: [
 				{
-					licenseEntryId: 98765,
-					licenseEntryName: 'Portal Backup',
-					licenseEntryType: 'production'
+					licenseEntryId: 12345,
+					licenseEntryName: 'Entry Name A',
+					licenseEntryType: 'oem'
 				},
 				{
-					licenseEntryId: 87654,
-					licenseEntryName: 'Portal Backup',
-					licenseEntryType: 'development'
+					licenseEntryId: 23456,
+					licenseEntryName: 'Entry Name B',
+					licenseEntryType: 'limited'
 				}
 			]
 		}
@@ -53,7 +53,7 @@ const licensableProducts = [
 		productKey: 'KEY-456',
 		productName: 'Product B',
 		productVersions: {
-			7.0: [
+			'7.0': [
 				{
 					licenseEntryId: 76543,
 					licenseEntryName: 'Test Entry',
@@ -243,5 +243,121 @@ describe('GeneralInformation', () => {
 		});
 
 		getByText('March 17, 2021');
+	});
+
+	it('repopulates the Version dropdown when the Product dropdown has been reselected', () => {
+		const {getByLabelText, getByText} = renderGeneralInformation({
+			accountName: 'Test Account',
+			licensableProducts
+		});
+
+		fireEvent.change(getByLabelText('product'), {
+			target: {value: 'KEY-123'}
+		});
+
+		getByText('6.1');
+		getByText('6.2');
+
+		fireEvent.change(getByLabelText('product'), {
+			target: {value: 'KEY-456'}
+		});
+
+		getByText('7.0');
+	});
+
+	it('repopulates the Type dropdown when the Version dropdown has been reselected', () => {
+		const {getByLabelText, getByText} = renderGeneralInformation({
+			accountName: 'Test Account',
+			licensableProducts
+		});
+
+		fireEvent.change(getByLabelText('product'), {
+			target: {value: 'KEY-123'}
+		});
+		fireEvent.change(getByLabelText('version'), {
+			target: {value: '6.1'}
+		});
+
+		getByText('Portal Backup (Production)');
+		getByText('Portal Backup (Development)');
+
+		fireEvent.change(getByLabelText('version'), {
+			target: {value: '6.2'}
+		});
+
+		getByText('Entry Name A (Oem)');
+		getByText('Entry Name B (Limited)');
+	});
+
+	it('disables the Type dropdown after the Product dropdown was reselected, until the Version dropdown is selected again', () => {
+		const {getByLabelText} = renderGeneralInformation({
+			accountName: 'Test Account',
+			licensableProducts
+		});
+
+		fireEvent.change(getByLabelText('product'), {
+			target: {value: 'KEY-123'}
+		});
+		fireEvent.change(getByLabelText('version'), {
+			target: {value: '6.1'}
+		});
+
+		fireEvent.change(getByLabelText('product'), {
+			target: {value: 'KEY-456'}
+		});
+
+		expect(getByLabelText('type').disabled).toBeTruthy();
+
+		fireEvent.change(getByLabelText('version'), {
+			target: {value: '7.0'}
+		});
+
+		expect(getByLabelText('type').disabled).toBeFalsy();
+	});
+
+	it('hides the Choose Purchase section when the Product dropdown has been reselected after Product, Version, and Type have been previously selected', () => {
+		const {getByLabelText, queryByText} = renderGeneralInformation({
+			accountName: 'Test Account',
+			licensableProducts
+		});
+
+		fireEvent.change(getByLabelText('product'), {
+			target: {value: 'KEY-123'}
+		});
+		fireEvent.change(getByLabelText('version'), {
+			target: {value: '6.1'}
+		});
+		fireEvent.change(getByLabelText('type'), {
+			target: {value: 98765}
+		});
+
+		fireEvent.change(getByLabelText('product'), {
+			target: {value: 'KEY-456'}
+		});
+
+		expect(queryByText('choose-purchase')).toBeFalsy();
+	});
+
+	it('hides the Choose Purchase section when the Version dropdown has been reselected after Product, Version, and Type have been previously selected', () => {
+		const {getByLabelText, queryByText} = renderGeneralInformation({
+			accountName: 'Test Account',
+			licensableProducts
+		});
+
+		fireEvent.change(getByLabelText('product'), {
+			target: {value: 'KEY-123'}
+		});
+		fireEvent.change(getByLabelText('version'), {
+			target: {value: '6.1'}
+		});
+		fireEvent.change(getByLabelText('type'), {
+			target: {value: 98765}
+		});
+
+		fireEvent.change(getByLabelText('version'), {
+			target: {value: '6.2'}
+		});
+
+		expect(queryByText('choose-purchase')).toBeFalsy();
 	});
 });

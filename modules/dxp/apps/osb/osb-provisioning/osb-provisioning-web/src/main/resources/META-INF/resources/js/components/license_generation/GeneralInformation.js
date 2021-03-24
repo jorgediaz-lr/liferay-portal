@@ -61,6 +61,8 @@ function GeneralInformation({
 				product => product.productKey === selectedProductKey
 			)
 		);
+		setSelectedVersion('');
+		setSelectedType('');
 	}
 
 	function handleTypeOnChange(event) {
@@ -69,6 +71,7 @@ function GeneralInformation({
 
 	function handleVersionOnChange(event) {
 		setSelectedVersion(event.target.value);
+		setSelectedType('');
 	}
 
 	return (
@@ -138,6 +141,7 @@ function GeneralInformation({
 								disabled={selectedProduct === null}
 								id="version"
 								onChange={handleVersionOnChange}
+								value={selectedVersion}
 							>
 								{!!selectedProduct && (
 									<>
@@ -168,6 +172,7 @@ function GeneralInformation({
 								disabled={!selectedVersion}
 								id="type"
 								onChange={handleTypeOnChange}
+								value={selectedType}
 							>
 								{!!selectedVersion && (
 									<>
