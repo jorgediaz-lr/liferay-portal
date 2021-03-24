@@ -4,7 +4,7 @@ ignoreTables: [audit_auditevent, counter, cyrusUser, cyrusVirtual, dlSync, syste
 #
 listener : {
   cleanUpClasses: [],
-  cleanUpMethods: ["DataGuardTestRule.afterClass", "DataGuardTestRule.afterMethod", "DeleteAfterTestRunMethodTestRule.afterMethod","BaseStagedModelDataHandlerTestCase.deleteStagedModel"],
+  cleanUpMethods: ["DataGuardTestRule.afterClass", "DataGuardTestRule.afterMethod", "DeleteAfterTestRunMethodTestRule.afterMethod","BaseStagedModelDataHandlerTestCase.deleteStagedModel","GroupTestUtil.deleteGroup","deleteCompany"],
   ignoredClasses: ["UpgradeProcess"],
   ignoredMethods: ["Test.setUp", "TestCase.setUp", "TestUtil.setUp", "Fixture.setUp", "Test.tearDown", "TestCase.tearDown", "TestUtil.tearDown", "Fixture.tearDown", "MissingRequirementsConflictTest.testMissingParentFolder"],
   printThreadDump: true
@@ -15,13 +15,24 @@ references: [
   {origin: {table: ".*", columns: [".*${destTable.PrimaryKey}"]},                                     dest: {table: ".*", columns: ["${destTable.primaryKey}"]}},
   {origin: {table: ".*", columns: ["${destTable.primaryKey}"]},                                       dest: {table: ".*", columns: ["${destTable.primaryKey}"]}},
   {origin: {table: ".*", columns: ["groupId", "companyId"], condition: "groupId<>0"},                 dest: {table: "Group_", columns: ["groupId", "companyId"]}},
-  {origin: {table: ".*", columns: ["groupId", "folderId"], condition: "folderId<>0"},                 dest: {table: ".*Folder", columns: ["groupId","folderId"]}},
-  {origin: {table: ".*", columns: ["folderId", "treePath"], condition: "folderId<>0"},                dest: {table: ".*Folder", columns: ["folderId", "treePath"]}},
   {origin: {table: ".*", columns: ["ddmStorageId"]},                                                  dest: {table: "DDMContent", columns: ["contentId"]}},
   {origin: {table: ".*", columns: ["layoutId"]},                                                      dest: {table: "Layout", columns: ["layoutId"]}},
   {origin: {table: ".*", columns: ["layoutUuid"]},                                                    dest: {table: "Layout", columns: ["uuid_"]}, fixAction: "update" },
   {origin: {table: ".*", columns: [".*layoutPrototypeUuid"]},                                         dest: {table: "LayoutPrototype", columns: ["uuid_"]}, fixAction: "update" },
   {origin: {table: ".*", columns: [".*layoutSetPrototypeUuid"]},                                      dest: {table: "LayoutSetPrototype", columns: ["uuid_"]}, fixAction: "update" },
+    #folderId
+  {origin: {table: ".*", columns: [".*folderId"], conditionColumns: ["groupId"]}}, #ignore
+  {origin: {table: "KBArticle", columns: ["groupId", "kbFolderId"], condition: "kbFolderId<>0 and status<> 8", conditionColumns: ["status"]}, dest: {table: "KBFolder", columns: ["groupId","kbFolderId"]}, fixAction: "update" },
+  {origin: {table: "KBFolder", columns: ["groupId", "parentKbFolderId"], condition: "parentKbFolderId<>0"}, dest: {table: "KBFolder", columns: ["groupId","kbFolderId"]}, fixAction: "update" },
+  {origin: {table: "^(?!.*Folder\\b).*$", columns: ["groupId", "folderId"], condition: "folderId<>0"}, dest: {table: ".*Folder", columns: ["groupId","folderId"]}, fixAction: "update" },
+  {origin: {table: "^(?!.*Folder\\b).*$", columns: ["groupId", "folderId"], condition: "folderId<>0", conditionColumns: ["status"]}}, #ignore
+  {origin: {table: "^(?!.*Folder\\b).*$", columns: ["groupId", "folderId"], condition: "folderId<>0 and status<> 8", conditionColumns: ["status"]}, dest: {table: ".*Folder", columns: ["groupId","folderId"]}, fixAction: "update" },
+  {origin: {table: ".*", columns: ["groupId", "parentFolderId"], condition: "parentFolderId<>0"},                 dest: {table: ".*Folder", columns: ["groupId","folderId"]}, fixAction: "update" },
+  {origin: {table: ".*", columns: ["groupId", "parentFolderId"], condition: "parentFolderId<>0", conditionColumns: ["status"]}}, #ignore
+  {origin: {table: ".*", columns: ["groupId", "parentFolderId"], condition: "parentFolderId<>0 and status<> 8", conditionColumns: ["status"]}, dest: {table: ".*Folder", columns: ["groupId","folderId"]}, fixAction: "update" },
+  {origin: {table: "^(?!.*Folder\\b).*$", columns: ["folderId", "treePath"], condition: "folderId<>0"},                dest: {table: ".*Folder", columns: ["folderId", "treePath"]}},
+  {origin: {table: "^(?!.*Folder\\b).*$", columns: ["folderId", "treePath"], condition: "folderId<>0", conditionColumns: ["status"]}}, #ignore
+  {origin: {table: "^(?!.*Folder\\b).*$", columns: ["folderId", "treePath"], condition: "folderId<>0 and status<> 8", conditionColumns: ["status"]}, dest: {table: ".*Folder", columns: ["folderId", "treePath"]}},
     #imageId
   {origin: {table: ".*", columns: ["logoId"]},                                                        dest: {table: "Image", columns: ["imageId"]}},
   {origin: {table: ".*", columns: ["portraitId"]},                                                    dest: {table: "Image", columns: ["imageId"]}},
