@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.permission.LayoutPermissionUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -126,7 +127,12 @@ public class PermissionsPortletConfigurationIcon
 				publishDate = modifiedDate;
 			}
 
-			if (modifiedDate.getTime() > publishDate.getTime()) {
+			boolean published = GetterUtil.getBoolean(
+				draftLayout.getTypeSettingsProperty("published"));
+
+			if (!published ||
+				(modifiedDate.getTime() > publishDate.getTime())) {
+
 				return false;
 			}
 		}

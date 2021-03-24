@@ -165,8 +165,14 @@ public class EditLayoutMVCActionCommand extends BaseMVCActionCommand {
 
 			Date publishDate = layout.getPublishDate();
 
-			layoutHasDraftChanges =
-				modifiedDate.getTime() > publishDate.getTime();
+			boolean published = GetterUtil.getBoolean(
+				draftLayout.getTypeSettingsProperty("published"));
+
+			if (published &&
+				(modifiedDate.getTime() <= publishDate.getTime())) {
+
+				layoutHasDraftChanges = false;
+			}
 
 			_layoutService.updateLayout(
 				groupId, privateLayout, draftLayout.getLayoutId(),

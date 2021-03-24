@@ -655,8 +655,17 @@ public class LayoutsAdminDisplayContext {
 					publishDate = modifiedDate;
 				}
 
-				layoutJSONObject.put(
-					"draft", modifiedDate.getTime() > publishDate.getTime());
+				boolean published = GetterUtil.getBoolean(
+					draftLayout.getTypeSettingsProperty("published"));
+
+				if (!published ||
+					(modifiedDate.getTime() > publishDate.getTime())) {
+
+					layoutJSONObject.put("draft", true);
+				}
+				else {
+					layoutJSONObject.put("draft", false);
+				}
 			}
 			else {
 				layoutJSONObject.put("draft", false);

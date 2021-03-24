@@ -90,6 +90,7 @@ import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Constants;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -342,8 +343,17 @@ public class ContentPageEditorDisplayContext {
 			publishDate = modifiedDate;
 		}
 
+		boolean published = GetterUtil.getBoolean(
+			draftLayout.getTypeSettingsProperty("published"));
+
+		boolean draft = false;
+
+		if (!published || (modifiedDate.getTime() > publishDate.getTime())) {
+			draft = true;
+		}
+
 		soyContext.put(
-			"draft", modifiedDate.after(publishDate)
+			"draft", draft
 		).put(
 			"lastSaveDate", StringPool.BLANK
 		).put(
