@@ -35,7 +35,7 @@ if (provisioningWebConfiguration.licensesPortletEnabled()) {
 <div class="subscription" id="account">
 	<div class="subscription-content">
 		<liferay-ui:tabs
-			names="<%= tabNames %>>"
+			names="<%= tabNames %>"
 			portletURL="<%= viewSubscriptionDisplayContext.getPortletURL() %>"
 		/>
 
