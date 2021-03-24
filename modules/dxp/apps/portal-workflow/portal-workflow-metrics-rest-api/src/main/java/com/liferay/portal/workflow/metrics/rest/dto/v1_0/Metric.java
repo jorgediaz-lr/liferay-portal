@@ -46,7 +46,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @generated
  */
 @Generated("")
-@GraphQLName("Metric")
+@GraphQLName(description = "https://www.schema.org/Metric", value = "Metric")
 @JsonFilter("Liferay.Vulcan")
 @XmlRootElement(name = "Metric")
 public class Metric implements Serializable {
