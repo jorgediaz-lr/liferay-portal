@@ -1044,12 +1044,6 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 		KBArticle latestKBArticle = getLatestKBArticle(
 			resourcePrimKey, WorkflowConstants.STATUS_ANY);
 
-		// Index
-
-		indexKBArticle(latestKBArticle);
-
-		// Social
-
 		JSONObject extraDataJSONObject = JSONUtil.put(
 			"title", latestKBArticle.getTitle());
 
@@ -1059,6 +1053,8 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 				resourcePrimKey, AdminActivityKeys.MOVE_KB_ARTICLE,
 				extraDataJSONObject.toString(), 0);
 		}
+
+		indexKBArticle(latestKBArticle);
 	}
 
 	@Override
@@ -1773,9 +1769,6 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 	protected void indexKBArticle(KBArticle kbArticle) {
 		TransactionCommitCallbackUtil.registerCallback(
 			() -> {
-
-				// Indexer
-
 				Indexer<KBArticle> indexer = _indexerRegistry.getIndexer(
 					KBArticle.class);
 
