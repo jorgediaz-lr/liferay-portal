@@ -4185,6 +4185,18 @@ log.sanitizer.enabled=false</echo>
 		/>
 	</target>
 
+	<target name="functional-smoke-bundle-tomcat-db2111-jdk8">
+		<antcall target="functional-bundle-tomcat-db2111-jdk8" />
+	</target>
+
+	<target name="functional-smoke-bundle-tomcat-hypersonic20-jdk8">
+		<antcall target="functional-bundle-tomcat-hypersonic20-jdk8" />
+	</target>
+
+	<target name="functional-smoke-bundle-tomcat-mariadb102-jdk8">
+		<antcall target="functional-bundle-tomcat-mariadb102-jdk8" />
+	</target>
+
 	<target name="functional-smoke-bundle-tomcat-mysql56-jdk8">
 		<antcall target="functional-bundle-tomcat-mysql56-jdk8" />
 	</target>
@@ -4195,6 +4207,14 @@ log.sanitizer.enabled=false</echo>
 
 	<target name="functional-smoke-bundle-tomcat-mysql57-jdk11_open">
 		<antcall target="functional-bundle-tomcat-mysql57-jdk11_open" />
+	</target>
+
+	<target name="functional-smoke-bundle-tomcat-oracle122-jdk8">
+		<antcall target="functional-bundle-tomcat-oracle122-jdk8" />
+	</target>
+
+	<target name="functional-smoke-bundle-tomcat-postgresql10-jdk8">
+		<antcall target="functional-bundle-tomcat-postgresql10-jdk8" />
 	</target>
 
 	<target name="functional-smoke-bundle-weblogic-mysql57-jdk8">
