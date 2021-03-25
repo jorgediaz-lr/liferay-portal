@@ -162,6 +162,7 @@ public class CreatorUser implements Serializable {
 	}
 
 	@Schema(
+		accessMode = Schema.AccessMode.READ_ONLY,
 		defaultValue = "com.liferay.portal.workflow.metrics.rest.dto.v1_0.CreatorUser",
 		name = "x-class-name"
 	)

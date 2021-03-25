@@ -325,6 +325,7 @@ public class DataDefinitionPermission implements Serializable {
 	}
 
 	@Schema(
+		accessMode = Schema.AccessMode.READ_ONLY,
 		defaultValue = "com.liferay.data.engine.rest.dto.v1_0.DataDefinitionPermission",
 		name = "x-class-name"
 	)

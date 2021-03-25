@@ -265,6 +265,7 @@ public class DataDefinitionRule implements Serializable {
 	}
 
 	@Schema(
+		accessMode = Schema.AccessMode.READ_ONLY,
 		defaultValue = "com.liferay.data.engine.rest.dto.v1_0.DataDefinitionRule",
 		name = "x-class-name"
 	)

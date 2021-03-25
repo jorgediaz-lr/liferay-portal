@@ -519,6 +519,7 @@ public class DataRecordCollectionPermission implements Serializable {
 	}
 
 	@Schema(
+		accessMode = Schema.AccessMode.READ_ONLY,
 		defaultValue = "com.liferay.data.engine.rest.dto.v1_0.DataRecordCollectionPermission",
 		name = "x-class-name"
 	)

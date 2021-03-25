@@ -225,6 +225,7 @@ public class Metric implements Serializable {
 	}
 
 	@Schema(
+		accessMode = Schema.AccessMode.READ_ONLY,
 		defaultValue = "com.liferay.portal.workflow.metrics.rest.dto.v1_0.Metric",
 		name = "x-class-name"
 	)
