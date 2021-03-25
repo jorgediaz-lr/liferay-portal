@@ -19,7 +19,6 @@
 	{@param? label: string}
 	{@param? options: list<?>}
 	{@param? placeholder: string}
-	{@param? predefinedValue: string}
 	{@param? readOnly: bool}
 	{@param? repeatable: bool}
 	{@param? required: bool}
@@ -49,7 +48,6 @@
 				{param name: $name /}
 				{param options: $options/}
 				{param placeholder: $placeholder /}
-				{param predefinedValue: $predefinedValue /}
 				{param readOnly: $readOnly /}
 				{param value: $value /}
 			{/call}
@@ -87,12 +85,10 @@
 	{@param? id: string}
 	{@param? options: list<?>}
 	{@param? placeholder: string}
-	{@param? predefinedValue: string}
 	{@param? readOnly: bool}
 	{@param? value: string}
 
-	{let $inputValue: isNonnull($value) and $value != '' ? $value : $predefinedValue /}
-
+	{let $inputValue: isNonnull($value) and $value != '' ? $value : ''/}
 	{let $attributes kind="attributes"}
 		class="ddm-field-text form-control"
 

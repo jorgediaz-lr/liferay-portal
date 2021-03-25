@@ -71,7 +71,8 @@ class Text extends Component {
 
 		return {
 			...state,
-			options: this.getAutocompleteOptions(options)
+			options: this.getAutocompleteOptions(options),
+			value: this._getValue()
 		};
 	}
 
@@ -103,6 +104,22 @@ class Text extends Component {
 				return true;
 			}
 		});
+	}
+
+	_getValue() {
+		const {
+			context: {store}
+		} = this;
+
+		if (
+			!store.viewMode &&
+			this.predefinedValue !== '' &&
+			this.value === ''
+		) {
+			return this.predefinedValue;
+		}
+
+		return this.value;
 	}
 
 	_handleAutocompleteFieldChanged(event) {
