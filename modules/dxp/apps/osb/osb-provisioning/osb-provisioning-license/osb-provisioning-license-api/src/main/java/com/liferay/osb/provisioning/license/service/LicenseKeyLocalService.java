@@ -391,10 +391,6 @@ public interface LicenseKeyLocalService
 			long userId, long licenseKeyId, Date startDate, Date expirationDate)
 		throws Exception;
 
-	public LicenseKey renewLicenseKey(
-			long userId, long licenseKeyId, Date startDate, int renewTime)
-		throws Exception;
-
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> search(
 		String createUserUuid, Date createDateGT, Date createDateLT,

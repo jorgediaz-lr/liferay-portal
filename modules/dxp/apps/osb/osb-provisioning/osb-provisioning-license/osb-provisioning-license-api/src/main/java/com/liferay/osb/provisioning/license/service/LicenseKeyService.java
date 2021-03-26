@@ -160,12 +160,7 @@ public interface LicenseKeyService extends BaseService {
 		throws PortalException;
 
 	public LicenseKey renewLicenseKey(
-			long licenseKeyId, Date startDate, int renewTime)
-		throws Exception;
-
-	@JSONWebService
-	public LicenseKey renewLicenseKey(
-			String uuid, Date startDate, Date expirationDate)
+			long licenseKeyId, Date startDate, Date expirationDate)
 		throws Exception;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

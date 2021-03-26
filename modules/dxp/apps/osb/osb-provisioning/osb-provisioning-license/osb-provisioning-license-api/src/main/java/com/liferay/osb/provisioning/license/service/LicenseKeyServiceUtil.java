@@ -195,18 +195,12 @@ public class LicenseKeyServiceUtil {
 	}
 
 	public static LicenseKey renewLicenseKey(
-			long licenseKeyId, java.util.Date startDate, int renewTime)
-		throws Exception {
-
-		return getService().renewLicenseKey(licenseKeyId, startDate, renewTime);
-	}
-
-	public static LicenseKey renewLicenseKey(
-			String uuid, java.util.Date startDate,
+			long licenseKeyId, java.util.Date startDate,
 			java.util.Date expirationDate)
 		throws Exception {
 
-		return getService().renewLicenseKey(uuid, startDate, expirationDate);
+		return getService().renewLicenseKey(
+			licenseKeyId, startDate, expirationDate);
 	}
 
 	public static List<LicenseKey> search(

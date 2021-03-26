@@ -596,17 +596,6 @@ public class LicenseKeyLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.osb.provisioning.license.model.LicenseKey
-			renewLicenseKey(
-				long userId, long licenseKeyId, java.util.Date startDate,
-				int renewTime)
-		throws Exception {
-
-		return _licenseKeyLocalService.renewLicenseKey(
-			userId, licenseKeyId, startDate, renewTime);
-	}
-
-	@Override
 	public java.util.List<com.liferay.osb.provisioning.license.model.LicenseKey>
 		search(
 			String createUserUuid, java.util.Date createDateGT,

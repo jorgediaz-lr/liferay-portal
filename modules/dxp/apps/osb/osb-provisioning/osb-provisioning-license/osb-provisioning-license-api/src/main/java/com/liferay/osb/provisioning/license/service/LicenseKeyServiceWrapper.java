@@ -217,22 +217,12 @@ public class LicenseKeyServiceWrapper
 	@Override
 	public com.liferay.osb.provisioning.license.model.LicenseKey
 			renewLicenseKey(
-				long licenseKeyId, java.util.Date startDate, int renewTime)
-		throws Exception {
-
-		return _licenseKeyService.renewLicenseKey(
-			licenseKeyId, startDate, renewTime);
-	}
-
-	@Override
-	public com.liferay.osb.provisioning.license.model.LicenseKey
-			renewLicenseKey(
-				String uuid, java.util.Date startDate,
+				long licenseKeyId, java.util.Date startDate,
 				java.util.Date expirationDate)
 		throws Exception {
 
 		return _licenseKeyService.renewLicenseKey(
-			uuid, startDate, expirationDate);
+			licenseKeyId, startDate, expirationDate);
 	}
 
 	@Override

@@ -513,15 +513,6 @@ public class LicenseKeyLocalServiceUtil {
 			userId, licenseKeyId, startDate, expirationDate);
 	}
 
-	public static LicenseKey renewLicenseKey(
-			long userId, long licenseKeyId, java.util.Date startDate,
-			int renewTime)
-		throws Exception {
-
-		return getService().renewLicenseKey(
-			userId, licenseKeyId, startDate, renewTime);
-	}
-
 	public static List<LicenseKey> search(
 		String createUserUuid, java.util.Date createDateGT,
 		java.util.Date createDateLT, String modifiedUserUuid,
