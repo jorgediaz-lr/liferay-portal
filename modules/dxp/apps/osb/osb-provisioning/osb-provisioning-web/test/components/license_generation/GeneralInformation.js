@@ -226,11 +226,13 @@ describe('GeneralInformation', () => {
 	});
 
 	it('displays the Non-detached section correctly based on the Product Selected', () => {
-		const {getByLabelText, getByText} = renderGeneralInformation({
-			accountName: 'Test Account',
-			licensableProducts,
-			purchasedProducts
-		});
+		const {getAllByDisplayValue, getByLabelText} = renderGeneralInformation(
+			{
+				accountName: 'Test Account',
+				licensableProducts,
+				purchasedProducts
+			}
+		);
 
 		fireEvent.change(getByLabelText('product'), {
 			target: {value: 'KEY-123'}
@@ -242,7 +244,9 @@ describe('GeneralInformation', () => {
 			target: {value: 98765}
 		});
 
-		getByText('March 17, 2021');
+		// Clay Date Picker always displays two inputs for the same date
+
+		expect(getAllByDisplayValue('2021-03-17').length).toBe(2);
 	});
 
 	it('repopulates the Version dropdown when the Product dropdown has been reselected', () => {

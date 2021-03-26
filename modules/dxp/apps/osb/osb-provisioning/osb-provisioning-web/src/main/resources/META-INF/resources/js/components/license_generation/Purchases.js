@@ -14,11 +14,7 @@ import ClayTableCell from '@clayui/table/lib/Cell';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import {
-	displayInMDYDateFormat,
-	generateNewDate,
-	getUTCAdjustedDate
-} from '../../utilities/date';
+import {generateNewDate, getUTCAdjustedDate} from '../../utilities/date';
 import Purchase from './Purchase';
 
 const TYPE_DEVELOPER = 'developer';
@@ -59,11 +55,11 @@ function Detached({detached}) {
 	const formattedDates = {};
 
 	if (detached) {
-		const startDate = getUTCAdjustedDate(new Date());
-		const expirationDate = generateNewDate(startDate);
+		formattedDates.startDate = getUTCAdjustedDate(new Date());
 
-		formattedDates.expirationDate = displayInMDYDateFormat(expirationDate);
-		formattedDates.startDate = displayInMDYDateFormat(startDate);
+		formattedDates.expirationDate = generateNewDate(
+			formattedDates.startDate
+		);
 	}
 
 	return (
@@ -106,8 +102,8 @@ function Purchased({purchased, selectedType}) {
 					}
 
 					const formattedDates = {
-						expirationDate: displayInMDYDateFormat(expirationDate),
-						startDate: displayInMDYDateFormat(startDate)
+						expirationDate,
+						startDate
 					};
 
 					return (

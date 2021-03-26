@@ -14,10 +14,15 @@ import React from 'react';
 
 import Purchases from '../../../src/main/resources/META-INF/resources/js/components/license_generation/Purchases';
 import {
-	displayInMDYDateFormat,
 	generateNewDate,
 	getUTCAdjustedDate
 } from '../../../src/main/resources/META-INF/resources/js/utilities/date';
+
+function formatDate(date) {
+	return JSON.stringify(date)
+		.replace(/T(.*)Z/g, '')
+		.replace(/"/g, '');
+}
 
 function renderPurchases({...props}) {
 	return render(
@@ -104,88 +109,102 @@ describe('Purchases', () => {
 		within(getByLabelText('instance-size')).getByText('4');
 	});
 
-	it('displays dates in MDY format', () => {
-		const {getByText} = renderPurchases();
+	describe('Dates', () => {
+		// Clay Date Picker always displays two inputs for the same date
 
-		getByText('March 17, 2020');
-	});
+		it('always displays Start Date in the Detached section as Today in UTC', () => {
+			const {getAllByDisplayValue} = renderPurchases({
+				detached: {
+					instanceSizes: [1, 2, 3, 4],
+					licenseKeysGenerated: '0'
+				},
+				purchased: []
+			});
 
-	it('always displays Start Date in the Detached section as Today in UTC', () => {
-		const {getByText} = renderPurchases({
-			detached: {
-				instanceSizes: [1, 2, 3, 4],
-				licenseKeysGenerated: '0'
-			},
-			purchased: []
+			const utcAdjustedStartDate = getUTCAdjustedDate(new Date());
+
+			expect(
+				getAllByDisplayValue(formatDate(utcAdjustedStartDate)).length
+			).toBe(2);
 		});
 
-		const utcAdjustedStartDate = getUTCAdjustedDate(new Date());
+		it('always displays Expiration Date in the Detached section as a year from the Start Date', () => {
+			const {getAllByDisplayValue} = renderPurchases({
+				detached: {
+					instanceSizes: [1, 2, 3, 4],
+					licenseKeysGenerated: '0'
+				},
+				purchased: []
+			});
 
-		getByText(displayInMDYDateFormat(utcAdjustedStartDate));
-	});
+			const utcAdjustedStartDate = getUTCAdjustedDate(new Date());
+			const utcAdjustedExpirationDate = generateNewDate(
+				utcAdjustedStartDate
+			);
 
-	it('always displays Expiration Date in the Detached section as a year from the Start Date', () => {
-		const {getByText} = renderPurchases({
-			detached: {
-				instanceSizes: [1, 2, 3, 4],
-				licenseKeysGenerated: '0'
-			},
-			purchased: []
+			expect(
+				getAllByDisplayValue(formatDate(utcAdjustedStartDate)).length
+			).toBe(2);
+			expect(
+				getAllByDisplayValue(formatDate(utcAdjustedExpirationDate))
+					.length
+			).toBe(2);
+
+			const startDateYear = utcAdjustedStartDate.getFullYear();
+			const expirationDateYear = utcAdjustedExpirationDate.getFullYear();
+
+			expect(expirationDateYear - startDateYear).toBe(1);
 		});
 
-		const utcAdjustedStartDate = getUTCAdjustedDate(new Date());
-		const utcAdjustedExpirationDate = generateNewDate(utcAdjustedStartDate);
+		it('always displays the Start Date of a Perpetual subscription in the Non Detached section as Today in UTC', () => {
+			const {getAllByDisplayValue} = renderPurchases();
 
-		getByText(displayInMDYDateFormat(utcAdjustedStartDate));
-		getByText(displayInMDYDateFormat(utcAdjustedExpirationDate));
+			const utcAdjustedStartDate = getUTCAdjustedDate(new Date());
 
-		const startDateYear = utcAdjustedStartDate.getFullYear();
-		const expirationDateYear = utcAdjustedExpirationDate.getFullYear();
+			expect(
+				getAllByDisplayValue(formatDate(utcAdjustedStartDate)).length
+			).toBe(2);
+		});
 
-		expect(expirationDateYear - startDateYear).toBe(1);
-	});
+		it('always displays the Expiration Date of a Perpetual subscription in the Non Detached section as 100 years from Today in UTC', () => {
+			const {getAllByDisplayValue} = renderPurchases();
 
-	it('always displays the Start Date of a Perpetual subscription in the Non Detached section as Today in UTC', () => {
-		const {getByText} = renderPurchases();
+			const utcAdjustedStartDate = getUTCAdjustedDate(new Date());
+			const utcAdjustedExpirationDate = generateNewDate(
+				utcAdjustedStartDate,
+				100
+			);
 
-		const utcAdjustedStartDate = getUTCAdjustedDate(new Date());
+			expect(
+				getAllByDisplayValue(formatDate(utcAdjustedStartDate)).length
+			).toBe(2);
+			expect(
+				getAllByDisplayValue(formatDate(utcAdjustedExpirationDate))
+					.length
+			).toBe(2);
 
-		getByText(displayInMDYDateFormat(utcAdjustedStartDate));
-	});
+			expect(
+				utcAdjustedExpirationDate.getFullYear() -
+					utcAdjustedStartDate.getFullYear()
+			).toBe(100);
+		});
 
-	it('always displays the Expiration Date of a Perpetual subscription in the Non Detached section as 100 years from Today in UTC', () => {
-		const {getByText} = renderPurchases();
+		it('displays the Start Date of a Non Perpetual subscription in the Non Detached section correctly', () => {
+			const {getAllByDisplayValue} = renderPurchases();
 
-		const utcAdjustedStartDate = getUTCAdjustedDate(new Date());
-		const utcAdjustedExpirationDate = generateNewDate(
-			utcAdjustedStartDate,
-			100
-		);
+			expect(getAllByDisplayValue('2020-03-17').length).toBe(2);
+		});
 
-		getByText(displayInMDYDateFormat(utcAdjustedStartDate));
-		getByText(displayInMDYDateFormat(utcAdjustedExpirationDate));
+		it('displays the Expiration Date of a Non Perpetual subscription whose license Type is NOT Developer in the Non Detached section 100 years from the subscription End Date', () => {
+			const {getAllByDisplayValue} = renderPurchases();
 
-		expect(
-			utcAdjustedExpirationDate.getFullYear() -
-				utcAdjustedStartDate.getFullYear()
-		).toBe(100);
-	});
+			expect(getAllByDisplayValue('2120-04-16').length).toBe(2);
+		});
 
-	it('displays the Start Date of a Non Perpetual subscription in the Non Detached section correctly', () => {
-		const {getByText} = renderPurchases();
+		it('displays the Expiration Date of a Non Perpetual subscription whose license Type is Developer in the Non Detached section from the subscription End Date', () => {
+			const {getAllByDisplayValue} = renderPurchases({type: 'developer'});
 
-		getByText('March 17, 2020');
-	});
-
-	it('displays the Expiration Date of a Non Perpetual subscription whose license Type is NOT Developer in the Non Detached section 100 years from the subscription End Date', () => {
-		const {getByText} = renderPurchases();
-
-		getByText('April 16, 2120');
-	});
-
-	it('displays the Expiration Date of a Non Perpetual subscription whose license Type is Developer in the Non Detached section from the subscription End Date', () => {
-		const {getByText} = renderPurchases({type: 'developer'});
-
-		getByText('April 16, 2020');
+			expect(getAllByDisplayValue('2020-04-16').length).toBe(2);
+		});
 	});
 });

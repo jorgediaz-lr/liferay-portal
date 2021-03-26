@@ -96,7 +96,7 @@ describe('Bulk Input', () => {
 		expect(getAllByPlaceholderText('varied-data').length).toBe(3);
 	});
 
-	it('renders the field value when the subscriptions contain identical values for the said fields', () => {
+	it("renders the field's value in the Bulk Input when the subscriptions contain identical values for the same field name", () => {
 		const {getAllByDisplayValue, getByDisplayValue} = renderBulkInput({
 			subscriptions: [
 				{
@@ -128,12 +128,14 @@ describe('Bulk Input', () => {
 			]
 		});
 
+		// Clay Date Picker always displays two inputs for the same date
+
 		getByDisplayValue('salesForceKey456');
 		getByDisplayValue('2');
-		getAllByDisplayValue('2020-12-21');
-		getAllByDisplayValue('2022-01-21');
+		expect(getAllByDisplayValue('2020-12-21').length).toBe(2);
+		expect(getAllByDisplayValue('2022-01-21').length).toBe(2);
 		getByDisplayValue('1');
-		getAllByDisplayValue('2021-12-21');
+		expect(getAllByDisplayValue('2021-12-21').length).toBe(2);
 		getByDisplayValue('Approved');
 	});
 

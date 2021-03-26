@@ -14,15 +14,17 @@ import ClayTableCell from '@clayui/table/lib/Cell';
 import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 
+import DatePicker from '../DatePicker';
+
 const DASH = '-';
 
 function Purchase({
 	dividerTitle,
-	expirationDate = DASH,
+	expirationDate,
 	instanceSize = DASH,
 	instanceSizes,
 	licenseKeysGenerated = DASH,
-	startDate = DASH
+	startDate
 }) {
 	const [sizing, setSizing] = useState();
 
@@ -38,11 +40,29 @@ function Purchase({
 				</ClayTable.Row>
 			)}
 
-			<ClayTable.Row>
-				<ClayTableCell className="semi-bold">{startDate}</ClayTableCell>
-				<ClayTableCell className="semi-bold">
-					{expirationDate}
-				</ClayTableCell>
+			<ClayTable.Row id={dividerTitle ? dividerTitle : ''}>
+				{startDate ? (
+					<ClayTableCell className="input-group-sm">
+						<DatePicker
+							defaultValue={startDate}
+							inputName="startDate"
+						/>
+					</ClayTableCell>
+				) : (
+					<ClayTableCell>{DASH}</ClayTableCell>
+				)}
+
+				{expirationDate ? (
+					<ClayTableCell className="input-group-sm">
+						<DatePicker
+							defaultValue={expirationDate}
+							inputName="expirationDate"
+						/>
+					</ClayTableCell>
+				) : (
+					<ClayTableCell>{DASH}</ClayTableCell>
+				)}
+
 				<ClayTableCell>
 					{instanceSizes ? (
 						<label htmlFor="instanceSize">

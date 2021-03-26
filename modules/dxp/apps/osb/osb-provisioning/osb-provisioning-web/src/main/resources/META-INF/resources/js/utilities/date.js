@@ -22,19 +22,6 @@ export function convertInputToDate(value) {
 }
 
 /**
- * Displays a date object in the MDY format.
- * @param {Object} date Date to be formatted.
- * @returns {string} String representation of the date in MDY format
- */
-export function displayInMDYDateFormat(date) {
-	return new Intl.DateTimeFormat('en-US', {
-		day: 'numeric',
-		month: 'long',
-		year: 'numeric'
-	}).format(date);
-}
-
-/**
  * Generates a new date based on the starting point and the offset in years
  * indicated.
  * @param {Object|string} startDate Starting point in which to generate the new
