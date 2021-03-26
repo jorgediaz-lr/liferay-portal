@@ -6,7 +6,7 @@ listener : {
   cleanUpClasses: [],
   cleanUpMethods: ["DataGuardTestRule.afterClass", "DataGuardTestRule.afterMethod", "DeleteAfterTestRunMethodTestRule.afterMethod","BaseStagedModelDataHandlerTestCase.deleteStagedModel","GroupTestUtil.deleteGroup","deleteCompany"],
   ignoredClasses: ["UpgradeProcess"],
-  ignoredMethods: ["Test.setUp", "TestCase.setUp", "TestUtil.setUp", "Fixture.setUp", "Test.tearDown", "TestCase.tearDown", "TestUtil.tearDown", "Fixture.tearDown", "MissingRequirementsConflictTest.testMissingParentFolder"],
+  ignoredMethods: ["Test.setUp", "TestCase.setUp", "TestUtil.setUp", "Fixture.setUp", "Test.tearDown", "TestCase.tearDown", "TestUtil.tearDown", "Fixture.tearDown", "CompanyTestUtil.addCompany", "MissingRequirementsConflictTest.testMissingParentFolder"],
   printThreadDump: true
 }
 #
@@ -14,7 +14,7 @@ references: [
     #generic references
   {origin: {table: ".*", columns: [".*${destTable.PrimaryKey}"]},                                     dest: {table: ".*", columns: ["${destTable.primaryKey}"]}},
   {origin: {table: ".*", columns: ["${destTable.primaryKey}"]},                                       dest: {table: ".*", columns: ["${destTable.primaryKey}"]}},
-  {origin: {table: ".*", columns: ["groupId", "companyId"], condition: "groupId<>0"},                 dest: {table: "Group_", columns: ["groupId", "companyId"]}},
+  {origin: {table: ".*", columns: ["groupId", "companyId"], condition: "groupId<>0 and companyId<>0"},dest: {table: "Group_", columns: ["groupId", "companyId"]}},
   {origin: {table: ".*", columns: ["ddmStorageId"]},                                                  dest: {table: "DDMContent", columns: ["contentId"]}},
   {origin: {table: ".*", columns: ["layoutId"]},                                                      dest: {table: "Layout", columns: ["layoutId"]}},
   {origin: {table: ".*", columns: ["layoutUuid"]},                                                    dest: {table: "Layout", columns: ["uuid_"]}, fixAction: "update" },
