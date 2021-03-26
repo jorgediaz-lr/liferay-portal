@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.test.rule.NewEnv;
 import com.liferay.portal.test.aspects.ReflectionUtilAdvice;
 import com.liferay.portal.test.rule.AdviseWith;
 import com.liferay.portal.test.rule.AspectJNewEnvTestRule;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
@@ -46,7 +47,8 @@ public class ObjectDecodeChannelInboundHandlerTest {
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
 		new AggregateTestRule(
-			AspectJNewEnvTestRule.INSTANCE, CodeCoverageAssertor.INSTANCE);
+			AspectJNewEnvTestRule.INSTANCE, CodeCoverageAssertor.INSTANCE,
+			LiferayUnitTestRule.INSTANCE);
 
 	@Test
 	public void testChannelRead() throws Exception {

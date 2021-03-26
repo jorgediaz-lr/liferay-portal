@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.test.rule.AdviseWith;
 import com.liferay.portal.test.rule.AspectJNewEnvTestRule;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.util.PropsUtil;
 
 import java.io.ObjectInputStream;
@@ -74,7 +75,8 @@ public class PortletSessionImplTest {
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
 		new AggregateTestRule(
-			AspectJNewEnvTestRule.INSTANCE, CodeCoverageAssertor.INSTANCE);
+			AspectJNewEnvTestRule.INSTANCE, CodeCoverageAssertor.INSTANCE,
+			LiferayUnitTestRule.INSTANCE);
 
 	@Before
 	public void setUp() throws ClassNotFoundException {

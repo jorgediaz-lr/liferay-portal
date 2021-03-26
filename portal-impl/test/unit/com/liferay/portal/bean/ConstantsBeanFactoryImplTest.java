@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.test.rule.NewEnv;
 import com.liferay.portal.test.aspects.ReflectionUtilAdvice;
 import com.liferay.portal.test.rule.AdviseWith;
 import com.liferay.portal.test.rule.AspectJNewEnvTestRule;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -50,7 +51,8 @@ public class ConstantsBeanFactoryImplTest {
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
 		new AggregateTestRule(
-			AspectJNewEnvTestRule.INSTANCE, CodeCoverageAssertor.INSTANCE);
+			AspectJNewEnvTestRule.INSTANCE, CodeCoverageAssertor.INSTANCE,
+			LiferayUnitTestRule.INSTANCE);
 
 	@AdviseWith(adviceClasses = ReflectionUtilAdvice.class)
 	@NewEnv(type = NewEnv.Type.CLASSLOADER)

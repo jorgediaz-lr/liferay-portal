@@ -14,12 +14,14 @@
 
 package com.liferay.portal.test.rule;
 
+import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.NewEnv;
 
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 
 import org.junit.Assert;
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -28,6 +30,12 @@ import org.junit.Test;
  */
 @NewEnv(type = NewEnv.Type.JVM)
 public class AspectJNewEnvJVMTestRuleTest {
+
+	@ClassRule
+	@Rule
+	public static final AggregateTestRule aggregateTestRule =
+		new AggregateTestRule(
+			AspectJNewEnvTestRule.INSTANCE, LiferayUnitTestRule.INSTANCE);
 
 	@NewEnv(type = NewEnv.Type.NONE)
 	@Test
@@ -70,10 +78,6 @@ public class AspectJNewEnvJVMTestRuleTest {
 		catch (IllegalStateException illegalStateException) {
 		}
 	}
-
-	@Rule
-	public final AspectJNewEnvTestRule aspectJNewEnvTestRule =
-		AspectJNewEnvTestRule.INSTANCE;
 
 	@Aspect
 	private static class AdviceClass1 {

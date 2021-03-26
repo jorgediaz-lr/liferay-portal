@@ -46,6 +46,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.impl.PortletImpl;
 import com.liferay.portal.test.rule.AdviseWith;
 import com.liferay.portal.test.rule.AspectJNewEnvTestRule;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.registry.BasicRegistryImpl;
 import com.liferay.registry.RegistryUtil;
 
@@ -89,7 +90,8 @@ public class SPIAgentSerializableTest {
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
 		new AggregateTestRule(
-			AspectJNewEnvTestRule.INSTANCE, CodeCoverageAssertor.INSTANCE);
+			AspectJNewEnvTestRule.INSTANCE, CodeCoverageAssertor.INSTANCE,
+			LiferayUnitTestRule.INSTANCE);
 
 	@Before
 	public void setUp() {

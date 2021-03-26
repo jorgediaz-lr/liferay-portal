@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.test.rule.NewEnv;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.test.rule.AdviseWith;
 import com.liferay.portal.test.rule.AspectJNewEnvTestRule;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -43,7 +44,8 @@ public class WelderFactoryUtilTest {
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
 		new AggregateTestRule(
-			AspectJNewEnvTestRule.INSTANCE, CodeCoverageAssertor.INSTANCE);
+			AspectJNewEnvTestRule.INSTANCE, CodeCoverageAssertor.INSTANCE,
+			LiferayUnitTestRule.INSTANCE);
 
 	@NewEnv(type = NewEnv.Type.NONE)
 	@Test
