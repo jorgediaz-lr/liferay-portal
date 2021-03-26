@@ -13,6 +13,8 @@
 	{@param? namespace: string}
 	{@param? viewType: string}
 
+	{let $empty: length($nodes) > 0 ? false : true /}
+
 	<div class="select-layout">
 		<nav class="management-bar management-bar-light navbar navbar-expand-md">
 			<div class="container">
@@ -24,6 +26,9 @@
 									<input
 										class="form-control input-group-inset input-group-inset-after"
 										data-oninput="{$_searchNodes}"
+										{if $empty}
+											disabled
+										{/if}
 										name="{$namespace}filterKeywords"
 										placeholder="{msg desc=""}search-for{/msg}"
 										type="text"
@@ -52,17 +57,27 @@
 
 		<div class="container-fluid-1280 layouts-selector" id="{$namespace}selectLayoutFm">
 			<fieldset class="panel-body">
-				<div class="layout-tree" id="{$namespace}layoutContainer">
-					{call liferay.frontend.CardsTreeview.render}
-						{param events: [
-							'selectedNodesChanged': $_selectedNodeChange
-						] /}
-						{param multiSelection: $multiSelection /}
-						{param nodes: $nodes /}
-						{param pathThemeImages: $pathThemeImages /}
-						{param viewType: $viewType /}
-					{/call}
-				</div>
+				{if $empty}
+					<div className="sheet taglib-empty-result-message">
+						<div className="taglib-empty-result-message-header"></div>
+
+						<div className="sheet-text text-center">
+							{msg desc=""}there-are-no-pages{/msg}
+						</div>
+					</div>
+				{else}
+					<div class="layout-tree" id="{$namespace}layoutContainer">
+						{call liferay.frontend.CardsTreeview.render}
+							{param events: [
+								'selectedNodesChanged': $_selectedNodeChange
+							] /}
+							{param multiSelection: $multiSelection /}
+							{param nodes: $nodes /}
+							{param pathThemeImages: $pathThemeImages /}
+							{param viewType: $viewType /}
+						{/call}
+					</div>
+				{/if}
 			</fieldset>
 		</div>
 	</div>

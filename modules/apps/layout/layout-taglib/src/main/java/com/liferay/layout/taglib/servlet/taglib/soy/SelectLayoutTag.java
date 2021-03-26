@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
@@ -178,6 +179,14 @@ public class SelectLayoutTag extends ComponentRendererTag {
 	private JSONArray _getLayoutsJSONArray() throws Exception {
 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
 			WebKeys.THEME_DISPLAY);
+
+		Group group = themeDisplay.getScopeGroup();
+
+		if ((_getPrivateLayout() && !group.hasPrivateLayouts()) ||
+			(!_getPrivateLayout() && !group.hasPublicLayouts())) {
+
+			return JSONFactoryUtil.createJSONArray();
+		}
 
 		String layoutUuid = ParamUtil.getString(request, "layoutUuid");
 
