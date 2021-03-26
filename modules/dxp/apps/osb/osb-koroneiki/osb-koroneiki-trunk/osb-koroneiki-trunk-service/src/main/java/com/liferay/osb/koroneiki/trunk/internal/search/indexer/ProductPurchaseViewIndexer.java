@@ -492,6 +492,10 @@ public class ProductPurchaseViewIndexer
 	}
 
 	protected int getStatus(List<ProductPurchase> productPurchases) {
+		if (productPurchases.isEmpty()) {
+			return WorkflowConstants.STATUS_INACTIVE;
+		}
+
 		for (ProductPurchase productPurchase : productPurchases) {
 			if (productPurchase.getStatus() ==
 					WorkflowConstants.STATUS_APPROVED) {
@@ -748,7 +752,7 @@ public class ProductPurchaseViewIndexer
 
 	private void _reindexAccountProductPurchaseViews(
 			long companyId, Account account)
-		throws SearchException {
+		throws PortalException {
 
 		List<ProductPurchase> productPurchases =
 			_productPurchaseLocalService.getAccountProductPurchases(
@@ -757,9 +761,25 @@ public class ProductPurchaseViewIndexer
 		Stream<ProductPurchase> productPurchaseStream =
 			productPurchases.stream();
 
-		Set<Long> productEntryIds = productPurchaseStream.collect(
-			Collectors.mapping(
-				ProductPurchase::getProductEntryId, Collectors.toSet()));
+		Set<Long> productEntryIds = productPurchaseStream.map(
+			ProductPurchase::getProductEntryId
+		).collect(
+			Collectors.toSet()
+		);
+
+		List<ProductConsumption> productConsumptions =
+			_productConsumptionLocalService.getAccountProductConsumptions(
+				account.getAccountId(), QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+
+		Stream<ProductConsumption> productConsumptionStream =
+			productConsumptions.stream();
+
+		productEntryIds.addAll(
+			productConsumptionStream.map(
+				ProductConsumption::getProductEntryId
+			).collect(
+				Collectors.toSet()
+			));
 
 		for (long productEntryId : productEntryIds) {
 			ProductPurchaseView productPurchaseView =
