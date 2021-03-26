@@ -90,6 +90,18 @@ describe('Search', () => {
 			expect(getByPlaceholderText('search-accounts').disabled).toBe(true);
 		});
 
+		it('disables keyword search button when Advanced Search is expanded', () => {
+			const {getByLabelText} = renderAccountSearch();
+
+			const keywordSearchButton = getByLabelText('keyword-search');
+
+			expect(keywordSearchButton.disabled).toBe(false);
+
+			fireEvent.click(getByLabelText('advanced-search-icon'));
+
+			expect(keywordSearchButton.disabled).toBe(true);
+		});
+
 		it('opens the Advanced Search when the caret is clicked', () => {
 			const {getByLabelText} = renderAccountSearch();
 
@@ -136,9 +148,16 @@ describe('Search', () => {
 				getByPlaceholderText
 			} = renderLicenseKeySearch();
 
+			const keywordSearchButton = getByLabelText('keyword-search');
+			const keywordSearchInput = getByPlaceholderText('search-licenses');
+
+			expect(keywordSearchInput.disabled).toBe(false);
+			expect(keywordSearchButton.disabled).toBe(false);
+
 			fireEvent.click(getByLabelText('advanced-search-icon'));
 
-			expect(getByPlaceholderText('search-licenses').disabled).toBe(true);
+			expect(keywordSearchInput.disabled).toBe(true);
+			expect(keywordSearchButton.disabled).toBe(true);
 		});
 
 		it('opens the Advanced Search when the caret is clicked', () => {

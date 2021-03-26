@@ -59,8 +59,12 @@ function Search({
 
 	function handleOnKeyDown(event) {
 		if (event.keyCode === 13) {
-			window.location.assign(buildSearchResultsURL());
+			handleOnKeywordSearch();
 		}
+	}
+
+	function handleOnKeywordSearch() {
+		window.location.assign(buildSearchResultsURL());
 	}
 
 	function handleOnToggle() {
@@ -111,10 +115,13 @@ function Search({
 						</button>
 					</div>
 
-					<a
+					<button
+						aria-label={Liferay.Language.get('keyword-search')}
 						className="btn btn-default search-btn"
-						href={buildSearchResultsURL()}
-						role="button"
+						disabled={showAdvancedSearch}
+						onClick={handleOnKeywordSearch}
+						role="link"
+						type="button"
 					>
 						<svg
 							aria-hidden="true"
@@ -124,7 +131,7 @@ function Search({
 						>
 							<use xlinkHref="#search" />
 						</svg>
-					</a>
+					</button>
 				</div>
 			</div>
 
