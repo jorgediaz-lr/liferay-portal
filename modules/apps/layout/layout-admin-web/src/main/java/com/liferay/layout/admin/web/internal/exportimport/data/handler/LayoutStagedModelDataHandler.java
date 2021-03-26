@@ -2145,10 +2145,19 @@ public class LayoutStagedModelDataHandler
 					layout.getPlid());
 
 		if (layoutPageTemplateStructure == null) {
-			layoutPageTemplateStructure =
-				_layoutPageTemplateStructureLocalService.
-					rebuildLayoutPageTemplateStructure(
-						layout.getGroupId(), layout.getPlid());
+			try {
+				layoutPageTemplateStructure =
+					_layoutPageTemplateStructureLocalService.
+						rebuildLayoutPageTemplateStructure(
+							layout.getGroupId(),
+							_portal.getClassNameId(Layout.class.getName()),
+							layout.getPlid());
+			}
+			catch (PortalException portalException) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(portalException, portalException);
+				}
+			}
 		}
 
 		StagedModelDataHandlerUtil.exportReferenceStagedModel(
