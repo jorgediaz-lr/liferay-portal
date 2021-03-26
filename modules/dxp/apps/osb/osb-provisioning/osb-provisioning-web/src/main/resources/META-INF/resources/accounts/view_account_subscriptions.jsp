@@ -33,7 +33,7 @@ SearchContainer productPurchasesSearchContainer = viewAccountDisplayContext.getP
 		<liferay-util:param name="names" value="<%= viewAccountDisplayContext.getTabsNames() %>" />
 		<liferay-util:param name="param" value="tabs2" />
 		<liferay-util:param name="url" value="<%= portletURL.toString() %>" />
-		<liferay-util:param name="values" value="active,inactive,all" />
+		<liferay-util:param name="values" value="active,future,complimentary,expired,cancelled,all" />
 	</liferay-util:include>
 
 	<portlet:actionURL name="/accounts/edit_product_purchases_select_terms" var="editProductPurchasesURL">
@@ -117,7 +117,7 @@ SearchContainer productPurchasesSearchContainer = viewAccountDisplayContext.getP
 				String columnName = "current-purchased";
 				String columnCount = productPurchaseViewDisplay.getCurrentPurchasedCount();
 
-				if (tabs2.equals("inactive")) {
+				if (tabs2.equals("expired")) {
 					columnName = "latest-purchased";
 					columnCount = productPurchaseViewDisplay.getLatestPurchasedCount();
 				}

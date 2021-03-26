@@ -62,6 +62,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
 import java.text.Format;
@@ -501,12 +502,32 @@ public class ViewAccountDisplayContext {
 
 		tabsNames.add(getTabName("active", activeProductPurchaseViewsCount));
 
-		long inactiveProductPurchaseViewsCount =
+		long futureProductPurchaseViewsCount =
 			productPurchaseViewWebService.getProductPurchaseViewsCount(
-				StringPool.BLANK, _getFilter("inactive"));
+				StringPool.BLANK, _getFilter("future"));
+
+		tabsNames.add(getTabName("future", futureProductPurchaseViewsCount));
+
+		long complimentaryProductPurchaseViewsCount =
+			productPurchaseViewWebService.getProductPurchaseViewsCount(
+				StringPool.BLANK, _getFilter("complimentary"));
 
 		tabsNames.add(
-			getTabName("inactive", inactiveProductPurchaseViewsCount));
+			getTabName(
+				"complimentary", complimentaryProductPurchaseViewsCount));
+
+		long expiredProductPurchaseViewsCount =
+			productPurchaseViewWebService.getProductPurchaseViewsCount(
+				StringPool.BLANK, _getFilter("expired"));
+
+		tabsNames.add(getTabName("expired", expiredProductPurchaseViewsCount));
+
+		long cancelledProductPurchaseViewsCount =
+			productPurchaseViewWebService.getProductPurchaseViewsCount(
+				StringPool.BLANK, _getFilter("cancelled"));
+
+		tabsNames.add(
+			getTabName("cancelled", cancelledProductPurchaseViewsCount));
 
 		long allProductPurchaseViewsCount =
 			productPurchaseViewWebService.getProductPurchaseViewsCount(
@@ -631,7 +652,7 @@ public class ViewAccountDisplayContext {
 		Date endDate = PortalUtil.getDate(
 			endDateMonth, endDateDay, endDateYear, null);
 
-		StringBundler sb = new StringBundler(13);
+		StringBundler sb = new StringBundler(15);
 
 		sb.append("(accountKey eq '");
 		sb.append(account.getKey());
@@ -642,14 +663,25 @@ public class ViewAccountDisplayContext {
 			sb.append(ProductPurchaseConstants.STATE_ACTIVE);
 			sb.append("')");
 		}
-		else if (tabs2.equals("inactive") && (states.length == 0)) {
-			sb.append(" and ((state eq '");
-			sb.append(ProductPurchaseConstants.STATE_CANCELLED);
-			sb.append("') or (state eq '");
-			sb.append(ProductPurchaseConstants.STATE_EXPIRED);
-			sb.append("') or (state eq '");
+		else if (tabs2.equals("future")) {
+			sb.append(" and (state eq '");
 			sb.append(ProductPurchaseConstants.STATE_UNACTIVATED);
-			sb.append("'))");
+			sb.append("')");
+		}
+		else if (tabs2.equals("complimentary")) {
+			sb.append(" and (status eq '");
+			sb.append(WorkflowConstants.STATUS_INACTIVE);
+			sb.append("')");
+		}
+		else if (tabs2.equals("expired")) {
+			sb.append(" and (state eq '");
+			sb.append(ProductPurchaseConstants.STATE_EXPIRED);
+			sb.append("')");
+		}
+		else if (tabs2.equals("cancelled")) {
+			sb.append(" and (state eq '");
+			sb.append(ProductPurchaseConstants.STATE_CANCELLED);
+			sb.append("')");
 		}
 
 		if (!tabs2.equals("active") && (states.length > 0)) {
