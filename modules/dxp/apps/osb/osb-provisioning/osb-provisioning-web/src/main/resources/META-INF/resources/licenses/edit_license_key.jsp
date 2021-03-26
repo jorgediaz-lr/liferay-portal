@@ -32,6 +32,18 @@ String licenseType = licenseKey.getLicenseEntryType();
 if (licenseType.equals(LicenseType.CLUSTER)) {
 	clusterLicenseKeys = (List<LicenseKey>)renderRequest.getAttribute(ProvisioningWebKeys.LICENSE_KEYS);
 }
+
+String updateComplimentary = "make-complimentary";
+
+if (licenseKey.isComplimentary()) {
+	updateComplimentary = "remove-complimentary";
+}
+
+String updateActive = "activate";
+
+if (licenseKey.isActive()) {
+	updateActive = "deactivate";
+}
 %>
 
 <div class="add-items">
@@ -46,6 +58,8 @@ if (licenseType.equals(LicenseType.CLUSTER)) {
 	<aui:form action="<%= editLicenseKeyURL %>" cssClass="container-fluid container-fluid-max-xl" method="post" name="fm">
 		<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 		<aui:input name="licenseKeyId" type="hidden" value="<%= licenseKey.getLicenseKeyId() %>" />
+		<aui:input name="clusterLicenseKeyId" type="hidden" />
+		<aui:input name="productPurchaseKey" type="hidden" value="<%= licenseKey.getProductPurchaseKey() %>" />
 		<aui:input name="complimentary" type="hidden" value="<%= licenseKey.isComplimentary() %>" />
 		<aui:input name="active" type="hidden" value="<%= licenseKey.isActive() %>" />
 		<aui:input name="startDate" type="hidden" />
@@ -230,9 +244,17 @@ if (licenseType.equals(LicenseType.CLUSTER)) {
 									</aui:col>
 
 									<aui:col md="12">
-										<span><liferay-ui:message key="download" /></span>
+										<div class="button-holder">
+											<span><liferay-ui:message key="download" /></span>
 
-										<span><%= licenseKey.isActive() ? "deactivate" : "activate" %></span>
+											<%
+											String clusterUpdateActive = clusterLicenseKey.isActive() ? "deactivate" : "activate";
+											%>
+
+											<button class="btn" onclick="<portlet:namespace />updateActive('<%= clusterUpdateActive %>', '<%= clusterLicenseKey.getLicenseKeyId() %>');" type="button">
+												<liferay-ui:message key="<%= clusterUpdateActive %>" />
+											</button>
+										</div>
 									</aui:col>
 
 								<%
@@ -313,19 +335,25 @@ if (licenseType.equals(LicenseType.CLUSTER)) {
 								</aui:col>
 
 								<aui:col md="12">
-									<c:if test="<%= licenseKey.canRenew() %>">
-										<span><liferay-ui:message key="renew" /></span>
-									</c:if>
+									<div class="button-holder">
+										<c:if test="<%= licenseKey.canRenew() %>">
+											<span><liferay-ui:message key="renew" /></span>
+										</c:if>
 
-									<span><liferay-ui:message key='<%= licenseKey.isComplimentary() ? "make-complimentary" :"remove-complimentary" %>' /></span>
+										<button class="btn" onclick="<portlet:namespace />updateComplimentary('<%= updateComplimentary %>');" type="button">
+											<liferay-ui:message key="<%= updateComplimentary %>" />
+										</button>
 
-									<span><liferay-ui:message key='<%= licenseKey.isActive() ? "deactivate" : "activate" %>' /></span>
+										<button class="btn" onclick="<portlet:namespace />updateActive('<%= updateActive %>', null);" type="button">
+											<liferay-ui:message key="<%= updateActive %>" />
+										</button>
 
-									<c:if test="<%= licenseKey.isActive() %>">
-										<span><liferay-ui:message key="download" /></span>
-									</c:if>
+										<c:if test="<%= licenseKey.isActive() %>">
+											<span><liferay-ui:message key="download" /></span>
+										</c:if>
 
-									<span><liferay-ui:message key="move-license" /></span>
+										<span><liferay-ui:message key="move-license" /></span>
+									</div>
 								</aui:col>
 							</c:otherwise>
 						</c:choose>
@@ -397,13 +425,17 @@ if (licenseType.equals(LicenseType.CLUSTER)) {
 						</c:choose>
 
 						<aui:col md="12">
-							<span><liferay-ui:message key='<%= licenseKey.isActive() ? "deactivate" : "activate" %>' /></span>
+							<div class="button-holder">
+								<button class="btn" onclick="<portlet:namespace />updateActive('<%= updateActive %>', null);" type="button">
+									<liferay-ui:message key="<%= updateActive %>" />
+								</button>
 
-							<c:if test="<%= licenseKey.isActive() && ((licenseKey.getLicenseVersion() == 2) || licenseType.equals(LicenseType.CLUSTER) || licenseType.equals(LicenseType.DEVELOPER_CLUSTER)) %>">
-								<span><liferay-ui:message key="download" /></span>
-							</c:if>
+								<c:if test="<%= licenseKey.isActive() && ((licenseKey.getLicenseVersion() == 2) || licenseType.equals(LicenseType.CLUSTER) || licenseType.equals(LicenseType.DEVELOPER_CLUSTER)) %>">
+									<span><liferay-ui:message key="download" /></span>
+								</c:if>
 
-							<span><liferay-ui:message key="move-license" /></span>
+								<span><liferay-ui:message key="move-license" /></span>
+							</div>
 						</aui:col>
 					</c:otherwise>
 				</c:choose>
@@ -411,3 +443,37 @@ if (licenseType.equals(LicenseType.CLUSTER)) {
 		</div>
 	</aui:form>
 </div>
+
+<aui:script>
+	function <portlet:namespace />updateActive(action, clusterLicenseKeyId) {
+		var confirmMessage =
+			action == 'activate'
+				? '<liferay-ui:message key="are-you-sure-you-want-to-activate-this-license-key" />'
+				: '<liferay-ui:message key="are-you-sure-you-want-to-deactivate-this-license-key" />';
+
+		if (confirm(confirmMessage)) {
+			document.getElementById('<portlet:namespace />active').value =
+				action == 'activate' ? true : false;
+
+			document.getElementById(
+				'<portlet:namespace />clusterLicenseKeyId'
+			).value = clusterLicenseKeyId ? clusterLicenseKeyId : '';
+
+			document.getElementById('<portlet:namespace />fm').submit();
+		}
+	}
+
+	function <portlet:namespace />updateComplimentary(action) {
+		var confirmMessage =
+			action == 'make-complimentary'
+				? '<liferay-ui:message key="are-you-sure-you-want-to-make-complimentary-for-this-license-key" />'
+				: '<liferay-ui:message key="are-you-sure-you-want-to-remove-complimentary-for-this-license-key" />';
+
+		if (confirm(confirmMessage)) {
+			document.getElementById('<portlet:namespace />complimentary').value =
+				action == 'make-complimentary' ? true : false;
+
+			document.getElementById('<portlet:namespace />fm').submit();
+		}
+	}
+</aui:script>
