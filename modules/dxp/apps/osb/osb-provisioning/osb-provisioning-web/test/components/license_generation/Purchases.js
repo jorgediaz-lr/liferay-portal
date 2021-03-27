@@ -76,10 +76,10 @@ describe('Purchases', () => {
 		getByText('instance-size');
 	});
 
-	it('displays a License Key Generated column', () => {
+	it('displays a License Keys Generated column', () => {
 		const {getByText} = renderPurchases();
 
-		getByText('license-key-generated');
+		getByText('license-keys-generated');
 	});
 
 	it('always displays a Detached section', () => {

@@ -44,6 +44,12 @@ String updateActive = "activate";
 if (licenseKey.isActive()) {
 	updateActive = "deactivate";
 }
+
+PortletURL moveLicensekeyURL = renderResponse.createRenderURL();
+
+moveLicensekeyURL.setWindowState(LiferayWindowState.POP_UP);
+moveLicensekeyURL.setParameter("mvcRenderCommandName", "/licenses/move_license_key");
+moveLicensekeyURL.setParameter("licenseKeyId", String.valueOf(licenseKey.getLicenseKeyId()));
 %>
 
 <div class="add-items">
@@ -354,7 +360,11 @@ if (licenseKey.isActive()) {
 											<span><liferay-ui:message key="download" /></span>
 										</c:if>
 
-										<span><liferay-ui:message key="move-license" /></span>
+										<button class="btn" onclick="<portlet:namespace />moveLicenseKey('<%= moveLicensekeyURL %>');" type="button">
+											<clay:icon
+												symbol="move-folder"
+											/>
+										</button>
 									</div>
 								</aui:col>
 							</c:otherwise>
@@ -436,7 +446,11 @@ if (licenseKey.isActive()) {
 									<span><liferay-ui:message key="download" /></span>
 								</c:if>
 
-								<span><liferay-ui:message key="move-license" /></span>
+								<button class="btn" onclick="<portlet:namespace />moveLicenseKey('<%= moveLicensekeyURL %>');" type="button">
+									<clay:icon
+										symbol="move-folder"
+									/>
+								</button>
 							</div>
 						</aui:col>
 					</c:otherwise>
@@ -471,6 +485,27 @@ if (licenseKey.isActive()) {
 		},
 		['aui-base', 'liferay-item-selector-dialog']
 	);
+
+	<portlet:namespace />moveLicenseKey = function(url) {
+		Liferay.Util.selectEntity(
+			{
+				dialog: {
+					constrain: true,
+					modal: true
+				},
+				eventName: 'moveLicenseKey',
+				title: '<liferay-ui:message key="move-license" />',
+				uri: url
+			},
+			function(event) {
+				document.getElementById(
+					'<portlet:namespace />productPurchaseKey'
+				).value = event.productpurchasekey;
+
+				document.getElementById('<portlet:namespace />fm').submit();
+			}
+		);
+	};
 
 	function <portlet:namespace />updateActive(action, clusterLicenseKeyId) {
 		var confirmMessage =

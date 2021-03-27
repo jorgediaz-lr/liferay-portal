@@ -38,7 +38,7 @@ function Purchases({detached, purchased, type}) {
 							{Liferay.Language.get('instance-size')}
 						</ClayTableCell>
 						<ClayTableCell headingCell>
-							{Liferay.Language.get('license-key-generated')}
+							{Liferay.Language.get('license-keys-generated')}
 						</ClayTableCell>
 						<ClayTableCell headingCell>{''}</ClayTableCell>
 					</ClayTable.Row>
