@@ -29,6 +29,8 @@ import org.osgi.service.component.annotations.Reference;
 	property = {
 		"exchange=is_entity_exchange", "exclusive=true",
 		"queue=is_osb_provisioning_entity_queue",
+		"routing.key=entity.organization.assigned",
+		"routing.key=entity.organization.unassigned",
 		"routing.key=entity.role.assigned"
 	},
 	service = EntityLegacyConsumer.class
