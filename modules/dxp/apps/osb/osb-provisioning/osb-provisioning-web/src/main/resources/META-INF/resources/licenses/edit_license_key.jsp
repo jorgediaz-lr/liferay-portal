@@ -337,7 +337,9 @@ if (licenseKey.isActive()) {
 								<aui:col md="12">
 									<div class="button-holder">
 										<c:if test="<%= licenseKey.canRenew() %>">
-											<span><liferay-ui:message key="renew" /></span>
+											<button class="btn" onclick="<portlet:namespace />renewLicenseKey();" type="button">
+												<liferay-ui:message key="renew" />
+											</button>
 										</c:if>
 
 										<button class="btn" onclick="<portlet:namespace />updateComplimentary('<%= updateComplimentary %>');" type="button">
@@ -445,6 +447,31 @@ if (licenseKey.isActive()) {
 </div>
 
 <aui:script>
+	Liferay.provide(
+		window,
+		'<portlet:namespace />renewLicenseKey',
+		function() {
+			var A = AUI();
+
+			<portlet:renderURL var="renewLicenseKeyURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+				<portlet:param name="mvcRenderCommandName" value="/licenses/renew_license_key" />
+			</portlet:renderURL>
+
+			var itemSelectorDialog = new A.LiferayItemSelectorDialog({
+				eventName: 'selectedItemChange',
+				strings: {
+					add: '<liferay-ui:message key="renew" />',
+					cancel: '<liferay-ui:message key="cancel" />'
+				},
+				title: '<liferay-ui:message key="renew" />',
+				url: '<%= renewLicenseKeyURL %>'
+			});
+
+			itemSelectorDialog.open();
+		},
+		['aui-base', 'liferay-item-selector-dialog']
+	);
+
 	function <portlet:namespace />updateActive(action, clusterLicenseKeyId) {
 		var confirmMessage =
 			action == 'activate'
