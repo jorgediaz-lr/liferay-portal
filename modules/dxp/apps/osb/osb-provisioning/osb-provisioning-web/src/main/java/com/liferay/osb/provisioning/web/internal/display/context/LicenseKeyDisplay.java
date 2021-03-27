@@ -86,7 +86,8 @@ public class LicenseKeyDisplay {
 			Date startDate = _licenseKey.getStartDate();
 			Date expirationDate = _licenseKey.getExpirationDate();
 
-			long days = (expirationDate.getTime() - startDate.getTime()) / Time.DAY;
+			long days =
+				(expirationDate.getTime() - startDate.getTime()) / Time.DAY;
 
 			return String.valueOf((int)days) + " Days";
 		}

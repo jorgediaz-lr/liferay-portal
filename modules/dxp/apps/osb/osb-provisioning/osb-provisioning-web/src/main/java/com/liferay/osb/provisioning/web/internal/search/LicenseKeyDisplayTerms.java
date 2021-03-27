@@ -242,6 +242,15 @@ public class LicenseKeyDisplayTerms extends DisplayTerms {
 		return null;
 	}
 
+	@Override
+	public String getKeywords() {
+		if (Validator.isNotNull(keywords)) {
+			return keywords;
+		}
+
+		return null;
+	}
+
 	public String getMacAddress() {
 		if (Validator.isNotNull(macAddress)) {
 			return macAddress;
