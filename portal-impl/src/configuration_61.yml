@@ -6,7 +6,7 @@ listener : {
   cleanUpClasses: [],
   cleanUpMethods: ["DataGuardTestRule.afterClass", "DataGuardTestRule.afterMethod", "DeleteAfterTestRunMethodTestRule.afterMethod","BaseStagedModelDataHandlerTestCase.deleteStagedModel","GroupTestUtil.deleteGroup","deleteCompany"],
   ignoredClasses: ["UpgradeProcess"],
-  ignoredMethods: ["Test.setUp", "TestCase.setUp", "TestUtil.setUp", "Fixture.setUp", "Test.tearDown", "TestCase.tearDown", "TestUtil.tearDown", "Fixture.tearDown", "MissingRequirementsConflictTest.testMissingParentFolder"],
+  ignoredMethods: ["Test.setUp", "TestCase.setUp", "TestUtil.setUp", "Fixture.setUp", "Test.tearDown", "TestCase.tearDown", "TestUtil.tearDown", "DataGuardTestRule.afterClass", "DataGuardTestRule.afterMethod", "DeleteAfterTestRunMethodTestRule.afterMethod", "Fixture.tearDown", "CompanyTestUtil.addCompany", "BaseTableReferenceDefinitionTestCase.testDiscardCTEntry", "MissingRequirementsConflictTest.testMissingParentFolder"],
   printThreadDump: true
 }
 #
