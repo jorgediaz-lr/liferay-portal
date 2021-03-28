@@ -251,7 +251,6 @@ moveLicensekeyURL.setParameter("licenseKeyId", String.valueOf(licenseKey.getLice
 
 									<aui:col md="12">
 										<div class="button-holder">
-											<span><liferay-ui:message key="download" /></span>
 
 											<%
 											String clusterUpdateActive = clusterLicenseKey.isActive() ? "deactivate" : "activate";
@@ -260,6 +259,16 @@ moveLicensekeyURL.setParameter("licenseKeyId", String.valueOf(licenseKey.getLice
 											<button class="btn" onclick="<portlet:namespace />updateActive('<%= clusterUpdateActive %>', '<%= clusterLicenseKey.getLicenseKeyId() %>');" type="button">
 												<liferay-ui:message key="<%= clusterUpdateActive %>" />
 											</button>
+
+											<portlet:resourceURL id="/licenses/download_license_key" var="downloadLicenseFileURL">
+												<portlet:param name="licenseKeyId" value="<%= String.valueOf(clusterLicenseKey.getLicenseKeyId()) %>" />
+											</portlet:resourceURL>
+
+											<a class="btn" href="<%= downloadLicenseFileURL %>" type="button">
+												<clay:icon
+													symbol="download"
+												/>
+											</a>
 										</div>
 									</aui:col>
 
@@ -356,15 +365,23 @@ moveLicensekeyURL.setParameter("licenseKeyId", String.valueOf(licenseKey.getLice
 											<liferay-ui:message key="<%= updateActive %>" />
 										</button>
 
-										<c:if test="<%= licenseKey.isActive() %>">
-											<span><liferay-ui:message key="download" /></span>
-										</c:if>
-
 										<button class="btn" onclick="<portlet:namespace />moveLicenseKey('<%= moveLicensekeyURL %>');" type="button">
 											<clay:icon
 												symbol="move-folder"
 											/>
 										</button>
+
+										<c:if test="<%= licenseKey.isActive() %>">
+											<portlet:resourceURL id="/licenses/download_license_key" var="downloadLicenseFileURL">
+												<portlet:param name="licenseKeyId" value="<%= String.valueOf(licenseKey.getLicenseKeyId()) %>" />
+											</portlet:resourceURL>
+
+											<a class="btn" href="<%= downloadLicenseFileURL %>" type="button">
+												<clay:icon
+													symbol="download"
+												/>
+											</a>
+										</c:if>
 									</div>
 								</aui:col>
 							</c:otherwise>
@@ -442,15 +459,23 @@ moveLicensekeyURL.setParameter("licenseKeyId", String.valueOf(licenseKey.getLice
 									<liferay-ui:message key="<%= updateActive %>" />
 								</button>
 
-								<c:if test="<%= licenseKey.isActive() && ((licenseKey.getLicenseVersion() == 2) || licenseType.equals(LicenseType.CLUSTER) || licenseType.equals(LicenseType.DEVELOPER_CLUSTER)) %>">
-									<span><liferay-ui:message key="download" /></span>
-								</c:if>
-
 								<button class="btn" onclick="<portlet:namespace />moveLicenseKey('<%= moveLicensekeyURL %>');" type="button">
 									<clay:icon
 										symbol="move-folder"
 									/>
 								</button>
+
+								<c:if test="<%= licenseKey.isActive() && ((licenseKey.getLicenseVersion() == 2) || licenseType.equals(LicenseType.CLUSTER) || licenseType.equals(LicenseType.DEVELOPER_CLUSTER)) %>">
+									<portlet:resourceURL id="/licenses/download_license_key" var="downloadLicenseFileURL">
+										<portlet:param name="licenseKeyId" value="<%= String.valueOf(licenseKey.getLicenseKeyId()) %>" />
+									</portlet:resourceURL>
+
+									<a class="btn" href="<%= downloadLicenseFileURL %>" type="button">
+										<clay:icon
+											symbol="download"
+										/>
+									</a>
+								</c:if>
 							</div>
 						</aui:col>
 					</c:otherwise>

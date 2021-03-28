@@ -1,0 +1,116 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package com.liferay.osb.provisioning.web.internal.portlet.action;
+
+import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
+import com.liferay.osb.provisioning.license.exporter.LicenseKeyExporter;
+import com.liferay.osb.provisioning.license.model.LicenseKey;
+import com.liferay.osb.provisioning.license.service.LicenseKeyService;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.portlet.PortletResponseUtil;
+import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
+import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
+import com.liferay.portal.kernel.util.ContentTypes;
+import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.StringUtil;
+
+import javax.portlet.PortletException;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
+
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
+/**
+ * @author Yuanyuan Huang
+ */
+@Component(
+	property = {
+		"javax.portlet.name=" + ProvisioningPortletKeys.LICENSES,
+		"mvc.command.name=/licenses/download_license_key"
+	},
+	service = MVCResourceCommand.class
+)
+public class DownloadLicenseKeyMVCResourceCommand
+	extends BaseMVCResourceCommand {
+
+	@Override
+	public void doServeResource(
+			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
+		throws PortletException {
+
+		try {
+			long licenseKeyId = ParamUtil.getLong(
+				resourceRequest, "licenseKeyId");
+
+			LicenseKey licenseKey = _licenseKeyService.getLicenseKey(
+				licenseKeyId);
+
+			//TODO: check user role before download
+
+			int licenseVersion = licenseKey.getLicenseVersion();
+
+			if (licenseVersion == 1) {
+				String encodedLicenseFile =
+					_licenseKeyExporter.toEncodedLicenseFile(
+						licenseKey.getServerId(), licenseKey.getKey());
+
+				PortletResponseUtil.sendFile(
+					resourceRequest, resourceResponse, "license",
+					encodedLicenseFile.getBytes(),
+					ContentTypes.APPLICATION_OCTET_STREAM);
+			}
+			else if (licenseVersion >= 2) {
+				String fileName = _licenseKeyExporter.getFileName(
+					licenseKey.getProductName(),
+					licenseKey.getProductVersion());
+
+				String licenseXML = _licenseKeyExporter.toXML(
+					licenseKey.getKey(), licenseKey.getAccountName(),
+					licenseKey.getLicenseEntryName(),
+					licenseKey.getLicenseEntryType(),
+					licenseKey.getLicenseVersion(), licenseKey.getProductName(),
+					licenseKey.getProductId(), licenseKey.getProductVersion(),
+					licenseKey.getOwner(), licenseKey.getMaxServers(),
+					licenseKey.getMaxHttpSessions(),
+					licenseKey.getMaxConcurrentUsers(),
+					licenseKey.getMaxUsers(), licenseKey.getSizing(),
+					licenseKey.getDescription(), licenseKey.getHostName(),
+					licenseKey.getIpAddresses(), licenseKey.getMacAddresses(),
+					StringUtil.split(licenseKey.getServerId()),
+					licenseKey.getStartDate(), licenseKey.getExpirationDate(),
+					licenseKey.getCreateDate());
+
+				PortletResponseUtil.sendFile(
+					resourceRequest, resourceResponse, fileName,
+					licenseXML.getBytes(), ContentTypes.TEXT_XML);
+			}
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+		}
+	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		DownloadLicenseKeyMVCResourceCommand.class);
+
+	@Reference
+	private LicenseKeyExporter _licenseKeyExporter;
+
+	@Reference
+	private LicenseKeyService _licenseKeyService;
+
+}
