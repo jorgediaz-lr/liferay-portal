@@ -45,6 +45,14 @@ definition {
 			value1 = "${emailAddressField}");
 	}
 
+	macro fillProperty {
+		Click(locator1 = "Segmentation#PROPERTY_FIELD");
+
+		Type(
+			locator1 = "Segmentation#PROPERTY_FIELD",
+			value1 = "${PropertyField}");
+	}
+
 	macro fillTitle {
 		Click(locator1 = "Segmentation#TITLE_FIELD");
 
