@@ -21,6 +21,12 @@ MoveLicenseKeyDisplayContext moveLicenseKeyDisplayContext = ProvisioningWebCompo
 
 LicenseKey licenseKey = moveLicenseKeyDisplayContext.getLicenseKey();
 
+String licenseProductPurchaseKey = StringPool.BLANK;
+
+if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
+	licenseProductPurchaseKey = licenseKey.getProductPurchaseKey();
+}
+
 String detachedLicenseKeysGenerated = moveLicenseKeyDisplayContext.getDetachedLicenseKeysGenerated();
 
 Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat("MMMM dd, yyyy");
@@ -43,34 +49,32 @@ Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat("MMMM dd, yyyy
 				productPurchaseDisplay = (ProductPurchaseDisplay)resultRow;
 			}
 
-			Calendar startDateCal = Calendar.getInstance();
-
-			if ((productPurchaseDisplay != null) && (productPurchaseDisplay.getStartDate() != null)) {
-				startDateCal.setTime(productPurchaseDisplay.getStartDate());
-			}
-			else {
-				startDateCal.setTime(licenseKey.getStartDate());
-			}
-
-			Calendar expirationDateCal = Calendar.getInstance();
-
-			if ((productPurchaseDisplay != null) && (productPurchaseDisplay.getEndDate() != null)) {
-				expirationDateCal.setTime(productPurchaseDisplay.getEndDate());
-			}
-			else {
-				expirationDateCal.setTime(licenseKey.getExpirationDate());
-			}
-
+			String productPurchaseKey = StringPool.BLANK;
 			String sizing = StringPool.DASH;
 			String licenseKeysGenerated = detachedLicenseKeysGenerated;
 
+			Calendar startDateCal = Calendar.getInstance();
+			Calendar expirationDateCal = Calendar.getInstance();
+
 			if (productPurchaseDisplay != null) {
+				productPurchaseKey = productPurchaseDisplay.getKey();
 				sizing = productPurchaseDisplay.getSizing();
 
 				licenseKeysGenerated = productPurchaseDisplay.getProvisionedCount() + " / " + productPurchaseDisplay.getQuantity();
+
+				if (productPurchaseDisplay.getStartDate() != null) {
+					startDateCal.setTime(productPurchaseDisplay.getStartDate());
+				}
+
+				if (productPurchaseDisplay.getEndDate() != null) {
+					expirationDateCal.setTime(productPurchaseDisplay.getEndDate());
+				}
 			}
 			else if (licenseKey.getSizing() > 0) {
 				sizing = String.valueOf(licenseKey.getSizing());
+
+				startDateCal.setTime(licenseKey.getStartDate());
+				expirationDateCal.setTime(licenseKey.getExpirationDate());
 			}
 			%>
 
@@ -96,17 +100,8 @@ Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat("MMMM dd, yyyy
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text>
-
-				<%
-				String productPurchaseKey = null;
-
-				if (productPurchaseDisplay != null) {
-					productPurchaseKey = productPurchaseDisplay.getKey();
-				}
-				%>
-
 				<c:choose>
-					<c:when test="<%= (productPurchaseDisplay == null) || !productPurchaseKey.equals(licenseKey.getProductPurchaseKey()) %>">
+					<c:when test="<%= !productPurchaseKey.equals(licenseProductPurchaseKey) %>">
 
 						<%
 						Map<String, Object> data = new HashMap<String, Object>();

@@ -16,14 +16,11 @@ package com.liferay.osb.provisioning.web.internal.portlet.action;
 
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.constants.ProvisioningWebKeys;
-import com.liferay.osb.provisioning.license.helper.constants.LicenseType;
 import com.liferay.osb.provisioning.license.model.LicenseKey;
 import com.liferay.osb.provisioning.license.service.LicenseKeyLocalService;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.ParamUtil;
-
-import java.util.List;
 
 import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
@@ -58,18 +55,6 @@ public class EditLicenseKeyMVCRenderCommand implements MVCRenderCommand {
 
 			renderRequest.setAttribute(
 				ProvisioningWebKeys.LICENSE_KEY, licenseKey);
-
-			String licenseType = licenseKey.getLicenseEntryType();
-
-			if (licenseType.equals(LicenseType.CLUSTER)) {
-				List<LicenseKey> licenseKeys =
-					_licenseKeyLocalService.getProductPurchaseLicenseKeys(
-						licenseKey.getProductPurchaseKey(),
-						licenseKey.getClusterId());
-
-				renderRequest.setAttribute(
-					ProvisioningWebKeys.LICENSE_KEYS, licenseKeys);
-			}
 
 			return "/licenses/edit_license_key.jsp";
 		}

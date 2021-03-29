@@ -68,11 +68,7 @@ public class LicenseKeyDisplay {
 	}
 
 	public String getDescription() {
-		if (Validator.isNotNull(_licenseKey.getDescription())) {
-			return _licenseKey.getDescription();
-		}
-
-		return StringPool.DASH;
+		return _licenseKey.getDescription();
 	}
 
 	public String getEndDate() {
@@ -131,6 +127,10 @@ public class LicenseKeyDisplay {
 		return _licenseKey.getLicenseEntryName();
 	}
 
+	public String getOwner() {
+		return _licenseKey.getOwner();
+	}
+
 	public String getProductName() {
 		return _licenseKey.getProductName();
 	}
@@ -139,8 +139,22 @@ public class LicenseKeyDisplay {
 		return _licenseKey.getProductVersion();
 	}
 
+	public String getServerId() {
+		if (Validator.isNotNull(_licenseKey.getServerId())) {
+			return _licenseKey.getServerId();
+		}
+
+		return StringPool.DASH;
+	}
+
 	public String getStartDate() {
-		return _dateFormat.format(_licenseKey.getCreateDate());
+		String licenseType = _licenseKey.getLicenseEntryType();
+
+		if (licenseType.equals(LicenseType.TRIAL)) {
+			return LanguageUtil.get(_httpServletRequest, "registration");
+		}
+
+		return _dateFormat.format(_licenseKey.getStartDate());
 	}
 
 	public String getStatus() {
@@ -160,7 +174,24 @@ public class LicenseKeyDisplay {
 	}
 
 	public String getType() {
-		return _licenseKey.getLicenseEntryType();
+		return LanguageUtil.get(
+			_httpServletRequest, _licenseKey.getLicenseEntryType());
+	}
+
+	public String getUserName() {
+		if (Validator.isNotNull(_licenseKey.getUserName())) {
+			return _licenseKey.getUserName();
+		}
+
+		return StringPool.DASH;
+	}
+
+	public String isComplimentaryLabel() {
+		if (_licenseKey.isComplimentary()) {
+			return LanguageUtil.get(_httpServletRequest, "yes");
+		}
+
+		return LanguageUtil.get(_httpServletRequest, "no");
 	}
 
 	private void _initStatus() {

@@ -37,6 +37,7 @@ import com.liferay.osb.provisioning.web.internal.display.context.AssignProductBu
 import com.liferay.osb.provisioning.web.internal.display.context.AssignProductPurchaseProductsDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.AssignTeamContactsDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.ContactSearchDisplayContext;
+import com.liferay.osb.provisioning.web.internal.display.context.EditLicenseKeyDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.EditProductPurchasesDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.LicenseKeySearchDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.MoveLicenseKeyDisplayContext;
@@ -132,6 +133,16 @@ public class ProvisioningWebComponentProvider {
 
 		return _provisioningWebComponentProvider.
 			_getContactSearchDisplayContext(
+				renderRequest, renderResponse, httpServletRequest);
+	}
+
+	public static EditLicenseKeyDisplayContext getEditLicenseKeyDisplayContext(
+			RenderRequest renderRequest, RenderResponse renderResponse,
+			HttpServletRequest httpServletRequest)
+		throws Exception {
+
+		return _provisioningWebComponentProvider.
+			_getEditLicenseKeyDisplayContext(
 				renderRequest, renderResponse, httpServletRequest);
 	}
 
@@ -369,6 +380,16 @@ public class ProvisioningWebComponentProvider {
 		return new ContactSearchDisplayContext(
 			renderRequest, renderResponse, httpServletRequest,
 			_accountWebService, _contactWebService);
+	}
+
+	private EditLicenseKeyDisplayContext _getEditLicenseKeyDisplayContext(
+			RenderRequest renderRequest, RenderResponse renderResponse,
+			HttpServletRequest httpServletRequest)
+		throws Exception {
+
+		return new EditLicenseKeyDisplayContext(
+			renderRequest, renderResponse, httpServletRequest,
+			_licenseKeyLocalService);
 	}
 
 	private LicenseKeySearchDisplayContext _getLicenseKeySearchDisplayContext(
