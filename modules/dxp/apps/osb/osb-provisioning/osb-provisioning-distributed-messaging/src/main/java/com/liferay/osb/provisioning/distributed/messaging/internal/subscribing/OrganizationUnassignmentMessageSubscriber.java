@@ -47,6 +47,18 @@ public class OrganizationUnassignmentMessageSubscriber
 
 	@Override
 	protected void doParse(JSONObject jsonObject) throws Exception {
+		JSONObject organizationJSONObject = jsonObject.getJSONObject(
+			"organization");
+
+		String organizationId = organizationJSONObject.getString(
+			"organizationId");
+
+		if (!organizationId.equals(
+				LegacyConstants.ORGANIZATION_LIFERAY_INC_ID)) {
+
+			return;
+		}
+
 		JSONObject userJSONObject = jsonObject.getJSONObject("user");
 
 		Contact contact = _contactWebservice.fetchContactByEmailAddress(
@@ -56,29 +68,18 @@ public class OrganizationUnassignmentMessageSubscriber
 			return;
 		}
 
-		JSONObject organizationJSONObject = jsonObject.getJSONObject(
-			"organization");
+		List<Account> accounts = _accountWebservice.getAccounts(
+			ExternalLinkDomain.WEB, ExternalLinkEntityName.WEB_ORGANIZATION,
+			organizationId, 1, 1000);
 
-		String organizationId = organizationJSONObject.getString(
-			"organizationId");
+		ContactRole contactRole = _contactRoleWebservice.fetchContactRole(
+			ContactRole.Type.ACCOUNT_CUSTOMER.toString(),
+			ContactRoleConstants.NAME_MEMBER);
 
-		if (organizationId.equals(
-				LegacyConstants.ORGANIZATION_LIFERAY_INC_ID)) {
-
-			List<Account> accounts = _accountWebservice.getAccounts(
-				ExternalLinkDomain.WEB, ExternalLinkEntityName.WEB_ORGANIZATION,
-				organizationId, 1, 1000);
-
-			ContactRole contactRole = _contactRoleWebservice.fetchContactRole(
-				ContactRole.Type.ACCOUNT_CUSTOMER.toString(),
-				ContactRoleConstants.NAME_MEMBER);
-
-			for (Account account : accounts) {
-				_accountWebservice.unassignContactRoles(
-					StringPool.BLANK, StringPool.BLANK, account.getKey(),
-					contact.getEmailAddress(),
-					new String[] {contactRole.getKey()});
-			}
+		for (Account account : accounts) {
+			_accountWebservice.unassignContactRoles(
+				StringPool.BLANK, StringPool.BLANK, account.getKey(),
+				contact.getEmailAddress(), new String[] {contactRole.getKey()});
 		}
 	}
 
