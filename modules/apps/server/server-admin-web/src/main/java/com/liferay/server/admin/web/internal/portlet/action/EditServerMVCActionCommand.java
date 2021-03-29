@@ -368,8 +368,7 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 					if ((pref.getOwnerId() !=
 							PortletKeys.PREFS_OWNER_ID_DEFAULT) ||
 						(pref.getOwnerType() !=
-							PortletKeys.PREFS_OWNER_TYPE_LAYOUT) ||
-						Objects.equals("145", pref.getPortletId())) {
+							PortletKeys.PREFS_OWNER_TYPE_LAYOUT)) {
 
 						return;
 					}
