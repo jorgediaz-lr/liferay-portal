@@ -118,10 +118,7 @@ OAuth2Application oAuth2Application = oAuth2AdminPortletDisplayContext.getOAuth2
 							</c:choose>
 						</div>
 
-						<%
-						if (grantType.isRequiresRedirectURI()) {
-						%>
-
+						<c:if test="<%= grantType.isRequiresRedirectURI() %>">
 							<script>
 								var allowedAuthorizationTypeCheckbox = document.getElementById(
 									'<portlet:namespace /><%= name %>'
@@ -133,9 +130,9 @@ OAuth2Application oAuth2Application = oAuth2AdminPortletDisplayContext.getOAuth2
 									});
 								}
 							</script>
+						</c:if>
 
 					<%
-						}
 					}
 					%>
 

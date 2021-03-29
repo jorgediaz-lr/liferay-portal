@@ -77,10 +77,13 @@ ItemSelectorRepositoryEntryManagementToolbarDisplayContext itemSelectorRepositor
 
 	<%
 	long folderId = ParamUtil.getLong(request, "folderId");
-
-	if (showBreadcrumb && !showSearchInfo) {
-		ItemSelectorRepositoryEntryBrowserUtil.addPortletBreadcrumbEntries(folderId, displayStyle, request, liferayPortletResponse, PortletURLUtil.clone(portletURL, liferayPortletResponse));
 	%>
+
+	<c:if test="<%= showBreadcrumb && !showSearchInfo %>">
+
+		<%
+		ItemSelectorRepositoryEntryBrowserUtil.addPortletBreadcrumbEntries(folderId, displayStyle, request, liferayPortletResponse, PortletURLUtil.clone(portletURL, liferayPortletResponse));
+		%>
 
 		<liferay-ui:breadcrumb
 			showCurrentGroup="<%= false %>"
@@ -88,10 +91,7 @@ ItemSelectorRepositoryEntryManagementToolbarDisplayContext itemSelectorRepositor
 			showLayout="<%= false %>"
 			showParentGroups="<%= false %>"
 		/>
-
-	<%
-	}
-	%>
+	</c:if>
 
 	<c:if test="<%= showDragAndDropZone && !showSearchInfo && DLFolderPermission.contains(permissionChecker, scopeGroupId, folderId, ActionKeys.ADD_DOCUMENT) %>">
 		<liferay-util:buffer
@@ -147,8 +147,11 @@ ItemSelectorRepositoryEntryManagementToolbarDisplayContext itemSelectorRepositor
 						else {
 							folder = (Folder)repositoryEntry;
 						}
+						%>
 
-						if (fileEntry != null) {
+						<c:if test="<%= fileEntry != null %>">
+
+							<%
 							FileVersion latestFileVersion = fileEntry.getLatestFileVersion();
 
 							String title = fileEntry.getTitle();
@@ -156,7 +159,7 @@ ItemSelectorRepositoryEntryManagementToolbarDisplayContext itemSelectorRepositor
 							JSONObject itemMedatadaJSONObject = ItemSelectorRepositoryEntryBrowserUtil.getItemMetadataJSONObject(fileEntry, locale);
 
 							String thumbnailSrc = DLURLHelperUtil.getThumbnailSrc(fileEntry, themeDisplay);
-						%>
+							%>
 
 							<liferay-ui:search-container-column-text
 								name="title"
@@ -195,15 +198,15 @@ ItemSelectorRepositoryEntryManagementToolbarDisplayContext itemSelectorRepositor
 							>
 								<liferay-ui:message arguments="<%= new String[] {LanguageUtil.getTimeDescription(locale, System.currentTimeMillis() - fileEntry.getModifiedDate().getTime(), true), HtmlUtil.escape(fileEntry.getUserName())} %>" key="x-ago-by-x" translateArguments="<%= false %>" />
 							</liferay-ui:search-container-column-text>
+						</c:if>
 
-						<%
-						}
+						<c:if test="<%= folder != null %>">
 
-						if (folder != null) {
+							<%
 							PortletURL viewFolderURL = PortletURLUtil.clone(portletURL, liferayPortletResponse);
 
 							viewFolderURL.setParameter("folderId", String.valueOf(folder.getFolderId()));
-						%>
+							%>
 
 							<liferay-ui:search-container-column-text
 								name="title"
@@ -232,11 +235,7 @@ ItemSelectorRepositoryEntryManagementToolbarDisplayContext itemSelectorRepositor
 							>
 								<liferay-ui:message arguments="<%= new String[] {LanguageUtil.getTimeDescription(locale, System.currentTimeMillis() - folder.getModifiedDate().getTime(), true), HtmlUtil.escape(folder.getUserName())} %>" key="x-ago-by-x" translateArguments="<%= false %>" />
 							</liferay-ui:search-container-column-text>
-
-						<%
-						}
-						%>
-
+						</c:if>
 					</c:when>
 					<c:otherwise>
 
@@ -262,12 +261,15 @@ ItemSelectorRepositoryEntryManagementToolbarDisplayContext itemSelectorRepositor
 
 								<%
 								row.setCssClass("entry-card lfr-asset-folder");
+								%>
 
-								if (folder != null) {
+								<c:if test="<%= folder != null %>">
+
+									<%
 									PortletURL viewFolderURL = PortletURLUtil.clone(portletURL, liferayPortletResponse);
 
 									viewFolderURL.setParameter("folderId", String.valueOf(folder.getFolderId()));
-								%>
+									%>
 
 									<liferay-ui:search-container-column-text
 										colspan="<%= 3 %>"
@@ -285,11 +287,11 @@ ItemSelectorRepositoryEntryManagementToolbarDisplayContext itemSelectorRepositor
 											</liferay-frontend:horizontal-card-col>
 										</liferay-frontend:horizontal-card>
 									</liferay-ui:search-container-column-text>
+								</c:if>
 
-								<%
-								}
+								<c:if test="<%= fileEntry != null %>">
 
-								if (fileEntry != null) {
+									<%
 									FileVersion latestFileVersion = fileEntry.getLatestFileVersion();
 
 									String title = fileEntry.getTitle();
@@ -315,7 +317,7 @@ ItemSelectorRepositoryEntryManagementToolbarDisplayContext itemSelectorRepositor
 									data.put("title", title);
 									data.put("url", DLURLHelperUtil.getPreviewURL(fileEntry, latestFileVersion, themeDisplay, StringPool.BLANK));
 									data.put("value", ItemSelectorRepositoryEntryBrowserUtil.getValue(itemSelectorReturnTypeResolver, existingFileEntryReturnType, fileEntry, themeDisplay));
-								%>
+									%>
 
 									<liferay-ui:search-container-column-text>
 										<c:choose>
@@ -353,16 +355,12 @@ ItemSelectorRepositoryEntryManagementToolbarDisplayContext itemSelectorRepositor
 											</c:otherwise>
 										</c:choose>
 									</liferay-ui:search-container-column-text>
-
-								<%
-								}
-								%>
-
+								</c:if>
 							</c:when>
 							<c:otherwise>
+								<c:if test="<%= folder != null %>">
 
-								<%
-								if (folder != null) {
+									<%
 									PortletURL viewFolderURL = PortletURLUtil.clone(portletURL, liferayPortletResponse);
 
 									viewFolderURL.setParameter("folderId", String.valueOf(folder.getFolderId()));
@@ -372,7 +370,7 @@ ItemSelectorRepositoryEntryManagementToolbarDisplayContext itemSelectorRepositor
 									if (PropsValues.DL_FOLDER_ICON_CHECK_COUNT && (DLAppServiceUtil.getFoldersAndFileEntriesAndFileShortcutsCount(folder.getRepositoryId(), folder.getFolderId(), WorkflowConstants.STATUS_APPROVED, true) > 0)) {
 										folderImage = "folder_full_document";
 									}
-								%>
+									%>
 
 									<liferay-ui:search-container-column-image
 										src='<%= themeDisplay.getPathThemeImages() + "/file_system/large/" + folderImage + ".png" %>'
@@ -394,11 +392,11 @@ ItemSelectorRepositoryEntryManagementToolbarDisplayContext itemSelectorRepositor
 											url="<%= viewFolderURL.toString() %>"
 										/>
 									</liferay-ui:search-container-column-text>
+								</c:if>
 
-								<%
-								}
+								<c:if test="<%= fileEntry != null %>">
 
-								if (fileEntry != null) {
+									<%
 									FileVersion latestFileVersion = fileEntry.getLatestFileVersion();
 
 									String title = fileEntry.getTitle();
@@ -406,7 +404,7 @@ ItemSelectorRepositoryEntryManagementToolbarDisplayContext itemSelectorRepositor
 									JSONObject itemMedatadaJSONObject = ItemSelectorRepositoryEntryBrowserUtil.getItemMetadataJSONObject(fileEntry, locale);
 
 									String thumbnailSrc = DLURLHelperUtil.getThumbnailSrc(fileEntry, themeDisplay);
-								%>
+									%>
 
 									<c:choose>
 										<c:when test="<%= Validator.isNotNull(thumbnailSrc) %>">
@@ -446,13 +444,8 @@ ItemSelectorRepositoryEntryManagementToolbarDisplayContext itemSelectorRepositor
 											/>
 										</div>
 									</liferay-ui:search-container-column-text>
-
-								<%
-								}
-								%>
-
-							</c:otherwise>
-						</c:choose>
+								</c:if>
+							</c:otherwise> </c:choose>
 					</c:otherwise>
 				</c:choose>
 			</liferay-ui:search-container-row>

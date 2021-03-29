@@ -65,9 +65,7 @@ String dropdownMenuComponentId = randomNamespace + "socialBookmarksDropdownMenu"
 
 			</ul>
 
-			<%
-			if (types.length > maxInlineItems) {
-			%>
+			<c:if test="<%= types.length > maxInlineItems %>">
 
 				<%
 				String[] remainingTypes = ArrayUtil.subset(types, maxInlineItems, types.length);
@@ -81,11 +79,7 @@ String dropdownMenuComponentId = randomNamespace + "socialBookmarksDropdownMenu"
 					triggerCssClasses="btn-monospaced btn-outline-borderless btn-outline-secondary btn-sm"
 					triggerTitle='<%= LanguageUtil.get(request, "share") %>'
 				/>
-
-			<%
-			}
-			%>
-
+			</c:if>
 		</c:otherwise>
 	</c:choose>
 

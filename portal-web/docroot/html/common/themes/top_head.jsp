@@ -24,8 +24,9 @@
 
 <%-- Available Translations --%>
 
-<%
-if (!themeDisplay.isSignedIn() && layout.isPublicLayout()) {
+<c:if test="<%= !themeDisplay.isSignedIn() && layout.isPublicLayout() %>">
+
+	<%
 	String completeURL = PortalUtil.getCurrentCompleteURL(request);
 
 	String canonicalURL = PortalUtil.getCanonicalURL(completeURL, themeDisplay, layout, false, false);
@@ -39,7 +40,7 @@ if (!themeDisplay.isSignedIn() && layout.isPublicLayout()) {
 	}
 
 	for (LayoutSEOLink layoutSEOLink : LayoutSEOLinkManagerUtil.getLocalizedLayoutSEOLinks(layout, PortalUtil.getLocale(request), canonicalURL, alternateURLs)) {
-%>
+	%>
 
 		<c:choose>
 			<c:when test="<%= Validator.isNotNull(layoutSEOLink.getHrefLang()) %>">
@@ -50,10 +51,11 @@ if (!themeDisplay.isSignedIn() && layout.isPublicLayout()) {
 			</c:otherwise>
 		</c:choose>
 
-<%
+	<%
 	}
-}
-%>
+	%>
+
+</c:if>
 
 <%-- Portal CSS --%>
 
@@ -144,17 +146,23 @@ if (layout != null) {
 
 <%
 List<String> markupHeaders = (List<String>)request.getAttribute(MimeResponse.MARKUP_HEAD_ELEMENT);
-
-if (markupHeaders != null) {
-	for (String markupHeader : markupHeaders) {
 %>
+
+<c:if test="<%= markupHeaders != null %>">
+
+	<%
+	for (String markupHeader : markupHeaders) {
+	%>
 
 		<%= markupHeader %>
 
-<%
+	<%
 	}
-}
+	%>
 
+</c:if>
+
+<%
 com.liferay.petra.string.StringBundler pageTopSB = OutputTag.getDataSB(request, WebKeys.PAGE_TOP);
 %>
 
