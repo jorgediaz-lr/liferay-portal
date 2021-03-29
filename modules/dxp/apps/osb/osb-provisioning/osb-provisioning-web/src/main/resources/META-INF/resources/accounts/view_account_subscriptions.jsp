@@ -117,13 +117,13 @@ SearchContainer productPurchasesSearchContainer = viewAccountDisplayContext.getP
 				String columnName = "current-purchased";
 				String columnCount = productPurchaseViewDisplay.getCurrentPurchasedCount();
 
-				if (tabs2.equals("expired")) {
-					columnName = "latest-purchased";
-					columnCount = productPurchaseViewDisplay.getLatestPurchasedCount();
-				}
-				else if (tabs2.equals("all")) {
+				if (tabs2.equals("all")) {
 					columnName = "approved-purchased";
 					columnCount = productPurchaseViewDisplay.getApprovedPurchasedCount();
+				}
+				else if (tabs2.equals("expired")) {
+					columnName = "latest-purchased";
+					columnCount = productPurchaseViewDisplay.getLatestPurchasedCount();
 				}
 				%>
 

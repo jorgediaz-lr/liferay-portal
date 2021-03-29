@@ -652,7 +652,7 @@ public class ViewAccountDisplayContext {
 		Date endDate = PortalUtil.getDate(
 			endDateMonth, endDateDay, endDateYear, null);
 
-		StringBundler sb = new StringBundler(15);
+		StringBundler sb = new StringBundler(9);
 
 		sb.append("(accountKey eq '");
 		sb.append(account.getKey());
@@ -663,9 +663,9 @@ public class ViewAccountDisplayContext {
 			sb.append(ProductPurchaseConstants.STATE_ACTIVE);
 			sb.append("')");
 		}
-		else if (tabs2.equals("future")) {
+		else if (tabs2.equals("cancelled")) {
 			sb.append(" and (state eq '");
-			sb.append(ProductPurchaseConstants.STATE_UNACTIVATED);
+			sb.append(ProductPurchaseConstants.STATE_CANCELLED);
 			sb.append("')");
 		}
 		else if (tabs2.equals("complimentary")) {
@@ -678,9 +678,9 @@ public class ViewAccountDisplayContext {
 			sb.append(ProductPurchaseConstants.STATE_EXPIRED);
 			sb.append("')");
 		}
-		else if (tabs2.equals("cancelled")) {
+		else if (tabs2.equals("future")) {
 			sb.append(" and (state eq '");
-			sb.append(ProductPurchaseConstants.STATE_CANCELLED);
+			sb.append(ProductPurchaseConstants.STATE_UNACTIVATED);
 			sb.append("')");
 		}
 
