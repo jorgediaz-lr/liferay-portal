@@ -13,10 +13,9 @@ import {cleanup, render, within} from '@testing-library/react';
 import React from 'react';
 
 import Purchases from '../../../src/main/resources/META-INF/resources/js/components/license_generation/Purchases';
-import {
-	generateNewDate,
-	getUTCAdjustedDate
-} from '../../../src/main/resources/META-INF/resources/js/utilities/date';
+import {generateNewDate} from '../../../src/main/resources/META-INF/resources/js/utilities/date';
+
+const TODAY = new Date();
 
 function formatDate(date) {
 	return JSON.stringify(date)
@@ -121,11 +120,7 @@ describe('Purchases', () => {
 				purchased: []
 			});
 
-			const utcAdjustedStartDate = getUTCAdjustedDate(new Date());
-
-			expect(
-				getAllByDisplayValue(formatDate(utcAdjustedStartDate)).length
-			).toBe(2);
+			expect(getAllByDisplayValue(formatDate(TODAY)).length).toBe(2);
 		});
 
 		it('always displays Expiration Date in the Detached section as a year from the Start Date', () => {
@@ -137,21 +132,16 @@ describe('Purchases', () => {
 				purchased: []
 			});
 
-			const utcAdjustedStartDate = getUTCAdjustedDate(new Date());
-			const utcAdjustedExpirationDate = generateNewDate(
-				utcAdjustedStartDate
-			);
+			const startDate = TODAY;
+			const expirationDate = generateNewDate(startDate);
 
+			expect(getAllByDisplayValue(formatDate(startDate)).length).toBe(2);
 			expect(
-				getAllByDisplayValue(formatDate(utcAdjustedStartDate)).length
-			).toBe(2);
-			expect(
-				getAllByDisplayValue(formatDate(utcAdjustedExpirationDate))
-					.length
+				getAllByDisplayValue(formatDate(expirationDate)).length
 			).toBe(2);
 
-			const startDateYear = utcAdjustedStartDate.getFullYear();
-			const expirationDateYear = utcAdjustedExpirationDate.getFullYear();
+			const startDateYear = startDate.getFullYear();
+			const expirationDateYear = expirationDate.getFullYear();
 
 			expect(expirationDateYear - startDateYear).toBe(1);
 		});
@@ -159,34 +149,23 @@ describe('Purchases', () => {
 		it('always displays the Start Date of a Perpetual subscription in the Non Detached section as Today in UTC', () => {
 			const {getAllByDisplayValue} = renderPurchases();
 
-			const utcAdjustedStartDate = getUTCAdjustedDate(new Date());
-
-			expect(
-				getAllByDisplayValue(formatDate(utcAdjustedStartDate)).length
-			).toBe(2);
+			expect(getAllByDisplayValue(formatDate(TODAY)).length).toBe(2);
 		});
 
 		it('always displays the Expiration Date of a Perpetual subscription in the Non Detached section as 100 years from Today in UTC', () => {
 			const {getAllByDisplayValue} = renderPurchases();
 
-			const utcAdjustedStartDate = getUTCAdjustedDate(new Date());
-			const utcAdjustedExpirationDate = generateNewDate(
-				utcAdjustedStartDate,
+			const startDate = TODAY;
+			const expirationDate = generateNewDate(startDate, 100);
+
+			expect(getAllByDisplayValue(formatDate(startDate)).length).toBe(2);
+			expect(
+				getAllByDisplayValue(formatDate(expirationDate)).length
+			).toBe(2);
+
+			expect(expirationDate.getFullYear() - startDate.getFullYear()).toBe(
 				100
 			);
-
-			expect(
-				getAllByDisplayValue(formatDate(utcAdjustedStartDate)).length
-			).toBe(2);
-			expect(
-				getAllByDisplayValue(formatDate(utcAdjustedExpirationDate))
-					.length
-			).toBe(2);
-
-			expect(
-				utcAdjustedExpirationDate.getFullYear() -
-					utcAdjustedStartDate.getFullYear()
-			).toBe(100);
 		});
 
 		it('displays the Start Date of a Non Perpetual subscription in the Non Detached section correctly', () => {

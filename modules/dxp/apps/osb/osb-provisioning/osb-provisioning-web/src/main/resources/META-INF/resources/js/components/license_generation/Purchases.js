@@ -14,9 +14,10 @@ import ClayTableCell from '@clayui/table/lib/Cell';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import {generateNewDate, getUTCAdjustedDate} from '../../utilities/date';
+import {generateNewDate} from '../../utilities/date';
 import Purchase from './Purchase';
 
+const TODAY = new Date();
 const TYPE_DEVELOPER = 'developer';
 
 function Purchases({detached, purchased, type}) {
@@ -55,7 +56,7 @@ function Detached({detached}) {
 	const formattedDates = {};
 
 	if (detached) {
-		formattedDates.startDate = getUTCAdjustedDate(new Date());
+		formattedDates.startDate = TODAY;
 
 		formattedDates.expirationDate = generateNewDate(
 			formattedDates.startDate
@@ -80,18 +81,14 @@ function Purchased({purchased, selectedType}) {
 					let startDate;
 
 					if (item.perpetual) {
-						startDate = getUTCAdjustedDate(new Date());
+						startDate = TODAY;
 
 						expirationDate = generateNewDate(startDate, 100);
 					}
 					else {
-						startDate = getUTCAdjustedDate(
-							new Date(item.startDate)
-						);
+						startDate = new Date(item.startDate);
 
-						expirationDate = getUTCAdjustedDate(
-							new Date(item.expirationDate)
-						);
+						expirationDate = new Date(item.expirationDate);
 
 						if (selectedType !== TYPE_DEVELOPER) {
 							expirationDate = generateNewDate(
