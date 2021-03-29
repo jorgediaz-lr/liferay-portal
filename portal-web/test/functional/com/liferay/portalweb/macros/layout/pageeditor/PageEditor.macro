@@ -92,6 +92,7 @@ definition {
 
 	macro addExperience {
 		var key_experienceName = "${experienceName}";
+		var key_segmentName = "${segmentName}";
 
 		AssertTextEquals(
 			locator1 = "PageEditor#EXPERIENCE_LABEL",
@@ -106,6 +107,12 @@ definition {
 		Type(
 			locator1 = "PageEditor#EXPERIENCE_NAME",
 			value1 = "${experienceName}");
+
+		Click(locator1 = "PageEditor#EXPERIENCE_SEGMENT_ANYONE");
+
+		AssertClick(
+			locator1 = "PageEditor#EXPERIENCE_SELECT_SEGMENT",
+			value1 = "${segmentName}");
 
 		Button.clickSave();
 
@@ -363,6 +370,44 @@ definition {
 		AssertTextNotPresent(value1 = "${fragmentComment}");
 	}
 
+	macro deleteExperience {
+		var key_experienceName = "${newExperience}";
+
+		Click(locator1 = "PageEditor#EXPERIENCE_DEFAULT_BUTTON_NAME");
+
+		ClickNoError(locator1 = "PageEditor#EXPERIENCE_DELETE_BUTTON");
+
+		AssertConfirm(value1 = "Do you want to delete this experience? Its content will be deleted.");
+
+		Alert.viewSuccessMessage();
+
+		Click(locator1 = "PageEditor#EXPERIENCE_DEFAULT_BUTTON_NAME");
+
+		AssertElementNotPresent(
+			key_experienceName = "${newExperience}",
+			locator1 = "PageEditor#EXPERIENCE_SELECT_ITEM");
+
+		Click(locator1 = "PageEditor#EXPERIENCE_DEFAULT_BUTTON_NAME");
+	}
+
+	macro duplicateExperience {
+		var key_experienceName = "${experienceName}";
+
+		AssertTextEquals(
+			locator1 = "PageEditor#EXPERIENCE_LABEL",
+			value1 = "Experience");
+
+		AssertClick(
+			locator1 = "PageEditor#EXPERIENCE_BUTTON_NAME",
+			value1 = "${experienceName}");
+
+		Click(locator1 = "PageEditor#EXPERIENCE_DUPLICATE_BUTTON");
+
+		AssertElementPresent(
+			key_experienceName = "${experienceName} (Copy)",
+			locator1 = "PageEditor#EXPERIENCE_SELECT_ITEM");
+	}
+
 	macro editComment {
 		MouseOver(locator1 = "PageEditor#FRAGMENT_SIDEBAR_ELLIPSIS");
 
@@ -377,6 +422,40 @@ definition {
 			value1 = "${fragmentCommentEdit}");
 
 		Click(locator1 = "Button#COMMENT");
+	}
+
+	macro editExperience {
+		var key_experienceName = "${newExperience}";
+
+		Click(locator1 = "PageEditor#EXPERIENCE_DEFAULT_BUTTON_NAME");
+
+		Click(locator1 = "PageEditor#EXPERIENCE_EDIT_BUTTON");
+
+		Click(locator1 = "PageEditor#EXPERIENCE_CREATE_SEGMENT");
+
+		Segmentation.addProperties(propertyOption = "Email Address");
+
+		Segmentation.fillTitle(titleField = "AddSegmentUserEmailAddressContains Test 2");
+
+		Segmentation.changeCriterionInputEmailAddress(criterionInputOption = "Contains");
+
+		Segmentation.fillProperty(PropertyField = "liferay2");
+
+		Button.clickSave();
+
+		Type(
+			locator1 = "PageEditor#EXPERIENCE_NAME",
+			value1 = "${key_experienceName}");
+
+		Click(locator1 = "Button#SAVE");
+
+		Click(locator1 = "PageEditor#EXPERIENCE_DEFAULT_BUTTON_NAME");
+
+		AssertElementPresent(
+			key_experienceName = "${newExperience}",
+			locator1 = "PageEditor#EXPERIENCE_SELECT_ITEM");
+
+		Click(locator1 = "PageEditor#EXPERIENCE_DEFAULT_BUTTON_NAME");
 	}
 
 	macro editFragmentHTML {
@@ -601,6 +680,10 @@ definition {
 				key_tabName = "${tabName}",
 				locator1 = "PageEditor#FRAGMENT_SIDEBAR_TAB_BUTTON");
 		}
+	}
+
+	macro openExperienceMenu {
+		Click(locator1 = "PageEditor#EXPERIENCE_DEFAULT_BUTTON_NAME");
 	}
 
 	macro removeFragment {
