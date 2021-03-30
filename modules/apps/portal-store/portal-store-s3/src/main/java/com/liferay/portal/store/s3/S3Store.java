@@ -235,7 +235,7 @@ public class S3Store extends BaseStore {
 			ObjectMetadata objectMetadata = s3Object.getObjectMetadata();
 
 			return _s3FileCache.getCacheFileInputStream(
-				fileName, s3Object::getObjectContent, s3Object,
+				s3Object, fileName, s3Object::getObjectContent,
 				objectMetadata.getLastModified());
 		}
 		catch (IOException ioException) {
