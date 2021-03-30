@@ -669,6 +669,11 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		}
 
 		if (!hasOpportunityProductFamily(jsonObject)) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Skipping message because product family is invalid");
+			}
+
 			return;
 		}
 
@@ -688,8 +693,8 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 			if (_log.isDebugEnabled()) {
 				_log.debug(
-					"Opportunity is not closed won or a renewal that is " +
-						"closed lost");
+					"Skipping message because opportunity is not closed won " +
+						"or a renewal that is closed lost");
 			}
 
 			return;
@@ -699,6 +704,10 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			jsonObject);
 
 		if (productPurchases.isEmpty()) {
+			if (_log.isDebugEnabled()) {
+				_log.debug("Skipping message because purchases is empty");
+			}
+
 			return;
 		}
 
@@ -1373,6 +1382,10 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			Message.class.getName(), salesforceOpportunityKey, owner);
 
 		if (!lock.isNew()) {
+			if (_log.isDebugEnabled()) {
+				_log.debug("Message is locked by another cluster node");
+			}
+
 			return false;
 		}
 
@@ -1390,6 +1403,12 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			_productPurchaseWebService.getProductPurchasesCount(sb.toString());
 
 		if (productPurchaseCount > 0) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Product purchase already exists with opportunity key " +
+						salesforceOpportunityKey);
+			}
+
 			return false;
 		}
 
