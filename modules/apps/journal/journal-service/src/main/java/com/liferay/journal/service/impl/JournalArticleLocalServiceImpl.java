@@ -73,7 +73,7 @@ import com.liferay.journal.util.JournalHelper;
 import com.liferay.journal.util.comparator.ArticleIDComparator;
 import com.liferay.journal.util.comparator.ArticleVersionComparator;
 import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
-import com.liferay.layout.page.template.service.LayoutPageTemplateEntryService;
+import com.liferay.layout.page.template.service.LayoutPageTemplateEntryLocalService;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.petra.xml.XMLUtil;
@@ -9312,10 +9312,11 @@ public class JournalArticleLocalServiceImpl
 			ddmStructureKey, true);
 
 		LayoutPageTemplateEntry defaultAssetDisplayPage =
-			_layoutPageTemplateEntryService.fetchDefaultLayoutPageTemplateEntry(
-				serviceContext.getScopeGroupId(),
-				classNameLocalService.getClassNameId(JournalArticle.class),
-				ddmStructure.getStructureId());
+			_layoutPageTemplateEntryLocalService.
+				fetchDefaultLayoutPageTemplateEntry(
+					serviceContext.getScopeGroupId(),
+					classNameLocalService.getClassNameId(JournalArticle.class),
+					ddmStructure.getStructureId());
 
 		if (defaultAssetDisplayPage != null) {
 			_assetDisplayPageEntryLocalService.addAssetDisplayPageEntry(
@@ -9406,7 +9407,8 @@ public class JournalArticleLocalServiceImpl
 	private JournalHelper _journalHelper;
 
 	@Reference
-	private LayoutPageTemplateEntryService _layoutPageTemplateEntryService;
+	private LayoutPageTemplateEntryLocalService
+		_layoutPageTemplateEntryLocalService;
 
 	@Reference
 	private Portal _portal;
