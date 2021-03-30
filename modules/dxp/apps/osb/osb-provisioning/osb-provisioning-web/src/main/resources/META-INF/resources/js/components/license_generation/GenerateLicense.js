@@ -11,10 +11,33 @@
 
 import React from 'react';
 
+import {
+	GenerateLicenseProvider,
+	useGenerateLicense
+} from '../../hooks/generateLicense';
 import GeneralInformation from './GeneralInformation';
+import SpecificDetails from './SpecificDetails';
 
 function GenerateLicense(props) {
-	return <GeneralInformation {...props} />;
+	return (
+		<GenerateLicenseProvider>
+			<Generate {...props} />
+		</GenerateLicenseProvider>
+	);
+}
+
+function Generate(props) {
+	const [generateLicense] = useGenerateLicense();
+
+	return (
+		<>
+			{!generateLicense.showSpecificDetails && (
+				<GeneralInformation {...props} />
+			)}
+
+			{generateLicense.showSpecificDetails && <SpecificDetails />}
+		</>
+	);
 }
 
 export default GenerateLicense;

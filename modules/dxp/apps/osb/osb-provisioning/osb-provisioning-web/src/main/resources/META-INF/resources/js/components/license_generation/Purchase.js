@@ -14,6 +14,7 @@ import ClayTableCell from '@clayui/table/lib/Cell';
 import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 
+import {useGenerateLicense} from '../../hooks/generateLicense';
 import DatePicker from '../DatePicker';
 
 const DASH = '-';
@@ -27,6 +28,28 @@ function Purchase({
 	startDate
 }) {
 	const [sizing, setSizing] = useState();
+
+	const [
+		,
+		{
+			setExpirationDate,
+			setInstanceSize,
+			setLicensesGenerated,
+			setShowSpecificDetails,
+			setStartDate
+		}
+	] = useGenerateLicense();
+
+	function handleChoosePurchase() {
+		// TODO
+		setExpirationDate(expirationDate);
+		setStartDate(startDate);
+
+		setLicensesGenerated(licenseKeysGenerated);
+		setInstanceSize(sizing ? sizing : instanceSize);
+
+		setShowSpecificDetails();
+	}
 
 	function handleSizingChange(event) {
 		setSizing(event.currentTarget.value);
@@ -89,7 +112,10 @@ function Purchase({
 				</ClayTableCell>
 				<ClayTableCell>{licenseKeysGenerated}</ClayTableCell>
 				<ClayTableCell>
-					<button className="btn btn-secondary btn-sm">
+					<button
+						className="btn btn-secondary btn-sm"
+						onClick={handleChoosePurchase}
+					>
 						{Liferay.Language.get('choose')}
 					</button>
 				</ClayTableCell>
