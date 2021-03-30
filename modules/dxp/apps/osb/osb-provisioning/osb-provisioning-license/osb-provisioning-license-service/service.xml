@@ -71,6 +71,7 @@
 		<column name="productId" type="String" />
 		<column name="productVersion" type="String" />
 		<column name="clusterId" type="long" />
+		<column name="name" type="String" />
 		<column name="owner" type="String" />
 		<column name="maxServers" type="int" />
 		<column name="maxConcurrentUsers" type="long" />

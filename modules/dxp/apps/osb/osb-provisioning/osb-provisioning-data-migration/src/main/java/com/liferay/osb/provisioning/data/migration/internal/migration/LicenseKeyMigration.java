@@ -49,13 +49,15 @@ public class LicenseKeyMigration {
 	}
 
 	private void _migrate(int start, int batchSize) throws Exception {
-		StringBundler sb = new StringBundler(12);
+		StringBundler sb = new StringBundler(14);
 
-		sb.append("select OSB_LicenseKey.*, ");
+		sb.append("select OSB_LicenseKey.*, OSB_LicenseKeySet.name,");
 		sb.append("OSB_ProductEntry.koroneikiProductKey, user1.uuid_ as ");
 		sb.append("userUuid, user2.uuid_ as modifiedUserUuid from ");
-		sb.append("OSB_LicenseKey left join OSB_ProductEntry on ");
-		sb.append("OSB_ProductEntry.productEntryId = ");
+		sb.append("OSB_LicenseKey left join OSB_LicenseKeySet on ");
+		sb.append("OSB_LicenseKey.licenseKeySetId = ");
+		sb.append("OSB_LicenseKeySet.licenseKeySetId left join ");
+		sb.append("OSB_ProductEntry on OSB_ProductEntry.productEntryId = ");
 		sb.append("OSB_LicenseKey.productEntryId left join CUSTOMER_User ");
 		sb.append("user1 on user1.userId = OSB_LicenseKey.userId left join ");
 		sb.append("CUSTOMER_User user2 on user2.userId = ");
@@ -112,6 +114,7 @@ public class LicenseKeyMigration {
 				licenseKey.setProductVersion(
 					resultSet.getString("productVersionLabel"));
 				licenseKey.setClusterId(resultSet.getLong("clusterId"));
+				licenseKey.setName(resultSet.getString("name"));
 				licenseKey.setOwner(resultSet.getString("owner"));
 				licenseKey.setMaxServers(resultSet.getInt("maxServers"));
 				licenseKey.setMaxConcurrentUsers(
