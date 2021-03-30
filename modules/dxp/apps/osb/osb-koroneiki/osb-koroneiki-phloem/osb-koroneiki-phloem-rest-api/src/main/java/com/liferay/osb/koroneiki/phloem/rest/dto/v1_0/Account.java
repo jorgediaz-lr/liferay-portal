@@ -28,6 +28,8 @@ import com.liferay.portal.vulcan.util.ObjectMapperUtil;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.io.Serializable;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
@@ -48,10 +50,10 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @generated
  */
 @Generated("")
-@GraphQLName("Account")
+@GraphQLName(description = "Represents an account.", value = "Account")
 @JsonFilter("Liferay.Vulcan")
 @XmlRootElement(name = "Account")
-public class Account {
+public class Account implements Serializable {
 
 	public static Account toDTO(String json) {
 		return ObjectMapperUtil.readValue(Account.class, json);
@@ -484,7 +486,10 @@ public class Account {
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Language language;
 
-	@Schema(description = "The assetAttachmentId of the account's logo.")
+	@Schema(
+		deprecated = true,
+		description = "The assetAttachmentId of the account's logo."
+	)
 	public Long getLogoId() {
 		return logoId;
 	}
@@ -1300,6 +1305,7 @@ public class Account {
 	}
 
 	@Schema(
+		accessMode = Schema.AccessMode.READ_ONLY,
 		defaultValue = "com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.Account",
 		name = "x-class-name"
 	)
@@ -1450,6 +1456,16 @@ public class Account {
 		return string.replaceAll("\"", "\\\\\"");
 	}
 
+	private static boolean _isArray(Object value) {
+		if (value == null) {
+			return false;
+		}
+
+		Class<?> clazz = value.getClass();
+
+		return clazz.isArray();
+	}
+
 	private static String _toJSON(Map<String, ?> map) {
 		StringBuilder sb = new StringBuilder("{");
 
@@ -1464,13 +1480,11 @@ public class Account {
 
 			sb.append("\"");
 			sb.append(entry.getKey());
-			sb.append("\":");
+			sb.append("\": ");
 
 			Object value = entry.getValue();
 
-			Class<?> clazz = value.getClass();
-
-			if (clazz.isArray()) {
+			if (_isArray(value)) {
 				sb.append("[");
 
 				Object[] valueArray = (Object[])value;
@@ -1505,7 +1519,7 @@ public class Account {
 			}
 
 			if (iterator.hasNext()) {
-				sb.append(",");
+				sb.append(", ");
 			}
 		}
 

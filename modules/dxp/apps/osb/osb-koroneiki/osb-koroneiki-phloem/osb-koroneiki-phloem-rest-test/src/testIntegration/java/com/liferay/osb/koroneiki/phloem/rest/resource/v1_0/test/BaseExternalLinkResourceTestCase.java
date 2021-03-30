@@ -109,7 +109,9 @@ public abstract class BaseExternalLinkResourceTestCase {
 
 		ExternalLinkResource.Builder builder = ExternalLinkResource.builder();
 
-		externalLinkResource = builder.locale(
+		externalLinkResource = builder.authentication(
+			"test@liferay.com", "test"
+		).locale(
 			LocaleUtil.getDefault()
 		).build();
 	}
@@ -212,7 +214,7 @@ public abstract class BaseExternalLinkResourceTestCase {
 		String irrelevantAccountKey =
 			testGetAccountAccountKeyExternalLinksPage_getIrrelevantAccountKey();
 
-		if ((irrelevantAccountKey != null)) {
+		if (irrelevantAccountKey != null) {
 			ExternalLink irrelevantExternalLink =
 				testGetAccountAccountKeyExternalLinksPage_addExternalLink(
 					irrelevantAccountKey, randomIrrelevantExternalLink());
@@ -357,7 +359,7 @@ public abstract class BaseExternalLinkResourceTestCase {
 		String irrelevantContactUuid =
 			testGetContactByUuidContactUuidExternalLinksPage_getIrrelevantContactUuid();
 
-		if ((irrelevantContactUuid != null)) {
+		if (irrelevantContactUuid != null) {
 			ExternalLink irrelevantExternalLink =
 				testGetContactByUuidContactUuidExternalLinksPage_addExternalLink(
 					irrelevantContactUuid, randomIrrelevantExternalLink());
@@ -539,7 +541,7 @@ public abstract class BaseExternalLinkResourceTestCase {
 		String irrelevantProductConsumptionKey =
 			testGetProductConsumptionProductConsumptionKeyExternalLinksPage_getIrrelevantProductConsumptionKey();
 
-		if ((irrelevantProductConsumptionKey != null)) {
+		if (irrelevantProductConsumptionKey != null) {
 			ExternalLink irrelevantExternalLink =
 				testGetProductConsumptionProductConsumptionKeyExternalLinksPage_addExternalLink(
 					irrelevantProductConsumptionKey,
@@ -696,7 +698,7 @@ public abstract class BaseExternalLinkResourceTestCase {
 		String irrelevantProductPurchaseKey =
 			testGetProductPurchaseProductPurchaseKeyExternalLinksPage_getIrrelevantProductPurchaseKey();
 
-		if ((irrelevantProductPurchaseKey != null)) {
+		if (irrelevantProductPurchaseKey != null) {
 			ExternalLink irrelevantExternalLink =
 				testGetProductPurchaseProductPurchaseKeyExternalLinksPage_addExternalLink(
 					irrelevantProductPurchaseKey,
@@ -850,7 +852,7 @@ public abstract class BaseExternalLinkResourceTestCase {
 		String irrelevantProductKey =
 			testGetProductProductKeyExternalLinksPage_getIrrelevantProductKey();
 
-		if ((irrelevantProductKey != null)) {
+		if (irrelevantProductKey != null) {
 			ExternalLink irrelevantExternalLink =
 				testGetProductProductKeyExternalLinksPage_addExternalLink(
 					irrelevantProductKey, randomIrrelevantExternalLink());
@@ -992,7 +994,7 @@ public abstract class BaseExternalLinkResourceTestCase {
 		String irrelevantTeamKey =
 			testGetTeamTeamKeyExternalLinksPage_getIrrelevantTeamKey();
 
-		if ((irrelevantTeamKey != null)) {
+		if (irrelevantTeamKey != null) {
 			ExternalLink irrelevantExternalLink =
 				testGetTeamTeamKeyExternalLinksPage_addExternalLink(
 					irrelevantTeamKey, randomIrrelevantExternalLink());
@@ -1167,7 +1169,7 @@ public abstract class BaseExternalLinkResourceTestCase {
 		}
 	}
 
-	protected void assertValid(ExternalLink externalLink) {
+	protected void assertValid(ExternalLink externalLink) throws Exception {
 		boolean valid = true;
 
 		if (externalLink.getDateCreated() == null) {
@@ -1399,9 +1401,11 @@ public abstract class BaseExternalLinkResourceTestCase {
 					return false;
 				}
 			}
+
+			return true;
 		}
 
-		return true;
+		return false;
 	}
 
 	protected java.util.Collection<EntityField> getEntityFields()
@@ -1637,12 +1641,12 @@ public abstract class BaseExternalLinkResourceTestCase {
 						_parameterMap.entrySet()) {
 
 					sb.append(entry.getKey());
-					sb.append(":");
+					sb.append(": ");
 					sb.append(entry.getValue());
-					sb.append(",");
+					sb.append(", ");
 				}
 
-				sb.setLength(sb.length() - 1);
+				sb.setLength(sb.length() - 2);
 
 				sb.append(")");
 			}
@@ -1652,10 +1656,10 @@ public abstract class BaseExternalLinkResourceTestCase {
 
 				for (GraphQLField graphQLField : _graphQLFields) {
 					sb.append(graphQLField.toString());
-					sb.append(",");
+					sb.append(", ");
 				}
 
-				sb.setLength(sb.length() - 1);
+				sb.setLength(sb.length() - 2);
 
 				sb.append("}");
 			}

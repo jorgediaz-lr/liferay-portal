@@ -116,7 +116,9 @@ public abstract class BaseProductPurchaseResourceTestCase {
 		ProductPurchaseResource.Builder builder =
 			ProductPurchaseResource.builder();
 
-		productPurchaseResource = builder.locale(
+		productPurchaseResource = builder.authentication(
+			"test@liferay.com", "test"
+		).locale(
 			LocaleUtil.getDefault()
 		).build();
 	}
@@ -217,7 +219,7 @@ public abstract class BaseProductPurchaseResourceTestCase {
 		String irrelevantAccountKey =
 			testGetAccountAccountKeyProductPurchasesPage_getIrrelevantAccountKey();
 
-		if ((irrelevantAccountKey != null)) {
+		if (irrelevantAccountKey != null) {
 			ProductPurchase irrelevantProductPurchase =
 				testGetAccountAccountKeyProductPurchasesPage_addProductPurchase(
 					irrelevantAccountKey, randomIrrelevantProductPurchase());
@@ -366,7 +368,7 @@ public abstract class BaseProductPurchaseResourceTestCase {
 		String irrelevantContactUuid =
 			testGetContactByUuidContactUuidProductPurchasesPage_getIrrelevantContactUuid();
 
-		if ((irrelevantContactUuid != null)) {
+		if (irrelevantContactUuid != null) {
 			ProductPurchase irrelevantProductPurchase =
 				testGetContactByUuidContactUuidProductPurchasesPage_addProductPurchase(
 					irrelevantContactUuid, randomIrrelevantProductPurchase());
@@ -1032,7 +1034,9 @@ public abstract class BaseProductPurchaseResourceTestCase {
 		}
 	}
 
-	protected void assertValid(ProductPurchase productPurchase) {
+	protected void assertValid(ProductPurchase productPurchase)
+		throws Exception {
+
 		boolean valid = true;
 
 		if (productPurchase.getDateCreated() == null) {
@@ -1400,9 +1404,11 @@ public abstract class BaseProductPurchaseResourceTestCase {
 					return false;
 				}
 			}
+
+			return true;
 		}
 
-		return true;
+		return false;
 	}
 
 	protected java.util.Collection<EntityField> getEntityFields()
@@ -1758,12 +1764,12 @@ public abstract class BaseProductPurchaseResourceTestCase {
 						_parameterMap.entrySet()) {
 
 					sb.append(entry.getKey());
-					sb.append(":");
+					sb.append(": ");
 					sb.append(entry.getValue());
-					sb.append(",");
+					sb.append(", ");
 				}
 
-				sb.setLength(sb.length() - 1);
+				sb.setLength(sb.length() - 2);
 
 				sb.append(")");
 			}
@@ -1773,10 +1779,10 @@ public abstract class BaseProductPurchaseResourceTestCase {
 
 				for (GraphQLField graphQLField : _graphQLFields) {
 					sb.append(graphQLField.toString());
-					sb.append(",");
+					sb.append(", ");
 				}
 
-				sb.setLength(sb.length() - 1);
+				sb.setLength(sb.length() - 2);
 
 				sb.append("}");
 			}

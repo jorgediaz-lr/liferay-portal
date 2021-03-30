@@ -18,6 +18,7 @@ import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.Note;
 import com.liferay.osb.koroneiki.phloem.rest.resource.v1_0.NoteResource;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.model.GroupedModel;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ResourceActionLocalService;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
@@ -71,9 +72,9 @@ public abstract class BaseNoteResourceImpl implements NoteResource {
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/accounts/{accountKey}/notes'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
 	@Operation(description = "Retrieves the account's notes.")
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "accountKey"),
@@ -88,8 +89,8 @@ public abstract class BaseNoteResourceImpl implements NoteResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Note")})
 	public Page<Note> getAccountAccountKeyNotesPage(
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
-				accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
+				String accountKey,
 			@Parameter(hidden = true) @QueryParam("priority") Integer priority,
 			@Parameter(hidden = true) @QueryParam("status") String status,
 			@Parameter(hidden = true) @QueryParam("type") String type,
@@ -104,9 +105,8 @@ public abstract class BaseNoteResourceImpl implements NoteResource {
 	 *
 	 * curl -X 'POST' 'http://localhost:8080/o/koroneiki-rest/v1.0/accounts/{accountKey}/notes' -d $'{"content": ___, "format": ___, "priority": ___, "status": ___, "type": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Consumes({"application/json", "application/xml"})
-	@POST
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -115,13 +115,14 @@ public abstract class BaseNoteResourceImpl implements NoteResource {
 		}
 	)
 	@Path("/accounts/{accountKey}/notes")
+	@POST
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Note")})
 	public Note postAccountAccountKeyNote(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
-				accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
+				String accountKey,
 			Note note)
 		throws Exception {
 
@@ -133,8 +134,8 @@ public abstract class BaseNoteResourceImpl implements NoteResource {
 	 *
 	 * curl -X 'DELETE' 'http://localhost:8080/o/koroneiki-rest/v1.0/notes/{noteKey}'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@DELETE
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -148,8 +149,8 @@ public abstract class BaseNoteResourceImpl implements NoteResource {
 	public void deleteNote(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("noteKey") String
-				noteKey)
+			@NotNull @Parameter(hidden = true) @PathParam("noteKey")
+				String noteKey)
 		throws Exception {
 	}
 
@@ -158,16 +159,16 @@ public abstract class BaseNoteResourceImpl implements NoteResource {
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/notes/{noteKey}'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
 	@Operation(description = "Retrieves the note.")
+	@Override
 	@Parameters(value = {@Parameter(in = ParameterIn.PATH, name = "noteKey")})
 	@Path("/notes/{noteKey}")
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Note")})
 	public Note getNote(
-			@NotNull @Parameter(hidden = true) @PathParam("noteKey") String
-				noteKey)
+			@NotNull @Parameter(hidden = true) @PathParam("noteKey")
+				String noteKey)
 		throws Exception {
 
 		return new Note();
@@ -178,9 +179,8 @@ public abstract class BaseNoteResourceImpl implements NoteResource {
 	 *
 	 * curl -X 'PUT' 'http://localhost:8080/o/koroneiki-rest/v1.0/notes/{noteKey}' -d $'{"content": ___, "format": ___, "priority": ___, "status": ___, "type": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Consumes({"application/json", "application/xml"})
-	@PUT
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -190,12 +190,13 @@ public abstract class BaseNoteResourceImpl implements NoteResource {
 	)
 	@Path("/notes/{noteKey}")
 	@Produces({"application/json", "application/xml"})
+	@PUT
 	@Tags(value = {@Tag(name = "Note")})
 	public Note putNote(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("noteKey") String
-				noteKey,
+			@NotNull @Parameter(hidden = true) @PathParam("noteKey")
+				String noteKey,
 			Note note)
 		throws Exception {
 
@@ -234,6 +235,14 @@ public abstract class BaseNoteResourceImpl implements NoteResource {
 		this.contextUser = contextUser;
 	}
 
+	public void setGroupLocalService(GroupLocalService groupLocalService) {
+		this.groupLocalService = groupLocalService;
+	}
+
+	public void setRoleLocalService(RoleLocalService roleLocalService) {
+		this.roleLocalService = roleLocalService;
+	}
+
 	protected Map<String, String> addAction(
 		String actionName, GroupedModel groupedModel, String methodName) {
 
@@ -249,6 +258,15 @@ public abstract class BaseNoteResourceImpl implements NoteResource {
 		return ActionUtil.addAction(
 			actionName, getClass(), id, methodName, contextScopeChecker,
 			ownerId, permissionName, siteId, contextUriInfo);
+	}
+
+	protected Map<String, String> addAction(
+		String actionName, Long id, String methodName,
+		ModelResourcePermission modelResourcePermission) {
+
+		return ActionUtil.addAction(
+			actionName, getClass(), id, methodName, contextScopeChecker,
+			modelResourcePermission, contextUriInfo);
 	}
 
 	protected Map<String, String> addAction(

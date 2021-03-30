@@ -224,14 +224,30 @@ public interface ExternalLinkResource {
 			return this;
 		}
 
+		public Builder parameters(String... parameters) {
+			if ((parameters.length % 2) != 0) {
+				throw new IllegalArgumentException(
+					"Parameters length is not an even number");
+			}
+
+			for (int i = 0; i < parameters.length; i += 2) {
+				String parameterName = String.valueOf(parameters[i]);
+				String parameterValue = String.valueOf(parameters[i + 1]);
+
+				_parameters.put(parameterName, parameterValue);
+			}
+
+			return this;
+		}
+
 		private Builder() {
 		}
 
 		private Map<String, String> _headers = new LinkedHashMap<>();
 		private String _host = "localhost";
 		private Locale _locale;
-		private String _login = "test@liferay.com";
-		private String _password = "test";
+		private String _login = "";
+		private String _password = "";
 		private Map<String, String> _parameters = new LinkedHashMap<>();
 		private int _port = 8080;
 		private String _scheme = "http";
@@ -251,11 +267,28 @@ public interface ExternalLinkResource {
 
 			String content = httpResponse.getContent();
 
-			_logger.fine("HTTP response content: " + content);
+			if ((httpResponse.getStatusCode() / 100) != 2) {
+				_logger.log(
+					Level.WARNING,
+					"Unable to process HTTP response content: " + content);
+				_logger.log(
+					Level.WARNING,
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.log(
+					Level.WARNING,
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
 
-			_logger.fine("HTTP response message: " + httpResponse.getMessage());
-			_logger.fine(
-				"HTTP response status code: " + httpResponse.getStatusCode());
+				throw new Problem.ProblemException(Problem.toDTO(content));
+			}
+			else {
+				_logger.fine("HTTP response content: " + content);
+				_logger.fine(
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.fine(
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
+			}
 
 			try {
 				return Page.of(content, ExternalLinkSerDes::toDTO);
@@ -305,8 +338,9 @@ public interface ExternalLinkResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/external-links",
-				accountKey);
+						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/external-links");
+
+			httpInvoker.path("accountKey", accountKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -325,11 +359,28 @@ public interface ExternalLinkResource {
 
 			String content = httpResponse.getContent();
 
-			_logger.fine("HTTP response content: " + content);
+			if ((httpResponse.getStatusCode() / 100) != 2) {
+				_logger.log(
+					Level.WARNING,
+					"Unable to process HTTP response content: " + content);
+				_logger.log(
+					Level.WARNING,
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.log(
+					Level.WARNING,
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
 
-			_logger.fine("HTTP response message: " + httpResponse.getMessage());
-			_logger.fine(
-				"HTTP response status code: " + httpResponse.getStatusCode());
+				throw new Problem.ProblemException(Problem.toDTO(content));
+			}
+			else {
+				_logger.fine("HTTP response content: " + content);
+				_logger.fine(
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.fine(
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
+			}
 
 			try {
 				return ExternalLinkSerDes.toDTO(content);
@@ -383,8 +434,9 @@ public interface ExternalLinkResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/external-links",
-				accountKey);
+						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/external-links");
+
+			httpInvoker.path("accountKey", accountKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -402,11 +454,28 @@ public interface ExternalLinkResource {
 
 			String content = httpResponse.getContent();
 
-			_logger.fine("HTTP response content: " + content);
+			if ((httpResponse.getStatusCode() / 100) != 2) {
+				_logger.log(
+					Level.WARNING,
+					"Unable to process HTTP response content: " + content);
+				_logger.log(
+					Level.WARNING,
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.log(
+					Level.WARNING,
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
 
-			_logger.fine("HTTP response message: " + httpResponse.getMessage());
-			_logger.fine(
-				"HTTP response status code: " + httpResponse.getStatusCode());
+				throw new Problem.ProblemException(Problem.toDTO(content));
+			}
+			else {
+				_logger.fine("HTTP response content: " + content);
+				_logger.fine(
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.fine(
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
+			}
 
 			try {
 				return Page.of(content, ExternalLinkSerDes::toDTO);
@@ -456,8 +525,9 @@ public interface ExternalLinkResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/contacts/by-uuid/{contactUuid}/external-links",
-				contactUuid);
+						"/o/koroneiki-rest/v1.0/contacts/by-uuid/{contactUuid}/external-links");
+
+			httpInvoker.path("contactUuid", contactUuid);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -476,11 +546,28 @@ public interface ExternalLinkResource {
 
 			String content = httpResponse.getContent();
 
-			_logger.fine("HTTP response content: " + content);
+			if ((httpResponse.getStatusCode() / 100) != 2) {
+				_logger.log(
+					Level.WARNING,
+					"Unable to process HTTP response content: " + content);
+				_logger.log(
+					Level.WARNING,
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.log(
+					Level.WARNING,
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
 
-			_logger.fine("HTTP response message: " + httpResponse.getMessage());
-			_logger.fine(
-				"HTTP response status code: " + httpResponse.getStatusCode());
+				throw new Problem.ProblemException(Problem.toDTO(content));
+			}
+			else {
+				_logger.fine("HTTP response content: " + content);
+				_logger.fine(
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.fine(
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
+			}
 
 			try {
 				return ExternalLinkSerDes.toDTO(content);
@@ -534,8 +621,9 @@ public interface ExternalLinkResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/contacts/by-uuid/{contactUuid}/external-links",
-				contactUuid);
+						"/o/koroneiki-rest/v1.0/contacts/by-uuid/{contactUuid}/external-links");
+
+			httpInvoker.path("contactUuid", contactUuid);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -553,11 +641,28 @@ public interface ExternalLinkResource {
 
 			String content = httpResponse.getContent();
 
-			_logger.fine("HTTP response content: " + content);
+			if ((httpResponse.getStatusCode() / 100) != 2) {
+				_logger.log(
+					Level.WARNING,
+					"Unable to process HTTP response content: " + content);
+				_logger.log(
+					Level.WARNING,
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.log(
+					Level.WARNING,
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
 
-			_logger.fine("HTTP response message: " + httpResponse.getMessage());
-			_logger.fine(
-				"HTTP response status code: " + httpResponse.getStatusCode());
+				throw new Problem.ProblemException(Problem.toDTO(content));
+			}
+			else {
+				_logger.fine("HTTP response content: " + content);
+				_logger.fine(
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.fine(
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
+			}
 
 			try {
 				return;
@@ -607,8 +712,9 @@ public interface ExternalLinkResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/external-links/{externalLinkKey}",
-				externalLinkKey);
+						"/o/koroneiki-rest/v1.0/external-links/{externalLinkKey}");
+
+			httpInvoker.path("externalLinkKey", externalLinkKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -624,11 +730,28 @@ public interface ExternalLinkResource {
 
 			String content = httpResponse.getContent();
 
-			_logger.fine("HTTP response content: " + content);
+			if ((httpResponse.getStatusCode() / 100) != 2) {
+				_logger.log(
+					Level.WARNING,
+					"Unable to process HTTP response content: " + content);
+				_logger.log(
+					Level.WARNING,
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.log(
+					Level.WARNING,
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
 
-			_logger.fine("HTTP response message: " + httpResponse.getMessage());
-			_logger.fine(
-				"HTTP response status code: " + httpResponse.getStatusCode());
+				throw new Problem.ProblemException(Problem.toDTO(content));
+			}
+			else {
+				_logger.fine("HTTP response content: " + content);
+				_logger.fine(
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.fine(
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
+			}
 
 			try {
 				return ExternalLinkSerDes.toDTO(content);
@@ -670,8 +793,9 @@ public interface ExternalLinkResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/external-links/{externalLinkKey}",
-				externalLinkKey);
+						"/o/koroneiki-rest/v1.0/external-links/{externalLinkKey}");
+
+			httpInvoker.path("externalLinkKey", externalLinkKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -689,11 +813,28 @@ public interface ExternalLinkResource {
 
 			String content = httpResponse.getContent();
 
-			_logger.fine("HTTP response content: " + content);
+			if ((httpResponse.getStatusCode() / 100) != 2) {
+				_logger.log(
+					Level.WARNING,
+					"Unable to process HTTP response content: " + content);
+				_logger.log(
+					Level.WARNING,
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.log(
+					Level.WARNING,
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
 
-			_logger.fine("HTTP response message: " + httpResponse.getMessage());
-			_logger.fine(
-				"HTTP response status code: " + httpResponse.getStatusCode());
+				throw new Problem.ProblemException(Problem.toDTO(content));
+			}
+			else {
+				_logger.fine("HTTP response content: " + content);
+				_logger.fine(
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.fine(
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
+			}
 
 			try {
 				return ExternalLinkSerDes.toDTO(content);
@@ -746,8 +887,9 @@ public interface ExternalLinkResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/external-links/{externalLinkKey}",
-				externalLinkKey);
+						"/o/koroneiki-rest/v1.0/external-links/{externalLinkKey}");
+
+			httpInvoker.path("externalLinkKey", externalLinkKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -766,11 +908,28 @@ public interface ExternalLinkResource {
 
 			String content = httpResponse.getContent();
 
-			_logger.fine("HTTP response content: " + content);
+			if ((httpResponse.getStatusCode() / 100) != 2) {
+				_logger.log(
+					Level.WARNING,
+					"Unable to process HTTP response content: " + content);
+				_logger.log(
+					Level.WARNING,
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.log(
+					Level.WARNING,
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
 
-			_logger.fine("HTTP response message: " + httpResponse.getMessage());
-			_logger.fine(
-				"HTTP response status code: " + httpResponse.getStatusCode());
+				throw new Problem.ProblemException(Problem.toDTO(content));
+			}
+			else {
+				_logger.fine("HTTP response content: " + content);
+				_logger.fine(
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.fine(
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
+			}
 
 			try {
 				return Page.of(content, ExternalLinkSerDes::toDTO);
@@ -820,8 +979,9 @@ public interface ExternalLinkResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/product-consumptions/{productConsumptionKey}/external-links",
-				productConsumptionKey);
+						"/o/koroneiki-rest/v1.0/product-consumptions/{productConsumptionKey}/external-links");
+
+			httpInvoker.path("productConsumptionKey", productConsumptionKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -841,11 +1001,28 @@ public interface ExternalLinkResource {
 
 			String content = httpResponse.getContent();
 
-			_logger.fine("HTTP response content: " + content);
+			if ((httpResponse.getStatusCode() / 100) != 2) {
+				_logger.log(
+					Level.WARNING,
+					"Unable to process HTTP response content: " + content);
+				_logger.log(
+					Level.WARNING,
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.log(
+					Level.WARNING,
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
 
-			_logger.fine("HTTP response message: " + httpResponse.getMessage());
-			_logger.fine(
-				"HTTP response status code: " + httpResponse.getStatusCode());
+				throw new Problem.ProblemException(Problem.toDTO(content));
+			}
+			else {
+				_logger.fine("HTTP response content: " + content);
+				_logger.fine(
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.fine(
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
+			}
 
 			try {
 				return ExternalLinkSerDes.toDTO(content);
@@ -899,8 +1076,9 @@ public interface ExternalLinkResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/product-consumptions/{productConsumptionKey}/external-links",
-				productConsumptionKey);
+						"/o/koroneiki-rest/v1.0/product-consumptions/{productConsumptionKey}/external-links");
+
+			httpInvoker.path("productConsumptionKey", productConsumptionKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -919,11 +1097,28 @@ public interface ExternalLinkResource {
 
 			String content = httpResponse.getContent();
 
-			_logger.fine("HTTP response content: " + content);
+			if ((httpResponse.getStatusCode() / 100) != 2) {
+				_logger.log(
+					Level.WARNING,
+					"Unable to process HTTP response content: " + content);
+				_logger.log(
+					Level.WARNING,
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.log(
+					Level.WARNING,
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
 
-			_logger.fine("HTTP response message: " + httpResponse.getMessage());
-			_logger.fine(
-				"HTTP response status code: " + httpResponse.getStatusCode());
+				throw new Problem.ProblemException(Problem.toDTO(content));
+			}
+			else {
+				_logger.fine("HTTP response content: " + content);
+				_logger.fine(
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.fine(
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
+			}
 
 			try {
 				return Page.of(content, ExternalLinkSerDes::toDTO);
@@ -973,8 +1168,9 @@ public interface ExternalLinkResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/product-purchases/{productPurchaseKey}/external-links",
-				productPurchaseKey);
+						"/o/koroneiki-rest/v1.0/product-purchases/{productPurchaseKey}/external-links");
+
+			httpInvoker.path("productPurchaseKey", productPurchaseKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -993,11 +1189,28 @@ public interface ExternalLinkResource {
 
 			String content = httpResponse.getContent();
 
-			_logger.fine("HTTP response content: " + content);
+			if ((httpResponse.getStatusCode() / 100) != 2) {
+				_logger.log(
+					Level.WARNING,
+					"Unable to process HTTP response content: " + content);
+				_logger.log(
+					Level.WARNING,
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.log(
+					Level.WARNING,
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
 
-			_logger.fine("HTTP response message: " + httpResponse.getMessage());
-			_logger.fine(
-				"HTTP response status code: " + httpResponse.getStatusCode());
+				throw new Problem.ProblemException(Problem.toDTO(content));
+			}
+			else {
+				_logger.fine("HTTP response content: " + content);
+				_logger.fine(
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.fine(
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
+			}
 
 			try {
 				return ExternalLinkSerDes.toDTO(content);
@@ -1051,8 +1264,9 @@ public interface ExternalLinkResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/product-purchases/{productPurchaseKey}/external-links",
-				productPurchaseKey);
+						"/o/koroneiki-rest/v1.0/product-purchases/{productPurchaseKey}/external-links");
+
+			httpInvoker.path("productPurchaseKey", productPurchaseKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -1070,11 +1284,28 @@ public interface ExternalLinkResource {
 
 			String content = httpResponse.getContent();
 
-			_logger.fine("HTTP response content: " + content);
+			if ((httpResponse.getStatusCode() / 100) != 2) {
+				_logger.log(
+					Level.WARNING,
+					"Unable to process HTTP response content: " + content);
+				_logger.log(
+					Level.WARNING,
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.log(
+					Level.WARNING,
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
 
-			_logger.fine("HTTP response message: " + httpResponse.getMessage());
-			_logger.fine(
-				"HTTP response status code: " + httpResponse.getStatusCode());
+				throw new Problem.ProblemException(Problem.toDTO(content));
+			}
+			else {
+				_logger.fine("HTTP response content: " + content);
+				_logger.fine(
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.fine(
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
+			}
 
 			try {
 				return Page.of(content, ExternalLinkSerDes::toDTO);
@@ -1124,8 +1355,9 @@ public interface ExternalLinkResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/products/{productKey}/external-links",
-				productKey);
+						"/o/koroneiki-rest/v1.0/products/{productKey}/external-links");
+
+			httpInvoker.path("productKey", productKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -1144,11 +1376,28 @@ public interface ExternalLinkResource {
 
 			String content = httpResponse.getContent();
 
-			_logger.fine("HTTP response content: " + content);
+			if ((httpResponse.getStatusCode() / 100) != 2) {
+				_logger.log(
+					Level.WARNING,
+					"Unable to process HTTP response content: " + content);
+				_logger.log(
+					Level.WARNING,
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.log(
+					Level.WARNING,
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
 
-			_logger.fine("HTTP response message: " + httpResponse.getMessage());
-			_logger.fine(
-				"HTTP response status code: " + httpResponse.getStatusCode());
+				throw new Problem.ProblemException(Problem.toDTO(content));
+			}
+			else {
+				_logger.fine("HTTP response content: " + content);
+				_logger.fine(
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.fine(
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
+			}
 
 			try {
 				return ExternalLinkSerDes.toDTO(content);
@@ -1202,8 +1451,9 @@ public interface ExternalLinkResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/products/{productKey}/external-links",
-				productKey);
+						"/o/koroneiki-rest/v1.0/products/{productKey}/external-links");
+
+			httpInvoker.path("productKey", productKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -1221,11 +1471,28 @@ public interface ExternalLinkResource {
 
 			String content = httpResponse.getContent();
 
-			_logger.fine("HTTP response content: " + content);
+			if ((httpResponse.getStatusCode() / 100) != 2) {
+				_logger.log(
+					Level.WARNING,
+					"Unable to process HTTP response content: " + content);
+				_logger.log(
+					Level.WARNING,
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.log(
+					Level.WARNING,
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
 
-			_logger.fine("HTTP response message: " + httpResponse.getMessage());
-			_logger.fine(
-				"HTTP response status code: " + httpResponse.getStatusCode());
+				throw new Problem.ProblemException(Problem.toDTO(content));
+			}
+			else {
+				_logger.fine("HTTP response content: " + content);
+				_logger.fine(
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.fine(
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
+			}
 
 			try {
 				return Page.of(content, ExternalLinkSerDes::toDTO);
@@ -1275,8 +1542,9 @@ public interface ExternalLinkResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/teams/{teamKey}/external-links",
-				teamKey);
+						"/o/koroneiki-rest/v1.0/teams/{teamKey}/external-links");
+
+			httpInvoker.path("teamKey", teamKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -1295,11 +1563,28 @@ public interface ExternalLinkResource {
 
 			String content = httpResponse.getContent();
 
-			_logger.fine("HTTP response content: " + content);
+			if ((httpResponse.getStatusCode() / 100) != 2) {
+				_logger.log(
+					Level.WARNING,
+					"Unable to process HTTP response content: " + content);
+				_logger.log(
+					Level.WARNING,
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.log(
+					Level.WARNING,
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
 
-			_logger.fine("HTTP response message: " + httpResponse.getMessage());
-			_logger.fine(
-				"HTTP response status code: " + httpResponse.getStatusCode());
+				throw new Problem.ProblemException(Problem.toDTO(content));
+			}
+			else {
+				_logger.fine("HTTP response content: " + content);
+				_logger.fine(
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.fine(
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
+			}
 
 			try {
 				return ExternalLinkSerDes.toDTO(content);
@@ -1352,8 +1637,9 @@ public interface ExternalLinkResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/teams/{teamKey}/external-links",
-				teamKey);
+						"/o/koroneiki-rest/v1.0/teams/{teamKey}/external-links");
+
+			httpInvoker.path("teamKey", teamKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);

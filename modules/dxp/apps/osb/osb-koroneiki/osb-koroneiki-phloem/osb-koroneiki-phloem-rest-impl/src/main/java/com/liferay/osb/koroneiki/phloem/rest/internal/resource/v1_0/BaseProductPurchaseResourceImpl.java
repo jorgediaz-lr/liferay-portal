@@ -21,6 +21,7 @@ import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.model.GroupedModel;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ResourceActionLocalService;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
@@ -75,9 +76,9 @@ public abstract class BaseProductPurchaseResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/accounts/{accountKey}/product-purchases'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
 	@Operation(description = "Retrieves the account's product purchases.")
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "accountKey"),
@@ -89,8 +90,8 @@ public abstract class BaseProductPurchaseResourceImpl
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "ProductPurchase")})
 	public Page<ProductPurchase> getAccountAccountKeyProductPurchasesPage(
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
-				accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
+				String accountKey,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -102,9 +103,8 @@ public abstract class BaseProductPurchaseResourceImpl
 	 *
 	 * curl -X 'POST' 'http://localhost:8080/o/koroneiki-rest/v1.0/accounts/{accountKey}/product-purchases' -d $'{"endDate": ___, "externalLinks": ___, "originalEndDate": ___, "perpetual": ___, "product": ___, "productKey": ___, "properties": ___, "quantity": ___, "startDate": ___, "status": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Consumes({"application/json", "application/xml"})
-	@POST
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -113,13 +113,14 @@ public abstract class BaseProductPurchaseResourceImpl
 		}
 	)
 	@Path("/accounts/{accountKey}/product-purchases")
+	@POST
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "ProductPurchase")})
 	public ProductPurchase postAccountAccountKeyProductPurchase(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
-				accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
+				String accountKey,
 			ProductPurchase productPurchase)
 		throws Exception {
 
@@ -131,9 +132,9 @@ public abstract class BaseProductPurchaseResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/contacts/by-uuid/{contactUuid}/product-purchases'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
 	@Operation(description = "Retrieves the contacts product purchases.")
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "contactUuid"),
@@ -159,11 +160,11 @@ public abstract class BaseProductPurchaseResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/product-purchases'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
 	@Operation(
 		description = "Retrieves the product purchases. Results can be paginated, filtered, searched, and sorted."
 	)
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "search"),
@@ -190,11 +191,11 @@ public abstract class BaseProductPurchaseResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/product-purchases/by-external-link/{domain}/{entityName}/{entityId}'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
 	@Operation(
 		description = "Retrieves the product purchases by the external link."
 	)
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "domain"),
@@ -211,12 +212,12 @@ public abstract class BaseProductPurchaseResourceImpl
 	@Tags(value = {@Tag(name = "ProductPurchase")})
 	public Page<ProductPurchase>
 			getProductPurchaseByExternalLinkDomainEntityNameEntityPage(
-				@NotNull @Parameter(hidden = true) @PathParam("domain") String
-					domain,
+				@NotNull @Parameter(hidden = true) @PathParam("domain")
+					String domain,
 				@NotNull @Parameter(hidden = true) @PathParam("entityName")
 					String entityName,
-				@NotNull @Parameter(hidden = true) @PathParam("entityId") String
-					entityId,
+				@NotNull @Parameter(hidden = true) @PathParam("entityId")
+					String entityId,
 				@Context Pagination pagination)
 		throws Exception {
 
@@ -228,8 +229,8 @@ public abstract class BaseProductPurchaseResourceImpl
 	 *
 	 * curl -X 'DELETE' 'http://localhost:8080/o/koroneiki-rest/v1.0/product-purchases/{productPurchaseKey}'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@DELETE
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -253,9 +254,9 @@ public abstract class BaseProductPurchaseResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/product-purchases/{productPurchaseKey}'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
 	@Operation(description = "Retrieves the product purchase.")
+	@Override
 	@Parameters(
 		value = {@Parameter(in = ParameterIn.PATH, name = "productPurchaseKey")}
 	)
@@ -275,9 +276,8 @@ public abstract class BaseProductPurchaseResourceImpl
 	 *
 	 * curl -X 'PUT' 'http://localhost:8080/o/koroneiki-rest/v1.0/product-purchases/{productPurchaseKey}' -d $'{"endDate": ___, "externalLinks": ___, "originalEndDate": ___, "perpetual": ___, "product": ___, "productKey": ___, "properties": ___, "quantity": ___, "startDate": ___, "status": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Consumes({"application/json", "application/xml"})
-	@PUT
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -287,6 +287,7 @@ public abstract class BaseProductPurchaseResourceImpl
 	)
 	@Path("/product-purchases/{productPurchaseKey}")
 	@Produces({"application/json", "application/xml"})
+	@PUT
 	@Tags(value = {@Tag(name = "ProductPurchase")})
 	public ProductPurchase putProductPurchase(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
@@ -304,9 +305,9 @@ public abstract class BaseProductPurchaseResourceImpl
 	 *
 	 * curl -X 'DELETE' 'http://localhost:8080/o/koroneiki-rest/v1.0/product-purchases/{productPurchaseKey}/product-purchase-permissions' -d $'{"delete": ___, "permissions": ___, "roleNames": ___, "update": ___, "view": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Consumes({"application/json", "application/xml"})
 	@DELETE
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -333,9 +334,8 @@ public abstract class BaseProductPurchaseResourceImpl
 	 *
 	 * curl -X 'PUT' 'http://localhost:8080/o/koroneiki-rest/v1.0/product-purchases/{productPurchaseKey}/product-purchase-permissions' -d $'{"delete": ___, "permissions": ___, "roleNames": ___, "update": ___, "view": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Consumes({"application/json", "application/xml"})
-	@PUT
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -347,6 +347,7 @@ public abstract class BaseProductPurchaseResourceImpl
 		"/product-purchases/{productPurchaseKey}/product-purchase-permissions"
 	)
 	@Produces({"application/json", "application/xml"})
+	@PUT
 	@Tags(value = {@Tag(name = "ProductPurchase")})
 	public void putProductPurchaseProductPurchasePermission(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
@@ -389,6 +390,14 @@ public abstract class BaseProductPurchaseResourceImpl
 		this.contextUser = contextUser;
 	}
 
+	public void setGroupLocalService(GroupLocalService groupLocalService) {
+		this.groupLocalService = groupLocalService;
+	}
+
+	public void setRoleLocalService(RoleLocalService roleLocalService) {
+		this.roleLocalService = roleLocalService;
+	}
+
 	protected Map<String, String> addAction(
 		String actionName, GroupedModel groupedModel, String methodName) {
 
@@ -404,6 +413,15 @@ public abstract class BaseProductPurchaseResourceImpl
 		return ActionUtil.addAction(
 			actionName, getClass(), id, methodName, contextScopeChecker,
 			ownerId, permissionName, siteId, contextUriInfo);
+	}
+
+	protected Map<String, String> addAction(
+		String actionName, Long id, String methodName,
+		ModelResourcePermission modelResourcePermission) {
+
+		return ActionUtil.addAction(
+			actionName, getClass(), id, methodName, contextScopeChecker,
+			modelResourcePermission, contextUriInfo);
 	}
 
 	protected Map<String, String> addAction(

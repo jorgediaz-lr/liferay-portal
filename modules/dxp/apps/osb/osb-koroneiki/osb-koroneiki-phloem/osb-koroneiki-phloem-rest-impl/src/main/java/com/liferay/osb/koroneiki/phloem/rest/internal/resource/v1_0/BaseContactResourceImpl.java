@@ -21,6 +21,7 @@ import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.model.GroupedModel;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ResourceActionLocalService;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
@@ -74,11 +75,11 @@ public abstract class BaseContactResourceImpl implements ContactResource {
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/accounts/{accountKey}/contacts'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
 	@Operation(
 		description = "Retrieves the account's customer and worker contacts."
 	)
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "accountKey"),
@@ -90,8 +91,8 @@ public abstract class BaseContactResourceImpl implements ContactResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Contact")})
 	public Page<Contact> getAccountAccountKeyContactsPage(
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
-				accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
+				String accountKey,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -103,9 +104,9 @@ public abstract class BaseContactResourceImpl implements ContactResource {
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/accounts/{accountKey}/customer-contacts'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
 	@Operation(description = "Retrieves the account's customer contacts.")
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "accountKey"),
@@ -117,8 +118,8 @@ public abstract class BaseContactResourceImpl implements ContactResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Contact")})
 	public Page<Contact> getAccountAccountKeyCustomerContactsPage(
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
-				accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
+				String accountKey,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -130,9 +131,9 @@ public abstract class BaseContactResourceImpl implements ContactResource {
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/accounts/{accountKey}/worker-contacts'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
 	@Operation(description = "Retrieves the account's worker contacts.")
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "accountKey"),
@@ -144,8 +145,8 @@ public abstract class BaseContactResourceImpl implements ContactResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Contact")})
 	public Page<Contact> getAccountAccountKeyWorkerContactsPage(
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
-				accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
+				String accountKey,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -157,11 +158,11 @@ public abstract class BaseContactResourceImpl implements ContactResource {
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/contacts'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
 	@Operation(
 		description = "Retrieves the contacts. Results can be paginated, filtered, searched, and sorted."
 	)
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "search"),
@@ -188,9 +189,8 @@ public abstract class BaseContactResourceImpl implements ContactResource {
 	 *
 	 * curl -X 'POST' 'http://localhost:8080/o/koroneiki-rest/v1.0/contacts' -d $'{"accounts": ___, "contactRoles": ___, "emailAddress": ___, "emailAddressVerified": ___, "firstName": ___, "languageId": ___, "lastName": ___, "middleName": ___, "uuid": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Consumes({"application/json", "application/xml"})
-	@POST
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -198,6 +198,7 @@ public abstract class BaseContactResourceImpl implements ContactResource {
 		}
 	)
 	@Path("/contacts")
+	@POST
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Contact")})
 	public Contact postContact(
@@ -214,8 +215,8 @@ public abstract class BaseContactResourceImpl implements ContactResource {
 	 *
 	 * curl -X 'DELETE' 'http://localhost:8080/o/koroneiki-rest/v1.0/contacts/by-email-address/{emailAddress}'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@DELETE
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -229,8 +230,8 @@ public abstract class BaseContactResourceImpl implements ContactResource {
 	public void deleteContactByEmailAddresEmailAddress(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("emailAddress") String
-				emailAddress)
+			@NotNull @Parameter(hidden = true) @PathParam("emailAddress")
+				String emailAddress)
 		throws Exception {
 	}
 
@@ -239,9 +240,9 @@ public abstract class BaseContactResourceImpl implements ContactResource {
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/contacts/by-email-address/{emailAddress}'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
 	@Operation(description = "Retrieves the contact.")
+	@Override
 	@Parameters(
 		value = {@Parameter(in = ParameterIn.PATH, name = "emailAddress")}
 	)
@@ -249,8 +250,8 @@ public abstract class BaseContactResourceImpl implements ContactResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Contact")})
 	public Contact getContactByEmailAddresEmailAddress(
-			@NotNull @Parameter(hidden = true) @PathParam("emailAddress") String
-				emailAddress)
+			@NotNull @Parameter(hidden = true) @PathParam("emailAddress")
+				String emailAddress)
 		throws Exception {
 
 		return new Contact();
@@ -261,9 +262,8 @@ public abstract class BaseContactResourceImpl implements ContactResource {
 	 *
 	 * curl -X 'PUT' 'http://localhost:8080/o/koroneiki-rest/v1.0/contacts/by-email-address/{emailAddress}' -d $'{"accounts": ___, "contactRoles": ___, "emailAddress": ___, "emailAddressVerified": ___, "firstName": ___, "languageId": ___, "lastName": ___, "middleName": ___, "uuid": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Consumes({"application/json", "application/xml"})
-	@PUT
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -273,12 +273,13 @@ public abstract class BaseContactResourceImpl implements ContactResource {
 	)
 	@Path("/contacts/by-email-address/{emailAddress}")
 	@Produces({"application/json", "application/xml"})
+	@PUT
 	@Tags(value = {@Tag(name = "Contact")})
 	public Contact putContactByEmailAddresEmailAddress(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("emailAddress") String
-				emailAddress,
+			@NotNull @Parameter(hidden = true) @PathParam("emailAddress")
+				String emailAddress,
 			Contact contact)
 		throws Exception {
 
@@ -290,8 +291,8 @@ public abstract class BaseContactResourceImpl implements ContactResource {
 	 *
 	 * curl -X 'DELETE' 'http://localhost:8080/o/koroneiki-rest/v1.0/contacts/by-uuid/{contactUuid}'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@DELETE
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -305,8 +306,8 @@ public abstract class BaseContactResourceImpl implements ContactResource {
 	public void deleteContactByUuidContactUuid(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("contactUuid") String
-				contactUuid)
+			@NotNull @Parameter(hidden = true) @PathParam("contactUuid")
+				String contactUuid)
 		throws Exception {
 	}
 
@@ -315,9 +316,9 @@ public abstract class BaseContactResourceImpl implements ContactResource {
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/contacts/by-uuid/{contactUuid}'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
 	@Operation(description = "Retrieves the contact.")
+	@Override
 	@Parameters(
 		value = {@Parameter(in = ParameterIn.PATH, name = "contactUuid")}
 	)
@@ -325,8 +326,8 @@ public abstract class BaseContactResourceImpl implements ContactResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Contact")})
 	public Contact getContactByUuidContactUuid(
-			@NotNull @Parameter(hidden = true) @PathParam("contactUuid") String
-				contactUuid)
+			@NotNull @Parameter(hidden = true) @PathParam("contactUuid")
+				String contactUuid)
 		throws Exception {
 
 		return new Contact();
@@ -337,9 +338,8 @@ public abstract class BaseContactResourceImpl implements ContactResource {
 	 *
 	 * curl -X 'PUT' 'http://localhost:8080/o/koroneiki-rest/v1.0/contacts/by-uuid/{contactUuid}' -d $'{"accounts": ___, "contactRoles": ___, "emailAddress": ___, "emailAddressVerified": ___, "firstName": ___, "languageId": ___, "lastName": ___, "middleName": ___, "uuid": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Consumes({"application/json", "application/xml"})
-	@PUT
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -349,12 +349,13 @@ public abstract class BaseContactResourceImpl implements ContactResource {
 	)
 	@Path("/contacts/by-uuid/{contactUuid}")
 	@Produces({"application/json", "application/xml"})
+	@PUT
 	@Tags(value = {@Tag(name = "Contact")})
 	public Contact putContactByUuidContactUuid(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("contactUuid") String
-				contactUuid,
+			@NotNull @Parameter(hidden = true) @PathParam("contactUuid")
+				String contactUuid,
 			Contact contact)
 		throws Exception {
 
@@ -366,9 +367,9 @@ public abstract class BaseContactResourceImpl implements ContactResource {
 	 *
 	 * curl -X 'DELETE' 'http://localhost:8080/o/koroneiki-rest/v1.0/contacts/by-uuid/{contactUuid}/contact-permissions' -d $'{"delete": ___, "permissions": ___, "roleNames": ___, "update": ___, "view": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Consumes({"application/json", "application/xml"})
 	@DELETE
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -382,8 +383,8 @@ public abstract class BaseContactResourceImpl implements ContactResource {
 	public void deleteContactByUuidContactUuidContactPermission(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("contactUuid") String
-				contactUuid,
+			@NotNull @Parameter(hidden = true) @PathParam("contactUuid")
+				String contactUuid,
 			ContactPermission contactPermission)
 		throws Exception {
 	}
@@ -393,9 +394,8 @@ public abstract class BaseContactResourceImpl implements ContactResource {
 	 *
 	 * curl -X 'PUT' 'http://localhost:8080/o/koroneiki-rest/v1.0/contacts/by-uuid/{contactUuid}/contact-permissions' -d $'{"delete": ___, "permissions": ___, "roleNames": ___, "update": ___, "view": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Consumes({"application/json", "application/xml"})
-	@PUT
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -405,12 +405,13 @@ public abstract class BaseContactResourceImpl implements ContactResource {
 	)
 	@Path("/contacts/by-uuid/{contactUuid}/contact-permissions")
 	@Produces({"application/json", "application/xml"})
+	@PUT
 	@Tags(value = {@Tag(name = "Contact")})
 	public void putContactByUuidContactUuidContactPermission(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("contactUuid") String
-				contactUuid,
+			@NotNull @Parameter(hidden = true) @PathParam("contactUuid")
+				String contactUuid,
 			ContactPermission contactPermission)
 		throws Exception {
 	}
@@ -420,9 +421,9 @@ public abstract class BaseContactResourceImpl implements ContactResource {
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/teams/{teamKey}/contacts'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
 	@Operation(description = "Retrieves the team's contacts.")
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "teamKey"),
@@ -434,8 +435,8 @@ public abstract class BaseContactResourceImpl implements ContactResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Contact")})
 	public Page<Contact> getTeamTeamKeyContactsPage(
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
-				teamKey,
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
+				String teamKey,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -474,6 +475,14 @@ public abstract class BaseContactResourceImpl implements ContactResource {
 		this.contextUser = contextUser;
 	}
 
+	public void setGroupLocalService(GroupLocalService groupLocalService) {
+		this.groupLocalService = groupLocalService;
+	}
+
+	public void setRoleLocalService(RoleLocalService roleLocalService) {
+		this.roleLocalService = roleLocalService;
+	}
+
 	protected Map<String, String> addAction(
 		String actionName, GroupedModel groupedModel, String methodName) {
 
@@ -489,6 +498,15 @@ public abstract class BaseContactResourceImpl implements ContactResource {
 		return ActionUtil.addAction(
 			actionName, getClass(), id, methodName, contextScopeChecker,
 			ownerId, permissionName, siteId, contextUriInfo);
+	}
+
+	protected Map<String, String> addAction(
+		String actionName, Long id, String methodName,
+		ModelResourcePermission modelResourcePermission) {
+
+		return ActionUtil.addAction(
+			actionName, getClass(), id, methodName, contextScopeChecker,
+			modelResourcePermission, contextUriInfo);
 	}
 
 	protected Map<String, String> addAction(

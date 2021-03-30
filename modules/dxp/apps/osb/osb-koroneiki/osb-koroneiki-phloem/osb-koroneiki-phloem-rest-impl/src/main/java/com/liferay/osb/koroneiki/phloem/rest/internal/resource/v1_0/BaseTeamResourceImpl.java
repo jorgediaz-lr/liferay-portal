@@ -21,6 +21,7 @@ import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.model.GroupedModel;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ResourceActionLocalService;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
@@ -74,9 +75,9 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/accounts/{accountKey}/assigned-teams'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
 	@Operation(description = "Retrieves the teams assigned to the account.")
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "accountKey"),
@@ -88,8 +89,8 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Team")})
 	public Page<Team> getAccountAccountKeyAssignedTeamsPage(
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
-				accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
+				String accountKey,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -101,9 +102,9 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/accounts/{accountKey}/teams'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
 	@Operation(description = "Retrieves the account's teams.")
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "accountKey"),
@@ -115,8 +116,8 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Team")})
 	public Page<Team> getAccountAccountKeyTeamsPage(
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
-				accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
+				String accountKey,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -128,9 +129,8 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	 *
 	 * curl -X 'POST' 'http://localhost:8080/o/koroneiki-rest/v1.0/accounts/{accountKey}/teams' -d $'{"key": ___, "name": ___, "teamRoles": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Consumes({"application/json", "application/xml"})
-	@POST
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -139,13 +139,14 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 		}
 	)
 	@Path("/accounts/{accountKey}/teams")
+	@POST
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Team")})
 	public Team postAccountAccountKeyTeam(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
-				accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
+				String accountKey,
 			Team team)
 		throws Exception {
 
@@ -157,11 +158,11 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/teams'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
 	@Operation(
 		description = "Retrieves the teams. Results can be paginated, filtered, searched, and sorted."
 	)
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "search"),
@@ -188,9 +189,9 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/teams/by-external-link/{domain}/{entityName}/{entityId}'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
 	@Operation(description = "Retrieves the team by the external link.")
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "domain"),
@@ -204,12 +205,12 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Team")})
 	public Page<Team> getTeamByExternalLinkDomainEntityNameEntityPage(
-			@NotNull @Parameter(hidden = true) @PathParam("domain") String
-				domain,
-			@NotNull @Parameter(hidden = true) @PathParam("entityName") String
-				entityName,
-			@NotNull @Parameter(hidden = true) @PathParam("entityId") String
-				entityId,
+			@NotNull @Parameter(hidden = true) @PathParam("domain")
+				String domain,
+			@NotNull @Parameter(hidden = true) @PathParam("entityName")
+				String entityName,
+			@NotNull @Parameter(hidden = true) @PathParam("entityId")
+				String entityId,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -221,8 +222,8 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	 *
 	 * curl -X 'DELETE' 'http://localhost:8080/o/koroneiki-rest/v1.0/teams/{teamKey}'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@DELETE
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -236,8 +237,8 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	public void deleteTeam(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
-				teamKey)
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
+				String teamKey)
 		throws Exception {
 	}
 
@@ -246,16 +247,16 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/teams/{teamKey}'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
 	@Operation(description = "Retrieves the team.")
+	@Override
 	@Parameters(value = {@Parameter(in = ParameterIn.PATH, name = "teamKey")})
 	@Path("/teams/{teamKey}")
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Team")})
 	public Team getTeam(
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
-				teamKey)
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
+				String teamKey)
 		throws Exception {
 
 		return new Team();
@@ -266,9 +267,8 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	 *
 	 * curl -X 'PUT' 'http://localhost:8080/o/koroneiki-rest/v1.0/teams/{teamKey}' -d $'{"key": ___, "name": ___, "teamRoles": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Consumes({"application/json", "application/xml"})
-	@PUT
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -278,12 +278,13 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	)
 	@Path("/teams/{teamKey}")
 	@Produces({"application/json", "application/xml"})
+	@PUT
 	@Tags(value = {@Tag(name = "Team")})
 	public Team putTeam(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
-				teamKey,
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
+				String teamKey,
 			Team team)
 		throws Exception {
 
@@ -295,9 +296,9 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	 *
 	 * curl -X 'DELETE' 'http://localhost:8080/o/koroneiki-rest/v1.0/teams/{teamKey}/contacts/by-email-address'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@DELETE
 	@Operation(description = "Unassigns contacts from the team.")
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -312,8 +313,8 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	public void deleteTeamContactByEmailAddress(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
-				teamKey,
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
+				String teamKey,
 			@NotNull @Parameter(hidden = true) @QueryParam("emailAddresses")
 				String[] emailAddresses)
 		throws Exception {
@@ -324,9 +325,8 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	 *
 	 * curl -X 'PUT' 'http://localhost:8080/o/koroneiki-rest/v1.0/teams/{teamKey}/contacts/by-email-address'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Operation(description = "Assigns contacts to the team.")
-	@PUT
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -337,12 +337,13 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	)
 	@Path("/teams/{teamKey}/contacts/by-email-address")
 	@Produces({"application/json", "application/xml"})
+	@PUT
 	@Tags(value = {@Tag(name = "Team")})
 	public void putTeamContactByEmailAddress(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
-				teamKey,
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
+				String teamKey,
 			@NotNull @Parameter(hidden = true) @QueryParam("emailAddresses")
 				String[] emailAddresses)
 		throws Exception {
@@ -353,9 +354,9 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	 *
 	 * curl -X 'DELETE' 'http://localhost:8080/o/koroneiki-rest/v1.0/teams/{teamKey}/contacts/by-email-address/{emailAddress}/roles'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@DELETE
 	@Operation(description = "Unassigns roles from the contact for the team.")
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -371,10 +372,10 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	public void deleteTeamContactByEmailAddressRole(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
-				teamKey,
-			@NotNull @Parameter(hidden = true) @PathParam("emailAddress") String
-				emailAddress,
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
+				String teamKey,
+			@NotNull @Parameter(hidden = true) @PathParam("emailAddress")
+				String emailAddress,
 			@NotNull @Parameter(hidden = true) @QueryParam("contactRoleKeys")
 				String[] contactRoleKeys)
 		throws Exception {
@@ -385,9 +386,8 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	 *
 	 * curl -X 'PUT' 'http://localhost:8080/o/koroneiki-rest/v1.0/teams/{teamKey}/contacts/by-email-address/{emailAddress}/roles'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Operation(description = "Assigns roles to the contact for the team.")
-	@PUT
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -399,14 +399,15 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	)
 	@Path("/teams/{teamKey}/contacts/by-email-address/{emailAddress}/roles")
 	@Produces({"application/json", "application/xml"})
+	@PUT
 	@Tags(value = {@Tag(name = "Team")})
 	public void putTeamContactByEmailAddressRole(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
-				teamKey,
-			@NotNull @Parameter(hidden = true) @PathParam("emailAddress") String
-				emailAddress,
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
+				String teamKey,
+			@NotNull @Parameter(hidden = true) @PathParam("emailAddress")
+				String emailAddress,
 			@NotNull @Parameter(hidden = true) @QueryParam("contactRoleKeys")
 				String[] contactRoleKeys)
 		throws Exception {
@@ -417,9 +418,9 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	 *
 	 * curl -X 'DELETE' 'http://localhost:8080/o/koroneiki-rest/v1.0/teams/{teamKey}/contacts/by-uuid'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@DELETE
 	@Operation(description = "Unassigns contacts from the team.")
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -434,8 +435,8 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	public void deleteTeamContactByUuid(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
-				teamKey,
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
+				String teamKey,
 			@NotNull @Parameter(hidden = true) @QueryParam("contactUuids")
 				String[] contactUuids)
 		throws Exception {
@@ -446,9 +447,8 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	 *
 	 * curl -X 'PUT' 'http://localhost:8080/o/koroneiki-rest/v1.0/teams/{teamKey}/contacts/by-uuid'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Operation(description = "Assigns contacts to the team.")
-	@PUT
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -459,12 +459,13 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	)
 	@Path("/teams/{teamKey}/contacts/by-uuid")
 	@Produces({"application/json", "application/xml"})
+	@PUT
 	@Tags(value = {@Tag(name = "Team")})
 	public void putTeamContactByUuid(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
-				teamKey,
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
+				String teamKey,
 			@NotNull @Parameter(hidden = true) @QueryParam("contactUuids")
 				String[] contactUuids)
 		throws Exception {
@@ -475,9 +476,9 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	 *
 	 * curl -X 'DELETE' 'http://localhost:8080/o/koroneiki-rest/v1.0/teams/{teamKey}/contacts/by-uuid/{contactUuid}/roles'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@DELETE
 	@Operation(description = "Unassigns roles from the contact for the team.")
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -493,10 +494,10 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	public void deleteTeamContactByUuidContactUuidRole(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
-				teamKey,
-			@NotNull @Parameter(hidden = true) @PathParam("contactUuid") String
-				contactUuid,
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
+				String teamKey,
+			@NotNull @Parameter(hidden = true) @PathParam("contactUuid")
+				String contactUuid,
 			@NotNull @Parameter(hidden = true) @QueryParam("contactRoleKeys")
 				String[] contactRoleKeys)
 		throws Exception {
@@ -507,9 +508,8 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	 *
 	 * curl -X 'PUT' 'http://localhost:8080/o/koroneiki-rest/v1.0/teams/{teamKey}/contacts/by-uuid/{contactUuid}/roles'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Operation(description = "Assigns roles to the contact for the team.")
-	@PUT
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -521,14 +521,15 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	)
 	@Path("/teams/{teamKey}/contacts/by-uuid/{contactUuid}/roles")
 	@Produces({"application/json", "application/xml"})
+	@PUT
 	@Tags(value = {@Tag(name = "Team")})
 	public void putTeamContactByUuidContactUuidRole(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
-				teamKey,
-			@NotNull @Parameter(hidden = true) @PathParam("contactUuid") String
-				contactUuid,
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
+				String teamKey,
+			@NotNull @Parameter(hidden = true) @PathParam("contactUuid")
+				String contactUuid,
 			@NotNull @Parameter(hidden = true) @QueryParam("contactRoleKeys")
 				String[] contactRoleKeys)
 		throws Exception {
@@ -539,9 +540,9 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	 *
 	 * curl -X 'DELETE' 'http://localhost:8080/o/koroneiki-rest/v1.0/teams/{teamKey}/team-permissions' -d $'{"assignContact": ___, "delete": ___, "permissions": ___, "roleNames": ___, "update": ___, "view": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Consumes({"application/json", "application/xml"})
 	@DELETE
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -555,8 +556,8 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	public void deleteTeamTeamPermission(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
-				teamKey,
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
+				String teamKey,
 			TeamPermission teamPermission)
 		throws Exception {
 	}
@@ -566,9 +567,8 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	 *
 	 * curl -X 'PUT' 'http://localhost:8080/o/koroneiki-rest/v1.0/teams/{teamKey}/team-permissions' -d $'{"assignContact": ___, "delete": ___, "permissions": ___, "roleNames": ___, "update": ___, "view": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Consumes({"application/json", "application/xml"})
-	@PUT
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -578,12 +578,13 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	)
 	@Path("/teams/{teamKey}/team-permissions")
 	@Produces({"application/json", "application/xml"})
+	@PUT
 	@Tags(value = {@Tag(name = "Team")})
 	public void putTeamTeamPermission(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
-				teamKey,
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
+				String teamKey,
 			TeamPermission teamPermission)
 		throws Exception {
 	}
@@ -620,6 +621,14 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 		this.contextUser = contextUser;
 	}
 
+	public void setGroupLocalService(GroupLocalService groupLocalService) {
+		this.groupLocalService = groupLocalService;
+	}
+
+	public void setRoleLocalService(RoleLocalService roleLocalService) {
+		this.roleLocalService = roleLocalService;
+	}
+
 	protected Map<String, String> addAction(
 		String actionName, GroupedModel groupedModel, String methodName) {
 
@@ -635,6 +644,15 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 		return ActionUtil.addAction(
 			actionName, getClass(), id, methodName, contextScopeChecker,
 			ownerId, permissionName, siteId, contextUriInfo);
+	}
+
+	protected Map<String, String> addAction(
+		String actionName, Long id, String methodName,
+		ModelResourcePermission modelResourcePermission) {
+
+		return ActionUtil.addAction(
+			actionName, getClass(), id, methodName, contextScopeChecker,
+			modelResourcePermission, contextUriInfo);
 	}
 
 	protected Map<String, String> addAction(

@@ -26,6 +26,8 @@ import com.liferay.portal.vulcan.util.ObjectMapperUtil;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.io.Serializable;
+
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
@@ -42,10 +44,13 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @generated
  */
 @Generated("")
-@GraphQLName("ContactAccountView")
+@GraphQLName(
+	description = "A contact's perspective of his/her relationship to an account.",
+	value = "ContactAccountView"
+)
 @JsonFilter("Liferay.Vulcan")
 @XmlRootElement(name = "ContactAccountView")
-public class ContactAccountView {
+public class ContactAccountView implements Serializable {
 
 	public static ContactAccountView toDTO(String json) {
 		return ObjectMapperUtil.readValue(ContactAccountView.class, json);
@@ -223,6 +228,7 @@ public class ContactAccountView {
 	}
 
 	@Schema(
+		accessMode = Schema.AccessMode.READ_ONLY,
 		defaultValue = "com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.ContactAccountView",
 		name = "x-class-name"
 	)
@@ -232,6 +238,16 @@ public class ContactAccountView {
 		String string = String.valueOf(object);
 
 		return string.replaceAll("\"", "\\\\\"");
+	}
+
+	private static boolean _isArray(Object value) {
+		if (value == null) {
+			return false;
+		}
+
+		Class<?> clazz = value.getClass();
+
+		return clazz.isArray();
 	}
 
 	private static String _toJSON(Map<String, ?> map) {
@@ -248,13 +264,11 @@ public class ContactAccountView {
 
 			sb.append("\"");
 			sb.append(entry.getKey());
-			sb.append("\":");
+			sb.append("\": ");
 
 			Object value = entry.getValue();
 
-			Class<?> clazz = value.getClass();
-
-			if (clazz.isArray()) {
+			if (_isArray(value)) {
 				sb.append("[");
 
 				Object[] valueArray = (Object[])value;
@@ -289,7 +303,7 @@ public class ContactAccountView {
 			}
 
 			if (iterator.hasNext()) {
-				sb.append(",");
+				sb.append(", ");
 			}
 		}
 

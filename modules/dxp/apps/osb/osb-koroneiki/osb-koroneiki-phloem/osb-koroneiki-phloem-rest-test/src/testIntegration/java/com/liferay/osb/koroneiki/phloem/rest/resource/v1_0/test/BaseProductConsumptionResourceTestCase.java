@@ -116,7 +116,9 @@ public abstract class BaseProductConsumptionResourceTestCase {
 		ProductConsumptionResource.Builder builder =
 			ProductConsumptionResource.builder();
 
-		productConsumptionResource = builder.locale(
+		productConsumptionResource = builder.authentication(
+			"test@liferay.com", "test"
+		).locale(
 			LocaleUtil.getDefault()
 		).build();
 	}
@@ -221,7 +223,7 @@ public abstract class BaseProductConsumptionResourceTestCase {
 		String irrelevantAccountKey =
 			testGetAccountAccountKeyProductConsumptionsPage_getIrrelevantAccountKey();
 
-		if ((irrelevantAccountKey != null)) {
+		if (irrelevantAccountKey != null) {
 			ProductConsumption irrelevantProductConsumption =
 				testGetAccountAccountKeyProductConsumptionsPage_addProductConsumption(
 					irrelevantAccountKey, randomIrrelevantProductConsumption());
@@ -377,7 +379,7 @@ public abstract class BaseProductConsumptionResourceTestCase {
 		String irrelevantContactUuid =
 			testGetContactByUuidContactUuidProductConsumptionsPage_getIrrelevantContactUuid();
 
-		if ((irrelevantContactUuid != null)) {
+		if (irrelevantContactUuid != null) {
 			ProductConsumption irrelevantProductConsumption =
 				testGetContactByUuidContactUuidProductConsumptionsPage_addProductConsumption(
 					irrelevantContactUuid,
@@ -1064,7 +1066,9 @@ public abstract class BaseProductConsumptionResourceTestCase {
 		}
 	}
 
-	protected void assertValid(ProductConsumption productConsumption) {
+	protected void assertValid(ProductConsumption productConsumption)
+		throws Exception {
+
 		boolean valid = true;
 
 		if (productConsumption.getDateCreated() == null) {
@@ -1362,9 +1366,11 @@ public abstract class BaseProductConsumptionResourceTestCase {
 					return false;
 				}
 			}
+
+			return true;
 		}
 
-		return true;
+		return false;
 	}
 
 	protected java.util.Collection<EntityField> getEntityFields()
@@ -1679,12 +1685,12 @@ public abstract class BaseProductConsumptionResourceTestCase {
 						_parameterMap.entrySet()) {
 
 					sb.append(entry.getKey());
-					sb.append(":");
+					sb.append(": ");
 					sb.append(entry.getValue());
-					sb.append(",");
+					sb.append(", ");
 				}
 
-				sb.setLength(sb.length() - 1);
+				sb.setLength(sb.length() - 2);
 
 				sb.append(")");
 			}
@@ -1694,10 +1700,10 @@ public abstract class BaseProductConsumptionResourceTestCase {
 
 				for (GraphQLField graphQLField : _graphQLFields) {
 					sb.append(graphQLField.toString());
-					sb.append(",");
+					sb.append(", ");
 				}
 
-				sb.setLength(sb.length() - 1);
+				sb.setLength(sb.length() - 2);
 
 				sb.append("}");
 			}

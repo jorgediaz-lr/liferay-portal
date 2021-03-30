@@ -115,7 +115,9 @@ public abstract class BaseContactResourceTestCase {
 
 		ContactResource.Builder builder = ContactResource.builder();
 
-		contactResource = builder.locale(
+		contactResource = builder.authentication(
+			"test@liferay.com", "test"
+		).locale(
 			LocaleUtil.getDefault()
 		).build();
 	}
@@ -221,7 +223,7 @@ public abstract class BaseContactResourceTestCase {
 		String irrelevantAccountKey =
 			testGetAccountAccountKeyContactsPage_getIrrelevantAccountKey();
 
-		if ((irrelevantAccountKey != null)) {
+		if (irrelevantAccountKey != null) {
 			Contact irrelevantContact =
 				testGetAccountAccountKeyContactsPage_addContact(
 					irrelevantAccountKey, randomIrrelevantContact());
@@ -331,7 +333,7 @@ public abstract class BaseContactResourceTestCase {
 		String irrelevantAccountKey =
 			testGetAccountAccountKeyCustomerContactsPage_getIrrelevantAccountKey();
 
-		if ((irrelevantAccountKey != null)) {
+		if (irrelevantAccountKey != null) {
 			Contact irrelevantContact =
 				testGetAccountAccountKeyCustomerContactsPage_addContact(
 					irrelevantAccountKey, randomIrrelevantContact());
@@ -448,7 +450,7 @@ public abstract class BaseContactResourceTestCase {
 		String irrelevantAccountKey =
 			testGetAccountAccountKeyWorkerContactsPage_getIrrelevantAccountKey();
 
-		if ((irrelevantAccountKey != null)) {
+		if (irrelevantAccountKey != null) {
 			Contact irrelevantContact =
 				testGetAccountAccountKeyWorkerContactsPage_addContact(
 					irrelevantAccountKey, randomIrrelevantContact());
@@ -876,7 +878,7 @@ public abstract class BaseContactResourceTestCase {
 		String irrelevantTeamKey =
 			testGetTeamTeamKeyContactsPage_getIrrelevantTeamKey();
 
-		if ((irrelevantTeamKey != null)) {
+		if (irrelevantTeamKey != null) {
 			Contact irrelevantContact =
 				testGetTeamTeamKeyContactsPage_addContact(
 					irrelevantTeamKey, randomIrrelevantContact());
@@ -1019,7 +1021,7 @@ public abstract class BaseContactResourceTestCase {
 		}
 	}
 
-	protected void assertValid(Contact contact) {
+	protected void assertValid(Contact contact) throws Exception {
 		boolean valid = true;
 
 		if (contact.getDateCreated() == null) {
@@ -1412,9 +1414,11 @@ public abstract class BaseContactResourceTestCase {
 					return false;
 				}
 			}
+
+			return true;
 		}
 
-		return true;
+		return false;
 	}
 
 	protected java.util.Collection<EntityField> getEntityFields()
@@ -1733,12 +1737,12 @@ public abstract class BaseContactResourceTestCase {
 						_parameterMap.entrySet()) {
 
 					sb.append(entry.getKey());
-					sb.append(":");
+					sb.append(": ");
 					sb.append(entry.getValue());
-					sb.append(",");
+					sb.append(", ");
 				}
 
-				sb.setLength(sb.length() - 1);
+				sb.setLength(sb.length() - 2);
 
 				sb.append(")");
 			}
@@ -1748,10 +1752,10 @@ public abstract class BaseContactResourceTestCase {
 
 				for (GraphQLField graphQLField : _graphQLFields) {
 					sb.append(graphQLField.toString());
-					sb.append(",");
+					sb.append(", ");
 				}
 
-				sb.setLength(sb.length() - 1);
+				sb.setLength(sb.length() - 2);
 
 				sb.append("}");
 			}

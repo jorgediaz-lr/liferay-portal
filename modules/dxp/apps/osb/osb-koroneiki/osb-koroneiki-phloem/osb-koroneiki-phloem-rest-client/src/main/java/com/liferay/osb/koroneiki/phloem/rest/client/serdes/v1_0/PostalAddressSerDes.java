@@ -396,10 +396,6 @@ public class PostalAddressSerDes {
 						(String)jsonParserFieldValue);
 				}
 			}
-			else {
-				throw new IllegalArgumentException(
-					"Unsupported field name " + jsonParserFieldName);
-			}
 		}
 
 	}
@@ -428,7 +424,7 @@ public class PostalAddressSerDes {
 
 			sb.append("\"");
 			sb.append(entry.getKey());
-			sb.append("\":");
+			sb.append("\": ");
 
 			Object value = entry.getValue();
 
@@ -464,7 +460,7 @@ public class PostalAddressSerDes {
 			}
 
 			if (iterator.hasNext()) {
-				sb.append(",");
+				sb.append(", ");
 			}
 		}
 

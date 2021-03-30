@@ -115,7 +115,9 @@ public abstract class BaseContactRoleResourceTestCase {
 
 		ContactRoleResource.Builder builder = ContactRoleResource.builder();
 
-		contactRoleResource = builder.locale(
+		contactRoleResource = builder.authentication(
+			"test@liferay.com", "test"
+		).locale(
 			LocaleUtil.getDefault()
 		).build();
 	}
@@ -1797,7 +1799,7 @@ public abstract class BaseContactRoleResourceTestCase {
 		}
 	}
 
-	protected void assertValid(ContactRole contactRole) {
+	protected void assertValid(ContactRole contactRole) throws Exception {
 		boolean valid = true;
 
 		if (contactRole.getDateCreated() == null) {
@@ -2043,9 +2045,11 @@ public abstract class BaseContactRoleResourceTestCase {
 					return false;
 				}
 			}
+
+			return true;
 		}
 
-		return true;
+		return false;
 	}
 
 	protected java.util.Collection<EntityField> getEntityFields()
@@ -2306,12 +2310,12 @@ public abstract class BaseContactRoleResourceTestCase {
 						_parameterMap.entrySet()) {
 
 					sb.append(entry.getKey());
-					sb.append(":");
+					sb.append(": ");
 					sb.append(entry.getValue());
-					sb.append(",");
+					sb.append(", ");
 				}
 
-				sb.setLength(sb.length() - 1);
+				sb.setLength(sb.length() - 2);
 
 				sb.append(")");
 			}
@@ -2321,10 +2325,10 @@ public abstract class BaseContactRoleResourceTestCase {
 
 				for (GraphQLField graphQLField : _graphQLFields) {
 					sb.append(graphQLField.toString());
-					sb.append(",");
+					sb.append(", ");
 				}
 
-				sb.setLength(sb.length() - 1);
+				sb.setLength(sb.length() - 2);
 
 				sb.append("}");
 			}

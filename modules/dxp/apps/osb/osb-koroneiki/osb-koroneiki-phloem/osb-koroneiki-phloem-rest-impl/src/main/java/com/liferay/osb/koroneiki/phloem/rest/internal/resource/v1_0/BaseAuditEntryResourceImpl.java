@@ -18,6 +18,7 @@ import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.AuditEntry;
 import com.liferay.osb.koroneiki.phloem.rest.resource.v1_0.AuditEntryResource;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.model.GroupedModel;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ResourceActionLocalService;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
@@ -66,9 +67,9 @@ public abstract class BaseAuditEntryResourceImpl implements AuditEntryResource {
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/accounts/{accountKey}/audit-entries'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
 	@Operation(description = "Retrieves the account's audit history.")
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "accountKey"),
@@ -80,8 +81,8 @@ public abstract class BaseAuditEntryResourceImpl implements AuditEntryResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "AuditEntry")})
 	public Page<AuditEntry> getAccountAccountKeyAuditEntriesPage(
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
-				accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
+				String accountKey,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -93,9 +94,9 @@ public abstract class BaseAuditEntryResourceImpl implements AuditEntryResource {
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/audit-entries/{auditEntryKey}'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
 	@Operation(description = "Retrieves the audit entry.")
+	@Override
 	@Parameters(
 		value = {@Parameter(in = ParameterIn.PATH, name = "auditEntryKey")}
 	)
@@ -115,9 +116,9 @@ public abstract class BaseAuditEntryResourceImpl implements AuditEntryResource {
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/contact-roles/{contactRoleKey}/audit-entries'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
 	@Operation(description = "Retrieves the contact role's audit history.")
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "contactRoleKey"),
@@ -142,9 +143,9 @@ public abstract class BaseAuditEntryResourceImpl implements AuditEntryResource {
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/contacts/by-uuid/{contactUuid}/audit-entries'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
 	@Operation(description = "Retrieves the contact's audit history.")
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "contactUuid"),
@@ -156,8 +157,8 @@ public abstract class BaseAuditEntryResourceImpl implements AuditEntryResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "AuditEntry")})
 	public Page<AuditEntry> getContactByUuidContactUuidAuditEntriesPage(
-			@NotNull @Parameter(hidden = true) @PathParam("contactUuid") String
-				contactUuid,
+			@NotNull @Parameter(hidden = true) @PathParam("contactUuid")
+				String contactUuid,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -169,9 +170,9 @@ public abstract class BaseAuditEntryResourceImpl implements AuditEntryResource {
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/team-roles/{teamRoleKey}/audit-entries'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
 	@Operation(description = "Retrieves the team role's audit history.")
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "teamRoleKey"),
@@ -183,8 +184,8 @@ public abstract class BaseAuditEntryResourceImpl implements AuditEntryResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "AuditEntry")})
 	public Page<AuditEntry> getTeamRoleTeamRoleKeyAuditEntriesPage(
-			@NotNull @Parameter(hidden = true) @PathParam("teamRoleKey") String
-				teamRoleKey,
+			@NotNull @Parameter(hidden = true) @PathParam("teamRoleKey")
+				String teamRoleKey,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -196,9 +197,9 @@ public abstract class BaseAuditEntryResourceImpl implements AuditEntryResource {
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/teams/{teamKey}/audit-entries'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
 	@Operation(description = "Retrieves the team's audit history.")
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "teamKey"),
@@ -210,8 +211,8 @@ public abstract class BaseAuditEntryResourceImpl implements AuditEntryResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "AuditEntry")})
 	public Page<AuditEntry> getTeamTeamKeyAuditEntriesPage(
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
-				teamKey,
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
+				String teamKey,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -250,6 +251,14 @@ public abstract class BaseAuditEntryResourceImpl implements AuditEntryResource {
 		this.contextUser = contextUser;
 	}
 
+	public void setGroupLocalService(GroupLocalService groupLocalService) {
+		this.groupLocalService = groupLocalService;
+	}
+
+	public void setRoleLocalService(RoleLocalService roleLocalService) {
+		this.roleLocalService = roleLocalService;
+	}
+
 	protected Map<String, String> addAction(
 		String actionName, GroupedModel groupedModel, String methodName) {
 
@@ -265,6 +274,15 @@ public abstract class BaseAuditEntryResourceImpl implements AuditEntryResource {
 		return ActionUtil.addAction(
 			actionName, getClass(), id, methodName, contextScopeChecker,
 			ownerId, permissionName, siteId, contextUriInfo);
+	}
+
+	protected Map<String, String> addAction(
+		String actionName, Long id, String methodName,
+		ModelResourcePermission modelResourcePermission) {
+
+		return ActionUtil.addAction(
+			actionName, getClass(), id, methodName, contextScopeChecker,
+			modelResourcePermission, contextUriInfo);
 	}
 
 	protected Map<String, String> addAction(

@@ -48,6 +48,8 @@ import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
+import com.liferay.portal.kernel.service.GroupLocalService;
+import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
 import com.liferay.portal.vulcan.graphql.annotation.GraphQLField;
 import com.liferay.portal.vulcan.graphql.annotation.GraphQLName;
@@ -919,8 +921,8 @@ public class Query {
 	 */
 	@GraphQLField(description = "Retrieves the entitlement definition.")
 	public EntitlementDefinition entitlementDefinition(
-			@GraphQLName("entitlementDefinitionKey") String
-				entitlementDefinitionKey)
+			@GraphQLName("entitlementDefinitionKey")
+				String entitlementDefinitionKey)
 		throws Exception {
 
 		return _applyComponentServiceObjects(
@@ -999,8 +1001,8 @@ public class Query {
 	)
 	public ExternalLinkPage
 			productConsumptionProductConsumptionKeyExternalLinks(
-				@GraphQLName("productConsumptionKey") String
-					productConsumptionKey,
+				@GraphQLName("productConsumptionKey")
+					String productConsumptionKey,
 				@GraphQLName("pageSize") int pageSize,
 				@GraphQLName("page") int page)
 		throws Exception {
@@ -1893,8 +1895,8 @@ public class Query {
 		)
 		public ContactRolePage
 				accountKeyContactByEmailAddresContactEmailAddressRoles(
-					@GraphQLName("contactEmailAddress") String
-						contactEmailAddress,
+					@GraphQLName("contactEmailAddress")
+						String contactEmailAddress,
 					@GraphQLName("pageSize") int pageSize,
 					@GraphQLName("page") int page)
 			throws Exception {
@@ -2056,8 +2058,8 @@ public class Query {
 		)
 		public ContactRolePage
 				accountKeyWorkerContactByEmailAddresContactEmailAddressRoles(
-					@GraphQLName("contactEmailAddress") String
-						contactEmailAddress,
+					@GraphQLName("contactEmailAddress")
+						String contactEmailAddress,
 					@GraphQLName("pageSize") int pageSize,
 					@GraphQLName("page") int page)
 			throws Exception {
@@ -2643,8 +2645,8 @@ public class Query {
 		)
 		public ContactRolePage
 				accountKeyCustomerContactByEmailAddresContactEmailAddressRoles(
-					@GraphQLName("contactEmailAddress") String
-						contactEmailAddress,
+					@GraphQLName("contactEmailAddress")
+						String contactEmailAddress,
 					@GraphQLName("pageSize") int pageSize,
 					@GraphQLName("page") int page)
 			throws Exception {
@@ -2794,6 +2796,7 @@ public class Query {
 
 		public AccountPage(Page accountPage) {
 			actions = accountPage.getActions();
+
 			items = accountPage.getItems();
 			lastPage = accountPage.getLastPage();
 			page = accountPage.getPage();
@@ -2826,6 +2829,7 @@ public class Query {
 
 		public AuditEntryPage(Page auditEntryPage) {
 			actions = auditEntryPage.getActions();
+
 			items = auditEntryPage.getItems();
 			lastPage = auditEntryPage.getLastPage();
 			page = auditEntryPage.getPage();
@@ -2858,6 +2862,7 @@ public class Query {
 
 		public ContactPage(Page contactPage) {
 			actions = contactPage.getActions();
+
 			items = contactPage.getItems();
 			lastPage = contactPage.getLastPage();
 			page = contactPage.getPage();
@@ -2890,6 +2895,7 @@ public class Query {
 
 		public ContactAccountViewPage(Page contactAccountViewPage) {
 			actions = contactAccountViewPage.getActions();
+
 			items = contactAccountViewPage.getItems();
 			lastPage = contactAccountViewPage.getLastPage();
 			page = contactAccountViewPage.getPage();
@@ -2922,6 +2928,7 @@ public class Query {
 
 		public ContactRolePage(Page contactRolePage) {
 			actions = contactRolePage.getActions();
+
 			items = contactRolePage.getItems();
 			lastPage = contactRolePage.getLastPage();
 			page = contactRolePage.getPage();
@@ -2954,6 +2961,7 @@ public class Query {
 
 		public EntitlementDefinitionPage(Page entitlementDefinitionPage) {
 			actions = entitlementDefinitionPage.getActions();
+
 			items = entitlementDefinitionPage.getItems();
 			lastPage = entitlementDefinitionPage.getLastPage();
 			page = entitlementDefinitionPage.getPage();
@@ -2986,6 +2994,7 @@ public class Query {
 
 		public ExternalLinkPage(Page externalLinkPage) {
 			actions = externalLinkPage.getActions();
+
 			items = externalLinkPage.getItems();
 			lastPage = externalLinkPage.getLastPage();
 			page = externalLinkPage.getPage();
@@ -3018,6 +3027,7 @@ public class Query {
 
 		public NotePage(Page notePage) {
 			actions = notePage.getActions();
+
 			items = notePage.getItems();
 			lastPage = notePage.getLastPage();
 			page = notePage.getPage();
@@ -3050,6 +3060,7 @@ public class Query {
 
 		public PostalAddressPage(Page postalAddressPage) {
 			actions = postalAddressPage.getActions();
+
 			items = postalAddressPage.getItems();
 			lastPage = postalAddressPage.getLastPage();
 			page = postalAddressPage.getPage();
@@ -3082,6 +3093,7 @@ public class Query {
 
 		public ProductPage(Page productPage) {
 			actions = productPage.getActions();
+
 			items = productPage.getItems();
 			lastPage = productPage.getLastPage();
 			page = productPage.getPage();
@@ -3114,6 +3126,7 @@ public class Query {
 
 		public ProductConsumptionPage(Page productConsumptionPage) {
 			actions = productConsumptionPage.getActions();
+
 			items = productConsumptionPage.getItems();
 			lastPage = productConsumptionPage.getLastPage();
 			page = productConsumptionPage.getPage();
@@ -3146,6 +3159,7 @@ public class Query {
 
 		public ProductPurchasePage(Page productPurchasePage) {
 			actions = productPurchasePage.getActions();
+
 			items = productPurchasePage.getItems();
 			lastPage = productPurchasePage.getLastPage();
 			page = productPurchasePage.getPage();
@@ -3178,6 +3192,7 @@ public class Query {
 
 		public ProductPurchaseViewPage(Page productPurchaseViewPage) {
 			actions = productPurchaseViewPage.getActions();
+
 			items = productPurchaseViewPage.getItems();
 			lastPage = productPurchaseViewPage.getLastPage();
 			page = productPurchaseViewPage.getPage();
@@ -3210,6 +3225,7 @@ public class Query {
 
 		public TeamPage(Page teamPage) {
 			actions = teamPage.getActions();
+
 			items = teamPage.getItems();
 			lastPage = teamPage.getLastPage();
 			page = teamPage.getPage();
@@ -3242,6 +3258,7 @@ public class Query {
 
 		public TeamRolePage(Page teamRolePage) {
 			actions = teamRolePage.getActions();
+
 			items = teamRolePage.getItems();
 			lastPage = teamRolePage.getLastPage();
 			page = teamRolePage.getPage();
@@ -3297,6 +3314,8 @@ public class Query {
 		accountResource.setContextHttpServletResponse(_httpServletResponse);
 		accountResource.setContextUriInfo(_uriInfo);
 		accountResource.setContextUser(_user);
+		accountResource.setGroupLocalService(_groupLocalService);
+		accountResource.setRoleLocalService(_roleLocalService);
 	}
 
 	private void _populateResourceContext(AuditEntryResource auditEntryResource)
@@ -3308,6 +3327,8 @@ public class Query {
 		auditEntryResource.setContextHttpServletResponse(_httpServletResponse);
 		auditEntryResource.setContextUriInfo(_uriInfo);
 		auditEntryResource.setContextUser(_user);
+		auditEntryResource.setGroupLocalService(_groupLocalService);
+		auditEntryResource.setRoleLocalService(_roleLocalService);
 	}
 
 	private void _populateResourceContext(ContactResource contactResource)
@@ -3319,6 +3340,8 @@ public class Query {
 		contactResource.setContextHttpServletResponse(_httpServletResponse);
 		contactResource.setContextUriInfo(_uriInfo);
 		contactResource.setContextUser(_user);
+		contactResource.setGroupLocalService(_groupLocalService);
+		contactResource.setRoleLocalService(_roleLocalService);
 	}
 
 	private void _populateResourceContext(
@@ -3333,6 +3356,8 @@ public class Query {
 			_httpServletResponse);
 		contactAccountViewResource.setContextUriInfo(_uriInfo);
 		contactAccountViewResource.setContextUser(_user);
+		contactAccountViewResource.setGroupLocalService(_groupLocalService);
+		contactAccountViewResource.setRoleLocalService(_roleLocalService);
 	}
 
 	private void _populateResourceContext(
@@ -3345,6 +3370,8 @@ public class Query {
 		contactRoleResource.setContextHttpServletResponse(_httpServletResponse);
 		contactRoleResource.setContextUriInfo(_uriInfo);
 		contactRoleResource.setContextUser(_user);
+		contactRoleResource.setGroupLocalService(_groupLocalService);
+		contactRoleResource.setRoleLocalService(_roleLocalService);
 	}
 
 	private void _populateResourceContext(
@@ -3359,6 +3386,8 @@ public class Query {
 			_httpServletResponse);
 		entitlementDefinitionResource.setContextUriInfo(_uriInfo);
 		entitlementDefinitionResource.setContextUser(_user);
+		entitlementDefinitionResource.setGroupLocalService(_groupLocalService);
+		entitlementDefinitionResource.setRoleLocalService(_roleLocalService);
 	}
 
 	private void _populateResourceContext(
@@ -3372,6 +3401,8 @@ public class Query {
 			_httpServletResponse);
 		externalLinkResource.setContextUriInfo(_uriInfo);
 		externalLinkResource.setContextUser(_user);
+		externalLinkResource.setGroupLocalService(_groupLocalService);
+		externalLinkResource.setRoleLocalService(_roleLocalService);
 	}
 
 	private void _populateResourceContext(NoteResource noteResource)
@@ -3383,6 +3414,8 @@ public class Query {
 		noteResource.setContextHttpServletResponse(_httpServletResponse);
 		noteResource.setContextUriInfo(_uriInfo);
 		noteResource.setContextUser(_user);
+		noteResource.setGroupLocalService(_groupLocalService);
+		noteResource.setRoleLocalService(_roleLocalService);
 	}
 
 	private void _populateResourceContext(
@@ -3396,6 +3429,8 @@ public class Query {
 			_httpServletResponse);
 		postalAddressResource.setContextUriInfo(_uriInfo);
 		postalAddressResource.setContextUser(_user);
+		postalAddressResource.setGroupLocalService(_groupLocalService);
+		postalAddressResource.setRoleLocalService(_roleLocalService);
 	}
 
 	private void _populateResourceContext(ProductResource productResource)
@@ -3407,6 +3442,8 @@ public class Query {
 		productResource.setContextHttpServletResponse(_httpServletResponse);
 		productResource.setContextUriInfo(_uriInfo);
 		productResource.setContextUser(_user);
+		productResource.setGroupLocalService(_groupLocalService);
+		productResource.setRoleLocalService(_roleLocalService);
 	}
 
 	private void _populateResourceContext(
@@ -3421,6 +3458,8 @@ public class Query {
 			_httpServletResponse);
 		productConsumptionResource.setContextUriInfo(_uriInfo);
 		productConsumptionResource.setContextUser(_user);
+		productConsumptionResource.setGroupLocalService(_groupLocalService);
+		productConsumptionResource.setRoleLocalService(_roleLocalService);
 	}
 
 	private void _populateResourceContext(
@@ -3435,6 +3474,8 @@ public class Query {
 			_httpServletResponse);
 		productPurchaseResource.setContextUriInfo(_uriInfo);
 		productPurchaseResource.setContextUser(_user);
+		productPurchaseResource.setGroupLocalService(_groupLocalService);
+		productPurchaseResource.setRoleLocalService(_roleLocalService);
 	}
 
 	private void _populateResourceContext(
@@ -3449,6 +3490,8 @@ public class Query {
 			_httpServletResponse);
 		productPurchaseViewResource.setContextUriInfo(_uriInfo);
 		productPurchaseViewResource.setContextUser(_user);
+		productPurchaseViewResource.setGroupLocalService(_groupLocalService);
+		productPurchaseViewResource.setRoleLocalService(_roleLocalService);
 	}
 
 	private void _populateResourceContext(TeamResource teamResource)
@@ -3460,6 +3503,8 @@ public class Query {
 		teamResource.setContextHttpServletResponse(_httpServletResponse);
 		teamResource.setContextUriInfo(_uriInfo);
 		teamResource.setContextUser(_user);
+		teamResource.setGroupLocalService(_groupLocalService);
+		teamResource.setRoleLocalService(_roleLocalService);
 	}
 
 	private void _populateResourceContext(TeamRoleResource teamRoleResource)
@@ -3471,6 +3516,8 @@ public class Query {
 		teamRoleResource.setContextHttpServletResponse(_httpServletResponse);
 		teamRoleResource.setContextUriInfo(_uriInfo);
 		teamRoleResource.setContextUser(_user);
+		teamRoleResource.setGroupLocalService(_groupLocalService);
+		teamRoleResource.setRoleLocalService(_roleLocalService);
 	}
 
 	private static ComponentServiceObjects<AccountResource>
@@ -3505,12 +3552,14 @@ public class Query {
 		_teamRoleResourceComponentServiceObjects;
 
 	private AcceptLanguage _acceptLanguage;
-	private BiFunction<Object, String, Filter> _filterBiFunction;
-	private BiFunction<Object, String, Sort[]> _sortsBiFunction;
 	private com.liferay.portal.kernel.model.Company _company;
-	private com.liferay.portal.kernel.model.User _user;
+	private BiFunction<Object, String, Filter> _filterBiFunction;
+	private GroupLocalService _groupLocalService;
 	private HttpServletRequest _httpServletRequest;
 	private HttpServletResponse _httpServletResponse;
+	private RoleLocalService _roleLocalService;
+	private BiFunction<Object, String, Sort[]> _sortsBiFunction;
 	private UriInfo _uriInfo;
+	private com.liferay.portal.kernel.model.User _user;
 
 }

@@ -276,10 +276,6 @@ public class ProductSerDes {
 						(Map)ProductSerDes.toMap((String)jsonParserFieldValue));
 				}
 			}
-			else {
-				throw new IllegalArgumentException(
-					"Unsupported field name " + jsonParserFieldName);
-			}
 		}
 
 	}
@@ -308,7 +304,7 @@ public class ProductSerDes {
 
 			sb.append("\"");
 			sb.append(entry.getKey());
-			sb.append("\":");
+			sb.append("\": ");
 
 			Object value = entry.getValue();
 
@@ -344,7 +340,7 @@ public class ProductSerDes {
 			}
 
 			if (iterator.hasNext()) {
-				sb.append(",");
+				sb.append(", ");
 			}
 		}
 

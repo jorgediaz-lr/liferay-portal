@@ -46,8 +46,6 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.odata.entity.EntityField;
 import com.liferay.portal.odata.entity.EntityModel;
-import com.liferay.portal.test.log.CaptureAppender;
-import com.liferay.portal.test.log.Log4JLoggerTestUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.vulcan.resource.EntityModelResource;
@@ -71,7 +69,6 @@ import javax.annotation.Generated;
 import javax.ws.rs.core.MultivaluedHashMap;
 
 import org.apache.commons.beanutils.BeanUtilsBean;
-import org.apache.log4j.Level;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -111,7 +108,9 @@ public abstract class BasePostalAddressResourceTestCase {
 
 		PostalAddressResource.Builder builder = PostalAddressResource.builder();
 
-		postalAddressResource = builder.locale(
+		postalAddressResource = builder.authentication(
+			"test@liferay.com", "test"
+		).locale(
 			LocaleUtil.getDefault()
 		).build();
 	}
@@ -219,7 +218,7 @@ public abstract class BasePostalAddressResourceTestCase {
 		String irrelevantAccountKey =
 			testGetAccountAccountKeyPostalAddressesPage_getIrrelevantAccountKey();
 
-		if ((irrelevantAccountKey != null)) {
+		if (irrelevantAccountKey != null) {
 			PostalAddress irrelevantPostalAddress =
 				testGetAccountAccountKeyPostalAddressesPage_addPostalAddress(
 					irrelevantAccountKey, randomIrrelevantPostalAddress());
@@ -349,25 +348,19 @@ public abstract class BasePostalAddressResourceTestCase {
 						})),
 				"JSONObject/data", "Object/deletePostalAddress"));
 
-		try (CaptureAppender captureAppender =
-				Log4JLoggerTestUtil.configureLog4JLogger(
-					"graphql.execution.SimpleDataFetcherExceptionHandler",
-					Level.WARN)) {
+		JSONArray errorsJSONArray = JSONUtil.getValueAsJSONArray(
+			invokeGraphQLQuery(
+				new GraphQLField(
+					"postalAddress",
+					new HashMap<String, Object>() {
+						{
+							put("postalAddressId", postalAddress.getId());
+						}
+					},
+					new GraphQLField("id"))),
+			"JSONArray/errors");
 
-			JSONArray errorsJSONArray = JSONUtil.getValueAsJSONArray(
-				invokeGraphQLQuery(
-					new GraphQLField(
-						"postalAddress",
-						new HashMap<String, Object>() {
-							{
-								put("postalAddressId", postalAddress.getId());
-							}
-						},
-						new GraphQLField("id"))),
-				"JSONArray/errors");
-
-			Assert.assertTrue(errorsJSONArray.length() > 0);
-		}
+		Assert.assertTrue(errorsJSONArray.length() > 0);
 	}
 
 	@Test
@@ -522,7 +515,7 @@ public abstract class BasePostalAddressResourceTestCase {
 		}
 	}
 
-	protected void assertValid(PostalAddress postalAddress) {
+	protected void assertValid(PostalAddress postalAddress) throws Exception {
 		boolean valid = true;
 
 		if (postalAddress.getId() == null) {
@@ -863,9 +856,11 @@ public abstract class BasePostalAddressResourceTestCase {
 					return false;
 				}
 			}
+
+			return true;
 		}
 
-		return true;
+		return false;
 	}
 
 	protected java.util.Collection<EntityField> getEntityFields()
@@ -1118,12 +1113,12 @@ public abstract class BasePostalAddressResourceTestCase {
 						_parameterMap.entrySet()) {
 
 					sb.append(entry.getKey());
-					sb.append(":");
+					sb.append(": ");
 					sb.append(entry.getValue());
-					sb.append(",");
+					sb.append(", ");
 				}
 
-				sb.setLength(sb.length() - 1);
+				sb.setLength(sb.length() - 2);
 
 				sb.append(")");
 			}
@@ -1133,10 +1128,10 @@ public abstract class BasePostalAddressResourceTestCase {
 
 				for (GraphQLField graphQLField : _graphQLFields) {
 					sb.append(graphQLField.toString());
-					sb.append(",");
+					sb.append(", ");
 				}
 
-				sb.setLength(sb.length() - 1);
+				sb.setLength(sb.length() - 2);
 
 				sb.append("}");
 			}

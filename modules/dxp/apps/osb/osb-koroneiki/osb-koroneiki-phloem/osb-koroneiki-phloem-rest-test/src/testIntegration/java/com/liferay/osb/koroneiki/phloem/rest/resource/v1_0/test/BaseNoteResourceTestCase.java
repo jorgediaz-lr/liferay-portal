@@ -109,7 +109,9 @@ public abstract class BaseNoteResourceTestCase {
 
 		NoteResource.Builder builder = NoteResource.builder();
 
-		noteResource = builder.locale(
+		noteResource = builder.authentication(
+			"test@liferay.com", "test"
+		).locale(
 			LocaleUtil.getDefault()
 		).build();
 	}
@@ -213,7 +215,7 @@ public abstract class BaseNoteResourceTestCase {
 		String irrelevantAccountKey =
 			testGetAccountAccountKeyNotesPage_getIrrelevantAccountKey();
 
-		if ((irrelevantAccountKey != null)) {
+		if (irrelevantAccountKey != null) {
 			Note irrelevantNote = testGetAccountAccountKeyNotesPage_addNote(
 				irrelevantAccountKey, randomIrrelevantNote());
 
@@ -393,7 +395,7 @@ public abstract class BaseNoteResourceTestCase {
 		}
 	}
 
-	protected void assertValid(Note note) {
+	protected void assertValid(Note note) throws Exception {
 		boolean valid = true;
 
 		if (note.getDateCreated() == null) {
@@ -716,9 +718,11 @@ public abstract class BaseNoteResourceTestCase {
 					return false;
 				}
 			}
+
+			return true;
 		}
 
-		return true;
+		return false;
 	}
 
 	protected java.util.Collection<EntityField> getEntityFields()
@@ -1016,12 +1020,12 @@ public abstract class BaseNoteResourceTestCase {
 						_parameterMap.entrySet()) {
 
 					sb.append(entry.getKey());
-					sb.append(":");
+					sb.append(": ");
 					sb.append(entry.getValue());
-					sb.append(",");
+					sb.append(", ");
 				}
 
-				sb.setLength(sb.length() - 1);
+				sb.setLength(sb.length() - 2);
 
 				sb.append(")");
 			}
@@ -1031,10 +1035,10 @@ public abstract class BaseNoteResourceTestCase {
 
 				for (GraphQLField graphQLField : _graphQLFields) {
 					sb.append(graphQLField.toString());
-					sb.append(",");
+					sb.append(", ");
 				}
 
-				sb.setLength(sb.length() - 1);
+				sb.setLength(sb.length() - 2);
 
 				sb.append("}");
 			}

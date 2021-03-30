@@ -248,10 +248,6 @@ public class ProductPermissionSerDes {
 					productPermission.setView((Boolean)jsonParserFieldValue);
 				}
 			}
-			else {
-				throw new IllegalArgumentException(
-					"Unsupported field name " + jsonParserFieldName);
-			}
 		}
 
 	}
@@ -280,7 +276,7 @@ public class ProductPermissionSerDes {
 
 			sb.append("\"");
 			sb.append(entry.getKey());
-			sb.append("\":");
+			sb.append("\": ");
 
 			Object value = entry.getValue();
 
@@ -316,7 +312,7 @@ public class ProductPermissionSerDes {
 			}
 
 			if (iterator.hasNext()) {
-				sb.append(",");
+				sb.append(", ");
 			}
 		}
 

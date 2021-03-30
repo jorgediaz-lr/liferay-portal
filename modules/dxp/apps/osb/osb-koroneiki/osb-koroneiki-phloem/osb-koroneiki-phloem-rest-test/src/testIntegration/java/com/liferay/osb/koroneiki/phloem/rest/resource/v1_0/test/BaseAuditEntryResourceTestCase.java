@@ -109,7 +109,9 @@ public abstract class BaseAuditEntryResourceTestCase {
 
 		AuditEntryResource.Builder builder = AuditEntryResource.builder();
 
-		auditEntryResource = builder.locale(
+		auditEntryResource = builder.authentication(
+			"test@liferay.com", "test"
+		).locale(
 			LocaleUtil.getDefault()
 		).build();
 	}
@@ -218,7 +220,7 @@ public abstract class BaseAuditEntryResourceTestCase {
 		String irrelevantAccountKey =
 			testGetAccountAccountKeyAuditEntriesPage_getIrrelevantAccountKey();
 
-		if ((irrelevantAccountKey != null)) {
+		if (irrelevantAccountKey != null) {
 			AuditEntry irrelevantAuditEntry =
 				testGetAccountAccountKeyAuditEntriesPage_addAuditEntry(
 					irrelevantAccountKey, randomIrrelevantAuditEntry());
@@ -352,7 +354,7 @@ public abstract class BaseAuditEntryResourceTestCase {
 		String irrelevantContactRoleKey =
 			testGetContactRoleContactRoleKeyAuditEntriesPage_getIrrelevantContactRoleKey();
 
-		if ((irrelevantContactRoleKey != null)) {
+		if (irrelevantContactRoleKey != null) {
 			AuditEntry irrelevantAuditEntry =
 				testGetContactRoleContactRoleKeyAuditEntriesPage_addAuditEntry(
 					irrelevantContactRoleKey, randomIrrelevantAuditEntry());
@@ -474,7 +476,7 @@ public abstract class BaseAuditEntryResourceTestCase {
 		String irrelevantContactUuid =
 			testGetContactByUuidContactUuidAuditEntriesPage_getIrrelevantContactUuid();
 
-		if ((irrelevantContactUuid != null)) {
+		if (irrelevantContactUuid != null) {
 			AuditEntry irrelevantAuditEntry =
 				testGetContactByUuidContactUuidAuditEntriesPage_addAuditEntry(
 					irrelevantContactUuid, randomIrrelevantAuditEntry());
@@ -594,7 +596,7 @@ public abstract class BaseAuditEntryResourceTestCase {
 		String irrelevantTeamRoleKey =
 			testGetTeamRoleTeamRoleKeyAuditEntriesPage_getIrrelevantTeamRoleKey();
 
-		if ((irrelevantTeamRoleKey != null)) {
+		if (irrelevantTeamRoleKey != null) {
 			AuditEntry irrelevantAuditEntry =
 				testGetTeamRoleTeamRoleKeyAuditEntriesPage_addAuditEntry(
 					irrelevantTeamRoleKey, randomIrrelevantAuditEntry());
@@ -711,7 +713,7 @@ public abstract class BaseAuditEntryResourceTestCase {
 		String irrelevantTeamKey =
 			testGetTeamTeamKeyAuditEntriesPage_getIrrelevantTeamKey();
 
-		if ((irrelevantTeamKey != null)) {
+		if (irrelevantTeamKey != null) {
 			AuditEntry irrelevantAuditEntry =
 				testGetTeamTeamKeyAuditEntriesPage_addAuditEntry(
 					irrelevantTeamKey, randomIrrelevantAuditEntry());
@@ -862,7 +864,7 @@ public abstract class BaseAuditEntryResourceTestCase {
 		}
 	}
 
-	protected void assertValid(AuditEntry auditEntry) {
+	protected void assertValid(AuditEntry auditEntry) throws Exception {
 		boolean valid = true;
 
 		if (auditEntry.getDateCreated() == null) {
@@ -1183,9 +1185,11 @@ public abstract class BaseAuditEntryResourceTestCase {
 					return false;
 				}
 			}
+
+			return true;
 		}
 
-		return true;
+		return false;
 	}
 
 	protected java.util.Collection<EntityField> getEntityFields()
@@ -1460,12 +1464,12 @@ public abstract class BaseAuditEntryResourceTestCase {
 						_parameterMap.entrySet()) {
 
 					sb.append(entry.getKey());
-					sb.append(":");
+					sb.append(": ");
 					sb.append(entry.getValue());
-					sb.append(",");
+					sb.append(", ");
 				}
 
-				sb.setLength(sb.length() - 1);
+				sb.setLength(sb.length() - 2);
 
 				sb.append(")");
 			}
@@ -1475,10 +1479,10 @@ public abstract class BaseAuditEntryResourceTestCase {
 
 				for (GraphQLField graphQLField : _graphQLFields) {
 					sb.append(graphQLField.toString());
-					sb.append(",");
+					sb.append(", ");
 				}
 
-				sb.setLength(sb.length() - 1);
+				sb.setLength(sb.length() - 2);
 
 				sb.append("}");
 			}

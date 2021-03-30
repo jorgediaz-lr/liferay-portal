@@ -21,6 +21,7 @@ import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.model.GroupedModel;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ResourceActionLocalService;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
@@ -74,11 +75,11 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/accounts'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
 	@Operation(
 		description = "Retrieves the accounts. Results can be paginated, filtered, searched, and sorted."
 	)
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "search"),
@@ -105,9 +106,8 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	 *
 	 * curl -X 'POST' 'http://localhost:8080/o/koroneiki-rest/v1.0/accounts' -d $'{"assignedTeams": ___, "code": ___, "contactEmailAddress": ___, "contacts": ___, "description": ___, "externalLinks": ___, "faxNumber": ___, "internal": ___, "language": ___, "logoId": ___, "name": ___, "parentAccountKey": ___, "phoneNumber": ___, "postalAddresses": ___, "productPurchases": ___, "profileEmailAddress": ___, "region": ___, "status": ___, "tier": ___, "website": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Consumes({"application/json", "application/xml"})
-	@POST
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -115,6 +115,7 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 		}
 	)
 	@Path("/accounts")
+	@POST
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Account")})
 	public Account postAccount(
@@ -131,9 +132,9 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/accounts/by-external-link/{domain}/{entityName}/{entityId}'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
 	@Operation(description = "Retrieves the account by the external link.")
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "domain"),
@@ -147,12 +148,12 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Account")})
 	public Page<Account> getAccountByExternalLinkDomainEntityNameEntityPage(
-			@NotNull @Parameter(hidden = true) @PathParam("domain") String
-				domain,
-			@NotNull @Parameter(hidden = true) @PathParam("entityName") String
-				entityName,
-			@NotNull @Parameter(hidden = true) @PathParam("entityId") String
-				entityId,
+			@NotNull @Parameter(hidden = true) @PathParam("domain")
+				String domain,
+			@NotNull @Parameter(hidden = true) @PathParam("entityName")
+				String entityName,
+			@NotNull @Parameter(hidden = true) @PathParam("entityId")
+				String entityId,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -164,8 +165,8 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	 *
 	 * curl -X 'DELETE' 'http://localhost:8080/o/koroneiki-rest/v1.0/accounts/{accountKey}'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@DELETE
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -179,8 +180,8 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	public void deleteAccount(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
-				accountKey)
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
+				String accountKey)
 		throws Exception {
 	}
 
@@ -189,9 +190,9 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/accounts/{accountKey}'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
 	@Operation(description = "Retrieves the account.")
+	@Override
 	@Parameters(
 		value = {@Parameter(in = ParameterIn.PATH, name = "accountKey")}
 	)
@@ -199,8 +200,8 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Account")})
 	public Account getAccount(
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
-				accountKey)
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
+				String accountKey)
 		throws Exception {
 
 		return new Account();
@@ -211,9 +212,8 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	 *
 	 * curl -X 'PUT' 'http://localhost:8080/o/koroneiki-rest/v1.0/accounts/{accountKey}' -d $'{"assignedTeams": ___, "code": ___, "contactEmailAddress": ___, "contacts": ___, "description": ___, "externalLinks": ___, "faxNumber": ___, "internal": ___, "language": ___, "logoId": ___, "name": ___, "parentAccountKey": ___, "phoneNumber": ___, "postalAddresses": ___, "productPurchases": ___, "profileEmailAddress": ___, "region": ___, "status": ___, "tier": ___, "website": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Consumes({"application/json", "application/xml"})
-	@PUT
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -223,12 +223,13 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	)
 	@Path("/accounts/{accountKey}")
 	@Produces({"application/json", "application/xml"})
+	@PUT
 	@Tags(value = {@Tag(name = "Account")})
 	public Account putAccount(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
-				accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
+				String accountKey,
 			Account account)
 		throws Exception {
 
@@ -240,9 +241,9 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	 *
 	 * curl -X 'DELETE' 'http://localhost:8080/o/koroneiki-rest/v1.0/accounts/{accountKey}/account-permissions' -d $'{"assignContact": ___, "assignTeam": ___, "delete": ___, "permissions": ___, "roleNames": ___, "update": ___, "view": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Consumes({"application/json", "application/xml"})
 	@DELETE
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -256,8 +257,8 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	public void deleteAccountAccountPermission(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
-				accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
+				String accountKey,
 			AccountPermission accountPermission)
 		throws Exception {
 	}
@@ -267,9 +268,8 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	 *
 	 * curl -X 'PUT' 'http://localhost:8080/o/koroneiki-rest/v1.0/accounts/{accountKey}/account-permissions' -d $'{"assignContact": ___, "assignTeam": ___, "delete": ___, "permissions": ___, "roleNames": ___, "update": ___, "view": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Consumes({"application/json", "application/xml"})
-	@PUT
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -279,12 +279,13 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	)
 	@Path("/accounts/{accountKey}/account-permissions")
 	@Produces({"application/json", "application/xml"})
+	@PUT
 	@Tags(value = {@Tag(name = "Account")})
 	public void putAccountAccountPermission(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
-				accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
+				String accountKey,
 			AccountPermission accountPermission)
 		throws Exception {
 	}
@@ -294,9 +295,9 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	 *
 	 * curl -X 'DELETE' 'http://localhost:8080/o/koroneiki-rest/v1.0/accounts/{accountKey}/assigned-teams/{teamKey}/roles'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@DELETE
 	@Operation(description = "Unassigns roles from the team for the account.")
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -312,10 +313,10 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	public void deleteAccountAssignedTeamTeamKeyRole(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
-				accountKey,
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
-				teamKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
+				String accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
+				String teamKey,
 			@NotNull @Parameter(hidden = true) @QueryParam("teamRoleKeys")
 				String[] teamRoleKeys)
 		throws Exception {
@@ -326,9 +327,8 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	 *
 	 * curl -X 'PUT' 'http://localhost:8080/o/koroneiki-rest/v1.0/accounts/{accountKey}/assigned-teams/{teamKey}/roles'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Operation(description = "Assigns roles to the team for the account.")
-	@PUT
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -340,14 +340,15 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	)
 	@Path("/accounts/{accountKey}/assigned-teams/{teamKey}/roles")
 	@Produces({"application/json", "application/xml"})
+	@PUT
 	@Tags(value = {@Tag(name = "Account")})
 	public void putAccountAssignedTeamTeamKeyRole(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
-				accountKey,
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
-				teamKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
+				String accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
+				String teamKey,
 			@NotNull @Parameter(hidden = true) @QueryParam("teamRoleKeys")
 				String[] teamRoleKeys)
 		throws Exception {
@@ -358,9 +359,9 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/accounts/{accountKey}/child-accounts'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
 	@Operation(description = "Retrieves the account's child accounts.")
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "accountKey"),
@@ -372,8 +373,8 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Account")})
 	public Page<Account> getAccountChildAccountsPage(
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
-				accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
+				String accountKey,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -385,11 +386,11 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	 *
 	 * curl -X 'DELETE' 'http://localhost:8080/o/koroneiki-rest/v1.0/accounts/{accountKey}/contacts/by-email-address/{contactEmailAddress}/roles'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@DELETE
 	@Operation(
 		description = "Unassigns roles from the contact for the account."
 	)
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -407,8 +408,8 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	public void deleteAccountContactByEmailAddresContactEmailAddressRole(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
-				accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
+				String accountKey,
 			@NotNull @Parameter(hidden = true) @PathParam("contactEmailAddress")
 				String contactEmailAddress,
 			@NotNull @Parameter(hidden = true) @QueryParam("contactRoleKeys")
@@ -421,9 +422,8 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	 *
 	 * curl -X 'PUT' 'http://localhost:8080/o/koroneiki-rest/v1.0/accounts/{accountKey}/contacts/by-email-address/{contactEmailAddress}/roles'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Operation(description = "Assigns roles to the contact for the account.")
-	@PUT
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -437,12 +437,13 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 		"/accounts/{accountKey}/contacts/by-email-address/{contactEmailAddress}/roles"
 	)
 	@Produces({"application/json", "application/xml"})
+	@PUT
 	@Tags(value = {@Tag(name = "Account")})
 	public void putAccountContactByEmailAddresContactEmailAddressRole(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
-				accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
+				String accountKey,
 			@NotNull @Parameter(hidden = true) @PathParam("contactEmailAddress")
 				String contactEmailAddress,
 			@NotNull @Parameter(hidden = true) @QueryParam("contactRoleKeys")
@@ -455,11 +456,11 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	 *
 	 * curl -X 'DELETE' 'http://localhost:8080/o/koroneiki-rest/v1.0/accounts/{accountKey}/contacts/by-uuid/{contactUuid}/roles'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@DELETE
 	@Operation(
 		description = "Unassigns roles from the contact for the account."
 	)
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -475,10 +476,10 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	public void deleteAccountContactByUuidContactUuidRole(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
-				accountKey,
-			@NotNull @Parameter(hidden = true) @PathParam("contactUuid") String
-				contactUuid,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
+				String accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("contactUuid")
+				String contactUuid,
 			@NotNull @Parameter(hidden = true) @QueryParam("contactRoleKeys")
 				String[] contactRoleKeys)
 		throws Exception {
@@ -489,9 +490,8 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	 *
 	 * curl -X 'PUT' 'http://localhost:8080/o/koroneiki-rest/v1.0/accounts/{accountKey}/contacts/by-uuid/{contactUuid}/roles'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Operation(description = "Assigns roles to the contact for the account.")
-	@PUT
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -503,14 +503,15 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	)
 	@Path("/accounts/{accountKey}/contacts/by-uuid/{contactUuid}/roles")
 	@Produces({"application/json", "application/xml"})
+	@PUT
 	@Tags(value = {@Tag(name = "Account")})
 	public void putAccountContactByUuidContactUuidRole(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
-				accountKey,
-			@NotNull @Parameter(hidden = true) @PathParam("contactUuid") String
-				contactUuid,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
+				String accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("contactUuid")
+				String contactUuid,
 			@NotNull @Parameter(hidden = true) @QueryParam("contactRoleKeys")
 				String[] contactRoleKeys)
 		throws Exception {
@@ -521,9 +522,9 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	 *
 	 * curl -X 'DELETE' 'http://localhost:8080/o/koroneiki-rest/v1.0/accounts/{accountKey}/customer-contacts/by-email-address'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@DELETE
 	@Operation(description = "Unassigns customer contacts from the account.")
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -538,10 +539,11 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	public void deleteAccountCustomerContactByEmailAddres(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
-				accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
+				String accountKey,
 			@NotNull @Parameter(hidden = true)
-			@QueryParam("contactEmailAddresses") String[] contactEmailAddresses)
+			@QueryParam("contactEmailAddresses")
+				String[] contactEmailAddresses)
 		throws Exception {
 	}
 
@@ -550,9 +552,9 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	 *
 	 * curl -X 'DELETE' 'http://localhost:8080/o/koroneiki-rest/v1.0/accounts/{accountKey}/customer-contacts/by-uuid'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@DELETE
 	@Operation(description = "Unassigns contacts from the account.")
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -567,8 +569,8 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	public void deleteAccountCustomerContactByUuid(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
-				accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
+				String accountKey,
 			@NotNull @Parameter(hidden = true) @QueryParam("contactUuids")
 				String[] contactUuids)
 		throws Exception {
@@ -579,9 +581,9 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	 *
 	 * curl -X 'DELETE' 'http://localhost:8080/o/koroneiki-rest/v1.0/accounts/{accountKey}/worker-contacts/by-email-address'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@DELETE
 	@Operation(description = "Unassigns worker contacts from the account.")
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -596,10 +598,11 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	public void deleteAccountWorkerContactByEmailAddres(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
-				accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
+				String accountKey,
 			@NotNull @Parameter(hidden = true)
-			@QueryParam("contactEmailAddresses") String[] contactEmailAddresses)
+			@QueryParam("contactEmailAddresses")
+				String[] contactEmailAddresses)
 		throws Exception {
 	}
 
@@ -608,9 +611,9 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	 *
 	 * curl -X 'DELETE' 'http://localhost:8080/o/koroneiki-rest/v1.0/accounts/{accountKey}/worker-contacts/by-uuid'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@DELETE
 	@Operation(description = "Unassigns contacts from the account.")
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -625,8 +628,8 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	public void deleteAccountWorkerContactByUuid(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
-				accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
+				String accountKey,
 			@NotNull @Parameter(hidden = true) @QueryParam("contactUuids")
 				String[] contactUuids)
 		throws Exception {
@@ -637,9 +640,9 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/contacts/by-uuid/{contactUuid}/accounts'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
 	@Operation(description = "Retrieves the contact's accounts.")
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "contactUuid"),
@@ -651,8 +654,8 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Account")})
 	public Page<Account> getContactByUuidContactUuidAccountsPage(
-			@NotNull @Parameter(hidden = true) @PathParam("contactUuid") String
-				contactUuid,
+			@NotNull @Parameter(hidden = true) @PathParam("contactUuid")
+				String contactUuid,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -664,9 +667,9 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/teams/{teamKey}/assigned-accounts'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
 	@Operation(description = "Retrieves the team's assigned accounts.")
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "teamKey"),
@@ -678,8 +681,8 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Account")})
 	public Page<Account> getTeamTeamKeyAssignedAccountsPage(
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
-				teamKey,
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
+				String teamKey,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -718,6 +721,14 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 		this.contextUser = contextUser;
 	}
 
+	public void setGroupLocalService(GroupLocalService groupLocalService) {
+		this.groupLocalService = groupLocalService;
+	}
+
+	public void setRoleLocalService(RoleLocalService roleLocalService) {
+		this.roleLocalService = roleLocalService;
+	}
+
 	protected Map<String, String> addAction(
 		String actionName, GroupedModel groupedModel, String methodName) {
 
@@ -733,6 +744,15 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 		return ActionUtil.addAction(
 			actionName, getClass(), id, methodName, contextScopeChecker,
 			ownerId, permissionName, siteId, contextUriInfo);
+	}
+
+	protected Map<String, String> addAction(
+		String actionName, Long id, String methodName,
+		ModelResourcePermission modelResourcePermission) {
+
+		return ActionUtil.addAction(
+			actionName, getClass(), id, methodName, contextScopeChecker,
+			modelResourcePermission, contextUriInfo);
 	}
 
 	protected Map<String, String> addAction(

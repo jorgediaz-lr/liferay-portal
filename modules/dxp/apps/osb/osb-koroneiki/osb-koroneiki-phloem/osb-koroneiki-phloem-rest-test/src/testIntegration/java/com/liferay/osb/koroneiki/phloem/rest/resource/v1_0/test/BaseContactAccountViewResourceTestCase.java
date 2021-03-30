@@ -107,7 +107,9 @@ public abstract class BaseContactAccountViewResourceTestCase {
 		ContactAccountViewResource.Builder builder =
 			ContactAccountViewResource.builder();
 
-		contactAccountViewResource = builder.locale(
+		contactAccountViewResource = builder.authentication(
+			"test@liferay.com", "test"
+		).locale(
 			LocaleUtil.getDefault()
 		).build();
 	}
@@ -202,7 +204,7 @@ public abstract class BaseContactAccountViewResourceTestCase {
 		String irrelevantContactUuid =
 			testGetContactByUuidContactUuidContactAccountViewsPage_getIrrelevantContactUuid();
 
-		if ((irrelevantContactUuid != null)) {
+		if (irrelevantContactUuid != null) {
 			ContactAccountView irrelevantContactAccountView =
 				testGetContactByUuidContactUuidContactAccountViewsPage_addContactAccountView(
 					irrelevantContactUuid,
@@ -381,7 +383,9 @@ public abstract class BaseContactAccountViewResourceTestCase {
 		}
 	}
 
-	protected void assertValid(ContactAccountView contactAccountView) {
+	protected void assertValid(ContactAccountView contactAccountView)
+		throws Exception {
+
 		boolean valid = true;
 
 		for (String additionalAssertFieldName :
@@ -573,9 +577,11 @@ public abstract class BaseContactAccountViewResourceTestCase {
 					return false;
 				}
 			}
+
+			return true;
 		}
 
-		return true;
+		return false;
 	}
 
 	protected java.util.Collection<EntityField> getEntityFields()
@@ -751,12 +757,12 @@ public abstract class BaseContactAccountViewResourceTestCase {
 						_parameterMap.entrySet()) {
 
 					sb.append(entry.getKey());
-					sb.append(":");
+					sb.append(": ");
 					sb.append(entry.getValue());
-					sb.append(",");
+					sb.append(", ");
 				}
 
-				sb.setLength(sb.length() - 1);
+				sb.setLength(sb.length() - 2);
 
 				sb.append(")");
 			}
@@ -766,10 +772,10 @@ public abstract class BaseContactAccountViewResourceTestCase {
 
 				for (GraphQLField graphQLField : _graphQLFields) {
 					sb.append(graphQLField.toString());
-					sb.append(",");
+					sb.append(", ");
 				}
 
-				sb.setLength(sb.length() - 1);
+				sb.setLength(sb.length() - 2);
 
 				sb.append("}");
 			}

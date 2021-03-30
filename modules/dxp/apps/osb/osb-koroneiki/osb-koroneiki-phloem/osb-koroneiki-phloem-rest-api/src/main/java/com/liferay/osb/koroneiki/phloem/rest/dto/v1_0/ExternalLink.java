@@ -26,6 +26,8 @@ import com.liferay.portal.vulcan.util.ObjectMapperUtil;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.io.Serializable;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
@@ -46,14 +48,17 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @generated
  */
 @Generated("")
-@GraphQLName("ExternalLink")
+@GraphQLName(
+	description = "Represents a link to an entity in a different domain.",
+	value = "ExternalLink"
+)
 @JsonFilter("Liferay.Vulcan")
 @Schema(
-	requiredProperties = {"domain", "entityId", "entityName"},
-	description = "Represents a link to an entity in a different domain."
+	description = "Represents a link to an entity in a different domain.",
+	requiredProperties = {"domain", "entityId", "entityName"}
 )
 @XmlRootElement(name = "ExternalLink")
-public class ExternalLink {
+public class ExternalLink implements Serializable {
 
 	public static ExternalLink toDTO(String json) {
 		return ObjectMapperUtil.readValue(ExternalLink.class, json);
@@ -346,6 +351,7 @@ public class ExternalLink {
 	}
 
 	@Schema(
+		accessMode = Schema.AccessMode.READ_ONLY,
 		defaultValue = "com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.ExternalLink",
 		name = "x-class-name"
 	)
@@ -355,6 +361,16 @@ public class ExternalLink {
 		String string = String.valueOf(object);
 
 		return string.replaceAll("\"", "\\\\\"");
+	}
+
+	private static boolean _isArray(Object value) {
+		if (value == null) {
+			return false;
+		}
+
+		Class<?> clazz = value.getClass();
+
+		return clazz.isArray();
 	}
 
 	private static String _toJSON(Map<String, ?> map) {
@@ -371,13 +387,11 @@ public class ExternalLink {
 
 			sb.append("\"");
 			sb.append(entry.getKey());
-			sb.append("\":");
+			sb.append("\": ");
 
 			Object value = entry.getValue();
 
-			Class<?> clazz = value.getClass();
-
-			if (clazz.isArray()) {
+			if (_isArray(value)) {
 				sb.append("[");
 
 				Object[] valueArray = (Object[])value;
@@ -412,7 +426,7 @@ public class ExternalLink {
 			}
 
 			if (iterator.hasNext()) {
-				sb.append(",");
+				sb.append(", ");
 			}
 		}
 

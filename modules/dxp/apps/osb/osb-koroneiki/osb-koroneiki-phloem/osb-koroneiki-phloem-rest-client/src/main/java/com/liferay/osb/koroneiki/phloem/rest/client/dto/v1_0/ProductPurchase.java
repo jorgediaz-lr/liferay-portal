@@ -17,6 +17,8 @@ package com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0;
 import com.liferay.osb.koroneiki.phloem.rest.client.function.UnsafeSupplier;
 import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.ProductPurchaseSerDes;
 
+import java.io.Serializable;
+
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
@@ -28,7 +30,7 @@ import javax.annotation.Generated;
  * @generated
  */
 @Generated("")
-public class ProductPurchase implements Cloneable {
+public class ProductPurchase implements Cloneable, Serializable {
 
 	public static ProductPurchase toDTO(String json) {
 		return ProductPurchaseSerDes.toDTO(json);

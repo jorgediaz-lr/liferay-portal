@@ -18,6 +18,7 @@ import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.ExternalLink;
 import com.liferay.osb.koroneiki.phloem.rest.resource.v1_0.ExternalLinkResource;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.model.GroupedModel;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ResourceActionLocalService;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
@@ -72,9 +73,9 @@ public abstract class BaseExternalLinkResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/accounts/{accountKey}/external-links'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
 	@Operation(description = "Retrieves the account's external links.")
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "accountKey"),
@@ -86,8 +87,8 @@ public abstract class BaseExternalLinkResourceImpl
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "ExternalLink")})
 	public Page<ExternalLink> getAccountAccountKeyExternalLinksPage(
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
-				accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
+				String accountKey,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -99,10 +100,9 @@ public abstract class BaseExternalLinkResourceImpl
 	 *
 	 * curl -X 'POST' 'http://localhost:8080/o/koroneiki-rest/v1.0/accounts/{accountKey}/external-links' -d $'{"domain": ___, "entityId": ___, "entityName": ___, "key": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Consumes({"application/json", "application/xml"})
 	@Operation(description = "Adds an external link to the account.")
-	@POST
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -111,13 +111,14 @@ public abstract class BaseExternalLinkResourceImpl
 		}
 	)
 	@Path("/accounts/{accountKey}/external-links")
+	@POST
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "ExternalLink")})
 	public ExternalLink postAccountAccountKeyExternalLink(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
-				accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
+				String accountKey,
 			ExternalLink externalLink)
 		throws Exception {
 
@@ -129,9 +130,9 @@ public abstract class BaseExternalLinkResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/contacts/by-uuid/{contactUuid}/external-links'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
 	@Operation(description = "Retrieves the contact's external links.")
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "contactUuid"),
@@ -143,8 +144,8 @@ public abstract class BaseExternalLinkResourceImpl
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "ExternalLink")})
 	public Page<ExternalLink> getContactByUuidContactUuidExternalLinksPage(
-			@NotNull @Parameter(hidden = true) @PathParam("contactUuid") String
-				contactUuid,
+			@NotNull @Parameter(hidden = true) @PathParam("contactUuid")
+				String contactUuid,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -156,10 +157,9 @@ public abstract class BaseExternalLinkResourceImpl
 	 *
 	 * curl -X 'POST' 'http://localhost:8080/o/koroneiki-rest/v1.0/contacts/by-uuid/{contactUuid}/external-links' -d $'{"domain": ___, "entityId": ___, "entityName": ___, "key": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Consumes({"application/json", "application/xml"})
 	@Operation(description = "Adds an external link to the contact.")
-	@POST
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -168,13 +168,14 @@ public abstract class BaseExternalLinkResourceImpl
 		}
 	)
 	@Path("/contacts/by-uuid/{contactUuid}/external-links")
+	@POST
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "ExternalLink")})
 	public ExternalLink postContactByUuidContactUuidExternalLink(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("contactUuid") String
-				contactUuid,
+			@NotNull @Parameter(hidden = true) @PathParam("contactUuid")
+				String contactUuid,
 			ExternalLink externalLink)
 		throws Exception {
 
@@ -186,8 +187,8 @@ public abstract class BaseExternalLinkResourceImpl
 	 *
 	 * curl -X 'DELETE' 'http://localhost:8080/o/koroneiki-rest/v1.0/external-links/{externalLinkKey}'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@DELETE
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -211,9 +212,9 @@ public abstract class BaseExternalLinkResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/external-links/{externalLinkKey}'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
 	@Operation(description = "Retrieves the external link.")
+	@Override
 	@Parameters(
 		value = {@Parameter(in = ParameterIn.PATH, name = "externalLinkKey")}
 	)
@@ -233,12 +234,11 @@ public abstract class BaseExternalLinkResourceImpl
 	 *
 	 * curl -X 'PUT' 'http://localhost:8080/o/koroneiki-rest/v1.0/external-links/{externalLinkKey}' -d $'{"domain": ___, "entityId": ___, "entityName": ___, "key": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Consumes({"application/json", "application/xml"})
 	@Operation(
 		description = "Updates the external link. Only the entityId field can be updated."
 	)
-	@PUT
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -248,6 +248,7 @@ public abstract class BaseExternalLinkResourceImpl
 	)
 	@Path("/external-links/{externalLinkKey}")
 	@Produces({"application/json", "application/xml"})
+	@PUT
 	@Tags(value = {@Tag(name = "ExternalLink")})
 	public ExternalLink putExternalLink(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
@@ -265,11 +266,11 @@ public abstract class BaseExternalLinkResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/product-consumptions/{productConsumptionKey}/external-links'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
 	@Operation(
 		description = "Retrieves the product consumption's external links."
 	)
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "productConsumptionKey"),
@@ -283,8 +284,8 @@ public abstract class BaseExternalLinkResourceImpl
 	public Page<ExternalLink>
 			getProductConsumptionProductConsumptionKeyExternalLinksPage(
 				@NotNull @Parameter(hidden = true)
-				@PathParam("productConsumptionKey") String
-					productConsumptionKey,
+				@PathParam("productConsumptionKey")
+					String productConsumptionKey,
 				@Context Pagination pagination)
 		throws Exception {
 
@@ -296,12 +297,11 @@ public abstract class BaseExternalLinkResourceImpl
 	 *
 	 * curl -X 'POST' 'http://localhost:8080/o/koroneiki-rest/v1.0/product-consumptions/{productConsumptionKey}/external-links' -d $'{"domain": ___, "entityId": ___, "entityName": ___, "key": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Consumes({"application/json", "application/xml"})
 	@Operation(
 		description = "Adds an external link to the product consumption."
 	)
-	@POST
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -310,13 +310,15 @@ public abstract class BaseExternalLinkResourceImpl
 		}
 	)
 	@Path("/product-consumptions/{productConsumptionKey}/external-links")
+	@POST
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "ExternalLink")})
 	public ExternalLink postProductConsumptionProductConsumptionKeyExternalLink(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
 			@NotNull @Parameter(hidden = true)
-			@PathParam("productConsumptionKey") String productConsumptionKey,
+			@PathParam("productConsumptionKey")
+				String productConsumptionKey,
 			ExternalLink externalLink)
 		throws Exception {
 
@@ -328,9 +330,9 @@ public abstract class BaseExternalLinkResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/product-purchases/{productPurchaseKey}/external-links'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
 	@Operation(description = "Retrieves the product purchase's external links.")
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "productPurchaseKey"),
@@ -344,7 +346,8 @@ public abstract class BaseExternalLinkResourceImpl
 	public Page<ExternalLink>
 			getProductPurchaseProductPurchaseKeyExternalLinksPage(
 				@NotNull @Parameter(hidden = true)
-				@PathParam("productPurchaseKey") String productPurchaseKey,
+				@PathParam("productPurchaseKey")
+					String productPurchaseKey,
 				@Context Pagination pagination)
 		throws Exception {
 
@@ -356,10 +359,9 @@ public abstract class BaseExternalLinkResourceImpl
 	 *
 	 * curl -X 'POST' 'http://localhost:8080/o/koroneiki-rest/v1.0/product-purchases/{productPurchaseKey}/external-links' -d $'{"domain": ___, "entityId": ___, "entityName": ___, "key": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Consumes({"application/json", "application/xml"})
 	@Operation(description = "Adds an external link to the product purchase.")
-	@POST
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -368,6 +370,7 @@ public abstract class BaseExternalLinkResourceImpl
 		}
 	)
 	@Path("/product-purchases/{productPurchaseKey}/external-links")
+	@POST
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "ExternalLink")})
 	public ExternalLink postProductPurchaseProductPurchaseKeyExternalLink(
@@ -386,9 +389,9 @@ public abstract class BaseExternalLinkResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/products/{productKey}/external-links'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
 	@Operation(description = "Retrieves the product's external links.")
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "productKey"),
@@ -400,8 +403,8 @@ public abstract class BaseExternalLinkResourceImpl
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "ExternalLink")})
 	public Page<ExternalLink> getProductProductKeyExternalLinksPage(
-			@NotNull @Parameter(hidden = true) @PathParam("productKey") String
-				productKey,
+			@NotNull @Parameter(hidden = true) @PathParam("productKey")
+				String productKey,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -413,10 +416,9 @@ public abstract class BaseExternalLinkResourceImpl
 	 *
 	 * curl -X 'POST' 'http://localhost:8080/o/koroneiki-rest/v1.0/products/{productKey}/external-links' -d $'{"domain": ___, "entityId": ___, "entityName": ___, "key": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Consumes({"application/json", "application/xml"})
 	@Operation(description = "Adds an external link to the product.")
-	@POST
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -425,13 +427,14 @@ public abstract class BaseExternalLinkResourceImpl
 		}
 	)
 	@Path("/products/{productKey}/external-links")
+	@POST
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "ExternalLink")})
 	public ExternalLink postProductProductKeyExternalLink(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("productKey") String
-				productKey,
+			@NotNull @Parameter(hidden = true) @PathParam("productKey")
+				String productKey,
 			ExternalLink externalLink)
 		throws Exception {
 
@@ -443,9 +446,9 @@ public abstract class BaseExternalLinkResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/teams/{teamKey}/external-links'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
 	@Operation(description = "Retrieves the team's external links.")
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "teamKey"),
@@ -457,8 +460,8 @@ public abstract class BaseExternalLinkResourceImpl
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "ExternalLink")})
 	public Page<ExternalLink> getTeamTeamKeyExternalLinksPage(
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
-				teamKey,
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
+				String teamKey,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -470,10 +473,9 @@ public abstract class BaseExternalLinkResourceImpl
 	 *
 	 * curl -X 'POST' 'http://localhost:8080/o/koroneiki-rest/v1.0/teams/{teamKey}/external-links' -d $'{"domain": ___, "entityId": ___, "entityName": ___, "key": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Consumes({"application/json", "application/xml"})
 	@Operation(description = "Adds an external link to the team.")
-	@POST
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -482,13 +484,14 @@ public abstract class BaseExternalLinkResourceImpl
 		}
 	)
 	@Path("/teams/{teamKey}/external-links")
+	@POST
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "ExternalLink")})
 	public ExternalLink postTeamTeamKeyExternalLink(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
-				teamKey,
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
+				String teamKey,
 			ExternalLink externalLink)
 		throws Exception {
 
@@ -527,6 +530,14 @@ public abstract class BaseExternalLinkResourceImpl
 		this.contextUser = contextUser;
 	}
 
+	public void setGroupLocalService(GroupLocalService groupLocalService) {
+		this.groupLocalService = groupLocalService;
+	}
+
+	public void setRoleLocalService(RoleLocalService roleLocalService) {
+		this.roleLocalService = roleLocalService;
+	}
+
 	protected Map<String, String> addAction(
 		String actionName, GroupedModel groupedModel, String methodName) {
 
@@ -542,6 +553,15 @@ public abstract class BaseExternalLinkResourceImpl
 		return ActionUtil.addAction(
 			actionName, getClass(), id, methodName, contextScopeChecker,
 			ownerId, permissionName, siteId, contextUriInfo);
+	}
+
+	protected Map<String, String> addAction(
+		String actionName, Long id, String methodName,
+		ModelResourcePermission modelResourcePermission) {
+
+		return ActionUtil.addAction(
+			actionName, getClass(), id, methodName, contextScopeChecker,
+			modelResourcePermission, contextUriInfo);
 	}
 
 	protected Map<String, String> addAction(

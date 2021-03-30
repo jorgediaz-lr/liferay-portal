@@ -18,6 +18,7 @@ import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.EntitlementDefinition;
 import com.liferay.osb.koroneiki.phloem.rest.resource.v1_0.EntitlementDefinitionResource;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.model.GroupedModel;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ResourceActionLocalService;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
@@ -71,11 +72,11 @@ public abstract class BaseEntitlementDefinitionResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/accounts/entitlement-definitions'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
 	@Operation(
 		description = "Retrieves the account entitlement definitions. Results can be paginated, filtered, searched, and sorted."
 	)
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "search"),
@@ -99,9 +100,8 @@ public abstract class BaseEntitlementDefinitionResourceImpl
 	 *
 	 * curl -X 'POST' 'http://localhost:8080/o/koroneiki-rest/v1.0/accounts/entitlement-definitions' -d $'{"definition": ___, "description": ___, "name": ___, "status": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Consumes({"application/json", "application/xml"})
-	@POST
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -109,6 +109,7 @@ public abstract class BaseEntitlementDefinitionResourceImpl
 		}
 	)
 	@Path("/accounts/entitlement-definitions")
+	@POST
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "EntitlementDefinition")})
 	public EntitlementDefinition postAccountEntitlementDefinition(
@@ -125,9 +126,9 @@ public abstract class BaseEntitlementDefinitionResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/contacts/entitlement-definitions'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
 	@Operation(description = "Retrieves the contact entitlement definitions.")
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "search"),
@@ -151,9 +152,8 @@ public abstract class BaseEntitlementDefinitionResourceImpl
 	 *
 	 * curl -X 'POST' 'http://localhost:8080/o/koroneiki-rest/v1.0/contacts/entitlement-definitions' -d $'{"definition": ___, "description": ___, "name": ___, "status": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Consumes({"application/json", "application/xml"})
-	@POST
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -161,6 +161,7 @@ public abstract class BaseEntitlementDefinitionResourceImpl
 		}
 	)
 	@Path("/contacts/entitlement-definitions")
+	@POST
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "EntitlementDefinition")})
 	public EntitlementDefinition postContactEntitlementDefinition(
@@ -177,8 +178,8 @@ public abstract class BaseEntitlementDefinitionResourceImpl
 	 *
 	 * curl -X 'DELETE' 'http://localhost:8080/o/koroneiki-rest/v1.0/entitlement-definitions/{entitlementDefinitionKey}'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@DELETE
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -193,8 +194,8 @@ public abstract class BaseEntitlementDefinitionResourceImpl
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
 			@NotNull @Parameter(hidden = true)
-			@PathParam("entitlementDefinitionKey") String
-				entitlementDefinitionKey)
+			@PathParam("entitlementDefinitionKey")
+				String entitlementDefinitionKey)
 		throws Exception {
 	}
 
@@ -203,9 +204,9 @@ public abstract class BaseEntitlementDefinitionResourceImpl
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/entitlement-definitions/{entitlementDefinitionKey}'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@GET
 	@Operation(description = "Retrieves the entitlement definition.")
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "entitlementDefinitionKey")
@@ -216,8 +217,8 @@ public abstract class BaseEntitlementDefinitionResourceImpl
 	@Tags(value = {@Tag(name = "EntitlementDefinition")})
 	public EntitlementDefinition getEntitlementDefinition(
 			@NotNull @Parameter(hidden = true)
-			@PathParam("entitlementDefinitionKey") String
-				entitlementDefinitionKey)
+			@PathParam("entitlementDefinitionKey")
+				String entitlementDefinitionKey)
 		throws Exception {
 
 		return new EntitlementDefinition();
@@ -228,11 +229,10 @@ public abstract class BaseEntitlementDefinitionResourceImpl
 	 *
 	 * curl -X 'POST' 'http://localhost:8080/o/koroneiki-rest/v1.0/entitlement-definitions/{entitlementDefinitionKey}/synchronize'  -u 'test@liferay.com:test'
 	 */
-	@Override
 	@Operation(
 		description = "Immediately runs a synchronization of the entitlement definition."
 	)
-	@POST
+	@Override
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
@@ -241,14 +241,15 @@ public abstract class BaseEntitlementDefinitionResourceImpl
 		}
 	)
 	@Path("/entitlement-definitions/{entitlementDefinitionKey}/synchronize")
+	@POST
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "EntitlementDefinition")})
 	public void postEntitlementDefinitionSynchronize(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
 			@NotNull @Parameter(hidden = true)
-			@PathParam("entitlementDefinitionKey") String
-				entitlementDefinitionKey)
+			@PathParam("entitlementDefinitionKey")
+				String entitlementDefinitionKey)
 		throws Exception {
 	}
 
@@ -284,6 +285,14 @@ public abstract class BaseEntitlementDefinitionResourceImpl
 		this.contextUser = contextUser;
 	}
 
+	public void setGroupLocalService(GroupLocalService groupLocalService) {
+		this.groupLocalService = groupLocalService;
+	}
+
+	public void setRoleLocalService(RoleLocalService roleLocalService) {
+		this.roleLocalService = roleLocalService;
+	}
+
 	protected Map<String, String> addAction(
 		String actionName, GroupedModel groupedModel, String methodName) {
 
@@ -299,6 +308,15 @@ public abstract class BaseEntitlementDefinitionResourceImpl
 		return ActionUtil.addAction(
 			actionName, getClass(), id, methodName, contextScopeChecker,
 			ownerId, permissionName, siteId, contextUriInfo);
+	}
+
+	protected Map<String, String> addAction(
+		String actionName, Long id, String methodName,
+		ModelResourcePermission modelResourcePermission) {
+
+		return ActionUtil.addAction(
+			actionName, getClass(), id, methodName, contextScopeChecker,
+			modelResourcePermission, contextUriInfo);
 	}
 
 	protected Map<String, String> addAction(

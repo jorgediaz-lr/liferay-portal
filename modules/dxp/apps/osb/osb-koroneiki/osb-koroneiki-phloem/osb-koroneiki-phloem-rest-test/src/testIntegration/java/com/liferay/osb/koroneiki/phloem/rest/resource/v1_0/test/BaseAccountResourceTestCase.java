@@ -115,7 +115,9 @@ public abstract class BaseAccountResourceTestCase {
 
 		AccountResource.Builder builder = AccountResource.builder();
 
-		accountResource = builder.locale(
+		accountResource = builder.authentication(
+			"test@liferay.com", "test"
+		).locale(
 			LocaleUtil.getDefault()
 		).build();
 	}
@@ -693,7 +695,7 @@ public abstract class BaseAccountResourceTestCase {
 		String irrelevantAccountKey =
 			testGetAccountChildAccountsPage_getIrrelevantAccountKey();
 
-		if ((irrelevantAccountKey != null)) {
+		if (irrelevantAccountKey != null) {
 			Account irrelevantAccount =
 				testGetAccountChildAccountsPage_addAccount(
 					irrelevantAccountKey, randomIrrelevantAccount());
@@ -847,7 +849,7 @@ public abstract class BaseAccountResourceTestCase {
 		String irrelevantContactUuid =
 			testGetContactByUuidContactUuidAccountsPage_getIrrelevantContactUuid();
 
-		if ((irrelevantContactUuid != null)) {
+		if (irrelevantContactUuid != null) {
 			Account irrelevantAccount =
 				testGetContactByUuidContactUuidAccountsPage_addAccount(
 					irrelevantContactUuid, randomIrrelevantAccount());
@@ -962,7 +964,7 @@ public abstract class BaseAccountResourceTestCase {
 		String irrelevantTeamKey =
 			testGetTeamTeamKeyAssignedAccountsPage_getIrrelevantTeamKey();
 
-		if ((irrelevantTeamKey != null)) {
+		if (irrelevantTeamKey != null) {
 			Account irrelevantAccount =
 				testGetTeamTeamKeyAssignedAccountsPage_addAccount(
 					irrelevantTeamKey, randomIrrelevantAccount());
@@ -1109,7 +1111,7 @@ public abstract class BaseAccountResourceTestCase {
 		}
 	}
 
-	protected void assertValid(Account account) {
+	protected void assertValid(Account account) throws Exception {
 		boolean valid = true;
 
 		if (account.getDateCreated() == null) {
@@ -1709,9 +1711,11 @@ public abstract class BaseAccountResourceTestCase {
 					return false;
 				}
 			}
+
+			return true;
 		}
 
-		return true;
+		return false;
 	}
 
 	protected java.util.Collection<EntityField> getEntityFields()
@@ -2098,12 +2102,12 @@ public abstract class BaseAccountResourceTestCase {
 						_parameterMap.entrySet()) {
 
 					sb.append(entry.getKey());
-					sb.append(":");
+					sb.append(": ");
 					sb.append(entry.getValue());
-					sb.append(",");
+					sb.append(", ");
 				}
 
-				sb.setLength(sb.length() - 1);
+				sb.setLength(sb.length() - 2);
 
 				sb.append(")");
 			}
@@ -2113,10 +2117,10 @@ public abstract class BaseAccountResourceTestCase {
 
 				for (GraphQLField graphQLField : _graphQLFields) {
 					sb.append(graphQLField.toString());
-					sb.append(",");
+					sb.append(", ");
 				}
 
-				sb.setLength(sb.length() - 1);
+				sb.setLength(sb.length() - 2);
 
 				sb.append("}");
 			}

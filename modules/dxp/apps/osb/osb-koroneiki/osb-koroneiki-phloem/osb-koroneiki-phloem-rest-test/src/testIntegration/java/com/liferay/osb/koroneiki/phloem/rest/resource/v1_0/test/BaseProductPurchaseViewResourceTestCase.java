@@ -116,7 +116,9 @@ public abstract class BaseProductPurchaseViewResourceTestCase {
 		ProductPurchaseViewResource.Builder builder =
 			ProductPurchaseViewResource.builder();
 
-		productPurchaseViewResource = builder.locale(
+		productPurchaseViewResource = builder.authentication(
+			"test@liferay.com", "test"
+		).locale(
 			LocaleUtil.getDefault()
 		).build();
 	}
@@ -563,7 +565,9 @@ public abstract class BaseProductPurchaseViewResourceTestCase {
 		}
 	}
 
-	protected void assertValid(ProductPurchaseView productPurchaseView) {
+	protected void assertValid(ProductPurchaseView productPurchaseView)
+		throws Exception {
+
 		boolean valid = true;
 
 		for (String additionalAssertFieldName :
@@ -751,9 +755,11 @@ public abstract class BaseProductPurchaseViewResourceTestCase {
 					return false;
 				}
 			}
+
+			return true;
 		}
 
-		return true;
+		return false;
 	}
 
 	protected java.util.Collection<EntityField> getEntityFields()
@@ -929,12 +935,12 @@ public abstract class BaseProductPurchaseViewResourceTestCase {
 						_parameterMap.entrySet()) {
 
 					sb.append(entry.getKey());
-					sb.append(":");
+					sb.append(": ");
 					sb.append(entry.getValue());
-					sb.append(",");
+					sb.append(", ");
 				}
 
-				sb.setLength(sb.length() - 1);
+				sb.setLength(sb.length() - 2);
 
 				sb.append(")");
 			}
@@ -944,10 +950,10 @@ public abstract class BaseProductPurchaseViewResourceTestCase {
 
 				for (GraphQLField graphQLField : _graphQLFields) {
 					sb.append(graphQLField.toString());
-					sb.append(",");
+					sb.append(", ");
 				}
 
-				sb.setLength(sb.length() - 1);
+				sb.setLength(sb.length() - 2);
 
 				sb.append("}");
 			}

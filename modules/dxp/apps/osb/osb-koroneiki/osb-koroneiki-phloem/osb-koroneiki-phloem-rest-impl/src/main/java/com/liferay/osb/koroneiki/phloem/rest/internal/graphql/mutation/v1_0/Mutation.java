@@ -49,6 +49,8 @@ import com.liferay.osb.koroneiki.phloem.rest.resource.v1_0.TeamRoleResource;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.search.Sort;
+import com.liferay.portal.kernel.service.GroupLocalService;
+import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
 import com.liferay.portal.vulcan.graphql.annotation.GraphQLField;
 import com.liferay.portal.vulcan.graphql.annotation.GraphQLName;
@@ -217,8 +219,8 @@ public class Mutation {
 			@GraphQLName("agentName") String agentName,
 			@GraphQLName("agentUID") String agentUID,
 			@GraphQLName("accountKey") String accountKey,
-			@GraphQLName("accountPermission") AccountPermission
-				accountPermission)
+			@GraphQLName("accountPermission")
+				AccountPermission accountPermission)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
@@ -235,8 +237,8 @@ public class Mutation {
 			@GraphQLName("agentName") String agentName,
 			@GraphQLName("agentUID") String agentUID,
 			@GraphQLName("accountKey") String accountKey,
-			@GraphQLName("accountPermission") AccountPermission
-				accountPermission)
+			@GraphQLName("accountPermission")
+				AccountPermission accountPermission)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
@@ -379,8 +381,8 @@ public class Mutation {
 			@GraphQLName("agentName") String agentName,
 			@GraphQLName("agentUID") String agentUID,
 			@GraphQLName("accountKey") String accountKey,
-			@GraphQLName("contactEmailAddresses") String[]
-				contactEmailAddresses)
+			@GraphQLName("contactEmailAddresses")
+				String[] contactEmailAddresses)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
@@ -416,8 +418,8 @@ public class Mutation {
 			@GraphQLName("agentName") String agentName,
 			@GraphQLName("agentUID") String agentUID,
 			@GraphQLName("accountKey") String accountKey,
-			@GraphQLName("contactEmailAddresses") String[]
-				contactEmailAddresses)
+			@GraphQLName("contactEmailAddresses")
+				String[] contactEmailAddresses)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
@@ -530,8 +532,8 @@ public class Mutation {
 			@GraphQLName("agentName") String agentName,
 			@GraphQLName("agentUID") String agentUID,
 			@GraphQLName("contactUuid") String contactUuid,
-			@GraphQLName("contactPermission") ContactPermission
-				contactPermission)
+			@GraphQLName("contactPermission")
+				ContactPermission contactPermission)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
@@ -549,8 +551,8 @@ public class Mutation {
 			@GraphQLName("agentName") String agentName,
 			@GraphQLName("agentUID") String agentUID,
 			@GraphQLName("contactUuid") String contactUuid,
-			@GraphQLName("contactPermission") ContactPermission
-				contactPermission)
+			@GraphQLName("contactPermission")
+				ContactPermission contactPermission)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
@@ -613,8 +615,8 @@ public class Mutation {
 			@GraphQLName("agentName") String agentName,
 			@GraphQLName("agentUID") String agentUID,
 			@GraphQLName("contactRoleKey") String contactRoleKey,
-			@GraphQLName("contactRolePermission") ContactRolePermission
-				contactRolePermission)
+			@GraphQLName("contactRolePermission")
+				ContactRolePermission contactRolePermission)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
@@ -633,8 +635,8 @@ public class Mutation {
 			@GraphQLName("agentName") String agentName,
 			@GraphQLName("agentUID") String agentUID,
 			@GraphQLName("contactRoleKey") String contactRoleKey,
-			@GraphQLName("contactRolePermission") ContactRolePermission
-				contactRolePermission)
+			@GraphQLName("contactRolePermission")
+				ContactRolePermission contactRolePermission)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
@@ -652,8 +654,8 @@ public class Mutation {
 	public EntitlementDefinition createAccountEntitlementDefinition(
 			@GraphQLName("agentName") String agentName,
 			@GraphQLName("agentUID") String agentUID,
-			@GraphQLName("entitlementDefinition") EntitlementDefinition
-				entitlementDefinition)
+			@GraphQLName("entitlementDefinition")
+				EntitlementDefinition entitlementDefinition)
 		throws Exception {
 
 		return _applyComponentServiceObjects(
@@ -668,8 +670,8 @@ public class Mutation {
 	public EntitlementDefinition createContactEntitlementDefinition(
 			@GraphQLName("agentName") String agentName,
 			@GraphQLName("agentUID") String agentUID,
-			@GraphQLName("entitlementDefinition") EntitlementDefinition
-				entitlementDefinition)
+			@GraphQLName("entitlementDefinition")
+				EntitlementDefinition entitlementDefinition)
 		throws Exception {
 
 		return _applyComponentServiceObjects(
@@ -684,8 +686,8 @@ public class Mutation {
 	public boolean deleteEntitlementDefinition(
 			@GraphQLName("agentName") String agentName,
 			@GraphQLName("agentUID") String agentUID,
-			@GraphQLName("entitlementDefinitionKey") String
-				entitlementDefinitionKey)
+			@GraphQLName("entitlementDefinitionKey")
+				String entitlementDefinitionKey)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
@@ -704,8 +706,8 @@ public class Mutation {
 	public boolean createEntitlementDefinitionSynchronize(
 			@GraphQLName("agentName") String agentName,
 			@GraphQLName("agentUID") String agentUID,
-			@GraphQLName("entitlementDefinitionKey") String
-				entitlementDefinitionKey)
+			@GraphQLName("entitlementDefinitionKey")
+				String entitlementDefinitionKey)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
@@ -791,8 +793,8 @@ public class Mutation {
 			createProductConsumptionProductConsumptionKeyExternalLink(
 				@GraphQLName("agentName") String agentName,
 				@GraphQLName("agentUID") String agentUID,
-				@GraphQLName("productConsumptionKey") String
-					productConsumptionKey,
+				@GraphQLName("productConsumptionKey")
+					String productConsumptionKey,
 				@GraphQLName("externalLink") ExternalLink externalLink)
 		throws Exception {
 
@@ -1000,8 +1002,8 @@ public class Mutation {
 			@GraphQLName("agentName") String agentName,
 			@GraphQLName("agentUID") String agentUID,
 			@GraphQLName("productKey") String productKey,
-			@GraphQLName("productPermission") ProductPermission
-				productPermission)
+			@GraphQLName("productPermission")
+				ProductPermission productPermission)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
@@ -1018,8 +1020,8 @@ public class Mutation {
 			@GraphQLName("agentName") String agentName,
 			@GraphQLName("agentUID") String agentUID,
 			@GraphQLName("productKey") String productKey,
-			@GraphQLName("productPermission") ProductPermission
-				productPermission)
+			@GraphQLName("productPermission")
+				ProductPermission productPermission)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
@@ -1036,8 +1038,8 @@ public class Mutation {
 			@GraphQLName("agentName") String agentName,
 			@GraphQLName("agentUID") String agentUID,
 			@GraphQLName("accountKey") String accountKey,
-			@GraphQLName("productConsumption") ProductConsumption
-				productConsumption)
+			@GraphQLName("productConsumption")
+				ProductConsumption productConsumption)
 		throws Exception {
 
 		return _applyComponentServiceObjects(
@@ -1162,8 +1164,8 @@ public class Mutation {
 			@GraphQLName("agentName") String agentName,
 			@GraphQLName("agentUID") String agentUID,
 			@GraphQLName("productPurchaseKey") String productPurchaseKey,
-			@GraphQLName("productPurchasePermission") ProductPurchasePermission
-				productPurchasePermission)
+			@GraphQLName("productPurchasePermission")
+				ProductPurchasePermission productPurchasePermission)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
@@ -1183,8 +1185,8 @@ public class Mutation {
 			@GraphQLName("agentName") String agentName,
 			@GraphQLName("agentUID") String agentUID,
 			@GraphQLName("productPurchaseKey") String productPurchaseKey,
-			@GraphQLName("productPurchasePermission") ProductPurchasePermission
-				productPurchasePermission)
+			@GraphQLName("productPurchasePermission")
+				ProductPurchasePermission productPurchasePermission)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
@@ -1473,8 +1475,8 @@ public class Mutation {
 			@GraphQLName("agentName") String agentName,
 			@GraphQLName("agentUID") String agentUID,
 			@GraphQLName("teamRoleKey") String teamRoleKey,
-			@GraphQLName("teamRolePermission") TeamRolePermission
-				teamRolePermission)
+			@GraphQLName("teamRolePermission")
+				TeamRolePermission teamRolePermission)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
@@ -1492,8 +1494,8 @@ public class Mutation {
 			@GraphQLName("agentName") String agentName,
 			@GraphQLName("agentUID") String agentUID,
 			@GraphQLName("teamRoleKey") String teamRoleKey,
-			@GraphQLName("teamRolePermission") TeamRolePermission
-				teamRolePermission)
+			@GraphQLName("teamRolePermission")
+				TeamRolePermission teamRolePermission)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
@@ -1552,6 +1554,8 @@ public class Mutation {
 		accountResource.setContextHttpServletResponse(_httpServletResponse);
 		accountResource.setContextUriInfo(_uriInfo);
 		accountResource.setContextUser(_user);
+		accountResource.setGroupLocalService(_groupLocalService);
+		accountResource.setRoleLocalService(_roleLocalService);
 	}
 
 	private void _populateResourceContext(ContactResource contactResource)
@@ -1563,6 +1567,8 @@ public class Mutation {
 		contactResource.setContextHttpServletResponse(_httpServletResponse);
 		contactResource.setContextUriInfo(_uriInfo);
 		contactResource.setContextUser(_user);
+		contactResource.setGroupLocalService(_groupLocalService);
+		contactResource.setRoleLocalService(_roleLocalService);
 	}
 
 	private void _populateResourceContext(
@@ -1575,6 +1581,8 @@ public class Mutation {
 		contactRoleResource.setContextHttpServletResponse(_httpServletResponse);
 		contactRoleResource.setContextUriInfo(_uriInfo);
 		contactRoleResource.setContextUser(_user);
+		contactRoleResource.setGroupLocalService(_groupLocalService);
+		contactRoleResource.setRoleLocalService(_roleLocalService);
 	}
 
 	private void _populateResourceContext(
@@ -1589,6 +1597,8 @@ public class Mutation {
 			_httpServletResponse);
 		entitlementDefinitionResource.setContextUriInfo(_uriInfo);
 		entitlementDefinitionResource.setContextUser(_user);
+		entitlementDefinitionResource.setGroupLocalService(_groupLocalService);
+		entitlementDefinitionResource.setRoleLocalService(_roleLocalService);
 	}
 
 	private void _populateResourceContext(
@@ -1602,6 +1612,8 @@ public class Mutation {
 			_httpServletResponse);
 		externalLinkResource.setContextUriInfo(_uriInfo);
 		externalLinkResource.setContextUser(_user);
+		externalLinkResource.setGroupLocalService(_groupLocalService);
+		externalLinkResource.setRoleLocalService(_roleLocalService);
 	}
 
 	private void _populateResourceContext(NoteResource noteResource)
@@ -1613,6 +1625,8 @@ public class Mutation {
 		noteResource.setContextHttpServletResponse(_httpServletResponse);
 		noteResource.setContextUriInfo(_uriInfo);
 		noteResource.setContextUser(_user);
+		noteResource.setGroupLocalService(_groupLocalService);
+		noteResource.setRoleLocalService(_roleLocalService);
 	}
 
 	private void _populateResourceContext(
@@ -1626,6 +1640,8 @@ public class Mutation {
 			_httpServletResponse);
 		postalAddressResource.setContextUriInfo(_uriInfo);
 		postalAddressResource.setContextUser(_user);
+		postalAddressResource.setGroupLocalService(_groupLocalService);
+		postalAddressResource.setRoleLocalService(_roleLocalService);
 	}
 
 	private void _populateResourceContext(ProductResource productResource)
@@ -1637,6 +1653,8 @@ public class Mutation {
 		productResource.setContextHttpServletResponse(_httpServletResponse);
 		productResource.setContextUriInfo(_uriInfo);
 		productResource.setContextUser(_user);
+		productResource.setGroupLocalService(_groupLocalService);
+		productResource.setRoleLocalService(_roleLocalService);
 	}
 
 	private void _populateResourceContext(
@@ -1651,6 +1669,8 @@ public class Mutation {
 			_httpServletResponse);
 		productConsumptionResource.setContextUriInfo(_uriInfo);
 		productConsumptionResource.setContextUser(_user);
+		productConsumptionResource.setGroupLocalService(_groupLocalService);
+		productConsumptionResource.setRoleLocalService(_roleLocalService);
 	}
 
 	private void _populateResourceContext(
@@ -1665,6 +1685,8 @@ public class Mutation {
 			_httpServletResponse);
 		productPurchaseResource.setContextUriInfo(_uriInfo);
 		productPurchaseResource.setContextUser(_user);
+		productPurchaseResource.setGroupLocalService(_groupLocalService);
+		productPurchaseResource.setRoleLocalService(_roleLocalService);
 	}
 
 	private void _populateResourceContext(TeamResource teamResource)
@@ -1676,6 +1698,8 @@ public class Mutation {
 		teamResource.setContextHttpServletResponse(_httpServletResponse);
 		teamResource.setContextUriInfo(_uriInfo);
 		teamResource.setContextUser(_user);
+		teamResource.setGroupLocalService(_groupLocalService);
+		teamResource.setRoleLocalService(_roleLocalService);
 	}
 
 	private void _populateResourceContext(TeamRoleResource teamRoleResource)
@@ -1687,6 +1711,8 @@ public class Mutation {
 		teamRoleResource.setContextHttpServletResponse(_httpServletResponse);
 		teamRoleResource.setContextUriInfo(_uriInfo);
 		teamRoleResource.setContextUser(_user);
+		teamRoleResource.setGroupLocalService(_groupLocalService);
+		teamRoleResource.setRoleLocalService(_roleLocalService);
 	}
 
 	private static ComponentServiceObjects<AccountResource>
@@ -1716,10 +1742,12 @@ public class Mutation {
 
 	private AcceptLanguage _acceptLanguage;
 	private com.liferay.portal.kernel.model.Company _company;
-	private BiFunction<Object, String, Sort[]> _sortsBiFunction;
-	private com.liferay.portal.kernel.model.User _user;
+	private GroupLocalService _groupLocalService;
 	private HttpServletRequest _httpServletRequest;
 	private HttpServletResponse _httpServletResponse;
+	private RoleLocalService _roleLocalService;
+	private BiFunction<Object, String, Sort[]> _sortsBiFunction;
 	private UriInfo _uriInfo;
+	private com.liferay.portal.kernel.model.User _user;
 
 }

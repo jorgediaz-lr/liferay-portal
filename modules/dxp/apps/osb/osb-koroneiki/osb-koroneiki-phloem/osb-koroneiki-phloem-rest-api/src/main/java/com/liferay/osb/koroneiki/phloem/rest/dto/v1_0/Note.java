@@ -28,6 +28,8 @@ import com.liferay.portal.vulcan.util.ObjectMapperUtil;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.io.Serializable;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
@@ -48,10 +50,13 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @generated
  */
 @Generated("")
-@GraphQLName("Note")
+@GraphQLName(
+	description = "Additional notes for miscellaneous information.",
+	value = "Note"
+)
 @JsonFilter("Liferay.Vulcan")
 @XmlRootElement(name = "Note")
-public class Note {
+public class Note implements Serializable {
 
 	public static Note toDTO(String json) {
 		return ObjectMapperUtil.readValue(Note.class, json);
@@ -635,6 +640,7 @@ public class Note {
 	}
 
 	@Schema(
+		accessMode = Schema.AccessMode.READ_ONLY,
 		defaultValue = "com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.Note",
 		name = "x-class-name"
 	)
@@ -748,6 +754,16 @@ public class Note {
 		return string.replaceAll("\"", "\\\\\"");
 	}
 
+	private static boolean _isArray(Object value) {
+		if (value == null) {
+			return false;
+		}
+
+		Class<?> clazz = value.getClass();
+
+		return clazz.isArray();
+	}
+
 	private static String _toJSON(Map<String, ?> map) {
 		StringBuilder sb = new StringBuilder("{");
 
@@ -762,13 +778,11 @@ public class Note {
 
 			sb.append("\"");
 			sb.append(entry.getKey());
-			sb.append("\":");
+			sb.append("\": ");
 
 			Object value = entry.getValue();
 
-			Class<?> clazz = value.getClass();
-
-			if (clazz.isArray()) {
+			if (_isArray(value)) {
 				sb.append("[");
 
 				Object[] valueArray = (Object[])value;
@@ -803,7 +817,7 @@ public class Note {
 			}
 
 			if (iterator.hasNext()) {
-				sb.append(",");
+				sb.append(", ");
 			}
 		}
 

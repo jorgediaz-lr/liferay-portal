@@ -247,10 +247,6 @@ public class TeamPermissionSerDes {
 					teamPermission.setView((Boolean)jsonParserFieldValue);
 				}
 			}
-			else {
-				throw new IllegalArgumentException(
-					"Unsupported field name " + jsonParserFieldName);
-			}
 		}
 
 	}
@@ -279,7 +275,7 @@ public class TeamPermissionSerDes {
 
 			sb.append("\"");
 			sb.append(entry.getKey());
-			sb.append("\":");
+			sb.append("\": ");
 
 			Object value = entry.getValue();
 
@@ -315,7 +311,7 @@ public class TeamPermissionSerDes {
 			}
 
 			if (iterator.hasNext()) {
-				sb.append(",");
+				sb.append(", ");
 			}
 		}
 

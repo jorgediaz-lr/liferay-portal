@@ -115,7 +115,9 @@ public abstract class BaseProductResourceTestCase {
 
 		ProductResource.Builder builder = ProductResource.builder();
 
-		productResource = builder.locale(
+		productResource = builder.authentication(
+			"test@liferay.com", "test"
+		).locale(
 			LocaleUtil.getDefault()
 		).build();
 	}
@@ -723,7 +725,7 @@ public abstract class BaseProductResourceTestCase {
 		}
 	}
 
-	protected void assertValid(Product product) {
+	protected void assertValid(Product product) throws Exception {
 		boolean valid = true;
 
 		if (product.getDateCreated() == null) {
@@ -947,9 +949,11 @@ public abstract class BaseProductResourceTestCase {
 					return false;
 				}
 			}
+
+			return true;
 		}
 
-		return true;
+		return false;
 	}
 
 	protected java.util.Collection<EntityField> getEntityFields()
@@ -1196,12 +1200,12 @@ public abstract class BaseProductResourceTestCase {
 						_parameterMap.entrySet()) {
 
 					sb.append(entry.getKey());
-					sb.append(":");
+					sb.append(": ");
 					sb.append(entry.getValue());
-					sb.append(",");
+					sb.append(", ");
 				}
 
-				sb.setLength(sb.length() - 1);
+				sb.setLength(sb.length() - 2);
 
 				sb.append(")");
 			}
@@ -1211,10 +1215,10 @@ public abstract class BaseProductResourceTestCase {
 
 				for (GraphQLField graphQLField : _graphQLFields) {
 					sb.append(graphQLField.toString());
-					sb.append(",");
+					sb.append(", ");
 				}
 
-				sb.setLength(sb.length() - 1);
+				sb.setLength(sb.length() - 2);
 
 				sb.append("}");
 			}

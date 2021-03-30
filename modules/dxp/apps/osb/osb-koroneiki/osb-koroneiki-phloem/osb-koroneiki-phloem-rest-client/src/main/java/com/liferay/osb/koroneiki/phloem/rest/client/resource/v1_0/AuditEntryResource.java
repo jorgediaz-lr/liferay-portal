@@ -129,14 +129,30 @@ public interface AuditEntryResource {
 			return this;
 		}
 
+		public Builder parameters(String... parameters) {
+			if ((parameters.length % 2) != 0) {
+				throw new IllegalArgumentException(
+					"Parameters length is not an even number");
+			}
+
+			for (int i = 0; i < parameters.length; i += 2) {
+				String parameterName = String.valueOf(parameters[i]);
+				String parameterValue = String.valueOf(parameters[i + 1]);
+
+				_parameters.put(parameterName, parameterValue);
+			}
+
+			return this;
+		}
+
 		private Builder() {
 		}
 
 		private Map<String, String> _headers = new LinkedHashMap<>();
 		private String _host = "localhost";
 		private Locale _locale;
-		private String _login = "test@liferay.com";
-		private String _password = "test";
+		private String _login = "";
+		private String _password = "";
 		private Map<String, String> _parameters = new LinkedHashMap<>();
 		private int _port = 8080;
 		private String _scheme = "http";
@@ -155,11 +171,28 @@ public interface AuditEntryResource {
 
 			String content = httpResponse.getContent();
 
-			_logger.fine("HTTP response content: " + content);
+			if ((httpResponse.getStatusCode() / 100) != 2) {
+				_logger.log(
+					Level.WARNING,
+					"Unable to process HTTP response content: " + content);
+				_logger.log(
+					Level.WARNING,
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.log(
+					Level.WARNING,
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
 
-			_logger.fine("HTTP response message: " + httpResponse.getMessage());
-			_logger.fine(
-				"HTTP response status code: " + httpResponse.getStatusCode());
+				throw new Problem.ProblemException(Problem.toDTO(content));
+			}
+			else {
+				_logger.fine("HTTP response content: " + content);
+				_logger.fine(
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.fine(
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
+			}
 
 			try {
 				return Page.of(content, AuditEntrySerDes::toDTO);
@@ -209,8 +242,9 @@ public interface AuditEntryResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/audit-entries",
-				accountKey);
+						"/o/koroneiki-rest/v1.0/accounts/{accountKey}/audit-entries");
+
+			httpInvoker.path("accountKey", accountKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -224,11 +258,28 @@ public interface AuditEntryResource {
 
 			String content = httpResponse.getContent();
 
-			_logger.fine("HTTP response content: " + content);
+			if ((httpResponse.getStatusCode() / 100) != 2) {
+				_logger.log(
+					Level.WARNING,
+					"Unable to process HTTP response content: " + content);
+				_logger.log(
+					Level.WARNING,
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.log(
+					Level.WARNING,
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
 
-			_logger.fine("HTTP response message: " + httpResponse.getMessage());
-			_logger.fine(
-				"HTTP response status code: " + httpResponse.getStatusCode());
+				throw new Problem.ProblemException(Problem.toDTO(content));
+			}
+			else {
+				_logger.fine("HTTP response content: " + content);
+				_logger.fine(
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.fine(
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
+			}
 
 			try {
 				return AuditEntrySerDes.toDTO(content);
@@ -270,8 +321,9 @@ public interface AuditEntryResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/audit-entries/{auditEntryKey}",
-				auditEntryKey);
+						"/o/koroneiki-rest/v1.0/audit-entries/{auditEntryKey}");
+
+			httpInvoker.path("auditEntryKey", auditEntryKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -289,11 +341,28 @@ public interface AuditEntryResource {
 
 			String content = httpResponse.getContent();
 
-			_logger.fine("HTTP response content: " + content);
+			if ((httpResponse.getStatusCode() / 100) != 2) {
+				_logger.log(
+					Level.WARNING,
+					"Unable to process HTTP response content: " + content);
+				_logger.log(
+					Level.WARNING,
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.log(
+					Level.WARNING,
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
 
-			_logger.fine("HTTP response message: " + httpResponse.getMessage());
-			_logger.fine(
-				"HTTP response status code: " + httpResponse.getStatusCode());
+				throw new Problem.ProblemException(Problem.toDTO(content));
+			}
+			else {
+				_logger.fine("HTTP response content: " + content);
+				_logger.fine(
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.fine(
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
+			}
 
 			try {
 				return Page.of(content, AuditEntrySerDes::toDTO);
@@ -343,8 +412,9 @@ public interface AuditEntryResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/contact-roles/{contactRoleKey}/audit-entries",
-				contactRoleKey);
+						"/o/koroneiki-rest/v1.0/contact-roles/{contactRoleKey}/audit-entries");
+
+			httpInvoker.path("contactRoleKey", contactRoleKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -362,11 +432,28 @@ public interface AuditEntryResource {
 
 			String content = httpResponse.getContent();
 
-			_logger.fine("HTTP response content: " + content);
+			if ((httpResponse.getStatusCode() / 100) != 2) {
+				_logger.log(
+					Level.WARNING,
+					"Unable to process HTTP response content: " + content);
+				_logger.log(
+					Level.WARNING,
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.log(
+					Level.WARNING,
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
 
-			_logger.fine("HTTP response message: " + httpResponse.getMessage());
-			_logger.fine(
-				"HTTP response status code: " + httpResponse.getStatusCode());
+				throw new Problem.ProblemException(Problem.toDTO(content));
+			}
+			else {
+				_logger.fine("HTTP response content: " + content);
+				_logger.fine(
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.fine(
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
+			}
 
 			try {
 				return Page.of(content, AuditEntrySerDes::toDTO);
@@ -416,8 +503,9 @@ public interface AuditEntryResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/contacts/by-uuid/{contactUuid}/audit-entries",
-				contactUuid);
+						"/o/koroneiki-rest/v1.0/contacts/by-uuid/{contactUuid}/audit-entries");
+
+			httpInvoker.path("contactUuid", contactUuid);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -435,11 +523,28 @@ public interface AuditEntryResource {
 
 			String content = httpResponse.getContent();
 
-			_logger.fine("HTTP response content: " + content);
+			if ((httpResponse.getStatusCode() / 100) != 2) {
+				_logger.log(
+					Level.WARNING,
+					"Unable to process HTTP response content: " + content);
+				_logger.log(
+					Level.WARNING,
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.log(
+					Level.WARNING,
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
 
-			_logger.fine("HTTP response message: " + httpResponse.getMessage());
-			_logger.fine(
-				"HTTP response status code: " + httpResponse.getStatusCode());
+				throw new Problem.ProblemException(Problem.toDTO(content));
+			}
+			else {
+				_logger.fine("HTTP response content: " + content);
+				_logger.fine(
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.fine(
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
+			}
 
 			try {
 				return Page.of(content, AuditEntrySerDes::toDTO);
@@ -489,8 +594,9 @@ public interface AuditEntryResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/team-roles/{teamRoleKey}/audit-entries",
-				teamRoleKey);
+						"/o/koroneiki-rest/v1.0/team-roles/{teamRoleKey}/audit-entries");
+
+			httpInvoker.path("teamRoleKey", teamRoleKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -507,11 +613,28 @@ public interface AuditEntryResource {
 
 			String content = httpResponse.getContent();
 
-			_logger.fine("HTTP response content: " + content);
+			if ((httpResponse.getStatusCode() / 100) != 2) {
+				_logger.log(
+					Level.WARNING,
+					"Unable to process HTTP response content: " + content);
+				_logger.log(
+					Level.WARNING,
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.log(
+					Level.WARNING,
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
 
-			_logger.fine("HTTP response message: " + httpResponse.getMessage());
-			_logger.fine(
-				"HTTP response status code: " + httpResponse.getStatusCode());
+				throw new Problem.ProblemException(Problem.toDTO(content));
+			}
+			else {
+				_logger.fine("HTTP response content: " + content);
+				_logger.fine(
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.fine(
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
+			}
 
 			try {
 				return Page.of(content, AuditEntrySerDes::toDTO);
@@ -561,8 +684,9 @@ public interface AuditEntryResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/koroneiki-rest/v1.0/teams/{teamKey}/audit-entries",
-				teamKey);
+						"/o/koroneiki-rest/v1.0/teams/{teamKey}/audit-entries");
+
+			httpInvoker.path("teamKey", teamKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);

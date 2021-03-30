@@ -28,6 +28,8 @@ import com.liferay.portal.vulcan.util.ObjectMapperUtil;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.io.Serializable;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
@@ -49,14 +51,17 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @generated
  */
 @Generated("")
-@GraphQLName("EntitlementDefinition")
+@GraphQLName(
+	description = "A definition of what an entitlement is.",
+	value = "EntitlementDefinition"
+)
 @JsonFilter("Liferay.Vulcan")
 @Schema(
-	requiredProperties = {"name"},
-	description = "A definition of what an entitlement is."
+	description = "A definition of what an entitlement is.",
+	requiredProperties = {"name"}
 )
 @XmlRootElement(name = "EntitlementDefinition")
-public class EntitlementDefinition {
+public class EntitlementDefinition implements Serializable {
 
 	public static EntitlementDefinition toDTO(String json) {
 		return ObjectMapperUtil.readValue(EntitlementDefinition.class, json);
@@ -461,6 +466,7 @@ public class EntitlementDefinition {
 	}
 
 	@Schema(
+		accessMode = Schema.AccessMode.READ_ONLY,
 		defaultValue = "com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.EntitlementDefinition",
 		name = "x-class-name"
 	)
@@ -506,6 +512,16 @@ public class EntitlementDefinition {
 		return string.replaceAll("\"", "\\\\\"");
 	}
 
+	private static boolean _isArray(Object value) {
+		if (value == null) {
+			return false;
+		}
+
+		Class<?> clazz = value.getClass();
+
+		return clazz.isArray();
+	}
+
 	private static String _toJSON(Map<String, ?> map) {
 		StringBuilder sb = new StringBuilder("{");
 
@@ -520,13 +536,11 @@ public class EntitlementDefinition {
 
 			sb.append("\"");
 			sb.append(entry.getKey());
-			sb.append("\":");
+			sb.append("\": ");
 
 			Object value = entry.getValue();
 
-			Class<?> clazz = value.getClass();
-
-			if (clazz.isArray()) {
+			if (_isArray(value)) {
 				sb.append("[");
 
 				Object[] valueArray = (Object[])value;
@@ -561,7 +575,7 @@ public class EntitlementDefinition {
 			}
 
 			if (iterator.hasNext()) {
-				sb.append(",");
+				sb.append(", ");
 			}
 		}
 

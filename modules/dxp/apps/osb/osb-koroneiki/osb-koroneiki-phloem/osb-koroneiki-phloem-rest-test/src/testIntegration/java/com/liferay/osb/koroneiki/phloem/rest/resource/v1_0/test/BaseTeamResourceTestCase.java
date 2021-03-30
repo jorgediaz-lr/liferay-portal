@@ -115,7 +115,9 @@ public abstract class BaseTeamResourceTestCase {
 
 		TeamResource.Builder builder = TeamResource.builder();
 
-		teamResource = builder.locale(
+		teamResource = builder.authentication(
+			"test@liferay.com", "test"
+		).locale(
 			LocaleUtil.getDefault()
 		).build();
 	}
@@ -213,7 +215,7 @@ public abstract class BaseTeamResourceTestCase {
 		String irrelevantAccountKey =
 			testGetAccountAccountKeyAssignedTeamsPage_getIrrelevantAccountKey();
 
-		if ((irrelevantAccountKey != null)) {
+		if (irrelevantAccountKey != null) {
 			Team irrelevantTeam =
 				testGetAccountAccountKeyAssignedTeamsPage_addTeam(
 					irrelevantAccountKey, randomIrrelevantTeam());
@@ -317,7 +319,7 @@ public abstract class BaseTeamResourceTestCase {
 		String irrelevantAccountKey =
 			testGetAccountAccountKeyTeamsPage_getIrrelevantAccountKey();
 
-		if ((irrelevantAccountKey != null)) {
+		if (irrelevantAccountKey != null) {
 			Team irrelevantTeam = testGetAccountAccountKeyTeamsPage_addTeam(
 				irrelevantAccountKey, randomIrrelevantTeam());
 
@@ -935,7 +937,7 @@ public abstract class BaseTeamResourceTestCase {
 		}
 	}
 
-	protected void assertValid(Team team) {
+	protected void assertValid(Team team) throws Exception {
 		boolean valid = true;
 
 		if (team.getDateCreated() == null) {
@@ -1224,9 +1226,11 @@ public abstract class BaseTeamResourceTestCase {
 					return false;
 				}
 			}
+
+			return true;
 		}
 
-		return true;
+		return false;
 	}
 
 	protected java.util.Collection<EntityField> getEntityFields()
@@ -1499,12 +1503,12 @@ public abstract class BaseTeamResourceTestCase {
 						_parameterMap.entrySet()) {
 
 					sb.append(entry.getKey());
-					sb.append(":");
+					sb.append(": ");
 					sb.append(entry.getValue());
-					sb.append(",");
+					sb.append(", ");
 				}
 
-				sb.setLength(sb.length() - 1);
+				sb.setLength(sb.length() - 2);
 
 				sb.append(")");
 			}
@@ -1514,10 +1518,10 @@ public abstract class BaseTeamResourceTestCase {
 
 				for (GraphQLField graphQLField : _graphQLFields) {
 					sb.append(graphQLField.toString());
-					sb.append(",");
+					sb.append(", ");
 				}
 
-				sb.setLength(sb.length() - 1);
+				sb.setLength(sb.length() - 2);
 
 				sb.append("}");
 			}
