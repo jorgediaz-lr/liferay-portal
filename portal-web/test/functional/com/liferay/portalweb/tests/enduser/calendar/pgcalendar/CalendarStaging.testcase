@@ -240,8 +240,9 @@ definition {
 			calendarType = "Other Calendars");
 	}
 
+	@description = "This is a use case for LPS-74684."
 	@priority = "5"
-	test UserCannotReceiveCalendarEventInviteIfEventisUnpublishedThroughStaging {
+	test InviteUserViaUnpublishedEventAndViewNoResponse {
 		Navigator.openSiteURL(siteName = "Site Name");
 
 		ProductMenu.gotoPortlet(
