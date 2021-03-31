@@ -35,7 +35,9 @@ function Generate(props) {
 				<GeneralInformation {...props} />
 			)}
 
-			{generateLicense.showSpecificDetails && <SpecificDetails />}
+			{generateLicense.showSpecificDetails && (
+				<SpecificDetails redirect={props.redirect} />
+			)}
 		</>
 	);
 }

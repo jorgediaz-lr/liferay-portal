@@ -13,121 +13,41 @@ import {Record} from 'immutable';
 import React, {useContext, useState} from 'react';
 
 const GenerateLicense = Record({
+	accountCode: '',
 	accountKey: '',
 	accountName: '',
 	complimentary: false,
 	description: '',
 	expirationDate: null,
+	licenseEntry: {
+		licenseEntryId: '',
+		licenseEntryName: '',
+		licenseEntryType: ''
+	},
 	licenseKeyGenerated: '',
 	owner: '',
-	productPurchaseKey: null,
-	selectedProduct: null,
-	selectedType: '',
-	selectedVersion: '',
+	product: {productKey: '', productName: ''},
+	productPurchaseKey: '',
 	showSpecificDetails: false,
 	sizing: '',
-	startDate: null
+	startDate: null,
+	version: ''
 });
 
 const GenerateLicenseContext = React.createContext();
 
 export function GenerateLicenseProvider({children}) {
-	const [generateLicense, setGenerateLicense] = useState(GenerateLicense);
+	const [generateLicense, setGenerateLicense] = useState(
+		new GenerateLicense()
+	);
 
 	return (
 		<GenerateLicenseContext.Provider
 			value={[
 				generateLicense,
 				{
-					setAccountKey(key) {
-						setGenerateLicense(
-							generateLicense.set('accountKey', key)
-						);
-					},
-					setAccountName(name) {
-						setGenerateLicense(
-							generateLicense
-								.set('accountName', name)
-								.update('description', name => {
-									const existingValue = generateLicense.get(
-										'description'
-									);
-
-									return existingValue === ''
-										? name
-										: existingValue;
-								})
-								.update('owner', name => {
-									const existingValue = generateLicense.get(
-										'owner'
-									);
-
-									return existingValue === ''
-										? name
-										: existingValue;
-								})
-						);
-					},
-					setComplimentary(complimentary = true) {
-						setGenerateLicense(
-							generateLicense.set('complimentary', complimentary)
-						);
-					},
-					setDescription(description) {
-						setGenerateLicense(
-							generateLicense.set('description', description)
-						);
-					},
-					setExpirationDate(date) {
-						setGenerateLicense(
-							generateLicense.set('expirationDate', date)
-						);
-					},
-					setInstanceSize(sizing) {
-						setGenerateLicense(
-							generateLicense.set('sizing', sizing)
-						);
-					},
-					setLicensesGenerated(licensesGenerated) {
-						setGenerateLicense(
-							generateLicense.set(
-								'licenseKeyGenerated',
-								licensesGenerated
-							)
-						);
-					},
-					setOwner(owner) {
-						setGenerateLicense(generateLicense.set('owner', owner));
-					},
-					setProductPurchaseKey(key) {
-						setGenerateLicense(
-							generateLicense.set('productPurchaseKey', key)
-						);
-					},
-					setSelectedProduct(product) {
-						setGenerateLicense(
-							generateLicense.set('selectedProduct', product)
-						);
-					},
-					setSelectedType(type) {
-						setGenerateLicense(
-							generateLicense.set('selectedType', type)
-						);
-					},
-					setSelectedVersion(version) {
-						setGenerateLicense(
-							generateLicense.set('selectedVersion', version)
-						);
-					},
-					setShowSpecificDetails(show = true) {
-						setGenerateLicense(
-							generateLicense.set('showSpecificDetails', show)
-						);
-					},
-					setStartDate(date) {
-						setGenerateLicense(
-							generateLicense.set('startDate', date)
-						);
+					updateLicense(updater) {
+						setGenerateLicense(updater(generateLicense));
 					}
 				}
 			]}

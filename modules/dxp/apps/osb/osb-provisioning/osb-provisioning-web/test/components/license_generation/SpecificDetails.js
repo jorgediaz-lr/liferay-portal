@@ -13,9 +13,14 @@ import {cleanup, render} from '@testing-library/react';
 import React from 'react';
 
 import SpecificDetails from '../../../src/main/resources/META-INF/resources/js/components/license_generation/SpecificDetails';
+import {GenerateLicenseProvider} from '../../../src/main/resources/META-INF/resources/js/hooks/generateLicense';
 
 function renderSpecificDetails(props) {
-	return render(<SpecificDetails {...props} />);
+	return render(
+		<GenerateLicenseProvider>
+			<SpecificDetails redirect={'/redirect/url'} {...props} />
+		</GenerateLicenseProvider>
+	);
 }
 
 describe('SpecificDetails', () => {
@@ -25,5 +30,17 @@ describe('SpecificDetails', () => {
 		const {container} = renderSpecificDetails();
 
 		expect(container).toBeTruthy();
+	});
+
+	it('displays a Previous Step button', () => {
+		const {getByText} = renderSpecificDetails();
+
+		getByText('previous-step');
+	});
+
+	it('displays a Cancel button', () => {
+		const {getByText} = renderSpecificDetails();
+
+		getByText('cancel');
 	});
 });

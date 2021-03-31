@@ -13,6 +13,7 @@ import {cleanup, render, within} from '@testing-library/react';
 import React from 'react';
 
 import Purchases from '../../../src/main/resources/META-INF/resources/js/components/license_generation/Purchases';
+import {GenerateLicenseProvider} from '../../../src/main/resources/META-INF/resources/js/hooks/generateLicense';
 import {generateNewDate} from '../../../src/main/resources/META-INF/resources/js/utilities/date';
 
 const TODAY = new Date();
@@ -25,27 +26,29 @@ function formatDate(date) {
 
 function renderPurchases({...props}) {
 	return render(
-		<Purchases
-			purchased={[
-				{
-					expirationDate: '2020-04-16',
-					instanceSize: 1,
-					licenseKeysGenerated: '0 / 1',
-					perpetual: false,
-					productPurchaseKey: 'PURCHKEY-123',
-					startDate: '2020-03-17'
-				},
-				{
-					expirationDate: '',
-					instanceSize: 1,
-					licenseKeysGenerated: '1 / 1',
-					perpetual: true,
-					productPurchaseKey: 'PURCHKEY-456',
-					startDate: ''
-				}
-			]}
-			{...props}
-		/>
+		<GenerateLicenseProvider>
+			<Purchases
+				purchased={[
+					{
+						expirationDate: '2020-04-16',
+						instanceSize: 1,
+						licenseKeysGenerated: '0 / 1',
+						perpetual: false,
+						productPurchaseKey: 'PURCHKEY-123',
+						startDate: '2020-03-17'
+					},
+					{
+						expirationDate: '',
+						instanceSize: 1,
+						licenseKeysGenerated: '1 / 1',
+						perpetual: true,
+						productPurchaseKey: 'PURCHKEY-456',
+						startDate: ''
+					}
+				]}
+				{...props}
+			/>
+		</GenerateLicenseProvider>
 	);
 }
 

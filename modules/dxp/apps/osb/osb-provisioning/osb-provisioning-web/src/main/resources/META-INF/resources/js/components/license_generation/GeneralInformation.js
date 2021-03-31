@@ -11,13 +11,15 @@
 
 import capitalize from 'lodash.capitalize';
 import PropTypes from 'prop-types';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
+import {useGenerateLicense} from '../../hooks/generateLicense';
 import CancelLink from '../CancelLink';
 import Purchases from './Purchases';
 import SelectAccount from './SelectAccount';
 
 function GeneralInformation({
+	accountCode = '',
 	accountKey = '',
 	accountName = '',
 	licensableProducts = [],
@@ -26,13 +28,40 @@ function GeneralInformation({
 	selectAccountActionURL,
 	selectAccountRenderURL
 }) {
-	const [selectedProduct, setSelectedProduct] = useState(null);
-	const [selectedType, setSelectedType] = useState('');
-	const [selectedVersion, setSelectedVersion] = useState('');
+	const [
+		{licenseEntry, product, version},
+		{updateAccountName, updateLicense}
+	] = useGenerateLicense();
+	const {licenseEntryId} = licenseEntry;
 
-	function getAvailableTypes() {
-		if (selectedProduct && selectedVersion) {
-			return selectedProduct.productVersions[selectedVersion];
+	const [selectedProduct, setSelectedProduct] = useState(
+		findCurrentProduct(product ? product.productKey : null)
+	);
+
+	useEffect(() => {
+		updateLicense(generateLicense =>
+			generateLicense
+				.set('accountCode', accountCode)
+				.set('accountKey', accountKey)
+				.set('accountName', accountName)
+		);
+	}, [
+		accountCode,
+		accountKey,
+		accountName,
+		updateAccountName,
+		updateLicense
+	]);
+
+	function findCurrentProduct(productKey) {
+		return licensableProducts.find(
+			product => product.productKey === productKey
+		);
+	}
+
+	function getAvailableLicenseEntries() {
+		if (selectedProduct && version) {
+			return selectedProduct.productVersions[version];
 		}
 	}
 
@@ -42,37 +71,71 @@ function GeneralInformation({
 		}
 	}
 
-	function getType() {
-		const availableTypes = getAvailableTypes();
+	function getLicenseEntry(licenseEntryId) {
+		const availableLicenseEntries = getAvailableLicenseEntries();
 
-		if (availableTypes && selectedType) {
-			const type = availableTypes.find(
-				type => type.licenseEntryId === Number(selectedType)
+		if (availableLicenseEntries && licenseEntryId) {
+			return availableLicenseEntries.find(
+				entry => entry.licenseEntryId === Number(licenseEntryId)
 			);
-
-			return type ? type.licenseEntryType : undefined;
 		}
 	}
 
-	function handleProductOnChange(event) {
-		const selectedProductKey = event.target.value;
+	function handleLicenseEntryOnChange(event) {
+		const currentLicenseEntry = getLicenseEntry(event.target.value);
 
-		setSelectedProduct(
-			licensableProducts.find(
-				product => product.productKey === selectedProductKey
-			)
+		updateLicense(generateLicense =>
+			generateLicense
+				.updateIn(['licenseEntry', 'licenseEntryId'], licenseEntryId =>
+					currentLicenseEntry
+						? currentLicenseEntry.licenseEntryId
+						: licenseEntryId
+				)
+				.updateIn(
+					['licenseEntry', 'licenseEntryName'],
+					licenseEntryName =>
+						currentLicenseEntry
+							? currentLicenseEntry.licenseEntryName
+							: licenseEntryName
+				)
+				.updateIn(
+					['licenseEntry', 'licenseEntryType'],
+					licenseEntryType =>
+						currentLicenseEntry
+							? currentLicenseEntry.licenseEntryType
+							: licenseEntryType
+				)
 		);
-		setSelectedVersion('');
-		setSelectedType('');
 	}
 
-	function handleTypeOnChange(event) {
-		setSelectedType(event.target.value);
+	function handleProductOnChange(event) {
+		const currentProduct = findCurrentProduct(event.target.value);
+
+		setSelectedProduct(currentProduct);
+
+		updateLicense(generateLicense =>
+			generateLicense
+				.set('version', '')
+				.setIn(['licenseEntry', 'licenseEntryId'], '')
+				.setIn(['licenseEntry', 'licenseEntryName'], '')
+				.setIn(['licenseEntry', 'licenseEntryType'], '')
+				.updateIn(['product', 'productKey'], productKey =>
+					currentProduct ? currentProduct.productKey : productKey
+				)
+				.updateIn(['product', 'productName'], productName =>
+					currentProduct ? currentProduct.productName : productName
+				)
+		);
 	}
 
 	function handleVersionOnChange(event) {
-		setSelectedVersion(event.target.value);
-		setSelectedType('');
+		updateLicense(generateLicense =>
+			generateLicense
+				.set('version', event.target.value)
+				.setIn(['licenseEntry', 'licenseEntryId'], '')
+				.setIn(['licenseEntry', 'licenseEntryName'], '')
+				.setIn(['licenseEntry', 'licenseEntryType'], '')
+		);
 	}
 
 	return (
@@ -113,18 +176,27 @@ function GeneralInformation({
 								disabled={!licensableProducts.length}
 								id="product"
 								onChange={handleProductOnChange}
+								value={product.productKey}
 							>
 								{!!licensableProducts.length && (
 									<>
 										<option value=""></option>
-										{licensableProducts.map(product => (
-											<option
-												key={product.productKey}
-												value={product.productKey}
-											>
-												{product.productName}
-											</option>
-										))}
+										{licensableProducts.map(
+											availableProduct => (
+												<option
+													key={
+														availableProduct.productKey
+													}
+													value={
+														availableProduct.productKey
+													}
+												>
+													{
+														availableProduct.productName
+													}
+												</option>
+											)
+										)}
 									</>
 								)}
 							</select>
@@ -139,22 +211,22 @@ function GeneralInformation({
 
 							<select
 								className="form-control"
-								disabled={selectedProduct === null}
+								disabled={!product.productKey}
 								id="version"
 								onChange={handleVersionOnChange}
-								value={selectedVersion}
+								value={version}
 							>
-								{!!selectedProduct && (
+								{!!product.productKey && (
 									<>
 										<option value=""></option>
 										{!!getAvailableVersions() &&
 											getAvailableVersions().map(
-												version => (
+												availableVersion => (
 													<option
-														key={version}
-														value={version}
+														key={availableVersion}
+														value={availableVersion}
 													>
-														{version}
+														{availableVersion}
 													</option>
 												)
 											)}
@@ -170,27 +242,33 @@ function GeneralInformation({
 
 							<select
 								className="form-control"
-								disabled={!selectedVersion}
+								disabled={!version}
 								id="type"
-								onChange={handleTypeOnChange}
-								value={selectedType}
+								onChange={handleLicenseEntryOnChange}
+								value={licenseEntryId}
 							>
-								{!!selectedVersion && (
+								{!!version && (
 									<>
 										<option value=""></option>
-										{!!getAvailableTypes() &&
-											getAvailableTypes().map(type => (
-												<option
-													key={type.licenseEntryId}
-													value={type.licenseEntryId}
-												>
-													{`${
-														type.licenseEntryName
-													} (${capitalize(
-														type.licenseEntryType
-													)})`}
-												</option>
-											))}
+										{!!getAvailableLicenseEntries() &&
+											getAvailableLicenseEntries().map(
+												entry => (
+													<option
+														key={
+															entry.licenseEntryId
+														}
+														value={
+															entry.licenseEntryId
+														}
+													>
+														{`${
+															entry.licenseEntryName
+														} (${capitalize(
+															entry.licenseEntryType
+														)})`}
+													</option>
+												)
+											)}
 									</>
 								)}
 							</select>
@@ -198,13 +276,11 @@ function GeneralInformation({
 					</div>
 				</div>
 
-				{!!selectedType && (
+				{!!licenseEntryId && (
 					<Purchases
 						detached={selectedProduct.detached}
-						purchased={
-							purchasedProducts[selectedProduct.productKey]
-						}
-						type={getType()}
+						purchased={purchasedProducts[product.productKey]}
+						type={licenseEntry.licenseEntryType}
 					/>
 				)}
 
@@ -215,6 +291,7 @@ function GeneralInformation({
 }
 
 GeneralInformation.propTypes = {
+	accountCode: PropTypes.string,
 	accountKey: PropTypes.string,
 	accountName: PropTypes.string,
 	licensableProducts: PropTypes.arrayOf(

@@ -13,8 +13,17 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import {useGenerateLicense} from '../../hooks/generateLicense';
+import CancelLink from '../CancelLink';
 
-function SpecificDetails() {
+function SpecificDetails({redirect}) {
+	const [generateLicense, {updateLicense}] = useGenerateLicense();
+
+	function handleDisplayPreviousPage() {
+		updateLicense(generateLicense =>
+			generateLicense.set('showSpecificDetails', false)
+		);
+	}
+
 	return (
 		<>
 			<div className="page-steps">
@@ -22,15 +31,22 @@ function SpecificDetails() {
 
 				<span>{Liferay.Language.get('step-2-of-2')}</span>
 			</div>
+
+			<button
+				className="btn btn-secondary"
+				onClick={handleDisplayPreviousPage}
+				type="button"
+			>
+				{Liferay.Language.get('previous-step')}
+			</button>
+
+			<CancelLink redirect={redirect} />
 		</>
 	);
 }
 
 SpecificDetails.propTypes = {
-	expirationDate: PropTypes.string,
-	instanceSize: PropTypes.number,
-	licenseKeysGenerated: PropTypes.string,
-	startDate: PropTypes.string
+	redirect: PropTypes.string
 };
 
 export default SpecificDetails;

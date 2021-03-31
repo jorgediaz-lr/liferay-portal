@@ -29,26 +29,20 @@ function Purchase({
 }) {
 	const [sizing, setSizing] = useState();
 
-	const [
-		,
-		{
-			setExpirationDate,
-			setInstanceSize,
-			setLicensesGenerated,
-			setShowSpecificDetails,
-			setStartDate
-		}
-	] = useGenerateLicense();
+	const [, {updateLicense}] = useGenerateLicense();
 
 	function handleChoosePurchase() {
-		// TODO
-		setExpirationDate(expirationDate);
-		setStartDate(startDate);
+		updateLicense(generateLicense =>
+			generateLicense
+				// TODO
+				.set('expirationDate', expirationDate)
+				.set('startDate', startDate)
 
-		setLicensesGenerated(licenseKeysGenerated);
-		setInstanceSize(sizing ? sizing : instanceSize);
+				.set('licenseKeyGenerated', licenseKeysGenerated)
+				.set('sizing', sizing ? sizing : instanceSize)
 
-		setShowSpecificDetails();
+				.set('showSpecificDetails', true)
+		);
 	}
 
 	function handleSizingChange(event) {
