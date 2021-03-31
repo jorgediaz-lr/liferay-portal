@@ -15,6 +15,7 @@ import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
 
 import {NAMESPACE} from '../../utilities/constants';
+import CancelLink from '../CancelLink';
 import ContactEntry from './ContactEntry';
 
 export default function AddContact({
@@ -175,9 +176,7 @@ export default function AddContact({
 					{Liferay.Language.get('save')}
 				</button>
 
-				<a className="btn btn-secondary" href={redirect}>
-					{Liferay.Language.get('cancel')}
-				</a>
+				<CancelLink redirect={redirect} />
 			</div>
 		</>
 	);

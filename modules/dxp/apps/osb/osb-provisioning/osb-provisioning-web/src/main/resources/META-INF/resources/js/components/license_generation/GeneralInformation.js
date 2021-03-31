@@ -13,6 +13,7 @@ import capitalize from 'lodash.capitalize';
 import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 
+import CancelLink from '../CancelLink';
 import Purchases from './Purchases';
 import SelectAccount from './SelectAccount';
 
@@ -207,9 +208,7 @@ function GeneralInformation({
 					/>
 				)}
 
-				<a className="btn btn-secondary" href={redirect}>
-					{Liferay.Language.get('cancel')}
-				</a>
+				<CancelLink redirect={redirect} />
 			</div>
 		</>
 	);

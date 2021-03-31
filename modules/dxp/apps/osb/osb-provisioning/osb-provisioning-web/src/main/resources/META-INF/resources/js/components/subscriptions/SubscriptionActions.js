@@ -18,6 +18,7 @@ import {
 	EDIT_SUBSCRIPTIONS,
 	NAMESPACE
 } from '../../utilities/constants';
+import CancelLink from '../CancelLink';
 
 function SubscriptionActions({
 	backURL,
@@ -116,13 +117,7 @@ function SubscriptionActions({
 					</a>
 				)}
 
-				<a
-					className="btn btn-secondary"
-					href={redirectURL}
-					type="button"
-				>
-					{Liferay.Language.get('cancel')}
-				</a>
+				<CancelLink redirect={redirectURL} />
 			</div>
 		</form>
 	);
