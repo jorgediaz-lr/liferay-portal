@@ -334,7 +334,7 @@ definition {
 			vocabularyName2 = "Vocabulary Name 2");
 	}
 
-	@description = "This is a use case for LPS-74684."
+	@description = "This is a use case for LPS-71944."
 	@priority = "5"
 	test ADTChangeTemplatePortletPreferencesMethodContracts {
 		property testray.component.names = "Asset Publisher,Content and Application Templates";
