@@ -43,6 +43,7 @@ public class BaseConnection implements Connection {
 		ConnectionFactory connectionFactory = new ConnectionFactory();
 
 		connectionFactory.setAutomaticRecoveryEnabled(true);
+		connectionFactory.setConnectionTimeout(5000);
 		connectionFactory.setHost(_host);
 		connectionFactory.setPassword(_password);
 		connectionFactory.setPort(_port);
