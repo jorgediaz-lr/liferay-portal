@@ -272,7 +272,7 @@ public class WebContactIdentityProvider implements ContactIdentityProvider {
 				"<br />"));
 
 		try {
-			InternetAddress from = new InternetAddress("noreply@liferay.com");
+			InternetAddress from = new InternetAddress("no-reply@liferay.com");
 			InternetAddress to = new InternetAddress(_errorEmailAddress);
 
 			MailMessage mailMessage = new MailMessage(
