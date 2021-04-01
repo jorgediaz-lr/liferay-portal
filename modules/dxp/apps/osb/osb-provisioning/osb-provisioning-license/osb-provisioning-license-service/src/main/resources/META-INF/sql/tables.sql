@@ -36,6 +36,7 @@ create table Provisioning_LicenseKey (
 	productId VARCHAR(75) null,
 	productVersion VARCHAR(75) null,
 	clusterId LONG,
+	name VARCHAR(75) null,
 	owner VARCHAR(75) null,
 	maxServers INTEGER,
 	maxConcurrentUsers LONG,

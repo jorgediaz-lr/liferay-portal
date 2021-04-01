@@ -65,6 +65,7 @@ public class LicenseKeyWrapper
 		attributes.put("productId", getProductId());
 		attributes.put("productVersion", getProductVersion());
 		attributes.put("clusterId", getClusterId());
+		attributes.put("name", getName());
 		attributes.put("owner", getOwner());
 		attributes.put("maxServers", getMaxServers());
 		attributes.put("maxConcurrentUsers", getMaxConcurrentUsers());
@@ -226,6 +227,12 @@ public class LicenseKeyWrapper
 
 		if (clusterId != null) {
 			setClusterId(clusterId);
+		}
+
+		String name = (String)attributes.get("name");
+
+		if (name != null) {
+			setName(name);
 		}
 
 		String owner = (String)attributes.get("owner");
@@ -623,6 +630,16 @@ public class LicenseKeyWrapper
 	@Override
 	public long getMvccVersion() {
 		return model.getMvccVersion();
+	}
+
+	/**
+	 * Returns the name of this license key.
+	 *
+	 * @return the name of this license key
+	 */
+	@Override
+	public String getName() {
+		return model.getName();
 	}
 
 	/**
@@ -1063,6 +1080,16 @@ public class LicenseKeyWrapper
 	@Override
 	public void setMvccVersion(long mvccVersion) {
 		model.setMvccVersion(mvccVersion);
+	}
+
+	/**
+	 * Sets the name of this license key.
+	 *
+	 * @param name the name of this license key
+	 */
+	@Override
+	public void setName(String name) {
+		model.setName(name);
 	}
 
 	/**

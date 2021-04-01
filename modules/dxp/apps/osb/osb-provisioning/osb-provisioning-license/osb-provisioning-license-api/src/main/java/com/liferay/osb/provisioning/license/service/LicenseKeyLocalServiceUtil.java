@@ -74,7 +74,7 @@ public class LicenseKeyLocalServiceUtil {
 				product,
 			String accountKey, String productPurchaseKey, String accountCode,
 			String accountName, String productVersion, long clusterId,
-			String owner, int maxServers, int maxHttpSessions,
+			String name, String owner, int maxServers, int maxHttpSessions,
 			int maxConcurrentUsers, int maxUsers, int sizing,
 			String description, String[] hostNames, String[] ipAddresses,
 			String[] macAddresses, String[] serverIds, java.util.Date startDate,
@@ -84,7 +84,7 @@ public class LicenseKeyLocalServiceUtil {
 
 		return getService().addLicenseKey(
 			userId, licenseEntry, product, accountKey, productPurchaseKey,
-			accountCode, accountName, productVersion, clusterId, owner,
+			accountCode, accountName, productVersion, clusterId, name, owner,
 			maxServers, maxHttpSessions, maxConcurrentUsers, maxUsers, sizing,
 			description, hostNames, ipAddresses, macAddresses, serverIds,
 			startDate, expirationDate, additionalInfo, complimentary, active);
@@ -94,7 +94,7 @@ public class LicenseKeyLocalServiceUtil {
 			long userId, long licenseEntryId, String productKey,
 			String accountKey, String productPurchaseKey, String accountCode,
 			String accountName, String productVersion, long clusterId,
-			String owner, int maxServers, int maxHttpSessions,
+			String name, String owner, int maxServers, int maxHttpSessions,
 			int maxConcurrentUsers, int maxUsers, int sizing,
 			String description, String[] hostNames, String[] ipAddresses,
 			String[] macAddresses, String[] serverIds, java.util.Date startDate,
@@ -104,7 +104,7 @@ public class LicenseKeyLocalServiceUtil {
 
 		return getService().addLicenseKey(
 			userId, licenseEntryId, productKey, accountKey, productPurchaseKey,
-			accountCode, accountName, productVersion, clusterId, owner,
+			accountCode, accountName, productVersion, clusterId, name, owner,
 			maxServers, maxHttpSessions, maxConcurrentUsers, maxUsers, sizing,
 			description, hostNames, ipAddresses, macAddresses, serverIds,
 			startDate, expirationDate, complimentary, active);

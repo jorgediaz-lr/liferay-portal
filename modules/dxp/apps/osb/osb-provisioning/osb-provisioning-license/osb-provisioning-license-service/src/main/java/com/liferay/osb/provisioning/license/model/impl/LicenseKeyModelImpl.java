@@ -82,15 +82,15 @@ public class LicenseKeyModelImpl
 		{"licenseEntryType", Types.VARCHAR}, {"licenseVersion", Types.INTEGER},
 		{"productName", Types.VARCHAR}, {"productId", Types.VARCHAR},
 		{"productVersion", Types.VARCHAR}, {"clusterId", Types.BIGINT},
-		{"owner", Types.VARCHAR}, {"maxServers", Types.INTEGER},
-		{"maxConcurrentUsers", Types.BIGINT}, {"maxUsers", Types.BIGINT},
-		{"maxHttpSessions", Types.INTEGER}, {"sizing", Types.INTEGER},
-		{"description", Types.VARCHAR}, {"hostName", Types.VARCHAR},
-		{"ipAddresses", Types.VARCHAR}, {"macAddresses", Types.VARCHAR},
-		{"serverId", Types.VARCHAR}, {"key_", Types.VARCHAR},
-		{"startDate", Types.TIMESTAMP}, {"expirationDate", Types.TIMESTAMP},
-		{"additionalInfo", Types.VARCHAR}, {"complimentary", Types.BOOLEAN},
-		{"active_", Types.BOOLEAN}
+		{"name", Types.VARCHAR}, {"owner", Types.VARCHAR},
+		{"maxServers", Types.INTEGER}, {"maxConcurrentUsers", Types.BIGINT},
+		{"maxUsers", Types.BIGINT}, {"maxHttpSessions", Types.INTEGER},
+		{"sizing", Types.INTEGER}, {"description", Types.VARCHAR},
+		{"hostName", Types.VARCHAR}, {"ipAddresses", Types.VARCHAR},
+		{"macAddresses", Types.VARCHAR}, {"serverId", Types.VARCHAR},
+		{"key_", Types.VARCHAR}, {"startDate", Types.TIMESTAMP},
+		{"expirationDate", Types.TIMESTAMP}, {"additionalInfo", Types.VARCHAR},
+		{"complimentary", Types.BOOLEAN}, {"active_", Types.BOOLEAN}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -120,6 +120,7 @@ public class LicenseKeyModelImpl
 		TABLE_COLUMNS_MAP.put("productId", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("productVersion", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("clusterId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("owner", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("maxServers", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("maxConcurrentUsers", Types.BIGINT);
@@ -140,7 +141,7 @@ public class LicenseKeyModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table Provisioning_LicenseKey (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,licenseKeyId LONG not null primary key,userUuid VARCHAR(75) null,userName VARCHAR(75) null,createDate DATE null,modifiedUserUuid VARCHAR(75) null,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,assetReceiptLicenseUuid VARCHAR(75) null,accountKey VARCHAR(75) null,productPurchaseKey VARCHAR(75) null,licenseEntryId LONG,productKey VARCHAR(75) null,accountCode VARCHAR(75) null,accountName VARCHAR(500) null,licenseEntryName VARCHAR(75) null,licenseEntryType VARCHAR(75) null,licenseVersion INTEGER,productName VARCHAR(75) null,productId VARCHAR(75) null,productVersion VARCHAR(75) null,clusterId LONG,owner VARCHAR(75) null,maxServers INTEGER,maxConcurrentUsers LONG,maxUsers LONG,maxHttpSessions INTEGER,sizing INTEGER,description VARCHAR(255) null,hostName VARCHAR(75) null,ipAddresses STRING null,macAddresses STRING null,serverId STRING null,key_ STRING null,startDate DATE null,expirationDate DATE null,additionalInfo STRING null,complimentary BOOLEAN,active_ BOOLEAN)";
+		"create table Provisioning_LicenseKey (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,licenseKeyId LONG not null primary key,userUuid VARCHAR(75) null,userName VARCHAR(75) null,createDate DATE null,modifiedUserUuid VARCHAR(75) null,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,assetReceiptLicenseUuid VARCHAR(75) null,accountKey VARCHAR(75) null,productPurchaseKey VARCHAR(75) null,licenseEntryId LONG,productKey VARCHAR(75) null,accountCode VARCHAR(75) null,accountName VARCHAR(500) null,licenseEntryName VARCHAR(75) null,licenseEntryType VARCHAR(75) null,licenseVersion INTEGER,productName VARCHAR(75) null,productId VARCHAR(75) null,productVersion VARCHAR(75) null,clusterId LONG,name VARCHAR(75) null,owner VARCHAR(75) null,maxServers INTEGER,maxConcurrentUsers LONG,maxUsers LONG,maxHttpSessions INTEGER,sizing INTEGER,description VARCHAR(255) null,hostName VARCHAR(75) null,ipAddresses STRING null,macAddresses STRING null,serverId STRING null,key_ STRING null,startDate DATE null,expirationDate DATE null,additionalInfo STRING null,complimentary BOOLEAN,active_ BOOLEAN)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table Provisioning_LicenseKey";
@@ -230,6 +231,7 @@ public class LicenseKeyModelImpl
 		model.setProductId(soapModel.getProductId());
 		model.setProductVersion(soapModel.getProductVersion());
 		model.setClusterId(soapModel.getClusterId());
+		model.setName(soapModel.getName());
 		model.setOwner(soapModel.getOwner());
 		model.setMaxServers(soapModel.getMaxServers());
 		model.setMaxConcurrentUsers(soapModel.getMaxConcurrentUsers());
@@ -500,6 +502,9 @@ public class LicenseKeyModelImpl
 		attributeSetterBiConsumers.put(
 			"clusterId",
 			(BiConsumer<LicenseKey, Long>)LicenseKey::setClusterId);
+		attributeGetterFunctions.put("name", LicenseKey::getName);
+		attributeSetterBiConsumers.put(
+			"name", (BiConsumer<LicenseKey, String>)LicenseKey::setName);
 		attributeGetterFunctions.put("owner", LicenseKey::getOwner);
 		attributeSetterBiConsumers.put(
 			"owner", (BiConsumer<LicenseKey, String>)LicenseKey::setOwner);
@@ -1021,6 +1026,22 @@ public class LicenseKeyModelImpl
 
 	@JSON
 	@Override
+	public String getName() {
+		if (_name == null) {
+			return "";
+		}
+		else {
+			return _name;
+		}
+	}
+
+	@Override
+	public void setName(String name) {
+		_name = name;
+	}
+
+	@JSON
+	@Override
 	public String getOwner() {
 		if (_owner == null) {
 			return "";
@@ -1351,6 +1372,7 @@ public class LicenseKeyModelImpl
 		licenseKeyImpl.setProductId(getProductId());
 		licenseKeyImpl.setProductVersion(getProductVersion());
 		licenseKeyImpl.setClusterId(getClusterId());
+		licenseKeyImpl.setName(getName());
 		licenseKeyImpl.setOwner(getOwner());
 		licenseKeyImpl.setMaxServers(getMaxServers());
 		licenseKeyImpl.setMaxConcurrentUsers(getMaxConcurrentUsers());
@@ -1644,6 +1666,14 @@ public class LicenseKeyModelImpl
 
 		licenseKeyCacheModel.clusterId = getClusterId();
 
+		licenseKeyCacheModel.name = getName();
+
+		String name = licenseKeyCacheModel.name;
+
+		if ((name != null) && (name.length() == 0)) {
+			licenseKeyCacheModel.name = null;
+		}
+
 		licenseKeyCacheModel.owner = getOwner();
 
 		String owner = licenseKeyCacheModel.owner;
@@ -1851,6 +1881,7 @@ public class LicenseKeyModelImpl
 	private long _clusterId;
 	private long _originalClusterId;
 	private boolean _setOriginalClusterId;
+	private String _name;
 	private String _owner;
 	private int _maxServers;
 	private long _maxConcurrentUsers;

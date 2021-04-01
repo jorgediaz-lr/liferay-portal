@@ -40,6 +40,7 @@
 		<field name="productId" type="String" />
 		<field name="productVersion" type="String" />
 		<field name="clusterId" type="long" />
+		<field name="name" type="String" />
 		<field name="owner" type="String" />
 		<field name="maxServers" type="int" />
 		<field name="maxConcurrentUsers" type="long" />

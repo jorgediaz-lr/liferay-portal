@@ -77,7 +77,7 @@ public class LicenseKeyCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(81);
+		StringBundler sb = new StringBundler(83);
 
 		sb.append("{mvccVersion=");
 		sb.append(mvccVersion);
@@ -125,6 +125,8 @@ public class LicenseKeyCacheModel
 		sb.append(productVersion);
 		sb.append(", clusterId=");
 		sb.append(clusterId);
+		sb.append(", name=");
+		sb.append(name);
 		sb.append(", owner=");
 		sb.append(owner);
 		sb.append(", maxServers=");
@@ -304,6 +306,13 @@ public class LicenseKeyCacheModel
 
 		licenseKeyImpl.setClusterId(clusterId);
 
+		if (name == null) {
+			licenseKeyImpl.setName("");
+		}
+		else {
+			licenseKeyImpl.setName(name);
+		}
+
 		if (owner == null) {
 			licenseKeyImpl.setOwner("");
 		}
@@ -417,6 +426,7 @@ public class LicenseKeyCacheModel
 		productVersion = objectInput.readUTF();
 
 		clusterId = objectInput.readLong();
+		name = objectInput.readUTF();
 		owner = objectInput.readUTF();
 
 		maxServers = objectInput.readInt();
@@ -571,6 +581,13 @@ public class LicenseKeyCacheModel
 
 		objectOutput.writeLong(clusterId);
 
+		if (name == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(name);
+		}
+
 		if (owner == null) {
 			objectOutput.writeUTF("");
 		}
@@ -668,6 +685,7 @@ public class LicenseKeyCacheModel
 	public String productId;
 	public String productVersion;
 	public long clusterId;
+	public String name;
 	public String owner;
 	public int maxServers;
 	public long maxConcurrentUsers;

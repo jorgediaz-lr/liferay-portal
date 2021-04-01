@@ -397,6 +397,21 @@ public interface LicenseKeyModel extends BaseModel<LicenseKey>, MVCCModel {
 	public void setClusterId(long clusterId);
 
 	/**
+	 * Returns the name of this license key.
+	 *
+	 * @return the name of this license key
+	 */
+	@AutoEscape
+	public String getName();
+
+	/**
+	 * Sets the name of this license key.
+	 *
+	 * @param name the name of this license key
+	 */
+	public void setName(String name);
+
+	/**
 	 * Returns the owner of this license key.
 	 *
 	 * @return the owner of this license key

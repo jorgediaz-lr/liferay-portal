@@ -55,6 +55,7 @@ public class LicenseKeySoap implements Serializable {
 		soapModel.setProductId(model.getProductId());
 		soapModel.setProductVersion(model.getProductVersion());
 		soapModel.setClusterId(model.getClusterId());
+		soapModel.setName(model.getName());
 		soapModel.setOwner(model.getOwner());
 		soapModel.setMaxServers(model.getMaxServers());
 		soapModel.setMaxConcurrentUsers(model.getMaxConcurrentUsers());
@@ -309,6 +310,14 @@ public class LicenseKeySoap implements Serializable {
 		_clusterId = clusterId;
 	}
 
+	public String getName() {
+		return _name;
+	}
+
+	public void setName(String name) {
+		_name = name;
+	}
+
 	public String getOwner() {
 		return _owner;
 	}
@@ -476,6 +485,7 @@ public class LicenseKeySoap implements Serializable {
 	private String _productId;
 	private String _productVersion;
 	private long _clusterId;
+	private String _name;
 	private String _owner;
 	private int _maxServers;
 	private long _maxConcurrentUsers;
