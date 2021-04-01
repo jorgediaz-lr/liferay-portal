@@ -20,7 +20,9 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -99,8 +101,16 @@ public class LicenseKeyDisplay {
 		return StringPool.DASH;
 	}
 
+	public String getIpAddresses() {
+		return getSplitFieldValue(_licenseKey.getIpAddresses());
+	}
+
 	public String getLicenseKeyId() {
 		return String.valueOf(_licenseKey.getLicenseKeyId());
+	}
+
+	public String getMacAddresses() {
+		return getSplitFieldValue(_licenseKey.getMacAddresses());
 	}
 
 	public String getMaxConcurrentUsersLabel() {
@@ -192,6 +202,26 @@ public class LicenseKeyDisplay {
 		}
 
 		return LanguageUtil.get(_httpServletRequest, "no");
+	}
+
+	protected String getSplitFieldValue(String value) {
+		String[] splitValue = StringUtil.split(value);
+
+		if (splitValue.length > 0) {
+			StringBundler sb = new StringBundler((splitValue.length * 2) - 1);
+
+			for (int i = 0; i < splitValue.length; i++) {
+				sb.append(splitValue[i]);
+
+				if ((i + 1) < splitValue.length) {
+					sb.append(StringPool.SPACE);
+				}
+			}
+
+			return sb.toString();
+		}
+
+		return StringPool.DASH;
 	}
 
 	private void _initStatus() {

@@ -61,9 +61,7 @@ public class DownloadLicenseKeyMVCResourceCommand
 
 			//TODO: check user role before download
 
-			int licenseVersion = licenseKey.getLicenseVersion();
-
-			if (licenseVersion == 1) {
+			if (licenseKey.getLicenseVersion() == 1) {
 				String encodedLicenseFile =
 					_licenseKeyExporter.toEncodedLicenseFile(
 						licenseKey.getServerId(), licenseKey.getKey());
@@ -73,7 +71,7 @@ public class DownloadLicenseKeyMVCResourceCommand
 					encodedLicenseFile.getBytes(),
 					ContentTypes.APPLICATION_OCTET_STREAM);
 			}
-			else if (licenseVersion >= 2) {
+			else if (licenseKey.getLicenseVersion() >= 2) {
 				String fileName = _licenseKeyExporter.getFileName(
 					licenseKey.getProductName(),
 					licenseKey.getProductVersion());

@@ -161,55 +161,10 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 
 						<c:choose>
 							<c:when test="<%= licenseKey.getLicenseVersion() >= 3 %>">
-
-								<%
-								String[] macAddresses = StringUtil.split(licenseKey.getMacAddresses());
-
-								if (macAddresses.length > 0) {
-									for (int i = 0; i < macAddresses.length; i++) {
-								%>
-
-										<%= HtmlUtil.escape(macAddresses[i]) %><%= ((i + 1) < macAddresses.length) ? " " : "" %>
-
-								<%
-									}
-								}
-								else {
-								%>
-
-									-
-
-								<%
-								}
-								%>
-
+								<%= HtmlUtil.escape(licenseKeyDisplay.getMacAddresses()) %>
 							</c:when>
 							<c:otherwise>
-
-								<%
-								List<LicenseKey> clusterLicenseKeys = editLicenseKeyDisplayContext.getClusterLicenseKeys();
-
-								if (!clusterLicenseKeys.isEmpty()) {
-									for (int i = 0; i < clusterLicenseKeys.size(); i++) {
-										LicenseKey clusterLicenseKey = clusterLicenseKeys.get(i);
-
-										LicenseKeyDisplay clusterLicenseKeyDisplay = new LicenseKeyDisplay(renderRequest, renderResponse, clusterLicenseKey);
-								%>
-
-										<%= HtmlUtil.escape(clusterLicenseKeyDisplay.getServerId()) %><%= ((i + 1) < clusterLicenseKeys.size()) ? " " : "" %>
-
-								<%
-									}
-								}
-								else {
-								%>
-
-									-
-
-								<%
-								}
-								%>
-
+								<%= HtmlUtil.escape(editLicenseKeyDisplayContext.getClusterLicenseKeysDisplay()) %>
 							</c:otherwise>
 						</c:choose>
 					</aui:col>
@@ -219,27 +174,7 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 					<aui:col md="12">
 						<liferay-ui:message key="ip-addresses" />:
 
-							<%
-							String[] ipAddresses = StringUtil.split(licenseKey.getIpAddresses());
-
-							if (ipAddresses.length > 0) {
-								for (int i = 0; i < ipAddresses.length; i++) {
-							%>
-
-									<%= HtmlUtil.escape(ipAddresses[i]) %><%= ((i + 1) < ipAddresses.length) ? " " : "" %>
-
-							<%
-								}
-							}
-							else {
-							%>
-
-								-
-
-							<%
-							}
-							%>
-
+						<%= HtmlUtil.escape(licenseKeyDisplay.getIpAddresses()) %>
 					</aui:col>
 				</c:if>
 
@@ -307,53 +242,13 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 						<aui:col md="12">
 							<liferay-ui:message key="mac-addresses" />:
 
-								<%
-								String[] clusterMacAddresseses = StringUtil.split(clusterLicenseKey.getMacAddresses());
-
-								if (clusterMacAddresseses.length > 0) {
-									for (int j = 0; j < clusterMacAddresseses.length; j++) {
-								%>
-
-										<%= HtmlUtil.escape(clusterMacAddresseses[j]) %><%= ((j + 1) < clusterMacAddresseses.length) ? " " : "" %>
-
-								<%
-									}
-								}
-								else {
-								%>
-
-									-
-
-								<%
-								}
-								%>
-
+							<%= HtmlUtil.escape(clusterLicenseKeyDisplay.getMacAddresses()) %>
 						</aui:col>
 
 						<aui:col md="12">
 							<liferay-ui:message key="ip-addresses" />:
 
-								<%
-								String[] clusterIpAddresses = StringUtil.split(clusterLicenseKey.getIpAddresses());
-
-								if (clusterIpAddresses.length > 0) {
-									for (int j = 0; j < clusterIpAddresses.length; j++) {
-								%>
-
-										<%= HtmlUtil.escape(clusterIpAddresses[j]) %><%= ((j + 1) < clusterIpAddresses.length) ? " " : "" %>
-
-								<%
-									}
-								}
-								else {
-								%>
-
-									-
-
-								<%
-								}
-								%>
-
+							<%= HtmlUtil.escape(clusterLicenseKeyDisplay.getIpAddresses()) %>
 						</aui:col>
 
 						<aui:col md="12">

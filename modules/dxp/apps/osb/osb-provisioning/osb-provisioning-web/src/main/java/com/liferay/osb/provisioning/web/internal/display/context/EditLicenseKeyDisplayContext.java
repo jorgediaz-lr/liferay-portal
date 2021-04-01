@@ -18,8 +18,10 @@ import com.liferay.osb.provisioning.constants.ProvisioningWebKeys;
 import com.liferay.osb.provisioning.license.helper.constants.LicenseType;
 import com.liferay.osb.provisioning.license.model.LicenseKey;
 import com.liferay.osb.provisioning.license.service.LicenseKeyLocalService;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.List;
@@ -61,6 +63,31 @@ public class EditLicenseKeyDisplayContext {
 	public List<LicenseKey> getClusterLicenseKeys() {
 		return _licenseKeyLocalService.getProductPurchaseLicenseKeys(
 			_licenseKey.getProductPurchaseKey(), _licenseKey.getClusterId());
+	}
+
+	public String getClusterLicenseKeysDisplay() throws Exception {
+		List<LicenseKey> licenseKeys = getClusterLicenseKeys();
+
+		if (licenseKeys.isEmpty()) {
+			return StringPool.DASH;
+		}
+
+		StringBundler sb = new StringBundler((licenseKeys.size() * 2) - 1);
+
+		for (int i = 0; i < licenseKeys.size(); i++) {
+			LicenseKey licenseKey = licenseKeys.get(i);
+
+			LicenseKeyDisplay licenseKeyDisplay = new LicenseKeyDisplay(
+				_renderRequest, _renderResponse, licenseKey);
+
+			sb.append(licenseKeyDisplay.getServerId());
+
+			if ((i + 1) < licenseKeys.size()) {
+				sb.append(StringPool.SPACE);
+			}
+		}
+
+		return sb.toString();
 	}
 
 	public String getDownloadLicenseKeyURL() throws Exception {

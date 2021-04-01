@@ -27,8 +27,6 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 	licenseProductPurchaseKey = licenseKey.getProductPurchaseKey();
 }
 
-String detachedLicenseKeysGenerated = moveLicenseKeyDisplayContext.getDetachedLicenseKeysGenerated();
-
 Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat("MMMM dd, yyyy");
 %>
 
@@ -51,7 +49,7 @@ Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat("MMMM dd, yyyy
 
 			String productPurchaseKey = StringPool.BLANK;
 			String sizing = StringPool.DASH;
-			String licenseKeysGenerated = detachedLicenseKeysGenerated;
+			String licenseKeysGenerated = moveLicenseKeyDisplayContext.getDetachedLicenseKeysCount();
 
 			Calendar startDateCal = Calendar.getInstance();
 			Calendar expirationDateCal = Calendar.getInstance();

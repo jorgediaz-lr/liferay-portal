@@ -180,8 +180,8 @@ public class EditLicenseKeyMVCActionCommand extends BaseMVCActionCommand {
 
 		portletURL.setParameter(
 			"mvcRenderCommandName", "/licenses/edit_license_key");
-		portletURL.setParameter("licenseKeyId", String.valueOf(licenseKeyId));
 		portletURL.setParameter("redirect", redirect);
+		portletURL.setParameter("licenseKeyId", String.valueOf(licenseKeyId));
 
 		return portletURL.toString();
 	}
@@ -190,16 +190,6 @@ public class EditLicenseKeyMVCActionCommand extends BaseMVCActionCommand {
 			ActionRequest actionRequest, ActionResponse actionResponse,
 			ThemeDisplay themeDisplay, long licenseKeyId)
 		throws Exception {
-
-		long clusterLicenseKeyId = ParamUtil.getLong(
-			actionRequest, "clusterLicenseKeyId");
-
-		String productPurchaseKey = ParamUtil.getString(
-			actionRequest, "productPurchaseKey");
-
-		boolean active = ParamUtil.getBoolean(actionRequest, "active");
-		boolean complimentary = ParamUtil.getBoolean(
-			actionRequest, "complimentary");
 
 		String startDate = ParamUtil.getString(actionRequest, "startDate");
 		String expirationDate = ParamUtil.getString(
@@ -219,6 +209,14 @@ public class EditLicenseKeyMVCActionCommand extends BaseMVCActionCommand {
 				licenseKeyId, curStartDate, curExpirationDate);
 		}
 		else {
+			long clusterLicenseKeyId = ParamUtil.getLong(
+				actionRequest, "clusterLicenseKeyId");
+			String productPurchaseKey = ParamUtil.getString(
+				actionRequest, "productPurchaseKey");
+			boolean active = ParamUtil.getBoolean(actionRequest, "active");
+			boolean complimentary = ParamUtil.getBoolean(
+				actionRequest, "complimentary");
+
 			long curLicenseKeyId = licenseKeyId;
 
 			if (clusterLicenseKeyId > 0) {

@@ -24,7 +24,7 @@ public class ProvisioningWebKeys {
 	public static final String CONTACT = "CONTACT";
 
 	public static final String CONTACT_ROLES = "CONTACT_ROLES";
-	
+
 	public static final String LICENSE_KEY = "LICENSE_KEY";
 
 	public static final String PRODUCT = "PRODUCT";

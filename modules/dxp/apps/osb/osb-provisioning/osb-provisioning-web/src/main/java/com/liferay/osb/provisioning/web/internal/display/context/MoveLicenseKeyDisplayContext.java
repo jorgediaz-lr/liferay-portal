@@ -62,7 +62,7 @@ public class MoveLicenseKeyDisplayContext {
 			ProvisioningWebKeys.LICENSE_KEY);
 	}
 
-	public String getDetachedLicenseKeysGenerated() throws Exception {
+	public String getDetachedLicenseKeysCount() throws Exception {
 		StringBundler sb = new StringBundler(5);
 
 		sb.append("accountKey eq '");
