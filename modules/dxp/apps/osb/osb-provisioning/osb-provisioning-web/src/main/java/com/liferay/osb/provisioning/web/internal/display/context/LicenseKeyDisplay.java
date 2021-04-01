@@ -134,7 +134,7 @@ public class LicenseKeyDisplay {
 	}
 
 	public String getName() {
-		return _licenseKey.getLicenseEntryName();
+		return _licenseKey.getName();
 	}
 
 	public String getOwner() {

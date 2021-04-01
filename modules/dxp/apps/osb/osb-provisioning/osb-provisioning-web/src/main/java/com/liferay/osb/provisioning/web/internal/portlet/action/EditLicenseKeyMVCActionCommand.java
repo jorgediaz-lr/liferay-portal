@@ -75,6 +75,7 @@ public class EditLicenseKeyMVCActionCommand extends BaseMVCActionCommand {
 		String accountName = ParamUtil.getString(actionRequest, "accountName");
 		String productVersion = ParamUtil.getString(
 			actionRequest, "productVersion");
+		String name = ParamUtil.getString(actionRequest, "name");
 		String owner = ParamUtil.getString(actionRequest, "owner");
 		int maxServers = ParamUtil.getInteger(actionRequest, "maxServers");
 		int maxHttpSessions = ParamUtil.getInteger(
@@ -129,7 +130,7 @@ public class EditLicenseKeyMVCActionCommand extends BaseMVCActionCommand {
 		_licenseKeyService.addLicenseKey(
 			themeDisplay.getUserId(), licenseEntryId, productKey, accountKey,
 			productPurchaseKey, accountCode, accountName, productVersion, 0,
-			owner, maxServers, maxHttpSessions, 0, 0, sizing, description,
+			name, owner, maxServers, maxHttpSessions, 0, 0, sizing, description,
 			hostNames.toArray(new String[0]),
 			ipAddresses.toArray(new String[0]),
 			macAddresses.toArray(new String[0]),
