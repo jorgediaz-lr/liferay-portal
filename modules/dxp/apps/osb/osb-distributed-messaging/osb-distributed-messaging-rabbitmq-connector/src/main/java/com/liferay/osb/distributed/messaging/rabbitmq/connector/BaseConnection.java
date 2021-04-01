@@ -82,7 +82,7 @@ public class BaseConnection implements Connection {
 			}
 		}
 		catch (Exception exception) {
-			_log.error(exception, exception);
+			handleConnectionError(exception);
 
 			disconnect();
 		}
@@ -151,6 +151,10 @@ public class BaseConnection implements Connection {
 		_useSSL = GetterUtil.getBoolean(properties.get("useSSL"));
 
 		connect();
+	}
+
+	protected void handleConnectionError(Exception exception) {
+		_log.error(exception, exception);
 	}
 
 	protected boolean isConnected() {
