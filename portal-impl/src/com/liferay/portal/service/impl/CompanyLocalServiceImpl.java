@@ -1934,16 +1934,18 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 					continue;
 				}
 
-				String[] groupLocales = GetterUtil.getStringValues(
+				String[] groupLanguageIds = StringUtil.split(
 					groupTypeSettingsUnicodeProperties.getProperty(
 						PropsKeys.LOCALES));
 
 				boolean updateLocales = false;
 
 				for (String removedLanguageId : removedLanguageIds) {
-					if (ArrayUtil.contains(groupLocales, removedLanguageId)) {
-						groupLocales = ArrayUtil.remove(
-							groupLocales, removedLanguageId);
+					if (ArrayUtil.contains(
+							groupLanguageIds, removedLanguageId)) {
+
+						groupLanguageIds = ArrayUtil.remove(
+							groupLanguageIds, removedLanguageId);
 
 						updateLocales = true;
 					}
@@ -1952,7 +1954,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 				if (updateLocales) {
 					groupTypeSettingsUnicodeProperties.setProperty(
 						PropsKeys.LOCALES,
-						StringUtil.merge(groupLocales, StringPool.COMMA));
+						StringUtil.merge(groupLanguageIds, StringPool.COMMA));
 
 					groupLocalService.updateGroup(group);
 				}
