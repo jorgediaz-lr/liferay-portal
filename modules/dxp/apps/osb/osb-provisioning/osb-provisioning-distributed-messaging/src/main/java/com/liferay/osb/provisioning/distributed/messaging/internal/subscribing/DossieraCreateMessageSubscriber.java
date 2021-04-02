@@ -331,10 +331,11 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 	}
 
 	protected Account createAccount(
-			Contact[] contacts, ExternalLink[] externalLinks,
-			Account.Language language, Account.Region region,
-			PostalAddress postalAddress, ProductPurchase[] productPurchases,
-			Team[] partnerTeams, JSONObject jsonObject)
+			Account parentAccount, Contact[] contacts,
+			ExternalLink[] externalLinks, Account.Language language,
+			Account.Region region, PostalAddress postalAddress,
+			ProductPurchase[] productPurchases, Team[] partnerTeams,
+			JSONObject jsonObject)
 		throws Exception {
 
 		Account account = new Account();
@@ -345,14 +346,14 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		String accountName = accountJSONObject.getString("_name");
 
 		if (projectJSONObject != null) {
-			Account parentAccount = createParentAccount(jsonObject);
-
 			String projectName = projectJSONObject.getString("_name");
 
 			account.setName(projectName);
 			account.setCode(_getCode(accountName, projectName));
 
-			account.setParentAccountKey(parentAccount.getKey());
+			if (parentAccount != null) {
+				account.setParentAccountKey(parentAccount.getKey());
+			}
 		}
 		else {
 			account.setName(accountName);
@@ -421,15 +422,25 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		String dossieraAccountKey = accountJSONObject.getString(
 			"_dossieraAccountKey");
 
+		String accountName = accountJSONObject.getString("_name");
+
 		Account parentAccount = fetchAccount(dossieraAccountKey);
 
 		if (parentAccount != null) {
+			String parentAccountName = parentAccount.getName();
+
+			if (!accountName.equals(parentAccountName)) {
+				parentAccount.setName(accountName);
+
+				return _accountWebService.updateAccount(
+					StringPool.BLANK, StringPool.BLANK, parentAccount.getKey(),
+					parentAccount);
+			}
+
 			return parentAccount;
 		}
 
 		parentAccount = new Account();
-
-		String accountName = accountJSONObject.getString("_name");
 
 		parentAccount.setName(accountName);
 		parentAccount.setCode(_getCode(accountName, null));
@@ -757,6 +768,14 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 		String accountKey = getAccountKey(jsonObject);
 
+		JSONObject projectJSONObject = jsonObject.getJSONObject("_project");
+
+		Account parentAccount = null;
+
+		if (projectJSONObject != null) {
+			parentAccount = createParentAccount(jsonObject);
+		}
+
 		Account partnerAccount = parsePartnerAccount(jsonObject);
 
 		boolean partnerFirstLineSupport = jsonObject.getBoolean(
@@ -764,8 +783,8 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 		if (Validator.isNotNull(accountKey)) {
 			account = updateAccount(
-				accountKey, activeContacts, region, productPurchases,
-				jsonObject);
+				accountKey, parentAccount, activeContacts, region,
+				productPurchases, jsonObject);
 		}
 		else {
 			ExternalLink[] externalLinks = parseExternalLinks(jsonObject);
@@ -774,8 +793,8 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 				partnerAccount, partnerFirstLineSupport);
 
 			account = createAccount(
-				activeContacts.toArray(new Contact[0]), externalLinks, language,
-				region, postalAddress,
+				parentAccount, activeContacts.toArray(new Contact[0]),
+				externalLinks, language, region, postalAddress,
 				productPurchases.toArray(new ProductPurchase[0]), partnerTeams,
 				jsonObject);
 
@@ -1849,14 +1868,19 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 	}
 
 	protected Account updateAccount(
-			String accountKey, List<Contact> contacts, Account.Region region,
-			List<ProductPurchase> productPurchases, JSONObject jsonObject)
+			String accountKey, Account parentAccount, List<Contact> contacts,
+			Account.Region region, List<ProductPurchase> productPurchases,
+			JSONObject jsonObject)
 		throws Exception {
 
 		Account account = _accountWebService.getAccount(accountKey);
 
 		if (Validator.isNull(account.getContactEmailAddress()) ||
-			Validator.isNull(account.getRegion())) {
+			Validator.isNull(account.getRegion()) || (parentAccount != null)) {
+
+			if (parentAccount != null) {
+				account.setParentAccountKey(parentAccount.getKey());
+			}
 
 			if (Validator.isNull(account.getContactEmailAddress())) {
 				JSONObject ownerJSONObject = jsonObject.getJSONObject("_owner");
