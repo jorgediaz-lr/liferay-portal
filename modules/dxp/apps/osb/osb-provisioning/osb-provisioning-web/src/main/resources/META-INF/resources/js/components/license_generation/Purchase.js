@@ -27,6 +27,10 @@ function Purchase({
 	licenseKeysGenerated = DASH,
 	startDate
 }) {
+	const [selectedExpirationDate, setSelectedExpirationDate] = useState(
+		expirationDate
+	);
+	const [selectedStartDate, setSelectedStartDate] = useState(startDate);
 	const [sizing, setSizing] = useState();
 
 	const [, {updateLicense}] = useGenerateLicense();
@@ -34,15 +38,22 @@ function Purchase({
 	function handleChoosePurchase() {
 		updateLicense(generateLicense =>
 			generateLicense
-				// TODO
-				.set('expirationDate', expirationDate)
-				.set('startDate', startDate)
+				.set('expirationDate', selectedExpirationDate)
+				.set('startDate', selectedStartDate)
 
-				.set('licenseKeyGenerated', licenseKeysGenerated)
+				.set('licenseKeysGenerated', licenseKeysGenerated)
 				.set('sizing', sizing ? sizing : instanceSize)
 
 				.set('showSpecificDetails', true)
 		);
+	}
+
+	function handleExpirationDateChange(val) {
+		setSelectedExpirationDate(val);
+	}
+
+	function handleStartDateChange(val) {
+		setSelectedStartDate(val);
 	}
 
 	function handleSizingChange(event) {
@@ -63,6 +74,7 @@ function Purchase({
 						<DatePicker
 							defaultValue={startDate}
 							inputName="startDate"
+							updateFn={handleStartDateChange}
 						/>
 					</ClayTableCell>
 				) : (
@@ -74,6 +86,7 @@ function Purchase({
 						<DatePicker
 							defaultValue={expirationDate}
 							inputName="expirationDate"
+							updateFn={handleExpirationDateChange}
 						/>
 					</ClayTableCell>
 				) : (

@@ -30,7 +30,7 @@ function GeneralInformation({
 }) {
 	const [
 		{licenseEntry, product, version},
-		{updateAccountName, updateLicense}
+		{updateLicense}
 	] = useGenerateLicense();
 	const {licenseEntryId} = licenseEntry;
 
@@ -44,14 +44,10 @@ function GeneralInformation({
 				.set('accountCode', accountCode)
 				.set('accountKey', accountKey)
 				.set('accountName', accountName)
+				.set('description', accountName)
+				.set('owner', accountName)
 		);
-	}, [
-		accountCode,
-		accountKey,
-		accountName,
-		updateAccountName,
-		updateLicense
-	]);
+	}, [accountCode, accountKey, accountName, updateLicense]);
 
 	function findCurrentProduct(productKey) {
 		return licensableProducts.find(
@@ -147,7 +143,7 @@ function GeneralInformation({
 			</div>
 
 			<div className="container-fluid-max-xl generate-license-sheet sheet">
-				<div className="generate-license-container">
+				<div className="general-information generate-license-container">
 					<h3>{Liferay.Language.get('general-information')}</h3>
 
 					<div className="row">

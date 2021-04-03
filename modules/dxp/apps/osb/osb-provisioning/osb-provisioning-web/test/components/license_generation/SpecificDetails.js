@@ -13,11 +13,40 @@ import {cleanup, render} from '@testing-library/react';
 import React from 'react';
 
 import SpecificDetails from '../../../src/main/resources/META-INF/resources/js/components/license_generation/SpecificDetails';
-import {GenerateLicenseProvider} from '../../../src/main/resources/META-INF/resources/js/hooks/generateLicense';
+import {
+	GenerateLicense,
+	GenerateLicenseProvider
+} from '../../../src/main/resources/META-INF/resources/js/hooks/generateLicense';
+import {
+	displayInMDYDateFormat,
+	getUTCAdjustedDate
+} from '../../../src/main/resources/META-INF/resources/js/utilities/date';
+
+const dummyLicense = new GenerateLicense({
+	accountCode: 'ABC',
+	accountKey: 'KEY-ABC',
+	accountName: 'Test Account',
+	complimentary: true,
+	description: '',
+	expirationDate: new Date(),
+	licenseEntry: {
+		licenseEntryId: 'ID-123',
+		licenseEntryName: 'Test License Entry Name',
+		licenseEntryType: 'type'
+	},
+	licenseKeysGenerated: '0',
+	owner: '',
+	product: {productKey: 'PRODUCT-123', productName: 'Test Product'},
+	productPurchaseKey: 'PPKEY-123',
+	showSpecificDetails: true,
+	sizing: '1',
+	startDate: new Date(),
+	version: '1.0'
+});
 
 function renderSpecificDetails(props) {
 	return render(
-		<GenerateLicenseProvider>
+		<GenerateLicenseProvider license={dummyLicense}>
 			<SpecificDetails redirect={'/redirect/url'} {...props} />
 		</GenerateLicenseProvider>
 	);
@@ -42,5 +71,45 @@ describe('SpecificDetails', () => {
 		const {getByText} = renderSpecificDetails();
 
 		getByText('cancel');
+	});
+
+	it('displays the Account Name correctly', () => {
+		const {getByDisplayValue} = renderSpecificDetails();
+
+		getByDisplayValue('Test Account');
+	});
+
+	it('displays the Product Name correctly', () => {
+		const {getByText} = renderSpecificDetails();
+
+		getByText('Test Product');
+	});
+
+	it('displays the Version field correctly', () => {
+		const {getByText} = renderSpecificDetails();
+
+		getByText('1.0');
+	});
+
+	it('displays the Type field correctly', () => {
+		const {getByText} = renderSpecificDetails();
+
+		getByText('Type');
+	});
+
+	it('displays the Start and Expiration date fields correctly', () => {
+		const {getAllByText} = renderSpecificDetails();
+
+		const utcAdjustedDate = displayInMDYDateFormat(
+			getUTCAdjustedDate(new Date())
+		);
+
+		expect(getAllByText(utcAdjustedDate).length).toBe(2);
+	});
+
+	it('displays the Complimentary checkbox correctly', () => {
+		const {getByLabelText} = renderSpecificDetails();
+
+		expect(getByLabelText('complimentary').checked).toBeTruthy();
 	});
 });

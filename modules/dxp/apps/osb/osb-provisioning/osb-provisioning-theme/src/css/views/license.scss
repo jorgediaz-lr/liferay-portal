@@ -1,3 +1,30 @@
+#generateLicense {
+	.additional-information {
+		dl {
+			font-size: $mid-font-size;
+			line-height: 1;
+
+			div {
+				display: flex;
+			}
+		}
+
+		dt::after {
+			content: ': \00a0';
+		}
+
+		h4 {
+			margin-bottom: $spacing-md;
+		}
+	}
+
+	.specific-details-content {
+		background-color: $body-bg;
+		border-radius: $border-radius;
+		padding: $spacing-default;
+	}
+}
+
 .generate-license-container {
 	h3 {
 		margin-bottom: $spacing-default;
