@@ -723,7 +723,7 @@ public class DDMStructureLocalServiceTest extends BaseDDMServiceTestCase {
 
 		PermissionThreadLocal.setPermissionChecker(originalPermissionChecker);
 
-		DDMStructureLocalServiceUtil.deleteDDMStructure(structure);
+		DDMStructureLocalServiceUtil.deleteStructure(structure);
 
 		UserLocalServiceUtil.deleteUser(user);
 	}

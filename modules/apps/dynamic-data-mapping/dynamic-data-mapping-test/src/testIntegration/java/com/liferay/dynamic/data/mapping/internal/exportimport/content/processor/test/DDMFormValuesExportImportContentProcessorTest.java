@@ -229,7 +229,7 @@ public class DDMFormValuesExportImportContentProcessorTest {
 
 		newDLFileEntry.setUuid(_fileEntry.getUuid());
 
-		_dlFileEntryLocalService.deleteDLFileEntry(fileEntryId);
+		_dlFileEntryLocalService.deleteFileEntry(fileEntryId);
 
 		_dlFileEntryLocalService.updateDLFileEntry(newDLFileEntry);
 
@@ -250,7 +250,7 @@ public class DDMFormValuesExportImportContentProcessorTest {
 
 		long newDLFileEntryId = newDLFileEntry.getFileEntryId();
 
-		_dlFileEntryLocalService.deleteDLFileEntry(newDLFileEntry);
+		_dlFileEntryLocalService.deleteFileEntry(newDLFileEntry);
 
 		Assert.assertEquals(newDLFileEntryId, jsonObject2.getLong("classPK"));
 	}
