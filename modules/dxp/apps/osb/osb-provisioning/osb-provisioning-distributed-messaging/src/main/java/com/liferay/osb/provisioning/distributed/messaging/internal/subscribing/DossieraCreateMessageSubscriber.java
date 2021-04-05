@@ -39,6 +39,7 @@ import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ContactRoleWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ContactWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.NoteWebService;
+import com.liferay.osb.provisioning.koroneiki.web.service.PostalAddressWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductConsumptionWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductPurchaseWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
@@ -784,7 +785,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		if (Validator.isNotNull(accountKey)) {
 			account = updateAccount(
 				accountKey, parentAccount, activeContacts, region,
-				productPurchases, jsonObject);
+				postalAddress, productPurchases, jsonObject);
 		}
 		else {
 			ExternalLink[] externalLinks = parseExternalLinks(jsonObject);
@@ -1869,8 +1870,8 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 	protected Account updateAccount(
 			String accountKey, Account parentAccount, List<Contact> contacts,
-			Account.Region region, List<ProductPurchase> productPurchases,
-			JSONObject jsonObject)
+			Account.Region region, PostalAddress postalAddress,
+			List<ProductPurchase> productPurchases, JSONObject jsonObject)
 		throws Exception {
 
 		Account account = _accountWebService.getAccount(accountKey);
@@ -1897,6 +1898,29 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 			_accountWebService.updateAccount(
 				StringPool.BLANK, StringPool.BLANK, accountKey, account);
+		}
+
+		PostalAddress primaryPostalAddress = null;
+
+		PostalAddress[] postalAddresses = account.getPostalAddresses();
+
+		for (PostalAddress curPostalAddress : postalAddresses) {
+			if (curPostalAddress.getPrimary()) {
+				primaryPostalAddress = curPostalAddress;
+
+				break;
+			}
+		}
+
+		if (primaryPostalAddress != null) {
+			_postalAddressWebService.updatePostalAddress(
+				StringPool.BLANK, StringPool.BLANK,
+				primaryPostalAddress.getId(), postalAddress);
+		}
+		else {
+			_postalAddressWebService.addPostalAddress(
+				StringPool.BLANK, StringPool.BLANK, account.getKey(),
+				postalAddress);
 		}
 
 		for (Contact contact : contacts) {
@@ -2190,6 +2214,9 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 	@Reference
 	private Portal _portal;
+
+	@Reference
+	private PostalAddressWebService _postalAddressWebService;
 
 	@Reference
 	private ProductConsumptionWebService _productConsumptionWebService;
