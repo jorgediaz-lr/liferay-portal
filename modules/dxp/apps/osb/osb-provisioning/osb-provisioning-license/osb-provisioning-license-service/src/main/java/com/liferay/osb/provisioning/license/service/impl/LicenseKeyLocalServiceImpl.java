@@ -465,8 +465,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		licenseKey = licenseKeyPersistence.update(licenseKey);
 
-		int renewTime =
-			(int)((expirationDate.getTime() - startDate.getTime()) / Time.DAY);
+		long renewTime =
+			(expirationDate.getTime() - startDate.getTime()) / Time.DAY;
 
 		String description = renewTime + "-Day License";
 

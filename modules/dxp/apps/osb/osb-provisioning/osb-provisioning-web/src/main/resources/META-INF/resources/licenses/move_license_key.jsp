@@ -21,10 +21,10 @@ MoveLicenseKeyDisplayContext moveLicenseKeyDisplayContext = ProvisioningWebCompo
 
 LicenseKey licenseKey = moveLicenseKeyDisplayContext.getLicenseKey();
 
-String licenseProductPurchaseKey = StringPool.BLANK;
+String productPurchaseKey = StringPool.BLANK;
 
 if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
-	licenseProductPurchaseKey = licenseKey.getProductPurchaseKey();
+	productPurchaseKey = licenseKey.getProductPurchaseKey();
 }
 
 Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat("MMMM dd, yyyy");
@@ -47,7 +47,7 @@ Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat("MMMM dd, yyyy
 				productPurchaseDisplay = (ProductPurchaseDisplay)resultRow;
 			}
 
-			String productPurchaseKey = StringPool.BLANK;
+			String curProductPurchaseKey = StringPool.BLANK;
 			String sizing = StringPool.DASH;
 			String licenseKeysGenerated = moveLicenseKeyDisplayContext.getDetachedLicenseKeysCount();
 
@@ -55,7 +55,7 @@ Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat("MMMM dd, yyyy
 			Calendar expirationDateCal = Calendar.getInstance();
 
 			if (productPurchaseDisplay != null) {
-				productPurchaseKey = productPurchaseDisplay.getKey();
+				curProductPurchaseKey = productPurchaseDisplay.getKey();
 				sizing = productPurchaseDisplay.getSizing();
 
 				licenseKeysGenerated = productPurchaseDisplay.getProvisionedCount() + " / " + productPurchaseDisplay.getQuantity();
@@ -99,12 +99,12 @@ Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat("MMMM dd, yyyy
 
 			<liferay-ui:search-container-column-text>
 				<c:choose>
-					<c:when test="<%= !productPurchaseKey.equals(licenseProductPurchaseKey) %>">
+					<c:when test="<%= !curProductPurchaseKey.equals(productPurchaseKey) %>">
 
 						<%
 						Map<String, Object> data = new HashMap<String, Object>();
 
-						data.put("productPurchaseKey", productPurchaseKey);
+						data.put("productPurchaseKey", curProductPurchaseKey);
 						%>
 
 						<aui:button cssClass="selector-button" data="<%= data %>" value="choose" />

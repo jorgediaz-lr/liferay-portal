@@ -41,11 +41,9 @@ public class LicenseType {
 
 	public static final String PRODUCTION = "production";
 
-	public static final String TRIAL = "trial";
-
 	public static final String[] VALUES = {
 		CLUSTER, DEVELOPER, DEVELOPER_CLUSTER, ELASTIC, ENTERPRISE, LIMITED,
-		OEM, PER_USER, PRODUCTION, TRIAL
+		OEM, PER_USER, PRODUCTION
 	};
 
 }

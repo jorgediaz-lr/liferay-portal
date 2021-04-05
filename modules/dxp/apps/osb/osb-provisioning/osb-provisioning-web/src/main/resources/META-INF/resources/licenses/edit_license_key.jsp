@@ -59,7 +59,7 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 					<%= HtmlUtil.escape(licenseKeyDisplay.getProductName()) %>
 				</aui:col>
 
-				<c:if test="<%= !editLicenseKeyDisplayContext.isClusterLicenseKeyVisable() %>">
+				<c:if test="<%= !editLicenseKeyDisplayContext.isClusterLicenseKeyVisible() %>">
 					<aui:col md="4">
 						<liferay-ui:message key="owner" />:
 
@@ -109,7 +109,7 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 					<%= HtmlUtil.escape(licenseKeyDisplay.getExpirationDate()) %>
 				</aui:col>
 
-				<c:if test="<%= !editLicenseKeyDisplayContext.isClusterLicenseKeyVisable() %>">
+				<c:if test="<%= !editLicenseKeyDisplayContext.isClusterLicenseKeyVisible() %>">
 					<aui:col md="4">
 						<liferay-ui:message key="description" />:
 
@@ -123,7 +123,7 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 					<%= HtmlUtil.escape(editLicenseKeyDisplayContext.getLastModifiedUserNameDate()) %>
 				</aui:col>
 
-				<c:if test="<%= editLicenseKeyDisplayContext.isMaximumConnectionsVisable() %>">
+				<c:if test="<%= editLicenseKeyDisplayContext.isMaximumConnectionsVisible() %>">
 					<aui:col md="12">
 						<liferay-ui:message key="maximum-connections" />:
 
@@ -131,7 +131,7 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 					</aui:col>
 				</c:if>
 
-				<c:if test="<%= editLicenseKeyDisplayContext.isMaximumConcurrentUsersVisable() %>">
+				<c:if test="<%= editLicenseKeyDisplayContext.isMaximumConcurrentUsersVisible() %>">
 					<aui:col md="4">
 						<liferay-ui:message key="maximum-concurrent-users" />:
 
@@ -139,7 +139,7 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 					</aui:col>
 				</c:if>
 
-				<c:if test="<%= editLicenseKeyDisplayContext.isMaximumUsersVisable() %>">
+				<c:if test="<%= editLicenseKeyDisplayContext.isMaximumUsersVisible() %>">
 					<aui:col md="4">
 						<liferay-ui:message key="maximum-users" />:
 
@@ -147,7 +147,7 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 					</aui:col>
 				</c:if>
 
-				<c:if test="<%= editLicenseKeyDisplayContext.isMaxmumServersVisable() %>">
+				<c:if test="<%= editLicenseKeyDisplayContext.isMaxmumServersVisible() %>">
 					<aui:col md="12">
 						<liferay-ui:message key="maximum-servers" />:
 
@@ -155,7 +155,7 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 					</aui:col>
 				</c:if>
 
-				<c:if test="<%= editLicenseKeyDisplayContext.isMacAddressesVisable() %>">
+				<c:if test="<%= editLicenseKeyDisplayContext.isMacAddressesVisible() %>">
 					<aui:col md="12">
 						<liferay-ui:message key="mac-addresses" />:
 
@@ -170,7 +170,7 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 					</aui:col>
 				</c:if>
 
-				<c:if test="<%= editLicenseKeyDisplayContext.isIpAddressesVisable() %>">
+				<c:if test="<%= editLicenseKeyDisplayContext.isIpAddressesVisible() %>">
 					<aui:col md="12">
 						<liferay-ui:message key="ip-addresses" />:
 
@@ -178,7 +178,7 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 					</aui:col>
 				</c:if>
 
-				<c:if test="<%= editLicenseKeyDisplayContext.isHostNameVisable() %>">
+				<c:if test="<%= editLicenseKeyDisplayContext.isHostNameVisible() %>">
 					<aui:col md="12">
 						<liferay-ui:message key="host-name" />:
 
@@ -186,7 +186,7 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 					</aui:col>
 				</c:if>
 
-				<c:if test="<%= editLicenseKeyDisplayContext.isServerIdVisable() %>">
+				<c:if test="<%= editLicenseKeyDisplayContext.isServerIdVisible() %>">
 					<aui:col md="12">
 						<liferay-ui:message key="server-id" />:
 
@@ -194,7 +194,7 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 					</aui:col>
 				</c:if>
 
-				<c:if test="<%= editLicenseKeyDisplayContext.isComplimentaryVisable() %>">
+				<c:if test="<%= editLicenseKeyDisplayContext.isComplimentaryVisible() %>">
 					<aui:col md="12">
 						<liferay-ui:message key="complimentary" />:
 
@@ -202,7 +202,7 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 					</aui:col>
 				</c:if>
 
-				<c:if test="<%= editLicenseKeyDisplayContext.isKeyVisable() %>">
+				<c:if test="<%= editLicenseKeyDisplayContext.isKeyVisible() %>">
 					<aui:col md="12">
 						<liferay-ui:message key="key" />:
 
@@ -210,7 +210,7 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 					</aui:col>
 				</c:if>
 
-				<c:if test="<%= editLicenseKeyDisplayContext.isClusterLicenseKeyVisable() %>">
+				<c:if test="<%= editLicenseKeyDisplayContext.isClusterLicenseKeyVisible() %>">
 
 					<%
 					List<LicenseKey> clusterLicenseKeys = editLicenseKeyDisplayContext.getClusterLicenseKeys();
@@ -292,25 +292,25 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 
 				<aui:col md="12">
 					<div class="button-holder">
-						<c:if test="<%= editLicenseKeyDisplayContext.isRenewVisable() %>">
+						<c:if test="<%= editLicenseKeyDisplayContext.isRenewVisible() %>">
 							<button class="btn" onclick="<portlet:namespace />renewLicenseKey();" type="button">
 								<liferay-ui:message key="renew" />
 							</button>
 						</c:if>
 
-						<c:if test="<%= editLicenseKeyDisplayContext.isComplimentaryVisable() %>">
+						<c:if test="<%= editLicenseKeyDisplayContext.isComplimentaryVisible() %>">
 							<button class="btn" onclick="<portlet:namespace />updateValues(<%= licenseKey.isActive() %>, <%= !licenseKey.isComplimentary() %>);" type="button">
 								<liferay-ui:message key="<%= editLicenseKeyDisplayContext.getUpdateComplimentaryLabel() %>" />
 							</button>
 						</c:if>
 
-						<c:if test="<%= !editLicenseKeyDisplayContext.isClusterLicenseKeyVisable() %>">
+						<c:if test="<%= !editLicenseKeyDisplayContext.isClusterLicenseKeyVisible() %>">
 							<button class="btn" onclick="<portlet:namespace />updateValues(<%= !licenseKey.isActive() %>, <%= licenseKey.isComplimentary() %>);" type="button">
 								<liferay-ui:message key="<%= editLicenseKeyDisplayContext.getUpdateActiveLabel() %>" />
 							</button>
 						</c:if>
 
-						<c:if test="<%= !editLicenseKeyDisplayContext.isClusterLicenseKeyVisable() %>">
+						<c:if test="<%= !editLicenseKeyDisplayContext.isClusterLicenseKeyVisible() %>">
 							<button class="btn" onclick="<portlet:namespace />moveLicenseKey('<%= editLicenseKeyDisplayContext.getMoveLicenseKeyURL() %>');" type="button">
 								<clay:icon
 									symbol="move-folder"
@@ -318,7 +318,7 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 							</button>
 						</c:if>
 
-						<c:if test="<%= editLicenseKeyDisplayContext.isDownloadVisable() %>">
+						<c:if test="<%= editLicenseKeyDisplayContext.isDownloadVisible() %>">
 							<a class="btn" href="<%= editLicenseKeyDisplayContext.getDownloadLicenseKeyURL() %>" type="button">
 								<clay:icon
 									symbol="download"

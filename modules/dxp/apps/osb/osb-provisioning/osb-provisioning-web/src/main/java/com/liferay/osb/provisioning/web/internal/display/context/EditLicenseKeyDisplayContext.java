@@ -110,10 +110,6 @@ public class EditLicenseKeyDisplayContext {
 	}
 
 	public String getExpirationDateLabel() {
-		if (_licenseType.equals(LicenseType.TRIAL)) {
-			return LanguageUtil.get(_httpServletRequest, "lifetime");
-		}
-
 		return LanguageUtil.get(_httpServletRequest, "expiration-date");
 	}
 
@@ -159,7 +155,7 @@ public class EditLicenseKeyDisplayContext {
 		return LanguageUtil.get(_httpServletRequest, "make-complimentary");
 	}
 
-	public boolean isClusterLicenseKeyVisable() {
+	public boolean isClusterLicenseKeyVisible() {
 		if ((_licenseVersion >= 3) &&
 			_licenseType.equals(LicenseType.CLUSTER)) {
 
@@ -169,7 +165,7 @@ public class EditLicenseKeyDisplayContext {
 		return false;
 	}
 
-	public boolean isComplimentaryVisable() {
+	public boolean isComplimentaryVisible() {
 		if ((_licenseVersion >= 3) &&
 			!_licenseType.equals(LicenseType.CLUSTER)) {
 
@@ -179,8 +175,8 @@ public class EditLicenseKeyDisplayContext {
 		return false;
 	}
 
-	public boolean isDownloadVisable() {
-		if (!isClusterLicenseKeyVisable() && _licenseKey.isActive() &&
+	public boolean isDownloadVisible() {
+		if (!isClusterLicenseKeyVisible() && _licenseKey.isActive() &&
 			((_licenseVersion >= 2) ||
 			 _licenseType.equals(LicenseType.CLUSTER) ||
 			 _licenseType.equals(LicenseType.DEVELOPER_CLUSTER))) {
@@ -191,7 +187,7 @@ public class EditLicenseKeyDisplayContext {
 		return false;
 	}
 
-	public boolean isHostNameVisable() {
+	public boolean isHostNameVisible() {
 		if ((_licenseVersion >= 3) &&
 			(_licenseType.equals(LicenseType.LIMITED) ||
 			 _licenseType.equals(LicenseType.PER_USER) ||
@@ -203,7 +199,7 @@ public class EditLicenseKeyDisplayContext {
 		return false;
 	}
 
-	public boolean isIpAddressesVisable() {
+	public boolean isIpAddressesVisible() {
 		if ((_licenseVersion >= 3) &&
 			(_licenseType.equals(LicenseType.LIMITED) ||
 			 _licenseType.equals(LicenseType.PER_USER) ||
@@ -215,7 +211,7 @@ public class EditLicenseKeyDisplayContext {
 		return false;
 	}
 
-	public boolean isKeyVisable() {
+	public boolean isKeyVisible() {
 		if (_licenseVersion == 1) {
 			return true;
 		}
@@ -223,7 +219,7 @@ public class EditLicenseKeyDisplayContext {
 		return false;
 	}
 
-	public boolean isMacAddressesVisable() {
+	public boolean isMacAddressesVisible() {
 		if (((_licenseVersion >= 3) &&
 			 (_licenseType.equals(LicenseType.LIMITED) ||
 			  _licenseType.equals(LicenseType.PER_USER) ||
@@ -240,7 +236,7 @@ public class EditLicenseKeyDisplayContext {
 		return false;
 	}
 
-	public boolean isMaximumConcurrentUsersVisable() {
+	public boolean isMaximumConcurrentUsersVisible() {
 		if ((_licenseVersion >= 3) &&
 			_licenseType.equals(LicenseType.PER_USER)) {
 
@@ -250,7 +246,7 @@ public class EditLicenseKeyDisplayContext {
 		return false;
 	}
 
-	public boolean isMaximumConnectionsVisable() {
+	public boolean isMaximumConnectionsVisible() {
 		if ((_licenseVersion >= 3) &&
 			(_licenseType.equals(LicenseType.DEVELOPER) ||
 			 _licenseType.equals(LicenseType.DEVELOPER_CLUSTER))) {
@@ -261,7 +257,7 @@ public class EditLicenseKeyDisplayContext {
 		return false;
 	}
 
-	public boolean isMaximumUsersVisable() {
+	public boolean isMaximumUsersVisible() {
 		if ((_licenseVersion >= 3) &&
 			_licenseType.equals(LicenseType.PER_USER)) {
 
@@ -271,7 +267,7 @@ public class EditLicenseKeyDisplayContext {
 		return false;
 	}
 
-	public boolean isMaxmumServersVisable() {
+	public boolean isMaxmumServersVisible() {
 		if (((_licenseVersion >= 3) &&
 			 _licenseType.equals(LicenseType.CLUSTER)) ||
 			((_licenseVersion == 2) &&
@@ -284,7 +280,7 @@ public class EditLicenseKeyDisplayContext {
 		return false;
 	}
 
-	public boolean isRenewVisable() throws Exception {
+	public boolean isRenewVisible() throws Exception {
 		if (_licenseKey.canRenew() && (_licenseVersion >= 3) &&
 			!_licenseType.equals(LicenseType.CLUSTER)) {
 
@@ -294,7 +290,7 @@ public class EditLicenseKeyDisplayContext {
 		return false;
 	}
 
-	public boolean isServerIdVisable() {
+	public boolean isServerIdVisible() {
 		if (((_licenseVersion >= 3) &&
 			 (_licenseType.equals(LicenseType.LIMITED) ||
 			  _licenseType.equals(LicenseType.PER_USER) ||

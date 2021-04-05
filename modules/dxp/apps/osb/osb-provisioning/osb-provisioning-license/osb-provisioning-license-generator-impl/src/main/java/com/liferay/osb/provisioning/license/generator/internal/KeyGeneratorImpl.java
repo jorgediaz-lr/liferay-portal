@@ -101,22 +101,19 @@ public class KeyGeneratorImpl implements KeyGenerator {
 
 		Arrays.sort(serverIds);
 
-		long lifetime = expirationDate.getTime() - startDate.getTime();
-
 		Map<String, String> properties = new HashMap<>();
-
-		properties.put("version", String.valueOf(licenseVersion));
-
-		if (!licenseEntryType.equals(LicenseType.TRIAL)) {
-			properties.put("startDate", String.valueOf(startDate.getTime()));
-		}
 
 		properties.put("description", description);
 		properties.put("owner", owner);
+		properties.put("startDate", String.valueOf(startDate.getTime()));
 		properties.put("type", licenseEntryType);
+		properties.put("version", String.valueOf(licenseVersion));
 
 		if (licenseVersion == 1) {
+			long lifetime = expirationDate.getTime() - startDate.getTime();
+
 			properties.put("lifetime", String.valueOf(lifetime));
+
 			properties.put("productVersion", productVersionLabel);
 
 			if (licenseEntryType.equals(LicenseType.CLUSTER) ||
@@ -139,17 +136,11 @@ public class KeyGeneratorImpl implements KeyGenerator {
 		}
 		else if (licenseVersion == 2) {
 			properties.put("accountEntryName", accountName);
+			properties.put(
+				"expirationDate", String.valueOf(expirationDate.getTime()));
 			properties.put("licenseEntryName", licenseEntryName);
 			properties.put("productEntryName", productName);
 			properties.put("productVersion", productVersionLabel);
-
-			if (licenseEntryType.equals(LicenseType.TRIAL)) {
-				properties.put("lifetime", String.valueOf(lifetime));
-			}
-			else {
-				properties.put(
-					"expirationDate", String.valueOf(expirationDate.getTime()));
-			}
 
 			if (licenseEntryType.equals(LicenseType.CLUSTER) ||
 				licenseEntryType.equals(LicenseType.DEVELOPER_CLUSTER)) {
@@ -158,8 +149,7 @@ public class KeyGeneratorImpl implements KeyGenerator {
 			}
 
 			if (licenseEntryType.equals(LicenseType.DEVELOPER) ||
-				licenseEntryType.equals(LicenseType.DEVELOPER_CLUSTER) ||
-				licenseEntryType.equals(LicenseType.TRIAL)) {
+				licenseEntryType.equals(LicenseType.DEVELOPER_CLUSTER)) {
 
 				properties.put(
 					"maxHttpSessions", String.valueOf(maxHttpSessions));

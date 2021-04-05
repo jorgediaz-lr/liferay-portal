@@ -14,7 +14,6 @@
 
 package com.liferay.osb.provisioning.web.internal.display.context;
 
-import com.liferay.osb.provisioning.license.helper.constants.LicenseType;
 import com.liferay.osb.provisioning.license.model.LicenseKey;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
@@ -23,7 +22,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.text.Format;
@@ -78,18 +76,6 @@ public class LicenseKeyDisplay {
 	}
 
 	public String getExpirationDate() {
-		String licenseType = _licenseKey.getLicenseEntryType();
-
-		if (licenseType.equals(LicenseType.TRIAL)) {
-			Date startDate = _licenseKey.getStartDate();
-			Date expirationDate = _licenseKey.getExpirationDate();
-
-			long days =
-				(expirationDate.getTime() - startDate.getTime()) / Time.DAY;
-
-			return String.valueOf((int)days) + " Days";
-		}
-
 		return _dateFormat.format(_licenseKey.getExpirationDate());
 	}
 
@@ -158,12 +144,6 @@ public class LicenseKeyDisplay {
 	}
 
 	public String getStartDate() {
-		String licenseType = _licenseKey.getLicenseEntryType();
-
-		if (licenseType.equals(LicenseType.TRIAL)) {
-			return LanguageUtil.get(_httpServletRequest, "registration");
-		}
-
 		return _dateFormat.format(_licenseKey.getStartDate());
 	}
 

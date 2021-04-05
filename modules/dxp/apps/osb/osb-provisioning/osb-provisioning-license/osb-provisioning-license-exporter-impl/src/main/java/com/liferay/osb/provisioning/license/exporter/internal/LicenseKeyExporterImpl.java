@@ -302,28 +302,19 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 
 		longDateFormatDateTime.setTimeZone(TimeZone.getTimeZone("GMT"));
 
-		if (licenseEntryType.equals(LicenseType.TRIAL)) {
-			DocUtil.add(rootElement, "start-date", "Registration");
+		Date startDate = new Date(
+			GetterUtil.getLong(properties.get("startDate")));
 
-			long lifetime = GetterUtil.getLong(properties.get("lifetime"));
+		DocUtil.add(
+			rootElement, "start-date",
+			longDateFormatDateTime.format(startDate));
 
-			DocUtil.add(rootElement, "lifetime", String.valueOf(lifetime));
-		}
-		else {
-			Date startDate = new Date(
-				GetterUtil.getLong(properties.get("startDate")));
+		Date expirationDate = new Date(
+			GetterUtil.getLong(properties.get("expirationDate")));
 
-			DocUtil.add(
-				rootElement, "start-date",
-				longDateFormatDateTime.format(startDate));
-
-			Date expirationDate = new Date(
-				GetterUtil.getLong(properties.get("expirationDate")));
-
-			DocUtil.add(
-				rootElement, "expiration-date",
-				longDateFormatDateTime.format(expirationDate));
-		}
+		DocUtil.add(
+			rootElement, "expiration-date",
+			longDateFormatDateTime.format(expirationDate));
 
 		if (licenseEntryType.equals(LicenseType.CLUSTER) ||
 			licenseEntryType.equals(LicenseType.DEVELOPER_CLUSTER)) {
@@ -333,8 +324,7 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 		}
 
 		if (licenseEntryType.equals(LicenseType.DEVELOPER) ||
-			licenseEntryType.equals(LicenseType.DEVELOPER_CLUSTER) ||
-			licenseEntryType.equals(LicenseType.TRIAL)) {
+			licenseEntryType.equals(LicenseType.DEVELOPER_CLUSTER)) {
 
 			DocUtil.add(
 				rootElement, "max-http-sessions",
