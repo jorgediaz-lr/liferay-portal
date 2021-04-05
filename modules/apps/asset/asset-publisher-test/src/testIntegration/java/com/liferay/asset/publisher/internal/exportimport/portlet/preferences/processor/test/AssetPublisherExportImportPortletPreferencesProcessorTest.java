@@ -153,7 +153,7 @@ public class AssetPublisherExportImportPortletPreferencesProcessorTest {
 		// Update asset vocabulary to have a different primary key. We will swap
 		// to the new one and verify it.
 
-		AssetVocabularyLocalServiceUtil.deleteAssetVocabulary(
+		AssetVocabularyLocalServiceUtil.deleteVocabulary(
 			assetVocabulary.getVocabularyId());
 
 		assetVocabulary = AssetTestUtil.addVocabulary(_group.getGroupId());
@@ -208,7 +208,7 @@ public class AssetPublisherExportImportPortletPreferencesProcessorTest {
 		// Update asset vocabulary to have a different primary key. We will swap
 		// to the new one and verify it.
 
-		AssetCategoryLocalServiceUtil.deleteAssetCategory(
+		AssetCategoryLocalServiceUtil.deleteCategory(
 			assetCategory.getCategoryId());
 
 		assetCategory = AssetTestUtil.addCategory(
