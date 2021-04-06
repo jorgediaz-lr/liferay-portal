@@ -206,6 +206,7 @@ definition {
 
 	@priority = "5"
 	test XPackPkiAuthenticationSmokeTest {
+		property elastic.override.version = "7.11.0";
 		property elastic.pki.authentication.enabled = "true";
 		property elastic.xpack.enabled = "true";
 		property osgi.app.includes = "portal-search-elasticsearch6-xpack-monitoring,portal-search-elasticsearch7";
@@ -233,6 +234,7 @@ definition {
 
 	@priority = "5"
 	test XPackSmokeTest {
+		property elastic.override.version = "7.11.0";
 		property elastic.xpack.enabled = "true";
 		property osgi.app.includes = "portal-search-elasticsearch6-xpack-monitoring,portal-search-elasticsearch7";
 		property osgi.module.configuration.file.names = "com.liferay.portal.bundle.blacklist.internal.BundleBlacklistConfiguration.config";
