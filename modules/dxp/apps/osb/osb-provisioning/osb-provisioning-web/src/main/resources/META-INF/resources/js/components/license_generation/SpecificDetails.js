@@ -13,12 +13,12 @@ import capitalize from 'lodash.capitalize';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import {useGenerateLicense} from '../../hooks/generateLicense';
+import {useLicense} from '../../hooks/license';
 import {displayInMDYDateFormat, getUTCAdjustedDate} from '../../utilities/date';
 import CancelLink from '../CancelLink';
 
 function SpecificDetails({redirect}) {
-	const [generateLicense, {updateLicense}] = useGenerateLicense();
+	const [license, {updateLicense}] = useLicense();
 
 	const {
 		accountName,
@@ -31,7 +31,7 @@ function SpecificDetails({redirect}) {
 		product,
 		startDate,
 		version
-	} = generateLicense;
+	} = license;
 
 	function formatDate(date) {
 		const utcAdjustedDate = getUTCAdjustedDate(date);
@@ -40,36 +40,29 @@ function SpecificDetails({redirect}) {
 	}
 
 	function handleAccountNameChange(event) {
-		updateLicense(generateLicense =>
-			generateLicense.set('accountName', event.currentTarget)
+		updateLicense(license =>
+			license.set('accountName', event.currentTarget)
 		);
 	}
 
 	function handleComplimentaryChange() {
-		updateLicense(generateLicense =>
-			generateLicense.update(
-				'complimentary',
-				complimentary => !complimentary
-			)
+		updateLicense(license =>
+			license.update('complimentary', complimentary => !complimentary)
 		);
 	}
 
 	function handleDescriptionChange(event) {
-		updateLicense(generateLicense =>
-			generateLicense.set('description', event.currentTarget)
+		updateLicense(license =>
+			license.set('description', event.currentTarget)
 		);
 	}
 
 	function handleDisplayPreviousPage() {
-		updateLicense(generateLicense =>
-			generateLicense.set('showSpecificDetails', false)
-		);
+		updateLicense(license => license.set('showSpecificDetails', false));
 	}
 
 	function handleOwnerChange(event) {
-		updateLicense(generateLicense =>
-			generateLicense.set('owner', event.currentTarget)
-		);
+		updateLicense(license => license.set('owner', event.currentTarget));
 	}
 
 	return (

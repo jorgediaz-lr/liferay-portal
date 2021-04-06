@@ -13,7 +13,7 @@ import capitalize from 'lodash.capitalize';
 import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
 
-import {useGenerateLicense} from '../../hooks/generateLicense';
+import {useLicense} from '../../hooks/license';
 import CancelLink from '../CancelLink';
 import Purchases from './Purchases';
 import SelectAccount from './SelectAccount';
@@ -31,7 +31,7 @@ function GeneralInformation({
 	const [
 		{licenseEntry, product, version},
 		{updateLicense}
-	] = useGenerateLicense();
+	] = useLicense();
 	const {licenseEntryId} = licenseEntry;
 
 	const [selectedProduct, setSelectedProduct] = useState(
@@ -39,8 +39,8 @@ function GeneralInformation({
 	);
 
 	useEffect(() => {
-		updateLicense(generateLicense =>
-			generateLicense
+		updateLicense(license =>
+			license
 				.set('accountCode', accountCode)
 				.set('accountKey', accountKey)
 				.set('accountName', accountName)
@@ -80,8 +80,8 @@ function GeneralInformation({
 	function handleLicenseEntryOnChange(event) {
 		const currentLicenseEntry = getLicenseEntry(event.target.value);
 
-		updateLicense(generateLicense =>
-			generateLicense
+		updateLicense(license =>
+			license
 				.updateIn(['licenseEntry', 'licenseEntryId'], licenseEntryId =>
 					currentLicenseEntry
 						? currentLicenseEntry.licenseEntryId
@@ -109,8 +109,8 @@ function GeneralInformation({
 
 		setSelectedProduct(currentProduct);
 
-		updateLicense(generateLicense =>
-			generateLicense
+		updateLicense(license =>
+			license
 				.set('version', '')
 				.setIn(['licenseEntry', 'licenseEntryId'], '')
 				.setIn(['licenseEntry', 'licenseEntryName'], '')
@@ -125,8 +125,8 @@ function GeneralInformation({
 	}
 
 	function handleVersionOnChange(event) {
-		updateLicense(generateLicense =>
-			generateLicense
+		updateLicense(license =>
+			license
 				.set('version', event.target.value)
 				.setIn(['licenseEntry', 'licenseEntryId'], '')
 				.setIn(['licenseEntry', 'licenseEntryName'], '')

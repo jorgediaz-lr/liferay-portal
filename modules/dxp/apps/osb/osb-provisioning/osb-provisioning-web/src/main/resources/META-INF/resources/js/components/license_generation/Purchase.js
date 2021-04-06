@@ -14,7 +14,7 @@ import ClayTableCell from '@clayui/table/lib/Cell';
 import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 
-import {useGenerateLicense} from '../../hooks/generateLicense';
+import {useLicense} from '../../hooks/license';
 import DatePicker from '../DatePicker';
 
 const DASH = '-';
@@ -33,11 +33,11 @@ function Purchase({
 	const [selectedStartDate, setSelectedStartDate] = useState(startDate);
 	const [sizing, setSizing] = useState();
 
-	const [, {updateLicense}] = useGenerateLicense();
+	const [, {updateLicense}] = useLicense();
 
 	function handleChoosePurchase() {
-		updateLicense(generateLicense =>
-			generateLicense
+		updateLicense(license =>
+			license
 				.set('expirationDate', selectedExpirationDate)
 				.set('startDate', selectedStartDate)
 

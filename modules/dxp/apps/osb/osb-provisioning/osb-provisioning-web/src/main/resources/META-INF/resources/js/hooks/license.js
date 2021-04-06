@@ -12,7 +12,7 @@
 import {Record} from 'immutable';
 import React, {useContext, useState} from 'react';
 
-export const GenerateLicense = Record({
+export const License = Record({
 	accountCode: '',
 	accountKey: '',
 	accountName: '',
@@ -34,30 +34,27 @@ export const GenerateLicense = Record({
 	version: ''
 });
 
-const GenerateLicenseContext = React.createContext();
+const LicenseContext = React.createContext();
 
-export function GenerateLicenseProvider({
-	license = new GenerateLicense(),
-	children
-}) {
-	const [generateLicense, setGenerateLicense] = useState(license);
+export function LicenseProvider({initialLicense = new License(), children}) {
+	const [license, setLicense] = useState(initialLicense);
 
 	return (
-		<GenerateLicenseContext.Provider
+		<LicenseContext.Provider
 			value={[
-				generateLicense,
+				license,
 				{
 					updateLicense(updater) {
-						setGenerateLicense(updater(generateLicense));
+						setLicense(updater(license));
 					}
 				}
 			]}
 		>
 			{children}
-		</GenerateLicenseContext.Provider>
+		</LicenseContext.Provider>
 	);
 }
 
-export function useGenerateLicense() {
-	return useContext(GenerateLicenseContext);
+export function useLicense() {
+	return useContext(LicenseContext);
 }

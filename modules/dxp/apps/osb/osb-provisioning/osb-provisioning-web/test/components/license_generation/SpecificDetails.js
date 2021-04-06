@@ -14,15 +14,15 @@ import React from 'react';
 
 import SpecificDetails from '../../../src/main/resources/META-INF/resources/js/components/license_generation/SpecificDetails';
 import {
-	GenerateLicense,
-	GenerateLicenseProvider
-} from '../../../src/main/resources/META-INF/resources/js/hooks/generateLicense';
+	License,
+	LicenseProvider
+} from '../../../src/main/resources/META-INF/resources/js/hooks/license';
 import {
 	displayInMDYDateFormat,
 	getUTCAdjustedDate
 } from '../../../src/main/resources/META-INF/resources/js/utilities/date';
 
-const dummyLicense = new GenerateLicense({
+const dummyLicense = new License({
 	accountCode: 'ABC',
 	accountKey: 'KEY-ABC',
 	accountName: 'Test Account',
@@ -46,9 +46,9 @@ const dummyLicense = new GenerateLicense({
 
 function renderSpecificDetails(props) {
 	return render(
-		<GenerateLicenseProvider license={dummyLicense}>
+		<LicenseProvider initialLicense={dummyLicense}>
 			<SpecificDetails redirect={'/redirect/url'} {...props} />
-		</GenerateLicenseProvider>
+		</LicenseProvider>
 	);
 }
 

@@ -13,7 +13,7 @@ import {cleanup, fireEvent, render} from '@testing-library/react';
 import React from 'react';
 
 import GeneralInformation from '../../../src/main/resources/META-INF/resources/js/components/license_generation/GeneralInformation';
-import {GenerateLicenseProvider} from '../../../src/main/resources/META-INF/resources/js/hooks/generateLicense';
+import {LicenseProvider} from '../../../src/main/resources/META-INF/resources/js/hooks/license';
 
 const licensableProducts = [
 	{
@@ -98,14 +98,14 @@ const purchasedProducts = {
 
 function renderGeneralInformation(props) {
 	return render(
-		<GenerateLicenseProvider>
+		<LicenseProvider>
 			<GeneralInformation
 				redirect="/back/url"
 				selectAccountActionURL="/action/url"
 				selectAccountRenderURL="render/url"
 				{...props}
 			/>
-		</GenerateLicenseProvider>
+		</LicenseProvider>
 	);
 }
 
