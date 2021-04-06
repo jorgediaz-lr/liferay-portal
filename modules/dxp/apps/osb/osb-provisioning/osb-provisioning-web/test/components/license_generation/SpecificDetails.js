@@ -112,4 +112,28 @@ describe('SpecificDetails', () => {
 
 		expect(getByLabelText('complimentary').checked).toBeTruthy();
 	});
+
+	it('does not display the Maximum Servers input if the selected Type is not Cluster', () => {
+		const {queryByLabelText} = renderSpecificDetails();
+
+		expect(queryByLabelText('maximum-servers')).toBeFalsy();
+	});
+
+	it('displays the Maximum Servers input if the selected Type is Cluster', () => {
+		const {getByLabelText} = render(
+			<LicenseProvider
+				initialLicense={
+					new License({
+						licenseEntry: {
+							licenseEntryType: 'cluster'
+						}
+					})
+				}
+			>
+				<SpecificDetails redirect={'/redirect/url'} />
+			</LicenseProvider>
+		);
+
+		getByLabelText('maximum-servers');
+	});
 });

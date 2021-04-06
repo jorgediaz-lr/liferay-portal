@@ -75,7 +75,7 @@ function GeneralInformation({
 	}
 
 	function handleLicenseEntryOnChange(event) {
-		const currentLicenseEntry = getLicenseEntry(event.target.value);
+		const currentLicenseEntry = getLicenseEntry(event.currentTarget.value);
 
 		updateLicense(license =>
 			license
@@ -102,7 +102,7 @@ function GeneralInformation({
 	}
 
 	function handleProductOnChange(event) {
-		const currentProduct = findCurrentProduct(event.target.value);
+		const currentProduct = findCurrentProduct(event.currentTarget.value);
 
 		setSelectedProduct(currentProduct);
 

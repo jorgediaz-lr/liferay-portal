@@ -14,6 +14,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import {useLicense} from '../../hooks/license';
+import {LICENSE_TYPE_CLUSTER} from '../../utilities/constants';
 import {displayInMDYDateFormat, getUTCAdjustedDate} from '../../utilities/date';
 import CancelLink from '../CancelLink';
 
@@ -27,6 +28,7 @@ function SpecificDetails({redirect}) {
 		expirationDate,
 		licenseEntry,
 		licenseKeysGenerated,
+		maxServers,
 		owner,
 		product,
 		startDate,
@@ -41,7 +43,7 @@ function SpecificDetails({redirect}) {
 
 	function handleAccountNameChange(event) {
 		updateLicense(license =>
-			license.set('accountName', event.currentTarget)
+			license.set('accountName', event.currentTarget.value)
 		);
 	}
 
@@ -53,7 +55,7 @@ function SpecificDetails({redirect}) {
 
 	function handleDescriptionChange(event) {
 		updateLicense(license =>
-			license.set('description', event.currentTarget)
+			license.set('description', event.currentTarget.value)
 		);
 	}
 
@@ -61,8 +63,16 @@ function SpecificDetails({redirect}) {
 		updateLicense(license => license.set('showSpecificDetails', false));
 	}
 
+	function handleMaxServersChange(event) {
+		updateLicense(license =>
+			license.set('maxServers', event.currentTarget.value)
+		);
+	}
+
 	function handleOwnerChange(event) {
-		updateLicense(license => license.set('owner', event.currentTarget));
+		updateLicense(license =>
+			license.set('owner', event.currentTarget.value)
+		);
 	}
 
 	return (
@@ -86,7 +96,7 @@ function SpecificDetails({redirect}) {
 
 								<input
 									className="form-control"
-									name="name"
+									id="name"
 									onChange={handleAccountNameChange}
 									type="text"
 									value={accountName}
@@ -100,7 +110,7 @@ function SpecificDetails({redirect}) {
 
 								<input
 									className="form-control"
-									name="owner"
+									id="owner"
 									onChange={handleOwnerChange}
 									type="text"
 									value={owner}
@@ -114,12 +124,33 @@ function SpecificDetails({redirect}) {
 
 								<input
 									className="form-control"
-									name="description"
+									id="description"
 									onChange={handleDescriptionChange}
 									type="text"
 									value={description}
 								/>
 							</div>
+
+							{licenseEntry.licenseEntryType ===
+								LICENSE_TYPE_CLUSTER && (
+								<div className="col-md-6 form-group">
+									<label htmlFor="maxServers">
+										{Liferay.Language.get(
+											'maximum-servers'
+										)}
+									</label>
+
+									<input
+										className="form-control"
+										id="maxServers"
+										max={50}
+										min={1}
+										onChange={handleMaxServersChange}
+										type="number"
+										value={maxServers}
+									/>
+								</div>
+							)}
 
 							<div className="col-md-12 form-group">
 								<label

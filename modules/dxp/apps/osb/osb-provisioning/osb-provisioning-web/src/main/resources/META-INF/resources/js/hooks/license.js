@@ -25,6 +25,7 @@ export const License = Record({
 		licenseEntryType: ''
 	},
 	licenseKeysGenerated: '',
+	maxServers: 1,
 	owner: '',
 	product: {productKey: '', productName: ''},
 	productPurchaseKey: '',
