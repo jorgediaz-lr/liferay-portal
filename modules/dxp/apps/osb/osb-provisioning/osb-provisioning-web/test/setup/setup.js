@@ -27,6 +27,17 @@ window.Liferay = {
 window.ProvisioningConstants = {
 	accountsPortletNamespace:
 		'_com_liferay_osb_provisioning_web_portlet_AccountsPortlet_',
+	licenseType: {
+		cluster: 'cluster',
+		developer: 'developer',
+		knownServerIdTypes: [
+			'developer',
+			'developer_cluster',
+			'elastic',
+			'enterprise',
+			'oem'
+		]
+	},
 	namespace: 'namespace',
 	noteFormat: {
 		html: 'HTML',

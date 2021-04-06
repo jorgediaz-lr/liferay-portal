@@ -14,11 +14,11 @@ import ClayTableCell from '@clayui/table/lib/Cell';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import {LICENSE_TYPE_DEVELOPER} from '../../utilities/constants';
 import {generateNewDate} from '../../utilities/date';
 import Purchase from './Purchase';
 
 const TODAY = new Date();
-const TYPE_DEVELOPER = 'developer';
 
 function Purchases({detached, purchased, type}) {
 	return (
@@ -90,7 +90,7 @@ function Purchased({purchased, selectedType}) {
 
 						expirationDate = new Date(item.expirationDate);
 
-						if (selectedType !== TYPE_DEVELOPER) {
+						if (selectedType !== LICENSE_TYPE_DEVELOPER) {
 							expirationDate = generateNewDate(
 								expirationDate,
 								100

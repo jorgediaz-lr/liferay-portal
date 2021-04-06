@@ -51,6 +51,7 @@ page import="com.liferay.osb.provisioning.exception.MultipleDossieraKeysExceptio
 page import="com.liferay.osb.provisioning.exception.ProductBundleNameException" %><%@
 page import="com.liferay.osb.provisioning.exception.ProductPurchaseQuantityException" %><%@
 page import="com.liferay.osb.provisioning.exception.RequiredProductException" %><%@
+page import="com.liferay.osb.provisioning.license.helper.constants.LicenseType" %><%@
 page import="com.liferay.osb.provisioning.license.model.LicenseKey" %><%@
 page import="com.liferay.osb.provisioning.model.ProductBundle" %><%@
 page import="com.liferay.osb.provisioning.service.ProductBundleLocalServiceUtil" %><%@
@@ -139,6 +140,17 @@ ProvisioningWebConfiguration provisioningWebConfiguration = (ProvisioningWebConf
 	window.ProvisioningConstants = {
 		accountsPortletNamespace:
 			'<%= PortalUtil.getPortletNamespace(ProvisioningPortletKeys.ACCOUNTS) %>',
+		licenseType: {
+			cluster: '<%= LicenseType.CLUSTER %>',
+			developer: '<%= LicenseType.DEVELOPER %>',
+			knownServerIdTypes: [
+				'<%= LicenseType.DEVELOPER %>',
+				'<%= LicenseType.DEVELOPER_CLUSTER %>',
+				'<%= LicenseType.ELASTIC %>',
+				'<%= LicenseType.ENTERPRISE %>',
+				'<%= LicenseType.OEM %>'
+			]
+		},
 		namespace: '${renderResponse.namespace}',
 		noteFormat: {
 			html: '<%= Note.Format.HTML %>',

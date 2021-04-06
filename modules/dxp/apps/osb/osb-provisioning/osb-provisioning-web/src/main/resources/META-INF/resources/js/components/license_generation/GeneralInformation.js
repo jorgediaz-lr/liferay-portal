@@ -28,10 +28,7 @@ function GeneralInformation({
 	selectAccountActionURL,
 	selectAccountRenderURL
 }) {
-	const [
-		{licenseEntry, product, version},
-		{updateLicense}
-	] = useLicense();
+	const [{licenseEntry, product, version}, {updateLicense}] = useLicense();
 	const {licenseEntryId} = licenseEntry;
 
 	const [selectedProduct, setSelectedProduct] = useState(

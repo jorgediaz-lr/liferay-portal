@@ -70,3 +70,13 @@ export const PRODUCT_PURCHASE_STATUS_APPROVED =
 	window.ProvisioningConstants.productPurchaseStatus.approved;
 export const PRODUCT_PURCHASE_STATUS_CANCELLED =
 	window.ProvisioningConstants.productPurchaseStatus.cancelled;
+
+// License Types
+
+export const KNOWN_SERVER_ID_LICENSE_TYPES =
+	window.ProvisioningConstants.licenseType.knownServerIdTypes;
+export const LICENSE_TYPE_CLUSTER =
+	window.ProvisioningConstants.licenseType.cluster;
+export const LICENSE_TYPE_DEVELOPER =
+	window.ProvisioningConstants.licenseType.developer;
+
