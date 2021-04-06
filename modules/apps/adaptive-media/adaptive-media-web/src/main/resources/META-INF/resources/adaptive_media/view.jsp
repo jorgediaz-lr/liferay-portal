@@ -178,9 +178,7 @@ AMManagementToolbarDisplayContext amManagementToolbarDisplayContext = new AMMana
 
 					<%
 					Map<String, String> properties = amImageConfigurationEntry.getProperties();
-					%>
 
-					<%
 					String maxWidth = properties.get("max-width");
 					%>
 
