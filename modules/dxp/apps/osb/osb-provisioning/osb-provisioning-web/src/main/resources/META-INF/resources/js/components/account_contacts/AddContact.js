@@ -60,7 +60,8 @@ export default function AddContact({
 
 		if (partnerIntersection.size > 1 || supportIntersection.size > 1) {
 			setValid(false);
-		} else {
+		}
+		else {
 			setValid(true);
 		}
 	}, [newRoles, validationRoleIds.partner, validationRoleIds.support]);

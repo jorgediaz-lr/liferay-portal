@@ -32,7 +32,7 @@ const dummyLicense = new License({
 	licenseEntry: {
 		licenseEntryId: 'ID-123',
 		licenseEntryName: 'Test License Entry Name',
-		licenseEntryType: 'type'
+		licenseEntryType: 'developer'
 	},
 	licenseKeysGenerated: '0',
 	owner: '',
@@ -94,7 +94,7 @@ describe('SpecificDetails', () => {
 	it('displays the Type field correctly', () => {
 		const {getByText} = renderSpecificDetails();
 
-		getByText('Type');
+		getByText('Developer');
 	});
 
 	it('displays the Start and Expiration date fields correctly', () => {
@@ -111,6 +111,30 @@ describe('SpecificDetails', () => {
 		const {getByLabelText} = renderSpecificDetails();
 
 		expect(getByLabelText('complimentary').checked).toBeTruthy();
+	});
+
+	it('displays the Server Id Fields section if the selected Type is one of Backup, Cluster, Limited, Non-production, Per-user, or Production', () => {
+		const {getByText} = render(
+			<LicenseProvider
+				initialLicense={
+					new License({
+						licenseEntry: {
+							licenseEntryType: 'cluster'
+						}
+					})
+				}
+			>
+				<SpecificDetails redirect={'/redirect/url'} />
+			</LicenseProvider>
+		);
+
+		getByText('server-id-fields');
+	});
+
+	it('does not display the Server Id Fields section if the selected Type is one of Developer, Developer-cluster, Elastic, Enterprise, or OEM', () => {
+		const {queryByText} = renderSpecificDetails();
+
+		expect(queryByText('server-id-fields')).toBeFalsy();
 	});
 
 	it('does not display the Maximum Servers input if the selected Type is not Cluster', () => {

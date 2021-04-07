@@ -79,4 +79,3 @@ export const LICENSE_TYPE_CLUSTER =
 	window.ProvisioningConstants.licenseType.cluster;
 export const LICENSE_TYPE_DEVELOPER =
 	window.ProvisioningConstants.licenseType.developer;
-

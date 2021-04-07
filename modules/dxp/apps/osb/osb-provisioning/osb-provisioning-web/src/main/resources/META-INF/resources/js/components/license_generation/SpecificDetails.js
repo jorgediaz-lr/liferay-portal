@@ -14,10 +14,14 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import {useLicense} from '../../hooks/license';
-import {LICENSE_TYPE_CLUSTER} from '../../utilities/constants';
+import {
+	KNOWN_SERVER_ID_LICENSE_TYPES,
+	LICENSE_TYPE_CLUSTER
+} from '../../utilities/constants';
 import {displayInMDYDateFormat, getUTCAdjustedDate} from '../../utilities/date';
 import CancelLink from '../CancelLink';
 import RequiredFieldMarker from '../RequiredFieldMarker';
+import ServerIdFields from './ServerIdFields';
 
 function SpecificDetails({redirect}) {
 	const [license, {updateLicense}] = useLicense();
@@ -35,6 +39,12 @@ function SpecificDetails({redirect}) {
 		startDate,
 		version
 	} = license;
+
+	function displayServerIDFields() {
+		return !KNOWN_SERVER_ID_LICENSE_TYPES.filter(
+			type => type === licenseEntry.licenseEntryType
+		).length;
+	}
 
 	function formatDate(date) {
 		const utcAdjustedDate = getUTCAdjustedDate(date);
@@ -141,6 +151,8 @@ function SpecificDetails({redirect}) {
 									value={description}
 								/>
 							</div>
+
+							{displayServerIDFields() && <ServerIdFields />}
 
 							{licenseEntry.licenseEntryType ===
 								LICENSE_TYPE_CLUSTER && (
