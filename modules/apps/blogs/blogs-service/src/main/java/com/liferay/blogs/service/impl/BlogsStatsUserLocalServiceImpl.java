@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.util.GroupThreadLocal;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
@@ -247,6 +248,10 @@ public class BlogsStatsUserLocalServiceImpl
 			long groupId, long userId, int ratingsTotalEntries,
 			double ratingsTotalScore, double ratingsAverageScore)
 		throws PortalException {
+
+		if (GroupThreadLocal.isDeleteInProcess()) {
+			return null;
+		}
 
 		BlogsStatsUser blogsStatsUser = getStatsUser(groupId, userId);
 
