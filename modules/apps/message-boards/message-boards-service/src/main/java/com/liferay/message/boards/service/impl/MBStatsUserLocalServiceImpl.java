@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.util.GroupThreadLocal;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.util.Date;
@@ -262,6 +263,10 @@ public class MBStatsUserLocalServiceImpl
 	@Override
 	public MBStatsUser updateStatsUser(
 		long groupId, long userId, int messageCount, Date lastPostDate) {
+
+		if (GroupThreadLocal.isDeleteInProcess()) {
+			return null;
+		}
 
 		MBStatsUser statsUser = getStatsUser(groupId, userId);
 
