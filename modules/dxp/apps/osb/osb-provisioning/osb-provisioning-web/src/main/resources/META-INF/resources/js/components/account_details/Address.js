@@ -23,6 +23,7 @@ import {
 import {convertDashToEmptyString} from '../../utilities/helpers';
 import EditableField from '../EditableField';
 import IconButton from '../IconButton';
+import RequiredFieldMarker from '../RequiredFieldMarker';
 
 function Address({accountKey, addURL, address, count, countryOptions}) {
 	const [countryId, setCountryId] = useState(
@@ -366,8 +367,7 @@ function AddressField({
 		<ClayList.Item flex>
 			<div className="detail-field">
 				<ClayList.ItemTitle>
-					{fieldLabel}{' '}
-					{required && <span className="text-warning">{'*'}</span>}
+					{fieldLabel} {required && <RequiredFieldMarker />}
 				</ClayList.ItemTitle>
 
 				{readOnly && (

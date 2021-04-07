@@ -17,6 +17,7 @@ import {useLicense} from '../../hooks/license';
 import {LICENSE_TYPE_CLUSTER} from '../../utilities/constants';
 import {displayInMDYDateFormat, getUTCAdjustedDate} from '../../utilities/date';
 import CancelLink from '../CancelLink';
+import RequiredFieldMarker from '../RequiredFieldMarker';
 
 function SpecificDetails({redirect}) {
 	const [license, {updateLicense}] = useLicense();
@@ -103,9 +104,14 @@ function SpecificDetails({redirect}) {
 								/>
 							</div>
 
-							<div className="col-md-6 form-group">
+							<div
+								className={`col-md-6 form-group ${
+									owner ? '' : 'has-error'
+								}`}
+							>
 								<label htmlFor="owner">
-									{Liferay.Language.get('owner')}
+									{Liferay.Language.get('owner')}{' '}
+									<RequiredFieldMarker />
 								</label>
 
 								<input
@@ -117,9 +123,14 @@ function SpecificDetails({redirect}) {
 								/>
 							</div>
 
-							<div className="col-md-6 form-group">
+							<div
+								className={`col-md-6 form-group ${
+									description ? '' : 'has-error'
+								}`}
+							>
 								<label htmlFor="description">
-									{Liferay.Language.get('description')}
+									{Liferay.Language.get('description')}{' '}
+									<RequiredFieldMarker />
 								</label>
 
 								<input

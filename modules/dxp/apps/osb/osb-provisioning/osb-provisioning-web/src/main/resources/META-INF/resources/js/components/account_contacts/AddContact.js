@@ -16,6 +16,7 @@ import React, {useEffect, useState} from 'react';
 
 import {NAMESPACE} from '../../utilities/constants';
 import CancelLink from '../CancelLink';
+import RequiredFieldMarker from '../RequiredFieldMarker';
 import ContactEntry from './ContactEntry';
 
 export default function AddContact({
@@ -59,8 +60,7 @@ export default function AddContact({
 
 		if (partnerIntersection.size > 1 || supportIntersection.size > 1) {
 			setValid(false);
-		}
-		else {
+		} else {
 			setValid(true);
 		}
 	}, [newRoles, validationRoleIds.partner, validationRoleIds.support]);
@@ -126,11 +126,7 @@ export default function AddContact({
 							<span className="text-truncate-inline">
 								<span className="text-secondary text-truncate">
 									{Liferay.Language.get('email')}
-									{!knownContact && (
-										<span className="text-warning">
-											{'*'}
-										</span>
-									)}
+									{!knownContact && <RequiredFieldMarker />}
 								</span>
 							</span>
 						</th>
@@ -138,7 +134,7 @@ export default function AddContact({
 							<span className="text-truncate-inline">
 								<span className="text-secondary text-truncate">
 									{Liferay.Language.get('roles')}
-									<span className="text-warning">{'*'}</span>
+									<RequiredFieldMarker />
 								</span>
 							</span>
 						</th>
