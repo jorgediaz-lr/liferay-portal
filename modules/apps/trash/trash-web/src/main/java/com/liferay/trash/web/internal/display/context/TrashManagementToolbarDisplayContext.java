@@ -56,6 +56,8 @@ public class TrashManagementToolbarDisplayContext
 		super(
 			liferayPortletRequest, liferayPortletResponse, httpServletRequest,
 			trashDisplayContext.getEntrySearch());
+
+		_trashDisplayContext = trashDisplayContext;
 	}
 
 	@Override
@@ -154,6 +156,11 @@ public class TrashManagementToolbarDisplayContext
 	}
 
 	@Override
+	protected String getDisplayStyle() {
+		return _trashDisplayContext.getDisplayStyle();
+	}
+
+	@Override
 	protected String[] getDisplayViews() {
 		return new String[] {"list", "descriptive", "icon"};
 	}
@@ -207,5 +214,7 @@ public class TrashManagementToolbarDisplayContext
 
 		return trashHandler.isDeletable(trashEntry.getClassPK());
 	}
+
+	private final TrashDisplayContext _trashDisplayContext;
 
 }
