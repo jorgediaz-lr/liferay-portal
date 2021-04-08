@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.AggregateResourceBundleLoader;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
 
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -176,22 +178,7 @@ public class FragmentCollectionContributorTrackerImpl
 	protected FragmentEntryValidator fragmentEntryValidator;
 
 	private synchronized Map<String, FragmentEntry> _getFragmentEntries() {
-		Map<String, FragmentEntry> fragmentEntries = _fragmentEntries;
-
-		if (fragmentEntries == null) {
-			fragmentEntries = new HashMap<>();
-
-			for (FragmentCollectionContributor fragmentCollectionContributor :
-					_serviceTrackerMap.values()) {
-
-				fragmentEntries.putAll(
-					_getFragmentEntries(fragmentCollectionContributor));
-			}
-
-			_fragmentEntries = fragmentEntries;
-		}
-
-		return new HashMap<>(fragmentEntries);
+		return new HashMap<>(_fragmentEntries);
 	}
 
 	private Map<String, FragmentEntry> _getFragmentEntries(
@@ -290,7 +277,8 @@ public class FragmentCollectionContributorTrackerImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		FragmentCollectionContributorTrackerImpl.class);
 
-	private volatile Map<String, FragmentEntry> _fragmentEntries;
+	private volatile Map<String, FragmentEntry> _fragmentEntries =
+		new ConcurrentHashMap<>();
 
 	@Reference
 	private FragmentEntryLinkLocalService _fragmentEntryLinkLocalService;
@@ -312,9 +300,19 @@ public class FragmentCollectionContributorTrackerImpl
 		public FragmentCollectionContributor addingService(
 			ServiceReference<FragmentCollectionContributor> serviceReference) {
 
-			_fragmentEntries = null;
+			FragmentCollectionContributor fragmentCollectionContributor =
+				_bundleContext.getService(serviceReference);
 
-			return _bundleContext.getService(serviceReference);
+			Map<String, FragmentEntry> fragmentEntries = _getFragmentEntries(
+				fragmentCollectionContributor);
+
+			if (MapUtil.isEmpty(fragmentEntries)) {
+				return null;
+			}
+
+			_fragmentEntries.putAll(fragmentEntries);
+
+			return fragmentCollectionContributor;
 		}
 
 		@Override
@@ -328,7 +326,19 @@ public class FragmentCollectionContributorTrackerImpl
 			ServiceReference<FragmentCollectionContributor> serviceReference,
 			FragmentCollectionContributor fragmentCollectionContributor) {
 
-			_fragmentEntries = null;
+			Map<String, FragmentEntry> fragmentEntries = _fragmentEntries;
+
+			if (fragmentEntries != null) {
+				for (int type : _SUPPORTED_FRAGMENT_TYPES) {
+					for (FragmentEntry fragmentEntry :
+							fragmentCollectionContributor.getFragmentEntries(
+								type)) {
+
+						fragmentEntries.remove(
+							fragmentEntry.getFragmentEntryKey());
+					}
+				}
+			}
 
 			_bundleContext.ungetService(serviceReference);
 		}
