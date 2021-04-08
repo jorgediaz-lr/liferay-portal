@@ -146,6 +146,10 @@ public class AssetVocabulariesManagementToolbarDisplayContext
 		return false;
 	}
 
+	protected String getDisplayStyle() {
+		return _assetCategoriesDisplayContext.getDisplayStyle();
+	}
+
 	@Override
 	protected String[] getDisplayViews() {
 		return new String[] {"list", "descriptive"};
