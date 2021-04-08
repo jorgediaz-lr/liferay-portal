@@ -41,7 +41,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	immediate = true,
 	property = {
-		"error.email.address=", "host=", "password=", "port=", "username=",
+		"errorEmailAddress=", "host=", "password=", "port=", "username=",
 		"useSSL="
 	},
 	service = XylemConnection.class
