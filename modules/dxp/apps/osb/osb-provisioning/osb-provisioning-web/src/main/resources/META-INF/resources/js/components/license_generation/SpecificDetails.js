@@ -21,7 +21,7 @@ import {
 import {displayInMDYDateFormat, getUTCAdjustedDate} from '../../utilities/date';
 import CancelLink from '../CancelLink';
 import RequiredFieldMarker from '../RequiredFieldMarker';
-import ServerIdFields from './ServerIdFields';
+import ServerIdFieldGroups from './ServerIdFieldGroups';
 
 function SpecificDetails({redirect}) {
 	const [license, {updateLicense}] = useLicense();
@@ -152,7 +152,7 @@ function SpecificDetails({redirect}) {
 								/>
 							</div>
 
-							{displayServerIDFields() && <ServerIdFields />}
+							{displayServerIDFields() && <ServerIdFieldGroups />}
 
 							{licenseEntry.licenseEntryType ===
 								LICENSE_TYPE_CLUSTER && (

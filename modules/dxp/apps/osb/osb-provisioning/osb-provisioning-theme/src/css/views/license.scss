@@ -52,8 +52,21 @@
 	}
 }
 
-.server-id-field {
-	border: 1px solid $divider;
-	border-radius: $border-radius;
-	padding: $spacing-default;
+.server-id-field-groups {
+	.server-id-field {
+		border: 1px solid $divider;
+		border-bottom-width: 0;
+		padding: $spacing-default;
+
+		&:first-child {
+			border-top-left-radius: $border-radius;
+			border-top-right-radius: $border-radius;
+		}
+
+		&:last-child {
+			border-bottom-left-radius: $border-radius;
+			border-bottom-right-radius: $border-radius;
+			border-bottom-width: 1px;
+		}
+	}
 }
