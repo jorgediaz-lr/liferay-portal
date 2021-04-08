@@ -51,6 +51,8 @@ public class JournalFeedsManagementToolbarDisplayContext
 		super(
 			liferayPortletRequest, liferayPortletResponse, httpServletRequest,
 			journalFeedsDisplayContext.getFeedsSearchContainer());
+
+		_journalFeedsDisplayContext = journalFeedsDisplayContext;
 	}
 
 	@Override
@@ -149,6 +151,11 @@ public class JournalFeedsManagementToolbarDisplayContext
 	}
 
 	@Override
+	protected String getDisplayStyle() {
+		return _journalFeedsDisplayContext.getDisplayStyle();
+	}
+
+	@Override
 	protected String[] getDisplayViews() {
 		return new String[] {"list", "descriptive"};
 	}
@@ -162,5 +169,7 @@ public class JournalFeedsManagementToolbarDisplayContext
 	protected String[] getOrderByKeys() {
 		return new String[] {"name", "id"};
 	}
+
+	private final JournalFeedsDisplayContext _journalFeedsDisplayContext;
 
 }
