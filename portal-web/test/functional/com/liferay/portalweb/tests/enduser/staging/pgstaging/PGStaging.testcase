@@ -391,15 +391,19 @@ definition {
 
 		Staging.gotoPublishToLive();
 
-		ClickNoError(locator1 = "Staging#STAGING_PUBLISH_TO_LIVE_BUTTON");
+		AssertClickNoError.assertPartialTextClickAt(
+			locator1 = "Button#SUBMIT",
+			value1 = "Publish");
 
 		Pause(locator1 = "3000");
 
-		AssertTextEquals( locator1 = "Staging#PROCESS_SUCCESSFUL", value1 = "Successful");
+		AssertTextEquals(
+			locator1 = "Staging#PROCESS_SUCCESSFUL",
+			value1 = "Successful");
 
-		SelectFrameTop();
+		SelectFrame(value1 = "relative=top");
 
-		SelectFrame(locator1 = "IFrame#MODAL_BODY");
+		SelectFrame(locator1 = "IFrame#DIALOG");
 
 		takeScreenshot();
 
