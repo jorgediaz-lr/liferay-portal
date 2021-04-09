@@ -165,8 +165,10 @@ public class PublishLayoutMVCActionCommand extends BaseMVCActionCommand {
 				layout.getTypeSettingsProperties();
 
 			for (String key : typeSettingsProperties.keySet()) {
-				layoutTypeSettingsProperties.put(
-					key, typeSettingsProperties.get(key));
+				if (key.startsWith("sitemap")) {
+					layoutTypeSettingsProperties.put(
+						key, typeSettingsProperties.get(key));
+				}
 			}
 
 			_layoutLocalService.updateLayout(
