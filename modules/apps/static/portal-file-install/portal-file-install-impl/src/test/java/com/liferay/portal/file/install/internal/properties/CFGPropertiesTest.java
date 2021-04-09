@@ -81,11 +81,22 @@ public class CFGPropertiesTest {
 
 	@Test
 	public void testLoadAndSave() throws IOException {
-		String line = "testKey=testValue";
+		String line = "testKey = testValue:";
 
 		CFGProperties cfgProperties = _createCFGProperties(line);
 
-		Assert.assertEquals("testValue", cfgProperties.get("testKey"));
+		Assert.assertEquals("testValue:", cfgProperties.get("testKey"));
+
+		_assertSave(cfgProperties, line);
+	}
+
+	@Test
+	public void testLoadAndSaveColon() throws IOException {
+		String line = "testKey : testValue=";
+
+		CFGProperties cfgProperties = _createCFGProperties(line);
+
+		Assert.assertEquals("testValue=", cfgProperties.get("testKey"));
 
 		_assertSave(cfgProperties, line);
 	}
@@ -97,7 +108,7 @@ public class CFGPropertiesTest {
 
 	@Test
 	public void testLoadAndSaveMultiline() throws IOException {
-		String line = "testKey1=testValue11\\\n\ttestValue12";
+		String line = "test\\\nKey1=testValue11\\\n\ttestValue12";
 
 		CFGProperties cfgProperties = _createCFGProperties(line);
 

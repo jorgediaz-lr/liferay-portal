@@ -18,6 +18,7 @@ import com.liferay.petra.io.unsync.UnsyncBufferedReader;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -59,9 +60,8 @@ public class CFGProperties implements ConfigurationProperties {
 
 			List<String> lines = new ArrayList<>();
 
+			String key = StringPool.BLANK;
 			String value = StringPool.BLANK;
-
-			String key = null;
 
 			while (line != null) {
 				lines.add(line);
@@ -74,17 +74,28 @@ public class CFGProperties implements ConfigurationProperties {
 					continue;
 				}
 
-				int index = line.indexOf(CharPool.EQUAL);
+				if (Validator.isNull(value)) {
+					int index = _getSeparator(line);
 
-				if (index == -1) {
-					value = value.concat(line.trim());
+					if (index == -1) {
+						key = key.concat(line.trim());
+
+						if (line.endsWith(StringPool.BACK_SLASH)) {
+							key = key.substring(0, key.length() - 1);
+
+							line = unsyncBufferedReader.readLine();
+
+							continue;
+						}
+					}
+					else {
+						key = key.concat(line.substring(0, index));
+
+						value = line.substring(index + 1);
+					}
 				}
 				else {
-					key = line.substring(0, index);
-
-					String valueToken = line.substring(index + 1);
-
-					value = value.concat(valueToken);
+					value = value.concat(line.trim());
 				}
 
 				if (line.endsWith(StringPool.BACK_SLASH)) {
@@ -101,6 +112,7 @@ public class CFGProperties implements ConfigurationProperties {
 						InterpolationUtil.substVars(value.trim()),
 						new ArrayList<>(lines)));
 
+				key = StringPool.BLANK;
 				value = StringPool.BLANK;
 
 				lines.clear();
@@ -185,6 +197,21 @@ public class CFGProperties implements ConfigurationProperties {
 		}
 
 		writer.write(sb.toString());
+	}
+
+	private int _getSeparator(String line) {
+		int indexColon = line.indexOf(CharPool.COLON);
+		int indexEqual = line.indexOf(CharPool.EQUAL);
+
+		if (indexColon == -1) {
+			return indexEqual;
+		}
+
+		if (indexEqual == -1) {
+			return indexColon;
+		}
+
+		return Math.min(indexColon, indexEqual);
 	}
 
 	private UnsyncBufferedReader _wrap(Reader reader) {
