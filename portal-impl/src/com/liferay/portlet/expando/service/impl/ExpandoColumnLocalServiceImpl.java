@@ -28,8 +28,10 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.SystemEventConstants;
 import com.liferay.portal.kernel.model.adapter.ModelAdapterUtil;
 import com.liferay.portal.kernel.service.SystemEventLocalService;
@@ -102,6 +104,18 @@ public class ExpandoColumnLocalServiceImpl
 		// Values
 
 		expandoValueLocalService.deleteColumnValues(column.getColumnId());
+
+		try {
+
+			// Resources
+
+			resourceLocalService.deleteResource(
+				column.getCompanyId(), ExpandoColumn.class.getName(),
+				ResourceConstants.SCOPE_INDIVIDUAL, column.getColumnId());
+		}
+		catch (PortalException portalException) {
+			throw new SystemException(portalException);
+		}
 	}
 
 	@Override
