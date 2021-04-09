@@ -70,6 +70,42 @@ definition {
 		Page.assertCanonicalURL(portalURL = "http://mycustomizedurl.com/mydesiredurl");
 	}
 
+	@description = "This test covers LPS-122797. It ensures that the Canonical URL does not have a limit of 75 characters."
+	@priority = "4"
+	test SetCustomURLWith76Characters {
+		JSONLayout.addPublicLayout(
+			groupName = "Guest",
+			layoutName = "Canonical URL Test Page");
+
+		Navigator.gotoPage(pageName = "Canonical URL Test Page");
+
+		Navigator.gotoEditPageViaControlMenu(pageName = "Canonical URL Test Page");
+
+		Navigator.gotoSEOPanel();
+
+		Check.checkToggleSwitch(
+			key_toggleSwitchLabel = "Use Custom Canonical URL",
+			locator1 = "ToggleSwitch#ANY_TOGGLE_SWITCH");
+
+		Type(
+			key_fieldLabel = "Canonical URL",
+			locator1 = "TextInput#GENERIC_TEXT_INPUT",
+			value1 = "http://mycustomizedcharactersurl.com/mydesiredmorethan75charactersurlfortest");
+
+		PortletEntry.save();
+
+		Navigator.gotoPage(pageName = "Canonical URL Test Page");
+
+		Navigator.gotoEditPageViaControlMenu(pageName = "Canonical URL Test Page");
+
+		Navigator.gotoSEOPanel();
+
+		AssertTextEquals(
+			key_fieldLabel = "Canonical URL",
+			locator1 = "TextInput#GENERIC_TEXT_INPUT",
+			value1 = "http://mycustomizedcharactersurl.com/mydesiredmorethan75charactersurlfortest");
+	}
+
 	@priority = "5"
 	test SetDefaultURLAtSystemLevel {
 		property test.name.skip.portal.instance = "CanonicalURL#SetDefaultURLAtSystemLevel";
