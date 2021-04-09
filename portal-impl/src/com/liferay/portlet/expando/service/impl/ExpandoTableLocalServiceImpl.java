@@ -89,21 +89,21 @@ public class ExpandoTableLocalServiceImpl
 	@Override
 	public void deleteTable(ExpandoTable table) {
 
-		// Table
+		// Values
 
-		expandoTablePersistence.remove(table);
-
-		// Columns
-
-		expandoColumnPersistence.removeByTableId(table.getTableId());
+		expandoValuePersistence.removeByTableId(table.getTableId());
 
 		// Rows
 
 		expandoRowPersistence.removeByTableId(table.getTableId());
 
-		// Values
+		// Columns
 
-		expandoValuePersistence.removeByTableId(table.getTableId());
+		expandoColumnLocalService.deleteColumns(table.getTableId());
+
+		// Table
+
+		expandoTablePersistence.remove(table);
 	}
 
 	@Override
