@@ -26,6 +26,34 @@ export const ACCOUNTS_PORTLET_NAMESPACE =
 	window.ProvisioningConstants.accountsPortletNamespace;
 export const NAMESPACE = window.ProvisioningConstants.namespace;
 
+// Inline edit field types
+
+export const FIELD_SIZE_DEFAULT = 'default';
+export const FIELD_SIZE_SMALL = 'small';
+
+export const FIELD_TYPE_EXTERNAL = 'external';
+export const FIELD_TYPE_NONEDITABLE = 'noneditable';
+export const FIELD_TYPE_SELECT = 'select';
+export const FIELD_TYPE_TEXT = 'text';
+export const FIELD_TYPE_TEXTAREA = 'textarea';
+export const FIELD_TYPE_TOGGLE = 'toggle';
+
+// License types
+
+export const KNOWN_SERVER_ID_LICENSE_TYPES =
+	window.ProvisioningConstants.licenseType.knownServerIdTypes;
+export const LICENSE_TYPE_CLUSTER =
+	window.ProvisioningConstants.licenseType.cluster;
+export const LICENSE_TYPE_DEVELOPER =
+	window.ProvisioningConstants.licenseType.developer;
+
+// Note actions
+
+export const ADD_NOTE = 'addNote';
+export const ARCHIVE_NOTE = 'archiveNote';
+export const EDIT_NOTE = 'editNote';
+export const PIN_NOTE = 'pinNote';
+
 // Note properties
 
 export const NOTE_FORMAT_HTML = window.ProvisioningConstants.noteFormat.html;
@@ -40,42 +68,14 @@ export const NOTE_STATUS_ARCHIVED =
 export const NOTE_TYPE_GENERAL = window.ProvisioningConstants.noteType.general;
 export const NOTE_TYPE_SALES = window.ProvisioningConstants.noteType.sales;
 
-// Action types for interacting with a Note
-
-export const ADD_NOTE = 'addNote';
-export const ARCHIVE_NOTE = 'archiveNote';
-export const EDIT_NOTE = 'editNote';
-export const PIN_NOTE = 'pinNote';
-
-// Inline edit field types
-
-export const FIELD_SIZE_DEFAULT = 'default';
-export const FIELD_SIZE_SMALL = 'small';
-
-export const FIELD_TYPE_EXTERNAL = 'external';
-export const FIELD_TYPE_NONEDITABLE = 'noneditable';
-export const FIELD_TYPE_SELECT = 'select';
-export const FIELD_TYPE_TEXT = 'text';
-export const FIELD_TYPE_TEXTAREA = 'textarea';
-export const FIELD_TYPE_TOGGLE = 'toggle';
-
-// Action types for interacting with Product Purchases
+// Product purchase actions
 
 export const ADD_SUBSCRIPTIONS = 'add';
 export const EDIT_SUBSCRIPTIONS = 'edit';
 
-// Product Purchase Statuses
+// Product purchase statuses
 
 export const PRODUCT_PURCHASE_STATUS_APPROVED =
 	window.ProvisioningConstants.productPurchaseStatus.approved;
 export const PRODUCT_PURCHASE_STATUS_CANCELLED =
 	window.ProvisioningConstants.productPurchaseStatus.cancelled;
-
-// License Types
-
-export const KNOWN_SERVER_ID_LICENSE_TYPES =
-	window.ProvisioningConstants.licenseType.knownServerIdTypes;
-export const LICENSE_TYPE_CLUSTER =
-	window.ProvisioningConstants.licenseType.cluster;
-export const LICENSE_TYPE_DEVELOPER =
-	window.ProvisioningConstants.licenseType.developer;
