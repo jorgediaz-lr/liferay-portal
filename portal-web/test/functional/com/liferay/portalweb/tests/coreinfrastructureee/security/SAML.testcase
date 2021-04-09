@@ -1051,6 +1051,7 @@ definition {
 	@description = "LPS-50220 - IdP initiated SSO login should work regardless if 'Remember Me' is checked or not."
 	@priority = "4"
 	test ViewIdPInitiatedSSOWithRememberMeChecked {
+		property portal.upstream = "quarantine";
 		property test.name.skip.portal.instance = "SAML#ViewIdPInitiatedSSOWithRememberMeChecked";
 
 		SAML.configureLiferaySAMLAsIdP(samlEntityID = "samlidp");
