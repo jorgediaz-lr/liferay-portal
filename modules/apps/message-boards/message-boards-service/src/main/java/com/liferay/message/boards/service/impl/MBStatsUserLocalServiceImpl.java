@@ -66,6 +66,15 @@ public class MBStatsUserLocalServiceImpl
 		statsUser.setUserId(userId);
 
 		try {
+			Group group = groupLocalService.getGroup(groupId);
+
+			statsUser.setCompanyId(group.getCompanyId());
+		}
+		catch (PortalException portalException) {
+			throw new SystemException(portalException);
+		}
+
+		try {
 			statsUser = mbStatsUserPersistence.update(statsUser);
 		}
 		catch (SystemException systemException) {
