@@ -466,7 +466,7 @@ public class LayoutStagedModelDataHandler
 			PortletDataContext portletDataContext, Layout layout)
 		throws Exception {
 
-		final long groupId = portletDataContext.getGroupId();
+		long groupId = portletDataContext.getGroupId();
 		long userId = portletDataContext.getUserId(layout.getUserUuid());
 
 		Element layoutElement =
@@ -477,7 +477,7 @@ public class LayoutStagedModelDataHandler
 
 		long oldLayoutId = layoutId;
 
-		final boolean privateLayout =
+		boolean privateLayout =
 			portletDataContext.isPrivateLayout() &&
 			!layout.isTypeAssetDisplay();
 
@@ -825,7 +825,7 @@ public class LayoutStagedModelDataHandler
 				if (!ExportImportThreadLocal.
 						isInitialLayoutStagingInProcess()) {
 
-					final long finalParentLayoutId = parentLayoutId;
+					long finalParentLayoutId = parentLayoutId;
 
 					priority = TransactionInvokerUtil.invoke(
 						_transactionConfig,
