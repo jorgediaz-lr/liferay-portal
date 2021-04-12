@@ -105,18 +105,18 @@ public class ContentDashboardAdminPortletGetPropsTest {
 	public void testGetPropsWithAssetCategoriesSortedByKey() throws Exception {
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(
-				_company.getGroupId(), _user.getUserId());
+				_company.getGroupId(), TestPropsValues.getUserId());
 
 		AssetVocabulary assetVocabulary =
 			_assetVocabularyLocalService.addVocabulary(
-				_user.getUserId(), _company.getGroupId(),
+				TestPropsValues.getUserId(), _company.getGroupId(),
 				"vocabulary", serviceContext);
 
 		AssetCategory assetCategory1 = _assetCategoryLocalService.addCategory(
-			_user.getUserId(), _company.getGroupId(), "category-1",
+			TestPropsValues.getUserId(), _company.getGroupId(), "category-1",
 			assetVocabulary.getVocabularyId(), serviceContext);
 		AssetCategory assetCategory2 = _assetCategoryLocalService.addCategory(
-			_user.getUserId(), _company.getGroupId(), "category-2",
+			TestPropsValues.getUserId(), _company.getGroupId(), "category-2",
 			assetVocabulary.getVocabularyId(), serviceContext);
 
 		try {
@@ -174,30 +174,30 @@ public class ContentDashboardAdminPortletGetPropsTest {
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(
-				_company.getGroupId(), _user.getUserId());
+				_company.getGroupId(), TestPropsValues.getUserId());
 
 		AssetVocabulary assetVocabulary =
 			_assetVocabularyLocalService.addVocabulary(
-				_user.getUserId(), _company.getGroupId(),
+				TestPropsValues.getUserId(), _company.getGroupId(),
 				"vocabulary", serviceContext);
 
 		AssetCategory assetCategory = _assetCategoryLocalService.addCategory(
-			_user.getUserId(), _company.getGroupId(), "category",
+			TestPropsValues.getUserId(), _company.getGroupId(), "category",
 			assetVocabulary.getVocabularyId(), serviceContext);
 
 		AssetVocabulary childAssetVocabulary =
 			_assetVocabularyLocalService.addVocabulary(
-				_user.getUserId(), _company.getGroupId(),
+				TestPropsValues.getUserId(), _company.getGroupId(),
 				"child-vocabulary", serviceContext);
 
 		AssetCategory childAssetCategory1 =
 			_assetCategoryLocalService.addCategory(
-				_user.getUserId(), _company.getGroupId(),
+				TestPropsValues.getUserId(), _company.getGroupId(),
 				"child-category-1", childAssetVocabulary.getVocabularyId(),
 				serviceContext);
 		AssetCategory childAssetCategory2 =
 			_assetCategoryLocalService.addCategory(
-				_user.getUserId(), _company.getGroupId(),
+				TestPropsValues.getUserId(), _company.getGroupId(),
 				"child-category-2", childAssetVocabulary.getVocabularyId(),
 				serviceContext);
 
@@ -278,25 +278,25 @@ public class ContentDashboardAdminPortletGetPropsTest {
 	public void testGetPropsWithChildNoneAssetCategory() throws Exception {
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(
-				_company.getGroupId(), _user.getUserId());
+				_company.getGroupId(), TestPropsValues.getUserId());
 
 		AssetVocabulary assetVocabulary =
 			_assetVocabularyLocalService.addVocabulary(
-				_user.getUserId(), _company.getGroupId(),
+				TestPropsValues.getUserId(), _company.getGroupId(),
 				"vocabulary", serviceContext);
 
 		AssetCategory assetCategory = _assetCategoryLocalService.addCategory(
-			_user.getUserId(), _company.getGroupId(), "category",
+			TestPropsValues.getUserId(), _company.getGroupId(), "category",
 			assetVocabulary.getVocabularyId(), serviceContext);
 
 		AssetVocabulary childAssetVocabulary =
 			_assetVocabularyLocalService.addVocabulary(
-				_user.getUserId(), _company.getGroupId(),
+				TestPropsValues.getUserId(), _company.getGroupId(),
 				"child-vocabulary", serviceContext);
 
 		AssetCategory childAssetCategory =
 			_assetCategoryLocalService.addCategory(
-				_user.getUserId(), _company.getGroupId(),
+				TestPropsValues.getUserId(), _company.getGroupId(),
 				"child-category", childAssetVocabulary.getVocabularyId(),
 				serviceContext);
 
@@ -371,25 +371,25 @@ public class ContentDashboardAdminPortletGetPropsTest {
 	public void testGetPropsWithMissingAssetVocabulary() throws Exception {
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(
-				_company.getGroupId(), _user.getUserId());
+				_company.getGroupId(), TestPropsValues.getUserId());
 
 		AssetVocabulary assetVocabulary =
 			_assetVocabularyLocalService.addVocabulary(
-				_user.getUserId(), _company.getGroupId(),
+				TestPropsValues.getUserId(), _company.getGroupId(),
 				"vocabulary", serviceContext);
 
 		_assetCategoryLocalService.addCategory(
-			_user.getUserId(), _company.getGroupId(), "category",
+			TestPropsValues.getUserId(), _company.getGroupId(), "category",
 			assetVocabulary.getVocabularyId(), serviceContext);
 
 		AssetVocabulary childAssetVocabulary =
 			_assetVocabularyLocalService.addVocabulary(
-				_user.getUserId(), _company.getGroupId(),
+				TestPropsValues.getUserId(), _company.getGroupId(),
 				"child-vocabulary", serviceContext);
 
 		AssetCategory childAssetCategory =
 			_assetCategoryLocalService.addCategory(
-				_user.getUserId(), _company.getGroupId(),
+				TestPropsValues.getUserId(), _company.getGroupId(),
 				"child-category", childAssetVocabulary.getVocabularyId(),
 				serviceContext);
 
@@ -434,20 +434,20 @@ public class ContentDashboardAdminPortletGetPropsTest {
 	public void testGetPropsWithMissingChildAssetVocabulary() throws Exception {
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(
-				_company.getGroupId(), _user.getUserId());
+				_company.getGroupId(), TestPropsValues.getUserId());
 
 		AssetVocabulary assetVocabulary =
 			_assetVocabularyLocalService.addVocabulary(
-				_user.getUserId(), _company.getGroupId(),
+				TestPropsValues.getUserId(), _company.getGroupId(),
 				"vocabulary", serviceContext);
 
 		AssetCategory assetCategory = _assetCategoryLocalService.addCategory(
-			_user.getUserId(), _company.getGroupId(), "category",
+			TestPropsValues.getUserId(), _company.getGroupId(), "category",
 			assetVocabulary.getVocabularyId(), serviceContext);
 
 		AssetVocabulary childAssetVocabulary =
 			_assetVocabularyLocalService.addVocabulary(
-				_user.getUserId(), _company.getGroupId(),
+				TestPropsValues.getUserId(), _company.getGroupId(),
 				RandomTestUtil.randomString(), serviceContext);
 
 		try {
@@ -490,25 +490,25 @@ public class ContentDashboardAdminPortletGetPropsTest {
 	public void testGetPropsWithNoneAssetCategory() throws Exception {
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(
-				_company.getGroupId(), _user.getUserId());
+				_company.getGroupId(), TestPropsValues.getUserId());
 
 		AssetVocabulary assetVocabulary =
 			_assetVocabularyLocalService.addVocabulary(
-				_user.getUserId(), _company.getGroupId(),
+				TestPropsValues.getUserId(), _company.getGroupId(),
 				"vocabulary", serviceContext);
 
 		AssetCategory assetCategory = _assetCategoryLocalService.addCategory(
-			_user.getUserId(), _company.getGroupId(), "category",
+			TestPropsValues.getUserId(), _company.getGroupId(), "category",
 			assetVocabulary.getVocabularyId(), serviceContext);
 
 		AssetVocabulary childAssetVocabulary =
 			_assetVocabularyLocalService.addVocabulary(
-				_user.getUserId(), _company.getGroupId(),
+				TestPropsValues.getUserId(), _company.getGroupId(),
 				"child-vocabulary", serviceContext);
 
 		AssetCategory childAssetCategory =
 			_assetCategoryLocalService.addCategory(
-				_user.getUserId(), _company.getGroupId(),
+				TestPropsValues.getUserId(), _company.getGroupId(),
 				"child-category", childAssetVocabulary.getVocabularyId(),
 				serviceContext);
 

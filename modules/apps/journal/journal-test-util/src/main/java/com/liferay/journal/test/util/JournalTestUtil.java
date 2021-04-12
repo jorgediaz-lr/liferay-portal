@@ -182,13 +182,8 @@ public class JournalTestUtil {
 		long ddmGroupId = GetterUtil.getLong(
 			serviceContext.getAttribute("ddmGroupId"), groupId);
 
-		ServiceContext serviceContextDDMStructure =
-			ServiceContextTestUtil.getServiceContext(
-				ddmGroupId, serviceContext.getUserId());
-
 		DDMStructure ddmStructure = DDMStructureTestUtil.addStructure(
-			ddmGroupId, JournalArticle.class.getName(), 0, ddmForm, defaultLocale,
-			serviceContextDDMStructure);
+			ddmGroupId, JournalArticle.class.getName(), ddmForm, defaultLocale);
 
 		DDMTemplate ddmTemplate = DDMTemplateTestUtil.addTemplate(
 			ddmGroupId, ddmStructure.getStructureId(),
