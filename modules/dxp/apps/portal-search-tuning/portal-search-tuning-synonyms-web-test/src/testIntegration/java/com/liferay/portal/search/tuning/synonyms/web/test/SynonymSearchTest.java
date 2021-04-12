@@ -101,7 +101,7 @@ public class SynonymSearchTest {
 							configurationPidElasticsearch));
 			ConfigurationTemporarySwapper synonymConfigurationTemporarySwapper =
 				new ConfigurationTemporarySwapper(
-					_SYNONYMS_CONFIGURATION_PID, setUpSynonymsProperties())) {
+					_CONFIGURATION_PID_SYNONYMS, setUpSynonymsProperties())) {
 
 			_company = CompanyTestUtil.addCompany();
 
@@ -310,7 +310,7 @@ public class SynonymSearchTest {
 	@Inject
 	protected static SearchEngineInformation searchEngineInformation;
 
-	private static final String _SYNONYMS_CONFIGURATION_PID =
+	private static final String _CONFIGURATION_PID_SYNONYMS =
 		"com.liferay.portal.search.tuning.synonyms.web.internal." +
 			"configuration.SynonymsConfiguration";
 
