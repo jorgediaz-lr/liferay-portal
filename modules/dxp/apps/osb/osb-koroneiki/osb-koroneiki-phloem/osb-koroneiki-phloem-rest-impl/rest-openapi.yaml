@@ -428,6 +428,86 @@ components:
                 view:
                     type: boolean
             type: object
+        Country:
+            description:
+                Represents a country.
+            properties:
+                a2:
+                    description:
+                        The country's alpha-2 code (e.g., US).
+                    readOnly: true
+                    type: string
+                a3:
+                    description:
+                        The country's alpha-3 code (e.g., USA).
+                    readOnly: true
+                    type: string
+                active:
+                    description:
+                        A flag that identifies whether this country is active.
+                    readOnly: true
+                    type: boolean
+                countryRegions:
+                    description:
+                        The country's regions. Optional field that can retrieved with nestedFields.
+                    items:
+                        $ref: "#/components/schemas/CountryRegion"
+                    readOnly: true
+                    type: array
+                id:
+                    description:
+                        The country's ID.
+                    format: int64
+                    readOnly: true
+                    type: integer
+                idd:
+                    description:
+                        The country's IDD.
+                    readOnly: true
+                    type: string
+                name:
+                    description:
+                        The name of the country.
+                    readOnly: true
+                    type: string
+                zipRequired:
+                    description:
+                        A flag that identifies whether this country requires zip code.
+                    readOnly: true
+                    type: boolean
+            type: object
+        CountryRegion:
+            description:
+                Represents a region within a country.
+            properties:
+                active:
+                    description:
+                        A flag that identifies whether this country region is active.
+                    readOnly: true
+                    type: boolean
+                code:
+                    description:
+                        The region's code.
+                    readOnly: true
+                    type: string
+                countryId:
+                    description:
+                        The region's country ID.
+                    format: int64
+                    readOnly: true
+                    type: integer
+                id:
+                    description:
+                        The region's ID.
+                    format: int64
+                    readOnly: true
+                    type: integer
+                name:
+                    description:
+                        The name of the region.
+                    readOnly: true
+                    type: string
+            type: object
         Entitlement:
             description:
                 Represents products/services an account or contact is entitled to receive.
@@ -3402,6 +3482,48 @@ paths:
                     description:
                         ""
             tags: ["EntitlementDefinition"]
+    "/countries":
+        get:
+            description:
+                Retrieves the countries.
+            operationId: getCountriesPage
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/Country"
+                                type: array
+                        application/xml:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/Country"
+                                type: array
+                    description:
+                        ""
+            tags: ["Country"]
+    "/country-regions":
+        get:
+            description:
+                Retrieves the country regions.
+            operationId: getCountryRegionsPage
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/CountryRegion"
+                                type: array
+                        application/xml:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/CountryRegion"
+                                type: array
+                    description:
+                        ""
+            tags: ["CountryRegion"]
     "/entitlement-definitions/{entitlementDefinitionKey}":
         delete:
             operationId: deleteEntitlementDefinition
