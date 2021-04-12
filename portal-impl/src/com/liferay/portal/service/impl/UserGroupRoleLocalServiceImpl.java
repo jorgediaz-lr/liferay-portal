@@ -52,6 +52,12 @@ public class UserGroupRoleLocalServiceImpl
 			userGroupRole.setGroupId(groupId);
 			userGroupRole.setRoleId(roleId);
 
+			Group group = groupLocalService.fetchGroup(groupId);
+
+			if (group != null) {
+				userGroupRole.setCompanyId(group.getCompanyId());
+			}
+
 			userGroupRole = userGroupRolePersistence.update(userGroupRole);
 		}
 
