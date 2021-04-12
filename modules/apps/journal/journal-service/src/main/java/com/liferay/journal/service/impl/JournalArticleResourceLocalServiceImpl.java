@@ -18,11 +18,14 @@ import com.liferay.journal.model.JournalArticleResource;
 import com.liferay.journal.service.base.JournalArticleResourceLocalServiceBaseImpl;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
@@ -98,6 +101,12 @@ public class JournalArticleResourceLocalServiceImpl
 			articleResource.setGroupId(groupId);
 			articleResource.setArticleId(articleId);
 
+			Group group = _groupLocalService.fetchGroup(groupId);
+
+			if (group != null) {
+				articleResource.setCompanyId(group.getCompanyId());
+			}
+
 			articleResource = journalArticleResourcePersistence.update(
 				articleResource);
 		}
@@ -109,5 +118,8 @@ public class JournalArticleResourceLocalServiceImpl
 	public List<JournalArticleResource> getArticleResources(long groupId) {
 		return journalArticleResourcePersistence.findByGroupId(groupId);
 	}
+
+	@Reference
+	private GroupLocalService _groupLocalService;
 
 }

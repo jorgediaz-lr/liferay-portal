@@ -15,8 +15,10 @@
 package com.liferay.reading.time.service.impl;
 
 import com.liferay.portal.aop.AopService;
+import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupedModel;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
+import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.reading.time.calculator.ReadingTimeCalculator;
 import com.liferay.reading.time.model.ReadingTimeEntry;
 import com.liferay.reading.time.service.base.ReadingTimeEntryLocalServiceBaseImpl;
@@ -61,6 +63,12 @@ public class ReadingTimeEntryLocalServiceImpl
 		entry.setClassNameId(classNameId);
 		entry.setClassPK(classPK);
 		entry.setReadingTime(readingTimeDuration.toMillis());
+
+		Group group = _groupLocalService.fetchGroup(groupId);
+
+		if (group != null) {
+			entry.setCompanyId(group.getCompanyId());
+		}
 
 		return readingTimeEntryPersistence.update(entry);
 	}
@@ -157,6 +165,9 @@ public class ReadingTimeEntryLocalServiceImpl
 
 	@Reference
 	private ClassNameLocalService _classNameLocalService;
+
+	@Reference
+	private GroupLocalService _groupLocalService;
 
 	@Reference
 	private ReadingTimeCalculator _readingTimeCalculator;
