@@ -14,9 +14,19 @@
 
 package com.liferay.osb.koroneiki.phloem.rest.internal.resource.v1_0;
 
+import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.Country;
+import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.CountryRegion;
+import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.util.CountryRegionUtil;
 import com.liferay.osb.koroneiki.phloem.rest.resource.v1_0.CountryRegionResource;
+import com.liferay.portal.kernel.service.RegionService;
+import com.liferay.portal.vulcan.fields.NestedField;
+import com.liferay.portal.vulcan.fields.NestedFieldId;
+import com.liferay.portal.vulcan.pagination.Page;
+
+import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ServiceScope;
 
 /**
@@ -27,4 +37,26 @@ import org.osgi.service.component.annotations.ServiceScope;
 	scope = ServiceScope.PROTOTYPE, service = CountryRegionResource.class
 )
 public class CountryRegionResourceImpl extends BaseCountryRegionResourceImpl {
+
+	@NestedField(parentClass = Country.class, value = "countryRegions")
+	public List<CountryRegion> getCountryNestedFieldRegions(
+			@NestedFieldId("id") long countryId)
+		throws Exception {
+
+		return transform(
+			_regionService.getRegions(countryId),
+			CountryRegionUtil::toCountryRegion);
+	}
+
+	@Override
+	public Page<CountryRegion> getCountryRegionsPage() throws Exception {
+		return Page.of(
+			transform(
+				_regionService.getRegions(),
+				CountryRegionUtil::toCountryRegion));
+	}
+
+	@Reference
+	private RegionService _regionService;
+
 }
