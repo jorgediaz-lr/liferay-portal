@@ -35,6 +35,17 @@ export function displayInMDYDateFormat(date) {
 }
 
 /**
+ * Format s a date object into ISO 8601 format.
+ * @param {Object} date Date object to be formatted.
+ * @returns {string} String representation of the date in YYYY-MM-DD format
+ */
+export function formatDate(date) {
+	return JSON.stringify(date)
+		.replace(/T(.*)Z/g, '')
+		.replace(/"/g, '');
+}
+
+/**
  * Generates a new date based on the starting point and the offset in years
  * indicated.
  * @param {Object|string} startDate Starting point in which to generate the new

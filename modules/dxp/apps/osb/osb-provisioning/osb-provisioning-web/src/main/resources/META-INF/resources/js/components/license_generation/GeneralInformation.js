@@ -291,7 +291,7 @@ GeneralInformation.propTypes = {
 		PropTypes.shape({
 			detached: PropTypes.shape({
 				instanceSizes: PropTypes.arrayOf(PropTypes.number),
-				licenseKeysGenerated: PropTypes.number
+				licenseKeysGenerated: PropTypes.string
 			}),
 			productKey: PropTypes.string,
 			productName: PropTypes.string,

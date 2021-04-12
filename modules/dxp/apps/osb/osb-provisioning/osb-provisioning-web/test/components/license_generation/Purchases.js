@@ -14,15 +14,12 @@ import React from 'react';
 
 import Purchases from '../../../src/main/resources/META-INF/resources/js/components/license_generation/Purchases';
 import {LicenseProvider} from '../../../src/main/resources/META-INF/resources/js/hooks/license';
-import {generateNewDate} from '../../../src/main/resources/META-INF/resources/js/utilities/date';
+import {
+	formatDate,
+	generateNewDate
+} from '../../../src/main/resources/META-INF/resources/js/utilities/date';
 
 const TODAY = new Date();
-
-function formatDate(date) {
-	return JSON.stringify(date)
-		.replace(/T(.*)Z/g, '')
-		.replace(/"/g, '');
-}
 
 function renderPurchases({...props}) {
 	return render(

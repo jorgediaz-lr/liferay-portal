@@ -118,7 +118,7 @@ function Purchased({purchased, selectedType}) {
 Purchases.protoType = {
 	detached: PropTypes.shape({
 		instanceSize: PropTypes.arrayOf(PropTypes.number),
-		licenseKeysGenerated: PropTypes.number,
+		licenseKeysGenerated: PropTypes.string,
 		startDate: PropTypes.string
 	}),
 	purchased: PropTypes.arrayOf(

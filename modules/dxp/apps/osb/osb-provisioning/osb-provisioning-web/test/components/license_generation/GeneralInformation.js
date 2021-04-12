@@ -19,7 +19,7 @@ const licensableProducts = [
 	{
 		detached: {
 			instanceSizes: [1, 2, 3, 4],
-			licenseKeysGenerated: 0
+			licenseKeysGenerated: '0'
 		},
 		productKey: 'KEY-123',
 		productName: 'Product A',

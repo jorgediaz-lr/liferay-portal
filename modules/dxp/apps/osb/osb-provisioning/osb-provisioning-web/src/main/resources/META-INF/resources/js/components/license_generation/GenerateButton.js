@@ -9,22 +9,61 @@
  * distribution rights of the Software.
  */
 
+import PropTypes from 'prop-types';
 import React from 'react';
 
 import {useLicense} from '../../hooks/license';
+import {formatDate} from '../../utilities/date';
+import {request} from '../../utilities/helpers';
 
-function GenerateButton() {
+function GenerateButton({formAction, redirect}) {
 	const [license] = useLicense();
+	const {
+		licenseEntryId,
+		licenseEntryName,
+		licenseEntryType
+	} = license.licenseEntry;
+	const {productKey} = license.product;
+
+	function handleSubmit() {
+		const params = {
+			...license.toJS(),
+			expirationDate: formatDate(license.expirationDate),
+			licenseEntryId,
+			licenseEntryType,
+			name: licenseEntryName,
+			productKey,
+			productVersion: license.version,
+			serverIds: license.serverIds
+				? JSON.stringify(license.serverIds)
+				: '',
+			startDate: formatDate(license.startDate)
+		};
+
+		request(formAction, params, 'formData', 'post')
+			.then(({data}) => {
+				if (data) {
+					location.assign(redirect);
+				}
+			})
+			.catch(err => console.error(err));
+	}
 
 	return (
 		<button
 			className="btn btn-primary"
 			disabled={!license.description || !license.owner}
+			onClick={handleSubmit}
 			type="button"
 		>
 			{Liferay.Language.get('generate')}
 		</button>
 	);
 }
+
+GenerateButton.propTypse = {
+	formAction: PropTypes.string.isRequired,
+	redirect: PropTypes.string.isRequired
+};
 
 export default GenerateButton;

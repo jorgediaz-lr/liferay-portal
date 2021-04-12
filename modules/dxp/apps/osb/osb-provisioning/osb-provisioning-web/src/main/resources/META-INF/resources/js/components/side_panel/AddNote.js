@@ -154,7 +154,7 @@ function AddNote({
 					<button
 						className="btn btn-primary save-btn"
 						disabled={!localContent || savingNote}
-						onClick={() => handleSubmit()}
+						onClick={handleSubmit}
 						role="button"
 						type="button"
 					>

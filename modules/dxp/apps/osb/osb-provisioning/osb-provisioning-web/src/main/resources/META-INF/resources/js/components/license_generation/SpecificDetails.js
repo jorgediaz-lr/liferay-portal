@@ -24,7 +24,7 @@ import RequiredFieldMarker from '../RequiredFieldMarker';
 import GenerateButton from './GenerateButton';
 import ServerIdFieldGroups from './ServerIdFieldGroups';
 
-function SpecificDetails({redirect}) {
+function SpecificDetails({addLicenseKeyURL, redirect}) {
 	const [license, {updateLicense}] = useLicense();
 
 	const {
@@ -220,7 +220,10 @@ function SpecificDetails({redirect}) {
 					</div>
 
 					<div className="button-holder">
-						<GenerateButton />
+						<GenerateButton
+							formAction={addLicenseKeyURL}
+							redirect={redirect}
+						/>
 
 						<button
 							className="btn btn-secondary"
@@ -287,6 +290,7 @@ function SpecificDetails({redirect}) {
 }
 
 SpecificDetails.propTypes = {
+	addLicenseKeyURL: PropTypes.string,
 	redirect: PropTypes.string
 };
 

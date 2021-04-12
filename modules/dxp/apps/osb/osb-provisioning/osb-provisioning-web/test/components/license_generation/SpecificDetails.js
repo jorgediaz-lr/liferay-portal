@@ -47,7 +47,11 @@ const dummyLicense = new License({
 function renderSpecificDetails(props) {
 	return render(
 		<LicenseProvider initialLicense={dummyLicense}>
-			<SpecificDetails redirect={'/redirect/url'} {...props} />
+			<SpecificDetails
+				addLicenseKeyURL="add/license/key/url"
+				redirect="/redirect/url"
+				{...props}
+			/>
 		</LicenseProvider>
 	);
 }
