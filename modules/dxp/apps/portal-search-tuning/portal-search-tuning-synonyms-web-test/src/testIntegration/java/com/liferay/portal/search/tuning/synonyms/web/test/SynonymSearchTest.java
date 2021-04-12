@@ -17,6 +17,7 @@ package com.liferay.portal.search.tuning.synonyms.web.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.test.util.JournalTestUtil;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.test.util.ConfigurationTemporarySwapper;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -54,6 +55,7 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import java.io.IOException;
 import java.io.InputStream;
 
+import java.util.Dictionary;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -66,6 +68,9 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import org.osgi.service.cm.Configuration;
+import org.osgi.service.cm.ConfigurationAdmin;
 
 /**
  * @author Tibor Lipusz
@@ -84,36 +89,19 @@ public class SynonymSearchTest {
 			_elasticsearchVersion = "elasticsearch7";
 		}
 
+		String configurationPidElasticsearch =
+			"com.liferay.portal.search." + _elasticsearchVersion +
+				".configuration.ElasticsearchConfiguration";
+
 		try (ConfigurationTemporarySwapper
 				elasticsearchConfigurationTemporarySwapper =
 					new ConfigurationTemporarySwapper(
-						"com.liferay.portal.search." + _elasticsearchVersion +
-							".configuration.ElasticsearchConfiguration",
-						new HashMapDictionary<String, Object>() {
-							{
-								put(
-									"additionalIndexConfigurations",
-									loadAdditionalIndexConfigurations());
-								put(
-									"overrideTypeMappings",
-									loadOverrideTypeMappings());
-							}
-						});
+						configurationPidElasticsearch,
+						setUpElasticsearchProperties(
+							configurationPidElasticsearch));
 			ConfigurationTemporarySwapper synonymConfigurationTemporarySwapper =
 				new ConfigurationTemporarySwapper(
-					"com.liferay.portal.search.tuning.synonyms.web.internal." +
-						"configuration.SynonymsConfiguration",
-					new HashMapDictionary<String, Object>() {
-						{
-							put(
-								"filterNames",
-								new String[] {
-									"liferay_filter_synonym_en",
-									"liferay_filter_synonym_es",
-									"custom-synonym-filter-fr"
-								});
-						}
-					})) {
+					_SYNONYMS_CONFIGURATION_PID, setUpSynonymsProperties())) {
 
 			_company = CompanyTestUtil.addCompany();
 
@@ -256,6 +244,40 @@ public class SynonymSearchTest {
 		}
 	}
 
+	protected static Dictionary<String, Object> setUpElasticsearchProperties(
+			String configurationPidElasticsearch)
+		throws Exception {
+
+		Configuration configuration = _configurationAdmin.getConfiguration(
+			configurationPidElasticsearch, StringPool.QUESTION);
+
+		Dictionary<String, Object> properties = configuration.getProperties();
+
+		if (properties == null) {
+			properties = new HashMapDictionary<>();
+		}
+
+		properties.put(
+			"additionalIndexConfigurations",
+			loadAdditionalIndexConfigurations());
+		properties.put("overrideTypeMappings", loadOverrideTypeMappings());
+
+		return properties;
+	}
+
+	protected static Dictionary<String, Object> setUpSynonymsProperties() {
+		return new HashMapDictionary<String, Object>() {
+			{
+				put(
+					"filterNames",
+					new String[] {
+						"liferay_filter_synonym_en",
+						"liferay_filter_synonym_es", "custom-synonym-filter-fr"
+					});
+			}
+		};
+	}
+
 	protected void doAssertSearch(
 		String keyword, String fieldName, Locale locale, int expectedCount) {
 
@@ -288,10 +310,17 @@ public class SynonymSearchTest {
 	@Inject
 	protected static SearchEngineInformation searchEngineInformation;
 
+	private static final String _SYNONYMS_CONFIGURATION_PID =
+		"com.liferay.portal.search.tuning.synonyms.web.internal." +
+			"configuration.SynonymsConfiguration";
+
 	private static Company _company;
 
 	@Inject
 	private static CompanyLocalService _companyLocalService;
+
+	@Inject
+	private static ConfigurationAdmin _configurationAdmin;
 
 	private static String _elasticsearchVersion = "elasticsearch6";
 	private static Group _group;
