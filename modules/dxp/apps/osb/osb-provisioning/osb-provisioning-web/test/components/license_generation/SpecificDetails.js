@@ -9,7 +9,7 @@
  * distribution rights of the Software.
  */
 
-import {cleanup, render} from '@testing-library/react';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 import React from 'react';
 
 import SpecificDetails from '../../../src/main/resources/META-INF/resources/js/components/license_generation/SpecificDetails';
@@ -159,5 +159,27 @@ describe('SpecificDetails', () => {
 		);
 
 		getByLabelText('maximum-servers');
+	});
+
+	it('displays a Generate button', () => {
+		const {getByText} = renderSpecificDetails();
+
+		getByText('generate');
+	});
+
+	it('displays a disabled Generate button if the Owner field is empty', () => {
+		const {getByText} = renderSpecificDetails();
+
+		fireEvent.change(getByText('owner'), {taget: {value: ''}});
+
+		expect(getByText('generate').disabled).toBeTruthy();
+	});
+
+	it('displays a disabled Generate button if the Description field is empty', () => {
+		const {getByText} = renderSpecificDetails();
+
+		fireEvent.change(getByText('description'), {taget: {value: ''}});
+
+		expect(getByText('generate').disabled).toBeTruthy();
 	});
 });

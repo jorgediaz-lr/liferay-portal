@@ -21,6 +21,7 @@ import {
 import {displayInMDYDateFormat, getUTCAdjustedDate} from '../../utilities/date';
 import CancelLink from '../CancelLink';
 import RequiredFieldMarker from '../RequiredFieldMarker';
+import GenerateButton from './GenerateButton';
 import ServerIdFieldGroups from './ServerIdFieldGroups';
 
 function SpecificDetails({redirect}) {
@@ -219,6 +220,8 @@ function SpecificDetails({redirect}) {
 					</div>
 
 					<div className="button-holder">
+						<GenerateButton />
+
 						<button
 							className="btn btn-secondary"
 							onClick={handleDisplayPreviousPage}
