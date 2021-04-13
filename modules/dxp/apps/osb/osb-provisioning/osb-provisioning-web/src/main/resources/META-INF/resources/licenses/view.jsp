@@ -88,8 +88,8 @@ ViewLicenseKeysManagementToolbarDisplayContext viewLicenseKeysManagementToolbarD
 
 				<liferay-ui:search-container-column-text
 					href="<%= rowURL %>"
-					name="end-date"
-					value="<%= HtmlUtil.escape(licenseKeyDisplay.getEndDate()) %>"
+					name="expiration-date"
+					value="<%= HtmlUtil.escape(licenseKeyDisplay.getExpirationDate()) %>"
 				/>
 
 				<liferay-ui:search-container-column-text

@@ -60,8 +60,8 @@ PortletURL portletURL = viewAccountLicenseKeysDisplayContext.getPortletURL();
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text
-				name="end-date"
-				value="<%= licenseKeyDisplay.getEndDate() %>"
+				name="expiration-date"
+				value="<%= licenseKeyDisplay.getExpirationDate() %>"
 			/>
 
 			<liferay-ui:search-container-column-text
