@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.koroneiki.taproot.internal.upgrade.v1_0_1;
+package com.liferay.osb.koroneiki.taproot.internal.upgrade.v1_1_0;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
