@@ -1,27 +1,49 @@
 #generateLicense {
-	.additional-information {
-		dl {
-			font-size: $mid-font-size;
-			line-height: 1;
-
-			div {
-				display: flex;
-			}
-		}
-
-		dt::after {
-			content: ': \00a0';
-		}
-
-		h4 {
-			margin-bottom: $spacing-md;
-		}
-	}
-
 	.specific-details-content {
 		background-color: $body-bg;
 		border-radius: $border-radius;
 		padding: $spacing-default;
+	}
+}
+
+.additional-information,
+.edit-license {
+	dl {
+		font-size: $mid-font-size;
+		line-height: 1;
+
+		div {
+			display: flex;
+		}
+	}
+
+	dt::after {
+		content: ': \00a0';
+	}
+
+	h4 {
+		margin-bottom: $spacing-md;
+	}
+}
+
+.cluster-licenses {
+	.license {
+		border-bottom: 1px solid $divider;
+		padding-top: $spacing-lg;
+
+		&:first-child {
+			border-top: 1px solid $divider;
+		}
+	}
+}
+
+.edit-license-actions {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: $spacing-lg;
+
+	.btn-secondary {
+		border: none;
 	}
 }
 
