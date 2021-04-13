@@ -27,7 +27,6 @@ const dummyLicense = new License({
 	accountKey: 'KEY-ABC',
 	accountName: 'Test Account',
 	complimentary: true,
-	description: '',
 	expirationDate: new Date(),
 	licenseEntry: {
 		licenseEntryId: 'ID-123',
@@ -35,7 +34,6 @@ const dummyLicense = new License({
 		licenseEntryType: 'developer'
 	},
 	licenseKeysGenerated: '0',
-	owner: '',
 	product: {productKey: 'PRODUCT-123', productName: 'Test Product'},
 	productPurchaseKey: 'PPKEY-123',
 	showSpecificDetails: true,

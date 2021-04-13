@@ -13,9 +13,14 @@ import {cleanup, fireEvent, render} from '@testing-library/react';
 import React from 'react';
 
 import ServerIdFieldGroups from '../../../src/main/resources/META-INF/resources/js/components/license_generation/ServerIdFieldGroups';
+import {LicenseProvider} from '../../../src/main/resources/META-INF/resources/js/hooks/license';
 
 function renderServerIdFields(props) {
-	return render(<ServerIdFieldGroups {...props} />);
+	return render(
+		<LicenseProvider>
+			<ServerIdFieldGroups {...props} />{' '}
+		</LicenseProvider>
+	);
 }
 
 describe('ServerIdFieldGroups', () => {

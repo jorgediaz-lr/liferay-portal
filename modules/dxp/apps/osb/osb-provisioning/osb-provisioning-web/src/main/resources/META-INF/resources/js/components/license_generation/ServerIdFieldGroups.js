@@ -9,44 +9,26 @@
  * distribution rights of the Software.
  */
 
-import {List} from 'immutable';
 import PropTypes from 'prop-types';
-import React, {useState} from 'react';
+import React from 'react';
 
+import {useLicense} from '../../hooks/license';
 import IconButton from '../IconButton';
 
 function ServerIdFieldGroups() {
-	const initialValue = {hostName: '', ipAddresses: '', macAddresses: ''};
-
-	const [groups, setGroups] = useState(List.of(initialValue));
-
-	function updateGroups(id, fieldValues = null) {
-		let newGroup;
-
-		if (fieldValues !== null) {
-			newGroup = groups.set(id, fieldValues);
-		}
-		else {
-			newGroup = groups.get(id)
-				? groups.delete(id)
-				: groups.insert(id, initialValue);
-		}
-
-		setGroups(newGroup);
-	}
+	const [{serverIds}] = useLicense();
 
 	return (
 		<div className="col-md-12 form-group">
 			<h4>{Liferay.Language.get('server-id-fields')}</h4>
 
 			<div className="server-id-field-groups">
-				{groups.map((group, index) => (
+				{serverIds.map((group, index) => (
 					<FieldGroup
 						group={group}
 						id={index}
 						key={index}
-						showDelete={groups.size > 1}
-						updateFn={updateGroups}
+						showDelete={serverIds.size > 1}
 					/>
 				))}
 			</div>
@@ -54,23 +36,55 @@ function ServerIdFieldGroups() {
 	);
 }
 
-function FieldGroup({group, id, showDelete = false, updateFn}) {
+function FieldGroup({group, id, showDelete = false}) {
+	const [, {updateLicense}] = useLicense();
+
+	function handleAdd() {
+		updateLicense(license =>
+			license.update('serverIds', serverIds =>
+				serverIds.insert(id + 1, {
+					hostName: '',
+					ipAddresses: '',
+					macAddresses: ''
+				})
+			)
+		);
+	}
+
 	function handleHostNameChange(event) {
-		updateFn(id, {...group, hostName: event.currentTarget.value});
+		updateLicense(license =>
+			license.update('serverIds', serverIds =>
+				serverIds.update(id, index => {
+					return {...index, hostName: event.currentTarget.value};
+				})
+			)
+		);
 	}
 
 	function handleIpAddressChange(event) {
-		updateFn(id, {
-			...group,
-			ipAddresses: event.currentTarget.value
-		});
+		updateLicense(license =>
+			license.update('serverIds', serverIds =>
+				serverIds.update(id, index => {
+					return {...index, ipAddresses: event.currentTarget.value};
+				})
+			)
+		);
 	}
 
 	function handleMacAddressChange(event) {
-		updateFn(id, {
-			...group,
-			macAddresses: event.currentTarget.value
-		});
+		updateLicense(license =>
+			license.update('serverIds', serverIds =>
+				serverIds.update(id, index => {
+					return {...index, macAddresses: event.currentTarget.value};
+				})
+			)
+		);
+	}
+
+	function handleRemove() {
+		updateLicense(license =>
+			license.update('serverIds', serverIds => serverIds.delete(id))
+		);
 	}
 
 	return (
@@ -129,9 +143,7 @@ function FieldGroup({group, id, showDelete = false, updateFn}) {
 					<IconButton
 						cssClass="add-fields btn-secondary nav-btn nav-btn-monospaced"
 						labelName={Liferay.Language.get('add')}
-						onClick={() => {
-							updateFn(id + 1);
-						}}
+						onClick={handleAdd}
 						svgId="#plus"
 						title={Liferay.Language.get('add')}
 					/>
@@ -142,9 +154,7 @@ function FieldGroup({group, id, showDelete = false, updateFn}) {
 						<IconButton
 							cssClass="btn-secondary delete-fields nav-btn nav-btn-monospaced"
 							labelName={Liferay.Language.get('delete')}
-							onClick={() => {
-								updateFn(id);
-							}}
+							onClick={handleRemove}
 							svgId="#hr"
 							title={Liferay.Language.get('delete')}
 						/>
@@ -163,8 +173,7 @@ FieldGroup.propTypes = {
 	}),
 	id: PropTypes.number.isRequired,
 
-	showDelete: PropTypes.bool,
-	updateFn: PropTypes.func.isRequired
+	showDelete: PropTypes.bool
 };
 
 export default ServerIdFieldGroups;

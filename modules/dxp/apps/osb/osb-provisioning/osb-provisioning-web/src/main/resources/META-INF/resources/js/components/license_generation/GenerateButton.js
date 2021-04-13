@@ -34,9 +34,7 @@ function GenerateButton({formAction, redirect}) {
 			name: licenseEntryName,
 			productKey,
 			productVersion: license.version,
-			serverIds: license.serverIds
-				? JSON.stringify(license.serverIds)
-				: '',
+			serverIds: JSON.stringify(license.serverIds),
 			startDate: formatDate(license.startDate)
 		};
 

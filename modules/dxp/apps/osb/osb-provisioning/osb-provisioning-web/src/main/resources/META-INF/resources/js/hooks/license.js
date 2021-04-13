@@ -9,7 +9,7 @@
  * distribution rights of the Software.
  */
 
-import {Record} from 'immutable';
+import {List, Record} from 'immutable';
 import React, {useContext, useState} from 'react';
 
 export const License = Record({
@@ -29,7 +29,7 @@ export const License = Record({
 	owner: '',
 	product: {productKey: '', productName: ''},
 	productPurchaseKey: '',
-	serverIds: null,
+	serverIds: List.of({hostName: '', ipAddresses: '', macAddresses: ''}),
 	showSpecificDetails: false,
 	sizing: '',
 	startDate: null,
