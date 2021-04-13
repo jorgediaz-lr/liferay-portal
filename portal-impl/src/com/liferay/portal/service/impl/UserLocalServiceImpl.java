@@ -1322,7 +1322,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 			for (long groupId : groupIds) {
 				Group group = _groupLocalService.fetchGroup(groupId);
 
-				if (group != null) {
+				if ((group != null) && (group.getCompanyId() == companyId)) {
 					groups.add(group);
 				}
 				else {
