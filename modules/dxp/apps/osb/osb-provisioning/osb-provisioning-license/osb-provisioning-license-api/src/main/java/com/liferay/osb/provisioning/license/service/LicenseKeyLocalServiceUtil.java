@@ -257,6 +257,19 @@ public class LicenseKeyLocalServiceUtil {
 		return getService().fetchLicenseKey(licenseKeyId);
 	}
 
+	/**
+	 * Returns the license key with the matching UUID and company.
+	 *
+	 * @param uuid the license key's UUID
+	 * @param companyId the primary key of the company
+	 * @return the matching license key, or <code>null</code> if a matching license key could not be found
+	 */
+	public static LicenseKey fetchLicenseKeyByUuidAndCompanyId(
+		String uuid, long companyId) {
+
+		return getService().fetchLicenseKeyByUuidAndCompanyId(uuid, companyId);
+	}
+
 	public static List<LicenseKey> getAccountLicenseKeys(String accountKey) {
 		return getService().getAccountLicenseKeys(accountKey);
 	}
@@ -286,6 +299,14 @@ public class LicenseKeyLocalServiceUtil {
 
 		return getService().getAssetReceiptLicenseLicenseKeysCount(
 			assetReceiptLicenseUuid, complimentary, active);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery
+		getExportActionableDynamicQuery(
+			com.liferay.exportimport.kernel.lar.PortletDataContext
+				portletDataContext) {
+
+		return getService().getExportActionableDynamicQuery(portletDataContext);
 	}
 
 	public static LicenseKey getFirstLicenseKey(
@@ -343,6 +364,21 @@ public class LicenseKeyLocalServiceUtil {
 		throws PortalException {
 
 		return getService().getLicenseKeyByUuid(uuid);
+	}
+
+	/**
+	 * Returns the license key with the matching UUID and company.
+	 *
+	 * @param uuid the license key's UUID
+	 * @param companyId the primary key of the company
+	 * @return the matching license key
+	 * @throws PortalException if a matching license key could not be found
+	 */
+	public static LicenseKey getLicenseKeyByUuidAndCompanyId(
+			String uuid, long companyId)
+		throws PortalException {
+
+		return getService().getLicenseKeyByUuidAndCompanyId(uuid, companyId);
 	}
 
 	public static List<LicenseKey> getLicenseKeys(
@@ -513,6 +549,39 @@ public class LicenseKeyLocalServiceUtil {
 			userId, licenseKeyId, startDate, expirationDate);
 	}
 
+	public static com.liferay.portal.kernel.search.Hits search(
+			long companyId, String createUserUuid, java.util.Date createDateGT,
+			java.util.Date createDateLT, String modifiedUserUuid,
+			java.util.Date modifiedDateGT, java.util.Date modifiedDateLT,
+			String accountKey, String productPurchaseKey, String accountName,
+			java.util.Date startDateGT, java.util.Date startDateLT,
+			Long[] licenseEntryIds, String[] productKeys, String productName,
+			String productId, String[] productVersions, String owner,
+			String description, String hostName, String ipAddress,
+			String macAddress, String serverId, String key,
+			java.util.Date expirationDateGT, java.util.Date expirationDateLT,
+			Boolean active, boolean andSearch, int start, int end,
+			com.liferay.portal.kernel.search.Sort sort)
+		throws Exception {
+
+		return getService().search(
+			companyId, createUserUuid, createDateGT, createDateLT,
+			modifiedUserUuid, modifiedDateGT, modifiedDateLT, accountKey,
+			productPurchaseKey, accountName, startDateGT, startDateLT,
+			licenseEntryIds, productKeys, productName, productId,
+			productVersions, owner, description, hostName, ipAddress,
+			macAddress, serverId, key, expirationDateGT, expirationDateLT,
+			active, andSearch, start, end, sort);
+	}
+
+	public static com.liferay.portal.kernel.search.Hits search(
+			long companyId, String keywords, int start, int end,
+			com.liferay.portal.kernel.search.Sort sort)
+		throws PortalException {
+
+		return getService().search(companyId, keywords, start, end, sort);
+	}
+
 	public static List<LicenseKey> search(
 		String createUserUuid, java.util.Date createDateGT,
 		java.util.Date createDateLT, String modifiedUserUuid,
@@ -541,6 +610,36 @@ public class LicenseKeyLocalServiceUtil {
 		int start, int end, OrderByComparator obc) {
 
 		return getService().search(keywords, params, start, end, obc);
+	}
+
+	public static int searchCount(long companyId, String keywords)
+		throws PortalException {
+
+		return getService().searchCount(companyId, keywords);
+	}
+
+	public static int searchCount(
+			long companyId, String createUserUuid, java.util.Date createDateGT,
+			java.util.Date createDateLT, String modifiedUserUuid,
+			java.util.Date modifiedDateGT, java.util.Date modifiedDateLT,
+			String accountKey, String productPurchaseKey, String accountName,
+			java.util.Date startDateGT, java.util.Date startDateLT,
+			Long[] licenseEntryIds, String[] productKeys, String productName,
+			String productId, String[] productVersions, String owner,
+			String description, String hostName, String ipAddress,
+			String macAddress, String serverId, String key,
+			java.util.Date expirationDateGT, java.util.Date expirationDateLT,
+			Boolean active, boolean andSearch)
+		throws Exception {
+
+		return getService().searchCount(
+			companyId, createUserUuid, createDateGT, createDateLT,
+			modifiedUserUuid, modifiedDateGT, modifiedDateLT, accountKey,
+			productPurchaseKey, accountName, startDateGT, startDateLT,
+			licenseEntryIds, productKeys, productName, productId,
+			productVersions, owner, description, hostName, ipAddress,
+			macAddress, serverId, key, expirationDateGT, expirationDateLT,
+			active, andSearch);
 	}
 
 	public static int searchCount(
@@ -585,11 +684,11 @@ public class LicenseKeyLocalServiceUtil {
 		return getService().updateLicenseKey(licenseKey);
 	}
 
-	public static void updateLicenseKey(
+	public static LicenseKey updateLicenseKey(
 			long userId, long licenseKeyId, boolean active)
 		throws Exception {
 
-		getService().updateLicenseKey(userId, licenseKeyId, active);
+		return getService().updateLicenseKey(userId, licenseKeyId, active);
 	}
 
 	public static LicenseKey updateLicenseKey(

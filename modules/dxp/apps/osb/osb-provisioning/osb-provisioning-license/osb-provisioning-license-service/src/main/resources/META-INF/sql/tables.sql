@@ -16,6 +16,7 @@ create table Provisioning_LicenseKey (
 	mvccVersion LONG default 0 not null,
 	uuid_ VARCHAR(75) null,
 	licenseKeyId LONG not null primary key,
+	companyId LONG,
 	userUuid VARCHAR(75) null,
 	userName VARCHAR(75) null,
 	createDate DATE null,

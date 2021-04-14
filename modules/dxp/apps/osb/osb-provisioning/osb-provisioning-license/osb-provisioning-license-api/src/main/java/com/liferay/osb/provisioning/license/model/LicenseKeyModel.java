@@ -17,6 +17,8 @@ package com.liferay.osb.provisioning.license.model;
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.MVCCModel;
+import com.liferay.portal.kernel.model.ShardedModel;
+import com.liferay.portal.kernel.model.StagedModel;
 
 import java.util.Date;
 
@@ -34,7 +36,8 @@ import org.osgi.annotation.versioning.ProviderType;
  * @generated
  */
 @ProviderType
-public interface LicenseKeyModel extends BaseModel<LicenseKey>, MVCCModel {
+public interface LicenseKeyModel
+	extends BaseModel<LicenseKey>, MVCCModel, ShardedModel, StagedModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:
@@ -78,6 +81,7 @@ public interface LicenseKeyModel extends BaseModel<LicenseKey>, MVCCModel {
 	 * @return the uuid of this license key
 	 */
 	@AutoEscape
+	@Override
 	public String getUuid();
 
 	/**
@@ -85,6 +89,7 @@ public interface LicenseKeyModel extends BaseModel<LicenseKey>, MVCCModel {
 	 *
 	 * @param uuid the uuid of this license key
 	 */
+	@Override
 	public void setUuid(String uuid);
 
 	/**
@@ -100,6 +105,22 @@ public interface LicenseKeyModel extends BaseModel<LicenseKey>, MVCCModel {
 	 * @param licenseKeyId the license key ID of this license key
 	 */
 	public void setLicenseKeyId(long licenseKeyId);
+
+	/**
+	 * Returns the company ID of this license key.
+	 *
+	 * @return the company ID of this license key
+	 */
+	@Override
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this license key.
+	 *
+	 * @param companyId the company ID of this license key
+	 */
+	@Override
+	public void setCompanyId(long companyId);
 
 	/**
 	 * Returns the user uuid of this license key.
@@ -136,6 +157,7 @@ public interface LicenseKeyModel extends BaseModel<LicenseKey>, MVCCModel {
 	 *
 	 * @return the create date of this license key
 	 */
+	@Override
 	public Date getCreateDate();
 
 	/**
@@ -143,6 +165,7 @@ public interface LicenseKeyModel extends BaseModel<LicenseKey>, MVCCModel {
 	 *
 	 * @param createDate the create date of this license key
 	 */
+	@Override
 	public void setCreateDate(Date createDate);
 
 	/**
@@ -180,6 +203,7 @@ public interface LicenseKeyModel extends BaseModel<LicenseKey>, MVCCModel {
 	 *
 	 * @return the modified date of this license key
 	 */
+	@Override
 	public Date getModifiedDate();
 
 	/**
@@ -187,6 +211,7 @@ public interface LicenseKeyModel extends BaseModel<LicenseKey>, MVCCModel {
 	 *
 	 * @param modifiedDate the modified date of this license key
 	 */
+	@Override
 	public void setModifiedDate(Date modifiedDate);
 
 	/**

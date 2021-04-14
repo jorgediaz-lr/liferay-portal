@@ -77,7 +77,7 @@ public class LicenseKeyCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(83);
+		StringBundler sb = new StringBundler(85);
 
 		sb.append("{mvccVersion=");
 		sb.append(mvccVersion);
@@ -85,6 +85,8 @@ public class LicenseKeyCacheModel
 		sb.append(uuid);
 		sb.append(", licenseKeyId=");
 		sb.append(licenseKeyId);
+		sb.append(", companyId=");
+		sb.append(companyId);
 		sb.append(", userUuid=");
 		sb.append(userUuid);
 		sb.append(", userName=");
@@ -180,6 +182,7 @@ public class LicenseKeyCacheModel
 		}
 
 		licenseKeyImpl.setLicenseKeyId(licenseKeyId);
+		licenseKeyImpl.setCompanyId(companyId);
 
 		if (userUuid == null) {
 			licenseKeyImpl.setUserUuid("");
@@ -403,6 +406,8 @@ public class LicenseKeyCacheModel
 		uuid = objectInput.readUTF();
 
 		licenseKeyId = objectInput.readLong();
+
+		companyId = objectInput.readLong();
 		userUuid = objectInput.readUTF();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
@@ -465,6 +470,8 @@ public class LicenseKeyCacheModel
 		}
 
 		objectOutput.writeLong(licenseKeyId);
+
+		objectOutput.writeLong(companyId);
 
 		if (userUuid == null) {
 			objectOutput.writeUTF("");
@@ -665,6 +672,7 @@ public class LicenseKeyCacheModel
 	public long mvccVersion;
 	public String uuid;
 	public long licenseKeyId;
+	public long companyId;
 	public String userUuid;
 	public String userName;
 	public long createDate;

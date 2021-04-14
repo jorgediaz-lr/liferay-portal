@@ -14,18 +14,22 @@
 
 package com.liferay.osb.provisioning.license.service;
 
+import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.osb.provisioning.license.model.LicenseEntry;
 import com.liferay.osb.provisioning.license.model.LicenseKey;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
+import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.transaction.Isolation;
@@ -64,6 +68,7 @@ public interface LicenseKeyLocalService
 	 *
 	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.osb.provisioning.license.service.impl.LicenseKeyLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the license key local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link LicenseKeyLocalServiceUtil} if injection and service tracking are not available.
 	 */
+	@Indexable(type = IndexableType.REINDEX)
 	public LicenseKey addDeveloperLicenseKey(
 			long userId, String accountKey, String productKey,
 			String productVersion)
@@ -82,6 +87,7 @@ public interface LicenseKeyLocalService
 	@Indexable(type = IndexableType.REINDEX)
 	public LicenseKey addLicenseKey(LicenseKey licenseKey);
 
+	@Indexable(type = IndexableType.REINDEX)
 	public LicenseKey addLicenseKey(
 			long userId, LicenseEntry licenseEntry, Product product,
 			String accountKey, String productPurchaseKey, String accountCode,
@@ -94,6 +100,7 @@ public interface LicenseKeyLocalService
 			boolean active)
 		throws Exception;
 
+	@Indexable(type = IndexableType.REINDEX)
 	public LicenseKey addLicenseKey(
 			long userId, long licenseEntryId, String productKey,
 			String accountKey, String productPurchaseKey, String accountCode,
@@ -105,6 +112,7 @@ public interface LicenseKeyLocalService
 			Date expirationDate, boolean complimentary, boolean active)
 		throws Exception;
 
+	@Indexable(type = IndexableType.REINDEX)
 	public LicenseKey addLicenseKey(
 			long userId, String assetReceiptLicenseUuid,
 			String licenseEntryType, String productName, String productId,
@@ -227,6 +235,17 @@ public interface LicenseKeyLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public LicenseKey fetchLicenseKey(long licenseKeyId);
 
+	/**
+	 * Returns the license key with the matching UUID and company.
+	 *
+	 * @param uuid the license key's UUID
+	 * @param companyId the primary key of the company
+	 * @return the matching license key, or <code>null</code> if a matching license key could not be found
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public LicenseKey fetchLicenseKeyByUuidAndCompanyId(
+		String uuid, long companyId);
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getAccountLicenseKeys(String accountKey);
 
@@ -244,6 +263,10 @@ public interface LicenseKeyLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getAssetReceiptLicenseLicenseKeysCount(
 		String assetReceiptLicenseUuid, boolean complimentary, boolean active);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ExportActionableDynamicQuery getExportActionableDynamicQuery(
+		PortletDataContext portletDataContext);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public LicenseKey getFirstLicenseKey(
@@ -287,6 +310,19 @@ public interface LicenseKeyLocalService
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public LicenseKey getLicenseKeyByUuid(String uuid) throws PortalException;
+
+	/**
+	 * Returns the license key with the matching UUID and company.
+	 *
+	 * @param uuid the license key's UUID
+	 * @param companyId the primary key of the company
+	 * @return the matching license key
+	 * @throws PortalException if a matching license key could not be found
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public LicenseKey getLicenseKeyByUuidAndCompanyId(
+			String uuid, long companyId)
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getLicenseKeys(long userId, String accountKey)
@@ -387,9 +423,29 @@ public interface LicenseKeyLocalService
 	public int getUserLicenseKeysCount(long userId, String accountKey)
 		throws PortalException;
 
+	@Indexable(type = IndexableType.REINDEX)
 	public LicenseKey renewLicenseKey(
 			long userId, long licenseKeyId, Date startDate, Date expirationDate)
 		throws Exception;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Hits search(
+			long companyId, String createUserUuid, Date createDateGT,
+			Date createDateLT, String modifiedUserUuid, Date modifiedDateGT,
+			Date modifiedDateLT, String accountKey, String productPurchaseKey,
+			String accountName, Date startDateGT, Date startDateLT,
+			Long[] licenseEntryIds, String[] productKeys, String productName,
+			String productId, String[] productVersions, String owner,
+			String description, String hostName, String ipAddress,
+			String macAddress, String serverId, String key,
+			Date expirationDateGT, Date expirationDateLT, Boolean active,
+			boolean andSearch, int start, int end, Sort sort)
+		throws Exception;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Hits search(
+			long companyId, String keywords, int start, int end, Sort sort)
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> search(
@@ -408,6 +464,24 @@ public interface LicenseKeyLocalService
 	public List<LicenseKey> search(
 		String keywords, LinkedHashMap<String, Object> params, int start,
 		int end, OrderByComparator obc);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int searchCount(long companyId, String keywords)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int searchCount(
+			long companyId, String createUserUuid, Date createDateGT,
+			Date createDateLT, String modifiedUserUuid, Date modifiedDateGT,
+			Date modifiedDateLT, String accountKey, String productPurchaseKey,
+			String accountName, Date startDateGT, Date startDateLT,
+			Long[] licenseEntryIds, String[] productKeys, String productName,
+			String productId, String[] productVersions, String owner,
+			String description, String hostName, String ipAddress,
+			String macAddress, String serverId, String key,
+			Date expirationDateGT, Date expirationDateLT, Boolean active,
+			boolean andSearch)
+		throws Exception;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int searchCount(
@@ -438,14 +512,18 @@ public interface LicenseKeyLocalService
 	@Indexable(type = IndexableType.REINDEX)
 	public LicenseKey updateLicenseKey(LicenseKey licenseKey);
 
-	public void updateLicenseKey(long userId, long licenseKeyId, boolean active)
+	@Indexable(type = IndexableType.REINDEX)
+	public LicenseKey updateLicenseKey(
+			long userId, long licenseKeyId, boolean active)
 		throws Exception;
 
+	@Indexable(type = IndexableType.REINDEX)
 	public LicenseKey updateLicenseKey(
 			long userId, long licenseKeyId, String productPurchaseKey,
 			boolean complimentary, boolean active)
 		throws Exception;
 
+	@Indexable(type = IndexableType.REINDEX)
 	public LicenseKey updateLicenseKey(
 			long licenseKeyId, String accountKey, String productPurchaseKey)
 		throws PortalException;

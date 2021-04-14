@@ -226,6 +226,32 @@ public class LicenseKeyServiceWrapper
 	}
 
 	@Override
+	public com.liferay.portal.kernel.search.Hits search(
+			long companyId, String createUserUuid, java.util.Date createDateGT,
+			java.util.Date createDateLT, String modifiedUserUuid,
+			java.util.Date modifiedDateGT, java.util.Date modifiedDateLT,
+			String accountKey, String productPurchaseKey, String accountName,
+			java.util.Date startDateGT, java.util.Date startDateLT,
+			Long[] licenseEntryIds, String[] productKeys, String productName,
+			String productId, String[] productVersions, String owner,
+			String description, String hostName, String ipAddress,
+			String macAddress, String serverId, String key,
+			java.util.Date expirationDateGT, java.util.Date expirationDateLT,
+			Boolean active, boolean andSearch, int start, int end,
+			com.liferay.portal.kernel.search.Sort sort)
+		throws Exception {
+
+		return _licenseKeyService.search(
+			companyId, createUserUuid, createDateGT, createDateLT,
+			modifiedUserUuid, modifiedDateGT, modifiedDateLT, accountKey,
+			productPurchaseKey, accountName, startDateGT, startDateLT,
+			licenseEntryIds, productKeys, productName, productId,
+			productVersions, owner, description, hostName, ipAddress,
+			macAddress, serverId, key, expirationDateGT, expirationDateLT,
+			active, andSearch, start, end, sort);
+	}
+
+	@Override
 	public java.util.List<com.liferay.osb.provisioning.license.model.LicenseKey>
 			search(
 				String createUserUuid, java.util.Date createDateGT,

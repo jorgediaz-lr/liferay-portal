@@ -12,4 +12,4 @@ create index IX_25272E34 on Provisioning_LicenseKey (productPurchaseKey[$COLUMN_
 create index IX_EA2A66B3 on Provisioning_LicenseKey (productPurchaseKey[$COLUMN_LENGTH:75$], licenseEntryType[$COLUMN_LENGTH:75$], complimentary, active_);
 create index IX_C2A51B6 on Provisioning_LicenseKey (userUuid[$COLUMN_LENGTH:75$], accountKey[$COLUMN_LENGTH:75$]);
 create index IX_424E2ECA on Provisioning_LicenseKey (userUuid[$COLUMN_LENGTH:75$], productId[$COLUMN_LENGTH:75$]);
-create index IX_978F8A3E on Provisioning_LicenseKey (uuid_[$COLUMN_LENGTH:75$]);
+create index IX_E6B6472A on Provisioning_LicenseKey (uuid_[$COLUMN_LENGTH:75$], companyId);

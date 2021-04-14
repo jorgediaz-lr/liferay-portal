@@ -18,6 +18,7 @@
 		<field name="mvccVersion" type="long" />
 		<field name="uuid" type="String" />
 		<field name="licenseKeyId" type="long" />
+		<field name="companyId" type="long" />
 		<field name="userUuid" type="String" />
 		<field name="userName" type="String" />
 		<field name="createDate" type="Date" />

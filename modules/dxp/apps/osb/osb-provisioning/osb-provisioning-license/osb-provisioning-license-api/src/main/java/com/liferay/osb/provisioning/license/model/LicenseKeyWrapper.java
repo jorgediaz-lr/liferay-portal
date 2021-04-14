@@ -14,6 +14,7 @@
 
 package com.liferay.osb.provisioning.license.model;
 
+import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.wrapper.BaseModelWrapper;
 
@@ -45,6 +46,7 @@ public class LicenseKeyWrapper
 		attributes.put("mvccVersion", getMvccVersion());
 		attributes.put("uuid", getUuid());
 		attributes.put("licenseKeyId", getLicenseKeyId());
+		attributes.put("companyId", getCompanyId());
 		attributes.put("userUuid", getUserUuid());
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
@@ -105,6 +107,12 @@ public class LicenseKeyWrapper
 
 		if (licenseKeyId != null) {
 			setLicenseKeyId(licenseKeyId);
+		}
+
+		Long companyId = (Long)attributes.get("companyId");
+
+		if (companyId != null) {
+			setCompanyId(companyId);
 		}
 
 		String userUuid = (String)attributes.get("userUuid");
@@ -413,6 +421,16 @@ public class LicenseKeyWrapper
 	@Override
 	public long getClusterId() {
 		return model.getClusterId();
+	}
+
+	/**
+	 * Returns the company ID of this license key.
+	 *
+	 * @return the company ID of this license key
+	 */
+	@Override
+	public long getCompanyId() {
+		return model.getCompanyId();
 	}
 
 	/**
@@ -873,6 +891,16 @@ public class LicenseKeyWrapper
 	}
 
 	/**
+	 * Sets the company ID of this license key.
+	 *
+	 * @param companyId the company ID of this license key
+	 */
+	@Override
+	public void setCompanyId(long companyId) {
+		model.setCompanyId(companyId);
+	}
+
+	/**
 	 * Sets whether this license key is complimentary.
 	 *
 	 * @param complimentary the complimentary of this license key
@@ -1220,6 +1248,11 @@ public class LicenseKeyWrapper
 	@Override
 	public void setUuid(String uuid) {
 		model.setUuid(uuid);
+	}
+
+	@Override
+	public StagedModelType getStagedModelType() {
+		return model.getStagedModelType();
 	}
 
 	@Override

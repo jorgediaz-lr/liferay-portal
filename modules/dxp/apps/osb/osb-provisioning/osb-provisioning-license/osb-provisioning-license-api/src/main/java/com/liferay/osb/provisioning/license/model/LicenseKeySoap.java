@@ -34,6 +34,7 @@ public class LicenseKeySoap implements Serializable {
 		soapModel.setMvccVersion(model.getMvccVersion());
 		soapModel.setUuid(model.getUuid());
 		soapModel.setLicenseKeyId(model.getLicenseKeyId());
+		soapModel.setCompanyId(model.getCompanyId());
 		soapModel.setUserUuid(model.getUserUuid());
 		soapModel.setUserName(model.getUserName());
 		soapModel.setCreateDate(model.getCreateDate());
@@ -148,6 +149,14 @@ public class LicenseKeySoap implements Serializable {
 
 	public void setLicenseKeyId(long licenseKeyId) {
 		_licenseKeyId = licenseKeyId;
+	}
+
+	public long getCompanyId() {
+		return _companyId;
+	}
+
+	public void setCompanyId(long companyId) {
+		_companyId = companyId;
 	}
 
 	public String getUserUuid() {
@@ -465,6 +474,7 @@ public class LicenseKeySoap implements Serializable {
 	private long _mvccVersion;
 	private String _uuid;
 	private long _licenseKeyId;
+	private long _companyId;
 	private String _userUuid;
 	private String _userName;
 	private Date _createDate;

@@ -18,6 +18,8 @@ import com.liferay.osb.provisioning.license.model.LicenseKey;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
+import com.liferay.portal.kernel.search.Hits;
+import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.service.BaseService;
 import com.liferay.portal.kernel.transaction.Isolation;
@@ -161,6 +163,20 @@ public interface LicenseKeyService extends BaseService {
 
 	public LicenseKey renewLicenseKey(
 			long licenseKeyId, Date startDate, Date expirationDate)
+		throws Exception;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Hits search(
+			long companyId, String createUserUuid, Date createDateGT,
+			Date createDateLT, String modifiedUserUuid, Date modifiedDateGT,
+			Date modifiedDateLT, String accountKey, String productPurchaseKey,
+			String accountName, Date startDateGT, Date startDateLT,
+			Long[] licenseEntryIds, String[] productKeys, String productName,
+			String productId, String[] productVersions, String owner,
+			String description, String hostName, String ipAddress,
+			String macAddress, String serverId, String key,
+			Date expirationDateGT, Date expirationDateLT, Boolean active,
+			boolean andSearch, int start, int end, Sort sort)
 		throws Exception;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

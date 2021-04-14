@@ -16,6 +16,7 @@ package com.liferay.osb.provisioning.license.model.impl;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
+import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.osb.provisioning.license.model.LicenseKey;
 import com.liferay.osb.provisioning.license.model.LicenseKeyModel;
 import com.liferay.osb.provisioning.license.model.LicenseKeySoap;
@@ -27,6 +28,7 @@ import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.io.Serializable;
@@ -70,9 +72,9 @@ public class LicenseKeyModelImpl
 
 	public static final Object[][] TABLE_COLUMNS = {
 		{"mvccVersion", Types.BIGINT}, {"uuid_", Types.VARCHAR},
-		{"licenseKeyId", Types.BIGINT}, {"userUuid", Types.VARCHAR},
-		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
-		{"modifiedUserUuid", Types.VARCHAR},
+		{"licenseKeyId", Types.BIGINT}, {"companyId", Types.BIGINT},
+		{"userUuid", Types.VARCHAR}, {"userName", Types.VARCHAR},
+		{"createDate", Types.TIMESTAMP}, {"modifiedUserUuid", Types.VARCHAR},
 		{"modifiedUserName", Types.VARCHAR}, {"modifiedDate", Types.TIMESTAMP},
 		{"assetReceiptLicenseUuid", Types.VARCHAR},
 		{"accountKey", Types.VARCHAR}, {"productPurchaseKey", Types.VARCHAR},
@@ -100,6 +102,7 @@ public class LicenseKeyModelImpl
 		TABLE_COLUMNS_MAP.put("mvccVersion", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("uuid_", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("licenseKeyId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userUuid", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
@@ -141,7 +144,7 @@ public class LicenseKeyModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table Provisioning_LicenseKey (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,licenseKeyId LONG not null primary key,userUuid VARCHAR(75) null,userName VARCHAR(75) null,createDate DATE null,modifiedUserUuid VARCHAR(75) null,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,assetReceiptLicenseUuid VARCHAR(75) null,accountKey VARCHAR(75) null,productPurchaseKey VARCHAR(75) null,licenseEntryId LONG,productKey VARCHAR(75) null,accountCode VARCHAR(75) null,accountName VARCHAR(500) null,licenseEntryName VARCHAR(75) null,licenseEntryType VARCHAR(75) null,licenseVersion INTEGER,productName VARCHAR(75) null,productId VARCHAR(75) null,productVersion VARCHAR(75) null,clusterId LONG,name VARCHAR(75) null,owner VARCHAR(75) null,maxServers INTEGER,maxConcurrentUsers LONG,maxUsers LONG,maxHttpSessions INTEGER,sizing INTEGER,description VARCHAR(255) null,hostName VARCHAR(75) null,ipAddresses STRING null,macAddresses STRING null,serverId STRING null,key_ STRING null,startDate DATE null,expirationDate DATE null,additionalInfo STRING null,complimentary BOOLEAN,active_ BOOLEAN)";
+		"create table Provisioning_LicenseKey (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,licenseKeyId LONG not null primary key,companyId LONG,userUuid VARCHAR(75) null,userName VARCHAR(75) null,createDate DATE null,modifiedUserUuid VARCHAR(75) null,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,assetReceiptLicenseUuid VARCHAR(75) null,accountKey VARCHAR(75) null,productPurchaseKey VARCHAR(75) null,licenseEntryId LONG,productKey VARCHAR(75) null,accountCode VARCHAR(75) null,accountName VARCHAR(500) null,licenseEntryName VARCHAR(75) null,licenseEntryType VARCHAR(75) null,licenseVersion INTEGER,productName VARCHAR(75) null,productId VARCHAR(75) null,productVersion VARCHAR(75) null,clusterId LONG,name VARCHAR(75) null,owner VARCHAR(75) null,maxServers INTEGER,maxConcurrentUsers LONG,maxUsers LONG,maxHttpSessions INTEGER,sizing INTEGER,description VARCHAR(255) null,hostName VARCHAR(75) null,ipAddresses STRING null,macAddresses STRING null,serverId STRING null,key_ STRING null,startDate DATE null,expirationDate DATE null,additionalInfo STRING null,complimentary BOOLEAN,active_ BOOLEAN)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table Provisioning_LicenseKey";
@@ -166,25 +169,27 @@ public class LicenseKeyModelImpl
 
 	public static final long CLUSTERID_COLUMN_BITMASK = 8L;
 
-	public static final long COMPLIMENTARY_COLUMN_BITMASK = 16L;
+	public static final long COMPANYID_COLUMN_BITMASK = 16L;
 
-	public static final long LICENSEENTRYTYPE_COLUMN_BITMASK = 32L;
+	public static final long COMPLIMENTARY_COLUMN_BITMASK = 32L;
 
-	public static final long PRODUCTID_COLUMN_BITMASK = 64L;
+	public static final long LICENSEENTRYTYPE_COLUMN_BITMASK = 64L;
 
-	public static final long PRODUCTKEY_COLUMN_BITMASK = 128L;
+	public static final long PRODUCTID_COLUMN_BITMASK = 128L;
 
-	public static final long PRODUCTNAME_COLUMN_BITMASK = 256L;
+	public static final long PRODUCTKEY_COLUMN_BITMASK = 256L;
 
-	public static final long PRODUCTPURCHASEKEY_COLUMN_BITMASK = 512L;
+	public static final long PRODUCTNAME_COLUMN_BITMASK = 512L;
 
-	public static final long SERVERID_COLUMN_BITMASK = 1024L;
+	public static final long PRODUCTPURCHASEKEY_COLUMN_BITMASK = 1024L;
 
-	public static final long USERUUID_COLUMN_BITMASK = 2048L;
+	public static final long SERVERID_COLUMN_BITMASK = 2048L;
 
-	public static final long UUID_COLUMN_BITMASK = 4096L;
+	public static final long USERUUID_COLUMN_BITMASK = 4096L;
 
-	public static final long LICENSEKEYID_COLUMN_BITMASK = 8192L;
+	public static final long UUID_COLUMN_BITMASK = 8192L;
+
+	public static final long LICENSEKEYID_COLUMN_BITMASK = 16384L;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -210,6 +215,7 @@ public class LicenseKeyModelImpl
 		model.setMvccVersion(soapModel.getMvccVersion());
 		model.setUuid(soapModel.getUuid());
 		model.setLicenseKeyId(soapModel.getLicenseKeyId());
+		model.setCompanyId(soapModel.getCompanyId());
 		model.setUserUuid(soapModel.getUserUuid());
 		model.setUserName(soapModel.getUserName());
 		model.setCreateDate(soapModel.getCreateDate());
@@ -411,6 +417,10 @@ public class LicenseKeyModelImpl
 		attributeSetterBiConsumers.put(
 			"licenseKeyId",
 			(BiConsumer<LicenseKey, Long>)LicenseKey::setLicenseKeyId);
+		attributeGetterFunctions.put("companyId", LicenseKey::getCompanyId);
+		attributeSetterBiConsumers.put(
+			"companyId",
+			(BiConsumer<LicenseKey, Long>)LicenseKey::setCompanyId);
 		attributeGetterFunctions.put("userUuid", LicenseKey::getUserUuid);
 		attributeSetterBiConsumers.put(
 			"userUuid",
@@ -629,6 +639,29 @@ public class LicenseKeyModelImpl
 		_columnBitmask = -1L;
 
 		_licenseKeyId = licenseKeyId;
+	}
+
+	@JSON
+	@Override
+	public long getCompanyId() {
+		return _companyId;
+	}
+
+	@Override
+	public void setCompanyId(long companyId) {
+		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+		if (!_setOriginalCompanyId) {
+			_setOriginalCompanyId = true;
+
+			_originalCompanyId = _companyId;
+		}
+
+		_companyId = companyId;
+	}
+
+	public long getOriginalCompanyId() {
+		return _originalCompanyId;
 	}
 
 	@JSON
@@ -1313,6 +1346,12 @@ public class LicenseKeyModelImpl
 		return _originalActive;
 	}
 
+	@Override
+	public StagedModelType getStagedModelType() {
+		return new StagedModelType(
+			PortalUtil.getClassNameId(LicenseKey.class.getName()));
+	}
+
 	public long getColumnBitmask() {
 		return _columnBitmask;
 	}
@@ -1320,7 +1359,7 @@ public class LicenseKeyModelImpl
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return ExpandoBridgeFactoryUtil.getExpandoBridge(
-			0, LicenseKey.class.getName(), getPrimaryKey());
+			getCompanyId(), LicenseKey.class.getName(), getPrimaryKey());
 	}
 
 	@Override
@@ -1352,6 +1391,7 @@ public class LicenseKeyModelImpl
 		licenseKeyImpl.setMvccVersion(getMvccVersion());
 		licenseKeyImpl.setUuid(getUuid());
 		licenseKeyImpl.setLicenseKeyId(getLicenseKeyId());
+		licenseKeyImpl.setCompanyId(getCompanyId());
 		licenseKeyImpl.setUserUuid(getUserUuid());
 		licenseKeyImpl.setUserName(getUserName());
 		licenseKeyImpl.setCreateDate(getCreateDate());
@@ -1466,6 +1506,10 @@ public class LicenseKeyModelImpl
 	public void resetOriginalValues() {
 		_originalUuid = _uuid;
 
+		_originalCompanyId = _companyId;
+
+		_setOriginalCompanyId = false;
+
 		_originalUserUuid = _userUuid;
 
 		_setModifiedDate = false;
@@ -1515,6 +1559,8 @@ public class LicenseKeyModelImpl
 		}
 
 		licenseKeyCacheModel.licenseKeyId = getLicenseKeyId();
+
+		licenseKeyCacheModel.companyId = getCompanyId();
 
 		licenseKeyCacheModel.userUuid = getUserUuid();
 
@@ -1850,6 +1896,9 @@ public class LicenseKeyModelImpl
 	private String _uuid;
 	private String _originalUuid;
 	private long _licenseKeyId;
+	private long _companyId;
+	private long _originalCompanyId;
+	private boolean _setOriginalCompanyId;
 	private String _userUuid;
 	private String _originalUserUuid;
 	private String _userName;
