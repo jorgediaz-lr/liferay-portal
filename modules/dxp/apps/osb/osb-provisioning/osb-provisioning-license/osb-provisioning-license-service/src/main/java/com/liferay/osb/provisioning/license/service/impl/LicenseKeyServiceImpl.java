@@ -154,14 +154,6 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		int licenseVersion = LicenseVersion.getLicenseVersion(
 			product.getName(), productVersion);
 
-		if ((licenseVersion >= 3) &&
-			(licenseEntryType.equals(LicenseType.DEVELOPER) ||
-			 licenseEntryType.equals(LicenseType.DEVELOPER_CLUSTER)) &&
-			(maxHttpSessions != 5)) {
-
-			throw new PrincipalException();
-		}
-
 		return licenseKeyLocalService.addLicenseKey(
 			userId, licenseEntryId, productKey, accountKey, productPurchaseKey,
 			accountCode, accountName, productVersion, clusterId, name, owner,
