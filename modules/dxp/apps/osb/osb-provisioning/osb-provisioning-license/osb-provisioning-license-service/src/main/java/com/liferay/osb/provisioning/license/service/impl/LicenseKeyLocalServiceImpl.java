@@ -50,20 +50,47 @@ import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.search.BooleanClause;
+import com.liferay.portal.kernel.search.BooleanClauseFactoryUtil;
+import com.liferay.portal.kernel.search.BooleanClauseOccur;
+import com.liferay.portal.kernel.search.BooleanQuery;
+import com.liferay.portal.kernel.search.Field;
+import com.liferay.portal.kernel.search.Hits;
+import com.liferay.portal.kernel.search.Indexable;
+import com.liferay.portal.kernel.search.IndexableType;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
+import com.liferay.portal.kernel.search.Query;
+import com.liferay.portal.kernel.search.QueryConfig;
+import com.liferay.portal.kernel.search.SearchContext;
+import com.liferay.portal.kernel.search.Sort;
+import com.liferay.portal.kernel.search.TermRangeQuery;
+import com.liferay.portal.kernel.search.generic.BooleanQueryImpl;
+import com.liferay.portal.kernel.search.generic.TermRangeQueryImpl;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 
+import java.io.Serializable;
+
+import java.text.Format;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
@@ -82,6 +109,7 @@ import org.osgi.service.component.annotations.Reference;
 )
 public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
+	@Indexable(type = IndexableType.REINDEX)
 	public LicenseKey addDeveloperLicenseKey(
 			long userId, String accountKey, String productKey,
 			String productVersion)
@@ -111,6 +139,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			startDate, expirationDate, StringPool.BLANK, true, true);
 	}
 
+	@Indexable(type = IndexableType.REINDEX)
 	public LicenseKey addLicenseKey(
 			long userId, LicenseEntry licenseEntry, Product product,
 			String accountKey, String productPurchaseKey, String accountCode,
@@ -152,6 +181,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			additionalInfo, complimentary, active);
 	}
 
+	@Indexable(type = IndexableType.REINDEX)
 	public LicenseKey addLicenseKey(
 			long userId, long licenseEntryId, String productKey,
 			String accountKey, String productPurchaseKey, String accountCode,
@@ -175,6 +205,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			StringPool.BLANK, complimentary, active);
 	}
 
+	@Indexable(type = IndexableType.REINDEX)
 	public LicenseKey addLicenseKey(
 			long userId, String assetReceiptLicenseUuid,
 			String licenseEntryType, String productName, String productId,
@@ -444,6 +475,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		return licenseKeyPersistence.countByU_AK(user.getUuid(), accountKey);
 	}
 
+	@Indexable(type = IndexableType.REINDEX)
 	public LicenseKey renewLicenseKey(
 			long userId, long licenseKeyId, Date startDate, Date expirationDate)
 		throws Exception {
@@ -487,6 +519,82 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			licenseKey.getAdditionalInfo(), licenseKey.isComplimentary(), true);
 	}
 
+	public Hits search(
+			long companyId, String createUserUuid, Date createDateGT,
+			Date createDateLT, String modifiedUserUuid, Date modifiedDateGT,
+			Date modifiedDateLT, String accountKey, String productPurchaseKey,
+			String accountName, Date startDateGT, Date startDateLT,
+			Long[] licenseEntryIds, String[] productKeys, String productName,
+			String productId, String[] productVersions, String owner,
+			String description, String hostName, String ipAddress,
+			String macAddress, String serverId, String key,
+			Date expirationDateGT, Date expirationDateLT, Boolean active,
+			boolean andSearch, int start, int end, Sort sort)
+		throws Exception {
+
+		Indexer<LicenseKey> indexer = IndexerRegistryUtil.nullSafeGetIndexer(
+			LicenseKey.class);
+
+		SearchContext searchContext = buildSearchContext(
+			companyId, createUserUuid, createDateGT, createDateLT,
+			modifiedUserUuid, modifiedDateGT, modifiedDateLT, accountKey,
+			productPurchaseKey, accountName, startDateGT, startDateLT,
+			licenseEntryIds, productKeys, productName, productId,
+			productVersions, owner, description, hostName, ipAddress,
+			macAddress, serverId, key, expirationDateGT, expirationDateLT,
+			active, andSearch, start, end, sort);
+
+		return indexer.search(searchContext);
+	}
+
+	public Hits search(
+			long companyId, String keywords, int start, int end, Sort sort)
+		throws PortalException {
+
+		Indexer<LicenseKey> indexer = IndexerRegistryUtil.nullSafeGetIndexer(
+			LicenseKey.class);
+
+		SearchContext searchContext = new SearchContext();
+
+		searchContext.setAndSearch(false);
+
+		Map<String, Serializable> attributes = new HashMap<>();
+
+		attributes.put("accountKey", keywords);
+		attributes.put("accountName", keywords);
+		attributes.put("createUserUuid", keywords);
+		attributes.put("description", keywords);
+		attributes.put("hostName", keywords);
+		attributes.put("ipAddresses", keywords);
+		attributes.put("key", keywords);
+		attributes.put("macAddresses", keywords);
+		attributes.put("modifiedUserUuid", keywords);
+		attributes.put("owner", keywords);
+		attributes.put("productId", keywords);
+		attributes.put("productName", keywords);
+		attributes.put("productPurchaseKey", keywords);
+		attributes.put("productVersions", keywords);
+		attributes.put("serverId", keywords);
+
+		searchContext.setAttributes(attributes);
+
+		searchContext.setCompanyId(companyId);
+		searchContext.setEnd(end);
+
+		if (sort != null) {
+			searchContext.setSorts(sort);
+		}
+
+		searchContext.setStart(start);
+
+		QueryConfig queryConfig = searchContext.getQueryConfig();
+
+		queryConfig.setHighlightEnabled(false);
+		queryConfig.setScoreEnabled(false);
+
+		return indexer.search(searchContext);
+	}
+
 	public List<LicenseKey> search(
 		String createUserUuid, Date createDateGT, Date createDateLT,
 		String modifiedUserUuid, Date modifiedDateGT, Date modifiedDateLT,
@@ -518,6 +626,67 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			keywords, params, start, end, obc);
 	}
 
+	public int searchCount(long companyId, String keywords)
+		throws PortalException {
+
+		Indexer<LicenseKey> indexer = IndexerRegistryUtil.nullSafeGetIndexer(
+			LicenseKey.class);
+
+		SearchContext searchContext = new SearchContext();
+
+		Map<String, Serializable> attributes = new HashMap<>();
+
+		attributes.put("accountKey", keywords);
+		attributes.put("accountName", keywords);
+		attributes.put("createUserUuid", keywords);
+		attributes.put("description", keywords);
+		attributes.put("hostName", keywords);
+		attributes.put("ipAddress", keywords);
+		attributes.put("key", keywords);
+		attributes.put("macAddress", keywords);
+		attributes.put("modifiedUserUuid", keywords);
+		attributes.put("owner", keywords);
+		attributes.put("productId", keywords);
+		attributes.put("productName", keywords);
+		attributes.put("productPurchaseKey", keywords);
+		attributes.put("productVersions", keywords);
+		attributes.put("serverId", keywords);
+
+		searchContext.setAttributes(attributes);
+
+		searchContext.setCompanyId(companyId);
+
+		return (int)indexer.searchCount(searchContext);
+	}
+
+	public int searchCount(
+			long companyId, String createUserUuid, Date createDateGT,
+			Date createDateLT, String modifiedUserUuid, Date modifiedDateGT,
+			Date modifiedDateLT, String accountKey, String productPurchaseKey,
+			String accountName, Date startDateGT, Date startDateLT,
+			Long[] licenseEntryIds, String[] productKeys, String productName,
+			String productId, String[] productVersions, String owner,
+			String description, String hostName, String ipAddress,
+			String macAddress, String serverId, String key,
+			Date expirationDateGT, Date expirationDateLT, Boolean active,
+			boolean andSearch)
+		throws Exception {
+
+		Indexer<LicenseKey> indexer = IndexerRegistryUtil.nullSafeGetIndexer(
+			LicenseKey.class);
+
+		SearchContext searchContext = buildSearchContext(
+			companyId, createUserUuid, createDateGT, createDateLT,
+			modifiedUserUuid, modifiedDateGT, modifiedDateLT, accountKey,
+			productPurchaseKey, accountName, startDateGT, startDateLT,
+			licenseEntryIds, productKeys, productName, productId,
+			productVersions, owner, description, hostName, ipAddress,
+			macAddress, serverId, key, expirationDateGT, expirationDateLT,
+			active, andSearch, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+
+		return (int)indexer.searchCount(searchContext);
+	}
+
 	public int searchCount(
 		String createUserUuid, Date createDateGT, Date createDateLT,
 		String modifiedUserUuid, Date modifiedDateGT, Date modifiedDateLT,
@@ -545,7 +714,9 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		return licenseKeyFinder.countByKeywords(keywords, params);
 	}
 
-	public void updateLicenseKey(long userId, long licenseKeyId, boolean active)
+	@Indexable(type = IndexableType.REINDEX)
+	public LicenseKey updateLicenseKey(
+			long userId, long licenseKeyId, boolean active)
 		throws Exception {
 
 		User user = userLocalService.getUser(userId);
@@ -567,9 +738,10 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		licenseKey.setModifiedDate(new Date());
 		licenseKey.setActive(active);
 
-		licenseKeyPersistence.update(licenseKey);
+		return licenseKeyPersistence.update(licenseKey);
 	}
 
+	@Indexable(type = IndexableType.REINDEX)
 	public LicenseKey updateLicenseKey(
 			long userId, long licenseKeyId, String productPurchaseKey,
 			boolean complimentary, boolean active)
@@ -590,6 +762,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		return licenseKey;
 	}
 
+	@Indexable(type = IndexableType.REINDEX)
 	public LicenseKey updateLicenseKey(
 			long licenseKeyId, String accountKey, String productPurchaseKey)
 		throws PortalException {
@@ -622,6 +795,160 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		}
 
 		return textContent.toString();
+	}
+
+	protected SearchContext buildSearchContext(
+		long companyId, String createUserUuid, Date createDateGT,
+		Date createDateLT, String modifiedUserUuid, Date modifiedDateGT,
+		Date modifiedDateLT, String accountKey, String productPurchaseKey,
+		String accountName, Date startDateGT, Date startDateLT,
+		Long[] licenseEntryIds, String[] productKeys, String productName,
+		String productId, String[] productVersions, String owner,
+		String description, String hostName, String ipAddress,
+		String macAddress, String serverId, String key, Date expirationDateGT,
+		Date expirationDateLT, Boolean active, boolean andSearch, int start,
+		int end, Sort sort) {
+
+		SearchContext searchContext = new SearchContext();
+
+		searchContext.setAndSearch(andSearch);
+
+		Map<String, Serializable> attributes = new HashMap<>();
+
+		List<BooleanClause<Query>> booleanClauses = new ArrayList<>();
+
+		if (active != null) {
+			BooleanQuery booleanQuery = new BooleanQueryImpl();
+
+			booleanQuery.addExactTerm("active", active);
+
+			booleanClauses.add(
+				BooleanClauseFactoryUtil.create(
+					booleanQuery, BooleanClauseOccur.MUST.getName()));
+		}
+
+		if (createDateGT != null) {
+			TermRangeQuery createDateGTTermQuery = new TermRangeQueryImpl(
+				Field.CREATE_DATE, _dateFormat.format(createDateGT), null, true,
+				true);
+
+			booleanClauses.add(
+				BooleanClauseFactoryUtil.create(
+					createDateGTTermQuery, BooleanClauseOccur.MUST.getName()));
+		}
+
+		if (createDateLT != null) {
+			TermRangeQuery createDateLTTermQuery = new TermRangeQueryImpl(
+				Field.CREATE_DATE, null, _dateFormat.format(createDateLT), true,
+				true);
+
+			booleanClauses.add(
+				BooleanClauseFactoryUtil.create(
+					createDateLTTermQuery, BooleanClauseOccur.MUST.getName()));
+		}
+
+		if (modifiedDateGT != null) {
+			TermRangeQuery modifiedDateGTTermQuery = new TermRangeQueryImpl(
+				Field.MODIFIED_DATE, _dateFormat.format(modifiedDateGT), null,
+				true, true);
+
+			booleanClauses.add(
+				BooleanClauseFactoryUtil.create(
+					modifiedDateGTTermQuery,
+					BooleanClauseOccur.MUST.getName()));
+		}
+
+		if (modifiedDateLT != null) {
+			TermRangeQuery modifiedDateLTTermQuery = new TermRangeQueryImpl(
+				Field.MODIFIED_DATE, null, _dateFormat.format(modifiedDateLT),
+				true, true);
+
+			booleanClauses.add(
+				BooleanClauseFactoryUtil.create(
+					modifiedDateLTTermQuery,
+					BooleanClauseOccur.MUST.getName()));
+		}
+
+		if (expirationDateGT != null) {
+			TermRangeQuery expirationDateGTTermQuery = new TermRangeQueryImpl(
+				Field.EXPIRATION_DATE, _dateFormat.format(expirationDateGT),
+				null, true, true);
+
+			booleanClauses.add(
+				BooleanClauseFactoryUtil.create(
+					expirationDateGTTermQuery,
+					BooleanClauseOccur.MUST.getName()));
+		}
+
+		if (expirationDateLT != null) {
+			TermRangeQuery expirationDateLTTermQuery = new TermRangeQueryImpl(
+				Field.EXPIRATION_DATE, null,
+				_dateFormat.format(expirationDateLT), true, true);
+
+			booleanClauses.add(
+				BooleanClauseFactoryUtil.create(
+					expirationDateLTTermQuery,
+					BooleanClauseOccur.MUST.getName()));
+		}
+
+		if (startDateGT != null) {
+			TermRangeQuery startDateGTTermQuery = new TermRangeQueryImpl(
+				"startDate", _dateFormat.format(startDateGT), null, true, true);
+
+			booleanClauses.add(
+				BooleanClauseFactoryUtil.create(
+					startDateGTTermQuery, BooleanClauseOccur.MUST.getName()));
+		}
+
+		if (startDateLT != null) {
+			TermRangeQuery startDateLTTermQuery = new TermRangeQueryImpl(
+				"startDate", null, _dateFormat.format(startDateLT), true, true);
+
+			booleanClauses.add(
+				BooleanClauseFactoryUtil.create(
+					startDateLTTermQuery, BooleanClauseOccur.MUST.getName()));
+		}
+
+		if (!booleanClauses.isEmpty()) {
+			searchContext.setBooleanClauses(
+				booleanClauses.toArray(new BooleanClause[0]));
+		}
+
+		attributes.put("accountKey", accountKey);
+		attributes.put("accountName", accountName);
+		attributes.put("description", description);
+		attributes.put("hostName", hostName);
+		attributes.put("ipAddresses", ipAddress);
+		attributes.put("key", key);
+		attributes.put("licenseEntryId", licenseEntryIds);
+		attributes.put("macAddresses", macAddress);
+		attributes.put("modifiedUserUuid", modifiedUserUuid);
+		attributes.put("owner", owner);
+		attributes.put("productId", productId);
+		attributes.put("productKey", productKeys);
+		attributes.put("productName", productName);
+		attributes.put("productPurchaseKey", productPurchaseKey);
+		attributes.put("productVersion", productVersions);
+		attributes.put("serverId", serverId);
+		attributes.put("userUuid", createUserUuid);
+
+		searchContext.setAttributes(attributes);
+
+		searchContext.setCompanyId(companyId);
+		searchContext.setEnd(end);
+
+		if (sort != null) {
+			searchContext.setSorts(sort);
+		}
+
+		searchContext.setStart(start);
+
+		QueryConfig queryConfig = searchContext.getQueryConfig();
+
+		queryConfig.setHighlightEnabled(false);
+		queryConfig.setScoreEnabled(false);
+
+		return searchContext;
 	}
 
 	protected LicenseKey doAddLicenseKey(
@@ -1073,8 +1400,15 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		}
 	}
 
+	private static final String _INDEX_DATE_FORMAT_PATTERN = PropsUtil.get(
+		PropsKeys.INDEX_DATE_FORMAT_PATTERN);
+
 	@Reference
 	private AccountWebService _accountWebService;
+
+	private final Format _dateFormat =
+		FastDateFormatFactoryUtil.getSimpleDateFormat(
+			_INDEX_DATE_FORMAT_PATTERN);
 
 	@Reference
 	private KeyGenerator _keyGenerator;

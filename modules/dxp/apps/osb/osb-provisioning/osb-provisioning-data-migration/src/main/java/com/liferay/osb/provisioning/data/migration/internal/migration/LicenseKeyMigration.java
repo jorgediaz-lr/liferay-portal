@@ -19,6 +19,8 @@ import com.liferay.osb.provisioning.license.service.LicenseKeyLocalService;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.StringBundler;
 
 import java.sql.Connection;
@@ -41,14 +43,18 @@ public class LicenseKeyMigration {
 
 		stopWatch.start();
 
-		_migrate(0, 1000);
+		User user = _userLocalService.getUser(userId);
+
+		_migrate(user.getCompanyId(), 0, 1000);
 
 		if (_log.isInfoEnabled()) {
 			_log.info("Migration took " + stopWatch.getTime() + " ms");
 		}
 	}
 
-	private void _migrate(int start, int batchSize) throws Exception {
+	private void _migrate(long companyId, int start, int batchSize)
+		throws Exception {
+
 		StringBundler sb = new StringBundler(14);
 
 		sb.append("select OSB_LicenseKey.*, OSB_LicenseKeySet.name,");
@@ -81,6 +87,7 @@ public class LicenseKeyMigration {
 						resultSet.getLong("licenseKeyId"));
 
 				licenseKey.setUuid(resultSet.getString("uuid_"));
+				licenseKey.setCompanyId(companyId);
 				licenseKey.setUserUuid(resultSet.getString("userUuid"));
 				licenseKey.setUserName(resultSet.getString("userName"));
 				licenseKey.setCreateDate(resultSet.getTimestamp("createDate"));
@@ -142,7 +149,7 @@ public class LicenseKeyMigration {
 			}
 		}
 
-		_migrate(start + batchSize, batchSize);
+		_migrate(companyId, start + batchSize, batchSize);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -150,5 +157,8 @@ public class LicenseKeyMigration {
 
 	@Reference
 	private LicenseKeyLocalService _licenseKeyLocalService;
+
+	@Reference
+	private UserLocalService _userLocalService;
 
 }

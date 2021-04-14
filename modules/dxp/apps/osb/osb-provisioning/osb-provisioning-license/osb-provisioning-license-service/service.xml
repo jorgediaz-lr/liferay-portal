@@ -48,6 +48,7 @@
 
 		<!-- Audit fields -->
 
+		<column name="companyId" type="long" />
 		<column name="userUuid" type="String" />
 		<column name="userName" type="String" />
 		<column name="createDate" type="Date" />

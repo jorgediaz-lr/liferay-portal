@@ -30,6 +30,8 @@ import com.liferay.portal.instances.service.PortalInstancesLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.search.Hits;
+import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -315,6 +317,31 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 		return licenseKeyLocalService.renewLicenseKey(
 			getUserId(), licenseKeyId, startDate, expirationDate);
+	}
+
+	public Hits search(
+			long companyId, String createUserUuid, Date createDateGT,
+			Date createDateLT, String modifiedUserUuid, Date modifiedDateGT,
+			Date modifiedDateLT, String accountKey, String productPurchaseKey,
+			String accountName, Date startDateGT, Date startDateLT,
+			Long[] licenseEntryIds, String[] productKeys, String productName,
+			String productId, String[] productVersions, String owner,
+			String description, String hostName, String ipAddress,
+			String macAddress, String serverId, String key,
+			Date expirationDateGT, Date expirationDateLT, Boolean active,
+			boolean andSearch, int start, int end, Sort sort)
+		throws Exception {
+
+		//addPermissionParams(params);
+
+		return licenseKeyLocalService.search(
+			companyId, createUserUuid, createDateGT, createDateLT,
+			modifiedUserUuid, modifiedDateGT, modifiedDateLT, accountKey,
+			productPurchaseKey, accountName, startDateGT, startDateLT,
+			licenseEntryIds, productKeys, productName, productId,
+			productVersions, owner, description, hostName, ipAddress,
+			macAddress, serverId, key, expirationDateGT, expirationDateLT,
+			active, andSearch, start, end, sort);
 	}
 
 	public List<LicenseKey> search(

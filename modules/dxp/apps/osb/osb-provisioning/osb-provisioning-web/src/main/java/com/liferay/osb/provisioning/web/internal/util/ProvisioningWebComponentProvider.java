@@ -398,8 +398,8 @@ public class ProvisioningWebComponentProvider {
 
 		return new LicenseKeySearchDisplayContext(
 			renderRequest, renderResponse, httpServletRequest,
-			_licenseEntryLocalService, _licenseKeyLocalService,
-			_productWebService);
+			_identityProvider, _licenseEntryLocalService,
+			_licenseKeyLocalService, _productWebService, _userLocalService);
 	}
 
 	private MoveLicenseKeyDisplayContext _getMoveLicenseKeyDisplayContext(

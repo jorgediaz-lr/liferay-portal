@@ -14,11 +14,7 @@
 
 package com.liferay.osb.provisioning.web.internal.search;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.text.DateFormat;
@@ -38,14 +34,9 @@ public class LicenseKeySearchTerms extends LicenseKeyDisplayTerms {
 		super(portletRequest);
 	}
 
-	public String getCreatorUserUuid() throws PortalException {
-		if (Validator.isNotNull(creatorEmailAddress)) {
-			User user = UserLocalServiceUtil.fetchUserByEmailAddress(
-				PortalUtil.getDefaultCompanyId(), creatorEmailAddress);
-
-			if (user != null) {
-				return user.getUuid();
-			}
+	public Boolean getActive() {
+		if (activeLicenses.length == 1) {
+			return activeLicenses[0];
 		}
 
 		return null;
@@ -59,37 +50,14 @@ public class LicenseKeySearchTerms extends LicenseKeyDisplayTerms {
 		return null;
 	}
 
-	public long[] getLicenseEntryIds() {
-		long[] licenseEntryIds = new long[types.length];
+	public Long[] getLicenseEntryIds() {
+		Long[] licenseEntryIds = new Long[types.length];
 
 		for (int i = 0; i < types.length; i++) {
 			licenseEntryIds[i] = Long.valueOf(types[i]);
 		}
 
 		return licenseEntryIds;
-	}
-
-	public String getModifiedUserUuid() throws PortalException {
-		if (Validator.isNotNull(modifiedEmailAddress)) {
-			User user = UserLocalServiceUtil.fetchUserByEmailAddress(
-				PortalUtil.getDefaultCompanyId(), modifiedEmailAddress);
-
-			if (user != null) {
-				return user.getUuid();
-			}
-		}
-
-		return null;
-	}
-
-	public LinkedHashMap<String, Object> getParams() {
-		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
-
-		if (activeLicenses.length == 1) {
-			params.put("active", activeLicenses[0]);
-		}
-
-		return params;
 	}
 
 	private final DateFormat _dateFormat =
