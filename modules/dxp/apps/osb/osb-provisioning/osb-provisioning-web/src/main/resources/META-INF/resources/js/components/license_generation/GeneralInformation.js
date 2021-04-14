@@ -14,9 +14,16 @@ import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
 
 import {useLicense} from '../../hooks/license';
+import {
+	LICENSE_TYPE_DEVELOPER,
+	LICENSE_TYPE_DEVELOPER_CLUSTER
+} from '../../utilities/constants';
 import CancelLink from '../CancelLink';
 import Purchases from './Purchases';
 import SelectAccount from './SelectAccount';
+
+const DEFAULT_MAXHTTPSESSIONS = 0;
+const DEFAULT_MAXHTTPSESSIONS_FOR_DEVELOPER_LICENSES = 5;
 
 function GeneralInformation({
 	accountCode = '',
@@ -98,6 +105,18 @@ function GeneralInformation({
 							? currentLicenseEntry.licenseEntryType
 							: licenseEntryType
 				)
+				.update('maxHttpSessions', maxHttpSessions => {
+					if (currentLicenseEntry) {
+						const type = currentLicenseEntry.licenseEntryType;
+
+						return type === LICENSE_TYPE_DEVELOPER ||
+							type === LICENSE_TYPE_DEVELOPER_CLUSTER
+							? DEFAULT_MAXHTTPSESSIONS_FOR_DEVELOPER_LICENSES
+							: DEFAULT_MAXHTTPSESSIONS;
+					}
+
+					return maxHttpSessions;
+				})
 		);
 	}
 

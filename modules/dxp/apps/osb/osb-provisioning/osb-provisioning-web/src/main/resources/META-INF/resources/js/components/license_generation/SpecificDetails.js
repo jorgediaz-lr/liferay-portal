@@ -16,7 +16,9 @@ import React from 'react';
 import {useLicense} from '../../hooks/license';
 import {
 	KNOWN_SERVER_ID_LICENSE_TYPES,
-	LICENSE_TYPE_CLUSTER
+	LICENSE_TYPE_CLUSTER,
+	LICENSE_TYPE_DEVELOPER,
+	LICENSE_TYPE_DEVELOPER_CLUSTER
 } from '../../utilities/constants';
 import {displayInMDYDateFormat, getUTCAdjustedDate} from '../../utilities/date';
 import CancelLink from '../CancelLink';
@@ -34,6 +36,7 @@ function SpecificDetails({addLicenseKeyURL, redirect}) {
 		expirationDate,
 		licenseEntry,
 		licenseKeysGenerated,
+		maxHttpSessions,
 		maxServers,
 		owner,
 		product,
@@ -75,6 +78,12 @@ function SpecificDetails({addLicenseKeyURL, redirect}) {
 		updateLicense(license => license.set('showSpecificDetails', false));
 	}
 
+	function handleMaxHttpSessionsChange(event) {
+		updateLicense(license =>
+			license.set('maxHttpSessions', event.currentTarget.value)
+		);
+	}
+
 	function handleMaxServersChange(event) {
 		updateLicense(license =>
 			license.set('maxServers', event.currentTarget.value)
@@ -84,6 +93,13 @@ function SpecificDetails({addLicenseKeyURL, redirect}) {
 	function handleOwnerChange(event) {
 		updateLicense(license =>
 			license.set('owner', event.currentTarget.value)
+		);
+	}
+
+	function isDeveloperOrDeveloperCluster() {
+		return (
+			licenseEntry.licenseEntryType === LICENSE_TYPE_DEVELOPER_CLUSTER ||
+			licenseEntry.licenseEntryType === LICENSE_TYPE_DEVELOPER
 		);
 	}
 
@@ -172,6 +188,26 @@ function SpecificDetails({addLicenseKeyURL, redirect}) {
 										onChange={handleMaxServersChange}
 										type="number"
 										value={maxServers}
+									/>
+								</div>
+							)}
+
+							{isDeveloperOrDeveloperCluster() && (
+								<div className="col-md-6 form-group">
+									<label htmlFor="maxHttpSessions">
+										{Liferay.Language.get(
+											'maximum-connections'
+										)}
+									</label>
+
+									<input
+										className="form-control"
+										id="maxHttpSessions"
+										max={10}
+										min={5}
+										onChange={handleMaxHttpSessionsChange}
+										type="number"
+										value={maxHttpSessions}
 									/>
 								</div>
 							)}

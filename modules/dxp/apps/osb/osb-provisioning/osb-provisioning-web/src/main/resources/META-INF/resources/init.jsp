@@ -143,6 +143,7 @@ ProvisioningWebConfiguration provisioningWebConfiguration = (ProvisioningWebConf
 		licenseType: {
 			cluster: '<%= LicenseType.CLUSTER %>',
 			developer: '<%= LicenseType.DEVELOPER %>',
+			developerCluster: '<%= LicenseType.DEVELOPER_CLUSTER %>',
 			knownServerIdTypes: [
 				'<%= LicenseType.DEVELOPER %>',
 				'<%= LicenseType.DEVELOPER_CLUSTER %>',

@@ -163,6 +163,48 @@ describe('SpecificDetails', () => {
 		getByLabelText('maximum-servers');
 	});
 
+	it('does not display the Maximum Connections input if the selected Type is not Developer or Developer Cluster', () => {
+		const {queryByLabelText} = render(
+			<LicenseProvider
+				initialLicense={
+					new License({
+						licenseEntry: {
+							licenseEntryType: 'oem'
+						}
+					})
+				}
+			>
+				<SpecificDetails redirect={'/redirect/url'} />
+			</LicenseProvider>
+		);
+
+		expect(queryByLabelText('maximum-connections')).toBeFalsy();
+	});
+
+	it('displays the Maximum Connections input if the selected Type is Developer', () => {
+		const {getByLabelText} = renderSpecificDetails();
+
+		getByLabelText('maximum-connections');
+	});
+
+	it('displays the Maximum Connections input if the selected Type is Developer Cluster', () => {
+		const {getByLabelText} = render(
+			<LicenseProvider
+				initialLicense={
+					new License({
+						licenseEntry: {
+							licenseEntryType: 'developer_cluster'
+						}
+					})
+				}
+			>
+				<SpecificDetails redirect={'/redirect/url'} />
+			</LicenseProvider>
+		);
+
+		getByLabelText('maximum-connections');
+	});
+
 	it('displays a Generate button', () => {
 		const {getByText} = renderSpecificDetails();
 

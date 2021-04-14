@@ -30,6 +30,7 @@ window.ProvisioningConstants = {
 	licenseType: {
 		cluster: 'cluster',
 		developer: 'developer',
+		developerCluster: 'developer_cluster',
 		knownServerIdTypes: [
 			'developer',
 			'developer_cluster',
