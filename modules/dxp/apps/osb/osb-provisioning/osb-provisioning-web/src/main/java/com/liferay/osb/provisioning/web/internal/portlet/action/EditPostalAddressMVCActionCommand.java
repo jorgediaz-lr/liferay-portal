@@ -18,23 +18,14 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.PostalAddress;
 import com.liferay.osb.koroneiki.phloem.rest.client.problem.Problem;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.koroneiki.web.service.PostalAddressWebService;
-import com.liferay.portal.kernel.exception.NoSuchCountryException;
-import com.liferay.portal.kernel.exception.NoSuchListTypeException;
-import com.liferay.portal.kernel.exception.NoSuchRegionException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.Country;
-import com.liferay.portal.kernel.model.Region;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
-import com.liferay.portal.kernel.service.CountryService;
-import com.liferay.portal.kernel.service.ListTypeService;
-import com.liferay.portal.kernel.service.RegionService;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -97,11 +88,7 @@ public class EditPostalAddressMVCActionCommand extends BaseMVCActionCommand {
 
 			SessionErrors.add(actionRequest, exception.getClass(), exception);
 
-			if (exception instanceof NoSuchCountryException ||
-				exception instanceof NoSuchListTypeException ||
-				exception instanceof NoSuchRegionException ||
-				exception instanceof Problem.ProblemException) {
-
+			if (exception instanceof Problem.ProblemException) {
 				if (postalAddressId > 0) {
 					sendRedirect(actionRequest, actionResponse);
 				}
@@ -130,10 +117,10 @@ public class EditPostalAddressMVCActionCommand extends BaseMVCActionCommand {
 		String addressLocality = ParamUtil.getString(
 			actionRequest, "addressLocality");
 		String addressZip = ParamUtil.getString(actionRequest, "addressZip");
-		long addressCountryId = ParamUtil.getLong(
-			actionRequest, "addressCountryId");
-		long addressRegionId = ParamUtil.getLong(
-			actionRequest, "addressRegionId");
+		String addressCountryName = ParamUtil.getString(
+			actionRequest, "addressCountryName");
+		String addressRegionName = ParamUtil.getString(
+			actionRequest, "addressRegionName");
 
 		boolean primary = ParamUtil.getBoolean(actionRequest, "addressPrimary");
 
@@ -159,16 +146,12 @@ public class EditPostalAddressMVCActionCommand extends BaseMVCActionCommand {
 			postalAddress.setPostalCode(addressZip);
 		}
 
-		if (addressRegionId > 0) {
-			Region region = _regionService.getRegion(addressRegionId);
-
-			postalAddress.setAddressRegion(region.getName());
+		if (Validator.isNotNull(addressRegionName)) {
+			postalAddress.setAddressRegion(addressRegionName);
 		}
 
-		if (addressCountryId > 0) {
-			Country country = _countryService.getCountry(addressCountryId);
-
-			postalAddress.setAddressCountry(country.getName(LocaleUtil.US));
+		if (Validator.isNotNull(addressCountryName)) {
+			postalAddress.setAddressCountry(addressCountryName);
 		}
 
 		postalAddress.setPrimary(primary);
@@ -188,15 +171,6 @@ public class EditPostalAddressMVCActionCommand extends BaseMVCActionCommand {
 		EditPostalAddressMVCActionCommand.class);
 
 	@Reference
-	private CountryService _countryService;
-
-	@Reference
-	private ListTypeService _listTypeService;
-
-	@Reference
 	private PostalAddressWebService _postalAddressWebService;
-
-	@Reference
-	private RegionService _regionService;
 
 }

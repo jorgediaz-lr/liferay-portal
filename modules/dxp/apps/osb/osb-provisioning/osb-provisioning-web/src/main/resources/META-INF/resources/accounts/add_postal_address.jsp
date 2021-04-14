@@ -69,11 +69,7 @@ AccountDisplay accountDisplay = viewAccountDisplayContext.getAccountDisplay();
 
 			<aui:input fieldParam="addressLocality" id="addressLocality" inlineLabel="left" name="city" required="<%= true %>" />
 
-			<liferay-ui:error exception="<%= NoSuchCountryException.class %>" message="please-select-a-country" />
-
 			<aui:select inlineLabel="left" label="country" name="addressCountryId" />
-
-			<liferay-ui:error exception="<%= NoSuchRegionException.class %>" message="please-select-a-region" />
 
 			<aui:select id="addressRegionId" inlineLabel="left" label="region" name="addressRegionId" />
 
