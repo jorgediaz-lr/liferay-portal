@@ -21,9 +21,6 @@ import com.liferay.osb.provisioning.koroneiki.constants.ProductConstants;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductPurchaseViewWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
-import com.liferay.osb.provisioning.license.helper.constants.LicenseType;
-import com.liferay.osb.provisioning.license.helper.constants.LicenseVersion;
-import com.liferay.osb.provisioning.license.model.LicenseEntry;
 import com.liferay.osb.provisioning.license.model.LicenseKey;
 import com.liferay.osb.provisioning.license.service.LicenseEntryLocalService;
 import com.liferay.osb.provisioning.license.service.base.LicenseKeyServiceBaseImpl;
@@ -38,7 +35,6 @@ import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -135,24 +131,6 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		throws Exception {
 
 		//TODO: add permission check
-
-		LicenseEntry licenseEntry = _licenseEntryLocalService.getLicenseEntry(
-			licenseEntryId);
-
-		Product product = null;
-
-		if (Validator.isNotNull(productKey)) {
-			product = _productWebService.getProduct(productKey);
-		}
-		else {
-			product = _productWebService.getProduct(
-				licenseEntry.getProductKey());
-		}
-
-		String licenseEntryType = licenseEntry.getType();
-
-		int licenseVersion = LicenseVersion.getLicenseVersion(
-			product.getName(), productVersion);
 
 		return licenseKeyLocalService.addLicenseKey(
 			userId, licenseEntryId, productKey, accountKey, productPurchaseKey,
