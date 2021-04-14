@@ -40,6 +40,9 @@ public class DataRegionUtil {
 		else if (region == Account.Region.INDIA) {
 			return Account.DataRegion.JAPAN;
 		}
+		else if (region == Account.Region.JAPAN) {
+			return Account.DataRegion.JAPAN;
+		}
 		else if (region == Account.Region.SPAIN) {
 			return Account.DataRegion.HUNGARY;
 		}
