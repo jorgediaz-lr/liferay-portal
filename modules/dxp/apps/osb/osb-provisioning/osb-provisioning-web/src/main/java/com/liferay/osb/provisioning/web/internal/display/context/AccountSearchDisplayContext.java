@@ -15,6 +15,7 @@
 package com.liferay.osb.provisioning.web.internal.display.context;
 
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Country;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
@@ -25,22 +26,20 @@ import com.liferay.osb.provisioning.koroneiki.constants.ProductPurchaseConstants
 import com.liferay.osb.provisioning.koroneiki.constants.TeamRoleConstants;
 import com.liferay.osb.provisioning.koroneiki.reader.AccountReader;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
+import com.liferay.osb.provisioning.koroneiki.web.service.CountryWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamRoleWebService;
 import com.liferay.osb.provisioning.web.internal.search.AccountSearch;
 import com.liferay.osb.provisioning.web.internal.search.AccountSearchTerms;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
-import com.liferay.portal.kernel.service.CountryService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -71,8 +70,9 @@ public class AccountSearchDisplayContext {
 	public AccountSearchDisplayContext(
 		RenderRequest renderRequest, RenderResponse renderResponse,
 		HttpServletRequest httpServletRequest, AccountReader accountReader,
-		AccountWebService accountWebService, CountryService countryService,
-		IdentityProvider identityProvider, ProductWebService productWebService,
+		AccountWebService accountWebService,
+		CountryWebService countryWebService, IdentityProvider identityProvider,
+		ProductWebService productWebService,
 		TeamRoleWebService teamRoleWebService,
 		UserLocalService userLocalService) {
 
@@ -81,7 +81,7 @@ public class AccountSearchDisplayContext {
 		_httpServletRequest = httpServletRequest;
 		_accountReader = accountReader;
 		_accountWebService = accountWebService;
-		_countryService = countryService;
+		_countryWebService = countryWebService;
 		_identityProvider = identityProvider;
 		_productWebService = productWebService;
 		_teamRoleWebService = teamRoleWebService;
@@ -111,14 +111,14 @@ public class AccountSearchDisplayContext {
 		data.put(
 			"activeSLANames", ListUtil.fromArray(EntitlementConstants.SLAS));
 
-		List<Country> countries = _countryService.getCountries();
+		List<Country> countries = _countryWebService.getCountries();
 
 		Stream<Country> stream = countries.stream();
 
 		data.put(
 			"countryNames",
 			stream.map(
-				country -> country.getName(LocaleUtil.US)
+				country -> country.getName()
 			).collect(
 				Collectors.toList()
 			));
@@ -307,7 +307,7 @@ public class AccountSearchDisplayContext {
 	private final AccountReader _accountReader;
 	private AccountSearch _accountSearch;
 	private final AccountWebService _accountWebService;
-	private final CountryService _countryService;
+	private final CountryWebService _countryWebService;
 	private final PortletURL _currentURLObj;
 	private final HttpServletRequest _httpServletRequest;
 	private final IdentityProvider _identityProvider;

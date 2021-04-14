@@ -21,6 +21,7 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.LabelItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.LabelItemList;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Country;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchaseView;
 import com.liferay.osb.provisioning.constants.AccountEntryLocales;
 import com.liferay.osb.provisioning.constants.ProvisioningActionKeys;
@@ -33,6 +34,7 @@ import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.AuditEntryWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ContactRoleWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ContactWebService;
+import com.liferay.osb.provisioning.koroneiki.web.service.CountryWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ExternalLinkWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.NoteWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductConsumptionWebService;
@@ -165,6 +167,8 @@ public class ViewAccountDisplayContext {
 			"assignFirstLineSupportTeamURL",
 			assignFirstLineSupportTeamURL.toString());
 
+		data.put("countryOptions", getCountries());
+
 		List<String> dataRegionNames = new ArrayList<>();
 
 		for (Account.DataRegion dataRegion : Account.DataRegion.values()) {
@@ -220,6 +224,10 @@ public class ViewAccountDisplayContext {
 		PortletURL portletURL = getPortletURL();
 
 		return portletURL.toString();
+	}
+
+	public List<Country> getCountries() throws Exception {
+		return countryWebService.getCountries();
 	}
 
 	public CreationMenu getCreationMenu() {
@@ -553,6 +561,7 @@ public class ViewAccountDisplayContext {
 			AuditEntryWebService auditEntryWebService,
 			ContactRoleWebService contactRoleWebService,
 			ContactWebService contactWebService,
+			CountryWebService countryWebService,
 			ExternalLinkWebService externalLinkWebService,
 			LicenseKeyLocalService licenseKeyLocalService,
 			NoteWebService noteWebService,
@@ -572,6 +581,7 @@ public class ViewAccountDisplayContext {
 		this.auditEntryWebService = auditEntryWebService;
 		this.contactRoleWebService = contactRoleWebService;
 		this.contactWebService = contactWebService;
+		this.countryWebService = countryWebService;
 		this.externalLinkWebService = externalLinkWebService;
 		this.licenseKeyLocalService = licenseKeyLocalService;
 		this.noteWebService = noteWebService;
@@ -618,6 +628,7 @@ public class ViewAccountDisplayContext {
 	protected AuditEntryWebService auditEntryWebService;
 	protected ContactRoleWebService contactRoleWebService;
 	protected ContactWebService contactWebService;
+	protected CountryWebService countryWebService;
 	protected PortletURL currentURLObj;
 	protected final Format dateFormat =
 		FastDateFormatFactoryUtil.getSimpleDateFormat(

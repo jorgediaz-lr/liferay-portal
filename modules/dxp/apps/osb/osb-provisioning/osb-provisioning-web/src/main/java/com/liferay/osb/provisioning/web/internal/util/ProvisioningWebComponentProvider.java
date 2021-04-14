@@ -21,6 +21,7 @@ import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.AuditEntryWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ContactRoleWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ContactWebService;
+import com.liferay.osb.provisioning.koroneiki.web.service.CountryWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ExternalLinkWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.NoteWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductConsumptionWebService;
@@ -57,7 +58,6 @@ import com.liferay.osb.provisioning.web.internal.display.context.ViewTeamDisplay
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
-import com.liferay.portal.kernel.service.CountryService;
 import com.liferay.portal.kernel.service.UserLocalService;
 
 import javax.portlet.RenderRequest;
@@ -339,7 +339,7 @@ public class ProvisioningWebComponentProvider {
 
 		return new AccountSearchDisplayContext(
 			renderRequest, renderResponse, httpServletRequest, _accountReader,
-			_accountWebService, _countryService, _identityProvider,
+			_accountWebService, _countryWebService, _identityProvider,
 			_productWebService, _teamRoleWebService, _userLocalService);
 	}
 
@@ -448,8 +448,8 @@ public class ProvisioningWebComponentProvider {
 		viewAccountDisplayContext.init(
 			renderRequest, renderResponse, httpServletRequest, _accountReader,
 			_accountEntryWebService, _accountWebService, _auditEntryWebService,
-			_contactRoleWebService, _contactWebService, _externalLinkWebService,
-			_licenseKeyLocalService, _noteWebService,
+			_contactRoleWebService, _contactWebService, _countryWebService,
+			_externalLinkWebService, _licenseKeyLocalService, _noteWebService,
 			_productConsumptionWebService, _productPurchaseViewWebService,
 			_productWebService, _teamRoleWebService, _teamWebService,
 			_userLocalService);
@@ -532,7 +532,7 @@ public class ProvisioningWebComponentProvider {
 	private ContactWebService _contactWebService;
 
 	@Reference
-	private CountryService _countryService;
+	private CountryWebService _countryWebService;
 
 	@Reference
 	private ExternalLinkWebService _externalLinkWebService;
