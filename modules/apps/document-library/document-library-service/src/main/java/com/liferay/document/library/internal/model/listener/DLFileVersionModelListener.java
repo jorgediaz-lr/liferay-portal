@@ -17,6 +17,7 @@ package com.liferay.document.library.internal.model.listener;
 import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.document.library.kernel.model.DLFileVersion;
 import com.liferay.document.library.kernel.service.DLFileEntryLocalService;
+import com.liferay.document.library.kernel.service.DLFileEntryMetadataLocalService;
 import com.liferay.document.library.kernel.store.DLStoreUtil;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -40,6 +41,9 @@ public class DLFileVersionModelListener
 		throws ModelListenerException {
 
 		try {
+			_dlFileEntryMetadataLocalService.deleteFileVersionFileEntryMetadata(
+				dlFileVersion.getFileVersionId());
+
 			DLFileEntry dlFileEntry = _dlFileEntryLocalService.fetchDLFileEntry(
 				dlFileVersion.getFileEntryId());
 
@@ -60,5 +64,8 @@ public class DLFileVersionModelListener
 
 	@Reference
 	private DLFileEntryLocalService _dlFileEntryLocalService;
+
+	@Reference
+	private DLFileEntryMetadataLocalService _dlFileEntryMetadataLocalService;
 
 }
