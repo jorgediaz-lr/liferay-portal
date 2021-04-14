@@ -21,6 +21,8 @@ import com.liferay.osb.koroneiki.phloem.rest.resource.v1_0.AuditEntryResource;
 import com.liferay.osb.koroneiki.phloem.rest.resource.v1_0.ContactAccountViewResource;
 import com.liferay.osb.koroneiki.phloem.rest.resource.v1_0.ContactResource;
 import com.liferay.osb.koroneiki.phloem.rest.resource.v1_0.ContactRoleResource;
+import com.liferay.osb.koroneiki.phloem.rest.resource.v1_0.CountryRegionResource;
+import com.liferay.osb.koroneiki.phloem.rest.resource.v1_0.CountryResource;
 import com.liferay.osb.koroneiki.phloem.rest.resource.v1_0.EntitlementDefinitionResource;
 import com.liferay.osb.koroneiki.phloem.rest.resource.v1_0.ExternalLinkResource;
 import com.liferay.osb.koroneiki.phloem.rest.resource.v1_0.NoteResource;
@@ -87,6 +89,10 @@ public class ServletDataImpl implements ServletData {
 			_contactAccountViewResourceComponentServiceObjects);
 		Query.setContactRoleResourceComponentServiceObjects(
 			_contactRoleResourceComponentServiceObjects);
+		Query.setCountryResourceComponentServiceObjects(
+			_countryResourceComponentServiceObjects);
+		Query.setCountryRegionResourceComponentServiceObjects(
+			_countryRegionResourceComponentServiceObjects);
 		Query.setEntitlementDefinitionResourceComponentServiceObjects(
 			_entitlementDefinitionResourceComponentServiceObjects);
 		Query.setExternalLinkResourceComponentServiceObjects(
@@ -179,6 +185,14 @@ public class ServletDataImpl implements ServletData {
 	@Reference(scope = ReferenceScope.PROTOTYPE_REQUIRED)
 	private ComponentServiceObjects<ContactAccountViewResource>
 		_contactAccountViewResourceComponentServiceObjects;
+
+	@Reference(scope = ReferenceScope.PROTOTYPE_REQUIRED)
+	private ComponentServiceObjects<CountryResource>
+		_countryResourceComponentServiceObjects;
+
+	@Reference(scope = ReferenceScope.PROTOTYPE_REQUIRED)
+	private ComponentServiceObjects<CountryRegionResource>
+		_countryRegionResourceComponentServiceObjects;
 
 	@Reference(scope = ReferenceScope.PROTOTYPE_REQUIRED)
 	private ComponentServiceObjects<ProductPurchaseViewResource>

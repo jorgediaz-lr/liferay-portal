@@ -90,6 +90,10 @@ public class OpenAPIResourceImpl {
 
 			add(ContactRoleResourceImpl.class);
 
+			add(CountryResourceImpl.class);
+
+			add(CountryRegionResourceImpl.class);
+
 			add(EntitlementDefinitionResourceImpl.class);
 
 			add(ExternalLinkResourceImpl.class);

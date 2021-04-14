@@ -19,6 +19,8 @@ import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.AuditEntry;
 import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.Contact;
 import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.ContactAccountView;
 import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.ContactRole;
+import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.Country;
+import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.CountryRegion;
 import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.EntitlementDefinition;
 import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.ExternalLink;
 import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.Note;
@@ -34,6 +36,8 @@ import com.liferay.osb.koroneiki.phloem.rest.resource.v1_0.AuditEntryResource;
 import com.liferay.osb.koroneiki.phloem.rest.resource.v1_0.ContactAccountViewResource;
 import com.liferay.osb.koroneiki.phloem.rest.resource.v1_0.ContactResource;
 import com.liferay.osb.koroneiki.phloem.rest.resource.v1_0.ContactRoleResource;
+import com.liferay.osb.koroneiki.phloem.rest.resource.v1_0.CountryRegionResource;
+import com.liferay.osb.koroneiki.phloem.rest.resource.v1_0.CountryResource;
 import com.liferay.osb.koroneiki.phloem.rest.resource.v1_0.EntitlementDefinitionResource;
 import com.liferay.osb.koroneiki.phloem.rest.resource.v1_0.ExternalLinkResource;
 import com.liferay.osb.koroneiki.phloem.rest.resource.v1_0.NoteResource;
@@ -114,6 +118,22 @@ public class Query {
 
 		_contactRoleResourceComponentServiceObjects =
 			contactRoleResourceComponentServiceObjects;
+	}
+
+	public static void setCountryResourceComponentServiceObjects(
+		ComponentServiceObjects<CountryResource>
+			countryResourceComponentServiceObjects) {
+
+		_countryResourceComponentServiceObjects =
+			countryResourceComponentServiceObjects;
+	}
+
+	public static void setCountryRegionResourceComponentServiceObjects(
+		ComponentServiceObjects<CountryRegionResource>
+			countryRegionResourceComponentServiceObjects) {
+
+		_countryRegionResourceComponentServiceObjects =
+			countryRegionResourceComponentServiceObjects;
 	}
 
 	public static void setEntitlementDefinitionResourceComponentServiceObjects(
@@ -866,6 +886,34 @@ public class Query {
 				contactRoleResource.
 					getTeamTeamKeyContactByUuidContactUuidRolesPage(
 						teamKey, contactUuid, Pagination.of(page, pageSize))));
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {countries{items {__}, page, pageSize, totalCount}}"}' -u 'test@liferay.com:test'
+	 */
+	@GraphQLField(description = "Retrieves the countries.")
+	public CountryPage countries() throws Exception {
+		return _applyComponentServiceObjects(
+			_countryResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			countryResource -> new CountryPage(
+				countryResource.getCountriesPage()));
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {countryRegions{items {__}, page, pageSize, totalCount}}"}' -u 'test@liferay.com:test'
+	 */
+	@GraphQLField(description = "Retrieves the country regions.")
+	public CountryRegionPage countryRegions() throws Exception {
+		return _applyComponentServiceObjects(
+			_countryRegionResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			countryRegionResource -> new CountryRegionPage(
+				countryRegionResource.getCountryRegionsPage()));
 	}
 
 	/**
@@ -2956,6 +3004,72 @@ public class Query {
 
 	}
 
+	@GraphQLName("CountryPage")
+	public class CountryPage {
+
+		public CountryPage(Page countryPage) {
+			actions = countryPage.getActions();
+
+			items = countryPage.getItems();
+			lastPage = countryPage.getLastPage();
+			page = countryPage.getPage();
+			pageSize = countryPage.getPageSize();
+			totalCount = countryPage.getTotalCount();
+		}
+
+		@GraphQLField
+		protected Map<String, Map> actions;
+
+		@GraphQLField
+		protected java.util.Collection<Country> items;
+
+		@GraphQLField
+		protected long lastPage;
+
+		@GraphQLField
+		protected long page;
+
+		@GraphQLField
+		protected long pageSize;
+
+		@GraphQLField
+		protected long totalCount;
+
+	}
+
+	@GraphQLName("CountryRegionPage")
+	public class CountryRegionPage {
+
+		public CountryRegionPage(Page countryRegionPage) {
+			actions = countryRegionPage.getActions();
+
+			items = countryRegionPage.getItems();
+			lastPage = countryRegionPage.getLastPage();
+			page = countryRegionPage.getPage();
+			pageSize = countryRegionPage.getPageSize();
+			totalCount = countryRegionPage.getTotalCount();
+		}
+
+		@GraphQLField
+		protected Map<String, Map> actions;
+
+		@GraphQLField
+		protected java.util.Collection<CountryRegion> items;
+
+		@GraphQLField
+		protected long lastPage;
+
+		@GraphQLField
+		protected long page;
+
+		@GraphQLField
+		protected long pageSize;
+
+		@GraphQLField
+		protected long totalCount;
+
+	}
+
 	@GraphQLName("EntitlementDefinitionPage")
 	public class EntitlementDefinitionPage {
 
@@ -3374,6 +3488,34 @@ public class Query {
 		contactRoleResource.setRoleLocalService(_roleLocalService);
 	}
 
+	private void _populateResourceContext(CountryResource countryResource)
+		throws Exception {
+
+		countryResource.setContextAcceptLanguage(_acceptLanguage);
+		countryResource.setContextCompany(_company);
+		countryResource.setContextHttpServletRequest(_httpServletRequest);
+		countryResource.setContextHttpServletResponse(_httpServletResponse);
+		countryResource.setContextUriInfo(_uriInfo);
+		countryResource.setContextUser(_user);
+		countryResource.setGroupLocalService(_groupLocalService);
+		countryResource.setRoleLocalService(_roleLocalService);
+	}
+
+	private void _populateResourceContext(
+			CountryRegionResource countryRegionResource)
+		throws Exception {
+
+		countryRegionResource.setContextAcceptLanguage(_acceptLanguage);
+		countryRegionResource.setContextCompany(_company);
+		countryRegionResource.setContextHttpServletRequest(_httpServletRequest);
+		countryRegionResource.setContextHttpServletResponse(
+			_httpServletResponse);
+		countryRegionResource.setContextUriInfo(_uriInfo);
+		countryRegionResource.setContextUser(_user);
+		countryRegionResource.setGroupLocalService(_groupLocalService);
+		countryRegionResource.setRoleLocalService(_roleLocalService);
+	}
+
 	private void _populateResourceContext(
 			EntitlementDefinitionResource entitlementDefinitionResource)
 		throws Exception {
@@ -3530,6 +3672,10 @@ public class Query {
 		_contactAccountViewResourceComponentServiceObjects;
 	private static ComponentServiceObjects<ContactRoleResource>
 		_contactRoleResourceComponentServiceObjects;
+	private static ComponentServiceObjects<CountryResource>
+		_countryResourceComponentServiceObjects;
+	private static ComponentServiceObjects<CountryRegionResource>
+		_countryRegionResourceComponentServiceObjects;
 	private static ComponentServiceObjects<EntitlementDefinitionResource>
 		_entitlementDefinitionResourceComponentServiceObjects;
 	private static ComponentServiceObjects<ExternalLinkResource>
