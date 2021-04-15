@@ -253,7 +253,7 @@
 </tr>
 <tr>
 	<td>EXPERIENCE_SEGMENT_ANYONE</td>
-	<td>//select[@id='_com_liferay_layout_content_page_editor_web_internal_portlet_ContentPageEditorPortlet_CreateExperience']</td>
+	<td>//select[@id='_com_liferay_layout_content_page_editor_web_internal_portlet_ContentPageEditorPortlet_CreateExperience'] | //select[@name='experienceSegmentId']</td>
 	<td></td>
 </tr>
 <tr>
