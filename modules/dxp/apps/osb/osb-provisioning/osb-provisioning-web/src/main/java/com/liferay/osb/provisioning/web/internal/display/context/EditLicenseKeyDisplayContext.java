@@ -21,10 +21,15 @@ import com.liferay.osb.provisioning.license.service.LicenseKeyLocalService;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
 
+import java.text.Format;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.PortletURL;
@@ -136,6 +141,20 @@ public class EditLicenseKeyDisplayContext {
 			"licenseKeyId", String.valueOf(_licenseKey.getLicenseKeyId()));
 
 		return portletURL.toString();
+	}
+
+	public Map<String, Object> getRenewLicenseData() {
+		Map<String, Object> data = new HashMap<>();
+
+		Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
+			"yyyy-MM-dd");
+
+		data.put(
+			"expirationDate",
+			dateFormat.format(_licenseKey.getExpirationDate()));
+		data.put("startDate", dateFormat.format(_licenseKey.getStartDate()));
+
+		return data;
 	}
 
 	public String getUpdateActiveLabel() {

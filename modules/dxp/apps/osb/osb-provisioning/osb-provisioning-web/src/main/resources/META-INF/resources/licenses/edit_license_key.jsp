@@ -41,7 +41,7 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 		title="<%= licenseKey.getOwner() %>"
 	/>
 
-	<aui:form action="<%= editLicenseKeyDisplayContext.getEditLicenseKeyURL() %>" cssClass="container-fluid container-fluid-max-xl" method="post" name="fm">
+	<aui:form action="<%= editLicenseKeyDisplayContext.getEditLicenseKeyURL() %>" cssClass="container-fluid container-fluid-max-xl" method="post" name="editLicenseFm">
 		<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 		<aui:input name="licenseKeyId" type="hidden" value="<%= licenseKeyDisplay.getLicenseKeyId() %>" />
 		<aui:input name="clusterLicenseKeyId" type="hidden" value="0" />
@@ -49,7 +49,7 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 		<aui:input name="complimentary" type="hidden" value="<%= licenseKey.isComplimentary() %>" />
 		<aui:input name="active" type="hidden" value="<%= licenseKey.isActive() %>" />
 		<aui:input name="startDate" type="hidden" />
-		<aui:input name="endDate" type="hidden" />
+		<aui:input name="expirationDate" type="hidden" />
 
 		<div class="add-items-sheet sheet">
 			<aui:row>
@@ -412,9 +412,12 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 				<aui:col cssClass="edit-license-actions" md="12">
 					<div>
 						<c:if test="<%= editLicenseKeyDisplayContext.isRenewVisible() %>">
-							<button class="btn btn-secondary btn-sm" onclick="<portlet:namespace />renewLicenseKey();" type="button">
-								<liferay-ui:message key="renew" />
-							</button>
+							<span id="renewLicense">
+								<react:component
+									data="<%= editLicenseKeyDisplayContext.getRenewLicenseData() %>"
+									module="js/RenewLicenseApp"
+								/>
+							</span>
 						</c:if>
 
 						<c:if test="<%= editLicenseKeyDisplayContext.isComplimentaryVisible() %>">
@@ -454,31 +457,6 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 </div>
 
 <aui:script>
-	Liferay.provide(
-		window,
-		'<portlet:namespace />renewLicenseKey',
-		function() {
-			var A = AUI();
-
-			<portlet:renderURL var="renewLicenseKeyURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
-				<portlet:param name="mvcRenderCommandName" value="/licenses/renew_license_key" />
-			</portlet:renderURL>
-
-			var itemSelectorDialog = new A.LiferayItemSelectorDialog({
-				eventName: 'selectedItemChange',
-				strings: {
-					add: '<liferay-ui:message key="renew" />',
-					cancel: '<liferay-ui:message key="cancel" />'
-				},
-				title: '<liferay-ui:message key="renew" />',
-				url: '<%= renewLicenseKeyURL %>'
-			});
-
-			itemSelectorDialog.open();
-		},
-		['aui-base', 'liferay-item-selector-dialog']
-	);
-
 	<portlet:namespace />moveLicenseKey = function(url) {
 		Liferay.Util.selectEntity(
 			{
@@ -499,7 +477,9 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 					productPurchaseKeyField.value = event.productpurchasekey;
 				}
 
-				var form = document.getElementById('<portlet:namespace />fm');
+				var form = document.getElementById(
+					'<portlet:namespace />editLicenseFm'
+				);
 
 				if (form) {
 					form.submit();
@@ -535,7 +515,7 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 			clusterLicenseKeyIdField.value = clusterLicenseKeyId;
 		}
 
-		var form = document.getElementById('<portlet:namespace />fm');
+		var form = document.getElementById('<portlet:namespace />editLicenseFm');
 
 		if (form) {
 			form.submit();

@@ -35,25 +35,6 @@
 			padding-left: 20%;
 			padding-top: $spacing-default;
 		}
-
-		.form-group {
-			margin-bottom: $spacing-default;
-			padding-bottom: $spacing-default;
-
-			.control-label {
-				padding-right: $spacing-md;
-				text-align: right;
-				width: 20%;
-			}
-
-			.form-control {
-				width: 65%;
-			}
-
-			.form-validator-stack {
-				margin-left: 20%;
-			}
-		}
 	}
 
 	.assign-contacts-sheet {
@@ -86,6 +67,27 @@
 					letter-spacing: normal;
 				}
 			}
+		}
+	}
+}
+
+.add-items-sheet {
+	.form-group {
+		margin-bottom: $spacing-default;
+		padding-bottom: $spacing-default;
+
+		.control-label {
+			padding-right: $spacing-md;
+			text-align: right;
+			width: 20%;
+		}
+
+		.form-control {
+			width: 65%;
+		}
+
+		.form-validator-stack {
+			margin-left: 20%;
 		}
 	}
 }

@@ -1,4 +1,3 @@
-<%--
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
@@ -8,12 +7,15 @@
  * contacting Liferay, Inc. See the License for the specific language governing
  * permissions and limitations under the License, including but not limited to
  * distribution rights of the Software.
- *
- *
- *
  */
---%>
 
-<%@ include file="/init.jsp" %>
+import React from 'react';
 
-//TODO: add date picker
+import ErrorBoundary from './ErrorBoundary';
+import RenewLicense from './components/license_renewal/RenewLicense';
+
+export default props => (
+	<ErrorBoundary>
+		<RenewLicense {...props} />
+	</ErrorBoundary>
+);
