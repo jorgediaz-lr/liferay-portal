@@ -15,9 +15,8 @@ import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 
 import {useLicense} from '../../hooks/license';
+import {DASH} from '../../utilities/constants';
 import DatePicker from '../DatePicker';
-
-const DASH = '-';
 
 function Purchase({
 	dividerTitle,
