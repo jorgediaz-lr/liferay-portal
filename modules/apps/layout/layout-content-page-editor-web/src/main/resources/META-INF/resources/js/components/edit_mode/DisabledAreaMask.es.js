@@ -141,7 +141,7 @@ DisabledAreaMask.DEFAULT_DISABLED_AREA_CLASS = 'lfr-edit-mode__disabled-area';
  * @review
  * @see DisabledAreaMask.origin
  */
-DisabledAreaMask.DEFAULT_ORIGIN = '.layout-content';
+DisabledAreaMask.DEFAULT_ORIGIN = '#content';
 
 /**
  * @review
