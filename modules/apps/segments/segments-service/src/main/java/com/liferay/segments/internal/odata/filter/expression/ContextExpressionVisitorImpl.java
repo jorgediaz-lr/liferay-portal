@@ -241,7 +241,7 @@ public class ContextExpressionVisitorImpl implements ExpressionVisitor<Object> {
 			if (expressions.size() != 2) {
 				throw new UnsupportedOperationException(
 					StringBundler.concat(
-						"Unsupported method visitMethodExpression with method",
+						"Unsupported method visitMethodExpression with method ",
 						"type ", type, " and ", expressions.size(),
 						" parameters"));
 			}

@@ -687,7 +687,7 @@ public class DDMFormInstanceRecordLocalServiceImpl
 
 				if (_log.isWarnEnabled()) {
 					_log.warn(
-						"DDM form instance record index is stale and" +
+						"DDM form instance record index is stale and " +
 							"contains record " + recordId,
 						noSuchFormInstanceRecordException);
 				}
