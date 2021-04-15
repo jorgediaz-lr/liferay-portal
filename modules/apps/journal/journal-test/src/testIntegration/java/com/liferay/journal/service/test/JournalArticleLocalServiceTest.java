@@ -394,12 +394,7 @@ public class JournalArticleLocalServiceTest {
 
 			Assert.assertNull(assetEntry);
 
-			_ddmTemplateLinkLocalService.deleteTemplateLink(
-				PortalUtil.getClassNameId(JournalArticle.class),
-				curArticle.getPrimaryKey());
-
-			_journalArticleLocalService.deleteJournalArticle(
-				curArticle.getPrimaryKey());
+			_journalArticleLocalService.deleteArticle(curArticle);
 		}
 	}
 
