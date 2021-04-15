@@ -74,8 +74,8 @@ public class ViewEntitlementDefinitionsManagementToolbarDisplayContext
 							dropdownItem.setHref(
 								liferayPortletResponse.createRenderURL(),
 								"mvcRenderCommandName",
-								"/entitlement_definitions_admin/edit_" +
-									"entitlement_definition",
+								"/entitlement_definitions_admin" +
+									"/edit_entitlement_definition",
 								"redirect", currentURLObj.toString(),
 								"classNameId",
 								PortalUtil.getClassNameId(Account.class));
@@ -90,8 +90,8 @@ public class ViewEntitlementDefinitionsManagementToolbarDisplayContext
 							dropdownItem.setHref(
 								liferayPortletResponse.createRenderURL(),
 								"mvcRenderCommandName",
-								"/entitlement_definitions_admin/edit_" +
-									"entitlement_definition",
+								"/entitlement_definitions_admin" +
+									"/edit_entitlement_definition",
 								"redirect", currentURLObj.toString(),
 								"classNameId",
 								PortalUtil.getClassNameId(Contact.class));

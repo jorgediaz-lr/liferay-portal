@@ -60,12 +60,12 @@ public class EditEntitlementDefinitionMVCRenderCommand
 			String tabs1 = ParamUtil.getString(renderRequest, "tabs1");
 
 			if (tabs1.equals("external-links")) {
-				return "/entitlement_definitions_admin/edit_entitlement_" +
-					"definition_external_links.jsp";
+				return "/entitlement_definitions_admin" +
+					"/edit_entitlement_definition_external_links.jsp";
 			}
 
-			return "/entitlement_definitions_admin/edit_entitlement_" +
-				"definition.jsp";
+			return "/entitlement_definitions_admin" +
+				"/edit_entitlement_definition.jsp";
 		}
 		catch (Exception exception) {
 			SessionErrors.add(renderRequest, exception.getClass());

@@ -88,8 +88,8 @@ public class EditEntitlementDefinitionMVCActionCommand
 
 				actionResponse.setRenderParameter(
 					"mvcRenderCommandName",
-					"/entitlement_definitions_admin/edit_entitlement_" +
-						"definition");
+					"/entitlement_definitions_admin" +
+						"/edit_entitlement_definition");
 			}
 			else {
 				_log.error(exception, exception);
