@@ -79,24 +79,18 @@ public class CountryRegionSerDes {
 			sb.append("\"");
 		}
 
-		if (countryRegion.getCountryId() != null) {
+		if (countryRegion.getCountryName() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
-			sb.append("\"countryId\": ");
+			sb.append("\"countryName\": ");
 
-			sb.append(countryRegion.getCountryId());
-		}
+			sb.append("\"");
 
-		if (countryRegion.getId() != null) {
-			if (sb.length() > 1) {
-				sb.append(", ");
-			}
+			sb.append(_escape(countryRegion.getCountryName()));
 
-			sb.append("\"id\": ");
-
-			sb.append(countryRegion.getId());
+			sb.append("\"");
 		}
 
 		if (countryRegion.getName() != null) {
@@ -146,18 +140,12 @@ public class CountryRegionSerDes {
 			map.put("code", String.valueOf(countryRegion.getCode()));
 		}
 
-		if (countryRegion.getCountryId() == null) {
-			map.put("countryId", null);
+		if (countryRegion.getCountryName() == null) {
+			map.put("countryName", null);
 		}
 		else {
-			map.put("countryId", String.valueOf(countryRegion.getCountryId()));
-		}
-
-		if (countryRegion.getId() == null) {
-			map.put("id", null);
-		}
-		else {
-			map.put("id", String.valueOf(countryRegion.getId()));
+			map.put(
+				"countryName", String.valueOf(countryRegion.getCountryName()));
 		}
 
 		if (countryRegion.getName() == null) {
@@ -198,16 +186,9 @@ public class CountryRegionSerDes {
 					countryRegion.setCode((String)jsonParserFieldValue);
 				}
 			}
-			else if (Objects.equals(jsonParserFieldName, "countryId")) {
+			else if (Objects.equals(jsonParserFieldName, "countryName")) {
 				if (jsonParserFieldValue != null) {
-					countryRegion.setCountryId(
-						Long.valueOf((String)jsonParserFieldValue));
-				}
-			}
-			else if (Objects.equals(jsonParserFieldName, "id")) {
-				if (jsonParserFieldValue != null) {
-					countryRegion.setId(
-						Long.valueOf((String)jsonParserFieldValue));
+					countryRegion.setCountryName((String)jsonParserFieldValue);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "name")) {

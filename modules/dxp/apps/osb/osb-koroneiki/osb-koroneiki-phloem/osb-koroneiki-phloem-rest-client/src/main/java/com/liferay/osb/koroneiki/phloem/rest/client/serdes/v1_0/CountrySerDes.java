@@ -113,16 +113,6 @@ public class CountrySerDes {
 			sb.append("]");
 		}
 
-		if (country.getId() != null) {
-			if (sb.length() > 1) {
-				sb.append(", ");
-			}
-
-			sb.append("\"id\": ");
-
-			sb.append(country.getId());
-		}
-
 		if (country.getIdd() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
@@ -208,13 +198,6 @@ public class CountrySerDes {
 				"countryRegions", String.valueOf(country.getCountryRegions()));
 		}
 
-		if (country.getId() == null) {
-			map.put("id", null);
-		}
-		else {
-			map.put("id", String.valueOf(country.getId()));
-		}
-
 		if (country.getIdd() == null) {
 			map.put("idd", null);
 		}
@@ -281,11 +264,6 @@ public class CountrySerDes {
 						).toArray(
 							size -> new CountryRegion[size]
 						));
-				}
-			}
-			else if (Objects.equals(jsonParserFieldName, "id")) {
-				if (jsonParserFieldValue != null) {
-					country.setId(Long.valueOf((String)jsonParserFieldValue));
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "idd")) {

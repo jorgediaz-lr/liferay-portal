@@ -74,45 +74,26 @@ public class CountryRegion implements Cloneable, Serializable {
 
 	protected String code;
 
-	public Long getCountryId() {
-		return countryId;
+	public String getCountryName() {
+		return countryName;
 	}
 
-	public void setCountryId(Long countryId) {
-		this.countryId = countryId;
+	public void setCountryName(String countryName) {
+		this.countryName = countryName;
 	}
 
-	public void setCountryId(
-		UnsafeSupplier<Long, Exception> countryIdUnsafeSupplier) {
+	public void setCountryName(
+		UnsafeSupplier<String, Exception> countryNameUnsafeSupplier) {
 
 		try {
-			countryId = countryIdUnsafeSupplier.get();
+			countryName = countryNameUnsafeSupplier.get();
 		}
 		catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	protected Long countryId;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public void setId(UnsafeSupplier<Long, Exception> idUnsafeSupplier) {
-		try {
-			id = idUnsafeSupplier.get();
-		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	protected Long id;
+	protected String countryName;
 
 	public String getName() {
 		return name;

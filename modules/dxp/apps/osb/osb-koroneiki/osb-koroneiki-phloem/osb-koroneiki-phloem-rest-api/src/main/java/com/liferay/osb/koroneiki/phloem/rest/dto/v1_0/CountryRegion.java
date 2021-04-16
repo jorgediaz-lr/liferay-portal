@@ -112,21 +112,21 @@ public class CountryRegion implements Serializable {
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	protected String code;
 
-	@Schema(description = "The region's country ID.")
-	public Long getCountryId() {
-		return countryId;
+	@Schema(description = "The region's country name.")
+	public String getCountryName() {
+		return countryName;
 	}
 
-	public void setCountryId(Long countryId) {
-		this.countryId = countryId;
+	public void setCountryName(String countryName) {
+		this.countryName = countryName;
 	}
 
 	@JsonIgnore
-	public void setCountryId(
-		UnsafeSupplier<Long, Exception> countryIdUnsafeSupplier) {
+	public void setCountryName(
+		UnsafeSupplier<String, Exception> countryNameUnsafeSupplier) {
 
 		try {
-			countryId = countryIdUnsafeSupplier.get();
+			countryName = countryNameUnsafeSupplier.get();
 		}
 		catch (RuntimeException re) {
 			throw re;
@@ -136,35 +136,9 @@ public class CountryRegion implements Serializable {
 		}
 	}
 
-	@GraphQLField(description = "The region's country ID.")
+	@GraphQLField(description = "The region's country name.")
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
-	protected Long countryId;
-
-	@Schema(description = "The region's ID.")
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	@JsonIgnore
-	public void setId(UnsafeSupplier<Long, Exception> idUnsafeSupplier) {
-		try {
-			id = idUnsafeSupplier.get();
-		}
-		catch (RuntimeException re) {
-			throw re;
-		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	@GraphQLField(description = "The region's ID.")
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
-	protected Long id;
+	protected String countryName;
 
 	@Schema(description = "The name of the region.")
 	public String getName() {
@@ -243,24 +217,18 @@ public class CountryRegion implements Serializable {
 			sb.append("\"");
 		}
 
-		if (countryId != null) {
+		if (countryName != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
-			sb.append("\"countryId\": ");
+			sb.append("\"countryName\": ");
 
-			sb.append(countryId);
-		}
+			sb.append("\"");
 
-		if (id != null) {
-			if (sb.length() > 1) {
-				sb.append(", ");
-			}
+			sb.append(_escape(countryName));
 
-			sb.append("\"id\": ");
-
-			sb.append(id);
+			sb.append("\"");
 		}
 
 		if (name != null) {

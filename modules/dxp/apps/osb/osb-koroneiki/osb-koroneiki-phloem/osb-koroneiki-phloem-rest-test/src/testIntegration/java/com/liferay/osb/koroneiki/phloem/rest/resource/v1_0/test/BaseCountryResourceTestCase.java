@@ -203,39 +203,7 @@ public abstract class BaseCountryResourceTestCase {
 
 	@Test
 	public void testGraphQLGetCountriesPage() throws Exception {
-		GraphQLField graphQLField = new GraphQLField(
-			"countries",
-			new HashMap<String, Object>() {
-				{
-				}
-			},
-			new GraphQLField("items", getGraphQLFields()),
-			new GraphQLField("page"), new GraphQLField("totalCount"));
-
-		JSONObject countriesJSONObject = JSONUtil.getValueAsJSONObject(
-			invokeGraphQLQuery(graphQLField), "JSONObject/data",
-			"JSONObject/countries");
-
-		Assert.assertEquals(0, countriesJSONObject.get("totalCount"));
-
-		Country country1 = testGraphQLCountry_addCountry();
-		Country country2 = testGraphQLCountry_addCountry();
-
-		countriesJSONObject = JSONUtil.getValueAsJSONObject(
-			invokeGraphQLQuery(graphQLField), "JSONObject/data",
-			"JSONObject/countries");
-
-		Assert.assertEquals(2, countriesJSONObject.get("totalCount"));
-
-		assertEqualsIgnoringOrder(
-			Arrays.asList(country1, country2),
-			Arrays.asList(
-				CountrySerDes.toDTOs(countriesJSONObject.getString("items"))));
-	}
-
-	protected Country testGraphQLCountry_addCountry() throws Exception {
-		throw new UnsupportedOperationException(
-			"This method needs to be implemented");
+		Assert.assertTrue(false);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -288,10 +256,6 @@ public abstract class BaseCountryResourceTestCase {
 
 	protected void assertValid(Country country) throws Exception {
 		boolean valid = true;
-
-		if (country.getId() == null) {
-			valid = false;
-		}
 
 		for (String additionalAssertFieldName :
 				getAdditionalAssertFieldNames()) {
@@ -479,14 +443,6 @@ public abstract class BaseCountryResourceTestCase {
 				continue;
 			}
 
-			if (Objects.equals("id", additionalAssertFieldName)) {
-				if (!Objects.deepEquals(country1.getId(), country2.getId())) {
-					return false;
-				}
-
-				continue;
-			}
-
 			if (Objects.equals("idd", additionalAssertFieldName)) {
 				if (!Objects.deepEquals(country1.getIdd(), country2.getIdd())) {
 					return false;
@@ -625,11 +581,6 @@ public abstract class BaseCountryResourceTestCase {
 				"Invalid entity field " + entityFieldName);
 		}
 
-		if (entityFieldName.equals("id")) {
-			throw new IllegalArgumentException(
-				"Invalid entity field " + entityFieldName);
-		}
-
 		if (entityFieldName.equals("idd")) {
 			sb.append("'");
 			sb.append(String.valueOf(country.getIdd()));
@@ -698,7 +649,6 @@ public abstract class BaseCountryResourceTestCase {
 				a2 = StringUtil.toLowerCase(RandomTestUtil.randomString());
 				a3 = StringUtil.toLowerCase(RandomTestUtil.randomString());
 				active = RandomTestUtil.randomBoolean();
-				id = RandomTestUtil.randomLong();
 				idd = StringUtil.toLowerCase(RandomTestUtil.randomString());
 				name = StringUtil.toLowerCase(RandomTestUtil.randomString());
 				zipRequired = RandomTestUtil.randomBoolean();

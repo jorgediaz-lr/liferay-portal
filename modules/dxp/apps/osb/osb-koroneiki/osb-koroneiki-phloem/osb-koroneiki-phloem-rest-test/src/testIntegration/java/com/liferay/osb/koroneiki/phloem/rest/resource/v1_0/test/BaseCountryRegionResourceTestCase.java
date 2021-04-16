@@ -180,6 +180,7 @@ public abstract class BaseCountryRegionResourceTestCase {
 		CountryRegion countryRegion = randomCountryRegion();
 
 		countryRegion.setCode(regex);
+		countryRegion.setCountryName(regex);
 		countryRegion.setName(regex);
 
 		String json = CountryRegionSerDes.toJSON(countryRegion);
@@ -189,6 +190,7 @@ public abstract class BaseCountryRegionResourceTestCase {
 		countryRegion = CountryRegionSerDes.toDTO(json);
 
 		Assert.assertEquals(regex, countryRegion.getCode());
+		Assert.assertEquals(regex, countryRegion.getCountryName());
 		Assert.assertEquals(regex, countryRegion.getName());
 	}
 
@@ -199,44 +201,7 @@ public abstract class BaseCountryRegionResourceTestCase {
 
 	@Test
 	public void testGraphQLGetCountryRegionsPage() throws Exception {
-		GraphQLField graphQLField = new GraphQLField(
-			"countryRegions",
-			new HashMap<String, Object>() {
-				{
-				}
-			},
-			new GraphQLField("items", getGraphQLFields()),
-			new GraphQLField("page"), new GraphQLField("totalCount"));
-
-		JSONObject countryRegionsJSONObject = JSONUtil.getValueAsJSONObject(
-			invokeGraphQLQuery(graphQLField), "JSONObject/data",
-			"JSONObject/countryRegions");
-
-		Assert.assertEquals(0, countryRegionsJSONObject.get("totalCount"));
-
-		CountryRegion countryRegion1 =
-			testGraphQLCountryRegion_addCountryRegion();
-		CountryRegion countryRegion2 =
-			testGraphQLCountryRegion_addCountryRegion();
-
-		countryRegionsJSONObject = JSONUtil.getValueAsJSONObject(
-			invokeGraphQLQuery(graphQLField), "JSONObject/data",
-			"JSONObject/countryRegions");
-
-		Assert.assertEquals(2, countryRegionsJSONObject.get("totalCount"));
-
-		assertEqualsIgnoringOrder(
-			Arrays.asList(countryRegion1, countryRegion2),
-			Arrays.asList(
-				CountryRegionSerDes.toDTOs(
-					countryRegionsJSONObject.getString("items"))));
-	}
-
-	protected CountryRegion testGraphQLCountryRegion_addCountryRegion()
-		throws Exception {
-
-		throw new UnsupportedOperationException(
-			"This method needs to be implemented");
+		Assert.assertTrue(false);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -295,10 +260,6 @@ public abstract class BaseCountryRegionResourceTestCase {
 	protected void assertValid(CountryRegion countryRegion) throws Exception {
 		boolean valid = true;
 
-		if (countryRegion.getId() == null) {
-			valid = false;
-		}
-
 		for (String additionalAssertFieldName :
 				getAdditionalAssertFieldNames()) {
 
@@ -318,8 +279,8 @@ public abstract class BaseCountryRegionResourceTestCase {
 				continue;
 			}
 
-			if (Objects.equals("countryId", additionalAssertFieldName)) {
-				if (countryRegion.getCountryId() == null) {
+			if (Objects.equals("countryName", additionalAssertFieldName)) {
+				if (countryRegion.getCountryName() == null) {
 					valid = false;
 				}
 
@@ -447,20 +408,10 @@ public abstract class BaseCountryRegionResourceTestCase {
 				continue;
 			}
 
-			if (Objects.equals("countryId", additionalAssertFieldName)) {
+			if (Objects.equals("countryName", additionalAssertFieldName)) {
 				if (!Objects.deepEquals(
-						countryRegion1.getCountryId(),
-						countryRegion2.getCountryId())) {
-
-					return false;
-				}
-
-				continue;
-			}
-
-			if (Objects.equals("id", additionalAssertFieldName)) {
-				if (!Objects.deepEquals(
-						countryRegion1.getId(), countryRegion2.getId())) {
+						countryRegion1.getCountryName(),
+						countryRegion2.getCountryName())) {
 
 					return false;
 				}
@@ -575,14 +526,12 @@ public abstract class BaseCountryRegionResourceTestCase {
 			return sb.toString();
 		}
 
-		if (entityFieldName.equals("countryId")) {
-			throw new IllegalArgumentException(
-				"Invalid entity field " + entityFieldName);
-		}
+		if (entityFieldName.equals("countryName")) {
+			sb.append("'");
+			sb.append(String.valueOf(countryRegion.getCountryName()));
+			sb.append("'");
 
-		if (entityFieldName.equals("id")) {
-			throw new IllegalArgumentException(
-				"Invalid entity field " + entityFieldName);
+			return sb.toString();
 		}
 
 		if (entityFieldName.equals("name")) {
@@ -639,8 +588,8 @@ public abstract class BaseCountryRegionResourceTestCase {
 			{
 				active = RandomTestUtil.randomBoolean();
 				code = StringUtil.toLowerCase(RandomTestUtil.randomString());
-				countryId = RandomTestUtil.randomLong();
-				id = RandomTestUtil.randomLong();
+				countryName = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 				name = StringUtil.toLowerCase(RandomTestUtil.randomString());
 			}
 		};

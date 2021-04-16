@@ -171,32 +171,6 @@ public class Country implements Serializable {
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	protected CountryRegion[] countryRegions;
 
-	@Schema(description = "The country's ID.")
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	@JsonIgnore
-	public void setId(UnsafeSupplier<Long, Exception> idUnsafeSupplier) {
-		try {
-			id = idUnsafeSupplier.get();
-		}
-		catch (RuntimeException re) {
-			throw re;
-		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	@GraphQLField(description = "The country's ID.")
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
-	protected Long id;
-
 	@Schema(description = "The country's IDD.")
 	public String getIdd() {
 		return idd;
@@ -364,16 +338,6 @@ public class Country implements Serializable {
 			}
 
 			sb.append("]");
-		}
-
-		if (id != null) {
-			if (sb.length() > 1) {
-				sb.append(", ");
-			}
-
-			sb.append("\"id\": ");
-
-			sb.append(id);
 		}
 
 		if (idd != null) {
