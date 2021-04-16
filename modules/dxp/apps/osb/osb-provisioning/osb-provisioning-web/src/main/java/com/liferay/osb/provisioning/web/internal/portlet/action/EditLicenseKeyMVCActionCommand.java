@@ -127,6 +127,14 @@ public class EditLicenseKeyMVCActionCommand extends BaseMVCActionCommand {
 			macAddresses.add(StringUtil.merge(curMacAddresses));
 		}
 
+		List<String> serverIds = new ArrayList<>();
+
+		String serverId = LicenseServerId.getServerId(licenseEntryType);
+
+		if (Validator.isNotNull(serverId)) {
+			serverIds.add(serverId);
+		}
+
 		_licenseKeyService.addLicenseKey(
 			themeDisplay.getUserId(), licenseEntryId, productKey, accountKey,
 			productPurchaseKey, accountCode, accountName, productVersion, 0,
@@ -134,8 +142,8 @@ public class EditLicenseKeyMVCActionCommand extends BaseMVCActionCommand {
 			hostNames.toArray(new String[0]),
 			ipAddresses.toArray(new String[0]),
 			macAddresses.toArray(new String[0]),
-			new String[] {LicenseServerId.getServerId(licenseEntryType)},
-			startDate, expirationDate, complimentary, true);
+			serverIds.toArray(new String[0]), startDate, expirationDate,
+			complimentary, true);
 
 		sendRedirect(actionRequest, actionResponse);
 	}
