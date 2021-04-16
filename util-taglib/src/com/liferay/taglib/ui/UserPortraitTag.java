@@ -78,7 +78,7 @@ public class UserPortraitTag extends IncludeTag {
 
 		sb.append(cssClass);
 		sb.append("\"><span class=\"sticker-overlay\">");
-		sb.append("<img alt=\"thumbnail\" class=\"img-fluid\" src=\"");
+		sb.append("<img alt=\"thumbnail\" class=\"sticker-img\" src=\"");
 		sb.append(portraitURL);
 		sb.append("\" /></span></span>");
 
