@@ -15,11 +15,13 @@
 package com.liferay.site.navigation.directory.web.internal.display.context;
 
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.portlet.SearchDisplayStyleUtil;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.site.navigation.directory.web.internal.configuration.SitesDirectoryPortletInstanceConfiguration;
+import com.liferay.site.navigation.directory.web.internal.constants.SitesDirectoryPortletKeys;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -49,8 +51,8 @@ public class SitesDirectoryDisplayContext {
 			return _displayStyle;
 		}
 
-		_displayStyle = ParamUtil.getString(
-			_httpServletRequest, "displayStyle",
+		_displayStyle = SearchDisplayStyleUtil.getDisplayStyle(
+			_httpServletRequest, SitesDirectoryPortletKeys.SITES_DIRECTORY,
 			_sitesDirectoryPortletInstanceConfiguration.displayStyle());
 
 		return _displayStyle;
