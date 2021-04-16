@@ -171,6 +171,8 @@ public class UpgradeAssetDisplayPageEntryTest {
 
 		String sql = sb.toString();
 
+		String articleId = RandomTestUtil.randomString();
+
 		try (Connection con = DataAccess.getConnection();
 			PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -187,9 +189,29 @@ public class UpgradeAssetDisplayPageEntryTest {
 			ps.setLong(11, 0);
 			ps.setLong(12, 0);
 			ps.setString(13, "/");
-			ps.setString(14, RandomTestUtil.randomString());
+			ps.setString(14, articleId);
 			ps.setDouble(15, version);
 			ps.setString(16, layoutUuid);
+
+			ps.executeUpdate();
+		}
+
+		sb = new StringBundler(2);
+
+		sb.append(
+			"insert into JournalArticleResource (uuid_, resourcePrimKey, ");
+		sb.append("groupId, companyId, articleId) values (?, ?, ?, ?, ?)");
+
+		sql = sb.toString();
+
+		try (Connection con = DataAccess.getConnection();
+			PreparedStatement ps = con.prepareStatement(sql)) {
+
+			ps.setString(1, PortalUUIDUtil.generate());
+			ps.setLong(2, resourcePrimKey);
+			ps.setLong(3, groupId);
+			ps.setLong(4, companyId);
+			ps.setString(5, articleId);
 
 			ps.executeUpdate();
 		}
