@@ -166,7 +166,7 @@ public class DDMFormInstanceReportLocalServiceTest
 		DDMFormInstanceRecord ddmFormInstanceRecord =
 			createDDMFormInstanceRecord();
 
-		_ddmFormInstanceRecordLocalService.deleteDDMFormInstanceRecord(
+		_ddmFormInstanceRecordLocalService.deleteFormInstanceRecord(
 			ddmFormInstanceRecord);
 
 		DDMFormInstanceReport ddmFormInstanceReport =
