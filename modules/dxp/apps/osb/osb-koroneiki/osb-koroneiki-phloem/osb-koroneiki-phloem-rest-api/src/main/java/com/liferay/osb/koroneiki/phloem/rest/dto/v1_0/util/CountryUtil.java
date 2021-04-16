@@ -30,7 +30,6 @@ public class CountryUtil {
 				a2 = country.getA2();
 				a3 = country.getA3();
 				active = country.isActive();
-				id = country.getCountryId();
 				idd = country.getIdd();
 				name = country.getName();
 				zipRequired = country.isZipRequired();

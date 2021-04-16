@@ -454,12 +454,6 @@ components:
                         $ref: "#/components/schemas/CountryRegion"
                     readOnly: true
                     type: array
-                id:
-                    description:
-                        The country's ID.
-                    format: int64
-                    readOnly: true
-                    type: integer
                 idd:
                     description:
                         The country's IDD.
@@ -490,18 +484,11 @@ components:
                         The region's code.
                     readOnly: true
                     type: string
-                countryId:
+                countryName:
                     description:
-                        The region's country ID.
-                    format: int64
+                        The region's country name.
                     readOnly: true
-                    type: integer
-                id:
-                    description:
-                        The region's ID.
-                    format: int64
-                    readOnly: true
-                    type: integer
+                    type: string
                 name:
                     description:
                         The name of the region.

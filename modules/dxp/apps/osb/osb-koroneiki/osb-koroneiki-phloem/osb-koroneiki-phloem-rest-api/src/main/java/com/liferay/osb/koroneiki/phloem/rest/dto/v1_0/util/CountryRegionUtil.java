@@ -15,7 +15,9 @@
 package com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.util;
 
 import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.CountryRegion;
+import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.model.Region;
+import com.liferay.portal.kernel.service.CountryServiceUtil;
 
 /**
  * @author Yuanyuan Huang
@@ -29,8 +31,12 @@ public class CountryRegionUtil {
 			{
 				active = region.isActive();
 				code = region.getRegionCode();
-				countryId = region.getCountryId();
-				id = region.getRegionId();
+
+				Country country = CountryServiceUtil.getCountry(
+					region.getCountryId());
+
+				countryName = country.getName();
+
 				name = region.getName();
 			}
 		};

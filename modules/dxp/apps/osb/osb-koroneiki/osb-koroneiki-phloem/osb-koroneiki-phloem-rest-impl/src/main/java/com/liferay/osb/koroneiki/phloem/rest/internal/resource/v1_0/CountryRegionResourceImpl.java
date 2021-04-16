@@ -18,6 +18,7 @@ import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.Country;
 import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.CountryRegion;
 import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.util.CountryRegionUtil;
 import com.liferay.osb.koroneiki.phloem.rest.resource.v1_0.CountryRegionResource;
+import com.liferay.portal.kernel.service.CountryService;
 import com.liferay.portal.kernel.service.RegionService;
 import com.liferay.portal.vulcan.fields.NestedField;
 import com.liferay.portal.vulcan.fields.NestedFieldId;
@@ -40,11 +41,14 @@ public class CountryRegionResourceImpl extends BaseCountryRegionResourceImpl {
 
 	@NestedField(parentClass = Country.class, value = "countryRegions")
 	public List<CountryRegion> getCountryNestedFieldRegions(
-			@NestedFieldId("id") long countryId)
+			@NestedFieldId("name") String countryName)
 		throws Exception {
 
+		com.liferay.portal.kernel.model.Country country =
+			_countryService.getCountryByName(countryName);
+
 		return transform(
-			_regionService.getRegions(countryId),
+			_regionService.getRegions(country.getCountryId()),
 			CountryRegionUtil::toCountryRegion);
 	}
 
@@ -55,6 +59,9 @@ public class CountryRegionResourceImpl extends BaseCountryRegionResourceImpl {
 				_regionService.getRegions(),
 				CountryRegionUtil::toCountryRegion));
 	}
+
+	@Reference
+	private CountryService _countryService;
 
 	@Reference
 	private RegionService _regionService;
