@@ -159,7 +159,7 @@ public class UpgradeAssetDisplayPageEntryTest {
 
 	protected void addJournalArticle(
 			long resourcePrimKey, long groupId, long companyId, double version,
-			String layoutUuid)
+			String articleId, String layoutUuid)
 		throws Exception {
 
 		StringBundler sb = new StringBundler(5);
@@ -170,28 +170,79 @@ public class UpgradeAssetDisplayPageEntryTest {
 		sb.append("articleId, version, layoutUuid) values (?, ?, ?, ?, ?, ?, ");
 		sb.append("?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
+		String sql1 = sb.toString();
+
+		sb = new StringBundler(3);
+
+		sb.append("insert into JournalArticleResource (uuid_, ");
+		sb.append("resourcePrimKey, groupId, companyId, articleId) values ");
+		sb.append("(?, ?, ?, ?, ?)");
+
+		String sql2 = sb.toString();
+
+		try (Connection connection = DataAccess.getConnection();
+			PreparedStatement preparedStatement1 = connection.prepareStatement(
+				sql1);
+			PreparedStatement preparedStatement2 = connection.prepareStatement(
+				sql2)) {
+
+			preparedStatement1.setString(1, PortalUUIDUtil.generate());
+			preparedStatement1.setLong(2, _counterLocalService.increment());
+			preparedStatement1.setLong(3, resourcePrimKey);
+			preparedStatement1.setLong(4, groupId);
+			preparedStatement1.setLong(5, companyId);
+			preparedStatement1.setLong(6, TestPropsValues.getUserId());
+			preparedStatement1.setString(7, null);
+			preparedStatement1.setTimestamp(8, _timestamp);
+			preparedStatement1.setTimestamp(9, _timestamp);
+			preparedStatement1.setLong(10, 0);
+			preparedStatement1.setLong(11, 0);
+			preparedStatement1.setLong(12, 0);
+			preparedStatement1.setString(13, "/");
+			preparedStatement1.setString(14, articleId);
+			preparedStatement1.setDouble(15, version);
+			preparedStatement1.setString(16, layoutUuid);
+
+			connection.setAutoCommit(false);
+
+			preparedStatement1.executeUpdate();
+
+			if (version == 1.0) {
+				preparedStatement2.setString(1, PortalUUIDUtil.generate());
+				preparedStatement2.setLong(2, resourcePrimKey);
+				preparedStatement2.setLong(3, groupId);
+				preparedStatement2.setLong(4, companyId);
+				preparedStatement2.setString(5, articleId);
+
+				preparedStatement2.executeUpdate();
+			}
+
+			connection.commit();
+		}
+	}
+
+	protected void addLayout(String uuid, long groupId, long companyId)
+		throws Exception {
+
+		StringBundler sb = new StringBundler(3);
+
+		sb.append("insert into Layout (uuid_, plid, groupId, companyId, ");
+		sb.append("layoutId, classNameId, classPK) values (?, ?, ?, ?, ?, ?, ");
+		sb.append("?)");
+
 		String sql = sb.toString();
 
 		try (Connection connection = DataAccess.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(
 				sql)) {
 
-			preparedStatement.setString(1, PortalUUIDUtil.generate());
+			preparedStatement.setString(1, uuid);
 			preparedStatement.setLong(2, _counterLocalService.increment());
-			preparedStatement.setLong(3, resourcePrimKey);
-			preparedStatement.setLong(4, groupId);
-			preparedStatement.setLong(5, companyId);
-			preparedStatement.setLong(6, TestPropsValues.getUserId());
-			preparedStatement.setString(7, null);
-			preparedStatement.setTimestamp(8, _timestamp);
-			preparedStatement.setTimestamp(9, _timestamp);
-			preparedStatement.setLong(10, 0);
-			preparedStatement.setLong(11, 0);
-			preparedStatement.setLong(12, 0);
-			preparedStatement.setString(13, "/");
-			preparedStatement.setString(14, RandomTestUtil.randomString());
-			preparedStatement.setDouble(15, version);
-			preparedStatement.setString(16, layoutUuid);
+			preparedStatement.setLong(3, groupId);
+			preparedStatement.setLong(4, companyId);
+			preparedStatement.setLong(5, _counterLocalService.increment());
+			preparedStatement.setLong(6, 0);
+			preparedStatement.setLong(7, 0);
 
 			preparedStatement.executeUpdate();
 		}
@@ -230,6 +281,11 @@ public class UpgradeAssetDisplayPageEntryTest {
 		db.runSQL("delete from AssetEntry where groupId = " + groupId);
 
 		db.runSQL("delete from JournalArticle where groupId = " + groupId);
+
+		db.runSQL(
+			"delete from JournalArticleResource where groupId = " + groupId);
+
+		db.runSQL("delete from Layout where groupId = " + groupId);
 	}
 
 	protected Group createGroup() throws Exception {
@@ -245,21 +301,23 @@ public class UpgradeAssetDisplayPageEntryTest {
 			long resourcePrimKey)
 		throws Exception {
 
+		String articleId = RandomTestUtil.randomString();
+
 		double version = 1.0;
 
 		if (multipleArticleVersions) {
 			addJournalArticle(
 				resourcePrimKey, group.getGroupId(), group.getCompanyId(),
-				version++, null);
+				version++, articleId, null);
 
 			addJournalArticle(
 				resourcePrimKey, group.getGroupId(), group.getCompanyId(),
-				version++, PortalUUIDUtil.generate());
+				version++, articleId, PortalUUIDUtil.generate());
 		}
 
 		addJournalArticle(
 			resourcePrimKey, group.getGroupId(), group.getCompanyId(), version,
-			layoutUuid);
+			articleId, layoutUuid);
 	}
 
 	protected List<Long> createJournalArticles(
@@ -398,6 +456,8 @@ public class UpgradeAssetDisplayPageEntryTest {
 
 		String layoutUuid = PortalUUIDUtil.generate();
 
+		addLayout(layoutUuid, liveGroup.getGroupId(), liveGroup.getCompanyId());
+
 		List<Long> stagingResourcePrimKeys = createJournalArticles(
 			articleCount, multipleArticleVersions, stagingGroup, layoutUuid);
 
@@ -440,6 +500,8 @@ public class UpgradeAssetDisplayPageEntryTest {
 		try {
 			String layoutUuid = PortalUUIDUtil.generate();
 
+			addLayout(layoutUuid, group.getGroupId(), group.getCompanyId());
+
 			createJournalArticles(
 				articleCount, multipleArticleVersions, group, layoutUuid);
 
@@ -461,6 +523,8 @@ public class UpgradeAssetDisplayPageEntryTest {
 		Group group = createGroup();
 
 		String layoutUuid = PortalUUIDUtil.generate();
+
+		addLayout(layoutUuid, group.getGroupId(), group.getCompanyId());
 
 		List<Long> resourcePrimKeys = createJournalArticles(
 			articleCount, multipleArticleVersions, group, layoutUuid);
