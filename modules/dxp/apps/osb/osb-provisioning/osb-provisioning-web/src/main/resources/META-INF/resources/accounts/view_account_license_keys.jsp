@@ -30,58 +30,103 @@ PortletURL portletURL = viewAccountLicenseKeysDisplayContext.getPortletURL();
 		<liferay-util:param name="values" value="active,expired,deactivated,all" />
 	</liferay-util:include>
 
-	<liferay-ui:search-container
-		id="license-keys"
-		searchContainer="<%= viewAccountLicenseKeysDisplayContext.getSearchContainer() %>"
-	>
-		<clay:management-toolbar
-			clearResultsURL="<%= viewAccountLicenseKeysDisplayContext.getClearResultsURL() %>"
-			elementClasses="full-width"
-			itemsTotal="<%= searchContainer.getTotal() %>"
-			searchActionURL="<%= viewAccountLicenseKeysDisplayContext.getCurrentURL() %>"
-			searchContainerId="license-keys"
-			selectable="<%= false %>"
-			showSearch="<%= false %>"
-		/>
+	<portlet:actionURL name="/accounts/download_license_keys" var="downloadLicenseKeysURL">
+		<portlet:param name="redirect" value="<%= currentURL %>" />
+	</portlet:actionURL>
 
-		<liferay-ui:search-container-row
-			className="com.liferay.osb.provisioning.web.internal.display.context.LicenseKeyDisplay"
-			keyProperty="licenseKeyId"
-			modelVar="licenseKeyDisplay"
+	<aui:form action="<%= downloadLicenseKeysURL %>" name="downloadLicenseKeysFm">
+		<aui:input name="licenseKeyIds" type="hidden" />
+
+		<liferay-ui:search-container
+			id="license-keys"
+			searchContainer="<%= viewAccountLicenseKeysDisplayContext.getSearchContainer() %>"
 		>
-			<liferay-ui:search-container-column-text
-				name="name-description"
+			<clay:management-toolbar
+				actionDropdownItems="<%= viewAccountLicenseKeysDisplayContext.getActionDropdownItems() %>"
+				clearResultsURL="<%= viewAccountLicenseKeysDisplayContext.getClearResultsURL() %>"
+				elementClasses="full-width"
+				itemsTotal="<%= searchContainer.getTotal() %>"
+				searchActionURL="<%= viewAccountLicenseKeysDisplayContext.getCurrentURL() %>"
+				searchContainerId="license-keys"
+				selectable="<%= false %>"
+				showSearch="<%= false %>"
+			/>
+
+			<liferay-ui:search-container-row
+				className="com.liferay.osb.provisioning.web.internal.display.context.LicenseKeyDisplay"
+				keyProperty="licenseKeyId"
+				modelVar="licenseKeyDisplay"
 			>
-				<%= HtmlUtil.escape(licenseKeyDisplay.getName()) %>
+				<liferay-ui:search-container-column-text
+					name="name-description"
+				>
+					<%= HtmlUtil.escape(licenseKeyDisplay.getName()) %>
 
-				<div class="secondary-information">
-					<%= HtmlUtil.escape(licenseKeyDisplay.getDescription()) %>
-				</div>
-			</liferay-ui:search-container-column-text>
+					<div class="secondary-information">
+						<%= HtmlUtil.escape(licenseKeyDisplay.getDescription()) %>
+					</div>
+				</liferay-ui:search-container-column-text>
 
-			<liferay-ui:search-container-column-text
-				name="expiration-date"
-				value="<%= licenseKeyDisplay.getExpirationDate() %>"
+				<liferay-ui:search-container-column-text
+					name="expiration-date"
+					value="<%= licenseKeyDisplay.getExpirationDate() %>"
+				/>
+
+				<liferay-ui:search-container-column-text
+					name="product"
+					value="<%= HtmlUtil.escape(licenseKeyDisplay.getProductName()) %>"
+				/>
+
+				<liferay-ui:search-container-column-text
+					name="type"
+					value="<%= licenseKeyDisplay.getType() %>"
+				/>
+
+				<liferay-ui:search-container-column-text
+					name="host-name"
+					value="<%= licenseKeyDisplay.getHostName() %>"
+				/>
+			</liferay-ui:search-container-row>
+
+			<liferay-ui:search-iterator
+				markupView="lexicon"
 			/>
-
-			<liferay-ui:search-container-column-text
-				name="product"
-				value="<%= HtmlUtil.escape(licenseKeyDisplay.getProductName()) %>"
-			/>
-
-			<liferay-ui:search-container-column-text
-				name="type"
-				value="<%= licenseKeyDisplay.getType() %>"
-			/>
-
-			<liferay-ui:search-container-column-text
-				name="host-name"
-				value="<%= licenseKeyDisplay.getHostName() %>"
-			/>
-		</liferay-ui:search-container-row>
-
-		<liferay-ui:search-iterator
-			markupView="lexicon"
-		/>
-	</liferay-ui:search-container>
+		</liferay-ui:search-container>
+	</aui:form>
 </div>
+
+<aui:script use="liferay-search-container">
+	var searchContainer = Liferay.SearchContainer.get(
+		'<portlet:namespace />license-keys'
+	);
+
+	if (searchContainer) {
+		searchContainer.on('rowToggled', function(event) {
+			var licenseKeyIds = '';
+
+			var selectedItems = event.elements.allSelectedElements;
+
+			if (selectedItems && selectedItems.size()) {
+				licenseKeyIds = selectedItems.attr('value').join(',');
+			}
+
+			var licenseKeyIdsInput = A.one('#<portlet:namespace />licenseKeyIds');
+
+			if (licenseKeyIdsInput) {
+				licenseKeyIdsInput.val(licenseKeyIds);
+			}
+		});
+	}
+</aui:script>
+
+<aui:script>
+	function <portlet:namespace />downloadLicenseKeys() {
+		var downloadLicenseKeysFm = document.getElementById(
+			'<portlet:namespace />downloadLicenseKeysFm'
+		);
+
+		if (downloadLicenseKeysFm) {
+			downloadLicenseKeysFm.submit();
+		}
+	}
+</aui:script>

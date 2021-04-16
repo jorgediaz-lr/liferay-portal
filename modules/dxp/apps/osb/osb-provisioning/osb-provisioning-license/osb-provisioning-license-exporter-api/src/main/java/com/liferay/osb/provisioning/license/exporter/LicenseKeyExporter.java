@@ -34,7 +34,7 @@ public interface LicenseKeyExporter {
 			String productId, String productVersion, String owner,
 			int maxServers, int maxHttpSessions, long maxConcurrentUsers,
 			long maxUsers, int sizing, String description, String hostNames,
-			String ipAddresses, String macAddresses, String[] serverIds,
+			String ipAddresses, String macAddresses, String serverIds,
 			Date startDate, Date expirationDate, Date createDate)
 		throws Exception;
 
@@ -52,12 +52,22 @@ public interface LicenseKeyExporter {
 		throws Exception;
 
 	public String toXML(
+			String accountName, String licenseEntryName, String licenseType,
+			int licenseVersion, String productName, String productId,
+			String productVersion, String owner, int maxServers,
+			int maxHttpSessions, long maxConcurrentUsers, long maxUsers,
+			int sizing, String description, String[] hostNames,
+			String[] ipAddresses, String[] macAddresses, String[] serverIds,
+			Date startDate, Date expirationDate, Date createDate)
+		throws Exception;
+
+	public String toXML(
 			String key, String accountName, String licenseEntryName,
 			String licenseType, int licenseVersion, String productName,
 			String productId, String productVersion, String owner,
 			int maxServers, int maxHttpSessions, long maxConcurrentUsers,
 			long maxUsers, int sizing, String description, String hostNames,
-			String ipAddresses, String macAddresses, String[] serverIds,
+			String ipAddresses, String macAddresses, String serverIds,
 			Date startDate, Date expirationDate, Date createDate)
 		throws Exception;
 

@@ -14,9 +14,14 @@
 
 package com.liferay.osb.provisioning.web.internal.display.context;
 
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
 import com.liferay.osb.provisioning.license.model.LicenseKey;
 import com.liferay.osb.provisioning.license.util.LicenseUtil;
+import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.vulcan.util.TransformUtil;
@@ -43,6 +48,23 @@ public class ViewAccountLicenseKeysDisplayContext
 		super.doInit();
 
 		_productKeys = ParamUtil.getStringValues(renderRequest, "productKey");
+	}
+
+	public List<DropdownItem> getActionDropdownItems() {
+		return new DropdownItemList() {
+			{
+				add(
+					dropdownItem -> {
+						dropdownItem.setHref(
+							StringBundler.concat(
+								"javascript:", renderResponse.getNamespace(),
+								"downloadLicenseKeys();"));
+						dropdownItem.setLabel(
+							LanguageUtil.get(httpServletRequest, "download"));
+						dropdownItem.setQuickAction(true);
+					});
+			}
+		};
 	}
 
 	@Override
@@ -156,6 +178,9 @@ public class ViewAccountLicenseKeysDisplayContext
 					renderRequest, renderResponse, licenseKey)));
 
 		searchContainer.setTotal(count);
+
+		searchContainer.setRowChecker(
+			new EmptyOnClickRowChecker(renderResponse));
 
 		return searchContainer;
 	}

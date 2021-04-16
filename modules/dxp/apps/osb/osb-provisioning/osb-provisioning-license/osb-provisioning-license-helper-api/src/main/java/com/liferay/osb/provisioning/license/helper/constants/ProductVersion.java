@@ -106,7 +106,7 @@ public class ProductVersion {
 			return PORTAL_VERSIONS;
 		}
 
-		return null;
+		return new String[0];
 	}
 
 }

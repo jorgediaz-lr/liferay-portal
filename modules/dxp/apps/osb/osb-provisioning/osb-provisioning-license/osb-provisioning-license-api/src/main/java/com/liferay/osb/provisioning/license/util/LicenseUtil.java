@@ -14,9 +14,18 @@
 
 package com.liferay.osb.provisioning.license.util;
 
+import com.liferay.osb.provisioning.license.helper.constants.LicenseType;
+import com.liferay.osb.provisioning.license.model.LicenseKey;
 import com.liferay.osb.provisioning.license.util.comparator.LicenseKeyExpirationDateComparator;
 import com.liferay.osb.provisioning.license.util.comparator.LicenseKeyStartDateComparator;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.util.DateUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Amos Fong
@@ -43,6 +52,74 @@ public class LicenseUtil {
 		}
 
 		return orderByComparator;
+	}
+
+	public static boolean isAggregate(List<LicenseKey> licenseKeys)
+		throws PortalException {
+
+		licenseKeys = ListUtil.copy(licenseKeys);
+
+		Iterator<LicenseKey> itr = licenseKeys.iterator();
+
+		while (itr.hasNext()) {
+			LicenseKey licenseKey = itr.next();
+
+			if (!licenseKey.isActive()) {
+				itr.remove();
+			}
+		}
+
+		if (licenseKeys.isEmpty() || (licenseKeys.size() <= 1)) {
+			return false;
+		}
+
+		LicenseKey firstLicenseKey = licenseKeys.get(0);
+
+		String licenseEntryType = firstLicenseKey.getLicenseEntryType();
+		Date startDate = firstLicenseKey.getStartDate();
+		Date expirationDate = firstLicenseKey.getExpirationDate();
+
+		for (LicenseKey licenseKey : licenseKeys) {
+			if (licenseKey.getLicenseVersion() < 3) {
+				return false;
+			}
+
+			String curLicenseEntryType = licenseKey.getLicenseEntryType();
+
+			if (!curLicenseEntryType.equals(LicenseType.PER_USER) &&
+				!curLicenseEntryType.equals(LicenseType.PRODUCTION)) {
+
+				return false;
+			}
+
+			if (curLicenseEntryType.equals(LicenseType.PER_USER)) {
+				if (firstLicenseKey.getMaxConcurrentUsers() !=
+						licenseKey.getMaxConcurrentUsers()) {
+
+					return false;
+				}
+
+				if (firstLicenseKey.getMaxUsers() != licenseKey.getMaxUsers()) {
+					return false;
+				}
+			}
+
+			if (!licenseEntryType.equals(curLicenseEntryType)) {
+				return false;
+			}
+
+			if (!DateUtil.equals(startDate, licenseKey.getStartDate())) {
+				return false;
+			}
+
+			if (!DateUtil.equals(
+					expirationDate, licenseKey.getExpirationDate())) {
+
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 }

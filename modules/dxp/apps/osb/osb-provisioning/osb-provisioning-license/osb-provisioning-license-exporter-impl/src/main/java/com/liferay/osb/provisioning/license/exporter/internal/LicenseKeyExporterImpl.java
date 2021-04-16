@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -43,8 +44,10 @@ import java.io.ObjectOutputStream;
 
 import java.text.DateFormat;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.TimeZone;
@@ -97,7 +100,7 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 			String productId, String productVersion, String owner,
 			int maxServers, int maxHttpSessions, long maxConcurrentUsers,
 			long maxUsers, int sizing, String description, String hostNames,
-			String ipAddresses, String macAddresses, String[] serverIds,
+			String ipAddresses, String macAddresses, String serverIds,
 			Date startDate, Date expirationDate, Date createDate)
 		throws Exception {
 
@@ -207,12 +210,85 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 	}
 
 	public String toXML(
+			String accountName, String licenseEntryName, String licenseType,
+			int licenseVersion, String productName, String productId,
+			String productVersion, String owner, int maxServers,
+			int maxHttpSessions, long maxConcurrentUsers, long maxUsers,
+			int sizing, String description, String[] hostNames,
+			String[] ipAddresses, String[] macAddresses, String[] serverIds,
+			Date startDate, Date expirationDate, Date createDate)
+		throws Exception {
+
+		Map<String, String> properties = _getProperties(
+			accountName, licenseEntryName, licenseType, licenseVersion,
+			productName, productId, productVersion, owner, maxServers,
+			maxHttpSessions, maxConcurrentUsers, maxUsers, sizing, description,
+			hostNames[0], ipAddresses[0], macAddresses[0], serverIds[0],
+			startDate, expirationDate, createDate);
+
+		if ((licenseVersion >= 4) &&
+			licenseType.equals(LicenseType.PRODUCTION)) {
+
+			properties.put("maxServers", String.valueOf(serverIds.length));
+		}
+
+		Document document = toXMLVersion3_4(properties, StringPool.BLANK, true);
+
+		Element rootElement = document.getRootElement();
+
+		List<String> allHostNames = new ArrayList<>();
+		List<String> allIpAddresses = new ArrayList<>();
+		List<String> allMacAddresses = new ArrayList<>();
+
+		Element serversElement = rootElement.addElement("servers");
+
+		for (int i = 0; i < serverIds.length; i++) {
+			Map<String, String> curProperties = _getProperties(
+				accountName, licenseEntryName, licenseType, licenseVersion,
+				productName, productId, productVersion, owner, maxServers,
+				maxHttpSessions, maxConcurrentUsers, maxUsers, sizing,
+				description, hostNames[i], ipAddresses[i], macAddresses[i],
+				serverIds[i], startDate, expirationDate, createDate);
+
+			Element serverElement = serversElement.addElement("server");
+
+			exportServerToXML(serverElement, curProperties);
+
+			String curHostName = curProperties.get("hostNames");
+
+			if (Validator.isNotNull(curHostName)) {
+				allHostNames.add(curHostName);
+			}
+
+			List<String> curIpAddresses = ListUtil.fromArray(
+				StringUtil.split(curProperties.get("ipAddresses")));
+
+			allIpAddresses.addAll(curIpAddresses);
+
+			List<String> curMacAddresses = ListUtil.fromArray(
+				StringUtil.split(curProperties.get("macAddresses")));
+
+			allMacAddresses.addAll(curMacAddresses);
+		}
+
+		properties.put("hostNames", StringUtil.merge(allHostNames));
+		properties.put("ipAddresses", StringUtil.merge(allIpAddresses));
+		properties.put("macAddresses", StringUtil.merge(allMacAddresses));
+
+		String key = _keyGenerator.generate(properties);
+
+		DocUtil.add(rootElement, "key", key);
+
+		return document.formattedString();
+	}
+
+	public String toXML(
 			String key, String accountName, String licenseEntryName,
 			String licenseType, int licenseVersion, String productName,
 			String productId, String productVersion, String owner,
 			int maxServers, int maxHttpSessions, long maxConcurrentUsers,
 			long maxUsers, int sizing, String description, String hostNames,
-			String ipAddresses, String macAddresses, String[] serverIds,
+			String ipAddresses, String macAddresses, String serverIds,
 			Date startDate, Date expirationDate, Date createDate)
 		throws Exception {
 
@@ -466,14 +542,16 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 		String productVersion, String owner, int maxServers,
 		int maxHttpSessions, long maxConcurrentUsers, long maxUsers, int sizing,
 		String description, String hostNames, String ipAddresses,
-		String macAddresses, String[] serverIds, Date startDate,
+		String macAddresses, String serverIds, Date startDate,
 		Date expirationDate, Date createDate) {
+
+		String[] curServerIds = {serverIds};
 
 		Map<String, String> properties = _keyGenerator.getProperties(
 			accountName, licenseEntryName, licenseType, licenseVersion,
 			productName, productId, productVersion, owner, maxServers,
 			maxHttpSessions, maxConcurrentUsers, maxUsers, sizing, description,
-			hostNames, ipAddresses, macAddresses, serverIds, startDate,
+			hostNames, ipAddresses, macAddresses, curServerIds, startDate,
 			expirationDate);
 
 		// See LRDCOM-2568

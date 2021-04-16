@@ -18,6 +18,7 @@ import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.license.exporter.LicenseKeyExporter;
 import com.liferay.osb.provisioning.license.model.LicenseKey;
 import com.liferay.osb.provisioning.license.service.LicenseKeyService;
+import com.liferay.osb.provisioning.license.util.LicenseUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletResponseUtil;
@@ -25,7 +26,9 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.StringUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.portlet.PortletException;
 import javax.portlet.ResourceRequest;
@@ -39,7 +42,9 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
+		"javax.portlet.name=" + ProvisioningPortletKeys.ACCOUNTS,
 		"javax.portlet.name=" + ProvisioningPortletKeys.LICENSES,
+		"mvc.command.name=/accounts/download_license_keys",
 		"mvc.command.name=/licenses/download_license_key"
 	},
 	service = MVCResourceCommand.class
@@ -53,52 +58,126 @@ public class DownloadLicenseKeyMVCResourceCommand
 		throws PortletException {
 
 		try {
+			long[] licenseKeyIds = ParamUtil.getLongValues(
+				resourceRequest, "licenseKeyIds");
+
 			long licenseKeyId = ParamUtil.getLong(
 				resourceRequest, "licenseKeyId");
 
-			LicenseKey licenseKey = _licenseKeyService.getLicenseKey(
-				licenseKeyId);
-
-			//TODO: check user role before download
-
-			if (licenseKey.getLicenseVersion() == 1) {
-				String encodedLicenseFile =
-					_licenseKeyExporter.toEncodedLicenseFile(
-						licenseKey.getServerId(), licenseKey.getKey());
-
-				PortletResponseUtil.sendFile(
-					resourceRequest, resourceResponse, "license",
-					encodedLicenseFile.getBytes(),
-					ContentTypes.APPLICATION_OCTET_STREAM);
+			if (licenseKeyIds.length > 1) {
+				downloadAggregateLicenseKey(
+					resourceRequest, resourceResponse, licenseKeyIds);
 			}
-			else if (licenseKey.getLicenseVersion() >= 2) {
-				String fileName = _licenseKeyExporter.getFileName(
-					licenseKey.getProductName(),
-					licenseKey.getProductVersion());
-
-				String licenseXML = _licenseKeyExporter.toXML(
-					licenseKey.getKey(), licenseKey.getAccountName(),
-					licenseKey.getLicenseEntryName(),
-					licenseKey.getLicenseEntryType(),
-					licenseKey.getLicenseVersion(), licenseKey.getProductName(),
-					licenseKey.getProductId(), licenseKey.getProductVersion(),
-					licenseKey.getOwner(), licenseKey.getMaxServers(),
-					licenseKey.getMaxHttpSessions(),
-					licenseKey.getMaxConcurrentUsers(),
-					licenseKey.getMaxUsers(), licenseKey.getSizing(),
-					licenseKey.getDescription(), licenseKey.getHostName(),
-					licenseKey.getIpAddresses(), licenseKey.getMacAddresses(),
-					StringUtil.split(licenseKey.getServerId()),
-					licenseKey.getStartDate(), licenseKey.getExpirationDate(),
-					licenseKey.getCreateDate());
-
-				PortletResponseUtil.sendFile(
-					resourceRequest, resourceResponse, fileName,
-					licenseXML.getBytes(), ContentTypes.TEXT_XML);
+			else if (licenseKeyIds.length == 1) {
+				downloadLicenseKey(
+					resourceRequest, resourceResponse, licenseKeyIds[0]);
+			}
+			else {
+				downloadLicenseKey(
+					resourceRequest, resourceResponse, licenseKeyId);
 			}
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
+		}
+	}
+
+	protected void downloadAggregateLicenseKey(
+			ResourceRequest resourceRequest, ResourceResponse resourceResponse,
+			long[] licenseKeyIds)
+		throws Exception {
+
+		//TODO: check user role before download
+
+		List<LicenseKey> licenseKeys = new ArrayList<>();
+
+		String[] hostNames = new String[licenseKeyIds.length];
+		String[] ipAddresses = new String[licenseKeyIds.length];
+		String[] macAddresses = new String[licenseKeyIds.length];
+		String[] serverIds = new String[licenseKeyIds.length];
+
+		for (int i = 0; i < licenseKeyIds.length; i++) {
+			LicenseKey licenseKey = _licenseKeyService.getLicenseKey(
+				licenseKeyIds[i]);
+
+			if (!licenseKey.isActive()) {
+				continue;
+			}
+
+			licenseKeys.add(licenseKey);
+
+			hostNames[i] = licenseKey.getHostName();
+			ipAddresses[i] = licenseKey.getIpAddresses();
+			macAddresses[i] = licenseKey.getMacAddresses();
+			serverIds[i] = licenseKey.getServerId();
+		}
+
+		if (!LicenseUtil.isAggregate(licenseKeys)) {
+			return;
+		}
+
+		LicenseKey licenseKey = licenseKeys.get(0);
+
+		String fileName = _licenseKeyExporter.getFileName(
+			licenseKey.getProductName(), licenseKey.getProductVersion());
+
+		String licenseXML = _licenseKeyExporter.toXML(
+			licenseKey.getAccountName(), licenseKey.getLicenseEntryName(),
+			licenseKey.getLicenseEntryType(), licenseKey.getLicenseVersion(),
+			licenseKey.getProductName(), licenseKey.getProductId(),
+			licenseKey.getProductVersion(), licenseKey.getOwner(),
+			licenseKey.getMaxServers(), licenseKey.getMaxHttpSessions(),
+			licenseKey.getMaxConcurrentUsers(), licenseKey.getMaxUsers(),
+			licenseKey.getSizing(), licenseKey.getDescription(), hostNames,
+			ipAddresses, macAddresses, serverIds, licenseKey.getStartDate(),
+			licenseKey.getExpirationDate(), licenseKey.getCreateDate());
+
+		PortletResponseUtil.sendFile(
+			resourceRequest, resourceResponse, fileName, licenseXML.getBytes(),
+			ContentTypes.TEXT_XML);
+	}
+
+	protected void downloadLicenseKey(
+			ResourceRequest resourceRequest, ResourceResponse resourceResponse,
+			long licenseKeyId)
+		throws Exception {
+
+		//TODO: check user role before download
+
+		LicenseKey licenseKey = _licenseKeyService.getLicenseKey(licenseKeyId);
+
+		if (licenseKey.getLicenseVersion() == 1) {
+			String encodedLicenseFile =
+				_licenseKeyExporter.toEncodedLicenseFile(
+					licenseKey.getServerId(), licenseKey.getKey());
+
+			PortletResponseUtil.sendFile(
+				resourceRequest, resourceResponse, "license",
+				encodedLicenseFile.getBytes(),
+				ContentTypes.APPLICATION_OCTET_STREAM);
+		}
+		else if (licenseKey.getLicenseVersion() >= 2) {
+			String fileName = _licenseKeyExporter.getFileName(
+				licenseKey.getProductName(), licenseKey.getProductVersion());
+
+			String licenseXML = _licenseKeyExporter.toXML(
+				licenseKey.getKey(), licenseKey.getAccountName(),
+				licenseKey.getLicenseEntryName(),
+				licenseKey.getLicenseEntryType(),
+				licenseKey.getLicenseVersion(), licenseKey.getProductName(),
+				licenseKey.getProductId(), licenseKey.getProductVersion(),
+				licenseKey.getOwner(), licenseKey.getMaxServers(),
+				licenseKey.getMaxHttpSessions(),
+				licenseKey.getMaxConcurrentUsers(), licenseKey.getMaxUsers(),
+				licenseKey.getSizing(), licenseKey.getDescription(),
+				licenseKey.getHostName(), licenseKey.getIpAddresses(),
+				licenseKey.getMacAddresses(), licenseKey.getServerId(),
+				licenseKey.getStartDate(), licenseKey.getExpirationDate(),
+				licenseKey.getCreateDate());
+
+			PortletResponseUtil.sendFile(
+				resourceRequest, resourceResponse, fileName,
+				licenseXML.getBytes(), ContentTypes.TEXT_XML);
 		}
 	}
 
