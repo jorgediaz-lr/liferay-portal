@@ -23,6 +23,7 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.NavigationItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.NavigationItemList;
+import com.liferay.layout.admin.constants.LayoutAdminPortletKeys;
 import com.liferay.layout.admin.web.internal.configuration.LayoutConverterConfiguration;
 import com.liferay.layout.admin.web.internal.constants.LayoutAdminWebKeys;
 import com.liferay.layout.page.template.model.LayoutPageTemplateCollection;
@@ -65,6 +66,10 @@ import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.portlet.PortalPreferences;
+import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
+import com.liferay.portal.kernel.portlet.PortletProvider;
+import com.liferay.portal.kernel.portlet.PortletProviderUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
@@ -404,7 +409,20 @@ public class LayoutsAdminDisplayContext {
 		}
 
 		_displayStyle = ParamUtil.getString(
-			_httpServletRequest, "displayStyle", "miller-columns");
+			_liferayPortletRequest, "displayStyle");
+
+		PortalPreferences portalPreferences =
+			PortletPreferencesFactoryUtil.getPortalPreferences(
+				_liferayPortletRequest);
+
+		if (Validator.isNull(_displayStyle)) {
+			_displayStyle = portalPreferences.getValue(
+				LayoutAdminPortletKeys.GROUP_PAGES, "display-style",
+				"miller-columns");
+		}
+
+		portalPreferences.setValue(
+			LayoutAdminPortletKeys.GROUP_PAGES, "display-style", _displayStyle);
 
 		return _displayStyle;
 	}
