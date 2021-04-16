@@ -443,7 +443,7 @@ public class DDMTemplateLocalServiceImpl
 			template.getCompanyId(), resourceName,
 			ResourceConstants.SCOPE_INDIVIDUAL, template.getTemplateId());
 
-		// Template versions
+		// Template versions - LPS-137567
 
 		_ddmTemplateVersionLocalService.deleteTemplateVersions(
 			template.getTemplateId());
