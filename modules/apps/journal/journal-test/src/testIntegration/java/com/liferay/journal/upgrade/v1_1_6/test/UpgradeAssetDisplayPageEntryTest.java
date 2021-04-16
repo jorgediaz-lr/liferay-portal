@@ -169,12 +169,21 @@ public class UpgradeAssetDisplayPageEntryTest {
 		sb.append("articleId, version, layoutUuid) values (?, ?, ?, ?, ?, ?, ");
 		sb.append("?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-		String sql = sb.toString();
+		String sql1 = sb.toString();
+
+		sb = new StringBundler(3);
+
+		sb.append("insert into JournalArticleResource (uuid_, ");
+		sb.append("resourcePrimKey, groupId, companyId, articleId) values ");
+		sb.append("(?, ?, ?, ?, ?)");
+
+		String sql2 = sb.toString();
 
 		String articleId = RandomTestUtil.randomString();
 
 		try (Connection con = DataAccess.getConnection();
-			PreparedStatement ps = con.prepareStatement(sql)) {
+			PreparedStatement ps = con.prepareStatement(sql1);
+			PreparedStatement ps2 = con.prepareStatement(sql2)) {
 
 			ps.setString(1, PortalUUIDUtil.generate());
 			ps.setLong(2, _counterLocalService.increment());
@@ -193,27 +202,19 @@ public class UpgradeAssetDisplayPageEntryTest {
 			ps.setDouble(15, version);
 			ps.setString(16, layoutUuid);
 
-			ps.executeUpdate();
-		}
+			ps2.setString(1, PortalUUIDUtil.generate());
+			ps2.setLong(2, resourcePrimKey);
+			ps2.setLong(3, groupId);
+			ps2.setLong(4, companyId);
+			ps2.setString(5, articleId);
 
-		sb = new StringBundler(2);
-
-		sb.append(
-			"insert into JournalArticleResource (uuid_, resourcePrimKey, ");
-		sb.append("groupId, companyId, articleId) values (?, ?, ?, ?, ?)");
-
-		sql = sb.toString();
-
-		try (Connection con = DataAccess.getConnection();
-			PreparedStatement ps = con.prepareStatement(sql)) {
-
-			ps.setString(1, PortalUUIDUtil.generate());
-			ps.setLong(2, resourcePrimKey);
-			ps.setLong(3, groupId);
-			ps.setLong(4, companyId);
-			ps.setString(5, articleId);
+			con.setAutoCommit(false);
 
 			ps.executeUpdate();
+
+			ps2.executeUpdate();
+
+			con.commit();
 		}
 	}
 
