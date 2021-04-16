@@ -23,6 +23,7 @@ import com.liferay.osb.provisioning.constants.ProvisioningWebKeys;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductConsumptionWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductPurchaseViewWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
+import com.liferay.osb.provisioning.license.helper.constants.ProductVersion;
 import com.liferay.osb.provisioning.license.model.LicenseEntry;
 import com.liferay.osb.provisioning.license.service.LicenseEntryLocalService;
 import com.liferay.petra.string.StringBundler;
@@ -37,7 +38,6 @@ import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.text.Format;
@@ -195,13 +195,8 @@ public class AddLicenseKeyDisplayContext {
 			StringPool.BLANK);
 
 		for (Product product : products) {
-			Map<String, String> properties = product.getProperties();
-
-			if ((properties == null) || (properties.get("versions") == null)) {
-				continue;
-			}
-
-			String[] versions = StringUtil.split(properties.get("versions"));
+			String[] versions = ProductVersion.getProductVersions(
+				product.getName());
 
 			if (versions.length < 1) {
 				continue;

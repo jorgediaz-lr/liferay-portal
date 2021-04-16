@@ -24,6 +24,8 @@ public class ProductVersion {
 
 	public static final String COMMERCE_LICENSE_VERSION_1 = "1";
 
+	public static final String DXP_MAJOR_VERSION_7 = "7";
+
 	public static final String DXP_VERSION_7_0 = "7.0";
 
 	public static final String DXP_VERSION_7_1 = "7.1";
@@ -39,34 +41,44 @@ public class ProductVersion {
 		DXP_VERSION_7_4
 	};
 
+	public static final String PORTAL_MAJOR_VERSION_6 = "6";
+
 	public static final String PORTAL_MINOR_VERSION_6_1 = "6.1";
 
 	public static final String PORTAL_MINOR_VERSION_6_2 = "6.2";
+
+	public static final String[] PORTAL_MINOR_VERSIONS = {
+		PORTAL_MINOR_VERSION_6_1, PORTAL_MINOR_VERSION_6_2
+	};
 
 	public static final String PORTAL_VERSION_6_1_10 = "6.1 GA1";
 
 	public static final String PORTAL_VERSION_6_1_20 = "6.1 GA2";
 
+	public static final String PORTAL_VERSION_6_1_30 = "6.1 GA3";
+
 	public static final String PORTAL_VERSION_6_2_10 = "6.2 EE";
 
 	public static final String[] PORTAL_VERSIONS = {
-		PORTAL_VERSION_6_1_10, PORTAL_VERSION_6_1_20, PORTAL_VERSION_6_2_10
+		PORTAL_VERSION_6_1_10, PORTAL_VERSION_6_1_20, PORTAL_VERSION_6_1_30,
+		PORTAL_VERSION_6_2_10
 	};
 
 	public static final Map<String, Integer> productVersionMap =
 		new HashMap<String, Integer>() {
 			{
-				put(COMMERCE_LICENSE_VERSION_1, 10);
-				put(DXP_VERSION_7_0, 5);
-				put(DXP_VERSION_7_1, 6);
-				put(DXP_VERSION_7_2, 7);
-				put(DXP_VERSION_7_3, 8);
-				put(DXP_VERSION_7_4, 9);
-				put(PORTAL_MINOR_VERSION_6_1, 0);
-				put(PORTAL_MINOR_VERSION_6_2, 3);
-				put(PORTAL_VERSION_6_1_10, 1);
-				put(PORTAL_VERSION_6_1_20, 2);
-				put(PORTAL_VERSION_6_2_10, 4);
+				put(COMMERCE_LICENSE_VERSION_1, 11);
+				put(DXP_VERSION_7_0, 6);
+				put(DXP_VERSION_7_1, 7);
+				put(DXP_VERSION_7_2, 8);
+				put(DXP_VERSION_7_3, 9);
+				put(DXP_VERSION_7_4, 10);
+				put(PORTAL_MINOR_VERSION_6_1, 4);
+				put(PORTAL_MINOR_VERSION_6_2, 5);
+				put(PORTAL_VERSION_6_1_10, 0);
+				put(PORTAL_VERSION_6_1_20, 1);
+				put(PORTAL_VERSION_6_1_30, 2);
+				put(PORTAL_VERSION_6_2_10, 3);
 			}
 		};
 
@@ -76,6 +88,25 @@ public class ProductVersion {
 		}
 
 		return -1;
+	}
+
+	public static final String[] getProductVersions(String productName) {
+		if (productName.contains("Commerce Subscription")) {
+			return new String[] {COMMERCE_LICENSE_VERSION_1};
+		}
+		else if (productName.startsWith("DXP") &&
+				 !productName.contains("DXP Cloud")) {
+
+			return DXP_VERSIONS;
+		}
+		else if ((productName.contains("Portal") &&
+				  !productName.contains("Early Access Program")) ||
+				 productName.startsWith("TCAT Portal")) {
+
+			return PORTAL_VERSIONS;
+		}
+
+		return null;
 	}
 
 }

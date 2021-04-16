@@ -43,6 +43,7 @@ public class LicenseVersion {
 		}
 
 		if (productVersion.equals(ProductVersion.PORTAL_VERSION_6_1_20) ||
+			productVersion.equals(ProductVersion.PORTAL_VERSION_6_1_30) ||
 			productVersion.equals(ProductVersion.PORTAL_VERSION_6_2_10)) {
 
 			return 4;
