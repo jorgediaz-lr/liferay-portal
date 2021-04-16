@@ -86,6 +86,9 @@ public class AddContentLayoutMVCActionCommand
 		Map<Locale, String> nameMap = HashMapBuilder.put(
 			LocaleUtil.getSiteDefault(), name
 		).build();
+		UnicodeProperties typeSettingsUnicodeProperties =
+			PropertiesParamUtil.getProperties(
+				actionRequest, "TypeSettingsProperties--");
 
 		ServiceContext serviceContext = ServiceContextFactory.getInstance(
 			Layout.class.getName(), actionRequest);
@@ -93,10 +96,6 @@ public class AddContentLayoutMVCActionCommand
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 		Layout layout = null;
-
-		UnicodeProperties typeSettingsUnicodeProperties =
-			PropertiesParamUtil.getProperties(
-				actionRequest, "TypeSettingsProperties--");
 
 		try {
 			LayoutPageTemplateEntry layoutPageTemplateEntry =
