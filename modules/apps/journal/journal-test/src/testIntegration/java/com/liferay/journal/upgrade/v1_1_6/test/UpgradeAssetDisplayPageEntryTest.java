@@ -158,7 +158,7 @@ public class UpgradeAssetDisplayPageEntryTest {
 
 	protected void addJournalArticle(
 			long resourcePrimKey, long groupId, long companyId, double version,
-			String layoutUuid)
+			String articleId, String layoutUuid)
 		throws Exception {
 
 		StringBundler sb = new StringBundler(5);
@@ -178,8 +178,6 @@ public class UpgradeAssetDisplayPageEntryTest {
 		sb.append("(?, ?, ?, ?, ?)");
 
 		String sql2 = sb.toString();
-
-		String articleId = RandomTestUtil.randomString();
 
 		try (Connection con = DataAccess.getConnection();
 			PreparedStatement ps = con.prepareStatement(sql1);
@@ -202,17 +200,19 @@ public class UpgradeAssetDisplayPageEntryTest {
 			ps.setDouble(15, version);
 			ps.setString(16, layoutUuid);
 
-			ps2.setString(1, PortalUUIDUtil.generate());
-			ps2.setLong(2, resourcePrimKey);
-			ps2.setLong(3, groupId);
-			ps2.setLong(4, companyId);
-			ps2.setString(5, articleId);
-
 			con.setAutoCommit(false);
 
 			ps.executeUpdate();
 
-			ps2.executeUpdate();
+			if (version == 1.0) {
+				ps2.setString(1, PortalUUIDUtil.generate());
+				ps2.setLong(2, resourcePrimKey);
+				ps2.setLong(3, groupId);
+				ps2.setLong(4, companyId);
+				ps2.setString(5, articleId);
+
+				ps2.executeUpdate();
+			}
 
 			con.commit();
 		}
@@ -266,21 +266,23 @@ public class UpgradeAssetDisplayPageEntryTest {
 			long resourcePrimKey)
 		throws Exception {
 
+		String articleId = RandomTestUtil.randomString();
+
 		double version = 1.0;
 
 		if (multipleArticleVersions) {
 			addJournalArticle(
 				resourcePrimKey, group.getGroupId(), group.getCompanyId(),
-				version++, null);
+				version++, articleId, null);
 
 			addJournalArticle(
 				resourcePrimKey, group.getGroupId(), group.getCompanyId(),
-				version++, PortalUUIDUtil.generate());
+				version++, articleId, PortalUUIDUtil.generate());
 		}
 
 		addJournalArticle(
 			resourcePrimKey, group.getGroupId(), group.getCompanyId(), version,
-			layoutUuid);
+			articleId, layoutUuid);
 	}
 
 	protected List<Long> createJournalArticles(
