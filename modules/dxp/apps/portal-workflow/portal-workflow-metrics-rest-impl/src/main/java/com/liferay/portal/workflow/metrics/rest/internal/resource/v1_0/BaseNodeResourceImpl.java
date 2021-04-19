@@ -86,8 +86,8 @@ public abstract class BaseNodeResourceImpl
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Node")})
 	public Page<Node> getProcessNodesPage(
-			@NotNull @Parameter(hidden = true) @PathParam("processId")
-				Long processId)
+			@NotNull @Parameter(hidden = true) @PathParam("processId") Long
+				processId)
 		throws Exception {
 
 		return Page.of(Collections.emptyList());

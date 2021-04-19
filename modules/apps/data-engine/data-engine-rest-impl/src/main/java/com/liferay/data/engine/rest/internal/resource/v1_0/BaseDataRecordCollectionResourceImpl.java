@@ -104,9 +104,9 @@ public abstract class BaseDataRecordCollectionResourceImpl
 			getDataDefinitionDataRecordCollectionsPage(
 				@NotNull @Parameter(hidden = true)
 				@PathParam("dataDefinitionId")
-					Long dataDefinitionId,
-				@Parameter(hidden = true) @QueryParam("keywords")
-					String keywords,
+				Long dataDefinitionId,
+				@Parameter(hidden = true) @QueryParam("keywords") String
+					keywords,
 				@Context Pagination pagination)
 		throws Exception {
 
@@ -156,8 +156,8 @@ public abstract class BaseDataRecordCollectionResourceImpl
 	public Response postDataDefinitionDataRecordCollectionBatch(
 			@NotNull @Parameter(hidden = true) @PathParam("dataDefinitionId")
 				Long dataDefinitionId,
-			@Parameter(hidden = true) @QueryParam("callbackURL")
-				String callbackURL,
+			@Parameter(hidden = true) @QueryParam("callbackURL") String
+				callbackURL,
 			Object object)
 		throws Exception {
 
@@ -195,7 +195,7 @@ public abstract class BaseDataRecordCollectionResourceImpl
 	public void deleteDataRecordCollection(
 			@NotNull @Parameter(hidden = true)
 			@PathParam("dataRecordCollectionId")
-				Long dataRecordCollectionId)
+			Long dataRecordCollectionId)
 		throws Exception {
 	}
 
@@ -214,8 +214,8 @@ public abstract class BaseDataRecordCollectionResourceImpl
 	@Produces("application/json")
 	@Tags(value = {@Tag(name = "DataRecordCollection")})
 	public Response deleteDataRecordCollectionBatch(
-			@Parameter(hidden = true) @QueryParam("callbackURL")
-				String callbackURL,
+			@Parameter(hidden = true) @QueryParam("callbackURL") String
+				callbackURL,
 			Object object)
 		throws Exception {
 
@@ -253,7 +253,7 @@ public abstract class BaseDataRecordCollectionResourceImpl
 	public DataRecordCollection getDataRecordCollection(
 			@NotNull @Parameter(hidden = true)
 			@PathParam("dataRecordCollectionId")
-				Long dataRecordCollectionId)
+			Long dataRecordCollectionId)
 		throws Exception {
 
 		return new DataRecordCollection();
@@ -278,7 +278,7 @@ public abstract class BaseDataRecordCollectionResourceImpl
 	public DataRecordCollection putDataRecordCollection(
 			@NotNull @Parameter(hidden = true)
 			@PathParam("dataRecordCollectionId")
-				Long dataRecordCollectionId,
+			Long dataRecordCollectionId,
 			DataRecordCollection dataRecordCollection)
 		throws Exception {
 
@@ -300,8 +300,8 @@ public abstract class BaseDataRecordCollectionResourceImpl
 	@PUT
 	@Tags(value = {@Tag(name = "DataRecordCollection")})
 	public Response putDataRecordCollectionBatch(
-			@Parameter(hidden = true) @QueryParam("callbackURL")
-				String callbackURL,
+			@Parameter(hidden = true) @QueryParam("callbackURL") String
+				callbackURL,
 			Object object)
 		throws Exception {
 
@@ -343,9 +343,9 @@ public abstract class BaseDataRecordCollectionResourceImpl
 	public void postDataRecordCollectionDataRecordCollectionPermission(
 			@NotNull @Parameter(hidden = true)
 			@PathParam("dataRecordCollectionId")
-				Long dataRecordCollectionId,
-			@NotNull @Parameter(hidden = true) @QueryParam("operation")
-				String operation,
+			Long dataRecordCollectionId,
+			@NotNull @Parameter(hidden = true) @QueryParam("operation") String
+				operation,
 			DataRecordCollectionPermission dataRecordCollectionPermission)
 		throws Exception {
 	}
@@ -369,8 +369,8 @@ public abstract class BaseDataRecordCollectionResourceImpl
 	@Tags(value = {@Tag(name = "DataRecordCollection")})
 	public void postSiteDataRecordCollectionPermission(
 			@NotNull @Parameter(hidden = true) @PathParam("siteId") Long siteId,
-			@NotNull @Parameter(hidden = true) @QueryParam("operation")
-				String operation,
+			@NotNull @Parameter(hidden = true) @QueryParam("operation") String
+				operation,
 			DataRecordCollectionPermission dataRecordCollectionPermission)
 		throws Exception {
 	}
@@ -422,7 +422,7 @@ public abstract class BaseDataRecordCollectionResourceImpl
 			@NotNull @Parameter(hidden = true) @PathParam("siteId") Long siteId,
 			@NotNull @Parameter(hidden = true)
 			@PathParam("dataRecordCollectionKey")
-				String dataRecordCollectionKey)
+			String dataRecordCollectionKey)
 		throws Exception {
 
 		return new DataRecordCollection();

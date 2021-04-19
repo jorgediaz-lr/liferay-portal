@@ -90,8 +90,8 @@ public abstract class BaseStatusResourceImpl
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Status")})
 	public Experiment postExperimentStatus(
-			@NotNull @Parameter(hidden = true) @PathParam("experimentId")
-				Long experimentId,
+			@NotNull @Parameter(hidden = true) @PathParam("experimentId") Long
+				experimentId,
 			Status status)
 		throws Exception {
 

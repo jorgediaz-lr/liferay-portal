@@ -151,8 +151,8 @@ public abstract class BaseDataRecordResourceImpl
 	public Response postDataDefinitionDataRecordBatch(
 			@NotNull @Parameter(hidden = true) @PathParam("dataDefinitionId")
 				Long dataDefinitionId,
-			@Parameter(hidden = true) @QueryParam("callbackURL")
-				String callbackURL,
+			@Parameter(hidden = true) @QueryParam("callbackURL") String
+				callbackURL,
 			Object object)
 		throws Exception {
 
@@ -192,7 +192,7 @@ public abstract class BaseDataRecordResourceImpl
 	public Page<DataRecord> getDataRecordCollectionDataRecordsPage(
 			@NotNull @Parameter(hidden = true)
 			@PathParam("dataRecordCollectionId")
-				Long dataRecordCollectionId,
+			Long dataRecordCollectionId,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -218,7 +218,7 @@ public abstract class BaseDataRecordResourceImpl
 	public DataRecord postDataRecordCollectionDataRecord(
 			@NotNull @Parameter(hidden = true)
 			@PathParam("dataRecordCollectionId")
-				Long dataRecordCollectionId,
+			Long dataRecordCollectionId,
 			DataRecord dataRecord)
 		throws Exception {
 
@@ -247,9 +247,9 @@ public abstract class BaseDataRecordResourceImpl
 	public Response postDataRecordCollectionDataRecordBatch(
 			@NotNull @Parameter(hidden = true)
 			@PathParam("dataRecordCollectionId")
-				Long dataRecordCollectionId,
-			@Parameter(hidden = true) @QueryParam("callbackURL")
-				String callbackURL,
+			Long dataRecordCollectionId,
+			@Parameter(hidden = true) @QueryParam("callbackURL") String
+				callbackURL,
 			Object object)
 		throws Exception {
 
@@ -291,7 +291,7 @@ public abstract class BaseDataRecordResourceImpl
 	public String getDataRecordCollectionDataRecordExport(
 			@NotNull @Parameter(hidden = true)
 			@PathParam("dataRecordCollectionId")
-				Long dataRecordCollectionId,
+			Long dataRecordCollectionId,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -312,8 +312,8 @@ public abstract class BaseDataRecordResourceImpl
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "DataRecord")})
 	public void deleteDataRecord(
-			@NotNull @Parameter(hidden = true) @PathParam("dataRecordId")
-				Long dataRecordId)
+			@NotNull @Parameter(hidden = true) @PathParam("dataRecordId") Long
+				dataRecordId)
 		throws Exception {
 	}
 
@@ -332,8 +332,8 @@ public abstract class BaseDataRecordResourceImpl
 	@Produces("application/json")
 	@Tags(value = {@Tag(name = "DataRecord")})
 	public Response deleteDataRecordBatch(
-			@Parameter(hidden = true) @QueryParam("callbackURL")
-				String callbackURL,
+			@Parameter(hidden = true) @QueryParam("callbackURL") String
+				callbackURL,
 			Object object)
 		throws Exception {
 
@@ -367,8 +367,8 @@ public abstract class BaseDataRecordResourceImpl
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "DataRecord")})
 	public DataRecord getDataRecord(
-			@NotNull @Parameter(hidden = true) @PathParam("dataRecordId")
-				Long dataRecordId)
+			@NotNull @Parameter(hidden = true) @PathParam("dataRecordId") Long
+				dataRecordId)
 		throws Exception {
 
 		return new DataRecord();
@@ -389,8 +389,8 @@ public abstract class BaseDataRecordResourceImpl
 	@PUT
 	@Tags(value = {@Tag(name = "DataRecord")})
 	public DataRecord putDataRecord(
-			@NotNull @Parameter(hidden = true) @PathParam("dataRecordId")
-				Long dataRecordId,
+			@NotNull @Parameter(hidden = true) @PathParam("dataRecordId") Long
+				dataRecordId,
 			DataRecord dataRecord)
 		throws Exception {
 
@@ -412,8 +412,8 @@ public abstract class BaseDataRecordResourceImpl
 	@PUT
 	@Tags(value = {@Tag(name = "DataRecord")})
 	public Response putDataRecordBatch(
-			@Parameter(hidden = true) @QueryParam("callbackURL")
-				String callbackURL,
+			@Parameter(hidden = true) @QueryParam("callbackURL") String
+				callbackURL,
 			Object object)
 		throws Exception {
 

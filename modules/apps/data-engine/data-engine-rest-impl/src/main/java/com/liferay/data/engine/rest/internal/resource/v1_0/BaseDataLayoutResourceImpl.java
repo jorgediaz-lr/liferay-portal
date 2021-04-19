@@ -154,8 +154,8 @@ public abstract class BaseDataLayoutResourceImpl
 	public Response postDataDefinitionDataLayoutBatch(
 			@NotNull @Parameter(hidden = true) @PathParam("dataDefinitionId")
 				Long dataDefinitionId,
-			@Parameter(hidden = true) @QueryParam("callbackURL")
-				String callbackURL,
+			@Parameter(hidden = true) @QueryParam("callbackURL") String
+				callbackURL,
 			Object object)
 		throws Exception {
 
@@ -189,8 +189,8 @@ public abstract class BaseDataLayoutResourceImpl
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "DataLayout")})
 	public void deleteDataLayout(
-			@NotNull @Parameter(hidden = true) @PathParam("dataLayoutId")
-				Long dataLayoutId)
+			@NotNull @Parameter(hidden = true) @PathParam("dataLayoutId") Long
+				dataLayoutId)
 		throws Exception {
 	}
 
@@ -209,8 +209,8 @@ public abstract class BaseDataLayoutResourceImpl
 	@Produces("application/json")
 	@Tags(value = {@Tag(name = "DataLayout")})
 	public Response deleteDataLayoutBatch(
-			@Parameter(hidden = true) @QueryParam("callbackURL")
-				String callbackURL,
+			@Parameter(hidden = true) @QueryParam("callbackURL") String
+				callbackURL,
 			Object object)
 		throws Exception {
 
@@ -244,8 +244,8 @@ public abstract class BaseDataLayoutResourceImpl
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "DataLayout")})
 	public DataLayout getDataLayout(
-			@NotNull @Parameter(hidden = true) @PathParam("dataLayoutId")
-				Long dataLayoutId)
+			@NotNull @Parameter(hidden = true) @PathParam("dataLayoutId") Long
+				dataLayoutId)
 		throws Exception {
 
 		return new DataLayout();
@@ -266,8 +266,8 @@ public abstract class BaseDataLayoutResourceImpl
 	@PUT
 	@Tags(value = {@Tag(name = "DataLayout")})
 	public DataLayout putDataLayout(
-			@NotNull @Parameter(hidden = true) @PathParam("dataLayoutId")
-				Long dataLayoutId,
+			@NotNull @Parameter(hidden = true) @PathParam("dataLayoutId") Long
+				dataLayoutId,
 			DataLayout dataLayout)
 		throws Exception {
 
@@ -289,8 +289,8 @@ public abstract class BaseDataLayoutResourceImpl
 	@PUT
 	@Tags(value = {@Tag(name = "DataLayout")})
 	public Response putDataLayoutBatch(
-			@Parameter(hidden = true) @QueryParam("callbackURL")
-				String callbackURL,
+			@Parameter(hidden = true) @QueryParam("callbackURL") String
+				callbackURL,
 			Object object)
 		throws Exception {
 
@@ -328,10 +328,10 @@ public abstract class BaseDataLayoutResourceImpl
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "DataLayout")})
 	public void postDataLayoutDataLayoutPermission(
-			@NotNull @Parameter(hidden = true) @PathParam("dataLayoutId")
-				Long dataLayoutId,
-			@NotNull @Parameter(hidden = true) @QueryParam("operation")
-				String operation,
+			@NotNull @Parameter(hidden = true) @PathParam("dataLayoutId") Long
+				dataLayoutId,
+			@NotNull @Parameter(hidden = true) @QueryParam("operation") String
+				operation,
 			DataLayoutPermission dataLayoutPermission)
 		throws Exception {
 	}
@@ -355,8 +355,8 @@ public abstract class BaseDataLayoutResourceImpl
 	@Tags(value = {@Tag(name = "DataLayout")})
 	public void postSiteDataLayoutPermission(
 			@NotNull @Parameter(hidden = true) @PathParam("siteId") Long siteId,
-			@NotNull @Parameter(hidden = true) @QueryParam("operation")
-				String operation,
+			@NotNull @Parameter(hidden = true) @QueryParam("operation") String
+				operation,
 			DataLayoutPermission dataLayoutPermission)
 		throws Exception {
 	}

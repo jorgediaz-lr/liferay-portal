@@ -133,8 +133,8 @@ public abstract class BaseDataDefinitionResourceImpl
 	@Produces("application/json")
 	@Tags(value = {@Tag(name = "DataDefinition")})
 	public Response deleteDataDefinitionBatch(
-			@Parameter(hidden = true) @QueryParam("callbackURL")
-				String callbackURL,
+			@Parameter(hidden = true) @QueryParam("callbackURL") String
+				callbackURL,
 			Object object)
 		throws Exception {
 
@@ -213,8 +213,8 @@ public abstract class BaseDataDefinitionResourceImpl
 	@PUT
 	@Tags(value = {@Tag(name = "DataDefinition")})
 	public Response putDataDefinitionBatch(
-			@Parameter(hidden = true) @QueryParam("callbackURL")
-				String callbackURL,
+			@Parameter(hidden = true) @QueryParam("callbackURL") String
+				callbackURL,
 			Object object)
 		throws Exception {
 
@@ -254,8 +254,8 @@ public abstract class BaseDataDefinitionResourceImpl
 	public void postDataDefinitionDataDefinitionPermission(
 			@NotNull @Parameter(hidden = true) @PathParam("dataDefinitionId")
 				Long dataDefinitionId,
-			@NotNull @Parameter(hidden = true) @QueryParam("operation")
-				String operation,
+			@NotNull @Parameter(hidden = true) @QueryParam("operation") String
+				operation,
 			DataDefinitionPermission dataDefinitionPermission)
 		throws Exception {
 	}
@@ -279,8 +279,8 @@ public abstract class BaseDataDefinitionResourceImpl
 	@Tags(value = {@Tag(name = "DataDefinition")})
 	public void postSiteDataDefinitionPermission(
 			@NotNull @Parameter(hidden = true) @PathParam("siteId") Long siteId,
-			@NotNull @Parameter(hidden = true) @QueryParam("operation")
-				String operation,
+			@NotNull @Parameter(hidden = true) @QueryParam("operation") String
+				operation,
 			DataDefinitionPermission dataDefinitionPermission)
 		throws Exception {
 	}
@@ -352,8 +352,8 @@ public abstract class BaseDataDefinitionResourceImpl
 	@Tags(value = {@Tag(name = "DataDefinition")})
 	public Response postSiteDataDefinitionBatch(
 			@NotNull @Parameter(hidden = true) @PathParam("siteId") Long siteId,
-			@Parameter(hidden = true) @QueryParam("callbackURL")
-				String callbackURL,
+			@Parameter(hidden = true) @QueryParam("callbackURL") String
+				callbackURL,
 			Object object)
 		throws Exception {
 

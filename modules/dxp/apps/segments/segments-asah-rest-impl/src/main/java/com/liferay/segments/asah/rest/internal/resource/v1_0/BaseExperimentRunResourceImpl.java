@@ -91,8 +91,8 @@ public abstract class BaseExperimentRunResourceImpl
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "ExperimentRun")})
 	public ExperimentRun postExperimentRun(
-			@NotNull @Parameter(hidden = true) @PathParam("experimentId")
-				Long experimentId,
+			@NotNull @Parameter(hidden = true) @PathParam("experimentId") Long
+				experimentId,
 			ExperimentRun experimentRun)
 		throws Exception {
 
@@ -117,10 +117,10 @@ public abstract class BaseExperimentRunResourceImpl
 	@Produces("application/json")
 	@Tags(value = {@Tag(name = "ExperimentRun")})
 	public Response postExperimentRunBatch(
-			@NotNull @Parameter(hidden = true) @PathParam("experimentId")
-				Long experimentId,
-			@Parameter(hidden = true) @QueryParam("callbackURL")
-				String callbackURL,
+			@NotNull @Parameter(hidden = true) @PathParam("experimentId") Long
+				experimentId,
+			@Parameter(hidden = true) @QueryParam("callbackURL") String
+				callbackURL,
 			Object object)
 		throws Exception {
 

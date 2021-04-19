@@ -86,8 +86,8 @@ public abstract class BaseAssigneeUserResourceImpl
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "AssigneeUser")})
 	public Page<AssigneeUser> getProcessAssigneeUsersPage(
-			@NotNull @Parameter(hidden = true) @PathParam("processId")
-				Long processId)
+			@NotNull @Parameter(hidden = true) @PathParam("processId") Long
+				processId)
 		throws Exception {
 
 		return Page.of(Collections.emptyList());
