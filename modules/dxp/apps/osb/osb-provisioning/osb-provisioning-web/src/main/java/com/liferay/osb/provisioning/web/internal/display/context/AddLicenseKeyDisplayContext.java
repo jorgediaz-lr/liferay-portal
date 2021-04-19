@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -198,7 +199,7 @@ public class AddLicenseKeyDisplayContext {
 			String[] versions = ProductVersion.getProductVersions(
 				product.getName());
 
-			if (versions.length < 1) {
+			if (ArrayUtil.isEmpty(versions)) {
 				continue;
 			}
 
