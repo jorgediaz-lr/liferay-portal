@@ -556,7 +556,9 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 
 		// See LRDCOM-2568
 
-		if (productVersion.equals(ProductVersion.PORTAL_VERSION_6_1_10)) {
+		if (productVersion.equals(ProductVersion.PORTAL_VERSION_6_1_10) ||
+			productVersion.equals("6.1 GA 1")) {
+
 			Calendar cal = Calendar.getInstance();
 
 			cal.set(Calendar.DAY_OF_MONTH, 31);
