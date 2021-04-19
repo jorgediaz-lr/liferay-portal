@@ -23,6 +23,36 @@ definition {
 			AlloyEditor.addContent(content = "${webContentContent}");
 		}
 
+		if (isSet(embedImage)) {
+			var key_uploadFileName = "${imageFileName}";
+
+			ItemSelector.gotoItemSelectorViaAlloyEditor();
+
+			SelectFrame(locator1 = "ItemSelector#ITEM_SELECTOR_IFRAME");
+
+			AssertClick(
+				key_breadcrumbName = "Sites",
+				locator1 = "Breadcrumb#BREADCRUMB_ENTRY",
+				value1 = "Sites");
+
+			AssertClick(
+				key_siteName = "${siteName}",
+				locator1 = "ItemSelector#SITE_SELECTOR",
+				value1 = "${siteName}");
+
+			var key_imageFileName = StringUtil.replace("${imageFileName}", " ", "+");
+
+			LexiconCard.clickCard(card = "${imageFileName}");
+
+			AssertTextEquals.assertPartialText(
+				locator1 = "ItemSelector#CAPTION",
+				value1 = "${imageFileName}");
+
+			SelectFrameTop(value1 = "relative=top");
+
+			Click(locator1 = "Button#ADD");
+		}
+
 		if (isSet(viewableBy)) {
 			Panel.expandPanel(panel = "Permissions");
 
@@ -212,6 +242,9 @@ definition {
 		WebContentDisplayPortletNavigator.gotoAdd(portletNameScoped = "${portletNameScoped}");
 
 		WebContent.addCP(
+			embedImage = "${embedImage}",
+			imageFileName = "${imageFileName}",
+			siteName = "${siteName}",
 			webContentContent = "${webContentContent}",
 			webContentTitle = "${webContentTitle}");
 
