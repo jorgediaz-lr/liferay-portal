@@ -143,7 +143,6 @@ public interface LicenseKeyService extends BaseService {
 			String[] productPurchaseKeys, boolean complimentary, boolean active)
 		throws PortalException;
 
-	@JSONWebService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getProductPurchaseLicenseKeysCount(
 			String productPurchaseKey, boolean complimentary, boolean active)

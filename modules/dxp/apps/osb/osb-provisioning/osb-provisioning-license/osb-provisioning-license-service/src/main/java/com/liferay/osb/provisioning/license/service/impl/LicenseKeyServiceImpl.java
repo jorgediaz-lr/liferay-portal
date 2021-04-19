@@ -266,7 +266,6 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			productPurchaseKeys, complimentary, active);
 	}
 
-	@JSONWebService
 	public int getProductPurchaseLicenseKeysCount(
 			String productPurchaseKey, boolean complimentary, boolean active)
 		throws PortalException {
