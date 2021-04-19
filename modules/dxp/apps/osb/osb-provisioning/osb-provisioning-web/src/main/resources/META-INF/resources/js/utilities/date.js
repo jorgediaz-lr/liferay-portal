@@ -123,7 +123,7 @@ export function setDisabledAttribute(attributeValue, identifier) {
  * @param {Object|string} value Date value from user input.
  * @returns {boolean}
  */
-export function validateDateFieldValue(value) {
+export function validateDateFieldFormat(value) {
 	if (typeof value === 'string' && value !== '') {
 		return /\d{4}-\d{2}-\d{2}/.test(value);
 	}

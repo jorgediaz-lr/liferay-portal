@@ -132,4 +132,22 @@ describe('RenewLicense', () => {
 			expect(queryAllByText('renew')[2].disabled).toBe(true);
 		});
 	});
+
+	it('keeps the Renew button disabled until the input date matches the MDYDateFormat', () => {
+		const {
+			getAllByPlaceholderText,
+			getByText,
+			queryAllByText
+		} = renderRenewLicense();
+
+		fireEvent.click(getByText('renew'));
+
+		return wait(() => {
+			fireEvent.change(getAllByPlaceholderText('YYYY-MM-DD')[0], {
+				target: {value: '2021-04'}
+			});
+
+			expect(queryAllByText('renew')[2].disabled).toBe(true);
+		});
+	});
 });

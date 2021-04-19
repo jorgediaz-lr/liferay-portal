@@ -23,7 +23,7 @@ import {
 import {
 	convertInputToDate,
 	setDisabledAttribute,
-	validateDateFieldValue
+	validateDateFieldFormat
 } from '../../utilities/date';
 import DatePicker from '../DatePicker';
 import BulkInput from './BulkInput';
@@ -185,13 +185,13 @@ function Subscription({
 	});
 
 	function handleEndDateChange(value) {
-		if (validateDateFieldValue(value)) {
+		if (validateDateFieldFormat(value)) {
 			updateEndDate(key, convertInputToDate(value));
 		}
 	}
 
 	function handleGracePeriodStartDateChange(value) {
-		if (validateDateFieldValue(value)) {
+		if (validateDateFieldFormat(value)) {
 			updateOriginalEndDate(key, convertInputToDate(value));
 		}
 	}
@@ -219,7 +219,7 @@ function Subscription({
 	}
 
 	function handleStartDateChange(value) {
-		if (validateDateFieldValue(value)) {
+		if (validateDateFieldFormat(value)) {
 			updateStartDate(key, convertInputToDate(value));
 		}
 	}

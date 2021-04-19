@@ -14,6 +14,7 @@ import ClayModal, {useModal} from '@clayui/modal';
 import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
 
+import {validateDateFieldFormat} from '../../utilities/date';
 import DatePicker from '../DatePicker';
 
 function RenewalModal({closeFn, expirationDate, renewFn, startDate}) {
@@ -31,6 +32,8 @@ function RenewalModal({closeFn, expirationDate, renewFn, startDate}) {
 		if (
 			!isNaN(new Date(currentExpirationDate)) &&
 			!isNaN(new Date(currentStartDate)) &&
+			validateDateFieldFormat(currentExpirationDate) &&
+			validateDateFieldFormat(currentStartDate) &&
 			(expirationDate !== currentExpirationDate ||
 				startDate !== currentStartDate)
 		) {

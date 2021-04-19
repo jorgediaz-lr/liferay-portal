@@ -24,7 +24,7 @@ import {
 import {
 	convertInputToDate,
 	setDisabledAttribute,
-	validateDateFieldValue
+	validateDateFieldFormat
 } from '../../utilities/date';
 import DatePicker from '../DatePicker';
 
@@ -157,13 +157,13 @@ function BulkInput({
 	}
 
 	function handleSaveEndDate(value) {
-		if (validateDateFieldValue(value)) {
+		if (validateDateFieldFormat(value)) {
 			updateAllValuesByFieldName('endDate', convertInputToDate(value));
 		}
 	}
 
 	function handleSaveGracePeriodStartDate(value) {
-		if (validateDateFieldValue(value)) {
+		if (validateDateFieldFormat(value)) {
 			updateAllValuesByFieldName(
 				'originalEndDate',
 				convertInputToDate(value)
@@ -194,7 +194,7 @@ function BulkInput({
 	}
 
 	function handleSaveStartDate(value) {
-		if (validateDateFieldValue(value)) {
+		if (validateDateFieldFormat(value)) {
 			updateAllValuesByFieldName('startDate', convertInputToDate(value));
 		}
 	}
