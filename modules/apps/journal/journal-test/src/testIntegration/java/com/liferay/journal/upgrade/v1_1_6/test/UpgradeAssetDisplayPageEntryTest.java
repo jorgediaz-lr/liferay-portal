@@ -218,6 +218,32 @@ public class UpgradeAssetDisplayPageEntryTest {
 		}
 	}
 
+	protected void addLayout(String uuid, long groupId, long companyId)
+		throws Exception {
+
+		StringBundler sb = new StringBundler(3);
+
+		sb.append("insert into Layout (uuid_, plid, groupId, companyId, ");
+		sb.append("layoutId, classNameId, classPK) values (?, ?, ?, ?, ?, ?, ");
+		sb.append("?)");
+
+		String sql = sb.toString();
+
+		try (Connection con = DataAccess.getConnection();
+			PreparedStatement ps = con.prepareStatement(sql)) {
+
+			ps.setString(1, uuid);
+			ps.setLong(2, _counterLocalService.increment());
+			ps.setLong(3, groupId);
+			ps.setLong(4, companyId);
+			ps.setLong(5, _counterLocalService.increment());
+			ps.setLong(6, 0);
+			ps.setLong(7, 0);
+
+			ps.executeUpdate();
+		}
+	}
+
 	protected void assertAssetDisplayPageEntries(
 			Group group, List<Long> resourcePrimKeys)
 		throws Exception {
@@ -251,6 +277,11 @@ public class UpgradeAssetDisplayPageEntryTest {
 		db.runSQL("delete from AssetEntry where groupId = " + groupId);
 
 		db.runSQL("delete from JournalArticle where groupId = " + groupId);
+
+		db.runSQL(
+			"delete from JournalArticleResource where groupId = " + groupId);
+
+		db.runSQL("delete from Layout where groupId = " + groupId);
 	}
 
 	protected Group createGroup() throws Exception {
@@ -420,6 +451,8 @@ public class UpgradeAssetDisplayPageEntryTest {
 
 		String layoutUuid = PortalUUIDUtil.generate();
 
+		addLayout(layoutUuid, liveGroup.getGroupId(), liveGroup.getCompanyId());
+
 		List<Long> stagingResourcePrimKeys = createJournalArticles(
 			articleCount, multipleArticleVersions, stagingGroup, layoutUuid);
 
@@ -462,6 +495,8 @@ public class UpgradeAssetDisplayPageEntryTest {
 		try {
 			String layoutUuid = PortalUUIDUtil.generate();
 
+			addLayout(layoutUuid, group.getGroupId(), group.getCompanyId());
+
 			createJournalArticles(
 				articleCount, multipleArticleVersions, group, layoutUuid);
 
@@ -483,6 +518,8 @@ public class UpgradeAssetDisplayPageEntryTest {
 		Group group = createGroup();
 
 		String layoutUuid = PortalUUIDUtil.generate();
+
+		addLayout(layoutUuid, group.getGroupId(), group.getCompanyId());
 
 		List<Long> resourcePrimKeys = createJournalArticles(
 			articleCount, multipleArticleVersions, group, layoutUuid);
