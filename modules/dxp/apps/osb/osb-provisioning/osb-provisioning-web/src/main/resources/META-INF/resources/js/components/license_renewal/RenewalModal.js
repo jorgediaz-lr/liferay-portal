@@ -29,8 +29,8 @@ function RenewalModal({closeFn, expirationDate, renewFn, startDate}) {
 
 	useEffect(() => {
 		if (
-			!!currentExpirationDate &&
-			!!currentStartDate &&
+			!isNaN(new Date(currentExpirationDate)) &&
+			!isNaN(new Date(currentStartDate)) &&
 			(expirationDate !== currentExpirationDate ||
 				startDate !== currentStartDate)
 		) {
@@ -58,7 +58,11 @@ function RenewalModal({closeFn, expirationDate, renewFn, startDate}) {
 			<ClayModal.Header>{Liferay.Language.get('renew')}</ClayModal.Header>
 			<ClayModal.Body>
 				<div className="add-items-sheet sheet sheet-lg">
-					<div className="form-group form-inline input-text-wrapper">
+					<div
+						className={`form-group form-inline input-text-wrapper ${
+							isNaN(new Date(currentStartDate)) ? 'has-error' : ''
+						}`}
+					>
 						<label className="control-label" htmlFor="startDate">
 							{Liferay.Language.get('start-date')}
 						</label>
@@ -71,7 +75,13 @@ function RenewalModal({closeFn, expirationDate, renewFn, startDate}) {
 						/>
 					</div>
 
-					<div className="form-group form-inline input-text-wrapper">
+					<div
+						className={`form-group form-inline input-text-wrapper ${
+							isNaN(new Date(currentExpirationDate))
+								? 'has-error'
+								: ''
+						}`}
+					>
 						<label
 							className="control-label"
 							htmlFor="expirationDate"

@@ -38,14 +38,8 @@ export default function RenewLicense({expirationDate, startDate}) {
 		if (form && expirationDateField && startDateField) {
 			handleClose();
 
-			// Validates user input. If date is invalid, simply use existing start or expiration date.
-
-			expirationDateField.value = !isNaN(new Date(newExpirationDate))
-				? formatDate(newExpirationDate)
-				: expirationDate;
-			startDateField.value = !isNaN(new Date(newStartDate))
-				? formatDate(newStartDate)
-				: startDate;
+			expirationDateField.value = formatDate(newExpirationDate);
+			startDateField.value = formatDate(newStartDate);
 
 			form.submit();
 		}
