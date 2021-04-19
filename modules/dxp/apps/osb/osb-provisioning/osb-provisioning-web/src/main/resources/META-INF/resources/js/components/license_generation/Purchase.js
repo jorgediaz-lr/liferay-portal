@@ -12,7 +12,7 @@
 import ClayTable from '@clayui/table';
 import ClayTableCell from '@clayui/table/lib/Cell';
 import PropTypes from 'prop-types';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {useLicense} from '../../hooks/license';
 import {DASH} from '../../utilities/constants';
@@ -26,6 +26,7 @@ function Purchase({
 	licenseKeysGenerated = DASH,
 	startDate
 }) {
+	const [disableChoose, setDisableChoose] = useState(false);
 	const [selectedExpirationDate, setSelectedExpirationDate] = useState(
 		expirationDate
 	);
@@ -33,6 +34,18 @@ function Purchase({
 	const [sizing, setSizing] = useState();
 
 	const [, {updateLicense}] = useLicense();
+
+	useEffect(() => {
+		if (
+			!isNaN(new Date(selectedExpirationDate)) &&
+			!isNaN(new Date(selectedStartDate))
+		) {
+			setDisableChoose(false);
+		}
+		else {
+			setDisableChoose(true);
+		}
+	}, [selectedExpirationDate, selectedStartDate]);
 
 	function handleChoosePurchase() {
 		updateLicense(license =>
@@ -69,7 +82,13 @@ function Purchase({
 
 			<ClayTable.Row id={dividerTitle ? dividerTitle : ''}>
 				{startDate ? (
-					<ClayTableCell className="input-group-sm">
+					<ClayTableCell
+						className={`input-group-sm ${
+							isNaN(new Date(selectedStartDate))
+								? 'has-error'
+								: ''
+						}`}
+					>
 						<DatePicker
 							defaultValue={startDate}
 							inputName="startDate"
@@ -81,7 +100,13 @@ function Purchase({
 				)}
 
 				{expirationDate ? (
-					<ClayTableCell className="input-group-sm">
+					<ClayTableCell
+						className={`input-group-sm ${
+							isNaN(new Date(selectedExpirationDate))
+								? 'has-error'
+								: ''
+						}`}
+					>
 						<DatePicker
 							defaultValue={expirationDate}
 							inputName="expirationDate"
@@ -120,6 +145,7 @@ function Purchase({
 				<ClayTableCell>
 					<button
 						className="btn btn-secondary btn-sm"
+						disabled={disableChoose}
 						onClick={handleChoosePurchase}
 					>
 						{Liferay.Language.get('choose')}

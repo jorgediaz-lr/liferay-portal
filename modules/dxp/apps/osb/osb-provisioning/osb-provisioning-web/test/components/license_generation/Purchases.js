@@ -9,7 +9,7 @@
  * distribution rights of the Software.
  */
 
-import {cleanup, render, within} from '@testing-library/react';
+import {cleanup, fireEvent, render, within} from '@testing-library/react';
 import React from 'react';
 
 import Purchases from '../../../src/main/resources/META-INF/resources/js/components/license_generation/Purchases';
@@ -89,9 +89,10 @@ describe('Purchases', () => {
 	});
 
 	it('only renders the Detached section with default values (dashes) if no purchased product is provided', () => {
-		const {getAllByText} = renderPurchases({purchased: []});
+		const {getAllByText, getByText} = renderPurchases({purchased: []});
 
 		expect(getAllByText('-').length).toBe(4);
+		expect(getByText('choose').disabled).toBeTruthy();
 	});
 
 	it('allows the user to select an Instance Size from a list of choices in the Detached section', () => {
@@ -106,6 +107,12 @@ describe('Purchases', () => {
 		within(getByLabelText('instance-size')).getByText('2');
 		within(getByLabelText('instance-size')).getByText('3');
 		within(getByLabelText('instance-size')).getByText('4');
+	});
+
+	it('displays a Choose button for each Purchase section', () => {
+		const {getAllByText} = renderPurchases();
+
+		expect(getAllByText('choose').length).toBe(3);
 	});
 
 	describe('Dates', () => {
@@ -184,6 +191,34 @@ describe('Purchases', () => {
 			const {getAllByDisplayValue} = renderPurchases({type: 'developer'});
 
 			expect(getAllByDisplayValue('2020-04-16').length).toBe(2);
+		});
+
+		it('displays the Choose button as disabled when a date field is left empty', () => {
+			const {getAllByPlaceholderText, getAllByText} = renderPurchases();
+
+			const firstChooseBtn = getAllByText('choose')[0];
+
+			expect(firstChooseBtn.disabled).toBeFalsy();
+
+			fireEvent.change(getAllByPlaceholderText('YYYY-MM-DD')[0], {
+				target: {value: ''}
+			});
+
+			expect(firstChooseBtn.disabled).toBeTruthy();
+		});
+
+		it('displays the Choose button as disabled when an invalid date is entered', () => {
+			const {getAllByPlaceholderText, getAllByText} = renderPurchases();
+
+			const firstChooseBtn = getAllByText('choose')[0];
+
+			expect(firstChooseBtn.disabled).toBeFalsy();
+
+			fireEvent.change(getAllByPlaceholderText('YYYY-MM-DD')[0], {
+				target: {value: '2021-04-32'}
+			});
+
+			expect(firstChooseBtn.disabled).toBeTruthy();
 		});
 	});
 });
