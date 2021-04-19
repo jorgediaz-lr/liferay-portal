@@ -57,6 +57,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import java.net.MalformedURLException;
@@ -1295,8 +1296,9 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 				try {
 					transformURLMethod.invoke(configurationFileInstaller, file);
 				}
-				catch (Exception exception) {
-					_log.error("Problem installing " + file, exception);
+				catch (InvocationTargetException invocationTargetException) {
+					_log.error(
+						"Unable to install " + file, invocationTargetException);
 				}
 			}
 		}
