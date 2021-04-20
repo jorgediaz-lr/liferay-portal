@@ -640,6 +640,10 @@ public class BasePersistenceImpl<T extends BaseModel<T>>
 			model = modelWrapper.getWrappedModel();
 		}
 
+		if (model == null) {
+			return null;
+		}
+
 		ModelListener<T>[] listeners = getListeners();
 
 		for (ModelListener<T> listener : listeners) {
@@ -647,6 +651,10 @@ public class BasePersistenceImpl<T extends BaseModel<T>>
 		}
 
 		model = removeImpl(model);
+
+		if (model == null) {
+			return null;
+		}
 
 		for (ModelListener<T> listener : listeners) {
 			listener.onAfterRemove(model);
