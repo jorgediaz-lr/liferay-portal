@@ -119,7 +119,7 @@ public class LicenseKeyServiceSoap {
 			addLicenseKey(
 				String userUuid, String assetReceiptLicenseUuid,
 				String licenseEntryType, String productName, String productId,
-				String productVersion, String owner, long maxUsers,
+				int productVersion, String owner, long maxUsers,
 				String description, String hostName, String ipAddresses,
 				String macAddresses, String serverId, java.util.Date startDate,
 				java.util.Date expirationDate)

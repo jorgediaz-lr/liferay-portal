@@ -147,7 +147,7 @@ public class LicenseKeyServiceHttp {
 			addLicenseKey(
 				HttpPrincipal httpPrincipal, String userUuid,
 				String assetReceiptLicenseUuid, String licenseEntryType,
-				String productName, String productId, String productVersion,
+				String productName, String productId, int productVersion,
 				String owner, long maxUsers, String description,
 				String hostName, String ipAddresses, String macAddresses,
 				String serverId, java.util.Date startDate,
@@ -1204,7 +1204,7 @@ public class LicenseKeyServiceHttp {
 	private static final Class<?>[] _addLicenseKeyParameterTypes2 =
 		new Class[] {
 			String.class, String.class, String.class, String.class,
-			String.class, String.class, String.class, long.class, String.class,
+			String.class, int.class, String.class, long.class, String.class,
 			String.class, String.class, String.class, String.class,
 			java.util.Date.class, java.util.Date.class
 		};

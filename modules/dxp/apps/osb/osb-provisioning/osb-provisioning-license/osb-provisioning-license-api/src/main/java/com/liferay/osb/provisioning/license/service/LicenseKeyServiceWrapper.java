@@ -65,9 +65,9 @@ public class LicenseKeyServiceWrapper
 	public com.liferay.osb.provisioning.license.model.LicenseKey addLicenseKey(
 			String userUuid, String assetReceiptLicenseUuid,
 			String licenseEntryType, String productName, String productId,
-			String productVersion, String owner, long maxUsers,
-			String description, String hostName, String ipAddresses,
-			String macAddresses, String serverId, java.util.Date startDate,
+			int productVersion, String owner, long maxUsers, String description,
+			String hostName, String ipAddresses, String macAddresses,
+			String serverId, java.util.Date startDate,
 			java.util.Date expirationDate)
 		throws Exception {
 
