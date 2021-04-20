@@ -170,6 +170,20 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			startDate = now;
 		}
 
+		if (Validator.isNotNull(accountName)) {
+			if (Validator.isNull(name)) {
+				name = accountName;
+			}
+
+			if (Validator.isNull(owner)) {
+				owner = accountName;
+			}
+
+			if (Validator.isNull(description)) {
+				description = accountName;
+			}
+		}
+
 		validate(productVersion, owner, description);
 
 		return doAddLicenseKeyVersion3_4(
