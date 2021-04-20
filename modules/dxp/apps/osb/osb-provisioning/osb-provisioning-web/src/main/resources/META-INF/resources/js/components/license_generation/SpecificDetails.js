@@ -53,7 +53,9 @@ function SpecificDetails({addLicenseKeyURL, redirect}) {
 	function formatDate(date) {
 		const utcAdjustedDate = getUTCAdjustedDate(date);
 
-		return displayInMDYDateFormat(utcAdjustedDate) || utcAdjustedDate;
+		return utcAdjustedDate instanceof Date
+			? displayInMDYDateFormat(utcAdjustedDate)
+			: utcAdjustedDate;
 	}
 
 	function handleAccountNameChange(event) {
