@@ -16,7 +16,7 @@ import {useLicense} from '../../hooks/license';
 import {formatDate} from '../../utilities/date';
 import {request} from '../../utilities/helpers';
 
-function GenerateButton({formAction, redirect}) {
+function GenerateButton({formAction, redirect, serverIdValidatable = false}) {
 	const [license] = useLicense();
 	const {
 		licenseEntryId,
@@ -24,6 +24,13 @@ function GenerateButton({formAction, redirect}) {
 		licenseEntryType
 	} = license.licenseEntry;
 	const {productKey} = license.product;
+	const {serverIds} = license;
+
+	function disableGenerate() {
+		return !license.description || !license.owner || serverIdValidatable
+			? !validateServerIds()
+			: false;
+	}
 
 	function handleSubmit() {
 		const params = {
@@ -34,7 +41,7 @@ function GenerateButton({formAction, redirect}) {
 			name: licenseEntryName,
 			productKey,
 			productVersion: license.version,
-			serverIds: JSON.stringify(license.serverIds),
+			serverIds: JSON.stringify(serverIds),
 			startDate: formatDate(license.startDate)
 		};
 
@@ -47,10 +54,19 @@ function GenerateButton({formAction, redirect}) {
 			.catch(err => console.error(err));
 	}
 
+	function validateServerIds() {
+		return serverIds
+			.filter(
+				({hostName, ipAddresses, macAddresses}) =>
+					!hostName && !ipAddresses && !macAddresses
+			)
+			.isEmpty();
+	}
+
 	return (
 		<button
 			className="btn btn-primary"
-			disabled={!license.description || !license.owner}
+			disabled={disableGenerate()}
 			onClick={handleSubmit}
 			type="button"
 		>
@@ -61,7 +77,8 @@ function GenerateButton({formAction, redirect}) {
 
 GenerateButton.propTypse = {
 	formAction: PropTypes.string.isRequired,
-	redirect: PropTypes.string.isRequired
+	redirect: PropTypes.string.isRequired,
+	serverIdValidatable: PropTypes.bool
 };
 
 export default GenerateButton;

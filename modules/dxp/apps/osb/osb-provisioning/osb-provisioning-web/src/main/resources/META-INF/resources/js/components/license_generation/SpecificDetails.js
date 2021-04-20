@@ -44,12 +44,6 @@ function SpecificDetails({addLicenseKeyURL, redirect}) {
 		version
 	} = license;
 
-	function displayServerIDFields() {
-		return !KNOWN_SERVER_ID_LICENSE_TYPES.filter(
-			type => type === licenseEntry.licenseEntryType
-		).length;
-	}
-
 	function formatDate(date) {
 		const utcAdjustedDate = getUTCAdjustedDate(new Date(date));
 
@@ -101,6 +95,12 @@ function SpecificDetails({addLicenseKeyURL, redirect}) {
 			licenseEntry.licenseEntryType === LICENSE_TYPE_DEVELOPER_CLUSTER ||
 			licenseEntry.licenseEntryType === LICENSE_TYPE_DEVELOPER
 		);
+	}
+
+	function isDisplayServerIDFields() {
+		return !KNOWN_SERVER_ID_LICENSE_TYPES.filter(
+			type => type === licenseEntry.licenseEntryType
+		).length;
 	}
 
 	return (
@@ -169,7 +169,7 @@ function SpecificDetails({addLicenseKeyURL, redirect}) {
 								/>
 							</div>
 
-							{displayServerIDFields() && <ServerIdFieldGroups />}
+							{isDisplayServerIDFields() && <ServerIdFieldGroups />}
 
 							{licenseEntry.licenseEntryType ===
 								LICENSE_TYPE_CLUSTER && (
@@ -259,6 +259,7 @@ function SpecificDetails({addLicenseKeyURL, redirect}) {
 						<GenerateButton
 							formAction={addLicenseKeyURL}
 							redirect={redirect}
+							serverIdValidatable={isDisplayServerIDFields()}
 						/>
 
 						<button

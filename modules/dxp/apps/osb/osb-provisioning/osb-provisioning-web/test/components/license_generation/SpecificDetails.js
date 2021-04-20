@@ -126,7 +126,10 @@ describe('SpecificDetails', () => {
 					})
 				}
 			>
-				<SpecificDetails redirect={'/redirect/url'} />
+				<SpecificDetails
+					addLicenseKeyURL="add/license/key/url"
+					redirect={'/redirect/url'}
+				/>
 			</LicenseProvider>
 		);
 
@@ -156,7 +159,10 @@ describe('SpecificDetails', () => {
 					})
 				}
 			>
-				<SpecificDetails redirect={'/redirect/url'} />
+				<SpecificDetails
+					addLicenseKeyURL="add/license/key/url"
+					redirect={'/redirect/url'}
+				/>
 			</LicenseProvider>
 		);
 
@@ -174,7 +180,10 @@ describe('SpecificDetails', () => {
 					})
 				}
 			>
-				<SpecificDetails redirect={'/redirect/url'} />
+				<SpecificDetails
+					addLicenseKeyURL="add/license/key/url"
+					redirect={'/redirect/url'}
+				/>
 			</LicenseProvider>
 		);
 
@@ -198,7 +207,10 @@ describe('SpecificDetails', () => {
 					})
 				}
 			>
-				<SpecificDetails redirect={'/redirect/url'} />
+				<SpecificDetails
+					addLicenseKeyURL="add/license/key/url"
+					redirect={'/redirect/url'}
+				/>
 			</LicenseProvider>
 		);
 
@@ -223,6 +235,27 @@ describe('SpecificDetails', () => {
 		const {getByText} = renderSpecificDetails();
 
 		fireEvent.change(getByText('description'), {taget: {value: ''}});
+
+		expect(getByText('generate').disabled).toBeTruthy();
+	});
+
+	it('displays a disabled Generate button if the Server ID Fields are displayed but no value has been entered in any of its three fields', () => {
+		const {getByText} = render(
+			<LicenseProvider
+				initialLicense={
+					new License({
+						licenseEntry: {
+							licenseEntryType: 'cluster'
+						}
+					})
+				}
+			>
+				<SpecificDetails
+					addLicenseKeyURL="add/license/key/url"
+					redirect={'/redirect/url'}
+				/>
+			</LicenseProvider>
+		);
 
 		expect(getByText('generate').disabled).toBeTruthy();
 	});

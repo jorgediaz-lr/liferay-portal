@@ -14,15 +14,27 @@ import React from 'react';
 
 import {useLicense} from '../../hooks/license';
 import IconButton from '../IconButton';
+import RequiredFieldMarker from '../RequiredFieldMarker';
 
 function ServerIdFieldGroups() {
 	const [{serverIds}] = useLicense();
 
 	return (
 		<div className="col-md-12 form-group">
-			<h4>{Liferay.Language.get('server-id-fields')}</h4>
+			<h4>
+				{Liferay.Language.get('server-id-fields')}{' '}
+				<RequiredFieldMarker />
+			</h4>
 
 			<div className="server-id-field-groups">
+				<div className="form-feedback-group">
+					<div className="form-text">
+						{Liferay.Language.get(
+							'please-fill-out-at-lease-one-of-the-server-id-fields-for-each-field-group'
+						)}
+					</div>
+				</div>
+
 				{serverIds.map((group, index) => (
 					<FieldGroup
 						group={group}
