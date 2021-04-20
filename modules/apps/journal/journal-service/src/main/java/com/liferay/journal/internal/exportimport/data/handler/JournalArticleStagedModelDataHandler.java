@@ -1559,7 +1559,8 @@ public class JournalArticleStagedModelDataHandler
 						importedArticle.getGroupId(),
 						serviceContext.getLiferayPortletResponse());
 
-					HashMap<String, Object> articleURLMap =
+					contextMap.put(
+						"[$ARTICLE_URL$]",
 						HashMapBuilder.<String, Object>put(
 							"escape", true
 						).put(
@@ -1572,9 +1573,7 @@ public class JournalArticleStagedModelDataHandler
 							}
 						).put(
 							"originalValue", articleURL
-						).build();
-
-					contextMap.put("[$ARTICLE_URL$]", articleURLMap);
+						).build());
 
 					contextMap.forEach(
 						(key, value) -> subscriptionSender.setContextAttribute(
