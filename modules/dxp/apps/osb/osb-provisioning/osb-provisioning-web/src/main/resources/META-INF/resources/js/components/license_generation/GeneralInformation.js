@@ -232,16 +232,16 @@ function GeneralInformation({
 									<>
 										<option value=""></option>
 										{!!getAvailableVersions() &&
-											getAvailableVersions().map(
-												availableVersion => (
+											getAvailableVersions()
+												.sort()
+												.map(availableVersion => (
 													<option
 														key={availableVersion}
 														value={availableVersion}
 													>
 														{availableVersion}
 													</option>
-												)
-											)}
+												))}
 									</>
 								)}
 							</select>
