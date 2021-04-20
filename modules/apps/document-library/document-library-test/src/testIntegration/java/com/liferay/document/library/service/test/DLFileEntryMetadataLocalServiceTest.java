@@ -37,6 +37,7 @@ import com.liferay.dynamic.data.mapping.service.DDMStructureLocalServiceUtil;
 import com.liferay.dynamic.data.mapping.test.util.DDMFormTestUtil;
 import com.liferay.dynamic.data.mapping.util.DDMBeanTranslatorUtil;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
@@ -56,6 +57,9 @@ import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import java.io.ByteArrayInputStream;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 
 import java.util.List;
 import java.util.Locale;
@@ -151,10 +155,16 @@ public class DLFileEntryMetadataLocalServiceTest {
 					_ddmStructure.getStructureId(),
 					dlFileVersion.getFileVersionId());
 
-			_ddmStructure.setCompanyId(_company.getCompanyId());
+			try (Connection connection = DataAccess.getConnection();
+				PreparedStatement ps = connection.prepareStatement(
+					"update DDMStructure set companyId = ? where structureId " +
+						"= ?")) {
 
-			_ddmStructure = DDMStructureLocalServiceUtil.updateDDMStructure(
-				_ddmStructure);
+				ps.setLong(1, _company.getCompanyId());
+				ps.setLong(2, _ddmStructure.getStructureId());
+
+				ps.executeUpdate();
+			}
 
 			List<DLFileEntryMetadata> dlFileEntryMetadatas =
 				DLFileEntryMetadataLocalServiceUtil.
@@ -168,6 +178,7 @@ public class DLFileEntryMetadataLocalServiceTest {
 		}
 		finally {
 			if (_ddmStructure != null) {
+				_ddmStructure.setGroupId(_dlFileEntry.getGroupId());
 				_ddmStructure.setCompanyId(_dlFileEntry.getCompanyId());
 
 				_ddmStructure = DDMStructureLocalServiceUtil.updateDDMStructure(
