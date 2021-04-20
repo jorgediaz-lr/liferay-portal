@@ -454,11 +454,11 @@ public interface LicenseKeyLocalService
 		String accountKey, String productPurchaseKey, String accountName,
 		Date startDateGT, Date startDateLT, long[] licenseEntryIds,
 		String[] productKeys, String productName, String productId,
-		String[] productVersions, String owner, String description,
-		String hostName, String ipAddress, String macAddress, String serverId,
-		String key, Date expirationDateGT, Date expirationDateLT,
-		LinkedHashMap<String, Object> params, boolean andSearch, int start,
-		int end, OrderByComparator obc);
+		String[] productVersions, long[] clusterIds, String owner,
+		String description, String hostName, String ipAddress,
+		String macAddress, String serverId, String key, Date expirationDateGT,
+		Date expirationDateLT, LinkedHashMap<String, Object> params,
+		boolean andSearch, int start, int end, OrderByComparator obc);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> search(
@@ -490,10 +490,11 @@ public interface LicenseKeyLocalService
 		String accountKey, String productPurchaseKey, String accountName,
 		Date startDateGT, Date startDateLT, long[] licenseEntryIds,
 		String[] productKeys, String productName, String productId,
-		String[] productVersions, String owner, String description,
-		String hostName, String ipAddress, String macAddress, String serverId,
-		String key, Date expirationDateGT, Date expirationDateLT,
-		LinkedHashMap<String, Object> params, boolean andSearch);
+		String[] productVersions, long[] clusterIds, String owner,
+		String description, String hostName, String ipAddress,
+		String macAddress, String serverId, String key, Date expirationDateGT,
+		Date expirationDateLT, LinkedHashMap<String, Object> params,
+		boolean andSearch);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int searchCount(

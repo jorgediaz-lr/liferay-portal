@@ -682,8 +682,8 @@ public class LicenseKeyLocalServiceWrapper
 			String accountKey, String productPurchaseKey, String accountName,
 			java.util.Date startDateGT, java.util.Date startDateLT,
 			long[] licenseEntryIds, String[] productKeys, String productName,
-			String productId, String[] productVersions, String owner,
-			String description, String hostName, String ipAddress,
+			String productId, String[] productVersions, long[] clusterIds,
+			String owner, String description, String hostName, String ipAddress,
 			String macAddress, String serverId, String key,
 			java.util.Date expirationDateGT, java.util.Date expirationDateLT,
 			java.util.LinkedHashMap<String, Object> params, boolean andSearch,
@@ -694,9 +694,10 @@ public class LicenseKeyLocalServiceWrapper
 			createUserUuid, createDateGT, createDateLT, modifiedUserUuid,
 			modifiedDateGT, modifiedDateLT, accountKey, productPurchaseKey,
 			accountName, startDateGT, startDateLT, licenseEntryIds, productKeys,
-			productName, productId, productVersions, owner, description,
-			hostName, ipAddress, macAddress, serverId, key, expirationDateGT,
-			expirationDateLT, params, andSearch, start, end, obc);
+			productName, productId, productVersions, clusterIds, owner,
+			description, hostName, ipAddress, macAddress, serverId, key,
+			expirationDateGT, expirationDateLT, params, andSearch, start, end,
+			obc);
 	}
 
 	@Override
@@ -750,8 +751,8 @@ public class LicenseKeyLocalServiceWrapper
 		String accountKey, String productPurchaseKey, String accountName,
 		java.util.Date startDateGT, java.util.Date startDateLT,
 		long[] licenseEntryIds, String[] productKeys, String productName,
-		String productId, String[] productVersions, String owner,
-		String description, String hostName, String ipAddress,
+		String productId, String[] productVersions, long[] clusterIds,
+		String owner, String description, String hostName, String ipAddress,
 		String macAddress, String serverId, String key,
 		java.util.Date expirationDateGT, java.util.Date expirationDateLT,
 		java.util.LinkedHashMap<String, Object> params, boolean andSearch) {
@@ -760,9 +761,9 @@ public class LicenseKeyLocalServiceWrapper
 			createUserUuid, createDateGT, createDateLT, modifiedUserUuid,
 			modifiedDateGT, modifiedDateLT, accountKey, productPurchaseKey,
 			accountName, startDateGT, startDateLT, licenseEntryIds, productKeys,
-			productName, productId, productVersions, owner, description,
-			hostName, ipAddress, macAddress, serverId, key, expirationDateGT,
-			expirationDateLT, params, andSearch);
+			productName, productId, productVersions, clusterIds, owner,
+			description, hostName, ipAddress, macAddress, serverId, key,
+			expirationDateGT, expirationDateLT, params, andSearch);
 	}
 
 	@Override
