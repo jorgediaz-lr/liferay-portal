@@ -122,7 +122,7 @@ public class EditLicenseKeyMVCActionCommand extends BaseMVCActionCommand {
 				continue;
 			}
 
-			hostNames.add(hostName);
+			hostNames.add(hostName.trim());
 			ipAddresses.add(StringUtil.merge(curIpAddresses));
 			macAddresses.add(StringUtil.merge(curMacAddresses));
 		}
