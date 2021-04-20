@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -146,10 +147,9 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 	public LicenseKey addLicenseKey(
 			String userUuid, String assetReceiptLicenseUuid,
 			String licenseEntryType, String productName, String productId,
-			String productVersion, String owner, long maxUsers,
-			String description, String hostName, String ipAddresses,
-			String macAddresses, String serverId, Date startDate,
-			Date expirationDate)
+			int productVersion, String owner, long maxUsers, String description,
+			String hostName, String ipAddresses, String macAddresses,
+			String serverId, Date startDate, Date expirationDate)
 		throws Exception {
 
 		validateJSONWebServicePermissions();
@@ -160,9 +160,9 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 		return licenseKeyLocalService.addLicenseKey(
 			user.getUserId(), assetReceiptLicenseUuid, licenseEntryType,
-			productName, productId, productVersion, owner, maxUsers,
-			description, hostName, ipAddresses, macAddresses, serverId,
-			startDate, expirationDate);
+			productName, productId, String.valueOf(productVersion), owner,
+			maxUsers, description, hostName, ipAddresses, macAddresses,
+			serverId, startDate, expirationDate);
 	}
 
 	@JSONWebService
@@ -515,7 +515,11 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 	}
 
 	protected void validateJSONWebServicePermissions() throws PortalException {
-		//TODO: add permission check
+		PermissionChecker permissionChecker = getPermissionChecker();
+
+		if (!permissionChecker.isCompanyAdmin()) {
+			throw new PrincipalException();
+		}
 	}
 
 	@Reference
