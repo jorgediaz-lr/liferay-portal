@@ -228,7 +228,7 @@ public class AddLicenseKeyDisplayContext {
 		for (String version : versions) {
 			List<LicenseEntry> licenseEntries =
 				_licenseEntryLocalService.getLicenseEntriesByVersion(
-					productKey, version.trim());
+					productKey, version);
 
 			JSONArray licenseEntriesJSONArray =
 				JSONFactoryUtil.createJSONArray();
@@ -244,8 +244,7 @@ public class AddLicenseKeyDisplayContext {
 					));
 			}
 
-			productVersionsJSONObject.put(
-				version.trim(), licenseEntriesJSONArray);
+			productVersionsJSONObject.put(version, licenseEntriesJSONArray);
 		}
 
 		return productVersionsJSONObject;
