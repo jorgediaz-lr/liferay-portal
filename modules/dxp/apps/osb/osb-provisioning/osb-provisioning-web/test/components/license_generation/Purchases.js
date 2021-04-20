@@ -79,7 +79,7 @@ describe('Purchases', () => {
 	it('displays a License Keys Generated column', () => {
 		const {getByText} = renderPurchases();
 
-		getByText('license-keys-generated');
+		getByText('licenses-generated');
 	});
 
 	it('always displays a Detached section', () => {

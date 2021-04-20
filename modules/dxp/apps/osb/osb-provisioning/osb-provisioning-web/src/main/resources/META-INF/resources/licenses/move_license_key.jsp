@@ -92,7 +92,7 @@ Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat("MMMM dd, yyyy
 			/>
 
 			<liferay-ui:search-container-column-text
-				name="license-keys-generated"
+				name="licenses-generated"
 				value="<%= licenseKeysGenerated %>"
 			>
 			</liferay-ui:search-container-column-text>

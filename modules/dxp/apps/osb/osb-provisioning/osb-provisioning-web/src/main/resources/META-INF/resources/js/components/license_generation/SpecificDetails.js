@@ -313,7 +313,7 @@ function SpecificDetails({addLicenseKeyURL, redirect}) {
 							<div>
 								<dt>
 									{Liferay.Language.get(
-										'license-keys-generated'
+										'licenses-generated'
 									)}
 								</dt>
 								<dd>{licenseKeysGenerated}</dd>
