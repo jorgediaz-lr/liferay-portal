@@ -48,8 +48,6 @@ PortletURL portletURL = viewAccountLicenseKeysDisplayContext.getPortletURL();
 				itemsTotal="<%= searchContainer.getTotal() %>"
 				searchActionURL="<%= viewAccountLicenseKeysDisplayContext.getCurrentURL() %>"
 				searchContainerId="license-keys"
-				selectable="<%= false %>"
-				showSearch="<%= false %>"
 			/>
 
 			<liferay-ui:search-container-row

@@ -50,6 +50,7 @@ SearchContainer productPurchasesSearchContainer = viewAccountDisplayContext.getP
 		<clay:management-toolbar
 			componentId="productPurchasesManagementToolbar"
 			displayContext="<%= new ViewProductPurchasesManagementToolbarDisplayContext(liferayPortletRequest, liferayPortletResponse, request, productPurchasesSearchContainer, accountDisplay.getKey()) %>"
+			elementClasses="full-width"
 			searchContainerId="productPurchases"
 		/>
 
