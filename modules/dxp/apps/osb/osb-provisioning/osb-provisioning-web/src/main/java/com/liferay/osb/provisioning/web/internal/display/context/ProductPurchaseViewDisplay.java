@@ -19,7 +19,10 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductConsumption;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchaseView;
+import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
+import com.liferay.osb.provisioning.web.internal.search.LicenseKeyDisplayTerms;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -31,6 +34,9 @@ import java.text.Format;
 
 import java.util.Date;
 import java.util.Map;
+
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletURL;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -145,6 +151,23 @@ public class ProductPurchaseViewDisplay {
 
 	public String getProvisionedCount() {
 		return String.valueOf(_provisionedCount);
+	}
+
+	public String getProvisionedCountURL() {
+		PortletURL portletURL = PortletURLFactoryUtil.create(
+			_httpServletRequest, ProvisioningPortletKeys.LICENSES,
+			PortletRequest.RENDER_PHASE);
+
+		portletURL.setParameter(
+			LicenseKeyDisplayTerms.ADVANCED_SEARCH, StringPool.TRUE);
+		portletURL.setParameter(
+			LicenseKeyDisplayTerms.AND_OPERATOR, StringPool.TRUE);
+		portletURL.setParameter(
+			LicenseKeyDisplayTerms.ACCOUNT_KEY, _account.getKey());
+		portletURL.setParameter(
+			LicenseKeyDisplayTerms.PRODUCTS, _product.getKey());
+
+		return portletURL.toString();
 	}
 
 	public String getSizing() {
