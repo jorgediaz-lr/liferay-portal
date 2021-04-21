@@ -50,7 +50,6 @@ public class DownloadLicenseKeysDisplayContext {
 			(LiferayPortletURL)_renderResponse.createResourceURL();
 
 		liferayPortletURL.setCopyCurrentRenderParameters(false);
-
 		liferayPortletURL.setResourceID("/accounts/download_license_keys");
 
 		data.put("downloadLicenseKeysURL", liferayPortletURL.toString());

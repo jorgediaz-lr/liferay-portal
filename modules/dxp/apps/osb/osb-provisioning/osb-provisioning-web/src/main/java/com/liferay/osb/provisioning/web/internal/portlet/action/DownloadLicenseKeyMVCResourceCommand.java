@@ -61,9 +61,6 @@ public class DownloadLicenseKeyMVCResourceCommand
 			long[] licenseKeyIds = ParamUtil.getLongValues(
 				resourceRequest, "licenseKeyIds");
 
-			long licenseKeyId = ParamUtil.getLong(
-				resourceRequest, "licenseKeyId");
-
 			if (licenseKeyIds.length > 1) {
 				downloadAggregateLicenseKey(
 					resourceRequest, resourceResponse, licenseKeyIds);
@@ -73,6 +70,9 @@ public class DownloadLicenseKeyMVCResourceCommand
 					resourceRequest, resourceResponse, licenseKeyIds[0]);
 			}
 			else {
+				long licenseKeyId = ParamUtil.getLong(
+					resourceRequest, "licenseKeyId");
+
 				downloadLicenseKey(
 					resourceRequest, resourceResponse, licenseKeyId);
 			}

@@ -49,11 +49,11 @@ public class DownloadLicenseKeysMVCRenderCommand implements MVCRenderCommand {
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws PortletException {
 
+		List<LicenseKey> licenseKeys = new ArrayList<>();
+
 		try {
 			long[] licenseKeyIds = ParamUtil.getLongValues(
 				renderRequest, "licenseKeyIds");
-
-			List<LicenseKey> licenseKeys = new ArrayList<>();
 
 			for (long licenseKeyId : licenseKeyIds) {
 				licenseKeys.add(_licenseKeyService.getLicenseKey(licenseKeyId));

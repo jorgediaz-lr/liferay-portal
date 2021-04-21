@@ -545,14 +545,12 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 		String macAddresses, String serverIds, Date startDate,
 		Date expirationDate, Date createDate) {
 
-		String[] curServerIds = {serverIds};
-
 		Map<String, String> properties = _keyGenerator.getProperties(
 			accountName, licenseEntryName, licenseType, licenseVersion,
 			productName, productId, productVersion, owner, maxServers,
 			maxHttpSessions, maxConcurrentUsers, maxUsers, sizing, description,
-			hostNames, ipAddresses, macAddresses, curServerIds, startDate,
-			expirationDate);
+			hostNames, ipAddresses, macAddresses, new String[] {serverIds},
+			startDate, expirationDate);
 
 		// See LRDCOM-2568
 
