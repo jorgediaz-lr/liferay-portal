@@ -289,21 +289,6 @@ public interface LicenseKeyModel
 	public void setProductKey(String productKey);
 
 	/**
-	 * Returns the account code of this license key.
-	 *
-	 * @return the account code of this license key
-	 */
-	@AutoEscape
-	public String getAccountCode();
-
-	/**
-	 * Sets the account code of this license key.
-	 *
-	 * @param accountCode the account code of this license key
-	 */
-	public void setAccountCode(String accountCode);
-
-	/**
 	 * Returns the account name of this license key.
 	 *
 	 * @return the account name of this license key

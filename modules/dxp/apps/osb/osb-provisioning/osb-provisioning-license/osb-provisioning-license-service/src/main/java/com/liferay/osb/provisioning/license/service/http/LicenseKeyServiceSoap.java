@@ -85,11 +85,11 @@ public class LicenseKeyServiceSoap {
 			addLicenseKey(
 				long userId, long licenseEntryId, String productKey,
 				String accountKey, String productPurchaseKey,
-				String accountCode, String accountName, String productVersion,
-				long clusterId, String name, String owner, int maxServers,
-				int maxHttpSessions, int maxConcurrentUsers, int maxUsers,
-				int sizing, String description, String[] hostNames,
-				String[] ipAddresses, String[] macAddresses, String[] serverIds,
+				String accountName, String productVersion, long clusterId,
+				String name, String owner, int maxServers, int maxHttpSessions,
+				int maxConcurrentUsers, int maxUsers, int sizing,
+				String description, String[] hostNames, String[] ipAddresses,
+				String[] macAddresses, String[] serverIds,
 				java.util.Date startDate, java.util.Date expirationDate,
 				boolean complimentary, boolean active)
 		throws RemoteException {
@@ -98,12 +98,11 @@ public class LicenseKeyServiceSoap {
 			com.liferay.osb.provisioning.license.model.LicenseKey returnValue =
 				LicenseKeyServiceUtil.addLicenseKey(
 					userId, licenseEntryId, productKey, accountKey,
-					productPurchaseKey, accountCode, accountName,
-					productVersion, clusterId, name, owner, maxServers,
-					maxHttpSessions, maxConcurrentUsers, maxUsers, sizing,
-					description, hostNames, ipAddresses, macAddresses,
-					serverIds, startDate, expirationDate, complimentary,
-					active);
+					productPurchaseKey, accountName, productVersion, clusterId,
+					name, owner, maxServers, maxHttpSessions,
+					maxConcurrentUsers, maxUsers, sizing, description,
+					hostNames, ipAddresses, macAddresses, serverIds, startDate,
+					expirationDate, complimentary, active);
 
 			return com.liferay.osb.provisioning.license.model.LicenseKeySoap.
 				toSoapModel(returnValue);

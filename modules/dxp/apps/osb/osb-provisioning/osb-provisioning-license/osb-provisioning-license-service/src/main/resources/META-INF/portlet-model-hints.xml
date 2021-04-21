@@ -30,7 +30,6 @@
 		<field name="productPurchaseKey" type="String" />
 		<field name="licenseEntryId" type="long" />
 		<field name="productKey" type="String" />
-		<field name="accountCode" type="String" />
 		<field name="accountName" type="String">
 			<hint name="max-length">500</hint>
 		</field>

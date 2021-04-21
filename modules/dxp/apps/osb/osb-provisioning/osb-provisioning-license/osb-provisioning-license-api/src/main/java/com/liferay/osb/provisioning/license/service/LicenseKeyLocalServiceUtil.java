@@ -72,42 +72,40 @@ public class LicenseKeyLocalServiceUtil {
 				licenseEntry,
 			com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product
 				product,
-			String accountKey, String productPurchaseKey, String accountCode,
-			String accountName, String productVersion, long clusterId,
-			String name, String owner, int maxServers, int maxHttpSessions,
-			int maxConcurrentUsers, int maxUsers, int sizing,
-			String description, String[] hostNames, String[] ipAddresses,
-			String[] macAddresses, String[] serverIds, java.util.Date startDate,
-			java.util.Date expirationDate, String additionalInfo,
-			boolean complimentary, boolean active)
+			String accountKey, String productPurchaseKey, String accountName,
+			String productVersion, long clusterId, String name, String owner,
+			int maxServers, int maxHttpSessions, int maxConcurrentUsers,
+			int maxUsers, int sizing, String description, String[] hostNames,
+			String[] ipAddresses, String[] macAddresses, String[] serverIds,
+			java.util.Date startDate, java.util.Date expirationDate,
+			String additionalInfo, boolean complimentary, boolean active)
 		throws Exception {
 
 		return getService().addLicenseKey(
 			userId, licenseEntry, product, accountKey, productPurchaseKey,
-			accountCode, accountName, productVersion, clusterId, name, owner,
-			maxServers, maxHttpSessions, maxConcurrentUsers, maxUsers, sizing,
-			description, hostNames, ipAddresses, macAddresses, serverIds,
-			startDate, expirationDate, additionalInfo, complimentary, active);
+			accountName, productVersion, clusterId, name, owner, maxServers,
+			maxHttpSessions, maxConcurrentUsers, maxUsers, sizing, description,
+			hostNames, ipAddresses, macAddresses, serverIds, startDate,
+			expirationDate, additionalInfo, complimentary, active);
 	}
 
 	public static LicenseKey addLicenseKey(
 			long userId, long licenseEntryId, String productKey,
-			String accountKey, String productPurchaseKey, String accountCode,
-			String accountName, String productVersion, long clusterId,
-			String name, String owner, int maxServers, int maxHttpSessions,
-			int maxConcurrentUsers, int maxUsers, int sizing,
-			String description, String[] hostNames, String[] ipAddresses,
-			String[] macAddresses, String[] serverIds, java.util.Date startDate,
-			java.util.Date expirationDate, boolean complimentary,
-			boolean active)
+			String accountKey, String productPurchaseKey, String accountName,
+			String productVersion, long clusterId, String name, String owner,
+			int maxServers, int maxHttpSessions, int maxConcurrentUsers,
+			int maxUsers, int sizing, String description, String[] hostNames,
+			String[] ipAddresses, String[] macAddresses, String[] serverIds,
+			java.util.Date startDate, java.util.Date expirationDate,
+			boolean complimentary, boolean active)
 		throws Exception {
 
 		return getService().addLicenseKey(
 			userId, licenseEntryId, productKey, accountKey, productPurchaseKey,
-			accountCode, accountName, productVersion, clusterId, name, owner,
-			maxServers, maxHttpSessions, maxConcurrentUsers, maxUsers, sizing,
-			description, hostNames, ipAddresses, macAddresses, serverIds,
-			startDate, expirationDate, complimentary, active);
+			accountName, productVersion, clusterId, name, owner, maxServers,
+			maxHttpSessions, maxConcurrentUsers, maxUsers, sizing, description,
+			hostNames, ipAddresses, macAddresses, serverIds, startDate,
+			expirationDate, complimentary, active);
 	}
 
 	public static LicenseKey addLicenseKey(

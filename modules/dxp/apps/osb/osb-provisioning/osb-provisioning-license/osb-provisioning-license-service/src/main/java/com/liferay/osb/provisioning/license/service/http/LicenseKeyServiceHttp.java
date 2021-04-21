@@ -95,11 +95,11 @@ public class LicenseKeyServiceHttp {
 			addLicenseKey(
 				HttpPrincipal httpPrincipal, long userId, long licenseEntryId,
 				String productKey, String accountKey, String productPurchaseKey,
-				String accountCode, String accountName, String productVersion,
-				long clusterId, String name, String owner, int maxServers,
-				int maxHttpSessions, int maxConcurrentUsers, int maxUsers,
-				int sizing, String description, String[] hostNames,
-				String[] ipAddresses, String[] macAddresses, String[] serverIds,
+				String accountName, String productVersion, long clusterId,
+				String name, String owner, int maxServers, int maxHttpSessions,
+				int maxConcurrentUsers, int maxUsers, int sizing,
+				String description, String[] hostNames, String[] ipAddresses,
+				String[] macAddresses, String[] serverIds,
 				java.util.Date startDate, java.util.Date expirationDate,
 				boolean complimentary, boolean active)
 		throws Exception {
@@ -111,10 +111,10 @@ public class LicenseKeyServiceHttp {
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, userId, licenseEntryId, productKey, accountKey,
-				productPurchaseKey, accountCode, accountName, productVersion,
-				clusterId, name, owner, maxServers, maxHttpSessions,
-				maxConcurrentUsers, maxUsers, sizing, description, hostNames,
-				ipAddresses, macAddresses, serverIds, startDate, expirationDate,
+				productPurchaseKey, accountName, productVersion, clusterId,
+				name, owner, maxServers, maxHttpSessions, maxConcurrentUsers,
+				maxUsers, sizing, description, hostNames, ipAddresses,
+				macAddresses, serverIds, startDate, expirationDate,
 				complimentary, active);
 
 			Object returnObj = null;
@@ -1195,11 +1195,11 @@ public class LicenseKeyServiceHttp {
 	private static final Class<?>[] _addLicenseKeyParameterTypes1 =
 		new Class[] {
 			long.class, long.class, String.class, String.class, String.class,
-			String.class, String.class, String.class, long.class, String.class,
-			String.class, int.class, int.class, int.class, int.class, int.class,
-			String.class, String[].class, String[].class, String[].class,
-			String[].class, java.util.Date.class, java.util.Date.class,
-			boolean.class, boolean.class
+			String.class, String.class, long.class, String.class, String.class,
+			int.class, int.class, int.class, int.class, int.class, String.class,
+			String[].class, String[].class, String[].class, String[].class,
+			java.util.Date.class, java.util.Date.class, boolean.class,
+			boolean.class
 		};
 	private static final Class<?>[] _addLicenseKeyParameterTypes2 =
 		new Class[] {

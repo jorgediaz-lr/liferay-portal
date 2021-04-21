@@ -28,7 +28,6 @@ create table Provisioning_LicenseKey (
 	productPurchaseKey VARCHAR(75) null,
 	licenseEntryId LONG,
 	productKey VARCHAR(75) null,
-	accountCode VARCHAR(75) null,
 	accountName VARCHAR(500) null,
 	licenseEntryName VARCHAR(75) null,
 	licenseEntryType VARCHAR(75) null,

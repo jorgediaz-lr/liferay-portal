@@ -58,7 +58,6 @@ public class LicenseKeyWrapper
 		attributes.put("productPurchaseKey", getProductPurchaseKey());
 		attributes.put("licenseEntryId", getLicenseEntryId());
 		attributes.put("productKey", getProductKey());
-		attributes.put("accountCode", getAccountCode());
 		attributes.put("accountName", getAccountName());
 		attributes.put("licenseEntryName", getLicenseEntryName());
 		attributes.put("licenseEntryType", getLicenseEntryType());
@@ -181,12 +180,6 @@ public class LicenseKeyWrapper
 
 		if (productKey != null) {
 			setProductKey(productKey);
-		}
-
-		String accountCode = (String)attributes.get("accountCode");
-
-		if (accountCode != null) {
-			setAccountCode(accountCode);
 		}
 
 		String accountName = (String)attributes.get("accountName");
@@ -351,16 +344,6 @@ public class LicenseKeyWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return model.canRenew();
-	}
-
-	/**
-	 * Returns the account code of this license key.
-	 *
-	 * @return the account code of this license key
-	 */
-	@Override
-	public String getAccountCode() {
-		return model.getAccountCode();
 	}
 
 	/**
@@ -818,16 +801,6 @@ public class LicenseKeyWrapper
 	@Override
 	public void persist() {
 		model.persist();
-	}
-
-	/**
-	 * Sets the account code of this license key.
-	 *
-	 * @param accountCode the account code of this license key
-	 */
-	@Override
-	public void setAccountCode(String accountCode) {
-		model.setAccountCode(accountCode);
 	}
 
 	/**

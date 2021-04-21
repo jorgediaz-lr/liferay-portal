@@ -47,7 +47,6 @@ public class LicenseKeySoap implements Serializable {
 		soapModel.setProductPurchaseKey(model.getProductPurchaseKey());
 		soapModel.setLicenseEntryId(model.getLicenseEntryId());
 		soapModel.setProductKey(model.getProductKey());
-		soapModel.setAccountCode(model.getAccountCode());
 		soapModel.setAccountName(model.getAccountName());
 		soapModel.setLicenseEntryName(model.getLicenseEntryName());
 		soapModel.setLicenseEntryType(model.getLicenseEntryType());
@@ -245,14 +244,6 @@ public class LicenseKeySoap implements Serializable {
 
 	public void setProductKey(String productKey) {
 		_productKey = productKey;
-	}
-
-	public String getAccountCode() {
-		return _accountCode;
-	}
-
-	public void setAccountCode(String accountCode) {
-		_accountCode = accountCode;
 	}
 
 	public String getAccountName() {
@@ -486,7 +477,6 @@ public class LicenseKeySoap implements Serializable {
 	private String _productPurchaseKey;
 	private long _licenseEntryId;
 	private String _productKey;
-	private String _accountCode;
 	private String _accountName;
 	private String _licenseEntryName;
 	private String _licenseEntryType;

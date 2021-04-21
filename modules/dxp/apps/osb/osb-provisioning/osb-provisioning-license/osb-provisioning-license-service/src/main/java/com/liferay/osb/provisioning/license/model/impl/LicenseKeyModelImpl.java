@@ -79,8 +79,7 @@ public class LicenseKeyModelImpl
 		{"assetReceiptLicenseUuid", Types.VARCHAR},
 		{"accountKey", Types.VARCHAR}, {"productPurchaseKey", Types.VARCHAR},
 		{"licenseEntryId", Types.BIGINT}, {"productKey", Types.VARCHAR},
-		{"accountCode", Types.VARCHAR}, {"accountName", Types.VARCHAR},
-		{"licenseEntryName", Types.VARCHAR},
+		{"accountName", Types.VARCHAR}, {"licenseEntryName", Types.VARCHAR},
 		{"licenseEntryType", Types.VARCHAR}, {"licenseVersion", Types.INTEGER},
 		{"productName", Types.VARCHAR}, {"productId", Types.VARCHAR},
 		{"productVersion", Types.VARCHAR}, {"clusterId", Types.BIGINT},
@@ -114,7 +113,6 @@ public class LicenseKeyModelImpl
 		TABLE_COLUMNS_MAP.put("productPurchaseKey", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("licenseEntryId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("productKey", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("accountCode", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("accountName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("licenseEntryName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("licenseEntryType", Types.VARCHAR);
@@ -144,7 +142,7 @@ public class LicenseKeyModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table Provisioning_LicenseKey (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,licenseKeyId LONG not null primary key,companyId LONG,userUuid VARCHAR(75) null,userName VARCHAR(75) null,createDate DATE null,modifiedUserUuid VARCHAR(75) null,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,assetReceiptLicenseUuid VARCHAR(75) null,accountKey VARCHAR(75) null,productPurchaseKey VARCHAR(75) null,licenseEntryId LONG,productKey VARCHAR(75) null,accountCode VARCHAR(75) null,accountName VARCHAR(500) null,licenseEntryName VARCHAR(75) null,licenseEntryType VARCHAR(75) null,licenseVersion INTEGER,productName VARCHAR(75) null,productId VARCHAR(75) null,productVersion VARCHAR(75) null,clusterId LONG,name VARCHAR(75) null,owner VARCHAR(75) null,maxServers INTEGER,maxConcurrentUsers LONG,maxUsers LONG,maxHttpSessions INTEGER,sizing INTEGER,description VARCHAR(255) null,hostName VARCHAR(75) null,ipAddresses STRING null,macAddresses STRING null,serverId STRING null,key_ STRING null,startDate DATE null,expirationDate DATE null,additionalInfo STRING null,complimentary BOOLEAN,active_ BOOLEAN)";
+		"create table Provisioning_LicenseKey (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,licenseKeyId LONG not null primary key,companyId LONG,userUuid VARCHAR(75) null,userName VARCHAR(75) null,createDate DATE null,modifiedUserUuid VARCHAR(75) null,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,assetReceiptLicenseUuid VARCHAR(75) null,accountKey VARCHAR(75) null,productPurchaseKey VARCHAR(75) null,licenseEntryId LONG,productKey VARCHAR(75) null,accountName VARCHAR(500) null,licenseEntryName VARCHAR(75) null,licenseEntryType VARCHAR(75) null,licenseVersion INTEGER,productName VARCHAR(75) null,productId VARCHAR(75) null,productVersion VARCHAR(75) null,clusterId LONG,name VARCHAR(75) null,owner VARCHAR(75) null,maxServers INTEGER,maxConcurrentUsers LONG,maxUsers LONG,maxHttpSessions INTEGER,sizing INTEGER,description VARCHAR(255) null,hostName VARCHAR(75) null,ipAddresses STRING null,macAddresses STRING null,serverId STRING null,key_ STRING null,startDate DATE null,expirationDate DATE null,additionalInfo STRING null,complimentary BOOLEAN,active_ BOOLEAN)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table Provisioning_LicenseKey";
@@ -228,7 +226,6 @@ public class LicenseKeyModelImpl
 		model.setProductPurchaseKey(soapModel.getProductPurchaseKey());
 		model.setLicenseEntryId(soapModel.getLicenseEntryId());
 		model.setProductKey(soapModel.getProductKey());
-		model.setAccountCode(soapModel.getAccountCode());
 		model.setAccountName(soapModel.getAccountName());
 		model.setLicenseEntryName(soapModel.getLicenseEntryName());
 		model.setLicenseEntryType(soapModel.getLicenseEntryType());
@@ -472,10 +469,6 @@ public class LicenseKeyModelImpl
 		attributeSetterBiConsumers.put(
 			"productKey",
 			(BiConsumer<LicenseKey, String>)LicenseKey::setProductKey);
-		attributeGetterFunctions.put("accountCode", LicenseKey::getAccountCode);
-		attributeSetterBiConsumers.put(
-			"accountCode",
-			(BiConsumer<LicenseKey, String>)LicenseKey::setAccountCode);
 		attributeGetterFunctions.put("accountName", LicenseKey::getAccountName);
 		attributeSetterBiConsumers.put(
 			"accountName",
@@ -879,22 +872,6 @@ public class LicenseKeyModelImpl
 
 	public String getOriginalProductKey() {
 		return GetterUtil.getString(_originalProductKey);
-	}
-
-	@JSON
-	@Override
-	public String getAccountCode() {
-		if (_accountCode == null) {
-			return "";
-		}
-		else {
-			return _accountCode;
-		}
-	}
-
-	@Override
-	public void setAccountCode(String accountCode) {
-		_accountCode = accountCode;
 	}
 
 	@JSON
@@ -1403,7 +1380,6 @@ public class LicenseKeyModelImpl
 		licenseKeyImpl.setProductPurchaseKey(getProductPurchaseKey());
 		licenseKeyImpl.setLicenseEntryId(getLicenseEntryId());
 		licenseKeyImpl.setProductKey(getProductKey());
-		licenseKeyImpl.setAccountCode(getAccountCode());
 		licenseKeyImpl.setAccountName(getAccountName());
 		licenseKeyImpl.setLicenseEntryName(getLicenseEntryName());
 		licenseKeyImpl.setLicenseEntryType(getLicenseEntryType());
@@ -1650,14 +1626,6 @@ public class LicenseKeyModelImpl
 
 		if ((productKey != null) && (productKey.length() == 0)) {
 			licenseKeyCacheModel.productKey = null;
-		}
-
-		licenseKeyCacheModel.accountCode = getAccountCode();
-
-		String accountCode = licenseKeyCacheModel.accountCode;
-
-		if ((accountCode != null) && (accountCode.length() == 0)) {
-			licenseKeyCacheModel.accountCode = null;
 		}
 
 		licenseKeyCacheModel.accountName = getAccountName();
@@ -1916,7 +1884,6 @@ public class LicenseKeyModelImpl
 	private long _licenseEntryId;
 	private String _productKey;
 	private String _originalProductKey;
-	private String _accountCode;
 	private String _accountName;
 	private String _licenseEntryName;
 	private String _licenseEntryType;

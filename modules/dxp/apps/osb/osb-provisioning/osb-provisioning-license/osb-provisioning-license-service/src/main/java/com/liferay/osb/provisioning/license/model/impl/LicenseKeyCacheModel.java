@@ -77,7 +77,7 @@ public class LicenseKeyCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(85);
+		StringBundler sb = new StringBundler(83);
 
 		sb.append("{mvccVersion=");
 		sb.append(mvccVersion);
@@ -109,8 +109,6 @@ public class LicenseKeyCacheModel
 		sb.append(licenseEntryId);
 		sb.append(", productKey=");
 		sb.append(productKey);
-		sb.append(", accountCode=");
-		sb.append(accountCode);
 		sb.append(", accountName=");
 		sb.append(accountName);
 		sb.append(", licenseEntryName=");
@@ -254,13 +252,6 @@ public class LicenseKeyCacheModel
 		}
 		else {
 			licenseKeyImpl.setProductKey(productKey);
-		}
-
-		if (accountCode == null) {
-			licenseKeyImpl.setAccountCode("");
-		}
-		else {
-			licenseKeyImpl.setAccountCode(accountCode);
 		}
 
 		if (accountName == null) {
@@ -420,7 +411,6 @@ public class LicenseKeyCacheModel
 
 		licenseEntryId = objectInput.readLong();
 		productKey = objectInput.readUTF();
-		accountCode = objectInput.readUTF();
 		accountName = objectInput.readUTF();
 		licenseEntryName = objectInput.readUTF();
 		licenseEntryType = objectInput.readUTF();
@@ -533,13 +523,6 @@ public class LicenseKeyCacheModel
 		}
 		else {
 			objectOutput.writeUTF(productKey);
-		}
-
-		if (accountCode == null) {
-			objectOutput.writeUTF("");
-		}
-		else {
-			objectOutput.writeUTF(accountCode);
 		}
 
 		if (accountName == null) {
@@ -684,7 +667,6 @@ public class LicenseKeyCacheModel
 	public String productPurchaseKey;
 	public long licenseEntryId;
 	public String productKey;
-	public String accountCode;
 	public String accountName;
 	public String licenseEntryName;
 	public String licenseEntryType;
