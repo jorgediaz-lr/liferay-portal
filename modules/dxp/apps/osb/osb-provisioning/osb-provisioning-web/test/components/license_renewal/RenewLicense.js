@@ -35,51 +35,51 @@ describe('RenewLicense', () => {
 		getByText('renew');
 	});
 
-	it('displays a renewal modal after the Renew button is clicked', () => {
+	it('displays a renewal modal after the Renew button is clicked', async () => {
 		const {getByText, queryAllByText} = renderRenewLicense();
 
 		fireEvent.click(getByText('renew'));
 
-		return wait(() => expect(queryAllByText('renew').length).toBe(3));
+		return await wait(() => expect(queryAllByText('renew').length).toBe(3));
 	});
 
 	// Clay Date Picker always displays two inputs for the same date
 
-	it('displays a start date in the renewal modal', () => {
+	it('displays a start date in the renewal modal', async () => {
 		const {getByText, queryAllByDisplayValue} = renderRenewLicense();
 
 		fireEvent.click(getByText('renew'));
 
-		return wait(() => {
+		return await wait(() => {
 			getByText('start-date');
 
 			expect(queryAllByDisplayValue('2021-04-14').length).toBe(2);
 		});
 	});
 
-	it('displays an expiration date in the renewal modal', () => {
+	it('displays an expiration date in the renewal modal', async () => {
 		const {getByText, queryAllByDisplayValue} = renderRenewLicense();
 
 		fireEvent.click(getByText('renew'));
 
-		return wait(() => {
+		return await wait(() => {
 			getByText('expiration-date');
 
 			expect(queryAllByDisplayValue('2022-04-14').length).toBe(2);
 		});
 	});
 
-	it('disables the Renew button initially', () => {
+	it('disables the Renew button initially', async () => {
 		const {getByText, queryAllByText} = renderRenewLicense();
 
 		fireEvent.click(getByText('renew'));
 
-		return wait(() =>
+		return await wait(() =>
 			expect(queryAllByText('renew')[2].disabled).toBe(true)
 		);
 	});
 
-	it('reenables the Renew button after a date has been updated', () => {
+	it('reenables the Renew button after a date has been updated', async () => {
 		const {
 			getAllByPlaceholderText,
 			getByText,
@@ -88,7 +88,7 @@ describe('RenewLicense', () => {
 
 		fireEvent.click(getByText('renew'));
 
-		return wait(() => {
+		return await wait(() => {
 			fireEvent.change(getAllByPlaceholderText('YYYY-MM-DD')[0], {
 				target: {value: '2020-04-15'}
 			});
@@ -97,7 +97,7 @@ describe('RenewLicense', () => {
 		});
 	});
 
-	it('keeps the Renew button disabled if a date is modified but left empty', () => {
+	it('keeps the Renew button disabled if a date is modified but left empty', async () => {
 		const {
 			getAllByPlaceholderText,
 			getByText,
@@ -106,7 +106,7 @@ describe('RenewLicense', () => {
 
 		fireEvent.click(getByText('renew'));
 
-		return wait(() => {
+		return await wait(() => {
 			fireEvent.change(getAllByPlaceholderText('YYYY-MM-DD')[0], {
 				target: {value: ''}
 			});
@@ -115,7 +115,7 @@ describe('RenewLicense', () => {
 		});
 	});
 
-	it('keeps the Renew button disabled if an invalid date is entered', () => {
+	it('keeps the Renew button disabled if an invalid date is entered', async () => {
 		const {
 			getAllByPlaceholderText,
 			getByText,
@@ -124,7 +124,7 @@ describe('RenewLicense', () => {
 
 		fireEvent.click(getByText('renew'));
 
-		return wait(() => {
+		return await wait(() => {
 			fireEvent.change(getAllByPlaceholderText('YYYY-MM-DD')[0], {
 				target: {value: '2021-04-32'}
 			});
@@ -133,7 +133,7 @@ describe('RenewLicense', () => {
 		});
 	});
 
-	it('keeps the Renew button disabled until the input date matches the MDYDateFormat', () => {
+	it('keeps the Renew button disabled until the input date matches the MDYDateFormat', async () => {
 		const {
 			getAllByPlaceholderText,
 			getByText,
@@ -142,7 +142,7 @@ describe('RenewLicense', () => {
 
 		fireEvent.click(getByText('renew'));
 
-		return wait(() => {
+		return await wait(() => {
 			fireEvent.change(getAllByPlaceholderText('YYYY-MM-DD')[0], {
 				target: {value: '2021-04'}
 			});

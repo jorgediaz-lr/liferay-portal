@@ -69,18 +69,18 @@ describe('Address', () => {
 
 	afterEach(cleanup);
 
-	it('renders', () => {
+	it('renders', async () => {
 		const {container} = renderAddress();
 
-		return wait(() => expect(container).toBeTruthy());
+		return await wait(() => expect(container).toBeTruthy());
 	});
 
-	it('displays all address fields as editable when any one of the address fields is clicked', () => {
+	it('displays all address fields as editable when any one of the address fields is clicked', async () => {
 		const {container, getByText} = renderAddress();
 
 		fireEvent.click(getByText('Diamond Bar'));
 
-		return wait(() => {
+		return await wait(() => {
 			expect(container.querySelectorAll('select').length).toBe(2);
 			expect(container.querySelectorAll('input[type=text]').length).toBe(
 				5
@@ -91,24 +91,24 @@ describe('Address', () => {
 		});
 	});
 
-	it('displays PRC, UAE, and USA as country options when the user clicks on a Country field', () => {
+	it('displays PRC, UAE, and USA as country options when the user clicks on a Country field', async () => {
 		const {getByText} = renderAddress();
 
 		fireEvent.click(getByText('United States'));
 
-		return wait(() => {
+		return await wait(() => {
 			getByText('China');
 			getByText('United Arab Emirates');
 			getByText('United States');
 		});
 	});
 
-	it('displays Primary field as toggled on edit when the field is displayed as "Yes"', () => {
+	it('displays Primary field as toggled on edit when the field is displayed as "Yes"', async () => {
 		const {container, getByText} = renderAddress();
 
 		fireEvent.click(getByText('yes'));
 
-		return wait(() => {
+		return await wait(() => {
 			expect(
 				container.querySelector('input[type=checkbox]').checked
 			).toBe(true);

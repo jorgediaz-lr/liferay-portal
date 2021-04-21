@@ -87,26 +87,26 @@ describe('AccountAddresses', () => {
 
 	afterEach(cleanup);
 
-	it('renders', () => {
+	it('renders', async () => {
 		const {container} = renderAccountAddress();
 
-		return wait(() => expect(container).toBeTruthy());
+		return await wait(() => expect(container).toBeTruthy());
 	});
 
-	it('displays an addresses List Group with dashes for each field when no address was provided', () => {
+	it('displays an addresses List Group with dashes for each field when no address was provided', async () => {
 		const {getAllByText} = renderAccountAddress({addresses: []});
 
-		return wait(() => expect(getAllByText('-').length).toBe(7));
+		return await wait(() => expect(getAllByText('-').length).toBe(7));
 	});
 
-	it('does not allow any address fields to be edited when no address was provided', () => {
+	it('does not allow any address fields to be edited when no address was provided', async () => {
 		const {getAllByText, queryByText} = renderAccountAddress({
 			addresses: []
 		});
 
 		fireEvent.click(getAllByText('-')[0]);
 
-		return wait(() => {
+		return await wait(() => {
 			expect(queryByText('save')).toBeFalsy();
 			expect(queryByText('cancel')).toBeFalsy();
 		});
@@ -134,26 +134,30 @@ describe('AccountAddresses', () => {
 		});
 	});
 
-	it('allows address fields to be edited when at least one address was provided', () => {
+	it('allows address fields to be edited when at least one address was provided', async () => {
 		const {getByText} = renderAccountAddress();
 
 		fireEvent.click(getByText('Diamond Bar'));
 
-		return wait(() => {
+		return await wait(() => {
 			getByText('save');
 			getByText('cancel');
 		});
 	});
 
-	it('displays an add button for each provided addresses', () => {
+	it('displays an add button for each provided addresses', async () => {
 		const {getAllByLabelText} = renderAccountAddress();
 
-		return wait(() => expect(getAllByLabelText('add').length).toBe(3));
+		return await wait(() =>
+			expect(getAllByLabelText('add').length).toBe(3)
+		);
 	});
 
-	it('displays a delete button for each provided addresses', () => {
+	it('displays a delete button for each provided addresses', async () => {
 		const {getAllByLabelText} = renderAccountAddress();
 
-		return wait(() => expect(getAllByLabelText('delete').length).toBe(3));
+		return await wait(() =>
+			expect(getAllByLabelText('delete').length).toBe(3)
+		);
 	});
 });

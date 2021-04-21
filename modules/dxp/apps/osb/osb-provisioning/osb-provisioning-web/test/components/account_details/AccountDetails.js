@@ -67,33 +67,33 @@ describe('AccountDetails', () => {
 
 	afterEach(cleanup);
 
-	it('renders', () => {
+	it('renders', async () => {
 		const {container} = renderAccountDetails();
 
-		return wait(() => expect(container).toBeTruthy());
+		return await wait(() => expect(container).toBeTruthy());
 	});
 
-	it('displays General Details section', () => {
+	it('displays General Details section', async () => {
 		const {getByText} = renderAccountDetails();
 
-		return wait(() => getByText('general-details'));
+		return await wait(() => getByText('general-details'));
 	});
 
-	it('displays Partner Info section', () => {
+	it('displays Partner Info section', async () => {
 		const {getByText} = renderAccountDetails();
 
-		return wait(() => getByText('partner-info'));
+		return await wait(() => getByText('partner-info'));
 	});
 
-	it('displays Address 1 section', () => {
+	it('displays Address 1 section', async () => {
 		const {getByText} = renderAccountDetails();
 
-		return wait(() => getByText('address 1'));
+		return await wait(() => getByText('address 1'));
 	});
 
-	it('displays External Account Keys section', () => {
+	it('displays External Account Keys section', async () => {
 		const {getByText} = renderAccountDetails();
 
-		return wait(() => getByText('external-account-keys'));
+		return await wait(() => getByText('external-account-keys'));
 	});
 });
