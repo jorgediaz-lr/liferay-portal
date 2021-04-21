@@ -30,6 +30,9 @@ public class ProductConstants {
 
 	public static final String NAME_DIGITAL_ENTERPRISE = "Digital Enterprise";
 
+	public static final String NAME_DISTRIBUTION_PARTNERSHIP =
+		"Distribution Partnership";
+
 	public static final String NAME_DXP = "DXP";
 
 	public static final String NAME_DXP_CLOUD = "DXP Cloud";
@@ -59,6 +62,9 @@ public class ProductConstants {
 
 	public static final String NAME_PORTAL_PRODUCTION = "Portal Production";
 
+	public static final String NAME_RESELLER_PARTNERSHIP =
+		"Reseller Partnership";
+
 	public static final String NAME_SERVICE_PARTNERSHIP = "Service Partnership";
 
 	public static final String NAME_SILVER = "Silver Subscription";
@@ -70,7 +76,8 @@ public class ProductConstants {
 		"Value-Added Reseller Partnership";
 
 	public static final String[] NAMES_PARTNERSHIP = {
-		NAME_BASIC_RESELLER_PARTNERSHIP, NAME_SERVICE_PARTNERSHIP,
+		NAME_BASIC_RESELLER_PARTNERSHIP, NAME_DISTRIBUTION_PARTNERSHIP,
+		NAME_RESELLER_PARTNERSHIP, NAME_SERVICE_PARTNERSHIP,
 		NAME_TRAINING_PARTNERSHIP, NAME_VALUE_ADDED_RESELLER_PARTNERSHIP
 	};
 
