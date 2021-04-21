@@ -71,7 +71,6 @@ public class EditLicenseKeyMVCActionCommand extends BaseMVCActionCommand {
 		String accountKey = ParamUtil.getString(actionRequest, "accountKey");
 		String productPurchaseKey = ParamUtil.getString(
 			actionRequest, "productPurchaseKey");
-		String accountCode = ParamUtil.getString(actionRequest, "accountCode");
 		String accountName = ParamUtil.getString(actionRequest, "accountName");
 		String productVersion = ParamUtil.getString(
 			actionRequest, "productVersion");
@@ -137,8 +136,8 @@ public class EditLicenseKeyMVCActionCommand extends BaseMVCActionCommand {
 
 		_licenseKeyService.addLicenseKey(
 			themeDisplay.getUserId(), licenseEntryId, productKey, accountKey,
-			productPurchaseKey, accountCode, accountName, productVersion, 0,
-			name, owner, maxServers, maxHttpSessions, 0, 0, sizing, description,
+			productPurchaseKey, accountName, productVersion, 0, name, owner,
+			maxServers, maxHttpSessions, 0, 0, sizing, description,
 			hostNames.toArray(new String[0]),
 			ipAddresses.toArray(new String[0]),
 			macAddresses.toArray(new String[0]),

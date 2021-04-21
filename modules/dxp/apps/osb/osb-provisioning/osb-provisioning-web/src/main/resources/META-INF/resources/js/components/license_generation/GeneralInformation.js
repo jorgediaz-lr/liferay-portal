@@ -26,7 +26,6 @@ const DEFAULT_MAXHTTPSESSIONS = 0;
 const DEFAULT_MAXHTTPSESSIONS_FOR_DEVELOPER_LICENSES = 5;
 
 function GeneralInformation({
-	accountCode = '',
 	accountKey = '',
 	accountName = '',
 	licensableProducts = [],
@@ -45,13 +44,12 @@ function GeneralInformation({
 	useEffect(() => {
 		updateLicense(license =>
 			license
-				.set('accountCode', accountCode)
 				.set('accountKey', accountKey)
 				.set('accountName', accountName)
 				.set('description', accountName)
 				.set('owner', accountName)
 		);
-	}, [accountCode, accountKey, accountName, updateLicense]);
+	}, [accountKey, accountName, updateLicense]);
 
 	function findCurrentProduct(productKey) {
 		return licensableProducts.find(
@@ -303,7 +301,6 @@ function GeneralInformation({
 }
 
 GeneralInformation.propTypes = {
-	accountCode: PropTypes.string,
 	accountKey: PropTypes.string,
 	accountName: PropTypes.string,
 	licensableProducts: PropTypes.arrayOf(

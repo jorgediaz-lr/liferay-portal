@@ -63,7 +63,6 @@
 		<column name="productPurchaseKey" type="String" />
 		<column name="licenseEntryId" type="long" />
 		<column name="productKey" type="String" />
-		<column name="accountCode" type="String" />
 		<column name="accountName" type="String" />
 		<column name="licenseEntryName" type="String" />
 		<column name="licenseEntryType" type="String" />

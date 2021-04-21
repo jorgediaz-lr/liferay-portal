@@ -23,7 +23,6 @@ import {
 } from '../../../src/main/resources/META-INF/resources/js/utilities/date';
 
 const dummyLicense = new License({
-	accountCode: 'ABC',
 	accountKey: 'KEY-ABC',
 	accountName: 'Test Account',
 	complimentary: true,

@@ -13,7 +13,6 @@ import {List, Record} from 'immutable';
 import React, {useContext, useState} from 'react';
 
 export const License = Record({
-	accountCode: '',
 	accountKey: '',
 	accountName: '',
 	complimentary: false,

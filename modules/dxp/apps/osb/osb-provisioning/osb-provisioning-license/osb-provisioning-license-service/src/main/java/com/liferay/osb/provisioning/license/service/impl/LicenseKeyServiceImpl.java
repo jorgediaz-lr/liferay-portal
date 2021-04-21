@@ -124,23 +124,23 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 	public LicenseKey addLicenseKey(
 			long userId, long licenseEntryId, String productKey,
-			String accountKey, String productPurchaseKey, String accountCode,
-			String accountName, String productVersion, long clusterId,
-			String name, String owner, int maxServers, int maxHttpSessions,
-			int maxConcurrentUsers, int maxUsers, int sizing,
-			String description, String[] hostNames, String[] ipAddresses,
-			String[] macAddresses, String[] serverIds, Date startDate,
-			Date expirationDate, boolean complimentary, boolean active)
+			String accountKey, String productPurchaseKey, String accountName,
+			String productVersion, long clusterId, String name, String owner,
+			int maxServers, int maxHttpSessions, int maxConcurrentUsers,
+			int maxUsers, int sizing, String description, String[] hostNames,
+			String[] ipAddresses, String[] macAddresses, String[] serverIds,
+			Date startDate, Date expirationDate, boolean complimentary,
+			boolean active)
 		throws Exception {
 
 		//TODO: add permission check
 
 		return licenseKeyLocalService.addLicenseKey(
 			userId, licenseEntryId, productKey, accountKey, productPurchaseKey,
-			accountCode, accountName, productVersion, clusterId, name, owner,
-			maxServers, maxHttpSessions, maxConcurrentUsers, maxUsers, sizing,
-			description, hostNames, ipAddresses, macAddresses, serverIds,
-			startDate, expirationDate, complimentary, true);
+			accountName, productVersion, clusterId, name, owner, maxServers,
+			maxHttpSessions, maxConcurrentUsers, maxUsers, sizing, description,
+			hostNames, ipAddresses, macAddresses, serverIds, startDate,
+			expirationDate, complimentary, true);
 	}
 
 	@JSONWebService

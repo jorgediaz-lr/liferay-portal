@@ -114,7 +114,6 @@ public class AddLicenseKeyDisplayContext {
 			return data;
 		}
 
-		data.put("accountCode", _account.getCode());
 		data.put("accountKey", _account.getKey());
 		data.put("accountName", _account.getName());
 

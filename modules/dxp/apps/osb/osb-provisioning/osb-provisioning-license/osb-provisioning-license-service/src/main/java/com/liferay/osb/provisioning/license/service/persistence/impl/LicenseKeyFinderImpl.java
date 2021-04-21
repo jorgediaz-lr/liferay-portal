@@ -550,9 +550,6 @@ public class LicenseKeyFinderImpl
 			sql, "LOWER(Provisioning_LicenseKey.accountName)", StringPool.LIKE,
 			true, accountNames);
 		sql = _customSQL.replaceKeywords(
-			sql, "LOWER(Provisioning_LicenseKey.accountCode)", StringPool.LIKE,
-			true, accountNames);
-		sql = _customSQL.replaceKeywords(
 			sql, "Provisioning_LicenseKey.licenseEntryId", false,
 			licenseEntryIds);
 		sql = _customSQL.replaceKeywords(
@@ -684,7 +681,6 @@ public class LicenseKeyFinderImpl
 		qPos.add(accountKey);
 		qPos.add(productPurchaseKey);
 		qPos.add(productPurchaseKey);
-		qPos.add(accountNames, 2);
 		qPos.add(accountNames, 2);
 		qPos.add(startDateGT);
 		qPos.add(startDateGT);
