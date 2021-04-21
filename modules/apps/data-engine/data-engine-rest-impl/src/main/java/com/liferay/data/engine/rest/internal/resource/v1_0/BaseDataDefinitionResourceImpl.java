@@ -407,7 +407,7 @@ public abstract class BaseDataDefinitionResourceImpl
 
 		for (DataDefinition dataDefinition : dataDefinitions) {
 			postSiteDataDefinition(
-				Long.valueOf((String)parameters.get("siteId")), dataDefinition);
+				(Long)parameters.get("siteId"), dataDefinition);
 		}
 	}
 

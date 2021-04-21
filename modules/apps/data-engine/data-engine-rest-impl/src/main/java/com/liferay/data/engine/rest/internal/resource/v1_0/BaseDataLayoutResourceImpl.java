@@ -423,8 +423,7 @@ public abstract class BaseDataLayoutResourceImpl
 
 		for (DataLayout dataLayout : dataLayouts) {
 			postDataDefinitionDataLayout(
-				Long.valueOf((String)parameters.get("dataDefinitionId")),
-				dataLayout);
+				(Long)parameters.get("dataDefinitionId"), dataLayout);
 		}
 	}
 

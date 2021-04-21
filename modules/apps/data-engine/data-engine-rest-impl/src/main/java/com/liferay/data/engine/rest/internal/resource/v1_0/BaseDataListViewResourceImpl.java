@@ -318,8 +318,7 @@ public abstract class BaseDataListViewResourceImpl
 
 		for (DataListView dataListView : dataListViews) {
 			postDataDefinitionDataListView(
-				Long.valueOf((String)parameters.get("dataDefinitionId")),
-				dataListView);
+				(Long)parameters.get("dataDefinitionId"), dataListView);
 		}
 	}
 
