@@ -13,7 +13,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import {useLicense} from '../../hooks/license';
-import {validateIPv4s} from '../../utilities/helpers';
+import {validateIPv4s, validateMAC} from '../../utilities/helpers';
 import IconButton from '../IconButton';
 import RequiredFieldMarker from '../RequiredFieldMarker';
 
@@ -106,6 +106,12 @@ function FieldGroup({group, id, showDelete = false}) {
 		return ipAddresses ? validateIPv4s(ipAddresses) : true;
 	}
 
+	function validateMacAddresses() {
+		const {macAddresses} = group;
+
+		return macAddresses ? validateMAC(macAddresses) : true;
+	}
+
 	return (
 		<div className="server-id-field">
 			<div className="col-md-12 form-group">
@@ -145,7 +151,11 @@ function FieldGroup({group, id, showDelete = false}) {
 				/>
 			</div>
 
-			<div className="col-md-12 form-group">
+			<div
+				className={`col-md-12 form-group ${
+					!validateMacAddresses() ? 'has-error' : ''
+				}`}
+			>
 				<label
 					className="form-control-label"
 					htmlFor={`macAddresses-${id}`}

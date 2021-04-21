@@ -11,7 +11,7 @@
 
 import axios from 'axios';
 
-import {NAMESPACE} from '../utilities/constants';
+import {IPV4, MACADDRESS, NAMESPACE} from '../utilities/constants';
 
 /**
  * Certain empty values are represented by a dash in the UI.
@@ -80,11 +80,26 @@ export function submitOnEnter(event, formRef) {
  */
 export function validateIPv4s(input) {
 	if (input) {
-		const ipv4 = `^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$`;
-
 		const chuncks = input.trim().split(/\s*,\s*|\s+/);
 
-		return chuncks.every(chunck => chunck.match(ipv4));
+		return chuncks.every(chunck => chunck.match(IPV4));
+	}
+	else {
+		return false;
+	}
+}
+
+/**
+ * Takes an input and evaluates whether the input contains a single or multiple
+ * valid MAC addresses.
+ * @param {string} input The value to be evaluated
+ * @returns {boolean} Whether the input is valid or not
+ */
+export function validateMAC(input) {
+	if (input) {
+		const chuncks = input.trim().split(/\s*,\s*|\s+/);
+
+		return chuncks.every(chunck => chunck.match(MACADDRESS));
 	}
 	else {
 		return false;

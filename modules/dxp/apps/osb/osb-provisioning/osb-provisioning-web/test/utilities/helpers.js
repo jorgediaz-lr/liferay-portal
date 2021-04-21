@@ -9,7 +9,10 @@
  * distribution rights of the Software.
  */
 
-import {validateIPv4s} from '../../src/main/resources/META-INF/resources/js/utilities/helpers';
+import {
+	validateIPv4s,
+	validateMAC
+} from '../../src/main/resources/META-INF/resources/js/utilities/helpers';
 
 describe('validateIPv4s', () => {
 	it('validates multiple valid IP addresses deliminated via comma, space, or new line', () => {
@@ -44,5 +47,39 @@ describe('validateIPv4s', () => {
 
 	it('handles undefined input', () => {
 		expect(validateIPv4s(undefined)).toBeFalsy();
+	});
+});
+
+describe('validateMAC', () => {
+	it('validates a MAC address seperated with two digit octets correctly', () => {
+		expect(validateMAC('00:00:0A:BB:28:FC')).toBeTruthy();
+		expect(validateMAC('00.00.0A.BB.28.FC')).toBeTruthy();
+		expect(validateMAC('01-02-03-04-ab-cd')).toBeTruthy();
+	});
+
+	it('validates a MAC address separated with four digit octets correctly', () => {
+		expect(validateMAC('0000:0ABB:28FC')).toBeTruthy();
+		expect(validateMAC('0000.0ABB.28FC')).toBeTruthy();
+		expect(validateMAC('0000-0ABB-28FC')).toBeTruthy();
+	});
+
+	it('validates multiple MAC address with different formats correctly', () => {
+		expect(validateMAC('00:00:0A:BB:28:FC, 0000-0ABB-28FC')).toBeTruthy();
+	});
+
+	it('validates invalid MAC address correctly', () => {
+		expect(validateMAC('zz-00-34-xx-35-64')).toBeFalsy();
+	});
+
+	it('handles empty input', () => {
+		expect(validateMAC('')).toBeFalsy();
+	});
+
+	it('handles null input', () => {
+		expect(validateMAC(null)).toBeFalsy();
+	});
+
+	it('handles undefined input', () => {
+		expect(validateMAC(undefined)).toBeFalsy();
 	});
 });
