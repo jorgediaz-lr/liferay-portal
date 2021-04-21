@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <custom-sql>
-	<sql id="com.liferay.osb.provisioning.license.service.persistence.LicenseKeyFinder.countByU_C_M_M_AK_PPK_A_S_L_P_P_P_P_O_D_H_I_M_S_E_A">
+	<sql id="com.liferay.osb.provisioning.license.service.persistence.LicenseKeyFinder.countByU_C_M_M_AK_PPK_A_S_L_P_P_P_P_CI_O_D_H_I_M_S_E_A">
 		<![CDATA[
 			SELECT
 				DISTINCT Provisioning_LicenseKey.licenseKeyId
@@ -30,6 +30,7 @@
 					(LOWER(Provisioning_LicenseKey.productName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
 					(LOWER(Provisioning_LicenseKey.productId) = ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
 					(Provisioning_LicenseKey.productVersion = ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(Provisioning_LicenseKey.clusterId = ?) [$AND_OR_CONNECTOR$]
 					(LOWER(Provisioning_LicenseKey.owner) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
 					(LOWER(Provisioning_LicenseKey.description) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
 					(LOWER(Provisioning_LicenseKey.hostName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
@@ -42,7 +43,7 @@
 				)
 		]]>
 	</sql>
-	<sql id="com.liferay.osb.provisioning.license.service.persistence.LicenseKeyFinder.findByU_C_M_M_AK_PPK_A_S_L_P_P_P_P_O_D_H_I_M_S_E_A">
+	<sql id="com.liferay.osb.provisioning.license.service.persistence.LicenseKeyFinder.findByU_C_M_M_AK_PPK_A_S_L_P_P_P_P_CI_O_D_H_I_M_S_E_A">
 		<![CDATA[
 			SELECT
 				DISTINCT Provisioning_LicenseKey.licenseKeyId, Provisioning_LicenseKey.startDate, Provisioning_LicenseKey.expirationDate
@@ -71,6 +72,7 @@
 					(LOWER(Provisioning_LicenseKey.productName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
 					(LOWER(Provisioning_LicenseKey.productId) = ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
 					(Provisioning_LicenseKey.productVersion = ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(Provisioning_LicenseKey.clusterId = ?) [$AND_OR_CONNECTOR$]
 					(LOWER(Provisioning_LicenseKey.owner) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
 					(LOWER(Provisioning_LicenseKey.description) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
 					(LOWER(Provisioning_LicenseKey.hostName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]

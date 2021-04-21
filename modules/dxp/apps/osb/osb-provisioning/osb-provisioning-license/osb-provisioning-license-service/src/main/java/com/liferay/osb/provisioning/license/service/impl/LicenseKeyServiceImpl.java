@@ -288,8 +288,9 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 		int activeLicensesCount = licenseKeyLocalService.searchCount(
 			null, null, null, null, null, null, null, null, null, null, null,
-			new long[0], new String[0], null, productId, new String[0], null,
-			null, null, null, null, serverId, key, null, null, params, true);
+			new long[0], new String[0], null, productId, new String[0],
+			new long[0], null, null, null, null, null, serverId, key, null,
+			null, params, true);
 
 		if (activeLicensesCount > 0) {
 			return true;
@@ -349,11 +350,12 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			String accountKey, String productPurchaseKey, String accountName,
 			Date startDateGT, Date startDateLT, long[] licenseEntryIds,
 			String[] productKeys, String productName, String productId,
-			String[] productVersions, String owner, String description,
-			String hostName, String ipAddress, String macAddress,
-			String serverId, String key, Date expirationDateGT,
-			Date expirationDateLT, LinkedHashMap<String, Object> params,
-			boolean andSearch, int start, int end, OrderByComparator obc)
+			String[] productVersions, long[] clusterIds, String owner,
+			String description, String hostName, String ipAddress,
+			String macAddress, String serverId, String key,
+			Date expirationDateGT, Date expirationDateLT,
+			LinkedHashMap<String, Object> params, boolean andSearch, int start,
+			int end, OrderByComparator obc)
 		throws Exception {
 
 		addPermissionParams(params);
@@ -362,9 +364,10 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			createUserUuid, createDateGT, createDateLT, modifiedUserUuid,
 			modifiedDateGT, modifiedDateLT, accountKey, productPurchaseKey,
 			accountName, startDateGT, startDateLT, licenseEntryIds, productKeys,
-			productName, productId, productVersions, owner, description,
-			hostName, ipAddress, macAddress, serverId, key, expirationDateGT,
-			expirationDateLT, params, andSearch, start, end, obc);
+			productName, productId, productVersions, clusterIds, owner,
+			description, hostName, ipAddress, macAddress, serverId, key,
+			expirationDateGT, expirationDateLT, params, andSearch, start, end,
+			obc);
 	}
 
 	public List<LicenseKey> search(
@@ -383,11 +386,11 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			String accountKey, String productPurchaseKey, String accountName,
 			Date startDateGT, Date startDateLT, long[] licenseEntryIds,
 			String[] productKeys, String productName, String productId,
-			String[] productVersions, String owner, String description,
-			String hostName, String ipAddress, String macAddress,
-			String serverId, String key, Date expirationDateGT,
-			Date expirationDateLT, LinkedHashMap<String, Object> params,
-			boolean andSearch)
+			String[] productVersions, long[] clusterIds, String owner,
+			String description, String hostName, String ipAddress,
+			String macAddress, String serverId, String key,
+			Date expirationDateGT, Date expirationDateLT,
+			LinkedHashMap<String, Object> params, boolean andSearch)
 		throws Exception {
 
 		addPermissionParams(params);
@@ -396,9 +399,9 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			createUserUuid, createDateGT, createDateLT, modifiedUserUuid,
 			modifiedDateGT, modifiedDateLT, accountKey, productPurchaseKey,
 			accountName, startDateGT, startDateLT, licenseEntryIds, productKeys,
-			productName, productId, productVersions, owner, description,
-			hostName, ipAddress, macAddress, serverId, key, expirationDateGT,
-			expirationDateLT, params, andSearch);
+			productName, productId, productVersions, clusterIds, owner,
+			description, hostName, ipAddress, macAddress, serverId, key,
+			expirationDateGT, expirationDateLT, params, andSearch);
 	}
 
 	public int searchCount(

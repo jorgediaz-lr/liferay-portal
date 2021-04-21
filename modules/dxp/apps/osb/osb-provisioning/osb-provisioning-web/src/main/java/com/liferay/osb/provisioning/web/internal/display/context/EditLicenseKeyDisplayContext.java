@@ -18,6 +18,7 @@ import com.liferay.osb.provisioning.constants.ProvisioningWebKeys;
 import com.liferay.osb.provisioning.license.helper.constants.LicenseType;
 import com.liferay.osb.provisioning.license.model.LicenseKey;
 import com.liferay.osb.provisioning.license.service.LicenseKeyLocalService;
+import com.liferay.osb.provisioning.license.util.LicenseUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
@@ -28,6 +29,7 @@ import com.liferay.portal.kernel.util.Validator;
 import java.text.Format;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -66,8 +68,22 @@ public class EditLicenseKeyDisplayContext {
 	}
 
 	public List<LicenseKey> getClusterLicenseKeys() {
-		return _licenseKeyLocalService.getProductPurchaseLicenseKeys(
-			_licenseKey.getProductPurchaseKey(), _licenseKey.getClusterId());
+		String productPurchaseKey = null;
+
+		if (Validator.isNotNull(_licenseKey.getProductPurchaseKey())) {
+			productPurchaseKey = _licenseKey.getProductPurchaseKey();
+		}
+
+		return _licenseKeyLocalService.search(
+			null, null, null, null, null, null, _licenseKey.getAccountKey(),
+			productPurchaseKey, null, null, null, new long[0],
+			new String[] {_licenseKey.getProductKey()}, null, null,
+			new String[] {_licenseKey.getProductVersion()},
+			new long[] {_licenseKey.getClusterId()}, _licenseKey.getOwner(),
+			null, null, null, null, null, null, null, null,
+			new LinkedHashMap<>(), true, 0, 1000,
+			LicenseUtil.getLicenseKeyOrderByComparator(
+				"expiration-date", "desc"));
 	}
 
 	public String getClusterLicenseKeysDisplay() throws Exception {

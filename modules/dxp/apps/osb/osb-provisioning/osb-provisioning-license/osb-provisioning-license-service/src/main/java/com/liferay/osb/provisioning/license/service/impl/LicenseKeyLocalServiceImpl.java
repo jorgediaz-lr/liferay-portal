@@ -615,21 +615,21 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		String accountKey, String productPurchaseKey, String accountName,
 		Date startDateGT, Date startDateLT, long[] licenseEntryIds,
 		String[] productKeys, String productName, String productId,
-		String[] productVersions, String owner, String description,
-		String hostName, String ipAddress, String macAddress, String serverId,
-		String key, Date expirationDateGT, Date expirationDateLT,
-		LinkedHashMap<String, Object> params, boolean andSearch, int start,
-		int end, OrderByComparator obc) {
+		String[] productVersions, long[] clusterIds, String owner,
+		String description, String hostName, String ipAddress,
+		String macAddress, String serverId, String key, Date expirationDateGT,
+		Date expirationDateLT, LinkedHashMap<String, Object> params,
+		boolean andSearch, int start, int end, OrderByComparator obc) {
 
 		return licenseKeyFinder.
-			findByU_C_M_M_AK_PPK_A_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
+			findByU_C_M_M_AK_PPK_A_S_L_P_P_P_P_CI_O_D_H_I_M_S_E_A(
 				createUserUuid, createDateGT, createDateLT, modifiedUserUuid,
 				modifiedDateGT, modifiedDateLT, accountKey, productPurchaseKey,
 				accountName, startDateGT, startDateLT, licenseEntryIds,
-				productKeys, productName, productId, productVersions, owner,
-				description, hostName, ipAddress, macAddress, serverId, key,
-				expirationDateGT, expirationDateLT, params, andSearch, start,
-				end, obc);
+				productKeys, productName, productId, productVersions,
+				clusterIds, owner, description, hostName, ipAddress, macAddress,
+				serverId, key, expirationDateGT, expirationDateLT, params,
+				andSearch, start, end, obc);
 	}
 
 	public List<LicenseKey> search(
@@ -707,19 +707,21 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		String accountKey, String productPurchaseKey, String accountName,
 		Date startDateGT, Date startDateLT, long[] licenseEntryIds,
 		String[] productKeys, String productName, String productId,
-		String[] productVersions, String owner, String description,
-		String hostName, String ipAddress, String macAddress, String serverId,
-		String key, Date expirationDateGT, Date expirationDateLT,
-		LinkedHashMap<String, Object> params, boolean andSearch) {
+		String[] productVersions, long[] clusterIds, String owner,
+		String description, String hostName, String ipAddress,
+		String macAddress, String serverId, String key, Date expirationDateGT,
+		Date expirationDateLT, LinkedHashMap<String, Object> params,
+		boolean andSearch) {
 
 		return licenseKeyFinder.
-			countByU_C_M_M_AK_PPK_A_S_L_P_P_P_P_O_D_H_I_M_S_E_A(
+			countByU_C_M_M_AK_PPK_A_S_L_P_P_P_P_CI_O_D_H_I_M_S_E_A(
 				createUserUuid, createDateGT, createDateLT, modifiedUserUuid,
 				modifiedDateGT, modifiedDateLT, accountKey, productPurchaseKey,
 				accountName, startDateGT, startDateLT, licenseEntryIds,
-				productKeys, productName, productId, productVersions, owner,
-				description, hostName, ipAddress, macAddress, serverId, key,
-				expirationDateGT, expirationDateLT, params, andSearch);
+				productKeys, productName, productId, productVersions,
+				clusterIds, owner, description, hostName, ipAddress, macAddress,
+				serverId, key, expirationDateGT, expirationDateLT, params,
+				andSearch);
 	}
 
 	public int searchCount(
