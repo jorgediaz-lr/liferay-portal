@@ -1,0 +1,48 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ */
+
+import {validateIPv4s} from '../../src/main/resources/META-INF/resources/js/utilities/helpers';
+
+describe('validateIPv4s', () => {
+	it('validates multiple valid IP addresses deliminated via comma, space, or new line', () => {
+		expect(
+			validateIPv4s(
+				`127.0.0.1,\n123.1.2.3, 192.168.1.101\n\n0.0.0.0,172.16.254.1 98.139.180.149\n,8.8.8.8\r255.255.255.0 `
+			)
+		).toBeTruthy();
+	});
+
+	it('validates multiple IP addresses containing invalid values correctly', () => {
+		expect(validateIPv4s('0.0.0.0.0, 127.0.0.1')).toBeFalsy();
+	});
+
+	it('validates a single valid IP address correctly', () => {
+		expect(validateIPv4s('127.0.0.1')).toBeTruthy();
+	});
+
+	it('validates a single invalid IP address correctly', () => {
+		expect(validateIPv4s('257.0.0.2')).toBeFalsy();
+
+		expect(validateIPv4s('2343.22.22')).toBeFalsy();
+	});
+
+	it('handles empty input', () => {
+		expect(validateIPv4s('')).toBeFalsy();
+	});
+
+	it('handles null input', () => {
+		expect(validateIPv4s(null)).toBeFalsy();
+	});
+
+	it('handles undefined input', () => {
+		expect(validateIPv4s(undefined)).toBeFalsy();
+	});
+});

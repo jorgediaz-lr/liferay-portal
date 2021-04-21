@@ -71,3 +71,22 @@ export function submitOnEnter(event, formRef) {
 		formRef.current.submit();
 	}
 }
+
+/**
+ * Takes an input and evaluates whether the input contains a single or multiple
+ * valid IPv4 addresses.
+ * @param {string} input The value to be evaluated
+ * @returns {boolean} Whether the input is valid or not
+ */
+export function validateIPv4s(input) {
+	if (input) {
+		const ipv4 = `^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$`;
+
+		const chuncks = input.trim().split(/\s*,\s*|\s+/);
+
+		return chuncks.every(chunck => chunck.match(ipv4));
+	}
+	else {
+		return false;
+	}
+}

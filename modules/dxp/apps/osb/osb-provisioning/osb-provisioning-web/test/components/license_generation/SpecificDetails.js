@@ -9,7 +9,7 @@
  * distribution rights of the Software.
  */
 
-import {cleanup, fireEvent, render} from '@testing-library/react';
+import {cleanup, fireEvent, render, wait} from '@testing-library/react';
 import React from 'react';
 
 import SpecificDetails from '../../../src/main/resources/META-INF/resources/js/components/license_generation/SpecificDetails';

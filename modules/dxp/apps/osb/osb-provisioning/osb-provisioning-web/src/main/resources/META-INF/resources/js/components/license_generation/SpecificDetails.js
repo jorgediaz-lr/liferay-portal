@@ -169,7 +169,9 @@ function SpecificDetails({addLicenseKeyURL, redirect}) {
 								/>
 							</div>
 
-							{isDisplayServerIDFields() && <ServerIdFieldGroups />}
+							{isDisplayServerIDFields() && (
+								<ServerIdFieldGroups />
+							)}
 
 							{licenseEntry.licenseEntryType ===
 								LICENSE_TYPE_CLUSTER && (
@@ -312,9 +314,7 @@ function SpecificDetails({addLicenseKeyURL, redirect}) {
 						<dl>
 							<div>
 								<dt>
-									{Liferay.Language.get(
-										'licenses-generated'
-									)}
+									{Liferay.Language.get('licenses-generated')}
 								</dt>
 								<dd>{licenseKeysGenerated}</dd>
 							</div>
