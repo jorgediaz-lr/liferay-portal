@@ -18,6 +18,7 @@ import com.liferay.osb.provisioning.license.model.LicenseKey;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
@@ -191,10 +192,10 @@ public class LicenseKeyDisplay {
 			StringBundler sb = new StringBundler((splitValue.length * 2) - 1);
 
 			for (int i = 0; i < splitValue.length; i++) {
-				sb.append(splitValue[i]);
+				sb.append(HtmlUtil.escape(splitValue[i]));
 
 				if ((i + 1) < splitValue.length) {
-					sb.append("<br>");
+					sb.append("<br />");
 				}
 			}
 
