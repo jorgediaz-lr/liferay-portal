@@ -62,7 +62,7 @@ public class LicenseEntryMigration {
 			while (resultSet.next()) {
 				String name = _getNewName(resultSet.getString(2));
 
-				Product product = _productWebService.fetchProductByName(name);
+				Product product = _getProduct(name);
 
 				if (product == null) {
 					_log.error("Unable to find product with name " + name);
@@ -99,6 +99,24 @@ public class LicenseEntryMigration {
 		}
 
 		return newName;
+	}
+
+	private Product _getProduct(String name) throws Exception {
+		Product product = _productWebService.fetchProductByName(name);
+
+		if (product != null) {
+			return product;
+		}
+
+		if (name.contains("(Cluster)")) {
+			name = StringUtil.removeSubstring(name, " (Cluster)");
+		}
+
+		if (name.contains("Developer")) {
+			name = StringUtil.replace(name, "Developer", "Development");
+		}
+
+		return _productWebService.fetchProductByName(name);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
