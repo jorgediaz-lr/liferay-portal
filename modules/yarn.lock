@@ -15989,26 +15989,10 @@ send@0.17.1:
     range-parser "~1.2.1"
     statuses "~1.5.0"
 
-senna@2.7.10:
+senna@2.7.10, senna@^2.3.1:
   version "2.7.10"
   resolved "https://registry.yarnpkg.com/senna/-/senna-2.7.10.tgz#0ba8aeb4b7097279a389ad47fddf845a8847af13"
   integrity sha512-iECG/q1ZeroXJdVArCFSODbD1YDoDD8LdQWvGESVCpZiuEQ8QDsJBctYmihcWow3dYEzG7/JAi3zvHrdltPL0w==
-  dependencies:
-    bootstrap "^3.3.6"
-    metal "^2.16.5"
-    metal-ajax "^2.1.1"
-    metal-debounce "^2.0.0"
-    metal-dom "^2.16.8"
-    metal-events "^2.16.5"
-    metal-path-parser "^1.0.3"
-    metal-promise "^2.0.1"
-    metal-structs "^1.0.0"
-    metal-uri "^2.2.6"
-    metal-useragent "^3.0.0"
-
-senna@^2.3.1:
-  version "2.7.9"
-  resolved "https://registry.yarnpkg.com/senna/-/senna-2.7.9.tgz#b40eb8cfdb61ec1c22785b8dab6e695222e353df"
   dependencies:
     bootstrap "^3.3.6"
     metal "^2.16.5"
