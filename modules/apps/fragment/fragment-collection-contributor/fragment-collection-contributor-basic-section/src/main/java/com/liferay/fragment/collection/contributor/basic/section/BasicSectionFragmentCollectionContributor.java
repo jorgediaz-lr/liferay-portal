@@ -16,6 +16,7 @@ package com.liferay.fragment.collection.contributor.basic.section;
 
 import com.liferay.fragment.contributor.BaseFragmentCollectionContributor;
 import com.liferay.fragment.contributor.FragmentCollectionContributor;
+import com.liferay.fragment.contributor.PortletAliasRegistration;
 
 import javax.servlet.ServletContext;
 
@@ -38,6 +39,11 @@ public class BasicSectionFragmentCollectionContributor
 	public ServletContext getServletContext() {
 		return _servletContext;
 	}
+
+	@Reference(
+		target = "(com.liferay.fragment.entry.processor.portlet.alias=nav)"
+	)
+	private PortletAliasRegistration _portletAliasRegistration;
 
 	@Reference(
 		target = "(osgi.web.symbolicname=com.liferay.fragment.collection.contributor.basic.section)"
