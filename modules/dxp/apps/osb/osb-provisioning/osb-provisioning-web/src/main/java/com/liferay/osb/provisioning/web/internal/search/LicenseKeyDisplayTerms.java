@@ -164,42 +164,42 @@ public class LicenseKeyDisplayTerms extends DisplayTerms {
 		return new ArrayList<>(
 			Arrays.asList(
 				new DisplayTerm("account-key", ACCOUNT_KEY, accountKey),
-				new DisplayTerm("account-name", ACCOUNT_NAME, accountName),
-				new DisplayTerm(
-					"active", ACTIVE_LICENSES,
-					StringUtil.merge(activeLicenses)),
-				new DisplayTerm("created-after", CREATE_DATE_GT, createDateGT),
-				new DisplayTerm("created-before", CREATE_DATE_LT, createDateLT),
-				new DisplayTerm(
-					"created-by", CREATOR_EMAIL_ADDRESS, creatorEmailAddress),
-				new DisplayTerm(
-					"expires-after", EXPIRATION_DATE_GT, expirationDateGT),
-				new DisplayTerm(
-					"expires-before", EXPIRATION_DATE_LT, expirationDateLT),
-				new DisplayTerm("host-name", HOST_NAME, hostName),
-				new DisplayTerm("ip-address", IP_ADDRESS, ipAddress),
-				new DisplayTerm("key", KEY, key),
-				new DisplayTerm("mac-address", MAC_ADDRESS, macAddress),
-				new DisplayTerm(
-					"modified-after", MODIFIED_DATE_GT, modifiedDateGT),
-				new DisplayTerm(
-					"modified-before", MODIFIED_DATE_LT, modifiedDateLT),
-				new DisplayTerm(
-					"last-edited-by", MODIFIED_EMAIL_ADDRESS,
-					modifiedEmailAddress),
-				new DisplayTerm("owner", OWNER, owner),
-				new DisplayTerm(
-					"product", PRODUCTS, StringUtil.merge(products)),
 				new DisplayTerm(
 					"product-purchase-key", PRODUCT_PURCHASE_KEY,
 					productPurchaseKey),
+				new DisplayTerm("account-name", ACCOUNT_NAME, accountName),
+				new DisplayTerm("owner", OWNER, owner),
+				new DisplayTerm("host-name", HOST_NAME, hostName),
+				new DisplayTerm("ip-address", IP_ADDRESS, ipAddress),
+				new DisplayTerm("mac-address", MAC_ADDRESS, macAddress),
+				new DisplayTerm("server-id", SERVER_ID, serverId),
+				new DisplayTerm("key", KEY, key),
+				new DisplayTerm(
+					"created-by", CREATOR_EMAIL_ADDRESS, creatorEmailAddress),
+				new DisplayTerm(
+					"last-edited-by", MODIFIED_EMAIL_ADDRESS,
+					modifiedEmailAddress),
+				new DisplayTerm(
+					"active", ACTIVE_LICENSES,
+					StringUtil.merge(activeLicenses)),
+				new DisplayTerm("type", TYPES, StringUtil.merge(types)),
+				new DisplayTerm(
+					"product", PRODUCTS, StringUtil.merge(products)),
 				new DisplayTerm(
 					"product-version", PRODUCT_VERSIONS,
 					StringUtil.merge(productVersions)),
-				new DisplayTerm("server-id", SERVER_ID, serverId),
-				new DisplayTerm("started-after", START_DATE_GT, startDateGT),
+				new DisplayTerm("created-before", CREATE_DATE_LT, createDateLT),
+				new DisplayTerm("created-after", CREATE_DATE_GT, createDateGT),
+				new DisplayTerm(
+					"modified-before", MODIFIED_DATE_LT, modifiedDateLT),
+				new DisplayTerm(
+					"modified-after", MODIFIED_DATE_GT, modifiedDateGT),
 				new DisplayTerm("started-before", START_DATE_LT, startDateLT),
-				new DisplayTerm("type", TYPES, StringUtil.merge(types))));
+				new DisplayTerm("started-after", START_DATE_GT, startDateGT),
+				new DisplayTerm(
+					"expires-before", EXPIRATION_DATE_LT, expirationDateLT),
+				new DisplayTerm(
+					"expires-after", EXPIRATION_DATE_GT, expirationDateGT)));
 	}
 
 	public String getExpirationDateGT() {
