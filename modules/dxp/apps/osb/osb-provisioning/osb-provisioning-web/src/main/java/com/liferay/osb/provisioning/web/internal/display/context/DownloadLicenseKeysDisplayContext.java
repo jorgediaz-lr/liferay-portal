@@ -65,10 +65,6 @@ public class DownloadLicenseKeysDisplayContext {
 				).put(
 					"expirationDate", licenseKey.getExpirationDate()
 				).put(
-					"hostName", licenseKey.getHostName()
-				).put(
-					"ipAddresses", licenseKey.getIpAddresses()
-				).put(
 					"licenseEntryName", licenseKey.getLicenseEntryName()
 				).put(
 					"licenseEntryType", licenseKey.getLicenseEntryType()
@@ -77,15 +73,11 @@ public class DownloadLicenseKeysDisplayContext {
 				).put(
 					"licenseVersion", licenseKey.getLicenseVersion()
 				).put(
-					"macAddresses", licenseKey.getMacAddresses()
-				).put(
 					"maxConcurrentUsers", licenseKey.getMaxConcurrentUsers()
 				).put(
 					"maxUsers", licenseKey.getMaxUsers()
 				).put(
 					"name", licenseKey.getName()
-				).put(
-					"owner", licenseKey.getOwner()
 				).put(
 					"productName", licenseKey.getProductName()
 				).put(

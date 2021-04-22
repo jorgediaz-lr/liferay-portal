@@ -22,16 +22,19 @@
 String redirect = ParamUtil.getString(request, "redirect");
 
 DownloadLicenseKeysDisplayContext downloadLicenseKeysDisplayContext = new DownloadLicenseKeysDisplayContext(renderRequest, renderResponse);
-
-downloadLicenseKeysDisplayContext.getDownloadLicenseKeysData();
 %>
 
 <div class="add-items">
 	<liferay-ui:header
 		backURL="<%= redirect %>"
 		cssClass="add-items-header"
-		title="download"
+		title='<%= LanguageUtil.get(request, "download-licenses") %>'
 	/>
 
-	//pass downloadLicenseKeysDisplayContext.getDownloadLicenseKeysData() for data
+	<div id="downloadLicenses">
+		<react:component
+			data="<%= downloadLicenseKeysDisplayContext.getDownloadLicenseKeysData() %>"
+			module="js/DownloadLicensesApp"
+		/>
+	</div>	
 </div>

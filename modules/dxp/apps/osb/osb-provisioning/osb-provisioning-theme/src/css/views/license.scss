@@ -1,3 +1,9 @@
+#downloadLicenses {
+	.download-licenses-container {
+		padding: $spacing-lg $spacing-md;
+	}
+}
+
 #generateLicense {
 	.specific-details-content {
 		background-color: $body-bg;
@@ -36,6 +42,10 @@
 			border-top: 1px solid $divider;
 		}
 	}
+}
+
+.download-licenses-container {
+	padding: 0 $spacing-md;
 }
 
 .edit-license-actions {
