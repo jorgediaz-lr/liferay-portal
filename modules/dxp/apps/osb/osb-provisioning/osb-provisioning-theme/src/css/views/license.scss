@@ -29,6 +29,7 @@
 .cluster-licenses {
 	.license {
 		border-bottom: 1px solid $divider;
+		margin-bottom: $spacing-xs;
 		padding-top: $spacing-lg;
 
 		&:first-child {
@@ -40,10 +41,22 @@
 .edit-license-actions {
 	display: flex;
 	justify-content: space-between;
-	margin-bottom: $spacing-lg;
+	margin-bottom: $spacing-md;
 
 	.btn-secondary {
 		border: none;
+	}
+}
+
+.edit-license-sheet {
+	dt {
+		padding-right: $spacing-xxs;
+	}
+
+	.host-name-field {
+		dd {
+			word-break: break-word;
+		}
 	}
 }
 

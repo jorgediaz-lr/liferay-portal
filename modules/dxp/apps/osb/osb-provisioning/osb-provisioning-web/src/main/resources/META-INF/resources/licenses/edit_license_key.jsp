@@ -51,7 +51,7 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 		<aui:input name="startDate" type="hidden" />
 		<aui:input name="expirationDate" type="hidden" />
 
-		<div class="add-items-sheet sheet">
+		<div class="add-items-sheet edit-license-sheet sheet">
 			<aui:row>
 				<aui:col md="4">
 					<dl>
@@ -83,7 +83,7 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 						</div>
 					</dl>
 
-					<dl>
+					<dl class="server-id-fields">
 						<c:if test="<%= editLicenseKeyDisplayContext.isServerIdVisible() %>">
 							<div>
 								<dt>
@@ -96,7 +96,7 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 						</c:if>
 
 						<c:if test="<%= editLicenseKeyDisplayContext.isHostNameVisible() %>">
-							<div>
+							<div class="host-name-field">
 								<dt>
 									<liferay-ui:message key="host-name" />
 								</dt>
@@ -307,8 +307,8 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 								<aui:col cssClass="license" md="12">
 									<aui:row>
 										<aui:col md="4">
-											<dl>
-												<div>
+											<dl class="server-id-fields">
+												<div class="host-name-field">
 													<dt>
 														<liferay-ui:message key="host-name" />
 													</dt>
