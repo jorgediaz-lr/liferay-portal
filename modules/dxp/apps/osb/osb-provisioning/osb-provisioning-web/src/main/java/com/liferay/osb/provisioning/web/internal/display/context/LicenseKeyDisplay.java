@@ -194,7 +194,7 @@ public class LicenseKeyDisplay {
 				sb.append(splitValue[i]);
 
 				if ((i + 1) < splitValue.length) {
-					sb.append(StringPool.SPACE);
+					sb.append("<br>");
 				}
 			}
 

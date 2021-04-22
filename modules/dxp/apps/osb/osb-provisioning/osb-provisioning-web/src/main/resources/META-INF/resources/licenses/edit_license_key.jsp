@@ -112,7 +112,7 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 									<liferay-ui:message key="ip-addresses" />
 								</dt>
 								<dd>
-									<%= HtmlUtil.escape(licenseKeyDisplay.getIpAddresses()) %>
+									<%= licenseKeyDisplay.getIpAddresses() %>
 								</dd>
 							</div>
 						</c:if>
@@ -125,7 +125,7 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 								<dd>
 									<c:choose>
 										<c:when test="<%= licenseKey.getLicenseVersion() >= 3 %>">
-											<%= HtmlUtil.escape(licenseKeyDisplay.getMacAddresses()) %>
+											<%= licenseKeyDisplay.getMacAddresses() %>
 										</c:when>
 										<c:otherwise>
 											<%= HtmlUtil.escape(editLicenseKeyDisplayContext.getClusterLicenseKeysDisplay()) %>
@@ -322,7 +322,7 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 														<liferay-ui:message key="ip-addresses" />
 													</dt>
 													<dd>
-														<%= HtmlUtil.escape(clusterLicenseKeyDisplay.getIpAddresses()) %>
+														<%= clusterLicenseKeyDisplay.getIpAddresses() %>
 													</dd>
 												</div>
 
@@ -331,7 +331,7 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 														<liferay-ui:message key="mac-addresses" />
 													</dt>
 													<dd>
-														<%= HtmlUtil.escape(clusterLicenseKeyDisplay.getMacAddresses()) %>
+														<%= clusterLicenseKeyDisplay.getMacAddresses() %>
 													</dd>
 												</div>
 											</dl>
