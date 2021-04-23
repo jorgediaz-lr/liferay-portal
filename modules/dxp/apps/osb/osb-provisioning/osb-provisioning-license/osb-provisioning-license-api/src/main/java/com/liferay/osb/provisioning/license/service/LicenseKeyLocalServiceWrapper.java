@@ -625,6 +625,14 @@ public class LicenseKeyLocalServiceWrapper
 	}
 
 	@Override
+	public com.liferay.osb.provisioning.license.model.LicenseKey reindex(
+			long licenseKeyId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _licenseKeyLocalService.reindex(licenseKeyId);
+	}
+
+	@Override
 	public com.liferay.osb.provisioning.license.model.LicenseKey
 			renewLicenseKey(
 				long userId, long licenseKeyId, java.util.Date startDate,

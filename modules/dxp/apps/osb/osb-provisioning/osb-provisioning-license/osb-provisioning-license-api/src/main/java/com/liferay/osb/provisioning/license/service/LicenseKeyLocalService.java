@@ -68,7 +68,6 @@ public interface LicenseKeyLocalService
 	 *
 	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.osb.provisioning.license.service.impl.LicenseKeyLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the license key local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link LicenseKeyLocalServiceUtil} if injection and service tracking are not available.
 	 */
-	@Indexable(type = IndexableType.REINDEX)
 	public LicenseKey addDeveloperLicenseKey(
 			long userId, String accountKey, String productKey,
 			String productVersion)
@@ -87,7 +86,6 @@ public interface LicenseKeyLocalService
 	@Indexable(type = IndexableType.REINDEX)
 	public LicenseKey addLicenseKey(LicenseKey licenseKey);
 
-	@Indexable(type = IndexableType.REINDEX)
 	public LicenseKey addLicenseKey(
 			long userId, LicenseEntry licenseEntry, Product product,
 			String accountKey, String productPurchaseKey, String accountName,
@@ -99,7 +97,6 @@ public interface LicenseKeyLocalService
 			boolean complimentary, boolean active)
 		throws Exception;
 
-	@Indexable(type = IndexableType.REINDEX)
 	public LicenseKey addLicenseKey(
 			long userId, long licenseEntryId, String productKey,
 			String accountKey, String productPurchaseKey, String accountName,
@@ -111,7 +108,6 @@ public interface LicenseKeyLocalService
 			boolean active)
 		throws Exception;
 
-	@Indexable(type = IndexableType.REINDEX)
 	public LicenseKey addLicenseKey(
 			long userId, String assetReceiptLicenseUuid,
 			String licenseEntryType, String productName, String productId,
@@ -423,6 +419,9 @@ public interface LicenseKeyLocalService
 		throws PortalException;
 
 	@Indexable(type = IndexableType.REINDEX)
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public LicenseKey reindex(long licenseKeyId) throws PortalException;
+
 	public LicenseKey renewLicenseKey(
 			long userId, long licenseKeyId, Date startDate, Date expirationDate)
 		throws Exception;
@@ -512,18 +511,15 @@ public interface LicenseKeyLocalService
 	@Indexable(type = IndexableType.REINDEX)
 	public LicenseKey updateLicenseKey(LicenseKey licenseKey);
 
-	@Indexable(type = IndexableType.REINDEX)
 	public LicenseKey updateLicenseKey(
 			long userId, long licenseKeyId, boolean active)
 		throws Exception;
 
-	@Indexable(type = IndexableType.REINDEX)
 	public LicenseKey updateLicenseKey(
 			long userId, long licenseKeyId, String productPurchaseKey,
 			boolean complimentary, boolean active)
 		throws Exception;
 
-	@Indexable(type = IndexableType.REINDEX)
 	public LicenseKey updateLicenseKey(
 			long licenseKeyId, String accountKey, String productPurchaseKey)
 		throws PortalException;

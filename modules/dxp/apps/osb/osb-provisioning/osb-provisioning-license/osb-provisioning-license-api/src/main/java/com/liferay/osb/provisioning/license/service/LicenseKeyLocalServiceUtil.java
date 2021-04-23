@@ -538,6 +538,10 @@ public class LicenseKeyLocalServiceUtil {
 		return getService().getUserLicenseKeysCount(userId, accountKey);
 	}
 
+	public static LicenseKey reindex(long licenseKeyId) throws PortalException {
+		return getService().reindex(licenseKeyId);
+	}
+
 	public static LicenseKey renewLicenseKey(
 			long userId, long licenseKeyId, java.util.Date startDate,
 			java.util.Date expirationDate)
