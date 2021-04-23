@@ -85,7 +85,7 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 
 					<dl class="server-id-fields">
 						<c:if test="<%= editLicenseKeyDisplayContext.isServerIdVisible() %>">
-							<div>
+							<div class="server-id">
 								<dt>
 									<liferay-ui:message key="server-id" />
 								</dt>
@@ -96,7 +96,7 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 						</c:if>
 
 						<c:if test="<%= editLicenseKeyDisplayContext.isHostNameVisible() %>">
-							<div class="host-name-field">
+							<div class="host-name">
 								<dt>
 									<liferay-ui:message key="host-name" />
 								</dt>
@@ -308,7 +308,7 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 									<aui:row>
 										<aui:col md="4">
 											<dl class="server-id-fields">
-												<div class="host-name-field">
+												<div class="host-name">
 													<dt>
 														<liferay-ui:message key="host-name" />
 													</dt>

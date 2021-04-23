@@ -48,14 +48,17 @@
 	}
 }
 
-.edit-license-sheet {
+.edit-license {
 	dt {
 		padding-right: $spacing-xxs;
 	}
 
-	.host-name-field {
-		dd {
-			word-break: break-word;
+	.server-id-fields {
+		.host-name,
+		.server-id {
+			dd {
+				word-break: break-word;
+			}
 		}
 	}
 }
