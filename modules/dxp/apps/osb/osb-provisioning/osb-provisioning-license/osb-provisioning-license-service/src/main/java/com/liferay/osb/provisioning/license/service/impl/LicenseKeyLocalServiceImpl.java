@@ -108,7 +108,6 @@ import org.osgi.service.component.annotations.Reference;
 )
 public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
-	@Indexable(type = IndexableType.REINDEX)
 	public LicenseKey addDeveloperLicenseKey(
 			long userId, String accountKey, String productKey,
 			String productVersion)
@@ -138,7 +137,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			StringPool.BLANK, true, true);
 	}
 
-	@Indexable(type = IndexableType.REINDEX)
 	public LicenseKey addLicenseKey(
 			long userId, LicenseEntry licenseEntry, Product product,
 			String accountKey, String productPurchaseKey, String accountName,
@@ -193,7 +191,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			additionalInfo, complimentary, active);
 	}
 
-	@Indexable(type = IndexableType.REINDEX)
 	public LicenseKey addLicenseKey(
 			long userId, long licenseEntryId, String productKey,
 			String accountKey, String productPurchaseKey, String accountName,
@@ -217,7 +214,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			StringPool.BLANK, complimentary, active);
 	}
 
-	@Indexable(type = IndexableType.REINDEX)
 	public LicenseKey addLicenseKey(
 			long userId, String assetReceiptLicenseUuid,
 			String licenseEntryType, String productName, String productId,
@@ -488,6 +484,10 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 	}
 
 	@Indexable(type = IndexableType.REINDEX)
+	public LicenseKey reindex(long licenseKeyId) throws PortalException {
+		return licenseKeyPersistence.findByPrimaryKey(licenseKeyId);
+	}
+
 	public LicenseKey renewLicenseKey(
 			long userId, long licenseKeyId, Date startDate, Date expirationDate)
 		throws Exception {
@@ -723,7 +723,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		return licenseKeyFinder.countByKeywords(keywords, params);
 	}
 
-	@Indexable(type = IndexableType.REINDEX)
 	public LicenseKey updateLicenseKey(
 			long userId, long licenseKeyId, boolean active)
 		throws Exception {
@@ -750,7 +749,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		return licenseKeyPersistence.update(licenseKey);
 	}
 
-	@Indexable(type = IndexableType.REINDEX)
 	public LicenseKey updateLicenseKey(
 			long userId, long licenseKeyId, String productPurchaseKey,
 			boolean complimentary, boolean active)
@@ -771,7 +769,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		return licenseKey;
 	}
 
-	@Indexable(type = IndexableType.REINDEX)
 	public LicenseKey updateLicenseKey(
 			long licenseKeyId, String accountKey, String productPurchaseKey)
 		throws PortalException {
