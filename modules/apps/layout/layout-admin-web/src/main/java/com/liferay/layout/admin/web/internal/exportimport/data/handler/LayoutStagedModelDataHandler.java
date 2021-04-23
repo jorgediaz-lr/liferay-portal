@@ -480,7 +480,8 @@ public class LayoutStagedModelDataHandler
 		boolean privateLayout = false;
 
 		if (portletDataContext.isPrivateLayout() &&
-			!layout.isTypeAssetDisplay()) {
+			!Objects.equals(
+				layout.getType(), LayoutConstants.TYPE_ASSET_DISPLAY)) {
 
 			privateLayout = true;
 		}
