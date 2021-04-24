@@ -110,8 +110,8 @@ public class SPIAgentRequest extends SPIAgentSerializable {
 		throws IOException {
 
 		super(
-			((Portlet)httpServletRequest.getAttribute(
-				WebKeys.SPI_AGENT_PORTLET)).getContextName());
+			(Portlet)httpServletRequest.getAttribute(
+				WebKeys.SPI_AGENT_PORTLET).getContextName());
 
 		Cookie[] cookies = httpServletRequest.getCookies();
 
