@@ -699,7 +699,9 @@ public class LayoutSetWrapper
 	 * @see #getVirtualHostnames()
 	 */
 	@Override
-	public void setVirtualHostnames(java.util.TreeMap virtualHostnames) {
+	public void setVirtualHostnames(
+		java.util.TreeMap<String, String> virtualHostnames) {
+
 		model.setVirtualHostnames(virtualHostnames);
 	}
 
