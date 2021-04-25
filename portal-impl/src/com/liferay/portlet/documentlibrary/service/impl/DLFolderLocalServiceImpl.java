@@ -191,7 +191,11 @@ public class DLFolderLocalServiceImpl extends DLFolderLocalServiceBaseImpl {
 			groupId = repository.getGroupId();
 		}
 
-		Group group = groupLocalService.getGroup(groupId);
+		Group group = groupLocalService.fetchGroup(groupId);
+
+		if (group == null) {
+			return;
+		}
 
 		RepositoryEventTrigger repositoryEventTrigger =
 			RepositoryUtil.getRepositoryEventTrigger(repositoryId);
