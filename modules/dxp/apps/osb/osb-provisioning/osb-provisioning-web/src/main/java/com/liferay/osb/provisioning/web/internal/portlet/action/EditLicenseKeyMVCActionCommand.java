@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -40,6 +39,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -105,12 +105,10 @@ public class EditLicenseKeyMVCActionCommand extends BaseMVCActionCommand {
 
 			String hostName = serverIdJSONObject.getString("hostName");
 
-			String[] curIpAddresses = StringUtil.split(
-				serverIdJSONObject.getString("ipAddresses"),
-				StringPool.NEW_LINE);
-			String[] curMacAddresses = StringUtil.split(
-				serverIdJSONObject.getString("macAddresses"),
-				StringPool.NEW_LINE);
+			String[] curIpAddresses = _serverIdsSeparatorPattern.split(
+				serverIdJSONObject.getString("ipAddresses"));
+			String[] curMacAddresses = _serverIdsSeparatorPattern.split(
+				serverIdJSONObject.getString("macAddresses"));
 
 			curIpAddresses = ArrayUtil.distinct(curIpAddresses);
 			curMacAddresses = ArrayUtil.distinct(curMacAddresses);
@@ -242,6 +240,9 @@ public class EditLicenseKeyMVCActionCommand extends BaseMVCActionCommand {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		EditLicenseKeyMVCActionCommand.class);
+
+	private static final Pattern _serverIdsSeparatorPattern = Pattern.compile(
+		"\\s*,\\s*|\\s+");
 
 	@Reference
 	private LicenseKeyService _licenseKeyService;
