@@ -63,6 +63,16 @@ public class ViewAccountLicenseKeysDisplayContext
 							LanguageUtil.get(httpServletRequest, "download"));
 						dropdownItem.setQuickAction(true);
 					});
+				add(
+					dropdownItem -> {
+						dropdownItem.setHref(
+							StringBundler.concat(
+								"javascript:", renderResponse.getNamespace(),
+								"renewLicenseKeys();"));
+						dropdownItem.setLabel(
+							LanguageUtil.get(httpServletRequest, "renew"));
+						dropdownItem.setQuickAction(true);
+					});
 			}
 		};
 	}

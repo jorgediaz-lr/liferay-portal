@@ -30,11 +30,7 @@ PortletURL portletURL = viewAccountLicenseKeysDisplayContext.getPortletURL();
 		<liferay-util:param name="values" value="active,expired,deactivated,all" />
 	</liferay-util:include>
 
-	<portlet:actionURL name="/accounts/download_license_keys" var="downloadLicenseKeysURL">
-		<portlet:param name="redirect" value="<%= currentURL %>" />
-	</portlet:actionURL>
-
-	<aui:form action="<%= downloadLicenseKeysURL %>" name="downloadLicenseKeysFm">
+	<aui:form action="<%= currentURL %>" name="licenseKeysFm">
 		<aui:input name="licenseKeyIds" type="hidden" />
 
 		<liferay-ui:search-container
@@ -120,11 +116,27 @@ PortletURL portletURL = viewAccountLicenseKeysDisplayContext.getPortletURL();
 <aui:script>
 	function <portlet:namespace />downloadLicenseKeys() {
 		var downloadLicenseKeysFm = document.getElementById(
-			'<portlet:namespace />downloadLicenseKeysFm'
+			'<portlet:namespace />licenseKeysFm'
 		);
 
 		if (downloadLicenseKeysFm) {
-			downloadLicenseKeysFm.submit();
+			submitForm(
+				downloadLicenseKeysFm,
+				'<portlet:actionURL name="/accounts/download_license_keys"><portlet:param name="redirect" value="<%= currentURL %>" /></portlet:actionURL>'
+			);
+		}
+	}
+
+	function <portlet:namespace />renewLicenseKeys() {
+		var renewLicenseKeysFm = document.getElementById(
+			'<portlet:namespace />licenseKeysFm'
+		);
+
+		if (renewLicenseKeysFm) {
+			submitForm(
+				renewLicenseKeysFm,
+				'<portlet:actionURL name="/accounts/renew_select_license_keys"><portlet:param name="redirect" value="<%= currentURL %>" /></portlet:actionURL>'
+			);
 		}
 	}
 </aui:script>
