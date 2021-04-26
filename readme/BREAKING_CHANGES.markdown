@@ -1393,3 +1393,29 @@ managed by it by default. Removing various branching logic supporting this
 feature improves code maintainability and readability.
 
 ---------------------------------------
+
+### Make .cfg files use the cfg format
+- **Date:** 2021-Feb-21
+- **JIRA Ticket:** [LPS-128031](https://issues.liferay.com/browse/LPS-128031)
+
+#### What changed?
+
+Prior to this change, .cfg files could use either the format for .cfg or .config. Now,
+.cfg configuration files now must use the cfg format as defined [here](https://sling.apache.org/documentation/bundles/configuration-installer-factory.html#property-files-cfg)
+
+#### Who is affected?
+
+This affects anyone who has a .cfg file using the .config format
+
+#### How should I update my code?
+
+Either rename your .cfg file to .config and ensure it uses the .config format or
+modify your .cfg file to use the .cfg format (see link above).
+
+#### Why was this change made?
+
+Having .cfg files able to use the .config format was an allowance by apache file install,
+when we switched to using our own version of file install, we decided to have stricter format
+handling for ease of maintainability.
+
+---------------------------------------
