@@ -55,12 +55,12 @@ public class RenewSelectLicenseKeysMVCActionCommand
 			PortletURL portletURL = liferayPortletResponse.createRenderURL();
 
 			portletURL.setParameter(
-				"licenseKeyIds",
-				ParamUtil.getString(actionRequest, "licenseKeyIds"));
-			portletURL.setParameter(
 				"mvcRenderCommandName", "/accounts/renew_license_keys");
 			portletURL.setParameter(
 				"redirect", ParamUtil.getString(actionRequest, "redirect"));
+			portletURL.setParameter(
+				"licenseKeyIds",
+				ParamUtil.getString(actionRequest, "licenseKeyIds"));
 
 			hideDefaultSuccessMessage(actionRequest);
 
