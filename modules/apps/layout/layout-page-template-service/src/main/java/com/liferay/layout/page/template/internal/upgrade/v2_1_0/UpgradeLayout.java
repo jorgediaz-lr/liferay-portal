@@ -136,9 +136,11 @@ public class UpgradeLayout extends UpgradeProcess {
 	}
 
 	protected void upgradeSchema() throws Exception {
-		alter(
-			LayoutPageTemplateEntryTable.class,
-			new AlterTableAddColumn("plid LONG"));
+		if (!hasColumn(LayoutPageTemplateEntryTable.TABLE_NAME, "plid")) {
+			alter(
+				LayoutPageTemplateEntryTable.class,
+				new AlterTableAddColumn("plid LONG"));
+		}
 	}
 
 	private long _getPlid(
