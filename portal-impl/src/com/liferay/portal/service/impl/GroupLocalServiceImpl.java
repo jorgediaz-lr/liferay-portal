@@ -1121,7 +1121,11 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 	 */
 	@Override
 	public Group deleteGroup(long groupId) throws PortalException {
-		Group group = groupPersistence.findByPrimaryKey(groupId);
+		Group group = fetchGroup(groupId);
+
+		if (group == null) {
+			return null;
+		}
 
 		return deleteGroup(group);
 	}
