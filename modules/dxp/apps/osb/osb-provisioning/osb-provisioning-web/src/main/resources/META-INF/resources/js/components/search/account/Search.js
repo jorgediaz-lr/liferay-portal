@@ -161,11 +161,13 @@ function Search({
 					disabled={showAdvancedSearch}
 					onChange={handleOnChange}
 					onKeyDown={handleOnKeyDown}
-					placeholder={getSearchPlaceholder(
-						getAccountSearchFilterDisplayName,
-						Liferay.Language.get('search-accounts'),
-						NAMESPACE
-					)}
+					placeholder={getSearchPlaceholder({
+						defaultPlaceholder: Liferay.Language.get(
+							'search-accounts'
+						),
+						getFilterDisplayNameCallback: getAccountSearchFilterDisplayName,
+						namespace: NAMESPACE
+					})}
 					value={keywords}
 				/>
 

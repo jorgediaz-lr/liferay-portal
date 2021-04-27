@@ -47,6 +47,25 @@ function formatPlaceholder(filters, getFilterDisplayNameCallback) {
 		.join(', ');
 }
 
+function formatSearchFilters(namespace = NAMESPACE) {
+	const searchParams = new URLSearchParams(window.location.search);
+	const searchFilters = {};
+
+	// Suppress eslint false alarm for unused var
+	/* eslint-disable no-unused-vars */
+
+	// Project has no IE11 constraint, prefer to use for...of loop
+	/* eslint-disable-next-line no-for-of-loops/no-for-of-loops */
+	for (const [key, value] of searchParams.entries()) {
+		if (validateParameterNames(key, namespace) && value) {
+			searchFilters[key.replace(namespace, '')] = value;
+		}
+	}
+	/* eslint-enable no-unused-vars */
+
+	return searchFilters;
+}
+
 /**
  * This helper matches a search param name for account search and returns the
  * localized display name.
@@ -225,32 +244,23 @@ export function getSearchParameter(param) {
 /**
  * Generates placeholder text in the search input based on the
  * search params and results conducted via the advanced search.
+ * @param {string} defaultPlaceholder The default search placeholder.
  * @param {function} getFilterDisplayNameCallback The function that constructs
  * the placeholder text.
- * @param {string} defaultPlaceholder The default search placeholder.
  * @param {string} namespace The namespace on the query params.
+ * @param {function} searchFilterProcesser Custom function that allows for
+ * additional processing for the formatted search filters.
  * @returns {string} The final placeholder text to be displayed.
  */
-export function getSearchPlaceholder(
-	getFilterDisplayNameCallback,
+export function getSearchPlaceholder({
 	defaultPlaceholder = Liferay.Language.get('search'),
-	namespace = NAMESPACE
-) {
-	const searchParams = new URLSearchParams(window.location.search);
-
-	const searchFilters = {};
-
-	// Suppress eslint false alarm for unused var
-	/* eslint-disable no-unused-vars */
-
-	// Project has no IE11 constraint, prefer to use for...of loop
-	/* eslint-disable-next-line no-for-of-loops/no-for-of-loops */
-	for (const [key, value] of searchParams.entries()) {
-		if (validateParameterNames(key, namespace) && value) {
-			searchFilters[key.replace(namespace, '')] = value;
-		}
-	}
-	/* eslint-enable no-unused-vars */
+	getFilterDisplayNameCallback,
+	namespace = NAMESPACE,
+	searchFilterProcesser
+}) {
+	const searchFilters = searchFilterProcesser
+		? searchFilterProcesser(formatSearchFilters(namespace))
+		: formatSearchFilters(namespace);
 
 	if (formatPlaceholder(searchFilters, getFilterDisplayNameCallback)) {
 		return formatPlaceholder(searchFilters, getFilterDisplayNameCallback);

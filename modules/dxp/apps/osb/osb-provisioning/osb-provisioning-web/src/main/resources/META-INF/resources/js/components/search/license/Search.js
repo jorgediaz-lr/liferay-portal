@@ -38,6 +38,39 @@ function Search({
 		return `${licenseHomeURL}&${NAMESPACE}licenseKeySearchKeywords=${keywords}`;
 	}
 
+	function convertSearchParamValuesByName(searchFilters) {
+		const formattedSearchFilters = {...searchFilters};
+
+		const productsParamValues = formattedSearchFilters['products'];
+
+		if (productsParamValues) {
+			formattedSearchFilters['products'] = extractLabels(
+				productsParamValues.split(','),
+				products
+			);
+		}
+
+		const typesParamValues = formattedSearchFilters['types'];
+
+		if (typesParamValues) {
+			formattedSearchFilters['types'] = extractLabels(
+				typesParamValues.split(','),
+				licenseTypes
+			);
+		}
+
+		return formattedSearchFilters;
+	}
+
+	function extractLabels(val, source) {
+		const values = new Set(val);
+
+		return source
+			.filter(({value}) => values.has(value))
+			.map(({label}) => label)
+			.join(', ');
+	}
+
 	function handleClickOutside(event) {
 		const activeDatePicker = document.querySelector(
 			'.date-picker-dropdown-menu.show'
@@ -84,10 +117,13 @@ function Search({
 						disabled={showAdvancedSearch}
 						onChange={handleOnChange}
 						onKeyDown={handleOnKeyDown}
-						placeholder={getSearchPlaceholder(
-							getLicenseKeySearchFilterDisplayName,
-							Liferay.Language.get('search-licenses')
-						)}
+						placeholder={getSearchPlaceholder({
+							defaultPlaceholder: Liferay.Language.get(
+								'search-licenses'
+							),
+							getFilterDisplayNameCallback: getLicenseKeySearchFilterDisplayName,
+							searchFilterProcesser: convertSearchParamValuesByName
+						})}
 						type=""
 						value={keywords}
 					/>
