@@ -299,16 +299,6 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		return false;
 	}
 
-	@JSONWebService
-	public LicenseKey registerLicenseKey(
-			String orderEntryUuid, String productName, int liferayVersion,
-			int maxServers, String hostName, String ipAddresses,
-			String macAddresses, String serverId)
-		throws PortalException {
-
-		throw new UnsupportedOperationException();
-	}
-
 	public LicenseKey renewLicenseKey(
 			long licenseKeyId, Date startDate, Date expirationDate)
 		throws Exception {
