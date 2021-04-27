@@ -125,7 +125,7 @@ public class ViewLicenseKeysManagementToolbarDisplayContext
 			value = _getProductName(value);
 		}
 
-		if (key.equals("type")) {
+		if (key.equals("license-type")) {
 			value = _getLicenseType(value);
 		}
 

@@ -182,7 +182,7 @@ public class LicenseKeyDisplayTerms extends DisplayTerms {
 				new DisplayTerm(
 					"active", ACTIVE_LICENSES,
 					StringUtil.merge(activeLicenses)),
-				new DisplayTerm("type", TYPES, StringUtil.merge(types)),
+				new DisplayTerm("license-type", TYPES, StringUtil.merge(types)),
 				new DisplayTerm(
 					"product", PRODUCTS, StringUtil.merge(products)),
 				new DisplayTerm(
