@@ -124,8 +124,7 @@ public class SegmentsEntryStagedModelDataHandlerTest
 		StagedExpandoColumn exportedStagedExpandoColumn =
 			(StagedExpandoColumn)readExportedStagedModel(stagedExpandoColumn);
 
-		StagedModelDataHandlerUtil.importStagedModel(
-			portletDataContext, exportedStagedExpandoColumn);
+		importStagedModel(portletDataContext, exportedStagedExpandoColumn);
 
 		List<StagedExpandoColumn> stagedExpandoColumns =
 			_stagedModelRepository.fetchStagedModelsByUuidAndCompanyId(
@@ -141,8 +140,7 @@ public class SegmentsEntryStagedModelDataHandlerTest
 		SegmentsEntry exportedSegmentsEntry =
 			(SegmentsEntry)readExportedStagedModel(segmentsEntry);
 
-		StagedModelDataHandlerUtil.importStagedModel(
-			portletDataContext, exportedSegmentsEntry);
+		importStagedModel(portletDataContext, exportedSegmentsEntry);
 
 		SegmentsEntry importedSegmentsEntry = (SegmentsEntry)getStagedModel(
 			segmentsEntry.getUuid(), liveGroup);
@@ -188,8 +186,7 @@ public class SegmentsEntryStagedModelDataHandlerTest
 
 		Team exportedTeam = (Team)readExportedStagedModel(team);
 
-		StagedModelDataHandlerUtil.importStagedModel(
-			portletDataContext, exportedTeam);
+		importStagedModel(portletDataContext, exportedTeam);
 
 		Team importedTeam = TeamLocalServiceUtil.fetchTeamByUuidAndGroupId(
 			team.getUuid(), liveGroup.getGroupId());
@@ -197,8 +194,7 @@ public class SegmentsEntryStagedModelDataHandlerTest
 		SegmentsEntry exportedSegmentsEntry =
 			(SegmentsEntry)readExportedStagedModel(segmentsEntry);
 
-		StagedModelDataHandlerUtil.importStagedModel(
-			portletDataContext, exportedSegmentsEntry);
+		importStagedModel(portletDataContext, exportedSegmentsEntry);
 
 		SegmentsEntry importedSegmentsEntry = (SegmentsEntry)getStagedModel(
 			segmentsEntry.getUuid(), liveGroup);

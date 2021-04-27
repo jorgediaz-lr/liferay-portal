@@ -74,8 +74,7 @@ public class PollsQuestionStagedModelDataHandlerTest
 		ExportImportThreadLocal.setPortletImportInProcess(true);
 
 		try {
-			StagedModelDataHandlerUtil.importStagedModel(
-				portletDataContext, exportedQuestion);
+			importStagedModel(portletDataContext, exportedQuestion);
 		}
 		finally {
 			ExportImportThreadLocal.setPortletImportInProcess(false);
