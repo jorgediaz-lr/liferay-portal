@@ -16,6 +16,7 @@ package com.liferay.osb.provisioning.web.internal.portlet.action;
 
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.license.helper.constants.LicenseServerId;
+import com.liferay.osb.provisioning.license.model.LicenseKey;
 import com.liferay.osb.provisioning.license.service.LicenseKeyService;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -211,8 +212,10 @@ public class EditLicenseKeyMVCActionCommand extends BaseMVCActionCommand {
 			Date curExpirationDate = dateFormat.parse(
 				ParamUtil.getString(actionRequest, "expirationDate"));
 
-			_licenseKeyService.renewLicenseKey(
+			LicenseKey licenseKey = _licenseKeyService.renewLicenseKey(
 				licenseKeyId, curStartDate, curExpirationDate);
+
+			licenseKeyId = licenseKey.getLicenseKeyId();
 		}
 		else {
 			long clusterLicenseKeyId = ParamUtil.getLong(
