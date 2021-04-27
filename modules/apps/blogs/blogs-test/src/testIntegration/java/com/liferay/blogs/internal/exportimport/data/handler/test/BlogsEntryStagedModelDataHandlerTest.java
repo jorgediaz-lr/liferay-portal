@@ -80,8 +80,7 @@ public class BlogsEntryStagedModelDataHandlerTest
 
 		BlogsEntry exportedEntry = (BlogsEntry)readExportedStagedModel(entry);
 
-		StagedModelDataHandlerUtil.importStagedModel(
-			portletDataContext, exportedEntry);
+		importStagedModel(portletDataContext, exportedEntry);
 
 		BlogsEntry importedEntry = (BlogsEntry)getStagedModel(
 			entry.getUuid(), liveGroup);
@@ -111,8 +110,7 @@ public class BlogsEntryStagedModelDataHandlerTest
 
 		BlogsEntry exportedEntry = (BlogsEntry)readExportedStagedModel(entry);
 
-		StagedModelDataHandlerUtil.importStagedModel(
-			portletDataContext, exportedEntry);
+		importStagedModel(portletDataContext, exportedEntry);
 
 		BlogsEntry importedEntry = (BlogsEntry)getStagedModel(
 			entry.getUuid(), liveGroup);
@@ -131,8 +129,7 @@ public class BlogsEntryStagedModelDataHandlerTest
 		BlogsEntry exportedUpdatedEntry = (BlogsEntry)readExportedStagedModel(
 			updatedEntry);
 
-		StagedModelDataHandlerUtil.importStagedModel(
-			portletDataContext, exportedUpdatedEntry);
+		importStagedModel(portletDataContext, exportedUpdatedEntry);
 
 		BlogsEntry importedUpdatedEntry = (BlogsEntry)getStagedModel(
 			updatedEntry.getUuid(), liveGroup);
@@ -156,8 +153,7 @@ public class BlogsEntryStagedModelDataHandlerTest
 
 		Assert.assertNotNull(exportedEntry);
 
-		StagedModelDataHandlerUtil.importStagedModel(
-			portletDataContext, exportedEntry);
+		importStagedModel(portletDataContext, exportedEntry);
 
 		BlogsEntry importedEntry = (BlogsEntry)getStagedModel(
 			entry.getUuid(), liveGroup);
@@ -187,8 +183,7 @@ public class BlogsEntryStagedModelDataHandlerTest
 
 		BlogsEntry exportedEntry = (BlogsEntry)readExportedStagedModel(entry);
 
-		StagedModelDataHandlerUtil.importStagedModel(
-			portletDataContext, exportedEntry);
+		importStagedModel(portletDataContext, exportedEntry);
 
 		BlogsEntry importedEntry = (BlogsEntry)getStagedModel(
 			entry.getUuid(), liveGroup);
@@ -207,8 +202,7 @@ public class BlogsEntryStagedModelDataHandlerTest
 		BlogsEntry exportedUpdatedEntry = (BlogsEntry)readExportedStagedModel(
 			updatedEntry);
 
-		StagedModelDataHandlerUtil.importStagedModel(
-			portletDataContext, exportedUpdatedEntry);
+		importStagedModel(portletDataContext, exportedUpdatedEntry);
 
 		BlogsEntry importedUpdatedEntry = (BlogsEntry)getStagedModel(
 			updatedEntry.getUuid(), liveGroup);
