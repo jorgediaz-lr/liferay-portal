@@ -18,7 +18,6 @@ import com.liferay.petra.io.StreamUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.events.StartupHelperUtil;
 import com.liferay.portal.kernel.dao.db.DB;
-import com.liferay.portal.kernel.dao.db.DBManager;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataSourceFactoryUtil;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -39,6 +38,8 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import java.util.Properties;
+
 import javax.sql.DataSource;
 
 /**
@@ -50,17 +51,29 @@ public class DBInitUtil {
 		return _dataSource;
 	}
 
+	public static DataSource getReadDataSource() {
+		return _readDataSource;
+	}
+
+	public static DataSource getWriteDataSource() {
+		return _writeDataSource;
+	}
+
 	public static void init() throws Exception {
-		_dataSource = DataSourceFactoryUtil.initDataSource(
-			PropsUtil.getProperties("jdbc.default.", true));
+		_readDataSource = _initDataSource(
+			PropsUtil.getProperties("jdbc.read.", true));
 
-		DB db = DBManagerUtil.getDB(
-			DBManagerUtil.getDBType(DialectDetector.getDialect(_dataSource)),
-			_dataSource);
+		_writeDataSource = _initDataSource(
+			PropsUtil.getProperties("jdbc.write.", true));
 
-		DBManager dbManager = DBManagerUtil.getDBManager();
+		_dataSource = _writeDataSource;
 
-		dbManager.setDB(db);
+		if ((_readDataSource == null) && (_writeDataSource == null)) {
+			_dataSource = _initDataSource(
+				PropsUtil.getProperties("jdbc.default.", true));
+		}
+
+		DB db = DBManagerUtil.getDB();
 
 		try (Connection connection = _dataSource.getConnection()) {
 			if (_checkDefaultRelease(connection)) {
@@ -203,6 +216,21 @@ public class DBInitUtil {
 		return false;
 	}
 
+	private static DataSource _initDataSource(Properties properties)
+		throws Exception {
+
+		if ((properties == null) || properties.isEmpty()) {
+			return null;
+		}
+
+		DataSource dataSource = DataSourceFactoryUtil.initDataSource(
+			properties);
+
+		DBManagerUtil.setDB(DialectDetector.getDialect(dataSource), dataSource);
+
+		return dataSource;
+	}
+
 	private static void _runSQLTemplate(
 			DB db, Connection connection, ClassLoader classLoader, String path)
 		throws Exception {
@@ -243,5 +271,7 @@ public class DBInitUtil {
 	private static final Log _log = LogFactoryUtil.getLog(DBInitUtil.class);
 
 	private static DataSource _dataSource;
+	private static DataSource _readDataSource;
+	private static DataSource _writeDataSource;
 
 }
