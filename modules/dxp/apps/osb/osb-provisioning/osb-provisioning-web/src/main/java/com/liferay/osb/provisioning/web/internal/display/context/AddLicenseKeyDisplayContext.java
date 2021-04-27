@@ -127,23 +127,6 @@ public class AddLicenseKeyDisplayContext {
 
 		data.put("description", _account.getName());
 		data.put("licensableProducts", _getLicensableProductsJSONArray());
-
-		List<Integer> maxHttpSessions = new ArrayList<>();
-
-		for (int i = 5; i <= 10; i++) {
-			maxHttpSessions.add(i);
-		}
-
-		data.put("maxHttpSessions", maxHttpSessions);
-
-		List<Integer> maxServers = new ArrayList<>();
-
-		for (int i = 0; i <= 15; i++) {
-			maxServers.add(i);
-		}
-
-		data.put("maxServers", maxServers);
-
 		data.put("owner", _account.getName());
 		data.put("purchasedProducts", _getPurchasedProductsJSONObject());
 
