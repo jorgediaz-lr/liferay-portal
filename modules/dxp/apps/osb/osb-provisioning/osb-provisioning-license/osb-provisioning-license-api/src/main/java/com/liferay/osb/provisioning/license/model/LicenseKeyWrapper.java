@@ -339,13 +339,6 @@ public class LicenseKeyWrapper
 		}
 	}
 
-	@Override
-	public boolean canRenew()
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return model.canRenew();
-	}
-
 	/**
 	 * Returns the account key of this license key.
 	 *
