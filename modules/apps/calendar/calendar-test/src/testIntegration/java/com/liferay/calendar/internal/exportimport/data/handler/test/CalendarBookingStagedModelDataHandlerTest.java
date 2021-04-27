@@ -101,8 +101,7 @@ public class CalendarBookingStagedModelDataHandlerTest
 		CalendarBooking exportedCalendarBooking =
 			(CalendarBooking)readExportedStagedModel(calendarBooking);
 
-		StagedModelDataHandlerUtil.importStagedModel(
-			portletDataContext, exportedCalendarBooking);
+		importStagedModel(portletDataContext, exportedCalendarBooking);
 
 		CalendarBooking importedCalendarBooking =
 			(CalendarBooking)getStagedModel(

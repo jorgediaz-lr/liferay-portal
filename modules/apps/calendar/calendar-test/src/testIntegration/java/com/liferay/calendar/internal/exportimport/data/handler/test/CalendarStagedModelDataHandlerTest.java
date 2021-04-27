@@ -64,8 +64,7 @@ public class CalendarStagedModelDataHandlerTest
 
 		Calendar exportedCalendar = (Calendar)readExportedStagedModel(calendar);
 
-		StagedModelDataHandlerUtil.importStagedModel(
-			portletDataContext, exportedCalendar);
+		importStagedModel(portletDataContext, exportedCalendar);
 
 		Calendar importedCalendar = (Calendar)getStagedModel(
 			exportedCalendar.getUuid(), liveGroup);
@@ -99,8 +98,7 @@ public class CalendarStagedModelDataHandlerTest
 
 		Calendar exportedCalendar = (Calendar)readExportedStagedModel(calendar);
 
-		StagedModelDataHandlerUtil.importStagedModel(
-			portletDataContext, exportedCalendar);
+		importStagedModel(portletDataContext, exportedCalendar);
 
 		Calendar importedCalendar = (Calendar)getStagedModel(
 			exportedCalendar.getUuid(), liveGroup);
