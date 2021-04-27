@@ -26,13 +26,17 @@ import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.item.selector.ItemSelectorCriterion;
 import com.liferay.item.selector.ItemSelectorReturnTypeResolver;
 import com.liferay.item.selector.ItemSelectorReturnTypeResolverHandler;
+import com.liferay.item.selector.taglib.servlet.taglib.util.RepositoryEntryBrowserTagUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
+import com.liferay.portal.kernel.portlet.PortalPreferences;
+import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
@@ -54,7 +58,8 @@ import javax.servlet.http.HttpServletRequest;
 public class DLItemSelectorViewDisplayContext<T extends ItemSelectorCriterion> {
 
 	public DLItemSelectorViewDisplayContext(
-		T itemSelectorCriterion, DLItemSelectorView<T> dlItemSelectorView,
+		HttpServletRequest httpServletRequest, T itemSelectorCriterion,
+		DLItemSelectorView<T> dlItemSelectorView,
 		ItemSelectorReturnTypeResolverHandler
 			itemSelectorReturnTypeResolverHandler,
 		String itemSelectedEventName, boolean search, PortletURL portletURL,
@@ -62,6 +67,7 @@ public class DLItemSelectorViewDisplayContext<T extends ItemSelectorCriterion> {
 		ClassNameLocalService classNameLocalService,
 		StagingGroupHelper stagingGroupHelper) {
 
+		_httpServletRequest = httpServletRequest;
 		_itemSelectorCriterion = itemSelectorCriterion;
 		_dlItemSelectorView = dlItemSelectorView;
 		_itemSelectorReturnTypeResolverHandler =
@@ -72,6 +78,9 @@ public class DLItemSelectorViewDisplayContext<T extends ItemSelectorCriterion> {
 		_assetVocabularyService = assetVocabularyService;
 		_classNameLocalService = classNameLocalService;
 		_stagingGroupHelper = stagingGroupHelper;
+
+		_portalPreferences = PortletPreferencesFactoryUtil.getPortalPreferences(
+			_httpServletRequest);
 	}
 
 	public String[] getExtensions() {
@@ -100,6 +109,15 @@ public class DLItemSelectorViewDisplayContext<T extends ItemSelectorCriterion> {
 
 	public String[] getMimeTypes() {
 		return _dlItemSelectorView.getMimeTypes();
+	}
+
+	public OrderByComparator getOrderByComparator() {
+		return DLUtil.getRepositoryModelOrderByComparator(
+			RepositoryEntryBrowserTagUtil.getOrderByCol(
+				_httpServletRequest, _portalPreferences),
+			RepositoryEntryBrowserTagUtil.getOrderByType(
+				_httpServletRequest, _portalPreferences),
+			true);
 	}
 
 	public PortletURL getPortletURL(
@@ -227,10 +245,12 @@ public class DLItemSelectorViewDisplayContext<T extends ItemSelectorCriterion> {
 	private final AssetVocabularyService _assetVocabularyService;
 	private final ClassNameLocalService _classNameLocalService;
 	private final DLItemSelectorView<T> _dlItemSelectorView;
+	private final HttpServletRequest _httpServletRequest;
 	private final String _itemSelectedEventName;
 	private final T _itemSelectorCriterion;
 	private final ItemSelectorReturnTypeResolverHandler
 		_itemSelectorReturnTypeResolverHandler;
+	private final PortalPreferences _portalPreferences;
 	private final PortletURL _portletURL;
 	private final boolean _search;
 	private Boolean _showDragAndDropZone;

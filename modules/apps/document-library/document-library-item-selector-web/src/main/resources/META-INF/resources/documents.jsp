@@ -73,10 +73,7 @@ if (dlItemSelectorViewDisplayContext.isSearch()) {
 	}
 }
 else {
-	String orderByCol = ParamUtil.getString(request, "orderByCol", "title");
-	String orderByType = ParamUtil.getString(request, "orderByType", "asc");
-
-	repositoryEntries = DLAppServiceUtil.getFoldersAndFileEntriesAndFileShortcuts(groupId, folderId, WorkflowConstants.STATUS_APPROVED, mimeTypes, false, false, start, end, DLUtil.getRepositoryModelOrderByComparator(orderByCol, orderByType, true));
+	repositoryEntries = DLAppServiceUtil.getFoldersAndFileEntriesAndFileShortcuts(groupId, folderId, WorkflowConstants.STATUS_APPROVED, mimeTypes, false, false, start, end, dlItemSelectorViewDisplayContext.getOrderByComparator());
 
 	repositoryEntriesCount = DLAppServiceUtil.getFoldersAndFileEntriesAndFileShortcutsCount(groupId, folderId, WorkflowConstants.STATUS_APPROVED, mimeTypes, false, false);
 }
