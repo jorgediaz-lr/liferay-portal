@@ -146,14 +146,21 @@ public class EditLayoutMVCActionCommand extends BaseMVCActionCommand {
 			nameMap, titleMap, descriptionMap, keywordsMap, robotsMap, type,
 			hidden, friendlyURLMap, !deleteLogo, iconBytes, serviceContext);
 
-		boolean useCustomCanonicalURL = ParamUtil.getBoolean(
-			actionRequest, "useCustomCanonicalURL");
-		Map<Locale, String> canonicalURLMap =
-			LocalizationUtil.getLocalizationMap(actionRequest, "canonicalURL");
+		Map<Locale, String> canonicalURLMap = null;
+		Boolean useCustomCanonicalURL = null;
 
-		_layoutSEOEntryService.updateLayoutSEOEntry(
-			groupId, privateLayout, layoutId, useCustomCanonicalURL,
-			canonicalURLMap, serviceContext);
+		if (actionRequest.getParameter("useCustomCanonicalURL") != null) {
+			canonicalURLMap = LocalizationUtil.getLocalizationMap(
+				actionRequest, "canonicalURL");
+			useCustomCanonicalURL = ParamUtil.getBoolean(
+				actionRequest, "useCustomCanonicalURL");
+		}
+
+		if (useCustomCanonicalURL != null) {
+			_layoutSEOEntryService.updateLayoutSEOEntry(
+				groupId, privateLayout, layoutId, useCustomCanonicalURL,
+				canonicalURLMap, serviceContext);
+		}
 
 		boolean layoutHasDraftChanges = true;
 
@@ -181,9 +188,11 @@ public class EditLayoutMVCActionCommand extends BaseMVCActionCommand {
 				draftLayout.isHidden(), draftLayout.getFriendlyURLMap(),
 				!deleteLogo, iconBytes, serviceContext);
 
-			_layoutSEOEntryService.updateLayoutSEOEntry(
-				groupId, privateLayout, draftLayout.getLayoutId(),
-				useCustomCanonicalURL, canonicalURLMap, serviceContext);
+			if (useCustomCanonicalURL != null) {
+				_layoutSEOEntryService.updateLayoutSEOEntry(
+					groupId, privateLayout, draftLayout.getLayoutId(),
+					useCustomCanonicalURL, canonicalURLMap, serviceContext);
+			}
 		}
 
 		themeDisplay.clearLayoutFriendlyURL(layout);
