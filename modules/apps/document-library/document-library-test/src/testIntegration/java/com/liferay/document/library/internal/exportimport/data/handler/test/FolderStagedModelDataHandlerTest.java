@@ -87,8 +87,7 @@ public class FolderStagedModelDataHandlerTest
 
 		Assert.assertNotNull(exportedStagedModel);
 
-		StagedModelDataHandlerUtil.importStagedModel(
-			portletDataContext, exportedStagedModel);
+		importStagedModel(portletDataContext, exportedStagedModel);
 
 		validateCompanyDependenciesImport(dependentStagedModelsMap, liveGroup);
 	}

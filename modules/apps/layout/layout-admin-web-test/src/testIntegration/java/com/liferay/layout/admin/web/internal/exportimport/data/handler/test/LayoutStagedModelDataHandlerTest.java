@@ -119,14 +119,12 @@ public class LayoutStagedModelDataHandlerTest
 
 		Layout exportedLayout = (Layout)readExportedStagedModel(layout);
 
-		StagedModelDataHandlerUtil.importStagedModel(
-			portletDataContext, exportedLayout);
+		importStagedModel(portletDataContext, exportedLayout);
 
 		Layout exportedLinkedLayout = (Layout)readExportedStagedModel(
 			linkedLayout);
 
-		StagedModelDataHandlerUtil.importStagedModel(
-			portletDataContext, exportedLinkedLayout);
+		importStagedModel(portletDataContext, exportedLinkedLayout);
 
 		ExportImportLifecycleManagerUtil.fireExportImportLifecycleEvent(
 			ExportImportLifecycleConstants.EVENT_LAYOUT_IMPORT_SUCCEEDED,

@@ -37,6 +37,7 @@ import com.liferay.message.boards.model.MBMessage;
 import com.liferay.message.boards.service.MBMessageLocalServiceUtil;
 import com.liferay.portal.kernel.comment.CommentManagerUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.StagedGroupedModel;
@@ -54,6 +55,9 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
+import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.transaction.TransactionConfig;
+import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Time;
@@ -237,7 +241,27 @@ public abstract class BaseStagedModelDataHandlerTestCase {
 
 		initImport();
 
-		deleteStagedModel(stagedModel, dependentStagedModelsMap, stagingGroup);
+		try {
+			TransactionInvokerUtil.invoke(
+				_transactionConfig,
+				() -> {
+					deleteStagedModel(
+						stagedModel, dependentStagedModelsMap, stagingGroup);
+
+					return null;
+				});
+		}
+		catch (Throwable throwable) {
+			if (throwable instanceof PortalException) {
+				throw (PortalException)throwable;
+			}
+
+			if (throwable instanceof SystemException) {
+				throw (SystemException)throwable;
+			}
+
+			throw new SystemException(throwable);
+		}
 
 		// Reread the staged model for import from ZIP for true testing
 
@@ -245,8 +269,7 @@ public abstract class BaseStagedModelDataHandlerTestCase {
 
 		Assert.assertNotNull(exportedStagedModel);
 
-		StagedModelDataHandlerUtil.importStagedModel(
-			portletDataContext, exportedStagedModel);
+		importStagedModel(portletDataContext, exportedStagedModel);
 
 		StagedModel importedStagedModel = getStagedModel(
 			exportedStagedModel.getUuid(), liveGroup);
@@ -296,13 +319,11 @@ public abstract class BaseStagedModelDataHandlerTestCase {
 
 		Assert.assertNotNull(exportedStagedModel);
 
-		StagedModelDataHandlerUtil.importStagedModel(
-			portletDataContext, exportedStagedModel);
+		importStagedModel(portletDataContext, exportedStagedModel);
 
 		// Import again for more robustness (i.e. filter name issues)
 
-		StagedModelDataHandlerUtil.importStagedModel(
-			portletDataContext, exportedStagedModel);
+		importStagedModel(portletDataContext, exportedStagedModel);
 
 		StagedModel importedModel = getStagedModel(
 			exportedStagedModel.getUuid(), liveGroup);
@@ -413,8 +434,7 @@ public abstract class BaseStagedModelDataHandlerTestCase {
 
 		Assert.assertNotNull(exportedStagedModel);
 
-		StagedModelDataHandlerUtil.importStagedModel(
-			portletDataContext, exportedStagedModel);
+		importStagedModel(portletDataContext, exportedStagedModel);
 
 		validateImport(
 			stagedModel, stagedModelAssets, dependentStagedModelsMap,
@@ -507,6 +527,33 @@ public abstract class BaseStagedModelDataHandlerTestCase {
 		Assert.assertNotNull(importedStagedModel);
 
 		validateImportedStagedModel(stagedModel, importedStagedModel);
+	}
+
+	protected static <T extends StagedModel> void importStagedModel(
+			PortletDataContext portletDataContext, T stagedModel)
+		throws Exception {
+
+		try {
+			TransactionInvokerUtil.invoke(
+				_transactionConfig,
+				() -> {
+					StagedModelDataHandlerUtil.importStagedModel(
+						portletDataContext, stagedModel);
+
+					return null;
+				});
+		}
+		catch (Throwable throwable) {
+			if (throwable instanceof PortalException) {
+				throw (PortalException)throwable;
+			}
+
+			if (throwable instanceof SystemException) {
+				throw (SystemException)throwable;
+			}
+
+			throw new SystemException(throwable);
+		}
 	}
 
 	protected void addComments(StagedModel stagedModel) throws Exception {
@@ -628,8 +675,7 @@ public abstract class BaseStagedModelDataHandlerTestCase {
 
 		Assert.assertNotNull(exportedStagedModel);
 
-		StagedModelDataHandlerUtil.importStagedModel(
-			portletDataContext, exportedStagedModel);
+		importStagedModel(portletDataContext, exportedStagedModel);
 	}
 
 	protected void exportImportStagedModelFromLiveToStaging(
@@ -647,8 +693,7 @@ public abstract class BaseStagedModelDataHandlerTestCase {
 
 		Assert.assertNotNull(exportedStagedModel);
 
-		StagedModelDataHandlerUtil.importStagedModel(
-			portletDataContext, exportedStagedModel);
+		importStagedModel(portletDataContext, exportedStagedModel);
 	}
 
 	protected AssetEntry fetchAssetEntry(StagedModel stagedModel, Group group)
@@ -1214,5 +1259,9 @@ public abstract class BaseStagedModelDataHandlerTestCase {
 		private final long _userId;
 
 	}
+
+	private static final TransactionConfig _transactionConfig =
+		TransactionConfig.Factory.create(
+			Propagation.REQUIRED, new Class<?>[] {Exception.class});
 
 }

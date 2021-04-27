@@ -206,8 +206,7 @@ public class JournalArticleStagedModelDataHandlerTest
 		ExportImportThreadLocal.setPortletImportInProcess(true);
 
 		try {
-			StagedModelDataHandlerUtil.importStagedModel(
-				portletDataContext, exportedStagedModel);
+			importStagedModel(portletDataContext, exportedStagedModel);
 		}
 		finally {
 			ExportImportThreadLocal.setPortletImportInProcess(false);
@@ -268,8 +267,7 @@ public class JournalArticleStagedModelDataHandlerTest
 
 		Assert.assertNotNull(exportedStagedModel);
 
-		StagedModelDataHandlerUtil.importStagedModel(
-			portletDataContext, exportedStagedModel);
+		importStagedModel(portletDataContext, exportedStagedModel);
 
 		validateCompanyDependenciesImport(dependentStagedModelsMap, liveGroup);
 	}
@@ -318,8 +316,7 @@ public class JournalArticleStagedModelDataHandlerTest
 		ExportImportThreadLocal.setPortletImportInProcess(true);
 
 		try {
-			StagedModelDataHandlerUtil.importStagedModel(
-				portletDataContext, exportedStagedModel);
+			importStagedModel(portletDataContext, exportedStagedModel);
 		}
 		finally {
 			ExportImportThreadLocal.setPortletImportInProcess(false);
