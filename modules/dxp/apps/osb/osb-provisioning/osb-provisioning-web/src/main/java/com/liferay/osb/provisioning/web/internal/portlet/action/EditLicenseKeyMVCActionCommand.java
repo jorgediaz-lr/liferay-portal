@@ -105,9 +105,9 @@ public class EditLicenseKeyMVCActionCommand extends BaseMVCActionCommand {
 
 			String hostName = serverIdJSONObject.getString("hostName");
 
-			String[] curIpAddresses = _serverIdsSeparatorPattern.split(
+			String[] curIpAddresses = _separatorPattern.split(
 				serverIdJSONObject.getString("ipAddresses"));
-			String[] curMacAddresses = _serverIdsSeparatorPattern.split(
+			String[] curMacAddresses = _separatorPattern.split(
 				serverIdJSONObject.getString("macAddresses"));
 
 			curIpAddresses = ArrayUtil.distinct(curIpAddresses);
@@ -241,7 +241,7 @@ public class EditLicenseKeyMVCActionCommand extends BaseMVCActionCommand {
 	private static final Log _log = LogFactoryUtil.getLog(
 		EditLicenseKeyMVCActionCommand.class);
 
-	private static final Pattern _serverIdsSeparatorPattern = Pattern.compile(
+	private static final Pattern _separatorPattern = Pattern.compile(
 		"\\s*,\\s*|\\s+");
 
 	@Reference
