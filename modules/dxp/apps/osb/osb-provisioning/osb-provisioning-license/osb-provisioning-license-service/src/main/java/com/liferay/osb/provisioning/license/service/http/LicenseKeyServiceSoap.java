@@ -386,29 +386,6 @@ public class LicenseKeyServiceSoap {
 	}
 
 	public static com.liferay.osb.provisioning.license.model.LicenseKeySoap
-			registerLicenseKey(
-				String orderEntryUuid, String productName, int liferayVersion,
-				int maxServers, String hostName, String ipAddresses,
-				String macAddresses, String serverId)
-		throws RemoteException {
-
-		try {
-			com.liferay.osb.provisioning.license.model.LicenseKey returnValue =
-				LicenseKeyServiceUtil.registerLicenseKey(
-					orderEntryUuid, productName, liferayVersion, maxServers,
-					hostName, ipAddresses, macAddresses, serverId);
-
-			return com.liferay.osb.provisioning.license.model.LicenseKeySoap.
-				toSoapModel(returnValue);
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-
-			throw new RemoteException(exception.getMessage());
-		}
-	}
-
-	public static com.liferay.osb.provisioning.license.model.LicenseKeySoap
 			renewLicenseKey(
 				long licenseKeyId, java.util.Date startDate,
 				java.util.Date expirationDate)

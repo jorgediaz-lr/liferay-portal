@@ -152,13 +152,6 @@ public interface LicenseKeyService extends BaseService {
 	public boolean isActive(String serverId, String productId, String key)
 		throws PortalException;
 
-	@JSONWebService
-	public LicenseKey registerLicenseKey(
-			String orderEntryUuid, String productName, int liferayVersion,
-			int maxServers, String hostName, String ipAddresses,
-			String macAddresses, String serverId)
-		throws PortalException;
-
 	public LicenseKey renewLicenseKey(
 			long licenseKeyId, Date startDate, Date expirationDate)
 		throws Exception;

@@ -182,17 +182,6 @@ public class LicenseKeyServiceUtil {
 		return getService().isActive(serverId, productId, key);
 	}
 
-	public static LicenseKey registerLicenseKey(
-			String orderEntryUuid, String productName, int liferayVersion,
-			int maxServers, String hostName, String ipAddresses,
-			String macAddresses, String serverId)
-		throws PortalException {
-
-		return getService().registerLicenseKey(
-			orderEntryUuid, productName, liferayVersion, maxServers, hostName,
-			ipAddresses, macAddresses, serverId);
-	}
-
 	public static LicenseKey renewLicenseKey(
 			long licenseKeyId, java.util.Date startDate,
 			java.util.Date expirationDate)

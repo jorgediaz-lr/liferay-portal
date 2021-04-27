@@ -202,19 +202,6 @@ public class LicenseKeyServiceWrapper
 
 	@Override
 	public com.liferay.osb.provisioning.license.model.LicenseKey
-			registerLicenseKey(
-				String orderEntryUuid, String productName, int liferayVersion,
-				int maxServers, String hostName, String ipAddresses,
-				String macAddresses, String serverId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _licenseKeyService.registerLicenseKey(
-			orderEntryUuid, productName, liferayVersion, maxServers, hostName,
-			ipAddresses, macAddresses, serverId);
-	}
-
-	@Override
-	public com.liferay.osb.provisioning.license.model.LicenseKey
 			renewLicenseKey(
 				long licenseKeyId, java.util.Date startDate,
 				java.util.Date expirationDate)
