@@ -79,7 +79,7 @@ ProductPurchaseViewDisplay productPurchaseViewDisplay = viewSubscriptionDisplayC
 			licenseManagerHREF = StringUtil.replace(licenseManagerHREF, "[$PRODUCT_KEY$]", productPurchaseViewDisplay.getProductKey());
 
 			if (provisioningWebConfiguration.licensesPortletEnabled()) {
-				generateLicenseURL = productPurchaseViewDisplay.getGenerateLicenseURL();
+				generateLicenseURL = viewSubscriptionDisplayContext.getGenerateLicenseURL();
 
 				licenseManagerHREF = productPurchaseViewDisplay.getProvisionedCountURL();
 			}

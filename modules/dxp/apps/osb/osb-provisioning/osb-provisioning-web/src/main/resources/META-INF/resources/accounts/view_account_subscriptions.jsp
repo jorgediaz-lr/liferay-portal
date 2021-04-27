@@ -65,7 +65,6 @@ SearchContainer productPurchasesSearchContainer = viewAccountDisplayContext.getP
 			>
 				<portlet:renderURL var="rowURL">
 					<portlet:param name="mvcRenderCommandName" value="/accounts/view_subscription" />
-					<portlet:param name="redirect" value="<%= currentURL %>" />
 					<portlet:param name="accountKey" value="<%= productPurchaseViewDisplay.getAccountKey() %>" />
 					<portlet:param name="productKey" value="<%= productPurchaseViewDisplay.getProductKey() %>" />
 				</portlet:renderURL>

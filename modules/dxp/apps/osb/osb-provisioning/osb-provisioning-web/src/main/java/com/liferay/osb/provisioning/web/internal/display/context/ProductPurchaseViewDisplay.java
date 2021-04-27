@@ -107,18 +107,6 @@ public class ProductPurchaseViewDisplay {
 		return StringPool.DASH;
 	}
 
-	public String getGenerateLicenseURL() {
-		PortletURL portletURL = PortletURLFactoryUtil.create(
-			_httpServletRequest, ProvisioningPortletKeys.LICENSES,
-			PortletRequest.RENDER_PHASE);
-
-		portletURL.setParameter(
-			"mvcRenderCommandName", "/licenses/add_license_key");
-		portletURL.setParameter("accountKey", _account.getKey());
-
-		return portletURL.toString();
-	}
-
 	public String getGracePeriod() {
 		if (_perpetual || (_originalEndDate == null) ||
 			_originalEndDate.after(_endDate)) {

@@ -17,8 +17,10 @@ package com.liferay.osb.provisioning.web.internal.display.context;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductConsumption;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchaseView;
+import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.constants.ProvisioningWebKeys;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
+import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -28,6 +30,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;
 
 /**
@@ -58,6 +61,19 @@ public class ViewSubscriptionDisplayContext extends ViewAccountDisplayContext {
 
 		_productPurchaseViewDisplay = new ProductPurchaseViewDisplay(
 			httpServletRequest, account, _productPurchaseView);
+	}
+
+	public String getGenerateLicenseURL() {
+		PortletURL portletURL = PortletURLFactoryUtil.create(
+			httpServletRequest, ProvisioningPortletKeys.LICENSES,
+			PortletRequest.RENDER_PHASE);
+
+		portletURL.setParameter(
+			"mvcRenderCommandName", "/licenses/add_license_key");
+		portletURL.setParameter("accountKey", account.getKey());
+		portletURL.setParameter("redirect", currentURLObj.toString());
+
+		return portletURL.toString();
 	}
 
 	@Override
