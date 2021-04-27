@@ -131,7 +131,7 @@ public class LayoutModelListener extends BaseModelListener<Layout> {
 					layout.getGroupId(), layout.isPrivateLayout(),
 					layout.getLayoutId(), unicodeProperties.toString());
 
-				Layout draftLayout = layout.fetchDraftLayout();
+				Layout draftLayout = _layoutLocalService.getDraft(layout);
 
 				if ((draftLayout != null) &&
 					Validator.isNotNull(
@@ -255,7 +255,8 @@ public class LayoutModelListener extends BaseModelListener<Layout> {
 		if (layout.isHidden() || !visible ||
 			(Objects.equals(layout.getType(), LayoutConstants.TYPE_CONTENT) &&
 			 Objects.equals(layout.getCreateDate(), layout.getPublishDate())) ||
-			(!Objects.equals(layout.getType(), LayoutConstants.TYPE_CONTENT) && update)) {
+			(!Objects.equals(layout.getType(), LayoutConstants.TYPE_CONTENT) &&
+			 update)) {
 
 			return false;
 		}
