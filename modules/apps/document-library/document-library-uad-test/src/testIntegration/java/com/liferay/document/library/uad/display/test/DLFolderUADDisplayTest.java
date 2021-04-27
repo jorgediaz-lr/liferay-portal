@@ -107,10 +107,10 @@ public class DLFolderUADDisplayTest extends BaseUADDisplayTestCase<DLFolder> {
 				MBConstants.SERVICE_NAME);
 
 			if (mbRepository != null) {
+				_repositoryLocalService.deleteRepository(mbRepository);
+
 				_dlFolderLocalService.deleteAllByRepository(
 					mbRepository.getRepositoryId());
-
-				_repositoryLocalService.deleteRepository(mbRepository);
 			}
 
 			Repository tempFilesRepository =
@@ -119,10 +119,10 @@ public class DLFolderUADDisplayTest extends BaseUADDisplayTestCase<DLFolder> {
 					null);
 
 			if (tempFilesRepository != null) {
+				_repositoryLocalService.deleteRepository(tempFilesRepository);
+
 				_dlFolderLocalService.deleteAllByRepository(
 					tempFilesRepository.getRepositoryId());
-
-				_repositoryLocalService.deleteRepository(tempFilesRepository);
 			}
 		}
 	}
