@@ -31,7 +31,6 @@ import com.liferay.osb.provisioning.license.exception.LicenseKeyIPAddressExcepti
 import com.liferay.osb.provisioning.license.exception.LicenseKeyMACAddressException;
 import com.liferay.osb.provisioning.license.exception.LicenseKeyOwnerException;
 import com.liferay.osb.provisioning.license.exception.LicenseKeyProductVersionException;
-import com.liferay.osb.provisioning.license.exception.LicenseKeyRenewException;
 import com.liferay.osb.provisioning.license.exception.LicenseKeyServerInfoException;
 import com.liferay.osb.provisioning.license.exception.NoSuchLicenseKeyException;
 import com.liferay.osb.provisioning.license.generator.KeyGenerator;
@@ -501,10 +500,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		Product product = _productWebService.getProduct(
 			licenseKey.getProductKey());
 		LicenseEntry licenseEntry = licenseKey.getLicenseEntry();
-
-		if (!licenseKey.canRenew()) {
-			throw new LicenseKeyRenewException();
-		}
 
 		licenseKey.setActive(false);
 

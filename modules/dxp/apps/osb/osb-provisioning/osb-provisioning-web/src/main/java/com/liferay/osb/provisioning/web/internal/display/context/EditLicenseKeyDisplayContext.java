@@ -315,16 +315,6 @@ public class EditLicenseKeyDisplayContext {
 		return false;
 	}
 
-	public boolean isRenewVisible() throws Exception {
-		if (_licenseKey.canRenew() && (_licenseVersion >= 3) &&
-			!_licenseType.equals(LicenseType.CLUSTER)) {
-
-			return true;
-		}
-
-		return false;
-	}
-
 	public boolean isServerIdVisible() {
 		if (((_licenseVersion >= 3) &&
 			 (_licenseType.equals(LicenseType.LIMITED) ||

@@ -411,14 +411,12 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 
 				<aui:col cssClass="edit-license-actions" md="12">
 					<div>
-						<c:if test="<%= editLicenseKeyDisplayContext.isRenewVisible() %>">
-							<span id="renewLicense">
-								<react:component
-									data="<%= editLicenseKeyDisplayContext.getRenewLicenseData() %>"
-									module="js/RenewLicenseApp"
-								/>
-							</span>
-						</c:if>
+						<span id="renewLicense">
+							<react:component
+								data="<%= editLicenseKeyDisplayContext.getRenewLicenseData() %>"
+								module="js/RenewLicenseApp"
+							/>
+						</span>
 
 						<c:if test="<%= editLicenseKeyDisplayContext.isComplimentaryVisible() %>">
 							<button class="btn btn-secondary btn-sm" onclick="<portlet:namespace />updateValues(<%= licenseKey.isActive() %>, <%= !licenseKey.isComplimentary() %>);" type="button">

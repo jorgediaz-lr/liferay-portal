@@ -17,7 +17,6 @@ package com.liferay.osb.provisioning.license.model.impl;
 import com.liferay.osb.provisioning.license.model.LicenseEntry;
 import com.liferay.osb.provisioning.license.service.LicenseEntryLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.util.Time;
 
 import java.util.Date;
 
@@ -28,27 +27,6 @@ import java.util.Date;
 public class LicenseKeyImpl extends LicenseKeyBaseImpl {
 
 	public LicenseKeyImpl() {
-	}
-
-	public boolean canRenew() throws PortalException {
-		if (!isActive()) {
-			return false;
-		}
-
-		if (getLicenseVersion() < 3) {
-			return false;
-		}
-
-		Date startDate = getStartDate();
-		Date expirationDate = getExpirationDate();
-
-		if (((expirationDate.getTime() - startDate.getTime()) / Time.DAY) >
-				365) {
-
-			return false;
-		}
-
-		return true;
 	}
 
 	public LicenseEntry getLicenseEntry() throws PortalException {

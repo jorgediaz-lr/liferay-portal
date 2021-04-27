@@ -179,7 +179,6 @@
 		<exception>LicenseKeyMACAddress</exception>
 		<exception>LicenseKeyOwner</exception>
 		<exception>LicenseKeyProductVersion</exception>
-		<exception>LicenseKeyRenew</exception>
 		<exception>LicenseKeyServerId</exception>
 		<exception>LicenseKeyServerInfo</exception>
 	</exceptions>
