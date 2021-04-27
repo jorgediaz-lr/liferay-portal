@@ -78,8 +78,7 @@ public class CalendarResourceStagedModelDataHandlerTest
 		CalendarResource exportedCalendarResource =
 			(CalendarResource)readExportedStagedModel(calendarResource);
 
-		StagedModelDataHandlerUtil.importStagedModel(
-			portletDataContext, exportedCalendarResource);
+		importStagedModel(portletDataContext, exportedCalendarResource);
 
 		CalendarResource importedCalendarResource =
 			(CalendarResource)getStagedModel(
@@ -107,8 +106,7 @@ public class CalendarResourceStagedModelDataHandlerTest
 		CalendarResource exportedCalendarResource =
 			(CalendarResource)readExportedStagedModel(calendarResource);
 
-		StagedModelDataHandlerUtil.importStagedModel(
-			portletDataContext, exportedCalendarResource);
+		importStagedModel(portletDataContext, exportedCalendarResource);
 
 		CalendarResource importedCalendarResource =
 			(CalendarResource)getStagedModel(

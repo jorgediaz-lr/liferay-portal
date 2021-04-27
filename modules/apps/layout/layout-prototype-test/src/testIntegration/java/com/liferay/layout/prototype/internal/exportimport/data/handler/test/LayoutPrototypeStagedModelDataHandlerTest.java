@@ -120,8 +120,7 @@ public class LayoutPrototypeStagedModelDataHandlerTest
 		portletDataContext.setDataStrategy(
 			PortletDataHandlerKeys.DATA_STRATEGY_COPY_AS_NEW);
 
-		StagedModelDataHandlerUtil.importStagedModel(
-			portletDataContext, exportedStagedModel);
+		importStagedModel(portletDataContext, exportedStagedModel);
 
 		LayoutPrototype importedLayoutPrototype =
 			LayoutPrototypeLocalServiceUtil.getLayoutPrototype(
