@@ -30,7 +30,6 @@ function SpecificDetails({addLicenseKeyURL, redirect}) {
 	const [license, {updateLicense}] = useLicense();
 
 	const {
-		accountName,
 		complimentary,
 		description,
 		expirationDate,
@@ -38,6 +37,7 @@ function SpecificDetails({addLicenseKeyURL, redirect}) {
 		licenseKeysGenerated,
 		maxHttpSessions,
 		maxServers,
+		name,
 		owner,
 		product,
 		startDate,
@@ -48,12 +48,6 @@ function SpecificDetails({addLicenseKeyURL, redirect}) {
 		const utcAdjustedDate = getUTCAdjustedDate(new Date(date));
 
 		return displayInMDYDateFormat(utcAdjustedDate);
-	}
-
-	function handleAccountNameChange(event) {
-		updateLicense(license =>
-			license.set('accountName', event.currentTarget.value)
-		);
 	}
 
 	function handleComplimentaryChange() {
@@ -81,6 +75,12 @@ function SpecificDetails({addLicenseKeyURL, redirect}) {
 	function handleMaxServersChange(event) {
 		updateLicense(license =>
 			license.set('maxServers', event.currentTarget.value)
+		);
+	}
+
+	function handleNameChange(event) {
+		updateLicense(license =>
+			license.set('name', event.currentTarget.value)
 		);
 	}
 
@@ -125,9 +125,9 @@ function SpecificDetails({addLicenseKeyURL, redirect}) {
 								<input
 									className="form-control"
 									id="name"
-									onChange={handleAccountNameChange}
+									onChange={handleNameChange}
 									type="text"
-									value={accountName}
+									value={name}
 								/>
 							</div>
 

@@ -18,11 +18,7 @@ import {request, validateIPv4s, validateMAC} from '../../utilities/helpers';
 
 function GenerateButton({formAction, redirect, serverIdValidatable = false}) {
 	const [license] = useLicense();
-	const {
-		licenseEntryId,
-		licenseEntryName,
-		licenseEntryType
-	} = license.licenseEntry;
+	const {licenseEntryId, licenseEntryType} = license.licenseEntry;
 	const {productKey} = license.product;
 	const {serverIds} = license;
 
@@ -38,7 +34,6 @@ function GenerateButton({formAction, redirect, serverIdValidatable = false}) {
 			expirationDate: formatDate(license.expirationDate),
 			licenseEntryId,
 			licenseEntryType,
-			name: licenseEntryName,
 			productKey,
 			productVersion: license.version,
 			serverIds: JSON.stringify(serverIds),

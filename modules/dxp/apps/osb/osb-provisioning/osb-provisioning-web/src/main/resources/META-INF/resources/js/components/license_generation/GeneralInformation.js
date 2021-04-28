@@ -47,6 +47,7 @@ function GeneralInformation({
 				.set('accountKey', accountKey)
 				.set('accountName', accountName)
 				.set('description', accountName)
+				.set('name', accountName)
 				.set('owner', accountName)
 		);
 	}, [accountKey, accountName, updateLicense]);

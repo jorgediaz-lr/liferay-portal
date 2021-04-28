@@ -33,6 +33,7 @@ const dummyLicense = new License({
 		licenseEntryType: 'developer'
 	},
 	licenseKeysGenerated: '0',
+	name: 'Test Account',
 	product: {productKey: 'PRODUCT-123', productName: 'Test Product'},
 	productPurchaseKey: 'PPKEY-123',
 	showSpecificDetails: true,
