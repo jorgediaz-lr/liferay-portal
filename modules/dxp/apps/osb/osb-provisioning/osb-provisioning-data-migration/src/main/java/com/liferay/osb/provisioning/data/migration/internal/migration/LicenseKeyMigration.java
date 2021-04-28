@@ -14,18 +14,22 @@
 
 package com.liferay.osb.provisioning.data.migration.internal.migration;
 
+import com.liferay.osb.provisioning.license.helper.constants.LicenseSizing;
 import com.liferay.osb.provisioning.license.model.LicenseKey;
 import com.liferay.osb.provisioning.license.service.LicenseKeyLocalService;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 
 import org.apache.commons.lang.time.StopWatch;
 
@@ -81,6 +85,8 @@ public class LicenseKeyMigration {
 				return;
 			}
 
+			Timestamp timestamp = new Timestamp(1608364800000L);
+
 			while (resultSet.next()) {
 				LicenseKey licenseKey =
 					_licenseKeyLocalService.createLicenseKey(
@@ -129,7 +135,26 @@ public class LicenseKeyMigration {
 				licenseKey.setMaxUsers(resultSet.getLong("maxUsers"));
 				licenseKey.setMaxHttpSessions(
 					resultSet.getInt("maxHttpSessions"));
-				licenseKey.setSizing(resultSet.getInt("sizing"));
+
+				String sizing = resultSet.getString("sizing");
+
+				if (sizing.equals("0")) {
+					licenseKey.setSizing(StringPool.BLANK);
+				}
+				else if (timestamp.before(
+							resultSet.getTimestamp("createDate"))) {
+
+					licenseKey.setSizing(
+						StringUtil.insert(
+							resultSet.getString("sizing"), "sizing-", 0));
+				}
+				else {
+					licenseKey.setSizing(
+						LicenseSizing.getLabel(
+							StringUtil.insert(
+								resultSet.getString("sizing"), "sizing-", 0)));
+				}
+
 				licenseKey.setDescription(resultSet.getString("description"));
 				licenseKey.setHostName(resultSet.getString("hostName"));
 				licenseKey.setIpAddresses(resultSet.getString("ipAddresses"));
