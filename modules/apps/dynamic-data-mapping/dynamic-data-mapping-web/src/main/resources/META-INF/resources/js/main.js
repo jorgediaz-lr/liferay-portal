@@ -55,6 +55,8 @@ AUI.add(
 			]
 		};
 
+		var REGEX_DIGITS = /^\d/;
+
 		var REGEX_HYPHEN = /[-–—]/i;
 
 		var SETTINGS_TAB_INDEX = 1;
@@ -491,6 +493,10 @@ AUI.add(
 						) {
 							generatedName = normalizedLabel + counter++;
 						}
+					}
+
+					if (REGEX_DIGITS.test(generatedName)) {
+						generatedName = `_${generatedName}`;
 					}
 
 					return generatedName;
