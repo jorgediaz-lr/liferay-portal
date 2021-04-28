@@ -75,7 +75,7 @@ public class LicenseKeyLocalServiceUtil {
 			String accountKey, String productPurchaseKey, String accountName,
 			String productVersion, long clusterId, String name, String owner,
 			int maxServers, int maxHttpSessions, int maxConcurrentUsers,
-			int maxUsers, int sizing, String description, String[] hostNames,
+			int maxUsers, String sizing, String description, String[] hostNames,
 			String[] ipAddresses, String[] macAddresses, String[] serverIds,
 			java.util.Date startDate, java.util.Date expirationDate,
 			String additionalInfo, boolean complimentary, boolean active)
@@ -94,7 +94,7 @@ public class LicenseKeyLocalServiceUtil {
 			String accountKey, String productPurchaseKey, String accountName,
 			String productVersion, long clusterId, String name, String owner,
 			int maxServers, int maxHttpSessions, int maxConcurrentUsers,
-			int maxUsers, int sizing, String description, String[] hostNames,
+			int maxUsers, String sizing, String description, String[] hostNames,
 			String[] ipAddresses, String[] macAddresses, String[] serverIds,
 			java.util.Date startDate, java.util.Date expirationDate,
 			boolean complimentary, boolean active)

@@ -86,7 +86,7 @@ public class LicenseKeyModelImpl
 		{"name", Types.VARCHAR}, {"owner", Types.VARCHAR},
 		{"maxServers", Types.INTEGER}, {"maxConcurrentUsers", Types.BIGINT},
 		{"maxUsers", Types.BIGINT}, {"maxHttpSessions", Types.INTEGER},
-		{"sizing", Types.INTEGER}, {"description", Types.VARCHAR},
+		{"sizing", Types.VARCHAR}, {"description", Types.VARCHAR},
 		{"hostName", Types.VARCHAR}, {"ipAddresses", Types.VARCHAR},
 		{"macAddresses", Types.VARCHAR}, {"serverId", Types.VARCHAR},
 		{"key_", Types.VARCHAR}, {"startDate", Types.TIMESTAMP},
@@ -127,7 +127,7 @@ public class LicenseKeyModelImpl
 		TABLE_COLUMNS_MAP.put("maxConcurrentUsers", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("maxUsers", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("maxHttpSessions", Types.INTEGER);
-		TABLE_COLUMNS_MAP.put("sizing", Types.INTEGER);
+		TABLE_COLUMNS_MAP.put("sizing", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("description", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("hostName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("ipAddresses", Types.VARCHAR);
@@ -142,7 +142,7 @@ public class LicenseKeyModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table Provisioning_LicenseKey (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,licenseKeyId LONG not null primary key,companyId LONG,userUuid VARCHAR(75) null,userName VARCHAR(75) null,createDate DATE null,modifiedUserUuid VARCHAR(75) null,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,assetReceiptLicenseUuid VARCHAR(75) null,accountKey VARCHAR(75) null,productPurchaseKey VARCHAR(75) null,licenseEntryId LONG,productKey VARCHAR(75) null,accountName VARCHAR(500) null,licenseEntryName VARCHAR(75) null,licenseEntryType VARCHAR(75) null,licenseVersion INTEGER,productName VARCHAR(75) null,productId VARCHAR(75) null,productVersion VARCHAR(75) null,clusterId LONG,name VARCHAR(75) null,owner VARCHAR(75) null,maxServers INTEGER,maxConcurrentUsers LONG,maxUsers LONG,maxHttpSessions INTEGER,sizing INTEGER,description VARCHAR(255) null,hostName VARCHAR(75) null,ipAddresses STRING null,macAddresses STRING null,serverId STRING null,key_ STRING null,startDate DATE null,expirationDate DATE null,additionalInfo STRING null,complimentary BOOLEAN,active_ BOOLEAN)";
+		"create table Provisioning_LicenseKey (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,licenseKeyId LONG not null primary key,companyId LONG,userUuid VARCHAR(75) null,userName VARCHAR(75) null,createDate DATE null,modifiedUserUuid VARCHAR(75) null,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,assetReceiptLicenseUuid VARCHAR(75) null,accountKey VARCHAR(75) null,productPurchaseKey VARCHAR(75) null,licenseEntryId LONG,productKey VARCHAR(75) null,accountName VARCHAR(500) null,licenseEntryName VARCHAR(75) null,licenseEntryType VARCHAR(75) null,licenseVersion INTEGER,productName VARCHAR(75) null,productId VARCHAR(75) null,productVersion VARCHAR(75) null,clusterId LONG,name VARCHAR(75) null,owner VARCHAR(75) null,maxServers INTEGER,maxConcurrentUsers LONG,maxUsers LONG,maxHttpSessions INTEGER,sizing VARCHAR(75) null,description VARCHAR(255) null,hostName VARCHAR(75) null,ipAddresses STRING null,macAddresses STRING null,serverId STRING null,key_ STRING null,startDate DATE null,expirationDate DATE null,additionalInfo STRING null,complimentary BOOLEAN,active_ BOOLEAN)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table Provisioning_LicenseKey";
@@ -530,7 +530,7 @@ public class LicenseKeyModelImpl
 			(BiConsumer<LicenseKey, Integer>)LicenseKey::setMaxHttpSessions);
 		attributeGetterFunctions.put("sizing", LicenseKey::getSizing);
 		attributeSetterBiConsumers.put(
-			"sizing", (BiConsumer<LicenseKey, Integer>)LicenseKey::setSizing);
+			"sizing", (BiConsumer<LicenseKey, String>)LicenseKey::setSizing);
 		attributeGetterFunctions.put("description", LicenseKey::getDescription);
 		attributeSetterBiConsumers.put(
 			"description",
@@ -1112,12 +1112,17 @@ public class LicenseKeyModelImpl
 
 	@JSON
 	@Override
-	public int getSizing() {
-		return _sizing;
+	public String getSizing() {
+		if (_sizing == null) {
+			return "";
+		}
+		else {
+			return _sizing;
+		}
 	}
 
 	@Override
-	public void setSizing(int sizing) {
+	public void setSizing(String sizing) {
 		_sizing = sizing;
 	}
 
@@ -1706,6 +1711,12 @@ public class LicenseKeyModelImpl
 
 		licenseKeyCacheModel.sizing = getSizing();
 
+		String sizing = licenseKeyCacheModel.sizing;
+
+		if ((sizing != null) && (sizing.length() == 0)) {
+			licenseKeyCacheModel.sizing = null;
+		}
+
 		licenseKeyCacheModel.description = getDescription();
 
 		String description = licenseKeyCacheModel.description;
@@ -1903,7 +1914,7 @@ public class LicenseKeyModelImpl
 	private long _maxConcurrentUsers;
 	private long _maxUsers;
 	private int _maxHttpSessions;
-	private int _sizing;
+	private String _sizing;
 	private String _description;
 	private String _hostName;
 	private String _ipAddresses;

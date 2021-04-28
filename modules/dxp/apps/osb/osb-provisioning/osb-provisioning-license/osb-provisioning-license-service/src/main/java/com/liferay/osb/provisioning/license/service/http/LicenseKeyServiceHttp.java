@@ -97,7 +97,7 @@ public class LicenseKeyServiceHttp {
 				String productKey, String accountKey, String productPurchaseKey,
 				String accountName, String productVersion, long clusterId,
 				String name, String owner, int maxServers, int maxHttpSessions,
-				int maxConcurrentUsers, int maxUsers, int sizing,
+				int maxConcurrentUsers, int maxUsers, String sizing,
 				String description, String[] hostNames, String[] ipAddresses,
 				String[] macAddresses, String[] serverIds,
 				java.util.Date startDate, java.util.Date expirationDate,
@@ -1150,10 +1150,10 @@ public class LicenseKeyServiceHttp {
 		new Class[] {
 			long.class, long.class, String.class, String.class, String.class,
 			String.class, String.class, long.class, String.class, String.class,
-			int.class, int.class, int.class, int.class, int.class, String.class,
-			String[].class, String[].class, String[].class, String[].class,
-			java.util.Date.class, java.util.Date.class, boolean.class,
-			boolean.class
+			int.class, int.class, int.class, int.class, String.class,
+			String.class, String[].class, String[].class, String[].class,
+			String[].class, java.util.Date.class, java.util.Date.class,
+			boolean.class, boolean.class
 		};
 	private static final Class<?>[] _addLicenseKeyParameterTypes2 =
 		new Class[] {

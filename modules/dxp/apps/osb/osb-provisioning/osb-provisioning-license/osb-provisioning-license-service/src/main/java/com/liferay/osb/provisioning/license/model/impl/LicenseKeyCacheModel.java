@@ -318,7 +318,13 @@ public class LicenseKeyCacheModel
 		licenseKeyImpl.setMaxConcurrentUsers(maxConcurrentUsers);
 		licenseKeyImpl.setMaxUsers(maxUsers);
 		licenseKeyImpl.setMaxHttpSessions(maxHttpSessions);
-		licenseKeyImpl.setSizing(sizing);
+
+		if (sizing == null) {
+			licenseKeyImpl.setSizing("");
+		}
+		else {
+			licenseKeyImpl.setSizing(sizing);
+		}
 
 		if (description == null) {
 			licenseKeyImpl.setDescription("");
@@ -431,8 +437,7 @@ public class LicenseKeyCacheModel
 		maxUsers = objectInput.readLong();
 
 		maxHttpSessions = objectInput.readInt();
-
-		sizing = objectInput.readInt();
+		sizing = objectInput.readUTF();
 		description = objectInput.readUTF();
 		hostName = objectInput.readUTF();
 		ipAddresses = objectInput.readUTF();
@@ -593,7 +598,12 @@ public class LicenseKeyCacheModel
 
 		objectOutput.writeInt(maxHttpSessions);
 
-		objectOutput.writeInt(sizing);
+		if (sizing == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(sizing);
+		}
 
 		if (description == null) {
 			objectOutput.writeUTF("");
@@ -681,7 +691,7 @@ public class LicenseKeyCacheModel
 	public long maxConcurrentUsers;
 	public long maxUsers;
 	public int maxHttpSessions;
-	public int sizing;
+	public String sizing;
 	public String description;
 	public String hostName;
 	public String ipAddresses;

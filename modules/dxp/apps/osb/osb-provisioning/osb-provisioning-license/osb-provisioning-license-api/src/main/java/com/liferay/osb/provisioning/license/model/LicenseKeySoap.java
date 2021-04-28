@@ -358,11 +358,11 @@ public class LicenseKeySoap implements Serializable {
 		_maxHttpSessions = maxHttpSessions;
 	}
 
-	public int getSizing() {
+	public String getSizing() {
 		return _sizing;
 	}
 
-	public void setSizing(int sizing) {
+	public void setSizing(String sizing) {
 		_sizing = sizing;
 	}
 
@@ -491,7 +491,7 @@ public class LicenseKeySoap implements Serializable {
 	private long _maxConcurrentUsers;
 	private long _maxUsers;
 	private int _maxHttpSessions;
-	private int _sizing;
+	private String _sizing;
 	private String _description;
 	private String _hostName;
 	private String _ipAddresses;

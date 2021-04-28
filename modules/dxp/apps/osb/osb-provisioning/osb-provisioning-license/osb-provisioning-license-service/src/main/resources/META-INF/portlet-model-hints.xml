@@ -46,7 +46,7 @@
 		<field name="maxConcurrentUsers" type="long" />
 		<field name="maxUsers" type="long" />
 		<field name="maxHttpSessions" type="int" />
-		<field name="sizing" type="int" />
+		<field name="sizing" type="String" />
 		<field name="description" type="String">
 			<hint name="max-length">255</hint>
 		</field>

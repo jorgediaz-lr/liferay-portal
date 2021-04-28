@@ -266,7 +266,7 @@ public class LicenseKeyWrapper
 			setMaxHttpSessions(maxHttpSessions);
 		}
 
-		Integer sizing = (Integer)attributes.get("sizing");
+		String sizing = (String)attributes.get("sizing");
 
 		if (sizing != null) {
 			setSizing(sizing);
@@ -732,7 +732,7 @@ public class LicenseKeyWrapper
 	 * @return the sizing of this license key
 	 */
 	@Override
-	public int getSizing() {
+	public String getSizing() {
 		return model.getSizing();
 	}
 
@@ -1182,7 +1182,7 @@ public class LicenseKeyWrapper
 	 * @param sizing the sizing of this license key
 	 */
 	@Override
-	public void setSizing(int sizing) {
+	public void setSizing(String sizing) {
 		model.setSizing(sizing);
 	}
 

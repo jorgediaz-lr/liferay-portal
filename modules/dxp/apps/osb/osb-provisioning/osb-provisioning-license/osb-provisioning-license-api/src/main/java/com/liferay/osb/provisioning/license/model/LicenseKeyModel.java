@@ -497,14 +497,15 @@ public interface LicenseKeyModel
 	 *
 	 * @return the sizing of this license key
 	 */
-	public int getSizing();
+	@AutoEscape
+	public String getSizing();
 
 	/**
 	 * Sets the sizing of this license key.
 	 *
 	 * @param sizing the sizing of this license key
 	 */
-	public void setSizing(int sizing);
+	public void setSizing(String sizing);
 
 	/**
 	 * Returns the description of this license key.
