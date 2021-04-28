@@ -10,39 +10,63 @@
  */
 
 import ClayTable from '@clayui/table';
+import capitalize from 'lodash.capitalize';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-function LicenseGroup() {
+function LicenseGroup({downloadURL, licenses}) {
+	return licenses.map((group, index) => (
+		<ClayTable.Body key={index}>
+			{group.map(license => (
+				<License key={license.licenseKeyId} license={license} />
+			))}
+			<Download downloadURL={downloadURL} />
+		</ClayTable.Body>
+	));
+}
+
+function Download({downloadURL}) {
 	return (
-		<>
-			<License />
-			<ClayTable.Row>
-				<ClayTable.Cell></ClayTable.Cell>
-				<ClayTable.Cell></ClayTable.Cell>
-				<ClayTable.Cell></ClayTable.Cell>
-				<ClayTable.Cell></ClayTable.Cell>
-				<ClayTable.Cell></ClayTable.Cell>
-				<ClayTable.Cell>
-					<button className="btn btn-primary" type="submit">
-						{Liferay.Language.get('download')}
-					</button>
-				</ClayTable.Cell>
-			</ClayTable.Row>
-		</>
+		<ClayTable.Row>
+			<ClayTable.Cell></ClayTable.Cell>
+			<ClayTable.Cell></ClayTable.Cell>
+			<ClayTable.Cell></ClayTable.Cell>
+			<ClayTable.Cell></ClayTable.Cell>
+			<ClayTable.Cell></ClayTable.Cell>
+			<ClayTable.Cell>
+				<button className="btn btn-primary" type="submit">
+					{Liferay.Language.get('download')}
+				</button>
+			</ClayTable.Cell>
+		</ClayTable.Row>
 	);
 }
 
-function License() {
+function License({license}) {
+	const {
+		active,
+		description,
+		expirationDate,
+		licenseEntryName,
+		licenseEntryType,
+		licenseKeyId,
+		name,
+		productName,
+		startDate
+	} = license;
+
 	return (
-		<ClayTable.Row id={''}>
+		<ClayTable.Row id={licenseKeyId}>
 			<ClayTable.Cell className="semi-bold">
-				name, descrption
+				{name}
+				<div className="secondary-information">{description}</div>
 			</ClayTable.Cell>
-			<ClayTable.Cell>product</ClayTable.Cell>
-			<ClayTable.Cell>type</ClayTable.Cell>
-			<ClayTable.Cell>start date</ClayTable.Cell>
-			<ClayTable.Cell>exp date</ClayTable.Cell>
+			<ClayTable.Cell>{productName}</ClayTable.Cell>
+			<ClayTable.Cell>{`${licenseEntryName} (${capitalize(
+				licenseEntryType
+			)})`}</ClayTable.Cell>
+			<ClayTable.Cell>{startDate}</ClayTable.Cell>
+			<ClayTable.Cell>{expirationDate}</ClayTable.Cell>
 			<ClayTable.Cell>
 				<label
 					className="custom-checkbox custom-control"
@@ -50,10 +74,10 @@ function License() {
 				>
 					<input
 						aria-label={Liferay.Language.get('active-subscription')}
-						checked={true}
+						checked={active}
 						className="custom-control-input"
 						id="active"
-                        readOnly
+						readOnly
 						role="checkbox"
 						type="checkbox"
 					/>
@@ -65,7 +89,26 @@ function License() {
 }
 
 LicenseGroup.propTypes = {
-	downloadURL: PropTypes.string.isRequired
+	downloadURL: PropTypes.string.isRequired,
+	licenses: PropTypes.arrayOf(
+		PropTypes.arrayOf(
+			PropTypes.shape({
+				active: PropTypes.bool,
+				description: PropTypes.string,
+				expirationDate: PropTypes.string,
+				licenseEntryName: PropTypes.string,
+				licenseEntryType: PropTypes.string,
+				licenseKeyId: PropTypes.string,
+				licenseVersion: PropTypes.number,
+				maxConcurrentUsers: PropTypes.string,
+				maxUsers: PropTypes.string,
+				name: PropTypes.string,
+				productName: PropTypes.string,
+				productVersion: PropTypes.string,
+				startDate: PropTypes.string
+			})
+		)
+	)
 };
 
 export default LicenseGroup;

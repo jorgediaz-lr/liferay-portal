@@ -36,5 +36,5 @@ DownloadLicenseKeysDisplayContext downloadLicenseKeysDisplayContext = new Downlo
 			data="<%= downloadLicenseKeysDisplayContext.getDownloadLicenseKeysData() %>"
 			module="js/DownloadLicensesApp"
 		/>
-	</div>	
+	</div>
 </div>

@@ -10,12 +10,33 @@
  */
 
 import ClayTable from '@clayui/table';
+import groupBy from 'lodash.groupby';
+import partition from 'lodash.partition';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import {groupByAll} from '../../utilities/helpers';
 import LicenseGroup from './LicenseGroup';
 
+const MIN_LICENSE_GROUPABLE_VERSION_NUMBER = 3;
+
 function DownloadLicenses({downloadLicenseKeysURL, licenseKeys}) {
+	const [activeVersionCompliantLicenses, oldInactiveLicenses] = partition(
+		licenseKeys,
+		({active, licenseVersion}) =>
+			licenseVersion >= MIN_LICENSE_GROUPABLE_VERSION_NUMBER && active
+	);
+
+	const grouppedLicenses = groupByAll(
+		activeVersionCompliantLicenses,
+		({startDate}) => startDate,
+		({expirationDate}) => expirationDate,
+		({licenseEntryType}) => licenseEntryType
+	);
+
+	// if license type is pre_User
+	// maxConCurrentUsers value and maxUsers
+
 	return (
 		<div className="download-licenses-container">
 			<ClayTable>
@@ -43,9 +64,19 @@ function DownloadLicenses({downloadLicenseKeysURL, licenseKeys}) {
 					</ClayTable.Row>
 				</ClayTable.Head>
 
-				<ClayTable.Body>
-					<LicenseGroup downloadURL={downloadLicenseKeysURL} />
-				</ClayTable.Body>
+				{!!grouppedLicenses.length && (
+					<LicenseGroup
+						downloadURL={downloadLicenseKeysURL}
+						licenses={grouppedLicenses}
+					/>
+				)}
+
+				{!!oldInactiveLicenses.length && (
+					<LicenseGroup
+						downloadURL={downloadLicenseKeysURL}
+						licenses={oldInactiveLicenses.map(license => [license])}
+					/>
+				)}
 			</ClayTable>
 		</div>
 	);
@@ -61,7 +92,7 @@ DownloadLicenses.propTypes = {
 			licenseEntryName: PropTypes.string,
 			licenseEntryType: PropTypes.string,
 			licenseKeyId: PropTypes.string,
-			licenseVersion: PropTypes.string,
+			licenseVersion: PropTypes.number,
 			maxConcurrentUsers: PropTypes.string,
 			maxUsers: PropTypes.string,
 			name: PropTypes.string,

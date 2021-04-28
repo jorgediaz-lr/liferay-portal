@@ -10,9 +10,45 @@
  */
 
 import {
+	groupByAll,
 	validateIPv4s,
 	validateMAC
 } from '../../src/main/resources/META-INF/resources/js/utilities/helpers';
+
+describe('groupByAll', () => {
+	it('groups the input appropriately', () => {
+		const data = [
+			{a: 3, b: 2, c: 5},
+			{a: 3, b: 2, c: 6},
+			{a: 3, b: 1, c: 6},
+			{a: 3, b: 1, c: 6},
+			{a: 3, b: 1, c: 2},
+			{a: 2, b: 3, c: 1, d: 10},
+			{a: 2, b: 3, c: 1, d: 12}
+		];
+
+		expect(
+			groupByAll(
+				data,
+				item => item.a,
+				item => item.b,
+				item => item.c
+			)
+		).toEqual([
+			[
+				{a: 2, b: 3, c: 1, d: 10},
+				{a: 2, b: 3, c: 1, d: 12}
+			],
+			[{a: 3, b: 1, c: 2}],
+			[
+				{a: 3, b: 1, c: 6},
+				{a: 3, b: 1, c: 6}
+			],
+			[{a: 3, b: 2, c: 5}],
+			[{a: 3, b: 2, c: 6}]
+		]);
+	});
+});
 
 describe('validateIPv4s', () => {
 	it('validates multiple valid IP addresses deliminated via comma, space, or new line', () => {
