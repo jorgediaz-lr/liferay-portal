@@ -346,6 +346,38 @@ definition {
 		DMFolder.viewCP(dmFolderName = "DM Folder Name Name");
 	}
 
+	@description = "This test covers LPS-101667. It makes sure that the file size can be displayed correctly in the different versions after editing the document file."
+	@priority = "3"
+	test FileSizeCanBeDisplayedCorrectlyInDifferentVersions {
+		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
+
+		DMDocument.addCP(
+			dmDocumentDescription = "DM Document Description1",
+			dmDocumentFile = "Document_2.jpg",
+			dmDocumentTitle = "Document_2");
+
+		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
+
+		DMDocument.editCP(
+			dmDocumentFileEdit = "Document_1.txt",
+			dmDocumentTitle = "Document_2",
+			dmDocumentTitleEdit = "Document_1");
+
+		DMNavigator.gotoDocumentCP(dmDocumentTitle = "Document_1");
+
+		DMDocument.viewFileSizeByVersion(
+			dmDocumentSize = "30 KB",
+			dmDocumentVersionNumber = "1.0");
+
+		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
+
+		DMNavigator.gotoDocumentCP(dmDocumentTitle = "Document_1");
+
+		DMDocument.viewFileSizeByVersion(
+			dmDocumentSize = "259 B",
+			dmDocumentVersionNumber = "2.0");
+	}
+
 	@description = "This test covers LPS-94820. This test ensures that only the last two checked in versions of a file are kept when the max version limit is set."
 	@priority = "4"
 	test LimitCheckInMaxFileVersion {
