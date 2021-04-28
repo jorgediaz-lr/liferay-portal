@@ -77,7 +77,7 @@
 		<column name="maxConcurrentUsers" type="long" />
 		<column name="maxUsers" type="long" />
 		<column name="maxHttpSessions" type="int" />
-		<column name="sizing" type="int" />
+		<column name="sizing" type="String" />
 		<column name="description" type="String" />
 		<column name="hostName" type="String" />
 		<column name="ipAddresses" type="String" />

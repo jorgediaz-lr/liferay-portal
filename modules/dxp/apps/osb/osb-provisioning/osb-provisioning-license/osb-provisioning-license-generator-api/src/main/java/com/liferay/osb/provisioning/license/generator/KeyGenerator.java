@@ -32,8 +32,8 @@ public interface KeyGenerator {
 		String accountName, String licenseEntryName, String licenseEntryType,
 		int licenseVersion, String productName, String productId,
 		String productVersionLabel, String owner, int maxServers,
-		int maxHttpSessions, long maxConcurrentUsers, long maxUsers, int sizing,
-		String description, String hostName, String ipAddresses,
+		int maxHttpSessions, long maxConcurrentUsers, long maxUsers,
+		String sizing, String description, String hostName, String ipAddresses,
 		String macAddresses, String[] serverIds, Date startDate,
 		Date expirationDate);
 
@@ -41,8 +41,8 @@ public interface KeyGenerator {
 		String accountName, String licenseEntryName, String licenseEntryType,
 		int licenseVersion, String productName, String productId,
 		String productVersionLabel, String owner, int maxServers,
-		int maxHttpSessions, long maxConcurrentUsers, long maxUsers, int sizing,
-		String description, String hostNames, String ipAddresses,
+		int maxHttpSessions, long maxConcurrentUsers, long maxUsers,
+		String sizing, String description, String hostNames, String ipAddresses,
 		String macAddresses, String[] serverIds, Date startDate,
 		Date expirationDate);
 

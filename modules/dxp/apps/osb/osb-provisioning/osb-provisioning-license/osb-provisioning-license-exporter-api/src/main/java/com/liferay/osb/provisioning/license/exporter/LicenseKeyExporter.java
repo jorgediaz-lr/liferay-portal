@@ -33,7 +33,7 @@ public interface LicenseKeyExporter {
 			String licenseType, int licenseVersion, String productName,
 			String productId, String productVersion, String owner,
 			int maxServers, int maxHttpSessions, long maxConcurrentUsers,
-			long maxUsers, int sizing, String description, String hostNames,
+			long maxUsers, String sizing, String description, String hostNames,
 			String ipAddresses, String macAddresses, String serverIds,
 			Date startDate, Date expirationDate, Date createDate)
 		throws Exception;
@@ -43,7 +43,7 @@ public interface LicenseKeyExporter {
 			String licenseType, int licenseVersion, String productName,
 			String productId, String productVersion, String owner,
 			int maxServers, int maxHttpSessions, long maxConcurrentUsers,
-			long maxUsers, int sizing, String description, String hostName,
+			long maxUsers, String sizing, String description, String hostName,
 			String ipAddresses, String macAddresses, String serverId,
 			Date startDate, Date expirationDate)
 		throws Exception;
@@ -56,7 +56,7 @@ public interface LicenseKeyExporter {
 			int licenseVersion, String productName, String productId,
 			String productVersion, String owner, int maxServers,
 			int maxHttpSessions, long maxConcurrentUsers, long maxUsers,
-			int sizing, String description, String[] hostNames,
+			String sizing, String description, String[] hostNames,
 			String[] ipAddresses, String[] macAddresses, String[] serverIds,
 			Date startDate, Date expirationDate, Date createDate)
 		throws Exception;
@@ -66,7 +66,7 @@ public interface LicenseKeyExporter {
 			String licenseType, int licenseVersion, String productName,
 			String productId, String productVersion, String owner,
 			int maxServers, int maxHttpSessions, long maxConcurrentUsers,
-			long maxUsers, int sizing, String description, String hostNames,
+			long maxUsers, String sizing, String description, String hostNames,
 			String ipAddresses, String macAddresses, String serverIds,
 			Date startDate, Date expirationDate, Date createDate)
 		throws Exception;

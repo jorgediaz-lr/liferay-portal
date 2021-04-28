@@ -15,18 +15,15 @@
 package com.liferay.osb.provisioning.license.generator.internal;
 
 import com.liferay.osb.provisioning.license.generator.KeyGenerator;
-import com.liferay.osb.provisioning.license.helper.constants.LicenseSizing;
 import com.liferay.osb.provisioning.license.helper.constants.LicenseType;
 import com.liferay.osb.provisioning.license.helper.constants.ProductId;
 import com.liferay.petra.encryptor.Encryptor;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -75,8 +72,8 @@ public class KeyGeneratorImpl implements KeyGenerator {
 		String accountName, String licenseEntryName, String licenseEntryType,
 		int licenseVersion, String productName, String productId,
 		String productVersionLabel, String owner, int maxServers,
-		int maxHttpSessions, long maxConcurrentUsers, long maxUsers, int sizing,
-		String description, String hostName, String ipAddresses,
+		int maxHttpSessions, long maxConcurrentUsers, long maxUsers,
+		String sizing, String description, String hostName, String ipAddresses,
 		String macAddresses, String[] serverIds, Date startDate,
 		Date expirationDate) {
 
@@ -94,8 +91,8 @@ public class KeyGeneratorImpl implements KeyGenerator {
 		String accountName, String licenseEntryName, String licenseEntryType,
 		int licenseVersion, String productName, String productId,
 		String productVersionLabel, String owner, int maxServers,
-		int maxHttpSessions, long maxConcurrentUsers, long maxUsers, int sizing,
-		String description, String hostNames, String ipAddresses,
+		int maxHttpSessions, long maxConcurrentUsers, long maxUsers,
+		String sizing, String description, String hostNames, String ipAddresses,
 		String macAddresses, String[] serverIds, Date startDate,
 		Date expirationDate) {
 
@@ -207,11 +204,8 @@ public class KeyGeneratorImpl implements KeyGenerator {
 				}
 			}
 
-			if ((licenseVersion >= 6) && (sizing > 0)) {
-				properties.put(
-					"instanceSize",
-					LanguageUtil.get(
-						LocaleUtil.US, LicenseSizing.getLabel(sizing)));
+			if ((licenseVersion >= 6) && Validator.isNotNull(sizing)) {
+				properties.put("instanceSize", sizing);
 			}
 
 			if (licenseEntryType.equals(LicenseType.CLUSTER) ||

@@ -127,7 +127,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			String accountKey, String productPurchaseKey, String accountName,
 			String productVersion, long clusterId, String name, String owner,
 			int maxServers, int maxHttpSessions, int maxConcurrentUsers,
-			int maxUsers, int sizing, String description, String[] hostNames,
+			int maxUsers, String sizing, String description, String[] hostNames,
 			String[] ipAddresses, String[] macAddresses, String[] serverIds,
 			Date startDate, Date expirationDate, boolean complimentary,
 			boolean active)

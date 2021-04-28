@@ -68,7 +68,7 @@ Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat("MMMM dd, yyyy
 					expirationDateCal.setTime(productPurchaseDisplay.getEndDate());
 				}
 			}
-			else if (licenseKey.getSizing() > 0) {
+			else if (Validator.isNotNull(licenseKey.getSizing())) {
 				sizing = String.valueOf(licenseKey.getSizing());
 
 				startDateCal.setTime(licenseKey.getStartDate());

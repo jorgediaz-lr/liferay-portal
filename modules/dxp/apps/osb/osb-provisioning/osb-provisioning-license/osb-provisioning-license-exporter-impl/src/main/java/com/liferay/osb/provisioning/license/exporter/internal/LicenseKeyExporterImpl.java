@@ -16,7 +16,6 @@ package com.liferay.osb.provisioning.license.exporter.internal;
 
 import com.liferay.osb.provisioning.license.exporter.LicenseKeyExporter;
 import com.liferay.osb.provisioning.license.generator.KeyGenerator;
-import com.liferay.osb.provisioning.license.helper.constants.LicenseSizing;
 import com.liferay.osb.provisioning.license.helper.constants.LicenseType;
 import com.liferay.osb.provisioning.license.helper.constants.ProductVersion;
 import com.liferay.osb.provisioning.license.helper.util.OSBFileUtil;
@@ -99,7 +98,7 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 			String licenseType, int licenseVersion, String productName,
 			String productId, String productVersion, String owner,
 			int maxServers, int maxHttpSessions, long maxConcurrentUsers,
-			long maxUsers, int sizing, String description, String hostNames,
+			long maxUsers, String sizing, String description, String hostNames,
 			String ipAddresses, String macAddresses, String serverIds,
 			Date startDate, Date expirationDate, Date createDate)
 		throws Exception {
@@ -124,7 +123,7 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 			String licenseType, int licenseVersion, String productName,
 			String productId, String productVersion, String owner,
 			int maxServers, int maxHttpSessions, long maxConcurrentUsers,
-			long maxUsers, int sizing, String description, String hostName,
+			long maxUsers, String sizing, String description, String hostName,
 			String ipAddresses, String macAddresses, String serverId,
 			Date startDate, Date expirationDate)
 		throws IOException {
@@ -166,7 +165,7 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 			objectOutputStream.writeLong(maxConcurrentUsers);
 			objectOutputStream.writeLong(maxUsers);
 
-			objectOutputStream.writeUTF(LicenseSizing.getLabel(sizing));
+			objectOutputStream.writeUTF(sizing);
 
 			objectOutputStream.writeUTF(GetterUtil.getString(owner));
 			objectOutputStream.writeUTF(GetterUtil.getString(productName));
@@ -214,7 +213,7 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 			int licenseVersion, String productName, String productId,
 			String productVersion, String owner, int maxServers,
 			int maxHttpSessions, long maxConcurrentUsers, long maxUsers,
-			int sizing, String description, String[] hostNames,
+			String sizing, String description, String[] hostNames,
 			String[] ipAddresses, String[] macAddresses, String[] serverIds,
 			Date startDate, Date expirationDate, Date createDate)
 		throws Exception {
@@ -287,7 +286,7 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 			String licenseType, int licenseVersion, String productName,
 			String productId, String productVersion, String owner,
 			int maxServers, int maxHttpSessions, long maxConcurrentUsers,
-			long maxUsers, int sizing, String description, String hostNames,
+			long maxUsers, String sizing, String description, String hostNames,
 			String ipAddresses, String macAddresses, String serverIds,
 			Date startDate, Date expirationDate, Date createDate)
 		throws Exception {
@@ -540,8 +539,8 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 		String accountName, String licenseEntryName, String licenseType,
 		int licenseVersion, String productName, String productId,
 		String productVersion, String owner, int maxServers,
-		int maxHttpSessions, long maxConcurrentUsers, long maxUsers, int sizing,
-		String description, String hostNames, String ipAddresses,
+		int maxHttpSessions, long maxConcurrentUsers, long maxUsers,
+		String sizing, String description, String hostNames, String ipAddresses,
 		String macAddresses, String serverIds, Date startDate,
 		Date expirationDate, Date createDate) {
 
