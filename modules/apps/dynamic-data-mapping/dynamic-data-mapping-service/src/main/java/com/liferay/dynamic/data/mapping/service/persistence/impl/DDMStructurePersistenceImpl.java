@@ -10724,14 +10724,25 @@ public class DDMStructurePersistenceImpl
 	@Override
 	public void cacheResult(List<DDMStructure> ddmStructures) {
 		for (DDMStructure ddmStructure : ddmStructures) {
-			if (entityCache.getResult(
+			DDMStructure cachedDDMStructure =
+				(DDMStructure)entityCache.getResult(
 					entityCacheEnabled, DDMStructureImpl.class,
-					ddmStructure.getPrimaryKey()) == null) {
+					ddmStructure.getPrimaryKey());
 
+			if (cachedDDMStructure == null) {
 				cacheResult(ddmStructure);
 			}
 			else {
-				ddmStructure.resetOriginalValues();
+				DDMStructureModelImpl ddmStructureModelImpl =
+					(DDMStructureModelImpl)ddmStructure;
+				DDMStructureModelImpl cachedDDMStructureModelImpl =
+					(DDMStructureModelImpl)cachedDDMStructure;
+
+				ddmStructureModelImpl.setClassName(
+					cachedDDMStructureModelImpl.getClassName());
+
+				ddmStructureModelImpl.setDDMForm(
+					cachedDDMStructureModelImpl.getDDMForm());
 			}
 		}
 	}

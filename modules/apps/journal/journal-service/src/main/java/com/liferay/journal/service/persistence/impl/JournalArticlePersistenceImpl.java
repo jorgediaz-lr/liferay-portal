@@ -32454,14 +32454,22 @@ public class JournalArticlePersistenceImpl
 	@Override
 	public void cacheResult(List<JournalArticle> journalArticles) {
 		for (JournalArticle journalArticle : journalArticles) {
-			if (entityCache.getResult(
+			JournalArticle cachedJournalArticle =
+				(JournalArticle)entityCache.getResult(
 					entityCacheEnabled, JournalArticleImpl.class,
-					journalArticle.getPrimaryKey()) == null) {
+					journalArticle.getPrimaryKey());
 
+			if (cachedJournalArticle == null) {
 				cacheResult(journalArticle);
 			}
 			else {
-				journalArticle.resetOriginalValues();
+				JournalArticleModelImpl journalArticleModelImpl =
+					(JournalArticleModelImpl)journalArticle;
+				JournalArticleModelImpl cachedJournalArticleModelImpl =
+					(JournalArticleModelImpl)cachedJournalArticle;
+
+				journalArticleModelImpl.setDocument(
+					cachedJournalArticleModelImpl.getDocument());
 			}
 		}
 	}
