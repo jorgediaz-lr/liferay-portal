@@ -73,7 +73,9 @@ ViewLicenseKeysManagementToolbarDisplayContext viewLicenseKeysManagementToolbarD
 					href="<%= rowURL %>"
 					name="name-description"
 				>
-					<%= HtmlUtil.escape(licenseKeyDisplay.getName()) %>
+					<strong>
+						<%= HtmlUtil.escape(licenseKeyDisplay.getName()) %>
+					</strong>
 
 					<div class="secondary-information">
 						<%= HtmlUtil.escape(licenseKeyDisplay.getDescription()) %>
