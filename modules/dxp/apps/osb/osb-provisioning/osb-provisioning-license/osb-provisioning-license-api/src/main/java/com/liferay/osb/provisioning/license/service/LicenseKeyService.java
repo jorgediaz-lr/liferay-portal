@@ -74,7 +74,7 @@ public interface LicenseKeyService extends BaseService {
 	@JSONWebService
 	public LicenseKey addLicenseKey(
 			String userUuid, String assetReceiptLicenseUuid,
-			String licenseEntryType, String productName, String productId,
+			String licenseEntryType, String productEntryName, String productId,
 			int productVersion, String owner, long maxUsers, String description,
 			String hostName, String ipAddresses, String macAddresses,
 			String serverId, Date startDate, Date expirationDate)

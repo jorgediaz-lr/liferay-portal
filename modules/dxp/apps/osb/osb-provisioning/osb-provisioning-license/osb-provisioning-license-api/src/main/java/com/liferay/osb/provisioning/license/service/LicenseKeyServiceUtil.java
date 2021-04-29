@@ -68,7 +68,7 @@ public class LicenseKeyServiceUtil {
 
 	public static LicenseKey addLicenseKey(
 			String userUuid, String assetReceiptLicenseUuid,
-			String licenseEntryType, String productName, String productId,
+			String licenseEntryType, String productEntryName, String productId,
 			int productVersion, String owner, long maxUsers, String description,
 			String hostName, String ipAddresses, String macAddresses,
 			String serverId, java.util.Date startDate,
@@ -76,9 +76,10 @@ public class LicenseKeyServiceUtil {
 		throws Exception {
 
 		return getService().addLicenseKey(
-			userUuid, assetReceiptLicenseUuid, licenseEntryType, productName,
-			productId, productVersion, owner, maxUsers, description, hostName,
-			ipAddresses, macAddresses, serverId, startDate, expirationDate);
+			userUuid, assetReceiptLicenseUuid, licenseEntryType,
+			productEntryName, productId, productVersion, owner, maxUsers,
+			description, hostName, ipAddresses, macAddresses, serverId,
+			startDate, expirationDate);
 	}
 
 	public static List<LicenseKey> getAssetReceiptLicenseLicenseKeys(

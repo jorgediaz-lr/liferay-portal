@@ -147,7 +147,7 @@ public class LicenseKeyServiceHttp {
 			addLicenseKey(
 				HttpPrincipal httpPrincipal, String userUuid,
 				String assetReceiptLicenseUuid, String licenseEntryType,
-				String productName, String productId, int productVersion,
+				String productEntryName, String productId, int productVersion,
 				String owner, long maxUsers, String description,
 				String hostName, String ipAddresses, String macAddresses,
 				String serverId, java.util.Date startDate,
@@ -161,7 +161,7 @@ public class LicenseKeyServiceHttp {
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, userUuid, assetReceiptLicenseUuid, licenseEntryType,
-				productName, productId, productVersion, owner, maxUsers,
+				productEntryName, productId, productVersion, owner, maxUsers,
 				description, hostName, ipAddresses, macAddresses, serverId,
 				startDate, expirationDate);
 
