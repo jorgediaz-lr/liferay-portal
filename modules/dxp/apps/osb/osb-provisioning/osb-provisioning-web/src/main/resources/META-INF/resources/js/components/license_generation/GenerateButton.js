@@ -43,7 +43,12 @@ function GenerateButton({formAction, redirect, serverIdValidatable = false}) {
 		request(formAction, params, 'formData', 'post')
 			.then(({data}) => {
 				if (data) {
-					location.assign(redirect);
+					if (data.redirectURL) {
+						location.assign(data.redirectURL);
+					}
+					else {
+						location.assign(redirect);
+					}
 				}
 			})
 			.catch(err => console.error(err));

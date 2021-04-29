@@ -22,9 +22,12 @@ import com.liferay.osb.provisioning.license.service.LicenseKeyService;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
+import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -45,6 +48,7 @@ import java.util.regex.Pattern;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
+import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;
 
 import org.osgi.service.component.annotations.Component;
@@ -134,7 +138,7 @@ public class EditLicenseKeyMVCActionCommand extends BaseMVCActionCommand {
 			serverIds.add(serverId);
 		}
 
-		_licenseKeyService.addLicenseKey(
+		LicenseKey licenseKey = _licenseKeyService.addLicenseKey(
 			themeDisplay.getUserId(), licenseEntryId, productKey, accountKey,
 			productPurchaseKey, accountName, productVersion, 0, name, owner,
 			maxServers, maxHttpSessions, 0, 0, LicenseSizing.getLabel(sizing),
@@ -144,7 +148,39 @@ public class EditLicenseKeyMVCActionCommand extends BaseMVCActionCommand {
 			serverIds.toArray(new String[0]), startDate, expirationDate,
 			complimentary, true);
 
-		sendRedirect(actionRequest, actionResponse);
+		PortletURL redirectURL = PortletURLFactoryUtil.create(
+			actionRequest, ProvisioningPortletKeys.LICENSES,
+			PortletRequest.RENDER_PHASE);
+
+		PortletURL portletURL = null;
+
+		if (serverIdsJSONArray.length() > 1) {
+			portletURL = PortletURLFactoryUtil.create(
+				actionRequest, ProvisioningPortletKeys.ACCOUNTS,
+				PortletRequest.RENDER_PHASE);
+
+			portletURL.setParameter(
+				"mvcRenderCommandName", "/accounts/view_account");
+			portletURL.setParameter("accountKey", accountKey);
+			portletURL.setParameter("redirect", redirectURL.toString());
+			portletURL.setParameter("tabs1", "licenses");
+		}
+		else {
+			portletURL = PortletURLFactoryUtil.create(
+				actionRequest, ProvisioningPortletKeys.LICENSES,
+				PortletRequest.RENDER_PHASE);
+
+			portletURL.setParameter(
+				"mvcRenderCommandName", "/licenses/edit_license_key");
+			portletURL.setParameter(
+				"licenseKeyId", String.valueOf(licenseKey.getLicenseKeyId()));
+			portletURL.setParameter("redirect", redirectURL.toString());
+		}
+
+		JSONObject jsonObject = JSONUtil.put("redirectURL", portletURL);
+
+		JSONPortletResponseUtil.writeJSON(
+			actionRequest, actionResponse, jsonObject);
 	}
 
 	@Override
