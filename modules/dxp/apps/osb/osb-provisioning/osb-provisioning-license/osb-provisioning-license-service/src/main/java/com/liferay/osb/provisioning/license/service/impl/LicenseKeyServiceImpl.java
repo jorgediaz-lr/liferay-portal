@@ -146,7 +146,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 	@JSONWebService
 	public LicenseKey addLicenseKey(
 			String userUuid, String assetReceiptLicenseUuid,
-			String licenseEntryType, String productName, String productId,
+			String licenseEntryType, String productEntryName, String productId,
 			int productVersion, String owner, long maxUsers, String description,
 			String hostName, String ipAddresses, String macAddresses,
 			String serverId, Date startDate, Date expirationDate)
@@ -160,7 +160,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 		return licenseKeyLocalService.addLicenseKey(
 			user.getUserId(), assetReceiptLicenseUuid, licenseEntryType,
-			productName, productId, String.valueOf(productVersion), owner,
+			productEntryName, productId, String.valueOf(productVersion), owner,
 			maxUsers, description, hostName, ipAddresses, macAddresses,
 			serverId, startDate, expirationDate);
 	}
