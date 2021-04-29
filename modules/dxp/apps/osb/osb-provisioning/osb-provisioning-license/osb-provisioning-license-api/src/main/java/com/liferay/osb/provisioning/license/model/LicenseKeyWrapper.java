@@ -656,6 +656,11 @@ public class LicenseKeyWrapper
 		return model.getPrimaryKey();
 	}
 
+	@Override
+	public String getProductEntryName() {
+		return model.getProductEntryName();
+	}
+
 	/**
 	 * Returns the product ID of this license key.
 	 *
@@ -704,6 +709,11 @@ public class LicenseKeyWrapper
 	@Override
 	public String getProductVersion() {
 		return model.getProductVersion();
+	}
+
+	@Override
+	public String getProductVersionLabel() {
+		return model.getProductVersionLabel();
 	}
 
 	/**

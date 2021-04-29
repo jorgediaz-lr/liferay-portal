@@ -61,6 +61,10 @@ public interface LicenseKey extends LicenseKeyModel, PersistedModel {
 	public LicenseEntry getLicenseEntry()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
+	public String getProductEntryName();
+
+	public String getProductVersionLabel();
+
 	public boolean isExpired();
 
 }
