@@ -133,6 +133,11 @@ public class PublishLayoutMVCActionCommand extends BaseMVCActionCommand {
 
 			_mergeTypeSettingsProperties(layout, layoutTypeSettingsProperties);
 
+			_layoutLocalService.updateLookAndFeel(
+				layout.getGroupId(), layout.isPrivateLayout(),
+				layout.getLayoutId(), layout.getThemeId(),
+				layout.getColorSchemeId(), layout.getCss());
+
 			_layoutLocalService.updateLayout(
 				layout.getGroupId(), layout.isPrivateLayout(),
 				layout.getLayoutId(), new Date());
