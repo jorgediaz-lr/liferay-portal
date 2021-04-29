@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -66,6 +67,16 @@ public class UserItemSelectorViewDisplayContext {
 		return ParamUtil.getString(
 			_portletRequest, SearchContainer.DEFAULT_ORDER_BY_COL_PARAM,
 			"first-name");
+	}
+
+	public String[] getOrderbyKeys() {
+		String[] orderColumns = {"first-name", "last-name", "screen-name"};
+
+		if (_searchContainer.isSearch()) {
+			orderColumns = ArrayUtil.append(orderColumns, "relevance");
+		}
+
+		return orderColumns;
 	}
 
 	public String getOrderByType() {
