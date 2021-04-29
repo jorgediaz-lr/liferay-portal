@@ -34,6 +34,14 @@ public class LicenseKeyImpl extends LicenseKeyBaseImpl {
 			getLicenseEntryId());
 	}
 
+	public String getProductEntryName() {
+		return getProductName();
+	}
+
+	public String getProductVersionLabel() {
+		return getProductVersion();
+	}
+
 	public boolean isExpired() {
 		Date now = new Date();
 
