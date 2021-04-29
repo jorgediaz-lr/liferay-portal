@@ -177,6 +177,8 @@ public class EditLicenseKeyMVCActionCommand extends BaseMVCActionCommand {
 			portletURL.setParameter("redirect", redirectURL.toString());
 		}
 
+		hideDefaultSuccessMessage(actionRequest);
+
 		JSONObject jsonObject = JSONUtil.put("redirectURL", portletURL);
 
 		JSONPortletResponseUtil.writeJSON(
