@@ -42,14 +42,9 @@ function GenerateButton({formAction, redirect, serverIdValidatable = false}) {
 
 		request(formAction, params, 'formData', 'post')
 			.then(({data}) => {
-				if (data) {
-					if (data.redirectURL) {
-						location.assign(data.redirectURL);
-					}
-					else {
-						location.assign(redirect);
-					}
-				}
+				const {redirectURL} = data;
+
+				location.assign(redirectURL ? redirectURL : redirect);
 			})
 			.catch(err => console.error(err));
 	}
