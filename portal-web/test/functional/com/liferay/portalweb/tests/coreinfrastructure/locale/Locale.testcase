@@ -283,7 +283,7 @@ definition {
 			layoutName = "Test Page",
 			widgetName = "Language Selector");
 
-		Navigator.openSitePage(
+		Navigator.gotoSitePage(
 			pageName = "Test Page",
 			siteName = "Test Site Name");
 
@@ -301,7 +301,7 @@ definition {
 
 		Portlet.startServer(deleteLiferayHome = "false");
 
-		Navigator.openSitePage(
+		Navigator.gotoSitePage(
 			pageName = "Test Page",
 			siteName = "Test Site Name");
 
@@ -319,7 +319,7 @@ definition {
 
 		Portlet.startServer(deleteLiferayHome = "false");
 
-		Navigator.openSitePage(
+		Navigator.gotoSitePage(
 			pageName = "Test Page",
 			siteName = "Test Site Name");
 
@@ -343,7 +343,7 @@ definition {
 
 		Portlet.startServer(deleteLiferayHome = "false");
 
-		Navigator.openSitePage(
+		Navigator.gotoSitePage(
 			pageName = "Test Page",
 			siteName = "Test Site Name");
 
@@ -462,7 +462,7 @@ definition {
 
 		PortalSettings.configureTimeZone(timeZone = "(UTC +02:00) Central European Summer Time");
 
-		ApplicationsMenu.gotoPortlet(
+		ProductMenu.gotoPortlet(
 			category = "Security",
 			panel = "Control Panel",
 			portlet = "Password Policies");
@@ -579,10 +579,12 @@ definition {
 			defaultPortalLanguage = "Italian (Italy)",
 			displaySettings = "Display Settings");
 
-		HeadlessPortalInstanceAPI.addPortalInstance(
-			domain = "www.able.com",
-			portalInstanceId = "www.able.com",
-			virtualHost = "www.able.com");
+		PortalInstances.openVirtualInstancesAdmin();
+
+		PortalInstances.addCP(
+			mailDomain = "www.able.com",
+			virtualHost = "www.able.com",
+			webId = "www.able.com");
 
 		User.firstLoginPG(
 			localization = "IT",
