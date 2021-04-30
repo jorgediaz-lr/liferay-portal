@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -136,23 +135,18 @@ public class LicenseKeyMigration {
 				licenseKey.setMaxHttpSessions(
 					resultSet.getInt("maxHttpSessions"));
 
-				String sizing = resultSet.getString("sizing");
+				int sizing = resultSet.getInt("sizing");
 
-				if (sizing.equals("0")) {
+				if (sizing <= 0) {
 					licenseKey.setSizing(StringPool.BLANK);
 				}
 				else if (timestamp.before(
 							resultSet.getTimestamp("createDate"))) {
 
-					licenseKey.setSizing(
-						StringUtil.insert(
-							resultSet.getString("sizing"), "sizing-", 0));
+					licenseKey.setSizing("sizing-" + sizing);
 				}
 				else {
-					licenseKey.setSizing(
-						LicenseSizing.getLabel(
-							StringUtil.insert(
-								resultSet.getString("sizing"), "sizing-", 0)));
+					licenseKey.setSizing(LicenseSizing.getLabel(sizing));
 				}
 
 				licenseKey.setDescription(resultSet.getString("description"));

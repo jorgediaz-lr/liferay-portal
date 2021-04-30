@@ -21,25 +21,25 @@ import com.liferay.petra.string.StringPool;
  */
 public class LicenseSizing {
 
-	public static final String FOUR = "sizing-4";
+	public static final int FOUR = 4;
 
-	public static final String ONE = "sizing-1";
+	public static final int ONE = 1;
 
-	public static final String THREE = "sizing-3";
+	public static final int THREE = 3;
 
-	public static final String TWO = "sizing-2";
+	public static final int TWO = 2;
 
-	public static String getLabel(String sizing) {
-		if (sizing.equals(ONE)) {
+	public static String getLabel(int sizing) {
+		if (sizing == ONE) {
 			return "Sizing 1";
 		}
-		else if (sizing.equals(TWO)) {
+		else if (sizing == TWO) {
 			return "Sizing 2";
 		}
-		else if (sizing.equals(THREE)) {
+		else if (sizing == THREE) {
 			return "Sizing 3";
 		}
-		else if (sizing.equals(FOUR)) {
+		else if (sizing == FOUR) {
 			return "Sizing 4";
 		}
 

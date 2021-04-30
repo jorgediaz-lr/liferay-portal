@@ -69,7 +69,7 @@ Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat("MMMM dd, yyyy
 				}
 			}
 			else if (Validator.isNotNull(licenseKey.getSizing())) {
-				sizing = String.valueOf(licenseKey.getSizing());
+				sizing = licenseKey.getSizing();
 
 				startDateCal.setTime(licenseKey.getStartDate());
 				expirationDateCal.setTime(licenseKey.getExpirationDate());
