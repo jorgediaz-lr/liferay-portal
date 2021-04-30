@@ -106,7 +106,7 @@ public class LayoutSEOEntryLocalServiceTest {
 			_layout.getLayoutId(), false,
 			Collections.singletonMap(LocaleUtil.US, "http://example.com"), true,
 			Collections.singletonMap(LocaleUtil.US, "description"),
-			Collections.singletonMap(LocaleUtil.US, "image alt"), 12345, true,
+			Collections.singletonMap(LocaleUtil.US, "image alt"), 9999999, true,
 			Collections.singletonMap(LocaleUtil.US, "title"),
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
 
@@ -119,7 +119,7 @@ public class LayoutSEOEntryLocalServiceTest {
 			layoutSEOEntry.getCanonicalURL(LocaleUtil.US));
 		Assert.assertFalse(layoutSEOEntry.isCanonicalURLEnabled());
 		Assert.assertEquals(
-			12345, layoutSEOEntry.getOpenGraphImageFileEntryId());
+			9999999, layoutSEOEntry.getOpenGraphImageFileEntryId());
 		Assert.assertEquals(
 			"description",
 			layoutSEOEntry.getOpenGraphDescription(LocaleUtil.US));
@@ -149,7 +149,7 @@ public class LayoutSEOEntryLocalServiceTest {
 				_layout.getLayoutId(), false,
 				Collections.singletonMap(LocaleUtil.US, "http://example.com"),
 				true, Collections.singletonMap(LocaleUtil.US, "description"),
-				Collections.singletonMap(LocaleUtil.US, "image alt"), 12345,
+				Collections.singletonMap(LocaleUtil.US, "image alt"), 9999999,
 				true, Collections.singletonMap(LocaleUtil.US, "title"),
 				serviceContext);
 
@@ -203,7 +203,7 @@ public class LayoutSEOEntryLocalServiceTest {
 			_layout.getLayoutId(), false,
 			Collections.singletonMap(LocaleUtil.US, "http://example.com"), true,
 			Collections.singletonMap(LocaleUtil.US, "description"),
-			Collections.singletonMap(LocaleUtil.US, "image alt"), 12345, true,
+			Collections.singletonMap(LocaleUtil.US, "image alt"), 9999999, true,
 			Collections.singletonMap(LocaleUtil.US, "title"), serviceContext);
 
 		LayoutSEOEntry layoutSEOEntry =
@@ -279,7 +279,7 @@ public class LayoutSEOEntryLocalServiceTest {
 			_layout.getLayoutId(), true,
 			Collections.singletonMap(LocaleUtil.US, "http://example.com"), true,
 			Collections.singletonMap(LocaleUtil.US, "description"),
-			Collections.singletonMap(LocaleUtil.US, "image alt"), 12345, true,
+			Collections.singletonMap(LocaleUtil.US, "image alt"), 9999999, true,
 			Collections.singletonMap(LocaleUtil.US, "title"),
 			ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
 
@@ -296,7 +296,7 @@ public class LayoutSEOEntryLocalServiceTest {
 			layoutSEOEntry.getOpenGraphDescription(LocaleUtil.US));
 		Assert.assertTrue(layoutSEOEntry.isOpenGraphDescriptionEnabled());
 		Assert.assertEquals(
-			12345, layoutSEOEntry.getOpenGraphImageFileEntryId());
+			9999999, layoutSEOEntry.getOpenGraphImageFileEntryId());
 		Assert.assertEquals(
 			"title", layoutSEOEntry.getOpenGraphTitle(LocaleUtil.US));
 		Assert.assertTrue(layoutSEOEntry.isOpenGraphTitleEnabled());
@@ -322,7 +322,7 @@ public class LayoutSEOEntryLocalServiceTest {
 				_layout.getLayoutId(), false,
 				Collections.singletonMap(LocaleUtil.US, "http://example.com"),
 				true, Collections.singletonMap(LocaleUtil.US, "description"),
-				Collections.singletonMap(LocaleUtil.US, "image alt"), 12345,
+				Collections.singletonMap(LocaleUtil.US, "image alt"), 9999999,
 				true, Collections.singletonMap(LocaleUtil.US, "title"),
 				serviceContext);
 
