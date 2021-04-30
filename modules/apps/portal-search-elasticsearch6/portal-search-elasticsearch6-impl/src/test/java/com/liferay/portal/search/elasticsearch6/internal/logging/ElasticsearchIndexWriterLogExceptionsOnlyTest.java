@@ -27,12 +27,12 @@ import com.liferay.portal.search.elasticsearch6.internal.search.engine.adapter.d
 import com.liferay.portal.search.test.util.indexing.BaseIndexingTestCase;
 import com.liferay.portal.search.test.util.indexing.DocumentCreationHelpers;
 import com.liferay.portal.search.test.util.indexing.IndexingFixture;
+import com.liferay.portal.search.test.util.logging.ExpectedLog;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -73,13 +73,13 @@ public class ElasticsearchIndexWriterLogExceptionsOnlyTest
 		}
 	}
 
+	@ExpectedLog(
+		expectedClass = BulkDocumentRequestExecutorImpl.class,
+		expectedLevel = ExpectedLog.Level.WARNING,
+		expectedLog = "failed to parse field [expirationDate] of type [date]"
+	)
 	@Test
 	public void testAddDocumentsBulkExecutor() {
-		expectedLogTestRule.configure(
-			BulkDocumentRequestExecutorImpl.class, Level.WARNING);
-		expectedLogTestRule.expectMessage(
-			"failed to parse field [expirationDate] of type [date]");
-
 		List<Document> documents = new ArrayList<>();
 
 		Document document = new DocumentImpl();
@@ -146,12 +146,12 @@ public class ElasticsearchIndexWriterLogExceptionsOnlyTest
 		}
 	}
 
+	@ExpectedLog(
+		expectedClass = BulkDocumentRequestExecutorImpl.class,
+		expectedLevel = ExpectedLog.Level.WARNING, expectedLog = "no such index"
+	)
 	@Test
 	public void testDeleteDocumentsBulkExecutor() {
-		expectedLogTestRule.configure(
-			BulkDocumentRequestExecutorImpl.class, Level.WARNING);
-		expectedLogTestRule.expectMessage("no such index");
-
 		SearchContext searchContext = new SearchContext();
 
 		searchContext.setCompanyId(1);
@@ -220,12 +220,13 @@ public class ElasticsearchIndexWriterLogExceptionsOnlyTest
 		}
 	}
 
+	@ExpectedLog(
+		expectedClass = BulkDocumentRequestExecutorImpl.class,
+		expectedLevel = ExpectedLog.Level.WARNING,
+		expectedLog = "document missing"
+	)
 	@Test
 	public void testPartiallyUpdateDocumentsBulkExecutor() {
-		expectedLogTestRule.configure(
-			BulkDocumentRequestExecutorImpl.class, Level.WARNING);
-		expectedLogTestRule.expectMessage("document missing");
-
 		Document document = new DocumentImpl();
 
 		List<Document> documents = new ArrayList<>();
@@ -260,13 +261,13 @@ public class ElasticsearchIndexWriterLogExceptionsOnlyTest
 		}
 	}
 
+	@ExpectedLog(
+		expectedClass = BulkDocumentRequestExecutorImpl.class,
+		expectedLevel = ExpectedLog.Level.WARNING,
+		expectedLog = "failed to parse field [expirationDate] of type [date]"
+	)
 	@Test
 	public void testUpdateDocumentBulkExecutor() {
-		expectedLogTestRule.configure(
-			BulkDocumentRequestExecutorImpl.class, Level.WARNING);
-		expectedLogTestRule.expectMessage(
-			"failed to parse field [expirationDate] of type [date]");
-
 		Document document = new DocumentImpl();
 
 		document.addKeyword(Field.UID, "1");
@@ -301,13 +302,13 @@ public class ElasticsearchIndexWriterLogExceptionsOnlyTest
 		}
 	}
 
+	@ExpectedLog(
+		expectedClass = BulkDocumentRequestExecutorImpl.class,
+		expectedLevel = ExpectedLog.Level.WARNING,
+		expectedLog = "failed to parse field [expirationDate] of type [date]"
+	)
 	@Test
 	public void testUpdateDocumentsBulkExecutor() {
-		expectedLogTestRule.configure(
-			BulkDocumentRequestExecutorImpl.class, Level.WARNING);
-		expectedLogTestRule.expectMessage(
-			"failed to parse field [expirationDate] of type [date]");
-
 		List<Document> documents = new ArrayList<>();
 
 		Document document = new DocumentImpl();

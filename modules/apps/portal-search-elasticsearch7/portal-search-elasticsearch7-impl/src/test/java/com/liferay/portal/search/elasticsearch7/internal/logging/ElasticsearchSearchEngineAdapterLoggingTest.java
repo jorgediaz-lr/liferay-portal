@@ -15,6 +15,7 @@
 package com.liferay.portal.search.elasticsearch7.internal.logging;
 
 import com.liferay.portal.kernel.search.generic.MatchAllQuery;
+import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchFixture;
 import com.liferay.portal.search.elasticsearch7.internal.connection.HealthExpectations;
 import com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.ElasticsearchEngineAdapterFixture;
@@ -25,10 +26,9 @@ import com.liferay.portal.search.engine.adapter.SearchEngineAdapter;
 import com.liferay.portal.search.engine.adapter.search.CountSearchRequest;
 import com.liferay.portal.search.engine.adapter.search.MultisearchSearchRequest;
 import com.liferay.portal.search.engine.adapter.search.SearchSearchRequest;
-import com.liferay.portal.search.test.util.logging.ExpectedLogTestRule;
+import com.liferay.portal.search.test.util.logging.ExpectedLog;
+import com.liferay.portal.search.test.util.logging.ExpectedLogMethodTestRule;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
-
-import java.util.logging.Level;
 
 import org.elasticsearch.cluster.health.ClusterHealthStatus;
 
@@ -46,8 +46,10 @@ import org.junit.Test;
 public class ElasticsearchSearchEngineAdapterLoggingTest {
 
 	@ClassRule
-	public static final LiferayUnitTestRule liferayUnitTestRule =
-		LiferayUnitTestRule.INSTANCE;
+	@Rule
+	public static final AggregateTestRule aggregateTestRule =
+		new AggregateTestRule(
+			ExpectedLogMethodTestRule.INSTANCE, LiferayUnitTestRule.INSTANCE);
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
@@ -79,13 +81,13 @@ public class ElasticsearchSearchEngineAdapterLoggingTest {
 			elasticsearchEngineAdapterFixture.getSearchEngineAdapter();
 	}
 
+	@ExpectedLog(
+		expectedClass = CountSearchRequestExecutorImpl.class,
+		expectedLevel = ExpectedLog.Level.FINE,
+		expectedLog = "The search engine processed"
+	)
 	@Test
 	public void testCountSearchRequestExecutorLogs() {
-		expectedLogTestRule.configure(
-			CountSearchRequestExecutorImpl.class, Level.FINE);
-
-		expectedLogTestRule.expectMessage("The search engine processed");
-
 		_searchEngineAdapter.execute(
 			new CountSearchRequest() {
 				{
@@ -95,13 +97,13 @@ public class ElasticsearchSearchEngineAdapterLoggingTest {
 			});
 	}
 
+	@ExpectedLog(
+		expectedClass = MultisearchSearchRequestExecutorImpl.class,
+		expectedLevel = ExpectedLog.Level.FINE,
+		expectedLog = "The search engine processed"
+	)
 	@Test
 	public void testMultisearchSearchRequestExecutorLogs() {
-		expectedLogTestRule.configure(
-			MultisearchSearchRequestExecutorImpl.class, Level.FINE);
-
-		expectedLogTestRule.expectMessage("The search engine processed");
-
 		_searchEngineAdapter.execute(
 			new MultisearchSearchRequest() {
 				{
@@ -116,13 +118,13 @@ public class ElasticsearchSearchEngineAdapterLoggingTest {
 			});
 	}
 
+	@ExpectedLog(
+		expectedClass = SearchSearchRequestExecutorImpl.class,
+		expectedLevel = ExpectedLog.Level.FINE,
+		expectedLog = "The search engine processed"
+	)
 	@Test
 	public void testSearchSearchRequestExecutorLogs() {
-		expectedLogTestRule.configure(
-			SearchSearchRequestExecutorImpl.class, Level.FINE);
-
-		expectedLogTestRule.expectMessage("The search engine processed");
-
 		_searchEngineAdapter.execute(
 			new SearchSearchRequest() {
 				{
@@ -131,9 +133,6 @@ public class ElasticsearchSearchEngineAdapterLoggingTest {
 				}
 			});
 	}
-
-	@Rule
-	public ExpectedLogTestRule expectedLogTestRule = ExpectedLogTestRule.none();
 
 	protected void waitForElasticsearchToStart(
 		ElasticsearchFixture elasticsearchFixture) {

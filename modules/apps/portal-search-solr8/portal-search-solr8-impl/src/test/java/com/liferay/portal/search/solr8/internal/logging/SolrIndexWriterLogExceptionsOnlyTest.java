@@ -19,21 +19,25 @@ import com.liferay.portal.kernel.search.DocumentImpl;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.IndexWriter;
 import com.liferay.portal.kernel.search.SearchException;
+import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.search.solr8.internal.SolrIndexingFixture;
+import com.liferay.portal.search.solr8.internal.SolrUnitTestRequirements;
 import com.liferay.portal.search.solr8.internal.search.engine.adapter.document.BulkDocumentRequestExecutorImpl;
 import com.liferay.portal.search.test.util.indexing.BaseIndexingTestCase;
 import com.liferay.portal.search.test.util.indexing.DocumentCreationHelpers;
 import com.liferay.portal.search.test.util.indexing.IndexingFixture;
-import com.liferay.portal.search.test.util.logging.ExpectedLogTestRule;
+import com.liferay.portal.search.test.util.logging.ExpectedLog;
+import com.liferay.portal.search.test.util.logging.ExpectedLogMethodTestRule;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.util.Collections;
 import java.util.Map;
-import java.util.logging.Level;
 
 import org.junit.After;
+import org.junit.Assume;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -45,8 +49,15 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 
 	@ClassRule
 	@Rule
-	public static final LiferayUnitTestRule liferayUnitTestRule =
-		LiferayUnitTestRule.INSTANCE;
+	public static final AggregateTestRule aggregateTestRule =
+		new AggregateTestRule(
+			ExpectedLogMethodTestRule.INSTANCE, LiferayUnitTestRule.INSTANCE);
+
+	@BeforeClass
+	public static void setUpClass() {
+		Assume.assumeTrue(
+			SolrUnitTestRequirements.isSolrExternallyStartedByDeveloper());
+	}
 
 	@After
 	public void tearDown() throws Exception {
@@ -54,9 +65,6 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 
 	@Test
 	public void testAddDocument() throws Exception {
-		expectedLogTestRule.expectMessage("/solr/liferay/" + _COLLECTION_NAME);
-		expectedLogTestRule.expectMessage("404 Not Found");
-
 		addDocument(
 			DocumentCreationHelpers.singleKeyword(
 				Field.EXPIRATION_DATE, "text"));
@@ -75,13 +83,13 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 		}
 	}
 
+	@ExpectedLog(
+		expectedClass = BulkDocumentRequestExecutorImpl.class,
+		expectedLevel = ExpectedLog.Level.WARNING,
+		expectedLog = "/solr/liferay/" + _COLLECTION_NAME
+	)
 	@Test
 	public void testAddDocumentsBulkExecutor() {
-		expectedLogTestRule.configure(
-			BulkDocumentRequestExecutorImpl.class, Level.WARNING);
-		expectedLogTestRule.expectMessage("/solr/liferay/" + _COLLECTION_NAME);
-		expectedLogTestRule.expectMessage("404 Not Found");
-
 		IndexWriter indexWriter = getIndexWriter();
 
 		try {
@@ -95,9 +103,6 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 
 	@Test
 	public void testCommit() {
-		expectedLogTestRule.expectMessage("/solr/liferay/" + _COLLECTION_NAME);
-		expectedLogTestRule.expectMessage("404 Not Found");
-
 		IndexWriter indexWriter = getIndexWriter();
 
 		try {
@@ -109,9 +114,6 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 
 	@Test
 	public void testDeleteDocument() {
-		expectedLogTestRule.expectMessage("/solr/liferay/" + _COLLECTION_NAME);
-		expectedLogTestRule.expectMessage("404 Not Found");
-
 		IndexWriter indexWriter = getIndexWriter();
 
 		try {
@@ -133,13 +135,13 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 		}
 	}
 
+	@ExpectedLog(
+		expectedClass = BulkDocumentRequestExecutorImpl.class,
+		expectedLevel = ExpectedLog.Level.WARNING,
+		expectedLog = "/solr/liferay/" + _COLLECTION_NAME
+	)
 	@Test
 	public void testDeleteDocumentsBulkExecutor() {
-		expectedLogTestRule.configure(
-			BulkDocumentRequestExecutorImpl.class, Level.WARNING);
-		expectedLogTestRule.expectMessage("/solr/liferay/" + _COLLECTION_NAME);
-		expectedLogTestRule.expectMessage("404 Not Found");
-
 		IndexWriter indexWriter = getIndexWriter();
 
 		try {
@@ -152,9 +154,6 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 
 	@Test
 	public void testDeleteEntityDocuments() {
-		expectedLogTestRule.expectMessage(
-			"Problem accessing /solr/liferay/" + _COLLECTION_NAME);
-
 		IndexWriter indexWriter = getIndexWriter();
 
 		try {
@@ -166,9 +165,6 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 
 	@Test
 	public void testPartiallyUpdateDocument() {
-		expectedLogTestRule.expectMessage("/solr/liferay/" + _COLLECTION_NAME);
-		expectedLogTestRule.expectMessage("404 Not Found");
-
 		IndexWriter indexWriter = getIndexWriter();
 
 		try {
@@ -192,13 +188,13 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 		}
 	}
 
+	@ExpectedLog(
+		expectedClass = BulkDocumentRequestExecutorImpl.class,
+		expectedLevel = ExpectedLog.Level.WARNING,
+		expectedLog = "/solr/liferay/" + _COLLECTION_NAME
+	)
 	@Test
 	public void testPartiallyUpdateDocumentsBulkExecutor() {
-		expectedLogTestRule.configure(
-			BulkDocumentRequestExecutorImpl.class, Level.WARNING);
-		expectedLogTestRule.expectMessage("/solr/liferay/" + _COLLECTION_NAME);
-		expectedLogTestRule.expectMessage("404 Not Found");
-
 		IndexWriter indexWriter = getIndexWriter();
 
 		try {
@@ -222,13 +218,13 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 		}
 	}
 
+	@ExpectedLog(
+		expectedClass = BulkDocumentRequestExecutorImpl.class,
+		expectedLevel = ExpectedLog.Level.WARNING,
+		expectedLog = "/solr/liferay/" + _COLLECTION_NAME
+	)
 	@Test
 	public void testUpdateDocumentBulkExecutor() {
-		expectedLogTestRule.configure(
-			BulkDocumentRequestExecutorImpl.class, Level.WARNING);
-		expectedLogTestRule.expectMessage("/solr/liferay/" + _COLLECTION_NAME);
-		expectedLogTestRule.expectMessage("404 Not Found");
-
 		IndexWriter indexWriter = getIndexWriter();
 
 		try {
@@ -252,13 +248,13 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 		}
 	}
 
+	@ExpectedLog(
+		expectedClass = BulkDocumentRequestExecutorImpl.class,
+		expectedLevel = ExpectedLog.Level.WARNING,
+		expectedLog = "/solr/liferay/" + _COLLECTION_NAME
+	)
 	@Test
 	public void testUpdateDocumentsBulkExecutor() {
-		expectedLogTestRule.configure(
-			BulkDocumentRequestExecutorImpl.class, Level.WARNING);
-		expectedLogTestRule.expectMessage("/solr/liferay/" + _COLLECTION_NAME);
-		expectedLogTestRule.expectMessage("404 Not Found");
-
 		IndexWriter indexWriter = getIndexWriter();
 
 		try {
@@ -269,9 +265,6 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 		catch (SearchException searchException) {
 		}
 	}
-
-	@Rule
-	public ExpectedLogTestRule expectedLogTestRule = ExpectedLogTestRule.none();
 
 	@Override
 	protected IndexingFixture createIndexingFixture() throws Exception {
