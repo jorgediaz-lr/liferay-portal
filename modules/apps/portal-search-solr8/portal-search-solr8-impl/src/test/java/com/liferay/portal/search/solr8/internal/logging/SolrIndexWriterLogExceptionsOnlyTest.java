@@ -64,8 +64,6 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 
 	@Test
 	public void testAddDocuments() {
-		expectedLogTestRule.expectMessage("Bulk add failed");
-
 		IndexWriter indexWriter = getIndexWriter();
 
 		try {
@@ -125,8 +123,6 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 
 	@Test
 	public void testDeleteDocuments() {
-		expectedLogTestRule.expectMessage("Bulk delete failed");
-
 		IndexWriter indexWriter = getIndexWriter();
 
 		try {
@@ -185,8 +181,6 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 
 	@Test
 	public void testPartiallyUpdateDocuments() {
-		expectedLogTestRule.expectMessage("Bulk partial update failed");
-
 		IndexWriter indexWriter = getIndexWriter();
 
 		try {
@@ -218,8 +212,6 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 
 	@Test
 	public void testUpdateDocument() {
-		expectedLogTestRule.expectMessage("Update failed");
-
 		IndexWriter indexWriter = getIndexWriter();
 
 		try {
@@ -249,8 +241,6 @@ public class SolrIndexWriterLogExceptionsOnlyTest extends BaseIndexingTestCase {
 
 	@Test
 	public void testUpdateDocuments() {
-		expectedLogTestRule.expectMessage("Update failed");
-
 		IndexWriter indexWriter = getIndexWriter();
 
 		try {

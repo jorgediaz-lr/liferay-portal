@@ -24,7 +24,6 @@ import com.liferay.portal.search.elasticsearch6.internal.LiferayElasticsearchInd
 import com.liferay.portal.search.elasticsearch6.internal.connection.ElasticsearchFixture;
 import com.liferay.portal.search.test.util.indexing.BaseIndexingTestCase;
 import com.liferay.portal.search.test.util.indexing.IndexingFixture;
-import com.liferay.portal.search.test.util.logging.ExpectedLogTestRule;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.util.Map;
@@ -40,27 +39,19 @@ public class ElasticsearchIndexSearcherLogExceptionsOnlyTest
 	extends BaseIndexingTestCase {
 
 	@ClassRule
+	@Rule
 	public static final LiferayUnitTestRule liferayUnitTestRule =
 		LiferayUnitTestRule.INSTANCE;
 
 	@Test
 	public void testExceptionOnlyLoggedWhenQueryMalformedSearch() {
-		expectedLogTestRule.expectMessage(
-			"Failed to execute phase [query], all shards failed");
-
 		search(createSearchContext(), getMalformedQuery());
 	}
 
 	@Test
 	public void testExceptionOnlyLoggedWhenQueryMalformedSearchCount() {
-		expectedLogTestRule.expectMessage(
-			"Failed to execute phase [query], all shards failed");
-
 		searchCount(createSearchContext(), getMalformedQuery());
 	}
-
-	@Rule
-	public ExpectedLogTestRule expectedLogTestRule = ExpectedLogTestRule.none();
 
 	protected ElasticsearchFixture createElasticsearchFixture() {
 		Map<String, Object> elasticsearchConfigurationProperties =

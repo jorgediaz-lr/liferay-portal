@@ -27,7 +27,6 @@ import com.liferay.portal.search.elasticsearch6.internal.search.engine.adapter.d
 import com.liferay.portal.search.test.util.indexing.BaseIndexingTestCase;
 import com.liferay.portal.search.test.util.indexing.DocumentCreationHelpers;
 import com.liferay.portal.search.test.util.indexing.IndexingFixture;
-import com.liferay.portal.search.test.util.logging.ExpectedLogTestRule;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.util.ArrayList;
@@ -36,7 +35,6 @@ import java.util.Map;
 import java.util.logging.Level;
 
 import org.junit.ClassRule;
-import org.junit.Rule;
 import org.junit.Test;
 
 /**
@@ -51,9 +49,6 @@ public class ElasticsearchIndexWriterLogExceptionsOnlyTest
 
 	@Test
 	public void testAddDocument() throws Exception {
-		expectedLogTestRule.expectMessage(
-			"failed to parse field [expirationDate] of type [date]");
-
 		addDocument(
 			DocumentCreationHelpers.singleKeyword(
 				Field.EXPIRATION_DATE, "text"));
@@ -61,8 +56,6 @@ public class ElasticsearchIndexWriterLogExceptionsOnlyTest
 
 	@Test
 	public void testAddDocuments() {
-		expectedLogTestRule.expectMessage("Bulk add failed");
-
 		List<Document> documents = new ArrayList<>();
 
 		Document document = new DocumentImpl();
@@ -106,8 +99,6 @@ public class ElasticsearchIndexWriterLogExceptionsOnlyTest
 
 	@Test
 	public void testCommit() {
-		expectedLogTestRule.expectMessage("no such index");
-
 		SearchContext searchContext = new SearchContext();
 
 		searchContext.setCompanyId(1);
@@ -123,8 +114,6 @@ public class ElasticsearchIndexWriterLogExceptionsOnlyTest
 
 	@Test
 	public void testDeleteDocument() {
-		expectedLogTestRule.expectMessage("no such index");
-
 		SearchContext searchContext = new SearchContext();
 
 		searchContext.setCompanyId(1);
@@ -140,8 +129,6 @@ public class ElasticsearchIndexWriterLogExceptionsOnlyTest
 
 	@Test
 	public void testDeleteDocuments() {
-		expectedLogTestRule.expectMessage("Bulk delete failed");
-
 		SearchContext searchContext = new SearchContext();
 
 		searchContext.setCompanyId(1);
@@ -184,8 +171,6 @@ public class ElasticsearchIndexWriterLogExceptionsOnlyTest
 
 	@Test
 	public void testDeleteEntityDocuments() {
-		expectedLogTestRule.expectMessage("no such index");
-
 		SearchContext searchContext = new SearchContext();
 
 		searchContext.setCompanyId(1);
@@ -201,8 +186,6 @@ public class ElasticsearchIndexWriterLogExceptionsOnlyTest
 
 	@Test
 	public void testPartiallyUpdateDocument() {
-		expectedLogTestRule.expectMessage("document missing");
-
 		Document document = new DocumentImpl();
 
 		document.addKeyword(Field.UID, "1");
@@ -219,8 +202,6 @@ public class ElasticsearchIndexWriterLogExceptionsOnlyTest
 
 	@Test
 	public void testPartiallyUpdateDocuments() {
-		expectedLogTestRule.expectMessage("Bulk partial update failed");
-
 		Document document = new DocumentImpl();
 
 		List<Document> documents = new ArrayList<>();
@@ -265,8 +246,6 @@ public class ElasticsearchIndexWriterLogExceptionsOnlyTest
 
 	@Test
 	public void testUpdateDocument() {
-		expectedLogTestRule.expectMessage("Update failed");
-
 		Document document = new DocumentImpl();
 
 		document.addKeyword(Field.UID, "1");
@@ -304,8 +283,6 @@ public class ElasticsearchIndexWriterLogExceptionsOnlyTest
 
 	@Test
 	public void testUpdateDocuments() {
-		expectedLogTestRule.expectMessage("Bulk update failed");
-
 		List<Document> documents = new ArrayList<>();
 
 		Document document = new DocumentImpl();
@@ -348,9 +325,6 @@ public class ElasticsearchIndexWriterLogExceptionsOnlyTest
 		catch (SearchException searchException) {
 		}
 	}
-
-	@Rule
-	public ExpectedLogTestRule expectedLogTestRule = ExpectedLogTestRule.none();
 
 	protected ElasticsearchFixture createElasticsearchFixture() {
 		Map<String, Object> elasticsearchConfigurationProperties =

@@ -22,13 +22,11 @@ import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.search.solr7.internal.SolrIndexingFixture;
 import com.liferay.portal.search.test.util.indexing.BaseIndexingTestCase;
 import com.liferay.portal.search.test.util.indexing.IndexingFixture;
-import com.liferay.portal.search.test.util.logging.ExpectedLogTestRule;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.util.Map;
 
 import org.junit.ClassRule;
-import org.junit.Rule;
 import org.junit.Test;
 
 /**
@@ -43,20 +41,13 @@ public class SolrIndexSearcherLogExceptionsOnlyTest
 
 	@Test
 	public void testExceptionOnlyLoggedWhenQueryMalformedSearch() {
-		expectedLogTestRule.expectMessage("Cannot parse '+f^eld:text'");
-
 		search(createSearchContext(), getMalformedQuery());
 	}
 
 	@Test
 	public void testExceptionOnlyLoggedWhenQueryMalformedSearchCount() {
-		expectedLogTestRule.expectMessage("Cannot parse '+f^eld:text'");
-
 		searchCount(createSearchContext(), getMalformedQuery());
 	}
-
-	@Rule
-	public ExpectedLogTestRule expectedLogTestRule = ExpectedLogTestRule.none();
 
 	@Override
 	protected IndexingFixture createIndexingFixture() throws Exception {
