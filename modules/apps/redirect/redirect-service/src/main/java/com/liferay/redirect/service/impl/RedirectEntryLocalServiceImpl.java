@@ -18,6 +18,8 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.LayoutFriendlyURLException;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -155,6 +157,36 @@ public class RedirectEntryLocalServiceImpl
 		}
 
 		return redirectEntry;
+	}
+
+	@Indexable(type = IndexableType.DELETE)
+	@Override
+	public RedirectEntry deleteRedirectEntry(long redirectEntryId)
+		throws PortalException {
+
+		RedirectEntry redirectEntry = fetchRedirectEntry(redirectEntryId);
+
+		if (redirectEntry == null) {
+			return null;
+		}
+
+		resourceLocalService.deleteResource(
+			redirectEntry.getCompanyId(), RedirectEntry.class.getName(),
+			ResourceConstants.SCOPE_INDIVIDUAL,
+			redirectEntry.getRedirectEntryId());
+
+		return super.deleteRedirectEntry(redirectEntry);
+	}
+
+	@Indexable(type = IndexableType.DELETE)
+	@Override
+	public RedirectEntry deleteRedirectEntry(RedirectEntry redirectEntry) {
+		try {
+			return deleteRedirectEntry(redirectEntry.getRedirectEntryId());
+		}
+		catch (PortalException portalException) {
+			throw new SystemException(portalException);
+		}
 	}
 
 	@Override
