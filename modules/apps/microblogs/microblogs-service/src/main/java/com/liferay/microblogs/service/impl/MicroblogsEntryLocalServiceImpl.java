@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserNotificationDeliveryConstants;
 import com.liferay.portal.kernel.process.ProcessCallable;
@@ -240,6 +241,14 @@ public class MicroblogsEntryLocalServiceImpl
 
 			assetEntryLocalService.deleteEntry(
 				MicroblogsEntry.class.getName(),
+				curMicroblogsEntry.getMicroblogsEntryId());
+
+			// Resource
+
+			resourceLocalService.deleteResource(
+				curMicroblogsEntry.getCompanyId(),
+				MicroblogsEntry.class.getName(),
+				ResourceConstants.SCOPE_INDIVIDUAL,
 				curMicroblogsEntry.getMicroblogsEntryId());
 
 			// Social
