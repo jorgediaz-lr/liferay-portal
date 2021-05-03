@@ -70,8 +70,8 @@ public class ViewSubscriptionDisplayContext extends ViewAccountDisplayContext {
 
 		portletURL.setParameter(
 			"mvcRenderCommandName", "/licenses/add_license_key");
-		portletURL.setParameter("accountKey", account.getKey());
 		portletURL.setParameter("redirect", currentURLObj.toString());
+		portletURL.setParameter("accountKey", account.getKey());
 
 		return portletURL.toString();
 	}
