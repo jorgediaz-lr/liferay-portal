@@ -51,12 +51,17 @@ function DownloadLicenses({downloadLicenseKeysURL, licenseKeys}) {
 						<ClayTable.Cell expanded headingCell>
 							{Liferay.Language.get('type')}
 						</ClayTable.Cell>
-
 						<ClayTable.Cell expanded headingCell>
 							{Liferay.Language.get('start-date')}
 						</ClayTable.Cell>
 						<ClayTable.Cell expanded headingCell>
 							{Liferay.Language.get('expiration-date')}
+						</ClayTable.Cell>
+						<ClayTable.Cell headingCell>
+							{Liferay.Language.get('maximum-users')}
+						</ClayTable.Cell>
+						<ClayTable.Cell headingCell>
+							{Liferay.Language.get('maximum-concurrent-users')}
 						</ClayTable.Cell>
 						<ClayTable.Cell headingCell>
 							{Liferay.Language.get('status')}

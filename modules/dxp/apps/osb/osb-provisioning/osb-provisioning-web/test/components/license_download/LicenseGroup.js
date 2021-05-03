@@ -131,6 +131,12 @@ describe('LicenseGroup', () => {
 		getByText('April 16, 2122');
 	});
 
+	it('displays a dash if there are no Maximum Users or no Maximum Concurrent Users', () => {
+		const {getAllByText} = renderLicenseGroup();
+
+		expect(getAllByText('-').length).toBe(2);
+	});
+
 	it('displays the Status label correctly', () => {
 		const {getByText} = renderLicenseGroup();
 
