@@ -10,7 +10,6 @@
  */
 
 import ClayTable from '@clayui/table';
-import groupBy from 'lodash.groupby';
 import partition from 'lodash.partition';
 import PropTypes from 'prop-types';
 import React from 'react';

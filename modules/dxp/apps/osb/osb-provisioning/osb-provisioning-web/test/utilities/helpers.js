@@ -10,10 +10,27 @@
  */
 
 import {
+	groupBy,
 	groupByAll,
 	validateIPv4s,
 	validateMAC
 } from '../../src/main/resources/META-INF/resources/js/utilities/helpers';
+
+describe('groupBy', () => {
+	it('groups the input correctly', () => {
+		const data = [
+			{a: 3, b: 1},
+			{a: 3, b: 2}
+		];
+
+		expect(groupBy(data, item => item.a)).toEqual({
+			3: [
+				{a: 3, b: 1},
+				{a: 3, b: 2}
+			]
+		});
+	});
+});
 
 describe('groupByAll', () => {
 	it('groups the input appropriately', () => {

@@ -10,7 +10,6 @@
  */
 
 import axios from 'axios';
-import groupBy from 'lodash.groupby';
 
 import {IPV4, MACADDRESS, NAMESPACE} from '../utilities/constants';
 
@@ -26,10 +25,37 @@ export function convertDashToEmptyString(value) {
 }
 
 /**
- * Generalized recursive grouping algorithm that groups the input based on the 
- * callbacks provided. 
+ * Custom groupby function
+ * @param {Array} items The collection to be iterated over
+ * @callback fn Callback to transform the keys
+ * @returns {Object} The composed object
+ */
+export function groupBy(items, fn) {
+	const result = {};
+
+	// Suppress eslint false alarm for unused var
+	/* eslint-disable no-unused-vars */
+
+	/* eslint-disable-next-line no-for-of-loops/no-for-of-loops */
+	for (const item of Object.values(items)) {
+		const key = fn(item);
+
+		if (!result[key]) {
+			result[key] = [];
+		}
+
+		result[key].push(item);
+	}
+	/* eslint-enable no-unused-vars */
+
+	return result;
+}
+
+/**
+ * Generalized recursive grouping algorithm that groups the input based on the
+ * callbacks provided.
  * @param {Array} items An array of objects to be grouped
- * @callback groupFns Callbacks to group the inputs 
+ * @callback groupFns Callbacks to group the inputs
  * @returns {Array} The grouped result
  */
 export function groupByAll(items, ...groupFns) {
@@ -112,7 +138,8 @@ export function validateIPv4s(input) {
 		const chuncks = input.trim().split(/\s*,\s*|\s+/);
 
 		return chuncks.every(chunck => chunck.match(IPV4));
-	} else {
+	}
+	else {
 		return false;
 	}
 }
@@ -128,7 +155,8 @@ export function validateMAC(input) {
 		const chuncks = input.trim().split(/\s*,\s*|\s+/);
 
 		return chuncks.every(chunck => chunck.match(MACADDRESS));
-	} else {
+	}
+	else {
 		return false;
 	}
 }
