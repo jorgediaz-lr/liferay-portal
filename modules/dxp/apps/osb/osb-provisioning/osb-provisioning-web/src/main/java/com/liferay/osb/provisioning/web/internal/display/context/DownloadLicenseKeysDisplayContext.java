@@ -20,6 +20,9 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
+import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+
+import java.text.Format;
 
 import java.util.HashMap;
 import java.util.List;
@@ -39,6 +42,8 @@ public class DownloadLicenseKeysDisplayContext {
 		_renderRequest = renderRequest;
 		_renderResponse = renderResponse;
 
+		_dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
+			"MMM dd, yyyy");
 		_licenseKeys = (List<LicenseKey>)renderRequest.getAttribute(
 			ProvisioningWebKeys.LICENSE_KEYS);
 	}
@@ -63,7 +68,8 @@ public class DownloadLicenseKeysDisplayContext {
 				).put(
 					"description", licenseKey.getDescription()
 				).put(
-					"expirationDate", licenseKey.getExpirationDate()
+					"expirationDate",
+					_dateFormat.format(licenseKey.getExpirationDate())
 				).put(
 					"licenseEntryName", licenseKey.getLicenseEntryName()
 				).put(
@@ -83,7 +89,7 @@ public class DownloadLicenseKeysDisplayContext {
 				).put(
 					"productVersion", licenseKey.getProductVersion()
 				).put(
-					"startDate", licenseKey.getStartDate()
+					"startDate", _dateFormat.format(licenseKey.getStartDate())
 				));
 		}
 
@@ -92,6 +98,7 @@ public class DownloadLicenseKeysDisplayContext {
 		return data;
 	}
 
+	private final Format _dateFormat;
 	private final List<LicenseKey> _licenseKeys;
 	private final RenderRequest _renderRequest;
 	private final RenderResponse _renderResponse;
