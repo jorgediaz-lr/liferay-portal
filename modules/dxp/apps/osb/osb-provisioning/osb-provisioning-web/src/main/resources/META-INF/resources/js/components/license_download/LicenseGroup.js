@@ -33,8 +33,9 @@ function Download({downloadURL}) {
 			<ClayTable.Cell></ClayTable.Cell>
 			<ClayTable.Cell></ClayTable.Cell>
 			<ClayTable.Cell></ClayTable.Cell>
+			<ClayTable.Cell></ClayTable.Cell>
 			<ClayTable.Cell>
-				<button className="btn btn-primary" type="submit">
+				<button className="btn btn-primary btn-sm" type="submit">
 					{Liferay.Language.get('download')}
 				</button>
 			</ClayTable.Cell>
@@ -78,6 +79,7 @@ function License({license}) {
 					</span>
 				)}
 			</ClayTable.Cell>
+			<ClayTable.Cell></ClayTable.Cell>
 		</ClayTable.Row>
 	);
 }

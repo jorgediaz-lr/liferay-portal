@@ -61,6 +61,7 @@ function DownloadLicenses({downloadLicenseKeysURL, licenseKeys}) {
 						<ClayTable.Cell headingCell>
 							{Liferay.Language.get('status')}
 						</ClayTable.Cell>
+						<ClayTable.Cell></ClayTable.Cell>
 					</ClayTable.Row>
 				</ClayTable.Head>
 
