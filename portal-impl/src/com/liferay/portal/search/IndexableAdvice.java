@@ -18,7 +18,6 @@ import com.liferay.portal.kernel.aop.AopMethodInvocation;
 import com.liferay.portal.kernel.aop.ChainableMethodAdvice;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.messaging.proxy.ProxyModeThreadLocal;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.search.IndexWriterHelperUtil;
 import com.liferay.portal.kernel.search.Indexable;
@@ -125,20 +124,11 @@ public class IndexableAdvice extends ChainableMethodAdvice {
 			}
 		}
 
-		boolean forceSync = ProxyModeThreadLocal.isForceSync();
-
-		ProxyModeThreadLocal.setForceSync(IndexableThreadLocal.isForceSync());
-
-		try {
-			if (indexableContext._indexableType == IndexableType.DELETE) {
-				indexer.delete(result);
-			}
-			else {
-				indexer.reindex(result);
-			}
+		if (indexableContext._indexableType == IndexableType.DELETE) {
+			indexer.delete(result);
 		}
-		finally {
-			ProxyModeThreadLocal.setForceSync(forceSync);
+		else {
+			indexer.reindex(result);
 		}
 	}
 
