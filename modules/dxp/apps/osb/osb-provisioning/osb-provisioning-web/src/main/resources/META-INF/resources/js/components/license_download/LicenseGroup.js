@@ -68,21 +68,15 @@ function License({license}) {
 			<ClayTable.Cell>{startDate}</ClayTable.Cell>
 			<ClayTable.Cell>{expirationDate}</ClayTable.Cell>
 			<ClayTable.Cell>
-				<label
-					className="custom-checkbox custom-control"
-					htmlFor="active"
-				>
-					<input
-						aria-label={Liferay.Language.get('active-subscription')}
-						checked={active}
-						className="custom-control-input"
-						id="active"
-						readOnly
-						role="checkbox"
-						type="checkbox"
-					/>
-					<span className="custom-control-label"></span>
-				</label>
+				{active ? (
+					<span className="label label-success">
+						{Liferay.Language.get('active')}
+					</span>
+				) : (
+					<span className="label label-danger">
+						{Liferay.Language.get('deactivated')}
+					</span>
+				)}
 			</ClayTable.Cell>
 		</ClayTable.Row>
 	);

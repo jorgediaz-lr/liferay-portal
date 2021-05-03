@@ -59,7 +59,7 @@ function DownloadLicenses({downloadLicenseKeysURL, licenseKeys}) {
 							{Liferay.Language.get('expiration-date')}
 						</ClayTable.Cell>
 						<ClayTable.Cell headingCell>
-							{Liferay.Language.get('active')}
+							{Liferay.Language.get('status')}
 						</ClayTable.Cell>
 					</ClayTable.Row>
 				</ClayTable.Head>

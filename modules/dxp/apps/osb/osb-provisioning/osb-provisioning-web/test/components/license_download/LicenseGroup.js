@@ -131,9 +131,9 @@ describe('LicenseGroup', () => {
 		getByText('April 16, 2122');
 	});
 
-	it('displays the Active checkbox correctly', () => {
-		const {getByLabelText} = renderLicenseGroup();
+	it('displays the Status label correctly', () => {
+		const {getByText} = renderLicenseGroup();
 
-		expect(getByLabelText('active-subscription').checked).toBeTruthy();
+		getByText('active');
 	});
 });
