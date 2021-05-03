@@ -161,9 +161,9 @@ public class EditLicenseKeyMVCActionCommand extends BaseMVCActionCommand {
 
 			portletURL.setParameter(
 				"mvcRenderCommandName", "/accounts/view_account");
-			portletURL.setParameter("accountKey", accountKey);
 			portletURL.setParameter("redirect", redirectURL.toString());
 			portletURL.setParameter("tabs1", "licenses");
+			portletURL.setParameter("accountKey", accountKey);
 		}
 		else {
 			portletURL = PortletURLFactoryUtil.create(
@@ -172,9 +172,9 @@ public class EditLicenseKeyMVCActionCommand extends BaseMVCActionCommand {
 
 			portletURL.setParameter(
 				"mvcRenderCommandName", "/licenses/edit_license_key");
+			portletURL.setParameter("redirect", redirectURL.toString());
 			portletURL.setParameter(
 				"licenseKeyId", String.valueOf(licenseKey.getLicenseKeyId()));
-			portletURL.setParameter("redirect", redirectURL.toString());
 		}
 
 		hideDefaultSuccessMessage(actionRequest);
