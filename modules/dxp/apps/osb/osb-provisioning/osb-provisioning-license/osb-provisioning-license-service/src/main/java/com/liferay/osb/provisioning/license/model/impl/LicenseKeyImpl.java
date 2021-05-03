@@ -17,6 +17,7 @@ package com.liferay.osb.provisioning.license.model.impl;
 import com.liferay.osb.provisioning.license.model.LicenseEntry;
 import com.liferay.osb.provisioning.license.service.LicenseEntryLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSON;
 
 import java.util.Date;
 
@@ -24,6 +25,7 @@ import java.util.Date;
  * @author Brian Wing Shun Chan
  * @author Amos Fong
  */
+@JSON(strict = true)
 public class LicenseKeyImpl extends LicenseKeyBaseImpl {
 
 	public LicenseKeyImpl() {
@@ -34,10 +36,14 @@ public class LicenseKeyImpl extends LicenseKeyBaseImpl {
 			getLicenseEntryId());
 	}
 
+	@JSON
+	@Override
 	public String getProductEntryName() {
 		return getProductName();
 	}
 
+	@JSON
+	@Override
 	public String getProductVersionLabel() {
 		return getProductVersion();
 	}
