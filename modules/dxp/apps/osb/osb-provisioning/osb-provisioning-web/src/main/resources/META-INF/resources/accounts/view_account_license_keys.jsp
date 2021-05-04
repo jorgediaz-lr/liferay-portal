@@ -115,26 +115,26 @@ PortletURL portletURL = viewAccountLicenseKeysDisplayContext.getPortletURL();
 
 <aui:script>
 	function <portlet:namespace />downloadLicenseKeys() {
-		var downloadLicenseKeysFm = document.getElementById(
+		var licenseKeysFm = document.getElementById(
 			'<portlet:namespace />licenseKeysFm'
 		);
 
-		if (downloadLicenseKeysFm) {
+		if (licenseKeysFm) {
 			submitForm(
-				downloadLicenseKeysFm,
+				licenseKeysFm,
 				'<portlet:actionURL name="/accounts/download_license_keys"><portlet:param name="redirect" value="<%= currentURL %>" /></portlet:actionURL>'
 			);
 		}
 	}
 
 	function <portlet:namespace />renewLicenseKeys() {
-		var renewLicenseKeysFm = document.getElementById(
+		var licenseKeysFm = document.getElementById(
 			'<portlet:namespace />licenseKeysFm'
 		);
 
-		if (renewLicenseKeysFm) {
+		if (licenseKeysFm) {
 			submitForm(
-				renewLicenseKeysFm,
+				licenseKeysFm,
 				'<portlet:actionURL name="/accounts/renew_select_license_keys"><portlet:param name="redirect" value="<%= currentURL %>" /></portlet:actionURL>'
 			);
 		}
