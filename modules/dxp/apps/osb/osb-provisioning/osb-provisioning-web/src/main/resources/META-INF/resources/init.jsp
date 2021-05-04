@@ -142,6 +142,8 @@ ProvisioningWebConfiguration provisioningWebConfiguration = (ProvisioningWebConf
 	window.ProvisioningConstants = {
 		accountsPortletNamespace:
 			'<%= PortalUtil.getPortletNamespace(ProvisioningPortletKeys.ACCOUNTS) %>',
+		licensePortletNamespace:
+			'<%= PortalUtil.getPortletNamespace(ProvisioningPortletKeys.LICENSES) %>',
 		licenseType: {
 			cluster: '<%= LicenseType.CLUSTER %>',
 			developer: '<%= LicenseType.DEVELOPER %>',

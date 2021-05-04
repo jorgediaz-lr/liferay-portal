@@ -94,7 +94,7 @@ describe('LicenseGroup', () => {
 		getByText('download');
 	});
 
-	it('only displays one Download button no matter how many licenses are listed', () => {
+	it('only displays one Download button per group no matter how many licenses are listed', () => {
 		const {getAllByText} = renderLicenseGroup({licenses: multipleLicenses});
 
 		expect(getAllByText('download').length).toBe(1);

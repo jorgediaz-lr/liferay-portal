@@ -14,20 +14,24 @@ import capitalize from 'lodash.capitalize';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import {DASH} from '../../utilities/constants';
+import {DASH, LICENSE_PORTLET_NAMESPACE} from '../../utilities/constants';
 
 function LicenseGroup({downloadURL, licenses}) {
+	let value = [];
+
 	return licenses.map((group, index) => (
 		<ClayTable.Body key={index}>
-			{group.map(license => (
-				<License key={license.licenseKeyId} license={license} />
-			))}
-			<Download downloadURL={downloadURL} />
+			{group.map(license => {
+				value = [...value, license.licenseKeyId];
+
+				return <License key={license.licenseKeyId} license={license} />;
+			})}
+			<Download actionURL={downloadURL} value={value.join()} />
 		</ClayTable.Body>
 	));
 }
 
-function Download({downloadURL}) {
+function Download({actionURL, value}) {
 	return (
 		<ClayTable.Row>
 			<ClayTable.Cell></ClayTable.Cell>
@@ -39,9 +43,16 @@ function Download({downloadURL}) {
 			<ClayTable.Cell></ClayTable.Cell>
 			<ClayTable.Cell></ClayTable.Cell>
 			<ClayTable.Cell>
-				<button className="btn btn-primary btn-sm" type="submit">
-					{Liferay.Language.get('download')}
-				</button>
+				<form action={actionURL} method="post" name="downloadLicenses">
+					<input
+						name={`${LICENSE_PORTLET_NAMESPACE}licenseKeyId`}
+						type="hidden"
+						value={value}
+					/>
+					<button className="btn btn-secondary btn-sm" type="submit">
+						{Liferay.Language.get('download')}
+					</button>
+				</form>
 			</ClayTable.Cell>
 		</ClayTable.Row>
 	);
