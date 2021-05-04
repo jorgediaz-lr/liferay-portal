@@ -80,7 +80,8 @@ public class SegmentsExperienceModelListenerTest {
 			_layoutPageTemplateStructureRelLocalService.
 				addLayoutPageTemplateStructureRel(
 					serviceContext.getUserId(),
-					serviceContext.getScopeGroupId(), RandomTestUtil.nextLong(),
+					serviceContext.getScopeGroupId(),
+					RandomTestUtil.nextLong() * 9999L,
 					segmentsExperience.getSegmentsExperienceId(),
 					StringPool.BLANK, serviceContext);
 		}
