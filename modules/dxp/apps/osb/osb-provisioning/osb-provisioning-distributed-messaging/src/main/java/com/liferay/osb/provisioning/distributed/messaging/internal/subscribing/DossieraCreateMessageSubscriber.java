@@ -122,8 +122,8 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 	protected void checkWarnings(
 			String accountKey, Account account, Account partnerAccount,
-			boolean partnerFirstLineSupport, List<Contact> inactiveContacts,
-			List<Contact> missingContacts,
+			boolean analyticsCloud, boolean partnerFirstLineSupport,
+			List<Contact> inactiveContacts, List<Contact> missingContacts,
 			List<ProductPurchase> productPurchases,
 			String salesforceOpportunityTypeName, int salesforceOpportunityType)
 		throws Exception {
@@ -289,17 +289,22 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			_logWarning(sb.toString());
 		}
 
+		boolean renew = false;
+
 		for (ProductPurchase productPurchase : productPurchases) {
 			Map<String, String> properties = productPurchase.getProperties();
 
 			if (properties != null) {
 				String productType = properties.get("productType");
 
-				if ((productType == null) ||
-					!ArrayUtil.contains(
+				if (ArrayUtil.contains(
 						SalesforceConstants.PRODUCT_TYPES_RENEWAL,
 						productType)) {
 
+					renew = true;
+				}
+
+				if ((productType == null) || !renew) {
 					continue;
 				}
 			}
@@ -328,6 +333,59 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 						" is ", productPurchase.getQuantity(),
 						" which is lower than the current provisioned amount ",
 						"of ", productConsumptionCount));
+			}
+		}
+
+		if (renew) {
+			if (analyticsCloud) {
+				sb = new StringBundler(5);
+
+				sb.append("accountKeysContactRoleKeys/any(s:s eq '");
+				sb.append(accountKey);
+				sb.append(StringPool.UNDERLINE);
+
+				ContactRole analyticsCloudOwnerRole =
+					_contactRoleWebService.fetchContactRole(
+						ContactRole.Type.ACCOUNT_CUSTOMER.toString(),
+						ContactRoleConstants.NAME_ANALYTICS_CLOUD_OWNER);
+
+				sb.append(analyticsCloudOwnerRole.getKey());
+
+				sb.append("')");
+
+				long curAnalyticsCloudOwnerCount =
+					_contactWebService.searchCount(
+						StringPool.BLANK, sb.toString());
+
+				if (curAnalyticsCloudOwnerCount == 0) {
+					_logWarning(
+						StringBundler.concat(
+							"An Analytics Cloud Subscription is renewed, and ",
+							"there is no contact with Analytics Cloud Owner ",
+							"role, the customer does not have access to ",
+							"Analytics Cloud"));
+				}
+			}
+
+			long curContactsCount = _contactWebService.searchCount(
+				StringPool.BLANK,
+				StringBundler.concat(
+					"customerAccountKeys/any(s:s eq '", accountKey, "')"));
+
+			if (curContactsCount == 0) {
+				_logWarning(
+					StringBundler.concat(
+						"An opportunity is processed with Renewal order type, ",
+						"and there are no contacts, the customer does not ",
+						"have access to Help Center."));
+			}
+
+			if (curDeveloperCount == 0) {
+				_logWarning(
+					StringBundler.concat(
+						"An opportunity is processed with Renewal order type, ",
+						"and there are no developer contacts, the customer ",
+						"does not have access to support tickets"));
 			}
 		}
 	}
@@ -809,9 +867,10 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		createAccountNote(jsonObject, account);
 
 		checkWarnings(
-			accountKey, account, partnerAccount, partnerFirstLineSupport,
-			inactiveContacts, missingContacts, productPurchases,
-			salesforceOpportunityTypeName, salesforceOpportunityType);
+			accountKey, account, partnerAccount, analyticsCloud,
+			partnerFirstLineSupport, inactiveContacts, missingContacts,
+			productPurchases, salesforceOpportunityTypeName,
+			salesforceOpportunityType);
 
 		String salesforceOpportunityProductFamily = jsonObject.getString(
 			"_salesforceOpportunityProductFamily");
