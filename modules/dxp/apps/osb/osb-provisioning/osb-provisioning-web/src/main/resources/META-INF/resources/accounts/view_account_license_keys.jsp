@@ -89,6 +89,13 @@ PortletURL portletURL = viewAccountLicenseKeysDisplayContext.getPortletURL();
 	</aui:form>
 </div>
 
+<span id="bulkLicenseRenewal">
+	<react:component
+		data="<%= viewAccountLicenseKeysDisplayContext.getRenewLicenseKeysData() %>"
+		module="js/BulkLicenseRenewalApp"
+	/>
+</span>
+
 <aui:script use="liferay-search-container">
 	var searchContainer = Liferay.SearchContainer.get(
 		'<portlet:namespace />license-keys'
@@ -128,15 +135,19 @@ PortletURL portletURL = viewAccountLicenseKeysDisplayContext.getPortletURL();
 	}
 
 	function <portlet:namespace />renewLicenseKeys() {
-		var licenseKeysFm = document.getElementById(
-			'<portlet:namespace />licenseKeysFm'
+		var licenseKeyIdsInput = document.getElementById(
+			'<portlet:namespace />licenseKeyIds'
 		);
 
-		if (licenseKeysFm) {
-			submitForm(
-				licenseKeysFm,
-				'<portlet:actionURL name="/accounts/renew_select_license_keys"><portlet:param name="redirect" value="<%= currentURL %>" /></portlet:actionURL>'
-			);
+		if (licenseKeyIdsInput) {
+			var event = new CustomEvent('bulkRenewLicenses', {
+				detail: {
+					licenseKeyIds: licenseKeyIdsInput.value,
+					modalVisible: true
+				}
+			});
+
+			window.dispatchEvent(event);
 		}
 	}
 </aui:script>

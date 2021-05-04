@@ -29,9 +29,12 @@ import com.liferay.portal.vulcan.util.TransformUtil;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.portlet.ActionRequest;
 import javax.portlet.PortletURL;
 
 /**
@@ -93,6 +96,21 @@ public class ViewAccountLicenseKeysDisplayContext
 		}
 
 		return super.getPortletURL();
+	}
+
+	public Map<String, Object> getRenewLicenseKeysData() throws Exception {
+		Map<String, Object> data = new HashMap<>();
+
+		data.put("accountKey", account.getKey());
+
+		PortletURL portletURL = renderResponse.createActionURL();
+
+		portletURL.setParameter(
+			ActionRequest.ACTION_NAME, "/accounts/renew_license_keys");
+
+		data.put("renewalURL", portletURL.toString());
+
+		return data;
 	}
 
 	public SearchContainer getSearchContainer() throws Exception {
