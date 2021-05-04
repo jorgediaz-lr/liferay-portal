@@ -39,7 +39,8 @@ window.ProvisioningConstants = {
 			'elastic',
 			'enterprise',
 			'oem'
-		]
+		],
+		perUser: 'per-user'
 	},
 	namespace: 'namespace',
 	noteFormat: {

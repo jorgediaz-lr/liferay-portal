@@ -154,7 +154,8 @@ ProvisioningWebConfiguration provisioningWebConfiguration = (ProvisioningWebConf
 				'<%= LicenseType.ELASTIC %>',
 				'<%= LicenseType.ENTERPRISE %>',
 				'<%= LicenseType.OEM %>'
-			]
+			],
+			perUser: '<%= LicenseType.PER_USER %>'
 		},
 		namespace: '${renderResponse.namespace}',
 		noteFormat: {

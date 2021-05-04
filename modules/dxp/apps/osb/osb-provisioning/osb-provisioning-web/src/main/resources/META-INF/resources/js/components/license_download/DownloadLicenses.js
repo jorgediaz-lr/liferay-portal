@@ -14,6 +14,7 @@ import partition from 'lodash.partition';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import {LICENSE_TYPE_PER_USER} from '../../utilities/constants';
 import {groupByAll} from '../../utilities/helpers';
 import LicenseGroup from './LicenseGroup';
 
@@ -26,15 +27,30 @@ function DownloadLicenses({downloadLicenseKeysURL, licenseKeys}) {
 			licenseVersion >= MIN_LICENSE_GROUPABLE_VERSION_NUMBER && active
 	);
 
-	const grouppedLicenses = groupByAll(
+	const groupedLicenses = groupByAll(
 		activeVersionCompliantLicenses,
 		({startDate}) => startDate,
 		({expirationDate}) => expirationDate,
-		({licenseEntryType}) => licenseEntryType
+		({licenseEntryType}) => licenseEntryType,
+		groupByMaxUsers,
+		groupByMaxConcurrentUsers
 	);
 
-	// if license type is pre_User
-	// maxConCurrentUsers value and maxUsers
+	function groupByMaxConcurrentUsers(license) {
+		if (license.licenseEntryType === LICENSE_TYPE_PER_USER) {
+			return license.maxConcurrentUsers;
+		}
+
+		return license;
+	}
+
+	function groupByMaxUsers(license) {
+		if (license.licenseEntryType === LICENSE_TYPE_PER_USER) {
+			return license.maxUsers;
+		}
+
+		return license;
+	}
 
 	return (
 		<div className="download-licenses-container">
@@ -69,10 +85,10 @@ function DownloadLicenses({downloadLicenseKeysURL, licenseKeys}) {
 					</ClayTable.Row>
 				</ClayTable.Head>
 
-				{!!grouppedLicenses.length && (
+				{!!groupedLicenses.length && (
 					<LicenseGroup
 						downloadURL={downloadLicenseKeysURL}
-						licenses={grouppedLicenses}
+						licenses={groupedLicenses}
 					/>
 				)}
 

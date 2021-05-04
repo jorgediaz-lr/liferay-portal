@@ -188,5 +188,83 @@ describe('DownloadLicenses', () => {
 		expect(getAllByText('download').length).toBe(7);
 	});
 
-	it('groups licenses with the Pre-User type that contain the same maxConcurrentUsers and maxUsers value', () => {});
+	it('groups licenses with the Pre-User type that contain the same maxConcurrentUsers and maxUsers value', () => {
+		const {container, getAllByText} = renderDownloadLicenses({
+			licenseKeys: [
+				{
+					active: true,
+					description: 'Test Account description',
+					expirationDate: 'April 16, 2122',
+					licenseEntryName: 'Portal Backup',
+					licenseEntryType: 'production',
+					licenseKeyId: '85600',
+					licenseVersion: 3,
+					maxConcurrentUsers: '0',
+					maxUsers: '0',
+					name: 'License 1',
+					productName: 'Portal Backup',
+					productVersion: '6.1 GA1',
+					startDate: 'March 17, 2021'
+				},
+				// type Pre-User
+				{
+					active: true,
+					description: 'Test Account description',
+					expirationDate: 'April 16, 2122',
+					licenseEntryName: 'Portal Backup',
+					licenseEntryType: 'per-user',
+					licenseKeyId: '85601',
+					licenseVersion: 3,
+					maxConcurrentUsers: '1',
+					maxUsers: '2',
+					name: 'License 2',
+					productName: 'Portal Backup',
+					productVersion: '6.1 GA1',
+					startDate: 'March 17, 2021'
+				},
+				{
+					active: true,
+					description: 'Test Account description',
+					expirationDate: 'April 16, 2122',
+					licenseEntryName: 'Portal Backup',
+					licenseEntryType: 'per-user',
+					licenseKeyId: '85602',
+					licenseVersion: 3,
+					maxConcurrentUsers: '1',
+					maxUsers: '2',
+					name: 'License 3',
+					productName: 'Portal Backup',
+					productVersion: '6.1 GA1',
+					startDate: 'March 17, 2021'
+				},
+				// different maxConcurrentUsers
+				{
+					active: true,
+					description: 'Test Account description',
+					expirationDate: 'April 16, 2122',
+					licenseEntryName: 'Portal Backup',
+					licenseEntryType: 'per-user',
+					licenseKeyId: '85603',
+					licenseVersion: 3,
+					maxConcurrentUsers: '2',
+					maxUsers: '2',
+					name: 'License 4',
+					productName: 'Portal Backup',
+					productVersion: '6.1 GA1',
+					startDate: 'March 17, 2021'
+				}
+			]
+		});
+
+		const groups = container.querySelectorAll('tbody');
+
+		within(groups[0]).getByText('License 1');
+
+		within(groups[1]).getByText('License 2');
+		within(groups[1]).getByText('License 3');
+
+		within(groups[2]).getByText('License 4');
+
+		expect(getAllByText('download').length).toBe(3);
+	});
 });
