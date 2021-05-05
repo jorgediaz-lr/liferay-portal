@@ -24,6 +24,7 @@ function Purchase({
 	instanceSize = DASH,
 	instanceSizes,
 	licenseKeysGenerated = DASH,
+	productPurchaseKey = '',
 	startDate
 }) {
 	const [disableChoose, setDisableChoose] = useState(false);
@@ -54,6 +55,7 @@ function Purchase({
 				.set('startDate', selectedStartDate)
 
 				.set('licenseKeysGenerated', licenseKeysGenerated)
+				.set('productPurchaseKey', productPurchaseKey)
 				.set('sizing', sizing ? sizing : instanceSize)
 
 				.set('showSpecificDetails', true)
@@ -162,6 +164,7 @@ Purchase.protoType = {
 	instanceSize: PropTypes.number,
 	instanceSizes: PropTypes.arrayOf(PropTypes.number),
 	licenseKeysGenerated: PropTypes.string,
+	productPurchaseKey: PropTypes.string,
 	startDate: PropTypes.string
 };
 
