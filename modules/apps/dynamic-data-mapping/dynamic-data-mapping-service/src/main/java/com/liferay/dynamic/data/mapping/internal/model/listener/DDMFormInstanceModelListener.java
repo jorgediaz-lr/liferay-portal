@@ -71,11 +71,19 @@ public class DDMFormInstanceModelListener
 			TransactionCommitCallbackUtil.registerCallback(
 				() -> {
 					_ddmFormInstanceReportPortalExecutor.execute(
-						() ->
-							ddmFormInstanceReportLocalService.
-								deleteDDMFormInstanceReport(
-									ddmFormInstanceReport.
-										getFormInstanceReportId()));
+						() -> {
+							DDMFormInstanceReport ddmFormInstanceReport2 =
+								ddmFormInstanceReportLocalService.
+									fetchDDMFormInstanceReport(
+										ddmFormInstanceReport.
+											getFormInstanceReportId());
+
+							if (ddmFormInstanceReport2 != null) {
+								ddmFormInstanceReportLocalService.
+									deleteDDMFormInstanceReport(
+										ddmFormInstanceReport2);
+							}
+						});
 
 					return null;
 				});
