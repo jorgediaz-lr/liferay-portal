@@ -21,6 +21,8 @@ MoveLicenseKeyDisplayContext moveLicenseKeyDisplayContext = ProvisioningWebCompo
 
 LicenseKey licenseKey = moveLicenseKeyDisplayContext.getLicenseKey();
 
+String detachedlicenseKeysGenerated = moveLicenseKeyDisplayContext.getDetachedLicenseKeysCount();
+
 String productPurchaseKey = StringPool.BLANK;
 
 if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
@@ -48,8 +50,8 @@ Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat("MMMM dd, yyyy
 			}
 
 			String curProductPurchaseKey = StringPool.BLANK;
+			String licenseKeysGenerated = detachedlicenseKeysGenerated;
 			String sizing = StringPool.DASH;
-			String licenseKeysGenerated = moveLicenseKeyDisplayContext.getDetachedLicenseKeysCount();
 
 			Calendar startDateCal = Calendar.getInstance();
 			Calendar expirationDateCal = Calendar.getInstance();
