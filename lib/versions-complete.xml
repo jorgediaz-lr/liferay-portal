@@ -7031,7 +7031,7 @@
 			</library>
 			<library>
 				<file-name>lib/portal/jsqlparser.jar</file-name>
-				<version>1.2</version>
+				<version>4.0</version>
 			</library>
 			<library>
 				<file-name>lib/portal/jsr107cache.jar</file-name>
