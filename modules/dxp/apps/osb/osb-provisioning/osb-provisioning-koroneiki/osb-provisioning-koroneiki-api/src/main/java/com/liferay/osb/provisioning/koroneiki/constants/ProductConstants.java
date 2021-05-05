@@ -19,6 +19,12 @@ package com.liferay.osb.provisioning.koroneiki.constants;
  */
 public class ProductConstants {
 
+	public static final String NAME_ANALYTICS_CLOUD_BUSINESS =
+		"Analytics Cloud Business";
+
+	public static final String NAME_ANALYTICS_CLOUD_ENTERPRISE =
+		"Analytics Cloud Enterprise";
+
 	public static final String NAME_BASIC_RESELLER_PARTNERSHIP =
 		"Basic Reseller Partnership";
 

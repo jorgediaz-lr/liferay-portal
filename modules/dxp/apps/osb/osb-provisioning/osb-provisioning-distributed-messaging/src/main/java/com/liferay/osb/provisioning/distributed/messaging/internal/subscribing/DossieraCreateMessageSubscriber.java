@@ -1446,10 +1446,8 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 			String name = product.getName();
 
-			if (name.equals(
-					"Liferay Analytics Cloud Subscription - Business") ||
-				name.equals(
-					"Liferay Analytics Cloud Subscription - Enterprise")) {
+			if (name.equals(ProductConstants.NAME_ANALYTICS_CLOUD_BUSINESS) ||
+				name.equals(ProductConstants.NAME_ANALYTICS_CLOUD_ENTERPRISE)) {
 
 				return true;
 			}
