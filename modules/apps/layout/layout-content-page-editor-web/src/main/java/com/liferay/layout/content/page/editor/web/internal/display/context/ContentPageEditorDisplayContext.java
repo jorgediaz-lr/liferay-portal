@@ -99,6 +99,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.util.comparator.PortletCategoryComparator;
@@ -109,6 +110,8 @@ import com.liferay.portal.template.soy.util.SoyContextFactoryUtil;
 import com.liferay.portal.util.PortletCategoryUtil;
 import com.liferay.portal.util.WebAppPool;
 import com.liferay.segments.constants.SegmentsExperienceConstants;
+import com.liferay.segments.model.SegmentsExperience;
+import com.liferay.segments.service.SegmentsExperienceLocalServiceUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -395,7 +398,29 @@ public class ContentPageEditorDisplayContext {
 	}
 
 	protected long getSegmentsExperienceId() {
-		return SegmentsExperienceConstants.ID_DEFAULT;
+		if (_segmentsExperienceId != null) {
+			return _segmentsExperienceId;
+		}
+
+		Layout layout = themeDisplay.getLayout();
+
+		UnicodeProperties unicodeProperties =
+			layout.getTypeSettingsProperties();
+
+		long segmentsExperienceId = GetterUtil.getLong(
+			unicodeProperties.getProperty("segmentsExperienceId"),
+			SegmentsExperienceConstants.ID_DEFAULT);
+
+		_segmentsExperienceId = Optional.ofNullable(
+			SegmentsExperienceLocalServiceUtil.fetchSegmentsExperience(
+				segmentsExperienceId)
+		).map(
+			SegmentsExperience::getSegmentsExperienceId
+		).orElse(
+			SegmentsExperienceConstants.ID_DEFAULT
+		);
+
+		return _segmentsExperienceId;
 	}
 
 	protected List<SoyContext> getSidebarPanelSoyContexts(
@@ -1434,6 +1459,7 @@ public class ContentPageEditorDisplayContext {
 	private String _layoutData;
 	private String _redirect;
 	private final RenderResponse _renderResponse;
+	private Long _segmentsExperienceId;
 	private List<SoyContext> _sidebarPanelSoyContexts;
 	private SoyContext _soyContextFragmentEntryLinksSoyContext;
 	private ItemSelectorCriterion _urlItemSelectorCriterion;
