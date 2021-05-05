@@ -1539,9 +1539,14 @@ public class JournalArticleLocalServiceImpl
 					(articleResource.getPrimaryKey() !=
 						article.getResourcePrimKey())) {
 
-					articleResources.add(
-						_journalArticleResourceLocalService.getArticleResource(
-							article.getResourcePrimKey()));
+					articleResource =
+						_journalArticleResourceLocalService.
+							fetchJournalArticleResource(
+								article.getResourcePrimKey());
+
+					if (articleResource != null) {
+						articleResources.add(articleResource);
+					}
 				}
 
 				journalArticleLocalService.deleteArticle(article, null, null);
