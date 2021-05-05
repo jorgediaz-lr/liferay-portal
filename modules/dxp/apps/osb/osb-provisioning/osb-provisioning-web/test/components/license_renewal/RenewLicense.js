@@ -150,4 +150,22 @@ describe('RenewLicense', () => {
 			expect(queryAllByText('renew')[2].disabled).toBe(true);
 		});
 	});
+
+	it('keeps the Renew button disabled until the input Start Date is later than the Expiration Date', async () => {
+		const {
+			getAllByPlaceholderText,
+			getByText,
+			queryAllByText
+		} = renderRenewLicense();
+
+		fireEvent.click(getByText('renew'));
+
+		return await wait(() => {
+			fireEvent.change(getAllByPlaceholderText('YYYY-MM-DD')[0], {
+				target: {value: '2022-04-15'}
+			});
+
+			expect(queryAllByText('renew')[2].disabled).toBe(true);
+		});
+	});
 });
