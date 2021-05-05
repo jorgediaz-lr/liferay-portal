@@ -289,6 +289,8 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			_logWarning(sb.toString());
 		}
 
+		Set<String> inactiveProvisionedProducts = new HashSet<>();
+
 		boolean renew = false;
 
 		for (ProductPurchase productPurchase : productPurchases) {
@@ -324,15 +326,41 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			int productConsumptionCount =
 				(int)_productConsumptionWebService.searchCount(sb.toString());
 
+			String productName = product.getName();
+
 			if ((productPurchase.getQuantity() != null) &&
 				(productConsumptionCount > productPurchase.getQuantity())) {
 
 				_logWarning(
 					StringBundler.concat(
-						"The new purchase quantity of ", product.getName(),
-						" is ", productPurchase.getQuantity(),
+						"The new purchase quantity of ", productName, " is ",
+						productPurchase.getQuantity(),
 						" which is lower than the current provisioned amount ",
 						"of ", productConsumptionCount));
+			}
+
+			if ((productName.contains(ProductConstants.NAME_DXP) &&
+				 !productName.contains(ProductConstants.NAME_DXP_CLOUD)) ||
+				productName.contains(ProductConstants.NAME_COMMERCE) ||
+				productName.contains(ProductConstants.NAME_PORTAL)) {
+
+				sb = new StringBundler(7);
+
+				sb.append("accountKey eq '");
+				sb.append(accountKey);
+				sb.append("' and productKey eq '");
+				sb.append(product.getKey());
+				sb.append("' and (endDate eq null or endDate ge ");
+				sb.append(_dateFormat.format(new Date()));
+				sb.append(")");
+
+				productConsumptionCount =
+					(int)_productConsumptionWebService.searchCount(
+						sb.toString());
+
+				if (productConsumptionCount == 0) {
+					inactiveProvisionedProducts.add(productName);
+				}
 			}
 		}
 
@@ -387,6 +415,13 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 						"and there are no developer contacts, the customer ",
 						"does not have access to support tickets"));
 			}
+		}
+
+		for (String inactiveProvisionedProduct : inactiveProvisionedProducts) {
+			_logWarning(
+				StringBundler.concat(
+					"The Renewal order ", inactiveProvisionedProduct,
+					" has no activation keys"));
 		}
 	}
 

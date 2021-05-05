@@ -22,6 +22,8 @@ public class ProductConstants {
 	public static final String NAME_BASIC_RESELLER_PARTNERSHIP =
 		"Basic Reseller Partnership";
 
+	public static final String NAME_COMMERCE = "Commerce";
+
 	public static final String NAME_COMMERCE_SUBSCRIPTION =
 		"Commerce Subscription";
 
