@@ -21,8 +21,10 @@ import com.liferay.dynamic.data.mapping.test.util.DDMStructureTestUtil;
 import com.liferay.dynamic.data.mapping.test.util.DDMTemplateTestUtil;
 import com.liferay.journal.constants.JournalArticleConstants;
 import com.liferay.journal.model.JournalArticle;
+import com.liferay.journal.model.JournalArticleResource;
 import com.liferay.journal.model.JournalFolder;
 import com.liferay.journal.service.JournalArticleLocalServiceUtil;
+import com.liferay.journal.service.JournalArticleResourceLocalServiceUtil;
 import com.liferay.journal.service.persistence.JournalArticleFinder;
 import com.liferay.journal.test.util.JournalTestUtil;
 import com.liferay.journal.util.comparator.ArticleCreateDateComparator;
@@ -32,6 +34,8 @@ import com.liferay.journal.util.comparator.ArticleModifiedDateComparator;
 import com.liferay.journal.util.comparator.ArticleReviewDateComparator;
 import com.liferay.journal.util.comparator.ArticleVersionComparator;
 import com.liferay.portal.kernel.dao.orm.QueryDefinition;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
@@ -40,6 +44,8 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.transaction.Propagation;
+import com.liferay.portal.kernel.transaction.TransactionConfig;
+import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -593,6 +599,15 @@ public class JournalArticleFinderTest {
 			article = JournalArticleLocalServiceUtil.getArticle(
 				article.getId());
 
+			JournalArticleResource articleResource =
+				JournalArticleResourceLocalServiceUtil.fetchArticleResource(
+					article.getGroupId(), article.getArticleId());
+
+			articleResource.setArticleId("a" + i);
+
+			JournalArticleResourceLocalServiceUtil.updateJournalArticleResource(
+				articleResource);
+
 			article.setCreateDate(calendar.getTime());
 			article.setModifiedDate(calendar.getTime());
 			article.setArticleId("a" + i);
@@ -731,7 +746,26 @@ public class JournalArticleFinderTest {
 			OrderByComparator<JournalArticle> orderByComparator)
 		throws Exception {
 
-		prepareSortedArticles();
+		try {
+			TransactionInvokerUtil.invoke(
+				_transactionConfig,
+				() -> {
+					prepareSortedArticles();
+
+					return null;
+				});
+		}
+		catch (Throwable throwable) {
+			if (throwable instanceof PortalException) {
+				throw (PortalException)throwable;
+			}
+
+			if (throwable instanceof SystemException) {
+				throw (SystemException)throwable;
+			}
+
+			throw new SystemException(throwable);
+		}
 
 		QueryDefinition<JournalArticle> queryDefinition =
 			new QueryDefinition<>();
@@ -762,6 +796,10 @@ public class JournalArticleFinderTest {
 
 	@Inject
 	private static JournalArticleFinder _journalArticleFinder;
+
+	private static final TransactionConfig _transactionConfig =
+		TransactionConfig.Factory.create(
+			Propagation.REQUIRED, new Class<?>[] {Exception.class});
 
 	private JournalArticle _article;
 	private final List<JournalArticle> _articles = new ArrayList<>();
