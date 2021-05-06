@@ -125,7 +125,8 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			boolean analyticsCloud, boolean partnerFirstLineSupport,
 			List<Contact> inactiveContacts, List<Contact> missingContacts,
 			List<ProductPurchase> productPurchases,
-			String salesforceOpportunityTypeName, int salesforceOpportunityType)
+			String salesforceOpportunityTypeName, int salesforceOpportunityType,
+			JSONObject jsonObject)
 		throws Exception {
 
 		if (Validator.isNull(accountKey) &&
@@ -291,22 +292,17 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 		Set<String> inactiveProvisionedProducts = new HashSet<>();
 
-		boolean renew = false;
-
 		for (ProductPurchase productPurchase : productPurchases) {
 			Map<String, String> properties = productPurchase.getProperties();
 
 			if (properties != null) {
 				String productType = properties.get("productType");
 
-				if (ArrayUtil.contains(
+				if ((productType == null) ||
+					!ArrayUtil.contains(
 						SalesforceConstants.PRODUCT_TYPES_RENEWAL,
 						productType)) {
 
-					renew = true;
-				}
-
-				if ((productType == null) || !renew) {
 					continue;
 				}
 			}
@@ -364,7 +360,9 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			}
 		}
 
-		if (renew) {
+		boolean renewal = jsonObject.getBoolean("_renewal");
+
+		if (renewal) {
 			if (analyticsCloud) {
 				sb = new StringBundler(5);
 
@@ -905,7 +903,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			accountKey, account, partnerAccount, analyticsCloud,
 			partnerFirstLineSupport, inactiveContacts, missingContacts,
 			productPurchases, salesforceOpportunityTypeName,
-			salesforceOpportunityType);
+			salesforceOpportunityType, jsonObject);
 
 		String salesforceOpportunityProductFamily = jsonObject.getString(
 			"_salesforceOpportunityProductFamily");
