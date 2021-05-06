@@ -36,7 +36,7 @@ function RenewalModal({closeFn, expirationDate, renewFn, startDate}) {
 			validateDateFieldFormat(currentStartDate) &&
 			(expirationDate !== currentExpirationDate ||
 				startDate !== currentStartDate) &&
-			currentExpirationDate > currentStartDate
+			new Date(currentExpirationDate) > new Date(currentStartDate)
 		) {
 			setDisableRenew(false);
 		}
