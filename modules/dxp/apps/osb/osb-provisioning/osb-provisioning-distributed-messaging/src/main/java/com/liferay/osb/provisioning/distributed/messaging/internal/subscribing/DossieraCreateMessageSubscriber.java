@@ -135,7 +135,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 			_logWarning(
 				"The opportunity type is " + salesforceOpportunityTypeName +
-					" and the project does not exists");
+					" and the project does not exists.");
 		}
 
 		if (Validator.isNotNull(accountKey) &&
@@ -147,7 +147,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 			_logWarning(
 				"The opportunity type is " + salesforceOpportunityTypeName +
-					" and the project already exists");
+					" and the project already exists.");
 		}
 
 		StringBundler sb = new StringBundler(5);
@@ -173,9 +173,9 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		if (curDeveloperCount > maxDeveloperCount) {
 			_logWarning(
 				StringBundler.concat(
-					"Maximum developer contacts is ", maxDeveloperCount,
+					"The maximum developer contacts is ", maxDeveloperCount,
 					" but there are ", curDeveloperCount,
-					" developer contacts"));
+					" developer contacts."));
 		}
 
 		if (!inactiveContacts.isEmpty()) {
@@ -332,7 +332,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 						"The new purchase quantity of ", productName, " is ",
 						productPurchase.getQuantity(),
 						" which is lower than the current provisioned amount ",
-						"of ", productConsumptionCount));
+						"of ", productConsumptionCount, "."));
 			}
 
 			if ((productName.contains(ProductConstants.NAME_DXP) &&
@@ -386,10 +386,10 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 				if (curAnalyticsCloudOwnerCount == 0) {
 					_logWarning(
 						StringBundler.concat(
-							"An Analytics Cloud Subscription is renewed, and ",
-							"there is no contact with Analytics Cloud Owner ",
-							"role, the customer does not have access to ",
-							"Analytics Cloud"));
+							"An Analytics Cloud subscription was renewed and ",
+							"there are no contacts with the Analytics Cloud ",
+							"Owner role. The customer does not have access to ",
+							"Analytics Cloud."));
 				}
 			}
 
@@ -401,17 +401,18 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			if (curContactsCount == 0) {
 				_logWarning(
 					StringBundler.concat(
-						"An opportunity is processed with Renewal order type, ",
-						"and there are no contacts, the customer does not ",
+						"An opportunity was processed with Renewal order type ",
+						"and there are no contacts. The customer does not ",
 						"have access to Help Center."));
 			}
 
 			if (curDeveloperCount == 0) {
 				_logWarning(
 					StringBundler.concat(
-						"An opportunity is processed with Renewal order type, ",
-						"and there are no developer contacts, the customer ",
-						"does not have access to support tickets"));
+						"An opportunity was processed with Renewal order type ",
+						"and there are no contacts with the Developer role. ",
+						"The customer does not have access to support ",
+						"tickets."));
 			}
 		}
 
@@ -419,7 +420,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			_logWarning(
 				StringBundler.concat(
 					"The Renewal order ", inactiveProvisionedProduct,
-					" has no activation keys"));
+					" has no activation keys."));
 		}
 	}
 
