@@ -12,8 +12,8 @@
 import PropTypes from 'prop-types';
 import React, {useEffect, useRef, useState} from 'react';
 
-import {NAMESPACE} from '../../utilities/constants';
 import {formatDate} from '../../utilities/date';
+import HiddenForm from '../HiddenForm';
 import RenewalModal from './RenewalModal';
 
 export default function BulkRenewal({accountKey, renewalURL}) {
@@ -63,33 +63,17 @@ export default function BulkRenewal({accountKey, renewalURL}) {
 				/>
 			)}
 
-			<form
-				action={renewalURL}
-				method="post"
-				name="bulkLicenseRenewal"
+			<HiddenForm
+				fields={{
+					accountKey,
+					expirationDate: formatDate(expirationDate),
+					licenseKeyIds,
+					startDate: formatDate(startDate)
+				}}
+				formAction={renewalURL}
+				formName="bulkLicenseRenewal"
 				ref={formRef}
-			>
-				<input
-					name={`${NAMESPACE}licenseKeyIds`}
-					type="hidden"
-					value={licenseKeyIds}
-				/>
-				<input
-					name={`${NAMESPACE}accountKey`}
-					type="hidden"
-					value={accountKey}
-				/>
-				<input
-					name={`${NAMESPACE}startDate`}
-					type="hidden"
-					value={formatDate(startDate)}
-				/>
-				<input
-					name={`${NAMESPACE}expirationDate`}
-					type="hidden"
-					value={formatDate(expirationDate)}
-				/>
-			</form>
+			/>
 		</>
 	);
 }
