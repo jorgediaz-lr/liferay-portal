@@ -21,7 +21,7 @@ MoveLicenseKeyDisplayContext moveLicenseKeyDisplayContext = ProvisioningWebCompo
 
 LicenseKey licenseKey = moveLicenseKeyDisplayContext.getLicenseKey();
 
-String detachedlicenseKeysGenerated = moveLicenseKeyDisplayContext.getDetachedLicenseKeysCount();
+String detachedLicenseKeysCount = moveLicenseKeyDisplayContext.getDetachedLicenseKeysCount();
 
 String productPurchaseKey = StringPool.BLANK;
 
@@ -50,7 +50,7 @@ Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat("MMMM dd, yyyy
 			}
 
 			String curProductPurchaseKey = StringPool.BLANK;
-			String licenseKeysGenerated = detachedlicenseKeysGenerated;
+			String licenseKeysGenerated = StringPool.BLANK;
 			String sizing = StringPool.DASH;
 
 			Calendar startDateCal = Calendar.getInstance();
@@ -71,6 +71,7 @@ Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat("MMMM dd, yyyy
 				}
 			}
 			else {
+				licenseKeysGenerated = detachedLicenseKeysCount;
 				sizing = licenseKey.getSizing();
 
 				startDateCal.setTime(licenseKey.getStartDate());
