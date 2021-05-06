@@ -119,6 +119,10 @@ public class PermissionsPortletConfigurationIcon
 			Layout draftLayout = _layoutLocalService.fetchLayout(
 				_portal.getClassNameId(Layout.class), layout.getPlid());
 
+			if (draftLayout == null) {
+				return false;
+			}
+
 			Date modifiedDate = draftLayout.getModifiedDate();
 
 			Date publishDate = layout.getPublishDate();
