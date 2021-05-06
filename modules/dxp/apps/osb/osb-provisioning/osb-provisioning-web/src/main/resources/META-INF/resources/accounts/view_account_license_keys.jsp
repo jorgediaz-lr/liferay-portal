@@ -51,7 +51,14 @@ PortletURL portletURL = viewAccountLicenseKeysDisplayContext.getPortletURL();
 				keyProperty="licenseKeyId"
 				modelVar="licenseKeyDisplay"
 			>
+				<liferay-portlet:renderURL portletName="<%= ProvisioningPortletKeys.LICENSES %>" var="rowURL">
+					<portlet:param name="mvcRenderCommandName" value="/licenses/edit_license_key" />
+					<portlet:param name="redirect" value="<%= currentURL %>" />
+					<portlet:param name="licenseKeyId" value="<%= licenseKeyDisplay.getLicenseKeyId() %>" />
+				</liferay-portlet:renderURL>
+
 				<liferay-ui:search-container-column-text
+					href="<%= rowURL %>"
 					name="name-description"
 				>
 					<%= HtmlUtil.escape(licenseKeyDisplay.getName()) %>
@@ -62,21 +69,25 @@ PortletURL portletURL = viewAccountLicenseKeysDisplayContext.getPortletURL();
 				</liferay-ui:search-container-column-text>
 
 				<liferay-ui:search-container-column-text
+					href="<%= rowURL %>"
 					name="expiration-date"
 					value="<%= licenseKeyDisplay.getExpirationDate() %>"
 				/>
 
 				<liferay-ui:search-container-column-text
+					href="<%= rowURL %>"
 					name="product"
 					value="<%= HtmlUtil.escape(licenseKeyDisplay.getProductName()) %>"
 				/>
 
 				<liferay-ui:search-container-column-text
+					href="<%= rowURL %>"
 					name="type"
 					value="<%= licenseKeyDisplay.getType() %>"
 				/>
 
 				<liferay-ui:search-container-column-text
+					href="<%= rowURL %>"
 					name="host-name"
 					value="<%= licenseKeyDisplay.getHostName() %>"
 				/>
