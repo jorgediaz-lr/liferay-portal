@@ -1,0 +1,11 @@
+#
+# Liferay App Version 3.0.0
+#
+
+app.artifacts-3.0.0=\
+	com.liferay.portal.search.solr8.api-3.0.1.jar,\
+	com.liferay.portal.search.solr8.impl-3.0.0.jar
+
+app.change.log-3.0.0=LPS-102232 LPS-107394 LPS-116812 LPS-119129 LPS-119141 LPS-77699
+
+app.git.id-3.0.0=0808ae297db4c8d61c2ae2319ca682f5d87a8fe3
