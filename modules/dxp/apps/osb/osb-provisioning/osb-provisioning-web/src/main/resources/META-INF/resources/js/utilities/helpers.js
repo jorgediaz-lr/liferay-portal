@@ -11,7 +11,7 @@
 
 import axios from 'axios';
 
-import {IPV4, MACADDRESS, NAMESPACE} from '../utilities/constants';
+import {IPV4, IPV6, MACADDRESS, NAMESPACE} from '../utilities/constants';
 
 /**
  * Certain empty values are represented by a dash in the UI.
@@ -129,15 +129,34 @@ export function submitOnEnter(event, formRef) {
 
 /**
  * Takes an input and evaluates whether the input contains a single or multiple
- * valid IPv4 addresses.
+ * valid IPv4 or IPv6 addresses.
  * @param {string} input The value to be evaluated
  * @returns {boolean} Whether the input is valid or not
  */
-export function validateIPv4s(input) {
+export function validateAllIPAddresses(input) {
 	if (input) {
 		const chuncks = input.trim().split(/\s*,\s*|\s+/);
 
-		return chuncks.every(chunck => chunck.match(IPV4));
+		return chuncks.every(
+			chunck => chunck.match(IPV4) || chunck.match(IPV6)
+		);
+	}
+	else {
+		return false;
+	}
+}
+
+/**
+ * Takes an input and evaluates whether the input contains a single or multiple
+ * valid IPv6 addresses in the standard, compact, or mixed formats.
+ * @param {string} input The value to be evaluated
+ * @returns {boolean} Whether the input is valid or not
+ */
+export function validateIPv6s(input) {
+	if (input) {
+		const chuncks = input.trim().split(/\s*,\s*|\s+/);
+
+		return chuncks.every(chunck => chunck.match(IPV6));
 	}
 	else {
 		return false;
