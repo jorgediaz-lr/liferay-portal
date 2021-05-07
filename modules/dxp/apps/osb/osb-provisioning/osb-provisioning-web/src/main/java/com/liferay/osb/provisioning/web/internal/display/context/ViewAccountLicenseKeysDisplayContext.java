@@ -17,11 +17,16 @@ package com.liferay.osb.provisioning.web.internal.display.context;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
 import com.liferay.osb.provisioning.license.model.LicenseKey;
-import com.liferay.osb.provisioning.license.util.LicenseUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.search.Document;
+import com.liferay.portal.kernel.search.Field;
+import com.liferay.portal.kernel.search.Hits;
+import com.liferay.portal.kernel.search.Sort;
+import com.liferay.portal.kernel.search.SortFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.vulcan.util.TransformUtil;
@@ -30,7 +35,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -122,81 +126,51 @@ public class ViewAccountLicenseKeysDisplayContext
 
 		Date now = new Date();
 
-		List<LicenseKey> licenseKeys = null;
+		Hits hits = null;
 
-		int count = 0;
+		Sort sort = SortFactoryUtil.getSort(
+			LicenseKey.class, Sort.LONG_TYPE, Field.MODIFIED_DATE, "desc");
 
 		if (tabs2.equals("active")) {
-			LinkedHashMap<String, Object> params = new LinkedHashMap<>();
-
-			params.put("active", true);
-
-			licenseKeys = licenseKeyLocalService.search(
-				null, null, null, null, null, null, account.getKey(), null,
-				null, null, now, new long[0], _productKeys, null, null,
-				new String[0], new long[0], null, null, null, null, null, null,
-				null, now, null, params, true, searchContainer.getStart(),
-				searchContainer.getEnd(),
-				LicenseUtil.getLicenseKeyOrderByComparator(
-					"expiration-date", "desc"));
-
-			count = licenseKeyLocalService.searchCount(
-				null, null, null, null, null, null, account.getKey(), null,
-				null, null, null, new long[0], _productKeys, null, null,
-				new String[0], new long[0], null, null, null, null, null, null,
-				null, now, null, params, true);
+			hits = licenseKeyLocalService.search(
+				themeDisplay.getCompanyId(), null, null, null, null, null, null,
+				account.getKey(), null, null, null, null, null, _productKeys,
+				null, null, null, null, null, null, null, null, null, null, now,
+				null, true, true, searchContainer.getStart(),
+				searchContainer.getEnd(), sort);
 		}
 		else if (tabs2.equals("deactivated")) {
-			LinkedHashMap<String, Object> params = new LinkedHashMap<>();
-
-			params.put("active", false);
-
-			licenseKeys = licenseKeyLocalService.search(
-				null, null, null, null, null, null, account.getKey(), null,
-				null, null, null, new long[0], _productKeys, null, null,
-				new String[0], new long[0], null, null, null, null, null, null,
-				null, null, null, params, true, searchContainer.getStart(),
-				searchContainer.getEnd(),
-				LicenseUtil.getLicenseKeyOrderByComparator(
-					"expiration-date", "desc"));
-
-			count = licenseKeyLocalService.searchCount(
-				null, null, null, null, null, null, account.getKey(), null,
-				null, null, null, new long[0], _productKeys, null, null,
-				new String[0], new long[0], null, null, null, null, null, null,
-				null, null, null, params, true);
+			hits = licenseKeyLocalService.search(
+				themeDisplay.getCompanyId(), null, null, null, null, null, null,
+				account.getKey(), null, null, null, null, null, _productKeys,
+				null, null, null, null, null, null, null, null, null, null,
+				null, null, false, true, searchContainer.getStart(),
+				searchContainer.getEnd(), sort);
 		}
 		else if (tabs2.equals("expired")) {
-			licenseKeys = licenseKeyLocalService.search(
-				null, null, null, null, null, null, account.getKey(), null,
-				null, null, null, new long[0], _productKeys, null, null,
-				new String[0], new long[0], null, null, null, null, null, null,
-				null, null, now, new LinkedHashMap<>(), true,
-				searchContainer.getStart(), searchContainer.getEnd(),
-				LicenseUtil.getLicenseKeyOrderByComparator(
-					"expiration-date", "desc"));
-
-			count = licenseKeyLocalService.searchCount(
-				null, null, null, null, null, null, account.getKey(), null,
-				null, null, null, new long[0], _productKeys, null, null,
-				new String[0], new long[0], null, null, null, null, null, null,
-				null, null, now, new LinkedHashMap<>(), true);
+			hits = licenseKeyLocalService.search(
+				themeDisplay.getCompanyId(), null, null, null, null, null, null,
+				account.getKey(), null, null, null, null, null, _productKeys,
+				null, null, null, null, null, null, null, null, null, null,
+				null, now, true, true, searchContainer.getStart(),
+				searchContainer.getEnd(), sort);
 		}
 		else {
-			licenseKeys = licenseKeyLocalService.search(
-				null, null, null, null, null, null, account.getKey(), null,
-				null, null, null, new long[0], _productKeys, null, null,
-				new String[0], new long[0], null, null, null, null, null, null,
-				null, null, null, new LinkedHashMap<>(), true,
-				searchContainer.getStart(), searchContainer.getEnd(),
-				LicenseUtil.getLicenseKeyOrderByComparator(
-					"expiration-date", "desc"));
+			hits = licenseKeyLocalService.search(
+				themeDisplay.getCompanyId(), null, null, null, null, null, null,
+				account.getKey(), null, null, null, null, null, _productKeys,
+				null, null, null, null, null, null, null, null, null, null,
+				null, null, null, true, searchContainer.getStart(),
+				searchContainer.getEnd(), sort);
+		}
 
-			count = licenseKeyLocalService.searchCount(
-				null, null, null, null, null, null, account.getKey(), null,
-				null, null, null, new long[0], _productKeys, null, null,
-				new String[0], new long[0], null, null, null, null, null, null,
-				null, null, null, new LinkedHashMap<>(), true);
+		List<LicenseKey> licenseKeys = new ArrayList<>();
+
+		for (Document document : hits.toList()) {
+			long licenseKeyId = GetterUtil.getLong(
+				document.get(Field.ENTRY_CLASS_PK));
+
+			licenseKeys.add(licenseKeyLocalService.getLicenseKey(licenseKeyId));
 		}
 
 		searchContainer.setResults(
@@ -205,7 +179,7 @@ public class ViewAccountLicenseKeysDisplayContext
 				licenseKey -> new LicenseKeyDisplay(
 					renderRequest, renderResponse, licenseKey)));
 
-		searchContainer.setTotal(count);
+		searchContainer.setTotal(hits.getLength());
 
 		searchContainer.setRowChecker(
 			new EmptyOnClickRowChecker(renderResponse));
@@ -218,41 +192,35 @@ public class ViewAccountLicenseKeysDisplayContext
 
 		Date now = new Date();
 
-		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
-
-		params.put("active", true);
-
 		int activeLicenseKeysCount = licenseKeyLocalService.searchCount(
-			null, null, null, null, null, null, account.getKey(), null, null,
-			null, null, new long[0], _productKeys, null, null, new String[0],
-			new long[0], null, null, null, null, null, null, null, now, null,
-			params, true);
+			themeDisplay.getCompanyId(), null, null, null, null, null, null,
+			account.getKey(), null, null, null, null, null, _productKeys, null,
+			null, null, null, null, null, null, null, null, null, now, null,
+			true, true);
 
 		tabsNames.add(getTabName("active", activeLicenseKeysCount));
 
 		int expiredLicenseKeysCount = licenseKeyLocalService.searchCount(
-			null, null, null, null, null, null, account.getKey(), null, null,
-			null, null, new long[0], _productKeys, null, null, new String[0],
-			new long[0], null, null, null, null, null, null, null, null, now,
-			new LinkedHashMap<>(), true);
+			themeDisplay.getCompanyId(), null, null, null, null, null, null,
+			account.getKey(), null, null, null, null, null, _productKeys, null,
+			null, null, null, null, null, null, null, null, null, null, now,
+			true, true);
 
 		tabsNames.add(getTabName("expired", expiredLicenseKeysCount));
 
-		params.put("active", false);
-
 		int deactivatedLicenseKeysCount = licenseKeyLocalService.searchCount(
-			null, null, null, null, null, null, account.getKey(), null, null,
-			null, null, new long[0], _productKeys, null, null, new String[0],
-			new long[0], null, null, null, null, null, null, null, null, null,
-			params, true);
+			themeDisplay.getCompanyId(), null, null, null, null, null, null,
+			account.getKey(), null, null, null, null, null, _productKeys, null,
+			null, null, null, null, null, null, null, null, null, null, null,
+			false, true);
 
 		tabsNames.add(getTabName("deactivated", deactivatedLicenseKeysCount));
 
 		int allLicenseKeysCount = licenseKeyLocalService.searchCount(
-			null, null, null, null, null, null, account.getKey(), null, null,
-			null, null, new long[0], _productKeys, null, null, new String[0],
-			new long[0], null, null, null, null, null, null, null, null, null,
-			new LinkedHashMap<>(), true);
+			themeDisplay.getCompanyId(), null, null, null, null, null, null,
+			account.getKey(), null, null, null, null, null, _productKeys, null,
+			null, null, null, null, null, null, null, null, null, null, null,
+			null, true);
 
 		tabsNames.add(getTabName("all", allLicenseKeysCount));
 
