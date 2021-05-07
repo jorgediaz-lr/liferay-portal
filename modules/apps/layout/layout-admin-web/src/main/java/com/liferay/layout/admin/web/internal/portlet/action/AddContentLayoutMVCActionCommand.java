@@ -86,6 +86,7 @@ public class AddContentLayoutMVCActionCommand
 		Map<Locale, String> nameMap = HashMapBuilder.put(
 			LocaleUtil.getSiteDefault(), name
 		).build();
+
 		UnicodeProperties typeSettingsUnicodeProperties =
 			PropertiesParamUtil.getProperties(
 				actionRequest, "TypeSettingsProperties--");
