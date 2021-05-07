@@ -15,6 +15,7 @@
 package com.liferay.asset.display.page.internal.exportimport.data.handler;
 
 import com.liferay.asset.display.page.model.AssetDisplayPageEntry;
+import com.liferay.asset.display.page.service.AssetDisplayPageEntryLocalService;
 import com.liferay.exportimport.data.handler.base.BaseStagedModelDataHandler;
 import com.liferay.exportimport.kernel.lar.ExportImportPathUtil;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
@@ -112,23 +113,24 @@ public class AssetDisplayPageStagedModelDataHandler
 			layoutPageTemplateEntryId);
 		importedAssetDisplayPageEntry.setPlid(plid);
 
+		Map<Long, Long> newClassPKsMap =
+			(Map<Long, Long>)portletDataContext.getNewPrimaryKeysMap(
+				importedAssetDisplayPageEntry.getClassName());
+
+		long existingClassPK = MapUtil.getLong(
+			newClassPKsMap, importedAssetDisplayPageEntry.getClassPK(),
+			importedAssetDisplayPageEntry.getClassPK());
+
 		AssetDisplayPageEntry existingAssetDisplayPageEntry =
-			_stagedModelRepository.fetchStagedModelByUuidAndGroupId(
-				assetDisplayPageEntry.getUuid(),
-				portletDataContext.getScopeGroupId());
+			_assetDisplayPageEntryLocalService.fetchAssetDisplayPageEntry(
+				portletDataContext.getScopeGroupId(),
+				importedAssetDisplayPageEntry.getClassNameId(),
+				existingClassPK);
 
 		if ((existingAssetDisplayPageEntry == null) ||
 			!portletDataContext.isDataStrategyMirror()) {
 
-			Map<Long, Long> newPrimaryKeysMap =
-				(Map<Long, Long>)portletDataContext.getNewPrimaryKeysMap(
-					importedAssetDisplayPageEntry.getClassName());
-
-			importedAssetDisplayPageEntry.setClassPK(
-				MapUtil.getLong(
-					newPrimaryKeysMap,
-					importedAssetDisplayPageEntry.getClassPK(),
-					importedAssetDisplayPageEntry.getClassPK()));
+			importedAssetDisplayPageEntry.setClassPK(existingClassPK);
 
 			importedAssetDisplayPageEntry =
 				_stagedModelRepository.addStagedModel(
@@ -157,6 +159,10 @@ public class AssetDisplayPageStagedModelDataHandler
 
 		return _stagedModelRepository;
 	}
+
+	@Reference
+	private AssetDisplayPageEntryLocalService
+		_assetDisplayPageEntryLocalService;
 
 	@Reference
 	private LayoutPageTemplateEntryLocalService
