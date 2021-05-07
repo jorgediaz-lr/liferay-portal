@@ -16,6 +16,8 @@
 
 <%@ include file="/init.jsp" %>
 
+<liferay-util:include page="/common/view_account_search_header.jsp" servletContext="<%= application %>" />
+
 <%
 ViewSubscriptionDisplayContext viewSubscriptionDisplayContext = ProvisioningWebComponentProvider.getViewSubscriptionDisplayContext(renderRequest, renderResponse, request);
 
