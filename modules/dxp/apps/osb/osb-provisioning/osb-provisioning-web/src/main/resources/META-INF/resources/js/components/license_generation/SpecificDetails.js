@@ -9,12 +9,14 @@
  * distribution rights of the Software.
  */
 
+import ClayAlert from '@clayui/alert';
 import capitalize from 'lodash.capitalize';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {useLicense} from '../../hooks/license';
 import {
+	IPV6,
 	KNOWN_SERVER_ID_LICENSE_TYPES,
 	LICENSE_TYPE_CLUSTER,
 	LICENSE_TYPE_DEVELOPER,
@@ -29,6 +31,8 @@ import ServerIdFieldGroups from './ServerIdFieldGroups';
 function SpecificDetails({addLicenseKeyURL, redirect}) {
 	const [license, {updateLicense}] = useLicense();
 
+	const [showIPv6Alert, setShowIPv6Alert] = useState(false);
+
 	const {
 		complimentary,
 		description,
@@ -40,9 +44,27 @@ function SpecificDetails({addLicenseKeyURL, redirect}) {
 		name,
 		owner,
 		product,
+		serverIds,
 		startDate,
 		version
 	} = license;
+
+	useEffect(() => {
+		const ipv6Address = serverIds.find(serverId => {
+			const {ipAddresses} = serverId;
+
+			if (ipAddresses) {
+				const chuncks = ipAddresses.trim().split(/\s*,\s*|\s+/);
+
+				return chuncks.some(chunck => chunck.match(IPV6));
+			}
+			else {
+				return false;
+			}
+		});
+
+		setShowIPv6Alert(!!ipv6Address);
+	}, [serverIds]);
 
 	function formatDate(date) {
 		const utcAdjustedDate = getUTCAdjustedDate(new Date(date));
@@ -112,6 +134,16 @@ function SpecificDetails({addLicenseKeyURL, redirect}) {
 			</div>
 
 			<div className="container-fluid-max-xl generate-license-sheet row">
+				{showIPv6Alert && (
+					<div className="col-md-12">
+						<ClayAlert displayType="info">
+							{Liferay.Language.get(
+								'ipv6-addresses-in-activation-keys-are-currently-ignored-please-enter-a-hostname-or-mac-address-instead'
+							)}
+						</ClayAlert>
+					</div>
+				)}
+
 				<div className="col-md-9 generate-license-container specific-details">
 					<div className="specific-details-content">
 						<h3>{Liferay.Language.get('specific-details')}</h3>

@@ -14,7 +14,12 @@ import React from 'react';
 
 import {useLicense} from '../../hooks/license';
 import {formatDate} from '../../utilities/date';
-import {request, validateIPv4s, validateMAC} from '../../utilities/helpers';
+import {
+	request,
+	validateAllIPAddresses,
+	validateIPv6s,
+	validateMAC
+} from '../../utilities/helpers';
 
 function GenerateButton({formAction, redirect, serverIdValidatable = false}) {
 	const [license] = useLicense();
@@ -52,7 +57,7 @@ function GenerateButton({formAction, redirect, serverIdValidatable = false}) {
 	function validateIpAddresses() {
 		return serverIds.every(({ipAddresses}) => {
 			if (ipAddresses) {
-				return validateIPv4s(ipAddresses);
+				return validateAllIPAddresses(ipAddresses);
 			}
 			else {
 				return true;
@@ -75,7 +80,9 @@ function GenerateButton({formAction, redirect, serverIdValidatable = false}) {
 		return serverIds
 			.filter(
 				({hostName, ipAddresses, macAddresses}) =>
-					!hostName && !ipAddresses && !macAddresses
+					!hostName &&
+					!macAddresses &&
+					(ipAddresses ? validateIPv6s(ipAddresses) : !ipAddresses)
 			)
 			.isEmpty();
 	}

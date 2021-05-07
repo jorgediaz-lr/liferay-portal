@@ -9,7 +9,7 @@
  * distribution rights of the Software.
  */
 
-import {cleanup, fireEvent, render} from '@testing-library/react';
+import {cleanup, fireEvent, render, wait} from '@testing-library/react';
 import React from 'react';
 
 import SpecificDetails from '../../../src/main/resources/META-INF/resources/js/components/license_generation/SpecificDetails';
@@ -49,6 +49,29 @@ function renderSpecificDetails(props) {
 				addLicenseKeyURL="add/license/key/url"
 				redirect="/redirect/url"
 				{...props}
+			/>
+		</LicenseProvider>
+	);
+}
+
+function renderServerIdFields(props) {
+	return render(
+		<LicenseProvider
+			initialLicense={
+				new License({
+					accountName: 'Test Account',
+					licenseEntry: {
+						licenseEntryType: 'cluster'
+					},
+					name: 'Test Account',
+					startDate: new Date(),
+					...props
+				})
+			}
+		>
+			<SpecificDetails
+				addLicenseKeyURL="add/license/key/url"
+				redirect={'/redirect/url'}
 			/>
 		</LicenseProvider>
 	);
@@ -217,46 +240,119 @@ describe('SpecificDetails', () => {
 		getByLabelText('maximum-connections');
 	});
 
-	it('displays a Generate button', () => {
-		const {getByText} = renderSpecificDetails();
+	it('displays a warning that IPv6 addresses are ignore when one was entered', async () => {
+		const {getByLabelText, getByText} = renderServerIdFields();
 
-		getByText('generate');
+		await wait(() => {
+			fireEvent.change(getByLabelText('ip-addresses'), {
+				target: {value: '1762:0:0:0:0:B03:1:AF18'}
+			});
+
+			getByText(
+				'ipv6-addresses-in-activation-keys-are-currently-ignored-please-enter-a-hostname-or-mac-address-instead'
+			);
+		});
 	});
 
-	it('displays a disabled Generate button if the Owner field is empty', () => {
-		const {getByText} = renderSpecificDetails();
+	describe('Generate Button', () => {
+		it('displays a Generate button', () => {
+			const {getByText} = renderSpecificDetails();
 
-		fireEvent.change(getByText('owner'), {taget: {value: ''}});
+			getByText('generate');
+		});
 
-		expect(getByText('generate').disabled).toBeTruthy();
-	});
+		it('displays a disabled Generate button if the Owner field is empty', () => {
+			const {getByText} = renderSpecificDetails();
 
-	it('displays a disabled Generate button if the Description field is empty', () => {
-		const {getByText} = renderSpecificDetails();
+			fireEvent.change(getByText('owner'), {taget: {value: ''}});
 
-		fireEvent.change(getByText('description'), {taget: {value: ''}});
+			expect(getByText('generate').disabled).toBeTruthy();
+		});
 
-		expect(getByText('generate').disabled).toBeTruthy();
-	});
+		it('displays a disabled Generate button if the Description field is empty', () => {
+			const {getByText} = renderSpecificDetails();
 
-	it('displays a disabled Generate button if the Server ID Fields are displayed but no value has been entered in any of its three fields', () => {
-		const {getByText} = render(
-			<LicenseProvider
-				initialLicense={
-					new License({
-						licenseEntry: {
-							licenseEntryType: 'cluster'
-						}
-					})
-				}
-			>
-				<SpecificDetails
-					addLicenseKeyURL="add/license/key/url"
-					redirect={'/redirect/url'}
-				/>
-			</LicenseProvider>
-		);
+			fireEvent.change(getByText('description'), {taget: {value: ''}});
 
-		expect(getByText('generate').disabled).toBeTruthy();
+			expect(getByText('generate').disabled).toBeTruthy();
+		});
+
+		it('displays a disabled Generate button if the Server ID Fields are displayed but no value has been entered in any of its three fields', () => {
+			const {getByText} = renderServerIdFields();
+
+			expect(getByText('generate').disabled).toBeTruthy();
+		});
+
+		it('displays an enabled Generate button if a Host Name is entered', async () => {
+			const {getByLabelText, getByText} = renderServerIdFields();
+
+			await wait(() => {
+				fireEvent.change(getByLabelText('host-name'), {
+					target: {value: 'host name 1'}
+				});
+
+				expect(getByText('generate').disabled).toBeFalsy();
+			});
+		});
+
+		it('displays a disabled Generate button if only a valid IPv6 address was entered', async () => {
+			const {getByLabelText, getByText} = renderServerIdFields();
+
+			await wait(() => {
+				fireEvent.change(getByLabelText('ip-addresses'), {
+					target: {value: '1762:0:0:0:0:B03:1:AF18'}
+				});
+
+				expect(getByText('generate').disabled).toBeTruthy();
+			});
+		});
+
+		it('displays an enabled Generate button if a valid IPv4 address was entered', async () => {
+			const {getByLabelText, getByText} = renderServerIdFields();
+
+			await wait(() => {
+				fireEvent.change(getByLabelText('ip-addresses'), {
+					target: {value: '127.0.0.1'}
+				});
+
+				expect(getByText('generate').disabled).toBeFalsy();
+			});
+		});
+
+		it('displays a disabled Generate button if an invalid IPv4 address was entered', async () => {
+			const {getByLabelText, getByText} = renderServerIdFields();
+
+			await wait(() => {
+				fireEvent.change(getByLabelText('ip-addresses'), {
+					target: {value: '127.0.0.267'}
+				});
+
+				expect(getByText('generate').disabled).toBeTruthy();
+			});
+		});
+
+		it('displays an enabled Generate button if a valid MAC address was entered', async () => {
+			const {getByLabelText, getByText} = renderServerIdFields();
+
+			await wait(() => {
+				fireEvent.change(getByLabelText('mac-addresses'), {
+					target: {value: '00:00:0A:BB:28:FC'}
+				});
+
+				expect(getByText('generate').disabled).toBeFalsy();
+			});
+		});
+
+		it('displays a disabled Generate button if an invalid MAC address was entered', async () => {
+			const {getByLabelText, getByText} = renderServerIdFields();
+
+			await wait(() => {
+				fireEvent.change(getByLabelText('mac-addresses'), {
+					target: {value: '00:00:0A:BB:28:FG'}
+				});
+
+				expect(getByText('generate').disabled).toBeTruthy();
+			});
+		});
 	});
 });

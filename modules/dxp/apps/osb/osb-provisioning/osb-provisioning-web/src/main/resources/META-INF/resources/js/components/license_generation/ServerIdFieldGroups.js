@@ -13,7 +13,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import {useLicense} from '../../hooks/license';
-import {validateIPv4s, validateMAC} from '../../utilities/helpers';
+import {validateAllIPAddresses, validateMAC} from '../../utilities/helpers';
 import IconButton from '../IconButton';
 import RequiredFieldMarker from '../RequiredFieldMarker';
 
@@ -103,7 +103,7 @@ function FieldGroup({group, id, showDelete = false}) {
 	function validateIpAddresses() {
 		const {ipAddresses} = group;
 
-		return ipAddresses ? validateIPv4s(ipAddresses) : true;
+		return ipAddresses ? validateAllIPAddresses(ipAddresses) : true;
 	}
 
 	function validateMacAddresses() {
