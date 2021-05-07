@@ -165,7 +165,7 @@ public class LicenseKeySearchDisplayContext {
 		Hits hits = null;
 
 		Sort sort = SortFactoryUtil.getSort(
-			LicenseKey.class, "create-date", "desc");
+			LicenseKey.class, Sort.LONG_TYPE, Field.CREATE_DATE, "desc");
 
 		if (searchTerms.isAdvancedSearch()) {
 			hits = _licenseKeyLocalService.search(
