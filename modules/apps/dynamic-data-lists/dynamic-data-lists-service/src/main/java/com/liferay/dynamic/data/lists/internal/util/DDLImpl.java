@@ -154,7 +154,9 @@ public class DDLImpl implements DDL {
 						JSONArray jsonArrayValue = getJSONArrayValue(
 							fieldValue);
 
-						fieldJSONArray.put(jsonArrayValue.get(0));
+						for (Object object : jsonArrayValue) {
+							fieldJSONArray.put(object);
+						}
 					});
 
 				jsonObject.put(fieldName, fieldJSONArray);
