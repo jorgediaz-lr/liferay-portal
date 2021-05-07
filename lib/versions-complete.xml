@@ -2711,18 +2711,6 @@
 				</licenses>
 			</library>
 			<library>
-				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!analysis-common.jar</file-name>
-				<version>6.8.6</version>
-				<project-name>org.elasticsearch.plugin#analysis-common;6.8.6</project-name>
-				<project-url>https://github.com/codelibs/elasticsearch-module</project-url>
-				<licenses>
-					<license>
-						<license-name>The Apache Software License, Version 2.0</license-name>
-						<license-url>http://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
-					</license>
-				</licenses>
-			</library>
-			<library>
 				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!antlr4-runtime.jar</file-name>
 				<version>4.5.3</version>
 				<project-name>ANTLR 4 Runtime</project-name>
@@ -2748,7 +2736,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!bcpg-jdk15on.jar</file-name>
-				<version>1.61</version>
+				<version>1.68</version>
 				<project-name>Bouncy Castle OpenPGP API</project-name>
 				<project-url>http://www.bouncycastle.org/java.html</project-url>
 				<licenses>
@@ -2760,7 +2748,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!bcpkix-jdk15on.jar</file-name>
-				<version>1.61</version>
+				<version>1.68</version>
 				<project-name>Bouncy Castle PKIX, CMS, EAC, TSP, PKCS, OCSP, CMP, and CRMF APIs</project-name>
 				<project-url>http://www.bouncycastle.org/java.html</project-url>
 				<licenses>
@@ -2772,7 +2760,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!bcprov-jdk15on.jar</file-name>
-				<version>1.61</version>
+				<version>1.68</version>
 				<project-name>Bouncy Castle Provider</project-name>
 				<project-url>http://www.bouncycastle.org/java.html</project-url>
 				<licenses>
@@ -2820,8 +2808,8 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!elasticsearch-cli.jar</file-name>
-				<version>6.8.6</version>
-				<project-name>org.elasticsearch#cli;6.8.6</project-name>
+				<version>6.8.15</version>
+				<project-name>org.elasticsearch#cli;6.8.15</project-name>
 				<project-url>https://github.com/elastic/elasticsearch</project-url>
 				<licenses>
 					<license>
@@ -2832,8 +2820,8 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!elasticsearch-core.jar</file-name>
-				<version>6.8.6</version>
-				<project-name>org.elasticsearch#core;6.8.6</project-name>
+				<version>6.8.15</version>
+				<project-name>org.elasticsearch#core;6.8.15</project-name>
 				<project-url>https://github.com/elastic/elasticsearch</project-url>
 				<licenses>
 					<license>
@@ -2844,8 +2832,8 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!elasticsearch-rest-client.jar</file-name>
-				<version>6.8.6</version>
-				<project-name>org.elasticsearch.client#rest;6.8.6</project-name>
+				<version>6.8.15</version>
+				<project-name>org.elasticsearch.client#rest;6.8.15</project-name>
 				<project-url>https://github.com/elastic/elasticsearch</project-url>
 				<licenses>
 					<license>
@@ -2856,8 +2844,8 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!elasticsearch-rest-high-level-client.jar</file-name>
-				<version>6.8.6</version>
-				<project-name>org.elasticsearch.client#rest-high-level;6.8.6</project-name>
+				<version>6.8.15</version>
+				<project-name>org.elasticsearch.client#rest-high-level;6.8.15</project-name>
 				<project-url>https://github.com/elastic/elasticsearch</project-url>
 				<licenses>
 					<license>
@@ -2868,8 +2856,8 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!elasticsearch-scripting-painless-spi.jar</file-name>
-				<version>6.8.6</version>
-				<project-name>org.elasticsearch.plugin#spi;6.8.6</project-name>
+				<version>6.8.15</version>
+				<project-name>org.elasticsearch.plugin#spi;6.8.15</project-name>
 				<project-url>https://github.com/elastic/elasticsearch</project-url>
 				<licenses>
 					<license>
@@ -2880,8 +2868,8 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!elasticsearch-ssl-config.jar</file-name>
-				<version>6.8.6</version>
-				<project-name>org.elasticsearch#elasticsearch-ssl-config;6.8.6</project-name>
+				<version>6.8.15</version>
+				<project-name>org.elasticsearch#elasticsearch-ssl-config;6.8.15</project-name>
 				<project-url>https://github.com/elastic/elasticsearch</project-url>
 				<licenses>
 					<license>
@@ -2892,8 +2880,8 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!elasticsearch-x-content.jar</file-name>
-				<version>6.8.6</version>
-				<project-name>org.elasticsearch#x-content;6.8.6</project-name>
+				<version>6.8.15</version>
+				<project-name>org.elasticsearch#x-content;6.8.15</project-name>
 				<project-url>https://github.com/elastic/elasticsearch</project-url>
 				<licenses>
 					<license>
@@ -2904,8 +2892,8 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!elasticsearch.jar</file-name>
-				<version>6.8.6</version>
-				<project-name>org.elasticsearch#server;6.8.6</project-name>
+				<version>6.8.15</version>
+				<project-name>org.elasticsearch#server;6.8.15</project-name>
 				<project-url>https://github.com/elastic/elasticsearch</project-url>
 				<licenses>
 					<license>
@@ -3011,13 +2999,13 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!joda-time.jar</file-name>
-				<version>2.9.5</version>
+				<version>2.10.10</version>
 				<project-name>Joda-Time</project-name>
-				<project-url>http://www.joda.org/joda-time/</project-url>
+				<project-url>https://www.joda.org/joda-time/</project-url>
 				<licenses>
 					<license>
 						<license-name>Apache License, Version 2.0</license-name>
-						<license-url>https://www.apache.org/licenses/LICENSE-2.0</license-url>
+						<license-url>https://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
 					</license>
 				</licenses>
 			</library>
@@ -3057,8 +3045,8 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!lang-mustache-client.jar</file-name>
-				<version>6.8.6</version>
-				<project-name>org.elasticsearch.plugin#lang-mustache;6.8.6</project-name>
+				<version>6.8.15</version>
+				<project-name>org.elasticsearch.plugin#lang-mustache;6.8.15</project-name>
 				<project-url>https://github.com/elastic/elasticsearch</project-url>
 				<licenses>
 					<license>
@@ -3105,7 +3093,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!lucene-analyzers-common.jar</file-name>
-				<version>7.7.2</version>
+				<version>7.7.3</version>
 				<project-name>Lucene Common Analyzers</project-name>
 				<licenses>
 					<license>
@@ -3116,7 +3104,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!lucene-core.jar</file-name>
-				<version>7.7.2</version>
+				<version>7.7.3</version>
 				<project-name>Lucene Core</project-name>
 				<licenses>
 					<license>
@@ -3127,7 +3115,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!lucene-grouping.jar</file-name>
-				<version>7.7.2</version>
+				<version>7.7.3</version>
 				<project-name>Lucene Grouping</project-name>
 				<licenses>
 					<license>
@@ -3138,7 +3126,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!lucene-highlighter.jar</file-name>
-				<version>7.7.2</version>
+				<version>7.7.3</version>
 				<project-name>Lucene Highlighter</project-name>
 				<licenses>
 					<license>
@@ -3149,7 +3137,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!lucene-join.jar</file-name>
-				<version>7.7.2</version>
+				<version>7.7.3</version>
 				<project-name>Lucene Join</project-name>
 				<licenses>
 					<license>
@@ -3160,7 +3148,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!lucene-memory.jar</file-name>
-				<version>7.7.2</version>
+				<version>7.7.3</version>
 				<project-name>Lucene Memory</project-name>
 				<licenses>
 					<license>
@@ -3171,7 +3159,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!lucene-misc.jar</file-name>
-				<version>7.7.2</version>
+				<version>7.7.3</version>
 				<project-name>Lucene Miscellaneous</project-name>
 				<licenses>
 					<license>
@@ -3182,7 +3170,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!lucene-queries.jar</file-name>
-				<version>7.7.2</version>
+				<version>7.7.3</version>
 				<project-name>Lucene Queries</project-name>
 				<licenses>
 					<license>
@@ -3193,7 +3181,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!lucene-queryparser.jar</file-name>
-				<version>7.7.2</version>
+				<version>7.7.3</version>
 				<project-name>Lucene QueryParsers</project-name>
 				<licenses>
 					<license>
@@ -3204,7 +3192,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!lucene-sandbox.jar</file-name>
-				<version>7.7.2</version>
+				<version>7.7.3</version>
 				<project-name>Lucene Sandbox</project-name>
 				<licenses>
 					<license>
@@ -3215,7 +3203,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!lucene-spatial.jar</file-name>
-				<version>7.7.2</version>
+				<version>7.7.3</version>
 				<project-name>Lucene Spatial</project-name>
 				<licenses>
 					<license>
@@ -3226,7 +3214,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!lucene-suggest.jar</file-name>
-				<version>7.7.2</version>
+				<version>7.7.3</version>
 				<project-name>Lucene Suggest</project-name>
 				<licenses>
 					<license>
@@ -3237,19 +3225,19 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!netty-all.jar</file-name>
-				<version>4.1.48.Final</version>
+				<version>4.1.63.Final</version>
 				<project-name>Netty/All-in-One</project-name>
 				<licenses>
 					<license>
 						<license-name>Apache License, Version 2.0</license-name>
-						<license-url>http://www.apache.org/licenses/LICENSE-2.0</license-url>
+						<license-url>https://www.apache.org/licenses/LICENSE-2.0</license-url>
 					</license>
 				</licenses>
 			</library>
 			<library>
-				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!org.elasticsearch.client.xpack.transport.jar</file-name>
-				<version>6.8.6</version>
-				<project-name>org.elasticsearch.client#transport-client;6.8.6</project-name>
+				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!org.elasticsearch.analysis.common.jar</file-name>
+				<version>6.8.15</version>
+				<project-name>org.elasticsearch.plugin#analysis-common;6.8.15</project-name>
 				<licenses>
 					<license>
 						<license-name>Apache License, Version 2.0</license-name>
@@ -3259,19 +3247,19 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!org.elasticsearch.painless.jar</file-name>
-				<version>6.8.6.LIFERAY-PATCHED-1</version>
-				<project-name>org.elasticsearch.painless</project-name>
+				<version>6.8.15</version>
+				<project-name>org.elasticsearch.plugin#lang-painless;6.8.15</project-name>
 				<licenses>
 					<license>
-						<license-name>LGPL 2.1</license-name>
-						<license-url>http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt</license-url>
+						<license-name>Apache License, Version 2.0</license-name>
+						<license-url>https://www.apache.org/licenses/LICENSE-2.0</license-url>
 					</license>
 				</licenses>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!org.elasticsearch.plugin.classloader.jar</file-name>
-				<version>6.8.6</version>
-				<project-name>org.elasticsearch#plugin-classloader;6.8.6</project-name>
+				<version>6.8.15</version>
+				<project-name>org.elasticsearch#plugin-classloader;6.8.15</project-name>
 				<licenses>
 					<license>
 						<license-name>Apache License, Version 2.0</license-name>
@@ -3281,8 +3269,8 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!org.elasticsearch.plugin.cli.jar</file-name>
-				<version>6.8.6</version>
-				<project-name>org.elasticsearch#plugin-cli;6.8.6</project-name>
+				<version>6.8.15</version>
+				<project-name>org.elasticsearch#plugin-cli;6.8.15</project-name>
 				<licenses>
 					<license>
 						<license-name>Apache License, Version 2.0</license-name>
@@ -3292,8 +3280,8 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!org.elasticsearch.plugin.mapper-extras-client.jar</file-name>
-				<version>6.8.6</version>
-				<project-name>org.elasticsearch.plugin#mapper-extras;6.8.6</project-name>
+				<version>6.8.15</version>
+				<project-name>org.elasticsearch.plugin#mapper-extras;6.8.15</project-name>
 				<licenses>
 					<license>
 						<license-name>Apache License, Version 2.0</license-name>
@@ -3303,8 +3291,8 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!org.elasticsearch.secure.sm.jar</file-name>
-				<version>6.8.6</version>
-				<project-name>org.elasticsearch#secure-sm;6.8.6</project-name>
+				<version>6.8.15</version>
+				<project-name>org.elasticsearch#secure-sm;6.8.15</project-name>
 				<licenses>
 					<license>
 						<license-name>Apache License, Version 2.0</license-name>
@@ -3314,8 +3302,8 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!parent-join-client.jar</file-name>
-				<version>6.8.6</version>
-				<project-name>org.elasticsearch.plugin#parent-join;6.8.6</project-name>
+				<version>6.8.15</version>
+				<project-name>org.elasticsearch.plugin#parent-join;6.8.15</project-name>
 				<project-url>https://github.com/elastic/elasticsearch</project-url>
 				<licenses>
 					<license>
@@ -3326,8 +3314,8 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!percolator-client.jar</file-name>
-				<version>6.8.6</version>
-				<project-name>org.elasticsearch.plugin#percolator;6.8.6</project-name>
+				<version>6.8.15</version>
+				<project-name>org.elasticsearch.plugin#percolator;6.8.15</project-name>
 				<project-url>https://github.com/elastic/elasticsearch</project-url>
 				<licenses>
 					<license>
@@ -3338,8 +3326,8 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!rank-eval-client.jar</file-name>
-				<version>6.8.6</version>
-				<project-name>org.elasticsearch.plugin#rank-eval;6.8.6</project-name>
+				<version>6.8.15</version>
+				<project-name>org.elasticsearch.plugin#rank-eval;6.8.15</project-name>
 				<project-url>https://github.com/elastic/elasticsearch</project-url>
 				<licenses>
 					<license>
@@ -3350,8 +3338,8 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!reindex-client.jar</file-name>
-				<version>6.8.6</version>
-				<project-name>org.elasticsearch.plugin#reindex;6.8.6</project-name>
+				<version>6.8.15</version>
+				<project-name>org.elasticsearch.plugin#reindex;6.8.15</project-name>
 				<project-url>https://github.com/elastic/elasticsearch</project-url>
 				<licenses>
 					<license>
@@ -3422,8 +3410,8 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!transport-netty4-client.jar</file-name>
-				<version>6.8.6</version>
-				<project-name>org.elasticsearch.plugin#transport-netty4;6.8.6</project-name>
+				<version>6.8.15</version>
+				<project-name>org.elasticsearch.plugin#transport-netty4;6.8.15</project-name>
 				<project-url>https://github.com/elastic/elasticsearch</project-url>
 				<licenses>
 					<license>
@@ -3434,8 +3422,8 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!transport.jar</file-name>
-				<version>6.8.6</version>
-				<project-name>org.elasticsearch.client#transport;6.8.6</project-name>
+				<version>6.8.15</version>
+				<project-name>org.elasticsearch.client#transport;6.8.15</project-name>
 				<project-url>https://github.com/elastic/elasticsearch</project-url>
 				<licenses>
 					<license>
@@ -3453,6 +3441,30 @@
 					<license>
 						<license-name>UnboundID LDAP SDK Free Use License</license-name>
 						<license-url>https://docs.ldap.com/ldap-sdk/docs/LICENSE-UnboundID-LDAPSDK.txt</license-url>
+					</license>
+				</licenses>
+			</library>
+			<library>
+				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!x-pack-core.jar</file-name>
+				<version>6.8.15</version>
+				<project-name>org.elasticsearch.plugin#core;6.8.15</project-name>
+				<project-url>https://github.com/elastic/elasticsearch</project-url>
+				<licenses>
+					<license>
+						<license-name>Elastic License</license-name>
+						<license-url>https://raw.githubusercontent.com/elastic/elasticsearch/v6.8.15/licenses/ELASTIC-LICENSE.txt</license-url>
+					</license>
+				</licenses>
+			</library>
+			<library>
+				<file-name>com.liferay.portal.search.elasticsearch6.impl.jar!x-pack-transport.jar</file-name>
+				<version>6.8.15</version>
+				<project-name>org.elasticsearch.client#transport-client;6.8.15</project-name>
+				<project-url>https://github.com/elastic/elasticsearch</project-url>
+				<licenses>
+					<license>
+						<license-name>Elastic License</license-name>
+						<license-url>https://raw.githubusercontent.com/elastic/elasticsearch/v6.8.15/licenses/ELASTIC-LICENSE.txt</license-url>
 					</license>
 				</licenses>
 			</library>
@@ -3772,14 +3784,13 @@
 				</licenses>
 			</library>
 			<library>
-				<file-name>com.liferay.portal.security.sso.openid.connect.impl.jar!javax.mail.jar</file-name>
+				<file-name>com.liferay.portal.security.sso.openid.connect.impl.jar!jakarta.mail.jar</file-name>
 				<version>1.6.6</version>
-				<project-name>JavaMail API</project-name>
-				<project-url>https://eclipse-ee4j.github.io/mail/</project-url>
+				<project-name>Jakarta Mail API</project-name>
+				<project-url>http://www.oracle.com</project-url>
 				<licenses>
 					<license>
-						<license-name>COMMON DEVELOPMENT AND DISTRIBUTION LICENSE (CDDL) Version 1.0</license-name>
-						<license-url>https://opensource.org/licenses/CDDL-1.0</license-url>
+						<license-name>http://www.eclipse.org/legal/epl-2.0, https://www.gnu.org/software/classpath/license.html, http://www.eclipse.org/org/documents/edl-v10.php</license-name>
 					</license>
 				</licenses>
 			</library>
@@ -4935,18 +4946,6 @@
 				</licenses>
 			</library>
 			<library>
-				<file-name>com.liferay.rss.impl.jar!icu4j.jar</file-name>
-				<version>54.1.1</version>
-				<project-name>ICU4J</project-name>
-				<project-url>http://icu-project.org/</project-url>
-				<licenses>
-					<license>
-						<license-name>ICU License</license-name>
-						<license-url>http://source.icu-project.org/repos/icu/icu/trunk/license.html</license-url>
-					</license>
-				</licenses>
-			</library>
-			<library>
 				<file-name>com.liferay.segments.content.targeting.upgrade.jar!commons-lang3.jar</file-name>
 				<version>3.8</version>
 				<project-name>Apache Commons Lang</project-name>
@@ -5045,8 +5044,7 @@
 			<library>
 				<file-name>com.liferay.sync.security.jar!joda-time.jar</file-name>
 				<version>1.6</version>
-				<project-name>Joda time</project-name>
-				<project-url>http://joda-time.sourceforge.net</project-url>
+				<project-name>Joda-Time</project-name>
 				<licenses>
 					<license>
 						<license-name>Apache License, Version 2.0</license-name>
@@ -5771,9 +5769,9 @@
 			</library>
 			<library>
 				<file-name>lib/development/mail.jar</file-name>
-				<version>1.6.2</version>
+				<version>1.6.6</version>
 				<project-name>JavaMail</project-name>
-				<project-url>http://java.sun.com/products/javamail</project-url>
+				<project-url>https://eclipse-ee4j.github.io/mail/</project-url>
 				<licenses>
 					<license>
 						<license-name>Common Development and Distribution License 1.0</license-name>
@@ -8314,7 +8312,7 @@
 			</library>
 			<library>
 				<file-name>lib/portal/tika-core.jar</file-name>
-				<version>1.25</version>
+				<version>1.26</version>
 				<project-name>Tika</project-name>
 				<project-url>http://tika.apache.org</project-url>
 				<licenses>
@@ -8326,7 +8324,7 @@
 			</library>
 			<library>
 				<file-name>lib/portal/tika-parsers.jar</file-name>
-				<version>1.25</version>
+				<version>1.26</version>
 				<project-name>Tika</project-name>
 				<project-url>http://tika.apache.org</project-url>
 				<licenses>
