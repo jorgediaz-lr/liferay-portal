@@ -112,6 +112,10 @@ public class LiferayPortlet extends GenericPortlet {
 		catch (PortletException portletException) {
 			Throwable cause = portletException.getCause();
 
+			if (_log.isDebugEnabled()) {
+				_log.debug(cause, cause);
+			}
+
 			if (isSessionErrorException(cause)) {
 				SessionErrors.add(actionRequest, cause.getClass(), cause);
 			}
@@ -566,10 +570,6 @@ public class LiferayPortlet extends GenericPortlet {
 	}
 
 	protected boolean isSessionErrorException(Throwable cause) {
-		if (_log.isDebugEnabled()) {
-			_log.debug(cause, cause);
-		}
-
 		if (cause instanceof PortalException) {
 			return true;
 		}
