@@ -69,14 +69,16 @@ public interface DataDefinitionResource {
 	public Response putDataDefinitionBatch(String callbackURL, Object object)
 		throws Exception;
 
-	public void postDataDefinitionDataDefinitionPermission(
-			Long dataDefinitionId, String operation,
-			DataDefinitionPermission dataDefinitionPermission)
+	public Page<com.liferay.portal.vulcan.permission.Permission>
+			postDataDefinitionDataDefinitionPermission(
+				Long dataDefinitionId, String operation,
+				DataDefinitionPermission dataDefinitionPermission)
 		throws Exception;
 
-	public void postSiteDataDefinitionPermission(
-			Long siteId, String operation,
-			DataDefinitionPermission dataDefinitionPermission)
+	public Page<com.liferay.portal.vulcan.permission.Permission>
+			postSiteDataDefinitionPermission(
+				Long siteId, String operation,
+				DataDefinitionPermission dataDefinitionPermission)
 		throws Exception;
 
 	public Page<DataDefinition> getSiteDataDefinitionsPage(

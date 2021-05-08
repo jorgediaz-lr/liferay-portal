@@ -19,6 +19,7 @@ import com.liferay.data.engine.rest.client.dto.v1_0.DataDefinitionPermission;
 import com.liferay.data.engine.rest.client.http.HttpInvoker;
 import com.liferay.data.engine.rest.client.pagination.Page;
 import com.liferay.data.engine.rest.client.pagination.Pagination;
+import com.liferay.data.engine.rest.client.permission.Permission;
 import com.liferay.data.engine.rest.client.problem.Problem;
 import com.liferay.data.engine.rest.client.serdes.v1_0.DataDefinitionSerDes;
 
@@ -83,7 +84,7 @@ public interface DataDefinitionResource {
 			String callbackURL, Object object)
 		throws Exception;
 
-	public void postDataDefinitionDataDefinitionPermission(
+	public Page<Permission> postDataDefinitionDataDefinitionPermission(
 			Long dataDefinitionId, String operation,
 			DataDefinitionPermission dataDefinitionPermission)
 		throws Exception;
@@ -94,7 +95,7 @@ public interface DataDefinitionResource {
 				DataDefinitionPermission dataDefinitionPermission)
 		throws Exception;
 
-	public void postSiteDataDefinitionPermission(
+	public Page<Permission> postSiteDataDefinitionPermission(
 			Long siteId, String operation,
 			DataDefinitionPermission dataDefinitionPermission)
 		throws Exception;
@@ -684,7 +685,7 @@ public interface DataDefinitionResource {
 			return httpInvoker.invoke();
 		}
 
-		public void postDataDefinitionDataDefinitionPermission(
+		public Page<Permission> postDataDefinitionDataDefinitionPermission(
 				Long dataDefinitionId, String operation,
 				DataDefinitionPermission dataDefinitionPermission)
 			throws Exception {
@@ -719,7 +720,7 @@ public interface DataDefinitionResource {
 			}
 
 			try {
-				return;
+				return Page.of(content, Permission::toDTO);
 			}
 			catch (Exception e) {
 				_logger.log(
@@ -777,7 +778,7 @@ public interface DataDefinitionResource {
 			return httpInvoker.invoke();
 		}
 
-		public void postSiteDataDefinitionPermission(
+		public Page<Permission> postSiteDataDefinitionPermission(
 				Long siteId, String operation,
 				DataDefinitionPermission dataDefinitionPermission)
 			throws Exception {
@@ -812,7 +813,7 @@ public interface DataDefinitionResource {
 			}
 
 			try {
-				return;
+				return Page.of(content, Permission::toDTO);
 			}
 			catch (Exception e) {
 				_logger.log(

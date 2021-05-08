@@ -77,14 +77,16 @@ public interface DataLayoutResource {
 	public Response putDataLayoutBatch(String callbackURL, Object object)
 		throws Exception;
 
-	public void postDataLayoutDataLayoutPermission(
-			Long dataLayoutId, String operation,
-			DataLayoutPermission dataLayoutPermission)
+	public Page<com.liferay.portal.vulcan.permission.Permission>
+			postDataLayoutDataLayoutPermission(
+				Long dataLayoutId, String operation,
+				DataLayoutPermission dataLayoutPermission)
 		throws Exception;
 
-	public void postSiteDataLayoutPermission(
-			Long siteId, String operation,
-			DataLayoutPermission dataLayoutPermission)
+	public Page<com.liferay.portal.vulcan.permission.Permission>
+			postSiteDataLayoutPermission(
+				Long siteId, String operation,
+				DataLayoutPermission dataLayoutPermission)
 		throws Exception;
 
 	public Page<DataLayout> getSiteDataLayoutsPage(

@@ -327,13 +327,16 @@ public abstract class BaseDataLayoutResourceImpl
 	@POST
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "DataLayout")})
-	public void postDataLayoutDataLayoutPermission(
-			@NotNull @Parameter(hidden = true) @PathParam("dataLayoutId") Long
-				dataLayoutId,
-			@NotNull @Parameter(hidden = true) @QueryParam("operation") String
-				operation,
-			DataLayoutPermission dataLayoutPermission)
+	public Page<com.liferay.portal.vulcan.permission.Permission>
+			postDataLayoutDataLayoutPermission(
+				@NotNull @Parameter(hidden = true) @PathParam("dataLayoutId")
+					Long dataLayoutId,
+				@NotNull @Parameter(hidden = true) @QueryParam("operation")
+					String operation,
+				DataLayoutPermission dataLayoutPermission)
 		throws Exception {
+
+		return Page.of(Collections.emptyList());
 	}
 
 	/**
@@ -353,12 +356,16 @@ public abstract class BaseDataLayoutResourceImpl
 	@POST
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "DataLayout")})
-	public void postSiteDataLayoutPermission(
-			@NotNull @Parameter(hidden = true) @PathParam("siteId") Long siteId,
-			@NotNull @Parameter(hidden = true) @QueryParam("operation") String
-				operation,
-			DataLayoutPermission dataLayoutPermission)
+	public Page<com.liferay.portal.vulcan.permission.Permission>
+			postSiteDataLayoutPermission(
+				@NotNull @Parameter(hidden = true) @PathParam("siteId") Long
+					siteId,
+				@NotNull @Parameter(hidden = true) @QueryParam("operation")
+					String operation,
+				DataLayoutPermission dataLayoutPermission)
 		throws Exception {
+
+		return Page.of(Collections.emptyList());
 	}
 
 	/**

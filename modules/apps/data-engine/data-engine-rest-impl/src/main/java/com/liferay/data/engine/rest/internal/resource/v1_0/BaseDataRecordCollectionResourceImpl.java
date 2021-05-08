@@ -340,14 +340,17 @@ public abstract class BaseDataRecordCollectionResourceImpl
 	@POST
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "DataRecordCollection")})
-	public void postDataRecordCollectionDataRecordCollectionPermission(
-			@NotNull @Parameter(hidden = true)
-			@PathParam("dataRecordCollectionId")
-			Long dataRecordCollectionId,
-			@NotNull @Parameter(hidden = true) @QueryParam("operation") String
-				operation,
-			DataRecordCollectionPermission dataRecordCollectionPermission)
+	public Page<com.liferay.portal.vulcan.permission.Permission>
+			postDataRecordCollectionDataRecordCollectionPermission(
+				@NotNull @Parameter(hidden = true)
+				@PathParam("dataRecordCollectionId")
+				Long dataRecordCollectionId,
+				@NotNull @Parameter(hidden = true) @QueryParam("operation")
+					String operation,
+				DataRecordCollectionPermission dataRecordCollectionPermission)
 		throws Exception {
+
+		return Page.of(Collections.emptyList());
 	}
 
 	/**
@@ -367,12 +370,16 @@ public abstract class BaseDataRecordCollectionResourceImpl
 	@POST
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "DataRecordCollection")})
-	public void postSiteDataRecordCollectionPermission(
-			@NotNull @Parameter(hidden = true) @PathParam("siteId") Long siteId,
-			@NotNull @Parameter(hidden = true) @QueryParam("operation") String
-				operation,
-			DataRecordCollectionPermission dataRecordCollectionPermission)
+	public Page<com.liferay.portal.vulcan.permission.Permission>
+			postSiteDataRecordCollectionPermission(
+				@NotNull @Parameter(hidden = true) @PathParam("siteId") Long
+					siteId,
+				@NotNull @Parameter(hidden = true) @QueryParam("operation")
+					String operation,
+				DataRecordCollectionPermission dataRecordCollectionPermission)
 		throws Exception {
+
+		return Page.of(Collections.emptyList());
 	}
 
 	/**

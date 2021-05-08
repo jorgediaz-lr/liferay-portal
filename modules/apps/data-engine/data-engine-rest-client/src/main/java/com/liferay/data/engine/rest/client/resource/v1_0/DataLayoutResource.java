@@ -19,6 +19,7 @@ import com.liferay.data.engine.rest.client.dto.v1_0.DataLayoutPermission;
 import com.liferay.data.engine.rest.client.http.HttpInvoker;
 import com.liferay.data.engine.rest.client.pagination.Page;
 import com.liferay.data.engine.rest.client.pagination.Pagination;
+import com.liferay.data.engine.rest.client.permission.Permission;
 import com.liferay.data.engine.rest.client.problem.Problem;
 import com.liferay.data.engine.rest.client.serdes.v1_0.DataLayoutSerDes;
 
@@ -101,7 +102,7 @@ public interface DataLayoutResource {
 			String callbackURL, Object object)
 		throws Exception;
 
-	public void postDataLayoutDataLayoutPermission(
+	public Page<Permission> postDataLayoutDataLayoutPermission(
 			Long dataLayoutId, String operation,
 			DataLayoutPermission dataLayoutPermission)
 		throws Exception;
@@ -112,7 +113,7 @@ public interface DataLayoutResource {
 				DataLayoutPermission dataLayoutPermission)
 		throws Exception;
 
-	public void postSiteDataLayoutPermission(
+	public Page<Permission> postSiteDataLayoutPermission(
 			Long siteId, String operation,
 			DataLayoutPermission dataLayoutPermission)
 		throws Exception;
@@ -865,7 +866,7 @@ public interface DataLayoutResource {
 			return httpInvoker.invoke();
 		}
 
-		public void postDataLayoutDataLayoutPermission(
+		public Page<Permission> postDataLayoutDataLayoutPermission(
 				Long dataLayoutId, String operation,
 				DataLayoutPermission dataLayoutPermission)
 			throws Exception {
@@ -900,7 +901,7 @@ public interface DataLayoutResource {
 			}
 
 			try {
-				return;
+				return Page.of(content, Permission::toDTO);
 			}
 			catch (Exception e) {
 				_logger.log(
@@ -958,7 +959,7 @@ public interface DataLayoutResource {
 			return httpInvoker.invoke();
 		}
 
-		public void postSiteDataLayoutPermission(
+		public Page<Permission> postSiteDataLayoutPermission(
 				Long siteId, String operation,
 				DataLayoutPermission dataLayoutPermission)
 			throws Exception {
@@ -993,7 +994,7 @@ public interface DataLayoutResource {
 			}
 
 			try {
-				return;
+				return Page.of(content, Permission::toDTO);
 			}
 			catch (Exception e) {
 				_logger.log(
