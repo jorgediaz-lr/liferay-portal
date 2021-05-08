@@ -14,7 +14,7 @@ import capitalize from 'lodash.capitalize';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import {DASH, LICENSE_PORTLET_NAMESPACE} from '../../utilities/constants';
+import {DASH, NAMESPACE} from '../../utilities/constants';
 
 function LicenseGroup({downloadURL, licenses}) {
 	let value = [];
@@ -45,7 +45,7 @@ function Download({actionURL, value}) {
 			<ClayTable.Cell>
 				<form action={actionURL} method="post" name="downloadLicenses">
 					<input
-						name={`${LICENSE_PORTLET_NAMESPACE}licenseKeyId`}
+						name={`${NAMESPACE}licenseKeyId`}
 						type="hidden"
 						value={value}
 					/>

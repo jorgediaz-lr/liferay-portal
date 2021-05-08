@@ -26,8 +26,6 @@ export const DASH = '-';
 
 export const ACCOUNTS_PORTLET_NAMESPACE =
 	window.ProvisioningConstants.accountsPortletNamespace;
-export const LICENSE_PORTLET_NAMESPACE =
-	window.ProvisioningConstants.licensePortletNamespace;
 export const NAMESPACE = window.ProvisioningConstants.namespace;
 
 // Regex
