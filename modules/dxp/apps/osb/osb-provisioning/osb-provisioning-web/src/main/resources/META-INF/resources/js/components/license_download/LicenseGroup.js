@@ -17,18 +17,22 @@ import React from 'react';
 import {DASH, NAMESPACE} from '../../utilities/constants';
 
 function LicenseGroup({downloadURL, licenses}) {
-	let value = [];
+	return licenses.map((group, index) => {
+		let value = [];
 
-	return licenses.map((group, index) => (
-		<ClayTable.Body key={index}>
-			{group.map(license => {
-				value = [...value, license.licenseKeyId];
+		return (
+			<ClayTable.Body key={index}>
+				{group.map(license => {
+					value = [...value, license.licenseKeyId];
 
-				return <License key={license.licenseKeyId} license={license} />;
-			})}
-			<Download actionURL={downloadURL} value={value.join()} />
-		</ClayTable.Body>
-	));
+					return (
+						<License key={license.licenseKeyId} license={license} />
+					);
+				})}
+				<Download actionURL={downloadURL} value={value.join()} />
+			</ClayTable.Body>
+		);
+	});
 }
 
 function Download({actionURL, value}) {
@@ -45,7 +49,7 @@ function Download({actionURL, value}) {
 			<ClayTable.Cell>
 				<form action={actionURL} method="post" name="downloadLicenses">
 					<input
-						name={`${NAMESPACE}licenseKeyId`}
+						name={`${NAMESPACE}licenseKeyIds`}
 						type="hidden"
 						value={value}
 					/>
