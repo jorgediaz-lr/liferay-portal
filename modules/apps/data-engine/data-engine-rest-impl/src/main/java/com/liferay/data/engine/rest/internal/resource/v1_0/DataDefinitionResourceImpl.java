@@ -70,11 +70,13 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
+import com.liferay.portal.vulcan.permission.Permission;
 import com.liferay.portal.vulcan.resource.EntityModelResource;
 import com.liferay.portal.vulcan.util.SearchUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -240,7 +242,7 @@ public class DataDefinitionResourceImpl
 	}
 
 	@Override
-	public void postDataDefinitionDataDefinitionPermission(
+	public Page<Permission> postDataDefinitionDataDefinitionPermission(
 			Long dataDefinitionId, String operation,
 			DataDefinitionPermission dataDefinitionPermission)
 		throws Exception {
@@ -266,7 +268,7 @@ public class DataDefinitionResourceImpl
 		}
 
 		if (actionIds.isEmpty()) {
-			return;
+			return Page.of(Collections.<Permission>emptyList());
 		}
 
 		DataEnginePermissionUtil.persistModelPermission(
@@ -274,6 +276,8 @@ public class DataDefinitionResourceImpl
 			DataDefinitionConstants.RESOURCE_NAME,
 			_resourcePermissionLocalService, _roleLocalService,
 			dataDefinitionPermission.getRoleNames(), ddmStructure.getGroupId());
+
+		return Page.of(Collections.<Permission>emptyList());
 	}
 
 	@Override
@@ -325,7 +329,7 @@ public class DataDefinitionResourceImpl
 	}
 
 	@Override
-	public void postSiteDataDefinitionPermission(
+	public Page<Permission> postSiteDataDefinitionPermission(
 			Long siteId, String operation,
 			DataDefinitionPermission dataDefinitionPermission)
 		throws Exception {
@@ -348,13 +352,15 @@ public class DataDefinitionResourceImpl
 		}
 
 		if (actionIds.isEmpty()) {
-			return;
+			return Page.of(Collections.<Permission>emptyList());
 		}
 
 		DataEnginePermissionUtil.persistPermission(
 			actionIds, contextCompany, operation,
 			_resourcePermissionLocalService, _roleLocalService,
 			dataDefinitionPermission.getRoleNames());
+
+		return Page.of(Collections.<Permission>emptyList());
 	}
 
 	@Override
