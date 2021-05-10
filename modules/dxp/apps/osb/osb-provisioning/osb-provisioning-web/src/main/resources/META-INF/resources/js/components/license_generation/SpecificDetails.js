@@ -16,11 +16,11 @@ import React, {useEffect, useState} from 'react';
 
 import {useLicense} from '../../hooks/license';
 import {
-	IPV6,
 	KNOWN_SERVER_ID_LICENSE_TYPES,
 	LICENSE_TYPE_CLUSTER,
 	LICENSE_TYPE_DEVELOPER,
-	LICENSE_TYPE_DEVELOPER_CLUSTER
+	LICENSE_TYPE_DEVELOPER_CLUSTER,
+	PATTERN_IP_ADDRESS_V6
 } from '../../utilities/constants';
 import {displayInMDYDateFormat, getUTCAdjustedDate} from '../../utilities/date';
 import CancelLink from '../CancelLink';
@@ -56,7 +56,9 @@ function SpecificDetails({addLicenseKeyURL, redirect}) {
 			if (ipAddresses) {
 				const chuncks = ipAddresses.trim().split(/\s*,\s*|\s+/);
 
-				return chuncks.some(chunck => chunck.match(IPV6));
+				return chuncks.some(chunck =>
+					chunck.match(PATTERN_IP_ADDRESS_V6)
+				);
 			}
 			else {
 				return false;

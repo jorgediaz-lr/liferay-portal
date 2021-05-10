@@ -30,9 +30,9 @@ export const NAMESPACE = window.ProvisioningConstants.namespace;
 
 // Regex
 
-export const IPV4 = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
-export const IPV6 = /^(?:[0-9A-Fa-f]{1,4})(?::[0-9A-Fa-f]{1,4})*::(?:[0-9A-Fa-f]{1,4})(?::[0-9A-Fa-f]{1,4})*|(?:[0-9A-Fa-f]{1,4})(?::[0-9A-Fa-f]{1,4}){7}$/;
-export const MACADDRESS = /^([0-9A-Fa-f]{2}[. :-]){5}([0-9A-Fa-f]{2})|([0-9A-Fa-f]{4}[. :-][0-9A-Fa-f]{4}[. :-][0-9A-Fa-f]{4})$/;
+export const PATTERN_IP_ADDRESS_V4 = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+export const PATTERN_IP_ADDRESS_V6 = /^(?:[0-9A-Fa-f]{1,4})(?::[0-9A-Fa-f]{1,4})*::(?:[0-9A-Fa-f]{1,4})(?::[0-9A-Fa-f]{1,4})*|(?:[0-9A-Fa-f]{1,4})(?::[0-9A-Fa-f]{1,4}){7}$/;
+export const PATTERN_MAC_ADDRESS = /^([0-9A-Fa-f]{2}[. :-]){5}([0-9A-Fa-f]{2})|([0-9A-Fa-f]{4}[. :-][0-9A-Fa-f]{4}[. :-][0-9A-Fa-f]{4})$/;
 
 // Inline edit field types
 

@@ -11,7 +11,12 @@
 
 import axios from 'axios';
 
-import {IPV4, IPV6, MACADDRESS, NAMESPACE} from '../utilities/constants';
+import {
+	NAMESPACE,
+	PATTERN_IP_ADDRESS_V4,
+	PATTERN_IP_ADDRESS_V6,
+	PATTERN_MAC_ADDRESS
+} from '../utilities/constants';
 
 /**
  * Certain empty values are represented by a dash in the UI.
@@ -138,7 +143,9 @@ export function validateAllIPAddresses(input) {
 		const chuncks = input.trim().split(/\s*,\s*|\s+/);
 
 		return chuncks.every(
-			chunck => chunck.match(IPV4) || chunck.match(IPV6)
+			chunck =>
+				chunck.match(PATTERN_IP_ADDRESS_V4) ||
+				chunck.match(PATTERN_IP_ADDRESS_V6)
 		);
 	}
 	else {
@@ -156,7 +163,7 @@ export function validateIPv6s(input) {
 	if (input) {
 		const chuncks = input.trim().split(/\s*,\s*|\s+/);
 
-		return chuncks.every(chunck => chunck.match(IPV6));
+		return chuncks.every(chunck => chunck.match(PATTERN_IP_ADDRESS_V6));
 	}
 	else {
 		return false;
@@ -173,7 +180,7 @@ export function validateMAC(input) {
 	if (input) {
 		const chuncks = input.trim().split(/\s*,\s*|\s+/);
 
-		return chuncks.every(chunck => chunck.match(MACADDRESS));
+		return chuncks.every(chunck => chunck.match(PATTERN_MAC_ADDRESS));
 	}
 	else {
 		return false;
