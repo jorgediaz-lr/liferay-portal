@@ -251,17 +251,13 @@ public abstract class BaseDataDefinitionResourceImpl
 	@POST
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "DataDefinition")})
-	public Page<com.liferay.portal.vulcan.permission.Permission>
-			postDataDefinitionDataDefinitionPermission(
-				@NotNull @Parameter(hidden = true)
-				@PathParam("dataDefinitionId")
+	public void postDataDefinitionDataDefinitionPermission(
+			@NotNull @Parameter(hidden = true) @PathParam("dataDefinitionId")
 				Long dataDefinitionId,
-				@NotNull @Parameter(hidden = true) @QueryParam("operation")
-					String operation,
-				DataDefinitionPermission dataDefinitionPermission)
+			@NotNull @Parameter(hidden = true) @QueryParam("operation") String
+				operation,
+			DataDefinitionPermission dataDefinitionPermission)
 		throws Exception {
-
-		return Page.of(Collections.emptyList());
 	}
 
 	/**
@@ -281,16 +277,12 @@ public abstract class BaseDataDefinitionResourceImpl
 	@POST
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "DataDefinition")})
-	public Page<com.liferay.portal.vulcan.permission.Permission>
-			postSiteDataDefinitionPermission(
-				@NotNull @Parameter(hidden = true) @PathParam("siteId") Long
-					siteId,
-				@NotNull @Parameter(hidden = true) @QueryParam("operation")
-					String operation,
-				DataDefinitionPermission dataDefinitionPermission)
+	public void postSiteDataDefinitionPermission(
+			@NotNull @Parameter(hidden = true) @PathParam("siteId") Long siteId,
+			@NotNull @Parameter(hidden = true) @QueryParam("operation") String
+				operation,
+			DataDefinitionPermission dataDefinitionPermission)
 		throws Exception {
-
-		return Page.of(Collections.emptyList());
 	}
 
 	/**

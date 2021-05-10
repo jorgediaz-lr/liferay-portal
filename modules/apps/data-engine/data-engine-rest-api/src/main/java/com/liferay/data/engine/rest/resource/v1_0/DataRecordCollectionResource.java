@@ -83,16 +83,14 @@ public interface DataRecordCollectionResource {
 			String callbackURL, Object object)
 		throws Exception;
 
-	public Page<com.liferay.portal.vulcan.permission.Permission>
-			postDataRecordCollectionDataRecordCollectionPermission(
-				Long dataRecordCollectionId, String operation,
-				DataRecordCollectionPermission dataRecordCollectionPermission)
+	public void postDataRecordCollectionDataRecordCollectionPermission(
+			Long dataRecordCollectionId, String operation,
+			DataRecordCollectionPermission dataRecordCollectionPermission)
 		throws Exception;
 
-	public Page<com.liferay.portal.vulcan.permission.Permission>
-			postSiteDataRecordCollectionPermission(
-				Long siteId, String operation,
-				DataRecordCollectionPermission dataRecordCollectionPermission)
+	public void postSiteDataRecordCollectionPermission(
+			Long siteId, String operation,
+			DataRecordCollectionPermission dataRecordCollectionPermission)
 		throws Exception;
 
 	public Page<DataRecordCollection> getSiteDataRecordCollectionsPage(

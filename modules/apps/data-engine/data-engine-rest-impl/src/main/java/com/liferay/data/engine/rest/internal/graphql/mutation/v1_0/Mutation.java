@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
 import com.liferay.portal.vulcan.graphql.annotation.GraphQLField;
 import com.liferay.portal.vulcan.graphql.annotation.GraphQLName;
-import com.liferay.portal.vulcan.pagination.Page;
 
 import java.util.function.BiFunction;
 
@@ -154,48 +153,41 @@ public class Mutation {
 	}
 
 	@GraphQLField
-	public java.util.Collection<com.liferay.portal.vulcan.permission.Permission>
-			createDataDefinitionDataDefinitionPermission(
-				@GraphQLName("dataDefinitionId") Long dataDefinitionId,
-				@GraphQLName("operation") String operation,
-				@GraphQLName("dataDefinitionPermission")
-					DataDefinitionPermission dataDefinitionPermission)
+	public boolean createDataDefinitionDataDefinitionPermission(
+			@GraphQLName("dataDefinitionId") Long dataDefinitionId,
+			@GraphQLName("operation") String operation,
+			@GraphQLName("dataDefinitionPermission") DataDefinitionPermission
+				dataDefinitionPermission)
 		throws Exception {
 
-		return _applyComponentServiceObjects(
+		_applyVoidComponentServiceObjects(
 			_dataDefinitionResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			dataDefinitionResource -> {
-				Page paginationPage =
-					dataDefinitionResource.
-						postDataDefinitionDataDefinitionPermission(
-							dataDefinitionId, operation,
-							dataDefinitionPermission);
+			dataDefinitionResource ->
+				dataDefinitionResource.
+					postDataDefinitionDataDefinitionPermission(
+						dataDefinitionId, operation, dataDefinitionPermission));
 
-				return paginationPage.getItems();
-			});
+		return true;
 	}
 
 	@GraphQLField
-	public java.util.Collection<com.liferay.portal.vulcan.permission.Permission>
-			createSiteDataDefinitionPermission(
-				@GraphQLName("siteKey") @NotEmpty String siteKey,
-				@GraphQLName("operation") String operation,
-				@GraphQLName("dataDefinitionPermission")
-					DataDefinitionPermission dataDefinitionPermission)
+	public boolean createSiteDataDefinitionPermission(
+			@GraphQLName("siteKey") @NotEmpty String siteKey,
+			@GraphQLName("operation") String operation,
+			@GraphQLName("dataDefinitionPermission") DataDefinitionPermission
+				dataDefinitionPermission)
 		throws Exception {
 
-		return _applyComponentServiceObjects(
+		_applyVoidComponentServiceObjects(
 			_dataDefinitionResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			dataDefinitionResource -> {
-				Page paginationPage =
-					dataDefinitionResource.postSiteDataDefinitionPermission(
-						Long.valueOf(siteKey), operation,
-						dataDefinitionPermission);
+			dataDefinitionResource ->
+				dataDefinitionResource.postSiteDataDefinitionPermission(
+					Long.valueOf(siteKey), operation,
+					dataDefinitionPermission));
 
-				return paginationPage.getItems();
-			});
+		return true;
 	}
 
 	@GraphQLField
@@ -310,45 +302,39 @@ public class Mutation {
 	}
 
 	@GraphQLField
-	public java.util.Collection<com.liferay.portal.vulcan.permission.Permission>
-			createDataLayoutDataLayoutPermission(
-				@GraphQLName("dataLayoutId") Long dataLayoutId,
-				@GraphQLName("operation") String operation,
-				@GraphQLName("dataLayoutPermission") DataLayoutPermission
-					dataLayoutPermission)
+	public boolean createDataLayoutDataLayoutPermission(
+			@GraphQLName("dataLayoutId") Long dataLayoutId,
+			@GraphQLName("operation") String operation,
+			@GraphQLName("dataLayoutPermission") DataLayoutPermission
+				dataLayoutPermission)
 		throws Exception {
 
-		return _applyComponentServiceObjects(
+		_applyVoidComponentServiceObjects(
 			_dataLayoutResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			dataLayoutResource -> {
-				Page paginationPage =
-					dataLayoutResource.postDataLayoutDataLayoutPermission(
-						dataLayoutId, operation, dataLayoutPermission);
+			dataLayoutResource ->
+				dataLayoutResource.postDataLayoutDataLayoutPermission(
+					dataLayoutId, operation, dataLayoutPermission));
 
-				return paginationPage.getItems();
-			});
+		return true;
 	}
 
 	@GraphQLField
-	public java.util.Collection<com.liferay.portal.vulcan.permission.Permission>
-			createSiteDataLayoutPermission(
-				@GraphQLName("siteKey") @NotEmpty String siteKey,
-				@GraphQLName("operation") String operation,
-				@GraphQLName("dataLayoutPermission") DataLayoutPermission
-					dataLayoutPermission)
+	public boolean createSiteDataLayoutPermission(
+			@GraphQLName("siteKey") @NotEmpty String siteKey,
+			@GraphQLName("operation") String operation,
+			@GraphQLName("dataLayoutPermission") DataLayoutPermission
+				dataLayoutPermission)
 		throws Exception {
 
-		return _applyComponentServiceObjects(
+		_applyVoidComponentServiceObjects(
 			_dataLayoutResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			dataLayoutResource -> {
-				Page paginationPage =
-					dataLayoutResource.postSiteDataLayoutPermission(
-						Long.valueOf(siteKey), operation, dataLayoutPermission);
+			dataLayoutResource ->
+				dataLayoutResource.postSiteDataLayoutPermission(
+					Long.valueOf(siteKey), operation, dataLayoutPermission));
 
-				return paginationPage.getItems();
-			});
+		return true;
 	}
 
 	@GraphQLField
@@ -636,52 +622,43 @@ public class Mutation {
 	}
 
 	@GraphQLField
-	public java.util.Collection<com.liferay.portal.vulcan.permission.Permission>
-			createDataRecordCollectionDataRecordCollectionPermission(
-				@GraphQLName("dataRecordCollectionId") Long
-					dataRecordCollectionId,
-				@GraphQLName("operation") String operation,
-				@GraphQLName("dataRecordCollectionPermission")
-					DataRecordCollectionPermission
-						dataRecordCollectionPermission)
+	public boolean createDataRecordCollectionDataRecordCollectionPermission(
+			@GraphQLName("dataRecordCollectionId") Long dataRecordCollectionId,
+			@GraphQLName("operation") String operation,
+			@GraphQLName("dataRecordCollectionPermission")
+				DataRecordCollectionPermission dataRecordCollectionPermission)
 		throws Exception {
 
-		return _applyComponentServiceObjects(
+		_applyVoidComponentServiceObjects(
 			_dataRecordCollectionResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			dataRecordCollectionResource -> {
-				Page paginationPage =
-					dataRecordCollectionResource.
-						postDataRecordCollectionDataRecordCollectionPermission(
-							dataRecordCollectionId, operation,
-							dataRecordCollectionPermission);
+			dataRecordCollectionResource ->
+				dataRecordCollectionResource.
+					postDataRecordCollectionDataRecordCollectionPermission(
+						dataRecordCollectionId, operation,
+						dataRecordCollectionPermission));
 
-				return paginationPage.getItems();
-			});
+		return true;
 	}
 
 	@GraphQLField
-	public java.util.Collection<com.liferay.portal.vulcan.permission.Permission>
-			createSiteDataRecordCollectionPermission(
-				@GraphQLName("siteKey") @NotEmpty String siteKey,
-				@GraphQLName("operation") String operation,
-				@GraphQLName("dataRecordCollectionPermission")
-					DataRecordCollectionPermission
-						dataRecordCollectionPermission)
+	public boolean createSiteDataRecordCollectionPermission(
+			@GraphQLName("siteKey") @NotEmpty String siteKey,
+			@GraphQLName("operation") String operation,
+			@GraphQLName("dataRecordCollectionPermission")
+				DataRecordCollectionPermission dataRecordCollectionPermission)
 		throws Exception {
 
-		return _applyComponentServiceObjects(
+		_applyVoidComponentServiceObjects(
 			_dataRecordCollectionResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			dataRecordCollectionResource -> {
-				Page paginationPage =
-					dataRecordCollectionResource.
-						postSiteDataRecordCollectionPermission(
-							Long.valueOf(siteKey), operation,
-							dataRecordCollectionPermission);
+			dataRecordCollectionResource ->
+				dataRecordCollectionResource.
+					postSiteDataRecordCollectionPermission(
+						Long.valueOf(siteKey), operation,
+						dataRecordCollectionPermission));
 
-				return paginationPage.getItems();
-			});
+		return true;
 	}
 
 	private <T, R, E1 extends Throwable, E2 extends Throwable> R

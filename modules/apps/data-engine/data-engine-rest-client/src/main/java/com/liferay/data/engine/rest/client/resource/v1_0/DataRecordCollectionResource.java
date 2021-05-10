@@ -19,7 +19,6 @@ import com.liferay.data.engine.rest.client.dto.v1_0.DataRecordCollectionPermissi
 import com.liferay.data.engine.rest.client.http.HttpInvoker;
 import com.liferay.data.engine.rest.client.pagination.Page;
 import com.liferay.data.engine.rest.client.pagination.Pagination;
-import com.liferay.data.engine.rest.client.permission.Permission;
 import com.liferay.data.engine.rest.client.problem.Problem;
 import com.liferay.data.engine.rest.client.serdes.v1_0.DataRecordCollectionSerDes;
 
@@ -111,10 +110,9 @@ public interface DataRecordCollectionResource {
 			String callbackURL, Object object)
 		throws Exception;
 
-	public Page<Permission>
-			postDataRecordCollectionDataRecordCollectionPermission(
-				Long dataRecordCollectionId, String operation,
-				DataRecordCollectionPermission dataRecordCollectionPermission)
+	public void postDataRecordCollectionDataRecordCollectionPermission(
+			Long dataRecordCollectionId, String operation,
+			DataRecordCollectionPermission dataRecordCollectionPermission)
 		throws Exception;
 
 	public HttpInvoker.HttpResponse
@@ -123,7 +121,7 @@ public interface DataRecordCollectionResource {
 				DataRecordCollectionPermission dataRecordCollectionPermission)
 		throws Exception;
 
-	public Page<Permission> postSiteDataRecordCollectionPermission(
+	public void postSiteDataRecordCollectionPermission(
 			Long siteId, String operation,
 			DataRecordCollectionPermission dataRecordCollectionPermission)
 		throws Exception;
@@ -894,11 +892,9 @@ public interface DataRecordCollectionResource {
 			return httpInvoker.invoke();
 		}
 
-		public Page<Permission>
-				postDataRecordCollectionDataRecordCollectionPermission(
-					Long dataRecordCollectionId, String operation,
-					DataRecordCollectionPermission
-						dataRecordCollectionPermission)
+		public void postDataRecordCollectionDataRecordCollectionPermission(
+				Long dataRecordCollectionId, String operation,
+				DataRecordCollectionPermission dataRecordCollectionPermission)
 			throws Exception {
 
 			HttpInvoker.HttpResponse httpResponse =
@@ -932,7 +928,7 @@ public interface DataRecordCollectionResource {
 			}
 
 			try {
-				return Page.of(content, Permission::toDTO);
+				return;
 			}
 			catch (Exception e) {
 				_logger.log(
@@ -991,7 +987,7 @@ public interface DataRecordCollectionResource {
 			return httpInvoker.invoke();
 		}
 
-		public Page<Permission> postSiteDataRecordCollectionPermission(
+		public void postSiteDataRecordCollectionPermission(
 				Long siteId, String operation,
 				DataRecordCollectionPermission dataRecordCollectionPermission)
 			throws Exception {
@@ -1026,7 +1022,7 @@ public interface DataRecordCollectionResource {
 			}
 
 			try {
-				return Page.of(content, Permission::toDTO);
+				return;
 			}
 			catch (Exception e) {
 				_logger.log(

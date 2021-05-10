@@ -39,9 +39,11 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.test.util.RoleTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -605,12 +607,56 @@ public abstract class BaseDataLayoutResourceTestCase {
 
 	@Test
 	public void testPostDataLayoutDataLayoutPermission() throws Exception {
-		Assert.assertTrue(false);
+		@SuppressWarnings("PMD.UnusedLocalVariable")
+		DataLayout dataLayout =
+			testPostDataLayoutDataLayoutPermission_addDataLayout();
+
+		com.liferay.portal.kernel.model.Role role = RoleTestUtil.addRole(
+			RoleConstants.TYPE_REGULAR);
+
+		assertHttpResponseStatusCode(
+			204,
+			dataLayoutResource.postDataLayoutDataLayoutPermissionHttpResponse(
+				dataLayout.getId(), null, null));
+
+		assertHttpResponseStatusCode(
+			404,
+			dataLayoutResource.postDataLayoutDataLayoutPermissionHttpResponse(
+				0L, null, null));
+	}
+
+	protected DataLayout testPostDataLayoutDataLayoutPermission_addDataLayout()
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
 	}
 
 	@Test
 	public void testPostSiteDataLayoutPermission() throws Exception {
-		Assert.assertTrue(false);
+		@SuppressWarnings("PMD.UnusedLocalVariable")
+		DataLayout dataLayout =
+			testPostSiteDataLayoutPermission_addDataLayout();
+
+		com.liferay.portal.kernel.model.Role role = RoleTestUtil.addRole(
+			RoleConstants.TYPE_REGULAR);
+
+		assertHttpResponseStatusCode(
+			204,
+			dataLayoutResource.postSiteDataLayoutPermissionHttpResponse(
+				dataLayout.getSiteId(), null, null));
+
+		assertHttpResponseStatusCode(
+			404,
+			dataLayoutResource.postSiteDataLayoutPermissionHttpResponse(
+				dataLayout.getSiteId(), null, null));
+	}
+
+	protected DataLayout testPostSiteDataLayoutPermission_addDataLayout()
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
 	}
 
 	@Test

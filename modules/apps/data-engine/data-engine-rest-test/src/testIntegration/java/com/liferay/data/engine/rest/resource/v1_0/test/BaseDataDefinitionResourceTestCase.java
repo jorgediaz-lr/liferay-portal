@@ -40,9 +40,11 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.test.util.RoleTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -368,12 +370,60 @@ public abstract class BaseDataDefinitionResourceTestCase {
 	public void testPostDataDefinitionDataDefinitionPermission()
 		throws Exception {
 
-		Assert.assertTrue(false);
+		@SuppressWarnings("PMD.UnusedLocalVariable")
+		DataDefinition dataDefinition =
+			testPostDataDefinitionDataDefinitionPermission_addDataDefinition();
+
+		com.liferay.portal.kernel.model.Role role = RoleTestUtil.addRole(
+			RoleConstants.TYPE_REGULAR);
+
+		assertHttpResponseStatusCode(
+			204,
+			dataDefinitionResource.
+				postDataDefinitionDataDefinitionPermissionHttpResponse(
+					dataDefinition.getId(), null, null));
+
+		assertHttpResponseStatusCode(
+			404,
+			dataDefinitionResource.
+				postDataDefinitionDataDefinitionPermissionHttpResponse(
+					0L, null, null));
+	}
+
+	protected DataDefinition
+			testPostDataDefinitionDataDefinitionPermission_addDataDefinition()
+		throws Exception {
+
+		return dataDefinitionResource.postSiteDataDefinition(
+			testGroup.getGroupId(), randomDataDefinition());
 	}
 
 	@Test
 	public void testPostSiteDataDefinitionPermission() throws Exception {
-		Assert.assertTrue(false);
+		@SuppressWarnings("PMD.UnusedLocalVariable")
+		DataDefinition dataDefinition =
+			testPostSiteDataDefinitionPermission_addDataDefinition();
+
+		com.liferay.portal.kernel.model.Role role = RoleTestUtil.addRole(
+			RoleConstants.TYPE_REGULAR);
+
+		assertHttpResponseStatusCode(
+			204,
+			dataDefinitionResource.postSiteDataDefinitionPermissionHttpResponse(
+				dataDefinition.getSiteId(), null, null));
+
+		assertHttpResponseStatusCode(
+			404,
+			dataDefinitionResource.postSiteDataDefinitionPermissionHttpResponse(
+				dataDefinition.getSiteId(), null, null));
+	}
+
+	protected DataDefinition
+			testPostSiteDataDefinitionPermission_addDataDefinition()
+		throws Exception {
+
+		return dataDefinitionResource.postSiteDataDefinition(
+			testGroup.getGroupId(), randomDataDefinition());
 	}
 
 	@Test
