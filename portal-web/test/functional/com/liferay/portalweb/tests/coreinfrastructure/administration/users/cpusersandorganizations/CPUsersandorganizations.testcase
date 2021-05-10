@@ -1094,6 +1094,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-130750."
+	@ignore = "true"
 	@priority = "2"
 	test AssertRelevanceSortOptionDisplaysWhenSearching {
 		JSONUser.addUser(
