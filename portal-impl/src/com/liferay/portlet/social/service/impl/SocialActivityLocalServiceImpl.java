@@ -125,8 +125,12 @@ public class SocialActivityLocalServiceImpl
 		User user = _userPersistence.findByPrimaryKey(userId);
 		long classNameId = _classNameLocalService.getClassNameId(className);
 
+		long companyId = user.getCompanyId();
+
 		if (groupId > 0) {
 			Group group = _groupLocalService.getGroup(groupId);
+
+			companyId = group.getCompanyId();
 
 			if (group.isLayout()) {
 				Layout layout = _layoutLocalService.getLayout(
@@ -139,7 +143,7 @@ public class SocialActivityLocalServiceImpl
 		final SocialActivity activity = socialActivityPersistence.create(0);
 
 		activity.setGroupId(groupId);
-		activity.setCompanyId(user.getCompanyId());
+		activity.setCompanyId(companyId);
 		activity.setUserId(user.getUserId());
 		activity.setCreateDate(createDate.getTime());
 		activity.setMirrorActivityId(0);
@@ -170,7 +174,7 @@ public class SocialActivityLocalServiceImpl
 			mirrorActivity = socialActivityPersistence.create(0);
 
 			mirrorActivity.setGroupId(groupId);
-			mirrorActivity.setCompanyId(user.getCompanyId());
+			mirrorActivity.setCompanyId(companyId);
 			mirrorActivity.setUserId(receiverUserId);
 			mirrorActivity.setCreateDate(createDate.getTime());
 			mirrorActivity.setClassNameId(classNameId);
