@@ -50,11 +50,10 @@ Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat("MMMM dd, yyyy
 			}
 
 			String curProductPurchaseKey = StringPool.BLANK;
-			String licenseKeysGenerated = StringPool.BLANK;
+			String licenseKeysGenerated = StringPool.DASH;
 			String sizing = StringPool.DASH;
-
-			Calendar startDateCal = Calendar.getInstance();
-			Calendar expirationDateCal = Calendar.getInstance();
+			String startDate = StringPool.DASH;
+			String endDate = StringPool.DASH;
 
 			if (productPurchaseDisplay != null) {
 				curProductPurchaseKey = productPurchaseDisplay.getKey();
@@ -63,30 +62,34 @@ Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat("MMMM dd, yyyy
 				licenseKeysGenerated = productPurchaseDisplay.getProvisionedCount() + " / " + productPurchaseDisplay.getQuantity();
 
 				if (productPurchaseDisplay.getStartDate() != null) {
-					startDateCal.setTime(productPurchaseDisplay.getStartDate());
+					Calendar calendar = Calendar.getInstance();
+
+					calendar.setTime(productPurchaseDisplay.getStartDate());
+
+					startDate = dateFormat.format(calendar.getTime());
 				}
 
 				if (productPurchaseDisplay.getEndDate() != null) {
-					expirationDateCal.setTime(productPurchaseDisplay.getEndDate());
+					Calendar calendar = Calendar.getInstance();
+
+					calendar.setTime(productPurchaseDisplay.getEndDate());
+
+					endDate = dateFormat.format(calendar.getTime());
 				}
 			}
 			else {
 				licenseKeysGenerated = detachedLicenseKeysCount;
-				sizing = licenseKey.getSizing();
-
-				startDateCal.setTime(licenseKey.getStartDate());
-				expirationDateCal.setTime(licenseKey.getExpirationDate());
 			}
 			%>
 
 			<liferay-ui:search-container-column-text
-				name="start-date"
-				value="<%= dateFormat.format(startDateCal.getTime()) %>"
+				name="subscription-start-date"
+				value="<%= startDate %>"
 			/>
 
 			<liferay-ui:search-container-column-text
-				name="expiration-date"
-				value="<%= dateFormat.format(expirationDateCal.getTime()) %>"
+				name="subscription-end-date"
+				value="<%= endDate %>"
 			/>
 
 			<liferay-ui:search-container-column-text
