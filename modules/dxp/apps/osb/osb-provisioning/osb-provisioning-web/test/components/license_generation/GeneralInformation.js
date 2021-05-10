@@ -169,6 +169,33 @@ describe('GeneralInformation', () => {
 		expect(getByLabelText('version').disabled).toBeTruthy();
 	});
 
+	it('groups the purchased products inside the Product dropdown', () => {
+		const {container, getByLabelText} = renderGeneralInformation({
+			accountName: 'Test Account',
+			licensableProducts,
+			purchasedProducts
+		});
+
+		fireEvent.click(getByLabelText('product'));
+
+		expect(
+			container.querySelector('optgroup[label="purchased"]')
+		).toBeTruthy();
+	});
+
+	it('groups the not purchased products inside the Product dropdown', () => {
+		const {container, getByLabelText} = renderGeneralInformation({
+			accountName: 'Test Account',
+			licensableProducts
+		});
+
+		fireEvent.click(getByLabelText('product'));
+
+		expect(
+			container.querySelector('optgroup[label="not-purchased"]')
+		).toBeTruthy();
+	});
+
 	it('populates the Version select with options based on the Product selected', () => {
 		const {getByLabelText, getByText} = renderGeneralInformation({
 			accountName: 'Test Account',

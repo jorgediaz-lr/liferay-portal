@@ -10,6 +10,7 @@
  */
 
 import capitalize from 'lodash.capitalize';
+import partition from 'lodash.partition';
 import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
 
@@ -190,25 +191,12 @@ function GeneralInformation({
 								value={product.productKey}
 							>
 								{!!licensableProducts.length && (
-									<>
-										<option value=""></option>
-										{licensableProducts.map(
-											availableProduct => (
-												<option
-													key={
-														availableProduct.productKey
-													}
-													value={
-														availableProduct.productKey
-													}
-												>
-													{
-														availableProduct.productName
-													}
-												</option>
-											)
+									<ProductDropdown
+										products={licensableProducts}
+										purchased={Object.keys(
+											purchasedProducts
 										)}
-									</>
+									/>
 								)}
 							</select>
 						</div>
@@ -297,6 +285,44 @@ function GeneralInformation({
 
 				<CancelLink redirect={redirect} />
 			</div>
+		</>
+	);
+}
+
+function ProductDropdown({products, purchased = []}) {
+	const [purchasedProducts, notPurchasedProducts] = partition(
+		products,
+		({productKey}) => purchased.find(item => item === productKey)
+	);
+
+	return (
+		<>
+			<option value=""></option>
+			{!!purchasedProducts.length && (
+				<optgroup label={Liferay.Language.get('purchased')}>
+					{purchasedProducts.map(product => (
+						<option
+							key={product.productKey}
+							value={product.productKey}
+						>
+							{product.productName}
+						</option>
+					))}
+				</optgroup>
+			)}
+
+			{!!notPurchasedProducts.length && (
+				<optgroup label={Liferay.Language.get('not-purchased')}>
+					{notPurchasedProducts.map(product => (
+						<option
+							key={product.productKey}
+							value={product.productKey}
+						>
+							{product.productName}
+						</option>
+					))}
+				</optgroup>
+			)}
 		</>
 	);
 }
