@@ -62,19 +62,11 @@ Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat("MMMM dd, yyyy
 				licenseKeysGenerated = productPurchaseDisplay.getProvisionedCount() + " / " + productPurchaseDisplay.getQuantity();
 
 				if (productPurchaseDisplay.getStartDate() != null) {
-					Calendar calendar = Calendar.getInstance();
-
-					calendar.setTime(productPurchaseDisplay.getStartDate());
-
-					startDate = dateFormat.format(calendar.getTime());
+					startDate = dateFormat.format(productPurchaseDisplay.getStartDate());
 				}
 
 				if (productPurchaseDisplay.getEndDate() != null) {
-					Calendar calendar = Calendar.getInstance();
-
-					calendar.setTime(productPurchaseDisplay.getEndDate());
-
-					endDate = dateFormat.format(calendar.getTime());
+					endDate = dateFormat.format(productPurchaseDisplay.getEndDate());
 				}
 			}
 			else {
