@@ -233,7 +233,7 @@ function SpecificDetails({addLicenseKeyURL, redirect}) {
 									<input
 										className="form-control"
 										id="maxHttpSessions"
-										readOnly="true"
+										readOnly={true}
 										type="number"
 										value={maxHttpSessions}
 									/>
