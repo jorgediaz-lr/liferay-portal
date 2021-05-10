@@ -30,9 +30,6 @@ import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
-import com.liferay.portal.vulcan.permission.Permission;
-
-import java.util.Collections;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -135,10 +132,9 @@ public class DataRecordCollectionResourceImpl
 	}
 
 	@Override
-	public Page<Permission>
-			postDataRecordCollectionDataRecordCollectionPermission(
-				Long dataRecordCollectionId, String operation,
-				DataRecordCollectionPermission dataRecordCollectionPermission)
+	public void postDataRecordCollectionDataRecordCollectionPermission(
+			Long dataRecordCollectionId, String operation,
+			DataRecordCollectionPermission dataRecordCollectionPermission)
 		throws Exception {
 
 		CommonDataRecordCollectionResource<DataRecordCollection>
@@ -164,12 +160,10 @@ public class DataRecordCollectionResourceImpl
 				GetterUtil.getBoolean(
 					dataRecordCollectionPermission.getViewDataRecord()),
 				operation, dataRecordCollectionPermission.getRoleNames());
-
-		return Page.of(Collections.<Permission>emptyList());
 	}
 
 	@Override
-	public Page<Permission> postSiteDataRecordCollectionPermission(
+	public void postSiteDataRecordCollectionPermission(
 			Long siteId, String operation,
 			DataRecordCollectionPermission dataRecordCollectionPermission)
 		throws Exception {
@@ -188,8 +182,6 @@ public class DataRecordCollectionResourceImpl
 					dataRecordCollectionPermission.getDefinePermissions()),
 				operation, dataRecordCollectionPermission.getRoleNames(),
 				siteId);
-
-		return Page.of(Collections.<Permission>emptyList());
 	}
 
 	@Override

@@ -60,12 +60,10 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
-import com.liferay.portal.vulcan.permission.Permission;
 import com.liferay.portal.vulcan.resource.EntityModelResource;
 import com.liferay.portal.vulcan.util.SearchUtil;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.validation.ValidationException;
@@ -297,8 +295,7 @@ public class DataLayoutResourceImpl
 		return dataLayout;
 	}
 
-	@Override
-	public Page<Permission> postDataLayoutDataLayoutPermission(
+	public void postDataLayoutDataLayoutPermission(
 			Long dataLayoutId, String operation,
 			DataLayoutPermission dataLayoutPermission)
 		throws Exception {
@@ -324,7 +321,7 @@ public class DataLayoutResourceImpl
 		}
 
 		if (actionIds.isEmpty()) {
-			return Page.of(Collections.<Permission>emptyList());
+			return;
 		}
 
 		DataEnginePermissionUtil.persistModelPermission(
@@ -332,12 +329,10 @@ public class DataLayoutResourceImpl
 			DataLayoutConstants.RESOURCE_NAME, _resourcePermissionLocalService,
 			_roleLocalService, dataLayoutPermission.getRoleNames(),
 			ddmStructureLayout.getGroupId());
-
-		return Page.of(Collections.<Permission>emptyList());
 	}
 
 	@Override
-	public Page<Permission> postSiteDataLayoutPermission(
+	public void postSiteDataLayoutPermission(
 			Long siteId, String operation,
 			DataLayoutPermission dataLayoutPermission)
 		throws Exception {
@@ -358,15 +353,13 @@ public class DataLayoutResourceImpl
 		}
 
 		if (actionIds.isEmpty()) {
-			return Page.of(Collections.<Permission>emptyList());
+			return;
 		}
 
 		DataEnginePermissionUtil.persistPermission(
 			actionIds, contextCompany, operation,
 			_resourcePermissionLocalService, _roleLocalService,
 			dataLayoutPermission.getRoleNames());
-
-		return Page.of(Collections.<Permission>emptyList());
 	}
 
 	@Override
