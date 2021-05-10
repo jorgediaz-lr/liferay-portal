@@ -90,12 +90,6 @@ function SpecificDetails({addLicenseKeyURL, redirect}) {
 		updateLicense(license => license.set('showSpecificDetails', false));
 	}
 
-	function handleMaxHttpSessionsChange(event) {
-		updateLicense(license =>
-			license.set('maxHttpSessions', event.currentTarget.value)
-		);
-	}
-
 	function handleMaxServersChange(event) {
 		updateLicense(license =>
 			license.set('maxServers', event.currentTarget.value)
@@ -239,9 +233,7 @@ function SpecificDetails({addLicenseKeyURL, redirect}) {
 									<input
 										className="form-control"
 										id="maxHttpSessions"
-										max={10}
-										min={5}
-										onChange={handleMaxHttpSessionsChange}
+										readOnly="true"
 										type="number"
 										value={maxHttpSessions}
 									/>
