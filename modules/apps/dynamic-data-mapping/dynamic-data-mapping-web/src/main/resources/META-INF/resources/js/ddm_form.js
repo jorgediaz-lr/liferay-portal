@@ -3665,7 +3665,7 @@ AUI.add(
 
 					instance.after({
 						'liferay-ddm-field:render':
-							instance._afterRenderTextHTMLField,
+							instance._afterRenderTextHTMLField
 					});
 				},
 
