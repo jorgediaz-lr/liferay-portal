@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.search.IndexerRegistry;
 import com.liferay.portal.kernel.search.QueryConfig;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.Sort;
+import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.trash.TrashHandler;
 import com.liferay.portal.kernel.trash.TrashHandlerRegistryUtil;
 import com.liferay.portal.kernel.trash.TrashRenderer;
@@ -117,7 +118,15 @@ public class TrashEntryLocalServiceImpl extends TrashEntryLocalServiceBaseImpl {
 
 		User user = userLocalService.getUserById(userId);
 
-		trashEntry.setCompanyId(user.getCompanyId());
+		long companyId = user.getCompanyId();
+
+		Group group = _groupLocalService.fetchGroup(groupId);
+
+		if (group != null) {
+			companyId = group.getCompanyId();
+		}
+
+		trashEntry.setCompanyId(companyId);
 		trashEntry.setUserId(user.getUserId());
 		trashEntry.setUserName(user.getFullName());
 
@@ -528,6 +537,9 @@ public class TrashEntryLocalServiceImpl extends TrashEntryLocalServiceBaseImpl {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		TrashEntryLocalServiceImpl.class);
+
+	@Reference
+	private GroupLocalService _groupLocalService;
 
 	@Reference
 	private IndexerRegistry _indexerRegistry;
