@@ -24,6 +24,12 @@ ViewContactDisplayContext viewContactDisplayContext = ProvisioningWebComponentPr
 viewContactDisplayContext.addPortletBreadcrumbEntries();
 
 String tabs1 = ParamUtil.getString(request, "tabs1");
+
+String tabNames = "accounts,entitlements";
+
+if (viewContactDisplayContext.hasEditPermission()) {
+	tabNames = "accounts,general,entitlements";
+}
 %>
 
 <liferay-util:include page="/users/view_contact_header.jsp" servletContext="<%= application %>" />
@@ -31,7 +37,7 @@ String tabs1 = ParamUtil.getString(request, "tabs1");
 <div class="contact" id="contact">
 	<div class="contact-content">
 		<liferay-ui:tabs
-			names="accounts,general,entitlements"
+			names="<%= tabNames %>"
 			portletURL="<%= viewContactDisplayContext.getPortletURL() %>"
 		/>
 

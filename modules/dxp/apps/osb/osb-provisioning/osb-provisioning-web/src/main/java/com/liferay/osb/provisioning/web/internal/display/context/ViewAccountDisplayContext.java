@@ -43,6 +43,7 @@ import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamRoleWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamWebService;
 import com.liferay.osb.provisioning.license.service.LicenseKeyLocalService;
+import com.liferay.osb.provisioning.web.internal.permission.AccountsPermissionChecker;
 import com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -188,6 +189,8 @@ public class ViewAccountDisplayContext {
 
 		data.put("tierNames", tierNames);
 
+		data.put("hasEditAccountPermission", hasEditPermission());
+
 		return data;
 	}
 
@@ -230,7 +233,11 @@ public class ViewAccountDisplayContext {
 		return countryWebService.getCountries();
 	}
 
-	public CreationMenu getCreationMenu() {
+	public CreationMenu getCreationMenu() throws Exception {
+		if (!hasEditPermission()) {
+			return null;
+		}
+
 		return new CreationMenu() {
 			{
 				addDropdownItem(
@@ -364,6 +371,15 @@ public class ViewAccountDisplayContext {
 					userLocalService.fetchUserByUuidAndCompanyId(
 						note.getCreatorUID(), themeDisplay.getCompanyId()))));
 
+		data.put(
+			"hasEditNotesPermission",
+			_hasEditPermission(ProvisioningActionKeys.UPDATE_NOTES));
+		data.put(
+			"hasEditSalesInfoPermission",
+			_hasEditPermission(ProvisioningActionKeys.UPDATE_SALES_INFO));
+
+		data.put("hasEditAccountPermission", hasEditPermission());
+
 		return data;
 	}
 
@@ -483,6 +499,10 @@ public class ViewAccountDisplayContext {
 			data.put("updateLanguageIdURL", updateLanguageIdURL.toString());
 		}
 
+		data.put(
+			"hasEditInstructionsPermission",
+			_hasEditPermission(ProvisioningActionKeys.UPDATE_INSTRUCTIONS));
+
 		data.put("instructions", _getSupportInstructions(accountEntry));
 		data.put("language", _getSupportLanguage(accountEntry));
 		data.put("languageList", _getLanguageList());
@@ -504,6 +524,8 @@ public class ViewAccountDisplayContext {
 		updateAccountURL.setParameter("accountKey", account.getKey());
 
 		data.put("updateAccountURL", updateAccountURL.toString());
+
+		data.put("hasEditAccountPermission", hasEditPermission());
 
 		return data;
 	}
@@ -551,6 +573,14 @@ public class ViewAccountDisplayContext {
 		tabsNames.add(getTabName("all", allProductPurchaseViewsCount));
 
 		return StringUtil.merge(tabsNames);
+	}
+
+	public boolean hasEditContactsPermission() throws Exception {
+		return _hasEditPermission(ProvisioningActionKeys.UPDATE_CONTACTS);
+	}
+
+	public boolean hasEditPermission() throws Exception {
+		return _hasEditPermission(ProvisioningActionKeys.UPDATE_ACCOUNTS);
 	}
 
 	public void init(
@@ -938,6 +968,11 @@ public class ViewAccountDisplayContext {
 		sb.append("))");
 
 		return sb.toString();
+	}
+
+	private boolean _hasEditPermission(String actionId) throws Exception {
+		return AccountsPermissionChecker.contains(
+			themeDisplay.getPermissionChecker(), actionId);
 	}
 
 }

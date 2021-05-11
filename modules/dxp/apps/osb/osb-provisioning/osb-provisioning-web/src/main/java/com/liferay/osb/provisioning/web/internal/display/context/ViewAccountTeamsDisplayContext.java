@@ -36,7 +36,11 @@ public class ViewAccountTeamsDisplayContext extends ViewAccountDisplayContext {
 	public ViewAccountTeamsDisplayContext() {
 	}
 
-	public CreationMenu getCreationMenu() {
+	public CreationMenu getCreationMenu() throws Exception {
+		if (!hasEditPermission()) {
+			return null;
+		}
+
 		return new CreationMenu() {
 			{
 				addDropdownItem(

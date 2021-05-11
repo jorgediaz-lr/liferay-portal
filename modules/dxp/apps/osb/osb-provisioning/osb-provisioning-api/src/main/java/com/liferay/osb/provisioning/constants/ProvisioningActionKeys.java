@@ -19,8 +19,23 @@ package com.liferay.osb.provisioning.constants;
  */
 public class ProvisioningActionKeys {
 
+	public static final String UPDATE_ACCOUNTS = "UPDATE_ACCOUNTS";
+
+	public static final String UPDATE_CONTACTS = "UPDATE_CONTACTS";
+
 	public static final String UPDATE_INSTRUCTIONS = "UPDATE_INSTRUCTIONS";
 
 	public static final String UPDATE_LANGUAGE_ID = "UPDATE_LANGUAGE_ID";
+
+	public static final String UPDATE_NOTES = "UPDATE_NOTES";
+
+	public static final String UPDATE_PRODUCT_BUNDLES =
+		"UPDATE_PRODUCT_BUNDLES";
+
+	public static final String UPDATE_PRODUCTS = "UPDATE_PRODUCTS";
+
+	public static final String UPDATE_SALES_INFO = "UPDATE_SALES_INFO";
+
+	public static final String UPDATE_USERS = "UPDATE_USERS";
 
 }

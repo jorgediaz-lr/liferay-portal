@@ -18,6 +18,7 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Country;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
+import com.liferay.osb.provisioning.constants.ProvisioningActionKeys;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.identity.management.provider.IdentityProvider;
 import com.liferay.osb.provisioning.koroneiki.constants.EntitlementConstants;
@@ -29,6 +30,7 @@ import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.CountryWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamRoleWebService;
+import com.liferay.osb.provisioning.web.internal.permission.AccountsPermissionChecker;
 import com.liferay.osb.provisioning.web.internal.search.AccountSearch;
 import com.liferay.osb.provisioning.web.internal.search.AccountSearchTerms;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
@@ -89,6 +91,9 @@ public class AccountSearchDisplayContext {
 
 		_currentURLObj = PortletURLUtil.getCurrent(
 			_renderRequest, _renderResponse);
+
+		_themeDisplay = (ThemeDisplay)_httpServletRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
 	}
 
 	public String getClearResultsURL() {
@@ -248,6 +253,12 @@ public class AccountSearchDisplayContext {
 		return _accountSearch;
 	}
 
+	public boolean hasEditPermission() throws Exception {
+		return AccountsPermissionChecker.contains(
+			_themeDisplay.getPermissionChecker(),
+			ProvisioningActionKeys.UPDATE_ACCOUNTS);
+	}
+
 	private String _getCreatedByUuid(String createdByEmailAddress)
 		throws Exception {
 
@@ -255,12 +266,8 @@ public class AccountSearchDisplayContext {
 			return StringPool.BLANK;
 		}
 
-		ThemeDisplay themeDisplay =
-			(ThemeDisplay)_httpServletRequest.getAttribute(
-				WebKeys.THEME_DISPLAY);
-
 		User user = _userLocalService.fetchUserByEmailAddress(
-			themeDisplay.getCompanyId(), createdByEmailAddress);
+			_themeDisplay.getCompanyId(), createdByEmailAddress);
 
 		if (user != null) {
 			return user.getUuid();
@@ -316,6 +323,7 @@ public class AccountSearchDisplayContext {
 	private final RenderResponse _renderResponse;
 	private Set<String> _subscriptionProductKeys;
 	private final TeamRoleWebService _teamRoleWebService;
+	private final ThemeDisplay _themeDisplay;
 	private final UserLocalService _userLocalService;
 
 }

@@ -1,0 +1,102 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package com.liferay.osb.provisioning.web.internal.permission;
+
+import com.liferay.osb.provisioning.constants.ProvisioningActionKeys;
+import com.liferay.osb.provisioning.constants.RoleConstants;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.service.RoleLocalService;
+import com.liferay.portal.kernel.util.ArrayUtil;
+
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
+/**
+ * @author Jenny Chen
+ */
+@Component(immediate = true, service = {})
+public class AccountsPermissionChecker {
+
+	public static boolean contains(
+			PermissionChecker permissionChecker, String actionId)
+		throws PortalException {
+
+		if (permissionChecker.isOmniadmin()) {
+			return true;
+		}
+
+		long userId = permissionChecker.getUserId();
+		long companyId = permissionChecker.getCompanyId();
+
+		if (_roleLocalService.hasUserRole(
+				userId, companyId, RoleConstants.PROVISIONING_ADMIN, true)) {
+
+			return true;
+		}
+
+		if (_roleLocalService.hasUserRole(
+				userId, companyId, RoleConstants.PROVISIONING_WORKER, true) &&
+			ArrayUtil.contains(_PROVISIONING_WORKER_ACTION_IDS, actionId)) {
+
+			return true;
+		}
+
+		if (_roleLocalService.hasUserRole(
+				userId, companyId, RoleConstants.PROVISIONING_WATCHER, true) &&
+			ArrayUtil.contains(_PROVISIONING_WATCHER_ACTION_IDS, actionId)) {
+
+			return true;
+		}
+
+		if (_roleLocalService.hasUserRole(
+				userId, companyId, RoleConstants.PROVISIONING_CONTACT_WORKER,
+				true) &&
+			ArrayUtil.contains(
+				_PROVISIONING_CONTACT_WORKER_ACTION_IDS, actionId)) {
+
+			return true;
+		}
+
+		return false;
+	}
+
+	@Reference(unbind = "-")
+	protected void setRoleLocalService(RoleLocalService roleLocalService) {
+		_roleLocalService = roleLocalService;
+	}
+
+	private static final String[] _PROVISIONING_CONTACT_WORKER_ACTION_IDS = {
+		ProvisioningActionKeys.UPDATE_CONTACTS
+	};
+
+	private static final String[] _PROVISIONING_WATCHER_ACTION_IDS = {
+		ProvisioningActionKeys.UPDATE_INSTRUCTIONS,
+		ProvisioningActionKeys.UPDATE_NOTES,
+		ProvisioningActionKeys.UPDATE_SALES_INFO
+	};
+
+	private static final String[] _PROVISIONING_WORKER_ACTION_IDS = {
+		ProvisioningActionKeys.UPDATE_ACCOUNTS,
+		ProvisioningActionKeys.UPDATE_CONTACTS,
+		ProvisioningActionKeys.UPDATE_INSTRUCTIONS,
+		ProvisioningActionKeys.UPDATE_LANGUAGE_ID,
+		ProvisioningActionKeys.UPDATE_NOTES,
+		ProvisioningActionKeys.UPDATE_SALES_INFO
+	};
+
+	private static RoleLocalService _roleLocalService;
+
+}

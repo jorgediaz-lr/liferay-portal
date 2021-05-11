@@ -15,10 +15,14 @@
 package com.liferay.osb.provisioning.web.internal.display.context;
 
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
+import com.liferay.osb.provisioning.constants.ProvisioningActionKeys;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
+import com.liferay.osb.provisioning.web.internal.permission.ProductsPermissionChecker;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
 import java.util.Collections;
@@ -68,6 +72,16 @@ public class ProductSearchDisplayContext {
 		searchContainer.setTotal(count);
 
 		return searchContainer;
+	}
+
+	public boolean hasEditPermission() throws Exception {
+		ThemeDisplay themeDisplay =
+			(ThemeDisplay)_httpServletRequest.getAttribute(
+				WebKeys.THEME_DISPLAY);
+
+		return ProductsPermissionChecker.contains(
+			themeDisplay.getPermissionChecker(),
+			ProvisioningActionKeys.UPDATE_PRODUCTS);
 	}
 
 	private final HttpServletRequest _httpServletRequest;

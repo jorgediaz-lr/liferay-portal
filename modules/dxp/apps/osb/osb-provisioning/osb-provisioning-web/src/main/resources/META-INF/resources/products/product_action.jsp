@@ -28,11 +28,13 @@ ProductDisplay productDisplay = (ProductDisplay)row.getObject();
 	markupView="lexicon"
 	message="<%= StringPool.BLANK %>"
 >
-	<liferay-ui:icon-delete
-		confirmation="are-you-sure-you-want-to-delete-this-product"
-		icon="trash"
-		label="<%= false %>"
-		showIcon="<%= true %>"
-		url="<%= productDisplay.getDeleteProductURL() %>"
-	/>
+	<c:if test="<%= productDisplay.hasEditPermission() %>">
+		<liferay-ui:icon-delete
+			confirmation="are-you-sure-you-want-to-delete-this-product"
+			icon="trash"
+			label="<%= false %>"
+			showIcon="<%= true %>"
+			url="<%= productDisplay.getDeleteProductURL() %>"
+		/>
+	</c:if>
 </liferay-ui:icon-menu>

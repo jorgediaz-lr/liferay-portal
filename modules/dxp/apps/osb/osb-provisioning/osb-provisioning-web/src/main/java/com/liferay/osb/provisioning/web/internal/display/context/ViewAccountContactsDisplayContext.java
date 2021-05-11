@@ -83,7 +83,11 @@ public class ViewAccountContactsDisplayContext
 		return "assign-contact";
 	}
 
-	public CreationMenu getCreationMenu() {
+	public CreationMenu getCreationMenu() throws Exception {
+		if (!hasEditContactsPermission()) {
+			return null;
+		}
+
 		return new CreationMenu() {
 			{
 				addDropdownItem(

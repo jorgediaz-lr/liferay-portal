@@ -30,11 +30,13 @@ ProductSearchDisplayContext productSearchDisplayContext = ProvisioningWebCompone
 <div class="title-bar">
 	<h3><liferay-ui:message key="products" /></h3>
 
-	<a aria-label="<%= LanguageUtil.get(request, "new-product") %>" class="btn btn-primary nav-btn nav-btn-monospaced" href="<%= editProductURL %>" title="<%= LanguageUtil.get(request, "new-product") %>">
-		<svg class="lexicon-icon lexicon-icon-plus" focusable="false" role="presentation">
-			<use xlink:href="#plus" />
-		</svg>
-	</a>
+	<c:if test="<%= productSearchDisplayContext.hasEditPermission() %>">
+		<a aria-label="<%= LanguageUtil.get(request, "new-product") %>" class="btn btn-primary nav-btn nav-btn-monospaced" href="<%= editProductURL %>" title="<%= LanguageUtil.get(request, "new-product") %>">
+			<svg class="lexicon-icon lexicon-icon-plus" focusable="false" role="presentation">
+				<use xlink:href="#plus" />
+			</svg>
+		</a>
+	</c:if>
 </div>
 
 <div class="container-fluid home">
@@ -72,13 +74,13 @@ ProductSearchDisplayContext productSearchDisplayContext = ProvisioningWebCompone
 			</portlet:renderURL>
 
 			<liferay-ui:search-container-column-text
-				href="<%= rowURL %>"
+				href="<%= productSearchDisplayContext.hasEditPermission() ? rowURL : StringPool.BLANK %>"
 				name="name"
 				value="<%= HtmlUtil.escape(productDisplay.getName()) %>"
 			/>
 
 			<liferay-ui:search-container-column-text
-				href="<%= rowURL %>"
+				href="<%= productSearchDisplayContext.hasEditPermission() ? rowURL : StringPool.BLANK %>"
 				name="type"
 				value="<%= productDisplay.getType() %>"
 			/>

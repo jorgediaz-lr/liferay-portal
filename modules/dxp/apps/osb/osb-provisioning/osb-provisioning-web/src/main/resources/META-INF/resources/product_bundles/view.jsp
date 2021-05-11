@@ -18,6 +18,10 @@
 
 <liferay-util:include page="/common/view_account_search_header.jsp" servletContext="<%= application %>" />
 
+<%
+boolean hasEditPermission = ProductBundlesPermissionChecker.contains(permissionChecker, ProvisioningActionKeys.UPDATE_PRODUCT_BUNDLES);
+%>
+
 <portlet:renderURL var="editProductBundleURL">
 	<portlet:param name="mvcRenderCommandName" value="/product_bundles/edit_product_bundle" />
 	<portlet:param name="redirect" value="<%= currentURL %>" />
@@ -26,11 +30,13 @@
 <div class="title-bar">
 	<h3><liferay-ui:message key="product-bundles" /></h3>
 
-	<a aria-label="<%= LanguageUtil.get(request, "new-product-bundle") %>" class="btn btn-primary nav-btn nav-btn-monospaced" href="<%= editProductBundleURL %>" title="<%= LanguageUtil.get(request, "new-product-bundle") %>">
-		<svg class="lexicon-icon lexicon-icon-plus" focusable="false" role="presentation">
-			<use xlink:href="#plus" />
-		</svg>
-	</a>
+	<c:if test="<%= hasEditPermission %>">
+		<a aria-label="<%= LanguageUtil.get(request, "new-product-bundle") %>" class="btn btn-primary nav-btn nav-btn-monospaced" href="<%= editProductBundleURL %>" title="<%= LanguageUtil.get(request, "new-product-bundle") %>">
+			<svg class="lexicon-icon lexicon-icon-plus" focusable="false" role="presentation">
+				<use xlink:href="#plus" />
+			</svg>
+		</a>
+	</c:if>
 </div>
 
 <div class="container-fluid home">
@@ -65,15 +71,17 @@
 			</portlet:renderURL>
 
 			<liferay-ui:search-container-column-text
-				href="<%= rowURL %>"
+				href="<%= hasEditPermission ? rowURL : StringPool.BLANK %>"
 				name="name"
 				value="<%= productBundle.getName() %>"
 			/>
 
-			<liferay-ui:search-container-column-jsp
-				align="right"
-				path="/product_bundles/product_bundle_action.jsp"
-			/>
+			<c:if test="<%= hasEditPermission %>">
+				<liferay-ui:search-container-column-jsp
+					align="right"
+					path="/product_bundles/product_bundle_action.jsp"
+				/>
+			</c:if>
 		</liferay-ui:search-container-row>
 
 		<liferay-ui:search-iterator

@@ -18,12 +18,16 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.display.context.SearchCon
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenu;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
+import com.liferay.osb.provisioning.constants.ProvisioningActionKeys;
+import com.liferay.osb.provisioning.web.internal.permission.AccountsPermissionChecker;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.WebKeys;
 
 import java.util.List;
 
@@ -48,10 +52,21 @@ public class ViewProductPurchasesManagementToolbarDisplayContext
 			searchContainer);
 
 		_accountKey = accountKey;
+
+		_themeDisplay = (ThemeDisplay)httpServletRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
 	}
 
 	@Override
 	public List<DropdownItem> getActionDropdownItems() {
+		try {
+			if (!hasEditPermission()) {
+				return null;
+			}
+		}
+		catch (Exception exception) {
+		}
+
 		return new DropdownItemList() {
 			{
 				add(
@@ -81,6 +96,14 @@ public class ViewProductPurchasesManagementToolbarDisplayContext
 
 	@Override
 	public CreationMenu getCreationMenu() {
+		try {
+			if (!hasEditPermission()) {
+				return null;
+			}
+		}
+		catch (Exception exception) {
+		}
+
 		return new CreationMenu() {
 			{
 				addDropdownItem(
@@ -97,6 +120,13 @@ public class ViewProductPurchasesManagementToolbarDisplayContext
 		return searchActionURL.toString();
 	}
 
+	public boolean hasEditPermission() throws Exception {
+		return AccountsPermissionChecker.contains(
+			_themeDisplay.getPermissionChecker(),
+			ProvisioningActionKeys.UPDATE_ACCOUNTS);
+	}
+
 	private final String _accountKey;
+	private final ThemeDisplay _themeDisplay;
 
 }

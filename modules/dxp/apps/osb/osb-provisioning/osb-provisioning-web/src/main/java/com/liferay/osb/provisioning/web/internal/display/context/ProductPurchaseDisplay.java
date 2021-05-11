@@ -19,11 +19,15 @@ import com.liferay.osb.koroneiki.phloem.rest.client.constants.ExternalLinkEntity
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ExternalLink;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
+import com.liferay.osb.provisioning.constants.ProvisioningActionKeys;
+import com.liferay.osb.provisioning.web.internal.permission.AccountsPermissionChecker;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.WebKeys;
 
 import java.text.Format;
 
@@ -181,6 +185,16 @@ public class ProductPurchaseDisplay {
 		}
 
 		return sb.toString();
+	}
+
+	public boolean hasEditPermission() throws Exception {
+		ThemeDisplay themeDisplay =
+			(ThemeDisplay)_httpServletRequest.getAttribute(
+				WebKeys.THEME_DISPLAY);
+
+		return AccountsPermissionChecker.contains(
+			themeDisplay.getPermissionChecker(),
+			ProvisioningActionKeys.UPDATE_ACCOUNTS);
 	}
 
 	public boolean isPerpetual() {

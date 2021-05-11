@@ -18,18 +18,22 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
+import com.liferay.osb.provisioning.constants.ProvisioningActionKeys;
 import com.liferay.osb.provisioning.constants.ProvisioningWebKeys;
 import com.liferay.osb.provisioning.koroneiki.reader.AccountReader;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ContactRoleWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ContactWebService;
+import com.liferay.osb.provisioning.web.internal.permission.UsersPermissionChecker;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
 import java.util.ArrayList;
@@ -164,6 +168,12 @@ public class ViewContactDisplayContext {
 		return names;
 	}
 
+	public boolean hasEditPermission() throws Exception {
+		return UsersPermissionChecker.contains(
+			themeDisplay.getPermissionChecker(),
+			ProvisioningActionKeys.UPDATE_USERS);
+	}
+
 	public void init(
 			RenderRequest renderRequest, RenderResponse renderResponse,
 			HttpServletRequest httpServletRequest, AccountReader accountReader,
@@ -199,6 +209,9 @@ public class ViewContactDisplayContext {
 
 		currentURLObj = PortletURLUtil.getCurrent(
 			renderRequest, renderResponse);
+
+		themeDisplay = (ThemeDisplay)httpServletRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
 	}
 
 	protected AccountReader accountReader;
@@ -212,5 +225,6 @@ public class ViewContactDisplayContext {
 	protected HttpServletRequest httpServletRequest;
 	protected RenderRequest renderRequest;
 	protected RenderResponse renderResponse;
+	protected ThemeDisplay themeDisplay;
 
 }

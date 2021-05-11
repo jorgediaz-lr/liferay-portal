@@ -29,15 +29,17 @@ ProductPurchaseDisplay productPurchaseDisplay = (ProductPurchaseDisplay)row.getO
 	message="<%= StringPool.BLANK %>"
 	showWhenSingleIcon="<%= true %>"
 >
-	<portlet:renderURL var="editURL">
-		<portlet:param name="mvcRenderCommandName" value="/accounts/edit_product_purchases" />
-		<portlet:param name="redirect" value="<%= currentURL %>" />
-		<portlet:param name="accountKey" value="<%= productPurchaseDisplay.getAccountKey() %>" />
-		<portlet:param name="productPurchaseKeys" value="<%= productPurchaseDisplay.getKey() %>" />
-	</portlet:renderURL>
+	<c:if test="<%= productPurchaseDisplay.hasEditPermission() %>">
+		<portlet:renderURL var="editURL">
+			<portlet:param name="mvcRenderCommandName" value="/accounts/edit_product_purchases" />
+			<portlet:param name="redirect" value="<%= currentURL %>" />
+			<portlet:param name="accountKey" value="<%= productPurchaseDisplay.getAccountKey() %>" />
+			<portlet:param name="productPurchaseKeys" value="<%= productPurchaseDisplay.getKey() %>" />
+		</portlet:renderURL>
 
-	<liferay-ui:icon
-		message="edit"
-		url="<%= editURL %>"
-	/>
+		<liferay-ui:icon
+			message="edit"
+			url="<%= editURL %>"
+		/>
+	</c:if>
 </liferay-ui:icon-menu>

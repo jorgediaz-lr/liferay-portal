@@ -33,27 +33,29 @@ AccountDisplay accountDisplay = viewAccountDisplayContext.getAccountDisplay();
 	message="<%= StringPool.BLANK %>"
 	showWhenSingleIcon="<%= true %>"
 >
-	<portlet:renderURL var="editURL">
-		<portlet:param name="mvcRenderCommandName" value="/accounts/assign_contacts" />
-		<portlet:param name="redirect" value="<%= currentURL %>" />
-		<portlet:param name="accountKey" value="<%= accountDisplay.getKey() %>" />
-		<portlet:param name="emailAddress" value="<%= contactDisplay.getEmailAddress() %>" />
-	</portlet:renderURL>
+	<c:if test="<%= viewAccountDisplayContext.hasEditContactsPermission() %>">
+		<portlet:renderURL var="editURL">
+			<portlet:param name="mvcRenderCommandName" value="/accounts/assign_contacts" />
+			<portlet:param name="redirect" value="<%= currentURL %>" />
+			<portlet:param name="accountKey" value="<%= accountDisplay.getKey() %>" />
+			<portlet:param name="emailAddress" value="<%= contactDisplay.getEmailAddress() %>" />
+		</portlet:renderURL>
 
-	<liferay-ui:icon
-		message="edit"
-		url="<%= editURL %>"
-	/>
+		<liferay-ui:icon
+			message="edit"
+			url="<%= editURL %>"
+		/>
 
-	<portlet:actionURL name="/accounts/unassign_customer_contact" var="unassignURL">
-		<portlet:param name="redirect" value="<%= currentURL %>" />
-		<portlet:param name="accountKey" value="<%= accountDisplay.getKey() %>" />
-		<portlet:param name="emailAddress" value="<%= contactDisplay.getEmailAddress() %>" />
-	</portlet:actionURL>
+		<portlet:actionURL name="/accounts/unassign_customer_contact" var="unassignURL">
+			<portlet:param name="redirect" value="<%= currentURL %>" />
+			<portlet:param name="accountKey" value="<%= accountDisplay.getKey() %>" />
+			<portlet:param name="emailAddress" value="<%= contactDisplay.getEmailAddress() %>" />
+		</portlet:actionURL>
 
-	<liferay-ui:icon-delete
-		confirmation="are-you-sure-you-want-to-unassign-this-contact"
-		message="unassign"
-		url="<%= unassignURL %>"
-	/>
+		<liferay-ui:icon-delete
+			confirmation="are-you-sure-you-want-to-unassign-this-contact"
+			message="unassign"
+			url="<%= unassignURL %>"
+		/>
+	</c:if>
 </liferay-ui:icon-menu>

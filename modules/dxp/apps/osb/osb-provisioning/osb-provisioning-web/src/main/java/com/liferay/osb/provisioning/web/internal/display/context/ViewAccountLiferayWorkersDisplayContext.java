@@ -91,7 +91,11 @@ public class ViewAccountLiferayWorkersDisplayContext
 		return "assign-liferay-worker";
 	}
 
-	public CreationMenu getCreationMenu() {
+	public CreationMenu getCreationMenu() throws Exception {
+		if (!hasEditContactsPermission()) {
+			return null;
+		}
+
 		return new CreationMenu() {
 			{
 				addDropdownItem(
