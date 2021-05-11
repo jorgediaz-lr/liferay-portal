@@ -16,7 +16,7 @@ package com.liferay.osb.provisioning.web.internal.display.context;
 
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.osb.provisioning.constants.ProvisioningActionKeys;
-import com.liferay.osb.provisioning.web.internal.permission.ProductsPermissionChecker;
+import com.liferay.osb.provisioning.web.internal.permission.ProductPermissionChecker;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
@@ -98,9 +98,9 @@ public class ProductDisplay {
 			(ThemeDisplay)_httpServletRequest.getAttribute(
 				WebKeys.THEME_DISPLAY);
 
-		return ProductsPermissionChecker.contains(
+		return ProductPermissionChecker.contains(
 			themeDisplay.getPermissionChecker(),
-			ProvisioningActionKeys.UPDATE_PRODUCTS);
+			ProvisioningActionKeys.MANAGE_PRODUCTS);
 	}
 
 	private final HttpServletRequest _httpServletRequest;

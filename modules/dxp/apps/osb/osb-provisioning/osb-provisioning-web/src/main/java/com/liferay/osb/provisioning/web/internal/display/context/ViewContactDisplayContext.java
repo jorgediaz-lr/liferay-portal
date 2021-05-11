@@ -24,7 +24,7 @@ import com.liferay.osb.provisioning.koroneiki.reader.AccountReader;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ContactRoleWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ContactWebService;
-import com.liferay.osb.provisioning.web.internal.permission.UsersPermissionChecker;
+import com.liferay.osb.provisioning.web.internal.permission.ContactPermissionChecker;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -168,10 +168,10 @@ public class ViewContactDisplayContext {
 		return names;
 	}
 
-	public boolean hasEditPermission() throws Exception {
-		return UsersPermissionChecker.contains(
+	public boolean hasManageContactsPermission() throws Exception {
+		return ContactPermissionChecker.contains(
 			themeDisplay.getPermissionChecker(),
-			ProvisioningActionKeys.UPDATE_USERS);
+			ProvisioningActionKeys.MANAGE_CONTACTS);
 	}
 
 	public void init(
@@ -196,6 +196,8 @@ public class ViewContactDisplayContext {
 	protected void doInit() throws Exception {
 		contact = (Contact)renderRequest.getAttribute(
 			ProvisioningWebKeys.CONTACT);
+		themeDisplay = (ThemeDisplay)httpServletRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
 
 		List<ContactRole> contactRoles = null;
 
@@ -209,9 +211,6 @@ public class ViewContactDisplayContext {
 
 		currentURLObj = PortletURLUtil.getCurrent(
 			renderRequest, renderResponse);
-
-		themeDisplay = (ThemeDisplay)httpServletRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
 	}
 
 	protected AccountReader accountReader;

@@ -30,7 +30,7 @@ import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.CountryWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamRoleWebService;
-import com.liferay.osb.provisioning.web.internal.permission.AccountsPermissionChecker;
+import com.liferay.osb.provisioning.web.internal.permission.AccountPermissionChecker;
 import com.liferay.osb.provisioning.web.internal.search.AccountSearch;
 import com.liferay.osb.provisioning.web.internal.search.AccountSearchTerms;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
@@ -89,11 +89,11 @@ public class AccountSearchDisplayContext {
 		_teamRoleWebService = teamRoleWebService;
 		_userLocalService = userLocalService;
 
-		_currentURLObj = PortletURLUtil.getCurrent(
-			_renderRequest, _renderResponse);
-
 		_themeDisplay = (ThemeDisplay)_httpServletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
+
+		_currentURLObj = PortletURLUtil.getCurrent(
+			_renderRequest, _renderResponse);
 	}
 
 	public String getClearResultsURL() {
@@ -253,10 +253,10 @@ public class AccountSearchDisplayContext {
 		return _accountSearch;
 	}
 
-	public boolean hasEditPermission() throws Exception {
-		return AccountsPermissionChecker.contains(
+	public boolean hasManageAccountsPermission() throws Exception {
+		return AccountPermissionChecker.contains(
 			_themeDisplay.getPermissionChecker(),
-			ProvisioningActionKeys.UPDATE_ACCOUNTS);
+			ProvisioningActionKeys.MANAGE_ACCOUNTS);
 	}
 
 	private String _getCreatedByUuid(String createdByEmailAddress)

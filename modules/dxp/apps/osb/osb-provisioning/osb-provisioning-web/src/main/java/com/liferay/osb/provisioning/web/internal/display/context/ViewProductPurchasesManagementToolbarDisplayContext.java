@@ -19,7 +19,7 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenu;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
 import com.liferay.osb.provisioning.constants.ProvisioningActionKeys;
-import com.liferay.osb.provisioning.web.internal.permission.AccountsPermissionChecker;
+import com.liferay.osb.provisioning.web.internal.permission.AccountPermissionChecker;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
@@ -59,12 +59,8 @@ public class ViewProductPurchasesManagementToolbarDisplayContext
 
 	@Override
 	public List<DropdownItem> getActionDropdownItems() {
-		try {
-			if (!hasEditPermission()) {
-				return null;
-			}
-		}
-		catch (Exception exception) {
+		if (!_hasManageAccountsPermission()) {
+			return null;
 		}
 
 		return new DropdownItemList() {
@@ -96,12 +92,8 @@ public class ViewProductPurchasesManagementToolbarDisplayContext
 
 	@Override
 	public CreationMenu getCreationMenu() {
-		try {
-			if (!hasEditPermission()) {
-				return null;
-			}
-		}
-		catch (Exception exception) {
+		if (!_hasManageAccountsPermission()) {
+			return null;
 		}
 
 		return new CreationMenu() {
@@ -120,10 +112,15 @@ public class ViewProductPurchasesManagementToolbarDisplayContext
 		return searchActionURL.toString();
 	}
 
-	public boolean hasEditPermission() throws Exception {
-		return AccountsPermissionChecker.contains(
-			_themeDisplay.getPermissionChecker(),
-			ProvisioningActionKeys.UPDATE_ACCOUNTS);
+	private boolean _hasManageAccountsPermission() {
+		try {
+			return AccountPermissionChecker.contains(
+				_themeDisplay.getPermissionChecker(),
+				ProvisioningActionKeys.MANAGE_ACCOUNTS);
+		}
+		catch (Exception exception) {
+			return false;
+		}
 	}
 
 	private final String _accountKey;

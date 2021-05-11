@@ -19,7 +19,7 @@
 <liferay-util:include page="/common/view_account_search_header.jsp" servletContext="<%= application %>" />
 
 <%
-boolean hasEditPermission = ProductBundlesPermissionChecker.contains(permissionChecker, ProvisioningActionKeys.UPDATE_PRODUCT_BUNDLES);
+boolean hasManageProductBundlesPermission = ProductBundlePermissionChecker.contains(permissionChecker, ProvisioningActionKeys.MANAGE_PRODUCT_BUNDLES);
 %>
 
 <portlet:renderURL var="editProductBundleURL">
@@ -30,7 +30,7 @@ boolean hasEditPermission = ProductBundlesPermissionChecker.contains(permissionC
 <div class="title-bar">
 	<h3><liferay-ui:message key="product-bundles" /></h3>
 
-	<c:if test="<%= hasEditPermission %>">
+	<c:if test="<%= hasManageProductBundlesPermission %>">
 		<a aria-label="<%= LanguageUtil.get(request, "new-product-bundle") %>" class="btn btn-primary nav-btn nav-btn-monospaced" href="<%= editProductBundleURL %>" title="<%= LanguageUtil.get(request, "new-product-bundle") %>">
 			<svg class="lexicon-icon lexicon-icon-plus" focusable="false" role="presentation">
 				<use xlink:href="#plus" />
@@ -71,12 +71,12 @@ boolean hasEditPermission = ProductBundlesPermissionChecker.contains(permissionC
 			</portlet:renderURL>
 
 			<liferay-ui:search-container-column-text
-				href="<%= hasEditPermission ? rowURL : StringPool.BLANK %>"
+				href="<%= hasManageProductBundlesPermission ? rowURL : StringPool.BLANK %>"
 				name="name"
 				value="<%= productBundle.getName() %>"
 			/>
 
-			<c:if test="<%= hasEditPermission %>">
+			<c:if test="<%= hasManageProductBundlesPermission %>">
 				<liferay-ui:search-container-column-jsp
 					align="right"
 					path="/product_bundles/product_bundle_action.jsp"

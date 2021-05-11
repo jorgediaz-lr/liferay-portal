@@ -33,7 +33,7 @@ AccountDisplay accountDisplay = viewAccountDisplayContext.getAccountDisplay();
 	message="<%= StringPool.BLANK %>"
 	showWhenSingleIcon="<%= true %>"
 >
-	<c:if test="<%= viewAccountDisplayContext.hasEditContactsPermission() %>">
+	<c:if test="<%= viewAccountDisplayContext.hasAssignContactsPermission() %>">
 		<portlet:renderURL var="editURL">
 			<portlet:param name="mvcRenderCommandName" value="/accounts/assign_contacts" />
 			<portlet:param name="redirect" value="<%= currentURL %>" />

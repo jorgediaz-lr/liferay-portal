@@ -26,7 +26,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Jenny Chen
  */
 @Component(immediate = true, service = {})
-public class ProductsPermissionChecker {
+public class ProductPermissionChecker {
 
 	public static boolean contains(
 			PermissionChecker permissionChecker, String actionId)
@@ -38,7 +38,7 @@ public class ProductsPermissionChecker {
 
 		if (_roleLocalService.hasUserRole(
 				permissionChecker.getUserId(), permissionChecker.getCompanyId(),
-				RoleConstants.PROVISIONING_ADMIN, true)) {
+				RoleConstants.PROVISIONING_ADMIN, false)) {
 
 			return true;
 		}

@@ -27,7 +27,7 @@ String tabs1 = ParamUtil.getString(request, "tabs1");
 
 String tabNames = "accounts,entitlements";
 
-if (viewContactDisplayContext.hasEditPermission()) {
+if (viewContactDisplayContext.hasManageContactsPermission()) {
 	tabNames = "accounts,general,entitlements";
 }
 %>

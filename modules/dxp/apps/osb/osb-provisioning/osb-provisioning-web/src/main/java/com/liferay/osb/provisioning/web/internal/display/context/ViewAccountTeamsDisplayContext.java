@@ -37,7 +37,7 @@ public class ViewAccountTeamsDisplayContext extends ViewAccountDisplayContext {
 	}
 
 	public CreationMenu getCreationMenu() throws Exception {
-		if (!hasEditPermission()) {
+		if (!hasManageAccountsPermission()) {
 			return null;
 		}
 

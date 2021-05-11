@@ -28,7 +28,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Jenny Chen
  */
 @Component(immediate = true, service = {})
-public class AccountsPermissionChecker {
+public class AccountPermissionChecker {
 
 	public static boolean contains(
 			PermissionChecker permissionChecker, String actionId)
@@ -38,32 +38,32 @@ public class AccountsPermissionChecker {
 			return true;
 		}
 
-		long userId = permissionChecker.getUserId();
-		long companyId = permissionChecker.getCompanyId();
-
 		if (_roleLocalService.hasUserRole(
-				userId, companyId, RoleConstants.PROVISIONING_ADMIN, true)) {
+				permissionChecker.getUserId(), permissionChecker.getCompanyId(),
+				RoleConstants.PROVISIONING_ADMIN, false)) {
 
 			return true;
 		}
 
 		if (_roleLocalService.hasUserRole(
-				userId, companyId, RoleConstants.PROVISIONING_WORKER, true) &&
+				permissionChecker.getUserId(), permissionChecker.getCompanyId(),
+				RoleConstants.PROVISIONING_WORKER, false) &&
 			ArrayUtil.contains(_PROVISIONING_WORKER_ACTION_IDS, actionId)) {
 
 			return true;
 		}
 
 		if (_roleLocalService.hasUserRole(
-				userId, companyId, RoleConstants.PROVISIONING_WATCHER, true) &&
+				permissionChecker.getUserId(), permissionChecker.getCompanyId(),
+				RoleConstants.PROVISIONING_WATCHER, false) &&
 			ArrayUtil.contains(_PROVISIONING_WATCHER_ACTION_IDS, actionId)) {
 
 			return true;
 		}
 
 		if (_roleLocalService.hasUserRole(
-				userId, companyId, RoleConstants.PROVISIONING_CONTACT_WORKER,
-				true) &&
+				permissionChecker.getUserId(), permissionChecker.getCompanyId(),
+				RoleConstants.PROVISIONING_CONTACT_WORKER, false) &&
 			ArrayUtil.contains(
 				_PROVISIONING_CONTACT_WORKER_ACTION_IDS, actionId)) {
 
@@ -79,7 +79,7 @@ public class AccountsPermissionChecker {
 	}
 
 	private static final String[] _PROVISIONING_CONTACT_WORKER_ACTION_IDS = {
-		ProvisioningActionKeys.UPDATE_CONTACTS
+		ProvisioningActionKeys.ASSIGN_CONTACTS
 	};
 
 	private static final String[] _PROVISIONING_WATCHER_ACTION_IDS = {
@@ -89,8 +89,8 @@ public class AccountsPermissionChecker {
 	};
 
 	private static final String[] _PROVISIONING_WORKER_ACTION_IDS = {
-		ProvisioningActionKeys.UPDATE_ACCOUNTS,
-		ProvisioningActionKeys.UPDATE_CONTACTS,
+		ProvisioningActionKeys.ASSIGN_CONTACTS,
+		ProvisioningActionKeys.MANAGE_ACCOUNTS,
 		ProvisioningActionKeys.UPDATE_INSTRUCTIONS,
 		ProvisioningActionKeys.UPDATE_LANGUAGE_ID,
 		ProvisioningActionKeys.UPDATE_NOTES,

@@ -23,7 +23,7 @@ import org.osgi.service.component.annotations.Component;
  * @author Jenny Chen
  */
 @Component(immediate = true, service = {})
-public class UsersPermissionChecker {
+public class ContactPermissionChecker {
 
 	public static boolean contains(
 			PermissionChecker permissionChecker, String actionId)

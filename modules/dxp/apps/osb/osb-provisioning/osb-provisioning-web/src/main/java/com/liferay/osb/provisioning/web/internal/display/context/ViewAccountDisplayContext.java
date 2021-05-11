@@ -43,7 +43,7 @@ import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamRoleWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamWebService;
 import com.liferay.osb.provisioning.license.service.LicenseKeyLocalService;
-import com.liferay.osb.provisioning.web.internal.permission.AccountsPermissionChecker;
+import com.liferay.osb.provisioning.web.internal.permission.AccountPermissionChecker;
 import com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -179,6 +179,10 @@ public class ViewAccountDisplayContext {
 		data.put("dataRegionNames", dataRegionNames);
 
 		data.put("details", getAccountDisplay());
+		data.put("hasManageAccountsPermission", hasManageAccountsPermission());
+		data.put(
+			"hasUpdateExternalLinksPermission",
+			_hasPermission(ProvisioningActionKeys.UPDATE_EXTERNAL_LINKS));
 		data.put("parentAccountName", getParentAccountName());
 
 		List<String> tierNames = new ArrayList<>();
@@ -188,11 +192,6 @@ public class ViewAccountDisplayContext {
 		}
 
 		data.put("tierNames", tierNames);
-
-		data.put("hasEditAccountPermission", hasEditPermission());
-		data.put(
-			"hasEditExternalLinksPermission",
-			_hasEditPermission(ProvisioningActionKeys.UPDATE_EXTERNAL_LINKS));
 
 		return data;
 	}
@@ -237,7 +236,7 @@ public class ViewAccountDisplayContext {
 	}
 
 	public CreationMenu getCreationMenu() throws Exception {
-		if (!hasEditPermission()) {
+		if (!hasManageAccountsPermission()) {
 			return null;
 		}
 
@@ -363,6 +362,13 @@ public class ViewAccountDisplayContext {
 					account.getKey(), 1, 1000),
 				externalLink -> new ExternalLinkDisplay(
 					httpServletRequest, externalLink)));
+		data.put("hasManageAccountsPermission", hasManageAccountsPermission());
+		data.put(
+			"hasUpdateNotesPermission",
+			_hasPermission(ProvisioningActionKeys.UPDATE_NOTES));
+		data.put(
+			"hasUpdateSalesInfoPermission",
+			_hasPermission(ProvisioningActionKeys.UPDATE_SALES_INFO));
 		data.put(
 			"notes",
 			TransformUtil.transform(
@@ -373,15 +379,6 @@ public class ViewAccountDisplayContext {
 					renderRequest, renderResponse, note,
 					userLocalService.fetchUserByUuidAndCompanyId(
 						note.getCreatorUID(), themeDisplay.getCompanyId()))));
-
-		data.put(
-			"hasEditNotesPermission",
-			_hasEditPermission(ProvisioningActionKeys.UPDATE_NOTES));
-		data.put(
-			"hasEditSalesInfoPermission",
-			_hasEditPermission(ProvisioningActionKeys.UPDATE_SALES_INFO));
-
-		data.put("hasEditAccountPermission", hasEditPermission());
 
 		return data;
 	}
@@ -502,10 +499,10 @@ public class ViewAccountDisplayContext {
 			data.put("updateLanguageIdURL", updateLanguageIdURL.toString());
 		}
 
+		data.put("hasManageAccountsPermission", hasManageAccountsPermission());
 		data.put(
-			"hasEditInstructionsPermission",
-			_hasEditPermission(ProvisioningActionKeys.UPDATE_INSTRUCTIONS));
-
+			"hasUpdateInstructionsPermission",
+			_hasPermission(ProvisioningActionKeys.UPDATE_INSTRUCTIONS));
 		data.put("instructions", _getSupportInstructions(accountEntry));
 		data.put("language", _getSupportLanguage(accountEntry));
 		data.put("languageList", _getLanguageList());
@@ -527,8 +524,6 @@ public class ViewAccountDisplayContext {
 		updateAccountURL.setParameter("accountKey", account.getKey());
 
 		data.put("updateAccountURL", updateAccountURL.toString());
-
-		data.put("hasEditAccountPermission", hasEditPermission());
 
 		return data;
 	}
@@ -578,12 +573,12 @@ public class ViewAccountDisplayContext {
 		return StringUtil.merge(tabsNames);
 	}
 
-	public boolean hasEditContactsPermission() throws Exception {
-		return _hasEditPermission(ProvisioningActionKeys.UPDATE_CONTACTS);
+	public boolean hasAssignContactsPermission() throws Exception {
+		return _hasPermission(ProvisioningActionKeys.ASSIGN_CONTACTS);
 	}
 
-	public boolean hasEditPermission() throws Exception {
-		return _hasEditPermission(ProvisioningActionKeys.UPDATE_ACCOUNTS);
+	public boolean hasManageAccountsPermission() throws Exception {
+		return _hasPermission(ProvisioningActionKeys.MANAGE_ACCOUNTS);
 	}
 
 	public void init(
@@ -973,8 +968,8 @@ public class ViewAccountDisplayContext {
 		return sb.toString();
 	}
 
-	private boolean _hasEditPermission(String actionId) throws Exception {
-		return AccountsPermissionChecker.contains(
+	private boolean _hasPermission(String actionId) throws Exception {
+		return AccountPermissionChecker.contains(
 			themeDisplay.getPermissionChecker(), actionId);
 	}
 
