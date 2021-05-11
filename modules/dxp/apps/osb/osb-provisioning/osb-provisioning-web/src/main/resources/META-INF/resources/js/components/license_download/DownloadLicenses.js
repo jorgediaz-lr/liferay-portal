@@ -23,7 +23,7 @@ function DownloadLicenses({downloadLicenseKeysURL, licenseKeys}) {
 	const [activeVersionCompliantLicenses, oldInactiveLicenses] = partition(
 		licenseKeys,
 		({active, licenseVersion}) =>
-			licenseVersion >= MIN_LICENSE_GROUPABLE_VERSION_NUMBER && active
+			licenseVersion > MIN_LICENSE_GROUPABLE_VERSION_NUMBER && active
 	);
 
 	const groupedLicenses = groupByAll(
