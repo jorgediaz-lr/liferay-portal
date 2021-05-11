@@ -40,6 +40,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.ProxyFactory;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.util.PropsImpl;
 
@@ -1070,6 +1071,14 @@ public class DDMFormValuesFactoryTest extends PowerMockito {
 	}
 
 	protected void setUpDDMFormValuesJSONSerializer() throws Exception {
+		field(
+			DDMFormValuesJSONSerializer.class,
+			"_ddmFormFieldValueJSONSerializersServiceTrackerMap"
+		).set(
+			_ddmFormValuesJSONSerializer,
+			ProxyFactory.newDummyInstance(ServiceTrackerMap.class)
+		);
+
 		field(
 			DDMFormValuesJSONSerializer.class, "_jsonFactory"
 		).set(
