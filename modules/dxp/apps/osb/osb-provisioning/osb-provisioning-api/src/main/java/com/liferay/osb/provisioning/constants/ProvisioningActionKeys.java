@@ -23,6 +23,8 @@ public class ProvisioningActionKeys {
 
 	public static final String UPDATE_CONTACTS = "UPDATE_CONTACTS";
 
+	public static final String UPDATE_EXTERNAL_LINKS = "UPDATE_EXTERNAL_LINKS";
+
 	public static final String UPDATE_INSTRUCTIONS = "UPDATE_INSTRUCTIONS";
 
 	public static final String UPDATE_LANGUAGE_ID = "UPDATE_LANGUAGE_ID";

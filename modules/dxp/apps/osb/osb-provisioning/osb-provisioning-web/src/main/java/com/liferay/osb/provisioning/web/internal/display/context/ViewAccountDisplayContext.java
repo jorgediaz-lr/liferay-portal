@@ -190,6 +190,9 @@ public class ViewAccountDisplayContext {
 		data.put("tierNames", tierNames);
 
 		data.put("hasEditAccountPermission", hasEditPermission());
+		data.put(
+			"hasEditExternalLinksPermission",
+			_hasEditPermission(ProvisioningActionKeys.UPDATE_EXTERNAL_LINKS));
 
 		return data;
 	}
