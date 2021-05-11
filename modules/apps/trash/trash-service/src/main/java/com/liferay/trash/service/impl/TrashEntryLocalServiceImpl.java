@@ -122,7 +122,15 @@ public class TrashEntryLocalServiceImpl extends TrashEntryLocalServiceBaseImpl {
 
 		User user = _userLocalService.getUserById(userId);
 
-		trashEntry.setCompanyId(user.getCompanyId());
+		long companyId = user.getCompanyId();
+
+		Group group = _groupLocalService.fetchGroup(groupId);
+
+		if (group != null) {
+			companyId = group.getCompanyId();
+		}
+
+		trashEntry.setCompanyId(companyId);
 		trashEntry.setUserId(user.getUserId());
 		trashEntry.setUserName(user.getFullName());
 
