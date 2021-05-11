@@ -61,6 +61,8 @@ public class RenewLicenseKeysMVCActionCommand extends BaseMVCActionCommand {
 
 			String accountKey = ParamUtil.getString(
 				actionRequest, "accountKey");
+			String productKey = ParamUtil.getString(
+				actionRequest, "productKey");
 
 			String startDate = ParamUtil.getString(actionRequest, "startDate");
 			String expirationDate = ParamUtil.getString(
@@ -85,7 +87,7 @@ public class RenewLicenseKeysMVCActionCommand extends BaseMVCActionCommand {
 
 			sendRedirect(
 				actionRequest, actionResponse,
-				getRedirect(actionResponse, accountKey));
+				getRedirect(actionResponse, accountKey, productKey));
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
@@ -95,7 +97,7 @@ public class RenewLicenseKeysMVCActionCommand extends BaseMVCActionCommand {
 	}
 
 	protected String getRedirect(
-			ActionResponse actionResponse, String accountKey)
+			ActionResponse actionResponse, String accountKey, String productKey)
 		throws Exception {
 
 		LiferayPortletResponse liferayPortletResponse =
@@ -103,10 +105,18 @@ public class RenewLicenseKeysMVCActionCommand extends BaseMVCActionCommand {
 
 		PortletURL portletURL = liferayPortletResponse.createRenderURL();
 
-		portletURL.setParameter(
-			"mvcRenderCommandName", "/accounts/view_account");
 		portletURL.setParameter("tabs1", "licenses");
 		portletURL.setParameter("accountKey", accountKey);
+
+		if (Validator.isNull(productKey)) {
+			portletURL.setParameter(
+				"mvcRenderCommandName", "/accounts/view_account");
+		}
+		else {
+			portletURL.setParameter(
+				"mvcRenderCommandName", "/accounts/view_subscription");
+			portletURL.setParameter("productKey", productKey);
+		}
 
 		return portletURL.toString();
 	}

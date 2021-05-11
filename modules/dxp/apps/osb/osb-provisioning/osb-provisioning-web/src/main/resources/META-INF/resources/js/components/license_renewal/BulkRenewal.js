@@ -16,7 +16,7 @@ import {formatDate} from '../../utilities/date';
 import HiddenForm from '../HiddenForm';
 import RenewalModal from './RenewalModal';
 
-export default function BulkRenewal({accountKey, renewalURL}) {
+export default function BulkRenewal({accountKey, productKey = '', renewalURL}) {
 	const formRef = useRef();
 
 	const [expirationDate, setExpirationDate] = useState('');
@@ -68,6 +68,7 @@ export default function BulkRenewal({accountKey, renewalURL}) {
 					accountKey,
 					expirationDate: formatDate(expirationDate),
 					licenseKeyIds,
+					productKey,
 					startDate: formatDate(startDate)
 				}}
 				formAction={renewalURL}
@@ -80,5 +81,6 @@ export default function BulkRenewal({accountKey, renewalURL}) {
 
 BulkRenewal.propTypes = {
 	accountKey: PropTypes.string,
+	productKey: PropTypes.string,
 	renewalURL: PropTypes.string
 };

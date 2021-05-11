@@ -109,6 +109,10 @@ public class ViewAccountLicenseKeysDisplayContext
 
 		PortletURL portletURL = renderResponse.createActionURL();
 
+		if (_productKeys.length > 0) {
+			data.put("productKey", _productKeys[0]);
+		}
+
 		portletURL.setParameter(
 			ActionRequest.ACTION_NAME, "/accounts/renew_license_keys");
 
