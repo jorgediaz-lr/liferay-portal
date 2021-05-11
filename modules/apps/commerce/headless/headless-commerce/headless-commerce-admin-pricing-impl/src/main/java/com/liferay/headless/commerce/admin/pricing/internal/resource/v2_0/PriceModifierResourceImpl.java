@@ -33,6 +33,7 @@ import com.liferay.headless.commerce.core.util.ServiceContextHelper;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -235,6 +236,47 @@ public class PriceModifierResourceImpl extends BasePriceModifierResourceImpl {
 			commercePriceModifier.getCommercePriceModifierId());
 	}
 
+	private CommercePriceModifier _addOrUpdateCommercePriceModifier(
+			CommercePriceList commercePriceList, PriceModifier priceModifier)
+		throws PortalException {
+
+		ServiceContext serviceContext = _serviceContextHelper.getServiceContext(
+			commercePriceList.getGroupId());
+
+		DateConfig displayDateConfig = _getDisplayDateConfig(
+			priceModifier.getDisplayDate(), serviceContext.getTimeZone());
+
+		DateConfig expirationDateConfig = _getExpirationDateConfig(
+			priceModifier.getExpirationDate(), serviceContext.getTimeZone());
+
+		CommercePriceModifier commercePriceModifier =
+			_commercePriceModifierService.upsertCommercePriceModifier(
+				serviceContext.getUserId(),
+				GetterUtil.getLong(priceModifier.getId()),
+				commercePriceList.getGroupId(), priceModifier.getTitle(),
+				priceModifier.getTarget(),
+				commercePriceList.getCommercePriceListId(),
+				priceModifier.getModifierType(),
+				priceModifier.getModifierAmount(),
+				GetterUtil.get(priceModifier.getPriority(), 0D),
+				GetterUtil.getBoolean(priceModifier.getActive(), true),
+				displayDateConfig.getMonth(), displayDateConfig.getDay(),
+				displayDateConfig.getYear(), displayDateConfig.getHour(),
+				displayDateConfig.getMinute(), expirationDateConfig.getMonth(),
+				expirationDateConfig.getDay(), expirationDateConfig.getYear(),
+				expirationDateConfig.getHour(),
+				expirationDateConfig.getMinute(),
+				priceModifier.getExternalReferenceCode(),
+				GetterUtil.getBoolean(priceModifier.getNeverExpire(), true),
+				serviceContext);
+
+		// Update nested resources
+
+		_updateNestedResources(priceModifier, commercePriceModifier);
+
+		return commercePriceModifier;
+	}
+
 	private Map<String, Map<String, String>> _getActions(
 			CommercePriceModifier commercePriceModifier)
 		throws PortalException {
@@ -242,24 +284,21 @@ public class PriceModifierResourceImpl extends BasePriceModifierResourceImpl {
 		return HashMapBuilder.<String, Map<String, String>>put(
 			"delete",
 			addAction(
-				"UPDATE", commercePriceModifier.getCommercePriceListId(),
-				"deletePriceModifier", commercePriceModifier.getUserId(),
-				"com.liferay.commerce.price.list.model.CommercePriceList",
-				commercePriceModifier.getGroupId())
+				"UPDATE", commercePriceModifier.getCommercePriceModifierId(),
+				"deletePriceModifier",
+				_commercePriceModifierModelResourcePermission)
 		).put(
 			"get",
 			addAction(
-				"VIEW", commercePriceModifier.getCommercePriceListId(),
-				"getPriceModifier", commercePriceModifier.getUserId(),
-				"com.liferay.commerce.price.list.model.CommercePriceList",
-				commercePriceModifier.getGroupId())
+				"VIEW", commercePriceModifier.getCommercePriceModifierId(),
+				"getPriceModifier",
+				_commercePriceModifierModelResourcePermission)
 		).put(
 			"update",
 			addAction(
-				"UPDATE", commercePriceModifier.getCommercePriceListId(),
-				"patchPriceModifier", commercePriceModifier.getUserId(),
-				"com.liferay.commerce.price.list.model.CommercePriceList",
-				commercePriceModifier.getGroupId())
+				"UPDATE", commercePriceModifier.getCommercePriceModifierId(),
+				"patchPriceModifier",
+				_commercePriceModifierModelResourcePermission)
 		).build();
 	}
 
@@ -373,52 +412,17 @@ public class PriceModifierResourceImpl extends BasePriceModifierResourceImpl {
 		return commercePriceModifier;
 	}
 
-	private CommercePriceModifier _addOrUpdateCommercePriceModifier(
-			CommercePriceList commercePriceList, PriceModifier priceModifier)
-		throws PortalException {
-
-		ServiceContext serviceContext = _serviceContextHelper.getServiceContext(
-			commercePriceList.getGroupId());
-
-		DateConfig displayDateConfig = _getDisplayDateConfig(
-			priceModifier.getDisplayDate(), serviceContext.getTimeZone());
-
-		DateConfig expirationDateConfig = _getExpirationDateConfig(
-			priceModifier.getExpirationDate(), serviceContext.getTimeZone());
-
-		CommercePriceModifier commercePriceModifier =
-			_commercePriceModifierService.upsertCommercePriceModifier(
-				serviceContext.getUserId(),
-				GetterUtil.getLong(priceModifier.getId()),
-				commercePriceList.getGroupId(), priceModifier.getTitle(),
-				priceModifier.getTarget(),
-				commercePriceList.getCommercePriceListId(),
-				priceModifier.getModifierType(),
-				priceModifier.getModifierAmount(),
-				GetterUtil.get(priceModifier.getPriority(), 0D),
-				GetterUtil.getBoolean(priceModifier.getActive(), true),
-				displayDateConfig.getMonth(), displayDateConfig.getDay(),
-				displayDateConfig.getYear(), displayDateConfig.getHour(),
-				displayDateConfig.getMinute(), expirationDateConfig.getMonth(),
-				expirationDateConfig.getDay(), expirationDateConfig.getYear(),
-				expirationDateConfig.getHour(),
-				expirationDateConfig.getMinute(),
-				priceModifier.getExternalReferenceCode(),
-				GetterUtil.getBoolean(priceModifier.getNeverExpire(), true),
-				serviceContext);
-
-		// Update nested resources
-
-		_updateNestedResources(priceModifier, commercePriceModifier);
-
-		return commercePriceModifier;
-	}
-
 	@Reference
 	private AssetCategoryLocalService _assetCategoryLocalService;
 
 	@Reference
 	private CommercePriceListService _commercePriceListService;
+
+	@Reference(
+		target = "(model.class.name=com.liferay.commerce.pricing.model.CommercePriceModifier)"
+	)
+	private ModelResourcePermission<CommercePriceModifier>
+		_commercePriceModifierModelResourcePermission;
 
 	@Reference
 	private CommercePriceModifierRelService _commercePriceModifierRelService;

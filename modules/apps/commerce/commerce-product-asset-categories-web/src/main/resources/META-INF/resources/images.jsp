@@ -27,12 +27,31 @@ portletURL.setParameter("historyKey", renderResponse.getNamespace() + "images");
 
 SearchContainer<CPAttachmentFileEntry> cpAttachmentFileEntrySearchContainer = new SearchContainer<>(liferayPortletRequest, portletURL, null, null);
 
-int cpAttachmentFileEntriesCount = cpAttachmentFileEntryService.getCPAttachmentFileEntriesCount(PortalUtil.getClassNameId(AssetCategory.class), assetCategory.getCategoryId(), CPAttachmentFileEntryConstants.TYPE_IMAGE, WorkflowConstants.STATUS_ANY);
-
 List<CPAttachmentFileEntry> cpAttachmentFileEntries = cpAttachmentFileEntryService.getCPAttachmentFileEntries(PortalUtil.getClassNameId(AssetCategory.class), assetCategory.getCategoryId(), CPAttachmentFileEntryConstants.TYPE_IMAGE, WorkflowConstants.STATUS_ANY, cpAttachmentFileEntrySearchContainer.getStart(), cpAttachmentFileEntrySearchContainer.getEnd());
 
-cpAttachmentFileEntrySearchContainer.setTotal(cpAttachmentFileEntriesCount);
+cpAttachmentFileEntrySearchContainer.setTotal(cpAttachmentFileEntryService.getCPAttachmentFileEntriesCount(PortalUtil.getClassNameId(AssetCategory.class), assetCategory.getCategoryId(), CPAttachmentFileEntryConstants.TYPE_IMAGE, WorkflowConstants.STATUS_ANY));
 cpAttachmentFileEntrySearchContainer.setResults(cpAttachmentFileEntries);
+
+PortletURL categoryRedirectURL = renderResponse.createRenderURL();
+
+long parentCategoryId = BeanParamUtil.getLong(assetCategory, request, "parentCategoryId");
+
+categoryRedirectURL.setParameter("mvcPath", "/view_categories.jsp");
+
+if (parentCategoryId > 0) {
+	categoryRedirectURL.setParameter("categoryId", String.valueOf(parentCategoryId));
+}
+
+long vocabularyId = ParamUtil.getLong(request, "vocabularyId");
+
+if (vocabularyId > 0) {
+	categoryRedirectURL.setParameter("vocabularyId", String.valueOf(vocabularyId));
+}
+
+portletDisplay.setShowBackIcon(true);
+portletDisplay.setURLBack(categoryRedirectURL.toString());
+
+renderResponse.setTitle(assetCategory.getTitle(locale));
 %>
 
 <liferay-frontend:management-bar

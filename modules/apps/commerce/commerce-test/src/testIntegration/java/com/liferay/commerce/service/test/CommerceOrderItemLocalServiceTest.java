@@ -27,6 +27,7 @@ import com.liferay.commerce.inventory.model.CommerceInventoryWarehouse;
 import com.liferay.commerce.inventory.service.CommerceInventoryBookedQuantityLocalService;
 import com.liferay.commerce.model.CommerceOrder;
 import com.liferay.commerce.model.CommerceOrderItem;
+import com.liferay.commerce.pricing.constants.CommercePricingConstants;
 import com.liferay.commerce.product.CommerceProductTestUtil;
 import com.liferay.commerce.product.constants.CPConstants;
 import com.liferay.commerce.product.model.CPDefinition;
@@ -39,14 +40,12 @@ import com.liferay.commerce.product.model.CPOptionValue;
 import com.liferay.commerce.product.model.CommerceCatalog;
 import com.liferay.commerce.product.model.CommerceChannel;
 import com.liferay.commerce.product.option.CommerceOptionValue;
-import com.liferay.commerce.product.service.CPDefinitionLocalService;
 import com.liferay.commerce.product.service.CPDefinitionOptionRelLocalServiceUtil;
 import com.liferay.commerce.product.service.CPDefinitionOptionValueRelLocalService;
 import com.liferay.commerce.product.service.CPDefinitionOptionValueRelLocalServiceUtil;
 import com.liferay.commerce.product.service.CPInstanceLocalService;
 import com.liferay.commerce.product.service.CPOptionLocalServiceUtil;
 import com.liferay.commerce.product.service.CPOptionValueLocalServiceUtil;
-import com.liferay.commerce.product.service.CommerceCatalogLocalService;
 import com.liferay.commerce.product.service.CommerceCatalogLocalServiceUtil;
 import com.liferay.commerce.product.test.util.CPTestUtil;
 import com.liferay.commerce.product.type.simple.constants.SimpleCPTypeConstants;
@@ -57,8 +56,10 @@ import com.liferay.commerce.test.util.CommerceInventoryTestUtil;
 import com.liferay.commerce.test.util.CommerceTestUtil;
 import com.liferay.commerce.test.util.TestCommerceContext;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.configuration.test.util.ConfigurationTestUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -73,11 +74,13 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
+import com.liferay.portal.test.rule.PermissionCheckerTestRule;
 
 import java.math.BigDecimal;
 
 import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -85,8 +88,10 @@ import java.util.Objects;
 import org.frutilla.FrutillaRule;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -103,10 +108,37 @@ public class CommerceOrderItemLocalServiceTest {
 	public static final AggregateTestRule aggregateTestRule =
 		new AggregateTestRule(
 			new LiferayIntegrationTestRule(),
-			PermissionCheckerMethodTestRule.INSTANCE);
+			PermissionCheckerTestRule.INSTANCE);
+
+	@BeforeClass
+	public static void setUpClass() throws Exception {
+		_properties = new Hashtable<>();
+
+		_properties.put(
+			"commercePricingCalculationKey",
+			CommercePricingConstants.VERSION_1_0);
+
+		ConfigurationTestUtil.saveConfiguration(_PID, _properties);
+	}
+
+	@AfterClass
+	public static void tearDownClass() throws Exception {
+		_properties.put(
+			"commercePricingCalculationKey",
+			CommercePricingConstants.VERSION_2_0);
+
+		ConfigurationTestUtil.saveConfiguration(_PID, _properties);
+	}
 
 	@Before
 	public void setUp() throws Exception {
+		_company = CommerceTestUtil.addCompany();
+
+		_user = UserTestUtil.addUser(_company);
+
+		_group = GroupTestUtil.addGroup(
+			_user.getCompanyId(), _user.getUserId(), 0);
+
 		List<CommerceInventoryBookedQuantity>
 			commerceInventoryBookedQuantities =
 				_commerceBookedQuantityLocalService.
@@ -121,9 +153,6 @@ public class CommerceOrderItemLocalServiceTest {
 					commerceInventoryBookedQuantity);
 		}
 
-		_group = GroupTestUtil.addGroup();
-		_user = UserTestUtil.addUser();
-
 		_serviceContext = ServiceContextTestUtil.getServiceContext(
 			_group.getGroupId(), _user.getUserId());
 
@@ -131,7 +160,7 @@ public class CommerceOrderItemLocalServiceTest {
 			_group.getCompanyId());
 
 		_commerceChannel = CommerceTestUtil.addCommerceChannel(
-			_commerceCurrency.getCode());
+			_company.getGroupId(), _commerceCurrency.getCode());
 
 		_commerceAccount =
 			_commerceAccountLocalService.addPersonalCommerceAccount(
@@ -149,17 +178,6 @@ public class CommerceOrderItemLocalServiceTest {
 	@After
 	public void tearDown() throws Exception {
 		_deleteCommerceAccountTestOrderItems();
-
-		List<CPDefinition> cpDefinitions =
-			_cpDefinitionLocalService.getCPDefinitions(
-				_commerceCatalog.getGroupId(), WorkflowConstants.STATUS_ANY,
-				QueryUtil.ALL_POS, QueryUtil.ALL_POS);
-
-		for (CPDefinition cpDefinition : cpDefinitions) {
-			_cpDefinitionLocalService.deleteCPDefinition(cpDefinition);
-		}
-
-		_commerceCatalogLocalService.deleteCommerceCatalog(_commerceCatalog);
 	}
 
 	@Test
@@ -1486,7 +1504,12 @@ public class CommerceOrderItemLocalServiceTest {
 		return "value-key-for-" + optionKey;
 	}
 
-	@DeleteAfterTestRun
+	private static final String _PID =
+		"com.liferay.commerce.pricing.configuration." +
+			"CommercePricingConfiguration";
+
+	private static Dictionary<String, Object> _properties;
+
 	private CommerceAccount _commerceAccount;
 
 	@Inject
@@ -1497,16 +1520,8 @@ public class CommerceOrderItemLocalServiceTest {
 		_commerceBookedQuantityLocalService;
 
 	private CommerceCatalog _commerceCatalog;
-
-	@Inject
-	private CommerceCatalogLocalService _commerceCatalogLocalService;
-
-	@DeleteAfterTestRun
 	private CommerceChannel _commerceChannel;
-
 	private CommerceContext _commerceContext;
-
-	@DeleteAfterTestRun
 	private CommerceCurrency _commerceCurrency;
 
 	@Inject
@@ -1515,8 +1530,8 @@ public class CommerceOrderItemLocalServiceTest {
 	@Inject
 	private CommerceOrderLocalService _commerceOrderLocalService;
 
-	@Inject
-	private CPDefinitionLocalService _cpDefinitionLocalService;
+	@DeleteAfterTestRun
+	private Company _company;
 
 	@Inject
 	private CPDefinitionOptionValueRelLocalService
@@ -1528,12 +1543,8 @@ public class CommerceOrderItemLocalServiceTest {
 	@Inject
 	private CPInstanceLocalService _cpInstanceLocalService;
 
-	@DeleteAfterTestRun
 	private Group _group;
-
 	private ServiceContext _serviceContext;
-
-	@DeleteAfterTestRun
 	private User _user;
 
 }

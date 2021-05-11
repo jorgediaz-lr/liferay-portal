@@ -345,3 +345,154 @@ Give administrators more flexibility on whether or not they want to provide
 sorting functionality of product search results.
 
 ---------------------------------------
+
+### Price Lists Retrieval for Pricing Algorithm
+- **Date:** 2020-Jul-10
+- **JIRA Ticket:** [COMMERCE-4221](https://issues.liferay.com/browse/COMMERCE-4221)
+
+#### What changed?
+
+A price list's retrieval in the pricing algorithm
+(`CommerceProductPriceCalculationImpl`) is performed by means of the
+`CommercePriceListDiscovery` service instead of relying on the price list
+indexer.
+
+The price list's discovery strategy is `ORDER_BY_HIERARCHY`, searching for the
+active price list that applies to the current context in the following order:
+
+1. **Accounts and Channels**: the price list is associated to specific accounts
+   in specific channels.
+2. **Accounts**: the price list is associated to specific accounts.
+3. **Account Groups and Channels**: the price list is associated to specific
+   account groups in specific channels.
+4. **Account Groups**: the price list is associated to specific account groups.
+5. **Channels**: the price list is associated to a specific channel.
+6. **Unqualified**: the price list is not associated to any specific account,
+   account group or channel.
+
+The first matching criteria will stop the search and return the active price
+list.
+
+#### Who is affected?
+
+Anyone who is using the out-of-the-box pricing algorithm.
+
+#### How should I update my code?
+
+No code updates are needed.
+
+#### Why was this change made?
+
+This change provides the flexibility to filter search results in the user
+interface based on user roles without interfering with the pricing business
+logic.
+
+---------------------------------------
+
+### Price Lists Permission Management
+- **Date:** 2020-Jul-10
+- **JIRA Ticket:** [COMMERCE-3561](https://issues.liferay.com/browse/COMMERCE-4221)
+- **Version:** 2.1.2
+
+#### What changed?
+
+Price lists are now modeled as Liferay resources and therefore use the standard
+permission management.
+
+The generic `MANAGE_COMMERCE_PRICE_LISTS` portlet permission has been removed.
+
+The price lists indexer has been set to support filter search and be permission
+aware.
+
+All service and finder methods used in the user interface to retrieve:
+1. **Price Entries**
+2. **Price Lists**
+3. **Price List Accounts**
+4. **Price List Account Groups**
+5. **Price List Account Channels**
+6. **Price List Discounts**
+7. **Price Modifiers**
+8. **Tier Price Entries**
+are permission-aware. (i.e. in `CommercePriceListService` method
+`getCommercePriceListsCount(long, int)`)
+
+As part of the pricing section refactoring, the permissions settings for
+price lists have been moved under the menu **Pricing** in the Define Permissions
+tab for the selected role.
+
+In `CommerceTierPriceEntryService` methods:
+1. `fetchCommerceTierPriceEntries(long, int, int)`
+2. `getCommerceTierPriceEntriesCountByCompanyId(long)`
+have been deprecated and no replacement is provided.
+
+In `CommercePriceModifierService` methods:
+1. `getCommercePriceModifiers(long, String)`
+2. `getCommercePriceModifiersCount()`
+have been deprecated and no replacement is provided.
+
+#### Who is affected?
+
+Anyone who is using Commerce Price Lists and related entities.
+
+#### How should I update my code?
+
+An upgrade process will associate resources to existing price
+lists and set the correct permissions.
+
+All references to
+`CommercePriceListActionKeys.MANAGE_COMMERCE_PRICE_LISTS` should be updated and
+permissions should be checked according to the following rules:
+1. `ADD_COMMERCE_PRICE_LIST`: when permission to add a new price list is required
+2. `DELETE/PERMISSIONS/UPDATE/VIEW`: when permission to delete, modify
+permissions, update or view a specific price list or related entities is required.
+
+All calls to unsecure methods:
+1. `com.liferay.commerce.price.list.service.impl.CommerceTierPriceEntryService#fetchCommerceTierPriceEntries(long, int, int)`
+2. `com.liferay.commerce.price.list.service.impl.CommerceTierPriceEntryService#getCommerceTierPriceEntriesCountByCompanyId(long)`
+3. `com.liferay.commerce.pricing.service.impl.CommercePriceModifierService#getCommercePriceModifiers(long, String)`
+4. `com.liferay.commerce.pricing.service.impl.CommercePriceModifierService#getCommercePriceModifiersCount()`
+need to be replaced with permission aware custom finder methods.
+
+#### Why was this change made?
+
+This change gives administrators the possibility to leverage on the Liferay permission
+management, thus providing a more fine-grained security access control.
+
+---------------------------------------
+
+### Migrate From Commerce Friendly URL to Liferay Friendly URL
+- **Date:** 2020-Jul-16
+- **JIRA Ticket:** [COMMERCE-2794](https://issues.liferay.com/browse/COMMERCE-2794)
+- **Version:** 2.1.2
+
+#### What changed?
+
+Commerce has moved from using `Commerce Friendly URL` to
+`Liferay Friendly URL`.
+
+#### Who is affected?
+
+End Users: URL Titles will no longer validate for the following.
+- Validation that prevents adjacent slashes.
+- Validation that prevents friendly URLs ending in slashes.
+- Validation that prevents double slashes.
+- Validation that checks for valid characters
+  `(Aa-Zz, 0-9, -, %, ., +, /, *, _)`.
+
+Developers: Any custom code that is using `CPFriendlyURLEntry` will need to be
+updated to use a different class.
+
+#### How should I update my code?
+
+The classes listed will need to be replaced:
+- `CPFriendlyURLEntry`
+- `CPFriendlyURLEntryLocalService`
+
+Replace with the following new classes:
+- `FriendlyURLEntry`
+- `FriendlyURLEntryLocalService`
+
+#### Why was this change made?
+
+`CPFriendlyURLEntry` is deprecated and `FriendlyURLEntry` is a direct
+replacement.

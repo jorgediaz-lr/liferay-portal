@@ -76,12 +76,9 @@ definition {
 			locator1 = "Select#TYPE",
 			value1 = "${channelType}");
 
-		Click(
-			key_text = "Add",
-			locator1 = "Button#ANY");
+		Click(locator1 = "Button#ADD");
 
 		if (isSet(siteName)) {
-
 			Click(
 				key_menuTab = "Type",
 				locator1 = "CommerceEntry#MENU_TAB");
@@ -309,6 +306,8 @@ definition {
 
 		Click(locator1 = "Button#SUBMIT");
 
+		Pause(locator1 = "2000");
+
 		Refresh();
 
 		AssertSelectedLabel(
@@ -429,11 +428,15 @@ definition {
 	}
 
 	macro deleteCommerceEntry {
-		ClickNoError(locator1 = "CommerceEntry#BODY_VERTICAL_ELLIPSIS");
+		ClickNoError(
+			key_value = "",
+			locator1 = "CommerceEntry#BODY_VERTICAL_ELLIPSIS");
 
 		CommerceEntry.clickNoError(menuItem = "Delete");
 
-		AssertElementPresent(locator1 = "Message#SUCCESS");
+		if (IsElementPresent(locator1 = "Message#SUCCESS")) {
+			AssertElementPresent(locator1 = "Message#SUCCESS");
+		}
 
 		AssertElementNotPresent(locator1 = "Message#ERROR");
 	}
@@ -702,7 +705,9 @@ definition {
 	}
 
 	macro viewProductOptions {
-		Click(locator1 = "CommerceEntry#PRODUCT_DETAIL_VIEW_OPTION");
+		Click(
+			key_entryName = "${optionName}",
+			locator1 = "CommerceEntry#PRODUCT_DETAIL_VIEW_OPTION_2");
 
 		SelectFrame(locator1 = "CommerceEntry#IFRAME_SIDE_PANEL");
 
@@ -723,7 +728,6 @@ definition {
 			locator1 = "ToggleSwitch#ANY_TOGGLE_SWITCH");
 
 		for (var optionList : list "${optionList}") {
-
 			IsElementPresent(
 				key_entryName = "${optionList}",
 				locator1 = "CommerceNavigation#ENTRY_NAME");
@@ -753,7 +757,7 @@ definition {
 
 			Click(
 				key_entryName = "${sku}",
-				locator1 = "CommerceNavigation#ENTRY_NAME");
+				locator1 = "CommerceNavigation#DATASET_DISPLAY_ENTRY_NAME");
 
 			SelectFrame(locator1 = "CommerceEntry#IFRAME_SIDE_PANEL");
 
@@ -766,7 +770,6 @@ definition {
 				value1 = "${price}");
 
 			Click(locator1 = "Icon#CLOSE");
-
 		}
 	}
 

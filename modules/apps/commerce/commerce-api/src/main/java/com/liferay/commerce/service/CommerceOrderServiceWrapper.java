@@ -611,6 +611,11 @@ public class CommerceOrderServiceWrapper
 			orderDateHour, orderDateMinute, serviceContext);
 	}
 
+	/**
+	 * @deprecated As of Judson (7.1.x), with no direct replacement.
+	 See CommercePaymentEngine.updateOrderPaymentStatus.
+	 */
+	@Deprecated
 	@Override
 	public com.liferay.commerce.model.CommerceOrder updatePaymentStatus(
 			long commerceOrderId, int paymentStatus)
@@ -620,6 +625,11 @@ public class CommerceOrderServiceWrapper
 			commerceOrderId, paymentStatus);
 	}
 
+	/**
+	 * @deprecated As of Judson (7.1.x), with no direct replacement.
+	 See CommercePaymentEngine.updateOrderPaymentStatus.
+	 */
+	@Deprecated
 	@Override
 	public com.liferay.commerce.model.CommerceOrder
 			updatePaymentStatusAndTransactionId(
@@ -670,6 +680,19 @@ public class CommerceOrderServiceWrapper
 			commerceOrderId, name, description, street1, street2, street3, city,
 			zip, commerceRegionId, commerceCountryId, phoneNumber,
 			serviceContext);
+	}
+
+	@Override
+	public com.liferay.commerce.model.CommerceOrder updateShippingMethod(
+			long commerceOrderId, long commerceShippingMethodId,
+			String shippingOptionName,
+			com.liferay.commerce.context.CommerceContext commerceContext,
+			java.util.Locale locale)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _commerceOrderService.updateShippingMethod(
+			commerceOrderId, commerceShippingMethodId, shippingOptionName,
+			commerceContext, locale);
 	}
 
 	@Override

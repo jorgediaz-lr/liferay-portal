@@ -28,7 +28,7 @@ import {
 	UPDATE_DATASET_DISPLAY
 } from '../../utilities/eventsDefinitions';
 import {getRandomId, executeAsyncAction, loadData} from '../../utilities/index';
-import getJsModule from '../../utilities/modules';
+import {getJsModule} from '../../utilities/modules';
 import {
 	showNotification,
 	showErrorNotification
@@ -424,7 +424,11 @@ function DatasetDisplay(props) {
 	function executeAsyncItemAction(url, method) {
 		setActionLoading(true);
 		return executeAsyncAction(url, method)
-			.then(_ => handleCompletedAction())
+			.then(_ => {
+				setTimeout(() => {
+					handleCompletedAction();
+				}, 500);
+			})
 			.catch(handleFailedAction);
 	}
 

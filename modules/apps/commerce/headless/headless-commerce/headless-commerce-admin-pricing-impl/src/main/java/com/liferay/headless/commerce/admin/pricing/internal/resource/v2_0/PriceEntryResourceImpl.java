@@ -38,6 +38,7 @@ import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -184,10 +185,10 @@ public class PriceEntryResourceImpl extends BasePriceEntryResourceImpl {
 				public void accept(Object o) throws Exception {
 					SearchContext searchContext = (SearchContext)o;
 
-					searchContext.setCompanyId(contextCompany.getCompanyId());
 					searchContext.setAttribute("commercePriceListId", id);
 					searchContext.setAttribute(
 						"status", WorkflowConstants.STATUS_ANY);
+					searchContext.setCompanyId(contextCompany.getCompanyId());
 				}
 
 			},
@@ -255,34 +256,89 @@ public class PriceEntryResourceImpl extends BasePriceEntryResourceImpl {
 		return _toPriceEntry(commercePriceEntry.getCommercePriceEntryId());
 	}
 
+	private CommercePriceEntry _addOrUpdateCommercePriceEntry(
+			CommercePriceList commercePriceList, PriceEntry priceEntry)
+		throws PortalException {
+
+		ServiceContext serviceContext = _serviceContextHelper.getServiceContext(
+			commercePriceList.getGroupId());
+
+		// Commerce price entry
+
+		long cProductId = 0;
+		String cpInstanceUuid = null;
+		CPInstance cpInstance = null;
+
+		long skuId = GetterUtil.getLong(priceEntry.getSkuId());
+		String skuExternalReferenceCode =
+			priceEntry.getSkuExternalReferenceCode();
+
+		if (skuId > 0) {
+			cpInstance = _cpInstanceService.fetchCPInstance(skuId);
+		}
+		else if (Validator.isNotNull(skuExternalReferenceCode)) {
+			cpInstance = _cpInstanceService.fetchByExternalReferenceCode(
+				serviceContext.getCompanyId(), skuExternalReferenceCode);
+		}
+
+		if (cpInstance != null) {
+			CPDefinition cpDefinition = cpInstance.getCPDefinition();
+
+			cProductId = cpDefinition.getCProductId();
+
+			cpInstanceUuid = cpInstance.getCPInstanceUuid();
+		}
+
+		DateConfig displayDateConfig = _getDisplayDateConfig(
+			priceEntry.getDisplayDate(), serviceContext.getTimeZone());
+
+		DateConfig expirationDateConfig = _getExpirationDateConfig(
+			priceEntry.getExpirationDate(), serviceContext.getTimeZone());
+
+		CommercePriceEntry commercePriceEntry =
+			_commercePriceEntryService.upsertCommercePriceEntry(
+				GetterUtil.getLong(priceEntry.getId()), cProductId,
+				cpInstanceUuid, commercePriceList.getCommercePriceListId(),
+				priceEntry.getExternalReferenceCode(),
+				BigDecimal.valueOf(priceEntry.getPrice()),
+				GetterUtil.getBoolean(priceEntry.getDiscountDiscovery(), true),
+				priceEntry.getDiscountLevel1(), priceEntry.getDiscountLevel2(),
+				priceEntry.getDiscountLevel3(), priceEntry.getDiscountLevel4(),
+				displayDateConfig.getMonth(), displayDateConfig.getDay(),
+				displayDateConfig.getYear(), displayDateConfig.getHour(),
+				displayDateConfig.getMinute(), expirationDateConfig.getMonth(),
+				expirationDateConfig.getDay(), expirationDateConfig.getYear(),
+				expirationDateConfig.getHour(),
+				expirationDateConfig.getMinute(),
+				GetterUtil.getBoolean(priceEntry.getNeverExpire(), true),
+				priceEntry.getSkuExternalReferenceCode(), serviceContext);
+
+		// Update nested resources
+
+		_updateNestedResources(priceEntry, commercePriceEntry);
+
+		return commercePriceEntry;
+	}
+
 	private Map<String, Map<String, String>> _getActions(
 			CommercePriceEntry commercePriceEntry)
 		throws PortalException {
 
-		CommercePriceList commercePriceList =
-			commercePriceEntry.getCommercePriceList();
-
 		return HashMapBuilder.<String, Map<String, String>>put(
 			"delete",
 			addAction(
-				"UPDATE", commercePriceList.getCommercePriceListId(),
-				"deletePriceEntry", commercePriceEntry.getUserId(),
-				"com.liferay.commerce.price.list.model.CommercePriceList",
-				commercePriceList.getGroupId())
+				"UPDATE", commercePriceEntry.getCommercePriceEntryId(),
+				"deletePriceEntry", _commercePriceEntryModelResourcePermission)
 		).put(
 			"get",
 			addAction(
-				"VIEW", commercePriceList.getCommercePriceListId(),
-				"getPriceEntry", commercePriceEntry.getUserId(),
-				"com.liferay.commerce.price.list.model.CommercePriceList",
-				commercePriceList.getGroupId())
+				"VIEW", commercePriceEntry.getCommercePriceEntryId(),
+				"getPriceEntry", _commercePriceEntryModelResourcePermission)
 		).put(
 			"update",
 			addAction(
-				"UPDATE", commercePriceList.getCommercePriceListId(),
-				"patchPriceEntry", commercePriceEntry.getUserId(),
-				"com.liferay.commerce.price.list.model.CommercePriceList",
-				commercePriceList.getGroupId())
+				"UPDATE", commercePriceEntry.getCommercePriceEntryId(),
+				"patchPriceEntry", _commercePriceEntryModelResourcePermission)
 		).build();
 	}
 
@@ -405,71 +461,13 @@ public class PriceEntryResourceImpl extends BasePriceEntryResourceImpl {
 		return commercePriceEntry;
 	}
 
-	private CommercePriceEntry _addOrUpdateCommercePriceEntry(
-			CommercePriceList commercePriceList, PriceEntry priceEntry)
-		throws PortalException {
-
-		ServiceContext serviceContext = _serviceContextHelper.getServiceContext(
-			commercePriceList.getGroupId());
-
-		// Commerce price entry
-
-		long cProductId = 0;
-		String cpInstanceUuid = null;
-		CPInstance cpInstance = null;
-
-		long skuId = GetterUtil.getLong(priceEntry.getSkuId());
-		String skuExternalReferenceCode =
-			priceEntry.getSkuExternalReferenceCode();
-
-		if (skuId > 0) {
-			cpInstance = _cpInstanceService.fetchCPInstance(skuId);
-		}
-		else if (Validator.isNotNull(skuExternalReferenceCode)) {
-			cpInstance = _cpInstanceService.fetchByExternalReferenceCode(
-				serviceContext.getCompanyId(), skuExternalReferenceCode);
-		}
-
-		if (cpInstance != null) {
-			CPDefinition cpDefinition = cpInstance.getCPDefinition();
-
-			cProductId = cpDefinition.getCProductId();
-
-			cpInstanceUuid = cpInstance.getCPInstanceUuid();
-		}
-
-		DateConfig displayDateConfig = _getDisplayDateConfig(
-			priceEntry.getDisplayDate(), serviceContext.getTimeZone());
-
-		DateConfig expirationDateConfig = _getExpirationDateConfig(
-			priceEntry.getExpirationDate(), serviceContext.getTimeZone());
-
-		CommercePriceEntry commercePriceEntry =
-			_commercePriceEntryService.upsertCommercePriceEntry(
-				GetterUtil.getLong(priceEntry.getId()), cProductId,
-				cpInstanceUuid, commercePriceList.getCommercePriceListId(),
-				priceEntry.getExternalReferenceCode(),
-				BigDecimal.valueOf(priceEntry.getPrice()),
-				GetterUtil.getBoolean(priceEntry.getDiscountDiscovery(), true),
-				priceEntry.getDiscountLevel1(), priceEntry.getDiscountLevel2(),
-				priceEntry.getDiscountLevel3(), priceEntry.getDiscountLevel4(),
-				displayDateConfig.getMonth(), displayDateConfig.getDay(),
-				displayDateConfig.getYear(), displayDateConfig.getHour(),
-				displayDateConfig.getMinute(), expirationDateConfig.getMonth(),
-				expirationDateConfig.getDay(), expirationDateConfig.getYear(),
-				expirationDateConfig.getHour(),
-				expirationDateConfig.getMinute(),
-				GetterUtil.getBoolean(priceEntry.getNeverExpire(), true),
-				priceEntry.getSkuExternalReferenceCode(), serviceContext);
-
-		// Update nested resources
-
-		_updateNestedResources(priceEntry, commercePriceEntry);
-
-		return commercePriceEntry;
-	}
-
 	private static final EntityModel _entityModel = new PriceEntryEntityModel();
+
+	@Reference(
+		target = "(model.class.name=com.liferay.commerce.price.list.model.CommercePriceEntry)"
+	)
+	private ModelResourcePermission<CommercePriceEntry>
+		_commercePriceEntryModelResourcePermission;
 
 	@Reference
 	private CommercePriceEntryService _commercePriceEntryService;

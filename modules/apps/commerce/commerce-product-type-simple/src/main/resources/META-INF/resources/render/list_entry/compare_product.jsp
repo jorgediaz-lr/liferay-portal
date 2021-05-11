@@ -18,6 +18,7 @@
 
 <%
 CPCompareContentHelper cpCompareContentHelper = (CPCompareContentHelper)request.getAttribute(CPContentWebKeys.CP_COMPARE_CONTENT_HELPER);
+
 CPContentHelper cpContentHelper = (CPContentHelper)request.getAttribute(CPContentWebKeys.CP_CONTENT_HELPER);
 
 CPCatalogEntry cpCatalogEntry = cpContentHelper.getCPCatalogEntry(request);
@@ -92,13 +93,17 @@ CPSku cpSku = cpContentHelper.getDefaultCPSku(cpCatalogEntry);
 		<c:if test="<%= (cpSku != null) && !cpContentHelper.hasChildCPDefinitions(cpCatalogEntry.getCPDefinitionId()) %>">
 			<div class="autofit-row product-actions">
 				<div class="autofit-col autofit-col-expand">
-					<liferay-commerce:quantity-input CPDefinitionId="<%= cpCatalogEntry.getCPDefinitionId() %>" name="<%= quantityInputId %>" useSelect="<%= false %>" />
+					<liferay-commerce:quantity-input
+						CPDefinitionId="<%= cpCatalogEntry.getCPDefinitionId() %>"
+						name="<%= quantityInputId %>"
+						useSelect="<%= false %>"
+					/>
 
 					<liferay-commerce-cart:add-to-cart
 						CPDefinitionId="<%= cpCatalogEntry.getCPDefinitionId() %>"
 						CPInstanceId="<%= cpSku.getCPInstanceId() %>"
 						elementClasses="btn-block btn-primary text-truncate"
-						taglibQuantityInputId='<%= renderResponse.getNamespace() + quantityInputId %>'
+						taglibQuantityInputId="<%= renderResponse.getNamespace() + quantityInputId %>"
 					/>
 				</div>
 			</div>

@@ -25,10 +25,12 @@ import com.liferay.headless.commerce.admin.catalog.dto.v1_0.AttachmentBase64;
 import com.liferay.headless.commerce.admin.catalog.dto.v1_0.AttachmentUrl;
 import com.liferay.headless.commerce.admin.catalog.dto.v1_0.Product;
 import com.liferay.headless.commerce.admin.catalog.internal.dto.v1_0.converter.AttachmentDTOConverter;
+import com.liferay.headless.commerce.admin.catalog.internal.dto.v1_0.util.CustomFieldsUtil;
 import com.liferay.headless.commerce.admin.catalog.internal.util.v1_0.AttachmentUtil;
 import com.liferay.headless.commerce.admin.catalog.resource.v1_0.AttachmentResource;
 import com.liferay.headless.commerce.core.util.ServiceContextHelper;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
 import com.liferay.portal.vulcan.fields.NestedField;
@@ -38,8 +40,11 @@ import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
 import com.liferay.upload.UniqueFileNameProvider;
 
+import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.constraints.NotNull;
 
@@ -349,6 +354,139 @@ public class AttachmentResourceImpl
 		return _addOrUpdateProductImage(cpDefinition, attachmentUrl);
 	}
 
+	private Attachment _addOrUpdateAttachment(
+			CPDefinition cpDefinition, int type, Attachment attachment)
+		throws Exception {
+
+		ServiceContext serviceContext = _serviceContextHelper.getServiceContext(
+			cpDefinition.getGroupId());
+
+		Map<String, Serializable> expandoBridgeAttributes =
+			_getExpandoBridgeAttributes(attachment);
+
+		if (expandoBridgeAttributes != null) {
+			serviceContext.setExpandoBridgeAttributes(expandoBridgeAttributes);
+		}
+
+		CPAttachmentFileEntry cpAttachmentFileEntry =
+			AttachmentUtil.upsertCPAttachmentFileEntry(
+				cpDefinition.getGroupId(), _cpAttachmentFileEntryService,
+				_uniqueFileNameProvider, attachment,
+				_classNameLocalService.getClassNameId(
+					cpDefinition.getModelClassName()),
+				cpDefinition.getCPDefinitionId(), type, serviceContext);
+
+		return _toAttachment(
+			cpAttachmentFileEntry.getCPAttachmentFileEntryId());
+	}
+
+	private Attachment _addOrUpdateAttachment(
+			CPDefinition cpDefinition, int type,
+			AttachmentBase64 attachmentBase64)
+		throws Exception {
+
+		ServiceContext serviceContext = _serviceContextHelper.getServiceContext(
+			cpDefinition.getGroupId());
+
+		Map<String, Serializable> expandoBridgeAttributes =
+			_getExpandoBridgeAttributes(attachmentBase64);
+
+		if (expandoBridgeAttributes != null) {
+			serviceContext.setExpandoBridgeAttributes(expandoBridgeAttributes);
+		}
+
+		CPAttachmentFileEntry cpAttachmentFileEntry =
+			AttachmentUtil.upsertCPAttachmentFileEntry(
+				_cpAttachmentFileEntryService, _uniqueFileNameProvider,
+				attachmentBase64,
+				_classNameLocalService.getClassNameId(
+					cpDefinition.getModelClassName()),
+				cpDefinition.getCPDefinitionId(), type, serviceContext);
+
+		return _toAttachment(
+			cpAttachmentFileEntry.getCPAttachmentFileEntryId());
+	}
+
+	private Attachment _addOrUpdateAttachment(
+			CPDefinition cpDefinition, int type, AttachmentUrl attachmentUrl)
+		throws Exception {
+
+		ServiceContext serviceContext = _serviceContextHelper.getServiceContext(
+			cpDefinition.getGroupId());
+
+		Map<String, Serializable> expandoBridgeAttributes =
+			_getExpandoBridgeAttributes(attachmentUrl);
+
+		if (expandoBridgeAttributes != null) {
+			serviceContext.setExpandoBridgeAttributes(expandoBridgeAttributes);
+		}
+
+		CPAttachmentFileEntry cpAttachmentFileEntry =
+			AttachmentUtil.upsertCPAttachmentFileEntry(
+				_cpAttachmentFileEntryService, _uniqueFileNameProvider,
+				attachmentUrl,
+				_classNameLocalService.getClassNameId(
+					cpDefinition.getModelClassName()),
+				cpDefinition.getCPDefinitionId(), type, serviceContext);
+
+		return _toAttachment(
+			cpAttachmentFileEntry.getCPAttachmentFileEntryId());
+	}
+
+	private Attachment _addOrUpdateProductAttachment(
+			CPDefinition cpDefinition, Attachment attachment)
+		throws Exception {
+
+		return _addOrUpdateAttachment(
+			cpDefinition, CPAttachmentFileEntryConstants.TYPE_OTHER,
+			attachment);
+	}
+
+	private Attachment _addOrUpdateProductAttachment(
+			CPDefinition cpDefinition, AttachmentBase64 attachment)
+		throws Exception {
+
+		return _addOrUpdateAttachment(
+			cpDefinition, CPAttachmentFileEntryConstants.TYPE_OTHER,
+			attachment);
+	}
+
+	private Attachment _addOrUpdateProductAttachment(
+			CPDefinition cpDefinition, AttachmentUrl attachment)
+		throws Exception {
+
+		return _addOrUpdateAttachment(
+			cpDefinition, CPAttachmentFileEntryConstants.TYPE_OTHER,
+			attachment);
+	}
+
+	private Attachment _addOrUpdateProductImage(
+			CPDefinition cpDefinition, Attachment attachment)
+		throws Exception {
+
+		return _addOrUpdateAttachment(
+			cpDefinition, CPAttachmentFileEntryConstants.TYPE_IMAGE,
+			attachment);
+	}
+
+	private Attachment _addOrUpdateProductImage(
+			CPDefinition cpDefinition, AttachmentBase64 attachment)
+		throws Exception {
+
+		return _addOrUpdateAttachment(
+			cpDefinition, CPAttachmentFileEntryConstants.TYPE_IMAGE,
+			attachment);
+	}
+
+	private Attachment _addOrUpdateProductImage(
+			CPDefinition cpDefinition, AttachmentUrl attachment)
+		throws Exception {
+
+		return _addOrUpdateAttachment(
+			cpDefinition, CPAttachmentFileEntryConstants.TYPE_IMAGE,
+			attachment);
+	}
+
 	private Page<Attachment> _getAttachmentPage(
 			CPDefinition cpDefinition, int type, Pagination pagination)
 		throws Exception {
@@ -370,6 +508,33 @@ public class AttachmentResourceImpl
 
 		return Page.of(
 			_toAttachments(cpAttachmentFileEntries), pagination, totalItems);
+	}
+
+	private Map<String, Serializable> _getExpandoBridgeAttributes(
+		Attachment attachment) {
+
+		return CustomFieldsUtil.toMap(
+			CPAttachmentFileEntry.class.getName(),
+			contextCompany.getCompanyId(), attachment.getCustomFields(),
+			contextAcceptLanguage.getPreferredLocale());
+	}
+
+	private Map<String, Serializable> _getExpandoBridgeAttributes(
+		AttachmentBase64 attachmentBase64) {
+
+		return CustomFieldsUtil.toMap(
+			CPAttachmentFileEntry.class.getName(),
+			contextCompany.getCompanyId(), attachmentBase64.getCustomFields(),
+			contextAcceptLanguage.getPreferredLocale());
+	}
+
+	private Map<String, Serializable> _getExpandoBridgeAttributes(
+		AttachmentUrl attachmentUrl) {
+
+		return CustomFieldsUtil.toMap(
+			CPAttachmentFileEntry.class.getName(),
+			contextCompany.getCompanyId(), attachmentUrl.getCustomFields(),
+			contextAcceptLanguage.getPreferredLocale());
 	}
 
 	private Attachment _toAttachment(Long cpAttachmentFileEntryId)
@@ -396,115 +561,6 @@ public class AttachmentResourceImpl
 		}
 
 		return attachments;
-	}
-
-	private Attachment _addOrUpdateAttachment(
-			CPDefinition cpDefinition, int type, Attachment attachment)
-		throws Exception {
-
-		CPAttachmentFileEntry cpAttachmentFileEntry =
-			AttachmentUtil.upsertCPAttachmentFileEntry(
-				cpDefinition.getGroupId(), _cpAttachmentFileEntryService,
-				_uniqueFileNameProvider, attachment,
-				_classNameLocalService.getClassNameId(
-					cpDefinition.getModelClassName()),
-				cpDefinition.getCPDefinitionId(), type,
-				_serviceContextHelper.getServiceContext(
-					cpDefinition.getGroupId()));
-
-		return _toAttachment(
-			cpAttachmentFileEntry.getCPAttachmentFileEntryId());
-	}
-
-	private Attachment _addOrUpdateAttachment(
-			CPDefinition cpDefinition, int type,
-			AttachmentBase64 attachmentBase64)
-		throws Exception {
-
-		CPAttachmentFileEntry cpAttachmentFileEntry =
-			AttachmentUtil.upsertCPAttachmentFileEntry(
-				_cpAttachmentFileEntryService, _uniqueFileNameProvider,
-				attachmentBase64,
-				_classNameLocalService.getClassNameId(
-					cpDefinition.getModelClassName()),
-				cpDefinition.getCPDefinitionId(), type,
-				_serviceContextHelper.getServiceContext(
-					cpDefinition.getGroupId()));
-
-		return _toAttachment(
-			cpAttachmentFileEntry.getCPAttachmentFileEntryId());
-	}
-
-	private Attachment _addOrUpdateAttachment(
-			CPDefinition cpDefinition, int type, AttachmentUrl attachmentUrl)
-		throws Exception {
-
-		CPAttachmentFileEntry cpAttachmentFileEntry =
-			AttachmentUtil.upsertCPAttachmentFileEntry(
-				_cpAttachmentFileEntryService, _uniqueFileNameProvider,
-				attachmentUrl,
-				_classNameLocalService.getClassNameId(
-					cpDefinition.getModelClassName()),
-				cpDefinition.getCPDefinitionId(), type,
-				_serviceContextHelper.getServiceContext(
-					cpDefinition.getGroupId()));
-
-		return _toAttachment(
-			cpAttachmentFileEntry.getCPAttachmentFileEntryId());
-	}
-
-	private Attachment _addOrUpdateProductAttachment(
-			CPDefinition cpDefinition, Attachment attachment)
-		throws Exception {
-
-		return _addOrUpdateAttachment(
-			cpDefinition, CPAttachmentFileEntryConstants.TYPE_OTHER,
-			attachment);
-	}
-
-	private Attachment _addOrUpdateProductAttachment(
-			CPDefinition cpDefinition, AttachmentBase64 attachment)
-		throws Exception {
-
-		return _addOrUpdateAttachment(
-			cpDefinition, CPAttachmentFileEntryConstants.TYPE_OTHER,
-			attachment);
-	}
-
-	private Attachment _addOrUpdateProductAttachment(
-			CPDefinition cpDefinition, AttachmentUrl attachment)
-		throws Exception {
-
-		return _addOrUpdateAttachment(
-			cpDefinition, CPAttachmentFileEntryConstants.TYPE_OTHER,
-			attachment);
-	}
-
-	private Attachment _addOrUpdateProductImage(
-			CPDefinition cpDefinition, Attachment attachment)
-		throws Exception {
-
-		return _addOrUpdateAttachment(
-			cpDefinition, CPAttachmentFileEntryConstants.TYPE_IMAGE,
-			attachment);
-	}
-
-	private Attachment _addOrUpdateProductImage(
-			CPDefinition cpDefinition, AttachmentBase64 attachment)
-		throws Exception {
-
-		return _addOrUpdateAttachment(
-			cpDefinition, CPAttachmentFileEntryConstants.TYPE_IMAGE,
-			attachment);
-	}
-
-	private Attachment _addOrUpdateProductImage(
-			CPDefinition cpDefinition, AttachmentUrl attachment)
-		throws Exception {
-
-		return _addOrUpdateAttachment(
-			cpDefinition, CPAttachmentFileEntryConstants.TYPE_IMAGE,
-			attachment);
 	}
 
 	@Reference

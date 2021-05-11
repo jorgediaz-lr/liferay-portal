@@ -49,6 +49,7 @@ if (Validator.isNotNull(backURL)) {
 				<aui:input name="commerceInventoryWarehouseId" type="hidden" />
 				<aui:input name="commerceInventoryWarehouseItemId" type="hidden" />
 				<aui:input name="sku" type="hidden" value="<%= cpInstance.getSku() %>" />
+				<aui:input name="mvccVersion" type="hidden" />
 
 				<table class="show-quick-actions-on-hover table table-autofit table-list table-responsive-lg">
 					<thead>
@@ -66,9 +67,11 @@ if (Validator.isNotNull(backURL)) {
 							CommerceInventoryWarehouseItem commerceInventoryWarehouseItem = commerceInventoryWarehouseItemsDisplayContext.getCommerceInventoryWarehouseItem(commerceInventoryWarehouse);
 
 							long commerceInventoryWarehouseItemId = 0;
+							long mvccVersion = 0;
 
 							if (commerceInventoryWarehouseItem != null) {
 								commerceInventoryWarehouseItemId = commerceInventoryWarehouseItem.getCommerceInventoryWarehouseItemId();
+								mvccVersion = commerceInventoryWarehouseItem.getMvccVersion();
 							}
 
 							int curIndex = commerceInventoryWarehouses.indexOf(commerceInventoryWarehouse);
@@ -84,7 +87,7 @@ if (Validator.isNotNull(backURL)) {
 									<aui:input id='<%= "commerceInventoryWarehouseItemQuantity" + curIndex %>' label="" name="quantity" wrapperCssClass="m-0" />
 								</td>
 								<td class="text-center">
-									<aui:button cssClass="btn-primary" name='<%= "saveButton" + curIndex %>' onClick="<%= commerceInventoryWarehouseItemsDisplayContext.getUpdateCommerceInventoryWarehouseItemTaglibOnClick(commerceInventoryWarehouse.getCommerceInventoryWarehouseId(), commerceInventoryWarehouseItemId, curIndex) %>" primary="<%= true %>" value="save" />
+									<aui:button cssClass="btn-primary" name='<%= "saveButton" + curIndex %>' onClick="<%= commerceInventoryWarehouseItemsDisplayContext.getUpdateCommerceInventoryWarehouseItemTaglibOnClick(commerceInventoryWarehouse.getCommerceInventoryWarehouseId(), commerceInventoryWarehouseItemId, mvccVersion, curIndex) %>" primary="<%= true %>" value="save" />
 								</td>
 							</tr>
 
@@ -99,9 +102,10 @@ if (Validator.isNotNull(backURL)) {
 	</c:choose>
 
 	<aui:script>
-		function <portlet:namespace/>updateCommerceInventoryWarehouseItem(
+		function <portlet:namespace />updateCommerceInventoryWarehouseItem(
 			commerceInventoryWarehouseId,
 			commerceInventoryWarehouseItemId,
+			mvccVersion,
 			index
 		) {
 			var form = $(document.<portlet:namespace />fm);
@@ -124,6 +128,8 @@ if (Validator.isNotNull(backURL)) {
 
 			form.fm('quantity').val(quantityInput.val());
 
+			form.fm('mvccVersion').val(mvccVersion);
+
 			submitForm(form);
 		}
 	</aui:script>
@@ -140,7 +146,7 @@ if (Validator.isNotNull(backURL)) {
 				var curIndex = $(this)
 					.attr('id')
 					.split(quantityPrefix)[1];
-				$('#<portlet:namespace/>saveButton' + curIndex).click();
+				$('#<portlet:namespace />saveButton' + curIndex).click();
 			}
 		});
 	</aui:script>

@@ -242,6 +242,15 @@ public class CPDisplayLayoutPersistenceTest {
 	}
 
 	@Test
+	public void testCountByG_C_C() throws Exception {
+		_persistence.countByG_C_C(
+			RandomTestUtil.nextLong(), RandomTestUtil.nextLong(),
+			RandomTestUtil.nextLong());
+
+		_persistence.countByG_C_C(0L, 0L, 0L);
+	}
+
+	@Test
 	public void testFindByPrimaryKeyExisting() throws Exception {
 		CPDisplayLayout newCPDisplayLayout = addCPDisplayLayout();
 
@@ -506,6 +515,11 @@ public class CPDisplayLayoutPersistenceTest {
 				existingCPDisplayLayout, "getOriginalGroupId",
 				new Class<?>[0]));
 
+		Assert.assertEquals(
+			Long.valueOf(existingCPDisplayLayout.getGroupId()),
+			ReflectionTestUtil.<Long>invoke(
+				existingCPDisplayLayout, "getOriginalGroupId",
+				new Class<?>[0]));
 		Assert.assertEquals(
 			Long.valueOf(existingCPDisplayLayout.getClassNameId()),
 			ReflectionTestUtil.<Long>invoke(

@@ -208,6 +208,10 @@ public class CommercePriceListLocalServiceImpl
 			commercePriceList.setStatus(WorkflowConstants.STATUS_EXPIRED);
 		}
 
+		if (catalogBasePriceList) {
+			commercePriceList.setStatus(WorkflowConstants.STATUS_APPROVED);
+		}
+
 		commercePriceList.setStatusByUserId(user.getUserId());
 		commercePriceList.setStatusDate(serviceContext.getModifiedDate(now));
 		commercePriceList.setExpandoBridgeAttributes(serviceContext);
@@ -1355,9 +1359,9 @@ public class CommercePriceListLocalServiceImpl
 		searchContext.setAttributes(attributes);
 
 		searchContext.setCompanyId(companyId);
-		searchContext.setStart(0);
 		searchContext.setEnd(1);
 		searchContext.setGroupIds(new long[] {groupId});
+		searchContext.setStart(0);
 
 		QueryConfig queryConfig = searchContext.getQueryConfig();
 
@@ -1393,9 +1397,9 @@ public class CommercePriceListLocalServiceImpl
 		searchContext.setAttributes(attributes);
 
 		searchContext.setCompanyId(companyId);
-		searchContext.setStart(start);
 		searchContext.setEnd(end);
 		searchContext.setGroupIds(groupIds);
+		searchContext.setStart(start);
 
 		if (Validator.isNotNull(keywords)) {
 			searchContext.setKeywords(keywords);

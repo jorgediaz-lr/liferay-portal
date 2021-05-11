@@ -19,12 +19,15 @@ import template from './QuantitySelector.soy';
 
 class QuantitySelector extends Component {
 	attached() {
+		this.inputDebounceTimeout = null;
+
 		if (!this.quantity) {
 			this.quantity = this.allowedQuantities
 				? this.allowedQuantities[0]
 				: this.minQuantity;
 			this._updateQuantity(this.quantity);
 		}
+
 		return !!this.quantity;
 	}
 
@@ -38,6 +41,7 @@ class QuantitySelector extends Component {
 
 	_handleSelectOption(e) {
 		const quantity = parseInt(e.target.value, 10);
+
 		return this.emit('updateQuantity', quantity);
 	}
 
@@ -66,6 +70,7 @@ class QuantitySelector extends Component {
 		e.preventDefault();
 		if (!this._prevAvailable) {
 			this.showError = true;
+
 			return false;
 		}
 
@@ -79,6 +84,7 @@ class QuantitySelector extends Component {
 
 		if (quantity < this.minQuantity) {
 			this.inputError = 'MaxAvailableReached';
+
 			return false;
 		}
 
@@ -89,6 +95,7 @@ class QuantitySelector extends Component {
 		e.preventDefault();
 		if (!this._nextAvailable) {
 			this.showError = true;
+
 			return false;
 		}
 
@@ -102,6 +109,7 @@ class QuantitySelector extends Component {
 
 		if (quantity > this.maxQuantity) {
 			this.inputError = 'MaxAvailableReached';
+
 			return false;
 		}
 
@@ -115,46 +123,52 @@ class QuantitySelector extends Component {
 		if (e.keyCode == 40) {
 			return this._handlePrevQuantityButtonPressed(e);
 		}
+
 		return e;
 	}
 
 	_handleInputKeyUp(e) {
+		clearTimeout(this.inputDebounceTimeout);
+
 		if (!e.target.value) {
 			return null;
 		}
-		const quantity = parseInt(e.target.value, 10);
-		return this._submitQuantity(quantity);
+
+		this.inputDebounceTimeout = setTimeout(() => {
+			this._submitQuantity(parseInt(e.target.value, 10));
+		}, 500);
 	}
 
 	_handleFormSubmit(e) {
 		e.preventDefault();
 		this.showError = true;
+
 		return this.emit('submitQuantity', this.quantity);
 	}
 
 	_submitQuantity(quantity) {
+		let computedQuantity = quantity;
+
 		if (this.multipleQuantity) {
-			if (quantity % this.multipleQuantity) {
-				this.inputError = 'NotMultipleThan';
-				return this.inputError;
+			if (!computedQuantity || computedQuantity % this.multipleQuantity) {
+				computedQuantity -= computedQuantity % this.multipleQuantity;
 			}
 		}
 
-		if (quantity < this.minQuantity) {
-			this.inputError = 'MinAvailableReached';
-			return this.inputError;
+		if (computedQuantity < this.minQuantity) {
+			computedQuantity = this.minQuantity;
 		}
 
-		if (quantity > this.maxQuantity) {
-			this.inputError = 'MaxAvailableReached';
-			return this.inputError;
+		if (computedQuantity > this.maxQuantity) {
+			computedQuantity = this.maxQuantity;
 		}
 
-		return this._updateQuantity(quantity);
+		this._updateQuantity(computedQuantity);
 	}
 
 	_updateQuantity(quantity) {
 		this.showError = false;
+
 		return this.emit('updateQuantity', quantity);
 	}
 }

@@ -104,15 +104,26 @@ long commerceRegionId = BeanParamUtil.getLong(currentCommerceAddress, request, "
 		</aui:select>
 	</div>
 
-	<div class="add-street-link form-group-autofit">
-		<aui:a disabled="<%= commerceAddressId > 0 %>" href="javascript:;" label="+-add-address-line" onClick='<%= renderResponse.getNamespace() + "addStreetAddress();" %>' />
-	</div>
+	<c:choose>
+		<c:when test="<%= (commerceAddressId > 0) && (!Validator.isBlank(currentCommerceAddress.getStreet2()) || !Validator.isBlank(currentCommerceAddress.getStreet3())) %>">
+			<div class="form-group-autofit">
+				<aui:input disabled="<%= commerceAddressId > 0 %>" label="" name="street2" placeholder="address-2" wrapperCssClass="form-group-item" />
 
-	<div class="add-street-fields form-group-autofit hide">
-		<aui:input disabled="<%= commerceAddressId > 0 %>" label="" name="street2" placeholder="address-2" wrapperCssClass="form-group-item" />
+				<aui:input disabled="<%= commerceAddressId > 0 %>" label="" name="street3" placeholder="address-3" wrapperCssClass="form-group-item" />
+			</div>
+		</c:when>
+		<c:otherwise>
+			<div class="add-street-link form-group-autofit">
+				<aui:a disabled="<%= commerceAddressId > 0 %>" href="javascript:;" label="+-add-address-line" onClick='<%= renderResponse.getNamespace() + "addStreetAddress();" %>' />
+			</div>
 
-		<aui:input disabled="<%= commerceAddressId > 0 %>" label="" name="street3" placeholder="address-3" wrapperCssClass="form-group-item" />
-	</div>
+			<div class="add-street-fields form-group-autofit hide">
+				<aui:input disabled="<%= commerceAddressId > 0 %>" label="" name="street2" placeholder="address-2" wrapperCssClass="form-group-item" />
+
+				<aui:input disabled="<%= commerceAddressId > 0 %>" label="" name="street3" placeholder="address-3" wrapperCssClass="form-group-item" />
+			</div>
+		</c:otherwise>
+	</c:choose>
 
 	<div class="form-group-autofit">
 		<aui:input disabled="<%= commerceAddressId > 0 %>" label="" name="zip" placeholder="zip" wrapperCssClass="form-group-item" />
@@ -322,7 +333,12 @@ long commerceRegionId = BeanParamUtil.getLong(currentCommerceAddress, request, "
 								nameCurrentValue:
 									'- <liferay-ui:message key="select-country" />'
 							},
-							...list
+							...list.map(function(countryObj) {
+								return {
+									commerceCountryId: countryObj.commerceCountryId,
+									nameCurrentValue: Liferay.Language.get(countryObj.nameCurrentValue),
+								}
+							})
 						]);
 					}
 
@@ -351,7 +367,12 @@ long commerceRegionId = BeanParamUtil.getLong(currentCommerceAddress, request, "
 								commerceRegionId: '0',
 								name: '- <liferay-ui:message key="select-region" />'
 							},
-							...list
+							...list.map(function(regionObj) {
+								return {
+									commerceRegionId: regionObj.commerceRegionId,
+									name: Liferay.Language.get(regionObj.name),
+								}
+							})
 						]);
 					}
 

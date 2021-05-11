@@ -6,29 +6,24 @@ definition {
 		}
 
 		if (IsNotVisible(locator1 = "ControlMenuAddPanel#CLOSE_ADD_PANEL")) {
-			var browserType = PropsUtil.get("browser.type");
-
-			if ("${browserType}" == "safari") {
-				Click.clickNoMouseOver(locator1 = "ControlMenu#ADD");
-			}
-			else {
-				Click.clickAt(locator1 = "ControlMenu#ADD");
-			}
+			Click.clickAt(locator1 = "ControlMenu#ADD");
 		}
 
-		AssertElementPresent(locator1 = "ControlMenuAddPanel#SIDEBAR_HEADER");
+		AssertElementPresent(locator1 = "ControlMenuAddPanel#APPLICATIONS_ACCORDION_PANEL_TITLE");
 
-		Navigator.gotoNavTab(navTab = "Widgets");
+		AssertVisible(
+			locator1 = "ControlMenuAddPanel#APPLICATIONS_ACCORDION_PANEL_TITLE",
+			value1 = "Widgets");
 
 		Pause(locator1 = "5000");
 
-		Type(
+		Panel.expandSidebarApplicationsPanel();
+
+		Type.sendKeysApplicationSearch(
 			locator1 = "NavBar#APPLICATION_SEARCH_FIELD",
 			value1 = "${portletName}");
 
 		Portlet._clickAddPortlet(portletName = "${portletName}");
-
-		var key_portletName = "${portletName}";
 
 		AssertElementPresent(
 			key_portletName = "${portletName}",
@@ -85,7 +80,7 @@ definition {
 
 	macro inviteNewMemberWithRoleToAccount {
 		Click(
-			key_text = "Invite User",
+			key_text = "Invite user",
 			locator1 = "Button#ANY");
 
 		Type(

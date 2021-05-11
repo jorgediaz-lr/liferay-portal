@@ -574,10 +574,11 @@ public class CPDefinitionLocalServiceImpl
 
 		// CPDisplayLayout
 
-		CPDisplayLayout cpDisplayLayout = cpDisplayLayoutPersistence.fetchByC_C(
-			cpDefinitionClassNameId, cpDefinitionId);
+		List<CPDisplayLayout> cpDisplayLayouts =
+			cpDisplayLayoutPersistence.findByC_C(
+				cpDefinitionClassNameId, cpDefinitionId);
 
-		if (cpDisplayLayout != null) {
+		for (CPDisplayLayout cpDisplayLayout : cpDisplayLayouts) {
 			CPDisplayLayout newCPDisplayLayout =
 				(CPDisplayLayout)cpDisplayLayout.clone();
 
@@ -730,7 +731,7 @@ public class CPDefinitionLocalServiceImpl
 
 		// Commerce product display layout
 
-		cpDisplayLayoutLocalService.deleteCPDisplayLayout(
+		cpDisplayLayoutLocalService.deleteCPDisplayLayouts(
 			CPDefinition.class, cpDefinition.getCPDefinitionId());
 
 		// Commerce product version contributors
@@ -1153,11 +1154,28 @@ public class CPDefinitionLocalServiceImpl
 		return facets;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x)
+	 */
+	@Deprecated
 	@Override
 	public String getLayoutUuid(long cpDefinitionId) {
 		CPDisplayLayout cpDisplayLayout =
 			cpDisplayLayoutLocalService.fetchCPDisplayLayout(
 				CPDefinition.class, cpDefinitionId);
+
+		if (cpDisplayLayout == null) {
+			return null;
+		}
+
+		return cpDisplayLayout.getLayoutUuid();
+	}
+
+	@Override
+	public String getLayoutUuid(long groupId, long cpDefinitionId) {
+		CPDisplayLayout cpDisplayLayout =
+			cpDisplayLayoutLocalService.fetchCPDisplayLayout(
+				groupId, CPDefinition.class, cpDefinitionId);
 
 		if (cpDisplayLayout == null) {
 			return null;
@@ -1998,8 +2016,8 @@ public class CPDefinitionLocalServiceImpl
 		searchContext.setCompanyId(companyId);
 		searchContext.setGroupIds(groupIds);
 
-		searchContext.setStart(start);
 		searchContext.setEnd(end);
+		searchContext.setStart(start);
 
 		if (Validator.isNotNull(keywords)) {
 			searchContext.setKeywords(keywords);

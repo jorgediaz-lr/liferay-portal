@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import java.math.BigDecimal;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Provides the remote service interface for CommerceOrder. Methods of this
@@ -354,10 +355,20 @@ public interface CommerceOrderService extends BaseService {
 			ServiceContext serviceContext)
 		throws PortalException;
 
+	/**
+	 * @deprecated As of Judson (7.1.x), with no direct replacement.
+	 See CommercePaymentEngine.updateOrderPaymentStatus.
+	 */
+	@Deprecated
 	public CommerceOrder updatePaymentStatus(
 			long commerceOrderId, int paymentStatus)
 		throws PortalException;
 
+	/**
+	 * @deprecated As of Judson (7.1.x), with no direct replacement.
+	 See CommercePaymentEngine.updateOrderPaymentStatus.
+	 */
+	@Deprecated
 	public CommerceOrder updatePaymentStatusAndTransactionId(
 			long commerceOrderId, int paymentStatus, String transactionId)
 		throws PortalException;
@@ -379,6 +390,12 @@ public interface CommerceOrderService extends BaseService {
 			String street1, String street2, String street3, String city,
 			String zip, long commerceRegionId, long commerceCountryId,
 			String phoneNumber, ServiceContext serviceContext)
+		throws PortalException;
+
+	public CommerceOrder updateShippingMethod(
+			long commerceOrderId, long commerceShippingMethodId,
+			String shippingOptionName, CommerceContext commerceContext,
+			Locale locale)
 		throws PortalException;
 
 	public CommerceOrder updateTransactionId(

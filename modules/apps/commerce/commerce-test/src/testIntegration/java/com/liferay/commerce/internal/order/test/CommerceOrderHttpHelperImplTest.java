@@ -21,13 +21,13 @@ import com.liferay.commerce.constants.CommerceWebKeys;
 import com.liferay.commerce.context.CommerceContext;
 import com.liferay.commerce.currency.model.CommerceCurrency;
 import com.liferay.commerce.currency.test.util.CommerceCurrencyTestUtil;
-import com.liferay.commerce.discount.service.CommerceDiscountLocalService;
 import com.liferay.commerce.inventory.model.CommerceInventoryBookedQuantity;
 import com.liferay.commerce.inventory.model.CommerceInventoryWarehouse;
 import com.liferay.commerce.inventory.service.CommerceInventoryBookedQuantityLocalService;
 import com.liferay.commerce.model.CommerceOrder;
 import com.liferay.commerce.model.CommerceOrderItem;
 import com.liferay.commerce.order.CommerceOrderHttpHelper;
+import com.liferay.commerce.pricing.constants.CommercePricingConstants;
 import com.liferay.commerce.product.model.CPInstance;
 import com.liferay.commerce.product.model.CommerceChannel;
 import com.liferay.commerce.product.test.util.CPTestUtil;
@@ -36,14 +36,14 @@ import com.liferay.commerce.test.util.CommerceInventoryTestUtil;
 import com.liferay.commerce.test.util.CommerceTestUtil;
 import com.liferay.commerce.test.util.TestCommerceContext;
 import com.liferay.petra.lang.CentralizedThreadLocal;
+import com.liferay.portal.configuration.test.util.ConfigurationTestUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
-import com.liferay.portal.kernel.service.GroupLocalService;
-import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
@@ -52,10 +52,12 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
+import com.liferay.portal.test.rule.PermissionCheckerTestRule;
 import com.liferay.portal.theme.ThemeDisplayFactory;
 
 import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -63,8 +65,10 @@ import javax.servlet.http.HttpServletRequest;
 import org.frutilla.FrutillaRule;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -83,10 +87,37 @@ public class CommerceOrderHttpHelperImplTest {
 	public static final AggregateTestRule aggregateTestRule =
 		new AggregateTestRule(
 			new LiferayIntegrationTestRule(),
-			PermissionCheckerMethodTestRule.INSTANCE);
+			PermissionCheckerTestRule.INSTANCE);
+
+	@BeforeClass
+	public static void setUpClass() throws Exception {
+		_properties = new Hashtable<>();
+
+		_properties.put(
+			"commercePricingCalculationKey",
+			CommercePricingConstants.VERSION_1_0);
+
+		ConfigurationTestUtil.saveConfiguration(_PID, _properties);
+	}
+
+	@AfterClass
+	public static void tearDownClass() throws Exception {
+		_properties.put(
+			"commercePricingCalculationKey",
+			CommercePricingConstants.VERSION_2_0);
+
+		ConfigurationTestUtil.saveConfiguration(_PID, _properties);
+	}
 
 	@Before
 	public void setUp() throws Exception {
+		_company = CommerceTestUtil.addCompany();
+
+		_user = UserTestUtil.addUser(_company);
+
+		_group = GroupTestUtil.addGroup(
+			_user.getCompanyId(), _user.getUserId(), 0);
+
 		List<CommerceInventoryBookedQuantity>
 			commerceInventoryBookedQuantities =
 				_commerceBookedQuantityLocalService.
@@ -100,10 +131,6 @@ public class CommerceOrderHttpHelperImplTest {
 				deleteCommerceInventoryBookedQuantity(
 					commerceInventoryBookedQuantity);
 		}
-
-		_group = GroupTestUtil.addGroup();
-
-		_user = UserTestUtil.addUser();
 
 		PrincipalThreadLocal.setName(_user.getUserId());
 
@@ -149,12 +176,6 @@ public class CommerceOrderHttpHelperImplTest {
 		for (CommerceOrder commerceOrder : _commerceOrders) {
 			_commerceOrderLocalService.deleteCommerceOrder(commerceOrder);
 		}
-
-		_commerceDiscountLocalService.deleteCommerceDiscounts(
-			_group.getCompanyId());
-		_commerceAccountLocalService.deleteCommerceAccount(_commerceAccount);
-		_groupLocalService.deleteGroup(_group);
-		_userLocalService.deleteUser(_user);
 	}
 
 	@Test
@@ -204,7 +225,7 @@ public class CommerceOrderHttpHelperImplTest {
 
 		_commerceOrders.add(commerceOrder);
 
-		CPInstance cpInstance = CPTestUtil.addCPInstance();
+		CPInstance cpInstance = CPTestUtil.addCPInstance(_group.getGroupId());
 
 		_commerceInventoryWarehouse =
 			CommerceInventoryTestUtil.addCommerceInventoryWarehouse();
@@ -231,6 +252,12 @@ public class CommerceOrderHttpHelperImplTest {
 	@Rule
 	public FrutillaRule frutillaRule = new FrutillaRule();
 
+	private static final String _PID =
+		"com.liferay.commerce.pricing.configuration." +
+			"CommercePricingConfiguration";
+
+	private static Dictionary<String, Object> _properties;
+
 	private CommerceAccount _commerceAccount;
 
 	@Inject
@@ -240,16 +267,8 @@ public class CommerceOrderHttpHelperImplTest {
 	private CommerceInventoryBookedQuantityLocalService
 		_commerceBookedQuantityLocalService;
 
-	@DeleteAfterTestRun
 	private CommerceChannel _commerceChannel;
-
-	@DeleteAfterTestRun
 	private CommerceCurrency _commerceCurrency;
-
-	@Inject
-	private CommerceDiscountLocalService _commerceDiscountLocalService;
-
-	@DeleteAfterTestRun
 	private CommerceInventoryWarehouse _commerceInventoryWarehouse;
 
 	@Inject
@@ -259,16 +278,13 @@ public class CommerceOrderHttpHelperImplTest {
 	private CommerceOrderLocalService _commerceOrderLocalService;
 
 	private List<CommerceOrder> _commerceOrders;
+
+	@DeleteAfterTestRun
+	private Company _company;
+
 	private Group _group;
-
-	@Inject
-	private GroupLocalService _groupLocalService;
-
 	private HttpServletRequest _httpServletRequest;
 	private ThemeDisplay _themeDisplay;
 	private User _user;
-
-	@Inject
-	private UserLocalService _userLocalService;
 
 }

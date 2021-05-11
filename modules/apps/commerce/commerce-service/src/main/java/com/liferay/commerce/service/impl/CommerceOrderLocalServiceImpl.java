@@ -44,13 +44,16 @@ import com.liferay.commerce.internal.order.comparator.CommerceOrderModifiedDateC
 import com.liferay.commerce.model.CommerceAddress;
 import com.liferay.commerce.model.CommerceOrder;
 import com.liferay.commerce.model.CommerceOrderItem;
+import com.liferay.commerce.model.CommerceShippingEngine;
 import com.liferay.commerce.model.CommerceShippingMethod;
+import com.liferay.commerce.model.CommerceShippingOption;
 import com.liferay.commerce.price.CommerceOrderPrice;
 import com.liferay.commerce.price.CommerceOrderPriceCalculation;
 import com.liferay.commerce.price.CommerceOrderPriceCalculationFactory;
 import com.liferay.commerce.product.util.JsonHelper;
 import com.liferay.commerce.search.facet.NegatableMultiValueFacet;
 import com.liferay.commerce.service.base.CommerceOrderLocalServiceBaseImpl;
+import com.liferay.commerce.util.CommerceShippingEngineRegistry;
 import com.liferay.commerce.util.CommerceShippingHelper;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -101,6 +104,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.function.BiConsumer;
@@ -225,6 +229,13 @@ public class CommerceOrderLocalServiceImpl
 		commerceOrder.setStatusByUserName(user.getFullName());
 		commerceOrder.setStatusDate(serviceContext.getModifiedDate(null));
 		commerceOrder.setExpandoBridgeAttributes(serviceContext);
+
+		_setCommerceOrderShippingDiscountValue(commerceOrder, null, true);
+		_setCommerceOrderShippingDiscountValue(commerceOrder, null, false);
+		_setCommerceOrderSubtotalDiscountValue(commerceOrder, null, true);
+		_setCommerceOrderSubtotalDiscountValue(commerceOrder, null, false);
+		_setCommerceOrderTotalDiscountValue(commerceOrder, null, true);
+		_setCommerceOrderTotalDiscountValue(commerceOrder, null, false);
 
 		commerceOrder = commerceOrderPersistence.update(commerceOrder);
 
@@ -1028,7 +1039,9 @@ public class CommerceOrderLocalServiceImpl
 		commerceOrder.setShippingOptionName(shippingOptionName);
 		commerceOrder.setPurchaseOrderNumber(purchaseOrderNumber);
 		commerceOrder.setSubtotal(subtotal);
+		commerceOrder.setShippingAmount(shippingAmount);
 		commerceOrder.setSubtotalWithTaxAmount(subtotalWithTaxAmount);
+		commerceOrder.setShippingWithTaxAmount(shippingWithTaxAmount);
 
 		if (commerceContext != null) {
 			CommerceOrderPriceCalculation commerceOrderPriceCalculation =
@@ -1046,7 +1059,7 @@ public class CommerceOrderLocalServiceImpl
 				CommerceMoney shippingDiscountAmount =
 					shippingDiscountValue.getDiscountAmount();
 
-				shippingAmount = shippingAmount.subtract(
+				commerceOrder.setShippingDiscountAmount(
 					shippingDiscountAmount.getPrice());
 			}
 
@@ -1057,14 +1070,12 @@ public class CommerceOrderLocalServiceImpl
 				CommerceMoney shippingDiscountWithTaxAmount =
 					shippingDiscountValueWithTaxAmount.getDiscountAmount();
 
-				shippingWithTaxAmount = shippingWithTaxAmount.subtract(
+				commerceOrder.setShippingDiscountWithTaxAmount(
 					shippingDiscountWithTaxAmount.getPrice());
 			}
 		}
 
-		commerceOrder.setShippingAmount(shippingAmount);
 		commerceOrder.setTotal(total);
-		commerceOrder.setShippingWithTaxAmount(shippingWithTaxAmount);
 		commerceOrder.setTotalWithTaxAmount(totalWithTaxAmount);
 		commerceOrder.setAdvanceStatus(advanceStatus);
 		commerceOrder.setExternalReferenceCode(externalReferenceCode);
@@ -1126,6 +1137,7 @@ public class CommerceOrderLocalServiceImpl
 		commerceOrder.setShippingOptionName(shippingOptionName);
 		commerceOrder.setPurchaseOrderNumber(purchaseOrderNumber);
 		commerceOrder.setSubtotal(subtotal);
+		commerceOrder.setShippingAmount(shippingAmount);
 
 		if (commerceContext != null) {
 			CommerceOrderPriceCalculation commerceOrderPriceCalculation =
@@ -1143,12 +1155,11 @@ public class CommerceOrderLocalServiceImpl
 				CommerceMoney shippingDiscountAmount =
 					shippingDiscountValue.getDiscountAmount();
 
-				shippingAmount = shippingAmount.subtract(
+				commerceOrder.setShippingDiscountAmount(
 					shippingDiscountAmount.getPrice());
 			}
 		}
 
-		commerceOrder.setShippingAmount(shippingAmount);
 		commerceOrder.setTotal(total);
 		commerceOrder.setAdvanceStatus(advanceStatus);
 		commerceOrder.setExternalReferenceCode(externalReferenceCode);
@@ -1566,6 +1577,53 @@ public class CommerceOrderLocalServiceImpl
 
 	@Indexable(type = IndexableType.REINDEX)
 	@Override
+	public CommerceOrder updateShippingMethod(
+			long commerceOrderId, long commerceShippingMethodId,
+			String shippingOptionName, CommerceContext commerceContext,
+			Locale locale)
+		throws PortalException {
+
+		CommerceOrder commerceOrder = commerceOrderPersistence.findByPrimaryKey(
+			commerceOrderId);
+
+		CommerceShippingMethod commerceShippingMethod =
+			commerceShippingMethodLocalService.getCommerceShippingMethod(
+				commerceShippingMethodId);
+
+		commerceOrder.setCommerceShippingMethodId(
+			commerceShippingMethod.getCommerceShippingMethodId());
+
+		commerceOrder.setShippingOptionName(shippingOptionName);
+
+		CommerceShippingEngine commerceShippingEngine =
+			_commerceShippingEngineRegistry.getCommerceShippingEngine(
+				commerceShippingMethod.getEngineKey());
+
+		List<CommerceShippingOption> commerceShippingOptions =
+			commerceShippingEngine.getCommerceShippingOptions(
+				commerceContext, commerceOrder, locale);
+
+		for (CommerceShippingOption commerceShippingOption :
+				commerceShippingOptions) {
+
+			if (Validator.isNotNull(shippingOptionName) &&
+				shippingOptionName.equals(commerceShippingOption.getName())) {
+
+				commerceOrder.setShippingAmount(
+					commerceShippingOption.getAmount());
+
+				break;
+			}
+		}
+
+		commerceOrder = commerceOrderPersistence.update(commerceOrder);
+
+		return commerceOrderLocalService.recalculatePrice(
+			commerceOrder.getCommerceOrderId(), commerceContext);
+	}
+
+	@Indexable(type = IndexableType.REINDEX)
+	@Override
 	public CommerceOrder updateStatus(
 			long userId, long commerceOrderId, int status,
 			ServiceContext serviceContext,
@@ -1770,10 +1828,10 @@ public class CommerceOrderLocalServiceImpl
 		}
 
 		searchContext.setCompanyId(companyId);
+		searchContext.setEnd(end);
 		searchContext.setGroupIds(new long[] {commerceChannelGroupId});
 		searchContext.setKeywords(keywords);
 		searchContext.setStart(start);
-		searchContext.setEnd(end);
 
 		Sort sort = SortFactoryUtil.getSort(
 			CommerceOrder.class, Sort.LONG_TYPE, Field.CREATE_DATE, "DESC");
@@ -2209,6 +2267,9 @@ public class CommerceOrderLocalServiceImpl
 	@ServiceReference(type = CommerceOrderPriceCalculationFactory.class)
 	private CommerceOrderPriceCalculationFactory
 		_commerceOrderPriceCalculationFactory;
+
+	@ServiceReference(type = CommerceShippingEngineRegistry.class)
+	private CommerceShippingEngineRegistry _commerceShippingEngineRegistry;
 
 	@ServiceReference(type = CommerceShippingHelper.class)
 	private CommerceShippingHelper _commerceShippingHelper;

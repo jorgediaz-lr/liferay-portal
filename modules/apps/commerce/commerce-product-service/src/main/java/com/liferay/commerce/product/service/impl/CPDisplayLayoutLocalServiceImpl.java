@@ -82,7 +82,8 @@ public class CPDisplayLayoutLocalServiceImpl
 		long classNameId = classNameLocalService.getClassNameId(clazz);
 
 		CPDisplayLayout oldCPDisplayLayout =
-			cpDisplayLayoutPersistence.fetchByC_C(classNameId, classPK);
+			cpDisplayLayoutPersistence.fetchByG_C_C(
+				groupId, classNameId, classPK);
 
 		if ((clazz == CPDefinition.class) &&
 			cpDefinitionLocalService.isVersionable(classPK)) {
@@ -97,8 +98,8 @@ public class CPDisplayLayoutLocalServiceImpl
 				throw new SystemException(pe);
 			}
 
-			oldCPDisplayLayout = cpDisplayLayoutPersistence.fetchByC_C(
-				classNameId, classPK);
+			oldCPDisplayLayout = cpDisplayLayoutPersistence.fetchByG_C_C(
+				groupId, classNameId, classPK);
 		}
 
 		if (oldCPDisplayLayout != null) {
@@ -124,29 +125,18 @@ public class CPDisplayLayoutLocalServiceImpl
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public CPDisplayLayout deleteCPDisplayLayout(Class<?> clazz, long classPK) {
-		long classNameId = classNameLocalService.getClassNameId(clazz);
-
-		CPDisplayLayout cpDisplayLayout = cpDisplayLayoutPersistence.fetchByC_C(
-			classNameId, classPK);
-
-		if (cpDisplayLayout != null) {
+		try {
 			if ((clazz == CPDefinition.class) &&
 				cpDefinitionLocalService.isVersionable(classPK)) {
 
-				try {
-					CPDefinition newCPDefinition =
-						cpDefinitionLocalService.copyCPDefinition(classPK);
-
-					cpDisplayLayout = cpDisplayLayoutPersistence.findByC_C(
-						classNameId, newCPDefinition.getCPDefinitionId());
-				}
-				catch (PortalException pe) {
-					throw new SystemException(pe);
-				}
+				cpDefinitionLocalService.copyCPDefinition(classPK);
 			}
-
-			return cpDisplayLayoutPersistence.remove(cpDisplayLayout);
 		}
+		catch (PortalException pe) {
+			throw new SystemException(pe);
+		}
+
+		cpDisplayLayoutLocalService.deleteCPDisplayLayouts(clazz, classPK);
 
 		return null;
 	}
@@ -163,9 +153,32 @@ public class CPDisplayLayoutLocalServiceImpl
 	}
 
 	@Override
+	public void deleteCPDisplayLayouts(Class<?> clazz, long classPK) {
+		List<CPDisplayLayout> cpDisplayLayouts =
+			cpDisplayLayoutPersistence.findByC_C(
+				classNameLocalService.getClassNameId(clazz), classPK);
+
+		for (CPDisplayLayout cpDisplayLayout : cpDisplayLayouts) {
+			cpDisplayLayoutLocalService.deleteCPDisplayLayout(cpDisplayLayout);
+		}
+	}
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x)
+	 */
+	@Deprecated
+	@Override
 	public CPDisplayLayout fetchCPDisplayLayout(Class<?> clazz, long classPK) {
-		return cpDisplayLayoutPersistence.fetchByC_C(
-			classNameLocalService.getClassNameId(clazz), classPK);
+		return cpDisplayLayoutPersistence.fetchByC_C_First(
+			classNameLocalService.getClassNameId(clazz), classPK, null);
+	}
+
+	@Override
+	public CPDisplayLayout fetchCPDisplayLayout(
+		long groupId, Class<?> clazz, long classPK) {
+
+		return cpDisplayLayoutPersistence.fetchByG_C_C(
+			groupId, classNameLocalService.getClassNameId(clazz), classPK);
 	}
 
 	@Override
@@ -230,9 +243,9 @@ public class CPDisplayLayoutLocalServiceImpl
 		searchContext.setAttributes(attributes);
 
 		searchContext.setCompanyId(companyId);
+		searchContext.setEnd(end);
 		searchContext.setGroupIds(new long[] {groupId});
 		searchContext.setStart(start);
-		searchContext.setEnd(end);
 
 		if (Validator.isNotNull(keywords)) {
 			searchContext.setKeywords(keywords);

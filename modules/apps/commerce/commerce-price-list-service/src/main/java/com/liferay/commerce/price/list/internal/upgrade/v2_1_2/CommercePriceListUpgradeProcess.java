@@ -48,7 +48,7 @@ public class CommercePriceListUpgradeProcess
 			Arrays.asList(_OWNER_PERMISSIONS));
 
 		ModelPermissions modelPermissions = ModelPermissionsFactory.create(
-			new String[0], new String[0]);
+			null, null);
 
 		modelPermissions.addRolePermissions(
 			RoleConstants.OWNER, _OWNER_PERMISSIONS);

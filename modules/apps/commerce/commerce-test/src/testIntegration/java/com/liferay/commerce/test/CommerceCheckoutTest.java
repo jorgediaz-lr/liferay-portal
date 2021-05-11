@@ -28,11 +28,14 @@ import com.liferay.commerce.exception.CommerceOrderGuestCheckoutException;
 import com.liferay.commerce.model.CommerceOrder;
 import com.liferay.commerce.model.CommerceOrderItem;
 import com.liferay.commerce.order.engine.CommerceOrderEngine;
+import com.liferay.commerce.pricing.constants.CommercePricingConstants;
 import com.liferay.commerce.product.model.CPInstance;
 import com.liferay.commerce.product.model.CommerceChannel;
 import com.liferay.commerce.service.CommerceOrderLocalServiceUtil;
 import com.liferay.commerce.test.util.CommerceTestUtil;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.configuration.test.util.ConfigurationTestUtil;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
@@ -45,6 +48,7 @@ import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
+import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.settings.GroupServiceSettingsLocator;
 import com.liferay.portal.kernel.settings.ModifiableSettings;
@@ -52,7 +56,6 @@ import com.liferay.portal.kernel.settings.Settings;
 import com.liferay.portal.kernel.settings.SettingsFactory;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
-import com.liferay.portal.kernel.test.util.CompanyTestUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.RoleTestUtil;
@@ -61,16 +64,20 @@ import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
+import com.liferay.portal.test.rule.PermissionCheckerTestRule;
 
 import java.math.BigDecimal;
 
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.List;
 
 import org.frutilla.FrutillaRule;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -85,16 +92,36 @@ public class CommerceCheckoutTest {
 	@ClassRule
 	@Rule
 	public static AggregateTestRule aggregateTestRule = new AggregateTestRule(
-		new LiferayIntegrationTestRule(), PermissionCheckerMethodTestRule.INSTANCE);
+		new LiferayIntegrationTestRule(), PermissionCheckerTestRule.INSTANCE);
+
+	@BeforeClass
+	public static void setUpClass() throws Exception {
+		_properties = new Hashtable<>();
+
+		_properties.put(
+			"commercePricingCalculationKey",
+			CommercePricingConstants.VERSION_1_0);
+
+		ConfigurationTestUtil.saveConfiguration(_PID, _properties);
+	}
+
+	@AfterClass
+	public static void tearDownClass() throws Exception {
+		_properties.put(
+			"commercePricingCalculationKey",
+			CommercePricingConstants.VERSION_2_0);
+
+		ConfigurationTestUtil.saveConfiguration(_PID, _properties);
+	}
 
 	@Before
 	public void setUp() throws Exception {
-		_company = CompanyTestUtil.addCompany();
+		_company = CommerceTestUtil.addCompany();
 
 		_user = UserTestUtil.addUser(_company);
 
 		_group = GroupTestUtil.addGroup(
-			_company.getCompanyId(), _user.getUserId(), 0);
+			_user.getCompanyId(), _user.getUserId(), 0);
 
 		_commerceCurrency = CommerceCurrencyTestUtil.addCommerceCurrency(
 			_group.getCompanyId());
@@ -132,31 +159,33 @@ public class CommerceCheckoutTest {
 			"The guest should be able to place the order"
 		);
 
-		User user = _company.getDefaultUser();
+		Company company = CompanyLocalServiceUtil.getCompany(
+			_user.getCompanyId());
+
+		User user = company.getDefaultUser();
 
 		CommerceAccount commerceAccount =
 			_commerceAccountLocalService.getGuestCommerceAccount(
-				_company.getCompanyId());
+				company.getCompanyId());
 
-		CommerceOrder commerceOrder =
-			CommerceOrderLocalServiceUtil.addCommerceOrder(
-				user.getUserId(), _commerceChannel.getGroupId(),
-				commerceAccount.getCommerceAccountId(),
-				_commerceCurrency.getCommerceCurrencyId());
+		_commerceOrder = CommerceOrderLocalServiceUtil.addCommerceOrder(
+			user.getUserId(), _commerceChannel.getGroupId(),
+			commerceAccount.getCommerceAccountId(),
+			_commerceCurrency.getCommerceCurrencyId());
 
 		CommerceTestUtil.addCheckoutDetailsToUserOrder(
-			commerceOrder, commerceOrder.getUserId(), false);
+			_commerceOrder, _commerceOrder.getUserId(), false);
 
-		commerceOrder = _commerceOrderEngine.checkoutCommerceOrder(
-			commerceOrder, user.getUserId());
+		_commerceOrder = _commerceOrderEngine.checkoutCommerceOrder(
+			_commerceOrder, user.getUserId());
 
 		Assert.assertEquals(
-			commerceOrder.getOrderStatus(),
+			_commerceOrder.getOrderStatus(),
 			CommerceOrderConstants.ORDER_STATUS_PENDING);
-		Assert.assertTrue(commerceOrder.isGuestOrder());
+		Assert.assertTrue(_commerceOrder.isGuestOrder());
 	}
 
-	@Test(expected = PrincipalException.MustHavePermission.class)
+	@Test
 	public void testGuestUserCheckoutFromAnotherGuestUser() throws Exception {
 		frutillaRule.scenario(
 			"When a guest creates an order other guests should not be able " +
@@ -171,63 +200,74 @@ public class CommerceCheckoutTest {
 			"A Permission exception should be thrown"
 		);
 
-		ServiceContext serviceContext =
-			ServiceContextTestUtil.getServiceContext(
-				_company.getCompanyId(), _group.getGroupId(),
-				_user.getUserId());
+		try {
+			Company company = CompanyLocalServiceUtil.getCompany(
+				_user.getCompanyId());
 
-		User user = UserTestUtil.addUser(_company);
+			ServiceContext serviceContext =
+				ServiceContextTestUtil.getServiceContext(
+					company.getCompanyId(), _group.getGroupId(),
+					_user.getUserId());
 
-		serviceContext.setUserId(user.getUserId());
+			User user = UserTestUtil.addUser(company);
 
-		PermissionChecker permissionChecker =
-			PermissionCheckerFactoryUtil.create(user);
+			serviceContext.setUserId(user.getUserId());
 
-		PrincipalThreadLocal.setName(user.getUserId());
+			PermissionChecker permissionChecker =
+				PermissionCheckerFactoryUtil.create(user);
 
-		PermissionThreadLocal.setPermissionChecker(permissionChecker);
+			PrincipalThreadLocal.setName(user.getUserId());
 
-		CommerceAccount commerceAccount =
-			_commerceAccountLocalService.addCommerceAccount(
-				RandomTestUtil.randomString(),
-				CommerceAccountConstants.DEFAULT_PARENT_ACCOUNT_ID,
-				user.getEmailAddress(), StringPool.BLANK,
-				CommerceAccountConstants.ACCOUNT_TYPE_GUEST, true, null,
-				serviceContext);
+			PermissionThreadLocal.setPermissionChecker(permissionChecker);
 
-		Role role = RoleTestUtil.addRole(
-			CommerceAccountConstants.ROLE_NAME_ACCOUNT_ADMINISTRATOR,
-			RoleConstants.TYPE_SITE, "com.liferay.commerce.order",
-			ResourceConstants.SCOPE_GROUP_TEMPLATE,
-			String.valueOf(GroupConstants.DEFAULT_PARENT_GROUP_ID),
-			CommerceOrderActionKeys.CHECKOUT_OPEN_COMMERCE_ORDERS);
+			CommerceAccount commerceAccount =
+				_commerceAccountLocalService.addCommerceAccount(
+					RandomTestUtil.randomString(),
+					CommerceAccountConstants.DEFAULT_PARENT_ACCOUNT_ID,
+					user.getEmailAddress(), StringPool.BLANK,
+					CommerceAccountConstants.ACCOUNT_TYPE_GUEST, true, null,
+					serviceContext);
 
-		CommerceAccountUserRelLocalServiceUtil.addCommerceAccountUserRel(
-			commerceAccount.getCommerceAccountId(), user.getUserId(),
-			new long[] {role.getRoleId()}, serviceContext);
+			Role role = RoleTestUtil.addRole(
+				CommerceAccountConstants.ROLE_NAME_ACCOUNT_ADMINISTRATOR,
+				RoleConstants.TYPE_SITE, "com.liferay.commerce.order",
+				ResourceConstants.SCOPE_GROUP_TEMPLATE,
+				String.valueOf(GroupConstants.DEFAULT_PARENT_GROUP_ID),
+				CommerceOrderActionKeys.CHECKOUT_OPEN_COMMERCE_ORDERS);
 
-		CommerceOrder commerceOrder =
-			CommerceOrderLocalServiceUtil.addCommerceOrder(
+			CommerceAccountUserRelLocalServiceUtil.addCommerceAccountUserRel(
+				commerceAccount.getCommerceAccountId(), user.getUserId(),
+				new long[] {role.getRoleId()}, serviceContext);
+
+			_commerceOrder = CommerceOrderLocalServiceUtil.addCommerceOrder(
 				user.getUserId(), _commerceChannel.getGroupId(),
 				commerceAccount.getCommerceAccountId(),
 				_commerceCurrency.getCommerceCurrencyId());
 
-		CommerceTestUtil.addCheckoutDetailsToUserOrder(
-			commerceOrder, commerceOrder.getUserId(), false);
+			CommerceTestUtil.addCheckoutDetailsToUserOrder(
+				_commerceOrder, _commerceOrder.getUserId(), false);
 
-		User user2 = UserTestUtil.addUser(_company);
+			User user2 = UserTestUtil.addUser(company);
 
-		permissionChecker = PermissionCheckerFactoryUtil.create(user2);
+			permissionChecker = PermissionCheckerFactoryUtil.create(user2);
 
-		PrincipalThreadLocal.setName(user2.getUserId());
+			PrincipalThreadLocal.setName(user2.getUserId());
 
-		PermissionThreadLocal.setPermissionChecker(permissionChecker);
+			PermissionThreadLocal.setPermissionChecker(permissionChecker);
 
-		_commerceOrderEngine.checkoutCommerceOrder(
-			commerceOrder, user2.getUserId());
+			_commerceOrderEngine.checkoutCommerceOrder(
+				_commerceOrder, user2.getUserId());
+		}
+		catch (PortalException portalException) {
+			Throwable throwable = portalException.getCause();
+
+			Assert.assertSame(
+				PrincipalException.MustHavePermission.class,
+				throwable.getClass());
+		}
 	}
 
-	@Test(expected = CommerceOrderGuestCheckoutException.class)
+	@Test
 	public void testGuestUserCheckoutWithGuestCheckoutDisabled()
 		throws Exception {
 
@@ -245,41 +285,52 @@ public class CommerceCheckoutTest {
 			"The guest should be able to place the order"
 		);
 
-		Settings settings = _settingsFactory.getSettings(
-			new GroupServiceSettingsLocator(
-				_commerceChannel.getGroupId(),
-				CommerceConstants.ORDER_SERVICE_NAME));
+		try {
+			Company company = CompanyLocalServiceUtil.getCompany(
+				_user.getCompanyId());
 
-		ModifiableSettings modifiableSettings =
-			settings.getModifiableSettings();
+			Settings settings = _settingsFactory.getSettings(
+				new GroupServiceSettingsLocator(
+					_commerceChannel.getGroupId(),
+					CommerceConstants.ORDER_SERVICE_NAME));
 
-		modifiableSettings.setValue(
-			"guestCheckoutEnabled", Boolean.FALSE.toString());
+			ModifiableSettings modifiableSettings =
+				settings.getModifiableSettings();
 
-		modifiableSettings.store();
+			modifiableSettings.setValue(
+				"guestCheckoutEnabled", Boolean.FALSE.toString());
 
-		User user = _company.getDefaultUser();
+			modifiableSettings.store();
 
-		CommerceAccount commerceAccount =
-			_commerceAccountLocalService.getGuestCommerceAccount(
-				_company.getCompanyId());
+			User user = company.getDefaultUser();
 
-		CommerceOrder commerceOrder =
-			CommerceOrderLocalServiceUtil.addCommerceOrder(
+			CommerceAccount commerceAccount =
+				_commerceAccountLocalService.getGuestCommerceAccount(
+					company.getCompanyId());
+
+			_commerceOrder = CommerceOrderLocalServiceUtil.addCommerceOrder(
 				user.getUserId(), _commerceChannel.getGroupId(),
 				commerceAccount.getCommerceAccountId(),
 				_commerceCurrency.getCommerceCurrencyId());
 
-		CommerceTestUtil.addCheckoutDetailsToUserOrder(
-			commerceOrder, commerceOrder.getUserId(), false);
+			CommerceTestUtil.addCheckoutDetailsToUserOrder(
+				_commerceOrder, _commerceOrder.getUserId(), false);
 
-		_commerceOrderEngine.checkoutCommerceOrder(
-			commerceOrder, user.getUserId());
+			_commerceOrderEngine.checkoutCommerceOrder(
+				_commerceOrder, user.getUserId());
 
-		Assert.assertNotEquals(
-			commerceOrder.getOrderStatus(),
-			CommerceOrderConstants.ORDER_STATUS_PENDING);
-		Assert.assertTrue(commerceOrder.isGuestOrder());
+			Assert.assertNotEquals(
+				_commerceOrder.getOrderStatus(),
+				CommerceOrderConstants.ORDER_STATUS_PENDING);
+			Assert.assertTrue(_commerceOrder.isGuestOrder());
+		}
+		catch (PortalException portalException) {
+			Throwable throwable = portalException.getCause();
+
+			Assert.assertSame(
+				CommerceOrderGuestCheckoutException.class,
+				throwable.getClass());
+		}
 	}
 
 	@Test
@@ -295,21 +346,21 @@ public class CommerceCheckoutTest {
 			"The price list with the highest priority should be retrieved"
 		);
 
-		CommerceOrder commerceOrder = CommerceTestUtil.addB2CCommerceOrder(
+		_commerceOrder = CommerceTestUtil.addB2CCommerceOrder(
 			_user.getUserId(), _commerceChannel.getGroupId(),
 			_commerceCurrency.getCommerceCurrencyId());
 
 		CommerceTestUtil.addCheckoutDetailsToUserOrder(
-			commerceOrder, commerceOrder.getUserId(), false);
+			_commerceOrder, _commerceOrder.getUserId(), false);
 
-		commerceOrder = _commerceOrderEngine.checkoutCommerceOrder(
-			commerceOrder, _user.getUserId());
+		_commerceOrder = _commerceOrderEngine.checkoutCommerceOrder(
+			_commerceOrder, _user.getUserId());
 
 		Assert.assertEquals(
-			WorkflowConstants.STATUS_APPROVED, commerceOrder.getStatus());
+			WorkflowConstants.STATUS_APPROVED, _commerceOrder.getStatus());
 
 		List<CommerceOrderItem> commerceOrderItems =
-			commerceOrder.getCommerceOrderItems();
+			_commerceOrder.getCommerceOrderItems();
 
 		BigDecimal expectedSubTotal = BigDecimal.ZERO;
 
@@ -330,16 +381,16 @@ public class CommerceCheckoutTest {
 			expectedSubTotal = expectedSubTotal.add(totalItemPrice);
 		}
 
-		BigDecimal actualSubTotal = commerceOrder.getSubtotal();
+		BigDecimal actualSubTotal = _commerceOrder.getSubtotal();
 
 		Assert.assertEquals(
 			expectedSubTotal.doubleValue(), actualSubTotal.doubleValue(),
 			0.0001);
 
 		BigDecimal expectedTotal = expectedSubTotal.add(
-			commerceOrder.getShippingAmount());
+			_commerceOrder.getShippingAmount());
 
-		BigDecimal actualTotal = commerceOrder.getTotal();
+		BigDecimal actualTotal = _commerceOrder.getTotal();
 
 		Assert.assertEquals(
 			expectedTotal.doubleValue(), actualTotal.doubleValue(), 0.0001);
@@ -348,14 +399,20 @@ public class CommerceCheckoutTest {
 	@Rule
 	public FrutillaRule frutillaRule = new FrutillaRule();
 
+	private static final String _PID =
+		"com.liferay.commerce.pricing.configuration." +
+			"CommercePricingConfiguration";
+
+	private static Dictionary<String, Object> _properties;
+
 	@Inject
 	private CommerceAccountLocalService _commerceAccountLocalService;
 
-	@DeleteAfterTestRun
 	private CommerceChannel _commerceChannel;
+	private CommerceCurrency _commerceCurrency;
 
 	@DeleteAfterTestRun
-	private CommerceCurrency _commerceCurrency;
+	private CommerceOrder _commerceOrder;
 
 	@Inject
 	private CommerceOrderEngine _commerceOrderEngine;
@@ -363,13 +420,11 @@ public class CommerceCheckoutTest {
 	@DeleteAfterTestRun
 	private Company _company;
 
-	@DeleteAfterTestRun
 	private Group _group;
 
 	@Inject
 	private SettingsFactory _settingsFactory;
 
-	@DeleteAfterTestRun
 	private User _user;
 
 }

@@ -547,6 +547,11 @@ public class CommerceOrderServiceUtil {
 			orderDateHour, orderDateMinute, serviceContext);
 	}
 
+	/**
+	 * @deprecated As of Judson (7.1.x), with no direct replacement.
+	 See CommercePaymentEngine.updateOrderPaymentStatus.
+	 */
+	@Deprecated
 	public static CommerceOrder updatePaymentStatus(
 			long commerceOrderId, int paymentStatus)
 		throws PortalException {
@@ -554,6 +559,11 @@ public class CommerceOrderServiceUtil {
 		return getService().updatePaymentStatus(commerceOrderId, paymentStatus);
 	}
 
+	/**
+	 * @deprecated As of Judson (7.1.x), with no direct replacement.
+	 See CommercePaymentEngine.updateOrderPaymentStatus.
+	 */
+	@Deprecated
 	public static CommerceOrder updatePaymentStatusAndTransactionId(
 			long commerceOrderId, int paymentStatus, String transactionId)
 		throws PortalException {
@@ -597,6 +607,18 @@ public class CommerceOrderServiceUtil {
 			commerceOrderId, name, description, street1, street2, street3, city,
 			zip, commerceRegionId, commerceCountryId, phoneNumber,
 			serviceContext);
+	}
+
+	public static CommerceOrder updateShippingMethod(
+			long commerceOrderId, long commerceShippingMethodId,
+			String shippingOptionName,
+			com.liferay.commerce.context.CommerceContext commerceContext,
+			java.util.Locale locale)
+		throws PortalException {
+
+		return getService().updateShippingMethod(
+			commerceOrderId, commerceShippingMethodId, shippingOptionName,
+			commerceContext, locale);
 	}
 
 	public static CommerceOrder updateTransactionId(

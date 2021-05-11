@@ -248,7 +248,7 @@ public class CommerceDataIntegrationProcessLocalServiceImpl
 
 		if (Validator.isNull(name)) {
 			throw new CommerceDataIntegrationProcessNameException(
-				"Commerce data integration process name cannot be null for" +
+				"Commerce data integration process name cannot be null for " +
 					"company " + companyId);
 		}
 
@@ -260,13 +260,10 @@ public class CommerceDataIntegrationProcessLocalServiceImpl
 			return;
 		}
 
-		long existingCommerceDataIntegrationProcessId =
-			commerceDataIntegrationProcess.
-				getCommerceDataIntegrationProcessId();
-
 		if ((commerceDataIntegrationProcessId > 0) &&
-			(existingCommerceDataIntegrationProcessId ==
-				commerceDataIntegrationProcessId)) {
+			(commerceDataIntegrationProcess.
+				getCommerceDataIntegrationProcessId() ==
+					commerceDataIntegrationProcessId)) {
 
 			return;
 		}

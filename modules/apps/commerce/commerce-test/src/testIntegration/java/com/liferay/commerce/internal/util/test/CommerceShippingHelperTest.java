@@ -20,16 +20,20 @@ import com.liferay.commerce.currency.test.util.CommerceCurrencyTestUtil;
 import com.liferay.commerce.inventory.model.CommerceInventoryWarehouse;
 import com.liferay.commerce.model.CommerceOrder;
 import com.liferay.commerce.model.Dimensions;
+import com.liferay.commerce.pricing.constants.CommercePricingConstants;
 import com.liferay.commerce.product.model.CPDefinition;
 import com.liferay.commerce.product.model.CPInstance;
 import com.liferay.commerce.product.model.CommerceChannel;
 import com.liferay.commerce.product.service.CPDefinitionLocalService;
 import com.liferay.commerce.product.service.CPInstanceLocalService;
 import com.liferay.commerce.product.test.util.CPTestUtil;
+import com.liferay.commerce.service.CommerceOrderLocalService;
 import com.liferay.commerce.test.util.CommerceInventoryTestUtil;
 import com.liferay.commerce.test.util.CommerceTestUtil;
 import com.liferay.commerce.util.CommerceShippingHelper;
+import com.liferay.portal.configuration.test.util.ConfigurationTestUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
@@ -37,14 +41,22 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
+import com.liferay.portal.test.rule.PermissionCheckerTestRule;
 
 import java.math.BigDecimal;
 
+import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.Hashtable;
+import java.util.List;
+
 import org.frutilla.FrutillaRule;
 
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -61,17 +73,39 @@ public class CommerceShippingHelperTest {
 	public static final AggregateTestRule aggregateTestRule =
 		new AggregateTestRule(
 			new LiferayIntegrationTestRule(),
-			PermissionCheckerMethodTestRule.INSTANCE);
+			PermissionCheckerTestRule.INSTANCE);
+
+	@BeforeClass
+	public static void setUpClass() throws Exception {
+		_properties = new Hashtable<>();
+
+		_properties.put(
+			"commercePricingCalculationKey",
+			CommercePricingConstants.VERSION_1_0);
+
+		ConfigurationTestUtil.saveConfiguration(_PID, _properties);
+	}
+
+	@AfterClass
+	public static void tearDownClass() throws Exception {
+		_properties.put(
+			"commercePricingCalculationKey",
+			CommercePricingConstants.VERSION_2_0);
+
+		ConfigurationTestUtil.saveConfiguration(_PID, _properties);
+	}
 
 	@Before
 	public void setUp() throws Exception {
-		_user = UserTestUtil.addUser();
+		_company = CommerceTestUtil.addCompany();
+
+		_user = UserTestUtil.addUser(_company);
 
 		_commerceCurrency = CommerceCurrencyTestUtil.addCommerceCurrency(
 			_user.getCompanyId());
 
 		_commerceChannel = CommerceTestUtil.addCommerceChannel(
-			_commerceCurrency.getCode());
+			_company.getGroupId(), _commerceCurrency.getCode());
 
 		_commerceInventoryWarehouse =
 			CommerceInventoryTestUtil.addCommerceInventoryWarehouse();
@@ -79,6 +113,15 @@ public class CommerceShippingHelperTest {
 		CommerceTestUtil.addWarehouseCommerceChannelRel(
 			_commerceInventoryWarehouse.getCommerceInventoryWarehouseId(),
 			_commerceChannel.getCommerceChannelId());
+
+		_commerceOrders = new ArrayList<>();
+	}
+
+	@After
+	public void tearDown() throws PortalException {
+		for (CommerceOrder commerceOrder : _commerceOrders) {
+			_commerceOrderLocalService.deleteCommerceOrder(commerceOrder);
+		}
 	}
 
 	@Test
@@ -97,6 +140,8 @@ public class CommerceShippingHelperTest {
 		CommerceOrder commerceOrder = CommerceTestUtil.addB2CCommerceOrder(
 			_user.getUserId(), _commerceChannel.getGroupId(),
 			_commerceCurrency);
+
+		_commerceOrders.add(commerceOrder);
 
 		CPInstance cpInstance1 = CPTestUtil.addCPInstanceWithSku();
 		CPInstance cpInstance2 = CPTestUtil.addCPInstanceWithSku();
@@ -162,6 +207,8 @@ public class CommerceShippingHelperTest {
 		CommerceOrder commerceOrder = CommerceTestUtil.addB2CCommerceOrder(
 			_user.getUserId(), _commerceChannel.getGroupId(),
 			_commerceCurrency);
+
+		_commerceOrders.add(commerceOrder);
 
 		CPInstance cpInstance1 = CPTestUtil.addCPInstanceWithSku();
 		CPInstance cpInstance2 = CPTestUtil.addCPInstanceWithSku();
@@ -241,6 +288,10 @@ public class CommerceShippingHelperTest {
 		_cpInstanceLocalService.updateCPInstance(cpInstance);
 	}
 
+	private static final String _PID =
+		"com.liferay.commerce.pricing.configuration." +
+			"CommercePricingConfiguration";
+
 	private static CommerceInventoryWarehouse _commerceInventoryWarehouse;
 
 	@Inject
@@ -249,13 +300,22 @@ public class CommerceShippingHelperTest {
 	@Inject
 	private static CPInstanceLocalService _cpInstanceLocalService;
 
+	private static Dictionary<String, Object> _properties;
+
 	private CommerceChannel _commerceChannel;
 	private CommerceCurrency _commerceCurrency;
+
+	@Inject
+	private CommerceOrderLocalService _commerceOrderLocalService;
+
+	private List<CommerceOrder> _commerceOrders;
 
 	@Inject
 	private CommerceShippingHelper _commerceShippingHelper;
 
 	@DeleteAfterTestRun
+	private Company _company;
+
 	private User _user;
 
 }

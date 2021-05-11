@@ -19,7 +19,6 @@ import com.liferay.commerce.constants.CommerceOrderConstants;
 import com.liferay.commerce.context.CommerceContext;
 import com.liferay.commerce.currency.model.CommerceCurrency;
 import com.liferay.commerce.currency.model.CommerceMoney;
-import com.liferay.commerce.currency.service.CommerceCurrencyLocalService;
 import com.liferay.commerce.currency.test.util.CommerceCurrencyTestUtil;
 import com.liferay.commerce.discount.CommerceDiscountValue;
 import com.liferay.commerce.exception.CommerceOrderShippingAddressException;
@@ -37,12 +36,12 @@ import com.liferay.commerce.model.CommerceShippingMethod;
 import com.liferay.commerce.order.engine.CommerceOrderEngine;
 import com.liferay.commerce.price.CommerceOrderPrice;
 import com.liferay.commerce.price.CommerceOrderPriceCalculation;
+import com.liferay.commerce.pricing.constants.CommercePricingConstants;
 import com.liferay.commerce.product.model.CPDefinition;
 import com.liferay.commerce.product.model.CPInstance;
 import com.liferay.commerce.product.model.CommerceChannel;
 import com.liferay.commerce.product.service.CPDefinitionLocalService;
 import com.liferay.commerce.product.service.CPInstanceLocalService;
-import com.liferay.commerce.product.service.CommerceChannelLocalService;
 import com.liferay.commerce.product.service.CommerceChannelRelLocalService;
 import com.liferay.commerce.product.test.util.CPTestUtil;
 import com.liferay.commerce.service.CommerceOrderItemLocalService;
@@ -53,32 +52,37 @@ import com.liferay.commerce.test.util.CommerceInventoryTestUtil;
 import com.liferay.commerce.test.util.CommerceTestUtil;
 import com.liferay.commerce.test.util.TestCommerceContext;
 import com.liferay.commerce.util.CommerceShippingHelper;
+import com.liferay.portal.configuration.test.util.ConfigurationTestUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.CompanyLocalService;
-import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
-import com.liferay.portal.kernel.test.util.CompanyTestUtil;
+import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
+import com.liferay.portal.test.rule.PermissionCheckerTestRule;
 
 import java.math.BigDecimal;
 
 import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.List;
 
 import org.frutilla.FrutillaRule;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -93,19 +97,39 @@ public class CommerceShipmentTest {
 	@ClassRule
 	@Rule
 	public static AggregateTestRule aggregateTestRule = new AggregateTestRule(
-		new LiferayIntegrationTestRule(), PermissionCheckerMethodTestRule.INSTANCE);
+		new LiferayIntegrationTestRule(), PermissionCheckerTestRule.INSTANCE);
+
+	@BeforeClass
+	public static void setUpClass() throws Exception {
+		_properties = new Hashtable<>();
+
+		_properties.put(
+			"commercePricingCalculationKey",
+			CommercePricingConstants.VERSION_1_0);
+
+		ConfigurationTestUtil.saveConfiguration(_PID, _properties);
+	}
+
+	@AfterClass
+	public static void tearDownClass() throws Exception {
+		_properties.put(
+			"commercePricingCalculationKey",
+			CommercePricingConstants.VERSION_2_0);
+
+		ConfigurationTestUtil.saveConfiguration(_PID, _properties);
+	}
 
 	@Before
 	public void setUp() throws Exception {
-		_company = CompanyTestUtil.addCompany();
+		_company = CommerceTestUtil.addCompany();
 
 		_user = UserTestUtil.addUser(_company);
 
 		_commerceCurrency = CommerceCurrencyTestUtil.addCommerceCurrency(
-			_company.getCompanyId());
+			_user.getCompanyId());
 
 		_commerceChannel = CommerceTestUtil.addCommerceChannel(
-			_commerceCurrency.getCode());
+			_company.getGroupId(), _commerceCurrency.getCode());
 
 		_commerceOrders = new ArrayList<>();
 	}
@@ -115,19 +139,9 @@ public class CommerceShipmentTest {
 		for (CommerceOrder commerceOrder : _commerceOrders) {
 			_commerceOrderLocalService.deleteCommerceOrder(commerceOrder);
 		}
-
-		_cpDefinitionLocalService.deleteCPDefinitions(_company.getCompanyId());
-
-		_commerceChannelLocalService.deleteCommerceChannel(_commerceChannel);
-
-		_commerceCurrencyLocalService.deleteCommerceCurrency(_commerceCurrency);
-
-		_userLocalService.deleteUser(_user);
-
-		_companyLocalService.deleteCompany(_company);
 	}
 
-	@Test(expected = CommerceOrderShippingAddressException.class)
+	@Test
 	public void testCheckoutWihoutShippingAddress() throws Exception {
 		frutillaRule.scenario(
 			"It should not be possible to create an order without shipment " +
@@ -140,25 +154,34 @@ public class CommerceShipmentTest {
 			"An exception is raised"
 		);
 
-		BigDecimal value = BigDecimal.valueOf(RandomTestUtil.nextDouble());
+		try {
+			BigDecimal value = BigDecimal.valueOf(RandomTestUtil.nextDouble());
 
-		CommerceOrder commerceOrder = CommerceTestUtil.addB2CCommerceOrder(
-			_user.getUserId(), _commerceChannel.getGroupId(),
-			_commerceCurrency);
+			CommerceOrder commerceOrder = CommerceTestUtil.addB2CCommerceOrder(
+				_user.getUserId(), _commerceChannel.getGroupId(),
+				_commerceCurrency);
 
-		CommerceShippingMethod commerceShippingMethod =
-			CommerceTestUtil.addFixedRateCommerceShippingMethod(
-				_user.getUserId(), commerceOrder.getGroupId(), value);
+			CommerceShippingMethod commerceShippingMethod =
+				CommerceTestUtil.addFixedRateCommerceShippingMethod(
+					_user.getUserId(), commerceOrder.getGroupId(), value);
 
-		commerceOrder.setCommerceShippingMethodId(
-			commerceShippingMethod.getCommerceShippingMethodId());
+			commerceOrder.setCommerceShippingMethodId(
+				commerceShippingMethod.getCommerceShippingMethodId());
 
-		_commerceOrderLocalService.updateCommerceOrder(commerceOrder);
+			_commerceOrderLocalService.updateCommerceOrder(commerceOrder);
 
-		_commerceOrders.add(commerceOrder);
+			_commerceOrders.add(commerceOrder);
 
-		_commerceOrderEngine.checkoutCommerceOrder(
-			commerceOrder, _user.getUserId());
+			_commerceOrderEngine.checkoutCommerceOrder(
+				commerceOrder, _user.getUserId());
+		}
+		catch (PortalException portalException) {
+			Throwable throwable = portalException.getCause();
+
+			Assert.assertSame(
+				CommerceOrderShippingAddressException.class,
+				throwable.getClass());
+		}
 	}
 
 	@Test
@@ -596,7 +619,7 @@ public class CommerceShipmentTest {
 			false, _commerceShippingHelper.isShippable(commerceOrder));
 	}
 
-	@Test(expected = CommerceOrderStatusException.class)
+	@Test
 	public void testCreateShippingForCancelledOrder() throws Exception {
 		frutillaRule.scenario(
 			"Attach a shipment to an order with order status CANCELLED "
@@ -610,25 +633,33 @@ public class CommerceShipmentTest {
 			"An exception shall be raised"
 		);
 
-		BigDecimal value = BigDecimal.valueOf(RandomTestUtil.nextDouble());
+		try {
+			BigDecimal value = BigDecimal.valueOf(RandomTestUtil.nextDouble());
 
-		CommerceOrder commerceOrder =
-			CommerceTestUtil.createCommerceOrderForShipping(
-				_user.getUserId(), _commerceChannel.getGroupId(),
-				_commerceCurrency.getCommerceCurrencyId(), value);
+			CommerceOrder commerceOrder =
+				CommerceTestUtil.createCommerceOrderForShipping(
+					_user.getUserId(), _commerceChannel.getGroupId(),
+					_commerceCurrency.getCommerceCurrencyId(), value);
 
-		_commerceOrders.add(commerceOrder);
+			_commerceOrders.add(commerceOrder);
 
-		commerceOrder.setOrderStatus(
-			CommerceOrderConstants.ORDER_STATUS_CANCELLED);
+			commerceOrder.setOrderStatus(
+				CommerceOrderConstants.ORDER_STATUS_CANCELLED);
 
-		_commerceOrderLocalService.updateCommerceOrder(commerceOrder);
+			_commerceOrderLocalService.updateCommerceOrder(commerceOrder);
 
-		CommerceShipmentTestUtil.createEmptyOrderShipment(
-			commerceOrder.getGroupId(), commerceOrder.getCommerceOrderId());
+			CommerceShipmentTestUtil.createEmptyOrderShipment(
+				commerceOrder.getGroupId(), commerceOrder.getCommerceOrderId());
 
-		_commerceOrderEngine.checkoutCommerceOrder(
-			commerceOrder, _user.getUserId());
+			_commerceOrderEngine.checkoutCommerceOrder(
+				commerceOrder, _user.getUserId());
+		}
+		catch (PortalException portalException) {
+			Throwable throwable = portalException.getCause();
+
+			Assert.assertSame(
+				CommerceOrderStatusException.class, throwable.getClass());
+		}
 	}
 
 	@Test
@@ -915,8 +946,11 @@ public class CommerceShipmentTest {
 	}
 
 	private CPInstance _createCPInstance() throws Exception {
+		Company company = CompanyLocalServiceUtil.getCompany(
+			_user.getCompanyId());
+
 		Group group = GroupTestUtil.addGroup(
-			_company.getGroupId(), _user.getUserId(), 0);
+			company.getGroupId(), _user.getUserId(), 0);
 
 		return CPTestUtil.addCPInstanceWithRandomSku(group.getGroupId());
 	}
@@ -925,18 +959,18 @@ public class CommerceShipmentTest {
 		return CPTestUtil.addCPInstanceWithRandomSku(groupId);
 	}
 
-	private CommerceChannel _commerceChannel;
+	private static final String _PID =
+		"com.liferay.commerce.pricing.configuration." +
+			"CommercePricingConfiguration";
 
-	@Inject
-	private CommerceChannelLocalService _commerceChannelLocalService;
+	private static Dictionary<String, Object> _properties;
+
+	private CommerceChannel _commerceChannel;
 
 	@Inject
 	private CommerceChannelRelLocalService _commerceChannelRelLocalService;
 
 	private CommerceCurrency _commerceCurrency;
-
-	@Inject
-	private CommerceCurrencyLocalService _commerceCurrencyLocalService;
 
 	@Inject
 	private CommerceOrderEngine _commerceOrderEngine;
@@ -958,10 +992,8 @@ public class CommerceShipmentTest {
 	@Inject
 	private CommerceShippingHelper _commerceShippingHelper;
 
+	@DeleteAfterTestRun
 	private Company _company;
-
-	@Inject
-	private CompanyLocalService _companyLocalService;
 
 	@Inject
 	private CPDefinitionLocalService _cpDefinitionLocalService;
@@ -970,8 +1002,5 @@ public class CommerceShipmentTest {
 	private CPInstanceLocalService _cpInstanceLocalService;
 
 	private User _user;
-
-	@Inject
-	private UserLocalService _userLocalService;
 
 }

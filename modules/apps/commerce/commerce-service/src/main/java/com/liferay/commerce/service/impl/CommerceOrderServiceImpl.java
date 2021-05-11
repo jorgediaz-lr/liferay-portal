@@ -28,7 +28,6 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
-import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermissionFactory;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
@@ -41,6 +40,7 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 import java.math.BigDecimal;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * @author Andrea Di Giorgi
@@ -798,33 +798,30 @@ public class CommerceOrderServiceImpl extends CommerceOrderServiceBaseImpl {
 			orderDateHour, orderDateMinute, serviceContext);
 	}
 
+	/**
+	 * @deprecated As of Judson (7.1.x), with no direct replacement.
+	 * See CommercePaymentEngine.updateOrderPaymentStatus.
+	 */
+	@Deprecated
 	@Override
 	public CommerceOrder updatePaymentStatus(
 			long commerceOrderId, int paymentStatus)
 		throws PortalException {
 
-		PermissionChecker permissionChecker = getPermissionChecker();
-
-		_commerceOrderModelResourcePermission.check(
-			permissionChecker, commerceOrderId, ActionKeys.UPDATE);
-
-		return commerceOrderLocalService.updatePaymentStatus(
-			permissionChecker.getUserId(), commerceOrderId, paymentStatus);
+		throw new UnsupportedOperationException();
 	}
 
+	/**
+	 * @deprecated As of Judson (7.1.x), with no direct replacement.
+	 * See CommercePaymentEngine.updateOrderPaymentStatus.
+	 */
+	@Deprecated
 	@Override
 	public CommerceOrder updatePaymentStatusAndTransactionId(
 			long commerceOrderId, int paymentStatus, String transactionId)
 		throws PortalException {
 
-		PermissionChecker permissionChecker = getPermissionChecker();
-
-		_commerceOrderModelResourcePermission.check(
-			permissionChecker, commerceOrderId, ActionKeys.UPDATE);
-
-		return commerceOrderLocalService.updatePaymentStatusAndTransactionId(
-			permissionChecker.getUserId(), commerceOrderId, paymentStatus,
-			transactionId);
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -878,6 +875,22 @@ public class CommerceOrderServiceImpl extends CommerceOrderServiceBaseImpl {
 			commerceOrderId, name, description, street1, street2, street3, city,
 			zip, commerceRegionId, commerceCountryId, phoneNumber,
 			serviceContext);
+	}
+
+	@Override
+	public CommerceOrder updateShippingMethod(
+			long commerceOrderId, long commerceShippingMethodId,
+			String shippingOptionName, CommerceContext commerceContext,
+			Locale locale)
+		throws PortalException {
+
+		_commerceOrderModelResourcePermission.check(
+			getPermissionChecker(), commerceOrderId,
+			CommerceOrderActionKeys.CHECKOUT_COMMERCE_ORDER);
+
+		return commerceOrderLocalService.updateShippingMethod(
+			commerceOrderId, commerceShippingMethodId, shippingOptionName,
+			commerceContext, locale);
 	}
 
 	@Override

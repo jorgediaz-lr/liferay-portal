@@ -27,17 +27,17 @@ long cpInstanceId = 0;
 if (cpInstance != null) {
 	cpInstanceId = cpInstance.getCPInstanceId();
 }
-
-String productContentId = renderResponse.getNamespace() + cpCatalogEntry.getCPDefinitionId() + "ProductContent";
-String quantityInputId = renderResponse.getNamespace() + cpCatalogEntry.getCPDefinitionId() + "Quantity";
 %>
 
-<liferay-commerce:quantity-input CPDefinitionId="<%= cpCatalogEntry.getCPDefinitionId() %>" useSelect="<%= true %>" />
+<liferay-commerce:quantity-input
+	CPDefinitionId="<%= cpCatalogEntry.getCPDefinitionId() %>"
+	useSelect="<%= true %>"
+/>
 
 <liferay-commerce-cart:add-to-cart
 	CPDefinitionId="<%= cpCatalogEntry.getCPDefinitionId() %>"
 	CPInstanceId="<%= cpInstanceId %>"
-	elementClasses="btn-lg btn-default"
-	productContentId='<%= productContentId %>'
-	taglibQuantityInputId='<%= quantityInputId %>'
+	elementClasses="btn-default btn-lg"
+	productContentId='<%= renderResponse.getNamespace() + cpCatalogEntry.getCPDefinitionId() + "ProductContent" %>'
+	taglibQuantityInputId='<%= renderResponse.getNamespace() + cpCatalogEntry.getCPDefinitionId() + "Quantity" %>'
 />

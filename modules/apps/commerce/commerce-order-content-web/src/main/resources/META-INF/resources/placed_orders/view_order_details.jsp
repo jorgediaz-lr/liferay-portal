@@ -56,18 +56,21 @@ if (commerceOrder != null) {
 
 	<%
 	CommerceOrderValidatorException cove = (CommerceOrderValidatorException)errorException;
-
-	if (cove != null) {
-		for (CommerceOrderValidatorResult commerceOrderValidatorResult : cove.getCommerceOrderValidatorResults()) {
 	%>
+
+	<c:if test="<%= cove != null %>">
+
+		<%
+		for (CommerceOrderValidatorResult commerceOrderValidatorResult : cove.getCommerceOrderValidatorResults()) {
+		%>
 
 			<liferay-ui:message key="<%= commerceOrderValidatorResult.getLocalizedMessage() %>" />
 
-	<%
+		<%
 		}
-	}
-	%>
+		%>
 
+	</c:if>
 </liferay-ui:error>
 
 <div class="commerce-panel">
@@ -159,8 +162,17 @@ if (commerceOrder != null) {
 				<div class="row">
 					<div class="col-md-12">
 						<c:if test="<%= billingCommerceAddress != null %>">
-							<%= billingCommerceAddress.getStreet1() %><br />
-							<%= billingCommerceAddress.getCity() + StringPool.SPACE + billingCommerceAddress.getZip() %>
+							<p><%= HtmlUtil.escape(billingCommerceAddress.getStreet1()) %></p>
+
+							<c:if test="<%= !Validator.isBlank(billingCommerceAddress.getStreet2()) %>">
+								<p><%= HtmlUtil.escape(billingCommerceAddress.getStreet2()) %></p>
+							</c:if>
+
+							<c:if test="<%= !Validator.isBlank(billingCommerceAddress.getStreet3()) %>">
+								<p><%= HtmlUtil.escape(billingCommerceAddress.getStreet3()) %></p>
+							</c:if>
+
+							<p><%= HtmlUtil.escape(billingCommerceAddress.getCity() + StringPool.SPACE + billingCommerceAddress.getZip()) %></p>
 						</c:if>
 					</div>
 				</div>
@@ -175,8 +187,17 @@ if (commerceOrder != null) {
 				<div class="row">
 					<div class="col-md-12">
 						<c:if test="<%= shippingCommerceAddress != null %>">
-							<%= shippingCommerceAddress.getStreet1() %><br />
-							<%= shippingCommerceAddress.getCity() + StringPool.SPACE + shippingCommerceAddress.getZip() %>
+							<p><%= HtmlUtil.escape(shippingCommerceAddress.getStreet1()) %></p>
+
+							<c:if test="<%= !Validator.isBlank(shippingCommerceAddress.getStreet2()) %>">
+								<p><%= HtmlUtil.escape(shippingCommerceAddress.getStreet2()) %></p>
+							</c:if>
+
+							<c:if test="<%= !Validator.isBlank(shippingCommerceAddress.getStreet3()) %>">
+								<p><%= HtmlUtil.escape(shippingCommerceAddress.getStreet3()) %></p>
+							</c:if>
+
+							<p><%= HtmlUtil.escape(shippingCommerceAddress.getCity() + StringPool.SPACE + shippingCommerceAddress.getZip()) %></p>
 						</c:if>
 					</div>
 				</div>
@@ -292,7 +313,7 @@ if (commerceOrder != null) {
 </div>
 
 <aui:script>
-	function <portlet:namespace/>viewCommerceOrderShipments(uri) {
+	function <portlet:namespace />viewCommerceOrderShipments(uri) {
 		Liferay.Util.openWindow({
 			dialog: {
 				centered: true,

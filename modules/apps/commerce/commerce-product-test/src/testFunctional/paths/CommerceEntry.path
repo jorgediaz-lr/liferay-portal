@@ -399,6 +399,11 @@
     <td></td>
 </tr>
 <tr>
+	<td>ROW_VERTICAL_ELLIPSIS_BY_ORDER_WORKFLOW_STATUS</td>
+	<td>//div[@class='dataset-display-wrapper' or @class='searchcontainer-content']//..//strong[text()='${key_orderWorkflowStatus}']/../../../following-sibling::td//button</td>
+	<td></td>
+</tr>
+<tr>
 	<td>CHANNEL_PAYMENT_METHOD_NAME</td>
 	<td>//div/h4[contains(.,'Payment Methods')]/..//button[contains(.,'${key_paymentMethod}')]</td>
 	<td></td>
@@ -439,7 +444,7 @@
 <!--PRICE-->
 <tr>
 	<td>INPUT_PRICE</td>
-	<td>//div[label[(text() = ' Price ' )]]//input[@type='text']</td>
+	<td>//div[label[(text() = ' Price ' )]]//input[@type='text'] | //label[normalize-space(text())='Price']/following-sibling::div//input[@type='text']</td>
 	<td></td>
 </tr>
 <!--IMAGES-->
@@ -456,7 +461,12 @@
 </tr>
 <tr>
 	<td>PRODUCT_DETAIL_VIEW_OPTION</td>
-	<td>//div[contains(@class,'card d-flex')]//h4[contains(.,'Option')]/..//a</td>
+	<td>/div[contains(@class,'card d-flex')]//h4[contains(.,'Option')]/..//a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PRODUCT_DETAIL_VIEW_OPTION_2</td>
+	<td>//div/button[contains(.,'${key_entryName}')]</td>
 	<td></td>
 </tr>
 <tr>

@@ -1,7 +1,7 @@
 {
 	"dependencies": {
 		"@clayui/alert": "3.2.0",
-		"@clayui/autocomplete": "3.0.7",
+		"@clayui/autocomplete": "^3.1.2",
 		"@clayui/badge": "3.0.0",
 		"@clayui/button": "3.2.0",
 		"@clayui/card": "3.0.7",
@@ -11,20 +11,20 @@
 		"@clayui/label": "3.0.3",
 		"@clayui/link": "3.0.3",
 		"@clayui/list": "3.1.0",
-		"@clayui/loading-indicator": "3.0.0",
+		"@clayui/loading-indicator": "^3.0.1",
 		"@clayui/modal": "3.2.0",
-		"@clayui/multi-select": "3.4.1",
-		"@clayui/pagination-bar": "3.0.7",
+		"@clayui/multi-select": "^3.5.1",
+		"@clayui/pagination-bar": "^3.1.0",
 		"@clayui/panel": "3.0.7",
 		"@clayui/shared": "3.0.7",
 		"@clayui/sticker": "3.0.5",
-		"@clayui/table": "3.0.6",
+		"@clayui/table": "^4.0.0",
 		"@clayui/tooltip": "3.1.0",
-		"classnames": "2.2.6",
+		"classnames": "^2.2.6",
 		"moment": "^2.22.2",
-		"prop-types": "15.7.2",
-		"react": "16.12.0",
-		"react-dom": "16.12.0"
+		"prop-types": "^15.7.2",
+		"react": "16.8.6",
+		"react-dom": "16.8.6"
 	},
 	"devDependencies": {
 		"clay-css": "^2.16.2"
@@ -34,14 +34,15 @@
 			"<rootDir>/test/dev/"
 		]
 	},
+	"main": "index.js",
 	"name": "commerce-frontend-js",
 	"private": true,
 	"scripts": {
 		"build": "liferay-npm-scripts build",
 		"checkFormat": "liferay-npm-scripts check",
 		"format": "liferay-npm-scripts fix",
-		"test_DISABLED": "liferay-npm-scripts test",
+		"test": "liferay-npm-scripts test",
 		"watch": "liferay-npm-scripts webpack --watch"
 	},
-	"version": "2.0.3"
+	"version": "1.0.48"
 }

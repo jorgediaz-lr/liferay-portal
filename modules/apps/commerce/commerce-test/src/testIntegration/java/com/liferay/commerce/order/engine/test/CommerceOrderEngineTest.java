@@ -16,8 +16,6 @@ package com.liferay.commerce.order.engine.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.commerce.account.model.CommerceAccount;
-import com.liferay.commerce.account.service.CommerceAccountLocalService;
-import com.liferay.commerce.account.service.CommerceAccountUserRelLocalService;
 import com.liferay.commerce.account.test.util.CommerceAccountTestUtil;
 import com.liferay.commerce.constants.CommerceOrderConstants;
 import com.liferay.commerce.constants.CommerceShipmentConstants;
@@ -42,6 +40,7 @@ import com.liferay.commerce.model.CommerceShipment;
 import com.liferay.commerce.order.engine.CommerceOrderEngine;
 import com.liferay.commerce.order.status.CommerceOrderStatus;
 import com.liferay.commerce.payment.test.util.TestCommercePaymentMethod;
+import com.liferay.commerce.pricing.constants.CommercePricingConstants;
 import com.liferay.commerce.product.model.CommerceChannel;
 import com.liferay.commerce.product.model.CommerceChannelConstants;
 import com.liferay.commerce.product.service.CommerceChannelLocalServiceUtil;
@@ -50,7 +49,9 @@ import com.liferay.commerce.service.CommerceShipmentItemLocalService;
 import com.liferay.commerce.service.CommerceShipmentLocalService;
 import com.liferay.commerce.test.util.CommerceTestUtil;
 import com.liferay.commerce.test.util.TestCommerceContext;
+import com.liferay.portal.configuration.test.util.ConfigurationTestUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
@@ -67,18 +68,22 @@ import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
+import com.liferay.portal.test.rule.PermissionCheckerTestRule;
 
 import java.math.BigDecimal;
 
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.frutilla.FrutillaRule;
 
-import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -93,13 +98,38 @@ public class CommerceOrderEngineTest {
 	@ClassRule
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
-		new LiferayIntegrationTestRule();
+		new AggregateTestRule(
+			new LiferayIntegrationTestRule(),
+			PermissionCheckerTestRule.INSTANCE);
+
+	@BeforeClass
+	public static void setUpClass() throws Exception {
+		_properties = new Hashtable<>();
+
+		_properties.put(
+			"commercePricingCalculationKey",
+			CommercePricingConstants.VERSION_1_0);
+
+		ConfigurationTestUtil.saveConfiguration(_PID, _properties);
+	}
+
+	@AfterClass
+	public static void tearDownClass() throws Exception {
+		_properties.put(
+			"commercePricingCalculationKey",
+			CommercePricingConstants.VERSION_2_0);
+
+		ConfigurationTestUtil.saveConfiguration(_PID, _properties);
+	}
 
 	@Before
 	public void setUp() throws Exception {
-		_group = GroupTestUtil.addGroup();
+		_company = CommerceTestUtil.addCompany();
 
-		_user = UserTestUtil.addUser();
+		_user = UserTestUtil.addUser(_company);
+
+		_group = GroupTestUtil.addGroup(
+			_user.getCompanyId(), _user.getUserId(), 0);
 
 		PrincipalThreadLocal.setName(_user.getUserId());
 
@@ -142,17 +172,10 @@ public class CommerceOrderEngineTest {
 			_commerceOrder.getCommerceAccount(), _commerceOrder);
 	}
 
-	@After
-	public void tearDown() throws PortalException {
-		_commerceOrderLocalService.deleteCommerceOrder(_commerceOrder);
-
-		_commerceAccountLocalService.deleteCommerceAccount(_commerceAccount);
-	}
-
 	@Test
 	public void testAutomaticallyTransitionOrderToCompleted() throws Exception {
 		frutillaRule.scenario(
-			"Use the Order Engine to checkout an Order, transition it to" +
+			"Use the Order Engine to checkout an Order, transition it to " +
 				"processing then create a shipment with all of the order " +
 					"items and mark that shipment as delivered"
 		).given(
@@ -229,6 +252,9 @@ public class CommerceOrderEngineTest {
 		Assert.assertEquals(
 			CommerceOrderConstants.ORDER_STATUS_COMPLETED,
 			_commerceOrder.getOrderStatus());
+
+		_commerceOrderLocalService.deleteCommerceOrder(
+			_commerceOrder.getCommerceOrderId());
 	}
 
 	@Test
@@ -236,7 +262,7 @@ public class CommerceOrderEngineTest {
 		throws Exception {
 
 		frutillaRule.scenario(
-			"Use the Order Engine to checkout an Order, transition it to" +
+			"Use the Order Engine to checkout an Order, transition it to " +
 				"processing then create a shipment with one but not all of " +
 					"the order items"
 		).given(
@@ -375,7 +401,7 @@ public class CommerceOrderEngineTest {
 			_commerceOrder.getOrderStatus());
 	}
 
-	@Test(expected = CommerceOrderStatusException.class)
+	@Test
 	public void testCancelOrder() throws Exception {
 		frutillaRule.scenario(
 			"Use the Order Engine to cancel a placed Order"
@@ -384,33 +410,41 @@ public class CommerceOrderEngineTest {
 		).when(
 			"We checkout the order and cancel it"
 		).then(
-			"The order status should be cancelled and the order should not be" +
-				"able to be transitioned to anything else."
+			"The order status should be cancelled and the order should not " +
+				"be able to be transitioned to anything else."
 		);
 
-		_commerceOrder = _commerceOrderEngine.checkoutCommerceOrder(
-			_commerceOrder, _user.getUserId());
+		try {
+			_commerceOrder = _commerceOrderEngine.checkoutCommerceOrder(
+				_commerceOrder, _user.getUserId());
 
-		_commerceOrder = _commerceOrderEngine.transitionCommerceOrder(
-			_commerceOrder, CommerceOrderConstants.ORDER_STATUS_CANCELLED,
-			_user.getUserId());
+			_commerceOrder = _commerceOrderEngine.transitionCommerceOrder(
+				_commerceOrder, CommerceOrderConstants.ORDER_STATUS_CANCELLED,
+				_user.getUserId());
 
-		Thread.sleep(1000);
+			Thread.sleep(1000);
 
-		Assert.assertEquals(
-			_commerceOrder.getOrderStatus(),
-			CancelledCommerceOrderStatusImpl.KEY);
+			Assert.assertEquals(
+				_commerceOrder.getOrderStatus(),
+				CancelledCommerceOrderStatusImpl.KEY);
 
-		_commerceOrder = _commerceOrderEngine.transitionCommerceOrder(
-			_commerceOrder, CommerceOrderConstants.ORDER_STATUS_PROCESSING,
-			_user.getUserId());
+			_commerceOrder = _commerceOrderEngine.transitionCommerceOrder(
+				_commerceOrder, CommerceOrderConstants.ORDER_STATUS_PROCESSING,
+				_user.getUserId());
 
-		Assert.assertNotEquals(
-			ProcessingCommerceOrderStatusImpl.KEY,
-			_commerceOrder.getOrderStatus());
+			Assert.assertNotEquals(
+				ProcessingCommerceOrderStatusImpl.KEY,
+				_commerceOrder.getOrderStatus());
+		}
+		catch (PortalException portalException) {
+			Throwable throwable = portalException.getCause();
+
+			Assert.assertSame(
+				CommerceOrderStatusException.class, throwable.getClass());
+		}
 	}
 
-	@Test(expected = PrincipalException.MustHavePermission.class)
+	@Test
 	public void testCheckOrderWithoutPermissions() throws Exception {
 		frutillaRule.scenario(
 			"Use the Order Engine to try to checkout an order that a user " +
@@ -425,23 +459,33 @@ public class CommerceOrderEngineTest {
 			"The order engine should throw a permission exception"
 		);
 
-		Assert.assertEquals(
-			_commerceOrder.getOrderStatus(), OpenCommerceOrderStatusImpl.KEY);
+		try {
+			Assert.assertEquals(
+				_commerceOrder.getOrderStatus(),
+				OpenCommerceOrderStatusImpl.KEY);
 
-		User nonAdminUser = UserTestUtil.addUser();
+			User nonAdminUser = UserTestUtil.addUser();
 
-		PrincipalThreadLocal.setName(nonAdminUser.getUserId());
+			PrincipalThreadLocal.setName(nonAdminUser.getUserId());
 
-		PermissionChecker permissionChecker =
-			PermissionCheckerFactoryUtil.create(nonAdminUser);
+			PermissionChecker permissionChecker =
+				PermissionCheckerFactoryUtil.create(nonAdminUser);
 
-		PermissionThreadLocal.setPermissionChecker(permissionChecker);
+			PermissionThreadLocal.setPermissionChecker(permissionChecker);
 
-		_commerceOrder = _commerceOrderEngine.checkoutCommerceOrder(
-			_commerceOrder, nonAdminUser.getUserId());
+			_commerceOrder = _commerceOrderEngine.checkoutCommerceOrder(
+				_commerceOrder, nonAdminUser.getUserId());
+		}
+		catch (PortalException portalException) {
+			Throwable throwable = portalException.getCause();
+
+			Assert.assertSame(
+				PrincipalException.MustHavePermission.class,
+				throwable.getClass());
+		}
 	}
 
-	@Test(expected = CommerceOrderStatusException.class)
+	@Test
 	public void testCheckoutAlreadyCheckedOutOrder() throws Exception {
 		frutillaRule.scenario(
 			"Use the Order Engine to try to checkout an order twice"
@@ -455,14 +499,23 @@ public class CommerceOrderEngineTest {
 			"We should not be able to check it out again"
 		);
 
-		Assert.assertEquals(
-			_commerceOrder.getOrderStatus(), OpenCommerceOrderStatusImpl.KEY);
+		try {
+			Assert.assertEquals(
+				_commerceOrder.getOrderStatus(),
+				OpenCommerceOrderStatusImpl.KEY);
 
-		_commerceOrder = _commerceOrderEngine.checkoutCommerceOrder(
-			_commerceOrder, _user.getUserId());
+			_commerceOrder = _commerceOrderEngine.checkoutCommerceOrder(
+				_commerceOrder, _user.getUserId());
 
-		_commerceOrder = _commerceOrderEngine.checkoutCommerceOrder(
-			_commerceOrder, _user.getUserId());
+			_commerceOrder = _commerceOrderEngine.checkoutCommerceOrder(
+				_commerceOrder, _user.getUserId());
+		}
+		catch (PortalException portalException) {
+			Throwable throwable = portalException.getCause();
+
+			Assert.assertSame(
+				CommerceOrderStatusException.class, throwable.getClass());
+		}
 	}
 
 	@Test
@@ -476,7 +529,7 @@ public class CommerceOrderEngineTest {
 		).when(
 			"We try to checkout the order"
 		).then(
-			"The Order should be in the In progress status"
+			"The Order should be in the Pending status"
 		);
 
 		Assert.assertEquals(
@@ -520,7 +573,7 @@ public class CommerceOrderEngineTest {
 			_commerceOrder, _user.getUserId());
 
 		Assert.assertEquals(
-			InProgressCommerceOrderStatusImpl.KEY,
+			PendingCommerceOrderStatusImpl.KEY,
 			_commerceOrder.getOrderStatus());
 	}
 
@@ -553,7 +606,7 @@ public class CommerceOrderEngineTest {
 			_commerceOrder.getOrderStatus());
 	}
 
-	@Test(expected = CommerceOrderBillingAddressException.class)
+	@Test
 	public void testCheckoutOrderWithoutBillingAddress() throws Exception {
 		frutillaRule.scenario(
 			"Use the Order Engine to checkout an Order without billing address"
@@ -568,17 +621,27 @@ public class CommerceOrderEngineTest {
 				"is required"
 		);
 
-		Assert.assertEquals(
-			_commerceOrder.getOrderStatus(), OpenCommerceOrderStatusImpl.KEY);
+		try {
+			Assert.assertEquals(
+				_commerceOrder.getOrderStatus(),
+				OpenCommerceOrderStatusImpl.KEY);
 
-		_commerceOrder = _commerceOrderLocalService.updateBillingAddress(
-			_commerceOrder.getCommerceOrderId(), 0);
+			_commerceOrder = _commerceOrderLocalService.updateBillingAddress(
+				_commerceOrder.getCommerceOrderId(), 0);
 
-		_commerceOrderEngine.checkoutCommerceOrder(
-			_commerceOrder, _user.getUserId());
+			_commerceOrderEngine.checkoutCommerceOrder(
+				_commerceOrder, _user.getUserId());
+		}
+		catch (PortalException portalException) {
+			Throwable throwable = portalException.getCause();
+
+			Assert.assertSame(
+				CommerceOrderBillingAddressException.class,
+				throwable.getClass());
+		}
 	}
 
-	@Test(expected = CommerceOrderShippingAddressException.class)
+	@Test
 	public void testCheckoutOrderWithoutShippingAddress() throws Exception {
 		frutillaRule.scenario(
 			"Use the Order Engine to checkout an Order without shipping address"
@@ -593,17 +656,27 @@ public class CommerceOrderEngineTest {
 				"is required"
 		);
 
-		Assert.assertEquals(
-			_commerceOrder.getOrderStatus(), OpenCommerceOrderStatusImpl.KEY);
+		try {
+			Assert.assertEquals(
+				_commerceOrder.getOrderStatus(),
+				OpenCommerceOrderStatusImpl.KEY);
 
-		_commerceOrder = _commerceOrderLocalService.updateShippingAddress(
-			_commerceOrder.getCommerceOrderId(), 0);
+			_commerceOrder = _commerceOrderLocalService.updateShippingAddress(
+				_commerceOrder.getCommerceOrderId(), 0);
 
-		_commerceOrderEngine.checkoutCommerceOrder(
-			_commerceOrder, _user.getUserId());
+			_commerceOrderEngine.checkoutCommerceOrder(
+				_commerceOrder, _user.getUserId());
+		}
+		catch (PortalException portalException) {
+			Throwable throwable = portalException.getCause();
+
+			Assert.assertSame(
+				CommerceOrderShippingAddressException.class,
+				throwable.getClass());
+		}
 	}
 
-	@Test(expected = CommerceOrderShippingMethodException.class)
+	@Test
 	public void testCheckoutOrderWithoutShippingMethod() throws Exception {
 		frutillaRule.scenario(
 			"Use the Order Engine to checkout an Order without shipping " +
@@ -621,15 +694,25 @@ public class CommerceOrderEngineTest {
 				"is required"
 		);
 
-		Assert.assertEquals(
-			_commerceOrder.getOrderStatus(), OpenCommerceOrderStatusImpl.KEY);
+		try {
+			Assert.assertEquals(
+				_commerceOrder.getOrderStatus(),
+				OpenCommerceOrderStatusImpl.KEY);
 
-		_commerceOrder = _commerceOrderLocalService.updateShippingMethod(
-			_commerceOrder.getCommerceOrderId(), 0, null, BigDecimal.ZERO,
-			_commerceContext);
+			_commerceOrder = _commerceOrderLocalService.updateShippingMethod(
+				_commerceOrder.getCommerceOrderId(), 0, null, BigDecimal.ZERO,
+				_commerceContext);
 
-		_commerceOrderEngine.checkoutCommerceOrder(
-			_commerceOrder, _user.getUserId());
+			_commerceOrderEngine.checkoutCommerceOrder(
+				_commerceOrder, _user.getUserId());
+		}
+		catch (PortalException portalException) {
+			Throwable throwable = portalException.getCause();
+
+			Assert.assertSame(
+				CommerceOrderShippingMethodException.class,
+				throwable.getClass());
+		}
 	}
 
 	@Test
@@ -745,7 +828,7 @@ public class CommerceOrderEngineTest {
 	@Test
 	public void testGetNextOrderStatusesWhileOrderNotOpen() throws Exception {
 		frutillaRule.scenario(
-			"When an order is not open, next order statuses should contain" +
+			"When an order is not open, next order statuses should contain " +
 				"CommerceOrderStatuses that contain a -1 priority"
 		).given(
 			"An Open Order"
@@ -794,7 +877,7 @@ public class CommerceOrderEngineTest {
 	@Test
 	public void testGetNextOrderStatusesWhileOrderOpen() throws Exception {
 		frutillaRule.scenario(
-			"When an order is open, next order statuses should never contain" +
+			"When an order is open, next order statuses should never contain " +
 				"CommerceOrderStatuses that contain a -1 priority"
 		).given(
 			"An Open Order"
@@ -869,27 +952,22 @@ public class CommerceOrderEngineTest {
 	@Rule
 	public FrutillaRule frutillaRule = new FrutillaRule();
 
+	private static final String _PID =
+		"com.liferay.commerce.pricing.configuration." +
+			"CommercePricingConfiguration";
+
+	private static Dictionary<String, Object> _properties;
+
 	private CommerceAccount _commerceAccount;
-
-	@Inject
-	private CommerceAccountLocalService _commerceAccountLocalService;
-
-	@Inject
-	private CommerceAccountUserRelLocalService
-		_commerceAccountUserRelLocalService;
-
-	@DeleteAfterTestRun
 	private CommerceChannel _commerceChannel;
-
 	private CommerceContext _commerceContext;
-
-	@DeleteAfterTestRun
 	private CommerceCurrency _commerceCurrency;
 
 	@Inject
 	private CommerceInventoryWarehouseLocalService
 		_commerceInventoryWarehouseLocalService;
 
+	@DeleteAfterTestRun
 	private CommerceOrder _commerceOrder;
 
 	@Inject
@@ -898,10 +976,7 @@ public class CommerceOrderEngineTest {
 	@Inject
 	private CommerceOrderLocalService _commerceOrderLocalService;
 
-	@DeleteAfterTestRun
 	private CommerceShipment _commerceShipment;
-
-	@DeleteAfterTestRun
 	private CommerceShipment _commerceShipment2;
 
 	@Inject
@@ -911,11 +986,10 @@ public class CommerceOrderEngineTest {
 	private CommerceShipmentLocalService _commerceShipmentLocalService;
 
 	@DeleteAfterTestRun
+	private Company _company;
+
 	private Group _group;
-
 	private ServiceContext _serviceContext;
-
-	@DeleteAfterTestRun
 	private User _user;
 
 }

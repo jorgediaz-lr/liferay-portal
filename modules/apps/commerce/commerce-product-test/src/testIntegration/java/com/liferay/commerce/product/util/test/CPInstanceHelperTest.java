@@ -30,13 +30,13 @@ import com.liferay.commerce.product.service.CommerceCatalogLocalServiceUtil;
 import com.liferay.commerce.product.test.util.CPTestUtil;
 import com.liferay.commerce.product.type.simple.constants.SimpleCPTypeConstants;
 import com.liferay.commerce.product.util.CPInstanceHelper;
+import com.liferay.commerce.test.util.CommerceTestUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
-import com.liferay.portal.kernel.test.util.CompanyTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -55,7 +55,6 @@ import java.util.Set;
 
 import org.frutilla.FrutillaRule;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -65,6 +64,7 @@ import org.junit.runner.RunWith;
 
 /**
  * @author Igor Beslic
+ * @author Alessio Antonio Rendina
  */
 @RunWith(Arquillian.class)
 public class CPInstanceHelperTest {
@@ -76,26 +76,12 @@ public class CPInstanceHelperTest {
 
 	@Before
 	public void setUp() throws Exception {
-		_company = CompanyTestUtil.addCompany();
+		_company = CommerceTestUtil.addCompany();
 
 		_commerceCatalog = CommerceCatalogLocalServiceUtil.addCommerceCatalog(
 			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
-			LocaleUtil.US.getDisplayLanguage(), null,
+			LocaleUtil.toLanguageId(LocaleUtil.US), null,
 			ServiceContextTestUtil.getServiceContext(_company.getGroupId()));
-	}
-
-	@After
-	public void tearDown() throws Exception {
-		List<CPDefinition> cpDefinitions =
-			_cpDefinitionLocalService.getCPDefinitions(
-				_commerceCatalog.getGroupId(), WorkflowConstants.STATUS_ANY,
-				QueryUtil.ALL_POS, QueryUtil.ALL_POS);
-
-		for (CPDefinition cpDefinition : cpDefinitions) {
-			_cpDefinitionLocalService.deleteCPDefinition(cpDefinition);
-		}
-
-		_commerceCatalogLocalService.deleteCommerceCatalog(_commerceCatalog);
 	}
 
 	@Test
@@ -362,6 +348,120 @@ public class CPInstanceHelperTest {
 
 		_cpInstanceHelper.getDefaultCPInstance(
 			cpDefinition.getCPDefinitionId());
+	}
+
+	@Test
+	public void testPublicStoreOptionsOrder() throws Exception {
+		frutillaRule.scenario(
+			"Check the order of product options on the front store"
+		).given(
+			"a product with multiple options with different priorities"
+		).when(
+			"the method renderOptions is called from CPContentHelper"
+		).then(
+			"the options Map are sorted ascending by priority."
+		);
+
+		CPDefinition cpDefinition = CPTestUtil.addCPDefinition(
+			_commerceCatalog.getGroupId());
+
+		CPDefinitionOptionRel cpDefinitionOptionRel1 =
+			CPTestUtil.addCPDefinitionOptionRel(
+				cpDefinition.getGroupId(), cpDefinition.getCPDefinitionId(),
+				true, 2);
+
+		cpDefinitionOptionRel1.setPriority(2);
+
+		_cpDefinitionOptionRelLocalService.updateCPDefinitionOptionRel(
+			cpDefinitionOptionRel1);
+
+		CPDefinitionOptionRel cpDefinitionOptionRel2 =
+			CPTestUtil.addCPDefinitionOptionRel(
+				cpDefinition.getGroupId(), cpDefinition.getCPDefinitionId(),
+				true, 2);
+
+		cpDefinitionOptionRel2.setPriority(1);
+
+		_cpDefinitionOptionRelLocalService.updateCPDefinitionOptionRel(
+			cpDefinitionOptionRel2);
+
+		Map<CPDefinitionOptionRel, List<CPDefinitionOptionValueRel>>
+			cpDefinitionOptionRelsMap =
+				_cpInstanceHelper.getCPDefinitionOptionRelsMap(
+					cpDefinition.getCPDefinitionId(), true, true);
+
+		Assert.assertNotNull(cpDefinitionOptionRelsMap);
+		Assert.assertEquals(
+			cpDefinitionOptionRelsMap.toString(), 2,
+			cpDefinitionOptionRelsMap.size());
+
+		List<CPDefinitionOptionRel> keys = new ArrayList(
+			cpDefinitionOptionRelsMap.keySet());
+
+		CPDefinitionOptionRel orderedCPDefinitionOptionRel1 = keys.get(0);
+		CPDefinitionOptionRel orderedCPDefinitionOptionRel2 = keys.get(1);
+
+		Assert.assertEquals(
+			cpDefinitionOptionRel2, orderedCPDefinitionOptionRel1);
+		Assert.assertEquals(
+			cpDefinitionOptionRel1, orderedCPDefinitionOptionRel2);
+	}
+
+	@Test
+	public void testPublicStoreOptionsWithSamePriorityOrder() throws Exception {
+		frutillaRule.scenario(
+			"Check the order of product options on the front store"
+		).given(
+			"a product with multiple options with same priorities"
+		).when(
+			"the method renderOptions is called from CPContentHelper"
+		).then(
+			"the options Map are sorted ascending by name."
+		);
+
+		CPDefinition cpDefinition = CPTestUtil.addCPDefinition(
+			_commerceCatalog.getGroupId());
+
+		CPDefinitionOptionRel cpDefinitionOptionRel1 =
+			CPTestUtil.addCPDefinitionOptionRel(
+				cpDefinition.getGroupId(), cpDefinition.getCPDefinitionId(),
+				true, 2);
+
+		cpDefinitionOptionRel1.setName("Size");
+
+		_cpDefinitionOptionRelLocalService.updateCPDefinitionOptionRel(
+			cpDefinitionOptionRel1);
+
+		CPDefinitionOptionRel cpDefinitionOptionRel2 =
+			CPTestUtil.addCPDefinitionOptionRel(
+				cpDefinition.getGroupId(), cpDefinition.getCPDefinitionId(),
+				true, 2);
+
+		cpDefinitionOptionRel2.setName("Color");
+
+		_cpDefinitionOptionRelLocalService.updateCPDefinitionOptionRel(
+			cpDefinitionOptionRel2);
+
+		Map<CPDefinitionOptionRel, List<CPDefinitionOptionValueRel>>
+			cpDefinitionOptionRelsMap =
+				_cpInstanceHelper.getCPDefinitionOptionRelsMap(
+					cpDefinition.getCPDefinitionId(), true, true);
+
+		Assert.assertNotNull(cpDefinitionOptionRelsMap);
+		Assert.assertEquals(
+			cpDefinitionOptionRelsMap.toString(), 2,
+			cpDefinitionOptionRelsMap.size());
+
+		List<CPDefinitionOptionRel> keys = new ArrayList(
+			cpDefinitionOptionRelsMap.keySet());
+
+		CPDefinitionOptionRel orderedCPDefinitionOptionRel1 = keys.get(0);
+		CPDefinitionOptionRel orderedCPDefinitionOptionRel2 = keys.get(1);
+
+		Assert.assertEquals(
+			cpDefinitionOptionRel2, orderedCPDefinitionOptionRel1);
+		Assert.assertEquals(
+			cpDefinitionOptionRel1, orderedCPDefinitionOptionRel2);
 	}
 
 	@Rule

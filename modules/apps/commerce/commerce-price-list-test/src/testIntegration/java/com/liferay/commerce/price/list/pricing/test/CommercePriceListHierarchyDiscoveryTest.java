@@ -101,7 +101,7 @@ public class CommercePriceListHierarchyDiscoveryTest {
 				_commerceAccount.getCommerceAccountId(), _serviceContext);
 
 		_commerceChannel = CommerceTestUtil.addCommerceChannel(
-			_commerceCurrency.getCode());
+			_company.getGroupId(), _commerceCurrency.getCode());
 
 		_catalog = _commerceCatalogLocalService.addCommerceCatalog(
 			RandomTestUtil.randomString(), _commerceCurrency.getCode(),
@@ -143,13 +143,13 @@ public class CommercePriceListHierarchyDiscoveryTest {
 			_commerceAccount4);
 
 		_commerceChannel1 = CommerceTestUtil.addCommerceChannel(
-			_commerceCurrency.getCode());
+			_company.getGroupId(), _commerceCurrency.getCode());
 		_commerceChannel2 = CommerceTestUtil.addCommerceChannel(
-			_commerceCurrency.getCode());
+			_company.getGroupId(), _commerceCurrency.getCode());
 		_commerceChannel3 = CommerceTestUtil.addCommerceChannel(
-			_commerceCurrency.getCode());
+			_company.getGroupId(), _commerceCurrency.getCode());
 		_commerceChannel4 = CommerceTestUtil.addCommerceChannel(
-			_commerceCurrency.getCode());
+			_company.getGroupId(), _commerceCurrency.getCode());
 
 		long[] commerceAccount3AccountGroups =
 			_commerceAccountHelper.getCommerceAccountGroupIds(
@@ -231,8 +231,8 @@ public class CommercePriceListHierarchyDiscoveryTest {
 				LocaleUtil.US.getDisplayLanguage(), null, _serviceContext);
 
 		CommercePriceList commercePriceList =
-			CommercePriceListTestUtil.addCommercePriceList(
-				catalog.getGroupId(), true, _TYPE, 0.0);
+			_commercePriceListLocalService.fetchCommerceCatalogBasePriceList(
+				catalog.getGroupId());
 
 		CommercePriceList discoveredPriceList =
 			_commercePriceListDiscovery.getCommercePriceList(
@@ -344,6 +344,82 @@ public class CommercePriceListHierarchyDiscoveryTest {
 	}
 
 	@Test
+	public void testRetrieveCorrectPriceListByHierarchy1() throws Exception {
+		frutillaRule.scenario(
+			"A price list is qualified by an account and a channel is not " +
+				"applicable to the same account on another channel"
+		).given(
+			"A catalog with a price list on account and channel"
+		).when(
+			"The price list is discovered given a different channel"
+		).then(
+			"Only the catalog base price list is returned"
+		);
+
+		CommerceCatalog catalog =
+			_commerceCatalogLocalService.addCommerceCatalog(
+				RandomTestUtil.randomString(), _commerceCurrency.getCode(),
+				LocaleUtil.US.getDisplayLanguage(), null, _serviceContext);
+
+		CommercePriceListTestUtil.addAccountAndChannelPriceList(
+			catalog.getGroupId(), _commerceAccount1.getCommerceAccountId(),
+			_commerceChannel1.getCommerceChannelId(), _TYPE);
+
+		CommercePriceList discoveredPriceList =
+			_commercePriceListDiscovery.getCommercePriceList(
+				catalog.getGroupId(), _commerceAccount1.getCommerceAccountId(),
+				RandomTestUtil.nextLong(), null, _TYPE);
+
+		CommercePriceList commercePriceList =
+			_commercePriceListLocalService.fetchCommerceCatalogBasePriceList(
+				catalog.getGroupId());
+
+		Assert.assertEquals(
+			commercePriceList.getCommercePriceListId(),
+			discoveredPriceList.getCommercePriceListId());
+	}
+
+	@Test
+	public void testRetrieveCorrectPriceListByHierarchy2() throws Exception {
+		frutillaRule.scenario(
+			"A price list is qualified by an account group and a channel is " +
+				"not applicable to the same account on another channel"
+		).given(
+			"A catalog with a price list on account group and channel"
+		).when(
+			"The price list is discovered given a different channel"
+		).then(
+			"Only the catalog base price list is returned"
+		);
+
+		CommerceCatalog catalog =
+			_commerceCatalogLocalService.addCommerceCatalog(
+				RandomTestUtil.randomString(), _commerceCurrency.getCode(),
+				LocaleUtil.US.getDisplayLanguage(), null, _serviceContext);
+
+		long[] commerceAccountGroupIds =
+			_commerceAccountHelper.getCommerceAccountGroupIds(
+				_commerceAccount1.getCommerceAccountId());
+
+		CommercePriceListTestUtil.addAccountGroupAndChannelPriceList(
+			catalog.getGroupId(), commerceAccountGroupIds,
+			_commerceChannel1.getCommerceChannelId(), _TYPE);
+
+		CommercePriceList discoveredPriceList =
+			_commercePriceListDiscovery.getCommercePriceList(
+				catalog.getGroupId(), _commerceAccount1.getCommerceAccountId(),
+				RandomTestUtil.nextLong(), null, _TYPE);
+
+		CommercePriceList commercePriceList =
+			_commercePriceListLocalService.fetchCommerceCatalogBasePriceList(
+				catalog.getGroupId());
+
+		Assert.assertEquals(
+			commercePriceList.getCommercePriceListId(),
+			discoveredPriceList.getCommercePriceListId());
+	}
+
+	@Test
 	public void testRetrievePriceListForAccount() throws Exception {
 		frutillaRule.scenario(
 			"When multiple price list are defined for the same catalog the " +
@@ -382,7 +458,7 @@ public class CommercePriceListHierarchyDiscoveryTest {
 		CommercePriceList discoveredPriceList =
 			_commercePriceListDiscovery.getCommercePriceList(
 				_catalog.getGroupId(), _commerceAccount4.getCommerceAccountId(),
-				_commerceChannel2.getCommerceChannelId(), null, _TYPE);
+				_commerceChannel1.getCommerceChannelId(), null, _TYPE);
 
 		Assert.assertEquals(
 			_commercePriceList3.getCommercePriceListId(),

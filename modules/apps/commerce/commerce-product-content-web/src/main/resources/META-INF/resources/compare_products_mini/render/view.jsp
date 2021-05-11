@@ -18,6 +18,7 @@
 
 <%
 CPCompareContentHelper cpCompareContentHelper = (CPCompareContentHelper)request.getAttribute(CPContentWebKeys.CP_COMPARE_CONTENT_HELPER);
+
 CPDataSourceResult cpDataSourceResult = (CPDataSourceResult)request.getAttribute(CPWebKeys.CP_DATA_SOURCE_RESULT);
 
 List<CPCatalogEntry> cpCatalogEntries = cpDataSourceResult.getCPCatalogEntries();
@@ -68,7 +69,7 @@ List<Long> cpDefinitionIds = CPCompareHelperUtil.getCPDefinitionIds(commerceCont
 
 					<li class="card-page-item">
 						<liferay-commerce-product:product-list-entry-renderer
-							CPCatalogEntry = "<%= cpCatalogEntry %>"
+							CPCatalogEntry="<%= cpCatalogEntry %>"
 						/>
 					</li>
 

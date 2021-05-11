@@ -7,6 +7,10 @@ definition {
 	property testray.main.component.name = "Commerce";
 
 	setUp {
+		Portlet.shutdownServer();
+
+		Portlet.startServer(deleteLiferayHome = "false");
+
 		TestCase.setUpPortalInstance();
 
 		User.firstLoginPG();

@@ -55,10 +55,10 @@ public class CommerceDataIntegrationMessageListener implements MessageListener {
 		try {
 			payLoad = JSONFactoryUtil.createJSONObject(payLoadString);
 		}
-		catch (JSONException jsonException) {
-			_log.error(jsonException, jsonException);
+		catch (JSONException jsone) {
+			_log.error(jsone, jsone);
 
-			throw new MessageListenerException(jsonException);
+			throw new MessageListenerException(jsone);
 		}
 
 		long commerceDataIntegrationProcessId = payLoad.getLong(
@@ -70,9 +70,9 @@ public class CommerceDataIntegrationMessageListener implements MessageListener {
 			scheduledTaskExecutorService = getScheduledTaskExecutorService(
 				commerceDataIntegrationProcessId);
 		}
-		catch (PortalException portalException) {
+		catch (PortalException pe) {
 			if (_log.isDebugEnabled()) {
-				_log.debug(portalException, portalException);
+				_log.debug(pe, pe);
 			}
 		}
 
@@ -81,9 +81,9 @@ public class CommerceDataIntegrationMessageListener implements MessageListener {
 				scheduledTaskExecutorService.runProcess(
 					commerceDataIntegrationProcessId);
 			}
-			catch (Exception exception) {
+			catch (Exception e) {
 				if (_log.isDebugEnabled()) {
-					_log.debug(exception, exception);
+					_log.debug(e, e);
 				}
 			}
 		}
@@ -103,12 +103,12 @@ public class CommerceDataIntegrationMessageListener implements MessageListener {
 
 		ScheduledTaskExecutorService scheduledTaskExecutorService = null;
 
-		if (_scheduledTaskExecutorServiceTrackerMap != null) {
-			CommerceDataIntegrationProcess commerceDataIntegrationProcess =
-				_commerceDataIntegrationProcessLocalService.
-					getCommerceDataIntegrationProcess(
-						commerceDataIntegrationProcessId);
+		CommerceDataIntegrationProcess commerceDataIntegrationProcess =
+			_commerceDataIntegrationProcessLocalService.
+				getCommerceDataIntegrationProcess(
+					commerceDataIntegrationProcessId);
 
+		if (_scheduledTaskExecutorServiceTrackerMap != null) {
 			for (String key :
 					_scheduledTaskExecutorServiceTrackerMap.keySet()) {
 

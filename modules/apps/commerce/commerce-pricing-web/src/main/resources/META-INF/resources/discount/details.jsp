@@ -25,6 +25,11 @@ long commerceDiscountId = commerceDiscountDisplayContext.getCommerceDiscountId()
 PortletURL portletDiscountRuleURL = commerceDiscountDisplayContext.getPortletDiscountRuleURL();
 
 boolean neverExpire = ParamUtil.getBoolean(request, "neverExpire", true);
+
+if ((commerceDiscount != null) && (commerceDiscount.getExpirationDate() != null)) {
+	neverExpire = false;
+}
+
 boolean usePercentage = ParamUtil.getBoolean(request, "usePercentage");
 
 String target = ParamUtil.getString(request, "target");
@@ -177,11 +182,11 @@ boolean hasPermission = commerceDiscountDisplayContext.hasPermission(ActionKeys.
 <aui:script>
 	Liferay.provide(
 		window,
-		'<portlet:namespace/>selectType',
+		'<portlet:namespace />selectType',
 		function() {
 			var A = AUI();
 
-			var type = A.one('#<portlet:namespace/>usePercentage').val();
+			var type = A.one('#<portlet:namespace />usePercentage').val();
 
 			var portletURL = new Liferay.PortletURL.createURL(
 				'<%= currentURLObj %>'
@@ -196,11 +201,11 @@ boolean hasPermission = commerceDiscountDisplayContext.hasPermission(ActionKeys.
 
 	Liferay.provide(
 		window,
-		'<portlet:namespace/>selectTarget',
+		'<portlet:namespace />selectTarget',
 		function() {
 			var A = AUI();
 
-			var type = A.one('#<portlet:namespace/>target').val();
+			var type = A.one('#<portlet:namespace />target').val();
 
 			var portletURL = new Liferay.PortletURL.createURL(
 				'<%= currentURLObj %>'

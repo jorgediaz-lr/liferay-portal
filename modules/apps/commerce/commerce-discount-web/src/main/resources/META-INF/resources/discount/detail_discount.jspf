@@ -51,6 +51,7 @@ String level4 = StringPool.BLANK;
 
 if (commerceDiscount != null) {
 	BigDecimal commerceDiscountLevel1 = commerceDiscount.getLevel1();
+
 	BigDecimal commerceDiscountLevel2 = commerceDiscount.getLevel2();
 	BigDecimal commerceDiscountLevel3 = commerceDiscount.getLevel3();
 	BigDecimal commerceDiscountLevel4 = commerceDiscount.getLevel4();
@@ -117,7 +118,7 @@ if (!usePercentage) {
 			</aui:input>
 
 			<div class="input-group-item input-group-item-shrink">
-				<aui:button name="level1PlusButton" value="+" />
+				<aui:button cssClass='<%= usePercentage ? StringPool.BLANK : "hide" %>' name="level1PlusButton" value="+" />
 			</div>
 
 			<div class="input-group-item input-group-item-shrink">
@@ -179,7 +180,12 @@ if (!usePercentage) {
 
 	var A = AUI();
 
-	A.one('#<portlet:namespace />usePercentage').on('change', function(event) {
+	var discountPercentageValue = 0;
+	var discountAbsoluteValue = 0;
+	var level1Input = A.one('#<portlet:namespace />level1');
+	var percentageCheckboxInput = A.one('#<portlet:namespace />usePercentage');
+
+	percentageCheckboxInput.on('change', function(event) {
 		if (this.attr('checked')) {
 			A.one('#<portlet:namespace />maximumDiscountAmount').attr(
 				'disabled',
@@ -202,12 +208,14 @@ if (!usePercentage) {
 			A.all(
 				'#<portlet:namespace />levelsContainer .input-group-item-shrink'
 			).removeClass('hide');
+
+			discountAbsoluteValue = level1Input.val();
+			level1Input.val(discountPercentageValue);
 		} else {
 			A.one('#<portlet:namespace />maximumDiscountAmount').attr(
 				'disabled',
 				true
 			);
-
 			A.all(
 				'#<portlet:namespace />maximumDiscountAmountContainer .input-item-retractable'
 			).addClass('hide');
@@ -231,15 +239,19 @@ if (!usePercentage) {
 			A.all('#<portlet:namespace />levelsContainer .input-group-addon').html(
 				'<%= HtmlUtil.escape(commerceDiscountDisplayContext.getDefaultCommerceCurrencyCode()) %>'
 			);
+
 			A.one('#<portlet:namespace />level1Label').html(
 				'<liferay-ui:message key="discount-amount" />'
 			);
+
+			discountPercentageValue = level1Input.val();
+			level1Input.val(discountAbsoluteValue);
 		}
 	});
 
 	A.one('#<portlet:namespace />level1PlusButton').on('click', function() {
 		A.one('#<portlet:namespace />level2').attr('disabled', false);
-
+		A.one('#<portlet:namespace />level2').removeClass('disabled');
 		A.one('#<portlet:namespace />level1MinusButton').removeClass('hide');
 		A.one('#<portlet:namespace />levelsContainer .level2Container').removeClass(
 			'hide'
@@ -253,6 +265,7 @@ if (!usePercentage) {
 		A.one('#<portlet:namespace />level1MinusButton').addClass('hide');
 
 		A.one('#<portlet:namespace />level2').attr('disabled', true);
+		A.one('#<portlet:namespace />level2').addClass('disabled');
 
 		if (
 			!A.one(
@@ -265,6 +278,7 @@ if (!usePercentage) {
 			A.one('#<portlet:namespace />level2MinusButton').addClass('hide');
 
 			A.one('#<portlet:namespace />level3').attr('disabled', true);
+			A.one('#<portlet:namespace />level3').addClass('disabled');
 
 			if (
 				!A.one(
@@ -277,12 +291,14 @@ if (!usePercentage) {
 				A.one('#<portlet:namespace />level3MinusButton').addClass('hide');
 
 				A.one('#<portlet:namespace />level4').attr('disabled', true);
+				A.one('#<portlet:namespace />level4').addClass('disabled');
 			}
 		}
 	});
 
 	A.one('#<portlet:namespace />level2PlusButton').on('click', function() {
 		A.one('#<portlet:namespace />level3').attr('disabled', false);
+		A.one('#<portlet:namespace />level3').removeClass('disabled');
 
 		A.one('#<portlet:namespace />level2MinusButton').removeClass('hide');
 		A.one('#<portlet:namespace />levelsContainer .level3Container').removeClass(
@@ -297,6 +313,7 @@ if (!usePercentage) {
 		A.one('#<portlet:namespace />level2MinusButton').addClass('hide');
 
 		A.one('#<portlet:namespace />level3').attr('disabled', true);
+		A.one('#<portlet:namespace />level3').addClass('disabled');
 
 		if (
 			!A.one(
@@ -309,11 +326,13 @@ if (!usePercentage) {
 			A.one('#<portlet:namespace />level3MinusButton').addClass('hide');
 
 			A.one('#<portlet:namespace />level4').attr('disabled', true);
+			A.one('#<portlet:namespace />level4').addClass('disabled');
 		}
 	});
 
 	A.one('#<portlet:namespace />level3PlusButton').on('click', function() {
 		A.one('#<portlet:namespace />level4').attr('disabled', false);
+		A.one('#<portlet:namespace />level4').removeClass('disabled');
 
 		A.one('#<portlet:namespace />level3MinusButton').removeClass('hide');
 		A.one('#<portlet:namespace />levelsContainer .level4Container').removeClass(
@@ -328,5 +347,6 @@ if (!usePercentage) {
 		A.one('#<portlet:namespace />level3MinusButton').addClass('hide');
 
 		A.one('#<portlet:namespace />level4').attr('disabled', true);
+		A.one('#<portlet:namespace />level4').addClass('disabled');
 	});
 </aui:script>

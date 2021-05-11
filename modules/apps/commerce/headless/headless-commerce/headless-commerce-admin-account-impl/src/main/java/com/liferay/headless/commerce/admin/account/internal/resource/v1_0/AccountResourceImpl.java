@@ -271,6 +271,18 @@ public class AccountResourceImpl
 				true, account.getExternalReferenceCode(),
 				_serviceContextHelper.getServiceContext());
 
+		if (_isValidId(account.getDefaultBillingAccountAddressId())) {
+			_commerceAccountService.updateDefaultBillingAddress(
+				commerceAccount.getCommerceAccountId(),
+				account.getDefaultBillingAccountAddressId());
+		}
+
+		if (_isValidId(account.getDefaultShippingAccountAddressId())) {
+			_commerceAccountService.updateDefaultShippingAddress(
+				commerceAccount.getCommerceAccountId(),
+				account.getDefaultShippingAccountAddressId());
+		}
+
 		// Expando
 
 		Map<String, ?> customFields = account.getCustomFields();
@@ -423,6 +435,14 @@ public class AccountResourceImpl
 		return commerceAccount.getEmail();
 	}
 
+	private boolean _isValidId(Long value) {
+		if ((value == null) || (value <= 0)) {
+			return false;
+		}
+
+		return true;
+	}
+
 	private Account _toAccount(CommerceAccount commerceAccount)
 		throws Exception {
 
@@ -450,8 +470,8 @@ public class AccountResourceImpl
 			null, _getEmailAddress(account, commerceAccount),
 			GetterUtil.get(account.getTaxId(), commerceAccount.getTaxId()),
 			commerceAccount.isActive(),
-			commerceAccount.getDefaultBillingAddressId(),
-			commerceAccount.getDefaultShippingAddressId(),
+			account.getDefaultBillingAccountAddressId(),
+			account.getDefaultShippingAccountAddressId(),
 			account.getExternalReferenceCode(), serviceContext);
 
 		// Expando

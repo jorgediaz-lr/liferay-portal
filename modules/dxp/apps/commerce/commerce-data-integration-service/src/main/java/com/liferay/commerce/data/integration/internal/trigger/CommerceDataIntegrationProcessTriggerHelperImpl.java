@@ -93,8 +93,8 @@ public class CommerceDataIntegrationProcessTriggerHelperImpl
 				_getGroupName(commerceDataIntegrationProcessId),
 				StorageType.PERSISTED);
 		}
-		catch (SchedulerException schedulerException) {
-			_log.error(schedulerException, schedulerException);
+		catch (SchedulerException se) {
+			_log.error(se, se);
 		}
 
 		return nextFireTime;
@@ -110,8 +110,8 @@ public class CommerceDataIntegrationProcessTriggerHelperImpl
 				_getGroupName(commerceDataIntegrationProcessId),
 				StorageType.PERSISTED);
 		}
-		catch (SchedulerException schedulerException) {
-			_log.error(schedulerException, schedulerException);
+		catch (SchedulerException se) {
+			_log.error(se, se);
 		}
 
 		return nextFireTime;

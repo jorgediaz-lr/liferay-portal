@@ -20,10 +20,12 @@ import com.liferay.commerce.currency.test.util.CommerceCurrencyTestUtil;
 import com.liferay.commerce.exception.CommerceOrderValidatorException;
 import com.liferay.commerce.model.CommerceOrder;
 import com.liferay.commerce.model.CommerceSubscriptionEntry;
+import com.liferay.commerce.pricing.constants.CommercePricingConstants;
 import com.liferay.commerce.product.model.CPDefinition;
 import com.liferay.commerce.product.model.CPInstance;
 import com.liferay.commerce.product.model.CPOption;
 import com.liferay.commerce.product.model.CPSubscriptionInfo;
+import com.liferay.commerce.product.model.CommerceCatalog;
 import com.liferay.commerce.product.model.CommerceChannel;
 import com.liferay.commerce.product.service.CPDefinitionLocalServiceUtil;
 import com.liferay.commerce.product.service.CPDefinitionOptionRelLocalServiceUtil;
@@ -37,7 +39,9 @@ import com.liferay.commerce.subscription.CommerceSubscriptionEntryHelper;
 import com.liferay.commerce.subscription.test.util.CommerceSubscriptionEntryTestUtil;
 import com.liferay.commerce.test.util.CommerceTestUtil;
 import com.liferay.commerce.util.comparator.CommerceSubscriptionEntryCreateDateComparator;
+import com.liferay.portal.configuration.test.util.ConfigurationTestUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
+import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
@@ -49,14 +53,18 @@ import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
+import com.liferay.portal.test.rule.PermissionCheckerTestRule;
 
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.List;
 
 import org.frutilla.FrutillaRule;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -71,19 +79,42 @@ public class CommerceSubscriptionEntryTest {
 	@ClassRule
 	@Rule
 	public static AggregateTestRule aggregateTestRule = new AggregateTestRule(
-		new LiferayIntegrationTestRule(), PermissionCheckerMethodTestRule.INSTANCE);
+		new LiferayIntegrationTestRule(), PermissionCheckerTestRule.INSTANCE);
+
+	@BeforeClass
+	public static void setUpClass() throws Exception {
+		_properties = new Hashtable<>();
+
+		_properties.put(
+			"commercePricingCalculationKey",
+			CommercePricingConstants.VERSION_1_0);
+
+		ConfigurationTestUtil.saveConfiguration(_PID, _properties);
+	}
+
+	@AfterClass
+	public static void tearDownClass() throws Exception {
+		_properties.put(
+			"commercePricingCalculationKey",
+			CommercePricingConstants.VERSION_2_0);
+
+		ConfigurationTestUtil.saveConfiguration(_PID, _properties);
+	}
 
 	@Before
 	public void setUp() throws Exception {
-		_group = GroupTestUtil.addGroup();
+		_company = CommerceTestUtil.addCompany();
 
-		_user = UserTestUtil.addUser();
+		_user = UserTestUtil.addUser(_company);
+
+		_group = GroupTestUtil.addGroup(
+			_user.getCompanyId(), _user.getUserId(), 0);
 
 		_commerceCurrency = CommerceCurrencyTestUtil.addCommerceCurrency(
 			_user.getCompanyId());
 
 		_commerceChannel = CommerceTestUtil.addCommerceChannel(
-			_commerceCurrency.getCode());
+			_company.getGroupId(), _commerceCurrency.getCode());
 	}
 
 	@Test
@@ -102,10 +133,11 @@ public class CommerceSubscriptionEntryTest {
 			"The product subscription entry is created"
 		);
 
-		CommerceSubscriptionEntryTestUtil.setUpCommerceSubscriptionEntry(
-			_user.getUserId(), _commerceChannel.getGroupId(), 1,
-			_commerceCurrency.getCommerceCurrencyId(),
-			_commerceSubscriptionEntryHelper);
+		_commerceOrder =
+			CommerceSubscriptionEntryTestUtil.setUpCommerceSubscriptionEntry(
+				_user.getUserId(), _commerceChannel.getGroupId(), 1,
+				_commerceCurrency.getCommerceCurrencyId(),
+				_commerceSubscriptionEntryHelper);
 
 		int commerceSubscriptionEntriesCount =
 			_commerceSubscriptionEntryLocalService.
@@ -200,7 +232,11 @@ public class CommerceSubscriptionEntryTest {
 			boolean cpInstanceSubscriptionEnabled)
 		throws Exception {
 
-		long groupId = _group.getGroupId(); //catalogGroupId
+		CommerceCatalog commerceCatalog = CommerceTestUtil.addCommerceCatalog(
+			_company.getCompanyId(), _group.getGroupId(), _user.getUserId(),
+			_commerceCurrency.getCode());
+
+		long groupId = commerceCatalog.getGroupId();
 
 		CPDefinition cpDefinition = CPTestUtil.addCPDefinition(
 			groupId, SimpleCPTypeConstants.NAME, false, false);
@@ -243,7 +279,7 @@ public class CommerceSubscriptionEntryTest {
 			ServiceContextTestUtil.getServiceContext(
 				_commerceChannel.getGroupId()));
 
-		CommerceOrder commerceOrder = CommerceTestUtil.addB2CCommerceOrder(
+		_commerceOrder = CommerceTestUtil.addB2CCommerceOrder(
 			_user.getUserId(), _commerceChannel.getGroupId(),
 			_commerceCurrency);
 
@@ -272,13 +308,13 @@ public class CommerceSubscriptionEntryTest {
 
 			if (cpSubscriptionInfo != null) {
 				CommerceTestUtil.addCommerceOrderItem(
-					commerceOrder.getCommerceOrderId(),
+					_commerceOrder.getCommerceOrderId(),
 					cpInstance.getCPInstanceId(), 1);
 			}
 		}
 
 		_commerceSubscriptionEntryHelper.checkCommerceSubscriptions(
-			commerceOrder);
+			_commerceOrder);
 
 		List<CommerceSubscriptionEntry> commerceSubscriptionEntries =
 			_commerceSubscriptionEntryLocalService.
@@ -357,11 +393,17 @@ public class CommerceSubscriptionEntryTest {
 		}
 	}
 
-	@DeleteAfterTestRun
+	private static final String _PID =
+		"com.liferay.commerce.pricing.configuration." +
+			"CommercePricingConfiguration";
+
+	private static Dictionary<String, Object> _properties;
+
 	private CommerceChannel _commerceChannel;
+	private CommerceCurrency _commerceCurrency;
 
 	@DeleteAfterTestRun
-	private CommerceCurrency _commerceCurrency;
+	private CommerceOrder _commerceOrder;
 
 	@Inject
 	private CommerceSubscriptionEntryHelper _commerceSubscriptionEntryHelper;
@@ -370,13 +412,13 @@ public class CommerceSubscriptionEntryTest {
 	private CommerceSubscriptionEntryLocalService
 		_commerceSubscriptionEntryLocalService;
 
+	@DeleteAfterTestRun
+	private Company _company;
+
 	@Inject
 	private CPInstanceLocalService _cpInstanceLocalService;
 
-	@DeleteAfterTestRun
 	private Group _group;
-
-	@DeleteAfterTestRun
 	private User _user;
 
 }

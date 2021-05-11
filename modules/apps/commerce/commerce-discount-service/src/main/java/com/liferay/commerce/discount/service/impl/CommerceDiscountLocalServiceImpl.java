@@ -822,6 +822,8 @@ public class CommerceDiscountLocalServiceImpl
 			(commerceDiscount.getDisplayDate() != null) &&
 			now.before(commerceDiscount.getDisplayDate())) {
 
+			commerceDiscount.setActive(false);
+
 			status = WorkflowConstants.STATUS_SCHEDULED;
 		}
 
@@ -831,9 +833,16 @@ public class CommerceDiscountLocalServiceImpl
 			if ((expirationDate != null) && expirationDate.before(now)) {
 				commerceDiscount.setExpirationDate(null);
 			}
+
+			if (commerceDiscount.getStatus() ==
+					WorkflowConstants.STATUS_SCHEDULED) {
+
+				commerceDiscount.setActive(true);
+			}
 		}
 
 		if (status == WorkflowConstants.STATUS_EXPIRED) {
+			commerceDiscount.setActive(false);
 			commerceDiscount.setExpirationDate(now);
 		}
 
@@ -1037,8 +1046,8 @@ public class CommerceDiscountLocalServiceImpl
 		searchContext.setAttributes(attributes);
 
 		searchContext.setCompanyId(companyId);
-		searchContext.setStart(start);
 		searchContext.setEnd(end);
+		searchContext.setStart(start);
 
 		if (Validator.isNotNull(keywords)) {
 			searchContext.setKeywords(keywords);

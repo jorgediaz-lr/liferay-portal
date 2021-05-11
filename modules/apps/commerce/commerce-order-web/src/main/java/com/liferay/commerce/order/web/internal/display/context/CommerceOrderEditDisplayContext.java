@@ -414,10 +414,24 @@ public class CommerceOrderEditDisplayContext {
 
 		CommerceRegion commerceRegion = commerceAddress.getCommerceRegion();
 
-		StringBundler sb = new StringBundler((commerceRegion == null) ? 5 : 7);
+		StringBundler sb = new StringBundler((commerceRegion == null) ? 6 : 8);
 
 		sb.append(commerceAddress.getStreet1());
+		sb.append(StringPool.COMMA);
 		sb.append(StringPool.SPACE);
+
+		if (!Validator.isBlank(commerceAddress.getStreet2())) {
+			sb.append(commerceAddress.getStreet2());
+			sb.append(StringPool.COMMA);
+			sb.append(StringPool.SPACE);
+		}
+
+		if (!Validator.isBlank(commerceAddress.getStreet3())) {
+			sb.append(commerceAddress.getStreet3());
+			sb.append(StringPool.COMMA);
+			sb.append(StringPool.SPACE);
+		}
+
 		sb.append(commerceAddress.getCity());
 		sb.append(StringPool.NEW_LINE);
 
@@ -501,6 +515,11 @@ public class CommerceOrderEditDisplayContext {
 				else {
 					label = "hold";
 				}
+			}
+
+			if (Validator.isNull(label)) {
+				label = commerceOrderStatus.getLabel(
+					_commerceOrderRequestHelper.getLocale());
 			}
 
 			String buttonCssClass = "btn-primary";

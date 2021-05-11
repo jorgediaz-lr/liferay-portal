@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author	  Brian Wing Shun Chan
+ * @author	  Matija Petanjek
  * @generated
  */
 public class CommerceDataIntegrationProcessTable {

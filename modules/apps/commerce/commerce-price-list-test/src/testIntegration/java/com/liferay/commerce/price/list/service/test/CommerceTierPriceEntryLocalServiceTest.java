@@ -14,8 +14,6 @@
 
 package com.liferay.commerce.price.list.service.test;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.commerce.price.list.exception.DuplicateCommerceTierPriceEntryException;
 import com.liferay.commerce.price.list.exception.NoSuchPriceEntryException;
@@ -43,6 +41,8 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import org.frutilla.FrutillaRule;
+
+import org.hamcrest.CoreMatchers;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -152,7 +152,8 @@ public class CommerceTierPriceEntryLocalServiceTest {
 			commerceTierPriceEntry);
 		Assert.assertThat(
 			externalReferenceCode,
-			equalTo(commerceTierPriceEntry.getExternalReferenceCode()));
+			CoreMatchers.equalTo(
+				commerceTierPriceEntry.getExternalReferenceCode()));
 	}
 
 	@Test
@@ -299,8 +300,8 @@ public class CommerceTierPriceEntryLocalServiceTest {
 	@Test(expected = NoSuchPriceEntryException.class)
 	public void testUpsertCommerceTierPriceEntry4() throws Exception {
 		frutillaRule.scenario(
-			"Adding a new Tier Price Entry where the referred Price Entry is" +
-				"not exist"
+			"Adding a new Tier Price Entry where the referred Price Entry " +
+				"does not exist"
 		).given(
 			"A Price Entry"
 		).and(
@@ -337,7 +338,7 @@ public class CommerceTierPriceEntryLocalServiceTest {
 	@Test
 	public void testUpsertCommerceTierPriceEntry5() throws Exception {
 		frutillaRule.scenario(
-			"Adding a new Tier Price Entry where the referred Price Entry is" +
+			"Adding a new Tier Price Entry where the referred Price Entry is " +
 				"given by its external reference code"
 		).given(
 			"A Price Entry's external reference code"
@@ -383,13 +384,14 @@ public class CommerceTierPriceEntryLocalServiceTest {
 				_group.getCompanyId(), priceEntryExternalReferenceCode);
 
 		Assert.assertThat(
-			actualCommercePriceEntry.isHasTierPrice(), equalTo(Boolean.TRUE));
+			actualCommercePriceEntry.isHasTierPrice(),
+			CoreMatchers.equalTo(Boolean.TRUE));
 
 		Assert.assertThat(
 			_commerceTierPriceEntryLocalService.
 				getCommerceTierPriceEntriesCount(
 					actualCommercePriceEntry.getCommercePriceEntryId()),
-			equalTo(1));
+			CoreMatchers.equalTo(1));
 
 		List<CommerceTierPriceEntry> commerceTierPriceEntries =
 			_commerceTierPriceEntryLocalService.getCommerceTierPriceEntries(
@@ -415,10 +417,12 @@ public class CommerceTierPriceEntryLocalServiceTest {
 
 		Assert.assertThat(
 			commercePriceEntry.getCommercePriceEntryId(),
-			equalTo(actualCommercePriceEntry.getCommercePriceEntryId()));
+			CoreMatchers.equalTo(
+				actualCommercePriceEntry.getCommercePriceEntryId()));
 
 		Assert.assertThat(
-			minQuantity, equalTo(commerceTierPriceEntry.getMinQuantity()));
+			minQuantity,
+			CoreMatchers.equalTo(commerceTierPriceEntry.getMinQuantity()));
 
 		BigDecimal actualPrice = commerceTierPriceEntry.getPrice();
 		BigDecimal actualPromoPrice = commerceTierPriceEntry.getPromoPrice();
