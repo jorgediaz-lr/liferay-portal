@@ -56,8 +56,6 @@ export const LICENSE_TYPE_DEVELOPER =
 	window.ProvisioningConstants.licenseType.developer;
 export const LICENSE_TYPE_DEVELOPER_CLUSTER =
 	window.ProvisioningConstants.licenseType.developerCluster;
-export const LICENSE_TYPE_PER_USER =
-	window.ProvisioningConstants.licenseType.perUser;
 
 // Note actions
 

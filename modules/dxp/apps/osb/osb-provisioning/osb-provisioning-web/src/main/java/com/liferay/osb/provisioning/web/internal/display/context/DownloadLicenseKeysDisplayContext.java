@@ -79,10 +79,6 @@ public class DownloadLicenseKeysDisplayContext {
 				).put(
 					"licenseVersion", licenseKey.getLicenseVersion()
 				).put(
-					"maxConcurrentUsers", licenseKey.getMaxConcurrentUsers()
-				).put(
-					"maxUsers", licenseKey.getMaxUsers()
-				).put(
 					"name", licenseKey.getName()
 				).put(
 					"productName", licenseKey.getProductName()

@@ -28,8 +28,6 @@ const multipleLicenses = [
 			licenseEntryType: 'production',
 			licenseKeyId: '85602',
 			licenseVersion: 3,
-			maxConcurrentUsers: '0',
-			maxUsers: '0',
 			name: 'License 1',
 			productName: 'Portal Backup',
 			productVersion: '6.1 GA1',
@@ -43,8 +41,6 @@ const multipleLicenses = [
 			licenseEntryType: 'production',
 			licenseKeyId: '85603',
 			licenseVersion: 3,
-			maxConcurrentUsers: '0',
-			maxUsers: '0',
 			name: 'License 2',
 			productName: 'Portal Backup',
 			productVersion: '6.2',
@@ -68,8 +64,6 @@ function renderLicenseGroup(props) {
 							licenseEntryType: 'production',
 							licenseKeyId: '85602',
 							licenseVersion: 3,
-							maxConcurrentUsers: '0',
-							maxUsers: '0',
 							name: 'License 1',
 							productName: 'Portal Backup',
 							productVersion: '6.1 GA1',
@@ -135,12 +129,6 @@ describe('LicenseGroup', () => {
 		getByText('April 16, 2122');
 	});
 
-	it('displays a dash if there are no Maximum Users or no Maximum Concurrent Users', () => {
-		const {getAllByText} = renderLicenseGroup();
-
-		expect(getAllByText('-').length).toBe(2);
-	});
-
 	it('displays the Deactivated Status label correctly', () => {
 		const {getByText} = renderLicenseGroup({
 			licenses: [
@@ -153,8 +141,6 @@ describe('LicenseGroup', () => {
 						licenseEntryType: 'production',
 						licenseKeyId: '85602',
 						licenseVersion: 3,
-						maxConcurrentUsers: '0',
-						maxUsers: '0',
 						name: 'License 1',
 						productName: 'Portal Backup',
 						productVersion: '6.1 GA1',
@@ -181,8 +167,6 @@ describe('LicenseGroup', () => {
 						licenseEntryType: 'production',
 						licenseKeyId: '85602',
 						licenseVersion: 3,
-						maxConcurrentUsers: '0',
-						maxUsers: '0',
 						name: 'License 1',
 						productName: 'Portal Backup',
 						productVersion: '6.1 GA1',
@@ -207,8 +191,6 @@ describe('LicenseGroup', () => {
 						licenseEntryType: 'production',
 						licenseKeyId: '85602',
 						licenseVersion: 3,
-						maxConcurrentUsers: '0',
-						maxUsers: '0',
 						name: 'License 1',
 						productName: 'Portal Backup',
 						productVersion: '6.1 GA1',

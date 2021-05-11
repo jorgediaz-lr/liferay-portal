@@ -14,7 +14,6 @@ import partition from 'lodash.partition';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import {LICENSE_TYPE_PER_USER} from '../../utilities/constants';
 import {groupByAll} from '../../utilities/helpers';
 import LicenseGroup from './LicenseGroup';
 
@@ -31,26 +30,8 @@ function DownloadLicenses({downloadLicenseKeysURL, licenseKeys}) {
 		activeVersionCompliantLicenses,
 		({startDate}) => startDate,
 		({expirationDate}) => expirationDate,
-		({licenseEntryType}) => licenseEntryType,
-		groupByMaxUsers,
-		groupByMaxConcurrentUsers
+		({licenseEntryType}) => licenseEntryType
 	);
-
-	function groupByMaxConcurrentUsers(license) {
-		if (license.licenseEntryType === LICENSE_TYPE_PER_USER) {
-			return license.maxConcurrentUsers;
-		}
-
-		return license;
-	}
-
-	function groupByMaxUsers(license) {
-		if (license.licenseEntryType === LICENSE_TYPE_PER_USER) {
-			return license.maxUsers;
-		}
-
-		return license;
-	}
 
 	return (
 		<div className="download-licenses-container">
@@ -71,12 +52,6 @@ function DownloadLicenses({downloadLicenseKeysURL, licenseKeys}) {
 						</ClayTable.Cell>
 						<ClayTable.Cell expanded headingCell>
 							{Liferay.Language.get('expiration-date')}
-						</ClayTable.Cell>
-						<ClayTable.Cell headingCell>
-							{Liferay.Language.get('maximum-users')}
-						</ClayTable.Cell>
-						<ClayTable.Cell headingCell>
-							{Liferay.Language.get('maximum-concurrent-users')}
 						</ClayTable.Cell>
 						<ClayTable.Cell headingCell>
 							{Liferay.Language.get('status')}
@@ -114,8 +89,6 @@ DownloadLicenses.propTypes = {
 			licenseEntryType: PropTypes.string,
 			licenseKeyId: PropTypes.string,
 			licenseVersion: PropTypes.number,
-			maxConcurrentUsers: PropTypes.string,
-			maxUsers: PropTypes.string,
 			name: PropTypes.string,
 			productName: PropTypes.string,
 			productVersion: PropTypes.string,

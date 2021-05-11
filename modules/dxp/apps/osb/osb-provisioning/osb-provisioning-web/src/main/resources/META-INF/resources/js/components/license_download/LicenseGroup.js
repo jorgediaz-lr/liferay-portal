@@ -14,7 +14,7 @@ import capitalize from 'lodash.capitalize';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import {DASH, NAMESPACE} from '../../utilities/constants';
+import {NAMESPACE} from '../../utilities/constants';
 
 function LicenseGroup({downloadURL, licenses}) {
 	return licenses.map((group, index) => {
@@ -38,8 +38,6 @@ function LicenseGroup({downloadURL, licenses}) {
 function Download({actionURL, value}) {
 	return (
 		<ClayTable.Row>
-			<ClayTable.Cell></ClayTable.Cell>
-			<ClayTable.Cell></ClayTable.Cell>
 			<ClayTable.Cell></ClayTable.Cell>
 			<ClayTable.Cell></ClayTable.Cell>
 			<ClayTable.Cell></ClayTable.Cell>
@@ -70,8 +68,6 @@ function License({license}) {
 		licenseEntryName,
 		licenseEntryType,
 		licenseKeyId,
-		maxConcurrentUsers,
-		maxUsers,
 		name,
 		productName,
 		startDate
@@ -89,12 +85,6 @@ function License({license}) {
 			)})`}</ClayTable.Cell>
 			<ClayTable.Cell>{startDate}</ClayTable.Cell>
 			<ClayTable.Cell>{expirationDate}</ClayTable.Cell>
-			<ClayTable.Cell>
-				{maxUsers === '0' ? DASH : maxUsers}
-			</ClayTable.Cell>
-			<ClayTable.Cell>
-				{maxConcurrentUsers === '0' ? DASH : maxConcurrentUsers}
-			</ClayTable.Cell>
 			<ClayTable.Cell>
 				<Status active={active} expirationDate={expirationDate} />
 			</ClayTable.Cell>
@@ -141,8 +131,6 @@ LicenseGroup.propTypes = {
 				licenseEntryType: PropTypes.string,
 				licenseKeyId: PropTypes.string,
 				licenseVersion: PropTypes.number,
-				maxConcurrentUsers: PropTypes.string,
-				maxUsers: PropTypes.string,
 				name: PropTypes.string,
 				productName: PropTypes.string,
 				productVersion: PropTypes.string,
