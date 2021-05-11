@@ -37,7 +37,8 @@ window.ProvisioningConstants = {
 			'elastic',
 			'enterprise',
 			'oem'
-		]
+		],
+		production: 'production'
 	},
 	namespace: 'namespace',
 	noteFormat: {

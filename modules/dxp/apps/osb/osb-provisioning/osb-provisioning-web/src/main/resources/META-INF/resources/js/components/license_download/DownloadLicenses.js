@@ -14,6 +14,7 @@ import partition from 'lodash.partition';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import {LICENSE_TYPE_PRODUCTION} from '../../utilities/constants';
 import {groupByAll} from '../../utilities/helpers';
 import LicenseGroup from './LicenseGroup';
 
@@ -30,7 +31,7 @@ function DownloadLicenses({downloadLicenseKeysURL, licenseKeys}) {
 		activeVersionCompliantLicenses,
 		({startDate}) => startDate,
 		({expirationDate}) => expirationDate,
-		({licenseEntryType}) => licenseEntryType
+		({licenseEntryType}) => licenseEntryType === LICENSE_TYPE_PRODUCTION
 	);
 
 	return (

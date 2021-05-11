@@ -26,13 +26,13 @@ function renderDownloadLicenses(props) {
 					licenseEntryName: 'Portal Backup',
 					licenseEntryType: 'production',
 					licenseKeyId: '85602',
-					licenseVersion: 3,
+					licenseVersion: 4,
 					name: 'License 1',
 					productName: 'Portal Backup',
-					productVersion: '6.1 GA1',
+					productVersion: '6.2',
 					startDate: 'March 17, 2021'
 				},
-				// Different productVersion, groupable with above license
+				// groupable with above license
 				{
 					active: true,
 					description: 'Test Account description',
@@ -40,7 +40,7 @@ function renderDownloadLicenses(props) {
 					licenseEntryName: 'Portal Backup',
 					licenseEntryType: 'production',
 					licenseKeyId: '85603',
-					licenseVersion: 3,
+					licenseVersion: 4,
 					name: 'License 2',
 					productName: 'Portal Backup',
 					productVersion: '6.2',
@@ -54,7 +54,7 @@ function renderDownloadLicenses(props) {
 					licenseEntryName: 'Portal Backup',
 					licenseEntryType: 'production',
 					licenseKeyId: '85604',
-					licenseVersion: 3,
+					licenseVersion: 4,
 					name: 'License 3',
 					productName: 'Portal Backup',
 					productVersion: '6.2',
@@ -68,7 +68,7 @@ function renderDownloadLicenses(props) {
 					licenseEntryName: 'Portal Backup',
 					licenseEntryType: 'production',
 					licenseKeyId: '85605',
-					licenseVersion: 3,
+					licenseVersion: 4,
 					name: 'License 4',
 					productName: 'Portal Backup',
 					productVersion: '6.2',
@@ -82,7 +82,7 @@ function renderDownloadLicenses(props) {
 					licenseEntryName: 'Portal Backup',
 					licenseEntryType: 'production',
 					licenseKeyId: '85606',
-					licenseVersion: 3,
+					licenseVersion: 4,
 					name: 'License 5',
 					productName: 'Portal Backup',
 					productVersion: '6.2',
@@ -96,10 +96,10 @@ function renderDownloadLicenses(props) {
 					licenseEntryName: 'Portal Backup',
 					licenseEntryType: 'production',
 					licenseKeyId: '85607',
-					licenseVersion: 3,
+					licenseVersion: 4,
 					name: 'License 6',
 					productName: 'Portal Backup',
-					productVersion: '6.1',
+					productVersion: '6.2',
 					startDate: 'March 16, 2021'
 				},
 				// Different startDate
@@ -110,13 +110,13 @@ function renderDownloadLicenses(props) {
 					licenseEntryName: 'Portal Backup',
 					licenseEntryType: 'production',
 					licenseKeyId: '85608',
-					licenseVersion: 3,
+					licenseVersion: 4,
 					name: 'License 7',
 					productName: 'Portal Backup',
 					productVersion: '6.2',
 					startDate: 'March 14, 2021'
 				},
-				// Different licenseEntryType
+				// licenseEntryType is not Production
 				{
 					active: true,
 					description: 'Test Account description',
@@ -124,7 +124,7 @@ function renderDownloadLicenses(props) {
 					licenseEntryName: 'Portal Backup',
 					licenseEntryType: 'cluster',
 					licenseKeyId: '85609',
-					licenseVersion: 3,
+					licenseVersion: 4,
 					name: 'License 8',
 					productName: 'Portal Backup',
 					productVersion: '6.2',
@@ -138,10 +138,10 @@ function renderDownloadLicenses(props) {
 					licenseEntryName: 'Portal Backup',
 					licenseEntryType: 'production',
 					licenseKeyId: '85610',
-					licenseVersion: 1,
+					licenseVersion: 2,
 					name: 'License 9',
 					productName: 'Portal Backup',
-					productVersion: '6.2',
+					productVersion: '6.0',
 					startDate: 'March 17, 2021'
 				}
 			]}
@@ -159,7 +159,7 @@ describe('DownloadLicenses', () => {
 		expect(container).toBeTruthy();
 	});
 
-	it('groups licenses that are active, has a license versions greater than 3, shares the same start and expiration dates, and license type', () => {
+	it('groups licenses that are active, has a license versions greater than 3, shares the same start and expiration dates, and license type is Production', () => {
 		const {container, getAllByText} = renderDownloadLicenses();
 
 		const groups = container.querySelectorAll('tbody');
@@ -168,5 +168,75 @@ describe('DownloadLicenses', () => {
 		within(groups[0]).getByText('License 2');
 
 		expect(getAllByText('download').length).toBe(7);
+	});
+
+	it('does not group licenses whose version is 3', () => {
+		const {getAllByText} = renderDownloadLicenses({
+			licenseKeys: [
+				{
+					active: true,
+					description: 'Test Account description',
+					expirationDate: 'April 16, 2122',
+					licenseEntryName: 'Portal Backup',
+					licenseEntryType: 'production',
+					licenseKeyId: '85602',
+					licenseVersion: 3,
+					name: 'License 1',
+					productName: 'Portal Backup',
+					productVersion: '6.1',
+					startDate: 'March 17, 2021'
+				},
+				{
+					active: true,
+					description: 'Test Account description',
+					expirationDate: 'April 16, 2122',
+					licenseEntryName: 'Portal Backup',
+					licenseEntryType: 'production',
+					licenseKeyId: '85603',
+					licenseVersion: 3,
+					name: 'License 2',
+					productName: 'Portal Backup',
+					productVersion: '6.1',
+					startDate: 'March 17, 2021'
+				}
+			]
+		});
+
+		expect(getAllByText('download').length).toBe(2);
+	});
+
+	it('does not group licenses whose Type is not Production', () => {
+		const {getAllByText} = renderDownloadLicenses({
+			licenseKeys: [
+				{
+					active: true,
+					description: 'Test Account description',
+					expirationDate: 'April 16, 2122',
+					licenseEntryName: 'Portal Backup',
+					licenseEntryType: 'elastic',
+					licenseKeyId: '85602',
+					licenseVersion: 4,
+					name: 'License 1',
+					productName: 'Portal Backup',
+					productVersion: '6.2',
+					startDate: 'March 17, 2021'
+				},
+				{
+					active: true,
+					description: 'Test Account description',
+					expirationDate: 'April 16, 2122',
+					licenseEntryName: 'Portal Backup',
+					licenseEntryType: 'elastic',
+					licenseKeyId: '85603',
+					licenseVersion: 4,
+					name: 'License 2',
+					productName: 'Portal Backup',
+					productVersion: '6.2',
+					startDate: 'March 17, 2021'
+				}
+			]
+		});
+
+		expect(getAllByText('download').length).toBe(2);
 	});
 });
