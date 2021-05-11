@@ -96,18 +96,36 @@ function License({license}) {
 				{maxConcurrentUsers === '0' ? DASH : maxConcurrentUsers}
 			</ClayTable.Cell>
 			<ClayTable.Cell>
-				{active ? (
-					<span className="label label-success">
-						{Liferay.Language.get('active')}
-					</span>
-				) : (
-					<span className="label label-danger">
-						{Liferay.Language.get('deactivated')}
-					</span>
-				)}
+				<Status active={active} expirationDate={expirationDate} />
 			</ClayTable.Cell>
 			<ClayTable.Cell></ClayTable.Cell>
 		</ClayTable.Row>
+	);
+}
+
+function Status({active, expirationDate}) {
+	if (active) {
+		const expired = new Date(expirationDate) < new Date();
+
+		if (expired) {
+			return (
+				<span className="label label-warning">
+					{Liferay.Language.get('expired')}
+				</span>
+			);
+		}
+
+		return (
+			<span className="label label-success">
+				{Liferay.Language.get('active')}
+			</span>
+		);
+	}
+
+	return (
+		<span className="label label-danger">
+			{Liferay.Language.get('deactivated')}
+		</span>
 	);
 }
 

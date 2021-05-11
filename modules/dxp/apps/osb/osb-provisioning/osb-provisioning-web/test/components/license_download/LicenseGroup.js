@@ -13,6 +13,10 @@ import {cleanup, render} from '@testing-library/react';
 import React from 'react';
 
 import LicenseGroup from '../../../src/main/resources/META-INF/resources/js/components/license_download/LicenseGroup';
+import {
+	formatDate,
+	generateNewDate
+} from '../../../src/main/resources/META-INF/resources/js/utilities/date';
 
 const multipleLicenses = [
 	[
@@ -137,9 +141,83 @@ describe('LicenseGroup', () => {
 		expect(getAllByText('-').length).toBe(2);
 	});
 
-	it('displays the Status label correctly', () => {
-		const {getByText} = renderLicenseGroup();
+	it('displays the Deactivated Status label correctly', () => {
+		const {getByText} = renderLicenseGroup({
+			licenses: [
+				[
+					{
+						active: false,
+						description: 'Test Account description',
+						expirationDate: 'April 16, 2122',
+						licenseEntryName: 'Portal Backup',
+						licenseEntryType: 'production',
+						licenseKeyId: '85602',
+						licenseVersion: 3,
+						maxConcurrentUsers: '0',
+						maxUsers: '0',
+						name: 'License 1',
+						productName: 'Portal Backup',
+						productVersion: '6.1 GA1',
+						startDate: 'March 17, 2021'
+					}
+				]
+			]
+		});
+
+		getByText('deactivated');
+	});
+
+	it('displays the Active Status label correctly', () => {
+		const newExpirationDate = generateNewDate(new Date(), 2);
+
+		const {getByText} = renderLicenseGroup({
+			licenses: [
+				[
+					{
+						active: true,
+						description: 'Test Account description',
+						expirationDate: formatDate(newExpirationDate),
+						licenseEntryName: 'Portal Backup',
+						licenseEntryType: 'production',
+						licenseKeyId: '85602',
+						licenseVersion: 3,
+						maxConcurrentUsers: '0',
+						maxUsers: '0',
+						name: 'License 1',
+						productName: 'Portal Backup',
+						productVersion: '6.1 GA1',
+						startDate: 'March 17, 2020'
+					}
+				]
+			]
+		});
 
 		getByText('active');
+	});
+
+	it('displays the Expired Status label correctly', () => {
+		const {getByText} = renderLicenseGroup({
+			licenses: [
+				[
+					{
+						active: true,
+						description: 'Test Account description',
+						expirationDate: 'April 10, 2020',
+						licenseEntryName: 'Portal Backup',
+						licenseEntryType: 'production',
+						licenseKeyId: '85602',
+						licenseVersion: 3,
+						maxConcurrentUsers: '0',
+						maxUsers: '0',
+						name: 'License 1',
+						productName: 'Portal Backup',
+						productVersion: '6.1 GA1',
+						startDate: 'March 17, 2020'
+					}
+				]
+			]
+		});
+
+		getByText('expired');
 	});
 });
