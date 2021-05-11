@@ -892,10 +892,6 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 				externalLinks, language, region, postalAddress,
 				productPurchases.toArray(new ProductPurchase[0]), partnerTeams,
 				jsonObject);
-
-			if (analyticsCloud) {
-				sendAnalyticsCloudWelcomeEmail(activeContacts, languageId);
-			}
 		}
 
 		createAccountNote(jsonObject, account);
@@ -1871,42 +1867,6 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 		_lockLocalService.unlock(
 			Message.class.getName(), salesforceOpportunityKey);
-	}
-
-	protected void sendAnalyticsCloudWelcomeEmail(
-			List<Contact> contacts, String languageId)
-		throws PortalException {
-
-		for (Contact contact : contacts) {
-			String body = _getEmailTemplate(
-				"email_analytics_cloud_welcome_body_" + languageId + ".tmpl",
-				"email_analytics_cloud_welcome_body.tmpl");
-
-			Locale locale = LocaleUtil.fromLanguageId(languageId);
-
-			ResourceBundle resourceBundle = ResourceBundleUtil.getBundle(
-				"content.Language", locale, getClass());
-
-			String subject = LanguageUtil.get(
-				resourceBundle, "you-have-been-invited-to-analytics-cloud");
-
-			SubscriptionSender subscriptionSender = new SubscriptionSender();
-
-			subscriptionSender.setBody(body);
-			subscriptionSender.setCompanyId(_portal.getDefaultCompanyId());
-			subscriptionSender.setFrom(
-				"no-reply@liferay.com", "Liferay Analytics Cloud");
-			subscriptionSender.setHtmlFormat(true);
-			subscriptionSender.setMailId(
-				"analytics_cloud_welcome", contact.getKey());
-			subscriptionSender.setReplyToAddress("no-reply@liferay.com");
-			subscriptionSender.setSubject(subject);
-
-			subscriptionSender.addRuntimeSubscribers(
-				contact.getEmailAddress(), getContactFullName(contact));
-
-			subscriptionSender.flushNotificationsAsync();
-		}
 	}
 
 	protected void sendUserCreationEmail(
