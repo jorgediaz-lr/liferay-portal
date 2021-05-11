@@ -111,6 +111,12 @@ describe('LicenseGroup', () => {
 		getByText('Portal Backup');
 	});
 
+	it('displays the Product Version correctly', () => {
+		const {getByText} = renderLicenseGroup();
+
+		getByText('6.1 GA1');
+	});
+
 	it('displays the Product Type correctly', () => {
 		const {getByText} = renderLicenseGroup();
 

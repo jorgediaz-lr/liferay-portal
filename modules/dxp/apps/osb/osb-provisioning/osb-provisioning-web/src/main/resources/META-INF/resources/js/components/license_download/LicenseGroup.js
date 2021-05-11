@@ -44,6 +44,7 @@ function Download({actionURL, value}) {
 			<ClayTable.Cell></ClayTable.Cell>
 			<ClayTable.Cell></ClayTable.Cell>
 			<ClayTable.Cell></ClayTable.Cell>
+			<ClayTable.Cell></ClayTable.Cell>
 			<ClayTable.Cell>
 				<form action={actionURL} method="post" name="downloadLicenses">
 					<input
@@ -70,6 +71,7 @@ function License({license}) {
 		licenseKeyId,
 		name,
 		productName,
+		productVersion,
 		startDate
 	} = license;
 
@@ -80,6 +82,7 @@ function License({license}) {
 				<div className="secondary-information">{description}</div>
 			</ClayTable.Cell>
 			<ClayTable.Cell>{productName}</ClayTable.Cell>
+			<ClayTable.Cell>{productVersion}</ClayTable.Cell>
 			<ClayTable.Cell>{`${licenseEntryName} (${capitalize(
 				licenseEntryType
 			)})`}</ClayTable.Cell>

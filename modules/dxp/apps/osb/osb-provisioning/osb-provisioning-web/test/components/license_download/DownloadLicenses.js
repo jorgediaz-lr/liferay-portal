@@ -88,33 +88,33 @@ function renderDownloadLicenses(props) {
 					productVersion: '6.2',
 					startDate: 'March 16, 2021'
 				},
-				// Different startDate
+				// Different license version & product version
 				{
 					active: true,
 					description: 'Test Account description',
 					expirationDate: 'April 16, 2122',
-					licenseEntryName: 'Portal Backup',
+					licenseEntryName: 'DXP Development',
 					licenseEntryType: 'production',
 					licenseKeyId: '85607',
-					licenseVersion: 4,
+					licenseVersion: 6,
 					name: 'License 6',
-					productName: 'Portal Backup',
-					productVersion: '6.2',
-					startDate: 'March 16, 2021'
+					productName: 'DXP Development',
+					productVersion: '7.4',
+					startDate: 'March 17, 2021'
 				},
-				// Different startDate
+				// Different license version & product version
 				{
 					active: true,
 					description: 'Test Account description',
 					expirationDate: 'April 16, 2122',
-					licenseEntryName: 'Portal Backup',
+					licenseEntryName: 'DXP Development',
 					licenseEntryType: 'production',
 					licenseKeyId: '85608',
-					licenseVersion: 4,
+					licenseVersion: 6,
 					name: 'License 7',
-					productName: 'Portal Backup',
-					productVersion: '6.2',
-					startDate: 'March 14, 2021'
+					productName: 'DXP Development',
+					productVersion: '7.1',
+					startDate: 'March 17, 2021'
 				},
 				// licenseEntryType is not Production
 				{
@@ -159,7 +159,7 @@ describe('DownloadLicenses', () => {
 		expect(container).toBeTruthy();
 	});
 
-	it('groups licenses that are active, has a license versions greater than 3, shares the same start and expiration dates, and license type is Production', () => {
+	it('groups licenses that are active, has a license versions greater than 3, has a license type that is Production, and shares the same start date, expiration date, product version, and license version', () => {
 		const {container, getAllByText} = renderDownloadLicenses();
 
 		const groups = container.querySelectorAll('tbody');
@@ -167,7 +167,7 @@ describe('DownloadLicenses', () => {
 		within(groups[0]).getByText('License 1');
 		within(groups[0]).getByText('License 2');
 
-		expect(getAllByText('download').length).toBe(7);
+		expect(getAllByText('download').length).toBe(8);
 	});
 
 	it('does not group licenses whose version is 3', () => {
@@ -232,6 +232,148 @@ describe('DownloadLicenses', () => {
 					name: 'License 2',
 					productName: 'Portal Backup',
 					productVersion: '6.2',
+					startDate: 'March 17, 2021'
+				}
+			]
+		});
+
+		expect(getAllByText('download').length).toBe(2);
+	});
+
+	it('does not group licenses whose start date is not the same', () => {
+		const {getAllByText} = renderDownloadLicenses({
+			licenseKeys: [
+				{
+					active: true,
+					description: 'Test Account description',
+					expirationDate: 'April 16, 2122',
+					licenseEntryName: 'Portal Backup',
+					licenseEntryType: 'production',
+					licenseKeyId: '85602',
+					licenseVersion: 4,
+					name: 'License 1',
+					productName: 'Portal Backup',
+					productVersion: '6.2',
+					startDate: 'March 17, 2021'
+				},
+				{
+					active: true,
+					description: 'Test Account description',
+					expirationDate: 'April 16, 2122',
+					licenseEntryName: 'Portal Backup',
+					licenseEntryType: 'production',
+					licenseKeyId: '85603',
+					licenseVersion: 4,
+					name: 'License 2',
+					productName: 'Portal Backup',
+					productVersion: '6.2',
+					startDate: 'March 13, 2021'
+				}
+			]
+		});
+
+		expect(getAllByText('download').length).toBe(2);
+	});
+
+	it('does not group licenses whose expiration date is not the same', () => {
+		const {getAllByText} = renderDownloadLicenses({
+			licenseKeys: [
+				{
+					active: true,
+					description: 'Test Account description',
+					expirationDate: 'April 14, 2122',
+					licenseEntryName: 'Portal Backup',
+					licenseEntryType: 'production',
+					licenseKeyId: '85602',
+					licenseVersion: 4,
+					name: 'License 1',
+					productName: 'Portal Backup',
+					productVersion: '6.2',
+					startDate: 'March 17, 2021'
+				},
+				{
+					active: true,
+					description: 'Test Account description',
+					expirationDate: 'April 16, 2122',
+					licenseEntryName: 'Portal Backup',
+					licenseEntryType: 'production',
+					licenseKeyId: '85603',
+					licenseVersion: 4,
+					name: 'License 2',
+					productName: 'Portal Backup',
+					productVersion: '6.2',
+					startDate: 'March 17, 2021'
+				}
+			]
+		});
+
+		expect(getAllByText('download').length).toBe(2);
+	});
+
+	it('does not group licenses whose license version is not the same', () => {
+		// In real life, licenses wouldn't have different license versions without having different product and product versions
+
+		const {getAllByText} = renderDownloadLicenses({
+			licenseKeys: [
+				{
+					active: true,
+					description: 'Test Account description',
+					expirationDate: 'April 16, 2122',
+					licenseEntryName: 'Portal Backup',
+					licenseEntryType: 'production',
+					licenseKeyId: '85602',
+					licenseVersion: 4,
+					name: 'License 1',
+					productName: 'Portal Backup',
+					productVersion: '6.2',
+					startDate: 'March 17, 2021'
+				},
+				{
+					active: true,
+					description: 'Test Account description',
+					expirationDate: 'April 16, 2122',
+					licenseEntryName: 'Portal Backup',
+					licenseEntryType: 'production',
+					licenseKeyId: '85603',
+					licenseVersion: 5,
+					name: 'License 2',
+					productName: 'Portal Backup',
+					productVersion: '6.2',
+					startDate: 'March 17, 2021'
+				}
+			]
+		});
+
+		expect(getAllByText('download').length).toBe(2);
+	});
+
+	it('does not group licenses whose product version is not the same', () => {
+		const {getAllByText} = renderDownloadLicenses({
+			licenseKeys: [
+				{
+					active: true,
+					description: 'Test Account description',
+					expirationDate: 'April 16, 2122',
+					licenseEntryName: 'DXP Development',
+					licenseEntryType: 'production',
+					licenseKeyId: '85602',
+					licenseVersion: 6,
+					name: 'License 1',
+					productName: 'DXP Development',
+					productVersion: '7.1',
+					startDate: 'March 17, 2021'
+				},
+				{
+					active: true,
+					description: 'Test Account description',
+					expirationDate: 'April 16, 2122',
+					licenseEntryName: 'DXP Development',
+					licenseEntryType: 'production',
+					licenseKeyId: '85603',
+					licenseVersion: 6,
+					name: 'License 2',
+					productName: 'DXP Development',
+					productVersion: '7.4',
 					startDate: 'March 17, 2021'
 				}
 			]

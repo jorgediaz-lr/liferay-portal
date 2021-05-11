@@ -31,7 +31,9 @@ function DownloadLicenses({downloadLicenseKeysURL, licenseKeys}) {
 		activeVersionCompliantLicenses,
 		({startDate}) => startDate,
 		({expirationDate}) => expirationDate,
-		({licenseEntryType}) => licenseEntryType === LICENSE_TYPE_PRODUCTION
+		({licenseEntryType}) => licenseEntryType === LICENSE_TYPE_PRODUCTION,
+		({licenseVersion}) => licenseVersion,
+		({productVersion}) => productVersion
 	);
 
 	return (
@@ -44,6 +46,9 @@ function DownloadLicenses({downloadLicenseKeysURL, licenseKeys}) {
 						</ClayTable.Cell>
 						<ClayTable.Cell expanded headingCell>
 							{Liferay.Language.get('product')}
+						</ClayTable.Cell>
+						<ClayTable.Cell headingCell>
+							{Liferay.Language.get('version')}
 						</ClayTable.Cell>
 						<ClayTable.Cell expanded headingCell>
 							{Liferay.Language.get('type')}
