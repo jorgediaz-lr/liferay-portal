@@ -43,7 +43,7 @@ function LicenseDetails() {
 
 			<div className="col-md-6 form-group">
 				<label htmlFor="accountName">
-					{Liferay.Language.get('account')}
+					{Liferay.Language.get('account-name')}
 				</label>
 				<input
 					className="form-control form-control-sm"

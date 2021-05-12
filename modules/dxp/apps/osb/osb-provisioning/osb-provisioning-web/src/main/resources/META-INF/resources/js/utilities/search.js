@@ -157,7 +157,7 @@ export function getLicenseKeySearchFilterDisplayName(name) {
 			displayName = Liferay.Language.get('account-key');
 			break;
 		case 'accountName':
-			displayName = Liferay.Language.get('account');
+			displayName = Liferay.Language.get('account-name');
 			break;
 		case 'activeLicenses':
 			displayName = Liferay.Language.get('active');

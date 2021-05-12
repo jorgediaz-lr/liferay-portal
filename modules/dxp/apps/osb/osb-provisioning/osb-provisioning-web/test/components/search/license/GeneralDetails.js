@@ -27,7 +27,7 @@ describe('License Search General Details', () => {
 		expect(container).toBeTruthy();
 	});
 
-	it('displays a Koroneiki Account Key Name field', () => {
+	it('displays a Koroneiki Account Key field', () => {
 		const {getByLabelText} = renderDetails();
 
 		getByLabelText('account-key');
