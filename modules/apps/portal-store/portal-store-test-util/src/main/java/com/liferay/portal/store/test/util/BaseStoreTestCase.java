@@ -38,8 +38,8 @@ public abstract class BaseStoreTestCase {
 
 	@Before
 	public void setUp() {
-		_companyId = RandomTestUtil.nextLong();
-		_repositoryId = RandomTestUtil.nextLong();
+		_companyId = RandomTestUtil.nextLong() * 999L;
+		_repositoryId = RandomTestUtil.nextLong() * 999L;
 		_store = getStore();
 	}
 
