@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.search.SortFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
 import java.util.ArrayList;
@@ -54,7 +55,7 @@ public class ViewAccountLicenseKeysDisplayContext
 	public void doInit() throws Exception {
 		super.doInit();
 
-		_productKeys = ParamUtil.getStringValues(renderRequest, "productKey");
+		_productKey = ParamUtil.getString(renderRequest, "productKey");
 	}
 
 	public List<DropdownItem> getActionDropdownItems() {
@@ -85,8 +86,35 @@ public class ViewAccountLicenseKeysDisplayContext
 	}
 
 	@Override
+	public String getClearResultsURL() {
+		PortletURL portletURL = null;
+
+		if (Validator.isNotNull(_productKey)) {
+			portletURL = renderResponse.createRenderURL();
+
+			portletURL.setParameter(
+				"mvcRenderCommandName", "/accounts/view_subscription");
+			portletURL.setParameter(
+				"tabs1", ParamUtil.getString(renderRequest, "tabs1"));
+			portletURL.setParameter("accountKey", account.getKey());
+			portletURL.setParameter("productKey", _productKey);
+		}
+		else {
+			portletURL = super.getPortletURL();
+		}
+
+		String tabs2 = ParamUtil.getString(renderRequest, "tabs2");
+
+		if (Validator.isNotNull(tabs2)) {
+			portletURL.setParameter("tabs2", tabs2);
+		}
+
+		return portletURL.toString();
+	}
+
+	@Override
 	public PortletURL getPortletURL() {
-		if (_productKeys.length > 0) {
+		if (Validator.isNotNull(_productKey)) {
 			PortletURL portletURL = renderResponse.createRenderURL();
 
 			portletURL.setParameter(
@@ -94,7 +122,7 @@ public class ViewAccountLicenseKeysDisplayContext
 			portletURL.setParameter(
 				"tabs1", ParamUtil.getString(renderRequest, "tabs1"));
 			portletURL.setParameter("accountKey", account.getKey());
-			portletURL.setParameter("productKey", _productKeys[0]);
+			portletURL.setParameter("productKey", _productKey);
 
 			return portletURL;
 		}
@@ -106,10 +134,7 @@ public class ViewAccountLicenseKeysDisplayContext
 		Map<String, Object> data = new HashMap<>();
 
 		data.put("accountKey", account.getKey());
-
-		if (_productKeys.length > 0) {
-			data.put("productKey", _productKeys[0]);
-		}
+		data.put("productKey", _productKey);
 
 		PortletURL portletURL = renderResponse.createActionURL();
 
@@ -126,6 +151,7 @@ public class ViewAccountLicenseKeysDisplayContext
 			renderRequest, currentURLObj, Collections.emptyList(),
 			"no-licenses-were-found");
 
+		String keywords = ParamUtil.getString(renderRequest, "keywords");
 		String tabs2 = ParamUtil.getString(renderRequest, "tabs2", "active");
 
 		Date now = new Date();
@@ -135,37 +161,47 @@ public class ViewAccountLicenseKeysDisplayContext
 		Sort sort = SortFactoryUtil.getSort(
 			LicenseKey.class, Sort.LONG_TYPE, Field.MODIFIED_DATE, "desc");
 
+		String[] productKeys = new String[0];
+
+		if (Validator.isNotNull(_productKey)) {
+			productKeys = new String[] {_productKey};
+		}
+
 		if (tabs2.equals("active")) {
 			hits = licenseKeyLocalService.search(
-				themeDisplay.getCompanyId(), null, null, null, null, null, null,
-				account.getKey(), null, null, null, null, null, _productKeys,
-				null, null, null, null, null, null, null, null, null, null, now,
-				null, true, true, searchContainer.getStart(),
-				searchContainer.getEnd(), sort);
+				themeDisplay.getCompanyId(), keywords, null, null, null, null,
+				null, account.getKey(), keywords, keywords, null, null, null,
+				productKeys, keywords, keywords, new String[] {keywords},
+				keywords, keywords, keywords, keywords, keywords, keywords,
+				keywords, now, null, true, true, true, false,
+				searchContainer.getStart(), searchContainer.getEnd(), sort);
 		}
 		else if (tabs2.equals("deactivated")) {
 			hits = licenseKeyLocalService.search(
-				themeDisplay.getCompanyId(), null, null, null, null, null, null,
-				account.getKey(), null, null, null, null, null, _productKeys,
-				null, null, null, null, null, null, null, null, null, null,
-				null, null, false, true, searchContainer.getStart(),
-				searchContainer.getEnd(), sort);
+				themeDisplay.getCompanyId(), keywords, null, null, null, null,
+				null, account.getKey(), keywords, keywords, null, null, null,
+				productKeys, keywords, keywords, new String[] {keywords},
+				keywords, keywords, keywords, keywords, keywords, keywords,
+				keywords, null, null, false, true, true, false,
+				searchContainer.getStart(), searchContainer.getEnd(), sort);
 		}
 		else if (tabs2.equals("expired")) {
 			hits = licenseKeyLocalService.search(
-				themeDisplay.getCompanyId(), null, null, null, null, null, null,
-				account.getKey(), null, null, null, null, null, _productKeys,
-				null, null, null, null, null, null, null, null, null, null,
-				null, now, true, true, searchContainer.getStart(),
-				searchContainer.getEnd(), sort);
+				themeDisplay.getCompanyId(), keywords, null, null, null, null,
+				null, account.getKey(), keywords, keywords, null, null, null,
+				productKeys, keywords, keywords, new String[] {keywords},
+				keywords, keywords, keywords, keywords, keywords, keywords,
+				keywords, null, now, true, true, true, false,
+				searchContainer.getStart(), searchContainer.getEnd(), sort);
 		}
 		else {
 			hits = licenseKeyLocalService.search(
-				themeDisplay.getCompanyId(), null, null, null, null, null, null,
-				account.getKey(), null, null, null, null, null, _productKeys,
-				null, null, null, null, null, null, null, null, null, null,
-				null, null, null, true, searchContainer.getStart(),
-				searchContainer.getEnd(), sort);
+				themeDisplay.getCompanyId(), keywords, null, null, null, null,
+				null, account.getKey(), keywords, keywords, null, null, null,
+				productKeys, keywords, keywords, new String[] {keywords},
+				keywords, keywords, keywords, keywords, keywords, keywords,
+				keywords, null, null, null, true, true, false,
+				searchContainer.getStart(), searchContainer.getEnd(), sort);
 		}
 
 		List<LicenseKey> licenseKeys = new ArrayList<>();
@@ -196,41 +232,47 @@ public class ViewAccountLicenseKeysDisplayContext
 
 		Date now = new Date();
 
+		String[] productKeys = new String[0];
+
+		if (Validator.isNotNull(_productKey)) {
+			productKeys = new String[] {_productKey};
+		}
+
 		int activeLicenseKeysCount = licenseKeyLocalService.searchCount(
 			themeDisplay.getCompanyId(), null, null, null, null, null, null,
-			account.getKey(), null, null, null, null, null, _productKeys, null,
+			account.getKey(), null, null, null, null, null, productKeys, null,
 			null, null, null, null, null, null, null, null, null, now, null,
-			true, true);
+			true, true, true, true);
 
 		tabsNames.add(getTabName("active", activeLicenseKeysCount));
 
 		int expiredLicenseKeysCount = licenseKeyLocalService.searchCount(
 			themeDisplay.getCompanyId(), null, null, null, null, null, null,
-			account.getKey(), null, null, null, null, null, _productKeys, null,
+			account.getKey(), null, null, null, null, null, productKeys, null,
 			null, null, null, null, null, null, null, null, null, null, now,
-			true, true);
+			true, true, true, true);
 
 		tabsNames.add(getTabName("expired", expiredLicenseKeysCount));
 
 		int deactivatedLicenseKeysCount = licenseKeyLocalService.searchCount(
 			themeDisplay.getCompanyId(), null, null, null, null, null, null,
-			account.getKey(), null, null, null, null, null, _productKeys, null,
+			account.getKey(), null, null, null, null, null, productKeys, null,
 			null, null, null, null, null, null, null, null, null, null, null,
-			false, true);
+			false, true, true, true);
 
 		tabsNames.add(getTabName("deactivated", deactivatedLicenseKeysCount));
 
 		int allLicenseKeysCount = licenseKeyLocalService.searchCount(
 			themeDisplay.getCompanyId(), null, null, null, null, null, null,
-			account.getKey(), null, null, null, null, null, _productKeys, null,
+			account.getKey(), null, null, null, null, null, productKeys, null,
 			null, null, null, null, null, null, null, null, null, null, null,
-			null, true);
+			null, true, true, true);
 
 		tabsNames.add(getTabName("all", allLicenseKeysCount));
 
 		return StringUtil.merge(tabsNames);
 	}
 
-	private String[] _productKeys;
+	private String _productKey;
 
 }

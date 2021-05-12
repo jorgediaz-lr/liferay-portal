@@ -319,7 +319,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			String description, String hostName, String ipAddress,
 			String macAddress, String serverId, String key,
 			Date expirationDateGT, Date expirationDateLT, Boolean active,
-			boolean andSearch, int start, int end, Sort sort)
+			boolean accountKeyMatch, boolean productKeyMatch, boolean andSearch,
+			int start, int end, Sort sort)
 		throws Exception {
 
 		//addPermissionParams(params);
@@ -331,7 +332,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			licenseEntryIds, productKeys, productName, productId,
 			productVersions, owner, description, hostName, ipAddress,
 			macAddress, serverId, key, expirationDateGT, expirationDateLT,
-			active, andSearch, start, end, sort);
+			active, accountKeyMatch, productKeyMatch, andSearch, start, end,
+			sort);
 	}
 
 	public List<LicenseKey> search(

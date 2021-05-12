@@ -63,8 +63,10 @@ import com.liferay.portal.kernel.search.Query;
 import com.liferay.portal.kernel.search.QueryConfig;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.Sort;
+import com.liferay.portal.kernel.search.TermQuery;
 import com.liferay.portal.kernel.search.TermRangeQuery;
 import com.liferay.portal.kernel.search.generic.BooleanQueryImpl;
+import com.liferay.portal.kernel.search.generic.TermQueryImpl;
 import com.liferay.portal.kernel.search.generic.TermRangeQueryImpl;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
@@ -536,7 +538,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			String description, String hostName, String ipAddress,
 			String macAddress, String serverId, String key,
 			Date expirationDateGT, Date expirationDateLT, Boolean active,
-			boolean andSearch, int start, int end, Sort sort)
+			boolean accountKeyMatch, boolean productKeyMatch, boolean andSearch,
+			int start, int end, Sort sort)
 		throws Exception {
 
 		Indexer<LicenseKey> indexer = IndexerRegistryUtil.nullSafeGetIndexer(
@@ -549,7 +552,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			licenseEntryIds, productKeys, productName, productId,
 			productVersions, owner, description, hostName, ipAddress,
 			macAddress, serverId, key, expirationDateGT, expirationDateLT,
-			active, andSearch, start, end, sort);
+			active, accountKeyMatch, productKeyMatch, andSearch, start, end,
+			sort);
 
 		return indexer.search(searchContext);
 	}
@@ -676,7 +680,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			String description, String hostName, String ipAddress,
 			String macAddress, String serverId, String key,
 			Date expirationDateGT, Date expirationDateLT, Boolean active,
-			boolean andSearch)
+			boolean accountKeyMatch, boolean productKeyMatch, boolean andSearch)
 		throws Exception {
 
 		Indexer<LicenseKey> indexer = IndexerRegistryUtil.nullSafeGetIndexer(
@@ -689,7 +693,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			licenseEntryIds, productKeys, productName, productId,
 			productVersions, owner, description, hostName, ipAddress,
 			macAddress, serverId, key, expirationDateGT, expirationDateLT,
-			active, andSearch, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+			active, accountKeyMatch, productKeyMatch, andSearch,
+			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 
 		return (int)indexer.searchCount(searchContext);
 	}
@@ -812,8 +817,9 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		String productId, String[] productVersions, String owner,
 		String description, String hostName, String ipAddress,
 		String macAddress, String serverId, String key, Date expirationDateGT,
-		Date expirationDateLT, Boolean active, boolean andSearch, int start,
-		int end, Sort sort) {
+		Date expirationDateLT, Boolean active, boolean accountKeyMatch,
+		boolean productKeyMatch, boolean andSearch, int start, int end,
+		Sort sort) {
 
 		SearchContext searchContext = new SearchContext();
 
@@ -822,6 +828,34 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		Map<String, Serializable> attributes = new HashMap<>();
 
 		List<BooleanClause<Query>> booleanClauses = new ArrayList<>();
+
+		if (accountKeyMatch) {
+			TermQuery accountKeyTermQuery = new TermQueryImpl(
+				"accountKey", StringUtil.toLowerCase(accountKey));
+
+			booleanClauses.add(
+				BooleanClauseFactoryUtil.create(
+					accountKeyTermQuery, BooleanClauseOccur.MUST.getName()));
+		}
+		else {
+			attributes.put("accountKey", accountKey);
+		}
+
+		if (productKeyMatch) {
+			BooleanQuery booleanQuery = new BooleanQueryImpl();
+
+			for (String productKey : productKeys) {
+				booleanQuery.addExactTerm(
+					"productKey", StringUtil.toLowerCase(productKey));
+			}
+
+			booleanClauses.add(
+				BooleanClauseFactoryUtil.create(
+					booleanQuery, BooleanClauseOccur.MUST.getName()));
+		}
+		else {
+			attributes.put("productKey", productKeys);
+		}
 
 		if (active != null) {
 			BooleanQuery booleanQuery = new BooleanQueryImpl();
@@ -920,7 +954,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 				booleanClauses.toArray(new BooleanClause[0]));
 		}
 
-		attributes.put("accountKey", accountKey);
 		attributes.put("accountName", accountName);
 		attributes.put("description", description);
 		attributes.put("hostName", hostName);
@@ -931,7 +964,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		attributes.put("modifiedUserUuid", modifiedUserUuid);
 		attributes.put("owner", owner);
 		attributes.put("productId", productId);
-		attributes.put("productKey", productKeys);
 		attributes.put("productName", productName);
 		attributes.put("productPurchaseKey", productPurchaseKey);
 		attributes.put("productVersion", productVersions);

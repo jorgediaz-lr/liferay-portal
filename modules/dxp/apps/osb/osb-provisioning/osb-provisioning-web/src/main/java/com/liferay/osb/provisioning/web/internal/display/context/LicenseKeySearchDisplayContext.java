@@ -188,8 +188,9 @@ public class LicenseKeySearchDisplayContext {
 				searchTerms.getServerId(), searchTerms.getKey(),
 				searchTerms.getDate(searchTerms.getExpirationDateGT()),
 				searchTerms.getDate(searchTerms.getExpirationDateLT()),
-				searchTerms.getActive(), searchTerms.isAndOperator(),
-				_licenseKeySearch.getStart(), _licenseKeySearch.getEnd(), sort);
+				searchTerms.getActive(), false, false,
+				searchTerms.isAndOperator(), _licenseKeySearch.getStart(),
+				_licenseKeySearch.getEnd(), sort);
 		}
 		else {
 			hits = _licenseKeyLocalService.search(

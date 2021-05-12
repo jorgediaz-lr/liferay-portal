@@ -65,6 +65,8 @@ public class LicenseKeyKeywordQueryContributor
 		queryHelper.addSearchTerm(
 			booleanQuery, searchContext, "productKey", false);
 		queryHelper.addSearchTerm(
+			booleanQuery, searchContext, "productName", false);
+		queryHelper.addSearchTerm(
 			booleanQuery, searchContext, "productPurchaseKey", false);
 		queryHelper.addSearchTerm(
 			booleanQuery, searchContext, "productVersion", false);
