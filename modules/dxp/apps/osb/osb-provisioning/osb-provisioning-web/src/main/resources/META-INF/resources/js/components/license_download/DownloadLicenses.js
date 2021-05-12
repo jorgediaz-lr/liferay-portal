@@ -26,15 +26,24 @@ function DownloadLicenses({downloadLicenseKeysURL, licenseKeys}) {
 		({active, licenseVersion}) =>
 			licenseVersion > MIN_LICENSE_GROUPABLE_VERSION_NUMBER && active
 	);
-
-	const groupedLicenses = groupByAll(
+	const [licensesTypeProduction, licensesTypeOther] = partition(
 		activeVersionCompliantLicenses,
-		({startDate}) => startDate,
-		({expirationDate}) => expirationDate,
-		({licenseEntryType}) => licenseEntryType === LICENSE_TYPE_PRODUCTION,
-		({licenseVersion}) => licenseVersion,
-		({productVersion}) => productVersion
+		({licenseEntryType}) => licenseEntryType === LICENSE_TYPE_PRODUCTION
 	);
+
+	const groupedLicenses = licensesTypeProduction.length
+		? groupByAll(
+				licensesTypeProduction,
+				({startDate}) => startDate,
+				({expirationDate}) => expirationDate,
+				({licenseVersion}) => licenseVersion,
+				({productVersion}) => productVersion
+		  )
+		: licensesTypeProduction;
+
+	function formatLicenses(licenses) {
+		return licenses.map(license => [license]);
+	}
 
 	return (
 		<div className="download-licenses-container">
@@ -73,10 +82,17 @@ function DownloadLicenses({downloadLicenseKeysURL, licenseKeys}) {
 					/>
 				)}
 
+				{!!licensesTypeOther.length && (
+					<LicenseGroup
+						downloadURL={downloadLicenseKeysURL}
+						licenses={formatLicenses(licensesTypeOther)}
+					/>
+				)}
+
 				{!!oldInactiveLicenses.length && (
 					<LicenseGroup
 						downloadURL={downloadLicenseKeysURL}
-						licenses={oldInactiveLicenses.map(license => [license])}
+						licenses={formatLicenses(oldInactiveLicenses)}
 					/>
 				)}
 			</ClayTable>

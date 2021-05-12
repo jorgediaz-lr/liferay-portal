@@ -140,7 +140,7 @@ LicenseGroup.propTypes = {
 				startDate: PropTypes.string
 			})
 		)
-	)
+	).isRequired
 };
 
 export default LicenseGroup;
