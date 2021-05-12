@@ -75,36 +75,29 @@ public class LicenseUtil {
 
 		LicenseKey firstLicenseKey = licenseKeys.get(0);
 
-		String licenseEntryType = firstLicenseKey.getLicenseEntryType();
+		int licenseVersion = firstLicenseKey.getLicenseVersion();
+		String productVersion = firstLicenseKey.getProductVersion();
 		Date startDate = firstLicenseKey.getStartDate();
 		Date expirationDate = firstLicenseKey.getExpirationDate();
 
 		for (LicenseKey licenseKey : licenseKeys) {
-			if (licenseKey.getLicenseVersion() < 3) {
+			int curLicenseVersion = licenseKey.getLicenseVersion();
+
+			if ((curLicenseVersion < 4) ||
+				(curLicenseVersion != licenseVersion)) {
+
+				return false;
+			}
+
+			String curProductVersion = licenseKey.getProductVersion();
+
+			if (!curProductVersion.equals(productVersion)) {
 				return false;
 			}
 
 			String curLicenseEntryType = licenseKey.getLicenseEntryType();
 
-			if (!curLicenseEntryType.equals(LicenseType.PER_USER) &&
-				!curLicenseEntryType.equals(LicenseType.PRODUCTION)) {
-
-				return false;
-			}
-
-			if (curLicenseEntryType.equals(LicenseType.PER_USER)) {
-				if (firstLicenseKey.getMaxConcurrentUsers() !=
-						licenseKey.getMaxConcurrentUsers()) {
-
-					return false;
-				}
-
-				if (firstLicenseKey.getMaxUsers() != licenseKey.getMaxUsers()) {
-					return false;
-				}
-			}
-
-			if (!licenseEntryType.equals(curLicenseEntryType)) {
+			if (!curLicenseEntryType.equals(LicenseType.PRODUCTION)) {
 				return false;
 			}
 
