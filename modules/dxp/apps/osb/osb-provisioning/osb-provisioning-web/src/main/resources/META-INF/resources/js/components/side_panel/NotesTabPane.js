@@ -13,6 +13,7 @@ import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 
 import {useNotes} from '../../hooks/notes';
+import {usePermissions} from '../../hooks/permissions';
 import {
 	NOTE_STATUS_APPROVED,
 	NOTE_STATUS_ARCHIVED,
@@ -63,9 +64,11 @@ function ApprovedGeneralNotes({notes}) {
 }
 
 function ApprovedNotes({addURL, hasArchive, notes, onClick, tabType}) {
+	const {updatePermission} = usePermissions();
+
 	return (
 		<>
-			<AddNote actionURL={addURL} type={tabType} />
+			{updatePermission && <AddNote actionURL={addURL} type={tabType} />}
 
 			<div className="notes">
 				{tabType === NOTE_TYPE_GENERAL ? (

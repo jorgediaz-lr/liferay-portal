@@ -14,6 +14,7 @@ import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
 
 import {NotesProvider} from '../../hooks/notes';
+import {PermissionsProvider} from '../../hooks/permissions';
 import {
 	NOTE_STATUS_APPROVED,
 	NOTE_STATUS_ARCHIVED,
@@ -27,7 +28,13 @@ import NotesTabPane from './NotesTabPane';
 const COLLAPSED = 'collapsed';
 const EXPANDED = 'expanded';
 
-function CollapsiblePanel({addNoteURL, externalLinks, handleCollapse}) {
+function CollapsiblePanel({
+	addNoteURL,
+	externalLinks,
+	handleCollapse,
+	hasUpdateNotesPermission,
+	hasUpdateSalesInfoPermission
+}) {
 	const [activeIndex, setActiveIndex] = useState(0);
 
 	return (
@@ -77,16 +84,28 @@ function CollapsiblePanel({addNoteURL, externalLinks, handleCollapse}) {
 
 			<ClayTabs.Content activeIndex={activeIndex}>
 				<ClayTabs.TabPane id="tabPaneNotes">
-					<NotesTabPane
-						addURL={addNoteURL}
-						tabType={NOTE_TYPE_GENERAL}
-					/>
+					<PermissionsProvider
+						permissions={{
+							updatePermission: hasUpdateNotesPermission
+						}}
+					>
+						<NotesTabPane
+							addURL={addNoteURL}
+							tabType={NOTE_TYPE_GENERAL}
+						/>
+					</PermissionsProvider>
 				</ClayTabs.TabPane>
 				<ClayTabs.TabPane id="tabPaneSalesInfo">
-					<NotesTabPane
-						addURL={addNoteURL}
-						tabType={NOTE_TYPE_SALES}
-					/>
+					<PermissionsProvider
+						permissions={{
+							updatePermission: hasUpdateSalesInfoPermission
+						}}
+					>
+						<NotesTabPane
+							addURL={addNoteURL}
+							tabType={NOTE_TYPE_SALES}
+						/>
+					</PermissionsProvider>
 				</ClayTabs.TabPane>
 				<ClayTabs.TabPane id="tabPaneExternalLinks">
 					<ExternalLinksTabPane links={externalLinks} />
@@ -165,6 +184,8 @@ SidePanel.propTypes = {
 			url: PropTypes.string
 		})
 	),
+	hasUpdateNotesPermission: PropTypes.bool,
+	hasUpdateSalesInfoPermission: PropTypes.bool,
 	notes: PropTypes.arrayOf(
 		PropTypes.shape({
 			content: PropTypes.string.isRequired,

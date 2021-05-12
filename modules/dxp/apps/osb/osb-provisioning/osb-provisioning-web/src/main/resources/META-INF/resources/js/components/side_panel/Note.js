@@ -14,6 +14,7 @@ import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 
 import {NoteRecord, useNotes} from '../../hooks/notes';
+import {usePermissions} from '../../hooks/permissions';
 import {
 	NOTE_PRIORITY_PINNED,
 	NOTE_PRIORITY_UNPINNED,
@@ -29,6 +30,7 @@ function Note({note}) {
 	const [editNote, setEditNote] = useState(false);
 	const [showActionMenu, setShowActionMenu] = useState(false);
 	const [, {archiveNote, pinNote}] = useNotes();
+	const {updatePermission} = usePermissions();
 
 	const {
 		content,
@@ -132,26 +134,28 @@ function Note({note}) {
 					</div>
 				</div>
 
-				<div className="note-menu">
-					{showActionMenu && (
-						<ActionMenu
+				{updatePermission && (
+					<div className="note-menu">
+						{showActionMenu && (
+							<ActionMenu
+								onEdit={handleEdit}
+								onPinning={handlePinning}
+								pinned={pinned}
+								tabType={type}
+							/>
+						)}
+
+						<PanelDropdownMenu
+							id={id}
+							onArchive={handleArchive}
 							onEdit={handleEdit}
 							onPinning={handlePinning}
 							pinned={pinned}
+							status={status}
 							tabType={type}
 						/>
-					)}
-
-					<PanelDropdownMenu
-						id={id}
-						onArchive={handleArchive}
-						onEdit={handleEdit}
-						onPinning={handlePinning}
-						pinned={pinned}
-						status={status}
-						tabType={type}
-					/>
-				</div>
+					</div>
+				)}
 			</div>
 
 			{editNote ? (

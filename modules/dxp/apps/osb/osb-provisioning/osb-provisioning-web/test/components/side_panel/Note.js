@@ -17,6 +17,7 @@ import {
 	NoteRecord,
 	NotesProvider
 } from '../../../src/main/resources/META-INF/resources/js/hooks/notes';
+import {PermissionsProvider} from '../../../src/main/resources/META-INF/resources/js/hooks/permissions';
 import {
 	NOTE_FORMAT_HTML,
 	NOTE_STATUS_APPROVED,
@@ -24,8 +25,25 @@ import {
 	NOTE_TYPE_GENERAL
 } from '../../../src/main/resources/META-INF/resources/js/utilities/constants';
 
-function renderNote(props) {
-	const note = NoteRecord({
+const initialNotes = [
+	{
+		content: 'pinned note',
+		createDate: new Date().toLocaleString('en-US'),
+		creatorName: 'Jane Doe',
+		creatorPortraitURL: '/',
+		edited: false,
+		format: NOTE_FORMAT_HTML,
+		htmlContent: '<div>pinned note</div>',
+		key: '123',
+		pinned: true,
+		status: NOTE_STATUS_APPROVED,
+		type: NOTE_TYPE_GENERAL,
+		updateNoteURL: '/'
+	}
+];
+
+const note = props =>
+	NoteRecord({
 		content: '<div>note 1</div>',
 		createDate: new Date().toLocaleString('en-US'),
 		creatorName: 'Jane Doe',
@@ -40,27 +58,23 @@ function renderNote(props) {
 		...props
 	});
 
+function renderNote(props) {
 	return render(
-		<NotesProvider
-			initialNotes={[
-				{
-					content: 'pinned note',
-					createDate: new Date().toLocaleString('en-US'),
-					creatorName: 'Jane Doe',
-					creatorPortraitURL: '/',
-					edited: false,
-					format: NOTE_FORMAT_HTML,
-					htmlContent: '<div>pinned note</div>',
-					key: '123',
-					pinned: true,
-					status: NOTE_STATUS_APPROVED,
-					type: NOTE_TYPE_GENERAL,
-					updateNoteURL: '/'
-				}
-			]}
-		>
-			<Note note={note} />
-		</NotesProvider>
+		<PermissionsProvider permissions={{updatePermission: true}}>
+			<NotesProvider initialNotes={initialNotes}>
+				<Note note={note(props)} />
+			</NotesProvider>
+		</PermissionsProvider>
+	);
+}
+
+function renderNoteWithLimitedPrivilege(props) {
+	return render(
+		<PermissionsProvider permissions={{updatePermission: false}}>
+			<NotesProvider initialNotes={initialNotes}>
+				<Note note={note(props)} />
+			</NotesProvider>
+		</PermissionsProvider>
 	);
 }
 
@@ -93,43 +107,68 @@ describe('Note', () => {
 		getAllByText('May 01, 2020 12:10 AM');
 	});
 
-	it('displays a three-dot menu icon', () => {
-		const {getByLabelText} = renderNote();
-
-		getByLabelText('action-menu-icon');
-	});
-
-	it('displays the action menu icons on hover', () => {
-		const {container, getByLabelText, queryByLabelText} = renderNote();
-
-		expect(queryByLabelText('edit-note-icon')).toBeNull();
-
-		const note = container.querySelector('.note');
-
-		fireEvent.mouseEnter(note);
-
-		getByLabelText('edit-note-icon');
-
-		fireEvent.mouseLeave(note);
-
-		expect(queryByLabelText('edit-note-icon')).toBeNull();
-	});
-
-	it('displays no action menu icons for an archived note', () => {
-		const {container, queryByLabelText} = renderNote({
-			status: NOTE_STATUS_ARCHIVED
-		});
-
-		const note = container.querySelector('.note');
-
-		fireEvent.mouseEnter(note);
-
-		expect(queryByLabelText('edit-note-icon')).toBeNull();
-	});
-
 	it('displays the "edited" text next to the date of the note that has been modified', () => {
 		const {getByText} = renderNote({edited: true});
 
 		getByText('(edited)');
+	});
+
+	describe('Note for a user with update privilege', () => {
+		it('displays a three-dot menu icon', () => {
+			const {getByLabelText} = renderNote();
+
+			getByLabelText('action-menu-icon');
+		});
+
+		it('displays the action menu icons on hover', () => {
+			const {container, getByLabelText, queryByLabelText} = renderNote();
+
+			expect(queryByLabelText('edit-note-icon')).toBeNull();
+
+			const note = container.querySelector('.note');
+
+			fireEvent.mouseEnter(note);
+
+			getByLabelText('edit-note-icon');
+
+			fireEvent.mouseLeave(note);
+
+			expect(queryByLabelText('edit-note-icon')).toBeNull();
+		});
+
+		it('displays no action menu icons for an archived note', () => {
+			const {container, queryByLabelText} = renderNote({
+				status: NOTE_STATUS_ARCHIVED
+			});
+
+			const note = container.querySelector('.note');
+
+			fireEvent.mouseEnter(note);
+
+			expect(queryByLabelText('edit-note-icon')).toBeNull();
+		});
+	});
+
+	describe('Note for a user without update previlege', () => {
+		it('displays no three-dot menu icon', () => {
+			const {queryByLabelText} = renderNoteWithLimitedPrivilege();
+
+			expect(queryByLabelText('action-menu-icon')).toBeFalsy();
+		});
+
+		it('displays no action menu icons on hover', () => {
+			const {
+				container,
+				queryByLabelText
+			} = renderNoteWithLimitedPrivilege();
+
+			expect(queryByLabelText('edit-note-icon')).toBeNull();
+
+			const note = container.querySelector('.note');
+
+			fireEvent.mouseEnter(note);
+
+			expect(queryByLabelText('edit-note-icon')).toBeNull();
+		});
 	});
 });

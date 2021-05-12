@@ -362,7 +362,6 @@ public class ViewAccountDisplayContext {
 					account.getKey(), 1, 1000),
 				externalLink -> new ExternalLinkDisplay(
 					httpServletRequest, externalLink)));
-		data.put("hasManageAccountsPermission", hasManageAccountsPermission());
 		data.put(
 			"hasUpdateNotesPermission",
 			_hasPermission(ProvisioningActionKeys.UPDATE_NOTES));

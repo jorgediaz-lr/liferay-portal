@@ -14,6 +14,7 @@ import React from 'react';
 
 import NotesTabPane from '../../../src/main/resources/META-INF/resources/js/components/side_panel/NotesTabPane';
 import {NotesProvider} from '../../../src/main/resources/META-INF/resources/js/hooks/notes';
+import {PermissionsProvider} from '../../../src/main/resources/META-INF/resources/js/hooks/permissions';
 import {
 	NOTE_FORMAT_HTML,
 	NOTE_STATUS_APPROVED,
@@ -89,9 +90,11 @@ function renderNotesTabPane({
 	...props
 } = {}) {
 	return render(
-		<NotesProvider initialNotes={notes}>
-			<NotesTabPane addURL="/" tabType={type} {...props} />
-		</NotesProvider>
+		<PermissionsProvider permissions={{updatePermission: true}}>
+			<NotesProvider initialNotes={notes}>
+				<NotesTabPane addURL="/" tabType={type} {...props} />
+			</NotesProvider>
+		</PermissionsProvider>
 	);
 }
 
@@ -126,6 +129,26 @@ describe('NotesTabPane', () => {
 
 			getByText('general');
 			getByText('an unpinned note');
+		});
+
+		it('displays a textarea for adding a new note', () => {
+			const {getByPlaceholderText} = renderNotesTabPane();
+
+			getByPlaceholderText('write-a-note');
+		});
+
+		it('does not display a textarea for adding new note if user does not have update privilege', () => {
+			const {queryByPlaceholderText} = render(
+				<PermissionsProvider permissions={{updatePermission: false}}>
+					<NotesProvider
+						initialNotes={mockNotes({NOTE_TYPE_GENERAL})}
+					>
+						<NotesTabPane addURL="/" tabType={NOTE_TYPE_GENERAL} />
+					</NotesProvider>
+				</PermissionsProvider>
+			);
+
+			expect(queryByPlaceholderText('write-a-note')).toBeFalsy();
 		});
 
 		it('displays a sales note with no pinned or general section', () => {
