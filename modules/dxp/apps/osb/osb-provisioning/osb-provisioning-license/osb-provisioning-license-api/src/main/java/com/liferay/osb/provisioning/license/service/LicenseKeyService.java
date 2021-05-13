@@ -167,7 +167,8 @@ public interface LicenseKeyService extends BaseService {
 			String description, String hostName, String ipAddress,
 			String macAddress, String serverId, String key,
 			Date expirationDateGT, Date expirationDateLT, Boolean active,
-			boolean andSearch, int start, int end, Sort sort)
+			LinkedHashMap<String, Object> params, boolean andSearch, int start,
+			int end, Sort sort)
 		throws Exception;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

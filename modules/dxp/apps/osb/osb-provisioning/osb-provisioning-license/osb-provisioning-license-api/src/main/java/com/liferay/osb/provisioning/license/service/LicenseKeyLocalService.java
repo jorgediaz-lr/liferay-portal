@@ -437,7 +437,8 @@ public interface LicenseKeyLocalService
 			String description, String hostName, String ipAddress,
 			String macAddress, String serverId, String key,
 			Date expirationDateGT, Date expirationDateLT, Boolean active,
-			boolean andSearch, int start, int end, Sort sort)
+			LinkedHashMap<String, Object> params, boolean andSearch, int start,
+			int end, Sort sort)
 		throws Exception;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -478,7 +479,7 @@ public interface LicenseKeyLocalService
 			String description, String hostName, String ipAddress,
 			String macAddress, String serverId, String key,
 			Date expirationDateGT, Date expirationDateLT, Boolean active,
-			boolean andSearch)
+			LinkedHashMap<String, Object> params, boolean andSearch)
 		throws Exception;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

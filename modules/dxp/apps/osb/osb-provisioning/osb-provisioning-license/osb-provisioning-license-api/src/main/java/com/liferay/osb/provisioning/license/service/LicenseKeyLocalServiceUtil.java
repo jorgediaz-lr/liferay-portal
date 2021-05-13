@@ -562,7 +562,8 @@ public class LicenseKeyLocalServiceUtil {
 			String description, String hostName, String ipAddress,
 			String macAddress, String serverId, String key,
 			java.util.Date expirationDateGT, java.util.Date expirationDateLT,
-			Boolean active, boolean andSearch, int start, int end,
+			Boolean active, java.util.LinkedHashMap<String, Object> params,
+			boolean andSearch, int start, int end,
 			com.liferay.portal.kernel.search.Sort sort)
 		throws Exception {
 
@@ -573,7 +574,7 @@ public class LicenseKeyLocalServiceUtil {
 			licenseEntryIds, productKeys, productName, productId,
 			productVersions, owner, description, hostName, ipAddress,
 			macAddress, serverId, key, expirationDateGT, expirationDateLT,
-			active, andSearch, start, end, sort);
+			active, params, andSearch, start, end, sort);
 	}
 
 	public static com.liferay.portal.kernel.search.Hits search(
@@ -632,7 +633,8 @@ public class LicenseKeyLocalServiceUtil {
 			String description, String hostName, String ipAddress,
 			String macAddress, String serverId, String key,
 			java.util.Date expirationDateGT, java.util.Date expirationDateLT,
-			Boolean active, boolean andSearch)
+			Boolean active, java.util.LinkedHashMap<String, Object> params,
+			boolean andSearch)
 		throws Exception {
 
 		return getService().searchCount(
@@ -642,7 +644,7 @@ public class LicenseKeyLocalServiceUtil {
 			licenseEntryIds, productKeys, productName, productId,
 			productVersions, owner, description, hostName, ipAddress,
 			macAddress, serverId, key, expirationDateGT, expirationDateLT,
-			active, andSearch);
+			active, params, andSearch);
 	}
 
 	public static int searchCount(

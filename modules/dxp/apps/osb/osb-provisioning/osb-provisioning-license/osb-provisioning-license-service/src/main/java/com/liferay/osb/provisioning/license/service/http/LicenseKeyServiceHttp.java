@@ -763,7 +763,8 @@ public class LicenseKeyServiceHttp {
 			String description, String hostName, String ipAddress,
 			String macAddress, String serverId, String key,
 			java.util.Date expirationDateGT, java.util.Date expirationDateLT,
-			Boolean active, boolean andSearch, int start, int end,
+			Boolean active, java.util.LinkedHashMap<String, Object> params,
+			boolean andSearch, int start, int end,
 			com.liferay.portal.kernel.search.Sort sort)
 		throws Exception {
 
@@ -778,7 +779,7 @@ public class LicenseKeyServiceHttp {
 				startDateLT, licenseEntryIds, productKeys, productName,
 				productId, productVersions, owner, description, hostName,
 				ipAddress, macAddress, serverId, key, expirationDateGT,
-				expirationDateLT, active, andSearch, start, end, sort);
+				expirationDateLT, active, params, andSearch, start, end, sort);
 
 			Object returnObj = null;
 
@@ -1213,8 +1214,9 @@ public class LicenseKeyServiceHttp {
 		Long[].class, String[].class, String.class, String.class,
 		String[].class, String.class, String.class, String.class, String.class,
 		String.class, String.class, String.class, java.util.Date.class,
-		java.util.Date.class, Boolean.class, boolean.class, int.class,
-		int.class, com.liferay.portal.kernel.search.Sort.class
+		java.util.Date.class, Boolean.class, java.util.LinkedHashMap.class,
+		boolean.class, int.class, int.class,
+		com.liferay.portal.kernel.search.Sort.class
 	};
 	private static final Class<?>[] _searchParameterTypes17 = new Class[] {
 		String.class, java.util.Date.class, java.util.Date.class, String.class,

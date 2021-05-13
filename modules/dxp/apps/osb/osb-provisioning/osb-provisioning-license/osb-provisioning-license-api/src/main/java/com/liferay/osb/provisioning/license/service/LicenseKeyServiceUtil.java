@@ -203,7 +203,8 @@ public class LicenseKeyServiceUtil {
 			String description, String hostName, String ipAddress,
 			String macAddress, String serverId, String key,
 			java.util.Date expirationDateGT, java.util.Date expirationDateLT,
-			Boolean active, boolean andSearch, int start, int end,
+			Boolean active, java.util.LinkedHashMap<String, Object> params,
+			boolean andSearch, int start, int end,
 			com.liferay.portal.kernel.search.Sort sort)
 		throws Exception {
 
@@ -214,7 +215,7 @@ public class LicenseKeyServiceUtil {
 			licenseEntryIds, productKeys, productName, productId,
 			productVersions, owner, description, hostName, ipAddress,
 			macAddress, serverId, key, expirationDateGT, expirationDateLT,
-			active, andSearch, start, end, sort);
+			active, params, andSearch, start, end, sort);
 	}
 
 	public static List<LicenseKey> search(
