@@ -17,13 +17,11 @@ package com.liferay.osb.provisioning.distributed.messaging.internal.subscribing;
 import com.liferay.osb.koroneiki.phloem.rest.client.constants.ExternalLinkDomain;
 import com.liferay.osb.koroneiki.phloem.rest.client.constants.ExternalLinkEntityName;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
-import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
 import com.liferay.osb.provisioning.distributed.messaging.internal.constants.LegacyConstants;
 import com.liferay.osb.provisioning.koroneiki.constants.ContactRoleConstants;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ContactRoleWebService;
-import com.liferay.osb.provisioning.koroneiki.web.service.ContactWebService;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -59,21 +57,11 @@ public class OrganizationAssignmentMessageSubscriber
 			return;
 		}
 
-		JSONObject userJSONObject = jsonObject.getJSONObject("user");
-
-		Contact contact = _contactWebservice.fetchContactByEmailAddress(
-			userJSONObject.getString("emailAddress"));
-
-		if (contact == null) {
-			contact = parseContact(userJSONObject);
-
-			_contactWebservice.addContact(
-				StringPool.BLANK, StringPool.BLANK, contact);
-		}
-
 		List<Account> accounts = _accountWebservice.getAccounts(
 			ExternalLinkDomain.WEB, ExternalLinkEntityName.WEB_ORGANIZATION,
 			organizationId, 1, 1000);
+
+		JSONObject userJSONObject = jsonObject.getJSONObject("user");
 
 		ContactRole contactRole = _contactRoleWebservice.fetchContactRole(
 			ContactRole.Type.ACCOUNT_CUSTOMER.toString(),
@@ -82,7 +70,8 @@ public class OrganizationAssignmentMessageSubscriber
 		for (Account account : accounts) {
 			_accountWebservice.assignContactRoles(
 				StringPool.BLANK, StringPool.BLANK, account.getKey(),
-				contact.getEmailAddress(), new String[] {contactRole.getKey()});
+				userJSONObject.getString("emailAddress"),
+				new String[] {contactRole.getKey()});
 		}
 	}
 
@@ -94,18 +83,6 @@ public class OrganizationAssignmentMessageSubscriber
 		_log.error(message, exception);
 	}
 
-	protected Contact parseContact(JSONObject jsonObject) {
-		Contact contact = new Contact();
-
-		contact.setUuid(jsonObject.getString("uuid"));
-		contact.setFirstName(jsonObject.getString("firstName"));
-		contact.setMiddleName(jsonObject.getString("middleName"));
-		contact.setLastName(jsonObject.getString("lastName"));
-		contact.setEmailAddress(jsonObject.getString("emailAddress"));
-
-		return contact;
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		OrganizationAssignmentMessageSubscriber.class);
 
@@ -114,8 +91,5 @@ public class OrganizationAssignmentMessageSubscriber
 
 	@Reference
 	private ContactRoleWebService _contactRoleWebservice;
-
-	@Reference
-	private ContactWebService _contactWebservice;
 
 }
