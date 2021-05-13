@@ -17,14 +17,14 @@ import ClayIcon, {ClayIconSpriteContext} from '@clayui/icon';
 import ClayLoadingIndicator from '@clayui/loading-indicator';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 import debounce from '../../utilities/debounce';
 import {
-	OPEN_SIDE_PANEL,
 	CLOSE_SIDE_PANEL,
 	IFRAME_LOADED,
+	OPEN_SIDE_PANEL,
 	SIDE_PANEL_CLOSED
 } from '../../utilities/eventsDefinitions';
 import {getIframeHandlerModalId, isPageInIframe} from '../../utilities/iframes';
@@ -84,7 +84,8 @@ export default class SidePanel extends React.Component {
 			);
 			if (container) {
 				container.classList.add('with-side-panel');
-			} else {
+			}
+			else {
 				throw new Error(
 					`Container: "${this.props.containerSelector}" not found!`
 				);
@@ -127,8 +128,9 @@ export default class SidePanel extends React.Component {
 		if (
 			e.keyCode !== 27 ||
 			window.top.document.querySelector('.modal-content')
-		)
+		) {
 			return;
+		}
 
 		if (this.iframeRef.current && this.iframeRef.current.contentWindow) {
 			const nestedIframe = this.iframeRef.current.contentDocument.querySelector(
@@ -158,7 +160,9 @@ export default class SidePanel extends React.Component {
 	}
 
 	updateTop() {
-		if (!this._isMounted) return;
+		if (!this._isMounted) {
+			return;
+		}
 
 		const topAnchor = document.querySelector(this.props.topAnchorSelector);
 
@@ -177,7 +181,8 @@ export default class SidePanel extends React.Component {
 			this.setState({
 				menuCoverTopDistance: top + 'px'
 			});
-		} else if (isPageInIframe()) {
+		}
+		else if (isPageInIframe()) {
 			this.setState({
 				menuCoverTopDistance: SIDE_PANEL_TITLE_HEIGHT + 'px'
 			});
@@ -185,7 +190,9 @@ export default class SidePanel extends React.Component {
 	}
 
 	load(url, refreshPageAfterSubmit) {
-		if (!this._isMounted) return;
+		if (!this._isMounted) {
+			return;
+		}
 
 		this.setState(
 			{
@@ -222,7 +229,9 @@ export default class SidePanel extends React.Component {
 
 	close() {
 		this.toggle(false).then(() => {
-			if (!this._isMounted) return;
+			if (!this._isMounted) {
+				return;
+			}
 
 			this.setState({
 				active: null,
@@ -239,7 +248,8 @@ export default class SidePanel extends React.Component {
 	toggle(visible = !this.state.visible) {
 		if (visible) {
 			window.addEventListener('keyup', this.handleKeyupEvent);
-		} else {
+		}
+		else {
 			window.removeEventListener('keyup', this.handleKeyupEvent);
 			window.focus();
 		}
@@ -247,7 +257,9 @@ export default class SidePanel extends React.Component {
 		return new Promise(resolve => {
 			this.setState({moving: true, visible});
 
-			if (!this.panel.current) return;
+			if (!this.panel.current) {
+				return;
+			}
 
 			this.panel.current.addEventListener(
 				'transitionend',
@@ -320,7 +332,8 @@ export default class SidePanel extends React.Component {
 					);
 				});
 			}
-		} catch (error) {
+		}
+		catch (error) {
 			throw new Error(
 				`Cannot access to iframe body. Url: "${this.state.currentUrl}"`
 			);

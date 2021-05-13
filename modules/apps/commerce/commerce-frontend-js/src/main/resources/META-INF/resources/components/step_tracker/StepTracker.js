@@ -38,7 +38,7 @@ Step.propTypes = {
 function StepTracker(props) {
 	return (
 		<ClayIconSpriteContext.Provider value={props.spritemap}>
-			<div className="step-tracker rounded">
+			<div className="rounded step-tracker">
 				{props.steps.map(step => (
 					<Step key={step.id} {...step} />
 				))}

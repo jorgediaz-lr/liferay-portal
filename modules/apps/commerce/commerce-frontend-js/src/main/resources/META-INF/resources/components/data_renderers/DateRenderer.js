@@ -31,6 +31,7 @@ function DateRenderer(props) {
 	const formattedDate = new Intl.DateTimeFormat(locale, dateOptions).format(
 		new Date(props.value)
 	);
+
 	return formattedDate;
 }
 

@@ -492,7 +492,8 @@ if (deliveryMaxSubscriptionCycles > 0) {
 						'disabled',
 						false
 					);
-				} else {
+				}
+				else {
 					A.one('#<portlet:namespace />maxSubscriptionCycles').attr(
 						'disabled',
 						true
@@ -515,7 +516,8 @@ if (deliveryMaxSubscriptionCycles > 0) {
 					A.one(
 						'#<portlet:namespace />deliveryMaxSubscriptionCycles'
 					).attr('disabled', false);
-				} else {
+				}
+				else {
 					A.one(
 						'#<portlet:namespace />deliveryMaxSubscriptionCycles'
 					).attr('disabled', true);

@@ -1,5 +1,16 @@
-import React, {useContext} from 'react';
-import { shallow, mount } from 'enzyme';
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ */
+
+import {mount, shallow} from 'enzyme';
+import React from 'react';
 
 import DetailsBox, {
 	DetailsListElement
@@ -11,9 +22,30 @@ const mockedContext = {
 			spritemap: '/spritemap.test.svg'
 		},
 		area: {
+			availableProducts: [],
 			highlightedDetail: {
 				number: 1
 			},
+			mappedProducts: [
+				{
+					id: 'PR01',
+					name: 'Product 1',
+					price: '$ 12.99',
+					sku: 'sku01'
+				},
+				{
+					id: 'PR02',
+					name: 'Product 2',
+					price: '$ 12.99',
+					sku: 'sku02'
+				},
+				{
+					id: 'PR03',
+					name: 'Product 3',
+					price: '$ 12.99',
+					sku: 'sku03'
+				}
+			],
 			spots: [
 				{
 					id: 'SP01',
@@ -51,51 +83,29 @@ const mockedContext = {
 					},
 					productId: 'PR03'
 				}
-			],
-			availableProducts: [],
-			mappedProducts: [
-				{
-					id: 'PR01',
-					name: 'Product 1',
-					price: '$ 12.99',
-					sku: 'sku01'
-				},
-				{
-					id: 'PR02',
-					name: 'Product 2',
-					price: '$ 12.99',
-					sku: 'sku02'
-				},
-				{
-					id: 'PR03',
-					name: 'Product 3',
-					price: '$ 12.99',
-					sku: 'sku03'
-				}
 			]
 		}
 	}
 };
 
-
 describe('Details box', () => {
+	jest.spyOn(React, 'useContext').mockImplementation(() => mockedContext);
 
-	jest
-		.spyOn(React, "useContext")
-		.mockImplementation(() => mockedContext);
-
-	it('renders without crashing', () => {		
+	it('renders without crashing', () => {
 		mount(<DetailsBox />);
 	});
 
-	it('Should correctly group the products', () => {
+	it('must correctly group the products', () => {
 		const detailsBox = shallow(<DetailsBox />);
 		expect(detailsBox.find(DetailsListElement).length).toBe(3);
 	});
 
-	it('Should calculate correctly the products to be displayed', () => {
+	it('must calculate correctly the products to be displayed', () => {
 		const detailsBox = shallow(<DetailsBox />);
-		const firstListElementProps = detailsBox.find(DetailsListElement).first().props();
+		const firstListElementProps = detailsBox
+			.find(DetailsListElement)
+			.first()
+			.props();
 		expect(firstListElementProps.number).toBe(1);
 		expect(firstListElementProps.name).toBe('Product 1');
 		expect(firstListElementProps.sku).toBe('sku01');

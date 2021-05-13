@@ -12,6 +12,8 @@
  * details.
  */
 
+import {fetch} from 'frontend-js-web';
+
 import launcher from '../../../src/main/resources/META-INF/resources/components/item_finder/entry';
 import slugify from '../../../src/main/resources/META-INF/resources/utilities/slugify';
 
@@ -81,6 +83,7 @@ function getSelectedItems() {
 			if (!jsonResponse.items && jsonResponse.title) {
 				return showErrorNotification(jsonResponse.title);
 			}
+
 			return jsonResponse.items.map(
 				specification => specification.specificationId
 			);

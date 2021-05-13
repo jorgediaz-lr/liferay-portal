@@ -14,6 +14,7 @@
 
 'use strict';
 
+import {fetch} from 'frontend-js-web';
 import Component from 'metal-component';
 import Soy, {Config} from 'metal-soy';
 
@@ -123,6 +124,7 @@ class AccountSelector extends Component {
 		if (this.currentAccount) {
 			if (selectedAccount.accountId === this.currentAccount.accountId) {
 				this.currentView = 'orders';
+
 				return this.currentView;
 			}
 			this.orders = null;
@@ -151,6 +153,7 @@ class AccountSelector extends Component {
 		});
 
 		this.currentView = 'orders';
+
 		return this._getOrders().then(orders => {
 			this.orders = orders;
 		});
@@ -162,6 +165,7 @@ class AccountSelector extends Component {
 
 	_handleOrderSelected(selectedOrder) {
 		this.currentOrder = selectedOrder;
+
 		return this.toggleAccountSelector();
 	}
 
@@ -186,6 +190,7 @@ class AccountSelector extends Component {
 			.then(response => response.json())
 			.then(response => {
 				this.accounts = response.accounts;
+
 				return this.accounts;
 			});
 	}

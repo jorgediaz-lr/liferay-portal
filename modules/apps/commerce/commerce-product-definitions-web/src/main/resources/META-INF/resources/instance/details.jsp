@@ -267,7 +267,8 @@ if ((cpInstance != null) && (cpInstance.getExpirationDate() != null)) {
 
 				if (Array.isArray(value)) {
 					arrValue = value;
-				} else {
+				}
+				else {
 					arrValue.push(value);
 				}
 

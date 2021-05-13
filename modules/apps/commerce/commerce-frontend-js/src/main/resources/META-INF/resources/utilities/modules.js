@@ -51,12 +51,14 @@ export function getComponentByModuleUrl(url) {
 		if (foundModule) {
 			resolve(foundModule.component);
 		}
+
 		return getJsModule(url)
 			.then(fetchedComponent => {
 				fetchedJsModules.push({
 					component: fetchedComponent,
 					url
 				});
+
 				return resolve(fetchedComponent);
 			})
 			.catch(reject);

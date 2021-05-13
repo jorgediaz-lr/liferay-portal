@@ -78,7 +78,8 @@ class QuantitySelector extends Component {
 
 		if (this.multipleQuantity) {
 			quantity -= this.multipleQuantity;
-		} else {
+		}
+		else {
 			quantity -= 1;
 		}
 
@@ -103,7 +104,8 @@ class QuantitySelector extends Component {
 
 		if (this.multipleQuantity) {
 			quantity += this.multipleQuantity;
-		} else {
+		}
+		else {
 			quantity += 1;
 		}
 

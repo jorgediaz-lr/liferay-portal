@@ -63,57 +63,54 @@ contextParams.put("organizationId", String.valueOf(commerceOrganizationDisplayCo
 		Liferay.provide(
 			window,
 			'<portlet:namespace />openUserInvitationModal',
-			function(evt) {
-				const userInvitationModal = Liferay.component('userInvitationModal');
+			function() {
+				var userInvitationModal = Liferay.component('userInvitationModal');
 				userInvitationModal.open();
 			}
 		);
 
-		Liferay.provide(
-			window,
-			'deleteCommerceOrganizationUser',
-			function(id) {
-				document.querySelector('#<portlet:namespace /><%= Constants.CMD %>').value = '<%= Constants.REMOVE %>';
-				document.querySelector('#<portlet:namespace />userId').value = id;
+		Liferay.provide(window, 'deleteCommerceOrganizationUser', function(id) {
+			document.querySelector('#<portlet:namespace /><%= Constants.CMD %>').value =
+				'<%= Constants.REMOVE %>';
+			document.querySelector('#<portlet:namespace />userId').value = id;
+
+			submitForm(document.<portlet:namespace />inviteUserFm);
+		});
+
+		Liferay.componentReady('userInvitationModal').then(function(
+			userInvitationModal
+		) {
+			userInvitationModal.on('inviteUserToAccount', function(users) {
+				var existingUsersIds = users
+					.filter(function(el) {
+						return el.userId;
+					})
+					.map(function(usr) {
+						return usr.userId;
+					})
+					.join(',');
+
+				var newUsersEmails = users
+					.filter(function(el) {
+						return !el.userId;
+					})
+					.map(function(usr) {
+						return usr.email;
+					})
+					.join(',');
+
+				document.querySelector(
+					'#<portlet:namespace />userIds'
+				).value = existingUsersIds;
+
+				document.querySelector(
+					'#<portlet:namespace />emailAddresses'
+				).value = newUsersEmails;
+
+				userInvitationModal.close();
 
 				submitForm(document.<portlet:namespace />inviteUserFm);
-			}
-		);
-
-		Liferay.componentReady('userInvitationModal').then(
-			function(userInvitationModal) {
-				userInvitationModal.on(
-					'inviteUserToAccount',
-					function(users) {
-						let existingUsersIds = users.filter(
-							function(el) {
-								return el.userId
-							}
-						).map(
-							function(usr) {
-								return usr.userId
-							}
-						).join(',');
-
-						let newUsersEmails = users.filter(
-							function(el) {
-								return !el.userId
-							}
-						).map(
-							function(usr) {
-								return usr.email
-							}
-						).join(',');
-
-						document.querySelector('#<portlet:namespace />userIds').value = existingUsersIds;
-						document.querySelector('#<portlet:namespace />emailAddresses').value = newUsersEmails;
-
-						userInvitationModal.close();
-
-						submitForm(document.<portlet:namespace />inviteUserFm);
-					}
-				);
-			}
-		);
+			});
+		});
 	</aui:script>
 </c:if>

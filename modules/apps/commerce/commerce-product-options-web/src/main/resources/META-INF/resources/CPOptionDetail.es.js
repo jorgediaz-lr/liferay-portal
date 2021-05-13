@@ -12,12 +12,15 @@
  * details.
  */
 
+import {fetch} from 'frontend-js-web';
 import Component from 'metal-component';
 import {globalEval} from 'metal-dom';
 import Soy from 'metal-soy';
 import {Config} from 'metal-state';
 
 import templates from './CPOptionDetail.soy';
+
+/* eslint-disable react/no-string-refs */
 
 /**
  * CPOptionDetail

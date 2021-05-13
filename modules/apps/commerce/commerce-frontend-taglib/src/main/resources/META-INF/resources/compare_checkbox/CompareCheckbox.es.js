@@ -46,11 +46,13 @@ class CompareCheckbox extends Component {
 
 	_enableCompare() {
 		this.compareAvailable = true;
+
 		return this._emitUpdates();
 	}
 
 	_disableCompare() {
 		this.compareAvailable = false;
+
 		return this._emitUpdates();
 	}
 
@@ -58,6 +60,7 @@ class CompareCheckbox extends Component {
 		if (data.id === this.productId) {
 			this.inCompare = false;
 		}
+
 		return this._emitUpdates();
 	}
 
@@ -71,6 +74,7 @@ class CompareCheckbox extends Component {
 	_handleCompareCheckbox(evt) {
 		evt.preventDefault();
 		this.inCompare = !this.inCompare;
+
 		return Liferay.fire('toggleProductToCompare', {
 			id: this.productId,
 			thumbnail: this.pictureUrl || null

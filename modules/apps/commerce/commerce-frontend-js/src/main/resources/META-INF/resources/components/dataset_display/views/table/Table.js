@@ -15,7 +15,7 @@
 import ClayTable from '@clayui/table';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 
 import {getValueFromItem} from '../../../../utilities/index';
 import ActionsDropdownRenderer from '../../../data_renderers/ActionsDropdownRenderer';
@@ -89,6 +89,7 @@ function getItemFields(item, fields, itemId, itemsActions) {
 			? field.mapData(rawValue)
 			: rawValue;
 		const comment = comments ? comments[field.fieldName] : null;
+
 		return (
 			<CustomTableCell
 				actions={itemsActions || actionItems}
@@ -136,11 +137,11 @@ function Table(props) {
 				<TableHeadRow
 					items={props.items}
 					schema={props.schema}
-					selectItems={selectItems}
 					selectable={selectable}
 					selectedItemsKey={selectedItemsKey}
 					selectedItemsValue={selectedItemsValue}
 					selectionType={selectionType}
+					selectItems={selectItems}
 					showActionItems={showActionItems}
 					sorting={sorting}
 					updateSorting={updateSorting}

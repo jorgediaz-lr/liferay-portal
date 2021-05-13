@@ -208,7 +208,6 @@ if ((cpDefinition != null) && (cpDefinition.getExpirationDate() != null)) {
 					var productId = <%= cpDefinition.getCProductId() %>;
 
 					function selectItem(specification) {
-						debugger;
 						return fetch(
 							'/o/headless-commerce-admin-catalog/v1.0/products/' +
 								id +

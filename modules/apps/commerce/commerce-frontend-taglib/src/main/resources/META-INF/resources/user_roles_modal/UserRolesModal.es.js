@@ -61,9 +61,11 @@ class UserRolesModal extends Component {
 	_handleInputBox(evt) {
 		if (evt.keyCode === 8 && !this.query.length) {
 			this.selectedRoles = this.selectedRoles.slice(0, -1);
-		} else {
+		}
+		else {
 			this.query = evt.target.value;
 		}
+
 		return evt;
 	}
 
@@ -89,6 +91,7 @@ class UserRolesModal extends Component {
 			role =>
 				role.name.toLowerCase().indexOf(this.query.toLowerCase()) > -1
 		);
+
 		return this.filteredRoles;
 	}
 
@@ -98,16 +101,19 @@ class UserRolesModal extends Component {
 
 	toggle() {
 		this._modalVisible = !this._modalVisible;
+
 		return this._modalVisible;
 	}
 
 	open() {
 		this._modalVisible = true;
+
 		return this._modalVisible;
 	}
 
 	close() {
 		this._modalVisible = false;
+
 		return this._modalVisible;
 	}
 }

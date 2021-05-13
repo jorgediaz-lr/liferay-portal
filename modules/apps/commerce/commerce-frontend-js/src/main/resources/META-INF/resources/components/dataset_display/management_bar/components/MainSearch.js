@@ -14,7 +14,7 @@
 
 import Icon from '@clayui/icon';
 import classNames from 'classnames';
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 
 import DatasetDisplayContext from '../../DatasetDisplayContext';
 
@@ -30,6 +30,7 @@ function MainSearch() {
 	function handleKeyDown(e) {
 		if (e.keyCode === 13) {
 			e.preventDefault();
+
 			return updateSearchParam(inputValue);
 		}
 	}
@@ -40,7 +41,7 @@ function MainSearch() {
 				<div className="input-group-item">
 					<div className="main-input-wrapper">
 						<input
-							className="main-input-search form-control input-group-inset input-group-inset-after"
+							className="form-control input-group-inset input-group-inset-after main-input-search"
 							onChange={e => updateInputValue(e.target.value)}
 							onKeyDown={handleKeyDown}
 							placeholder={Liferay.Language.get('search')}
@@ -57,6 +58,7 @@ function MainSearch() {
 							onClick={e => {
 								e.preventDefault();
 								updateInputValue('');
+
 								return updateSearchParam('');
 							}}
 							type="button"
@@ -70,6 +72,7 @@ function MainSearch() {
 							className="btn btn-unstyled"
 							onClick={e => {
 								e.preventDefault();
+
 								return updateSearchParam(inputValue);
 							}}
 							type="button"

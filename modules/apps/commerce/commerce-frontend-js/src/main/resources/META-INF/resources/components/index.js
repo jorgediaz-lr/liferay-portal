@@ -32,6 +32,4 @@ export {default as Summary} from './summary/entry';
  */
 
 export {default as MiniCartContext} from './mini_cart/MiniCartContext';
-export {
-	default as DatasetDisplayContext
-} from './dataset_display/DatasetDisplayContext';
+export {default as DatasetDisplayContext} from './dataset_display/DatasetDisplayContext';

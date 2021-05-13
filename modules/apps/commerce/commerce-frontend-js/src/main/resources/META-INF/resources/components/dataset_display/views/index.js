@@ -49,7 +49,9 @@ const views = [
 export function getViewById(requestedContentRendererId) {
 	return new Promise(resolve => {
 		views.forEach(view => {
-			if (view.id === requestedContentRendererId) resolve(view.component);
+			if (view.id === requestedContentRendererId) {
+				resolve(view.component);
+			}
 		});
 		throw new Error(
 			`No content renderer found with the ID: "${requestedContentRendererId}"`

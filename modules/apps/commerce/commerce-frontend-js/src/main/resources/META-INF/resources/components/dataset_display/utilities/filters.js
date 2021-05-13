@@ -13,7 +13,9 @@
  */
 
 export function isValuesArrayChanged(prevValue = [], newValue = []) {
-	if (prevValue.length !== newValue.length) return true;
+	if (prevValue.length !== newValue.length) {
+		return true;
+	}
 
 	const prevValues = prevValue.map(el => el.value || el).sort();
 	const newValues = newValue.map(el => el.value || el).sort();

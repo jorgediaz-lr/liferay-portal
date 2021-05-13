@@ -121,10 +121,19 @@ CommerceApplicationAdminDisplayContext commerceApplicationAdminDisplayContext = 
 
 <aui:script>
 	function <portlet:namespace />deleteCommerceApplicationBrands() {
-		if (confirm('<liferay-ui:message key="are-you-sure-you-want-to-delete-the-selected-brands" />')) {
+		if (
+			confirm(
+				'<liferay-ui:message key="are-you-sure-you-want-to-delete-the-selected-brands" />'
+			)
+		) {
 			var form = AUI.$(document.<portlet:namespace />fm);
 
-			form.fm('deleteCommerceApplicationBrandIds').val(Liferay.Util.listCheckedExcept(form, '<portlet:namespace />allRowIds'));
+			form.fm('deleteCommerceApplicationBrandIds').val(
+				Liferay.Util.listCheckedExcept(
+					form,
+					'<portlet:namespace />allRowIds'
+				)
+			);
 
 			submitForm(form);
 		}
@@ -143,21 +152,20 @@ CommerceApplicationAdminDisplayContext commerceApplicationAdminDisplayContext = 
 			'click',
 			'#<portlet:namespace />addApplicationBrandButton',
 			function(event) {
-				modalCommands.openSimpleInputModal(
-					{
-						dialogTitle: '<liferay-ui:message key="add-brand" />',
-						formSubmitURL: '<%= editCommerceApplicationBrandActionURL %>',
-						mainFieldLabel: '<liferay-ui:message key="name" />',
-						mainFieldName: 'name',
-						mainFieldPlaceholder: '<liferay-ui:message key="name" />',
-						namespace: '<portlet:namespace />',
-						spritemap: '<%= themeDisplay.getPathThemeImages() %>/lexicon/icons.svg'
-					}
-				);
+				modalCommands.openSimpleInputModal({
+					dialogTitle: '<liferay-ui:message key="add-brand" />',
+					formSubmitURL: '<%= editCommerceApplicationBrandActionURL %>',
+					mainFieldLabel: '<liferay-ui:message key="name" />',
+					mainFieldName: 'name',
+					mainFieldPlaceholder: '<liferay-ui:message key="name" />',
+					namespace: '<portlet:namespace />',
+					spritemap:
+						'<%= themeDisplay.getPathThemeImages() %>/lexicon/icons.svg'
+				});
 			}
 		);
 
-		function handleDestroyPortlet () {
+		function handleDestroyPortlet() {
 			handleAddApplicationBrandButtonClick.removeListener();
 
 			Liferay.detach('destroyPortlet', handleDestroyPortlet);

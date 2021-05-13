@@ -13,7 +13,7 @@
  */
 
 import ClayLoadingIndicator from '@clayui/loading-indicator';
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {getComponentByModuleUrl} from '../../../../../utilities/modules';
 import AutocompleteFilter from './AutocompleteFilter';
@@ -42,7 +42,8 @@ export function Filter(props) {
 			}
 
 			return Matched;
-		} else {
+		}
+		else {
 			return null;
 		}
 	});

@@ -31,7 +31,8 @@ function Opener({openCart}) {
 			{itemsQuantity = 0} = summary;
 
 		numberOfItems = itemsQuantity;
-	} else {
+	}
+	else {
 		const {cartItems = []} = cartState;
 
 		numberOfItems = cartItems.length;

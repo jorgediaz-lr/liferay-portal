@@ -22,6 +22,7 @@ import template from './ProductsCompareItem.soy';
 class ProductsCompareItem extends Component {
 	_hideItem() {
 		this.emit('updateProductVisibility', this.id, 'hidden');
+
 		return setTimeout(() => {
 			return this.emit('removeProduct', {
 				id: this.id

@@ -97,9 +97,9 @@ function MiniCart({
 			.catch(showErrorNotification);
 
 	useEffect(() => {
-		resolveCartViews(normalizePartialObject(DEFAULT_VIEWS, cartViews)).then(
-			views => setCartViews(views)
-		);
+		resolveCartViews(
+			normalizePartialObject(DEFAULT_VIEWS, cartViews)
+		).then(views => setCartViews(views));
 	}, [cartViews]);
 
 	useEffect(() => {

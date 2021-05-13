@@ -46,6 +46,7 @@ module.exports = {
 	devtool: 'inline-source-map',
 	entry: [...components, {entry: 'Menu'}].reduce((comp, current) => {
 		comp[current.entry] = getComponentPath(current.entry);
+
 		return comp;
 	}, {}),
 	mode: 'development',

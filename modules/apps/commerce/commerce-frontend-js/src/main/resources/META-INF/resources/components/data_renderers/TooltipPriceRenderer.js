@@ -50,7 +50,9 @@ function TooltipTable(props) {
 }
 
 function TooltipPriceRenderer(props) {
-	if (!props.value) return null;
+	if (!props.value) {
+		return null;
+	}
 
 	return (
 		<>

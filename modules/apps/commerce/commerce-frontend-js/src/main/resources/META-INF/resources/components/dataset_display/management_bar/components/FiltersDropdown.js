@@ -15,7 +15,7 @@
 import {ClayButtonWithIcon} from '@clayui/button';
 import ClayDropDown from '@clayui/drop-down';
 import Icon from '@clayui/icon';
-import React, {useState, useEffect, useMemo} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 
 import getAppContext from './Context';
 import {Filter} from './filters/index';
@@ -62,7 +62,7 @@ function FiltersDropdown() {
 			onActiveChange={setActive}
 			trigger={
 				<button
-					className="filters-dropdown-button btn btn-unstyled dropdown-toggle"
+					className="btn btn-unstyled dropdown-toggle filters-dropdown-button"
 					type="button"
 				>
 					<span className="navbar-text-truncate">

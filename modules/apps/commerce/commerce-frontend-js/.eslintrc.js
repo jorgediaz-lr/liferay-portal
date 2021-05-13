@@ -18,7 +18,6 @@ module.exports = {
 		jest: true,
 		node: true
 	},
-	extends: ['liferay/react'],
 	globals: {
 		AUI: 'readonly',
 		Liferay: 'readonly'

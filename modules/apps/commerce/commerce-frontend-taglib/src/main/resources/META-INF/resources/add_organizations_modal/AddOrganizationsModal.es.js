@@ -14,6 +14,7 @@
 
 'use strict';
 
+import {fetch} from 'frontend-js-web';
 import Component from 'metal-component';
 import {debounce} from 'metal-debounce';
 import Soy, {Config} from 'metal-soy';
@@ -55,6 +56,7 @@ class AddOrganizationModal extends Component {
 
 	syncQuery() {
 		this._loading = true;
+
 		return this._debouncedFetchOrganizations();
 	}
 
@@ -75,9 +77,11 @@ class AddOrganizationModal extends Component {
 				0,
 				-1
 			);
+
 			return false;
 		}
 		this.query = e.target.value;
+
 		return this.query;
 	}
 
@@ -123,6 +127,7 @@ class AddOrganizationModal extends Component {
 				this.organizations = this.addColorToOrganizations(
 					response.organizations
 				);
+
 				return this.organizations;
 			});
 	}
@@ -144,16 +149,19 @@ class AddOrganizationModal extends Component {
 
 	toggle() {
 		this._modalVisible = !this._modalVisible;
+
 		return this._modalVisible;
 	}
 
 	open() {
 		this._modalVisible = true;
+
 		return this._modalVisible;
 	}
 
 	close() {
 		this._modalVisible = false;
+
 		return this._modalVisible;
 	}
 }

@@ -18,6 +18,8 @@ import {Config} from 'metal-state';
 
 import templates from './CategorySelector.soy';
 
+/* eslint-disable react/no-string-refs */
+
 /**
  * CategorySelector is a temporary Component wrapping the existing
  * AUI module liferay-commerce-frontend-asset-categories-selector

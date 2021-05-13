@@ -111,7 +111,8 @@ boolean isViewOnly = !commerceCatalogDisplayContext.hasPermission(commerceCatalo
 										$('#<portlet:namespace />baseCommercePriceListId').val(
 											priceListData.id
 										);
-									} else {
+									}
+									else {
 										$('#<portlet:namespace />baseCommercePriceListId').val(0);
 									}
 								},
@@ -141,7 +142,8 @@ boolean isViewOnly = !commerceCatalogDisplayContext.hasPermission(commerceCatalo
 										$('#<portlet:namespace />basePromotionCommercePriceListId').val(
 											priceListData.id
 										);
-									} else {
+									}
+									else {
 										$('#<portlet:namespace />basePromotionCommercePriceListId').val(0);
 									}
 								},

@@ -15,7 +15,7 @@
 import {ClayButtonWithIcon} from '@clayui/button';
 import ClayDropDown from '@clayui/drop-down';
 import PropTypes from 'prop-types';
-import React, {useState, useContext} from 'react';
+import React, {useContext, useState} from 'react';
 
 import {triggerAction} from '../../../../utilities/actionItems/index';
 import DatasetDisplayContext from '../../DatasetDisplayContext';

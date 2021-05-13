@@ -45,13 +45,17 @@ class UserListItem extends Component {
 	_updateStatus() {
 		if (this.userId) {
 			this._status = 'valid';
-		} else if (this.email.indexOf('@') < 0) {
+		}
+		else if (this.email.indexOf('@') < 0) {
 			this._status = 'user-not-found';
-		} else if (!EMAIL_REGEX.test(this.email)) {
+		}
+		else if (!EMAIL_REGEX.test(this.email)) {
 			this._status = 'email-not-valid';
-		} else {
+		}
+		else {
 			this._status = 'valid';
 		}
+
 		return this._status;
 	}
 

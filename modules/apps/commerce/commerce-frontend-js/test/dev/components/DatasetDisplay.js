@@ -136,12 +136,12 @@ const fluidDataSetDisplayProps = {
 			component: props => {
 				return (
 					<>
-						<h4 className="p-3 mb-0 bg-dark text-center text-white">
+						<h4 className="bg-dark mb-0 p-3 text-center text-white">
 							Hey, I&apos;m a custom template from the outside
 						</h4>
 						{props.items.map(item => (
 							<div
-								className="p-3 text-center bg-white"
+								className="bg-white p-3 text-center"
 								key={item.skuId}
 							>
 								<strong className="mr-3">{item.skuId}</strong>

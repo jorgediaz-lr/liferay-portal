@@ -14,7 +14,7 @@
 
 import ClayLoadingIndicator from '@clayui/loading-indicator';
 import PropTypes from 'prop-types';
-import React, {useCallback, useState, useEffect} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 
 import AJAX from '../../utilities/AJAX/index';
 import {DATASET_DISPLAY_UPDATED} from '../../utilities/eventsDefinitions';
@@ -51,10 +51,10 @@ function SummaryItemBigVariant(props) {
 	return (
 		<>
 			<div className="col-6 col-md-9">
-				<h4 className="summary-table-item-big my-2">{props.label}</h4>
+				<h4 className="my-2 summary-table-item-big">{props.label}</h4>
 			</div>
 			<div className="col-6 col-md-3">
-				<h4 className="summary-table-item-big my-2">{props.value}</h4>
+				<h4 className="my-2 summary-table-item-big">{props.value}</h4>
 			</div>
 		</>
 	);
@@ -138,6 +138,7 @@ function Summary({
 
 			return () => Liferay.detach(DATASET_DISPLAY_UPDATED, refreshData);
 		}
+
 		return () => {};
 	}, [apiUrl, datasetDisplayId, refreshData]);
 

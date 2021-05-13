@@ -28,7 +28,7 @@ function NavBar(props) {
 		<nav className="management-bar management-bar-light navbar navbar-expand-md">
 			<div className="container-fluid container-fluid-max-xl">
 				{state.filters.length ? (
-					<div className="navbar-nav mr-2">
+					<div className="mr-2 navbar-nav">
 						<FiltersDropdown />
 					</div>
 				) : null}

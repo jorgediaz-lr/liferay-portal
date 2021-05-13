@@ -61,9 +61,7 @@ contextParams.put("commerceAccountId", String.valueOf(commerceAccount.getCommerc
 			window,
 			'<portlet:namespace />openAddOrganizationsModal',
 			function(evt) {
-				const addOrganizationsModal = Liferay.component(
-					'addOrganizationsModal'
-				);
+				var addOrganizationsModal = Liferay.component('addOrganizationsModal');
 
 				addOrganizationsModal.open();
 			}
@@ -81,7 +79,7 @@ contextParams.put("commerceAccountId", String.valueOf(commerceAccount.getCommerc
 			addOrganizationsModal
 		) {
 			addOrganizationsModal.on('addOrganization', function(event) {
-				let orgIds = event
+				var orgIds = event
 					.map(function(org) {
 						return org.id;
 					})

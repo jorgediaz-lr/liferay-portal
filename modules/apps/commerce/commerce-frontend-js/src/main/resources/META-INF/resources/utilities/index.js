@@ -12,6 +12,8 @@
  * details.
  */
 
+import {fetch} from 'frontend-js-web';
+
 import createOdataFilter from './odata';
 
 export function getData(apiUrl, query) {
@@ -30,7 +32,8 @@ export function getData(apiUrl, query) {
 export function liferayNavigate(url) {
 	if (Liferay.SPA) {
 		Liferay.SPA.app.navigate(url);
-	} else {
+	}
+	else {
 		window.location.href = url;
 	}
 }
@@ -47,9 +50,11 @@ export function getValueFromItem(item, fieldName) {
 					acc[Liferay.ThemeDisplay.getDefaultLanguageId()]
 				);
 			}
+
 			return acc[key];
 		}, item);
 	}
+
 	return item[fieldName];
 }
 
@@ -119,7 +124,9 @@ export const fetchParams = {
 };
 
 export function createSortingString(values) {
-	if (!values.length) return null;
+	if (!values.length) {
+		return null;
+	}
 
 	return values
 		.map(value => {
@@ -181,6 +188,7 @@ export function loadData(
 
 	formattedUrl = formattedUrl.replace(regex, matched => {
 		providedFilters = matched.replace(/[?|&]filter=/, '');
+
 		return '';
 	});
 
@@ -208,7 +216,8 @@ export function sortByKey(items, keyName) {
 						[item[keyName]]: item
 					}
 				};
-			} else {
+			}
+			else {
 				return {
 					...data,
 					unsortable: data.unsortable.concat(item)

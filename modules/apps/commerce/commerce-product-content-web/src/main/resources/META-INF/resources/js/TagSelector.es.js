@@ -18,6 +18,8 @@ import {Config} from 'metal-state';
 
 import templates from './TagSelector.soy';
 
+/* eslint-disable react/no-string-refs */
+
 /**
  * TagSelector is a temporary Component wrapping the existing
  * AUI module liferay-commerce-frontend-asset-tag-selector

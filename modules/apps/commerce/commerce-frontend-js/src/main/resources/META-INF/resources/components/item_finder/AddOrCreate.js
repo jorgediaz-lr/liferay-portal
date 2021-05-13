@@ -31,6 +31,7 @@ function Item(props) {
 			{props.fields.map((field, i) => {
 				const value = getValueFromItem(props.itemData, field.fieldName);
 				const DataRenderer = getDataRendererById(field.contentRenderer);
+
 				return (
 					<ClayTable.Cell
 						expanded
@@ -94,7 +95,7 @@ class AddOrCreateBase extends Component {
 				}`}
 				onFocus={e => this.handleFocusIn(e)}
 			>
-				<h4 className="card-header align-items-center py-3">
+				<h4 className="align-items-center card-header py-3">
 					{this.props.panelHeaderLabel}
 				</h4>
 				<div className="card-body">
@@ -179,7 +180,7 @@ class AddOrCreateBase extends Component {
 								{this.props.items &&
 									this.props.items.length === 0 &&
 									!this.props.itemCreation && (
-										<ClayList.Header className="px-0 d-flex">
+										<ClayList.Header className="d-flex px-0">
 											{Liferay.Language.get(
 												'no-items-were-found'
 											)}

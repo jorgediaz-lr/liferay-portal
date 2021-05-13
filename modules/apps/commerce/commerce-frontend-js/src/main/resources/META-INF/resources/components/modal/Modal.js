@@ -15,7 +15,7 @@
 import ClayLoadingIndicator from '@clayui/loading-indicator';
 import ClayModal, {useModal} from '@clayui/modal';
 import PropTypes from 'prop-types';
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {
 	CLOSE_MODAL,
@@ -81,11 +81,14 @@ function Modal(props) {
 			redirectURL = '',
 			successNotification = {}
 		}) {
-			if (!visible) return;
+			if (!visible) {
+				return;
+			}
 
 			if (redirectURL) {
 				liferayNavigate(redirectURL);
-			} else {
+			}
+			else {
 				close(successNotification);
 			}
 		}

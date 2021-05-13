@@ -119,7 +119,8 @@ if ((commercePriceList != null) && (commercePriceList.getExpirationDate() != nul
 								$('#<portlet:namespace />parentCommercePriceListId').val(
 									priceListData.id
 								);
-							} else {
+							}
+							else {
 								$('#<portlet:namespace />parentCommercePriceListId').val(0);
 							}
 						}

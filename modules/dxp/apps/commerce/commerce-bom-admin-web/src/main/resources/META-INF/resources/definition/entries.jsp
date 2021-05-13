@@ -33,14 +33,12 @@ NPMResolver npmResolver = NPMResolverProvider.getNPMResolver();
 </div>
 
 <aui:script require='<%= npmResolver.resolveModuleName("commerce-bom-admin-web/js/index.es") + " as CarPartsAdmin" %>'>
-	CarPartsAdmin.default(
-		'carPartsAdmin',
-		'<%= carPartsFinderRootElementId %>',
-		{
-			areaId: '<%= commerceBOMDefinition.getCommerceBOMDefinitionId() %>',
-			areaApiUrl: '<%= PortalUtil.getPortalURL(request) + "/o/commerce-bom/1.0/areas" %>',
-			productApiUrl: '<%= PortalUtil.getPortalURL(request) + "/o/commerce-bom/1.0/products" %>',
-			spritemap: '<%= themeDisplay.getPathThemeImages() + "/lexicon/icons.svg" %>'
-		}
-	);
+	CarPartsAdmin.default('carPartsAdmin', '<%= carPartsFinderRootElementId %>', {
+		areaId: '<%= commerceBOMDefinition.getCommerceBOMDefinitionId() %>',
+		areaApiUrl:
+			'<%= PortalUtil.getPortalURL(request) + "/o/commerce-bom/1.0/areas" %>',
+		productApiUrl:
+			'<%= PortalUtil.getPortalURL(request) + "/o/commerce-bom/1.0/products" %>',
+		spritemap: '<%= themeDisplay.getPathThemeImages() + "/lexicon/icons.svg" %>'
+	});
 </aui:script>

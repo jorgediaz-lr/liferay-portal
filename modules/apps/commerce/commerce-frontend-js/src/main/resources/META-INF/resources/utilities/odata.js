@@ -13,7 +13,9 @@
  */
 
 export default function createOdataFilter(filters) {
-	if (!filters.length) return null;
+	if (!filters.length) {
+		return null;
+	}
 
 	return filters
 		.map(filter => filter.odataFilterString)

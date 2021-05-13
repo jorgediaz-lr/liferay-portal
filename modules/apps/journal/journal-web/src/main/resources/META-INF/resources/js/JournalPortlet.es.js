@@ -344,7 +344,7 @@ class JournalPortlet extends PortletBase {
 
 JournalPortlet.STATE = {
 	_selectedLanguageId: Config.internal().string(),
-	defaultLanguageId: Config.string(),
+	defaultLanguageId: Config.string()
 };
 
 export {JournalPortlet};

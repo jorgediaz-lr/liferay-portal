@@ -109,13 +109,13 @@ portletURL.setParameter("userId", String.valueOf(selectedUser.getUserId()));
 			Liferay.provide(window, '<portlet:namespace />openUserRolesModal', function(
 				evt
 			) {
-				const userRolesModal = Liferay.component('userRolesModal');
+				var userRolesModal = Liferay.component('userRolesModal');
 				userRolesModal.open();
 			});
 
 			Liferay.componentReady('userRolesModal').then(function(userRolesModal) {
 				userRolesModal.on('updateRoles', function(selectedRoles) {
-					let selectedRoleIds = selectedRoles
+					var selectedRoleIds = selectedRoles
 						.map(function(role) {
 							return role.id;
 						})

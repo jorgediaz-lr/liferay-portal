@@ -18,10 +18,11 @@ import ClayDropDown from '@clayui/drop-down';
 import {ClayCheckbox, ClayRadio, ClayToggle} from '@clayui/form';
 import ClayLabel from '@clayui/label';
 import ClayLoadingIndicator from '@clayui/loading-indicator';
+import {fetch} from 'frontend-js-web';
 import PropTypes from 'prop-types';
-import React, {useState, useEffect, useCallback, useRef} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 
-import {getValueFromItem, fetchParams} from '../../../../../utilities/index';
+import {fetchParams, getValueFromItem} from '../../../../../utilities/index';
 import {isValuesArrayChanged} from '../../../utilities/filters';
 
 const DEFAULT_PAGE_SIZE = 10;
@@ -42,6 +43,7 @@ function fetchData(apiUrl, searchParam, currentPage = 1) {
 
 function Item(props) {
 	const Input = props.selectionType === 'single' ? ClayRadio : ClayCheckbox;
+
 	return (
 		<li>
 			<Input
@@ -67,7 +69,10 @@ const formatValue = (value, exclude) =>
 	value.map(el => el.label).join(', ');
 
 function getOdataString(value, key, selectionType, exclude) {
-	if (!value || !value.length) return null;
+	if (!value || !value.length) {
+		return null;
+	}
+
 	return selectionType === 'multiple'
 		? `${key}/any(x:${value
 				.map(
@@ -110,7 +115,9 @@ function AutocompleteFilter(props) {
 	}, [props.value]);
 
 	useEffect(() => {
-		if (query === search) return;
+		if (query === search) {
+			return;
+		}
 		setCurrentPage(1);
 		setSearch(query);
 	}, [query, search]);
@@ -122,7 +129,8 @@ function AutocompleteFilter(props) {
 				setLoading(false);
 				if (currentPage === 1) {
 					updateItems(data.items);
-				} else {
+				}
+				else {
 					updateItems(items => [...items, ...data.items]);
 				}
 				updateTotalItems(data.totalCount);
@@ -159,8 +167,9 @@ function AutocompleteFilter(props) {
 			!scrollingArea.current ||
 			!infiniteLoader.current ||
 			!IntersectionObserver
-		)
+		) {
 			return;
+		}
 
 		const options = {
 			root: scrollingArea.current,
@@ -169,7 +178,9 @@ function AutocompleteFilter(props) {
 		};
 
 		const observer = new IntersectionObserver(entries => {
-			if (entries[0].intersectionRatio <= 0) return;
+			if (entries[0].intersectionRatio <= 0) {
+				return;
+			}
 			setCurrentPage(page => page + 1);
 		}, options);
 
@@ -209,7 +220,7 @@ function AutocompleteFilter(props) {
 					{loading && <ClayAutocomplete.LoadingIndicator />}
 				</ClayAutocomplete>
 				{selectedItems.length ? (
-					<div className="selected-elements-wrapper mt-2">
+					<div className="mt-2 selected-elements-wrapper">
 						{selectedItems.map(selectedItem => (
 							<ClayLabel
 								closeButtonProps={{
@@ -307,7 +318,7 @@ function AutocompleteFilter(props) {
 							)}
 						</ul>
 					) : (
-						<div className="text-muted p-2 mt-2">
+						<div className="mt-2 p-2 text-muted">
 							{Liferay.Language.get('no-items-were-found')}
 						</div>
 					)}

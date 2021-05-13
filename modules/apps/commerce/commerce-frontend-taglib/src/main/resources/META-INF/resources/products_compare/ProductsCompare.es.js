@@ -14,6 +14,7 @@
 
 'use strict';
 
+import {fetch} from 'frontend-js-web';
 import Component from 'metal-component';
 import Soy, {Config} from 'metal-soy';
 
@@ -66,12 +67,14 @@ class ProductsCompare extends Component {
 	_removeProduct(product) {
 		this._updateProductVisibility(product.id, 'hidden');
 		this._toogleRemoteStatus(product.id, false);
+
 		return new Promise(resolve => {
 			return setTimeout(() => {
 				this.products = this.products.filter(
 					el => el.id !== product.id
 				);
 				Liferay.fire('productRemovedFromCompare', product);
+
 				return resolve(this.products);
 			}, 500);
 		});
@@ -126,6 +129,7 @@ class ProductsCompare extends Component {
 
 				return this.products;
 			}, 100);
+
 			return setTimeout(() => {
 				this.products = this.products.map(el => {
 					return el.id === id
@@ -136,6 +140,7 @@ class ProductsCompare extends Component {
 						  }
 						: el;
 				});
+
 				return resolve(this.products);
 			}, 400);
 		});
@@ -144,7 +149,8 @@ class ProductsCompare extends Component {
 	_submitCompare() {
 		if (Liferay.SPA) {
 			Liferay.SPA.app.navigate(this.compareProductsURL);
-		} else {
+		}
+		else {
 			window.location.href = this.compareProductsURL;
 		}
 	}

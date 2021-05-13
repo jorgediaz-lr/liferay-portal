@@ -17,7 +17,7 @@ import ClayLink from '@clayui/link';
 import ClayLoadingIndicator from '@clayui/loading-indicator';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 
 import {OPEN_SIDE_PANEL} from '../../../../utilities/eventsDefinitions';
 import {getOpenedSidePanel} from '../../../../utilities/sidePanels';
@@ -48,6 +48,7 @@ function getRichPayload(payload, key, values = []) {
 			payload.baseUrl.includes('?') ? '&' : '?'
 		}${key}=${values.join(',')}`
 	};
+
 	return richPayload;
 }
 

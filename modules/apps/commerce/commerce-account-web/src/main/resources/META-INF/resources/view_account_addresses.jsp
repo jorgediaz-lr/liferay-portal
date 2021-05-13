@@ -72,13 +72,13 @@ portletURL.setParameter(PortletQName.PUBLIC_RENDER_PARAMETER_NAMESPACE + "backUR
 
 	<aui:script>
 		Liferay.provide(window, '<portlet:namespace />openAddressModal', function(evt) {
-			const addressModal = Liferay.component('addressModal');
+			var addressModal = Liferay.component('addressModal');
 			addressModal.resetForm();
 			addressModal.open();
 		});
 
 		Liferay.provide(window, 'editCommerceAddress', function(id) {
-			const addressModal = Liferay.component('addressModal');
+			var addressModal = Liferay.component('addressModal');
 			addressModal.fetchExistingAddress(id);
 			addressModal.open();
 		});

@@ -71,14 +71,13 @@ long commerceRegionId = BeanParamUtil.getLong(billingAddress, request, "commerce
 			select: '<portlet:namespace />commerceCountryId',
 			selectData: function(callback) {
 				function injectCountryPlaceholder(list) {
-					callback([
-						{
+					callback(
+						list.concat({
 							commerceCountryId: '0',
 							nameCurrentValue:
 								'- <liferay-ui:message key="select-country" />'
-						},
-						...list
-					]);
+						})
+					);
 				}
 
 				Liferay.Service(
@@ -101,13 +100,12 @@ long commerceRegionId = BeanParamUtil.getLong(billingAddress, request, "commerce
 			select: '<portlet:namespace />commerceRegionId',
 			selectData: function(callback, selectKey) {
 				function injectRegionPlaceholder(list) {
-					callback([
-						{
-							commerceRegionId: '0',
-							name: '- <liferay-ui:message key="select-region" />'
-						},
-						...list
-					]);
+					list.unshift({
+						commerceRegionId: '0',
+						name: '- <liferay-ui:message key="select-region" />'
+					});
+
+					callback(list);
 				}
 
 				Liferay.Service(

@@ -22,6 +22,7 @@ import './CPOptionValueDetail.es';
 
 import './CPOptionValueList.es';
 
+import {fetch} from 'frontend-js-web';
 import Component from 'metal-component';
 import Soy from 'metal-soy';
 import {Config} from 'metal-state';
@@ -62,7 +63,8 @@ class CPOptionsEditor extends Component {
 					if (!this._currentOption || this._currentOption == null) {
 						this._currentOption = this._options[0].cpOptionId;
 					}
-				} else if (this._options && this._options.length == 0) {
+				}
+				else if (this._options && this._options.length == 0) {
 					this._newOptionName = '';
 					this._currentOption = '0';
 				}
@@ -80,7 +82,8 @@ class CPOptionsEditor extends Component {
 
 		if (event.success) {
 			this._showNotification(this.successMessage, 'success');
-		} else {
+		}
+		else {
 			this._showNotification(event.message, 'danger');
 		}
 	}
@@ -100,7 +103,8 @@ class CPOptionsEditor extends Component {
 	_handleNameChange(newName) {
 		if (this._currentOption == '0') {
 			this._newOptionName = newName;
-		} else {
+		}
+		else {
 			this._newOptionName = '';
 		}
 	}

@@ -14,6 +14,7 @@
 
 'use strict';
 
+import {fetch} from 'frontend-js-web';
 import Component from 'metal-component';
 import Soy, {Config} from 'metal-soy';
 
@@ -22,7 +23,8 @@ import template from './ProductCard.soy';
 function liferayNavigation(url) {
 	if (Liferay.SPA) {
 		Liferay.SPA.app.navigate(url);
-	} else {
+	}
+	else {
 		window.location.href = url;
 	}
 }
@@ -55,6 +57,7 @@ class ProductCard extends Component {
 			checkboxVisible: this.compareState.checkboxVisible,
 			...newCompareState
 		};
+
 		return this.compareState;
 	}
 
@@ -78,6 +81,7 @@ class ProductCard extends Component {
 			method: 'post'
 		}).then(() => {
 			liferayNavigation(window.location.href);
+
 			return Liferay.SPA;
 		});
 	}
@@ -111,6 +115,7 @@ class ProductCard extends Component {
 			.then(response => response.json())
 			.then(jsonresponse => {
 				this.addedToWishlist = jsonresponse.success;
+
 				return this.addedToWishlist;
 			});
 	}

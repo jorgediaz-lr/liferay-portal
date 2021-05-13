@@ -37,11 +37,13 @@ class OrdersTable extends Component {
 
 	_handleFilterChange(evt) {
 		this.filterString = evt.target.value;
+
 		return this._getOrders();
 	}
 
 	_handleSubmitFilter(evt) {
 		evt.preventDefault();
+
 		return this._getOrders();
 	}
 }

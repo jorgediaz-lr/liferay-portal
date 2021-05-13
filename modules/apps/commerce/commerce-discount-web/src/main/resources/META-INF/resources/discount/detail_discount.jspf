@@ -211,7 +211,8 @@ if (!usePercentage) {
 
 			discountAbsoluteValue = level1Input.val();
 			level1Input.val(discountPercentageValue);
-		} else {
+		}
+		else {
 			A.one('#<portlet:namespace />maximumDiscountAmount').attr(
 				'disabled',
 				true

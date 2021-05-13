@@ -41,7 +41,8 @@ function TableHeadCell(props) {
 					: el
 			);
 			props.updateSorting(updatedSortedElements);
-		} else {
+		}
+		else {
 			props.updateSorting([
 				{
 					direction: 'asc',
@@ -65,7 +66,7 @@ function TableHeadCell(props) {
 		>
 			{props.sortable ? (
 				<a
-					className="inline-item text-truncate-inline text-nowrap"
+					className="inline-item text-nowrap text-truncate-inline"
 					data-senna-off
 					href="#"
 					onClick={handleSortingCellClick}
@@ -109,6 +110,7 @@ function TableHeadRow(props) {
 			(expandable, field) => expandable || Boolean(field.expand),
 			false
 		);
+
 		return fields.map((field, i) => {
 			return (
 				<TableHeadCell

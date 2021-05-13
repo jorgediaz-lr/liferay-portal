@@ -22,7 +22,8 @@ export default function Expose({active, children, onClose}) {
 
 		if (active) {
 			window.addEventListener('keydown', handleEscKey);
-		} else {
+		}
+		else {
 			window.removeEventListener('keydown', handleEscKey);
 		}
 	}, [active, onClose]);

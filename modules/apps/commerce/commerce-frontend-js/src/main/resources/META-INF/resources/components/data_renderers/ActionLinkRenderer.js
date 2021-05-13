@@ -53,7 +53,8 @@ function ActionLinkRenderer(props) {
 					...props.itemData.actions[currentAction.id]
 				};
 			}
-		} else {
+		}
+		else {
 			return props.value ? <DefaultContent value={props.value} /> : null;
 		}
 	}

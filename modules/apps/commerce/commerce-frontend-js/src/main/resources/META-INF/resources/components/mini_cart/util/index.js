@@ -33,7 +33,8 @@ export function parseOptions(stringifiedJSON) {
 
 	try {
 		options = JSON.parse(stringifiedJSON);
-	} catch (ignore) {
+	}
+	catch (ignore) {
 		options = '';
 	}
 

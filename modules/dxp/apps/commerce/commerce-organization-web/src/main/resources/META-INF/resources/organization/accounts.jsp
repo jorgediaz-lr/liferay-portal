@@ -50,15 +50,12 @@ CommerceOrganizationDisplayContext commerceOrganizationDisplayContext = (Commerc
 	</aui:form>
 
 	<aui:script>
-		Liferay.provide(
-		window,
-		'deleteCommerceOrganizationAccount',
-			function(id) {
-				document.querySelector('#<portlet:namespace /><%= Constants.CMD %>').value = '<%= Constants.REMOVE %>';
-				document.querySelector('#<portlet:namespace />organizationId').value = id;
+		Liferay.provide(window, 'deleteCommerceOrganizationAccount', function(id) {
+			document.querySelector('#<portlet:namespace /><%= Constants.CMD %>').value =
+				'<%= Constants.REMOVE %>';
+			document.querySelector('#<portlet:namespace />organizationId').value = id;
 
-				submitForm(document.<portlet:namespace />commerceAccountOrganizationRelFm);
-			}
-		);
+			submitForm(document.<portlet:namespace />commerceAccountOrganizationRelFm);
+		});
 	</aui:script>
 </c:if>

@@ -123,11 +123,20 @@ CommerceBOMFolder commerceBOMFolder = commerceBOMAdminDisplayContext.getCommerce
 <c:if test="<%= commerceBOMAdminDisplayContext.hasCommerceBOMFolderPermissions(commerceBOMAdminDisplayContext.getCommerceBOMFolderId(), ActionKeys.UPDATE) %>">
 	<aui:script>
 		function <portlet:namespace />deleteCommerceBOMFolderApplicationRels() {
-			if (confirm('<liferay-ui:message key="are-you-sure-you-want-to-delete-the-selected-models" />')) {
+			if (
+				confirm(
+					'<liferay-ui:message key="are-you-sure-you-want-to-delete-the-selected-models" />'
+				)
+			) {
 				var form = AUI.$(document.<portlet:namespace />fm);
 
 				form.fm('<%= Constants.CMD %>').val('<%= Constants.DELETE %>');
-				form.fm('deleteCommerceBOMFolderApplicationRelIds').val(Liferay.Util.listCheckedExcept(form, '<portlet:namespace />allRowIds'));
+				form.fm('deleteCommerceBOMFolderApplicationRelIds').val(
+					Liferay.Util.listCheckedExcept(
+						form,
+						'<portlet:namespace />allRowIds'
+					)
+				);
 
 				submitForm(form);
 			}
@@ -140,35 +149,44 @@ CommerceBOMFolder commerceBOMFolder = commerceBOMAdminDisplayContext.getCommerce
 			function(event) {
 				event.preventDefault();
 
-				var itemSelectorDialog = new A.LiferayItemSelectorDialog(
-					{
-						eventName: 'commerceApplicationModelsSelectItem',
-						on: {
-							selectedItemChange: function(event) {
-								var <portlet:namespace />addCommerceApplicationModelIds = [];
+				var itemSelectorDialog = new A.LiferayItemSelectorDialog({
+					eventName: 'commerceApplicationModelsSelectItem',
+					on: {
+						selectedItemChange: function(event) {
+							var <portlet:namespace />addCommerceApplicationModelIds = [];
 
-								var selectedItems = event.newVal;
+							var selectedItems = event.newVal;
 
-								if (selectedItems) {
-									A.Array.each(
-										selectedItems,
-										function(item, index, selectedItems) {
-											<portlet:namespace />addCommerceApplicationModelIds.push(item.commerceApplicationModelId);
-										}
+							if (selectedItems) {
+								A.Array.each(selectedItems, function(
+									item,
+									index,
+									selectedItems
+								) {
+									<portlet:namespace />addCommerceApplicationModelIds.push(
+										item.commerceApplicationModelId
 									);
+								});
 
-									$('#<portlet:namespace />commerceApplicationModelIds').val(<portlet:namespace />addCommerceApplicationModelIds.join(','));
+								$(
+									'#<portlet:namespace />commerceApplicationModelIds'
+								).val(
+									<portlet:namespace />addCommerceApplicationModelIds.join(
+										','
+									)
+								);
 
-									var fm = $('#<portlet:namespace />fm');
+								var fm = $('#<portlet:namespace />fm');
 
-									submitForm(fm);
-								}
+								submitForm(fm);
 							}
-						},
-						title: '<liferay-ui:message arguments="<%= HtmlUtil.escape(commerceBOMFolder.getName()) %>" key="add-new-entry-to-x" />',
-						url: '<%= commerceBOMAdminDisplayContext.getCommerceApplicationModelItemSelectorUrl() %>'
-					}
-				);
+						}
+					},
+					title:
+						'<liferay-ui:message arguments="<%= HtmlUtil.escape(commerceBOMFolder.getName()) %>" key="add-new-entry-to-x" />',
+					url:
+						'<%= commerceBOMAdminDisplayContext.getCommerceApplicationModelItemSelectorUrl() %>'
+				});
 
 				itemSelectorDialog.open();
 			}

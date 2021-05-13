@@ -85,7 +85,8 @@ CPCategoryContentDisplayContext cpCategoryContentDisplayContext = (CPCategoryCon
 						'disabled',
 						false
 					);
-				} else {
+				}
+				else {
 					A.one('#<portlet:namespace />preferencesAssetCategoryId').attr(
 						'disabled',
 						true

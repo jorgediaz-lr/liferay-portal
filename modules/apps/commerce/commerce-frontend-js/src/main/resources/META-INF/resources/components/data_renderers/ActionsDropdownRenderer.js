@@ -136,12 +136,15 @@ function ActionsDropdownRenderer(props) {
 									]
 								}
 							];
-						} else {
+						}
+						else {
 							return [...actions, action];
 						}
 					}
+
 					return actions;
 				}
+
 				return [...actions, action];
 		  }, [])
 		: [];
@@ -184,6 +187,7 @@ function ActionsDropdownRenderer(props) {
 				monospaced={Boolean(action.icon)}
 				onClick={e => {
 					e.preventDefault();
+
 					return handleAction({
 						method: action.method,
 						onClick: action.onClick,

@@ -16,7 +16,7 @@ import ClayButton from '@clayui/button';
 import ClayDropDown from '@clayui/drop-down';
 import {ClayCheckbox, ClayToggle} from '@clayui/form';
 import PropTypes from 'prop-types';
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {isValuesArrayChanged} from '../../../utilities/filters';
 
@@ -40,7 +40,10 @@ export const formatValue = (value, items, exclude) => {
 };
 
 function getOdataString(values, key, exclude = false) {
-	if (!values || !values.length) return null;
+	if (!values || !values.length) {
+		return null;
+	}
+
 	return `${key}/any(x:${values
 		.map(
 			v =>
@@ -113,7 +116,7 @@ function CheckboxesFilter(props) {
 			</ClayDropDown.Caption>
 			<ClayDropDown.Divider />
 			<ClayDropDown.Caption>
-				<div className="inline-scroller mx-n2 px-2 mb-n2">
+				<div className="inline-scroller mb-n2 mx-n2 px-2">
 					{props.items.map((item, i) => {
 						let checked = false;
 

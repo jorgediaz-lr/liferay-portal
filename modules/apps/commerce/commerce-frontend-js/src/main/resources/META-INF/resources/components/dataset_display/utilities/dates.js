@@ -64,5 +64,6 @@ export function convertObjectDateToIsoString(objDate, direction) {
 		objDate.day,
 		...time
 	);
+
 	return date.toISOString();
 }

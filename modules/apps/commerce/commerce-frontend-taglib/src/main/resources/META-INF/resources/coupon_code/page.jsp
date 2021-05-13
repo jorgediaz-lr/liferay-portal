@@ -47,7 +47,7 @@ if (commerceOrder != null) {
 		</div>
 
 		<aui:script>
-			const couponCodeIconRemove = window.document.querySelector(
+			var couponCodeIconRemove = window.document.querySelector(
 				'#<portlet:namespace />couponCodeIconRemove'
 			);
 
@@ -68,7 +68,8 @@ if (commerceOrder != null) {
 						.then(function(payload) {
 							if (payload.success) {
 								window.location.reload();
-							} else {
+							}
+							else {
 								new Liferay.Notification({
 									closeable: true,
 									delay: {
@@ -97,7 +98,7 @@ if (commerceOrder != null) {
 		<aui:button name="applyCouponCodeButton" type="submit" value="apply" />
 
 		<aui:script>
-			const applyCouponCodeButton = window.document.querySelector(
+			var applyCouponCodeButton = window.document.querySelector(
 				'#<portlet:namespace />applyCouponCodeButton'
 			);
 
@@ -123,7 +124,8 @@ if (commerceOrder != null) {
 						.then(function(payload) {
 							if (payload.success) {
 								window.location.reload();
-							} else {
+							}
+							else {
 								new Liferay.Notification({
 									closeable: true,
 									delay: {

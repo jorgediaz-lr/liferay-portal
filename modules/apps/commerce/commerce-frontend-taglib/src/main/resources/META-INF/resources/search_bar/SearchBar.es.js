@@ -18,6 +18,8 @@ import Soy, {Config} from 'metal-soy';
 
 import template from './SearchBar.soy';
 
+/* eslint-disable react/no-string-refs */
+
 class SearchBar extends Component {
 	created() {
 		this._handleDocumentKeypress = this._handleDocumentKeypress.bind(this);
@@ -120,7 +122,8 @@ class SearchBar extends Component {
 				this._removeOpenButtonListener();
 				this.refs.searchInput.focus();
 			}, 0);
-		} else {
+		}
+		else {
 			window.removeEventListener('click', this._handleClickOutside);
 			setTimeout(() => {
 				this._addOpenButtonListener();

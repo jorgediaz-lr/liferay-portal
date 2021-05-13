@@ -12,7 +12,7 @@
  * details.
  */
 
-import {ClayRadio, ClayCheckbox} from '@clayui/form';
+import {ClayCheckbox, ClayRadio} from '@clayui/form';
 import ClayList from '@clayui/list';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';

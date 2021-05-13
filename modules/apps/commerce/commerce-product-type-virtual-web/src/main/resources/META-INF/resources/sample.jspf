@@ -144,7 +144,8 @@
 				isSampleFileSelected
 			);
 			A.one('#<portlet:namespace />selectSampleFile').attr('disabled', false);
-		} else {
+		}
+		else {
 			A.one('#<portlet:namespace />sampleUrl').attr('disabled', true);
 			A.one('#<portlet:namespace />selectSampleFile').attr('disabled', true);
 		}

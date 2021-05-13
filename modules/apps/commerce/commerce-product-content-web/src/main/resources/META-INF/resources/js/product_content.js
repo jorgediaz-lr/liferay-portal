@@ -391,7 +391,8 @@ AUI.add(
 
 						if (Array.isArray(value)) {
 							arrValue = value;
-						} else {
+						}
+						else {
 							arrValue.push(value);
 						}
 
@@ -427,7 +428,8 @@ AUI.add(
 
 					if (!ddmForm) {
 						callback.call(instance, false);
-					} else {
+					}
+					else {
 						ddmForm.validate(callback);
 					}
 				}

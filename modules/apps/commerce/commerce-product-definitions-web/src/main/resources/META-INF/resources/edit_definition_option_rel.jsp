@@ -177,8 +177,6 @@ String defaultLanguageId = cpDefinitionOptionRelDisplayContext.getCatalogDefault
 
 				enableFormFieldTypeSelectOptionValues(availableFieldTypeSelectOptions);
 
-				debugger;
-
 				if (priceTypeSelectValue != '') {
 					enableFormFieldTypeSelectOptionValues(
 						allowedPriceContributorFieldTypeSelectOptions
@@ -231,10 +229,12 @@ String defaultLanguageId = cpDefinitionOptionRelDisplayContext.getCatalogDefault
 					)
 				) {
 					enable(priceTypeSelect);
-				} else {
+				}
+				else {
 					if (priceTypeSelect.value == '') {
 						disable(priceTypeSelect);
-					} else {
+					}
+					else {
 						alert(
 							'<liferay-ui:message key="selected-field-type-price-type-and-sku-contributor-combination-is-not-allowed" />'
 						);
@@ -250,10 +250,12 @@ String defaultLanguageId = cpDefinitionOptionRelDisplayContext.getCatalogDefault
 					)
 				) {
 					enable(skuContributorInput);
-				} else {
+				}
+				else {
 					if (!skuContributorInput.checked) {
 						disable(skuContributorInput);
-					} else {
+					}
+					else {
 						alert(
 							'<liferay-ui:message key="selected-field-type-price-type-and-sku-contributor-combination-is-not-allowed" />'
 						);
@@ -269,7 +271,8 @@ String defaultLanguageId = cpDefinitionOptionRelDisplayContext.getCatalogDefault
 					)
 				) {
 					valuesContainer.classList.remove('d-none');
-				} else {
+				}
+				else {
 					valuesContainer.classList.add('d-none');
 				}
 			}

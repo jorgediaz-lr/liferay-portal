@@ -27,6 +27,7 @@ class RoleListItem extends Component {
 			(itemSelected, item) => itemSelected || item.id === this.id,
 			false
 		);
+
 		return this._selected;
 	}
 

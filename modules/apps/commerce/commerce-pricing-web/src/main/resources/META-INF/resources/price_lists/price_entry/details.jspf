@@ -111,7 +111,8 @@ boolean discountDiscovery = BeanParamUtil.getBoolean(commercePriceEntry, request
 
 			A.one('#<portlet:namespace />discountLevel4').attr('disabled', false);
 			A.one('#<portlet:namespace />discountLevel4').removeClass('disabled');
-		} else {
+		}
+		else {
 			A.one('#<portlet:namespace />discountLevels').hide();
 
 			A.one('#<portlet:namespace />discountLevel1').attr('disabled', true);

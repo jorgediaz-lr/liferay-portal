@@ -26,7 +26,8 @@ class AutocompleteItem extends Component {
 
 		if (results) {
 			this.updateHighlightedText(results.map(el => el.toString()));
-		} else {
+		}
+		else {
 			this.reinitializeTextGroups();
 		}
 

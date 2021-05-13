@@ -61,7 +61,7 @@ PortletURL editDiscountPortletURL = commerceDiscountDisplayContext.getEditCommer
 		</aui:form>
 
 		<aui:script require="commerce-frontend-js/utilities/eventsDefinitions as events, commerce-frontend-js/utilities/forms/index as FormUtils, commerce-frontend-js/ServiceProvider/index as ServiceProvider">
-			const CommerceDiscountResource = ServiceProvider.default.AdminPricingAPI('v2');
+			var CommerceDiscountResource = ServiceProvider.default.AdminPricingAPI('v2');
 
 			Liferay.provide(
 				window,

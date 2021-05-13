@@ -12,11 +12,14 @@
  * details.
  */
 
+import {fetch} from 'frontend-js-web';
 import Component from 'metal-component';
 import debounce from 'metal-debounce';
 import Soy, {Config} from 'metal-soy';
 
 import template from './SearchResults.soy';
+
+/* eslint-disable react/no-string-refs */
 
 class SearchResults extends Component {
 	created() {
@@ -57,7 +60,8 @@ class SearchResults extends Component {
 		if (selected.length && selected[0].url) {
 			if (Liferay.SPA) {
 				Liferay.SPA.app.navigate(selected[0].url);
-			} else {
+			}
+			else {
 				window.location.href = selected[0].url;
 			}
 		}
@@ -66,7 +70,8 @@ class SearchResults extends Component {
 	handleKeyDown(e) {
 		if (e.key === 'ArrowDown') {
 			this.selectNext();
-		} else if (e.key === 'ArrowUp') {
+		}
+		else if (e.key === 'ArrowUp') {
 			this.selectPrevious();
 		}
 	}
@@ -165,7 +170,8 @@ class SearchResults extends Component {
 		if (visible) {
 			if (visible.newVal) {
 				document.addEventListener('keydown', this.handleKeyDown);
-			} else {
+			}
+			else {
 				document.removeEventListener('keydown', this.handleKeyDown);
 			}
 		}

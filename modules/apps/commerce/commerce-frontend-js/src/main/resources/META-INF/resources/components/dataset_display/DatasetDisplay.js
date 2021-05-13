@@ -15,7 +15,7 @@
 import {ClayIconSpriteContext} from '@clayui/icon';
 import {ClayPaginationBarWithBasicItems} from '@clayui/pagination-bar';
 import PropTypes from 'prop-types';
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
 import {listenToBulkActionStatus} from '../../utilities/actionItems/bulkActions';
 import {closest} from '../../utilities/closest';
@@ -27,11 +27,11 @@ import {
 	SIDE_PANEL_CLOSED,
 	UPDATE_DATASET_DISPLAY
 } from '../../utilities/eventsDefinitions';
-import {getRandomId, executeAsyncAction, loadData} from '../../utilities/index';
+import {executeAsyncAction, getRandomId, loadData} from '../../utilities/index';
 import {getJsModule} from '../../utilities/modules';
 import {
-	showNotification,
-	showErrorNotification
+	showErrorNotification,
+	showNotification
 } from '../../utilities/notifications';
 import Modal from '../modal/Modal';
 import SidePanel from '../side_panel/SidePanel';
@@ -141,6 +141,7 @@ function DatasetDisplay(props) {
 		successNotification = {}
 	) {
 		setLoading(true);
+
 		return loadData(
 			apiUrl,
 			currentUrl,
@@ -225,7 +226,8 @@ function DatasetDisplay(props) {
 
 		if (itemAdded) {
 			setSelectedItemsValue(selectedItemsValue.filter(el => el !== val));
-		} else {
+		}
+		else {
 			setSelectedItemsValue(selectedItemsValue.concat(val));
 		}
 	}
@@ -304,10 +306,10 @@ function DatasetDisplay(props) {
 				filters={filters}
 				fluid={props.style === 'fluid'}
 				onFiltersChange={updateFilters}
+				selectable={selectable}
 				selectAllItems={() =>
 					selectItems(items.map(item => item[props.selectedItemsKey]))
 				}
-				selectable={selectable}
 				selectedItemsKey={props.selectedItemsKey}
 				selectedItemsValue={selectedItemsValue}
 				selectionType={props.selectionType}
@@ -405,6 +407,7 @@ function DatasetDisplay(props) {
 					)
 				];
 			}
+
 			return foundData;
 		}, []);
 		setActionLoading(true);
@@ -423,6 +426,7 @@ function DatasetDisplay(props) {
 
 	function executeAsyncItemAction(url, method) {
 		setActionLoading(true);
+
 		return executeAsyncAction(url, method)
 			.then(_ => {
 				setTimeout(() => {

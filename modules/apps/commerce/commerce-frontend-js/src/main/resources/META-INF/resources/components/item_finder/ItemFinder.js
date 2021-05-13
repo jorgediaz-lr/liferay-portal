@@ -13,6 +13,7 @@
  */
 
 import {ClayIconSpriteContext} from '@clayui/icon';
+import {fetch} from 'frontend-js-web';
 import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
 
@@ -36,6 +37,7 @@ function ItemFinder(props) {
 		if (!textFilter) {
 			updateItems(null);
 			updateItemsCount(0);
+
 			return;
 		}
 
@@ -95,7 +97,8 @@ function ItemFinder(props) {
 			.then(() => {
 				if (props.multiSelectableEntries) {
 					showNotification(props.itemSelectedMessage);
-				} else {
+				}
+				else {
 					updateSelectedItems(i => [...i, itemId]);
 				}
 			})

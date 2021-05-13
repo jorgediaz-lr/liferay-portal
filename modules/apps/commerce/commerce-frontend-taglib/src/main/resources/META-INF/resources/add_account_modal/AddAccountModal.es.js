@@ -14,6 +14,7 @@
 
 'use strict';
 
+import {fetch} from 'frontend-js-web';
 import Component from 'metal-component';
 import {debounce} from 'metal-debounce';
 import Soy, {Config} from 'metal-soy';
@@ -50,11 +51,13 @@ class AddAccountModal extends Component {
 	_handleCloseModal(e) {
 		e.preventDefault();
 		this._modalVisible = false;
+
 		return e;
 	}
 
 	syncQuery() {
 		this._loading = true;
+
 		return this._debouncedFetchUser();
 	}
 
@@ -71,20 +74,24 @@ class AddAccountModal extends Component {
 			this.query = '';
 			result = true;
 		}
+
 		return result;
 	}
 
 	_handleInputBox(evt) {
 		if (evt.keyCode === 8 && !this.query.length) {
 			this.addedUsers = this.addedUsers.slice(0, -1);
-		} else {
+		}
+		else {
 			this.query = evt.target.value;
 		}
+
 		return evt;
 	}
 
 	_handleInputName(evt) {
 		this.accountName = evt.target.value;
+
 		return evt;
 	}
 
@@ -127,6 +134,7 @@ class AddAccountModal extends Component {
 			.then(response => {
 				this._loading = false;
 				this.users = response.users;
+
 				return this.users;
 			});
 	}
@@ -146,16 +154,19 @@ class AddAccountModal extends Component {
 
 	toggle() {
 		this._modalVisible = !this._modalVisible;
+
 		return this._modalVisible;
 	}
 
 	open() {
 		this._modalVisible = true;
+
 		return this._modalVisible;
 	}
 
 	close() {
 		this._modalVisible = false;
+
 		return this._modalVisible;
 	}
 }

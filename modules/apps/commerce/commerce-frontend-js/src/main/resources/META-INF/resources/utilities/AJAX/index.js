@@ -12,6 +12,8 @@
  * details.
  */
 
+import {fetch} from 'frontend-js-web';
+
 import {fetchParams} from '../index';
 
 const BASE_OPTIONS = {

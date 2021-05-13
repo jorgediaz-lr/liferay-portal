@@ -65,7 +65,8 @@ String fixIssueButton = "fixIssueButton" + row.getRowId();
 								iconCheckContainer.removeClass('hide');
 								iconSpinnerContainer.addClass('hide');
 								iconTimesContainer.addClass('hide');
-							} else {
+							}
+							else {
 								A.one(
 									'#<portlet:namespace /><%= fixIssueButton %>'
 								).attr('disabled', false);

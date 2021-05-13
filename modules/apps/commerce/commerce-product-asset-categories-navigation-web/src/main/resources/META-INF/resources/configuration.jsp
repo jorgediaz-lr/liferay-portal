@@ -146,7 +146,8 @@ if (assetVocabulary != null) {
 				A.one(
 					'#<portlet:namespace />rootAssetCategoryContainer'
 				).removeClass('hide');
-			} else {
+			}
+			else {
 				A.one('#<portlet:namespace />rootAssetCategoryContainer').addClass(
 					'hide'
 				);
@@ -164,7 +165,8 @@ if (assetVocabulary != null) {
 				A.one(
 					'#<portlet:namespace />rootAssetCategoryIdInputContainer'
 				).addClass('hide');
-			} else {
+			}
+			else {
 				A.one(
 					'#<portlet:namespace />rootAssetCategoryIdInputContainer'
 				).removeClass('hide');

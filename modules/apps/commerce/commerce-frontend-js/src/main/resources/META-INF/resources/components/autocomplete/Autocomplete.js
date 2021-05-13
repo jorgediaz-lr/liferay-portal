@@ -16,11 +16,11 @@ import ClayAutocomplete from '@clayui/autocomplete';
 import ClayDropDown from '@clayui/drop-down';
 import {FocusScope} from '@clayui/shared';
 import PropTypes from 'prop-types';
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
 import {debouncePromise} from '../../utilities/debounce';
 import {AUTOCOMPLETE_VALUE_UPDATED} from '../../utilities/eventsDefinitions';
-import {getValueFromItem, getData} from '../../utilities/index';
+import {getData, getValueFromItem} from '../../utilities/index';
 import {showErrorNotification} from '../../utilities/notifications';
 
 function Autocomplete({onValueUpdated, ...props}) {
@@ -71,7 +71,9 @@ function Autocomplete({onValueUpdated, ...props}) {
 				.then(jsonResponse => {
 					updateItems(jsonResponse.items);
 					setLoading(false);
-					if (!query) return;
+					if (!query) {
+						return;
+					}
 					const found = jsonResponse.items.find(
 						item =>
 							getValueFromItem(item, props.itemsLabel) === query
@@ -151,7 +153,8 @@ function Autocomplete({onValueUpdated, ...props}) {
 					onKeyUp={e => {
 						if (e.keyCode === 27) {
 							setActive(false);
-						} else {
+						}
+						else {
 							setActive(true);
 						}
 					}}

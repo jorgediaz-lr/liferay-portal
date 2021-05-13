@@ -112,7 +112,8 @@ if (Validator.isNotNull(backURL)) {
 
 			if (commerceInventoryWarehouseItemId > 0) {
 				form.fm('<%= Constants.CMD %>').val('<%= Constants.UPDATE %>');
-			} else {
+			}
+			else {
 				form.fm('<%= Constants.CMD %>').val('<%= Constants.ADD %>');
 			}
 

@@ -14,6 +14,7 @@
 
 'use strict';
 
+import {fetch} from 'frontend-js-web';
 import Component from 'metal-component';
 import Soy, {Config} from 'metal-soy';
 
@@ -22,6 +23,8 @@ import template from './AddressModal.soy';
 import 'clay-modal';
 
 import '../input_utils/CommerceInputText';
+
+/* eslint-disable react/no-string-refs */
 
 class AddressModal extends Component {
 	attached() {
@@ -35,6 +38,7 @@ class AddressModal extends Component {
 	_handleFirstDotClick(e) {
 		e.preventDefault();
 		this._stage = 1;
+
 		return this._stage;
 	}
 
@@ -48,12 +52,14 @@ class AddressModal extends Component {
 		if (this._firstFormValid) {
 			this._stage = 2;
 		}
+
 		return e;
 	}
 
 	_handleCloseModal(e) {
 		e.preventDefault();
 		this._modalVisible = false;
+
 		return e;
 	}
 
@@ -74,20 +80,24 @@ class AddressModal extends Component {
 				this._isShippingAllowed = country[0].shippingAllowed;
 
 				this._fetchRegions();
-			} else {
+			}
+			else {
 				this._regions = [];
 			}
-		} else if (e.target.name === 'addressType') {
+		}
+		else if (e.target.name === 'addressType') {
 			this._formData = {
 				...this._formData,
 				addressType: value
 			};
-		} else {
+		}
+		else {
 			this._formData = {
 				...this._formData,
 				region: value
 			};
 		}
+
 		return value;
 	}
 
@@ -96,6 +106,7 @@ class AddressModal extends Component {
 			...this._formData,
 			[evt.target.name]: evt.target.value
 		};
+
 		return evt.target.value;
 	}
 
@@ -158,6 +169,7 @@ class AddressModal extends Component {
 			.then(response => response.json())
 			.then(countries => {
 				this._countries = countries;
+
 				return this._countries;
 			});
 	}
@@ -177,6 +189,7 @@ class AddressModal extends Component {
 			.then(response => response.json())
 			.then(regions => {
 				this._regions = regions;
+
 				return this._regions;
 			});
 	}
@@ -186,6 +199,7 @@ class AddressModal extends Component {
 		if (this._firstFormValid && this._secondFormValid) {
 			this._addAddress(e);
 		}
+
 		return e;
 	}
 
@@ -211,16 +225,19 @@ class AddressModal extends Component {
 
 	toggle() {
 		this._modalVisible = !this._modalVisible;
+
 		return this._modalVisible;
 	}
 
 	open() {
 		this._modalVisible = true;
+
 		return this._modalVisible;
 	}
 
 	close() {
 		this._modalVisible = false;
+
 		return this._modalVisible;
 	}
 }

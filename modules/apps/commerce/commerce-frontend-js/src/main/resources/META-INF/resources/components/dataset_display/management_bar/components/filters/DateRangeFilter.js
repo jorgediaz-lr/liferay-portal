@@ -19,10 +19,10 @@ import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 
 import {
+	convertObjectDateToIsoString,
 	formatDateObject,
 	formatDateRangeObject,
-	getDateFromDateString,
-	convertObjectDateToIsoString
+	getDateFromDateString
 } from '../../../utilities/dates';
 
 function getOdataString(value, key) {
@@ -124,7 +124,8 @@ function DateRangeFilter(props) {
 					onClick={() => {
 						if (actionType === 'delete') {
 							props.actions.updateFilterState(props.id);
-						} else {
+						}
+						else {
 							const newValue = {
 								from: fromValue
 									? getDateFromDateString(fromValue)

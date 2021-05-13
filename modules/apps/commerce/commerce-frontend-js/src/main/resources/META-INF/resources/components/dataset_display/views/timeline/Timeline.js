@@ -29,7 +29,7 @@ function TimelineEntry(props) {
 						<div className="col">
 							<h4 className="mb-0">{props.title}</h4>
 						</div>
-						<div className=" col-auto">{props.description}</div>
+						<div className="col-auto">{props.description}</div>
 					</div>
 					<small>{props.date}</small>
 				</div>

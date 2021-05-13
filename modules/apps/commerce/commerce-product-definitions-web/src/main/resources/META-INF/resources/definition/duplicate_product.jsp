@@ -62,14 +62,16 @@ CPDefinition cpDefinition = cpDefinitionsDisplayContext.getCPDefinition();
 							'x-csrf-token': Liferay.authToken
 						});
 
+						var nameDefinition = {};
+
+						nameDefinition[
+							<portlet:namespace />defaultLanguageId
+						] = document.getElementById('<portlet:namespace />name').value;
+
 						var formattedData = {
 							active: false,
 							catalogId: <portlet:namespace />product.catalogId,
-							name: {
-								[<portlet:namespace />defaultLanguageId]: document.getElementById(
-									'<portlet:namespace />name'
-								).value
-							},
+							name: nameDefinition,
 							productType: <portlet:namespace />product.productType
 						};
 

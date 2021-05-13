@@ -18,8 +18,8 @@ import React from 'react';
 
 function Example(props) {
 	return (
-		<ClayList className="mb-0 p-3 bg-white">
-			<pre className="text-wrap mb-0">{JSON.stringify(props.items)}</pre>
+		<ClayList className="bg-white mb-0 p-3">
+			<pre className="mb-0 text-wrap">{JSON.stringify(props.items)}</pre>
 		</ClayList>
 	);
 }

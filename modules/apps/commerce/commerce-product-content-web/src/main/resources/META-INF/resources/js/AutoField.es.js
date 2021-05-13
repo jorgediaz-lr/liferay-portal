@@ -81,8 +81,6 @@ class AutoField extends Component {
 		const list = this.rules;
 
 		list.splice(itemIndex, 1);
-
-		this.rules = this.rules;
 	}
 
 	/**

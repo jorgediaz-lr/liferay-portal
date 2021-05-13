@@ -12,6 +12,7 @@
  * details.
  */
 
+import {fetch} from 'frontend-js-web';
 import Component from 'metal-component';
 import Soy, {Config} from 'metal-soy';
 
@@ -22,6 +23,8 @@ import '../quantity_selector/QuantitySelector.es';
 let notificationDidShow = false;
 
 const ALL = 'all';
+
+/* eslint-disable react/no-string-refs */
 
 function showNotification(message, type) {
 	if (!notificationDidShow) {
@@ -101,16 +104,19 @@ function doSubmit() {
 				resetInputQuantity.call(this);
 
 				Liferay.fire('commerce:productAddedToCart', jsonresponse);
-			} else if (jsonresponse.errorMessages) {
+			}
+			else if (jsonresponse.errorMessages) {
 				showNotification(jsonresponse.errorMessages[0], 'danger');
-			} else {
+			}
+			else {
 				const validatorErrors = jsonresponse.validatorErrors;
 
 				if (validatorErrors) {
 					validatorErrors.forEach(validatorError => {
 						showNotification(validatorError.message, 'danger');
 					});
-				} else {
+				}
+				else {
 					showNotification(jsonresponse.error, 'danger');
 				}
 			}
@@ -120,7 +126,6 @@ function doSubmit() {
 
 class AddToCartButton extends Component {
 	created() {
-		this.quantity = this.quantity;
 		resetInputQuantity.call(this);
 		this._handleMarkerAnimation = this._handleMarkerAnimation.bind(this);
 	}
@@ -128,7 +133,8 @@ class AddToCartButton extends Component {
 	_animateMarker(prevQuantity) {
 		if (prevQuantity === 0) {
 			this.updatingTransition = 'adding';
-		} else {
+		}
+		else {
 			this.updatingTransition = 'incrementing';
 		}
 
@@ -198,14 +204,17 @@ class AddToCartButton extends Component {
 
 	_handleCurrentProductStatusChange(e) {
 		if (this.id) {
-			if (this.id !== e.addToCartId) return;
+			if (this.id !== e.addToCartId) {
+				return;
+			}
 			if (e.productId) {
 				this.productId = e.productId;
 				this.options = e.options;
 				this.quantity = e.quantity;
 				this.settings = e.settings;
 				this.disabled = false;
-			} else {
+			}
+			else {
 				this.disabled = true;
 			}
 		}

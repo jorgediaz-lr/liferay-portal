@@ -73,6 +73,7 @@ function Dropdown(props) {
 										onClick: e => {
 											e.preventDefault();
 											setActive(false);
+
 											return handleAction({
 												onClick: item.onClick,
 												target: item.target,
@@ -85,6 +86,7 @@ function Dropdown(props) {
 										'data-senna-off': true,
 										href: item.href
 								  };
+
 						return (
 							<ClayDropDown.Item key={i} {...dropdownProps}>
 								{item.icon && (

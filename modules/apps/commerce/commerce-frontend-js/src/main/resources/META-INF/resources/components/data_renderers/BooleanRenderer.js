@@ -18,6 +18,7 @@ function BooleanRenderer(props) {
 	if (typeof props.value !== 'boolean') {
 		return null;
 	}
+
 	return props.value
 		? props.options.trueLabel || Liferay.Language.get('yes')
 		: props.options.falseLabel || Liferay.Language.get('no');

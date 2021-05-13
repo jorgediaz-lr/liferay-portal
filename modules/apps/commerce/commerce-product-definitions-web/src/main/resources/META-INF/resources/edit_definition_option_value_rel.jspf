@@ -120,7 +120,8 @@ long cpDefinitionOptionValueRelId = cpDefinitionOptionValueRelDisplayContext.get
 					if (value) {
 						quantityInput.disabled = false;
 						deleteButton.disabled = false;
-					} else {
+					}
+					else {
 						quantityInput.disabled = true;
 						deleteButton.disabled = true;
 					}
@@ -134,7 +135,8 @@ long cpDefinitionOptionValueRelId = cpDefinitionOptionValueRelDisplayContext.get
 
 				if (Liferay.SPA) {
 					Liferay.SPA.app.navigate(url.toString());
-				} else {
+				}
+				else {
 					window.location.href = url.toString();
 				}
 			});

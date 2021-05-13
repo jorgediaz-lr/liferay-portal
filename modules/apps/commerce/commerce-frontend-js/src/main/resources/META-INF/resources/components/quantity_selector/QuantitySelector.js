@@ -46,7 +46,8 @@ function QuantitySelector(props) {
 			setIsThrottling(true);
 
 			props.onUpdate(currentQuantity).then(() => setIsThrottling(false));
-		} else {
+		}
+		else {
 			props.onUpdate(currentQuantity);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps

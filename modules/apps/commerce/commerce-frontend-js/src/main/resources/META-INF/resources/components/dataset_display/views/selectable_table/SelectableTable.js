@@ -15,7 +15,7 @@
 import {ClayCheckbox} from '@clayui/form';
 import ClayTable from '@clayui/table';
 import PropTypes from 'prop-types';
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 
 import DatasetDisplayContext from '../../DatasetDisplayContext';
 
@@ -36,8 +36,9 @@ function SelectableTable(props) {
 				return {
 					...item,
 					fields: item.fields.map(currentField => {
-						if (itemField !== currentField.name)
+						if (itemField !== currentField.name) {
 							return currentField;
+						}
 
 						return {
 							...currentField,

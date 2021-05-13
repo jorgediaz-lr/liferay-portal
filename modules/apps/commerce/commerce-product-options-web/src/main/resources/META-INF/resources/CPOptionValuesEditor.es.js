@@ -12,6 +12,7 @@
  * details.
  */
 
+import {fetch} from 'frontend-js-web';
 import Component from 'metal-component';
 import Soy from 'metal-soy';
 import {Config} from 'metal-state';
@@ -69,7 +70,8 @@ class CPOptionValuesEditor extends Component {
 					) {
 						this._currentOptionValue = this._optionValues[0].cpOptionValueId;
 					}
-				} else if (
+				}
+				else if (
 					this._optionValues &&
 					this._optionValues.length == 0
 				) {
@@ -94,7 +96,8 @@ class CPOptionValuesEditor extends Component {
 
 		if (event.success) {
 			this._showNotification(this.successMessage, 'success');
-		} else {
+		}
+		else {
 			this._showNotification(event.message, 'danger');
 		}
 	}
@@ -114,7 +117,8 @@ class CPOptionValuesEditor extends Component {
 	_handleNameChange(newName) {
 		if (this._currentOptionValue == '0') {
 			this._newOptionValueName = newName;
-		} else {
+		}
+		else {
 			this._newOptionValueName = '';
 		}
 	}

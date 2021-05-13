@@ -1,269 +1,248 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ */
+
+import {fetch} from 'frontend-js-web';
+
 export const actionDefinition = {
-    HIGHLIGHT_DETAIL: 'highlightDetail',
-    SELECT_DETAIL: 'selectDetail',
-    RESET_PRODUCTS: 'resetProducts',
-    SELECT_SPOT: 'selectSpot',
-    UNSELECT_SPOT: 'unselectSpot',
-    CREATE_SPOT: 'createSpot',
-    RESET_FORM_DATA: 'resetFormData',
-    UPDATE_FORM_VALUE: 'updateFormValue',
-    GET_AREA_FULFILLED: 'getAreaFulfilled',
-    GET_AREA_REJECTED: 'getAreaRejected',
-    GET_AREA_PENDING: 'getAreaPending',
-    GET_PRODUCTS_FULFILLED: 'getProductsFulfilled',
-    GET_PRODUCTS_REJECTED: 'getProductsRejected',
-    GET_PRODUCTS_PENDING: 'getProductsPending',
-    SUBMIT_NEW_SPOT_PENDING: 'submitNewSpotPending',
-    SUBMIT_NEW_SPOT_FULFILLED: 'submitNewSpotFulfilled',
-    SUBMIT_NEW_SPOT_REJECTED: 'submitNewSpotRejected',
-    SUBMIT_SPOT_CHANGES_PENDING: 'submitSpotChangesPending',
-    SUBMIT_SPOT_CHANGES_FULFILLED: 'submitSpotChangesFulfilled',
-    SUBMIT_SPOT_CHANGES_REJECTED: 'submitSpotChangesRejected',
-    DELETE_SPOT_PENDING: 'deleteSpotPending',
-    DELETE_SPOT_FULFILLED: 'deleteSpotFulfilled',
-    DELETE_SPOT_REJECTED: 'deleteSpotRejected',
-}
+	CREATE_SPOT: 'createSpot',
+	DELETE_SPOT_FULFILLED: 'deleteSpotFulfilled',
+	DELETE_SPOT_PENDING: 'deleteSpotPending',
+	DELETE_SPOT_REJECTED: 'deleteSpotRejected',
+	GET_AREA_FULFILLED: 'getAreaFulfilled',
+	GET_AREA_PENDING: 'getAreaPending',
+	GET_AREA_REJECTED: 'getAreaRejected',
+	GET_PRODUCTS_FULFILLED: 'getProductsFulfilled',
+	GET_PRODUCTS_PENDING: 'getProductsPending',
+	GET_PRODUCTS_REJECTED: 'getProductsRejected',
+	HIGHLIGHT_DETAIL: 'highlightDetail',
+	RESET_FORM_DATA: 'resetFormData',
+	RESET_PRODUCTS: 'resetProducts',
+	SELECT_DETAIL: 'selectDetail',
+	SELECT_SPOT: 'selectSpot',
+	SUBMIT_NEW_SPOT_FULFILLED: 'submitNewSpotFulfilled',
+	SUBMIT_NEW_SPOT_PENDING: 'submitNewSpotPending',
+	SUBMIT_NEW_SPOT_REJECTED: 'submitNewSpotRejected',
+	SUBMIT_SPOT_CHANGES_FULFILLED: 'submitSpotChangesFulfilled',
+	SUBMIT_SPOT_CHANGES_PENDING: 'submitSpotChangesPending',
+	SUBMIT_SPOT_CHANGES_REJECTED: 'submitSpotChangesRejected',
+	UNSELECT_SPOT: 'unselectSpot',
+	UPDATE_FORM_VALUE: 'updateFormValue'
+};
 
-const highlightDetail = dispatch => (number, showFirstResume = false) => dispatch(
-    { 
-        type: actionDefinition.HIGHLIGHT_DETAIL, 
-        payload: {
-            number,
-            showFirstResume
-        }
-    }
-)
+const highlightDetail = dispatch => (number, showFirstResume = false) =>
+	dispatch({
+		payload: {
+			number,
+			showFirstResume
+		},
+		type: actionDefinition.HIGHLIGHT_DETAIL
+	});
 
-const select = dispatch => id => dispatch(
-    { 
-        type: actionDefinition.SELECT_DETAIL,
-        payload: id
-    }
-)
+const select = dispatch => id =>
+	dispatch({
+		payload: id,
+		type: actionDefinition.SELECT_DETAIL
+	});
 
 const getArea = dispatch => (endpoint, id) => {
-    dispatch(
-        {
-            type: actionDefinition.GET_AREA_PENDING 
-        }
-    )
-    return fetch(endpoint + '/' + id + `?p_auth=${window.Liferay.authToken}`)
-        .then(
-            response => response.json()
-        )
-        .then(
-            (data) => dispatch({ 
-                type: actionDefinition.GET_AREA_FULFILLED,
-                payload: data 
-            })
-        )
-        .catch(
-            (err) => dispatch({ 
-                type: actionDefinition.GET_AREA_REJECTED,
-                payload: err 
-            })
-        )
-}
+	dispatch({
+		type: actionDefinition.GET_AREA_PENDING
+	});
+
+	return fetch(endpoint + '/' + id + `?p_auth=${window.Liferay.authToken}`)
+		.then(response => response.json())
+		.then(data =>
+			dispatch({
+				payload: data,
+				type: actionDefinition.GET_AREA_FULFILLED
+			})
+		)
+		.catch(err =>
+			dispatch({
+				payload: err,
+				type: actionDefinition.GET_AREA_REJECTED
+			})
+		);
+};
 
 const getProducts = dispatch => (endpoint, query) => {
-    dispatch(
-        {
-            type: actionDefinition.GET_PRODUCTS_PENDING 
-        }
-    )
-    return fetch(endpoint + (query ? `?p_auth=${window.Liferay.authToken}&q=${query}` : '' ))
-        .then(
-            response => response.json()
-        )
-        .then(
-            (data) => dispatch({ 
-                type: actionDefinition.GET_PRODUCTS_FULFILLED,
-                payload: data && data.items
-            })
-        )
-        .catch(
-            (err) => dispatch({ 
-                type: actionDefinition.GET_PRODUCTS_REJECTED,
-                payload: err 
-            })
-        )
-}
+	dispatch({
+		type: actionDefinition.GET_PRODUCTS_PENDING
+	});
 
-const resetProducts = dispatch => () => dispatch(
-    {
-        type: actionDefinition.RESET_PRODUCTS
-    }
-)
+	return fetch(
+		endpoint +
+			(query ? `?p_auth=${window.Liferay.authToken}&q=${query}` : '')
+	)
+		.then(response => response.json())
+		.then(data =>
+			dispatch({
+				payload: data && data.items,
+				type: actionDefinition.GET_PRODUCTS_FULFILLED
+			})
+		)
+		.catch(err =>
+			dispatch({
+				payload: err,
+				type: actionDefinition.GET_PRODUCTS_REJECTED
+			})
+		);
+};
 
-const createSpot = dispatch => position => dispatch(
-    {
-        type: actionDefinition.CREATE_SPOT,
-        payload: position
-    }
-)
+const resetProducts = dispatch => () =>
+	dispatch({
+		type: actionDefinition.RESET_PRODUCTS
+	});
 
-const selectSpot = dispatch => spotId => dispatch(
-    {
-        type: actionDefinition.SELECT_SPOT,
-        payload: spotId
-    }
-)
+const createSpot = dispatch => position =>
+	dispatch({
+		payload: position,
+		type: actionDefinition.CREATE_SPOT
+	});
 
-const unselectSpot = dispatch => () => dispatch(
-    {
-        type: actionDefinition.UNSELECT_SPOT
-    }
-)
+const selectSpot = dispatch => spotId =>
+	dispatch({
+		payload: spotId,
+		type: actionDefinition.SELECT_SPOT
+	});
 
+const unselectSpot = dispatch => () =>
+	dispatch({
+		type: actionDefinition.UNSELECT_SPOT
+	});
 
-const updateFormValue = dispatch => (key, value) => dispatch(
-    {
-        type: actionDefinition.UPDATE_FORM_VALUE,
-        payload: {
-            key,
-            value
-        }
-    }
-)
+const updateFormValue = dispatch => (key, value) =>
+	dispatch({
+		payload: {
+			key,
+			value
+		},
+		type: actionDefinition.UPDATE_FORM_VALUE
+	});
 
-const submitNewSpot = dispatch => (
-    endpoint,
-    areaId,
-    formData
-) => {
-    const {
-        query, 
-        originalData,
-        state,
-        changed,
-        ...data
-    } = formData;
+const submitNewSpot = dispatch => (endpoint, areaId, formData) => {
+	// eslint-disable-next-line no-unused-vars
+	const {changed, originalData, query, state, ...data} = formData;
 
-    dispatch(
-        {
-            type: actionDefinition.SUBMIT_NEW_SPOT_PENDING 
-        }
-    )
+	dispatch({
+		type: actionDefinition.SUBMIT_NEW_SPOT_PENDING
+	});
 
-    return fetch(
-        endpoint + '/' + areaId + `/spot?p_auth=${window.Liferay.authToken}`,
-        {
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: new Headers({
-                'Content-Type': 'application/json'
-            })
-        }
-    )
-        .then(
-            () => {
-                dispatch({ 
-                    type: actionDefinition.SUBMIT_NEW_SPOT_FULFILLED,
-                })
-                return getArea(dispatch)(endpoint, areaId)
-            }
-        )
-        .catch(
-            (err) => dispatch({ 
-                type: actionDefinition.SUBMIT_NEW_SPOT_REJECTED,
-                payload: err 
-            })
-        )
-}
+	return fetch(
+		endpoint + '/' + areaId + `/spot?p_auth=${window.Liferay.authToken}`,
+		{
+			body: JSON.stringify(data),
+			headers: new Headers({
+				'Content-Type': 'application/json'
+			}),
+			method: 'POST'
+		}
+	)
+		.then(() => {
+			dispatch({
+				type: actionDefinition.SUBMIT_NEW_SPOT_FULFILLED
+			});
 
-const deleteSpot = dispatch => (
-        endpoint,
-        areaId,
-        spotId
-    ) => {
+			return getArea(dispatch)(endpoint, areaId);
+		})
+		.catch(err =>
+			dispatch({
+				payload: err,
+				type: actionDefinition.SUBMIT_NEW_SPOT_REJECTED
+			})
+		);
+};
 
-    dispatch(
-        {
-            type: actionDefinition.DELETE_SPOT_PENDING 
-        }
-    )
+const deleteSpot = dispatch => (endpoint, areaId, spotId) => {
+	dispatch({
+		type: actionDefinition.DELETE_SPOT_PENDING
+	});
 
-    return fetch(
-        endpoint + '/' + areaId + '/spot/' + spotId  + `?p_auth=${window.Liferay.authToken}`,
-        {
-            method: 'DELETE'
-        }
-    )
-        .then(
-            () => {
-                dispatch({ 
-                    type: actionDefinition.DELETE_SPOT_FULFILLED
-                })
-                return getArea(dispatch)(endpoint, areaId)
-            }
-        )
-        .catch(
-            (err) => dispatch({ 
-                type: actionDefinition.DELETE_SPOT_REJECTED,
-                payload: err 
-            })
-        )
-}
+	return fetch(
+		endpoint +
+			'/' +
+			areaId +
+			'/spot/' +
+			spotId +
+			`?p_auth=${window.Liferay.authToken}`,
+		{
+			method: 'DELETE'
+		}
+	)
+		.then(() => {
+			dispatch({
+				type: actionDefinition.DELETE_SPOT_FULFILLED
+			});
 
-const submitSpotChanges = dispatch => (
-        endpoint,
-        areaId,
-        formData
-) => {
-    const { 
-        query, 
-        originalData,
-        state,
-        changed,
-        id,
-        ...data
-    } = formData;
-    
-    dispatch(
-        {
-            type: actionDefinition.SUBMIT_SPOT_CHANGES_PENDING 
-        }
-    )
+			return getArea(dispatch)(endpoint, areaId);
+		})
+		.catch(err =>
+			dispatch({
+				payload: err,
+				type: actionDefinition.DELETE_SPOT_REJECTED
+			})
+		);
+};
 
-    return fetch(
-        endpoint + '/' + areaId + '/spot/' + id  + `?p_auth=${window.Liferay.authToken}`,
-        {
-            method: 'PUT',
-            body: JSON.stringify(data),
-            headers: new Headers({
-                'Content-Type': 'application/json'
-            })
-        }
-    )
-        .then(
-            () => {
-                dispatch({ 
-                    type: actionDefinition.SUBMIT_SPOT_CHANGES_FULFILLED
-                })
-                return getArea(dispatch)(endpoint, areaId)
-            }
-        )
-        .catch(
-            (err) => dispatch({ 
-                type: actionDefinition.SUBMIT_SPOT_CHANGES_REJECTED,
-                payload: err 
-            })
-        )
-}
+const submitSpotChanges = dispatch => (endpoint, areaId, formData) => {
+	// eslint-disable-next-line no-unused-vars
+	const {changed, id, originalData, query, state, ...data} = formData;
+
+	dispatch({
+		type: actionDefinition.SUBMIT_SPOT_CHANGES_PENDING
+	});
+
+	return fetch(
+		endpoint +
+			'/' +
+			areaId +
+			'/spot/' +
+			id +
+			`?p_auth=${window.Liferay.authToken}`,
+		{
+			body: JSON.stringify(data),
+			headers: new Headers({
+				'Content-Type': 'application/json'
+			}),
+			method: 'PUT'
+		}
+	)
+		.then(() => {
+			dispatch({
+				type: actionDefinition.SUBMIT_SPOT_CHANGES_FULFILLED
+			});
+
+			return getArea(dispatch)(endpoint, areaId);
+		})
+		.catch(err =>
+			dispatch({
+				payload: err,
+				type: actionDefinition.SUBMIT_SPOT_CHANGES_REJECTED
+			})
+		);
+};
 
 export const actions = {
-    getArea,
-    highlightDetail,
-    select,
-    getProducts,
-    resetProducts,
-    createSpot,
-    selectSpot,
-    unselectSpot,
-    updateFormValue,
-    submitNewSpot,
-    deleteSpot,
-    submitSpotChanges
-}
+	createSpot,
+	deleteSpot,
+	getArea,
+	getProducts,
+	highlightDetail,
+	resetProducts,
+	select,
+	selectSpot,
+	submitNewSpot,
+	submitSpotChanges,
+	unselectSpot,
+	updateFormValue
+};
 
 export default actions;

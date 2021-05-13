@@ -17,9 +17,11 @@
 import Component from 'metal-component';
 import Soy, {Config} from 'metal-soy';
 
-import template from './ProductDetailsModal.soy.js';
+import template from './ProductDetailsModal.soy';
 
 import 'clay-modal';
+
+/* eslint-disable react/no-string-refs */
 
 class ProductDetailsModal extends Component {
 	created() {
@@ -30,6 +32,7 @@ class ProductDetailsModal extends Component {
 
 	_handleCloseModal(evt) {
 		evt.preventDefault();
+
 		return this.refs.modal.show();
 	}
 }

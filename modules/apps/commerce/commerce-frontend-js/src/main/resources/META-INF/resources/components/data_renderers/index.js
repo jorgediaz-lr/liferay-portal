@@ -59,12 +59,14 @@ export function getDataRendererByUrl(url) {
 		if (addedDataRenderer) {
 			resolve(addedDataRenderer.component);
 		}
+
 		return getJsModule(url)
 			.then(fetchedComponent => {
 				fetchedContentRenderers.push({
 					component: fetchedComponent,
 					url
 				});
+
 				return resolve(fetchedComponent);
 			})
 			.catch(reject);

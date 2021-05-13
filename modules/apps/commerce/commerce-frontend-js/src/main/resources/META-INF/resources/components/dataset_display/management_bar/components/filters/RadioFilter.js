@@ -72,7 +72,7 @@ function RadioFilter(props) {
 			</ClayDropDown.Caption>
 			<ClayDropDown.Divider />
 			<ClayDropDown.Caption>
-				<div className="inline-scroller mx-n2 px-2 mb-n2">
+				<div className="inline-scroller mb-n2 mx-n2 px-2">
 					<ClayRadioGroup
 						onSelectedValueChange={setItemValue}
 						selectedValue={isDefined(itemValue) ? itemValue : ''}
