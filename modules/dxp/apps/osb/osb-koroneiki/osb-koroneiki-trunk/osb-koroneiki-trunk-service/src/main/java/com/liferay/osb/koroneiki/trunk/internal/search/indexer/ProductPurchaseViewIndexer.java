@@ -675,6 +675,7 @@ public class ProductPurchaseViewIndexer
 			BooleanClauseOccur.MUST);
 
 		booleanFilter.add(_getActiveFilter(), BooleanClauseOccur.MUST_NOT);
+		booleanFilter.add(_getExpiredFilter(), BooleanClauseOccur.MUST_NOT);
 
 		return booleanFilter;
 	}
