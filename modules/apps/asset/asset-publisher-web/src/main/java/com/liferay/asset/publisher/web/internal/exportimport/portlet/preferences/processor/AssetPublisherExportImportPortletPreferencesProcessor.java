@@ -62,6 +62,7 @@ import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.StagedModel;
@@ -221,7 +222,10 @@ public class AssetPublisherExportImportPortletPreferencesProcessor
 			"selectionStyle", "dynamic");
 
 		if (selectionStyle.equals("dynamic")) {
-			if (!_assetPublisherWebConfiguration.dynamicExportEnabled()) {
+			if (!_assetPublisherWebConfiguration.dynamicExportEnabled() ||
+				Objects.equals(
+					layout.getType(), LayoutConstants.TYPE_ASSET_DISPLAY)) {
+
 				return;
 			}
 
