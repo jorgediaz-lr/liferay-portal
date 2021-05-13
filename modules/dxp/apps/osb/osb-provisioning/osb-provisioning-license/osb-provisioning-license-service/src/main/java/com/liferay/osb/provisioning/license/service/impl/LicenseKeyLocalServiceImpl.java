@@ -538,8 +538,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			String description, String hostName, String ipAddress,
 			String macAddress, String serverId, String key,
 			Date expirationDateGT, Date expirationDateLT, Boolean active,
-			boolean accountKeyMatch, boolean productKeyMatch, boolean andSearch,
-			int start, int end, Sort sort)
+			LinkedHashMap<String, Object> params, boolean andSearch, int start,
+			int end, Sort sort)
 		throws Exception {
 
 		Indexer<LicenseKey> indexer = IndexerRegistryUtil.nullSafeGetIndexer(
@@ -552,8 +552,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			licenseEntryIds, productKeys, productName, productId,
 			productVersions, owner, description, hostName, ipAddress,
 			macAddress, serverId, key, expirationDateGT, expirationDateLT,
-			active, accountKeyMatch, productKeyMatch, andSearch, start, end,
-			sort);
+			active, params, andSearch, start, end, sort);
 
 		return indexer.search(searchContext);
 	}
@@ -680,7 +679,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			String description, String hostName, String ipAddress,
 			String macAddress, String serverId, String key,
 			Date expirationDateGT, Date expirationDateLT, Boolean active,
-			boolean accountKeyMatch, boolean productKeyMatch, boolean andSearch)
+			LinkedHashMap<String, Object> params, boolean andSearch)
 		throws Exception {
 
 		Indexer<LicenseKey> indexer = IndexerRegistryUtil.nullSafeGetIndexer(
@@ -693,8 +692,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			licenseEntryIds, productKeys, productName, productId,
 			productVersions, owner, description, hostName, ipAddress,
 			macAddress, serverId, key, expirationDateGT, expirationDateLT,
-			active, accountKeyMatch, productKeyMatch, andSearch,
-			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+			active, params, andSearch, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+			null);
 
 		return (int)indexer.searchCount(searchContext);
 	}
@@ -817,9 +816,9 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		String productId, String[] productVersions, String owner,
 		String description, String hostName, String ipAddress,
 		String macAddress, String serverId, String key, Date expirationDateGT,
-		Date expirationDateLT, Boolean active, boolean accountKeyMatch,
-		boolean productKeyMatch, boolean andSearch, int start, int end,
-		Sort sort) {
+		Date expirationDateLT, Boolean active,
+		LinkedHashMap<String, Object> params, boolean andSearch, int start,
+		int end, Sort sort) {
 
 		SearchContext searchContext = new SearchContext();
 
@@ -829,7 +828,9 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		List<BooleanClause<Query>> booleanClauses = new ArrayList<>();
 
-		if (accountKeyMatch) {
+		Boolean accountKeyMatch = (Boolean)params.get("accountKeyMatch");
+
+		if ((accountKeyMatch != null) && accountKeyMatch) {
 			TermQuery accountKeyTermQuery = new TermQueryImpl(
 				"accountKey", StringUtil.toLowerCase(accountKey));
 
@@ -841,7 +842,9 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			attributes.put("accountKey", accountKey);
 		}
 
-		if (productKeyMatch) {
+		Boolean productKeyMatch = (Boolean)params.get("productKeyMatch");
+
+		if ((productKeyMatch != null) && productKeyMatch) {
 			BooleanQuery booleanQuery = new BooleanQueryImpl();
 
 			for (String productKey : productKeys) {

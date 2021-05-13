@@ -50,6 +50,7 @@ import com.liferay.portal.vulcan.util.TransformUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -188,7 +189,7 @@ public class LicenseKeySearchDisplayContext {
 				searchTerms.getServerId(), searchTerms.getKey(),
 				searchTerms.getDate(searchTerms.getExpirationDateGT()),
 				searchTerms.getDate(searchTerms.getExpirationDateLT()),
-				searchTerms.getActive(), false, false,
+				searchTerms.getActive(), new LinkedHashMap<>(),
 				searchTerms.isAndOperator(), _licenseKeySearch.getStart(),
 				_licenseKeySearch.getEnd(), sort);
 		}
