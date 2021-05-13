@@ -13,18 +13,38 @@ import {cleanup, fireEvent, render} from '@testing-library/react';
 import React from 'react';
 
 import Instructions from '../../../src/main/resources/META-INF/resources/js/components/support_information/Instructions';
+import {PermissionsProvider} from '../../../src/main/resources/META-INF/resources/js/hooks/permissions';
+import {DASH} from '../../../src/main/resources/META-INF/resources/js/utilities/constants';
 
 function renderInstructions(props) {
 	return render(
-		<Instructions
-			accountAttachmentURL="account/attachment/url"
-			accountKey="123"
-			fileName="OEM instruction file"
-			instructions="Sample support instructions text"
-			updateAccountAttachmentURL="update/account/attachment/URL"
-			updateInstructionsURL="update/instructions/url"
-			{...props}
-		/>
+		<PermissionsProvider permissions={{updatePermission: true}}>
+			<Instructions
+				accountAttachmentURL="account/attachment/url"
+				accountKey="123"
+				fileName="OEM instruction file"
+				instructions="Sample support instructions text"
+				updateAccountAttachmentURL="update/account/attachment/URL"
+				updateInstructionsURL="update/instructions/url"
+				{...props}
+			/>
+		</PermissionsProvider>
+	);
+}
+
+function renderInstructionsWithoutPermission(props) {
+	return render(
+		<PermissionsProvider permissions={{updatePermission: false}}>
+			<Instructions
+				accountAttachmentURL="account/attachment/url"
+				accountKey="123"
+				fileName="OEM instruction file"
+				instructions="Sample support instructions text"
+				updateAccountAttachmentURL="update/account/attachment/URL"
+				updateInstructionsURL="update/instructions/url"
+				{...props}
+			/>
+		</PermissionsProvider>
 	);
 }
 
@@ -50,24 +70,74 @@ describe('Instructions', () => {
 		getByText('Sample support instructions text');
 	});
 
-	it('shows Support Instructions as editable when clicked on', () => {
-		const {getByText} = renderInstructions();
-
-		fireEvent.click(getByText('Sample support instructions text'));
-
-		getByText('save');
-		getByText('cancel');
-	});
-
 	it('shows OEM instructions file when one is provided', () => {
 		const {getByText} = renderInstructions();
 
 		getByText('OEM instruction file');
 	});
 
-	it('shows no OEM instructions file when one is not provided', () => {
-		const {container} = renderInstructions({fileName: ''});
+	it('shows a message when support project does not exist', () => {
+		// This happens when there is no support project on the Customer system connected to the current account
 
-		expect(container.querySelector('a')).toBe(null);
+		const {getByText} = renderInstructions({
+			updateAccountAttachmentURL: '',
+			updateInstructionsURL: ''
+		});
+
+		getByText('support-project-does-not-exist');
+	});
+
+	describe('Instructions with full editing privilege', () => {
+		it('shows Support Instructions as editable when clicked on', () => {
+			const {getByText} = renderInstructions();
+
+			fireEvent.click(getByText('Sample support instructions text'));
+
+			getByText('save');
+			getByText('cancel');
+		});
+
+		it('shows no OEM instructions file when one is not provided', () => {
+			const {container, queryByText} = renderInstructions({fileName: ''});
+
+			expect(container.querySelector('a')).toBe(null);
+			expect(queryByText(DASH)).toBeFalsy();
+		});
+
+		it('shows a file selection for OEM instructions', () => {
+			const {container} = renderInstructions();
+
+			expect(
+				container.querySelector('input[type = "file"]')
+			).toBeTruthy();
+		});
+	});
+
+	describe('Instructions with no editing privilege', () => {
+		it('prevents Support Instructions from being edited', () => {
+			const {
+				getByText,
+				queryByText
+			} = renderInstructionsWithoutPermission();
+
+			fireEvent.click(getByText('Sample support instructions text'));
+
+			expect(queryByText('save')).toBeFalsy();
+			expect(queryByText('cancel')).toBeFalsy();
+		});
+
+		it('shows a dash when no OEM instructions file is provided', () => {
+			const {queryByText} = renderInstructionsWithoutPermission({
+				fileName: ''
+			});
+
+			expect(queryByText(DASH)).toBeTruthy();
+		});
+
+		it('does not show a file selection for OEM instructions', () => {
+			const {container} = renderInstructionsWithoutPermission();
+
+			expect(container.querySelector('input[type = "file"]')).toBeFalsy();
+		});
 	});
 });

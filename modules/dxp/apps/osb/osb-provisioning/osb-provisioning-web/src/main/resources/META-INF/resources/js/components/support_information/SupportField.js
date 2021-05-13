@@ -15,6 +15,7 @@ import React from 'react';
 
 import {
 	FIELD_TYPE_EXTERNAL,
+	FIELD_TYPE_NONEDITABLE,
 	FIELD_TYPE_SELECT,
 	FIELD_TYPE_TEXT,
 	FIELD_TYPE_TEXTAREA,
@@ -23,7 +24,7 @@ import {
 import {request} from '../../utilities/helpers';
 import InlineEdit from '../InlineEdit';
 
-function LiveUpdateableField({
+function SupportField({
 	displayValue,
 	fieldLabel,
 	fieldName = fieldLabel,
@@ -54,22 +55,28 @@ function LiveUpdateableField({
 				)}
 
 				<div className="list-group-text">
-					<InlineEdit
-						displayValue={displayValue}
-						fieldName={fieldName}
-						fieldValue={value}
-						inputStyle={inputStyle}
-						options={options}
-						saveFn={handleSave}
-						type={type}
-					/>
+					{type === FIELD_TYPE_NONEDITABLE && (
+						<>{displayValue ? displayValue : value}</>
+					)}
+
+					{type !== FIELD_TYPE_NONEDITABLE && (
+						<InlineEdit
+							displayValue={displayValue}
+							fieldName={fieldName}
+							fieldValue={value}
+							inputStyle={inputStyle}
+							options={options}
+							saveFn={handleSave}
+							type={type}
+						/>
+					)}
 				</div>
 			</div>
 		</ClayList.Item>
 	);
 }
 
-LiveUpdateableField.propTypes = {
+SupportField.propTypes = {
 	displayValue: PropTypes.string,
 	fieldLabel: PropTypes.string,
 	fieldName: PropTypes.string,
@@ -83,6 +90,7 @@ LiveUpdateableField.propTypes = {
 	),
 	type: PropTypes.oneOf([
 		FIELD_TYPE_EXTERNAL,
+		FIELD_TYPE_NONEDITABLE,
 		FIELD_TYPE_SELECT,
 		FIELD_TYPE_TEXT,
 		FIELD_TYPE_TEXTAREA,
@@ -92,4 +100,4 @@ LiveUpdateableField.propTypes = {
 	value: PropTypes.string.isRequired
 };
 
-export default LiveUpdateableField;
+export default SupportField;

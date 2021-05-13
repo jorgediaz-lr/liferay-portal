@@ -13,10 +13,14 @@ import ClayList from '@clayui/list';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import {FIELD_TYPE_SELECT} from '../../utilities/constants';
+import {usePermissions} from '../../hooks/permissions';
+import {
+	FIELD_TYPE_NONEDITABLE,
+	FIELD_TYPE_SELECT
+} from '../../utilities/constants';
 import {convertDashToEmptyString} from '../../utilities/helpers';
 import DetailField from '../DetailField';
-import LiveUpdateableField from './LiveUpdateableField';
+import SupportField from './SupportField';
 
 function SupportDetails({
 	account,
@@ -26,6 +30,11 @@ function SupportDetails({
 	updateAccountURL,
 	updateLanguageIdURL
 }) {
+	const {updatePermission} = usePermissions();
+	const fieldType = updatePermission
+		? FIELD_TYPE_SELECT
+		: FIELD_TYPE_NONEDITABLE;
+
 	const formData = {
 		code: convertDashToEmptyString(account.code),
 		name: convertDashToEmptyString(account.name),
@@ -58,18 +67,18 @@ function SupportDetails({
 				formAction={updateAccountURL}
 				formData={formData}
 				options={createSelectOptions(regionNames)}
-				type={FIELD_TYPE_SELECT}
+				type={fieldType}
 				value={account.region}
 			/>
 
 			{!!updateLanguageIdURL && (
-				<LiveUpdateableField
+				<SupportField
 					displayValue={language.name}
 					fieldLabel={Liferay.Language.get('support-language')}
 					fieldName="languageId"
 					formAction={updateLanguageIdURL}
 					options={createSelectOptions(languageList)}
-					type={FIELD_TYPE_SELECT}
+					type={fieldType}
 					updateFormData={handleUpdateSupportLanguage}
 					value={language.id}
 				/>

@@ -13,8 +13,13 @@ import ClayList from '@clayui/list';
 import PropTypes from 'prop-types';
 import React, {useRef} from 'react';
 
-import {FIELD_TYPE_TEXTAREA} from '../../utilities/constants';
-import LiveUpdateableField from './LiveUpdateableField';
+import {usePermissions} from '../../hooks/permissions';
+import {
+	DASH,
+	FIELD_TYPE_NONEDITABLE,
+	FIELD_TYPE_TEXTAREA
+} from '../../utilities/constants';
+import SupportField from './SupportField';
 
 function Instructions({
 	accountAttachmentURL,
@@ -24,6 +29,8 @@ function Instructions({
 	updateAccountAttachmentURL,
 	updateInstructionsURL
 }) {
+	const {updatePermission} = usePermissions();
+
 	function handleUpdateSupportInstructions(instructions) {
 		return {
 			instructions
@@ -47,13 +54,17 @@ function Instructions({
 						formAction={updateAccountAttachmentURL}
 					/>
 
-					<LiveUpdateableField
+					<SupportField
 						fieldLabel={Liferay.Language.get(
 							'support-instructions'
 						)}
 						fieldName="instructions"
 						formAction={updateInstructionsURL}
-						type={FIELD_TYPE_TEXTAREA}
+						type={
+							updatePermission
+								? FIELD_TYPE_TEXTAREA
+								: FIELD_TYPE_NONEDITABLE
+						}
 						updateFormData={handleUpdateSupportInstructions}
 						value={instructions}
 					/>
@@ -89,6 +100,7 @@ function FileUpload({
 	formAction
 }) {
 	const formRef = useRef();
+	const {updatePermission} = usePermissions();
 
 	function handleChange() {
 		formRef.current.submit();
@@ -109,32 +121,36 @@ function FileUpload({
 					</a>
 				)}
 
-				<form
-					action={formAction}
-					encType="multipart/form-data"
-					method="post"
-					ref={formRef}
-				>
-					<input
-						name="koroneikiAccountKey"
-						type="hidden"
-						value={accountKey}
-					/>
+				{!fileName && !updatePermission && <>{DASH}</>}
 
-					<label
-						aria-label={fieldName}
-						className="form-control-label"
-						htmlFor={fieldName}
+				{updatePermission && (
+					<form
+						action={formAction}
+						encType="multipart/form-data"
+						method="post"
+						ref={formRef}
 					>
 						<input
-							className="form-control"
-							id={fieldName}
-							name={fieldName}
-							onChange={handleChange}
-							type="file"
+							name="koroneikiAccountKey"
+							type="hidden"
+							value={accountKey}
 						/>
-					</label>
-				</form>
+
+						<label
+							aria-label={fieldName}
+							className="form-control-label"
+							htmlFor={fieldName}
+						>
+							<input
+								className="form-control"
+								id={fieldName}
+								name={fieldName}
+								onChange={handleChange}
+								type="file"
+							/>
+						</label>
+					</form>
+				)}
 			</div>
 		</ClayList.Item>
 	);

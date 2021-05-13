@@ -12,12 +12,15 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import {PermissionsProvider} from './../../hooks/permissions';
 import Instructions from './Instructions';
 import SupportDetails from './SupportDetails';
 
 function SupportInformation({
 	account,
 	accountAttachmentURL,
+	hasManageAccountsPermission,
+	hasUpdateInstructionsPermission,
 	instructions,
 	language,
 	languageList,
@@ -30,23 +33,33 @@ function SupportInformation({
 }) {
 	return (
 		<>
-			<SupportDetails
-				account={account}
-				language={language}
-				languageList={languageList}
-				regionNames={regionNames}
-				updateAccountURL={updateAccountURL}
-				updateLanguageIdURL={updateLanguageIdURL}
-			/>
+			<PermissionsProvider
+				permissions={{updatePermission: hasManageAccountsPermission}}
+			>
+				<SupportDetails
+					account={account}
+					language={language}
+					languageList={languageList}
+					regionNames={regionNames}
+					updateAccountURL={updateAccountURL}
+					updateLanguageIdURL={updateLanguageIdURL}
+				/>
+			</PermissionsProvider>
 
-			<Instructions
-				accountAttachmentURL={accountAttachmentURL}
-				accountKey={account.key}
-				fileName={oemInstructionsFileName}
-				instructions={instructions}
-				updateAccountAttachmentURL={updateAccountAttachmentURL}
-				updateInstructionsURL={updateInstructionsURL}
-			/>
+			<PermissionsProvider
+				permissions={{
+					updatePermission: hasUpdateInstructionsPermission
+				}}
+			>
+				<Instructions
+					accountAttachmentURL={accountAttachmentURL}
+					accountKey={account.key}
+					fileName={oemInstructionsFileName}
+					instructions={instructions}
+					updateAccountAttachmentURL={updateAccountAttachmentURL}
+					updateInstructionsURL={updateInstructionsURL}
+				/>
+			</PermissionsProvider>
 		</>
 	);
 }
@@ -62,6 +75,8 @@ SupportInformation.propTypes = {
 		tier: PropTypes.string
 	}),
 	accountAttachmentURL: PropTypes.string,
+	hasManageAccountsPermission: PropTypes.bool,
+	hasUpdateInstructionsPermission: PropTypes.bool,
 	instructions: PropTypes.string,
 	language: PropTypes.shape({
 		id: PropTypes.string,
