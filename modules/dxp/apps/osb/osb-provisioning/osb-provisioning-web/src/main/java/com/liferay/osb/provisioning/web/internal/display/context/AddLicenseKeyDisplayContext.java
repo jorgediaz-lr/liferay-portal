@@ -273,7 +273,9 @@ public class AddLicenseKeyDisplayContext {
 					productConsumptions.add(productConsumption);
 				}
 
-				if (productPurchaseView.getProductPurchases() != null) {
+				if (ArrayUtil.isNotEmpty(
+						productPurchaseView.getProductPurchases())) {
+
 					Product product = productPurchaseView.getProduct();
 
 					JSONArray productPurchasesJSONArray =
