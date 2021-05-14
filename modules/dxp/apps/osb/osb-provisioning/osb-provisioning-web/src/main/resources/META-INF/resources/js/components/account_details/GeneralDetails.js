@@ -13,10 +13,12 @@ import ClayList from '@clayui/list';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import {usePermissions} from '../../hooks/permissions';
 import {
 	FIELD_TYPE_EXTERNAL,
 	FIELD_TYPE_NONEDITABLE,
 	FIELD_TYPE_SELECT,
+	FIELD_TYPE_TEXT,
 	NAMESPACE
 } from '../../utilities/constants';
 import {convertDashToEmptyString} from '../../utilities/helpers';
@@ -29,7 +31,8 @@ function GeneralDetails({
 	parentAccountName,
 	tiers
 }) {
-	const parentAccountFormData = {parentAccountKey: ''};
+	const {updatePermission} = usePermissions();
+
 	const formData = {
 		code: convertDashToEmptyString(details.code),
 		dataRegion: convertDashToEmptyString(details.dataRegion),
@@ -59,6 +62,9 @@ function GeneralDetails({
 				fieldName="name"
 				formAction={details.editAccountURL}
 				formData={formData}
+				type={
+					updatePermission ? FIELD_TYPE_TEXT : FIELD_TYPE_NONEDITABLE
+				}
 				value={details.name}
 			/>
 
@@ -66,7 +72,6 @@ function GeneralDetails({
 				displayAs="label"
 				fieldLabel={Liferay.Language.get('state')}
 				inputStyle={details.subscriptionStateStyle}
-				type={FIELD_TYPE_NONEDITABLE}
 				value={details.subscriptionState}
 			/>
 
@@ -75,12 +80,14 @@ function GeneralDetails({
 				fieldName="code"
 				formAction={details.editAccountURL}
 				formData={formData}
+				type={
+					updatePermission ? FIELD_TYPE_TEXT : FIELD_TYPE_NONEDITABLE
+				}
 				value={details.code}
 			/>
 
 			<DetailField
 				fieldLabel={Liferay.Language.get('created')}
-				type={FIELD_TYPE_NONEDITABLE}
 				value={details.dateCreated}
 			/>
 
@@ -90,13 +97,16 @@ function GeneralDetails({
 				formAction={details.editAccountURL}
 				formData={formData}
 				options={createSelectOptions(tiers)}
-				type={FIELD_TYPE_SELECT}
+				type={
+					updatePermission
+						? FIELD_TYPE_SELECT
+						: FIELD_TYPE_NONEDITABLE
+				}
 				value={details.tier}
 			/>
 
 			<DetailField
 				fieldLabel={Liferay.Language.get('last-modified')}
-				type={FIELD_TYPE_NONEDITABLE}
 				value={details.dateModified}
 			/>
 
@@ -109,8 +119,12 @@ function GeneralDetails({
 				}}
 				fieldLabel={Liferay.Language.get('parent')}
 				formAction={details.editAccountHierarchyURL}
-				formData={parentAccountFormData}
-				type={FIELD_TYPE_EXTERNAL}
+				formData={{parentAccountKey: ''}}
+				type={
+					updatePermission
+						? FIELD_TYPE_EXTERNAL
+						: FIELD_TYPE_NONEDITABLE
+				}
 				value={parentAccountName}
 			/>
 
@@ -120,7 +134,11 @@ function GeneralDetails({
 				formAction={details.editAccountURL}
 				formData={formData}
 				options={createSelectOptions(dataRegions)}
-				type={FIELD_TYPE_SELECT}
+				type={
+					updatePermission
+						? FIELD_TYPE_SELECT
+						: FIELD_TYPE_NONEDITABLE
+				}
 				value={details.dataRegion}
 			/>
 		</ClayList>

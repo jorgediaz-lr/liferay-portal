@@ -12,6 +12,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import {PermissionsProvider} from './../../hooks/permissions';
 import AccountAddresses from './AccountAddresses';
 import ExternalAccountKeys from './ExternalAccountKeys';
 import GeneralDetails from './GeneralDetails';
@@ -23,32 +24,46 @@ function AccountDetails({
 	assignPartnerTeamURL,
 	dataRegionNames,
 	details,
+	hasManageAccountsPermission,
+	hasUpdateExternalLinksPermission,
 	parentAccountName,
 	tierNames
 }) {
 	return (
 		<>
-			<GeneralDetails
-				assignParentAccountURL={assignParentAccountURL}
-				dataRegions={dataRegionNames}
-				details={details}
-				parentAccountName={parentAccountName}
-				tiers={tierNames}
-			/>
+			<PermissionsProvider
+				permissions={{updatePermission: hasManageAccountsPermission}}
+			>
+				<GeneralDetails
+					assignParentAccountURL={assignParentAccountURL}
+					dataRegions={dataRegionNames}
+					details={details}
+					parentAccountName={parentAccountName}
+					tiers={tierNames}
+				/>
 
-			<PartnerInfo
-				assignFirstLineSupportTeamURL={assignFirstLineSupportTeamURL}
-				assignPartnerTeamURL={assignPartnerTeamURL}
-				details={details}
-			/>
+				<PartnerInfo
+					assignFirstLineSupportTeamURL={
+						assignFirstLineSupportTeamURL
+					}
+					assignPartnerTeamURL={assignPartnerTeamURL}
+					details={details}
+				/>
 
-			<AccountAddresses
-				accountKey={details.key}
-				addresses={details.postalAddressDisplays}
-				addURL={details.addPostalAddressURL}
-			/>
+				<AccountAddresses
+					accountKey={details.key}
+					addresses={details.postalAddressDisplays}
+					addURL={details.addPostalAddressURL}
+				/>
+			</PermissionsProvider>
 
-			<ExternalAccountKeys details={details} />
+			<PermissionsProvider
+				permissions={{
+					updatePermission: hasUpdateExternalLinksPermission
+				}}
+			>
+				<ExternalAccountKeys details={details} />
+			</PermissionsProvider>
 		</>
 	);
 }
@@ -96,6 +111,8 @@ AccountDetails.propTypes = {
 		updateDossieraProjectURL: PropTypes.string,
 		updateSalesforceProjectURL: PropTypes.string
 	}),
+	hasManageAccountsPermission: PropTypes.bool,
+	hasUpdateExternalLinksPermission: PropTypes.bool,
 	parentAccountName: PropTypes.string,
 	tierNames: PropTypes.arrayOf(PropTypes.string)
 };

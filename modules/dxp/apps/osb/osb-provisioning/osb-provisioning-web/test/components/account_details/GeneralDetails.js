@@ -9,33 +9,35 @@
  * distribution rights of the Software.
  */
 
-import {cleanup, render} from '@testing-library/react';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 import React from 'react';
 
 import GeneralDetails from '../../../src/main/resources/META-INF/resources/js/components/account_details/GeneralDetails';
+import {PermissionsProvider} from '../../../src/main/resources/META-INF/resources/js/hooks/permissions';
 
-function renderGeneralDetails(props) {
+function renderGeneralDetails(permission = true) {
 	return render(
-		<GeneralDetails
-			dataRegions={['Brazil', 'Hungary', 'Japan', 'United States']}
-			details={{
-				code: '123',
-				dataRegion: 'Brazil',
-				dateCreated: new Date().toLocaleString('en-US'),
-				dateModified: new Date().toLocaleString('en-US'),
-				firstLineSupportTeamName: 'Test Support Team',
-				key: '123',
-				name: 'Test Account',
-				parterTeamName: 'Test Partner Team',
-				region: 'US',
-				subscriptionState: 'Active',
-				subscriptionStateStyle: 'label-success',
-				tier: 'Regular'
-			}}
-			parentAccountName="Parent Account Name"
-			tiers={['1', '2', '3']}
-			{...props}
-		/>
+		<PermissionsProvider permissions={{updatePermission: permission}}>
+			<GeneralDetails
+				dataRegions={['Brazil', 'Hungary', 'Japan', 'United States']}
+				details={{
+					code: '123',
+					dataRegion: 'Brazil',
+					dateCreated: new Date().toLocaleString('en-US'),
+					dateModified: new Date().toLocaleString('en-US'),
+					firstLineSupportTeamName: 'Test Support Team',
+					key: '123',
+					name: 'Test Account',
+					parterTeamName: 'Test Partner Team',
+					region: 'US',
+					subscriptionState: 'Active',
+					subscriptionStateStyle: 'label-success',
+					tier: 'Regular'
+				}}
+				parentAccountName="Parent Account Name"
+				tiers={['1', '2', '3']}
+			/>
+		</PermissionsProvider>
 	);
 }
 
@@ -55,6 +57,13 @@ describe('GeneralDetails', () => {
 		getByText('Test Account');
 	});
 
+	it('shows State field', () => {
+		const {getByText} = renderGeneralDetails();
+
+		getByText('state');
+		getByText('Active');
+	});
+
 	it('shows Code field', () => {
 		const {getByText} = renderGeneralDetails();
 
@@ -72,6 +81,81 @@ describe('GeneralDetails', () => {
 	it('shows Parent Account field', () => {
 		const {getByText} = renderGeneralDetails();
 
+		getByText('parent');
 		getByText('Parent Account Name');
+	});
+
+	it('shows Data Region field', () => {
+		const {getByText} = renderGeneralDetails();
+
+		getByText('data-region');
+		getByText('Brazil');
+	});
+
+	describe('General Details with full editing privilege', () => {
+		it('allows the Account Name field to be edited', () => {
+			const {getByText} = renderGeneralDetails();
+
+			fireEvent.click(getByText('Test Account'));
+
+			getByText('save');
+			getByText('cancel');
+		});
+
+		it('does not allow the State field to be edited', () => {
+			const {getByText, queryByText} = renderGeneralDetails();
+
+			fireEvent.click(getByText('Active'));
+
+			expect(queryByText('save')).toBeFalsy();
+			expect(queryByText('cancel')).toBeFalsy();
+		});
+
+		it('allows the Data Region field to be edited', () => {
+			const {getByText} = renderGeneralDetails();
+
+			fireEvent.click(getByText('Brazil'));
+
+			getByText('Brazil');
+			getByText('Hungary');
+			getByText('Japan');
+			getByText('United States');
+
+			getByText('save');
+			getByText('cancel');
+		});
+	});
+
+	describe('General Details with limited editing privilege', () => {
+		it('does not allow the Account Name field to be edited', () => {
+			const {getByText, queryByText} = renderGeneralDetails(false);
+
+			fireEvent.click(getByText('Test Account'));
+
+			expect(queryByText('save')).toBeFalsy();
+			expect(queryByText('cancel')).toBeFalsy();
+		});
+
+		it('does not allow the State field to be edited', () => {
+			const {getByText, queryByText} = renderGeneralDetails(false);
+
+			fireEvent.click(getByText('Active'));
+
+			expect(queryByText('save')).toBeFalsy();
+			expect(queryByText('cancel')).toBeFalsy();
+		});
+
+		it('allows the Data Region field to be edited', () => {
+			const {getByText, queryByText} = renderGeneralDetails(false);
+
+			fireEvent.click(getByText('Brazil'));
+
+			expect(queryByText('Hungary')).toBeFalsy();
+			expect(queryByText('Japan')).toBeFalsy();
+			expect(queryByText('United States')).toBeFalsy();
+
+			expect(queryByText('save')).toBeFalsy();
+			expect(queryByText('cancel')).toBeFalsy();
+		});
 	});
 });

@@ -13,45 +13,48 @@ import {cleanup, fireEvent, render, wait} from '@testing-library/react';
 import React from 'react';
 
 import Address from '../../../src/main/resources/META-INF/resources/js/components/account_details/Address';
+import {PermissionsProvider} from '../../../src/main/resources/META-INF/resources/js/hooks/permissions';
 
 function renderAddress(props) {
 	return render(
-		<Address
-			accountKey="key123"
-			address={{
-				addressCountry: 'United States',
-				addressLocality: 'Diamond Bar',
-				addressRegion: 'California',
-				deletePostalAddressURL: '/',
-				editPostalAddressURL: '/',
-				id: '123',
-				postalCode: '91765',
-				primary: true,
-				streetAddressLine1: '1400 Montefino Ave',
-				streetAddressLine2: '-',
-				streetAddressLine3: '-'
-			}}
-			addURL="/"
-			count={1}
-			countryOptions={[
-				{
-					label: 'China',
-					value: '2',
-					zipRequired: true
-				},
-				{
-					label: 'United Arab Emirates',
-					value: '217',
-					zipRequired: false
-				},
-				{
-					label: 'United States',
-					value: '19',
-					zipRequired: true
-				}
-			]}
-			{...props}
-		/>
+		<PermissionsProvider permissions={{updatePermission: true}}>
+			<Address
+				accountKey="key123"
+				address={{
+					addressCountry: 'United States',
+					addressLocality: 'Diamond Bar',
+					addressRegion: 'California',
+					deletePostalAddressURL: '/',
+					editPostalAddressURL: '/',
+					id: '123',
+					postalCode: '91765',
+					primary: true,
+					streetAddressLine1: '1400 Montefino Ave',
+					streetAddressLine2: '-',
+					streetAddressLine3: '-'
+				}}
+				addURL="/"
+				count={1}
+				countryOptions={[
+					{
+						label: 'China',
+						value: '2',
+						zipRequired: true
+					},
+					{
+						label: 'United Arab Emirates',
+						value: '217',
+						zipRequired: false
+					},
+					{
+						label: 'United States',
+						value: '19',
+						zipRequired: true
+					}
+				]}
+				{...props}
+			/>
+		</PermissionsProvider>
 	);
 }
 

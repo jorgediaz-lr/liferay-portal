@@ -13,52 +13,56 @@ import {cleanup, fireEvent, render, wait} from '@testing-library/react';
 import React from 'react';
 
 import AccountAddresses from '../../../src/main/resources/META-INF/resources/js/components/account_details/AccountAddresses';
+import {PermissionsProvider} from '../../../src/main/resources/META-INF/resources/js/hooks/permissions';
 
-function renderAccountAddress(props) {
+const sampleAddresses = [
+	{
+		addressCountry: 'United States',
+		addressLocality: 'Diamond Bar',
+		addressRegion: 'California',
+		deletePostalAddressURL: '/',
+		editPostalAddressURL: '/',
+		id: '123',
+		postalCode: '91765',
+		streetAddressLine1: '1400 Montefino Ave',
+		streetAddressLine2: '-',
+		streetAddressLine3: '-'
+	},
+	{
+		addressCountry: 'United Arab Emirates',
+		addressLocality: 'Dubai Media City',
+		addressRegion: '-',
+		deletePostalAddressURL: '/',
+		editPostalAddressURL: '/',
+		id: '456',
+		postalCode: '-',
+		streetAddressLine1: 'Building 8',
+		streetAddressLine2: 'Office 207',
+		streetAddressLine3: '-'
+	},
+	{
+		addressCountry: 'P.R. China',
+		addressLocality: 'Dalian',
+		addressRegion: 'Liaoning',
+		deletePostalAddressURL: '/',
+		editPostalAddressURL: '/',
+		id: '789',
+		postalCode: '116023',
+		streetAddressLine1: '537 Huangpu Road Taide Building',
+		streetAddressLine2: '1005 High-Tech Zone',
+		streetAddressLine3: '-'
+	}
+];
+
+function renderAccountAddress(addresses = [], permission = true) {
 	return render(
-		<AccountAddresses
-			accountKey="key123"
-			addresses={[
-				{
-					addressCountry: 'United States',
-					addressLocality: 'Diamond Bar',
-					addressRegion: 'California',
-					deletePostalAddressURL: '/',
-					editPostalAddressURL: '/',
-					id: '123',
-					postalCode: '91765',
-					streetAddressLine1: '1400 Montefino Ave',
-					streetAddressLine2: '-',
-					streetAddressLine3: '-'
-				},
-				{
-					addressCountry: 'United Arab Emirates',
-					addressLocality: 'Dubai Media City',
-					addressRegion: '-',
-					deletePostalAddressURL: '/',
-					editPostalAddressURL: '/',
-					id: '456',
-					postalCode: '-',
-					streetAddressLine1: 'Building 8',
-					streetAddressLine2: 'Office 207',
-					streetAddressLine3: '-'
-				},
-				{
-					addressCountry: 'P.R. China',
-					addressLocality: 'Dalian',
-					addressRegion: 'Liaoning',
-					deletePostalAddressURL: '/',
-					editPostalAddressURL: '/',
-					id: '789',
-					postalCode: '116023',
-					streetAddressLine1: '537 Huangpu Road Taide Building',
-					streetAddressLine2: '1005 High-Tech Zone',
-					streetAddressLine3: '-'
-				}
-			]}
-			addURL="/"
-			{...props}
-		/>
+		<PermissionsProvider permissions={{updatePermission: permission}}>
+			<AccountAddresses
+				accountKey="key123"
+				addresses={addresses}
+				addURL="/"
+			/>
+		</PermissionsProvider>
 	);
 }
 
@@ -88,21 +92,19 @@ describe('AccountAddresses', () => {
 	afterEach(cleanup);
 
 	it('renders', async () => {
-		const {container} = renderAccountAddress();
+		const {container} = renderAccountAddress(sampleAddresses);
 
 		return await wait(() => expect(container).toBeTruthy());
 	});
 
 	it('displays an addresses List Group with dashes for each field when no address was provided', async () => {
-		const {getAllByText} = renderAccountAddress({addresses: []});
+		const {getAllByText} = renderAccountAddress();
 
 		return await wait(() => expect(getAllByText('-').length).toBe(7));
 	});
 
 	it('does not allow any address fields to be edited when no address was provided', async () => {
-		const {getAllByText, queryByText} = renderAccountAddress({
-			addresses: []
-		});
+		const {getAllByText, queryByText} = renderAccountAddress();
 
 		fireEvent.click(getAllByText('-')[0]);
 
@@ -112,52 +114,102 @@ describe('AccountAddresses', () => {
 		});
 	});
 
-	it('displays an add button when no address was provided', () => {
-		const {queryByLabelText} = renderAccountAddress({addresses: []});
+	it('displays no delete button when no address was provided', async () => {
+		const {queryByLabelText} = renderAccountAddress();
 
-		return wait(() => expect(queryByLabelText('add')).toBeTruthy());
+		return await wait(() => expect(queryByLabelText('delete')).toBeFalsy());
 	});
 
-	it('displays no delete button when no address was provided', () => {
-		const {queryByLabelText} = renderAccountAddress({addresses: []});
+	it('displays multiple address List Groups when multiple addresses are provided', async () => {
+		const {getByText} = renderAccountAddress(sampleAddresses);
 
-		return wait(() => expect(queryByLabelText('delete')).toBeFalsy());
-	});
-
-	it('displays multiple address List Groups when multiple addresses are provided', () => {
-		const {getByText} = renderAccountAddress();
-
-		return wait(() => {
+		return await wait(() => {
 			getByText('address 1');
 			getByText('address 2');
 			getByText('address 3');
 		});
 	});
 
-	it('allows address fields to be edited when at least one address was provided', async () => {
-		const {getByText} = renderAccountAddress();
+	describe('AccountAddresses with full editing privilege', () => {
+		it('displays an add button when no address was provided', async () => {
+			const {queryByLabelText} = renderAccountAddress();
 
-		fireEvent.click(getByText('Diamond Bar'));
+			return await wait(() =>
+				expect(queryByLabelText('add')).toBeTruthy()
+			);
+		});
 
-		return await wait(() => {
-			getByText('save');
-			getByText('cancel');
+		it('displays an add button for each provided addresses', async () => {
+			const {getAllByLabelText} = renderAccountAddress(sampleAddresses);
+
+			return await wait(() =>
+				expect(getAllByLabelText('add').length).toBe(3)
+			);
+		});
+
+		it('displays a delete button for each provided addresses', async () => {
+			const {getAllByLabelText} = renderAccountAddress(sampleAddresses);
+
+			return await wait(() =>
+				expect(getAllByLabelText('delete').length).toBe(3)
+			);
+		});
+
+		it('allows address fields to be edited when at least one address was provided', async () => {
+			const {getByText} = renderAccountAddress(sampleAddresses);
+
+			fireEvent.click(getByText('Diamond Bar'));
+
+			return await wait(() => {
+				getByText('save');
+				getByText('cancel');
+			});
 		});
 	});
 
-	it('displays an add button for each provided addresses', async () => {
-		const {getAllByLabelText} = renderAccountAddress();
+	describe('AccountAddresses with limited editing privilege', () => {
+		it('does not display an add button when no address was provided', async () => {
+			const {queryByLabelText} = renderAccountAddress([], false);
 
-		return await wait(() =>
-			expect(getAllByLabelText('add').length).toBe(3)
-		);
-	});
+			return await wait(() =>
+				expect(queryByLabelText('add')).toBeFalsy()
+			);
+		});
 
-	it('displays a delete button for each provided addresses', async () => {
-		const {getAllByLabelText} = renderAccountAddress();
+		it('does not display an add button for each provided addresses', async () => {
+			const {queryByLabelText} = renderAccountAddress(
+				sampleAddresses,
+				false
+			);
 
-		return await wait(() =>
-			expect(getAllByLabelText('delete').length).toBe(3)
-		);
+			return await wait(() =>
+				expect(queryByLabelText('add')).toBeFalsy()
+			);
+		});
+
+		it('does not display a delete button for each provided addresses', async () => {
+			const {queryByLabelText} = renderAccountAddress(
+				sampleAddresses,
+				false
+			);
+
+			return await wait(() =>
+				expect(queryByLabelText('delete')).toBeFalsy()
+			);
+		});
+
+		it('does not allow address fields to be edited when at least one address was provided', async () => {
+			const {getByText, queryByText} = renderAccountAddress(
+				sampleAddresses,
+				false
+			);
+
+			fireEvent.click(getByText('Diamond Bar'));
+
+			return await wait(() => {
+				expect(queryByText('save')).toBeFalsy();
+				expect(queryByText('cancel')).toBeFalsy();
+			});
+		});
 	});
 });

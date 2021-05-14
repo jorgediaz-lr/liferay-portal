@@ -13,7 +13,12 @@ import ClayList from '@clayui/list';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import {FIELD_TYPE_EXTERNAL, NAMESPACE} from '../../utilities/constants';
+import {usePermissions} from '../../hooks/permissions';
+import {
+	FIELD_TYPE_EXTERNAL,
+	FIELD_TYPE_NONEDITABLE,
+	NAMESPACE
+} from '../../utilities/constants';
 import DetailField from '../DetailField';
 
 function PartnerInfo({
@@ -21,6 +26,11 @@ function PartnerInfo({
 	assignPartnerTeamURL,
 	details
 }) {
+	const {updatePermission} = usePermissions();
+	const fieldType = updatePermission
+		? FIELD_TYPE_EXTERNAL
+		: FIELD_TYPE_NONEDITABLE;
+
 	const firstLineSupportFormData = {
 		firstLineSupportTeamKey: '',
 		updateFirstLineSupport: true
@@ -46,7 +56,7 @@ function PartnerInfo({
 				fieldLabel={Liferay.Language.get('partner-reseller-si')}
 				formAction={details.editAccountURL}
 				formData={partnerFormData}
-				type={FIELD_TYPE_EXTERNAL}
+				type={fieldType}
 				value={details.partnerTeamName}
 			/>
 
@@ -62,7 +72,7 @@ function PartnerInfo({
 				fieldLabel={Liferay.Language.get('first-line-support')}
 				formAction={details.editAccountURL}
 				formData={firstLineSupportFormData}
-				type={FIELD_TYPE_EXTERNAL}
+				type={fieldType}
 				value={details.firstLineSupportTeamName}
 			/>
 		</ClayList>

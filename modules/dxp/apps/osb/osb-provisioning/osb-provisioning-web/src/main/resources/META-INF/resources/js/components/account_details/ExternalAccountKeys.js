@@ -13,10 +13,20 @@ import ClayList from '@clayui/list';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import {usePermissions} from '../../hooks/permissions';
+import {
+	FIELD_TYPE_NONEDITABLE,
+	FIELD_TYPE_TEXT
+} from '../../utilities/constants';
 import {convertDashToEmptyString} from '../../utilities/helpers';
 import DetailField from '../DetailField';
 
 function ExternalAccountKeys({details}) {
+	const {updatePermission} = usePermissions();
+	const fieldType = updatePermission
+		? FIELD_TYPE_TEXT
+		: FIELD_TYPE_NONEDITABLE;
+
 	return (
 		<ClayList>
 			<ClayList.Header>
@@ -34,6 +44,7 @@ function ExternalAccountKeys({details}) {
 					),
 					entityName: 'account'
 				}}
+				type={fieldType}
 				value={details.dossieraAccountKey}
 			/>
 
@@ -48,6 +59,7 @@ function ExternalAccountKeys({details}) {
 					),
 					entityName: 'project'
 				}}
+				type={fieldType}
 				value={details.dossieraProjectKey}
 			/>
 
@@ -62,6 +74,7 @@ function ExternalAccountKeys({details}) {
 					),
 					entityName: 'project'
 				}}
+				type={fieldType}
 				value={details.salesforceProjectKey}
 			/>
 		</ClayList>

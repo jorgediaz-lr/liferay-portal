@@ -13,6 +13,7 @@ import ClayList from '@clayui/list';
 import PropTypes from 'prop-types';
 import React, {useEffect, useRef, useState} from 'react';
 
+import {usePermissions} from '../../hooks/permissions';
 import {
 	FIELD_TYPE_NONEDITABLE,
 	FIELD_TYPE_SELECT,
@@ -36,6 +37,8 @@ function Address({accountKey, addURL, address, count, countryOptions}) {
 	);
 	const [zipRequired, setZipRequired] = useState(false);
 	const formRef = useRef();
+
+	const {updatePermission} = usePermissions();
 
 	const regionId = getFieldId(regionOptions, address.addressRegion);
 
@@ -220,79 +223,85 @@ function Address({accountKey, addURL, address, count, countryOptions}) {
 					value={address.primary}
 				/>
 
-				<ClayList.Item
-					className={`address-controls ${editable ? 'editing' : ''}`}
-					flex
-				>
-					{editable && (
-						<div className="btn-group" role="group">
-							<div className="btn-group-item">
-								<button
-									className="btn btn-primary btn-sm save-btn"
-									disabled={zipRequired && !zipCode}
-									onClick={handleSave}
-									role="button"
-									type="button"
-								>
-									{Liferay.Language.get('save')}
-								</button>
-							</div>
+				{updatePermission && (
+					<ClayList.Item
+						className={`address-controls ${
+							editable ? 'editing' : ''
+						}`}
+						flex
+					>
+						{editable && (
+							<div className="btn-group" role="group">
+								<div className="btn-group-item">
+									<button
+										className="btn btn-primary btn-sm save-btn"
+										disabled={zipRequired && !zipCode}
+										onClick={handleSave}
+										role="button"
+										type="button"
+									>
+										{Liferay.Language.get('save')}
+									</button>
+								</div>
 
-							<div className="btn-group-item">
-								<button
-									className="btn btn-secondary btn-sm cancel-btn"
-									onClick={handleCancel}
-									role="button"
-									type="button"
-								>
-									{Liferay.Language.get('cancel')}
-								</button>
-							</div>
-						</div>
-					)}
-
-					<div className="btn-group" role="group">
-						<div className="btn-group-item">
-							<a
-								className="add-address btn btn-secondary nav-btn nav-btn-monospaced"
-								href={addURL}
-								title={Liferay.Language.get('add')}
-							>
-								<svg
-									aria-label={Liferay.Language.get('add')}
-									className="lexicon-icon"
-									role="img"
-								>
-									<use xlinkHref="#plus" />
-								</svg>
-							</a>
-						</div>
-
-						{!!address.deletePostalAddressURL && (
-							<div className="btn-group-item">
-								<IconButton
-									cssClass="btn-secondary delete-address nav-btn nav-btn-monospaced"
-									labelName={Liferay.Language.get('delete')}
-									onClick={() => {
-										if (
-											window.confirm(
-												Liferay.Language.get(
-													'are-you-sure-you-want-to-delete-this-address'
-												)
-											)
-										) {
-											window.location.assign(
-												address.deletePostalAddressURL
-											);
-										}
-									}}
-									svgId="#hr"
-									title={Liferay.Language.get('delete')}
-								/>
+								<div className="btn-group-item">
+									<button
+										className="btn btn-secondary btn-sm cancel-btn"
+										onClick={handleCancel}
+										role="button"
+										type="button"
+									>
+										{Liferay.Language.get('cancel')}
+									</button>
+								</div>
 							</div>
 						)}
-					</div>
-				</ClayList.Item>
+
+						<div className="btn-group" role="group">
+							<div className="btn-group-item">
+								<a
+									className="add-address btn btn-secondary nav-btn nav-btn-monospaced"
+									href={addURL}
+									title={Liferay.Language.get('add')}
+								>
+									<svg
+										aria-label={Liferay.Language.get('add')}
+										className="lexicon-icon"
+										role="img"
+									>
+										<use xlinkHref="#plus" />
+									</svg>
+								</a>
+							</div>
+
+							{!!address.deletePostalAddressURL && (
+								<div className="btn-group-item">
+									<IconButton
+										cssClass="btn-secondary delete-address nav-btn nav-btn-monospaced"
+										labelName={Liferay.Language.get(
+											'delete'
+										)}
+										onClick={() => {
+											if (
+												window.confirm(
+													Liferay.Language.get(
+														'are-you-sure-you-want-to-delete-this-address'
+													)
+												)
+											) {
+												window.location.assign(
+													address.deletePostalAddressURL
+												);
+											}
+										}}
+										svgId="#hr"
+										title={Liferay.Language.get('delete')}
+									/>
+								</div>
+							)}
+						</div>
+					</ClayList.Item>
+				)}
 			</ClayList>
 		</form>
 	);
