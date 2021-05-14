@@ -25,6 +25,8 @@ import com.liferay.portal.kernel.service.RoleLocalService;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
+import java.util.List;
+
 /**
  * @author Amos Fong
  */
@@ -56,7 +58,82 @@ public class LicenseKeyPermission {
 			String actionId)
 		throws PortalException {
 
-		//TODO
+		if (_roleLocalService.hasUserRole(
+				permissionChecker.getUserId(),
+				OSBCustomerConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
+
+			return true;
+		}
+
+		if (_roleLocalService.hasUserRole(
+				permissionChecker.getUserId(),
+				OSBCustomerConstants.ROLE_OSB_ACCOUNT_ADMIN_ID)) {
+
+			return true;
+		}
+
+		if (actionId.equals(OSBActionKeys.UPDATE_ADMIN)) {
+			return false;
+		}
+
+		if (actionId.equals(OSBActionKeys.UPDATE_ADVANCED)) {
+			return false;
+		}
+
+		if (actionId.equals(OSBActionKeys.UPDATE_BASIC)) {
+			return false;
+		}
+
+		try {
+			User user = permissionChecker.getUser();
+
+			boolean accountCustomer = false;
+			boolean accountWorker = false;
+
+			List<ContactRole> contactRoles =
+				_contactRoleWebService.getAccountContactRoles(
+					licenseKey.getKoroneikiAccountKey(), user.getUuid(), 1,
+					1000);
+
+			for (ContactRole contactRole : contactRoles) {
+				if (contactRole.getType() ==
+						ContactRole.Type.ACCOUNT_CUSTOMER) {
+
+					accountCustomer = true;
+				}
+				else if (contactRole.getType() ==
+							ContactRole.Type.ACCOUNT_WORKER) {
+
+					String name = contactRole.getName();
+
+					if (name.equals(
+							ContactRoleConstants.NAME_ADVOCACY_SPECIALIST) ||
+						name.equals(
+							ContactRoleConstants.NAME_CUSTOMER_SUCCESS) ||
+						name.equals(ContactRoleConstants.NAME_SALES)) {
+
+						return true;
+					}
+
+					accountWorker = true;
+				}
+			}
+
+			if (actionId.equals(OSBActionKeys.VIEW) && !licenseKey.isActive()) {
+				return false;
+			}
+
+			if (accountWorker) {
+				return true;
+			}
+
+			if (accountCustomer) {
+				return true;
+			}
+		}
+		catch (Exception e) {
+			throw new PortalException(e);
+		}
 
 		return true;
 	}
