@@ -20,7 +20,6 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductConsumption;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchaseView;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
-import com.liferay.osb.provisioning.web.internal.search.LicenseKeyDisplayTerms;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
@@ -155,17 +154,14 @@ public class ProductPurchaseViewDisplay {
 
 	public String getProvisionedCountURL() {
 		PortletURL portletURL = PortletURLFactoryUtil.create(
-			_httpServletRequest, ProvisioningPortletKeys.LICENSES,
+			_httpServletRequest, ProvisioningPortletKeys.ACCOUNTS,
 			PortletRequest.RENDER_PHASE);
 
 		portletURL.setParameter(
-			LicenseKeyDisplayTerms.ADVANCED_SEARCH, StringPool.TRUE);
-		portletURL.setParameter(
-			LicenseKeyDisplayTerms.AND_OPERATOR, StringPool.TRUE);
-		portletURL.setParameter(
-			LicenseKeyDisplayTerms.ACCOUNT_KEY, _account.getKey());
-		portletURL.setParameter(
-			LicenseKeyDisplayTerms.PRODUCTS, _product.getKey());
+			"mvcRenderCommandName", "/accounts/view_subscription");
+		portletURL.setParameter("tabs1", "licenses");
+		portletURL.setParameter("accountKey", _account.getKey());
+		portletURL.setParameter("productKey", _product.getKey());
 
 		return portletURL.toString();
 	}
