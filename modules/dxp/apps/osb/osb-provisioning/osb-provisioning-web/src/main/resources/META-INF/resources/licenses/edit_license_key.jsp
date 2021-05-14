@@ -60,7 +60,7 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 								<liferay-ui:message key="product" />
 							</dt>
 							<dd>
-								<%= HtmlUtil.escape(licenseKeyDisplay.getProductName()) %>
+								<a href="<%= editLicenseKeyDisplayContext.getAccountProductPurchasesURL() %>"><%= HtmlUtil.escape(licenseKeyDisplay.getProductName()) %></a>
 							</dd>
 						</div>
 
@@ -145,7 +145,7 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 									<liferay-ui:message key="owner" />
 								</dt>
 								<dd>
-									<%= HtmlUtil.escape(licenseKeyDisplay.getOwner()) %>
+									<a href="<%= editLicenseKeyDisplayContext.getAccountURL() %>"><%= HtmlUtil.escape(licenseKeyDisplay.getOwner()) %></a>
 								</dd>
 							</div>
 

@@ -14,6 +14,7 @@
 
 package com.liferay.osb.provisioning.web.internal.display.context;
 
+import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.constants.ProvisioningWebKeys;
 import com.liferay.osb.provisioning.license.helper.constants.LicenseType;
 import com.liferay.osb.provisioning.license.model.LicenseKey;
@@ -22,6 +23,7 @@ import com.liferay.osb.provisioning.license.util.LicenseUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
@@ -34,6 +36,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.portlet.ActionRequest;
+import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
@@ -65,6 +68,31 @@ public class EditLicenseKeyDisplayContext {
 
 		_licenseType = _licenseKey.getLicenseEntryType();
 		_licenseVersion = _licenseKey.getLicenseVersion();
+	}
+
+	public String getAccountProductPurchasesURL() throws Exception {
+		PortletURL portletURL = PortletURLFactoryUtil.create(
+			_renderRequest, ProvisioningPortletKeys.ACCOUNTS,
+			PortletRequest.RENDER_PHASE);
+
+		portletURL.setParameter(
+			"mvcRenderCommandName", "/accounts/view_subscription");
+		portletURL.setParameter("accountKey", _licenseKey.getAccountKey());
+		portletURL.setParameter("productKey", _licenseKey.getProductKey());
+
+		return portletURL.toString();
+	}
+
+	public String getAccountURL() throws Exception {
+		PortletURL portletURL = PortletURLFactoryUtil.create(
+			_renderRequest, ProvisioningPortletKeys.ACCOUNTS,
+			PortletRequest.RENDER_PHASE);
+
+		portletURL.setParameter(
+			"mvcRenderCommandName", "/accounts/view_account");
+		portletURL.setParameter("accountKey", _licenseKey.getAccountKey());
+
+		return portletURL.toString();
 	}
 
 	public List<LicenseKey> getClusterLicenseKeys() {
