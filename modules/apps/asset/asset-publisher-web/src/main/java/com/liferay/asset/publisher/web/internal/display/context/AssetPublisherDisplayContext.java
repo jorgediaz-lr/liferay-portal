@@ -1278,6 +1278,10 @@ public class AssetPublisherDisplayContext {
 		return _enableConversions;
 	}
 
+	public boolean isEnabledAutoscroll() {
+		return _assetPublisherWebConfiguration.enableAutoscroll();
+	}
+
 	public boolean isEnableFlags() {
 		if (_enableFlags != null) {
 			return _enableFlags;
