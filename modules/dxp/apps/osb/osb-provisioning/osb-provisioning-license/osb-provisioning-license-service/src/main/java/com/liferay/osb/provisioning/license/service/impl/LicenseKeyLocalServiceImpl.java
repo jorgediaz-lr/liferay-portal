@@ -828,38 +828,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		List<BooleanClause<Query>> booleanClauses = new ArrayList<>();
 
-		Boolean accountKeyMatch = (Boolean)params.get("accountKeyMatch");
-
-		if ((accountKeyMatch != null) && accountKeyMatch) {
-			TermQuery accountKeyTermQuery = new TermQueryImpl(
-				"accountKey", StringUtil.toLowerCase(accountKey));
-
-			booleanClauses.add(
-				BooleanClauseFactoryUtil.create(
-					accountKeyTermQuery, BooleanClauseOccur.MUST.getName()));
-		}
-		else {
-			attributes.put("accountKey", accountKey);
-		}
-
-		Boolean productKeyMatch = (Boolean)params.get("productKeyMatch");
-
-		if ((productKeyMatch != null) && productKeyMatch) {
-			BooleanQuery booleanQuery = new BooleanQueryImpl();
-
-			for (String productKey : productKeys) {
-				booleanQuery.addExactTerm(
-					"productKey", StringUtil.toLowerCase(productKey));
-			}
-
-			booleanClauses.add(
-				BooleanClauseFactoryUtil.create(
-					booleanQuery, BooleanClauseOccur.MUST.getName()));
-		}
-		else {
-			attributes.put("productKey", productKeys);
-		}
-
 		if (active != null) {
 			BooleanQuery booleanQuery = new BooleanQueryImpl();
 
@@ -952,11 +920,34 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 					startDateLTTermQuery, BooleanClauseOccur.MUST.getName()));
 		}
 
+		if (params.containsKey("accountKey")) {
+			TermQuery accountKeyTermQuery = new TermQueryImpl(
+				"accountKey",
+				StringUtil.toLowerCase((String)params.get("accountKey")));
+
+			booleanClauses.add(
+				BooleanClauseFactoryUtil.create(
+					accountKeyTermQuery, BooleanClauseOccur.MUST.getName()));
+		}
+
+		if (params.containsKey("productKey")) {
+			BooleanQuery booleanQuery = new BooleanQueryImpl();
+
+			booleanQuery.addExactTerm(
+				"productKey",
+				StringUtil.toLowerCase((String)params.get("productKey")));
+
+			booleanClauses.add(
+				BooleanClauseFactoryUtil.create(
+					booleanQuery, BooleanClauseOccur.MUST.getName()));
+		}
+
 		if (!booleanClauses.isEmpty()) {
 			searchContext.setBooleanClauses(
 				booleanClauses.toArray(new BooleanClause[0]));
 		}
 
+		attributes.put("accountKey", accountKey);
 		attributes.put("accountName", accountName);
 		attributes.put("description", description);
 		attributes.put("hostName", hostName);
@@ -967,6 +958,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		attributes.put("modifiedUserUuid", modifiedUserUuid);
 		attributes.put("owner", owner);
 		attributes.put("productId", productId);
+		attributes.put("productKey", productKeys);
 		attributes.put("productName", productName);
 		attributes.put("productPurchaseKey", productPurchaseKey);
 		attributes.put("productVersion", productVersions);

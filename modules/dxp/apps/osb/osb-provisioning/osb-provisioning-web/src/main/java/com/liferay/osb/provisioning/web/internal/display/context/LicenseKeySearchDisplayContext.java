@@ -163,10 +163,10 @@ public class LicenseKeySearchDisplayContext {
 		LicenseKeySearchTerms searchTerms =
 			(LicenseKeySearchTerms)_licenseKeySearch.getSearchTerms();
 
-		Hits hits = null;
-
 		Sort sort = SortFactoryUtil.getSort(
 			LicenseKey.class, Sort.LONG_TYPE, Field.CREATE_DATE, "desc");
+
+		Hits hits = null;
 
 		if (searchTerms.isAdvancedSearch()) {
 			hits = _licenseKeyLocalService.search(
