@@ -38,13 +38,6 @@ function LicenseGroup({downloadURL, licenses}) {
 function Download({actionURL, value}) {
 	return (
 		<ClayTable.Row>
-			<ClayTable.Cell></ClayTable.Cell>
-			<ClayTable.Cell></ClayTable.Cell>
-			<ClayTable.Cell></ClayTable.Cell>
-			<ClayTable.Cell></ClayTable.Cell>
-			<ClayTable.Cell></ClayTable.Cell>
-			<ClayTable.Cell></ClayTable.Cell>
-			<ClayTable.Cell></ClayTable.Cell>
 			<ClayTable.Cell>
 				<form action={actionURL} method="post" name="downloadLicenses">
 					<input
@@ -57,6 +50,13 @@ function Download({actionURL, value}) {
 					</button>
 				</form>
 			</ClayTable.Cell>
+			<ClayTable.Cell></ClayTable.Cell>
+			<ClayTable.Cell></ClayTable.Cell>
+			<ClayTable.Cell></ClayTable.Cell>
+			<ClayTable.Cell></ClayTable.Cell>
+			<ClayTable.Cell></ClayTable.Cell>
+			<ClayTable.Cell></ClayTable.Cell>
+			<ClayTable.Cell></ClayTable.Cell>
 		</ClayTable.Row>
 	);
 }
