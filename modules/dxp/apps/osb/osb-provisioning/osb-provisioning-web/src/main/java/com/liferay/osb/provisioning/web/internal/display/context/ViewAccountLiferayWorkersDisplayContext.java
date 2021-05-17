@@ -92,7 +92,7 @@ public class ViewAccountLiferayWorkersDisplayContext
 	}
 
 	public CreationMenu getCreationMenu() throws Exception {
-		if (!hasManageAccountsPermission()) {
+		if (!hasAssignContactsPermission()) {
 			return null;
 		}
 

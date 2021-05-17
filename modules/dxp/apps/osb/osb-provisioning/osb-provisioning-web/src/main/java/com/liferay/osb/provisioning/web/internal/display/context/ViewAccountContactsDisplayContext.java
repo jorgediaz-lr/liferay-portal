@@ -84,7 +84,7 @@ public class ViewAccountContactsDisplayContext
 	}
 
 	public CreationMenu getCreationMenu() throws Exception {
-		if (!hasManageAccountsPermission()) {
+		if (!hasAssignContactsPermission()) {
 			return null;
 		}
 
