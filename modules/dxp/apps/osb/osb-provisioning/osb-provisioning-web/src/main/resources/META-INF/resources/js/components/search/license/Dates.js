@@ -23,7 +23,7 @@ function Dates() {
 				<div className="row">
 					<div className="col-md-6">
 						<label htmlFor="createdAfter">
-							{Liferay.Language.get('start-date')}
+							{Liferay.Language.get('after')}
 						</label>
 
 						<DatePicker
@@ -34,7 +34,7 @@ function Dates() {
 
 					<div className="col-md-6">
 						<label htmlFor="createdBefore">
-							{Liferay.Language.get('end-date')}
+							{Liferay.Language.get('before')}
 						</label>
 
 						<DatePicker
@@ -51,7 +51,7 @@ function Dates() {
 				<div className="row">
 					<div className="col-md-6">
 						<label htmlFor="modifiedAfter">
-							{Liferay.Language.get('start-date')}
+							{Liferay.Language.get('after')}
 						</label>
 
 						<DatePicker
@@ -62,7 +62,7 @@ function Dates() {
 
 					<div className="col-md-6">
 						<label htmlFor="modifiedBefore">
-							{Liferay.Language.get('end-date')}
+							{Liferay.Language.get('before')}
 						</label>
 
 						<DatePicker
@@ -79,7 +79,7 @@ function Dates() {
 				<div className="row">
 					<div className="col-md-6">
 						<label htmlFor="startedAfter">
-							{Liferay.Language.get('start-date')}
+							{Liferay.Language.get('after')}
 						</label>
 
 						<DatePicker
@@ -90,7 +90,7 @@ function Dates() {
 
 					<div className="col-md-6">
 						<label htmlFor="startedBefore">
-							{Liferay.Language.get('end-date')}
+							{Liferay.Language.get('before')}
 						</label>
 
 						<DatePicker
@@ -107,7 +107,7 @@ function Dates() {
 				<div className="row">
 					<div className="col-md-6">
 						<label htmlFor="expiresAfter">
-							{Liferay.Language.get('start-date')}
+							{Liferay.Language.get('after')}
 						</label>
 
 						<DatePicker
@@ -118,7 +118,7 @@ function Dates() {
 
 					<div className="col-md-6">
 						<label htmlFor="expiresBefore">
-							{Liferay.Language.get('end-date')}
+							{Liferay.Language.get('before')}
 						</label>
 
 						<DatePicker
