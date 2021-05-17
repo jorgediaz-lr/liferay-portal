@@ -25,6 +25,7 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Note;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.PostalAddress;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchaseView;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
@@ -41,6 +42,7 @@ import com.liferay.osb.provisioning.koroneiki.web.service.ContactWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.NoteWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.PostalAddressWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductConsumptionWebService;
+import com.liferay.osb.provisioning.koroneiki.web.service.ProductPurchaseViewWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductPurchaseWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamRoleWebService;
@@ -118,6 +120,45 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		_distributedMessagingConfiguration =
 			ConfigurableUtil.createConfigurable(
 				DistributedMessagingConfiguration.class, properties);
+	}
+
+	protected ProductPurchase addEWSAProductPurchase(
+			ProductPurchase ewsaProductPurchase,
+			ProductPurchase productPurchase, JSONObject jsonObject)
+		throws Exception {
+
+		ProductPurchase newProductPurchase = new ProductPurchase();
+
+		newProductPurchase.setAccountKey(productPurchase.getAccountKey());
+		newProductPurchase.setProductKey(productPurchase.getProductKey());
+		newProductPurchase.setStartDate(ewsaProductPurchase.getStartDate());
+
+		if ((productPurchase.getStartDate() != null) &&
+			(productPurchase.getOriginalEndDate() != null)) {
+
+			newProductPurchase.setOriginalEndDate(
+				ewsaProductPurchase.getOriginalEndDate());
+			newProductPurchase.setEndDate(ewsaProductPurchase.getEndDate());
+		}
+		else {
+			newProductPurchase.setPerpetual(true);
+		}
+
+		newProductPurchase.setQuantity(productPurchase.getQuantity());
+
+		ExternalLink externalLink = getSalesforceOpportunityExternalLink(
+			jsonObject);
+
+		if (externalLink != null) {
+			newProductPurchase.setExternalLinks(
+				new ExternalLink[] {externalLink});
+		}
+
+		newProductPurchase.setProperties(productPurchase.getProperties());
+
+		return _productPurchaseWebService.addProductPurchase(
+			StringPool.BLANK, StringPool.BLANK,
+			newProductPurchase.getAccountKey(), newProductPurchase);
 	}
 
 	protected void checkWarnings(
@@ -1298,6 +1339,26 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			provisioningEmailAddressGlobal();
 	}
 
+	protected ExternalLink getSalesforceOpportunityExternalLink(
+		JSONObject jsonObject) {
+
+		String salesforceOpportunityKey = jsonObject.getString(
+			"_salesforceOpportunityKey");
+
+		ExternalLink externalLink = null;
+
+		if (Validator.isNotNull(salesforceOpportunityKey)) {
+			externalLink = new ExternalLink();
+
+			externalLink.setDomain(ExternalLinkDomain.SALESFORCE);
+			externalLink.setEntityName(
+				ExternalLinkEntityName.SALESFORCE_OPPORTUNITY);
+			externalLink.setEntityId(salesforceOpportunityKey);
+		}
+
+		return externalLink;
+	}
+
 	protected int getSalesforceOpportunityType(
 		String salesforceOpportunityTypeName) {
 
@@ -1746,19 +1807,8 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			return Collections.emptyList();
 		}
 
-		String salesforceOpportunityKey = jsonObject.getString(
-			"_salesforceOpportunityKey");
-
-		ExternalLink externalLink = null;
-
-		if (Validator.isNotNull(salesforceOpportunityKey)) {
-			externalLink = new ExternalLink();
-
-			externalLink.setDomain(ExternalLinkDomain.SALESFORCE);
-			externalLink.setEntityName(
-				ExternalLinkEntityName.SALESFORCE_OPPORTUNITY);
-			externalLink.setEntityId(salesforceOpportunityKey);
-		}
+		ExternalLink externalLink = getSalesforceOpportunityExternalLink(
+			jsonObject);
 
 		List<ProductPurchase> productPurchases = new ArrayList<>();
 
@@ -2006,11 +2056,13 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		sb.append(accountKey);
 		sb.append("' and state eq 'Active'");
 
-		List<ProductPurchase> curProductPurchases =
+		List<ProductPurchase> activeProductPurchases =
 			_productPurchaseWebService.getProductPurchases(
 				sb.toString(), 1, 1000, StringPool.BLANK);
 
 		Date newStartDate = new Date();
+
+		ProductPurchase ewsaProductPurchase = null;
 
 		boolean renewal = false;
 
@@ -2027,6 +2079,14 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 			if (renewal) {
 				Product product = productPurchase.getProduct();
+
+				if (ewsaProductPurchase == null) {
+					String name = product.getName();
+
+					if (name.contains("Unlimited Enterprise-Wide")) {
+						ewsaProductPurchase = productPurchase;
+					}
+				}
 
 				if (ArrayUtil.contains(
 						ProductConstants.NAMES_PARTNERSHIP,
@@ -2045,7 +2105,14 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		}
 
 		if (renewal) {
-			for (ProductPurchase productPurchase : curProductPurchases) {
+			for (ProductPurchase productPurchase : activeProductPurchases) {
+				if (ewsaProductPurchase != null) {
+					ProductPurchase newProductPurchase = addEWSAProductPurchase(
+						ewsaProductPurchase, productPurchase, jsonObject);
+
+					newStartDate = newProductPurchase.getStartDate();
+				}
+
 				if (newStartDate.before(productPurchase.getEndDate())) {
 					if (newStartDate.before(
 							productPurchase.getOriginalEndDate())) {
@@ -2060,6 +2127,51 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 					_productPurchaseWebService.updateProductPurchase(
 						StringPool.BLANK, StringPool.BLANK,
 						productPurchase.getKey(), productPurchase);
+				}
+			}
+
+			if (activeProductPurchases.isEmpty() &&
+				(ewsaProductPurchase != null)) {
+
+				sb = new StringBundler(3);
+
+				sb.append("accountKey eq '");
+				sb.append(getAccountKey(jsonObject));
+				sb.append("' and state eq 'Expired'");
+
+				List<ProductPurchaseView> expiredProductPurchaseViews =
+					_productPurchaseViewWebService.getProductPurchaseViews(
+						StringPool.BLANK, sb.toString(), 1, 1000,
+						StringPool.BLANK);
+
+				for (ProductPurchaseView productPurchaseView :
+						expiredProductPurchaseViews) {
+
+					ProductPurchase[] viewProductPurchases =
+						productPurchaseView.getProductPurchases();
+
+					if ((viewProductPurchases == null) ||
+						(viewProductPurchases.length < 1)) {
+
+						continue;
+					}
+
+					Date latestEndDate = null;
+					ProductPurchase latestProductPurchase = null;
+
+					for (ProductPurchase productPurchase :
+							viewProductPurchases) {
+
+						if ((latestEndDate == null) ||
+							latestEndDate.after(productPurchase.getEndDate())) {
+
+							latestEndDate = productPurchase.getEndDate();
+							latestProductPurchase = productPurchase;
+						}
+					}
+
+					addEWSAProductPurchase(
+						ewsaProductPurchase, latestProductPurchase, jsonObject);
 				}
 			}
 		}
@@ -2273,6 +2385,9 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 	@Reference
 	private ProductConsumptionWebService _productConsumptionWebService;
+
+	@Reference
+	private ProductPurchaseViewWebService _productPurchaseViewWebService;
 
 	@Reference
 	private ProductPurchaseWebService _productPurchaseWebService;
