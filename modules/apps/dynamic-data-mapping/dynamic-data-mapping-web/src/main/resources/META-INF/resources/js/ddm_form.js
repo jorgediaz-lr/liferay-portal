@@ -3711,13 +3711,11 @@ AUI.add(
 										])
 							) {
 								editor.setHTML(value);
-
-								editor
-									.getNativeEditor()
-									.once('dataReady', () => {
-										Liferay.fire('ddmEditorDataReady');
-									});
 							}
+
+							editor.getNativeEditor().once('dataReady', () => {
+								Liferay.fire('ddmEditorDataReady');
+							});
 						}
 					});
 				},
