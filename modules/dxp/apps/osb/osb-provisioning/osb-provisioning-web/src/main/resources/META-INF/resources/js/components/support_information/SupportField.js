@@ -31,7 +31,7 @@ function SupportField({
 	formAction,
 	inputStyle,
 	options = [],
-	type = FIELD_TYPE_TEXT,
+	type = FIELD_TYPE_NONEDITABLE,
 	value,
 	updateFormData
 }) {
