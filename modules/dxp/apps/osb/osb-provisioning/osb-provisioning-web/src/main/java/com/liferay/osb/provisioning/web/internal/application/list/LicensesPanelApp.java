@@ -39,7 +39,7 @@ import org.osgi.service.component.annotations.Reference;
 	configurationPid = "com.liferay.osb.provisioning.web.internal.configuration.ProvisioningWebConfiguration",
 	immediate = true,
 	property = {
-		"panel.app.order:Integer=50",
+		"panel.app.order:Integer=20",
 		"panel.category.key=" + ProvisioningPanelCategoryKeys.CONTROL_PANEL_PROVISIONING
 	},
 	service = PanelApp.class
