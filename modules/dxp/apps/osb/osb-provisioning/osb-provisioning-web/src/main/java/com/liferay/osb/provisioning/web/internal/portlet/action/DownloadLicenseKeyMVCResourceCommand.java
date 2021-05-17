@@ -87,8 +87,6 @@ public class DownloadLicenseKeyMVCResourceCommand
 			long[] licenseKeyIds)
 		throws Exception {
 
-		//TODO: check user role before download
-
 		List<LicenseKey> licenseKeys = new ArrayList<>();
 
 		String[] hostNames = new String[licenseKeyIds.length];
@@ -141,8 +139,6 @@ public class DownloadLicenseKeyMVCResourceCommand
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse,
 			long licenseKeyId)
 		throws Exception {
-
-		//TODO: check user role before download
 
 		LicenseKey licenseKey = _licenseKeyService.getLicenseKey(licenseKeyId);
 
