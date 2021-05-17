@@ -433,7 +433,9 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 
 					<div>
 						<c:if test="<%= !editLicenseKeyDisplayContext.isClusterLicenseKeyVisible() %>">
-							<button class="btn btn-monospaced btn-secondary" onclick="<portlet:namespace />moveLicenseKey('<%= editLicenseKeyDisplayContext.getMoveLicenseKeyURL() %>');" type="button">
+							<button class="btn btn-secondary btn-sm" onclick="<portlet:namespace />moveLicenseKey('<%= editLicenseKeyDisplayContext.getMoveLicenseKeyURL() %>');" type="button">
+								<liferay-ui:message key="move" />
+
 								<clay:icon
 									symbol="move-folder"
 								/>
@@ -441,7 +443,9 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 						</c:if>
 
 						<c:if test="<%= editLicenseKeyDisplayContext.isDownloadVisible() %>">
-							<a class="btn btn-monospaced btn-secondary" href="<%= editLicenseKeyDisplayContext.getDownloadLicenseKeyURL() %>" type="button">
+							<a class="btn btn-primary btn-sm" href="<%= editLicenseKeyDisplayContext.getDownloadLicenseKeyURL() %>" type="button">
+								<liferay-ui:message key="download" />
+
 								<clay:icon
 									symbol="download"
 								/>
