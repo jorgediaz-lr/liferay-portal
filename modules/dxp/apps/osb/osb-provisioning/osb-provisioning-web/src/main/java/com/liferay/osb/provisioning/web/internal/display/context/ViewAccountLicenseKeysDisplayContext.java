@@ -68,6 +68,7 @@ public class ViewAccountLicenseKeysDisplayContext
 							StringBundler.concat(
 								"javascript:", renderResponse.getNamespace(),
 								"downloadLicenseKeys();"));
+						dropdownItem.setIcon("download");
 						dropdownItem.setLabel(
 							LanguageUtil.get(httpServletRequest, "download"));
 						dropdownItem.setQuickAction(true);
@@ -78,6 +79,7 @@ public class ViewAccountLicenseKeysDisplayContext
 							StringBundler.concat(
 								"javascript:", renderResponse.getNamespace(),
 								"renewLicenseKeys();"));
+						dropdownItem.setIcon("time");
 						dropdownItem.setLabel(
 							LanguageUtil.get(httpServletRequest, "renew"));
 						dropdownItem.setQuickAction(true);
