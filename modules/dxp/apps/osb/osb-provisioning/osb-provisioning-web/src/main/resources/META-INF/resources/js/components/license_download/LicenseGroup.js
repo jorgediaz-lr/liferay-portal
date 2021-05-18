@@ -14,19 +14,27 @@ import capitalize from 'lodash.capitalize';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import {useLicenses} from '../../hooks/licenses';
 import {NAMESPACE} from '../../utilities/constants';
 
-function LicenseGroup({downloadURL, licenses}) {
-	return licenses.map((group, index) => {
+function LicenseGroup({downloadURL, items}) {
+	const [licenses] = useLicenses();
+	const disableDelete = licenses.size === 1;
+
+	return items.map((group, index) => {
 		let value = [];
 
 		return (
 			<ClayTable.Body key={index}>
-				{group.map(license => {
-					value = [...value, license.licenseKeyId];
+				{group.map(item => {
+					value = [...value, item.licenseKeyId];
 
 					return (
-						<License key={license.licenseKeyId} license={license} />
+						<License
+							disableDelete={disableDelete}
+							key={item.licenseKeyId}
+							license={item}
+						/>
 					);
 				})}
 				<Download actionURL={downloadURL} value={value.join()} />
@@ -64,7 +72,9 @@ function Download({actionURL, value}) {
 	);
 }
 
-function License({license}) {
+function License({disableDelete, license}) {
+	const [, {removeLicense}] = useLicenses();
+
 	const {
 		active,
 		description,
@@ -80,6 +90,16 @@ function License({license}) {
 		productVersion,
 		startDate
 	} = license;
+
+	function handleDeleteLicense(event) {
+		const {currentTarget} = event;
+
+		const ancestor = currentTarget.closest('tr');
+
+		if (ancestor) {
+			removeLicense(ancestor.id);
+		}
+	}
 
 	return (
 		<ClayTable.Row id={licenseKeyId}>
@@ -100,7 +120,24 @@ function License({license}) {
 			<ClayTable.Cell>
 				<Status active={active} expirationDate={expirationDate} />
 			</ClayTable.Cell>
-			<ClayTable.Cell></ClayTable.Cell>
+			<ClayTable.Cell>
+				<button
+					className="btn btn-icon btn-sm"
+					disabled={disableDelete}
+					onClick={handleDeleteLicense}
+					role="button"
+					title={Liferay.Language.get('delete')}
+					type="button"
+				>
+					<svg
+						aria-label={Liferay.Language.get('delete-license-icon')}
+						className="delete-icon"
+						role="img"
+					>
+						<use xlinkHref="#delete-icon" />
+					</svg>
+				</button>
+			</ClayTable.Cell>
 		</ClayTable.Row>
 	);
 }
@@ -133,7 +170,7 @@ function Status({active, expirationDate}) {
 
 LicenseGroup.propTypes = {
 	downloadURL: PropTypes.string.isRequired,
-	licenses: PropTypes.arrayOf(
+	items: PropTypes.arrayOf(
 		PropTypes.arrayOf(
 			PropTypes.shape({
 				active: PropTypes.bool,

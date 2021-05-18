@@ -137,7 +137,7 @@ function renderDownloadLicenses(props) {
 					productVersion: '7.1',
 					startDate: 'March 17, 2021'
 				},
-				// licenseEntryType is not Production
+				// licenseEntryType is not Production, same start date as License 5
 				{
 					active: true,
 					description: 'Test Account description',
@@ -152,7 +152,7 @@ function renderDownloadLicenses(props) {
 					name: 'License 8',
 					productName: 'Portal Backup',
 					productVersion: '6.2',
-					startDate: 'March 17, 2021'
+					startDate: 'March 16, 2021'
 				},
 				// Old licenseVersion
 				{
@@ -191,8 +191,9 @@ describe('DownloadLicenses', () => {
 
 		const groups = container.querySelectorAll('tbody');
 
-		within(groups[0]).getByText('License 1');
-		within(groups[0]).getByText('License 2');
+		// only two licenses are groupable
+		within(groups[1]).getByText('License 1');
+		within(groups[1]).getByText('License 2');
 
 		expect(getAllByText('download').length).toBe(8);
 	});

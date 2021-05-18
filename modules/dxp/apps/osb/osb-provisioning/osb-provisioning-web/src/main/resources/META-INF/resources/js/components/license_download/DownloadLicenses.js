@@ -14,6 +14,7 @@ import partition from 'lodash.partition';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import {LicensesProvider, useLicenses} from '../../hooks/licenses';
 import {LICENSE_TYPE_PRODUCTION} from '../../utilities/constants';
 import {groupByAll} from '../../utilities/helpers';
 import LicenseGroup from './LicenseGroup';
@@ -21,11 +22,22 @@ import LicenseGroup from './LicenseGroup';
 const MIN_LICENSE_GROUPABLE_VERSION_NUMBER = 3;
 
 function DownloadLicenses({downloadLicenseKeysURL, licenseKeys}) {
+	return (
+		<LicensesProvider initialLicenses={licenseKeys}>
+			<Licenses downloadURL={downloadLicenseKeysURL} />
+		</LicensesProvider>
+	);
+}
+
+function Licenses({downloadURL}) {
+	const [licenses] = useLicenses();
+
 	const [activeVersionCompliantLicenses, oldInactiveLicenses] = partition(
-		licenseKeys,
+		licenses.toSet().toJS(),
 		({active, licenseVersion}) =>
 			licenseVersion > MIN_LICENSE_GROUPABLE_VERSION_NUMBER && active
 	);
+
 	const [licensesTypeProduction, licensesTypeOther] = partition(
 		activeVersionCompliantLicenses,
 		({licenseEntryType}) => licenseEntryType === LICENSE_TYPE_PRODUCTION
@@ -80,28 +92,28 @@ function DownloadLicenses({downloadLicenseKeysURL, licenseKeys}) {
 						<ClayTable.Cell headingCell>
 							{Liferay.Language.get('status')}
 						</ClayTable.Cell>
-						<ClayTable.Cell></ClayTable.Cell>
+						<ClayTable.Cell headingCell></ClayTable.Cell>
 					</ClayTable.Row>
 				</ClayTable.Head>
 
 				{!!groupedLicenses.length && (
 					<LicenseGroup
-						downloadURL={downloadLicenseKeysURL}
-						licenses={groupedLicenses}
+						downloadURL={downloadURL}
+						items={groupedLicenses}
 					/>
 				)}
 
 				{!!licensesTypeOther.length && (
 					<LicenseGroup
-						downloadURL={downloadLicenseKeysURL}
-						licenses={formatLicenses(licensesTypeOther)}
+						downloadURL={downloadURL}
+						items={formatLicenses(licensesTypeOther)}
 					/>
 				)}
 
 				{!!oldInactiveLicenses.length && (
 					<LicenseGroup
-						downloadURL={downloadLicenseKeysURL}
-						licenses={formatLicenses(oldInactiveLicenses)}
+						downloadURL={downloadURL}
+						items={formatLicenses(oldInactiveLicenses)}
 					/>
 				)}
 			</ClayTable>
@@ -128,7 +140,7 @@ DownloadLicenses.propTypes = {
 			productVersion: PropTypes.string,
 			startDate: PropTypes.string
 		})
-	)
+	).isRequired
 };
 
 export default DownloadLicenses;

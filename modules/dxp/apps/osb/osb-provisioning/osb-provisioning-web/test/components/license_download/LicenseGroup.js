@@ -13,6 +13,7 @@ import {cleanup, render} from '@testing-library/react';
 import React from 'react';
 
 import LicenseGroup from '../../../src/main/resources/META-INF/resources/js/components/license_download/LicenseGroup';
+import {LicensesProvider} from '../../../src/main/resources/META-INF/resources/js/hooks/licenses';
 import {
 	formatDate,
 	generateNewDateByYear
@@ -21,70 +22,70 @@ import {
 const TODAY = new Date();
 
 const multipleLicenses = [
-	[
-		{
-			active: true,
-			description: 'Test Account description',
-			expirationDate: 'April 16, 2122',
-			hostName: 'Test Host Name 1',
-			ipAddresses: '',
-			licenseEntryName: 'Portal Backup',
-			licenseEntryType: 'production',
-			licenseKeyId: '85602',
-			licenseVersion: 3,
-			macAddresses: '',
-			name: 'License 1',
-			productName: 'Portal Backup',
-			productVersion: '6.1 GA1',
-			startDate: 'March 17, 2021'
-		},
-		{
-			active: true,
-			description: 'Test Account description',
-			expirationDate: 'April 16, 2122',
-			hostName: 'Test Host Name 2',
-			ipAddresses: '',
-			licenseEntryName: 'Portal Backup',
-			licenseEntryType: 'production',
-			licenseKeyId: '85603',
-			licenseVersion: 3,
-			macAddresses: '',
-			name: 'License 2',
-			productName: 'Portal Backup',
-			productVersion: '6.2',
-			startDate: 'March 17, 2021'
-		}
-	]
+	{
+		active: true,
+		description: 'Test Account description',
+		expirationDate: 'April 16, 2122',
+		hostName: 'Test Host Name 1',
+		ipAddresses: '',
+		licenseEntryName: 'Portal Backup',
+		licenseEntryType: 'production',
+		licenseKeyId: '85602',
+		licenseVersion: 3,
+		macAddresses: '',
+		name: 'License 1',
+		productName: 'Portal Backup',
+		productVersion: '6.1 GA1',
+		startDate: 'March 17, 2021'
+	},
+	{
+		active: true,
+		description: 'Test Account description',
+		expirationDate: 'April 16, 2122',
+		hostName: 'Test Host Name 2',
+		ipAddresses: '',
+		licenseEntryName: 'Portal Backup',
+		licenseEntryType: 'production',
+		licenseKeyId: '85603',
+		licenseVersion: 3,
+		macAddresses: '',
+		name: 'License 2',
+		productName: 'Portal Backup',
+		productVersion: '6.2',
+		startDate: 'March 17, 2021'
+	}
+];
+
+const singleLicense = [
+	{
+		active: true,
+		description: 'Test Account description',
+		expirationDate: 'April 16, 2122',
+		hostName: 'Test Host Name 1',
+		ipAddresses: '0.0.0.0',
+		licenseEntryName: 'Portal Backup',
+		licenseEntryType: 'production',
+		licenseKeyId: '85602',
+		licenseVersion: 3,
+		macAddresses: '01-02-03-04-ab-cd',
+		name: 'License 1',
+		productName: 'Portal Backup',
+		productVersion: '6.1 GA1',
+		startDate: 'March 17, 2021'
+	}
 ];
 
 function renderLicenseGroup(props) {
 	return render(
-		<table>
-			<LicenseGroup
-				downloadURL="/download/license/key/url"
-				licenses={[
-					[
-						{
-							active: true,
-							description: 'Test Account description',
-							expirationDate: 'April 16, 2122',
-							hostName: 'Test Host Name 1',
-							ipAddresses: '0.0.0.0',
-							licenseEntryName: 'Portal Backup',
-							licenseEntryType: 'production',
-							licenseKeyId: '85602',
-							licenseVersion: 3,
-							macAddresses: '01-02-03-04-ab-cd',
-							name: 'License 1',
-							productName: 'Portal Backup',
-							productVersion: '6.1 GA1',
-							startDate: 'March 17, 2021'
-						}
-					]
-				]}
-				{...props}
-			/>
-		</table>
+		<LicensesProvider initialLicenses={singleLicense}>
+			<table>
+				<LicenseGroup
+					downloadURL="/download/license/key/url"
+					items={[singleLicense]}
+					{...props}
+				/>
+			</table>
+		</LicensesProvider>
 	);
 }
 
@@ -104,7 +105,7 @@ describe('LicenseGroup', () => {
 	});
 
 	it('only displays one Download button per group no matter how many licenses are listed', () => {
-		const {getAllByText} = renderLicenseGroup({licenses: multipleLicenses});
+		const {getAllByText} = renderLicenseGroup({items: [multipleLicenses]});
 
 		expect(getAllByText('download').length).toBe(1);
 	});
@@ -166,7 +167,7 @@ describe('LicenseGroup', () => {
 
 	it('displays the Deactivated Status label correctly', () => {
 		const {getByText} = renderLicenseGroup({
-			licenses: [
+			items: [
 				[
 					{
 						active: false,
@@ -195,7 +196,7 @@ describe('LicenseGroup', () => {
 		const newExpirationDate = generateNewDateByYear(TODAY, 2);
 
 		const {getByText} = renderLicenseGroup({
-			licenses: [
+			items: [
 				[
 					{
 						active: true,
@@ -222,7 +223,7 @@ describe('LicenseGroup', () => {
 
 	it('displays the Expired Status label correctly', () => {
 		const {getByText} = renderLicenseGroup({
-			licenses: [
+			items: [
 				[
 					{
 						active: true,
@@ -245,5 +246,38 @@ describe('LicenseGroup', () => {
 		});
 
 		getByText('expired');
+	});
+
+	it('displays a delete button correctly', () => {
+		const {getByLabelText} = renderLicenseGroup();
+
+		getByLabelText('delete-license-icon');
+	});
+
+	it('displays a disabled delete button when there is only one license', () => {
+		const {getByLabelText} = renderLicenseGroup();
+
+		expect(
+			getByLabelText('delete-license-icon').parentElement.disabled
+		).toBeTruthy();
+	});
+
+	it('displays enabled delete buttons when there is more than one license', () => {
+		const {getAllByLabelText} = render(
+			<LicensesProvider initialLicenses={multipleLicenses}>
+				<table>
+					<LicenseGroup
+						downloadURL="/download/license/key/url"
+						items={[multipleLicenses]}
+					/>
+				</table>
+			</LicensesProvider>
+		);
+
+		const allDeleteIconSVGs = getAllByLabelText('delete-license-icon');
+
+		allDeleteIconSVGs.forEach(icon => {
+			expect(icon.parentElement.disabled).toBeFalsy();
+		});
 	});
 });

@@ -119,6 +119,12 @@
 	padding-right: $spacing-xs;
 }
 
+.btn-icon svg {
+	fill: $dark-l3;
+	height: $spacing-md;
+	width: $spacing-md;
+}
+
 .button-holder {
 	&.button-holder-lg {
 		margin: $spacing-default 0;
