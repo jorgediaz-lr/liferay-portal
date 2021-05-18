@@ -32,3 +32,8 @@
 # Bundle Version 2.0.6
 #
 40abeffd19dabd477fefc83611b50072ca925421^..9ca7b0ed32175c35cc6ec6c031757753e7af1e22=LPS-77699
+
+#
+# Bundle Version 2.0.7
+#
+9ca7b0ed32175c35cc6ec6c031757753e7af1e22^..afb7675d86c7bca83701b15d066edfcae2445920=COMMERCE-6622
