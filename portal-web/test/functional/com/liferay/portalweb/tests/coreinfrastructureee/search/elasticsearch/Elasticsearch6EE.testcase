@@ -77,7 +77,7 @@ definition {
 
 	@priority = "5"
 	test LearningToRankSmoke {
-		property elastic.override.version = "6.8.6";
+		property elastic.override.version = "6.8.0";
 		property elasticsearch.ltr.enabled = "true";
 		property osgi.app.includes = "portal-search-learning-to-rank";
 		property remote.elasticsearch.enabled = "true";
