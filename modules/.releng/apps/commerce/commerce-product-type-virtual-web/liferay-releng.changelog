@@ -2,3 +2,8 @@
 # Bundle Version 2.0.0
 #
 2b26efd18fadb3c1adac707100c875f43e782ed1^..c23e5c6696ddadf381e2534c4d2ceee9c23aeaf3=COMMERCE-4584
+
+#
+# Bundle Version 2.0.1
+#
+c23e5c6696ddadf381e2534c4d2ceee9c23aeaf3^..bccfb1e4112106c87354036be611c860ec242cff=COMMERCE-4584 COMMERCE-6622
