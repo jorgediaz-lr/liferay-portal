@@ -241,6 +241,8 @@ public class DLAppHelperLocalServiceImpl
 		actionableDynamicQuery.setPerformActionMethod(
 			(DLFileEntry dlFileEntry) -> _deleteFileEntry(
 				dlFileEntry.getFileEntryId()));
+
+		actionableDynamicQuery.performActions();
 	}
 
 	@Override
