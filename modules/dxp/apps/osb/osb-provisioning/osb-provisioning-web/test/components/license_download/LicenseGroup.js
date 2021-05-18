@@ -24,10 +24,13 @@ const multipleLicenses = [
 			active: true,
 			description: 'Test Account description',
 			expirationDate: 'April 16, 2122',
+			hostName: 'Test Host Name 1',
+			ipAddresses: '',
 			licenseEntryName: 'Portal Backup',
 			licenseEntryType: 'production',
 			licenseKeyId: '85602',
 			licenseVersion: 3,
+			macAddresses: '',
 			name: 'License 1',
 			productName: 'Portal Backup',
 			productVersion: '6.1 GA1',
@@ -37,10 +40,13 @@ const multipleLicenses = [
 			active: true,
 			description: 'Test Account description',
 			expirationDate: 'April 16, 2122',
+			hostName: 'Test Host Name 2',
+			ipAddresses: '',
 			licenseEntryName: 'Portal Backup',
 			licenseEntryType: 'production',
 			licenseKeyId: '85603',
 			licenseVersion: 3,
+			macAddresses: '',
 			name: 'License 2',
 			productName: 'Portal Backup',
 			productVersion: '6.2',
@@ -60,10 +66,13 @@ function renderLicenseGroup(props) {
 							active: true,
 							description: 'Test Account description',
 							expirationDate: 'April 16, 2122',
+							hostName: 'Test Host Name 1',
+							ipAddresses: '0.0.0.0',
 							licenseEntryName: 'Portal Backup',
 							licenseEntryType: 'production',
 							licenseKeyId: '85602',
 							licenseVersion: 3,
+							macAddresses: '01-02-03-04-ab-cd',
 							name: 'License 1',
 							productName: 'Portal Backup',
 							productVersion: '6.1 GA1',
@@ -135,6 +144,24 @@ describe('LicenseGroup', () => {
 		getByText('April 16, 2122');
 	});
 
+	it('displays the Host Name correctly', () => {
+		const {getByText} = renderLicenseGroup();
+
+		getByText('Test Host Name 1');
+	});
+
+	it('displays the IP Addresses correctly', () => {
+		const {getByText} = renderLicenseGroup();
+
+		getByText('0.0.0.0');
+	});
+
+	it('displays the MAC Addresses correctly', () => {
+		const {getByText} = renderLicenseGroup();
+
+		getByText('01-02-03-04-ab-cd');
+	});
+
 	it('displays the Deactivated Status label correctly', () => {
 		const {getByText} = renderLicenseGroup({
 			licenses: [
@@ -143,10 +170,13 @@ describe('LicenseGroup', () => {
 						active: false,
 						description: 'Test Account description',
 						expirationDate: 'April 16, 2122',
+						hostName: 'Test Host Name',
+						ipAddresses: '',
 						licenseEntryName: 'Portal Backup',
 						licenseEntryType: 'production',
 						licenseKeyId: '85602',
 						licenseVersion: 3,
+						macAddresses: '',
 						name: 'License 1',
 						productName: 'Portal Backup',
 						productVersion: '6.1 GA1',
@@ -169,10 +199,13 @@ describe('LicenseGroup', () => {
 						active: true,
 						description: 'Test Account description',
 						expirationDate: formatDate(newExpirationDate),
+						hostName: 'Test Host Name',
+						ipAddresses: '',
 						licenseEntryName: 'Portal Backup',
 						licenseEntryType: 'production',
 						licenseKeyId: '85602',
 						licenseVersion: 3,
+						macAddresses: '',
 						name: 'License 1',
 						productName: 'Portal Backup',
 						productVersion: '6.1 GA1',
@@ -193,10 +226,13 @@ describe('LicenseGroup', () => {
 						active: true,
 						description: 'Test Account description',
 						expirationDate: 'April 10, 2020',
+						hostName: 'Test Host Name',
+						ipAddresses: '',
 						licenseEntryName: 'Portal Backup',
 						licenseEntryType: 'production',
 						licenseKeyId: '85602',
 						licenseVersion: 3,
+						macAddresses: '',
 						name: 'License 1',
 						productName: 'Portal Backup',
 						productVersion: '6.1 GA1',

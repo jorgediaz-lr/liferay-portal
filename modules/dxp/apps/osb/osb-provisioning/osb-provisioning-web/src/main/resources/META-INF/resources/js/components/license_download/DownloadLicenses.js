@@ -68,6 +68,15 @@ function DownloadLicenses({downloadLicenseKeysURL, licenseKeys}) {
 						<ClayTable.Cell expanded headingCell>
 							{Liferay.Language.get('expiration-date')}
 						</ClayTable.Cell>
+						<ClayTable.Cell expanded headingCell>
+							{Liferay.Language.get('host-name')}
+						</ClayTable.Cell>
+						<ClayTable.Cell expanded headingCell>
+							{Liferay.Language.get('ip-addresses')}
+						</ClayTable.Cell>
+						<ClayTable.Cell expanded headingCell>
+							{Liferay.Language.get('mac-addresses')}
+						</ClayTable.Cell>
 						<ClayTable.Cell headingCell>
 							{Liferay.Language.get('status')}
 						</ClayTable.Cell>
@@ -107,10 +116,13 @@ DownloadLicenses.propTypes = {
 			active: PropTypes.bool,
 			description: PropTypes.string,
 			expirationDate: PropTypes.string,
+			hostName: PropTypes.string,
+			ipAddresses: PropTypes.string,
 			licenseEntryName: PropTypes.string,
 			licenseEntryType: PropTypes.string,
 			licenseKeyId: PropTypes.string,
 			licenseVersion: PropTypes.number,
+			macAddresses: PropTypes.string,
 			name: PropTypes.string,
 			productName: PropTypes.string,
 			productVersion: PropTypes.string,

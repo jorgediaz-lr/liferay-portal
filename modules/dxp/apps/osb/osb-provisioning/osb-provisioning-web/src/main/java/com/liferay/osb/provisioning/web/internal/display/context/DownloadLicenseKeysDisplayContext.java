@@ -71,6 +71,10 @@ public class DownloadLicenseKeysDisplayContext {
 					"expirationDate",
 					_dateFormat.format(licenseKey.getExpirationDate())
 				).put(
+					"hostName", licenseKey.getHostName()
+				).put(
+					"ipAddresses", licenseKey.getIpAddresses()
+				).put(
 					"licenseEntryName", licenseKey.getLicenseEntryName()
 				).put(
 					"licenseEntryType", licenseKey.getLicenseEntryType()
@@ -78,6 +82,8 @@ public class DownloadLicenseKeysDisplayContext {
 					"licenseKeyId", licenseKey.getLicenseKeyId()
 				).put(
 					"licenseVersion", licenseKey.getLicenseVersion()
+				).put(
+					"macAddresses", licenseKey.getMacAddresses()
 				).put(
 					"name", licenseKey.getName()
 				).put(

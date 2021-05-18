@@ -57,6 +57,9 @@ function Download({actionURL, value}) {
 			<ClayTable.Cell></ClayTable.Cell>
 			<ClayTable.Cell></ClayTable.Cell>
 			<ClayTable.Cell></ClayTable.Cell>
+			<ClayTable.Cell></ClayTable.Cell>
+			<ClayTable.Cell></ClayTable.Cell>
+			<ClayTable.Cell></ClayTable.Cell>
 		</ClayTable.Row>
 	);
 }
@@ -66,9 +69,12 @@ function License({license}) {
 		active,
 		description,
 		expirationDate,
+		hostName,
+		ipAddresses,
 		licenseEntryName,
 		licenseEntryType,
 		licenseKeyId,
+		macAddresses,
 		name,
 		productName,
 		productVersion,
@@ -88,6 +94,9 @@ function License({license}) {
 			)})`}</ClayTable.Cell>
 			<ClayTable.Cell>{startDate}</ClayTable.Cell>
 			<ClayTable.Cell>{expirationDate}</ClayTable.Cell>
+			<ClayTable.Cell>{hostName}</ClayTable.Cell>
+			<ClayTable.Cell>{ipAddresses}</ClayTable.Cell>
+			<ClayTable.Cell>{macAddresses}</ClayTable.Cell>
 			<ClayTable.Cell>
 				<Status active={active} expirationDate={expirationDate} />
 			</ClayTable.Cell>
@@ -130,10 +139,13 @@ LicenseGroup.propTypes = {
 				active: PropTypes.bool,
 				description: PropTypes.string,
 				expirationDate: PropTypes.string,
+				hostName: PropTypes.string,
+				ipAddresses: PropTypes.string,
 				licenseEntryName: PropTypes.string,
 				licenseEntryType: PropTypes.string,
 				licenseKeyId: PropTypes.string,
 				licenseVersion: PropTypes.number,
+				macAddresses: PropTypes.string,
 				name: PropTypes.string,
 				productName: PropTypes.string,
 				productVersion: PropTypes.string,
