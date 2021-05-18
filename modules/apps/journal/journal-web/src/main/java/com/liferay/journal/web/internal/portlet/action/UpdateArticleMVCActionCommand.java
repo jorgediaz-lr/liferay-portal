@@ -132,7 +132,6 @@ public class UpdateArticleMVCActionCommand extends BaseMVCActionCommand {
 		long folderId = ParamUtil.getLong(uploadPortletRequest, "folderId");
 		String articleId = ParamUtil.getString(
 			uploadPortletRequest, "articleId");
-		double version = ParamUtil.getDouble(uploadPortletRequest, "version");
 		Map<Locale, String> titleMap = LocalizationUtil.getLocalizationMap(
 			actionRequest, "titleMapAsXML");
 
@@ -310,6 +309,9 @@ public class UpdateArticleMVCActionCommand extends BaseMVCActionCommand {
 		else {
 
 			// Update article
+
+			double version = ParamUtil.getDouble(
+				uploadPortletRequest, "version");
 
 			article = _journalArticleService.getArticle(
 				groupId, articleId, version);

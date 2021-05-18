@@ -111,9 +111,6 @@ public class EditAuthenticationTokenMVCActionCommand
 	protected void updateAuthenticationToken(ActionRequest actionRequest)
 		throws PortalException {
 
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
 		long authenticationTokenId = ParamUtil.getLong(
 			actionRequest, "authenticationTokenId");
 
@@ -125,6 +122,9 @@ public class EditAuthenticationTokenMVCActionCommand
 				authenticationTokenId, name);
 		}
 		else {
+			ThemeDisplay themeDisplay =
+				(ThemeDisplay)actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
+
 			ServiceProducer serviceProducer =
 				_serviceProducerLocalService.getAuthorizedServiceProducer(
 					themeDisplay.getUserId());
