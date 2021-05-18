@@ -11,6 +11,7 @@
 
 import ClayTable from '@clayui/table';
 import ClayTableCell from '@clayui/table/lib/Cell';
+import partition from 'lodash.partition';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -64,53 +65,85 @@ function Detached({detached}) {
 	}
 
 	return (
-		<Purchase
-			dividerTitle={Liferay.Language.get('detached')}
-			{...detached}
-			{...formattedDates}
-		/>
+		<>
+			<DividerTitle title={Liferay.Language.get('detached')} />
+
+			<Purchase {...detached} {...formattedDates} />
+		</>
+	);
+}
+
+function DividerTitle({title}) {
+	return (
+		<ClayTable.Row divider={true}>
+			<ClayTableCell colSpan={5}>{title}</ClayTableCell>
+		</ClayTable.Row>
 	);
 }
 
 function Purchased({purchased, selectedType}) {
+	const processedPurchased = purchased
+		? purchased.map(item => {
+				if (item.perpetual) {
+					const startDate = TODAY;
+					const expirationDate = generateNewDate(startDate, 100);
+
+					return {...item, expirationDate, expired: false, startDate};
+				}
+				else {
+					const startDate = new Date(item.startDate);
+					const expirationDate = setExpirationDate(
+						item,
+						selectedType
+					);
+					const expired = expirationDate < TODAY;
+
+					return {...item, expirationDate, expired, startDate};
+				}
+		  })
+		: [];
+	const [active, expired] = partition(
+		processedPurchased,
+		({expired}) => !expired
+	);
+
+	function setExpirationDate(license, type) {
+		let expirationDate = new Date(license.expirationDate);
+
+		if (type !== LICENSE_TYPE_DEVELOPER) {
+			expirationDate = generateNewDate(expirationDate, 100);
+		}
+
+		return expirationDate;
+	}
+
 	return (
 		<>
-			{!!purchased &&
-				purchased.map((item, index) => {
-					let expirationDate;
-					let startDate;
+			{!!active.length && (
+				<>
+					<DividerTitle title={Liferay.Language.get('active')} />
 
-					if (item.perpetual) {
-						startDate = TODAY;
-
-						expirationDate = generateNewDate(startDate, 100);
-					}
-					else {
-						startDate = new Date(item.startDate);
-
-						expirationDate = new Date(item.expirationDate);
-
-						if (selectedType !== LICENSE_TYPE_DEVELOPER) {
-							expirationDate = generateNewDate(
-								expirationDate,
-								100
-							);
-						}
-					}
-
-					const formattedDates = {
-						expirationDate,
-						startDate
-					};
-
-					return (
+					{active.map((item, index) => (
 						<Purchase
 							key={item.productPurchaseKey || index}
 							{...item}
-							{...formattedDates}
 						/>
-					);
-				})}
+					))}
+				</>
+			)}
+
+			{!!expired.length && (
+				<>
+					<DividerTitle title={Liferay.Language.get('expired')} />
+
+					{expired.map((item, index) => (
+						<Purchase
+							key={item.productPurchaseKey || index}
+							{...item}
+						/>
+					))}
+				</>
+			)}
 		</>
 	);
 }

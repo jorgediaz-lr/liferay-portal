@@ -19,7 +19,6 @@ import {DASH} from '../../utilities/constants';
 import DatePicker from '../DatePicker';
 
 function Purchase({
-	dividerTitle,
 	expirationDate,
 	instanceSize = DASH,
 	instanceSizes,
@@ -75,91 +74,78 @@ function Purchase({
 	}
 
 	return (
-		<>
-			{!!dividerTitle && (
-				<ClayTable.Row divider={true}>
-					<ClayTableCell colSpan={5}>{dividerTitle}</ClayTableCell>
-				</ClayTable.Row>
+		<ClayTable.Row>
+			{startDate ? (
+				<ClayTableCell
+					className={`input-group-sm ${
+						isNaN(new Date(selectedStartDate)) ? 'has-error' : ''
+					}`}
+				>
+					<DatePicker
+						defaultValue={startDate}
+						inputName="startDate"
+						updateFn={handleStartDateChange}
+					/>
+				</ClayTableCell>
+			) : (
+				<ClayTableCell>{DASH}</ClayTableCell>
 			)}
 
-			<ClayTable.Row id={dividerTitle ? dividerTitle : ''}>
-				{startDate ? (
-					<ClayTableCell
-						className={`input-group-sm ${
-							isNaN(new Date(selectedStartDate))
-								? 'has-error'
-								: ''
-						}`}
-					>
-						<DatePicker
-							defaultValue={startDate}
-							inputName="startDate"
-							updateFn={handleStartDateChange}
-						/>
-					</ClayTableCell>
-				) : (
-					<ClayTableCell>{DASH}</ClayTableCell>
-				)}
-
-				{expirationDate ? (
-					<ClayTableCell
-						className={`input-group-sm ${
-							isNaN(new Date(selectedExpirationDate))
-								? 'has-error'
-								: ''
-						}`}
-					>
-						<DatePicker
-							defaultValue={expirationDate}
-							inputName="expirationDate"
-							updateFn={handleExpirationDateChange}
-						/>
-					</ClayTableCell>
-				) : (
-					<ClayTableCell>{DASH}</ClayTableCell>
-				)}
-
-				<ClayTableCell>
-					{instanceSizes ? (
-						<label htmlFor="instanceSize">
-							<select
-								aria-label={Liferay.Language.get(
-									'instance-size'
-								)}
-								className="form-control form-control-sm"
-								disabled={!instanceSizes.length}
-								id="instanceSize"
-								onChange={handleSizingChange}
-								value={sizing}
-							>
-								{instanceSizes.map(size => (
-									<option key={size} value={size}>
-										{size}
-									</option>
-								))}
-							</select>
-						</label>
-					) : (
-						instanceSize
-					)}
+			{expirationDate ? (
+				<ClayTableCell
+					className={`input-group-sm ${
+						isNaN(new Date(selectedExpirationDate))
+							? 'has-error'
+							: ''
+					}`}
+				>
+					<DatePicker
+						defaultValue={expirationDate}
+						inputName="expirationDate"
+						updateFn={handleExpirationDateChange}
+					/>
 				</ClayTableCell>
-				<ClayTableCell>{licenseKeysGenerated}</ClayTableCell>
-				<ClayTableCell>
-					<button
-						className="btn btn-secondary btn-sm"
-						disabled={disableChoose}
-						onClick={handleChoosePurchase}
-					>
-						{Liferay.Language.get('choose')}
-					</button>
-				</ClayTableCell>
-			</ClayTable.Row>
-		</>
+			) : (
+				<ClayTableCell>{DASH}</ClayTableCell>
+			)}
+
+			<ClayTableCell>
+				{instanceSizes ? (
+					<label htmlFor="instanceSize">
+						<select
+							aria-label={Liferay.Language.get('instance-size')}
+							className="form-control form-control-sm"
+							disabled={!instanceSizes.length}
+							id="instanceSize"
+							onChange={handleSizingChange}
+							value={sizing}
+						>
+							{instanceSizes.map(size => (
+								<option key={size} value={size}>
+									{size}
+								</option>
+							))}
+						</select>
+					</label>
+				) : (
+					instanceSize
+				)}
+			</ClayTableCell>
+			<ClayTableCell>{licenseKeysGenerated}</ClayTableCell>
+			<ClayTableCell>
+				<button
+					className="btn btn-secondary btn-sm"
+					disabled={disableChoose}
+					onClick={handleChoosePurchase}
+				>
+					{Liferay.Language.get('choose')}
+				</button>
+			</ClayTableCell>
+		</ClayTable.Row>
 	);
 }
 
 Purchase.protoType = {
-	dividerTitle: PropTypes.string,
 	expirationDate: PropTypes.string,
 	instanceSize: PropTypes.number,
 	instanceSizes: PropTypes.arrayOf(PropTypes.number),

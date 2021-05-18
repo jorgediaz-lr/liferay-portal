@@ -88,6 +88,20 @@ describe('Purchases', () => {
 		getByText('detached');
 	});
 
+	it('displays only the Active section for purchased subscriptions if none are expired', () => {
+		const {getByText, queryByText} = renderPurchases();
+
+		getByText('active');
+		expect(queryByText('expired')).toBeFalsy();
+	});
+
+	it('displays an Expired section if there are expired subscriptions', () => {
+		const {getByText} = renderPurchases({type: 'developer'});
+
+		getByText('expired');
+		getByText('active');
+	});
+
 	it('only renders the Detached section with default values (dashes) if no purchased product is provided', () => {
 		const {getAllByText, getByText} = renderPurchases({purchased: []});
 
