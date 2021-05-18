@@ -2144,15 +2144,13 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 						StringPool.BLANK, sb.toString(), 1, 1000,
 						StringPool.BLANK);
 
-				for (ProductPurchaseView productPurchaseView :
+				for (ProductPurchaseView expiredProductPurchaseView :
 						expiredProductPurchaseViews) {
 
-					ProductPurchase[] viewProductPurchases =
-						productPurchaseView.getProductPurchases();
+					ProductPurchase[] expiredProductPurchases =
+						expiredProductPurchaseView.getProductPurchases();
 
-					if ((viewProductPurchases == null) ||
-						(viewProductPurchases.length < 1)) {
-
+					if (ArrayUtil.isEmpty(expiredProductPurchases)) {
 						continue;
 					}
 
@@ -2160,7 +2158,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 					ProductPurchase latestProductPurchase = null;
 
 					for (ProductPurchase productPurchase :
-							viewProductPurchases) {
+							expiredProductPurchases) {
 
 						if ((latestEndDate == null) ||
 							latestEndDate.after(productPurchase.getEndDate())) {
