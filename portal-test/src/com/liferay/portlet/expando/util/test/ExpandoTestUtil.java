@@ -76,7 +76,7 @@ public class ExpandoTestUtil {
 		return ExpandoValueLocalServiceUtil.addValue(
 			TestPropsValues.getCompanyId(),
 			PortalUtil.getClassName(table.getClassNameId()), table.getName(),
-			column.getName(), CounterLocalServiceUtil.increment(), data,
+			column.getName(), CounterLocalServiceUtil.increment() * 999L, data,
 			defaultLocale);
 	}
 
@@ -85,7 +85,7 @@ public class ExpandoTestUtil {
 		throws Exception {
 
 		return addValue(
-			table, column, CounterLocalServiceUtil.increment(), data);
+			table, column, CounterLocalServiceUtil.increment() * 999L, data);
 	}
 
 	public static ExpandoValue addValue(
