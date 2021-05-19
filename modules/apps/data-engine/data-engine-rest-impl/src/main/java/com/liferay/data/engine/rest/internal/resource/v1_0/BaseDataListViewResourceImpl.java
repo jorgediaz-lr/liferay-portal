@@ -318,7 +318,8 @@ public abstract class BaseDataListViewResourceImpl
 
 		for (DataListView dataListView : dataListViews) {
 			postDataDefinitionDataListView(
-				(Long)parameters.get("dataDefinitionId"), dataListView);
+				Long.parseLong((String)parameters.get("dataDefinitionId")),
+				dataListView);
 		}
 	}
 
@@ -355,7 +356,7 @@ public abstract class BaseDataListViewResourceImpl
 		throws Exception {
 
 		return getDataDefinitionDataListViewsPage(
-			(Long)parameters.get("dataDefinitionId"),
+			Long.parseLong((String)parameters.get("dataDefinitionId")),
 			(String)parameters.get("keywords"), pagination, sorts);
 	}
 
@@ -390,7 +391,7 @@ public abstract class BaseDataListViewResourceImpl
 		for (DataListView dataListView : dataListViews) {
 			putDataListView(
 				dataListView.getId() != null ? dataListView.getId() :
-					(Long)parameters.get("dataListViewId"),
+					Long.parseLong((String)parameters.get("dataListViewId")),
 				dataListView);
 		}
 	}

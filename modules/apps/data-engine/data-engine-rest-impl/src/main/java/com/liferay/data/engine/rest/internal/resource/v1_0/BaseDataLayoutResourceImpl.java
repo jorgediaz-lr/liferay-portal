@@ -423,7 +423,8 @@ public abstract class BaseDataLayoutResourceImpl
 
 		for (DataLayout dataLayout : dataLayouts) {
 			postDataDefinitionDataLayout(
-				(Long)parameters.get("dataDefinitionId"), dataLayout);
+				Long.parseLong((String)parameters.get("dataDefinitionId")),
+				dataLayout);
 		}
 	}
 
@@ -460,8 +461,8 @@ public abstract class BaseDataLayoutResourceImpl
 		throws Exception {
 
 		return getSiteDataLayoutsPage(
-			(Long)parameters.get("siteId"), (String)parameters.get("keywords"),
-			pagination, sorts);
+			Long.parseLong((String)parameters.get("siteId")),
+			(String)parameters.get("keywords"), pagination, sorts);
 	}
 
 	@Override
@@ -495,7 +496,7 @@ public abstract class BaseDataLayoutResourceImpl
 		for (DataLayout dataLayout : dataLayouts) {
 			putDataLayout(
 				dataLayout.getId() != null ? dataLayout.getId() :
-					(Long)parameters.get("dataLayoutId"),
+					Long.parseLong((String)parameters.get("dataLayoutId")),
 				dataLayout);
 		}
 	}

@@ -151,10 +151,10 @@ public abstract class BaseTaskResourceImpl
 		throws Exception {
 
 		return getProcessTasksPage(
-			(Long)parameters.get("processId"),
-			(Boolean)parameters.get("completed"),
-			(java.util.Date)parameters.get("dateEnd"),
-			(java.util.Date)parameters.get("dateStart"),
+			Long.parseLong((String)parameters.get("processId")),
+			Boolean.parseBoolean((String)parameters.get("completed")),
+			new java.util.Date((String)parameters.get("dateEnd")),
+			new java.util.Date((String)parameters.get("dateStart")),
 			(String)parameters.get("key"), pagination, sorts);
 	}
 

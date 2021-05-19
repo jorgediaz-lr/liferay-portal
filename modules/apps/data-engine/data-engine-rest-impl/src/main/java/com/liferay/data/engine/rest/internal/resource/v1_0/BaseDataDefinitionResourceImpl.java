@@ -407,7 +407,8 @@ public abstract class BaseDataDefinitionResourceImpl
 
 		for (DataDefinition dataDefinition : dataDefinitions) {
 			postSiteDataDefinition(
-				(Long)parameters.get("siteId"), dataDefinition);
+				Long.parseLong((String)parameters.get("siteId")),
+				dataDefinition);
 		}
 	}
 
@@ -444,8 +445,8 @@ public abstract class BaseDataDefinitionResourceImpl
 		throws Exception {
 
 		return getSiteDataDefinitionsPage(
-			(Long)parameters.get("siteId"), (String)parameters.get("keywords"),
-			pagination, sorts);
+			Long.parseLong((String)parameters.get("siteId")),
+			(String)parameters.get("keywords"), pagination, sorts);
 	}
 
 	@Override
@@ -479,7 +480,7 @@ public abstract class BaseDataDefinitionResourceImpl
 		for (DataDefinition dataDefinition : dataDefinitions) {
 			putDataDefinition(
 				dataDefinition.getId() != null ? dataDefinition.getId() :
-					(Long)parameters.get("dataDefinitionId"),
+					Long.parseLong((String)parameters.get("dataDefinitionId")),
 				dataDefinition);
 		}
 	}

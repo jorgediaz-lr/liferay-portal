@@ -439,7 +439,8 @@ public abstract class BaseDataRecordCollectionResourceImpl
 				dataRecordCollections) {
 
 			postDataDefinitionDataRecordCollection(
-				(Long)parameters.get("dataDefinitionId"), dataRecordCollection);
+				Long.parseLong((String)parameters.get("dataDefinitionId")),
+				dataRecordCollection);
 		}
 	}
 
@@ -478,8 +479,8 @@ public abstract class BaseDataRecordCollectionResourceImpl
 		throws Exception {
 
 		return getSiteDataRecordCollectionsPage(
-			(Long)parameters.get("siteId"), (String)parameters.get("keywords"),
-			pagination);
+			Long.parseLong((String)parameters.get("siteId")),
+			(String)parameters.get("keywords"), pagination);
 	}
 
 	@Override
@@ -516,7 +517,8 @@ public abstract class BaseDataRecordCollectionResourceImpl
 			putDataRecordCollection(
 				dataRecordCollection.getId() != null ?
 					dataRecordCollection.getId() :
-						(Long)parameters.get("dataRecordCollectionId"),
+						Long.parseLong(
+							(String)parameters.get("dataRecordCollectionId")),
 				dataRecordCollection);
 		}
 	}

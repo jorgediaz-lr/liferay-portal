@@ -129,7 +129,8 @@ public abstract class BaseAssigneeUserResourceImpl
 			Map<String, Serializable> parameters, String search)
 		throws Exception {
 
-		return getProcessAssigneeUsersPage((Long)parameters.get("processId"));
+		return getProcessAssigneeUsersPage(
+			Long.parseLong((String)parameters.get("processId")));
 	}
 
 	@Override

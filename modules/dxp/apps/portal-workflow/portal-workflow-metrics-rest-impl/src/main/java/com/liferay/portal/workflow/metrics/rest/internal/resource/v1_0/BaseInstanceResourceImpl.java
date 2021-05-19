@@ -181,10 +181,10 @@ public abstract class BaseInstanceResourceImpl
 		throws Exception {
 
 		return getProcessInstancesPage(
-			(Long)parameters.get("processId"),
+			Long.parseLong((String)parameters.get("processId")),
 			(Long[])parameters.get("assigneeUserIds"),
-			(java.util.Date)parameters.get("dateEnd"),
-			(java.util.Date)parameters.get("dateStart"),
+			new java.util.Date((String)parameters.get("dateEnd")),
+			new java.util.Date((String)parameters.get("dateStart")),
 			(String[])parameters.get("slaStatuses"),
 			(String[])parameters.get("statuses"),
 			(String[])parameters.get("taskKeys"), pagination);
