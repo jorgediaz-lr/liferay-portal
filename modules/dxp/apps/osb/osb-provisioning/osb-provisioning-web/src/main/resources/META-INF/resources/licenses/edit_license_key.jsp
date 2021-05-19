@@ -413,7 +413,7 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 					<div>
 						<span id="renewLicense">
 							<react:component
-								data="<%= editLicenseKeyDisplayContext.getRenewLicenseData() %>"
+								data="<%= new HashMap<>() %>"
 								module="js/RenewLicenseApp"
 							/>
 						</span>

@@ -17,7 +17,7 @@ import React, {useEffect, useState} from 'react';
 import {validateDateFieldFormat} from '../../utilities/date';
 import DatePicker from '../DatePicker';
 
-function RenewalModal({closeFn, expirationDate, renewFn, startDate}) {
+function RenewalModal({closeFn, expirationDate = '', renewFn, startDate = ''}) {
 	const [currentExpirationDate, setCurrentExpirationDate] = useState(
 		expirationDate
 	);
@@ -123,9 +123,9 @@ function RenewalModal({closeFn, expirationDate, renewFn, startDate}) {
 
 RenewalModal.propTypes = {
 	closeFn: PropTypes.func.isRequired,
-	expirationDate: PropTypes.string.isRequired,
+	expirationDate: PropTypes.string,
 	renewFn: PropTypes.func.isRequired,
-	startDate: PropTypes.string.isRequired
+	startDate: PropTypes.string
 };
 
 export default RenewalModal;

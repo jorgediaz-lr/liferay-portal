@@ -55,12 +55,7 @@ export default function BulkRenewal({accountKey, productKey = '', renewalURL}) {
 	return (
 		<>
 			{modalVisible && (
-				<RenewalModal
-					closeFn={handleClose}
-					expirationDate={''}
-					renewFn={handleRenew}
-					startDate={''}
-				/>
+				<RenewalModal closeFn={handleClose} renewFn={handleRenew} />
 			)}
 
 			<HiddenForm

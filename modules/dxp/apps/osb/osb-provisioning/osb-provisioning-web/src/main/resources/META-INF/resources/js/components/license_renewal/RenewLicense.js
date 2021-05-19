@@ -16,7 +16,7 @@ import {NAMESPACE} from '../../utilities/constants';
 import {formatDate} from '../../utilities/date';
 import RenewalModal from './RenewalModal';
 
-export default function RenewLicense({expirationDate, startDate}) {
+export default function RenewLicense({expirationDate = '', startDate = ''}) {
 	const [modalVisible, setModalVisible] = useState(false);
 
 	function handleClose() {
@@ -68,6 +68,6 @@ export default function RenewLicense({expirationDate, startDate}) {
 }
 
 RenewLicense.propTypes = {
-	expirationDate: PropTypes.string.isRequired,
-	startDate: PropTypes.string.isRequired
+	expirationDate: PropTypes.string,
+	startDate: PropTypes.string
 };
