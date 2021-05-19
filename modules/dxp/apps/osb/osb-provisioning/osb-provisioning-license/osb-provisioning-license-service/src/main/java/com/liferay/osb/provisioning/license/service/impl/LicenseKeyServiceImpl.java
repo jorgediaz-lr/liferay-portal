@@ -17,13 +17,16 @@ package com.liferay.osb.provisioning.license.service.impl;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchaseView;
+import com.liferay.osb.provisioning.constants.ProvisioningActionKeys;
 import com.liferay.osb.provisioning.koroneiki.constants.ProductConstants;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductPurchaseViewWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
-import com.liferay.osb.provisioning.license.internal.permission.AssetReceiptPermission;
-import com.liferay.osb.provisioning.license.internal.permission.LicenseKeyPermission;
+import com.liferay.osb.provisioning.license.helper.constants.LicenseType;
+import com.liferay.osb.provisioning.license.helper.constants.LicenseVersion;
+import com.liferay.osb.provisioning.license.model.LicenseEntry;
 import com.liferay.osb.provisioning.license.model.LicenseKey;
+import com.liferay.osb.provisioning.license.permission.LicenseKeyPermission;
 import com.liferay.osb.provisioning.license.service.LicenseEntryLocalService;
 import com.liferay.osb.provisioning.license.service.base.LicenseKeyServiceBaseImpl;
 import com.liferay.petra.string.StringPool;
@@ -40,6 +43,7 @@ import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Date;
 import java.util.Iterator;
@@ -64,6 +68,9 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 	public LicenseKey addDeveloperLicenseKey(
 			String accountKey, String productKey, String productVersion)
 		throws Exception {
+
+		_licenseKeyPermission.check(
+			getPermissionChecker(), ProvisioningActionKeys.MANAGE_LICENSE_KEYS);
 
 		Product product = _productWebService.getProduct(productKey);
 
@@ -136,36 +143,30 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			boolean active)
 		throws Exception {
 
-		AccountEntryPermission.check(
-			getPermissionChecker(), koroneikiAccountKey,
-			OSBActionKeys.ADD_LICENSE);
+		_licenseKeyPermission.check(
+			getPermissionChecker(), ProvisioningActionKeys.MANAGE_LICENSE_KEYS);
 
 		LicenseEntry licenseEntry = _licenseEntryLocalService.getLicenseEntry(
 			licenseEntryId);
 
-		ProductEntry productEntry = null;
+		Product product = null;
 
-		if (productEntryId > 0) {
-			productEntry = _productEntryLocalService.getProductEntry(
-				productEntryId);
+		if (Validator.isNotNull(productKey)) {
+			product = _productWebService.getProduct(productKey);
 		}
 		else {
-			productEntry = _productEntryLocalService.getProductEntry(
-				licenseEntry.getProductEntryId());
+			product = _productWebService.getProduct(
+				licenseEntry.getProductKey());
 		}
 
+		int licenseVersion = LicenseVersion.getLicenseVersion(
+			product.getName(), productVersion);
 		String licenseEntryType = licenseEntry.getType();
 
-		if ((LicenseKeyConstants.getLicenseVersion(
-				productEntry, productVersion) >= 3) &&
-			(licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER) ||
-			 licenseEntryType.equals(
-				 LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER)) &&
-			(maxHttpSessions != 5) &&
-			!_roleLocalService.hasUserRole(
-				getUserId(), OSBCustomerConstants.ROLE_OSB_ACCOUNT_ADMIN_ID) &&
-			!_roleLocalService.hasUserRole(
-				getUserId(), OSBCustomerConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
+		if ((licenseVersion >= 3) &&
+			(licenseEntryType.equals(LicenseType.DEVELOPER) ||
+			 licenseEntryType.equals(LicenseType.DEVELOPER_CLUSTER)) &&
+			(maxHttpSessions != 5)) {
 
 			throw new PrincipalException();
 		}
@@ -228,14 +229,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		LicenseKey licenseKey = licenseKeyLocalService.getLicenseKey(
 			licenseKeyId);
 
-		if (Validator.isNotNull(licenseKey.getAssetReceiptLicenseUuid())) {
-			AssetReceiptPermission.check(
-				getPermissionChecker(), OSBActionKeys.VIEW);
-		}
-		else {
-			LicenseKeyPermission.check(
-				getPermissionChecker(), licenseKey, ActionKeys.VIEW);
-		}
+		_licenseKeyPermission.check(
+			getPermissionChecker(), licenseKey, ProvisioningActionKeys.VIEW);
 
 		return licenseKeyLocalService.getLicenseKey(licenseKeyId);
 	}
@@ -295,13 +290,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			int start, int end, OrderByComparator obc)
 		throws PortalException {
 
-		if (!isAccountAdmin(getUserId()) &&
-			!_roleLocalService.hasUserRole(
-				getUserId(),
-				OSBCustomerConstants.ROLE_OSB_TRIAL_LICENSE_ADMIN_ID)) {
-
-			throw new PrincipalException();
-		}
+		_licenseKeyPermission.check(
+			getPermissionChecker(), ProvisioningActionKeys.VIEW);
 
 		return licenseKeyLocalService.getProductPurchaseGroupLicenseKeys(
 			productPurchaseKeys, complimentary, active, start, end, obc);
@@ -311,13 +301,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			String[] productPurchaseKeys, boolean complimentary, boolean active)
 		throws PortalException {
 
-		if (!isAccountAdmin(getUserId()) &&
-			!_roleLocalService.hasUserRole(
-				getUserId(),
-				OSBCustomerConstants.ROLE_OSB_TRIAL_LICENSE_ADMIN_ID)) {
-
-			throw new PrincipalException();
-		}
+		_licenseKeyPermission.check(
+			getPermissionChecker(), ProvisioningActionKeys.VIEW);
 
 		return licenseKeyLocalService.getProductPurchaseGroupLicenseKeysCount(
 			productPurchaseKeys, complimentary, active);
@@ -327,7 +312,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			String productPurchaseKey, boolean complimentary, boolean active)
 		throws PortalException {
 
-		validateJSONWebServicePermissions();
+		_licenseKeyPermission.check(
+			getPermissionChecker(), ProvisioningActionKeys.VIEW);
 
 		return licenseKeyLocalService.getProductPurchaseLicenseKeysCount(
 			productPurchaseKey, complimentary, active);
@@ -363,9 +349,9 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		LicenseKey licenseKey = licenseKeyLocalService.getLicenseKey(
 			licenseKeyId);
 
-		AccountEntryPermission.check(
-			getPermissionChecker(), licenseKey.getKoroneikiAccountKey(),
-			OSBActionKeys.ADD_LICENSE);
+		_licenseKeyPermission.check(
+			getPermissionChecker(), licenseKey,
+			ProvisioningActionKeys.MANAGE_LICENSE_KEYS);
 
 		return licenseKeyLocalService.renewLicenseKey(
 			getUserId(), licenseKeyId, startDate, expirationDate);
@@ -472,21 +458,9 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		LicenseKey licenseKey = licenseKeyLocalService.getLicenseKey(
 			licenseKeyId);
 
-		if (licenseKey.isActive() != active) {
-			if (Validator.isNull(licenseKey.getServerId())) {
-				LicenseKeyPermission.check(
-					getPermissionChecker(), licenseKey,
-					OSBActionKeys.UPDATE_ADVANCED);
-			}
-			else {
-				AssetReceiptPermission.check(
-					getPermissionChecker(), OSBActionKeys.MANAGE);
-			}
-		}
-		else {
-			LicenseKeyPermission.check(
-				getPermissionChecker(), licenseKey, OSBActionKeys.UPDATE_BASIC);
-		}
+		_licenseKeyPermission.check(
+			getPermissionChecker(), licenseKey,
+			ProvisioningActionKeys.MANAGE_LICENSE_KEYS);
 
 		licenseKeyLocalService.updateLicenseKey(userId, licenseKeyId, active);
 	}
@@ -499,21 +473,9 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		LicenseKey licenseKey = licenseKeyLocalService.getLicenseKey(
 			licenseKeyId);
 
-		if (!koroneikiProductPurchaseKey.equals(
-				licenseKey.getKoroneikiProductPurchaseKey())) {
-
-			LicenseKeyPermission.check(
-				getPermissionChecker(), licenseKey, OSBActionKeys.UPDATE_ADMIN);
-		}
-		else if (licenseKey.isActive() != active) {
-			LicenseKeyPermission.check(
-				getPermissionChecker(), licenseKey,
-				OSBActionKeys.UPDATE_ADVANCED);
-		}
-		else {
-			LicenseKeyPermission.check(
-				getPermissionChecker(), licenseKey, OSBActionKeys.UPDATE_BASIC);
-		}
+		_licenseKeyPermission.check(
+			getPermissionChecker(), licenseKey,
+			ProvisioningActionKeys.MANAGE_LICENSE_KEYS);
 
 		return licenseKeyLocalService.updateLicenseKey(
 			getUserId(), licenseKeyId, productPurchaseKey, complimentary,
@@ -542,6 +504,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			String assetReceiptLicenseUuid, boolean active)
 		throws Exception {
 
+		validateJSONWebServicePermissions();
+
 		List<LicenseKey> licenseKeys = licenseKeyPersistence.findByARLU_A(
 			assetReceiptLicenseUuid, !active);
 
@@ -554,7 +518,10 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 	protected void addPermissionParams(LinkedHashMap<String, Object> params)
 		throws Exception {
 
-		if (isAccountAdmin(getUserId())) {
+		if (_licenseKeyPermission.contains(
+				getPermissionChecker(),
+				ProvisioningActionKeys.MANAGE_LICENSE_KEYS)) {
+
 			return;
 		}
 
@@ -600,8 +567,9 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		while (itr.hasNext()) {
 			LicenseKey licenseKey = itr.next();
 
-			if (!LicenseKeyPermission.contains(
-					getPermissionChecker(), licenseKey, ActionKeys.VIEW)) {
+			if (!_licenseKeyPermission.contains(
+					getPermissionChecker(), licenseKey,
+					ProvisioningActionKeys.VIEW)) {
 
 				itr.remove();
 			}
@@ -610,34 +578,10 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		return filteredLicenseKeys;
 	}
 
-	protected boolean isAccountAdmin(long userId) {
-		PermissionChecker permissionChecker = getPermissionChecker();
-
-		if (_roleLocalService.hasUserRole(
-				userId, OSBCustomerConstants.ROLE_OSB_ACCOUNT_ADMIN_ID)) {
-
-			return true;
-		}
-
-		if (_roleLocalService.hasUserRole(
-				userId, OSBCustomerConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
-
-			return true;
-		}
-
-		return false;
-	}
-
 	protected void validateJSONWebServicePermissions() throws PortalException {
 		PermissionChecker permissionChecker = getPermissionChecker();
 
 		if (!permissionChecker.isCompanyAdmin()) {
-			throw new PrincipalException();
-		}
-
-		if (!_roleLocalService.hasUserRole(
-				getUserId(), OSBCustomerConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
-
 			throw new PrincipalException();
 		}
 	}
@@ -647,6 +591,9 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 	@Reference
 	private LicenseEntryLocalService _licenseEntryLocalService;
+
+	@Reference
+	private LicenseKeyPermission _licenseKeyPermission;
 
 	@Reference
 	private PortalInstancesLocalService _portalInstancesLocalService;

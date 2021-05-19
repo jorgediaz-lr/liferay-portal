@@ -60,7 +60,8 @@ public class ViewSubscriptionDisplayContext extends ViewAccountDisplayContext {
 			ProvisioningWebKeys.PRODUCT_PURCHASE_VIEW);
 
 		_productPurchaseViewDisplay = new ProductPurchaseViewDisplay(
-			httpServletRequest, account, _productPurchaseView);
+			httpServletRequest, account, licenseKeyPermission,
+			_productPurchaseView);
 	}
 
 	public String getGenerateLicenseURL() {

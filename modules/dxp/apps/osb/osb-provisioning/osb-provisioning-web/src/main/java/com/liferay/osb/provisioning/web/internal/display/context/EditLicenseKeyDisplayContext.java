@@ -14,18 +14,22 @@
 
 package com.liferay.osb.provisioning.web.internal.display.context;
 
+import com.liferay.osb.provisioning.constants.ProvisioningActionKeys;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.constants.ProvisioningWebKeys;
 import com.liferay.osb.provisioning.license.helper.constants.LicenseType;
 import com.liferay.osb.provisioning.license.model.LicenseKey;
+import com.liferay.osb.provisioning.license.permission.LicenseKeyPermission;
 import com.liferay.osb.provisioning.license.service.LicenseKeyLocalService;
 import com.liferay.osb.provisioning.license.util.LicenseUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.WebKeys;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -47,13 +51,15 @@ public class EditLicenseKeyDisplayContext {
 	public EditLicenseKeyDisplayContext(
 			RenderRequest renderRequest, RenderResponse renderResponse,
 			HttpServletRequest httpServletRequest,
-			LicenseKeyLocalService licenseKeyLocalService)
+			LicenseKeyLocalService licenseKeyLocalService,
+			LicenseKeyPermission licenseKeyPermission)
 		throws Exception {
 
 		_renderRequest = renderRequest;
 		_renderResponse = renderResponse;
 		_httpServletRequest = httpServletRequest;
 		_licenseKeyLocalService = licenseKeyLocalService;
+		_licenseKeyPermission = licenseKeyPermission;
 
 		_licenseKey = (LicenseKey)renderRequest.getAttribute(
 			ProvisioningWebKeys.LICENSE_KEY);
@@ -197,6 +203,16 @@ public class EditLicenseKeyDisplayContext {
 		}
 
 		return LanguageUtil.get(_httpServletRequest, "make-complimentary");
+	}
+
+	public boolean hasManageLicenseKeysPermission() throws Exception {
+		ThemeDisplay themeDisplay =
+			(ThemeDisplay)_httpServletRequest.getAttribute(
+				WebKeys.THEME_DISPLAY);
+
+		return _licenseKeyPermission.contains(
+			themeDisplay.getPermissionChecker(),
+			ProvisioningActionKeys.MANAGE_LICENSE_KEYS);
 	}
 
 	public boolean isClusterLicenseKeyVisible() {
@@ -343,6 +359,7 @@ public class EditLicenseKeyDisplayContext {
 	private final LicenseKey _licenseKey;
 	private final LicenseKeyDisplay _licenseKeyDisplay;
 	private final LicenseKeyLocalService _licenseKeyLocalService;
+	private final LicenseKeyPermission _licenseKeyPermission;
 	private final String _licenseType;
 	private final int _licenseVersion;
 	private final RenderRequest _renderRequest;

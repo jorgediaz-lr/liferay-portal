@@ -4,6 +4,7 @@ Bundle-Version: 1.0.0
 Export-Package:\
 	com.liferay.osb.provisioning.license.exception,\
 	com.liferay.osb.provisioning.license.model,\
+	com.liferay.osb.provisioning.license.permission,\
 	com.liferay.osb.provisioning.license.service,\
 	com.liferay.osb.provisioning.license.service.persistence,\
 	com.liferay.osb.provisioning.license.util,\

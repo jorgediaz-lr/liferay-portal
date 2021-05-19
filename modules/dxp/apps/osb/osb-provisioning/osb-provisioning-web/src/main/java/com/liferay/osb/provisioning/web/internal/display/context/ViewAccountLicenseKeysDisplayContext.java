@@ -16,6 +16,7 @@ package com.liferay.osb.provisioning.web.internal.display.context;
 
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
+import com.liferay.osb.provisioning.constants.ProvisioningActionKeys;
 import com.liferay.osb.provisioning.license.model.LicenseKey;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker;
@@ -26,10 +27,12 @@ import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.SortFactoryUtil;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
 import java.util.ArrayList;
@@ -59,7 +62,7 @@ public class ViewAccountLicenseKeysDisplayContext
 		_productKey = ParamUtil.getString(renderRequest, "productKey");
 	}
 
-	public List<DropdownItem> getActionDropdownItems() {
+	public List<DropdownItem> getActionDropdownItems() throws Exception {
 		return new DropdownItemList() {
 			{
 				add(
@@ -73,17 +76,21 @@ public class ViewAccountLicenseKeysDisplayContext
 							LanguageUtil.get(httpServletRequest, "download"));
 						dropdownItem.setQuickAction(true);
 					});
-				add(
-					dropdownItem -> {
-						dropdownItem.setHref(
-							StringBundler.concat(
-								"javascript:", renderResponse.getNamespace(),
-								"renewLicenseKeys();"));
-						dropdownItem.setIcon("time");
-						dropdownItem.setLabel(
-							LanguageUtil.get(httpServletRequest, "renew"));
-						dropdownItem.setQuickAction(true);
-					});
+
+				if (hasManageLicenseKeysPermission()) {
+					add(
+						dropdownItem -> {
+							dropdownItem.setHref(
+								StringBundler.concat(
+									"javascript:",
+									renderResponse.getNamespace(),
+									"renewLicenseKeys();"));
+							dropdownItem.setIcon("time");
+							dropdownItem.setLabel(
+								LanguageUtil.get(httpServletRequest, "renew"));
+							dropdownItem.setQuickAction(true);
+						});
+				}
 			}
 		};
 	}
@@ -272,6 +279,16 @@ public class ViewAccountLicenseKeysDisplayContext
 		tabsNames.add(getTabName("all", allLicenseKeysCount));
 
 		return StringUtil.merge(tabsNames);
+	}
+
+	public boolean hasManageLicenseKeysPermission() throws Exception {
+		ThemeDisplay themeDisplay =
+			(ThemeDisplay)httpServletRequest.getAttribute(
+				WebKeys.THEME_DISPLAY);
+
+		return licenseKeyPermission.contains(
+			themeDisplay.getPermissionChecker(),
+			ProvisioningActionKeys.MANAGE_LICENSE_KEYS);
 	}
 
 	private String _productKey;

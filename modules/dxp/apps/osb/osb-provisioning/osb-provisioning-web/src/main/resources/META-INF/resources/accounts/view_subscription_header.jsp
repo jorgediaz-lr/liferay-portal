@@ -95,11 +95,13 @@ ProductPurchaseViewDisplay productPurchaseViewDisplay = viewSubscriptionDisplayC
 		</ul>
 	</div>
 
-	<div class="header-buttons">
-		<div>
-			<a class="btn btn-primary" href="<%= generateLicenseURL %>">
-				<span class="lfr-btn-label"><liferay-ui:message key="generate-license" /></span>
-			</a>
+	<c:if test="<%= productPurchaseViewDisplay.hasManageLicenseKeysPermission() %>">
+		<div class="header-buttons">
+			<div>
+				<a class="btn btn-primary" href="<%= generateLicenseURL %>">
+					<span class="lfr-btn-label"><liferay-ui:message key="generate-license" /></span>
+				</a>
+			</div>
 		</div>
-	</div>
+	</c:if>
 </div>

@@ -32,9 +32,11 @@ ViewLicenseKeysManagementToolbarDisplayContext viewLicenseKeysManagementToolbarD
 		<portlet:param name="redirect" value="<%= currentURL %>" />
 	</portlet:renderURL>
 
-	<a class="btn btn-primary" href="<%= addLicenseKeyURL %>">
-		<span class="lfr-btn-label"><liferay-ui:message key="generate-license" /></span>
-	</a>
+	<c:if test="<%= licenseKeySearchDisplayContext.hasManageLicenseKeysPermission() %>">
+		<a class="btn btn-primary" href="<%= addLicenseKeyURL %>">
+			<span class="lfr-btn-label"><liferay-ui:message key="generate-license" /></span>
+		</a>
+	</c:if>
 </div>
 
 <div class="container-fluid home">

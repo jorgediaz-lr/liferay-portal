@@ -32,6 +32,8 @@ String licenseProductPurchaseKey = StringPool.BLANK;
 if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 	licenseProductPurchaseKey = licenseKey.getProductPurchaseKey();
 }
+
+boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageLicenseKeysPermission();
 %>
 
 <div class="add-items edit-license">
@@ -384,9 +386,11 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 											}
 											%>
 
-											<button class="btn btn-secondary btn-sm" onclick="<portlet:namespace />updateValues(<%= !clusterLicenseKey.isActive() %>, <%= clusterLicenseKey.isComplimentary() %>, '<%= clusterLicenseKey.getLicenseKeyId() %>');" type="button">
-												<liferay-ui:message key="<%= clusterUpdateActive %>" />
-											</button>
+											<c:if test="<%= hasManageLicenseKeysPermission %>">
+												<button class="btn btn-secondary btn-sm" onclick="<portlet:namespace />updateValues(<%= !clusterLicenseKey.isActive() %>, <%= clusterLicenseKey.isComplimentary() %>, '<%= clusterLicenseKey.getLicenseKeyId() %>');" type="button">
+													<liferay-ui:message key="<%= clusterUpdateActive %>" />
+												</button>
+											</c:if>
 
 											<portlet:resourceURL id="/licenses/download_license_key" var="downloadClusterLicenseKeyURL">
 												<portlet:param name="licenseKeyId" value="<%= String.valueOf(clusterLicenseKey.getLicenseKeyId()) %>" />
@@ -411,20 +415,22 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 
 				<aui:col cssClass="edit-license-actions" md="12">
 					<div>
-						<span id="renewLicense">
-							<react:component
-								data="<%= new HashMap<>() %>"
-								module="js/RenewLicenseApp"
-							/>
-						</span>
+						<c:if test="<%= hasManageLicenseKeysPermission %>">
+							<span id="renewLicense">
+								<react:component
+									data="<%= new HashMap<>() %>"
+									module="js/RenewLicenseApp"
+								/>
+							</span>
+						</c:if>
 
-						<c:if test="<%= editLicenseKeyDisplayContext.isComplimentaryVisible() %>">
+						<c:if test="<%= hasManageLicenseKeysPermission && editLicenseKeyDisplayContext.isComplimentaryVisible() %>">
 							<button class="btn btn-secondary btn-sm" onclick="<portlet:namespace />updateValues(<%= licenseKey.isActive() %>, <%= !licenseKey.isComplimentary() %>);" type="button">
 								<liferay-ui:message key="<%= editLicenseKeyDisplayContext.getUpdateComplimentaryLabel() %>" />
 							</button>
 						</c:if>
 
-						<c:if test="<%= !editLicenseKeyDisplayContext.isClusterLicenseKeyVisible() %>">
+						<c:if test="<%= hasManageLicenseKeysPermission && !editLicenseKeyDisplayContext.isClusterLicenseKeyVisible() %>">
 							<button class="btn btn-secondary btn-sm" onclick="<portlet:namespace />updateValues(<%= !licenseKey.isActive() %>, <%= licenseKey.isComplimentary() %>);" type="button">
 								<liferay-ui:message key="<%= editLicenseKeyDisplayContext.getUpdateActiveLabel() %>" />
 							</button>
@@ -432,7 +438,7 @@ if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
 					</div>
 
 					<div>
-						<c:if test="<%= !editLicenseKeyDisplayContext.isClusterLicenseKeyVisible() %>">
+						<c:if test="<%= hasManageLicenseKeysPermission && !editLicenseKeyDisplayContext.isClusterLicenseKeyVisible() %>">
 							<button class="btn btn-secondary btn-sm" onclick="<portlet:namespace />moveLicenseKey('<%= editLicenseKeyDisplayContext.getMoveLicenseKeyURL() %>');" type="button">
 								<liferay-ui:message key="move" />
 

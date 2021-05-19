@@ -29,6 +29,7 @@ import com.liferay.osb.provisioning.koroneiki.web.service.ProductPurchaseViewWeb
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamRoleWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamWebService;
+import com.liferay.osb.provisioning.license.permission.LicenseKeyPermission;
 import com.liferay.osb.provisioning.license.service.LicenseEntryLocalService;
 import com.liferay.osb.provisioning.license.service.LicenseKeyLocalService;
 import com.liferay.osb.provisioning.service.ProductBundleLocalService;
@@ -389,7 +390,7 @@ public class ProvisioningWebComponentProvider {
 
 		return new EditLicenseKeyDisplayContext(
 			renderRequest, renderResponse, httpServletRequest,
-			_licenseKeyLocalService);
+			_licenseKeyLocalService, _licenseKeyPermission);
 	}
 
 	private LicenseKeySearchDisplayContext _getLicenseKeySearchDisplayContext(
@@ -399,7 +400,8 @@ public class ProvisioningWebComponentProvider {
 		return new LicenseKeySearchDisplayContext(
 			renderRequest, renderResponse, httpServletRequest,
 			_identityProvider, _licenseEntryLocalService,
-			_licenseKeyLocalService, _productWebService, _userLocalService);
+			_licenseKeyLocalService, _licenseKeyPermission, _productWebService,
+			_userLocalService);
 	}
 
 	private MoveLicenseKeyDisplayContext _getMoveLicenseKeyDisplayContext(
@@ -449,7 +451,8 @@ public class ProvisioningWebComponentProvider {
 			renderRequest, renderResponse, httpServletRequest, _accountReader,
 			_accountEntryWebService, _accountWebService, _auditEntryWebService,
 			_contactRoleWebService, _contactWebService, _countryWebService,
-			_externalLinkWebService, _licenseKeyLocalService, _noteWebService,
+			_externalLinkWebService, _licenseKeyLocalService,
+			_licenseKeyPermission, _noteWebService,
 			_productConsumptionWebService, _productPurchaseViewWebService,
 			_productWebService, _teamRoleWebService, _teamWebService,
 			_userLocalService);
@@ -545,6 +548,9 @@ public class ProvisioningWebComponentProvider {
 
 	@Reference
 	private LicenseKeyLocalService _licenseKeyLocalService;
+
+	@Reference
+	private LicenseKeyPermission _licenseKeyPermission;
 
 	@Reference
 	private NoteWebService _noteWebService;

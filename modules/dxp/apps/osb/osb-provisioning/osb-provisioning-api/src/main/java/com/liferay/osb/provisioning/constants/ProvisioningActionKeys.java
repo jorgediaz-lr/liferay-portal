@@ -14,16 +14,20 @@
 
 package com.liferay.osb.provisioning.constants;
 
+import com.liferay.portal.kernel.security.permission.ActionKeys;
+
 /**
  * @author Amos Fong
  */
-public class ProvisioningActionKeys {
+public class ProvisioningActionKeys extends ActionKeys {
 
 	public static final String ASSIGN_CONTACTS = "ASSIGN_CONTACTS";
 
 	public static final String MANAGE_ACCOUNTS = "MANAGE_ACCOUNTS";
 
 	public static final String MANAGE_CONTACTS = "MANAGE_CONTACTS";
+
+	public static final String MANAGE_LICENSE_KEYS = "MANAGE_LICENSE_KEYS";
 
 	public static final String MANAGE_PRODUCT_BUNDLES =
 		"MANAGE_PRODUCT_BUNDLES";

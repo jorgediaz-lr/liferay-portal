@@ -15,12 +15,14 @@
 package com.liferay.osb.provisioning.web.internal.display.context;
 
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
+import com.liferay.osb.provisioning.constants.ProvisioningActionKeys;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.identity.management.provider.IdentityProvider;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.provisioning.license.helper.constants.ProductVersion;
 import com.liferay.osb.provisioning.license.model.LicenseEntry;
 import com.liferay.osb.provisioning.license.model.LicenseKey;
+import com.liferay.osb.provisioning.license.permission.LicenseKeyPermission;
 import com.liferay.osb.provisioning.license.service.LicenseEntryLocalService;
 import com.liferay.osb.provisioning.license.service.LicenseKeyLocalService;
 import com.liferay.osb.provisioning.web.internal.search.LicenseKeySearch;
@@ -72,6 +74,7 @@ public class LicenseKeySearchDisplayContext {
 		IdentityProvider identityProvider,
 		LicenseEntryLocalService licenseEntryLocalService,
 		LicenseKeyLocalService licenseKeyLocalService,
+		LicenseKeyPermission licenseKeyPermission,
 		ProductWebService productWebService,
 		UserLocalService userLocalService) {
 
@@ -81,6 +84,7 @@ public class LicenseKeySearchDisplayContext {
 		_identityProvider = identityProvider;
 		_licenseEntryLocalService = licenseEntryLocalService;
 		_licenseKeyLocalService = licenseKeyLocalService;
+		_licenseKeyPermission = licenseKeyPermission;
 		_productWebService = productWebService;
 		_userLocalService = userLocalService;
 
@@ -220,6 +224,12 @@ public class LicenseKeySearchDisplayContext {
 		return _licenseKeySearch;
 	}
 
+	public boolean hasManageLicenseKeysPermission() throws Exception {
+		return _licenseKeyPermission.contains(
+			_themeDisplay.getPermissionChecker(),
+			ProvisioningActionKeys.MANAGE_LICENSE_KEYS);
+	}
+
 	private String _getUserUuid(String emailAddress) throws Exception {
 		if (Validator.isNull(emailAddress)) {
 			return StringPool.BLANK;
@@ -247,6 +257,7 @@ public class LicenseKeySearchDisplayContext {
 	private final IdentityProvider _identityProvider;
 	private final LicenseEntryLocalService _licenseEntryLocalService;
 	private final LicenseKeyLocalService _licenseKeyLocalService;
+	private final LicenseKeyPermission _licenseKeyPermission;
 	private LicenseKeySearch _licenseKeySearch;
 	private final ProductWebService _productWebService;
 	private final RenderRequest _renderRequest;

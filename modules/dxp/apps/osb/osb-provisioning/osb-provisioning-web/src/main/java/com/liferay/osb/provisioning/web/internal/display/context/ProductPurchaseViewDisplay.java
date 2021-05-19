@@ -19,15 +19,19 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductConsumption;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchaseView;
+import com.liferay.osb.provisioning.constants.ProvisioningActionKeys;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
+import com.liferay.osb.provisioning.license.permission.LicenseKeyPermission;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.WebKeys;
 
 import java.text.Format;
 
@@ -46,10 +50,12 @@ public class ProductPurchaseViewDisplay {
 
 	public ProductPurchaseViewDisplay(
 		HttpServletRequest httpServletRequest, Account account,
+		LicenseKeyPermission licenseKeyPermission,
 		ProductPurchaseView productPurchaseView) {
 
 		_httpServletRequest = httpServletRequest;
 		_account = account;
+		_licenseKeyPermission = licenseKeyPermission;
 
 		_dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
 			"MMM dd, yyyy");
@@ -245,6 +251,16 @@ public class ProductPurchaseViewDisplay {
 		return StringPool.BLANK;
 	}
 
+	public boolean hasManageLicenseKeysPermission() throws Exception {
+		ThemeDisplay themeDisplay =
+			(ThemeDisplay)_httpServletRequest.getAttribute(
+				WebKeys.THEME_DISPLAY);
+
+		return _licenseKeyPermission.contains(
+			themeDisplay.getPermissionChecker(),
+			ProvisioningActionKeys.MANAGE_LICENSE_KEYS);
+	}
+
 	public boolean isInSupportGap() {
 		if (_inSupportGap) {
 			return true;
@@ -391,6 +407,7 @@ public class ProductPurchaseViewDisplay {
 	private final HttpServletRequest _httpServletRequest;
 	private boolean _inSupportGap;
 	private int _latestPurchasedCount;
+	private final LicenseKeyPermission _licenseKeyPermission;
 	private Date _nextTermStartDate;
 	private Date _originalEndDate;
 	private boolean _perpetual;
