@@ -312,6 +312,41 @@ function BulkInput({
 					/>
 				</label>
 			</ClayTable.Cell>
+
+			{subscriptionsType === EDIT_SUBSCRIPTIONS && (
+				<ClayTable.Cell>
+					{showField.status && (
+						<label htmlFor="statusBulkInput" ref={statusRef}>
+							<select
+								aria-label={Liferay.Language.get(
+									'subscription-status-bulk-input'
+								)}
+								className="form-control form-control-sm"
+								disabled={statusOptions.length === 0}
+								id="status"
+								onChange={handleSaveStatus}
+								value={status}
+							>
+								{statusOptions.map(option => (
+									<option key={option} value={option}>
+										{option}
+									</option>
+								))}
+							</select>
+						</label>
+					)}
+
+					{!showField.status && (
+						<VariedData
+							clickFn={handleOnClickStatus}
+							name={Liferay.Language.get(
+								'subscription-status-bulk-input'
+							)}
+						/>
+					)}
+				</ClayTable.Cell>
+			)}
+
 			<ClayTable.Cell>
 				{showField.sizing && (
 					<label htmlFor="instanceSizeBulkInput" ref={sizingRef}>
@@ -353,40 +388,6 @@ function BulkInput({
 							updateFn={handleSaveEndDate}
 						/>
 					</label>
-				</ClayTable.Cell>
-			)}
-
-			{subscriptionsType === EDIT_SUBSCRIPTIONS && (
-				<ClayTable.Cell>
-					{showField.status && (
-						<label htmlFor="statusBulkInput" ref={statusRef}>
-							<select
-								aria-label={Liferay.Language.get(
-									'subscription-status-bulk-input'
-								)}
-								className="form-control form-control-sm"
-								disabled={statusOptions.length === 0}
-								id="status"
-								onChange={handleSaveStatus}
-								value={status}
-							>
-								{statusOptions.map(option => (
-									<option key={option} value={option}>
-										{option}
-									</option>
-								))}
-							</select>
-						</label>
-					)}
-
-					{!showField.status && (
-						<VariedData
-							clickFn={handleOnClickStatus}
-							name={Liferay.Language.get(
-								'subscription-status-bulk-input'
-							)}
-						/>
-					)}
 				</ClayTable.Cell>
 			)}
 

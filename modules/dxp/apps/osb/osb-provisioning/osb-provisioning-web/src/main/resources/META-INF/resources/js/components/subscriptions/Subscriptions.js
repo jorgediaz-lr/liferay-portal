@@ -70,6 +70,17 @@ function Subscriptions({
 					<ClayTable.Cell expanded headingCell>
 						{Liferay.Language.get('end-date')}
 					</ClayTable.Cell>
+
+					{subscriptionsType === EDIT_SUBSCRIPTIONS && (
+						<ClayTable.Cell
+							className="table-cell-expand-smallest"
+							expanded
+							headingCell
+						>
+							{Liferay.Language.get('status')}
+						</ClayTable.Cell>
+					)}
+
 					<ClayTable.Cell
 						className={
 							subscriptions.size > 1 ? 'table-cell-expand' : ''
@@ -82,16 +93,6 @@ function Subscriptions({
 					{subscriptionsType === EDIT_SUBSCRIPTIONS && (
 						<ClayTable.Cell expanded headingCell>
 							{Liferay.Language.get('grace-period-end-date')}
-						</ClayTable.Cell>
-					)}
-
-					{subscriptionsType === EDIT_SUBSCRIPTIONS && (
-						<ClayTable.Cell
-							className="table-cell-expand-smallest"
-							expanded
-							headingCell
-						>
-							{Liferay.Language.get('status')}
 						</ClayTable.Cell>
 					)}
 
@@ -306,6 +307,28 @@ function Subscription({
 					/>
 				</label>
 			</ClayTable.Cell>
+
+			{subscriptionsType === EDIT_SUBSCRIPTIONS && (
+				<ClayTable.Cell>
+					<label htmlFor="status">
+						<select
+							aria-label={Liferay.Language.get('status')}
+							className="form-control form-control-sm"
+							disabled={statusOptions.length === 0}
+							id="status"
+							onChange={handleStatusChange}
+							value={status}
+						>
+							{statusOptions.map(option => (
+								<option key={option} value={option}>
+									{option}
+								</option>
+							))}
+						</select>
+					</label>
+				</ClayTable.Cell>
+			)}
+
 			<ClayTable.Cell>
 				<label htmlFor="instanceSize">
 					<select
@@ -338,27 +361,6 @@ function Subscription({
 							inputName="endDate"
 							updateFn={handleEndDateChange}
 						/>
-					</label>
-				</ClayTable.Cell>
-			)}
-
-			{subscriptionsType === EDIT_SUBSCRIPTIONS && (
-				<ClayTable.Cell>
-					<label htmlFor="status">
-						<select
-							aria-label={Liferay.Language.get('status')}
-							className="form-control form-control-sm"
-							disabled={statusOptions.length === 0}
-							id="status"
-							onChange={handleStatusChange}
-							value={status}
-						>
-							{statusOptions.map(option => (
-								<option key={option} value={option}>
-									{option}
-								</option>
-							))}
-						</select>
 					</label>
 				</ClayTable.Cell>
 			)}
