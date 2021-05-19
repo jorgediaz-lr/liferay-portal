@@ -16,7 +16,7 @@ import Purchases from '../../../src/main/resources/META-INF/resources/js/compone
 import {LicenseProvider} from '../../../src/main/resources/META-INF/resources/js/hooks/license';
 import {
 	formatDate,
-	generateNewDate
+	generateNewDateByYear
 } from '../../../src/main/resources/META-INF/resources/js/utilities/date';
 
 const TODAY = new Date();
@@ -154,7 +154,7 @@ describe('Purchases', () => {
 			});
 
 			const startDate = TODAY;
-			const expirationDate = generateNewDate(startDate);
+			const expirationDate = generateNewDateByYear(startDate);
 
 			expect(getAllByDisplayValue(formatDate(startDate)).length).toBe(2);
 			expect(
@@ -177,7 +177,7 @@ describe('Purchases', () => {
 			const {getAllByDisplayValue} = renderPurchases();
 
 			const startDate = TODAY;
-			const expirationDate = generateNewDate(startDate, 100);
+			const expirationDate = generateNewDateByYear(startDate, 100);
 
 			expect(getAllByDisplayValue(formatDate(startDate)).length).toBe(2);
 			expect(
@@ -198,7 +198,7 @@ describe('Purchases', () => {
 		it('displays the Expiration Date of a Non Perpetual subscription whose license Type is NOT Developer in the Non Detached section 100 years from the subscription End Date', () => {
 			const {getAllByDisplayValue} = renderPurchases();
 
-			expect(getAllByDisplayValue('2120-04-16').length).toBe(2);
+			expect(getAllByDisplayValue('2120-03-23').length).toBe(2);
 		});
 
 		it('displays the Expiration Date of a Non Perpetual subscription whose license Type is Developer in the Non Detached section from the subscription End Date', () => {

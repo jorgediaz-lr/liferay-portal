@@ -14,14 +14,26 @@ import ClayModal, {useModal} from '@clayui/modal';
 import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
 
-import {validateDateFieldFormat} from '../../utilities/date';
+import {
+	formatDate,
+	generateNewDateByDay,
+	validateDateFieldFormat
+} from '../../utilities/date';
 import DatePicker from '../DatePicker';
 
+const TODAY = new Date();
+
 function RenewalModal({closeFn, expirationDate = '', renewFn, startDate = ''}) {
+	const defaultExpirationDate =
+		expirationDate === ''
+			? formatDate(generateNewDateByDay())
+			: expirationDate;
+	const defaultStartDate = startDate === '' ? formatDate(TODAY) : startDate;
+
 	const [currentExpirationDate, setCurrentExpirationDate] = useState(
-		expirationDate
+		defaultExpirationDate
 	);
-	const [currentStartDate, setCurrentStartDate] = useState(startDate);
+	const [currentStartDate, setCurrentStartDate] = useState(defaultStartDate);
 	const [disableRenew, setDisableRenew] = useState(true);
 
 	const {observer, onClose} = useModal({
@@ -72,7 +84,7 @@ function RenewalModal({closeFn, expirationDate = '', renewFn, startDate = ''}) {
 						</label>
 
 						<DatePicker
-							defaultValue={startDate}
+							defaultValue={defaultStartDate}
 							id="startDate"
 							inputName="startDate"
 							updateFn={handleStartDateChange}
@@ -94,7 +106,7 @@ function RenewalModal({closeFn, expirationDate = '', renewFn, startDate = ''}) {
 						</label>
 
 						<DatePicker
-							defaultValue={expirationDate}
+							defaultValue={defaultExpirationDate}
 							id="expirationDate"
 							inputName="expirationDate"
 							updateFn={handleExpirationDateChange}

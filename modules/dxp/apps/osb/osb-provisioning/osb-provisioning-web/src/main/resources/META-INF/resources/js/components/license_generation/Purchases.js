@@ -16,7 +16,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import {LICENSE_TYPE_DEVELOPER} from '../../utilities/constants';
-import {generateNewDate} from '../../utilities/date';
+import {generateNewDateByYear} from '../../utilities/date';
 import Purchase from './Purchase';
 
 const TODAY = new Date();
@@ -59,7 +59,7 @@ function Detached({detached}) {
 	if (detached) {
 		formattedDates.startDate = TODAY;
 
-		formattedDates.expirationDate = generateNewDate(
+		formattedDates.expirationDate = generateNewDateByYear(
 			formattedDates.startDate
 		);
 	}
@@ -86,7 +86,10 @@ function Purchased({purchased, selectedType}) {
 		? purchased.map(item => {
 				if (item.perpetual) {
 					const startDate = TODAY;
-					const expirationDate = generateNewDate(startDate, 100);
+					const expirationDate = generateNewDateByYear(
+						startDate,
+						100
+					);
 
 					return {...item, expirationDate, expired: false, startDate};
 				}
@@ -111,7 +114,7 @@ function Purchased({purchased, selectedType}) {
 		let expirationDate = new Date(license.expirationDate);
 
 		if (type !== LICENSE_TYPE_DEVELOPER) {
-			expirationDate = generateNewDate(expirationDate, 100);
+			expirationDate = generateNewDateByYear(expirationDate, 100);
 		}
 
 		return expirationDate;

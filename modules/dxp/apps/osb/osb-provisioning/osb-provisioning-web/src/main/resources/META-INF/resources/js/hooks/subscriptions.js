@@ -13,14 +13,14 @@ import {Map, Record} from 'immutable';
 import React, {useContext, useState} from 'react';
 
 import {PRODUCT_PURCHASE_STATUS_APPROVED} from '../utilities/constants';
-import {generateNewDate} from '../utilities/date';
+import {generateNewDateByYear} from '../utilities/date';
 
 export class Subscription extends Record({
 	endDate: null,
 	externalLinkKey: null,
 	index: 0,
 	key: null,
-	originalEndDate: generateNewDate(),
+	originalEndDate: generateNewDateByYear(),
 	perpetual: false,
 	productKey: null,
 	productName: '',

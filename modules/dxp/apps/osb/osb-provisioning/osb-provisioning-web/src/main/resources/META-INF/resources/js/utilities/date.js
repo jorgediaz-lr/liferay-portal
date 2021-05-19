@@ -46,6 +46,27 @@ export function formatDate(date) {
 }
 
 /**
+ * Generates a new date based on the starting point and the offset in days
+ * indicated.
+ * @param {Object|string} startDate Starting point in which to generate the new
+ * date from. If invalid or missing, will default to today's date.
+ * @param {number} offset Offset in years (positive or negative) from the
+ * starting date.
+ * @returns {Object} Date object.
+ */
+export function generateNewDateByDay(startDate = new Date(), offset = 30) {
+	let startDateCopy = new Date(startDate);
+
+	if (isNaN(startDateCopy)) {
+		startDateCopy = new Date();
+	}
+
+	const offsetInMS = offset * 1000 * 60 * 60 * 24;
+
+	return new Date(Date.parse(startDateCopy) + offsetInMS);
+}
+
+/**
  * Generates a new date based on the starting point and the offset in years
  * indicated.
  * @param {Object|string} startDate Starting point in which to generate the new
@@ -54,16 +75,16 @@ export function formatDate(date) {
  * starting date.
  * @returns {Object} Date object.
  */
-export function generateNewDate(startDate = new Date(), offset = 1) {
+export function generateNewDateByYear(startDate = new Date(), offset = 1) {
 	let startDateCopy = new Date(startDate);
 
 	if (isNaN(startDateCopy)) {
 		startDateCopy = new Date();
 	}
 
-	const newEndYear = startDateCopy.getUTCFullYear() + offset;
+	const offsetInMS = offset * 1000 * 60 * 60 * 24 * 365;
 
-	return new Date(startDateCopy.setFullYear(newEndYear));
+	return new Date(Date.parse(startDateCopy) + offsetInMS);
 }
 
 /**

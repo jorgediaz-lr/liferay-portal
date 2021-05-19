@@ -13,6 +13,12 @@ import {cleanup, fireEvent, render, wait} from '@testing-library/react';
 import React from 'react';
 
 import RenewLicense from '../../../src/main/resources/META-INF/resources/js/components/license_renewal/RenewLicense';
+import {
+	formatDate,
+	generateNewDateByDay
+} from '../../../src/main/resources/META-INF/resources/js/utilities/date';
+
+const TODAY = new Date();
 
 function renderRenewLicense() {
 	return render(
@@ -45,7 +51,7 @@ describe('RenewLicense', () => {
 
 	// Clay Date Picker always displays two inputs for the same date
 
-	it('displays a start date in the renewal modal', async () => {
+	it('displays a start date in the renewal modal if one is provided', async () => {
 		const {getByText, queryAllByDisplayValue} = renderRenewLicense();
 
 		fireEvent.click(getByText('renew'));
@@ -57,7 +63,7 @@ describe('RenewLicense', () => {
 		});
 	});
 
-	it('displays an expiration date in the renewal modal', async () => {
+	it('displays an expiration date in the renewal modal if one is provided', async () => {
 		const {getByText, queryAllByDisplayValue} = renderRenewLicense();
 
 		fireEvent.click(getByText('renew'));
@@ -66,6 +72,33 @@ describe('RenewLicense', () => {
 			getByText('expiration-date');
 
 			expect(queryAllByDisplayValue('2022-04-14').length).toBe(2);
+		});
+	});
+
+	it('displays the current date as the Start Date in the renewal modal if no start date is provided', async () => {
+		const {getByText, queryAllByDisplayValue} = render(<RenewLicense />);
+
+		fireEvent.click(getByText('renew'));
+
+		return await wait(() => {
+			getByText('start-date');
+
+			expect(queryAllByDisplayValue(formatDate(TODAY)).length).toBe(2);
+		});
+	});
+
+	it('displays 30 days after the current date as the Expiration Date in the renewal modal if no expiration date is provided', async () => {
+		const {getByText, queryAllByDisplayValue} = render(<RenewLicense />);
+
+		fireEvent.click(getByText('renew'));
+
+		return await wait(() => {
+			getByText('expiration-date');
+
+			expect(
+				queryAllByDisplayValue(formatDate(generateNewDateByDay()))
+					.length
+			).toBe(2);
 		});
 	});
 

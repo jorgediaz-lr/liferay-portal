@@ -15,8 +15,10 @@ import React from 'react';
 import LicenseGroup from '../../../src/main/resources/META-INF/resources/js/components/license_download/LicenseGroup';
 import {
 	formatDate,
-	generateNewDate
+	generateNewDateByYear
 } from '../../../src/main/resources/META-INF/resources/js/utilities/date';
+
+const TODAY = new Date();
 
 const multipleLicenses = [
 	[
@@ -190,7 +192,7 @@ describe('LicenseGroup', () => {
 	});
 
 	it('displays the Active Status label correctly', () => {
-		const newExpirationDate = generateNewDate(new Date(), 2);
+		const newExpirationDate = generateNewDateByYear(TODAY, 2);
 
 		const {getByText} = renderLicenseGroup({
 			licenses: [
