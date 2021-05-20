@@ -136,7 +136,7 @@ function Address({accountKey, addURL, address, count, countryOptions}) {
 					fieldLabel={Liferay.Language.get('street-1')}
 					fieldName="streetAddressLine1"
 					onClick={handleOnClick}
-					readOnly={address.readOnly}
+					readOnly={address.readOnly || !updatePermission}
 					type={setFieldType()}
 					value={address.streetAddressLine1}
 				/>
@@ -146,7 +146,7 @@ function Address({accountKey, addURL, address, count, countryOptions}) {
 					fieldLabel={Liferay.Language.get('city')}
 					fieldName="addressLocality"
 					onClick={handleOnClick}
-					readOnly={address.readOnly}
+					readOnly={address.readOnly || !updatePermission}
 					type={setFieldType()}
 					value={address.addressLocality}
 				/>
@@ -156,7 +156,7 @@ function Address({accountKey, addURL, address, count, countryOptions}) {
 					fieldLabel={Liferay.Language.get('street-2')}
 					fieldName="streetAddressLine2"
 					onClick={handleOnClick}
-					readOnly={address.readOnly}
+					readOnly={address.readOnly || !updatePermission}
 					type={setFieldType()}
 					value={address.streetAddressLine2}
 				/>
@@ -168,7 +168,7 @@ function Address({accountKey, addURL, address, count, countryOptions}) {
 					fieldName="addressRegionId"
 					onClick={handleOnClick}
 					options={regionOptions}
-					readOnly={address.readOnly}
+					readOnly={address.readOnly || !updatePermission}
 					type={setFieldType(FIELD_TYPE_SELECT)}
 					value={regionId}
 				/>
@@ -178,7 +178,7 @@ function Address({accountKey, addURL, address, count, countryOptions}) {
 					fieldLabel={Liferay.Language.get('street-3')}
 					fieldName="streetAddressLine3"
 					onClick={handleOnClick}
-					readOnly={address.readOnly}
+					readOnly={address.readOnly || !updatePermission}
 					type={setFieldType()}
 					value={address.streetAddressLine3}
 				/>
@@ -188,7 +188,7 @@ function Address({accountKey, addURL, address, count, countryOptions}) {
 					fieldLabel={Liferay.Language.get('postal-code')}
 					fieldName="addressZip"
 					onClick={handleOnClick}
-					readOnly={address.readOnly}
+					readOnly={address.readOnly || !updatePermission}
 					required={zipRequired}
 					type={setFieldType()}
 					updateFn={handlePostalCodeUpdate}
@@ -202,7 +202,7 @@ function Address({accountKey, addURL, address, count, countryOptions}) {
 					fieldName="addressCountryId"
 					onClick={handleOnClick}
 					options={countryOptions}
-					readOnly={address.readOnly}
+					readOnly={address.readOnly || !updatePermission}
 					type={setFieldType(FIELD_TYPE_SELECT)}
 					updateFn={handleCountryUpdate}
 					value={countryId}
@@ -218,7 +218,7 @@ function Address({accountKey, addURL, address, count, countryOptions}) {
 					fieldLabel={Liferay.Language.get('primary')}
 					fieldName="addressPrimary"
 					onClick={handleOnClick}
-					readOnly={address.readOnly}
+					readOnly={address.readOnly || !updatePermission}
 					type={setFieldType(FIELD_TYPE_TOGGLE)}
 					value={address.primary}
 				/>

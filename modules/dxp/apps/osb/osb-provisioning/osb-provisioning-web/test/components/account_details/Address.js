@@ -15,9 +15,9 @@ import React from 'react';
 import Address from '../../../src/main/resources/META-INF/resources/js/components/account_details/Address';
 import {PermissionsProvider} from '../../../src/main/resources/META-INF/resources/js/hooks/permissions';
 
-function renderAddress(props) {
+function renderAddress(permission = true) {
 	return render(
-		<PermissionsProvider permissions={{updatePermission: true}}>
+		<PermissionsProvider permissions={{updatePermission: permission}}>
 			<Address
 				accountKey="key123"
 				address={{
@@ -52,7 +52,6 @@ function renderAddress(props) {
 						zipRequired: true
 					}
 				]}
-				{...props}
 			/>
 		</PermissionsProvider>
 	);
@@ -78,7 +77,7 @@ describe('Address', () => {
 		return await wait(() => expect(container).toBeTruthy());
 	});
 
-	it('displays all address fields as editable when any one of the address fields is clicked', async () => {
+	it('displays all address fields as editable when any one of the address fields is clicked for a user with full editing privilege', async () => {
 		const {container, getByText} = renderAddress();
 
 		fireEvent.click(getByText('Diamond Bar'));
@@ -91,6 +90,22 @@ describe('Address', () => {
 
 			getByText('save');
 			getByText('cancel');
+		});
+	});
+
+	it('displays all address fields as non editable when any of the fields is clicked for a user with limited editing privilege', async () => {
+		const {container, getByText, queryByText} = renderAddress(false);
+
+		fireEvent.click(getByText('Diamond Bar'));
+
+		return await wait(() => {
+			expect(container.querySelectorAll('select').length).toBe(0);
+			expect(container.querySelectorAll('input[type=text]').length).toBe(
+				0
+			);
+
+			expect(queryByText('save')).toBeFalsy();
+			expect(queryByText('cancel')).toBeFalsy();
 		});
 	});
 
