@@ -48,27 +48,24 @@ public class OrganizationAssignmentMessageSubscriber
 		JSONObject organizationJSONObject = jsonObject.getJSONObject(
 			"organization");
 
-		String organizationId = organizationJSONObject.getString(
-			"organizationId");
+		long organizationId = organizationJSONObject.getLong("organizationId");
 
-		if (!organizationId.equals(
-				LegacyConstants.ORGANIZATION_LIFERAY_INC_ID)) {
-
+		if (organizationId != LegacyConstants.ORGANIZATION_LIFERAY_INC_ID) {
 			return;
 		}
 
-		List<Account> accounts = _accountWebservice.getAccounts(
+		List<Account> accounts = _accountWebService.getAccounts(
 			ExternalLinkDomain.WEB, ExternalLinkEntityName.WEB_ORGANIZATION,
-			organizationId, 1, 1000);
+			String.valueOf(organizationId), 1, 1000);
 
 		JSONObject userJSONObject = jsonObject.getJSONObject("user");
 
-		ContactRole contactRole = _contactRoleWebservice.fetchContactRole(
+		ContactRole contactRole = _contactRoleWebService.fetchContactRole(
 			ContactRole.Type.ACCOUNT_CUSTOMER.toString(),
 			ContactRoleConstants.NAME_MEMBER);
 
 		for (Account account : accounts) {
-			_accountWebservice.assignContactRoles(
+			_accountWebService.assignContactRoles(
 				StringPool.BLANK, StringPool.BLANK, account.getKey(),
 				userJSONObject.getString("emailAddress"),
 				new String[] {contactRole.getKey()});
@@ -87,9 +84,9 @@ public class OrganizationAssignmentMessageSubscriber
 		OrganizationAssignmentMessageSubscriber.class);
 
 	@Reference
-	private AccountWebService _accountWebservice;
+	private AccountWebService _accountWebService;
 
 	@Reference
-	private ContactRoleWebService _contactRoleWebservice;
+	private ContactRoleWebService _contactRoleWebService;
 
 }

@@ -39,7 +39,7 @@ public class RoleAssignmentMessageSubscriber extends BaseMessageSubscriber {
 	protected void doParse(JSONObject jsonObject) throws Exception {
 		JSONObject userJSONObject = jsonObject.getJSONObject("user");
 
-		Contact contact = _contactWebservice.fetchContactByEmailAddress(
+		Contact contact = _contactWebService.fetchContactByEmailAddress(
 			userJSONObject.getString("emailAddress"));
 
 		if (contact == null) {
@@ -53,7 +53,7 @@ public class RoleAssignmentMessageSubscriber extends BaseMessageSubscriber {
 		if (roleUUID.equals(LegacyConstants.ROLE_VERIFIED_UUID)) {
 			contact.setEmailAddressVerified(true);
 
-			_contactWebservice.updateContact(
+			_contactWebService.updateContact(
 				StringPool.BLANK, StringPool.BLANK, contact.getEmailAddress(),
 				contact);
 		}
@@ -71,6 +71,6 @@ public class RoleAssignmentMessageSubscriber extends BaseMessageSubscriber {
 		RoleAssignmentMessageSubscriber.class);
 
 	@Reference
-	private ContactWebService _contactWebservice;
+	private ContactWebService _contactWebService;
 
 }

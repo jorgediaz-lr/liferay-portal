@@ -14,13 +14,9 @@
 
 package com.liferay.osb.provisioning.distributed.messaging.internal.subscribing;
 
-import com.liferay.osb.koroneiki.phloem.rest.client.constants.ExternalLinkDomain;
-import com.liferay.osb.koroneiki.phloem.rest.client.constants.ExternalLinkEntityName;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
-import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
 import com.liferay.osb.provisioning.distributed.messaging.internal.constants.LegacyConstants;
-import com.liferay.osb.provisioning.koroneiki.constants.ContactRoleConstants;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ContactRoleWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ContactWebService;
@@ -29,14 +25,14 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-
-import java.util.List;
+import com.liferay.portal.kernel.util.ArrayUtil;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Jenny Chen
+ * @author Kyle Bischof
  */
 @Component(
 	immediate = true, property = "topic.pattern=entity.organization.unassigned",
@@ -50,36 +46,29 @@ public class OrganizationUnassignmentMessageSubscriber
 		JSONObject organizationJSONObject = jsonObject.getJSONObject(
 			"organization");
 
-		String organizationId = organizationJSONObject.getString(
-			"organizationId");
+		long organizationId = organizationJSONObject.getLong("organizationId");
 
-		if (!organizationId.equals(
-				LegacyConstants.ORGANIZATION_LIFERAY_INC_ID)) {
-
+		if (organizationId != LegacyConstants.ORGANIZATION_LIFERAY_INC_ID) {
 			return;
 		}
 
 		JSONObject userJSONObject = jsonObject.getJSONObject("user");
 
-		Contact contact = _contactWebservice.fetchContactByEmailAddress(
+		Contact contact = _contactWebService.fetchContactByEmailAddress(
 			userJSONObject.getString("emailAddress"));
 
-		if (contact == null) {
+		if ((contact == null) || ArrayUtil.isEmpty(contact.getAccounts())) {
 			return;
 		}
 
-		List<Account> accounts = _accountWebservice.getAccounts(
-			ExternalLinkDomain.WEB, ExternalLinkEntityName.WEB_ORGANIZATION,
-			organizationId, 1, 1000);
-
-		ContactRole contactRole = _contactRoleWebservice.fetchContactRole(
-			ContactRole.Type.ACCOUNT_CUSTOMER.toString(),
-			ContactRoleConstants.NAME_MEMBER);
-
-		for (Account account : accounts) {
-			_accountWebservice.unassignContactRoles(
+		for (Account account : contact.getAccounts()) {
+			_accountWebService.unassignCustomerContact(
 				StringPool.BLANK, StringPool.BLANK, account.getKey(),
-				contact.getEmailAddress(), new String[] {contactRole.getKey()});
+				contact.getEmailAddress());
+
+			_accountWebService.unassignWorkerContact(
+				StringPool.BLANK, StringPool.BLANK, account.getKey(),
+				contact.getEmailAddress());
 		}
 	}
 
@@ -95,12 +84,12 @@ public class OrganizationUnassignmentMessageSubscriber
 		OrganizationUnassignmentMessageSubscriber.class);
 
 	@Reference
-	private AccountWebService _accountWebservice;
+	private AccountWebService _accountWebService;
 
 	@Reference
-	private ContactRoleWebService _contactRoleWebservice;
+	private ContactRoleWebService _contactRoleWebService;
 
 	@Reference
-	private ContactWebService _contactWebservice;
+	private ContactWebService _contactWebService;
 
 }
