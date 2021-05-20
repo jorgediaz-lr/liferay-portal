@@ -95,7 +95,7 @@ ProductPurchaseViewDisplay productPurchaseViewDisplay = viewSubscriptionDisplayC
 		</ul>
 	</div>
 
-	<c:if test="<%= productPurchaseViewDisplay.hasManageLicenseKeysPermission() %>">
+	<c:if test="<%= viewSubscriptionDisplayContext.hasManageLicenseKeysPermission() %>">
 		<div class="header-buttons">
 			<div>
 				<a class="btn btn-primary" href="<%= generateLicenseURL %>">

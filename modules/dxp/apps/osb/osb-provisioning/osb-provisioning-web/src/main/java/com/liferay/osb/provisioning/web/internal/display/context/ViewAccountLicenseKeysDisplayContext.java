@@ -16,7 +16,6 @@ package com.liferay.osb.provisioning.web.internal.display.context;
 
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
-import com.liferay.osb.provisioning.constants.ProvisioningActionKeys;
 import com.liferay.osb.provisioning.license.model.LicenseKey;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker;
@@ -27,12 +26,10 @@ import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.SortFactoryUtil;
-import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
 import java.util.ArrayList;
@@ -279,16 +276,6 @@ public class ViewAccountLicenseKeysDisplayContext
 		tabsNames.add(getTabName("all", allLicenseKeysCount));
 
 		return StringUtil.merge(tabsNames);
-	}
-
-	public boolean hasManageLicenseKeysPermission() throws Exception {
-		ThemeDisplay themeDisplay =
-			(ThemeDisplay)httpServletRequest.getAttribute(
-				WebKeys.THEME_DISPLAY);
-
-		return licenseKeyPermission.contains(
-			themeDisplay.getPermissionChecker(),
-			ProvisioningActionKeys.MANAGE_LICENSE_KEYS);
 	}
 
 	private String _productKey;

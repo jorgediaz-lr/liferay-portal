@@ -14,7 +14,6 @@
 
 package com.liferay.osb.provisioning.license.permission;
 
-import com.liferay.osb.provisioning.license.model.LicenseKey;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 
@@ -23,27 +22,7 @@ import com.liferay.portal.kernel.security.permission.PermissionChecker;
  */
 public interface LicenseKeyPermission {
 
-	public void check(
-			PermissionChecker permissionChecker, LicenseKey licenseKey,
-			String actionId)
-		throws PortalException;
-
-	public void check(
-			PermissionChecker permissionChecker, long licenseKeyId,
-			String actionId)
-		throws PortalException;
-
 	public void check(PermissionChecker permissionChecker, String actionId)
-		throws PortalException;
-
-	public boolean contains(
-			PermissionChecker permissionChecker, LicenseKey licenseKey,
-			String actionId)
-		throws PortalException;
-
-	public boolean contains(
-			PermissionChecker permissionChecker, long licenseKeyId,
-			String actionId)
 		throws PortalException;
 
 	public boolean contains(

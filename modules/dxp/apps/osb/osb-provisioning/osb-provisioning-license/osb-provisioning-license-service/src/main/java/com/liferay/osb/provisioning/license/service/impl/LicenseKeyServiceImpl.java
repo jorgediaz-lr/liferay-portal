@@ -14,7 +14,6 @@
 
 package com.liferay.osb.provisioning.license.service.impl;
 
-import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchaseView;
 import com.liferay.osb.provisioning.constants.ProvisioningActionKeys;
@@ -22,9 +21,6 @@ import com.liferay.osb.provisioning.koroneiki.constants.ProductConstants;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductPurchaseViewWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
-import com.liferay.osb.provisioning.license.helper.constants.LicenseType;
-import com.liferay.osb.provisioning.license.helper.constants.LicenseVersion;
-import com.liferay.osb.provisioning.license.model.LicenseEntry;
 import com.liferay.osb.provisioning.license.model.LicenseKey;
 import com.liferay.osb.provisioning.license.permission.LicenseKeyPermission;
 import com.liferay.osb.provisioning.license.service.LicenseEntryLocalService;
@@ -40,13 +36,10 @@ import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.RoleLocalService;
-import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -146,31 +139,6 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		_licenseKeyPermission.check(
 			getPermissionChecker(), ProvisioningActionKeys.MANAGE_LICENSE_KEYS);
 
-		LicenseEntry licenseEntry = _licenseEntryLocalService.getLicenseEntry(
-			licenseEntryId);
-
-		Product product = null;
-
-		if (Validator.isNotNull(productKey)) {
-			product = _productWebService.getProduct(productKey);
-		}
-		else {
-			product = _productWebService.getProduct(
-				licenseEntry.getProductKey());
-		}
-
-		int licenseVersion = LicenseVersion.getLicenseVersion(
-			product.getName(), productVersion);
-		String licenseEntryType = licenseEntry.getType();
-
-		if ((licenseVersion >= 3) &&
-			(licenseEntryType.equals(LicenseType.DEVELOPER) ||
-			 licenseEntryType.equals(LicenseType.DEVELOPER_CLUSTER)) &&
-			(maxHttpSessions != 5)) {
-
-			throw new PrincipalException();
-		}
-
 		return licenseKeyLocalService.addLicenseKey(
 			userId, licenseEntryId, productKey, accountKey, productPurchaseKey,
 			accountName, productVersion, clusterId, name, owner, maxServers,
@@ -226,11 +194,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 	}
 
 	public LicenseKey getLicenseKey(long licenseKeyId) throws PortalException {
-		LicenseKey licenseKey = licenseKeyLocalService.getLicenseKey(
-			licenseKeyId);
-
 		_licenseKeyPermission.check(
-			getPermissionChecker(), licenseKey, ProvisioningActionKeys.VIEW);
+			getPermissionChecker(), ProvisioningActionKeys.VIEW);
 
 		return licenseKeyLocalService.getLicenseKey(licenseKeyId);
 	}
@@ -245,10 +210,10 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 	public List<LicenseKey> getLicenseKeys(long userId, String productId)
 		throws PortalException {
 
-		List<LicenseKey> licenseKeys = licenseKeyLocalService.getLicenseKeys(
-			userId, productId);
+		_licenseKeyPermission.check(
+			getPermissionChecker(), ProvisioningActionKeys.VIEW);
 
-		return filterLicenseKeys(licenseKeys);
+		return licenseKeyLocalService.getLicenseKeys(userId, productId);
 	}
 
 	@JSONWebService
@@ -346,12 +311,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			long licenseKeyId, Date startDate, Date expirationDate)
 		throws Exception {
 
-		LicenseKey licenseKey = licenseKeyLocalService.getLicenseKey(
-			licenseKeyId);
-
 		_licenseKeyPermission.check(
-			getPermissionChecker(), licenseKey,
-			ProvisioningActionKeys.MANAGE_LICENSE_KEYS);
+			getPermissionChecker(), ProvisioningActionKeys.MANAGE_LICENSE_KEYS);
 
 		return licenseKeyLocalService.renewLicenseKey(
 			getUserId(), licenseKeyId, startDate, expirationDate);
@@ -371,7 +332,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			int end, Sort sort)
 		throws Exception {
 
-		//addPermissionParams(params);
+		_licenseKeyPermission.check(
+			getPermissionChecker(), ProvisioningActionKeys.VIEW);
 
 		return licenseKeyLocalService.search(
 			companyId, createUserUuid, createDateGT, createDateLT,
@@ -397,7 +359,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			int end, OrderByComparator obc)
 		throws Exception {
 
-		addPermissionParams(params);
+		_licenseKeyPermission.check(
+			getPermissionChecker(), ProvisioningActionKeys.VIEW);
 
 		return licenseKeyLocalService.search(
 			createUserUuid, createDateGT, createDateLT, modifiedUserUuid,
@@ -414,7 +377,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			int end, OrderByComparator obc)
 		throws Exception {
 
-		addPermissionParams(params);
+		_licenseKeyPermission.check(
+			getPermissionChecker(), ProvisioningActionKeys.VIEW);
 
 		return licenseKeyLocalService.search(keywords, params, start, end, obc);
 	}
@@ -432,7 +396,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			LinkedHashMap<String, Object> params, boolean andSearch)
 		throws Exception {
 
-		addPermissionParams(params);
+		_licenseKeyPermission.check(
+			getPermissionChecker(), ProvisioningActionKeys.VIEW);
 
 		return licenseKeyLocalService.searchCount(
 			createUserUuid, createDateGT, createDateLT, modifiedUserUuid,
@@ -447,7 +412,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			String keywords, LinkedHashMap<String, Object> params)
 		throws Exception {
 
-		addPermissionParams(params);
+		_licenseKeyPermission.check(
+			getPermissionChecker(), ProvisioningActionKeys.VIEW);
 
 		return licenseKeyLocalService.searchCount(keywords, params);
 	}
@@ -455,12 +421,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 	public void updateLicenseKey(long userId, long licenseKeyId, boolean active)
 		throws Exception {
 
-		LicenseKey licenseKey = licenseKeyLocalService.getLicenseKey(
-			licenseKeyId);
-
 		_licenseKeyPermission.check(
-			getPermissionChecker(), licenseKey,
-			ProvisioningActionKeys.MANAGE_LICENSE_KEYS);
+			getPermissionChecker(), ProvisioningActionKeys.MANAGE_LICENSE_KEYS);
 
 		licenseKeyLocalService.updateLicenseKey(userId, licenseKeyId, active);
 	}
@@ -470,12 +432,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			boolean active)
 		throws Exception {
 
-		LicenseKey licenseKey = licenseKeyLocalService.getLicenseKey(
-			licenseKeyId);
-
 		_licenseKeyPermission.check(
-			getPermissionChecker(), licenseKey,
-			ProvisioningActionKeys.MANAGE_LICENSE_KEYS);
+			getPermissionChecker(), ProvisioningActionKeys.MANAGE_LICENSE_KEYS);
 
 		return licenseKeyLocalService.updateLicenseKey(
 			getUserId(), licenseKeyId, productPurchaseKey, complimentary,
@@ -513,69 +471,6 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			licenseKeyLocalService.updateLicenseKey(
 				getUserId(), licenseKey.getLicenseKeyId(), active);
 		}
-	}
-
-	protected void addPermissionParams(LinkedHashMap<String, Object> params)
-		throws Exception {
-
-		if (_licenseKeyPermission.contains(
-				getPermissionChecker(),
-				ProvisioningActionKeys.MANAGE_LICENSE_KEYS)) {
-
-			return;
-		}
-
-		StringBundler sb = new StringBundler(3);
-
-		sb.append("contactUuids/any(s:s eq '");
-
-		User user = getUser();
-
-		sb.append(user.getUuid());
-
-		sb.append("')");
-
-		List<Account> accounts = _accountWebService.search(
-			StringPool.BLANK, sb.toString(), 1, 1000, null);
-
-		if (accounts.isEmpty()) {
-			params.put("accountMembership", new String[] {StringPool.BLANK});
-		}
-		else {
-			String[] accountKeys = new String[accounts.size()];
-
-			for (int i = 0; i < accounts.size(); i++) {
-				Account account = accounts.get(i);
-
-				accountKeys[i] = account.getKey();
-			}
-
-			params.put("accountMembership", accountKeys);
-		}
-
-		params.put("active", Boolean.TRUE);
-		params.put("user", user.getUserId());
-	}
-
-	protected List<LicenseKey> filterLicenseKeys(List<LicenseKey> licenseKeys)
-		throws PortalException {
-
-		List<LicenseKey> filteredLicenseKeys = ListUtil.copy(licenseKeys);
-
-		Iterator<LicenseKey> itr = filteredLicenseKeys.iterator();
-
-		while (itr.hasNext()) {
-			LicenseKey licenseKey = itr.next();
-
-			if (!_licenseKeyPermission.contains(
-					getPermissionChecker(), licenseKey,
-					ProvisioningActionKeys.VIEW)) {
-
-				itr.remove();
-			}
-		}
-
-		return filteredLicenseKeys;
 	}
 
 	protected void validateJSONWebServicePermissions() throws PortalException {

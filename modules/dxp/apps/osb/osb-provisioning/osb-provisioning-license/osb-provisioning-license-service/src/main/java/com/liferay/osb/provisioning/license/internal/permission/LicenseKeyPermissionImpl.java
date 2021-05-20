@@ -18,7 +18,6 @@ import com.liferay.osb.provisioning.constants.ProvisioningActionKeys;
 import com.liferay.osb.provisioning.constants.RoleConstants;
 import com.liferay.osb.provisioning.license.model.LicenseKey;
 import com.liferay.osb.provisioning.license.permission.LicenseKeyPermission;
-import com.liferay.osb.provisioning.license.service.LicenseKeyLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
@@ -35,32 +34,6 @@ import org.osgi.service.component.annotations.Reference;
 public class LicenseKeyPermissionImpl implements LicenseKeyPermission {
 
 	@Override
-	public void check(
-			PermissionChecker permissionChecker, LicenseKey licenseKey,
-			String actionId)
-		throws PortalException {
-
-		if (!contains(permissionChecker, licenseKey, actionId)) {
-			throw new PrincipalException.MustHavePermission(
-				permissionChecker, LicenseKey.class.getName(),
-				licenseKey.getLicenseKeyId(), actionId);
-		}
-	}
-
-	@Override
-	public void check(
-			PermissionChecker permissionChecker, long licenseKeyId,
-			String actionId)
-		throws PortalException {
-
-		if (!contains(permissionChecker, licenseKeyId, actionId)) {
-			throw new PrincipalException.MustHavePermission(
-				permissionChecker, LicenseKey.class.getName(), licenseKeyId,
-				actionId);
-		}
-	}
-
-	@Override
 	public void check(PermissionChecker permissionChecker, String actionId)
 		throws PortalException {
 
@@ -68,27 +41,6 @@ public class LicenseKeyPermissionImpl implements LicenseKeyPermission {
 			throw new PrincipalException.MustHavePermission(
 				permissionChecker, LicenseKey.class.getName(), actionId);
 		}
-	}
-
-	@Override
-	public boolean contains(
-			PermissionChecker permissionChecker, LicenseKey licenseKey,
-			String actionId)
-		throws PortalException {
-
-		return contains(permissionChecker, actionId);
-	}
-
-	@Override
-	public boolean contains(
-			PermissionChecker permissionChecker, long licenseKeyId,
-			String actionId)
-		throws PortalException {
-
-		LicenseKey licenseKey = _licenseKeyLocalService.getLicenseKey(
-			licenseKeyId);
-
-		return contains(permissionChecker, licenseKey, actionId);
 	}
 
 	@Override
@@ -130,18 +82,6 @@ public class LicenseKeyPermissionImpl implements LicenseKeyPermission {
 		return false;
 	}
 
-	@Reference(unbind = "-")
-	protected void setLicenseKeyLocalService(
-		LicenseKeyLocalService licenseKeyLocalService) {
-
-		_licenseKeyLocalService = licenseKeyLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setRoleLocalService(RoleLocalService roleLocalService) {
-		_roleLocalService = roleLocalService;
-	}
-
 	private static final String[] _PROVISIONING_CONTACT_WORKER_ACTION_IDS = {
 		ProvisioningActionKeys.VIEW
 	};
@@ -150,7 +90,7 @@ public class LicenseKeyPermissionImpl implements LicenseKeyPermission {
 		ProvisioningActionKeys.VIEW
 	};
 
-	private static LicenseKeyLocalService _licenseKeyLocalService;
-	private static RoleLocalService _roleLocalService;
+	@Reference
+	private RoleLocalService _roleLocalService;
 
 }

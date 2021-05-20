@@ -434,8 +434,7 @@ public class ViewAccountDisplayContext {
 			TransformUtil.transform(
 				productPurchaseViews,
 				productPurchaseView -> new ProductPurchaseViewDisplay(
-					httpServletRequest, account, licenseKeyPermission,
-					productPurchaseView)));
+					httpServletRequest, account, productPurchaseView)));
 
 		int count =
 			(int)productPurchaseViewWebService.getProductPurchaseViewsCount(
@@ -580,6 +579,12 @@ public class ViewAccountDisplayContext {
 
 	public boolean hasManageAccountsPermission() throws Exception {
 		return _hasPermission(ProvisioningActionKeys.MANAGE_ACCOUNTS);
+	}
+
+	public boolean hasManageLicenseKeysPermission() throws Exception {
+		return licenseKeyPermission.contains(
+			themeDisplay.getPermissionChecker(),
+			ProvisioningActionKeys.MANAGE_LICENSE_KEYS);
 	}
 
 	public void init(
