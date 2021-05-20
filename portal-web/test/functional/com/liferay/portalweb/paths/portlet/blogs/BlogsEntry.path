@@ -14,6 +14,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>ENTRY_COVER_IMAGE_CAPTION</td>
+	<td>//div[contains(@class,'cover-image-caption')]</td>
+	<td></td>
+</tr>	
+<tr>
 	<td>ENTRY_COVER_IMAGE_SELECT_FILE</td>
 	<td>//div[contains(@class,'image-selector')]//a[contains(.,'Select File')]</td>
 	<td></td>
@@ -99,8 +104,18 @@
 	<td></td>
 </tr>
 <tr>
+	<td>CONTENT_SMALL_IMAGE</td>
+	<td>//div[contains(@class,'asset-small-image')]//img[contains(@src,'${key_imageFileName}')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>CONTENT_VIDEO</td>
 	<td>//div[contains(@class,'embed')]//iframe[contains(@src,'${key_service}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>REMOVE_IMAGE</td>
+	<td>//button[@id='otzm___removeImage']</td>
 	<td></td>
 </tr>
 <tr>
@@ -136,6 +151,11 @@
 <tr>
 	<td>SMALL_IMAGE</td>
 	<td>//div[@class='current-image' and contains(@src,'${key_smallImage}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SMALL_IMAGE_BROWSE_IMAGE</td>
+	<td>//div[contains(@class,'blogs-small-image')]//button[contains(@class,'browse-image')]</td>
 	<td></td>
 </tr>
 <tr>
