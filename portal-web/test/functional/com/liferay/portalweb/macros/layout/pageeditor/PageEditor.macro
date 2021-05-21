@@ -187,6 +187,32 @@ definition {
 		PageEditor.closeSidebar(tabName = "Widgets");
 	}
 
+	macro addWidgetSpecific {
+		Variables.assertDefined(parameterList = "${portletCategory},${portletName}");
+
+		PageEditor.gotoTab(tabName = "Widgets");
+
+		Type.sendKeysApplicationSearch(
+			locator1 = "PageEditor#WIDGETS_APPLICATION_SEARCH_FIELD",
+			value1 = "${portletName}");
+
+		var key_portletCategory = "${portletCategory}";
+		var key_portletName = "${portletName}";
+
+		DragAndDrop(
+			locator1 = "PageEditor#WIDGETS_ADD_PORTLET_DRAG_LINK_SPECIFIC",
+			locator2 = "PageEditor#FRAGMENT_DROP_TARGET",
+			value1 = "${portletName}");
+
+		Pause(locator1 = "5000");
+
+		AssertElementPresent(
+			key_fragmentName = "${portletName}",
+			locator1 = "Fragment#FRAGMENT_HEADER");
+
+		PageEditor.closeSidebar(tabName = "Widgets");
+	}
+
 	macro assertFragmentSidebarLoaded {
 		AssertVisible(locator1 = "PageEditor#FRAGMENT_SIDEBAR_LOADED");
 	}

@@ -401,6 +401,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>WIDGETS_ADD_PORTLET_DRAG_LINK_SPECIFIC</td>
+	<td>//*[contains(@class,'sheet-subtitle')][normalize-space()='${key_portletCategory}']//following-sibling::div//*[text()='${key_portletName}']</td>
+	<td></td>
+</tr>
+<tr>
 	<td>WIDGETS_OPTIONS_ICON</td>
 	<td>//span[contains(@class,'portlet-name') and contains(.,'${key_portletName}')]/../..//a[span//*[name()='path'][contains(@class,'lexicon-icon-body')]]</td>
 	<td></td>
