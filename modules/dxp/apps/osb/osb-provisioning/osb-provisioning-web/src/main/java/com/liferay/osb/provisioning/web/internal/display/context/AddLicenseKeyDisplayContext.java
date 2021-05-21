@@ -26,6 +26,7 @@ import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.provisioning.license.helper.constants.ProductVersion;
 import com.liferay.osb.provisioning.license.model.LicenseEntry;
 import com.liferay.osb.provisioning.license.service.LicenseEntryLocalService;
+import com.liferay.osb.provisioning.web.internal.configuration.ProvisioningWebConfiguration;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -177,9 +178,17 @@ public class AddLicenseKeyDisplayContext {
 			StringPool.BLANK, "property_licenses eq 'true'", 1, 1000,
 			StringPool.BLANK);
 
+		ProvisioningWebConfiguration provisioningWebConfiguration =
+			(ProvisioningWebConfiguration)GetterUtil.getObject(
+				_renderRequest.getAttribute(
+					ProvisioningWebConfiguration.class.getName()));
+
+		boolean includeUnreleasedVersions =
+			provisioningWebConfiguration.includeUnreleasedVersions();
+
 		for (Product product : products) {
 			String[] versions = ProductVersion.getProductVersions(
-				product.getName());
+				product.getName(), includeUnreleasedVersions);
 
 			if (ArrayUtil.isEmpty(versions)) {
 				continue;
@@ -194,7 +203,8 @@ public class AddLicenseKeyDisplayContext {
 					"productName", product.getName()
 				).put(
 					"productVersions",
-					_getProductVersionsJSONObject(versions, product.getKey())
+					_getProductVersionsJSONObject(
+						versions, product.getKey(), includeUnreleasedVersions)
 				));
 		}
 
@@ -202,7 +212,8 @@ public class AddLicenseKeyDisplayContext {
 	}
 
 	private JSONObject _getProductVersionsJSONObject(
-		String[] versions, String productKey) {
+		String[] versions, String productKey,
+		boolean includeUnreleasedVersions) {
 
 		JSONObject productVersionsJSONObject =
 			JSONFactoryUtil.createJSONObject();
@@ -210,7 +221,7 @@ public class AddLicenseKeyDisplayContext {
 		for (String version : versions) {
 			List<LicenseEntry> licenseEntries =
 				_licenseEntryLocalService.getLicenseEntriesByVersion(
-					productKey, version);
+					productKey, version, includeUnreleasedVersions);
 
 			JSONArray licenseEntriesJSONArray =
 				JSONFactoryUtil.createJSONArray();
