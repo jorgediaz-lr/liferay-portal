@@ -100,19 +100,9 @@ SearchContainer productPurchasesSearchContainer = viewAccountDisplayContext.getP
 					</c:choose>
 				</liferay-ui:search-container-column-text>
 
-				<%
-				String licenseManagerHREF = StringUtil.replace(provisioningWebConfiguration.licenseManagerHREF(), "[$ACCOUNT_KEY$]", productPurchaseViewDisplay.getAccountKey());
-
-				licenseManagerHREF = StringUtil.replace(licenseManagerHREF, "[$PRODUCT_KEY$]", productPurchaseViewDisplay.getProductKey());
-
-				if (provisioningWebConfiguration.licensesPortletEnabled()) {
-					licenseManagerHREF = productPurchaseViewDisplay.getProvisionedCountURL();
-				}
-				%>
-
 				<liferay-ui:search-container-column-text
 					cssClass="semi-bold"
-					href="<%= licenseManagerHREF %>"
+					href="<%= productPurchaseViewDisplay.getProvisionedCountURL() %>"
 					name='<%= tabs2.equals("all") ? "provisioned" : "current-provisioned" %>'
 					value='<%= tabs2.equals("all") ? productPurchaseViewDisplay.getProvisionedCount() : productPurchaseViewDisplay.getCurrentProvisionedCount() %>'
 				/>

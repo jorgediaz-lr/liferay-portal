@@ -56,7 +56,6 @@ page import="com.liferay.osb.provisioning.license.helper.constants.LicenseType" 
 page import="com.liferay.osb.provisioning.license.model.LicenseKey" %><%@
 page import="com.liferay.osb.provisioning.model.ProductBundle" %><%@
 page import="com.liferay.osb.provisioning.service.ProductBundleLocalServiceUtil" %><%@
-page import="com.liferay.osb.provisioning.web.internal.configuration.ProvisioningWebConfiguration" %><%@
 page import="com.liferay.osb.provisioning.web.internal.dao.search.ProductPurchaseResultRowSplitter" %><%@
 page import="com.liferay.osb.provisioning.web.internal.dao.search.ProductPurchaseViewResultRowSplitter" %><%@
 page import="com.liferay.osb.provisioning.web.internal.dao.search.ProductResultRowSplitter" %><%@
@@ -133,10 +132,6 @@ page import="java.util.Map" %>
 <liferay-theme:defineObjects />
 
 <portlet:defineObjects />
-
-<%
-ProvisioningWebConfiguration provisioningWebConfiguration = (ProvisioningWebConfiguration)liferayPortletRequest.getAttribute(ProvisioningWebConfiguration.class.getName());
-%>
 
 <aui:script>
 	window.ProvisioningConstants = {

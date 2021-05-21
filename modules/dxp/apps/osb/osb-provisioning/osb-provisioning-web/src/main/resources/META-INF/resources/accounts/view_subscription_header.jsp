@@ -70,27 +70,12 @@ ProductPurchaseViewDisplay productPurchaseViewDisplay = viewSubscriptionDisplayC
 
 				<%= productPurchaseViewDisplay.getGracePeriod() %>
 			</li>
-
-			<%
-			String generateLicenseURL = StringUtil.replace(provisioningWebConfiguration.generateLicenseHREF(), "[$ACCOUNT_KEY$]", productPurchaseViewDisplay.getAccountKey());
-
-			String licenseManagerHREF = StringUtil.replace(provisioningWebConfiguration.licenseManagerHREF(), "[$ACCOUNT_KEY$]", productPurchaseViewDisplay.getAccountKey());
-
-			licenseManagerHREF = StringUtil.replace(licenseManagerHREF, "[$PRODUCT_KEY$]", productPurchaseViewDisplay.getProductKey());
-
-			if (provisioningWebConfiguration.licensesPortletEnabled()) {
-				generateLicenseURL = viewSubscriptionDisplayContext.getGenerateLicenseURL();
-
-				licenseManagerHREF = productPurchaseViewDisplay.getProvisionedCountURL();
-			}
-			%>
-
 			<li>
 				<div class="header-label">
 					<liferay-ui:message key="provisioned" />
 				</div>
 
-				<a href="<%= licenseManagerHREF %>"><%= productPurchaseViewDisplay.getProvisionedCount() %></a>
+				<a href="<%= productPurchaseViewDisplay.getProvisionedCountURL() %>"><%= productPurchaseViewDisplay.getProvisionedCount() %></a>
 			</li>
 		</ul>
 	</div>
@@ -98,7 +83,7 @@ ProductPurchaseViewDisplay productPurchaseViewDisplay = viewSubscriptionDisplayC
 	<c:if test="<%= viewSubscriptionDisplayContext.hasManageLicenseKeysPermission() %>">
 		<div class="header-buttons">
 			<div>
-				<a class="btn btn-primary" href="<%= generateLicenseURL %>">
+				<a class="btn btn-primary" href="<%= viewSubscriptionDisplayContext.getGenerateLicenseURL() %>">
 					<span class="lfr-btn-label"><liferay-ui:message key="generate-license" /></span>
 				</a>
 			</div>

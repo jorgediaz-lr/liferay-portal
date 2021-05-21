@@ -24,12 +24,6 @@ ViewSubscriptionDisplayContext viewSubscriptionDisplayContext = ProvisioningWebC
 viewSubscriptionDisplayContext.addPortletBreadcrumbEntries();
 
 String tabs1 = ParamUtil.getString(request, "tabs1");
-
-String tabNames = "subscription-terms";
-
-if (provisioningWebConfiguration.licensesPortletEnabled()) {
-	tabNames = tabNames.concat(",licenses");
-}
 %>
 
 <liferay-util:include page="/accounts/view_subscription_header.jsp" servletContext="<%= application %>" />
@@ -37,12 +31,12 @@ if (provisioningWebConfiguration.licensesPortletEnabled()) {
 <div class="subscription" id="account">
 	<div class="subscription-content">
 		<liferay-ui:tabs
-			names="<%= tabNames %>"
+			names="subscription-terms,licenses"
 			portletURL="<%= viewSubscriptionDisplayContext.getPortletURL() %>"
 		/>
 
 		<c:choose>
-			<c:when test='<%= tabs1.equals("licenses") && provisioningWebConfiguration.licensesPortletEnabled() %>'>
+			<c:when test='<%= tabs1.equals("licenses") %>'>
 				<liferay-util:include page="/accounts/view_account_license_keys.jsp" servletContext="<%= application %>" />
 			</c:when>
 			<c:otherwise>

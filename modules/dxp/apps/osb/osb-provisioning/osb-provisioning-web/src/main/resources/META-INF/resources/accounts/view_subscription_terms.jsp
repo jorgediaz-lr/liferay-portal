@@ -51,18 +51,8 @@ ProductPurchaseViewDisplay productPurchaseViewDisplay = viewSubscriptionDisplayC
 				value="<%= productPurchaseDisplay.getGracePeriod() %>"
 			/>
 
-			<%
-			String licenseManagerHREF = StringUtil.replace(provisioningWebConfiguration.licenseManagerHREF(), "[$ACCOUNT_KEY$]", productPurchaseViewDisplay.getAccountKey());
-
-			licenseManagerHREF = StringUtil.replace(licenseManagerHREF, "[$PRODUCT_KEY$]", productPurchaseViewDisplay.getProductKey());
-
-			if (provisioningWebConfiguration.licensesPortletEnabled()) {
-				licenseManagerHREF = productPurchaseViewDisplay.getProvisionedCountURL();
-			}
-			%>
-
 			<liferay-ui:search-container-column-text
-				href="<%= licenseManagerHREF %>"
+				href="<%= productPurchaseViewDisplay.getProvisionedCountURL() %>"
 				name="provisioned"
 				value="<%= productPurchaseDisplay.getProvisionedCount() %>"
 			/>
