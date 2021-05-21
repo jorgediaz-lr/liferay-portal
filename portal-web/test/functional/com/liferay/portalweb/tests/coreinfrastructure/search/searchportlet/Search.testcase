@@ -919,7 +919,9 @@ definition {
 		ContentPages.addPage(pageName = "Test Content Page Name");
 
 		for (var portletName : list "Search Bar,Search Results") {
-			PageEditor.addWidget(portletName = "${portletName}");
+			PageEditor.addWidgetSpecific(
+				portletCategory = "Search",
+				portletName = "${portletName}");
 		}
 
 		PageEditor.clickPublish();
