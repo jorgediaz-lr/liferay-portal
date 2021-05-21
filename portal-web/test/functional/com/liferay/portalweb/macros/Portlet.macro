@@ -148,6 +148,12 @@ definition {
 			locator1 = "Icon#DISPLAY_STYLE_ACTIVE");
 	}
 
+	macro clickAddPortletSpecific {
+		Variables.assertDefined(parameterList = "${portletCategory},${portletName}");
+
+		Click(locator1 = "ControlMenuAddPanel#ADD_PORTLET_LINK_SPECIFIC");
+	}
+
 	macro clickPortletPlusIconPG {
 		var browserType = PropsUtil.get("browser.type");
 		var key_portletName = "${portletName}";
