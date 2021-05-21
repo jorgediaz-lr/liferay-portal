@@ -24,7 +24,9 @@ definition {
 			value1 = "search");
 
 		for (var portletName : list "${searchPortletList}") {
-			Portlet._clickAddPortlet(portletName = "${portletName}");
+			Portlet.clickAddPortletSpecific(
+				portletCategory = "Search",
+				portletName = "${portletName}");
 
 			var key_portletName = "${portletName}";
 
