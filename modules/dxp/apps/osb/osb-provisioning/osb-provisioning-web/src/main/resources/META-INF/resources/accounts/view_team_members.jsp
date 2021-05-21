@@ -48,7 +48,7 @@ TeamDisplay teamDisplay = viewTeamDisplayContext.getTeamDisplay();
 			</div>
 		</div>
 
-		<c:if test="<%= !teamDisplay.isSystem() %>">
+		<c:if test="<%= !teamDisplay.isSystem() && viewTeamDisplayContext.hasManageAccountsPermission() %>">
 			<portlet:actionURL name="/accounts/edit_team" var="editTeamURL" />
 
 			<ul class="navbar-nav">

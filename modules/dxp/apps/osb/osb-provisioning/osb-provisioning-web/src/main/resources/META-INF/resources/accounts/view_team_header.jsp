@@ -58,7 +58,7 @@ TeamDisplay teamDisplay = viewTeamDisplayContext.getTeamDisplay();
 	</div>
 
 	<div class="autofit-col">
-		<c:if test="<%= !teamDisplay.isSystem() %>">
+		<c:if test="<%= !teamDisplay.isSystem() && viewTeamDisplayContext.hasManageAccountsPermission() %>">
 			<portlet:actionURL name="/accounts/edit_team" var="editTeamURL" />
 
 			<portlet:renderURL var="editTeamNameURL">

@@ -32,7 +32,7 @@ TeamDisplay teamDisplay = viewTeamDisplayContext.getTeamDisplay();
 	markupView="lexicon"
 	message="<%= StringPool.BLANK %>"
 >
-	<c:if test="<%= !teamDisplay.isSystem() %>">
+	<c:if test="<%= !teamDisplay.isSystem() && viewTeamDisplayContext.hasManageAccountsPermission() %>">
 		<portlet:actionURL name="/accounts/edit_team" var="unassignURL">
 			<portlet:param name="redirect" value="<%= currentURL %>" />
 			<portlet:param name="teamKey" value="<%= teamDisplay.getKey() %>" />

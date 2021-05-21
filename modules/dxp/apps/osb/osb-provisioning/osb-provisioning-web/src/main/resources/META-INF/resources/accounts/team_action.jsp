@@ -20,9 +20,11 @@
 ResultRow row = (ResultRow)request.getAttribute(WebKeys.SEARCH_CONTAINER_RESULT_ROW);
 
 TeamDisplay teamDisplay = (TeamDisplay)row.getObject();
+
+ViewAccountTeamsDisplayContext viewAccountTeamsDisplayContext = ProvisioningWebComponentProvider.getViewAccountTeamsDisplayContext(renderRequest, renderResponse, request);
 %>
 
-<c:if test="<%= !teamDisplay.isSystem() %>">
+<c:if test="<%= !teamDisplay.isSystem() && viewAccountTeamsDisplayContext.hasManageAccountsPermission() %>">
 	<liferay-ui:icon-menu
 		direction="left-side"
 		icon="<%= StringPool.BLANK %>"
