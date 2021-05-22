@@ -418,7 +418,6 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 						<c:if test="<%= hasManageLicenseKeysPermission %>">
 							<span id="renewLicense">
 								<react:component
-									data="<%= new HashMap<>() %>"
 									module="js/RenewLicenseApp"
 								/>
 							</span>
