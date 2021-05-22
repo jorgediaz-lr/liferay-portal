@@ -217,7 +217,7 @@ public interface LicenseEntryLocalService
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseEntry> getLicenseEntriesByVersion(
-		String productKey, String version);
+		String productKey, String version, boolean includeUnreleasedVersions);
 
 	/**
 	 * Returns the number of license entries.
