@@ -199,7 +199,7 @@ public class ExpandoValueLocalServiceTest {
 		ExpandoColumn column = ExpandoTestUtil.addColumn(
 			_expandoTable, "Test Column", ExpandoColumnConstants.STRING);
 
-		long classPK = CounterLocalServiceUtil.increment();
+		long classPK = CounterLocalServiceUtil.increment() * 999L;
 
 		ExpandoValue value = ExpandoTestUtil.addValue(
 			_expandoTable, column, classPK, "value");
@@ -218,7 +218,7 @@ public class ExpandoValueLocalServiceTest {
 		ExpandoColumn column2 = ExpandoTestUtil.addColumn(
 			_expandoTable, "Test Column 2", ExpandoColumnConstants.STRING);
 
-		long classPK = CounterLocalServiceUtil.increment();
+		long classPK = CounterLocalServiceUtil.increment() * 999L;
 
 		ExpandoValue value = ExpandoTestUtil.addValue(
 			_expandoTable, column1, classPK, "value");
