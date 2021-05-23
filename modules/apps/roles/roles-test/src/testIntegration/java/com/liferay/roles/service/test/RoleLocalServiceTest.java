@@ -200,7 +200,7 @@ public class RoleLocalServiceTest {
 		long[] roleIds = {_role.getRoleId()};
 
 		_userGroupGroupRoleLocalService.addUserGroupGroupRoles(
-			_userGroup.getGroupId(), _group.getGroupId(), roleIds);
+			_userGroup.getUserGroupId(), _group.getGroupId(), roleIds);
 		_userGroupRoleLocalService.addUserGroupRoles(
 			_user.getUserId(), _group.getGroupId(), roleIds);
 
