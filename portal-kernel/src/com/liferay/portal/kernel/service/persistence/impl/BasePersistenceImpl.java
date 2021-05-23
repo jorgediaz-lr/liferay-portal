@@ -59,6 +59,7 @@ import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.dao.orm.Type;
 import com.liferay.portal.kernel.exception.DataLimitExceededException;
 import com.liferay.portal.kernel.exception.NoSuchModelException;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.internal.spring.transaction.ReadOnlyTransactionThreadLocal;
 import com.liferay.portal.kernel.log.Log;
@@ -70,6 +71,8 @@ import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.model.ModelListenerRegistrationUtil;
 import com.liferay.portal.kernel.model.ModelWrapper;
+import com.liferay.portal.kernel.model.ResourceConstants;
+import com.liferay.portal.kernel.service.ResourceLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
@@ -655,6 +658,26 @@ public class BasePersistenceImpl<T extends BaseModel<T>>
 			ModelWrapper<T> modelWrapper = (ModelWrapper<T>)model;
 
 			model = modelWrapper.getWrappedModel();
+		}
+
+		if (model instanceof AuditedModel) {
+			AuditedModel auditedModel = (AuditedModel)model;
+
+			try {
+				ResourceLocalServiceUtil.deleteResource(
+					auditedModel, ResourceConstants.SCOPE_INDIVIDUAL);
+			}
+			catch (PortalException portalException) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						StringBundler.concat(
+							"Error deleting resource for companyId=",
+							auditedModel.getCompanyId(), ", className=",
+							auditedModel.getModelClassName(), ", primKey = ",
+							auditedModel.getPrimaryKeyObj()),
+						portalException);
+				}
+			}
 		}
 
 		ModelListener<T>[] modelListeners = getListeners();
