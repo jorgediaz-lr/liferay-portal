@@ -899,11 +899,12 @@ public class CompanyLocalServiceTest {
 	public void testUpdateInvalidAccountNames() throws Exception {
 		Company company = addCompany();
 
-		Group group = GroupTestUtil.addGroup();
+		long companyId = company.getCompanyId();
 
-		group.setCompanyId(company.getCompanyId());
+		long userId = UserLocalServiceUtil.getDefaultUserId(companyId);
 
-		GroupLocalServiceUtil.updateGroup(group);
+		final Group group = GroupTestUtil.addGroup(
+			companyId, userId, GroupConstants.DEFAULT_PARENT_GROUP_ID);
 
 		testUpdateAccountNames(
 			company,
