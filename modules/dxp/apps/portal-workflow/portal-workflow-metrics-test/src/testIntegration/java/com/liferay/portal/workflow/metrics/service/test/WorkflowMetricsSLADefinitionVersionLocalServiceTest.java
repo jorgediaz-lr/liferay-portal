@@ -148,7 +148,7 @@ public class WorkflowMetricsSLADefinitionVersionLocalServiceTest
 			workflowMetricsSLADefinitionVersion =
 				WorkflowMetricsSLADefinitionVersionLocalServiceUtil.
 					createWorkflowMetricsSLADefinitionVersion(
-						CounterLocalServiceUtil.increment());
+						CounterLocalServiceUtil.increment() * 999L);
 
 		Date date = new Date();
 
