@@ -57,7 +57,7 @@ public class AnnouncementsFlagUADAnonymizerTest
 
 		AnnouncementsFlag announcementsFlag =
 			_announcementsFlagLocalService.addFlag(
-				userId, RandomTestUtil.randomLong(),
+				userId, RandomTestUtil.randomLong() * 999L,
 				AnnouncementsFlagConstants.UNREAD);
 
 		if (deleteAfterTestRun) {
