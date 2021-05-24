@@ -83,6 +83,26 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 		return StringUtil.toLowerCase(fileName);
 	}
 
+	public String getFileName(String[] productNames) {
+		StringBundler sb = new StringBundler(2 + (2 * productNames.length));
+
+		sb.append("activation-key");
+
+		for (String productName : productNames) {
+			productName = StringUtil.extractChars(productName);
+
+			sb.append(StringPool.DASH);
+			sb.append(productName);
+		}
+
+		sb.append(".xml");
+
+		String fileName = StringUtil.replace(
+			sb.toString(), CharPool.SPACE, StringPool.BLANK);
+
+		return StringUtil.toLowerCase(fileName);
+	}
+
 	public String toEncodedLicenseFile(String serverId, String key) {
 		Properties licenseProperties = new Properties();
 
@@ -208,7 +228,11 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 	public String toXML(Map<String, String> properties, String key)
 		throws Exception {
 
-		Document document = toXMLVersion3_4(properties, key, false);
+		Document document = SAXReaderUtil.createDocument();
+
+		Element rootElement = document.addElement("license");
+
+		toXMLVersion3_4(rootElement, properties, key, false);
 
 		return document.formattedString();
 	}
@@ -237,9 +261,11 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 			properties.put("maxServers", String.valueOf(serverIds.length));
 		}
 
-		Document document = toXMLVersion3_4(properties, StringPool.BLANK, true);
+		Document document = SAXReaderUtil.createDocument();
 
-		Element rootElement = document.getRootElement();
+		Element rootElement = document.addElement("license");
+
+		toXMLVersion3_4(rootElement, properties, StringPool.BLANK, true);
 
 		List<String> allHostNames = new ArrayList<>();
 		List<String> allIpAddresses = new ArrayList<>();
@@ -309,10 +335,47 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 			startDate, expirationDate, createDate);
 
 		if (licenseVersion >= 3) {
-			document = toXMLVersion3_4(properties, key, false);
+			document = SAXReaderUtil.createDocument();
+
+			Element rootElement = document.addElement("license");
+
+			toXMLVersion3_4(rootElement, properties, key, false);
 		}
 		else {
 			document = toXMLVersion2(properties, key);
+		}
+
+		return document.formattedString();
+	}
+
+	public String toXML(
+			String[] keys, String[] accountNames, String[] licenseEntryNames,
+			String[] licenseTypes, int[] licenseVersions, String[] productNames,
+			String[] productIds, String[] productVersions, String[] owners,
+			int[] maxServers, int[] maxHttpSessions, long[] maxConcurrentUsers,
+			long[] maxUsers, String[] sizings, String[] descriptions,
+			String[] hostNames, String[] ipAddresses, String[] macAddresses,
+			String[] serverIds, Date[] startDates, Date[] expirationDates,
+			Date[] createDates)
+		throws Exception {
+
+		Document document = SAXReaderUtil.createDocument();
+
+		Element rootElement = document.addElement("licenses");
+
+		for (int i = 0; i < keys.length; i++) {
+			Map<String, String> properties = _getProperties(
+				accountNames[i], licenseEntryNames[i], licenseTypes[i],
+				licenseVersions[i], productNames[i], productIds[i],
+				productVersions[i], owners[i], maxServers[i],
+				maxHttpSessions[i], maxConcurrentUsers[i], maxUsers[i],
+				sizings[i], descriptions[i], hostNames[i], ipAddresses[i],
+				macAddresses[i], serverIds[i], startDates[i],
+				expirationDates[i], createDates[i]);
+
+			Element licenseElement = rootElement.addElement("license");
+
+			toXMLVersion3_4(licenseElement, properties, keys[i], false);
 		}
 
 		return document.formattedString();
@@ -429,13 +492,10 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 		return document;
 	}
 
-	protected Document toXMLVersion3_4(
-			Map<String, String> properties, String key, boolean aggregate)
+	protected void toXMLVersion3_4(
+			Element rootElement, Map<String, String> properties, String key,
+			boolean aggregate)
 		throws Exception {
-
-		Document document = SAXReaderUtil.createDocument();
-
-		Element rootElement = document.addElement("license");
 
 		String productId = properties.get("productId");
 		String licenseEntryType = properties.get("type");
@@ -545,8 +605,6 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 
 			DocUtil.add(rootElement, "key", key);
 		}
-
-		return document;
 	}
 
 	private Map<String, String> _getProperties(
