@@ -463,7 +463,7 @@ definition {
 		PortalSettings.configureTimeZone(timeZone = "(UTC +02:00) Central European Summer Time");
 
 		ProductMenu.gotoPortlet(
-			category = "Security",
+			category = "Users",
 			panel = "Control Panel",
 			portlet = "Password Policies");
 
