@@ -154,7 +154,11 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 				new ExternalLink[] {externalLink});
 		}
 
-		newProductPurchase.setProperties(productPurchase.getProperties());
+		Map<String, String> properties = productPurchase.getProperties();
+
+		properties.put("productType", SalesforceConstants.PRODUCT_TYPE_RENEWAL);
+
+		newProductPurchase.setProperties(properties);
 
 		return _productPurchaseWebService.addProductPurchase(
 			StringPool.BLANK, StringPool.BLANK,
@@ -2083,7 +2087,9 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 				if (ewsaProductPurchase == null) {
 					String name = product.getName();
 
-					if (name.contains("Unlimited Enterprise-Wide")) {
+					if (name.equals(ProductConstants.NAME_DXP_EWSA) ||
+						name.equals(ProductConstants.NAME_PORTAL_EWSA)) {
+
 						ewsaProductPurchase = productPurchase;
 					}
 				}
@@ -2106,7 +2112,10 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 		if (renewal) {
 			for (ProductPurchase productPurchase : activeProductPurchases) {
-				if (ewsaProductPurchase != null) {
+				if ((ewsaProductPurchase != null) &&
+					!_containsProduct(
+						productPurchases, productPurchase.getProductKey())) {
+
 					ProductPurchase newProductPurchase = addEWSAProductPurchase(
 						ewsaProductPurchase, productPurchase, jsonObject);
 
@@ -2147,6 +2156,12 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 				for (ProductPurchaseView expiredProductPurchaseView :
 						expiredProductPurchaseViews) {
 
+					Product product = expiredProductPurchaseView.getProduct();
+
+					if (_containsProduct(productPurchases, product.getKey())) {
+						continue;
+					}
+
 					ProductPurchase[] expiredProductPurchases =
 						expiredProductPurchaseView.getProductPurchases();
 
@@ -2175,6 +2190,20 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		}
 
 		return _accountWebService.getAccount(accountKey);
+	}
+
+	private static boolean _containsProduct(
+		List<ProductPurchase> productPurchases, String productKey) {
+
+		for (ProductPurchase productPurchase : productPurchases) {
+			Product product = productPurchase.getProduct();
+
+			if ((product != null) && productKey.equals(product.getKey())) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private static String _getEmailTemplate(
