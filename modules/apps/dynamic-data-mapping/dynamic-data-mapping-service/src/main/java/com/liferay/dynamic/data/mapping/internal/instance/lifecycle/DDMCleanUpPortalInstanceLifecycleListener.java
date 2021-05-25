@@ -24,6 +24,9 @@ import com.liferay.dynamic.data.mapping.service.DDMTemplateVersionLocalService;
 import com.liferay.dynamic.data.mapping.storage.StorageEngine;
 import com.liferay.portal.instance.lifecycle.BasePortalInstanceLifecycleListener;
 import com.liferay.portal.instance.lifecycle.PortalInstanceLifecycleListener;
+import com.liferay.portal.kernel.exception.NoSuchGroupException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 
 import java.util.Deque;
@@ -44,15 +47,27 @@ public class DDMCleanUpPortalInstanceLifecycleListener
 	public void portalInstancePreunregistered(Company company)
 		throws Exception {
 
+		long groupId;
+
+		try {
+			groupId = company.getGroupId();
+		}
+		catch (NoSuchGroupException noSuchGroupException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(noSuchGroupException, noSuchGroupException);
+			}
+
+			return;
+		}
+
 		for (DDMTemplate ddmTemplate :
-				_ddmTemplateLocalService.getTemplatesByGroupId(
-					company.getGroupId())) {
+				_ddmTemplateLocalService.getTemplatesByGroupId(groupId)) {
 
 			_deleteDDMTemplate(ddmTemplate);
 		}
 
 		Queue<DDMStructure> queue = new LinkedList<>(
-			_ddmStructureLocalService.getStructures(company.getGroupId()));
+			_ddmStructureLocalService.getStructures(groupId));
 
 		Deque<DDMStructure> deque = new LinkedList<>();
 
@@ -93,6 +108,9 @@ public class DDMCleanUpPortalInstanceLifecycleListener
 
 		_ddmTemplateLocalService.deleteTemplate(ddmTemplate);
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		DDMCleanUpPortalInstanceLifecycleListener.class);
 
 	@Reference
 	private DDMStructureLinkLocalService _ddmStructureLinkLocalService;
