@@ -144,7 +144,7 @@
 	<div {$attributes}>
 		<div class="input-group-item">
 			{let $visibleInputAttributes kind="attributes"}
-
+				aria-labelledby="{$name + '_fieldDetails'}"
 				class="form-control input-group-inset input-group-inset-after"
 				data-onblur="{$_handleInputBlurred}"
 				data-onclick="{$_handleInputFocused}"
