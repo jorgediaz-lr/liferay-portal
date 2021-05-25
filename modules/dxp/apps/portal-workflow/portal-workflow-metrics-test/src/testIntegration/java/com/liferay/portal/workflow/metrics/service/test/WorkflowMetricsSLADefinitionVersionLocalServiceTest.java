@@ -53,10 +53,10 @@ public class WorkflowMetricsSLADefinitionVersionLocalServiceTest
 		throws Exception {
 
 		_addWorkflowMetricsSLADefinitionVersion(
-			"Abc", 1, WorkflowConstants.STATUS_APPROVED, 1);
+			"Abc", 9999999, WorkflowConstants.STATUS_APPROVED, 9999999);
 
 		_addWorkflowMetricsSLADefinitionVersion(
-			"Cdf", 1, WorkflowConstants.STATUS_APPROVED, 1);
+			"Cdf", 9999999, WorkflowConstants.STATUS_APPROVED, 9999999);
 
 		List<WorkflowMetricsSLADefinitionVersion>
 			workflowMetricsSLADefinitionVersions =
@@ -82,10 +82,10 @@ public class WorkflowMetricsSLADefinitionVersionLocalServiceTest
 		throws Exception {
 
 		_addWorkflowMetricsSLADefinitionVersion(
-			"Abc", 1, WorkflowConstants.STATUS_APPROVED, 1);
+			"Abc", 9999999, WorkflowConstants.STATUS_APPROVED, 9999999);
 
 		_addWorkflowMetricsSLADefinitionVersion(
-			"Cdf", 1, WorkflowConstants.STATUS_DRAFT, 1);
+			"Cdf", 9999999, WorkflowConstants.STATUS_DRAFT, 9999999);
 
 		List<WorkflowMetricsSLADefinitionVersion>
 			workflowMetricsSLADefinitionVersions =
@@ -113,12 +113,12 @@ public class WorkflowMetricsSLADefinitionVersionLocalServiceTest
 		WorkflowMetricsSLADefinitionVersion
 			workflowMetricsSLADefinitionVersion1 =
 				_addWorkflowMetricsSLADefinitionVersion(
-					"Abc", 1, WorkflowConstants.STATUS_APPROVED, 1);
+					"Abc", 9999999, WorkflowConstants.STATUS_APPROVED, 9999999);
 
 		WorkflowMetricsSLADefinitionVersion
 			workflowMetricsSLADefinitionVersion2 =
 				_addWorkflowMetricsSLADefinitionVersion(
-					"Cdf", 1, WorkflowConstants.STATUS_APPROVED, 2);
+					"Cdf", 9999999, WorkflowConstants.STATUS_APPROVED, 9999998);
 
 		List<WorkflowMetricsSLADefinitionVersion>
 			workflowMetricsSLADefinitionVersions =
