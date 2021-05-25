@@ -264,7 +264,7 @@ public class ExpandoValueLocalServiceTest {
 			_ptLocale, new String[] {"Ola, Joao", "Oi, Joao"}
 		).build();
 
-		long classPK = CounterLocalServiceUtil.increment();
+		long classPK = CounterLocalServiceUtil.increment() * 999L;
 
 		ExpandoTestUtil.addValue(_expandoTable, column, classPK, dataMap);
 
