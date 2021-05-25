@@ -21,6 +21,8 @@ import com.liferay.commerce.product.service.base.CommerceChannelLocalServiceBase
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.model.ResourceConstants;
@@ -130,14 +132,25 @@ public class CommerceChannelLocalServiceImpl
 
 		// Group
 
-		Group group = getCommerceChannelGroup(
-			commerceChannel.getCommerceChannelId());
+		Group group = null;
+
+		try {
+			group = getCommerceChannelGroup(
+				commerceChannel.getCommerceChannelId());
+		}
+		catch (PortalException portalException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(portalException, portalException);
+			}
+		}
 
 		// Commerce channel
 
 		commerceChannel = commerceChannelPersistence.remove(commerceChannel);
 
-		groupLocalService.deleteGroup(group);
+		if (group != null) {
+			groupLocalService.deleteGroup(group);
+		}
 
 		return commerceChannel;
 	}
@@ -424,5 +437,8 @@ public class CommerceChannelLocalServiceImpl
 	private static final String[] _SELECTED_FIELD_NAMES = {
 		Field.ENTRY_CLASS_PK, Field.COMPANY_ID
 	};
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		CommerceChannelLocalServiceImpl.class);
 
 }
