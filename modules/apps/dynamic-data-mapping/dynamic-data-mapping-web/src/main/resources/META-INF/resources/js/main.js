@@ -1103,7 +1103,10 @@ AUI.add(
 			validateFieldName(fieldName) {
 				var valid = true;
 
-				if (REGEX_HYPHEN.test(fieldName)) {
+				if (
+					REGEX_HYPHEN.test(fieldName) ||
+					REGEX_DIGITS.test(fieldName)
+				) {
 					valid = false;
 
 					return valid;
