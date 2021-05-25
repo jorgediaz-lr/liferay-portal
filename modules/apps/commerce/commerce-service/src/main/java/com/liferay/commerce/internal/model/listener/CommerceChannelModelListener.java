@@ -34,6 +34,10 @@ public class CommerceChannelModelListener
 
 	@Override
 	public void onBeforeRemove(CommerceChannel commerceChannel) {
+		if (commerceChannel.getGroupId() == 0) {
+			return;
+		}
+
 		try {
 			_commerceShippingMethodLocalService.deleteCommerceShippingMethods(
 				commerceChannel.getGroupId());
