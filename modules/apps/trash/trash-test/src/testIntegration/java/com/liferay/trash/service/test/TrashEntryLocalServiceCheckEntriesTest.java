@@ -100,24 +100,27 @@ public class TrashEntryLocalServiceCheckEntriesTest {
 	public void testCompanies() throws Exception {
 		Long companyId = CompanyThreadLocal.getCompanyId();
 
-		for (int i = 0; i < _COMPANIES_COUNT; i++) {
-			long newCompanyId = createCompany();
+		try {
+			for (int i = 0; i < _COMPANIES_COUNT; i++) {
+				long newCompanyId = createCompany();
 
-			CompanyThreadLocal.setCompanyId(newCompanyId);
+				CompanyThreadLocal.setCompanyId(newCompanyId);
 
-			Group group = updateTrashEntriesMaxAge(
-				createGroup(newCompanyId), _MAX_AGE);
+				Group group = updateTrashEntriesMaxAge(
+					createGroup(newCompanyId), _MAX_AGE);
 
-			createTrashEntries(group);
+				createTrashEntries(group);
+			}
+
+			TrashEntryLocalServiceUtil.checkEntries();
+
+			Assert.assertEquals(
+				_COMPANIES_COUNT * _NOT_EXPIRED_TRASH_ENTRIES_COUNT,
+				TrashEntryLocalServiceUtil.getTrashEntriesCount());
 		}
-
-		TrashEntryLocalServiceUtil.checkEntries();
-
-		Assert.assertEquals(
-			_COMPANIES_COUNT * _NOT_EXPIRED_TRASH_ENTRIES_COUNT,
-			TrashEntryLocalServiceUtil.getTrashEntriesCount());
-
-		CompanyThreadLocal.setCompanyId(companyId);
+		finally {
+			CompanyThreadLocal.setCompanyId(companyId);
+		}
 	}
 
 	@Test
