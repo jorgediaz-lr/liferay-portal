@@ -205,6 +205,12 @@ public class KaleoInstanceLocalServiceImpl
 
 	@Indexable(type = IndexableType.DELETE)
 	@Override
+	public KaleoInstance deleteKaleoInstance(KaleoInstance kaleoInstance) {
+		return deleteKaleoInstance(kaleoInstance.getKaleoInstanceId());
+	}
+
+	@Indexable(type = IndexableType.DELETE)
+	@Override
 	public KaleoInstance deleteKaleoInstance(long kaleoInstanceId) {
 		KaleoInstance kaleoInstance = null;
 
