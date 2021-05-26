@@ -147,17 +147,17 @@
 			{$contentRenderer}
 		{/if}
 
-		<span id="{$fieldDetailsId}" class="sr-only">
-			{let $hasError: $displayErrors and ($errorMessage != null and $errorMessage != '') and not $valid/}
+		{let $hasError: $displayErrors and ($errorMessage != null and $errorMessage != '') and not $valid/}
 
-			{if $renderlabel}{$label}{/if}
+		{if $tip or $text or $hasError}
+			<span id="{$fieldDetailsId}" class="sr-only">
+				{if $tip}{sp}{$tip}{/if}
 
-			{if $tip}{sp}{$tip}{/if}
+				{if $text}{sp}{$text}{/if}
 
-			{if $text}{sp}{$text}{/if}
-
-			{if $hasError}{sp}{$errorMessage}{elseif $required}{sp}{$requiredText}{/if}
-		</span>
+				{if $hasError}{sp}{$errorMessage}{elseif $required}{sp}{$requiredText}{/if}
+			</span>
+		{/if}
 
 		{if $tip}
 			<span class="form-text" aria-hidden="true">{$tip}</span>
