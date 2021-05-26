@@ -232,10 +232,10 @@ public class LicenseEntryLocalServiceUtil {
 	}
 
 	public static List<LicenseEntry> getLicenseEntriesByVersion(
-		String productKey, String version, boolean includeUnreleasedVersions) {
+			String productKey, String version)
+		throws Exception {
 
-		return getService().getLicenseEntriesByVersion(
-			productKey, version, includeUnreleasedVersions);
+		return getService().getLicenseEntriesByVersion(productKey, version);
 	}
 
 	/**
