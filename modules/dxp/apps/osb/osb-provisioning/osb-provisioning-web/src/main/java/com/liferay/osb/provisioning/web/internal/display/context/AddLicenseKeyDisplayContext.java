@@ -68,7 +68,8 @@ public class AddLicenseKeyDisplayContext {
 		LicenseEntryLocalService licenseEntryLocalService,
 		ProductConsumptionWebService productConsumptionWebService,
 		ProductWebService productWebService,
-		ProductPurchaseViewWebService productPurchaseViewWebService) {
+		ProductPurchaseViewWebService productPurchaseViewWebService,
+		ProvisioningWebConfiguration provisioningWebConfiguration) {
 
 		_renderRequest = renderRequest;
 		_renderResponse = renderResponse;
@@ -77,6 +78,7 @@ public class AddLicenseKeyDisplayContext {
 		_productConsumptionWebService = productConsumptionWebService;
 		_productWebService = productWebService;
 		_productPurchaseViewWebService = productPurchaseViewWebService;
+		_provisioningWebConfiguration = provisioningWebConfiguration;
 
 		_currentURLObj = PortletURLUtil.getCurrent(
 			_renderRequest, _renderResponse);
@@ -178,17 +180,9 @@ public class AddLicenseKeyDisplayContext {
 			StringPool.BLANK, "property_licenses eq 'true'", 1, 1000,
 			StringPool.BLANK);
 
-		ProvisioningWebConfiguration provisioningWebConfiguration =
-			(ProvisioningWebConfiguration)GetterUtil.getObject(
-				_renderRequest.getAttribute(
-					ProvisioningWebConfiguration.class.getName()));
-
-		boolean includeUnreleasedVersions =
-			provisioningWebConfiguration.includeUnreleasedVersions();
-
 		for (Product product : products) {
 			String[] versions = ProductVersion.getProductVersions(
-				product.getName(), includeUnreleasedVersions);
+				product.getName());
 
 			if (ArrayUtil.isEmpty(versions)) {
 				continue;
@@ -203,8 +197,7 @@ public class AddLicenseKeyDisplayContext {
 					"productName", product.getName()
 				).put(
 					"productVersions",
-					_getProductVersionsJSONObject(
-						versions, product.getKey(), includeUnreleasedVersions)
+					_getProductVersionsJSONObject(versions, product.getKey())
 				));
 		}
 
@@ -212,16 +205,23 @@ public class AddLicenseKeyDisplayContext {
 	}
 
 	private JSONObject _getProductVersionsJSONObject(
-		String[] versions, String productKey,
-		boolean includeUnreleasedVersions) {
+			String[] versions, String productKey)
+		throws Exception {
 
 		JSONObject productVersionsJSONObject =
 			JSONFactoryUtil.createJSONObject();
 
 		for (String version : versions) {
+			if (ArrayUtil.contains(
+					_provisioningWebConfiguration.addLicenseHiddenVersions(),
+					version)) {
+
+				continue;
+			}
+
 			List<LicenseEntry> licenseEntries =
 				_licenseEntryLocalService.getLicenseEntriesByVersion(
-					productKey, version, includeUnreleasedVersions);
+					productKey, version);
 
 			JSONArray licenseEntriesJSONArray =
 				JSONFactoryUtil.createJSONArray();
@@ -353,6 +353,7 @@ public class AddLicenseKeyDisplayContext {
 	private final ProductConsumptionWebService _productConsumptionWebService;
 	private final ProductPurchaseViewWebService _productPurchaseViewWebService;
 	private final ProductWebService _productWebService;
+	private final ProvisioningWebConfiguration _provisioningWebConfiguration;
 	private final RenderRequest _renderRequest;
 	private final RenderResponse _renderResponse;
 	private final ThemeDisplay _themeDisplay;

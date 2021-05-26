@@ -33,6 +33,7 @@ import com.liferay.osb.provisioning.license.permission.LicenseKeyPermission;
 import com.liferay.osb.provisioning.license.service.LicenseEntryLocalService;
 import com.liferay.osb.provisioning.license.service.LicenseKeyLocalService;
 import com.liferay.osb.provisioning.service.ProductBundleLocalService;
+import com.liferay.osb.provisioning.web.internal.configuration.ProvisioningWebConfiguration;
 import com.liferay.osb.provisioning.web.internal.display.context.AccountSearchDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.AddLicenseKeyDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.AssignProductBundleProductsDisplayContext;
@@ -56,10 +57,13 @@ import com.liferay.osb.provisioning.web.internal.display.context.ViewContactDisp
 import com.liferay.osb.provisioning.web.internal.display.context.ViewLicenseKeysManagementToolbarDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.ViewSubscriptionDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.ViewTeamDisplayContext;
+import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.service.UserLocalService;
+
+import java.util.Map;
 
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
@@ -68,13 +72,18 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Amos Fong
  */
-@Component(immediate = true, service = {})
+@Component(
+	configurationPid = "com.liferay.osb.provisioning.web.internal.configuration.ProvisioningWebConfiguration",
+	configurationPolicy = ConfigurationPolicy.OPTIONAL, immediate = true,
+	service = {}
+)
 public class ProvisioningWebComponentProvider {
 
 	public static AccountSearchDisplayContext getAccountSearchDisplayContext(
@@ -325,7 +334,10 @@ public class ProvisioningWebComponentProvider {
 	}
 
 	@Activate
-	protected void activate() {
+	protected void activate(Map<String, Object> properties) {
+		_provisioningWebConfiguration = ConfigurableUtil.createConfigurable(
+			ProvisioningWebConfiguration.class, properties);
+
 		_provisioningWebComponentProvider = this;
 	}
 
@@ -351,7 +363,8 @@ public class ProvisioningWebComponentProvider {
 		return new AddLicenseKeyDisplayContext(
 			renderRequest, renderResponse, httpServletRequest,
 			_licenseEntryLocalService, _productConsumptionWebService,
-			_productWebService, _productPurchaseViewWebService);
+			_productWebService, _productPurchaseViewWebService,
+			_provisioningWebConfiguration);
 	}
 
 	private AssignProductBundleProductsDisplayContext
@@ -566,6 +579,8 @@ public class ProvisioningWebComponentProvider {
 
 	@Reference
 	private ProductWebService _productWebService;
+
+	private volatile ProvisioningWebConfiguration _provisioningWebConfiguration;
 
 	@Reference
 	private TeamRoleWebService _teamRoleWebService;

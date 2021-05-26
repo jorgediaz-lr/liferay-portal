@@ -21,13 +21,17 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
 /**
  * @author Kyle Bischof
  */
-@ExtendedObjectClassDefinition(generateUI = false)
+@ExtendedObjectClassDefinition(category = "provisioning")
 @Meta.OCD(
-	id = "com.liferay.osb.provisioning.web.internal.configuration.ProvisioningWebConfiguration"
+	id = "com.liferay.osb.provisioning.web.internal.configuration.ProvisioningWebConfiguration",
+	localization = "content/Language", name = "provisioning-configuration-name"
 )
 public interface ProvisioningWebConfiguration {
 
-	@Meta.AD(deflt = "false", required = false)
-	public boolean includeUnreleasedVersions();
+	@Meta.AD(
+		deflt = "5.1|5.1 SP1|5.1 SP2|5.1 SP3|5.1 SP4|5.1 SP5|5.2|5.2 SP1|5.2 SP2|5.2 SP3|5.2 SP4|5.2 SP5|6.0|6.0 SP1|6.0 SP2|7.4",
+		name = "add-license-hidden-versions", required = false
+	)
+	public String[] addLicenseHiddenVersions();
 
 }

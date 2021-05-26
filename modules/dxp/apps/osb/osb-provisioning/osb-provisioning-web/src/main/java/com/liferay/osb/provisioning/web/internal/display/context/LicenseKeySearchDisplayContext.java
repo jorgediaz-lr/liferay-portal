@@ -140,7 +140,7 @@ public class LicenseKeySearchDisplayContext {
 		JSONArray productVersionsJSONArray = JSONFactoryUtil.createJSONArray();
 
 		String[] productVersions = ArrayUtil.append(
-			ProductVersion.DXP_VERSIONS, ProductVersion.PORTAL_VERSIONS);
+			ProductVersion.PORTAL_VERSIONS, ProductVersion.DXP_VERSIONS);
 
 		for (String productVersion : productVersions) {
 			productVersionsJSONArray.put(

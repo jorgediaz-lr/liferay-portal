@@ -15,29 +15,17 @@
 package com.liferay.osb.provisioning.web.internal.portlet;
 
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
-import com.liferay.osb.provisioning.web.internal.configuration.ProvisioningWebConfiguration;
-import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 
-import java.io.IOException;
-
-import java.util.Map;
-
 import javax.portlet.Portlet;
-import javax.portlet.PortletException;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
 
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.ConfigurationPolicy;
 
 /**
  * @author Yuanyuan Huang
  */
 @Component(
-	configurationPid = "com.liferay.osb.provisioning.web.internal.configuration.ProvisioningWebConfiguration",
-	configurationPolicy = ConfigurationPolicy.OPTIONAL, immediate = true,
+	immediate = true,
 	property = {
 		"com.liferay.portlet.css-class-wrapper=licenses-portlet",
 		"com.liferay.portlet.display-category=category.hidden",
@@ -52,25 +40,4 @@ import org.osgi.service.component.annotations.ConfigurationPolicy;
 	service = Portlet.class
 )
 public class LicensesPortlet extends MVCPortlet {
-
-	@Override
-	public void render(
-			RenderRequest renderRequest, RenderResponse renderResponse)
-		throws IOException, PortletException {
-
-		renderRequest.setAttribute(
-			ProvisioningWebConfiguration.class.getName(),
-			_provisioningWebConfiguration);
-
-		super.render(renderRequest, renderResponse);
-	}
-
-	@Activate
-	protected void activate(Map<String, Object> properties) {
-		_provisioningWebConfiguration = ConfigurableUtil.createConfigurable(
-			ProvisioningWebConfiguration.class, properties);
-	}
-
-	private volatile ProvisioningWebConfiguration _provisioningWebConfiguration;
-
 }

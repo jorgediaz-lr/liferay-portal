@@ -14,13 +14,8 @@
 
 package com.liferay.osb.provisioning.license.helper.constants;
 
-import com.liferay.portal.kernel.util.ArrayUtil;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Kyle Bischof
@@ -45,8 +40,6 @@ public class ProductVersion {
 		DXP_VERSION_7_0, DXP_VERSION_7_1, DXP_VERSION_7_2, DXP_VERSION_7_3
 	};
 
-	public static final String[] DXP_VERSIONS_UNRELEASED = {DXP_VERSION_7_4};
-
 	public static final String PORTAL_MAJOR_VERSION_6 = "6";
 
 	public static final String PORTAL_MINOR_VERSION_6_1 = "6.1";
@@ -57,6 +50,36 @@ public class ProductVersion {
 		PORTAL_MINOR_VERSION_6_1, PORTAL_MINOR_VERSION_6_2
 	};
 
+	public static final String PORTAL_VERSION_5_1_3 = "5.1";
+
+	public static final String PORTAL_VERSION_5_1_4 = "5.1 SP1";
+
+	public static final String PORTAL_VERSION_5_1_5 = "5.1 SP2";
+
+	public static final String PORTAL_VERSION_5_1_6 = "5.1 SP3";
+
+	public static final String PORTAL_VERSION_5_1_7 = "5.1 SP4";
+
+	public static final String PORTAL_VERSION_5_1_8 = "5.1 SP5";
+
+	public static final String PORTAL_VERSION_5_2_4 = "5.2";
+
+	public static final String PORTAL_VERSION_5_2_5 = "5.2 SP1";
+
+	public static final String PORTAL_VERSION_5_2_6 = "5.2 SP2";
+
+	public static final String PORTAL_VERSION_5_2_7 = "5.2 SP3";
+
+	public static final String PORTAL_VERSION_5_2_8 = "5.2 SP4";
+
+	public static final String PORTAL_VERSION_5_2_9 = "5.2 SP5";
+
+	public static final String PORTAL_VERSION_6_0_10 = "6.0";
+
+	public static final String PORTAL_VERSION_6_0_11 = "6.0 SP1";
+
+	public static final String PORTAL_VERSION_6_0_12 = "6.0 SP2";
+
 	public static final String PORTAL_VERSION_6_1_10 = "6.1 GA1";
 
 	public static final String PORTAL_VERSION_6_1_20 = "6.1 GA2";
@@ -66,80 +89,66 @@ public class ProductVersion {
 	public static final String PORTAL_VERSION_6_2_10 = "6.2 EE";
 
 	public static final String[] PORTAL_VERSIONS = {
+		PORTAL_VERSION_5_1_3, PORTAL_VERSION_5_1_4, PORTAL_VERSION_5_1_5,
+		PORTAL_VERSION_5_1_6, PORTAL_VERSION_5_1_7, PORTAL_VERSION_5_1_8,
+		PORTAL_VERSION_5_2_4, PORTAL_VERSION_5_2_5, PORTAL_VERSION_5_2_6,
+		PORTAL_VERSION_5_2_7, PORTAL_VERSION_5_2_8, PORTAL_VERSION_5_2_9,
+		PORTAL_VERSION_6_0_10, PORTAL_VERSION_6_0_11, PORTAL_VERSION_6_0_12,
 		PORTAL_VERSION_6_1_10, PORTAL_VERSION_6_1_20, PORTAL_VERSION_6_1_30,
 		PORTAL_VERSION_6_2_10
 	};
 
 	public static final int getOrder(
-		String productVersion, boolean includeUnreleasedVersions) {
+		String productName, String productVersion) {
 
-		Map<String, Integer> productVersionMap = _getProductVersionMap(
-			includeUnreleasedVersions);
-
-		if (productVersionMap.get(productVersion) != null) {
-			return productVersionMap.get(productVersion);
+		if (_isDXP(productName)) {
+			return _orderedDXPVersions.indexOf(productVersion);
+		}
+		else if (_isPortal(productName)) {
+			return _orderedPortalVersions.indexOf(productVersion);
 		}
 
 		return -1;
 	}
 
-	public static final String[] getProductVersions(
-		String productName, boolean includeUnreleasedVersions) {
-
+	public static final String[] getProductVersions(String productName) {
 		if (productName.contains("Commerce Subscription")) {
 			return new String[] {COMMERCE_LICENSE_VERSION_1};
 		}
-		else if (productName.startsWith("DXP") &&
-				 !productName.contains("DXP Cloud")) {
-
-			if (includeUnreleasedVersions) {
-				return ArrayUtil.append(DXP_VERSIONS, DXP_VERSIONS_UNRELEASED);
-			}
-
+		else if (_isDXP(productName)) {
 			return DXP_VERSIONS;
 		}
-		else if ((productName.contains("Portal") &&
-				  !productName.contains("Early Access Program")) ||
-				 productName.startsWith("TCAT Portal")) {
-
+		else if (_isPortal(productName)) {
 			return PORTAL_VERSIONS;
 		}
 
 		return new String[0];
 	}
 
-	private static final List<String> _getProductOrderList(
-		boolean includeUnreleasedVersions) {
+	private static boolean _isDXP(String productName) {
+		if (productName.startsWith("DXP") &&
+			!productName.contains("DXP Cloud")) {
 
-		List<String> productVersions = new ArrayList<>();
-
-		Collections.addAll(productVersions, PORTAL_VERSIONS);
-		Collections.addAll(productVersions, PORTAL_MINOR_VERSIONS);
-		Collections.addAll(productVersions, DXP_VERSIONS);
-
-		if (includeUnreleasedVersions) {
-			Collections.addAll(productVersions, DXP_VERSIONS_UNRELEASED);
+			return true;
 		}
 
-		productVersions.add(COMMERCE_LICENSE_VERSION_1);
-
-		return productVersions;
+		return false;
 	}
 
-	private static final Map<String, Integer> _getProductVersionMap(
-		boolean includeUnreleasedVersions) {
+	private static boolean _isPortal(String productName) {
+		if ((productName.contains("Portal") &&
+			 !productName.contains("Early Access Program")) ||
+			productName.startsWith("TCAT Portal")) {
 
-		Map<String, Integer> productVersionMap = new HashMap<>();
-
-		int i = 0;
-
-		for (String version : _getProductOrderList(includeUnreleasedVersions)) {
-			productVersionMap.put(version, i);
-
-			i++;
+			return true;
 		}
 
-		return productVersionMap;
+		return false;
 	}
+
+	private static final List<String> _orderedDXPVersions = Arrays.asList(
+		DXP_VERSIONS);
+	private static final List<String> _orderedPortalVersions = Arrays.asList(
+		PORTAL_VERSIONS);
 
 }

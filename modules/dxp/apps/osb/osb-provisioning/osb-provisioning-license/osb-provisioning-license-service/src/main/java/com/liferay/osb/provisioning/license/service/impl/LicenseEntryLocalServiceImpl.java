@@ -14,6 +14,8 @@
 
 package com.liferay.osb.provisioning.license.service.impl;
 
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
+import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.provisioning.license.exception.LicenseEntryNameException;
 import com.liferay.osb.provisioning.license.helper.constants.ProductVersion;
 import com.liferay.osb.provisioning.license.model.LicenseEntry;
@@ -28,6 +30,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
@@ -73,24 +76,27 @@ public class LicenseEntryLocalServiceImpl
 	}
 
 	public List<LicenseEntry> getLicenseEntriesByVersion(
-		String productKey, String version, boolean includeUnreleasedVersions) {
+			String productKey, String version)
+		throws Exception {
 
 		List<LicenseEntry> curLicenseEntries = new ArrayList<>();
+
+		Product product = _productWebService.getProduct(productKey);
 
 		List<LicenseEntry> licenseEntries =
 			licenseEntryPersistence.findByProductKey(productKey);
 
 		for (LicenseEntry licenseEntry : licenseEntries) {
 			int productVersionMinOrder = ProductVersion.getOrder(
-				licenseEntry.getVersionMin(), includeUnreleasedVersions);
+				product.getName(), licenseEntry.getVersionMin());
 			int productVersionMaxOrder = ProductVersion.getOrder(
-				licenseEntry.getVersionMax(), includeUnreleasedVersions);
+				product.getName(), licenseEntry.getVersionMax());
 
 			if ((Validator.isNull(licenseEntry.getVersionMin()) ||
 				 (productVersionMinOrder <= ProductVersion.getOrder(
-					 version, includeUnreleasedVersions))) &&
+					 product.getName(), version))) &&
 				(Validator.isNull(licenseEntry.getVersionMax()) ||
-				 (ProductVersion.getOrder(version, includeUnreleasedVersions) <=
+				 (ProductVersion.getOrder(product.getName(), version) <=
 					 productVersionMaxOrder))) {
 
 				curLicenseEntries.add(licenseEntry);
@@ -131,5 +137,8 @@ public class LicenseEntryLocalServiceImpl
 			throw new LicenseEntryNameException();
 		}
 	}
+
+	@Reference
+	private ProductWebService _productWebService;
 
 }
