@@ -74,7 +74,7 @@ function Purchase({
 	}
 
 	return (
-		<ClayTable.Row>
+		<ClayTable.Row id={productPurchaseKey}>
 			{startDate ? (
 				<ClayTableCell
 					className={`input-group-sm ${
