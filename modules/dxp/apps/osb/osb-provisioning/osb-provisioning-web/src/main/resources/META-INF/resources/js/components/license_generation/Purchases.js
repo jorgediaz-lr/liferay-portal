@@ -54,13 +54,13 @@ function Purchases({detached, purchased, type}) {
 }
 
 function Detached({detached}) {
-	const formattedDates = {};
+	const licenseDates = {};
 
 	if (detached) {
-		formattedDates.startDate = TODAY;
+		licenseDates.licenseStartDate = TODAY;
 
-		formattedDates.expirationDate = generateNewDateByYear(
-			formattedDates.startDate
+		licenseDates.licenseExpirationDate = generateNewDateByYear(
+			licenseDates.licenseStartDate
 		);
 	}
 
@@ -68,7 +68,7 @@ function Detached({detached}) {
 		<>
 			<DividerTitle title={Liferay.Language.get('detached')} />
 
-			<Purchase {...detached} {...formattedDates} />
+			<Purchase {...detached} {...licenseDates} />
 		</>
 	);
 }
@@ -85,23 +85,33 @@ function Purchased({purchased, selectedType}) {
 	const processedPurchased = purchased
 		? purchased.map(item => {
 				if (item.perpetual) {
-					const startDate = TODAY;
-					const expirationDate = generateNewDateByYear(
-						startDate,
+					const licenseStartDate = TODAY;
+					const licenseExpirationDate = generateNewDateByYear(
+						licenseStartDate,
 						100
 					);
 
-					return {...item, expirationDate, expired: false, startDate};
+					return {
+						...item,
+						expired: false,
+						licenseExpirationDate,
+						licenseStartDate
+					};
 				}
 				else {
-					const startDate = new Date(item.startDate);
-					const expirationDate = setExpirationDate(
+					const licenseStartDate = new Date(item.startDate);
+					const licenseExpirationDate = setExpirationDate(
 						item,
 						selectedType
 					);
-					const expired = expirationDate < TODAY;
+					const expired = new Date(item.endDate) < TODAY;
 
-					return {...item, expirationDate, expired, startDate};
+					return {
+						...item,
+						expired,
+						licenseExpirationDate,
+						licenseStartDate
+					};
 				}
 		  })
 		: [];
@@ -111,7 +121,7 @@ function Purchased({purchased, selectedType}) {
 	);
 
 	function setExpirationDate(license, type) {
-		let expirationDate = new Date(license.expirationDate);
+		let expirationDate = new Date(license.endDate);
 
 		if (type !== LICENSE_TYPE_DEVELOPER) {
 			expirationDate = generateNewDateByYear(expirationDate, 100);
@@ -124,7 +134,9 @@ function Purchased({purchased, selectedType}) {
 		<>
 			{!!active.length && (
 				<>
-					<DividerTitle title={Liferay.Language.get('active')} />
+					<DividerTitle
+						title={Liferay.Language.get('active-subscriptions')}
+					/>
 
 					{active.map((item, index) => (
 						<Purchase
@@ -137,7 +149,9 @@ function Purchased({purchased, selectedType}) {
 
 			{!!expired.length && (
 				<>
-					<DividerTitle title={Liferay.Language.get('expired')} />
+					<DividerTitle
+						title={Liferay.Language.get('expired-subscriptions')}
+					/>
 
 					{expired.map((item, index) => (
 						<Purchase
@@ -159,7 +173,7 @@ Purchases.protoType = {
 	}),
 	purchased: PropTypes.arrayOf(
 		PropTypes.shape({
-			expirationDate: PropTypes.string,
+			endDate: PropTypes.string,
 			licenseKeysGenerated: PropTypes.string,
 			perpetual: PropTypes.bool,
 			productPurchaseKey: PropTypes.string,

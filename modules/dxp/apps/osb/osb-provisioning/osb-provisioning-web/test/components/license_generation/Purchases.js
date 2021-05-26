@@ -27,7 +27,7 @@ function renderPurchases({...props}) {
 			<Purchases
 				purchased={[
 					{
-						expirationDate: '2020-04-16',
+						endDate: '2020-04-16',
 						instanceSize: 1,
 						licenseKeysGenerated: '0 / 1',
 						perpetual: false,
@@ -35,7 +35,7 @@ function renderPurchases({...props}) {
 						startDate: '2020-03-17'
 					},
 					{
-						expirationDate: '',
+						endDate: '',
 						instanceSize: 1,
 						licenseKeysGenerated: '1 / 1',
 						perpetual: true,
@@ -89,17 +89,55 @@ describe('Purchases', () => {
 	});
 
 	it('displays only the Active section for purchased subscriptions if none are expired', () => {
-		const {getByText, queryByText} = renderPurchases();
+		const {getByText, queryByText} = renderPurchases({
+			purchased: [
+				{
+					endDate: '',
+					instanceSize: 1,
+					licenseKeysGenerated: '1 / 1',
+					perpetual: true,
+					productPurchaseKey: 'PURCHKEY-123',
+					startDate: ''
+				},
+				{
+					endDate: '',
+					instanceSize: 5,
+					licenseKeysGenerated: '1 / 1',
+					perpetual: true,
+					productPurchaseKey: 'PURCHKEY-456',
+					startDate: ''
+				}
+			]
+		});
 
-		getByText('active');
-		expect(queryByText('expired')).toBeFalsy();
+		getByText('active-subscriptions');
+		expect(queryByText('expired-subscriptions')).toBeFalsy();
 	});
 
-	it('displays an Expired section if there are expired subscriptions', () => {
-		const {getByText} = renderPurchases({type: 'developer'});
+	it('displays only the Expired section if no subscriptions are active', () => {
+		const {getByText, queryByText} = renderPurchases({
+			purchased: [
+				{
+					endDate: '2020-04-16',
+					instanceSize: 1,
+					licenseKeysGenerated: '0 / 1',
+					perpetual: false,
+					productPurchaseKey: 'PURCHKEY-123',
+					startDate: '2020-03-17'
+				},
+				{
+					endDate: '2020-05-16',
+					instanceSize: 2,
+					licenseKeysGenerated: '1 / 1',
+					perpetual: false,
+					productPurchaseKey: 'PURCHKEY-456',
+					startDate: '2019-05-16'
+				}
+			]
+		});
 
-		getByText('expired');
-		getByText('active');
+		getByText('expired-subscriptions');
+		expect(queryByText('active-subscriptions')).toBeFalsy();
 	});
 
 	it('only renders the Detached section with default values (dashes) if no purchased product is provided', () => {

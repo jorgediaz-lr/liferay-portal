@@ -352,7 +352,7 @@ GeneralInformation.propTypes = {
 	purchasedProducts: PropTypes.shape({
 		[PropTypes.string]: PropTypes.arrayOf(
 			PropTypes.shape({
-				expirationDate: PropTypes.string,
+				endDate: PropTypes.string,
 				licenseKeysGenerated: PropTypes.string,
 				perpetual: PropTypes.bool,
 				productPurchaseKey: PropTypes.string,

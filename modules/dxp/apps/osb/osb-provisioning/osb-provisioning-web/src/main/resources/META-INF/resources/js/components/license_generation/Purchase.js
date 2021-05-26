@@ -19,18 +19,20 @@ import {DASH} from '../../utilities/constants';
 import DatePicker from '../DatePicker';
 
 function Purchase({
-	expirationDate,
 	instanceSize = DASH,
 	instanceSizes,
+	licenseExpirationDate,
 	licenseKeysGenerated = DASH,
-	productPurchaseKey = '',
-	startDate
+	licenseStartDate,
+	productPurchaseKey = ''
 }) {
 	const [disableChoose, setDisableChoose] = useState(false);
 	const [selectedExpirationDate, setSelectedExpirationDate] = useState(
-		expirationDate
+		licenseExpirationDate
 	);
-	const [selectedStartDate, setSelectedStartDate] = useState(startDate);
+	const [selectedStartDate, setSelectedStartDate] = useState(
+		licenseStartDate
+	);
 	const [sizing, setSizing] = useState();
 
 	const [, {updateLicense}] = useNewLicense();
@@ -75,14 +77,14 @@ function Purchase({
 
 	return (
 		<ClayTable.Row id={productPurchaseKey}>
-			{startDate ? (
+			{licenseStartDate ? (
 				<ClayTableCell
 					className={`input-group-sm ${
 						isNaN(new Date(selectedStartDate)) ? 'has-error' : ''
 					}`}
 				>
 					<DatePicker
-						defaultValue={startDate}
+						defaultValue={licenseStartDate}
 						inputName="startDate"
 						updateFn={handleStartDateChange}
 					/>
@@ -91,7 +93,7 @@ function Purchase({
 				<ClayTableCell>{DASH}</ClayTableCell>
 			)}
 
-			{expirationDate ? (
+			{licenseExpirationDate ? (
 				<ClayTableCell
 					className={`input-group-sm ${
 						isNaN(new Date(selectedExpirationDate))
@@ -100,7 +102,7 @@ function Purchase({
 					}`}
 				>
 					<DatePicker
-						defaultValue={expirationDate}
+						defaultValue={licenseExpirationDate}
 						inputName="expirationDate"
 						updateFn={handleExpirationDateChange}
 					/>
@@ -146,12 +148,12 @@ function Purchase({
 }
 
 Purchase.protoType = {
-	expirationDate: PropTypes.string,
 	instanceSize: PropTypes.number,
 	instanceSizes: PropTypes.arrayOf(PropTypes.number),
+	licenseExpirationDate: PropTypes.string,
 	licenseKeysGenerated: PropTypes.string,
-	productPurchaseKey: PropTypes.string,
-	startDate: PropTypes.string
+	licenseStartDate: PropTypes.string,
+	productPurchaseKey: PropTypes.string
 };
 
 export default Purchase;

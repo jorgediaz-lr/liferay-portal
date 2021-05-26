@@ -321,7 +321,7 @@ public class AddLicenseKeyDisplayContext {
 
 						productPurchasesJSONArray.put(
 							JSONUtil.put(
-								"expirationDate",
+								"endDate",
 								_formatDate(productPurchase.getEndDate())
 							).put(
 								"instanceSize", sizing
