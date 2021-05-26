@@ -15,8 +15,8 @@ import React from 'react';
 import SpecificDetails from '../../../src/main/resources/META-INF/resources/js/components/license_generation/SpecificDetails';
 import {
 	License,
-	LicenseProvider
-} from '../../../src/main/resources/META-INF/resources/js/hooks/license';
+	NewLicenseProvider
+} from '../../../src/main/resources/META-INF/resources/js/hooks/newLicense';
 import {
 	displayInMDYDateFormat,
 	getUTCAdjustedDate
@@ -44,19 +44,19 @@ const dummyLicense = new License({
 
 function renderSpecificDetails(props) {
 	return render(
-		<LicenseProvider initialLicense={dummyLicense}>
+		<NewLicenseProvider initialLicense={dummyLicense}>
 			<SpecificDetails
 				addLicenseKeyURL="add/license/key/url"
 				redirect="/redirect/url"
 				{...props}
 			/>
-		</LicenseProvider>
+		</NewLicenseProvider>
 	);
 }
 
 function renderServerIdFields(props) {
 	return render(
-		<LicenseProvider
+		<NewLicenseProvider
 			initialLicense={
 				new License({
 					accountName: 'Test Account',
@@ -73,7 +73,7 @@ function renderServerIdFields(props) {
 				addLicenseKeyURL="add/license/key/url"
 				redirect={'/redirect/url'}
 			/>
-		</LicenseProvider>
+		</NewLicenseProvider>
 	);
 }
 
@@ -140,7 +140,7 @@ describe('SpecificDetails', () => {
 
 	it('displays the Server Id Fields section if the selected Type is one of Backup, Cluster, Limited, Non-production, Per-user, or Production', () => {
 		const {getByText} = render(
-			<LicenseProvider
+			<NewLicenseProvider
 				initialLicense={
 					new License({
 						licenseEntry: {
@@ -153,7 +153,7 @@ describe('SpecificDetails', () => {
 					addLicenseKeyURL="add/license/key/url"
 					redirect={'/redirect/url'}
 				/>
-			</LicenseProvider>
+			</NewLicenseProvider>
 		);
 
 		getByText('server-id-fields');
@@ -173,7 +173,7 @@ describe('SpecificDetails', () => {
 
 	it('displays the Maximum Servers input if the selected Type is Cluster', () => {
 		const {getByLabelText} = render(
-			<LicenseProvider
+			<NewLicenseProvider
 				initialLicense={
 					new License({
 						licenseEntry: {
@@ -186,7 +186,7 @@ describe('SpecificDetails', () => {
 					addLicenseKeyURL="add/license/key/url"
 					redirect={'/redirect/url'}
 				/>
-			</LicenseProvider>
+			</NewLicenseProvider>
 		);
 
 		getByLabelText('maximum-servers');
@@ -194,7 +194,7 @@ describe('SpecificDetails', () => {
 
 	it('does not display the Maximum Connections input if the selected Type is not Developer or Developer Cluster', () => {
 		const {queryByLabelText} = render(
-			<LicenseProvider
+			<NewLicenseProvider
 				initialLicense={
 					new License({
 						licenseEntry: {
@@ -207,7 +207,7 @@ describe('SpecificDetails', () => {
 					addLicenseKeyURL="add/license/key/url"
 					redirect={'/redirect/url'}
 				/>
-			</LicenseProvider>
+			</NewLicenseProvider>
 		);
 
 		expect(queryByLabelText('maximum-connections')).toBeFalsy();
@@ -221,7 +221,7 @@ describe('SpecificDetails', () => {
 
 	it('displays the Maximum Connections input if the selected Type is Developer Cluster', () => {
 		const {getByLabelText} = render(
-			<LicenseProvider
+			<NewLicenseProvider
 				initialLicense={
 					new License({
 						licenseEntry: {
@@ -234,7 +234,7 @@ describe('SpecificDetails', () => {
 					addLicenseKeyURL="add/license/key/url"
 					redirect={'/redirect/url'}
 				/>
-			</LicenseProvider>
+			</NewLicenseProvider>
 		);
 
 		getByLabelText('maximum-connections');

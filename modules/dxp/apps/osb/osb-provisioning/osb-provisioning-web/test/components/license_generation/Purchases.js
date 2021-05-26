@@ -13,7 +13,7 @@ import {cleanup, fireEvent, render, within} from '@testing-library/react';
 import React from 'react';
 
 import Purchases from '../../../src/main/resources/META-INF/resources/js/components/license_generation/Purchases';
-import {LicenseProvider} from '../../../src/main/resources/META-INF/resources/js/hooks/license';
+import {NewLicenseProvider} from '../../../src/main/resources/META-INF/resources/js/hooks/newLicense';
 import {
 	formatDate,
 	generateNewDateByYear
@@ -23,7 +23,7 @@ const TODAY = new Date();
 
 function renderPurchases({...props}) {
 	return render(
-		<LicenseProvider>
+		<NewLicenseProvider>
 			<Purchases
 				purchased={[
 					{
@@ -45,7 +45,7 @@ function renderPurchases({...props}) {
 				]}
 				{...props}
 			/>
-		</LicenseProvider>
+		</NewLicenseProvider>
 	);
 }
 

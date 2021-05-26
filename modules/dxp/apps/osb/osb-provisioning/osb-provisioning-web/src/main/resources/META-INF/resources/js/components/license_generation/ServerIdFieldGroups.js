@@ -12,13 +12,13 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import {useLicense} from '../../hooks/license';
+import {useNewLicense} from '../../hooks/newLicense';
 import {validateAllIPAddresses, validateMAC} from '../../utilities/helpers';
 import IconButton from '../IconButton';
 import RequiredFieldMarker from '../RequiredFieldMarker';
 
 function ServerIdFieldGroups() {
-	const [{serverIds}] = useLicense();
+	const [{serverIds}] = useNewLicense();
 
 	return (
 		<div className="col-md-12 form-group">
@@ -50,7 +50,7 @@ function ServerIdFieldGroups() {
 }
 
 function FieldGroup({group, id, showDelete = false}) {
-	const [, {updateLicense}] = useLicense();
+	const [, {updateLicense}] = useNewLicense();
 
 	function handleAdd() {
 		updateLicense(license =>

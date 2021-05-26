@@ -14,7 +14,7 @@ import ClayTableCell from '@clayui/table/lib/Cell';
 import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
 
-import {useLicense} from '../../hooks/license';
+import {useNewLicense} from '../../hooks/newLicense';
 import {DASH} from '../../utilities/constants';
 import DatePicker from '../DatePicker';
 
@@ -33,7 +33,7 @@ function Purchase({
 	const [selectedStartDate, setSelectedStartDate] = useState(startDate);
 	const [sizing, setSizing] = useState();
 
-	const [, {updateLicense}] = useLicense();
+	const [, {updateLicense}] = useNewLicense();
 
 	useEffect(() => {
 		if (

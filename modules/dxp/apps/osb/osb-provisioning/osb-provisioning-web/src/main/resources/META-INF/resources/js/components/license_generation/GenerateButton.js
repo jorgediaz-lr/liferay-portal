@@ -12,7 +12,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import {useLicense} from '../../hooks/license';
+import {useNewLicense} from '../../hooks/newLicense';
 import {formatDate} from '../../utilities/date';
 import {
 	request,
@@ -22,7 +22,7 @@ import {
 } from '../../utilities/helpers';
 
 function GenerateButton({formAction, redirect, serverIdValidatable = false}) {
-	const [license] = useLicense();
+	const [license] = useNewLicense();
 	const {licenseEntryId, licenseEntryType} = license.licenseEntry;
 	const {productKey} = license.product;
 	const {serverIds} = license;

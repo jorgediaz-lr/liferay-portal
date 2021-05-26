@@ -11,20 +11,20 @@
 
 import React from 'react';
 
-import {LicenseProvider, useLicense} from '../../hooks/license';
+import {NewLicenseProvider, useNewLicense} from '../../hooks/newLicense';
 import GeneralInformation from './GeneralInformation';
 import SpecificDetails from './SpecificDetails';
 
 function GenerateLicense(props) {
 	return (
-		<LicenseProvider>
+		<NewLicenseProvider>
 			<Generate {...props} />
-		</LicenseProvider>
+		</NewLicenseProvider>
 	);
 }
 
 function Generate(props) {
-	const [license] = useLicense();
+	const [license] = useNewLicense();
 
 	return (
 		<>

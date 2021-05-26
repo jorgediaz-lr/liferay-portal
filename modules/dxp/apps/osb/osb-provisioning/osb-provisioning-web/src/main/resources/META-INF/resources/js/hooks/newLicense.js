@@ -37,13 +37,13 @@ export const License = Record({
 	version: ''
 });
 
-const LicenseContext = React.createContext();
+const NewLicenseContext = React.createContext();
 
-export function LicenseProvider({initialLicense = new License(), children}) {
+export function NewLicenseProvider({initialLicense = new License(), children}) {
 	const [license, setLicense] = useState(initialLicense);
 
 	return (
-		<LicenseContext.Provider
+		<NewLicenseContext.Provider
 			value={[
 				license,
 				{
@@ -54,10 +54,10 @@ export function LicenseProvider({initialLicense = new License(), children}) {
 			]}
 		>
 			{children}
-		</LicenseContext.Provider>
+		</NewLicenseContext.Provider>
 	);
 }
 
-export function useLicense() {
-	return useContext(LicenseContext);
+export function useNewLicense() {
+	return useContext(NewLicenseContext);
 }

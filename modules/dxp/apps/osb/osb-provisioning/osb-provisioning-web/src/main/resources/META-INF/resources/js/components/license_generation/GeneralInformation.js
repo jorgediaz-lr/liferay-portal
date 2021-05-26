@@ -14,7 +14,7 @@ import partition from 'lodash.partition';
 import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
 
-import {useLicense} from '../../hooks/license';
+import {useNewLicense} from '../../hooks/newLicense';
 import {
 	LICENSE_TYPE_DEVELOPER,
 	LICENSE_TYPE_DEVELOPER_CLUSTER
@@ -35,7 +35,7 @@ function GeneralInformation({
 	selectAccountActionURL,
 	selectAccountRenderURL
 }) {
-	const [{licenseEntry, product, version}, {updateLicense}] = useLicense();
+	const [{licenseEntry, product, version}, {updateLicense}] = useNewLicense();
 	const {licenseEntryId} = licenseEntry;
 
 	const [selectedProduct, setSelectedProduct] = useState(

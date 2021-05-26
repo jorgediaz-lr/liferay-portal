@@ -13,13 +13,13 @@ import {cleanup, fireEvent, render} from '@testing-library/react';
 import React from 'react';
 
 import ServerIdFieldGroups from '../../../src/main/resources/META-INF/resources/js/components/license_generation/ServerIdFieldGroups';
-import {LicenseProvider} from '../../../src/main/resources/META-INF/resources/js/hooks/license';
+import {NewLicenseProvider} from '../../../src/main/resources/META-INF/resources/js/hooks/newLicense';
 
 function renderServerIdFields(props) {
 	return render(
-		<LicenseProvider>
+		<NewLicenseProvider>
 			<ServerIdFieldGroups {...props} />{' '}
-		</LicenseProvider>
+		</NewLicenseProvider>
 	);
 }
 

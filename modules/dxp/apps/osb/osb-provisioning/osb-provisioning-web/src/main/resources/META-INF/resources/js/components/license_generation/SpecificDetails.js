@@ -14,7 +14,7 @@ import capitalize from 'lodash.capitalize';
 import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
 
-import {useLicense} from '../../hooks/license';
+import {useNewLicense} from '../../hooks/newLicense';
 import {
 	KNOWN_SERVER_ID_LICENSE_TYPES,
 	LICENSE_TYPE_CLUSTER,
@@ -29,7 +29,7 @@ import GenerateButton from './GenerateButton';
 import ServerIdFieldGroups from './ServerIdFieldGroups';
 
 function SpecificDetails({addLicenseKeyURL, redirect}) {
-	const [license, {updateLicense}] = useLicense();
+	const [license, {updateLicense}] = useNewLicense();
 
 	const [showIPv6Alert, setShowIPv6Alert] = useState(false);
 
