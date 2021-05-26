@@ -6609,25 +6609,25 @@ public class LayoutSetVersionPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (layoutSetVersion.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				layoutSetVersion.setCreateDate(now);
+				layoutSetVersion.setCreateDate(date);
 			}
 			else {
 				layoutSetVersion.setCreateDate(
-					serviceContext.getCreateDate(now));
+					serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!layoutSetVersionModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				layoutSetVersion.setModifiedDate(now);
+				layoutSetVersion.setModifiedDate(date);
 			}
 			else {
 				layoutSetVersion.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

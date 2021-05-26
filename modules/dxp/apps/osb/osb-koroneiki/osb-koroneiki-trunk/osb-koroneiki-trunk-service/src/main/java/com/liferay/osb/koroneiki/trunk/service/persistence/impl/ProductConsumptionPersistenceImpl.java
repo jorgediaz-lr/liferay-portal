@@ -6444,25 +6444,25 @@ public class ProductConsumptionPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (productConsumption.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				productConsumption.setCreateDate(now);
+				productConsumption.setCreateDate(date);
 			}
 			else {
 				productConsumption.setCreateDate(
-					serviceContext.getCreateDate(now));
+					serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!productConsumptionModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				productConsumption.setModifiedDate(now);
+				productConsumption.setModifiedDate(date);
 			}
 			else {
 				productConsumption.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

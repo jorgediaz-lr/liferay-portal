@@ -1752,24 +1752,24 @@ public class ProductBundlePersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (productBundle.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				productBundle.setCreateDate(now);
+				productBundle.setCreateDate(date);
 			}
 			else {
-				productBundle.setCreateDate(serviceContext.getCreateDate(now));
+				productBundle.setCreateDate(serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!productBundleModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				productBundle.setModifiedDate(now);
+				productBundle.setModifiedDate(date);
 			}
 			else {
 				productBundle.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

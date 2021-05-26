@@ -2887,24 +2887,24 @@ public class ProductEntryPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (productEntry.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				productEntry.setCreateDate(now);
+				productEntry.setCreateDate(date);
 			}
 			else {
-				productEntry.setCreateDate(serviceContext.getCreateDate(now));
+				productEntry.setCreateDate(serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!productEntryModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				productEntry.setModifiedDate(now);
+				productEntry.setModifiedDate(date);
 			}
 			else {
 				productEntry.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

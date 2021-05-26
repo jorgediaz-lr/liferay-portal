@@ -3883,24 +3883,24 @@ public class ContactRolePersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (contactRole.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				contactRole.setCreateDate(now);
+				contactRole.setCreateDate(date);
 			}
 			else {
-				contactRole.setCreateDate(serviceContext.getCreateDate(now));
+				contactRole.setCreateDate(serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!contactRoleModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				contactRole.setModifiedDate(now);
+				contactRole.setModifiedDate(date);
 			}
 			else {
 				contactRole.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

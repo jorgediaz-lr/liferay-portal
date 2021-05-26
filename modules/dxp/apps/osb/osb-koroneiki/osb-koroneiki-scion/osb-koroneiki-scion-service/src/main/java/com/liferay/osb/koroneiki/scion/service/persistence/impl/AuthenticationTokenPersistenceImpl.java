@@ -1561,25 +1561,25 @@ public class AuthenticationTokenPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (authenticationToken.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				authenticationToken.setCreateDate(now);
+				authenticationToken.setCreateDate(date);
 			}
 			else {
 				authenticationToken.setCreateDate(
-					serviceContext.getCreateDate(now));
+					serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!authenticationTokenModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				authenticationToken.setModifiedDate(now);
+				authenticationToken.setModifiedDate(date);
 			}
 			else {
 				authenticationToken.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

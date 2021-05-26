@@ -3852,23 +3852,23 @@ public class TeamRolePersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (teamRole.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				teamRole.setCreateDate(now);
+				teamRole.setCreateDate(date);
 			}
 			else {
-				teamRole.setCreateDate(serviceContext.getCreateDate(now));
+				teamRole.setCreateDate(serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!teamRoleModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				teamRole.setModifiedDate(now);
+				teamRole.setModifiedDate(date);
 			}
 			else {
-				teamRole.setModifiedDate(serviceContext.getModifiedDate(now));
+				teamRole.setModifiedDate(serviceContext.getModifiedDate(date));
 			}
 		}
 

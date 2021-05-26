@@ -390,8 +390,14 @@ public class UserTrackerModelImpl
 		return _modifiedDate;
 	}
 
+	public boolean hasSetModifiedDate() {
+		return _setModifiedDate;
+	}
+
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		_setModifiedDate = true;
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -578,6 +584,7 @@ public class UserTrackerModelImpl
 
 		_setOriginalUserId = false;
 
+		_setModifiedDate = false;
 		_originalSessionId = _sessionId;
 
 		_columnBitmask = 0;
@@ -719,6 +726,7 @@ public class UserTrackerModelImpl
 	private long _originalUserId;
 	private boolean _setOriginalUserId;
 	private Date _modifiedDate;
+	private boolean _setModifiedDate;
 	private String _sessionId;
 	private String _originalSessionId;
 	private String _remoteAddr;

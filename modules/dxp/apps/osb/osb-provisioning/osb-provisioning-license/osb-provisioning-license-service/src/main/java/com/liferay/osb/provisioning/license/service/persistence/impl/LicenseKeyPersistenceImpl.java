@@ -11406,23 +11406,24 @@ public class LicenseKeyPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (licenseKey.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				licenseKey.setCreateDate(now);
+				licenseKey.setCreateDate(date);
 			}
 			else {
-				licenseKey.setCreateDate(serviceContext.getCreateDate(now));
+				licenseKey.setCreateDate(serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!licenseKeyModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				licenseKey.setModifiedDate(now);
+				licenseKey.setModifiedDate(date);
 			}
 			else {
-				licenseKey.setModifiedDate(serviceContext.getModifiedDate(now));
+				licenseKey.setModifiedDate(
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

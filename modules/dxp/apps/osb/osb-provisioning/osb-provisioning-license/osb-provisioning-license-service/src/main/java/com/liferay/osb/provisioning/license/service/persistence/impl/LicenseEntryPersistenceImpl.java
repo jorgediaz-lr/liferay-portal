@@ -1199,24 +1199,24 @@ public class LicenseEntryPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (licenseEntry.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				licenseEntry.setCreateDate(now);
+				licenseEntry.setCreateDate(date);
 			}
 			else {
-				licenseEntry.setCreateDate(serviceContext.getCreateDate(now));
+				licenseEntry.setCreateDate(serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!licenseEntryModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				licenseEntry.setModifiedDate(now);
+				licenseEntry.setModifiedDate(date);
 			}
 			else {
 				licenseEntry.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

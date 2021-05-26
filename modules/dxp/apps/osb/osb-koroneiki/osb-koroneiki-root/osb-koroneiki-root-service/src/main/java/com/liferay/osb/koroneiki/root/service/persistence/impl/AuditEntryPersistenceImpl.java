@@ -1774,23 +1774,24 @@ public class AuditEntryPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (auditEntry.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				auditEntry.setCreateDate(now);
+				auditEntry.setCreateDate(date);
 			}
 			else {
-				auditEntry.setCreateDate(serviceContext.getCreateDate(now));
+				auditEntry.setCreateDate(serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!auditEntryModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				auditEntry.setModifiedDate(now);
+				auditEntry.setModifiedDate(date);
 			}
 			else {
-				auditEntry.setModifiedDate(serviceContext.getModifiedDate(now));
+				auditEntry.setModifiedDate(
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

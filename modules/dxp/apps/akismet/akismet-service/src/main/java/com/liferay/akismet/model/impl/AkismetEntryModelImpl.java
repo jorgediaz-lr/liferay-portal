@@ -325,8 +325,14 @@ public class AkismetEntryModelImpl
 		return _modifiedDate;
 	}
 
+	public boolean hasSetModifiedDate() {
+		return _setModifiedDate;
+	}
+
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		_setModifiedDate = true;
+
 		_columnBitmask |= MODIFIEDDATE_COLUMN_BITMASK;
 
 		if (_originalModifiedDate == null) {
@@ -602,6 +608,7 @@ public class AkismetEntryModelImpl
 	public void resetOriginalValues() {
 		_originalModifiedDate = _modifiedDate;
 
+		_setModifiedDate = false;
 		_originalClassNameId = _classNameId;
 
 		_setOriginalClassNameId = false;
@@ -757,6 +764,7 @@ public class AkismetEntryModelImpl
 	private long _akismetEntryId;
 	private Date _modifiedDate;
 	private Date _originalModifiedDate;
+	private boolean _setModifiedDate;
 	private long _classNameId;
 	private long _originalClassNameId;
 	private boolean _setOriginalClassNameId;

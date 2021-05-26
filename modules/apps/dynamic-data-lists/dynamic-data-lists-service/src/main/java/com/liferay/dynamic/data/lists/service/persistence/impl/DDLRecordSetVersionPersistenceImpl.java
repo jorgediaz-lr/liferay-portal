@@ -33,6 +33,8 @@ import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -43,6 +45,7 @@ import java.io.Serializable;
 
 import java.lang.reflect.InvocationHandler;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -1697,6 +1700,21 @@ public class DDLRecordSetVersionPersistenceImpl
 
 		DDLRecordSetVersionModelImpl ddlRecordSetVersionModelImpl =
 			(DDLRecordSetVersionModelImpl)ddlRecordSetVersion;
+
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
+
+		Date date = new Date();
+
+		if (isNew && (ddlRecordSetVersion.getCreateDate() == null)) {
+			if (serviceContext == null) {
+				ddlRecordSetVersion.setCreateDate(date);
+			}
+			else {
+				ddlRecordSetVersion.setCreateDate(
+					serviceContext.getCreateDate(date));
+			}
+		}
 
 		Session session = null;
 

@@ -29,6 +29,8 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
@@ -1135,6 +1137,21 @@ public class AkismetEntryPersistenceImpl
 
 		AkismetEntryModelImpl akismetEntryModelImpl =
 			(AkismetEntryModelImpl)akismetEntry;
+
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
+
+		Date date = new Date();
+
+		if (!akismetEntryModelImpl.hasSetModifiedDate()) {
+			if (serviceContext == null) {
+				akismetEntry.setModifiedDate(date);
+			}
+			else {
+				akismetEntry.setModifiedDate(
+					serviceContext.getModifiedDate(date));
+			}
+		}
 
 		Session session = null;
 

@@ -4982,25 +4982,25 @@ public class EntitlementDefinitionPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (entitlementDefinition.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				entitlementDefinition.setCreateDate(now);
+				entitlementDefinition.setCreateDate(date);
 			}
 			else {
 				entitlementDefinition.setCreateDate(
-					serviceContext.getCreateDate(now));
+					serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!entitlementDefinitionModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				entitlementDefinition.setModifiedDate(now);
+				entitlementDefinition.setModifiedDate(date);
 			}
 			else {
 				entitlementDefinition.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

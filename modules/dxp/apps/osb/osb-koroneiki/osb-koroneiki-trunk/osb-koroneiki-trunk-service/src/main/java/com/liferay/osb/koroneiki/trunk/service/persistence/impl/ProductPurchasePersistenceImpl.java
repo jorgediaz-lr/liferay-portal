@@ -5378,25 +5378,25 @@ public class ProductPurchasePersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (productPurchase.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				productPurchase.setCreateDate(now);
+				productPurchase.setCreateDate(date);
 			}
 			else {
 				productPurchase.setCreateDate(
-					serviceContext.getCreateDate(now));
+					serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!productPurchaseModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				productPurchase.setModifiedDate(now);
+				productPurchase.setModifiedDate(date);
 			}
 			else {
 				productPurchase.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

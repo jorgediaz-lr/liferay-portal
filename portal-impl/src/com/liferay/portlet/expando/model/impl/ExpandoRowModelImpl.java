@@ -293,8 +293,14 @@ public class ExpandoRowModelImpl
 		return _modifiedDate;
 	}
 
+	public boolean hasSetModifiedDate() {
+		return _setModifiedDate;
+	}
+
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
+		_setModifiedDate = true;
+
 		_modifiedDate = modifiedDate;
 	}
 
@@ -430,6 +436,7 @@ public class ExpandoRowModelImpl
 
 	@Override
 	public void resetOriginalValues() {
+		_setModifiedDate = false;
 		_originalTableId = _tableId;
 
 		_setOriginalTableId = false;
@@ -538,6 +545,7 @@ public class ExpandoRowModelImpl
 	private long _rowId;
 	private long _companyId;
 	private Date _modifiedDate;
+	private boolean _setModifiedDate;
 	private long _tableId;
 	private long _originalTableId;
 	private boolean _setOriginalTableId;

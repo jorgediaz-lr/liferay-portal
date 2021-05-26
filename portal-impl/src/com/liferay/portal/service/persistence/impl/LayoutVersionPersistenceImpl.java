@@ -25307,24 +25307,24 @@ public class LayoutVersionPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (layoutVersion.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				layoutVersion.setCreateDate(now);
+				layoutVersion.setCreateDate(date);
 			}
 			else {
-				layoutVersion.setCreateDate(serviceContext.getCreateDate(now));
+				layoutVersion.setCreateDate(serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!layoutVersionModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				layoutVersion.setModifiedDate(now);
+				layoutVersion.setModifiedDate(date);
 			}
 			else {
 				layoutVersion.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

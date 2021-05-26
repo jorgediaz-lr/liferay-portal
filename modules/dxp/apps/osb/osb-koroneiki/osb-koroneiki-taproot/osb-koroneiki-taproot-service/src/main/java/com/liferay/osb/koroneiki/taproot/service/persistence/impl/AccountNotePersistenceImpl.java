@@ -3434,24 +3434,24 @@ public class AccountNotePersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (accountNote.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				accountNote.setCreateDate(now);
+				accountNote.setCreateDate(date);
 			}
 			else {
-				accountNote.setCreateDate(serviceContext.getCreateDate(now));
+				accountNote.setCreateDate(serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!accountNoteModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				accountNote.setModifiedDate(now);
+				accountNote.setModifiedDate(date);
 			}
 			else {
 				accountNote.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

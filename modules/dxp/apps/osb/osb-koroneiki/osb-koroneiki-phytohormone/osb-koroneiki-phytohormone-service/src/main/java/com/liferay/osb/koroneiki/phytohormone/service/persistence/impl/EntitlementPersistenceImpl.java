@@ -1380,24 +1380,24 @@ public class EntitlementPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (entitlement.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				entitlement.setCreateDate(now);
+				entitlement.setCreateDate(date);
 			}
 			else {
-				entitlement.setCreateDate(serviceContext.getCreateDate(now));
+				entitlement.setCreateDate(serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!entitlementModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				entitlement.setModifiedDate(now);
+				entitlement.setModifiedDate(date);
 			}
 			else {
 				entitlement.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 

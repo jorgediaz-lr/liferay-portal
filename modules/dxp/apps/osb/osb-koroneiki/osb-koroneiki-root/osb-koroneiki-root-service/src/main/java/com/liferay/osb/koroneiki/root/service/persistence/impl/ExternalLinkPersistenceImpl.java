@@ -1894,24 +1894,24 @@ public class ExternalLinkPersistenceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		Date now = new Date();
+		Date date = new Date();
 
 		if (isNew && (externalLink.getCreateDate() == null)) {
 			if (serviceContext == null) {
-				externalLink.setCreateDate(now);
+				externalLink.setCreateDate(date);
 			}
 			else {
-				externalLink.setCreateDate(serviceContext.getCreateDate(now));
+				externalLink.setCreateDate(serviceContext.getCreateDate(date));
 			}
 		}
 
 		if (!externalLinkModelImpl.hasSetModifiedDate()) {
 			if (serviceContext == null) {
-				externalLink.setModifiedDate(now);
+				externalLink.setModifiedDate(date);
 			}
 			else {
 				externalLink.setModifiedDate(
-					serviceContext.getModifiedDate(now));
+					serviceContext.getModifiedDate(date));
 			}
 		}
 
