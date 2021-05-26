@@ -17,14 +17,22 @@ package com.liferay.portal.search.solr7.internal.sort;
 import com.liferay.portal.search.solr7.internal.SolrIndexingFixture;
 import com.liferay.portal.search.test.util.indexing.IndexingFixture;
 import com.liferay.portal.search.test.util.sort.BaseDocumentSortTestCase;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
+import org.junit.ClassRule;
 import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
 
 /**
  * @author Wade Cao
  */
 public class SolrDocumentSortTest extends BaseDocumentSortTestCase {
+
+	@ClassRule
+	@Rule
+	public static final LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
 
 	@Ignore("LPS-83586")
 	@Override

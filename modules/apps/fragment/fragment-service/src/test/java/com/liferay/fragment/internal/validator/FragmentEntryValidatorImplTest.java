@@ -18,11 +18,13 @@ import com.liferay.fragment.exception.FragmentEntryConfigurationException;
 import com.liferay.portal.json.JSONFactoryImpl;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.util.FileImpl;
 
 import org.hamcrest.core.StringStartsWith;
 
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -31,6 +33,10 @@ import org.junit.rules.ExpectedException;
  * @author Rubén Pulido
  */
 public class FragmentEntryValidatorImplTest {
+
+	@ClassRule
+	public static final LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
 
 	@Before
 	public void setUp() {

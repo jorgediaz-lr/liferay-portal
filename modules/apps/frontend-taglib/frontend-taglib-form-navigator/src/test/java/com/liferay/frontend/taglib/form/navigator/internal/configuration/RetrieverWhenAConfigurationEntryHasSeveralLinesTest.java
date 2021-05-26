@@ -16,11 +16,14 @@ package com.liferay.frontend.taglib.form.navigator.internal.configuration;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
 
 /**
@@ -28,6 +31,11 @@ import org.junit.Test;
  */
 public class RetrieverWhenAConfigurationEntryHasSeveralLinesTest
 	extends BaseFormNavigatorEntryConfigurationRetrieverTestCase {
+
+	@ClassRule
+	@Rule
+	public static final LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
 
 	@Override
 	public void setUp() throws Exception {

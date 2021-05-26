@@ -14,14 +14,22 @@
 
 package com.liferay.portal.tools.data.partitioning.sql.builder.exporter;
 
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.tools.data.partitioning.sql.builder.exporter.exception.DBProviderNotAvailableException;
 
+import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
 
 /**
  * @author Manuel de la Peña
  */
 public class DataPartitioningExporterFactoryTest {
+
+	@ClassRule
+	@Rule
+	public static final LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
 
 	@Test(expected = DBProviderNotAvailableException.class)
 	public void testGetDataPartitioningExporter() throws Exception {

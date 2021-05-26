@@ -16,16 +16,24 @@ package com.liferay.portal.search.elasticsearch6.internal.configuration;
 
 import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.search.elasticsearch6.internal.connection.ElasticsearchFixture;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.util.Map;
 import java.util.Properties;
 
+import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
 
 /**
  * @author André de Oliveira
  */
 public class ElasticsearchConfigurationTest {
+
+	@ClassRule
+	@Rule
+	public static final LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
 
 	@Test
 	public void testConfigurationsFromBuildTestXmlAntFile() throws Exception {

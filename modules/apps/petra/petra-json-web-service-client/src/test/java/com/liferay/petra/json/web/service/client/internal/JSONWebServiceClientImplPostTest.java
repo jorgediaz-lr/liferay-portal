@@ -19,6 +19,7 @@ import com.liferay.petra.json.web.service.client.JSONWebServiceTransportExceptio
 import com.liferay.petra.json.web.service.client.model.ResponseBody;
 import com.liferay.petra.json.web.service.client.server.simulator.HTTPServerSimulator;
 import com.liferay.petra.json.web.service.client.server.simulator.SimulatorConstants;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -27,6 +28,8 @@ import java.util.Map;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
 
 /**
@@ -34,6 +37,11 @@ import org.junit.Test;
  */
 public class JSONWebServiceClientImplPostTest
 	extends BaseJSONWebServiceClientTestCase {
+
+	@ClassRule
+	@Rule
+	public static final LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
 
 	@Before
 	public void setUp() throws Exception {

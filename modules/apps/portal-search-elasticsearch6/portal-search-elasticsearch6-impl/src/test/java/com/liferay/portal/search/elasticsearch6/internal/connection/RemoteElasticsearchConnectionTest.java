@@ -21,23 +21,32 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.search.elasticsearch6.configuration.OperationMode;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.net.InetSocketAddress;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Properties;
 
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.transport.TransportAddress;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
 
 /**
  * @author André de Oliveira
  */
 public class RemoteElasticsearchConnectionTest {
+
+	@ClassRule
+	@Rule
+	public static final LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
 
 	@Before
 	public void setUp() {
@@ -52,6 +61,7 @@ public class RemoteElasticsearchConnectionTest {
 					put(
 						PropsKeys.DNS_SECURITY_THREAD_LIMIT,
 						String.valueOf(10));
+					put("configuration.override.", new Properties());
 				}
 			});
 	}

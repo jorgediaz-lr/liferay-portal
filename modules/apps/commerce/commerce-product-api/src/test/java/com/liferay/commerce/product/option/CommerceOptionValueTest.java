@@ -17,12 +17,20 @@ package com.liferay.commerce.product.option;
 import java.math.BigDecimal;
 
 import org.junit.Assert;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
+import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import org.junit.Test;
 
 /**
  * @author Igor Belslic
  */
 public class CommerceOptionValueTest {
+
+	@ClassRule
+	@Rule
+	public static final LiferayUnitTestRule liferayUnitTestRule = LiferayUnitTestRule.INSTANCE;
 
 	@Test
 	public void testBuilder() {

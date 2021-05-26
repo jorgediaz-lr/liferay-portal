@@ -15,8 +15,11 @@
 package com.liferay.portal.security.ldap.internal.validator;
 
 import com.liferay.portal.security.ldap.validator.LDAPFilterValidator;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import org.junit.Assert;
+import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
 
 /**
@@ -24,6 +27,11 @@ import org.junit.Test;
  * @author Vilmos Papp
  */
 public class LDAPFilterValidatorImplTest {
+
+	@ClassRule
+	@Rule
+	public static final LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
 
 	@Test
 	public void testIsValidFilterBalancedParentheses() {

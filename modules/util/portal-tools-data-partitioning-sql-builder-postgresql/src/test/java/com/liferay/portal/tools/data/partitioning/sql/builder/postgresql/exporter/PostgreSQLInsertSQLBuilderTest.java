@@ -14,6 +14,7 @@
 
 package com.liferay.portal.tools.data.partitioning.sql.builder.postgresql.exporter;
 
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.tools.data.partitioning.sql.builder.exporter.InsertSQLBuilder;
 import com.liferay.portal.tools.data.partitioning.sql.builder.postgresql.exporter.serializer.PostgreSQLFieldSerializer;
 
@@ -21,12 +22,19 @@ import java.sql.Date;
 import java.sql.Timestamp;
 
 import org.junit.Assert;
+import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
 
 /**
  * @author Manuel de la Peña
  */
 public class PostgreSQLInsertSQLBuilderTest {
+
+	@ClassRule
+	@Rule
+	public static final LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
 
 	@Test
 	public void testBuildFieldFieldDate() throws Exception {

@@ -18,8 +18,11 @@ import com.liferay.portal.search.elasticsearch6.internal.LiferayElasticsearchInd
 import com.liferay.portal.search.engine.SearchEngineInformation;
 import com.liferay.portal.search.test.util.indexing.IndexingFixture;
 import com.liferay.portal.search.test.util.mappings.BaseLiferayFieldQueryFactoryTestCase;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
 
 import org.mockito.Mockito;
 
@@ -28,6 +31,11 @@ import org.mockito.Mockito;
  */
 public class LiferayFieldQueryFactoryTest
 	extends BaseLiferayFieldQueryFactoryTestCase {
+
+	@ClassRule
+	@Rule
+	public static final LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
 
 	@Before
 	public void setUp() throws Exception {

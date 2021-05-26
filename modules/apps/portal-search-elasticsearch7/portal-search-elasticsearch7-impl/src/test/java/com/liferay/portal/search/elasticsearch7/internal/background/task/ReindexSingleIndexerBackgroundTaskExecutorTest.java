@@ -20,12 +20,21 @@ import com.liferay.portal.search.elasticsearch7.internal.index.FieldMappingAsser
 import com.liferay.portal.search.elasticsearch7.internal.index.LiferayTypeMappingsConstants;
 import com.liferay.portal.search.test.util.background.task.BaseReindexSingleIndexerBackgroundTaskExecutorTestCase;
 import com.liferay.portal.search.test.util.search.engine.SearchEngineFixture;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
+
+import org.junit.ClassRule;
+import org.junit.Rule;
 
 /**
  * @author Adam Brandizzi
  */
 public class ReindexSingleIndexerBackgroundTaskExecutorTest
 	extends BaseReindexSingleIndexerBackgroundTaskExecutorTestCase {
+
+	@ClassRule
+	@Rule
+	public static final LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
 
 	@Override
 	protected void assertFieldType(String fieldName, String fieldType)

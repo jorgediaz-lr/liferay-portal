@@ -24,10 +24,13 @@ import com.liferay.portal.search.elasticsearch7.internal.BaseSearchEngineConfigu
 import com.liferay.portal.search.elasticsearch7.internal.BaseSearchEngineConfigurator.SearchDestinationHelper;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnection;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchConnectionManager;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.util.Collections;
 
 import org.junit.BeforeClass;
+import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
 
 import org.mockito.Mockito;
@@ -39,6 +42,11 @@ import org.osgi.service.component.ComponentContext;
  * @author André de Oliveira
  */
 public class ElasticsearchEngineConfiguratorTest {
+
+	@ClassRule
+	@Rule
+	public static final LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
 
 	@BeforeClass
 	public static void setUpClass() {

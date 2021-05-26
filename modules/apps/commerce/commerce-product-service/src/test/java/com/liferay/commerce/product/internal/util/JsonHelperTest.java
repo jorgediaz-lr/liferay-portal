@@ -25,6 +25,10 @@ import com.liferay.portal.kernel.json.JSONObject;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
+import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import org.junit.Test;
 
 import org.mockito.Mockito;
@@ -43,6 +47,10 @@ public class JsonHelperTest {
 
 		jsonFactoryUtil.setJSONFactory(new JSONFactoryImpl());
 	}
+
+	@ClassRule
+	@Rule
+	public static final LiferayUnitTestRule liferayUnitTestRule = LiferayUnitTestRule.INSTANCE;
 
 	@Test
 	public void testGetFirstElementStringValue() {

@@ -25,6 +25,7 @@ import com.liferay.portal.search.solr7.internal.SolrIndexingFixture;
 import com.liferay.portal.search.test.util.indexing.BaseIndexingTestCase;
 import com.liferay.portal.search.test.util.indexing.DocumentCreationHelpers;
 import com.liferay.portal.search.test.util.indexing.IndexingFixture;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.util.Collections;
 import java.util.Map;
@@ -32,6 +33,7 @@ import java.util.Map;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 
 import org.junit.After;
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -40,6 +42,10 @@ import org.junit.rules.ExpectedException;
  * @author Bryan Engler
  */
 public class SolrIndexWriterExceptionsTest extends BaseIndexingTestCase {
+
+	@ClassRule
+	public static final LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
 
 	@After
 	public void tearDown() throws Exception {

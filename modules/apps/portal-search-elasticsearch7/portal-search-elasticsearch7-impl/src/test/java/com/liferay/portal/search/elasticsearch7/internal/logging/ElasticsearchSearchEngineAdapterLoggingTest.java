@@ -26,6 +26,7 @@ import com.liferay.portal.search.engine.adapter.search.CountSearchRequest;
 import com.liferay.portal.search.engine.adapter.search.MultisearchSearchRequest;
 import com.liferay.portal.search.engine.adapter.search.SearchSearchRequest;
 import com.liferay.portal.search.test.util.logging.ExpectedLogTestRule;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.util.logging.Level;
 
@@ -34,6 +35,7 @@ import org.elasticsearch.cluster.health.ClusterHealthStatus;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -42,6 +44,10 @@ import org.junit.Test;
  * @author André de Oliveira
  */
 public class ElasticsearchSearchEngineAdapterLoggingTest {
+
+	@ClassRule
+	public static final LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {

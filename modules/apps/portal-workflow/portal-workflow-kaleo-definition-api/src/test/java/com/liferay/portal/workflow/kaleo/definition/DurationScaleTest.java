@@ -15,10 +15,13 @@
 package com.liferay.portal.workflow.kaleo.definition;
 
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.util.Arrays;
 
 import org.junit.Assert;
+import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
 
 /**
@@ -30,6 +33,11 @@ public class DurationScaleTest {
 		"second", "millisecond", "minute", "hour", "day", "week", "month",
 		"year"
 	};
+
+	@ClassRule
+	@Rule
+	public static final LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testParseInvalidScale() throws Exception {

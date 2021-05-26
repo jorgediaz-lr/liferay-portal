@@ -17,9 +17,11 @@ package com.liferay.portal.search.elasticsearch6.internal.index;
 import com.liferay.portal.search.elasticsearch6.internal.connection.IndexName;
 import com.liferay.portal.search.elasticsearch6.internal.document.SingleFieldFixture;
 import com.liferay.portal.search.elasticsearch6.internal.query.QueryBuilderFactories;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
@@ -28,6 +30,10 @@ import org.junit.rules.TestName;
  * @author André de Oliveira
  */
 public class LiferayTypeMappingsPrefixPerLanguageTest {
+
+	@ClassRule
+	public static final LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
 
 	@Before
 	public void setUp() throws Exception {

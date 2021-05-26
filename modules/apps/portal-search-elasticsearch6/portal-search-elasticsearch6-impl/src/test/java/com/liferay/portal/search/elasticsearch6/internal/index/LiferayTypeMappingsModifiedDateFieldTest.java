@@ -16,6 +16,7 @@ package com.liferay.portal.search.elasticsearch6.internal.index;
 
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.search.elasticsearch6.internal.connection.IndexName;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.util.Collections;
 import java.util.Date;
@@ -24,6 +25,7 @@ import org.elasticsearch.index.mapper.MapperParsingException;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -33,6 +35,10 @@ import org.junit.rules.TestName;
  * @author Bryan Engler
  */
 public class LiferayTypeMappingsModifiedDateFieldTest {
+
+	@ClassRule
+	public static final LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
 
 	@Before
 	public void setUp() throws Exception {
