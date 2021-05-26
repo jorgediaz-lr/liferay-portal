@@ -15,6 +15,7 @@
 package com.liferay.layout.admin.web.internal.exportimport.data.handler;
 
 import com.liferay.counter.kernel.service.CounterLocalService;
+import com.liferay.exportimport.content.processor.ExportImportContentProcessor;
 import com.liferay.exportimport.controller.PortletExportController;
 import com.liferay.exportimport.controller.PortletImportController;
 import com.liferay.exportimport.data.handler.base.BaseStagedModelDataHandler;
@@ -1080,6 +1081,14 @@ public class LayoutStagedModelDataHandler
 			!portletDataContext.isPerformDirectBinaryImport() &&
 			!layout.isInheritLookAndFeel()) {
 
+			String css =
+				_dlReferencesExportImportContentProcessor.
+					replaceExportContentReferences(
+						portletDataContext, layout, layout.getCss(), true,
+						false);
+
+			layout.setCss(css);
+
 			StagedTheme stagedTheme = new StagedThemeImpl(layout.getTheme());
 
 			Element layoutElement = portletDataContext.getExportDataElement(
@@ -1766,12 +1775,18 @@ public class LayoutStagedModelDataHandler
 		if (importThemeSettings) {
 			importedLayout.setThemeId(layout.getThemeId());
 			importedLayout.setColorSchemeId(layout.getColorSchemeId());
-			importedLayout.setCss(layout.getCss());
+
+			String css =
+				_dlReferencesExportImportContentProcessor.
+					replaceImportContentReferences(
+						portletDataContext, layout, layout.getCss());
+
+			importedLayout.setCss(css);
 
 			_layoutLocalService.updateLookAndFeel(
 				importedLayout.getGroupId(), importedLayout.isPrivateLayout(),
 				importedLayout.getLayoutId(), layout.getThemeId(),
-				layout.getColorSchemeId(), layout.getCss());
+				layout.getColorSchemeId(), importedLayout.getCss());
 		}
 	}
 
@@ -2245,6 +2260,10 @@ public class LayoutStagedModelDataHandler
 			new Class<?>[] {PortalException.class, SystemException.class});
 
 	private CounterLocalService _counterLocalService;
+
+	@Reference(target = "(content.processor.type=DLReferences)")
+	private ExportImportContentProcessor<String>
+		_dlReferencesExportImportContentProcessor;
 
 	@Reference
 	private ExportImportHelper _exportImportHelper;
