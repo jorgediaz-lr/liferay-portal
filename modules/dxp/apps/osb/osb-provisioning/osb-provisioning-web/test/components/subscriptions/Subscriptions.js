@@ -109,7 +109,7 @@ describe('Subscriptions', () => {
 			expect(allDeleteIcons.length).toBe(4);
 		});
 
-		it('displays a disabled delete subscription icon when there is only one subscription', () => {
+		it('removes subscriptions when the delete button is clicked', () => {
 			const {getAllByLabelText, getByText} = renderSubscriptions();
 
 			const allDeleteIcons = getAllByLabelText(
@@ -121,6 +121,23 @@ describe('Subscriptions', () => {
 			});
 
 			expect(getByText('Product D'));
+		});
+
+		it('displays a disabled delete button when there is only one subscription', () => {
+			const {getAllByLabelText, getByLabelText} = renderSubscriptions();
+
+			const allDeleteIcons = getAllByLabelText(
+				'delete-subscription-icon'
+			);
+
+			allDeleteIcons.forEach(icon => {
+				fireEvent.click(icon);
+			});
+
+			expect(
+				getByLabelText('delete-subscription-icon').parentElement
+					.disabled
+			).toBeTruthy();
 		});
 
 		it('displays the product name for each of the selected products', () => {
