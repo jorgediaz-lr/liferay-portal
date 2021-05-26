@@ -19,6 +19,7 @@ import com.liferay.osb.provisioning.license.helper.constants.LicenseServerId;
 import com.liferay.osb.provisioning.license.helper.constants.LicenseSizing;
 import com.liferay.osb.provisioning.license.model.LicenseKey;
 import com.liferay.osb.provisioning.license.service.LicenseKeyService;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -31,7 +32,6 @@ import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -43,7 +43,9 @@ import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import javax.portlet.ActionRequest;
@@ -111,23 +113,49 @@ public class EditLicenseKeyMVCActionCommand extends BaseMVCActionCommand {
 
 			String hostName = serverIdJSONObject.getString("hostName");
 
+			hostName = hostName.replaceAll(_WHITE_SPACE, StringPool.BLANK);
+
 			String[] curIpAddresses = _separatorPattern.split(
 				serverIdJSONObject.getString("ipAddresses"));
+
+			Set<String> distinctIpAddresses = new HashSet<>();
+
+			for (String ipAddress : curIpAddresses) {
+				ipAddress = ipAddress.replaceAll(
+					_WHITE_SPACE, StringPool.BLANK);
+
+				if (Validator.isIPAddress(ipAddress) &&
+					!distinctIpAddresses.contains(ipAddress)) {
+
+					distinctIpAddresses.add(ipAddress);
+				}
+			}
+
+			Set<String> distinctMacAddresses = new HashSet<>();
+
 			String[] curMacAddresses = _separatorPattern.split(
 				serverIdJSONObject.getString("macAddresses"));
 
-			curIpAddresses = ArrayUtil.distinct(curIpAddresses);
-			curMacAddresses = ArrayUtil.distinct(curMacAddresses);
+			for (String macAddress : curMacAddresses) {
+				macAddress = macAddress.replaceAll(
+					_WHITE_SPACE, StringPool.BLANK);
 
-			if (Validator.isNull(hostName) && (curIpAddresses.length <= 0) &&
-				(curMacAddresses.length <= 0)) {
+				if (Validator.isNotNull(macAddress) &&
+					!distinctMacAddresses.contains(macAddress)) {
+
+					distinctMacAddresses.add(macAddress);
+				}
+			}
+
+			if (Validator.isNull(hostName) && distinctIpAddresses.isEmpty() &&
+				distinctMacAddresses.isEmpty()) {
 
 				continue;
 			}
 
-			hostNames.add(hostName.trim());
-			ipAddresses.add(StringUtil.merge(curIpAddresses));
-			macAddresses.add(StringUtil.merge(curMacAddresses));
+			hostNames.add(hostName);
+			ipAddresses.add(StringUtil.merge(distinctIpAddresses));
+			macAddresses.add(StringUtil.merge(distinctMacAddresses));
 		}
 
 		List<String> serverIds = new ArrayList<>();
@@ -279,6 +307,8 @@ public class EditLicenseKeyMVCActionCommand extends BaseMVCActionCommand {
 			actionRequest, actionResponse,
 			getRedirect(actionResponse, actionRequest, licenseKeyId));
 	}
+
+	private static final String _WHITE_SPACE = "\\p{Zs}";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		EditLicenseKeyMVCActionCommand.class);
