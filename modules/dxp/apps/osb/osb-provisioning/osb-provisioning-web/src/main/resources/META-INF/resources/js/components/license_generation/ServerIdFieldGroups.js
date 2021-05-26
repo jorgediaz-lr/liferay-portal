@@ -65,10 +65,12 @@ function FieldGroup({group, id, showDelete = false}) {
 	}
 
 	function handleHostNameChange(event) {
+		const {currentTarget} = event;
+
 		updateLicense(license =>
 			license.update('serverIds', serverIds =>
 				serverIds.update(id, index => {
-					return {...index, hostName: event.currentTarget.value};
+					return {...index, hostName: currentTarget.value.trim()};
 				})
 			)
 		);
