@@ -121,9 +121,7 @@ public class EditLicenseKeyMVCActionCommand extends BaseMVCActionCommand {
 			for (String ipAddress : curIpAddresses) {
 				ipAddress = StringUtil.trim(ipAddress);
 
-				if (Validator.isIPAddress(ipAddress) &&
-					!distinctIpAddresses.contains(ipAddress)) {
-
+				if (Validator.isNotNull(ipAddress)) {
 					distinctIpAddresses.add(ipAddress);
 				}
 			}
@@ -136,9 +134,7 @@ public class EditLicenseKeyMVCActionCommand extends BaseMVCActionCommand {
 			for (String macAddress : curMacAddresses) {
 				macAddress = StringUtil.trim(macAddress);
 
-				if (Validator.isNotNull(macAddress) &&
-					!distinctMacAddresses.contains(macAddress)) {
-
+				if (Validator.isNotNull(macAddress)) {
 					distinctMacAddresses.add(macAddress);
 				}
 			}
