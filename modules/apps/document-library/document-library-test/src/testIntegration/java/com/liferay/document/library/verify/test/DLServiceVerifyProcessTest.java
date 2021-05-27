@@ -128,14 +128,15 @@ public class DLServiceVerifyProcessTest extends BaseVerifyProcessTestCase {
 
 		try {
 			try (Connection connection = DataAccess.getConnection();
-				PreparedStatement ps = connection.prepareStatement(
-					"update DDMStructure set companyId = ? where structureId " +
-						"= ?")) {
+				PreparedStatement preparedStatement =
+					connection.prepareStatement(
+						"update DDMStructure set companyId = ? where " +
+							"structureId = ?")) {
 
-				ps.setLong(1, _company.getCompanyId());
-				ps.setLong(2, ddmStructure.getStructureId());
+				preparedStatement.setLong(1, _company.getCompanyId());
+				preparedStatement.setLong(2, ddmStructure.getStructureId());
 
-				ps.executeUpdate();
+				preparedStatement.executeUpdate();
 			}
 
 			DLFileVersion dlFileVersion = dlFileEntry.getFileVersion();
