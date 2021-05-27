@@ -156,14 +156,15 @@ public class DLFileEntryMetadataLocalServiceTest {
 					dlFileVersion.getFileVersionId());
 
 			try (Connection connection = DataAccess.getConnection();
-				PreparedStatement ps = connection.prepareStatement(
-					"update DDMStructure set companyId = ? where structureId " +
-						"= ?")) {
+				PreparedStatement preparedStatement =
+					connection.prepareStatement(
+						"update DDMStructure set companyId = ? where " +
+							"structureId = ?")) {
 
-				ps.setLong(1, _company.getCompanyId());
-				ps.setLong(2, _ddmStructure.getStructureId());
+				preparedStatement.setLong(1, _company.getCompanyId());
+				preparedStatement.setLong(2, _ddmStructure.getStructureId());
 
-				ps.executeUpdate();
+				preparedStatement.executeUpdate();
 			}
 
 			List<DLFileEntryMetadata> dlFileEntryMetadatas =
