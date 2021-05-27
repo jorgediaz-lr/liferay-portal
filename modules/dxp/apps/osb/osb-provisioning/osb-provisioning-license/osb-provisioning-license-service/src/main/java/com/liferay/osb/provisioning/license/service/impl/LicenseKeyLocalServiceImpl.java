@@ -132,8 +132,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		return addLicenseKey(
 			userId, licenseEntry, product, accountKey, StringPool.BLANK,
-			account.getName(), productVersion, 0, name, user.getFullName(), 1,
-			5, 0, 0, StringPool.BLANK,
+			account.getName(), productVersion, 0, name, user.getFullName(), 0,
+			1, 5, 0, 0, StringPool.BLANK,
 			account.getName() + " Developer Activation Keys", new String[0],
 			new String[0], new String[0], new String[] {LicenseType.DEVELOPER},
 			startDate, expirationDate, StringPool.BLANK, true, true);
@@ -143,11 +143,12 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			long userId, LicenseEntry licenseEntry, Product product,
 			String accountKey, String productPurchaseKey, String accountName,
 			String productVersion, long clusterId, String name, String owner,
-			int maxServers, int maxHttpSessions, int maxConcurrentUsers,
-			int maxUsers, String sizing, String description, String[] hostNames,
-			String[] ipAddresses, String[] macAddresses, String[] serverIds,
-			Date startDate, Date expirationDate, String additionalInfo,
-			boolean complimentary, boolean active)
+			int maxClusterNodes, int maxServers, int maxHttpSessions,
+			int maxConcurrentUsers, int maxUsers, String sizing,
+			String description, String[] hostNames, String[] ipAddresses,
+			String[] macAddresses, String[] serverIds, Date startDate,
+			Date expirationDate, String additionalInfo, boolean complimentary,
+			boolean active)
 		throws Exception {
 
 		User user = userLocalService.getUser(userId);
@@ -187,21 +188,21 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		return doAddLicenseKeyVersion3_4(
 			now, user, licenseEntry, product, accountKey, productPurchaseKey,
 			accountName, licenseEntryType, licenseVersion, productVersion,
-			clusterId, name, owner, maxServers, maxHttpSessions,
-			maxConcurrentUsers, maxUsers, sizing, description, hostNames,
-			ipAddresses, macAddresses, serverIds, startDate, expirationDate,
-			additionalInfo, complimentary, active);
+			clusterId, name, owner, maxClusterNodes, maxServers,
+			maxHttpSessions, maxConcurrentUsers, maxUsers, sizing, description,
+			hostNames, ipAddresses, macAddresses, serverIds, startDate,
+			expirationDate, additionalInfo, complimentary, active);
 	}
 
 	public LicenseKey addLicenseKey(
 			long userId, long licenseEntryId, String productKey,
 			String accountKey, String productPurchaseKey, String accountName,
 			String productVersion, long clusterId, String name, String owner,
-			int maxServers, int maxHttpSessions, int maxConcurrentUsers,
-			int maxUsers, String sizing, String description, String[] hostNames,
-			String[] ipAddresses, String[] macAddresses, String[] serverIds,
-			Date startDate, Date expirationDate, boolean complimentary,
-			boolean active)
+			int maxClusterNodes, int maxServers, int maxHttpSessions,
+			int maxConcurrentUsers, int maxUsers, String sizing,
+			String description, String[] hostNames, String[] ipAddresses,
+			String[] macAddresses, String[] serverIds, Date startDate,
+			Date expirationDate, boolean complimentary, boolean active)
 		throws Exception {
 
 		LicenseEntry licenseEntry = _licenseEntryLocalService.getLicenseEntry(
@@ -210,10 +211,10 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		return addLicenseKey(
 			userId, licenseEntry, _productWebService.getProduct(productKey),
 			accountKey, productPurchaseKey, accountName, productVersion,
-			clusterId, name, owner, maxServers, maxHttpSessions,
-			maxConcurrentUsers, maxUsers, sizing, description, hostNames,
-			ipAddresses, macAddresses, serverIds, startDate, expirationDate,
-			StringPool.BLANK, complimentary, active);
+			clusterId, name, owner, maxClusterNodes, maxServers,
+			maxHttpSessions, maxConcurrentUsers, maxUsers, sizing, description,
+			hostNames, ipAddresses, macAddresses, serverIds, startDate,
+			expirationDate, StringPool.BLANK, complimentary, active);
 	}
 
 	public LicenseKey addLicenseKey(
@@ -242,8 +243,9 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		String key = _keyGenerator.generate(
 			StringPool.BLANK, StringPool.BLANK, licenseEntryType,
 			licenseVersion, productName, productId, productVersion, owner, 0, 0,
-			0, maxUsers, StringPool.BLANK, description, hostName, ipAddresses,
-			macAddresses, new String[] {serverId}, startDate, expirationDate);
+			0, 0, maxUsers, StringPool.BLANK, description, hostName,
+			ipAddresses, macAddresses, new String[] {serverId}, startDate,
+			expirationDate);
 
 		long licenseKeyId = counterLocalService.increment();
 
@@ -518,9 +520,10 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			licenseKey.getAccountName(), licenseEntry.getType(),
 			licenseKey.getLicenseVersion(), licenseKey.getProductVersion(),
 			licenseKey.getClusterId(), licenseKey.getName(),
-			licenseKey.getOwner(), licenseKey.getMaxServers(),
-			licenseKey.getMaxHttpSessions(), licenseKey.getMaxConcurrentUsers(),
-			licenseKey.getMaxUsers(), licenseKey.getSizing(), description,
+			licenseKey.getOwner(), licenseKey.getMaxClusterNodes(),
+			licenseKey.getMaxServers(), licenseKey.getMaxHttpSessions(),
+			licenseKey.getMaxConcurrentUsers(), licenseKey.getMaxUsers(),
+			licenseKey.getSizing(), description,
 			new String[] {licenseKey.getHostName()},
 			new String[] {licenseKey.getIpAddresses()},
 			new String[] {licenseKey.getMacAddresses()},
@@ -990,11 +993,12 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			String licenseEntryName, String licenseEntryType,
 			int licenseVersion, String productName, String productId,
 			String productVersion, long clusterId, String name, String owner,
-			int maxServers, long maxConcurrentUsers, long maxUsers,
-			int maxHttpSessions, String sizing, String description,
-			String hostName, String ipAddresses, String macAddresses,
-			String serverId, String key, Date startDate, Date expirationDate,
-			String additionalInfo, boolean complimentary, boolean active)
+			int maxClusterNodes, int maxServers, long maxConcurrentUsers,
+			long maxUsers, int maxHttpSessions, String sizing,
+			String description, String hostName, String ipAddresses,
+			String macAddresses, String serverId, String key, Date startDate,
+			Date expirationDate, String additionalInfo, boolean complimentary,
+			boolean active)
 		throws Exception {
 
 		long licenseKeyId = counterLocalService.increment();
@@ -1021,6 +1025,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		licenseKey.setClusterId(clusterId);
 		licenseKey.setName(name);
 		licenseKey.setOwner(owner);
+		licenseKey.setMaxClusterNodes(maxClusterNodes);
 		licenseKey.setMaxServers(maxServers);
 		licenseKey.setMaxConcurrentUsers(maxConcurrentUsers);
 		licenseKey.setMaxUsers(maxUsers);
@@ -1049,12 +1054,12 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			Date now, User user, LicenseEntry licenseEntry, Product product,
 			String accountKey, String productPurchaseKey, String accountName,
 			String licenseEntryType, int licenseVersion, String productVersion,
-			long clusterId, String name, String owner, int maxServers,
-			int maxHttpSessions, long maxConcurrentUsers, long maxUsers,
-			String sizing, String description, String[] hostNames,
-			String[] ipAddresses, String[] macAddresses, String[] serverIds,
-			Date startDate, Date expirationDate, String additionalInfo,
-			boolean complimentary, boolean active)
+			long clusterId, String name, String owner, int maxClusterNodes,
+			int maxServers, int maxHttpSessions, long maxConcurrentUsers,
+			long maxUsers, String sizing, String description,
+			String[] hostNames, String[] ipAddresses, String[] macAddresses,
+			String[] serverIds, Date startDate, Date expirationDate,
+			String additionalInfo, boolean complimentary, boolean active)
 		throws Exception {
 
 		accountName = trimText(accountName);
@@ -1146,19 +1151,19 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 			String key = _keyGenerator.generate(
 				accountName, licenseEntryName, licenseEntryType, licenseVersion,
-				productName, productId, productVersion, owner, maxServers,
-				maxHttpSessions, maxConcurrentUsers, maxUsers, sizing,
-				description, hostName, curIpAddresses, curMacAddresses,
+				productName, productId, productVersion, owner, maxClusterNodes,
+				maxServers, maxHttpSessions, maxConcurrentUsers, maxUsers,
+				sizing, description, hostName, curIpAddresses, curMacAddresses,
 				new String[] {serverId}, startDate, expirationDate);
 
 			licenseKey = doAddLicenseKey(
 				user, now, licenseEntry, accountKey, productPurchaseKey,
 				accountName, licenseEntryName, licenseEntryType, licenseVersion,
 				productName, productId, productVersion, clusterId, name, owner,
-				maxServers, maxConcurrentUsers, maxUsers, maxHttpSessions,
-				sizing, description, hostName, curIpAddresses, curMacAddresses,
-				serverId, key, startDate, expirationDate, additionalInfo,
-				complimentary, active);
+				maxClusterNodes, maxServers, maxConcurrentUsers, maxUsers,
+				maxHttpSessions, sizing, description, hostName, curIpAddresses,
+				curMacAddresses, serverId, key, startDate, expirationDate,
+				additionalInfo, complimentary, active);
 		}
 
 		return licenseKey;

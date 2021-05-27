@@ -124,10 +124,11 @@ public class DownloadLicenseKeyMVCResourceCommand
 			licenseKey.getLicenseEntryType(), licenseKey.getLicenseVersion(),
 			licenseKey.getProductName(), licenseKey.getProductId(),
 			licenseKey.getProductVersion(), licenseKey.getOwner(),
-			licenseKey.getMaxServers(), licenseKey.getMaxHttpSessions(),
-			licenseKey.getMaxConcurrentUsers(), licenseKey.getMaxUsers(),
-			licenseKey.getSizing(), licenseKey.getDescription(), hostNames,
-			ipAddresses, macAddresses, serverIds, licenseKey.getStartDate(),
+			licenseKey.getMaxClusterNodes(), licenseKey.getMaxServers(),
+			licenseKey.getMaxHttpSessions(), licenseKey.getMaxConcurrentUsers(),
+			licenseKey.getMaxUsers(), licenseKey.getSizing(),
+			licenseKey.getDescription(), hostNames, ipAddresses, macAddresses,
+			serverIds, licenseKey.getStartDate(),
 			licenseKey.getExpirationDate(), licenseKey.getCreateDate());
 
 		PortletResponseUtil.sendFile(
@@ -162,8 +163,8 @@ public class DownloadLicenseKeyMVCResourceCommand
 				licenseKey.getLicenseEntryType(),
 				licenseKey.getLicenseVersion(), licenseKey.getProductName(),
 				licenseKey.getProductId(), licenseKey.getProductVersion(),
-				licenseKey.getOwner(), licenseKey.getMaxServers(),
-				licenseKey.getMaxHttpSessions(),
+				licenseKey.getOwner(), licenseKey.getMaxClusterNodes(),
+				licenseKey.getMaxServers(), licenseKey.getMaxHttpSessions(),
 				licenseKey.getMaxConcurrentUsers(), licenseKey.getMaxUsers(),
 				licenseKey.getSizing(), licenseKey.getDescription(),
 				licenseKey.getHostName(), licenseKey.getIpAddresses(),

@@ -73,6 +73,7 @@
 		<column name="clusterId" type="long" />
 		<column name="name" type="String" />
 		<column name="owner" type="String" />
+		<column name="maxClusterNodes" type="int" />
 		<column name="maxServers" type="int" />
 		<column name="maxConcurrentUsers" type="long" />
 		<column name="maxUsers" type="long" />

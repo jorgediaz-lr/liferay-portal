@@ -29,6 +29,8 @@ public class LicenseServerId {
 
 	public static final String OEM = "OEM";
 
+	public static final String VIRTUAL_CLUSTER = "Virtual Cluster";
+
 	public static final String getServerId(String licenseType) {
 		if (licenseType.equals(LicenseType.DEVELOPER) ||
 			licenseType.equals(LicenseType.DEVELOPER_CLUSTER)) {
@@ -43,6 +45,9 @@ public class LicenseServerId {
 		}
 		else if (licenseType.equals(LicenseType.OEM)) {
 			return OEM;
+		}
+		else if (licenseType.equals(LicenseType.VIRTUAL_CLUSTER)) {
+			return VIRTUAL_CLUSTER;
 		}
 		else {
 			return StringPool.BLANK;

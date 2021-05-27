@@ -97,10 +97,11 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 			String key, String accountName, String licenseEntryName,
 			String licenseType, int licenseVersion, String productName,
 			String productId, String productVersion, String owner,
-			int maxServers, int maxHttpSessions, long maxConcurrentUsers,
-			long maxUsers, String sizing, String description, String hostNames,
-			String ipAddresses, String macAddresses, String serverIds,
-			Date startDate, Date expirationDate, Date createDate)
+			int maxClusterNodes, int maxServers, int maxHttpSessions,
+			long maxConcurrentUsers, long maxUsers, String sizing,
+			String description, String hostNames, String ipAddresses,
+			String macAddresses, String serverIds, Date startDate,
+			Date expirationDate, Date createDate)
 		throws Exception {
 
 		File file = OSBFileUtil.createTempFile(
@@ -110,10 +111,10 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 			file,
 			toXML(
 				key, accountName, licenseEntryName, licenseType, licenseVersion,
-				productName, productId, productVersion, owner, maxServers,
-				maxHttpSessions, maxConcurrentUsers, maxUsers, sizing,
-				description, hostNames, ipAddresses, macAddresses, serverIds,
-				startDate, expirationDate, createDate));
+				productName, productId, productVersion, owner, maxClusterNodes,
+				maxServers, maxHttpSessions, maxConcurrentUsers, maxUsers,
+				sizing, description, hostNames, ipAddresses, macAddresses,
+				serverIds, startDate, expirationDate, createDate));
 
 		return file;
 	}
@@ -122,10 +123,11 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 			String key, String accountName, String licenseEntryName,
 			String licenseType, int licenseVersion, String productName,
 			String productId, String productVersion, String owner,
-			int maxServers, int maxHttpSessions, long maxConcurrentUsers,
-			long maxUsers, String sizing, String description, String hostName,
-			String ipAddresses, String macAddresses, String serverId,
-			Date startDate, Date expirationDate)
+			int maxClusterNodes, int maxServers, int maxHttpSessions,
+			long maxConcurrentUsers, long maxUsers, String sizing,
+			String description, String hostName, String ipAddresses,
+			String macAddresses, String serverId, Date startDate,
+			Date expirationDate)
 		throws IOException {
 
 		UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
@@ -160,6 +162,7 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 			objectOutputStream.writeUTF(String.valueOf(licenseVersion));
 
 			objectOutputStream.writeObject(StringUtil.split(macAddresses));
+			objectOutputStream.writeInt(maxClusterNodes);
 			objectOutputStream.writeInt(maxHttpSessions);
 			objectOutputStream.writeInt(maxServers);
 			objectOutputStream.writeLong(maxConcurrentUsers);
@@ -211,19 +214,20 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 	public String toXML(
 			String accountName, String licenseEntryName, String licenseType,
 			int licenseVersion, String productName, String productId,
-			String productVersion, String owner, int maxServers,
-			int maxHttpSessions, long maxConcurrentUsers, long maxUsers,
-			String sizing, String description, String[] hostNames,
-			String[] ipAddresses, String[] macAddresses, String[] serverIds,
-			Date startDate, Date expirationDate, Date createDate)
+			String productVersion, String owner, int maxClusterNodes,
+			int maxServers, int maxHttpSessions, long maxConcurrentUsers,
+			long maxUsers, String sizing, String description,
+			String[] hostNames, String[] ipAddresses, String[] macAddresses,
+			String[] serverIds, Date startDate, Date expirationDate,
+			Date createDate)
 		throws Exception {
 
 		Map<String, String> properties = _getProperties(
 			accountName, licenseEntryName, licenseType, licenseVersion,
-			productName, productId, productVersion, owner, maxServers,
-			maxHttpSessions, maxConcurrentUsers, maxUsers, sizing, description,
-			hostNames[0], ipAddresses[0], macAddresses[0], serverIds[0],
-			startDate, expirationDate, createDate);
+			productName, productId, productVersion, owner, maxClusterNodes,
+			maxServers, maxHttpSessions, maxConcurrentUsers, maxUsers, sizing,
+			description, hostNames[0], ipAddresses[0], macAddresses[0],
+			serverIds[0], startDate, expirationDate, createDate);
 
 		if ((licenseVersion >= 4) &&
 			licenseType.equals(LicenseType.PRODUCTION)) {
@@ -244,10 +248,11 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 		for (int i = 0; i < serverIds.length; i++) {
 			Map<String, String> curProperties = _getProperties(
 				accountName, licenseEntryName, licenseType, licenseVersion,
-				productName, productId, productVersion, owner, maxServers,
-				maxHttpSessions, maxConcurrentUsers, maxUsers, sizing,
-				description, hostNames[i], ipAddresses[i], macAddresses[i],
-				serverIds[i], startDate, expirationDate, createDate);
+				productName, productId, productVersion, owner, maxClusterNodes,
+				maxServers, maxHttpSessions, maxConcurrentUsers, maxUsers,
+				sizing, description, hostNames[i], ipAddresses[i],
+				macAddresses[i], serverIds[i], startDate, expirationDate,
+				createDate);
 
 			Element serverElement = serversElement.addElement("server");
 
@@ -285,20 +290,21 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 			String key, String accountName, String licenseEntryName,
 			String licenseType, int licenseVersion, String productName,
 			String productId, String productVersion, String owner,
-			int maxServers, int maxHttpSessions, long maxConcurrentUsers,
-			long maxUsers, String sizing, String description, String hostNames,
-			String ipAddresses, String macAddresses, String serverIds,
-			Date startDate, Date expirationDate, Date createDate)
+			int maxClusterNodes, int maxServers, int maxHttpSessions,
+			long maxConcurrentUsers, long maxUsers, String sizing,
+			String description, String hostNames, String ipAddresses,
+			String macAddresses, String serverIds, Date startDate,
+			Date expirationDate, Date createDate)
 		throws Exception {
 
 		Document document = null;
 
 		Map<String, String> properties = _getProperties(
 			accountName, licenseEntryName, licenseType, licenseVersion,
-			productName, productId, productVersion, owner, maxServers,
-			maxHttpSessions, maxConcurrentUsers, maxUsers, sizing, description,
-			hostNames, ipAddresses, macAddresses, serverIds, startDate,
-			expirationDate, createDate);
+			productName, productId, productVersion, owner, maxClusterNodes,
+			maxServers, maxHttpSessions, maxConcurrentUsers, maxUsers, sizing,
+			description, hostNames, ipAddresses, macAddresses, serverIds,
+			startDate, expirationDate, createDate);
 
 		if (licenseVersion >= 3) {
 			document = toXMLVersion3_4(properties, key, false);
@@ -480,6 +486,12 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 			rootElement, "expiration-date",
 			longDateFormatDateTime.format(expirationDate));
 
+		if (licenseEntryType.equals(LicenseType.VIRTUAL_CLUSTER)) {
+			DocUtil.add(
+				rootElement, "max-cluster-nodes",
+				properties.get("max-cluster-nodes"));
+		}
+
 		if (licenseEntryType.equals(LicenseType.CLUSTER) ||
 			((licenseVersion >= 4) &&
 			 (licenseEntryType.equals(LicenseType.LIMITED) ||
@@ -538,18 +550,18 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 	private Map<String, String> _getProperties(
 		String accountName, String licenseEntryName, String licenseType,
 		int licenseVersion, String productName, String productId,
-		String productVersion, String owner, int maxServers,
-		int maxHttpSessions, long maxConcurrentUsers, long maxUsers,
-		String sizing, String description, String hostNames, String ipAddresses,
-		String macAddresses, String serverIds, Date startDate,
-		Date expirationDate, Date createDate) {
+		String productVersion, String owner, int maxClusterNodes,
+		int maxServers, int maxHttpSessions, long maxConcurrentUsers,
+		long maxUsers, String sizing, String description, String hostNames,
+		String ipAddresses, String macAddresses, String serverIds,
+		Date startDate, Date expirationDate, Date createDate) {
 
 		Map<String, String> properties = _keyGenerator.getProperties(
 			accountName, licenseEntryName, licenseType, licenseVersion,
-			productName, productId, productVersion, owner, maxServers,
-			maxHttpSessions, maxConcurrentUsers, maxUsers, sizing, description,
-			hostNames, ipAddresses, macAddresses, new String[] {serverIds},
-			startDate, expirationDate);
+			productName, productId, productVersion, owner, maxClusterNodes,
+			maxServers, maxHttpSessions, maxConcurrentUsers, maxUsers, sizing,
+			description, hostNames, ipAddresses, macAddresses,
+			new String[] {serverIds}, startDate, expirationDate);
 
 		// See LRDCOM-2568
 

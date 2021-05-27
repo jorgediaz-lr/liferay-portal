@@ -31,20 +31,20 @@ public interface KeyGenerator {
 	public String generate(
 		String accountName, String licenseEntryName, String licenseEntryType,
 		int licenseVersion, String productName, String productId,
-		String productVersionLabel, String owner, int maxServers,
-		int maxHttpSessions, long maxConcurrentUsers, long maxUsers,
-		String sizing, String description, String hostName, String ipAddresses,
-		String macAddresses, String[] serverIds, Date startDate,
-		Date expirationDate);
+		String productVersionLabel, String owner, int maxClusterNodes,
+		int maxServers, int maxHttpSessions, long maxConcurrentUsers,
+		long maxUsers, String sizing, String description, String hostName,
+		String ipAddresses, String macAddresses, String[] serverIds,
+		Date startDate, Date expirationDate);
 
 	public Map<String, String> getProperties(
 		String accountName, String licenseEntryName, String licenseEntryType,
 		int licenseVersion, String productName, String productId,
-		String productVersionLabel, String owner, int maxServers,
-		int maxHttpSessions, long maxConcurrentUsers, long maxUsers,
-		String sizing, String description, String hostNames, String ipAddresses,
-		String macAddresses, String[] serverIds, Date startDate,
-		Date expirationDate);
+		String productVersionLabel, String owner, int maxClusterNodes,
+		int maxServers, int maxHttpSessions, long maxConcurrentUsers,
+		long maxUsers, String sizing, String description, String hostNames,
+		String ipAddresses, String macAddresses, String[] serverIds,
+		Date startDate, Date expirationDate);
 
 	public String getServerId(
 		String hostName, String ipAddresses, String macAddresses);

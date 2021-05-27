@@ -41,9 +41,15 @@ public class LicenseType {
 
 	public static final String PRODUCTION = "production";
 
-	public static final String[] VALUES = {
-		CLUSTER, DEVELOPER, DEVELOPER_CLUSTER, ELASTIC, ENTERPRISE, LIMITED,
-		OEM, PER_USER, PRODUCTION
-	};
+	public static String[] VALUES = {};
+
+	public static final String VIRTUAL_CLUSTER = "virtual-cluster";
+
+	static {
+		VALUES = new String[] {
+			CLUSTER, DEVELOPER, DEVELOPER_CLUSTER, ELASTIC, ENTERPRISE, LIMITED,
+			OEM, PER_USER, PRODUCTION, VIRTUAL_CLUSTER
+		};
+	}
 
 }

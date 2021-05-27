@@ -71,18 +71,18 @@ public class KeyGeneratorImpl implements KeyGenerator {
 	public String generate(
 		String accountName, String licenseEntryName, String licenseEntryType,
 		int licenseVersion, String productName, String productId,
-		String productVersionLabel, String owner, int maxServers,
-		int maxHttpSessions, long maxConcurrentUsers, long maxUsers,
-		String sizing, String description, String hostName, String ipAddresses,
-		String macAddresses, String[] serverIds, Date startDate,
-		Date expirationDate) {
+		String productVersionLabel, String owner, int maxClusterNodes,
+		int maxServers, int maxHttpSessions, long maxConcurrentUsers,
+		long maxUsers, String sizing, String description, String hostName,
+		String ipAddresses, String macAddresses, String[] serverIds,
+		Date startDate, Date expirationDate) {
 
 		Map<String, String> properties = getProperties(
 			accountName, licenseEntryName, licenseEntryType, licenseVersion,
-			productName, productId, productVersionLabel, owner, maxServers,
-			maxHttpSessions, maxConcurrentUsers, maxUsers, sizing, description,
-			hostName, ipAddresses, macAddresses, serverIds, startDate,
-			expirationDate);
+			productName, productId, productVersionLabel, owner, maxClusterNodes,
+			maxServers, maxHttpSessions, maxConcurrentUsers, maxUsers, sizing,
+			description, hostName, ipAddresses, macAddresses, serverIds,
+			startDate, expirationDate);
 
 		return _encrypt(properties);
 	}
@@ -90,11 +90,11 @@ public class KeyGeneratorImpl implements KeyGenerator {
 	public Map<String, String> getProperties(
 		String accountName, String licenseEntryName, String licenseEntryType,
 		int licenseVersion, String productName, String productId,
-		String productVersionLabel, String owner, int maxServers,
-		int maxHttpSessions, long maxConcurrentUsers, long maxUsers,
-		String sizing, String description, String hostNames, String ipAddresses,
-		String macAddresses, String[] serverIds, Date startDate,
-		Date expirationDate) {
+		String productVersionLabel, String owner, int maxClusterNodes,
+		int maxServers, int maxHttpSessions, long maxConcurrentUsers,
+		long maxUsers, String sizing, String description, String hostNames,
+		String ipAddresses, String macAddresses, String[] serverIds,
+		Date startDate, Date expirationDate) {
 
 		Arrays.sort(serverIds);
 
@@ -176,6 +176,11 @@ public class KeyGeneratorImpl implements KeyGenerator {
 			properties.put(
 				"expirationDate", String.valueOf(expirationDate.getTime()));
 			properties.put("productEntryName", productName);
+
+			if (licenseEntryType.equals(LicenseType.VIRTUAL_CLUSTER)) {
+				properties.put(
+					"max-cluster-nodes", String.valueOf(maxClusterNodes));
+			}
 
 			if (licenseEntryType.equals(LicenseType.CLUSTER) ||
 				((licenseVersion >= 4) &&
