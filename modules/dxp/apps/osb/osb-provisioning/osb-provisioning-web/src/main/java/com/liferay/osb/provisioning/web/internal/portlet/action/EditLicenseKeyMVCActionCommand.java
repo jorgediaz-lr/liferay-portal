@@ -19,7 +19,6 @@ import com.liferay.osb.provisioning.license.helper.constants.LicenseServerId;
 import com.liferay.osb.provisioning.license.helper.constants.LicenseSizing;
 import com.liferay.osb.provisioning.license.model.LicenseKey;
 import com.liferay.osb.provisioning.license.service.LicenseKeyService;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -111,9 +110,8 @@ public class EditLicenseKeyMVCActionCommand extends BaseMVCActionCommand {
 		for (int i = 0; i < serverIdsJSONArray.length(); i++) {
 			JSONObject serverIdJSONObject = serverIdsJSONArray.getJSONObject(i);
 
-			String hostName = serverIdJSONObject.getString("hostName");
-
-			hostName = hostName.replaceAll(_WHITE_SPACE, StringPool.BLANK);
+			String hostName = StringUtil.trim(
+				serverIdJSONObject.getString("hostName"));
 
 			String[] curIpAddresses = _separatorPattern.split(
 				serverIdJSONObject.getString("ipAddresses"));
@@ -121,8 +119,7 @@ public class EditLicenseKeyMVCActionCommand extends BaseMVCActionCommand {
 			Set<String> distinctIpAddresses = new HashSet<>();
 
 			for (String ipAddress : curIpAddresses) {
-				ipAddress = ipAddress.replaceAll(
-					_WHITE_SPACE, StringPool.BLANK);
+				ipAddress = StringUtil.trim(ipAddress);
 
 				if (Validator.isIPAddress(ipAddress) &&
 					!distinctIpAddresses.contains(ipAddress)) {
@@ -137,8 +134,7 @@ public class EditLicenseKeyMVCActionCommand extends BaseMVCActionCommand {
 				serverIdJSONObject.getString("macAddresses"));
 
 			for (String macAddress : curMacAddresses) {
-				macAddress = macAddress.replaceAll(
-					_WHITE_SPACE, StringPool.BLANK);
+				macAddress = StringUtil.trim(macAddress);
 
 				if (Validator.isNotNull(macAddress) &&
 					!distinctMacAddresses.contains(macAddress)) {
@@ -307,8 +303,6 @@ public class EditLicenseKeyMVCActionCommand extends BaseMVCActionCommand {
 			actionRequest, actionResponse,
 			getRedirect(actionResponse, actionRequest, licenseKeyId));
 	}
-
-	private static final String _WHITE_SPACE = "\\p{Zs}";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		EditLicenseKeyMVCActionCommand.class);
