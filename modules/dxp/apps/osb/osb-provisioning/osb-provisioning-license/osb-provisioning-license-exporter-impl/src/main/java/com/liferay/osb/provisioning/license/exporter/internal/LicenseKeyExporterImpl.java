@@ -161,7 +161,6 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 			objectOutputStream.writeUTF(GetterUtil.getString(licenseEntryName));
 			objectOutputStream.writeUTF(GetterUtil.getString(licenseType));
 			objectOutputStream.writeUTF(String.valueOf(licenseVersion));
-
 			objectOutputStream.writeObject(StringUtil.split(macAddresses));
 
 			if (Objects.equals(LicenseType.VIRTUAL_CLUSTER, licenseType)) {
@@ -172,9 +171,7 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 			objectOutputStream.writeInt(maxServers);
 			objectOutputStream.writeLong(maxConcurrentUsers);
 			objectOutputStream.writeLong(maxUsers);
-
 			objectOutputStream.writeUTF(sizing);
-
 			objectOutputStream.writeUTF(GetterUtil.getString(owner));
 			objectOutputStream.writeUTF(GetterUtil.getString(productName));
 			objectOutputStream.writeUTF(GetterUtil.getString(productId));
