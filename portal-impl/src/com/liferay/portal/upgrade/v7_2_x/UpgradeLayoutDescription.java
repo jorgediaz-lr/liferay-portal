@@ -17,17 +17,20 @@ package com.liferay.portal.upgrade.v7_2_x;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.upgrade.v7_2_x.util.LayoutTable;
 
+/**
+ * @author L�szl� Pap
+ */
 public class UpgradeLayoutDescription extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
 		if (!hasColumnType(
-				LayoutTable.TABLE_NAME, "description",
-				"TEXT null")) {
+				LayoutTable.TABLE_NAME, "description", "TEXT null")) {
 
 			alter(
 				LayoutTable.class,
 				new AlterColumnType("description", "TEXT null"));
 		}
 	}
+
 }

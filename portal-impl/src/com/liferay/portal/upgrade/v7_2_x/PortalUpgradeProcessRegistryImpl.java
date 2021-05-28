@@ -52,7 +52,8 @@ public class PortalUpgradeProcessRegistryImpl
 
 		upgradeProcesses.put(new Version(5, 1, 1), new DummyUpgradeProcess());
 
-		upgradeProcesses.put(new Version(5, 1, 2), new UpgradeLayoutDescription());
+		upgradeProcesses.put(
+			new Version(5, 1, 2), new UpgradeLayoutDescription());
 	}
 
 }
