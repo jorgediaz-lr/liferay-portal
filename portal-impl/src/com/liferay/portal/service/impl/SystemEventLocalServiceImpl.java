@@ -19,6 +19,8 @@ import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.SystemEvent;
@@ -151,7 +153,11 @@ public class SystemEventLocalServiceImpl
 	@Override
 	public boolean validateGroup(long groupId) throws PortalException {
 		if (groupId > 0) {
-			Group group = _groupLocalService.getGroup(groupId);
+			Group group = _groupLocalService.fetchGroup(groupId);
+
+			if (group == null) {
+				return true;
+			}
 
 			if (group.hasStagingGroup() && !group.isStagedRemotely()) {
 				return false;
@@ -189,12 +195,20 @@ public class SystemEventLocalServiceImpl
 		}
 
 		if (!CompanyThreadLocal.isDeleteInProcess()) {
-			Company company = _companyPersistence.findByPrimaryKey(companyId);
+			try {
+				Company company = _companyPersistence.findByPrimaryKey(
+					companyId);
 
-			Group companyGroup = company.getGroup();
+				Group companyGroup = company.getGroup();
 
-			if (companyGroup.getGroupId() == groupId) {
-				groupId = 0;
+				if (companyGroup.getGroupId() == groupId) {
+					groupId = 0;
+				}
+			}
+			catch (Exception exception) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(exception, exception);
+				}
 			}
 		}
 
@@ -265,6 +279,9 @@ public class SystemEventLocalServiceImpl
 
 		return systemEventPersistence.update(systemEvent);
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		SystemEventLocalServiceImpl.class);
 
 	@BeanReference(type = CompanyPersistence.class)
 	private CompanyPersistence _companyPersistence;
