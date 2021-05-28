@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.search.BaseIndexer;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
 import com.liferay.portal.kernel.search.BooleanQuery;
@@ -382,7 +383,19 @@ public class CommerceDiscountIndexer extends BaseIndexer<CommerceDiscount> {
 			}
 
 			channelIdList.add(commerceChannel.getCommerceChannelId());
-			groupIdList.add(commerceChannel.getGroupId());
+
+			try {
+				Group group =
+					_commerceChannelLocalService.getCommerceChannelGroup(
+						commerceChannel.getCommerceChannelId());
+
+				groupIdList.add(group.getGroupId());
+			}
+			catch (Exception exception) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(exception, exception);
+				}
+			}
 		}
 
 		Stream<Long> channelIdStream = channelIdList.stream();
