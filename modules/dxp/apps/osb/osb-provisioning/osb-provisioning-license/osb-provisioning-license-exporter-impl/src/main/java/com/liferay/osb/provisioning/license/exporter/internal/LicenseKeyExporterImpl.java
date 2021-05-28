@@ -61,6 +61,18 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = LicenseKeyExporter.class)
 public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 
+	public String aggregateXMLs(String[] xmls) throws Exception {
+		Document document = SAXReaderUtil.createDocument();
+
+		Element rootElement = document.addElement("licenses");
+
+		for (String xml : xmls) {
+			DocUtil.add(rootElement, "license", xml);
+		}
+
+		return document.formattedString();
+	}
+
 	public String getFileName(String productName, String productVersion) {
 		StringBundler sb = new StringBundler(5);
 
@@ -226,11 +238,7 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 	public String toXML(Map<String, String> properties, String key)
 		throws Exception {
 
-		Document document = SAXReaderUtil.createDocument();
-
-		Element rootElement = document.addElement("license");
-
-		toXMLVersion3_4(rootElement, properties, key, false);
+		Document document = toXMLVersion3_4(properties, key, false);
 
 		return document.formattedString();
 	}
@@ -261,9 +269,7 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 
 		Document document = SAXReaderUtil.createDocument();
 
-		Element rootElement = document.addElement("license");
-
-		toXMLVersion3_4(rootElement, properties, StringPool.BLANK, true);
+		Element rootElement = document.getRootElement();
 
 		List<String> allHostNames = new ArrayList<>();
 		List<String> allIpAddresses = new ArrayList<>();
@@ -333,47 +339,10 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 			startDate, expirationDate, createDate);
 
 		if (licenseVersion >= 3) {
-			document = SAXReaderUtil.createDocument();
-
-			Element rootElement = document.addElement("license");
-
-			toXMLVersion3_4(rootElement, properties, key, false);
+			document = toXMLVersion3_4(properties, key, false);
 		}
 		else {
 			document = toXMLVersion2(properties, key);
-		}
-
-		return document.formattedString();
-	}
-
-	public String toXML(
-			String[] keys, String[] accountNames, String[] licenseEntryNames,
-			String[] licenseTypes, int[] licenseVersions, String[] productNames,
-			String[] productIds, String[] productVersions, String[] owners,
-			int[] maxServers, int[] maxHttpSessions, long[] maxConcurrentUsers,
-			long[] maxUsers, String[] sizings, String[] descriptions,
-			String[] hostNames, String[] ipAddresses, String[] macAddresses,
-			String[] serverIds, Date[] startDates, Date[] expirationDates,
-			Date[] createDates)
-		throws Exception {
-
-		Document document = SAXReaderUtil.createDocument();
-
-		Element rootElement = document.addElement("licenses");
-
-		for (int i = 0; i < keys.length; i++) {
-			Map<String, String> properties = _getProperties(
-				accountNames[i], licenseEntryNames[i], licenseTypes[i],
-				licenseVersions[i], productNames[i], productIds[i],
-				productVersions[i], owners[i], maxServers[i],
-				maxHttpSessions[i], maxConcurrentUsers[i], maxUsers[i],
-				sizings[i], descriptions[i], hostNames[i], ipAddresses[i],
-				macAddresses[i], serverIds[i], startDates[i],
-				expirationDates[i], createDates[i]);
-
-			Element licenseElement = rootElement.addElement("license");
-
-			toXMLVersion3_4(licenseElement, properties, keys[i], false);
 		}
 
 		return document.formattedString();
@@ -490,10 +459,13 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 		return document;
 	}
 
-	protected void toXMLVersion3_4(
-			Element rootElement, Map<String, String> properties, String key,
-			boolean aggregate)
+	protected Document toXMLVersion3_4(
+			Map<String, String> properties, String key, boolean aggregate)
 		throws Exception {
+
+		Document document = SAXReaderUtil.createDocument();
+
+		Element rootElement = document.addElement("license");
 
 		String productId = properties.get("productId");
 		String licenseEntryType = properties.get("type");
@@ -603,6 +575,8 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 
 			DocUtil.add(rootElement, "key", key);
 		}
+
+		return document;
 	}
 
 	private Map<String, String> _getProperties(

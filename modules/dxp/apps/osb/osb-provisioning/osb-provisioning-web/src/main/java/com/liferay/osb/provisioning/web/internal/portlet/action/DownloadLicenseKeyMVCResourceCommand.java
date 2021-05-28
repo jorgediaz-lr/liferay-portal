@@ -15,7 +15,6 @@
 package com.liferay.osb.provisioning.web.internal.portlet.action;
 
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
-import com.liferay.osb.provisioning.koroneiki.constants.ProductConstants;
 import com.liferay.osb.provisioning.license.exporter.LicenseKeyExporter;
 import com.liferay.osb.provisioning.license.model.LicenseKey;
 import com.liferay.osb.provisioning.license.service.LicenseKeyService;
@@ -25,12 +24,14 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.ParamUtil;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.portlet.PortletException;
 import javax.portlet.ResourceRequest;
@@ -91,101 +92,83 @@ public class DownloadLicenseKeyMVCResourceCommand
 
 		List<LicenseKey> licenseKeys = new ArrayList<>();
 
-		String[] keys = new String[licenseKeyIds.length];
-		String[] accountNames = new String[licenseKeyIds.length];
-		String[] licenseEntryNames = new String[licenseKeyIds.length];
-		String[] licenseTypes = new String[licenseKeyIds.length];
-		int[] licenseVersions = new int[licenseKeyIds.length];
-		String[] productNames = new String[licenseKeyIds.length];
-		String[] productIds = new String[licenseKeyIds.length];
-		String[] productVersions = new String[licenseKeyIds.length];
-		String[] owners = new String[licenseKeyIds.length];
-		int[] maxServers = new int[licenseKeyIds.length];
-		int[] maxHttpSessions = new int[licenseKeyIds.length];
-		long[] maxConcurrentUsers = new long[licenseKeyIds.length];
-		long[] maxUsers = new long[licenseKeyIds.length];
-		String[] sizings = new String[licenseKeyIds.length];
-		String[] descriptions = new String[licenseKeyIds.length];
-		String[] hostNames = new String[licenseKeyIds.length];
-		String[] ipAddresses = new String[licenseKeyIds.length];
-		String[] macAddresses = new String[licenseKeyIds.length];
-		String[] serverIds = new String[licenseKeyIds.length];
-		Date[] startDates = new Date[licenseKeyIds.length];
-		Date[] expirationDates = new Date[licenseKeyIds.length];
-		Date[] createDates = new Date[licenseKeyIds.length];
-
-		for (int i = 0; i < licenseKeyIds.length; i++) {
+		for (long licenseKeyId : licenseKeyIds) {
 			LicenseKey licenseKey = _licenseKeyService.getLicenseKey(
-				licenseKeyIds[i]);
+				licenseKeyId);
 
 			if (!licenseKey.isActive()) {
 				continue;
 			}
 
 			licenseKeys.add(licenseKey);
-
-			keys[i] = licenseKey.getKey();
-			accountNames[i] = licenseKey.getAccountName();
-			licenseEntryNames[i] = licenseKey.getLicenseEntryName();
-			licenseTypes[i] = licenseKey.getLicenseEntryType();
-			licenseVersions[i] = licenseKey.getLicenseVersion();
-			productNames[i] = licenseKey.getProductName();
-			productIds[i] = licenseKey.getProductId();
-			productVersions[i] = licenseKey.getProductVersion();
-			owners[i] = licenseKey.getOwner();
-			maxServers[i] = licenseKey.getMaxServers();
-			maxHttpSessions[i] = licenseKey.getMaxHttpSessions();
-			maxConcurrentUsers[i] = licenseKey.getMaxConcurrentUsers();
-			maxUsers[i] = licenseKey.getMaxUsers();
-			sizings[i] = licenseKey.getSizing();
-			descriptions[i] = licenseKey.getDescription();
-			hostNames[i] = licenseKey.getHostName();
-			ipAddresses[i] = licenseKey.getIpAddresses();
-			macAddresses[i] = licenseKey.getMacAddresses();
-			serverIds[i] = licenseKey.getServerId();
-			startDates[i] = licenseKey.getStartDate();
-			expirationDates[i] = licenseKey.getExpirationDate();
-			createDates[i] = licenseKey.getCreateDate();
 		}
 
 		if (LicenseUtil.isAggregate(licenseKeys)) {
+			String[] hostNames = new String[licenseKeys.size()];
+			String[] ipAddresses = new String[licenseKeys.size()];
+			String[] macAddresses = new String[licenseKeys.size()];
+			String[] serverIds = new String[licenseKeys.size()];
+
+			for (int i = 0; i < licenseKeys.size(); i++) {
+				LicenseKey licenseKey = licenseKeys.get(i);
+
+				hostNames[i] = licenseKey.getHostName();
+				ipAddresses[i] = licenseKey.getIpAddresses();
+				macAddresses[i] = licenseKey.getMacAddresses();
+				serverIds[i] = licenseKey.getServerId();
+			}
+
 			LicenseKey licenseKey = licenseKeys.get(0);
 
 			String fileName = _licenseKeyExporter.getFileName(
 				licenseKey.getProductName(), licenseKey.getProductVersion());
 
 			String licenseXML = _licenseKeyExporter.toXML(
-				licenseKey.getKey(), licenseKey.getAccountName(),
-				licenseKey.getLicenseEntryName(),
+				licenseKey.getAccountName(), licenseKey.getLicenseEntryName(),
 				licenseKey.getLicenseEntryType(),
 				licenseKey.getLicenseVersion(), licenseKey.getProductName(),
 				licenseKey.getProductId(), licenseKey.getProductVersion(),
 				licenseKey.getOwner(), licenseKey.getMaxClusterNodes(),
 				licenseKey.getMaxServers(), licenseKey.getMaxHttpSessions(),
 				licenseKey.getMaxConcurrentUsers(), licenseKey.getMaxUsers(),
-				licenseKey.getSizing(), licenseKey.getDescription(),
-				licenseKey.getHostName(), licenseKey.getIpAddresses(),
-				licenseKey.getMacAddresses(), licenseKey.getServerId(),
-				licenseKey.getStartDate(), licenseKey.getExpirationDate(),
-				licenseKey.getCreateDate());
+				licenseKey.getSizing(), licenseKey.getDescription(), hostNames,
+				ipAddresses, macAddresses, serverIds, licenseKey.getStartDate(),
+				licenseKey.getExpirationDate(), licenseKey.getCreateDate());
 
 			PortletResponseUtil.sendFile(
 				resourceRequest, resourceResponse, fileName,
 				licenseXML.getBytes(), ContentTypes.TEXT_XML);
 		}
 		else {
-			String fileName = _licenseKeyExporter.getFileName(
-				new String[] {
-					ProductConstants.NAME_COMMERCE, ProductConstants.NAME_DXP
-				});
+			Set<String> productNames = new HashSet<>();
 
-			String licenseXML = _licenseKeyExporter.toXML(
-				keys, accountNames, licenseEntryNames, licenseTypes,
-				licenseVersions, productNames, productIds, productVersions,
-				owners, maxServers, maxHttpSessions, maxConcurrentUsers,
-				maxUsers, sizings, descriptions, hostNames, ipAddresses,
-				macAddresses, serverIds, startDates, expirationDates,
-				createDates);
+			String[] licenseXMLs = new String[licenseKeys.size()];
+
+			for (int i = 0; i < licenseKeys.size(); i++) {
+				LicenseKey licenseKey = licenseKeys.get(i);
+
+				productNames.add(licenseKey.getProductName());
+
+				licenseXMLs[i] = _licenseKeyExporter.toXML(
+					licenseKey.getKey(), licenseKey.getAccountName(),
+					licenseKey.getLicenseEntryName(),
+					licenseKey.getLicenseEntryType(),
+					licenseKey.getLicenseVersion(), licenseKey.getProductName(),
+					licenseKey.getProductId(), licenseKey.getProductVersion(),
+					licenseKey.getOwner(), licenseKey.getMaxClusterNodes(),
+					licenseKey.getMaxServers(), licenseKey.getMaxHttpSessions(),
+					licenseKey.getMaxConcurrentUsers(),
+					licenseKey.getMaxUsers(), licenseKey.getSizing(),
+					licenseKey.getDescription(), licenseKey.getHostName(),
+					licenseKey.getIpAddresses(), licenseKey.getMacAddresses(),
+					licenseKey.getServerId(), licenseKey.getStartDate(),
+					licenseKey.getExpirationDate(), licenseKey.getCreateDate());
+			}
+
+			String fileName = _licenseKeyExporter.getFileName(
+				ArrayUtil.toStringArray(productNames));
+
+			String licenseXML = _licenseKeyExporter.aggregateXMLs(licenseXMLs);
 
 			PortletResponseUtil.sendFile(
 				resourceRequest, resourceResponse, fileName,

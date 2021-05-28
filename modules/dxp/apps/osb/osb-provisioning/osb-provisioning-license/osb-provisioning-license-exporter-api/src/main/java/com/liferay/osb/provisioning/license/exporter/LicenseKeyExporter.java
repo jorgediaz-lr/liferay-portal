@@ -24,6 +24,8 @@ import java.util.Map;
  */
 public interface LicenseKeyExporter {
 
+	public String aggregateXMLs(String[] xmls) throws Exception;
+
 	public String getFileName(String productName, String productVersion);
 
 	public String getFileName(String[] productNames);
@@ -75,17 +77,6 @@ public interface LicenseKeyExporter {
 			String description, String hostNames, String ipAddresses,
 			String macAddresses, String serverIds, Date startDate,
 			Date expirationDate, Date createDate)
-		throws Exception;
-
-	public String toXML(
-			String[] key, String[] accountName, String[] licenseEntryName,
-			String[] licenseType, int[] licenseVersion, String[] productName,
-			String[] productId, String[] productVersion, String[] owner,
-			int[] maxServers, int[] maxHttpSessions, long[] maxConcurrentUsers,
-			long[] maxUsers, String[] sizing, String[] description,
-			String[] hostNames, String[] ipAddresses, String[] macAddresses,
-			String[] serverIds, Date[] startDate, Date[] expirationDate,
-			Date[] createDate)
 		throws Exception;
 
 }
