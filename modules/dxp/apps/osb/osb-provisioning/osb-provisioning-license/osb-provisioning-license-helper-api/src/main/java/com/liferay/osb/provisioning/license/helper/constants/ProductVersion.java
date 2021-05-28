@@ -37,7 +37,8 @@ public class ProductVersion {
 	public static final String DXP_VERSION_7_4 = "7.4";
 
 	public static final String[] DXP_VERSIONS = {
-		DXP_VERSION_7_0, DXP_VERSION_7_1, DXP_VERSION_7_2, DXP_VERSION_7_3
+		DXP_VERSION_7_0, DXP_VERSION_7_1, DXP_VERSION_7_2, DXP_VERSION_7_3,
+		DXP_VERSION_7_4
 	};
 
 	public static final String PORTAL_MAJOR_VERSION_6 = "6";
