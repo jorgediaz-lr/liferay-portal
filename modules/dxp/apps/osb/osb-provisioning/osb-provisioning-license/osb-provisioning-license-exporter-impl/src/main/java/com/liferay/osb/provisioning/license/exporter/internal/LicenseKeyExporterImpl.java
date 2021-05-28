@@ -89,10 +89,8 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 		sb.append("activation-key");
 
 		for (String productName : productNames) {
-			productName = StringUtil.extractChars(productName);
-
 			sb.append(StringPool.DASH);
-			sb.append(productName);
+			sb.append(StringUtil.extractChars(productName));
 		}
 
 		sb.append(".xml");
