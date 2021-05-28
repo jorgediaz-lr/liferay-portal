@@ -14,7 +14,6 @@
 
 package com.liferay.portal.store.file.system;
 
-import com.liferay.document.library.kernel.exception.DuplicateFileException;
 import com.liferay.document.library.kernel.exception.NoSuchFileException;
 import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.petra.string.CharPool;
@@ -74,7 +73,7 @@ public class AdvancedFileSystemStore extends FileSystemStore {
 	public void updateFile(
 			long companyId, long repositoryId, String fileName,
 			String newFileName)
-		throws DuplicateFileException, NoSuchFileException {
+		throws NoSuchFileException {
 
 		super.updateFile(companyId, repositoryId, fileName, newFileName);
 

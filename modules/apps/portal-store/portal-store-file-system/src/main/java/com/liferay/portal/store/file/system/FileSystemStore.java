@@ -14,7 +14,6 @@
 
 package com.liferay.portal.store.file.system;
 
-import com.liferay.document.library.kernel.exception.DuplicateFileException;
 import com.liferay.document.library.kernel.exception.NoSuchFileException;
 import com.liferay.document.library.kernel.store.BaseStore;
 import com.liferay.document.library.kernel.util.DLUtil;
@@ -84,17 +83,11 @@ public class FileSystemStore extends BaseStore {
 
 	@Override
 	public void addFile(
-			long companyId, long repositoryId, String fileName, InputStream is)
-		throws DuplicateFileException {
+		long companyId, long repositoryId, String fileName, InputStream is) {
 
 		try {
 			File fileNameVersionFile = getFileNameVersionFile(
 				companyId, repositoryId, fileName, VERSION_DEFAULT);
-
-			if (fileNameVersionFile.exists()) {
-				throw new DuplicateFileException(
-					companyId, repositoryId, fileName);
-			}
 
 			FileUtil.write(fileNameVersionFile, is);
 		}
@@ -105,18 +98,12 @@ public class FileSystemStore extends BaseStore {
 
 	@Override
 	public void addFile(
-			long companyId, long repositoryId, String fileName,
-			String versionLabel, InputStream is)
-		throws DuplicateFileException {
+		long companyId, long repositoryId, String fileName, String versionLabel,
+		InputStream is) {
 
 		try {
 			File fileNameVersionFile = getFileNameVersionFile(
 				companyId, repositoryId, fileName, versionLabel);
-
-			if (fileNameVersionFile.exists()) {
-				throw new DuplicateFileException(
-					companyId, repositoryId, fileName);
-			}
 
 			FileUtil.write(fileNameVersionFile, is);
 		}
@@ -133,7 +120,7 @@ public class FileSystemStore extends BaseStore {
 	public void copyFileVersion(
 			long companyId, long repositoryId, String fileName,
 			String fromVersionLabel, String toVersionLabel)
-		throws DuplicateFileException, NoSuchFileException {
+		throws NoSuchFileException {
 
 		File fromFileNameVersionFile = getFileNameVersionFile(
 			companyId, repositoryId, fileName, fromVersionLabel);
@@ -145,10 +132,6 @@ public class FileSystemStore extends BaseStore {
 
 		File toFileNameVersionFile = getFileNameVersionFile(
 			companyId, repositoryId, fileName, toVersionLabel);
-
-		if (toFileNameVersionFile.exists()) {
-			throw new DuplicateFileException(toFileNameVersionFile.getPath());
-		}
 
 		try {
 			fileSystemHelper.copy(
@@ -393,12 +376,7 @@ public class FileSystemStore extends BaseStore {
 	public void updateFile(
 			long companyId, long repositoryId, long newRepositoryId,
 			String fileName)
-		throws DuplicateFileException, NoSuchFileException {
-
-		if (repositoryId == newRepositoryId) {
-			throw new DuplicateFileException(
-				companyId, newRepositoryId, fileName);
-		}
+		throws NoSuchFileException {
 
 		File fileNameDir = getFileNameDir(companyId, repositoryId, fileName);
 
@@ -408,11 +386,6 @@ public class FileSystemStore extends BaseStore {
 
 		File newFileNameDir = getFileNameDir(
 			companyId, newRepositoryId, fileName);
-
-		if (newFileNameDir.exists()) {
-			throw new DuplicateFileException(
-				companyId, newRepositoryId, fileName);
-		}
 
 		File parentFile = fileNameDir.getParentFile();
 
@@ -425,12 +398,7 @@ public class FileSystemStore extends BaseStore {
 	public void updateFile(
 			long companyId, long repositoryId, String fileName,
 			String newFileName)
-		throws DuplicateFileException, NoSuchFileException {
-
-		if (fileName.equals(newFileName)) {
-			throw new DuplicateFileException(
-				companyId, repositoryId, newFileName);
-		}
+		throws NoSuchFileException {
 
 		File fileNameDir = getFileNameDir(companyId, repositoryId, fileName);
 
@@ -441,11 +409,6 @@ public class FileSystemStore extends BaseStore {
 		File newFileNameDir = getFileNameDir(
 			companyId, repositoryId, newFileName);
 
-		if (newFileNameDir.exists()) {
-			throw new DuplicateFileException(
-				companyId, repositoryId, newFileName);
-		}
-
 		File parentFile = fileNameDir.getParentFile();
 
 		fileSystemHelper.move(fileNameDir, newFileNameDir);
@@ -455,18 +418,12 @@ public class FileSystemStore extends BaseStore {
 
 	@Override
 	public void updateFile(
-			long companyId, long repositoryId, String fileName,
-			String versionLabel, InputStream is)
-		throws DuplicateFileException {
+		long companyId, long repositoryId, String fileName, String versionLabel,
+		InputStream is) {
 
 		try {
 			File fileNameVersionFile = getFileNameVersionFile(
 				companyId, repositoryId, fileName, versionLabel);
-
-			if (fileNameVersionFile.exists()) {
-				throw new DuplicateFileException(
-					companyId, repositoryId, fileName, versionLabel);
-			}
 
 			FileUtil.write(fileNameVersionFile, is);
 		}
@@ -479,7 +436,7 @@ public class FileSystemStore extends BaseStore {
 	public void updateFileVersion(
 			long companyId, long repositoryId, String fileName,
 			String fromVersionLabel, String toVersionLabel)
-		throws DuplicateFileException, NoSuchFileException {
+		throws NoSuchFileException {
 
 		File fromFileNameVersionFile = getFileNameVersionFile(
 			companyId, repositoryId, fileName, fromVersionLabel);
@@ -491,11 +448,6 @@ public class FileSystemStore extends BaseStore {
 
 		File toFileNameVersionFile = getFileNameVersionFile(
 			companyId, repositoryId, fileName, toVersionLabel);
-
-		if (toFileNameVersionFile.exists()) {
-			throw new DuplicateFileException(
-				companyId, repositoryId, fileName, toVersionLabel);
-		}
 
 		fileSystemHelper.move(fromFileNameVersionFile, toFileNameVersionFile);
 	}

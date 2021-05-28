@@ -43,7 +43,6 @@ import com.ibm.cloud.objectstorage.services.s3.transfer.TransferManagerBuilder;
 import com.ibm.cloud.objectstorage.services.s3.transfer.Upload;
 
 import com.liferay.document.library.kernel.exception.AccessDeniedException;
-import com.liferay.document.library.kernel.exception.DuplicateFileException;
 import com.liferay.document.library.kernel.exception.NoSuchFileException;
 import com.liferay.document.library.kernel.store.BaseStore;
 import com.liferay.document.library.kernel.store.Store;
@@ -149,8 +148,7 @@ public class IBMS3Store extends BaseStore {
 			companyId, repositoryId, fileName, toVersionLabel);
 
 		if (_amazonS3.doesObjectExist(_bucketName, newKey)) {
-			throw new DuplicateFileException(
-				companyId, repositoryId, fileName, toVersionLabel);
+			deleteFile(companyId, repositoryId, fileName, toVersionLabel);
 		}
 
 		CopyObjectRequest copyObjectRequest = new CopyObjectRequest(
@@ -386,8 +384,7 @@ public class IBMS3Store extends BaseStore {
 		throws PortalException {
 
 		if (repositoryId == newRepositoryId) {
-			throw new DuplicateFileException(
-				companyId, newRepositoryId, fileName);
+			deleteFile(companyId, newRepositoryId, fileName);
 		}
 
 		String oldKey = _s3KeyTransformer.getFileKey(
@@ -405,7 +402,7 @@ public class IBMS3Store extends BaseStore {
 		throws PortalException {
 
 		if (fileName.equals(newFileName)) {
-			throw new DuplicateFileException(companyId, repositoryId, fileName);
+			deleteFile(companyId, repositoryId, fileName);
 		}
 
 		String oldKey = _s3KeyTransformer.getFileKey(
@@ -423,8 +420,7 @@ public class IBMS3Store extends BaseStore {
 		throws PortalException {
 
 		if (hasFile(companyId, repositoryId, fileName, versionLabel)) {
-			throw new DuplicateFileException(
-				companyId, repositoryId, fileName, versionLabel);
+			deleteFile(companyId, repositoryId, fileName, versionLabel);
 		}
 
 		putObject(companyId, repositoryId, fileName, versionLabel, file);
@@ -437,8 +433,7 @@ public class IBMS3Store extends BaseStore {
 		throws PortalException {
 
 		if (hasFile(companyId, repositoryId, fileName, versionLabel)) {
-			throw new DuplicateFileException(
-				companyId, repositoryId, fileName, versionLabel);
+			deleteFile(companyId, repositoryId, fileName, versionLabel);
 		}
 
 		File file = null;
@@ -817,9 +812,7 @@ public class IBMS3Store extends BaseStore {
 		activate(properties);
 	}
 
-	protected void moveObjects(String oldPrefix, String newPrefix)
-		throws DuplicateFileException {
-
+	protected void moveObjects(String oldPrefix, String newPrefix) {
 		ObjectListing objectListing = _amazonS3.listObjects(
 			_bucketName, newPrefix);
 
@@ -827,10 +820,7 @@ public class IBMS3Store extends BaseStore {
 			objectListing.getObjectSummaries();
 
 		if (!newS3ObjectSummaries.isEmpty()) {
-			throw new DuplicateFileException(
-				StringBundler.concat(
-					"Duplicate S3 object found when moving files from ",
-					oldPrefix, " to ", newPrefix));
+			deleteObjects(newPrefix);
 		}
 
 		List<S3ObjectSummary> oldS3ObjectSummaries = getS3ObjectSummaries(
