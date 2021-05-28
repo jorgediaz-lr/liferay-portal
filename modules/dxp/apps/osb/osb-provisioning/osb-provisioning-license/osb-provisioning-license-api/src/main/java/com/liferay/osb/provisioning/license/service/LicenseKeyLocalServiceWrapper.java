@@ -69,19 +69,21 @@ public class LicenseKeyLocalServiceWrapper
 				product,
 			String accountKey, String productPurchaseKey, String accountName,
 			String productVersion, long clusterId, String name, String owner,
-			int maxServers, int maxHttpSessions, int maxConcurrentUsers,
-			int maxUsers, String sizing, String description, String[] hostNames,
-			String[] ipAddresses, String[] macAddresses, String[] serverIds,
-			java.util.Date startDate, java.util.Date expirationDate,
-			String additionalInfo, boolean complimentary, boolean active)
+			int maxClusterNodes, int maxServers, int maxHttpSessions,
+			int maxConcurrentUsers, int maxUsers, String sizing,
+			String description, String[] hostNames, String[] ipAddresses,
+			String[] macAddresses, String[] serverIds, java.util.Date startDate,
+			java.util.Date expirationDate, String additionalInfo,
+			boolean complimentary, boolean active)
 		throws Exception {
 
 		return _licenseKeyLocalService.addLicenseKey(
 			userId, licenseEntry, product, accountKey, productPurchaseKey,
-			accountName, productVersion, clusterId, name, owner, maxServers,
-			maxHttpSessions, maxConcurrentUsers, maxUsers, sizing, description,
-			hostNames, ipAddresses, macAddresses, serverIds, startDate,
-			expirationDate, additionalInfo, complimentary, active);
+			accountName, productVersion, clusterId, name, owner,
+			maxClusterNodes, maxServers, maxHttpSessions, maxConcurrentUsers,
+			maxUsers, sizing, description, hostNames, ipAddresses, macAddresses,
+			serverIds, startDate, expirationDate, additionalInfo, complimentary,
+			active);
 	}
 
 	@Override
@@ -89,19 +91,20 @@ public class LicenseKeyLocalServiceWrapper
 			long userId, long licenseEntryId, String productKey,
 			String accountKey, String productPurchaseKey, String accountName,
 			String productVersion, long clusterId, String name, String owner,
-			int maxServers, int maxHttpSessions, int maxConcurrentUsers,
-			int maxUsers, String sizing, String description, String[] hostNames,
-			String[] ipAddresses, String[] macAddresses, String[] serverIds,
-			java.util.Date startDate, java.util.Date expirationDate,
-			boolean complimentary, boolean active)
+			int maxClusterNodes, int maxServers, int maxHttpSessions,
+			int maxConcurrentUsers, int maxUsers, String sizing,
+			String description, String[] hostNames, String[] ipAddresses,
+			String[] macAddresses, String[] serverIds, java.util.Date startDate,
+			java.util.Date expirationDate, boolean complimentary,
+			boolean active)
 		throws Exception {
 
 		return _licenseKeyLocalService.addLicenseKey(
 			userId, licenseEntryId, productKey, accountKey, productPurchaseKey,
-			accountName, productVersion, clusterId, name, owner, maxServers,
-			maxHttpSessions, maxConcurrentUsers, maxUsers, sizing, description,
-			hostNames, ipAddresses, macAddresses, serverIds, startDate,
-			expirationDate, complimentary, active);
+			accountName, productVersion, clusterId, name, owner,
+			maxClusterNodes, maxServers, maxHttpSessions, maxConcurrentUsers,
+			maxUsers, sizing, description, hostNames, ipAddresses, macAddresses,
+			serverIds, startDate, expirationDate, complimentary, active);
 	}
 
 	@Override

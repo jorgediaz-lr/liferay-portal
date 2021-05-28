@@ -42,6 +42,7 @@
 		<field name="clusterId" type="long" />
 		<field name="name" type="String" />
 		<field name="owner" type="String" />
+		<field name="maxClusterNodes" type="int" />
 		<field name="maxServers" type="int" />
 		<field name="maxConcurrentUsers" type="long" />
 		<field name="maxUsers" type="long" />

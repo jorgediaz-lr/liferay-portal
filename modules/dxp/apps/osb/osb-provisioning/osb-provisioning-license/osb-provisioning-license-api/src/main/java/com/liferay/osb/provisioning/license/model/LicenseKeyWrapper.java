@@ -68,6 +68,7 @@ public class LicenseKeyWrapper
 		attributes.put("clusterId", getClusterId());
 		attributes.put("name", getName());
 		attributes.put("owner", getOwner());
+		attributes.put("maxClusterNodes", getMaxClusterNodes());
 		attributes.put("maxServers", getMaxServers());
 		attributes.put("maxConcurrentUsers", getMaxConcurrentUsers());
 		attributes.put("maxUsers", getMaxUsers());
@@ -240,6 +241,12 @@ public class LicenseKeyWrapper
 
 		if (owner != null) {
 			setOwner(owner);
+		}
+
+		Integer maxClusterNodes = (Integer)attributes.get("maxClusterNodes");
+
+		if (maxClusterNodes != null) {
+			setMaxClusterNodes(maxClusterNodes);
 		}
 
 		Integer maxServers = (Integer)attributes.get("maxServers");
@@ -544,6 +551,16 @@ public class LicenseKeyWrapper
 	@Override
 	public String getMacAddresses() {
 		return model.getMacAddresses();
+	}
+
+	/**
+	 * Returns the max cluster nodes of this license key.
+	 *
+	 * @return the max cluster nodes of this license key
+	 */
+	@Override
+	public int getMaxClusterNodes() {
+		return model.getMaxClusterNodes();
 	}
 
 	/**
@@ -1004,6 +1021,16 @@ public class LicenseKeyWrapper
 	@Override
 	public void setMacAddresses(String macAddresses) {
 		model.setMacAddresses(macAddresses);
+	}
+
+	/**
+	 * Sets the max cluster nodes of this license key.
+	 *
+	 * @param maxClusterNodes the max cluster nodes of this license key
+	 */
+	@Override
+	public void setMaxClusterNodes(int maxClusterNodes) {
+		model.setMaxClusterNodes(maxClusterNodes);
 	}
 
 	/**

@@ -437,6 +437,20 @@ public interface LicenseKeyModel
 	public void setOwner(String owner);
 
 	/**
+	 * Returns the max cluster nodes of this license key.
+	 *
+	 * @return the max cluster nodes of this license key
+	 */
+	public int getMaxClusterNodes();
+
+	/**
+	 * Sets the max cluster nodes of this license key.
+	 *
+	 * @param maxClusterNodes the max cluster nodes of this license key
+	 */
+	public void setMaxClusterNodes(int maxClusterNodes);
+
+	/**
 	 * Returns the max servers of this license key.
 	 *
 	 * @return the max servers of this license key

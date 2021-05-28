@@ -84,14 +84,15 @@ public class LicenseKeyModelImpl
 		{"productName", Types.VARCHAR}, {"productId", Types.VARCHAR},
 		{"productVersion", Types.VARCHAR}, {"clusterId", Types.BIGINT},
 		{"name", Types.VARCHAR}, {"owner", Types.VARCHAR},
-		{"maxServers", Types.INTEGER}, {"maxConcurrentUsers", Types.BIGINT},
-		{"maxUsers", Types.BIGINT}, {"maxHttpSessions", Types.INTEGER},
-		{"sizing", Types.VARCHAR}, {"description", Types.VARCHAR},
-		{"hostName", Types.VARCHAR}, {"ipAddresses", Types.VARCHAR},
-		{"macAddresses", Types.VARCHAR}, {"serverId", Types.VARCHAR},
-		{"key_", Types.VARCHAR}, {"startDate", Types.TIMESTAMP},
-		{"expirationDate", Types.TIMESTAMP}, {"additionalInfo", Types.VARCHAR},
-		{"complimentary", Types.BOOLEAN}, {"active_", Types.BOOLEAN}
+		{"maxClusterNodes", Types.INTEGER}, {"maxServers", Types.INTEGER},
+		{"maxConcurrentUsers", Types.BIGINT}, {"maxUsers", Types.BIGINT},
+		{"maxHttpSessions", Types.INTEGER}, {"sizing", Types.VARCHAR},
+		{"description", Types.VARCHAR}, {"hostName", Types.VARCHAR},
+		{"ipAddresses", Types.VARCHAR}, {"macAddresses", Types.VARCHAR},
+		{"serverId", Types.VARCHAR}, {"key_", Types.VARCHAR},
+		{"startDate", Types.TIMESTAMP}, {"expirationDate", Types.TIMESTAMP},
+		{"additionalInfo", Types.VARCHAR}, {"complimentary", Types.BOOLEAN},
+		{"active_", Types.BOOLEAN}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -123,6 +124,7 @@ public class LicenseKeyModelImpl
 		TABLE_COLUMNS_MAP.put("clusterId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("owner", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("maxClusterNodes", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("maxServers", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("maxConcurrentUsers", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("maxUsers", Types.BIGINT);
@@ -142,7 +144,7 @@ public class LicenseKeyModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table Provisioning_LicenseKey (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,licenseKeyId LONG not null primary key,companyId LONG,userUuid VARCHAR(75) null,userName VARCHAR(75) null,createDate DATE null,modifiedUserUuid VARCHAR(75) null,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,assetReceiptLicenseUuid VARCHAR(75) null,accountKey VARCHAR(75) null,productPurchaseKey VARCHAR(75) null,licenseEntryId LONG,productKey VARCHAR(75) null,accountName VARCHAR(500) null,licenseEntryName VARCHAR(75) null,licenseEntryType VARCHAR(75) null,licenseVersion INTEGER,productName VARCHAR(75) null,productId VARCHAR(75) null,productVersion VARCHAR(75) null,clusterId LONG,name VARCHAR(75) null,owner VARCHAR(75) null,maxServers INTEGER,maxConcurrentUsers LONG,maxUsers LONG,maxHttpSessions INTEGER,sizing VARCHAR(75) null,description VARCHAR(255) null,hostName VARCHAR(75) null,ipAddresses STRING null,macAddresses STRING null,serverId STRING null,key_ STRING null,startDate DATE null,expirationDate DATE null,additionalInfo STRING null,complimentary BOOLEAN,active_ BOOLEAN)";
+		"create table Provisioning_LicenseKey (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,licenseKeyId LONG not null primary key,companyId LONG,userUuid VARCHAR(75) null,userName VARCHAR(75) null,createDate DATE null,modifiedUserUuid VARCHAR(75) null,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,assetReceiptLicenseUuid VARCHAR(75) null,accountKey VARCHAR(75) null,productPurchaseKey VARCHAR(75) null,licenseEntryId LONG,productKey VARCHAR(75) null,accountName VARCHAR(500) null,licenseEntryName VARCHAR(75) null,licenseEntryType VARCHAR(75) null,licenseVersion INTEGER,productName VARCHAR(75) null,productId VARCHAR(75) null,productVersion VARCHAR(75) null,clusterId LONG,name VARCHAR(75) null,owner VARCHAR(75) null,maxClusterNodes INTEGER,maxServers INTEGER,maxConcurrentUsers LONG,maxUsers LONG,maxHttpSessions INTEGER,sizing VARCHAR(75) null,description VARCHAR(255) null,hostName VARCHAR(75) null,ipAddresses STRING null,macAddresses STRING null,serverId STRING null,key_ STRING null,startDate DATE null,expirationDate DATE null,additionalInfo STRING null,complimentary BOOLEAN,active_ BOOLEAN)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table Provisioning_LicenseKey";
@@ -236,6 +238,7 @@ public class LicenseKeyModelImpl
 		model.setClusterId(soapModel.getClusterId());
 		model.setName(soapModel.getName());
 		model.setOwner(soapModel.getOwner());
+		model.setMaxClusterNodes(soapModel.getMaxClusterNodes());
 		model.setMaxServers(soapModel.getMaxServers());
 		model.setMaxConcurrentUsers(soapModel.getMaxConcurrentUsers());
 		model.setMaxUsers(soapModel.getMaxUsers());
@@ -511,6 +514,11 @@ public class LicenseKeyModelImpl
 		attributeGetterFunctions.put("owner", LicenseKey::getOwner);
 		attributeSetterBiConsumers.put(
 			"owner", (BiConsumer<LicenseKey, String>)LicenseKey::setOwner);
+		attributeGetterFunctions.put(
+			"maxClusterNodes", LicenseKey::getMaxClusterNodes);
+		attributeSetterBiConsumers.put(
+			"maxClusterNodes",
+			(BiConsumer<LicenseKey, Integer>)LicenseKey::setMaxClusterNodes);
 		attributeGetterFunctions.put("maxServers", LicenseKey::getMaxServers);
 		attributeSetterBiConsumers.put(
 			"maxServers",
@@ -1068,6 +1076,17 @@ public class LicenseKeyModelImpl
 
 	@JSON
 	@Override
+	public int getMaxClusterNodes() {
+		return _maxClusterNodes;
+	}
+
+	@Override
+	public void setMaxClusterNodes(int maxClusterNodes) {
+		_maxClusterNodes = maxClusterNodes;
+	}
+
+	@JSON
+	@Override
 	public int getMaxServers() {
 		return _maxServers;
 	}
@@ -1395,6 +1414,7 @@ public class LicenseKeyModelImpl
 		licenseKeyImpl.setClusterId(getClusterId());
 		licenseKeyImpl.setName(getName());
 		licenseKeyImpl.setOwner(getOwner());
+		licenseKeyImpl.setMaxClusterNodes(getMaxClusterNodes());
 		licenseKeyImpl.setMaxServers(getMaxServers());
 		licenseKeyImpl.setMaxConcurrentUsers(getMaxConcurrentUsers());
 		licenseKeyImpl.setMaxUsers(getMaxUsers());
@@ -1701,6 +1721,8 @@ public class LicenseKeyModelImpl
 			licenseKeyCacheModel.owner = null;
 		}
 
+		licenseKeyCacheModel.maxClusterNodes = getMaxClusterNodes();
+
 		licenseKeyCacheModel.maxServers = getMaxServers();
 
 		licenseKeyCacheModel.maxConcurrentUsers = getMaxConcurrentUsers();
@@ -1910,6 +1932,7 @@ public class LicenseKeyModelImpl
 	private boolean _setOriginalClusterId;
 	private String _name;
 	private String _owner;
+	private int _maxClusterNodes;
 	private int _maxServers;
 	private long _maxConcurrentUsers;
 	private long _maxUsers;

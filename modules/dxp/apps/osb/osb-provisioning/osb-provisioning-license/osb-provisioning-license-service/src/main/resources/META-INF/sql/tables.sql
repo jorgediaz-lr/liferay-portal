@@ -38,6 +38,7 @@ create table Provisioning_LicenseKey (
 	clusterId LONG,
 	name VARCHAR(75) null,
 	owner VARCHAR(75) null,
+	maxClusterNodes INTEGER,
 	maxServers INTEGER,
 	maxConcurrentUsers LONG,
 	maxUsers LONG,
