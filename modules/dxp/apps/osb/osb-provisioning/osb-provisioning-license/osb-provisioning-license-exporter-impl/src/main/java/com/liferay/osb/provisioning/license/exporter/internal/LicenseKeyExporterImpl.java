@@ -48,6 +48,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.TimeZone;
 
@@ -162,7 +163,11 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 			objectOutputStream.writeUTF(String.valueOf(licenseVersion));
 
 			objectOutputStream.writeObject(StringUtil.split(macAddresses));
-			objectOutputStream.writeInt(maxClusterNodes);
+
+			if (Objects.equals(LicenseType.VIRTUAL_CLUSTER, licenseType)) {
+				objectOutputStream.writeInt(maxClusterNodes);
+			}
+
 			objectOutputStream.writeInt(maxHttpSessions);
 			objectOutputStream.writeInt(maxServers);
 			objectOutputStream.writeLong(maxConcurrentUsers);
