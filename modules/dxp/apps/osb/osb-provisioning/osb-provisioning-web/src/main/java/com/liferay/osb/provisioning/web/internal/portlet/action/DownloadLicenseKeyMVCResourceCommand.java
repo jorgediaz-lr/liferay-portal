@@ -155,16 +155,19 @@ public class DownloadLicenseKeyMVCResourceCommand
 				licenseKey.getProductName(), licenseKey.getProductVersion());
 
 			String licenseXML = _licenseKeyExporter.toXML(
-				licenseKey.getAccountName(), licenseKey.getLicenseEntryName(),
+				licenseKey.getKey(), licenseKey.getAccountName(),
+				licenseKey.getLicenseEntryName(),
 				licenseKey.getLicenseEntryType(),
 				licenseKey.getLicenseVersion(), licenseKey.getProductName(),
 				licenseKey.getProductId(), licenseKey.getProductVersion(),
-				licenseKey.getOwner(), licenseKey.getMaxServers(),
-				licenseKey.getMaxHttpSessions(),
+				licenseKey.getOwner(), licenseKey.getMaxClusterNodes(),
+				licenseKey.getMaxServers(), licenseKey.getMaxHttpSessions(),
 				licenseKey.getMaxConcurrentUsers(), licenseKey.getMaxUsers(),
-				licenseKey.getSizing(), licenseKey.getDescription(), hostNames,
-				ipAddresses, macAddresses, serverIds, licenseKey.getStartDate(),
-				licenseKey.getExpirationDate(), licenseKey.getCreateDate());
+				licenseKey.getSizing(), licenseKey.getDescription(),
+				licenseKey.getHostName(), licenseKey.getIpAddresses(),
+				licenseKey.getMacAddresses(), licenseKey.getServerId(),
+				licenseKey.getStartDate(), licenseKey.getExpirationDate(),
+				licenseKey.getCreateDate());
 
 			PortletResponseUtil.sendFile(
 				resourceRequest, resourceResponse, fileName,
