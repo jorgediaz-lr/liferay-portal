@@ -612,7 +612,7 @@ public class ProductPurchaseViewIndexer
 
 		TermRangeQuery endDateQuery = new TermRangeQueryImpl(
 			"productPurchases.endDate_sortable", String.valueOf(now),
-			String.valueOf(now + (Time.YEAR * 100)), true, true);
+			String.valueOf(now + (Time.YEAR * 1000)), true, true);
 
 		rangeQuery.add(endDateQuery, BooleanClauseOccur.MUST);
 
