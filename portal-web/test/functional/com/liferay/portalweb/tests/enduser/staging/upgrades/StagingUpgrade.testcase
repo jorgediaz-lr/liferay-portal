@@ -124,7 +124,7 @@ definition {
 
 		Staging.openStagingAdmin(siteURLKey = "site-name-staging");
 
-		Staging.viewUncheckContentNameList(uncheckContentNameList = "Blogs,Calendar,Dynamic Data Lists,Forms,Knowledge Base,Message Boards,Polls,Segments,Widget Templates,Wiki");
+		Staging.viewUncheckContentNameList(uncheckContentNameList = "Blogs,Calendar,Dynamic Data Lists,Forms,Knowledge Base,Message Boards,Polls,Widget Templates,Wiki");
 	}
 
 	@description = "This is a use case for LPS-87237."
@@ -160,7 +160,7 @@ definition {
 
 		Staging.openStagingAdmin(siteURLKey = "site-name-staging");
 
-		Staging.viewUncheckContentNameList(uncheckContentNameList = "Blogs,Calendar,Dynamic Data Lists,Forms,Knowledge Base,Message Boards,Polls,Segments,Widget Templates,Wiki");
+		Staging.viewUncheckContentNameList(uncheckContentNameList = "Blogs,Calendar,Dynamic Data Lists,Forms,Knowledge Base,Message Boards,Polls,Widget Templates,Wiki");
 	}
 
 	@description = "This is a use case for LPS-87237."
