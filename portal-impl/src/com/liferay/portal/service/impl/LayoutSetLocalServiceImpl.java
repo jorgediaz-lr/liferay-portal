@@ -100,10 +100,17 @@ public class LayoutSetLocalServiceImpl extends LayoutSetLocalServiceBaseImpl {
 			long groupId, boolean privateLayout, ServiceContext serviceContext)
 		throws PortalException {
 
-		Group group = _groupPersistence.findByPrimaryKey(groupId);
+		Group group = _groupPersistence.fetchByPrimaryKey(groupId);
 
-		LayoutSet layoutSet = layoutSetPersistence.findByG_P(
-			groupId, privateLayout);
+		if (group == null) {
+			return;
+		}
+
+		LayoutSet layoutSet = fetchLayoutSet(groupId, privateLayout);
+
+		if (layoutSet == null) {
+			return;
+		}
 
 		// Layouts
 
