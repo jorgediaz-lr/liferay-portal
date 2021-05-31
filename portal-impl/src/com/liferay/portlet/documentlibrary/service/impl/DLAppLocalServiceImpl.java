@@ -546,7 +546,17 @@ public class DLAppLocalServiceImpl extends DLAppLocalServiceBaseImpl {
 	 */
 	@Override
 	public void deleteAll(long repositoryId) throws PortalException {
-		deleteRepository(getLocalRepository(repositoryId));
+		try {
+			deleteRepository(getLocalRepository(repositoryId));
+		}
+		catch (NoSuchGroupException noSuchGroupException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					noSuchGroupException, noSuchGroupException);
+			}
+
+			return;
+		}
 	}
 
 	@Override
