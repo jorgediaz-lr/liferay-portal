@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.search.index.IndexStatusManager;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -55,6 +56,8 @@ public class MigrateDataMVCActionCommand extends BaseMVCActionCommand {
 
 			stopWatch.start();
 
+			_indexStatusManager.setIndexReadOnly(true);
+
 			ThemeDisplay themeDisplay =
 				(ThemeDisplay)actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
 
@@ -75,10 +78,16 @@ public class MigrateDataMVCActionCommand extends BaseMVCActionCommand {
 
 			throw exception;
 		}
+		finally {
+			_indexStatusManager.setIndexReadOnly(false);
+		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		MigrateDataMVCActionCommand.class);
+
+	@Reference
+	private IndexStatusManager _indexStatusManager;
 
 	@Reference
 	private LicenseEntryMigration _licenseEntryMigration;
