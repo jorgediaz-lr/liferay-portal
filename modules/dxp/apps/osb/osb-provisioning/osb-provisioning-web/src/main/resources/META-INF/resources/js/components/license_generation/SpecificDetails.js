@@ -20,6 +20,7 @@ import {
 	LICENSE_TYPE_CLUSTER,
 	LICENSE_TYPE_DEVELOPER,
 	LICENSE_TYPE_DEVELOPER_CLUSTER,
+	LICENSE_TYPE_VIRTUAL_CLUSTER,
 	PATTERN_IP_ADDRESS_V6
 } from '../../utilities/constants';
 import {displayInMDYDateFormat, getUTCAdjustedDate} from '../../utilities/date';
@@ -39,6 +40,7 @@ function SpecificDetails({addLicenseKeyURL, redirect}) {
 		expirationDate,
 		licenseEntry,
 		licenseKeysGenerated,
+		maxClusterNodes,
 		maxHttpSessions,
 		maxServers,
 		name,
@@ -88,6 +90,12 @@ function SpecificDetails({addLicenseKeyURL, redirect}) {
 
 	function handleDisplayPreviousPage() {
 		updateLicense(license => license.set('showSpecificDetails', false));
+	}
+
+	function handleMaxClusterNodesChange(event) {
+		updateLicense(license =>
+			license.set('maxClusterNodes', event.currentTarget.value)
+		);
 	}
 
 	function handleMaxServersChange(event) {
@@ -236,6 +244,26 @@ function SpecificDetails({addLicenseKeyURL, redirect}) {
 										readOnly={true}
 										type="number"
 										value={maxHttpSessions}
+									/>
+								</div>
+							)}
+
+							{licenseEntry.licenseEntryType ===
+								LICENSE_TYPE_VIRTUAL_CLUSTER && (
+								<div className="col-md-6 form-group">
+									<label htmlFor="maxClusterNodes">
+										{Liferay.Language.get(
+											'maximum-cluster-nodes'
+										)}
+									</label>
+
+									<input
+										className="form-control"
+										id="maxClusterNodes"
+										min={0}
+										onChange={handleMaxClusterNodesChange}
+										type="number"
+										value={maxClusterNodes}
 									/>
 								</div>
 							)}

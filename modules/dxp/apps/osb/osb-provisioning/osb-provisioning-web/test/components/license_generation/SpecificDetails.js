@@ -159,9 +159,31 @@ describe('SpecificDetails', () => {
 		getByText('server-id-fields');
 	});
 
-	it('does not display the Server Id Fields section if the selected Type is one of Developer, Developer-cluster, Elastic, Enterprise, or OEM', () => {
+	it('does not display the Server Id Fields section if the selected Type is one of Developer, Developer Cluster, Elastic, Enterprise, OEM, or Virtual Cluster (for DXP 7.4)', () => {
 		const {queryByText} = renderSpecificDetails();
 
+		expect(queryByText('server-id-fields')).toBeFalsy();
+	});
+
+	it('displays the Max Cluster Nodes input if the selected Type is Virtual Cluster', () => {
+		const {getByLabelText, queryByText} = render(
+			<NewLicenseProvider
+				initialLicense={
+					new License({
+						licenseEntry: {
+							licenseEntryType: 'virtual_cluster'
+						}
+					})
+				}
+			>
+				<SpecificDetails
+					addLicenseKeyURL="add/license/key/url"
+					redirect={'/redirect/url'}
+				/>
+			</NewLicenseProvider>
+		);
+
+		getByLabelText('maximum-cluster-nodes');
 		expect(queryByText('server-id-fields')).toBeFalsy();
 	});
 

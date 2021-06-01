@@ -36,9 +36,11 @@ window.ProvisioningConstants = {
 			'developer_cluster',
 			'elastic',
 			'enterprise',
-			'oem'
+			'oem',
+			'virtual_cluster'
 		],
-		production: 'production'
+		production: 'production',
+		virtualCluster: 'virtual_cluster'
 	},
 	namespace: 'namespace',
 	noteFormat: {

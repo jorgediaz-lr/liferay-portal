@@ -24,6 +24,7 @@ export const License = Record({
 		licenseEntryType: ''
 	},
 	licenseKeysGenerated: '',
+	maxClusterNodes: 0,
 	maxHttpSessions: 0,
 	maxServers: 1,
 	name,

@@ -58,6 +58,8 @@ export const LICENSE_TYPE_DEVELOPER_CLUSTER =
 	window.ProvisioningConstants.licenseType.developerCluster;
 export const LICENSE_TYPE_PRODUCTION =
 	window.ProvisioningConstants.licenseType.production;
+export const LICENSE_TYPE_VIRTUAL_CLUSTER =
+	window.ProvisioningConstants.licenseType.virtualCluster;
 
 // Note actions
 

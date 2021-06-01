@@ -146,9 +146,11 @@ page import="java.util.Map" %>
 				'<%= LicenseType.DEVELOPER_CLUSTER %>',
 				'<%= LicenseType.ELASTIC %>',
 				'<%= LicenseType.ENTERPRISE %>',
-				'<%= LicenseType.OEM %>'
+				'<%= LicenseType.OEM %>',
+				'<%= LicenseType.VIRTUAL_CLUSTER %>'
 			],
-			production: '<%= LicenseType.PRODUCTION %>'
+			production: '<%= LicenseType.PRODUCTION %>',
+			virtualCluster: '<%= LicenseType.VIRTUAL_CLUSTER %>'
 		},
 		namespace: '${renderResponse.namespace}',
 		noteFormat: {
