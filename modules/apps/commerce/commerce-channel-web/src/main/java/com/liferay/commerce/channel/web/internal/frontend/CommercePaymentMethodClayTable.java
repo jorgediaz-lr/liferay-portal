@@ -255,14 +255,16 @@ public class CommercePaymentMethodClayTable
 				"PortletConfigurationPortlet",
 			ActionRequest.RENDER_PHASE);
 
+		portletURL.setParameter("mvcPath", "/edit_permissions.jsp");
+
 		String redirect = ParamUtil.getString(
 			httpServletRequest, "currentUrl",
 			_portal.getCurrentURL(httpServletRequest));
 
-		portletURL.setParameter("mvcPath", "/edit_permissions.jsp");
 		portletURL.setParameter(
 			PortletQName.PUBLIC_RENDER_PARAMETER_NAMESPACE + "backURL",
 			redirect);
+
 		portletURL.setParameter(
 			"modelResource", CommercePaymentMethodGroupRel.class.getName());
 		portletURL.setParameter("modelResourceDescription", paymentMethodKey);
