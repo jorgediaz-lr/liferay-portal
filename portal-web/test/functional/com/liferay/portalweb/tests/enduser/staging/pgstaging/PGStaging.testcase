@@ -107,6 +107,8 @@ definition {
 			pageName = "Staging Test Page",
 			siteName = "Site Name");
 
+		DMDocument.enableActionsMenuOnPortlet();
+
 		DMDocument.addPG(
 			dmDocumentFile = "Document_1.docx",
 			dmDocumentTitle = "Document_1.docx",
@@ -187,6 +189,8 @@ definition {
 		Navigator.gotoStagedSitePage(
 			pageName = "Staging Test Page",
 			siteName = "Site Name");
+
+		DMDocument.enableActionsMenuOnPortlet();
 
 		DMDocument.addPG(
 			dmDocumentFile = "Document_1.docx",

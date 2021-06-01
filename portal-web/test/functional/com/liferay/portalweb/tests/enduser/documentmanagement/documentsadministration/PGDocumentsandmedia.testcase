@@ -1367,6 +1367,8 @@ definition {
 			pageName = "Documents and Media Page",
 			siteName = "Site Name");
 
+		DMDocument.enableActionsMenuOnPortlet();
+
 		DMFolder.addPG(
 			dmFolderDescription = "DM Folder Description",
 			dmFolderName = "DM Folder Name");
@@ -1768,6 +1770,8 @@ definition {
 			siteName = "Site Name 2");
 
 		LexiconEntry.changeDisplayStyle(displayStyle = "list");
+
+		DMDocument.enableActionsMenuOnPortlet();
 
 		DMFolder.addPG(
 			dmFolderDescription = "DM Folder Description",

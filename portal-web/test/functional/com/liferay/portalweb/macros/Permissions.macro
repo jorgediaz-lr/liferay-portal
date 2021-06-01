@@ -45,6 +45,8 @@ definition {
 
 		Navigator.gotoPage(pageName = "${pageName}");
 
+		DMDocument.enableActionsMenuOnPortlet();
+
 		DMFolder.addPG(
 			dmFolder = "${dmFolder}",
 			dmFolderDescription = "${dmFolderDescription}",

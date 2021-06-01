@@ -82,6 +82,8 @@ definition {
 
 		Navigator.gotoPage(pageName = "Documents and Media Page");
 
+		DMDocument.enableActionsMenuOnPortlet();
+
 		DMDocument.addPG(
 			dmDocumentFile = "Document_1.doc",
 			dmDocumentTitle = "Document_1.doc");
@@ -122,6 +124,8 @@ definition {
 		Navigator.gotoSitePage(
 			pageName = "Documents and Media Page",
 			siteName = "Site Name");
+
+		DMDocument.enableActionsMenuOnPortlet();
 
 		DMDocument.addPG(
 			dmDocumentFile = "Document_1.doc",
@@ -395,6 +399,8 @@ definition {
 		Portlet.addPG(
 			pageName = "Documents and Media Page",
 			portletName = "Documents and Media");
+
+		DMDocument.enableActionsMenuOnPortlet();
 
 		Permissions.addDMFolderLoginUserPG(
 			dmFolderDescription = "DM Folder Description",

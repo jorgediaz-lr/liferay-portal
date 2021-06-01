@@ -1822,6 +1822,8 @@ definition {
 
 		Portlet.addPG(portletName = "Documents and Media");
 
+		DMDocument.enableActionsMenuOnPortlet();
+
 		DMDocument.addPG(
 			dmDocumentFile = "Document_1.doc",
 			dmDocumentTitle = "DM Document Title",
@@ -3276,6 +3278,8 @@ definition {
 			siteName = "Site Name");
 
 		Portlet.addPG(portletName = "Documents and Media");
+
+		DMDocument.enableActionsMenuOnPortlet();
 
 		DMDocument.addPG(
 			dmDocumentDescription = "DM Document Description",
