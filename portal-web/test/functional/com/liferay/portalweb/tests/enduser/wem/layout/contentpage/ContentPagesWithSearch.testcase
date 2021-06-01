@@ -30,11 +30,7 @@ definition {
 
 			Navigator.openWithAppendToBaseURL(urlAppend = "web/test-site-name/search");
 
-			Portlet.addPG(portletName = "Search Results");
-
-			Navigator.openWithAppendToBaseURL(urlAppend = "web/test-site-name/search");
-
-			Portlet.addPG(portletName = "Type Facet");
+			SearchPortlets.addWidgets(searchPortletList = "Search Results,Type Facet");
 		}
 
 		task ("Import test fragments from dependencies folder") {
