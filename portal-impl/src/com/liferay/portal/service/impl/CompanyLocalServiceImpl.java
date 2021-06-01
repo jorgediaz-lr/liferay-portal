@@ -75,6 +75,7 @@ import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.MapUtil;
@@ -1905,8 +1906,6 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		}
 	}
 
-	}
-
 	private void _updateGroupLanguageIds(
 		long companyId, String newLanguageIds, String oldLanguageIds) {
 
@@ -1969,6 +1968,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 				}
 			}
 		}
+	}
+
 	private static final String _DEFAULT_VIRTUAL_HOST = "localhost";
 
 	private static final Log _log = LogFactoryUtil.getLog(

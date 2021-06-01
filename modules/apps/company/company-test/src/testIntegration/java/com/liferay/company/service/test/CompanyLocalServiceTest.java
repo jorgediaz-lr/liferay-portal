@@ -664,9 +664,6 @@ public class CompanyLocalServiceTest {
 	}
 
 	@Test
-	}
-
-	@Test
 	public void testUpdateCompanyLocalesUpdateGroupLocales() throws Exception {
 		Company company = addCompany();
 
@@ -713,6 +710,9 @@ public class CompanyLocalServiceTest {
 		Assert.assertEquals(
 			languageIds,
 			groupTypeSettingsUnicodeProperties.getProperty(PropsKeys.LOCALES));
+	}
+
+	@Test
 	public void testUpdateDisplay() throws Exception {
 		Company company = addCompany();
 
