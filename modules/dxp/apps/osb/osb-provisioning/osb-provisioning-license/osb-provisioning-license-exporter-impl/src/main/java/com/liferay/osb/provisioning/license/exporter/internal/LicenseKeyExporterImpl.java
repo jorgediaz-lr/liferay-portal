@@ -67,7 +67,13 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 		Element rootElement = document.addElement("licenses");
 
 		for (String xml : xmls) {
-			DocUtil.add(rootElement, "license", xml);
+			Document curDocument = SAXReaderUtil.read(xml);
+
+			Element licenseElement = rootElement.addElement("license");
+
+			Element curRootElement = curDocument.getRootElement();
+
+			appendAllElements(curRootElement, licenseElement);
 		}
 
 		return document.formattedString();
@@ -346,6 +352,21 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 		}
 
 		return document.formattedString();
+	}
+
+	protected void appendAllElements(Element element, Element rootElement) {
+		for (Element curElement : element.elements()) {
+			if (ListUtil.isNotEmpty(curElement.elements())) {
+				Element subElement = rootElement.addElement(
+					curElement.getName());
+
+				appendAllElements(curElement, subElement);
+			}
+			else {
+				DocUtil.add(
+					rootElement, curElement.getName(), curElement.getText());
+			}
+		}
 	}
 
 	protected void exportServerToXML(
