@@ -60,6 +60,8 @@ export const LICENSE_TYPE_PRODUCTION =
 	window.ProvisioningConstants.licenseType.production;
 export const LICENSE_TYPE_VIRTUAL_CLUSTER =
 	window.ProvisioningConstants.licenseType.virtualCluster;
+export const RESTRICTED_EXPIRATION_DATE_TYPES =
+	window.ProvisioningConstants.licenseType.restrictedExpirationDateTypes;
 
 // Note actions
 

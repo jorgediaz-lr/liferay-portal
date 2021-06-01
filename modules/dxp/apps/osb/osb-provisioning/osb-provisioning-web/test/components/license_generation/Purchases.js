@@ -170,79 +170,89 @@ describe('Purchases', () => {
 	describe('Dates', () => {
 		// Clay Date Picker always displays two inputs for the same date
 
-		it('always displays Start Date in the Detached section as Today in UTC', () => {
-			const {getAllByDisplayValue} = renderPurchases({
-				detached: {
-					instanceSizes: [1, 2, 3, 4],
-					licenseKeysGenerated: '0'
-				},
-				purchased: []
+		describe('Dates for Detached Section', () => {
+			it('always displays Start Date as Today in UTC', () => {
+				const {getAllByDisplayValue} = renderPurchases({
+					detached: {
+						instanceSizes: [1, 2, 3, 4],
+						licenseKeysGenerated: '0'
+					},
+					purchased: []
+				});
+
+				expect(getAllByDisplayValue(formatDate(TODAY)).length).toBe(2);
 			});
 
-			expect(getAllByDisplayValue(formatDate(TODAY)).length).toBe(2);
+			it('always displays Expiration Date as one year after the Start Date', () => {
+				const {getAllByDisplayValue} = renderPurchases({
+					detached: {
+						instanceSizes: [1, 2, 3, 4],
+						licenseKeysGenerated: '0'
+					},
+					purchased: []
+				});
+
+				const startDate = TODAY;
+				const expirationDate = generateNewDateByYear(startDate);
+
+				expect(getAllByDisplayValue(formatDate(startDate)).length).toBe(
+					2
+				);
+				expect(
+					getAllByDisplayValue(formatDate(expirationDate)).length
+				).toBe(2);
+
+				const startDateYear = startDate.getFullYear();
+				const expirationDateYear = expirationDate.getFullYear();
+
+				expect(expirationDateYear - startDateYear).toBe(1);
+			});
 		});
 
-		it('always displays Expiration Date in the Detached section as a year from the Start Date', () => {
-			const {getAllByDisplayValue} = renderPurchases({
-				detached: {
-					instanceSizes: [1, 2, 3, 4],
-					licenseKeysGenerated: '0'
-				},
-				purchased: []
+		describe('Dates for Non Detached Section', () => {
+			it('always displays the Start Date of a Perpetual subscription as Today in UTC', () => {
+				const {getAllByDisplayValue} = renderPurchases();
+
+				expect(getAllByDisplayValue(formatDate(TODAY)).length).toBe(2);
 			});
 
-			const startDate = TODAY;
-			const expirationDate = generateNewDateByYear(startDate);
+			it('always displays the Expiration Date of a Perpetual subscription as 100 years from Today in UTC', () => {
+				const {getAllByDisplayValue} = renderPurchases();
 
-			expect(getAllByDisplayValue(formatDate(startDate)).length).toBe(2);
-			expect(
-				getAllByDisplayValue(formatDate(expirationDate)).length
-			).toBe(2);
+				const startDate = TODAY;
+				const expirationDate = generateNewDateByYear(startDate, 100);
 
-			const startDateYear = startDate.getFullYear();
-			const expirationDateYear = expirationDate.getFullYear();
+				expect(getAllByDisplayValue(formatDate(startDate)).length).toBe(
+					2
+				);
+				expect(
+					getAllByDisplayValue(formatDate(expirationDate)).length
+				).toBe(2);
 
-			expect(expirationDateYear - startDateYear).toBe(1);
-		});
+				expect(
+					expirationDate.getFullYear() - startDate.getFullYear()
+				).toBe(100);
+			});
 
-		it('always displays the Start Date of a Perpetual subscription in the Non Detached section as Today in UTC', () => {
-			const {getAllByDisplayValue} = renderPurchases();
+			it('displays the license Start Date of a Non Perpetual subscription as the subscription start date', () => {
+				const {getAllByDisplayValue} = renderPurchases();
 
-			expect(getAllByDisplayValue(formatDate(TODAY)).length).toBe(2);
-		});
+				expect(getAllByDisplayValue('2020-03-17').length).toBe(2);
+			});
 
-		it('always displays the Expiration Date of a Perpetual subscription in the Non Detached section as 100 years from Today in UTC', () => {
-			const {getAllByDisplayValue} = renderPurchases();
+			it('displays the Expiration Date of a Non Perpetual subscription whose license Type is NOT Enterpirse, Limited, OEM, or Virtual Cluster 100 years from the subscription End Date', () => {
+				const {getAllByDisplayValue} = renderPurchases();
 
-			const startDate = TODAY;
-			const expirationDate = generateNewDateByYear(startDate, 100);
+				expect(getAllByDisplayValue('2120-03-23').length).toBe(2);
+			});
 
-			expect(getAllByDisplayValue(formatDate(startDate)).length).toBe(2);
-			expect(
-				getAllByDisplayValue(formatDate(expirationDate)).length
-			).toBe(2);
+			it('displays the Expiration Date of a Non Perpetual subscription whose license Type is Enterpirse, Limited, OEM, or Virtual Cluster as the subscription End Date', () => {
+				const {getAllByDisplayValue} = renderPurchases({
+					type: 'virtual_cluster'
+				});
 
-			expect(expirationDate.getFullYear() - startDate.getFullYear()).toBe(
-				100
-			);
-		});
-
-		it('displays the Start Date of a Non Perpetual subscription in the Non Detached section correctly', () => {
-			const {getAllByDisplayValue} = renderPurchases();
-
-			expect(getAllByDisplayValue('2020-03-17').length).toBe(2);
-		});
-
-		it('displays the Expiration Date of a Non Perpetual subscription whose license Type is NOT Developer in the Non Detached section 100 years from the subscription End Date', () => {
-			const {getAllByDisplayValue} = renderPurchases();
-
-			expect(getAllByDisplayValue('2120-03-23').length).toBe(2);
-		});
-
-		it('displays the Expiration Date of a Non Perpetual subscription whose license Type is Developer in the Non Detached section from the subscription End Date', () => {
-			const {getAllByDisplayValue} = renderPurchases({type: 'developer'});
-
-			expect(getAllByDisplayValue('2020-04-16').length).toBe(2);
+				expect(getAllByDisplayValue('2020-04-16').length).toBe(2);
+			});
 		});
 
 		it('displays the Choose button as disabled when a date field is left empty', () => {

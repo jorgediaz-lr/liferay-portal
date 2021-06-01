@@ -15,7 +15,9 @@ import partition from 'lodash.partition';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import {LICENSE_TYPE_DEVELOPER} from '../../utilities/constants';
+import {
+	RESTRICTED_EXPIRATION_DATE_TYPES
+} from '../../utilities/constants';
 import {generateNewDateByYear} from '../../utilities/date';
 import Purchase from './Purchase';
 
@@ -121,9 +123,13 @@ function Purchased({purchased, selectedType}) {
 	);
 
 	function setExpirationDate(license, type) {
+		const restricted = RESTRICTED_EXPIRATION_DATE_TYPES.find(
+			restrictedType => restrictedType === type
+		);
+
 		let expirationDate = new Date(license.endDate);
 
-		if (type !== LICENSE_TYPE_DEVELOPER) {
+		if (!restricted) {
 			expirationDate = generateNewDateByYear(expirationDate, 100);
 		}
 

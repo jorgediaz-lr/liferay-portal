@@ -150,6 +150,12 @@ page import="java.util.Map" %>
 				'<%= LicenseType.VIRTUAL_CLUSTER %>'
 			],
 			production: '<%= LicenseType.PRODUCTION %>',
+			restrictedExpirationDateTypes: [
+				'<%= LicenseType.ENTERPRISE %>',
+				'<%= LicenseType.LIMITED %>',
+				'<%= LicenseType.OEM %>',
+				'<%= LicenseType.VIRTUAL_CLUSTER %>'
+			],
 			virtualCluster: '<%= LicenseType.VIRTUAL_CLUSTER %>'
 		},
 		namespace: '${renderResponse.namespace}',

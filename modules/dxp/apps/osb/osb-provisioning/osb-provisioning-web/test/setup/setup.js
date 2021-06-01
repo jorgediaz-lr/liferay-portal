@@ -40,6 +40,12 @@ window.ProvisioningConstants = {
 			'virtual_cluster'
 		],
 		production: 'production',
+		restrictedExpirationDateTypes: [
+			'enterprise',
+			'limited',
+			'oem',
+			'virtual_cluster'
+		],
 		virtualCluster: 'virtual_cluster'
 	},
 	namespace: 'namespace',
