@@ -562,6 +562,8 @@ definition {
 
 	@priority = "4"
 	test ViewLocaleInNewVirtualInstance {
+		property test.name.skip.portal.instance = "Locale#ViewLocaleInNewVirtualInstance";
+
 		User.firstLoginPG();
 
 		PortalSettings.gotoConfiguration(
