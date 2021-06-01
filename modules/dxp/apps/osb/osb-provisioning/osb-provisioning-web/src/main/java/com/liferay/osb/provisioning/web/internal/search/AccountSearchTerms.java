@@ -396,8 +396,16 @@ public class AccountSearchTerms extends AccountDisplayTerms {
 		StringBundler sb = new StringBundler();
 
 		if (Validator.isNotNull(keywords)) {
-			String[] keywordsArray = StringUtil.split(
-				keywords, StringPool.SPACE);
+			String[] keywordsArray = null;
+
+			if (keywords.startsWith(StringPool.QUOTE) &&
+				keywords.endsWith(StringPool.QUOTE)) {
+
+				keywordsArray = new String[] {StringUtil.unquote(keywords)};
+			}
+			else {
+				keywordsArray = StringUtil.split(keywords, StringPool.SPACE);
+			}
 
 			for (int i = 0; i < keywordsArray.length; i++) {
 				String keyword = keywordsArray[i];
