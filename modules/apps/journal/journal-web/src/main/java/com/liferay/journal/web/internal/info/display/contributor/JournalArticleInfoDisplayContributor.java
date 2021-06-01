@@ -158,7 +158,17 @@ public class JournalArticleInfoDisplayContributor
 			classPK);
 
 		if (article == null) {
-			article = journalArticleService.getArticle(classPK);
+			try {
+				article = journalArticleService.getArticle(classPK);
+			}
+			catch (PortalException portalException) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(portalException, portalException);
+				}
+				else if (_log.isWarnEnabled()) {
+					_log.warn(portalException.getMessage());
+				}
+			}
 		}
 
 		if ((article == null) || article.isInTrash()) {
