@@ -283,7 +283,7 @@ definition {
 			layoutName = "Test Page",
 			widgetName = "Language Selector");
 
-		Navigator.gotoSitePage(
+		Navigator.openSitePage(
 			pageName = "Test Page",
 			siteName = "Test Site Name");
 
@@ -301,7 +301,7 @@ definition {
 
 		Portlet.startServer(deleteLiferayHome = "false");
 
-		Navigator.gotoSitePage(
+		Navigator.openSitePage(
 			pageName = "Test Page",
 			siteName = "Test Site Name");
 
@@ -319,7 +319,7 @@ definition {
 
 		Portlet.startServer(deleteLiferayHome = "false");
 
-		Navigator.gotoSitePage(
+		Navigator.openSitePage(
 			pageName = "Test Page",
 			siteName = "Test Site Name");
 
@@ -343,7 +343,7 @@ definition {
 
 		Portlet.startServer(deleteLiferayHome = "false");
 
-		Navigator.gotoSitePage(
+		Navigator.openSitePage(
 			pageName = "Test Page",
 			siteName = "Test Site Name");
 
