@@ -10,32 +10,12 @@
  */
 
 import PropTypes from 'prop-types';
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 
 import {DASH} from '../../utilities/constants';
 import Address from './Address';
 
-function AccountAddresses({accountKey, addURL, addresses}) {
-	const [countryOptions, setCountryOptions] = useState([]);
-
-	useEffect(() => {
-		Liferay.Service('/country/get-countries', {active: true})
-			.then(countries => {
-				const options = countries.map(country => {
-					return {
-						label: country.nameCurrentValue,
-						value: country.countryId,
-						zipRequired: country.zipRequired
-					};
-				});
-
-				options.unshift({label: '-', value: '0', zipRequired: false});
-
-				setCountryOptions(options);
-			})
-			.catch(err => console.error(err));
-	}, []);
-
+function AccountAddresses({accountKey, addURL, addresses, countryOptions}) {
 	if (addresses.length === 0) {
 		addresses.push({
 			addressCountry: DASH,
@@ -84,7 +64,21 @@ AccountAddresses.propTypes = {
 			streetAddressLine2: PropTypes.string,
 			streetAddressLine3: PropTypes.string
 		})
-	)
+	),
+	countryOptions: PropTypes.arrayOf(
+		PropTypes.shape({
+			active: PropTypes.bool,
+			countryRegions: PropTypes.arrayOf(
+				PropTypes.shape({
+					active: PropTypes.bool,
+					countryName: PropTypes.string,
+					name: PropTypes.string
+				})
+			),
+			name: PropTypes.string,
+			zipRequired: PropTypes.bool
+		})
+	).isRequired
 };
 
 export default AccountAddresses;

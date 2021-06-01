@@ -17,8 +17,7 @@
 window.Liferay = {
 	Language: {
 		get: key => key
-	},
-	Service: jest.fn()
+	}
 };
 
 /**

@@ -27,11 +27,7 @@ import IconButton from '../IconButton';
 import RequiredFieldMarker from '../RequiredFieldMarker';
 
 function Address({accountKey, addURL, address, count, countryOptions}) {
-	const [countryId, setCountryId] = useState(
-		getFieldId(countryOptions, address.addressCountry)
-	);
 	const [editable, setEditable] = useState(false);
-	const [regionOptions, setRegionOptions] = useState([]);
 	const [zipCode, setZipCode] = useState(
 		convertDashToEmptyString(address.postalCode)
 	);
@@ -39,42 +35,6 @@ function Address({accountKey, addURL, address, count, countryOptions}) {
 	const formRef = useRef();
 
 	const {updatePermission} = usePermissions();
-
-	const regionId = getFieldId(regionOptions, address.addressRegion);
-
-	useEffect(() => {
-		setCountryId(getFieldId(countryOptions, address.addressCountry));
-	}, [address, countryOptions]);
-
-	useEffect(() => {
-		Liferay.Service('/region/get-regions', {
-			active: true,
-			countryId: Number(countryId)
-		})
-			.then(regions => {
-				const options = regions.map(region => {
-					return {
-						label: region.name,
-						value: region.regionId
-					};
-				});
-
-				setRegionOptions(options);
-			})
-			.catch(err => console.error(err));
-	}, [countryId]);
-
-	function getFieldId(fieldOptions, currentValue) {
-		const currentField = fieldOptions.find(
-			option => option.label === currentValue
-		);
-
-		if (currentField) {
-			return currentField.value;
-		}
-
-		return '';
-	}
 
 	function getZipRequirement(id) {
 		const currentCountry = countryOptions.find(
@@ -165,7 +125,7 @@ function Address({accountKey, addURL, address, count, countryOptions}) {
 					displayValue={address.addressRegion}
 					editable={editable}
 					fieldLabel={Liferay.Language.get('state-province')}
-					fieldName="addressRegionId"
+					fieldName="addressRegionName"
 					onClick={handleOnClick}
 					options={regionOptions}
 					readOnly={address.readOnly || !updatePermission}
@@ -199,7 +159,7 @@ function Address({accountKey, addURL, address, count, countryOptions}) {
 					displayValue={address.addressCountry}
 					editable={editable}
 					fieldLabel={Liferay.Language.get('country')}
-					fieldName="addressCountryId"
+					fieldName="addressCountryName"
 					onClick={handleOnClick}
 					options={countryOptions}
 					readOnly={address.readOnly || !updatePermission}

@@ -22,6 +22,7 @@ function AccountDetails({
 	assignFirstLineSupportTeamURL,
 	assignParentAccountURL,
 	assignPartnerTeamURL,
+	countryOptions,
 	dataRegionNames,
 	details,
 	hasManageAccountsPermission,
@@ -54,6 +55,7 @@ function AccountDetails({
 					accountKey={details.key}
 					addresses={details.postalAddressDisplays}
 					addURL={details.addPostalAddressURL}
+					countryOptions={countryOptions}
 				/>
 			</PermissionsProvider>
 
@@ -72,6 +74,20 @@ AccountDetails.propTypes = {
 	assignFirstLineSupportTeamURL: PropTypes.string,
 	assignParentAccountURL: PropTypes.string,
 	assignPartnerTeamURL: PropTypes.string,
+	countryOptions: PropTypes.arrayOf(
+		PropTypes.shape({
+			active: PropTypes.bool,
+			countryRegions: PropTypes.arrayOf(
+				PropTypes.shape({
+					active: PropTypes.bool,
+					countryName: PropTypes.string,
+					name: PropTypes.string
+				})
+			),
+			name: PropTypes.string,
+			zipRequired: PropTypes.bool
+		})
+	),
 	dataRegionNames: PropTypes.arrayOf(PropTypes.string),
 	details: PropTypes.shape({
 		addPostalAddressURL: PropTypes.string,

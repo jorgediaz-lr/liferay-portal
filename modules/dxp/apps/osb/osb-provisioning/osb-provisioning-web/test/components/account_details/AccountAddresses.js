@@ -61,134 +61,137 @@ function renderAccountAddress(addresses = [], permission = true) {
 				accountKey="key123"
 				addresses={addresses}
 				addURL="/"
+				countryOptions={[
+					{
+						active: true,
+						countryRegions: [],
+						name: 'afghanistan',
+						zipRequired: true
+					},
+					{
+						active: true,
+						countryRegions: [
+							{
+								active: true,
+								code: 'NSW',
+								countryName: 'australia',
+								name: 'New South Wales'
+							},
+							{
+								active: true,
+								code: 'QLD',
+								countryName: 'australia',
+								name: 'Queensland'
+							},
+							{
+								active: true,
+								code: 'VIC',
+								countryName: 'australia',
+								name: 'Victoria'
+							}
+						],
+						name: 'australia',
+						zipRequired: true
+					}
+				]}
 			/>
 		</PermissionsProvider>
 	);
 }
 
 describe('AccountAddresses', () => {
-	beforeEach(() => {
-		Liferay.Service.mockImplementation(() =>
-			Promise.resolve([
-				{
-					countryId: '2',
-					nameCurrentValue: 'China',
-					zipRequired: true
-				},
-				{
-					countryId: '217',
-					nameCurrentValue: 'United Arab Emirates',
-					zipRequired: false
-				},
-				{
-					countryId: '19',
-					nameCurrentValue: 'United States',
-					zipRequired: true
-				}
-			])
-		);
-	});
-
 	afterEach(cleanup);
 
-	it('renders', async () => {
+	it('renders', () => {
 		const {container} = renderAccountAddress(sampleAddresses);
 
-		await wait(() => expect(container).toBeTruthy());
+		expect(container).toBeTruthy();
 	});
 
-	it('displays an addresses List Group with dashes for each field when no address was provided', async () => {
+	it('displays an addresses List Group with dashes for each field when no address was provided', () => {
 		const {getAllByText} = renderAccountAddress();
 
-		await wait(() => expect(getAllByText('-').length).toBe(7));
+		expect(getAllByText('-').length).toBe(7);
 	});
 
-	it('does not allow any address fields to be edited when no address was provided', async () => {
+	it('does not allow any address fields to be edited when no address was provided', () => {
 		const {getAllByText, queryByText} = renderAccountAddress();
 
 		fireEvent.click(getAllByText('-')[0]);
 
-		await wait(() => {
-			expect(queryByText('save')).toBeFalsy();
-			expect(queryByText('cancel')).toBeFalsy();
-		});
+		expect(queryByText('save')).toBeFalsy();
+		expect(queryByText('cancel')).toBeFalsy();
 	});
 
-	it('displays no delete button when no address was provided', async () => {
+	it('displays no delete button when no address was provided', () => {
 		const {queryByLabelText} = renderAccountAddress();
 
-		await wait(() => expect(queryByLabelText('delete')).toBeFalsy());
+		expect(queryByLabelText('delete')).toBeFalsy();
 	});
 
-	it('displays multiple address List Groups when multiple addresses are provided', async () => {
+	it('displays multiple address List Groups when multiple addresses are provided', () => {
 		const {getByText} = renderAccountAddress(sampleAddresses);
 
-		await wait(() => {
-			getByText('address 1');
-			getByText('address 2');
-			getByText('address 3');
-		});
+		getByText('address 1');
+		getByText('address 2');
+		getByText('address 3');
 	});
 
 	describe('AccountAddresses with full editing privilege', () => {
-		it('displays an add button when no address was provided', async () => {
+		it('displays an add button when no address was provided', () => {
 			const {queryByLabelText} = renderAccountAddress();
 
-			await wait(() => expect(queryByLabelText('add')).toBeTruthy());
+			expect(queryByLabelText('add')).toBeTruthy();
 		});
 
-		it('displays an add button for each provided addresses', async () => {
+		it('displays an add button for each provided addresses', () => {
 			const {getAllByLabelText} = renderAccountAddress(sampleAddresses);
 
-			await wait(() => expect(getAllByLabelText('add').length).toBe(3));
+			expect(getAllByLabelText('add').length).toBe(3);
 		});
 
-		it('displays a delete button for each provided addresses', async () => {
+		it('displays a delete button for each provided addresses', () => {
 			const {getAllByLabelText} = renderAccountAddress(sampleAddresses);
 
-			await wait(() =>
-				expect(getAllByLabelText('delete').length).toBe(3)
-			);
+			expect(getAllByLabelText('delete').length).toBe(3);
 		});
 
-		it('allows address fields to be edited when at least one address was provided', async () => {
+		it('allows address fields to be edited when at least one address was provided', () => {
 			const {getByText} = renderAccountAddress(sampleAddresses);
 
 			fireEvent.click(getByText('Diamond Bar'));
 
-			await wait(() => {
-				getByText('save');
-				getByText('cancel');
-			});
+			getByText('save');
+			getByText('cancel');
 		});
 	});
 
 	describe('AccountAddresses with limited editing privilege', () => {
-		it('does not display an add button when no address was provided', async () => {
+		it('does not display an add button when no address was provided', () => {
 			const {queryByLabelText} = renderAccountAddress([], false);
 
-			await wait(() => expect(queryByLabelText('add')).toBeFalsy());
+			expect(queryByLabelText('add')).toBeFalsy();
 		});
 
-		it('does not display an add button for each provided addresses', async () => {
+		it('does not display an add button for each provided addresses', () => {
 			const {queryByLabelText} = renderAccountAddress(
 				sampleAddresses,
 				false
 			);
 
-			await wait(() => expect(queryByLabelText('add')).toBeFalsy());
+			expect(queryByLabelText('add')).toBeFalsy();
 		});
 
-		it('does not display a delete button for each provided addresses', async () => {
+		it('does not display a delete button for each provided addresses', () => {
 			const {queryByLabelText} = renderAccountAddress(
 				sampleAddresses,
 				false
 			);
 
-			await wait(() => expect(queryByLabelText('delete')).toBeFalsy());
+			expect(queryByLabelText('delete')).toBeFalsy();
 		});
 
-		it('does not allow address fields to be edited when at least one address was provided', async () => {
+		it('does not allow address fields to be edited when at least one address was provided', () => {
 			const {getByText, queryByText} = renderAccountAddress(
 				sampleAddresses,
 				false
@@ -196,10 +199,8 @@ describe('AccountAddresses', () => {
 
 			fireEvent.click(getByText('Diamond Bar'));
 
-			await wait(() => {
-				expect(queryByText('save')).toBeFalsy();
-				expect(queryByText('cancel')).toBeFalsy();
-			});
+			expect(queryByText('save')).toBeFalsy();
+			expect(queryByText('cancel')).toBeFalsy();
 		});
 	});
 });

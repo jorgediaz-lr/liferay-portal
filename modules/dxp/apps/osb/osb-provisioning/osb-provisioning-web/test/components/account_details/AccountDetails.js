@@ -17,6 +17,45 @@ import AccountDetails from '../../../src/main/resources/META-INF/resources/js/co
 function renderAccountDetails(props) {
 	return render(
 		<AccountDetails
+			countryOptions={[
+				{
+					active: true,
+					countryRegions: [],
+					name: 'afghanistan',
+					zipRequired: true
+				},
+				{
+					active: true,
+					countryRegions: [
+						{
+							active: true,
+							code: 'NSW',
+							countryName: 'australia',
+							name: 'New South Wales'
+						},
+						{
+							active: true,
+							code: 'QLD',
+							countryName: 'australia',
+							name: 'Queensland'
+						},
+						{
+							active: true,
+							code: 'TAS',
+							countryName: 'australia',
+							name: 'Tasmania'
+						},
+						{
+							active: true,
+							code: 'VIC',
+							countryName: 'australia',
+							name: 'Victoria'
+						}
+					],
+					name: 'australia',
+					zipRequired: true
+				}
+			]}
 			dataRegionNames={['Brazil', 'Hungary', 'Japan', 'United States']}
 			details={{
 				addPostalAddressURL: '',
