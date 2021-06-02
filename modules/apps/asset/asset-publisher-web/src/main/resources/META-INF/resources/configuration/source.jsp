@@ -457,10 +457,11 @@ List<AssetRendererFactory<?>> classTypesAssetRendererFactories = (List<AssetRend
 
 		<%
 		for (AssetRendererFactory<?> curRendererFactory : classTypesAssetRendererFactories) {
-			String className = assetPublisherWebUtil.getClassName(curRendererFactory);
 		%>
 
-			<portlet:namespace />toggle<%= className %>(removeOrderBySubtype);
+			<portlet:namespace />toggle<%= assetPublisherWebUtil.getClassName(curRendererFactory) %>(
+				removeOrderBySubtype
+			);
 
 		<%
 		}

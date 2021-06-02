@@ -18,9 +18,6 @@
 
 <%
 String namespace = StringUtil.randomId() + StringPool.UNDERLINE;
-
-boolean expanded = (boolean)request.getAttribute("liferay-product-navigation:personal-menu:expanded");
-String label = (String)request.getAttribute("liferay-product-navigation:personal-menu:label");
 %>
 
 <style type="text/css">
@@ -43,7 +40,7 @@ String label = (String)request.getAttribute("liferay-product-navigation:personal
 
 <div class="personal-menu-dropdown" id="<%= namespace %>personal_menu_dropdown">
 	<button aria-expanded="true" aria-haspopup="true" aria-label="<%= LanguageUtil.get(request, "personal-menu") %>" class="btn btn-unstyled dropdown-toggle" id="<%= namespace %>personal_menu_dropdown_toggle" ref="triggerButton" type="button">
-		<%= label %>
+		<%= (String)request.getAttribute("liferay-product-navigation:personal-menu:label") %>
 	</button>
 </div>
 
@@ -75,7 +72,9 @@ resourceURL.setResourceID("/get_personal_menu_items");
 								'#<%= namespace + "personal_menu_dropdown_toggle" %>',
 							events: {
 								willAttach: function(event) {
-									if (<%= expanded %>) {
+									if (
+										<%= (boolean)request.getAttribute("liferay-product-navigation:personal-menu:expanded") %>
+									) {
 										this.expanded = true;
 									}
 

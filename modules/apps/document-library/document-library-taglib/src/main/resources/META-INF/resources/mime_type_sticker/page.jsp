@@ -17,11 +17,10 @@
 <%@ include file="/init.jsp" %>
 
 <%
-String cssClass = (String)request.getAttribute("liferay-document-library:mime-type-sticker:cssClass");
 DLViewFileVersionDisplayContext dlViewFileVersionDisplayContext = (DLViewFileVersionDisplayContext)request.getAttribute("liferay-document-library:mime-type-sticker:dlViewFileVersionDisplayContext");
 %>
 
-<div class="sticker sticker-document <%= cssClass %> <%= dlViewFileVersionDisplayContext.getCssClassFileMimeType() %>">
+<div class="sticker sticker-document <%= (String)request.getAttribute("liferay-document-library:mime-type-sticker:cssClass") %> <%= dlViewFileVersionDisplayContext.getCssClassFileMimeType() %>">
 	<clay:icon
 		symbol="<%= dlViewFileVersionDisplayContext.getIconFileMimeType() %>"
 	/>
