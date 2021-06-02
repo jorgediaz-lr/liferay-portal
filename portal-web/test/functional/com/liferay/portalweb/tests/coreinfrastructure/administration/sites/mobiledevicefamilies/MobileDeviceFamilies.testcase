@@ -42,6 +42,7 @@ definition {
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
+			panel = "Site Administration",
 			portlet = "Mobile Device Families");
 
 		MobileDevice.addDeviceFamilyCP(deviceFamilyName = "Linux Family Name");
@@ -50,6 +51,8 @@ definition {
 			category = "Configuration",
 			panel = "Site Administration",
 			portlet = "Mobile Device Families");
+
+		MobileDevice.gotoMobileDeviceFamily(mobileDeviceFamilyName = "Linux Family Name");
 
 		MobileDevice.addClassificationRuleCP(
 			classificationName = "Classification Name",
@@ -62,14 +65,14 @@ definition {
 			panel = "Site Administration",
 			portlet = "Mobile Device Families");
 
-		MobileDevice.gotoMobileDeviceFamily(mobileDeviceFamilyName = "Test Family Name");
-
 		MobileDevice.addDeviceFamilyCP(deviceFamilyName = "Windows Device Family Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Site Administration",
 			portlet = "Mobile Device Families");
+
+		MobileDevice.gotoMobileDeviceFamily(mobileDeviceFamilyName = "Windows Device Family Name");
 
 		MobileDevice.addClassificationRuleCP(
 			classificationName = "Classification Name",
