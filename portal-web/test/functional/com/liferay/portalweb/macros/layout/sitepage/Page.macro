@@ -264,6 +264,15 @@ definition {
 		Uncheck.uncheckHiddenToggleSwitch(locator1 = "ToggleSwitch#INHERIT_MOBILE_DEVICE_RULES_FROM_PAGE");
 	}
 
+	macro editDeviceFamilyActions {
+
+		// Workaround for LPS-102958
+
+		LexiconEntry.gotoEntryMenuItem(
+			menuItem = "Edit",
+			rowEntry = "${scopeName}");
+	}
+
 	macro editName {
 		Alert.closeMessage(messageType = "SUCCESS");
 
@@ -377,7 +386,13 @@ definition {
 
 		var key_actionType = "${actionType}";
 
-		Click(locator1 = "MobileDevice#ADD_ACTION_TYPE_OPTION");
+		Select(
+			locator1 = "MobileDevice#ADD_ACTION_TYPE_SELECT",
+			value1 = "${actionType}");
+
+		PortletEntry.save();
+
+		Page.editDeviceFamilyActions(scopeName = "${actionName}");
 
 		if ("${actionType}" == "Redirect to URL") {
 			Type(
@@ -385,13 +400,13 @@ definition {
 				value1 = "${actionURL}");
 		}
 		else if ("${actionType}" == "Redirect to Site") {
-			var key_siteName = "${siteName}";
+			Select(
+				locator1 = "MobileDevice#ADD_ACTION_SITE_SELECT",
+				value1 = "${siteName}");
 
-			Click(locator1 = "MobileDevice#ADD_ACTION_SITE_OPTION");
-
-			var key_pageName = "${pageName}";
-
-			Click(locator1 = "MobileDevice#ADD_ACTION_PAGE_OPTION");
+			Select(
+				locator1 = "MobileDevice#ADD_ACTION_PAGE_SELECT",
+				value1 = "${pageName}");
 		}
 
 		PortletEntry.save();
@@ -1009,5 +1024,4 @@ definition {
 			AssertElementNotPresent(locator1 = "Home#PAGE");
 		}
 	}
-
 }
