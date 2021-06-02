@@ -16,6 +16,7 @@ import Purchases from '../../../src/main/resources/META-INF/resources/js/compone
 import {NewLicenseProvider} from '../../../src/main/resources/META-INF/resources/js/hooks/newLicense';
 import {
 	formatDate,
+	generateNewDateByDay,
 	generateNewDateByYear
 } from '../../../src/main/resources/META-INF/resources/js/utilities/date';
 
@@ -216,7 +217,7 @@ describe('Purchases', () => {
 				expect(getAllByDisplayValue(formatDate(TODAY)).length).toBe(2);
 			});
 
-			it('always displays the Expiration Date of a Perpetual subscription as 100 years from Today in UTC', () => {
+			it('always displays the Expiration Date of a Perpetual subscription whose Type is NOT Enterpirse, Limited, OEM, or Virtual Cluster as 100 years from Today in UTC', () => {
 				const {getAllByDisplayValue} = renderPurchases();
 
 				const startDate = TODAY;
@@ -234,13 +235,38 @@ describe('Purchases', () => {
 				).toBe(100);
 			});
 
+			it('always displays the Expiration Date of a Perpetual subscription whose Type is Enterpirse, Limited, OEM, or Virtual Cluster as 395 days (365 days + 30 days of grace period) from Today in UTC', () => {
+				const {getAllByDisplayValue} = renderPurchases({
+					type: 'virtual_cluster'
+				});
+
+				const startDate = TODAY;
+				const expirationDate = generateNewDateByDay(
+					generateNewDateByYear(startDate)
+				);
+
+				expect(getAllByDisplayValue(formatDate(startDate)).length).toBe(
+					2
+				);
+				expect(
+					getAllByDisplayValue(formatDate(expirationDate)).length
+				).toBe(2);
+
+				expect(
+					expirationDate.getFullYear() - startDate.getFullYear()
+				).toBe(1);
+				expect(expirationDate.getMonth() - startDate.getMonth()).toBe(
+					1
+				);
+			});
+
 			it('displays the license Start Date of a Non Perpetual subscription as the subscription start date', () => {
 				const {getAllByDisplayValue} = renderPurchases();
 
 				expect(getAllByDisplayValue('2020-03-17').length).toBe(2);
 			});
 
-			it('displays the Expiration Date of a Non Perpetual subscription whose license Type is NOT Enterpirse, Limited, OEM, or Virtual Cluster 100 years from the subscription End Date', () => {
+			it('displays the Expiration Date of a Non Perpetual subscription whose license Type is NOT Enterpirse, Limited, OEM, or Virtual Cluster as 100 years from the subscription End Date', () => {
 				const {getAllByDisplayValue} = renderPurchases();
 
 				expect(getAllByDisplayValue('2120-03-23').length).toBe(2);

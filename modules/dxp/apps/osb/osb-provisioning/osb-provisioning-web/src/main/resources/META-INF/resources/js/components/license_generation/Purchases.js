@@ -15,10 +15,11 @@ import partition from 'lodash.partition';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import {RESTRICTED_EXPIRATION_DATE_TYPES} from '../../utilities/constants';
 import {
-	RESTRICTED_EXPIRATION_DATE_TYPES
-} from '../../utilities/constants';
-import {generateNewDateByYear} from '../../utilities/date';
+	generateNewDateByDay,
+	generateNewDateByYear
+} from '../../utilities/date';
 import Purchase from './Purchase';
 
 const TODAY = new Date();
@@ -86,12 +87,13 @@ function DividerTitle({title}) {
 function Purchased({purchased, selectedType}) {
 	const processedPurchased = purchased
 		? purchased.map(item => {
+				const licenseExpirationDate = setExpirationDate(
+					item,
+					selectedType
+				);
+
 				if (item.perpetual) {
 					const licenseStartDate = TODAY;
-					const licenseExpirationDate = generateNewDateByYear(
-						licenseStartDate,
-						100
-					);
 
 					return {
 						...item,
@@ -102,10 +104,6 @@ function Purchased({purchased, selectedType}) {
 				}
 				else {
 					const licenseStartDate = new Date(item.startDate);
-					const licenseExpirationDate = setExpirationDate(
-						item,
-						selectedType
-					);
 					const expired = new Date(item.endDate) < TODAY;
 
 					return {
@@ -127,13 +125,24 @@ function Purchased({purchased, selectedType}) {
 			restrictedType => restrictedType === type
 		);
 
-		let expirationDate = new Date(license.endDate);
+		if (license.perpetual) {
+			let expirationDate = generateNewDateByDay(generateNewDateByYear());
 
-		if (!restricted) {
-			expirationDate = generateNewDateByYear(expirationDate, 100);
+			if (!restricted) {
+				expirationDate = generateNewDateByYear(TODAY, 100);
+			}
+
+			return expirationDate;
 		}
+		else {
+			let expirationDate = new Date(license.endDate);
 
-		return expirationDate;
+			if (!restricted) {
+				expirationDate = generateNewDateByYear(expirationDate, 100);
+			}
+
+			return expirationDate;
+		}
 	}
 
 	return (
