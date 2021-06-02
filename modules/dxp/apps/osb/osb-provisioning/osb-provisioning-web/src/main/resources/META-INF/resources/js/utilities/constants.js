@@ -48,8 +48,6 @@ export const FIELD_TYPE_TOGGLE = 'toggle';
 
 // License types
 
-export const KNOWN_SERVER_ID_LICENSE_TYPES =
-	window.ProvisioningConstants.licenseType.knownServerIdTypes;
 export const LICENSE_TYPE_CLUSTER =
 	window.ProvisioningConstants.licenseType.cluster;
 export const LICENSE_TYPE_DEVELOPER =
@@ -60,6 +58,8 @@ export const LICENSE_TYPE_PRODUCTION =
 	window.ProvisioningConstants.licenseType.production;
 export const LICENSE_TYPE_VIRTUAL_CLUSTER =
 	window.ProvisioningConstants.licenseType.virtualCluster;
+export const NO_SERVER_ID_LICENSE_TYPES =
+	window.ProvisioningConstants.licenseType.noServerIdTypes;
 export const RESTRICTED_EXPIRATION_DATE_TYPES =
 	window.ProvisioningConstants.licenseType.restrictedExpirationDateTypes;
 

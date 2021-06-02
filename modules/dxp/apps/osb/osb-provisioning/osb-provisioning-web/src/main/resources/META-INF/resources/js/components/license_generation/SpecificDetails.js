@@ -16,11 +16,11 @@ import React, {useEffect, useState} from 'react';
 
 import {useNewLicense} from '../../hooks/newLicense';
 import {
-	KNOWN_SERVER_ID_LICENSE_TYPES,
 	LICENSE_TYPE_CLUSTER,
 	LICENSE_TYPE_DEVELOPER,
 	LICENSE_TYPE_DEVELOPER_CLUSTER,
 	LICENSE_TYPE_VIRTUAL_CLUSTER,
+	NO_SERVER_ID_LICENSE_TYPES,
 	PATTERN_IP_ADDRESS_V6
 } from '../../utilities/constants';
 import {displayInMDYDateFormat, getUTCAdjustedDate} from '../../utilities/date';
@@ -124,7 +124,7 @@ function SpecificDetails({addLicenseKeyURL, redirect}) {
 	}
 
 	function isDisplayServerIDFields() {
-		return !KNOWN_SERVER_ID_LICENSE_TYPES.filter(
+		return !NO_SERVER_ID_LICENSE_TYPES.filter(
 			type => type === licenseEntry.licenseEntryType
 		).length;
 	}

@@ -31,7 +31,7 @@ window.ProvisioningConstants = {
 		cluster: 'cluster',
 		developer: 'developer',
 		developerCluster: 'developer_cluster',
-		knownServerIdTypes: [
+		noServerIdTypes: [
 			'developer',
 			'developer_cluster',
 			'elastic',

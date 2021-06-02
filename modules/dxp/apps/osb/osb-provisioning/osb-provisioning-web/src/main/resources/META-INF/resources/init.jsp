@@ -141,7 +141,7 @@ page import="java.util.Map" %>
 			cluster: '<%= LicenseType.CLUSTER %>',
 			developer: '<%= LicenseType.DEVELOPER %>',
 			developerCluster: '<%= LicenseType.DEVELOPER_CLUSTER %>',
-			knownServerIdTypes: [
+			noServerIdTypes: [
 				'<%= LicenseType.DEVELOPER %>',
 				'<%= LicenseType.DEVELOPER_CLUSTER %>',
 				'<%= LicenseType.ELASTIC %>',
