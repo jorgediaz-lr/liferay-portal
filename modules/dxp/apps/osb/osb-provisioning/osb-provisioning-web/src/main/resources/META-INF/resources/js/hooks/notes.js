@@ -9,7 +9,7 @@
  * distribution rights of the Software.
  */
 
-import {Map, Record} from 'immutable';
+import {OrderedMap, Record} from 'immutable';
 import React, {useContext, useState} from 'react';
 
 import {
@@ -56,7 +56,7 @@ export function NotesProvider({initialNotes = [], children}) {
 		})
 	]);
 
-	const [notes, setNotes] = useState(Map(processedNotes));
+	const [notes, setNotes] = useState(OrderedMap(processedNotes));
 
 	// Actions that can be performed on a Note
 

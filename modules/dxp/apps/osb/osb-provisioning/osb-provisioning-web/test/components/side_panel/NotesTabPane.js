@@ -107,15 +107,6 @@ describe('NotesTabPane', () => {
 		expect(container).toBeTruthy();
 	});
 
-	it('renders latest notes first', () => {
-		const {container} = renderNotesTabPane();
-
-		const notes = container.querySelectorAll('.note');
-
-		within(notes.item(0)).getByText('May 01, 2020 12:10 AM');
-		within(notes.item(1)).getByText('Apr 30, 2020 11:53 PM');
-	});
-
 	describe('approved notes', () => {
 		it('displays a pinned general note in a "Pinned" section', () => {
 			const {getByText} = renderNotesTabPane();
