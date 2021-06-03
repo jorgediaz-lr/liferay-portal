@@ -94,6 +94,9 @@ export function getAccountSearchFilterDisplayName(name) {
 		case 'createdByEmailAddress':
 			displayName = Liferay.Language.get('created-by');
 			break;
+		case 'externalAccountKey':
+			displayName = Liferay.Language.get('external-account-key');
+			break;
 		case 'flsTeamName':
 			displayName = Liferay.Language.get('first-line-support');
 			break;
@@ -108,6 +111,9 @@ export function getAccountSearchFilterDisplayName(name) {
 			break;
 		case 'modifiedDateLT':
 			displayName = Liferay.Language.get('modified-before');
+			break;
+		case 'notes':
+			displayName = Liferay.Language.get('notes');
 			break;
 		case 'parentAccountName':
 			displayName = Liferay.Language.get('parent-account');
@@ -126,6 +132,9 @@ export function getAccountSearchFilterDisplayName(name) {
 			break;
 		case 'regions':
 			displayName = Liferay.Language.get('support-region');
+			break;
+		case 'salesInfo':
+			displayName = Liferay.Language.get('sales-info');
 			break;
 		case 'subscriptionStates':
 			displayName = Liferay.Language.get('subscription-status');

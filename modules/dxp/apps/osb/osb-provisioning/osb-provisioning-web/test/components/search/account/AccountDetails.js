@@ -76,4 +76,22 @@ describe('AccountDetails', () => {
 		getByLabelText('country');
 		getByText('Afghanistan');
 	});
+
+	it('displays an External Account Key field', () => {
+		const {getByText} = renderAccount();
+
+		getByText('external-account-key');
+	});
+
+	it('displays a Notes field', () => {
+		const {getByText} = renderAccount();
+
+		getByText('notes');
+	});
+
+	it('displays a Sales Info field', () => {
+		const {getByText} = renderAccount();
+
+		getByText('sales-info');
+	});
 });
