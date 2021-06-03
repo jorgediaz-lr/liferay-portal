@@ -58,23 +58,21 @@ public class UpgradeAssetDisplayPrivateLayout extends UpgradeProcess {
 	}
 
 	private String _getFriendlyURL(
-			PreparedStatement ps, long ctCollectionId, long groupId,
-			String friendlyURL)
+			PreparedStatement ps, long groupId, String friendlyURL)
 		throws SQLException {
 
 		String initialFriendlyURL = friendlyURL;
 
-		ps.setLong(1, ctCollectionId);
-		ps.setLong(2, groupId);
-		ps.setBoolean(3, false);
-		ps.setString(4, friendlyURL);
+		ps.setLong(1, groupId);
+		ps.setBoolean(2, false);
+		ps.setString(3, friendlyURL);
 
 		for (int i = 1;; i++) {
 			try (ResultSet rs = ps.executeQuery()) {
 				if (rs.next()) {
 					friendlyURL = initialFriendlyURL + StringPool.DASH + i;
 
-					ps.setString(4, friendlyURL);
+					ps.setString(3, friendlyURL);
 				}
 				else {
 					break;
@@ -87,11 +85,11 @@ public class UpgradeAssetDisplayPrivateLayout extends UpgradeProcess {
 
 	private void _upgradeAssetDisplayLayouts() throws Exception {
 		try (PreparedStatement ps1 = connection.prepareStatement(
-				"select ctCollectionId, groupId, friendlyURL, plid from " +
-					"Layout where privateLayout = ? and type_ = ?");
+				"select groupId, friendlyURL, plid from  Layout where " +
+					"privateLayout = ? and type_ = ?");
 			PreparedStatement ps2 = connection.prepareStatement(
-				"select plid from Layout where ctCollectionId = ? and " +
-					"groupId = ? and privateLayout = ? and friendlyURL = ?");
+				"select plid from Layout where groupId = ? and privateLayout " +
+					"= ? and friendlyURL = ?");
 			PreparedStatement ps3 = AutoBatchPreparedStatementUtil.autoBatch(
 				connection.prepareStatement(
 					"update Layout set privateLayout = ?, layoutId = ?, " +
@@ -106,7 +104,6 @@ public class UpgradeAssetDisplayPrivateLayout extends UpgradeProcess {
 
 			try (ResultSet rs = ps1.executeQuery()) {
 				while (rs.next()) {
-					long ctCollectionId = rs.getLong("ctCollectionId");
 					long groupId = rs.getLong("groupId");
 					String friendlyURL = rs.getString("friendlyURL");
 					long plid = rs.getLong("plid");
@@ -114,7 +111,7 @@ public class UpgradeAssetDisplayPrivateLayout extends UpgradeProcess {
 					_addResources(groupId, plid);
 
 					String newFriendlyURL = _getFriendlyURL(
-						ps2, ctCollectionId, groupId, friendlyURL);
+						ps2, groupId, friendlyURL);
 
 					if (!newFriendlyURL.equals(friendlyURL)) {
 						if (_log.isWarnEnabled()) {
