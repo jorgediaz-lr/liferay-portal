@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -140,10 +141,12 @@ public class RenderFragmentLayoutTag extends IncludeTag {
 
 	private String _getData() {
 		try {
+			Layout layout = LayoutLocalServiceUtil.fetchLayout(_plid);
+
 			LayoutPageTemplateStructure layoutPageTemplateStructure =
 				LayoutPageTemplateStructureLocalServiceUtil.
 					fetchLayoutPageTemplateStructure(
-						_groupId,
+						layout.getGroupId(),
 						PortalUtil.getClassNameId(Layout.class.getName()),
 						_plid, true);
 
