@@ -213,6 +213,8 @@ public class ProductPurchaseLocalServiceImpl
 		ProductPurchase productPurchase =
 			productPurchasePersistence.findByPrimaryKey(productPurchaseId);
 
+		_accountLocalService.reindex(productPurchase.getAccountId());
+
 		reindexProductPurchaseView(productPurchase);
 
 		return productPurchase;

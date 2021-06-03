@@ -16,6 +16,7 @@ package com.liferay.osb.koroneiki.taproot.service.impl;
 
 import com.liferay.osb.koroneiki.root.util.ModelKeyGenerator;
 import com.liferay.osb.koroneiki.taproot.model.AccountNote;
+import com.liferay.osb.koroneiki.taproot.service.AccountLocalService;
 import com.liferay.osb.koroneiki.taproot.service.base.AccountNoteLocalServiceBaseImpl;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -25,6 +26,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Amos Fong
@@ -60,6 +62,8 @@ public class AccountNoteLocalServiceImpl
 		accountNote.setContent(content);
 		accountNote.setFormat(format);
 		accountNote.setStatus(status);
+
+		_accountLocalService.reindex(accountNote.getAccountId());
 
 		return accountNotePersistence.update(accountNote);
 	}
@@ -117,7 +121,12 @@ public class AccountNoteLocalServiceImpl
 		accountNote.setFormat(format);
 		accountNote.setStatus(status);
 
+		_accountLocalService.reindex(accountNote.getAccountId());
+
 		return accountNotePersistence.update(accountNote);
 	}
+
+	@Reference
+	private AccountLocalService _accountLocalService;
 
 }

@@ -43,6 +43,8 @@ public class AccountDisplayTerms extends DisplayTerms {
 	public static final String CREATED_BY_EMAIL_ADDRESS =
 		"createdByEmailAddress";
 
+	public static final String EXTERNAL_ACCOUNT_KEY = "externalAccountKey";
+
 	public static final String FLS_TEAM_KEY = "flsTeamKey";
 
 	public static final String INTERNALS = "internals";
@@ -52,6 +54,8 @@ public class AccountDisplayTerms extends DisplayTerms {
 	public static final String MODIFIED_DATE_LT = "modifiedDateLT";
 
 	public static final String NAME = "name";
+
+	public static final String NOTES = "notes";
 
 	public static final String PARENT = "parent";
 
@@ -66,6 +70,8 @@ public class AccountDisplayTerms extends DisplayTerms {
 	public static final String RECEIVES_FLS = "receivesFLS";
 
 	public static final String REGIONS = "regions";
+
+	public static final String SALES_INFO = "salesInfo";
 
 	public static final String SUBSCRIPTION_STATES = "subscriptionStates";
 
@@ -89,11 +95,14 @@ public class AccountDisplayTerms extends DisplayTerms {
 		createDateLT = ParamUtil.getString(portletRequest, CREATE_DATE_LT);
 		createdByEmailAddress = ParamUtil.getString(
 			portletRequest, CREATED_BY_EMAIL_ADDRESS);
+		externalAccountKey = ParamUtil.getString(
+			portletRequest, EXTERNAL_ACCOUNT_KEY);
 		flsTeamKey = ParamUtil.getString(portletRequest, FLS_TEAM_KEY);
 		internals = ParamUtil.getBooleanValues(portletRequest, INTERNALS);
 		modifiedDateGT = ParamUtil.getString(portletRequest, MODIFIED_DATE_GT);
 		modifiedDateLT = ParamUtil.getString(portletRequest, MODIFIED_DATE_LT);
 		name = ParamUtil.getString(portletRequest, NAME);
+		notes = ParamUtil.getString(portletRequest, NOTES);
 		parent = ParamUtil.getBoolean(portletRequest, PARENT);
 		parentAccountKey = ParamUtil.getString(
 			portletRequest, PARENT_ACCOUNT_KEY);
@@ -102,6 +111,7 @@ public class AccountDisplayTerms extends DisplayTerms {
 		providesFLS = ParamUtil.getBooleanValues(portletRequest, PROVIDES_FLS);
 		receivesFLS = ParamUtil.getBooleanValues(portletRequest, RECEIVES_FLS);
 		regions = ParamUtil.getStringValues(portletRequest, REGIONS);
+		salesInfo = ParamUtil.getString(portletRequest, SALES_INFO);
 		subscriptionStates = ParamUtil.getStringValues(
 			portletRequest, SUBSCRIPTION_STATES);
 		tiers = ParamUtil.getStringValues(portletRequest, TIERS);
@@ -148,6 +158,11 @@ public class AccountDisplayTerms extends DisplayTerms {
 				new DisplayTerm("first-line-support", FLS_TEAM_KEY, flsTeamKey),
 				new DisplayTerm("country", COUNTRY_NAME, countryName),
 				new DisplayTerm(
+					"external-account-key", EXTERNAL_ACCOUNT_KEY,
+					externalAccountKey),
+				new DisplayTerm("notes", NOTES, notes),
+				new DisplayTerm("sales-info", SALES_INFO, salesInfo),
+				new DisplayTerm(
 					"partner", PARTNERS, StringUtil.merge(partners)),
 				new DisplayTerm(
 					"provides-fls", PROVIDES_FLS,
@@ -177,6 +192,10 @@ public class AccountDisplayTerms extends DisplayTerms {
 					"modified-before", MODIFIED_DATE_LT, modifiedDateLT)));
 	}
 
+	public String getExternalAccountKey() {
+		return externalAccountKey;
+	}
+
 	public String getFLSTeamKey() {
 		return flsTeamKey;
 	}
@@ -195,6 +214,10 @@ public class AccountDisplayTerms extends DisplayTerms {
 
 	public String getName() {
 		return name;
+	}
+
+	public String getNotes() {
+		return notes;
 	}
 
 	public String getParentAccountKey() {
@@ -221,6 +244,10 @@ public class AccountDisplayTerms extends DisplayTerms {
 		return regions;
 	}
 
+	public String getSalesInfo() {
+		return salesInfo;
+	}
+
 	public String[] getSubscriptionStates() {
 		return subscriptionStates;
 	}
@@ -243,11 +270,13 @@ public class AccountDisplayTerms extends DisplayTerms {
 	protected String createDateGT;
 	protected String createDateLT;
 	protected String createdByEmailAddress;
+	protected String externalAccountKey;
 	protected String flsTeamKey;
 	protected boolean[] internals;
 	protected String modifiedDateGT;
 	protected String modifiedDateLT;
 	protected String name;
+	protected String notes;
 	protected boolean parent;
 	protected String parentAccountKey;
 	protected boolean[] partners;
@@ -255,6 +284,7 @@ public class AccountDisplayTerms extends DisplayTerms {
 	protected boolean[] providesFLS;
 	protected boolean[] receivesFLS;
 	protected String[] regions;
+	protected String salesInfo;
 	protected String[] subscriptionStates;
 	protected String[] tiers;
 	protected String workerContactEmailAddress;

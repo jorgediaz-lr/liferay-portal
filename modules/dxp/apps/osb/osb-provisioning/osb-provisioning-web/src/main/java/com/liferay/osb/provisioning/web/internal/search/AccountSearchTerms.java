@@ -205,6 +205,18 @@ public class AccountSearchTerms extends AccountDisplayTerms {
 			sb.append("'");
 		}
 
+		if (Validator.isNotNull(externalAccountKey)) {
+			sb.append(_getBooleanOperator(sb));
+
+			sb.append("externalLinkEntityIds/any(s:contains(s, '");
+			sb.append(externalAccountKey);
+			sb.append("')) or ");
+			sb.append("productPurchaseExternalLinkEntityIds/any(s:contains(");
+			sb.append("s, '");
+			sb.append(externalAccountKey);
+			sb.append("'))");
+		}
+
 		if (Validator.isNotNull(flsTeamKey)) {
 			sb.append(_getBooleanOperator(sb));
 
@@ -258,6 +270,14 @@ public class AccountSearchTerms extends AccountDisplayTerms {
 			sb.append("contains(name, '");
 			sb.append(name);
 			sb.append("')");
+		}
+
+		if (Validator.isNotNull(notes)) {
+			sb.append(_getBooleanOperator(sb));
+
+			sb.append("generalNoteContent/any(s:contains(s, '");
+			sb.append(notes);
+			sb.append("'))");
 		}
 
 		if (Validator.isNotNull(parentAccountKey)) {
@@ -363,6 +383,14 @@ public class AccountSearchTerms extends AccountDisplayTerms {
 			sb.append(")");
 		}
 
+		if (Validator.isNotNull(salesInfo)) {
+			sb.append(_getBooleanOperator(sb));
+
+			sb.append("salesNoteContent/any(s:contains(s, '");
+			sb.append(salesInfo);
+			sb.append("'))");
+		}
+
 		if (!ArrayUtil.isEmpty(tiers)) {
 			sb.append(_getBooleanOperator(sb));
 
@@ -414,7 +442,12 @@ public class AccountSearchTerms extends AccountDisplayTerms {
 				sb.append(keyword);
 				sb.append("') or contains(name, '");
 				sb.append(keyword);
-				sb.append("'))");
+				sb.append("') or externalLinkEntityIds/any(s:contains(s, '");
+				sb.append(keyword);
+				sb.append("')) or productPurchaseExternalLinkEntityIds/any(s:");
+				sb.append("contains(s, '");
+				sb.append(keyword);
+				sb.append("')))");
 
 				if (i < (keywordsArray.length - 1)) {
 					sb.append(" or ");
@@ -438,17 +471,18 @@ public class AccountSearchTerms extends AccountDisplayTerms {
 				Validator.isNotNull(createDateGT) ||
 				Validator.isNotNull(createDateLT) ||
 				Validator.isNotNull(createdByEmailAddress) ||
+				Validator.isNotNull(externalAccountKey) ||
 				Validator.isNotNull(flsTeamKey) ||
 				!ArrayUtil.isEmpty(internals) ||
 				Validator.isNotNull(modifiedDateGT) ||
 				Validator.isNotNull(modifiedDateLT) ||
-				Validator.isNotNull(name) ||
+				Validator.isNotNull(name) || Validator.isNotNull(notes) ||
 				Validator.isNotNull(parentAccountKey) ||
 				!ArrayUtil.isEmpty(partners) ||
 				Validator.isNotNull(partnerTeamKey) ||
 				!ArrayUtil.isEmpty(providesFLS) ||
 				!ArrayUtil.isEmpty(receivesFLS) ||
-				!ArrayUtil.isEmpty(regions) ||
+				!ArrayUtil.isEmpty(regions) || Validator.isNotNull(salesInfo) ||
 				!ArrayUtil.isEmpty(subscriptionStates) ||
 				!ArrayUtil.isEmpty(tiers) ||
 				Validator.isNotNull(workerContactEmailAddress)) {

@@ -56,6 +56,9 @@ public class AccountSearch extends SearchContainer<AccountDisplay> {
 			AccountDisplayTerms.CREATED_BY_EMAIL_ADDRESS,
 			displayTerms.getCreatedByEmailAddress());
 		iteratorURL.setParameter(
+			AccountDisplayTerms.EXTERNAL_ACCOUNT_KEY,
+			displayTerms.getExternalAccountKey());
+		iteratorURL.setParameter(
 			AccountDisplayTerms.FLS_TEAM_KEY, displayTerms.getFLSTeamKey());
 		iteratorURL.setParameter(
 			AccountDisplayTerms.INTERNALS,
@@ -68,6 +71,8 @@ public class AccountSearch extends SearchContainer<AccountDisplay> {
 			displayTerms.getModifiedDateLT());
 		iteratorURL.setParameter(
 			AccountDisplayTerms.NAME, displayTerms.getName());
+		iteratorURL.setParameter(
+			AccountDisplayTerms.NOTES, displayTerms.getNotes());
 		iteratorURL.setParameter(
 			AccountDisplayTerms.PARENT_ACCOUNT_KEY,
 			displayTerms.getParentAccountKey());
@@ -85,6 +90,8 @@ public class AccountSearch extends SearchContainer<AccountDisplay> {
 			ArrayUtil.toStringArray(displayTerms.receivesFLS));
 		iteratorURL.setParameter(
 			AccountDisplayTerms.REGIONS, displayTerms.getRegions());
+		iteratorURL.setParameter(
+			AccountDisplayTerms.SALES_INFO, displayTerms.getSalesInfo());
 		iteratorURL.setParameter(
 			AccountDisplayTerms.SUBSCRIPTION_STATES,
 			displayTerms.getSubscriptionStates());

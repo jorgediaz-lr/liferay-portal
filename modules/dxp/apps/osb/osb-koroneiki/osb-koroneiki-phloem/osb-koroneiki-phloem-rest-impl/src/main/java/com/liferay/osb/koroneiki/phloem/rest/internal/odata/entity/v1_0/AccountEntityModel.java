@@ -102,6 +102,14 @@ public class AccountEntityModel implements EntityModel {
 				new StringEntityField(
 					"externalLinkEntityNames",
 					locale -> "externalLinkEntityNames")),
+			new CollectionEntityField(
+				new StringEntityField(
+					"generalArchivedNoteContent",
+					locale -> "accountNoteGeneralContentArchived")),
+			new CollectionEntityField(
+				new StringEntityField(
+					"generalNoteContent",
+					locale -> "accountNoteGeneralContent")),
 			new BooleanEntityField("internal", locale -> "internal"),
 			new StringEntityField(
 				"name", locale -> Field.getSortableFieldName("name_String")),
@@ -136,9 +144,28 @@ public class AccountEntityModel implements EntityModel {
 			new CollectionEntityField(
 				new StringEntityField(
 					"productKeys", locale -> "productEntryKeys")),
+			new CollectionEntityField(
+				new StringEntityField(
+					"productPurchaseExternalLinkDomains",
+					locale -> "productPurchaseExternalLinkDomains")),
+			new CollectionEntityField(
+				new StringEntityField(
+					"productPurchaseExternalLinkEntityIds",
+					locale -> "productPurchaseExternalLinkEntityIds")),
+			new CollectionEntityField(
+				new StringEntityField(
+					"productPurchaseExternalLinkEntityNames",
+					locale -> "productPurchaseExternalLinkEntityNames")),
 			new StringEntityField(
 				"region",
 				locale -> Field.getSortableFieldName("region_String")),
+			new CollectionEntityField(
+				new StringEntityField(
+					"salesArchivedNoteContent",
+					locale -> "accountNoteSalesContentArchived")),
+			new CollectionEntityField(
+				new StringEntityField(
+					"salesNoteContent", locale -> "accountNoteSalesContent")),
 			new StringEntityField("status", locale -> "status"),
 			new CollectionEntityField(
 				new StringEntityField(

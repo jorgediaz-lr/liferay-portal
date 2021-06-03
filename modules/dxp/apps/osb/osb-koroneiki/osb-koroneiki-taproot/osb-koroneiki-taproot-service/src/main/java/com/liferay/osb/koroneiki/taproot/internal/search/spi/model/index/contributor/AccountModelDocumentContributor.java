@@ -15,6 +15,7 @@
 package com.liferay.osb.koroneiki.taproot.internal.search.spi.model.index.contributor;
 
 import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.ContactRole.Type;
+import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.Note;
 import com.liferay.osb.koroneiki.phytohormone.model.Entitlement;
 import com.liferay.osb.koroneiki.phytohormone.service.EntitlementLocalService;
 import com.liferay.osb.koroneiki.root.model.AuditEntry;
@@ -22,6 +23,7 @@ import com.liferay.osb.koroneiki.root.model.ExternalLink;
 import com.liferay.osb.koroneiki.root.service.AuditEntryLocalService;
 import com.liferay.osb.koroneiki.root.service.ExternalLinkLocalService;
 import com.liferay.osb.koroneiki.taproot.model.Account;
+import com.liferay.osb.koroneiki.taproot.model.AccountNote;
 import com.liferay.osb.koroneiki.taproot.model.Contact;
 import com.liferay.osb.koroneiki.taproot.model.ContactAccountRole;
 import com.liferay.osb.koroneiki.taproot.model.ContactRole;
@@ -29,6 +31,7 @@ import com.liferay.osb.koroneiki.taproot.model.ContactTeamRole;
 import com.liferay.osb.koroneiki.taproot.model.Team;
 import com.liferay.osb.koroneiki.taproot.model.TeamAccountRole;
 import com.liferay.osb.koroneiki.taproot.model.TeamRole;
+import com.liferay.osb.koroneiki.taproot.service.AccountNoteLocalService;
 import com.liferay.osb.koroneiki.taproot.service.ContactAccountRoleLocalService;
 import com.liferay.osb.koroneiki.taproot.service.ContactLocalService;
 import com.liferay.osb.koroneiki.taproot.service.ContactRoleLocalService;
@@ -157,12 +160,64 @@ public class AccountModelDocumentContributor
 		document.addTextSortable("region", account.getRegion());
 		document.addTextSortable("language", account.getLanguage());
 
+		_contributeAccountNotes(document, account.getAccountId());
 		_contributeAddresses(document, account.getAddresses());
 		_contributeContacts(document, account.getAccountId());
 		_contributeEntitlements(document, account.getAccountId());
 		_contributeExternalLinks(document, account.getAccountId());
-		_contributeProductEntries(document, account.getAccountId());
+		_contributeProductPurchases(document, account.getAccountId());
 		_contributeTeams(document, account.getAccountId());
+	}
+
+	private void _contributeAccountNotes(Document document, long accountId)
+		throws PortalException {
+
+		Set<String> accountNoteGeneralContent = new HashSet<>();
+		Set<String> accountNoteGeneralContentArchived = new HashSet<>();
+		Set<String> accountNoteSalesContent = new HashSet<>();
+		Set<String> accountNoteSalesContentArchived = new HashSet<>();
+
+		List<AccountNote> accountNotes =
+			_accountNoteLocalService.getAccountNotes(
+				accountId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+
+		for (AccountNote accountNote : accountNotes) {
+			String type = accountNote.getType();
+			String status = accountNote.getStatus();
+
+			if (type.equals(Note.Type.GENERAL.toString())) {
+				if (status.equals(Note.Status.APPROVED.toString())) {
+					accountNoteGeneralContent.add(accountNote.getContent());
+				}
+				else {
+					accountNoteGeneralContentArchived.add(
+						accountNote.getContent());
+				}
+			}
+			else if (type.equals(Note.Type.SALES.toString())) {
+				if (status.equals(Note.Status.APPROVED.toString())) {
+					accountNoteSalesContent.add(accountNote.getContent());
+				}
+				else {
+					accountNoteSalesContentArchived.add(
+						accountNote.getContent());
+				}
+			}
+		}
+
+		document.addKeyword(
+			"accountNoteGeneralContent",
+			ArrayUtil.toStringArray(accountNoteGeneralContent.toArray()));
+		document.addKeyword(
+			"accountNoteGeneralContentArchived",
+			ArrayUtil.toStringArray(
+				accountNoteGeneralContentArchived.toArray()));
+		document.addKeyword(
+			"accountNoteSalesContent",
+			ArrayUtil.toStringArray(accountNoteSalesContent.toArray()));
+		document.addKeyword(
+			"accountNoteSalesContentArchived",
+			ArrayUtil.toStringArray(accountNoteSalesContentArchived.toArray()));
 	}
 
 	private void _contributeAddresses(
@@ -334,10 +389,13 @@ public class AccountModelDocumentContributor
 			ArrayUtil.toStringArray(externalLinkEntityNames.toArray()));
 	}
 
-	private void _contributeProductEntries(Document document, long accountId)
+	private void _contributeProductPurchases(Document document, long accountId)
 		throws PortalException {
 
 		Set<String> productEntryKeys = new HashSet<>();
+		Set<String> productPurchaseExternalLinkDomains = new HashSet<>();
+		Set<String> productPurchaseExternalLinkEntityIds = new HashSet<>();
+		Set<String> productPurchaseExternalLinkEntityNames = new HashSet<>();
 
 		List<ProductPurchase> productPurchases =
 			_productPurchaseLocalService.getAccountProductPurchases(
@@ -347,11 +405,44 @@ public class AccountModelDocumentContributor
 
 		for (ProductPurchase productPurchase : productPurchases) {
 			productEntryKeys.add(productPurchase.getProductEntryKey());
+
+			List<ExternalLink> externalLinks =
+				_externalLinkLocalService.getExternalLinks(
+					ProductPurchase.class.getName(),
+					productPurchase.getProductPurchaseId(), QueryUtil.ALL_POS,
+					QueryUtil.ALL_POS);
+
+			for (ExternalLink externalLink : externalLinks) {
+				String entityName =
+					externalLink.getDomain() + StringPool.UNDERLINE +
+						externalLink.getEntityName();
+
+				String entityId =
+					entityName + StringPool.UNDERLINE +
+						externalLink.getEntityId();
+
+				productPurchaseExternalLinkDomains.add(
+					externalLink.getDomain());
+				productPurchaseExternalLinkEntityIds.add(entityId);
+				productPurchaseExternalLinkEntityNames.add(entityName);
+			}
 		}
 
 		document.addKeyword(
 			"productEntryKeys",
 			ArrayUtil.toStringArray(productEntryKeys.toArray()));
+		document.addKeyword(
+			"productPurchaseExternalLinkDomains",
+			ArrayUtil.toStringArray(
+				productPurchaseExternalLinkDomains.toArray()));
+		document.addKeyword(
+			"productPurchaseExternalLinkEntityIds",
+			ArrayUtil.toStringArray(
+				productPurchaseExternalLinkEntityIds.toArray()));
+		document.addKeyword(
+			"productPurchaseExternalLinkEntityNames",
+			ArrayUtil.toStringArray(
+				productPurchaseExternalLinkEntityNames.toArray()));
 	}
 
 	private void _contributeTeams(Document document, long accountId)
@@ -498,6 +589,9 @@ public class AccountModelDocumentContributor
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		AccountModelDocumentContributor.class);
+
+	@Reference
+	private AccountNoteLocalService _accountNoteLocalService;
 
 	@Reference
 	private AuditEntryLocalService _auditEntryLocalService;

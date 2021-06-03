@@ -127,6 +127,40 @@ function AccountDetails({
 					))}
 				</select>
 			</div>
+
+			<div className="col-md-6 form-group">
+				<label htmlFor="externalAccountKey">
+					{Liferay.Language.get('external-account-key')}
+				</label>
+				<input
+					className="form-control form-control-sm"
+					id="externalAccountKey"
+					name={`${NAMESPACE}externalAccountKey`}
+					type="text"
+				/>
+			</div>
+
+			<div className="col-md-6 form-group">
+				<label htmlFor="notes">{Liferay.Language.get('notes')}</label>
+				<input
+					className="form-control form-control-sm"
+					id="notes"
+					name={`${NAMESPACE}notes`}
+					type="text"
+				/>
+			</div>
+
+			<div className="col-md-6 form-group">
+				<label htmlFor="salesInfo">
+					{Liferay.Language.get('sales-info')}
+				</label>
+				<input
+					className="form-control form-control-sm"
+					id="salesInfo"
+					name={`${NAMESPACE}salesInfo`}
+					type="text"
+				/>
+			</div>
 		</div>
 	);
 }

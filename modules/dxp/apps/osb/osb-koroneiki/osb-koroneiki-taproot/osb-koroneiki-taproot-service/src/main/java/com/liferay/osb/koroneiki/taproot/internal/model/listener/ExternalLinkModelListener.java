@@ -21,6 +21,8 @@ import com.liferay.osb.koroneiki.taproot.model.Team;
 import com.liferay.osb.koroneiki.taproot.service.AccountLocalService;
 import com.liferay.osb.koroneiki.taproot.service.ContactLocalService;
 import com.liferay.osb.koroneiki.taproot.service.TeamLocalService;
+import com.liferay.osb.koroneiki.trunk.model.ProductPurchase;
+import com.liferay.osb.koroneiki.trunk.service.ProductPurchaseLocalService;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -92,6 +94,12 @@ public class ExternalLinkModelListener extends BaseModelListener<ExternalLink> {
 			_contactLocalService.reindex(externalLink.getClassPK());
 		}
 		else if (externalLink.getClassNameId() ==
+					_classNameLocalService.getClassNameId(
+						ProductPurchase.class)) {
+
+			_productPurchaseLocalService.reindex(externalLink.getClassPK());
+		}
+		else if (externalLink.getClassNameId() ==
 					_classNameLocalService.getClassNameId(Team.class)) {
 
 			_teamLocalService.reindex(externalLink.getClassPK());
@@ -109,6 +117,9 @@ public class ExternalLinkModelListener extends BaseModelListener<ExternalLink> {
 
 	@Reference
 	private ContactLocalService _contactLocalService;
+
+	@Reference
+	private ProductPurchaseLocalService _productPurchaseLocalService;
 
 	@Reference
 	private TeamLocalService _teamLocalService;
