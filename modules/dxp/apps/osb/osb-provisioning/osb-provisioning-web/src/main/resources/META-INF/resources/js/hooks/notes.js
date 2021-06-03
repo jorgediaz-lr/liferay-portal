@@ -37,28 +37,44 @@ export const NoteRecord = Record({
 
 const NotesContext = React.createContext();
 
-export function NotesProvider({initialNotes = [], children}) {
-	const processedNotes = initialNotes.map(note => [
-		note.key,
+function createNote(note) {
+	const {
+		content,
+		createDate,
+		creatorName,
+		creatorPortraitURL,
+		edited,
+		format,
+		htmlContent,
+		key,
+		pinned,
+		status,
+		type,
+		updateURL
+	} = note;
+
+	return [
+		key,
 		NoteRecord({
-			content: note.content,
-			createDate: note.createDate,
-			creatorName: note.creatorName,
-			creatorPortraitURL: note.creatorPortraitURL,
-			edited: note.edited,
-			format: note.format,
-			htmlContent: note.htmlContent,
-			id: note.key,
-			pinned: note.pinned,
-			status: note.status,
-			type: note.type,
-			updateURL: note.updateNoteURL
+			content,
+			createDate,
+			creatorName,
+			creatorPortraitURL,
+			edited,
+			format,
+			htmlContent,
+			id: key,
+			pinned,
+			status,
+			type,
+			updateURL
 		})
-	]);
+	];
+}
 
+export function NotesProvider({initialNotes = [], children}) {
+	const processedNotes = initialNotes.map(note => createNote(note));
 	const [notes, setNotes] = useState(OrderedMap(processedNotes));
-
-	// Actions that can be performed on a Note
 
 	return (
 		<NotesContext.Provider
@@ -66,7 +82,7 @@ export function NotesProvider({initialNotes = [], children}) {
 				notes,
 				{
 					addNote(note) {
-						setNotes(notes.set(note.id, note));
+						setNotes(OrderedMap([createNote(note)]).merge(notes));
 					},
 					archiveNote(id, status) {
 						setNotes(notes.setIn([id, 'status'], status));

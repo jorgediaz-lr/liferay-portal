@@ -13,7 +13,7 @@ import ClayLoadingIndicator from '@clayui/loading-indicator';
 import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 
-import {NoteRecord, useNotes} from '../../hooks/notes';
+import {useNotes} from '../../hooks/notes';
 import {
 	ADD_NOTE,
 	EDIT_NOTE,
@@ -71,31 +71,18 @@ function AddNote({
 
 		request(actionURL, noteData, 'formData', 'post')
 			.then(({data}) => {
-				const noteFromAPI = NoteRecord({
-					content: data.note.content,
-					createDate: data.note.createDate,
-					creatorName: data.note.creatorName,
-					creatorPortraitURL: data.note.creatorPortraitURL,
-					edited: data.note.edited,
-					format: data.note.format,
-					htmlContent: data.note.htmlContent,
-					id: data.note.key,
-					pinned: data.note.pinned,
-					status: data.note.status,
-					type: data.note.type,
-					updateURL: data.note.updateNoteURL
-				});
+				const {note} = data;
 
 				if (actionType === EDIT_NOTE) {
 					editNote(
-						noteFromAPI.id,
-						noteFromAPI.content,
-						noteFromAPI.htmlContent,
-						noteFromAPI.edited
+						note.key,
+						note.content,
+						note.htmlContent,
+						note.edited
 					);
 				}
 				else {
-					addNote(noteFromAPI);
+					addNote(note);
 				}
 
 				setSavingNote(false);

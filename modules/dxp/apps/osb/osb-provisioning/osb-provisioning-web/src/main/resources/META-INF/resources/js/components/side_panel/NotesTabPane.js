@@ -152,11 +152,13 @@ function NotesTabPane({addURL, tabType}) {
 		setViewArchive(bool);
 	};
 
-	const approved = notesForType
-		.filter(note => note.status === NOTE_STATUS_APPROVED);
+	const approved = notesForType.filter(
+		note => note.status === NOTE_STATUS_APPROVED
+	);
 
-	const archived = notesForType
-		.filter(note => note.status === NOTE_STATUS_ARCHIVED)
+	const archived = notesForType.filter(
+		note => note.status === NOTE_STATUS_ARCHIVED
+	);
 
 	return (
 		<div className="notes-container">
