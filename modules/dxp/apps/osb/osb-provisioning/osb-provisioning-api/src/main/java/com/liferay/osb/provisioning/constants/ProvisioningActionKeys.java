@@ -40,6 +40,8 @@ public class ProvisioningActionKeys extends ActionKeys {
 
 	public static final String UPDATE_LANGUAGE_ID = "UPDATE_LANGUAGE_ID";
 
+	public static final String UPDATE_LICENSE_DATE = "UPDATE_LICENSE_DATE";
+
 	public static final String UPDATE_NOTES = "UPDATE_NOTES";
 
 	public static final String UPDATE_SALES_INFO = "UPDATE_SALES_INFO";

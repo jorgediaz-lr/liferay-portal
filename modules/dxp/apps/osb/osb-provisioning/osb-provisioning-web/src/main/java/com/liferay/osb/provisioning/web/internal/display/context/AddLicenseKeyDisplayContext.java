@@ -19,12 +19,14 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductConsumption;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchaseView;
+import com.liferay.osb.provisioning.constants.ProvisioningActionKeys;
 import com.liferay.osb.provisioning.constants.ProvisioningWebKeys;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductConsumptionWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductPurchaseViewWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.provisioning.license.helper.constants.ProductVersion;
 import com.liferay.osb.provisioning.license.model.LicenseEntry;
+import com.liferay.osb.provisioning.license.permission.LicenseKeyPermission;
 import com.liferay.osb.provisioning.license.service.LicenseEntryLocalService;
 import com.liferay.osb.provisioning.web.internal.configuration.ProvisioningWebConfiguration;
 import com.liferay.petra.string.StringBundler;
@@ -66,6 +68,7 @@ public class AddLicenseKeyDisplayContext {
 		RenderRequest renderRequest, RenderResponse renderResponse,
 		HttpServletRequest httpServletRequest,
 		LicenseEntryLocalService licenseEntryLocalService,
+		LicenseKeyPermission licenseKeyPermission,
 		ProductConsumptionWebService productConsumptionWebService,
 		ProductWebService productWebService,
 		ProductPurchaseViewWebService productPurchaseViewWebService,
@@ -75,6 +78,7 @@ public class AddLicenseKeyDisplayContext {
 		_renderResponse = renderResponse;
 		_httpServletRequest = httpServletRequest;
 		_licenseEntryLocalService = licenseEntryLocalService;
+		_licenseKeyPermission = licenseKeyPermission;
 		_productConsumptionWebService = productConsumptionWebService;
 		_productWebService = productWebService;
 		_productPurchaseViewWebService = productPurchaseViewWebService;
@@ -92,6 +96,10 @@ public class AddLicenseKeyDisplayContext {
 
 	public Map<String, Object> getAddLicenseKeyData() throws Exception {
 		Map<String, Object> data = new HashMap<>();
+
+		data.put(
+			"hasUpdateLicenseDatePermission",
+			_hasUpdateLicenseDatePermission());
 
 		String redirect = ParamUtil.getString(_httpServletRequest, "redirect");
 
@@ -346,10 +354,17 @@ public class AddLicenseKeyDisplayContext {
 		return purchasedProductsJSONObject;
 	}
 
+	private boolean _hasUpdateLicenseDatePermission() throws Exception {
+		return _licenseKeyPermission.contains(
+			_themeDisplay.getPermissionChecker(),
+			ProvisioningActionKeys.UPDATE_LICENSE_DATE);
+	}
+
 	private final Account _account;
 	private final PortletURL _currentURLObj;
 	private final HttpServletRequest _httpServletRequest;
 	private final LicenseEntryLocalService _licenseEntryLocalService;
+	private final LicenseKeyPermission _licenseKeyPermission;
 	private final ProductConsumptionWebService _productConsumptionWebService;
 	private final ProductPurchaseViewWebService _productPurchaseViewWebService;
 	private final ProductWebService _productWebService;

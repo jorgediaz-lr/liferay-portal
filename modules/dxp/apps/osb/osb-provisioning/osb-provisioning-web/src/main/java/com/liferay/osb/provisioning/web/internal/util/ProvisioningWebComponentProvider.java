@@ -362,9 +362,9 @@ public class ProvisioningWebComponentProvider {
 
 		return new AddLicenseKeyDisplayContext(
 			renderRequest, renderResponse, httpServletRequest,
-			_licenseEntryLocalService, _productConsumptionWebService,
-			_productWebService, _productPurchaseViewWebService,
-			_provisioningWebConfiguration);
+			_licenseEntryLocalService, _licenseKeyPermission,
+			_productConsumptionWebService, _productWebService,
+			_productPurchaseViewWebService, _provisioningWebConfiguration);
 	}
 
 	private AssignProductBundleProductsDisplayContext
