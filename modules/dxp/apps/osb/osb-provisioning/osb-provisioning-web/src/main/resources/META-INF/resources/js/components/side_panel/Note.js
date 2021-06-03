@@ -64,14 +64,15 @@ function Note({note}) {
 
 		request(updateURL, formData, 'formData', 'post')
 			.then(({data}) => {
-				const noteFromAPI = NoteRecord({
-					id: data.note.key,
-					status: data.note.status
-				});
+				const {note} = data;
 
-				archiveNote(noteFromAPI.id, noteFromAPI.status);
+				archiveNote(note.key, note.status);
 			})
-			.catch(err => console.error(err));
+			.catch(err =>
+				console.error(
+					`Request to archive/unarchive Note failed with: ${err}`
+				)
+			);
 	}
 
 	function handleCancel() {
@@ -89,14 +90,13 @@ function Note({note}) {
 
 		request(updateURL, formData, 'formData', 'post')
 			.then(({data}) => {
-				const noteFromAPI = NoteRecord({
-					id: data.note.key,
-					pinned: data.note.pinned
-				});
+				const {note} = data;
 
-				pinNote(noteFromAPI.id, noteFromAPI.pinned);
+				pinNote(note.key, note.pinned);
 			})
-			.catch(err => console.error(err));
+			.catch(err =>
+				console.error(`Request to pin/unpin Note failed with: ${err}`)
+			);
 	}
 
 	return (

@@ -95,7 +95,7 @@ function AddNote({
 				}, 500);
 			})
 			.catch(err => {
-				console.error(err);
+				console.error(`Request to add/edit Note failed with: ${err}`);
 
 				setSavingNote(false);
 				setResponseStatus(FAILED);
