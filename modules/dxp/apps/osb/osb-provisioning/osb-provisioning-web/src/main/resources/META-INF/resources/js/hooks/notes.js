@@ -50,7 +50,7 @@ function createNote(note) {
 		pinned,
 		status,
 		type,
-		updateURL
+		updateNoteURL
 	} = note;
 
 	return [
@@ -67,7 +67,7 @@ function createNote(note) {
 			pinned,
 			status,
 			type,
-			updateURL
+			updateURL: updateNoteURL
 		})
 	];
 }
