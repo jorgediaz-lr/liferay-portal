@@ -11,7 +11,7 @@
 
 import ClayTable from '@clayui/table';
 import PropTypes from 'prop-types';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {useSubscriptions} from '../../hooks/subscriptions';
 import {
@@ -148,6 +148,12 @@ function Subscription({
 	subscription,
 	subscriptionsType
 }) {
+	const [invalidDate, setInvalidDate] = useState({
+		endDate: false,
+		originalEndDate: false,
+		startDate: false
+	});
+
 	const [
 		,
 		{
@@ -189,11 +195,17 @@ function Subscription({
 		if (validateDateFieldFormat(value)) {
 			updateEndDate(key, convertInputToDate(value));
 		}
+		else {
+			setInvalidDate({...invalidDate, endDate: true});
+		}
 	}
 
 	function handleGracePeriodStartDateChange(value) {
 		if (validateDateFieldFormat(value)) {
 			updateOriginalEndDate(key, convertInputToDate(value));
+		}
+		else {
+			setInvalidDate({...invalidDate, originalEndDate: true});
 		}
 	}
 
@@ -222,6 +234,9 @@ function Subscription({
 	function handleStartDateChange(value) {
 		if (validateDateFieldFormat(value)) {
 			updateStartDate(key, convertInputToDate(value));
+		}
+		else {
+			setInvalidDate({...invalidDate, startDate: true});
 		}
 	}
 
@@ -280,7 +295,11 @@ function Subscription({
 				</label>
 			</ClayTable.Cell>
 			<ClayTable.Cell
-				className={subscription.validateStartDate() ? '' : 'has-error'}
+				className={
+					subscription.validateStartDate() && !invalidDate.startDate
+						? ''
+						: 'has-error'
+				}
 			>
 				<label htmlFor="startDate">
 					<DatePicker
@@ -293,7 +312,8 @@ function Subscription({
 			</ClayTable.Cell>
 			<ClayTable.Cell
 				className={
-					subscription.validateGracePeriodStartDate()
+					subscription.validateGracePeriodStartDate() &&
+					!invalidDate.originalEndDate
 						? ''
 						: 'has-error'
 				}
@@ -351,7 +371,9 @@ function Subscription({
 			{subscriptionsType === EDIT_SUBSCRIPTIONS && (
 				<ClayTable.Cell
 					className={
-						subscription.validateEndDate() ? '' : 'has-error'
+						subscription.validateEndDate() && !invalidDate.endDate
+							? ''
+							: 'has-error'
 					}
 				>
 					<label htmlFor="endDate">
