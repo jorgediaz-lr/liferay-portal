@@ -254,6 +254,8 @@ definition {
 			pageName = "${pageName}",
 			portletName = "${portletName}");
 
+		DMDocument.enableActionsMenuOnPortlet();
+
 		JSONUser.addUser(
 			userEmailAddress = "${userEmailAddress}",
 			userFirstName = "${userFirstName}",
@@ -343,6 +345,10 @@ definition {
 			portletName = "${portletName}",
 			siteName = "${siteName}",
 			siteURL = "true");
+
+		if ("${portletName}" == "Documents and Media") {
+			DMDocument.enableActionsMenuOnPortlet();
+		}
 
 		User.logoutAndLoginPG(
 			userLoginEmailAddress = "${userLoginEmailAddress}",
