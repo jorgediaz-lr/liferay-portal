@@ -51,7 +51,11 @@ function GenerateButton({formAction, redirect, serverIdValidatable = false}) {
 
 				location.assign(redirectURL ? redirectURL : redirect);
 			})
-			.catch(err => console.error(err));
+			.catch(err =>
+				console.error(
+					`Request to generate new license failed with: ${err}`
+				)
+			);
 	}
 
 	function trimHostnames() {

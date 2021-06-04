@@ -44,7 +44,9 @@ function SupportField({
 					location.reload();
 				}
 			})
-			.catch(err => console.error(err));
+			.catch(err =>
+				console.error(`Request to update field failed with: ${err}`)
+			);
 	}
 
 	return (

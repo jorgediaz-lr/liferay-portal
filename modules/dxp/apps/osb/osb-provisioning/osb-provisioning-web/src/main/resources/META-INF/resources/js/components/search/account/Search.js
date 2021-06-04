@@ -100,7 +100,7 @@ function Search({
 				.catch(err => {
 					setError(true);
 
-					console.error(err);
+					console.error(`Request to search failed with: ${err}`);
 				});
 		}, 200)
 	);
