@@ -296,6 +296,14 @@ public class EditLicenseKeyDisplayContext {
 		return false;
 	}
 
+	public boolean isMaxClusterNodesVisible() {
+		if (_licenseType.equals(LicenseType.VIRTUAL_CLUSTER)) {
+			return true;
+		}
+
+		return false;
+	}
+
 	public boolean isMaximumConcurrentUsersVisible() {
 		if ((_licenseVersion >= 3) &&
 			_licenseType.equals(LicenseType.PER_USER)) {

@@ -174,6 +174,17 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 							</div>
 						</c:if>
 
+						<c:if test="<%= editLicenseKeyDisplayContext.isMaxClusterNodesVisible() %>">
+							<div>
+								<dt>
+									<liferay-ui:message key="maximum-cluster-nodes" />
+								</dt>
+								<dd>
+									<%= licenseKey.getMaxClusterNodes() %>
+								</dd>
+							</div>
+						</c:if>
+
 						<c:if test="<%= editLicenseKeyDisplayContext.isMaximumConnectionsVisible() %>">
 							<div>
 								<dt>
