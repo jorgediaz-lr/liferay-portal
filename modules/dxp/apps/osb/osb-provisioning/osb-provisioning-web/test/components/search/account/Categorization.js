@@ -38,7 +38,8 @@ function renderCategorization() {
 				'Active',
 				'Cancelled',
 				'Expired',
-				'Unactivated'
+				'Unactivated',
+				'N/A'
 			]}
 			tierNames={['OEM', 'Premier', 'Regular', 'Strategic']}
 		/>
@@ -110,14 +111,25 @@ describe('Account Search Categorization', () => {
 		).toBe('OEM,Regular');
 	});
 
-	it('displays a Subscription Status field', () => {
+	it('displays a State field', () => {
 		const {getByText} = renderCategorization();
 
-		getByText('subscription-status');
+		getByText('state');
 		getByText('Active');
 		getByText('Cancelled');
 		getByText('Expired');
 		getByText('Unactivated');
+		getByText('N/A');
+	});
+
+	it('displays all except for the N/A option of the State field as checked', () => {
+		const {getByLabelText} = renderCategorization();
+
+		expect(getByLabelText('Active').checked).toBeTruthy();
+		expect(getByLabelText('Cancelled').checked).toBeTruthy();
+		expect(getByLabelText('Expired').checked).toBeTruthy();
+		expect(getByLabelText('Unactivated').checked).toBeTruthy();
+		expect(getByLabelText('N/A').checked).toBeFalsy();
 	});
 
 	it('displays a Subscription Level field', () => {

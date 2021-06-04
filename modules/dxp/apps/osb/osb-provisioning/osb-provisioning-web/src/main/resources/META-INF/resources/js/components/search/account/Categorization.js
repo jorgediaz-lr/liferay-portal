@@ -31,6 +31,14 @@ function Categorization({
 		}));
 	}
 
+	function processSubscriptionStateFieldValues() {
+		return subscriptionStateNames.map(value => ({
+			checked: value !== 'N/A' ? true : false,
+			label: value,
+			value
+		}));
+	}
+
 	function simplifySLANames(names) {
 		return names.map(name => ({
 			label: name.replace(' Subscription', ''),
@@ -102,13 +110,11 @@ function Categorization({
 
 			<div className="col-md-3 form-group">
 				<h5 className="form-check-inline">
-					{Liferay.Language.get('subscription-status')}
+					{Liferay.Language.get('state')}
 				</h5>
 
 				<CheckboxGroups
-					fieldValues={processCheckboxGroupFieldValues(
-						subscriptionStateNames
-					)}
+					fieldValues={processSubscriptionStateFieldValues()}
 					inputName="subscriptionStates"
 					namespace={ACCOUNTS_PORTLET_NAMESPACE}
 				/>

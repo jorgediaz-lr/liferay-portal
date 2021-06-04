@@ -23,9 +23,21 @@ function CheckboxGroups({
 	inputName,
 	namespace = NAMESPACE
 }) {
-	const [values, setValues] = useState([]);
+	const [values, setValues] = useState(getDefaultValues());
 
-	function handleOnClick(event) {
+	function getDefaultValues() {
+		const defaultValues = [];
+
+		fieldValues.forEach(field => {
+			if (field.checked) {
+				defaultValues.push(field.value);
+			}
+		});
+
+		return defaultValues;
+	}
+
+	function handleOnChange(event) {
 		const currentValue = event.currentTarget.value;
 
 		if (!values.includes(currentValue)) {
@@ -54,8 +66,9 @@ function CheckboxGroups({
 						>
 							<ClayCheckbox
 								aria-label={field.label}
+								checked={field.checked ? field.checked : false}
 								label={field.label}
-								onClick={handleOnClick}
+								onChange={handleOnChange}
 								value={field.value}
 							/>
 						</div>

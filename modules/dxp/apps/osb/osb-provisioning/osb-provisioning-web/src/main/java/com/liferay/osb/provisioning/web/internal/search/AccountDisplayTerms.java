@@ -174,7 +174,7 @@ public class AccountDisplayTerms extends DisplayTerms {
 					"internal", INTERNALS, StringUtil.merge(internals)),
 				new DisplayTerm("tier", TIERS, StringUtil.merge(tiers)),
 				new DisplayTerm(
-					"subscription-status", SUBSCRIPTION_STATES,
+					"state", SUBSCRIPTION_STATES,
 					StringUtil.merge(subscriptionStates)),
 				new DisplayTerm(
 					"subscription-level", ACTIVE_SLAS,
