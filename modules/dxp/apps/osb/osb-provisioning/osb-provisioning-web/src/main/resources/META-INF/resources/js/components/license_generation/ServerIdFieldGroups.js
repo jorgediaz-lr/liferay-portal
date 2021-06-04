@@ -70,7 +70,7 @@ function FieldGroup({group, id, showDelete = false}) {
 		updateLicense(license =>
 			license.update('serverIds', serverIds =>
 				serverIds.update(id, index => {
-					return {...index, hostName: currentTarget.value.trim()};
+					return {...index, hostName: currentTarget.value};
 				})
 			)
 		);

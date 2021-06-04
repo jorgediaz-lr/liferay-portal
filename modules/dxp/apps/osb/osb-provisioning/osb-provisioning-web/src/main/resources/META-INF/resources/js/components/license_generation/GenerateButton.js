@@ -41,7 +41,7 @@ function GenerateButton({formAction, redirect, serverIdValidatable = false}) {
 			licenseEntryType,
 			productKey,
 			productVersion: license.version,
-			serverIds: JSON.stringify(serverIds),
+			serverIds: JSON.stringify(trimHostnames()),
 			startDate: formatDate(license.startDate)
 		};
 
@@ -52,6 +52,12 @@ function GenerateButton({formAction, redirect, serverIdValidatable = false}) {
 				location.assign(redirectURL ? redirectURL : redirect);
 			})
 			.catch(err => console.error(err));
+	}
+
+	function trimHostnames() {
+		return serverIds.map(server => {
+			return {...server, hostName: server.hostName.trim()};
+		});
 	}
 
 	function validateIpAddresses() {
