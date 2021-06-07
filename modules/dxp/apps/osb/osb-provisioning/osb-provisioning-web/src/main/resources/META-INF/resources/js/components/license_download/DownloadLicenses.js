@@ -14,6 +14,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import {LicensesProvider} from '../../hooks/licenses';
+import CombinedLicenses from './CombinedLicenses';
 import IndividualLicenses from './IndividualLicenses';
 
 function DownloadLicenses({downloadLicenseKeysURL, licenseKeys}) {
@@ -58,6 +59,8 @@ function DownloadLicenses({downloadLicenseKeysURL, licenseKeys}) {
 					</ClayTable.Head>
 
 					<IndividualLicenses downloadURL={downloadLicenseKeysURL} />
+
+					<CombinedLicenses downloadURL={downloadLicenseKeysURL} />
 				</ClayTable>
 			</div>
 		</LicensesProvider>
