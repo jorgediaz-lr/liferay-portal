@@ -10,114 +10,57 @@
  */
 
 import ClayTable from '@clayui/table';
-import partition from 'lodash.partition';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import {LicensesProvider, useLicenses} from '../../hooks/licenses';
-import {LICENSE_TYPE_PRODUCTION} from '../../utilities/constants';
-import {groupByAll} from '../../utilities/helpers';
-import LicenseGroup from './LicenseGroup';
-
-const MIN_LICENSE_GROUPABLE_VERSION_NUMBER = 3;
+import {LicensesProvider} from '../../hooks/licenses';
+import IndividualLicenses from './IndividualLicenses';
 
 function DownloadLicenses({downloadLicenseKeysURL, licenseKeys}) {
 	return (
 		<LicensesProvider initialLicenses={licenseKeys}>
-			<Licenses downloadURL={downloadLicenseKeysURL} />
+			<div className="download-licenses-container">
+				<ClayTable>
+					<ClayTable.Head>
+						<ClayTable.Row>
+							<ClayTable.Cell expanded headingCell>
+								{Liferay.Language.get('name-description')}
+							</ClayTable.Cell>
+							<ClayTable.Cell expanded headingCell>
+								{Liferay.Language.get('product')}
+							</ClayTable.Cell>
+							<ClayTable.Cell headingCell>
+								{Liferay.Language.get('version')}
+							</ClayTable.Cell>
+							<ClayTable.Cell expanded headingCell>
+								{Liferay.Language.get('type')}
+							</ClayTable.Cell>
+							<ClayTable.Cell expanded headingCell>
+								{Liferay.Language.get('start-date')}
+							</ClayTable.Cell>
+							<ClayTable.Cell expanded headingCell>
+								{Liferay.Language.get('expiration-date')}
+							</ClayTable.Cell>
+							<ClayTable.Cell expanded headingCell>
+								{Liferay.Language.get('host-name')}
+							</ClayTable.Cell>
+							<ClayTable.Cell expanded headingCell>
+								{Liferay.Language.get('ip-addresses')}
+							</ClayTable.Cell>
+							<ClayTable.Cell expanded headingCell>
+								{Liferay.Language.get('mac-addresses')}
+							</ClayTable.Cell>
+							<ClayTable.Cell headingCell>
+								{Liferay.Language.get('status')}
+							</ClayTable.Cell>
+							<ClayTable.Cell headingCell></ClayTable.Cell>
+						</ClayTable.Row>
+					</ClayTable.Head>
+
+					<IndividualLicenses downloadURL={downloadLicenseKeysURL} />
+				</ClayTable>
+			</div>
 		</LicensesProvider>
-	);
-}
-
-function Licenses({downloadURL}) {
-	const [licenses] = useLicenses();
-
-	const [activeVersionCompliantLicenses, oldInactiveLicenses] = partition(
-		licenses.toSet().toJS(),
-		({active, licenseVersion}) =>
-			licenseVersion > MIN_LICENSE_GROUPABLE_VERSION_NUMBER && active
-	);
-
-	const [licensesTypeProduction, licensesTypeOther] = partition(
-		activeVersionCompliantLicenses,
-		({licenseEntryType}) => licenseEntryType === LICENSE_TYPE_PRODUCTION
-	);
-
-	const groupedLicenses = licensesTypeProduction.length
-		? groupByAll(
-				licensesTypeProduction,
-				({startDate}) => startDate,
-				({expirationDate}) => expirationDate,
-				({licenseVersion}) => licenseVersion,
-				({productVersion}) => productVersion
-		  )
-		: licensesTypeProduction;
-
-	function formatLicenses(licenses) {
-		return licenses.map(license => [license]);
-	}
-
-	return (
-		<div className="download-licenses-container">
-			<ClayTable>
-				<ClayTable.Head>
-					<ClayTable.Row>
-						<ClayTable.Cell expanded headingCell>
-							{Liferay.Language.get('name-description')}
-						</ClayTable.Cell>
-						<ClayTable.Cell expanded headingCell>
-							{Liferay.Language.get('product')}
-						</ClayTable.Cell>
-						<ClayTable.Cell headingCell>
-							{Liferay.Language.get('version')}
-						</ClayTable.Cell>
-						<ClayTable.Cell expanded headingCell>
-							{Liferay.Language.get('type')}
-						</ClayTable.Cell>
-						<ClayTable.Cell expanded headingCell>
-							{Liferay.Language.get('start-date')}
-						</ClayTable.Cell>
-						<ClayTable.Cell expanded headingCell>
-							{Liferay.Language.get('expiration-date')}
-						</ClayTable.Cell>
-						<ClayTable.Cell expanded headingCell>
-							{Liferay.Language.get('host-name')}
-						</ClayTable.Cell>
-						<ClayTable.Cell expanded headingCell>
-							{Liferay.Language.get('ip-addresses')}
-						</ClayTable.Cell>
-						<ClayTable.Cell expanded headingCell>
-							{Liferay.Language.get('mac-addresses')}
-						</ClayTable.Cell>
-						<ClayTable.Cell headingCell>
-							{Liferay.Language.get('status')}
-						</ClayTable.Cell>
-						<ClayTable.Cell headingCell></ClayTable.Cell>
-					</ClayTable.Row>
-				</ClayTable.Head>
-
-				{!!groupedLicenses.length && (
-					<LicenseGroup
-						downloadURL={downloadURL}
-						items={groupedLicenses}
-					/>
-				)}
-
-				{!!licensesTypeOther.length && (
-					<LicenseGroup
-						downloadURL={downloadURL}
-						items={formatLicenses(licensesTypeOther)}
-					/>
-				)}
-
-				{!!oldInactiveLicenses.length && (
-					<LicenseGroup
-						downloadURL={downloadURL}
-						items={formatLicenses(oldInactiveLicenses)}
-					/>
-				)}
-			</ClayTable>
-		</div>
 	);
 }
 
