@@ -42,6 +42,7 @@ import com.liferay.portal.kernel.model.LayoutFriendlyURLComposite;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
 import com.liferay.portal.kernel.portlet.FriendlyURLResolver;
 import com.liferay.portal.kernel.service.LayoutLocalService;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.Http;
@@ -80,7 +81,7 @@ public abstract class BaseAssetDisplayPageFriendlyURLResolver
 
 		InfoDisplayObjectProvider infoDisplayObjectProvider =
 			_getInfoDisplayObjectProvider(
-				infoDisplayContributor, groupId, friendlyURL);
+				infoDisplayContributor, groupId, friendlyURL, params);
 
 		if (infoDisplayObjectProvider != null) {
 			httpServletRequest.setAttribute(
@@ -102,8 +103,7 @@ public abstract class BaseAssetDisplayPageFriendlyURLResolver
 			infoDisplayContributor);
 
 		httpServletRequest.setAttribute(
-			InfoDisplayWebKeys.VERSION_CLASS_PK,
-			_getVersionClassPK(friendlyURL));
+			InfoDisplayWebKeys.VERSION_CLASS_PK, _getVersionClassPK(params));
 
 		Locale locale = portal.getLocale(httpServletRequest);
 
@@ -136,7 +136,8 @@ public abstract class BaseAssetDisplayPageFriendlyURLResolver
 
 		InfoDisplayObjectProvider infoDisplayObjectProvider =
 			_getInfoDisplayObjectProvider(
-				_getInfoDisplayContributor(friendlyURL), groupId, friendlyURL);
+				_getInfoDisplayContributor(friendlyURL), groupId, friendlyURL,
+				params);
 
 		if (infoDisplayObjectProvider == null) {
 			throw new PortalException();
@@ -253,10 +254,10 @@ public abstract class BaseAssetDisplayPageFriendlyURLResolver
 
 	private InfoDisplayObjectProvider _getInfoDisplayObjectProvider(
 			InfoDisplayContributor infoDisplayContributor, long groupId,
-			String friendlyURL)
+			String friendlyURL, Map<String, String[]> params)
 		throws PortalException {
 
-		long versionClassPK = _getVersionClassPK(friendlyURL);
+		long versionClassPK = _getVersionClassPK(params);
 
 		if (versionClassPK > 0) {
 			return infoDisplayContributor.getInfoDisplayObjectProvider(
@@ -310,29 +311,17 @@ public abstract class BaseAssetDisplayPageFriendlyURLResolver
 	private String _getUrlTitle(String friendlyURL) {
 		String infoURLSeparator = _getInfoURLSeparator(friendlyURL);
 
-		String urlTitle = friendlyURL.substring(infoURLSeparator.length());
-
-		long versionClassPK = _getVersionClassPK(friendlyURL);
-
-		if (versionClassPK > 0) {
-			String versionClassPKValue = String.valueOf(versionClassPK);
-
-			urlTitle = friendlyURL.substring(
-				infoURLSeparator.length(),
-				friendlyURL.length() - versionClassPKValue.length() - 1);
-		}
-
-		return urlTitle;
+		return friendlyURL.substring(infoURLSeparator.length());
 	}
 
-	private long _getVersionClassPK(String friendlyURL) {
-		List<String> paths = StringUtil.split(friendlyURL, CharPool.SLASH);
+	private long _getVersionClassPK(Map<String, String[]> params) {
+		String[] versions = params.get("version");
 
-		if (paths.size() < 3) {
+		if (ArrayUtil.isEmpty(versions)) {
 			return 0;
 		}
 
-		return GetterUtil.getLong(paths.get(paths.size() - 1));
+		return GetterUtil.getLong(versions[0]);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
