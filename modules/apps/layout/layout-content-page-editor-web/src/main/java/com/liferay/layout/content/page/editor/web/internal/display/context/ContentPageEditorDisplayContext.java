@@ -352,7 +352,9 @@ public class ContentPageEditorDisplayContext {
 
 		boolean draft = false;
 
-		if (!published || (modifiedDate.getTime() > publishDate.getTime())) {
+		if (((draftLayout.getPublishDate() == null) && !published) ||
+			(modifiedDate.getTime() > publishDate.getTime())) {
+
 			draft = true;
 		}
 
