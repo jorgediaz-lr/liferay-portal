@@ -26,6 +26,7 @@ export const LicenseRecord = Record({
 	name: '',
 	productName: '',
 	productVersion: '',
+	sizing: 1,
 	startDate: ''
 });
 
@@ -47,6 +48,7 @@ export function LicensesProvider({initialLicenses = [], children}) {
 			name,
 			productName,
 			productVersion,
+			sizing,
 			startDate
 		}) => [
 			licenseKeyId,
@@ -64,6 +66,7 @@ export function LicensesProvider({initialLicenses = [], children}) {
 				name,
 				productName,
 				productVersion,
+				sizing,
 				startDate
 			})
 		]

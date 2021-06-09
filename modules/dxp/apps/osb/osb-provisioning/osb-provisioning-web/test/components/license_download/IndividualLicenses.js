@@ -30,6 +30,7 @@ const licenseKeys = [
 		name: 'License 1',
 		productName: 'Portal Backup',
 		productVersion: '6.2',
+		sizing: 1,
 		startDate: 'March 17, 2021'
 	},
 	// groupable with above license
@@ -47,6 +48,7 @@ const licenseKeys = [
 		name: 'License 2',
 		productName: 'Portal Backup',
 		productVersion: '6.2',
+		sizing: 1,
 		startDate: 'March 17, 2021'
 	},
 	// Inactive license
@@ -64,6 +66,7 @@ const licenseKeys = [
 		name: 'License 3',
 		productName: 'Portal Backup',
 		productVersion: '6.2',
+		sizing: 1,
 		startDate: 'March 17, 2021'
 	},
 	// Different expirationDate
@@ -81,6 +84,7 @@ const licenseKeys = [
 		name: 'License 4',
 		productName: 'Portal Backup',
 		productVersion: '6.2',
+		sizing: 1,
 		startDate: 'March 17, 2021'
 	},
 	// Different startDate
@@ -98,6 +102,7 @@ const licenseKeys = [
 		name: 'License 5',
 		productName: 'Portal Backup',
 		productVersion: '6.2',
+		sizing: 1,
 		startDate: 'March 16, 2021'
 	},
 	// Different license version & product version
@@ -115,6 +120,7 @@ const licenseKeys = [
 		name: 'License 6',
 		productName: 'DXP Development',
 		productVersion: '7.4',
+		sizing: 1,
 		startDate: 'March 17, 2021'
 	},
 	// Different license version & product version
@@ -132,6 +138,7 @@ const licenseKeys = [
 		name: 'License 7',
 		productName: 'DXP Development',
 		productVersion: '7.1',
+		sizing: 1,
 		startDate: 'March 17, 2021'
 	},
 	// licenseEntryType is not Production, same start date as License 5
@@ -149,6 +156,7 @@ const licenseKeys = [
 		name: 'License 8',
 		productName: 'Portal Backup',
 		productVersion: '6.2',
+		sizing: 1,
 		startDate: 'March 16, 2021'
 	},
 	// Old licenseVersion
@@ -166,6 +174,7 @@ const licenseKeys = [
 		name: 'License 9',
 		productName: 'Portal Backup',
 		productVersion: '6.0',
+		sizing: 1,
 		startDate: 'March 17, 2021'
 	}
 ];
@@ -217,6 +226,7 @@ describe('IndividualLicenses', () => {
 				name: 'License 1',
 				productName: 'Portal Backup',
 				productVersion: '6.1',
+				sizing: 1,
 				startDate: 'March 17, 2021'
 			},
 			{
@@ -233,6 +243,7 @@ describe('IndividualLicenses', () => {
 				name: 'License 2',
 				productName: 'Portal Backup',
 				productVersion: '6.1',
+				sizing: 1,
 				startDate: 'March 17, 2021'
 			}
 		]);
@@ -256,6 +267,7 @@ describe('IndividualLicenses', () => {
 				name: 'License 1',
 				productName: 'Portal Backup',
 				productVersion: '6.2',
+				sizing: 1,
 				startDate: 'March 17, 2021'
 			},
 			{
@@ -272,6 +284,7 @@ describe('IndividualLicenses', () => {
 				name: 'License 2',
 				productName: 'Portal Backup',
 				productVersion: '6.2',
+				sizing: 1,
 				startDate: 'March 17, 2021'
 			}
 		]);
@@ -295,6 +308,7 @@ describe('IndividualLicenses', () => {
 				name: 'License 1',
 				productName: 'Portal Backup',
 				productVersion: '6.2',
+				sizing: 1,
 				startDate: 'March 17, 2021'
 			},
 			{
@@ -311,6 +325,7 @@ describe('IndividualLicenses', () => {
 				name: 'License 2',
 				productName: 'Portal Backup',
 				productVersion: '6.2',
+				sizing: 1,
 				startDate: 'March 13, 2021'
 			}
 		]);
@@ -334,6 +349,7 @@ describe('IndividualLicenses', () => {
 				name: 'License 1',
 				productName: 'Portal Backup',
 				productVersion: '6.2',
+				sizing: 1,
 				startDate: 'March 17, 2021'
 			},
 			{
@@ -350,6 +366,7 @@ describe('IndividualLicenses', () => {
 				name: 'License 2',
 				productName: 'Portal Backup',
 				productVersion: '6.2',
+				sizing: 1,
 				startDate: 'March 17, 2021'
 			}
 		]);
@@ -375,6 +392,7 @@ describe('IndividualLicenses', () => {
 				name: 'License 1',
 				productName: 'Portal Backup',
 				productVersion: '6.2',
+				sizing: 1,
 				startDate: 'March 17, 2021'
 			},
 			{
@@ -391,6 +409,7 @@ describe('IndividualLicenses', () => {
 				name: 'License 2',
 				productName: 'Portal Backup',
 				productVersion: '6.2',
+				sizing: 1,
 				startDate: 'March 17, 2021'
 			}
 		]);
@@ -414,6 +433,7 @@ describe('IndividualLicenses', () => {
 				name: 'License 1',
 				productName: 'DXP Development',
 				productVersion: '7.1',
+				sizing: 1,
 				startDate: 'March 17, 2021'
 			},
 			{
@@ -430,6 +450,7 @@ describe('IndividualLicenses', () => {
 				name: 'License 2',
 				productName: 'DXP Development',
 				productVersion: '7.4',
+				sizing: 1,
 				startDate: 'March 17, 2021'
 			}
 		]);

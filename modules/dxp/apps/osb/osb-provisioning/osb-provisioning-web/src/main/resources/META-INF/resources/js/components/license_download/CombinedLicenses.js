@@ -39,8 +39,8 @@ function CombinedLicenses({downloadURL}) {
 		? groupByAll(
 				activeCommerceDXPLicenses,
 				({startDate}) => startDate,
-				({expirationDate}) => expirationDate
-				// TODO: group by instance size
+				({expirationDate}) => expirationDate,
+				({sizing}) => sizing
 		  )
 		: [];
 

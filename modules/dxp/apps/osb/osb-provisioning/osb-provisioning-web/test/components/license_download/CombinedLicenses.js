@@ -30,6 +30,7 @@ const multipleLiceseKeys = [
 		name: 'Commerce Subscription Backup',
 		productName: 'Commerce Subscription Backup',
 		productVersion: '1',
+		sizing: 1,
 		startDate: 'Jun 04, 2021'
 	},
 	// Inactive license
@@ -47,6 +48,7 @@ const multipleLiceseKeys = [
 		name: 'Commerce Subscription Backup',
 		productName: 'Commerce Subscription Backup',
 		productVersion: '1',
+		sizing: 1,
 		startDate: 'Jun 04, 2021'
 	},
 	{
@@ -63,6 +65,7 @@ const multipleLiceseKeys = [
 		name: 'DXP Backup',
 		productName: 'DXP Backup',
 		productVersion: '7.0',
+		sizing: 1,
 		startDate: 'Jun 04, 2021'
 	},
 	// Not DXP or Commerce product
@@ -80,6 +83,7 @@ const multipleLiceseKeys = [
 		name: 'License 1',
 		productName: 'Portal Backup',
 		productVersion: '6.2',
+		sizing: 1,
 		startDate: 'March 17, 2021'
 	}
 ];
@@ -99,6 +103,7 @@ const singleLicenseKey = [
 		name: 'Commerce Subscription Backup',
 		productName: 'Commerce Subscription Backup',
 		productVersion: '1',
+		sizing: 1,
 		startDate: 'Jun 04, 2021'
 	}
 ];
@@ -164,6 +169,7 @@ describe('CombinedLicenses', () => {
 					name: 'Commerce Subscription Backup',
 					productName: 'Commerce Subscription Backup',
 					productVersion: '1',
+					sizing: 1,
 					startDate: 'Jun 04, 2021'
 				},
 				{
@@ -180,6 +186,50 @@ describe('CombinedLicenses', () => {
 					name: 'DXP Backup',
 					productName: 'DXP Backup',
 					productVersion: '7.0',
+					sizing: 1,
+					startDate: 'Jun 04, 2021'
+				}
+			]);
+
+			expect(queryByText('Test Host Name 1')).toBeFalsy();
+			expect(queryByText('Test Host Name 2')).toBeFalsy();
+			expect(queryByText('download')).toBeFalsy();
+		});
+
+		it('does not group if Sizing are different', () => {
+			const {queryByText} = renderCombinedLicenses([
+				{
+					active: true,
+					description: 'Test Account description',
+					expirationDate: 'Jun 04, 2022',
+					hostName: 'Test Host Name 1',
+					ipAddresses: '',
+					licenseEntryName: 'Commerce Subscription Backup',
+					licenseEntryType: 'production',
+					licenseKeyId: '85602',
+					licenseVersion: 3,
+					macAddresses: '',
+					name: 'Commerce Subscription Backup',
+					productName: 'Commerce Subscription Backup',
+					productVersion: '1',
+					sizing: 1,
+					startDate: 'Jun 04, 2021'
+				},
+				{
+					active: true,
+					description: '365-Day License',
+					expirationDate: 'Jun 04, 2022',
+					hostName: 'Test Host Name 2',
+					ipAddresses: '',
+					licenseEntryName: 'DXP Backup',
+					licenseEntryType: 'production',
+					licenseKeyId: '89402',
+					licenseVersion: 5,
+					macAddresses: '',
+					name: 'DXP Backup',
+					productName: 'DXP Backup',
+					productVersion: '7.0',
+					sizing: 2,
 					startDate: 'Jun 04, 2021'
 				}
 			]);
@@ -205,6 +255,7 @@ describe('CombinedLicenses', () => {
 					name: 'DXP Backup',
 					productName: 'DXP Backup',
 					productVersion: '7.0',
+					sizing: 1,
 					startDate: 'Jun 04, 2021'
 				},
 				{
@@ -221,6 +272,7 @@ describe('CombinedLicenses', () => {
 					name: 'DXP Backup',
 					productName: 'DXP Backup',
 					productVersion: '7.0',
+					sizing: 1,
 					startDate: 'Jun 04, 2021'
 				},
 				{
@@ -237,6 +289,7 @@ describe('CombinedLicenses', () => {
 					name: 'Commerce Subscription Backup',
 					productName: 'Commerce Subscription Backup',
 					productVersion: '1',
+					sizing: 1,
 					startDate: 'Jun 04, 2021'
 				},
 				{
@@ -253,6 +306,7 @@ describe('CombinedLicenses', () => {
 					name: 'Commerce Subscription Backup',
 					productName: 'Commerce Subscription Backup',
 					productVersion: '1',
+					sizing: 1,
 					startDate: 'Jun 04, 2021'
 				}
 			]);
@@ -280,6 +334,7 @@ describe('CombinedLicenses', () => {
 					name: 'DXP Backup',
 					productName: 'DXP Backup',
 					productVersion: '7.0',
+					sizing: 1,
 					startDate: 'Jun 04, 2021'
 				},
 				{
@@ -296,6 +351,7 @@ describe('CombinedLicenses', () => {
 					name: 'DXP Backup',
 					productName: 'DXP Backup',
 					productVersion: '7.1',
+					sizing: 1,
 					startDate: 'Jun 04, 2021'
 				},
 				{
@@ -312,6 +368,7 @@ describe('CombinedLicenses', () => {
 					name: 'Commerce Subscription Backup',
 					productName: 'Commerce Subscription Backup',
 					productVersion: '1',
+					sizing: 1,
 					startDate: 'Jun 04, 2021'
 				},
 				{
@@ -328,6 +385,7 @@ describe('CombinedLicenses', () => {
 					name: 'Commerce Subscription Backup',
 					productName: 'Commerce Subscription Backup',
 					productVersion: '1',
+					sizing: 1,
 					startDate: 'Jun 04, 2021'
 				}
 			]);
@@ -351,6 +409,7 @@ describe('CombinedLicenses', () => {
 					name: 'Commerce Subscription Backup',
 					productName: 'Commerce Subscription Backup',
 					productVersion: '1',
+					sizing: 1,
 					startDate: 'Jun 04, 2021'
 				},
 				{
@@ -367,6 +426,7 @@ describe('CombinedLicenses', () => {
 					name: 'Commerce Subscription Backup',
 					productName: 'Commerce Subscription Backup',
 					productVersion: '1',
+					sizing: 1,
 					startDate: 'Jun 04, 2021'
 				},
 				{
@@ -383,6 +443,7 @@ describe('CombinedLicenses', () => {
 					name: 'DXP Backup',
 					productName: 'DXP Backup',
 					productVersion: '7.0',
+					sizing: 1,
 					startDate: 'Jun 04, 2021'
 				}
 			]);
@@ -408,6 +469,7 @@ describe('CombinedLicenses', () => {
 					name: 'Commerce Subscription Backup',
 					productName: 'Commerce Subscription Backup',
 					productVersion: '1',
+					sizing: 1,
 					startDate: 'Jun 04, 2021'
 				},
 				{
@@ -424,6 +486,7 @@ describe('CombinedLicenses', () => {
 					name: 'DXP Backup',
 					productName: 'DXP Backup',
 					productVersion: '7.0',
+					sizing: 1,
 					startDate: 'Jun 04, 2021'
 				}
 			]);
@@ -449,6 +512,7 @@ describe('CombinedLicenses', () => {
 					name: 'Commerce Subscription Backup',
 					productName: 'Commerce Subscription Backup',
 					productVersion: '1',
+					sizing: 1,
 					startDate: 'Jun 04, 2021'
 				},
 				{
@@ -465,6 +529,7 @@ describe('CombinedLicenses', () => {
 					name: 'Commerce Subscription Backup',
 					productName: 'Commerce Subscription Backup',
 					productVersion: '1',
+					sizing: 1,
 					startDate: 'Jun 04, 2021'
 				},
 				{
@@ -481,6 +546,7 @@ describe('CombinedLicenses', () => {
 					name: 'DXP Backup',
 					productName: 'DXP Backup',
 					productVersion: '7.0',
+					sizing: 1,
 					startDate: 'Jun 04, 2021'
 				},
 				{
@@ -497,6 +563,7 @@ describe('CombinedLicenses', () => {
 					name: 'DXP Backup',
 					productName: 'DXP Backup',
 					productVersion: '7.0',
+					sizing: 1,
 					startDate: 'Jun 04, 2021'
 				}
 			]);
@@ -524,6 +591,7 @@ describe('CombinedLicenses', () => {
 					name: 'Commerce Subscription Backup',
 					productName: 'Commerce Subscription Backup',
 					productVersion: '1',
+					sizing: 1,
 					startDate: 'Jun 03, 2021'
 				},
 				{
@@ -540,6 +608,7 @@ describe('CombinedLicenses', () => {
 					name: 'Commerce Subscription Backup',
 					productName: 'Commerce Subscription Backup',
 					productVersion: '1',
+					sizing: 1,
 					startDate: 'Jun 04, 2021'
 				},
 				{
@@ -556,6 +625,7 @@ describe('CombinedLicenses', () => {
 					name: 'DXP Backup',
 					productName: 'DXP Backup',
 					productVersion: '7.0',
+					sizing: 1,
 					startDate: 'Jun 03, 2021'
 				},
 				{
@@ -572,6 +642,7 @@ describe('CombinedLicenses', () => {
 					name: 'DXP Backup',
 					productName: 'DXP Backup',
 					productVersion: '7.1',
+					sizing: 1,
 					startDate: 'Jun 04, 2021'
 				}
 			]);

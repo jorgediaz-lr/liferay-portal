@@ -93,6 +93,7 @@ DownloadLicenses.propTypes = {
 			name: PropTypes.string,
 			productName: PropTypes.string,
 			productVersion: PropTypes.string,
+			sizing: PropTypes.string,
 			startDate: PropTypes.string
 		})
 	).isRequired
