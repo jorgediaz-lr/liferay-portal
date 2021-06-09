@@ -20,6 +20,7 @@ import {
 	generateNewDateByDay,
 	generateNewDateByYear
 } from '../../utilities/date';
+import TableDivider from '../TableDivider';
 import Purchase from './Purchase';
 
 const TODAY = new Date();
@@ -69,18 +70,13 @@ function Detached({detached}) {
 
 	return (
 		<>
-			<DividerTitle title={Liferay.Language.get('detached')} />
+			<TableDivider
+				colSpan={5}
+				title={Liferay.Language.get('detached')}
+			/>
 
 			<Purchase {...detached} {...licenseDates} />
 		</>
-	);
-}
-
-function DividerTitle({title}) {
-	return (
-		<ClayTable.Row divider={true}>
-			<ClayTableCell colSpan={5}>{title}</ClayTableCell>
-		</ClayTable.Row>
 	);
 }
 
@@ -149,7 +145,8 @@ function Purchased({purchased, selectedType}) {
 		<>
 			{!!active.length && (
 				<>
-					<DividerTitle
+					<TableDivider
+						colSpan={5}
 						title={Liferay.Language.get('active-subscriptions')}
 					/>
 
@@ -164,7 +161,8 @@ function Purchased({purchased, selectedType}) {
 
 			{!!expired.length && (
 				<>
-					<DividerTitle
+					<TableDivider
+						colSpan={5}
 						title={Liferay.Language.get('expired-subscriptions')}
 					/>
 

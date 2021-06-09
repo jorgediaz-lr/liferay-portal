@@ -16,6 +16,7 @@ import React from 'react';
 
 import {useLicenses} from '../../hooks/licenses';
 import {groupBy, groupByAll} from '../../utilities/helpers';
+import TableDivider from '../TableDivider';
 import LicenseGroup from './LicenseGroup';
 
 const COMMERCE = 'Commerce';
@@ -90,10 +91,21 @@ function CombinedLicenses({downloadURL}) {
 	return (
 		<>
 			{!!combinedLicenses.length && (
-				<LicenseGroup
-					downloadURL={downloadURL}
-					items={combinedLicenses}
-				/>
+				<>
+					<tbody>
+						<TableDivider
+							colSpan={11}
+							title={Liferay.Language.get(
+								'dxp-commerce-combined-licenses'
+							)}
+						/>
+					</tbody>
+
+					<LicenseGroup
+						downloadURL={downloadURL}
+						items={combinedLicenses}
+					/>
+				</>
 			)}
 		</>
 	);

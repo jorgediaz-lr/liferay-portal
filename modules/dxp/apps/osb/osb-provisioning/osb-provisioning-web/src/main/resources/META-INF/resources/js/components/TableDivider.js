@@ -9,17 +9,20 @@
  * distribution rights of the Software.
  */
 
+import ClayTable from '@clayui/table';
+import ClayTableCell from '@clayui/table/lib/Cell';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-export default function CancelLink({redirect}) {
+export default function TableDivider({colSpan, title = ''}) {
 	return (
-		<a className="btn btn-secondary" href={redirect} type="button">
-			{Liferay.Language.get('cancel')}
-		</a>
+		<ClayTable.Row divider={true}>
+			<ClayTableCell colSpan={colSpan}>{title}</ClayTableCell>
+		</ClayTable.Row>
 	);
 }
 
-CancelLink.propTypes = {
-	redirect: PropTypes.string.isRequired
+TableDivider.propTypes = {
+	colSpan: PropTypes.number.isRequired,
+	title: PropTypes.string
 };
