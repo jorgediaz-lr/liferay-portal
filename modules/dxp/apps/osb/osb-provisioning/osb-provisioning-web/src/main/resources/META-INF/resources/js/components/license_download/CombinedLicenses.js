@@ -26,6 +26,8 @@ const DXP_LICENSE_VERSION = 5;
 function CombinedLicenses({downloadURL}) {
 	const [licenses] = useLicenses();
 
+	let combinedLicenses = [];
+
 	const [activeCommerceDXPLicenses] = partition(
 		licenses.toSet().toJS(),
 		({active, licenseVersion, productName}) =>
@@ -44,49 +46,68 @@ function CombinedLicenses({downloadURL}) {
 		  )
 		: [];
 
-	const [dxp, commerce] = intersection.length
-		? partition(
-				flatten(intersection),
-				({licenseVersion}) => licenseVersion >= DXP_LICENSE_VERSION
+	const groupByProduct = intersection.length
+		? intersection.map(subgroup =>
+				partition(
+					subgroup,
+					({licenseVersion}) => licenseVersion >= DXP_LICENSE_VERSION
+				)
 		  )
-		: [[], []];
+		: [];
 
-	const commerceGrouping = groupByAll(
-		commerce,
-		({licenseEntryType}) => licenseEntryType
-	);
-	const dxpGrouping = groupByAll(
-		dxp,
-		({licenseEntryType}) => licenseEntryType,
-		({productVersion}) => productVersion
-	);
+	groupByProduct.forEach(([dxp, commerce]) => {
+		if (dxp.length && commerce.length) {
+			const transformedCommerceGrouping = transformByGroupLength(
+				groupByProductSpecificProperties(commerce)
+			);
+			const transformedDXPGrouping = transformByGroupLength(
+				groupByProductSpecificProperties(dxp)
+			);
 
-	const transformedCommerceGrouping = groupBy(
-		commerceGrouping,
-		item => item.length
-	);
-	const transformedDXPGrouping = groupBy(dxpGrouping, item => item.length);
-	const commerceSet = new Set(Object.keys(transformedCommerceGrouping));
-	const dxpSet = new Set(Object.keys(transformedDXPGrouping));
-	const licenseQtyIntersection = new Set(
-		[...commerceSet].filter(val => dxpSet.has(val))
-	);
+			combineLicenses(
+				transformedCommerceGrouping,
+				transformedDXPGrouping
+			);
+		}
+	});
 
-	let combinedLicenses = [];
-	// Suppress eslint false alarm for unused var
-	/* eslint-disable no-unused-vars */
+	function combineLicenses(transform1, transform2) {
+		const transformedIntersection = getTransformedIntersection(
+			transform1,
+			transform2
+		);
 
-	/* eslint-disable-next-line no-for-of-loops/no-for-of-loops */
-	for (const value of licenseQtyIntersection.values()) {
-		combinedLicenses = [
-			...combinedLicenses,
-			[
-				...flatten(transformedCommerceGrouping[value]),
-				...flatten(transformedDXPGrouping[value])
-			]
-		];
+		// Suppress eslint false alarm for unused var
+		/* eslint-disable no-unused-vars */
+
+		/* eslint-disable-next-line no-for-of-loops/no-for-of-loops */
+		for (const value of transformedIntersection.values()) {
+			combinedLicenses = [
+				...combinedLicenses,
+				[...flatten(transform1[value]), ...flatten(transform2[value])]
+			];
+		}
+		/* eslint-enable no-unused-vars */
 	}
-	/* eslint-enable no-unused-vars */
+
+	function getTransformedIntersection(transform1, transform2) {
+		const set1 = new Set(Object.keys(transform1));
+		const set2 = new Set(Object.keys(transform2));
+
+		return new Set([...set1].filter(val => set2.has(val)));
+	}
+
+	function groupByProductSpecificProperties(licenses) {
+		return groupByAll(
+			licenses,
+			({licenseEntryType}) => licenseEntryType,
+			({productVersion}) => productVersion
+		);
+	}
+
+	function transformByGroupLength(licenses) {
+		return groupBy(licenses, license => license.length);
+	}
 
 	return (
 		<>
