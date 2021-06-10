@@ -91,6 +91,8 @@ public class DownloadLicenseKeysDisplayContext {
 				).put(
 					"productVersion", licenseKey.getProductVersion()
 				).put(
+					"sizing", licenseKey.getSizing()
+				).put(
 					"startDate", _dateFormat.format(licenseKey.getStartDate())
 				));
 		}
