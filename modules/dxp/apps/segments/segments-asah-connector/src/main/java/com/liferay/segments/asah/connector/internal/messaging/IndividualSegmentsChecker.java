@@ -44,11 +44,13 @@ import com.liferay.segments.service.SegmentsEntryLocalService;
 import com.liferay.segments.service.SegmentsEntryRelLocalService;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
@@ -167,33 +169,24 @@ public class IndividualSegmentsChecker {
 		}
 	}
 
-	private void _addSegmentsEntryRel(
-		SegmentsEntry segmentsEntry, Individual individual) {
-
-		Optional<Long> userIdOptional = _getUserIdOptional(individual);
-
-		if (!userIdOptional.isPresent()) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(
-					"Unable to find a user corresponding to individual " +
-						individual.getId());
-			}
-
-			return;
-		}
+	private void _addSegmentsEntryRels(
+		SegmentsEntry segmentsEntry, Set<Long> userIds) {
 
 		try {
 			long userClassNameId = _classNameLocalService.getClassNameId(
 				User.class.getName());
 
-			_segmentsEntryRelLocalService.addSegmentsEntryRel(
-				segmentsEntry.getSegmentsEntryId(), userClassNameId,
-				userIdOptional.get(), _getServiceContext());
+			ServiceContext serviceContext = _getServiceContext();
+
+			for (long userId : userIds) {
+				_segmentsEntryRelLocalService.addSegmentsEntryRel(
+					segmentsEntry.getSegmentsEntryId(), userClassNameId, userId,
+					serviceContext);
+			}
 		}
 		catch (PortalException portalException) {
 			_log.error(
-				"Unable to process individual " + individual.getId(),
-				portalException);
+				"Unable to process individuals " + userIds, portalException);
 		}
 	}
 
@@ -223,6 +216,8 @@ public class IndividualSegmentsChecker {
 				return;
 			}
 
+			Set<Long> userIds = new HashSet<>();
+
 			int totalPages = (int)Math.ceil((double)totalElements / _DELTA);
 
 			int curPage = 1;
@@ -231,8 +226,12 @@ public class IndividualSegmentsChecker {
 				List<Individual> individuals = individualResults.getItems();
 
 				individuals.forEach(
-					individual -> _addSegmentsEntryRel(
-						segmentsEntry, individual));
+					individual -> {
+						Optional<Long> userIdOptional = _getUserIdOptional(
+							individual);
+
+						userIdOptional.ifPresent(userIds::add);
+					});
 
 				curPage++;
 
@@ -244,6 +243,10 @@ public class IndividualSegmentsChecker {
 					segmentsEntry.getSegmentsEntryKey(), curPage, _DELTA,
 					Collections.singletonList(
 						OrderByField.desc("dateModified")));
+			}
+
+			if (!userIds.isEmpty()) {
+				_addSegmentsEntryRels(segmentsEntry, userIds);
 			}
 		}
 		catch (RuntimeException runtimeException) {
@@ -321,6 +324,8 @@ public class IndividualSegmentsChecker {
 	}
 
 	private Optional<Long> _getUserIdOptional(Individual individual) {
+		Optional<Long> userIdOptional = Optional.empty();
+
 		List<Individual.DataSourceIndividualPK> dataSourceIndividualPKs =
 			individual.getDataSourceIndividualPKs();
 
@@ -338,21 +343,29 @@ public class IndividualSegmentsChecker {
 			Collections.emptyList()
 		);
 
-		if (ListUtil.isEmpty(individualUuids)) {
-			return Optional.empty();
+		if (!ListUtil.isEmpty(individualUuids)) {
+			Stream<String> individualUuidStream = individualUuids.stream();
+
+			userIdOptional = individualUuidStream.map(
+				individualUuid -> _userLocalService.fetchUserByUuidAndCompanyId(
+					individualUuid, _portal.getDefaultCompanyId())
+			).filter(
+				Objects::nonNull
+			).findFirst(
+			).map(
+				UserModel::getUserId
+			);
 		}
 
-		Stream<String> individualUuidStream = individualUuids.stream();
+		if (!userIdOptional.isPresent()) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					"Unable to find a user corresponding to individual " +
+						individual.getId());
+			}
+		}
 
-		return individualUuidStream.map(
-			individualUuid -> _userLocalService.fetchUserByUuidAndCompanyId(
-				individualUuid, _portal.getDefaultCompanyId())
-		).filter(
-			Objects::nonNull
-		).findFirst(
-		).map(
-			UserModel::getUserId
-		);
+		return userIdOptional;
 	}
 
 	private static final int _DELTA = 100;
