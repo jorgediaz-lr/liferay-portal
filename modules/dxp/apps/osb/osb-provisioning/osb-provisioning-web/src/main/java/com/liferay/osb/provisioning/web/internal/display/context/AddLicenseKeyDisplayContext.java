@@ -99,7 +99,9 @@ public class AddLicenseKeyDisplayContext {
 
 		data.put(
 			"hasUpdateLicenseDatePermission",
-			_hasUpdateLicenseDatePermission());
+			_licenseKeyPermission.contains(
+				_themeDisplay.getPermissionChecker(),
+				ProvisioningActionKeys.UPDATE_LICENSE_DATE));
 
 		String redirect = ParamUtil.getString(_httpServletRequest, "redirect");
 
@@ -352,12 +354,6 @@ public class AddLicenseKeyDisplayContext {
 		}
 
 		return purchasedProductsJSONObject;
-	}
-
-	private boolean _hasUpdateLicenseDatePermission() throws Exception {
-		return _licenseKeyPermission.contains(
-			_themeDisplay.getPermissionChecker(),
-			ProvisioningActionKeys.UPDATE_LICENSE_DATE);
 	}
 
 	private final Account _account;
