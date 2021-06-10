@@ -132,6 +132,21 @@ describe('EditSubscriptions', () => {
 			const firstStartDate = getAllByPlaceholderText('YYYY-MM-DD')[0];
 
 			fireEvent.change(firstStartDate, {
+				target: {value: 'invalid'}
+			});
+
+			expect(getByText('save').disabled).toBeTruthy();
+		});
+
+		it('disables the Save button if a start date is set to be after the End Date', () => {
+			const {
+				getAllByPlaceholderText,
+				getByText
+			} = renderAddSubscriptions();
+
+			const firstStartDate = getAllByPlaceholderText('YYYY-MM-DD')[0];
+
+			fireEvent.change(firstStartDate, {
 				target: {value: '2022-12-08'}
 			});
 

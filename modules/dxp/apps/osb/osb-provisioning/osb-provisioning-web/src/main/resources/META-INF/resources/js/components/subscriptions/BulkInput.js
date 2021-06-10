@@ -92,6 +92,12 @@ function BulkInput({
 	const [sizing, setSizing] = useState(getDisplayValue('sizing'));
 	const [status, setStatus] = useState(getDisplayValue('status'));
 
+	const [invalidDate, setInvalidDate] = useState({
+		endDate: false,
+		originalEndDate: false,
+		startDate: false
+	});
+
 	useEffect(() => {
 		setDisabledAttribute(perpetual, 'bulkInput');
 	});
@@ -157,18 +163,26 @@ function BulkInput({
 	}
 
 	function handleSaveEndDate(value) {
-		if (validateDateFieldFormat(value)) {
+		const validDateFormat = validateDateFieldFormat(value);
+
+		if (validDateFormat) {
 			updateAllValuesByFieldName('endDate', convertInputToDate(value));
 		}
+
+		setInvalidDate({...invalidDate, endDate: !validDateFormat});
 	}
 
 	function handleSaveGracePeriodStartDate(value) {
-		if (validateDateFieldFormat(value)) {
+		const validDateFormat = validateDateFieldFormat(value);
+
+		if (validDateFormat) {
 			updateAllValuesByFieldName(
 				'originalEndDate',
 				convertInputToDate(value)
 			);
 		}
+
+		setInvalidDate({...invalidDate, originalEndDate: !validDateFormat});
 	}
 
 	function handleSavePerpetual() {
@@ -194,9 +208,13 @@ function BulkInput({
 	}
 
 	function handleSaveStartDate(value) {
-		if (validateDateFieldFormat(value)) {
+		const validDateFormat = validateDateFieldFormat(value);
+
+		if (validDateFormat) {
 			updateAllValuesByFieldName('startDate', convertInputToDate(value));
 		}
+
+		setInvalidDate({...invalidDate, startDate: !validDateFormat});
 	}
 
 	function handleSaveStatus(event) {
@@ -288,7 +306,9 @@ function BulkInput({
 					/>
 				)}
 			</ClayTable.Cell>
-			<ClayTable.Cell>
+			<ClayTable.Cell
+				className={!invalidDate.startDate ? '' : 'has-error'}
+			>
 				<label htmlFor="startDateBulkInput">
 					<DatePicker
 						defaultValue={getDatePickerDisplayValue('startDate')}
@@ -299,7 +319,9 @@ function BulkInput({
 					/>
 				</label>
 			</ClayTable.Cell>
-			<ClayTable.Cell>
+			<ClayTable.Cell
+				className={!invalidDate.originalEndDate ? '' : 'has-error'}
+			>
 				<label htmlFor="gracePeriodStartDateBulkInput">
 					<DatePicker
 						defaultValue={getDatePickerDisplayValue(
@@ -378,7 +400,9 @@ function BulkInput({
 			</ClayTable.Cell>
 
 			{subscriptionsType === EDIT_SUBSCRIPTIONS && (
-				<ClayTable.Cell>
+				<ClayTable.Cell
+					className={!invalidDate.endDate ? '' : 'has-error'}
+				>
 					<label htmlFor="endDateBulkInput">
 						<DatePicker
 							defaultValue={getDatePickerDisplayValue('endDate')}

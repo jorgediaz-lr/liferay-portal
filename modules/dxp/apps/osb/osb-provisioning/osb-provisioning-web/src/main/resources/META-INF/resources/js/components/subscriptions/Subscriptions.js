@@ -192,21 +192,23 @@ function Subscription({
 	});
 
 	function handleEndDateChange(value) {
-		if (validateDateFieldFormat(value)) {
+		const validDateFormat = validateDateFieldFormat(value);
+
+		if (validDateFormat) {
 			updateEndDate(key, convertInputToDate(value));
 		}
-		else {
-			setInvalidDate({...invalidDate, endDate: true});
-		}
+
+		setInvalidDate({...invalidDate, endDate: !validDateFormat});
 	}
 
 	function handleGracePeriodStartDateChange(value) {
-		if (validateDateFieldFormat(value)) {
+		const validDateFormat = validateDateFieldFormat(value);
+
+		if (validDateFormat) {
 			updateOriginalEndDate(key, convertInputToDate(value));
 		}
-		else {
-			setInvalidDate({...invalidDate, originalEndDate: true});
-		}
+
+		setInvalidDate({...invalidDate, originalEndDate: !validDateFormat});
 	}
 
 	function handleDeleteSubscription() {
@@ -232,12 +234,13 @@ function Subscription({
 	}
 
 	function handleStartDateChange(value) {
-		if (validateDateFieldFormat(value)) {
+		const validDateFormat = validateDateFieldFormat(value);
+
+		if (validDateFormat) {
 			updateStartDate(key, convertInputToDate(value));
 		}
-		else {
-			setInvalidDate({...invalidDate, startDate: true});
-		}
+
+		setInvalidDate({...invalidDate, startDate: !validDateFormat});
 	}
 
 	function handleStatusChange(event) {
