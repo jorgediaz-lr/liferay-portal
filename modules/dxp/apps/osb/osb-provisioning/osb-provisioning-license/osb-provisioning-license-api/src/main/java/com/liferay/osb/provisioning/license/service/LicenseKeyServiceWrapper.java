@@ -214,6 +214,17 @@ public class LicenseKeyServiceWrapper
 	}
 
 	@Override
+	public com.liferay.osb.provisioning.license.model.LicenseKey
+			renewLicenseKey(
+				String uuid, java.util.Date startDate,
+				java.util.Date expirationDate)
+		throws Exception {
+
+		return _licenseKeyService.renewLicenseKey(
+			uuid, startDate, expirationDate);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.search.Hits search(
 			long companyId, String createUserUuid, java.util.Date createDateGT,
 			java.util.Date createDateLT, String modifiedUserUuid,

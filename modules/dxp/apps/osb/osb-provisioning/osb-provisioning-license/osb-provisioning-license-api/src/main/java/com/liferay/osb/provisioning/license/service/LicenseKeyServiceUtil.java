@@ -193,6 +193,14 @@ public class LicenseKeyServiceUtil {
 			licenseKeyId, startDate, expirationDate);
 	}
 
+	public static LicenseKey renewLicenseKey(
+			String uuid, java.util.Date startDate,
+			java.util.Date expirationDate)
+		throws Exception {
+
+		return getService().renewLicenseKey(uuid, startDate, expirationDate);
+	}
+
 	public static com.liferay.portal.kernel.search.Hits search(
 			long companyId, String createUserUuid, java.util.Date createDateGT,
 			java.util.Date createDateLT, String modifiedUserUuid,

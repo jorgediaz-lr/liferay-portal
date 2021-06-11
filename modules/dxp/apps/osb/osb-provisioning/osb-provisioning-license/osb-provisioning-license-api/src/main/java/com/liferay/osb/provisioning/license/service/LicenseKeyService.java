@@ -156,6 +156,11 @@ public interface LicenseKeyService extends BaseService {
 			long licenseKeyId, Date startDate, Date expirationDate)
 		throws Exception;
 
+	@JSONWebService
+	public LicenseKey renewLicenseKey(
+			String uuid, Date startDate, Date expirationDate)
+		throws Exception;
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Hits search(
 			long companyId, String createUserUuid, Date createDateGT,
