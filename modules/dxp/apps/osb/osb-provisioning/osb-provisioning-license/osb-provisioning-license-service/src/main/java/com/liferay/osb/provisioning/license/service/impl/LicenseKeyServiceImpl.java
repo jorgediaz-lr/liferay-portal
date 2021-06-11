@@ -318,6 +318,21 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			getUserId(), licenseKeyId, startDate, expirationDate);
 	}
 
+	@JSONWebService
+	public LicenseKey renewLicenseKey(
+			String uuid, Date startDate, Date expirationDate)
+		throws Exception {
+
+		validateJSONWebServicePermissions();
+
+		LicenseKey licenseKey = licenseKeyLocalService.getLicenseKeyByUuid(
+			uuid);
+
+		return licenseKeyLocalService.renewLicenseKey(
+			getUserId(), licenseKey.getLicenseKeyId(), startDate,
+			expirationDate);
+	}
+
 	public Hits search(
 			long companyId, String createUserUuid, Date createDateGT,
 			Date createDateLT, String modifiedUserUuid, Date modifiedDateGT,
