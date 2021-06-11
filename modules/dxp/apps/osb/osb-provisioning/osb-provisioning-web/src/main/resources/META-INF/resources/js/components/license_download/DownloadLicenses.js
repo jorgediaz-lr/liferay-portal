@@ -18,8 +18,17 @@ import CombinedLicenses from './CombinedLicenses';
 import IndividualLicenses from './IndividualLicenses';
 
 function DownloadLicenses({downloadLicenseKeysURL, licenseKeys}) {
+	const processedLicenseKeys = licenseKeys.map(license => {
+		const result = /(?<size>[0-4])/.exec(license.sizing);
+
+		return {
+			...license,
+			sizing: result ? result.groups.size : '0'
+		};
+	});
+
 	return (
-		<LicensesProvider initialLicenses={licenseKeys}>
+		<LicensesProvider initialLicenses={processedLicenseKeys}>
 			<div className="download-licenses-container">
 				<ClayTable>
 					<ClayTable.Head>
