@@ -140,10 +140,10 @@ renderResponse.setTitle(selLayout.getName(locale));
 			<c:if test="<%= layoutsAdminDisplayContext.isLayoutPageTemplateEntry() || ((Objects.equals(selLayout.getType(), LayoutConstants.TYPE_ASSET_DISPLAY) || Objects.equals(selLayout.getType(), LayoutConstants.TYPE_CONTENT)) && layoutsAdminDisplayContext.isDraft()) %>">
 
 				<%
-				for (String languageId : group.getAvailableLanguageIds()) {
+				for (Locale availableLocale : LanguageUtil.getAvailableLocales(group.getGroupId())) {
 				%>
 
-					<aui:input name='<%= "name_" + languageId %>' type="hidden" value="<%= selLayout.getName(LocaleUtil.fromLanguageId(languageId)) %>" />
+					<aui:input name='<%= "name_" + LocaleUtil.toLanguageId(availableLocale) %>' type="hidden" value="<%= selLayout.getName(availableLocale) %>" />
 
 				<%
 				}
