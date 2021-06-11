@@ -17,13 +17,15 @@ import {LicensesProvider} from '../../hooks/licenses';
 import CombinedLicenses from './CombinedLicenses';
 import IndividualLicenses from './IndividualLicenses';
 
+const SIZING_WITH_NO_VALIDATION = '4';
+
 function DownloadLicenses({downloadLicenseKeysURL, licenseKeys}) {
 	const processedLicenseKeys = licenseKeys.map(license => {
 		const result = /(?<size>[0-4])/.exec(license.sizing);
 
 		return {
 			...license,
-			sizing: result ? result.groups.size : '0'
+			sizing: result ? result.groups.size : SIZING_WITH_NO_VALIDATION
 		};
 	});
 
