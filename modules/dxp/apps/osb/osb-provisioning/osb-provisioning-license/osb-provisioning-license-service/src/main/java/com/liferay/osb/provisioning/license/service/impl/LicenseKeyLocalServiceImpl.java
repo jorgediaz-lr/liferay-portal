@@ -26,6 +26,7 @@ import com.liferay.osb.provisioning.koroneiki.web.service.ProductConsumptionWebS
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.provisioning.license.exception.DuplicateIPAddressException;
 import com.liferay.osb.provisioning.license.exception.DuplicateMACAddressException;
+import com.liferay.osb.provisioning.license.exception.LicenseKeyActiveException;
 import com.liferay.osb.provisioning.license.exception.LicenseKeyDescriptionException;
 import com.liferay.osb.provisioning.license.exception.LicenseKeyIPAddressException;
 import com.liferay.osb.provisioning.license.exception.LicenseKeyMACAddressException;
@@ -500,6 +501,23 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		LicenseKey licenseKey = licenseKeyPersistence.findByPrimaryKey(
 			licenseKeyId);
+
+		if (Validator.isNotNull(licenseKey.getAssetReceiptLicenseUuid())) {
+			if (!licenseKey.isActive()) {
+				throw new LicenseKeyActiveException();
+			}
+
+			updateLicenseKey(userId, licenseKeyId, false);
+
+			return addLicenseKey(
+				userId, licenseKey.getAssetReceiptLicenseUuid(),
+				licenseKey.getLicenseEntryType(), licenseKey.getProductName(),
+				licenseKey.getProductId(), licenseKey.getProductVersion(),
+				licenseKey.getOwner(), licenseKey.getMaxUsers(),
+				licenseKey.getDescription(), licenseKey.getHostName(),
+				licenseKey.getIpAddresses(), licenseKey.getMacAddresses(),
+				licenseKey.getServerId(), startDate, expirationDate);
+		}
 
 		Product product = _productWebService.getProduct(
 			licenseKey.getProductKey());
