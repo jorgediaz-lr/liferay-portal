@@ -716,12 +716,12 @@ public abstract class CalendarBookingLocalServiceBaseImpl
 		ratingsStatsLocalService;
 
 	@Reference
+	protected com.liferay.social.kernel.service.SocialActivityLocalService
+		socialActivityLocalService;
+
+	@Reference
 	protected
 		com.liferay.social.kernel.service.SocialActivityCounterLocalService
 			socialActivityCounterLocalService;
-
-	@Reference
-	protected com.liferay.social.kernel.service.SocialActivityLocalService
-		socialActivityLocalService;
 
 }

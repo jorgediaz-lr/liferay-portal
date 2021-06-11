@@ -878,12 +878,12 @@ public class QueuedMessagePersistenceImpl
 		QueuedMessageModelImpl queuedMessageModelImpl =
 			(QueuedMessageModelImpl)queuedMessage;
 
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
-
-		Date date = new Date();
-
 		if (isNew && (queuedMessage.getCreateDate() == null)) {
+			ServiceContext serviceContext =
+				ServiceContextThreadLocal.getServiceContext();
+
+			Date date = new Date();
+
 			if (serviceContext == null) {
 				queuedMessage.setCreateDate(date);
 			}

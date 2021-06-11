@@ -2451,12 +2451,12 @@ public class MembershipRequestPersistenceImpl
 		MembershipRequestModelImpl membershipRequestModelImpl =
 			(MembershipRequestModelImpl)membershipRequest;
 
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
-
-		Date date = new Date();
-
 		if (isNew && (membershipRequest.getCreateDate() == null)) {
+			ServiceContext serviceContext =
+				ServiceContextThreadLocal.getServiceContext();
+
+			Date date = new Date();
+
 			if (serviceContext == null) {
 				membershipRequest.setCreateDate(date);
 			}

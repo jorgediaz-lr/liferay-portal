@@ -1525,12 +1525,12 @@ public class PushNotificationsDevicePersistenceImpl
 		PushNotificationsDeviceModelImpl pushNotificationsDeviceModelImpl =
 			(PushNotificationsDeviceModelImpl)pushNotificationsDevice;
 
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
-
-		Date date = new Date();
-
 		if (isNew && (pushNotificationsDevice.getCreateDate() == null)) {
+			ServiceContext serviceContext =
+				ServiceContextThreadLocal.getServiceContext();
+
+			Date date = new Date();
+
 			if (serviceContext == null) {
 				pushNotificationsDevice.setCreateDate(date);
 			}
