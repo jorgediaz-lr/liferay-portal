@@ -14,8 +14,18 @@
 
 package com.liferay.osb.koroneiki.taproot.internal.search.spi.model.query.contributor;
 
+import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.search.BooleanClauseOccur;
 import com.liferay.portal.kernel.search.BooleanQuery;
+import com.liferay.portal.kernel.search.ParseException;
+import com.liferay.portal.kernel.search.Query;
+import com.liferay.portal.kernel.search.QueryConfig;
 import com.liferay.portal.kernel.search.SearchContext;
+import com.liferay.portal.kernel.search.generic.WildcardQueryImpl;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.query.QueryHelper;
 import com.liferay.portal.search.spi.model.query.contributor.KeywordQueryContributor;
 import com.liferay.portal.search.spi.model.query.contributor.helper.KeywordQueryContributorHelper;
@@ -64,9 +74,55 @@ public class AccountKeywordQueryContributor implements KeywordQueryContributor {
 			booleanQuery, searchContext, "profileEmailAddress", false);
 		queryHelper.addSearchTerm(
 			booleanQuery, searchContext, "website", false);
+
+		if (Validator.isNotNull(keywords)) {
+			QueryConfig queryConfig = searchContext.getQueryConfig();
+
+			queryConfig.setScoreEnabled(true);
+
+			_addSearchTerm(booleanQuery, "code", keywords);
+			_addSearchTerm(booleanQuery, "name", keywords);
+			_addWildcardQuery(booleanQuery, "code", keywords);
+			_addWildcardQuery(booleanQuery, "externalLinkEntityIds", keywords);
+			_addWildcardQuery(booleanQuery, "name", keywords);
+			_addWildcardQuery(
+				booleanQuery, "productPurchaseExternalLinkEntityIds", keywords);
+		}
 	}
 
 	@Reference
 	protected QueryHelper queryHelper;
+
+	private void _addSearchTerm(
+		BooleanQuery searchQuery, String field, String value) {
+
+		try {
+			Query query = searchQuery.addTerm(field, value);
+
+			query.setBoost(4.0F);
+		}
+		catch (ParseException parseException) {
+			throw new SystemException(parseException);
+		}
+	}
+
+	private void _addWildcardQuery(
+		BooleanQuery searchQuery, String field, String value) {
+
+		value = StringBundler.concat(
+			StringPool.STAR, StringUtil.toLowerCase(value), StringPool.STAR);
+
+		WildcardQueryImpl wildcardQueryImpl = new WildcardQueryImpl(
+			field, value);
+
+		wildcardQueryImpl.setBoost(3.0F);
+
+		try {
+			searchQuery.add(wildcardQueryImpl, BooleanClauseOccur.SHOULD);
+		}
+		catch (ParseException parseException) {
+			throw new SystemException(parseException);
+		}
+	}
 
 }

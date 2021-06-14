@@ -236,7 +236,7 @@ public class AccountSearchDisplayContext {
 		}
 
 		List<Account> accounts = _accountWebService.search(
-			StringPool.BLANK, filter, _accountSearch.getCur(),
+			searchTerms.getKeywords(), filter, _accountSearch.getCur(),
 			_accountSearch.getEnd() - _accountSearch.getStart(), sort);
 
 		_accountSearch.setResults(
@@ -246,7 +246,7 @@ public class AccountSearchDisplayContext {
 					_renderRequest, _renderResponse, _accountReader, account)));
 
 		int count = (int)_accountWebService.searchCount(
-			StringPool.BLANK, filter);
+			searchTerms.getKeywords(), filter);
 
 		_accountSearch.setTotal(count);
 

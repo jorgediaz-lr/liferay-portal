@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.text.DateFormat;
@@ -421,47 +420,11 @@ public class AccountSearchTerms extends AccountDisplayTerms {
 	}
 
 	public String getBasicSearchFilter() {
-		StringBundler sb = new StringBundler();
-
-		if (Validator.isNotNull(keywords)) {
-			String[] keywordsArray = null;
-
-			if (keywords.startsWith(StringPool.QUOTE) &&
-				keywords.endsWith(StringPool.QUOTE)) {
-
-				keywordsArray = new String[] {StringUtil.unquote(keywords)};
-			}
-			else {
-				keywordsArray = StringUtil.split(keywords, StringPool.SPACE);
-			}
-
-			for (int i = 0; i < keywordsArray.length; i++) {
-				String keyword = keywordsArray[i];
-
-				sb.append("(contains(code, '");
-				sb.append(keyword);
-				sb.append("') or contains(name, '");
-				sb.append(keyword);
-				sb.append("') or externalLinkEntityIds/any(s:contains(s, '");
-				sb.append(keyword);
-				sb.append("')) or productPurchaseExternalLinkEntityIds/any(s:");
-				sb.append("contains(s, '");
-				sb.append(keyword);
-				sb.append("')))");
-
-				if (i < (keywordsArray.length - 1)) {
-					sb.append(" or ");
-				}
-			}
-		}
-
 		if (parent) {
-			sb.append(_getBooleanOperator(sb));
-
-			sb.append("parent eq true");
+			return "parent eq true";
 		}
 
-		return sb.toString();
+		return StringPool.BLANK;
 	}
 
 	public boolean hasSearchTerms() {

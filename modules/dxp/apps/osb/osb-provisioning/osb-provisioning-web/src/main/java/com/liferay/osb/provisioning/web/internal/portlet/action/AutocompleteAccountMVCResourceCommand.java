@@ -95,32 +95,16 @@ public class AutocompleteAccountMVCResourceCommand
 
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
-		String[] keywords = StringUtil.split(
-			ParamUtil.getString(resourceRequest, "autocompleteKeywords"),
-			StringPool.SPACE);
+		String keywords = ParamUtil.getString(resourceRequest, "autocompleteKeywords");
 
-		if (!ArrayUtil.isEmpty(keywords)) {
+		if (Validator.isNotNull(keywords)) {
 			StringBundler sb = new StringBundler();
-
-			for (int i = 0; i < keywords.length; i++) {
-				String keyword = keywords[i];
-
-				sb.append("(contains(code, '");
-				sb.append(keyword);
-				sb.append("') or contains(name, '");
-				sb.append(keyword);
-				sb.append("'))");
-
-				if (i < (keywords.length - 1)) {
-					sb.append(" or ");
-				}
-			}
 
 			int maxResults = ParamUtil.getInteger(
 				resourceRequest, "maxResults", 20);
 
 			List<Account> accounts = _accountWebService.search(
-				StringPool.BLANK, sb.toString(), 1, maxResults, null);
+				keywords, StringPool.BLANK, 1, maxResults, null);
 
 			for (Account account : accounts) {
 				PortletURL portletURL = PortletURLFactoryUtil.create(
