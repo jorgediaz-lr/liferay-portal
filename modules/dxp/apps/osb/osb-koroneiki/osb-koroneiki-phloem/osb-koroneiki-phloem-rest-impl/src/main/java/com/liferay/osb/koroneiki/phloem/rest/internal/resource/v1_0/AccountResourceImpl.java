@@ -47,6 +47,7 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Sort;
+import com.liferay.portal.kernel.search.SortFactoryUtil;
 import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
@@ -251,6 +252,12 @@ public class AccountResourceImpl
 	public Page<Account> getAccountsPage(
 			String search, Filter filter, Pagination pagination, Sort[] sorts)
 		throws Exception {
+
+		if (sorts == null) {
+			sorts = new Sort[] {
+				SortFactoryUtil.create(null, Sort.SCORE_TYPE, false)
+			};
+		}
 
 		return SearchUtil.search(
 			booleanQuery -> {
