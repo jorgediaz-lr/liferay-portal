@@ -13,7 +13,10 @@ import {cleanup, fireEvent, render, within} from '@testing-library/react';
 import React from 'react';
 
 import Purchases from '../../../src/main/resources/META-INF/resources/js/components/license_generation/Purchases';
-import {NewLicenseProvider} from '../../../src/main/resources/META-INF/resources/js/hooks/newLicense';
+import {
+	License,
+	NewLicenseProvider
+} from '../../../src/main/resources/META-INF/resources/js/hooks/newLicense';
 import {
 	formatDate,
 	generateNewDateByDay,
@@ -22,9 +25,9 @@ import {
 
 const TODAY = new Date();
 
-function renderPurchases({...props}) {
+function renderPurchases({props = {}, initialLicense = new License()} = {}) {
 	return render(
-		<NewLicenseProvider>
+		<NewLicenseProvider initialLicense={initialLicense}>
 			<Purchases
 				purchased={[
 					{
@@ -91,24 +94,26 @@ describe('Purchases', () => {
 
 	it('displays only the Active section for purchased subscriptions if none are expired', () => {
 		const {getByText, queryByText} = renderPurchases({
-			purchased: [
-				{
-					endDate: '',
-					instanceSize: 1,
-					licenseKeysGenerated: '1 / 1',
-					perpetual: true,
-					productPurchaseKey: 'PURCHKEY-123',
-					startDate: ''
-				},
-				{
-					endDate: '',
-					instanceSize: 5,
-					licenseKeysGenerated: '1 / 1',
-					perpetual: true,
-					productPurchaseKey: 'PURCHKEY-456',
-					startDate: ''
-				}
-			]
+			props: {
+				purchased: [
+					{
+						endDate: '',
+						instanceSize: 1,
+						licenseKeysGenerated: '1 / 1',
+						perpetual: true,
+						productPurchaseKey: 'PURCHKEY-123',
+						startDate: ''
+					},
+					{
+						endDate: '',
+						instanceSize: 5,
+						licenseKeysGenerated: '1 / 1',
+						perpetual: true,
+						productPurchaseKey: 'PURCHKEY-456',
+						startDate: ''
+					}
+				]
+			}
 		});
 
 		getByText('active-subscriptions');
@@ -117,24 +122,26 @@ describe('Purchases', () => {
 
 	it('displays only the Expired section if no subscriptions are active', () => {
 		const {getByText, queryByText} = renderPurchases({
-			purchased: [
-				{
-					endDate: '2020-04-16',
-					instanceSize: 1,
-					licenseKeysGenerated: '0 / 1',
-					perpetual: false,
-					productPurchaseKey: 'PURCHKEY-123',
-					startDate: '2020-03-17'
-				},
-				{
-					endDate: '2020-05-16',
-					instanceSize: 2,
-					licenseKeysGenerated: '1 / 1',
-					perpetual: false,
-					productPurchaseKey: 'PURCHKEY-456',
-					startDate: '2019-05-16'
-				}
-			]
+			props: {
+				purchased: [
+					{
+						endDate: '2020-04-16',
+						instanceSize: 1,
+						licenseKeysGenerated: '0 / 1',
+						perpetual: false,
+						productPurchaseKey: 'PURCHKEY-123',
+						startDate: '2020-03-17'
+					},
+					{
+						endDate: '2020-05-16',
+						instanceSize: 2,
+						licenseKeysGenerated: '1 / 1',
+						perpetual: false,
+						productPurchaseKey: 'PURCHKEY-456',
+						startDate: '2019-05-16'
+					}
+				]
+			}
 		});
 
 		getByText('expired-subscriptions');
@@ -142,7 +149,11 @@ describe('Purchases', () => {
 	});
 
 	it('only renders the Detached section with default values (dashes) if no purchased product is provided', () => {
-		const {getAllByText, getByText} = renderPurchases({purchased: []});
+		const {getAllByText, getByText} = renderPurchases({
+			props: {
+				purchased: []
+			}
+		});
 
 		expect(getAllByText('-').length).toBe(4);
 		expect(getByText('choose').disabled).toBeTruthy();
@@ -150,9 +161,11 @@ describe('Purchases', () => {
 
 	it('allows the user to select an Instance Size from a list of choices in the Detached section', () => {
 		const {getByLabelText} = renderPurchases({
-			detached: {
-				instanceSizes: [1, 2, 3, 4],
-				licenseKeysGenerated: '0'
+			props: {
+				detached: {
+					instanceSizes: [1, 2, 3, 4],
+					licenseKeysGenerated: '0'
+				}
 			}
 		});
 
@@ -174,11 +187,13 @@ describe('Purchases', () => {
 		describe('Dates for Detached Section', () => {
 			it('always displays Start Date as Today in UTC', () => {
 				const {getAllByDisplayValue} = renderPurchases({
-					detached: {
-						instanceSizes: [1, 2, 3, 4],
-						licenseKeysGenerated: '0'
-					},
-					purchased: []
+					props: {
+						detached: {
+							instanceSizes: [1, 2, 3, 4],
+							licenseKeysGenerated: '0'
+						},
+						purchased: []
+					}
 				});
 
 				expect(getAllByDisplayValue(formatDate(TODAY)).length).toBe(2);
@@ -186,11 +201,13 @@ describe('Purchases', () => {
 
 			it('always displays Expiration Date as one year after the Start Date', () => {
 				const {getAllByDisplayValue} = renderPurchases({
-					detached: {
-						instanceSizes: [1, 2, 3, 4],
-						licenseKeysGenerated: '0'
-					},
-					purchased: []
+					props: {
+						detached: {
+							instanceSizes: [1, 2, 3, 4],
+							licenseKeysGenerated: '0'
+						},
+						purchased: []
+					}
 				});
 
 				const startDate = TODAY;
@@ -237,7 +254,11 @@ describe('Purchases', () => {
 
 			it('always displays the Expiration Date of a Perpetual subscription whose Type is Enterpirse, Limited, OEM, or Virtual Cluster as 395 days (365 days + 30 days of grace period) from Today in UTC', () => {
 				const {getAllByDisplayValue} = renderPurchases({
-					type: 'virtual_cluster'
+					initialLicense: new License({
+						licenseEntry: {
+							licenseEntryType: 'virtual_cluster'
+						}
+					})
 				});
 
 				const startDate = TODAY;
@@ -274,7 +295,11 @@ describe('Purchases', () => {
 
 			it('displays the Expiration Date of a Non Perpetual subscription whose license Type is Enterpirse, Limited, OEM, or Virtual Cluster as the subscription End Date', () => {
 				const {getAllByDisplayValue} = renderPurchases({
-					type: 'virtual_cluster'
+					initialLicense: new License({
+						licenseEntry: {
+							licenseEntryType: 'virtual_cluster'
+						}
+					})
 				});
 
 				expect(getAllByDisplayValue('2020-04-16').length).toBe(2);

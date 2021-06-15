@@ -15,6 +15,7 @@ import partition from 'lodash.partition';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import {useNewLicense} from '../../hooks/newLicense';
 import {RESTRICTED_EXPIRATION_DATE_TYPES} from '../../utilities/constants';
 import {
 	generateNewDateByDay,
@@ -25,7 +26,7 @@ import Purchase from './Purchase';
 
 const TODAY = new Date();
 
-function Purchases({detached, purchased, type}) {
+function Purchases({detached, purchased}) {
 	return (
 		<div className="choose-purchase">
 			<h4>{Liferay.Language.get('choose-purchase')}</h4>
@@ -49,7 +50,7 @@ function Purchases({detached, purchased, type}) {
 					</ClayTable.Row>
 				</ClayTable.Head>
 				<ClayTable.Body>
-					<Purchased purchased={purchased} selectedType={type} />
+					<Purchased purchased={purchased} />
 					<Detached detached={detached} />
 				</ClayTable.Body>
 			</ClayTable>
@@ -80,12 +81,14 @@ function Detached({detached}) {
 	);
 }
 
-function Purchased({purchased, selectedType}) {
+function Purchased({purchased}) {
+	const [{licenseEntry}] = useNewLicense();
+
 	const processedPurchased = purchased
 		? purchased.map(item => {
 				const licenseExpirationDate = setExpirationDate(
 					item,
-					selectedType
+					licenseEntry.licenseEntryType
 				);
 
 				if (item.perpetual) {
@@ -193,8 +196,7 @@ Purchases.protoType = {
 			sizing: PropTypes.number,
 			startDate: PropTypes.string
 		})
-	),
-	type: PropTypes.string
+	)
 };
 
 export default Purchases;

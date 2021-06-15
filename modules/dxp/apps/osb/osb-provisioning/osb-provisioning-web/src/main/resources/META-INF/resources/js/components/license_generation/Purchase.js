@@ -93,7 +93,7 @@ function Purchase({
 				<ClayTableCell>{DASH}</ClayTableCell>
 			)}
 
-			{licenseExpirationDate ? (
+			{!!licenseExpirationDate && (
 				<ClayTableCell
 					className={`input-group-sm ${
 						isNaN(new Date(selectedExpirationDate))
@@ -107,9 +107,9 @@ function Purchase({
 						updateFn={handleExpirationDateChange}
 					/>
 				</ClayTableCell>
-			) : (
-				<ClayTableCell>{DASH}</ClayTableCell>
 			)}
+
+			{!licenseExpirationDate && <ClayTableCell>{DASH}</ClayTableCell>}
 
 			<ClayTableCell>
 				{instanceSizes ? (

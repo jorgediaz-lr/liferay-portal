@@ -279,7 +279,6 @@ function GeneralInformation({
 					<Purchases
 						detached={selectedProduct.detached}
 						purchased={purchasedProducts[product.productKey]}
-						type={licenseEntry.licenseEntryType}
 					/>
 				)}
 
