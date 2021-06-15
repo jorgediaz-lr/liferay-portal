@@ -1428,8 +1428,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		ExternalLink externalLink = new ExternalLink();
 
-		externalLink.setDomain(ExternalLinkDomain.CUSTOMER);
-		externalLink.setEntityName(ExternalLinkEntityName.CUSTOMER_LICENSE_KEY);
+		externalLink.setDomain(ExternalLinkDomain.PROVISIONING);
+		externalLink.setEntityName(ExternalLinkEntityName.LICENSE_KEY);
 		externalLink.setEntityId(String.valueOf(licenseKey.getLicenseKeyId()));
 
 		productConsumption.setExternalLinks(new ExternalLink[] {externalLink});
@@ -1444,8 +1444,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		List<ProductConsumption> productConsumptions =
 			_productConsumptionWebService.getProductConsumptions(
-				ExternalLinkDomain.CUSTOMER,
-				ExternalLinkEntityName.CUSTOMER_LICENSE_KEY,
+				ExternalLinkDomain.PROVISIONING,
+				ExternalLinkEntityName.LICENSE_KEY,
 				String.valueOf(licenseKey.getLicenseKeyId()), 1, 1000);
 
 		for (ProductConsumption productConsumption : productConsumptions) {

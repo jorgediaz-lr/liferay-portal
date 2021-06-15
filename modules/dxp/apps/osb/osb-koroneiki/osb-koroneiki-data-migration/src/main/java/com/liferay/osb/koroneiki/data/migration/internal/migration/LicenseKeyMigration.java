@@ -110,7 +110,7 @@ public class LicenseKeyMigration {
 					userId, ProductConsumption.class.getName(),
 					productConsumption.getProductConsumptionId(),
 					ExternalLinkDomain.CUSTOMER,
-					ExternalLinkEntityName.CUSTOMER_LICENSE_KEY,
+					ExternalLinkEntityName.LICENSE_KEY,
 					String.valueOf(licenseKeyId));
 			}
 		}

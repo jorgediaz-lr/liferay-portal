@@ -27,6 +27,8 @@ public class ExternalLinkDomain {
 
 	public static final String LCS = "lcs";
 
+	public static final String PROVISIONING = "provisioning";
+
 	public static final String SALESFORCE = "salesforce";
 
 	public static final String WEB = "web";
