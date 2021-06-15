@@ -65,7 +65,7 @@ renderResponse.setTitle((koroneikiAccount == null) ? LanguageUtil.get(request, "
 					<c:if test="<%= parentAccount != null %>">
 						<liferay-portlet:renderURL var="parentAccountURL">
 							<portlet:param name="mvcRenderCommandName" value="/accounts_admin/edit_account" />
-							<portlet:param name="accountId" value="<%= String.valueOf(parentAccount .getAccountId()) %>" />
+							<portlet:param name="accountId" value="<%= String.valueOf(parentAccount.getAccountId()) %>" />
 						</liferay-portlet:renderURL>
 
 						<a href="<%= parentAccountURL %>"><%= HtmlUtil.escape(parentAccount.getName()) %></a>
