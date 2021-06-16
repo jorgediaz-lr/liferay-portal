@@ -208,9 +208,9 @@ public class AccountSearchDisplayContext {
 
 		String filter = null;
 
-		if (searchTerms.isAdvancedSearch()) {
-			Set<String> subscriptionProductKeys = _getSubscriptionProductKeys();
+		Set<String> subscriptionProductKeys = _getSubscriptionProductKeys();
 
+		if (searchTerms.isAdvancedSearch()) {
 			String createdByUuid = _getCreatedByUuid(
 				searchTerms.getCreatedByEmailAddress());
 
@@ -226,7 +226,7 @@ public class AccountSearchDisplayContext {
 				partnerTeamRole.getKey());
 		}
 		else {
-			filter = searchTerms.getBasicSearchFilter();
+			filter = searchTerms.getBasicSearchFilter(subscriptionProductKeys);
 		}
 
 		String sort = StringPool.BLANK;

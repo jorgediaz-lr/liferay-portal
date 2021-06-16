@@ -71,10 +71,6 @@ public class ViewAccountsManagementToolbarDisplayContext
 		AccountDisplayTerms accountDisplayTerms =
 			(AccountDisplayTerms)searchContainer.getDisplayTerms();
 
-		if (!accountDisplayTerms.isAdvancedSearch()) {
-			return null;
-		}
-
 		return new LabelItemList() {
 			{
 				List<DisplayTerm> displayTermsList =

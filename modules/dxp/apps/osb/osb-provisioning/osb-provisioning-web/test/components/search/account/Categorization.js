@@ -111,10 +111,10 @@ describe('Account Search Categorization', () => {
 		).toBe('OEM,Regular');
 	});
 
-	it('displays a State field', () => {
+	it('displays a Subscription State field', () => {
 		const {getByText} = renderCategorization();
 
-		getByText('state');
+		getByText('subscription-state');
 		getByText('Active');
 		getByText('Cancelled');
 		getByText('Expired');
@@ -122,7 +122,7 @@ describe('Account Search Categorization', () => {
 		getByText('N/A');
 	});
 
-	it('displays all except for the N/A option of the State field as checked', () => {
+	it('displays all except for the N/A option of the Subscription State field as checked', () => {
 		const {getByLabelText} = renderCategorization();
 
 		expect(getByLabelText('Active').checked).toBeTruthy();

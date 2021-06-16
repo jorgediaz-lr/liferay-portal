@@ -137,7 +137,7 @@ export function getAccountSearchFilterDisplayName(name) {
 			displayName = Liferay.Language.get('sales-info');
 			break;
 		case 'subscriptionStates':
-			displayName = Liferay.Language.get('state');
+			displayName = Liferay.Language.get('subscription-state');
 			break;
 		case 'tiers':
 			displayName = Liferay.Language.get('tier');

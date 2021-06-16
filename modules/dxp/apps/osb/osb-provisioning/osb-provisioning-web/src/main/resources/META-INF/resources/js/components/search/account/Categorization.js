@@ -110,7 +110,7 @@ function Categorization({
 
 			<div className="col-md-3 form-group">
 				<h5 className="form-check-inline">
-					{Liferay.Language.get('state')}
+					{Liferay.Language.get('subscription-state')}
 				</h5>
 
 				<CheckboxGroups

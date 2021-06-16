@@ -14,6 +14,7 @@
 
 package com.liferay.osb.provisioning.web.internal.search;
 
+import com.liferay.osb.provisioning.koroneiki.constants.ProductPurchaseConstants;
 import com.liferay.portal.kernel.dao.search.DisplayTerms;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -21,7 +22,9 @@ import com.liferay.portal.kernel.util.Validator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.portlet.PortletRequest;
 
@@ -88,6 +91,16 @@ public class AccountDisplayTerms extends DisplayTerms {
 				portletRequest, "accountSearchKeywords");
 		}
 
+		subscriptionStates = ParamUtil.getStringValues(
+			portletRequest, SUBSCRIPTION_STATES);
+
+		Map<String, String[]> requestMap = new LinkedHashMap<>(
+			portletRequest.getParameterMap());
+
+		if (!isAdvancedSearch() && (requestMap.size() == 1)) {
+			subscriptionStates = ProductPurchaseConstants.STATES;
+		}
+
 		activeSLAs = ParamUtil.getStringValues(portletRequest, ACTIVE_SLAS);
 		code = ParamUtil.getString(portletRequest, CODE);
 		countryName = ParamUtil.getString(portletRequest, COUNTRY_NAME);
@@ -112,8 +125,6 @@ public class AccountDisplayTerms extends DisplayTerms {
 		receivesFLS = ParamUtil.getBooleanValues(portletRequest, RECEIVES_FLS);
 		regions = ParamUtil.getStringValues(portletRequest, REGIONS);
 		salesInfo = ParamUtil.getString(portletRequest, SALES_INFO);
-		subscriptionStates = ParamUtil.getStringValues(
-			portletRequest, SUBSCRIPTION_STATES);
 		tiers = ParamUtil.getStringValues(portletRequest, TIERS);
 		workerContactEmailAddress = ParamUtil.getString(
 			portletRequest, WORKER_CONTACT_EMAIL_ADDRESS);
@@ -174,7 +185,7 @@ public class AccountDisplayTerms extends DisplayTerms {
 					"internal", INTERNALS, StringUtil.merge(internals)),
 				new DisplayTerm("tier", TIERS, StringUtil.merge(tiers)),
 				new DisplayTerm(
-					"state", SUBSCRIPTION_STATES,
+					"subscription-state", SUBSCRIPTION_STATES,
 					StringUtil.merge(subscriptionStates)),
 				new DisplayTerm(
 					"subscription-level", ACTIVE_SLAS,
