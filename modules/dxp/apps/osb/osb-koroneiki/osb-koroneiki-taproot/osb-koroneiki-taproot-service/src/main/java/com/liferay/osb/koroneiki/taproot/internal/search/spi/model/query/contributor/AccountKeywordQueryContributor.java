@@ -109,11 +109,11 @@ public class AccountKeywordQueryContributor implements KeywordQueryContributor {
 	private void _addWildcardQuery(
 		BooleanQuery searchQuery, String field, String value) {
 
-		value = StringBundler.concat(
-			StringPool.STAR, StringUtil.toLowerCase(value), StringPool.STAR);
-
 		WildcardQueryImpl wildcardQueryImpl = new WildcardQueryImpl(
-			field, value);
+			field,
+			StringBundler.concat(
+				StringPool.STAR, StringUtil.toLowerCase(value),
+				StringPool.STAR));
 
 		wildcardQueryImpl.setBoost(3.0F);
 

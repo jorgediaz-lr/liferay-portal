@@ -27,13 +27,10 @@ import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import com.liferay.portal.kernel.servlet.ServletResponseUtil;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.List;
@@ -95,11 +92,10 @@ public class AutocompleteAccountMVCResourceCommand
 
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
-		String keywords = ParamUtil.getString(resourceRequest, "autocompleteKeywords");
+		String keywords = ParamUtil.getString(
+			resourceRequest, "autocompleteKeywords");
 
 		if (Validator.isNotNull(keywords)) {
-			StringBundler sb = new StringBundler();
-
 			int maxResults = ParamUtil.getInteger(
 				resourceRequest, "maxResults", 20);
 
