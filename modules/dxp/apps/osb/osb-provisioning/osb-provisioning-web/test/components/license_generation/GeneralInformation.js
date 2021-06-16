@@ -14,6 +14,7 @@ import React from 'react';
 
 import GeneralInformation from '../../../src/main/resources/META-INF/resources/js/components/license_generation/GeneralInformation';
 import {NewLicenseProvider} from '../../../src/main/resources/META-INF/resources/js/hooks/newLicense';
+import {PermissionsProvider} from '../../../src/main/resources/META-INF/resources/js/hooks/permissions';
 
 const licensableProducts = [
 	{
@@ -96,15 +97,19 @@ const purchasedProducts = {
 	]
 };
 
-function renderGeneralInformation(props) {
+function renderGeneralInformation({permission = true, props = {}} = {}) {
 	return render(
 		<NewLicenseProvider>
-			<GeneralInformation
-				redirect="/back/url"
-				selectAccountActionURL="/action/url"
-				selectAccountRenderURL="render/url"
-				{...props}
-			/>
+			<PermissionsProvider
+				permissions={{updateDatePermission: permission}}
+			>
+				<GeneralInformation
+					redirect="/back/url"
+					selectAccountActionURL="/action/url"
+					selectAccountRenderURL="render/url"
+					{...props}
+				/>
+			</PermissionsProvider>
 		</NewLicenseProvider>
 	);
 }
@@ -151,7 +156,9 @@ describe('GeneralInformation', () => {
 
 	it('displays the account name if one is provided', () => {
 		const {getByDisplayValue} = renderGeneralInformation({
-			accountName: 'Test Account'
+			props: {
+				accountName: 'Test Account'
+			}
 		});
 
 		getByDisplayValue('Test Account');
@@ -159,8 +166,10 @@ describe('GeneralInformation', () => {
 
 	it('populates the Product select with options if a list of licensable products is provided', () => {
 		const {getByLabelText, getByText} = renderGeneralInformation({
-			accountName: 'Test Account',
-			licensableProducts
+			props: {
+				accountName: 'Test Account',
+				licensableProducts
+			}
 		});
 
 		getByText('Product A');
@@ -171,9 +180,11 @@ describe('GeneralInformation', () => {
 
 	it('groups the purchased products inside the Product dropdown', () => {
 		const {container, getByLabelText} = renderGeneralInformation({
-			accountName: 'Test Account',
-			licensableProducts,
-			purchasedProducts
+			props: {
+				accountName: 'Test Account',
+				licensableProducts,
+				purchasedProducts
+			}
 		});
 
 		fireEvent.click(getByLabelText('product'));
@@ -185,8 +196,10 @@ describe('GeneralInformation', () => {
 
 	it('groups the not purchased products inside the Product dropdown', () => {
 		const {container, getByLabelText} = renderGeneralInformation({
-			accountName: 'Test Account',
-			licensableProducts
+			props: {
+				accountName: 'Test Account',
+				licensableProducts
+			}
 		});
 
 		fireEvent.click(getByLabelText('product'));
@@ -198,8 +211,10 @@ describe('GeneralInformation', () => {
 
 	it('populates the Version select with options based on the Product selected', () => {
 		const {getByLabelText, getByText} = renderGeneralInformation({
-			accountName: 'Test Account',
-			licensableProducts
+			props: {
+				accountName: 'Test Account',
+				licensableProducts
+			}
 		});
 
 		fireEvent.change(getByLabelText('product'), {
@@ -214,8 +229,10 @@ describe('GeneralInformation', () => {
 
 	it('populates the Type select with options based on the Product and Version selected', () => {
 		const {getByLabelText, getByText} = renderGeneralInformation({
-			accountName: 'Test Account',
-			licensableProducts
+			props: {
+				accountName: 'Test Account',
+				licensableProducts
+			}
 		});
 
 		fireEvent.change(getByLabelText('product'), {
@@ -236,8 +253,10 @@ describe('GeneralInformation', () => {
 			getByText,
 			queryByText
 		} = renderGeneralInformation({
-			accountName: 'Test Account',
-			licensableProducts
+			props: {
+				accountName: 'Test Account',
+				licensableProducts
+			}
 		});
 
 		expect(queryByText('choose-purchase')).toBeFalsy();
@@ -258,9 +277,11 @@ describe('GeneralInformation', () => {
 	it('displays the Non-detached section correctly based on the Product Selected', () => {
 		const {getAllByDisplayValue, getByLabelText} = renderGeneralInformation(
 			{
-				accountName: 'Test Account',
-				licensableProducts,
-				purchasedProducts
+				props: {
+					accountName: 'Test Account',
+					licensableProducts,
+					purchasedProducts
+				}
 			}
 		);
 
@@ -281,8 +302,10 @@ describe('GeneralInformation', () => {
 
 	it('repopulates the Version dropdown when the Product dropdown has been reselected', () => {
 		const {getByLabelText, getByText} = renderGeneralInformation({
-			accountName: 'Test Account',
-			licensableProducts
+			props: {
+				accountName: 'Test Account',
+				licensableProducts
+			}
 		});
 
 		fireEvent.change(getByLabelText('product'), {
@@ -301,8 +324,10 @@ describe('GeneralInformation', () => {
 
 	it('repopulates the Type dropdown when the Version dropdown has been reselected', () => {
 		const {getByLabelText, getByText} = renderGeneralInformation({
-			accountName: 'Test Account',
-			licensableProducts
+			props: {
+				accountName: 'Test Account',
+				licensableProducts
+			}
 		});
 
 		fireEvent.change(getByLabelText('product'), {
@@ -325,8 +350,10 @@ describe('GeneralInformation', () => {
 
 	it('disables the Type dropdown after the Product dropdown was reselected, until the Version dropdown is selected again', () => {
 		const {getByLabelText} = renderGeneralInformation({
-			accountName: 'Test Account',
-			licensableProducts
+			props: {
+				accountName: 'Test Account',
+				licensableProducts
+			}
 		});
 
 		fireEvent.change(getByLabelText('product'), {
@@ -351,8 +378,10 @@ describe('GeneralInformation', () => {
 
 	it('hides the Choose Purchase section when the Product dropdown has been reselected after Product, Version, and Type have been previously selected', () => {
 		const {getByLabelText, queryByText} = renderGeneralInformation({
-			accountName: 'Test Account',
-			licensableProducts
+			props: {
+				accountName: 'Test Account',
+				licensableProducts
+			}
 		});
 
 		fireEvent.change(getByLabelText('product'), {
@@ -374,8 +403,10 @@ describe('GeneralInformation', () => {
 
 	it('hides the Choose Purchase section when the Version dropdown has been reselected after Product, Version, and Type have been previously selected', () => {
 		const {getByLabelText, queryByText} = renderGeneralInformation({
-			accountName: 'Test Account',
-			licensableProducts
+			props: {
+				accountName: 'Test Account',
+				licensableProducts
+			}
 		});
 
 		fireEvent.change(getByLabelText('product'), {

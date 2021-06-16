@@ -76,7 +76,7 @@ function Detached({detached}) {
 				title={Liferay.Language.get('detached')}
 			/>
 
-			<Purchase {...detached} {...licenseDates} />
+			<Purchase detached={true} {...detached} {...licenseDates} />
 		</>
 	);
 }

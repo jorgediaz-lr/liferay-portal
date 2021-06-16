@@ -9,16 +9,24 @@
  * distribution rights of the Software.
  */
 
+import PropTypes from 'prop-types';
 import React from 'react';
 
 import {NewLicenseProvider, useNewLicense} from '../../hooks/newLicense';
+import {PermissionsProvider} from '../../hooks/permissions';
 import GeneralInformation from './GeneralInformation';
 import SpecificDetails from './SpecificDetails';
 
 function GenerateLicense(props) {
 	return (
 		<NewLicenseProvider>
-			<Generate {...props} />
+			<PermissionsProvider
+				permissions={{
+					updateDatePermission: props.hasUpdateLicenseDatePermission
+				}}
+			>
+				<Generate {...props} />
+			</PermissionsProvider>
 		</NewLicenseProvider>
 	);
 }
@@ -39,5 +47,9 @@ function Generate(props) {
 		</>
 	);
 }
+
+GenerateLicense.propTypes = {
+	hasUpdateLicenseDatePermission: PropTypes.bool.isRequired
+};
 
 export default GenerateLicense;

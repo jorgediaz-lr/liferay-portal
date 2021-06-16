@@ -15,10 +15,18 @@ import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
 
 import {useNewLicense} from '../../hooks/newLicense';
-import {DASH} from '../../utilities/constants';
+import {usePermissions} from '../../hooks/permissions';
+import {
+	DASH,
+	RESTRICTED_EXPIRATION_DATE_TYPES
+} from '../../utilities/constants';
+import {formatDate} from '../../utilities/date';
 import DatePicker from '../DatePicker';
 
+const YEAR_IN_MS = 1000 * 60 * 60 * 24 * 365;
+
 function Purchase({
+	detached = false,
 	instanceSize = DASH,
 	instanceSizes,
 	licenseExpirationDate,
@@ -35,19 +43,27 @@ function Purchase({
 	);
 	const [sizing, setSizing] = useState();
 
-	const [, {updateLicense}] = useNewLicense();
+	const [validExperiationDate, setValidExperiationDate] = useState(true);
+
+	const [{licenseEntry}, {updateLicense}] = useNewLicense();
+	const {updateDatePermission} = usePermissions();
+
+	const restricted = RESTRICTED_EXPIRATION_DATE_TYPES.find(
+		restrictedType => restrictedType === licenseEntry.licenseEntryType
+	);
 
 	useEffect(() => {
 		if (
 			!isNaN(new Date(selectedExpirationDate)) &&
-			!isNaN(new Date(selectedStartDate))
+			!isNaN(new Date(selectedStartDate)) &&
+			validExperiationDate
 		) {
 			setDisableChoose(false);
 		}
 		else {
 			setDisableChoose(true);
 		}
-	}, [selectedExpirationDate, selectedStartDate]);
+	}, [selectedExpirationDate, selectedStartDate, validExperiationDate]);
 
 	function handleChoosePurchase() {
 		updateLicense(license =>
@@ -75,6 +91,15 @@ function Purchase({
 		setSizing(event.currentTarget.value);
 	}
 
+	function validateExpirationDateChange(val) {
+		const start = Date.parse(new Date(selectedStartDate));
+		const expiration = Date.parse(new Date(val));
+
+		setValidExperiationDate(expiration - start <= YEAR_IN_MS);
+
+		setSelectedExpirationDate(val);
+	}
+
 	return (
 		<ClayTable.Row id={productPurchaseKey}>
 			{licenseStartDate ? (
@@ -93,20 +118,46 @@ function Purchase({
 				<ClayTableCell>{DASH}</ClayTableCell>
 			)}
 
-			{!!licenseExpirationDate && (
-				<ClayTableCell
-					className={`input-group-sm ${
-						isNaN(new Date(selectedExpirationDate))
-							? 'has-error'
-							: ''
-					}`}
-				>
-					<DatePicker
-						defaultValue={licenseExpirationDate}
-						inputName="expirationDate"
-						updateFn={handleExpirationDateChange}
-					/>
-				</ClayTableCell>
+			{!!licenseExpirationDate &&
+				(updateDatePermission ||
+					(!updateDatePermission && !restricted)) && (
+					<ClayTableCell
+						className={`input-group-sm ${
+							isNaN(new Date(selectedExpirationDate))
+								? 'has-error'
+								: ''
+						}`}
+					>
+						<DatePicker
+							defaultValue={licenseExpirationDate}
+							inputName="expirationDate"
+							updateFn={handleExpirationDateChange}
+						/>
+					</ClayTableCell>
+				)}
+
+			{!!licenseExpirationDate && !updateDatePermission && restricted && (
+				<>
+					{!detached && (
+						<ClayTableCell>
+							{formatDate(licenseExpirationDate)}
+						</ClayTableCell>
+					)}
+
+					{detached && (
+						<ClayTableCell
+							className={`input-group-sm ${
+								!validExperiationDate ? 'has-error' : ''
+							}`}
+						>
+							<DatePicker
+								defaultValue={licenseExpirationDate}
+								inputName="expirationDate"
+								updateFn={validateExpirationDateChange}
+							/>
+						</ClayTableCell>
+					)}
+				</>
 			)}
 
 			{!licenseExpirationDate && <ClayTableCell>{DASH}</ClayTableCell>}
@@ -148,6 +199,7 @@ function Purchase({
 }
 
 Purchase.protoType = {
+	detached: PropTypes.bool,
 	instanceSize: PropTypes.number,
 	instanceSizes: PropTypes.arrayOf(PropTypes.number),
 	licenseExpirationDate: PropTypes.string,
