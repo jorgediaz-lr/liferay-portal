@@ -22,7 +22,6 @@ import com.liferay.portal.kernel.util.Validator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -86,21 +85,6 @@ public class AccountDisplayTerms extends DisplayTerms {
 	public AccountDisplayTerms(PortletRequest portletRequest) {
 		super(portletRequest);
 
-		if (Validator.isNull(keywords)) {
-			keywords = ParamUtil.getString(
-				portletRequest, "accountSearchKeywords");
-		}
-
-		subscriptionStates = ParamUtil.getStringValues(
-			portletRequest, SUBSCRIPTION_STATES);
-
-		Map<String, String[]> requestMap = new LinkedHashMap<>(
-			portletRequest.getParameterMap());
-
-		if (!isAdvancedSearch() && (requestMap.size() == 1)) {
-			subscriptionStates = ProductPurchaseConstants.STATES;
-		}
-
 		activeSLAs = ParamUtil.getStringValues(portletRequest, ACTIVE_SLAS);
 		code = ParamUtil.getString(portletRequest, CODE);
 		countryName = ParamUtil.getString(portletRequest, COUNTRY_NAME);
@@ -112,6 +96,12 @@ public class AccountDisplayTerms extends DisplayTerms {
 			portletRequest, EXTERNAL_ACCOUNT_KEY);
 		flsTeamKey = ParamUtil.getString(portletRequest, FLS_TEAM_KEY);
 		internals = ParamUtil.getBooleanValues(portletRequest, INTERNALS);
+
+		if (Validator.isNull(keywords)) {
+			keywords = ParamUtil.getString(
+				portletRequest, "accountSearchKeywords");
+		}
+
 		modifiedDateGT = ParamUtil.getString(portletRequest, MODIFIED_DATE_GT);
 		modifiedDateLT = ParamUtil.getString(portletRequest, MODIFIED_DATE_LT);
 		name = ParamUtil.getString(portletRequest, NAME);
@@ -125,6 +115,16 @@ public class AccountDisplayTerms extends DisplayTerms {
 		receivesFLS = ParamUtil.getBooleanValues(portletRequest, RECEIVES_FLS);
 		regions = ParamUtil.getStringValues(portletRequest, REGIONS);
 		salesInfo = ParamUtil.getString(portletRequest, SALES_INFO);
+
+		subscriptionStates = ParamUtil.getStringValues(
+			portletRequest, SUBSCRIPTION_STATES);
+
+		Map<String, String[]> parameterMap = portletRequest.getParameterMap();
+
+		if (!isAdvancedSearch() && (parameterMap.size() == 1)) {
+			subscriptionStates = ProductPurchaseConstants.STATES;
+		}
+
 		tiers = ParamUtil.getStringValues(portletRequest, TIERS);
 		workerContactEmailAddress = ParamUtil.getString(
 			portletRequest, WORKER_CONTACT_EMAIL_ADDRESS);

@@ -63,6 +63,16 @@ public class ViewAccountsManagementToolbarDisplayContext
 	public String getClearResultsURL() {
 		PortletURL clearResultsURL = liferayPortletResponse.createRenderURL();
 
+		AccountDisplayTerms accountDisplayTerms =
+			(AccountDisplayTerms)searchContainer.getDisplayTerms();
+
+		if (!accountDisplayTerms.isAdvancedSearch()) {
+			clearResultsURL.setParameter(
+				"accountSearchKeywords", accountDisplayTerms.getKeywords());
+			clearResultsURL.setParameter(
+				AccountDisplayTerms.SUBSCRIPTION_STATES, StringPool.BLANK);
+		}
+
 		return clearResultsURL.toString();
 	}
 

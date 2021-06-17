@@ -48,98 +48,7 @@ public class AccountSearchTerms extends AccountDisplayTerms {
 		StringBundler sb = new StringBundler();
 
 		if (!ArrayUtil.isEmpty(subscriptionStates)) {
-			sb.append("(");
-
-			for (int i = 0; i < subscriptionStates.length; i++) {
-				String subscriptionState = subscriptionStates[i];
-
-				if (subscriptionState.equals(
-						ProductPurchaseConstants.STATE_ACTIVE)) {
-
-					sb.append(
-						_getSubscriptionStateFilter(
-							"activeProductKeys", subscriptionProductKeys));
-				}
-				else if (subscriptionState.equals(
-							ProductPurchaseConstants.STATE_CANCELLED)) {
-
-					sb.append("(not ");
-					sb.append(
-						_getSubscriptionStateFilter(
-							"activeProductKeys", subscriptionProductKeys));
-					sb.append(" and not ");
-					sb.append(
-						_getSubscriptionStateFilter(
-							"expiredProductKeys", subscriptionProductKeys));
-					sb.append(" and not ");
-					sb.append(
-						_getSubscriptionStateFilter(
-							"unactivatedProductKeys", subscriptionProductKeys));
-					sb.append(" and ");
-					sb.append(
-						_getSubscriptionStateFilter(
-							"cancelledProductKeys", subscriptionProductKeys));
-					sb.append(")");
-				}
-				else if (subscriptionState.equals(
-							ProductPurchaseConstants.STATE_EXPIRED)) {
-
-					sb.append("(not ");
-					sb.append(
-						_getSubscriptionStateFilter(
-							"activeProductKeys", subscriptionProductKeys));
-					sb.append(" and not ");
-					sb.append(
-						_getSubscriptionStateFilter(
-							"unactivatedProductKeys", subscriptionProductKeys));
-					sb.append(" and ");
-					sb.append(
-						_getSubscriptionStateFilter(
-							"expiredProductKeys", subscriptionProductKeys));
-					sb.append(")");
-				}
-				else if (subscriptionState.equals(
-							ProductPurchaseConstants.STATE_NOT_AVAILABLE)) {
-
-					sb.append("(not ");
-					sb.append(
-						_getSubscriptionStateFilter(
-							"activeProductKeys", subscriptionProductKeys));
-					sb.append(" and not ");
-					sb.append(
-						_getSubscriptionStateFilter(
-							"cancelledProductKeys", subscriptionProductKeys));
-					sb.append(" and not ");
-					sb.append(
-						_getSubscriptionStateFilter(
-							"expiredProductKeys", subscriptionProductKeys));
-					sb.append(" and not ");
-					sb.append(
-						_getSubscriptionStateFilter(
-							"unactivatedProductKeys", subscriptionProductKeys));
-
-					sb.append(")");
-				}
-				else if (subscriptionState.equals(
-							ProductPurchaseConstants.STATE_UNACTIVATED)) {
-
-					sb.append("(not ");
-					sb.append(
-						_getSubscriptionStateFilter(
-							"activeProductKeys", subscriptionProductKeys));
-					sb.append(" and ");
-					sb.append(
-						_getSubscriptionStateFilter(
-							"unactivatedProductKeys", subscriptionProductKeys));
-					sb.append(")");
-				}
-
-				if ((i + 1) < subscriptionStates.length) {
-					sb.append(" or ");
-				}
-			}
-
-			sb.append(")");
+			sb.append(_getSubscriptionStateFilter(subscriptionProductKeys));
 		}
 
 		if (!ArrayUtil.isEmpty(activeSLAs)) {
@@ -423,80 +332,7 @@ public class AccountSearchTerms extends AccountDisplayTerms {
 		StringBundler sb = new StringBundler();
 
 		if (!ArrayUtil.isEmpty(subscriptionStates)) {
-			sb.append("(");
-
-			for (int i = 0; i < subscriptionStates.length; i++) {
-				String subscriptionState = subscriptionStates[i];
-
-				if (subscriptionState.equals(
-						ProductPurchaseConstants.STATE_ACTIVE)) {
-
-					sb.append(
-						_getSubscriptionStateFilter(
-							"activeProductKeys", subscriptionProductKeys));
-				}
-				else if (subscriptionState.equals(
-							ProductPurchaseConstants.STATE_CANCELLED)) {
-
-					sb.append("(not ");
-					sb.append(
-						_getSubscriptionStateFilter(
-							"activeProductKeys", subscriptionProductKeys));
-					sb.append(" and not ");
-					sb.append(
-						_getSubscriptionStateFilter(
-							"expiredProductKeys", subscriptionProductKeys));
-					sb.append(" and not ");
-					sb.append(
-						_getSubscriptionStateFilter(
-							"unactivatedProductKeys",
-							subscriptionProductKeys));
-					sb.append(" and ");
-					sb.append(
-						_getSubscriptionStateFilter(
-							"cancelledProductKeys",
-							subscriptionProductKeys));
-					sb.append(")");
-				}
-				else if (subscriptionState.equals(
-							ProductPurchaseConstants.STATE_EXPIRED)) {
-
-					sb.append("(not ");
-					sb.append(
-						_getSubscriptionStateFilter(
-							"activeProductKeys", subscriptionProductKeys));
-					sb.append(" and not ");
-					sb.append(
-						_getSubscriptionStateFilter(
-							"unactivatedProductKeys",
-							subscriptionProductKeys));
-					sb.append(" and ");
-					sb.append(
-						_getSubscriptionStateFilter(
-							"expiredProductKeys", subscriptionProductKeys));
-					sb.append(")");
-				}
-				else if (subscriptionState.equals(
-							ProductPurchaseConstants.STATE_UNACTIVATED)) {
-
-					sb.append("(not ");
-					sb.append(
-						_getSubscriptionStateFilter(
-							"activeProductKeys", subscriptionProductKeys));
-					sb.append(" and ");
-					sb.append(
-						_getSubscriptionStateFilter(
-							"unactivatedProductKeys",
-							subscriptionProductKeys));
-					sb.append(")");
-				}
-
-				if ((i + 1) < subscriptionStates.length) {
-					sb.append(" or ");
-				}
-			}
-
-			sb.append(")");
+			sb.append(_getSubscriptionStateFilter(subscriptionProductKeys));
 		}
 
 		if (parent) {
@@ -553,6 +389,107 @@ public class AccountSearchTerms extends AccountDisplayTerms {
 		}
 
 		return " or ";
+	}
+
+	private String _getSubscriptionStateFilter(
+		Set<String> subscriptionProductKeys) {
+
+		StringBundler sb = new StringBundler();
+
+		sb.append("(");
+
+		for (int i = 0; i < subscriptionStates.length; i++) {
+			String subscriptionState = subscriptionStates[i];
+
+			if (subscriptionState.equals(
+					ProductPurchaseConstants.STATE_ACTIVE)) {
+
+				sb.append(
+					_getSubscriptionStateFilter(
+						"activeProductKeys", subscriptionProductKeys));
+			}
+			else if (subscriptionState.equals(
+						ProductPurchaseConstants.STATE_CANCELLED)) {
+
+				sb.append("(not ");
+				sb.append(
+					_getSubscriptionStateFilter(
+						"activeProductKeys", subscriptionProductKeys));
+				sb.append(" and not ");
+				sb.append(
+					_getSubscriptionStateFilter(
+						"expiredProductKeys", subscriptionProductKeys));
+				sb.append(" and not ");
+				sb.append(
+					_getSubscriptionStateFilter(
+						"unactivatedProductKeys", subscriptionProductKeys));
+				sb.append(" and ");
+				sb.append(
+					_getSubscriptionStateFilter(
+						"cancelledProductKeys", subscriptionProductKeys));
+				sb.append(")");
+			}
+			else if (subscriptionState.equals(
+						ProductPurchaseConstants.STATE_EXPIRED)) {
+
+				sb.append("(not ");
+				sb.append(
+					_getSubscriptionStateFilter(
+						"activeProductKeys", subscriptionProductKeys));
+				sb.append(" and not ");
+				sb.append(
+					_getSubscriptionStateFilter(
+						"unactivatedProductKeys", subscriptionProductKeys));
+				sb.append(" and ");
+				sb.append(
+					_getSubscriptionStateFilter(
+						"expiredProductKeys", subscriptionProductKeys));
+				sb.append(")");
+			}
+			else if (subscriptionState.equals(
+						ProductPurchaseConstants.STATE_NOT_AVAILABLE)) {
+
+				sb.append("(not ");
+				sb.append(
+					_getSubscriptionStateFilter(
+						"activeProductKeys", subscriptionProductKeys));
+				sb.append(" and not ");
+				sb.append(
+					_getSubscriptionStateFilter(
+						"cancelledProductKeys", subscriptionProductKeys));
+				sb.append(" and not ");
+				sb.append(
+					_getSubscriptionStateFilter(
+						"expiredProductKeys", subscriptionProductKeys));
+				sb.append(" and not ");
+				sb.append(
+					_getSubscriptionStateFilter(
+						"unactivatedProductKeys", subscriptionProductKeys));
+
+				sb.append(")");
+			}
+			else if (subscriptionState.equals(
+						ProductPurchaseConstants.STATE_UNACTIVATED)) {
+
+				sb.append("(not ");
+				sb.append(
+					_getSubscriptionStateFilter(
+						"activeProductKeys", subscriptionProductKeys));
+				sb.append(" and ");
+				sb.append(
+					_getSubscriptionStateFilter(
+						"unactivatedProductKeys", subscriptionProductKeys));
+				sb.append(")");
+			}
+
+			if ((i + 1) < subscriptionStates.length) {
+				sb.append(" or ");
+			}
+		}
+
+		sb.append(")");
+
+		return sb.toString();
 	}
 
 	private String _getSubscriptionStateFilter(
