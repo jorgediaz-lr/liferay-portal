@@ -63,17 +63,8 @@ public class LicenseKeyFinderImpl
 			LicenseKeyFinder.class.getName() +
 				".findByU_C_M_M_AK_PPK_A_S_L_P_P_P_P_CI_O_D_H_I_M_S_E_A";
 
-	public static final String JOIN_BY_ACCOUNT_MEMBERSHIP =
-		LicenseKeyFinder.class.getName() + ".joinByAccountMembership";
-
 	public static final String JOIN_BY_ACTIVE =
 		LicenseKeyFinder.class.getName() + ".joinByActive";
-
-	public static final String JOIN_BY_ASSET_RECEIPT_ITEM =
-		LicenseKeyFinder.class.getName() + ".joinByAssetReceiptLicense";
-
-	public static final String JOIN_BY_USER =
-		LicenseKeyFinder.class.getName() + ".joinByUser";
 
 	public int countByKeywords(
 		String keywords, LinkedHashMap<String, Object> params) {
@@ -463,36 +454,8 @@ public class LicenseKeyFinderImpl
 	protected String getWhere(String key, Object value) {
 		String join = StringPool.BLANK;
 
-		if (key.equals("accountMembership")) {
-			String[] valueArray = (String[])value;
-
-			join = _customSQL.get(getClass(), JOIN_BY_ACCOUNT_MEMBERSHIP);
-
-			StringBundler sb = new StringBundler((valueArray.length * 2) + 2);
-
-			sb.append(StringPool.OPEN_PARENTHESIS);
-
-			for (int i = 0; i < valueArray.length; i++) {
-				if (i > 0) {
-					sb.append(" OR ");
-				}
-
-				sb.append("(Provisioning_LicenseKey.accountKey = ?)");
-			}
-
-			sb.append(StringPool.CLOSE_PARENTHESIS);
-
-			join = StringUtil.replace(
-				join, "Provisioning_LicenseKey.accountKey = ?", sb.toString());
-		}
-		else if (key.equals("active")) {
+		if (key.equals("active")) {
 			join = _customSQL.get(getClass(), JOIN_BY_ACTIVE);
-		}
-		else if (key.equals("assetReceiptLicense")) {
-			join = _customSQL.get(getClass(), JOIN_BY_ASSET_RECEIPT_ITEM);
-		}
-		else if (key.equals("user")) {
-			join = _customSQL.get(getClass(), JOIN_BY_USER);
 		}
 
 		if (Validator.isNotNull(join)) {

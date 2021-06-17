@@ -79,28 +79,10 @@
 				)
 		]]>
 	</sql>
-	<sql id="com.liferay.osb.provisioning.license.service.persistence.LicenseKeyFinder.joinByAccountMembership">
-		<![CDATA[
-			WHERE
-				Provisioning_LicenseKey.accountKey = ?
-		]]>
-	</sql>
 	<sql id="com.liferay.osb.provisioning.license.service.persistence.LicenseKeyFinder.joinByActive">
 		<![CDATA[
 			WHERE
 				Provisioning_LicenseKey.active_ = ?
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.provisioning.license.service.persistence.LicenseKeyFinder.joinByAssetReceiptLicense">
-		<![CDATA[
-			WHERE
-				Provisioning_LicenseKey.assetReceiptLicenseId >= ?
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.provisioning.license.service.persistence.LicenseKeyFinder.joinByUser">
-		<![CDATA[
-			WHERE
-				Provisioning_LicenseKey.userUuid = ?
 		]]>
 	</sql>
 </custom-sql>
