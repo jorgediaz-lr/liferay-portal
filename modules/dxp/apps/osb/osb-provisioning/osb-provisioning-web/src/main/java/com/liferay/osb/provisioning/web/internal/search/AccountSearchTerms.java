@@ -328,7 +328,7 @@ public class AccountSearchTerms extends AccountDisplayTerms {
 		return sb.toString();
 	}
 
-	public String getBasicSearchFilter() {
+	public String getBasicSearchFilter(Set<String> subscriptionProductKeys) {
 		StringBundler sb = new StringBundler();
 
 		if (!ArrayUtil.isEmpty(subscriptionStates)) {
