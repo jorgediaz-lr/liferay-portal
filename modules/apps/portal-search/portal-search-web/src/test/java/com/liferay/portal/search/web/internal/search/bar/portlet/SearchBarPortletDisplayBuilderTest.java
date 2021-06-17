@@ -18,18 +18,23 @@ import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.search.web.internal.display.context.SearchScope;
 import com.liferay.portal.search.web.internal.display.context.SearchScopePreference;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.util.Optional;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -40,6 +45,8 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+
+import javax.portlet.RenderRequest;
 
 /**
  * @author Adam Brandizzi
@@ -57,6 +64,7 @@ public class SearchBarPortletDisplayBuilderTest {
 
 		setUpHttp();
 		setUpThemeDisplay();
+		setUpPortal();
 	}
 
 	@Test
@@ -194,18 +202,46 @@ public class SearchBarPortletDisplayBuilderTest {
 			searchBarPortletDisplayBuilder.getSearchScope());
 	}
 
+	protected LiferayPortletRequest createLiferayPortletRequest() {
+		LiferayPortletRequest liferayPortletRequest = Mockito.mock(
+			LiferayPortletRequest.class);
+
+		Mockito.doReturn(
+			getHttpServletRequest()
+		).when(
+			liferayPortletRequest
+		).getHttpServletRequest();
+
+		return liferayPortletRequest;
+	}
+
 	protected SearchBarPortletDisplayBuilder
 		createSearchBarPortletDisplayBuilder() {
 
+		RenderRequest renderRequest = Mockito.mock(RenderRequest.class);
+
 		SearchBarPortletDisplayBuilder searchBarPortletDisplayBuilder =
 			new SearchBarPortletDisplayBuilder(
-				_http, _layoutLocalService, _portal);
+				_http, _layoutLocalService, _portal, renderRequest);
 
 		searchBarPortletDisplayBuilder.setSearchScopePreference(
 			SearchScopePreference.getSearchScopePreference("everything"));
 		searchBarPortletDisplayBuilder.setThemeDisplay(_themeDisplay);
 
 		return searchBarPortletDisplayBuilder;
+	}
+
+	protected HttpServletRequest getHttpServletRequest() {
+		HttpServletRequest httpServletRequest = Mockito.mock(
+			HttpServletRequest.class);
+
+		Mockito.when(
+			(ThemeDisplay)httpServletRequest.getAttribute(WebKeys.THEME_DISPLAY)
+		).thenReturn(
+			_themeDisplay
+		);
+
+		return httpServletRequest;
 	}
 
 	protected String getPath(String url) {
@@ -227,6 +263,16 @@ public class SearchBarPortletDisplayBuilderTest {
 		}
 
 		return url.substring(0, pos);
+	}
+
+	protected void setUpPortal() {
+		Mockito.doReturn(
+			createLiferayPortletRequest()
+		).when(
+			_portal
+		).getLiferayPortletRequest(
+			Mockito.anyObject()
+		);
 	}
 
 	protected void setUpHttp() {
