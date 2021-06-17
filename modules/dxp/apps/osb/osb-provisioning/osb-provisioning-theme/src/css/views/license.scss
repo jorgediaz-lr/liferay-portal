@@ -88,16 +88,33 @@
 	}
 }
 
-.licenses {
-	background-color: $body-bg;
-	border-radius: $border-radius;
-	padding: $spacing-default;
+.license-details {
+	dd {
+		margin-bottom: 0;
+	}
+
+	dl {
+		div {
+			display: flex;
+		}
+	}
+
+	dt {
+		padding-right: $spacing-xxs;
+		white-space: nowrap;
+	}
 }
 
 .license-search {
 	&.custom-search {
 		margin-bottom: $spacing-default;
 	}
+}
+
+.licenses {
+	background-color: $body-bg;
+	border-radius: $border-radius;
+	padding: $spacing-default;
 }
 
 .server-id-field-groups {

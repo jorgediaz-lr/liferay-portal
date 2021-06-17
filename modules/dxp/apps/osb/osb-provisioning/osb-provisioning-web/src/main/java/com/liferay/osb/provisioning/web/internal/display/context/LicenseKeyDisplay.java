@@ -14,6 +14,7 @@
 
 package com.liferay.osb.provisioning.web.internal.display.context;
 
+import com.liferay.osb.provisioning.license.helper.constants.LicenseType;
 import com.liferay.osb.provisioning.license.model.LicenseKey;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
@@ -56,6 +57,9 @@ public class LicenseKeyDisplay {
 			"MMMM dd, yyyy");
 		_dateTimeFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
 			"MMMM dd, yyyy hh:mm:ss a 'UTC'");
+
+		_licenseType = _licenseKey.getLicenseEntryType();
+		_licenseVersion = _licenseKey.getLicenseVersion();
 
 		_initStatus();
 	}
@@ -100,12 +104,20 @@ public class LicenseKeyDisplay {
 		return getSplitFieldValue(_licenseKey.getMacAddresses());
 	}
 
+	public String getMaxClusterNodes() {
+		return String.valueOf(_licenseKey.getMaxClusterNodes());
+	}
+
 	public String getMaxConcurrentUsersLabel() {
 		if (_licenseKey.getMaxConcurrentUsers() <= 0) {
 			return LanguageUtil.get(_httpServletRequest, "unlimited");
 		}
 
 		return String.valueOf(_licenseKey.getMaxConcurrentUsers());
+	}
+
+	public String getMaximumServers() {
+		return String.valueOf(_licenseKey.getMaxServers());
 	}
 
 	public String getMaxUsersLabel() {
@@ -177,12 +189,78 @@ public class LicenseKeyDisplay {
 		return StringPool.DASH;
 	}
 
+	public boolean isComplimentary() {
+		return _licenseKey.isComplimentary();
+	}
+
 	public String isComplimentaryLabel() {
 		if (_licenseKey.isComplimentary()) {
 			return LanguageUtil.get(_httpServletRequest, "yes");
 		}
 
 		return LanguageUtil.get(_httpServletRequest, "no");
+	}
+
+	public boolean isShowHostName() {
+		if ((_licenseVersion >= 3) &&
+			(_licenseType.equals(LicenseType.LIMITED) ||
+			 _licenseType.equals(LicenseType.PER_USER) ||
+			 _licenseType.equals(LicenseType.PRODUCTION))) {
+
+			return true;
+		}
+
+		return false;
+	}
+
+	public boolean isShowIpAddresses() {
+		if ((_licenseVersion >= 3) &&
+			(_licenseType.equals(LicenseType.LIMITED) ||
+			 _licenseType.equals(LicenseType.PER_USER) ||
+			 _licenseType.equals(LicenseType.PRODUCTION))) {
+
+			return true;
+		}
+
+		return false;
+	}
+
+	public boolean isShowMacAddresses() {
+		if (((_licenseVersion >= 3) &&
+			 (_licenseType.equals(LicenseType.LIMITED) ||
+			  _licenseType.equals(LicenseType.PER_USER) ||
+			  _licenseType.equals(LicenseType.PRODUCTION))) ||
+			((_licenseVersion == 2) &&
+			 _licenseType.equals(LicenseType.PRODUCTION)) ||
+			((_licenseVersion == 1) &&
+			 (_licenseType.equals(LicenseType.CLUSTER) ||
+			  _licenseType.equals(LicenseType.DEVELOPER_CLUSTER)))) {
+
+			return true;
+		}
+
+		return false;
+	}
+
+	public boolean isShowMaxClusterNodes() {
+		if (_licenseType.equals(LicenseType.VIRTUAL_CLUSTER)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public boolean isShowMaximumServers() {
+		if (((_licenseVersion >= 3) &&
+			 _licenseType.equals(LicenseType.CLUSTER)) ||
+			((_licenseVersion == 2) &&
+			 (_licenseType.equals(LicenseType.CLUSTER) ||
+			  _licenseType.equals(LicenseType.DEVELOPER_CLUSTER)))) {
+
+			return true;
+		}
+
+		return false;
 	}
 
 	protected String getSplitFieldValue(String value) {
@@ -227,6 +305,8 @@ public class LicenseKeyDisplay {
 	private final Format _dateTimeFormat;
 	private final HttpServletRequest _httpServletRequest;
 	private final LicenseKey _licenseKey;
+	private final String _licenseType;
+	private final int _licenseVersion;
 	private final LiferayPortletResponse _liferayPortletResponse;
 	private final PortletRequest _portletRequest;
 	private final PortletResponse _portletResponse;

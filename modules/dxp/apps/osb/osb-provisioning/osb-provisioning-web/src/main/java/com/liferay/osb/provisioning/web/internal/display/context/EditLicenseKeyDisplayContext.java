@@ -215,7 +215,7 @@ public class EditLicenseKeyDisplayContext {
 			ProvisioningActionKeys.MANAGE_LICENSE_KEYS);
 	}
 
-	public boolean isClusterLicenseKeyVisible() {
+	public boolean isShowClusterLicenseKey() {
 		if ((_licenseVersion >= 3) &&
 			_licenseType.equals(LicenseType.CLUSTER)) {
 
@@ -225,7 +225,7 @@ public class EditLicenseKeyDisplayContext {
 		return false;
 	}
 
-	public boolean isComplimentaryVisible() {
+	public boolean isShowComplimentary() {
 		if ((_licenseVersion >= 3) &&
 			!_licenseType.equals(LicenseType.CLUSTER)) {
 
@@ -235,8 +235,8 @@ public class EditLicenseKeyDisplayContext {
 		return false;
 	}
 
-	public boolean isDownloadVisible() {
-		if (!isClusterLicenseKeyVisible() && _licenseKey.isActive() &&
+	public boolean isShowDownload() {
+		if (!isShowClusterLicenseKey() && _licenseKey.isActive() &&
 			((_licenseVersion >= 2) ||
 			 _licenseType.equals(LicenseType.CLUSTER) ||
 			 _licenseType.equals(LicenseType.DEVELOPER_CLUSTER))) {
@@ -247,31 +247,15 @@ public class EditLicenseKeyDisplayContext {
 		return false;
 	}
 
-	public boolean isHostNameVisible() {
-		if ((_licenseVersion >= 3) &&
-			(_licenseType.equals(LicenseType.LIMITED) ||
-			 _licenseType.equals(LicenseType.PER_USER) ||
-			 _licenseType.equals(LicenseType.PRODUCTION))) {
-
-			return true;
-		}
-
-		return false;
+	public boolean isShowHostName() {
+		return _licenseKeyDisplay.isShowHostName();
 	}
 
-	public boolean isIpAddressesVisible() {
-		if ((_licenseVersion >= 3) &&
-			(_licenseType.equals(LicenseType.LIMITED) ||
-			 _licenseType.equals(LicenseType.PER_USER) ||
-			 _licenseType.equals(LicenseType.PRODUCTION))) {
-
-			return true;
-		}
-
-		return false;
+	public boolean isShowIpAddresses() {
+		return _licenseKeyDisplay.isShowIpAddresses();
 	}
 
-	public boolean isKeyVisible() {
+	public boolean isShowKey() {
 		if (_licenseVersion == 1) {
 			return true;
 		}
@@ -279,32 +263,15 @@ public class EditLicenseKeyDisplayContext {
 		return false;
 	}
 
-	public boolean isMacAddressesVisible() {
-		if (((_licenseVersion >= 3) &&
-			 (_licenseType.equals(LicenseType.LIMITED) ||
-			  _licenseType.equals(LicenseType.PER_USER) ||
-			  _licenseType.equals(LicenseType.PRODUCTION))) ||
-			((_licenseVersion == 2) &&
-			 _licenseType.equals(LicenseType.PRODUCTION)) ||
-			((_licenseVersion == 1) &&
-			 (_licenseType.equals(LicenseType.CLUSTER) ||
-			  _licenseType.equals(LicenseType.DEVELOPER_CLUSTER)))) {
-
-			return true;
-		}
-
-		return false;
+	public boolean isShowMacAddresses() {
+		return _licenseKeyDisplay.isShowMacAddresses();
 	}
 
-	public boolean isMaxClusterNodesVisible() {
-		if (_licenseType.equals(LicenseType.VIRTUAL_CLUSTER)) {
-			return true;
-		}
-
-		return false;
+	public boolean isShowMaxClusterNodes() {
+		return _licenseKeyDisplay.isShowMaxClusterNodes();
 	}
 
-	public boolean isMaximumConcurrentUsersVisible() {
+	public boolean isShowMaximumConcurrentUsers() {
 		if ((_licenseVersion >= 3) &&
 			_licenseType.equals(LicenseType.PER_USER)) {
 
@@ -314,7 +281,7 @@ public class EditLicenseKeyDisplayContext {
 		return false;
 	}
 
-	public boolean isMaximumConnectionsVisible() {
+	public boolean isShowMaximumConnections() {
 		if ((_licenseVersion >= 3) &&
 			(_licenseType.equals(LicenseType.DEVELOPER) ||
 			 _licenseType.equals(LicenseType.DEVELOPER_CLUSTER))) {
@@ -325,7 +292,11 @@ public class EditLicenseKeyDisplayContext {
 		return false;
 	}
 
-	public boolean isMaximumUsersVisible() {
+	public boolean isShowMaximumServers() {
+		return _licenseKeyDisplay.isShowMaximumServers();
+	}
+
+	public boolean isShowMaximumUsers() {
 		if ((_licenseVersion >= 3) &&
 			_licenseType.equals(LicenseType.PER_USER)) {
 
@@ -335,20 +306,7 @@ public class EditLicenseKeyDisplayContext {
 		return false;
 	}
 
-	public boolean isMaxmumServersVisible() {
-		if (((_licenseVersion >= 3) &&
-			 _licenseType.equals(LicenseType.CLUSTER)) ||
-			((_licenseVersion == 2) &&
-			 (_licenseType.equals(LicenseType.CLUSTER) ||
-			  _licenseType.equals(LicenseType.DEVELOPER_CLUSTER)))) {
-
-			return true;
-		}
-
-		return false;
-	}
-
-	public boolean isServerIdVisible() {
+	public boolean isShowServerId() {
 		if (((_licenseVersion >= 3) &&
 			 (_licenseType.equals(LicenseType.LIMITED) ||
 			  _licenseType.equals(LicenseType.PER_USER) ||
