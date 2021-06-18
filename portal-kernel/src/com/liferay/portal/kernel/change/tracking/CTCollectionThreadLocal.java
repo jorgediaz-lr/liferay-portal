@@ -15,7 +15,6 @@
 package com.liferay.portal.kernel.change.tracking;
 
 import com.liferay.petra.lang.CentralizedThreadLocal;
-import com.liferay.petra.lang.SafeClosable;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.kernel.util.ServiceProxyFactory;
 
@@ -45,8 +44,8 @@ public class CTCollectionThreadLocal {
 	 *             #setCTCollectionIdWithSafeCloseable(long)}
 	 */
 	@Deprecated
-	public static SafeClosable setCTCollectionId(long ctCollectionId) {
-		return _ctCollectionId.setWithSafeClosable(ctCollectionId);
+	public static SafeCloseable setCTCollectionId(long ctCollectionId) {
+		return _ctCollectionId.setWithSafeCloseable(ctCollectionId);
 	}
 
 	public static SafeCloseable setCTCollectionIdWithSafeCloseable(

@@ -259,7 +259,7 @@ public class CentralizedThreadLocalTest {
 		String value1 = "value1";
 
 		try (SafeClosable safeClosable =
-				centralizedThreadLocal.setWithSafeClosable(value1)) {
+				centralizedThreadLocal.setWithSafeCloseable(value1)) {
 
 			Assert.assertSame(value1, centralizedThreadLocal.get());
 		}
@@ -269,10 +269,10 @@ public class CentralizedThreadLocalTest {
 		String value2 = "value2";
 
 		try (SafeClosable safeClosable1 =
-				centralizedThreadLocal.setWithSafeClosable(value1)) {
+				centralizedThreadLocal.setWithSafeCloseable(value1)) {
 
 			try (SafeClosable safeClosable2 =
-					centralizedThreadLocal.setWithSafeClosable(value2)) {
+					centralizedThreadLocal.setWithSafeCloseable(value2)) {
 
 				Assert.assertSame(value2, centralizedThreadLocal.get());
 			}
