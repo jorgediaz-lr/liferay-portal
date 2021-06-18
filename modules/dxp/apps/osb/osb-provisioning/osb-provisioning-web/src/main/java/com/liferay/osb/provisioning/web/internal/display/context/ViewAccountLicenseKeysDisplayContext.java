@@ -81,10 +81,11 @@ public class ViewAccountLicenseKeysDisplayContext
 								StringBundler.concat(
 									"javascript:",
 									renderResponse.getNamespace(),
-									"renewLicenseKeys();"));
+									"replaceLicenseKeys();"));
 							dropdownItem.setIcon("time");
 							dropdownItem.setLabel(
-								LanguageUtil.get(httpServletRequest, "renew"));
+								LanguageUtil.get(
+									httpServletRequest, "replace"));
 							dropdownItem.setQuickAction(true);
 						});
 				}
@@ -134,7 +135,7 @@ public class ViewAccountLicenseKeysDisplayContext
 		return super.getPortletURL();
 	}
 
-	public Map<String, Object> getRenewLicenseKeysData() throws Exception {
+	public Map<String, Object> getReplaceLicenseKeysData() throws Exception {
 		Map<String, Object> data = new HashMap<>();
 
 		data.put("accountKey", account.getKey());
@@ -143,9 +144,9 @@ public class ViewAccountLicenseKeysDisplayContext
 		PortletURL portletURL = renderResponse.createActionURL();
 
 		portletURL.setParameter(
-			ActionRequest.ACTION_NAME, "/accounts/renew_license_keys");
+			ActionRequest.ACTION_NAME, "/accounts/replace_license_keys");
 
-		data.put("renewalURL", portletURL.toString());
+		data.put("replacementURL", portletURL.toString());
 
 		return data;
 	}

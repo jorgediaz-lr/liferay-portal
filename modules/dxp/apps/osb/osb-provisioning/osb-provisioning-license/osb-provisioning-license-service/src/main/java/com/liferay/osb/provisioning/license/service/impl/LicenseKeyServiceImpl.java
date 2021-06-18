@@ -307,19 +307,19 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		return false;
 	}
 
-	public LicenseKey renewLicenseKey(
+	public LicenseKey replaceLicenseKey(
 			long licenseKeyId, Date startDate, Date expirationDate)
 		throws Exception {
 
 		_licenseKeyPermission.check(
 			getPermissionChecker(), ProvisioningActionKeys.MANAGE_LICENSE_KEYS);
 
-		return licenseKeyLocalService.renewLicenseKey(
+		return licenseKeyLocalService.replaceLicenseKey(
 			getUserId(), licenseKeyId, startDate, expirationDate);
 	}
 
 	@JSONWebService
-	public LicenseKey renewLicenseKey(
+	public LicenseKey replaceLicenseKey(
 			String uuid, Date startDate, Date expirationDate)
 		throws Exception {
 
@@ -328,7 +328,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		LicenseKey licenseKey = licenseKeyLocalService.getLicenseKeyByUuid(
 			uuid);
 
-		return licenseKeyLocalService.renewLicenseKey(
+		return licenseKeyLocalService.replaceLicenseKey(
 			getUserId(), licenseKey.getLicenseKeyId(), startDate,
 			expirationDate);
 	}

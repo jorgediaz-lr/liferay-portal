@@ -493,7 +493,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		return licenseKeyPersistence.findByPrimaryKey(licenseKeyId);
 	}
 
-	public LicenseKey renewLicenseKey(
+	public LicenseKey replaceLicenseKey(
 			long userId, long licenseKeyId, Date startDate, Date expirationDate)
 		throws Exception {
 
@@ -527,10 +527,10 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		licenseKey = licenseKeyPersistence.update(licenseKey);
 
-		long renewTime =
+		long replaceTime =
 			(expirationDate.getTime() - startDate.getTime()) / Time.DAY;
 
-		String description = renewTime + "-Day License";
+		String description = replaceTime + "-Day License";
 
 		return doAddLicenseKeyVersion3_4(
 			new Date(), user, licenseKey.getLicenseEntry(), product,

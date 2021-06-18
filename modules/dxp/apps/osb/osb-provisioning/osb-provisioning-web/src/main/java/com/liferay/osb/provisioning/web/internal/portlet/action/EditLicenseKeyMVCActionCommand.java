@@ -274,7 +274,7 @@ public class EditLicenseKeyMVCActionCommand extends BaseMVCActionCommand {
 			Date curExpirationDate = dateFormat.parse(
 				ParamUtil.getString(actionRequest, "expirationDate"));
 
-			LicenseKey licenseKey = _licenseKeyService.renewLicenseKey(
+			LicenseKey licenseKey = _licenseKeyService.replaceLicenseKey(
 				licenseKeyId, curStartDate, curExpirationDate);
 
 			licenseKeyId = licenseKey.getLicenseKeyId();

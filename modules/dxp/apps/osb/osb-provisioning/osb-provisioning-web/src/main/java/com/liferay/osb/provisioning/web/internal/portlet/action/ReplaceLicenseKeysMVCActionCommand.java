@@ -44,11 +44,11 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	property = {
 		"javax.portlet.name=" + ProvisioningPortletKeys.ACCOUNTS,
-		"mvc.command.name=/accounts/renew_license_keys"
+		"mvc.command.name=/accounts/replace_license_keys"
 	},
 	service = MVCActionCommand.class
 )
-public class RenewLicenseKeysMVCActionCommand extends BaseMVCActionCommand {
+public class ReplaceLicenseKeysMVCActionCommand extends BaseMVCActionCommand {
 
 	@Override
 	protected void doProcessAction(
@@ -80,7 +80,7 @@ public class RenewLicenseKeysMVCActionCommand extends BaseMVCActionCommand {
 					ParamUtil.getString(actionRequest, "expirationDate"));
 
 				for (long licenseKeyId : licenseKeyIds) {
-					_licenseKeyService.renewLicenseKey(
+					_licenseKeyService.replaceLicenseKey(
 						licenseKeyId, curStartDate, curExpirationDate);
 				}
 			}
@@ -122,7 +122,7 @@ public class RenewLicenseKeysMVCActionCommand extends BaseMVCActionCommand {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		RenewLicenseKeysMVCActionCommand.class);
+		ReplaceLicenseKeysMVCActionCommand.class);
 
 	@Reference
 	private LicenseKeyService _licenseKeyService;
