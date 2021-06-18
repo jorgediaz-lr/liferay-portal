@@ -46,7 +46,7 @@ describe('RenewLicense', () => {
 
 		fireEvent.click(getByText('renew'));
 
-		return await wait(() => expect(queryAllByText('renew').length).toBe(3));
+		await wait(() => expect(queryAllByText('renew').length).toBe(3));
 	});
 
 	// Clay Date Picker always displays two inputs for the same date
@@ -56,7 +56,7 @@ describe('RenewLicense', () => {
 
 		fireEvent.click(getByText('renew'));
 
-		return await wait(() => {
+		await wait(() => {
 			getByText('start-date');
 
 			expect(queryAllByDisplayValue('2021-04-14').length).toBe(2);
@@ -68,7 +68,7 @@ describe('RenewLicense', () => {
 
 		fireEvent.click(getByText('renew'));
 
-		return await wait(() => {
+		await wait(() => {
 			getByText('expiration-date');
 
 			expect(queryAllByDisplayValue('2022-04-14').length).toBe(2);
@@ -80,7 +80,7 @@ describe('RenewLicense', () => {
 
 		fireEvent.click(getByText('renew'));
 
-		return await wait(() => {
+		await wait(() => {
 			getByText('start-date');
 
 			expect(queryAllByDisplayValue(formatDate(TODAY)).length).toBe(2);
@@ -92,7 +92,7 @@ describe('RenewLicense', () => {
 
 		fireEvent.click(getByText('renew'));
 
-		return await wait(() => {
+		await wait(() => {
 			getByText('expiration-date');
 
 			expect(
@@ -107,7 +107,7 @@ describe('RenewLicense', () => {
 
 		fireEvent.click(getByText('renew'));
 
-		return await wait(() =>
+		await wait(() =>
 			expect(queryAllByText('renew')[2].disabled).toBe(true)
 		);
 	});
@@ -121,7 +121,7 @@ describe('RenewLicense', () => {
 
 		fireEvent.click(getByText('renew'));
 
-		return await wait(() => {
+		await wait(() => {
 			fireEvent.change(getAllByPlaceholderText('YYYY-MM-DD')[0], {
 				target: {value: '2020-04-15'}
 			});
@@ -139,7 +139,7 @@ describe('RenewLicense', () => {
 
 		fireEvent.click(getByText('renew'));
 
-		return await wait(() => {
+		await wait(() => {
 			fireEvent.change(getAllByPlaceholderText('YYYY-MM-DD')[0], {
 				target: {value: ''}
 			});
@@ -157,7 +157,7 @@ describe('RenewLicense', () => {
 
 		fireEvent.click(getByText('renew'));
 
-		return await wait(() => {
+		await wait(() => {
 			fireEvent.change(getAllByPlaceholderText('YYYY-MM-DD')[0], {
 				target: {value: '2021-04-32'}
 			});
@@ -175,7 +175,7 @@ describe('RenewLicense', () => {
 
 		fireEvent.click(getByText('renew'));
 
-		return await wait(() => {
+		await wait(() => {
 			fireEvent.change(getAllByPlaceholderText('YYYY-MM-DD')[0], {
 				target: {value: '2021-04'}
 			});
@@ -193,7 +193,7 @@ describe('RenewLicense', () => {
 
 		fireEvent.click(getByText('renew'));
 
-		return await wait(() => {
+		await wait(() => {
 			fireEvent.change(getAllByPlaceholderText('YYYY-MM-DD')[0], {
 				target: {value: '2022-04-15'}
 			});

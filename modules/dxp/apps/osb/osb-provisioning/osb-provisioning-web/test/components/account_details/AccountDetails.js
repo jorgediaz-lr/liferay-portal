@@ -70,30 +70,30 @@ describe('AccountDetails', () => {
 	it('renders', async () => {
 		const {container} = renderAccountDetails();
 
-		return await wait(() => expect(container).toBeTruthy());
+		await wait(() => expect(container).toBeTruthy());
 	});
 
 	it('displays General Details section', async () => {
 		const {getByText} = renderAccountDetails();
 
-		return await wait(() => getByText('general-details'));
+		await wait(() => getByText('general-details'));
 	});
 
 	it('displays Partner Info section', async () => {
 		const {getByText} = renderAccountDetails();
 
-		return await wait(() => getByText('partner-info'));
+		await wait(() => getByText('partner-info'));
 	});
 
 	it('displays Address 1 section', async () => {
 		const {getByText} = renderAccountDetails();
 
-		return await wait(() => getByText('address 1'));
+		await wait(() => getByText('address 1'));
 	});
 
 	it('displays External Account Keys section', async () => {
 		const {getByText} = renderAccountDetails();
 
-		return await wait(() => getByText('external-account-keys'));
+		await wait(() => getByText('external-account-keys'));
 	});
 });

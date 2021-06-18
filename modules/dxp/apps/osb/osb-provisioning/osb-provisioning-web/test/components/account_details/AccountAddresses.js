@@ -94,13 +94,13 @@ describe('AccountAddresses', () => {
 	it('renders', async () => {
 		const {container} = renderAccountAddress(sampleAddresses);
 
-		return await wait(() => expect(container).toBeTruthy());
+		await wait(() => expect(container).toBeTruthy());
 	});
 
 	it('displays an addresses List Group with dashes for each field when no address was provided', async () => {
 		const {getAllByText} = renderAccountAddress();
 
-		return await wait(() => expect(getAllByText('-').length).toBe(7));
+		await wait(() => expect(getAllByText('-').length).toBe(7));
 	});
 
 	it('does not allow any address fields to be edited when no address was provided', async () => {
@@ -108,7 +108,7 @@ describe('AccountAddresses', () => {
 
 		fireEvent.click(getAllByText('-')[0]);
 
-		return await wait(() => {
+		await wait(() => {
 			expect(queryByText('save')).toBeFalsy();
 			expect(queryByText('cancel')).toBeFalsy();
 		});
@@ -117,13 +117,13 @@ describe('AccountAddresses', () => {
 	it('displays no delete button when no address was provided', async () => {
 		const {queryByLabelText} = renderAccountAddress();
 
-		return await wait(() => expect(queryByLabelText('delete')).toBeFalsy());
+		await wait(() => expect(queryByLabelText('delete')).toBeFalsy());
 	});
 
 	it('displays multiple address List Groups when multiple addresses are provided', async () => {
 		const {getByText} = renderAccountAddress(sampleAddresses);
 
-		return await wait(() => {
+		await wait(() => {
 			getByText('address 1');
 			getByText('address 2');
 			getByText('address 3');
@@ -134,23 +134,19 @@ describe('AccountAddresses', () => {
 		it('displays an add button when no address was provided', async () => {
 			const {queryByLabelText} = renderAccountAddress();
 
-			return await wait(() =>
-				expect(queryByLabelText('add')).toBeTruthy()
-			);
+			await wait(() => expect(queryByLabelText('add')).toBeTruthy());
 		});
 
 		it('displays an add button for each provided addresses', async () => {
 			const {getAllByLabelText} = renderAccountAddress(sampleAddresses);
 
-			return await wait(() =>
-				expect(getAllByLabelText('add').length).toBe(3)
-			);
+			await wait(() => expect(getAllByLabelText('add').length).toBe(3));
 		});
 
 		it('displays a delete button for each provided addresses', async () => {
 			const {getAllByLabelText} = renderAccountAddress(sampleAddresses);
 
-			return await wait(() =>
+			await wait(() =>
 				expect(getAllByLabelText('delete').length).toBe(3)
 			);
 		});
@@ -160,7 +156,7 @@ describe('AccountAddresses', () => {
 
 			fireEvent.click(getByText('Diamond Bar'));
 
-			return await wait(() => {
+			await wait(() => {
 				getByText('save');
 				getByText('cancel');
 			});
@@ -171,9 +167,7 @@ describe('AccountAddresses', () => {
 		it('does not display an add button when no address was provided', async () => {
 			const {queryByLabelText} = renderAccountAddress([], false);
 
-			return await wait(() =>
-				expect(queryByLabelText('add')).toBeFalsy()
-			);
+			await wait(() => expect(queryByLabelText('add')).toBeFalsy());
 		});
 
 		it('does not display an add button for each provided addresses', async () => {
@@ -182,9 +176,7 @@ describe('AccountAddresses', () => {
 				false
 			);
 
-			return await wait(() =>
-				expect(queryByLabelText('add')).toBeFalsy()
-			);
+			await wait(() => expect(queryByLabelText('add')).toBeFalsy());
 		});
 
 		it('does not display a delete button for each provided addresses', async () => {
@@ -193,9 +185,7 @@ describe('AccountAddresses', () => {
 				false
 			);
 
-			return await wait(() =>
-				expect(queryByLabelText('delete')).toBeFalsy()
-			);
+			await wait(() => expect(queryByLabelText('delete')).toBeFalsy());
 		});
 
 		it('does not allow address fields to be edited when at least one address was provided', async () => {
@@ -206,7 +196,7 @@ describe('AccountAddresses', () => {
 
 			fireEvent.click(getByText('Diamond Bar'));
 
-			return await wait(() => {
+			await wait(() => {
 				expect(queryByText('save')).toBeFalsy();
 				expect(queryByText('cancel')).toBeFalsy();
 			});

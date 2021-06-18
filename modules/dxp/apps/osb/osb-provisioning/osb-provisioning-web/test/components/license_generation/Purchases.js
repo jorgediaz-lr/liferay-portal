@@ -211,99 +211,6 @@ describe('Purchases', () => {
 			expect(limitedPrivilegeStartDateDatepickers.length).toBe(2);
 		});
 
-		it('always displays Expiration Date datepicker for users with full privilege', () => {
-			const {container} = renderPurchases({
-				props: {
-					detached: {
-						instanceSizes: [1, 2, 3, 4],
-						licenseKeysGenerated: '0'
-					}
-				}
-			});
-
-			const expDateDatepickers = container.querySelectorAll(
-				'input[name="expirationDate"]'
-			);
-
-			expect(expDateDatepickers.length).toBe(3);
-		});
-
-		it('displays the Expiration Date datepicker under the Detached section for users with limited privilege', () => {
-			const {container} = renderPurchases({
-				permission: false,
-				props: {
-					detached: {
-						instanceSizes: [1, 2, 3, 4],
-						licenseKeysGenerated: '0'
-					},
-					purchased: []
-				}
-			});
-
-			const expDateDatepickers = container.querySelectorAll(
-				'input[name="expirationDate"]'
-			);
-
-			expect(expDateDatepickers.length).toBe(1);
-		});
-
-		it('disables the Choose button for the limited privileged user in the Detached section if the Expiration Date selected is not within one year from the start date when Type is one of Enterpirse, Limited, OEM, or Virtual Cluster', async () => {
-			const {container, getAllByPlaceholderText} = renderPurchases({
-				initialLicense: new License({
-					licenseEntry: {
-						licenseEntryType: 'virtual_cluster'
-					}
-				}),
-				permission: false,
-				props: {
-					detached: {
-						instanceSizes: [1, 2, 3, 4],
-						licenseKeysGenerated: '0'
-					},
-					purchased: []
-				}
-			});
-
-			fireEvent.change(getAllByPlaceholderText('YYYY-MM-DD')[1], {
-				target: {value: formatDate(generateNewDateByYear(TODAY, 2))}
-			});
-
-			await wait(() =>
-				expect(
-					within(container).getByText('choose').disabled
-				).toBeTruthy()
-			);
-		});
-
-		it('displays the Expiration Date datepicker under the Non Detached section for users with limited privilege if the Type is NOT Enterpirse, Limited, OEM, or Virtual Cluster', () => {
-			const {container} = renderPurchases({
-				permission: false
-			});
-
-			const expDateDatepickers = container.querySelectorAll(
-				'input[name="expirationDate"]'
-			);
-
-			expect(expDateDatepickers.length).toBe(2);
-		});
-
-		it('does not display the Expiration Date datepicker under the Non Detached section for users with limited previliege if the Type is Enterpirse, Limited, OEM, or Virtual Cluster', () => {
-			const {container} = renderPurchases({
-				initialLicense: new License({
-					licenseEntry: {
-						licenseEntryType: 'virtual_cluster'
-					}
-				}),
-				permission: false
-			});
-
-			const expDateDatepickers = container.querySelectorAll(
-				'input[name="expirationDate"]'
-			);
-
-			expect(expDateDatepickers.length).toBe(0);
-		});
-
 		it('displays the Choose button as disabled when a date field is left empty', () => {
 			const {getAllByPlaceholderText, getAllByText} = renderPurchases();
 
@@ -332,7 +239,129 @@ describe('Purchases', () => {
 			expect(firstChooseBtn.disabled).toBeTruthy();
 		});
 
-		describe('Dates for Detached Section', () => {
+		describe('User Privilege', () => {
+			describe('Full Privilege', () => {
+				it('always displays Expiration Date datepicker', () => {
+					const {container} = renderPurchases({
+						props: {
+							detached: {
+								instanceSizes: [1, 2, 3, 4],
+								licenseKeysGenerated: '0'
+							}
+						}
+					});
+
+					const expDateDatepickers = container.querySelectorAll(
+						'input[name="expirationDate"]'
+					);
+
+					expect(expDateDatepickers.length).toBe(3);
+				});
+			});
+
+			describe('Limited Privilege', () => {
+				describe('Detached Section', () => {
+					describe('when Type is NOT Enterpirse, Limited, OEM, or Virtual Cluster', () => {
+						it('displays the Expiration Date datepicker', () => {
+							const {container} = renderPurchases({
+								permission: false,
+								props: {
+									detached: {
+										instanceSizes: [1, 2, 3, 4],
+										licenseKeysGenerated: '0'
+									},
+									purchased: []
+								}
+							});
+
+							const expDateDatepickers = container.querySelectorAll(
+								'input[name="expirationDate"]'
+							);
+
+							expect(expDateDatepickers.length).toBe(1);
+						});
+					});
+
+					describe('when Type is Enterpirse, Limited, OEM, or Virtual Cluster', () => {
+						it('disables the Choose button if the user selects an Expiration Date that is not within one year from the start date', async () => {
+							const {
+								container,
+								getAllByPlaceholderText
+							} = renderPurchases({
+								initialLicense: new License({
+									licenseEntry: {
+										licenseEntryType: 'virtual_cluster'
+									}
+								}),
+								permission: false,
+								props: {
+									detached: {
+										instanceSizes: [1, 2, 3, 4],
+										licenseKeysGenerated: '0'
+									},
+									purchased: []
+								}
+							});
+
+							fireEvent.change(
+								getAllByPlaceholderText('YYYY-MM-DD')[1],
+								{
+									target: {
+										value: formatDate(
+											generateNewDateByYear(TODAY, 2)
+										)
+									}
+								}
+							);
+
+							await wait(() =>
+								expect(
+									within(container).getByText('choose')
+										.disabled
+								).toBeTruthy()
+							);
+						});
+					});
+				});
+
+				describe('Non Detached Section', () => {
+					describe('when Type is NOT Enterpirse, Limited, OEM, or Virtual Cluster', () => {
+						it('displays the Expiration Date datepicker ', () => {
+							const {container} = renderPurchases({
+								permission: false
+							});
+
+							const expDateDatepickers = container.querySelectorAll(
+								'input[name="expirationDate"]'
+							);
+
+							expect(expDateDatepickers.length).toBe(2);
+						});
+					});
+
+					describe('when Type is Enterpirse, Limited, OEM, or Virtual Cluster', () => {
+						it('does not display the Expiration Date datepicker ', () => {
+							const {container} = renderPurchases({
+								initialLicense: new License({
+									licenseEntry: {
+										licenseEntryType: 'virtual_cluster'
+									}
+								}),
+								permission: false
+							});
+
+							const expDateDatepickers = container.querySelectorAll(
+								'input[name="expirationDate"]'
+							);
+
+							expect(expDateDatepickers.length).toBe(0);
+						});
+					});
+				});
+			});
+		});
+
+		describe('Date Display for Detached Section', () => {
 			it('always displays Start Date as Today in UTC', () => {
 				const {getAllByDisplayValue} = renderPurchases({
 					props: {
@@ -375,82 +404,107 @@ describe('Purchases', () => {
 			});
 		});
 
-		describe('Dates for Non Detached Section', () => {
-			it('always displays the Start Date of a Perpetual subscription as Today in UTC', () => {
-				const {getAllByDisplayValue} = renderPurchases();
+		describe('Dates Display for Non Detached Section', () => {
+			describe('for a Perpetual Subscription', () => {
+				it('always displays the Start Date as Today in UTC', () => {
+					const {getAllByDisplayValue} = renderPurchases();
 
-				expect(getAllByDisplayValue(formatDate(TODAY)).length).toBe(2);
-			});
-
-			it('always displays the Expiration Date of a Perpetual subscription whose Type is NOT Enterpirse, Limited, OEM, or Virtual Cluster as 100 years from Today in UTC', () => {
-				const {getAllByDisplayValue} = renderPurchases();
-
-				const startDate = TODAY;
-				const expirationDate = generateNewDateByYear(startDate, 100);
-
-				expect(getAllByDisplayValue(formatDate(startDate)).length).toBe(
-					2
-				);
-				expect(
-					getAllByDisplayValue(formatDate(expirationDate)).length
-				).toBe(2);
-
-				expect(
-					expirationDate.getFullYear() - startDate.getFullYear()
-				).toBe(100);
-			});
-
-			it('always displays the Expiration Date of a Perpetual subscription whose Type is Enterpirse, Limited, OEM, or Virtual Cluster as 395 days (365 days + 30 days of grace period) from Today in UTC', () => {
-				const {getAllByDisplayValue} = renderPurchases({
-					initialLicense: new License({
-						licenseEntry: {
-							licenseEntryType: 'virtual_cluster'
-						}
-					})
+					expect(getAllByDisplayValue(formatDate(TODAY)).length).toBe(
+						2
+					);
 				});
 
-				const startDate = TODAY;
-				const expirationDate = generateNewDateByDay(
-					generateNewDateByYear(startDate)
-				);
+				describe('when Type is NOT Enterpirse, Limited, OEM, or Virtual Cluster ', () => {
+					it('always displays the Expiration Date  as 100 years from Today in UTC', () => {
+						const {getAllByDisplayValue} = renderPurchases();
 
-				expect(getAllByDisplayValue(formatDate(startDate)).length).toBe(
-					2
-				);
-				expect(
-					getAllByDisplayValue(formatDate(expirationDate)).length
-				).toBe(2);
+						const startDate = TODAY;
+						const expirationDate = generateNewDateByYear(
+							startDate,
+							100
+						);
 
-				expect(
-					expirationDate.getFullYear() - startDate.getFullYear()
-				).toBe(1);
-				expect(expirationDate.getMonth() - startDate.getMonth()).toBe(
-					1
-				);
-			});
+						expect(
+							getAllByDisplayValue(formatDate(startDate)).length
+						).toBe(2);
+						expect(
+							getAllByDisplayValue(formatDate(expirationDate))
+								.length
+						).toBe(2);
 
-			it('displays the license Start Date of a Non Perpetual subscription as the subscription start date', () => {
-				const {getAllByDisplayValue} = renderPurchases();
-
-				expect(getAllByDisplayValue('2020-03-17').length).toBe(2);
-			});
-
-			it('displays the Expiration Date of a Non Perpetual subscription whose license Type is NOT Enterpirse, Limited, OEM, or Virtual Cluster as 100 years from the subscription End Date', () => {
-				const {getAllByDisplayValue} = renderPurchases();
-
-				expect(getAllByDisplayValue('2120-03-23').length).toBe(2);
-			});
-
-			it('displays the Expiration Date of a Non Perpetual subscription whose license Type is Enterpirse, Limited, OEM, or Virtual Cluster as the subscription End Date', () => {
-				const {getAllByDisplayValue} = renderPurchases({
-					initialLicense: new License({
-						licenseEntry: {
-							licenseEntryType: 'virtual_cluster'
-						}
-					})
+						expect(
+							expirationDate.getFullYear() -
+								startDate.getFullYear()
+						).toBe(100);
+					});
 				});
 
-				expect(getAllByDisplayValue('2020-04-16').length).toBe(2);
+				describe('when Type is Enterpirse, Limited, OEM, or Virtual Cluster', () => {
+					it('always displays the Expiration Date  as 395 days (365 days + 30 days of grace period) from Today in UTC', () => {
+						const {getAllByDisplayValue} = renderPurchases({
+							initialLicense: new License({
+								licenseEntry: {
+									licenseEntryType: 'virtual_cluster'
+								}
+							})
+						});
+
+						const startDate = TODAY;
+						const expirationDate = generateNewDateByDay(
+							generateNewDateByYear(startDate)
+						);
+
+						expect(
+							getAllByDisplayValue(formatDate(startDate)).length
+						).toBe(2);
+						expect(
+							getAllByDisplayValue(formatDate(expirationDate))
+								.length
+						).toBe(2);
+
+						expect(
+							expirationDate.getFullYear() -
+								startDate.getFullYear()
+						).toBe(1);
+						expect(
+							expirationDate.getMonth() - startDate.getMonth()
+						).toBe(1);
+					});
+				});
+			});
+
+			describe('for a non Perpetual Subscription', () => {
+				it('displays the license Start Date as the subscription start date', () => {
+					const {getAllByDisplayValue} = renderPurchases();
+
+					expect(getAllByDisplayValue('2020-03-17').length).toBe(2);
+				});
+
+				describe('when Type is NOT Enterpirse, Limited, OEM, or Virtual Cluster', () => {
+					it('displays the Expiration Date as 100 years from the subscription End Date', () => {
+						const {getAllByDisplayValue} = renderPurchases();
+
+						expect(getAllByDisplayValue('2120-03-23').length).toBe(
+							2
+						);
+					});
+				});
+
+				describe('when Type is Enterpirse, Limited, OEM, or Virtual Cluster', () => {
+					it('displays the Expiration Date as the subscription End Date', () => {
+						const {getAllByDisplayValue} = renderPurchases({
+							initialLicense: new License({
+								licenseEntry: {
+									licenseEntryType: 'virtual_cluster'
+								}
+							})
+						});
+
+						expect(getAllByDisplayValue('2020-04-16').length).toBe(
+							2
+						);
+					});
+				});
 			});
 		});
 	});

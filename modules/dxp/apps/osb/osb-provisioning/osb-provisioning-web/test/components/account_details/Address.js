@@ -74,7 +74,7 @@ describe('Address', () => {
 	it('renders', async () => {
 		const {container} = renderAddress();
 
-		return await wait(() => expect(container).toBeTruthy());
+		await wait(() => expect(container).toBeTruthy());
 	});
 
 	it('displays all address fields as editable when any one of the address fields is clicked for a user with full editing privilege', async () => {
@@ -82,7 +82,7 @@ describe('Address', () => {
 
 		fireEvent.click(getByText('Diamond Bar'));
 
-		return await wait(() => {
+		await wait(() => {
 			expect(container.querySelectorAll('select').length).toBe(2);
 			expect(container.querySelectorAll('input[type=text]').length).toBe(
 				5
@@ -98,7 +98,7 @@ describe('Address', () => {
 
 		fireEvent.click(getByText('Diamond Bar'));
 
-		return await wait(() => {
+		await wait(() => {
 			expect(container.querySelectorAll('select').length).toBe(0);
 			expect(container.querySelectorAll('input[type=text]').length).toBe(
 				0
@@ -114,7 +114,7 @@ describe('Address', () => {
 
 		fireEvent.click(getByText('United States'));
 
-		return await wait(() => {
+		await wait(() => {
 			getByText('China');
 			getByText('United Arab Emirates');
 			getByText('United States');
@@ -126,7 +126,7 @@ describe('Address', () => {
 
 		fireEvent.click(getByText('yes'));
 
-		return await wait(() => {
+		await wait(() => {
 			expect(
 				container.querySelector('input[type=checkbox]').checked
 			).toBe(true);

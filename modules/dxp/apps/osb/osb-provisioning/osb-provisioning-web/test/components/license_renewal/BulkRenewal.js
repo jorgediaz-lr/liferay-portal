@@ -47,7 +47,7 @@ describe('BulkRenewal', () => {
 
 		fireEvent.click(getByText('Test'));
 
-		return await wait(() => {
+		await wait(() => {
 			getByText('start-date');
 			getByText('expiration-date');
 		});
