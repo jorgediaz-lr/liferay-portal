@@ -16,6 +16,8 @@ package com.liferay.account.admin.web.internal.portlet.action;
 
 import com.liferay.account.constants.AccountPortletKeys;
 import com.liferay.account.service.AccountEntryOrganizationRelLocalService;
+import com.liferay.petra.lang.SafeClosable;
+import com.liferay.portal.kernel.messaging.proxy.ProxyModeThreadLocal;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -50,9 +52,13 @@ public class AssignAccountOrganizationsMVCActionCommand
 		long[] accountOrganizationIds = ParamUtil.getLongValues(
 			actionRequest, "accountOrganizationIds");
 
-		_accountEntryOrganizationRelLocalService.
-			addAccountEntryOrganizationRels(
-				accountEntryId, accountOrganizationIds);
+		try (SafeClosable safeClosable =
+				ProxyModeThreadLocal.setWithSafeClosable(true)) {
+
+			_accountEntryOrganizationRelLocalService.
+				addAccountEntryOrganizationRels(
+					accountEntryId, accountOrganizationIds);
+		}
 	}
 
 	@Reference
