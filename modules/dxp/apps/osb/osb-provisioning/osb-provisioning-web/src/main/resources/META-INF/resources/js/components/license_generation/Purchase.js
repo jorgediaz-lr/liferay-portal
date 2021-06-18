@@ -43,7 +43,10 @@ function Purchase({
 	);
 	const [sizing, setSizing] = useState();
 
-	const [validExperiationDate, setValidExperiationDate] = useState(true);
+	const [validDates, setValidDates] = useState(
+		!isNaN(new Date(licenseExpirationDate)) &&
+			!isNaN(new Date(licenseStartDate))
+	);
 
 	const [{licenseEntry}, {updateLicense}] = useNewLicense();
 	const {updateDatePermission} = usePermissions();
@@ -53,17 +56,8 @@ function Purchase({
 	);
 
 	useEffect(() => {
-		if (
-			!isNaN(new Date(selectedExpirationDate)) &&
-			!isNaN(new Date(selectedStartDate)) &&
-			validExperiationDate
-		) {
-			setDisableChoose(false);
-		}
-		else {
-			setDisableChoose(true);
-		}
-	}, [selectedExpirationDate, selectedStartDate, validExperiationDate]);
+		setDisableChoose(!validDates);
+	}, [validDates]);
 
 	function handleChoosePurchase() {
 		updateLicense(license =>
@@ -80,11 +74,21 @@ function Purchase({
 	}
 
 	function handleExpirationDateChange(val) {
+		const expiration = Date.parse(new Date(val));
+		const start = Date.parse(new Date(selectedStartDate));
+
 		setSelectedExpirationDate(val);
+
+		setValidDates(start < expiration);
 	}
 
 	function handleStartDateChange(val) {
+		const expiration = Date.parse(new Date(selectedExpirationDate));
+		const start = Date.parse(new Date(val));
+
 		setSelectedStartDate(val);
+
+		setValidDates(start < expiration);
 	}
 
 	function handleSizingChange(event) {
@@ -92,12 +96,12 @@ function Purchase({
 	}
 
 	function validateExpirationDateChange(val) {
-		const start = Date.parse(new Date(selectedStartDate));
 		const expiration = Date.parse(new Date(val));
-
-		setValidExperiationDate(expiration - start <= YEAR_IN_MS);
+		const start = Date.parse(new Date(selectedStartDate));
 
 		setSelectedExpirationDate(val);
+
+		setValidDates(expiration - start <= YEAR_IN_MS && start < expiration);
 	}
 
 	return (
@@ -105,7 +109,7 @@ function Purchase({
 			{licenseStartDate ? (
 				<ClayTableCell
 					className={`input-group-sm ${
-						isNaN(new Date(selectedStartDate)) ? 'has-error' : ''
+						!validDates ? 'has-error' : ''
 					}`}
 				>
 					<DatePicker
@@ -123,9 +127,7 @@ function Purchase({
 					(!updateDatePermission && !restricted)) && (
 					<ClayTableCell
 						className={`input-group-sm ${
-							isNaN(new Date(selectedExpirationDate))
-								? 'has-error'
-								: ''
+							!validDates ? 'has-error' : ''
 						}`}
 					>
 						<DatePicker
@@ -147,7 +149,7 @@ function Purchase({
 					{detached && (
 						<ClayTableCell
 							className={`input-group-sm ${
-								!validExperiationDate ? 'has-error' : ''
+								!validDates ? 'has-error' : ''
 							}`}
 						>
 							<DatePicker

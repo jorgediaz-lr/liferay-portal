@@ -239,6 +239,20 @@ describe('Purchases', () => {
 			expect(firstChooseBtn.disabled).toBeTruthy();
 		});
 
+		it('displays the Choose button as disabled when the start date entered is later than the expiration date', () => {
+			const {getAllByPlaceholderText, getAllByText} = renderPurchases();
+
+			const firstChooseBtn = getAllByText('choose')[0];
+
+			expect(firstChooseBtn.disabled).toBeFalsy();
+
+			fireEvent.change(getAllByPlaceholderText('YYYY-MM-DD')[0], {
+				target: {value: '2127-04-16'}
+			});
+
+			expect(firstChooseBtn.disabled).toBeTruthy();
+		});
+
 		describe('User Privilege', () => {
 			describe('Full Privilege', () => {
 				it('always displays Expiration Date datepicker', () => {
