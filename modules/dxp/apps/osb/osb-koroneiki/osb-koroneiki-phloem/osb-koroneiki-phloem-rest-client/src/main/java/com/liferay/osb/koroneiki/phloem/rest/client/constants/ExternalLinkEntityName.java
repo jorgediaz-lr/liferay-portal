@@ -19,8 +19,6 @@ package com.liferay.osb.koroneiki.phloem.rest.client.constants;
  */
 public class ExternalLinkEntityName {
 
-	public static final String LICENSE_KEY = "license-key";
-
 	public static final String DOSSIERA_ACCOUNT = "account";
 
 	public static final String DOSSIERA_PRODUCT = "product";
@@ -30,6 +28,8 @@ public class ExternalLinkEntityName {
 	public static final String JIRA_PROJECT = "project";
 
 	public static final String LCS_CORP_PROJECT = "corp-project";
+
+	public static final String LICENSE_KEY = "license-key";
 
 	public static final String SALESFORCE_ACCOUNT = "account";
 
