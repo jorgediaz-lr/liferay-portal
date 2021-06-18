@@ -37,11 +37,11 @@ public interface DLStoreConvertProcess {
 		Store sourceStore, Store targetStore, long companyId, long repositoryId,
 		String fileName, String versionLabel, boolean delete) {
 
-		try (InputStream inputStream = sourceStore.getFileAsStream(
+		try (InputStream is = sourceStore.getFileAsStream(
 				companyId, repositoryId, fileName, versionLabel)) {
 
 			targetStore.addFile(
-				companyId, repositoryId, fileName, versionLabel, inputStream);
+				companyId, repositoryId, fileName, versionLabel, is);
 
 			if (delete) {
 				sourceStore.deleteFile(

@@ -133,10 +133,10 @@ public class TunnelServlet extends HttpServlet {
 		}
 
 		if (returnObject != null) {
-			try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(
+			try (ObjectOutputStream oos = new ObjectOutputStream(
 					httpServletResponse.getOutputStream())) {
 
-				objectOutputStream.writeObject(returnObject);
+				oos.writeObject(returnObject);
 			}
 			catch (IOException ioException) {
 				_log.error(ioException, ioException);

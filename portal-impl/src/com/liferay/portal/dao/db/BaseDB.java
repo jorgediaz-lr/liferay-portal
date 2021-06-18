@@ -162,19 +162,18 @@ public abstract class BaseDB implements DB {
 		String catalog = dbInspector.getCatalog();
 		String schema = dbInspector.getSchema();
 
-		try (ResultSet tableResultSet = databaseMetaData.getTables(
+		try (ResultSet tableRS = databaseMetaData.getTables(
 				catalog, schema, null, new String[] {"TABLE"})) {
 
-			while (tableResultSet.next()) {
+			while (tableRS.next()) {
 				String tableName = dbInspector.normalizeName(
-					tableResultSet.getString("TABLE_NAME"));
+					tableRS.getString("TABLE_NAME"));
 
-				try (ResultSet indexResultSet = databaseMetaData.getIndexInfo(
+				try (ResultSet indexRS = databaseMetaData.getIndexInfo(
 						catalog, schema, tableName, false, false)) {
 
-					while (indexResultSet.next()) {
-						String indexName = indexResultSet.getString(
-							"INDEX_NAME");
+					while (indexRS.next()) {
+						String indexName = indexRS.getString("INDEX_NAME");
 
 						if (indexName == null) {
 							continue;
@@ -189,8 +188,7 @@ public abstract class BaseDB implements DB {
 							continue;
 						}
 
-						boolean unique = !indexResultSet.getBoolean(
-							"NON_UNIQUE");
+						boolean unique = !indexRS.getBoolean("NON_UNIQUE");
 
 						indexes.add(new Index(indexName, tableName, unique));
 					}

@@ -571,23 +571,19 @@ public class PortletSessionImplTest {
 	}
 
 	private Object _getDeserializedObject(Object object) throws Exception {
-		try (UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
+		try (UnsyncByteArrayOutputStream ubaos =
 				new UnsyncByteArrayOutputStream()) {
 
-			try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(
-					unsyncByteArrayOutputStream)) {
-
-				objectOutputStream.writeObject(object);
+			try (ObjectOutputStream oos = new ObjectOutputStream(ubaos)) {
+				oos.writeObject(object);
 			}
 
-			try (UnsyncByteArrayInputStream unsyncByteArrayInputStream =
+			try (UnsyncByteArrayInputStream ubais =
 					new UnsyncByteArrayInputStream(
-						unsyncByteArrayOutputStream.unsafeGetByteArray(), 0,
-						unsyncByteArrayOutputStream.size());
-				ObjectInputStream objectInputStream = new ObjectInputStream(
-					unsyncByteArrayInputStream)) {
+						ubaos.unsafeGetByteArray(), 0, ubaos.size());
+				ObjectInputStream ois = new ObjectInputStream(ubais)) {
 
-				return objectInputStream.readObject();
+				return ois.readObject();
 			}
 		}
 	}

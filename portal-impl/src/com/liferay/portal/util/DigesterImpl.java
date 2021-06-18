@@ -181,17 +181,17 @@ public class DigesterImpl implements Digester {
 	}
 
 	@Override
-	public byte[] digestRaw(String algorithm, InputStream inputStream1) {
+	public byte[] digestRaw(String algorithm, InputStream inputStream) {
 		MessageDigest messageDigest = null;
 
-		try (InputStream inputStream2 = inputStream1) {
+		try (InputStream is = inputStream) {
 			messageDigest = MessageDigest.getInstance(algorithm);
 
 			byte[] buffer = new byte[StreamUtil.BUFFER_SIZE];
 
 			int read = 0;
 
-			while ((read = inputStream2.read(buffer)) != -1) {
+			while ((read = is.read(buffer)) != -1) {
 				if (read > 0) {
 					messageDigest.update(buffer, 0, read);
 				}
