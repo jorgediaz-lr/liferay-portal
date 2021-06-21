@@ -2519,8 +2519,12 @@ AUI.add(
 							start = end;
 							end = start + delta;
 
+							var form = instance.getForm();
+
+							var showAll = form.get('initialChildren') == -1;
+
 							if (
-								cache.initialLoadedLayoutsCount <= start &&
+								!showAll &&
 								start <= cache.total &&
 								start != cache.oldStart
 							) {
@@ -3118,11 +3122,8 @@ AUI.add(
 					if (!cache) {
 						var path = instance.get('selectedLayoutPath');
 
-						var initialLoadedLayoutsCount = layouts.length;
-
 						cache = {
 							end,
-							initialLoadedLayoutsCount,
 							layouts,
 							oldStart: 0,
 							path: path.slice(),
@@ -3963,6 +3964,8 @@ AUI.add(
 				},
 
 				imageSelectorURL: {},
+
+				initialChildren: {},
 
 				liferayForm: {
 					valueFn: '_valueLiferayForm'
