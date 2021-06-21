@@ -64,13 +64,7 @@ function CheckboxGroups({
 								columns}`}
 							key={field.value}
 						>
-							<ClayCheckbox
-								aria-label={field.label}
-								checked={field.checked ? field.checked : false}
-								label={field.label}
-								onChange={handleOnChange}
-								value={field.value}
-							/>
+							<Checkbox field={field} updateFn={handleOnChange} />
 						</div>
 					))}
 				</div>
@@ -79,10 +73,31 @@ function CheckboxGroups({
 	);
 }
 
+function Checkbox({field, updateFn}) {
+	const [checked, setChecked] = useState(!!field.checked);
+
+	function handleOnChange(event) {
+		setChecked(!checked);
+
+		updateFn(event);
+	}
+
+	return (
+		<ClayCheckbox
+			aria-label={field.label}
+			checked={checked}
+			label={field.label}
+			onChange={handleOnChange}
+			value={field.value}
+		/>
+	);
+}
+
 CheckboxGroups.propTypes = {
 	columns: PropTypes.number,
 	fieldValues: PropTypes.arrayOf(
 		PropTypes.shape({
+			checked: PropTypes.bool,
 			label: PropTypes.string,
 			value: PropTypes.oneOfType([PropTypes.bool, PropTypes.string])
 		})
