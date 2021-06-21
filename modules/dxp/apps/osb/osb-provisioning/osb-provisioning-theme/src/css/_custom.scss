@@ -28,6 +28,10 @@
 	src: url(../fonts/SourceSansPro-Bold.ttf) format('truetype');
 }
 
+dt {
+	font-weight: $font-weight-semi-bold;
+}
+
 #wrapper {
 	padding-top: 0;
 }
@@ -92,7 +96,7 @@
 .table {
 	th {
 		color: $secondary;
-		font-size: $h5-font-size;
+		font-size: $mid-font-size;
 	}
 
 	.highlight-row td {
