@@ -190,19 +190,18 @@ public class EditLicenseKeyDisplayContext {
 
 	public String getUpdateActiveLabel() {
 		if (_licenseKey.isActive()) {
-			return LanguageUtil.get(_httpServletRequest, "deactivate");
+			return "deactivate";
 		}
 
-		return LanguageUtil.get(_httpServletRequest, "activate");
+		return "activate";
 	}
 
 	public String getUpdateComplimentaryLabel() {
 		if (_licenseKey.isComplimentary()) {
-			return LanguageUtil.get(
-				_httpServletRequest, "remove-complimentary");
+			return "remove-complimentary";
 		}
 
-		return LanguageUtil.get(_httpServletRequest, "make-complimentary");
+		return "make-complimentary";
 	}
 
 	public boolean hasManageLicenseKeysPermission() throws Exception {

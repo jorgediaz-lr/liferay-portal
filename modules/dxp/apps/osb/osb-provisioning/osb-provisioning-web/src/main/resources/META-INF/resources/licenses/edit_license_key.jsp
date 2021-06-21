@@ -398,7 +398,7 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 											%>
 
 											<c:if test="<%= hasManageLicenseKeysPermission %>">
-												<button class="btn btn-secondary btn-sm" onclick="<portlet:namespace />updateValues(<%= !clusterLicenseKey.isActive() %>, <%= clusterLicenseKey.isComplimentary() %>, '<%= clusterLicenseKey.getLicenseKeyId() %>');" type="button">
+												<button class="btn btn-secondary btn-sm" onclick="<portlet:namespace />updateValues('<%= clusterUpdateActive %>',<%= !clusterLicenseKey.isActive() %>, <%= clusterLicenseKey.isComplimentary() %>, '<%= clusterLicenseKey.getLicenseKeyId() %>');" type="button">
 													<liferay-ui:message key="<%= clusterUpdateActive %>" />
 												</button>
 											</c:if>
@@ -435,13 +435,13 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 						</c:if>
 
 						<c:if test="<%= hasManageLicenseKeysPermission && editLicenseKeyDisplayContext.isShowComplimentary() %>">
-							<button class="btn btn-secondary btn-sm" onclick="<portlet:namespace />updateValues(<%= licenseKey.isActive() %>, <%= !licenseKey.isComplimentary() %>);" type="button">
+							<button class="btn btn-secondary btn-sm" onclick="<portlet:namespace />updateValues('<%= editLicenseKeyDisplayContext.getUpdateComplimentaryLabel() %>', <%= licenseKey.isActive() %>, <%= !licenseKey.isComplimentary() %>);" type="button">
 								<liferay-ui:message key="<%= editLicenseKeyDisplayContext.getUpdateComplimentaryLabel() %>" />
 							</button>
 						</c:if>
 
 						<c:if test="<%= hasManageLicenseKeysPermission && !editLicenseKeyDisplayContext.isShowClusterLicenseKey() %>">
-							<button class="btn btn-secondary btn-sm" onclick="<portlet:namespace />updateValues(<%= !licenseKey.isActive() %>, <%= licenseKey.isComplimentary() %>);" type="button">
+							<button class="btn btn-secondary btn-sm" onclick="<portlet:namespace />updateValues('<%= editLicenseKeyDisplayContext.getUpdateActiveLabel() %>', <%= !licenseKey.isActive() %>, <%= licenseKey.isComplimentary() %>);" type="button">
 								<liferay-ui:message key="<%= editLicenseKeyDisplayContext.getUpdateActiveLabel() %>" />
 							</button>
 						</c:if>
@@ -507,35 +507,55 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 	};
 
 	function <portlet:namespace />updateValues(
+		action,
 		active,
 		complimentary,
 		clusterLicenseKeyId
 	) {
 		var activeField = document.getElementById('<portlet:namespace />active');
 
-		if (activeField) {
-			activeField.value = active;
-		}
+		var clusterLicenseKeyIdField = document.getElementById(
+			'<portlet:namespace />clusterLicenseKeyId'
+		);
 
 		var complimentaryField = document.getElementById(
 			'<portlet:namespace />complimentary'
 		);
 
-		if (complimentaryField) {
-			complimentaryField.value = complimentary;
+		var confirmMessage;
+
+		if (action == 'activate') {
+			confirmMessage =
+				'<liferay-ui:message key="are-you-sure-you-want-to-activate-this-license-key" />';
 		}
-
-		var clusterLicenseKeyIdField = document.getElementById(
-			'<portlet:namespace />clusterLicenseKeyId'
-		);
-
-		if (clusterLicenseKeyIdField) {
-			clusterLicenseKeyIdField.value = clusterLicenseKeyId;
+		else if (action == 'deactivate') {
+			confirmMessage =
+				'<liferay-ui:message key="are-you-sure-you-want-to-deactivate-this-license-key" />';
+		}
+		else if (action == 'make-complimentary') {
+			confirmMessage =
+				'<liferay-ui:message key="are-you-sure-you-want-to-make-complimentary-for-this-license-key" />';
+		}
+		else if (action == 'remove-complimentary') {
+			confirmMessage =
+				'<liferay-ui:message key="are-you-sure-you-want-to-remove-complimentary-for-this-license-key" />';
 		}
 
 		var form = document.getElementById('<portlet:namespace />editLicenseFm');
 
-		if (form) {
+		if (
+			activeField &&
+			clusterLicenseKeyIdField &&
+			complimentaryField &&
+			form &&
+			confirm(confirmMessage)
+		) {
+			if (clusterLicenseKeyId) {
+				clusterLicenseKeyIdField.value = clusterLicenseKeyId;
+			}
+
+			activeField.value = active;
+			complimentaryField.value = complimentary;
 			form.submit();
 		}
 	}
