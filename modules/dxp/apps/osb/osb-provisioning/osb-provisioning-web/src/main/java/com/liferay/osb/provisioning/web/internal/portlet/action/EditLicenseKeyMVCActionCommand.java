@@ -280,13 +280,17 @@ public class EditLicenseKeyMVCActionCommand extends BaseMVCActionCommand {
 			licenseKeyId = licenseKey.getLicenseKeyId();
 		}
 		else {
+			LicenseKey licenseKey = _licenseKeyService.getLicenseKey(
+				licenseKeyId);
+
 			long clusterLicenseKeyId = ParamUtil.getLong(
 				actionRequest, "clusterLicenseKeyId");
 			String productPurchaseKey = ParamUtil.getString(
 				actionRequest, "productPurchaseKey");
-			boolean active = ParamUtil.getBoolean(actionRequest, "active");
+			boolean active = ParamUtil.getBoolean(
+				actionRequest, "active", licenseKey.isActive());
 			boolean complimentary = ParamUtil.getBoolean(
-				actionRequest, "complimentary");
+				actionRequest, "complimentary", licenseKey.isComplimentary());
 
 			long curLicenseKeyId = licenseKeyId;
 

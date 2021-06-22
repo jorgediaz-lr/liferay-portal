@@ -18,6 +18,7 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
 import com.liferay.osb.provisioning.license.model.LicenseKey;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -99,7 +100,10 @@ public class ViewAccountLicenseKeysDisplayContext
 										StringBundler.concat(
 											"javascript:",
 											renderResponse.getNamespace(),
-											"editLicenseKeys('activate');"));
+											"updateLicenseKeysProperties('",
+											"activate', '",
+											_getConfirmMessage("activate"),
+											"');"));
 									dropdownItem.setLabel(
 										LanguageUtil.get(
 											httpServletRequest, "activate"));
@@ -112,7 +116,10 @@ public class ViewAccountLicenseKeysDisplayContext
 										StringBundler.concat(
 											"javascript:",
 											renderResponse.getNamespace(),
-											"editLicenseKeys('deactivate');"));
+											"updateLicenseKeysProperties('",
+											"deactivate', '",
+											_getConfirmMessage("deactivate"),
+											"');"));
 									dropdownItem.setLabel(
 										LanguageUtil.get(
 											httpServletRequest, "deactivate"));
@@ -126,7 +133,10 @@ public class ViewAccountLicenseKeysDisplayContext
 								StringBundler.concat(
 									"javascript:",
 									renderResponse.getNamespace(),
-									"editLicenseKeys('make-complimentary');"));
+									"updateLicenseKeysProperties('",
+									"make-complimentary', '",
+									_getConfirmMessage("make-complimentary"),
+									"');"));
 							dropdownItem.setLabel(
 								LanguageUtil.get(
 									httpServletRequest, "make-complimentary"));
@@ -138,8 +148,10 @@ public class ViewAccountLicenseKeysDisplayContext
 								StringBundler.concat(
 									"javascript:",
 									renderResponse.getNamespace(),
-									"editLicenseKeys('remove-complimentary'",
-									");"));
+									"updateLicenseKeysProperties('",
+									"remove-complimentary', '",
+									_getConfirmMessage("remove-complimentary"),
+									"');"));
 							dropdownItem.setLabel(
 								LanguageUtil.get(
 									httpServletRequest,
@@ -331,6 +343,32 @@ public class ViewAccountLicenseKeysDisplayContext
 		tabsNames.add(getTabName("all", allLicenseKeysCount));
 
 		return StringUtil.merge(tabsNames);
+	}
+
+	private String _getConfirmMessage(String action) {
+		if (action.equals("activate")) {
+			return LanguageUtil.get(
+				httpServletRequest,
+				"are-you-sure-you-want-to-activate-the-license-keys");
+		}
+		else if (action.equals("deactivate")) {
+			return LanguageUtil.get(
+				httpServletRequest,
+				"are-you-sure-you-want-to-deactivate-the-license-keys");
+		}
+		else if (action.equals("make-complimentary")) {
+			return LanguageUtil.get(
+				httpServletRequest,
+				"are-you-sure-you-want-to-make-the-license-keys-complimentary");
+		}
+		else if (action.equals("remove-complimentary")) {
+			return LanguageUtil.get(
+				httpServletRequest,
+				"are-you-sure-you-want-to-proceed-the-license-keys-will-no-" +
+					"longer-be-complimentary");
+		}
+
+		return StringPool.BLANK;
 	}
 
 	private String _productKey;

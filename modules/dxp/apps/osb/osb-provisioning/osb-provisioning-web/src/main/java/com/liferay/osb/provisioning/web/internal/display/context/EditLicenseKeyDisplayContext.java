@@ -188,22 +188,6 @@ public class EditLicenseKeyDisplayContext {
 		return portletURL.toString();
 	}
 
-	public String getUpdateActiveLabel() {
-		if (_licenseKey.isActive()) {
-			return "deactivate";
-		}
-
-		return "activate";
-	}
-
-	public String getUpdateComplimentaryLabel() {
-		if (_licenseKey.isComplimentary()) {
-			return "remove-complimentary";
-		}
-
-		return "make-complimentary";
-	}
-
 	public boolean hasManageLicenseKeysPermission() throws Exception {
 		ThemeDisplay themeDisplay =
 			(ThemeDisplay)_httpServletRequest.getAttribute(

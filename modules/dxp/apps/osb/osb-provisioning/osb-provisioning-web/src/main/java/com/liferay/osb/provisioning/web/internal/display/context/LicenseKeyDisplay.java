@@ -181,6 +181,47 @@ public class LicenseKeyDisplay {
 			_httpServletRequest, _licenseKey.getLicenseEntryType());
 	}
 
+	public String getUpdateActiveConfirmMessage() {
+		if (_licenseKey.isActive()) {
+			return LanguageUtil.get(
+				_httpServletRequest,
+				"are-you-sure-you-want-to-deactivate-the-license-keys");
+		}
+
+		return LanguageUtil.get(
+			_httpServletRequest,
+			"are-you-sure-you-want-to-activate-the-license-keys");
+	}
+
+	public String getUpdateActiveLabel() {
+		if (_licenseKey.isActive()) {
+			return "deactivate";
+		}
+
+		return "activate";
+	}
+
+	public String getUpdateComplimentaryConfirmMessage() {
+		if (_licenseKey.isComplimentary()) {
+			return LanguageUtil.get(
+				_httpServletRequest,
+				"are-you-sure-you-want-to-proceed-the-license-keys-will-no-" +
+					"longer-be-complimentary");
+		}
+
+		return LanguageUtil.get(
+			_httpServletRequest,
+			"are-you-sure-you-want-to-make-the-license-keys-complimentary");
+	}
+
+	public String getUpdateComplimentaryLabel() {
+		if (_licenseKey.isComplimentary()) {
+			return "remove-complimentary";
+		}
+
+		return "make-complimentary";
+	}
+
 	public String getUserName() {
 		if (Validator.isNotNull(_licenseKey.getUserName())) {
 			return _licenseKey.getUserName();
