@@ -46,7 +46,7 @@ import org.osgi.service.component.annotations.Reference;
 public abstract class BaseEntitlementsMessageListener
 	extends BaseMessageListener {
 
-	protected void processEntitlementDefinition(
+	protected void addEntitlements(
 		long companyId, long entitlementDefinitionId, long classNameId,
 		String name, String definition) {
 
@@ -69,8 +69,22 @@ public abstract class BaseEntitlementsMessageListener
 		if (_log.isDebugEnabled()) {
 			_log.debug("Finished in " + stopWatch.getTime() + "ms");
 		}
+	}
 
-		stopWatch.reset();
+	protected void processEntitlementDefinition(
+		long companyId, long entitlementDefinitionId, long classNameId,
+		String name, String definition) {
+
+		addEntitlements(
+			companyId, entitlementDefinitionId, classNameId, name, definition);
+
+		removeEntitlements(entitlementDefinitionId, name, definition);
+	}
+
+	protected void removeEntitlements(
+		long entitlementDefinitionId, String name, String definition) {
+
+		StopWatch stopWatch = new StopWatch();
 
 		stopWatch.start();
 

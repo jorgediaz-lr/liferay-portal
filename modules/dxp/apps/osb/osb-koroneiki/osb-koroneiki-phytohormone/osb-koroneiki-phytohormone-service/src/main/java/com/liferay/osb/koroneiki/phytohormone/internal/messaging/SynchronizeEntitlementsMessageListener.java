@@ -82,10 +82,19 @@ public class SynchronizeEntitlementsMessageListener
 		for (EntitlementDefinition entitlementDefinition :
 				entitlementDefinitions) {
 
-			processEntitlementDefinition(
+			addEntitlements(
 				entitlementDefinition.getCompanyId(),
 				entitlementDefinition.getEntitlementDefinitionId(),
 				entitlementDefinition.getClassNameId(),
+				entitlementDefinition.getName(),
+				entitlementDefinition.getDefinition());
+		}
+
+		for (EntitlementDefinition entitlementDefinition :
+				entitlementDefinitions) {
+
+			removeEntitlements(
+				entitlementDefinition.getEntitlementDefinitionId(),
 				entitlementDefinition.getName(),
 				entitlementDefinition.getDefinition());
 		}
@@ -101,10 +110,19 @@ public class SynchronizeEntitlementsMessageListener
 		for (EntitlementDefinition entitlementDefinition :
 				entitlementDefinitions) {
 
-			processEntitlementDefinition(
+			addEntitlements(
 				entitlementDefinition.getCompanyId(),
 				entitlementDefinition.getEntitlementDefinitionId(),
 				entitlementDefinition.getClassNameId(),
+				entitlementDefinition.getName(),
+				entitlementDefinition.getDefinition());
+		}
+
+		for (EntitlementDefinition entitlementDefinition :
+				entitlementDefinitions) {
+
+			removeEntitlements(
+				entitlementDefinition.getEntitlementDefinitionId(),
 				entitlementDefinition.getName(),
 				entitlementDefinition.getDefinition());
 		}
