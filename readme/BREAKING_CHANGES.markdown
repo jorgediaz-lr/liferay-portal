@@ -1018,33 +1018,33 @@ This change was made to reflect the inlining of Apache Felix Fileinstall. Moving
 
 ---------------------------------------
 
-### Replaced portal property: buffered.increment.enabled
+### Replaced the buffered.increment.enabled Portal Property
 - **Date:** 2020-Oct-21
 - **JIRA Ticket:** [LPS-122159](https://issues.liferay.com/browse/LPS-122159)
 
 #### What changed?
 
-The `buffered.increment.enabled` portal property has been replaced by the `view.count.enabled` portal property when used for managing view counts.
+Enabling and disabling view count management using `buffered.increment.enabled` portal properties has been replaced by using `view.count.enabled` portal properties.
 
-Enabling and disabling view counts globally is now done by using the `view.count.enabled` portal property.
+Enabling and disabling view counts globally is now done using the `view.count.enabled` portal property.
 
 Disabling view counts for a specific entity is now done, for example, by setting `view.count.enabled[SomeEntity]=false`.
 
 #### Who is affected?
 
-This affects anyone who has the portal property setting `buffered.increment.enabled=false`.
+This affects anyone who has the `buffered.increment.enabled=false` portal property setting.
 
-This affects anyone who has disabled view counts for some entity (e.g., `SomeEntity`) using portal property settings `buffered.increment.enabled[SomeEntity]=false`.
+This affects anyone who has disabled view counts for some entity (e.g., `SomeEntity`) using `buffered.increment.enabled[SomeEntity]=false` portal property settings.
 
 #### How should I update my code?
 
-Existing usage of the `buffered.increment.enabled` portal property to configure view counts globally, can be transitioned to use the `view.count.enabled` portal property.
+Replace `buffered.increment.enabled=false` with `view.count.enabled=false`.
 
-Existing usage of the `buffered.increment.enabled` portal property to disable view counts for some entity (e.g., `SomeEntity`) using portal property setting `buffered.increment.enabled[SomeEntity]=false`, can be transitioned to use the `view.count.enabled` portal property (e.g., `view.count.enabled[SomeEntity]=false`).
+Replace `buffered.increment.enabled[SomeEntity]=false`, where `SomeEntity` is an entity you're disabling view counts for, with `view.count.enabled[SomeEntity]=false`.
 
 #### Why was this change made?
 
-This change was made to facilitate managing View Count behavior.
+This facilitates managing view count behavior.
 
 ---------------------------------------
 
