@@ -30,7 +30,10 @@ describe('BulkReplacement', () => {
 
 	it('renders', () => {
 		const {container} = render(
-			<BulkReplacement accountKey="KEY-1" replacementURL="/replacement/url" />
+			<BulkReplacement
+				accountKey="KEY-1"
+				replacementURL="/replacement/url"
+			/>
 		);
 
 		expect(container).toBeTruthy();
@@ -41,7 +44,10 @@ describe('BulkReplacement', () => {
 			<div>
 				<button onClick={handleOnClick}>Test</button>
 
-				<BulkReplacement accountKey="KEY-1" replacementURL="/replacement/url" />
+				<BulkReplacement
+					accountKey="KEY-1"
+					replacementURL="/replacement/url"
+				/>
 			</div>
 		);
 

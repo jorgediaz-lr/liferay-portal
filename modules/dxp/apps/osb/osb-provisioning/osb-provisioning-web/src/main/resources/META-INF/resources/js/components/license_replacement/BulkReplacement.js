@@ -16,7 +16,11 @@ import {formatDate} from '../../utilities/date';
 import HiddenForm from '../HiddenForm';
 import ReplacementModal from './ReplacementModal';
 
-export default function BulkReplacement({accountKey, productKey = '', replacementURL}) {
+export default function BulkReplacement({
+	accountKey,
+	productKey = '',
+	replacementURL
+}) {
 	const formRef = useRef();
 
 	const [expirationDate, setExpirationDate] = useState('');
@@ -34,7 +38,8 @@ export default function BulkReplacement({accountKey, productKey = '', replacemen
 
 		window.addEventListener('bulkReplaceLicenses', listener);
 
-		return () => window.removeEventListener('bulkReplaceLicenses', listener);
+		return () =>
+			window.removeEventListener('bulkReplaceLicenses', listener);
 	});
 
 	useEffect(() => {
@@ -55,7 +60,10 @@ export default function BulkReplacement({accountKey, productKey = '', replacemen
 	return (
 		<>
 			{modalVisible && (
-				<ReplacementModal closeFn={handleClose} replaceFn={handleReplace} />
+				<ReplacementModal
+					closeFn={handleClose}
+					replaceFn={handleReplace}
+				/>
 			)}
 
 			<HiddenForm

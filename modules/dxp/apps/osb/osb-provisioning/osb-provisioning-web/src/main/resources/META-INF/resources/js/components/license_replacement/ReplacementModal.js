@@ -23,7 +23,12 @@ import DatePicker from '../DatePicker';
 
 const TODAY = new Date();
 
-function ReplacementModal({closeFn, expirationDate = '', replaceFn, startDate = ''}) {
+function ReplacementModal({
+	closeFn,
+	expirationDate = '',
+	replaceFn,
+	startDate = ''
+}) {
 	const defaultExpirationDate =
 		expirationDate === ''
 			? formatDate(generateNewDateByDay())
@@ -71,7 +76,9 @@ function ReplacementModal({closeFn, expirationDate = '', replaceFn, startDate = 
 
 	return (
 		<ClayModal observer={observer} size="full-screen">
-			<ClayModal.Header>{Liferay.Language.get('replace')}</ClayModal.Header>
+			<ClayModal.Header>
+				{Liferay.Language.get('replace')}
+			</ClayModal.Header>
 			<ClayModal.Body>
 				<div className="add-items-sheet sheet sheet-lg">
 					<div
