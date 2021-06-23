@@ -97,7 +97,7 @@ This change was made to avoid bundling and serving additional library code on ev
 
 ---------------------------------------
 
-### Moved Two Staging Properties to OSGi Configuration
+### Moved Two Staging Portal Properties to OSGi Configuration
 - **Date:** 2018-Dec-12
 - **JIRA Ticket:** [LPS-88018](https://issues.liferay.com/browse/LPS-88018)
 
@@ -124,7 +124,7 @@ This change was made as part of the modularization efforts to ease portal config
 
 ---------------------------------------
 
-### Remove Link Application URLs to Page Functionality
+### Removed Link Application URLs to Page Functionality
 - **Date:** 2018-Dec-14
 - **JIRA Ticket:** [LPS-85948](https://issues.liferay.com/browse/LPS-85948)
 
@@ -224,7 +224,7 @@ This is one of several steps to clean up kernel provider interfaces to reduce th
 
 ---------------------------------------
 
-### Deprecated com.liferay.portal.service.InvokableService Interface
+### Deprecated the com.liferay.portal.service.InvokableService Interface
 - **Date:** 2019-Jan-08
 - **JIRA Ticket:** [LPS-88912](https://issues.liferay.com/browse/LPS-88912)
 
@@ -297,7 +297,7 @@ This is one of several steps to clean up kernel provider interfaces to reduce th
 
 ---------------------------------------
 
-### Removed Unsafe Functional Interfaces in Package com.liferay.portal.kernel.util
+### Removed Unsafe Functional Interfaces from the com.liferay.portal.kernel.util Package
 - **Date:** 2019-Jan-15
 - **JIRA Ticket:** [LPS-89223](https://issues.liferay.com/browse/LPS-89223)
 
@@ -417,7 +417,7 @@ This change was made to use a newer major version of React, which brings perform
 
 ---------------------------------------
 
-### Deprecated dl.tabs.visible property
+### Deprecated the dl.tabs.visible Portal Property
 - **Date:** 2019-Apr-10
 - **JIRA Ticket:** [LPS-93948](https://issues.liferay.com/browse/LPS-93948)
 
@@ -439,7 +439,7 @@ Documents & Media has been reviewed from a UX perspective, and removing the navi
 
 ---------------------------------------
 
-### Move the User Menu out of the Product Menu
+### Moved the User Menu out of the Product Menu
 - **Date:** 2019-Apr-19
 - **JIRA Ticket:** [LPS-87868](https://issues.liferay.com/browse/LPS-87868)
 
@@ -505,7 +505,7 @@ This upgrade was made to fix a security issue.
 
 ---------------------------------------
 
-### Liferay `AssetEntries_AssetCategories` is No Longer Used
+### Liferay AssetEntries_AssetCategories is No Longer Used
 - **Date:** 2019-Sep-11
 - **JIRA Tickets:** [LPS-99973](https://issues.liferay.com/browse/LPS-99973), [LPS-76488](https://issues.liferay.com/browse/LPS-76488)
 
@@ -582,7 +582,7 @@ This change unifies the previously split configuration interfaces, improving the
 
 ---------------------------------------
 
-### Blogs Image Properties Were Moved to System Settings
+### Moved Blogs Image Portal Properties to System Settings
 - **Date:** 2019-Oct-02
 - **JIRA Ticket:** [LPS-95298](https://issues.liferay.com/browse/LPS-95298)
 
@@ -604,7 +604,7 @@ This change was made so Blogs image properties can be configured without a resta
 
 ---------------------------------------
 
-### Removed cache bootstrap feature
+### Removed the Cache Bootstrap Feature
 - **Date:** 2020-Jan-08
 - **JIRA Ticket:** [LPS-96563](https://issues.liferay.com/browse/LPS-96563)
 
@@ -628,7 +628,7 @@ This change was made to avoid security issues.
 
 ---------------------------------------
 
-### ContentTransformerListener Is Disabled By Default
+### Disabled ContentTransformerListener By Default
 - **Date:** 2020-May-25
 - **JIRA Ticket:** [LPS-114239](https://issues.liferay.com/browse/LPS-114239)
 
@@ -776,7 +776,7 @@ This change is part of the Data Provider API Refactoring on [LPS-81563](https://
 
 ---------------------------------------
 
-### Replaced Method in DDMDataProviderResponse
+### Replaced a Method in DDMDataProviderResponse
 - **Date:** 2020-Jul-14
 - **JIRA Ticket:** [LPS-81563](https://issues.liferay.com/browse/LPS-81563)
 
@@ -797,7 +797,7 @@ This change is part of the Data Provider API Refactoring on [LPS-81563](https://
 
 ---------------------------------------
 
-### Replaced Enum in DDMDataProviderResponse
+### Replaced an Enum in DDMDataProviderResponse
 - **Date:** 2020-Jul-14
 - **JIRA Ticket:** [LPS-81563](https://issues.liferay.com/browse/LPS-81563)
 
@@ -819,7 +819,7 @@ This change is part of the Data Provider API Refactoring on [LPS-81563](https://
 
 ---------------------------------------
 
-### DDMDataProviderResponseOutput Was Deleted
+### Deleted DDMDataProviderResponseOutput
 - **Date:** 2020-Jul-14
 - **JIRA Ticket:** [LPS-81563](https://issues.liferay.com/browse/LPS-81563)
 
@@ -841,7 +841,7 @@ The class `com.liferay.dynamic.data.mapping.data.provider.DDMDataProviderRespons
 
 ---------------------------------------
 
-### Removed Method in DDMDataProviderTracker
+### Removed a Method in DDMDataProviderTracker
 - **Date:** 2020-Jul-14
 - **JIRA Ticket:** [LPS-81563](https://issues.liferay.com/browse/LPS-81563)
 
@@ -863,7 +863,7 @@ All data provided by the `com.liferay.dynamic.data.mapping.data.provider.DDMData
 
 ---------------------------------------
 
-### Replaced method in DDMFormInstanceRecordLocalService
+### Replaced a Method in DDMFormInstanceRecordLocalService
 - **Date:** 2020-Jul-14
 - **JIRA Ticket:** [LPS-81564](https://issues.liferay.com/browse/LPS-81564)
 
