@@ -2,11 +2,13 @@
 <head>
 <title>FormFields</title>
 </head>
+
 <body>
-<table cellpadding="1" cellspacing="1" border="1">
+<table border="1" cellpadding="1" cellspacing="1">
 <thead>
 <tr><td rowspan="1" colspan="3">FormFields</td></tr>
 </thead>
+
 <tbody>
 <tr>
 	<td>FIELD_ADD</td>
@@ -419,7 +421,7 @@
 	<td>//li[contains(@class,'ddm-fieldtypes-dropdown')]//div[contains(@class,'dropdown')] | //button[contains(@id,'field-type-menu-content')] | //li[contains(@class,'ddm-fieldtypes-dropdown')]//button[contains(@class,'dropdown-toggle')]</td>
 	<td></td>
 </tr>
-<tr>	
+<tr>
 	<td>CHANGE_FIELD_TYPE_BUTTON_DROPDOWN</td>
 	<td>//li[contains(@class,'ddm-fieldtypes-dropdown')]//div[contains(@class,'dropdown show')]</td>
 	<td></td>
