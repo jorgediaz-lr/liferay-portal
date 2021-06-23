@@ -12,10 +12,10 @@
 import React from 'react';
 
 import ErrorBoundary from './ErrorBoundary';
-import RenewLicense from './components/license_renewal/RenewLicense';
+import ReplaceLicense from './components/license_replacement/ReplaceLicense';
 
 export default props => (
 	<ErrorBoundary>
-		<RenewLicense {...props} />
+		<ReplaceLicense {...props} />
 	</ErrorBoundary>
 );

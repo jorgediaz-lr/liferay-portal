@@ -14,9 +14,9 @@ import React, {useState} from 'react';
 
 import {NAMESPACE} from '../../utilities/constants';
 import {formatDate} from '../../utilities/date';
-import RenewalModal from './RenewalModal';
+import ReplacementModal from './ReplacementModal';
 
-export default function RenewLicense({expirationDate = '', startDate = ''}) {
+export default function ReplaceLicense({expirationDate = '', startDate = ''}) {
 	const [modalVisible, setModalVisible] = useState(false);
 
 	function handleClose() {
@@ -27,7 +27,7 @@ export default function RenewLicense({expirationDate = '', startDate = ''}) {
 		setModalVisible(true);
 	}
 
-	function handleRenew(newStartDate, newExpirationDate) {
+	function handleReplace(newStartDate, newExpirationDate) {
 		const form = document.getElementById(`${NAMESPACE}editLicenseFm`);
 
 		const expirationDateField = document.getElementById(
@@ -52,14 +52,14 @@ export default function RenewLicense({expirationDate = '', startDate = ''}) {
 				onClick={handleOnClick}
 				type="button"
 			>
-				{Liferay.Language.get('renew')}
+				{Liferay.Language.get('replace')}
 			</button>
 
 			{modalVisible && (
-				<RenewalModal
+				<ReplacementModal
 					closeFn={handleClose}
 					expirationDate={expirationDate}
-					renewFn={handleRenew}
+					replaceFn={handleReplace}
 					startDate={startDate}
 				/>
 			)}
@@ -67,7 +67,7 @@ export default function RenewLicense({expirationDate = '', startDate = ''}) {
 	);
 }
 
-RenewLicense.propTypes = {
+ReplaceLicense.propTypes = {
 	expirationDate: PropTypes.string,
 	startDate: PropTypes.string
 };

@@ -170,10 +170,10 @@ PortletURL portletURL = viewAccountLicenseKeysDisplayContext.getPortletURL();
 	</aui:form>
 </div>
 
-<span id="bulkLicenseRenewal">
+<span id="bulkLicenseReplacement">
 	<react:component
-		data="<%= viewAccountLicenseKeysDisplayContext.getRenewLicenseKeysData() %>"
-		module="js/BulkLicenseRenewalApp"
+		data="<%= viewAccountLicenseKeysDisplayContext.getReplaceLicenseKeysData() %>"
+		module="js/BulkLicenseReplacementApp"
 	/>
 </span>
 
@@ -215,13 +215,13 @@ PortletURL portletURL = viewAccountLicenseKeysDisplayContext.getPortletURL();
 		}
 	}
 
-	function <portlet:namespace />renewLicenseKeys() {
+	function <portlet:namespace />replaceLicenseKeys() {
 		var licenseKeyIdsInput = document.getElementById(
 			'<portlet:namespace />licenseKeyIds'
 		);
 
 		if (licenseKeyIdsInput) {
-			var event = new CustomEvent('bulkRenewLicenses', {
+			var event = new CustomEvent('bulkReplaceLicenses', {
 				detail: {
 					licenseKeyIds: licenseKeyIdsInput.value,
 					modalVisible: true

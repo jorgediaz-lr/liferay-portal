@@ -427,9 +427,9 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 				<aui:col cssClass="edit-license-actions" md="12">
 					<div>
 						<c:if test="<%= hasManageLicenseKeysPermission %>">
-							<span id="renewLicense">
+							<span id="replaceLicense">
 								<react:component
-									module="js/RenewLicenseApp"
+									module="js/ReplaceLicenseApp"
 								/>
 							</span>
 						</c:if>

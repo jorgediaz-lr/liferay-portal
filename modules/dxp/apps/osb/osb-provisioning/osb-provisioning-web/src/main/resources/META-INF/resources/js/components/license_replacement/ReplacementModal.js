@@ -23,7 +23,7 @@ import DatePicker from '../DatePicker';
 
 const TODAY = new Date();
 
-function RenewalModal({closeFn, expirationDate = '', renewFn, startDate = ''}) {
+function ReplacementModal({closeFn, expirationDate = '', replaceFn, startDate = ''}) {
 	const defaultExpirationDate =
 		expirationDate === ''
 			? formatDate(generateNewDateByDay())
@@ -34,7 +34,7 @@ function RenewalModal({closeFn, expirationDate = '', renewFn, startDate = ''}) {
 		defaultExpirationDate
 	);
 	const [currentStartDate, setCurrentStartDate] = useState(defaultStartDate);
-	const [disableRenew, setDisableRenew] = useState(true);
+	const [disableReplace, setDisableReplace] = useState(true);
 
 	const {observer, onClose} = useModal({
 		onClose: closeFn
@@ -50,10 +50,10 @@ function RenewalModal({closeFn, expirationDate = '', renewFn, startDate = ''}) {
 				startDate !== currentStartDate) &&
 			new Date(currentExpirationDate) > new Date(currentStartDate)
 		) {
-			setDisableRenew(false);
+			setDisableReplace(false);
 		}
 		else {
-			setDisableRenew(true);
+			setDisableReplace(true);
 		}
 	}, [currentExpirationDate, currentStartDate, expirationDate, startDate]);
 
@@ -61,8 +61,8 @@ function RenewalModal({closeFn, expirationDate = '', renewFn, startDate = ''}) {
 		setCurrentExpirationDate(val);
 	}
 
-	function handleRenew() {
-		renewFn(currentStartDate, currentExpirationDate);
+	function handleReplace() {
+		replaceFn(currentStartDate, currentExpirationDate);
 	}
 
 	function handleStartDateChange(val) {
@@ -71,7 +71,7 @@ function RenewalModal({closeFn, expirationDate = '', renewFn, startDate = ''}) {
 
 	return (
 		<ClayModal observer={observer} size="full-screen">
-			<ClayModal.Header>{Liferay.Language.get('renew')}</ClayModal.Header>
+			<ClayModal.Header>{Liferay.Language.get('replace')}</ClayModal.Header>
 			<ClayModal.Body>
 				<div className="add-items-sheet sheet sheet-lg">
 					<div
@@ -121,10 +121,10 @@ function RenewalModal({closeFn, expirationDate = '', renewFn, startDate = ''}) {
 							{Liferay.Language.get('cancel')}
 						</ClayButton>
 						<ClayButton
-							disabled={disableRenew}
-							onClick={handleRenew}
+							disabled={disableReplace}
+							onClick={handleReplace}
 						>
-							{Liferay.Language.get('renew')}
+							{Liferay.Language.get('replace')}
 						</ClayButton>
 					</ClayButton.Group>
 				}
@@ -133,11 +133,11 @@ function RenewalModal({closeFn, expirationDate = '', renewFn, startDate = ''}) {
 	);
 }
 
-RenewalModal.propTypes = {
+ReplacementModal.propTypes = {
 	closeFn: PropTypes.func.isRequired,
 	expirationDate: PropTypes.string,
-	renewFn: PropTypes.func.isRequired,
+	replaceFn: PropTypes.func.isRequired,
 	startDate: PropTypes.string
 };
 
-export default RenewalModal;
+export default ReplacementModal;

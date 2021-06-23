@@ -12,10 +12,10 @@
 import React from 'react';
 
 import ErrorBoundary from './ErrorBoundary';
-import BulkRenewal from './components/license_renewal/BulkRenewal';
+import BulkReplacement from './components/license_replacement/BulkReplacement';
 
 export default props => (
 	<ErrorBoundary>
-		<BulkRenewal {...props} />
+		<BulkReplacement {...props} />
 	</ErrorBoundary>
 );

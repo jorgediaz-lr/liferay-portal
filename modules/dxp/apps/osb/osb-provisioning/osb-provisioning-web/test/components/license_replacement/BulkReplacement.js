@@ -12,10 +12,10 @@
 import {cleanup, fireEvent, render, wait} from '@testing-library/react';
 import React from 'react';
 
-import BulkRenewal from '../../../src/main/resources/META-INF/resources/js/components/license_renewal/BulkRenewal';
+import BulkReplacement from '../../../src/main/resources/META-INF/resources/js/components/license_replacement/BulkReplacement';
 
 const handleOnClick = () => {
-	const event = new CustomEvent('bulkRenewLicenses', {
+	const event = new CustomEvent('bulkReplaceLicenses', {
 		detail: {
 			licenseKeyIds: 'id123',
 			modalVisible: true
@@ -25,23 +25,23 @@ const handleOnClick = () => {
 	window.dispatchEvent(event);
 };
 
-describe('BulkRenewal', () => {
+describe('BulkReplacement', () => {
 	afterEach(cleanup);
 
 	it('renders', () => {
 		const {container} = render(
-			<BulkRenewal accountKey="KEY-1" renewalURL="/renewal/url" />
+			<BulkReplacement accountKey="KEY-1" replacementURL="/replacement/url" />
 		);
 
 		expect(container).toBeTruthy();
 	});
 
-	it('triggers the renewal modal when the renew button was clicked', async () => {
+	it('triggers the replacement modal when the replace button was clicked', async () => {
 		const {getByText} = render(
 			<div>
 				<button onClick={handleOnClick}>Test</button>
 
-				<BulkRenewal accountKey="KEY-1" renewalURL="/renewal/url" />
+				<BulkReplacement accountKey="KEY-1" replacementURL="/replacement/url" />
 			</div>
 		);
 

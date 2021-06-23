@@ -14,9 +14,9 @@ import React, {useEffect, useRef, useState} from 'react';
 
 import {formatDate} from '../../utilities/date';
 import HiddenForm from '../HiddenForm';
-import RenewalModal from './RenewalModal';
+import ReplacementModal from './ReplacementModal';
 
-export default function BulkRenewal({accountKey, productKey = '', renewalURL}) {
+export default function BulkReplacement({accountKey, productKey = '', replacementURL}) {
 	const formRef = useRef();
 
 	const [expirationDate, setExpirationDate] = useState('');
@@ -32,9 +32,9 @@ export default function BulkRenewal({accountKey, productKey = '', renewalURL}) {
 			setModalVisible(detail.modalVisible);
 		};
 
-		window.addEventListener('bulkRenewLicenses', listener);
+		window.addEventListener('bulkReplaceLicenses', listener);
 
-		return () => window.removeEventListener('bulkRenewLicenses', listener);
+		return () => window.removeEventListener('bulkReplaceLicenses', listener);
 	});
 
 	useEffect(() => {
@@ -47,7 +47,7 @@ export default function BulkRenewal({accountKey, productKey = '', renewalURL}) {
 		setModalVisible(false);
 	}
 
-	function handleRenew(startDate, expirationDate) {
+	function handleReplace(startDate, expirationDate) {
 		setStartDate(startDate);
 		setExpirationDate(expirationDate);
 	}
@@ -55,7 +55,7 @@ export default function BulkRenewal({accountKey, productKey = '', renewalURL}) {
 	return (
 		<>
 			{modalVisible && (
-				<RenewalModal closeFn={handleClose} renewFn={handleRenew} />
+				<ReplacementModal closeFn={handleClose} replaceFn={handleReplace} />
 			)}
 
 			<HiddenForm
@@ -66,16 +66,16 @@ export default function BulkRenewal({accountKey, productKey = '', renewalURL}) {
 					productKey,
 					startDate: formatDate(startDate)
 				}}
-				formAction={renewalURL}
-				formName="bulkLicenseRenewal"
+				formAction={replacementURL}
+				formName="bulkLicenseReplacement"
 				ref={formRef}
 			/>
 		</>
 	);
 }
 
-BulkRenewal.propTypes = {
+BulkReplacement.propTypes = {
 	accountKey: PropTypes.string,
 	productKey: PropTypes.string,
-	renewalURL: PropTypes.string
+	replacementURL: PropTypes.string
 };
