@@ -155,10 +155,11 @@ PortletURL portletURL = viewAccountLicenseKeysDisplayContext.getPortletURL();
 					<span class="label label-sm <%= licenseKeyDisplay.getStatusStyle() %>"><%= StringUtil.lowerCase(licenseKeyDisplay.getStatus()) %></span>
 				</liferay-ui:search-container-column-text>
 
-				<liferay-ui:search-container-column-text>
-					<c:if test="<%= licenseKeyDisplay.isComplimentary() %>">
-						&copy;
-					</c:if>
+				<liferay-ui:search-container-column-text
+					cssClass="complimentary"
+					name="complimentary"
+				>
+					<aui:input checked="<%= licenseKeyDisplay.isComplimentary() %>" disabled="true" label="" name="complimentaryCheckbox" type="checkbox" />
 				</liferay-ui:search-container-column-text>
 			</liferay-ui:search-container-row>
 
