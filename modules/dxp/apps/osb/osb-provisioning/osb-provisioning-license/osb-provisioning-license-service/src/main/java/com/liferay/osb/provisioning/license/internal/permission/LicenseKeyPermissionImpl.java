@@ -96,7 +96,7 @@ public class LicenseKeyPermissionImpl implements LicenseKeyPermission {
 	};
 
 	private static final String[] _PROVISIONING_WORKER_ACTION_IDS = {
-		ProvisioningActionKeys.MANAGE_LICENSE_KEYS
+		ProvisioningActionKeys.MANAGE_LICENSE_KEYS, ProvisioningActionKeys.VIEW
 	};
 
 	@Reference
