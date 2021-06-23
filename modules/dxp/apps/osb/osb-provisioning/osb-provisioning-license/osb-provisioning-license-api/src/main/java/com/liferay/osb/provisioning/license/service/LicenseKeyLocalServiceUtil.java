@@ -545,12 +545,12 @@ public class LicenseKeyLocalServiceUtil {
 		return getService().reindex(licenseKeyId);
 	}
 
-	public static LicenseKey renewLicenseKey(
+	public static LicenseKey replaceLicenseKey(
 			long userId, long licenseKeyId, java.util.Date startDate,
 			java.util.Date expirationDate)
 		throws Exception {
 
-		return getService().renewLicenseKey(
+		return getService().replaceLicenseKey(
 			userId, licenseKeyId, startDate, expirationDate);
 	}
 

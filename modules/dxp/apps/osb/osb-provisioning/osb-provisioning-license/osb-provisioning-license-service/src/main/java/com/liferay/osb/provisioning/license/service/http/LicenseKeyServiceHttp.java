@@ -712,15 +712,15 @@ public class LicenseKeyServiceHttp {
 	}
 
 	public static com.liferay.osb.provisioning.license.model.LicenseKey
-			renewLicenseKey(
+			replaceLicenseKey(
 				HttpPrincipal httpPrincipal, long licenseKeyId,
 				java.util.Date startDate, java.util.Date expirationDate)
 		throws Exception {
 
 		try {
 			MethodKey methodKey = new MethodKey(
-				LicenseKeyServiceUtil.class, "renewLicenseKey",
-				_renewLicenseKeyParameterTypes15);
+				LicenseKeyServiceUtil.class, "replaceLicenseKey",
+				_replaceLicenseKeyParameterTypes15);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, licenseKeyId, startDate, expirationDate);
@@ -752,15 +752,15 @@ public class LicenseKeyServiceHttp {
 	}
 
 	public static com.liferay.osb.provisioning.license.model.LicenseKey
-			renewLicenseKey(
+			replaceLicenseKey(
 				HttpPrincipal httpPrincipal, String uuid,
 				java.util.Date startDate, java.util.Date expirationDate)
 		throws Exception {
 
 		try {
 			MethodKey methodKey = new MethodKey(
-				LicenseKeyServiceUtil.class, "renewLicenseKey",
-				_renewLicenseKeyParameterTypes16);
+				LicenseKeyServiceUtil.class, "replaceLicenseKey",
+				_replaceLicenseKeyParameterTypes16);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, uuid, startDate, expirationDate);
@@ -1245,9 +1245,9 @@ public class LicenseKeyServiceHttp {
 	private static final Class<?>[] _isActiveParameterTypes14 = new Class[] {
 		String.class, String.class, String.class
 	};
-	private static final Class<?>[] _renewLicenseKeyParameterTypes15 =
+	private static final Class<?>[] _replaceLicenseKeyParameterTypes15 =
 		new Class[] {long.class, java.util.Date.class, java.util.Date.class};
-	private static final Class<?>[] _renewLicenseKeyParameterTypes16 =
+	private static final Class<?>[] _replaceLicenseKeyParameterTypes16 =
 		new Class[] {String.class, java.util.Date.class, java.util.Date.class};
 	private static final Class<?>[] _searchParameterTypes17 = new Class[] {
 		long.class, String.class, java.util.Date.class, java.util.Date.class,

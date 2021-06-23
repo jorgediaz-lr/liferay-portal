@@ -184,21 +184,21 @@ public class LicenseKeyServiceUtil {
 		return getService().isActive(serverId, productId, key);
 	}
 
-	public static LicenseKey renewLicenseKey(
+	public static LicenseKey replaceLicenseKey(
 			long licenseKeyId, java.util.Date startDate,
 			java.util.Date expirationDate)
 		throws Exception {
 
-		return getService().renewLicenseKey(
+		return getService().replaceLicenseKey(
 			licenseKeyId, startDate, expirationDate);
 	}
 
-	public static LicenseKey renewLicenseKey(
+	public static LicenseKey replaceLicenseKey(
 			String uuid, java.util.Date startDate,
 			java.util.Date expirationDate)
 		throws Exception {
 
-		return getService().renewLicenseKey(uuid, startDate, expirationDate);
+		return getService().replaceLicenseKey(uuid, startDate, expirationDate);
 	}
 
 	public static com.liferay.portal.kernel.search.Hits search(

@@ -423,7 +423,7 @@ public interface LicenseKeyLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public LicenseKey reindex(long licenseKeyId) throws PortalException;
 
-	public LicenseKey renewLicenseKey(
+	public LicenseKey replaceLicenseKey(
 			long userId, long licenseKeyId, Date startDate, Date expirationDate)
 		throws Exception;
 

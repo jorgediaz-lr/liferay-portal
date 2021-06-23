@@ -637,12 +637,12 @@ public class LicenseKeyLocalServiceWrapper
 
 	@Override
 	public com.liferay.osb.provisioning.license.model.LicenseKey
-			renewLicenseKey(
+			replaceLicenseKey(
 				long userId, long licenseKeyId, java.util.Date startDate,
 				java.util.Date expirationDate)
 		throws Exception {
 
-		return _licenseKeyLocalService.renewLicenseKey(
+		return _licenseKeyLocalService.replaceLicenseKey(
 			userId, licenseKeyId, startDate, expirationDate);
 	}
 
