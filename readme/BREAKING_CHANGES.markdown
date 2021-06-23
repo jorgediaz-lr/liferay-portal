@@ -561,7 +561,7 @@ This change was made due to changes resulting from [LPS-76488](https://issues.li
 ---------------------------------------
 
 ### Auto Tagging Must Be Reconfigured Manually
-- **Date: 2019-Oct-2**
+- **Date:** 2019-Oct-02
 - **JIRA Ticket:** [LPS-97123](https://issues.liferay.com/browse/LPS-97123)
 
 #### What changed?
@@ -583,7 +583,7 @@ This change unifies the previously split configuration interfaces, improving the
 ---------------------------------------
 
 ### Blogs Image Properties Were Moved to System Settings
-- **Date: 2019-Oct-2**
+- **Date:** 2019-Oct-02
 - **JIRA Ticket:** [LPS-95298](https://issues.liferay.com/browse/LPS-95298)
 
 #### What changed?
@@ -605,7 +605,7 @@ This change was made so Blogs image properties can be configured without a resta
 ---------------------------------------
 
 ### Removed cache bootstrap feature
-- **Date:** 2020-Jan-8
+- **Date:** 2020-Jan-08
 - **JIRA Ticket:** [LPS-96563](https://issues.liferay.com/browse/LPS-96563)
 
 #### What changed?
@@ -997,7 +997,7 @@ Replace the removed method with the corresponding one provided in the base class
 ---------------------------------------
 
 ### Renamed portal properties "module.framework.properties.felix.fileinstall.\*" to "module.framework.properties.file.install.\*"
-- **Date:** 2020-Aug-8
+- **Date:** 2020-Aug-08
 - **JIRA Ticket:** [LPS-115016](https://issues.liferay.com/browse/LPS-115016)
 
 #### What changed?
@@ -1049,7 +1049,7 @@ This change was made to facilitate managing View Count behavior.
 ---------------------------------------
 
 ### Removed portal property "module.framework.properties.file.install.optionalImportRefreshScope"
-- **Date:** 2021-Feb-3
+- **Date:** 2021-Feb-03
 - **JIRA Ticket:** [LPS-122008](https://issues.liferay.com/browse/LPS-122008)
 
 #### What changed?
