@@ -28,29 +28,39 @@ import RequiredFieldMarker from '../RequiredFieldMarker';
 
 function Address({accountKey, addURL, address, count, countryOptions}) {
 	const [editable, setEditable] = useState(false);
+	const [country, setCountry] = useState(
+		convertDashToEmptyString(address.addressCountry)
+	);
 	const [zipCode, setZipCode] = useState(
 		convertDashToEmptyString(address.postalCode)
 	);
-	const [zipRequired, setZipRequired] = useState(false);
+
+	const [selectedCountry, setSelectedCountry] = useState();
+
 	const formRef = useRef();
 
 	const {updatePermission} = usePermissions();
 
-	function getZipRequirement(id) {
-		const currentCountry = countryOptions.find(
-			option => option.value === id
-		);
+	useEffect(() => {
+		setSelectedCountry(countryOptions.find(({name}) => name === country));
+	}, [country, countryOptions]);
 
-		return currentCountry ? currentCountry.zipRequired : false;
+	function getRegionOptions() {
+		return selectedCountry
+			? selectedCountry.countryRegions
+			: selectedCountry;
+	}
+
+	function getZipcodeRequirement() {
+		return selectedCountry ? selectedCountry.zipRequired : false;
 	}
 
 	function handleCancel() {
 		location.reload();
 	}
 
-	function handleCountryUpdate(id) {
-		setCountryId(id);
-		setZipRequired(getZipRequirement(id));
+	function handleCountryUpdate(value) {
+		setCountry(value);
 	}
 
 	function handleOnClick(bool) {
@@ -127,10 +137,10 @@ function Address({accountKey, addURL, address, count, countryOptions}) {
 					fieldLabel={Liferay.Language.get('state-province')}
 					fieldName="addressRegionName"
 					onClick={handleOnClick}
-					options={regionOptions}
+					options={getRegionOptions()}
 					readOnly={address.readOnly || !updatePermission}
 					type={setFieldType(FIELD_TYPE_SELECT)}
-					value={regionId}
+					value={address.addressLocality}
 				/>
 
 				<AddressField
@@ -149,7 +159,7 @@ function Address({accountKey, addURL, address, count, countryOptions}) {
 					fieldName="addressZip"
 					onClick={handleOnClick}
 					readOnly={address.readOnly || !updatePermission}
-					required={zipRequired}
+					required={getZipcodeRequirement()}
 					type={setFieldType()}
 					updateFn={handlePostalCodeUpdate}
 					value={address.postalCode}
@@ -165,7 +175,7 @@ function Address({accountKey, addURL, address, count, countryOptions}) {
 					readOnly={address.readOnly || !updatePermission}
 					type={setFieldType(FIELD_TYPE_SELECT)}
 					updateFn={handleCountryUpdate}
-					value={countryId}
+					value={country}
 				/>
 
 				<AddressField
@@ -195,7 +205,9 @@ function Address({accountKey, addURL, address, count, countryOptions}) {
 								<div className="btn-group-item">
 									<button
 										className="btn btn-primary btn-sm save-btn"
-										disabled={zipRequired && !zipCode}
+										disabled={
+											getZipcodeRequirement() && !zipCode
+										}
 										onClick={handleSave}
 										role="button"
 										type="button"
@@ -285,8 +297,9 @@ Address.propTypes = {
 	count: PropTypes.number,
 	countryOptions: PropTypes.arrayOf(
 		PropTypes.shape({
-			label: PropTypes.string,
-			value: PropTypes.string,
+			active: PropTypes.bool,
+			countryRegions: PropTypes.array,
+			name: PropTypes.string,
 			zipRequired: PropTypes.bool
 		})
 	)
@@ -378,10 +391,10 @@ function AddressField({
 								>
 									{options.map((option, index) => (
 										<option
-											key={option.value || index}
-											value={option.value}
+											key={option.name || index}
+											value={option.name}
 										>
-											{option.label}
+											{option.name}
 										</option>
 									))}
 								</select>

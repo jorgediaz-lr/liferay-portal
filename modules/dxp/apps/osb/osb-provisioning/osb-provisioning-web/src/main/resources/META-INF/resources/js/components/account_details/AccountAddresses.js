@@ -16,6 +16,15 @@ import {DASH} from '../../utilities/constants';
 import Address from './Address';
 
 function AccountAddresses({accountKey, addURL, addresses, countryOptions}) {
+	const processedCountryOptions = countryOptions.map(
+		({active, countryRegions, name, zipRequired}) => ({
+			active,
+			countryRegions,
+			name,
+			zipRequired
+		})
+	);
+
 	if (addresses.length === 0) {
 		addresses.push({
 			addressCountry: DASH,
@@ -39,7 +48,7 @@ function AccountAddresses({accountKey, addURL, addresses, countryOptions}) {
 					address={address}
 					addURL={addURL}
 					count={index + 1}
-					countryOptions={countryOptions}
+					countryOptions={processedCountryOptions}
 					key={address.id}
 				/>
 			))}

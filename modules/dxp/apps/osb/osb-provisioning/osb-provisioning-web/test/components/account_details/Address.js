@@ -9,7 +9,7 @@
  * distribution rights of the Software.
  */
 
-import {cleanup, fireEvent, render, wait} from '@testing-library/react';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 import React from 'react';
 
 import Address from '../../../src/main/resources/META-INF/resources/js/components/account_details/Address';
@@ -37,18 +37,35 @@ function renderAddress(permission = true) {
 				count={1}
 				countryOptions={[
 					{
-						label: 'China',
-						value: '2',
+						active: true,
+						countryRegions: [
+							{
+								active: true,
+								name: 'Shanghai'
+							},
+							{
+								active: true,
+								name: 'Sichuan'
+							}
+						],
+						name: 'China',
 						zipRequired: true
 					},
 					{
-						label: 'United Arab Emirates',
-						value: '217',
+						active: true,
+						countryRegions: [],
+						name: 'United Arab Emirates',
 						zipRequired: false
 					},
 					{
-						label: 'United States',
-						value: '19',
+						active: true,
+						countryRegions: [
+							{
+								active: true,
+								name: 'California'
+							}
+						],
+						name: 'United States',
 						zipRequired: true
 					}
 				]}
@@ -58,78 +75,75 @@ function renderAddress(permission = true) {
 }
 
 describe('Address', () => {
-	beforeEach(() => {
-		Liferay.Service.mockImplementation(() =>
-			Promise.resolve([
-				{
-					name: 'California',
-					regionId: '19005'
-				}
-			])
-		);
-	});
-
 	afterEach(cleanup);
 
-	it('renders', async () => {
+	it('renders', () => {
 		const {container} = renderAddress();
 
-		await wait(() => expect(container).toBeTruthy());
+		expect(container).toBeTruthy();
 	});
 
-	it('displays all address fields as editable when any one of the address fields is clicked for a user with full editing privilege', async () => {
+	it('displays all address fields as editable when any one of the address fields is clicked for a user with full editing privilege', () => {
 		const {container, getByText} = renderAddress();
 
 		fireEvent.click(getByText('Diamond Bar'));
 
-		await wait(() => {
-			expect(container.querySelectorAll('select').length).toBe(2);
-			expect(container.querySelectorAll('input[type=text]').length).toBe(
-				5
-			);
+		expect(container.querySelectorAll('select').length).toBe(2);
+		expect(container.querySelectorAll('input[type=text]').length).toBe(5);
 
-			getByText('save');
-			getByText('cancel');
-		});
+		getByText('save');
+		getByText('cancel');
 	});
 
-	it('displays all address fields as non editable when any of the fields is clicked for a user with limited editing privilege', async () => {
+	it('displays all address fields as non editable when any of the fields is clicked for a user with limited editing privilege', () => {
 		const {container, getByText, queryByText} = renderAddress(false);
 
 		fireEvent.click(getByText('Diamond Bar'));
 
-		await wait(() => {
-			expect(container.querySelectorAll('select').length).toBe(0);
-			expect(container.querySelectorAll('input[type=text]').length).toBe(
-				0
-			);
+		expect(container.querySelectorAll('select').length).toBe(0);
+		expect(container.querySelectorAll('input[type=text]').length).toBe(0);
 
-			expect(queryByText('save')).toBeFalsy();
-			expect(queryByText('cancel')).toBeFalsy();
-		});
+		expect(queryByText('save')).toBeFalsy();
+		expect(queryByText('cancel')).toBeFalsy();
 	});
 
-	it('displays PRC, UAE, and USA as country options when the user clicks on a Country field', async () => {
+	it('displays PRC, UAE, and USA as country options when the user clicks on a Country field', () => {
 		const {getByText} = renderAddress();
 
 		fireEvent.click(getByText('United States'));
 
-		await wait(() => {
-			getByText('China');
-			getByText('United Arab Emirates');
-			getByText('United States');
+		getByText('China');
+		getByText('United Arab Emirates');
+		getByText('United States');
+	});
+
+	it('displays Shanghai as a region option when the user selects PRC as the country', () => {
+		const {getByDisplayValue, getByText} = renderAddress();
+
+		fireEvent.click(getByText('91765'));
+		fireEvent.change(getByDisplayValue('91765'), {
+			target: {value: ''}
+		});
+
+		expect(getByText('save').disabled).toBeTruthy();
+	});
+
+	it('displays the Save button as disabled if a required Zip Code is not entered', () => {
+		const {getByDisplayValue, getByText} = renderAddress();
+
+		fireEvent.click(getByText('United States'));
+		fireEvent.change(getByDisplayValue('United States'), {
+			target: {value: 'China'}
 		});
 	});
 
-	it('displays Primary field as toggled on edit when the field is displayed as "Yes"', async () => {
+	it('displays Primary field as toggled on edit when the field is displayed as "Yes"', () => {
 		const {container, getByText} = renderAddress();
 
 		fireEvent.click(getByText('yes'));
 
-		await wait(() => {
-			expect(
-				container.querySelector('input[type=checkbox]').checked
-			).toBe(true);
-		});
+		expect(container.querySelector('input[type=checkbox]').checked).toBe(
+			true
+		);
 	});
 });

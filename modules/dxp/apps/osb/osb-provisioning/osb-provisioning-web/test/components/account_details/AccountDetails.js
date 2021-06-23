@@ -9,7 +9,7 @@
  * distribution rights of the Software.
  */
 
-import {cleanup, render, wait} from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 import React from 'react';
 
 import AccountDetails from '../../../src/main/resources/META-INF/resources/js/components/account_details/AccountDetails';
@@ -90,49 +90,35 @@ function renderAccountDetails(props) {
 }
 
 describe('AccountDetails', () => {
-	beforeEach(() => {
-		Liferay.Service.mockImplementation(() =>
-			Promise.resolve([
-				{
-					countryId: '',
-					name: '',
-					nameCurrentValue: '',
-					regionId: '',
-					zipRequired: false
-				}
-			])
-		);
-	});
-
 	afterEach(cleanup);
 
-	it('renders', async () => {
+	it('renders', () => {
 		const {container} = renderAccountDetails();
 
-		await wait(() => expect(container).toBeTruthy());
+		expect(container).toBeTruthy();
 	});
 
-	it('displays General Details section', async () => {
+	it('displays General Details section', () => {
 		const {getByText} = renderAccountDetails();
 
-		await wait(() => getByText('general-details'));
+		getByText('general-details');
 	});
 
-	it('displays Partner Info section', async () => {
+	it('displays Partner Info section', () => {
 		const {getByText} = renderAccountDetails();
 
-		await wait(() => getByText('partner-info'));
+		getByText('partner-info');
 	});
 
-	it('displays Address 1 section', async () => {
+	it('displays Address 1 section', () => {
 		const {getByText} = renderAccountDetails();
 
-		await wait(() => getByText('address 1'));
+		getByText('address 1');
 	});
 
-	it('displays External Account Keys section', async () => {
+	it('displays External Account Keys section', () => {
 		const {getByText} = renderAccountDetails();
 
-		await wait(() => getByText('external-account-keys'));
+		getByText('external-account-keys');
 	});
 });
