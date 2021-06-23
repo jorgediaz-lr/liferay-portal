@@ -996,25 +996,25 @@ Replace the removed method with the corresponding one provided in the base class
 
 ---------------------------------------
 
-### Renamed portal properties "module.framework.properties.felix.fileinstall.\*" to "module.framework.properties.file.install.\*"
+### Renamed module.framework.properties.felix.fileinstall.\* Portal Properties to module.framework.properties.file.install.\*
 - **Date:** 2020-Aug-08
 - **JIRA Ticket:** [LPS-115016](https://issues.liferay.com/browse/LPS-115016)
 
 #### What changed?
 
-Portal properties beginning with "module.framework.properties.felix.fileinstall" have been renamed to begin with "module.framework.properties.file.install".
+Portal properties beginning with `module.framework.properties.felix.fileinstall.` have been renamed to begin with `module.framework.properties.file.install.`.
 
 #### Who is affected?
 
-This affects anyone who has the portal property settings `module.framework.properties.felix.fileinstall.*`.
+This affects anyone who has the portal properties that start with `module.framework.properties.felix.fileinstall.`.
 
 #### How should I update my code?
 
-Existing usage of the `module.framework.properties.felix.fileinstall.*` properties can be renamed to `module.framework.properties.file.install.*`
+Rename portal properties that start with `module.framework.properties.felix.fileinstall.` to start with `module.framework.properties.file.install.`.
 
 #### Why was this change made?
 
-This change was made to reflect the inlining of Apache Felix Fileinstall. Moving forward this functionality will be managed and maintained by Liferay and the properties should be appropriately named.
+This change reflects Apache Felix Fileinstall inlining. Since Liferay now manages and maintains this functionality, the properties are renamed appropriately.
 
 ---------------------------------------
 
