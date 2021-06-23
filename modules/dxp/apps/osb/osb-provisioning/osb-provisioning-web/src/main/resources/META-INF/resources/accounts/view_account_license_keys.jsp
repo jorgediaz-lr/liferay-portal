@@ -32,6 +32,8 @@ PortletURL portletURL = viewAccountLicenseKeysDisplayContext.getPortletURL();
 
 	<aui:form action="<%= currentURL %>" name="licenseKeysFm">
 		<aui:input name="licenseKeyIds" type="hidden" />
+		<aui:input name="complimentary" type="hidden" />
+		<aui:input name="active" type="hidden" />
 
 		<liferay-ui:search-container
 			cssClass="license-details"
@@ -202,6 +204,54 @@ PortletURL portletURL = viewAccountLicenseKeysDisplayContext.getPortletURL();
 </aui:script>
 
 <aui:script>
+	function <portlet:namespace />editLicenseKeys(action) {
+		if (action == 'activate') {
+			<portlet:namespace />handleSubmitForm(
+				'active',
+				'<liferay-ui:message key="are-you-sure-you-want-to-activate-the-selected-license-keys" />',
+				true
+			);
+		}
+		else if (action == 'deactivate') {
+			<portlet:namespace />handleSubmitForm(
+				'active',
+				'<liferay-ui:message key="are-you-sure-you-want-to-deactivate-the-selected-license-keys" />',
+				false
+			);
+		}
+		else if (action == 'make-complimentary') {
+			<portlet:namespace />handleSubmitForm(
+				'complimentary',
+				'<liferay-ui:message key="are-you-sure-you-want-to-make-complimentary-for-the-selected-license-keys" />',
+				true
+			);
+		}
+		else if (action == 'remove-complimentary') {
+			<portlet:namespace />handleSubmitForm(
+				'complimentary',
+				'<liferay-ui:message key="are-you-sure-you-want-to-remove-complimentary-for-the-selected-license-keys" />',
+				false
+			);
+		}
+	}
+
+	function <portlet:namespace />handleSubmitForm(fieldName, message, value) {
+		var licenseKeysFm = document.getElementById(
+			'<portlet:namespace />licenseKeysFm'
+		);
+
+		var field = document.getElementById('<portlet:namespace />' + fieldName);
+
+		if (licenseKeysFm && field && confirm(message)) {
+			field.value = value;
+
+			submitForm(
+				licenseKeysFm,
+				'<portlet:actionURL name="/accounts/edit_license_keys"><portlet:param name="redirect" value="<%= currentURL %>" /></portlet:actionURL>'
+			);
+		}
+	}
+
 	function <portlet:namespace />downloadLicenseKeys() {
 		var licenseKeysFm = document.getElementById(
 			'<portlet:namespace />licenseKeysFm'

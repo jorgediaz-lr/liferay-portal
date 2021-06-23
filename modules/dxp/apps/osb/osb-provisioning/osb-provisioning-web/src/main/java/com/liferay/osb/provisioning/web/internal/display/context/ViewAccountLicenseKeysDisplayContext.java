@@ -56,6 +56,8 @@ public class ViewAccountLicenseKeysDisplayContext
 	public void doInit() throws Exception {
 		super.doInit();
 
+		_tabs2 = ParamUtil.getString(renderRequest, "tabs2", "active");
+
 		_productKey = ParamUtil.getString(renderRequest, "productKey");
 	}
 
@@ -88,6 +90,61 @@ public class ViewAccountLicenseKeysDisplayContext
 									httpServletRequest, "replace"));
 							dropdownItem.setQuickAction(true);
 						});
+
+					if (!_tabs2.equals("all")) {
+						if (_tabs2.equals("deactivated")) {
+							add(
+								dropdownItem -> {
+									dropdownItem.setHref(
+										StringBundler.concat(
+											"javascript:",
+											renderResponse.getNamespace(),
+											"editLicenseKeys('activate');"));
+									dropdownItem.setLabel(
+										LanguageUtil.get(
+											httpServletRequest, "activate"));
+								});
+						}
+						else {
+							add(
+								dropdownItem -> {
+									dropdownItem.setHref(
+										StringBundler.concat(
+											"javascript:",
+											renderResponse.getNamespace(),
+											"editLicenseKeys('deactivate');"));
+									dropdownItem.setLabel(
+										LanguageUtil.get(
+											httpServletRequest, "deactivate"));
+								});
+						}
+					}
+
+					add(
+						dropdownItem -> {
+							dropdownItem.setHref(
+								StringBundler.concat(
+									"javascript:",
+									renderResponse.getNamespace(),
+									"editLicenseKeys('make-complimentary');"));
+							dropdownItem.setLabel(
+								LanguageUtil.get(
+									httpServletRequest, "make-complimentary"));
+						});
+
+					add(
+						dropdownItem -> {
+							dropdownItem.setHref(
+								StringBundler.concat(
+									"javascript:",
+									renderResponse.getNamespace(),
+									"editLicenseKeys('remove-complimentary'",
+									");"));
+							dropdownItem.setLabel(
+								LanguageUtil.get(
+									httpServletRequest,
+									"remove-complimentary"));
+						});
 				}
 			}
 		};
@@ -108,10 +165,8 @@ public class ViewAccountLicenseKeysDisplayContext
 			portletURL.setParameter("productKey", _productKey);
 		}
 
-		String tabs2 = ParamUtil.getString(renderRequest, "tabs2");
-
-		if (Validator.isNotNull(tabs2)) {
-			portletURL.setParameter("tabs2", tabs2);
+		if (Validator.isNotNull(_tabs2)) {
+			portletURL.setParameter("tabs2", _tabs2);
 		}
 
 		return portletURL.toString();
@@ -152,7 +207,6 @@ public class ViewAccountLicenseKeysDisplayContext
 	}
 
 	public SearchContainer getSearchContainer() throws Exception {
-		String tabs2 = ParamUtil.getString(renderRequest, "tabs2", "active");
 		String keywords = ParamUtil.getString(renderRequest, "keywords");
 
 		Date now = new Date();
@@ -174,7 +228,7 @@ public class ViewAccountLicenseKeysDisplayContext
 		Sort sort = SortFactoryUtil.getSort(
 			LicenseKey.class, Sort.LONG_TYPE, Field.MODIFIED_DATE, "desc");
 
-		if (tabs2.equals("active")) {
+		if (_tabs2.equals("active")) {
 			hits = licenseKeyLocalService.search(
 				themeDisplay.getCompanyId(), keywords, null, null, null, null,
 				null, null, keywords, keywords, null, null, null, null,
@@ -183,7 +237,7 @@ public class ViewAccountLicenseKeysDisplayContext
 				true, params, false, searchContainer.getStart(),
 				searchContainer.getEnd(), sort);
 		}
-		else if (tabs2.equals("deactivated")) {
+		else if (_tabs2.equals("deactivated")) {
 			hits = licenseKeyLocalService.search(
 				themeDisplay.getCompanyId(), keywords, null, null, null, null,
 				null, null, keywords, keywords, null, null, null, null,
@@ -192,7 +246,7 @@ public class ViewAccountLicenseKeysDisplayContext
 				false, params, false, searchContainer.getStart(),
 				searchContainer.getEnd(), sort);
 		}
-		else if (tabs2.equals("expired")) {
+		else if (_tabs2.equals("expired")) {
 			hits = licenseKeyLocalService.search(
 				themeDisplay.getCompanyId(), keywords, null, null, null, null,
 				null, null, keywords, keywords, null, null, null, null,
@@ -280,5 +334,6 @@ public class ViewAccountLicenseKeysDisplayContext
 	}
 
 	private String _productKey;
+	private String _tabs2;
 
 }
