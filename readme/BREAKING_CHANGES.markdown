@@ -1048,25 +1048,25 @@ This facilitates managing view count behavior.
 
 ---------------------------------------
 
-### Removed portal property "module.framework.properties.file.install.optionalImportRefreshScope"
+### Removed the module.framework.properties.file.install.optionalImportRefreshScope Portal Property
 - **Date:** 2021-Feb-03
 - **JIRA Ticket:** [LPS-122008](https://issues.liferay.com/browse/LPS-122008)
 
 #### What changed?
 
-Portal property `module.framework.properties.file.install.optionalImportRefreshScope` has been removed. File install will now always only check managed bundles when scanning for bundles with optional packages that need to be refreshed.
+The `module.framework.properties.file.install.optionalImportRefreshScope` portal property has been removed. File install will now always only check managed bundles when scanning for bundles with optional packages that need to be refreshed.
 
 #### Who is affected?
 
-This affects anyone who has the portal property settings `module.framework.properties.file.install.optionalImportRefreshScope`.
+This affects anyone who specifies the `module.framework.properties.file.install.optionalImportRefreshScope` portal property.
 
 #### How should I update my code?
 
-Remove property `module.framework.properties.file.install.optionalImportRefreshScope`. File install cannot be configured to use other behavior.
+Remove the `module.framework.properties.file.install.optionalImportRefreshScope` property. File install cannot be configured to use other behavior.
 
 #### Why was this change made?
 
-There were very few cases where alternate behavior was desireable. File install is the primary way the bundles are installed into Liferay, so all bundles are managed by it by default. Removing various branching logic supporting this feature improves code maintainability and readability.
+There were very few cases where alternate behavior was desireable. File install is the primary way bundles are installed into Liferay, so all bundles are managed by it by default. Removing the branching logic that supports this feature improves code maintainability and readability.
 
 ---------------------------------------
 
