@@ -254,7 +254,9 @@ definition {
 			pageName = "${pageName}",
 			portletName = "${portletName}");
 
-		DMDocument.enableActionsMenuOnPortlet();
+		if ("${portletName}" == "Documents and Media") {
+			DMDocument.enableActionsMenuOnPortlet();
+		}
 
 		JSONUser.addUser(
 			userEmailAddress = "${userEmailAddress}",
