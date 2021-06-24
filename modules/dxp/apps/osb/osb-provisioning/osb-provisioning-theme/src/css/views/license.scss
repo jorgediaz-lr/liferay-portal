@@ -89,12 +89,6 @@
 }
 
 .license-details {
-	.complimentary {
-		.form-group {
-			margin-bottom: 0;
-		}
-	}
-
 	dd {
 		margin-bottom: 0;
 	}
@@ -110,6 +104,12 @@
 	dt {
 		padding-right: $spacing-xxs;
 		white-space: nowrap;
+	}
+
+	.complimentary {
+		.form-group {
+			margin-bottom: 0;
+		}
 	}
 }
 
