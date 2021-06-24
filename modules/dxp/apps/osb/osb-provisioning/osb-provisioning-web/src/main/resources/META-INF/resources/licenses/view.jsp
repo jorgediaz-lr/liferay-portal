@@ -180,7 +180,7 @@ ViewLicenseKeysManagementToolbarDisplayContext viewLicenseKeysManagementToolbarD
 					cssClass="complimentary"
 					name="complimentary"
 				>
-					<aui:input checked="<%= licenseKeyDisplay.isComplimentary() %>" disabled="true" label="" name="complimentaryCheckbox" type="checkbox" />
+					<aui:input checked="<%= licenseKeyDisplay.isComplimentary() %>" disabled="<%= true %>" label="" name="complimentaryCheckbox" type="checkbox" />
 				</liferay-ui:search-container-column-text>
 			</liferay-ui:search-container-row>
 
