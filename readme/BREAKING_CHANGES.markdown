@@ -12,7 +12,7 @@ Here are some of the types of changes documented in this file:
 * Execution requirements: Java version, J2EE Version, browser versions, etc.
 * Deprecations or end of support: For example, warning that a certain feature or API will be dropped in an upcoming version.
 
-*This document has been reviewed through commit `4e7386383d68`.*
+*This document has been reviewed through commit `2442ed1e976ae`.*
 
 ## Breaking Changes Contribution Guidelines
 
