@@ -58,7 +58,7 @@ function renderAccountDetails(props) {
 			]}
 			dataRegionNames={['Brazil', 'Hungary', 'Japan', 'United States']}
 			details={{
-				addPostalAddressURL: '',
+				addPostalAddressURL: '/',
 				code: '123',
 				dataRegion: 'Brazil',
 				dateCreated: new Date().toLocaleString('en-US'),

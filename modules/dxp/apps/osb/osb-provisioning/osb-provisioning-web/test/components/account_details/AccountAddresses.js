@@ -14,6 +14,7 @@ import React from 'react';
 
 import AccountAddresses from '../../../src/main/resources/META-INF/resources/js/components/account_details/AccountAddresses';
 import {PermissionsProvider} from '../../../src/main/resources/META-INF/resources/js/hooks/permissions';
+import {DASH} from '../../../src/main/resources/META-INF/resources/js/utilities/constants';
 
 const sampleAddresses = [
 	{
@@ -59,6 +60,7 @@ function renderAccountAddress(addresses = [], permission = true) {
 		<PermissionsProvider permissions={{updatePermission: permission}}>
 			<AccountAddresses
 				accountKey="key123"
+				addAddressURL="/add/address/url"
 				addresses={addresses}
 				countryOptions={[
 					{
@@ -113,18 +115,19 @@ describe('AccountAddresses', () => {
 		expect(getAllByText('-').length).toBe(7);
 	});
 
-	it('does not allow any address fields to be edited when no address was provided', () => {
-		const {getAllByText, queryByText} = renderAccountAddress();
+	it('allow a new address to be added when no address exists yet', () => {
+		const {getAllByText, getByText} = renderAccountAddress();
 
 		fireEvent.click(getAllByText('-')[0]);
 
-		expect(queryByText('save')).toBeFalsy();
-		expect(queryByText('cancel')).toBeFalsy();
+		getByText('save');
+		getByText('cancel');
 	});
 
-	it('displays no delete button when no address was provided', () => {
+	it('displays no Add or Delete button when no address was provided', () => {
 		const {queryByLabelText} = renderAccountAddress();
 
+		expect(queryByLabelText('add')).toBeFalsy();
 		expect(queryByLabelText('delete')).toBeFalsy();
 	});
 
@@ -137,19 +140,13 @@ describe('AccountAddresses', () => {
 	});
 
 	describe('Full Editing Privilege', () => {
-		it('displays an add button when no address was provided', () => {
-			const {queryByLabelText} = renderAccountAddress();
-
-			expect(queryByLabelText('add')).toBeTruthy();
-		});
-
-		it('displays an add button for each provided addresses', () => {
+		it('displays an Add button for each provided addresses', () => {
 			const {getAllByLabelText} = renderAccountAddress(sampleAddresses);
 
 			expect(getAllByLabelText('add').length).toBe(3);
 		});
 
-		it('displays a delete button for each provided addresses', () => {
+		it('displays a Delete button for each provided addresses', () => {
 			const {getAllByLabelText} = renderAccountAddress(sampleAddresses);
 
 			expect(getAllByLabelText('delete').length).toBe(3);
@@ -163,15 +160,18 @@ describe('AccountAddresses', () => {
 			getByText('save');
 			getByText('cancel');
 		});
+
+		it('allows an address to be added when no addresses exist yet', () => {
+			const {getAllByText, getByText} = renderAccountAddress();
+
+			fireEvent.click(getAllByText(DASH)[0]);
+
+			getByText('save');
+			getByText('cancel');
+		});
 	});
 
 	describe('Limited Editing Privilege', () => {
-		it('does not display an add button when no address was provided', () => {
-			const {queryByLabelText} = renderAccountAddress([], false);
-
-			expect(queryByLabelText('add')).toBeFalsy();
-		});
-
 		it('does not display an add button for each provided addresses', () => {
 			const {queryByLabelText} = renderAccountAddress(
 				sampleAddresses,
@@ -197,6 +197,15 @@ describe('AccountAddresses', () => {
 			);
 
 			fireEvent.click(getByText('Diamond Bar'));
+
+			expect(queryByText('save')).toBeFalsy();
+			expect(queryByText('cancel')).toBeFalsy();
+		});
+
+		it('does not allow an address to be added when none exist yet', () => {
+			const {getAllByText, queryByText} = renderAccountAddress([], false);
+
+			fireEvent.click(getAllByText(DASH)[0]);
 
 			expect(queryByText('save')).toBeFalsy();
 			expect(queryByText('cancel')).toBeFalsy();

@@ -10,12 +10,34 @@
  */
 
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {useState} from 'react';
 
 import {DASH} from '../../utilities/constants';
 import Address from './Address';
 
-function AccountAddresses({accountKey, addresses, countryOptions}) {
+function AccountAddresses({
+	accountKey,
+	addAddressURL,
+	addresses,
+	countryOptions
+}) {
+	const INITIAL_ADDRESS = {
+		addressCountry: DASH,
+		addressLocality: DASH,
+		addressRegion: DASH,
+		editPostalAddressURL: addAddressURL,
+		id: '',
+		postalCode: DASH,
+		primary: false,
+		streetAddressLine1: DASH,
+		streetAddressLine2: DASH,
+		streetAddressLine3: DASH
+	};
+
+	const [accountAddresses, setAccountAddresses] = useState(
+		addresses.length === 0 ? [INITIAL_ADDRESS] : addresses
+	);
+
 	const processedCountryOptions = countryOptions.map(
 		({active, countryRegions, name, zipRequired}) => ({
 			active,
@@ -25,30 +47,20 @@ function AccountAddresses({accountKey, addresses, countryOptions}) {
 		})
 	);
 
-	if (addresses.length === 0) {
-		addresses.push({
-			addressCountry: DASH,
-			addressLocality: DASH,
-			addressRegion: DASH,
-			id: '',
-			postalCode: DASH,
-			primary: false,
-			readOnly: true,
-			streetAddressLine1: DASH,
-			streetAddressLine2: DASH,
-			streetAddressLine3: DASH
-		});
+	function addAddressEntry() {
+		setAccountAddresses([...accountAddresses, INITIAL_ADDRESS]);
 	}
 
 	return (
 		<>
-			{addresses.map((address, index) => (
+			{accountAddresses.map((address, index) => (
 				<Address
 					accountKey={accountKey}
+					addFn={addAddressEntry}
 					address={address}
 					count={index + 1}
 					countryOptions={processedCountryOptions}
-					key={address.id}
+					key={address.id || index + 1}
 				/>
 			))}
 		</>
@@ -57,6 +69,7 @@ function AccountAddresses({accountKey, addresses, countryOptions}) {
 
 AccountAddresses.propTypes = {
 	accountKey: PropTypes.string.isRequired,
+	addAddressURL: PropTypes.string.isRequired,
 	addresses: PropTypes.arrayOf(
 		PropTypes.shape({
 			addressCountry: PropTypes.string,

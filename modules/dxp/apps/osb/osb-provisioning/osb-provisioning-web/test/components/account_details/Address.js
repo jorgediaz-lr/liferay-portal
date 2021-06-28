@@ -20,6 +20,7 @@ function renderAddress(permission = true) {
 		<PermissionsProvider permissions={{updatePermission: permission}}>
 			<Address
 				accountKey="key123"
+				addFn={jest.fn()}
 				address={{
 					addressCountry: 'United States',
 					addressLocality: 'Diamond Bar',

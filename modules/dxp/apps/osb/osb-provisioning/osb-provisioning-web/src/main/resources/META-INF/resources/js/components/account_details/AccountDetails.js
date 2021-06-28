@@ -53,6 +53,7 @@ function AccountDetails({
 
 				<AccountAddresses
 					accountKey={details.key}
+					addAddressURL={details.addPostalAddressURL}
 					addresses={details.postalAddressDisplays}
 					countryOptions={countryOptions}
 				/>

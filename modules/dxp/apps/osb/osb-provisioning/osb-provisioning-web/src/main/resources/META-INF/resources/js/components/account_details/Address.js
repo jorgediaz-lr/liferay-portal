@@ -15,7 +15,6 @@ import React, {useEffect, useRef, useState} from 'react';
 
 import {usePermissions} from '../../hooks/permissions';
 import {
-	FIELD_TYPE_NONEDITABLE,
 	FIELD_TYPE_SELECT,
 	FIELD_TYPE_TEXT,
 	FIELD_TYPE_TOGGLE,
@@ -26,7 +25,7 @@ import EditableField from '../EditableField';
 import IconButton from '../IconButton';
 import RequiredFieldMarker from '../RequiredFieldMarker';
 
-function Address({accountKey, address, count, countryOptions}) {
+function Address({accountKey, addFn, address, count, countryOptions}) {
 	const [editable, setEditable] = useState(false);
 	const [country, setCountry] = useState(
 		convertDashToEmptyString(address.addressCountry)
@@ -34,7 +33,6 @@ function Address({accountKey, address, count, countryOptions}) {
 	const [zipCode, setZipCode] = useState(
 		convertDashToEmptyString(address.postalCode)
 	);
-
 	const [selectedCountry, setSelectedCountry] = useState();
 
 	const formRef = useRef();
@@ -75,14 +73,6 @@ function Address({accountKey, address, count, countryOptions}) {
 		formRef.current.submit();
 	}
 
-	function setFieldType(fieldType = FIELD_TYPE_TEXT) {
-		if (address.id) {
-			return fieldType;
-		}
-
-		return FIELD_TYPE_NONEDITABLE;
-	}
-
 	return (
 		<form
 			action={address.editPostalAddressURL}
@@ -106,8 +96,8 @@ function Address({accountKey, address, count, countryOptions}) {
 					fieldLabel={Liferay.Language.get('street-1')}
 					fieldName="streetAddressLine1"
 					onClick={handleOnClick}
-					readOnly={address.readOnly || !updatePermission}
-					type={setFieldType()}
+					readOnly={!updatePermission}
+					required
 					value={address.streetAddressLine1}
 				/>
 
@@ -116,8 +106,8 @@ function Address({accountKey, address, count, countryOptions}) {
 					fieldLabel={Liferay.Language.get('city')}
 					fieldName="addressLocality"
 					onClick={handleOnClick}
-					readOnly={address.readOnly || !updatePermission}
-					type={setFieldType()}
+					readOnly={!updatePermission}
+					required
 					value={address.addressLocality}
 				/>
 
@@ -126,8 +116,7 @@ function Address({accountKey, address, count, countryOptions}) {
 					fieldLabel={Liferay.Language.get('street-2')}
 					fieldName="streetAddressLine2"
 					onClick={handleOnClick}
-					readOnly={address.readOnly || !updatePermission}
-					type={setFieldType()}
+					readOnly={!updatePermission}
 					value={address.streetAddressLine2}
 				/>
 
@@ -138,8 +127,8 @@ function Address({accountKey, address, count, countryOptions}) {
 					fieldName="addressRegionName"
 					onClick={handleOnClick}
 					options={getRegionOptions()}
-					readOnly={address.readOnly || !updatePermission}
-					type={setFieldType(FIELD_TYPE_SELECT)}
+					readOnly={!updatePermission}
+					type={FIELD_TYPE_SELECT}
 					value={address.addressLocality}
 				/>
 
@@ -148,8 +137,7 @@ function Address({accountKey, address, count, countryOptions}) {
 					fieldLabel={Liferay.Language.get('street-3')}
 					fieldName="streetAddressLine3"
 					onClick={handleOnClick}
-					readOnly={address.readOnly || !updatePermission}
-					type={setFieldType()}
+					readOnly={!updatePermission}
 					value={address.streetAddressLine3}
 				/>
 
@@ -158,9 +146,8 @@ function Address({accountKey, address, count, countryOptions}) {
 					fieldLabel={Liferay.Language.get('postal-code')}
 					fieldName="addressZip"
 					onClick={handleOnClick}
-					readOnly={address.readOnly || !updatePermission}
+					readOnly={!updatePermission}
 					required={getZipcodeRequirement()}
-					type={setFieldType()}
 					updateFn={handlePostalCodeUpdate}
 					value={address.postalCode}
 				/>
@@ -172,8 +159,8 @@ function Address({accountKey, address, count, countryOptions}) {
 					fieldName="addressCountryName"
 					onClick={handleOnClick}
 					options={countryOptions}
-					readOnly={address.readOnly || !updatePermission}
-					type={setFieldType(FIELD_TYPE_SELECT)}
+					readOnly={!updatePermission}
+					type={FIELD_TYPE_SELECT}
 					updateFn={handleCountryUpdate}
 					value={country}
 				/>
@@ -188,8 +175,8 @@ function Address({accountKey, address, count, countryOptions}) {
 					fieldLabel={Liferay.Language.get('primary')}
 					fieldName="addressPrimary"
 					onClick={handleOnClick}
-					readOnly={address.readOnly || !updatePermission}
-					type={setFieldType(FIELD_TYPE_TOGGLE)}
+					readOnly={!updatePermission}
+					type={FIELD_TYPE_TOGGLE}
 					value={address.primary}
 				/>
 
@@ -229,43 +216,47 @@ function Address({accountKey, address, count, countryOptions}) {
 							</div>
 						)}
 
-						<div className="btn-group" role="group">
-							<div className="btn-group-item">
-								<IconButton
-									cssClass="add-address btn btn-secondary nav-btn nav-btn-monospaced"
-									labelName={Liferay.Language.get('add')}
-									onClick={() => {}}
-									svgId="#plus"
-									title={Liferay.Language.get('add')}
-								/>
-							</div>
-
-							{!!address.deletePostalAddressURL && (
+						{!!address.id && (
+							<div className="btn-group" role="group">
 								<div className="btn-group-item">
 									<IconButton
-										cssClass="btn-secondary delete-address nav-btn nav-btn-monospaced"
-										labelName={Liferay.Language.get(
-											'delete'
-										)}
-										onClick={() => {
-											if (
-												window.confirm(
-													Liferay.Language.get(
-														'are-you-sure-you-want-to-delete-this-address'
-													)
-												)
-											) {
-												window.location.assign(
-													address.deletePostalAddressURL
-												);
-											}
-										}}
-										svgId="#hr"
-										title={Liferay.Language.get('delete')}
+										cssClass="add-address btn btn-secondary nav-btn nav-btn-monospaced"
+										labelName={Liferay.Language.get('add')}
+										onClick={addFn}
+										svgId="#plus"
+										title={Liferay.Language.get('add')}
 									/>
 								</div>
-							)}
-						</div>
+
+								{!!address.deletePostalAddressURL && (
+									<div className="btn-group-item">
+										<IconButton
+											cssClass="btn-secondary delete-address nav-btn nav-btn-monospaced"
+											labelName={Liferay.Language.get(
+												'delete'
+											)}
+											onClick={() => {
+												if (
+													window.confirm(
+														Liferay.Language.get(
+															'are-you-sure-you-want-to-delete-this-address'
+														)
+													)
+												) {
+													window.location.assign(
+														address.deletePostalAddressURL
+													);
+												}
+											}}
+											svgId="#hr"
+											title={Liferay.Language.get(
+												'delete'
+											)}
+										/>
+									</div>
+								)}
+							</div>
+						)}
 					</ClayList.Item>
 				)}
 			</ClayList>
@@ -275,6 +266,7 @@ function Address({accountKey, address, count, countryOptions}) {
 
 Address.propTypes = {
 	accountKey: PropTypes.string,
+	addFn: PropTypes.func.isRequired,
 	address: PropTypes.shape({
 		addressCountry: PropTypes.string,
 		addressLocality: PropTypes.string,
@@ -382,6 +374,7 @@ function AddressField({
 									onChange={handleChange}
 									value={convertDashToEmptyString(fieldValue)}
 								>
+									<option value=""></option>
 									{options.map((option, index) => (
 										<option
 											key={option.name || index}

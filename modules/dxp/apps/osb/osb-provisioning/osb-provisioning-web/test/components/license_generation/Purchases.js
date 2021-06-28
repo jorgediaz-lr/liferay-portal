@@ -429,7 +429,7 @@ describe('Purchases', () => {
 				});
 
 				describe('when Type is NOT Enterpirse, Limited, OEM, or Virtual Cluster ', () => {
-					it('always displays the Expiration Date  as 100 years from Today in UTC', () => {
+					it('always displays the Expiration Date as 100 years from Today in UTC', () => {
 						const {getAllByDisplayValue} = renderPurchases();
 
 						const startDate = TODAY;
@@ -454,7 +454,7 @@ describe('Purchases', () => {
 				});
 
 				describe('when Type is Enterpirse, Limited, OEM, or Virtual Cluster', () => {
-					it('always displays the Expiration Date  as 395 days (365 days + 30 days of grace period) from Today in UTC', () => {
+					it('always displays the Expiration Date as 395 days (365 days + 30 days of grace period) from Today in UTC', () => {
 						const {getAllByDisplayValue} = renderPurchases({
 							initialLicense: new License({
 								licenseEntry: {
