@@ -77,7 +77,6 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.io.Serializable;
@@ -527,11 +526,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		licenseKey = licenseKeyPersistence.update(licenseKey);
 
-		long replaceTime =
-			(expirationDate.getTime() - startDate.getTime()) / Time.DAY;
-
-		String description = replaceTime + "-Day License";
-
 		return doAddLicenseKeyVersion3_4(
 			new Date(), user, licenseKey.getLicenseEntry(), product,
 			licenseKey.getAccountKey(), licenseKey.getProductPurchaseKey(),
@@ -541,7 +535,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			licenseKey.getOwner(), licenseKey.getMaxClusterNodes(),
 			licenseKey.getMaxServers(), licenseKey.getMaxHttpSessions(),
 			licenseKey.getMaxConcurrentUsers(), licenseKey.getMaxUsers(),
-			licenseKey.getSizing(), description,
+			licenseKey.getSizing(), licenseKey.getDescription(),
 			new String[] {licenseKey.getHostName()},
 			new String[] {licenseKey.getIpAddresses()},
 			new String[] {licenseKey.getMacAddresses()},
