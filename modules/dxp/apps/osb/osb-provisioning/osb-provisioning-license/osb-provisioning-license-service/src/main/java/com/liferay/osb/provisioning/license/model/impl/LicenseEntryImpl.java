@@ -15,10 +15,8 @@
 package com.liferay.osb.provisioning.license.model.impl;
 
 import com.liferay.osb.provisioning.license.helper.constants.LicenseType;
-import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
 
 /**
  * @author Kyle Bischof
@@ -30,11 +28,11 @@ public class LicenseEntryImpl extends LicenseEntryBaseImpl {
 
 	public String getDisplayName() {
 		String name = getName();
-		String type = LicenseType.getLabel(getType());
+		String typeLabel = LicenseType.getLabel(getType());
 
-		if (!name.contains(type)) {
+		if (!name.contains(typeLabel)) {
 			return StringBundler.concat(
-				name, StringPool.SPACE, StringPool.OPEN_PARENTHESIS, type,
+				name, StringPool.SPACE, StringPool.OPEN_PARENTHESIS, typeLabel,
 				StringPool.CLOSE_PARENTHESIS);
 		}
 
