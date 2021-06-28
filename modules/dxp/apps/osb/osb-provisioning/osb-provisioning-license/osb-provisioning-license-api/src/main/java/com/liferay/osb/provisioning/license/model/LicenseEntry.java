@@ -58,4 +58,6 @@ public interface LicenseEntry extends LicenseEntryModel, PersistedModel {
 
 		};
 
+	public String getDisplayName();
+
 }

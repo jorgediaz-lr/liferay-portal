@@ -136,6 +136,11 @@ public class LicenseEntryWrapper
 		return model.getCreateDate();
 	}
 
+	@Override
+	public String getDisplayName() {
+		return model.getDisplayName();
+	}
+
 	/**
 	 * Returns the license entry ID of this license entry.
 	 *
