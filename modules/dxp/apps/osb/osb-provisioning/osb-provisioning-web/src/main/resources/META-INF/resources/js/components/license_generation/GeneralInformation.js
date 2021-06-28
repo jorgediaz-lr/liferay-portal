@@ -9,7 +9,6 @@
  * distribution rights of the Software.
  */
 
-import capitalize from 'lodash.capitalize';
 import partition from 'lodash.partition';
 import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
@@ -76,7 +75,7 @@ function GeneralInformation({
 
 		if (availableLicenseEntries && licenseEntryId) {
 			return availableLicenseEntries.find(
-				entry => entry.licenseEntryId === Number(licenseEntryId)
+				entry => entry.licenseEntryId === licenseEntryId
 			);
 		}
 	}
@@ -260,11 +259,9 @@ function GeneralInformation({
 															entry.licenseEntryId
 														}
 													>
-														{`${
-															entry.licenseEntryName
-														} (${capitalize(
-															entry.licenseEntryType
-														)})`}
+														{
+															entry.licenseEntryDisplayName
+														}
 													</option>
 												)
 											)}
@@ -340,7 +337,8 @@ GeneralInformation.propTypes = {
 			productVersions: PropTypes.shape({
 				[PropTypes.string]: PropTypes.arrayOf(
 					PropTypes.shape({
-						licenseEntryId: PropTypes.number,
+						licenseEntryDisplayName: PropTypes.string,
+						licenseEntryId: PropTypes.string,
 						licenseEntryName: PropTypes.string,
 						licenseEntryType: PropTypes.string
 					})

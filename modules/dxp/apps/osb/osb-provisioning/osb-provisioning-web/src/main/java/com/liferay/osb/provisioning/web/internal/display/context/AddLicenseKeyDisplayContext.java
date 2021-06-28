@@ -239,6 +239,8 @@ public class AddLicenseKeyDisplayContext {
 			for (LicenseEntry licenseEntry : licenseEntries) {
 				licenseEntriesJSONArray.put(
 					JSONUtil.put(
+						"licenseEntryDisplayName", licenseEntry.getDisplayName()
+					).put(
 						"licenseEntryId", licenseEntry.getLicenseEntryId()
 					).put(
 						"licenseEntryName", licenseEntry.getName()

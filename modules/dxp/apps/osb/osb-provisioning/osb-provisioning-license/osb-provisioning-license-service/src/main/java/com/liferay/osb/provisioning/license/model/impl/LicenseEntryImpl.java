@@ -14,23 +14,31 @@
 
 package com.liferay.osb.provisioning.license.model.impl;
 
+import com.liferay.osb.provisioning.license.helper.constants.LicenseType;
+import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
+
 /**
- * The extended model implementation for the LicenseEntry service. Represents a row in the &quot;Provisioning_LicenseEntry&quot; database table, with each column mapped to a property of this class.
- *
- * <p>
- * Helper methods and all application logic should be put in this class. Whenever methods are added, rerun ServiceBuilder to copy their definitions into the <code>com.liferay.osb.provisioning.license.model.LicenseEntry</code> interface.
- * </p>
- *
- * @author Brian Wing Shun Chan
+ * @author Kyle Bischof
  */
 public class LicenseEntryImpl extends LicenseEntryBaseImpl {
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never reference this class directly. All methods that expect a license entry model instance should use the {@link com.liferay.osb.provisioning.license.model.LicenseEntry} interface instead.
-	 */
 	public LicenseEntryImpl() {
+	}
+
+	public String getDisplayName() {
+		String name = getName();
+		String type = LicenseType.getLabel(getType());
+
+		if (!name.contains(type)) {
+			return StringBundler.concat(
+				name, StringPool.SPACE, StringPool.OPEN_PARENTHESIS, type,
+				StringPool.CLOSE_PARENTHESIS);
+		}
+
+		return name;
 	}
 
 }

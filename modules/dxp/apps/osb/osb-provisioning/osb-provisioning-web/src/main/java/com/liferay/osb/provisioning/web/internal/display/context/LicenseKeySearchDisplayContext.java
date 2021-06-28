@@ -113,7 +113,7 @@ public class LicenseKeySearchDisplayContext {
 		for (LicenseEntry licenseEntry : licenseEntries) {
 			licenseEntriesJSONArray.put(
 				JSONUtil.put(
-					"label", licenseEntry.getName()
+					"label", licenseEntry.getDisplayName()
 				).put(
 					"value", licenseEntry.getLicenseEntryId()
 				));

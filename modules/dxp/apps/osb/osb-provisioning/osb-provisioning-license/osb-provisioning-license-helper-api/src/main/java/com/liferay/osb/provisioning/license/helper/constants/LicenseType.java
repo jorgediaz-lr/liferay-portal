@@ -14,6 +14,8 @@
 
 package com.liferay.osb.provisioning.license.helper.constants;
 
+import com.liferay.petra.string.StringPool;
+
 /**
  * @author Amos Fong
  */
@@ -47,5 +49,47 @@ public class LicenseType {
 	};
 
 	public static final String VIRTUAL_CLUSTER = "virtual-cluster";
+
+	public static String getLabel(String type) {
+		if (type.equals(BACKUP)) {
+			return "Backup";
+		}
+		else if (type.equals(CLUSTER)) {
+			return "Cluster";
+		}
+		else if (type.equals(DEVELOPER)) {
+			return "Developer";
+		}
+		else if (type.equals(DEVELOPER_CLUSTER)) {
+			return "Developer Cluster";
+		}
+		else if (type.equals(ELASTIC)) {
+			return "Elastic";
+		}
+		else if (type.equals(ENTERPRISE)) {
+			return "Enterprise";
+		}
+		else if (type.equals(LIMITED)) {
+			return "Limited";
+		}
+		else if (type.equals(NON_PRODUCTION)) {
+			return "Non-Production";
+		}
+		else if (type.equals(OEM)) {
+			return "OEM";
+		}
+		else if (type.equals(PER_USER)) {
+			return "Per-User";
+		}
+		else if (type.equals(PRODUCTION)) {
+			return "Production";
+		}
+		else if (type.equals(VIRTUAL_CLUSTER)) {
+			return "Virtual Cluster";
+		}
+		else {
+			return StringPool.BLANK;
+		}
+	}
 
 }

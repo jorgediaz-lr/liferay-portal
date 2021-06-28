@@ -27,24 +27,28 @@ const licensableProducts = [
 		productVersions: {
 			6.1: [
 				{
-					licenseEntryId: 98765,
+					licenseEntryDisplayName: 'Portal Backup (Production)',
+					licenseEntryId: '98765',
 					licenseEntryName: 'Portal Backup',
 					licenseEntryType: 'production'
 				},
 				{
-					licenseEntryId: 87654,
+					licenseEntryDisplayName: 'Portal Backup (Development)',
+					licenseEntryId: '87654',
 					licenseEntryName: 'Portal Backup',
 					licenseEntryType: 'development'
 				}
 			],
 			6.2: [
 				{
-					licenseEntryId: 12345,
+					licenseEntryDisplayName: 'Entry Name A (Oem)',
+					licenseEntryId: '12345',
 					licenseEntryName: 'Entry Name A',
 					licenseEntryType: 'oem'
 				},
 				{
-					licenseEntryId: 23456,
+					licenseEntryDisplayName: 'Entry Name B (Limited)',
+					licenseEntryId: '23456',
 					licenseEntryName: 'Entry Name B',
 					licenseEntryType: 'limited'
 				}
@@ -57,7 +61,8 @@ const licensableProducts = [
 		productVersions: {
 			'7.0': [
 				{
-					licenseEntryId: 76543,
+					licenseEntryDisplayName: 'Test Entry (Developer)',
+					licenseEntryId: '76543',
 					licenseEntryName: 'Test Entry',
 					licenseEntryType: 'developer'
 				}
