@@ -22,7 +22,11 @@ const TODAY = new Date();
 
 function renderReplaceLicense() {
 	return render(
-		<ReplaceLicense expirationDate="2022-04-14" startDate="2021-04-14" />
+		<ReplaceLicense
+			expirationDate="2022-04-14"
+			replacementURL="/replacement/url"
+			startDate="2021-04-14"
+		/>
 	);
 }
 

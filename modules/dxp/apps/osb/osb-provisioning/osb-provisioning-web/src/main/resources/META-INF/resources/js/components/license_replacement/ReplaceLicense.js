@@ -16,7 +16,11 @@ import {NAMESPACE} from '../../utilities/constants';
 import {formatDate} from '../../utilities/date';
 import ReplacementModal from './ReplacementModal';
 
-export default function ReplaceLicense({expirationDate = '', startDate = ''}) {
+export default function ReplaceLicense({
+	expirationDate = '',
+	replacementURL,
+	startDate = ''
+}) {
 	const [modalVisible, setModalVisible] = useState(false);
 
 	function handleClose() {
@@ -40,6 +44,10 @@ export default function ReplaceLicense({expirationDate = '', startDate = ''}) {
 
 			expirationDateField.value = formatDate(newExpirationDate);
 			startDateField.value = formatDate(newStartDate);
+
+			if (replacementURL) {
+				form.action = replacementURL;
+			}
 
 			form.submit();
 		}
@@ -69,5 +77,6 @@ export default function ReplaceLicense({expirationDate = '', startDate = ''}) {
 
 ReplaceLicense.propTypes = {
 	expirationDate: PropTypes.string,
+	replacementURL: PropTypes.string,
 	startDate: PropTypes.string
 };

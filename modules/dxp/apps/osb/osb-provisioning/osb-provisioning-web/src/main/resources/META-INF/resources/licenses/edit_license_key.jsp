@@ -420,6 +420,7 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 						<c:if test="<%= hasManageLicenseKeysPermission %>">
 							<span id="replaceLicense">
 								<react:component
+									data="<%= editLicenseKeyDisplayContext.getReplaceLicenseKeyData() %>"
 									module="js/ReplaceLicenseApp"
 								/>
 							</span>

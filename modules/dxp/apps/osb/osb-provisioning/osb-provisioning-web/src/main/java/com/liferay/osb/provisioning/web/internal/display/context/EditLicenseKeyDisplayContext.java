@@ -31,8 +31,10 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.PortletRequest;
@@ -186,6 +188,19 @@ public class EditLicenseKeyDisplayContext {
 			"licenseKeyId", String.valueOf(_licenseKey.getLicenseKeyId()));
 
 		return portletURL.toString();
+	}
+
+	public Map<String, Object> getReplaceLicenseKeyData() throws Exception {
+		Map<String, Object> data = new HashMap<>();
+
+		PortletURL portletURL = _renderResponse.createActionURL();
+
+		portletURL.setParameter(
+			ActionRequest.ACTION_NAME, "/licenses/replace_license_key");
+
+		data.put("replacementURL", portletURL.toString());
+
+		return data;
 	}
 
 	public boolean hasManageLicenseKeysPermission() throws Exception {

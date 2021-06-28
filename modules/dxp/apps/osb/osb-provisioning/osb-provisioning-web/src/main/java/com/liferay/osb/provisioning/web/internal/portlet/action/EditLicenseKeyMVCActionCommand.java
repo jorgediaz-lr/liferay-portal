@@ -260,47 +260,22 @@ public class EditLicenseKeyMVCActionCommand extends BaseMVCActionCommand {
 			ThemeDisplay themeDisplay, long licenseKeyId)
 		throws Exception {
 
-		String startDate = ParamUtil.getString(actionRequest, "startDate");
-		String expirationDate = ParamUtil.getString(
-			actionRequest, "expirationDate");
+		long clusterLicenseKeyId = ParamUtil.getLong(
+			actionRequest, "clusterLicenseKeyId");
+		String productPurchaseKey = ParamUtil.getString(
+			actionRequest, "productPurchaseKey");
+		boolean active = ParamUtil.getBoolean(actionRequest, "active");
+		boolean complimentary = ParamUtil.getBoolean(
+			actionRequest, "complimentary");
 
-		if (Validator.isNotNull(startDate) &&
-			Validator.isNotNull(expirationDate)) {
+		long curLicenseKeyId = licenseKeyId;
 
-			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-			Date curStartDate = dateFormat.parse(
-				ParamUtil.getString(actionRequest, "startDate"));
-			Date curExpirationDate = dateFormat.parse(
-				ParamUtil.getString(actionRequest, "expirationDate"));
-
-			LicenseKey licenseKey = _licenseKeyService.replaceLicenseKey(
-				licenseKeyId, curStartDate, curExpirationDate);
-
-			licenseKeyId = licenseKey.getLicenseKeyId();
+		if (clusterLicenseKeyId > 0) {
+			curLicenseKeyId = clusterLicenseKeyId;
 		}
-		else {
-			LicenseKey licenseKey = _licenseKeyService.getLicenseKey(
-				licenseKeyId);
 
-			long clusterLicenseKeyId = ParamUtil.getLong(
-				actionRequest, "clusterLicenseKeyId");
-			String productPurchaseKey = ParamUtil.getString(
-				actionRequest, "productPurchaseKey");
-			boolean active = ParamUtil.getBoolean(
-				actionRequest, "active", licenseKey.isActive());
-			boolean complimentary = ParamUtil.getBoolean(
-				actionRequest, "complimentary", licenseKey.isComplimentary());
-
-			long curLicenseKeyId = licenseKeyId;
-
-			if (clusterLicenseKeyId > 0) {
-				curLicenseKeyId = clusterLicenseKeyId;
-			}
-
-			_licenseKeyService.updateLicenseKey(
-				curLicenseKeyId, productPurchaseKey, complimentary, active);
-		}
+		_licenseKeyService.updateLicenseKey(
+			curLicenseKeyId, productPurchaseKey, complimentary, active);
 
 		sendRedirect(
 			actionRequest, actionResponse,
