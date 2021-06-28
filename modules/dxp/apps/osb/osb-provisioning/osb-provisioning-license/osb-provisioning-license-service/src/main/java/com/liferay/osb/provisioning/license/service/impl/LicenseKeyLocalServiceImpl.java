@@ -279,6 +279,37 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		return licenseKeyPersistence.update(licenseKey);
 	}
 
+	public LicenseKey extendLicenseKey(
+			long userId, long licenseKeyId, String productPurchaseKey,
+			Date startDate, Date expirationDate)
+		throws Exception {
+
+		User user = userLocalService.getUser(userId);
+
+		LicenseKey licenseKey = licenseKeyPersistence.findByPrimaryKey(
+			licenseKeyId);
+
+		Product product = _productWebService.getProduct(
+			licenseKey.getProductKey());
+		LicenseEntry licenseEntry = licenseKey.getLicenseEntry();
+
+		return doAddLicenseKeyVersion3_4(
+			new Date(), user, licenseKey.getLicenseEntry(), product,
+			licenseKey.getAccountKey(), productPurchaseKey,
+			licenseKey.getAccountName(), licenseEntry.getType(),
+			licenseKey.getLicenseVersion(), licenseKey.getProductVersion(),
+			licenseKey.getClusterId(), licenseKey.getName(),
+			licenseKey.getOwner(), licenseKey.getMaxClusterNodes(),
+			licenseKey.getMaxServers(), licenseKey.getMaxHttpSessions(),
+			licenseKey.getMaxConcurrentUsers(), licenseKey.getMaxUsers(),
+			licenseKey.getSizing(), licenseKey.getDescription(),
+			new String[] {licenseKey.getHostName()},
+			new String[] {licenseKey.getIpAddresses()},
+			new String[] {licenseKey.getMacAddresses()},
+			new String[] {licenseKey.getServerId()}, startDate, expirationDate,
+			licenseKey.getAdditionalInfo(), licenseKey.isComplimentary(), true);
+	}
+
 	public List<LicenseKey> getAccountLicenseKeys(String accountKey) {
 		return licenseKeyPersistence.findByAccountKey(
 			accountKey, QueryUtil.ALL_POS, QueryUtil.ALL_POS,

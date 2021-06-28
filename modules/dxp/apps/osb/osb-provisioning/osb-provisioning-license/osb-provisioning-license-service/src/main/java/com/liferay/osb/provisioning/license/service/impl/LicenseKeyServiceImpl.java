@@ -169,6 +169,19 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			serverId, startDate, expirationDate);
 	}
 
+	public LicenseKey extendLicenseKey(
+			long licenseKeyId, String productPurchaseKey, Date startDate,
+			Date expirationDate)
+		throws Exception {
+
+		_licenseKeyPermission.check(
+			getPermissionChecker(), ProvisioningActionKeys.MANAGE_LICENSE_KEYS);
+
+		return licenseKeyLocalService.extendLicenseKey(
+			getUserId(), licenseKeyId, productPurchaseKey, startDate,
+			expirationDate);
+	}
+
 	@JSONWebService
 	public List<LicenseKey> getAssetReceiptLicenseLicenseKeys(
 			String assetReceiptLicenseUuid, boolean complimentary,

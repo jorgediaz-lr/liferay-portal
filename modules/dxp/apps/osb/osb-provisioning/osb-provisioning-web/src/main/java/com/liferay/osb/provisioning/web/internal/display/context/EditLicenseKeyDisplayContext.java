@@ -14,23 +14,34 @@
 
 package com.liferay.osb.provisioning.web.internal.display.context;
 
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchaseView;
 import com.liferay.osb.provisioning.constants.ProvisioningActionKeys;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.constants.ProvisioningWebKeys;
+import com.liferay.osb.provisioning.koroneiki.web.service.ProductPurchaseViewWebService;
 import com.liferay.osb.provisioning.license.helper.constants.LicenseType;
 import com.liferay.osb.provisioning.license.model.LicenseKey;
 import com.liferay.osb.provisioning.license.permission.LicenseKeyPermission;
 import com.liferay.osb.provisioning.license.service.LicenseKeyLocalService;
 import com.liferay.osb.provisioning.license.util.LicenseUtil;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
+import java.text.Format;
+
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -54,7 +65,8 @@ public class EditLicenseKeyDisplayContext {
 			RenderRequest renderRequest, RenderResponse renderResponse,
 			HttpServletRequest httpServletRequest,
 			LicenseKeyLocalService licenseKeyLocalService,
-			LicenseKeyPermission licenseKeyPermission)
+			LicenseKeyPermission licenseKeyPermission,
+			ProductPurchaseViewWebService productPurchaseViewWebService)
 		throws Exception {
 
 		_renderRequest = renderRequest;
@@ -62,6 +74,7 @@ public class EditLicenseKeyDisplayContext {
 		_httpServletRequest = httpServletRequest;
 		_licenseKeyLocalService = licenseKeyLocalService;
 		_licenseKeyPermission = licenseKeyPermission;
+		_productPurchaseViewWebService = productPurchaseViewWebService;
 
 		_licenseKey = (LicenseKey)renderRequest.getAttribute(
 			ProvisioningWebKeys.LICENSE_KEY);
@@ -163,6 +176,49 @@ public class EditLicenseKeyDisplayContext {
 
 	public String getExpirationDateLabel() {
 		return LanguageUtil.get(_httpServletRequest, "expiration-date");
+	}
+
+	public Map<String, Object> getExtendLicenseKeyData() throws Exception {
+		Map<String, Object> data = new HashMap<>();
+
+		PortletURL portletURL = _renderResponse.createActionURL();
+
+		portletURL.setParameter(
+			ActionRequest.ACTION_NAME, "/licenses/extend_license_key");
+
+		data.put("extensionURL", portletURL.toString());
+
+		ProductPurchaseView productPurchaseView =
+			_productPurchaseViewWebService.getProductPurchaseView(
+				_licenseKey.getAccountKey(), _licenseKey.getProductKey());
+
+		if (ArrayUtil.isNotEmpty(productPurchaseView.getProductPurchases())) {
+			JSONArray productPurchasesJSONArray =
+				JSONFactoryUtil.createJSONArray();
+
+			for (ProductPurchase productPurchase :
+					productPurchaseView.getProductPurchases()) {
+
+				productPurchasesJSONArray.put(
+					JSONUtil.put(
+						"endDate", _formatDate(productPurchase.getEndDate())
+					).put(
+						"perpetual", productPurchase.getPerpetual()
+					).put(
+						"productPurchaseKey", productPurchase.getKey()
+					).put(
+						"startDate", _formatDate(productPurchase.getStartDate())
+					));
+			}
+
+			data.put("terms", productPurchasesJSONArray);
+		}
+
+		data.put("complimentary", _licenseKey.isComplimentary());
+		data.put("licenseType", _licenseType);
+		data.put("productName", _licenseKey.getProductName());
+
+		return data;
 	}
 
 	public String getLastModifiedUserNameDate() {
@@ -319,6 +375,17 @@ public class EditLicenseKeyDisplayContext {
 		return false;
 	}
 
+	private String _formatDate(Date date) {
+		if (date != null) {
+			Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
+				"yyyy-MM-dd");
+
+			return dateFormat.format(date);
+		}
+
+		return StringPool.BLANK;
+	}
+
 	private final HttpServletRequest _httpServletRequest;
 	private final LicenseKey _licenseKey;
 	private final LicenseKeyDisplay _licenseKeyDisplay;
@@ -326,6 +393,7 @@ public class EditLicenseKeyDisplayContext {
 	private final LicenseKeyPermission _licenseKeyPermission;
 	private final String _licenseType;
 	private final int _licenseVersion;
+	private final ProductPurchaseViewWebService _productPurchaseViewWebService;
 	private final RenderRequest _renderRequest;
 	private final RenderResponse _renderResponse;
 
