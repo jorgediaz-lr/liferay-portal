@@ -901,7 +901,9 @@ public class LayoutStagedModelDataHandler
 		privateLayout = portletDataContext.isPrivateLayout();
 
 		try {
-			if (layout.isTypeAssetDisplay()) {
+			if (Objects.equals(
+					layout.getType(), LayoutConstants.TYPE_ASSET_DISPLAY)) {
+
 				portletDataContext.setPrivateLayout(false);
 			}
 
