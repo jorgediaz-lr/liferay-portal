@@ -8,7 +8,7 @@ cd $(git rev-parse --show-toplevel)
 ln -s ${REFERENCES_CHECKER_HOME} references-checker 2> /dev/null
 
 for i in $(ls -1 references-checker/lib/*.jar |grep -v "references-checker-cmd" |grep -v "references-checker-portal"); do cp -v $i lib/portal; done
-cp -v references-checker/references-checker/src/main/resources/configuration_*.yml portal-impl/src
+cp -v references-checker/references-checker/src/main/resources/*.yml portal-impl/src
 
 #update classpath
 grep -v "path=\"references-checker" .classpath > .classpath_filtered
