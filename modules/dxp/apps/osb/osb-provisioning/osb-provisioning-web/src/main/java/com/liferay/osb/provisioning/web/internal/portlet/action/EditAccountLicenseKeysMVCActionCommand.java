@@ -57,16 +57,6 @@ public class EditAccountLicenseKeysMVCActionCommand
 			String complimentary = ParamUtil.getString(
 				actionRequest, "complimentary");
 
-			Boolean isActive = null;
-			Boolean isComplimentary = null;
-
-			if (Validator.isNotNull(active)) {
-				isActive = GetterUtil.getBoolean(active);
-			}
-			else {
-				isComplimentary = GetterUtil.getBoolean(complimentary);
-			}
-
 			for (long licenseKeyId : licenseKeyIds) {
 				LicenseKey licenseKey = _licenseKeyService.getLicenseKey(
 					licenseKeyId);
@@ -74,12 +64,14 @@ public class EditAccountLicenseKeysMVCActionCommand
 				if (Validator.isNotNull(active)) {
 					_licenseKeyService.updateLicenseKey(
 						licenseKeyId, licenseKey.getProductPurchaseKey(),
-						licenseKey.isComplimentary(), isActive);
+						licenseKey.isComplimentary(),
+						GetterUtil.getBoolean(active));
 				}
-				else {
+				else if (Validator.isNotNull(complimentary)) {
 					_licenseKeyService.updateLicenseKey(
 						licenseKeyId, licenseKey.getProductPurchaseKey(),
-						isComplimentary, licenseKey.isActive());
+						GetterUtil.getBoolean(complimentary),
+						licenseKey.isActive());
 				}
 			}
 

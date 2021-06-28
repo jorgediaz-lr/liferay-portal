@@ -195,10 +195,10 @@ public class LicenseKeyDisplay {
 
 	public String getUpdateActiveLabel() {
 		if (_licenseKey.isActive()) {
-			return "deactivate";
+			return LanguageUtil.get(_httpServletRequest, "deactivate");
 		}
 
-		return "activate";
+		return LanguageUtil.get(_httpServletRequest, "activate");
 	}
 
 	public String getUpdateComplimentaryConfirmMessage() {
@@ -216,10 +216,11 @@ public class LicenseKeyDisplay {
 
 	public String getUpdateComplimentaryLabel() {
 		if (_licenseKey.isComplimentary()) {
-			return "remove-complimentary";
+			return LanguageUtil.get(
+				_httpServletRequest, "remove-complimentary");
 		}
 
-		return "make-complimentary";
+		return LanguageUtil.get(_httpServletRequest, "make-complimentary");
 	}
 
 	public String getUserName() {
