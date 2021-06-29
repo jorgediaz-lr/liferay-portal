@@ -31,6 +31,8 @@ import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -60,12 +62,14 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
+		"javax.portlet.name=" + ProvisioningPortletKeys.ACCOUNTS,
 		"javax.portlet.name=" + ProvisioningPortletKeys.LICENSES,
+		"mvc.command.name=/accounts/edit_license_keys",
 		"mvc.command.name=/licenses/edit_license_key"
 	},
 	service = MVCActionCommand.class
 )
-public class EditLicenseKeyMVCActionCommand extends BaseMVCActionCommand {
+public class EditLicenseKeysMVCActionCommand extends BaseMVCActionCommand {
 
 	protected void addLicenseKey(
 			ActionRequest actionRequest, ActionResponse actionResponse,
@@ -208,6 +212,36 @@ public class EditLicenseKeyMVCActionCommand extends BaseMVCActionCommand {
 			actionRequest, actionResponse, jsonObject);
 	}
 
+	protected void bulkUpdateLicenseKeys(
+			ActionRequest actionRequest, ActionResponse actionResponse,
+			ThemeDisplay themeDisplay, long[] licenseKeyIds)
+		throws Exception {
+
+		String active = ParamUtil.getString(actionRequest, "active");
+		String complimentary = ParamUtil.getString(
+			actionRequest, "complimentary");
+
+		for (long licenseKeyId : licenseKeyIds) {
+			LicenseKey licenseKey = _licenseKeyService.getLicenseKey(
+				licenseKeyId);
+
+			if (Validator.isNotNull(active)) {
+				_licenseKeyService.updateLicenseKey(
+					licenseKeyId, licenseKey.getProductPurchaseKey(),
+					licenseKey.isComplimentary(),
+					GetterUtil.getBoolean(active));
+			}
+			else if (Validator.isNotNull(complimentary)) {
+				_licenseKeyService.updateLicenseKey(
+					licenseKeyId, licenseKey.getProductPurchaseKey(),
+					GetterUtil.getBoolean(complimentary),
+					licenseKey.isActive());
+			}
+		}
+
+		sendRedirect(actionRequest, actionResponse);
+	}
+
 	@Override
 	protected void doProcessAction(
 			ActionRequest actionRequest, ActionResponse actionResponse)
@@ -220,7 +254,14 @@ public class EditLicenseKeyMVCActionCommand extends BaseMVCActionCommand {
 			long licenseKeyId = ParamUtil.getLong(
 				actionRequest, "licenseKeyId");
 
-			if (licenseKeyId > 0) {
+			long[] licenseKeyIds = ParamUtil.getLongValues(
+				actionRequest, "licenseKeyIds");
+
+			if (ArrayUtil.isNotEmpty(licenseKeyIds)) {
+				bulkUpdateLicenseKeys(
+					actionRequest, actionResponse, themeDisplay, licenseKeyIds);
+			}
+			else if (licenseKeyId > 0) {
 				updateLicenseKey(
 					actionRequest, actionResponse, themeDisplay, licenseKeyId);
 			}
@@ -283,7 +324,7 @@ public class EditLicenseKeyMVCActionCommand extends BaseMVCActionCommand {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		EditLicenseKeyMVCActionCommand.class);
+		EditLicenseKeysMVCActionCommand.class);
 
 	private static final Pattern _separatorPattern = Pattern.compile(
 		"\\s*,\\s*|\\s+");
