@@ -84,6 +84,9 @@ public class EditLicenseKeyDisplayContext {
 
 		_licenseType = _licenseKey.getLicenseEntryType();
 		_licenseVersion = _licenseKey.getLicenseVersion();
+
+		_themeDisplay = (ThemeDisplay)_httpServletRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
 	}
 
 	public String getAccountProductPurchasesURL() throws Exception {
@@ -215,6 +218,11 @@ public class EditLicenseKeyDisplayContext {
 		}
 
 		data.put("complimentary", _licenseKey.isComplimentary());
+		data.put(
+			"hasUpdateLicenseDatePermission",
+			_licenseKeyPermission.contains(
+				_themeDisplay.getPermissionChecker(),
+				ProvisioningActionKeys.UPDATE_LICENSE_DATE));
 		data.put("licenseType", _licenseType);
 		data.put("productName", _licenseKey.getProductName());
 
@@ -260,12 +268,8 @@ public class EditLicenseKeyDisplayContext {
 	}
 
 	public boolean hasManageLicenseKeysPermission() throws Exception {
-		ThemeDisplay themeDisplay =
-			(ThemeDisplay)_httpServletRequest.getAttribute(
-				WebKeys.THEME_DISPLAY);
-
 		return _licenseKeyPermission.contains(
-			themeDisplay.getPermissionChecker(),
+			_themeDisplay.getPermissionChecker(),
 			ProvisioningActionKeys.MANAGE_LICENSE_KEYS);
 	}
 
@@ -396,5 +400,6 @@ public class EditLicenseKeyDisplayContext {
 	private final ProductPurchaseViewWebService _productPurchaseViewWebService;
 	private final RenderRequest _renderRequest;
 	private final RenderResponse _renderResponse;
+	private final ThemeDisplay _themeDisplay;
 
 }
