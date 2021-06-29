@@ -101,9 +101,8 @@ public class ViewAccountLicenseKeysDisplayContext
 											"javascript:",
 											renderResponse.getNamespace(),
 											"updateLicenseKeysProperties('",
-											"activate', '",
 											_getConfirmMessage("activate"),
-											"');"));
+											"', 'active', true);"));
 									dropdownItem.setLabel(
 										LanguageUtil.get(
 											httpServletRequest, "activate"));
@@ -117,9 +116,8 @@ public class ViewAccountLicenseKeysDisplayContext
 											"javascript:",
 											renderResponse.getNamespace(),
 											"updateLicenseKeysProperties('",
-											"deactivate', '",
 											_getConfirmMessage("deactivate"),
-											"');"));
+											"', 'active', false);"));
 									dropdownItem.setLabel(
 										LanguageUtil.get(
 											httpServletRequest, "deactivate"));
@@ -134,9 +132,8 @@ public class ViewAccountLicenseKeysDisplayContext
 									"javascript:",
 									renderResponse.getNamespace(),
 									"updateLicenseKeysProperties('",
-									"make-complimentary', '",
 									_getConfirmMessage("make-complimentary"),
-									"');"));
+									"', 'complimentary', true);"));
 							dropdownItem.setLabel(
 								LanguageUtil.get(
 									httpServletRequest, "make-complimentary"));
@@ -149,9 +146,8 @@ public class ViewAccountLicenseKeysDisplayContext
 									"javascript:",
 									renderResponse.getNamespace(),
 									"updateLicenseKeysProperties('",
-									"remove-complimentary', '",
 									_getConfirmMessage("remove-complimentary"),
-									"');"));
+									"', 'complimentary', false);"));
 							dropdownItem.setLabel(
 								LanguageUtil.get(
 									httpServletRequest,

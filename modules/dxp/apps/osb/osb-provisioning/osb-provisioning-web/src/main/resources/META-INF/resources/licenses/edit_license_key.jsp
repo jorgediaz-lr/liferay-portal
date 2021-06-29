@@ -235,7 +235,7 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 									<liferay-ui:message key="complimentary" />
 								</dt>
 								<dd>
-									<liferay-ui:message key="<%= licenseKeyDisplay.isComplimentaryLabel() %>" />
+									<%= HtmlUtil.escape(licenseKeyDisplay.isComplimentaryLabel()) %>
 								</dd>
 							</div>
 						</c:if>
@@ -389,8 +389,8 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 
 										<aui:col cssClass="edit-license-actions" md="12">
 											<c:if test="<%= hasManageLicenseKeysPermission %>">
-												<button class="btn btn-secondary btn-sm" onclick="<portlet:namespace />updateLicenseKeyProperties('<%= clusterLicenseKeyDisplay.getUpdateActiveLabel() %>', '<%= clusterLicenseKeyDisplay.getUpdateActiveConfirmMessage() %>', '<%= clusterLicenseKey.getLicenseKeyId() %>');" type="button">
-													<liferay-ui:message key="<%= clusterLicenseKeyDisplay.getUpdateActiveLabel() %>" />
+												<button class="btn btn-secondary btn-sm" onclick="<portlet:namespace />updateLicenseKeyProperties('<%= clusterLicenseKeyDisplay.getUpdateActiveConfirmMessage() %>', 'active', <%= !clusterLicenseKey.isActive() %>,'<%= clusterLicenseKey.getLicenseKeyId() %>');" type="button">
+													<%= HtmlUtil.escape(clusterLicenseKeyDisplay.getUpdateActiveLabel()) %>
 												</button>
 											</c:if>
 
@@ -426,14 +426,14 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 						</c:if>
 
 						<c:if test="<%= hasManageLicenseKeysPermission && editLicenseKeyDisplayContext.isShowComplimentary() %>">
-							<button class="btn btn-secondary btn-sm" onclick="<portlet:namespace />updateLicenseKeyProperties('<%= licenseKeyDisplay.getUpdateComplimentaryLabel() %>', '<%= licenseKeyDisplay.getUpdateComplimentaryConfirmMessage() %>');" type="button">
-								<liferay-ui:message key="<%= licenseKeyDisplay.getUpdateComplimentaryLabel() %>" />
+							<button class="btn btn-secondary btn-sm" onclick="<portlet:namespace />updateLicenseKeyProperties('<%= licenseKeyDisplay.getUpdateComplimentaryConfirmMessage() %>', 'complimentary', <%= !licenseKey.isComplimentary() %>);" type="button">
+								<%= HtmlUtil.escape(licenseKeyDisplay.getUpdateComplimentaryLabel()) %>
 							</button>
 						</c:if>
 
 						<c:if test="<%= hasManageLicenseKeysPermission && !editLicenseKeyDisplayContext.isShowClusterLicenseKey() %>">
-							<button class="btn btn-secondary btn-sm" onclick="<portlet:namespace />updateLicenseKeyProperties('<%= licenseKeyDisplay.getUpdateActiveLabel() %>', '<%= licenseKeyDisplay.getUpdateActiveConfirmMessage() %>');" type="button">
-								<liferay-ui:message key="<%= licenseKeyDisplay.getUpdateActiveLabel() %>" />
+							<button class="btn btn-secondary btn-sm" onclick="<portlet:namespace />updateLicenseKeyProperties('<%= licenseKeyDisplay.getUpdateActiveConfirmMessage() %>', 'active', <%= !licenseKey.isActive() %>);" type="button">
+								<%= HtmlUtil.escape(licenseKeyDisplay.getUpdateActiveLabel()) %>
 							</button>
 						</c:if>
 					</div>
@@ -466,72 +466,7 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 </div>
 
 <aui:script>
-	function <portlet:namespace />updateLicenseKeyProperties(
-		action,
-		confirmMessage,
-		clusterLicenseKeyId
-	) {
-		if (!confirm(confirmMessage)) {
-			return;
-		}
-
-		if (action === 'activate') {
-			<portlet:namespace />handleSubmitForm(
-				'active',
-				true,
-				clusterLicenseKeyId
-			);
-		}
-		else if (action === 'deactivate') {
-			<portlet:namespace />handleSubmitForm(
-				'active',
-				false,
-				clusterLicenseKeyId
-			);
-		}
-		else if (action === 'make-complimentary') {
-			<portlet:namespace />handleSubmitForm(
-				'complimentary',
-				true,
-				clusterLicenseKeyId
-			);
-		}
-		else if (action === 'remove-complimentary') {
-			<portlet:namespace />handleSubmitForm(
-				'complimentary',
-				false,
-				clusterLicenseKeyId
-			);
-		}
-	}
-
-	function <portlet:namespace />handleSubmitForm(
-		fieldName,
-		value,
-		clusterLicenseKeyId
-	) {
-		var clusterLicenseKeyIdField = document.getElementById(
-			'<portlet:namespace />clusterLicenseKeyId'
-		);
-
-		if (clusterLicenseKeyId && clusterLicenseKeyIdField) {
-			clusterLicenseKeyIdField.value = clusterLicenseKeyId;
-		}
-
-		var field = document.getElementById('<portlet:namespace />' + fieldName);
-
-		if (field) {
-			field.value = value;
-		}
-
-		var form = document.getElementById('<portlet:namespace />editLicenseFm');
-
-		if (form) {
-			form.submit();
-		}
-	}
-
-	<portlet:namespace />moveLicenseKey = function(url) {
+	function <portlet:namespace />moveLicenseKey(url) {
 		Liferay.Util.selectEntity(
 			{
 				dialog: {
@@ -560,5 +495,36 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 				}
 			}
 		);
-	};
+	}
+
+	function <portlet:namespace />updateLicenseKeyProperties(
+		confirmMessage,
+		fieldName,
+		value,
+		clusterLicenseKeyId
+	) {
+		if (!confirm(confirmMessage)) {
+			return;
+		}
+
+		var clusterLicenseKeyIdField = document.getElementById(
+			'<portlet:namespace />clusterLicenseKeyId'
+		);
+
+		if (clusterLicenseKeyId && clusterLicenseKeyIdField) {
+			clusterLicenseKeyIdField.value = clusterLicenseKeyId;
+		}
+
+		var field = document.getElementById('<portlet:namespace />' + fieldName);
+
+		if (field) {
+			field.value = value;
+		}
+
+		var form = document.getElementById('<portlet:namespace />editLicenseFm');
+
+		if (form) {
+			form.submit();
+		}
+	}
 </aui:script>

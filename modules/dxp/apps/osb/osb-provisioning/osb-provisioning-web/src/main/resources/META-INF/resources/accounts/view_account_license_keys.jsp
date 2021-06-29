@@ -204,28 +204,6 @@ PortletURL portletURL = viewAccountLicenseKeysDisplayContext.getPortletURL();
 </aui:script>
 
 <aui:script>
-	function <portlet:namespace />updateLicenseKeysProperties(
-		action,
-		confirmMessage
-	) {
-		if (!confirm(confirmMessage)) {
-			return;
-		}
-
-		if (action === 'activate') {
-			<portlet:namespace />handleSubmitForm('active', true);
-		}
-		else if (action === 'deactivate') {
-			<portlet:namespace />handleSubmitForm('active', false);
-		}
-		else if (action === 'make-complimentary') {
-			<portlet:namespace />handleSubmitForm('complimentary', true);
-		}
-		else if (action === 'remove-complimentary') {
-			<portlet:namespace />handleSubmitForm('complimentary', false);
-		}
-	}
-
 	function <portlet:namespace />downloadLicenseKeys() {
 		var licenseKeysFm = document.getElementById(
 			'<portlet:namespace />licenseKeysFm'
@@ -235,25 +213,6 @@ PortletURL portletURL = viewAccountLicenseKeysDisplayContext.getPortletURL();
 			submitForm(
 				licenseKeysFm,
 				'<portlet:actionURL name="/accounts/download_license_keys"><portlet:param name="redirect" value="<%= currentURL %>" /></portlet:actionURL>'
-			);
-		}
-	}
-
-	function <portlet:namespace />handleSubmitForm(fieldName, value) {
-		var field = document.getElementById('<portlet:namespace />' + fieldName);
-
-		if (field) {
-			field.value = value;
-		}
-
-		var licenseKeysFm = document.getElementById(
-			'<portlet:namespace />licenseKeysFm'
-		);
-
-		if (licenseKeysFm) {
-			submitForm(
-				licenseKeysFm,
-				'<portlet:actionURL name="/accounts/edit_license_keys"><portlet:param name="redirect" value="<%= currentURL %>" /></portlet:actionURL>'
 			);
 		}
 	}
@@ -272,6 +231,33 @@ PortletURL portletURL = viewAccountLicenseKeysDisplayContext.getPortletURL();
 			});
 
 			window.dispatchEvent(event);
+		}
+	}
+
+	function <portlet:namespace />updateLicenseKeysProperties(
+		confirmMessage,
+		fieldName,
+		value
+	) {
+		if (!confirm(confirmMessage)) {
+			return;
+		}
+
+		var field = document.getElementById('<portlet:namespace />' + fieldName);
+
+		if (field) {
+			field.value = value;
+		}
+
+		var licenseKeysFm = document.getElementById(
+			'<portlet:namespace />licenseKeysFm'
+		);
+
+		if (licenseKeysFm) {
+			submitForm(
+				licenseKeysFm,
+				'<portlet:actionURL name="/accounts/edit_license_keys"><portlet:param name="redirect" value="<%= currentURL %>" /></portlet:actionURL>'
+			);
 		}
 	}
 </aui:script>
