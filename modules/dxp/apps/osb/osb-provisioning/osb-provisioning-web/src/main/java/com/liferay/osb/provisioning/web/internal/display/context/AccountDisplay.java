@@ -76,10 +76,10 @@ public class AccountDisplay {
 
 	public String getAddPostalAddressURL() {
 		PortletURL addPostalAddressURL =
-			_liferayPortletResponse.createRenderURL();
+			_liferayPortletResponse.createActionURL();
 
 		addPostalAddressURL.setParameter(
-			"mvcRenderCommandName", "/accounts/add_postal_address");
+			ActionRequest.ACTION_NAME, "/accounts/edit_postal_address");
 
 		PortletURL portletURL = _getPortletURL(
 			"/accounts/view_account", "details");

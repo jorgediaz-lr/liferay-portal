@@ -26,7 +26,7 @@ import EditableField from '../EditableField';
 import IconButton from '../IconButton';
 import RequiredFieldMarker from '../RequiredFieldMarker';
 
-function Address({accountKey, addURL, address, count, countryOptions}) {
+function Address({accountKey, address, count, countryOptions}) {
 	const [editable, setEditable] = useState(false);
 	const [country, setCountry] = useState(
 		convertDashToEmptyString(address.addressCountry)
@@ -231,19 +231,13 @@ function Address({accountKey, addURL, address, count, countryOptions}) {
 
 						<div className="btn-group" role="group">
 							<div className="btn-group-item">
-								<a
-									className="add-address btn btn-secondary nav-btn nav-btn-monospaced"
-									href={addURL}
+								<IconButton
+									cssClass="add-address btn btn-secondary nav-btn nav-btn-monospaced"
+									labelName={Liferay.Language.get('add')}
+									onClick={() => {}}
+									svgId="#plus"
 									title={Liferay.Language.get('add')}
-								>
-									<svg
-										aria-label={Liferay.Language.get('add')}
-										className="lexicon-icon"
-										role="img"
-									>
-										<use xlinkHref="#plus" />
-									</svg>
-								</a>
+								/>
 							</div>
 
 							{!!address.deletePostalAddressURL && (
@@ -281,7 +275,6 @@ function Address({accountKey, addURL, address, count, countryOptions}) {
 
 Address.propTypes = {
 	accountKey: PropTypes.string,
-	addURL: PropTypes.string,
 	address: PropTypes.shape({
 		addressCountry: PropTypes.string,
 		addressLocality: PropTypes.string,

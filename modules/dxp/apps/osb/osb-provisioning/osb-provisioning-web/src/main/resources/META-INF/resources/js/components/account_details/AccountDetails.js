@@ -54,7 +54,6 @@ function AccountDetails({
 				<AccountAddresses
 					accountKey={details.key}
 					addresses={details.postalAddressDisplays}
-					addURL={details.addPostalAddressURL}
 					countryOptions={countryOptions}
 				/>
 			</PermissionsProvider>

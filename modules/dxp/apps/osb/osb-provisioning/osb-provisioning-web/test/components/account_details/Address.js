@@ -33,7 +33,6 @@ function renderAddress(permission = true) {
 					streetAddressLine2: '-',
 					streetAddressLine3: '-'
 				}}
-				addURL="/"
 				count={1}
 				countryOptions={[
 					{

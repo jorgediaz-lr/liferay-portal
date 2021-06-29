@@ -15,7 +15,7 @@ import React from 'react';
 import {DASH} from '../../utilities/constants';
 import Address from './Address';
 
-function AccountAddresses({accountKey, addURL, addresses, countryOptions}) {
+function AccountAddresses({accountKey, addresses, countryOptions}) {
 	const processedCountryOptions = countryOptions.map(
 		({active, countryRegions, name, zipRequired}) => ({
 			active,
@@ -46,7 +46,6 @@ function AccountAddresses({accountKey, addURL, addresses, countryOptions}) {
 				<Address
 					accountKey={accountKey}
 					address={address}
-					addURL={addURL}
 					count={index + 1}
 					countryOptions={processedCountryOptions}
 					key={address.id}
@@ -58,7 +57,6 @@ function AccountAddresses({accountKey, addURL, addresses, countryOptions}) {
 
 AccountAddresses.propTypes = {
 	accountKey: PropTypes.string.isRequired,
-	addURL: PropTypes.string.isRequired,
 	addresses: PropTypes.arrayOf(
 		PropTypes.shape({
 			addressCountry: PropTypes.string,

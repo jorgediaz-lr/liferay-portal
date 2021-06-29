@@ -60,7 +60,6 @@ function renderAccountAddress(addresses = [], permission = true) {
 			<AccountAddresses
 				accountKey="key123"
 				addresses={addresses}
-				addURL="/"
 				countryOptions={[
 					{
 						active: true,

@@ -89,13 +89,7 @@ public class EditPostalAddressMVCActionCommand extends BaseMVCActionCommand {
 			SessionErrors.add(actionRequest, exception.getClass(), exception);
 
 			if (exception instanceof Problem.ProblemException) {
-				if (postalAddressId > 0) {
-					sendRedirect(actionRequest, actionResponse);
-				}
-				else {
-					actionResponse.setRenderParameter(
-						"mvcRenderCommandName", "/accounts/add_postal_address");
-				}
+				sendRedirect(actionRequest, actionResponse);
 			}
 			else {
 				throw exception;
