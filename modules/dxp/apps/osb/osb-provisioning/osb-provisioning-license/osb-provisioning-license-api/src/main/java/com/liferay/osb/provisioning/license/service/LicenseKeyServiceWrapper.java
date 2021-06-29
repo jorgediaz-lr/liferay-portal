@@ -79,6 +79,17 @@ public class LicenseKeyServiceWrapper
 	}
 
 	@Override
+	public com.liferay.osb.provisioning.license.model.LicenseKey
+			extendLicenseKey(
+				long licenseKeyId, String productPurchaseKey,
+				java.util.Date startDate, java.util.Date expirationDate)
+		throws Exception {
+
+		return _licenseKeyService.extendLicenseKey(
+			licenseKeyId, productPurchaseKey, startDate, expirationDate);
+	}
+
+	@Override
 	public java.util.List<com.liferay.osb.provisioning.license.model.LicenseKey>
 			getAssetReceiptLicenseLicenseKeys(
 				String assetReceiptLicenseUuid, boolean complimentary,

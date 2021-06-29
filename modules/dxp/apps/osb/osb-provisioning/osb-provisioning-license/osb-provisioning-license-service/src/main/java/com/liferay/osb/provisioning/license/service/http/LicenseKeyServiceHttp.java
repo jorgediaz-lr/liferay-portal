@@ -191,6 +191,48 @@ public class LicenseKeyServiceHttp {
 		}
 	}
 
+	public static com.liferay.osb.provisioning.license.model.LicenseKey
+			extendLicenseKey(
+				HttpPrincipal httpPrincipal, long licenseKeyId,
+				String productPurchaseKey, java.util.Date startDate,
+				java.util.Date expirationDate)
+		throws Exception {
+
+		try {
+			MethodKey methodKey = new MethodKey(
+				LicenseKeyServiceUtil.class, "extendLicenseKey",
+				_extendLicenseKeyParameterTypes3);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, licenseKeyId, productPurchaseKey, startDate,
+				expirationDate);
+
+			Object returnObj = null;
+
+			try {
+				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception exception) {
+				if (exception instanceof Exception) {
+					throw (Exception)exception;
+				}
+
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
+			}
+
+			return (com.liferay.osb.provisioning.license.model.LicenseKey)
+				returnObj;
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
+
+			_log.error(systemException, systemException);
+
+			throw systemException;
+		}
+	}
+
 	public static java.util.List
 		<com.liferay.osb.provisioning.license.model.LicenseKey>
 				getAssetReceiptLicenseLicenseKeys(
@@ -202,7 +244,7 @@ public class LicenseKeyServiceHttp {
 			MethodKey methodKey = new MethodKey(
 				LicenseKeyServiceUtil.class,
 				"getAssetReceiptLicenseLicenseKeys",
-				_getAssetReceiptLicenseLicenseKeysParameterTypes3);
+				_getAssetReceiptLicenseLicenseKeysParameterTypes4);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, assetReceiptLicenseUuid, complimentary, active);
@@ -246,7 +288,7 @@ public class LicenseKeyServiceHttp {
 			MethodKey methodKey = new MethodKey(
 				LicenseKeyServiceUtil.class,
 				"getAssetReceiptLicenseLicenseKeysCount",
-				_getAssetReceiptLicenseLicenseKeysCountParameterTypes4);
+				_getAssetReceiptLicenseLicenseKeysCountParameterTypes5);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, assetReceiptLicenseUuid, complimentary, active);
@@ -286,7 +328,7 @@ public class LicenseKeyServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				LicenseKeyServiceUtil.class, "getLicenseKey",
-				_getLicenseKeyParameterTypes5);
+				_getLicenseKeyParameterTypes6);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, licenseKeyId);
@@ -327,7 +369,7 @@ public class LicenseKeyServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				LicenseKeyServiceUtil.class, "getLicenseKey",
-				_getLicenseKeyParameterTypes6);
+				_getLicenseKeyParameterTypes7);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey, uuid);
 
@@ -368,7 +410,7 @@ public class LicenseKeyServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				LicenseKeyServiceUtil.class, "getLicenseKeys",
-				_getLicenseKeysParameterTypes7);
+				_getLicenseKeysParameterTypes8);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, userId, productId);
@@ -411,7 +453,7 @@ public class LicenseKeyServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				LicenseKeyServiceUtil.class, "getLicenseKeys",
-				_getLicenseKeysParameterTypes8);
+				_getLicenseKeysParameterTypes9);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, productId, serverId);
@@ -456,7 +498,7 @@ public class LicenseKeyServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				LicenseKeyServiceUtil.class, "getLicenseKeys",
-				_getLicenseKeysParameterTypes9);
+				_getLicenseKeysParameterTypes10);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, assetReceiptLicenseUuid, productId, serverId, active,
@@ -503,7 +545,7 @@ public class LicenseKeyServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				LicenseKeyServiceUtil.class, "getLicenseKeysByName",
-				_getLicenseKeysByNameParameterTypes10);
+				_getLicenseKeysByNameParameterTypes11);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, productName, serverId, active, start, end, obc);
@@ -550,7 +592,7 @@ public class LicenseKeyServiceHttp {
 			MethodKey methodKey = new MethodKey(
 				LicenseKeyServiceUtil.class,
 				"getProductPurchaseGroupLicenseKeys",
-				_getProductPurchaseGroupLicenseKeysParameterTypes11);
+				_getProductPurchaseGroupLicenseKeysParameterTypes12);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, productPurchaseKeys, complimentary, active, start,
@@ -595,7 +637,7 @@ public class LicenseKeyServiceHttp {
 			MethodKey methodKey = new MethodKey(
 				LicenseKeyServiceUtil.class,
 				"getProductPurchaseGroupLicenseKeysCount",
-				_getProductPurchaseGroupLicenseKeysCountParameterTypes12);
+				_getProductPurchaseGroupLicenseKeysCountParameterTypes13);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, productPurchaseKeys, complimentary, active);
@@ -637,7 +679,7 @@ public class LicenseKeyServiceHttp {
 			MethodKey methodKey = new MethodKey(
 				LicenseKeyServiceUtil.class,
 				"getProductPurchaseLicenseKeysCount",
-				_getProductPurchaseLicenseKeysCountParameterTypes13);
+				_getProductPurchaseLicenseKeysCountParameterTypes14);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, productPurchaseKey, complimentary, active);
@@ -678,7 +720,7 @@ public class LicenseKeyServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				LicenseKeyServiceUtil.class, "isActive",
-				_isActiveParameterTypes14);
+				_isActiveParameterTypes15);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, serverId, productId, key);
@@ -720,7 +762,7 @@ public class LicenseKeyServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				LicenseKeyServiceUtil.class, "replaceLicenseKey",
-				_replaceLicenseKeyParameterTypes15);
+				_replaceLicenseKeyParameterTypes16);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, licenseKeyId, startDate, expirationDate);
@@ -760,7 +802,7 @@ public class LicenseKeyServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				LicenseKeyServiceUtil.class, "replaceLicenseKey",
-				_replaceLicenseKeyParameterTypes16);
+				_replaceLicenseKeyParameterTypes17);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, uuid, startDate, expirationDate);
@@ -810,7 +852,7 @@ public class LicenseKeyServiceHttp {
 
 		try {
 			MethodKey methodKey = new MethodKey(
-				LicenseKeyServiceUtil.class, "search", _searchParameterTypes17);
+				LicenseKeyServiceUtil.class, "search", _searchParameterTypes18);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, companyId, createUserUuid, createDateGT,
@@ -867,7 +909,7 @@ public class LicenseKeyServiceHttp {
 
 		try {
 			MethodKey methodKey = new MethodKey(
-				LicenseKeyServiceUtil.class, "search", _searchParameterTypes18);
+				LicenseKeyServiceUtil.class, "search", _searchParameterTypes19);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, createUserUuid, createDateGT, createDateLT,
@@ -914,7 +956,7 @@ public class LicenseKeyServiceHttp {
 
 		try {
 			MethodKey methodKey = new MethodKey(
-				LicenseKeyServiceUtil.class, "search", _searchParameterTypes19);
+				LicenseKeyServiceUtil.class, "search", _searchParameterTypes20);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, keywords, params, start, end, obc);
@@ -964,7 +1006,7 @@ public class LicenseKeyServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				LicenseKeyServiceUtil.class, "searchCount",
-				_searchCountParameterTypes20);
+				_searchCountParameterTypes21);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, createUserUuid, createDateGT, createDateLT,
@@ -1008,7 +1050,7 @@ public class LicenseKeyServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				LicenseKeyServiceUtil.class, "searchCount",
-				_searchCountParameterTypes21);
+				_searchCountParameterTypes22);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, keywords, params);
@@ -1046,7 +1088,7 @@ public class LicenseKeyServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				LicenseKeyServiceUtil.class, "updateLicenseKey",
-				_updateLicenseKeyParameterTypes22);
+				_updateLicenseKeyParameterTypes23);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, userId, licenseKeyId, active);
@@ -1082,7 +1124,7 @@ public class LicenseKeyServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				LicenseKeyServiceUtil.class, "updateLicenseKey",
-				_updateLicenseKeyParameterTypes23);
+				_updateLicenseKeyParameterTypes24);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, licenseKeyId, productPurchaseKey, complimentary,
@@ -1122,7 +1164,7 @@ public class LicenseKeyServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				LicenseKeyServiceUtil.class, "updateLicenseKey",
-				_updateLicenseKeyParameterTypes24);
+				_updateLicenseKeyParameterTypes25);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, userUuid, uuid, active);
@@ -1156,7 +1198,7 @@ public class LicenseKeyServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				LicenseKeyServiceUtil.class, "updateLicenseKeys",
-				_updateLicenseKeysParameterTypes25);
+				_updateLicenseKeysParameterTypes26);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, assetReceiptLicenseUuid, active);
@@ -1203,53 +1245,57 @@ public class LicenseKeyServiceHttp {
 			String.class, String.class, String.class, String.class,
 			java.util.Date.class, java.util.Date.class
 		};
+	private static final Class<?>[] _extendLicenseKeyParameterTypes3 =
+		new Class[] {
+			long.class, String.class, java.util.Date.class, java.util.Date.class
+		};
 	private static final Class<?>[]
-		_getAssetReceiptLicenseLicenseKeysParameterTypes3 = new Class[] {
+		_getAssetReceiptLicenseLicenseKeysParameterTypes4 = new Class[] {
 			String.class, boolean.class, boolean.class
 		};
 	private static final Class<?>[]
-		_getAssetReceiptLicenseLicenseKeysCountParameterTypes4 = new Class[] {
+		_getAssetReceiptLicenseLicenseKeysCountParameterTypes5 = new Class[] {
 			String.class, boolean.class, boolean.class
 		};
-	private static final Class<?>[] _getLicenseKeyParameterTypes5 =
-		new Class[] {long.class};
 	private static final Class<?>[] _getLicenseKeyParameterTypes6 =
+		new Class[] {long.class};
+	private static final Class<?>[] _getLicenseKeyParameterTypes7 =
 		new Class[] {String.class};
-	private static final Class<?>[] _getLicenseKeysParameterTypes7 =
-		new Class[] {long.class, String.class};
 	private static final Class<?>[] _getLicenseKeysParameterTypes8 =
-		new Class[] {String.class, String.class};
+		new Class[] {long.class, String.class};
 	private static final Class<?>[] _getLicenseKeysParameterTypes9 =
+		new Class[] {String.class, String.class};
+	private static final Class<?>[] _getLicenseKeysParameterTypes10 =
 		new Class[] {
 			String.class, String.class, String.class, boolean.class, int.class,
 			int.class, com.liferay.portal.kernel.util.OrderByComparator.class
 		};
-	private static final Class<?>[] _getLicenseKeysByNameParameterTypes10 =
+	private static final Class<?>[] _getLicenseKeysByNameParameterTypes11 =
 		new Class[] {
 			String.class, String.class, boolean.class, int.class, int.class,
 			com.liferay.portal.kernel.util.OrderByComparator.class
 		};
 	private static final Class<?>[]
-		_getProductPurchaseGroupLicenseKeysParameterTypes11 = new Class[] {
+		_getProductPurchaseGroupLicenseKeysParameterTypes12 = new Class[] {
 			String[].class, boolean.class, boolean.class, int.class, int.class,
 			com.liferay.portal.kernel.util.OrderByComparator.class
 		};
 	private static final Class<?>[]
-		_getProductPurchaseGroupLicenseKeysCountParameterTypes12 = new Class[] {
+		_getProductPurchaseGroupLicenseKeysCountParameterTypes13 = new Class[] {
 			String[].class, boolean.class, boolean.class
 		};
 	private static final Class<?>[]
-		_getProductPurchaseLicenseKeysCountParameterTypes13 = new Class[] {
+		_getProductPurchaseLicenseKeysCountParameterTypes14 = new Class[] {
 			String.class, boolean.class, boolean.class
 		};
-	private static final Class<?>[] _isActiveParameterTypes14 = new Class[] {
+	private static final Class<?>[] _isActiveParameterTypes15 = new Class[] {
 		String.class, String.class, String.class
 	};
-	private static final Class<?>[] _replaceLicenseKeyParameterTypes15 =
-		new Class[] {long.class, java.util.Date.class, java.util.Date.class};
 	private static final Class<?>[] _replaceLicenseKeyParameterTypes16 =
+		new Class[] {long.class, java.util.Date.class, java.util.Date.class};
+	private static final Class<?>[] _replaceLicenseKeyParameterTypes17 =
 		new Class[] {String.class, java.util.Date.class, java.util.Date.class};
-	private static final Class<?>[] _searchParameterTypes17 = new Class[] {
+	private static final Class<?>[] _searchParameterTypes18 = new Class[] {
 		long.class, String.class, java.util.Date.class, java.util.Date.class,
 		String.class, java.util.Date.class, java.util.Date.class, String.class,
 		String.class, String.class, java.util.Date.class, java.util.Date.class,
@@ -1260,7 +1306,7 @@ public class LicenseKeyServiceHttp {
 		boolean.class, int.class, int.class,
 		com.liferay.portal.kernel.search.Sort.class
 	};
-	private static final Class<?>[] _searchParameterTypes18 = new Class[] {
+	private static final Class<?>[] _searchParameterTypes19 = new Class[] {
 		String.class, java.util.Date.class, java.util.Date.class, String.class,
 		java.util.Date.class, java.util.Date.class, String.class, String.class,
 		String.class, java.util.Date.class, java.util.Date.class, long[].class,
@@ -1271,11 +1317,11 @@ public class LicenseKeyServiceHttp {
 		int.class, int.class,
 		com.liferay.portal.kernel.util.OrderByComparator.class
 	};
-	private static final Class<?>[] _searchParameterTypes19 = new Class[] {
+	private static final Class<?>[] _searchParameterTypes20 = new Class[] {
 		String.class, java.util.LinkedHashMap.class, int.class, int.class,
 		com.liferay.portal.kernel.util.OrderByComparator.class
 	};
-	private static final Class<?>[] _searchCountParameterTypes20 = new Class[] {
+	private static final Class<?>[] _searchCountParameterTypes21 = new Class[] {
 		String.class, java.util.Date.class, java.util.Date.class, String.class,
 		java.util.Date.class, java.util.Date.class, String.class, String.class,
 		String.class, java.util.Date.class, java.util.Date.class, long[].class,
@@ -1284,16 +1330,16 @@ public class LicenseKeyServiceHttp {
 		String.class, String.class, String.class, java.util.Date.class,
 		java.util.Date.class, java.util.LinkedHashMap.class, boolean.class
 	};
-	private static final Class<?>[] _searchCountParameterTypes21 = new Class[] {
+	private static final Class<?>[] _searchCountParameterTypes22 = new Class[] {
 		String.class, java.util.LinkedHashMap.class
 	};
-	private static final Class<?>[] _updateLicenseKeyParameterTypes22 =
-		new Class[] {long.class, long.class, boolean.class};
 	private static final Class<?>[] _updateLicenseKeyParameterTypes23 =
-		new Class[] {long.class, String.class, boolean.class, boolean.class};
+		new Class[] {long.class, long.class, boolean.class};
 	private static final Class<?>[] _updateLicenseKeyParameterTypes24 =
+		new Class[] {long.class, String.class, boolean.class, boolean.class};
+	private static final Class<?>[] _updateLicenseKeyParameterTypes25 =
 		new Class[] {String.class, String.class, boolean.class};
-	private static final Class<?>[] _updateLicenseKeysParameterTypes25 =
+	private static final Class<?>[] _updateLicenseKeysParameterTypes26 =
 		new Class[] {String.class, boolean.class};
 
 }

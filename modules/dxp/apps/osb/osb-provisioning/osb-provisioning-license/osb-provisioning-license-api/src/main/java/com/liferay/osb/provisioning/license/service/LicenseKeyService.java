@@ -80,6 +80,11 @@ public interface LicenseKeyService extends BaseService {
 			String serverId, Date startDate, Date expirationDate)
 		throws Exception;
 
+	public LicenseKey extendLicenseKey(
+			long licenseKeyId, String productPurchaseKey, Date startDate,
+			Date expirationDate)
+		throws Exception;
+
 	@JSONWebService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getAssetReceiptLicenseLicenseKeys(

@@ -228,6 +228,11 @@ public interface LicenseKeyLocalService
 	public long dynamicQueryCount(
 		DynamicQuery dynamicQuery, Projection projection);
 
+	public LicenseKey extendLicenseKey(
+			long userId, long licenseKeyId, String productPurchaseKey,
+			Date startDate, Date expirationDate)
+		throws Exception;
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public LicenseKey fetchLicenseKey(long licenseKeyId);
 

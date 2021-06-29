@@ -254,6 +254,16 @@ public class LicenseKeyLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
+	public static LicenseKey extendLicenseKey(
+			long userId, long licenseKeyId, String productPurchaseKey,
+			java.util.Date startDate, java.util.Date expirationDate)
+		throws Exception {
+
+		return getService().extendLicenseKey(
+			userId, licenseKeyId, productPurchaseKey, startDate,
+			expirationDate);
+	}
+
 	public static LicenseKey fetchLicenseKey(long licenseKeyId) {
 		return getService().fetchLicenseKey(licenseKeyId);
 	}

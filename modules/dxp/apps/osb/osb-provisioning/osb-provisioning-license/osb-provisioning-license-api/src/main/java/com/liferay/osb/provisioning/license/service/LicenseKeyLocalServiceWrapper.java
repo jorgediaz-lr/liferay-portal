@@ -276,6 +276,18 @@ public class LicenseKeyLocalServiceWrapper
 
 	@Override
 	public com.liferay.osb.provisioning.license.model.LicenseKey
+			extendLicenseKey(
+				long userId, long licenseKeyId, String productPurchaseKey,
+				java.util.Date startDate, java.util.Date expirationDate)
+		throws Exception {
+
+		return _licenseKeyLocalService.extendLicenseKey(
+			userId, licenseKeyId, productPurchaseKey, startDate,
+			expirationDate);
+	}
+
+	@Override
+	public com.liferay.osb.provisioning.license.model.LicenseKey
 		fetchLicenseKey(long licenseKeyId) {
 
 		return _licenseKeyLocalService.fetchLicenseKey(licenseKeyId);

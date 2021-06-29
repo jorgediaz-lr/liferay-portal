@@ -83,6 +83,15 @@ public class LicenseKeyServiceUtil {
 			startDate, expirationDate);
 	}
 
+	public static LicenseKey extendLicenseKey(
+			long licenseKeyId, String productPurchaseKey,
+			java.util.Date startDate, java.util.Date expirationDate)
+		throws Exception {
+
+		return getService().extendLicenseKey(
+			licenseKeyId, productPurchaseKey, startDate, expirationDate);
+	}
+
 	public static List<LicenseKey> getAssetReceiptLicenseLicenseKeys(
 			String assetReceiptLicenseUuid, boolean complimentary,
 			boolean active)
