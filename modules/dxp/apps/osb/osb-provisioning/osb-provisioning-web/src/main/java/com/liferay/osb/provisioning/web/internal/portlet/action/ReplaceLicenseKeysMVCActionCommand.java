@@ -65,10 +65,10 @@ public class ReplaceLicenseKeysMVCActionCommand extends BaseMVCActionCommand {
 
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-			Date startDate = dateFormat.parse(
-				ParamUtil.getString(actionRequest, "startDate"));
-			Date expirationDate = dateFormat.parse(
-				ParamUtil.getString(actionRequest, "expirationDate"));
+			Date startDate = ParamUtil.getDate(
+				actionRequest, "startDate", dateFormat);
+			Date expirationDate = ParamUtil.getDate(
+				actionRequest, "expirationDate", dateFormat);
 
 			if (ArrayUtil.isNotEmpty(licenseKeyIds)) {
 				for (long licenseKeyId : licenseKeyIds) {
