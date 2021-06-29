@@ -80,7 +80,7 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 								<liferay-ui:message key="type" />
 							</dt>
 							<dd>
-								<%= HtmlUtil.escape(licenseKeyDisplay.getType()) %>
+								<%= licenseKeyDisplay.getType() %>
 							</dd>
 						</div>
 					</dl>
@@ -169,7 +169,7 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 									<liferay-ui:message key="key" />
 								</dt>
 								<dd>
-									<%= HtmlUtil.escape(licenseKey.getKey()) %>
+									<%= licenseKey.getKey() %>
 								</dd>
 							</div>
 						</c:if>
@@ -202,7 +202,7 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 									<liferay-ui:message key="maximum-concurrent-users" />
 								</dt>
 								<dd>
-									<%= HtmlUtil.escape(licenseKeyDisplay.getMaxConcurrentUsersLabel()) %>
+									<%= licenseKeyDisplay.getMaxConcurrentUsersLabel() %>
 								</dd>
 							</div>
 						</c:if>
@@ -213,7 +213,7 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 									<liferay-ui:message key="maximum-users" />
 								</dt>
 								<dd>
-									<%= HtmlUtil.escape(licenseKeyDisplay.getMaxUsersLabel()) %>
+									<%= licenseKeyDisplay.getMaxUsersLabel() %>
 								</dd>
 							</div>
 						</c:if>
@@ -235,7 +235,7 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 									<liferay-ui:message key="complimentary" />
 								</dt>
 								<dd>
-									<%= HtmlUtil.escape(licenseKeyDisplay.isComplimentaryLabel()) %>
+									<%= licenseKeyDisplay.isComplimentaryLabel() %>
 								</dd>
 							</div>
 						</c:if>
@@ -260,7 +260,7 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 								<liferay-ui:message key="start-date" />
 							</dt>
 							<dd>
-								<%= HtmlUtil.escape(licenseKeyDisplay.getStartDate()) %>
+								<%= licenseKeyDisplay.getStartDate() %>
 							</dd>
 						</div>
 
@@ -269,7 +269,7 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 								<liferay-ui:message key="expiration-date" />
 							</dt>
 							<dd>
-								<%= HtmlUtil.escape(licenseKeyDisplay.getExpirationDate()) %>
+								<%= licenseKeyDisplay.getExpirationDate() %>
 							</dd>
 						</div>
 					</dl>
@@ -289,7 +289,7 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 								<liferay-ui:message key="create-date" />
 							</dt>
 							<dd>
-								<%= HtmlUtil.escape(licenseKeyDisplay.getCreateDate()) %>
+								<%= licenseKeyDisplay.getCreateDate() %>
 							</dd>
 						</div>
 
@@ -428,13 +428,13 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 
 						<c:if test="<%= hasManageLicenseKeysPermission && editLicenseKeyDisplayContext.isShowComplimentary() %>">
 							<button class="btn btn-secondary btn-sm" onclick="<portlet:namespace />updateLicenseKeyProperties('<%= licenseKeyDisplay.getUpdateComplimentaryConfirmMessage() %>', 'complimentary', <%= !licenseKey.isComplimentary() %>);" type="button">
-								<%= HtmlUtil.escape(licenseKeyDisplay.getUpdateComplimentaryLabel()) %>
+								<%= licenseKeyDisplay.getUpdateComplimentaryLabel() %>
 							</button>
 						</c:if>
 
 						<c:if test="<%= hasManageLicenseKeysPermission && !editLicenseKeyDisplayContext.isShowClusterLicenseKey() %>">
 							<button class="btn btn-secondary btn-sm" onclick="<portlet:namespace />updateLicenseKeyProperties('<%= licenseKeyDisplay.getUpdateActiveConfirmMessage() %>', 'active', <%= !licenseKey.isActive() %>);" type="button">
-								<%= HtmlUtil.escape(licenseKeyDisplay.getUpdateActiveLabel()) %>
+								<%= licenseKeyDisplay.getUpdateActiveLabel() %>
 							</button>
 						</c:if>
 					</div>

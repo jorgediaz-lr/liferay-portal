@@ -92,37 +92,35 @@ public class ViewAccountLicenseKeysDisplayContext
 							dropdownItem.setQuickAction(true);
 						});
 
-					if (!_tabs2.equals("all")) {
-						if (_tabs2.equals("deactivated")) {
-							add(
-								dropdownItem -> {
-									dropdownItem.setHref(
-										StringBundler.concat(
-											"javascript:",
-											renderResponse.getNamespace(),
-											"updateLicenseKeysProperties('",
-											_getConfirmMessage("activate"),
-											"', 'active', true);"));
-									dropdownItem.setLabel(
-										LanguageUtil.get(
-											httpServletRequest, "activate"));
-								});
-						}
-						else {
-							add(
-								dropdownItem -> {
-									dropdownItem.setHref(
-										StringBundler.concat(
-											"javascript:",
-											renderResponse.getNamespace(),
-											"updateLicenseKeysProperties('",
-											_getConfirmMessage("deactivate"),
-											"', 'active', false);"));
-									dropdownItem.setLabel(
-										LanguageUtil.get(
-											httpServletRequest, "deactivate"));
-								});
-						}
+					if (_tabs2.equals("active") || _tabs2.equals("expired")) {
+						add(
+							dropdownItem -> {
+								dropdownItem.setHref(
+									StringBundler.concat(
+										"javascript:",
+										renderResponse.getNamespace(),
+										"updateLicenseKeysProperties('",
+										_getConfirmMessage("deactivate"),
+										"', 'active', false);"));
+								dropdownItem.setLabel(
+									LanguageUtil.get(
+										httpServletRequest, "deactivate"));
+							});
+					}
+					else if (_tabs2.equals("deactivated")) {
+						add(
+							dropdownItem -> {
+								dropdownItem.setHref(
+									StringBundler.concat(
+										"javascript:",
+										renderResponse.getNamespace(),
+										"updateLicenseKeysProperties('",
+										_getConfirmMessage("activate"),
+										"', 'active', true);"));
+								dropdownItem.setLabel(
+									LanguageUtil.get(
+										httpServletRequest, "activate"));
+							});
 					}
 
 					add(
