@@ -14,6 +14,7 @@ import React from 'react';
 
 import Address from '../../../src/main/resources/META-INF/resources/js/components/account_details/Address';
 import {PermissionsProvider} from '../../../src/main/resources/META-INF/resources/js/hooks/permissions';
+import {DASH} from '../../../src/main/resources/META-INF/resources/js/utilities/constants';
 
 function renderAddress(permission = true) {
 	return render(
@@ -31,8 +32,8 @@ function renderAddress(permission = true) {
 					postalCode: '91765',
 					primary: true,
 					streetAddressLine1: '1400 Montefino Ave',
-					streetAddressLine2: '-',
-					streetAddressLine3: '-'
+					streetAddressLine2: DASH,
+					streetAddressLine3: DASH
 				}}
 				count={1}
 				countryOptions={[
@@ -126,6 +127,46 @@ describe('Address', () => {
 		});
 
 		expect(getByText('save').disabled).toBeTruthy();
+	});
+
+	it('displays the Save button as disabled until Street 1 and City are filled out', () => {
+		const {getAllByDisplayValue, getAllByText, getByText} = render(
+			<PermissionsProvider permissions={{updatePermission: true}}>
+				<Address
+					accountKey="key123"
+					addFn={jest.fn()}
+					address={{
+						addressCountry: DASH,
+						addressLocality: DASH,
+						addressRegion: DASH,
+						deletePostalAddressURL: '/',
+						editPostalAddressURL: '/',
+						id: '123',
+						postalCode: DASH,
+						primary: true,
+						streetAddressLine1: DASH,
+						streetAddressLine2: DASH,
+						streetAddressLine3: DASH
+					}}
+					count={1}
+					countryOptions={[]}
+				/>
+			</PermissionsProvider>
+		);
+
+		fireEvent.click(getAllByText(DASH)[0]);
+
+		expect(getByText('save').disabled).toBeTruthy();
+
+		const fields = getAllByDisplayValue('');
+
+		fireEvent.change(fields[0], {target: {value: 'street 1'}});
+
+		expect(getByText('save').disabled).toBeTruthy();
+
+		fireEvent.change(fields[1], {target: {value: 'city'}});
+
+		expect(getByText('save').disabled).toBeFalsy();
 	});
 
 	it('displays the Save button as disabled if a required Zip Code is not entered', () => {

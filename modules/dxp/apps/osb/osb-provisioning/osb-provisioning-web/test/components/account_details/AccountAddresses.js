@@ -25,6 +25,7 @@ const sampleAddresses = [
 		editPostalAddressURL: '/',
 		id: '123',
 		postalCode: '91765',
+		primary: false,
 		streetAddressLine1: '1400 Montefino Ave',
 		streetAddressLine2: '-',
 		streetAddressLine3: '-'
@@ -37,6 +38,7 @@ const sampleAddresses = [
 		editPostalAddressURL: '/',
 		id: '456',
 		postalCode: '-',
+		primary: false,
 		streetAddressLine1: 'Building 8',
 		streetAddressLine2: 'Office 207',
 		streetAddressLine3: '-'
@@ -49,6 +51,7 @@ const sampleAddresses = [
 		editPostalAddressURL: '/',
 		id: '789',
 		postalCode: '116023',
+		primary: false,
 		streetAddressLine1: '537 Huangpu Road Taide Building',
 		streetAddressLine2: '1005 High-Tech Zone',
 		streetAddressLine3: '-'
