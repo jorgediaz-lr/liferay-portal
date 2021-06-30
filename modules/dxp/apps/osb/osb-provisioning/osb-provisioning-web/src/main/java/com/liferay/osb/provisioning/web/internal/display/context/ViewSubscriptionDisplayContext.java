@@ -19,6 +19,7 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchaseView;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.constants.ProvisioningWebKeys;
+import com.liferay.osb.provisioning.web.internal.util.ProductPurchaseDisplayComparator;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -28,6 +29,7 @@ import com.liferay.portal.vulcan.util.TransformUtil;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.portlet.PortletRequest;
@@ -126,13 +128,19 @@ public class ViewSubscriptionDisplayContext extends ViewAccountDisplayContext {
 			_productPurchaseView.getProductPurchases();
 
 		if (productPurchases != null) {
-			searchContainer.setResults(
+			List<ProductPurchaseDisplay> productPurchaseDisplays =
 				TransformUtil.transformToList(
 					productPurchases,
 					productPurchase -> new ProductPurchaseDisplay(
 						httpServletRequest, productPurchase,
 						productConsumptionsCount.getOrDefault(
-							productPurchase.getKey(), 0L))));
+							productPurchase.getKey(), 0L)));
+
+			Collections.sort(
+				productPurchaseDisplays,
+				new ProductPurchaseDisplayComparator());
+
+			searchContainer.setResults(productPurchaseDisplays);
 
 			searchContainer.setTotal(productPurchases.length);
 		}
