@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.text.DateFormat;
@@ -71,10 +70,10 @@ public class ExtendLicenseKeyMVCActionCommand extends BaseMVCActionCommand {
 
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-			Date startDate = dateFormat.parse(
-				ParamUtil.getString(actionRequest, "startDate"));
-			Date expirationDate = dateFormat.parse(
-				ParamUtil.getString(actionRequest, "expirationDate"));
+			Date startDate = ParamUtil.getDate(
+				actionRequest, "startDate", dateFormat);
+			Date expirationDate = ParamUtil.getDate(
+				actionRequest, "expirationDate", dateFormat);
 
 			LicenseKey licenseKey = _licenseKeyService.extendLicenseKey(
 				licenseKeyId, productPurchaseKey, startDate, expirationDate);
@@ -107,8 +106,7 @@ public class ExtendLicenseKeyMVCActionCommand extends BaseMVCActionCommand {
 		portletURL.setParameter(
 			"mvcRenderCommandName", "/licenses/edit_license_key");
 		portletURL.setParameter("redirect", redirect);
-		portletURL.setParameter(
-			"licenseKeyId", StringUtil.valueOf(licenseKeyId));
+		portletURL.setParameter("licenseKeyId", String.valueOf(licenseKeyId));
 
 		return portletURL.toString();
 	}
