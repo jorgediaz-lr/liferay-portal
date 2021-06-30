@@ -15,7 +15,7 @@ import React from 'react';
 import CombinedLicenses from '../../../src/main/resources/META-INF/resources/js/components/license_download/CombinedLicenses';
 import {LicensesProvider} from '../../../src/main/resources/META-INF/resources/js/hooks/licenses';
 
-const multipleLiceseKeys = [
+const multipleLicenseKeys = [
 	{
 		active: true,
 		description: 'Test Account description',
@@ -136,7 +136,7 @@ describe('CombinedLicenses', () => {
 
 	it('does not display an inactive license in the Combined Licenses section', () => {
 		const {getByText, queryByText} = renderCombinedLicenses(
-			multipleLiceseKeys
+			multipleLicenseKeys
 		);
 
 		expect(queryByText('Invalid Commerce Subscription Backup')).toBeFalsy();
@@ -145,7 +145,7 @@ describe('CombinedLicenses', () => {
 
 	it('does not display a license whose product is neither Commerce nor DXP in the Combined Licenses section', () => {
 		const {getByText, queryByText} = renderCombinedLicenses(
-			multipleLiceseKeys
+			multipleLicenseKeys
 		);
 
 		expect(queryByText('Portal Backup')).toBeFalsy();

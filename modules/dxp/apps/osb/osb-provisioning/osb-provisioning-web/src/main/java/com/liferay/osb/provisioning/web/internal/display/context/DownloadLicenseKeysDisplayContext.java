@@ -15,6 +15,7 @@
 package com.liferay.osb.provisioning.web.internal.display.context;
 
 import com.liferay.osb.provisioning.constants.ProvisioningWebKeys;
+import com.liferay.osb.provisioning.license.model.LicenseEntry;
 import com.liferay.osb.provisioning.license.model.LicenseKey;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -62,6 +63,8 @@ public class DownloadLicenseKeysDisplayContext {
 		JSONArray licenseKeysJSONArray = JSONFactoryUtil.createJSONArray();
 
 		for (LicenseKey licenseKey : _licenseKeys) {
+			LicenseEntry licenseEntry = licenseKey.getLicenseEntry();
+
 			licenseKeysJSONArray.put(
 				JSONUtil.put(
 					"active", licenseKey.isActive()
@@ -74,6 +77,8 @@ public class DownloadLicenseKeysDisplayContext {
 					"hostName", licenseKey.getHostName()
 				).put(
 					"ipAddresses", licenseKey.getIpAddresses()
+				).put(
+					"licenseEntryDisplayName", licenseEntry.getDisplayName()
 				).put(
 					"licenseEntryName", licenseKey.getLicenseEntryName()
 				).put(

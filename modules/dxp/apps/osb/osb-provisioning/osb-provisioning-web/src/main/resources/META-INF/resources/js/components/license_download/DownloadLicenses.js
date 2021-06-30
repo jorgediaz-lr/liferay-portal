@@ -87,6 +87,7 @@ DownloadLicenses.propTypes = {
 			expirationDate: PropTypes.string,
 			hostName: PropTypes.string,
 			ipAddresses: PropTypes.string,
+			licenseEntryDisplayName: PropTypes.string,
 			licenseEntryName: PropTypes.string,
 			licenseEntryType: PropTypes.string,
 			licenseKeyId: PropTypes.string,

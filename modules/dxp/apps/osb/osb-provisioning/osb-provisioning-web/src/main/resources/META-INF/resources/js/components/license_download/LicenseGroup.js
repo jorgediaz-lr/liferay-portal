@@ -10,7 +10,6 @@
  */
 
 import ClayTable from '@clayui/table';
-import capitalize from 'lodash.capitalize';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -81,8 +80,7 @@ function License({disableDelete, license}) {
 		expirationDate,
 		hostName,
 		ipAddresses,
-		licenseEntryName,
-		licenseEntryType,
+		licenseEntryDisplayName,
 		licenseKeyId,
 		macAddresses,
 		name,
@@ -109,9 +107,7 @@ function License({disableDelete, license}) {
 			</ClayTable.Cell>
 			<ClayTable.Cell>{productName}</ClayTable.Cell>
 			<ClayTable.Cell>{productVersion}</ClayTable.Cell>
-			<ClayTable.Cell>{`${licenseEntryName} (${capitalize(
-				licenseEntryType
-			)})`}</ClayTable.Cell>
+			<ClayTable.Cell>{licenseEntryDisplayName}</ClayTable.Cell>
 			<ClayTable.Cell>{startDate}</ClayTable.Cell>
 			<ClayTable.Cell>{expirationDate}</ClayTable.Cell>
 			<ClayTable.Cell>{hostName}</ClayTable.Cell>
@@ -178,6 +174,7 @@ LicenseGroup.propTypes = {
 				expirationDate: PropTypes.string,
 				hostName: PropTypes.string,
 				ipAddresses: PropTypes.string,
+				licenseEntryDisplayName: PropTypes.string,
 				licenseEntryName: PropTypes.string,
 				licenseEntryType: PropTypes.string,
 				licenseKeyId: PropTypes.string,

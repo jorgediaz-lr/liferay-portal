@@ -79,7 +79,7 @@ public class LicenseType {
 			return "OEM";
 		}
 		else if (type.equals(PER_USER)) {
-			return "Per-User";
+			return "Per User";
 		}
 		else if (type.equals(PRODUCTION)) {
 			return "Production";
