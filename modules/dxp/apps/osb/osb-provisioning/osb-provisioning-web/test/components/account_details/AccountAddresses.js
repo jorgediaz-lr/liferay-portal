@@ -118,7 +118,7 @@ describe('AccountAddresses', () => {
 		expect(getAllByText('-').length).toBe(7);
 	});
 
-	it('allow a new address to be added when no address exists yet', () => {
+	it('allows a new address to be added when no address exists yet', () => {
 		const {getAllByText, getByText} = renderAccountAddress();
 
 		fireEvent.click(getAllByText('-')[0]);
