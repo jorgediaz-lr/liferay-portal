@@ -269,7 +269,7 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 			properties.put("maxServers", String.valueOf(serverIds.length));
 		}
 
-		Document document = SAXReaderUtil.createDocument();
+		Document document = toXMLVersion3_4(properties, StringPool.BLANK, true);
 
 		Element rootElement = document.getRootElement();
 
