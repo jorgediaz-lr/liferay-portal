@@ -195,16 +195,20 @@ public class ProductPurchaseViewDisplay {
 		if (Validator.isNull(_state)) {
 			return StringPool.BLANK;
 		}
-
-		if (_state.equals("active")) {
+		else if (_state.equals("active")) {
 			return "label-success";
 		}
-		else if (_state.equals("expired") || _state.equals("future")) {
-			return "label-warning";
-		}
-		else {
+		else if (_state.equals("cancelled")) {
 			return "label-danger";
 		}
+		else if (_state.equals("expired")) {
+			return "label-secondary";
+		}
+		else if (_state.equals("future")) {
+			return "label-warning";
+		}
+
+		return StringPool.BLANK;
 	}
 
 	public String getSupportLife() {
