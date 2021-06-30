@@ -178,7 +178,7 @@ definition {
 			locator2 = "PageEditor#FRAGMENT_DROP_TARGET",
 			value1 = "${portletName}");
 
-		Pause(locator1 = "5000");
+		PageEditor.waitForAutoSave();
 
 		AssertElementPresent(
 			key_fragmentName = "${portletName}",
@@ -204,7 +204,7 @@ definition {
 			locator2 = "PageEditor#FRAGMENT_DROP_TARGET",
 			value1 = "${portletName}");
 
-		Pause(locator1 = "5000");
+		PageEditor.waitForAutoSave();
 
 		AssertElementPresent(
 			key_fragmentName = "${portletName}",

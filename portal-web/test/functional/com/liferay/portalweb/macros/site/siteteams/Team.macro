@@ -48,11 +48,9 @@ definition {
 		else {
 			LexiconEntry.changeDisplayStyle(displayStyle = "cards");
 
-			Pause(locator1 = "5000");
+			MetalComponent.waitForCard(card = "${userScreenName}");
 
 			LexiconCard.checkCardCheckbox(card = "${userScreenName}");
-
-			Pause(locator1 = "5000");
 
 			SelectFrameTop();
 

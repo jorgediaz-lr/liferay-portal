@@ -380,7 +380,7 @@ definition {
 	macro assignUserGroupAsMemberCP {
 		Navigator.gotoNavItem(navItem = "User Groups");
 
-		Pause(locator1 = "5000");
+		MetalComponent.waitForManagementBar();
 
 		LexiconEntry.gotoAdd();
 
@@ -614,8 +614,6 @@ definition {
 		AssertTextEquals(
 			locator1 = "SiteSettingsSiteURL#SITE_URL_FRIENDLY_URL_LABEL",
 			value1 = "Friendly URL");
-
-		Pause(locator1 = "5000");
 
 		Type(
 			locator1 = "TextInput#FRIENDLY_URL_SITE_SETTINGS",

@@ -2089,7 +2089,7 @@ definition {
 			locator1 = "UsersAndOrganizations#USER_TABLE_SCREEN_NAME",
 			value1 = "test");
 
-		Pause(locator1 = "5000");
+		WaitForElementPresent(locator1 = "UsersAndOrganizationsEditUser#DETAILS_USER_ID_FIELD");
 
 		var userId = selenium.getElementValue("UsersAndOrganizationsEditUser#DETAILS_USER_ID_FIELD");
 

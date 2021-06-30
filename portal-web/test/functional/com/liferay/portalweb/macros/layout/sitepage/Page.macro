@@ -516,8 +516,6 @@ definition {
 
 		Button.clickDone();
 
-		Pause(locator1 = "5000");
-
 		SelectFrameTop();
 
 		PortletEntry.save();

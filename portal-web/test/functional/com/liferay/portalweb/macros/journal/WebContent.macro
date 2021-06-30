@@ -221,11 +221,7 @@ definition {
 			webContentContent = "${webContentContent}",
 			webContentTitle = "${webContentTitle}");
 
-		AssertClickNoError(
-			locator1 = "Button#PUBLISH",
-			value1 = "Publish");
-
-		Pause(locator1 = "5000");
+		PortletEntry.publish();
 
 		var key_assetTitle = "${webContentTitle}";
 
@@ -724,7 +720,7 @@ definition {
 			locator1 = "Button#SUBMIT_FOR_PUBLICATION",
 			value1 = "Submit for Publication");
 
-		Pause(locator1 = "5000");
+		Alert.viewSuccessMessage();
 
 		SelectFrame();
 
@@ -1122,8 +1118,6 @@ definition {
 
 		SelectFrame(value1 = "relative=top");
 
-		Pause(locator1 = "5000");
-
 		Button.clickDone();
 
 		AssertClick(
@@ -1154,8 +1148,6 @@ definition {
 		Portlet.selectTreeNode(nodeName = "${folderName}");
 
 		SelectFrame(value1 = "relative=top");
-
-		Pause(locator1 = "5000");
 
 		Button.clickDone();
 
@@ -1251,9 +1243,7 @@ definition {
 	}
 
 	macro saveAsDraftViaAP {
-		Button.clickSaveAsDraft();
-
-		Pause(locator1 = "5000");
+		PortletEntry.saveAsDraft();
 
 		Refresh();
 
