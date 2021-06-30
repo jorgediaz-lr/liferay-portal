@@ -139,7 +139,7 @@ JournalEditArticleDisplayContext journalEditArticleDisplayContext = new JournalE
 
 	<div class="contextual-sidebar-content">
 		<div class="container-fluid container-fluid-max-xl container-view">
-			<div class="sheet sheet-lg">
+			<div class="container sheet">
 				<aui:model-context bean="<%= article %>" defaultLanguageId="<%= journalEditArticleDisplayContext.getDefaultArticleLanguageId() %>" model="<%= JournalArticle.class %>" />
 
 				<liferay-ui:error exception="<%= ArticleContentException.class %>" message="please-enter-valid-content" />
