@@ -75,6 +75,8 @@ public class ProductPurchaseDisplay {
 		else {
 			_sizing = 0;
 		}
+
+		_initState();
 	}
 
 	public String getAccountKey() {
@@ -150,20 +152,25 @@ public class ProductPurchaseDisplay {
 		return _productPurchase.getStartDate();
 	}
 
-	public String getStatus() {
-		ProductPurchase.Status status = _productPurchase.getStatus();
-
-		return status.toString();
+	public String getState() {
+		return _state;
 	}
 
-	public String getStatusStyle() {
-		ProductPurchase.Status status = _productPurchase.getStatus();
-
-		if (status == ProductPurchase.Status.APPROVED) {
+	public String getStateStyle() {
+		if (_state.equals("active")) {
 			return "label-success";
 		}
+		else if (_state.equals("cancelled")) {
+			return "label-danger";
+		}
+		else if (_state.equals("expired")) {
+			return "label-secondary";
+		}
+		else if (_state.equals("future")) {
+			return "label-warning";
+		}
 
-		return "label-danger";
+		return StringPool.BLANK;
 	}
 
 	public String getSupportLife() {
@@ -227,6 +234,31 @@ public class ProductPurchaseDisplay {
 		return null;
 	}
 
+	private void _initState() {
+		ProductPurchase.Status status = _productPurchase.getStatus();
+
+		Date startDate = _productPurchase.getStartDate();
+		Date endDate = _productPurchase.getEndDate();
+		Date now = new Date();
+
+		if (status == ProductPurchase.Status.APPROVED) {
+			if (_productPurchase.getPerpetual() ||
+				(startDate.before(now) && endDate.after(now))) {
+
+				_state = "active";
+			}
+			else if (endDate.before(now)) {
+				_state = "expired";
+			}
+			else {
+				_state = "future";
+			}
+		}
+		else {
+			_state = "cancelled";
+		}
+	}
+
 	private final Format _dateFormat;
 	private final String _externalLinkKey;
 	private final HttpServletRequest _httpServletRequest;
@@ -235,5 +267,6 @@ public class ProductPurchaseDisplay {
 	private final String _salesforceOpportunityKey;
 	private final String _salesforceOpportunityURL;
 	private final int _sizing;
+	private String _state;
 
 }

@@ -74,9 +74,9 @@ ProductPurchaseViewDisplay productPurchaseViewDisplay = viewSubscriptionDisplayC
 			/>
 
 			<liferay-ui:search-container-column-text
-				name="status"
+				name="state"
 			>
-				<span class="label <%= productPurchaseDisplay.getStatusStyle() %>"><%= productPurchaseDisplay.getStatus() %></span>
+				<span class="label <%= productPurchaseDisplay.getStateStyle() %>"><%= productPurchaseDisplay.getState() %></span>
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-jsp
