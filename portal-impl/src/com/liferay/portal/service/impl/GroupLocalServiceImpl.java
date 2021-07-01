@@ -4071,6 +4071,12 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 	}
 
 	protected void deletePortletData(Group group) throws PortalException {
+		group = groupPersistence.fetchByPrimaryKey(group.getGroupId());
+
+		if (group == null) {
+			return;
+		}
+
 		PortletDataContext portletDataContext =
 			PortletDataContextFactoryUtil.createPreparePortletDataContext(
 				group.getCompanyId(), group.getGroupId(), null, null);
