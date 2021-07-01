@@ -421,7 +421,7 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 							<span id="replaceLicense">
 								<react:component
 									data="<%= editLicenseKeyDisplayContext.getReplaceLicenseKeyData() %>"
-									module="js/ReplaceLicenseApp"
+									module="js/apps/ReplaceLicenseApp"
 								/>
 							</span>
 						</c:if>

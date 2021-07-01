@@ -34,7 +34,7 @@ DownloadLicenseKeysDisplayContext downloadLicenseKeysDisplayContext = new Downlo
 	<div id="downloadLicenses">
 		<react:component
 			data="<%= downloadLicenseKeysDisplayContext.getDownloadLicenseKeysData() %>"
-			module="js/DownloadLicensesApp"
+			module="js/apps/DownloadLicensesApp"
 		/>
 	</div>
 </div>

@@ -11,11 +11,11 @@
 
 import React from 'react';
 
-import ErrorBoundary from './ErrorBoundary';
-import EditSubscriptions from './components/subscriptions/EditSubscriptions';
+import ErrorBoundary from '../components/ErrorBoundary';
+import BulkReplacement from '../components/license_replacement/BulkReplacement';
 
 export default props => (
 	<ErrorBoundary>
-		<EditSubscriptions {...props} />
+		<BulkReplacement {...props} />
 	</ErrorBoundary>
 );

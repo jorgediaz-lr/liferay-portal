@@ -11,11 +11,11 @@
 
 import React from 'react';
 
-import ErrorBoundary from './ErrorBoundary';
-import GenerateLicense from './components/license_generation/GenerateLicense';
+import ErrorBoundary from '../components/ErrorBoundary';
+import ExtendLicense from '../components/license_extension/ExtendLicense';
 
 export default props => (
 	<ErrorBoundary>
-		<GenerateLicense {...props} />
+		<ExtendLicense {...props} />
 	</ErrorBoundary>
 );

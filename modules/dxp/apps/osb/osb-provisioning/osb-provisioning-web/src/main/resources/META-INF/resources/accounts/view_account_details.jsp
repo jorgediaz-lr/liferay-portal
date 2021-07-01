@@ -36,6 +36,6 @@ ViewAccountDisplayContext viewAccountDisplayContext = ProvisioningWebComponentPr
 <div class="account-details details-table" id="accountDetails">
 	<react:component
 		data="<%= viewAccountDisplayContext.getAccountDetailsData() %>"
-		module="js/AccountDetailsApp"
+		module="js/apps/AccountDetailsApp"
 	/>
 </div>

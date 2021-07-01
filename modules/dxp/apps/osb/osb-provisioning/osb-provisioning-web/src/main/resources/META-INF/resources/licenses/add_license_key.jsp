@@ -32,7 +32,7 @@ AddLicenseKeyDisplayContext addLicenseKeyDisplayContext = ProvisioningWebCompone
 	<div id="generateLicense">
 		<react:component
 			data="<%= addLicenseKeyDisplayContext.getAddLicenseKeyData() %>"
-			module="js/GenerateLicenseApp"
+			module="js/apps/GenerateLicenseApp"
 		/>
 	</div>
 </div>

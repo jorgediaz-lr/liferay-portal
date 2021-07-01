@@ -51,7 +51,7 @@ if (Validator.isNull(backURL)) {
 	<div id="editSubscriptions">
 		<react:component
 			data="<%= editProductPurchasesDisplayContext.getEditProductPurchasesData() %>"
-			module="js/EditSubscriptionsApp"
+			module="js/apps/EditSubscriptionsApp"
 		/>
 	</div>
 </div>

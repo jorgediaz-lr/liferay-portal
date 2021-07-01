@@ -71,7 +71,7 @@ String tabs1 = ParamUtil.getString(request, "tabs1");
 	<div class="side-panel" id="sidePanel">
 		<react:component
 			data="<%= viewAccountDisplayContext.getPanelData() %>"
-			module="js/SidePanelApp"
+			module="js/apps/SidePanelApp"
 		/>
 	</div>
 </div>

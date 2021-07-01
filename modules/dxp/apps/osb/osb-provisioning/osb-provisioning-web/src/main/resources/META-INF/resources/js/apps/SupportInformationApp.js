@@ -9,14 +9,13 @@
  * distribution rights of the Software.
  */
 
- import React from 'react';
+import React from 'react';
 
- import ErrorBoundary from './ErrorBoundary';
- import ExtendLicense from './components/license_extension/ExtendLicense';
- 
- export default props => (
-	 <ErrorBoundary>
-		 <ExtendLicense {...props} />
-	 </ErrorBoundary>
- );
- 
+import ErrorBoundary from '../components/ErrorBoundary';
+import SupportInformation from '../components/support_information/SupportInformation';
+
+export default props => (
+	<ErrorBoundary>
+		<SupportInformation {...props} />
+	</ErrorBoundary>
+);

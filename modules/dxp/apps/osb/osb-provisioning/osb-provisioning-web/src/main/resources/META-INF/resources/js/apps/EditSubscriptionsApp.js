@@ -11,11 +11,11 @@
 
 import React from 'react';
 
-import ErrorBoundary from './ErrorBoundary';
-import SupportInformation from './components/support_information/SupportInformation';
+import ErrorBoundary from '../components/ErrorBoundary';
+import EditSubscriptions from '../components/subscriptions/EditSubscriptions';
 
 export default props => (
 	<ErrorBoundary>
-		<SupportInformation {...props} />
+		<EditSubscriptions {...props} />
 	</ErrorBoundary>
 );

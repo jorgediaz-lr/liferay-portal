@@ -175,7 +175,7 @@ PortletURL portletURL = viewAccountLicenseKeysDisplayContext.getPortletURL();
 <span id="bulkLicenseReplacement">
 	<react:component
 		data="<%= viewAccountLicenseKeysDisplayContext.getReplaceLicenseKeysData() %>"
-		module="js/BulkLicenseReplacementApp"
+		module="js/apps/BulkLicenseReplacementApp"
 	/>
 </span>
 

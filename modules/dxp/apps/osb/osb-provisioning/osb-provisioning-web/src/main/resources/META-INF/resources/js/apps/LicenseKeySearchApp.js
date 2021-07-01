@@ -11,11 +11,11 @@
 
 import React from 'react';
 
-import ErrorBoundary from './ErrorBoundary';
-import BulkReplacement from './components/license_replacement/BulkReplacement';
+import ErrorBoundary from '../components/ErrorBoundary';
+import Search from '../components/search/license/Search';
 
 export default props => (
 	<ErrorBoundary>
-		<BulkReplacement {...props} />
+		<Search {...props} />
 	</ErrorBoundary>
 );

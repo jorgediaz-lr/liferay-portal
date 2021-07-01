@@ -11,11 +11,11 @@
 
 import React from 'react';
 
-import ErrorBoundary from './ErrorBoundary';
-import Search from './components/search/account/Search';
+import ErrorBoundary from '../components/ErrorBoundary';
+import AddContacts from '../components/account_contacts/AddContact';
 
 export default props => (
 	<ErrorBoundary>
-		<Search {...props} />
+		<AddContacts {...props} />
 	</ErrorBoundary>
 );

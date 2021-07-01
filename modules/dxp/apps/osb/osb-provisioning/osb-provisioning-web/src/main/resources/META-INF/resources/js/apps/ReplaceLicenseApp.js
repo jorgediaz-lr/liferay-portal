@@ -11,11 +11,11 @@
 
 import React from 'react';
 
-import ErrorBoundary from './ErrorBoundary';
-import SidePanel from './components/side_panel/SidePanel';
+import ErrorBoundary from '../components/ErrorBoundary';
+import ReplaceLicense from '../components/license_replacement/ReplaceLicense';
 
 export default props => (
 	<ErrorBoundary>
-		<SidePanel {...props} />
+		<ReplaceLicense {...props} />
 	</ErrorBoundary>
 );

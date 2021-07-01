@@ -44,7 +44,7 @@ ViewLicenseKeysManagementToolbarDisplayContext viewLicenseKeysManagementToolbarD
 		<div class="custom-search license-search">
 			<react:component
 				data="<%= licenseKeySearchDisplayContext.getData() %>"
-				module="js/LicenseKeySearchApp"
+				module="js/apps/LicenseKeySearchApp"
 			/>
 		</div>
 

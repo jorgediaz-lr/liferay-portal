@@ -11,11 +11,11 @@
 
 import React from 'react';
 
-import ErrorBoundary from './ErrorBoundary';
-import Search from './components/search/license/Search';
+import ErrorBoundary from '../components/ErrorBoundary';
+import DownloadLicenses from '../components/license_download/DownloadLicenses';
 
 export default props => (
 	<ErrorBoundary>
-		<Search {...props} />
+		<DownloadLicenses {...props} />
 	</ErrorBoundary>
 );

@@ -11,11 +11,11 @@
 
 import React from 'react';
 
-import ErrorBoundary from './ErrorBoundary';
-import AddContacts from './components/account_contacts/AddContact';
+import ErrorBoundary from '../components/ErrorBoundary';
+import AccountDetails from '../components/account_details/AccountDetails';
 
 export default props => (
 	<ErrorBoundary>
-		<AddContacts {...props} />
+		<AccountDetails {...props} />
 	</ErrorBoundary>
 );

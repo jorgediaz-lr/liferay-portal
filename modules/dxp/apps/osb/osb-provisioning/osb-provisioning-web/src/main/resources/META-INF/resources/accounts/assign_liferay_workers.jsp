@@ -53,7 +53,7 @@ AccountDisplay accountDisplay = viewAccountLiferayWorkersDisplayContext.getAccou
 		<div class="assign-contacts-sheet sheet">
 			<react:component
 				data="<%= viewAccountLiferayWorkersDisplayContext.getAssignLiferayWorkerData() %>"
-				module="js/AccountAddContactsApp"
+				module="js/apps/AccountAddContactsApp"
 			/>
 		</div>
 	</aui:form>

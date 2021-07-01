@@ -53,7 +53,7 @@ AccountDisplay accountDisplay = viewAccountContactsDisplayContext.getAccountDisp
 		<div class="assign-contacts-sheet sheet">
 			<react:component
 				data="<%= viewAccountContactsDisplayContext.getAssignContactData() %>"
-				module="js/AccountAddContactsApp"
+				module="js/apps/AccountAddContactsApp"
 			/>
 		</div>
 	</aui:form>

@@ -23,6 +23,6 @@ ViewAccountDisplayContext viewAccountDisplayContext = ProvisioningWebComponentPr
 <div class="details-table support-information" id="supportInformation">
 	<react:component
 		data="<%= viewAccountDisplayContext.getSupportData() %>"
-		module="js/SupportInformationApp"
+		module="js/apps/SupportInformationApp"
 	/>
 </div>
