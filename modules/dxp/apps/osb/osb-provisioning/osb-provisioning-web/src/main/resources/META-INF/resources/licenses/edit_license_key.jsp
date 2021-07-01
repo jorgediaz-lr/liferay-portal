@@ -426,6 +426,12 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 							</span>
 						</c:if>
 
+						<c:if test="<%= hasManageLicenseKeysPermission %>">
+							<a class="btn btn-secondary btn-sm" href="<%= editLicenseKeyDisplayContext.getExtendLicenseKeysURL() %>" type="button">
+								<liferay-ui:message key="extend" />
+							</a>
+						</c:if>
+
 						<c:if test="<%= hasManageLicenseKeysPermission && editLicenseKeyDisplayContext.isShowComplimentary() %>">
 							<button class="btn btn-secondary btn-sm" onclick="<portlet:namespace />updateLicenseKeyProperties('<%= licenseKeyDisplay.getUpdateComplimentaryConfirmMessage() %>', 'complimentary', <%= !licenseKey.isComplimentary() %>);" type="button">
 								<%= licenseKeyDisplay.getUpdateComplimentaryLabel() %>

@@ -222,10 +222,24 @@ public class EditLicenseKeyDisplayContext {
 			_licenseKeyPermission.contains(
 				_themeDisplay.getPermissionChecker(),
 				ProvisioningActionKeys.UPDATE_LICENSE_DATE));
+		data.put("licenseKeyId", _licenseKey.getLicenseKeyId());
 		data.put("licenseType", _licenseType);
 		data.put("productName", _licenseKey.getProductName());
 
 		return data;
+	}
+
+	public String getExtendLicenseKeysURL() throws Exception {
+		PortletURL portletURL = PortletURLFactoryUtil.create(
+			_renderRequest, ProvisioningPortletKeys.LICENSES,
+			PortletRequest.RENDER_PHASE);
+
+		portletURL.setParameter(
+			"mvcRenderCommandName", "/licenses/extend_license_key");
+		portletURL.setParameter(
+			"licenseKeyId", String.valueOf(_licenseKey.getLicenseKeyId()));
+
+		return portletURL.toString();
 	}
 
 	public String getLastModifiedUserNameDate() {
