@@ -30,6 +30,9 @@ EditLicenseKeyDisplayContext editLicenseKeyDisplayContext = ProvisioningWebCompo
 	/>
 
 	<div id="extendLicenses">
-		<%= editLicenseKeyDisplayContext.getExtendLicenseKeyData() %>
+		<react:component
+			data="<%= editLicenseKeyDisplayContext.getExtendLicenseKeyData() %>"
+			module="js/ExtendLicenseApp"
+		/>
 	</div>
 </div>

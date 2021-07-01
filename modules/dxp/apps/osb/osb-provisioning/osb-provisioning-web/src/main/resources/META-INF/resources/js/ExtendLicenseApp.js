@@ -9,20 +9,14 @@
  * distribution rights of the Software.
  */
 
-import ClayTable from '@clayui/table';
-import ClayTableCell from '@clayui/table/lib/Cell';
-import PropTypes from 'prop-types';
-import React from 'react';
+ import React from 'react';
 
-export default function TableDivider({colSpan, title = ''}) {
-	return (
-		<ClayTable.Row divider>
-			<ClayTableCell colSpan={colSpan}>{title}</ClayTableCell>
-		</ClayTable.Row>
-	);
-}
-
-TableDivider.propTypes = {
-	colSpan: PropTypes.number.isRequired,
-	title: PropTypes.string
-};
+ import ErrorBoundary from './ErrorBoundary';
+ import ExtendLicense from './components/license_extension/ExtendLicense';
+ 
+ export default props => (
+	 <ErrorBoundary>
+		 <ExtendLicense {...props} />
+	 </ErrorBoundary>
+ );
+ 

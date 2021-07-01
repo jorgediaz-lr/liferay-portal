@@ -1,7 +1,6 @@
-#downloadLicenses {
-	.download-licenses-container {
-		padding: $spacing-lg $spacing-md;
-	}
+#downloadLicenses .download-licenses-container,
+#extendLicenses .extend-licenses-container {
+	padding: $spacing-lg $spacing-md;
 }
 
 #generateLicense {

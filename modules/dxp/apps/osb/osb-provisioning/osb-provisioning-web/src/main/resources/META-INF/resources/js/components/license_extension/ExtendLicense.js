@@ -1,0 +1,62 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ */
+
+import ClayTable from '@clayui/table';
+import PropTypes from 'prop-types';
+import React from 'react';
+
+import ExtensionDetails from './ExtensionDetails';
+
+export default function ExtendLicense(props) {
+	return (
+		<div className="extend-licenses-container">
+			<ClayTable>
+				<ClayTable.Head>
+					<ClayTable.Row>
+						<ClayTable.Cell headingCell>
+							{Liferay.Language.get('products')}
+						</ClayTable.Cell>
+						<ClayTable.Cell expanded headingCell>
+							{Liferay.Language.get('subscription-term')}
+						</ClayTable.Cell>
+						<ClayTable.Cell expanded headingCell>
+							{Liferay.Language.get('start-date')}
+						</ClayTable.Cell>
+						<ClayTable.Cell expanded headingCell>
+							{Liferay.Language.get('expiration-date')}
+						</ClayTable.Cell>
+						<ClayTable.Cell headingCell></ClayTable.Cell>
+						<ClayTable.Cell headingCell></ClayTable.Cell>
+					</ClayTable.Row>
+				</ClayTable.Head>
+
+				<ExtensionDetails {...props} />
+			</ClayTable>
+		</div>
+	);
+}
+
+ExtendLicense.propTypes = {
+	complimentary: PropTypes.bool.isRequired,
+	extensionURL: PropTypes.string.isRequired,
+	hasUpdateLicenseDatePermission: PropTypes.bool.isRequired,
+	licenseKeyId: PropTypes.string,
+	licenseType: PropTypes.string.isRequired,
+	productName: PropTypes.string.isRequired,
+	terms: PropTypes.arrayOf(
+		PropTypes.shape({
+			endDate: PropTypes.string,
+			perpetual: PropTypes.bool,
+			productPurchaseKey: PropTypes.string,
+			startDate: PropTypes.string
+		})
+	)
+};
