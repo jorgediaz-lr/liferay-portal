@@ -26,6 +26,7 @@ import {
 	validateDateFieldFormat
 } from '../../utilities/date';
 import DatePicker from '../DatePicker';
+import IconButton from '../IconButton';
 import BulkInput from './BulkInput';
 
 function Subscriptions({
@@ -392,24 +393,14 @@ function Subscription({
 
 			<ClayTable.Cell>{accountName}</ClayTable.Cell>
 			<ClayTable.Cell>
-				<button
-					className="btn btn-icon btn-sm"
+				<IconButton
+					cssClass="btn-icon btn-sm"
 					disabled={disableDelete}
+					labelName={Liferay.Language.get('delete-subscription-icon')}
 					onClick={handleDeleteSubscription}
-					role="button"
+					svgId="#delete-icon"
 					title={Liferay.Language.get('delete')}
-					type="button"
-				>
-					<svg
-						aria-label={Liferay.Language.get(
-							'delete-subscription-icon'
-						)}
-						className="delete-icon"
-						role="img"
-					>
-						<use xlinkHref="#delete-icon" />
-					</svg>
-				</button>
+				/>
 			</ClayTable.Cell>
 		</ClayTable.Row>
 	);

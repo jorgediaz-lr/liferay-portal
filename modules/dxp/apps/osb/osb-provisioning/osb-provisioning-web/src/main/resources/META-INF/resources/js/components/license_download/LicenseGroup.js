@@ -15,6 +15,7 @@ import React from 'react';
 
 import {useLicenses} from '../../hooks/licenses';
 import {NAMESPACE} from '../../utilities/constants';
+import IconButton from '../IconButton';
 
 function LicenseGroup({downloadURL, items}) {
 	const [licenses] = useLicenses();
@@ -117,22 +118,14 @@ function License({disableDelete, license}) {
 				<Status active={active} expirationDate={expirationDate} />
 			</ClayTable.Cell>
 			<ClayTable.Cell>
-				<button
-					className="btn btn-icon btn-sm"
+				<IconButton
+					cssClass="btn-icon btn-sm"
 					disabled={disableDelete}
+					labelName={Liferay.Language.get('delete-license-icon')}
 					onClick={handleDeleteLicense}
-					role="button"
+					svgId="#delete-icon"
 					title={Liferay.Language.get('delete')}
-					type="button"
-				>
-					<svg
-						aria-label={Liferay.Language.get('delete-license-icon')}
-						className="delete-icon"
-						role="img"
-					>
-						<use xlinkHref="#delete-icon" />
-					</svg>
-				</button>
+				/>
 			</ClayTable.Cell>
 		</ClayTable.Row>
 	);
