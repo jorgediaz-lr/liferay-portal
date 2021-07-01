@@ -16,6 +16,7 @@ package com.liferay.osb.provisioning.web.internal.portlet.action;
 
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.license.model.LicenseKey;
+import com.liferay.osb.provisioning.license.service.LicenseKeyLocalService;
 import com.liferay.osb.provisioning.license.service.LicenseKeyService;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -62,7 +63,7 @@ public class ExtendLicenseKeyMVCActionCommand extends BaseMVCActionCommand {
 				actionRequest, "productPurchaseKey");
 
 			if (Validator.isNull(productPurchaseKey)) {
-				LicenseKey licenseKey = _licenseKeyService.getLicenseKey(
+				LicenseKey licenseKey = _licenseKeyLocalService.getLicenseKey(
 					licenseKeyId);
 
 				productPurchaseKey = licenseKey.getProductPurchaseKey();
@@ -113,6 +114,9 @@ public class ExtendLicenseKeyMVCActionCommand extends BaseMVCActionCommand {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ExtendLicenseKeyMVCActionCommand.class);
+
+	@Reference
+	private LicenseKeyLocalService _licenseKeyLocalService;
 
 	@Reference
 	private LicenseKeyService _licenseKeyService;

@@ -78,15 +78,14 @@ public class EditLicenseKeyDisplayContext {
 
 		_licenseKey = (LicenseKey)renderRequest.getAttribute(
 			ProvisioningWebKeys.LICENSE_KEY);
+		_themeDisplay = (ThemeDisplay)_httpServletRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
 
 		_licenseKeyDisplay = new LicenseKeyDisplay(
 			renderRequest, renderResponse, _licenseKey);
 
 		_licenseType = _licenseKey.getLicenseEntryType();
 		_licenseVersion = _licenseKey.getLicenseVersion();
-
-		_themeDisplay = (ThemeDisplay)_httpServletRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
 	}
 
 	public String getAccountProductPurchasesURL() throws Exception {
