@@ -204,8 +204,8 @@ describe('IndividualLicenses', () => {
 		const groups = container.querySelectorAll('tbody');
 
 		// only two licenses are groupable
-		within(groups[1]).getByText('License 1');
-		within(groups[1]).getByText('License 2');
+		within(groups[0]).getByText('License 1');
+		within(groups[0]).getByText('License 2');
 
 		expect(getAllByText('download').length).toBe(8);
 	});

@@ -34,46 +34,10 @@ export const LicenseRecord = Record({
 const LicensesContext = createContext();
 
 export function LicensesProvider({initialLicenses = [], children}) {
-	const processedLicenses = initialLicenses.map(
-		({
-			active,
-			description,
-			expirationDate,
-			hostName,
-			ipAddresses,
-			licenseEntryDisplayName,
-			licenseEntryName,
-			licenseEntryType,
-			licenseKeyId,
-			licenseVersion,
-			macAddresses,
-			name,
-			productName,
-			productVersion,
-			sizing,
-			startDate
-		}) => [
-			licenseKeyId,
-			LicenseRecord({
-				active,
-				description,
-				expirationDate,
-				hostName,
-				ipAddresses,
-				licenseEntryDisplayName,
-				licenseEntryName,
-				licenseEntryType,
-				licenseKeyId,
-				licenseVersion,
-				macAddresses,
-				name,
-				productName,
-				productVersion,
-				sizing,
-				startDate
-			})
-		]
-	);
+	const processedLicenses = initialLicenses.map(license => [
+		license.licenseKeyId,
+		LicenseRecord(license)
+	]);
 
 	const [licenses, setLicenses] = useState(Map(processedLicenses));
 
