@@ -18,7 +18,7 @@ import ReplacementModal from './ReplacementModal';
 
 export default function ReplaceLicense({
 	expirationDate = '',
-	replacementURL,
+	replacementURL = '',
 	startDate = ''
 }) {
 	const [modalVisible, setModalVisible] = useState(false);
@@ -45,10 +45,7 @@ export default function ReplaceLicense({
 			expirationDateField.value = formatDate(newExpirationDate);
 			startDateField.value = formatDate(newStartDate);
 
-			if (replacementURL) {
-				form.action = replacementURL;
-			}
-
+			form.action = replacementURL;
 			form.submit();
 		}
 	}
