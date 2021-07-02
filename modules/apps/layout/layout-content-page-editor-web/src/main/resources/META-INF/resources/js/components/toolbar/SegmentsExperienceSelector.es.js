@@ -26,6 +26,11 @@ import {
 	SELECT_SEGMENTS_EXPERIENCE,
 	UPDATE_SEGMENTS_EXPERIENCE_PRIORITY
 } from '../../actions/actions.es';
+import {
+	disableSavingChangesStatusAction,
+	enableSavingChangesStatusAction,
+	updateLastSaveDateAction
+} from '../../actions/saveChanges.es';
 import getConnectedComponent from '../../store/ConnectedComponent.es';
 import {setIn} from '../../utils/FragmentsEditorUpdateUtils.es';
 import templates from './SegmentsExperienceSelector.soy';
@@ -286,11 +291,14 @@ class SegmentsExperienceSelector extends Component {
 	 */
 	_createSegmentsExperience(name, segmentsEntryId) {
 		this.store
+			.dispatch(enableSavingChangesStatusAction())
 			.dispatch({
 				name,
 				segmentsEntryId,
 				type: CREATE_SEGMENTS_EXPERIENCE
 			})
+			.dispatch(updateLastSaveDateAction())
+			.dispatch(disableSavingChangesStatusAction())
 			.done(() => {
 				this._closeCreateModal();
 
@@ -317,10 +325,13 @@ class SegmentsExperienceSelector extends Component {
 	 */
 	_deleteSegmentsExperience(segmentsExperienceId) {
 		this.store
+			.dispatch(enableSavingChangesStatusAction())
 			.dispatch({
 				segmentsExperienceId,
 				type: DELETE_SEGMENTS_EXPERIENCE
 			})
+			.dispatch(updateLastSaveDateAction())
+			.dispatch(disableSavingChangesStatusAction())
 			.done(() => {
 				Liferay.Util.openToast({
 					title: Liferay.Language.get(
@@ -347,10 +358,13 @@ class SegmentsExperienceSelector extends Component {
 	 */
 	_duplicateSegmentsExperience(segmentsExperienceId) {
 		this.store
+			.dispatch(enableSavingChangesStatusAction())
 			.dispatch({
 				sourceSegmentsExperienceId: segmentsExperienceId,
 				type: DUPLICATE_SEGMENTS_EXPERIENCE
 			})
+			.dispatch(updateLastSaveDateAction())
+			.dispatch(disableSavingChangesStatusAction())
 			.done(() => {
 				Liferay.Util.openToast({
 					title: Liferay.Language.get(
@@ -438,12 +452,15 @@ class SegmentsExperienceSelector extends Component {
 	 */
 	_editSegmentsExperience({name, segmentsEntryId, segmentsExperienceId}) {
 		this.store
+			.dispatch(enableSavingChangesStatusAction())
 			.dispatch({
 				name,
 				segmentsEntryId,
 				segmentsExperienceId,
 				type: EDIT_SEGMENTS_EXPERIENCE
 			})
+			.dispatch(updateLastSaveDateAction())
+			.dispatch(disableSavingChangesStatusAction())
 			.done(() => {
 				this._experiencesModalStateHandler({
 					edition: false
@@ -694,7 +711,10 @@ class SegmentsExperienceSelector extends Component {
 		};
 
 		this.store
+			.dispatch(enableSavingChangesStatusAction())
 			.dispatch({...payload, type: UPDATE_SEGMENTS_EXPERIENCE_PRIORITY})
+			.dispatch(updateLastSaveDateAction())
+			.dispatch(disableSavingChangesStatusAction())
 			.done(removeBlurListener)
 			.failed(removeBlurListener);
 	}
