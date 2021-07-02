@@ -11,27 +11,51 @@
 
 import ClayTable from '@clayui/table';
 import PropTypes from 'prop-types';
-import React, {useState} from 'react';
+import React, {useRef} from 'react';
 
+import {LicenseRecord, useExtendLicenses} from '../../hooks/extendLicenses';
+import {RESTRICTED_EXPIRATION_DATE_TYPES} from '../../utilities/constants';
+import HiddenForm from '../HiddenForm';
 import IconButton from '../IconButton';
+import LicenseDates from '../LicenseDates';
 import Terms from './Terms';
 
-function ExtensionDetails({licenseKeyId, productName, terms}) {
-	const [values, setValues] = useState({
-		expirationDate: '',
+function Detail({disableDelete, license}) {
+	const [, {removeLicense, updateLicense}] = useExtendLicenses();
+	const formRef = useRef();
+
+	const {
+		expirationDate,
+		extensionURL,
 		licenseKeyId,
-		productPurchaseKey: '',
-		startDate: ''
-	});
+		licenseType,
+		productName,
+		productPurchaseKey,
+		startDate,
+		terms
+	} = license.toJS();
+	const restricted = !!RESTRICTED_EXPIRATION_DATE_TYPES.find(
+		restrictedType => restrictedType === licenseType
+	);
 
-	const disableDelete = true; // TODO ISSUP-4038
+	function handleExpirationDateChange(val) {
+		updateLicense(licenseKeyId, license =>
+			license.set('expirationDate', val)
+		);
+	}
 
-	function handleUpdate(name, value) {
-		const newValue = {};
+	function handleRemove() {
+		removeLicense(licenseKeyId);
+	}
 
-		newValue[name] = value;
+	function handleStartDateChange(val) {
+		updateLicense(licenseKeyId, license => license.set('startDate', val));
+	}
 
-		setValues({...values, ...newValue});
+	function handleTermsChange(val) {
+		updateLicense(licenseKeyId, license =>
+			license.set('productPurchaseKey', val)
+		);
 	}
 
 	return (
@@ -41,13 +65,38 @@ function ExtensionDetails({licenseKeyId, productName, terms}) {
 				<ClayTable.Cell>
 					<Terms
 						terms={terms}
-						termSelected={values.productPurchaseKey}
-						updateTerms={handleUpdate}
+						termSelected={productPurchaseKey}
+						updateTerms={handleTermsChange}
 					/>
 				</ClayTable.Cell>
-				<ClayTable.Cell>start date</ClayTable.Cell>
-				<ClayTable.Cell>expiration date</ClayTable.Cell>
+				<LicenseDates
+					detached={!!terms}
+					expirationDate={expirationDate}
+					restricted={restricted}
+					startDate={startDate}
+					updateExpirationDate={handleExpirationDateChange}
+					updateStartDate={handleStartDateChange}
+					updateValidation={() => {
+						// TODO
+					}}
+					validDates={
+						true
+						// TODO
+					}
+				/>
 				<ClayTable.Cell>
+					<HiddenForm
+						fields={{
+							expirationDate,
+							licenseKeyId,
+							productPurchaseKey,
+							startDate
+						}}
+						formAction={extensionURL}
+						formName="extendLicenseFm"
+						ref={formRef}
+					/>
+
 					<button className="btn btn-secondary btn-sm" type="submit">
 						{Liferay.Language.get('extend')}
 					</button>
@@ -57,9 +106,7 @@ function ExtensionDetails({licenseKeyId, productName, terms}) {
 						cssClass="btn-icon btn-sm"
 						disabled={disableDelete}
 						labelName={Liferay.Language.get('delete-license-icon')}
-						onClick={() => {
-							// TODO ISSUP-4038
-						}}
+						onClick={handleRemove}
 						svgId="#delete-icon"
 						title={Liferay.Language.get('delete')}
 					/>
@@ -69,20 +116,27 @@ function ExtensionDetails({licenseKeyId, productName, terms}) {
 	);
 }
 
-ExtensionDetails.propTypes = {
-	extensionURL: PropTypes.string.isRequired,
-	hasUpdateLicenseDatePermission: PropTypes.bool.isRequired,
-	licenseKeyId: PropTypes.string,
-	licenseType: PropTypes.string.isRequired,
-	productName: PropTypes.string.isRequired,
-	terms: PropTypes.arrayOf(
-		PropTypes.shape({
-			endDate: PropTypes.string,
-			perpetual: PropTypes.bool,
-			productPurchaseKey: PropTypes.string,
-			startDate: PropTypes.string
-		})
-	)
+Detail.propTypes = {
+	disableDelete: PropTypes.bool,
+	license: PropTypes.instanceOf(LicenseRecord)
 };
+
+function ExtensionDetails() {
+	const [licenses] = useExtendLicenses();
+
+	const disableDelete = licenses.size <= 1;
+
+	return (
+		<>
+			{licenses.toList().map(license => (
+				<Detail
+					disableDelete={disableDelete}
+					key={license.licenseKeyId}
+					license={license}
+				/>
+			))}
+		</>
+	);
+}
 
 export default ExtensionDetails;

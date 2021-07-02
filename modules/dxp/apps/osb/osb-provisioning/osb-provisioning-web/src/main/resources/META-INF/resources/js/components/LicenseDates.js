@@ -22,9 +22,9 @@ const YEAR_IN_MS = 1000 * 60 * 60 * 24 * 365;
 
 export default function LicenseDates({
 	detached,
-	licenseExpirationDate,
-	licenseStartDate,
+	expirationDate,
 	restricted,
+	startDate,
 	updateExpirationDate,
 	updateStartDate,
 	updateValidation,
@@ -34,14 +34,14 @@ export default function LicenseDates({
 
 	function handleExpirationDateChange(val) {
 		const expiration = Date.parse(new Date(val));
-		const start = Date.parse(new Date(licenseStartDate));
+		const start = Date.parse(new Date(startDate));
 
 		updateExpirationDate(val);
 		updateValidation(start < expiration);
 	}
 
 	function handleStartDateChange(val) {
-		const expiration = Date.parse(new Date(licenseExpirationDate));
+		const expiration = Date.parse(new Date(expirationDate));
 		const start = Date.parse(new Date(val));
 
 		updateStartDate(val);
@@ -50,7 +50,7 @@ export default function LicenseDates({
 
 	function validateExpirationDateChange(val) {
 		const expiration = Date.parse(new Date(val));
-		const start = Date.parse(new Date(licenseStartDate));
+		const start = Date.parse(new Date(startDate));
 
 		updateExpirationDate(val);
 		updateValidation(
@@ -60,14 +60,14 @@ export default function LicenseDates({
 
 	return (
 		<>
-			{licenseStartDate ? (
+			{startDate ? (
 				<ClayTableCell
 					className={`input-group-sm ${
 						!validDates ? 'has-error' : ''
 					}`}
 				>
 					<DatePicker
-						defaultValue={licenseStartDate}
+						defaultValue={startDate}
 						inputName="startDate"
 						updateFn={handleStartDateChange}
 					/>
@@ -76,7 +76,7 @@ export default function LicenseDates({
 				<ClayTableCell>{DASH}</ClayTableCell>
 			)}
 
-			{!!licenseExpirationDate &&
+			{!!expirationDate &&
 				(updateDatePermission ||
 					(!updateDatePermission && !restricted)) && (
 					<ClayTableCell
@@ -85,18 +85,18 @@ export default function LicenseDates({
 						}`}
 					>
 						<DatePicker
-							defaultValue={licenseExpirationDate}
+							defaultValue={expirationDate}
 							inputName="expirationDate"
 							updateFn={handleExpirationDateChange}
 						/>
 					</ClayTableCell>
 				)}
 
-			{!!licenseExpirationDate && !updateDatePermission && restricted && (
+			{!!expirationDate && !updateDatePermission && restricted && (
 				<>
 					{!detached && (
 						<ClayTableCell>
-							{formatDate(licenseExpirationDate)}
+							{formatDate(expirationDate)}
 						</ClayTableCell>
 					)}
 
@@ -107,7 +107,7 @@ export default function LicenseDates({
 							}`}
 						>
 							<DatePicker
-								defaultValue={licenseExpirationDate}
+								defaultValue={expirationDate}
 								inputName="expirationDate"
 								updateFn={validateExpirationDateChange}
 							/>
@@ -116,22 +116,22 @@ export default function LicenseDates({
 				</>
 			)}
 
-			{!licenseExpirationDate && <ClayTableCell>{DASH}</ClayTableCell>}
+			{!expirationDate && <ClayTableCell>{DASH}</ClayTableCell>}
 		</>
 	);
 }
 
 LicenseDates.propTypes = {
 	detached: PropTypes.bool.isRequired,
-	licenseExpirationDate: PropTypes.oneOfType([
-		PropTypes.instanceOf(Date),
-		PropTypes.string
-	]),
-	licenseStartDate: PropTypes.oneOfType([
+	expirationDate: PropTypes.oneOfType([
 		PropTypes.instanceOf(Date),
 		PropTypes.string
 	]),
 	restricted: PropTypes.bool.isRequired,
+	startDate: PropTypes.oneOfType([
+		PropTypes.instanceOf(Date),
+		PropTypes.string
+	]),
 	updateExpirationDate: PropTypes.func.isRequired,
 	updateStartDate: PropTypes.func.isRequired,
 	updateValidation: PropTypes.func.isRequired,

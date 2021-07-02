@@ -40,7 +40,7 @@ function Terms({termSelected = '', terms, updateTerms}) {
 	}
 
 	function handleOnChange(event) {
-		updateTerms('productPurchaseKey', event.currentTarget.value);
+		updateTerms(event.currentTarget.value);
 	}
 
 	return (

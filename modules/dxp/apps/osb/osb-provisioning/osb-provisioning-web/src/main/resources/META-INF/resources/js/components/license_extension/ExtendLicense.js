@@ -13,34 +13,44 @@ import ClayTable from '@clayui/table';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import {ExtendLicensesProvider} from '../../hooks/extendLicenses';
+import {PermissionsProvider} from '../../hooks/permissions';
 import ExtensionDetails from './ExtensionDetails';
 
 export default function ExtendLicense(props) {
 	return (
-		<div className="extend-licenses-container">
-			<ClayTable>
-				<ClayTable.Head>
-					<ClayTable.Row>
-						<ClayTable.Cell headingCell>
-							{Liferay.Language.get('products')}
-						</ClayTable.Cell>
-						<ClayTable.Cell expanded headingCell>
-							{Liferay.Language.get('subscription-term')}
-						</ClayTable.Cell>
-						<ClayTable.Cell expanded headingCell>
-							{Liferay.Language.get('start-date')}
-						</ClayTable.Cell>
-						<ClayTable.Cell expanded headingCell>
-							{Liferay.Language.get('expiration-date')}
-						</ClayTable.Cell>
-						<ClayTable.Cell headingCell></ClayTable.Cell>
-						<ClayTable.Cell headingCell></ClayTable.Cell>
-					</ClayTable.Row>
-				</ClayTable.Head>
+		<ExtendLicensesProvider initialLicenses={[props]}>
+			<PermissionsProvider
+				permissions={{
+					updateDatePermission: props.hasUpdateLicenseDatePermission
+				}}
+			>
+				<div className="extend-licenses-container">
+					<ClayTable>
+						<ClayTable.Head>
+							<ClayTable.Row>
+								<ClayTable.Cell headingCell>
+									{Liferay.Language.get('products')}
+								</ClayTable.Cell>
+								<ClayTable.Cell expanded headingCell>
+									{Liferay.Language.get('subscription-term')}
+								</ClayTable.Cell>
+								<ClayTable.Cell expanded headingCell>
+									{Liferay.Language.get('start-date')}
+								</ClayTable.Cell>
+								<ClayTable.Cell expanded headingCell>
+									{Liferay.Language.get('expiration-date')}
+								</ClayTable.Cell>
+								<ClayTable.Cell headingCell></ClayTable.Cell>
+								<ClayTable.Cell headingCell></ClayTable.Cell>
+							</ClayTable.Row>
+						</ClayTable.Head>
 
-				<ExtensionDetails {...props} />
-			</ClayTable>
-		</div>
+						<ExtensionDetails />
+					</ClayTable>
+				</div>
+			</PermissionsProvider>
+		</ExtendLicensesProvider>
 	);
 }
 
