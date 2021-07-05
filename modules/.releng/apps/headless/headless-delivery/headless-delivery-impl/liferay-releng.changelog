@@ -457,3 +457,8 @@ e2d730bcacb7fd1cf2917eddac6642be31f7ed34^..5ec11e72a6cd5b7d553001c6193f22f50cedb
 # Bundle Version 3.0.85
 #
 f0969ccfd2fa9414caecbd58d934a6f1e66db892^..cd9fa263cbe23f71ca8ae952df00127edacc5445=LPS-105380
+
+#
+# Bundle Version 3.0.86
+#
+cd9fa263cbe23f71ca8ae952df00127edacc5445^..c97196539e63e4bd213c08cb20edffcee22dd889=LPS-132761 LPS-133626 LRQA-51488
