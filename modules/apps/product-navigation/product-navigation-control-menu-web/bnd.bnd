@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Product Navigation Control Menu Web
 Bundle-SymbolicName: com.liferay.product.navigation.control.menu.web
-Bundle-Version: 4.0.59
+Bundle-Version: 4.0.60
 Provide-Capability:\
 	soy;\
 		type="product-navigation-control-menu-web";\
