@@ -27,3 +27,8 @@
 # Bundle Version 2.0.5
 #
 b0376710640a951c2a3a47654500f9978537e3c3^..659193a0bbaf241fc0fddbd6adbfe295b3cf43c3=COMMERCE-6622
+
+#
+# Bundle Version 2.0.6
+#
+659193a0bbaf241fc0fddbd6adbfe295b3cf43c3^..f37a0c27524a3fc220fa6fcd3ed8455233b25b39=LRQA-51488
