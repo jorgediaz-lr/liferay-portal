@@ -451,7 +451,7 @@ public class OpenIdConnectServiceHandlerImpl
 
 		Tokens tokens = requestRefreshToken(
 			refreshToken, getOIDCClientInformation(openIdConnectProvider),
-			oidcProviderMetadata, openIdConnectSessionImpl.getNonce(),
+			oidcProviderMetadata,
 			openIdConnectProvider.geTokenConnectionTimeout());
 
 		updateSessionTokens(
@@ -478,7 +478,7 @@ public class OpenIdConnectServiceHandlerImpl
 	protected Tokens requestRefreshToken(
 			RefreshToken refreshToken,
 			OIDCClientInformation oidcClientInformation,
-			OIDCProviderMetadata oidcProviderMetadata, Nonce nonce,
+			OIDCProviderMetadata oidcProviderMetadata,
 			int tokenConnectionTimeout)
 		throws OpenIdConnectServiceException {
 
@@ -486,7 +486,7 @@ public class OpenIdConnectServiceHandlerImpl
 			refreshToken);
 
 		return requestTokens(
-			oidcClientInformation, oidcProviderMetadata, nonce,
+			oidcClientInformation, oidcProviderMetadata, null,
 			refreshTokenGrant, tokenConnectionTimeout);
 	}
 
