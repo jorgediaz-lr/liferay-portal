@@ -190,186 +190,99 @@ describe('Purchases', () => {
 		expect(getAllByText('choose').length).toBe(3);
 	});
 
-	describe('Dates', () => {
+	describe('Date Fields', () => {
 		// Clay Date Picker always displays two inputs for the same date
 
-		it('always displays a date picker for Start Date', () => {
-			let {container} = renderPurchases();
+		describe('Choose Button behavior', () => {
+			it('displays the Choose button as disabled when a date field is left empty', () => {
+				const {
+					getAllByPlaceholderText,
+					getAllByText
+				} = renderPurchases();
 
-			const fullPrivilegeStartDateDatepickers = container.querySelectorAll(
-				'input[name="startDate"]'
-			);
+				const firstChooseBtn = getAllByText('choose')[0];
 
-			expect(fullPrivilegeStartDateDatepickers.length).toBe(2);
+				expect(firstChooseBtn.disabled).toBeFalsy();
 
-			container = renderPurchases({permission: false}).container;
+				fireEvent.change(getAllByPlaceholderText('YYYY-MM-DD')[0], {
+					target: {value: ''}
+				});
 
-			const limitedPrivilegeStartDateDatepickers = container.querySelectorAll(
-				'input[name="startDate"]'
-			);
-
-			expect(limitedPrivilegeStartDateDatepickers.length).toBe(2);
-		});
-
-		it('displays the Choose button as disabled when a date field is left empty', () => {
-			const {getAllByPlaceholderText, getAllByText} = renderPurchases();
-
-			const firstChooseBtn = getAllByText('choose')[0];
-
-			expect(firstChooseBtn.disabled).toBeFalsy();
-
-			fireEvent.change(getAllByPlaceholderText('YYYY-MM-DD')[0], {
-				target: {value: ''}
+				expect(firstChooseBtn.disabled).toBeTruthy();
 			});
 
-			expect(firstChooseBtn.disabled).toBeTruthy();
-		});
+			it('displays the Choose button as disabled when an invalid date is entered', () => {
+				const {
+					getAllByPlaceholderText,
+					getAllByText
+				} = renderPurchases();
 
-		it('displays the Choose button as disabled when an invalid date is entered', () => {
-			const {getAllByPlaceholderText, getAllByText} = renderPurchases();
+				const firstChooseBtn = getAllByText('choose')[0];
 
-			const firstChooseBtn = getAllByText('choose')[0];
+				expect(firstChooseBtn.disabled).toBeFalsy();
 
-			expect(firstChooseBtn.disabled).toBeFalsy();
+				fireEvent.change(getAllByPlaceholderText('YYYY-MM-DD')[0], {
+					target: {value: '2021-04-32'}
+				});
 
-			fireEvent.change(getAllByPlaceholderText('YYYY-MM-DD')[0], {
-				target: {value: '2021-04-32'}
+				expect(firstChooseBtn.disabled).toBeTruthy();
 			});
 
-			expect(firstChooseBtn.disabled).toBeTruthy();
-		});
+			it('displays the Choose button as disabled when the start date entered is later than the expiration date', () => {
+				const {
+					getAllByPlaceholderText,
+					getAllByText
+				} = renderPurchases();
 
-		it('displays the Choose button as disabled when the start date entered is later than the expiration date', () => {
-			const {getAllByPlaceholderText, getAllByText} = renderPurchases();
+				const firstChooseBtn = getAllByText('choose')[0];
 
-			const firstChooseBtn = getAllByText('choose')[0];
+				expect(firstChooseBtn.disabled).toBeFalsy();
 
-			expect(firstChooseBtn.disabled).toBeFalsy();
+				fireEvent.change(getAllByPlaceholderText('YYYY-MM-DD')[0], {
+					target: {value: '2127-04-16'}
+				});
 
-			fireEvent.change(getAllByPlaceholderText('YYYY-MM-DD')[0], {
-				target: {value: '2127-04-16'}
+				expect(firstChooseBtn.disabled).toBeTruthy();
 			});
 
-			expect(firstChooseBtn.disabled).toBeTruthy();
-		});
-
-		describe('User Privilege', () => {
-			describe('Full Privilege', () => {
-				it('always displays Expiration Date datepicker', () => {
-					const {container} = renderPurchases({
-						props: {
-							detached: {
-								instanceSizes: [1, 2, 3, 4],
-								licenseKeysGenerated: '0'
+			describe('Limited Privilege, Detached Section', () => {
+				describe('when Type is Enterpirse, Limited, OEM, or Virtual Cluster', () => {
+					it('disables the Choose button if the user selects an Expiration Date that is not within one year from the start date', async () => {
+						const {
+							container,
+							getAllByPlaceholderText
+						} = renderPurchases({
+							initialLicense: new License({
+								licenseEntry: {
+									licenseEntryType: 'virtual_cluster'
+								}
+							}),
+							permission: false,
+							props: {
+								detached: {
+									instanceSizes: [1, 2, 3, 4],
+									licenseKeysGenerated: '0'
+								},
+								purchased: []
 							}
-						}
-					});
+						});
 
-					const expDateDatepickers = container.querySelectorAll(
-						'input[name="expirationDate"]'
-					);
-
-					expect(expDateDatepickers.length).toBe(3);
-				});
-			});
-
-			describe('Limited Privilege', () => {
-				describe('Detached Section', () => {
-					describe('when Type is NOT Enterpirse, Limited, OEM, or Virtual Cluster', () => {
-						it('displays the Expiration Date datepicker', () => {
-							const {container} = renderPurchases({
-								permission: false,
-								props: {
-									detached: {
-										instanceSizes: [1, 2, 3, 4],
-										licenseKeysGenerated: '0'
-									},
-									purchased: []
+						fireEvent.change(
+							getAllByPlaceholderText('YYYY-MM-DD')[1],
+							{
+								target: {
+									value: formatDate(
+										generateNewDateByYear(TODAY, 2)
+									)
 								}
-							});
+							}
+						);
 
-							const expDateDatepickers = container.querySelectorAll(
-								'input[name="expirationDate"]'
-							);
-
-							expect(expDateDatepickers.length).toBe(1);
-						});
-					});
-
-					describe('when Type is Enterpirse, Limited, OEM, or Virtual Cluster', () => {
-						it('disables the Choose button if the user selects an Expiration Date that is not within one year from the start date', async () => {
-							const {
-								container,
-								getAllByPlaceholderText
-							} = renderPurchases({
-								initialLicense: new License({
-									licenseEntry: {
-										licenseEntryType: 'virtual_cluster'
-									}
-								}),
-								permission: false,
-								props: {
-									detached: {
-										instanceSizes: [1, 2, 3, 4],
-										licenseKeysGenerated: '0'
-									},
-									purchased: []
-								}
-							});
-
-							fireEvent.change(
-								getAllByPlaceholderText('YYYY-MM-DD')[1],
-								{
-									target: {
-										value: formatDate(
-											generateNewDateByYear(TODAY, 2)
-										)
-									}
-								}
-							);
-
-							await wait(() =>
-								expect(
-									within(container).getByText('choose')
-										.disabled
-								).toBeTruthy()
-							);
-						});
-					});
-				});
-
-				describe('Non Detached Section', () => {
-					describe('when Type is NOT Enterpirse, Limited, OEM, or Virtual Cluster', () => {
-						it('displays the Expiration Date datepicker ', () => {
-							const {container} = renderPurchases({
-								permission: false
-							});
-
-							const expDateDatepickers = container.querySelectorAll(
-								'input[name="expirationDate"]'
-							);
-
-							expect(expDateDatepickers.length).toBe(2);
-						});
-					});
-
-					describe('when Type is Enterpirse, Limited, OEM, or Virtual Cluster', () => {
-						it('does not display the Expiration Date datepicker ', () => {
-							const {container} = renderPurchases({
-								initialLicense: new License({
-									licenseEntry: {
-										licenseEntryType: 'virtual_cluster'
-									}
-								}),
-								permission: false
-							});
-
-							const expDateDatepickers = container.querySelectorAll(
-								'input[name="expirationDate"]'
-							);
-
-							expect(expDateDatepickers.length).toBe(0);
-						});
+						await wait(() =>
+							expect(
+								within(container).getByText('choose').disabled
+							).toBeTruthy()
+						);
 					});
 				});
 			});

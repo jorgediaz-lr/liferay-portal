@@ -15,15 +15,11 @@ import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
 
 import {useNewLicense} from '../../hooks/newLicense';
-import {usePermissions} from '../../hooks/permissions';
 import {
 	DASH,
 	RESTRICTED_EXPIRATION_DATE_TYPES
 } from '../../utilities/constants';
-import {formatDate} from '../../utilities/date';
-import DatePicker from '../DatePicker';
-
-const YEAR_IN_MS = 1000 * 60 * 60 * 24 * 365;
+import LicenseDates from '../LicenseDates';
 
 function Purchase({
 	detached = false,
@@ -49,9 +45,8 @@ function Purchase({
 	);
 
 	const [{licenseEntry}, {updateLicense}] = useNewLicense();
-	const {updateDatePermission} = usePermissions();
 
-	const restricted = RESTRICTED_EXPIRATION_DATE_TYPES.find(
+	const restricted = !!RESTRICTED_EXPIRATION_DATE_TYPES.find(
 		restrictedType => restrictedType === licenseEntry.licenseEntryType
 	);
 
@@ -73,96 +68,34 @@ function Purchase({
 		);
 	}
 
-	function handleExpirationDateChange(val) {
-		const expiration = Date.parse(new Date(val));
-		const start = Date.parse(new Date(selectedStartDate));
-
+	function handleSelectedExpirationDateChange(val) {
 		setSelectedExpirationDate(val);
-
-		setValidDates(start < expiration);
 	}
 
-	function handleStartDateChange(val) {
-		const expiration = Date.parse(new Date(selectedExpirationDate));
-		const start = Date.parse(new Date(val));
-
+	function handleSelectedStartDateChange(val) {
 		setSelectedStartDate(val);
-
-		setValidDates(start < expiration);
 	}
 
 	function handleSizingChange(event) {
 		setSizing(event.currentTarget.value);
 	}
 
-	function validateExpirationDateChange(val) {
-		const expiration = Date.parse(new Date(val));
-		const start = Date.parse(new Date(selectedStartDate));
-
-		setSelectedExpirationDate(val);
-
-		setValidDates(expiration - start <= YEAR_IN_MS && start < expiration);
+	function handleValidateDates(bool) {
+		setValidDates(bool);
 	}
 
 	return (
 		<ClayTable.Row id={productPurchaseKey}>
-			{licenseStartDate ? (
-				<ClayTableCell
-					className={`input-group-sm ${
-						!validDates ? 'has-error' : ''
-					}`}
-				>
-					<DatePicker
-						defaultValue={licenseStartDate}
-						inputName="startDate"
-						updateFn={handleStartDateChange}
-					/>
-				</ClayTableCell>
-			) : (
-				<ClayTableCell>{DASH}</ClayTableCell>
-			)}
-
-			{!!licenseExpirationDate &&
-				(updateDatePermission ||
-					(!updateDatePermission && !restricted)) && (
-					<ClayTableCell
-						className={`input-group-sm ${
-							!validDates ? 'has-error' : ''
-						}`}
-					>
-						<DatePicker
-							defaultValue={licenseExpirationDate}
-							inputName="expirationDate"
-							updateFn={handleExpirationDateChange}
-						/>
-					</ClayTableCell>
-				)}
-
-			{!!licenseExpirationDate && !updateDatePermission && restricted && (
-				<>
-					{!detached && (
-						<ClayTableCell>
-							{formatDate(licenseExpirationDate)}
-						</ClayTableCell>
-					)}
-
-					{detached && (
-						<ClayTableCell
-							className={`input-group-sm ${
-								!validDates ? 'has-error' : ''
-							}`}
-						>
-							<DatePicker
-								defaultValue={licenseExpirationDate}
-								inputName="expirationDate"
-								updateFn={validateExpirationDateChange}
-							/>
-						</ClayTableCell>
-					)}
-				</>
-			)}
-
-			{!licenseExpirationDate && <ClayTableCell>{DASH}</ClayTableCell>}
+			<LicenseDates
+				detached={detached}
+				licenseExpirationDate={selectedExpirationDate}
+				licenseStartDate={selectedStartDate}
+				restricted={restricted}
+				updateExpirationDate={handleSelectedExpirationDateChange}
+				updateStartDate={handleSelectedStartDateChange}
+				updateValidation={handleValidateDates}
+				validDates={validDates}
+			/>
 
 			<ClayTableCell>
 				{instanceSizes ? (
@@ -204,9 +137,15 @@ Purchase.protoType = {
 	detached: PropTypes.bool,
 	instanceSize: PropTypes.number,
 	instanceSizes: PropTypes.arrayOf(PropTypes.number),
-	licenseExpirationDate: PropTypes.string,
+	licenseExpirationDate: PropTypes.oneOfType([
+		PropTypes.instanceOf(Date),
+		PropTypes.string
+	]),
 	licenseKeysGenerated: PropTypes.string,
-	licenseStartDate: PropTypes.string,
+	licenseStartDate: PropTypes.oneOfType([
+		PropTypes.instanceOf(Date),
+		PropTypes.string
+	]),
 	productPurchaseKey: PropTypes.string
 };
 

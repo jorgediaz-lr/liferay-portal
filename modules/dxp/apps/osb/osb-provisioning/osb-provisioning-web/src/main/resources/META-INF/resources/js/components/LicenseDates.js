@@ -1,0 +1,139 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ */
+
+import ClayTableCell from '@clayui/table/lib/Cell';
+import PropTypes from 'prop-types';
+import React from 'react';
+
+import DatePicker from '../components/DatePicker';
+import {usePermissions} from '../hooks/permissions';
+import {DASH} from '../utilities/constants';
+import {formatDate} from '../utilities/date';
+
+const YEAR_IN_MS = 1000 * 60 * 60 * 24 * 365;
+
+export default function LicenseDates({
+	detached,
+	licenseExpirationDate,
+	licenseStartDate,
+	restricted,
+	updateExpirationDate,
+	updateStartDate,
+	updateValidation,
+	validDates
+}) {
+	const {updateDatePermission} = usePermissions();
+
+	function handleExpirationDateChange(val) {
+		const expiration = Date.parse(new Date(val));
+		const start = Date.parse(new Date(licenseStartDate));
+
+		updateExpirationDate(val);
+		updateValidation(start < expiration);
+	}
+
+	function handleStartDateChange(val) {
+		const expiration = Date.parse(new Date(licenseExpirationDate));
+		const start = Date.parse(new Date(val));
+
+		updateStartDate(val);
+		updateValidation(start < expiration);
+	}
+
+	function validateExpirationDateChange(val) {
+		const expiration = Date.parse(new Date(val));
+		const start = Date.parse(new Date(licenseStartDate));
+
+		updateExpirationDate(val);
+		updateValidation(
+			expiration - start <= YEAR_IN_MS && start < expiration
+		);
+	}
+
+	return (
+		<>
+			{licenseStartDate ? (
+				<ClayTableCell
+					className={`input-group-sm ${
+						!validDates ? 'has-error' : ''
+					}`}
+				>
+					<DatePicker
+						defaultValue={licenseStartDate}
+						inputName="startDate"
+						updateFn={handleStartDateChange}
+					/>
+				</ClayTableCell>
+			) : (
+				<ClayTableCell>{DASH}</ClayTableCell>
+			)}
+
+			{!!licenseExpirationDate &&
+				(updateDatePermission ||
+					(!updateDatePermission && !restricted)) && (
+					<ClayTableCell
+						className={`input-group-sm ${
+							!validDates ? 'has-error' : ''
+						}`}
+					>
+						<DatePicker
+							defaultValue={licenseExpirationDate}
+							inputName="expirationDate"
+							updateFn={handleExpirationDateChange}
+						/>
+					</ClayTableCell>
+				)}
+
+			{!!licenseExpirationDate && !updateDatePermission && restricted && (
+				<>
+					{!detached && (
+						<ClayTableCell>
+							{formatDate(licenseExpirationDate)}
+						</ClayTableCell>
+					)}
+
+					{detached && (
+						<ClayTableCell
+							className={`input-group-sm ${
+								!validDates ? 'has-error' : ''
+							}`}
+						>
+							<DatePicker
+								defaultValue={licenseExpirationDate}
+								inputName="expirationDate"
+								updateFn={validateExpirationDateChange}
+							/>
+						</ClayTableCell>
+					)}
+				</>
+			)}
+
+			{!licenseExpirationDate && <ClayTableCell>{DASH}</ClayTableCell>}
+		</>
+	);
+}
+
+LicenseDates.propTypes = {
+	detached: PropTypes.bool.isRequired,
+	licenseExpirationDate: PropTypes.oneOfType([
+		PropTypes.instanceOf(Date),
+		PropTypes.string
+	]),
+	licenseStartDate: PropTypes.oneOfType([
+		PropTypes.instanceOf(Date),
+		PropTypes.string
+	]),
+	restricted: PropTypes.bool.isRequired,
+	updateExpirationDate: PropTypes.func.isRequired,
+	updateStartDate: PropTypes.func.isRequired,
+	updateValidation: PropTypes.func.isRequired,
+	validDates: PropTypes.bool.isRequired
+};
