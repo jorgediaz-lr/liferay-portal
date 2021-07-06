@@ -828,6 +828,12 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 	 */
 	@Override
 	public Group deleteGroup(Group group) throws PortalException {
+		group = groupPersistence.fetchByPrimaryKey(group.getGroupId());
+
+		if (group == null) {
+			return null;
+		}
+
 		boolean deleteInProcess = GroupThreadLocal.isDeleteInProcess();
 
 		try {
