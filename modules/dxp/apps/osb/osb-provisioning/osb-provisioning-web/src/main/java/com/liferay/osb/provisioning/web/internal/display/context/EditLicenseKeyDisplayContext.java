@@ -216,7 +216,6 @@ public class EditLicenseKeyDisplayContext {
 			data.put("terms", productPurchasesJSONArray);
 		}
 
-		data.put("complimentary", _licenseKey.isComplimentary());
 		data.put(
 			"hasUpdateLicenseDatePermission",
 			_licenseKeyPermission.contains(

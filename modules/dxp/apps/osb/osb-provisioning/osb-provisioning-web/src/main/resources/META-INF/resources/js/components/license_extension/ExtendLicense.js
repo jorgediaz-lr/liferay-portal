@@ -45,7 +45,6 @@ export default function ExtendLicense(props) {
 }
 
 ExtendLicense.propTypes = {
-	complimentary: PropTypes.bool.isRequired,
 	extensionURL: PropTypes.string.isRequired,
 	hasUpdateLicenseDatePermission: PropTypes.bool.isRequired,
 	licenseKeyId: PropTypes.string,

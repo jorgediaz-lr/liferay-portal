@@ -70,7 +70,6 @@ function ExtensionDetails({licenseKeyId, productName, terms}) {
 }
 
 ExtensionDetails.propTypes = {
-	complimentary: PropTypes.bool.isRequired,
 	extensionURL: PropTypes.string.isRequired,
 	hasUpdateLicenseDatePermission: PropTypes.bool.isRequired,
 	licenseKeyId: PropTypes.string,
