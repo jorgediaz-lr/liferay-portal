@@ -72,7 +72,7 @@ public class ValidationDDMFormFieldTemplateContextContributor
 			String validationDataType = (String)changedProperties.get(
 				"validationDataType");
 
-			if (validationDataType != null) {
+			if (Validator.isNotNull(validationDataType)) {
 				return validationDataType;
 			}
 		}
