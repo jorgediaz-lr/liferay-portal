@@ -113,7 +113,7 @@ public abstract class BaseKaleoLocalServiceTestCase {
 
 	protected KaleoInstance addKaleoInstance() throws Exception {
 		return _kaleoInstanceLocalService.addKaleoInstance(
-			1, 1, "Test", 1,
+			9999999, 9999999, "Test", 9999999,
 			HashMapBuilder.<String, Serializable>put(
 				WorkflowConstants.CONTEXT_ENTRY_CLASS_NAME,
 				(Serializable)BlogsEntry.class.getName()
