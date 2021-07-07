@@ -19,6 +19,8 @@
 <%
 ViewAccountLicenseKeysDisplayContext viewAccountLicenseKeysDisplayContext = ProvisioningWebComponentProvider.getViewAccountLicenseKeysDisplayContext(renderRequest, renderResponse, request);
 
+AccountDisplay accountDisplay = viewAccountLicenseKeysDisplayContext.getAccountDisplay();
+
 PortletURL portletURL = viewAccountLicenseKeysDisplayContext.getPortletURL();
 %>
 
@@ -31,6 +33,7 @@ PortletURL portletURL = viewAccountLicenseKeysDisplayContext.getPortletURL();
 	</liferay-util:include>
 
 	<aui:form action="<%= currentURL %>" name="licenseKeysFm">
+		<aui:input name="accountKey" type="hidden" value="<%= accountDisplay.getKey() %>" />
 		<aui:input name="licenseKeyIds" type="hidden" />
 		<aui:input name="complimentary" type="hidden" />
 		<aui:input name="active" type="hidden" />

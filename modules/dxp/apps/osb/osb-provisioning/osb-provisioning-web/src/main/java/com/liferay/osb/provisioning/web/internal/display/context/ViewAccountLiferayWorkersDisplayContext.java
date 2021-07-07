@@ -31,7 +31,9 @@ import com.liferay.portal.kernel.portlet.PortletURLUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
 import java.util.ArrayList;
@@ -49,6 +51,16 @@ public class ViewAccountLiferayWorkersDisplayContext
 	extends ViewAccountDisplayContext {
 
 	public ViewAccountLiferayWorkersDisplayContext() {
+	}
+
+	@Override
+	public void doInit() throws Exception {
+		super.doInit();
+
+		_contact = (Contact)renderRequest.getAttribute(
+			ProvisioningWebKeys.CONTACT);
+
+		setWindowTitle();
 	}
 
 	public Map<String, Object> getAssignLiferayWorkerData() throws Exception {
@@ -81,10 +93,7 @@ public class ViewAccountLiferayWorkersDisplayContext
 	}
 
 	public String getAssignLiferayWorkerTitle() {
-		Contact contact = (Contact)renderRequest.getAttribute(
-			ProvisioningWebKeys.CONTACT);
-
-		if (contact != null) {
+		if (_contact != null) {
 			return "edit-roles";
 		}
 
@@ -227,6 +236,26 @@ public class ViewAccountLiferayWorkersDisplayContext
 		return searchContainer;
 	}
 
+	@Override
+	protected void setWindowTitle() {
+		String tabs1 = ParamUtil.getString(renderRequest, "tabs1");
+
+		if (Validator.isNotNull(tabs1)) {
+			return;
+		}
+
+		String title = "assign-liferay-worker";
+
+		if (_contact != null) {
+			title = "edit-roles";
+		}
+
+		renderResponse.setTitle(
+			StringBundler.concat(
+				account.getCode(), StringPool.SPACE,
+				LanguageUtil.get(httpServletRequest, title)));
+	}
+
 	private List<JSONObject> _getContactRoleJSONObjects() throws Exception {
 		List<JSONObject> contactRoleJSONObjects = new ArrayList<>();
 
@@ -291,5 +320,7 @@ public class ViewAccountLiferayWorkersDisplayContext
 			}
 		};
 	}
+
+	private Contact _contact;
 
 }

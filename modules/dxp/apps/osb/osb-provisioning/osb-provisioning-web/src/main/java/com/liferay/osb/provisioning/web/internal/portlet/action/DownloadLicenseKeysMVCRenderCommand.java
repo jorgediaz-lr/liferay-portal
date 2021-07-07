@@ -14,8 +14,10 @@
 
 package com.liferay.osb.provisioning.web.internal.portlet.action;
 
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.constants.ProvisioningWebKeys;
+import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.provisioning.license.model.LicenseKey;
 import com.liferay.osb.provisioning.license.service.LicenseKeyService;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
@@ -52,6 +54,9 @@ public class DownloadLicenseKeysMVCRenderCommand implements MVCRenderCommand {
 		List<LicenseKey> licenseKeys = new ArrayList<>();
 
 		try {
+			Account account = _accountWebService.getAccount(
+				ParamUtil.getString(renderRequest, "accountKey"));
+
 			long[] licenseKeyIds = ParamUtil.getLongValues(
 				renderRequest, "licenseKeyIds");
 
@@ -59,6 +64,7 @@ public class DownloadLicenseKeysMVCRenderCommand implements MVCRenderCommand {
 				licenseKeys.add(_licenseKeyService.getLicenseKey(licenseKeyId));
 			}
 
+			renderRequest.setAttribute(ProvisioningWebKeys.ACCOUNT, account);
 			renderRequest.setAttribute(
 				ProvisioningWebKeys.LICENSE_KEYS, licenseKeys);
 
@@ -70,6 +76,9 @@ public class DownloadLicenseKeysMVCRenderCommand implements MVCRenderCommand {
 			return "/common/error.jsp";
 		}
 	}
+
+	@Reference
+	private AccountWebService _accountWebService;
 
 	@Reference
 	private LicenseKeyService _licenseKeyService;

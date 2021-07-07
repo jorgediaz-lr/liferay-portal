@@ -21,9 +21,12 @@ import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.constants.ProvisioningWebKeys;
 import com.liferay.osb.provisioning.web.internal.util.ProductPurchaseDisplayComparator;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
@@ -63,6 +66,8 @@ public class ViewSubscriptionDisplayContext extends ViewAccountDisplayContext {
 
 		_productPurchaseViewDisplay = new ProductPurchaseViewDisplay(
 			httpServletRequest, account, _productPurchaseView);
+
+		setWindowTitle();
 	}
 
 	public String getGenerateLicenseURL() {
@@ -146,6 +151,20 @@ public class ViewSubscriptionDisplayContext extends ViewAccountDisplayContext {
 		}
 
 		return searchContainer;
+	}
+
+	@Override
+	protected void setWindowTitle() {
+		String tabs1 = ParamUtil.getString(renderRequest, "tabs1");
+
+		if (Validator.isNull(tabs1)) {
+			tabs1 = "subscription-terms";
+		}
+
+		renderResponse.setTitle(
+			StringBundler.concat(
+				account.getCode(), StringPool.SPACE,
+				LanguageUtil.get(httpServletRequest, tabs1)));
 	}
 
 	private ProductPurchaseView _productPurchaseView;

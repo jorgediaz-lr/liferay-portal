@@ -22,12 +22,14 @@ import com.liferay.osb.provisioning.constants.ProvisioningWebKeys;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
@@ -65,6 +67,8 @@ public class EditProductPurchasesDisplayContext
 		_productPurchaseViews =
 			(List<ProductPurchaseView>)renderRequest.getAttribute(
 				ProvisioningWebKeys.PRODUCT_PURCHASE_VIEWS);
+
+		setWindowTitle();
 	}
 
 	public Map<String, Object> getEditProductPurchasesData() throws Exception {
@@ -235,6 +239,20 @@ public class EditProductPurchasesDisplayContext
 		}
 
 		return "edit-subscriptions";
+	}
+
+	@Override
+	public void setWindowTitle() {
+		String title = "edit-subscriptions";
+
+		if (_products != null) {
+			title = "add-subscriptions";
+		}
+
+		renderResponse.setTitle(
+			StringBundler.concat(
+				account.getCode(), StringPool.SPACE,
+				LanguageUtil.get(httpServletRequest, title)));
 	}
 
 	private JSONArray _getAddProductPurchasesJSONArray() throws Exception {

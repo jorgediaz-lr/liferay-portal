@@ -20,6 +20,8 @@
 
 <%
 AccountSearchDisplayContext accountSearchDisplayContext = ProvisioningWebComponentProvider.getAccountSearchDisplayContext(renderRequest, renderResponse, request);
+
+renderResponse.setTitle(StringBundler.concat(LanguageUtil.get(request, "accounts"), StringPool.SPACE, StringPool.DASH, StringPool.SPACE, company.getName()));
 %>
 
 <div class="container-fluid home provisioning-accounts">

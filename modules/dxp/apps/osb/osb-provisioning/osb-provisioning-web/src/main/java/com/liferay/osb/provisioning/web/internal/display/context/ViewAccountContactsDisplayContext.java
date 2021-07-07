@@ -26,6 +26,8 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
 import java.util.ArrayList;
@@ -43,26 +45,33 @@ public class ViewAccountContactsDisplayContext
 	public ViewAccountContactsDisplayContext() {
 	}
 
+	@Override
+	public void doInit() throws Exception {
+		super.doInit();
+
+		_contact = (Contact)renderRequest.getAttribute(
+			ProvisioningWebKeys.CONTACT);
+
+		setWindowTitle();
+	}
+
 	public Map<String, Object> getAssignContactData() throws Exception {
 		Map<String, Object> data = new HashMap<>();
 
 		data.put("accountName", account.getName());
 		data.put("allRoles", _getContactRoleJSONObjects());
 
-		Contact contact = (Contact)renderRequest.getAttribute(
-			ProvisioningWebKeys.CONTACT);
-
-		if (contact != null) {
-			data.put("currentRoles", _getContactRoleKeys(contact));
+		if (_contact != null) {
+			data.put("currentRoles", _getContactRoleKeys(_contact));
 		}
 
 		data.put(
 			"emailAddress",
-			BeanParamUtil.getString(contact, renderRequest, "emailAddress"));
+			BeanParamUtil.getString(_contact, renderRequest, "emailAddress"));
 
-		if (contact != null) {
+		if (_contact != null) {
 			ContactDisplay contactDisplay = new ContactDisplay(
-				httpServletRequest, contact, null);
+				httpServletRequest, _contact, null);
 
 			data.put("fullName", contactDisplay.getFullName());
 		}
@@ -73,10 +82,7 @@ public class ViewAccountContactsDisplayContext
 	}
 
 	public String getAssignContactTitle() {
-		Contact contact = (Contact)renderRequest.getAttribute(
-			ProvisioningWebKeys.CONTACT);
-
-		if (contact != null) {
+		if (_contact != null) {
 			return "edit-roles";
 		}
 
@@ -163,6 +169,26 @@ public class ViewAccountContactsDisplayContext
 		return searchContainer;
 	}
 
+	@Override
+	protected void setWindowTitle() {
+		String tabs1 = ParamUtil.getString(renderRequest, "tabs1");
+
+		if (Validator.isNotNull(tabs1)) {
+			return;
+		}
+
+		String title = "assign-contact";
+
+		if (_contact != null) {
+			title = "edit-roles";
+		}
+
+		renderResponse.setTitle(
+			StringBundler.concat(
+				account.getCode(), StringPool.SPACE,
+				LanguageUtil.get(httpServletRequest, title)));
+	}
+
 	private List<JSONObject> _getContactRoleJSONObjects() throws Exception {
 		List<JSONObject> contactRoleJSONObjects = new ArrayList<>();
 
@@ -197,5 +223,7 @@ public class ViewAccountContactsDisplayContext
 			"type eq '" + ContactRole.Type.ACCOUNT_CUSTOMER.toString() + "'", 1,
 			1000, "name");
 	}
+
+	private Contact _contact;
 
 }

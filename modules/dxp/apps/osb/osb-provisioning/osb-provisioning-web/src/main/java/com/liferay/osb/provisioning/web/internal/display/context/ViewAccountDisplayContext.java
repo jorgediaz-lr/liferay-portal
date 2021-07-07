@@ -643,6 +643,8 @@ public class ViewAccountDisplayContext {
 
 		themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
+
+		setWindowTitle();
 	}
 
 	protected String getTabName(String label, long count) {
@@ -654,6 +656,19 @@ public class ViewAccountDisplayContext {
 		sb.append("</span>");
 
 		return sb.toString();
+	}
+
+	protected void setWindowTitle() {
+		String tabs1 = ParamUtil.getString(renderRequest, "tabs1");
+
+		if (Validator.isNull(tabs1)) {
+			tabs1 = "subscriptions";
+		}
+
+		renderResponse.setTitle(
+			StringBundler.concat(
+				account.getCode(), StringPool.SPACE,
+				LanguageUtil.get(httpServletRequest, tabs1)));
 	}
 
 	protected Account account;

@@ -58,6 +58,8 @@ public class DownloadLicenseKeysMVCActionCommand extends BaseMVCActionCommand {
 			portletURL.setParameter(
 				"redirect", ParamUtil.getString(actionRequest, "redirect"));
 			portletURL.setParameter(
+				"accountKey", ParamUtil.getString(actionRequest, "accountKey"));
+			portletURL.setParameter(
 				"licenseKeyIds",
 				ParamUtil.getString(actionRequest, "licenseKeyIds"));
 

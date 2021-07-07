@@ -14,14 +14,18 @@
 
 package com.liferay.osb.provisioning.web.internal.display.context;
 
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.provisioning.constants.ProvisioningWebKeys;
 import com.liferay.osb.provisioning.license.model.LicenseEntry;
 import com.liferay.osb.provisioning.license.model.LicenseKey;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.text.Format;
 
@@ -32,21 +36,32 @@ import java.util.Map;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @author Yuanyuan Huang
  */
 public class DownloadLicenseKeysDisplayContext {
 
 	public DownloadLicenseKeysDisplayContext(
-		RenderRequest renderRequest, RenderResponse renderResponse) {
+		RenderRequest renderRequest, RenderResponse renderResponse,
+		HttpServletRequest httpServletRequest) {
 
 		_renderRequest = renderRequest;
 		_renderResponse = renderResponse;
+		_httpServletRequest = httpServletRequest;
 
+		_account = (Account)renderRequest.getAttribute(
+			ProvisioningWebKeys.ACCOUNT);
 		_dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
 			"MMM dd, yyyy");
 		_licenseKeys = (List<LicenseKey>)renderRequest.getAttribute(
 			ProvisioningWebKeys.LICENSE_KEYS);
+
+		_renderResponse.setTitle(
+			StringBundler.concat(
+				_account.getCode(), StringPool.SPACE,
+				LanguageUtil.get(_httpServletRequest, "download-licenses")));
 	}
 
 	public Map<String, Object> getDownloadLicenseKeysData() throws Exception {
@@ -107,7 +122,9 @@ public class DownloadLicenseKeysDisplayContext {
 		return data;
 	}
 
+	private final Account _account;
 	private final Format _dateFormat;
+	private final HttpServletRequest _httpServletRequest;
 	private final List<LicenseKey> _licenseKeys;
 	private final RenderRequest _renderRequest;
 	private final RenderResponse _renderResponse;

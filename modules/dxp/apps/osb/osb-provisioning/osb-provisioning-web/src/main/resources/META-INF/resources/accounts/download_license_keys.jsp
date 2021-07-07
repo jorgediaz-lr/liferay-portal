@@ -21,7 +21,7 @@
 <%
 String redirect = ParamUtil.getString(request, "redirect");
 
-DownloadLicenseKeysDisplayContext downloadLicenseKeysDisplayContext = new DownloadLicenseKeysDisplayContext(renderRequest, renderResponse);
+DownloadLicenseKeysDisplayContext downloadLicenseKeysDisplayContext = new DownloadLicenseKeysDisplayContext(renderRequest, renderResponse, request);
 %>
 
 <div class="add-items">
