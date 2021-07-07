@@ -718,14 +718,16 @@ public class LayoutStagedModelDataHandler
 			importedLayout.setPrivateLayout(privateLayout);
 			importedLayout.setLayoutId(layoutId);
 
-			initNewLayoutPermissions(
-				portletDataContext.getCompanyId(), groupId, userId, layout,
-				importedLayout, privateLayout);
-
 			LayoutSet layoutSet = _layoutSetLocalService.getLayoutSet(
 				groupId, privateLayout);
 
 			importedLayout.setLayoutSet(layoutSet);
+
+			importedLayout = _layoutLocalService.updateLayout(importedLayout);
+
+			initNewLayoutPermissions(
+				portletDataContext.getCompanyId(), groupId, userId, layout,
+				importedLayout, privateLayout);
 		}
 		else {
 			importedLayout = existingLayout;
