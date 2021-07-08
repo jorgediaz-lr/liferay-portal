@@ -12,6 +12,11 @@
 import {Map, Record} from 'immutable';
 import React, {createContext, useContext, useState} from 'react';
 
+import {
+	deriveLicenseDates,
+	getDetachedLicenseDates
+} from '../utilities/license';
+
 export const LicenseRecord = Record({
 	expirationDate: '',
 	extensionURL: '',
@@ -26,10 +31,32 @@ export const LicenseRecord = Record({
 const ExtendLicensesContext = createContext();
 
 export function ExtendLicensesProvider({initialLicenses = [], children}) {
-	const processedLicenses = initialLicenses.map(license => [
-		license.licenseKeyId,
-		LicenseRecord(license)
-	]);
+	const processedLicenses = initialLicenses.map(license => {
+		let licenseDates = getDetachedLicenseDates();
+		let productPurchaseKey = '';
+
+		if (license.terms) {
+			const firstTerms = license.terms[0];
+
+			licenseDates = deriveLicenseDates(firstTerms, license.licenseType);
+			productPurchaseKey = firstTerms.productPurchaseKey;
+		}
+
+		const {
+			licenseExpirationDate: expirationDate,
+			licenseStartDate: startDate
+		} = licenseDates;
+
+		return [
+			license.licenseKeyId,
+			LicenseRecord({
+				...license,
+				expirationDate,
+				productPurchaseKey,
+				startDate
+			})
+		];
+	});
 
 	const [licenses, setLicenses] = useState(Map(processedLicenses));
 

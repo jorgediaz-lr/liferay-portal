@@ -16,11 +16,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import {useNewLicense} from '../../hooks/newLicense';
-import {RESTRICTED_EXPIRATION_DATE_TYPES} from '../../utilities/constants';
 import {
-	generateNewDateByDay,
-	generateNewDateByYear
-} from '../../utilities/date';
+	deriveLicenseDates,
+	getDetachedLicenseDates
+} from '../../utilities/license';
 import TableDivider from '../TableDivider';
 import Purchase from './Purchase';
 
@@ -59,14 +58,10 @@ function Purchases({detached, purchased}) {
 }
 
 function Detached({detached}) {
-	const licenseDates = {};
+	let licenseDates = {};
 
 	if (detached) {
-		licenseDates.licenseStartDate = TODAY;
-
-		licenseDates.licenseExpirationDate = generateNewDateByYear(
-			licenseDates.licenseStartDate
-		);
+		licenseDates = getDetachedLicenseDates();
 	}
 
 	return (
@@ -86,32 +81,11 @@ function Purchased({purchased}) {
 
 	const processedPurchased = purchased
 		? purchased.map(item => {
-				const licenseExpirationDate = setExpirationDate(
-					item,
-					licenseEntry.licenseEntryType
-				);
-
-				if (item.perpetual) {
-					const licenseStartDate = TODAY;
-
-					return {
-						...item,
-						expired: false,
-						licenseExpirationDate,
-						licenseStartDate
-					};
-				}
-				else {
-					const licenseStartDate = new Date(item.startDate);
-					const expired = new Date(item.endDate) < TODAY;
-
-					return {
-						...item,
-						expired,
-						licenseExpirationDate,
-						licenseStartDate
-					};
-				}
+				return {
+					...item,
+					...deriveLicenseDates(item, licenseEntry.licenseEntryType),
+					expired: getExpired(item)
+				};
 		  })
 		: [];
 	const [active, expired] = partition(
@@ -119,29 +93,12 @@ function Purchased({purchased}) {
 		({expired}) => !expired
 	);
 
-	function setExpirationDate(license, type) {
-		const restricted = RESTRICTED_EXPIRATION_DATE_TYPES.find(
-			restrictedType => restrictedType === type
-		);
-
-		if (license.perpetual) {
-			let expirationDate = generateNewDateByDay(generateNewDateByYear());
-
-			if (!restricted) {
-				expirationDate = generateNewDateByYear(TODAY, 100);
-			}
-
-			return expirationDate;
+	function getExpired(item) {
+		if (item.perpetual) {
+			return false;
 		}
-		else {
-			let expirationDate = new Date(license.endDate);
 
-			if (!restricted) {
-				expirationDate = generateNewDateByYear(expirationDate, 100);
-			}
-
-			return expirationDate;
-		}
+		return new Date(item.endDate) < TODAY;
 	}
 
 	return (

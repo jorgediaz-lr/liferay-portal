@@ -15,12 +15,34 @@ import React from 'react';
 import ExtensionDetails from '../../../src/main/resources/META-INF/resources/js/components/license_extension/ExtensionDetails';
 import {ExtendLicensesProvider} from '../../../src/main/resources/META-INF/resources/js/hooks/extendLicenses';
 import {PermissionsProvider} from '../../../src/main/resources/META-INF/resources/js/hooks/permissions';
+import {DASH} from '../../../src/main/resources/META-INF/resources/js/utilities/constants';
 
 const initialDetachedLicense = {
 	extensinURL: '/extension/url',
 	licenseKeyId: 'licenseKeyID1',
 	licenseType: 'development',
 	productName: 'DXP 7.0'
+};
+
+const initialAttachedLicense = {
+	extensinURL: '/extension/url',
+	licenseKeyId: 'licenseKeyID1',
+	licenseType: 'development',
+	productName: 'DXP 7.0',
+	terms: [
+		{
+			endDate: '',
+			perpetual: true,
+			productPurchaseKey: 'productPurchaseKey1',
+			startDate: ''
+		},
+		{
+			endDate: '2022-07-02',
+			perpetual: false,
+			productPurchaseKey: 'productPurchaseKey2',
+			startDate: '2021-06-02'
+		}
+	]
 };
 
 function renderExtensionDetails(initialLicenses, permission = true) {
@@ -44,5 +66,27 @@ describe('ExtensionDetails', () => {
 		const {container} = renderExtensionDetails(initialDetachedLicense);
 
 		expect(container).toBeTruthy();
+	});
+
+	it('renders the Terms of a Detached license as a dash', () => {
+		const {getByText} = renderExtensionDetails(initialDetachedLicense);
+
+		getByText(DASH);
+	});
+
+	it('renders the Terms in the dropdown of a Non Detached license', () => {
+		const {getByText} = renderExtensionDetails(initialAttachedLicense);
+
+		getByText('perpetual');
+		getByText('June 2, 2021 - July 2, 2022');
+	});
+
+	it('renders a disabled X icon for a single license extension', () => {
+		const {getByLabelText, getByTitle} = renderExtensionDetails(
+			initialDetachedLicense
+		);
+
+		getByLabelText('delete-license-icon');
+		expect(getByTitle('delete').disabled).toBeTruthy();
 	});
 });

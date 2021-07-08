@@ -15,6 +15,7 @@ import React, {useRef} from 'react';
 
 import {LicenseRecord, useExtendLicenses} from '../../hooks/extendLicenses';
 import {RESTRICTED_EXPIRATION_DATE_TYPES} from '../../utilities/constants';
+import {deriveLicenseDates} from '../../utilities/license';
 import HiddenForm from '../HiddenForm';
 import IconButton from '../IconButton';
 import LicenseDates from '../LicenseDates';
@@ -34,6 +35,7 @@ function Detail({disableDelete, license}) {
 		startDate,
 		terms
 	} = license.toJS();
+
 	const restricted = !!RESTRICTED_EXPIRATION_DATE_TYPES.find(
 		restrictedType => restrictedType === licenseType
 	);
@@ -53,8 +55,17 @@ function Detail({disableDelete, license}) {
 	}
 
 	function handleTermsChange(val) {
+		const currentTerm = terms.find(
+			({productPurchaseKey}) => productPurchaseKey === val
+		);
+
+		const dates = deriveLicenseDates(currentTerm, licenseType);
+
 		updateLicense(licenseKeyId, license =>
-			license.set('productPurchaseKey', val)
+			license
+				.set('productPurchaseKey', val)
+				.set('expirationDate', dates.licenseExpirationDate)
+				.set('startDate', dates.licenseStartDate)
 		);
 	}
 
@@ -62,7 +73,7 @@ function Detail({disableDelete, license}) {
 		<ClayTable.Body id={licenseKeyId}>
 			<ClayTable.Row>
 				<ClayTable.Cell>{productName}</ClayTable.Cell>
-				<ClayTable.Cell>
+				<ClayTable.Cell className="input-group-sm">
 					<Terms
 						terms={terms}
 						termSelected={productPurchaseKey}
@@ -97,7 +108,11 @@ function Detail({disableDelete, license}) {
 						ref={formRef}
 					/>
 
-					<button className="btn btn-secondary btn-sm" type="submit">
+					<button
+						className="btn btn-secondary btn-sm"
+						role="button"
+						type="submit"
+					>
 						{Liferay.Language.get('extend')}
 					</button>
 				</ClayTable.Cell>

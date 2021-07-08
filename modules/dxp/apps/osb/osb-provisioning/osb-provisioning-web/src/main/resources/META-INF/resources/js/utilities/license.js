@@ -1,0 +1,66 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ */
+
+import {RESTRICTED_EXPIRATION_DATE_TYPES} from './constants';
+import {generateNewDateByDay, generateNewDateByYear} from './date';
+
+const TODAY = new Date();
+
+/**
+ * Generates the start and expiration dates for a license associated with a
+ * purchased product. The dates are determined by the type of the subscription
+ * (perpetual or not) and the type of the license (one of the limited access
+ * types or not).
+ * @returns {Object} An object of dates representing the start and expiration
+ * dates of a detached license.
+ */
+export function deriveLicenseDates(license, type) {
+	const restricted = RESTRICTED_EXPIRATION_DATE_TYPES.find(
+		restrictedType => restrictedType === type
+	);
+
+	if (license.perpetual) {
+		let expirationDate = generateNewDateByDay(generateNewDateByYear());
+
+		if (!restricted) {
+			expirationDate = generateNewDateByYear(TODAY, 100);
+		}
+
+		return {licenseExpirationDate: expirationDate, licenseStartDate: TODAY};
+	}
+	else {
+		let expirationDate = new Date(license.endDate);
+
+		if (!restricted) {
+			expirationDate = generateNewDateByYear(expirationDate, 100);
+		}
+
+		return {
+			licenseExpirationDate: expirationDate,
+			licenseStartDate: new Date(license.startDate)
+		};
+	}
+}
+
+/**
+ * Generates the start and expiration dates for a detached license (license not
+ * associated with any purchased product). The start date should always be the
+ * current date in UTC while the expiration date should be 365 days from the
+ * start date.
+ * @returns {Object} An object of dates representing the start and expiration
+ * dates of a detached license.
+ */
+export function getDetachedLicenseDates() {
+	return {
+		licenseExpirationDate: generateNewDateByYear(TODAY),
+		licenseStartDate: TODAY
+	};
+}
