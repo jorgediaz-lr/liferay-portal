@@ -235,19 +235,16 @@ public class ProductPurchaseDisplay {
 	}
 
 	private void _initState() {
-		ProductPurchase.Status status = _productPurchase.getStatus();
+		if (_productPurchase.getStatus() == ProductPurchase.Status.APPROVED) {
+			Date now = new Date();
 
-		Date startDate = _productPurchase.getStartDate();
-		Date endDate = _productPurchase.getEndDate();
-		Date now = new Date();
-
-		if (status == ProductPurchase.Status.APPROVED) {
 			if (_productPurchase.getPerpetual() ||
-				(startDate.before(now) && endDate.after(now))) {
+				(now.after(_productPurchase.getStartDate()) &&
+				 now.before(_productPurchase.getEndDate()))) {
 
 				_state = "active";
 			}
-			else if (endDate.before(now)) {
+			else if (now.after(_productPurchase.getEndDate())) {
 				_state = "expired";
 			}
 			else {
