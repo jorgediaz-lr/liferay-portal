@@ -19,19 +19,19 @@
 <liferay-util:include page="/common/view_account_search_header.jsp" servletContext="<%= application %>" />
 
 <%
-EditLicenseKeyDisplayContext editLicenseKeyDisplayContext = ProvisioningWebComponentProvider.getEditLicenseKeyDisplayContext(renderRequest, renderResponse, request);
+ExtendLicenseKeysDisplayContext extendLicenseKeysDisplayContext = ProvisioningWebComponentProvider.getExtendLicenseKeysDisplayContext(renderRequest, renderResponse, request);
 %>
 
 <div class="add-items">
 	<liferay-ui:header
 		backURL='<%= ParamUtil.getString(request, "redirect") %>'
 		cssClass="add-items-header"
-		title='<%= LanguageUtil.get(request, "extend-license") %>'
+		title="<%= extendLicenseKeysDisplayContext.getTitle() %>"
 	/>
 
 	<div id="extendLicenses">
 		<react:component
-			data="<%= editLicenseKeyDisplayContext.getExtendLicenseKeyData() %>"
+			data="<%= extendLicenseKeysDisplayContext.getData() %>"
 			module="js/apps/ExtendLicenseApp"
 		/>
 	</div>

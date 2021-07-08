@@ -42,6 +42,7 @@ import com.liferay.osb.provisioning.web.internal.display.context.AssignTeamConta
 import com.liferay.osb.provisioning.web.internal.display.context.ContactSearchDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.EditLicenseKeyDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.EditProductPurchasesDisplayContext;
+import com.liferay.osb.provisioning.web.internal.display.context.ExtendLicenseKeysDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.LicenseKeySearchDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.MoveLicenseKeyDisplayContext;
 import com.liferay.osb.provisioning.web.internal.display.context.ProductSearchDisplayContext;
@@ -165,6 +166,17 @@ public class ProvisioningWebComponentProvider {
 		return _provisioningWebComponentProvider._getViewAccountDisplayContext(
 			EditProductPurchasesDisplayContext.class, renderRequest,
 			renderResponse, httpServletRequest);
+	}
+
+	public static ExtendLicenseKeysDisplayContext
+			getExtendLicenseKeysDisplayContext(
+				RenderRequest renderRequest, RenderResponse renderResponse,
+				HttpServletRequest httpServletRequest)
+		throws Exception {
+
+		return _provisioningWebComponentProvider.
+			_getExtendLicenseKeysDisplayContext(
+				renderRequest, renderResponse, httpServletRequest);
 	}
 
 	public static LicenseKeySearchDisplayContext
@@ -405,6 +417,16 @@ public class ProvisioningWebComponentProvider {
 			renderRequest, renderResponse, httpServletRequest,
 			_licenseKeyLocalService, _licenseKeyPermission,
 			_productPurchaseViewWebService);
+	}
+
+	private ExtendLicenseKeysDisplayContext _getExtendLicenseKeysDisplayContext(
+			RenderRequest renderRequest, RenderResponse renderResponse,
+			HttpServletRequest httpServletRequest)
+		throws Exception {
+
+		return new ExtendLicenseKeysDisplayContext(
+			renderRequest, renderResponse, httpServletRequest,
+			_licenseKeyPermission, _productPurchaseViewWebService);
 	}
 
 	private LicenseKeySearchDisplayContext _getLicenseKeySearchDisplayContext(
