@@ -188,7 +188,7 @@ public abstract class BaseKaleoLocalServiceTestCase {
 		throws Exception {
 
 		return kaleoTaskInstanceTokenLocalService.addKaleoTaskInstanceToken(
-			kaleoInstanceToken.getKaleoInstanceTokenId(), 1, "task",
+			kaleoInstanceToken.getKaleoInstanceTokenId(), 9999999, "task",
 			Collections.emptyList(), null,
 			WorkflowContextUtil.convert(kaleoInstance.getWorkflowContext()),
 			serviceContext);
