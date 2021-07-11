@@ -1377,11 +1377,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 		// Asset
 
-		if (serviceContext != null) {
-			updateAsset(
-				creatorUserId, user, serviceContext.getAssetCategoryIds(),
-				serviceContext.getAssetTagNames());
-		}
+		_updateAsset(creatorUserId, user, serviceContext);
 
 		// Indexer
 
@@ -5760,11 +5756,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 		// Asset
 
-		if (serviceContext != null) {
-			updateAsset(
-				userId, user, serviceContext.getAssetCategoryIds(),
-				serviceContext.getAssetTagNames());
-		}
+		_updateAsset(userId, user, serviceContext);
 
 		// Indexer
 
@@ -7565,6 +7557,25 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		catch (IOException ioException) {
 			throw new SystemException(ioException);
 		}
+	}
+
+	private void _updateAsset(
+			long userId, User user, ServiceContext serviceContext)
+		throws PortalException {
+
+		if (serviceContext == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					"serviceContext is null for user " + userId,
+					new Exception());
+			}
+
+			serviceContext = new ServiceContext();
+		}
+
+		updateAsset(
+			userId, user, serviceContext.getAssetCategoryIds(),
+			serviceContext.getAssetTagNames());
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
