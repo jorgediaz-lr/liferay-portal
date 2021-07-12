@@ -36,18 +36,17 @@ export function deriveLicenseDates(license, type) {
 
 		return {licenseExpirationDate: expirationDate, licenseStartDate: TODAY};
 	}
-	else {
-		let expirationDate = new Date(license.endDate);
 
-		if (!restricted) {
-			expirationDate = generateNewDateByYear(expirationDate, 100);
-		}
+	let expirationDate = new Date(license.endDate);
 
-		return {
-			licenseExpirationDate: expirationDate,
-			licenseStartDate: new Date(license.startDate)
-		};
+	if (!restricted) {
+		expirationDate = generateNewDateByYear(expirationDate, 100);
 	}
+
+	return {
+		licenseExpirationDate: expirationDate,
+		licenseStartDate: new Date(license.startDate)
+	};
 }
 
 /**
