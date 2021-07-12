@@ -9,13 +9,16 @@
  * distribution rights of the Software.
  */
 
-import {cleanup, render} from '@testing-library/react';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 import React from 'react';
 
 import ExtensionDetails from '../../../src/main/resources/META-INF/resources/js/components/license_extension/ExtensionDetails';
 import {ExtendLicensesProvider} from '../../../src/main/resources/META-INF/resources/js/hooks/extendLicenses';
 import {PermissionsProvider} from '../../../src/main/resources/META-INF/resources/js/hooks/permissions';
 import {DASH} from '../../../src/main/resources/META-INF/resources/js/utilities/constants';
+import {formatDate} from '../../../src/main/resources/META-INF/resources/js/utilities/date';
+
+const TODAY = new Date();
 
 const initialDetachedLicense = {
 	extensinURL: '/extension/url',
@@ -88,5 +91,44 @@ describe('ExtensionDetails', () => {
 
 		getByLabelText('delete-license-icon');
 		expect(getByTitle('delete').disabled).toBeTruthy();
+	});
+
+	it('renders an enabled Extend button by default', () => {
+		const {getByText} = renderExtensionDetails(initialAttachedLicense);
+
+		expect(getByText('extend').disabled).toBeFalsy();
+	});
+
+	it('renders a disabled Extend button if any of the dates are empty', () => {
+		const {getAllByDisplayValue, getByText} = renderExtensionDetails(
+			initialAttachedLicense
+		);
+
+		// Clay Date Picker always displays two inputs for the same date
+
+		fireEvent.change(getAllByDisplayValue(formatDate(TODAY))[1], {
+			target: {value: ''}
+		});
+
+		expect(getByText('extend').disabled).toBeTruthy();
+	});
+
+	it('always renders an enabled Extend button after a new Subscription Term is selected', () => {
+		const {
+			getAllByDisplayValue,
+			getByDisplayValue,
+			getByText
+		} = renderExtensionDetails(initialAttachedLicense);
+
+		// Clay Date Picker always displays two inputs for the same date
+
+		fireEvent.change(getAllByDisplayValue(formatDate(TODAY))[1], {
+			target: {value: ''}
+		});
+		fireEvent.change(getByDisplayValue('perpetual'), {
+			target: {value: 'June 2, 2021 - July 2, 2022'}
+		});
+
+		expect(getByText('extend').disabled).toBeFalsy();
 	});
 });

@@ -163,7 +163,7 @@ describe('Purchases', () => {
 			}
 		});
 
-		expect(getAllByText('-').length).toBe(4);
+		expect(getAllByText('-').length).toBe(2);
 		expect(getByText('choose').disabled).toBeTruthy();
 	});
 

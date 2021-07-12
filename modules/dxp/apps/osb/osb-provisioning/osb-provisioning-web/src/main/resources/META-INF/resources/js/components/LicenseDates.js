@@ -15,7 +15,6 @@ import React from 'react';
 
 import DatePicker from '../components/DatePicker';
 import {usePermissions} from '../hooks/permissions';
-import {DASH} from '../utilities/constants';
 import {formatDate} from '../utilities/date';
 
 const YEAR_IN_MS = 1000 * 60 * 60 * 24 * 365;
@@ -60,39 +59,32 @@ export default function LicenseDates({
 
 	return (
 		<>
-			{startDate ? (
+			<ClayTableCell
+				className={`input-group-sm ${!validDates ? 'has-error' : ''}`}
+			>
+				<DatePicker
+					defaultValue={startDate}
+					inputName="startDate"
+					updateFn={handleStartDateChange}
+				/>
+			</ClayTableCell>
+
+			{(updateDatePermission ||
+				(!updateDatePermission && !restricted)) && (
 				<ClayTableCell
 					className={`input-group-sm ${
 						!validDates ? 'has-error' : ''
 					}`}
 				>
 					<DatePicker
-						defaultValue={startDate}
-						inputName="startDate"
-						updateFn={handleStartDateChange}
+						defaultValue={expirationDate}
+						inputName="expirationDate"
+						updateFn={handleExpirationDateChange}
 					/>
 				</ClayTableCell>
-			) : (
-				<ClayTableCell>{DASH}</ClayTableCell>
 			)}
 
-			{!!expirationDate &&
-				(updateDatePermission ||
-					(!updateDatePermission && !restricted)) && (
-					<ClayTableCell
-						className={`input-group-sm ${
-							!validDates ? 'has-error' : ''
-						}`}
-					>
-						<DatePicker
-							defaultValue={expirationDate}
-							inputName="expirationDate"
-							updateFn={handleExpirationDateChange}
-						/>
-					</ClayTableCell>
-				)}
-
-			{!!expirationDate && !updateDatePermission && restricted && (
+			{!updateDatePermission && restricted && (
 				<>
 					{!detached && (
 						<ClayTableCell>
@@ -115,8 +107,6 @@ export default function LicenseDates({
 					)}
 				</>
 			)}
-
-			{!expirationDate && <ClayTableCell>{DASH}</ClayTableCell>}
 		</>
 	);
 }

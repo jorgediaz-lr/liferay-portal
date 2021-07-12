@@ -11,7 +11,7 @@
 
 import ClayTable from '@clayui/table';
 import PropTypes from 'prop-types';
-import React, {useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
 import {LicenseRecord, useExtendLicenses} from '../../hooks/extendLicenses';
 import {RESTRICTED_EXPIRATION_DATE_TYPES} from '../../utilities/constants';
@@ -36,14 +36,33 @@ function Detail({disableDelete, license}) {
 		terms
 	} = license.toJS();
 
+	const [disableExtend, setDisableExtend] = useState(false);
+	const [validDates, setValidDates] = useState(
+		!isNaN(new Date(expirationDate)) && !isNaN(new Date(startDate))
+	);
+
 	const restricted = !!RESTRICTED_EXPIRATION_DATE_TYPES.find(
 		restrictedType => restrictedType === licenseType
 	);
+
+	useEffect(() => {
+		setValidDates(
+			!isNaN(new Date(expirationDate)) && !isNaN(new Date(startDate))
+		);
+	}, [expirationDate, startDate]);
+
+	useEffect(() => {
+		setDisableExtend(!validDates);
+	}, [validDates]);
 
 	function handleExpirationDateChange(val) {
 		updateLicense(licenseKeyId, license =>
 			license.set('expirationDate', val)
 		);
+	}
+
+	function handleOnSubmit() {
+		formRef.submit();
 	}
 
 	function handleRemove() {
@@ -69,6 +88,10 @@ function Detail({disableDelete, license}) {
 		);
 	}
 
+	function handleValidDates(bool) {
+		setValidDates(bool);
+	}
+
 	return (
 		<ClayTable.Body id={licenseKeyId}>
 			<ClayTable.Row>
@@ -87,13 +110,8 @@ function Detail({disableDelete, license}) {
 					startDate={startDate}
 					updateExpirationDate={handleExpirationDateChange}
 					updateStartDate={handleStartDateChange}
-					updateValidation={() => {
-						// TODO
-					}}
-					validDates={
-						true
-						// TODO
-					}
+					updateValidation={handleValidDates}
+					validDates={validDates}
 				/>
 				<ClayTable.Cell>
 					<HiddenForm
@@ -110,8 +128,10 @@ function Detail({disableDelete, license}) {
 
 					<button
 						className="btn btn-secondary btn-sm"
+						disabled={disableExtend}
+						onClick={handleOnSubmit}
 						role="button"
-						type="submit"
+						type="button"
 					>
 						{Liferay.Language.get('extend')}
 					</button>

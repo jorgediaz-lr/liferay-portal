@@ -9,7 +9,7 @@
  * distribution rights of the Software.
  */
 
-import {cleanup, render, prettyDOM} from '@testing-library/react';
+import {cleanup, render} from '@testing-library/react';
 import React from 'react';
 
 import LicenseDates from '../../src/main/resources/META-INF/resources/js/components/LicenseDates';

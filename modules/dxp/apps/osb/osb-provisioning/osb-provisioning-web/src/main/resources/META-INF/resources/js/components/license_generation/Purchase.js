@@ -125,6 +125,8 @@ function Purchase({
 					className="btn btn-secondary btn-sm"
 					disabled={disableChoose}
 					onClick={handleChoosePurchase}
+					role="button"
+					type="button"
 				>
 					{Liferay.Language.get('choose')}
 				</button>
