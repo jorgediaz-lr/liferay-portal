@@ -88,9 +88,9 @@ function Purchase({
 		<ClayTable.Row id={productPurchaseKey}>
 			<LicenseDates
 				detached={detached}
-				expirationDate={selectedExpirationDate}
+				expirationDate={licenseExpirationDate}
 				restricted={restricted}
-				startDate={selectedStartDate}
+				startDate={licenseStartDate}
 				updateExpirationDate={handleSelectedExpirationDateChange}
 				updateStartDate={handleSelectedStartDateChange}
 				updateValidation={handleValidateDates}

@@ -15,6 +15,7 @@ import React, {useEffect, useRef, useState} from 'react';
 
 import {LicenseRecord, useExtendLicenses} from '../../hooks/extendLicenses';
 import {RESTRICTED_EXPIRATION_DATE_TYPES} from '../../utilities/constants';
+import {formatDate} from '../../utilities/date';
 import {deriveLicenseDates} from '../../utilities/license';
 import HiddenForm from '../HiddenForm';
 import IconButton from '../IconButton';
@@ -32,11 +33,16 @@ function Detail({disableDelete, license}) {
 		licenseType,
 		productName,
 		productPurchaseKey,
+		readyToExtend,
 		startDate,
 		terms
 	} = license.toJS();
 
 	const [disableExtend, setDisableExtend] = useState(false);
+	const [selectedExpirationDate, setSelectedExpirationDate] = useState(
+		expirationDate
+	);
+	const [selectedStartDate, setSelectedStartDate] = useState(startDate);
 	const [validDates, setValidDates] = useState(
 		!isNaN(new Date(expirationDate)) && !isNaN(new Date(startDate))
 	);
@@ -52,17 +58,27 @@ function Detail({disableDelete, license}) {
 	}, [expirationDate, startDate]);
 
 	useEffect(() => {
+		if (readyToExtend && formRef.current) {
+			formRef.current.submit();
+		}
+	}, [readyToExtend]);
+
+	useEffect(() => {
 		setDisableExtend(!validDates);
 	}, [validDates]);
 
 	function handleExpirationDateChange(val) {
-		updateLicense(licenseKeyId, license =>
-			license.set('expirationDate', val)
-		);
+		setSelectedExpirationDate(val);
 	}
 
 	function handleOnSubmit() {
-		formRef.submit();
+		updateLicense(licenseKeyId, license =>
+			license
+				.set('expirationDate', selectedExpirationDate)
+				.set('startDate', selectedStartDate)
+
+				.set('readyToExtend', true)
+		);
 	}
 
 	function handleRemove() {
@@ -70,7 +86,7 @@ function Detail({disableDelete, license}) {
 	}
 
 	function handleStartDateChange(val) {
-		updateLicense(licenseKeyId, license => license.set('startDate', val));
+		setSelectedStartDate(val);
 	}
 
 	function handleTermsChange(val) {
@@ -116,10 +132,10 @@ function Detail({disableDelete, license}) {
 				<ClayTable.Cell>
 					<HiddenForm
 						fields={{
-							expirationDate,
+							expirationDate: formatDate(expirationDate),
 							licenseKeyId,
 							productPurchaseKey,
-							startDate
+							startDate: formatDate(startDate)
 						}}
 						formAction={extensionURL}
 						formName="extendLicenseFm"

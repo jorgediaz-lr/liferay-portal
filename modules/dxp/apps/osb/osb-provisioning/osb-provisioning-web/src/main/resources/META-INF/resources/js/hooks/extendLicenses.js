@@ -24,6 +24,7 @@ export const LicenseRecord = Record({
 	licenseType: '',
 	productName: '',
 	productPurchaseKey: '',
+	readyToExtend: false,
 	startDate: '',
 	terms: null
 });

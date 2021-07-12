@@ -11,7 +11,7 @@
 
 import ClayTableCell from '@clayui/table/lib/Cell';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {useState} from 'react';
 
 import DatePicker from '../components/DatePicker';
 import {usePermissions} from '../hooks/permissions';
@@ -30,27 +30,34 @@ export default function LicenseDates({
 	validDates
 }) {
 	const {updateDatePermission} = usePermissions();
+	const [selectedExpirationDate, setSelectedExpirationDate] = useState(
+		expirationDate
+	);
+	const [selectedStartDate, setSelectedStartDate] = useState(startDate);
 
 	function handleExpirationDateChange(val) {
 		const expiration = Date.parse(new Date(val));
-		const start = Date.parse(new Date(startDate));
+		const start = Date.parse(new Date(selectedStartDate));
 
+		setSelectedExpirationDate(val);
 		updateExpirationDate(val);
 		updateValidation(start < expiration);
 	}
 
 	function handleStartDateChange(val) {
-		const expiration = Date.parse(new Date(expirationDate));
+		const expiration = Date.parse(new Date(selectedExpirationDate));
 		const start = Date.parse(new Date(val));
 
+		setSelectedStartDate(val);
 		updateStartDate(val);
 		updateValidation(start < expiration);
 	}
 
 	function validateExpirationDateChange(val) {
 		const expiration = Date.parse(new Date(val));
-		const start = Date.parse(new Date(startDate));
+		const start = Date.parse(new Date(selectedStartDate));
 
+		setSelectedExpirationDate(val);
 		updateExpirationDate(val);
 		updateValidation(
 			expiration - start <= YEAR_IN_MS && start < expiration
