@@ -149,61 +149,15 @@ export function SubscriptionsProvider({initialSubscriptions = [], children}) {
 					deleteSubscription(key) {
 						setSubscriptions(subscriptions.delete(key));
 					},
-					updateAllValuesByFieldName(fieldName, newValue) {
+					updateAllValuesByFieldName(fieldName, value) {
 						setSubscriptions(
 							subscriptions.map(subscription =>
-								subscription.set(fieldName, newValue)
+								subscription.set(fieldName, value)
 							)
 						);
 					},
-					updateEndDate(key, endDate) {
-						setSubscriptions(
-							subscriptions.setIn([key, 'endDate'], endDate)
-						);
-					},
-					updateOriginalEndDate(key, originalEndDate) {
-						setSubscriptions(
-							subscriptions.setIn(
-								[key, 'originalEndDate'],
-								originalEndDate
-							)
-						);
-					},
-					updatePerpetual(key, perpetual) {
-						setSubscriptions(
-							subscriptions.setIn([key, 'perpetual'], perpetual)
-						);
-					},
-					updateQuantity(key, quantity) {
-						setSubscriptions(
-							subscriptions.setIn([key, 'quantity'], quantity)
-						);
-					},
-					updateSalesforceOpportunityKey(
-						key,
-						salesforceOpportunityKey
-					) {
-						setSubscriptions(
-							subscriptions.setIn(
-								[key, 'salesforceOpportunityKey'],
-								salesforceOpportunityKey
-							)
-						);
-					},
-					updateSizing(key, sizing) {
-						setSubscriptions(
-							subscriptions.setIn([key, 'sizing'], sizing)
-						);
-					},
-					updateStartDate(key, startDate) {
-						setSubscriptions(
-							subscriptions.setIn([key, 'startDate'], startDate)
-						);
-					},
-					updateStatus(key, status) {
-						setSubscriptions(
-							subscriptions.setIn([key, 'status'], status)
-						);
+					updateSubscription(key, updater) {
+						setSubscriptions(subscriptions.update(key, updater));
 					}
 				}
 			]}

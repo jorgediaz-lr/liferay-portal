@@ -112,10 +112,10 @@ export function getUTCAdjustedDate(value) {
  * Source formatter locks @clayui/date-picker at version 3.0.7, which does not
  * provide an API for disabling/enabling date picker while later versions do.
  * This helper manually disables/enables the date picker.
- * @param {boolean} attributeValue The value, whether to disable or enable.
  * @param {string} identifier The target to disable.
+ * @param {boolean} attributeValue The value, whether to disable or enable.
  */
-export function setDisabledAttribute(attributeValue, identifier) {
+export function setDisabledAttribute(identifier, attributeValue) {
 	const dates = document.querySelectorAll(`#${identifier} .date-picker`);
 
 	dates.forEach(date => {

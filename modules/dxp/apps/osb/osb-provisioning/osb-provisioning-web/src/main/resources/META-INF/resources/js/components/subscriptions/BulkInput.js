@@ -99,7 +99,7 @@ function BulkInput({
 	});
 
 	useEffect(() => {
-		setDisabledAttribute(perpetual, 'bulkInput');
+		setDisabledAttribute('bulkInput', perpetual);
 	});
 
 	useEffect(() => {
@@ -186,7 +186,7 @@ function BulkInput({
 	}
 
 	function handleSavePerpetual() {
-		setDisabledAttribute(!perpetual, 'bulkInput');
+		setDisabledAttribute('bulkInput', !perpetual);
 		setPerpetual(!perpetual);
 
 		updateAllValuesByFieldName('perpetual', !perpetual);

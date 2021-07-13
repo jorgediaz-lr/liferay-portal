@@ -155,20 +155,7 @@ function Subscription({
 		startDate: false
 	});
 
-	const [
-		,
-		{
-			deleteSubscription,
-			updateEndDate,
-			updateOriginalEndDate,
-			updatePerpetual,
-			updateQuantity,
-			updateSalesforceOpportunityKey,
-			updateSizing,
-			updateStartDate,
-			updateStatus
-		}
-	] = useSubscriptions();
+	const [, {deleteSubscription, updateSubscription}] = useSubscriptions();
 
 	const {
 		endDate,
@@ -189,14 +176,16 @@ function Subscription({
 			: `${subscription.productKey}_${index}`;
 
 	useEffect(() => {
-		setDisabledAttribute(perpetual, key);
+		setDisabledAttribute(key, perpetual);
 	});
 
 	function handleEndDateChange(value) {
 		const validDateFormat = validateDateFieldFormat(value);
 
 		if (validDateFormat) {
-			updateEndDate(key, convertInputToDate(value));
+			updateSubscription(key, subscription =>
+				subscription.set('endDate', convertInputToDate(value))
+			);
 		}
 
 		setInvalidDate({...invalidDate, endDate: !validDateFormat});
@@ -206,7 +195,9 @@ function Subscription({
 		const validDateFormat = validateDateFieldFormat(value);
 
 		if (validDateFormat) {
-			updateOriginalEndDate(key, convertInputToDate(value));
+			updateSubscription(key, subscription =>
+				subscription.set('originalEndDate', convertInputToDate(value))
+			);
 		}
 
 		setInvalidDate({...invalidDate, originalEndDate: !validDateFormat});
@@ -217,35 +208,50 @@ function Subscription({
 	}
 
 	function handlePerpetualChange() {
-		updatePerpetual(key, !perpetual);
+		updateSubscription(key, subscription =>
+			subscription.set('perpetual', !perpetual)
+		);
 
-		setDisabledAttribute(!perpetual, key);
+		setDisabledAttribute(key, !perpetual);
 	}
 
 	function handleQuantityChange(event) {
-		updateQuantity(key, event.currentTarget.value);
+		updateSubscription(key, subscription =>
+			subscription.set('quantity', event.currentTarget.value)
+		);
 	}
 
 	function handleSalesforceOpportunityKeyChange(event) {
-		updateSalesforceOpportunityKey(key, event.currentTarget.value);
+		updateSubscription(key, subscription =>
+			subscription.set(
+				'salesforceOpportunityKey',
+				event.currentTarget.value
+			)
+		);
 	}
 
 	function handleSizingChange(event) {
-		updateSizing(key, event.currentTarget.value);
+		updateSubscription(key, subscription =>
+			subscription.set('sizing', event.currentTarget.value)
+		);
 	}
 
 	function handleStartDateChange(value) {
 		const validDateFormat = validateDateFieldFormat(value);
 
 		if (validDateFormat) {
-			updateStartDate(key, convertInputToDate(value));
+			updateSubscription(key, subscription =>
+				subscription.set('startDate', convertInputToDate(value))
+			);
 		}
 
 		setInvalidDate({...invalidDate, startDate: !validDateFormat});
 	}
 
 	function handleStatusChange(event) {
-		updateStatus(key, event.currentTarget.value);
+		updateSubscription(key, subscription =>
+			subscription.set('status', event.currentTarget.value)
+		);
 	}
 
 	return (
