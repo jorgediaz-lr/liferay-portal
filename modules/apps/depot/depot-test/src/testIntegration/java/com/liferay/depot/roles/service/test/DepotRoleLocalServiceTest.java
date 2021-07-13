@@ -82,7 +82,7 @@ public class DepotRoleLocalServiceTest {
 					_userGroup.getUserGroupId(), depotEntry.getGroup());
 
 				_userGroupGroupRoleLocalService.addUserGroupGroupRoles(
-					_userGroup.getGroupId(), depotEntry.getGroupId(),
+					_userGroup.getUserGroupId(), depotEntry.getGroupId(),
 					new long[] {role.getRoleId()});
 
 				_userGroupRoleLocalService.addUserGroupRoles(
