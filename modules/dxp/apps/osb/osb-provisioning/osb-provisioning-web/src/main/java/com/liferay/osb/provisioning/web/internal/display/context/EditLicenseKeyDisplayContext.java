@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -188,6 +189,12 @@ public class EditLicenseKeyDisplayContext {
 		portletURL.setParameter(
 			ActionRequest.ACTION_NAME, "/licenses/extend_license_key");
 
+		PortletURL redirect = PortletURLFactoryUtil.create(
+			_renderRequest, ProvisioningPortletKeys.LICENSES,
+			PortletRequest.RENDER_PHASE);
+
+		portletURL.setParameter("redirect", redirect.toString());
+
 		data.put("extensionURL", portletURL.toString());
 
 		ProductPurchaseView productPurchaseView =
@@ -229,12 +236,15 @@ public class EditLicenseKeyDisplayContext {
 	}
 
 	public String getExtendLicenseKeysURL() throws Exception {
+		String redirect = ParamUtil.getString(_renderRequest, "redirect");
+
 		PortletURL portletURL = PortletURLFactoryUtil.create(
 			_renderRequest, ProvisioningPortletKeys.LICENSES,
 			PortletRequest.RENDER_PHASE);
 
 		portletURL.setParameter(
 			"mvcRenderCommandName", "/licenses/extend_license_key");
+		portletURL.setParameter("redirect", redirect);
 		portletURL.setParameter(
 			"licenseKeyId", String.valueOf(_licenseKey.getLicenseKeyId()));
 
