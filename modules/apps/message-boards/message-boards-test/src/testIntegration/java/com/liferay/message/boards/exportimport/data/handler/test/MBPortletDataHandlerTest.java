@@ -94,7 +94,7 @@ public class MBPortletDataHandlerTest extends BasePortletDataHandlerTestCase {
 		MBCategoryLocalServiceUtil.moveCategoryToTrash(
 			TestPropsValues.getUserId(), childCategory.getCategoryId());
 
-		MBCategoryLocalServiceUtil.moveCategoryToTrash(
+		parentCategory = MBCategoryLocalServiceUtil.moveCategoryToTrash(
 			TestPropsValues.getUserId(), parentCategory.getCategoryId());
 
 		MBCategoryLocalServiceUtil.deleteCategory(parentCategory, false);
