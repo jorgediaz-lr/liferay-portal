@@ -85,7 +85,7 @@ public class KaleoLogLocalServiceTest extends BaseKaleoLocalServiceTestCase {
 
 		KaleoNode kaleoNode = addKaleoNode(kaleoInstance, task);
 
-		long kaleoClassPK = RandomTestUtil.nextLong();
+		long kaleoClassPK = RandomTestUtil.nextLong() * 999L;
 
 		for (Assignment assignment : task.getAssignments()) {
 			addKaleoTaskAssignmentInstance(
