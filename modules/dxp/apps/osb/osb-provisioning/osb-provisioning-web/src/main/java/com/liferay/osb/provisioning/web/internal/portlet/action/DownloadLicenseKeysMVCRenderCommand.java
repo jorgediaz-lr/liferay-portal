@@ -14,7 +14,6 @@
 
 package com.liferay.osb.provisioning.web.internal.portlet.action;
 
-import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.constants.ProvisioningWebKeys;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
@@ -54,8 +53,8 @@ public class DownloadLicenseKeysMVCRenderCommand implements MVCRenderCommand {
 		List<LicenseKey> licenseKeys = new ArrayList<>();
 
 		try {
-			Account account = _accountWebService.getAccount(
-				ParamUtil.getString(renderRequest, "accountKey"));
+			String accountKey = ParamUtil.getString(
+				renderRequest, "accountKey");
 
 			long[] licenseKeyIds = ParamUtil.getLongValues(
 				renderRequest, "licenseKeyIds");
@@ -64,7 +63,9 @@ public class DownloadLicenseKeysMVCRenderCommand implements MVCRenderCommand {
 				licenseKeys.add(_licenseKeyService.getLicenseKey(licenseKeyId));
 			}
 
-			renderRequest.setAttribute(ProvisioningWebKeys.ACCOUNT, account);
+			renderRequest.setAttribute(
+				ProvisioningWebKeys.ACCOUNT,
+				_accountWebService.getAccount(accountKey));
 			renderRequest.setAttribute(
 				ProvisioningWebKeys.LICENSE_KEYS, licenseKeys);
 

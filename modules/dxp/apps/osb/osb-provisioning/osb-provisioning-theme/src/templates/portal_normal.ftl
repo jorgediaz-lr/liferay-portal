@@ -3,7 +3,7 @@
 <#include init />
 
 <#if !stringUtil.equals(portlet_id, "com_liferay_osb_provisioning_web_portlet_AccountsPortlet")>
-	<#assign the_title = the_title + " - " + company_name/>
+	<#assign the_title = the_title + " - " + company_name />
 </#if>
 
 <html class="${root_css_class}" dir="<@liferay.language key="lang.dir" />" lang="${w3c_language_id}">

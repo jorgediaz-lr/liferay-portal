@@ -242,7 +242,7 @@ public class EditProductPurchasesDisplayContext
 	}
 
 	@Override
-	public void setWindowTitle() {
+	protected void setWindowTitle() {
 		String title = "edit-subscriptions";
 
 		if (_products != null) {

@@ -27,7 +27,6 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
 import java.util.Collections;
@@ -210,11 +209,8 @@ public class ViewTeamDisplayContext extends ViewAccountDisplayContext {
 
 	@Override
 	protected void setWindowTitle() {
-		String tabs1 = ParamUtil.getString(renderRequest, "tabs1");
-
-		if (Validator.isNull(tabs1)) {
-			tabs1 = "team-members";
-		}
+		String tabs1 = ParamUtil.getString(
+			renderRequest, "tabs1", "team-members");
 
 		renderResponse.setTitle(
 			StringBundler.concat(

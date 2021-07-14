@@ -659,11 +659,8 @@ public class ViewAccountDisplayContext {
 	}
 
 	protected void setWindowTitle() {
-		String tabs1 = ParamUtil.getString(renderRequest, "tabs1");
-
-		if (Validator.isNull(tabs1)) {
-			tabs1 = "subscriptions";
-		}
+		String tabs1 = ParamUtil.getString(
+			renderRequest, "tabs1", "subscriptions");
 
 		renderResponse.setTitle(
 			StringBundler.concat(

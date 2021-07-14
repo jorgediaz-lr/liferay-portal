@@ -155,11 +155,8 @@ public class ViewSubscriptionDisplayContext extends ViewAccountDisplayContext {
 
 	@Override
 	protected void setWindowTitle() {
-		String tabs1 = ParamUtil.getString(renderRequest, "tabs1");
-
-		if (Validator.isNull(tabs1)) {
-			tabs1 = "subscription-terms";
-		}
+		String tabs1 = ParamUtil.getString(
+			renderRequest, "tabs1", "subscription-terms");
 
 		renderResponse.setTitle(
 			StringBundler.concat(
