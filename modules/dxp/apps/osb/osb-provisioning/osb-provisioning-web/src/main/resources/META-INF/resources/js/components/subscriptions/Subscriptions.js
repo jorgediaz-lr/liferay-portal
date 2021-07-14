@@ -149,7 +149,7 @@ function Subscription({
 	subscription,
 	subscriptionsType
 }) {
-	const [invalidDate, setInvalidDate] = useState({
+	const [invalidDateFormat, setInvalidDateFormat] = useState({
 		endDate: false,
 		originalEndDate: false,
 		startDate: false
@@ -188,7 +188,7 @@ function Subscription({
 			);
 		}
 
-		setInvalidDate({...invalidDate, endDate: !validDateFormat});
+		setInvalidDateFormat({...invalidDateFormat, endDate: !validDateFormat});
 	}
 
 	function handleGracePeriodStartDateChange(value) {
@@ -200,7 +200,10 @@ function Subscription({
 			);
 		}
 
-		setInvalidDate({...invalidDate, originalEndDate: !validDateFormat});
+		setInvalidDateFormat({
+			...invalidDateFormat,
+			originalEndDate: !validDateFormat
+		});
 	}
 
 	function handleDeleteSubscription() {
@@ -245,7 +248,10 @@ function Subscription({
 			);
 		}
 
-		setInvalidDate({...invalidDate, startDate: !validDateFormat});
+		setInvalidDateFormat({
+			...invalidDateFormat,
+			startDate: !validDateFormat
+		});
 	}
 
 	function handleStatusChange(event) {
@@ -306,7 +312,8 @@ function Subscription({
 			</ClayTable.Cell>
 			<ClayTable.Cell
 				className={
-					subscription.validateStartDate() && !invalidDate.startDate
+					subscription.validateStartDate() &&
+					!invalidDateFormat.startDate
 						? ''
 						: 'has-error'
 				}
@@ -323,7 +330,7 @@ function Subscription({
 			<ClayTable.Cell
 				className={
 					subscription.validateGracePeriodStartDate() &&
-					!invalidDate.originalEndDate
+					!invalidDateFormat.originalEndDate
 						? ''
 						: 'has-error'
 				}
@@ -381,7 +388,8 @@ function Subscription({
 			{subscriptionsType === EDIT_SUBSCRIPTIONS && (
 				<ClayTable.Cell
 					className={
-						subscription.validateEndDate() && !invalidDate.endDate
+						subscription.validateEndDate() &&
+						!invalidDateFormat.endDate
 							? ''
 							: 'has-error'
 					}

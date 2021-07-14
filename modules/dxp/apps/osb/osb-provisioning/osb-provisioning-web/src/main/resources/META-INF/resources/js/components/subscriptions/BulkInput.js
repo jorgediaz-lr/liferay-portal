@@ -92,7 +92,7 @@ function BulkInput({
 	const [sizing, setSizing] = useState(getDisplayValue('sizing'));
 	const [status, setStatus] = useState(getDisplayValue('status'));
 
-	const [invalidDate, setInvalidDate] = useState({
+	const [invalidDateFormat, setInvalidDateFormat] = useState({
 		endDate: false,
 		originalEndDate: false,
 		startDate: false
@@ -169,7 +169,7 @@ function BulkInput({
 			updateAllValuesByFieldName('endDate', convertInputToDate(value));
 		}
 
-		setInvalidDate({...invalidDate, endDate: !validDateFormat});
+		setInvalidDateFormat({...invalidDateFormat, endDate: !validDateFormat});
 	}
 
 	function handleSaveGracePeriodStartDate(value) {
@@ -182,7 +182,10 @@ function BulkInput({
 			);
 		}
 
-		setInvalidDate({...invalidDate, originalEndDate: !validDateFormat});
+		setInvalidDateFormat({
+			...invalidDateFormat,
+			originalEndDate: !validDateFormat
+		});
 	}
 
 	function handleSavePerpetual() {
@@ -214,7 +217,10 @@ function BulkInput({
 			updateAllValuesByFieldName('startDate', convertInputToDate(value));
 		}
 
-		setInvalidDate({...invalidDate, startDate: !validDateFormat});
+		setInvalidDateFormat({
+			...invalidDateFormat,
+			startDate: !validDateFormat
+		});
 	}
 
 	function handleSaveStatus(event) {
@@ -307,7 +313,7 @@ function BulkInput({
 				)}
 			</ClayTable.Cell>
 			<ClayTable.Cell
-				className={!invalidDate.startDate ? '' : 'has-error'}
+				className={!invalidDateFormat.startDate ? '' : 'has-error'}
 			>
 				<label htmlFor="startDateBulkInput">
 					<DatePicker
@@ -320,7 +326,9 @@ function BulkInput({
 				</label>
 			</ClayTable.Cell>
 			<ClayTable.Cell
-				className={!invalidDate.originalEndDate ? '' : 'has-error'}
+				className={
+					!invalidDateFormat.originalEndDate ? '' : 'has-error'
+				}
 			>
 				<label htmlFor="gracePeriodStartDateBulkInput">
 					<DatePicker
@@ -401,7 +409,7 @@ function BulkInput({
 
 			{subscriptionsType === EDIT_SUBSCRIPTIONS && (
 				<ClayTable.Cell
-					className={!invalidDate.endDate ? '' : 'has-error'}
+					className={!invalidDateFormat.endDate ? '' : 'has-error'}
 				>
 					<label htmlFor="endDateBulkInput">
 						<DatePicker
