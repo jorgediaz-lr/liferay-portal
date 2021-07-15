@@ -1179,7 +1179,8 @@ public class UserFinderImpl extends UserFinderBaseImpl implements UserFinder {
 				else if (group.isUserGroup()) {
 					userGroupIds.add(group.getClassPK());
 				}
-				else {
+
+				if (group.isSite()) {
 					siteGroupIds.add(groupId);
 				}
 			}
