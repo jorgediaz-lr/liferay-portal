@@ -207,6 +207,19 @@ PortletURL portletURL = viewAccountLicenseKeysDisplayContext.getPortletURL();
 </aui:script>
 
 <aui:script>
+	function <portlet:namespace />extendLicenseKeys() {
+		var licenseKeysFm = document.getElementById(
+			'<portlet:namespace />licenseKeysFm'
+		);
+
+		if (licenseKeysFm) {
+			submitForm(
+				licenseKeysFm,
+				'<portlet:renderURL><portlet:param name="mvcRenderCommandName" value="/accounts/extend_license_keys" /><portlet:param name="redirect" value="<%= currentURL %>" /></portlet:renderURL>'
+			);
+		}
+	}
+
 	function <portlet:namespace />downloadLicenseKeys() {
 		var licenseKeysFm = document.getElementById(
 			'<portlet:namespace />licenseKeysFm'

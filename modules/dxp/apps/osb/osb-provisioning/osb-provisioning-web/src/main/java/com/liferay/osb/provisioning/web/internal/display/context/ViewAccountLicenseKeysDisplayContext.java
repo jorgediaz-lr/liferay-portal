@@ -92,6 +92,18 @@ public class ViewAccountLicenseKeysDisplayContext
 							dropdownItem.setQuickAction(true);
 						});
 
+					add(
+						dropdownItem -> {
+							dropdownItem.setHref(
+								StringBundler.concat(
+									"javascript:",
+									renderResponse.getNamespace(),
+									"extendLicenseKeys();"));
+							dropdownItem.setLabel(
+								LanguageUtil.get(httpServletRequest, "extend"));
+							dropdownItem.setQuickAction(true);
+						});
+
 					if (_tabs2.equals("active") || _tabs2.equals("expired")) {
 						add(
 							dropdownItem -> {
