@@ -426,7 +426,7 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 							</span>
 						</c:if>
 
-						<c:if test="<%= hasManageLicenseKeysPermission %>">
+						<c:if test="<%= hasManageLicenseKeysPermission && editLicenseKeyDisplayContext.isShowExtend() %>">
 							<a class="btn btn-secondary btn-sm" href="<%= editLicenseKeyDisplayContext.getExtendLicenseKeysURL() %>" type="button">
 								<liferay-ui:message key="extend" />
 							</a>

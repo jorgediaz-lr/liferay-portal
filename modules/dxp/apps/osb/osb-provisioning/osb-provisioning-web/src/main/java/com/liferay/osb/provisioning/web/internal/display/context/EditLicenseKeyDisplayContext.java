@@ -30,9 +30,11 @@ import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -257,6 +259,19 @@ public class EditLicenseKeyDisplayContext {
 			 _licenseType.equals(LicenseType.CLUSTER) ||
 			 _licenseType.equals(LicenseType.DEVELOPER_CLUSTER))) {
 
+			return true;
+		}
+
+		return false;
+	}
+
+	public boolean isShowExtend() {
+		Date expirationDate = _licenseKey.getExpirationDate();
+		Date startDate = _licenseKey.getStartDate();
+
+		long time = (expirationDate.getTime() - startDate.getTime()) / Time.YEAR;
+
+		if (time < 100) {
 			return true;
 		}
 
