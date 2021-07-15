@@ -19,7 +19,6 @@ import {
 
 export const LicenseRecord = Record({
 	expirationDate: '',
-	extensionURL: '',
 	licenseKeyId: '',
 	licenseType: '',
 	productName: '',

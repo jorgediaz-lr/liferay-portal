@@ -17,11 +17,16 @@ import ExtendLicense from '../../../src/main/resources/META-INF/resources/js/com
 function renderExtendLicense() {
 	return render(
 		<ExtendLicense
+			details={[
+				{
+					licenseKeyIds: 'licenseKeyID1',
+					licenseType: 'development',
+					permanent: false,
+					productName: 'DXP 7.0'
+				}
+			]}
 			extensionURL="/extension/url"
 			hasUpdateLicenseDatePermission={true}
-			licenseKeyId="licenseKeyID1"
-			licenseType="development"
-			productName="DXP 7.0"
 		/>
 	);
 }

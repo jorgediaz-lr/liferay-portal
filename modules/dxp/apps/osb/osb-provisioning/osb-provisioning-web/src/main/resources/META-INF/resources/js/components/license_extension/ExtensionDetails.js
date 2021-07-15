@@ -22,13 +22,12 @@ import IconButton from '../IconButton';
 import LicenseDates from '../LicenseDates';
 import Terms from './Terms';
 
-function Detail({disableDelete, license}) {
+function Detail({disableDelete, extensionURL, license}) {
 	const [, {removeLicense, updateLicense}] = useExtendLicenses();
 	const formRef = useRef();
 
 	const {
 		expirationDate,
-		extensionURL,
 		licenseKeyId,
 		licenseType,
 		productName,
@@ -172,10 +171,11 @@ function Detail({disableDelete, license}) {
 
 Detail.propTypes = {
 	disableDelete: PropTypes.bool,
+	extensionURL: PropTypes.string,
 	license: PropTypes.instanceOf(LicenseRecord)
 };
 
-function ExtensionDetails() {
+function ExtensionDetails({extensionURL}) {
 	const [licenses] = useExtendLicenses();
 
 	const disableDelete = licenses.size <= 1;
@@ -185,6 +185,7 @@ function ExtensionDetails() {
 			{licenses.toList().map(license => (
 				<Detail
 					disableDelete={disableDelete}
+					extensionURL={extensionURL}
 					key={license.licenseKeyId}
 					license={license}
 				/>
@@ -192,5 +193,9 @@ function ExtensionDetails() {
 		</>
 	);
 }
+
+ExtensionDetails.propTypes = {
+	extensionURL: PropTypes.string
+};
 
 export default ExtensionDetails;

@@ -21,14 +21,12 @@ import {formatDate} from '../../../src/main/resources/META-INF/resources/js/util
 const TODAY = new Date();
 
 const initialDetachedLicense = {
-	extensinURL: '/extension/url',
 	licenseKeyId: 'licenseKeyID1',
 	licenseType: 'development',
 	productName: 'DXP 7.0'
 };
 
 const initialAttachedLicense = {
-	extensinURL: '/extension/url',
 	licenseKeyId: 'licenseKeyID1',
 	licenseType: 'development',
 	productName: 'DXP 7.0',

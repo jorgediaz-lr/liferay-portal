@@ -19,7 +19,7 @@ import ExtensionDetails from './ExtensionDetails';
 
 export default function ExtendLicense(props) {
 	return (
-		<ExtendLicensesProvider initialLicenses={[props]}>
+		<ExtendLicensesProvider initialLicenses={props.details}>
 			<PermissionsProvider
 				permissions={{
 					updateDatePermission: props.hasUpdateLicenseDatePermission
@@ -46,7 +46,7 @@ export default function ExtendLicense(props) {
 							</ClayTable.Row>
 						</ClayTable.Head>
 
-						<ExtensionDetails />
+						<ExtensionDetails extensionURL={props.extensionURL} />
 					</ClayTable>
 				</div>
 			</PermissionsProvider>
@@ -55,17 +55,22 @@ export default function ExtendLicense(props) {
 }
 
 ExtendLicense.propTypes = {
-	extensionURL: PropTypes.string.isRequired,
-	hasUpdateLicenseDatePermission: PropTypes.bool.isRequired,
-	licenseKeyId: PropTypes.string,
-	licenseType: PropTypes.string.isRequired,
-	productName: PropTypes.string.isRequired,
-	terms: PropTypes.arrayOf(
+	details: PropTypes.arrayOf(
 		PropTypes.shape({
-			endDate: PropTypes.string,
-			perpetual: PropTypes.bool,
-			productPurchaseKey: PropTypes.string,
-			startDate: PropTypes.string
+			licenseKeyId: PropTypes.string,
+			licenseType: PropTypes.string.isRequired,
+			permanent: PropTypes.bool.isRequired,
+			productName: PropTypes.string.isRequired,
+			terms: PropTypes.arrayOf(
+				PropTypes.shape({
+					endDate: PropTypes.string,
+					perpetual: PropTypes.bool,
+					productPurchaseKey: PropTypes.string,
+					startDate: PropTypes.string
+				})
+			)
 		})
-	)
+	),
+	extensionURL: PropTypes.string.isRequired,
+	hasUpdateLicenseDatePermission: PropTypes.bool.isRequired
 };
