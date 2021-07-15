@@ -10,6 +10,7 @@
  */
 
 import ClayAlert from '@clayui/alert';
+import {Map as ImmutableMap, Record} from 'immutable';
 import PropTypes from 'prop-types';
 import React, {useEffect, useRef, useState} from 'react';
 
@@ -32,6 +33,9 @@ export function AddView({
 	const [subscriptions] = useSubscriptions();
 
 	const [displayAlert, setDisplayAlert] = useState(false);
+	const [dateFormatValidation, setDateFormatValidation] = useState(
+		useInitialDateFormatValidation()
+	);
 
 	useSetDisplayAlert(setDisplayAlert, subscriptions.toList());
 
@@ -45,6 +49,22 @@ export function AddView({
 				return key;
 			})
 			.join(',');
+	}
+
+	function getAllowSave() {
+		const formatValidationSet = dateFormatValidation.toSet();
+
+		if (formatValidationSet.size === 1) {
+			return Object.values(formatValidationSet.first().toJS()).every(
+				val => val
+			);
+		}
+
+		return false;
+	}
+
+	function validateDateFormat(keyPath, value) {
+		setDateFormatValidation(dateFormatValidation.setIn(keyPath, value));
 	}
 
 	return (
@@ -84,10 +104,12 @@ export function AddView({
 					accountName={accountName}
 					instanceSizes={sizing}
 					subscriptionsType={ADD_SUBSCRIPTIONS}
+					validateDateFormat={validateDateFormat}
 				/>
 			</div>
 
 			<SubscriptionActions
+				allowSave={getAllowSave()}
 				formAction={editProductPurchasesURL}
 				redirectURL={redirect}
 				subscriptionsType={ADD_SUBSCRIPTIONS}
@@ -115,9 +137,28 @@ export function EditView({
 }) {
 	const [subscriptions] = useSubscriptions();
 
+	const [dateFormatValidation, setDateFormatValidation] = useState(
+		useInitialDateFormatValidation()
+	);
 	const [displayAlert, setDisplayAlert] = useState(false);
 
 	useSetDisplayAlert(setDisplayAlert, subscriptions.toList());
+
+	function getAllowSave() {
+		const formatValidationSet = dateFormatValidation.toSet();
+
+		if (formatValidationSet.size === 1) {
+			return Object.values(formatValidationSet.first().toJS()).every(
+				val => val
+			);
+		}
+
+		return false;
+	}
+
+	function validateDateFormat(keyPath, value) {
+		setDateFormatValidation(dateFormatValidation.setIn(keyPath, value));
+	}
 
 	return (
 		<>
@@ -154,10 +195,12 @@ export function EditView({
 						instanceSizes={sizing}
 						statusOptions={status}
 						subscriptionsType={EDIT_SUBSCRIPTIONS}
+						validateDateFormat={validateDateFormat}
 					/>
 				</div>
 
 				<SubscriptionActions
+					allowSave={getAllowSave()}
 					backURL={backURL}
 					formAction={editProductPurchasesURL}
 					redirectURL={redirect}
@@ -185,6 +228,23 @@ function InvalidDateAlert({message}) {
 		>
 			{message}
 		</ClayAlert>
+	);
+}
+
+function useInitialDateFormatValidation() {
+	const Valid = Record({
+		endDate: true,
+		originalEndDate: true,
+		startDate: true
+	});
+	const [subscriptions] = useSubscriptions();
+
+	const initial = subscriptions.keySeq().map(key => [key, new Valid()]);
+
+	return ImmutableMap(
+		subscriptions.size > 1
+			? initial.toList().push(['bulk', new Valid()])
+			: initial.toList()
 	);
 }
 

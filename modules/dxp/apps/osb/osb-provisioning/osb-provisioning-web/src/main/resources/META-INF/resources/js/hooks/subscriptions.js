@@ -98,13 +98,15 @@ export class Subscription extends Record({
 
 const SubscriptionsContext = React.createContext();
 
+function assignKey(subscription) {
+	return subscription.key ? subscription.key : subscription.productKey;
+}
+
 export function SubscriptionsProvider({initialSubscriptions = [], children}) {
 	const duplicateSubscriptions = {};
 
 	const processedSubscriptions = initialSubscriptions.map(subscription => {
-		const key = subscription.key
-			? subscription.key
-			: subscription.productKey;
+		const key = assignKey(subscription);
 
 		if (duplicateSubscriptions[key] !== undefined) {
 			duplicateSubscriptions[key] = duplicateSubscriptions[key] + 1;

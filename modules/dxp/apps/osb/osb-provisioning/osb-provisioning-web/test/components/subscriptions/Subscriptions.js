@@ -82,6 +82,7 @@ function renderSubscriptions({
 					PRODUCT_PURCHASE_STATUS_CANCELLED
 				]}
 				subscriptionsType={ADD_SUBSCRIPTIONS}
+				validateDateFormat={jest.fn()}
 				{...props}
 			/>
 		</SubscriptionsProvider>

@@ -21,6 +21,7 @@ import {
 import CancelLink from '../CancelLink';
 
 function SubscriptionActions({
+	allowSave,
 	backURL,
 	formAction,
 	redirectURL,
@@ -28,7 +29,7 @@ function SubscriptionActions({
 }) {
 	const [subscriptions] = useSubscriptions();
 
-	const [disableSave, setDisableSave] = useState(true);
+	const [disableSave, setDisableSave] = useState(!allowSave);
 
 	useEffect(() => {
 		function validateEnableSave() {
@@ -41,13 +42,13 @@ function SubscriptionActions({
 				);
 		}
 
-		if (validateEnableSave()) {
+		if (validateEnableSave() && allowSave) {
 			setDisableSave(false);
 		}
 		else {
 			setDisableSave(true);
 		}
-	}, [subscriptions]);
+	}, [allowSave, subscriptions]);
 
 	function processSubmissionData() {
 		const submissionData = subscriptions
@@ -124,6 +125,7 @@ function SubscriptionActions({
 }
 
 SubscriptionActions.propTypes = {
+	allowSave: PropTypes.bool.isRequired,
 	backURL: PropTypes.string,
 	formAction: PropTypes.string.isRequired,
 	redirectURL: PropTypes.string.isRequired,

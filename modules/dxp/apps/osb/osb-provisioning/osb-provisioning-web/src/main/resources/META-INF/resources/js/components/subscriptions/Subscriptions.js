@@ -36,9 +36,14 @@ function Subscriptions({
 		PRODUCT_PURCHASE_STATUS_APPROVED,
 		PRODUCT_PURCHASE_STATUS_CANCELLED
 	],
-	subscriptionsType
+	subscriptionsType,
+	validateDateFormat
 }) {
 	const [subscriptions] = useSubscriptions();
+
+	function getLicenseDateFormatValidation(keyPath, value) {
+		validateDateFormat(keyPath, value);
+	}
 
 	return (
 		<ClayTable>
@@ -107,6 +112,7 @@ function Subscriptions({
 				{subscriptions.size > 1 && (
 					<BulkInput
 						accountName={accountName}
+						dateFormatValidation={getLicenseDateFormatValidation}
 						instanceSizes={instanceSizes}
 						statusOptions={statusOptions}
 						subscriptionsType={subscriptionsType}
@@ -116,6 +122,7 @@ function Subscriptions({
 				{subscriptions.toList().map(subscription => (
 					<Subscription
 						accountName={accountName}
+						dateFormatValidation={getLicenseDateFormatValidation}
 						disableDelete={subscriptions.size === 1}
 						instanceSizes={instanceSizes}
 						key={
@@ -138,11 +145,13 @@ Subscriptions.propTypes = {
 	instanceSizes: PropTypes.arrayOf(PropTypes.number),
 	statusOptions: PropTypes.arrayOf(PropTypes.string),
 	subscriptionsType: PropTypes.oneOf([ADD_SUBSCRIPTIONS, EDIT_SUBSCRIPTIONS])
-		.isRequired
+		.isRequired,
+	validateDateFormat: PropTypes.func.isRequired
 };
 
 function Subscription({
 	accountName,
+	dateFormatValidation,
 	disableDelete,
 	instanceSizes,
 	statusOptions,
@@ -188,6 +197,7 @@ function Subscription({
 			);
 		}
 
+		dateFormatValidation([key, 'endDate'], validDateFormat);
 		setInvalidDateFormat({...invalidDateFormat, endDate: !validDateFormat});
 	}
 
@@ -200,6 +210,7 @@ function Subscription({
 			);
 		}
 
+		dateFormatValidation([key, 'originalEndDate'], validDateFormat);
 		setInvalidDateFormat({
 			...invalidDateFormat,
 			originalEndDate: !validDateFormat
@@ -248,6 +259,7 @@ function Subscription({
 			);
 		}
 
+		dateFormatValidation([key, 'startDate'], validDateFormat);
 		setInvalidDateFormat({
 			...invalidDateFormat,
 			startDate: !validDateFormat

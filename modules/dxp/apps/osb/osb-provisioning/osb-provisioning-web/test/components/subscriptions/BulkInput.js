@@ -61,6 +61,7 @@ function renderBulkInput({
 				<SubscriptionsProvider initialSubscriptions={subscriptions}>
 					<BulkInput
 						accountName="Test Account"
+						dateFormatValidation={jest.fn()}
 						instanceSizes={[1, 2, 3, 4]}
 						statusOptions={[
 							PRODUCT_PURCHASE_STATUS_APPROVED,
@@ -180,7 +181,7 @@ describe('Bulk Input', () => {
 		expect(getAllByPlaceholderText('varied-data').length).toBe(3);
 	});
 
-	it('reveals an input for user input when Varied Data is clicked', () => {
+	it('reveals an input for user to enter data when Varied Data is clicked', () => {
 		const {getAllByText, getByLabelText} = renderBulkInput();
 
 		fireEvent.click(getAllByText('varied-data')[0]);
