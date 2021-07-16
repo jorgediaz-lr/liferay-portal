@@ -102,6 +102,9 @@ function Detail({disableDelete, license}) {
 				.set('expirationDate', dates.licenseExpirationDate)
 				.set('startDate', dates.licenseStartDate)
 		);
+
+		setSelectedExpirationDate(dates.licenseExpirationDate);
+		setSelectedStartDate(dates.licenseStartDate);
 	}
 
 	function handleValidDates(bool) {
