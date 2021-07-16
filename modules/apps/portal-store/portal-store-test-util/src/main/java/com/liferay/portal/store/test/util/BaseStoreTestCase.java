@@ -670,7 +670,6 @@ public abstract class BaseStoreTestCase {
 		Assert.assertTrue(store.hasFile(companyId, repositoryId, newFileName));
 	}
 
-	@Test(expected = DuplicateFileException.class)
 	public void testUpdateFileWithNewFileNameDuplicateFileException()
 		throws Exception {
 
