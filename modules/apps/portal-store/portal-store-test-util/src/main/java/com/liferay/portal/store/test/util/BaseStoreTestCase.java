@@ -152,7 +152,6 @@ public abstract class BaseStoreTestCase {
 			store.getFileAsBytes(companyId, repositoryId, fileName, "1.2"));
 	}
 
-	@Test(expected = DuplicateFileException.class)
 	public void testCopyFileVersionDuplicateFileException() throws Exception {
 		String fileName = RandomTestUtil.randomString();
 
