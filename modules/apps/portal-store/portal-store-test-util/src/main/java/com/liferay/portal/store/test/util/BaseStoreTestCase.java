@@ -14,7 +14,6 @@
 
 package com.liferay.portal.store.test.util;
 
-import com.liferay.document.library.kernel.exception.DuplicateFileException;
 import com.liferay.document.library.kernel.exception.NoSuchFileException;
 import com.liferay.document.library.kernel.store.BaseStore;
 import com.liferay.document.library.kernel.store.Store;
@@ -705,7 +704,6 @@ public abstract class BaseStoreTestCase {
 		store.deleteDirectory(companyId, newRepositoryId, StringPool.SLASH);
 	}
 
-	@Test(expected = DuplicateFileException.class)
 	public void testUpdateFileWithNewRepositoryIdDuplicateFileException()
 		throws Exception {
 
