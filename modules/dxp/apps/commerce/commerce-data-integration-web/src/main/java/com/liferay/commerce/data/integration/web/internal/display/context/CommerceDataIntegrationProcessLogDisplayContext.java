@@ -14,6 +14,7 @@
 
 package com.liferay.commerce.data.integration.web.internal.display.context;
 
+import com.liferay.commerce.data.integration.constants.CommerceDataIntegrationConstants;
 import com.liferay.commerce.data.integration.model.CommerceDataIntegrationProcess;
 import com.liferay.commerce.data.integration.model.CommerceDataIntegrationProcessLog;
 import com.liferay.commerce.data.integration.service.CommerceDataIntegrationProcessLogService;
@@ -118,6 +119,31 @@ public class CommerceDataIntegrationProcessLogDisplayContext {
 		if (Validator.isNotNull(deltaEntry)) {
 			portletURL.setParameter("deltaEntry", deltaEntry);
 		}
+
+		String commerceDataIntegrationProcessId = ParamUtil.getString(
+			_commerceDataIntegrationRequestHelper.getRequest(),
+			"commerceDataIntegrationProcessId");
+
+		if (Validator.isNotNull(commerceDataIntegrationProcessId)) {
+			portletURL.setParameter(
+				"commerceDataIntegrationProcessId",
+				commerceDataIntegrationProcessId);
+		}
+
+		portletURL.setParameter(
+			"mvcRenderCommandName", "editCommerceDataIntegrationProcess");
+
+		String redirect = ParamUtil.getString(
+			_commerceDataIntegrationRequestHelper.getRequest(), "redirect");
+
+		if (Validator.isNotNull(redirect)) {
+			portletURL.setParameter("redirect", redirect);
+		}
+
+		portletURL.setParameter(
+			"screenNavigationCategoryKey",
+			CommerceDataIntegrationConstants.
+				CATEGORY_KEY_COMMERCE_DATA_INTEGRATION_LOGS);
 
 		return portletURL;
 	}
