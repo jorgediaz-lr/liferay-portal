@@ -140,8 +140,11 @@ public class EditCommerceDataIntegrationProcessActionCommand
 
 			_log.error(e, e);
 
-			jsonObject.put("error", e.getMessage());
-			jsonObject.put("success", false);
+			jsonObject.put(
+				"error", e.getMessage()
+			).put(
+				"success", false
+			);
 		}
 
 		jsonObject.put("success", true);
