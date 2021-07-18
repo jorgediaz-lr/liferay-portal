@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.OrderFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
@@ -72,6 +73,39 @@ public class RedirectNotFoundEntryLocalServiceImpl
 			redirectNotFoundEntry.getRedirectNotFoundEntryId(), 1);
 
 		return redirectNotFoundEntry;
+	}
+
+	@Indexable(type = IndexableType.DELETE)
+	@Override
+	public RedirectNotFoundEntry deleteRedirectNotFoundEntry(
+			long redirectNotFoundEntryId)
+		throws PortalException {
+
+		RedirectNotFoundEntry redirectNotFoundEntry =
+			fetchRedirectNotFoundEntry(redirectNotFoundEntryId);
+
+		return deleteRedirectNotFoundEntry(redirectNotFoundEntry);
+	}
+
+	@Indexable(type = IndexableType.DELETE)
+	@Override
+	public RedirectNotFoundEntry deleteRedirectNotFoundEntry(
+		RedirectNotFoundEntry redirectNotFoundEntry) {
+
+		try {
+
+			// View count
+
+			_viewCountManager.deleteViewCount(
+				redirectNotFoundEntry.getCompanyId(),
+				_portal.getClassNameId(RedirectNotFoundEntry.class),
+				redirectNotFoundEntry.getRedirectNotFoundEntryId());
+		}
+		catch (PortalException portalException) {
+			throw new SystemException(portalException);
+		}
+
+		return super.deleteRedirectNotFoundEntry(redirectNotFoundEntry);
 	}
 
 	@Override
