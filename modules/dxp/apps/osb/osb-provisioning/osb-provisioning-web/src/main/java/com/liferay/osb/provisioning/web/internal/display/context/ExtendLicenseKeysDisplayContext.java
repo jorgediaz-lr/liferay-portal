@@ -21,6 +21,7 @@ import com.liferay.osb.provisioning.constants.ProvisioningActionKeys;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.constants.ProvisioningWebKeys;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductPurchaseViewWebService;
+import com.liferay.osb.provisioning.license.helper.constants.LicenseLifetime;
 import com.liferay.osb.provisioning.license.model.LicenseKey;
 import com.liferay.osb.provisioning.license.permission.LicenseKeyPermission;
 import com.liferay.petra.string.StringPool;
@@ -35,7 +36,6 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -108,7 +108,7 @@ public class ExtendLicenseKeysDisplayContext {
 
 			portletURL.setParameter("redirect", redirect.toString());
 
-			licenseKeyDetailsJSONArray.put(_getLicenseKeyDetail(_licenseKey));
+			licenseKeyDetailsJSONArray.put(_getLicenseKeyDetails(_licenseKey));
 		}
 		else {
 			String redirect = ParamUtil.getString(_renderRequest, "redirect");
@@ -119,7 +119,7 @@ public class ExtendLicenseKeysDisplayContext {
 
 			for (LicenseKey licenseKey : _licenseKeys) {
 				licenseKeyDetailsJSONArray.put(
-					_getLicenseKeyDetail(licenseKey));
+					_getLicenseKeyDetails(licenseKey));
 			}
 		}
 
@@ -153,17 +153,17 @@ public class ExtendLicenseKeysDisplayContext {
 		return StringPool.BLANK;
 	}
 
-	private JSONObject _getLicenseKeyDetail(LicenseKey licenseKey)
+	private JSONObject _getLicenseKeyDetails(LicenseKey licenseKey)
 		throws Exception {
 
 		return JSONUtil.put(
+			"indefinite",
+			_isIndefinite(
+				licenseKey.getStartDate(), licenseKey.getExpirationDate())
+		).put(
 			"licenseKeyId", licenseKey.getLicenseKeyId()
 		).put(
 			"licenseType", licenseKey.getLicenseEntryType()
-		).put(
-			"permanent",
-			_isPermanent(
-				licenseKey.getStartDate(), licenseKey.getExpirationDate())
 		).put(
 			"productName", licenseKey.getProductName()
 		).put(
@@ -180,10 +180,9 @@ public class ExtendLicenseKeysDisplayContext {
 			_productPurchaseViewWebService.getProductPurchaseView(
 				licenseKey.getAccountKey(), licenseKey.getProductKey());
 
-		JSONArray productPurchasesJSONArray = null;
-
 		if (ArrayUtil.isNotEmpty(productPurchaseView.getProductPurchases())) {
-			productPurchasesJSONArray = JSONFactoryUtil.createJSONArray();
+			JSONArray productPurchasesJSONArray =
+				JSONFactoryUtil.createJSONArray();
 
 			for (ProductPurchase productPurchase :
 					productPurchaseView.getProductPurchases()) {
@@ -199,15 +198,17 @@ public class ExtendLicenseKeysDisplayContext {
 						"startDate", _formatDate(productPurchase.getStartDate())
 					));
 			}
+
+			return productPurchasesJSONArray;
 		}
 
-		return productPurchasesJSONArray;
+		return null;
 	}
 
-	private boolean _isPermanent(Date startDate, Date expirationDate) {
-		long time = (expirationDate.getTime() - startDate.getTime()) / Time.YEAR;
+	private boolean _isIndefinite(Date startDate, Date expirationDate) {
+		long time = expirationDate.getTime() - startDate.getTime();
 
-		if (time < 100) {
+		if (time < LicenseLifetime.INDEFINITE) {
 			return false;
 		}
 

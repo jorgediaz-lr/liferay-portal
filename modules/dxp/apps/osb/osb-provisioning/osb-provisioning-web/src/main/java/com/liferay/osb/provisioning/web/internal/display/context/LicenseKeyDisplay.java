@@ -243,7 +243,7 @@ public class LicenseKeyDisplay {
 		return LanguageUtil.get(_httpServletRequest, "no");
 	}
 
-	public boolean isShowHostName() {
+	public boolean showHostName() {
 		if ((_licenseVersion >= 3) &&
 			(_licenseType.equals(LicenseType.LIMITED) ||
 			 _licenseType.equals(LicenseType.PER_USER) ||
@@ -255,7 +255,7 @@ public class LicenseKeyDisplay {
 		return false;
 	}
 
-	public boolean isShowIpAddresses() {
+	public boolean showIpAddresses() {
 		if ((_licenseVersion >= 3) &&
 			(_licenseType.equals(LicenseType.LIMITED) ||
 			 _licenseType.equals(LicenseType.PER_USER) ||
@@ -267,7 +267,7 @@ public class LicenseKeyDisplay {
 		return false;
 	}
 
-	public boolean isShowMacAddresses() {
+	public boolean showMacAddresses() {
 		if (((_licenseVersion >= 3) &&
 			 (_licenseType.equals(LicenseType.LIMITED) ||
 			  _licenseType.equals(LicenseType.PER_USER) ||
@@ -284,7 +284,7 @@ public class LicenseKeyDisplay {
 		return false;
 	}
 
-	public boolean isShowMaxClusterNodes() {
+	public boolean showMaxClusterNodes() {
 		if (_licenseType.equals(LicenseType.VIRTUAL_CLUSTER)) {
 			return true;
 		}
@@ -292,7 +292,7 @@ public class LicenseKeyDisplay {
 		return false;
 	}
 
-	public boolean isShowMaximumServers() {
+	public boolean showMaximumServers() {
 		if (((_licenseVersion >= 3) &&
 			 _licenseType.equals(LicenseType.CLUSTER)) ||
 			((_licenseVersion == 2) &&

@@ -57,9 +57,9 @@ export default function ExtendLicense(props) {
 ExtendLicense.propTypes = {
 	details: PropTypes.arrayOf(
 		PropTypes.shape({
+			indefinite: PropTypes.bool.isRequired,
 			licenseKeyId: PropTypes.string,
 			licenseType: PropTypes.string.isRequired,
-			permanent: PropTypes.bool.isRequired,
 			productName: PropTypes.string.isRequired,
 			terms: PropTypes.arrayOf(
 				PropTypes.shape({

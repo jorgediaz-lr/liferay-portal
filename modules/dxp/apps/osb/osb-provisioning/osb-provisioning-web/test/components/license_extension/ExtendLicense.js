@@ -19,9 +19,9 @@ function renderExtendLicense() {
 		<ExtendLicense
 			details={[
 				{
+					indefinite: false,
 					licenseKeyIds: 'licenseKeyID1',
 					licenseType: 'development',
-					permanent: false,
 					productName: 'DXP 7.0'
 				}
 			]}

@@ -62,10 +62,13 @@ public class ExtendLicenseKeysMVCActionCommand extends BaseMVCActionCommand {
 		throws Exception {
 
 		try {
-			JSONArray licenseKeysJSONArray = JSONFactoryUtil.createJSONArray(
-				ParamUtil.getString(actionRequest, "licenseKeys"));
+			String licenseKeys = ParamUtil.getString(
+				actionRequest, "licenseKeys");
 
-			if (licenseKeysJSONArray.length() > 0) {
+			if (Validator.isNotNull(licenseKeys)) {
+				JSONArray licenseKeysJSONArray =
+					JSONFactoryUtil.createJSONArray(licenseKeys);
+
 				extendLicenseKeys(
 					actionRequest, actionResponse, licenseKeysJSONArray);
 			}
@@ -88,10 +91,6 @@ public class ExtendLicenseKeysMVCActionCommand extends BaseMVCActionCommand {
 
 		String productPurchaseKey = ParamUtil.getString(
 			actionRequest, "productPurchaseKey");
-		Date startDate = ParamUtil.getDate(
-			actionRequest, "startDate", _dateFormat);
-		Date expirationDate = ParamUtil.getDate(
-			actionRequest, "expirationDate", _dateFormat);
 
 		if (Validator.isNull(productPurchaseKey)) {
 			LicenseKey licenseKey = _licenseKeyLocalService.getLicenseKey(
@@ -99,6 +98,13 @@ public class ExtendLicenseKeysMVCActionCommand extends BaseMVCActionCommand {
 
 			productPurchaseKey = licenseKey.getProductPurchaseKey();
 		}
+
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+		Date startDate = ParamUtil.getDate(
+			actionRequest, "startDate", dateFormat);
+		Date expirationDate = ParamUtil.getDate(
+			actionRequest, "expirationDate", dateFormat);
 
 		LicenseKey licenseKey = _licenseKeyService.extendLicenseKey(
 			licenseKeyId, productPurchaseKey, startDate, expirationDate);
@@ -114,6 +120,8 @@ public class ExtendLicenseKeysMVCActionCommand extends BaseMVCActionCommand {
 			JSONArray jsonArray)
 		throws Exception {
 
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
 
@@ -121,10 +129,6 @@ public class ExtendLicenseKeysMVCActionCommand extends BaseMVCActionCommand {
 
 			String productPurchaseKey = jsonObject.getString(
 				"productPurchaseKey");
-			Date startDate = _dateFormat.parse(
-				jsonObject.getString("startDate"));
-			Date expirationDate = _dateFormat.parse(
-				jsonObject.getString("expirationDate"));
 
 			if (Validator.isNull(productPurchaseKey)) {
 				LicenseKey licenseKey = _licenseKeyLocalService.getLicenseKey(
@@ -132,6 +136,11 @@ public class ExtendLicenseKeysMVCActionCommand extends BaseMVCActionCommand {
 
 				productPurchaseKey = licenseKey.getProductPurchaseKey();
 			}
+
+			Date startDate = dateFormat.parse(
+				jsonObject.getString("startDate"));
+			Date expirationDate = dateFormat.parse(
+				jsonObject.getString("expirationDate"));
 
 			_licenseKeyService.extendLicenseKey(
 				licenseKeyId, productPurchaseKey, startDate, expirationDate);
@@ -162,8 +171,6 @@ public class ExtendLicenseKeysMVCActionCommand extends BaseMVCActionCommand {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ExtendLicenseKeysMVCActionCommand.class);
-
-	private final DateFormat _dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 	@Reference
 	private LicenseKeyLocalService _licenseKeyLocalService;

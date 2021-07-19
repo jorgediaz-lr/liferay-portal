@@ -18,6 +18,7 @@ import com.liferay.osb.provisioning.constants.ProvisioningActionKeys;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.constants.ProvisioningWebKeys;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductPurchaseViewWebService;
+import com.liferay.osb.provisioning.license.helper.constants.LicenseLifetime;
 import com.liferay.osb.provisioning.license.helper.constants.LicenseType;
 import com.liferay.osb.provisioning.license.model.LicenseKey;
 import com.liferay.osb.provisioning.license.permission.LicenseKeyPermission;
@@ -30,7 +31,6 @@ import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -233,7 +233,7 @@ public class EditLicenseKeyDisplayContext {
 			ProvisioningActionKeys.MANAGE_LICENSE_KEYS);
 	}
 
-	public boolean isShowClusterLicenseKey() {
+	public boolean showClusterLicenseKey() {
 		if ((_licenseVersion >= 3) &&
 			_licenseType.equals(LicenseType.CLUSTER)) {
 
@@ -243,7 +243,7 @@ public class EditLicenseKeyDisplayContext {
 		return false;
 	}
 
-	public boolean isShowComplimentary() {
+	public boolean showComplimentary() {
 		if ((_licenseVersion >= 3) &&
 			!_licenseType.equals(LicenseType.CLUSTER)) {
 
@@ -253,8 +253,8 @@ public class EditLicenseKeyDisplayContext {
 		return false;
 	}
 
-	public boolean isShowDownload() {
-		if (!isShowClusterLicenseKey() && _licenseKey.isActive() &&
+	public boolean showDownload() {
+		if (!showClusterLicenseKey() && _licenseKey.isActive() &&
 			((_licenseVersion >= 2) ||
 			 _licenseType.equals(LicenseType.CLUSTER) ||
 			 _licenseType.equals(LicenseType.DEVELOPER_CLUSTER))) {
@@ -265,28 +265,28 @@ public class EditLicenseKeyDisplayContext {
 		return false;
 	}
 
-	public boolean isShowExtend() {
+	public boolean showExtend() {
 		Date expirationDate = _licenseKey.getExpirationDate();
 		Date startDate = _licenseKey.getStartDate();
 
-		long time = (expirationDate.getTime() - startDate.getTime()) / Time.YEAR;
+		long time = expirationDate.getTime() - startDate.getTime();
 
-		if (time < 100) {
+		if (time < LicenseLifetime.INDEFINITE) {
 			return true;
 		}
 
 		return false;
 	}
 
-	public boolean isShowHostName() {
-		return _licenseKeyDisplay.isShowHostName();
+	public boolean showHostName() {
+		return _licenseKeyDisplay.showHostName();
 	}
 
-	public boolean isShowIpAddresses() {
-		return _licenseKeyDisplay.isShowIpAddresses();
+	public boolean showIpAddresses() {
+		return _licenseKeyDisplay.showIpAddresses();
 	}
 
-	public boolean isShowKey() {
+	public boolean showKey() {
 		if (_licenseVersion == 1) {
 			return true;
 		}
@@ -294,15 +294,15 @@ public class EditLicenseKeyDisplayContext {
 		return false;
 	}
 
-	public boolean isShowMacAddresses() {
-		return _licenseKeyDisplay.isShowMacAddresses();
+	public boolean showMacAddresses() {
+		return _licenseKeyDisplay.showMacAddresses();
 	}
 
-	public boolean isShowMaxClusterNodes() {
-		return _licenseKeyDisplay.isShowMaxClusterNodes();
+	public boolean showMaxClusterNodes() {
+		return _licenseKeyDisplay.showMaxClusterNodes();
 	}
 
-	public boolean isShowMaximumConcurrentUsers() {
+	public boolean showMaximumConcurrentUsers() {
 		if ((_licenseVersion >= 3) &&
 			_licenseType.equals(LicenseType.PER_USER)) {
 
@@ -312,7 +312,7 @@ public class EditLicenseKeyDisplayContext {
 		return false;
 	}
 
-	public boolean isShowMaximumConnections() {
+	public boolean showMaximumConnections() {
 		if ((_licenseVersion >= 3) &&
 			(_licenseType.equals(LicenseType.DEVELOPER) ||
 			 _licenseType.equals(LicenseType.DEVELOPER_CLUSTER))) {
@@ -323,11 +323,11 @@ public class EditLicenseKeyDisplayContext {
 		return false;
 	}
 
-	public boolean isShowMaximumServers() {
-		return _licenseKeyDisplay.isShowMaximumServers();
+	public boolean showMaximumServers() {
+		return _licenseKeyDisplay.showMaximumServers();
 	}
 
-	public boolean isShowMaximumUsers() {
+	public boolean showMaximumUsers() {
 		if ((_licenseVersion >= 3) &&
 			_licenseType.equals(LicenseType.PER_USER)) {
 
@@ -337,7 +337,7 @@ public class EditLicenseKeyDisplayContext {
 		return false;
 	}
 
-	public boolean isShowServerId() {
+	public boolean showServerId() {
 		if (((_licenseVersion >= 3) &&
 			 (_licenseType.equals(LicenseType.LIMITED) ||
 			  _licenseType.equals(LicenseType.PER_USER) ||

@@ -86,7 +86,7 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 					</dl>
 
 					<dl class="server-id-fields">
-						<c:if test="<%= editLicenseKeyDisplayContext.isShowServerId() %>">
+						<c:if test="<%= editLicenseKeyDisplayContext.showServerId() %>">
 							<div class="server-id">
 								<dt>
 									<liferay-ui:message key="server-id" />
@@ -97,7 +97,7 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 							</div>
 						</c:if>
 
-						<c:if test="<%= editLicenseKeyDisplayContext.isShowHostName() %>">
+						<c:if test="<%= editLicenseKeyDisplayContext.showHostName() %>">
 							<div class="host-name">
 								<dt>
 									<liferay-ui:message key="host-name" />
@@ -108,7 +108,7 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 							</div>
 						</c:if>
 
-						<c:if test="<%= editLicenseKeyDisplayContext.isShowIpAddresses() %>">
+						<c:if test="<%= editLicenseKeyDisplayContext.showIpAddresses() %>">
 							<div>
 								<dt>
 									<liferay-ui:message key="ip-addresses" />
@@ -119,7 +119,7 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 							</div>
 						</c:if>
 
-						<c:if test="<%= editLicenseKeyDisplayContext.isShowMacAddresses() %>">
+						<c:if test="<%= editLicenseKeyDisplayContext.showMacAddresses() %>">
 							<div>
 								<dt>
 									<liferay-ui:message key="mac-addresses" />
@@ -141,7 +141,7 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 
 				<aui:col md="4">
 					<dl>
-						<c:if test="<%= !editLicenseKeyDisplayContext.isShowClusterLicenseKey() %>">
+						<c:if test="<%= !editLicenseKeyDisplayContext.showClusterLicenseKey() %>">
 							<div>
 								<dt>
 									<liferay-ui:message key="owner" />
@@ -163,7 +163,7 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 					</dl>
 
 					<dl>
-						<c:if test="<%= editLicenseKeyDisplayContext.isShowKey() %>">
+						<c:if test="<%= editLicenseKeyDisplayContext.showKey() %>">
 							<div>
 								<dt>
 									<liferay-ui:message key="key" />
@@ -174,7 +174,7 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 							</div>
 						</c:if>
 
-						<c:if test="<%= editLicenseKeyDisplayContext.isShowMaxClusterNodes() %>">
+						<c:if test="<%= editLicenseKeyDisplayContext.showMaxClusterNodes() %>">
 							<div>
 								<dt>
 									<liferay-ui:message key="maximum-cluster-nodes" />
@@ -185,7 +185,7 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 							</div>
 						</c:if>
 
-						<c:if test="<%= editLicenseKeyDisplayContext.isShowMaximumConnections() %>">
+						<c:if test="<%= editLicenseKeyDisplayContext.showMaximumConnections() %>">
 							<div>
 								<dt>
 									<liferay-ui:message key="maximum-connections" />
@@ -196,7 +196,7 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 							</div>
 						</c:if>
 
-						<c:if test="<%= editLicenseKeyDisplayContext.isShowMaximumConcurrentUsers() %>">
+						<c:if test="<%= editLicenseKeyDisplayContext.showMaximumConcurrentUsers() %>">
 							<div>
 								<dt>
 									<liferay-ui:message key="maximum-concurrent-users" />
@@ -207,7 +207,7 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 							</div>
 						</c:if>
 
-						<c:if test="<%= editLicenseKeyDisplayContext.isShowMaximumUsers() %>">
+						<c:if test="<%= editLicenseKeyDisplayContext.showMaximumUsers() %>">
 							<div>
 								<dt>
 									<liferay-ui:message key="maximum-users" />
@@ -218,7 +218,7 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 							</div>
 						</c:if>
 
-						<c:if test="<%= editLicenseKeyDisplayContext.isShowMaximumServers() %>">
+						<c:if test="<%= editLicenseKeyDisplayContext.showMaximumServers() %>">
 							<div>
 								<dt>
 									<liferay-ui:message key="maximum-servers" />
@@ -229,7 +229,7 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 							</div>
 						</c:if>
 
-						<c:if test="<%= editLicenseKeyDisplayContext.isShowComplimentary() %>">
+						<c:if test="<%= editLicenseKeyDisplayContext.showComplimentary() %>">
 							<div>
 								<dt>
 									<liferay-ui:message key="complimentary" />
@@ -244,7 +244,7 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 
 				<aui:col md="4">
 					<dl>
-						<c:if test="<%= !editLicenseKeyDisplayContext.isShowClusterLicenseKey() %>">
+						<c:if test="<%= !editLicenseKeyDisplayContext.showClusterLicenseKey() %>">
 							<div>
 								<dt>
 									<liferay-ui:message key="status" />
@@ -304,7 +304,7 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 					</dl>
 				</aui:col>
 
-				<c:if test="<%= editLicenseKeyDisplayContext.isShowClusterLicenseKey() %>">
+				<c:if test="<%= editLicenseKeyDisplayContext.showClusterLicenseKey() %>">
 					<aui:col cssClass="cluster-licenses" md="12">
 						<aui:row>
 
@@ -426,19 +426,19 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 							</span>
 						</c:if>
 
-						<c:if test="<%= hasManageLicenseKeysPermission && editLicenseKeyDisplayContext.isShowExtend() %>">
+						<c:if test="<%= hasManageLicenseKeysPermission && editLicenseKeyDisplayContext.showExtend() %>">
 							<a class="btn btn-secondary btn-sm" href="<%= editLicenseKeyDisplayContext.getExtendLicenseKeysURL() %>" type="button">
 								<liferay-ui:message key="extend" />
 							</a>
 						</c:if>
 
-						<c:if test="<%= hasManageLicenseKeysPermission && editLicenseKeyDisplayContext.isShowComplimentary() %>">
+						<c:if test="<%= hasManageLicenseKeysPermission && editLicenseKeyDisplayContext.showComplimentary() %>">
 							<button class="btn btn-secondary btn-sm" onclick="<portlet:namespace />updateLicenseKeyProperties('<%= licenseKeyDisplay.getUpdateComplimentaryConfirmMessage() %>', 'complimentary', <%= !licenseKey.isComplimentary() %>);" type="button">
 								<%= licenseKeyDisplay.getUpdateComplimentaryLabel() %>
 							</button>
 						</c:if>
 
-						<c:if test="<%= hasManageLicenseKeysPermission && !editLicenseKeyDisplayContext.isShowClusterLicenseKey() %>">
+						<c:if test="<%= hasManageLicenseKeysPermission && !editLicenseKeyDisplayContext.showClusterLicenseKey() %>">
 							<button class="btn btn-secondary btn-sm" onclick="<portlet:namespace />updateLicenseKeyProperties('<%= licenseKeyDisplay.getUpdateActiveConfirmMessage() %>', 'active', <%= !licenseKey.isActive() %>);" type="button">
 								<%= licenseKeyDisplay.getUpdateActiveLabel() %>
 							</button>
@@ -446,7 +446,7 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 					</div>
 
 					<div>
-						<c:if test="<%= hasManageLicenseKeysPermission && !editLicenseKeyDisplayContext.isShowClusterLicenseKey() %>">
+						<c:if test="<%= hasManageLicenseKeysPermission && !editLicenseKeyDisplayContext.showClusterLicenseKey() %>">
 							<button class="btn btn-secondary btn-sm" onclick="<portlet:namespace />moveLicenseKey('<%= editLicenseKeyDisplayContext.getMoveLicenseKeyURL() %>');" type="button">
 								<liferay-ui:message key="move" />
 
@@ -456,7 +456,7 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 							</button>
 						</c:if>
 
-						<c:if test="<%= editLicenseKeyDisplayContext.isShowDownload() %>">
+						<c:if test="<%= editLicenseKeyDisplayContext.showDownload() %>">
 							<a class="btn btn-primary btn-sm" href="<%= editLicenseKeyDisplayContext.getDownloadLicenseKeyURL() %>" type="button">
 								<liferay-ui:message key="download" />
 

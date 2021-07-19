@@ -112,7 +112,7 @@ ViewLicenseKeysManagementToolbarDisplayContext viewLicenseKeysManagementToolbarD
 					name="details"
 				>
 					<dl>
-						<c:if test="<%= licenseKeyDisplay.isShowHostName() %>">
+						<c:if test="<%= licenseKeyDisplay.showHostName() %>">
 							<div>
 								<dt>
 									<liferay-ui:message key="host-name" />:
@@ -123,7 +123,7 @@ ViewLicenseKeysManagementToolbarDisplayContext viewLicenseKeysManagementToolbarD
 							</div>
 						</c:if>
 
-						<c:if test="<%= licenseKeyDisplay.isShowIpAddresses() %>">
+						<c:if test="<%= licenseKeyDisplay.showIpAddresses() %>">
 							<div>
 								<dt>
 									<liferay-ui:message key="ip-address" />:
@@ -134,7 +134,7 @@ ViewLicenseKeysManagementToolbarDisplayContext viewLicenseKeysManagementToolbarD
 							</div>
 						</c:if>
 
-						<c:if test="<%= licenseKeyDisplay.isShowMacAddresses() %>">
+						<c:if test="<%= licenseKeyDisplay.showMacAddresses() %>">
 							<div>
 								<dt>
 									<liferay-ui:message key="mac-address" />:
@@ -145,7 +145,7 @@ ViewLicenseKeysManagementToolbarDisplayContext viewLicenseKeysManagementToolbarD
 							</div>
 						</c:if>
 
-						<c:if test="<%= licenseKeyDisplay.isShowMaxClusterNodes() %>">
+						<c:if test="<%= licenseKeyDisplay.showMaxClusterNodes() %>">
 							<div>
 								<dt>
 									<liferay-ui:message key="maximum-cluster-nodes" />:
@@ -156,7 +156,7 @@ ViewLicenseKeysManagementToolbarDisplayContext viewLicenseKeysManagementToolbarD
 							</div>
 						</c:if>
 
-						<c:if test="<%= licenseKeyDisplay.isShowMaximumServers() %>">
+						<c:if test="<%= licenseKeyDisplay.showMaximumServers() %>">
 							<div>
 								<dt>
 									<liferay-ui:message key="maximum-servers" />:
