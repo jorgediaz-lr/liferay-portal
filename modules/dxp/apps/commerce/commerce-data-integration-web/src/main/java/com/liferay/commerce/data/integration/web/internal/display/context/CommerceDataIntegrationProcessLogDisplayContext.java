@@ -106,18 +106,14 @@ public class CommerceDataIntegrationProcessLogDisplayContext {
 
 		PortletURL portletURL = liferayPortletResponse.createRenderURL();
 
-		String delta = ParamUtil.getString(
-			_commerceDataIntegrationRequestHelper.getRequest(), "delta");
+		portletURL.setParameter(
+			"mvcRenderCommandName", "editCommerceDataIntegrationProcess");
 
-		if (Validator.isNotNull(delta)) {
-			portletURL.setParameter("delta", delta);
-		}
+		String redirect = ParamUtil.getString(
+			_commerceDataIntegrationRequestHelper.getRequest(), "redirect");
 
-		String deltaEntry = ParamUtil.getString(
-			_commerceDataIntegrationRequestHelper.getRequest(), "deltaEntry");
-
-		if (Validator.isNotNull(deltaEntry)) {
-			portletURL.setParameter("deltaEntry", deltaEntry);
+		if (Validator.isNotNull(redirect)) {
+			portletURL.setParameter("redirect", redirect);
 		}
 
 		String commerceDataIntegrationProcessId = ParamUtil.getString(
@@ -130,14 +126,18 @@ public class CommerceDataIntegrationProcessLogDisplayContext {
 				commerceDataIntegrationProcessId);
 		}
 
-		portletURL.setParameter(
-			"mvcRenderCommandName", "editCommerceDataIntegrationProcess");
+		String delta = ParamUtil.getString(
+			_commerceDataIntegrationRequestHelper.getRequest(), "delta");
 
-		String redirect = ParamUtil.getString(
-			_commerceDataIntegrationRequestHelper.getRequest(), "redirect");
+		if (Validator.isNotNull(delta)) {
+			portletURL.setParameter("delta", delta);
+		}
 
-		if (Validator.isNotNull(redirect)) {
-			portletURL.setParameter("redirect", redirect);
+		String deltaEntry = ParamUtil.getString(
+			_commerceDataIntegrationRequestHelper.getRequest(), "deltaEntry");
+
+		if (Validator.isNotNull(deltaEntry)) {
+			portletURL.setParameter("deltaEntry", deltaEntry);
 		}
 
 		portletURL.setParameter(
