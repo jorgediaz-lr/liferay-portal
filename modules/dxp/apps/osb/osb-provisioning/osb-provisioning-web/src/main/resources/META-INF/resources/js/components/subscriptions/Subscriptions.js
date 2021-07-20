@@ -188,6 +188,10 @@ function Subscription({
 		setDisabledAttribute(key, perpetual);
 	});
 
+	function handleDeleteSubscription() {
+		deleteSubscription(key);
+	}
+
 	function handleEndDateChange(value) {
 		const validDateFormat = validateDateFieldFormat(value);
 
