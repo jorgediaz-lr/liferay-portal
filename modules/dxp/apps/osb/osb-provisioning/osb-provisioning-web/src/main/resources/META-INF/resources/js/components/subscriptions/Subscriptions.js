@@ -41,7 +41,7 @@ function Subscriptions({
 }) {
 	const [subscriptions] = useSubscriptions();
 
-	function getLicenseDateFormatValidation(keyPath, value) {
+	function getLicenseDateFormatValidator(keyPath, value) {
 		validateDateFormat(keyPath, value);
 	}
 
@@ -112,7 +112,7 @@ function Subscriptions({
 				{subscriptions.size > 1 && (
 					<BulkInput
 						accountName={accountName}
-						dateFormatValidation={getLicenseDateFormatValidation}
+						dateFormatValidators={getLicenseDateFormatValidator}
 						instanceSizes={instanceSizes}
 						statusOptions={statusOptions}
 						subscriptionsType={subscriptionsType}
@@ -122,7 +122,7 @@ function Subscriptions({
 				{subscriptions.toList().map(subscription => (
 					<Subscription
 						accountName={accountName}
-						dateFormatValidation={getLicenseDateFormatValidation}
+						dateFormatValidators={getLicenseDateFormatValidator}
 						disableDelete={subscriptions.size === 1}
 						instanceSizes={instanceSizes}
 						key={
@@ -151,7 +151,7 @@ Subscriptions.propTypes = {
 
 function Subscription({
 	accountName,
-	dateFormatValidation,
+	dateFormatValidators,
 	disableDelete,
 	instanceSizes,
 	statusOptions,
@@ -197,7 +197,7 @@ function Subscription({
 			);
 		}
 
-		dateFormatValidation([key, 'endDate'], validDateFormat);
+		dateFormatValidators([key, 'endDate'], validDateFormat);
 		setInvalidDateFormat({...invalidDateFormat, endDate: !validDateFormat});
 	}
 
@@ -210,7 +210,7 @@ function Subscription({
 			);
 		}
 
-		dateFormatValidation([key, 'originalEndDate'], validDateFormat);
+		dateFormatValidators([key, 'originalEndDate'], validDateFormat);
 		setInvalidDateFormat({
 			...invalidDateFormat,
 			originalEndDate: !validDateFormat
@@ -259,7 +259,7 @@ function Subscription({
 			);
 		}
 
-		dateFormatValidation([key, 'startDate'], validDateFormat);
+		dateFormatValidators([key, 'startDate'], validDateFormat);
 		setInvalidDateFormat({
 			...invalidDateFormat,
 			startDate: !validDateFormat

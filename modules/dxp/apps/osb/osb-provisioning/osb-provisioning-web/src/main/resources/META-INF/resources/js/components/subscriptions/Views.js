@@ -33,7 +33,7 @@ export function AddView({
 	const [subscriptions] = useSubscriptions();
 
 	const [displayAlert, setDisplayAlert] = useState(false);
-	const [dateFormatValidation, setDateFormatValidation] = useState(
+	const [dateFormatValidators, setDateFormatValidators] = useState(
 		useInitialDateFormatValidation()
 	);
 
@@ -52,10 +52,10 @@ export function AddView({
 	}
 
 	function getAllowSave() {
-		const formatValidationSet = dateFormatValidation.toSet();
+		const dateFormatValidatorsSet = dateFormatValidators.toSet();
 
-		if (formatValidationSet.size === 1) {
-			return Object.values(formatValidationSet.first().toJS()).every(
+		if (dateFormatValidatorsSet.size === 1) {
+			return Object.values(dateFormatValidatorsSet.first().toJS()).every(
 				val => val
 			);
 		}
@@ -64,7 +64,7 @@ export function AddView({
 	}
 
 	function validateDateFormat(keyPath, value) {
-		setDateFormatValidation(dateFormatValidation.setIn(keyPath, value));
+		setDateFormatValidators(dateFormatValidators.setIn(keyPath, value));
 	}
 
 	return (
@@ -137,7 +137,7 @@ export function EditView({
 }) {
 	const [subscriptions] = useSubscriptions();
 
-	const [dateFormatValidation, setDateFormatValidation] = useState(
+	const [dateFormatValidators, setDateFormatValidators] = useState(
 		useInitialDateFormatValidation()
 	);
 	const [displayAlert, setDisplayAlert] = useState(false);
@@ -145,10 +145,10 @@ export function EditView({
 	useSetDisplayAlert(setDisplayAlert, subscriptions.toList());
 
 	function getAllowSave() {
-		const formatValidationSet = dateFormatValidation.toSet();
+		const dateFormatValidatorsSet = dateFormatValidators.toSet();
 
-		if (formatValidationSet.size === 1) {
-			return Object.values(formatValidationSet.first().toJS()).every(
+		if (dateFormatValidatorsSet.size === 1) {
+			return Object.values(dateFormatValidatorsSet.first().toJS()).every(
 				val => val
 			);
 		}
@@ -157,7 +157,7 @@ export function EditView({
 	}
 
 	function validateDateFormat(keyPath, value) {
-		setDateFormatValidation(dateFormatValidation.setIn(keyPath, value));
+		setDateFormatValidators(dateFormatValidators.setIn(keyPath, value));
 	}
 
 	return (

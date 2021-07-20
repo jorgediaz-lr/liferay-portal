@@ -30,7 +30,7 @@ import DatePicker from '../DatePicker';
 
 function BulkInput({
 	accountName,
-	dateFormatValidation,
+	dateFormatValidators,
 	instanceSizes = [],
 	statusOptions = [
 		PRODUCT_PURCHASE_STATUS_APPROVED,
@@ -170,7 +170,7 @@ function BulkInput({
 			updateAllValuesByFieldName('endDate', convertInputToDate(value));
 		}
 
-		dateFormatValidation(['bulk', 'endDate'], validDateFormat);
+		dateFormatValidators(['bulk', 'endDate'], validDateFormat);
 		setInvalidDateFormat({...invalidDateFormat, endDate: !validDateFormat});
 	}
 
@@ -184,7 +184,7 @@ function BulkInput({
 			);
 		}
 
-		dateFormatValidation(['bulk', 'originalEndDate'], validDateFormat);
+		dateFormatValidators(['bulk', 'originalEndDate'], validDateFormat);
 		setInvalidDateFormat({
 			...invalidDateFormat,
 			originalEndDate: !validDateFormat
@@ -220,7 +220,7 @@ function BulkInput({
 			updateAllValuesByFieldName('startDate', convertInputToDate(value));
 		}
 
-		dateFormatValidation(['bulk', 'startDate'], validDateFormat);
+		dateFormatValidators(['bulk', 'startDate'], validDateFormat);
 		setInvalidDateFormat({
 			...invalidDateFormat,
 			startDate: !validDateFormat
@@ -435,7 +435,7 @@ function BulkInput({
 
 BulkInput.protoTypes = {
 	accountName: PropTypes.string.isRequired,
-	dateFormatValidation: PropTypes.func,
+	dateFormatValidators: PropTypes.func,
 	instanceSizes: PropTypes.arrayOf(PropTypes.number),
 	statusOptions: PropTypes.arrayOf(PropTypes.string),
 	subscriptionsType: PropTypes.oneOf([ADD_SUBSCRIPTIONS, EDIT_SUBSCRIPTIONS])
