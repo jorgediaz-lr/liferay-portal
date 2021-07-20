@@ -217,7 +217,7 @@ definition {
 
 		Portlet.addPG(portletName = "Asset Publisher");
 
-		Close.closeAndSelectWindow(locator1 = "Site Templates - ${siteName}");
+		Close.closeAndSelectWindow(locator1 = "title=Site Templates - Control Panel - ${siteName}");
 
 		Site.openSitesAdmin();
 
@@ -274,11 +274,7 @@ definition {
 			siteName = "${siteName}",
 			siteTemplateName = "Site Template Name");
 
-		ContentPages.clickPencil();
-
-		PageEditor.addWidget(portletName = "Asset Publisher");
-
-		PageEditor.clickPublish();
+		Portlet.addPG(portletName = "Asset Publisher");
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
