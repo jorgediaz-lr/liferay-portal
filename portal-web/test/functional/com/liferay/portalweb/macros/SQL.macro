@@ -1,0 +1,21 @@
+definition {
+
+	macro executeMySQLStatement {
+		Variables.assertDefined(parameterList = "${mysqlStatement}");
+
+		var liferayHome = PropsUtil.get("liferay.home.dir.name");
+		var inputFile = "mysqltemp.sql";
+		var outputFile = "mysqltemp.txt";
+
+		FileUtil.write("${liferayHome}/${inputFile}", "${mysqlStatement}");
+
+		AntCommand(
+			locator1 = "build-test.xml",
+			value1 = "execute-mysql -Dmysql.input.file=${liferayHome}/${inputFile} -Dmysql.output.file=${liferayHome}/${outputFile}");
+
+		var output = FileUtil.read("${liferayHome}/${outputFile}");
+
+		return "${output}";
+	}
+
+}
