@@ -39,18 +39,6 @@ export function AddView({
 
 	useSetDisplayAlert(setDisplayAlert, subscriptions.toList());
 
-	function getInitialProductKeys() {
-		const productsKeys = subscriptions.keySeq().toJS();
-
-		return productsKeys
-			.map(product => {
-				const [key] = product.split('_');
-
-				return key;
-			})
-			.join(',');
-	}
-
 	function getAllowSave() {
 		const dateFormatValidatorsSet = dateFormatValidators.toSet();
 
@@ -61,6 +49,18 @@ export function AddView({
 		}
 
 		return false;
+	}
+
+	function getInitialProductKeys() {
+		const productsKeys = subscriptions.keySeq().toJS();
+
+		return productsKeys
+			.map(product => {
+				const [key] = product.split('_');
+
+				return key;
+			})
+			.join(',');
 	}
 
 	function validateDateFormat(keyPath, value) {
@@ -258,8 +258,7 @@ function useSetDisplayAlert(callback, subscriptions) {
 
 		if (validateDateFields()) {
 			callback(false);
-		}
-		else {
+		} else {
 			callback(true);
 		}
 	}, [callback, subscriptions]);
@@ -295,8 +294,7 @@ function ProductSelection({formAction, initialProductKeys, selectionURL}) {
 				setProductKeys(
 					initialProductKeys.concat(',', newKeys.join(','))
 				);
-			}
-			else {
+			} else {
 				setProductKeys(initialProductKeys);
 			}
 		};
