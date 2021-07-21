@@ -22,6 +22,16 @@ import HiddenForm from '../HiddenForm';
 import SubscriptionActions from './SubscriptionActions';
 import Subscriptions from './Subscriptions';
 
+class Validator extends Record({
+	endDate: true,
+	originalEndDate: true,
+	startDate: true
+}) {
+	isValid() {
+		return this.endDate && this.originalEndDate && this.startDate;
+	}
+}
+
 export function AddView({
 	accountName,
 	editProductPurchasesURL,
@@ -34,21 +44,13 @@ export function AddView({
 
 	const [displayAlert, setDisplayAlert] = useState(false);
 	const [dateFormatValidators, setDateFormatValidators] = useState(
-		useInitialDateFormatValidation()
+		useInitialDateFormatValidators()
 	);
 
 	useSetDisplayAlert(setDisplayAlert, subscriptions.toList());
 
 	function getAllowSave() {
-		const dateFormatValidatorsSet = dateFormatValidators.toSet();
-
-		if (dateFormatValidatorsSet.size === 1) {
-			return Object.values(dateFormatValidatorsSet.first().toJS()).every(
-				val => val
-			);
-		}
-
-		return false;
+		return dateFormatValidators.every(validator => validator.isValid());
 	}
 
 	function getInitialProductKeys() {
@@ -138,22 +140,14 @@ export function EditView({
 	const [subscriptions] = useSubscriptions();
 
 	const [dateFormatValidators, setDateFormatValidators] = useState(
-		useInitialDateFormatValidation()
+		useInitialDateFormatValidators()
 	);
 	const [displayAlert, setDisplayAlert] = useState(false);
 
 	useSetDisplayAlert(setDisplayAlert, subscriptions.toList());
 
 	function getAllowSave() {
-		const dateFormatValidatorsSet = dateFormatValidators.toSet();
-
-		if (dateFormatValidatorsSet.size === 1) {
-			return Object.values(dateFormatValidatorsSet.first().toJS()).every(
-				val => val
-			);
-		}
-
-		return false;
+		return dateFormatValidators.every(validator => validator.isValid());
 	}
 
 	function validateDateFormat(keyPath, value) {
@@ -231,19 +225,14 @@ function InvalidDateAlert({message}) {
 	);
 }
 
-function useInitialDateFormatValidation() {
-	const Valid = Record({
-		endDate: true,
-		originalEndDate: true,
-		startDate: true
-	});
+function useInitialDateFormatValidators() {
 	const [subscriptions] = useSubscriptions();
 
-	const initial = subscriptions.keySeq().map(key => [key, new Valid()]);
+	const initial = subscriptions.keySeq().map(key => [key, new Validator()]);
 
 	return ImmutableMap(
 		subscriptions.size > 1
-			? initial.toList().push(['bulk', new Valid()])
+			? initial.toList().push(['bulk', new Validator()])
 			: initial.toList()
 	);
 }
@@ -258,8 +247,7 @@ function useSetDisplayAlert(callback, subscriptions) {
 
 		if (validateDateFields()) {
 			callback(false);
-		}
-		else {
+		} else {
 			callback(true);
 		}
 	}, [callback, subscriptions]);
@@ -295,8 +283,7 @@ function ProductSelection({formAction, initialProductKeys, selectionURL}) {
 				setProductKeys(
 					initialProductKeys.concat(',', newKeys.join(','))
 				);
-			}
-			else {
+			} else {
 				setProductKeys(initialProductKeys);
 			}
 		};
