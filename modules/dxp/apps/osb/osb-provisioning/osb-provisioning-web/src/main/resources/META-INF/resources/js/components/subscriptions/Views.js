@@ -258,7 +258,8 @@ function useSetDisplayAlert(callback, subscriptions) {
 
 		if (validateDateFields()) {
 			callback(false);
-		} else {
+		}
+		else {
 			callback(true);
 		}
 	}, [callback, subscriptions]);
@@ -294,7 +295,8 @@ function ProductSelection({formAction, initialProductKeys, selectionURL}) {
 				setProductKeys(
 					initialProductKeys.concat(',', newKeys.join(','))
 				);
-			} else {
+			}
+			else {
 				setProductKeys(initialProductKeys);
 			}
 		};

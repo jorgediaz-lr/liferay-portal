@@ -205,10 +205,6 @@ function Subscription({
 		setInvalidDateFormat({...invalidDateFormat, endDate: !validDateFormat});
 	}
 
-	function handleDeleteSubscription() {
-		deleteSubscription(key);
-	}
-
 	function handleGracePeriodStartDateChange(value) {
 		const validDateFormat = validateDateFieldFormat(value);
 
