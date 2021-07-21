@@ -85,6 +85,7 @@ public class ViewAccountLicenseKeysDisplayContext
 									"javascript:",
 									renderResponse.getNamespace(),
 									"extendLicenseKeys();"));
+							dropdownItem.setIcon("time");
 							dropdownItem.setLabel(
 								LanguageUtil.get(httpServletRequest, "extend"));
 							dropdownItem.setQuickAction(true);
@@ -97,7 +98,7 @@ public class ViewAccountLicenseKeysDisplayContext
 									"javascript:",
 									renderResponse.getNamespace(),
 									"replaceLicenseKeys();"));
-							dropdownItem.setIcon("time");
+							dropdownItem.setIcon("change");
 							dropdownItem.setLabel(
 								LanguageUtil.get(
 									httpServletRequest, "replace"));
