@@ -19,10 +19,12 @@ function renderExtendLicense() {
 		<ExtendLicense
 			details={[
 				{
+					expirationDate: '2021-08-21',
 					indefinite: false,
-					licenseKeyIds: 'licenseKeyID1',
+					licenseKeyId: 'licenseKeyID1',
 					licenseType: 'development',
-					productName: 'DXP 7.0'
+					productName: 'DXP 7.0',
+					startDate: '2021-07-21'
 				}
 			]}
 			extensionURL="/extension/url"
