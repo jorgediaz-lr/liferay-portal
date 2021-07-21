@@ -9,7 +9,7 @@
  * distribution rights of the Software.
  */
 
-import {cleanup, fireEvent, render} from '@testing-library/react';
+import {cleanup, fireEvent, render, within} from '@testing-library/react';
 import React from 'react';
 
 import NotesTabPane from '../../../src/main/resources/META-INF/resources/js/components/side_panel/NotesTabPane';
@@ -105,6 +105,15 @@ describe('NotesTabPane', () => {
 		const {container} = renderNotesTabPane();
 
 		expect(container).toBeTruthy();
+	});
+
+	it('renders the latest notes first', () => {
+		const {container} = renderNotesTabPane();
+
+		const notes = container.querySelectorAll('.note');
+
+		within(notes.item(0)).getByText('May 01, 2020 12:10 AM');
+		within(notes.item(1)).getByText('Apr 30, 2020 11:53 PM');
 	});
 
 	describe('approved notes', () => {

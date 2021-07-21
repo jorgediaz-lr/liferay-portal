@@ -152,13 +152,16 @@ function NotesTabPane({addURL, tabType}) {
 		setViewArchive(bool);
 	};
 
-	const approved = notesForType.filter(
-		note => note.status === NOTE_STATUS_APPROVED
-	);
+	const sortDateByRecency = (a, b) =>
+		new Date(a.createDate) > new Date(b.createDate) ? -1 : 1;
 
-	const archived = notesForType.filter(
-		note => note.status === NOTE_STATUS_ARCHIVED
-	);
+	const approved = notesForType
+		.filter(note => note.status === NOTE_STATUS_APPROVED)
+		.sort(sortDateByRecency);
+
+	const archived = notesForType
+		.filter(note => note.status === NOTE_STATUS_ARCHIVED)
+		.sort(sortDateByRecency);
 
 	return (
 		<div className="notes-container">
