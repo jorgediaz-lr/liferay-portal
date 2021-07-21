@@ -10,10 +10,12 @@
  */
 
 import {Map, Record} from 'immutable';
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 
 import {PRODUCT_PURCHASE_STATUS_APPROVED} from '../utilities/constants';
 import {generateNewDateByYear} from '../utilities/date';
+
+// Subscriptions Context
 
 export class Subscription extends Record({
 	endDate: null,
@@ -171,4 +173,45 @@ export function SubscriptionsProvider({initialSubscriptions = [], children}) {
 
 export function useSubscriptions() {
 	return useContext(SubscriptionsContext);
+}
+
+// View Subscriptions Hooks
+
+class DateFormatValidator extends Record({
+	endDate: true,
+	originalEndDate: true,
+	startDate: true
+}) {
+	isValid() {
+		return this.endDate && this.originalEndDate && this.startDate;
+	}
+}
+
+export function useInitialDateFormatValidators(subscriptions) {
+	const initial = subscriptions
+		.keySeq()
+		.map(key => [key, new DateFormatValidator()]);
+
+	return Map(
+		subscriptions.size > 1
+			? initial.toList().push(['bulk', new DateFormatValidator()])
+			: initial.toList()
+	);
+}
+
+export function useSetDisplayAlert(callback, subscriptions) {
+	return useEffect(() => {
+		function validateDateFields() {
+			return subscriptions.every(subscription =>
+				subscription.validateAllDates()
+			);
+		}
+
+		if (validateDateFields()) {
+			callback(false);
+		}
+		else {
+			callback(true);
+		}
+	}, [callback, subscriptions]);
 }

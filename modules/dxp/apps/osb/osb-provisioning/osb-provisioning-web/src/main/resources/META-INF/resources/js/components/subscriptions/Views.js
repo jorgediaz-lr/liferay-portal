@@ -10,27 +10,20 @@
  */
 
 import ClayAlert from '@clayui/alert';
-import {Map as ImmutableMap, Record} from 'immutable';
 import PropTypes from 'prop-types';
 import React, {useEffect, useRef, useState} from 'react';
 
-import {useSubscriptions} from '../../hooks/subscriptions';
+import {
+	useInitialDateFormatValidators,
+	useSetDisplayAlert,
+	useSubscriptions
+} from '../../hooks/subscriptions';
 import {ADD_SUBSCRIPTIONS, EDIT_SUBSCRIPTIONS} from '../../utilities/constants';
 import {itemSelectorDialogSelection} from '../../utilities/itemSelectorDialogHelper';
 import ExternalSelectField from '../ExternalSelectField';
 import HiddenForm from '../HiddenForm';
 import SubscriptionActions from './SubscriptionActions';
 import Subscriptions from './Subscriptions';
-
-class Validator extends Record({
-	endDate: true,
-	originalEndDate: true,
-	startDate: true
-}) {
-	isValid() {
-		return this.endDate && this.originalEndDate && this.startDate;
-	}
-}
 
 export function AddView({
 	accountName,
@@ -44,7 +37,7 @@ export function AddView({
 
 	const [displayAlert, setDisplayAlert] = useState(false);
 	const [dateFormatValidators, setDateFormatValidators] = useState(
-		useInitialDateFormatValidators()
+		useInitialDateFormatValidators(subscriptions)
 	);
 
 	useSetDisplayAlert(setDisplayAlert, subscriptions.toList());
@@ -140,7 +133,7 @@ export function EditView({
 	const [subscriptions] = useSubscriptions();
 
 	const [dateFormatValidators, setDateFormatValidators] = useState(
-		useInitialDateFormatValidators()
+		useInitialDateFormatValidators(subscriptions)
 	);
 	const [displayAlert, setDisplayAlert] = useState(false);
 
@@ -225,34 +218,6 @@ function InvalidDateAlert({message}) {
 	);
 }
 
-function useInitialDateFormatValidators() {
-	const [subscriptions] = useSubscriptions();
-
-	const initial = subscriptions.keySeq().map(key => [key, new Validator()]);
-
-	return ImmutableMap(
-		subscriptions.size > 1
-			? initial.toList().push(['bulk', new Validator()])
-			: initial.toList()
-	);
-}
-
-function useSetDisplayAlert(callback, subscriptions) {
-	return useEffect(() => {
-		function validateDateFields() {
-			return subscriptions.every(subscription =>
-				subscription.validateAllDates()
-			);
-		}
-
-		if (validateDateFields()) {
-			callback(false);
-		} else {
-			callback(true);
-		}
-	}, [callback, subscriptions]);
-}
-
 function ProductSelection({formAction, initialProductKeys, selectionURL}) {
 	const formRef = useRef();
 
@@ -283,7 +248,8 @@ function ProductSelection({formAction, initialProductKeys, selectionURL}) {
 				setProductKeys(
 					initialProductKeys.concat(',', newKeys.join(','))
 				);
-			} else {
+			}
+			else {
 				setProductKeys(initialProductKeys);
 			}
 		};
