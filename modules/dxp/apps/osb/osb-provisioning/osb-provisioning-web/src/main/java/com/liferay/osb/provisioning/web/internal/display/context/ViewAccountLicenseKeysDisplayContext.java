@@ -84,6 +84,18 @@ public class ViewAccountLicenseKeysDisplayContext
 								StringBundler.concat(
 									"javascript:",
 									renderResponse.getNamespace(),
+									"extendLicenseKeys();"));
+							dropdownItem.setLabel(
+								LanguageUtil.get(httpServletRequest, "extend"));
+							dropdownItem.setQuickAction(true);
+						});
+
+					add(
+						dropdownItem -> {
+							dropdownItem.setHref(
+								StringBundler.concat(
+									"javascript:",
+									renderResponse.getNamespace(),
 									"replaceLicenseKeys();"));
 							dropdownItem.setIcon("time");
 							dropdownItem.setLabel(
@@ -98,10 +110,27 @@ public class ViewAccountLicenseKeysDisplayContext
 								StringBundler.concat(
 									"javascript:",
 									renderResponse.getNamespace(),
-									"extendLicenseKeys();"));
+									"updateLicenseKeysProperties('",
+									_getConfirmMessage("make-complimentary"),
+									"', 'complimentary', true);"));
 							dropdownItem.setLabel(
-								LanguageUtil.get(httpServletRequest, "extend"));
-							dropdownItem.setQuickAction(true);
+								LanguageUtil.get(
+									httpServletRequest, "make-complimentary"));
+						});
+
+					add(
+						dropdownItem -> {
+							dropdownItem.setHref(
+								StringBundler.concat(
+									"javascript:",
+									renderResponse.getNamespace(),
+									"updateLicenseKeysProperties('",
+									_getConfirmMessage("remove-complimentary"),
+									"', 'complimentary', false);"));
+							dropdownItem.setLabel(
+								LanguageUtil.get(
+									httpServletRequest,
+									"remove-complimentary"));
 						});
 
 					if (_tabs2.equals("active") || _tabs2.equals("expired")) {
@@ -134,35 +163,6 @@ public class ViewAccountLicenseKeysDisplayContext
 										httpServletRequest, "activate"));
 							});
 					}
-
-					add(
-						dropdownItem -> {
-							dropdownItem.setHref(
-								StringBundler.concat(
-									"javascript:",
-									renderResponse.getNamespace(),
-									"updateLicenseKeysProperties('",
-									_getConfirmMessage("make-complimentary"),
-									"', 'complimentary', true);"));
-							dropdownItem.setLabel(
-								LanguageUtil.get(
-									httpServletRequest, "make-complimentary"));
-						});
-
-					add(
-						dropdownItem -> {
-							dropdownItem.setHref(
-								StringBundler.concat(
-									"javascript:",
-									renderResponse.getNamespace(),
-									"updateLicenseKeysProperties('",
-									_getConfirmMessage("remove-complimentary"),
-									"', 'complimentary', false);"));
-							dropdownItem.setLabel(
-								LanguageUtil.get(
-									httpServletRequest,
-									"remove-complimentary"));
-						});
 				}
 			}
 		};
