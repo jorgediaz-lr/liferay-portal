@@ -587,12 +587,12 @@ definition {
 
 		Form.gotoAddField(
 			fieldType = "Text Field",
-			localeBasic = "Básico");
+			localeBasic = "Basic");
 
 		Form.editFieldLabelMetal(
 			fieldValue = "Text Field On Spanish Portal",
-			localeAdvanced = "Avanzado",
-			localeBasic = "Básico");
+			localeAdvanced = "Advanced",
+			localeBasic = "Basic");
 
 		Form.closeSidebar();
 
