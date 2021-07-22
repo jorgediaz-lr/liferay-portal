@@ -58,7 +58,7 @@
 </tr>
 <tr>
 	<td>CONFIGURATION_PERMISSIONS_VIEW_CHECKBOX</td>
-	<td>//input[contains(@id,'${key_roleTitle}') and contains(@name,'VIEW')]</td>
+	<td>//input[@id='${key_roleTitle}_ACTION_VIEW']</td>
 	<td></td>
 </tr>
 <tr>
