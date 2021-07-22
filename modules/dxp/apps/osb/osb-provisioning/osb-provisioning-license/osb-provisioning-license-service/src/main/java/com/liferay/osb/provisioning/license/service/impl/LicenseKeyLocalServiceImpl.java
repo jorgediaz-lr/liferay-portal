@@ -1446,33 +1446,45 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 	private void _addProductConsumption(User user, LicenseKey licenseKey)
 		throws Exception {
 
-		ProductConsumption productConsumption = new ProductConsumption();
+		int count = 1;
 
-		productConsumption.setEndDate(licenseKey.getExpirationDate());
+		String licenseEntryType = licenseKey.getLicenseEntryType();
 
-		Product product = _productWebService.getProduct(
-			licenseKey.getProductKey());
-
-		productConsumption.setProductKey(product.getKey());
-
-		if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
-			productConsumption.setProductPurchaseKey(
-				licenseKey.getProductPurchaseKey());
+		if (licenseEntryType.equals(LicenseType.VIRTUAL_CLUSTER)) {
+			count = licenseKey.getMaxClusterNodes();
 		}
 
-		productConsumption.setStartDate(licenseKey.getStartDate());
+		for (int i = 0; i < count; i++) {
+			ProductConsumption productConsumption = new ProductConsumption();
 
-		ExternalLink externalLink = new ExternalLink();
+			productConsumption.setEndDate(licenseKey.getExpirationDate());
 
-		externalLink.setDomain(ExternalLinkDomain.PROVISIONING);
-		externalLink.setEntityName(ExternalLinkEntityName.LICENSE_KEY);
-		externalLink.setEntityId(String.valueOf(licenseKey.getLicenseKeyId()));
+			Product product = _productWebService.getProduct(
+				licenseKey.getProductKey());
 
-		productConsumption.setExternalLinks(new ExternalLink[] {externalLink});
+			productConsumption.setProductKey(product.getKey());
 
-		_productConsumptionWebService.addProductConsumption(
-			user.getFullName(), user.getUuid(), licenseKey.getAccountKey(),
-			productConsumption);
+			if (Validator.isNotNull(licenseKey.getProductPurchaseKey())) {
+				productConsumption.setProductPurchaseKey(
+					licenseKey.getProductPurchaseKey());
+			}
+
+			productConsumption.setStartDate(licenseKey.getStartDate());
+
+			ExternalLink externalLink = new ExternalLink();
+
+			externalLink.setDomain(ExternalLinkDomain.PROVISIONING);
+			externalLink.setEntityName(ExternalLinkEntityName.LICENSE_KEY);
+			externalLink.setEntityId(
+				String.valueOf(licenseKey.getLicenseKeyId()));
+
+			productConsumption.setExternalLinks(
+				new ExternalLink[] {externalLink});
+
+			_productConsumptionWebService.addProductConsumption(
+				user.getFullName(), user.getUuid(), licenseKey.getAccountKey(),
+				productConsumption);
+		}
 	}
 
 	private void _deleteProductConsumption(User user, LicenseKey licenseKey)
