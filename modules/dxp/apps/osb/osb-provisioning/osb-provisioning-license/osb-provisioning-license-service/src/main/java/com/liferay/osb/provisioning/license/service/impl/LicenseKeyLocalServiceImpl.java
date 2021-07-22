@@ -169,19 +169,10 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			startDate = now;
 		}
 
-		if (Validator.isNotNull(accountName)) {
-			if (Validator.isNull(name)) {
-				name = accountName;
-			}
+		name = truncateText(name, accountName, 75);
 
-			if (Validator.isNull(owner)) {
-				owner = accountName;
-			}
-
-			if (Validator.isNull(description)) {
-				description = accountName;
-			}
-		}
+		owner = truncateText(owner, accountName, 75);
+		description = truncateText(description, accountName, 255);
 
 		validate(productVersion, owner, description);
 
@@ -1330,6 +1321,21 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		return sb.toString();
 	}
 
+	protected String truncateText(
+		String text, String defaultText, int maxLength) {
+
+		if (Validator.isNull(text)) {
+			if (Validator.isNull(defaultText)) {
+				return null;
+			}
+
+			return defaultText.substring(
+				0, Math.min(maxLength, defaultText.length()));
+		}
+
+		return text.substring(0, Math.min(maxLength, text.length()));
+	}
+
 	protected void validate(
 			String productVersion, String owner, String description)
 		throws PortalException {
@@ -1352,11 +1358,11 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			String hostName, String ipAddresses, String macAddresses)
 		throws PortalException {
 
-		if (Validator.isNull(owner)) {
+		if (Validator.isNull(owner) || (owner.length() > 75)) {
 			throw new LicenseKeyOwnerException();
 		}
 
-		if (Validator.isNull(description)) {
+		if (Validator.isNull(description) || (description.length() > 255)) {
 			throw new LicenseKeyDescriptionException();
 		}
 
