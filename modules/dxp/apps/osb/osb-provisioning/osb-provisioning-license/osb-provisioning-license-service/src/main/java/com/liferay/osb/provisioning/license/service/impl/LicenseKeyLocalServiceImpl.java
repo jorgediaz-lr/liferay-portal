@@ -540,13 +540,13 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 				licenseKey.getServerId(), startDate, expirationDate);
 		}
 
+		updateLicenseKey(
+			userId, licenseKeyId, licenseKey.getProductPurchaseKey(),
+			licenseKey.isComplimentary(), false);
+
 		Product product = _productWebService.getProduct(
 			licenseKey.getProductKey());
 		LicenseEntry licenseEntry = licenseKey.getLicenseEntry();
-
-		licenseKey.setActive(false);
-
-		licenseKey = licenseKeyPersistence.update(licenseKey);
 
 		return doAddLicenseKeyVersion3_4(
 			new Date(), user, licenseKey.getLicenseEntry(), product,
