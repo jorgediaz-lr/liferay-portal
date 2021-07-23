@@ -17,12 +17,16 @@ import {ExtendLicensesProvider} from '../../hooks/extendLicenses';
 import {PermissionsProvider} from '../../hooks/permissions';
 import ExtensionDetails from './ExtensionDetails';
 
-export default function ExtendLicense(props) {
+export default function ExtendLicense({
+	details,
+	extensionURL,
+	hasUpdateLicenseDatePermission
+}) {
 	return (
-		<ExtendLicensesProvider initialLicenses={props.details}>
+		<ExtendLicensesProvider initialLicenses={details}>
 			<PermissionsProvider
 				permissions={{
-					updateDatePermission: props.hasUpdateLicenseDatePermission
+					updateDatePermission: hasUpdateLicenseDatePermission
 				}}
 			>
 				<div className="extend-licenses-container">
@@ -46,7 +50,7 @@ export default function ExtendLicense(props) {
 							</ClayTable.Row>
 						</ClayTable.Head>
 
-						<ExtensionDetails extensionURL={props.extensionURL} />
+						<ExtensionDetails extensionURL={extensionURL} />
 					</ClayTable>
 				</div>
 			</PermissionsProvider>

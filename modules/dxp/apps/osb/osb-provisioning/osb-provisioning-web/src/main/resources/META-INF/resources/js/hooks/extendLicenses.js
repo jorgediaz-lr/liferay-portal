@@ -12,10 +12,7 @@
 import {Map, Record} from 'immutable';
 import React, {createContext, useContext, useState} from 'react';
 
-import {
-	deriveLicenseDates,
-	getDetachedLicenseDates
-} from '../utilities/license';
+import {getDetachedLicenseDates} from '../utilities/license';
 
 export const LicenseRecord = Record({
 	expirationDate: '',
@@ -30,32 +27,30 @@ export const LicenseRecord = Record({
 
 const ExtendLicensesContext = createContext();
 
+function createLicenseRecord(license) {
+	if (license.terms) {
+		const firstTerms = license.terms[0];
+		const productPurchaseKey = firstTerms.productPurchaseKey;
+
+		return new LicenseRecord({...license, productPurchaseKey});
+	}
+
+	const licenseDates = getDetachedLicenseDates();
+	const {
+		licenseExpirationDate: expirationDate,
+		licenseStartDate: startDate
+	} = licenseDates;
+
+	return new LicenseRecord({
+		...license,
+		expirationDate,
+		startDate
+	});
+}
+
 export function ExtendLicensesProvider({initialLicenses = [], children}) {
 	const processedLicenses = initialLicenses.map(license => {
-		let licenseDates = getDetachedLicenseDates();
-		let productPurchaseKey = '';
-
-		if (license.terms) {
-			const firstTerms = license.terms[0];
-
-			licenseDates = deriveLicenseDates(firstTerms, license.licenseType);
-			productPurchaseKey = firstTerms.productPurchaseKey;
-		}
-
-		const {
-			licenseExpirationDate: expirationDate,
-			licenseStartDate: startDate
-		} = licenseDates;
-
-		return [
-			license.licenseKeyId,
-			LicenseRecord({
-				...license,
-				expirationDate,
-				productPurchaseKey,
-				startDate
-			})
-		];
+		return [license.licenseKeyId, createLicenseRecord(license)];
 	});
 
 	const [licenses, setLicenses] = useState(Map(processedLicenses));

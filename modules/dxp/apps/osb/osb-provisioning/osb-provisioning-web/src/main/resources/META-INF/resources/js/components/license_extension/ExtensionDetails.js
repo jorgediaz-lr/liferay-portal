@@ -16,7 +16,6 @@ import React, {useEffect, useRef, useState} from 'react';
 import {LicenseRecord, useExtendLicenses} from '../../hooks/extendLicenses';
 import {RESTRICTED_EXPIRATION_DATE_TYPES} from '../../utilities/constants';
 import {formatDate} from '../../utilities/date';
-import {deriveLicenseDates} from '../../utilities/license';
 import HiddenForm from '../HiddenForm';
 import IconButton from '../IconButton';
 import LicenseDates from '../LicenseDates';
@@ -89,21 +88,9 @@ function Detail({disableDelete, extensionURL, license}) {
 	}
 
 	function handleTermsChange(val) {
-		const currentTerm = terms.find(
-			({productPurchaseKey}) => productPurchaseKey === val
-		);
-
-		const dates = deriveLicenseDates(currentTerm, licenseType);
-
 		updateLicense(licenseKeyId, license =>
-			license
-				.set('productPurchaseKey', val)
-				.set('expirationDate', dates.licenseExpirationDate)
-				.set('startDate', dates.licenseStartDate)
+			license.set('productPurchaseKey', val)
 		);
-
-		setSelectedExpirationDate(dates.licenseExpirationDate);
-		setSelectedStartDate(dates.licenseStartDate);
 	}
 
 	function handleValidDates(bool) {

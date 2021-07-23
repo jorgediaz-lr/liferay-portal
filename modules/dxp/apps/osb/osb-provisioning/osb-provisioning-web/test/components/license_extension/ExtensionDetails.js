@@ -18,42 +18,50 @@ import {PermissionsProvider} from '../../../src/main/resources/META-INF/resource
 import {DASH} from '../../../src/main/resources/META-INF/resources/js/utilities/constants';
 import {formatDate} from '../../../src/main/resources/META-INF/resources/js/utilities/date';
 
-const TODAY = new Date();
+const initialDetachedLicense = [
+	{
+		expirationDate: '2022-06-04',
+		indefinite: false,
+		licenseKeyId: 'licenseKeyID1',
+		licenseType: 'production',
+		productName: 'Commerce Subscription Backup',
+		startDate: '2021-06-04'
+	}
+];
 
-const initialDetachedLicense = {
-	licenseKeyId: 'licenseKeyID1',
-	licenseType: 'development',
-	productName: 'DXP 7.0'
-};
-
-const initialAttachedLicense = {
-	licenseKeyId: 'licenseKeyID1',
-	licenseType: 'development',
-	productName: 'DXP 7.0',
-	terms: [
-		{
-			endDate: '',
-			perpetual: true,
-			productPurchaseKey: 'productPurchaseKey1',
-			startDate: ''
-		},
-		{
-			endDate: '2022-07-02',
-			perpetual: false,
-			productPurchaseKey: 'productPurchaseKey2',
-			startDate: '2021-06-02'
-		}
-	]
-};
+const initialAttachedLicense = [
+	{
+		expirationDate: '2122-06-08',
+		indefinite: false,
+		licenseKeyId: 'licenseKeyID1',
+		licenseType: 'development',
+		productName: 'DXP 7.0',
+		startDate: '2021-06-03',
+		terms: [
+			{
+				endDate: '',
+				perpetual: true,
+				productPurchaseKey: 'productPurchaseKey1',
+				startDate: ''
+			},
+			{
+				endDate: '2022-07-02',
+				perpetual: false,
+				productPurchaseKey: 'productPurchaseKey2',
+				startDate: '2021-06-02'
+			}
+		]
+	}
+];
 
 function renderExtensionDetails(initialLicenses, permission = true) {
 	return render(
 		<table>
-			<ExtendLicensesProvider initialLicenses={[initialLicenses]}>
+			<ExtendLicensesProvider initialLicenses={initialLicenses}>
 				<PermissionsProvider
 					permissions={{updateDatePermission: permission}}
 				>
-					<ExtensionDetails />
+					<ExtensionDetails extensionURL="/extension/url" />
 				</PermissionsProvider>
 			</ExtendLicensesProvider>
 		</table>
@@ -104,7 +112,7 @@ describe('ExtensionDetails', () => {
 
 		// Clay Date Picker always displays two inputs for the same date
 
-		fireEvent.change(getAllByDisplayValue(formatDate(TODAY))[1], {
+		fireEvent.change(getAllByDisplayValue('2021-06-03')[1], {
 			target: {value: ''}
 		});
 
@@ -112,21 +120,37 @@ describe('ExtensionDetails', () => {
 	});
 
 	it('always renders an enabled Extend button after a new Subscription Term is selected', () => {
-		const {
-			getAllByDisplayValue,
-			getByDisplayValue,
-			getByText
-		} = renderExtensionDetails(initialAttachedLicense);
+		const {getByDisplayValue, getByText} = renderExtensionDetails(
+			initialAttachedLicense
+		);
 
-		// Clay Date Picker always displays two inputs for the same date
-
-		fireEvent.change(getAllByDisplayValue(formatDate(TODAY))[1], {
-			target: {value: ''}
-		});
 		fireEvent.change(getByDisplayValue('perpetual'), {
 			target: {value: 'June 2, 2021 - July 2, 2022'}
 		});
 
 		expect(getByText('extend').disabled).toBeFalsy();
+	});
+
+	it('renders the default start and expiration dates of the existing license for an Attached license entry', () => {
+		const {getAllByDisplayValue} = renderExtensionDetails(
+			initialAttachedLicense
+		);
+
+		// Clay Date Picker always displays two inputs for the same date
+		// The date occurs one more time in the hidden form
+
+		expect(getAllByDisplayValue('2021-06-03').length).toBe(3);
+		expect(getAllByDisplayValue('2122-06-08').length).toBe(3);
+	});
+
+	it('renders Today as the default start date for a Detached license', () => {
+		const {getAllByDisplayValue} = renderExtensionDetails(
+			initialDetachedLicense
+		);
+
+		// Clay Date Picker always displays two inputs for the same date
+		// The date occurs one more time in the hidden form
+
+		expect(getAllByDisplayValue(formatDate(new Date())).length).toBe(3);
 	});
 });
