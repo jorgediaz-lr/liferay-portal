@@ -14,11 +14,11 @@
 
 package com.liferay.users.admin.internal.search.spi.model.permission.contributor;
 
-import com.liferay.petra.sql.dsl.DSLQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.Contact;
-import com.liferay.portal.kernel.model.ContactTable;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.filter.BooleanFilter;
@@ -96,21 +96,20 @@ public class UserSearchPermissionFilterContributor
 
 		TermsFilter termsFilter = new TermsFilter(Field.ENTRY_CLASS_PK);
 
-		List<Contact> contacts = _contactLocalService.dslQuery(
-			DSLQueryFactoryUtil.selectDistinct(
-				ContactTable.INSTANCE
-			).from(
-				ContactTable.INSTANCE
-			).where(
-				ContactTable.INSTANCE.classNameId.eq(
-					_portal.getClassNameId(User.class)
-				).and(
-					ContactTable.INSTANCE.userId.eq(userId)
-				)
-			));
+		DynamicQuery dynamicQuery = _contactLocalService.dynamicQuery();
 
-		for (Contact contact : contacts) {
-			termsFilter.addValue(String.valueOf(contact.getClassPK()));
+		dynamicQuery.add(
+			RestrictionsFactoryUtil.eq(
+				"classNameId", _portal.getClassNameId(User.class)));
+		dynamicQuery.add(RestrictionsFactoryUtil.eq("userId", userId));
+		dynamicQuery.setProjection(
+			ProjectionFactoryUtil.distinct(
+				ProjectionFactoryUtil.property("classPK")));
+
+		List<Long> classPKs = _contactLocalService.dynamicQuery(dynamicQuery);
+
+		for (Long classPK : classPKs) {
+			termsFilter.addValue(String.valueOf(classPK));
 		}
 
 		if (!termsFilter.isEmpty()) {
