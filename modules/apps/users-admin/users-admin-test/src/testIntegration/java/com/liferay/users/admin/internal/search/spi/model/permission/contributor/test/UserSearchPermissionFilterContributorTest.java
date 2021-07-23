@@ -32,7 +32,7 @@ import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
 import com.liferay.portal.kernel.service.UserGroupRoleLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
-import com.liferay.portal.kernel.test.rule.DataGuard;
+import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.OrganizationTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.RoleTestUtil;
@@ -54,7 +54,6 @@ import org.junit.runner.RunWith;
 /**
  * @author Drew Brokke
  */
-@DataGuard(scope = DataGuard.Scope.METHOD)
 @RunWith(Arquillian.class)
 public class UserSearchPermissionFilterContributorTest {
 
@@ -69,14 +68,14 @@ public class UserSearchPermissionFilterContributorTest {
 	public void testWhenHasOrganizationManageUsersPermissionSearch()
 		throws Exception {
 
-		Organization organization = OrganizationTestUtil.addOrganization();
+		_organization = OrganizationTestUtil.addOrganization();
 
-		User userA = _addOrganizationUser(organization);
-		_addOrganizationUser(organization);
+		_user1 = _addOrganizationUser(_organization);
+		_user2 = _addOrganizationUser(_organization);
 
-		Assert.assertEquals(1, _performUserSearchCount(userA));
+		Assert.assertEquals(1, _performUserSearchCount(_user1));
 
-		Role organizationRole = RoleTestUtil.addRole(
+		_organizationRole = RoleTestUtil.addRole(
 			RoleConstants.TYPE_ORGANIZATION);
 
 		_resourcePermissionLocalService.addResourcePermission(
@@ -84,28 +83,28 @@ public class UserSearchPermissionFilterContributorTest {
 			ResourceConstants.SCOPE_GROUP_TEMPLATE,
 			String.valueOf(
 				OrganizationConstants.DEFAULT_PARENT_ORGANIZATION_ID),
-			organizationRole.getRoleId(), ActionKeys.MANAGE_USERS);
+			_organizationRole.getRoleId(), ActionKeys.MANAGE_USERS);
 
 		_userGroupRoleLocalService.addUserGroupRoles(
-			userA.getUserId(), organization.getGroupId(),
-			new long[] {organizationRole.getRoleId()});
+			_user1.getUserId(), _organization.getGroupId(),
+			new long[] {_organizationRole.getRoleId()});
 
-		Assert.assertEquals(2, _performUserSearchCount(userA));
+		Assert.assertEquals(2, _performUserSearchCount(_user1));
 	}
 
 	@Test
 	public void testWhenHasOwnerPermissionSearch() throws Exception {
-		User user = UserTestUtil.addUser();
+		_user1 = UserTestUtil.addUser();
 
-		Assert.assertEquals(1, _performUserSearchCount(user));
+		Assert.assertEquals(1, _performUserSearchCount(_user1));
 
-		UserTestUtil.addUser(
-			user.getCompanyId(), user.getUserId(),
+		_user2 = UserTestUtil.addUser(
+			_user1.getCompanyId(), _user1.getUserId(),
 			RandomTestUtil.randomString(), LocaleUtil.getDefault(),
 			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
 			new long[0], ServiceContextTestUtil.getServiceContext());
 
-		Assert.assertEquals(2, _performUserSearchCount(user));
+		Assert.assertEquals(2, _performUserSearchCount(_user1));
 	}
 
 	private User _addOrganizationUser(Organization organization)
@@ -141,8 +140,20 @@ public class UserSearchPermissionFilterContributorTest {
 		}
 	}
 
+	@DeleteAfterTestRun
+	private Organization _organization;
+
+	@DeleteAfterTestRun
+	private Role _organizationRole;
+
 	@Inject
 	private ResourcePermissionLocalService _resourcePermissionLocalService;
+
+	@DeleteAfterTestRun
+	private User _user1;
+
+	@DeleteAfterTestRun
+	private User _user2;
 
 	@Inject
 	private UserGroupRoleLocalService _userGroupRoleLocalService;
