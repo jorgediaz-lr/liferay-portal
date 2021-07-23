@@ -86,9 +86,9 @@ public class UserSearchPermissionFilterContributorTest {
 				OrganizationConstants.DEFAULT_PARENT_ORGANIZATION_ID),
 			organizationRole.getRoleId(), ActionKeys.MANAGE_USERS);
 
-		_userGroupRoleLocalService.addUserGroupRole(
+		_userGroupRoleLocalService.addUserGroupRoles(
 			userA.getUserId(), organization.getGroupId(),
-			organizationRole.getRoleId());
+			new long[] {organizationRole.getRoleId()});
 
 		Assert.assertEquals(2, _performUserSearchCount(userA));
 	}
