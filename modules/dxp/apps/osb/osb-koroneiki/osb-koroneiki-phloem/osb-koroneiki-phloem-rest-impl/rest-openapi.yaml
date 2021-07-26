@@ -387,6 +387,13 @@ components:
                     description:
                         The description of the contact role.
                     type: string
+                externalLinks:
+                    description:
+                        The contact role's links to entities in external domains.
+                    items:
+                        $ref: "#/components/schemas/ExternalLink"
+                    readOnly: true
+                    type: array
                 key:
                     description:
                         The contact role's key.

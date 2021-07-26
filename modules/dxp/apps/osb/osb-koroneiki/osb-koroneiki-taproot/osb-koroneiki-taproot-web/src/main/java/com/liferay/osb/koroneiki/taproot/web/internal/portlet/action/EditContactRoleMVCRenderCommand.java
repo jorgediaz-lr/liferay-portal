@@ -55,6 +55,13 @@ public class EditContactRoleMVCRenderCommand implements MVCRenderCommand {
 					_contactRoleLocalService.getContactRole(contactRoleId));
 			}
 
+			String tabs1 = ParamUtil.getString(renderRequest, "tabs1");
+
+			if (tabs1.equals("external-links")) {
+				return "/contact_roles_admin" +
+					"/edit_contact_role_external_links.jsp";
+			}
+
 			return "/contact_roles_admin/edit_contact_role.jsp";
 		}
 		catch (Exception exception) {

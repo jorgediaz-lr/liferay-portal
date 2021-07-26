@@ -24,6 +24,8 @@ ContactRole contactRole = (ContactRole)request.getAttribute(TaprootWebKeys.CONTA
 String type = BeanParamUtil.getString(contactRole, request, "type");
 %>
 
+<liferay-util:include page="/contact_roles_admin/edit_contact_role_tabs.jsp" servletContext="<%= application %>" />
+
 <portlet:actionURL name="/contact_roles_admin/edit_contact_role" var="editContactRoleURL" />
 
 <aui:form action="<%= editContactRoleURL %>" cssClass="container-fluid-1280" method="post" name="fm">

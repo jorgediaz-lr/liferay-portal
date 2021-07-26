@@ -15,6 +15,8 @@
 package com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.util;
 
 import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.ContactRole;
+import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.ExternalLink;
+import com.liferay.portal.vulcan.util.TransformUtil;
 
 /**
  * @author Amos Fong
@@ -30,6 +32,9 @@ public class ContactRoleUtil {
 				dateCreated = contactRole.getCreateDate();
 				dateModified = contactRole.getModifiedDate();
 				description = contactRole.getDescription();
+				externalLinks = TransformUtil.transformToArray(
+					contactRole.getExternalLinks(),
+					ExternalLinkUtil::toExternalLink, ExternalLink.class);
 				key = contactRole.getContactRoleKey();
 				name = contactRole.getName();
 				system = contactRole.getSystem();
