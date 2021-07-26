@@ -62,6 +62,13 @@
 		padding-right: $spacing-xxs;
 	}
 
+	.description,
+	.owner {
+		dd {
+			word-break: break-word;
+		}
+	}
+
 	.server-id-fields {
 		.host-name,
 		.server-id {
@@ -125,10 +132,6 @@
 }
 
 .server-id-field-groups {
-	.form-feedback-group {
-		padding-bottom: $spacing-xs;
-	}
-
 	.server-id-field {
 		border: 1px solid $divider;
 		border-bottom-width: 0;

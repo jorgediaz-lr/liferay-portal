@@ -20,6 +20,8 @@ import {
 	LICENSE_TYPE_DEVELOPER,
 	LICENSE_TYPE_DEVELOPER_CLUSTER,
 	LICENSE_TYPE_VIRTUAL_CLUSTER,
+	NEW_LICENSE_DESCRIPTION_MAX_LENGTH,
+	NEW_LICENSE_NAME_OWNER_MAX_LENGTH,
 	NO_SERVER_ID_LICENSE_TYPES,
 	PATTERN_IP_ADDRESS_V6
 } from '../../utilities/constants';
@@ -153,14 +155,23 @@ function SpecificDetails({addLicenseKeyURL, redirect}) {
 						<h3>{Liferay.Language.get('specific-details')}</h3>
 
 						<div className="row">
-							<div className="col-md-12 form-group">
+							<div className="col-md-6 form-group">
 								<label htmlFor="name">
 									{Liferay.Language.get('name')}
 								</label>
 
+								<CharacterLimitMessage
+									message={Liferay.Language.get(
+										'please-enter-no-more-than-75-characters'
+									)}
+								/>
+
 								<input
 									className="form-control"
 									id="name"
+									maxLength={
+										NEW_LICENSE_NAME_OWNER_MAX_LENGTH
+									}
 									onChange={handleNameChange}
 									type="text"
 									value={name}
@@ -177,9 +188,18 @@ function SpecificDetails({addLicenseKeyURL, redirect}) {
 									<RequiredFieldMarker />
 								</label>
 
+								<CharacterLimitMessage
+									message={Liferay.Language.get(
+										'please-enter-no-more-than-75-characters'
+									)}
+								/>
+
 								<input
 									className="form-control"
 									id="owner"
+									maxLength={
+										NEW_LICENSE_NAME_OWNER_MAX_LENGTH
+									}
 									onChange={handleOwnerChange}
 									type="text"
 									value={owner}
@@ -187,7 +207,7 @@ function SpecificDetails({addLicenseKeyURL, redirect}) {
 							</div>
 
 							<div
-								className={`col-md-6 form-group ${
+								className={`col-md-12 form-group ${
 									description ? '' : 'has-error'
 								}`}
 							>
@@ -196,9 +216,18 @@ function SpecificDetails({addLicenseKeyURL, redirect}) {
 									<RequiredFieldMarker />
 								</label>
 
+								<CharacterLimitMessage
+									message={Liferay.Language.get(
+										'please-enter-no-more-than-255-characters'
+									)}
+								/>
+
 								<input
 									className="form-control"
 									id="description"
+									maxLength={
+										NEW_LICENSE_DESCRIPTION_MAX_LENGTH
+									}
 									onChange={handleDescriptionChange}
 									type="text"
 									value={description}
@@ -384,5 +413,13 @@ SpecificDetails.propTypes = {
 	addLicenseKeyURL: PropTypes.string,
 	redirect: PropTypes.string
 };
+
+function CharacterLimitMessage({message}) {
+	return (
+		<div className="form-feedback-group">
+			<div className="form-text">{message}</div>
+		</div>
+	);
+}
 
 export default SpecificDetails;

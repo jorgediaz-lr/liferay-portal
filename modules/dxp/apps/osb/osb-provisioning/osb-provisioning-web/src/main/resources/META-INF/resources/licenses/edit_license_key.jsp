@@ -142,7 +142,7 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 				<aui:col md="4">
 					<dl>
 						<c:if test="<%= !editLicenseKeyDisplayContext.showClusterLicenseKey() %>">
-							<div>
+							<div class="owner">
 								<dt>
 									<liferay-ui:message key="owner" />
 								</dt>
@@ -151,7 +151,7 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 								</dd>
 							</div>
 
-							<div>
+							<div class="description">
 								<dt>
 									<liferay-ui:message key="description" />
 								</dt>
@@ -352,7 +352,7 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 
 										<aui:col md="4">
 											<dl>
-												<div>
+												<div class="owner">
 													<dt>
 														<liferay-ui:message key="owner" />
 													</dt>
@@ -361,7 +361,7 @@ boolean hasManageLicenseKeysPermission = editLicenseKeyDisplayContext.hasManageL
 													</dd>
 												</div>
 
-												<div>
+												<div class="description">
 													<dt>
 														<liferay-ui:message key="description" />
 													</dt>

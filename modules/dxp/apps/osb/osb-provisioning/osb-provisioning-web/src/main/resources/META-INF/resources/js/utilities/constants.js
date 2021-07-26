@@ -46,6 +46,11 @@ export const FIELD_TYPE_TEXT = 'text';
 export const FIELD_TYPE_TEXTAREA = 'textarea';
 export const FIELD_TYPE_TOGGLE = 'toggle';
 
+// License fields maximum length
+
+export const NEW_LICENSE_DESCRIPTION_MAX_LENGTH = 255;
+export const NEW_LICENSE_NAME_OWNER_MAX_LENGTH = 75;
+
 // License types
 
 export const LICENSE_TYPE_CLUSTER =
