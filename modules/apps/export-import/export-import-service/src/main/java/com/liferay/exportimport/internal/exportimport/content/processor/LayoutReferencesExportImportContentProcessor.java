@@ -135,11 +135,8 @@ public class LayoutReferencesExportImportContentProcessor
 		String portalURL = StringPool.BLANK;
 
 		if (!publicLayoutSetVirtualHostnames.isEmpty()) {
-			portalURL = _getPortalURL(
-				url,
-				_portal.getPortalURL(
-					publicLayoutSetVirtualHostnames.firstKey(), serverPort,
-					secure));
+			portalURL = _portal.getPortalURL(
+				publicLayoutSetVirtualHostnames.firstKey(), serverPort, secure);
 
 			if (url.startsWith(portalURL)) {
 				if (secure) {
@@ -159,11 +156,9 @@ public class LayoutReferencesExportImportContentProcessor
 			privateLayoutSet.getVirtualHostnames();
 
 		if (!privateLayoutSetVirtualHostnames.isEmpty()) {
-			portalURL = _getPortalURL(
-				url,
-				_portal.getPortalURL(
-					privateLayoutSetVirtualHostnames.firstKey(), serverPort,
-					secure));
+			portalURL = _portal.getPortalURL(
+				privateLayoutSetVirtualHostnames.firstKey(), serverPort,
+				secure);
 
 			if (url.startsWith(portalURL)) {
 				if (secure) {
