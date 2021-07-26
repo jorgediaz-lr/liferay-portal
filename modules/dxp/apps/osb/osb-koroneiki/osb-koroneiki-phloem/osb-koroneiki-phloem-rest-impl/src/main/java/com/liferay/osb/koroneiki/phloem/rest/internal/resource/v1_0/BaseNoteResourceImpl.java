@@ -89,8 +89,8 @@ public abstract class BaseNoteResourceImpl implements NoteResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Note")})
 	public Page<Note> getAccountAccountKeyNotesPage(
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
-				String accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
+				accountKey,
 			@Parameter(hidden = true) @QueryParam("priority") Integer priority,
 			@Parameter(hidden = true) @QueryParam("status") String status,
 			@Parameter(hidden = true) @QueryParam("type") String type,
@@ -121,8 +121,8 @@ public abstract class BaseNoteResourceImpl implements NoteResource {
 	public Note postAccountAccountKeyNote(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
-				String accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
+				accountKey,
 			Note note)
 		throws Exception {
 
@@ -149,8 +149,8 @@ public abstract class BaseNoteResourceImpl implements NoteResource {
 	public void deleteNote(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("noteKey")
-				String noteKey)
+			@NotNull @Parameter(hidden = true) @PathParam("noteKey") String
+				noteKey)
 		throws Exception {
 	}
 
@@ -167,8 +167,8 @@ public abstract class BaseNoteResourceImpl implements NoteResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Note")})
 	public Note getNote(
-			@NotNull @Parameter(hidden = true) @PathParam("noteKey")
-				String noteKey)
+			@NotNull @Parameter(hidden = true) @PathParam("noteKey") String
+				noteKey)
 		throws Exception {
 
 		return new Note();
@@ -195,8 +195,8 @@ public abstract class BaseNoteResourceImpl implements NoteResource {
 	public Note putNote(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("noteKey")
-				String noteKey,
+			@NotNull @Parameter(hidden = true) @PathParam("noteKey") String
+				noteKey,
 			Note note)
 		throws Exception {
 

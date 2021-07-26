@@ -100,7 +100,7 @@ public abstract class BaseContactRoleResourceImpl
 					String accountKey,
 				@NotNull @Parameter(hidden = true)
 				@PathParam("contactEmailAddress")
-					String contactEmailAddress,
+				String contactEmailAddress,
 				@Context Pagination pagination)
 		throws Exception {
 
@@ -169,7 +169,7 @@ public abstract class BaseContactRoleResourceImpl
 					String accountKey,
 				@NotNull @Parameter(hidden = true)
 				@PathParam("contactEmailAddress")
-					String contactEmailAddress,
+				String contactEmailAddress,
 				@Context Pagination pagination)
 		throws Exception {
 
@@ -240,7 +240,7 @@ public abstract class BaseContactRoleResourceImpl
 					String accountKey,
 				@NotNull @Parameter(hidden = true)
 				@PathParam("contactEmailAddress")
-					String contactEmailAddress,
+				String contactEmailAddress,
 				@Context Pagination pagination)
 		throws Exception {
 
@@ -514,10 +514,10 @@ public abstract class BaseContactRoleResourceImpl
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "ContactRole")})
 	public Page<ContactRole> getTeamTeamKeyContactByEmailAddressRolesPage(
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
-				String teamKey,
-			@NotNull @Parameter(hidden = true) @PathParam("emailAddress")
-				String emailAddress,
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
+				teamKey,
+			@NotNull @Parameter(hidden = true) @PathParam("emailAddress") String
+				emailAddress,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -544,10 +544,10 @@ public abstract class BaseContactRoleResourceImpl
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "ContactRole")})
 	public Page<ContactRole> getTeamTeamKeyContactByUuidContactUuidRolesPage(
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
-				String teamKey,
-			@NotNull @Parameter(hidden = true) @PathParam("contactUuid")
-				String contactUuid,
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
+				teamKey,
+			@NotNull @Parameter(hidden = true) @PathParam("contactUuid") String
+				contactUuid,
 			@Context Pagination pagination)
 		throws Exception {
 

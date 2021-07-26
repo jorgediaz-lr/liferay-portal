@@ -90,8 +90,8 @@ public abstract class BaseProductConsumptionResourceImpl
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "ProductConsumption")})
 	public Page<ProductConsumption> getAccountAccountKeyProductConsumptionsPage(
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
-				String accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
+				accountKey,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -119,8 +119,8 @@ public abstract class BaseProductConsumptionResourceImpl
 	public ProductConsumption postAccountAccountKeyProductConsumption(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
-				String accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
+				accountKey,
 			ProductConsumption productConsumption)
 		throws Exception {
 
@@ -212,12 +212,12 @@ public abstract class BaseProductConsumptionResourceImpl
 	@Tags(value = {@Tag(name = "ProductConsumption")})
 	public Page<ProductConsumption>
 			getProductConsumptionByExternalLinkDomainEntityNameEntityPage(
-				@NotNull @Parameter(hidden = true) @PathParam("domain")
-					String domain,
+				@NotNull @Parameter(hidden = true) @PathParam("domain") String
+					domain,
 				@NotNull @Parameter(hidden = true) @PathParam("entityName")
 					String entityName,
-				@NotNull @Parameter(hidden = true) @PathParam("entityId")
-					String entityId,
+				@NotNull @Parameter(hidden = true) @PathParam("entityId") String
+					entityId,
 				@Context Pagination pagination)
 		throws Exception {
 
@@ -246,7 +246,7 @@ public abstract class BaseProductConsumptionResourceImpl
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
 			@NotNull @Parameter(hidden = true)
 			@PathParam("productConsumptionKey")
-				String productConsumptionKey)
+			String productConsumptionKey)
 		throws Exception {
 	}
 
@@ -269,7 +269,7 @@ public abstract class BaseProductConsumptionResourceImpl
 	public ProductConsumption getProductConsumption(
 			@NotNull @Parameter(hidden = true)
 			@PathParam("productConsumptionKey")
-				String productConsumptionKey)
+			String productConsumptionKey)
 		throws Exception {
 
 		return new ProductConsumption();
@@ -300,7 +300,7 @@ public abstract class BaseProductConsumptionResourceImpl
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
 			@NotNull @Parameter(hidden = true)
 			@PathParam("productConsumptionKey")
-				String productConsumptionKey,
+			String productConsumptionKey,
 			ProductConsumptionPermission productConsumptionPermission)
 		throws Exception {
 	}
@@ -330,7 +330,7 @@ public abstract class BaseProductConsumptionResourceImpl
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
 			@NotNull @Parameter(hidden = true)
 			@PathParam("productConsumptionKey")
-				String productConsumptionKey,
+			String productConsumptionKey,
 			ProductConsumptionPermission productConsumptionPermission)
 		throws Exception {
 	}

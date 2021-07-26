@@ -15,6 +15,7 @@
 package com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0;
 
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ExternalLink;
 import com.liferay.osb.koroneiki.phloem.rest.client.json.BaseJSONParser;
 
 import java.text.DateFormat;
@@ -25,6 +26,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -103,6 +105,26 @@ public class ContactRoleSerDes {
 			sb.append(_escape(contactRole.getDescription()));
 
 			sb.append("\"");
+		}
+
+		if (contactRole.getExternalLinks() != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"externalLinks\": ");
+
+			sb.append("[");
+
+			for (int i = 0; i < contactRole.getExternalLinks().length; i++) {
+				sb.append(String.valueOf(contactRole.getExternalLinks()[i]));
+
+				if ((i + 1) < contactRole.getExternalLinks().length) {
+					sb.append(", ");
+				}
+			}
+
+			sb.append("]");
 		}
 
 		if (contactRole.getKey() != null) {
@@ -205,6 +227,15 @@ public class ContactRoleSerDes {
 				"description", String.valueOf(contactRole.getDescription()));
 		}
 
+		if (contactRole.getExternalLinks() == null) {
+			map.put("externalLinks", null);
+		}
+		else {
+			map.put(
+				"externalLinks",
+				String.valueOf(contactRole.getExternalLinks()));
+		}
+
 		if (contactRole.getKey() == null) {
 			map.put("key", null);
 		}
@@ -269,6 +300,18 @@ public class ContactRoleSerDes {
 			else if (Objects.equals(jsonParserFieldName, "description")) {
 				if (jsonParserFieldValue != null) {
 					contactRole.setDescription((String)jsonParserFieldValue);
+				}
+			}
+			else if (Objects.equals(jsonParserFieldName, "externalLinks")) {
+				if (jsonParserFieldValue != null) {
+					contactRole.setExternalLinks(
+						Stream.of(
+							toStrings((Object[])jsonParserFieldValue)
+						).map(
+							object -> ExternalLinkSerDes.toDTO((String)object)
+						).toArray(
+							size -> new ExternalLink[size]
+						));
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "key")) {

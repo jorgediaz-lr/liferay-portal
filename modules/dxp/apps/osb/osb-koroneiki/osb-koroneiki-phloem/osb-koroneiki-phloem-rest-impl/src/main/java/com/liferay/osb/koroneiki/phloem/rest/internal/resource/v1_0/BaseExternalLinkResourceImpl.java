@@ -87,8 +87,8 @@ public abstract class BaseExternalLinkResourceImpl
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "ExternalLink")})
 	public Page<ExternalLink> getAccountAccountKeyExternalLinksPage(
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
-				String accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
+				accountKey,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -117,8 +117,8 @@ public abstract class BaseExternalLinkResourceImpl
 	public ExternalLink postAccountAccountKeyExternalLink(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
-				String accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
+				accountKey,
 			ExternalLink externalLink)
 		throws Exception {
 
@@ -144,8 +144,8 @@ public abstract class BaseExternalLinkResourceImpl
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "ExternalLink")})
 	public Page<ExternalLink> getContactByUuidContactUuidExternalLinksPage(
-			@NotNull @Parameter(hidden = true) @PathParam("contactUuid")
-				String contactUuid,
+			@NotNull @Parameter(hidden = true) @PathParam("contactUuid") String
+				contactUuid,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -174,8 +174,8 @@ public abstract class BaseExternalLinkResourceImpl
 	public ExternalLink postContactByUuidContactUuidExternalLink(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("contactUuid")
-				String contactUuid,
+			@NotNull @Parameter(hidden = true) @PathParam("contactUuid") String
+				contactUuid,
 			ExternalLink externalLink)
 		throws Exception {
 
@@ -285,7 +285,7 @@ public abstract class BaseExternalLinkResourceImpl
 			getProductConsumptionProductConsumptionKeyExternalLinksPage(
 				@NotNull @Parameter(hidden = true)
 				@PathParam("productConsumptionKey")
-					String productConsumptionKey,
+				String productConsumptionKey,
 				@Context Pagination pagination)
 		throws Exception {
 
@@ -318,7 +318,7 @@ public abstract class BaseExternalLinkResourceImpl
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
 			@NotNull @Parameter(hidden = true)
 			@PathParam("productConsumptionKey")
-				String productConsumptionKey,
+			String productConsumptionKey,
 			ExternalLink externalLink)
 		throws Exception {
 
@@ -347,7 +347,7 @@ public abstract class BaseExternalLinkResourceImpl
 			getProductPurchaseProductPurchaseKeyExternalLinksPage(
 				@NotNull @Parameter(hidden = true)
 				@PathParam("productPurchaseKey")
-					String productPurchaseKey,
+				String productPurchaseKey,
 				@Context Pagination pagination)
 		throws Exception {
 
@@ -403,8 +403,8 @@ public abstract class BaseExternalLinkResourceImpl
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "ExternalLink")})
 	public Page<ExternalLink> getProductProductKeyExternalLinksPage(
-			@NotNull @Parameter(hidden = true) @PathParam("productKey")
-				String productKey,
+			@NotNull @Parameter(hidden = true) @PathParam("productKey") String
+				productKey,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -433,8 +433,8 @@ public abstract class BaseExternalLinkResourceImpl
 	public ExternalLink postProductProductKeyExternalLink(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("productKey")
-				String productKey,
+			@NotNull @Parameter(hidden = true) @PathParam("productKey") String
+				productKey,
 			ExternalLink externalLink)
 		throws Exception {
 
@@ -460,8 +460,8 @@ public abstract class BaseExternalLinkResourceImpl
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "ExternalLink")})
 	public Page<ExternalLink> getTeamTeamKeyExternalLinksPage(
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
-				String teamKey,
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
+				teamKey,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -490,8 +490,8 @@ public abstract class BaseExternalLinkResourceImpl
 	public ExternalLink postTeamTeamKeyExternalLink(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
-				String teamKey,
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
+				teamKey,
 			ExternalLink externalLink)
 		throws Exception {
 

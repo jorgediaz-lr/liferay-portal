@@ -90,10 +90,10 @@ public abstract class BaseTeamRoleResourceImpl implements TeamRoleResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "TeamRole")})
 	public Page<TeamRole> getAccountAccountKeyAssignedTeamTeamKeyRolesPage(
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
-				String accountKey,
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
-				String teamKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
+				accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
+				teamKey,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -177,8 +177,8 @@ public abstract class BaseTeamRoleResourceImpl implements TeamRoleResource {
 	public void deleteTeamRole(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("teamRoleKey")
-				String teamRoleKey)
+			@NotNull @Parameter(hidden = true) @PathParam("teamRoleKey") String
+				teamRoleKey)
 		throws Exception {
 	}
 
@@ -197,8 +197,8 @@ public abstract class BaseTeamRoleResourceImpl implements TeamRoleResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "TeamRole")})
 	public TeamRole getTeamRole(
-			@NotNull @Parameter(hidden = true) @PathParam("teamRoleKey")
-				String teamRoleKey)
+			@NotNull @Parameter(hidden = true) @PathParam("teamRoleKey") String
+				teamRoleKey)
 		throws Exception {
 
 		return new TeamRole();
@@ -225,8 +225,8 @@ public abstract class BaseTeamRoleResourceImpl implements TeamRoleResource {
 	public TeamRole putTeamRole(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("teamRoleKey")
-				String teamRoleKey,
+			@NotNull @Parameter(hidden = true) @PathParam("teamRoleKey") String
+				teamRoleKey,
 			TeamRole teamRole)
 		throws Exception {
 
@@ -254,8 +254,8 @@ public abstract class BaseTeamRoleResourceImpl implements TeamRoleResource {
 	public void deleteTeamRoleTeamRolePermission(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("teamRoleKey")
-				String teamRoleKey,
+			@NotNull @Parameter(hidden = true) @PathParam("teamRoleKey") String
+				teamRoleKey,
 			TeamRolePermission teamRolePermission)
 		throws Exception {
 	}
@@ -281,8 +281,8 @@ public abstract class BaseTeamRoleResourceImpl implements TeamRoleResource {
 	public void putTeamRoleTeamRolePermission(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("teamRoleKey")
-				String teamRoleKey,
+			@NotNull @Parameter(hidden = true) @PathParam("teamRoleKey") String
+				teamRoleKey,
 			TeamRolePermission teamRolePermission)
 		throws Exception {
 	}
@@ -305,10 +305,10 @@ public abstract class BaseTeamRoleResourceImpl implements TeamRoleResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "TeamRole")})
 	public TeamRole getTeamRoleTeamRoleTypeTeamRoleName(
-			@NotNull @Parameter(hidden = true) @PathParam("teamRoleType")
-				String teamRoleType,
-			@NotNull @Parameter(hidden = true) @PathParam("teamRoleName")
-				String teamRoleName)
+			@NotNull @Parameter(hidden = true) @PathParam("teamRoleType") String
+				teamRoleType,
+			@NotNull @Parameter(hidden = true) @PathParam("teamRoleName") String
+				teamRoleName)
 		throws Exception {
 
 		return new TeamRole();

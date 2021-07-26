@@ -148,12 +148,12 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Account")})
 	public Page<Account> getAccountByExternalLinkDomainEntityNameEntityPage(
-			@NotNull @Parameter(hidden = true) @PathParam("domain")
-				String domain,
-			@NotNull @Parameter(hidden = true) @PathParam("entityName")
-				String entityName,
-			@NotNull @Parameter(hidden = true) @PathParam("entityId")
-				String entityId,
+			@NotNull @Parameter(hidden = true) @PathParam("domain") String
+				domain,
+			@NotNull @Parameter(hidden = true) @PathParam("entityName") String
+				entityName,
+			@NotNull @Parameter(hidden = true) @PathParam("entityId") String
+				entityId,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -180,8 +180,8 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	public void deleteAccount(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
-				String accountKey)
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
+				accountKey)
 		throws Exception {
 	}
 
@@ -200,8 +200,8 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Account")})
 	public Account getAccount(
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
-				String accountKey)
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
+				accountKey)
 		throws Exception {
 
 		return new Account();
@@ -228,8 +228,8 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	public Account putAccount(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
-				String accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
+				accountKey,
 			Account account)
 		throws Exception {
 
@@ -257,8 +257,8 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	public void deleteAccountAccountPermission(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
-				String accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
+				accountKey,
 			AccountPermission accountPermission)
 		throws Exception {
 	}
@@ -284,8 +284,8 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	public void putAccountAccountPermission(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
-				String accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
+				accountKey,
 			AccountPermission accountPermission)
 		throws Exception {
 	}
@@ -313,10 +313,10 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	public void deleteAccountAssignedTeamTeamKeyRole(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
-				String accountKey,
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
-				String teamKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
+				accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
+				teamKey,
 			@NotNull @Parameter(hidden = true) @QueryParam("teamRoleKeys")
 				String[] teamRoleKeys)
 		throws Exception {
@@ -345,10 +345,10 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	public void putAccountAssignedTeamTeamKeyRole(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
-				String accountKey,
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
-				String teamKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
+				accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
+				teamKey,
 			@NotNull @Parameter(hidden = true) @QueryParam("teamRoleKeys")
 				String[] teamRoleKeys)
 		throws Exception {
@@ -373,8 +373,8 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Account")})
 	public Page<Account> getAccountChildAccountsPage(
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
-				String accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
+				accountKey,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -408,8 +408,8 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	public void deleteAccountContactByEmailAddresContactEmailAddressRole(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
-				String accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
+				accountKey,
 			@NotNull @Parameter(hidden = true) @PathParam("contactEmailAddress")
 				String contactEmailAddress,
 			@NotNull @Parameter(hidden = true) @QueryParam("contactRoleKeys")
@@ -442,8 +442,8 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	public void putAccountContactByEmailAddresContactEmailAddressRole(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
-				String accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
+				accountKey,
 			@NotNull @Parameter(hidden = true) @PathParam("contactEmailAddress")
 				String contactEmailAddress,
 			@NotNull @Parameter(hidden = true) @QueryParam("contactRoleKeys")
@@ -476,10 +476,10 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	public void deleteAccountContactByUuidContactUuidRole(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
-				String accountKey,
-			@NotNull @Parameter(hidden = true) @PathParam("contactUuid")
-				String contactUuid,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
+				accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("contactUuid") String
+				contactUuid,
 			@NotNull @Parameter(hidden = true) @QueryParam("contactRoleKeys")
 				String[] contactRoleKeys)
 		throws Exception {
@@ -508,10 +508,10 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	public void putAccountContactByUuidContactUuidRole(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
-				String accountKey,
-			@NotNull @Parameter(hidden = true) @PathParam("contactUuid")
-				String contactUuid,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
+				accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("contactUuid") String
+				contactUuid,
 			@NotNull @Parameter(hidden = true) @QueryParam("contactRoleKeys")
 				String[] contactRoleKeys)
 		throws Exception {
@@ -539,11 +539,11 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	public void deleteAccountCustomerContactByEmailAddres(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
-				String accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
+				accountKey,
 			@NotNull @Parameter(hidden = true)
 			@QueryParam("contactEmailAddresses")
-				String[] contactEmailAddresses)
+			String[] contactEmailAddresses)
 		throws Exception {
 	}
 
@@ -569,8 +569,8 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	public void deleteAccountCustomerContactByUuid(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
-				String accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
+				accountKey,
 			@NotNull @Parameter(hidden = true) @QueryParam("contactUuids")
 				String[] contactUuids)
 		throws Exception {
@@ -598,11 +598,11 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	public void deleteAccountWorkerContactByEmailAddres(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
-				String accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
+				accountKey,
 			@NotNull @Parameter(hidden = true)
 			@QueryParam("contactEmailAddresses")
-				String[] contactEmailAddresses)
+			String[] contactEmailAddresses)
 		throws Exception {
 	}
 
@@ -628,8 +628,8 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	public void deleteAccountWorkerContactByUuid(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
-				String accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
+				accountKey,
 			@NotNull @Parameter(hidden = true) @QueryParam("contactUuids")
 				String[] contactUuids)
 		throws Exception {
@@ -654,8 +654,8 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Account")})
 	public Page<Account> getContactByUuidContactUuidAccountsPage(
-			@NotNull @Parameter(hidden = true) @PathParam("contactUuid")
-				String contactUuid,
+			@NotNull @Parameter(hidden = true) @PathParam("contactUuid") String
+				contactUuid,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -681,8 +681,8 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Account")})
 	public Page<Account> getTeamTeamKeyAssignedAccountsPage(
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
-				String teamKey,
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
+				teamKey,
 			@Context Pagination pagination)
 		throws Exception {
 

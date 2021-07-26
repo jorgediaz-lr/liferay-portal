@@ -804,6 +804,8 @@ public interface TeamResource {
 
 			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
 
+			httpInvoker.body(agentUID.toString(), "application/json");
+
 			if (_builder._locale != null) {
 				httpInvoker.header(
 					"Accept-Language", _builder._locale.toLanguageTag());
@@ -1065,6 +1067,16 @@ public interface TeamResource {
 
 			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
 
+			httpInvoker.body(
+				Stream.of(
+					emailAddresses
+				).map(
+					value -> "\"" + String.valueOf(value) + "\""
+				).collect(
+					Collectors.toList()
+				).toString(),
+				"application/json");
+
 			if (_builder._locale != null) {
 				httpInvoker.header(
 					"Accept-Language", _builder._locale.toLanguageTag());
@@ -1170,7 +1182,7 @@ public interface TeamResource {
 				Stream.of(
 					emailAddresses
 				).map(
-					value -> String.valueOf(value)
+					value -> "\"" + String.valueOf(value) + "\""
 				).collect(
 					Collectors.toList()
 				).toString(),
@@ -1277,6 +1289,16 @@ public interface TeamResource {
 			throws Exception {
 
 			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
+
+			httpInvoker.body(
+				Stream.of(
+					contactRoleKeys
+				).map(
+					value -> "\"" + String.valueOf(value) + "\""
+				).collect(
+					Collectors.toList()
+				).toString(),
+				"application/json");
 
 			if (_builder._locale != null) {
 				httpInvoker.header(
@@ -1385,7 +1407,7 @@ public interface TeamResource {
 				Stream.of(
 					contactRoleKeys
 				).map(
-					value -> String.valueOf(value)
+					value -> "\"" + String.valueOf(value) + "\""
 				).collect(
 					Collectors.toList()
 				).toString(),
@@ -1492,6 +1514,16 @@ public interface TeamResource {
 
 			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
 
+			httpInvoker.body(
+				Stream.of(
+					contactUuids
+				).map(
+					value -> "\"" + String.valueOf(value) + "\""
+				).collect(
+					Collectors.toList()
+				).toString(),
+				"application/json");
+
 			if (_builder._locale != null) {
 				httpInvoker.header(
 					"Accept-Language", _builder._locale.toLanguageTag());
@@ -1596,7 +1628,7 @@ public interface TeamResource {
 				Stream.of(
 					contactUuids
 				).map(
-					value -> String.valueOf(value)
+					value -> "\"" + String.valueOf(value) + "\""
 				).collect(
 					Collectors.toList()
 				).toString(),
@@ -1702,6 +1734,16 @@ public interface TeamResource {
 			throws Exception {
 
 			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
+
+			httpInvoker.body(
+				Stream.of(
+					contactRoleKeys
+				).map(
+					value -> "\"" + String.valueOf(value) + "\""
+				).collect(
+					Collectors.toList()
+				).toString(),
+				"application/json");
 
 			if (_builder._locale != null) {
 				httpInvoker.header(
@@ -1809,7 +1851,7 @@ public interface TeamResource {
 				Stream.of(
 					contactRoleKeys
 				).map(
-					value -> String.valueOf(value)
+					value -> "\"" + String.valueOf(value) + "\""
 				).collect(
 					Collectors.toList()
 				).toString(),
@@ -1915,6 +1957,8 @@ public interface TeamResource {
 			throws Exception {
 
 			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
+
+			httpInvoker.body(teamPermission.toString(), "application/json");
 
 			if (_builder._locale != null) {
 				httpInvoker.header(

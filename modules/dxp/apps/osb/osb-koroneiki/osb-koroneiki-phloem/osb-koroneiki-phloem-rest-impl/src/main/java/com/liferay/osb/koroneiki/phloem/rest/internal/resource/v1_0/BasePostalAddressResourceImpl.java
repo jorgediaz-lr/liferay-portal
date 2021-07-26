@@ -81,8 +81,8 @@ public abstract class BasePostalAddressResourceImpl
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "PostalAddress")})
 	public Page<PostalAddress> getAccountAccountKeyPostalAddressesPage(
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
-				String accountKey)
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
+				accountKey)
 		throws Exception {
 
 		return Page.of(Collections.emptyList());
@@ -109,8 +109,8 @@ public abstract class BasePostalAddressResourceImpl
 	public PostalAddress postAccountAccountKeyPostalAddress(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
-				String accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
+				accountKey,
 			PostalAddress postalAddress)
 		throws Exception {
 

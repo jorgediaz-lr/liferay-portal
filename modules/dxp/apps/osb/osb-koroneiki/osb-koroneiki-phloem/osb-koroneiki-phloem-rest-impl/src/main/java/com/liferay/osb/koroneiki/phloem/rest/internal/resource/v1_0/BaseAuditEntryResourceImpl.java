@@ -81,8 +81,8 @@ public abstract class BaseAuditEntryResourceImpl implements AuditEntryResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "AuditEntry")})
 	public Page<AuditEntry> getAccountAccountKeyAuditEntriesPage(
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
-				String accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
+				accountKey,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -157,8 +157,8 @@ public abstract class BaseAuditEntryResourceImpl implements AuditEntryResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "AuditEntry")})
 	public Page<AuditEntry> getContactByUuidContactUuidAuditEntriesPage(
-			@NotNull @Parameter(hidden = true) @PathParam("contactUuid")
-				String contactUuid,
+			@NotNull @Parameter(hidden = true) @PathParam("contactUuid") String
+				contactUuid,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -184,8 +184,8 @@ public abstract class BaseAuditEntryResourceImpl implements AuditEntryResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "AuditEntry")})
 	public Page<AuditEntry> getTeamRoleTeamRoleKeyAuditEntriesPage(
-			@NotNull @Parameter(hidden = true) @PathParam("teamRoleKey")
-				String teamRoleKey,
+			@NotNull @Parameter(hidden = true) @PathParam("teamRoleKey") String
+				teamRoleKey,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -211,8 +211,8 @@ public abstract class BaseAuditEntryResourceImpl implements AuditEntryResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "AuditEntry")})
 	public Page<AuditEntry> getTeamTeamKeyAuditEntriesPage(
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
-				String teamKey,
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
+				teamKey,
 			@Context Pagination pagination)
 		throws Exception {
 

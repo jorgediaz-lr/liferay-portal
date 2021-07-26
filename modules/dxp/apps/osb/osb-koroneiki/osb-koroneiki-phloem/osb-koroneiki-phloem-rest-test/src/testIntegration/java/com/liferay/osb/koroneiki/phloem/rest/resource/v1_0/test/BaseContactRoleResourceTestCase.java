@@ -38,9 +38,11 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.test.util.RoleTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -1427,7 +1429,30 @@ public abstract class BaseContactRoleResourceTestCase {
 
 	@Test
 	public void testPutContactRoleContactRolePermission() throws Exception {
-		Assert.assertTrue(false);
+		@SuppressWarnings("PMD.UnusedLocalVariable")
+		ContactRole contactRole =
+			testPutContactRoleContactRolePermission_addContactRole();
+
+		com.liferay.portal.kernel.model.Role role = RoleTestUtil.addRole(
+			RoleConstants.TYPE_REGULAR);
+
+		assertHttpResponseStatusCode(
+			200,
+			contactRoleResource.putContactRoleContactRolePermissionHttpResponse(
+				null, null, null, null));
+
+		assertHttpResponseStatusCode(
+			404,
+			contactRoleResource.putContactRoleContactRolePermissionHttpResponse(
+				null, null, null, null));
+	}
+
+	protected ContactRole
+			testPutContactRoleContactRolePermission_addContactRole()
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
 	}
 
 	@Test
@@ -1821,6 +1846,14 @@ public abstract class BaseContactRoleResourceTestCase {
 				continue;
 			}
 
+			if (Objects.equals("externalLinks", additionalAssertFieldName)) {
+				if (contactRole.getExternalLinks() == null) {
+					valid = false;
+				}
+
+				continue;
+			}
+
 			if (Objects.equals("key", additionalAssertFieldName)) {
 				if (contactRole.getKey() == null) {
 					valid = false;
@@ -1886,7 +1919,7 @@ public abstract class BaseContactRoleResourceTestCase {
 		List<GraphQLField> graphQLFields = new ArrayList<>();
 
 		for (Field field :
-				ReflectionUtil.getDeclaredFields(
+				getDeclaredFields(
 					com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.ContactRole.
 						class)) {
 
@@ -1921,7 +1954,7 @@ public abstract class BaseContactRoleResourceTestCase {
 				}
 
 				List<GraphQLField> childrenGraphQLFields = getGraphQLFields(
-					ReflectionUtil.getDeclaredFields(clazz));
+					getDeclaredFields(clazz));
 
 				graphQLFields.add(
 					new GraphQLField(field.getName(), childrenGraphQLFields));
@@ -1971,6 +2004,17 @@ public abstract class BaseContactRoleResourceTestCase {
 				if (!Objects.deepEquals(
 						contactRole1.getDescription(),
 						contactRole2.getDescription())) {
+
+					return false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals("externalLinks", additionalAssertFieldName)) {
+				if (!Objects.deepEquals(
+						contactRole1.getExternalLinks(),
+						contactRole2.getExternalLinks())) {
 
 					return false;
 				}
@@ -2050,6 +2094,17 @@ public abstract class BaseContactRoleResourceTestCase {
 		}
 
 		return false;
+	}
+
+	protected Field[] getDeclaredFields(Class clazz) throws Exception {
+		Stream<Field> stream = Stream.of(
+			ReflectionUtil.getDeclaredFields(clazz));
+
+		return stream.filter(
+			field -> !field.isSynthetic()
+		).toArray(
+			Field[]::new
+		);
 	}
 
 	protected java.util.Collection<EntityField> getEntityFields()
@@ -2173,6 +2228,11 @@ public abstract class BaseContactRoleResourceTestCase {
 			sb.append("'");
 
 			return sb.toString();
+		}
+
+		if (entityFieldName.equals("externalLinks")) {
+			throw new IllegalArgumentException(
+				"Invalid entity field " + entityFieldName);
 		}
 
 		if (entityFieldName.equals("key")) {

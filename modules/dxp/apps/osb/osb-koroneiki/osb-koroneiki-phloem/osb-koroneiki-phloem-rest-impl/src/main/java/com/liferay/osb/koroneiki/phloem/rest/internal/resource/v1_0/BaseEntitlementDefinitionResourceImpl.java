@@ -195,7 +195,7 @@ public abstract class BaseEntitlementDefinitionResourceImpl
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
 			@NotNull @Parameter(hidden = true)
 			@PathParam("entitlementDefinitionKey")
-				String entitlementDefinitionKey)
+			String entitlementDefinitionKey)
 		throws Exception {
 	}
 
@@ -218,7 +218,7 @@ public abstract class BaseEntitlementDefinitionResourceImpl
 	public EntitlementDefinition getEntitlementDefinition(
 			@NotNull @Parameter(hidden = true)
 			@PathParam("entitlementDefinitionKey")
-				String entitlementDefinitionKey)
+			String entitlementDefinitionKey)
 		throws Exception {
 
 		return new EntitlementDefinition();
@@ -249,7 +249,7 @@ public abstract class BaseEntitlementDefinitionResourceImpl
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
 			@NotNull @Parameter(hidden = true)
 			@PathParam("entitlementDefinitionKey")
-				String entitlementDefinitionKey)
+			String entitlementDefinitionKey)
 		throws Exception {
 	}
 

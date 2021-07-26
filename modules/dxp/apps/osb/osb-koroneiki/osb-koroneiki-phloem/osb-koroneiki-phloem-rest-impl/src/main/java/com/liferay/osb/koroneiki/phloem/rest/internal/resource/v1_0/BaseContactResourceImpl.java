@@ -91,8 +91,8 @@ public abstract class BaseContactResourceImpl implements ContactResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Contact")})
 	public Page<Contact> getAccountAccountKeyContactsPage(
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
-				String accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
+				accountKey,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -118,8 +118,8 @@ public abstract class BaseContactResourceImpl implements ContactResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Contact")})
 	public Page<Contact> getAccountAccountKeyCustomerContactsPage(
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
-				String accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
+				accountKey,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -145,8 +145,8 @@ public abstract class BaseContactResourceImpl implements ContactResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Contact")})
 	public Page<Contact> getAccountAccountKeyWorkerContactsPage(
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
-				String accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
+				accountKey,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -230,8 +230,8 @@ public abstract class BaseContactResourceImpl implements ContactResource {
 	public void deleteContactByEmailAddresEmailAddress(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("emailAddress")
-				String emailAddress)
+			@NotNull @Parameter(hidden = true) @PathParam("emailAddress") String
+				emailAddress)
 		throws Exception {
 	}
 
@@ -250,8 +250,8 @@ public abstract class BaseContactResourceImpl implements ContactResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Contact")})
 	public Contact getContactByEmailAddresEmailAddress(
-			@NotNull @Parameter(hidden = true) @PathParam("emailAddress")
-				String emailAddress)
+			@NotNull @Parameter(hidden = true) @PathParam("emailAddress") String
+				emailAddress)
 		throws Exception {
 
 		return new Contact();
@@ -278,8 +278,8 @@ public abstract class BaseContactResourceImpl implements ContactResource {
 	public Contact putContactByEmailAddresEmailAddress(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("emailAddress")
-				String emailAddress,
+			@NotNull @Parameter(hidden = true) @PathParam("emailAddress") String
+				emailAddress,
 			Contact contact)
 		throws Exception {
 
@@ -306,8 +306,8 @@ public abstract class BaseContactResourceImpl implements ContactResource {
 	public void deleteContactByUuidContactUuid(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("contactUuid")
-				String contactUuid)
+			@NotNull @Parameter(hidden = true) @PathParam("contactUuid") String
+				contactUuid)
 		throws Exception {
 	}
 
@@ -326,8 +326,8 @@ public abstract class BaseContactResourceImpl implements ContactResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Contact")})
 	public Contact getContactByUuidContactUuid(
-			@NotNull @Parameter(hidden = true) @PathParam("contactUuid")
-				String contactUuid)
+			@NotNull @Parameter(hidden = true) @PathParam("contactUuid") String
+				contactUuid)
 		throws Exception {
 
 		return new Contact();
@@ -354,8 +354,8 @@ public abstract class BaseContactResourceImpl implements ContactResource {
 	public Contact putContactByUuidContactUuid(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("contactUuid")
-				String contactUuid,
+			@NotNull @Parameter(hidden = true) @PathParam("contactUuid") String
+				contactUuid,
 			Contact contact)
 		throws Exception {
 
@@ -383,8 +383,8 @@ public abstract class BaseContactResourceImpl implements ContactResource {
 	public void deleteContactByUuidContactUuidContactPermission(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("contactUuid")
-				String contactUuid,
+			@NotNull @Parameter(hidden = true) @PathParam("contactUuid") String
+				contactUuid,
 			ContactPermission contactPermission)
 		throws Exception {
 	}
@@ -410,8 +410,8 @@ public abstract class BaseContactResourceImpl implements ContactResource {
 	public void putContactByUuidContactUuidContactPermission(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("contactUuid")
-				String contactUuid,
+			@NotNull @Parameter(hidden = true) @PathParam("contactUuid") String
+				contactUuid,
 			ContactPermission contactPermission)
 		throws Exception {
 	}
@@ -435,8 +435,8 @@ public abstract class BaseContactResourceImpl implements ContactResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Contact")})
 	public Page<Contact> getTeamTeamKeyContactsPage(
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
-				String teamKey,
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
+				teamKey,
 			@Context Pagination pagination)
 		throws Exception {
 

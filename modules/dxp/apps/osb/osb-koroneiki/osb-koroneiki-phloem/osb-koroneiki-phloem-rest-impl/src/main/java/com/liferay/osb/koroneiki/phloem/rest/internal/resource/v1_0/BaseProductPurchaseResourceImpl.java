@@ -90,8 +90,8 @@ public abstract class BaseProductPurchaseResourceImpl
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "ProductPurchase")})
 	public Page<ProductPurchase> getAccountAccountKeyProductPurchasesPage(
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
-				String accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
+				accountKey,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -119,8 +119,8 @@ public abstract class BaseProductPurchaseResourceImpl
 	public ProductPurchase postAccountAccountKeyProductPurchase(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
-				String accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
+				accountKey,
 			ProductPurchase productPurchase)
 		throws Exception {
 
@@ -212,12 +212,12 @@ public abstract class BaseProductPurchaseResourceImpl
 	@Tags(value = {@Tag(name = "ProductPurchase")})
 	public Page<ProductPurchase>
 			getProductPurchaseByExternalLinkDomainEntityNameEntityPage(
-				@NotNull @Parameter(hidden = true) @PathParam("domain")
-					String domain,
+				@NotNull @Parameter(hidden = true) @PathParam("domain") String
+					domain,
 				@NotNull @Parameter(hidden = true) @PathParam("entityName")
 					String entityName,
-				@NotNull @Parameter(hidden = true) @PathParam("entityId")
-					String entityId,
+				@NotNull @Parameter(hidden = true) @PathParam("entityId") String
+					entityId,
 				@Context Pagination pagination)
 		throws Exception {
 

@@ -89,8 +89,8 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Team")})
 	public Page<Team> getAccountAccountKeyAssignedTeamsPage(
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
-				String accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
+				accountKey,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -116,8 +116,8 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Team")})
 	public Page<Team> getAccountAccountKeyTeamsPage(
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
-				String accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
+				accountKey,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -145,8 +145,8 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	public Team postAccountAccountKeyTeam(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey")
-				String accountKey,
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
+				accountKey,
 			Team team)
 		throws Exception {
 
@@ -205,12 +205,12 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Team")})
 	public Page<Team> getTeamByExternalLinkDomainEntityNameEntityPage(
-			@NotNull @Parameter(hidden = true) @PathParam("domain")
-				String domain,
-			@NotNull @Parameter(hidden = true) @PathParam("entityName")
-				String entityName,
-			@NotNull @Parameter(hidden = true) @PathParam("entityId")
-				String entityId,
+			@NotNull @Parameter(hidden = true) @PathParam("domain") String
+				domain,
+			@NotNull @Parameter(hidden = true) @PathParam("entityName") String
+				entityName,
+			@NotNull @Parameter(hidden = true) @PathParam("entityId") String
+				entityId,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -237,8 +237,8 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	public void deleteTeam(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
-				String teamKey)
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
+				teamKey)
 		throws Exception {
 	}
 
@@ -255,8 +255,8 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Team")})
 	public Team getTeam(
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
-				String teamKey)
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
+				teamKey)
 		throws Exception {
 
 		return new Team();
@@ -283,8 +283,8 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	public Team putTeam(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
-				String teamKey,
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
+				teamKey,
 			Team team)
 		throws Exception {
 
@@ -313,8 +313,8 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	public void deleteTeamContactByEmailAddress(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
-				String teamKey,
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
+				teamKey,
 			@NotNull @Parameter(hidden = true) @QueryParam("emailAddresses")
 				String[] emailAddresses)
 		throws Exception {
@@ -342,8 +342,8 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	public void putTeamContactByEmailAddress(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
-				String teamKey,
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
+				teamKey,
 			@NotNull @Parameter(hidden = true) @QueryParam("emailAddresses")
 				String[] emailAddresses)
 		throws Exception {
@@ -372,10 +372,10 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	public void deleteTeamContactByEmailAddressRole(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
-				String teamKey,
-			@NotNull @Parameter(hidden = true) @PathParam("emailAddress")
-				String emailAddress,
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
+				teamKey,
+			@NotNull @Parameter(hidden = true) @PathParam("emailAddress") String
+				emailAddress,
 			@NotNull @Parameter(hidden = true) @QueryParam("contactRoleKeys")
 				String[] contactRoleKeys)
 		throws Exception {
@@ -404,10 +404,10 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	public void putTeamContactByEmailAddressRole(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
-				String teamKey,
-			@NotNull @Parameter(hidden = true) @PathParam("emailAddress")
-				String emailAddress,
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
+				teamKey,
+			@NotNull @Parameter(hidden = true) @PathParam("emailAddress") String
+				emailAddress,
 			@NotNull @Parameter(hidden = true) @QueryParam("contactRoleKeys")
 				String[] contactRoleKeys)
 		throws Exception {
@@ -435,8 +435,8 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	public void deleteTeamContactByUuid(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
-				String teamKey,
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
+				teamKey,
 			@NotNull @Parameter(hidden = true) @QueryParam("contactUuids")
 				String[] contactUuids)
 		throws Exception {
@@ -464,8 +464,8 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	public void putTeamContactByUuid(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
-				String teamKey,
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
+				teamKey,
 			@NotNull @Parameter(hidden = true) @QueryParam("contactUuids")
 				String[] contactUuids)
 		throws Exception {
@@ -494,10 +494,10 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	public void deleteTeamContactByUuidContactUuidRole(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
-				String teamKey,
-			@NotNull @Parameter(hidden = true) @PathParam("contactUuid")
-				String contactUuid,
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
+				teamKey,
+			@NotNull @Parameter(hidden = true) @PathParam("contactUuid") String
+				contactUuid,
 			@NotNull @Parameter(hidden = true) @QueryParam("contactRoleKeys")
 				String[] contactRoleKeys)
 		throws Exception {
@@ -526,10 +526,10 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	public void putTeamContactByUuidContactUuidRole(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
-				String teamKey,
-			@NotNull @Parameter(hidden = true) @PathParam("contactUuid")
-				String contactUuid,
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
+				teamKey,
+			@NotNull @Parameter(hidden = true) @PathParam("contactUuid") String
+				contactUuid,
 			@NotNull @Parameter(hidden = true) @QueryParam("contactRoleKeys")
 				String[] contactRoleKeys)
 		throws Exception {
@@ -556,8 +556,8 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	public void deleteTeamTeamPermission(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
-				String teamKey,
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
+				teamKey,
 			TeamPermission teamPermission)
 		throws Exception {
 	}
@@ -583,8 +583,8 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	public void putTeamTeamPermission(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("teamKey")
-				String teamKey,
+			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
+				teamKey,
 			TeamPermission teamPermission)
 		throws Exception {
 	}

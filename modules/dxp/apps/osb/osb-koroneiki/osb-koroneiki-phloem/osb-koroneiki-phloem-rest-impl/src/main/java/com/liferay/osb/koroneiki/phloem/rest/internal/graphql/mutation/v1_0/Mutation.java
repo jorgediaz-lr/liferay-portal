@@ -219,8 +219,8 @@ public class Mutation {
 			@GraphQLName("agentName") String agentName,
 			@GraphQLName("agentUID") String agentUID,
 			@GraphQLName("accountKey") String accountKey,
-			@GraphQLName("accountPermission")
-				AccountPermission accountPermission)
+			@GraphQLName("accountPermission") AccountPermission
+				accountPermission)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
@@ -237,8 +237,8 @@ public class Mutation {
 			@GraphQLName("agentName") String agentName,
 			@GraphQLName("agentUID") String agentUID,
 			@GraphQLName("accountKey") String accountKey,
-			@GraphQLName("accountPermission")
-				AccountPermission accountPermission)
+			@GraphQLName("accountPermission") AccountPermission
+				accountPermission)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
@@ -381,8 +381,8 @@ public class Mutation {
 			@GraphQLName("agentName") String agentName,
 			@GraphQLName("agentUID") String agentUID,
 			@GraphQLName("accountKey") String accountKey,
-			@GraphQLName("contactEmailAddresses")
-				String[] contactEmailAddresses)
+			@GraphQLName("contactEmailAddresses") String[]
+				contactEmailAddresses)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
@@ -418,8 +418,8 @@ public class Mutation {
 			@GraphQLName("agentName") String agentName,
 			@GraphQLName("agentUID") String agentUID,
 			@GraphQLName("accountKey") String accountKey,
-			@GraphQLName("contactEmailAddresses")
-				String[] contactEmailAddresses)
+			@GraphQLName("contactEmailAddresses") String[]
+				contactEmailAddresses)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
@@ -532,8 +532,8 @@ public class Mutation {
 			@GraphQLName("agentName") String agentName,
 			@GraphQLName("agentUID") String agentUID,
 			@GraphQLName("contactUuid") String contactUuid,
-			@GraphQLName("contactPermission")
-				ContactPermission contactPermission)
+			@GraphQLName("contactPermission") ContactPermission
+				contactPermission)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
@@ -551,8 +551,8 @@ public class Mutation {
 			@GraphQLName("agentName") String agentName,
 			@GraphQLName("agentUID") String agentUID,
 			@GraphQLName("contactUuid") String contactUuid,
-			@GraphQLName("contactPermission")
-				ContactPermission contactPermission)
+			@GraphQLName("contactPermission") ContactPermission
+				contactPermission)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
@@ -615,8 +615,8 @@ public class Mutation {
 			@GraphQLName("agentName") String agentName,
 			@GraphQLName("agentUID") String agentUID,
 			@GraphQLName("contactRoleKey") String contactRoleKey,
-			@GraphQLName("contactRolePermission")
-				ContactRolePermission contactRolePermission)
+			@GraphQLName("contactRolePermission") ContactRolePermission
+				contactRolePermission)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
@@ -635,8 +635,8 @@ public class Mutation {
 			@GraphQLName("agentName") String agentName,
 			@GraphQLName("agentUID") String agentUID,
 			@GraphQLName("contactRoleKey") String contactRoleKey,
-			@GraphQLName("contactRolePermission")
-				ContactRolePermission contactRolePermission)
+			@GraphQLName("contactRolePermission") ContactRolePermission
+				contactRolePermission)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
@@ -654,8 +654,8 @@ public class Mutation {
 	public EntitlementDefinition createAccountEntitlementDefinition(
 			@GraphQLName("agentName") String agentName,
 			@GraphQLName("agentUID") String agentUID,
-			@GraphQLName("entitlementDefinition")
-				EntitlementDefinition entitlementDefinition)
+			@GraphQLName("entitlementDefinition") EntitlementDefinition
+				entitlementDefinition)
 		throws Exception {
 
 		return _applyComponentServiceObjects(
@@ -670,8 +670,8 @@ public class Mutation {
 	public EntitlementDefinition createContactEntitlementDefinition(
 			@GraphQLName("agentName") String agentName,
 			@GraphQLName("agentUID") String agentUID,
-			@GraphQLName("entitlementDefinition")
-				EntitlementDefinition entitlementDefinition)
+			@GraphQLName("entitlementDefinition") EntitlementDefinition
+				entitlementDefinition)
 		throws Exception {
 
 		return _applyComponentServiceObjects(
@@ -686,8 +686,8 @@ public class Mutation {
 	public boolean deleteEntitlementDefinition(
 			@GraphQLName("agentName") String agentName,
 			@GraphQLName("agentUID") String agentUID,
-			@GraphQLName("entitlementDefinitionKey")
-				String entitlementDefinitionKey)
+			@GraphQLName("entitlementDefinitionKey") String
+				entitlementDefinitionKey)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
@@ -706,8 +706,8 @@ public class Mutation {
 	public boolean createEntitlementDefinitionSynchronize(
 			@GraphQLName("agentName") String agentName,
 			@GraphQLName("agentUID") String agentUID,
-			@GraphQLName("entitlementDefinitionKey")
-				String entitlementDefinitionKey)
+			@GraphQLName("entitlementDefinitionKey") String
+				entitlementDefinitionKey)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
@@ -793,8 +793,8 @@ public class Mutation {
 			createProductConsumptionProductConsumptionKeyExternalLink(
 				@GraphQLName("agentName") String agentName,
 				@GraphQLName("agentUID") String agentUID,
-				@GraphQLName("productConsumptionKey")
-					String productConsumptionKey,
+				@GraphQLName("productConsumptionKey") String
+					productConsumptionKey,
 				@GraphQLName("externalLink") ExternalLink externalLink)
 		throws Exception {
 
@@ -1002,8 +1002,8 @@ public class Mutation {
 			@GraphQLName("agentName") String agentName,
 			@GraphQLName("agentUID") String agentUID,
 			@GraphQLName("productKey") String productKey,
-			@GraphQLName("productPermission")
-				ProductPermission productPermission)
+			@GraphQLName("productPermission") ProductPermission
+				productPermission)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
@@ -1020,8 +1020,8 @@ public class Mutation {
 			@GraphQLName("agentName") String agentName,
 			@GraphQLName("agentUID") String agentUID,
 			@GraphQLName("productKey") String productKey,
-			@GraphQLName("productPermission")
-				ProductPermission productPermission)
+			@GraphQLName("productPermission") ProductPermission
+				productPermission)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
@@ -1038,8 +1038,8 @@ public class Mutation {
 			@GraphQLName("agentName") String agentName,
 			@GraphQLName("agentUID") String agentUID,
 			@GraphQLName("accountKey") String accountKey,
-			@GraphQLName("productConsumption")
-				ProductConsumption productConsumption)
+			@GraphQLName("productConsumption") ProductConsumption
+				productConsumption)
 		throws Exception {
 
 		return _applyComponentServiceObjects(
@@ -1164,8 +1164,8 @@ public class Mutation {
 			@GraphQLName("agentName") String agentName,
 			@GraphQLName("agentUID") String agentUID,
 			@GraphQLName("productPurchaseKey") String productPurchaseKey,
-			@GraphQLName("productPurchasePermission")
-				ProductPurchasePermission productPurchasePermission)
+			@GraphQLName("productPurchasePermission") ProductPurchasePermission
+				productPurchasePermission)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
@@ -1185,8 +1185,8 @@ public class Mutation {
 			@GraphQLName("agentName") String agentName,
 			@GraphQLName("agentUID") String agentUID,
 			@GraphQLName("productPurchaseKey") String productPurchaseKey,
-			@GraphQLName("productPurchasePermission")
-				ProductPurchasePermission productPurchasePermission)
+			@GraphQLName("productPurchasePermission") ProductPurchasePermission
+				productPurchasePermission)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
@@ -1475,8 +1475,8 @@ public class Mutation {
 			@GraphQLName("agentName") String agentName,
 			@GraphQLName("agentUID") String agentUID,
 			@GraphQLName("teamRoleKey") String teamRoleKey,
-			@GraphQLName("teamRolePermission")
-				TeamRolePermission teamRolePermission)
+			@GraphQLName("teamRolePermission") TeamRolePermission
+				teamRolePermission)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(
@@ -1494,8 +1494,8 @@ public class Mutation {
 			@GraphQLName("agentName") String agentName,
 			@GraphQLName("agentUID") String agentUID,
 			@GraphQLName("teamRoleKey") String teamRoleKey,
-			@GraphQLName("teamRolePermission")
-				TeamRolePermission teamRolePermission)
+			@GraphQLName("teamRolePermission") TeamRolePermission
+				teamRolePermission)
 		throws Exception {
 
 		_applyVoidComponentServiceObjects(

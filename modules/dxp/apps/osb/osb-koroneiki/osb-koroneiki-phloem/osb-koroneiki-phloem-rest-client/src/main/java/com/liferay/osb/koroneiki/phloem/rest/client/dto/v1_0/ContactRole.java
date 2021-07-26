@@ -98,6 +98,27 @@ public class ContactRole implements Cloneable, Serializable {
 
 	protected String description;
 
+	public ExternalLink[] getExternalLinks() {
+		return externalLinks;
+	}
+
+	public void setExternalLinks(ExternalLink[] externalLinks) {
+		this.externalLinks = externalLinks;
+	}
+
+	public void setExternalLinks(
+		UnsafeSupplier<ExternalLink[], Exception> externalLinksUnsafeSupplier) {
+
+		try {
+			externalLinks = externalLinksUnsafeSupplier.get();
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected ExternalLink[] externalLinks;
+
 	public String getKey() {
 		return key;
 	}

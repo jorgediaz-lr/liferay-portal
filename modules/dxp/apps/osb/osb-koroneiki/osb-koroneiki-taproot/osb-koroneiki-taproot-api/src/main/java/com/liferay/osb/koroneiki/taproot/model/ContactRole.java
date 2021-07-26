@@ -77,6 +77,9 @@ public interface ContactRole extends ContactRoleModel, PersistedModel {
 
 		};
 
+	public java.util.List<com.liferay.osb.koroneiki.root.model.ExternalLink>
+		getExternalLinks();
+
 	public boolean isMember();
 
 }

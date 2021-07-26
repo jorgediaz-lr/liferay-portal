@@ -740,6 +740,8 @@ public interface ProductPurchaseResource {
 
 			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
 
+			httpInvoker.body(agentUID.toString(), "application/json");
+
 			if (_builder._locale != null) {
 				httpInvoker.header(
 					"Accept-Language", _builder._locale.toLanguageTag());
@@ -1011,6 +1013,9 @@ public interface ProductPurchaseResource {
 			throws Exception {
 
 			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
+
+			httpInvoker.body(
+				productPurchasePermission.toString(), "application/json");
 
 			if (_builder._locale != null) {
 				httpInvoker.header(

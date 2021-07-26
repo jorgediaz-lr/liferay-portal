@@ -38,9 +38,11 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.test.util.RoleTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -999,7 +1001,32 @@ public abstract class BaseProductConsumptionResourceTestCase {
 	public void testPutProductConsumptionProductConsumptionPermission()
 		throws Exception {
 
-		Assert.assertTrue(false);
+		@SuppressWarnings("PMD.UnusedLocalVariable")
+		ProductConsumption productConsumption =
+			testPutProductConsumptionProductConsumptionPermission_addProductConsumption();
+
+		com.liferay.portal.kernel.model.Role role = RoleTestUtil.addRole(
+			RoleConstants.TYPE_REGULAR);
+
+		assertHttpResponseStatusCode(
+			200,
+			productConsumptionResource.
+				putProductConsumptionProductConsumptionPermissionHttpResponse(
+					null, null, null, null));
+
+		assertHttpResponseStatusCode(
+			404,
+			productConsumptionResource.
+				putProductConsumptionProductConsumptionPermissionHttpResponse(
+					null, null, null, null));
+	}
+
+	protected ProductConsumption
+			testPutProductConsumptionProductConsumptionPermission_addProductConsumption()
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
 	}
 
 	@Rule
@@ -1178,7 +1205,7 @@ public abstract class BaseProductConsumptionResourceTestCase {
 		List<GraphQLField> graphQLFields = new ArrayList<>();
 
 		for (Field field :
-				ReflectionUtil.getDeclaredFields(
+				getDeclaredFields(
 					com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.
 						ProductConsumption.class)) {
 
@@ -1213,7 +1240,7 @@ public abstract class BaseProductConsumptionResourceTestCase {
 				}
 
 				List<GraphQLField> childrenGraphQLFields = getGraphQLFields(
-					ReflectionUtil.getDeclaredFields(clazz));
+					getDeclaredFields(clazz));
 
 				graphQLFields.add(
 					new GraphQLField(field.getName(), childrenGraphQLFields));
@@ -1371,6 +1398,17 @@ public abstract class BaseProductConsumptionResourceTestCase {
 		}
 
 		return false;
+	}
+
+	protected Field[] getDeclaredFields(Class clazz) throws Exception {
+		Stream<Field> stream = Stream.of(
+			ReflectionUtil.getDeclaredFields(clazz));
+
+		return stream.filter(
+			field -> !field.isSynthetic()
+		).toArray(
+			Field[]::new
+		);
 	}
 
 	protected java.util.Collection<EntityField> getEntityFields()

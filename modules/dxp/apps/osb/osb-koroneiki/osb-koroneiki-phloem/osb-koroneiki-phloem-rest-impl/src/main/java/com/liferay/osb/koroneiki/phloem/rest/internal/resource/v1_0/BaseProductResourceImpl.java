@@ -148,12 +148,12 @@ public abstract class BaseProductResourceImpl implements ProductResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Product")})
 	public Page<Product> getProductByExternalLinkDomainEntityNameEntityPage(
-			@NotNull @Parameter(hidden = true) @PathParam("domain")
-				String domain,
-			@NotNull @Parameter(hidden = true) @PathParam("entityName")
-				String entityName,
-			@NotNull @Parameter(hidden = true) @PathParam("entityId")
-				String entityId,
+			@NotNull @Parameter(hidden = true) @PathParam("domain") String
+				domain,
+			@NotNull @Parameter(hidden = true) @PathParam("entityName") String
+				entityName,
+			@NotNull @Parameter(hidden = true) @PathParam("entityId") String
+				entityId,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -175,8 +175,8 @@ public abstract class BaseProductResourceImpl implements ProductResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Product")})
 	public Product getProductByNameProductName(
-			@NotNull @Parameter(hidden = true) @PathParam("productName")
-				String productName)
+			@NotNull @Parameter(hidden = true) @PathParam("productName") String
+				productName)
 		throws Exception {
 
 		return new Product();
@@ -202,8 +202,8 @@ public abstract class BaseProductResourceImpl implements ProductResource {
 	public void deleteProduct(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("productKey")
-				String productKey)
+			@NotNull @Parameter(hidden = true) @PathParam("productKey") String
+				productKey)
 		throws Exception {
 	}
 
@@ -222,8 +222,8 @@ public abstract class BaseProductResourceImpl implements ProductResource {
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Product")})
 	public Product getProduct(
-			@NotNull @Parameter(hidden = true) @PathParam("productKey")
-				String productKey)
+			@NotNull @Parameter(hidden = true) @PathParam("productKey") String
+				productKey)
 		throws Exception {
 
 		return new Product();
@@ -250,8 +250,8 @@ public abstract class BaseProductResourceImpl implements ProductResource {
 	public Product putProduct(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("productKey")
-				String productKey,
+			@NotNull @Parameter(hidden = true) @PathParam("productKey") String
+				productKey,
 			Product product)
 		throws Exception {
 
@@ -279,8 +279,8 @@ public abstract class BaseProductResourceImpl implements ProductResource {
 	public void deleteProductProductPermission(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("productKey")
-				String productKey,
+			@NotNull @Parameter(hidden = true) @PathParam("productKey") String
+				productKey,
 			ProductPermission productPermission)
 		throws Exception {
 	}
@@ -306,8 +306,8 @@ public abstract class BaseProductResourceImpl implements ProductResource {
 	public void putProductProductPermission(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
-			@NotNull @Parameter(hidden = true) @PathParam("productKey")
-				String productKey,
+			@NotNull @Parameter(hidden = true) @PathParam("productKey") String
+				productKey,
 			ProductPermission productPermission)
 		throws Exception {
 	}

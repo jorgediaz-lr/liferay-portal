@@ -810,7 +810,7 @@ public class Query {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {contactRole(contactRoleKey: ___){dateCreated, dateModified, description, key, name, system, type}}"}' -u 'test@liferay.com:test'
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {contactRole(contactRoleKey: ___){dateCreated, dateModified, description, externalLinks, key, name, system, type}}"}' -u 'test@liferay.com:test'
 	 */
 	@GraphQLField(description = "Retrieves the contact role.")
 	public ContactRole contactRole(
@@ -827,7 +827,7 @@ public class Query {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {contactRoleContactRoleTypeContactRoleName(contactRoleName: ___, contactRoleType: ___){dateCreated, dateModified, description, key, name, system, type}}"}' -u 'test@liferay.com:test'
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {contactRoleContactRoleTypeContactRoleName(contactRoleName: ___, contactRoleType: ___){dateCreated, dateModified, description, externalLinks, key, name, system, type}}"}' -u 'test@liferay.com:test'
 	 */
 	@GraphQLField(description = "Retrieves the contact role by name.")
 	public ContactRole contactRoleContactRoleTypeContactRoleName(
@@ -969,8 +969,8 @@ public class Query {
 	 */
 	@GraphQLField(description = "Retrieves the entitlement definition.")
 	public EntitlementDefinition entitlementDefinition(
-			@GraphQLName("entitlementDefinitionKey")
-				String entitlementDefinitionKey)
+			@GraphQLName("entitlementDefinitionKey") String
+				entitlementDefinitionKey)
 		throws Exception {
 
 		return _applyComponentServiceObjects(
@@ -1049,8 +1049,8 @@ public class Query {
 	)
 	public ExternalLinkPage
 			productConsumptionProductConsumptionKeyExternalLinks(
-				@GraphQLName("productConsumptionKey")
-					String productConsumptionKey,
+				@GraphQLName("productConsumptionKey") String
+					productConsumptionKey,
 				@GraphQLName("pageSize") int pageSize,
 				@GraphQLName("page") int page)
 		throws Exception {
@@ -1943,8 +1943,8 @@ public class Query {
 		)
 		public ContactRolePage
 				accountKeyContactByEmailAddresContactEmailAddressRoles(
-					@GraphQLName("contactEmailAddress")
-						String contactEmailAddress,
+					@GraphQLName("contactEmailAddress") String
+						contactEmailAddress,
 					@GraphQLName("pageSize") int pageSize,
 					@GraphQLName("page") int page)
 			throws Exception {
@@ -2106,8 +2106,8 @@ public class Query {
 		)
 		public ContactRolePage
 				accountKeyWorkerContactByEmailAddresContactEmailAddressRoles(
-					@GraphQLName("contactEmailAddress")
-						String contactEmailAddress,
+					@GraphQLName("contactEmailAddress") String
+						contactEmailAddress,
 					@GraphQLName("pageSize") int pageSize,
 					@GraphQLName("page") int page)
 			throws Exception {
@@ -2693,8 +2693,8 @@ public class Query {
 		)
 		public ContactRolePage
 				accountKeyCustomerContactByEmailAddresContactEmailAddressRoles(
-					@GraphQLName("contactEmailAddress")
-						String contactEmailAddress,
+					@GraphQLName("contactEmailAddress") String
+						contactEmailAddress,
 					@GraphQLName("pageSize") int pageSize,
 					@GraphQLName("page") int page)
 			throws Exception {
