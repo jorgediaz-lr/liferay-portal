@@ -17,6 +17,7 @@ package com.liferay.osb.koroneiki.phloem.rest.internal.resource.v1_0;
 import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.ContactRole;
 import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.ContactRolePermission;
 import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.util.ContactRoleUtil;
+import com.liferay.osb.koroneiki.phloem.rest.internal.PhloemNestedFieldsContextThreadLocal;
 import com.liferay.osb.koroneiki.phloem.rest.internal.odata.entity.v1_0.ContactRoleEntityModel;
 import com.liferay.osb.koroneiki.phloem.rest.internal.resource.v1_0.util.PhloemPermissionUtil;
 import com.liferay.osb.koroneiki.phloem.rest.internal.resource.v1_0.util.ServiceContextUtil;
@@ -41,6 +42,7 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.vulcan.fields.NestedField;
 import com.liferay.portal.vulcan.fields.NestedFieldId;
@@ -98,6 +100,12 @@ public class ContactRoleResourceImpl
 				@NestedFieldId("emailAddress") String contactEmailAddress,
 				Pagination pagination)
 		throws Exception {
+
+		if (Validator.isNull(accountKey)) {
+			accountKey =
+				(String)PhloemNestedFieldsContextThreadLocal.getContextValue(
+					"accountKey");
+		}
 
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();

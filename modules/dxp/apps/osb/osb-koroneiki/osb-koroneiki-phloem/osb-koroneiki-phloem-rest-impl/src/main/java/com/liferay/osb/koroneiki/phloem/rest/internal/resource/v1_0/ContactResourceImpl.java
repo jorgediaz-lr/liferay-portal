@@ -20,6 +20,7 @@ import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.ContactPermission;
 import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.ContactRole;
 import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.Team;
 import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.util.ContactUtil;
+import com.liferay.osb.koroneiki.phloem.rest.internal.PhloemNestedFieldsContextThreadLocal;
 import com.liferay.osb.koroneiki.phloem.rest.internal.odata.entity.v1_0.ContactEntityModel;
 import com.liferay.osb.koroneiki.phloem.rest.internal.resource.v1_0.util.PhloemPermissionUtil;
 import com.liferay.osb.koroneiki.phloem.rest.internal.resource.v1_0.util.ServiceContextUtil;
@@ -34,7 +35,11 @@ import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.vulcan.fields.NestedField;
 import com.liferay.portal.vulcan.fields.NestedFieldId;
@@ -154,6 +159,17 @@ public class ContactResourceImpl
 			@NestedFieldId("key") String accountKey)
 		throws Exception {
 
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
+
+		String[] nestedFields = StringUtil.split(
+			(String)serviceContext.getAttribute("nestedFields"));
+
+		if (ArrayUtil.contains(nestedFields, "customerContacts.contactRoles")) {
+			PhloemNestedFieldsContextThreadLocal.setContextValue(
+				"accountKey", accountKey);
+		}
+
 		return transform(
 			_contactService.getAccountContacts(
 				accountKey, ContactRole.Type.ACCOUNT_CUSTOMER.toString(),
@@ -165,6 +181,17 @@ public class ContactResourceImpl
 	public List<Contact> getAccountWorkerContacts(
 			@NestedFieldId("key") String accountKey)
 		throws Exception {
+
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
+
+		String[] nestedFields = StringUtil.split(
+			(String)serviceContext.getAttribute("nestedFields"));
+
+		if (ArrayUtil.contains(nestedFields, "workerContacts.contactRoles")) {
+			PhloemNestedFieldsContextThreadLocal.setContextValue(
+				"accountKey", accountKey);
+		}
 
 		return transform(
 			_contactService.getAccountContacts(
