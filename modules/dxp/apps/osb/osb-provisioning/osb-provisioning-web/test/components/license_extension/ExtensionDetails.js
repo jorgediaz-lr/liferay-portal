@@ -18,7 +18,26 @@ import {PermissionsProvider} from '../../../src/main/resources/META-INF/resource
 import {DASH} from '../../../src/main/resources/META-INF/resources/js/utilities/constants';
 import {formatDate} from '../../../src/main/resources/META-INF/resources/js/utilities/date';
 
-const initialDetachedLicense = [
+const multipleDetachedLicenses = [
+	{
+		expirationDate: '2022-06-04',
+		indefinite: false,
+		licenseKeyId: 'licenseKeyID1',
+		licenseType: 'production',
+		productName: 'Commerce Subscription Backup',
+		startDate: '2021-06-04'
+	},
+	{
+		expirationDate: '2027-12-14',
+		indefinite: false,
+		licenseKeyId: 'licenseKeyID2',
+		licenseType: 'developer',
+		productName: 'DXP Development',
+		startDate: '2021-07-26'
+	}
+];
+
+const singleDetachedLicense = [
 	{
 		expirationDate: '2022-06-04',
 		indefinite: false,
@@ -29,7 +48,7 @@ const initialDetachedLicense = [
 	}
 ];
 
-const initialAttachedLicense = [
+const singleAttachedLicense = [
 	{
 		expirationDate: '2122-06-08',
 		indefinite: false,
@@ -72,19 +91,19 @@ describe('ExtensionDetails', () => {
 	afterEach(cleanup);
 
 	it('renders', () => {
-		const {container} = renderExtensionDetails(initialDetachedLicense);
+		const {container} = renderExtensionDetails(singleDetachedLicense);
 
 		expect(container).toBeTruthy();
 	});
 
 	it('renders the Terms of a Detached license as a dash', () => {
-		const {getByText} = renderExtensionDetails(initialDetachedLicense);
+		const {getByText} = renderExtensionDetails(singleDetachedLicense);
 
 		getByText(DASH);
 	});
 
 	it('renders the Terms in the dropdown of a Non Detached license', () => {
-		const {getByText} = renderExtensionDetails(initialAttachedLicense);
+		const {getByText} = renderExtensionDetails(singleAttachedLicense);
 
 		getByText('perpetual');
 		getByText('June 2, 2021 - July 2, 2022');
@@ -92,22 +111,45 @@ describe('ExtensionDetails', () => {
 
 	it('renders a disabled X icon for a single license extension', () => {
 		const {getByLabelText, getByTitle} = renderExtensionDetails(
-			initialDetachedLicense
+			singleDetachedLicense
 		);
 
 		getByLabelText('delete-license-icon');
 		expect(getByTitle('delete').disabled).toBeTruthy();
 	});
 
-	it('renders an enabled Extend button by default', () => {
-		const {getByText} = renderExtensionDetails(initialAttachedLicense);
+	it('renders an enabled X iconf if there are multiple license extensions', () => {
+		const {getAllByTitle} = renderExtensionDetails(
+			multipleDetachedLicenses
+		);
+
+		expect(getAllByTitle('delete').disabled).toBeFalsy();
+	});
+
+	it('renders an enabled Extend button for a single temporary license by default', () => {
+		const {getByText} = renderExtensionDetails(singleAttachedLicense);
 
 		expect(getByText('extend').disabled).toBeFalsy();
 	});
 
+	it('does not render an Extend button for a single permanent license', () => {
+		const {queryByText} = renderExtensionDetails([
+			{
+				expirationDate: '2022-06-04',
+				indefinite: true,
+				licenseKeyId: 'licenseKeyID1',
+				licenseType: 'production',
+				productName: 'Commerce Subscription Backup',
+				startDate: '2021-06-04'
+			}
+		]);
+
+		expect(queryByText('extend')).toBeFalsy();
+	});
+
 	it('renders a disabled Extend button if any of the dates are empty', () => {
 		const {getAllByDisplayValue, getByText} = renderExtensionDetails(
-			initialAttachedLicense
+			singleAttachedLicense
 		);
 
 		// Clay Date Picker always displays two inputs for the same date
@@ -121,7 +163,7 @@ describe('ExtensionDetails', () => {
 
 	it('always renders an enabled Extend button after a new Subscription Term is selected', () => {
 		const {getByDisplayValue, getByText} = renderExtensionDetails(
-			initialAttachedLicense
+			singleAttachedLicense
 		);
 
 		fireEvent.change(getByDisplayValue('perpetual'), {
@@ -133,7 +175,7 @@ describe('ExtensionDetails', () => {
 
 	it('renders the default start and expiration dates of the existing license for an Attached license entry', () => {
 		const {getAllByDisplayValue} = renderExtensionDetails(
-			initialAttachedLicense
+			singleAttachedLicense
 		);
 
 		// Clay Date Picker always displays two inputs for the same date
@@ -145,7 +187,7 @@ describe('ExtensionDetails', () => {
 
 	it('renders Today as the default start date for a Detached license', () => {
 		const {getAllByDisplayValue} = renderExtensionDetails(
-			initialDetachedLicense
+			singleDetachedLicense
 		);
 
 		// Clay Date Picker always displays two inputs for the same date

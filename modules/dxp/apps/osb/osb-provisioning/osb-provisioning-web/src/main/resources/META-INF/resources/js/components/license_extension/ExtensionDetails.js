@@ -21,7 +21,12 @@ import IconButton from '../IconButton';
 import LicenseDates from '../LicenseDates';
 import Terms from './Terms';
 
-function Detail({disableDelete, extensionURL, license}) {
+function Detail({
+	disableDelete,
+	disableIndividualExtend,
+	extensionURL,
+	license
+}) {
 	const [, {removeLicense, updateLicense}] = useExtendLicenses();
 	const formRef = useRef();
 
@@ -119,27 +124,31 @@ function Detail({disableDelete, extensionURL, license}) {
 					validDates={validDates}
 				/>
 				<ClayTable.Cell>
-					<HiddenForm
-						fields={{
-							expirationDate: formatDate(expirationDate),
-							licenseKeyId,
-							productPurchaseKey,
-							startDate: formatDate(startDate)
-						}}
-						formAction={extensionURL}
-						formName="extendLicenseFm"
-						ref={formRef}
-					/>
+					{!disableIndividualExtend && (
+						<>
+							<HiddenForm
+								fields={{
+									expirationDate: formatDate(expirationDate),
+									licenseKeyId,
+									productPurchaseKey,
+									startDate: formatDate(startDate)
+								}}
+								formAction={extensionURL}
+								formName="extendLicenseFm"
+								ref={formRef}
+							/>
 
-					<button
-						className="btn btn-secondary btn-sm"
-						disabled={disableExtend}
-						onClick={handleOnSubmit}
-						role="button"
-						type="button"
-					>
-						{Liferay.Language.get('extend')}
-					</button>
+							<button
+								className="btn btn-secondary btn-sm"
+								disabled={disableExtend}
+								onClick={handleOnSubmit}
+								role="button"
+								type="button"
+							>
+								{Liferay.Language.get('extend')}
+							</button>
+						</>
+					)}
 				</ClayTable.Cell>
 				<ClayTable.Cell>
 					<IconButton
@@ -165,13 +174,16 @@ Detail.propTypes = {
 function ExtensionDetails({extensionURL}) {
 	const [licenses] = useExtendLicenses();
 
-	const disableDelete = licenses.size <= 1;
+	const singleLicense = licenses.size <= 1;
 
 	return (
 		<>
 			{licenses.toList().map(license => (
 				<Detail
-					disableDelete={disableDelete}
+					disableDelete={singleLicense}
+					disableIndividualExtend={
+						!singleLicense || license.indefinite
+					}
 					extensionURL={extensionURL}
 					key={license.licenseKeyId}
 					license={license}
@@ -182,7 +194,7 @@ function ExtensionDetails({extensionURL}) {
 }
 
 ExtensionDetails.propTypes = {
-	extensionURL: PropTypes.string
+	extensionURL: PropTypes.string.isRequired
 };
 
 export default ExtensionDetails;

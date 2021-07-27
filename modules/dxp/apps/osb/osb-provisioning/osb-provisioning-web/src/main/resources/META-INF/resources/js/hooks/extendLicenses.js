@@ -16,6 +16,7 @@ import {getDetachedLicenseDates} from '../utilities/license';
 
 export const LicenseRecord = Record({
 	expirationDate: '',
+	indefinite: false,
 	licenseKeyId: '',
 	licenseType: '',
 	productName: '',

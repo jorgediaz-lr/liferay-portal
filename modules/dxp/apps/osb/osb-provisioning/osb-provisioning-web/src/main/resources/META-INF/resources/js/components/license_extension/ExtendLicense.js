@@ -13,7 +13,10 @@ import ClayTable from '@clayui/table';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import {ExtendLicensesProvider} from '../../hooks/extendLicenses';
+import {
+	ExtendLicensesProvider,
+	useExtendLicenses
+} from '../../hooks/extendLicenses';
 import {PermissionsProvider} from '../../hooks/permissions';
 import ExtensionDetails from './ExtensionDetails';
 
@@ -30,28 +33,7 @@ export default function ExtendLicense({
 				}}
 			>
 				<div className="extend-licenses-container">
-					<ClayTable>
-						<ClayTable.Head>
-							<ClayTable.Row>
-								<ClayTable.Cell headingCell>
-									{Liferay.Language.get('products')}
-								</ClayTable.Cell>
-								<ClayTable.Cell expanded headingCell>
-									{Liferay.Language.get('subscription-term')}
-								</ClayTable.Cell>
-								<ClayTable.Cell expanded headingCell>
-									{Liferay.Language.get('start-date')}
-								</ClayTable.Cell>
-								<ClayTable.Cell expanded headingCell>
-									{Liferay.Language.get('expiration-date')}
-								</ClayTable.Cell>
-								<ClayTable.Cell headingCell></ClayTable.Cell>
-								<ClayTable.Cell headingCell></ClayTable.Cell>
-							</ClayTable.Row>
-						</ClayTable.Head>
-
-						<ExtensionDetails extensionURL={extensionURL} />
-					</ClayTable>
+					<ExtendLicensesTable extensionURL={extensionURL} />
 				</div>
 			</PermissionsProvider>
 		</ExtendLicensesProvider>
@@ -80,3 +62,34 @@ ExtendLicense.propTypes = {
 	extensionURL: PropTypes.string.isRequired,
 	hasUpdateLicenseDatePermission: PropTypes.bool.isRequired
 };
+
+function ExtendLicensesTable({extensionURL}) {
+	const [licenses] = useExtendLicenses();
+
+	return (
+		<ClayTable>
+			<ClayTable.Head>
+				<ClayTable.Row>
+					<ClayTable.Cell headingCell>
+						{Liferay.Language.get('products')}
+					</ClayTable.Cell>
+					<ClayTable.Cell expanded headingCell>
+						{Liferay.Language.get('subscription-term')}
+					</ClayTable.Cell>
+					<ClayTable.Cell expanded headingCell>
+						{Liferay.Language.get('start-date')}
+					</ClayTable.Cell>
+					<ClayTable.Cell expanded headingCell>
+						{Liferay.Language.get('expiration-date')}
+					</ClayTable.Cell>
+					<ClayTable.Cell headingCell></ClayTable.Cell>
+					<ClayTable.Cell headingCell></ClayTable.Cell>
+				</ClayTable.Row>
+			</ClayTable.Head>
+
+			{licenses.size <= 1 && (
+				<ExtensionDetails extensionURL={extensionURL} />
+			)}
+		</ClayTable>
+	);
+}
