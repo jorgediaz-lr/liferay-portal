@@ -15,6 +15,7 @@
 package com.liferay.osb.provisioning.web.internal.display.context;
 
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductConsumption;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchaseView;
 import com.liferay.osb.provisioning.constants.ProvisioningActionKeys;
@@ -167,6 +168,8 @@ public class ExtendLicenseKeysDisplayContext {
 		).put(
 			"licenseKeyId", licenseKey.getLicenseKeyId()
 		).put(
+			"licenseKeysGenerated", _getProvisionedCount(licenseKey)
+		).put(
 			"licenseType", licenseKey.getLicenseEntryType()
 		).put(
 			"productName", licenseKey.getProductName()
@@ -177,14 +180,47 @@ public class ExtendLicenseKeysDisplayContext {
 		);
 	}
 
+	private String _getLicenseKeysGenerated(
+			ProductPurchase productPurchase, LicenseKey licenseKey)
+		throws Exception {
+
+		int provisionedCount = _getProvisionedCount(licenseKey);
+
+		return provisionedCount + " / " + productPurchase.getQuantity();
+	}
+
+	private ProductPurchaseView _getProductPurchaseView(LicenseKey licenseKey)
+		throws Exception {
+
+		return _productPurchaseViewWebService.getProductPurchaseView(
+			licenseKey.getAccountKey(), licenseKey.getProductKey());
+	}
+
+	private int _getProvisionedCount(LicenseKey licenseKey) throws Exception {
+		int provisionedCount = 0;
+
+		ProductPurchaseView productPurchaseView = _getProductPurchaseView(
+			licenseKey);
+
+		if (productPurchaseView.getProductConsumptions() != null) {
+			ProductConsumption[] productConsumptions =
+				productPurchaseView.getProductConsumptions();
+
+			if (productConsumptions != null) {
+				provisionedCount = productConsumptions.length;
+			}
+		}
+
+		return provisionedCount;
+	}
+
 	private JSONArray _getTerms(LicenseKey licenseKey) throws Exception {
 		if (Validator.isNull(licenseKey.getProductPurchaseKey())) {
 			return null;
 		}
 
-		ProductPurchaseView productPurchaseView =
-			_productPurchaseViewWebService.getProductPurchaseView(
-				licenseKey.getAccountKey(), licenseKey.getProductKey());
+		ProductPurchaseView productPurchaseView = _getProductPurchaseView(
+			licenseKey);
 
 		if (ArrayUtil.isNotEmpty(productPurchaseView.getProductPurchases())) {
 			JSONArray productPurchasesJSONArray =
@@ -196,6 +232,9 @@ public class ExtendLicenseKeysDisplayContext {
 				productPurchasesJSONArray.put(
 					JSONUtil.put(
 						"endDate", _formatDate(productPurchase.getEndDate())
+					).put(
+						"licenseKeysGenerated",
+						_getLicenseKeysGenerated(productPurchase, licenseKey)
 					).put(
 						"perpetual", productPurchase.getPerpetual()
 					).put(
