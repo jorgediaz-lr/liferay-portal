@@ -30,6 +30,7 @@ import com.liferay.dynamic.data.mapping.model.Value;
 import com.liferay.dynamic.data.mapping.storage.DDMFormFieldValue;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.dynamic.data.mapping.storage.FieldConstants;
+import com.liferay.dynamic.data.mapping.util.NumberUtil;
 import com.liferay.dynamic.data.mapping.validator.DDMFormValuesValidationException;
 import com.liferay.dynamic.data.mapping.validator.DDMFormValuesValidationException.MustNotSetValue;
 import com.liferay.dynamic.data.mapping.validator.DDMFormValuesValidationException.MustSetValidAvailableLocales;
@@ -138,9 +139,17 @@ public class DDMFormValuesValidatorImpl implements DDMFormValuesValidator {
 					GetterUtil.getBoolean(value.getString(locale)));
 			}
 			else if (dataType.equals(FieldConstants.DOUBLE)) {
-				ddmExpression.setDoubleVariableValue(
-					ddmFormFieldName,
-					GetterUtil.getDouble(value.getString(locale)));
+				String valueString = value.getString(locale);
+
+				if (NumberUtil.hasDecimalSeparator(valueString)) {
+					ddmExpression.setVariable(
+						ddmFormFieldName,
+						GetterUtil.getDouble(valueString, locale));
+				}
+				else {
+					ddmExpression.setVariable(
+						ddmFormFieldName, GetterUtil.getInteger(valueString));
+				}
 			}
 			else if (dataType.equals(FieldConstants.INTEGER)) {
 				ddmExpression.setIntegerVariableValue(
