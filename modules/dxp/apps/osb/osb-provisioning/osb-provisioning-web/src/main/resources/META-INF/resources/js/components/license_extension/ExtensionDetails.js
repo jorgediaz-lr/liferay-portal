@@ -31,6 +31,7 @@ function Detail({
 	const formRef = useRef();
 
 	const {
+		accountName,
 		expirationDate,
 		licenseKeyId,
 		licenseType,
@@ -105,6 +106,7 @@ function Detail({
 	return (
 		<ClayTable.Body id={licenseKeyId}>
 			<ClayTable.Row>
+				<ClayTable.Cell>{accountName}</ClayTable.Cell>
 				<ClayTable.Cell>{productName}</ClayTable.Cell>
 				<ClayTable.Cell className="input-group-sm">
 					<Terms

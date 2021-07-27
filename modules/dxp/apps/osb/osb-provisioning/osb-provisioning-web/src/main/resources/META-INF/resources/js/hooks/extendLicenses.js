@@ -15,6 +15,7 @@ import React, {createContext, useContext, useState} from 'react';
 import {getDetachedLicenseDates} from '../utilities/license';
 
 export const LicenseRecord = Record({
+	accountName: '',
 	expirationDate: '',
 	indefinite: false,
 	licenseKeyId: '',

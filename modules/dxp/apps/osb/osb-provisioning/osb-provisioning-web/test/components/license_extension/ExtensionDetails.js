@@ -20,6 +20,7 @@ import {formatDate} from '../../../src/main/resources/META-INF/resources/js/util
 
 const multipleDetachedLicenses = [
 	{
+		accountName: 'Account 1',
 		expirationDate: '2022-06-04',
 		indefinite: false,
 		licenseKeyId: 'licenseKeyID1',
@@ -28,6 +29,7 @@ const multipleDetachedLicenses = [
 		startDate: '2021-06-04'
 	},
 	{
+		accountName: 'Account 2',
 		expirationDate: '2027-12-14',
 		indefinite: false,
 		licenseKeyId: 'licenseKeyID2',
@@ -39,6 +41,7 @@ const multipleDetachedLicenses = [
 
 const singleDetachedLicense = [
 	{
+		accountName: 'Account 1',
 		expirationDate: '2022-06-04',
 		indefinite: false,
 		licenseKeyId: 'licenseKeyID1',
@@ -50,6 +53,7 @@ const singleDetachedLicense = [
 
 const singleAttachedLicense = [
 	{
+		accountName: 'Account 1',
 		expirationDate: '2122-06-08',
 		indefinite: false,
 		licenseKeyId: 'licenseKeyID1',
@@ -135,6 +139,7 @@ describe('ExtensionDetails', () => {
 	it('does not render an Extend button for a single permanent license', () => {
 		const {queryByText} = renderExtensionDetails([
 			{
+				accountName: 'Account 1',
 				expirationDate: '2022-06-04',
 				indefinite: true,
 				licenseKeyId: 'licenseKeyID1',

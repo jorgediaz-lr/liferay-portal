@@ -157,6 +157,8 @@ public class ExtendLicenseKeysDisplayContext {
 		throws Exception {
 
 		return JSONUtil.put(
+			"accountName", licenseKey.getAccountName()
+		).put(
 			"expirationDate", _formatDate(licenseKey.getExpirationDate())
 		).put(
 			"indefinite",

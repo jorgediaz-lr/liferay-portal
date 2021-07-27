@@ -43,6 +43,7 @@ export default function ExtendLicense({
 ExtendLicense.propTypes = {
 	details: PropTypes.arrayOf(
 		PropTypes.shape({
+			accountName: PropTypes.string,
 			expirationDate: PropTypes.string,
 			indefinite: PropTypes.bool.isRequired,
 			licenseKeyId: PropTypes.string.isRequired,
@@ -70,6 +71,9 @@ function ExtendLicensesTable({extensionURL}) {
 		<ClayTable>
 			<ClayTable.Head>
 				<ClayTable.Row>
+					<ClayTable.Cell expanded headingCell>
+						{Liferay.Language.get('account-name')}
+					</ClayTable.Cell>
 					<ClayTable.Cell headingCell>
 						{Liferay.Language.get('products')}
 					</ClayTable.Cell>

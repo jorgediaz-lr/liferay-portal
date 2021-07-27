@@ -19,6 +19,7 @@ function renderExtendLicense() {
 		<ExtendLicense
 			details={[
 				{
+					accountName: 'Account 1',
 					expirationDate: '2021-08-21',
 					indefinite: false,
 					licenseKeyId: 'licenseKeyID1',
@@ -40,6 +41,12 @@ describe('ExtendLicense', () => {
 		const {container} = renderExtendLicense();
 
 		expect(container).toBeTruthy();
+	});
+
+	it('displays an account name table heading', () => {
+		const {getByText} = renderExtendLicense();
+
+		getByText('account-name');
 	});
 
 	it('displays a Product table heading', () => {
