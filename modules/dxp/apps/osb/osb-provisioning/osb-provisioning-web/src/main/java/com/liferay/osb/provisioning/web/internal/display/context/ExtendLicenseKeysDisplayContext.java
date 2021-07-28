@@ -184,7 +184,7 @@ public class ExtendLicenseKeysDisplayContext {
 			ProductPurchase productPurchase, LicenseKey licenseKey)
 		throws Exception {
 
-		int provisionedCount = _getProvisionedCount(licenseKey);
+		String provisionedCount = _getProvisionedCount(licenseKey);
 
 		return provisionedCount + " / " + productPurchase.getQuantity();
 	}
@@ -196,7 +196,9 @@ public class ExtendLicenseKeysDisplayContext {
 			licenseKey.getAccountKey(), licenseKey.getProductKey());
 	}
 
-	private int _getProvisionedCount(LicenseKey licenseKey) throws Exception {
+	private String _getProvisionedCount(LicenseKey licenseKey)
+		throws Exception {
+
 		int provisionedCount = 0;
 
 		ProductPurchaseView productPurchaseView = _getProductPurchaseView(
@@ -211,7 +213,7 @@ public class ExtendLicenseKeysDisplayContext {
 			}
 		}
 
-		return provisionedCount;
+		return String.valueOf(provisionedCount);
 	}
 
 	private JSONArray _getTerms(LicenseKey licenseKey) throws Exception {
