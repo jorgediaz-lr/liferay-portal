@@ -973,16 +973,12 @@ public class SiteAdminPortlet extends MVCPortlet {
 
 		// Virtual hosts
 
-		LayoutSet publicLayoutSet = liveGroup.getPublicLayoutSet();
-
 		Set<Locale> availableLocales = LanguageUtil.getAvailableLocales(
 			liveGroup.getGroupId());
 
 		layoutSetService.updateVirtualHosts(
 			liveGroup.getGroupId(), false,
 			toTreeMap(actionRequest, "publicVirtualHost", availableLocales));
-
-		LayoutSet privateLayoutSet = liveGroup.getPrivateLayoutSet();
 
 		layoutSetService.updateVirtualHosts(
 			liveGroup.getGroupId(), true,
@@ -1038,9 +1034,14 @@ public class SiteAdminPortlet extends MVCPortlet {
 			long publicLayoutSetPrototypeId = ParamUtil.getLong(
 				actionRequest, "publicLayoutSetPrototypeId");
 
+			LayoutSet privateLayoutSet = liveGroup.getPrivateLayoutSet();
+
 			boolean privateLayoutSetPrototypeLinkEnabled = ParamUtil.getBoolean(
 				actionRequest, "privateLayoutSetPrototypeLinkEnabled",
 				privateLayoutSet.isLayoutSetPrototypeLinkEnabled());
+
+			LayoutSet publicLayoutSet = liveGroup.getPublicLayoutSet();
+
 			boolean publicLayoutSetPrototypeLinkEnabled = ParamUtil.getBoolean(
 				actionRequest, "publicLayoutSetPrototypeLinkEnabled",
 				publicLayoutSet.isLayoutSetPrototypeLinkEnabled());
