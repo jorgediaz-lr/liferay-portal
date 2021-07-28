@@ -23,6 +23,7 @@ function renderExtendLicense() {
 					expirationDate: '2021-08-21',
 					indefinite: false,
 					licenseKeyId: 'licenseKeyID1',
+					licenseKeysGenerated: '0',
 					licenseType: 'development',
 					productName: 'DXP 7.0',
 					startDate: '2021-07-21'
@@ -43,7 +44,7 @@ describe('ExtendLicense', () => {
 		expect(container).toBeTruthy();
 	});
 
-	it('displays an account name table heading', () => {
+	it('displays an Account Name table heading', () => {
 		const {getByText} = renderExtendLicense();
 
 		getByText('account-name');
@@ -71,5 +72,11 @@ describe('ExtendLicense', () => {
 		const {getByText} = renderExtendLicense();
 
 		getByText('expiration-date');
+	});
+
+	it('displays a Licenses Generated table heading', () => {
+		const {getByText} = renderExtendLicense();
+
+		getByText('licenses-generated');
 	});
 });

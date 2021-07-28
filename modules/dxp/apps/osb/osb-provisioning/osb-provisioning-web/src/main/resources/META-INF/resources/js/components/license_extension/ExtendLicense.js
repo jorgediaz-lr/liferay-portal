@@ -47,12 +47,14 @@ ExtendLicense.propTypes = {
 			expirationDate: PropTypes.string,
 			indefinite: PropTypes.bool.isRequired,
 			licenseKeyId: PropTypes.string.isRequired,
+			licenseKeysGenerated: PropTypes.string,
 			licenseType: PropTypes.string.isRequired,
 			productName: PropTypes.string.isRequired,
 			startDate: PropTypes.string,
 			terms: PropTypes.arrayOf(
 				PropTypes.shape({
 					endDate: PropTypes.string,
+					licenseKeysGenerated: PropTypes.string,
 					perpetual: PropTypes.bool,
 					productPurchaseKey: PropTypes.string,
 					startDate: PropTypes.string
@@ -71,7 +73,7 @@ function ExtendLicensesTable({extensionURL}) {
 		<ClayTable>
 			<ClayTable.Head>
 				<ClayTable.Row>
-					<ClayTable.Cell expanded headingCell>
+					<ClayTable.Cell headingCell>
 						{Liferay.Language.get('account-name')}
 					</ClayTable.Cell>
 					<ClayTable.Cell headingCell>
@@ -85,6 +87,9 @@ function ExtendLicensesTable({extensionURL}) {
 					</ClayTable.Cell>
 					<ClayTable.Cell expanded headingCell>
 						{Liferay.Language.get('expiration-date')}
+					</ClayTable.Cell>
+					<ClayTable.Cell headingCell>
+						{Liferay.Language.get('licenses-generated')}
 					</ClayTable.Cell>
 					<ClayTable.Cell headingCell></ClayTable.Cell>
 					<ClayTable.Cell headingCell></ClayTable.Cell>

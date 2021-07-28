@@ -19,6 +19,7 @@ export const LicenseRecord = Record({
 	expirationDate: '',
 	indefinite: false,
 	licenseKeyId: '',
+	licenseKeysGenerated: '',
 	licenseType: '',
 	productName: '',
 	productPurchaseKey: '',
@@ -32,9 +33,15 @@ const ExtendLicensesContext = createContext();
 function createLicenseRecord(license) {
 	if (license.terms) {
 		const firstTerms = license.terms[0];
+
+		const licenseKeysGenerated = firstTerms.licenseKeysGenerated;
 		const productPurchaseKey = firstTerms.productPurchaseKey;
 
-		return new LicenseRecord({...license, productPurchaseKey});
+		return new LicenseRecord({
+			...license,
+			licenseKeysGenerated,
+			productPurchaseKey
+		});
 	}
 
 	const licenseDates = getDetachedLicenseDates();

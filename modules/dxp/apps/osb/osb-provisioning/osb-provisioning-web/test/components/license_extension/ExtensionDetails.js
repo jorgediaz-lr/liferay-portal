@@ -24,6 +24,7 @@ const multipleDetachedLicenses = [
 		expirationDate: '2022-06-04',
 		indefinite: false,
 		licenseKeyId: 'licenseKeyID1',
+		licenseKeysGenerated: '0',
 		licenseType: 'production',
 		productName: 'Commerce Subscription Backup',
 		startDate: '2021-06-04'
@@ -33,6 +34,7 @@ const multipleDetachedLicenses = [
 		expirationDate: '2027-12-14',
 		indefinite: false,
 		licenseKeyId: 'licenseKeyID2',
+		licenseKeysGenerated: '0',
 		licenseType: 'developer',
 		productName: 'DXP Development',
 		startDate: '2021-07-26'
@@ -45,6 +47,7 @@ const singleDetachedLicense = [
 		expirationDate: '2022-06-04',
 		indefinite: false,
 		licenseKeyId: 'licenseKeyID1',
+		licenseKeysGenerated: '0',
 		licenseType: 'production',
 		productName: 'Commerce Subscription Backup',
 		startDate: '2021-06-04'
@@ -57,18 +60,21 @@ const singleAttachedLicense = [
 		expirationDate: '2122-06-08',
 		indefinite: false,
 		licenseKeyId: 'licenseKeyID1',
+		licenseKeysGenerated: '0',
 		licenseType: 'development',
 		productName: 'DXP 7.0',
 		startDate: '2021-06-03',
 		terms: [
 			{
 				endDate: '',
+				licenseKeysGenerated: '2 / 1',
 				perpetual: true,
 				productPurchaseKey: 'productPurchaseKey1',
 				startDate: ''
 			},
 			{
 				endDate: '2022-07-02',
+				licenseKeysGenerated: '1 / 1',
 				perpetual: false,
 				productPurchaseKey: 'productPurchaseKey2',
 				startDate: '2021-06-02'
@@ -111,6 +117,24 @@ describe('ExtensionDetails', () => {
 
 		getByText('perpetual');
 		getByText('June 2, 2021 - July 2, 2022');
+	});
+
+	it('updates the Liceses Generated value when terms change', () => {
+		const {
+			getByDisplayValue,
+			getByText,
+			queryByText
+		} = renderExtensionDetails(singleAttachedLicense);
+
+		getByText('2 / 1');
+		expect(queryByText('1 / 1')).toBeFalsy();
+
+		fireEvent.change(getByDisplayValue('perpetual'), {
+			target: {value: 'productPurchaseKey2'}
+		});
+
+		expect(queryByText('2 / 1')).toBeFalsy();
+		getByText('1 / 1');
 	});
 
 	it('renders a disabled X icon for a single license extension', () => {
@@ -172,7 +196,7 @@ describe('ExtensionDetails', () => {
 		);
 
 		fireEvent.change(getByDisplayValue('perpetual'), {
-			target: {value: 'June 2, 2021 - July 2, 2022'}
+			target: {value: 'productPurchaseKey2'}
 		});
 
 		expect(getByText('extend').disabled).toBeFalsy();
