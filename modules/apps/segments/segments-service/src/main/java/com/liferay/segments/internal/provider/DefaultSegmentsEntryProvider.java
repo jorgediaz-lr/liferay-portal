@@ -263,7 +263,12 @@ public class DefaultSegmentsEntryProvider implements SegmentsEntryProvider {
 						contextFilterString, context);
 				}
 				catch (PortalException portalException) {
-					_log.error(portalException, portalException);
+					if (_log.isDebugEnabled()) {
+						_log.debug(portalException, portalException);
+					}
+					else if (_log.isWarnEnabled()) {
+						_log.warn(portalException.getMessage());
+					}
 				}
 
 				if (matchesContext &&
