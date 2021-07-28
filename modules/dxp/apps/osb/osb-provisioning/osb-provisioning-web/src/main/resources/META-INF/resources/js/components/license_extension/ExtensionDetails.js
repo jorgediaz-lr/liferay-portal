@@ -13,7 +13,7 @@ import ClayTable from '@clayui/table';
 import PropTypes from 'prop-types';
 import React, {useEffect, useRef, useState} from 'react';
 
-import {LicenseRecord, useExtendLicenses} from '../../hooks/extendLicenses';
+import {useExtendLicenses} from '../../hooks/extendLicenses';
 import {
 	DASH,
 	RESTRICTED_EXPIRATION_DATE_TYPES
@@ -44,7 +44,7 @@ function Detail({
 		readyToExtend,
 		startDate,
 		terms
-	} = license.toJS();
+	} = license;
 
 	const [disableExtend, setDisableExtend] = useState(false);
 	const [selectedExpirationDate, setSelectedExpirationDate] = useState(
@@ -145,7 +145,7 @@ function Detail({
 				/>
 				<ClayTable.Cell>{licenseKeysGenerated}</ClayTable.Cell>
 				<ClayTable.Cell>
-					{!disableIndividualExtend && (
+					{(!disableIndividualExtend || extensionURL) && (
 						<>
 							<HiddenForm
 								fields={{
@@ -189,17 +189,15 @@ function Detail({
 Detail.propTypes = {
 	disableDelete: PropTypes.bool,
 	extensionURL: PropTypes.string,
-	license: PropTypes.instanceOf(LicenseRecord)
+	license: PropTypes.object
 };
 
-function ExtensionDetails({extensionURL}) {
-	const [licenses] = useExtendLicenses();
-
-	const singleLicense = licenses.size <= 1;
+function ExtensionDetails({extensionURL, licenses}) {
+	const singleLicense = licenses.length === 1;
 
 	return (
 		<>
-			{licenses.toList().map(license => (
+			{licenses.map(license => (
 				<Detail
 					disableDelete={singleLicense}
 					disableIndividualExtend={
@@ -215,7 +213,8 @@ function ExtensionDetails({extensionURL}) {
 }
 
 ExtensionDetails.propTypes = {
-	extensionURL: PropTypes.string.isRequired
+	extensionURL: PropTypes.string,
+	licenses: PropTypes.array
 };
 
 export default ExtensionDetails;

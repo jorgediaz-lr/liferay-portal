@@ -18,6 +18,7 @@ import {
 	useExtendLicenses
 } from '../../hooks/extendLicenses';
 import {PermissionsProvider} from '../../hooks/permissions';
+import BulkExtension from './BulkExtension';
 import ExtensionDetails from './ExtensionDetails';
 
 export default function ExtendLicense({
@@ -96,9 +97,14 @@ function ExtendLicensesTable({extensionURL}) {
 				</ClayTable.Row>
 			</ClayTable.Head>
 
-			{licenses.size <= 1 && (
-				<ExtensionDetails extensionURL={extensionURL} />
+			{licenses.size === 1 && (
+				<ExtensionDetails
+					extensionURL={extensionURL}
+					licenses={licenses.toList().toJS()}
+				/>
 			)}
+
+			{licenses.size > 1 && <BulkExtension extensionURL={extensionURL} />}
 		</ClayTable>
 	);
 }
