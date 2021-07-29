@@ -14,7 +14,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import {useExtendLicenses} from '../../hooks/extendLicenses';
+import {groupByAll} from '../../utilities/helpers';
 import TableDivider from '../TableDivider';
+import DetailsGroup from './DetailsGroup';
 import ExtensionDetails from './ExtensionDetails';
 
 export default function BulkExtension({extensionURL}) {
@@ -25,14 +27,23 @@ export default function BulkExtension({extensionURL}) {
 		({indefinite}) => indefinite
 	);
 
+	const permanentOrderedByProduct = permanent.length
+		? groupByAll(permanent, ({productName}) => productName)
+		: permanent;
+	const temporaryOrderedByProduct = temporary.length
+		? groupByAll(temporary, ({productName}) => productName)
+		: temporary;
+
 	return (
 		<>
-			{!!temporary.length && (
-				<ExtensionDetails
-					extensionURL={extensionURL}
-					licenses={temporary}
-				/>
-			)}
+			{!!temporary.length &&
+				temporaryOrderedByProduct.map((temp, index) => (
+					<DetailsGroup
+						extensionURL={extensionURL}
+						key={index}
+						licenses={temp}
+					/>
+				))}
 
 			{!!permanent.length && (
 				<>
@@ -43,7 +54,9 @@ export default function BulkExtension({extensionURL}) {
 						/>
 					</tbody>
 
-					<ExtensionDetails licenses={permanent} />
+					{permanentOrderedByProduct.map((perm, index) => (
+						<ExtensionDetails key={index} licenses={perm} />
+					))}
 				</>
 			)}
 		</>
