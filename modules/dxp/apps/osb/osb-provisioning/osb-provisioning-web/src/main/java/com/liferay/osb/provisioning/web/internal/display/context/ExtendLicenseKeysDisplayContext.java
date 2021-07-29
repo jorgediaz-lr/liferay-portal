@@ -157,6 +157,10 @@ public class ExtendLicenseKeysDisplayContext {
 	private JSONObject _getLicenseKeyDetails(LicenseKey licenseKey)
 		throws Exception {
 
+		ProductPurchaseView productPurchaseView =
+			_productPurchaseViewWebService.getProductPurchaseView(
+				licenseKey.getAccountKey(), licenseKey.getProductKey());
+
 		return JSONUtil.put(
 			"accountName", licenseKey.getAccountName()
 		).put(
@@ -168,7 +172,8 @@ public class ExtendLicenseKeysDisplayContext {
 		).put(
 			"licenseKeyId", licenseKey.getLicenseKeyId()
 		).put(
-			"licenseKeysGenerated", _getProvisionedCount(licenseKey)
+			"licenseKeysGenerated",
+			_getLicenseKeysGenerated(productPurchaseView)
 		).put(
 			"licenseType", licenseKey.getLicenseEntryType()
 		).put(
@@ -176,33 +181,15 @@ public class ExtendLicenseKeysDisplayContext {
 		).put(
 			"startDate", _formatDate(licenseKey.getStartDate())
 		).put(
-			"terms", _getTerms(licenseKey)
+			"terms", _getTerms(licenseKey, productPurchaseView)
 		);
 	}
 
 	private String _getLicenseKeysGenerated(
-			ProductPurchase productPurchase, LicenseKey licenseKey)
-		throws Exception {
-
-		String provisionedCount = _getProvisionedCount(licenseKey);
-
-		return provisionedCount + " / " + productPurchase.getQuantity();
-	}
-
-	private ProductPurchaseView _getProductPurchaseView(LicenseKey licenseKey)
-		throws Exception {
-
-		return _productPurchaseViewWebService.getProductPurchaseView(
-			licenseKey.getAccountKey(), licenseKey.getProductKey());
-	}
-
-	private String _getProvisionedCount(LicenseKey licenseKey)
+			ProductPurchaseView productPurchaseView)
 		throws Exception {
 
 		int provisionedCount = 0;
-
-		ProductPurchaseView productPurchaseView = _getProductPurchaseView(
-			licenseKey);
 
 		if (productPurchaseView.getProductConsumptions() != null) {
 			ProductConsumption[] productConsumptions =
@@ -216,13 +203,13 @@ public class ExtendLicenseKeysDisplayContext {
 		return String.valueOf(provisionedCount);
 	}
 
-	private JSONArray _getTerms(LicenseKey licenseKey) throws Exception {
+	private JSONArray _getTerms(
+			LicenseKey licenseKey, ProductPurchaseView productPurchaseView)
+		throws Exception {
+
 		if (Validator.isNull(licenseKey.getProductPurchaseKey())) {
 			return null;
 		}
-
-		ProductPurchaseView productPurchaseView = _getProductPurchaseView(
-			licenseKey);
 
 		if (ArrayUtil.isNotEmpty(productPurchaseView.getProductPurchases())) {
 			JSONArray productPurchasesJSONArray =
@@ -236,7 +223,8 @@ public class ExtendLicenseKeysDisplayContext {
 						"endDate", _formatDate(productPurchase.getEndDate())
 					).put(
 						"licenseKeysGenerated",
-						_getLicenseKeysGenerated(productPurchase, licenseKey)
+						_getLicenseKeysGenerated(productPurchaseView) + " / " +
+							productPurchase.getQuantity()
 					).put(
 						"perpetual", productPurchase.getPerpetual()
 					).put(
