@@ -170,7 +170,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		}
 
 		name = truncateText(name, accountName, 75);
-
 		owner = truncateText(owner, accountName, 75);
 		description = truncateText(description, accountName, 255);
 
