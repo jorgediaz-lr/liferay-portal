@@ -30,6 +30,7 @@ import com.liferay.osb.provisioning.license.exception.LicenseKeyActiveException;
 import com.liferay.osb.provisioning.license.exception.LicenseKeyDescriptionException;
 import com.liferay.osb.provisioning.license.exception.LicenseKeyIPAddressException;
 import com.liferay.osb.provisioning.license.exception.LicenseKeyMACAddressException;
+import com.liferay.osb.provisioning.license.exception.LicenseKeyNameException;
 import com.liferay.osb.provisioning.license.exception.LicenseKeyOwnerException;
 import com.liferay.osb.provisioning.license.exception.LicenseKeyProductVersionException;
 import com.liferay.osb.provisioning.license.exception.LicenseKeyServerInfoException;
@@ -173,7 +174,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		owner = truncateText(owner, accountName, 75);
 		description = truncateText(description, accountName, 255);
 
-		validate(productVersion, owner, description);
+		validate(productVersion, name, owner, description);
 
 		return doAddLicenseKeyVersion3_4(
 			now, user, licenseEntry, product, accountKey, productPurchaseKey,
@@ -1336,18 +1337,23 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 	}
 
 	protected void validate(
-			String productVersion, String owner, String description)
+			String productVersion, String name, String owner,
+			String description)
 		throws PortalException {
 
 		if (Validator.isNull(productVersion)) {
 			throw new LicenseKeyProductVersionException();
 		}
 
-		if (Validator.isNull(owner)) {
+		if (Validator.isNull(name) || (name.length() > 75)) {
+			throw new LicenseKeyNameException();
+		}
+
+		if (Validator.isNull(owner) || (owner.length() > 75)) {
 			throw new LicenseKeyOwnerException();
 		}
 
-		if (Validator.isNull(description)) {
+		if (Validator.isNull(description) || (description.length() > 255)) {
 			throw new LicenseKeyDescriptionException();
 		}
 	}
