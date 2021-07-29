@@ -289,7 +289,7 @@ function SpecificDetails({addLicenseKeyURL, redirect}) {
 									<input
 										className="form-control"
 										id="maxClusterNodes"
-										min={0}
+										min={1}
 										onChange={handleMaxClusterNodesChange}
 										type="number"
 										value={maxClusterNodes}
