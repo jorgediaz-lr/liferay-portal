@@ -178,6 +178,7 @@
 		<exception>LicenseKeyDescription</exception>
 		<exception>LicenseKeyIPAddress</exception>
 		<exception>LicenseKeyMACAddress</exception>
+		<exception>LicenseKeyMaxClusterNodes</exception>
 		<exception>LicenseKeyName</exception>
 		<exception>LicenseKeyOwner</exception>
 		<exception>LicenseKeyProductVersion</exception>

@@ -30,6 +30,7 @@ import com.liferay.osb.provisioning.license.exception.LicenseKeyActiveException;
 import com.liferay.osb.provisioning.license.exception.LicenseKeyDescriptionException;
 import com.liferay.osb.provisioning.license.exception.LicenseKeyIPAddressException;
 import com.liferay.osb.provisioning.license.exception.LicenseKeyMACAddressException;
+import com.liferay.osb.provisioning.license.exception.LicenseKeyMaxClusterNodesException;
 import com.liferay.osb.provisioning.license.exception.LicenseKeyNameException;
 import com.liferay.osb.provisioning.license.exception.LicenseKeyOwnerException;
 import com.liferay.osb.provisioning.license.exception.LicenseKeyProductVersionException;
@@ -174,7 +175,13 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		owner = truncateText(owner, accountName, 75);
 		description = truncateText(description, accountName, 255);
 
-		validate(productVersion, name, owner, description);
+		if (licenseEntryType.equals(LicenseType.VIRTUAL_CLUSTER)) {
+			maxClusterNodes = Math.max(1, maxClusterNodes);
+		}
+
+		validate(
+			productVersion, name, owner, description, licenseEntryType,
+			maxClusterNodes);
 
 		return doAddLicenseKeyVersion3_4(
 			now, user, licenseEntry, product, accountKey, productPurchaseKey,
@@ -1338,7 +1345,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 	protected void validate(
 			String productVersion, String name, String owner,
-			String description)
+			String description, String licenseEntryType, int maxClusterNodes)
 		throws PortalException {
 
 		if (Validator.isNull(productVersion)) {
@@ -1355,6 +1362,12 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		if (Validator.isNull(description) || (description.length() > 255)) {
 			throw new LicenseKeyDescriptionException();
+		}
+
+		if (licenseEntryType.equals(LicenseType.VIRTUAL_CLUSTER) &&
+			(maxClusterNodes <= 0)) {
+
+			throw new LicenseKeyMaxClusterNodesException();
 		}
 	}
 
