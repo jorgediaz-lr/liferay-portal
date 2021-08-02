@@ -114,23 +114,41 @@ describe('ExtendLicense', () => {
 	});
 
 	describe('Extend Button', () => {
-		// it('does not render an Extend button for a single permanent license', () => {
-		// 	const {queryByText} = renderExtendLicense({
-		// 		details: [
-		// 			{
-		// 				accountName: 'Account 1',
-		// 				expirationDate: '2022-06-04',
-		// 				indefinite: true,
-		// 				licenseKeyId: 'licenseKeyID1',
-		// 				licenseType: 'production',
-		// 				productName: 'Commerce Subscription Backup',
-		// 				startDate: '2021-06-04'
-		// 			}
-		// 		]
-		// 	});
+		it('does not render an Extend button for a single permanent license', () => {
+			const {queryByText} = renderExtendLicense({
+				details: [
+					{
+						accountName: 'Account 1',
+						expirationDate: '2022-06-04',
+						indefinite: true,
+						licenseKeyId: 'licenseKeyID1',
+						licenseType: 'production',
+						productName: 'Commerce Subscription Backup',
+						startDate: '2021-06-04'
+					}
+				]
+			});
 
-		// 	expect(queryByText('extend')).toBeFalsy();
-		// });
+			expect(queryByText('extend')).toBeFalsy();
+		});
+
+		it('renders the Permanent License table heading for a single permanent license', () => {
+			const {getByText} = renderExtendLicense({
+				details: [
+					{
+						accountName: 'Account 1',
+						expirationDate: '2022-06-04',
+						indefinite: true,
+						licenseKeyId: 'licenseKeyID1',
+						licenseType: 'production',
+						productName: 'Commerce Subscription Backup',
+						startDate: '2021-06-04'
+					}
+				]
+			});
+
+			getByText('permanent-licenses');
+		});
 
 		it('renders an enabled Extend button for a single temporary license by default', () => {
 			const {getByText} = renderExtendLicense({

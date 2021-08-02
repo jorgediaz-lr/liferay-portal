@@ -13,17 +13,14 @@ import partition from 'lodash.partition';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import {useExtendLicenses} from '../../hooks/extendLicenses';
 import {groupByAll} from '../../utilities/helpers';
 import TableDivider from '../TableDivider';
 import DetailsGroup from './DetailsGroup';
 import ExtensionDetails from './ExtensionDetails';
 
-export default function BulkExtension({extensionURL}) {
-	const [licenses] = useExtendLicenses();
-
+export default function BulkExtension({extensionURL, licenses}) {
 	const [permanent, temporary] = partition(
-		licenses.toList().toJS(),
+		licenses,
 		({indefinite}) => indefinite
 	);
 
@@ -64,5 +61,6 @@ export default function BulkExtension({extensionURL}) {
 }
 
 BulkExtension.propTypes = {
-	extensionURL: PropTypes.string.isRequired
+	extensionURL: PropTypes.string.isRequired,
+	licenses: PropTypes.array.isRequired
 };

@@ -27,7 +27,7 @@ import Terms from './Terms';
 function Detail({
 	disableDelete,
 	disableIndividualExtend,
-	extensionURL,
+	extensionURL = '',
 	license
 }) {
 	const [, {removeLicense, updateLicense}] = useExtendLicenses();
@@ -145,7 +145,7 @@ function Detail({
 				/>
 				<ClayTable.Cell>{licenseKeysGenerated}</ClayTable.Cell>
 				<ClayTable.Cell>
-					{(!disableIndividualExtend || extensionURL) && (
+					{!disableIndividualExtend && (
 						<>
 							<HiddenForm
 								fields={{
@@ -193,23 +193,19 @@ Detail.propTypes = {
 };
 
 function ExtensionDetails({extensionURL, licenses}) {
+	const [extendLicenses] = useExtendLicenses();
+
 	const singleLicense = licenses.length === 1;
 
-	return (
-		<>
-			{licenses.map(license => (
-				<Detail
-					disableDelete={singleLicense}
-					disableIndividualExtend={
-						!singleLicense || license.indefinite
-					}
-					extensionURL={extensionURL}
-					key={license.licenseKeyId}
-					license={license}
-				/>
-			))}
-		</>
-	);
+	return licenses.map(license => (
+		<Detail
+			disableDelete={extendLicenses.size === 1}
+			disableIndividualExtend={!singleLicense || license.indefinite}
+			extensionURL={extensionURL}
+			key={license.licenseKeyId}
+			license={license}
+		/>
+	));
 }
 
 ExtensionDetails.propTypes = {

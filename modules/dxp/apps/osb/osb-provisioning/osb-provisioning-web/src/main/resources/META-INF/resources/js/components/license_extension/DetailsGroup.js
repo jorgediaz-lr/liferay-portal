@@ -9,18 +9,46 @@
  * distribution rights of the Software.
  */
 
+import ClayTable from '@clayui/table';
 import PropTypes from 'prop-types';
 import React from 'react';
 
 import ExtensionDetails from './ExtensionDetails';
 
-function DetailsGroup({extensionURL, licenses}) {
-	return <ExtensionDetails extensionURL={extensionURL} licenses={licenses} />;
+export default function DetailsGroup({extensionURL, licenses}) {
+	const singleLicense = licenses.length === 1;
+
+	function handleOnSubmit() {}
+
+	return (
+		<>
+			<ExtensionDetails extensionURL={extensionURL} licenses={licenses} />
+
+			{!singleLicense && (
+				<ClayTable.Body>
+					<ClayTable.Row>
+						<ClayTable.Cell colSpan={6}></ClayTable.Cell>
+						<ClayTable.Cell>
+							<>
+								<button
+									className="btn btn-secondary btn-sm"
+									onClick={handleOnSubmit}
+									role="button"
+									type="button"
+								>
+									{Liferay.Language.get('extend')}
+								</button>
+							</>
+						</ClayTable.Cell>
+						<ClayTable.Cell></ClayTable.Cell>
+					</ClayTable.Row>
+				</ClayTable.Body>
+			)}
+		</>
+	);
 }
 
 DetailsGroup.propTypes = {
 	extensionURL: PropTypes.string,
 	licenses: PropTypes.array
 };
-
-export default DetailsGroup;
