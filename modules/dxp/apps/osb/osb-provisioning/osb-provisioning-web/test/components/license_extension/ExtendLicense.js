@@ -44,6 +44,29 @@ const singleAttachedLicense = [
 	}
 ];
 
+const multipleDetachedLicenses = [
+	{
+		accountName: 'Account 1',
+		expirationDate: '2022-06-04',
+		indefinite: false,
+		licenseKeyId: 'licenseKeyID1',
+		licenseKeysGenerated: '0',
+		licenseType: 'production',
+		productName: 'DXP Development',
+		startDate: '2021-06-04'
+	},
+	{
+		accountName: 'Account 2',
+		expirationDate: '2027-12-14',
+		indefinite: false,
+		licenseKeyId: 'licenseKeyID2',
+		licenseKeysGenerated: '0',
+		licenseType: 'developer',
+		productName: 'DXP Development',
+		startDate: '2021-07-26'
+	}
+];
+
 function renderExtendLicense(props) {
 	return render(
 		<ExtendLicense
@@ -132,24 +155,6 @@ describe('ExtendLicense', () => {
 			expect(queryByText('extend')).toBeFalsy();
 		});
 
-		it('renders the Permanent License table heading for a single permanent license', () => {
-			const {getByText} = renderExtendLicense({
-				details: [
-					{
-						accountName: 'Account 1',
-						expirationDate: '2022-06-04',
-						indefinite: true,
-						licenseKeyId: 'licenseKeyID1',
-						licenseType: 'production',
-						productName: 'Commerce Subscription Backup',
-						startDate: '2021-06-04'
-					}
-				]
-			});
-
-			getByText('permanent-licenses');
-		});
-
 		it('renders an enabled Extend button for a single temporary license by default', () => {
 			const {getByText} = renderExtendLicense({
 				details: singleAttachedLicense
@@ -158,15 +163,41 @@ describe('ExtendLicense', () => {
 			expect(getByText('extend').disabled).toBeFalsy();
 		});
 
-		it('renders a disabled Extend button if any of the dates are empty', () => {
+		it('renders one Extend button for a group of temporary licenses for the same product', () => {
+			const {getAllByText} = renderExtendLicense({
+				details: multipleDetachedLicenses
+			});
+
+			expect(getAllByText('extend').length).toBe(1);
+		});
+
+		it('renders a disabled Extend button if any of the dates are empty for a single extend', () => {
 			const {getAllByDisplayValue, getByText} = renderExtendLicense({
 				details: singleAttachedLicense
 			});
+
+			expect(getByText('extend').disabled).toBeFalsy();
 
 			// Clay Date Picker always displays two inputs for the same date
 
 			fireEvent.change(getAllByDisplayValue('2021-06-03')[1], {
 				target: {value: ''}
+			});
+
+			expect(getByText('extend').disabled).toBeTruthy();
+		});
+
+		it('renders a disabled Extend button if any of the dates are invalid for bulk extend', () => {
+			const {getAllByDisplayValue, getByText} = renderExtendLicense({
+				details: multipleDetachedLicenses
+			});
+
+			expect(getByText('extend').disabled).toBeFalsy();
+
+			// Clay Date Picker always displays two inputs for the same date
+
+			fireEvent.change(getAllByDisplayValue(formatDate(new Date()))[1], {
+				target: {value: 'invalid'}
 			});
 
 			expect(getByText('extend').disabled).toBeTruthy();
@@ -219,6 +250,24 @@ describe('ExtendLicense', () => {
 
 			expect(getAllByDisplayValue(formatDate(new Date())).length).toBe(3);
 		});
+	});
+
+	it('renders the Permanent License table heading for a single permanent license', () => {
+		const {getByText} = renderExtendLicense({
+			details: [
+				{
+					accountName: 'Account 1',
+					expirationDate: '2022-06-04',
+					indefinite: true,
+					licenseKeyId: 'licenseKeyID1',
+					licenseType: 'production',
+					productName: 'Commerce Subscription Backup',
+					startDate: '2021-06-04'
+				}
+			]
+		});
+
+		getByText('permanent-licenses');
 	});
 
 	it('updates the Liceses Generated value when terms change', () => {

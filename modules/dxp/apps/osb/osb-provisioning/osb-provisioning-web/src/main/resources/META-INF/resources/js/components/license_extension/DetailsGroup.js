@@ -10,35 +10,73 @@
  */
 
 import ClayTable from '@clayui/table';
+import {Map} from 'immutable';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {useRef, useState} from 'react';
 
+import {FieldData} from '../../hooks/extendLicenses';
+import {formatDate} from '../../utilities/date';
+import ExtendButton from './ExtendButton';
 import ExtensionDetails from './ExtensionDetails';
 
 export default function DetailsGroup({extensionURL, licenses}) {
-	const singleLicense = licenses.length === 1;
+	const formRef = useRef();
+	const [fieldData, setFieldData] = useState(
+		Map(
+			licenses.map(license => [
+				license.licenseKeyId,
+				new FieldData(license)
+			])
+		)
+	);
 
-	function handleOnSubmit() {}
+	function deriveExtendDisabledState() {
+		return fieldData.toList().every(data => data.hasValidDates());
+	}
+
+	function getFieldData() {
+		return fieldData
+			.toList()
+			.toJS()
+			.map(data => ({
+				...data,
+				...{expirationDate: formatDate(data.expirationDate)},
+				...{startDate: formatDate(data.startDate)}
+			}));
+	}
+
+	function handleDateChange(keyPath, value) {
+		setFieldData(fieldData.setIn(keyPath, value));
+	}
+
+	function handleOnSubmit() {
+		if (formRef.current) {
+			formRef.current.submit();
+		}
+	}
 
 	return (
 		<>
-			<ExtensionDetails extensionURL={extensionURL} licenses={licenses} />
+			<ExtensionDetails
+				extensionURL={extensionURL}
+				licenses={licenses}
+				updateDate={handleDateChange}
+			/>
 
-			{!singleLicense && (
+			{licenses.length !== 1 && (
 				<ClayTable.Body>
 					<ClayTable.Row>
 						<ClayTable.Cell colSpan={6}></ClayTable.Cell>
 						<ClayTable.Cell>
-							<>
-								<button
-									className="btn btn-secondary btn-sm"
-									onClick={handleOnSubmit}
-									role="button"
-									type="button"
-								>
-									{Liferay.Language.get('extend')}
-								</button>
-							</>
+							<ExtendButton
+								disabled={!deriveExtendDisabledState()}
+								fields={{
+									licenseKeys: JSON.stringify(getFieldData())
+								}}
+								formAction={extensionURL}
+								ref={formRef}
+								submitHandler={handleOnSubmit}
+							/>
 						</ClayTable.Cell>
 						<ClayTable.Cell></ClayTable.Cell>
 					</ClayTable.Row>

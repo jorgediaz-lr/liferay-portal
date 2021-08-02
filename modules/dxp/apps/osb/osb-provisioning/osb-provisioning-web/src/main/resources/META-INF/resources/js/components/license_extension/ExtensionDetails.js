@@ -19,16 +19,17 @@ import {
 	RESTRICTED_EXPIRATION_DATE_TYPES
 } from '../../utilities/constants';
 import {formatDate} from '../../utilities/date';
-import HiddenForm from '../HiddenForm';
 import IconButton from '../IconButton';
 import LicenseDates from '../LicenseDates';
+import ExtendButton from './ExtendButton';
 import Terms from './Terms';
 
 function Detail({
 	disableDelete,
 	disableIndividualExtend,
 	extensionURL = '',
-	license
+	license,
+	updateDate
 }) {
 	const [, {removeLicense, updateLicense}] = useExtendLicenses();
 	const formRef = useRef();
@@ -89,6 +90,10 @@ function Detail({
 
 	function handleExpirationDateChange(val) {
 		setSelectedExpirationDate(val);
+
+		if (updateDate) {
+			updateDate([licenseKeyId, 'expirationDate'], val);
+		}
 	}
 
 	function handleOnSubmit() {
@@ -107,6 +112,10 @@ function Detail({
 
 	function handleStartDateChange(val) {
 		setSelectedStartDate(val);
+
+		if (updateDate) {
+			updateDate([licenseKeyId, 'startDate'], val);
+		}
 	}
 
 	function handleTermsChange(val) {
@@ -146,29 +155,18 @@ function Detail({
 				<ClayTable.Cell>{licenseKeysGenerated}</ClayTable.Cell>
 				<ClayTable.Cell>
 					{!disableIndividualExtend && (
-						<>
-							<HiddenForm
-								fields={{
-									expirationDate: formatDate(expirationDate),
-									licenseKeyId,
-									productPurchaseKey,
-									startDate: formatDate(startDate)
-								}}
-								formAction={extensionURL}
-								formName="extendLicenseFm"
-								ref={formRef}
-							/>
-
-							<button
-								className="btn btn-secondary btn-sm"
-								disabled={disableExtend}
-								onClick={handleOnSubmit}
-								role="button"
-								type="button"
-							>
-								{Liferay.Language.get('extend')}
-							</button>
-						</>
+						<ExtendButton
+							disabled={disableExtend}
+							fields={{
+								expirationDate: formatDate(expirationDate),
+								licenseKeyId,
+								productPurchaseKey,
+								startDate: formatDate(startDate)
+							}}
+							formAction={extensionURL}
+							ref={formRef}
+							submitHandler={handleOnSubmit}
+						/>
 					)}
 				</ClayTable.Cell>
 				<ClayTable.Cell>
@@ -189,10 +187,11 @@ function Detail({
 Detail.propTypes = {
 	disableDelete: PropTypes.bool,
 	extensionURL: PropTypes.string,
-	license: PropTypes.object
+	license: PropTypes.object,
+	updateDate: PropTypes.func
 };
 
-function ExtensionDetails({extensionURL, licenses}) {
+function ExtensionDetails({extensionURL, licenses, updateDate}) {
 	const [extendLicenses] = useExtendLicenses();
 
 	const singleLicense = licenses.length === 1;
@@ -204,13 +203,15 @@ function ExtensionDetails({extensionURL, licenses}) {
 			extensionURL={extensionURL}
 			key={license.licenseKeyId}
 			license={license}
+			updateDate={updateDate}
 		/>
 	));
 }
 
 ExtensionDetails.propTypes = {
 	extensionURL: PropTypes.string,
-	licenses: PropTypes.array
+	licenses: PropTypes.array,
+	updateDate: PropTypes.func
 };
 
 export default ExtensionDetails;

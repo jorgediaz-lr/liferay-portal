@@ -86,3 +86,19 @@ export function ExtendLicensesProvider({initialLicenses = [], children}) {
 export function useExtendLicenses() {
 	return useContext(ExtendLicensesContext);
 }
+
+// Bulk Extension Field Data
+
+export class FieldData extends Record({
+	expirationDate: null,
+	licenseKeyId: '',
+	productPurchaseKey: '',
+	startDate: ''
+}) {
+	hasValidDates() {
+		return (
+			!isNaN(new Date(this.expirationDate)) &&
+			!isNaN(new Date(this.startDate))
+		);
+	}
+}
