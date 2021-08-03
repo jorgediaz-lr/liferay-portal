@@ -2876,6 +2876,74 @@ paths:
                     description:
                         ""
             tags: ["ContactRole"]
+    "/contact-roles/{contactRoleKey}/external-links":
+        get:
+            description:
+                Retrieves the contact role's external links.
+            operationId: getContactRoleContactRoleKeyExternalLinksPage
+            parameters:
+                - in: path
+                  name: contactRoleKey
+                  required: true
+                  schema:
+                      type: string
+                - in: query
+                  name: page
+                  schema:
+                      type: integer
+                - in: query
+                  name: pageSize
+                  schema:
+                      type: integer
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/ExternalLink"
+                                type: array
+                        application/xml:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/ExternalLink"
+                                type: array
+                    description:
+                        ""
+            tags: ["ExternalLink"]
+        post:
+            description:
+                Adds an external link to the contact role.
+            operationId: postContactRoleContactRoleKeyExternalLink
+            parameters:
+                - $ref: "#/components/parameters/AgentName"
+                - $ref: "#/components/parameters/AgentUID"
+                - in: path
+                  name: contactRoleKey
+                  required: true
+                  schema:
+                      type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/ExternalLink"
+                    application/xml:
+                        schema:
+                            $ref: "#/components/schemas/ExternalLink"
+                required: true
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ExternalLink"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/ExternalLink"
+                    description:
+                        ""
+            tags: ["ExternalLink"]
     "/contact-roles/{contactRoleType}/{contactRoleName}":
         get:
             description:

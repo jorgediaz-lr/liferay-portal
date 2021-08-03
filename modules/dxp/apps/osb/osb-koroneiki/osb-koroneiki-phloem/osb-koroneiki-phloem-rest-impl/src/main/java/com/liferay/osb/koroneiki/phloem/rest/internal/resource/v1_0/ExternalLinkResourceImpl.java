@@ -21,6 +21,7 @@ import com.liferay.osb.koroneiki.phloem.rest.resource.v1_0.ExternalLinkResource;
 import com.liferay.osb.koroneiki.root.service.ExternalLinkService;
 import com.liferay.osb.koroneiki.taproot.model.Account;
 import com.liferay.osb.koroneiki.taproot.model.Contact;
+import com.liferay.osb.koroneiki.taproot.model.ContactRole;
 import com.liferay.osb.koroneiki.taproot.model.Team;
 import com.liferay.osb.koroneiki.taproot.service.AccountLocalService;
 import com.liferay.osb.koroneiki.taproot.service.ContactLocalService;
@@ -80,6 +81,18 @@ public class ExternalLinkResourceImpl extends BaseExternalLinkResourceImpl {
 
 		return getExternalLinksPage(
 			Contact.class, contact.getContactId(), pagination);
+	}
+
+	@Override
+	public Page<ExternalLink> getContactRoleContactRoleKeyExternalLinksPage(
+			String contactRoleKey, Pagination pagination)
+		throws Exception {
+
+		ContactRole contactRole = _contactRoleLocalService.getContactRole(
+			contactRoleKey);
+
+		return getExternalLinksPage(
+			ContactRole.class, contactRole.getContactRoleId(), pagination);
 	}
 
 	@Override
@@ -167,6 +180,21 @@ public class ExternalLinkResourceImpl extends BaseExternalLinkResourceImpl {
 
 		return postExternalLink(
 			Contact.class, contact.getContactId(), externalLink);
+	}
+
+	@Override
+	public ExternalLink postContactRoleContactRoleKeyExternalLink(
+			String agentName, String agentUID, String contactRoleKey,
+			ExternalLink externalLink)
+		throws Exception {
+
+		ServiceContextUtil.setAgentFields(agentName, agentUID);
+
+		ContactRole contactRole = _contactRoleLocalService.getContactRole(
+			contactRoleKey);
+
+		return postExternalLink(
+			ContactRole.class, contactRole.getContactRoleId(), externalLink);
 	}
 
 	@Override
