@@ -23,10 +23,10 @@ import CancelLink from '../CancelLink';
 import Purchases from './Purchases';
 import SelectAccount from './SelectAccount';
 
-const DEFAULT_MAXCLUSTERNODES = 0;
-const DEFAULT_MAXCLUSTERNODES_FOR_VIRTUAL_CLUSTER_LICENSES = 1;
-const DEFAULT_MAXHTTPSESSIONS = 0;
-const DEFAULT_MAXHTTPSESSIONS_FOR_DEVELOPER_LICENSES = 5;
+const DEFAULT_MAX_CLUSTER_NODES = 0;
+const DEFAULT_MAX_CLUSTER_NODES_FOR_VIRTUAL_CLUSTER_LICENSES = 1;
+const DEFAULT_MAX_HTTP_SESSIONS = 0;
+const DEFAULT_MAX_HTTP_SESSIONS_FOR_DEVELOPER_LICENSES = 5;
 
 function GeneralInformation({
 	accountKey = '',
@@ -113,8 +113,8 @@ function GeneralInformation({
 
 						return type === LICENSE_TYPE_DEVELOPER ||
 							type === LICENSE_TYPE_DEVELOPER_CLUSTER
-							? DEFAULT_MAXHTTPSESSIONS_FOR_DEVELOPER_LICENSES
-							: DEFAULT_MAXHTTPSESSIONS;
+							? DEFAULT_MAX_HTTP_SESSIONS_FOR_DEVELOPER_LICENSES
+							: DEFAULT_MAX_HTTP_SESSIONS;
 					}
 
 					return maxHttpSessions;
@@ -124,8 +124,8 @@ function GeneralInformation({
 						const type = currentLicenseEntry.licenseEntryType;
 
 						return type === LICENSE_TYPE_VIRTUAL_CLUSTER
-							? DEFAULT_MAXCLUSTERNODES_FOR_VIRTUAL_CLUSTER_LICENSES
-							: DEFAULT_MAXCLUSTERNODES;
+							? DEFAULT_MAX_CLUSTER_NODES_FOR_VIRTUAL_CLUSTER_LICENSES
+							: DEFAULT_MAX_CLUSTER_NODES;
 					}
 
 					return maxClusterNodes;
