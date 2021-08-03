@@ -653,13 +653,17 @@ public class Note implements Serializable {
 
 		@JsonCreator
 		public static Format create(String value) {
+			if ((value == null) || value.equals("")) {
+				return null;
+			}
+
 			for (Format format : values()) {
 				if (Objects.equals(format.getValue(), value)) {
 					return format;
 				}
 			}
 
-			return null;
+			throw new IllegalArgumentException("Invalid enum value: " + value);
 		}
 
 		@JsonValue
@@ -687,13 +691,17 @@ public class Note implements Serializable {
 
 		@JsonCreator
 		public static Status create(String value) {
+			if ((value == null) || value.equals("")) {
+				return null;
+			}
+
 			for (Status status : values()) {
 				if (Objects.equals(status.getValue(), value)) {
 					return status;
 				}
 			}
 
-			return null;
+			throw new IllegalArgumentException("Invalid enum value: " + value);
 		}
 
 		@JsonValue
@@ -721,13 +729,17 @@ public class Note implements Serializable {
 
 		@JsonCreator
 		public static Type create(String value) {
+			if ((value == null) || value.equals("")) {
+				return null;
+			}
+
 			for (Type type : values()) {
 				if (Objects.equals(type.getValue(), value)) {
 					return type;
 				}
 			}
 
-			return null;
+			throw new IllegalArgumentException("Invalid enum value: " + value);
 		}
 
 		@JsonValue

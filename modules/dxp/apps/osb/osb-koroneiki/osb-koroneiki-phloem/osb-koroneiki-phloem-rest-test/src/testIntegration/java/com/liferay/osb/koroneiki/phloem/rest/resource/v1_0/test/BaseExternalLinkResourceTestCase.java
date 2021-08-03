@@ -344,6 +344,157 @@ public abstract class BaseExternalLinkResourceTestCase {
 	}
 
 	@Test
+	public void testGetContactRoleContactRoleKeyExternalLinksPage()
+		throws Exception {
+
+		Page<ExternalLink> page =
+			externalLinkResource.getContactRoleContactRoleKeyExternalLinksPage(
+				testGetContactRoleContactRoleKeyExternalLinksPage_getContactRoleKey(),
+				Pagination.of(1, 2));
+
+		Assert.assertEquals(0, page.getTotalCount());
+
+		String contactRoleKey =
+			testGetContactRoleContactRoleKeyExternalLinksPage_getContactRoleKey();
+		String irrelevantContactRoleKey =
+			testGetContactRoleContactRoleKeyExternalLinksPage_getIrrelevantContactRoleKey();
+
+		if (irrelevantContactRoleKey != null) {
+			ExternalLink irrelevantExternalLink =
+				testGetContactRoleContactRoleKeyExternalLinksPage_addExternalLink(
+					irrelevantContactRoleKey, randomIrrelevantExternalLink());
+
+			page =
+				externalLinkResource.
+					getContactRoleContactRoleKeyExternalLinksPage(
+						irrelevantContactRoleKey, Pagination.of(1, 2));
+
+			Assert.assertEquals(1, page.getTotalCount());
+
+			assertEquals(
+				Arrays.asList(irrelevantExternalLink),
+				(List<ExternalLink>)page.getItems());
+			assertValid(page);
+		}
+
+		ExternalLink externalLink1 =
+			testGetContactRoleContactRoleKeyExternalLinksPage_addExternalLink(
+				contactRoleKey, randomExternalLink());
+
+		ExternalLink externalLink2 =
+			testGetContactRoleContactRoleKeyExternalLinksPage_addExternalLink(
+				contactRoleKey, randomExternalLink());
+
+		page =
+			externalLinkResource.getContactRoleContactRoleKeyExternalLinksPage(
+				contactRoleKey, Pagination.of(1, 2));
+
+		Assert.assertEquals(2, page.getTotalCount());
+
+		assertEqualsIgnoringOrder(
+			Arrays.asList(externalLink1, externalLink2),
+			(List<ExternalLink>)page.getItems());
+		assertValid(page);
+	}
+
+	@Test
+	public void testGetContactRoleContactRoleKeyExternalLinksPageWithPagination()
+		throws Exception {
+
+		String contactRoleKey =
+			testGetContactRoleContactRoleKeyExternalLinksPage_getContactRoleKey();
+
+		ExternalLink externalLink1 =
+			testGetContactRoleContactRoleKeyExternalLinksPage_addExternalLink(
+				contactRoleKey, randomExternalLink());
+
+		ExternalLink externalLink2 =
+			testGetContactRoleContactRoleKeyExternalLinksPage_addExternalLink(
+				contactRoleKey, randomExternalLink());
+
+		ExternalLink externalLink3 =
+			testGetContactRoleContactRoleKeyExternalLinksPage_addExternalLink(
+				contactRoleKey, randomExternalLink());
+
+		Page<ExternalLink> page1 =
+			externalLinkResource.getContactRoleContactRoleKeyExternalLinksPage(
+				contactRoleKey, Pagination.of(1, 2));
+
+		List<ExternalLink> externalLinks1 =
+			(List<ExternalLink>)page1.getItems();
+
+		Assert.assertEquals(
+			externalLinks1.toString(), 2, externalLinks1.size());
+
+		Page<ExternalLink> page2 =
+			externalLinkResource.getContactRoleContactRoleKeyExternalLinksPage(
+				contactRoleKey, Pagination.of(2, 2));
+
+		Assert.assertEquals(3, page2.getTotalCount());
+
+		List<ExternalLink> externalLinks2 =
+			(List<ExternalLink>)page2.getItems();
+
+		Assert.assertEquals(
+			externalLinks2.toString(), 1, externalLinks2.size());
+
+		Page<ExternalLink> page3 =
+			externalLinkResource.getContactRoleContactRoleKeyExternalLinksPage(
+				contactRoleKey, Pagination.of(1, 3));
+
+		assertEqualsIgnoringOrder(
+			Arrays.asList(externalLink1, externalLink2, externalLink3),
+			(List<ExternalLink>)page3.getItems());
+	}
+
+	protected ExternalLink
+			testGetContactRoleContactRoleKeyExternalLinksPage_addExternalLink(
+				String contactRoleKey, ExternalLink externalLink)
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
+	}
+
+	protected String
+			testGetContactRoleContactRoleKeyExternalLinksPage_getContactRoleKey()
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
+	}
+
+	protected String
+			testGetContactRoleContactRoleKeyExternalLinksPage_getIrrelevantContactRoleKey()
+		throws Exception {
+
+		return null;
+	}
+
+	@Test
+	public void testPostContactRoleContactRoleKeyExternalLink()
+		throws Exception {
+
+		ExternalLink randomExternalLink = randomExternalLink();
+
+		ExternalLink postExternalLink =
+			testPostContactRoleContactRoleKeyExternalLink_addExternalLink(
+				randomExternalLink);
+
+		assertEquals(randomExternalLink, postExternalLink);
+		assertValid(postExternalLink);
+	}
+
+	protected ExternalLink
+			testPostContactRoleContactRoleKeyExternalLink_addExternalLink(
+				ExternalLink externalLink)
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
+	}
+
+	@Test
 	public void testGetContactByUuidContactUuidExternalLinksPage()
 		throws Exception {
 

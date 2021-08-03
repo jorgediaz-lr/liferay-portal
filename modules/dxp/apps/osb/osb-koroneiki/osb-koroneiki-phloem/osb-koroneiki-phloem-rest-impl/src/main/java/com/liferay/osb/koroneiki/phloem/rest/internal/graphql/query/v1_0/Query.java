@@ -1004,6 +1004,27 @@ public class Query {
 	/**
 	 * Invoke this method with the command line:
 	 *
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {contactRoleContactRoleKeyExternalLinks(contactRoleKey: ___, page: ___, pageSize: ___){items {__}, page, pageSize, totalCount}}"}' -u 'test@liferay.com:test'
+	 */
+	@GraphQLField(description = "Retrieves the contact role's external links.")
+	public ExternalLinkPage contactRoleContactRoleKeyExternalLinks(
+			@GraphQLName("contactRoleKey") String contactRoleKey,
+			@GraphQLName("pageSize") int pageSize,
+			@GraphQLName("page") int page)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_externalLinkResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			externalLinkResource -> new ExternalLinkPage(
+				externalLinkResource.
+					getContactRoleContactRoleKeyExternalLinksPage(
+						contactRoleKey, Pagination.of(page, pageSize))));
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
 	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {contactByUuidContactUuidExternalLinks(contactUuid: ___, page: ___, pageSize: ___){items {__}, page, pageSize, totalCount}}"}' -u 'test@liferay.com:test'
 	 */
 	@GraphQLField(description = "Retrieves the contact's external links.")
@@ -2561,6 +2582,37 @@ public class Query {
 		}
 
 		private Team _team;
+
+	}
+
+	@GraphQLTypeExtension(ContactRole.class)
+	public class GetContactRoleContactRoleKeyExternalLinksPageTypeExtension {
+
+		public GetContactRoleContactRoleKeyExternalLinksPageTypeExtension(
+			ContactRole contactRole) {
+
+			_contactRole = contactRole;
+		}
+
+		@GraphQLField(
+			description = "Retrieves the contact role's external links."
+		)
+		public ExternalLinkPage contactRoleKeyExternalLinks(
+				@GraphQLName("pageSize") int pageSize,
+				@GraphQLName("page") int page)
+			throws Exception {
+
+			return _applyComponentServiceObjects(
+				_externalLinkResourceComponentServiceObjects,
+				Query.this::_populateResourceContext,
+				externalLinkResource -> new ExternalLinkPage(
+					externalLinkResource.
+						getContactRoleContactRoleKeyExternalLinksPage(
+							_contactRole.getKey(),
+							Pagination.of(page, pageSize))));
+		}
+
+		private ContactRole _contactRole;
 
 	}
 

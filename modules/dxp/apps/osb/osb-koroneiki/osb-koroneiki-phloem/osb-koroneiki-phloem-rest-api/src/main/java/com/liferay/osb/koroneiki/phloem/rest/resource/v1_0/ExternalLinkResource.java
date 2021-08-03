@@ -57,6 +57,15 @@ public interface ExternalLinkResource {
 			ExternalLink externalLink)
 		throws Exception;
 
+	public Page<ExternalLink> getContactRoleContactRoleKeyExternalLinksPage(
+			String contactRoleKey, Pagination pagination)
+		throws Exception;
+
+	public ExternalLink postContactRoleContactRoleKeyExternalLink(
+			String agentName, String agentUID, String contactRoleKey,
+			ExternalLink externalLink)
+		throws Exception;
+
 	public Page<ExternalLink> getContactByUuidContactUuidExternalLinksPage(
 			String contactUuid, Pagination pagination)
 		throws Exception;

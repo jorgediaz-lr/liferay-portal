@@ -737,6 +737,22 @@ public class Mutation {
 					agentName, agentUID, accountKey, externalLink));
 	}
 
+	@GraphQLField(description = "Adds an external link to the contact role.")
+	public ExternalLink createContactRoleContactRoleKeyExternalLink(
+			@GraphQLName("agentName") String agentName,
+			@GraphQLName("agentUID") String agentUID,
+			@GraphQLName("contactRoleKey") String contactRoleKey,
+			@GraphQLName("externalLink") ExternalLink externalLink)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_externalLinkResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			externalLinkResource ->
+				externalLinkResource.postContactRoleContactRoleKeyExternalLink(
+					agentName, agentUID, contactRoleKey, externalLink));
+	}
+
 	@GraphQLField(description = "Adds an external link to the contact.")
 	public ExternalLink createContactByUuidContactUuidExternalLink(
 			@GraphQLName("agentName") String agentName,

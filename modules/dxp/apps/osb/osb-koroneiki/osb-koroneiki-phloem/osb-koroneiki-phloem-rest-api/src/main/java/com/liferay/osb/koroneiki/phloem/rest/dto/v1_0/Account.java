@@ -1375,13 +1375,17 @@ public class Account implements Serializable {
 
 		@JsonCreator
 		public static DataRegion create(String value) {
+			if ((value == null) || value.equals("")) {
+				return null;
+			}
+
 			for (DataRegion dataRegion : values()) {
 				if (Objects.equals(dataRegion.getValue(), value)) {
 					return dataRegion;
 				}
 			}
 
-			return null;
+			throw new IllegalArgumentException("Invalid enum value: " + value);
 		}
 
 		@JsonValue
@@ -1410,13 +1414,17 @@ public class Account implements Serializable {
 
 		@JsonCreator
 		public static Language create(String value) {
+			if ((value == null) || value.equals("")) {
+				return null;
+			}
+
 			for (Language language : values()) {
 				if (Objects.equals(language.getValue(), value)) {
 					return language;
 				}
 			}
 
-			return null;
+			throw new IllegalArgumentException("Invalid enum value: " + value);
 		}
 
 		@JsonValue
@@ -1446,13 +1454,17 @@ public class Account implements Serializable {
 
 		@JsonCreator
 		public static Region create(String value) {
+			if ((value == null) || value.equals("")) {
+				return null;
+			}
+
 			for (Region region : values()) {
 				if (Objects.equals(region.getValue(), value)) {
 					return region;
 				}
 			}
 
-			return null;
+			throw new IllegalArgumentException("Invalid enum value: " + value);
 		}
 
 		@JsonValue
@@ -1480,13 +1492,17 @@ public class Account implements Serializable {
 
 		@JsonCreator
 		public static Status create(String value) {
+			if ((value == null) || value.equals("")) {
+				return null;
+			}
+
 			for (Status status : values()) {
 				if (Objects.equals(status.getValue(), value)) {
 					return status;
 				}
 			}
 
-			return null;
+			throw new IllegalArgumentException("Invalid enum value: " + value);
 		}
 
 		@JsonValue
@@ -1514,13 +1530,17 @@ public class Account implements Serializable {
 
 		@JsonCreator
 		public static Tier create(String value) {
+			if ((value == null) || value.equals("")) {
+				return null;
+			}
+
 			for (Tier tier : values()) {
 				if (Objects.equals(tier.getValue(), value)) {
 					return tier;
 				}
 			}
 
-			return null;
+			throw new IllegalArgumentException("Invalid enum value: " + value);
 		}
 
 		@JsonValue

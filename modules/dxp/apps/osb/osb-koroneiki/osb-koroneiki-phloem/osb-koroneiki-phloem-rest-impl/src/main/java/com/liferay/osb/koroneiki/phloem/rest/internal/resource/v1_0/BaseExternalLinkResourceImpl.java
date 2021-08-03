@@ -128,6 +128,63 @@ public abstract class BaseExternalLinkResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
+	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/contact-roles/{contactRoleKey}/external-links'  -u 'test@liferay.com:test'
+	 */
+	@GET
+	@Operation(description = "Retrieves the contact role's external links.")
+	@Override
+	@Parameters(
+		value = {
+			@Parameter(in = ParameterIn.PATH, name = "contactRoleKey"),
+			@Parameter(in = ParameterIn.QUERY, name = "page"),
+			@Parameter(in = ParameterIn.QUERY, name = "pageSize")
+		}
+	)
+	@Path("/contact-roles/{contactRoleKey}/external-links")
+	@Produces({"application/json", "application/xml"})
+	@Tags(value = {@Tag(name = "ExternalLink")})
+	public Page<ExternalLink> getContactRoleContactRoleKeyExternalLinksPage(
+			@NotNull @Parameter(hidden = true) @PathParam("contactRoleKey")
+				String contactRoleKey,
+			@Context Pagination pagination)
+		throws Exception {
+
+		return Page.of(Collections.emptyList());
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -X 'POST' 'http://localhost:8080/o/koroneiki-rest/v1.0/contact-roles/{contactRoleKey}/external-links' -d $'{"domain": ___, "entityId": ___, "entityName": ___, "key": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
+	 */
+	@Consumes({"application/json", "application/xml"})
+	@Operation(description = "Adds an external link to the contact role.")
+	@Override
+	@Parameters(
+		value = {
+			@Parameter(in = ParameterIn.QUERY, name = "agentName"),
+			@Parameter(in = ParameterIn.QUERY, name = "agentUID"),
+			@Parameter(in = ParameterIn.PATH, name = "contactRoleKey")
+		}
+	)
+	@Path("/contact-roles/{contactRoleKey}/external-links")
+	@POST
+	@Produces({"application/json", "application/xml"})
+	@Tags(value = {@Tag(name = "ExternalLink")})
+	public ExternalLink postContactRoleContactRoleKeyExternalLink(
+			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
+			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
+			@NotNull @Parameter(hidden = true) @PathParam("contactRoleKey")
+				String contactRoleKey,
+			ExternalLink externalLink)
+		throws Exception {
+
+		return new ExternalLink();
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/koroneiki-rest/v1.0/contacts/by-uuid/{contactUuid}/external-links'  -u 'test@liferay.com:test'
 	 */
 	@GET

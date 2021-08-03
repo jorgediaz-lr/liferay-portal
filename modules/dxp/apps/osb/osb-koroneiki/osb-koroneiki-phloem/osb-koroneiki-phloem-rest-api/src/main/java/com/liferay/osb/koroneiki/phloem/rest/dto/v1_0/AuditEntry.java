@@ -590,13 +590,17 @@ public class AuditEntry implements Serializable {
 
 		@JsonCreator
 		public static Action create(String value) {
+			if ((value == null) || value.equals("")) {
+				return null;
+			}
+
 			for (Action action : values()) {
 				if (Objects.equals(action.getValue(), value)) {
 					return action;
 				}
 			}
 
-			return null;
+			throw new IllegalArgumentException("Invalid enum value: " + value);
 		}
 
 		@JsonValue
