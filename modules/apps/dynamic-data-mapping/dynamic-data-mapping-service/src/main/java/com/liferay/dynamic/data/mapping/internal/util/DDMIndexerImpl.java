@@ -275,8 +275,12 @@ public class DDMIndexerImpl implements DDMIndexer {
 			Serializable value)
 		throws Exception {
 
-		value = _transformIndexedFieldValue(
-			ddmStructure, fieldReference, value);
+		if (ddmStructure.hasFieldByFieldReference(fieldReference)) {
+			value = _ddm.getIndexedFieldValue(
+				value,
+				ddmStructure.getFieldPropertyByFieldReference(
+					fieldReference, "type"));
+		}
 
 		return createFieldValueQueryFilter(
 			ddmStructure, fieldReference, locale,
@@ -805,21 +809,6 @@ public class DDMIndexerImpl implements DDMIndexer {
 		}
 
 		return sortableValue;
-	}
-
-	private Serializable _transformIndexedFieldValue(
-			DDMStructure ddmStructure, String fieldReference,
-			Serializable value)
-		throws Exception {
-
-		if (!ddmStructure.hasFieldByFieldReference(fieldReference)) {
-			return value;
-		}
-
-		return _ddm.getIndexedFieldValue(
-			value,
-			ddmStructure.getFieldPropertyByFieldReference(
-				fieldReference, "type"));
 	}
 
 	private static final int _SORTABLE_TEXT_FIELDS_TRUNCATED_LENGTH =
