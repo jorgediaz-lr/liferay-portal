@@ -21,17 +21,20 @@ import ExtensionDetails from './ExtensionDetails';
 
 export default function DetailsGroup({extensionURL, licenses}) {
 	const formRef = useRef();
+
 	const [fieldData, setFieldData] = useState(
 		Map(
 			licenses.map(license => [
 				license.licenseKeyId,
-				new FieldData(license)
+				new FieldData({...license, ...{hasTerm: !!license.terms}})
 			])
 		)
 	);
 
 	function deriveExtendDisabledState() {
-		return fieldData.toList().every(data => data.hasValidDates());
+		return fieldData
+			.toList()
+			.every(data => data.hasValidDates() && !data.hasMissingTerm());
 	}
 
 	function getFieldData() {
@@ -45,7 +48,7 @@ export default function DetailsGroup({extensionURL, licenses}) {
 			}));
 	}
 
-	function handleDateChange(keyPath, value) {
+	function handleFieldChange(keyPath, value) {
 		setFieldData(fieldData.setIn(keyPath, value));
 	}
 
@@ -55,12 +58,17 @@ export default function DetailsGroup({extensionURL, licenses}) {
 		}
 	}
 
+	function handleRemove(key) {
+		setFieldData(fieldData.delete(key));
+	}
+
 	return (
 		<>
 			<ExtensionDetails
 				extensionURL={extensionURL}
 				licenses={licenses}
-				updateDate={handleDateChange}
+				removalCallback={handleRemove}
+				updater={handleFieldChange}
 			/>
 
 			{licenses.length !== 1 && (

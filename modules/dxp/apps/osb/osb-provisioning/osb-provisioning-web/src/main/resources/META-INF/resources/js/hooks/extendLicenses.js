@@ -31,30 +31,30 @@ export const LicenseRecord = Record({
 const ExtendLicensesContext = createContext();
 
 function createLicenseRecord(license) {
-	if (license.terms) {
-		const firstTerms = license.terms[0];
-
-		const licenseKeysGenerated = firstTerms.licenseKeysGenerated;
-		const productPurchaseKey = firstTerms.productPurchaseKey;
+	if (!license.terms) {
+		const licenseDates = getDetachedLicenseDates();
+		const {
+			licenseExpirationDate: expirationDate,
+			licenseStartDate: startDate
+		} = licenseDates;
 
 		return new LicenseRecord({
 			...license,
-			licenseKeysGenerated,
-			productPurchaseKey
+			expirationDate,
+			startDate
 		});
 	}
 
-	const licenseDates = getDetachedLicenseDates();
-	const {
-		licenseExpirationDate: expirationDate,
-		licenseStartDate: startDate
-	} = licenseDates;
+	if (license.terms.length === 1) {
+		const term = license.terms[0];
 
-	return new LicenseRecord({
-		...license,
-		expirationDate,
-		startDate
-	});
+		return new LicenseRecord({
+			...license,
+			productPurchaseKey: term.productPurchaseKey
+		});
+	}
+
+	return new LicenseRecord(license);
 }
 
 export function ExtendLicensesProvider({initialLicenses = [], children}) {
@@ -91,14 +91,23 @@ export function useExtendLicenses() {
 
 export class FieldData extends Record({
 	expirationDate: null,
+	hasTerm: false,
 	licenseKeyId: '',
 	productPurchaseKey: '',
 	startDate: ''
 }) {
+	hasMissingTerm() {
+		if (this.hasTerm) {
+			return this.productPurchaseKey ? false : true;
+		}
+
+		return false;
+	}
+
 	hasValidDates() {
-		return (
-			!isNaN(new Date(this.expirationDate)) &&
-			!isNaN(new Date(this.startDate))
-		);
+		const expiration = Date.parse(new Date(this.expirationDate));
+		const start = Date.parse(new Date(this.startDate));
+
+		return start < expiration;
 	}
 }

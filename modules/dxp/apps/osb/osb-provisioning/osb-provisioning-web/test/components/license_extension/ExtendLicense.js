@@ -13,12 +13,15 @@ import {cleanup, fireEvent, render} from '@testing-library/react';
 import React from 'react';
 
 import ExtendLicense from '../../../src/main/resources/META-INF/resources/js/components/license_extension/ExtendLicense';
-import {formatDate} from '../../../src/main/resources/META-INF/resources/js/utilities/date';
+import {
+	formatDate,
+	generateNewDateByYear
+} from '../../../src/main/resources/META-INF/resources/js/utilities/date';
 
 const singleAttachedLicense = [
 	{
 		accountName: 'Account 1',
-		expirationDate: '2122-06-08',
+		expirationDate: '2022-06-08',
 		indefinite: false,
 		licenseKeyId: 'licenseKeyID1',
 		licenseKeysGenerated: '0',
@@ -39,6 +42,85 @@ const singleAttachedLicense = [
 				licenseKeysGenerated: '1 / 1',
 				perpetual: false,
 				productPurchaseKey: 'productPurchaseKey2',
+				startDate: '2021-06-02',
+				status: 'Approved'
+			}
+		]
+	}
+];
+
+const multipleAttachedLicenses = [
+	{
+		accountName: 'Account 1',
+		expirationDate: '2022-06-08',
+		indefinite: false,
+		licenseKeyId: 'licenseKeyID1',
+		licenseKeysGenerated: '0',
+		licenseType: 'development',
+		productName: 'DXP 7.0',
+		startDate: '2021-06-03',
+		terms: [
+			{
+				endDate: '',
+				licenseKeysGenerated: '2 / 1',
+				perpetual: true,
+				productPurchaseKey: 'productPurchaseKey1',
+				startDate: '',
+				status: 'Approved'
+			},
+			{
+				endDate: '2022-07-02',
+				licenseKeysGenerated: '1 / 1',
+				perpetual: false,
+				productPurchaseKey: 'productPurchaseKey2',
+				startDate: '2021-06-02',
+				status: 'Approved'
+			}
+		]
+	},
+	{
+		accountName: 'Account 1',
+		expirationDate: '2022-06-08',
+		indefinite: false,
+		licenseKeyId: 'licenseKeyID2',
+		licenseKeysGenerated: '0',
+		licenseType: 'development',
+		productName: 'DXP 7.0',
+		startDate: '2021-06-03',
+		terms: [
+			{
+				endDate: '',
+				licenseKeysGenerated: '2 / 1',
+				perpetual: true,
+				productPurchaseKey: 'productPurchaseKey3',
+				startDate: '',
+				status: 'Approved'
+			},
+			{
+				endDate: '2022-07-02',
+				licenseKeysGenerated: '1 / 1',
+				perpetual: false,
+				productPurchaseKey: 'productPurchaseKey4',
+				startDate: '2021-06-02',
+				status: 'Approved'
+			}
+		]
+	},
+	{
+		accountName: 'Account 1',
+		expirationDate: '2022-06-08',
+		indefinite: false,
+		licenseKeyId: 'licenseKeyID3',
+		licenseKeysGenerated: '0',
+		licenseType: 'development',
+		productName: 'DXP 7.0',
+		startDate: '2021-06-03',
+		terms: [
+			{
+				endDate: '2022-07-02',
+				licenseKeysGenerated: '1 / 1',
+				perpetual: false,
+				productPurchaseKey: 'productPurchaseKey5',
 				startDate: '2021-06-02',
 				status: 'Approved'
 			}
@@ -139,82 +221,214 @@ describe('ExtendLicense', () => {
 	});
 
 	describe('Extend Button', () => {
-		it('does not render an Extend button for a single permanent license', () => {
-			const {queryByText} = renderExtendLicense({
-				details: [
+		describe('Single License', () => {
+			it('does not render an Extend button for a permanent license', () => {
+				const {queryByText} = renderExtendLicense({
+					details: [
+						{
+							accountName: 'Account 1',
+							expirationDate: '2022-06-04',
+							indefinite: true,
+							licenseKeyId: 'licenseKeyID1',
+							licenseType: 'production',
+							productName: 'Commerce Subscription Backup',
+							startDate: '2021-06-04'
+						}
+					]
+				});
+
+				expect(queryByText('extend')).toBeFalsy();
+			});
+
+			it('renders an enabled Extend button for a Detached temporary license by default', () => {
+				const {getByText} = renderExtendLicense({
+					details: [
+						{
+							accountName: 'Account 1',
+							expirationDate: '2022-06-04',
+							indefinite: false,
+							licenseKeyId: 'licenseKeyID1',
+							licenseKeysGenerated: '0',
+							licenseType: 'production',
+							productName: 'DXP Development',
+							startDate: '2021-06-04'
+						}
+					]
+				});
+
+				expect(getByText('extend').disabled).toBeFalsy();
+			});
+
+			it('renders a disabled Extend button for an Attached temporary license by default', () => {
+				const {getByText} = renderExtendLicense({
+					details: singleAttachedLicense
+				});
+
+				expect(getByText('extend').disabled).toBeTruthy();
+			});
+
+			it('renders an enabled Extend button for an Attached temporary license after a term has been selected', () => {
+				const {getByLabelText, getByText} = renderExtendLicense({
+					details: singleAttachedLicense
+				});
+
+				fireEvent.change(getByLabelText('subscription-term'), {
+					target: {value: 'productPurchaseKey2'}
+				});
+
+				expect(getByText('extend').disabled).toBeFalsy();
+			});
+
+			it('renders a disabled Extend button if any of the dates are empty ', () => {
+				const {
+					getAllByDisplayValue,
+					getByLabelText,
+					getByText
+				} = renderExtendLicense({
+					details: singleAttachedLicense
+				});
+
+				fireEvent.change(getByLabelText('subscription-term'), {
+					target: {value: 'productPurchaseKey2'}
+				});
+
+				expect(getByText('extend').disabled).toBeFalsy();
+
+				// Clay Date Picker always displays two inputs for the same date
+
+				fireEvent.change(getAllByDisplayValue('2021-06-03')[1], {
+					target: {value: ''}
+				});
+
+				expect(getByText('extend').disabled).toBeTruthy();
+			});
+
+			it('always renders an enabled Extend button after a new Subscription Term is selected', () => {
+				const {getByLabelText, getByText} = renderExtendLicense({
+					details: singleAttachedLicense
+				});
+
+				fireEvent.change(getByLabelText('subscription-term'), {
+					target: {value: 'productPurchaseKey2'}
+				});
+
+				expect(getByText('extend').disabled).toBeFalsy();
+
+				fireEvent.change(getByLabelText('subscription-term'), {
+					target: {value: 'productPurchaseKey1'}
+				});
+
+				expect(getByText('extend').disabled).toBeFalsy();
+			});
+		});
+
+		describe('Multiple Licenses', () => {
+			it('renders one Extend button for a group of temporary licenses for the same product', () => {
+				const {getAllByText} = renderExtendLicense({
+					details: multipleDetachedLicenses
+				});
+
+				expect(getAllByText('extend').length).toBe(1);
+			});
+
+			it('renders a disabled Extend button for a group of Attached temporary licenses by default', () => {
+				const {getByText} = renderExtendLicense({
+					details: multipleAttachedLicenses
+				});
+
+				expect(getByText('extend').disabled).toBeTruthy();
+			});
+
+			it('renders an enabled Extend button when all of the temporary licenses in a group has a term selected', () => {
+				const {getAllByLabelText, getByText} = renderExtendLicense({
+					details: multipleAttachedLicenses
+				});
+
+				const subscriptionTerms = getAllByLabelText(
+					'subscription-term'
+				);
+
+				fireEvent.change(subscriptionTerms[0], {
+					target: {value: 'productPurchaseKey2'}
+				});
+
+				fireEvent.change(subscriptionTerms[1], {
+					target: {value: 'productPurchaseKey3'}
+				});
+
+				expect(getByText('extend').disabled).toBeFalsy();
+			});
+
+			it('renders an enabled Extend button correctly after user removes a license and selects a term for the remaining licenses in a group', () => {
+				const {
+					getAllByLabelText,
+					getAllByTitle,
+					getByText
+				} = renderExtendLicense({
+					details: multipleAttachedLicenses
+				});
+
+				const deleteBtns = getAllByTitle('delete');
+
+				fireEvent.click(deleteBtns[2]);
+
+				const subscriptionTerms = getAllByLabelText(
+					'subscription-term'
+				);
+				expect(subscriptionTerms.length).toBe(2);
+
+				fireEvent.change(subscriptionTerms[0], {
+					target: {value: 'productPurchaseKey2'}
+				});
+
+				fireEvent.change(subscriptionTerms[1], {
+					target: {value: 'productPurchaseKey3'}
+				});
+
+				expect(getByText('extend').disabled).toBeFalsy();
+			});
+
+			it('renders a disabled Extend button if any of the dates are invalid', () => {
+				const {getAllByDisplayValue, getByText} = renderExtendLicense({
+					details: multipleDetachedLicenses
+				});
+
+				expect(getByText('extend').disabled).toBeFalsy();
+
+				// Clay Date Picker always displays two inputs for the same date
+
+				fireEvent.change(
+					getAllByDisplayValue(formatDate(new Date()))[1],
 					{
-						accountName: 'Account 1',
-						expirationDate: '2022-06-04',
-						indefinite: true,
-						licenseKeyId: 'licenseKeyID1',
-						licenseType: 'production',
-						productName: 'Commerce Subscription Backup',
-						startDate: '2021-06-04'
+						target: {value: 'invalid'}
 					}
-				]
+				);
+
+				expect(getByText('extend').disabled).toBeTruthy();
 			});
 
-			expect(queryByText('extend')).toBeFalsy();
-		});
+			it('renders a disabled Extend button if any of the start dates occurs on a latter date than the corresponding expiration date', () => {
+				const {getAllByDisplayValue, getByText} = renderExtendLicense({
+					details: multipleDetachedLicenses
+				});
 
-		it('renders an enabled Extend button for a single temporary license by default', () => {
-			const {getByText} = renderExtendLicense({
-				details: singleAttachedLicense
+				expect(getByText('extend').disabled).toBeFalsy();
+
+				// Clay Date Picker always displays two inputs for the same date
+
+				fireEvent.change(
+					getAllByDisplayValue(formatDate(new Date()))[1],
+					{
+						target: {
+							value: formatDate(
+								generateNewDateByYear(new Date(), 2)
+							)
+						}
+					}
+				);
+
+				expect(getByText('extend').disabled).toBeTruthy();
 			});
-
-			expect(getByText('extend').disabled).toBeFalsy();
-		});
-
-		it('renders one Extend button for a group of temporary licenses for the same product', () => {
-			const {getAllByText} = renderExtendLicense({
-				details: multipleDetachedLicenses
-			});
-
-			expect(getAllByText('extend').length).toBe(1);
-		});
-
-		it('renders a disabled Extend button if any of the dates are empty for a single extend', () => {
-			const {getAllByDisplayValue, getByText} = renderExtendLicense({
-				details: singleAttachedLicense
-			});
-
-			expect(getByText('extend').disabled).toBeFalsy();
-
-			// Clay Date Picker always displays two inputs for the same date
-
-			fireEvent.change(getAllByDisplayValue('2021-06-03')[1], {
-				target: {value: ''}
-			});
-
-			expect(getByText('extend').disabled).toBeTruthy();
-		});
-
-		it('renders a disabled Extend button if any of the dates are invalid for bulk extend', () => {
-			const {getAllByDisplayValue, getByText} = renderExtendLicense({
-				details: multipleDetachedLicenses
-			});
-
-			expect(getByText('extend').disabled).toBeFalsy();
-
-			// Clay Date Picker always displays two inputs for the same date
-
-			fireEvent.change(getAllByDisplayValue(formatDate(new Date()))[1], {
-				target: {value: 'invalid'}
-			});
-
-			expect(getByText('extend').disabled).toBeTruthy();
-		});
-
-		it('always renders an enabled Extend button after a new Subscription Term is selected', () => {
-			const {getByDisplayValue, getByText} = renderExtendLicense({
-				details: singleAttachedLicense
-			});
-
-			fireEvent.change(getByDisplayValue('perpetual'), {
-				target: {value: 'productPurchaseKey2'}
-			});
-
-			expect(getByText('extend').disabled).toBeFalsy();
 		});
 	});
 
@@ -228,7 +442,7 @@ describe('ExtendLicense', () => {
 			// The date occurs one more time in the hidden form
 
 			expect(getAllByDisplayValue('2021-06-03').length).toBe(3);
-			expect(getAllByDisplayValue('2122-06-08').length).toBe(3);
+			expect(getAllByDisplayValue('2022-06-08').length).toBe(3);
 		});
 
 		it('renders Today as the default start date for a Detached license', () => {
@@ -273,20 +487,17 @@ describe('ExtendLicense', () => {
 	});
 
 	it('updates the Liceses Generated value when terms change', () => {
-		const {
-			getByDisplayValue,
-			getByText,
-			queryByText
-		} = renderExtendLicense({details: singleAttachedLicense});
+		const {getByLabelText, getByText, queryByText} = renderExtendLicense({
+			details: singleAttachedLicense
+		});
 
-		getByText('2 / 1');
-		expect(queryByText('1 / 1')).toBeFalsy();
+		getByText('0');
 
-		fireEvent.change(getByDisplayValue('perpetual'), {
+		fireEvent.change(getByLabelText('subscription-term'), {
 			target: {value: 'productPurchaseKey2'}
 		});
 
-		expect(queryByText('2 / 1')).toBeFalsy();
+		expect(queryByText('0')).toBeFalsy();
 		getByText('1 / 1');
 	});
 

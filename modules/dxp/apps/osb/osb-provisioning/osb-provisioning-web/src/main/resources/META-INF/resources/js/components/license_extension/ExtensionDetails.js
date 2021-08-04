@@ -29,7 +29,8 @@ function Detail({
 	disableIndividualExtend,
 	extensionURL = '',
 	license,
-	updateDate
+	removalCallback,
+	updater
 }) {
 	const [, {removeLicense, updateLicense}] = useExtendLicenses();
 	const formRef = useRef();
@@ -56,6 +57,7 @@ function Detail({
 		!isNaN(new Date(expirationDate)) && !isNaN(new Date(startDate))
 	);
 
+	const missingTermSelection = terms && !productPurchaseKey;
 	const restricted = !!RESTRICTED_EXPIRATION_DATE_TYPES.find(
 		restrictedType => restrictedType === licenseType
 	);
@@ -73,8 +75,8 @@ function Detail({
 	}, [readyToExtend]);
 
 	useEffect(() => {
-		setDisableExtend(!validDates);
-	}, [validDates]);
+		setDisableExtend(!validDates || missingTermSelection);
+	}, [missingTermSelection, validDates]);
 
 	function getLicenseKeysGenerated(productPurchaseKey) {
 		const selectedTerm = terms.find(
@@ -91,8 +93,8 @@ function Detail({
 	function handleExpirationDateChange(val) {
 		setSelectedExpirationDate(val);
 
-		if (updateDate) {
-			updateDate([licenseKeyId, 'expirationDate'], val);
+		if (updater) {
+			updater([licenseKeyId, 'expirationDate'], val);
 		}
 	}
 
@@ -108,13 +110,17 @@ function Detail({
 
 	function handleRemove() {
 		removeLicense(licenseKeyId);
+
+		if (removalCallback) {
+			removalCallback(licenseKeyId);
+		}
 	}
 
 	function handleStartDateChange(val) {
 		setSelectedStartDate(val);
 
-		if (updateDate) {
-			updateDate([licenseKeyId, 'startDate'], val);
+		if (updater) {
+			updater([licenseKeyId, 'startDate'], val);
 		}
 	}
 
@@ -124,6 +130,10 @@ function Detail({
 				.set('licenseKeysGenerated', getLicenseKeysGenerated(val))
 				.set('productPurchaseKey', val)
 		);
+
+		if (updater) {
+			updater([licenseKeyId, 'productPurchaseKey'], val);
+		}
 	}
 
 	function handleValidDates(bool) {
@@ -188,10 +198,10 @@ Detail.propTypes = {
 	disableDelete: PropTypes.bool,
 	extensionURL: PropTypes.string,
 	license: PropTypes.object,
-	updateDate: PropTypes.func
+	updater: PropTypes.func
 };
 
-function ExtensionDetails({extensionURL, licenses, updateDate}) {
+function ExtensionDetails({extensionURL, licenses, removalCallback, updater}) {
 	const [extendLicenses] = useExtendLicenses();
 
 	const singleLicense = licenses.length === 1;
@@ -203,7 +213,8 @@ function ExtensionDetails({extensionURL, licenses, updateDate}) {
 			extensionURL={extensionURL}
 			key={license.licenseKeyId}
 			license={license}
-			updateDate={updateDate}
+			removalCallback={removalCallback}
+			updater={updater}
 		/>
 	));
 }
@@ -211,7 +222,8 @@ function ExtensionDetails({extensionURL, licenses, updateDate}) {
 ExtensionDetails.propTypes = {
 	extensionURL: PropTypes.string,
 	licenses: PropTypes.array,
-	updateDate: PropTypes.func
+	removalCallback: PropTypes.func,
+	updater: PropTypes.func
 };
 
 export default ExtensionDetails;

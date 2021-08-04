@@ -49,24 +49,36 @@ function Terms({termSelected = '', terms, updateTerms}) {
 	}
 
 	return (
-		<>
-			{!terms && DASH}
+		<div className="input-group">
+			<div className="input-group-item">
+				{!terms && DASH}
 
-			{!!terms && (
-				<select
-					className="form-control"
-					id="product"
-					onChange={handleOnChange}
-					value={termSelected}
-				>
-					{generateTermOptions().map(option => (
-						<option key={option.value} value={option.value}>
-							{option.label}
-						</option>
-					))}
-				</select>
-			)}
-		</>
+				{!!terms && (
+					<label className="form-control-label" htmlFor="product">
+						<select
+							aria-label={Liferay.Language.get(
+								'subscription-term'
+							)}
+							className="form-control"
+							id="product"
+							onChange={handleOnChange}
+							value={termSelected}
+						>
+							{generateTermOptions().length > 1 &&
+								termSelected === '' && (
+									<option value=""></option>
+								)}
+
+							{generateTermOptions().map(option => (
+								<option key={option.value} value={option.value}>
+									{option.label}
+								</option>
+							))}
+						</select>
+					</label>
+				)}
+			</div>
+		</div>
 	);
 }
 
