@@ -3875,13 +3875,11 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 			PropsKeys.LOCALES);
 
 		if (Validator.isNotNull(newLanguageIds)) {
+			Group companyGroup = getCompanyGroup(group.getCompanyId());
 			String oldLanguageIds = oldTypeSettingsProperties.getProperty(
 				PropsKeys.LOCALES, StringPool.BLANK);
-
 			String defaultLanguageId = typeSettingsProperties.getProperty(
 				"languageId", LocaleUtil.toLanguageId(LocaleUtil.getDefault()));
-
-			Group companyGroup = getCompanyGroup(group.getCompanyId());
 
 			validateLanguageIds(
 				companyGroup.getGroupId(), defaultLanguageId, newLanguageIds);
