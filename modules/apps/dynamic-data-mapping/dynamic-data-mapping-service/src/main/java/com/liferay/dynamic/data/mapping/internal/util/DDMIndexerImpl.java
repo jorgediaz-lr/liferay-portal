@@ -331,11 +331,9 @@ public class DDMIndexerImpl implements DDMIndexer {
 		String indexType = ddmStructure.getFieldPropertyByFieldReference(
 			fieldReference, "indexType");
 
-		ddmStructureFieldName = StringBundler.concat(
+		addQueryTermBiConsumer.accept(booleanQuery, StringBundler.concat(
 			DDM_FIELD_ARRAY, StringPool.PERIOD,
 			getValueFieldName(indexType, locale));
-
-		addQueryTermBiConsumer.accept(booleanQuery, ddmStructureFieldName);
 
 		return new QueryFilter(new NestedQuery(DDM_FIELD_ARRAY, booleanQuery));
 	}
