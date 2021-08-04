@@ -660,16 +660,8 @@ public class DDMIndexerImpl implements DDMIndexer {
 				addQueryTermBiConsumer)
 		throws Exception {
 
-		return createFieldValueQueryFilter(
-			encodeName(ddmStructure.getStructureId(), fieldReference, locale),
-			locale, addQueryTermBiConsumer);
-	}
-
-	protected QueryFilter createFieldValueQueryFilter(
-			String ddmStructureFieldName, Locale locale,
-			UnsafeBiConsumer<BooleanQuery, String, Exception>
-				addQueryTermBiConsumer)
-		throws Exception {
+		String ddmStructureFieldName = encodeName(
+			ddmStructure.getStructureId(), fieldReference, locale);
 
 		BooleanQuery booleanQuery = new BooleanQueryImpl();
 
@@ -684,16 +676,37 @@ public class DDMIndexerImpl implements DDMIndexer {
 				DDM_FIELD_ARRAY, StringPool.PERIOD, DDM_FIELD_NAME),
 			ddmStructureFieldName);
 
-		String[] ddmStructureFieldNameParts = StringUtil.split(
-			ddmStructureFieldName, DDM_FIELD_SEPARATOR);
+		String indexType = ddmStructure.getFieldPropertyByFieldReference(
+			fieldReference, "indexType");
 
 		ddmStructureFieldName = StringBundler.concat(
 			DDM_FIELD_ARRAY, StringPool.PERIOD,
-			getValueFieldName(ddmStructureFieldNameParts[1], locale));
+			getValueFieldName(indexType, locale));
 
 		addQueryTermBiConsumer.accept(booleanQuery, ddmStructureFieldName);
 
 		return new QueryFilter(new NestedQuery(DDM_FIELD_ARRAY, booleanQuery));
+	}
+
+	protected QueryFilter createFieldValueQueryFilter(
+			String ddmStructureFieldName, Locale locale,
+			UnsafeBiConsumer<BooleanQuery, String, Exception>
+				addQueryTermBiConsumer)
+		throws Exception {
+
+		String[] ddmStructureFieldNameParts = StringUtil.split(
+			ddmStructureFieldName, DDM_FIELD_SEPARATOR);
+
+		DDMStructure ddmStructure = _ddmStructureLocalService.getStructure(
+			GetterUtil.getLong(ddmStructureFieldNameParts[2]));
+
+		String fieldReference = StringUtil.replaceLast(
+			ddmStructureFieldNameParts[3],
+			StringPool.UNDERLINE.concat(LocaleUtil.toLanguageId(locale)),
+			StringPool.BLANK);
+
+		return createFieldValueQueryFilter(
+			ddmStructure, fieldReference, locale, addQueryTermBiConsumer);
 	}
 
 	protected String encodeName(
