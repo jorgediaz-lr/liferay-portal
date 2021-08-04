@@ -279,8 +279,8 @@ public class DDMIndexerImpl implements DDMIndexer {
 			ddmStructure, fieldReference, value);
 
 		return createFieldValueQueryFilter(
-			encodeName(ddmStructure.getStructureId(), fieldReference, locale),
-			locale, addRequiredTermBiConsumer(value));
+			ddmStructure, fieldReference, locale,
+			addRequiredTermBiConsumer(value));
 	}
 
 	@Override
@@ -300,12 +300,8 @@ public class DDMIndexerImpl implements DDMIndexer {
 			StringPool.UNDERLINE.concat(LocaleUtil.toLanguageId(locale)),
 			StringPool.BLANK);
 
-		ddmStructureFieldValue = _transformIndexedFieldValue(
-			ddmStructure, fieldReference, ddmStructureFieldValue);
-
 		return createFieldValueQueryFilter(
-			ddmStructureFieldName, locale,
-			addRequiredTermBiConsumer(ddmStructureFieldValue));
+			ddmStructure, fieldReference, locale, ddmStructureFieldValue);
 	}
 
 	@Override
