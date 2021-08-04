@@ -272,19 +272,6 @@ public class DDMIndexerImpl implements DDMIndexer {
 
 	public QueryFilter createFieldValueQueryFilter(
 			DDMStructure ddmStructure, String fieldReference, Locale locale,
-			BiConsumer<BooleanQuery, String> addQueryTermBiConsumer)
-		throws Exception {
-
-		String indexType = ddmStructure.getFieldPropertyByFieldReference(
-			fieldReference, "indexType");
-
-		return createFieldValueQueryFilter(
-			ddmStructure, fieldReference, locale, indexType,
-			addQueryTermBiConsumer);
-	}
-
-	public QueryFilter createFieldValueQueryFilter(
-			DDMStructure ddmStructure, String fieldReference, Locale locale,
 			Serializable value)
 		throws Exception {
 
@@ -293,27 +280,6 @@ public class DDMIndexerImpl implements DDMIndexer {
 
 		return createFieldValueQueryFilter(
 			ddmStructure, fieldReference, value, locale, indexType);
-	}
-
-	public QueryFilter createFieldValueQueryFilter(
-			String ddmStructureFieldName, Locale locale,
-			BiConsumer<BooleanQuery, String> addQueryTermBiConsumer)
-		throws Exception {
-
-		String[] ddmStructureFieldNameParts = StringUtil.split(
-			ddmStructureFieldName, DDM_FIELD_SEPARATOR);
-
-		DDMStructure ddmStructure = _ddmStructureLocalService.getStructure(
-			GetterUtil.getLong(ddmStructureFieldNameParts[2]));
-
-		String fieldReference = StringUtil.replaceLast(
-			ddmStructureFieldNameParts[3],
-			StringPool.UNDERLINE.concat(LocaleUtil.toLanguageId(locale)),
-			StringPool.BLANK);
-
-		return createFieldValueQueryFilter(
-			ddmStructure, fieldReference, locale, ddmStructureFieldNameParts[1],
-			addQueryTermBiConsumer);
 	}
 
 	@Override
