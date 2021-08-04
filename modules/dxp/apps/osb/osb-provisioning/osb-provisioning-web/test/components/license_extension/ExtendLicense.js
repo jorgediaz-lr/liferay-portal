@@ -31,14 +31,16 @@ const singleAttachedLicense = [
 				licenseKeysGenerated: '2 / 1',
 				perpetual: true,
 				productPurchaseKey: 'productPurchaseKey1',
-				startDate: ''
+				startDate: '',
+				status: 'Approved'
 			},
 			{
 				endDate: '2022-07-02',
 				licenseKeysGenerated: '1 / 1',
 				perpetual: false,
 				productPurchaseKey: 'productPurchaseKey2',
-				startDate: '2021-06-02'
+				startDate: '2021-06-02',
+				status: 'Approved'
 			}
 		]
 	}
@@ -286,5 +288,43 @@ describe('ExtendLicense', () => {
 
 		expect(queryByText('2 / 1')).toBeFalsy();
 		getByText('1 / 1');
+	});
+
+	it('does not render any terms whose status is cancelled', () => {
+		const {getByText, queryByText} = renderExtendLicense({
+			details: [
+				{
+					accountName: 'Account 1',
+					expirationDate: '2122-06-08',
+					indefinite: false,
+					licenseKeyId: 'licenseKeyID1',
+					licenseKeysGenerated: '0',
+					licenseType: 'development',
+					productName: 'DXP 7.0',
+					startDate: '2021-06-03',
+					terms: [
+						{
+							endDate: '',
+							licenseKeysGenerated: '2 / 1',
+							perpetual: true,
+							productPurchaseKey: 'productPurchaseKey1',
+							startDate: '',
+							status: 'Approved'
+						},
+						{
+							endDate: '2022-07-02',
+							licenseKeysGenerated: '1 / 1',
+							perpetual: false,
+							productPurchaseKey: 'productPurchaseKey2',
+							startDate: '2021-06-02',
+							status: 'Cancelled'
+						}
+					]
+				}
+			]
+		});
+
+		getByText('perpetual');
+		expect(queryByText('June 02, 2021 - July 02, 2022')).toBeFalsy();
 	});
 });

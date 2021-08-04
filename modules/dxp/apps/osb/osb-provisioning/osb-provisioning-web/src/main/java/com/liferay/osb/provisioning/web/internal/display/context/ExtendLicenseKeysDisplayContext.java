@@ -218,6 +218,8 @@ public class ExtendLicenseKeysDisplayContext {
 			for (ProductPurchase productPurchase :
 					productPurchaseView.getProductPurchases()) {
 
+				ProductPurchase.Status status = productPurchase.getStatus();
+
 				productPurchasesJSONArray.put(
 					JSONUtil.put(
 						"endDate", _formatDate(productPurchase.getEndDate())
@@ -231,6 +233,8 @@ public class ExtendLicenseKeysDisplayContext {
 						"productPurchaseKey", productPurchase.getKey()
 					).put(
 						"startDate", _formatDate(productPurchase.getStartDate())
+					).put(
+						"status", status.toString()
 					));
 			}
 

@@ -69,14 +69,16 @@ const singleAttachedLicense = [
 				licenseKeysGenerated: '2 / 1',
 				perpetual: true,
 				productPurchaseKey: 'productPurchaseKey1',
-				startDate: ''
+				startDate: '',
+				status: 'Approved'
 			},
 			{
 				endDate: '2022-07-02',
 				licenseKeysGenerated: '1 / 1',
 				perpetual: false,
 				productPurchaseKey: 'productPurchaseKey2',
-				startDate: '2021-06-02'
+				startDate: '2021-06-02',
+				status: 'Approved'
 			}
 		]
 	}

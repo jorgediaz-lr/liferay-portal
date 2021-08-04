@@ -58,7 +58,8 @@ ExtendLicense.propTypes = {
 					licenseKeysGenerated: PropTypes.string,
 					perpetual: PropTypes.bool,
 					productPurchaseKey: PropTypes.string,
-					startDate: PropTypes.string
+					startDate: PropTypes.string,
+					status: PropTypes.string
 				})
 			)
 		})
