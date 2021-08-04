@@ -53,7 +53,7 @@ public class NoteDisplay {
 		_creatorUser = creatorUser;
 
 		_dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
-			"MMM dd, yyyy hh:mm a");
+			"MMM dd, yyyy hh:mm:ss a");
 		_httpServletRequest = PortalUtil.getHttpServletRequest(portletRequest);
 		_liferayPortletResponse = PortalUtil.getLiferayPortletResponse(
 			portletResponse);
