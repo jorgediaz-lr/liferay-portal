@@ -282,9 +282,28 @@ public class DDMIndexerImpl implements DDMIndexer {
 					fieldReference, "type"));
 		}
 
+		final Serializable fieldValue = value;
+
 		return createFieldValueQueryFilter(
 			ddmStructure, fieldReference, locale,
-			addRequiredTermBiConsumer(value));
+			(booleanQuery, fieldName) -> {
+				if (fieldValue instanceof String[]) {
+					String[] fieldValueArray = (String[])fieldValue;
+
+					for (String fieldValueString : fieldValueArray) {
+						booleanQuery.addRequiredTerm(
+							fieldName,
+							StringPool.QUOTE + fieldValueString +
+								StringPool.QUOTE);
+					}
+				}
+				else {
+					booleanQuery.addRequiredTerm(
+						fieldName,
+						StringPool.QUOTE + String.valueOf(fieldValue) +
+							StringPool.QUOTE);
+				}
+			});
 	}
 
 	@Override
@@ -468,28 +487,6 @@ public class DDMIndexerImpl implements DDMIndexer {
 	protected void activate(Map<String, Object> properties) {
 		_ddmIndexerConfiguration = ConfigurableUtil.createConfigurable(
 			DDMIndexerConfiguration.class, properties);
-	}
-
-	protected UnsafeBiConsumer<BooleanQuery, String, Exception>
-		addRequiredTermBiConsumer(Serializable value) {
-
-		return (booleanQuery, fieldName) -> {
-			if (value instanceof String[]) {
-				String[] valueArray = (String[])value;
-
-				for (String valueString : valueArray) {
-					booleanQuery.addRequiredTerm(
-						fieldName,
-						StringPool.QUOTE + valueString + StringPool.QUOTE);
-				}
-			}
-			else {
-				booleanQuery.addRequiredTerm(
-					fieldName,
-					StringPool.QUOTE + String.valueOf(value) +
-						StringPool.QUOTE);
-			}
-		};
 	}
 
 	protected void addToDocument(
