@@ -306,6 +306,61 @@ public class DDMIndexerImpl implements DDMIndexer {
 			});
 	}
 
+	public QueryFilter createFieldValueQueryFilter(
+			DDMStructure ddmStructure, String fieldReference, Locale locale,
+			UnsafeBiConsumer<BooleanQuery, String, Exception>
+				addQueryTermBiConsumer)
+		throws Exception {
+
+		String ddmStructureFieldName = encodeName(
+			ddmStructure.getStructureId(), fieldReference, locale);
+
+		BooleanQuery booleanQuery = new BooleanQueryImpl();
+
+		if (isLegacyDDMIndexFieldsEnabled()) {
+			addQueryTermBiConsumer.accept(booleanQuery, ddmStructureFieldName);
+
+			return new QueryFilter(booleanQuery);
+		}
+
+		booleanQuery.addRequiredTerm(
+			StringBundler.concat(
+				DDM_FIELD_ARRAY, StringPool.PERIOD, DDM_FIELD_NAME),
+			ddmStructureFieldName);
+
+		String indexType = ddmStructure.getFieldPropertyByFieldReference(
+			fieldReference, "indexType");
+
+		ddmStructureFieldName = StringBundler.concat(
+			DDM_FIELD_ARRAY, StringPool.PERIOD,
+			getValueFieldName(indexType, locale));
+
+		addQueryTermBiConsumer.accept(booleanQuery, ddmStructureFieldName);
+
+		return new QueryFilter(new NestedQuery(DDM_FIELD_ARRAY, booleanQuery));
+	}
+
+	public QueryFilter createFieldValueQueryFilter(
+			String ddmStructureFieldName, Locale locale,
+			UnsafeBiConsumer<BooleanQuery, String, Exception>
+				addQueryTermBiConsumer)
+		throws Exception {
+
+		String[] ddmStructureFieldNameParts = StringUtil.split(
+			ddmStructureFieldName, DDM_FIELD_SEPARATOR);
+
+		DDMStructure ddmStructure = _ddmStructureLocalService.getStructure(
+			GetterUtil.getLong(ddmStructureFieldNameParts[2]));
+
+		String fieldReference = StringUtil.replaceLast(
+			ddmStructureFieldNameParts[3],
+			StringPool.UNDERLINE.concat(LocaleUtil.toLanguageId(locale)),
+			StringPool.BLANK);
+
+		return createFieldValueQueryFilter(
+			ddmStructure, fieldReference, locale, addQueryTermBiConsumer);
+	}
+
 	@Override
 	public QueryFilter createFieldValueQueryFilter(
 			String ddmStructureFieldName, Serializable ddmStructureFieldValue,
@@ -649,61 +704,6 @@ public class DDMIndexerImpl implements DDMIndexer {
 		sortedFields.forEach(ddmField::addField);
 
 		return ddmField;
-	}
-
-	protected QueryFilter createFieldValueQueryFilter(
-			DDMStructure ddmStructure, String fieldReference, Locale locale,
-			UnsafeBiConsumer<BooleanQuery, String, Exception>
-				addQueryTermBiConsumer)
-		throws Exception {
-
-		String ddmStructureFieldName = encodeName(
-			ddmStructure.getStructureId(), fieldReference, locale);
-
-		BooleanQuery booleanQuery = new BooleanQueryImpl();
-
-		if (isLegacyDDMIndexFieldsEnabled()) {
-			addQueryTermBiConsumer.accept(booleanQuery, ddmStructureFieldName);
-
-			return new QueryFilter(booleanQuery);
-		}
-
-		booleanQuery.addRequiredTerm(
-			StringBundler.concat(
-				DDM_FIELD_ARRAY, StringPool.PERIOD, DDM_FIELD_NAME),
-			ddmStructureFieldName);
-
-		String indexType = ddmStructure.getFieldPropertyByFieldReference(
-			fieldReference, "indexType");
-
-		ddmStructureFieldName = StringBundler.concat(
-			DDM_FIELD_ARRAY, StringPool.PERIOD,
-			getValueFieldName(indexType, locale));
-
-		addQueryTermBiConsumer.accept(booleanQuery, ddmStructureFieldName);
-
-		return new QueryFilter(new NestedQuery(DDM_FIELD_ARRAY, booleanQuery));
-	}
-
-	protected QueryFilter createFieldValueQueryFilter(
-			String ddmStructureFieldName, Locale locale,
-			UnsafeBiConsumer<BooleanQuery, String, Exception>
-				addQueryTermBiConsumer)
-		throws Exception {
-
-		String[] ddmStructureFieldNameParts = StringUtil.split(
-			ddmStructureFieldName, DDM_FIELD_SEPARATOR);
-
-		DDMStructure ddmStructure = _ddmStructureLocalService.getStructure(
-			GetterUtil.getLong(ddmStructureFieldNameParts[2]));
-
-		String fieldReference = StringUtil.replaceLast(
-			ddmStructureFieldNameParts[3],
-			StringPool.UNDERLINE.concat(LocaleUtil.toLanguageId(locale)),
-			StringPool.BLANK);
-
-		return createFieldValueQueryFilter(
-			ddmStructure, fieldReference, locale, addQueryTermBiConsumer);
 	}
 
 	protected String encodeName(
