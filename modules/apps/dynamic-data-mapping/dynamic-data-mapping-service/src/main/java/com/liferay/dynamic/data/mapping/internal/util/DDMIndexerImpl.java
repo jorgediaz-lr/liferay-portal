@@ -280,9 +280,7 @@ public class DDMIndexerImpl implements DDMIndexer {
 			fieldReference, "indexType");
 
 		return createFieldValueQueryFilter(
-			ddmStructure,
-			encodeName(ddmStructure.getStructureId(), fieldReference, locale),
-			value, fieldReference, indexType, locale);
+			ddmStructure, fieldReference, value, locale, indexType);
 	}
 
 	@Override
@@ -303,8 +301,8 @@ public class DDMIndexerImpl implements DDMIndexer {
 			StringPool.BLANK);
 
 		return createFieldValueQueryFilter(
-			ddmStructure, ddmStructureFieldName, ddmStructureFieldValue,
-			fieldReference, ddmStructureFieldNameParts[1], locale);
+			ddmStructure, fieldReference, ddmStructureFieldValue, locale,
+			ddmStructureFieldNameParts[1]);
 	}
 
 	@Override
@@ -529,49 +527,17 @@ public class DDMIndexerImpl implements DDMIndexer {
 	}
 
 	protected QueryFilter createFieldValueQueryFilter(
-			DDMStructure ddmStructure, String ddmStructureFieldName,
-			Serializable ddmStructureFieldValue, String fieldReference,
-			String indexType, Locale locale)
+			DDMStructure ddmStructure, String fieldReference, Locale locale,
+			String indexType,
+			BiConsumer<BooleanQuery, String> addQueryTermBiConsumer)
 		throws Exception {
 
-		boolean localizable = false;
-
-		if (ddmStructure.hasFieldByFieldReference(fieldReference)) {
-			ddmStructureFieldValue = _ddm.getIndexedFieldValue(
-				ddmStructureFieldValue,
-				ddmStructure.getFieldPropertyByFieldReference(
-					fieldReference, "type"));
-
-			localizable = GetterUtil.getBoolean(
-				ddmStructure.getFieldPropertyByFieldReference(
-					fieldReference, "localizable"));
-		}
-
-		if (!localizable) {
+		if (!_isLocalizableField(ddmStructure, fieldReference)) {
 			locale = null;
 		}
 
-		final Serializable fieldValue = ddmStructureFieldValue;
-
-		BiConsumer<BooleanQuery, String> addQueryTermBiConsumer =
-			(booleanQuery, fieldName) -> {
-				if (fieldValue instanceof String[]) {
-					String[] fieldValueArray = (String[])fieldValue;
-
-					for (String fieldValueString : fieldValueArray) {
-						booleanQuery.addRequiredTerm(
-							fieldName,
-							StringPool.QUOTE + fieldValueString +
-								StringPool.QUOTE);
-					}
-				}
-				else {
-					booleanQuery.addRequiredTerm(
-						fieldName,
-						StringPool.QUOTE + String.valueOf(fieldValue) +
-							StringPool.QUOTE);
-				}
-			};
+		String ddmStructureFieldName = encodeName(
+			ddmStructure.getStructureId(), fieldReference, locale, indexType);
 
 		BooleanQuery booleanQuery = new BooleanQueryImpl();
 
@@ -593,6 +559,47 @@ public class DDMIndexerImpl implements DDMIndexer {
 				getValueFieldName(indexType, locale)));
 
 		return new QueryFilter(new NestedQuery(DDM_FIELD_ARRAY, booleanQuery));
+	}
+
+	protected QueryFilter createFieldValueQueryFilter(
+			DDMStructure ddmStructure, String fieldReference,
+			Serializable ddmStructureFieldValue, Locale locale,
+			String indexType)
+		throws Exception {
+
+		if (ddmStructure.hasFieldByFieldReference(fieldReference)) {
+			ddmStructureFieldValue = _ddm.getIndexedFieldValue(
+				ddmStructureFieldValue,
+				ddmStructure.getFieldPropertyByFieldReference(
+					fieldReference, "type"));
+		}
+
+		if (!_isLocalizableField(ddmStructure, fieldReference)) {
+			locale = null;
+		}
+
+		final Serializable fieldValue = ddmStructureFieldValue;
+
+		return createFieldValueQueryFilter(
+			ddmStructure, fieldReference, locale, indexType,
+			(booleanQuery, fieldName) -> {
+				if (fieldValue instanceof String[]) {
+					String[] fieldValueArray = (String[])fieldValue;
+
+					for (String fieldValueString : fieldValueArray) {
+						booleanQuery.addRequiredTerm(
+							fieldName,
+							StringPool.QUOTE + fieldValueString +
+								StringPool.QUOTE);
+					}
+				}
+				else {
+					booleanQuery.addRequiredTerm(
+						fieldName,
+						StringPool.QUOTE + String.valueOf(fieldValue) +
+							StringPool.QUOTE);
+				}
+			});
 	}
 
 	protected String encodeName(
@@ -817,6 +824,19 @@ public class DDMIndexerImpl implements DDMIndexer {
 		}
 
 		return sortableValue;
+	}
+
+	private boolean _isLocalizableField(
+			DDMStructure ddmStructure, String fieldReference)
+		throws Exception {
+
+		if (!ddmStructure.hasFieldByFieldReference(fieldReference)) {
+			return false;
+		}
+
+		return GetterUtil.getBoolean(
+			ddmStructure.getFieldPropertyByFieldReference(
+				fieldReference, "localizable"));
 	}
 
 	private Fields _toFields(
