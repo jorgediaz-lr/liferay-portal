@@ -467,29 +467,6 @@ public class DDMIndexerImpl implements DDMIndexer {
 			DDMIndexerConfiguration.class, properties);
 	}
 
-	protected void addFieldValueRequiredTerm(
-		BooleanQuery booleanQuery, String ddmStructureFieldName,
-		String ddmStructureFieldValue, String indexType, Locale locale) {
-
-		if (isLegacyDDMIndexFieldsEnabled()) {
-			booleanQuery.addRequiredTerm(
-				ddmStructureFieldName,
-				StringPool.QUOTE + ddmStructureFieldValue + StringPool.QUOTE);
-
-			return;
-		}
-
-		booleanQuery.addRequiredTerm(
-			StringBundler.concat(
-				DDM_FIELD_ARRAY, StringPool.PERIOD, DDM_FIELD_NAME),
-			ddmStructureFieldName);
-		booleanQuery.addRequiredTerm(
-			StringBundler.concat(
-				DDM_FIELD_ARRAY, StringPool.PERIOD,
-				getValueFieldName(indexType, locale)),
-			StringPool.QUOTE + ddmStructureFieldValue + StringPool.QUOTE);
-	}
-
 	protected void addToDocument(
 			Document document, Field field, String indexType, String name,
 			Serializable value)
@@ -667,6 +644,17 @@ public class DDMIndexerImpl implements DDMIndexer {
 					fieldReference, "type"));
 		}
 
+		if (!isLegacyDDMIndexFieldsEnabled()) {
+			booleanQuery.addRequiredTerm(
+				StringBundler.concat(
+					DDM_FIELD_ARRAY, StringPool.PERIOD, DDM_FIELD_NAME),
+				ddmStructureFieldName);
+
+			ddmStructureFieldName = StringBundler.concat(
+				DDM_FIELD_ARRAY, StringPool.PERIOD,
+				getValueFieldName(indexType, locale));
+		}
+
 		if (ddmStructureFieldValue instanceof String[]) {
 			String[] ddmStructureFieldValueArray =
 				(String[])ddmStructureFieldValue;
@@ -674,15 +662,15 @@ public class DDMIndexerImpl implements DDMIndexer {
 			for (String ddmStructureFieldValueString :
 					ddmStructureFieldValueArray) {
 
-				addFieldValueRequiredTerm(
-					booleanQuery, ddmStructureFieldName,
-					ddmStructureFieldValueString, indexType, locale);
+				booleanQuery.addRequiredTerm(
+					ddmStructureFieldName, ddmStructureFieldValueString);
 			}
 		}
 		else {
-			addFieldValueRequiredTerm(
-				booleanQuery, ddmStructureFieldName,
-				String.valueOf(ddmStructureFieldValue), indexType, locale);
+			booleanQuery.addRequiredTerm(
+				ddmStructureFieldName,
+				StringPool.QUOTE + String.valueOf(ddmStructureFieldValue) +
+					StringPool.QUOTE);
 		}
 
 		if (isLegacyDDMIndexFieldsEnabled()) {
