@@ -183,10 +183,7 @@ public class LayoutReferencesExportImportContentProcessor
 					companyVirtualHostname, serverPort, secure));
 
 			if (url.startsWith(portalURL)) {
-				if (StringUtil.equals(
-						group.getGroupKey(),
-						PropsValues.VIRTUAL_HOSTS_DEFAULT_SITE_NAME)) {
-
+				if (_isDefaultGroup(group)) {
 					if (secure) {
 						urlSB.append(
 							_DATA_HANDLER_COMPANY_SECURE_DEFAULT_GROUP_URL);
@@ -403,10 +400,7 @@ public class LayoutReferencesExportImportContentProcessor
 								_DATA_HANDLER_COMPANY_SECURE_URL) ||
 							 urlSBString.contains(_DATA_HANDLER_COMPANY_URL)) {
 
-						if (StringUtil.equals(
-								group.getGroupKey(),
-								PropsValues.VIRTUAL_HOSTS_DEFAULT_SITE_NAME)) {
-
+						if (_isDefaultGroup(group)) {
 							layoutSet = group.getPublicLayoutSet();
 						}
 					}
@@ -417,9 +411,7 @@ public class LayoutReferencesExportImportContentProcessor
 							publicLayoutSet.getVirtualHostnames();
 
 						if (!publicVirtualHostnames.isEmpty() ||
-							StringUtil.equals(
-								group.getGroupKey(),
-								PropsValues.VIRTUAL_HOSTS_DEFAULT_SITE_NAME)) {
+							_isDefaultGroup(group)) {
 
 							layoutSet = group.getPublicLayoutSet();
 						}
@@ -635,10 +627,7 @@ public class LayoutReferencesExportImportContentProcessor
 				publicLayoutSetPortalURL = companyPortalURL;
 			}
 
-			if (StringUtil.equals(
-					group.getGroupKey(),
-					PropsValues.VIRTUAL_HOSTS_DEFAULT_SITE_NAME)) {
-
+			if (_isDefaultGroup(group)) {
 				companyDefaultGroupPortalURL = companyPortalURL;
 			}
 			else {
@@ -675,10 +664,7 @@ public class LayoutReferencesExportImportContentProcessor
 					publicVirtualHostnames.firstKey(), secureSecurePort, true);
 			}
 
-			if (StringUtil.equals(
-					group.getGroupKey(),
-					PropsValues.VIRTUAL_HOSTS_DEFAULT_SITE_NAME)) {
-
+			if (_isDefaultGroup(group)) {
 				companySecureDefaultGroupPortalURL = companySecurePortalURL;
 			}
 			else {
@@ -730,11 +716,7 @@ public class LayoutReferencesExportImportContentProcessor
 		TreeMap<String, String> publicVirtualHostnames =
 			publicLayoutSet.getVirtualHostnames();
 
-		if (publicVirtualHostnames.isEmpty() &&
-			!StringUtil.equals(
-				PropsValues.VIRTUAL_HOSTS_DEFAULT_SITE_NAME,
-				group.getGroupKey())) {
-
+		if (publicVirtualHostnames.isEmpty() && !_isDefaultGroup(group)) {
 			virtualHostPublicLayoutFriendlyURLReplacement =
 				PropsValues.LAYOUT_FRIENDLY_URL_PUBLIC_SERVLET_MAPPING +
 					group.getFriendlyURL();
@@ -1036,10 +1018,7 @@ public class LayoutReferencesExportImportContentProcessor
 							_DATA_HANDLER_COMPANY_SECURE_URL) ||
 						 urlSBString.contains(_DATA_HANDLER_COMPANY_URL)) {
 
-					if (StringUtil.equals(
-							group.getGroupKey(),
-							PropsValues.VIRTUAL_HOSTS_DEFAULT_SITE_NAME)) {
-
+					if (_isDefaultGroup(group)) {
 						layoutSet = group.getPublicLayoutSet();
 					}
 				}
@@ -1050,9 +1029,7 @@ public class LayoutReferencesExportImportContentProcessor
 						publicLayoutSet.getVirtualHostnames();
 
 					if (!publicVirtualHostnames.isEmpty() ||
-						StringUtil.equals(
-							group.getGroupKey(),
-							PropsValues.VIRTUAL_HOSTS_DEFAULT_SITE_NAME)) {
+						_isDefaultGroup(group)) {
 
 						layoutSet = group.getPublicLayoutSet();
 					}
@@ -1164,6 +1141,11 @@ public class LayoutReferencesExportImportContentProcessor
 		}
 
 		return portalURL;
+	}
+
+	private boolean _isDefaultGroup(Group group) {
+		return StringUtil.equals(
+			group.getGroupKey(), PropsValues.VIRTUAL_HOSTS_DEFAULT_SITE_NAME);
 	}
 
 	private boolean _isVirtualHostDefined(StringBundler urlSB) {
