@@ -91,7 +91,9 @@ export function AddView({
 					<use xlinkHref="#info-circle-full" />
 				</svg>
 
-				{Liferay.Language.get('date-and-time-displayed-in-utc')}
+				{Liferay.Language.get(
+					'date-and-time-displayed-in-utc-all-end-dates-are-exclusive'
+				)}
 			</div>
 
 			<div className="subscriptions">
@@ -173,7 +175,9 @@ export function EditView({
 						<use xlinkHref="#info-circle-full" />
 					</svg>
 
-					{Liferay.Language.get('date-and-time-displayed-in-utc')}
+					{Liferay.Language.get(
+						'date-and-time-displayed-in-utc-all-end-dates-are-exclusive'
+					)}
 				</div>
 
 				<div className="subscriptions">

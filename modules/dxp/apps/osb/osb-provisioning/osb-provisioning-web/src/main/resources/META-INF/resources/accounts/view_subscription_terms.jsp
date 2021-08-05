@@ -26,6 +26,14 @@ String productPurchaseKey = ParamUtil.getString(request, "productPurchaseKey");
 ProductPurchaseViewDisplay productPurchaseViewDisplay = viewSubscriptionDisplayContext.getProductPurchaseViewDisplay();
 %>
 
+<div class="info subscriptions-date-time-info">
+	<svg aria-label="<liferay-ui:message key="info-icon" />" class="lexicon-icon-info-circle-full" role="img">
+		<use xlink:href="#info-circle-full" />
+	</svg>
+
+	<liferay-ui:message key="date-and-time-displayed-in-utc-all-end-dates-are-exclusive" />
+</div>
+
 <div class="details-table table-striped">
 	<liferay-ui:search-container
 		searchContainer="<%= viewSubscriptionDisplayContext.getSearchContainer() %>"
