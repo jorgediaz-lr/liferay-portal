@@ -16,8 +16,10 @@ package com.liferay.dynamic.data.mapping.util;
 
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
+import com.liferay.petra.function.UnsafeBiConsumer;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.search.BooleanQuery;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.filter.QueryFilter;
 import com.liferay.portal.search.sort.Sort;
@@ -65,6 +67,24 @@ public interface DDMIndexer {
 			DDMStructure ddmStructure, String fieldReference, Locale locale,
 			Serializable value)
 		throws Exception;
+
+	public default QueryFilter createFieldValueQueryFilter(
+			DDMStructure ddmStructure, String fieldReference, Locale locale,
+			UnsafeBiConsumer<BooleanQuery, String, Exception>
+				addQueryTermBiConsumer)
+		throws Exception {
+
+		throw new UnsupportedOperationException();
+	}
+
+	public default QueryFilter createFieldValueQueryFilter(
+			String ddmStructureFieldName, Locale locale,
+			UnsafeBiConsumer<BooleanQuery, String, Exception>
+				addQueryTermBiConsumer)
+		throws Exception {
+
+		throw new UnsupportedOperationException();
+	}
 
 	public QueryFilter createFieldValueQueryFilter(
 			String ddmStructureFieldName, Serializable ddmStructureFieldValue,
