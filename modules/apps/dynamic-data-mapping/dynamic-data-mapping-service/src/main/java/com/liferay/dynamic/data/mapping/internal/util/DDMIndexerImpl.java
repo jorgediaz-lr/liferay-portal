@@ -75,6 +75,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.BiConsumer;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -533,8 +534,6 @@ public class DDMIndexerImpl implements DDMIndexer {
 			String indexType, Locale locale)
 		throws Exception {
 
-		BooleanQuery booleanQuery = new BooleanQueryImpl();
-
 		boolean localizable = false;
 
 		if (ddmStructure.hasFieldByFieldReference(fieldReference)) {
@@ -552,6 +551,30 @@ public class DDMIndexerImpl implements DDMIndexer {
 			locale = null;
 		}
 
+		final Serializable fieldValue = ddmStructureFieldValue;
+
+		BiConsumer<BooleanQuery, String> addQueryTermBiConsumer =
+			(booleanQuery, fieldName) -> {
+				if (fieldValue instanceof String[]) {
+					String[] fieldValueArray = (String[])fieldValue;
+
+					for (String fieldValueString : fieldValueArray) {
+						booleanQuery.addRequiredTerm(
+							fieldName,
+							StringPool.QUOTE + fieldValueString +
+								StringPool.QUOTE);
+					}
+				}
+				else {
+					booleanQuery.addRequiredTerm(
+						fieldName,
+						StringPool.QUOTE + String.valueOf(fieldValue) +
+							StringPool.QUOTE);
+				}
+			};
+
+		BooleanQuery booleanQuery = new BooleanQueryImpl();
+
 		if (!isLegacyDDMIndexFieldsEnabled()) {
 			booleanQuery.addRequiredTerm(
 				StringBundler.concat(
@@ -563,25 +586,7 @@ public class DDMIndexerImpl implements DDMIndexer {
 				getValueFieldName(indexType, locale));
 		}
 
-		if (ddmStructureFieldValue instanceof String[]) {
-			String[] ddmStructureFieldValueArray =
-				(String[])ddmStructureFieldValue;
-
-			for (String ddmStructureFieldValueString :
-					ddmStructureFieldValueArray) {
-
-				booleanQuery.addRequiredTerm(
-					ddmStructureFieldName,
-					StringPool.QUOTE + ddmStructureFieldValueString +
-						StringPool.QUOTE);
-			}
-		}
-		else {
-			booleanQuery.addRequiredTerm(
-				ddmStructureFieldName,
-				StringPool.QUOTE + String.valueOf(ddmStructureFieldValue) +
-					StringPool.QUOTE);
-		}
+		addQueryTermBiConsumer.accept(booleanQuery, ddmStructureFieldName);
 
 		if (isLegacyDDMIndexFieldsEnabled()) {
 			return new QueryFilter(booleanQuery);
