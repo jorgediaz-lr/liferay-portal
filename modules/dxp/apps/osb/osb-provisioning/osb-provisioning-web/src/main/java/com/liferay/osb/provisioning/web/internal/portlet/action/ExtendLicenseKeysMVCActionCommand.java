@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
+import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
@@ -37,6 +38,7 @@ import java.util.Date;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
+import javax.portlet.PortletConfig;
 import javax.portlet.PortletURL;
 
 import org.osgi.service.component.annotations.Component;
@@ -154,12 +156,21 @@ public class ExtendLicenseKeysMVCActionCommand extends BaseMVCActionCommand {
 			long licenseKeyId)
 		throws Exception {
 
+		String redirect = ParamUtil.getString(actionRequest, "redirect");
+
+		PortletConfig portletConfig = (PortletConfig)actionRequest.getAttribute(
+			JavaConstants.JAVAX_PORTLET_CONFIG);
+
+		String portletName = portletConfig.getPortletName();
+
+		if (portletName.equals(ProvisioningPortletKeys.ACCOUNTS)) {
+			return redirect;
+		}
+
 		LiferayPortletResponse liferayPortletResponse =
 			_portal.getLiferayPortletResponse(actionResponse);
 
 		PortletURL portletURL = liferayPortletResponse.createRenderURL();
-
-		String redirect = ParamUtil.getString(actionRequest, "redirect");
 
 		portletURL.setParameter(
 			"mvcRenderCommandName", "/licenses/edit_license_key");
