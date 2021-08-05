@@ -292,7 +292,7 @@ public class DDMIndexerImpl implements DDMIndexer {
 			fieldReference, "indexType");
 
 		return createFieldValueQueryFilter(
-			ddmStructure, fieldReference, locale, indexType, value);
+			ddmStructure, fieldReference, value, locale, indexType);
 	}
 
 	public QueryFilter createFieldValueQueryFilter(
@@ -334,8 +334,8 @@ public class DDMIndexerImpl implements DDMIndexer {
 			StringPool.BLANK);
 
 		return createFieldValueQueryFilter(
-			ddmStructure, fieldReference, locale, ddmStructureFieldNameParts[1],
-			ddmStructureFieldValue);
+			ddmStructure, fieldReference, ddmStructureFieldValue, locale,
+			ddmStructureFieldNameParts[1]);
 	}
 
 	@Override
@@ -694,18 +694,19 @@ public class DDMIndexerImpl implements DDMIndexer {
 	}
 
 	protected QueryFilter createFieldValueQueryFilter(
-			DDMStructure ddmStructure, String fieldReference, Locale locale,
-			String indexType, Serializable value)
+			DDMStructure ddmStructure, String fieldReference,
+			Serializable ddmStructureFieldValue, Locale locale,
+			String indexType)
 		throws Exception {
 
 		if (ddmStructure.hasFieldByFieldReference(fieldReference)) {
-			value = _ddm.getIndexedFieldValue(
-				value,
+			ddmStructureFieldValue = _ddm.getIndexedFieldValue(
+				ddmStructureFieldValue,
 				ddmStructure.getFieldPropertyByFieldReference(
 					fieldReference, "type"));
 		}
 
-		final Serializable fieldValue = value;
+		final Serializable fieldValue = ddmStructureFieldValue;
 
 		return createFieldValueQueryFilter(
 			ddmStructure, fieldReference, locale, indexType,
