@@ -28,7 +28,6 @@ import com.liferay.dynamic.data.mapping.storage.Fields;
 import com.liferay.dynamic.data.mapping.util.DDM;
 import com.liferay.dynamic.data.mapping.util.DDMFormValuesToFieldsConverter;
 import com.liferay.dynamic.data.mapping.util.DDMIndexer;
-import com.liferay.petra.function.UnsafeBiConsumer;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
@@ -76,6 +75,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.BiConsumer;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -272,20 +272,7 @@ public class DDMIndexerImpl implements DDMIndexer {
 
 	public QueryFilter createFieldValueQueryFilter(
 			DDMStructure ddmStructure, String fieldReference, Locale locale,
-			Serializable value)
-		throws Exception {
-
-		String indexType = ddmStructure.getFieldPropertyByFieldReference(
-			fieldReference, "indexType");
-
-		return createFieldValueQueryFilter(
-			ddmStructure, fieldReference, locale, indexType, value);
-	}
-
-	public QueryFilter createFieldValueQueryFilter(
-			DDMStructure ddmStructure, String fieldReference, Locale locale,
-			UnsafeBiConsumer<BooleanQuery, String, Exception>
-				addQueryTermBiConsumer)
+			BiConsumer<BooleanQuery, String> addQueryTermBiConsumer)
 		throws Exception {
 
 		String indexType = ddmStructure.getFieldPropertyByFieldReference(
@@ -297,9 +284,20 @@ public class DDMIndexerImpl implements DDMIndexer {
 	}
 
 	public QueryFilter createFieldValueQueryFilter(
+			DDMStructure ddmStructure, String fieldReference, Locale locale,
+			Serializable value)
+		throws Exception {
+
+		String indexType = ddmStructure.getFieldPropertyByFieldReference(
+			fieldReference, "indexType");
+
+		return createFieldValueQueryFilter(
+			ddmStructure, fieldReference, locale, indexType, value);
+	}
+
+	public QueryFilter createFieldValueQueryFilter(
 			String ddmStructureFieldName, Locale locale,
-			UnsafeBiConsumer<BooleanQuery, String, Exception>
-				addQueryTermBiConsumer)
+			BiConsumer<BooleanQuery, String> addQueryTermBiConsumer)
 		throws Exception {
 
 		String[] ddmStructureFieldNameParts = StringUtil.split(
@@ -666,6 +664,37 @@ public class DDMIndexerImpl implements DDMIndexer {
 
 	protected QueryFilter createFieldValueQueryFilter(
 			DDMStructure ddmStructure, String fieldReference, Locale locale,
+			String indexType,
+			BiConsumer<BooleanQuery, String> addQueryTermBiConsumer)
+		throws Exception {
+
+		String ddmStructureFieldName = encodeName(
+			ddmStructure.getStructureId(), fieldReference, locale, indexType);
+
+		BooleanQuery booleanQuery = new BooleanQueryImpl();
+
+		if (isLegacyDDMIndexFieldsEnabled()) {
+			addQueryTermBiConsumer.accept(booleanQuery, ddmStructureFieldName);
+
+			return new QueryFilter(booleanQuery);
+		}
+
+		booleanQuery.addRequiredTerm(
+			StringBundler.concat(
+				DDM_FIELD_ARRAY, StringPool.PERIOD, DDM_FIELD_NAME),
+			ddmStructureFieldName);
+
+		addQueryTermBiConsumer.accept(
+			booleanQuery,
+			StringBundler.concat(
+				DDM_FIELD_ARRAY, StringPool.PERIOD,
+				getValueFieldName(indexType, locale)));
+
+		return new QueryFilter(new NestedQuery(DDM_FIELD_ARRAY, booleanQuery));
+	}
+
+	protected QueryFilter createFieldValueQueryFilter(
+			DDMStructure ddmStructure, String fieldReference, Locale locale,
 			String indexType, Serializable value)
 		throws Exception {
 
@@ -698,38 +727,6 @@ public class DDMIndexerImpl implements DDMIndexer {
 							StringPool.QUOTE);
 				}
 			});
-	}
-
-	protected QueryFilter createFieldValueQueryFilter(
-			DDMStructure ddmStructure, String fieldReference, Locale locale,
-			String indexType,
-			UnsafeBiConsumer<BooleanQuery, String, Exception>
-				addQueryTermBiConsumer)
-		throws Exception {
-
-		String ddmStructureFieldName = encodeName(
-			ddmStructure.getStructureId(), fieldReference, locale, indexType);
-
-		BooleanQuery booleanQuery = new BooleanQueryImpl();
-
-		if (isLegacyDDMIndexFieldsEnabled()) {
-			addQueryTermBiConsumer.accept(booleanQuery, ddmStructureFieldName);
-
-			return new QueryFilter(booleanQuery);
-		}
-
-		booleanQuery.addRequiredTerm(
-			StringBundler.concat(
-				DDM_FIELD_ARRAY, StringPool.PERIOD, DDM_FIELD_NAME),
-			ddmStructureFieldName);
-
-		addQueryTermBiConsumer.accept(
-			booleanQuery,
-			StringBundler.concat(
-				DDM_FIELD_ARRAY, StringPool.PERIOD,
-				getValueFieldName(indexType, locale)));
-
-		return new QueryFilter(new NestedQuery(DDM_FIELD_ARRAY, booleanQuery));
 	}
 
 	protected String encodeName(
