@@ -397,12 +397,11 @@ public class LayoutReferencesExportImportContentProcessor
 						layoutSet = group.getPrivateLayoutSet();
 					}
 					else if (urlSBString.contains(
-								_DATA_HANDLER_COMPANY_SECURE_URL) ||
-							 urlSBString.contains(_DATA_HANDLER_COMPANY_URL)) {
+								_DATA_HANDLER_COMPANY_SECURE_DEFAULT_GROUP_URL) ||
+							 urlSBString.contains(
+								 _DATA_HANDLER_COMPANY_DEFAULT_GROUP_URL)) {
 
-						if (_isDefaultGroup(group)) {
-							layoutSet = group.getPublicLayoutSet();
-						}
+						layoutSet = group.getPublicLayoutSet();
 					}
 					else {
 						LayoutSet publicLayoutSet = group.getPublicLayoutSet();
@@ -1015,12 +1014,11 @@ public class LayoutReferencesExportImportContentProcessor
 					layoutSet = group.getPrivateLayoutSet();
 				}
 				else if (urlSBString.contains(
-							_DATA_HANDLER_COMPANY_SECURE_URL) ||
-						 urlSBString.contains(_DATA_HANDLER_COMPANY_URL)) {
+							_DATA_HANDLER_COMPANY_SECURE_DEFAULT_GROUP_URL) ||
+						 urlSBString.contains(
+							 _DATA_HANDLER_COMPANY_DEFAULT_GROUP_URL)) {
 
-					if (_isDefaultGroup(group)) {
-						layoutSet = group.getPublicLayoutSet();
-					}
+					layoutSet = group.getPublicLayoutSet();
 				}
 				else {
 					LayoutSet publicLayoutSet = group.getPublicLayoutSet();
