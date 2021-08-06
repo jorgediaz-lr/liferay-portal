@@ -612,12 +612,28 @@ public class DDMIndexerImpl implements DDMIndexer {
 			locale = null;
 		}
 
-		Serializable fieldValue = ddmStructureFieldValue;
+		if (ddmStructureFieldValue instanceof String[]) {
+			final String[] fieldValueArray = (String[])ddmStructureFieldValue;
+
+			return createFieldValueQueryFilter(
+				ddmStructure, fieldReference, locale, indexType,
+				(booleanQuery, fieldName) -> {
+					for (String fieldValueString : fieldValueArray) {
+						booleanQuery.addRequiredTerm(
+							fieldName,
+							StringPool.QUOTE + fieldValueString +
+								StringPool.QUOTE);
+					}
+				});
+		}
+
+		final String fieldValueString = String.valueOf(ddmStructureFieldValue);
 
 		return createFieldValueQueryFilter(
 			ddmStructure, fieldReference, locale, indexType,
-			(booleanQuery, fieldName) -> _addFieldValueRequiredTerm(
-				booleanQuery, fieldName, fieldValue));
+			(booleanQuery, fieldName) -> booleanQuery.addRequiredTerm(
+				fieldName,
+				StringPool.QUOTE + fieldValueString + StringPool.QUOTE));
 	}
 
 	protected String encodeName(
@@ -672,26 +688,6 @@ public class DDMIndexerImpl implements DDMIndexer {
 
 	@Reference
 	protected Sorts sorts;
-
-	private void _addFieldValueRequiredTerm(
-		BooleanQuery booleanQuery, String fieldName, Serializable fieldValue) {
-
-		if (fieldValue instanceof String[]) {
-			String[] fieldValueArray = (String[])fieldValue;
-
-			for (String fieldValueString : fieldValueArray) {
-				booleanQuery.addRequiredTerm(
-					fieldName,
-					StringPool.QUOTE + fieldValueString + StringPool.QUOTE);
-			}
-		}
-		else {
-			booleanQuery.addRequiredTerm(
-				fieldName,
-				StringPool.QUOTE + String.valueOf(fieldValue) +
-					StringPool.QUOTE);
-		}
-	}
 
 	private void _addToDocument(
 			Document document, Field field, String indexType, String name,
