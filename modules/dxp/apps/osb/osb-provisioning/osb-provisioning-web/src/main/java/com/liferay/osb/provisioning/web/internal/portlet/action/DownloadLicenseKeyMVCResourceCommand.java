@@ -121,7 +121,8 @@ public class DownloadLicenseKeyMVCResourceCommand
 			LicenseKey licenseKey = licenseKeys.get(0);
 
 			String fileName = _licenseKeyExporter.getFileName(
-				licenseKey.getProductName(), licenseKey.getProductVersion());
+				licenseKey.getProductName(), licenseKey.getProductVersion(),
+				licenseKey.getName());
 
 			String licenseXML = _licenseKeyExporter.toXML(
 				licenseKey.getAccountName(), licenseKey.getLicenseEntryName(),
@@ -140,6 +141,7 @@ public class DownloadLicenseKeyMVCResourceCommand
 				licenseXML.getBytes(), ContentTypes.TEXT_XML);
 		}
 		else {
+			Set<String> names = new HashSet<>();
 			Set<String> productNames = new HashSet<>();
 
 			String[] licenseXMLs = new String[licenseKeys.size()];
@@ -147,6 +149,7 @@ public class DownloadLicenseKeyMVCResourceCommand
 			for (int i = 0; i < licenseKeys.size(); i++) {
 				LicenseKey licenseKey = licenseKeys.get(i);
 
+				names.add(licenseKey.getName());
 				productNames.add(licenseKey.getProductName());
 
 				licenseXMLs[i] = _licenseKeyExporter.toXML(
@@ -166,7 +169,8 @@ public class DownloadLicenseKeyMVCResourceCommand
 			}
 
 			String fileName = _licenseKeyExporter.getFileName(
-				ArrayUtil.toStringArray(productNames));
+				ArrayUtil.toStringArray(productNames),
+				ArrayUtil.toStringArray(names));
 
 			String licenseXML = _licenseKeyExporter.aggregateXMLs(licenseXMLs);
 
@@ -195,7 +199,8 @@ public class DownloadLicenseKeyMVCResourceCommand
 		}
 		else if (licenseKey.getLicenseVersion() >= 2) {
 			String fileName = _licenseKeyExporter.getFileName(
-				licenseKey.getProductName(), licenseKey.getProductVersion());
+				licenseKey.getProductName(), licenseKey.getProductVersion(),
+				licenseKey.getName());
 
 			String licenseXML = _licenseKeyExporter.toXML(
 				licenseKey.getKey(), licenseKey.getAccountName(),

@@ -14,10 +14,7 @@
 
 package com.liferay.osb.provisioning.license.exporter;
 
-import java.io.File;
-
 import java.util.Date;
-import java.util.Map;
 
 /**
  * @author Amos Fong
@@ -26,22 +23,12 @@ public interface LicenseKeyExporter {
 
 	public String aggregateXMLs(String[] xmls) throws Exception;
 
-	public String getFileName(String productName, String productVersion);
+	public String getFileName(
+		String productName, String productVersion, String name);
 
-	public String getFileName(String[] productNames);
+	public String getFileName(String[] productNames, String[] names);
 
 	public String toEncodedLicenseFile(String serverId, String key);
-
-	public File toFile(
-			String key, String accountName, String licenseEntryName,
-			String licenseType, int licenseVersion, String productName,
-			String productId, String productVersion, String owner,
-			int maxClusterNodes, int maxServers, int maxHttpSessions,
-			long maxConcurrentUsers, long maxUsers, String sizing,
-			String description, String hostNames, String ipAddresses,
-			String macAddresses, String serverIds, Date startDate,
-			Date expirationDate, Date createDate)
-		throws Exception;
 
 	public String toLI(
 			String key, String accountName, String licenseEntryName,
@@ -52,9 +39,6 @@ public interface LicenseKeyExporter {
 			String description, String hostName, String ipAddresses,
 			String macAddresses, String serverId, Date startDate,
 			Date expirationDate)
-		throws Exception;
-
-	public String toXML(Map<String, String> properties, String key)
 		throws Exception;
 
 	public String toXML(

@@ -18,14 +18,12 @@ import com.liferay.osb.provisioning.license.exporter.LicenseKeyExporter;
 import com.liferay.osb.provisioning.license.generator.KeyGenerator;
 import com.liferay.osb.provisioning.license.helper.constants.LicenseType;
 import com.liferay.osb.provisioning.license.helper.constants.ProductVersion;
-import com.liferay.osb.provisioning.license.helper.util.OSBFileUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.petra.xml.DocUtil;
 import com.liferay.portal.kernel.io.Base64OutputStream;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.util.Base64;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -37,7 +35,6 @@ import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
@@ -75,8 +72,10 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 		return document.formattedString();
 	}
 
-	public String getFileName(String productName, String productVersion) {
-		StringBundler sb = new StringBundler(5);
+	public String getFileName(
+		String productName, String productVersion, String licenseKeyName) {
+
+		StringBundler sb = new StringBundler(6);
 
 		productName = StringUtil.extractChars(productName);
 
@@ -88,17 +87,15 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 		sb.append(productName);
 		sb.append(StringPool.DASH);
 		sb.append(productVersion);
+		sb.append(StringPool.DASH);
+		sb.append(licenseKeyName);
 
-		sb.append(".xml");
-
-		String fileName = StringUtil.replace(
-			sb.toString(), CharPool.SPACE, StringPool.BLANK);
-
-		return StringUtil.toLowerCase(fileName);
+		return formatFileName(sb.toString());
 	}
 
-	public String getFileName(String[] productNames) {
-		StringBundler sb = new StringBundler(2 + (2 * productNames.length));
+	public String getFileName(String[] productNames, String[] licenseKeyNames) {
+		StringBundler sb = new StringBundler(
+			1 + (2 * productNames.length) + (2 * licenseKeyNames.length));
 
 		sb.append("activation-key");
 
@@ -107,12 +104,12 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 			sb.append(StringUtil.extractChars(productName));
 		}
 
-		sb.append(".xml");
+		for (String licenseKeyName : licenseKeyNames) {
+			sb.append(StringPool.DASH);
+			sb.append(licenseKeyName);
+		}
 
-		String fileName = StringUtil.replace(
-			sb.toString(), CharPool.SPACE, StringPool.BLANK);
-
-		return StringUtil.toLowerCase(fileName);
+		return formatFileName(sb.toString());
 	}
 
 	public String toEncodedLicenseFile(String serverId, String key) {
@@ -124,32 +121,6 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 		String licenseFileDecoded = PropertiesUtil.toString(licenseProperties);
 
 		return Base64.objectToString(licenseFileDecoded);
-	}
-
-	public File toFile(
-			String key, String accountName, String licenseEntryName,
-			String licenseType, int licenseVersion, String productName,
-			String productId, String productVersion, String owner,
-			int maxClusterNodes, int maxServers, int maxHttpSessions,
-			long maxConcurrentUsers, long maxUsers, String sizing,
-			String description, String hostNames, String ipAddresses,
-			String macAddresses, String serverIds, Date startDate,
-			Date expirationDate, Date createDate)
-		throws Exception {
-
-		File file = OSBFileUtil.createTempFile(
-			getFileName(productName, productVersion));
-
-		FileUtil.write(
-			file,
-			toXML(
-				key, accountName, licenseEntryName, licenseType, licenseVersion,
-				productName, productId, productVersion, owner, maxClusterNodes,
-				maxServers, maxHttpSessions, maxConcurrentUsers, maxUsers,
-				sizing, description, hostNames, ipAddresses, macAddresses,
-				serverIds, startDate, expirationDate, createDate));
-
-		return file;
 	}
 
 	public String toLI(
@@ -235,14 +206,6 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 				unsyncByteArrayOutputStream.close();
 			}
 		}
-	}
-
-	public String toXML(Map<String, String> properties, String key)
-		throws Exception {
-
-		Document document = toXMLVersion3_4(properties, key, false);
-
-		return document.formattedString();
 	}
 
 	public String toXML(
@@ -387,6 +350,15 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 				DocUtil.add(serverIdElement, "server-id", serverId);
 			}
 		}
+	}
+
+	protected String formatFileName(String fileName) {
+		fileName = StringUtil.replace(
+			fileName, CharPool.SPACE, StringPool.BLANK);
+		fileName = StringUtil.toLowerCase(fileName);
+		fileName = fileName.substring(0, Math.min(fileName.length(), 251));
+
+		return fileName.concat(".xml");
 	}
 
 	protected Document toXMLVersion2(Map<String, String> properties, String key)
