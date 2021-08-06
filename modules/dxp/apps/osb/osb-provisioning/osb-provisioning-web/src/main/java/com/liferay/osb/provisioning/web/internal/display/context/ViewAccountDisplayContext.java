@@ -25,6 +25,7 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Country;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchaseView;
 import com.liferay.osb.provisioning.constants.AccountEntryLocales;
 import com.liferay.osb.provisioning.constants.ProvisioningActionKeys;
+import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.constants.ProvisioningWebKeys;
 import com.liferay.osb.provisioning.customer.model.AccountEntry;
 import com.liferay.osb.provisioning.customer.web.service.AccountEntryWebService;
@@ -51,6 +52,7 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -80,6 +82,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.portlet.ActionRequest;
+import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
@@ -328,6 +331,19 @@ public class ViewAccountDisplayContext {
 				}
 			}
 		};
+	}
+
+	public String getGenerateLicenseURL() {
+		PortletURL portletURL = PortletURLFactoryUtil.create(
+			httpServletRequest, ProvisioningPortletKeys.LICENSES,
+			PortletRequest.RENDER_PHASE);
+
+		portletURL.setParameter(
+			"mvcRenderCommandName", "/licenses/add_license_key");
+		portletURL.setParameter("redirect", currentURLObj.toString());
+		portletURL.setParameter("accountKey", account.getKey());
+
+		return portletURL.toString();
 	}
 
 	public List<DropdownItem> getHeaderAddDropdownItems() {

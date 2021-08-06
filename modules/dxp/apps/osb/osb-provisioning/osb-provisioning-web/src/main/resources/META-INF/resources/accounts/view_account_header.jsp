@@ -140,7 +140,7 @@ String tabs1 = ParamUtil.getString(request, "tabs1");
 
 		<c:if test='<%= tabs1.equals("licenses") %>'>
 			<div>
-				<a class="btn btn-secondary btn-sm" href="">
+				<a class="btn btn-secondary btn-sm" href="<%= viewAccountDisplayContext.getGenerateLicenseURL() %>">
 					<span class="lfr-btn-label"><liferay-ui:message key="generate-license" /></span>
 				</a>
 			</div>
