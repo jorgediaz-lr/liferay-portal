@@ -14,6 +14,7 @@
 
 package com.liferay.osb.provisioning.web.internal.display.context;
 
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenu;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
 import com.liferay.osb.provisioning.license.model.LicenseKey;
@@ -189,6 +190,24 @@ public class ViewAccountLicenseKeysDisplayContext
 		}
 
 		return portletURL.toString();
+	}
+
+	public CreationMenu getCreationMenu() throws Exception {
+		if (!hasManageLicenseKeysPermission()) {
+			return null;
+		}
+
+		return new CreationMenu() {
+			{
+				addDropdownItem(
+					dropdownItem -> {
+						dropdownItem.setHref(getGenerateLicenseURL());
+						dropdownItem.setLabel(
+							LanguageUtil.get(
+								httpServletRequest, "generate-license"));
+					});
+			}
+		};
 	}
 
 	@Override

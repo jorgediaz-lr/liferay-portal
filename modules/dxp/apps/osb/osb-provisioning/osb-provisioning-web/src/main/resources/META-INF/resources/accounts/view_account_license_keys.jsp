@@ -46,6 +46,7 @@ PortletURL portletURL = viewAccountLicenseKeysDisplayContext.getPortletURL();
 			<clay:management-toolbar
 				actionDropdownItems="<%= viewAccountLicenseKeysDisplayContext.getActionDropdownItems() %>"
 				clearResultsURL="<%= viewAccountLicenseKeysDisplayContext.getClearResultsURL() %>"
+				creationMenu="<%= viewAccountLicenseKeysDisplayContext.getCreationMenu() %>"
 				elementClasses="full-width"
 				itemsTotal="<%= searchContainer.getTotal() %>"
 				searchActionURL="<%= viewAccountLicenseKeysDisplayContext.getCurrentURL() %>"
