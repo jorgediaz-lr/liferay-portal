@@ -20,6 +20,8 @@
 ViewAccountDisplayContext viewAccountDisplayContext = ProvisioningWebComponentProvider.getViewAccountDisplayContext(renderRequest, renderResponse, request);
 
 AccountDisplay accountDisplay = viewAccountDisplayContext.getAccountDisplay();
+
+String tabs1 = ParamUtil.getString(request, "tabs1");
 %>
 
 <div class="account-header autofit-row provisioning-accounts">
@@ -135,5 +137,13 @@ AccountDisplay accountDisplay = viewAccountDisplayContext.getAccountDisplay();
 		<aui:form action="<%= syncToZendeskURL %>" method="post" name="fm1">
 			<aui:button cssClass="btn-secondary btn-sm" href="<%= syncToZendeskURL %>" value="sync-to-zendesk" />
 		</aui:form>
+
+		<c:if test='<%= tabs1.equals("licenses") %>'>
+			<div>
+				<a class="btn btn-secondary btn-sm" href="">
+					<span class="lfr-btn-label"><liferay-ui:message key="generate-license" /></span>
+				</a>
+			</div>
+		</c:if>
 	</div>
 </div>
