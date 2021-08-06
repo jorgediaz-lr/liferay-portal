@@ -713,28 +713,28 @@ public class DDMIndexerImpl implements DDMIndexer {
 					fieldReference, "type"));
 		}
 
-		final Serializable fieldValue = ddmStructureFieldValue;
+		if (ddmStructureFieldValue instanceof String[]) {
+			final String[] fieldValueArray = (String[])ddmStructureFieldValue;
 
-		return createFieldValueQueryFilter(
-			ddmStructure, fieldReference, locale, indexType,
-			(booleanQuery, fieldName) -> {
-				if (fieldValue instanceof String[]) {
-					String[] fieldValueArray = (String[])fieldValue;
-
+			return createFieldValueQueryFilter(
+				ddmStructure, fieldReference, locale, indexType,
+				(booleanQuery, fieldName) -> {
 					for (String fieldValueString : fieldValueArray) {
 						booleanQuery.addRequiredTerm(
 							fieldName,
 							StringPool.QUOTE + fieldValueString +
 								StringPool.QUOTE);
 					}
-				}
-				else {
-					booleanQuery.addRequiredTerm(
-						fieldName,
-						StringPool.QUOTE + String.valueOf(fieldValue) +
-							StringPool.QUOTE);
-				}
-			});
+				});
+		}
+
+		final String fieldValueString = String.valueOf(ddmStructureFieldValue);
+
+		return createFieldValueQueryFilter(
+			ddmStructure, fieldReference, locale, indexType,
+			(booleanQuery, fieldName) -> booleanQuery.addRequiredTerm(
+				fieldName,
+				StringPool.QUOTE + fieldValueString + StringPool.QUOTE));
 	}
 
 	protected String encodeName(
