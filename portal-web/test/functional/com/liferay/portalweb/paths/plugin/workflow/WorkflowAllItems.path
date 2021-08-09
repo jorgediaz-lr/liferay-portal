@@ -20,6 +20,11 @@
 	<td>//td[contains(text(),'${key_workflowInstanceName}')]</td>
 	<td></td>
 </tr>
+<tr>
+	<td>METRICS_PROCESS_NAME_TABLE_ROW</td>
+	<td>//tr[${key_rowNumber}]//td[1]</td>
+	<td></td>
+</tr>
 </tbody>
 </table>
 </body>
