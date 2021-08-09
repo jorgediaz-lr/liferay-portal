@@ -249,7 +249,7 @@ describe('Subscriptions', () => {
 			).toBeTruthy();
 			expect(dateFields[0].disabled).toBeTruthy();
 			expect(dateFields[1].disabled).toBeTruthy();
-			expect(dateFields[2].disabled).toBeTruthy();
+			expect(getByLabelText('grace-period').disabled).toBeTruthy();
 		});
 
 		it('displays the account name for each of the subscriptions and the Bulk Input', () => {

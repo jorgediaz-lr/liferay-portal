@@ -12,7 +12,8 @@
 import {
 	formatDate,
 	generateNewDateByDay,
-	generateNewDateByYear
+	generateNewDateByYear,
+	getIntervalInDays
 } from '../../src/main/resources/META-INF/resources/js/utilities/date';
 
 describe('generateNewDateByDay', () => {
@@ -34,5 +35,15 @@ describe('generateNewDateByYear', () => {
 		expect(formatDate(generateNewDateByYear('2021-05-19', 4))).toBe(
 			'2025-05-18'
 		);
+	});
+});
+
+describe('getIntervalInDays', () => {
+	it('calculates the interval between two dates correctly', () => {
+		expect(getIntervalInDays(new Date(), generateNewDateByDay())).toBe(30);
+	});
+
+	it('calculates the duration between two string representation of dates correctly', () => {
+		expect(getIntervalInDays('2021-01-01', '2021-01-02')).toBe(1);
 	});
 });

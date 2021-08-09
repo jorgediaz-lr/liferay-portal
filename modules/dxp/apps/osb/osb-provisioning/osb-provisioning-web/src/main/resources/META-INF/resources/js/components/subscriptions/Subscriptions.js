@@ -22,6 +22,8 @@ import {
 } from '../../utilities/constants';
 import {
 	convertInputToDate,
+	generateNewDateByDay,
+	getIntervalInDays,
 	setDisabledAttribute,
 	validateDateFieldFormat
 } from '../../utilities/date';
@@ -98,7 +100,7 @@ function Subscriptions({
 
 					{subscriptionsType === EDIT_SUBSCRIPTIONS && (
 						<ClayTable.Cell expanded headingCell>
-							{Liferay.Language.get('grace-period-end-date')}
+							{Liferay.Language.get('grace-period')}
 						</ClayTable.Cell>
 					)}
 
@@ -158,14 +160,6 @@ function Subscription({
 	subscription,
 	subscriptionsType
 }) {
-	const [invalidDateFormat, setInvalidDateFormat] = useState({
-		endDate: false,
-		originalEndDate: false,
-		startDate: false
-	});
-
-	const [, {deleteSubscription, updateSubscription}] = useSubscriptions();
-
 	const {
 		endDate,
 		index,
@@ -178,6 +172,17 @@ function Subscription({
 		startDate,
 		status
 	} = subscription;
+
+	const [gracePeriod, setGracePeriod] = useState(
+		getIntervalInDays(originalEndDate, endDate)
+	);
+	const [invalidDateFormat, setInvalidDateFormat] = useState({
+		endDate: false,
+		originalEndDate: false,
+		startDate: false
+	});
+
+	const [, {deleteSubscription, updateSubscription}] = useSubscriptions();
 
 	const key =
 		subscriptionsType === EDIT_SUBSCRIPTIONS
@@ -192,32 +197,54 @@ function Subscription({
 		deleteSubscription(key);
 	}
 
-	function handleEndDateChange(value) {
-		const validDateFormat = validateDateFieldFormat(value);
+	function handleGracePeriodChange(event) {
+		const {value} = event.currentTarget;
 
-		if (validDateFormat) {
-			updateSubscription(key, subscription =>
-				subscription.set('endDate', convertInputToDate(value))
-			);
-		}
+		setGracePeriod(value);
 
-		dateFormatValidators([key, 'endDate'], validDateFormat);
-		setInvalidDateFormat({...invalidDateFormat, endDate: !validDateFormat});
+		updateEndDate(
+			validateCurrentGracePeriod(value)
+				? generateNewDateByDay(originalEndDate, value)
+				: ''
+		);
 	}
 
 	function handleGracePeriodStartDateChange(value) {
-		const validDateFormat = validateDateFieldFormat(value);
+		const validGracePeriodStartDateFormat = validateDateFieldFormat(value);
 
-		if (validDateFormat) {
-			updateSubscription(key, subscription =>
-				subscription.set('originalEndDate', convertInputToDate(value))
-			);
-		}
+		const newEndDate = validateCurrentGracePeriod(gracePeriod)
+			? generateNewDateByDay(convertInputToDate(value), gracePeriod)
+			: '';
+		const validEndDateFormat = validateDateFieldFormat(newEndDate);
 
-		dateFormatValidators([key, 'originalEndDate'], validDateFormat);
+		updateSubscription(key, subscription =>
+			subscription
+				.update('originalEndDate', originalEndDate => {
+					if (validGracePeriodStartDateFormat) {
+						return convertInputToDate(value);
+					}
+
+					return originalEndDate;
+				})
+				.update('endDate', endDate => {
+					if (validEndDateFormat) {
+						return newEndDate;
+					}
+
+					return endDate;
+				})
+		);
+
+		dateFormatValidators([key, 'endDate'], validEndDateFormat);
+		dateFormatValidators(
+			[key, 'originalEndDate'],
+			validGracePeriodStartDateFormat
+		);
+
 		setInvalidDateFormat({
 			...invalidDateFormat,
-			originalEndDate: !validDateFormat
+			endDate: !validEndDateFormat,
+			originalEndDate: !validGracePeriodStartDateFormat
 		});
 	}
 
@@ -270,6 +297,23 @@ function Subscription({
 		updateSubscription(key, subscription =>
 			subscription.set('status', event.currentTarget.value)
 		);
+	}
+
+	function updateEndDate(newEndDate) {
+		const validDateFormat = validateDateFieldFormat(newEndDate);
+
+		if (validDateFormat) {
+			updateSubscription(key, subscription =>
+				subscription.set('endDate', newEndDate)
+			);
+		}
+
+		dateFormatValidators([key, 'endDate'], validDateFormat);
+		setInvalidDateFormat({...invalidDateFormat, endDate: !validDateFormat});
+	}
+
+	function validateCurrentGracePeriod(currentGracePeriod) {
+		return currentGracePeriod !== '';
 	}
 
 	return (
@@ -406,13 +450,25 @@ function Subscription({
 							: 'has-error'
 					}
 				>
-					<label htmlFor="endDate">
-						<DatePicker
-							defaultValue={endDate}
-							id="endDate"
-							inputName="endDate"
-							updateFn={handleEndDateChange}
-						/>
+					<label htmlFor={`${key}endDate`}>
+						<div className="input-group" id={`${key}endDate`}>
+							<div className="input-group-item">
+								<input
+									aria-label={Liferay.Language.get(
+										'grace-period'
+									)}
+									className="form-control form-control-sm input-group-inset input-group-inset-after"
+									disabled={perpetual}
+									min={0}
+									onChange={handleGracePeriodChange}
+									type="number"
+									value={gracePeriod}
+								/>
+								<div className="input-group-inset-item input-group-inset-item-after">
+									{Liferay.Language.get('days')}
+								</div>
+							</div>
+						</div>
 					</label>
 				</ClayTable.Cell>
 			)}

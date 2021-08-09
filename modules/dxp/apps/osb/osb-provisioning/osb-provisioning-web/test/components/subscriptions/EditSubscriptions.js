@@ -399,6 +399,46 @@ describe('EditSubscriptions', () => {
 
 					expect(getByText('save').disabled).toBeTruthy();
 				});
+
+				it('disables the Save button if Grace Period field is empty', () => {
+					const {
+						getByLabelText,
+						getByText
+					} = renderEditSubscriptions();
+
+					fireEvent.change(getByLabelText('grace-period'), {
+						target: {value: ''}
+					});
+
+					expect(getByText('save').disabled).toBeTruthy();
+				});
+
+				it('disables the Save button if Grace Period entered is not a number', () => {
+					const {
+						getByLabelText,
+						getByText
+					} = renderEditSubscriptions();
+
+					fireEvent.change(getByLabelText('grace-period'), {
+						target: {value: 'test'}
+					});
+
+					expect(getByText('save').disabled).toBeTruthy();
+				});
+
+				it('disables the Save button and shows the Invalid Date warning if Grace Period entered is negative', () => {
+					const {
+						getByLabelText,
+						getByText
+					} = renderEditSubscriptions();
+
+					fireEvent.change(getByLabelText('grace-period'), {
+						target: {value: '-1'}
+					});
+
+					getByText('invalid-date');
+					expect(getByText('save').disabled).toBeTruthy();
+				});
 			});
 
 			describe('Multiple Subscriptions', () => {
