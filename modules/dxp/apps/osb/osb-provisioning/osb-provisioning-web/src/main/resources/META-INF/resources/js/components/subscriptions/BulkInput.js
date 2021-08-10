@@ -23,6 +23,7 @@ import {
 } from '../../utilities/constants';
 import {
 	convertInputToDate,
+	getIntervalInDays,
 	setDisabledAttribute,
 	validateDateFieldFormat
 } from '../../utilities/date';
@@ -40,51 +41,67 @@ function BulkInput({
 }) {
 	const [subscriptions, {updateAllValuesByFieldName}] = useSubscriptions();
 
+	const gracePeriodRef = useRef();
 	const quantityRef = useRef();
 	const salesforceOpportunityKeyRef = useRef();
 	const sizingRef = useRef();
 	const statusRef = useRef();
 
-	const getDisplayValue = useCallback(
-		fieldName => {
-			if (identicalValues(fieldName)) {
-				return subscriptions.toList().first()[fieldName];
-			}
-			else {
-				return '';
-			}
-		},
-		[identicalValues, subscriptions]
-	);
-
-	const identicalValues = useCallback(
-		fieldName => {
-			const fieldValues = new Set(
+	const fieldValueSet = useCallback(
+		fieldName =>
+			new Set(
 				subscriptions.toList().map(subscription => {
+					if (fieldName === 'gracePeriod') {
+						return getIntervalInDays(
+							subscription.originalEndDate,
+							subscription.endDate
+						);
+					}
+
 					const field = subscription[fieldName];
 
-					if (field instanceof Date) {
-						return field.toJSON();
-					}
-					else {
-						return field;
-					}
+					return field instanceof Date ? field.toJSON() : field;
 				})
-			);
-
-			return fieldValues.size === 1;
-		},
+			),
 		[subscriptions]
 	);
 
+	const getDisplayValue = useCallback(
+		fieldName => {
+			const set = fieldValueSet(fieldName);
+
+			if (set.size === 1) {
+				return set.values().next().value;
+			}
+
+			return '';
+		},
+		[fieldValueSet]
+	);
+
+	const identicalFieldValues = useCallback(
+		fieldName => {
+			const set = fieldValueSet(fieldName);
+
+			return set.size === 1;
+		},
+		[fieldValueSet]
+	);
+
 	const [showField, setShowField] = useState({
-		perpetual: identicalValues('perpetual'),
-		quantity: identicalValues('quantity'),
-		salesforceOpportunityKey: identicalValues('salesforceOpportunityKey'),
-		sizing: identicalValues('sizing'),
-		status: identicalValues('status')
+		gracePeriod: identicalFieldValues('gracePeriod'),
+		perpetual: identicalFieldValues('perpetual'),
+		quantity: identicalFieldValues('quantity'),
+		salesforceOpportunityKey: identicalFieldValues(
+			'salesforceOpportunityKey'
+		),
+		sizing: identicalFieldValues('sizing'),
+		status: identicalFieldValues('status')
 	});
 
+	const [gracePeriod, setGracePeriod] = useState(
+		getDisplayValue('gracePeriod')
+	);
 	const [perpetual, setPerpetual] = useState(getDisplayValue('perpetual'));
 	const [quantity, setQuantity] = useState(getDisplayValue('quantity'));
 	const [salesforceOpportunityKey, setSalesforceOpportunityKey] = useState(
@@ -105,15 +122,19 @@ function BulkInput({
 
 	useEffect(() => {
 		setShowField({
-			perpetual: identicalValues('perpetual'),
-			quantity: identicalValues('quantity'),
-			salesforceOpportunityKey: identicalValues(
+			gracePeriod: identicalFieldValues('gracePeriod'),
+			perpetual: identicalFieldValues('perpetual'),
+			quantity: identicalFieldValues('quantity'),
+			salesforceOpportunityKey: identicalFieldValues(
 				'salesforceOpportunityKey'
 			),
-			sizing: identicalValues('sizing'),
-			status: identicalValues('status')
+			sizing: identicalFieldValues('sizing'),
+			status: identicalFieldValues('status')
 		});
+	}, [identicalFieldValues]);
 
+	useEffect(() => {
+		setGracePeriod(getDisplayValue('gracePeriod'));
 		setPerpetual(getDisplayValue('perpetual'));
 		setQuantity(getDisplayValue('quantity'));
 		setSalesforceOpportunityKey(
@@ -121,8 +142,9 @@ function BulkInput({
 		);
 		setSizing(getDisplayValue('sizing'));
 		setStatus(getDisplayValue('status'));
-	}, [getDisplayValue, identicalValues, subscriptions]);
+	}, [getDisplayValue]);
 
+	useSetFocus(gracePeriodRef, showField.gracePeriod);
 	useSetFocus(quantityRef, showField.quantity);
 	useSetFocus(
 		salesforceOpportunityKeyRef,
@@ -132,12 +154,16 @@ function BulkInput({
 	useSetFocus(statusRef, showField.status);
 
 	function getDatePickerDisplayValue(fieldName) {
-		if (identicalValues('perpetual')) {
+		if (identicalFieldValues('perpetual')) {
 			return getDisplayValue(fieldName);
 		}
 		else {
 			return '';
 		}
+	}
+
+	function handleOnClickGracePeriod() {
+		setShowField({...showField, gracePeriod: true});
 	}
 
 	function handleOnClickPerpetual() {
@@ -163,7 +189,11 @@ function BulkInput({
 		setShowField({...showField, status: true});
 	}
 
-	function handleSaveEndDate(value) {
+	function handleSaveEndDate(event) {
+		const {value} = event.currentTarget;
+
+		setGracePeriod(value);
+
 		const validDateFormat = validateDateFieldFormat(value);
 
 		if (validDateFormat) {
@@ -415,15 +445,42 @@ function BulkInput({
 				<ClayTable.Cell
 					className={!invalidDateFormat.endDate ? '' : 'has-error'}
 				>
-					<label htmlFor="endDateBulkInput">
-						<DatePicker
-							defaultValue={getDatePickerDisplayValue('endDate')}
-							id="endDateBulkInput"
-							inputName="endDateBulkInput"
-							placeholder={Liferay.Language.get('varied-data')}
-							updateFn={handleSaveEndDate}
+					{showField.gracePeriod && (
+						<label htmlFor="endDateBulkInput" ref={gracePeriodRef}>
+							<div className="input-group" id="endDateBulkInput">
+								<div className="input-group-item">
+									<input
+										aria-label={Liferay.Language.get(
+											'grace-period-bulk-input'
+										)}
+										className="form-control form-control-sm input-group-inset input-group-inset-after"
+										disabled={perpetual}
+										min={0}
+										onChange={handleSaveEndDate}
+										type="number"
+										value={gracePeriod}
+									/>
+									<div
+										className={`${
+											perpetual ? 'disabled' : ''
+										} input-group-inset-item input-group-inset-item-after`}
+									>
+										{Liferay.Language.get('days')}
+									</div>
+								</div>
+							</div>
+						</label>
+					)}
+
+					{!showField.gracePeriod && (
+						<VariedData
+							clickFn={handleOnClickGracePeriod}
+							disabled={perpetual}
+							name={Liferay.Language.get(
+								'grace-period-bulk-input'
+							)}
 						/>
-					</label>
+					)}
 				</ClayTable.Cell>
 			)}
 
@@ -450,10 +507,12 @@ function useSetFocus(ref, state) {
 	}, [ref, state]);
 }
 
-function VariedData({clickFn, name = ''}) {
+function VariedData({clickFn, disabled = false, name = ''}) {
 	return (
 		<button
+			aria-label={name}
 			className="form-control form-control-sm varied-data"
+			disabled={disabled}
 			name={name}
 			onClick={clickFn}
 			type="button"

@@ -6,7 +6,8 @@
 			background-color: $light;
 		}
 
-		.form-control {
+		.form-control,
+		.input-group-inset-item {
 			background-color: $body-bg;
 
 			&[disabled] {
@@ -21,6 +22,10 @@
 			&[placeholder],
 			&::placeholder {
 				color: $dark;
+			}
+
+			&.disabled {
+				background-color: $light;
 			}
 		}
 

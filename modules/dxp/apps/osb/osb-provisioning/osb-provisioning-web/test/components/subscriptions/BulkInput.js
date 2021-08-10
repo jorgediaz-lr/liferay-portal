@@ -85,23 +85,27 @@ describe('Bulk Input', () => {
 		expect(container).toBeTruthy();
 	});
 
-	it('renders Varied Data for Salesforce Opportunity Key, Purchased, Instant Size, and Status fields when the subscriptions to be edited contain different values for these fields', () => {
+	it('renders Varied Data for Salesforce Opportunity Key, Purchased, Instant Size, and Status when the subscriptions to be edited contain different values for these fields', () => {
 		const {getAllByText} = renderBulkInput();
 
 		expect(getAllByText('varied-data').length).toBe(4);
 	});
 
-	it('renders Varied Data for the three date fields when the subscriptions to be edited contain different values for these fields', () => {
+	it('renders Varied Data for the two date fields when the subscriptions to be edited contain different values for these fields', () => {
 		const {getAllByPlaceholderText} = renderBulkInput();
 
-		expect(getAllByPlaceholderText('varied-data').length).toBe(3);
+		expect(getAllByPlaceholderText('varied-data').length).toBe(2);
 	});
 
 	it("renders the field's value in the Bulk Input when the subscriptions contain identical values for the same field name", () => {
-		const {getAllByDisplayValue, getByDisplayValue} = renderBulkInput({
+		const {
+			getAllByDisplayValue,
+			getByDisplayValue,
+			getByLabelText
+		} = renderBulkInput({
 			subscriptions: [
 				{
-					endDate: '2022-01-21',
+					endDate: '2021-12-24',
 					externalLinkKey: 'KOR-35727',
 					key: 'KOR-38323',
 					originalEndDate: '2021-12-21',
@@ -114,7 +118,7 @@ describe('Bulk Input', () => {
 					status: 'Approved'
 				},
 				{
-					endDate: '2022-01-21',
+					endDate: '2021-12-24',
 					externalLinkKey: 'KOR-35727',
 					key: 'KOR-38323',
 					originalEndDate: '2021-12-21',
@@ -132,15 +136,15 @@ describe('Bulk Input', () => {
 		// Clay Date Picker always displays two inputs for the same date
 
 		getByDisplayValue('salesForceKey456');
-		getByDisplayValue('2');
+		getByDisplayValue('2'); // quantity
 		expect(getAllByDisplayValue('2020-12-21').length).toBe(2);
-		expect(getAllByDisplayValue('2022-01-21').length).toBe(2);
-		getByDisplayValue('1');
+		expect(getByLabelText('grace-period-bulk-input').value).toBe('3'); // grace period
+		getByDisplayValue('1'); // sizing
 		expect(getAllByDisplayValue('2021-12-21').length).toBe(2);
 		getByDisplayValue('Approved');
 	});
 
-	it('renders Varied Data for the three date fields when subscriptions do not have identical perpetual values even when dates are identical', () => {
+	it('renders Varied Data for the two date fields when subscriptions do not have identical perpetual values even when the dates are identical', () => {
 		const {
 			getAllByPlaceholderText,
 			queryAllByDisplayValue
@@ -177,8 +181,7 @@ describe('Bulk Input', () => {
 
 		expect(queryAllByDisplayValue('2020-12-21').length).toBeFalsy();
 		expect(queryAllByDisplayValue('2021-12-21').length).toBeFalsy();
-		expect(queryAllByDisplayValue('2022-01-21').length).toBeFalsy();
-		expect(getAllByPlaceholderText('varied-data').length).toBe(3);
+		expect(getAllByPlaceholderText('varied-data').length).toBe(2);
 	});
 
 	it('reveals an input for user to enter data when Varied Data is clicked', () => {
@@ -190,7 +193,7 @@ describe('Bulk Input', () => {
 		expect(getAllByText('varied-data').length).toBe(3);
 	});
 
-	it('displays date bulk inputs as disabled when Perpetual Subscription is checked', () => {
+	it('displays date bulk inputs and Grace Period bulk input as disabled when Perpetual Subscription is checked', () => {
 		const {getAllByPlaceholderText, getByLabelText} = renderBulkInput();
 
 		const dateFields = getAllByPlaceholderText('varied-data');
@@ -201,10 +204,10 @@ describe('Bulk Input', () => {
 
 		expect(dateFields[0].disabled).toBeTruthy();
 		expect(dateFields[1].disabled).toBeTruthy();
-		expect(dateFields[2].disabled).toBeTruthy();
+		expect(getByLabelText('grace-period-bulk-input').disabled).toBeTruthy();
 	});
 
-	it('displays date bulk inputs as enabled when Perpetual Subscription is unchecked', () => {
+	it('displays date bulk inputs and Grace Period bulk input as enabled when Perpetual Subscription is unchecked', () => {
 		const {getAllByPlaceholderText, getByLabelText} = renderBulkInput({
 			subscriptions: [
 				{
@@ -244,7 +247,7 @@ describe('Bulk Input', () => {
 
 		expect(dateFields[0].disabled).toBeFalsy();
 		expect(dateFields[1].disabled).toBeFalsy();
-		expect(dateFields[2].disabled).toBeFalsy();
+		expect(getByLabelText('grace-period-bulk-input').disabled).toBeFalsy();
 	});
 
 	it('displays the indeterminate state of Perpetual Subscription when subscriptions contain varying values', () => {
