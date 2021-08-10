@@ -161,7 +161,7 @@ public class JournalPortletDataHandlerTest
 
 		DDMTemplateTestUtil.addTemplate(
 			stagingGroup.getGroupId(),
-			PortalUtil.getClassNameId(DDMStructure.class),
+			PortalUtil.getClassNameId(DDMStructure.class), 0,
 			PortalUtil.getClassNameId(JournalArticle.class));
 
 		DDMTemplate ddmTemplate = DDMTemplateTestUtil.addTemplate(
