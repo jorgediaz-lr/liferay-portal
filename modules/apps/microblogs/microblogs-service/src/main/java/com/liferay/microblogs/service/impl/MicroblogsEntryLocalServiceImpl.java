@@ -256,6 +256,13 @@ public class MicroblogsEntryLocalServiceImpl
 			socialActivityLocalService.deleteActivities(
 				MicroblogsEntry.class.getName(),
 				curMicroblogsEntry.getMicroblogsEntryId());
+
+			// Subscriptions
+
+			_subscriptionLocalService.deleteSubscriptions(
+				curMicroblogsEntry.getCompanyId(),
+				MicroblogsEntry.class.getName(),
+				curMicroblogsEntry.getMicroblogsEntryId());
 		}
 
 		return microblogsEntry;
