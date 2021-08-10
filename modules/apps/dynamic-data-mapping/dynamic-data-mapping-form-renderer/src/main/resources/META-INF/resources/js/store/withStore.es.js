@@ -79,14 +79,13 @@ const _handleFieldEdited = function(properties) {
 
 					const {
 						defaultLanguageId,
-						editingLanguageId,
-						fieldName
+						editingLanguageId
 					} = evaluatorContext;
 
 					const mergedPages = mergePages(
 						defaultLanguageId,
 						editingLanguageId,
-						fieldName,
+						fieldInstance.fieldName,
 						evaluatedPages,
 						lastEditedPages
 					);
