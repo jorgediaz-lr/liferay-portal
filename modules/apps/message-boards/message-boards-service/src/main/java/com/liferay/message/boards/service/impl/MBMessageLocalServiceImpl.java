@@ -764,7 +764,7 @@ public class MBMessageLocalServiceImpl extends MBMessageLocalServiceBaseImpl {
 			MBThread thread = _mbThreadPersistence.findByPrimaryKey(
 				message.getThreadId());
 
-			_mbThreadLocalService.deleteMBThread(thread);
+			_mbThreadLocalService.deleteThread(thread);
 
 			// Indexer
 
