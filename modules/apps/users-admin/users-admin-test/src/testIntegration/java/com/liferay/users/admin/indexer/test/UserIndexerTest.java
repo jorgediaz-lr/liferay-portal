@@ -18,6 +18,7 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Contact;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.User;
@@ -27,6 +28,7 @@ import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistry;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.search.QueryConfig;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.SearchException;
@@ -46,12 +48,15 @@ import com.liferay.portal.kernel.test.util.UserGroupTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.search.spi.model.index.contributor.ModelDocumentContributor;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -61,6 +66,11 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceRegistration;
 
 /**
  * @author André de Oliveira
@@ -282,6 +292,46 @@ public class UserIndexerTest {
 		List<User> users = getUsers(search((String)null));
 
 		Assert.assertFalse(users.contains(_expectedUser));
+	}
+
+	@Test
+	public void testReindexOneContact() throws Exception {
+		Bundle bundle = FrameworkUtil.getBundle(UserIndexerTest.class);
+
+		BundleContext bundleContext = bundle.getBundleContext();
+
+		Dictionary<String, Object> properties = new Hashtable<>();
+
+		properties.put(
+			"indexer.class.name", "com.liferay.portal.kernel.model.Contact");
+
+		long userId = TestPropsValues.getUserId();
+
+		ServiceRegistration<ModelDocumentContributor<Contact>>
+			serviceRegistration = bundleContext.registerService(
+				(Class<ModelDocumentContributor<Contact>>)
+					(Class<?>)ModelDocumentContributor.class,
+				new ModelDocumentContributor<Contact>() {
+
+					@Override
+					public void contribute(Document document, Contact contact) {
+						Assert.assertEquals(userId, contact.getClassPK());
+					}
+
+				},
+				properties);
+
+		try {
+			UserTestUtil.addUser();
+
+			Indexer<User> userIndexer = IndexerRegistryUtil.getIndexer(
+				User.class.getName());
+
+			userIndexer.reindex(User.class.getName(), userId);
+		}
+		finally {
+			serviceRegistration.unregister();
+		}
 	}
 
 	@Test
