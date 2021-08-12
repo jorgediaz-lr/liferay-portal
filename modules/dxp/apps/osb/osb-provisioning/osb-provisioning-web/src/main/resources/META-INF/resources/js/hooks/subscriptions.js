@@ -153,10 +153,10 @@ export function SubscriptionsProvider({initialSubscriptions = [], children}) {
 					deleteSubscription(key) {
 						setSubscriptions(subscriptions.delete(key));
 					},
-					updateAllValuesByFieldName(fieldName, value) {
+					updateAllValues(updater) {
 						setSubscriptions(
 							subscriptions.map(subscription =>
-								subscription.set(fieldName, value)
+								updater(subscription)
 							)
 						);
 					},

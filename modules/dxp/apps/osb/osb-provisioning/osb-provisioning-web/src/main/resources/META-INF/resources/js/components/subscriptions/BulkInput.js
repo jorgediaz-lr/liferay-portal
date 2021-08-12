@@ -23,6 +23,7 @@ import {
 } from '../../utilities/constants';
 import {
 	convertInputToDate,
+	generateNewDateByDay,
 	getIntervalInDays,
 	setDisabledAttribute,
 	validateDateFieldFormat
@@ -37,9 +38,10 @@ function BulkInput({
 		PRODUCT_PURCHASE_STATUS_APPROVED,
 		PRODUCT_PURCHASE_STATUS_CANCELLED
 	],
-	subscriptionsType
+	subscriptionsType,
+	updateBulkGracePeriod
 }) {
-	const [subscriptions, {updateAllValuesByFieldName}] = useSubscriptions();
+	const [subscriptions, {updateAllValues}] = useSubscriptions();
 
 	const gracePeriodRef = useRef();
 	const quantityRef = useRef();
@@ -170,7 +172,7 @@ function BulkInput({
 		setShowField({...showField, perpetual: true});
 		setPerpetual(false);
 
-		updateAllValuesByFieldName('perpetual', false);
+		updateAllValues(subscription => subscription.set('perpetual', false));
 	}
 
 	function handleOnClickQuantity() {
@@ -193,28 +195,45 @@ function BulkInput({
 		const {value} = event.currentTarget;
 
 		setGracePeriod(value);
+		updateBulkGracePeriod(value);
 
-		const validDateFormat = validateDateFieldFormat(value);
+		const validGracePeriod = validateCurrentGracePeriod(value);
 
-		if (validDateFormat) {
-			updateAllValuesByFieldName('endDate', convertInputToDate(value));
-		}
+		updateAllValues(subscription => {
+			return subscription.update('endDate', endDate =>
+				validGracePeriod
+					? generateNewDateByDay(subscription.originalEndDate, value)
+					: endDate
+			);
+		});
 
-		dateFormatValidators(['bulk', 'endDate'], validDateFormat);
-		setInvalidDateFormat({...invalidDateFormat, endDate: !validDateFormat});
+		dateFormatValidators(['bulk', 'endDate'], validGracePeriod);
+		setInvalidDateFormat({
+			...invalidDateFormat,
+			endDate: !validGracePeriod
+		});
 	}
 
 	function handleSaveGracePeriodStartDate(value) {
 		const validDateFormat = validateDateFieldFormat(value);
 
 		if (validDateFormat) {
-			updateAllValuesByFieldName(
-				'originalEndDate',
-				convertInputToDate(value)
+			updateAllValues(subscription =>
+				subscription
+					.set('originalEndDate', convertInputToDate(value))
+					.update('endDate', endDate =>
+						validateCurrentGracePeriod(gracePeriod)
+							? generateNewDateByDay(
+									subscription.originalEndDate,
+									gracePeriod
+							  )
+							: endDate
+					)
 			);
 		}
 
 		dateFormatValidators(['bulk', 'originalEndDate'], validDateFormat);
+
 		setInvalidDateFormat({
 			...invalidDateFormat,
 			originalEndDate: !validDateFormat
@@ -225,29 +244,39 @@ function BulkInput({
 		setDisabledAttribute('bulkInput', !perpetual);
 		setPerpetual(!perpetual);
 
-		updateAllValuesByFieldName('perpetual', !perpetual);
+		updateAllValues(subscription =>
+			subscription.set('perpetual', !perpetual)
+		);
 	}
 
 	function handleSaveQuantity(event) {
-		updateAllValuesByFieldName('quantity', event.currentTarget.value);
+		updateAllValues(subscription =>
+			subscription.set('quantity', event.currentTarget.value)
+		);
 	}
 
 	function handleSaveSalesforceOpportunityKey(event) {
-		updateAllValuesByFieldName(
-			'salesforceOpportunityKey',
-			event.currentTarget.value
+		updateAllValues(subscription =>
+			subscription.set(
+				'salesforceOpportunityKey',
+				event.currentTarget.value
+			)
 		);
 	}
 
 	function handleSaveSizing(event) {
-		updateAllValuesByFieldName('sizing', event.currentTarget.value);
+		updateAllValues(subscription =>
+			subscription.set('sizing', event.currentTarget.value)
+		);
 	}
 
 	function handleSaveStartDate(value) {
 		const validDateFormat = validateDateFieldFormat(value);
 
 		if (validDateFormat) {
-			updateAllValuesByFieldName('startDate', convertInputToDate(value));
+			updateAllValues(subscription =>
+				subscription.set('startDate', convertInputToDate(value))
+			);
 		}
 
 		dateFormatValidators(['bulk', 'startDate'], validDateFormat);
@@ -258,7 +287,13 @@ function BulkInput({
 	}
 
 	function handleSaveStatus(event) {
-		updateAllValuesByFieldName('status', event.currentTarget.value);
+		updateAllValues(subscription =>
+			subscription.set('status', event.currentTarget.value)
+		);
+	}
+
+	function validateCurrentGracePeriod(currentGracePeriod) {
+		return currentGracePeriod !== '';
 	}
 
 	return (
@@ -446,7 +481,7 @@ function BulkInput({
 					className={!invalidDateFormat.endDate ? '' : 'has-error'}
 				>
 					{showField.gracePeriod && (
-						<label htmlFor="endDateBulkInput" ref={gracePeriodRef}>
+						<label htmlFor="endDateBulkInput">
 							<div className="input-group" id="endDateBulkInput">
 								<div className="input-group-item">
 									<input
@@ -457,6 +492,7 @@ function BulkInput({
 										disabled={perpetual}
 										min={0}
 										onChange={handleSaveEndDate}
+										ref={gracePeriodRef}
 										type="number"
 										value={gracePeriod}
 									/>
@@ -496,7 +532,8 @@ BulkInput.protoTypes = {
 	instanceSizes: PropTypes.arrayOf(PropTypes.number),
 	statusOptions: PropTypes.arrayOf(PropTypes.string),
 	subscriptionsType: PropTypes.oneOf([ADD_SUBSCRIPTIONS, EDIT_SUBSCRIPTIONS])
-		.isRequired
+		.isRequired,
+	updateBulkGracePeriod: PropTypes.func
 };
 
 function useSetFocus(ref, state) {

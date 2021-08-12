@@ -43,6 +43,8 @@ function Subscriptions({
 }) {
 	const [subscriptions] = useSubscriptions();
 
+	const [bulkGracePeriod, setBulkGracePeriod] = useState('');
+
 	function getLicenseDateFormatValidator(keyPath, value) {
 		validateDateFormat(keyPath, value);
 	}
@@ -118,6 +120,7 @@ function Subscriptions({
 						instanceSizes={instanceSizes}
 						statusOptions={statusOptions}
 						subscriptionsType={subscriptionsType}
+						updateBulkGracePeriod={setBulkGracePeriod}
 					/>
 				)}
 
@@ -126,6 +129,13 @@ function Subscriptions({
 						accountName={accountName}
 						dateFormatValidators={getLicenseDateFormatValidator}
 						disableDelete={subscriptions.size === 1}
+						grace={
+							bulkGracePeriod ||
+							getIntervalInDays(
+								subscription.originalEndDate,
+								subscription.endDate
+							)
+						}
 						instanceSizes={instanceSizes}
 						key={
 							subscriptionsType === EDIT_SUBSCRIPTIONS
@@ -155,13 +165,13 @@ function Subscription({
 	accountName,
 	dateFormatValidators,
 	disableDelete,
+	grace,
 	instanceSizes,
 	statusOptions,
 	subscription,
 	subscriptionsType
 }) {
 	const {
-		endDate,
 		index,
 		originalEndDate,
 		perpetual,
@@ -173,9 +183,7 @@ function Subscription({
 		status
 	} = subscription;
 
-	const [gracePeriod, setGracePeriod] = useState(
-		getIntervalInDays(originalEndDate, endDate)
-	);
+	const [gracePeriod, setGracePeriod] = useState(grace);
 	const [invalidDateFormat, setInvalidDateFormat] = useState({
 		endDate: false,
 		originalEndDate: false,
@@ -192,6 +200,10 @@ function Subscription({
 	useEffect(() => {
 		setDisabledAttribute(key, perpetual);
 	});
+
+	useEffect(() => {
+		setGracePeriod(grace);
+	}, [grace]);
 
 	function handleDeleteSubscription() {
 		deleteSubscription(key);

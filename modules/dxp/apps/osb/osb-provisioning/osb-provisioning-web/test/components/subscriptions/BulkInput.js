@@ -68,6 +68,7 @@ function renderBulkInput({
 							PRODUCT_PURCHASE_STATUS_CANCELLED
 						]}
 						subscriptionsType={EDIT_SUBSCRIPTIONS}
+						updateBulkGracePeriod={jest.fn()}
 						{...props}
 					/>
 				</SubscriptionsProvider>
