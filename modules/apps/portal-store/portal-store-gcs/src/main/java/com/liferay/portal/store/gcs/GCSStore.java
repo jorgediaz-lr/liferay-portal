@@ -87,10 +87,12 @@ public class GCSStore extends BaseStore {
 
 	@Override
 	public void addFile(
-			long companyId, long repositoryId, String fileName, InputStream inputStream)
+			long companyId, long repositoryId, String fileName,
+			InputStream inputStream)
 		throws PortalException {
 
-		addFile(companyId, repositoryId, fileName, VERSION_DEFAULT, inputStream);
+		addFile(
+			companyId, repositoryId, fileName, VERSION_DEFAULT, inputStream);
 	}
 
 	@Override
@@ -111,7 +113,6 @@ public class GCSStore extends BaseStore {
 		).build();
 
 		try (WriteChannel writer = _getWriter(blobInfo)) {
-
 			StreamUtil.transfer(inputStream, Channels.newOutputStream(writer));
 		}
 		catch (IOException ioException) {
@@ -137,7 +138,8 @@ public class GCSStore extends BaseStore {
 			companyId, repositoryId, dirName);
 
 		Page<Blob> blobPage = _gcsStore.list(
-			_gcsStoreConfiguration.bucketName(), Storage.BlobListOption.prefix(path));
+			_gcsStoreConfiguration.bucketName(),
+			Storage.BlobListOption.prefix(path));
 
 		Iterable<Blob> blobs = blobPage.iterateAll();
 
@@ -157,8 +159,7 @@ public class GCSStore extends BaseStore {
 		String path = _getHeadVersionLabel(
 			companyId, repositoryId, fileName, versionLabel);
 
-		_gcsStore.delete(
-			BlobId.of(_gcsStoreConfiguration.bucketName(), path));
+		_gcsStore.delete(BlobId.of(_gcsStoreConfiguration.bucketName(), path));
 	}
 
 	@Override
@@ -167,17 +168,12 @@ public class GCSStore extends BaseStore {
 		String versionLabel) {
 
 		String pathName = _getHeadVersionLabel(
-			companyId, repositoryId, fileName,
-			versionLabel);
+			companyId, repositoryId, fileName, versionLabel);
 
 		Blob blob = _gcsStore.get(
-			BlobId.of(
-				_gcsStoreConfiguration.bucketName(),
-				pathName));
+			BlobId.of(_gcsStoreConfiguration.bucketName(), pathName));
 
-		return Channels.newInputStream(
-			_getReader(
-				blob));
+		return Channels.newInputStream(_getReader(blob));
 	}
 
 	@Override
@@ -243,7 +239,6 @@ public class GCSStore extends BaseStore {
 			_keyTransformer.getFileKey(companyId, repositoryId, fileName));
 	}
 
-
 	@Override
 	public boolean hasDirectory(
 		long companyId, long repositoryId, String dirName) {
@@ -251,7 +246,7 @@ public class GCSStore extends BaseStore {
 		if (_log.isDebugEnabled()) {
 			_log.debug(
 				"Liferay GCS adapter does not support check for directory, " +
-				"returning true");
+					"returning true");
 		}
 
 		return true;
@@ -268,8 +263,7 @@ public class GCSStore extends BaseStore {
 		Page<Blob> blobPage = _gcsStore.list(
 			_gcsStoreConfiguration.bucketName(),
 			Storage.BlobListOption.pageSize(1),
-			Storage.BlobListOption.prefix(
-				path));
+			Storage.BlobListOption.prefix(path));
 
 		Iterable<Blob> filesFoundIterable = blobPage.getValues();
 
@@ -335,7 +329,6 @@ public class GCSStore extends BaseStore {
 		).build();
 
 		try (WriteChannel writer = _getWriter(blobInfo)) {
-
 			StreamUtil.transfer(is, Channels.newOutputStream(writer));
 		}
 		catch (IOException ioException) {
@@ -347,7 +340,6 @@ public class GCSStore extends BaseStore {
 	@Activate
 	@Modified
 	protected void activate(Map<String, Object> properties) {
-
 		try {
 			_gcsStoreConfiguration = ConfigurableUtil.createConfigurable(
 				GCSStoreConfiguration.class, properties);
@@ -396,19 +388,6 @@ public class GCSStore extends BaseStore {
 		copyRequestBuilder.setTarget(newBlobId, targetOption);
 
 		return copyRequestBuilder.build();
-	}
-
-	private void _setCredentials() throws PortalException {
-		try (InputStream inputStream = new FileInputStream(
-			_gcsStoreConfiguration.authFileLocation())) {
-
-			_googleCredentials = ServiceAccountCredentials.fromStream(
-				inputStream);
-		}
-		catch (IOException ioException) {
-			throw new PortalException(
-				"Unable to authenticate with authentication file", ioException);
-		}
 	}
 
 	private String _getHeadVersionLabel(
@@ -472,37 +451,39 @@ public class GCSStore extends BaseStore {
 		return _gcsStore.writer(blobInfo, _blobEncryptWriteOption);
 	}
 
-	private void _move(Blob oldBlob, String newPath) {
-		BlobId newBlobId =
-			BlobId.of(_gcsStoreConfiguration.bucketName(), newPath);
+	private void _initCryptOptions() {
+		String key = PropsUtil.get(_DL_STORE_GCS_AES_256_KEY);
 
-		BlobId oldBlobId = oldBlob.getBlobId();
+		if (Validator.isNull(key)) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					"Property \"dl.store.gcs.aes256.key\" should be set to " +
+						"encrypt stored files. Using default storage. The " +
+							"key must be AES 256bit key, encoded in Base64.");
+			}
 
-		Storage.CopyRequest copyRequest = _getCopyRequest(
-			newBlobId, oldBlobId, _storageDecryptionSourceOption,
-			_blobEncryptTargetOption);
+			_blobDecryptSourceOption = null;
 
-		CopyWriter copyWriter = _gcsStore.copy(copyRequest);
-
-		// block until complete
-
-		while (!copyWriter.isDone()) {
-			copyWriter.copyChunk();
+			_blobEncryptWriteOption = null;
 		}
+		else {
+			_storageDecryptionSourceOption =
+				Storage.BlobSourceOption.decryptionKey(key);
 
-		if (_log.isDebugEnabled()) {
-			_log.debug(
-				StringBundler.concat("Copied ", oldBlob, " to ", newBlobId));
+			_blobDecryptSourceOption = Blob.BlobSourceOption.decryptionKey(key);
+
+			_blobEncryptWriteOption = Storage.BlobWriteOption.encryptionKey(
+				key);
+
+			_blobEncryptTargetOption = Storage.BlobTargetOption.encryptionKey(
+				key);
 		}
-
-		_deleteBlob(oldBlob);
-
 	}
 
 	private void _initGCSStore() throws PortalException {
 		if (_gcsStore == null) {
 			try (InputStream inputStream = new FileInputStream(
-				_gcsStoreConfiguration.authFileLocation())) {
+					_gcsStoreConfiguration.authFileLocation())) {
 
 				_googleCredentials = ServiceAccountCredentials.fromStream(
 					inputStream);
@@ -543,41 +524,34 @@ public class GCSStore extends BaseStore {
 		}
 	}
 
-	private void _initCryptOptions() {
-		String key = PropsUtil.get(_DL_STORE_GCS_AES_256_KEY);
+	private void _move(Blob oldBlob, String newPath) {
+		BlobId newBlobId = BlobId.of(
+			_gcsStoreConfiguration.bucketName(), newPath);
 
-		if (Validator.isNull(key)) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(
-					"Property \"dl.store.gcs.aes256.key\" should be set to " +
-					"encrypt stored files. Using default storage. The " +
-					"key must be AES 256bit key, encoded in Base64.");
-			}
+		BlobId oldBlobId = oldBlob.getBlobId();
 
-			_blobDecryptSourceOption = null;
+		Storage.CopyRequest copyRequest = _getCopyRequest(
+			newBlobId, oldBlobId, _storageDecryptionSourceOption,
+			_blobEncryptTargetOption);
 
-			_blobEncryptWriteOption = null;
+		CopyWriter copyWriter = _gcsStore.copy(copyRequest);
+
+		// block until complete
+
+		while (!copyWriter.isDone()) {
+			copyWriter.copyChunk();
 		}
-		else {
-			_storageDecryptionSourceOption =
-				Storage.BlobSourceOption.decryptionKey(key);
 
-			_blobDecryptSourceOption = Blob.BlobSourceOption.decryptionKey(
-				key);
-
-			_blobEncryptWriteOption = Storage.BlobWriteOption.encryptionKey(
-				key);
-
-			_blobEncryptTargetOption = Storage.BlobTargetOption.encryptionKey(
-				key);
+		if (_log.isDebugEnabled()) {
+			_log.debug(
+				StringBundler.concat("Copied ", oldBlob, " to ", newBlobId));
 		}
+
+		_deleteBlob(oldBlob);
 	}
-
 
 	private static final String _DL_STORE_GCS_AES_256_KEY =
 		"dl.store.gcs.aes256.key";
-
-	private static final int _WRITE_BUFFER_SIZE = 1024;
 
 	private static final Log _log = LogFactoryUtil.getLog(GCSStore.class);
 
@@ -589,7 +563,6 @@ public class GCSStore extends BaseStore {
 	private GCSStoreConfiguration _gcsStoreConfiguration;
 	private GoogleCredentials _googleCredentials;
 	private final GCSKeyTransformer _keyTransformer = new GCSKeyTransformer();
-
 	private Storage.BlobSourceOption _storageDecryptionSourceOption;
 
 }
