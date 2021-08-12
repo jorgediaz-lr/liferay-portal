@@ -75,8 +75,6 @@ import org.threeten.bp.Duration;
 )
 public class GCSStore extends BaseStore {
 
-	public static final String KEY_PROPERTY = "dl.store.gcs.aes256.key";
-
 	@Override
 	public void addDirectory(
 		long companyId, long repositoryId, String dirName) {
@@ -140,20 +138,16 @@ public class GCSStore extends BaseStore {
 			companyId, repositoryId, dirName);
 
 		Page<Blob> blobPage = _gcsStore.list(
-			_getBucketName(), Storage.BlobListOption.prefix(path));
+			_gcsStoreConfiguration.bucketName(), Storage.BlobListOption.prefix(path));
 
 		Iterable<Blob> blobs = blobPage.iterateAll();
 
-		blobs.forEach(this::_logAndDeleteBlob);
+		blobs.forEach(blob -> _deleteBlob(blob));
 	}
 
 	@Override
 	public void deleteFile(long companyId, long repositoryId, String fileName) {
-		if (_log.isDebugEnabled()) {
-			_log.debug("Deleting from bucket with fileName: " + fileName);
-		}
-
-		deleteDirectory(companyId, repositoryId, fileName);
+		deleteFile(companyId, repositoryId, fileName, null);
 	}
 
 	@Override
@@ -161,10 +155,8 @@ public class GCSStore extends BaseStore {
 		long companyId, long repositoryId, String fileName,
 		String versionLabel) {
 
-		String filePath = _getHeadVersionLabel(
-			companyId, repositoryId, fileName, versionLabel);
-
-		_deleteFile(filePath);
+		_deleteFile(_getHeadVersionLabel(
+			companyId, repositoryId, fileName, versionLabel));
 	}
 
 	@Override
@@ -174,8 +166,9 @@ public class GCSStore extends BaseStore {
 
 		return Channels.newInputStream(
 			_getReader(
-				_getBlob(
-					_getBlobId(
+				_gcsStore.get(
+					BlobId.of(
+						_gcsStoreConfiguration.bucketName(),
 						_getHeadVersionLabel(
 							companyId, repositoryId, fileName,
 							versionLabel)))));
@@ -202,7 +195,7 @@ public class GCSStore extends BaseStore {
 				companyId, repositoryId, dirName);
 		}
 
-		Bucket bucket = _getBucket();
+		Bucket bucket = _gcsStore.get(_gcsStoreConfiguration.bucketName());
 
 		Page<Blob> blobPage = bucket.list(Storage.BlobListOption.prefix(path));
 
@@ -225,7 +218,8 @@ public class GCSStore extends BaseStore {
 		String pathName = _getHeadVersionLabel(
 			companyId, repositoryId, fileName);
 
-		Blob blob = _getBlob(_getBlobId(pathName));
+		Blob blob = _gcsStore.get(
+			BlobId.of(_gcsStoreConfiguration.bucketName(), pathName));
 
 		if (blob == null) {
 			throw new PortalException("No such file store entry: " + pathName);
@@ -263,7 +257,8 @@ public class GCSStore extends BaseStore {
 		String versionLabel) {
 
 		Page<Blob> blobPage = _gcsStore.list(
-			_getBucketName(), Storage.BlobListOption.pageSize(1),
+			_gcsStoreConfiguration.bucketName(),
+			Storage.BlobListOption.pageSize(1),
 			Storage.BlobListOption.prefix(
 				_keyTransformer.getFileVersionKey(
 					companyId, repositoryId, fileName, versionLabel)));
@@ -285,7 +280,8 @@ public class GCSStore extends BaseStore {
 		for (String oldPath : fileNames) {
 			String version = _getVersionFromFullPath(oldPath);
 
-			Blob oldBlob = _getBlob(_getBlobId(oldPath));
+			Blob oldBlob = _gcsStore.get(
+				BlobId.of(_gcsStoreConfiguration.bucketName(), oldPath));
 
 			String newPath = _keyTransformer.getFileVersionKey(
 				companyId, newRepositoryId, fileName, version);
@@ -304,7 +300,11 @@ public class GCSStore extends BaseStore {
 		for (String oldPath : fileNames) {
 			String version = _getVersionFromFullPath(oldPath);
 
-			Blob oldBlob = _getBlob(companyId, repositoryId, fileName, version);
+			String path = _keyTransformer.getFileVersionKey(
+				companyId, repositoryId, fileName, version);
+
+			Blob oldBlob = _gcsStore.get(
+				BlobId.of(_gcsStoreConfiguration.bucketName(), path));
 
 			String newPath = _keyTransformer.getFileVersionKey(
 				companyId, repositoryId, newFileName, version);
@@ -339,10 +339,11 @@ public class GCSStore extends BaseStore {
 	@Activate
 	@Modified
 	protected void activate(Map<String, Object> properties) {
-		_gcsStoreConfiguration = ConfigurableUtil.createConfigurable(
-			GCSStoreConfiguration.class, properties);
 
 		try {
+			_gcsStoreConfiguration = ConfigurableUtil.createConfigurable(
+				GCSStoreConfiguration.class, properties);
+
 			_gcsStore = null;
 
 			_setupEncryptedCommunication();
@@ -354,19 +355,6 @@ public class GCSStore extends BaseStore {
 				"Unable to initialize GCS store", portalException);
 		}
 	}
-
-	protected void setCredentials() throws PortalException {
-		try (InputStream inputStream = _getCredentialsInputStream()) {
-			googleCredentials = ServiceAccountCredentials.fromStream(
-				inputStream);
-		}
-		catch (IOException ioException) {
-			throw new PortalException(
-				"Unable to authenticate with authentication file", ioException);
-		}
-	}
-
-	protected GoogleCredentials googleCredentials;
 
 	private RetrySettings _buildRetrySettings(
 		int maxAttempts, int initialRetryDelay, int maxRetryDelay,
@@ -398,16 +386,17 @@ public class GCSStore extends BaseStore {
 		return builder.build();
 	}
 
-	private boolean _deleteBlob(Blob blob) {
+	private void _deleteBlob(Blob blob) {
 		if (_blobDecryptSourceOption == null) {
-			return blob.delete();
+			blob.delete();
 		}
 
-		return blob.delete(_blobDecryptSourceOption);
+		blob.delete(_blobDecryptSourceOption);
 	}
 
 	private void _deleteFile(String filePath) {
-		boolean deleted = _gcsStore.delete(_getBlobId(filePath));
+		boolean deleted = _gcsStore.delete(
+			BlobId.of(_gcsStoreConfiguration.bucketName(), filePath));
 
 		if (!deleted && _log.isWarnEnabled()) {
 			_log.warn(
@@ -416,41 +405,15 @@ public class GCSStore extends BaseStore {
 		}
 	}
 
-	private Blob _getBlob(BlobId blobId) {
-		return _gcsStore.get(blobId);
-	}
-
-	private Blob _getBlob(
-		long companyId, long repositoryId, String fileName,
-		String versionLabel) {
-
-		String path = _keyTransformer.getFileVersionKey(
-			companyId, repositoryId, fileName, versionLabel);
-
-		return _getBlob(_getBlobId(path));
-	}
-
-	private BlobId _getBlobId(String pathName) {
-		return BlobId.of(_getBucketName(), pathName);
-	}
-
-	private Bucket _getBucket() {
-		return _gcsStore.get(_getBucketName());
-	}
-
 	private BucketInfo _getBucketInfo() {
 		if (_bucketInfo == null) {
 			BucketInfo.Builder builder = BucketInfo.newBuilder(
-				_getBucketName());
+				_gcsStoreConfiguration.bucketName());
 
 			_bucketInfo = builder.build();
 		}
 
 		return _bucketInfo;
-	}
-
-	private String _getBucketName() {
-		return _gcsStoreConfiguration.bucketName();
 	}
 
 	private Storage.CopyRequest _getCopyRequest(
@@ -468,10 +431,17 @@ public class GCSStore extends BaseStore {
 		return copyRequestBuilder.build();
 	}
 
-	private InputStream _getCredentialsInputStream()
-		throws FileNotFoundException {
+	private void _setCredentials() throws PortalException {
+		try (InputStream inputStream = new FileInputStream(
+			_gcsStoreConfiguration.authFileLocation())) {
 
-		return new FileInputStream(_gcsStoreConfiguration.authFileLocation());
+			_googleCredentials = ServiceAccountCredentials.fromStream(
+				inputStream);
+		}
+		catch (IOException ioException) {
+			throw new PortalException(
+				"Unable to authenticate with authentication file", ioException);
+		}
 	}
 
 	private String _getHeadVersionLabel(
@@ -497,8 +467,9 @@ public class GCSStore extends BaseStore {
 		if ((names == null) || (names.length == 0)) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
-					"Unable to determine available versions for: " + key);
-				_log.debug("Using default: " + VERSION_DEFAULT);
+					StringBundler.concat(
+						"Unable to determine available versions for: ", key,
+						" using default version: ", VERSION_DEFAULT));
 			}
 
 			return _keyTransformer.getFileVersionKey(
@@ -534,18 +505,9 @@ public class GCSStore extends BaseStore {
 		return _gcsStore.writer(blobInfo, _blobEncryptWriteOption);
 	}
 
-	private void _logAndDeleteBlob(Blob blob) {
-		boolean deleted = _deleteBlob(blob);
-
-		if (!deleted && _log.isWarnEnabled()) {
-			_log.warn(
-				"Unable to delete \"" + blob.getBlobId() +
-					"\" from file store");
-		}
-	}
-
 	private void _move(Blob oldBlob, String newPath) {
-		BlobId newBlobId = _getBlobId(newPath);
+		BlobId newBlobId =
+			BlobId.of(_gcsStoreConfiguration.bucketName(), newPath);
 
 		BlobId oldBlobId = oldBlob.getBlobId();
 
@@ -566,12 +528,13 @@ public class GCSStore extends BaseStore {
 				StringBundler.concat("Copied ", oldBlob, " to ", newBlobId));
 		}
 
-		_logAndDeleteBlob(oldBlob);
+		_deleteBlob(oldBlob);
+
 	}
 
 	private void _setGcsStore() throws PortalException {
 		if (_gcsStore == null) {
-			setCredentials();
+			_setCredentials();
 
 			RetrySettings retrySettings = _buildRetrySettings(
 				_gcsStoreConfiguration.maxRetryAttempts(),
@@ -584,14 +547,14 @@ public class GCSStore extends BaseStore {
 				_gcsStoreConfiguration.retryJitter());
 
 			StorageOptions storageOptions = _buildStorage(
-				retrySettings, googleCredentials);
+				retrySettings, _googleCredentials);
 
 			_gcsStore = storageOptions.getService();
 		}
 	}
 
 	private void _setupEncryptedCommunication() {
-		String keyValue = PropsUtil.get(KEY_PROPERTY);
+		String keyValue = PropsUtil.get(_DL_STORE_GCS_AES_256_KEY);
 
 		if ((keyValue == null) || keyValue.equals(StringPool.BLANK)) {
 			if (_log.isWarnEnabled()) {
@@ -636,6 +599,10 @@ public class GCSStore extends BaseStore {
 		}
 	}
 
+
+	private static final String _DL_STORE_GCS_AES_256_KEY =
+		"dl.store.gcs.aes256.key";
+
 	private static final int _WRITE_BUFFER_SIZE = 1024;
 
 	private static final Log _log = LogFactoryUtil.getLog(GCSStore.class);
@@ -646,6 +613,7 @@ public class GCSStore extends BaseStore {
 	private BucketInfo _bucketInfo;
 	private Storage _gcsStore;
 	private GCSStoreConfiguration _gcsStoreConfiguration;
+	private GoogleCredentials _googleCredentials;
 	private final GCSKeyTransformer _keyTransformer = new GCSKeyTransformer();
 
 	private Storage.BlobSourceOption _storageDecryptionSourceOption;
