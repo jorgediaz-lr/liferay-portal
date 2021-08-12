@@ -104,11 +104,11 @@ public class GCSStore extends BaseStore {
 			deleteFile(companyId, repositoryId, fileName, versionLabel);
 		}
 
-		String fileVersionKey = _keyTransformer.getFileVersionKey(
+		String path = _keyTransformer.getFileVersionKey(
 			companyId, repositoryId, fileName, versionLabel);
 
 		BlobInfo blobInfo = BlobInfo.newBuilder(
-			_getBucketInfo(), fileVersionKey
+			_getBucketInfo(), path
 		).build();
 
 		try (WriteChannel writer = _getWriter(blobInfo)) {
@@ -324,11 +324,11 @@ public class GCSStore extends BaseStore {
 			String versionLabel, InputStream is)
 		throws PortalException {
 
-		String fileVersionKey = _keyTransformer.getFileVersionKey(
+		String path = _keyTransformer.getFileVersionKey(
 			companyId, repositoryId, fileName, versionLabel);
 
 		BlobInfo blobInfo = BlobInfo.newBuilder(
-			_getBucketInfo(), fileVersionKey
+			_getBucketInfo(), path
 		).build();
 
 		try (WriteChannel writer = _getWriter(blobInfo)) {
@@ -463,16 +463,16 @@ public class GCSStore extends BaseStore {
 				companyId, repositoryId, fileName, versionLabel);
 		}
 
-		String key = _keyTransformer.getFileKey(
+		String path = _keyTransformer.getFileKey(
 			companyId, repositoryId, fileName);
 
-		String[] names = getFileNames(companyId, repositoryId, key);
+		String[] names = getFileNames(companyId, repositoryId, path);
 
 		if ((names == null) || (names.length == 0)) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
 					StringBundler.concat(
-						"Unable to determine available versions for: ", key,
+						"Unable to determine available versions for: ", path,
 						" using default version: ", VERSION_DEFAULT));
 			}
 
