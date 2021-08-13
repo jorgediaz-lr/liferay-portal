@@ -42,6 +42,7 @@ import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.text.Format;
@@ -129,6 +130,12 @@ public class AddLicenseKeyDisplayContext {
 
 		data.put("accountKey", _account.getKey());
 		data.put("accountName", _account.getName());
+
+		String productKey = ParamUtil.getString(_renderRequest, "productKey");
+
+		if (Validator.isNotNull(productKey)) {
+			data.put("selectedProduct", productKey);
+		}
 
 		PortletURL addLicenseKeyURL = _renderResponse.createActionURL();
 
