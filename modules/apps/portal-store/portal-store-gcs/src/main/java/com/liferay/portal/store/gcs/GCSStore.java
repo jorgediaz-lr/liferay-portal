@@ -160,10 +160,9 @@ public class GCSStore extends BaseStore {
 		long companyId, long repositoryId, String fileName,
 		String versionLabel) {
 
-		String path = _getHeadVersionLabel(
-			companyId, repositoryId, fileName, versionLabel);
-
-		_gcsStore.delete(BlobId.of(_gcsStoreConfiguration.bucketName(), path));
+		_gcsStore.delete(BlobId.of(_gcsStoreConfiguration.bucketName(),
+			_getHeadVersionLabel(
+				companyId, repositoryId, fileName, versionLabel)));
 	}
 
 	@Override
@@ -171,11 +170,10 @@ public class GCSStore extends BaseStore {
 		long companyId, long repositoryId, String fileName,
 		String versionLabel) {
 
-		String pathName = _getHeadVersionLabel(
-			companyId, repositoryId, fileName, versionLabel);
-
 		Blob blob = _gcsStore.get(
-			BlobId.of(_gcsStoreConfiguration.bucketName(), pathName));
+			BlobId.of(_gcsStoreConfiguration.bucketName(),
+			_getHeadVersionLabel(
+				companyId, repositoryId, fileName, versionLabel)));
 
 		return Channels.newInputStream(_getReadChannel(blob));
 	}
@@ -220,14 +218,14 @@ public class GCSStore extends BaseStore {
 	public long getFileSize(long companyId, long repositoryId, String fileName)
 		throws PortalException {
 
-		String pathName = _getHeadVersionLabel(
+		String headVersionLabel = _getHeadVersionLabel(
 			companyId, repositoryId, fileName);
 
 		Blob blob = _gcsStore.get(
-			BlobId.of(_gcsStoreConfiguration.bucketName(), pathName));
+			BlobId.of(_gcsStoreConfiguration.bucketName(), headVersionLabel));
 
 		if (blob == null) {
-			throw new PortalException("No file exists for " + pathName);
+			throw new PortalException("No file exists for " + headVersionLabel);
 		}
 
 		return blob.getSize();
