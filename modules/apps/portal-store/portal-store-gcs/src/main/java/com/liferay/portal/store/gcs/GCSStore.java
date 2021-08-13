@@ -29,18 +29,19 @@ import com.google.cloud.storage.CopyWriter;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 
+import com.liferay.document.library.kernel.exception.NoSuchFileException;
 import com.liferay.document.library.kernel.store.BaseStore;
 import com.liferay.document.library.kernel.store.Store;
 import com.liferay.document.library.kernel.util.comparator.VersionNumberComparator;
 import com.liferay.petra.io.StreamUtil;
+import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.Digester;
-import com.liferay.portal.kernel.util.DigesterUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.store.gcs.configuration.GCSStoreConfiguration;
 
@@ -189,28 +190,16 @@ public class GCSStore extends BaseStore {
 	public String[] getFileNames(
 		long companyId, long repositoryId, String dirName) {
 
-		Bucket bucket = _gcsStore.get(_gcsStoreConfiguration.bucketName());
+		Stream<String> stream = Arrays.stream(
+			_getFilePaths(companyId, repositoryId, dirName));
 
-		String path = null;
+		String prefix = StringBundler.concat(
+			companyId, StringPool.SLASH, repositoryId, StringPool.SLASH);
 
-		if (Validator.isNull(dirName) ||
-			dirName.equals(StringPool.FORWARD_SLASH)) {
-
-			path = _getRepositoryKey(companyId, repositoryId);
-		}
-		else {
-			path = _getDirectoryKey(companyId, repositoryId, dirName);
-		}
-
-		Page<Blob> blobPage = bucket.list(Storage.BlobListOption.prefix(path));
-
-		Iterable<Blob> blobs = blobPage.iterateAll();
-
-		Stream<Blob> blobStream = StreamSupport.stream(
-			blobs.spliterator(), false);
-
-		return blobStream.map(
-			BlobInfo::getName
+		return stream.map(
+			filePath -> filePath.substring(
+				filePath.indexOf(prefix) + prefix.length(),
+				filePath.lastIndexOf(StringPool.SLASH))
 		).toArray(
 			String[]::new
 		);
@@ -227,7 +216,8 @@ public class GCSStore extends BaseStore {
 			BlobId.of(_gcsStoreConfiguration.bucketName(), headVersionLabel));
 
 		if (blob == null) {
-			throw new PortalException("No file exists for " + headVersionLabel);
+			throw new NoSuchFileException(
+				"No file exists for " + headVersionLabel);
 		}
 
 		return blob.getSize();
@@ -237,9 +227,18 @@ public class GCSStore extends BaseStore {
 	public String[] getFileVersions(
 		long companyId, long repositoryId, String fileName) {
 
-		return getFileNames(
-			companyId, repositoryId,
-			_getFileKey(companyId, repositoryId, fileName));
+		Stream<String> stream = Arrays.stream(
+			_getFilePaths(companyId, repositoryId, fileName));
+
+		return stream.map(
+			path -> {
+				String[] parts = StringUtil.split(path, CharPool.SLASH);
+
+				return parts[parts.length - 1];
+			}
+		).toArray(
+			String[]::new
+		);
 	}
 
 	@Override
@@ -362,8 +361,9 @@ public class GCSStore extends BaseStore {
 		if (_blobDecryptSourceOption == null) {
 			blob.delete();
 		}
-
-		blob.delete(_blobDecryptSourceOption);
+		else {
+			blob.delete(_blobDecryptSourceOption);
+		}
 	}
 
 	private BucketInfo _getBucketInfo() {
@@ -402,7 +402,37 @@ public class GCSStore extends BaseStore {
 
 		return StringBundler.concat(
 			companyId, StringPool.SLASH, repositoryId, StringPool.SLASH,
-			_getNormalizedFileName(fileName));
+			fileName);
+	}
+
+	private String[] _getFilePaths(
+		long companyId, long repositoryId, String dirName) {
+
+		Bucket bucket = _gcsStore.get(_gcsStoreConfiguration.bucketName());
+
+		String path = null;
+
+		if (Validator.isNull(dirName) ||
+			dirName.equals(StringPool.FORWARD_SLASH)) {
+
+			path = _getRepositoryKey(companyId, repositoryId);
+		}
+		else {
+			path = _getDirectoryKey(companyId, repositoryId, dirName);
+		}
+
+		Page<Blob> blobPage = bucket.list(Storage.BlobListOption.prefix(path));
+
+		Iterable<Blob> blobs = blobPage.iterateAll();
+
+		Stream<Blob> blobStream = StreamSupport.stream(
+			blobs.spliterator(), false);
+
+		return blobStream.map(
+			BlobInfo::getName
+		).toArray(
+			String[]::new
+		);
 	}
 
 	private String _getFileVersionKey(
@@ -411,7 +441,7 @@ public class GCSStore extends BaseStore {
 
 		return StringBundler.concat(
 			companyId, StringPool.SLASH, repositoryId, StringPool.SLASH,
-			_getNormalizedFileName(fileName), StringPool.SLASH, versionLabel);
+			fileName, StringPool.SLASH, versionLabel);
 	}
 
 	private String _getHeadVersionLabel(
@@ -431,7 +461,7 @@ public class GCSStore extends BaseStore {
 
 		String path = _getFileKey(companyId, repositoryId, fileName);
 
-		String[] fileNames = getFileNames(companyId, repositoryId, path);
+		String[] fileNames = _getFilePaths(companyId, repositoryId, path);
 
 		if ((fileNames == null) || (fileNames.length == 0)) {
 			if (_log.isDebugEnabled()) {
@@ -447,21 +477,6 @@ public class GCSStore extends BaseStore {
 		fileNamesList.sort(new VersionNumberComparator());
 
 		return fileNamesList.get(fileNamesList.size() - 1);
-	}
-
-	private String _getNormalizedFileName(String fileName) {
-		String normalizedFileName = fileName;
-
-		if (fileName.startsWith(StringPool.SLASH)) {
-			normalizedFileName = normalizedFileName.substring(1);
-		}
-
-		if (fileName.endsWith(StringPool.SLASH)) {
-			normalizedFileName = normalizedFileName.substring(
-				0, normalizedFileName.length() - 1);
-		}
-
-		return DigesterUtil.digest(Digester.SHA_1, normalizedFileName);
 	}
 
 	private ReadChannel _getReadChannel(Blob blob) {
@@ -506,7 +521,8 @@ public class GCSStore extends BaseStore {
 		else {
 			_storageDecryptionSourceOption =
 				Storage.BlobSourceOption.decryptionKey(aes256Key);
-			_blobDecryptSourceOption = Blob.BlobSourceOption.decryptionKey(aes256Key);
+			_blobDecryptSourceOption = Blob.BlobSourceOption.decryptionKey(
+				aes256Key);
 			_blobEncryptWriteOption = Storage.BlobWriteOption.encryptionKey(
 				aes256Key);
 			_blobEncryptTargetOption = Storage.BlobTargetOption.encryptionKey(
