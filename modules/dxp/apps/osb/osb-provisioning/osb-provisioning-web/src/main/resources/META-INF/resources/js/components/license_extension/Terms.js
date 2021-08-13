@@ -12,36 +12,31 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import {
-	DASH,
-	PRODUCT_PURCHASE_STATUS_CANCELLED
-} from '../../utilities/constants';
+import {DASH} from '../../utilities/constants';
 import {displayInMDYDateFormat, getUTCAdjustedDate} from '../../utilities/date';
 
 function Terms({termSelected = '', terms, updateTerms}) {
 	function generateTermOptions() {
-		return terms
-			.filter(term => term.status !== PRODUCT_PURCHASE_STATUS_CANCELLED)
-			.map(term => {
-				if (term.perpetual) {
-					return {
-						label: Liferay.Language.get('perpetual'),
-						value: term.productPurchaseKey
-					};
-				}
-
-				const endDate = displayInMDYDateFormat(
-					getUTCAdjustedDate(new Date(term.endDate))
-				);
-				const startDate = displayInMDYDateFormat(
-					getUTCAdjustedDate(new Date(term.startDate))
-				);
-
+		return terms.map(term => {
+			if (term.perpetual) {
 				return {
-					label: `${startDate} ${DASH} ${endDate}`,
+					label: Liferay.Language.get('perpetual'),
 					value: term.productPurchaseKey
 				};
-			});
+			}
+
+			const endDate = displayInMDYDateFormat(
+				getUTCAdjustedDate(new Date(term.endDate))
+			);
+			const startDate = displayInMDYDateFormat(
+				getUTCAdjustedDate(new Date(term.startDate))
+			);
+
+			return {
+				label: `${startDate} ${DASH} ${endDate}`,
+				value: term.productPurchaseKey
+			};
+		});
 	}
 
 	function handleOnChange(event) {

@@ -12,6 +12,7 @@
 import {Map, Record} from 'immutable';
 import React, {createContext, useContext, useState} from 'react';
 
+import {PRODUCT_PURCHASE_STATUS_CANCELLED} from '../utilities/constants';
 import {getDetachedLicenseDates} from '../utilities/license';
 
 export const LicenseRecord = Record({
@@ -45,16 +46,21 @@ function createLicenseRecord(license) {
 		});
 	}
 
-	if (license.terms.length === 1) {
-		const term = license.terms[0];
+	const approvedTerms = license.terms.filter(
+		term => term.status !== PRODUCT_PURCHASE_STATUS_CANCELLED
+	);
+
+	if (approvedTerms.length === 1) {
+		const term = approvedTerms[0];
 
 		return new LicenseRecord({
 			...license,
-			productPurchaseKey: term.productPurchaseKey
+			productPurchaseKey: term.productPurchaseKey,
+			terms: approvedTerms
 		});
 	}
 
-	return new LicenseRecord(license);
+	return new LicenseRecord({...license, terms: approvedTerms});
 }
 
 export function ExtendLicensesProvider({initialLicenses = [], children}) {

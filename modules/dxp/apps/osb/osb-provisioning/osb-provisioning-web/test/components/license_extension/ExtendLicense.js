@@ -538,4 +538,44 @@ describe('ExtendLicense', () => {
 		getByText('perpetual');
 		expect(queryByText('June 02, 2021 - July 02, 2022')).toBeFalsy();
 	});
+
+	it('auto fills the terms if only one is Approved', () => {
+		const {getByLabelText, getByText} = renderExtendLicense({
+			details: [
+				{
+					accountName: 'Account 1',
+					expirationDate: '2122-06-08',
+					indefinite: false,
+					licenseKeyId: 'licenseKeyID1',
+					licenseKeysGenerated: '0',
+					licenseType: 'development',
+					productName: 'DXP 7.0',
+					startDate: '2021-06-03',
+					terms: [
+						{
+							endDate: '',
+							licenseKeysGenerated: '2 / 1',
+							perpetual: true,
+							productPurchaseKey: 'productPurchaseKey1',
+							startDate: '',
+							status: 'Approved'
+						},
+						{
+							endDate: '2022-07-02',
+							licenseKeysGenerated: '1 / 1',
+							perpetual: false,
+							productPurchaseKey: 'productPurchaseKey2',
+							startDate: '2021-06-02',
+							status: 'Cancelled'
+						}
+					]
+				}
+			]
+		});
+
+		expect(getByLabelText('subscription-term').value).toBe(
+			'productPurchaseKey1'
+		);
+		expect(getByText('extend').disabled).toBeFalsy();
+	});
 });
