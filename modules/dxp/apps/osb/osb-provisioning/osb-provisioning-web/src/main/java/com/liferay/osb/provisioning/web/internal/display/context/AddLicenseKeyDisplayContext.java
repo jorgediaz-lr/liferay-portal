@@ -134,7 +134,7 @@ public class AddLicenseKeyDisplayContext {
 		String productKey = ParamUtil.getString(_renderRequest, "productKey");
 
 		if (Validator.isNotNull(productKey)) {
-			data.put("selectedProduct", productKey);
+			data.put("currentProduct", productKey);
 		}
 
 		PortletURL addLicenseKeyURL = _renderResponse.createActionURL();

@@ -31,6 +31,7 @@ const DEFAULT_MAX_HTTP_SESSIONS_FOR_DEVELOPER_LICENSES = 5;
 function GeneralInformation({
 	accountKey = '',
 	accountName = '',
+	currentProduct = '',
 	licensableProducts = [],
 	purchasedProducts = {},
 	redirect,
@@ -41,7 +42,9 @@ function GeneralInformation({
 	const {licenseEntryId} = licenseEntry;
 
 	const [selectedProduct, setSelectedProduct] = useState(
-		findCurrentProduct(product ? product.productKey : null)
+		findCurrentProduct(
+			product.productKey ? product.productKey : currentProduct
+		)
 	);
 
 	useEffect(() => {
@@ -54,6 +57,24 @@ function GeneralInformation({
 				.set('owner', accountName)
 		);
 	}, [accountKey, accountName, updateLicense]);
+
+	useEffect(() => {
+		if (currentProduct) {
+			updateLicense(license =>
+				license
+					.updateIn(['product', 'productKey'], productKey =>
+						selectedProduct
+							? selectedProduct.productKey
+							: productKey
+					)
+					.updateIn(['product', 'productName'], productName =>
+						selectedProduct
+							? selectedProduct.productName
+							: productName
+					)
+			);
+		}
+	}, [currentProduct, selectedProduct, updateLicense]);
 
 	function findCurrentProduct(productKey) {
 		return licensableProducts.find(
@@ -134,9 +155,11 @@ function GeneralInformation({
 	}
 
 	function handleProductOnChange(event) {
-		const currentProduct = findCurrentProduct(event.currentTarget.value);
+		const currentSelectedProduct = findCurrentProduct(
+			event.currentTarget.value
+		);
 
-		setSelectedProduct(currentProduct);
+		setSelectedProduct(currentSelectedProduct);
 
 		updateLicense(license =>
 			license
@@ -145,10 +168,14 @@ function GeneralInformation({
 				.setIn(['licenseEntry', 'licenseEntryName'], '')
 				.setIn(['licenseEntry', 'licenseEntryType'], '')
 				.updateIn(['product', 'productKey'], productKey =>
-					currentProduct ? currentProduct.productKey : productKey
+					currentSelectedProduct
+						? currentSelectedProduct.productKey
+						: productKey
 				)
 				.updateIn(['product', 'productName'], productName =>
-					currentProduct ? currentProduct.productName : productName
+					currentSelectedProduct
+						? currentSelectedProduct.productName
+						: productName
 				)
 		);
 	}
@@ -340,6 +367,7 @@ function ProductDropdown({products, purchased = []}) {
 GeneralInformation.propTypes = {
 	accountKey: PropTypes.string,
 	accountName: PropTypes.string,
+	currentProduct: PropTypes.string,
 	licensableProducts: PropTypes.arrayOf(
 		PropTypes.shape({
 			detached: PropTypes.shape({
