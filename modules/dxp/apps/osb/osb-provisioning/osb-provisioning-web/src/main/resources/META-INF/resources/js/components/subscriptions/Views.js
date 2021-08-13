@@ -161,7 +161,7 @@ export function EditView({
 				{displayAlert && (
 					<InvalidDateAlert
 						message={Liferay.Language.get(
-							'please-make-sure-the-start-date-is-before-the-end-date-and-grace-period-is-a-positive-number'
+							'please-make-sure-the-start-date-is-before-the-end-date-and-the-grace-period-is-a-positive-number'
 						)}
 					/>
 				)}

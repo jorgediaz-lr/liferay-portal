@@ -89,15 +89,15 @@ export function generateNewDateByYear(startDate = new Date(), offset = 1) {
 
 /**
  * Calculates the interval between two dates in increments of days.
- * @param {Object|string} start Starting point to make the comparison.
- * @param {Object|string} end End point for making the comparison.
+ * @param {Object|string} startDate Starting date to make the comparison.
+ * @param {Object|string} endDate Ending date for making the comparison.
  * @returns {number} Number of days between start and end dates.
  */
-export function getIntervalInDays(start, end) {
-	const startDate = new Date(start);
-	const endDate = new Date(end);
+export function getIntervalInDays(startDate, endDate) {
+	const start = new Date(startDate);
+	const end = new Date(endDate);
 
-	const interval = Date.parse(endDate) - Date.parse(startDate);
+	const interval = Date.parse(end) - Date.parse(start);
 
 	return interval / (1000 * 60 * 60 * 24);
 }
