@@ -159,9 +159,11 @@ public class GCSStore extends BaseStore {
 		long companyId, long repositoryId, String fileName,
 		String versionLabel) {
 
-		_gcsStore.delete(BlobId.of(_gcsStoreConfiguration.bucketName(),
-			_getHeadVersionLabel(
-				companyId, repositoryId, fileName, versionLabel)));
+		_gcsStore.delete(
+			BlobId.of(
+				_gcsStoreConfiguration.bucketName(),
+				_getHeadVersionLabel(
+					companyId, repositoryId, fileName, versionLabel)));
 	}
 
 	@Override
@@ -170,9 +172,10 @@ public class GCSStore extends BaseStore {
 		String versionLabel) {
 
 		Blob blob = _gcsStore.get(
-			BlobId.of(_gcsStoreConfiguration.bucketName(),
-			_getHeadVersionLabel(
-				companyId, repositoryId, fileName, versionLabel)));
+			BlobId.of(
+				_gcsStoreConfiguration.bucketName(),
+				_getHeadVersionLabel(
+					companyId, repositoryId, fileName, versionLabel)));
 
 		return Channels.newInputStream(_getReadChannel(blob));
 	}
