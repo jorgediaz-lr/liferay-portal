@@ -52,20 +52,39 @@ ViewAccountContactsDisplayContext viewAccountContactsDisplayContext = Provisioni
 			</liferay-portlet:renderURL>
 
 			<liferay-ui:search-container-column-text
-				href="<%= rowURL %>"
 				name="name-email"
 			>
-				<%= HtmlUtil.escape(contactDisplay.getFullName()) %>
+				<a href="<%= rowURL %>"><%= HtmlUtil.escape(contactDisplay.getFullName()) %></a>
 
 				<div class="secondary-information">
-					<%= contactDisplay.getEmailAddress() %>
+					<span id="contactEmailAddress"><%= contactDisplay.getEmailAddress() %></span>
+
+					<button class="btn btn-unstyled copy-btn" data-clipboard-action="copy" data-clipboard-target="#contactEmailAddress">
+						<liferay-ui:icon
+							icon="paste"
+							markupView="lexicon"
+							message="copy"
+						/>
+					</button>
 				</div>
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text
 				name="role"
 			>
-				<%= StringUtil.merge(contactDisplay.getContactRoleNames(), "<br />") %>
+				<div class="card-row">
+					<span class="autofit-col" id="contactRoles">
+						<%= StringUtil.merge(contactDisplay.getContactRoleNames(), "<br />") %>
+					</span>
+
+					<button class="autofit-col btn btn-unstyled copy-btn" data-clipboard-action="copy" data-clipboard-target="#contactRoles">
+						<liferay-ui:icon
+							icon="paste"
+							markupView="lexicon"
+							message="copy"
+						/>
+					</button>
+				</div>
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text
@@ -85,3 +104,10 @@ ViewAccountContactsDisplayContext viewAccountContactsDisplayContext = Provisioni
 		/>
 	</liferay-ui:search-container>
 </div>
+
+<script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+	var copyBtns = document.querySelectorAll('.copy-btn');
+
+	new ClipboardJS(copyBtns);
+</script>
