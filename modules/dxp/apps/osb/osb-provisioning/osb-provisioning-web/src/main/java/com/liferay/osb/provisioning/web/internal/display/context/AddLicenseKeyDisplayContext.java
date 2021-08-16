@@ -131,12 +131,6 @@ public class AddLicenseKeyDisplayContext {
 		data.put("accountKey", _account.getKey());
 		data.put("accountName", _account.getName());
 
-		String productKey = ParamUtil.getString(_renderRequest, "productKey");
-
-		if (Validator.isNotNull(productKey)) {
-			data.put("currentProduct", productKey);
-		}
-
 		PortletURL addLicenseKeyURL = _renderResponse.createActionURL();
 
 		addLicenseKeyURL.setParameter(
@@ -144,6 +138,12 @@ public class AddLicenseKeyDisplayContext {
 		addLicenseKeyURL.setParameter("redirect", redirect);
 
 		data.put("addLicenseKeyURL", addLicenseKeyURL.toString());
+
+		String productKey = ParamUtil.getString(_renderRequest, "productKey");
+
+		if (Validator.isNotNull(productKey)) {
+			data.put("currentProduct", productKey);
+		}
 
 		data.put("description", _account.getName());
 		data.put("licensableProducts", _getLicensableProductsJSONArray());
