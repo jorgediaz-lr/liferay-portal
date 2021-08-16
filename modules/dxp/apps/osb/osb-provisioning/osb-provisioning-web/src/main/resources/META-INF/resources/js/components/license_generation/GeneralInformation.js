@@ -55,26 +55,24 @@ function GeneralInformation({
 				.set('description', accountName)
 				.set('name', accountName)
 				.set('owner', accountName)
+				.updateIn(['product', 'productKey'], productKey =>
+					currentProduct && selectedProduct
+						? selectedProduct.productKey
+						: productKey
+				)
+				.updateIn(['product', 'productName'], productName =>
+					currentProduct && selectedProduct
+						? selectedProduct.productName
+						: productName
+				)
 		);
-	}, [accountKey, accountName, updateLicense]);
-
-	useEffect(() => {
-		if (currentProduct) {
-			updateLicense(license =>
-				license
-					.updateIn(['product', 'productKey'], productKey =>
-						selectedProduct
-							? selectedProduct.productKey
-							: productKey
-					)
-					.updateIn(['product', 'productName'], productName =>
-						selectedProduct
-							? selectedProduct.productName
-							: productName
-					)
-			);
-		}
-	}, [currentProduct, selectedProduct, updateLicense]);
+	}, [
+		accountKey,
+		accountName,
+		currentProduct,
+		selectedProduct,
+		updateLicense
+	]);
 
 	function findCurrentProduct(productKey) {
 		return licensableProducts.find(
