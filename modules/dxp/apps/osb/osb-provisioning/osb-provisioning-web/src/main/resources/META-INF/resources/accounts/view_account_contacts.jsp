@@ -57,9 +57,9 @@ ViewAccountContactsDisplayContext viewAccountContactsDisplayContext = Provisioni
 				<a href="<%= rowURL %>"><%= HtmlUtil.escape(contactDisplay.getFullName()) %></a>
 
 				<div class="secondary-information">
-					<span id="contactEmailAddress"><%= contactDisplay.getEmailAddress() %></span>
+					<span><%= contactDisplay.getEmailAddress() %></span>
 
-					<button class="btn btn-unstyled copy-btn" data-clipboard-action="copy" data-clipboard-target="#contactEmailAddress">
+					<button class="btn btn-unstyled copy-btn">
 						<liferay-ui:icon
 							icon="paste"
 							markupView="lexicon"
@@ -73,11 +73,11 @@ ViewAccountContactsDisplayContext viewAccountContactsDisplayContext = Provisioni
 				name="role"
 			>
 				<div class="card-row">
-					<span class="autofit-col" id="contactRoles">
+					<span class="autofit-col">
 						<%= StringUtil.merge(contactDisplay.getContactRoleNames(), "<br />") %>
 					</span>
 
-					<button class="autofit-col btn btn-unstyled copy-btn" data-clipboard-action="copy" data-clipboard-target="#contactRoles">
+					<button class="autofit-col btn btn-unstyled copy-btn">
 						<liferay-ui:icon
 							icon="paste"
 							markupView="lexicon"
@@ -105,9 +105,16 @@ ViewAccountContactsDisplayContext viewAccountContactsDisplayContext = Provisioni
 	</liferay-ui:search-container>
 </div>
 
-<script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
-<script>
-	var copyBtns = document.querySelectorAll('.copy-btn');
+<aui:script>
+	const copyBtn = document.querySelectorAll('.copy-btn');
 
-	new ClipboardJS(copyBtns);
-</script>
+	copyBtn.forEach(function(btn) {
+		btn.addEventListener('click', function() {
+			const target = btn.previousElementSibling;
+
+			if (target) {
+				navigator.clipboard.writeText(target.innerText);
+			}
+		});
+	});
+</aui:script>
