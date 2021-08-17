@@ -1,0 +1,10 @@
+apiDir: "../osb-provisioning-rest-api/src/main/java"
+apiPackagePath: "com.liferay.osb.provisioning.rest"
+application:
+    baseURI: "/provisioning-rest"
+    className: "ProvisioningRESTApplication"
+    name: "Liferay.Provisioning.REST"
+author: "Kyle Bischof"
+clientDir: "../osb-provisioning-rest-client/src/main/java"
+generateBatch: false
+testDir: "../osb-provisioning-rest-test/src/testIntegration/java"

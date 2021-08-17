@@ -1,0 +1,230 @@
+components:
+    schemas:
+        LicenseKey:
+            description:
+                Represents a license key.
+            properties:
+                accountKey:
+                    description:
+                        The key of the license key's account.
+                    type: string
+                accountName:
+                    description:
+                        The name of the license key's account.
+                    type: string
+                active:
+                    description:
+                        If the license key is active or not.
+                    type: boolean
+                additionalInfo:
+                    description:
+                        Any additional information for the license key.
+                    type: string
+                assetReceiptLicenseUuid:
+                    description:
+                        The uuid of the asset receipt of the license key.
+                    type: string
+                clusterId:
+                    description:
+                        The id of the cluster of the license key if applicable.
+                    format: int64
+                    type: integer
+                complimentary:
+                    description:
+                        If the license key is complimentary or not.
+                    type: boolean
+                createDate:
+                    description:
+                        The create date of the license key.
+                    format: date-time
+                    readOnly: true
+                    type: string
+                description:
+                    description:
+                        The description of the license key.
+                    type: string
+                expirationDate:
+                    description:
+                        The date the license key expires.
+                    format: date-time
+                    type: string
+                hostName:
+                    description:
+                        The host name of the license key.
+                    type: string
+                ipAddresses:
+                    description:
+                        The IP addresses of the license key.
+                    type: string
+                key:
+                    description:
+                        The encrypted key of the license key.
+                    readOnly: true
+                    type: string
+                licenseEntryId:
+                    description:
+                        The id of the license entry of the license key.
+                    format: int64
+                    type: integer
+                licenseEntryName:
+                    description:
+                        The name of the license entry of the license key.
+                    type: string
+                licenseEntryType:
+                    description:
+                        The type of the license entry of the license key.
+                    type: string
+                licenseKeyId:
+                    description:
+                        The id of the license key.
+                    format: int64
+                    readOnly: true
+                    type: integer
+                licenseVersion:
+                    description:
+                        The version of the license key.
+                    type: integer
+                macAddresses:
+                    description:
+                        The MAC addresses of the license key.
+                    type: string
+                maxClusterNodes:
+                    description:
+                        The maximum number of cluster nodes of the license key.
+                    type: integer
+                maxConcurrentUsers:
+                    description:
+                        The maximum number of concurrent users the license key can handle.
+                    format: int64
+                    type: integer
+                maxHttpSessions:
+                    description:
+                        The maximum number of http sessions the license key can handle.
+                    type: integer
+                maxServers:
+                    description:
+                        The maximum number of servers of the license key.
+                    type: integer
+                maxUsers:
+                    description:
+                        The maximum number of users the license key can handle.
+                    format: int64
+                    type: integer
+                modifiedDate:
+                    description:
+                        The last date the license key was modified.
+                    format: date-time
+                    type: string
+                modifiedUserName:
+                    description:
+                        The name of the user who last modified the license key.
+                    type: string
+                modifiedUserUuid:
+                    description:
+                        The uuid of the user who last modified the license key.
+                    type: string
+                name:
+                    description:
+                        The name of the license key.
+                    type: string
+                owner:
+                    description:
+                        The owner of the license key.
+                    type: string
+                productId:
+                    description:
+                        The id of the product of the license key.
+                    type: string
+                productKey:
+                    description:
+                        The key of the product of the license key.
+                    type: string
+                productName:
+                    description:
+                        The name of the product of the license key.
+                    type: string
+                productPurchaseKey:
+                    description:
+                        The key of the license key's product purchase.
+                    type: string
+                productVersion:
+                    description:
+                        The version of the product of the license key.
+                    type: string
+                serverId:
+                    description:
+                        The id of the server of the license key.
+                    type: string
+                sizing:
+                    description:
+                        The sizing of the license key.
+                    type: string
+                startDate:
+                    description:
+                        The date the license key can start being used.
+                    format: date-time
+                    type: string
+                userName:
+                    description:
+                        The name of the user who created the license key.
+                    readOnly: true
+                    type: string
+                userUuid:
+                    description:
+                        The uuid of the user who created the license key.
+                    readOnly: true
+                    type: string
+            type: object
+info:
+    description:
+        "A Java client JAR is available for use with the group ID 'com.liferay', artifact ID
+        'com.liferay.osb.provisioning.rest.client', and version '1.0.0'."
+    license:
+        name: "Apache 2.0"
+        url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+    title: "Provisioning"
+    version: v1.0
+openapi: 3.0.1
+paths:
+    "/license-keys":
+        get:
+            description:
+                Retrieves the license keys. Results can be paginated, filtered, searched, and sorted.
+            operationId: getLicenseKeysPage
+            parameters:
+                - in: query
+                  name: filter
+                  schema:
+                      type: string
+                - in: query
+                  name: page
+                  schema:
+                      type: integer
+                - in: query
+                  name: pageSize
+                  schema:
+                      type: integer
+                - in: query
+                  name: search
+                  schema:
+                      type: string
+                - in: query
+                  name: sort
+                  schema:
+                      type: string
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/LicenseKey"
+                                type: array
+                        application/xml:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/LicenseKey"
+                                type: array
+                    description:
+                        ""
+            tags: ["LicenseKey"]
