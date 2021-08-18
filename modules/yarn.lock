@@ -11437,10 +11437,10 @@ liferay-amd-loader@4.2.0:
   resolved "https://registry.yarnpkg.com/liferay-amd-loader/-/liferay-amd-loader-4.2.0.tgz#c166fa3723a7cf760deefb8e580d8892c6bf436b"
   integrity sha512-q+b2oU6zy6gDe6uKqHPY2/L9eUjhZAVatCAC5HNrHd+tMIk+MDBSCiHmRvihoJnmPylT+RZ4gNvWxtVwIQBF/Q==
 
-liferay-ckeditor@4.16.1-liferay.3:
-  version "4.16.1-liferay.3"
-  resolved "https://registry.yarnpkg.com/liferay-ckeditor/-/liferay-ckeditor-4.16.1-liferay.3.tgz#f72fa055b9be40757dae7ea1215b594ff99b9f11"
-  integrity sha512-fwvFKVr24IcLk9v2VSRUa6ptSegeMqApJ0busLgN2S33xYEMPZiNklUbVpxXDosGanQiTn3F9R5fzZ+eHqYxYw==
+liferay-ckeditor@4.16.2-liferay.1:
+  version "4.16.2-liferay.1"
+  resolved "https://registry.yarnpkg.com/liferay-ckeditor/-/liferay-ckeditor-4.16.2-liferay.1.tgz#f78cdb74d3f8802d691acb072e1f026c196a1aa1"
+  integrity sha512-k6M0sNJbx+sWOBDwgTBUcwuROfkopBb5QXvR/tLtZ4aWGTI6prqX/LKAe4gSvGy0p9Q/AyYQU7SMzeb+WlgJzQ==
 
 liferay-css-parse@~1.7.1:
   version "1.7.1"
