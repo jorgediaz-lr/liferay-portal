@@ -157,6 +157,12 @@ public class CalendarResourceLocalServiceImpl
 			CalendarResource calendarResource)
 		throws PortalException {
 
+		// Asset
+
+		_assetEntryLocalService.deleteEntry(
+			CalendarResource.class.getName(),
+			calendarResource.getCalendarResourceId());
+
 		// Calendar resource
 
 		calendarResourcePersistence.remove(calendarResource);
