@@ -608,12 +608,13 @@ public class DDMDataProviderInvokerImplTest extends PowerMockito {
 	}
 
 	private int _getExecutionTimeoutInMilliseconds(
-		DDMDataProviderInvokeCommand command) {
+		DDMDataProviderInvokeCommand ddmDataProviderInvokeCommand) {
 
-		HystrixCommandProperties properties = command.getProperties();
+		HystrixCommandProperties hystrixCommandProperties =
+			ddmDataProviderInvokeCommand.getProperties();
 
 		HystrixProperty<Integer> executionTimeoutInMilliseconds =
-			properties.executionTimeoutInMilliseconds();
+			hystrixCommandProperties.executionTimeoutInMilliseconds();
 
 		return executionTimeoutInMilliseconds.get();
 	}
