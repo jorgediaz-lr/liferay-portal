@@ -157,7 +157,7 @@ public class DDMTemplateLocalServiceTest extends BaseDDMServiceTestCase {
 	@Test
 	public void testFetchTemplate() throws Exception {
 		DDMTemplate template = addDisplayTemplate(
-			_classNameId, _resourceClassNameId, "Test Template",
+			_classNameId, 0, "Test Template",
 			WorkflowConstants.STATUS_APPROVED);
 
 		Assert.assertNotNull(
@@ -169,7 +169,7 @@ public class DDMTemplateLocalServiceTest extends BaseDDMServiceTestCase {
 	@Test
 	public void testGetTemplates() throws Exception {
 		DDMTemplate template = addDisplayTemplate(
-			_classNameId, _resourceClassNameId, "Test Template",
+			_classNameId, 0, "Test Template",
 			WorkflowConstants.STATUS_APPROVED);
 
 		List<DDMTemplate> templates = DDMTemplateLocalServiceUtil.getTemplates(
@@ -243,14 +243,11 @@ public class DDMTemplateLocalServiceTest extends BaseDDMServiceTestCase {
 	@Test
 	public void testSearchByName() throws Exception {
 		addDisplayTemplate(
-			_classNameId, _resourceClassNameId, "Event",
-			WorkflowConstants.STATUS_APPROVED);
+			_classNameId, 0, "Event", WorkflowConstants.STATUS_APPROVED);
 		addDisplayTemplate(
-			_classNameId, _resourceClassNameId, "Contact",
-			WorkflowConstants.STATUS_APPROVED);
+			_classNameId, 0, "Contact", WorkflowConstants.STATUS_APPROVED);
 		addDisplayTemplate(
-			_classNameId, _resourceClassNameId, "Meeting",
-			WorkflowConstants.STATUS_APPROVED);
+			_classNameId, 0, "Meeting", WorkflowConstants.STATUS_APPROVED);
 
 		List<DDMTemplate> templates = DDMTemplateLocalServiceUtil.search(
 			TestPropsValues.getCompanyId(), new long[] {group.getGroupId()},
