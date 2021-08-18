@@ -194,6 +194,10 @@ public class DDMTemplateStagedModelDataHandlerTest
 	}
 
 	@Override
+	protected void addRatings(StagedModel stagedModel) throws Exception {
+	}
+
+	@Override
 	protected StagedModel addStagedModel(
 			Group group,
 			Map<String, List<StagedModel>> dependentStagedModelsMap)
