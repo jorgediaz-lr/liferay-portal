@@ -81,6 +81,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>CONTENT_ABSTRACT_AP</td>
+	<td>//div[contains(@class,'asset-content')]//div[contains(.,'${key_entryAbstractDescription}')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>CONTENT_INLINE_IMAGE</td>
 	<td>//div[contains(@class,'content')]//img[contains(@src,'${key_uploadFileName}')]</td>
 	<td></td>
