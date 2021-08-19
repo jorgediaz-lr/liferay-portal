@@ -111,7 +111,7 @@ public class ProductPurchaseLocalServiceImpl
 				productField.getName(), productField.getValue());
 		}
 
-		_accountLocalService.reindex(accountId);
+		_accountLocalService.updateAccount(productPurchase.getAccount());
 
 		reindexProductPurchaseView(productPurchase);
 
@@ -144,7 +144,7 @@ public class ProductPurchaseLocalServiceImpl
 			ResourceConstants.SCOPE_INDIVIDUAL,
 			productPurchase.getProductPurchaseId());
 
-		_accountLocalService.reindex(productPurchase.getAccountId());
+		_accountLocalService.updateAccount(productPurchase.getAccount());
 
 		reindexProductPurchaseView(productPurchase);
 
@@ -315,7 +315,7 @@ public class ProductPurchaseLocalServiceImpl
 				productField.getProductFieldId());
 		}
 
-		_accountLocalService.reindex(productPurchase.getAccountId());
+		_accountLocalService.updateAccount(productPurchase.getAccount());
 
 		reindexProductPurchaseView(productPurchase);
 

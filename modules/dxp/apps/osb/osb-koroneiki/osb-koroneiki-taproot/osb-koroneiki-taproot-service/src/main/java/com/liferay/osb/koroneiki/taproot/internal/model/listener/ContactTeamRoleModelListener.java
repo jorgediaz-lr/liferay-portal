@@ -15,6 +15,7 @@
 package com.liferay.osb.koroneiki.taproot.internal.model.listener;
 
 import com.liferay.osb.koroneiki.taproot.model.ContactTeamRole;
+import com.liferay.osb.koroneiki.taproot.model.Team;
 import com.liferay.osb.koroneiki.taproot.model.TeamAccountRole;
 import com.liferay.osb.koroneiki.taproot.service.AccountLocalService;
 import com.liferay.osb.koroneiki.taproot.service.ContactLocalService;
@@ -41,12 +42,16 @@ public class ContactTeamRoleModelListener
 	public void onAfterCreate(ContactTeamRole contactTeamRole)
 		throws ModelListenerException {
 
+		_updateAccountModifiedDate(contactTeamRole);
+
 		_reindex(contactTeamRole);
 	}
 
 	@Override
 	public void onBeforeRemove(ContactTeamRole contactTeamRole)
 		throws ModelListenerException {
+
+		_updateAccountModifiedDate(contactTeamRole);
 
 		_reindex(contactTeamRole);
 	}
@@ -66,6 +71,19 @@ public class ContactTeamRoleModelListener
 			_contactLocalService.reindex(contactTeamRole.getContactId());
 
 			_teamLocalService.reindex(contactTeamRole.getTeamId());
+		}
+		catch (PortalException portalException) {
+			throw new ModelListenerException(portalException);
+		}
+	}
+
+	private void _updateAccountModifiedDate(ContactTeamRole contactTeamRole)
+		throws ModelListenerException {
+
+		try {
+			Team team = contactTeamRole.getTeam();
+
+			_accountLocalService.updateAccount(team.getAccount());
 		}
 		catch (PortalException portalException) {
 			throw new ModelListenerException(portalException);
