@@ -139,9 +139,7 @@ public class LicenseKey implements Serializable {
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Boolean active;
 
-	@Schema(
-		description = "Any additional info for the license key if applicable."
-	)
+	@Schema(description = "Any additional information for the license key.")
 	public String getAdditionalInfo() {
 		return additionalInfo;
 	}
@@ -166,12 +164,12 @@ public class LicenseKey implements Serializable {
 	}
 
 	@GraphQLField(
-		description = "Any additional info for the license key if applicable."
+		description = "Any additional information for the license key."
 	)
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected String additionalInfo;
 
-	@Schema(description = "The uuid of the asset receipt of this license key.")
+	@Schema(description = "The uuid of the asset receipt of the license key.")
 	public String getAssetReceiptLicenseUuid() {
 		return assetReceiptLicenseUuid;
 	}
@@ -198,7 +196,7 @@ public class LicenseKey implements Serializable {
 	}
 
 	@GraphQLField(
-		description = "The uuid of the asset receipt of this license key."
+		description = "The uuid of the asset receipt of the license key."
 	)
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected String assetReceiptLicenseUuid;
@@ -235,7 +233,9 @@ public class LicenseKey implements Serializable {
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Long clusterId;
 
-	@Schema(description = "If the license key is complimentary or not.")
+	@Schema(
+		description = "If the license key counts towards the customer's purchase."
+	)
 	public Boolean getComplimentary() {
 		return complimentary;
 	}
@@ -259,7 +259,9 @@ public class LicenseKey implements Serializable {
 		}
 	}
 
-	@GraphQLField(description = "If the license key is complimentary or not.")
+	@GraphQLField(
+		description = "If the license key counts towards the customer's purchase."
+	)
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Boolean complimentary;
 
@@ -403,7 +405,7 @@ public class LicenseKey implements Serializable {
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected String ipAddresses;
 
-	@Schema(description = "The encrypted key of the license key.")
+	@Schema(description = "The hash key of the license key.")
 	public String getKey() {
 		return key;
 	}
@@ -425,7 +427,7 @@ public class LicenseKey implements Serializable {
 		}
 	}
 
-	@GraphQLField(description = "The encrypted key of the license key.")
+	@GraphQLField(description = "The hash key of the license key.")
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	protected String key;
 
@@ -519,7 +521,7 @@ public class LicenseKey implements Serializable {
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected String licenseEntryType;
 
-	@Schema(description = "The id of this license key.")
+	@Schema(description = "The id of the license key.")
 	public Long getLicenseKeyId() {
 		return licenseKeyId;
 	}
@@ -543,11 +545,11 @@ public class LicenseKey implements Serializable {
 		}
 	}
 
-	@GraphQLField(description = "The id of this license key.")
+	@GraphQLField(description = "The id of the license key.")
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	protected Long licenseKeyId;
 
-	@Schema(description = "The version of the license key.")
+	@Schema(description = "The portal's license version of the license key.")
 	public Integer getLicenseVersion() {
 		return licenseVersion;
 	}
@@ -571,7 +573,9 @@ public class LicenseKey implements Serializable {
 		}
 	}
 
-	@GraphQLField(description = "The version of the license key.")
+	@GraphQLField(
+		description = "The portal's license version of the license key."
+	)
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Integer licenseVersion;
 
@@ -604,7 +608,7 @@ public class LicenseKey implements Serializable {
 	protected String macAddresses;
 
 	@Schema(
-		description = "The maximum number of cluster nodes of the license key if applicable."
+		description = "The maximum number of cluster nodes of the license key."
 	)
 	public Integer getMaxClusterNodes() {
 		return maxClusterNodes;
@@ -630,7 +634,7 @@ public class LicenseKey implements Serializable {
 	}
 
 	@GraphQLField(
-		description = "The maximum number of cluster nodes of the license key if applicable."
+		description = "The maximum number of cluster nodes of the license key."
 	)
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Integer maxClusterNodes;
@@ -761,7 +765,7 @@ public class LicenseKey implements Serializable {
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Long maxUsers;
 
-	@Schema(description = "The last date this license key was modified.")
+	@Schema(description = "The last date the license key was modified.")
 	public Date getModifiedDate() {
 		return modifiedDate;
 	}
@@ -785,12 +789,12 @@ public class LicenseKey implements Serializable {
 		}
 	}
 
-	@GraphQLField(description = "The last date this license key was modified.")
+	@GraphQLField(description = "The last date the license key was modified.")
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Date modifiedDate;
 
 	@Schema(
-		description = "The name of the user who last modified this license key."
+		description = "The name of the user who last modified the license key."
 	)
 	public String getModifiedUserName() {
 		return modifiedUserName;
@@ -816,13 +820,13 @@ public class LicenseKey implements Serializable {
 	}
 
 	@GraphQLField(
-		description = "The name of the user who last modified this license key."
+		description = "The name of the user who last modified the license key."
 	)
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected String modifiedUserName;
 
 	@Schema(
-		description = "The uuid of the user who last modified this license key."
+		description = "The uuid of the user who last modified the license key."
 	)
 	public String getModifiedUserUuid() {
 		return modifiedUserUuid;
@@ -848,7 +852,7 @@ public class LicenseKey implements Serializable {
 	}
 
 	@GraphQLField(
-		description = "The uuid of the user who last modified this license key."
+		description = "The uuid of the user who last modified the license key."
 	)
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected String modifiedUserUuid;
@@ -935,7 +939,7 @@ public class LicenseKey implements Serializable {
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected String productId;
 
-	@Schema(description = "The key of the license key's product.")
+	@Schema(description = "The key of the product of the license key.")
 	public String getProductKey() {
 		return productKey;
 	}
@@ -959,7 +963,7 @@ public class LicenseKey implements Serializable {
 		}
 	}
 
-	@GraphQLField(description = "The key of the license key's product.")
+	@GraphQLField(description = "The key of the product of the license key.")
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected String productKey;
 
@@ -991,9 +995,7 @@ public class LicenseKey implements Serializable {
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected String productName;
 
-	@Schema(
-		description = "The key of the license key's product purchase if applicable."
-	)
+	@Schema(description = "The key of the license key's product purchase.")
 	public String getProductPurchaseKey() {
 		return productPurchaseKey;
 	}
@@ -1018,7 +1020,7 @@ public class LicenseKey implements Serializable {
 	}
 
 	@GraphQLField(
-		description = "The key of the license key's product purchase if applicable."
+		description = "The key of the license key's product purchase."
 	)
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected String productPurchaseKey;
@@ -1053,9 +1055,7 @@ public class LicenseKey implements Serializable {
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected String productVersion;
 
-	@Schema(
-		description = "The id of the server of the license key if applicable."
-	)
+	@Schema(description = "The id of the server of the license key.")
 	public String getServerId() {
 		return serverId;
 	}
@@ -1079,9 +1079,7 @@ public class LicenseKey implements Serializable {
 		}
 	}
 
-	@GraphQLField(
-		description = "The id of the server of the license key if applicable."
-	)
+	@GraphQLField(description = "The id of the server of the license key.")
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected String serverId;
 
@@ -1143,7 +1141,7 @@ public class LicenseKey implements Serializable {
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Date startDate;
 
-	@Schema(description = "The name of the user who created this license key.")
+	@Schema(description = "The name of the user who created the license key.")
 	public String getUserName() {
 		return userName;
 	}
@@ -1168,12 +1166,12 @@ public class LicenseKey implements Serializable {
 	}
 
 	@GraphQLField(
-		description = "The name of the user who created this license key."
+		description = "The name of the user who created the license key."
 	)
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	protected String userName;
 
-	@Schema(description = "The uuid of the user who created this license key.")
+	@Schema(description = "The uuid of the user who created the license key.")
 	public String getUserUuid() {
 		return userUuid;
 	}
@@ -1198,7 +1196,7 @@ public class LicenseKey implements Serializable {
 	}
 
 	@GraphQLField(
-		description = "The uuid of the user who created this license key."
+		description = "The uuid of the user who created the license key."
 	)
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	protected String userUuid;

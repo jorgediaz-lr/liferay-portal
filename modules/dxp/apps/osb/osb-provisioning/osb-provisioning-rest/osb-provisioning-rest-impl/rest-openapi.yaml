@@ -31,7 +31,7 @@ components:
                     type: integer
                 complimentary:
                     description:
-                        If the license key is complimentary or not.
+                        If the license key counts towards the customer's purchase.
                     type: boolean
                 createDate:
                     description:
@@ -58,7 +58,7 @@ components:
                     type: string
                 key:
                     description:
-                        The encrypted key of the license key.
+                        The hash key of the license key.
                     readOnly: true
                     type: string
                 licenseEntryId:
@@ -82,7 +82,7 @@ components:
                     type: integer
                 licenseVersion:
                     description:
-                        The version of the license key.
+                        The portal's license version of the license key.
                     type: integer
                 macAddresses:
                     description:
