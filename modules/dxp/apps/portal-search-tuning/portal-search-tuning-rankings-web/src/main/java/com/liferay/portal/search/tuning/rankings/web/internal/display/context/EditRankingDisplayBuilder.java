@@ -109,10 +109,6 @@ public class EditRankingDisplayBuilder {
 		return resourceURL.toString();
 	}
 
-	private boolean _getInactive() {
-		return ParamUtil.getBoolean(_httpServletRequest, "inactive");
-	}
-
 	private String _getKeywords() {
 		return ParamUtil.getString(_httpServletRequest, "keywords");
 	}
@@ -131,7 +127,7 @@ public class EditRankingDisplayBuilder {
 		).put(
 			"initialAliases", _getAliases()
 		).put(
-			"initialInactive", _getInactive()
+			"initialInactive", _isInactive()
 		).put(
 			"resultsRankingUid", _getResultsRankingUid()
 		).put(
@@ -186,6 +182,10 @@ public class EditRankingDisplayBuilder {
 		return resourceURL.toString();
 	}
 
+	private boolean _isInactive() {
+		return ParamUtil.getBoolean(_httpServletRequest, "inactive");
+	}
+
 	private void _setBackURL(
 		EditRankingDisplayContext editRankingDisplayContext) {
 
@@ -219,7 +219,7 @@ public class EditRankingDisplayBuilder {
 	private void _setInactive(
 		EditRankingDisplayContext editRankingDisplayContext) {
 
-		editRankingDisplayContext.setInactive(_getInactive());
+		editRankingDisplayContext.setInactive(_isInactive());
 	}
 
 	private void _setKeywords(
