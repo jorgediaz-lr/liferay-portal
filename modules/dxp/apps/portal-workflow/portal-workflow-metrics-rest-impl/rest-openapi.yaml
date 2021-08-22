@@ -312,8 +312,6 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/Calendar"
                                 type: array
-                    description:
-                        ""
             tags: ["Calendar"]
     "/processes":
         get:
@@ -348,8 +346,6 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/Process"
                                 type: array
-                    description:
-                        ""
             tags: ["Process"]
     "/processes/{processId}":
         get:
@@ -384,8 +380,6 @@ paths:
                         application/xml:
                             schema:
                                 $ref: "#/components/schemas/Process"
-                    description:
-                        ""
             tags: ["Process"]
     "/processes/{processId}/assignee-users":
         get:
@@ -410,8 +404,6 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/AssigneeUser"
                                 type: array
-                    description:
-                        ""
             tags: ["AssigneeUser"]
     "/processes/{processId}/instances":
         get:
@@ -481,8 +473,6 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/Instance"
                                 type: array
-                    description:
-                        ""
             tags: ["Instance"]
     "/processes/{processId}/instances/{instanceId}":
         get:
@@ -509,8 +499,6 @@ paths:
                         application/xml:
                             schema:
                                 $ref: "#/components/schemas/Instance"
-                    description:
-                        ""
             tags: ["Instance"]
     "/processes/{processId}/metric":
         get:
@@ -547,8 +535,6 @@ paths:
                         application/xml:
                             schema:
                                 $ref: "#/components/schemas/Metric"
-                    description:
-                        ""
             tags: ["Metric"]
     "/processes/{processId}/nodes":
         get:
@@ -573,8 +559,6 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/Node"
                                 type: array
-                    description:
-                        ""
             tags: ["Node"]
     "/processes/{processId}/slas":
         get:
@@ -612,8 +596,6 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/SLA"
                                 type: array
-                    description:
-                        ""
             tags: ["SLA"]
         post:
             operationId: postProcessSLA
@@ -641,8 +623,6 @@ paths:
                         application/xml:
                             schema:
                                 $ref: "#/components/schemas/SLA"
-                    description:
-                        ""
                 400:
                     content:
                         application/json:
@@ -651,8 +631,6 @@ paths:
                         application/xml:
                             schema:
                                 $ref: "#/components/schemas/GenericError"
-                    description:
-                        ""
             tags: ["SLA"]
     "/processes/{processId}/tasks":
         get:
@@ -707,8 +685,6 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/Task"
                                 type: array
-                    description:
-                        ""
             tags: ["Task"]
     "/processes/{processId}/title":
         get:
@@ -726,8 +702,6 @@ paths:
                         text/plain:
                             schema:
                                 type: string
-                    description:
-                        ""
             tags: ["Process"]
     "/slas/{slaId}":
         delete:
@@ -744,8 +718,6 @@ paths:
                     content:
                         application/json: {}
                         application/xml: {}
-                    description:
-                        ""
             tags: ["SLA"]
         get:
             operationId: getSLA
@@ -765,8 +737,6 @@ paths:
                         application/xml:
                             schema:
                                 $ref: "#/components/schemas/SLA"
-                    description:
-                        ""
             tags: ["SLA"]
         put:
             operationId: putSLA
@@ -794,8 +764,6 @@ paths:
                         application/xml:
                             schema:
                                 $ref: "#/components/schemas/SLA"
-                    description:
-                        ""
                 400:
                     content:
                         application/json:
@@ -804,8 +772,6 @@ paths:
                         application/xml:
                             schema:
                                 $ref: "#/components/schemas/GenericError"
-                    description:
-                        ""
             tags: ["SLA"]
     "/time-ranges":
         get:
@@ -823,6 +789,4 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/TimeRange"
                                 type: array
-                    description:
-                        ""
             tags: ["TimeRange"]
