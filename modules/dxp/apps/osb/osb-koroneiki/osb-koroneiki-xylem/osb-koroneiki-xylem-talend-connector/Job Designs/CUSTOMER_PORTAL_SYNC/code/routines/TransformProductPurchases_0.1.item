@@ -14,9 +14,6 @@
 
 package routines;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -184,21 +181,18 @@ public class TransformProductPurchases {
 		}
 
 		public JSONObject toJSONObject() {
-			DateFormat dateFormat = new SimpleDateFormat(
-				Constants.DATE_PATTERN);
-
 			JSONObject jsonObject = new JSONObject();
 
 			jsonObject.put("accountKey", accountKey);
 			jsonObject.put(
 				"accountSubscriptionGroupERC",
 				accountSubscriptionGroupExternalReferenceCode);
-			jsonObject.put("endDate", dateFormat.format(endDate));
+			jsonObject.put("endDate", DateUtil.format(endDate));
 			jsonObject.put("externalReferenceCode", externalReferenceCode);
 			jsonObject.put("instanceSize", instanceSize);
 			jsonObject.put("name", name);
 			jsonObject.put("quantity", quantity);
-			jsonObject.put("startDate", dateFormat.format(startDate));
+			jsonObject.put("startDate", DateUtil.format(startDate));
 			jsonObject.put("subscriptionStatus", status);
 			jsonObject.put(
 				"subscriptionTerms", getSubscriptionTermsJSONArray());
@@ -288,7 +282,6 @@ public class TransformProductPurchases {
 				"hasActivation",
 				!name.equals(SubscriptionConstants.GROUP_NAME_OTHER));
 			jsonObject.put("name", name);
-
 			jsonObject.put("subscriptions", getSubscriptionJSONArray());
 
 			return jsonObject;
@@ -313,40 +306,33 @@ public class TransformProductPurchases {
 			this.accountSubscriptionExternalReferenceCode =
 				accountSubscriptionExternalReferenceCode;
 
-			DateFormat dateFormat = new SimpleDateFormat(
-				Constants.DATE_PATTERN);
-
 			accountKey = jsonObject.getString("accountKey");
+			endDate = DateUtil.parseEndDate(jsonObject);
 			externalReferenceCode = jsonObject.getString("key");
-			startDate = dateFormat.parse(jsonObject.getString("startDate"));
-			originalEndDate = dateFormat.parse(
-				jsonObject.getString("originalEndDate"));
-			endDate = dateFormat.parse(jsonObject.getString("endDate"));
 
 			JSONObject propertiesJSONObject = jsonObject.getJSONObject(
 				"properties");
 
 			instanceSize = propertiesJSONObject.optString("sizing");
 
+			originalEndDate = DateUtil.parseOriginalEndDate(jsonObject);
 			quantity = jsonObject.getInt("quantity");
+			startDate = DateUtil.parseStartDate(jsonObject);
 			status = jsonObject.getString("status");
 		}
 
 		public JSONObject toJSONObject() {
 			JSONObject jsonObject = new JSONObject();
 
-			DateFormat dateFormat = new SimpleDateFormat(
-				Constants.DATE_PATTERN);
-
 			jsonObject.put("accountKey", accountKey);
 			jsonObject.put(
 				"accountSubscriptionERC",
 				accountSubscriptionExternalReferenceCode);
-			jsonObject.put("endDate", dateFormat.format(endDate));
+			jsonObject.put("endDate", DateUtil.format(endDate));
 			jsonObject.put("externalReferenceCode", externalReferenceCode);
 			jsonObject.put("instanceSize", instanceSize);
 			jsonObject.put("quantity", quantity);
-			jsonObject.put("startDate", dateFormat.format(startDate));
+			jsonObject.put("startDate", DateUtil.format(startDate));
 			jsonObject.put("subscriptionTermStatus", status);
 
 			return jsonObject;

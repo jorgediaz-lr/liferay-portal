@@ -14,9 +14,6 @@
 
 package routines;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-
 import java.util.Date;
 
 import routines.system.JSONArray;
@@ -32,11 +29,9 @@ public class TransformAccount {
 	public static String getSLACurrent(String productPurchases)
 		throws Exception {
 
-		DateFormat dateFormat = new SimpleDateFormat(Constants.DATE_PATTERN);
+		JSONObject slaJSONObject = null;
 
 		JSONArray jsonArray = new JSONArray(productPurchases);
-
-		JSONObject slaJSONObject = null;
 
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -45,9 +40,8 @@ public class TransformAccount {
 				continue;
 			}
 
-			Date startDate = dateFormat.parse(
-				jsonObject.getString("startDate"));
-			Date endDate = dateFormat.parse(jsonObject.getString("endDate"));
+			Date startDate = DateUtil.parseStartDate(jsonObject);
+			Date endDate = DateUtil.parseEndDate(jsonObject);
 			String status = jsonObject.getString("status");
 
 			if (!_isActive(startDate, endDate, status)) {
@@ -74,11 +68,9 @@ public class TransformAccount {
 
 		String slaCurrent = getSLACurrent(productPurchases);
 
-		DateFormat dateFormat = new SimpleDateFormat(Constants.DATE_PATTERN);
+		Date slaCurrentEndDate = null;
 
 		JSONArray jsonArray = new JSONArray(productPurchases);
-
-		Date slaCurrentEndDate = null;
 
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -95,16 +87,7 @@ public class TransformAccount {
 				continue;
 			}
 
-			Date endDate = null;
-
-			String endDateString = jsonObject.optString("endDate");
-
-			if (endDateString.isEmpty()) {
-				endDate = new Date(Constants.END_DATE_PERPETUAL);
-			}
-			else {
-				endDate = dateFormat.parse(endDateString);
-			}
+			Date endDate = DateUtil.parseEndDate(jsonObject);
 
 			if ((slaCurrentEndDate == null) ||
 				slaCurrentEndDate.before(endDate)) {
@@ -113,11 +96,7 @@ public class TransformAccount {
 			}
 		}
 
-		if (slaCurrentEndDate != null) {
-			return dateFormat.format(slaCurrentEndDate);
-		}
-
-		return "";
+		return DateUtil.format(slaCurrentEndDate);
 	}
 
 	public static String getSLACurrentStartDate(String productPurchases)
@@ -125,11 +104,9 @@ public class TransformAccount {
 
 		String slaCurrent = getSLACurrent(productPurchases);
 
-		DateFormat dateFormat = new SimpleDateFormat(Constants.DATE_PATTERN);
+		Date slaCurrentStartDate = null;
 
 		JSONArray jsonArray = new JSONArray(productPurchases);
-
-		Date slaCurrentStartDate = null;
 
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -146,16 +123,7 @@ public class TransformAccount {
 				continue;
 			}
 
-			Date startDate = null;
-
-			String startDateString = jsonObject.optString("startDate");
-
-			if (startDateString.isEmpty()) {
-				startDate = new Date(Constants.START_DATE_PERPETUAL);
-			}
-			else {
-				startDate = dateFormat.parse(startDateString);
-			}
+			Date startDate = DateUtil.parseStartDate(jsonObject);
 
 			if ((slaCurrentStartDate == null) ||
 				slaCurrentStartDate.after(startDate)) {
@@ -164,11 +132,7 @@ public class TransformAccount {
 			}
 		}
 
-		if (slaCurrentStartDate != null) {
-			return dateFormat.format(slaCurrentStartDate);
-		}
-
-		return "";
+		return DateUtil.format(slaCurrentStartDate);
 	}
 
 	public static String getSLAFuture(String productPurchases)
@@ -176,11 +140,9 @@ public class TransformAccount {
 
 		String slaCurrent = getSLACurrent(productPurchases);
 
-		DateFormat dateFormat = new SimpleDateFormat(Constants.DATE_PATTERN);
+		JSONObject slaJSONObject = null;
 
 		JSONArray jsonArray = new JSONArray(productPurchases);
-
-		JSONObject slaJSONObject = null;
 
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -195,7 +157,7 @@ public class TransformAccount {
 				continue;
 			}
 
-			Date endDate = dateFormat.parse(jsonObject.getString("endDate"));
+			Date endDate = DateUtil.parseEndDate(jsonObject);
 			String status = jsonObject.getString("status");
 
 			if (!_isActiveFuture(endDate, status)) {
@@ -222,11 +184,9 @@ public class TransformAccount {
 
 		String slaFuture = getSLAFuture(productPurchases);
 
-		DateFormat dateFormat = new SimpleDateFormat(Constants.DATE_PATTERN);
+		Date slaFutureEndDate = null;
 
 		JSONArray jsonArray = new JSONArray(productPurchases);
-
-		Date slaFutureEndDate = null;
 
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -243,16 +203,7 @@ public class TransformAccount {
 				continue;
 			}
 
-			Date endDate = null;
-
-			String endDateString = jsonObject.optString("endDate");
-
-			if (endDateString.isEmpty()) {
-				endDate = new Date(Constants.END_DATE_PERPETUAL);
-			}
-			else {
-				endDate = dateFormat.parse(endDateString);
-			}
+			Date endDate = DateUtil.parseEndDate(jsonObject);
 
 			if ((slaFutureEndDate == null) ||
 				slaFutureEndDate.before(endDate)) {
@@ -261,11 +212,7 @@ public class TransformAccount {
 			}
 		}
 
-		if (slaFutureEndDate != null) {
-			return dateFormat.format(slaFutureEndDate);
-		}
-
-		return "";
+		return DateUtil.format(slaFutureEndDate);
 	}
 
 	public static String getSLAFutureStartDate(String productPurchases)
@@ -273,11 +220,9 @@ public class TransformAccount {
 
 		String slaFuture = getSLAFuture(productPurchases);
 
-		DateFormat dateFormat = new SimpleDateFormat(Constants.DATE_PATTERN);
+		Date slaFutureStartDate = null;
 
 		JSONArray jsonArray = new JSONArray(productPurchases);
-
-		Date slaFutureStartDate = null;
 
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -294,16 +239,7 @@ public class TransformAccount {
 				continue;
 			}
 
-			Date startDate = null;
-
-			String startDateString = jsonObject.optString("startDate");
-
-			if (startDateString.isEmpty()) {
-				startDate = new Date(Constants.START_DATE_PERPETUAL);
-			}
-			else {
-				startDate = dateFormat.parse(startDateString);
-			}
+			Date startDate = DateUtil.parseStartDate(jsonObject);
 
 			if ((slaFutureStartDate == null) ||
 				slaFutureStartDate.before(startDate)) {
@@ -312,11 +248,7 @@ public class TransformAccount {
 			}
 		}
 
-		if (slaFutureStartDate != null) {
-			return dateFormat.format(slaFutureStartDate);
-		}
-
-		return "";
+		return DateUtil.format(slaFutureStartDate);
 	}
 
 	private static boolean _contains(String[] array, String value) {
@@ -360,11 +292,11 @@ public class TransformAccount {
 
 		Date now = new Date();
 
-		if ((endDate != null) && now.after(endDate)) {
+		if ((startDate != null) && now.before(startDate)) {
 			return false;
 		}
 
-		if ((startDate != null) && now.before(startDate)) {
+		if ((endDate != null) && now.after(endDate)) {
 			return false;
 		}
 
@@ -424,10 +356,8 @@ public class TransformAccount {
 			return false;
 		}
 
-		DateFormat dateFormat = new SimpleDateFormat(Constants.DATE_PATTERN);
-
-		Date curEndDate = dateFormat.parse(curJSONObject.getString("endDate"));
-		Date endDate = dateFormat.parse(jsonObject.getString("endDate"));
+		Date curEndDate = DateUtil.parseEndDate(curJSONObject);
+		Date endDate = DateUtil.parseStartDate(curJSONObject);
 
 		if (endDate.after(curEndDate)) {
 			return true;
