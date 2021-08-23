@@ -129,7 +129,7 @@ public class AddressLocalServiceImpl extends AddressLocalServiceBaseImpl {
 		address = addressPersistence.update(address);
 
 		if (Validator.isNotNull(phoneNumber)) {
-			_addAddressPhone(addressId, phoneNumber);
+			_addAddressPhone(address, phoneNumber);
 		}
 
 		return address;
@@ -162,7 +162,7 @@ public class AddressLocalServiceImpl extends AddressLocalServiceBaseImpl {
 		addressPersistence.remove(address);
 
 		_phoneLocalService.deletePhones(
-			address.getCompanyId(), address.getClassName(),
+			address.getCompanyId(), Address.class.getName(),
 			address.getAddressId());
 
 		return address;
@@ -320,7 +320,7 @@ public class AddressLocalServiceImpl extends AddressLocalServiceBaseImpl {
 				address.getCompanyId(), Address.class.getName(), addressId);
 
 			if (ListUtil.isEmpty(phones)) {
-				_addAddressPhone(addressId, phoneNumber);
+				_addAddressPhone(address, phoneNumber);
 			}
 			else {
 				Phone phone = phones.get(0);
@@ -511,18 +511,16 @@ public class AddressLocalServiceImpl extends AddressLocalServiceBaseImpl {
 		validate(addressId, companyId, classNameId, classPK, mailing, primary);
 	}
 
-	private void _addAddressPhone(long addressId, String phoneNumber)
+	private void _addAddressPhone(Address address, String phoneNumber)
 		throws PortalException {
 
 		ListType listType = listTypeLocalService.getListType(
 			"phone-number", ListTypeConstants.ADDRESS_PHONE);
 
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
-
 		_phoneLocalService.addPhone(
-			serviceContext.getUserId(), Address.class.getName(), addressId,
-			phoneNumber, null, listType.getListTypeId(), false, serviceContext);
+			address.getUserId(), Address.class.getName(),
+			address.getAddressId(), phoneNumber, null, listType.getListTypeId(),
+			false, ServiceContextThreadLocal.getServiceContext());
 	}
 
 	@BeanReference(type = PhoneLocalService.class)
