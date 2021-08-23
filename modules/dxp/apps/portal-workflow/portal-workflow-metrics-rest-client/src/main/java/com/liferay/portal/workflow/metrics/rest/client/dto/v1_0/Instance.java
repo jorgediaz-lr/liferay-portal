@@ -338,7 +338,9 @@ public class Instance implements Cloneable, Serializable {
 
 		public static SLAStatus create(String value) {
 			for (SLAStatus slaStatus : values()) {
-				if (Objects.equals(slaStatus.getValue(), value)) {
+				if (Objects.equals(slaStatus.getValue(), value) ||
+					Objects.equals(slaStatus.name(), value)) {
+
 					return slaStatus;
 				}
 			}
@@ -369,7 +371,9 @@ public class Instance implements Cloneable, Serializable {
 
 		public static Status create(String value) {
 			for (Status status : values()) {
-				if (Objects.equals(status.getValue(), value)) {
+				if (Objects.equals(status.getValue(), value) ||
+					Objects.equals(status.name(), value)) {
+
 					return status;
 				}
 			}
