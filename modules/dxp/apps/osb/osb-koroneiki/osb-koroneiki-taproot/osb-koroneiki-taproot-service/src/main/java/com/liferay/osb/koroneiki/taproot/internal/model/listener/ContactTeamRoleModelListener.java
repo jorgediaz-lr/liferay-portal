@@ -42,16 +42,12 @@ public class ContactTeamRoleModelListener
 	public void onAfterCreate(ContactTeamRole contactTeamRole)
 		throws ModelListenerException {
 
-		_updateAccountModifiedDate(contactTeamRole);
-
 		_reindex(contactTeamRole);
 	}
 
 	@Override
 	public void onBeforeRemove(ContactTeamRole contactTeamRole)
 		throws ModelListenerException {
-
-		_updateAccountModifiedDate(contactTeamRole);
 
 		_reindex(contactTeamRole);
 	}
@@ -60,30 +56,22 @@ public class ContactTeamRoleModelListener
 		throws ModelListenerException {
 
 		try {
+			Team team = contactTeamRole.getTeam();
+
+			_accountLocalService.updateAccount(team.getAccount());
+
 			List<TeamAccountRole> teamAccountRoles =
 				_teamAccountRoleLocalService.getTeamAccountRoles(
 					contactTeamRole.getTeamId());
 
 			for (TeamAccountRole teamAccountRole : teamAccountRoles) {
-				_accountLocalService.reindex(teamAccountRole.getAccountId());
+				_accountLocalService.updateAccount(
+					teamAccountRole.getAccount());
 			}
 
 			_contactLocalService.reindex(contactTeamRole.getContactId());
 
 			_teamLocalService.reindex(contactTeamRole.getTeamId());
-		}
-		catch (PortalException portalException) {
-			throw new ModelListenerException(portalException);
-		}
-	}
-
-	private void _updateAccountModifiedDate(ContactTeamRole contactTeamRole)
-		throws ModelListenerException {
-
-		try {
-			Team team = contactTeamRole.getTeam();
-
-			_accountLocalService.updateAccount(team.getAccount());
 		}
 		catch (PortalException portalException) {
 			throw new ModelListenerException(portalException);
