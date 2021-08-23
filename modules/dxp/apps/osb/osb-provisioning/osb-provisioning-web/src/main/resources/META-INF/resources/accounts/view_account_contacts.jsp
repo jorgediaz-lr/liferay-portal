@@ -106,11 +106,11 @@ ViewAccountContactsDisplayContext viewAccountContactsDisplayContext = Provisioni
 </div>
 
 <aui:script>
-	const copyBtn = document.querySelectorAll('.copy-btn');
+	var copyBtn = document.querySelectorAll('.copy-btn');
 
 	copyBtn.forEach(function(btn) {
 		btn.addEventListener('click', function() {
-			const target = btn.previousElementSibling;
+			var target = btn.previousElementSibling;
 
 			if (target) {
 				navigator.clipboard.writeText(target.innerText);

@@ -222,7 +222,7 @@ function BulkInput({
 				subscription
 					.set('originalEndDate', convertInputToDate(value))
 					.update('endDate', endDate =>
-						validateCurrentGracePeriod(gracePeriod)
+						endDate && validateCurrentGracePeriod(gracePeriod)
 							? generateNewDateByDay(
 									subscription.originalEndDate,
 									gracePeriod

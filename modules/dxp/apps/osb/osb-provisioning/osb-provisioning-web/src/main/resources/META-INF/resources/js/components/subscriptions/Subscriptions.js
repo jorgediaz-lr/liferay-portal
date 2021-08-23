@@ -239,7 +239,7 @@ function Subscription({
 					return originalEndDate;
 				})
 				.update('endDate', endDate => {
-					if (validEndDateFormat) {
+					if (endDate && validEndDateFormat) {
 						return newEndDate;
 					}
 
