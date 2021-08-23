@@ -127,15 +127,13 @@ function Subscriptions({
 				{subscriptions.toList().map(subscription => (
 					<Subscription
 						accountName={accountName}
+						bulkGracePeriodValue={bulkGracePeriod}
 						dateFormatValidators={getLicenseDateFormatValidator}
 						disableDelete={subscriptions.size === 1}
-						grace={
-							bulkGracePeriod ||
-							getIntervalInDays(
-								subscription.originalEndDate,
-								subscription.endDate
-							)
-						}
+						initialGracePeriod={getIntervalInDays(
+							subscription.originalEndDate,
+							subscription.endDate
+						)}
 						instanceSizes={instanceSizes}
 						key={
 							subscriptionsType === EDIT_SUBSCRIPTIONS
@@ -163,9 +161,10 @@ Subscriptions.propTypes = {
 
 function Subscription({
 	accountName,
+	bulkGracePeriodValue,
 	dateFormatValidators,
 	disableDelete,
-	grace,
+	initialGracePeriod,
 	instanceSizes,
 	statusOptions,
 	subscription,
@@ -182,8 +181,7 @@ function Subscription({
 		startDate,
 		status
 	} = subscription;
-
-	const [gracePeriod, setGracePeriod] = useState(grace);
+	const [gracePeriod, setGracePeriod] = useState(initialGracePeriod);
 	const [invalidDateFormat, setInvalidDateFormat] = useState({
 		endDate: false,
 		originalEndDate: false,
@@ -202,8 +200,10 @@ function Subscription({
 	});
 
 	useEffect(() => {
-		setGracePeriod(grace);
-	}, [grace]);
+		if (bulkGracePeriodValue) {
+			setGracePeriod(bulkGracePeriodValue);
+		}
+	}, [bulkGracePeriodValue]);
 
 	function handleDeleteSubscription() {
 		deleteSubscription(key);
