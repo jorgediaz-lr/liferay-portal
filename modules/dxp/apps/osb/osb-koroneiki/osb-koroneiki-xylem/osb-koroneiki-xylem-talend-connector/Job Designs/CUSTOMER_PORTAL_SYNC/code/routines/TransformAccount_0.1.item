@@ -1,0 +1,451 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package routines;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
+import java.util.Date;
+
+import routines.system.JSONArray;
+import routines.system.JSONObject;
+
+/**
+ * @author Amos Fong
+ */
+public class TransformAccount {
+
+	public static final String STATUS_CANCELLED = "Cancelled";
+
+	public static String getSLACurrent(String productPurchases)
+		throws Exception {
+
+		DateFormat dateFormat = new SimpleDateFormat(Constants.DATE_PATTERN);
+
+		JSONArray jsonArray = new JSONArray(productPurchases);
+
+		JSONObject slaJSONObject = null;
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+			if (!_isSLAProduct(jsonObject)) {
+				continue;
+			}
+
+			Date startDate = dateFormat.parse(
+				jsonObject.getString("startDate"));
+			Date endDate = dateFormat.parse(jsonObject.getString("endDate"));
+			String status = jsonObject.getString("status");
+
+			if (!_isActive(startDate, endDate, status)) {
+				continue;
+			}
+
+			if (_isHigherSLA(slaJSONObject, jsonObject)) {
+				slaJSONObject = jsonObject;
+			}
+		}
+
+		if (slaJSONObject != null) {
+			JSONObject productJSONObject = slaJSONObject.getJSONObject(
+				"product");
+
+			return productJSONObject.getString("name");
+		}
+
+		return "";
+	}
+
+	public static String getSLACurrentEndDate(String productPurchases)
+		throws Exception {
+
+		String slaCurrent = getSLACurrent(productPurchases);
+
+		DateFormat dateFormat = new SimpleDateFormat(Constants.DATE_PATTERN);
+
+		JSONArray jsonArray = new JSONArray(productPurchases);
+
+		Date slaCurrentEndDate = null;
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+			JSONObject productJSONObject = jsonObject.getJSONObject("product");
+
+			if (!slaCurrent.equals(productJSONObject.getString("name"))) {
+				continue;
+			}
+
+			String status = jsonObject.getString("status");
+
+			if (!_isActive(status)) {
+				continue;
+			}
+
+			Date endDate = null;
+
+			String endDateString = jsonObject.optString("endDate");
+
+			if (endDateString.isEmpty()) {
+				endDate = new Date(Constants.END_DATE_PERPETUAL);
+			}
+			else {
+				endDate = dateFormat.parse(endDateString);
+			}
+
+			if ((slaCurrentEndDate == null) ||
+				slaCurrentEndDate.before(endDate)) {
+
+				slaCurrentEndDate = endDate;
+			}
+		}
+
+		if (slaCurrentEndDate != null) {
+			return dateFormat.format(slaCurrentEndDate);
+		}
+
+		return "";
+	}
+
+	public static String getSLACurrentStartDate(String productPurchases)
+		throws Exception {
+
+		String slaCurrent = getSLACurrent(productPurchases);
+
+		DateFormat dateFormat = new SimpleDateFormat(Constants.DATE_PATTERN);
+
+		JSONArray jsonArray = new JSONArray(productPurchases);
+
+		Date slaCurrentStartDate = null;
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+			JSONObject productJSONObject = jsonObject.getJSONObject("product");
+
+			if (!slaCurrent.equals(productJSONObject.getString("name"))) {
+				continue;
+			}
+
+			String status = jsonObject.getString("status");
+
+			if (!_isActive(status)) {
+				continue;
+			}
+
+			Date startDate = null;
+
+			String startDateString = jsonObject.optString("startDate");
+
+			if (startDateString.isEmpty()) {
+				startDate = new Date(Constants.START_DATE_PERPETUAL);
+			}
+			else {
+				startDate = dateFormat.parse(startDateString);
+			}
+
+			if ((slaCurrentStartDate == null) ||
+				slaCurrentStartDate.after(startDate)) {
+
+				slaCurrentStartDate = startDate;
+			}
+		}
+
+		if (slaCurrentStartDate != null) {
+			return dateFormat.format(slaCurrentStartDate);
+		}
+
+		return "";
+	}
+
+	public static String getSLAFuture(String productPurchases)
+		throws Exception {
+
+		String slaCurrent = getSLACurrent(productPurchases);
+
+		DateFormat dateFormat = new SimpleDateFormat(Constants.DATE_PATTERN);
+
+		JSONArray jsonArray = new JSONArray(productPurchases);
+
+		JSONObject slaJSONObject = null;
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+			if (!_isSLAProduct(jsonObject)) {
+				continue;
+			}
+
+			JSONObject productJSONObject = jsonObject.getJSONObject("product");
+
+			if (slaCurrent.equals(productJSONObject.getString("name"))) {
+				continue;
+			}
+
+			Date endDate = dateFormat.parse(jsonObject.getString("endDate"));
+			String status = jsonObject.getString("status");
+
+			if (!_isActiveFuture(endDate, status)) {
+				continue;
+			}
+
+			if (_isHigherSLA(slaJSONObject, jsonObject)) {
+				slaJSONObject = jsonObject;
+			}
+		}
+
+		if (slaJSONObject != null) {
+			JSONObject productJSONObject = slaJSONObject.getJSONObject(
+				"product");
+
+			return productJSONObject.getString("name");
+		}
+
+		return "";
+	}
+
+	public static String getSLAFutureEndDate(String productPurchases)
+		throws Exception {
+
+		String slaFuture = getSLAFuture(productPurchases);
+
+		DateFormat dateFormat = new SimpleDateFormat(Constants.DATE_PATTERN);
+
+		JSONArray jsonArray = new JSONArray(productPurchases);
+
+		Date slaFutureEndDate = null;
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+			JSONObject productJSONObject = jsonObject.getJSONObject("product");
+
+			if (!slaFuture.equals(productJSONObject.getString("name"))) {
+				continue;
+			}
+
+			String status = jsonObject.getString("status");
+
+			if (!_isActive(status)) {
+				continue;
+			}
+
+			Date endDate = null;
+
+			String endDateString = jsonObject.optString("endDate");
+
+			if (endDateString.isEmpty()) {
+				endDate = new Date(Constants.END_DATE_PERPETUAL);
+			}
+			else {
+				endDate = dateFormat.parse(endDateString);
+			}
+
+			if ((slaFutureEndDate == null) ||
+				slaFutureEndDate.before(endDate)) {
+
+				slaFutureEndDate = endDate;
+			}
+		}
+
+		if (slaFutureEndDate != null) {
+			return dateFormat.format(slaFutureEndDate);
+		}
+
+		return "";
+	}
+
+	public static String getSLAFutureStartDate(String productPurchases)
+		throws Exception {
+
+		String slaFuture = getSLAFuture(productPurchases);
+
+		DateFormat dateFormat = new SimpleDateFormat(Constants.DATE_PATTERN);
+
+		JSONArray jsonArray = new JSONArray(productPurchases);
+
+		Date slaFutureStartDate = null;
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+			JSONObject productJSONObject = jsonObject.getJSONObject("product");
+
+			if (!slaFuture.equals(productJSONObject.getString("name"))) {
+				continue;
+			}
+
+			String status = jsonObject.getString("status");
+
+			if (!_isActive(status)) {
+				continue;
+			}
+
+			Date startDate = null;
+
+			String startDateString = jsonObject.optString("startDate");
+
+			if (startDateString.isEmpty()) {
+				startDate = new Date(Constants.START_DATE_PERPETUAL);
+			}
+			else {
+				startDate = dateFormat.parse(startDateString);
+			}
+
+			if ((slaFutureStartDate == null) ||
+				slaFutureStartDate.before(startDate)) {
+
+				slaFutureStartDate = startDate;
+			}
+		}
+
+		if (slaFutureStartDate != null) {
+			return dateFormat.format(slaFutureStartDate);
+		}
+
+		return "";
+	}
+
+	private static boolean _contains(String[] array, String value) {
+		for (String s : array) {
+			if (s.equals(value)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private static int _getSLARank(JSONObject productJSONObject)
+		throws Exception {
+
+		String productName = productJSONObject.getString("name");
+
+		if (productName.equals(ProductConstants.NAME_GOLD)) {
+			return 3;
+		}
+		else if (productName.equals(ProductConstants.NAME_LIMITED)) {
+			return 1;
+		}
+		else if (productName.equals(ProductConstants.NAME_PLATINUM)) {
+			return 4;
+		}
+		else if (productName.equals(ProductConstants.NAME_SILVER)) {
+			return 2;
+		}
+
+		return 0;
+	}
+
+	private static boolean _isActive(
+			Date startDate, Date endDate, String status)
+		throws Exception {
+
+		if (!_isActive(status)) {
+			return false;
+		}
+
+		Date now = new Date();
+
+		if ((endDate != null) && now.after(endDate)) {
+			return false;
+		}
+
+		if ((startDate != null) && now.before(startDate)) {
+			return false;
+		}
+
+		return true;
+	}
+
+	private static boolean _isActive(String status) throws Exception {
+		if ((status == null) || status.equals(STATUS_CANCELLED)) {
+			return false;
+		}
+
+		return true;
+	}
+
+	private static boolean _isActiveFuture(Date endDate, String status)
+		throws Exception {
+
+		if (!_isActive(status)) {
+			return false;
+		}
+
+		Date now = new Date();
+
+		if ((endDate != null) && now.before(endDate)) {
+			return false;
+		}
+
+		return true;
+	}
+
+	private static boolean _isHigherSLA(
+			JSONObject curJSONObject, JSONObject jsonObject)
+		throws Exception {
+
+		if (curJSONObject == null) {
+			return true;
+		}
+
+		int curSLARank = _getSLARank(jsonObject.getJSONObject("product"));
+		int slaRank = _getSLARank(jsonObject.getJSONObject("product"));
+
+		if (slaRank > curSLARank) {
+			return true;
+		}
+
+		if (slaRank < curSLARank) {
+			return false;
+		}
+
+		if (curJSONObject.getBoolean("perpetual") &&
+			!jsonObject.getBoolean("perpetual")) {
+
+			return true;
+		}
+
+		if (curJSONObject.getBoolean("perpetual")) {
+			return false;
+		}
+
+		DateFormat dateFormat = new SimpleDateFormat(Constants.DATE_PATTERN);
+
+		Date curEndDate = dateFormat.parse(curJSONObject.getString("endDate"));
+		Date endDate = dateFormat.parse(jsonObject.getString("endDate"));
+
+		if (endDate.after(curEndDate)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private static boolean _isSLAProduct(JSONObject jsonObject) {
+		JSONObject productJSONObject = jsonObject.getJSONObject("product");
+
+		String productName = productJSONObject.getString("name");
+
+		if (_contains(ProductConstants.NAMES_SUBSCRIPTION, productName)) {
+			return true;
+		}
+
+		return false;
+	}
+
+}

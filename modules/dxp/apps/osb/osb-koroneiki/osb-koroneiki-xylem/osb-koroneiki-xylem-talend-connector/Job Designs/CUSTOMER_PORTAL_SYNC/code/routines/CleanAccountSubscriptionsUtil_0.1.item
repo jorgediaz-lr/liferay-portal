@@ -1,0 +1,109 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package routines;
+
+import routines.system.JSONArray;
+import routines.system.JSONObject;
+
+/**
+ * @author Amos Fong
+ */
+public class CleanAccountSubscriptionsUtil {
+
+	public static String getDeleteAccountSubscriptionERC(
+		Object productPurchasesObject, String externalReferenceCode) {
+
+		JSONArray productPurchasesJSONArray = (JSONArray)productPurchasesObject;
+
+		for (int i = 0; i < productPurchasesJSONArray.length(); i++) {
+			JSONObject subscriptionGroupJSONObject =
+				productPurchasesJSONArray.getJSONObject(i);
+
+			JSONArray subscriptionsJSONArray =
+				subscriptionGroupJSONObject.getJSONArray("subscriptions");
+
+			for (int j = 0; j < subscriptionsJSONArray.length(); j++) {
+				JSONObject subscriptionJSONObject =
+					subscriptionsJSONArray.getJSONObject(j);
+
+				if (externalReferenceCode.equals(
+						subscriptionJSONObject.getString(
+							"externalReferenceCode"))) {
+
+					return "";
+				}
+			}
+		}
+
+		return externalReferenceCode;
+	}
+
+	public static String getDeleteAccountSubscriptionGroupERC(
+		Object productPurchasesObject, String externalReferenceCode) {
+
+		JSONArray productPurchasesJSONArray = (JSONArray)productPurchasesObject;
+
+		for (int i = 0; i < productPurchasesJSONArray.length(); i++) {
+			JSONObject subscriptionGroupJSONObject =
+				productPurchasesJSONArray.getJSONObject(i);
+
+			if (externalReferenceCode.equals(
+					subscriptionGroupJSONObject.getString(
+						"externalReferenceCode"))) {
+
+				return "";
+			}
+		}
+
+		return externalReferenceCode;
+	}
+
+	public static String getDeleteAccountSubscriptionTermERC(
+		Object productPurchasesObject, String externalReferenceCode) {
+
+		JSONArray productPurchasesJSONArray = (JSONArray)productPurchasesObject;
+
+		for (int i = 0; i < productPurchasesJSONArray.length(); i++) {
+			JSONObject subscriptionGroupJSONObject =
+				productPurchasesJSONArray.getJSONObject(i);
+
+			JSONArray subscriptionsJSONArray =
+				subscriptionGroupJSONObject.getJSONArray("subscriptions");
+
+			for (int j = 0; j < subscriptionsJSONArray.length(); j++) {
+				JSONObject subscriptionJSONObject =
+					subscriptionsJSONArray.getJSONObject(j);
+
+				JSONArray subscriptionTermsJSONArray =
+					subscriptionJSONObject.getJSONArray("subscriptionTerms");
+
+				for (int k = 0; k < subscriptionTermsJSONArray.length(); k++) {
+					JSONObject subscriptionTermJSONObject =
+						subscriptionTermsJSONArray.getJSONObject(k);
+
+					if (externalReferenceCode.equals(
+							subscriptionTermJSONObject.getString(
+								"externalReferenceCode"))) {
+
+						return "";
+					}
+				}
+			}
+		}
+
+		return externalReferenceCode;
+	}
+
+}

@@ -1,0 +1,367 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package routines;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import routines.system.JSONArray;
+import routines.system.JSONObject;
+
+/**
+ * @author Amos Fong
+ */
+public class TransformProductPurchases {
+
+	public static String STATUS_APPROVED = "Approved";
+
+	public static String SUBSCRIPTION_NAME_BACKUP = "Backup";
+
+	public static JSONArray getSubscriptionGroupsJSONArray(
+			String productPurchases)
+		throws Exception {
+
+		Map<String, SubscriptionGroup> subscriptionGroupMap = new HashMap<>();
+
+		JSONArray jsonArray = new JSONArray(productPurchases);
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+			SubscriptionGroup subscriptionGroup = _getSubscriptionGroup(
+				subscriptionGroupMap, jsonObject);
+
+			subscriptionGroup.addSubscription(jsonObject);
+		}
+
+		return _toJSONArray(subscriptionGroupMap);
+	}
+
+	private static SubscriptionGroup _getSubscriptionGroup(
+			Map<String, SubscriptionGroup> subscriptionGroupMap,
+			JSONObject jsonObject)
+		throws Exception {
+
+		String subscriptionGroupName = null;
+
+		JSONObject productJSONObject = jsonObject.getJSONObject("product");
+
+		String productName = productJSONObject.getString("name");
+
+		productName = productName.toLowerCase();
+
+		if (productName.contains("analytics cloud")) {
+			subscriptionGroupName =
+				SubscriptionConstants.GROUP_NAME_ANALYTICS_CLOUD;
+		}
+		else if (productName.contains("commerce")) {
+			subscriptionGroupName = SubscriptionConstants.GROUP_NAME_COMMERCE;
+		}
+		else if (productName.startsWith("dxp")) {
+			subscriptionGroupName = SubscriptionConstants.GROUP_NAME_DXP;
+		}
+		else if (productName.contains("dxp cloud")) {
+			subscriptionGroupName = SubscriptionConstants.GROUP_NAME_DXP_CLOUD;
+		}
+		else if (productName.contains("enterprise search")) {
+			subscriptionGroupName =
+				SubscriptionConstants.GROUP_NAME_ENTERPRISE_SEARCH;
+		}
+		else {
+			subscriptionGroupName = SubscriptionConstants.GROUP_NAME_OTHER;
+		}
+
+		SubscriptionGroup subscriptionGroup = subscriptionGroupMap.get(
+			subscriptionGroupName);
+
+		if (subscriptionGroup == null) {
+			subscriptionGroup = new SubscriptionGroup(
+				jsonObject.getString("accountKey"), subscriptionGroupName);
+
+			subscriptionGroupMap.put(subscriptionGroupName, subscriptionGroup);
+		}
+
+		return subscriptionGroup;
+	}
+
+	private static JSONArray _toJSONArray(
+			Map<String, SubscriptionGroup> subscriptionGroupMap)
+		throws Exception {
+
+		JSONArray jsonArray = new JSONArray();
+
+		for (SubscriptionGroup subscriptionGroup :
+				subscriptionGroupMap.values()) {
+
+			jsonArray.put(subscriptionGroup.toJSONObject());
+		}
+
+		return jsonArray;
+	}
+
+	private static class Subscription {
+
+		public Subscription(
+			String accountKey,
+			String accountSubscriptionGroupExternalReferenceCode, String name) {
+
+			this.accountKey = accountKey;
+			this.accountSubscriptionGroupExternalReferenceCode =
+				accountSubscriptionGroupExternalReferenceCode;
+			this.name = name;
+
+			String curExternalReferenceCode = name.toLowerCase();
+
+			curExternalReferenceCode = curExternalReferenceCode.replace(
+				" ", "-");
+
+			externalReferenceCode =
+				accountSubscriptionGroupExternalReferenceCode + "_" +
+					curExternalReferenceCode;
+		}
+
+		public void addSubscriptionTerm(JSONObject jsonObject)
+			throws Exception {
+
+			Date now = new Date();
+
+			SubscriptionTerm subscriptionTerm = new SubscriptionTerm(
+				externalReferenceCode, jsonObject);
+
+			if (subscriptionTerm.status.equals(STATUS_APPROVED)) {
+				if ((startDate == null) ||
+					startDate.after(subscriptionTerm.startDate)) {
+
+					startDate = subscriptionTerm.startDate;
+				}
+
+				if ((endDate == null) ||
+					endDate.before(subscriptionTerm.originalEndDate)) {
+
+					endDate = subscriptionTerm.originalEndDate;
+				}
+
+				if (instanceSize == null) {
+					instanceSize = subscriptionTerm.instanceSize;
+				}
+
+				if (now.after(subscriptionTerm.startDate) &&
+					now.before(subscriptionTerm.originalEndDate)) {
+
+					quantity += subscriptionTerm.quantity;
+				}
+			}
+
+			subscriptionTerms.add(subscriptionTerm);
+		}
+
+		public JSONArray getSubscriptionTermsJSONArray() {
+			JSONArray jsonArray = new JSONArray();
+
+			for (SubscriptionTerm subscriptionTerm : subscriptionTerms) {
+				jsonArray.put(subscriptionTerm.toJSONObject());
+			}
+
+			return jsonArray;
+		}
+
+		public JSONObject toJSONObject() {
+			DateFormat dateFormat = new SimpleDateFormat(
+				Constants.DATE_PATTERN);
+
+			JSONObject jsonObject = new JSONObject();
+
+			jsonObject.put("accountKey", accountKey);
+			jsonObject.put(
+				"accountSubscriptionGroupERC",
+				accountSubscriptionGroupExternalReferenceCode);
+			jsonObject.put("endDate", dateFormat.format(endDate));
+			jsonObject.put("externalReferenceCode", externalReferenceCode);
+			jsonObject.put("instanceSize", instanceSize);
+			jsonObject.put("name", name);
+			jsonObject.put("quantity", quantity);
+			jsonObject.put("startDate", dateFormat.format(startDate));
+			jsonObject.put("subscriptionStatus", status);
+			jsonObject.put(
+				"subscriptionTerms", getSubscriptionTermsJSONArray());
+
+			return jsonObject;
+		}
+
+		public String accountKey;
+		public String accountSubscriptionGroupExternalReferenceCode;
+		public Date endDate;
+		public String externalReferenceCode;
+		public String instanceSize;
+		public String name;
+		public int quantity;
+		public Date startDate;
+		public String status;
+		public List<SubscriptionTerm> subscriptionTerms = new ArrayList<>();
+
+	}
+
+	private static class SubscriptionGroup {
+
+		public SubscriptionGroup(String accountKey, String name) {
+			this.accountKey = accountKey;
+			this.name = name;
+
+			String curExternalReferenceCode = name.toLowerCase();
+
+			curExternalReferenceCode = curExternalReferenceCode.replace(
+				" ", "-");
+
+			externalReferenceCode = accountKey + "_" + curExternalReferenceCode;
+		}
+
+		public void addSubscription(JSONObject jsonObject) throws Exception {
+			String subscriptionName = getSubscriptionName(jsonObject);
+
+			Subscription subscription = subscriptionsMap.get(subscriptionName);
+
+			if (subscription == null) {
+				subscription = new Subscription(
+					accountKey, externalReferenceCode, subscriptionName);
+
+				subscriptionsMap.put(subscriptionName, subscription);
+			}
+
+			subscription.addSubscriptionTerm(jsonObject);
+		}
+
+		public JSONArray getSubscriptionJSONArray() {
+			JSONArray jsonArray = new JSONArray();
+
+			for (Subscription subscription : subscriptionsMap.values()) {
+				jsonArray.put(subscription.toJSONObject());
+			}
+
+			return jsonArray;
+		}
+
+		public String getSubscriptionName(JSONObject jsonObject) {
+			JSONObject productJSONObject = jsonObject.getJSONObject("product");
+
+			String productName = productJSONObject.getString("name");
+
+			if (name.equals(SubscriptionConstants.GROUP_NAME_DXP)) {
+				if (productName.contains("backup")) {
+					return "Backup";
+				}
+				else if (productName.contains("non-production")) {
+					return "Non-Production";
+				}
+				else if (productName.contains("production")) {
+					return "Production";
+				}
+			}
+
+			return productName;
+		}
+
+		public JSONObject toJSONObject() {
+			JSONObject jsonObject = new JSONObject();
+
+			jsonObject.put("accountKey", accountKey);
+			jsonObject.put("activationStatus", "In Progress");
+			jsonObject.put("externalReferenceCode", externalReferenceCode);
+			jsonObject.put(
+				"hasActivation",
+				!name.equals(SubscriptionConstants.GROUP_NAME_OTHER));
+			jsonObject.put("name", name);
+
+			jsonObject.put("subscriptions", getSubscriptionJSONArray());
+
+			return jsonObject;
+		}
+
+		public String accountKey;
+		public String activationStatus;
+		public String externalReferenceCode;
+		public boolean hasActivation;
+		public String name;
+		public Map<String, Subscription> subscriptionsMap = new HashMap<>();
+
+	}
+
+	private static class SubscriptionTerm {
+
+		public SubscriptionTerm(
+				String accountSubscriptionExternalReferenceCode,
+				JSONObject jsonObject)
+			throws Exception {
+
+			this.accountSubscriptionExternalReferenceCode =
+				accountSubscriptionExternalReferenceCode;
+
+			DateFormat dateFormat = new SimpleDateFormat(
+				Constants.DATE_PATTERN);
+
+			accountKey = jsonObject.getString("accountKey");
+			externalReferenceCode = jsonObject.getString("key");
+			startDate = dateFormat.parse(jsonObject.getString("startDate"));
+			originalEndDate = dateFormat.parse(
+				jsonObject.getString("originalEndDate"));
+			endDate = dateFormat.parse(jsonObject.getString("endDate"));
+
+			JSONObject propertiesJSONObject = jsonObject.getJSONObject(
+				"properties");
+
+			instanceSize = propertiesJSONObject.optString("sizing");
+
+			quantity = jsonObject.getInt("quantity");
+			status = jsonObject.getString("status");
+		}
+
+		public JSONObject toJSONObject() {
+			JSONObject jsonObject = new JSONObject();
+
+			DateFormat dateFormat = new SimpleDateFormat(
+				Constants.DATE_PATTERN);
+
+			jsonObject.put("accountKey", accountKey);
+			jsonObject.put(
+				"accountSubscriptionERC",
+				accountSubscriptionExternalReferenceCode);
+			jsonObject.put("endDate", dateFormat.format(endDate));
+			jsonObject.put("externalReferenceCode", externalReferenceCode);
+			jsonObject.put("instanceSize", instanceSize);
+			jsonObject.put("quantity", quantity);
+			jsonObject.put("startDate", dateFormat.format(startDate));
+			jsonObject.put("subscriptionTermStatus", status);
+
+			return jsonObject;
+		}
+
+		public String accountKey;
+		public String accountSubscriptionExternalReferenceCode;
+		public Date endDate;
+		public String externalReferenceCode;
+		public String instanceSize;
+		public Date originalEndDate;
+		public int quantity;
+		public Date startDate;
+		public String status;
+
+	}
+
+}
