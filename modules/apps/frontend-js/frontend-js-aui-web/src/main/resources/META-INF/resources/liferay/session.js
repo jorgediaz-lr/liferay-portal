@@ -55,7 +55,7 @@ AUI.add(
 				},
 				sessionTimeoutOffset: {
 					getter: '_getLengthInMillis',
-					value: 0,
+					value: 0
 				},
 				timestamp: {
 					getter: '_getTimestamp',
