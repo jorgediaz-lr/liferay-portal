@@ -274,6 +274,8 @@ public class DDLRecordLocalServiceImpl extends DDLRecordLocalServiceBaseImpl {
 			ddlRecordVersionPersistence.findByRecordId(record.getRecordId());
 
 		for (DDLRecordVersion recordVersion : recordVersions) {
+			deleteAssetEntry(recordVersion.getRecordVersionId());
+
 			ddlRecordVersionPersistence.remove(recordVersion);
 
 			// Dynamic data mapping storage
@@ -775,13 +777,6 @@ public class DDLRecordLocalServiceImpl extends DDLRecordLocalServiceBaseImpl {
 				recordVersion.getStatus(), serviceContext);
 		}
 
-		// Asset
-
-		updateAsset(
-			userId, record, recordVersion, serviceContext.getAssetCategoryIds(),
-			serviceContext.getAssetTagNames(), serviceContext.getLocale(),
-			serviceContext.getAssetPriority());
-
 		if (isKeepRecordVersionLabel(
 				record.getRecordVersion(), recordVersion, serviceContext)) {
 
@@ -791,8 +786,23 @@ public class DDLRecordLocalServiceImpl extends DDLRecordLocalServiceBaseImpl {
 
 			storageEngine.deleteByClass(recordVersion.getDDMStorageId());
 
+			// Asset
+
+			updateAsset(
+				userId, record, record.getRecordVersion(),
+				serviceContext.getAssetCategoryIds(),
+				serviceContext.getAssetTagNames(), serviceContext.getLocale(),
+				serviceContext.getAssetPriority());
+
 			return record;
 		}
+
+		// Asset
+
+		updateAsset(
+			userId, record, recordVersion, serviceContext.getAssetCategoryIds(),
+			serviceContext.getAssetTagNames(), serviceContext.getLocale(),
+			serviceContext.getAssetPriority());
 
 		// Workflow
 
