@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.workflow.kaleo.definition.LogType;
@@ -341,7 +342,7 @@ public class KaleoLogLocalServiceImpl extends KaleoLogLocalServiceBaseImpl {
 		long kaleoInstanceId, List<Integer> logTypes, int start, int end,
 		OrderByComparator<KaleoLog> orderByComparator) {
 
-		if ((logTypes == null) || logTypes.isEmpty()) {
+		if (ListUtil.isEmpty(logTypes)) {
 			return kaleoLogPersistence.findByKaleoInstanceId(
 				kaleoInstanceId, start, end, orderByComparator);
 		}
@@ -356,7 +357,7 @@ public class KaleoLogLocalServiceImpl extends KaleoLogLocalServiceBaseImpl {
 	public int getKaleoInstanceKaleoLogsCount(
 		long kaleoInstanceId, List<Integer> logTypes) {
 
-		if ((logTypes == null) || logTypes.isEmpty()) {
+		if (ListUtil.isEmpty(logTypes)) {
 			return kaleoLogPersistence.countByKaleoInstanceId(kaleoInstanceId);
 		}
 
@@ -371,7 +372,7 @@ public class KaleoLogLocalServiceImpl extends KaleoLogLocalServiceBaseImpl {
 		long kaleoTaskInstanceTokenId, List<Integer> logTypes, int start,
 		int end, OrderByComparator<KaleoLog> orderByComparator) {
 
-		if ((logTypes == null) || logTypes.isEmpty()) {
+		if (ListUtil.isEmpty(logTypes)) {
 			return kaleoLogPersistence.findByKaleoTaskInstanceTokenId(
 				kaleoTaskInstanceTokenId, start, end, orderByComparator);
 		}
@@ -386,7 +387,7 @@ public class KaleoLogLocalServiceImpl extends KaleoLogLocalServiceBaseImpl {
 	public int getKaleoTaskInstanceTokenKaleoLogsCount(
 		long kaleoTaskInstanceTokenId, List<Integer> logTypes) {
 
-		if ((logTypes == null) || logTypes.isEmpty()) {
+		if (ListUtil.isEmpty(logTypes)) {
 			return kaleoLogPersistence.countByKaleoTaskInstanceTokenId(
 				kaleoTaskInstanceTokenId);
 		}
