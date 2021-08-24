@@ -27,17 +27,20 @@ import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.provisioning.license.exception.DuplicateIPAddressException;
 import com.liferay.osb.provisioning.license.exception.DuplicateMACAddressException;
 import com.liferay.osb.provisioning.license.exception.LicenseKeyActiveException;
+import com.liferay.osb.provisioning.license.exception.LicenseKeyDateException;
 import com.liferay.osb.provisioning.license.exception.LicenseKeyDescriptionException;
 import com.liferay.osb.provisioning.license.exception.LicenseKeyIPAddressException;
 import com.liferay.osb.provisioning.license.exception.LicenseKeyMACAddressException;
 import com.liferay.osb.provisioning.license.exception.LicenseKeyMaxClusterNodesException;
 import com.liferay.osb.provisioning.license.exception.LicenseKeyNameException;
 import com.liferay.osb.provisioning.license.exception.LicenseKeyOwnerException;
+import com.liferay.osb.provisioning.license.exception.LicenseKeyProductPurchaseKeyException;
 import com.liferay.osb.provisioning.license.exception.LicenseKeyProductVersionException;
 import com.liferay.osb.provisioning.license.exception.LicenseKeyServerInfoException;
 import com.liferay.osb.provisioning.license.exception.NoSuchLicenseKeyException;
 import com.liferay.osb.provisioning.license.generator.KeyGenerator;
 import com.liferay.osb.provisioning.license.helper.constants.LicenseLifetime;
+import com.liferay.osb.provisioning.license.helper.constants.LicenseServerId;
 import com.liferay.osb.provisioning.license.helper.constants.LicenseType;
 import com.liferay.osb.provisioning.license.helper.constants.LicenseVersion;
 import com.liferay.osb.provisioning.license.helper.constants.ProductId;
@@ -137,8 +140,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			account.getName(), productVersion, 0, name, user.getFullName(), 0,
 			1, 5, 0, 0, StringPool.BLANK,
 			account.getName() + " Developer Activation Keys", new String[0],
-			new String[0], new String[0], new String[] {LicenseType.DEVELOPER},
-			startDate, expirationDate, StringPool.BLANK, true, true);
+			new String[0], new String[] {LicenseType.DEVELOPER}, startDate,
+			expirationDate, StringPool.BLANK, true, true);
 	}
 
 	public LicenseKey addLicenseKey(
@@ -148,9 +151,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			int maxClusterNodes, int maxServers, int maxHttpSessions,
 			int maxConcurrentUsers, int maxUsers, String sizing,
 			String description, String[] hostNames, String[] ipAddresses,
-			String[] macAddresses, String[] serverIds, Date startDate,
-			Date expirationDate, String additionalInfo, boolean complimentary,
-			boolean active)
+			String[] macAddresses, Date startDate, Date expirationDate,
+			String additionalInfo, boolean complimentary, boolean active)
 		throws Exception {
 
 		User user = userLocalService.getUser(userId);
@@ -165,31 +167,18 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		int licenseVersion = LicenseVersion.getLicenseVersion(
 			product.getName(), productVersion);
 
-		Date now = new Date();
-
-		if (startDate == null) {
-			startDate = now;
-		}
-
-		name = truncateText(name, accountName, 75);
-		owner = truncateText(owner, accountName, 75);
-		description = truncateText(description, accountName, 255);
-
-		if (licenseEntryType.equals(LicenseType.VIRTUAL_CLUSTER)) {
-			maxClusterNodes = Math.max(1, maxClusterNodes);
-		}
-
 		validate(
 			productVersion, name, owner, description, licenseEntryType,
 			maxClusterNodes);
 
 		return doAddLicenseKeyVersion3_4(
-			now, user, licenseEntry, product, accountKey, productPurchaseKey,
-			accountName, licenseEntryType, licenseVersion, productVersion,
-			clusterId, name, owner, maxClusterNodes, maxServers,
+			new Date(), user, licenseEntry, product, accountKey,
+			productPurchaseKey, accountName, licenseEntryType, licenseVersion,
+			productVersion, clusterId, name, owner, maxClusterNodes, maxServers,
 			maxHttpSessions, maxConcurrentUsers, maxUsers, sizing, description,
-			hostNames, ipAddresses, macAddresses, serverIds, startDate,
-			expirationDate, additionalInfo, complimentary, active);
+			hostNames, ipAddresses, macAddresses,
+			new String[] {LicenseServerId.getServerId(licenseEntryType)},
+			startDate, expirationDate, additionalInfo, complimentary, active);
 	}
 
 	public LicenseKey addLicenseKey(
@@ -199,20 +188,30 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			int maxClusterNodes, int maxServers, int maxHttpSessions,
 			int maxConcurrentUsers, int maxUsers, String sizing,
 			String description, String[] hostNames, String[] ipAddresses,
-			String[] macAddresses, String[] serverIds, Date startDate,
-			Date expirationDate, boolean complimentary, boolean active)
+			String[] macAddresses, Date startDate, Date expirationDate,
+			boolean complimentary, boolean active)
 		throws Exception {
 
 		LicenseEntry licenseEntry = _licenseEntryLocalService.getLicenseEntry(
 			licenseEntryId);
+
+		name = truncateText(name, accountName, 75);
+		owner = truncateText(owner, accountName, 75);
+		description = truncateText(description, accountName, 255);
+
+		String licenseEntryType = licenseEntry.getType();
+
+		if (licenseEntryType.equals(LicenseType.VIRTUAL_CLUSTER)) {
+			maxClusterNodes = Math.max(1, maxClusterNodes);
+		}
 
 		return addLicenseKey(
 			userId, licenseEntry, _productWebService.getProduct(productKey),
 			accountKey, productPurchaseKey, accountName, productVersion,
 			clusterId, name, owner, maxClusterNodes, maxServers,
 			maxHttpSessions, maxConcurrentUsers, maxUsers, sizing, description,
-			hostNames, ipAddresses, macAddresses, serverIds, startDate,
-			expirationDate, StringPool.BLANK, complimentary, active);
+			hostNames, ipAddresses, macAddresses, startDate, expirationDate,
+			StringPool.BLANK, complimentary, active);
 	}
 
 	public LicenseKey addLicenseKey(
@@ -275,6 +274,33 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		licenseKey.setActive(true);
 
 		return licenseKeyPersistence.update(licenseKey);
+	}
+
+	public LicenseKey addLicenseKey(
+			long userId, String licenseEntryType, String productKey,
+			String accountKey, String productPurchaseKey, String productVersion,
+			String name, String owner, int maxClusterNodes, String sizing,
+			String description, String hostName, String ipAddresses,
+			String macAddresses, Date startDate, Date expirationDate,
+			boolean complimentary, boolean active)
+		throws Exception {
+
+		LicenseEntry licenseEntry = _licenseEntryLocalService.getLicenseEntry(
+			productKey, licenseEntryType);
+
+		validate(
+			licenseEntryType, productPurchaseKey, hostName, ipAddresses,
+			macAddresses, startDate, expirationDate);
+
+		Account account = _accountWebService.getAccount(accountKey);
+
+		return addLicenseKey(
+			userId, licenseEntry, _productWebService.getProduct(productKey),
+			accountKey, productPurchaseKey, account.getName(), productVersion,
+			0, name, owner, maxClusterNodes, 0, 0, 0, 0, sizing, description,
+			new String[] {hostName}, new String[] {ipAddresses},
+			new String[] {macAddresses}, startDate, expirationDate,
+			StringPool.BLANK, complimentary, active);
 	}
 
 	public LicenseKey extendLicenseKey(
@@ -1116,6 +1142,10 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		owner = trimText(owner);
 
+		if (!licenseEntryType.equals(LicenseType.VIRTUAL_CLUSTER)) {
+			maxClusterNodes = 0;
+		}
+
 		if (!licenseEntryType.equals(LicenseType.CLUSTER)) {
 			maxServers = 1;
 		}
@@ -1344,30 +1374,99 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 	}
 
 	protected void validate(
+			String hostName, String ipAddresses, String macAddresses)
+		throws PortalException {
+
+		Set<String> distinctIpAddresses = new HashSet<>();
+
+		String[] curIpAddresses = StringUtil.split(ipAddresses);
+
+		for (String ipAddress : curIpAddresses) {
+			validateIpAddress(ipAddress);
+
+			if (distinctIpAddresses.contains(ipAddress)) {
+				throw new DuplicateIPAddressException("Duplicate IP addresses");
+			}
+
+			distinctIpAddresses.add(ipAddress);
+		}
+
+		Set<String> distinctMacAddresses = new HashSet<>();
+
+		String[] curMacAddresses = StringUtil.split(macAddresses);
+
+		for (String macAddress : curMacAddresses) {
+			validateMacAddress(macAddress);
+
+			if (distinctMacAddresses.contains(macAddress)) {
+				throw new DuplicateMACAddressException(
+					"Duplicate MAC addresses");
+			}
+
+			distinctMacAddresses.add(macAddress);
+		}
+
+		if (Validator.isNull(hostName) && distinctIpAddresses.isEmpty() &&
+			distinctMacAddresses.isEmpty()) {
+
+			throw new LicenseKeyServerInfoException("Invalid server details");
+		}
+	}
+
+	protected void validate(
+			String licenseEntryType, String productPurchaseKey, String hostName,
+			String ipAddresses, String macAddresses, Date startDate,
+			Date expirationDate)
+		throws PortalException {
+
+		if (Validator.isNull(productPurchaseKey)) {
+			throw new LicenseKeyProductPurchaseKeyException(
+				"Invalid product purchase key");
+		}
+
+		if ((startDate == null) || (expirationDate == null) ||
+			expirationDate.before(startDate)) {
+
+			throw new LicenseKeyDateException(
+				"Invalid start date or expiration date");
+		}
+
+		if (licenseEntryType.equals(LicenseType.BACKUP) ||
+			licenseEntryType.equals(LicenseType.LIMITED) ||
+			licenseEntryType.equals(LicenseType.PER_USER) ||
+			licenseEntryType.equals(LicenseType.PRODUCTION)) {
+
+			validate(hostName, ipAddresses, macAddresses);
+		}
+	}
+
+	protected void validate(
 			String productVersion, String name, String owner,
 			String description, String licenseEntryType, int maxClusterNodes)
 		throws PortalException {
 
 		if (Validator.isNull(productVersion)) {
-			throw new LicenseKeyProductVersionException();
+			throw new LicenseKeyProductVersionException(
+				"Invalid product version");
 		}
 
 		if (Validator.isNull(name) || (name.length() > 75)) {
-			throw new LicenseKeyNameException();
+			throw new LicenseKeyNameException("Invalid license name");
 		}
 
 		if (Validator.isNull(owner) || (owner.length() > 75)) {
-			throw new LicenseKeyOwnerException();
+			throw new LicenseKeyOwnerException("Invalid owner");
 		}
 
 		if (Validator.isNull(description) || (description.length() > 255)) {
-			throw new LicenseKeyDescriptionException();
+			throw new LicenseKeyDescriptionException("Invalid description");
 		}
 
 		if (licenseEntryType.equals(LicenseType.VIRTUAL_CLUSTER) &&
 			(maxClusterNodes <= 0)) {
 
-			throw new LicenseKeyMaxClusterNodesException();
+			throw new LicenseKeyMaxClusterNodesException(
+				"Invalid max cluster nodes");
 		}
 	}
 
@@ -1377,53 +1476,25 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		throws PortalException {
 
 		if (Validator.isNull(owner) || (owner.length() > 75)) {
-			throw new LicenseKeyOwnerException();
+			throw new LicenseKeyOwnerException("Invalid owner");
 		}
 
 		if (Validator.isNull(description) || (description.length() > 255)) {
-			throw new LicenseKeyDescriptionException();
+			throw new LicenseKeyDescriptionException("Invalid description");
 		}
 
-		if (!licenseEntryType.equals(LicenseType.ENTERPRISE)) {
-			Set<String> distinctIpAddresses = new HashSet<>();
+		if (licenseEntryType.equals(LicenseType.BACKUP) ||
+			licenseEntryType.equals(LicenseType.LIMITED) ||
+			licenseEntryType.equals(LicenseType.PER_USER) ||
+			licenseEntryType.equals(LicenseType.PRODUCTION)) {
 
-			String[] curIpAddresses = StringUtil.split(ipAddresses);
-
-			for (String ipAddress : curIpAddresses) {
-				validateIpAddress(ipAddress);
-
-				if (distinctIpAddresses.contains(ipAddress)) {
-					throw new DuplicateIPAddressException();
-				}
-
-				distinctIpAddresses.add(ipAddress);
-			}
-
-			Set<String> distinctMacAddresses = new HashSet<>();
-
-			String[] curMacAddresses = StringUtil.split(macAddresses);
-
-			for (String macAddress : curMacAddresses) {
-				validateMacAddress(macAddress);
-
-				if (distinctMacAddresses.contains(macAddress)) {
-					throw new DuplicateMACAddressException();
-				}
-
-				distinctMacAddresses.add(macAddress);
-			}
-
-			if (Validator.isNull(hostName) && distinctIpAddresses.isEmpty() &&
-				distinctMacAddresses.isEmpty()) {
-
-				throw new LicenseKeyServerInfoException();
-			}
+			validate(hostName, ipAddresses, macAddresses);
 		}
 	}
 
 	protected void validateIpAddress(String ipAddress) throws PortalException {
 		if (!Validator.isIPAddress(ipAddress)) {
-			throw new LicenseKeyIPAddressException();
+			throw new LicenseKeyIPAddressException("Invalid IP addresses");
 		}
 	}
 
@@ -1436,12 +1507,13 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		String[] octets = StringUtil.split(curMacAddress, StringPool.COLON);
 
 		if (octets.length != 6) {
-			throw new LicenseKeyMACAddressException();
+			throw new LicenseKeyMACAddressException("Invalid MAC addresses");
 		}
 
 		for (String octet : octets) {
 			if (octet.length() > 2) {
-				throw new LicenseKeyMACAddressException();
+				throw new LicenseKeyMACAddressException(
+					"Invalid MAC addresses");
 			}
 
 			char[] charArray = octet.toCharArray();
@@ -1450,7 +1522,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 				if (!Validator.isDigit(c) &&
 					((c < 65) || ((c > 70) && (c < 97)) || (c > 102))) {
 
-					throw new LicenseKeyMACAddressException();
+					throw new LicenseKeyMACAddressException(
+						"Invalid MAC addresses");
 				}
 			}
 		}

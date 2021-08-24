@@ -29,6 +29,9 @@ import com.liferay.portal.vulcan.pagination.Pagination;
 import com.liferay.portal.vulcan.resource.EntityModelResource;
 import com.liferay.portal.vulcan.util.SearchUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.osgi.service.component.annotations.Component;
@@ -68,6 +71,36 @@ public class LicenseKeyResourceImpl
 				_licenseKeyLocalService.getLicenseKey(
 					GetterUtil.getLong(document.get(Field.ENTRY_CLASS_PK)))),
 			sorts);
+	}
+
+	@Override
+	public Page<LicenseKey> postLicenseKeysPage(LicenseKey[] licenseKeys)
+		throws Exception {
+
+		List<LicenseKey> curLicenseKeys = new ArrayList<>();
+
+		for (LicenseKey licenseKey : licenseKeys) {
+			LicenseKey.LicenseEntryType licenseEntryType =
+				licenseKey.getLicenseEntryType();
+			LicenseKey.Sizing sizing = licenseKey.getSizing();
+
+			com.liferay.osb.provisioning.license.model.LicenseKey
+				curLicenseKey = _licenseKeyLocalService.addLicenseKey(
+					contextUser.getUserId(), licenseEntryType.getValue(),
+					licenseKey.getProductKey(), licenseKey.getAccountKey(),
+					licenseKey.getProductPurchaseKey(),
+					licenseKey.getProductVersion(), licenseKey.getName(),
+					licenseKey.getOwner(), licenseKey.getMaxClusterNodes(),
+					sizing.getValue(), licenseKey.getDescription(),
+					licenseKey.getHostName(), licenseKey.getIpAddresses(),
+					licenseKey.getMacAddresses(), licenseKey.getStartDate(),
+					licenseKey.getExpirationDate(),
+					licenseKey.getComplimentary(), licenseKey.getActive());
+
+			curLicenseKeys.add(LicenseKeyUtil.toLicenseKey(curLicenseKey));
+		}
+
+		return Page.of(curLicenseKeys);
 	}
 
 	private static final EntityModel _entityModel = new LicenseKeyEntityModel();

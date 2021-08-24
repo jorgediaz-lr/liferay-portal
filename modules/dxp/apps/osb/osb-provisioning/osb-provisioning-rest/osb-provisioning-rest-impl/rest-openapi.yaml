@@ -215,3 +215,33 @@ paths:
                                     $ref: "#/components/schemas/LicenseKey"
                                 type: array
             tags: ["LicenseKey"]
+        post:
+            description:
+                Generates license keys.
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            items:
+                                $ref: "#/components/schemas/LicenseKey"
+                            type: array
+                    application/xml:
+                        schema:
+                            items:
+                                $ref: "#/components/schemas/LicenseKey"
+                            type: array
+                required: true
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/LicenseKey"
+                                type: array
+                        application/xml:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/LicenseKey"
+                                type: array
+            tags: ["LicenseKey"]

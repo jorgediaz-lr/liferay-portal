@@ -25,22 +25,30 @@ public class LicenseSizing {
 
 	public static final int ONE = 1;
 
+	public static final String SIZING_FOUR = "Sizing 4";
+
+	public static final String SIZING_ONE = "Sizing 1";
+
+	public static final String SIZING_THREE = "Sizing 3";
+
+	public static final String SIZING_TWO = "Sizing 2";
+
 	public static final int THREE = 3;
 
 	public static final int TWO = 2;
 
 	public static String getLabel(int sizing) {
 		if (sizing == ONE) {
-			return "Sizing 1";
+			return SIZING_ONE;
 		}
 		else if (sizing == TWO) {
-			return "Sizing 2";
+			return SIZING_TWO;
 		}
 		else if (sizing == THREE) {
-			return "Sizing 3";
+			return SIZING_THREE;
 		}
 		else if (sizing == FOUR) {
-			return "Sizing 4";
+			return SIZING_FOUR;
 		}
 
 		return StringPool.BLANK;

@@ -132,8 +132,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			int maxClusterNodes, int maxServers, int maxHttpSessions,
 			int maxConcurrentUsers, int maxUsers, String sizing,
 			String description, String[] hostNames, String[] ipAddresses,
-			String[] macAddresses, String[] serverIds, Date startDate,
-			Date expirationDate, boolean complimentary, boolean active)
+			String[] macAddresses, Date startDate, Date expirationDate,
+			boolean complimentary, boolean active)
 		throws Exception {
 
 		_licenseKeyPermission.check(
@@ -144,7 +144,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			accountName, productVersion, clusterId, name, owner,
 			maxClusterNodes, maxServers, maxHttpSessions, maxConcurrentUsers,
 			maxUsers, sizing, description, hostNames, ipAddresses, macAddresses,
-			serverIds, startDate, expirationDate, complimentary, true);
+			startDate, expirationDate, complimentary, true);
 	}
 
 	@JSONWebService

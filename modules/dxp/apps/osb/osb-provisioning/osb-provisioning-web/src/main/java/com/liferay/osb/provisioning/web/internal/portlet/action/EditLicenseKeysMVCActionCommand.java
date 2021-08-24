@@ -15,7 +15,6 @@
 package com.liferay.osb.provisioning.web.internal.portlet.action;
 
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
-import com.liferay.osb.provisioning.license.helper.constants.LicenseServerId;
 import com.liferay.osb.provisioning.license.helper.constants.LicenseSizing;
 import com.liferay.osb.provisioning.license.model.LicenseKey;
 import com.liferay.osb.provisioning.license.service.LicenseKeyService;
@@ -94,8 +93,6 @@ public class EditLicenseKeysMVCActionCommand extends BaseMVCActionCommand {
 			actionRequest, "maxHttpSessions");
 		int sizing = ParamUtil.getInteger(actionRequest, "sizing");
 		String description = ParamUtil.getString(actionRequest, "description");
-		String licenseEntryType = ParamUtil.getString(
-			actionRequest, "licenseEntryType");
 		boolean complimentary = ParamUtil.getBoolean(
 			actionRequest, "complimentary");
 
@@ -156,14 +153,6 @@ public class EditLicenseKeysMVCActionCommand extends BaseMVCActionCommand {
 			macAddresses.add(StringUtil.merge(distinctMacAddresses));
 		}
 
-		List<String> serverIds = new ArrayList<>();
-
-		String serverId = LicenseServerId.getServerId(licenseEntryType);
-
-		if (Validator.isNotNull(serverId)) {
-			serverIds.add(serverId);
-		}
-
 		LicenseKey licenseKey = _licenseKeyService.addLicenseKey(
 			themeDisplay.getUserId(), licenseEntryId, productKey, accountKey,
 			productPurchaseKey, accountName, productVersion, 0, name, owner,
@@ -171,8 +160,7 @@ public class EditLicenseKeysMVCActionCommand extends BaseMVCActionCommand {
 			LicenseSizing.getLabel(sizing), description,
 			hostNames.toArray(new String[0]),
 			ipAddresses.toArray(new String[0]),
-			macAddresses.toArray(new String[0]),
-			serverIds.toArray(new String[0]), startDate, expirationDate,
+			macAddresses.toArray(new String[0]), startDate, expirationDate,
 			complimentary, true);
 
 		PortletURL redirectURL = PortletURLFactoryUtil.create(

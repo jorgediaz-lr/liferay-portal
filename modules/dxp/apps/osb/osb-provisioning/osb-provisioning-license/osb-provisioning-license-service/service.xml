@@ -175,12 +175,14 @@
 		<exception>LicenseEntryName</exception>
 		<exception>LicenseEntryVersion</exception>
 		<exception>LicenseKeyActive</exception>
+		<exception>LicenseKeyDate</exception>
 		<exception>LicenseKeyDescription</exception>
 		<exception>LicenseKeyIPAddress</exception>
 		<exception>LicenseKeyMACAddress</exception>
 		<exception>LicenseKeyMaxClusterNodes</exception>
 		<exception>LicenseKeyName</exception>
 		<exception>LicenseKeyOwner</exception>
+		<exception>LicenseKeyProductPurchaseKey</exception>
 		<exception>LicenseKeyProductVersion</exception>
 		<exception>LicenseKeyServerId</exception>
 		<exception>LicenseKeyServerInfo</exception>
