@@ -690,7 +690,7 @@ public class ServicePreAction extends Action {
 			List<Layout> layouts, boolean ignoreHiddenLayouts)
 		throws PortalException {
 
-		if ((layouts == null) || layouts.isEmpty()) {
+		if (ListUtil.isEmpty(layouts)) {
 			return new LayoutComposite(layout, layouts);
 		}
 

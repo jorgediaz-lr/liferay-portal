@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutSetPrototypeLocalServiceUtil;
 import com.liferay.portal.kernel.service.ThemeLocalServiceUtil;
 import com.liferay.portal.kernel.service.VirtualHostLocalServiceUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.TreeMapBuilder;
 import com.liferay.portal.kernel.util.UnicodeProperties;
@@ -287,7 +288,7 @@ public class LayoutSetImpl extends LayoutSetBaseImpl {
 			_log.error(portalException, portalException);
 		}
 
-		if ((virtualHosts == null) || virtualHosts.isEmpty()) {
+		if (ListUtil.isEmpty(virtualHosts)) {
 			_virtualHostnames = new TreeMap<>();
 		}
 		else {
