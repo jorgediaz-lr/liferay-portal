@@ -205,6 +205,10 @@ public class DDMFormInstanceRecordLocalServiceImpl
 		for (DDMFormInstanceRecordVersion ddmFormInstanceRecordVersion :
 				ddmFormInstanceRecordVersions) {
 
+			assetEntryLocalService.deleteEntry(
+				DDMFormInstanceRecord.class.getName(),
+				ddmFormInstanceRecordVersion.getFormInstanceRecordVersionId());
+
 			ddmFormInstanceRecordVersionPersistence.remove(
 				ddmFormInstanceRecordVersion);
 
@@ -463,14 +467,6 @@ public class DDMFormInstanceRecordLocalServiceImpl
 				ddmFormInstanceRecordVersion);
 		}
 
-		// Asset
-
-		updateAsset(
-			userId, ddmFormInstanceRecord, ddmFormInstanceRecordVersion,
-			serviceContext.getAssetCategoryIds(),
-			serviceContext.getAssetTagNames(), serviceContext.getLocale(),
-			serviceContext.getAssetPriority());
-
 		if (isKeepFormInstanceRecordVersionLabel(
 				ddmFormInstanceRecord.getFormInstanceRecordVersion(),
 				ddmFormInstanceRecordVersion, serviceContext)) {
@@ -482,8 +478,25 @@ public class DDMFormInstanceRecordLocalServiceImpl
 				ddmFormInstanceRecordVersion.getStorageId(),
 				ddmFormInstance.getStorageType());
 
+			// Asset
+
+			updateAsset(
+				userId, ddmFormInstanceRecord,
+				ddmFormInstanceRecord.getFormInstanceRecordVersion(),
+				serviceContext.getAssetCategoryIds(),
+				serviceContext.getAssetTagNames(), serviceContext.getLocale(),
+				serviceContext.getAssetPriority());
+
 			return ddmFormInstanceRecord;
 		}
+
+		// Asset
+
+		updateAsset(
+			userId, ddmFormInstanceRecord, ddmFormInstanceRecordVersion,
+			serviceContext.getAssetCategoryIds(),
+			serviceContext.getAssetTagNames(), serviceContext.getLocale(),
+			serviceContext.getAssetPriority());
 
 		if (serviceContext.getWorkflowAction() ==
 				WorkflowConstants.ACTION_PUBLISH) {
