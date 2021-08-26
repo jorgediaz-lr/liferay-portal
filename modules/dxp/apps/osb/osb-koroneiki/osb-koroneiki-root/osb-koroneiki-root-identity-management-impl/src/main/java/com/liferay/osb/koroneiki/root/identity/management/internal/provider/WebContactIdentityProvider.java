@@ -156,26 +156,6 @@ public class WebContactIdentityProvider implements ContactIdentityProvider {
 		return _defaultUserId;
 	}
 
-	private boolean _getEmailAddressVerified(JSONObject jsonObject)
-		throws Exception {
-
-		JSONArray rolesJSONArray = jsonObject.getJSONArray("roles");
-
-		if (rolesJSONArray != null) {
-			for (int i = 0; i < rolesJSONArray.length(); i++) {
-				JSONObject roleJSONObject = rolesJSONArray.getJSONObject(i);
-
-				String name = roleJSONObject.getString("name");
-
-				if (Validator.isNotNull(name) && name.equals("Verified User")) {
-					return true;
-				}
-			}
-		}
-
-		return false;
-	}
-
 	private JSONObject _getToJSONObject(
 			String url, Map<String, String> parameters)
 		throws Exception {
@@ -229,7 +209,7 @@ public class WebContactIdentityProvider implements ContactIdentityProvider {
 			jsonObject.getString("middleName"),
 			jsonObject.getString("lastName"), emailAddress,
 			jsonObject.getString("languageId"),
-			_getEmailAddressVerified(jsonObject));
+			_isEmailAddressVerified(jsonObject));
 	}
 
 	private Contact _importContactByUuid(String uuid) throws Exception {
@@ -246,7 +226,27 @@ public class WebContactIdentityProvider implements ContactIdentityProvider {
 			jsonObject.getString("lastName"),
 			jsonObject.getString("emailAddress"),
 			jsonObject.getString("languageId"),
-			_getEmailAddressVerified(jsonObject));
+			_isEmailAddressVerified(jsonObject));
+	}
+
+	private boolean _isEmailAddressVerified(JSONObject jsonObject)
+		throws Exception {
+
+		JSONArray rolesJSONArray = jsonObject.getJSONArray("roles");
+
+		if (rolesJSONArray != null) {
+			for (int i = 0; i < rolesJSONArray.length(); i++) {
+				JSONObject roleJSONObject = rolesJSONArray.getJSONObject(i);
+
+				String name = roleJSONObject.getString("name");
+
+				if (Validator.isNotNull(name) && name.equals("Verified User")) {
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	private void _sendEmail(
