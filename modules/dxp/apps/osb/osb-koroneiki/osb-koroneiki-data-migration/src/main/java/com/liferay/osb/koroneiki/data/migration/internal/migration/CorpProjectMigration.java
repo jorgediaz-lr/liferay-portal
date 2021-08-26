@@ -125,7 +125,7 @@ public class CorpProjectMigration {
 					_getRegion(resultSet.getLong("supportRegionId")));
 				account.setLanguage(
 					_getLanguage(resultSet.getString("languageId")));
-				account.setInternal(_getInternal(resultSet.getInt("type_")));
+				account.setInternal(_isInternal(resultSet.getInt("type_")));
 				account.setStatus(Status.ACTIVE.toString());
 
 				_accountLocalService.addAccount(account);
@@ -292,14 +292,6 @@ public class CorpProjectMigration {
 		return 0;
 	}
 
-	private boolean _getInternal(int type) {
-		if (type == 3) {
-			return true;
-		}
-
-		return false;
-	}
-
 	private String _getLanguage(String languageId) {
 		if (Validator.isNull(languageId)) {
 			return StringPool.BLANK;
@@ -397,6 +389,14 @@ public class CorpProjectMigration {
 		}
 
 		return StringPool.BLANK;
+	}
+
+	private boolean _isInternal(int type) {
+		if (type == 3) {
+			return true;
+		}
+
+		return false;
 	}
 
 	private void _migrateAddress(
