@@ -6,5 +6,6 @@ application:
     name: "Liferay.Provisioning.REST"
 author: "Kyle Bischof"
 clientDir: "../osb-provisioning-rest-client/src/main/java"
+forcePredictableOperationId: true
 generateBatch: false
 testDir: "../osb-provisioning-rest-test/src/testIntegration/java"
