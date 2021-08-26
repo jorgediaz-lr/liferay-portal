@@ -34,7 +34,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -195,8 +194,6 @@ public abstract class BaseLicenseKeyResourceTestCase {
 		licenseKey.setHostName(regex);
 		licenseKey.setIpAddresses(regex);
 		licenseKey.setKey(regex);
-		licenseKey.setLicenseEntryName(regex);
-		licenseKey.setLicenseEntryType(regex);
 		licenseKey.setMacAddresses(regex);
 		licenseKey.setModifiedUserName(regex);
 		licenseKey.setModifiedUserUuid(regex);
@@ -208,7 +205,6 @@ public abstract class BaseLicenseKeyResourceTestCase {
 		licenseKey.setProductPurchaseKey(regex);
 		licenseKey.setProductVersion(regex);
 		licenseKey.setServerId(regex);
-		licenseKey.setSizing(regex);
 		licenseKey.setUserName(regex);
 		licenseKey.setUserUuid(regex);
 
@@ -226,8 +222,6 @@ public abstract class BaseLicenseKeyResourceTestCase {
 		Assert.assertEquals(regex, licenseKey.getHostName());
 		Assert.assertEquals(regex, licenseKey.getIpAddresses());
 		Assert.assertEquals(regex, licenseKey.getKey());
-		Assert.assertEquals(regex, licenseKey.getLicenseEntryName());
-		Assert.assertEquals(regex, licenseKey.getLicenseEntryType());
 		Assert.assertEquals(regex, licenseKey.getMacAddresses());
 		Assert.assertEquals(regex, licenseKey.getModifiedUserName());
 		Assert.assertEquals(regex, licenseKey.getModifiedUserUuid());
@@ -239,7 +233,6 @@ public abstract class BaseLicenseKeyResourceTestCase {
 		Assert.assertEquals(regex, licenseKey.getProductPurchaseKey());
 		Assert.assertEquals(regex, licenseKey.getProductVersion());
 		Assert.assertEquals(regex, licenseKey.getServerId());
-		Assert.assertEquals(regex, licenseKey.getSizing());
 		Assert.assertEquals(regex, licenseKey.getUserName());
 		Assert.assertEquals(regex, licenseKey.getUserUuid());
 	}
@@ -482,11 +475,48 @@ public abstract class BaseLicenseKeyResourceTestCase {
 
 	@Test
 	public void testGraphQLGetLicenseKeysPage() throws Exception {
-		Assert.assertTrue(false);
+		GraphQLField graphQLField = new GraphQLField(
+			"licenseKeys",
+			new HashMap<String, Object>() {
+				{
+					put("page", 1);
+					put("pageSize", 2);
+				}
+			},
+			new GraphQLField("items", getGraphQLFields()),
+			new GraphQLField("page"), new GraphQLField("totalCount"));
+
+		JSONObject licenseKeysJSONObject = JSONUtil.getValueAsJSONObject(
+			invokeGraphQLQuery(graphQLField), "JSONObject/data",
+			"JSONObject/licenseKeys");
+
+		Assert.assertEquals(0, licenseKeysJSONObject.get("totalCount"));
+
+		LicenseKey licenseKey1 = testGraphQLLicenseKey_addLicenseKey();
+		LicenseKey licenseKey2 = testGraphQLLicenseKey_addLicenseKey();
+
+		licenseKeysJSONObject = JSONUtil.getValueAsJSONObject(
+			invokeGraphQLQuery(graphQLField), "JSONObject/data",
+			"JSONObject/licenseKeys");
+
+		Assert.assertEquals(2, licenseKeysJSONObject.get("totalCount"));
+
+		assertEqualsIgnoringOrder(
+			Arrays.asList(licenseKey1, licenseKey2),
+			Arrays.asList(
+				LicenseKeySerDes.toDTOs(
+					licenseKeysJSONObject.getString("items"))));
 	}
 
 	@Rule
 	public SearchTestRule searchTestRule = new SearchTestRule();
+
+	protected LicenseKey testGraphQLLicenseKey_addLicenseKey()
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
+	}
 
 	protected void assertHttpResponseStatusCode(
 		int expectedHttpResponseStatusCode,
@@ -540,6 +570,10 @@ public abstract class BaseLicenseKeyResourceTestCase {
 
 	protected void assertValid(LicenseKey licenseKey) throws Exception {
 		boolean valid = true;
+
+		if (licenseKey.getId() == null) {
+			valid = false;
+		}
 
 		for (String additionalAssertFieldName :
 				getAdditionalAssertFieldNames()) {
@@ -650,14 +684,6 @@ public abstract class BaseLicenseKeyResourceTestCase {
 				continue;
 			}
 
-			if (Objects.equals("licenseEntryId", additionalAssertFieldName)) {
-				if (licenseKey.getLicenseEntryId() == null) {
-					valid = false;
-				}
-
-				continue;
-			}
-
 			if (Objects.equals("licenseEntryName", additionalAssertFieldName)) {
 				if (licenseKey.getLicenseEntryName() == null) {
 					valid = false;
@@ -668,14 +694,6 @@ public abstract class BaseLicenseKeyResourceTestCase {
 
 			if (Objects.equals("licenseEntryType", additionalAssertFieldName)) {
 				if (licenseKey.getLicenseEntryType() == null) {
-					valid = false;
-				}
-
-				continue;
-			}
-
-			if (Objects.equals("licenseKeyId", additionalAssertFieldName)) {
-				if (licenseKey.getLicenseKeyId() == null) {
 					valid = false;
 				}
 
@@ -706,16 +724,6 @@ public abstract class BaseLicenseKeyResourceTestCase {
 				continue;
 			}
 
-			if (Objects.equals(
-					"maxConcurrentUsers", additionalAssertFieldName)) {
-
-				if (licenseKey.getMaxConcurrentUsers() == null) {
-					valid = false;
-				}
-
-				continue;
-			}
-
 			if (Objects.equals("maxHttpSessions", additionalAssertFieldName)) {
 				if (licenseKey.getMaxHttpSessions() == null) {
 					valid = false;
@@ -726,14 +734,6 @@ public abstract class BaseLicenseKeyResourceTestCase {
 
 			if (Objects.equals("maxServers", additionalAssertFieldName)) {
 				if (licenseKey.getMaxServers() == null) {
-					valid = false;
-				}
-
-				continue;
-			}
-
-			if (Objects.equals("maxUsers", additionalAssertFieldName)) {
-				if (licenseKey.getMaxUsers() == null) {
 					valid = false;
 				}
 
@@ -1073,6 +1073,16 @@ public abstract class BaseLicenseKeyResourceTestCase {
 				continue;
 			}
 
+			if (Objects.equals("id", additionalAssertFieldName)) {
+				if (!Objects.deepEquals(
+						licenseKey1.getId(), licenseKey2.getId())) {
+
+					return false;
+				}
+
+				continue;
+			}
+
 			if (Objects.equals("ipAddresses", additionalAssertFieldName)) {
 				if (!Objects.deepEquals(
 						licenseKey1.getIpAddresses(),
@@ -1087,17 +1097,6 @@ public abstract class BaseLicenseKeyResourceTestCase {
 			if (Objects.equals("key", additionalAssertFieldName)) {
 				if (!Objects.deepEquals(
 						licenseKey1.getKey(), licenseKey2.getKey())) {
-
-					return false;
-				}
-
-				continue;
-			}
-
-			if (Objects.equals("licenseEntryId", additionalAssertFieldName)) {
-				if (!Objects.deepEquals(
-						licenseKey1.getLicenseEntryId(),
-						licenseKey2.getLicenseEntryId())) {
 
 					return false;
 				}
@@ -1120,17 +1119,6 @@ public abstract class BaseLicenseKeyResourceTestCase {
 				if (!Objects.deepEquals(
 						licenseKey1.getLicenseEntryType(),
 						licenseKey2.getLicenseEntryType())) {
-
-					return false;
-				}
-
-				continue;
-			}
-
-			if (Objects.equals("licenseKeyId", additionalAssertFieldName)) {
-				if (!Objects.deepEquals(
-						licenseKey1.getLicenseKeyId(),
-						licenseKey2.getLicenseKeyId())) {
 
 					return false;
 				}
@@ -1171,19 +1159,6 @@ public abstract class BaseLicenseKeyResourceTestCase {
 				continue;
 			}
 
-			if (Objects.equals(
-					"maxConcurrentUsers", additionalAssertFieldName)) {
-
-				if (!Objects.deepEquals(
-						licenseKey1.getMaxConcurrentUsers(),
-						licenseKey2.getMaxConcurrentUsers())) {
-
-					return false;
-				}
-
-				continue;
-			}
-
 			if (Objects.equals("maxHttpSessions", additionalAssertFieldName)) {
 				if (!Objects.deepEquals(
 						licenseKey1.getMaxHttpSessions(),
@@ -1199,16 +1174,6 @@ public abstract class BaseLicenseKeyResourceTestCase {
 				if (!Objects.deepEquals(
 						licenseKey1.getMaxServers(),
 						licenseKey2.getMaxServers())) {
-
-					return false;
-				}
-
-				continue;
-			}
-
-			if (Objects.equals("maxUsers", additionalAssertFieldName)) {
-				if (!Objects.deepEquals(
-						licenseKey1.getMaxUsers(), licenseKey2.getMaxUsers())) {
 
 					return false;
 				}
@@ -1599,6 +1564,11 @@ public abstract class BaseLicenseKeyResourceTestCase {
 			return sb.toString();
 		}
 
+		if (entityFieldName.equals("id")) {
+			throw new IllegalArgumentException(
+				"Invalid entity field " + entityFieldName);
+		}
+
 		if (entityFieldName.equals("ipAddresses")) {
 			sb.append("'");
 			sb.append(String.valueOf(licenseKey.getIpAddresses()));
@@ -1615,28 +1585,12 @@ public abstract class BaseLicenseKeyResourceTestCase {
 			return sb.toString();
 		}
 
-		if (entityFieldName.equals("licenseEntryId")) {
+		if (entityFieldName.equals("licenseEntryName")) {
 			throw new IllegalArgumentException(
 				"Invalid entity field " + entityFieldName);
 		}
 
-		if (entityFieldName.equals("licenseEntryName")) {
-			sb.append("'");
-			sb.append(String.valueOf(licenseKey.getLicenseEntryName()));
-			sb.append("'");
-
-			return sb.toString();
-		}
-
 		if (entityFieldName.equals("licenseEntryType")) {
-			sb.append("'");
-			sb.append(String.valueOf(licenseKey.getLicenseEntryType()));
-			sb.append("'");
-
-			return sb.toString();
-		}
-
-		if (entityFieldName.equals("licenseKeyId")) {
 			throw new IllegalArgumentException(
 				"Invalid entity field " + entityFieldName);
 		}
@@ -1659,22 +1613,12 @@ public abstract class BaseLicenseKeyResourceTestCase {
 				"Invalid entity field " + entityFieldName);
 		}
 
-		if (entityFieldName.equals("maxConcurrentUsers")) {
-			throw new IllegalArgumentException(
-				"Invalid entity field " + entityFieldName);
-		}
-
 		if (entityFieldName.equals("maxHttpSessions")) {
 			throw new IllegalArgumentException(
 				"Invalid entity field " + entityFieldName);
 		}
 
 		if (entityFieldName.equals("maxServers")) {
-			throw new IllegalArgumentException(
-				"Invalid entity field " + entityFieldName);
-		}
-
-		if (entityFieldName.equals("maxUsers")) {
 			throw new IllegalArgumentException(
 				"Invalid entity field " + entityFieldName);
 		}
@@ -1792,11 +1736,8 @@ public abstract class BaseLicenseKeyResourceTestCase {
 		}
 
 		if (entityFieldName.equals("sizing")) {
-			sb.append("'");
-			sb.append(String.valueOf(licenseKey.getSizing()));
-			sb.append("'");
-
-			return sb.toString();
+			throw new IllegalArgumentException(
+				"Invalid entity field " + entityFieldName);
 		}
 
 		if (entityFieldName.equals("startDate")) {
@@ -1907,23 +1848,16 @@ public abstract class BaseLicenseKeyResourceTestCase {
 				expirationDate = RandomTestUtil.nextDate();
 				hostName = StringUtil.toLowerCase(
 					RandomTestUtil.randomString());
+				id = RandomTestUtil.randomLong();
 				ipAddresses = StringUtil.toLowerCase(
 					RandomTestUtil.randomString());
 				key = StringUtil.toLowerCase(RandomTestUtil.randomString());
-				licenseEntryId = RandomTestUtil.randomLong();
-				licenseEntryName = StringUtil.toLowerCase(
-					RandomTestUtil.randomString());
-				licenseEntryType = StringUtil.toLowerCase(
-					RandomTestUtil.randomString());
-				licenseKeyId = RandomTestUtil.randomLong();
 				licenseVersion = RandomTestUtil.randomInt();
 				macAddresses = StringUtil.toLowerCase(
 					RandomTestUtil.randomString());
 				maxClusterNodes = RandomTestUtil.randomInt();
-				maxConcurrentUsers = RandomTestUtil.randomLong();
 				maxHttpSessions = RandomTestUtil.randomInt();
 				maxServers = RandomTestUtil.randomInt();
-				maxUsers = RandomTestUtil.randomLong();
 				modifiedDate = RandomTestUtil.nextDate();
 				modifiedUserName = StringUtil.toLowerCase(
 					RandomTestUtil.randomString());
@@ -1943,7 +1877,6 @@ public abstract class BaseLicenseKeyResourceTestCase {
 					RandomTestUtil.randomString());
 				serverId = StringUtil.toLowerCase(
 					RandomTestUtil.randomString());
-				sizing = StringUtil.toLowerCase(RandomTestUtil.randomString());
 				startDate = RandomTestUtil.nextDate();
 				userName = StringUtil.toLowerCase(
 					RandomTestUtil.randomString());
@@ -2039,8 +1972,8 @@ public abstract class BaseLicenseKeyResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseLicenseKeyResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseLicenseKeyResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

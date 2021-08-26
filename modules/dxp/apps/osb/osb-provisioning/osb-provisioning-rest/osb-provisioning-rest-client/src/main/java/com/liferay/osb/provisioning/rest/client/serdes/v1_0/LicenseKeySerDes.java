@@ -203,6 +203,16 @@ public class LicenseKeySerDes {
 			sb.append("\"");
 		}
 
+		if (licenseKey.getId() != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"id\": ");
+
+			sb.append(licenseKey.getId());
+		}
+
 		if (licenseKey.getIpAddresses() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
@@ -231,16 +241,6 @@ public class LicenseKeySerDes {
 			sb.append("\"");
 		}
 
-		if (licenseKey.getLicenseEntryId() != null) {
-			if (sb.length() > 1) {
-				sb.append(", ");
-			}
-
-			sb.append("\"licenseEntryId\": ");
-
-			sb.append(licenseKey.getLicenseEntryId());
-		}
-
 		if (licenseKey.getLicenseEntryName() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
@@ -250,7 +250,7 @@ public class LicenseKeySerDes {
 
 			sb.append("\"");
 
-			sb.append(_escape(licenseKey.getLicenseEntryName()));
+			sb.append(licenseKey.getLicenseEntryName());
 
 			sb.append("\"");
 		}
@@ -264,19 +264,9 @@ public class LicenseKeySerDes {
 
 			sb.append("\"");
 
-			sb.append(_escape(licenseKey.getLicenseEntryType()));
+			sb.append(licenseKey.getLicenseEntryType());
 
 			sb.append("\"");
-		}
-
-		if (licenseKey.getLicenseKeyId() != null) {
-			if (sb.length() > 1) {
-				sb.append(", ");
-			}
-
-			sb.append("\"licenseKeyId\": ");
-
-			sb.append(licenseKey.getLicenseKeyId());
 		}
 
 		if (licenseKey.getLicenseVersion() != null) {
@@ -313,16 +303,6 @@ public class LicenseKeySerDes {
 			sb.append(licenseKey.getMaxClusterNodes());
 		}
 
-		if (licenseKey.getMaxConcurrentUsers() != null) {
-			if (sb.length() > 1) {
-				sb.append(", ");
-			}
-
-			sb.append("\"maxConcurrentUsers\": ");
-
-			sb.append(licenseKey.getMaxConcurrentUsers());
-		}
-
 		if (licenseKey.getMaxHttpSessions() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
@@ -341,16 +321,6 @@ public class LicenseKeySerDes {
 			sb.append("\"maxServers\": ");
 
 			sb.append(licenseKey.getMaxServers());
-		}
-
-		if (licenseKey.getMaxUsers() != null) {
-			if (sb.length() > 1) {
-				sb.append(", ");
-			}
-
-			sb.append("\"maxUsers\": ");
-
-			sb.append(licenseKey.getMaxUsers());
 		}
 
 		if (licenseKey.getModifiedDate() != null) {
@@ -517,7 +487,7 @@ public class LicenseKeySerDes {
 
 			sb.append("\"");
 
-			sb.append(_escape(licenseKey.getSizing()));
+			sb.append(licenseKey.getSizing());
 
 			sb.append("\"");
 		}
@@ -672,6 +642,13 @@ public class LicenseKeySerDes {
 			map.put("hostName", String.valueOf(licenseKey.getHostName()));
 		}
 
+		if (licenseKey.getId() == null) {
+			map.put("id", null);
+		}
+		else {
+			map.put("id", String.valueOf(licenseKey.getId()));
+		}
+
 		if (licenseKey.getIpAddresses() == null) {
 			map.put("ipAddresses", null);
 		}
@@ -684,15 +661,6 @@ public class LicenseKeySerDes {
 		}
 		else {
 			map.put("key", String.valueOf(licenseKey.getKey()));
-		}
-
-		if (licenseKey.getLicenseEntryId() == null) {
-			map.put("licenseEntryId", null);
-		}
-		else {
-			map.put(
-				"licenseEntryId",
-				String.valueOf(licenseKey.getLicenseEntryId()));
 		}
 
 		if (licenseKey.getLicenseEntryName() == null) {
@@ -711,14 +679,6 @@ public class LicenseKeySerDes {
 			map.put(
 				"licenseEntryType",
 				String.valueOf(licenseKey.getLicenseEntryType()));
-		}
-
-		if (licenseKey.getLicenseKeyId() == null) {
-			map.put("licenseKeyId", null);
-		}
-		else {
-			map.put(
-				"licenseKeyId", String.valueOf(licenseKey.getLicenseKeyId()));
 		}
 
 		if (licenseKey.getLicenseVersion() == null) {
@@ -747,15 +707,6 @@ public class LicenseKeySerDes {
 				String.valueOf(licenseKey.getMaxClusterNodes()));
 		}
 
-		if (licenseKey.getMaxConcurrentUsers() == null) {
-			map.put("maxConcurrentUsers", null);
-		}
-		else {
-			map.put(
-				"maxConcurrentUsers",
-				String.valueOf(licenseKey.getMaxConcurrentUsers()));
-		}
-
 		if (licenseKey.getMaxHttpSessions() == null) {
 			map.put("maxHttpSessions", null);
 		}
@@ -770,13 +721,6 @@ public class LicenseKeySerDes {
 		}
 		else {
 			map.put("maxServers", String.valueOf(licenseKey.getMaxServers()));
-		}
-
-		if (licenseKey.getMaxUsers() == null) {
-			map.put("maxUsers", null);
-		}
-		else {
-			map.put("maxUsers", String.valueOf(licenseKey.getMaxUsers()));
 		}
 
 		if (licenseKey.getModifiedDate() == null) {
@@ -978,6 +922,12 @@ public class LicenseKeySerDes {
 					licenseKey.setHostName((String)jsonParserFieldValue);
 				}
 			}
+			else if (Objects.equals(jsonParserFieldName, "id")) {
+				if (jsonParserFieldValue != null) {
+					licenseKey.setId(
+						Long.valueOf((String)jsonParserFieldValue));
+				}
+			}
 			else if (Objects.equals(jsonParserFieldName, "ipAddresses")) {
 				if (jsonParserFieldValue != null) {
 					licenseKey.setIpAddresses((String)jsonParserFieldValue);
@@ -988,28 +938,18 @@ public class LicenseKeySerDes {
 					licenseKey.setKey((String)jsonParserFieldValue);
 				}
 			}
-			else if (Objects.equals(jsonParserFieldName, "licenseEntryId")) {
-				if (jsonParserFieldValue != null) {
-					licenseKey.setLicenseEntryId(
-						Long.valueOf((String)jsonParserFieldValue));
-				}
-			}
 			else if (Objects.equals(jsonParserFieldName, "licenseEntryName")) {
 				if (jsonParserFieldValue != null) {
 					licenseKey.setLicenseEntryName(
-						(String)jsonParserFieldValue);
+						LicenseKey.LicenseEntryName.create(
+							(String)jsonParserFieldValue));
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "licenseEntryType")) {
 				if (jsonParserFieldValue != null) {
 					licenseKey.setLicenseEntryType(
-						(String)jsonParserFieldValue);
-				}
-			}
-			else if (Objects.equals(jsonParserFieldName, "licenseKeyId")) {
-				if (jsonParserFieldValue != null) {
-					licenseKey.setLicenseKeyId(
-						Long.valueOf((String)jsonParserFieldValue));
+						LicenseKey.LicenseEntryType.create(
+							(String)jsonParserFieldValue));
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "licenseVersion")) {
@@ -1029,14 +969,6 @@ public class LicenseKeySerDes {
 						Integer.valueOf((String)jsonParserFieldValue));
 				}
 			}
-			else if (Objects.equals(
-						jsonParserFieldName, "maxConcurrentUsers")) {
-
-				if (jsonParserFieldValue != null) {
-					licenseKey.setMaxConcurrentUsers(
-						Long.valueOf((String)jsonParserFieldValue));
-				}
-			}
 			else if (Objects.equals(jsonParserFieldName, "maxHttpSessions")) {
 				if (jsonParserFieldValue != null) {
 					licenseKey.setMaxHttpSessions(
@@ -1047,12 +979,6 @@ public class LicenseKeySerDes {
 				if (jsonParserFieldValue != null) {
 					licenseKey.setMaxServers(
 						Integer.valueOf((String)jsonParserFieldValue));
-				}
-			}
-			else if (Objects.equals(jsonParserFieldName, "maxUsers")) {
-				if (jsonParserFieldValue != null) {
-					licenseKey.setMaxUsers(
-						Long.valueOf((String)jsonParserFieldValue));
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "modifiedDate")) {
@@ -1118,7 +1044,8 @@ public class LicenseKeySerDes {
 			}
 			else if (Objects.equals(jsonParserFieldName, "sizing")) {
 				if (jsonParserFieldValue != null) {
-					licenseKey.setSizing((String)jsonParserFieldValue);
+					licenseKey.setSizing(
+						LicenseKey.Sizing.create((String)jsonParserFieldValue));
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "startDate")) {

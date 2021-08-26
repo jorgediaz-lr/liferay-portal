@@ -268,6 +268,25 @@ public class LicenseKey implements Cloneable, Serializable {
 
 	protected String hostName;
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setId(UnsafeSupplier<Long, Exception> idUnsafeSupplier) {
+		try {
+			id = idUnsafeSupplier.get();
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected Long id;
+
 	public String getIpAddresses() {
 		return ipAddresses;
 	}
@@ -308,37 +327,25 @@ public class LicenseKey implements Cloneable, Serializable {
 
 	protected String key;
 
-	public Long getLicenseEntryId() {
-		return licenseEntryId;
-	}
-
-	public void setLicenseEntryId(Long licenseEntryId) {
-		this.licenseEntryId = licenseEntryId;
-	}
-
-	public void setLicenseEntryId(
-		UnsafeSupplier<Long, Exception> licenseEntryIdUnsafeSupplier) {
-
-		try {
-			licenseEntryId = licenseEntryIdUnsafeSupplier.get();
-		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	protected Long licenseEntryId;
-
-	public String getLicenseEntryName() {
+	public LicenseEntryName getLicenseEntryName() {
 		return licenseEntryName;
 	}
 
-	public void setLicenseEntryName(String licenseEntryName) {
+	public String getLicenseEntryNameAsString() {
+		if (licenseEntryName == null) {
+			return null;
+		}
+
+		return licenseEntryName.toString();
+	}
+
+	public void setLicenseEntryName(LicenseEntryName licenseEntryName) {
 		this.licenseEntryName = licenseEntryName;
 	}
 
 	public void setLicenseEntryName(
-		UnsafeSupplier<String, Exception> licenseEntryNameUnsafeSupplier) {
+		UnsafeSupplier<LicenseEntryName, Exception>
+			licenseEntryNameUnsafeSupplier) {
 
 		try {
 			licenseEntryName = licenseEntryNameUnsafeSupplier.get();
@@ -348,18 +355,27 @@ public class LicenseKey implements Cloneable, Serializable {
 		}
 	}
 
-	protected String licenseEntryName;
+	protected LicenseEntryName licenseEntryName;
 
-	public String getLicenseEntryType() {
+	public LicenseEntryType getLicenseEntryType() {
 		return licenseEntryType;
 	}
 
-	public void setLicenseEntryType(String licenseEntryType) {
+	public String getLicenseEntryTypeAsString() {
+		if (licenseEntryType == null) {
+			return null;
+		}
+
+		return licenseEntryType.toString();
+	}
+
+	public void setLicenseEntryType(LicenseEntryType licenseEntryType) {
 		this.licenseEntryType = licenseEntryType;
 	}
 
 	public void setLicenseEntryType(
-		UnsafeSupplier<String, Exception> licenseEntryTypeUnsafeSupplier) {
+		UnsafeSupplier<LicenseEntryType, Exception>
+			licenseEntryTypeUnsafeSupplier) {
 
 		try {
 			licenseEntryType = licenseEntryTypeUnsafeSupplier.get();
@@ -369,28 +385,7 @@ public class LicenseKey implements Cloneable, Serializable {
 		}
 	}
 
-	protected String licenseEntryType;
-
-	public Long getLicenseKeyId() {
-		return licenseKeyId;
-	}
-
-	public void setLicenseKeyId(Long licenseKeyId) {
-		this.licenseKeyId = licenseKeyId;
-	}
-
-	public void setLicenseKeyId(
-		UnsafeSupplier<Long, Exception> licenseKeyIdUnsafeSupplier) {
-
-		try {
-			licenseKeyId = licenseKeyIdUnsafeSupplier.get();
-		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	protected Long licenseKeyId;
+	protected LicenseEntryType licenseEntryType;
 
 	public Integer getLicenseVersion() {
 		return licenseVersion;
@@ -455,27 +450,6 @@ public class LicenseKey implements Cloneable, Serializable {
 
 	protected Integer maxClusterNodes;
 
-	public Long getMaxConcurrentUsers() {
-		return maxConcurrentUsers;
-	}
-
-	public void setMaxConcurrentUsers(Long maxConcurrentUsers) {
-		this.maxConcurrentUsers = maxConcurrentUsers;
-	}
-
-	public void setMaxConcurrentUsers(
-		UnsafeSupplier<Long, Exception> maxConcurrentUsersUnsafeSupplier) {
-
-		try {
-			maxConcurrentUsers = maxConcurrentUsersUnsafeSupplier.get();
-		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	protected Long maxConcurrentUsers;
-
 	public Integer getMaxHttpSessions() {
 		return maxHttpSessions;
 	}
@@ -517,27 +491,6 @@ public class LicenseKey implements Cloneable, Serializable {
 	}
 
 	protected Integer maxServers;
-
-	public Long getMaxUsers() {
-		return maxUsers;
-	}
-
-	public void setMaxUsers(Long maxUsers) {
-		this.maxUsers = maxUsers;
-	}
-
-	public void setMaxUsers(
-		UnsafeSupplier<Long, Exception> maxUsersUnsafeSupplier) {
-
-		try {
-			maxUsers = maxUsersUnsafeSupplier.get();
-		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	protected Long maxUsers;
 
 	public Date getModifiedDate() {
 		return modifiedDate;
@@ -768,16 +721,24 @@ public class LicenseKey implements Cloneable, Serializable {
 
 	protected String serverId;
 
-	public String getSizing() {
+	public Sizing getSizing() {
 		return sizing;
 	}
 
-	public void setSizing(String sizing) {
+	public String getSizingAsString() {
+		if (sizing == null) {
+			return null;
+		}
+
+		return sizing.toString();
+	}
+
+	public void setSizing(Sizing sizing) {
 		this.sizing = sizing;
 	}
 
 	public void setSizing(
-		UnsafeSupplier<String, Exception> sizingUnsafeSupplier) {
+		UnsafeSupplier<Sizing, Exception> sizingUnsafeSupplier) {
 
 		try {
 			sizing = sizingUnsafeSupplier.get();
@@ -787,7 +748,7 @@ public class LicenseKey implements Cloneable, Serializable {
 		}
 	}
 
-	protected String sizing;
+	protected Sizing sizing;
 
 	public Date getStartDate() {
 		return startDate;
@@ -881,6 +842,149 @@ public class LicenseKey implements Cloneable, Serializable {
 
 	public String toString() {
 		return LicenseKeySerDes.toJSON(this);
+	}
+
+	public static enum LicenseEntryName {
+
+		COMMERCE_SUBSCRIPTION_BACKUP("Commerce Subscription Backup"),
+		COMMERCE_SUBSCRIPTION_BACKUP_VIRTUAL_CLUSTER(
+			"Commerce Subscription Backup (Virtual Cluster)"),
+		COMMERCE_SUBSCRIPTION_DEVELOPMENT("Commerce Subscription Development"),
+		COMMERCE_SUBSCRIPTION_NON_PRODUCTION(
+			"Commerce Subscription Non-Production"),
+		COMMERCE_SUBSCRIPTION_NON_PRODUCTION_VIRTUAL_CLUSTER(
+			"Commerce Subscription Non-Production (Virtual Cluster)"),
+		COMMERCE_SUBSCRIPTION_PRODUCTION("Commerce Subscription Production"),
+		COMMERCE_SUBSCRIPTION_PRODUCTION_VIRTUAL_CLUSTER(
+			"Commerce Subscription Production (Virtual Cluster)"),
+		COMMERCE_SUBSCRIPTION_UNLIMITED_ENTERPRISE_WIDE(
+			"Commerce Subscription Unlimited Enterprise-Wide"),
+		DXP_BACKUP("DXP Backup"),
+		DXP_BACKUP_VIRTUAL_CLUSTER("DXP Backup (Virtual Cluster)"),
+		DXP_DEVELOPMENT("DXP Development"),
+		DXP_DEVELOPMENT_CLUSTER("DXP Development (Cluster)"),
+		DXP_FLEX("DXP Flex"), DXP_LIMITED("DXP Limited"),
+		DXP_NON_PRODUCTION("DXP Non-Production"),
+		DXP_NON_PRODUCTION_VIRTUAL_CLUSTER(
+			"DXP Non-Production (Virtual Cluster)"),
+		DXP_OEM("DXP OEM"), DXP_PRODUCTION("DXP Production"),
+		DXP_PRODUCTION_VIRTUAL_CLUSTER("DXP Production (Virtual Cluster)"),
+		DXP_UNLIMITED_ENTERPRISE_WIDE("DXP Unlimited Enterprise-Wide"),
+		PORTAL_BACKUP("Portal Backup"),
+		PORTAL_BACKUP_ADDITIONAL_JVM("Portal Backup (Additional JVM)"),
+		PORTAL_BACKUP_CLUSTER("Portal Backup (Cluster)"),
+		PORTAL_DEVELOPER("Portal Developer"),
+		PORTAL_DEVELOPER_CLUSTER("Portal Developer (Cluster)"),
+		PORTAL_ENTERPRISE("Portal Enterprise"),
+		PORTAL_LIMITED("Portal Limited"),
+		PORTAL_NON_PRODUCTION("Portal Non-Production"),
+		PORTAL_NON_PRODUCTION_ADDITIONAL_JVM(
+			"Portal Non-Production (Additional JVM)"),
+		PORTAL_NON_PRODUCTION_CLUSTER("Portal Non-Production (Cluster)"),
+		PORTAL_NON_PRODUCTION_ELASTIC("Portal Non-Production (Elastic)"),
+		PORTAL_NON_PRODUCTION_MONTHLY("Portal Non-Production (Monthly)"),
+		PORTAL_OEM("Portal OEM"), PORTAL_PER_USER("Portal Per User"),
+		PORTAL_PRODUCTION("Portal Production"),
+		PORTAL_PRODUCTION_ADDITIONAL_JVM("Portal Production (Additional JVM)"),
+		PORTAL_PRODUCTION_CLUSTER("Portal Production (Cluster)");
+
+		public static LicenseEntryName create(String value) {
+			for (LicenseEntryName licenseEntryName : values()) {
+				if (Objects.equals(licenseEntryName.getValue(), value) ||
+					Objects.equals(licenseEntryName.name(), value)) {
+
+					return licenseEntryName;
+				}
+			}
+
+			return null;
+		}
+
+		public String getValue() {
+			return _value;
+		}
+
+		@Override
+		public String toString() {
+			return _value;
+		}
+
+		private LicenseEntryName(String value) {
+			_value = value;
+		}
+
+		private final String _value;
+
+	}
+
+	public static enum LicenseEntryType {
+
+		CLUSTER("cluster"), DEVELOPER("developer"),
+		DEVELOPER_CLUSTER("developer-cluster"), ENTERPRISE("enterprise"),
+		LIMITED("limited"), OEM("oem"), PER_USER("per-user"),
+		PRODUCTION("production"), VIRTUAL_CLUSTER("virtual-cluster");
+
+		public static LicenseEntryType create(String value) {
+			for (LicenseEntryType licenseEntryType : values()) {
+				if (Objects.equals(licenseEntryType.getValue(), value) ||
+					Objects.equals(licenseEntryType.name(), value)) {
+
+					return licenseEntryType;
+				}
+			}
+
+			return null;
+		}
+
+		public String getValue() {
+			return _value;
+		}
+
+		@Override
+		public String toString() {
+			return _value;
+		}
+
+		private LicenseEntryType(String value) {
+			_value = value;
+		}
+
+		private final String _value;
+
+	}
+
+	public static enum Sizing {
+
+		SIZING_1("Sizing 1"), SIZING_2("Sizing 2"), SIZING_3("Sizing 3"),
+		SIZING_4("Sizing 4");
+
+		public static Sizing create(String value) {
+			for (Sizing sizing : values()) {
+				if (Objects.equals(sizing.getValue(), value) ||
+					Objects.equals(sizing.name(), value)) {
+
+					return sizing;
+				}
+			}
+
+			return null;
+		}
+
+		public String getValue() {
+			return _value;
+		}
+
+		@Override
+		public String toString() {
+			return _value;
+		}
+
+		private Sizing(String value) {
+			_value = value;
+		}
+
+		private final String _value;
+
 	}
 
 }

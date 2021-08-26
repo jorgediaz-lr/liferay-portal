@@ -14,9 +14,11 @@
 
 package com.liferay.osb.provisioning.rest.dto.v1_0;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 import com.liferay.petra.function.UnsafeSupplier;
 import com.liferay.petra.string.StringBundler;
@@ -38,6 +40,8 @@ import java.util.Objects;
 import java.util.Set;
 
 import javax.annotation.Generated;
+
+import javax.validation.Valid;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -108,7 +112,7 @@ public class LicenseKey implements Serializable {
 	}
 
 	@GraphQLField(description = "The name of the license key's account.")
-	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	protected String accountName;
 
 	@Schema(description = "If the license key is active or not.")
@@ -377,6 +381,32 @@ public class LicenseKey implements Serializable {
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected String hostName;
 
+	@Schema(description = "The id of the license key.")
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	@JsonIgnore
+	public void setId(UnsafeSupplier<Long, Exception> idUnsafeSupplier) {
+		try {
+			id = idUnsafeSupplier.get();
+		}
+		catch (RuntimeException re) {
+			throw re;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@GraphQLField(description = "The id of the license key.")
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	protected Long id;
+
 	@Schema(description = "The IP addresses of the license key.")
 	public String getIpAddresses() {
 		return ipAddresses;
@@ -431,48 +461,29 @@ public class LicenseKey implements Serializable {
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	protected String key;
 
-	@Schema(description = "The id of the license entry of the license key.")
-	public Long getLicenseEntryId() {
-		return licenseEntryId;
-	}
-
-	public void setLicenseEntryId(Long licenseEntryId) {
-		this.licenseEntryId = licenseEntryId;
-	}
-
-	@JsonIgnore
-	public void setLicenseEntryId(
-		UnsafeSupplier<Long, Exception> licenseEntryIdUnsafeSupplier) {
-
-		try {
-			licenseEntryId = licenseEntryIdUnsafeSupplier.get();
-		}
-		catch (RuntimeException re) {
-			throw re;
-		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	@GraphQLField(
-		description = "The id of the license entry of the license key."
-	)
-	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
-	protected Long licenseEntryId;
-
 	@Schema(description = "The name of the license entry of the license key.")
-	public String getLicenseEntryName() {
+	@Valid
+	public LicenseEntryName getLicenseEntryName() {
 		return licenseEntryName;
 	}
 
-	public void setLicenseEntryName(String licenseEntryName) {
+	@JsonIgnore
+	public String getLicenseEntryNameAsString() {
+		if (licenseEntryName == null) {
+			return null;
+		}
+
+		return licenseEntryName.toString();
+	}
+
+	public void setLicenseEntryName(LicenseEntryName licenseEntryName) {
 		this.licenseEntryName = licenseEntryName;
 	}
 
 	@JsonIgnore
 	public void setLicenseEntryName(
-		UnsafeSupplier<String, Exception> licenseEntryNameUnsafeSupplier) {
+		UnsafeSupplier<LicenseEntryName, Exception>
+			licenseEntryNameUnsafeSupplier) {
 
 		try {
 			licenseEntryName = licenseEntryNameUnsafeSupplier.get();
@@ -489,20 +500,31 @@ public class LicenseKey implements Serializable {
 		description = "The name of the license entry of the license key."
 	)
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
-	protected String licenseEntryName;
+	protected LicenseEntryName licenseEntryName;
 
 	@Schema(description = "The type of the license entry of the license key.")
-	public String getLicenseEntryType() {
+	@Valid
+	public LicenseEntryType getLicenseEntryType() {
 		return licenseEntryType;
 	}
 
-	public void setLicenseEntryType(String licenseEntryType) {
+	@JsonIgnore
+	public String getLicenseEntryTypeAsString() {
+		if (licenseEntryType == null) {
+			return null;
+		}
+
+		return licenseEntryType.toString();
+	}
+
+	public void setLicenseEntryType(LicenseEntryType licenseEntryType) {
 		this.licenseEntryType = licenseEntryType;
 	}
 
 	@JsonIgnore
 	public void setLicenseEntryType(
-		UnsafeSupplier<String, Exception> licenseEntryTypeUnsafeSupplier) {
+		UnsafeSupplier<LicenseEntryType, Exception>
+			licenseEntryTypeUnsafeSupplier) {
 
 		try {
 			licenseEntryType = licenseEntryTypeUnsafeSupplier.get();
@@ -519,35 +541,7 @@ public class LicenseKey implements Serializable {
 		description = "The type of the license entry of the license key."
 	)
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
-	protected String licenseEntryType;
-
-	@Schema(description = "The id of the license key.")
-	public Long getLicenseKeyId() {
-		return licenseKeyId;
-	}
-
-	public void setLicenseKeyId(Long licenseKeyId) {
-		this.licenseKeyId = licenseKeyId;
-	}
-
-	@JsonIgnore
-	public void setLicenseKeyId(
-		UnsafeSupplier<Long, Exception> licenseKeyIdUnsafeSupplier) {
-
-		try {
-			licenseKeyId = licenseKeyIdUnsafeSupplier.get();
-		}
-		catch (RuntimeException re) {
-			throw re;
-		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	@GraphQLField(description = "The id of the license key.")
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
-	protected Long licenseKeyId;
+	protected LicenseEntryType licenseEntryType;
 
 	@Schema(description = "The portal's license version of the license key.")
 	public Integer getLicenseVersion() {
@@ -640,38 +634,6 @@ public class LicenseKey implements Serializable {
 	protected Integer maxClusterNodes;
 
 	@Schema(
-		description = "The maximum number of concurrent users the license key can handle."
-	)
-	public Long getMaxConcurrentUsers() {
-		return maxConcurrentUsers;
-	}
-
-	public void setMaxConcurrentUsers(Long maxConcurrentUsers) {
-		this.maxConcurrentUsers = maxConcurrentUsers;
-	}
-
-	@JsonIgnore
-	public void setMaxConcurrentUsers(
-		UnsafeSupplier<Long, Exception> maxConcurrentUsersUnsafeSupplier) {
-
-		try {
-			maxConcurrentUsers = maxConcurrentUsersUnsafeSupplier.get();
-		}
-		catch (RuntimeException re) {
-			throw re;
-		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	@GraphQLField(
-		description = "The maximum number of concurrent users the license key can handle."
-	)
-	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
-	protected Long maxConcurrentUsers;
-
-	@Schema(
 		description = "The maximum number of http sessions the license key can handle."
 	)
 	public Integer getMaxHttpSessions() {
@@ -732,38 +694,6 @@ public class LicenseKey implements Serializable {
 	)
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Integer maxServers;
-
-	@Schema(
-		description = "The maximum number of users the license key can handle."
-	)
-	public Long getMaxUsers() {
-		return maxUsers;
-	}
-
-	public void setMaxUsers(Long maxUsers) {
-		this.maxUsers = maxUsers;
-	}
-
-	@JsonIgnore
-	public void setMaxUsers(
-		UnsafeSupplier<Long, Exception> maxUsersUnsafeSupplier) {
-
-		try {
-			maxUsers = maxUsersUnsafeSupplier.get();
-		}
-		catch (RuntimeException re) {
-			throw re;
-		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	@GraphQLField(
-		description = "The maximum number of users the license key can handle."
-	)
-	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
-	protected Long maxUsers;
 
 	@Schema(description = "The last date the license key was modified.")
 	public Date getModifiedDate() {
@@ -1084,17 +1014,27 @@ public class LicenseKey implements Serializable {
 	protected String serverId;
 
 	@Schema(description = "The sizing of the license key.")
-	public String getSizing() {
+	@Valid
+	public Sizing getSizing() {
 		return sizing;
 	}
 
-	public void setSizing(String sizing) {
+	@JsonIgnore
+	public String getSizingAsString() {
+		if (sizing == null) {
+			return null;
+		}
+
+		return sizing.toString();
+	}
+
+	public void setSizing(Sizing sizing) {
 		this.sizing = sizing;
 	}
 
 	@JsonIgnore
 	public void setSizing(
-		UnsafeSupplier<String, Exception> sizingUnsafeSupplier) {
+		UnsafeSupplier<Sizing, Exception> sizingUnsafeSupplier) {
 
 		try {
 			sizing = sizingUnsafeSupplier.get();
@@ -1109,7 +1049,7 @@ public class LicenseKey implements Serializable {
 
 	@GraphQLField(description = "The sizing of the license key.")
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
-	protected String sizing;
+	protected Sizing sizing;
 
 	@Schema(description = "The date the license key can start being used.")
 	public Date getStartDate() {
@@ -1373,6 +1313,16 @@ public class LicenseKey implements Serializable {
 			sb.append("\"");
 		}
 
+		if (id != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"id\": ");
+
+			sb.append(id);
+		}
+
 		if (ipAddresses != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
@@ -1401,16 +1351,6 @@ public class LicenseKey implements Serializable {
 			sb.append("\"");
 		}
 
-		if (licenseEntryId != null) {
-			if (sb.length() > 1) {
-				sb.append(", ");
-			}
-
-			sb.append("\"licenseEntryId\": ");
-
-			sb.append(licenseEntryId);
-		}
-
 		if (licenseEntryName != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
@@ -1420,7 +1360,7 @@ public class LicenseKey implements Serializable {
 
 			sb.append("\"");
 
-			sb.append(_escape(licenseEntryName));
+			sb.append(licenseEntryName);
 
 			sb.append("\"");
 		}
@@ -1434,19 +1374,9 @@ public class LicenseKey implements Serializable {
 
 			sb.append("\"");
 
-			sb.append(_escape(licenseEntryType));
+			sb.append(licenseEntryType);
 
 			sb.append("\"");
-		}
-
-		if (licenseKeyId != null) {
-			if (sb.length() > 1) {
-				sb.append(", ");
-			}
-
-			sb.append("\"licenseKeyId\": ");
-
-			sb.append(licenseKeyId);
 		}
 
 		if (licenseVersion != null) {
@@ -1483,16 +1413,6 @@ public class LicenseKey implements Serializable {
 			sb.append(maxClusterNodes);
 		}
 
-		if (maxConcurrentUsers != null) {
-			if (sb.length() > 1) {
-				sb.append(", ");
-			}
-
-			sb.append("\"maxConcurrentUsers\": ");
-
-			sb.append(maxConcurrentUsers);
-		}
-
 		if (maxHttpSessions != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
@@ -1511,16 +1431,6 @@ public class LicenseKey implements Serializable {
 			sb.append("\"maxServers\": ");
 
 			sb.append(maxServers);
-		}
-
-		if (maxUsers != null) {
-			if (sb.length() > 1) {
-				sb.append(", ");
-			}
-
-			sb.append("\"maxUsers\": ");
-
-			sb.append(maxUsers);
 		}
 
 		if (modifiedDate != null) {
@@ -1686,7 +1596,7 @@ public class LicenseKey implements Serializable {
 
 			sb.append("\"");
 
-			sb.append(_escape(sizing));
+			sb.append(sizing);
 
 			sb.append("\"");
 		}
@@ -1744,6 +1654,164 @@ public class LicenseKey implements Serializable {
 		name = "x-class-name"
 	)
 	public String xClassName;
+
+	@GraphQLName("LicenseEntryName")
+	public static enum LicenseEntryName {
+
+		COMMERCE_SUBSCRIPTION_BACKUP("Commerce Subscription Backup"),
+		COMMERCE_SUBSCRIPTION_BACKUP_VIRTUAL_CLUSTER(
+			"Commerce Subscription Backup (Virtual Cluster)"),
+		COMMERCE_SUBSCRIPTION_DEVELOPMENT("Commerce Subscription Development"),
+		COMMERCE_SUBSCRIPTION_NON_PRODUCTION(
+			"Commerce Subscription Non-Production"),
+		COMMERCE_SUBSCRIPTION_NON_PRODUCTION_VIRTUAL_CLUSTER(
+			"Commerce Subscription Non-Production (Virtual Cluster)"),
+		COMMERCE_SUBSCRIPTION_PRODUCTION("Commerce Subscription Production"),
+		COMMERCE_SUBSCRIPTION_PRODUCTION_VIRTUAL_CLUSTER(
+			"Commerce Subscription Production (Virtual Cluster)"),
+		COMMERCE_SUBSCRIPTION_UNLIMITED_ENTERPRISE_WIDE(
+			"Commerce Subscription Unlimited Enterprise-Wide"),
+		DXP_BACKUP("DXP Backup"),
+		DXP_BACKUP_VIRTUAL_CLUSTER("DXP Backup (Virtual Cluster)"),
+		DXP_DEVELOPMENT("DXP Development"),
+		DXP_DEVELOPMENT_CLUSTER("DXP Development (Cluster)"),
+		DXP_FLEX("DXP Flex"), DXP_LIMITED("DXP Limited"),
+		DXP_NON_PRODUCTION("DXP Non-Production"),
+		DXP_NON_PRODUCTION_VIRTUAL_CLUSTER(
+			"DXP Non-Production (Virtual Cluster)"),
+		DXP_OEM("DXP OEM"), DXP_PRODUCTION("DXP Production"),
+		DXP_PRODUCTION_VIRTUAL_CLUSTER("DXP Production (Virtual Cluster)"),
+		DXP_UNLIMITED_ENTERPRISE_WIDE("DXP Unlimited Enterprise-Wide"),
+		PORTAL_BACKUP("Portal Backup"),
+		PORTAL_BACKUP_ADDITIONAL_JVM("Portal Backup (Additional JVM)"),
+		PORTAL_BACKUP_CLUSTER("Portal Backup (Cluster)"),
+		PORTAL_DEVELOPER("Portal Developer"),
+		PORTAL_DEVELOPER_CLUSTER("Portal Developer (Cluster)"),
+		PORTAL_ENTERPRISE("Portal Enterprise"),
+		PORTAL_LIMITED("Portal Limited"),
+		PORTAL_NON_PRODUCTION("Portal Non-Production"),
+		PORTAL_NON_PRODUCTION_ADDITIONAL_JVM(
+			"Portal Non-Production (Additional JVM)"),
+		PORTAL_NON_PRODUCTION_CLUSTER("Portal Non-Production (Cluster)"),
+		PORTAL_NON_PRODUCTION_ELASTIC("Portal Non-Production (Elastic)"),
+		PORTAL_NON_PRODUCTION_MONTHLY("Portal Non-Production (Monthly)"),
+		PORTAL_OEM("Portal OEM"), PORTAL_PER_USER("Portal Per User"),
+		PORTAL_PRODUCTION("Portal Production"),
+		PORTAL_PRODUCTION_ADDITIONAL_JVM("Portal Production (Additional JVM)"),
+		PORTAL_PRODUCTION_CLUSTER("Portal Production (Cluster)");
+
+		@JsonCreator
+		public static LicenseEntryName create(String value) {
+			if ((value == null) || value.equals("")) {
+				return null;
+			}
+
+			for (LicenseEntryName licenseEntryName : values()) {
+				if (Objects.equals(licenseEntryName.getValue(), value)) {
+					return licenseEntryName;
+				}
+			}
+
+			throw new IllegalArgumentException("Invalid enum value: " + value);
+		}
+
+		@JsonValue
+		public String getValue() {
+			return _value;
+		}
+
+		@Override
+		public String toString() {
+			return _value;
+		}
+
+		private LicenseEntryName(String value) {
+			_value = value;
+		}
+
+		private final String _value;
+
+	}
+
+	@GraphQLName("LicenseEntryType")
+	public static enum LicenseEntryType {
+
+		CLUSTER("cluster"), DEVELOPER("developer"),
+		DEVELOPER_CLUSTER("developer-cluster"), ENTERPRISE("enterprise"),
+		LIMITED("limited"), OEM("oem"), PER_USER("per-user"),
+		PRODUCTION("production"), VIRTUAL_CLUSTER("virtual-cluster");
+
+		@JsonCreator
+		public static LicenseEntryType create(String value) {
+			if ((value == null) || value.equals("")) {
+				return null;
+			}
+
+			for (LicenseEntryType licenseEntryType : values()) {
+				if (Objects.equals(licenseEntryType.getValue(), value)) {
+					return licenseEntryType;
+				}
+			}
+
+			throw new IllegalArgumentException("Invalid enum value: " + value);
+		}
+
+		@JsonValue
+		public String getValue() {
+			return _value;
+		}
+
+		@Override
+		public String toString() {
+			return _value;
+		}
+
+		private LicenseEntryType(String value) {
+			_value = value;
+		}
+
+		private final String _value;
+
+	}
+
+	@GraphQLName("Sizing")
+	public static enum Sizing {
+
+		SIZING_1("Sizing 1"), SIZING_2("Sizing 2"), SIZING_3("Sizing 3"),
+		SIZING_4("Sizing 4");
+
+		@JsonCreator
+		public static Sizing create(String value) {
+			if ((value == null) || value.equals("")) {
+				return null;
+			}
+
+			for (Sizing sizing : values()) {
+				if (Objects.equals(sizing.getValue(), value)) {
+					return sizing;
+				}
+			}
+
+			throw new IllegalArgumentException("Invalid enum value: " + value);
+		}
+
+		@JsonValue
+		public String getValue() {
+			return _value;
+		}
+
+		@Override
+		public String toString() {
+			return _value;
+		}
+
+		private Sizing(String value) {
+			_value = value;
+		}
+
+		private final String _value;
+
+	}
 
 	private static String _escape(Object object) {
 		String string = String.valueOf(object);
