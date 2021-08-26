@@ -56,6 +56,13 @@ public interface LicenseKeyResource {
 			String search, Filter filter, Pagination pagination, Sort[] sorts)
 		throws Exception;
 
+	public Page<LicenseKey> postLicenseKeysPage(LicenseKey[] licenseKeys)
+		throws Exception;
+
+	public void putLicenseKeyActivate(Long[] licenseKeyIds) throws Exception;
+
+	public void putLicenseKeyDeactivate(Long[] licenseKeyIds) throws Exception;
+
 	public default void setContextAcceptLanguage(
 		AcceptLanguage contextAcceptLanguage) {
 	}

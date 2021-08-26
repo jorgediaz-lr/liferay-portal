@@ -508,6 +508,49 @@ public abstract class BaseLicenseKeyResourceTestCase {
 					licenseKeysJSONObject.getString("items"))));
 	}
 
+	@Test
+	public void testPostLicenseKeysPage() throws Exception {
+		Assert.assertTrue(false);
+	}
+
+	@Test
+	public void testPutLicenseKeyActivate() throws Exception {
+		@SuppressWarnings("PMD.UnusedLocalVariable")
+		LicenseKey licenseKey = testPutLicenseKeyActivate_addLicenseKey();
+
+		assertHttpResponseStatusCode(
+			204, licenseKeyResource.putLicenseKeyActivateHttpResponse(null));
+
+		assertHttpResponseStatusCode(
+			404, licenseKeyResource.putLicenseKeyActivateHttpResponse(null));
+	}
+
+	protected LicenseKey testPutLicenseKeyActivate_addLicenseKey()
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
+	}
+
+	@Test
+	public void testPutLicenseKeyDeactivate() throws Exception {
+		@SuppressWarnings("PMD.UnusedLocalVariable")
+		LicenseKey licenseKey = testPutLicenseKeyDeactivate_addLicenseKey();
+
+		assertHttpResponseStatusCode(
+			204, licenseKeyResource.putLicenseKeyDeactivateHttpResponse(null));
+
+		assertHttpResponseStatusCode(
+			404, licenseKeyResource.putLicenseKeyDeactivateHttpResponse(null));
+	}
+
+	protected LicenseKey testPutLicenseKeyDeactivate_addLicenseKey()
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
+	}
+
 	@Rule
 	public SearchTestRule searchTestRule = new SearchTestRule();
 

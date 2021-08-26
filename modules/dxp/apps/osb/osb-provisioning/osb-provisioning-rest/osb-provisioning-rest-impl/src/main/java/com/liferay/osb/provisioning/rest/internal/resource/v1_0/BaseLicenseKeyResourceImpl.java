@@ -47,7 +47,12 @@ import javax.annotation.Generated;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import javax.validation.constraints.NotNull;
+
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -91,6 +96,64 @@ public abstract class BaseLicenseKeyResourceImpl implements LicenseKeyResource {
 		throws Exception {
 
 		return Page.of(Collections.emptyList());
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -X 'POST' 'http://localhost:8080/o/provisioning-rest/v1.0/license-keys'  -u 'test@liferay.com:test'
+	 */
+	@Consumes({"application/json", "application/xml"})
+	@Operation(description = "Generates license keys.")
+	@Override
+	@Path("/license-keys")
+	@POST
+	@Produces({"application/json", "application/xml"})
+	@Tags(value = {@Tag(name = "LicenseKey")})
+	public Page<LicenseKey> postLicenseKeysPage(LicenseKey[] licenseKeys)
+		throws Exception {
+
+		return Page.of(Collections.emptyList());
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -X 'PUT' 'http://localhost:8080/o/provisioning-rest/v1.0/license-keys/activate'  -u 'test@liferay.com:test'
+	 */
+	@Operation(description = "Activates license keys.")
+	@Override
+	@Parameters(
+		value = {@Parameter(in = ParameterIn.QUERY, name = "licenseKeyIds")}
+	)
+	@Path("/license-keys/activate")
+	@Produces({"application/json", "application/xml"})
+	@PUT
+	@Tags(value = {@Tag(name = "LicenseKey")})
+	public void putLicenseKeyActivate(
+			@NotNull @Parameter(hidden = true) @QueryParam("licenseKeyIds")
+				Long[] licenseKeyIds)
+		throws Exception {
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -X 'PUT' 'http://localhost:8080/o/provisioning-rest/v1.0/license-keys/deactivate'  -u 'test@liferay.com:test'
+	 */
+	@Operation(description = "Deactivates license keys.")
+	@Override
+	@Parameters(
+		value = {@Parameter(in = ParameterIn.QUERY, name = "licenseKeyIds")}
+	)
+	@Path("/license-keys/deactivate")
+	@Produces({"application/json", "application/xml"})
+	@PUT
+	@Tags(value = {@Tag(name = "LicenseKey")})
+	public void putLicenseKeyDeactivate(
+			@NotNull @Parameter(hidden = true) @QueryParam("licenseKeyIds")
+				Long[] licenseKeyIds)
+		throws Exception {
 	}
 
 	public void setContextAcceptLanguage(AcceptLanguage contextAcceptLanguage) {

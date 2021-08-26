@@ -14,12 +14,17 @@
 
 package com.liferay.osb.provisioning.rest.internal.graphql.mutation.v1_0;
 
+import com.liferay.osb.provisioning.rest.dto.v1_0.LicenseKey;
+import com.liferay.osb.provisioning.rest.resource.v1_0.LicenseKeyResource;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
+import com.liferay.portal.vulcan.graphql.annotation.GraphQLField;
+import com.liferay.portal.vulcan.graphql.annotation.GraphQLName;
+import com.liferay.portal.vulcan.pagination.Page;
 
 import java.util.function.BiFunction;
 
@@ -38,6 +43,58 @@ import org.osgi.service.component.ComponentServiceObjects;
  */
 @Generated("")
 public class Mutation {
+
+	public static void setLicenseKeyResourceComponentServiceObjects(
+		ComponentServiceObjects<LicenseKeyResource>
+			licenseKeyResourceComponentServiceObjects) {
+
+		_licenseKeyResourceComponentServiceObjects =
+			licenseKeyResourceComponentServiceObjects;
+	}
+
+	@GraphQLField(description = "Generates license keys.")
+	public java.util.Collection<LicenseKey> createLicenseKeysPage(
+			@GraphQLName("licenseKeys") LicenseKey[] licenseKeys)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_licenseKeyResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			licenseKeyResource -> {
+				Page paginationPage = licenseKeyResource.postLicenseKeysPage(
+					licenseKeys);
+
+				return paginationPage.getItems();
+			});
+	}
+
+	@GraphQLField(description = "Activates license keys.")
+	public boolean updateLicenseKeyActivate(
+			@GraphQLName("licenseKeyIds") Long[] licenseKeyIds)
+		throws Exception {
+
+		_applyVoidComponentServiceObjects(
+			_licenseKeyResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			licenseKeyResource -> licenseKeyResource.putLicenseKeyActivate(
+				licenseKeyIds));
+
+		return true;
+	}
+
+	@GraphQLField(description = "Deactivates license keys.")
+	public boolean updateLicenseKeyDeactivate(
+			@GraphQLName("licenseKeyIds") Long[] licenseKeyIds)
+		throws Exception {
+
+		_applyVoidComponentServiceObjects(
+			_licenseKeyResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			licenseKeyResource -> licenseKeyResource.putLicenseKeyDeactivate(
+				licenseKeyIds));
+
+		return true;
+	}
 
 	private <T, R, E1 extends Throwable, E2 extends Throwable> R
 			_applyComponentServiceObjects(
@@ -76,6 +133,22 @@ public class Mutation {
 			componentServiceObjects.ungetService(resource);
 		}
 	}
+
+	private void _populateResourceContext(LicenseKeyResource licenseKeyResource)
+		throws Exception {
+
+		licenseKeyResource.setContextAcceptLanguage(_acceptLanguage);
+		licenseKeyResource.setContextCompany(_company);
+		licenseKeyResource.setContextHttpServletRequest(_httpServletRequest);
+		licenseKeyResource.setContextHttpServletResponse(_httpServletResponse);
+		licenseKeyResource.setContextUriInfo(_uriInfo);
+		licenseKeyResource.setContextUser(_user);
+		licenseKeyResource.setGroupLocalService(_groupLocalService);
+		licenseKeyResource.setRoleLocalService(_roleLocalService);
+	}
+
+	private static ComponentServiceObjects<LicenseKeyResource>
+		_licenseKeyResourceComponentServiceObjects;
 
 	private AcceptLanguage _acceptLanguage;
 	private com.liferay.portal.kernel.model.Company _company;

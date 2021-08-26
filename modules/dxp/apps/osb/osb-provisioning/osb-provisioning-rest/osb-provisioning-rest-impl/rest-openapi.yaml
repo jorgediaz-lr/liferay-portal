@@ -218,6 +218,7 @@ paths:
         post:
             description:
                 Generates license keys.
+            operationId: postLicenseKeysPage
             requestBody:
                 content:
                     application/json:
@@ -249,6 +250,7 @@ paths:
         put:
             description:
                 Activates license keys.
+            operationId: putLicenseKeyActivate
             parameters:
                 - in: query
                   name: licenseKeyIds
@@ -268,6 +270,7 @@ paths:
         put:
             description:
                 Deactivates license keys.
+            operationId: putLicenseKeyDeactivate
             parameters:
                 - in: query
                   name: licenseKeyIds
