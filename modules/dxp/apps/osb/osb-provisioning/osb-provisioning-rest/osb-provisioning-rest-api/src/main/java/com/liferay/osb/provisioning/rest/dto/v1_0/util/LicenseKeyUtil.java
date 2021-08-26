@@ -39,19 +39,18 @@ public class LicenseKeyUtil {
 				description = licenseKey.getDescription();
 				expirationDate = licenseKey.getExpirationDate();
 				hostName = licenseKey.getHostName();
+				id = licenseKey.getLicenseKeyId();
 				ipAddresses = licenseKey.getIpAddresses();
 				key = licenseKey.getKey();
-				licenseEntryId = licenseKey.getLicenseEntryId();
-				licenseEntryName = licenseKey.getLicenseEntryName();
-				licenseEntryType = licenseKey.getLicenseEntryType();
-				licenseKeyId = licenseKey.getLicenseKeyId();
+				licenseEntryName = LicenseEntryName.create(
+					licenseKey.getLicenseEntryName());
+				licenseEntryType = LicenseEntryType.create(
+					licenseKey.getLicenseEntryType());
 				licenseVersion = licenseKey.getLicenseVersion();
 				macAddresses = licenseKey.getMacAddresses();
 				maxClusterNodes = licenseKey.getMaxClusterNodes();
-				maxConcurrentUsers = licenseKey.getMaxConcurrentUsers();
 				maxHttpSessions = licenseKey.getMaxHttpSessions();
 				maxServers = licenseKey.getMaxServers();
-				maxUsers = licenseKey.getMaxUsers();
 				modifiedDate = licenseKey.getModifiedDate();
 				modifiedUserName = licenseKey.getModifiedUserName();
 				modifiedUserUuid = licenseKey.getModifiedUserUuid();
@@ -63,7 +62,7 @@ public class LicenseKeyUtil {
 				productPurchaseKey = licenseKey.getProductPurchaseKey();
 				productVersion = licenseKey.getProductVersion();
 				serverId = licenseKey.getServerId();
-				sizing = licenseKey.getSizing();
+				sizing = Sizing.create(licenseKey.getSizing());
 				startDate = licenseKey.getStartDate();
 				userName = licenseKey.getUserName();
 				userUuid = licenseKey.getUserUuid();
