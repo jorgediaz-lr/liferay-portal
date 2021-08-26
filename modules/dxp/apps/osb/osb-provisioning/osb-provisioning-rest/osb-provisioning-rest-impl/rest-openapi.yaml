@@ -225,6 +225,4 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/LicenseKey"
                                 type: array
-                    description:
-                        ""
             tags: ["LicenseKey"]
