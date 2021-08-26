@@ -37,11 +37,7 @@ import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
-import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.vulcan.fields.NestedField;
@@ -107,21 +103,20 @@ public class ContactRoleResourceImpl
 					"accountKey");
 		}
 
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
-
-		String[] nestedFields = StringUtil.split(
-			(String)serviceContext.getAttribute("nestedFields"));
-
 		String[] contactRoleTypes = null;
 
-		if (ArrayUtil.contains(nestedFields, "customerContacts.contactRoles")) {
+		String parentContextName =
+			PhloemNestedFieldsContextThreadLocal.getLastContextName();
+
+		if (Validator.isNotNull(parentContextName) &&
+			parentContextName.equals("customerContacts")) {
+
 			contactRoleTypes = new String[] {
 				ContactRole.Type.ACCOUNT_CUSTOMER.toString()
 			};
 		}
-		else if (ArrayUtil.contains(
-					nestedFields, "workerContacts.contactRoles")) {
+		else if (Validator.isNotNull(parentContextName) &&
+				 parentContextName.equals("workerContacts")) {
 
 			contactRoleTypes = new String[] {
 				ContactRole.Type.ACCOUNT_WORKER.toString()
@@ -180,7 +175,6 @@ public class ContactRoleResourceImpl
 			pagination);
 	}
 
-	@NestedField("workerContactRoles")
 	@Override
 	public Page<ContactRole>
 			getAccountAccountKeyWorkerContactByEmailAddresContactEmailAddressRolesPage(

@@ -17,6 +17,7 @@ package com.liferay.osb.koroneiki.phloem.rest.internal;
 import com.liferay.petra.lang.CentralizedThreadLocal;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 /**
@@ -24,10 +25,26 @@ import java.util.Map;
  */
 public class PhloemNestedFieldsContextThreadLocal {
 
+	public static void addContextName(String name) {
+		LinkedList<String> contextNames = _contextNamesThreadLocal.get();
+
+		contextNames.add(name);
+	}
+
 	public static Object getContextValue(String name) {
 		Map<String, Object> contextValuesMap = _contextValuesThreadLocal.get();
 
 		return contextValuesMap.get(name);
+	}
+
+	public static String getLastContextName() {
+		LinkedList<String> contextNames = _contextNamesThreadLocal.get();
+
+		if (contextNames.isEmpty()) {
+			return null;
+		}
+
+		return contextNames.getLast();
 	}
 
 	public static void setContextValue(String name, Object value) {
@@ -36,6 +53,11 @@ public class PhloemNestedFieldsContextThreadLocal {
 		contextValuesMap.put(name, value);
 	}
 
+	private static final ThreadLocal<LinkedList<String>>
+		_contextNamesThreadLocal = new CentralizedThreadLocal<>(
+			PhloemNestedFieldsContextThreadLocal.class +
+				"._contextNamesThreadLocal",
+			LinkedList::new);
 	private static final ThreadLocal<Map<String, Object>>
 		_contextValuesThreadLocal = new CentralizedThreadLocal<>(
 			PhloemNestedFieldsContextThreadLocal.class +
