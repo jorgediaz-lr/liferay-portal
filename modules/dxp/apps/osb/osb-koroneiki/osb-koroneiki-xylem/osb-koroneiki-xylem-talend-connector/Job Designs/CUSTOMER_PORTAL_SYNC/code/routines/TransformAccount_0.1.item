@@ -15,6 +15,8 @@
 package routines;
 
 import java.util.Date;
+import java.util.Set;
+import java.util.TreeSet;
 
 import routines.system.JSONArray;
 import routines.system.JSONObject;
@@ -24,7 +26,179 @@ import routines.system.JSONObject;
  */
 public class TransformAccount {
 
+	public static final String CONTACT_ROLE_NAME_PRIMARY = "Primary Contact";
+
+	public static final String CONTACT_ROLE_NAME_SECONDARY =
+		"Secondary Contact";
+
 	public static final String STATUS_CANCELLED = "Cancelled";
+
+	public static String getLiferayContactEmailAddress(
+		String region, String workerContacts) {
+
+		String primaryContactEmailAddress = null;
+		String secondaryContactEmailAddress = null;
+
+		if ((workerContacts != null) && !workerContacts.isEmpty()) {
+			JSONArray jsonArray = new JSONArray(workerContacts);
+
+			for (int i = 0; i < jsonArray.length(); i++) {
+				JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+				JSONArray contactRolesJSONArray = jsonObject.getJSONArray(
+					"contactRoles");
+
+				for (int j = 0; j < contactRolesJSONArray.length(); j++) {
+					JSONObject contactRoleJSONObject =
+						contactRolesJSONArray.getJSONObject(j);
+
+					String contactRoleName = contactRoleJSONObject.getString(
+						"name");
+
+					if (contactRoleName.equals(CONTACT_ROLE_NAME_PRIMARY)) {
+						primaryContactEmailAddress = jsonObject.getString(
+							"emailAddress");
+
+						break;
+					}
+					else if (contactRoleName.equals(
+								CONTACT_ROLE_NAME_SECONDARY)) {
+
+						secondaryContactEmailAddress = jsonObject.getString(
+							"emailAddress");
+
+						break;
+					}
+				}
+			}
+		}
+
+		if ((primaryContactEmailAddress != null) &&
+			!primaryContactEmailAddress.isEmpty()) {
+
+			return primaryContactEmailAddress;
+		}
+
+		if ((secondaryContactEmailAddress != null) &&
+			!secondaryContactEmailAddress.isEmpty()) {
+
+			return secondaryContactEmailAddress;
+		}
+
+		return "Default email";
+	}
+
+	public static String getLiferayContactName(
+		String region, String workerContacts) {
+
+		String primaryContactName = null;
+		String secondaryContactName = null;
+
+		if ((workerContacts != null) && !workerContacts.isEmpty()) {
+			JSONArray jsonArray = new JSONArray(workerContacts);
+
+			for (int i = 0; i < jsonArray.length(); i++) {
+				JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+				JSONArray contactRolesJSONArray = jsonObject.getJSONArray(
+					"contactRoles");
+
+				for (int j = 0; j < contactRolesJSONArray.length(); j++) {
+					JSONObject contactRoleJSONObject =
+						contactRolesJSONArray.getJSONObject(j);
+
+					String contactRoleName = contactRoleJSONObject.getString(
+						"name");
+
+					if (contactRoleName.equals(CONTACT_ROLE_NAME_PRIMARY)) {
+						primaryContactName =
+							jsonObject.getString("firstName") + " " +
+								jsonObject.getString("lastName");
+
+						break;
+					}
+					else if (contactRoleName.equals(
+								CONTACT_ROLE_NAME_SECONDARY)) {
+
+						secondaryContactName =
+							jsonObject.getString("firstName") + " " +
+								jsonObject.getString("lastName");
+
+						break;
+					}
+				}
+			}
+		}
+
+		if ((primaryContactName != null) && !primaryContactName.isEmpty()) {
+			return primaryContactName;
+		}
+
+		if ((secondaryContactName != null) && !secondaryContactName.isEmpty()) {
+			return secondaryContactName;
+		}
+
+		return "Default Name";
+	}
+
+	public static String getLiferayContactRole(
+		String region, String workerContacts) {
+
+		String primaryContactRole = null;
+		String secondaryContactRole = null;
+
+		if ((workerContacts != null) && !workerContacts.isEmpty()) {
+			JSONArray jsonArray = new JSONArray(workerContacts);
+
+			for (int i = 0; i < jsonArray.length(); i++) {
+				JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+				JSONArray contactRolesJSONArray = jsonObject.getJSONArray(
+					"contactRoles");
+
+				boolean primaryContact = false;
+				boolean secondaryContact = false;
+				Set<String> contactRoleNames = new TreeSet<>();
+
+				for (int j = 0; j < contactRolesJSONArray.length(); j++) {
+					JSONObject contactRoleJSONObject =
+						contactRolesJSONArray.getJSONObject(j);
+
+					String contactRoleName = contactRoleJSONObject.getString(
+						"name");
+
+					if (contactRoleName.equals(CONTACT_ROLE_NAME_PRIMARY)) {
+						primaryContact = true;
+					}
+					else if (contactRoleName.equals(
+								CONTACT_ROLE_NAME_SECONDARY)) {
+
+						secondaryContact = true;
+					}
+					else {
+						contactRoleNames.add(contactRoleName);
+					}
+				}
+
+				if (primaryContact) {
+					primaryContactRole = String.join(", ", contactRoleNames);
+				}
+				else if (secondaryContact) {
+					secondaryContactRole = String.join(", ", contactRoleNames);
+				}
+			}
+		}
+
+		if ((primaryContactRole != null) && !primaryContactRole.isEmpty()) {
+			return primaryContactRole;
+		}
+
+		if ((secondaryContactRole != null) && !secondaryContactRole.isEmpty()) {
+			return secondaryContactRole;
+		}
+
+		return "Default role";
+	}
 
 	public static String getSLACurrent(String productPurchases)
 		throws Exception {
