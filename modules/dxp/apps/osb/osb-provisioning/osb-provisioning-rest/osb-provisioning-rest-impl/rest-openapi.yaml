@@ -11,6 +11,7 @@ components:
                 accountName:
                     description:
                         The name of the license key's account.
+                    readOnly: true
                     type: string
                 active:
                     description:
@@ -52,6 +53,12 @@ components:
                     description:
                         The host name of the license key.
                     type: string
+                id:
+                    description:
+                        The id of the license key.
+                    format: int64
+                    readOnly: true
+                    type: integer
                 ipAddresses:
                     description:
                         The IP addresses of the license key.
@@ -61,25 +68,16 @@ components:
                         The hash key of the license key.
                     readOnly: true
                     type: string
-                licenseEntryId:
-                    description:
-                        The id of the license entry of the license key.
-                    format: int64
-                    type: integer
                 licenseEntryName:
                     description:
                         The name of the license entry of the license key.
+                    enum: ["Commerce Subscription Backup", "Commerce Subscription Backup (Virtual Cluster)", "Commerce Subscription Development", "Commerce Subscription Non-Production", "Commerce Subscription Non-Production (Virtual Cluster)", "Commerce Subscription Production", "Commerce Subscription Production (Virtual Cluster)", "Commerce Subscription Unlimited Enterprise-Wide", "DXP Backup", "DXP Backup (Virtual Cluster)", "DXP Development", "DXP Development (Cluster)", "DXP Flex", "DXP Limited", "DXP Non-Production", "DXP Non-Production (Virtual Cluster)", "DXP OEM", "DXP Production", "DXP Production (Virtual Cluster)", "DXP Unlimited Enterprise-Wide", "Portal Backup", "Portal Backup (Additional JVM)", "Portal Backup (Cluster)", "Portal Developer", "Portal Developer (Cluster)", "Portal Enterprise", "Portal Limited", "Portal Non-Production", "Portal Non-Production (Additional JVM)", "Portal Non-Production (Cluster)", "Portal Non-Production (Elastic)", "Portal Non-Production (Monthly)", "Portal OEM", "Portal Per User", "Portal Production", "Portal Production (Additional JVM)", "Portal Production (Cluster)"]
                     type: string
                 licenseEntryType:
                     description:
                         The type of the license entry of the license key.
+                    enum: ["cluster", "developer", "developer-cluster", "enterprise", "limited", "oem", "per-user", "production", "virtual-cluster"]
                     type: string
-                licenseKeyId:
-                    description:
-                        The id of the license key.
-                    format: int64
-                    readOnly: true
-                    type: integer
                 licenseVersion:
                     description:
                         The portal's license version of the license key.
@@ -92,11 +90,6 @@ components:
                     description:
                         The maximum number of cluster nodes of the license key.
                     type: integer
-                maxConcurrentUsers:
-                    description:
-                        The maximum number of concurrent users the license key can handle.
-                    format: int64
-                    type: integer
                 maxHttpSessions:
                     description:
                         The maximum number of http sessions the license key can handle.
@@ -104,11 +97,6 @@ components:
                 maxServers:
                     description:
                         The maximum number of servers of the license key.
-                    type: integer
-                maxUsers:
-                    description:
-                        The maximum number of users the license key can handle.
-                    format: int64
                     type: integer
                 modifiedDate:
                     description:
@@ -158,6 +146,7 @@ components:
                 sizing:
                     description:
                         The sizing of the license key.
+                    enum: ["Sizing 1", "Sizing 2", "Sizing 3", "Sizing 4"]
                     type: string
                 startDate:
                     description:
