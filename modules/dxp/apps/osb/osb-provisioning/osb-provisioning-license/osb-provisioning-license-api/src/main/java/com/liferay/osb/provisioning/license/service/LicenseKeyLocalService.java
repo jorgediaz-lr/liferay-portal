@@ -93,9 +93,8 @@ public interface LicenseKeyLocalService
 			int maxClusterNodes, int maxServers, int maxHttpSessions,
 			int maxConcurrentUsers, int maxUsers, String sizing,
 			String description, String[] hostNames, String[] ipAddresses,
-			String[] macAddresses, String[] serverIds, Date startDate,
-			Date expirationDate, String additionalInfo, boolean complimentary,
-			boolean active)
+			String[] macAddresses, Date startDate, Date expirationDate,
+			String additionalInfo, boolean complimentary, boolean active)
 		throws Exception;
 
 	public LicenseKey addLicenseKey(
@@ -105,8 +104,8 @@ public interface LicenseKeyLocalService
 			int maxClusterNodes, int maxServers, int maxHttpSessions,
 			int maxConcurrentUsers, int maxUsers, String sizing,
 			String description, String[] hostNames, String[] ipAddresses,
-			String[] macAddresses, String[] serverIds, Date startDate,
-			Date expirationDate, boolean complimentary, boolean active)
+			String[] macAddresses, Date startDate, Date expirationDate,
+			boolean complimentary, boolean active)
 		throws Exception;
 
 	public LicenseKey addLicenseKey(
@@ -116,6 +115,15 @@ public interface LicenseKeyLocalService
 			String description, String hostName, String ipAddresses,
 			String macAddresses, String serverId, Date startDate,
 			Date expirationDate)
+		throws Exception;
+
+	public LicenseKey addLicenseKey(
+			long userId, String licenseEntryType, String productKey,
+			String accountKey, String productPurchaseKey, String productVersion,
+			String name, String owner, int maxClusterNodes, String sizing,
+			String description, String hostName, String ipAddresses,
+			String macAddresses, Date startDate, Date expirationDate,
+			boolean complimentary, boolean active)
 		throws Exception;
 
 	/**

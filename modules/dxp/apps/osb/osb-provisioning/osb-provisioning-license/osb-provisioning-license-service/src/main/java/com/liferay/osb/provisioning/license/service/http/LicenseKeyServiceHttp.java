@@ -99,7 +99,7 @@ public class LicenseKeyServiceHttp {
 				String name, String owner, int maxClusterNodes, int maxServers,
 				int maxHttpSessions, int maxConcurrentUsers, int maxUsers,
 				String sizing, String description, String[] hostNames,
-				String[] ipAddresses, String[] macAddresses, String[] serverIds,
+				String[] ipAddresses, String[] macAddresses,
 				java.util.Date startDate, java.util.Date expirationDate,
 				boolean complimentary, boolean active)
 		throws Exception {
@@ -114,7 +114,7 @@ public class LicenseKeyServiceHttp {
 				productPurchaseKey, accountName, productVersion, clusterId,
 				name, owner, maxClusterNodes, maxServers, maxHttpSessions,
 				maxConcurrentUsers, maxUsers, sizing, description, hostNames,
-				ipAddresses, macAddresses, serverIds, startDate, expirationDate,
+				ipAddresses, macAddresses, startDate, expirationDate,
 				complimentary, active);
 
 			Object returnObj = null;
@@ -1235,8 +1235,8 @@ public class LicenseKeyServiceHttp {
 			String.class, String.class, long.class, String.class, String.class,
 			int.class, int.class, int.class, int.class, int.class, String.class,
 			String.class, String[].class, String[].class, String[].class,
-			String[].class, java.util.Date.class, java.util.Date.class,
-			boolean.class, boolean.class
+			java.util.Date.class, java.util.Date.class, boolean.class,
+			boolean.class
 		};
 	private static final Class<?>[] _addLicenseKeyParameterTypes2 =
 		new Class[] {

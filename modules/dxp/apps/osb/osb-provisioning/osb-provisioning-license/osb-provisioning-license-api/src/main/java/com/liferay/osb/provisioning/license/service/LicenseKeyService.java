@@ -67,8 +67,8 @@ public interface LicenseKeyService extends BaseService {
 			int maxClusterNodes, int maxServers, int maxHttpSessions,
 			int maxConcurrentUsers, int maxUsers, String sizing,
 			String description, String[] hostNames, String[] ipAddresses,
-			String[] macAddresses, String[] serverIds, Date startDate,
-			Date expirationDate, boolean complimentary, boolean active)
+			String[] macAddresses, Date startDate, Date expirationDate,
+			boolean complimentary, boolean active)
 		throws Exception;
 
 	@JSONWebService

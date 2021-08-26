@@ -77,7 +77,7 @@ public class LicenseKeyLocalServiceUtil {
 			int maxClusterNodes, int maxServers, int maxHttpSessions,
 			int maxConcurrentUsers, int maxUsers, String sizing,
 			String description, String[] hostNames, String[] ipAddresses,
-			String[] macAddresses, String[] serverIds, java.util.Date startDate,
+			String[] macAddresses, java.util.Date startDate,
 			java.util.Date expirationDate, String additionalInfo,
 			boolean complimentary, boolean active)
 		throws Exception {
@@ -87,8 +87,7 @@ public class LicenseKeyLocalServiceUtil {
 			accountName, productVersion, clusterId, name, owner,
 			maxClusterNodes, maxServers, maxHttpSessions, maxConcurrentUsers,
 			maxUsers, sizing, description, hostNames, ipAddresses, macAddresses,
-			serverIds, startDate, expirationDate, additionalInfo, complimentary,
-			active);
+			startDate, expirationDate, additionalInfo, complimentary, active);
 	}
 
 	public static LicenseKey addLicenseKey(
@@ -98,7 +97,7 @@ public class LicenseKeyLocalServiceUtil {
 			int maxClusterNodes, int maxServers, int maxHttpSessions,
 			int maxConcurrentUsers, int maxUsers, String sizing,
 			String description, String[] hostNames, String[] ipAddresses,
-			String[] macAddresses, String[] serverIds, java.util.Date startDate,
+			String[] macAddresses, java.util.Date startDate,
 			java.util.Date expirationDate, boolean complimentary,
 			boolean active)
 		throws Exception {
@@ -108,7 +107,7 @@ public class LicenseKeyLocalServiceUtil {
 			accountName, productVersion, clusterId, name, owner,
 			maxClusterNodes, maxServers, maxHttpSessions, maxConcurrentUsers,
 			maxUsers, sizing, description, hostNames, ipAddresses, macAddresses,
-			serverIds, startDate, expirationDate, complimentary, active);
+			startDate, expirationDate, complimentary, active);
 	}
 
 	public static LicenseKey addLicenseKey(
@@ -124,6 +123,23 @@ public class LicenseKeyLocalServiceUtil {
 			userId, assetReceiptLicenseUuid, licenseEntryType, productName,
 			productId, productVersion, owner, maxUsers, description, hostName,
 			ipAddresses, macAddresses, serverId, startDate, expirationDate);
+	}
+
+	public static LicenseKey addLicenseKey(
+			long userId, String licenseEntryType, String productKey,
+			String accountKey, String productPurchaseKey, String productVersion,
+			String name, String owner, int maxClusterNodes, String sizing,
+			String description, String hostName, String ipAddresses,
+			String macAddresses, java.util.Date startDate,
+			java.util.Date expirationDate, boolean complimentary,
+			boolean active)
+		throws Exception {
+
+		return getService().addLicenseKey(
+			userId, licenseEntryType, productKey, accountKey,
+			productPurchaseKey, productVersion, name, owner, maxClusterNodes,
+			sizing, description, hostName, ipAddresses, macAddresses, startDate,
+			expirationDate, complimentary, active);
 	}
 
 	/**

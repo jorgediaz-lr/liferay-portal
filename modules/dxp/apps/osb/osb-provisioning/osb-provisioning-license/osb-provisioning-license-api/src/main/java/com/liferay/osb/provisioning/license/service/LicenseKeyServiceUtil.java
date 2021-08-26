@@ -54,7 +54,7 @@ public class LicenseKeyServiceUtil {
 			int maxClusterNodes, int maxServers, int maxHttpSessions,
 			int maxConcurrentUsers, int maxUsers, String sizing,
 			String description, String[] hostNames, String[] ipAddresses,
-			String[] macAddresses, String[] serverIds, java.util.Date startDate,
+			String[] macAddresses, java.util.Date startDate,
 			java.util.Date expirationDate, boolean complimentary,
 			boolean active)
 		throws Exception {
@@ -64,7 +64,7 @@ public class LicenseKeyServiceUtil {
 			accountName, productVersion, clusterId, name, owner,
 			maxClusterNodes, maxServers, maxHttpSessions, maxConcurrentUsers,
 			maxUsers, sizing, description, hostNames, ipAddresses, macAddresses,
-			serverIds, startDate, expirationDate, complimentary, active);
+			startDate, expirationDate, complimentary, active);
 	}
 
 	public static LicenseKey addLicenseKey(
