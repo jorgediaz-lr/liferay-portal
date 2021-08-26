@@ -245,3 +245,41 @@ paths:
                                     $ref: "#/components/schemas/LicenseKey"
                                 type: array
             tags: ["LicenseKey"]
+    "/license-keys/activate":
+        put:
+            description:
+                Activates license keys.
+            parameters:
+                - in: query
+                  name: licenseKeyIds
+                  required: true
+                  schema:
+                      items:
+                          format: int64
+                          type: integer
+                      type: array
+            responses:
+                204:
+                    content:
+                        application/json: {}
+                        application/xml: {}
+            tags: ["LicenseKey"]
+    "/license-keys/deactivate":
+        put:
+            description:
+                Deactivates license keys.
+            parameters:
+                - in: query
+                  name: licenseKeyIds
+                  required: true
+                  schema:
+                      items:
+                          format: int64
+                          type: integer
+                      type: array
+            responses:
+                204:
+                    content:
+                        application/json: {}
+                        application/xml: {}
+            tags: ["LicenseKey"]

@@ -103,6 +103,32 @@ public class LicenseKeyResourceImpl
 		return Page.of(curLicenseKeys);
 	}
 
+	@Override
+	public void putLicenseKeyActivate(Long[] licenseKeyIds) throws Exception {
+		for (long licenseKeyId : licenseKeyIds) {
+			com.liferay.osb.provisioning.license.model.LicenseKey licenseKey =
+				_licenseKeyLocalService.getLicenseKey(licenseKeyId);
+
+			_licenseKeyLocalService.updateLicenseKey(
+				contextUser.getUserId(), licenseKeyId,
+				licenseKey.getProductPurchaseKey(),
+				licenseKey.getComplimentary(), true);
+		}
+	}
+
+	@Override
+	public void putLicenseKeyDeactivate(Long[] licenseKeyIds) throws Exception {
+		for (long licenseKeyId : licenseKeyIds) {
+			com.liferay.osb.provisioning.license.model.LicenseKey licenseKey =
+				_licenseKeyLocalService.getLicenseKey(licenseKeyId);
+
+			_licenseKeyLocalService.updateLicenseKey(
+				contextUser.getUserId(), licenseKeyId,
+				licenseKey.getProductPurchaseKey(),
+				licenseKey.getComplimentary(), false);
+		}
+	}
+
 	private static final EntityModel _entityModel = new LicenseKeyEntityModel();
 
 	@Reference
