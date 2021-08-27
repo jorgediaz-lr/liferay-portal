@@ -57,7 +57,6 @@ components:
                     description:
                         The id of the license key.
                     format: int64
-                    readOnly: true
                     type: integer
                 ipAddresses:
                     description:
@@ -327,4 +326,35 @@ paths:
                             schema:
                                 format: binary
                                 type: string
+            tags: ["LicenseKey"]
+    "/license-keys/extend":
+        post:
+            description:
+                Extends license keys.
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            items:
+                                $ref: "#/components/schemas/LicenseKey"
+                            type: array
+                    application/xml:
+                        schema:
+                            items:
+                                $ref: "#/components/schemas/LicenseKey"
+                            type: array
+                required: true
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/LicenseKey"
+                                type: array
+                        application/xml:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/LicenseKey"
+                                type: array
             tags: ["LicenseKey"]

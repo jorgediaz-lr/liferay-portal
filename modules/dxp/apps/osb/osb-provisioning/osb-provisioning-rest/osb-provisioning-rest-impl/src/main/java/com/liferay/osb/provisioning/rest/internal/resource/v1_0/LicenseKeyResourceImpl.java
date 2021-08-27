@@ -237,6 +237,25 @@ public class LicenseKeyResourceImpl
 	}
 
 	@Override
+	public Page<LicenseKey> postLicenseKeysExtendPage(LicenseKey[] licenseKeys)
+		throws Exception {
+
+		List<LicenseKey> curLicenseKeys = new ArrayList<>();
+
+		for (LicenseKey licenseKey : licenseKeys) {
+			com.liferay.osb.provisioning.license.model.LicenseKey
+				curLicenseKey = _licenseKeyLocalService.extendLicenseKey(
+					contextUser.getUserId(), licenseKey.getId(),
+					licenseKey.getProductPurchaseKey(),
+					licenseKey.getStartDate(), licenseKey.getExpirationDate());
+
+			curLicenseKeys.add(LicenseKeyUtil.toLicenseKey(curLicenseKey));
+		}
+
+		return Page.of(curLicenseKeys);
+	}
+
+	@Override
 	public Page<LicenseKey> postLicenseKeysPage(LicenseKey[] licenseKeys)
 		throws Exception {
 
