@@ -21,8 +21,11 @@ import com.liferay.document.library.kernel.service.DLAppLocalServiceUtil;
 import com.liferay.document.library.kernel.service.DLFileEntryTypeLocalServiceUtil;
 import com.liferay.exportimport.kernel.service.StagingLocalServiceUtil;
 import com.liferay.petra.reflect.ReflectionUtil;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskThreadLocal;
+import com.liferay.portal.kernel.dao.db.DBInspector;
+import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.CompanyMxException;
 import com.liferay.portal.kernel.exception.CompanyNameException;
@@ -94,6 +97,13 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -184,6 +194,8 @@ public class CompanyLocalServiceTest {
 
 		CompanyLocalServiceUtil.deleteCompany(company.getCompanyId());
 
+		checkCompanyDeletion(company);
+
 		for (String webId : PortalInstances.getWebIds()) {
 			Assert.assertNotEquals(companyWebId, webId);
 		}
@@ -250,6 +262,8 @@ public class CompanyLocalServiceTest {
 		Group companyStagingGroup = companyGroup.getStagingGroup();
 
 		CompanyLocalServiceUtil.deleteCompany(company.getCompanyId());
+
+		checkCompanyDeletion(company);
 
 		companyGroup = GroupLocalServiceUtil.fetchGroup(
 			companyGroup.getGroupId());
@@ -395,6 +409,8 @@ public class CompanyLocalServiceTest {
 
 		CompanyLocalServiceUtil.deleteCompany(company.getCompanyId());
 
+		checkCompanyDeletion(company);
+
 		parentGroup = GroupLocalServiceUtil.fetchGroup(
 			parentGroup.getGroupId());
 
@@ -459,6 +475,8 @@ public class CompanyLocalServiceTest {
 
 		CompanyLocalServiceUtil.deleteCompany(company.getCompanyId());
 
+		checkCompanyDeletion(company);
+
 		userGroup = UserGroupLocalServiceUtil.fetchUserGroup(
 			userGroup.getUserGroupId());
 
@@ -503,6 +521,8 @@ public class CompanyLocalServiceTest {
 			user.getUserId(), group.getGroupId(), role.getRoleId());
 
 		CompanyLocalServiceUtil.deleteCompany(company.getCompanyId());
+
+		checkCompanyDeletion(company);
 
 		Assert.assertNull(RoleLocalServiceUtil.fetchRole(role.getRoleId()));
 
@@ -723,6 +743,8 @@ public class CompanyLocalServiceTest {
 
 		CompanyLocalServiceUtil.deleteCompany(company.getCompanyId());
 
+		checkCompanyDeletion(company);
+
 		Assert.assertEquals(UserGroupRole.class.getName(), list.get(0));
 		Assert.assertEquals(Role.class.getName(), list.get(1));
 	}
@@ -878,6 +900,8 @@ public class CompanyLocalServiceTest {
 
 		CompanyLocalServiceUtil.deleteCompany(company.getCompanyId());
 
+		checkCompanyDeletion(company);
+
 		Assert.assertEquals(languageId, user.getLanguageId());
 		Assert.assertEquals("CET", user.getTimeZoneId());
 	}
@@ -899,6 +923,8 @@ public class CompanyLocalServiceTest {
 		GroupLocalServiceUtil.deleteGroup(group);
 
 		CompanyLocalServiceUtil.deleteCompany(company.getCompanyId());
+
+		checkCompanyDeletion(company);
 	}
 
 	@Test
@@ -929,6 +955,8 @@ public class CompanyLocalServiceTest {
 			company, new String[] {RandomTestUtil.randomString()}, false);
 
 		CompanyLocalServiceUtil.deleteCompany(company.getCompanyId());
+
+		checkCompanyDeletion(company);
 	}
 
 	@Test
@@ -978,6 +1006,13 @@ public class CompanyLocalServiceTest {
 			serviceContext);
 	}
 
+	protected void checkCompanyDeletion(Company company) throws Exception {
+		List<String> invalidTables = getTablesWithInvalidRecords(
+			"companyId", company.getCompanyId());
+
+		Assert.assertEquals(Collections.emptyList(), invalidTables);
+	}
+
 	protected ServiceContext getServiceContext(long companyId) {
 		ServiceContext serviceContext = new ServiceContext();
 
@@ -986,6 +1021,64 @@ public class CompanyLocalServiceTest {
 		serviceContext.setCompanyId(companyId);
 
 		return serviceContext;
+	}
+
+	protected List<String> getTablesWithInvalidRecords(
+			String columnName, long wrongValue)
+		throws Exception {
+
+		List<String> invalidTables = new ArrayList<>();
+
+		try (Connection connection = DataAccess.getConnection()) {
+			DBInspector dbInspector = new DBInspector(connection);
+
+			String catalog = dbInspector.getCatalog();
+			String schema = dbInspector.getSchema();
+
+			DatabaseMetaData databaseMetaData = connection.getMetaData();
+
+			try (ResultSet tableResultSet = databaseMetaData.getTables(
+					catalog, schema, null, new String[] {"TABLE"})) {
+
+				while (tableResultSet.next()) {
+					String tableName = dbInspector.normalizeName(
+						tableResultSet.getString("TABLE_NAME"));
+
+					if (!dbInspector.hasColumn(tableName, columnName)) {
+						continue;
+					}
+
+					if (hasInvalidRecords(
+							connection, tableName, columnName, wrongValue)) {
+
+						invalidTables.add(tableName);
+					}
+				}
+			}
+		}
+
+		return invalidTables;
+	}
+
+	protected boolean hasInvalidRecords(
+			Connection connection, String tableName, String columnName,
+			long wrongValue)
+		throws SQLException {
+
+		String query = StringBundler.concat(
+			"select count(*) from ", tableName, " where ", columnName, " = ",
+			wrongValue);
+
+		try (PreparedStatement preparedStatement = connection.prepareStatement(
+				query);
+			ResultSet resultSet = preparedStatement.executeQuery()) {
+
+			if (resultSet.next() && (resultSet.getInt(1) > 0)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	protected void testUpdateCompanyNames(
@@ -1061,6 +1154,8 @@ public class CompanyLocalServiceTest {
 		finally {
 			CompanyLocalServiceUtil.deleteCompany(company.getCompanyId());
 
+			checkCompanyDeletion(company);
+
 			field.set(null, value);
 		}
 	}
@@ -1091,6 +1186,8 @@ public class CompanyLocalServiceTest {
 		}
 
 		CompanyLocalServiceUtil.deleteCompany(company.getCompanyId());
+
+		checkCompanyDeletion(company);
 	}
 
 	private List<String> _registerModelListeners() {
