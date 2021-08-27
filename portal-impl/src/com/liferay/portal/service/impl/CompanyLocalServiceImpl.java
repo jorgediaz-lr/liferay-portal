@@ -60,6 +60,7 @@ import com.liferay.portal.kernel.model.PortalPreferences;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.SystemEvent;
+import com.liferay.portal.kernel.model.Ticket;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.model.VirtualHost;
@@ -1418,6 +1419,21 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 					company.getCompanyId());
 
 		deleteSystemEventActionableDynamicQuery.performActions();
+
+		// Ticket
+
+		ActionableDynamicQuery actionableDynamicQuery =
+			ticketLocalService.getActionableDynamicQuery();
+
+		actionableDynamicQuery.setAddCriteriaMethod(
+			dynamicQuery -> dynamicQuery.add(
+				RestrictionsFactoryUtil.eq(
+					"companyId", company.getCompanyId())));
+
+		actionableDynamicQuery.setPerformActionMethod(
+			(Ticket ticket) -> ticketLocalService.deleteTicket(ticket));
+
+		actionableDynamicQuery.performActions();
 
 		_deletePortalInstance(company);
 
