@@ -21,8 +21,11 @@ import com.liferay.document.library.kernel.service.DLAppLocalServiceUtil;
 import com.liferay.document.library.kernel.service.DLFileEntryTypeLocalServiceUtil;
 import com.liferay.exportimport.kernel.service.StagingLocalServiceUtil;
 import com.liferay.petra.reflect.ReflectionUtil;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskThreadLocal;
+import com.liferay.portal.kernel.dao.db.DBInspector;
+import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.CompanyMxException;
 import com.liferay.portal.kernel.exception.CompanyNameException;
@@ -94,6 +97,13 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -187,6 +197,8 @@ public class CompanyLocalServiceTest {
 		for (String webId : PortalInstances.getWebIds()) {
 			Assert.assertNotEquals(companyWebId, webId);
 		}
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test
@@ -231,6 +243,8 @@ public class CompanyLocalServiceTest {
 			"The company organization child group should delete with the " +
 				"company",
 			group);
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test
@@ -260,6 +274,8 @@ public class CompanyLocalServiceTest {
 			companyStagingGroup.getGroupId());
 
 		Assert.assertNull(companyStagingGroup);
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test
@@ -289,6 +305,8 @@ public class CompanyLocalServiceTest {
 			"test.xml", "", "", "test".getBytes(), null, null, serviceContext);
 
 		CompanyLocalServiceUtil.deleteCompany(companyId);
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test
@@ -335,6 +353,8 @@ public class CompanyLocalServiceTest {
 				layoutSetPrototype.getLayoutSetPrototypeId());
 
 		Assert.assertNull(layoutSetPrototype);
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test
@@ -373,6 +393,8 @@ public class CompanyLocalServiceTest {
 			});
 
 		CompanyLocalServiceUtil.deleteCompany(companyId);
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test
@@ -403,6 +425,8 @@ public class CompanyLocalServiceTest {
 		group = GroupLocalServiceUtil.fetchGroup(group.getGroupId());
 
 		Assert.assertNull(group);
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test
@@ -435,6 +459,8 @@ public class CompanyLocalServiceTest {
 			companyOrganizationGroup.getGroupId());
 
 		Assert.assertNull(companyOrganizationGroup);
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test
@@ -467,6 +493,8 @@ public class CompanyLocalServiceTest {
 		user = UserLocalServiceUtil.fetchUser(user.getUserId());
 
 		Assert.assertNull(user);
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test
@@ -515,6 +543,8 @@ public class CompanyLocalServiceTest {
 				user.getUserId(), group.getGroupId(), role.getRoleId()));
 
 		Assert.assertNull(UserLocalServiceUtil.fetchUser(user.getUserId()));
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test(expected = NoSuchPasswordPolicyException.class)
@@ -527,6 +557,8 @@ public class CompanyLocalServiceTest {
 
 		PasswordPolicyLocalServiceUtil.getDefaultPasswordPolicy(
 			company.getCompanyId());
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test
@@ -544,6 +576,8 @@ public class CompanyLocalServiceTest {
 			company.getCompanyId(), GroupConstants.ANY_PARENT_GROUP_ID, false);
 
 		Assert.assertEquals(0, count);
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test
@@ -561,6 +595,8 @@ public class CompanyLocalServiceTest {
 			company.getCompanyId(), false);
 
 		Assert.assertEquals(0, count);
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test
@@ -575,6 +611,8 @@ public class CompanyLocalServiceTest {
 
 		Assert.assertEquals(
 			layoutSetPrototypes.toString(), 0, layoutSetPrototypes.size());
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test(expected = NoSuchPasswordPolicyException.class)
@@ -598,6 +636,8 @@ public class CompanyLocalServiceTest {
 				}
 
 			});
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test
@@ -611,6 +651,8 @@ public class CompanyLocalServiceTest {
 			OrganizationConstants.DEFAULT_PARENT_ORGANIZATION_ID);
 
 		Assert.assertEquals(0, count);
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test
@@ -623,6 +665,8 @@ public class CompanyLocalServiceTest {
 			companyId -> Assert.assertNotEquals(
 				"Company instance was not deleted", company.getCompanyId(),
 				(long)companyId));
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test
@@ -649,6 +693,8 @@ public class CompanyLocalServiceTest {
 				}
 
 			});
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test
@@ -672,6 +718,8 @@ public class CompanyLocalServiceTest {
 				}
 
 			});
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test
@@ -684,6 +732,8 @@ public class CompanyLocalServiceTest {
 			company.getCompanyId());
 
 		Assert.assertEquals(roles.toString(), 0, roles.size());
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test
@@ -725,6 +775,8 @@ public class CompanyLocalServiceTest {
 
 		Assert.assertEquals(UserGroupRole.class.getName(), list.get(0));
 		Assert.assertEquals(Role.class.getName(), list.get(1));
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test
@@ -737,6 +789,8 @@ public class CompanyLocalServiceTest {
 			company.getCompanyId(), QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
 		Assert.assertEquals(users.toString(), 0, users.size());
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test(expected = NoSuchVirtualHostException.class)
@@ -746,6 +800,8 @@ public class CompanyLocalServiceTest {
 		CompanyLocalServiceUtil.deleteCompany(company);
 
 		VirtualHostLocalServiceUtil.getVirtualHost(company.getWebId());
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test
@@ -755,6 +811,8 @@ public class CompanyLocalServiceTest {
 		Company company = addCompany();
 
 		CompanyLocalServiceUtil.deleteCompany(company);
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test(expected = RequiredCompanyException.class)
@@ -978,6 +1036,16 @@ public class CompanyLocalServiceTest {
 			serviceContext);
 	}
 
+	protected void assertTablesWithInvalidRecords(
+			String columnName, long wrongValue)
+		throws Exception {
+
+		List<String> invalidTables = getTablesWithInvalidRecords(
+			columnName, wrongValue);
+
+		Assert.assertEquals(Collections.emptyList(), invalidTables);
+	}
+
 	protected ServiceContext getServiceContext(long companyId) {
 		ServiceContext serviceContext = new ServiceContext();
 
@@ -986,6 +1054,64 @@ public class CompanyLocalServiceTest {
 		serviceContext.setCompanyId(companyId);
 
 		return serviceContext;
+	}
+
+	protected List<String> getTablesWithInvalidRecords(
+			String columnName, long wrongValue)
+		throws Exception {
+
+		List<String> invalidTables = new ArrayList<>();
+
+		try (Connection connection = DataAccess.getConnection()) {
+			DBInspector dbInspector = new DBInspector(connection);
+
+			String catalog = dbInspector.getCatalog();
+			String schema = dbInspector.getSchema();
+
+			DatabaseMetaData databaseMetaData = connection.getMetaData();
+
+			try (ResultSet tableResultSet = databaseMetaData.getTables(
+					catalog, schema, null, new String[] {"TABLE"})) {
+
+				while (tableResultSet.next()) {
+					String tableName = dbInspector.normalizeName(
+						tableResultSet.getString("TABLE_NAME"));
+
+					if (!dbInspector.hasColumn(tableName, columnName)) {
+						continue;
+					}
+
+					if (hasInvalidRecords(
+							connection, tableName, columnName, wrongValue)) {
+
+						invalidTables.add(tableName);
+					}
+				}
+			}
+		}
+
+		return invalidTables;
+	}
+
+	protected boolean hasInvalidRecords(
+			Connection connection, String tableName, String columnName,
+			long wrongValue)
+		throws SQLException {
+
+		String query = StringBundler.concat(
+			"select count(*) from ", tableName, " where ", columnName, " = ",
+			wrongValue);
+
+		try (PreparedStatement preparedStatement = connection.prepareStatement(
+				query);
+			ResultSet resultSet = preparedStatement.executeQuery()) {
+
+			if (resultSet.next() && (resultSet.getInt(1) > 0)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	protected void testUpdateCompanyNames(
@@ -1060,6 +1186,8 @@ public class CompanyLocalServiceTest {
 		}
 		finally {
 			CompanyLocalServiceUtil.deleteCompany(company.getCompanyId());
+
+			assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 
 			field.set(null, value);
 		}
