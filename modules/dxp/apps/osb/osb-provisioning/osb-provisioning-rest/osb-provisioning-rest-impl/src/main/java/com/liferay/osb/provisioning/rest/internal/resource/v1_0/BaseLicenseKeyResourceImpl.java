@@ -54,9 +54,11 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 /**
@@ -154,6 +156,54 @@ public abstract class BaseLicenseKeyResourceImpl implements LicenseKeyResource {
 			@NotNull @Parameter(hidden = true) @QueryParam("licenseKeyIds")
 				Long[] licenseKeyIds)
 		throws Exception {
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -X 'GET' 'http://localhost:8080/o/provisioning-rest/v1.0/license-keys/download'  -u 'test@liferay.com:test'
+	 */
+	@GET
+	@Operation(description = "Retrieves the aggregate license key download.")
+	@Override
+	@Parameters(
+		value = {@Parameter(in = ParameterIn.QUERY, name = "licenseKeyIds")}
+	)
+	@Path("/license-keys/download")
+	@Produces("application/xml")
+	@Tags(value = {@Tag(name = "LicenseKey")})
+	public Response getLicenseKeyDownload(
+			@NotNull @Parameter(hidden = true) @QueryParam("licenseKeyIds")
+				Long[] licenseKeyIds)
+		throws Exception {
+
+		Response.ResponseBuilder responseBuilder = Response.ok();
+
+		return responseBuilder.build();
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -X 'GET' 'http://localhost:8080/o/provisioning-rest/v1.0/license-keys/download/{licenseKeyId}'  -u 'test@liferay.com:test'
+	 */
+	@GET
+	@Operation(description = "Retrieves the license key download.")
+	@Override
+	@Parameters(
+		value = {@Parameter(in = ParameterIn.PATH, name = "licenseKeyId")}
+	)
+	@Path("/license-keys/download/{licenseKeyId}")
+	@Produces("application/xml")
+	@Tags(value = {@Tag(name = "LicenseKey")})
+	public Response getLicenseKeyDownloadLicenseKey(
+			@NotNull @Parameter(hidden = true) @PathParam("licenseKeyId") Long
+				licenseKeyId)
+		throws Exception {
+
+		Response.ResponseBuilder responseBuilder = Response.ok();
+
+		return responseBuilder.build();
 	}
 
 	public void setContextAcceptLanguage(AcceptLanguage contextAcceptLanguage) {

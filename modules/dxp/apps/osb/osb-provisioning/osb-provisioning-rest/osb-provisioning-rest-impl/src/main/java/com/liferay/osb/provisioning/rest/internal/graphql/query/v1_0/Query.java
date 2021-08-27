@@ -36,6 +36,7 @@ import javax.annotation.Generated;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import org.osgi.service.component.ComponentServiceObjects;
@@ -80,6 +81,41 @@ public class Query {
 					_filterBiFunction.apply(licenseKeyResource, filterString),
 					Pagination.of(page, pageSize),
 					_sortsBiFunction.apply(licenseKeyResource, sortsString))));
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {licenseKeyDownload(licenseKeyIds: ___){}}"}' -u 'test@liferay.com:test'
+	 */
+	@GraphQLField(description = "Retrieves the aggregate license key download.")
+	public Response licenseKeyDownload(
+			@GraphQLName("licenseKeyIds") Long[] licenseKeyIds)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_licenseKeyResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			licenseKeyResource -> licenseKeyResource.getLicenseKeyDownload(
+				licenseKeyIds));
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {licenseKeyDownloadLicenseKey(licenseKeyId: ___){}}"}' -u 'test@liferay.com:test'
+	 */
+	@GraphQLField(description = "Retrieves the license key download.")
+	public Response licenseKeyDownloadLicenseKey(
+			@GraphQLName("licenseKeyId") Long licenseKeyId)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_licenseKeyResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			licenseKeyResource ->
+				licenseKeyResource.getLicenseKeyDownloadLicenseKey(
+					licenseKeyId));
 	}
 
 	@GraphQLName("LicenseKeyPage")

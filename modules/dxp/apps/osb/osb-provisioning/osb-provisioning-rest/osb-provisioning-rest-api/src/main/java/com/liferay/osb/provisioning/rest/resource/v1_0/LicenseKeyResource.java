@@ -32,6 +32,7 @@ import javax.annotation.Generated;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -62,6 +63,12 @@ public interface LicenseKeyResource {
 	public void putLicenseKeyActivate(Long[] licenseKeyIds) throws Exception;
 
 	public void putLicenseKeyDeactivate(Long[] licenseKeyIds) throws Exception;
+
+	public Response getLicenseKeyDownload(Long[] licenseKeyIds)
+		throws Exception;
+
+	public Response getLicenseKeyDownloadLicenseKey(Long licenseKeyId)
+		throws Exception;
 
 	public default void setContextAcceptLanguage(
 		AcceptLanguage contextAcceptLanguage) {

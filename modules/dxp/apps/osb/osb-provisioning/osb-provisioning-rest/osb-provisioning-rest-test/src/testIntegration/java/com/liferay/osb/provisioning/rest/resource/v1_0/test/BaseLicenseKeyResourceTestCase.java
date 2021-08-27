@@ -551,6 +551,16 @@ public abstract class BaseLicenseKeyResourceTestCase {
 			"This method needs to be implemented");
 	}
 
+	@Test
+	public void testGetLicenseKeyDownload() throws Exception {
+		Assert.assertTrue(false);
+	}
+
+	@Test
+	public void testGetLicenseKeyDownloadLicenseKey() throws Exception {
+		Assert.assertTrue(false);
+	}
+
 	@Rule
 	public SearchTestRule searchTestRule = new SearchTestRule();
 
