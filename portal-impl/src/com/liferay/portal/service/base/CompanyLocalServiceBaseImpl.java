@@ -59,6 +59,7 @@ import com.liferay.portal.kernel.service.persistence.PortletPersistence;
 import com.liferay.portal.kernel.service.persistence.RoleFinder;
 import com.liferay.portal.kernel.service.persistence.RolePersistence;
 import com.liferay.portal.kernel.service.persistence.SystemEventPersistence;
+import com.liferay.portal.kernel.service.persistence.TicketPersistence;
 import com.liferay.portal.kernel.service.persistence.UserFinder;
 import com.liferay.portal.kernel.service.persistence.UserGroupFinder;
 import com.liferay.portal.kernel.service.persistence.UserGroupPersistence;
@@ -1184,6 +1185,47 @@ public abstract class CompanyLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the ticket local service.
+	 *
+	 * @return the ticket local service
+	 */
+	public com.liferay.portal.kernel.service.TicketLocalService
+		getTicketLocalService() {
+
+		return ticketLocalService;
+	}
+
+	/**
+	 * Sets the ticket local service.
+	 *
+	 * @param ticketLocalService the ticket local service
+	 */
+	public void setTicketLocalService(
+		com.liferay.portal.kernel.service.TicketLocalService
+			ticketLocalService) {
+
+		this.ticketLocalService = ticketLocalService;
+	}
+
+	/**
+	 * Returns the ticket persistence.
+	 *
+	 * @return the ticket persistence
+	 */
+	public TicketPersistence getTicketPersistence() {
+		return ticketPersistence;
+	}
+
+	/**
+	 * Sets the ticket persistence.
+	 *
+	 * @param ticketPersistence the ticket persistence
+	 */
+	public void setTicketPersistence(TicketPersistence ticketPersistence) {
+		this.ticketPersistence = ticketPersistence;
+	}
+
+	/**
 	 * Returns the user local service.
 	 *
 	 * @return the user local service
@@ -1579,6 +1621,15 @@ public abstract class CompanyLocalServiceBaseImpl
 
 	@BeanReference(type = SystemEventPersistence.class)
 	protected SystemEventPersistence systemEventPersistence;
+
+	@BeanReference(
+		type = com.liferay.portal.kernel.service.TicketLocalService.class
+	)
+	protected com.liferay.portal.kernel.service.TicketLocalService
+		ticketLocalService;
+
+	@BeanReference(type = TicketPersistence.class)
+	protected TicketPersistence ticketPersistence;
 
 	@BeanReference(
 		type = com.liferay.portal.kernel.service.UserLocalService.class
