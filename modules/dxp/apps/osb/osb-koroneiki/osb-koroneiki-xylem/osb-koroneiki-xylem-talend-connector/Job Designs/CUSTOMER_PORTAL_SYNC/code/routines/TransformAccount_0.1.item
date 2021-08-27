@@ -85,7 +85,7 @@ public class TransformAccount {
 			return secondaryContactEmailAddress;
 		}
 
-		return "Default email";
+		return "customer-service@liferay.com";
 	}
 
 	public static String getLiferayContactName(
@@ -138,7 +138,7 @@ public class TransformAccount {
 			return secondaryContactName;
 		}
 
-		return "Default Name";
+		return "Liferay Support";
 	}
 
 	public static String getLiferayContactRole(
@@ -197,7 +197,7 @@ public class TransformAccount {
 			return secondaryContactRole;
 		}
 
-		return "Default role";
+		return "";
 	}
 
 	public static String getSLACurrent(String productPurchases)
