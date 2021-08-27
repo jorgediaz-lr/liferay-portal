@@ -286,3 +286,45 @@ paths:
                         application/json: {}
                         application/xml: {}
             tags: ["LicenseKey"]
+    "/license-keys/download":
+        get:
+            description:
+                Retrieves the aggregate license key download.
+            operationId: getLicenseKeyDownload
+            parameters:
+                - in: query
+                  name: licenseKeyIds
+                  required: true
+                  schema:
+                      items:
+                          format: int64
+                          type: integer
+                      type: array
+            responses:
+                200:
+                    content:
+                        application/xml:
+                            schema:
+                                format: binary
+                                type: string
+            tags: ["LicenseKey"]
+    "/license-keys/download/{licenseKeyId}":
+        get:
+            description:
+                Retrieves the license key download.
+            operationId: getLicenseKeyDownloadLicenseKey
+            parameters:
+                - in: path
+                  name: licenseKeyId
+                  required: true
+                  schema:
+                      format: int64
+                      type: integer
+            responses:
+                200:
+                    content:
+                        application/xml:
+                            schema:
+                                format: binary
+                                type: string
+            tags: ["LicenseKey"]
