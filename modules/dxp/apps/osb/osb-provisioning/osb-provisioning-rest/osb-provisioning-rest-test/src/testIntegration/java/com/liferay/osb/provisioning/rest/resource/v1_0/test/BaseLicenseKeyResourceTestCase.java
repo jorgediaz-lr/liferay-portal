@@ -561,6 +561,11 @@ public abstract class BaseLicenseKeyResourceTestCase {
 		Assert.assertTrue(false);
 	}
 
+	@Test
+	public void testPostLicenseKeysExtendPage() throws Exception {
+		Assert.assertTrue(false);
+	}
+
 	@Rule
 	public SearchTestRule searchTestRule = new SearchTestRule();
 

@@ -404,7 +404,7 @@ public class LicenseKey implements Serializable {
 	}
 
 	@GraphQLField(description = "The id of the license key.")
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Long id;
 
 	@Schema(description = "The IP addresses of the license key.")

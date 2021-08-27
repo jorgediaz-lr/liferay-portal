@@ -206,6 +206,24 @@ public abstract class BaseLicenseKeyResourceImpl implements LicenseKeyResource {
 		return responseBuilder.build();
 	}
 
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -X 'POST' 'http://localhost:8080/o/provisioning-rest/v1.0/license-keys/extend'  -u 'test@liferay.com:test'
+	 */
+	@Consumes({"application/json", "application/xml"})
+	@Operation(description = "Extends license keys.")
+	@Override
+	@Path("/license-keys/extend")
+	@POST
+	@Produces({"application/json", "application/xml"})
+	@Tags(value = {@Tag(name = "LicenseKey")})
+	public Page<LicenseKey> postLicenseKeysExtendPage(LicenseKey[] licenseKeys)
+		throws Exception {
+
+		return Page.of(Collections.emptyList());
+	}
+
 	public void setContextAcceptLanguage(AcceptLanguage contextAcceptLanguage) {
 		this.contextAcceptLanguage = contextAcceptLanguage;
 	}

@@ -331,6 +331,7 @@ paths:
         post:
             description:
                 Extends license keys.
+            operationId: postLicenseKeysExtendPage
             requestBody:
                 content:
                     application/json:

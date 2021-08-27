@@ -70,6 +70,9 @@ public interface LicenseKeyResource {
 	public Response getLicenseKeyDownloadLicenseKey(Long licenseKeyId)
 		throws Exception;
 
+	public Page<LicenseKey> postLicenseKeysExtendPage(LicenseKey[] licenseKeys)
+		throws Exception;
+
 	public default void setContextAcceptLanguage(
 		AcceptLanguage contextAcceptLanguage) {
 	}

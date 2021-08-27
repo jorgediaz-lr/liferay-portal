@@ -96,6 +96,22 @@ public class Mutation {
 		return true;
 	}
 
+	@GraphQLField(description = "Extends license keys.")
+	public java.util.Collection<LicenseKey> createLicenseKeysExtendPage(
+			@GraphQLName("licenseKeys") LicenseKey[] licenseKeys)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_licenseKeyResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			licenseKeyResource -> {
+				Page paginationPage =
+					licenseKeyResource.postLicenseKeysExtendPage(licenseKeys);
+
+				return paginationPage.getItems();
+			});
+	}
+
 	private <T, R, E1 extends Throwable, E2 extends Throwable> R
 			_applyComponentServiceObjects(
 				ComponentServiceObjects<T> componentServiceObjects,
