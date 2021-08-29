@@ -194,11 +194,11 @@ public class CompanyLocalServiceTest {
 
 		CompanyLocalServiceUtil.deleteCompany(company.getCompanyId());
 
-		checkCompanyDeletion(company);
-
 		for (String webId : PortalInstances.getWebIds()) {
 			Assert.assertNotEquals(companyWebId, webId);
 		}
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test
@@ -243,6 +243,8 @@ public class CompanyLocalServiceTest {
 			"The company organization child group should delete with the " +
 				"company",
 			group);
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test
@@ -263,8 +265,6 @@ public class CompanyLocalServiceTest {
 
 		CompanyLocalServiceUtil.deleteCompany(company.getCompanyId());
 
-		checkCompanyDeletion(company);
-
 		companyGroup = GroupLocalServiceUtil.fetchGroup(
 			companyGroup.getGroupId());
 
@@ -274,6 +274,8 @@ public class CompanyLocalServiceTest {
 			companyStagingGroup.getGroupId());
 
 		Assert.assertNull(companyStagingGroup);
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test
@@ -303,6 +305,8 @@ public class CompanyLocalServiceTest {
 			"test.xml", "", "", "test".getBytes(), null, null, serviceContext);
 
 		CompanyLocalServiceUtil.deleteCompany(companyId);
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test
@@ -349,6 +353,8 @@ public class CompanyLocalServiceTest {
 				layoutSetPrototype.getLayoutSetPrototypeId());
 
 		Assert.assertNull(layoutSetPrototype);
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test
@@ -387,6 +393,8 @@ public class CompanyLocalServiceTest {
 			});
 
 		CompanyLocalServiceUtil.deleteCompany(companyId);
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test
@@ -409,8 +417,6 @@ public class CompanyLocalServiceTest {
 
 		CompanyLocalServiceUtil.deleteCompany(company.getCompanyId());
 
-		checkCompanyDeletion(company);
-
 		parentGroup = GroupLocalServiceUtil.fetchGroup(
 			parentGroup.getGroupId());
 
@@ -419,6 +425,8 @@ public class CompanyLocalServiceTest {
 		group = GroupLocalServiceUtil.fetchGroup(group.getGroupId());
 
 		Assert.assertNull(group);
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test
@@ -451,6 +459,8 @@ public class CompanyLocalServiceTest {
 			companyOrganizationGroup.getGroupId());
 
 		Assert.assertNull(companyOrganizationGroup);
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test
@@ -475,8 +485,6 @@ public class CompanyLocalServiceTest {
 
 		CompanyLocalServiceUtil.deleteCompany(company.getCompanyId());
 
-		checkCompanyDeletion(company);
-
 		userGroup = UserGroupLocalServiceUtil.fetchUserGroup(
 			userGroup.getUserGroupId());
 
@@ -485,6 +493,8 @@ public class CompanyLocalServiceTest {
 		user = UserLocalServiceUtil.fetchUser(user.getUserId());
 
 		Assert.assertNull(user);
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test
@@ -522,8 +532,6 @@ public class CompanyLocalServiceTest {
 
 		CompanyLocalServiceUtil.deleteCompany(company.getCompanyId());
 
-		checkCompanyDeletion(company);
-
 		Assert.assertNull(RoleLocalServiceUtil.fetchRole(role.getRoleId()));
 
 		Assert.assertNull(
@@ -535,6 +543,8 @@ public class CompanyLocalServiceTest {
 				user.getUserId(), group.getGroupId(), role.getRoleId()));
 
 		Assert.assertNull(UserLocalServiceUtil.fetchUser(user.getUserId()));
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test(expected = NoSuchPasswordPolicyException.class)
@@ -547,6 +557,8 @@ public class CompanyLocalServiceTest {
 
 		PasswordPolicyLocalServiceUtil.getDefaultPasswordPolicy(
 			company.getCompanyId());
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test
@@ -564,6 +576,8 @@ public class CompanyLocalServiceTest {
 			company.getCompanyId(), GroupConstants.ANY_PARENT_GROUP_ID, false);
 
 		Assert.assertEquals(0, count);
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test
@@ -581,6 +595,8 @@ public class CompanyLocalServiceTest {
 			company.getCompanyId(), false);
 
 		Assert.assertEquals(0, count);
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test
@@ -595,6 +611,8 @@ public class CompanyLocalServiceTest {
 
 		Assert.assertEquals(
 			layoutSetPrototypes.toString(), 0, layoutSetPrototypes.size());
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test(expected = NoSuchPasswordPolicyException.class)
@@ -618,6 +636,8 @@ public class CompanyLocalServiceTest {
 				}
 
 			});
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test
@@ -631,6 +651,8 @@ public class CompanyLocalServiceTest {
 			OrganizationConstants.DEFAULT_PARENT_ORGANIZATION_ID);
 
 		Assert.assertEquals(0, count);
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test
@@ -643,6 +665,8 @@ public class CompanyLocalServiceTest {
 			companyId -> Assert.assertNotEquals(
 				"Company instance was not deleted", company.getCompanyId(),
 				(long)companyId));
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test
@@ -669,6 +693,8 @@ public class CompanyLocalServiceTest {
 				}
 
 			});
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test
@@ -692,6 +718,8 @@ public class CompanyLocalServiceTest {
 				}
 
 			});
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test
@@ -704,6 +732,8 @@ public class CompanyLocalServiceTest {
 			company.getCompanyId());
 
 		Assert.assertEquals(roles.toString(), 0, roles.size());
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test
@@ -743,10 +773,10 @@ public class CompanyLocalServiceTest {
 
 		CompanyLocalServiceUtil.deleteCompany(company.getCompanyId());
 
-		checkCompanyDeletion(company);
-
 		Assert.assertEquals(UserGroupRole.class.getName(), list.get(0));
 		Assert.assertEquals(Role.class.getName(), list.get(1));
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test
@@ -759,6 +789,8 @@ public class CompanyLocalServiceTest {
 			company.getCompanyId(), QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
 		Assert.assertEquals(users.toString(), 0, users.size());
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test(expected = NoSuchVirtualHostException.class)
@@ -768,6 +800,8 @@ public class CompanyLocalServiceTest {
 		CompanyLocalServiceUtil.deleteCompany(company);
 
 		VirtualHostLocalServiceUtil.getVirtualHost(company.getWebId());
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test
@@ -777,6 +811,8 @@ public class CompanyLocalServiceTest {
 		Company company = addCompany();
 
 		CompanyLocalServiceUtil.deleteCompany(company);
+
+		assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 	}
 
 	@Test(expected = RequiredCompanyException.class)
@@ -900,8 +936,6 @@ public class CompanyLocalServiceTest {
 
 		CompanyLocalServiceUtil.deleteCompany(company.getCompanyId());
 
-		checkCompanyDeletion(company);
-
 		Assert.assertEquals(languageId, user.getLanguageId());
 		Assert.assertEquals("CET", user.getTimeZoneId());
 	}
@@ -923,8 +957,6 @@ public class CompanyLocalServiceTest {
 		GroupLocalServiceUtil.deleteGroup(group);
 
 		CompanyLocalServiceUtil.deleteCompany(company.getCompanyId());
-
-		checkCompanyDeletion(company);
 	}
 
 	@Test
@@ -955,8 +987,6 @@ public class CompanyLocalServiceTest {
 			company, new String[] {RandomTestUtil.randomString()}, false);
 
 		CompanyLocalServiceUtil.deleteCompany(company.getCompanyId());
-
-		checkCompanyDeletion(company);
 	}
 
 	@Test
@@ -1006,9 +1036,12 @@ public class CompanyLocalServiceTest {
 			serviceContext);
 	}
 
-	protected void checkCompanyDeletion(Company company) throws Exception {
+	protected void assertTablesWithInvalidRecords(
+			String columnName, long wrongValue)
+		throws Exception {
+
 		List<String> invalidTables = getTablesWithInvalidRecords(
-			"companyId", company.getCompanyId());
+			columnName, wrongValue);
 
 		Assert.assertEquals(Collections.emptyList(), invalidTables);
 	}
@@ -1154,7 +1187,7 @@ public class CompanyLocalServiceTest {
 		finally {
 			CompanyLocalServiceUtil.deleteCompany(company.getCompanyId());
 
-			checkCompanyDeletion(company);
+			assertTablesWithInvalidRecords("companyId", company.getCompanyId());
 
 			field.set(null, value);
 		}
@@ -1186,8 +1219,6 @@ public class CompanyLocalServiceTest {
 		}
 
 		CompanyLocalServiceUtil.deleteCompany(company.getCompanyId());
-
-		checkCompanyDeletion(company);
 	}
 
 	private List<String> _registerModelListeners() {
