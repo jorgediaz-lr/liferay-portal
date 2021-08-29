@@ -53,6 +53,7 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.util.CompanyTestUtil;
+import com.liferay.portal.kernel.test.util.DBAssertionUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.RoleTestUtil;
@@ -215,6 +216,9 @@ public class GroupServiceTest {
 				"preferences that do no belong to a single layout",
 			_portletPreferencesLocalService.fetchPortletPreferences(
 				portletPreferences.getPortletPreferencesId()));
+
+		DBAssertionUtil.assertTablesWithInvalidRecords(
+			"groupId", group.getGroupId());
 	}
 
 	@Test(expected = NoSuchResourcePermissionException.class)
@@ -238,6 +242,12 @@ public class GroupServiceTest {
 			stagingGroup.getCompanyId(), Group.class.getName(),
 			ResourceConstants.SCOPE_INDIVIDUAL,
 			String.valueOf(stagingGroup.getGroupId()), role.getRoleId());
+
+		DBAssertionUtil.assertTablesWithInvalidRecords(
+			"groupId", group.getGroupId());
+
+		DBAssertionUtil.assertTablesWithInvalidRecords(
+			"groupId", stagingGroup.getGroupId());
 	}
 
 	@Test
@@ -269,6 +279,12 @@ public class GroupServiceTest {
 		stagingUserGroupRolesCount = stagingUserGroupRoles.size();
 
 		Assert.assertEquals(0, stagingUserGroupRolesCount);
+
+		DBAssertionUtil.assertTablesWithInvalidRecords(
+			"groupId", group.getGroupId());
+
+		DBAssertionUtil.assertTablesWithInvalidRecords(
+			"groupId", stagingGroup.getGroupId());
 	}
 
 	@Test
@@ -312,6 +328,9 @@ public class GroupServiceTest {
 
 			_organizationLocalService.deleteOrganization(organization);
 		}
+
+		DBAssertionUtil.assertTablesWithInvalidRecords(
+			"groupId", organizationSite.getGroupId());
 	}
 
 	@Test
@@ -337,6 +356,9 @@ public class GroupServiceTest {
 		Assert.assertEquals(
 			initialTagsCount,
 			_assetTagLocalService.getGroupTagsCount(group.getGroupId()));
+
+		DBAssertionUtil.assertTablesWithInvalidRecords(
+			"groupId", group.getGroupId());
 	}
 
 	@Test
