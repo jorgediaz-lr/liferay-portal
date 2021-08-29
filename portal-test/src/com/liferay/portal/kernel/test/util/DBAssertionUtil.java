@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.test.util;
 
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.db.DBInspector;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -21,9 +22,13 @@ import com.liferay.portal.kernel.util.StringUtil;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.Assert;
@@ -64,6 +69,74 @@ public class DBAssertionUtil {
 
 		Assert.assertEquals(
 			columnNamesSet.toString(), 0, columnNamesSet.size());
+	}
+
+	public static void assertTablesWithInvalidRecords(
+			String columnName, long wrongValue)
+		throws Exception {
+
+		List<String> invalidTables = getTablesWithInvalidRecords(
+			columnName, wrongValue);
+
+		Assert.assertEquals(Collections.emptyList(), invalidTables);
+	}
+
+	protected static List<String> getTablesWithInvalidRecords(
+			String columnName, long wrongValue)
+		throws Exception {
+
+		List<String> invalidTables = new ArrayList<>();
+
+		try (Connection connection = DataAccess.getConnection()) {
+			DBInspector dbInspector = new DBInspector(connection);
+
+			String catalog = dbInspector.getCatalog();
+			String schema = dbInspector.getSchema();
+
+			DatabaseMetaData databaseMetaData = connection.getMetaData();
+
+			try (ResultSet tableResultSet = databaseMetaData.getTables(
+					catalog, schema, null, new String[] {"TABLE"})) {
+
+				while (tableResultSet.next()) {
+					String tableName = dbInspector.normalizeName(
+						tableResultSet.getString("TABLE_NAME"));
+
+					if (!dbInspector.hasColumn(tableName, columnName)) {
+						continue;
+					}
+
+					if (hasInvalidRecords(
+							connection, tableName, columnName, wrongValue)) {
+
+						invalidTables.add(tableName);
+					}
+				}
+			}
+		}
+
+		return invalidTables;
+	}
+
+	protected static boolean hasInvalidRecords(
+			Connection connection, String tableName, String columnName,
+			long wrongValue)
+		throws SQLException {
+
+		String query = StringBundler.concat(
+			"select count(*) from ", tableName, " where ", columnName, " = ",
+			wrongValue);
+
+		try (PreparedStatement preparedStatement = connection.prepareStatement(
+				query);
+			ResultSet resultSet = preparedStatement.executeQuery()) {
+
+			if (resultSet.next() && (resultSet.getInt(1) > 0)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 }
