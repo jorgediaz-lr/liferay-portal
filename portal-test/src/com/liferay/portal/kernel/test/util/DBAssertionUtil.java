@@ -104,7 +104,7 @@ public class DBAssertionUtil {
 					String tableName = dbInspector.normalizeName(
 						tableResultSet.getString("TABLE_NAME"));
 
-					if (_ignoredTableNames.contains(tableName) ||
+					if (_ignoredTable(tableName) ||
 						!dbInspector.hasColumn(tableName, columnName)) {
 
 						continue;
@@ -136,6 +136,16 @@ public class DBAssertionUtil {
 			ResultSet resultSet = preparedStatement.executeQuery()) {
 
 			if (resultSet.next() && (resultSet.getInt(1) > 0)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private static boolean _ignoredTable(String tableName) {
+		for (String ignoredTableName : _ignoredTableNames) {
+			if (StringUtil.equalsIgnoreCase(ignoredTableName, tableName)) {
 				return true;
 			}
 		}
