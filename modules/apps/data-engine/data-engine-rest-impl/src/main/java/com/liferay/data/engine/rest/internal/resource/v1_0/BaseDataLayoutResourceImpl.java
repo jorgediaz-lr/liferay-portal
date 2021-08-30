@@ -17,6 +17,7 @@ package com.liferay.data.engine.rest.internal.resource.v1_0;
 import com.liferay.data.engine.rest.dto.v1_0.DataLayout;
 import com.liferay.data.engine.rest.dto.v1_0.DataLayoutPermission;
 import com.liferay.data.engine.rest.resource.v1_0.DataLayoutResource;
+import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.model.GroupedModel;
 import com.liferay.portal.kernel.search.Sort;
@@ -421,10 +422,13 @@ public abstract class BaseDataLayoutResourceImpl
 			Map<String, Serializable> parameters)
 		throws Exception {
 
-		for (DataLayout dataLayout : dataLayouts) {
-			postDataDefinitionDataLayout(
+		UnsafeConsumer<DataLayout, Exception> dataLayoutUnsafeConsumer =
+			dataLayout -> postDataDefinitionDataLayout(
 				Long.parseLong((String)parameters.get("dataDefinitionId")),
 				dataLayout);
+
+		for (DataLayout dataLayout : dataLayouts) {
+			dataLayoutUnsafeConsumer.accept(dataLayout);
 		}
 	}
 
@@ -460,9 +464,16 @@ public abstract class BaseDataLayoutResourceImpl
 			Map<String, Serializable> parameters, String search)
 		throws Exception {
 
-		return getSiteDataLayoutsPage(
-			Long.parseLong((String)parameters.get("siteId")),
-			(String)parameters.get("keywords"), pagination, sorts);
+		if (parameters.containsKey("siteId")) {
+			return getSiteDataLayoutsPage(
+				(Long)parameters.get("siteId"),
+				(String)parameters.get("keywords"), pagination, sorts);
+		}
+		else {
+			return getDataDefinitionDataLayoutsPage(
+				Long.parseLong((String)parameters.get("dataDefinitionId")),
+				(String)parameters.get("keywords"), pagination, sorts);
+		}
 	}
 
 	@Override

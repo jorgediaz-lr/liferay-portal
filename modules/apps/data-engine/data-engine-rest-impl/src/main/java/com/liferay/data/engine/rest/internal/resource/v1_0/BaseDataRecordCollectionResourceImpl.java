@@ -17,6 +17,7 @@ package com.liferay.data.engine.rest.internal.resource.v1_0;
 import com.liferay.data.engine.rest.dto.v1_0.DataRecordCollection;
 import com.liferay.data.engine.rest.dto.v1_0.DataRecordCollectionPermission;
 import com.liferay.data.engine.rest.resource.v1_0.DataRecordCollectionResource;
+import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.model.GroupedModel;
 import com.liferay.portal.kernel.search.Sort;
@@ -435,12 +436,16 @@ public abstract class BaseDataRecordCollectionResourceImpl
 			Map<String, Serializable> parameters)
 		throws Exception {
 
+		UnsafeConsumer<DataRecordCollection, Exception>
+			dataRecordCollectionUnsafeConsumer =
+				dataRecordCollection -> postDataDefinitionDataRecordCollection(
+					Long.parseLong((String)parameters.get("dataDefinitionId")),
+					dataRecordCollection);
+
 		for (DataRecordCollection dataRecordCollection :
 				dataRecordCollections) {
 
-			postDataDefinitionDataRecordCollection(
-				Long.parseLong((String)parameters.get("dataDefinitionId")),
-				dataRecordCollection);
+			dataRecordCollectionUnsafeConsumer.accept(dataRecordCollection);
 		}
 	}
 
@@ -478,9 +483,16 @@ public abstract class BaseDataRecordCollectionResourceImpl
 			Map<String, Serializable> parameters, String search)
 		throws Exception {
 
-		return getSiteDataRecordCollectionsPage(
-			Long.parseLong((String)parameters.get("siteId")),
-			(String)parameters.get("keywords"), pagination);
+		if (parameters.containsKey("siteId")) {
+			return getSiteDataRecordCollectionsPage(
+				(Long)parameters.get("siteId"),
+				(String)parameters.get("keywords"), pagination);
+		}
+		else {
+			return getDataDefinitionDataRecordCollectionsPage(
+				Long.parseLong((String)parameters.get("dataDefinitionId")),
+				(String)parameters.get("keywords"), pagination);
+		}
 	}
 
 	@Override
