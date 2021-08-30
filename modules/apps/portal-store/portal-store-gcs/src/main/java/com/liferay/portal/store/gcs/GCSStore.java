@@ -606,7 +606,7 @@ public class GCSStore extends BaseStore {
 	private Storage.BlobWriteOption _blobEncryptWriteOption;
 	private BucketInfo _bucketInfo;
 	private Storage _gcsStore;
-	private GCSStoreConfiguration _gcsStoreConfiguration;
+	private volatile GCSStoreConfiguration _gcsStoreConfiguration;
 	private GoogleCredentials _googleCredentials;
 	private Storage.BlobSourceOption _storageDecryptionSourceOption;
 
