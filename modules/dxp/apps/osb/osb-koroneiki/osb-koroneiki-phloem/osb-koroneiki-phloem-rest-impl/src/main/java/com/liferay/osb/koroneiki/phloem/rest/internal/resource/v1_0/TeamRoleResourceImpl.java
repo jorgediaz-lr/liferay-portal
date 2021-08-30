@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.vulcan.fields.NestedField;
 import com.liferay.portal.vulcan.fields.NestedFieldId;
+import com.liferay.portal.vulcan.fields.NestedFieldSupport;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
 import com.liferay.portal.vulcan.resource.EntityModelResource;
@@ -56,10 +57,12 @@ import org.osgi.service.component.annotations.ServiceScope;
  */
 @Component(
 	properties = "OSGI-INF/liferay/rest/v1_0/team-role.properties",
-	scope = ServiceScope.PROTOTYPE, service = TeamRoleResource.class
+	scope = ServiceScope.PROTOTYPE,
+	service = {NestedFieldSupport.class, TeamRoleResource.class}
 )
 public class TeamRoleResourceImpl
-	extends BaseTeamRoleResourceImpl implements EntityModelResource {
+	extends BaseTeamRoleResourceImpl
+	implements EntityModelResource, NestedFieldSupport {
 
 	@Override
 	public void deleteTeamRole(
