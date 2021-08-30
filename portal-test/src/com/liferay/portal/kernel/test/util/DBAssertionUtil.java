@@ -27,7 +27,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -102,7 +104,9 @@ public class DBAssertionUtil {
 					String tableName = dbInspector.normalizeName(
 						tableResultSet.getString("TABLE_NAME"));
 
-					if (!dbInspector.hasColumn(tableName, columnName)) {
+					if (_ignoredTableNames.contains(tableName) ||
+						!dbInspector.hasColumn(tableName, columnName)) {
+
 						continue;
 					}
 
@@ -138,5 +142,8 @@ public class DBAssertionUtil {
 
 		return false;
 	}
+
+	private static final Set<String> _ignoredTableNames = new HashSet<>(
+		Arrays.asList("Audit_AuditEvent"));
 
 }
