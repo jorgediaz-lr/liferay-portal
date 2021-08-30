@@ -36,82 +36,58 @@ public class TransformProductPurchases {
 			String productPurchases)
 		throws Exception {
 
-		Map<String, SubscriptionGroup> subscriptionGroupMap = new HashMap<>();
+		Map<String, List<JSONObject>> subscriptionGroupsMap = new HashMap<>();
 
 		JSONArray jsonArray = new JSONArray(productPurchases);
 
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-			SubscriptionGroup subscriptionGroup = _getSubscriptionGroup(
-				subscriptionGroupMap, jsonObject);
+			JSONObject productJSONObject = jsonObject.getJSONObject("product");
 
-			subscriptionGroup.addSubscription(jsonObject);
+			JSONObject propertiesJSONObject = productJSONObject.getJSONObject(
+				"properties");
+
+			String displayGroupName = propertiesJSONObject.optString(
+				"display-group-name");
+
+			if (displayGroupName.isEmpty()) {
+				continue;
+			}
+
+			List<JSONObject> productPurchaseJSONObjects =
+				subscriptionGroupsMap.get(displayGroupName);
+
+			if (productPurchaseJSONObjects == null) {
+				productPurchaseJSONObjects = new ArrayList<>();
+
+				subscriptionGroupsMap.put(
+					displayGroupName, productPurchaseJSONObjects);
+			}
+
+			productPurchaseJSONObjects.add(jsonObject);
 		}
 
-		return _toJSONArray(subscriptionGroupMap);
-	}
+		JSONArray subscriptionGroupsJSONArray = new JSONArray();
 
-	private static SubscriptionGroup _getSubscriptionGroup(
-			Map<String, SubscriptionGroup> subscriptionGroupMap,
-			JSONObject jsonObject)
-		throws Exception {
+		for (Map.Entry<String, List<JSONObject>> entry :
+				subscriptionGroupsMap.entrySet()) {
 
-		String subscriptionGroupName = null;
+			String subscriptionGroupName = entry.getKey();
 
-		JSONObject productJSONObject = jsonObject.getJSONObject("product");
+			List<JSONObject> productPurchaseJSONObjects = entry.getValue();
 
-		String productName = productJSONObject.getString("name");
+			if (productPurchaseJSONObjects.isEmpty()) {
+				continue;
+			}
 
-		productName = productName.toLowerCase();
+			SubscriptionGroup subscriptionGroup = new SubscriptionGroup(
+				subscriptionGroupName, productPurchaseJSONObjects);
 
-		if (productName.contains("analytics cloud")) {
-			subscriptionGroupName =
-				SubscriptionConstants.GROUP_NAME_ANALYTICS_CLOUD;
-		}
-		else if (productName.contains("commerce")) {
-			subscriptionGroupName = SubscriptionConstants.GROUP_NAME_COMMERCE;
-		}
-		else if (productName.startsWith("dxp")) {
-			subscriptionGroupName = SubscriptionConstants.GROUP_NAME_DXP;
-		}
-		else if (productName.contains("dxp cloud")) {
-			subscriptionGroupName = SubscriptionConstants.GROUP_NAME_DXP_CLOUD;
-		}
-		else if (productName.contains("enterprise search")) {
-			subscriptionGroupName =
-				SubscriptionConstants.GROUP_NAME_ENTERPRISE_SEARCH;
-		}
-		else {
-			subscriptionGroupName = SubscriptionConstants.GROUP_NAME_OTHER;
+			subscriptionGroupsJSONArray.put(subscriptionGroup.toJSONObject());
 		}
 
-		SubscriptionGroup subscriptionGroup = subscriptionGroupMap.get(
-			subscriptionGroupName);
-
-		if (subscriptionGroup == null) {
-			subscriptionGroup = new SubscriptionGroup(
-				jsonObject.getString("accountKey"), subscriptionGroupName);
-
-			subscriptionGroupMap.put(subscriptionGroupName, subscriptionGroup);
-		}
-
-		return subscriptionGroup;
-	}
-
-	private static JSONArray _toJSONArray(
-			Map<String, SubscriptionGroup> subscriptionGroupMap)
-		throws Exception {
-
-		JSONArray jsonArray = new JSONArray();
-
-		for (SubscriptionGroup subscriptionGroup :
-				subscriptionGroupMap.values()) {
-
-			jsonArray.put(subscriptionGroup.toJSONObject());
-		}
-
-		return jsonArray;
+		return subscriptionGroupsJSONArray;
 	}
 
 	private static class Subscription {
@@ -215,31 +191,50 @@ public class TransformProductPurchases {
 
 	private static class SubscriptionGroup {
 
-		public SubscriptionGroup(String accountKey, String name) {
-			this.accountKey = accountKey;
+		public SubscriptionGroup(
+				String name, List<JSONObject> productPurchaseJSONObjects)
+			throws Exception {
+
 			this.name = name;
 
-			String curExternalReferenceCode = name.toLowerCase();
+			for (JSONObject jsonObject : productPurchaseJSONObjects) {
+				if (accountKey == null) {
+					accountKey = jsonObject.getString("accountKey");
 
-			curExternalReferenceCode = curExternalReferenceCode.replace(
-				" ", "-");
+					String curExternalReferenceCode = name.toLowerCase();
 
-			externalReferenceCode = accountKey + "_" + curExternalReferenceCode;
-		}
+					curExternalReferenceCode = curExternalReferenceCode.replace(
+						" ", "-");
 
-		public void addSubscription(JSONObject jsonObject) throws Exception {
-			String subscriptionName = getSubscriptionName(jsonObject);
+					externalReferenceCode =
+						accountKey + "_" + curExternalReferenceCode;
+				}
 
-			Subscription subscription = subscriptionsMap.get(subscriptionName);
+				JSONObject productJSONObject = jsonObject.getJSONObject(
+					"product");
 
-			if (subscription == null) {
-				subscription = new Subscription(
-					accountKey, externalReferenceCode, subscriptionName);
+				JSONObject productPropertiesJSONObject =
+					productJSONObject.getJSONObject("properties");
 
-				subscriptionsMap.put(subscriptionName, subscription);
+				String subscriptionName = productPropertiesJSONObject.optString(
+					"display-name");
+
+				if (subscriptionName.isEmpty()) {
+					subscriptionName = productJSONObject.getString("name");
+				}
+
+				Subscription subscription = subscriptionsMap.get(
+					subscriptionName);
+
+				if (subscription == null) {
+					subscription = new Subscription(
+						accountKey, externalReferenceCode, subscriptionName);
+
+					subscriptionsMap.put(subscriptionName, subscription);
+				}
+
+				subscription.addSubscriptionTerm(jsonObject);
 			}
-
-			subscription.addSubscriptionTerm(jsonObject);
 		}
 
 		public JSONArray getSubscriptionJSONArray() {
@@ -252,35 +247,28 @@ public class TransformProductPurchases {
 			return jsonArray;
 		}
 
-		public String getSubscriptionName(JSONObject jsonObject) {
-			JSONObject productJSONObject = jsonObject.getJSONObject("product");
-
-			String productName = productJSONObject.getString("name");
-
-			if (name.equals(SubscriptionConstants.GROUP_NAME_DXP)) {
-				if (productName.contains("backup")) {
-					return "Backup";
-				}
-				else if (productName.contains("non-production")) {
-					return "Non-Production";
-				}
-				else if (productName.contains("production")) {
-					return "Production";
-				}
-			}
-
-			return productName;
-		}
-
 		public JSONObject toJSONObject() {
 			JSONObject jsonObject = new JSONObject();
 
 			jsonObject.put("accountKey", accountKey);
 			jsonObject.put("activationStatus", "In Progress");
 			jsonObject.put("externalReferenceCode", externalReferenceCode);
-			jsonObject.put(
-				"hasActivation",
-				!name.equals(SubscriptionConstants.GROUP_NAME_OTHER));
+
+			if (name.equals(SubscriptionConstants.GROUP_NAME_DXP) ||
+				name.equals(SubscriptionConstants.GROUP_NAME_DXP_CLOUD) ||
+				name.equals(SubscriptionConstants.GROUP_NAME_DXP_COMMERCE) ||
+				name.equals(
+					SubscriptionConstants.
+						GROUP_NAME_DXP_CLOUD_COMMERCE_CLOUD) ||
+				name.equals(
+					SubscriptionConstants.GROUP_NAME_ENTERPRISE_SEARCH)) {
+
+				jsonObject.put("hasActivation", true);
+			}
+			else {
+				jsonObject.put("hasActivation", false);
+			}
+
 			jsonObject.put("name", name);
 			jsonObject.put("subscriptions", getSubscriptionJSONArray());
 
@@ -290,7 +278,6 @@ public class TransformProductPurchases {
 		public String accountKey;
 		public String activationStatus;
 		public String externalReferenceCode;
-		public boolean hasActivation;
 		public String name;
 		public Map<String, Subscription> subscriptionsMap = new HashMap<>();
 
