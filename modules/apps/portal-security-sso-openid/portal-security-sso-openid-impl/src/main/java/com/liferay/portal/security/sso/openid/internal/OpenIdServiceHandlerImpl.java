@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -446,7 +447,7 @@ public class OpenIdServiceHandlerImpl implements OpenIdServiceHandler {
 	}
 
 	protected String getFirstValue(List<String> values) {
-		if ((values == null) || values.isEmpty()) {
+		if (ListUtil.isEmpty(values)) {
 			return null;
 		}
 

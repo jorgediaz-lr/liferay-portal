@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.CookieUtil;
 import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -361,7 +362,7 @@ public class SPIAgentRequest extends SPIAgentSerializable {
 		public String getHeader(String name) {
 			List<String> values = headerMap.get(StringUtil.toLowerCase(name));
 
-			if ((values == null) || values.isEmpty()) {
+			if (ListUtil.isEmpty(values)) {
 				return null;
 			}
 
