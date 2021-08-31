@@ -63,6 +63,46 @@ public class LicenseKeyResourceImpl
 	}
 
 	@Override
+	public Response getLicenseKeyDownload(Long licenseKeyId) throws Exception {
+		com.liferay.osb.provisioning.license.model.LicenseKey licenseKey =
+			_licenseKeyLocalService.getLicenseKey(licenseKeyId);
+
+		if (licenseKey.getLicenseVersion() >= 2) {
+			String fileName = _licenseKeyExporter.getFileName(
+				licenseKey.getProductName(), licenseKey.getProductVersion(),
+				licenseKey.getName());
+
+			String licenseXML = _licenseKeyExporter.toXML(
+				licenseKey.getKey(), licenseKey.getAccountName(),
+				licenseKey.getLicenseEntryName(),
+				licenseKey.getLicenseEntryType(),
+				licenseKey.getLicenseVersion(), licenseKey.getProductName(),
+				licenseKey.getProductId(), licenseKey.getProductVersion(),
+				licenseKey.getOwner(), licenseKey.getMaxClusterNodes(),
+				licenseKey.getMaxServers(), licenseKey.getMaxHttpSessions(),
+				licenseKey.getMaxConcurrentUsers(), licenseKey.getMaxUsers(),
+				licenseKey.getSizing(), licenseKey.getDescription(),
+				licenseKey.getHostName(), licenseKey.getIpAddresses(),
+				licenseKey.getMacAddresses(), licenseKey.getServerId(),
+				licenseKey.getStartDate(), licenseKey.getExpirationDate(),
+				licenseKey.getCreateDate());
+
+			return Response.ok(
+				licenseXML.getBytes()
+			).header(
+				"content-disposition",
+				"attachment; filename=\"" + fileName + "\""
+			).type(
+				ContentTypes.TEXT_XML
+			).build();
+		}
+
+		return Response.status(
+			Response.Status.NOT_FOUND
+		).build();
+	}
+
+	@Override
 	public Response getLicenseKeyDownload(Long[] licenseKeyIds)
 		throws Exception {
 
@@ -171,48 +211,6 @@ public class LicenseKeyResourceImpl
 			"content-disposition", "attachment; filename=\"" + fileName + "\""
 		).type(
 			ContentTypes.TEXT_XML
-		).build();
-	}
-
-	@Override
-	public Response getLicenseKeyDownloadLicenseKey(Long licenseKeyId)
-		throws Exception {
-
-		com.liferay.osb.provisioning.license.model.LicenseKey licenseKey =
-			_licenseKeyLocalService.getLicenseKey(licenseKeyId);
-
-		if (licenseKey.getLicenseVersion() >= 2) {
-			String fileName = _licenseKeyExporter.getFileName(
-				licenseKey.getProductName(), licenseKey.getProductVersion(),
-				licenseKey.getName());
-
-			String licenseXML = _licenseKeyExporter.toXML(
-				licenseKey.getKey(), licenseKey.getAccountName(),
-				licenseKey.getLicenseEntryName(),
-				licenseKey.getLicenseEntryType(),
-				licenseKey.getLicenseVersion(), licenseKey.getProductName(),
-				licenseKey.getProductId(), licenseKey.getProductVersion(),
-				licenseKey.getOwner(), licenseKey.getMaxClusterNodes(),
-				licenseKey.getMaxServers(), licenseKey.getMaxHttpSessions(),
-				licenseKey.getMaxConcurrentUsers(), licenseKey.getMaxUsers(),
-				licenseKey.getSizing(), licenseKey.getDescription(),
-				licenseKey.getHostName(), licenseKey.getIpAddresses(),
-				licenseKey.getMacAddresses(), licenseKey.getServerId(),
-				licenseKey.getStartDate(), licenseKey.getExpirationDate(),
-				licenseKey.getCreateDate());
-
-			return Response.ok(
-				licenseXML.getBytes()
-			).header(
-				"content-disposition",
-				"attachment; filename=\"" + fileName + "\""
-			).type(
-				ContentTypes.TEXT_XML
-			).build();
-		}
-
-		return Response.status(
-			Response.Status.NOT_FOUND
 		).build();
 	}
 

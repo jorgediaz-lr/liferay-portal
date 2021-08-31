@@ -307,26 +307,6 @@ paths:
                                 format: binary
                                 type: string
             tags: ["LicenseKey"]
-    "/license-keys/download/{licenseKeyId}":
-        get:
-            description:
-                Retrieves the license key download.
-            operationId: getLicenseKeyDownloadLicenseKey
-            parameters:
-                - in: path
-                  name: licenseKeyId
-                  required: true
-                  schema:
-                      format: int64
-                      type: integer
-            responses:
-                200:
-                    content:
-                        application/xml:
-                            schema:
-                                format: binary
-                                type: string
-            tags: ["LicenseKey"]
     "/license-keys/extend":
         post:
             description:
@@ -358,4 +338,23 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/LicenseKey"
                                 type: array
+            tags: ["LicenseKey"]
+    "/license-keys/{licenseKeyId}/download":
+        get:
+            description:
+                Retrieves the license key download.
+            parameters:
+                - in: path
+                  name: licenseKeyId
+                  required: true
+                  schema:
+                      format: int64
+                      type: integer
+            responses:
+                200:
+                    content:
+                        application/xml:
+                            schema:
+                                format: binary
+                                type: string
             tags: ["LicenseKey"]
