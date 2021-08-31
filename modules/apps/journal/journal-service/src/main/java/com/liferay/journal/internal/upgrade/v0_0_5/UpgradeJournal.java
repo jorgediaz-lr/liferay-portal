@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.upgrade.util.UpgradeProcessUtil;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LoggingTimer;
@@ -475,9 +476,7 @@ public class UpgradeJournal extends UpgradeProcess {
 	protected void transformDateFieldValues(
 		List<Element> dynamicElementElements) {
 
-		if ((dynamicElementElements == null) ||
-			dynamicElementElements.isEmpty()) {
-
+		if (ListUtil.isEmpty(dynamicElementElements)) {
 			return;
 		}
 
