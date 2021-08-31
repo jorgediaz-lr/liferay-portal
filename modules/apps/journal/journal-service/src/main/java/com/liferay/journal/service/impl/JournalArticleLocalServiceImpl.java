@@ -1227,11 +1227,6 @@ public class JournalArticleLocalServiceImpl
 			updatePreviousApprovedArticle(article);
 		}
 
-		// Article localization
-
-		journalArticleLocalizationPersistence.removeByArticlePK(
-			article.getId());
-
 		// Asset
 
 		if (article.isDraft() || article.isInTrash()) {
