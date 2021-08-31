@@ -185,7 +185,7 @@ public abstract class BaseLicenseKeyResourceImpl implements LicenseKeyResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/provisioning-rest/v1.0/license-keys/download/{licenseKeyId}'  -u 'test@liferay.com:test'
+	 * curl -X 'GET' 'http://localhost:8080/o/provisioning-rest/v1.0/license-keys/{licenseKeyId}/download'  -u 'test@liferay.com:test'
 	 */
 	@GET
 	@Operation(description = "Retrieves the license key download.")
@@ -193,10 +193,10 @@ public abstract class BaseLicenseKeyResourceImpl implements LicenseKeyResource {
 	@Parameters(
 		value = {@Parameter(in = ParameterIn.PATH, name = "licenseKeyId")}
 	)
-	@Path("/license-keys/download/{licenseKeyId}")
+	@Path("/license-keys/{licenseKeyId}/download")
 	@Produces("application/xml")
 	@Tags(value = {@Tag(name = "LicenseKey")})
-	public Response getLicenseKeyDownloadLicenseKey(
+	public Response getLicenseKeyDownload(
 			@NotNull @Parameter(hidden = true) @PathParam("licenseKeyId") Long
 				licenseKeyId)
 		throws Exception {

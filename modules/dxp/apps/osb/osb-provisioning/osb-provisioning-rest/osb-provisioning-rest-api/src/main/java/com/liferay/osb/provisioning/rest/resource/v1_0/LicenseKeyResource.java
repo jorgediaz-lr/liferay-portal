@@ -67,8 +67,7 @@ public interface LicenseKeyResource {
 	public Response getLicenseKeyDownload(Long[] licenseKeyIds)
 		throws Exception;
 
-	public Response getLicenseKeyDownloadLicenseKey(Long licenseKeyId)
-		throws Exception;
+	public Response getLicenseKeyDownload(Long licenseKeyId) throws Exception;
 
 	public Page<LicenseKey> postLicenseKeysExtendPage(LicenseKey[] licenseKeys)
 		throws Exception;

@@ -77,10 +77,9 @@ public interface LicenseKeyResource {
 			Long[] licenseKeyIds)
 		throws Exception;
 
-	public void getLicenseKeyDownloadLicenseKey(Long licenseKeyId)
-		throws Exception;
+	public void getLicenseKeyDownload(Long licenseKeyId) throws Exception;
 
-	public HttpInvoker.HttpResponse getLicenseKeyDownloadLicenseKeyHttpResponse(
+	public HttpInvoker.HttpResponse getLicenseKeyDownloadHttpResponse(
 			Long licenseKeyId)
 		throws Exception;
 
@@ -618,11 +617,9 @@ public interface LicenseKeyResource {
 			return httpInvoker.invoke();
 		}
 
-		public void getLicenseKeyDownloadLicenseKey(Long licenseKeyId)
-			throws Exception {
-
+		public void getLicenseKeyDownload(Long licenseKeyId) throws Exception {
 			HttpInvoker.HttpResponse httpResponse =
-				getLicenseKeyDownloadLicenseKeyHttpResponse(licenseKeyId);
+				getLicenseKeyDownloadHttpResponse(licenseKeyId);
 
 			String content = httpResponse.getContent();
 
@@ -650,8 +647,8 @@ public interface LicenseKeyResource {
 			}
 		}
 
-		public HttpInvoker.HttpResponse
-				getLicenseKeyDownloadLicenseKeyHttpResponse(Long licenseKeyId)
+		public HttpInvoker.HttpResponse getLicenseKeyDownloadHttpResponse(
+				Long licenseKeyId)
 			throws Exception {
 
 			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
@@ -678,7 +675,7 @@ public interface LicenseKeyResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/provisioning-rest/v1.0/license-keys/download/{licenseKeyId}");
+						"/o/provisioning-rest/v1.0/license-keys/{licenseKeyId}/download");
 
 			httpInvoker.path("licenseKeyId", licenseKeyId);
 

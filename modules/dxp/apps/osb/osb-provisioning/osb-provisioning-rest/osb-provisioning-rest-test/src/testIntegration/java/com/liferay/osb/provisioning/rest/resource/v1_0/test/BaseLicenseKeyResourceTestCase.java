@@ -557,7 +557,7 @@ public abstract class BaseLicenseKeyResourceTestCase {
 	}
 
 	@Test
-	public void testGetLicenseKeyDownloadLicenseKey() throws Exception {
+	public void testGetLicenseKeyDownload() throws Exception {
 		Assert.assertTrue(false);
 	}
 
