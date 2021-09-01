@@ -4137,6 +4137,11 @@ AUI.add(
 					);
 
 					instance.set('definition', definition);
+
+					Liferay.fire('inputLocalized:localeChanged', {
+						item: event.item,
+						source: instance
+					});
 				},
 
 				_onLiferaySubmitForm(event) {
