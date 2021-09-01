@@ -28,8 +28,6 @@ definition {
 				locator1 = "Portlet#HEADER",
 				value1 = "Search");
 
-			Panel.expandPanel(panel = "Index Actions");
-
 			AssertClick.assertTextClickAt(
 				key_actionsDescription = "${actionsDescription}",
 				locator1 = "Button#EXECUTE_ACTION",
