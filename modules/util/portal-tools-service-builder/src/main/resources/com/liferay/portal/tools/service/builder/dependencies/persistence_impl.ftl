@@ -183,6 +183,14 @@ import org.osgi.service.component.annotations.Reference;
 	<#assign localizedEntity = entity.localizedEntity />
 
 	import ${apiPackagePath}.service.persistence.${localizedEntity.name}Persistence;
+
+	<#if localizedEntity.versionEntity??>
+		<#assign
+			localizedVersionEntity = localizedEntity.versionEntity
+		/>
+
+		import ${apiPackagePath}.service.persistence.${localizedVersionEntity.name}Persistence;
+	</#if>
 </#if>
 
 /**
@@ -702,6 +710,14 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 			/>
 
 			${localizedEntity.variableName}Persistence.removeBy${pkEntityColumn.methodName}(${entity.variableName}.get${pkEntityColumn.methodName}());
+
+			<#if localizedEntity.versionEntity??>
+				<#assign
+					localizedVersionEntity = localizedEntity.versionEntity
+				/>
+
+				${localizedVersionEntity.variableName}Persistence.removeBy${pkEntityColumn.methodName}(${entity.variableName}.get${pkEntityColumn.methodName}());
+			</#if>
 		</#if>
 
 		Session session = null;
@@ -2889,6 +2905,18 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 		</#if>
 
 		protected ${localizedEntity.name}Persistence ${localizedEntity.variableName}Persistence;
+
+		<#if localizedEntity.versionEntity??>
+			<#assign localizedVersionEntity = localizedEntity.versionEntity />
+
+			<#if dependencyInjectorDS>
+				@Reference
+			<#else>
+				@BeanReference(type = ${localizedVersionEntity.name}Persistence.class)
+			</#if>
+
+			protected ${localizedVersionEntity.name}Persistence ${localizedVersionEntity.variableName}Persistence;
+		</#if>
 	</#if>
 
 	<#if entity.isHierarchicalTree()>
