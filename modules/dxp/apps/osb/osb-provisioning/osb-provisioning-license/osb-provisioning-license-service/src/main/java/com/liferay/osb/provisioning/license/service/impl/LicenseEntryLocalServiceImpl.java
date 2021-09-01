@@ -75,6 +75,10 @@ public class LicenseEntryLocalServiceImpl
 		return licenseEntryPersistence.findByProductKey(productKey);
 	}
 
+	public List<LicenseEntry> getLicenseEntriesByType(String type) {
+		return licenseEntryPersistence.findByT(type);
+	}
+
 	public List<LicenseEntry> getLicenseEntriesByVersion(
 			String productKey, String version)
 		throws Exception {

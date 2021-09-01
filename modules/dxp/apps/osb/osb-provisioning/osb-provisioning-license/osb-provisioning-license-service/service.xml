@@ -35,6 +35,9 @@
 		<finder name="ProductKey" return-type="Collection">
 			<finder-column name="productKey" />
 		</finder>
+		<finder name="T" return-type="Collection">
+			<finder-column name="type" />
+		</finder>
 		<finder name="PK_T" return-type="LicenseEntry" unique="true">
 			<finder-column name="productKey" />
 			<finder-column name="type" />

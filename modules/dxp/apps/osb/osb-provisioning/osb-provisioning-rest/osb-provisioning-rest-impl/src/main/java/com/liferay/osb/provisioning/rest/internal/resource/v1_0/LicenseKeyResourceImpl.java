@@ -14,13 +14,29 @@
 
 package com.liferay.osb.provisioning.rest.internal.resource.v1_0;
 
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchaseView;
+import com.liferay.osb.provisioning.koroneiki.constants.ProductConstants;
+import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
+import com.liferay.osb.provisioning.koroneiki.web.service.ContactWebService;
+import com.liferay.osb.provisioning.koroneiki.web.service.ProductPurchaseViewWebService;
+import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.provisioning.license.exporter.LicenseKeyExporter;
+import com.liferay.osb.provisioning.license.generator.KeyGenerator;
+import com.liferay.osb.provisioning.license.helper.constants.LicenseLifetime;
+import com.liferay.osb.provisioning.license.helper.constants.LicenseServerId;
 import com.liferay.osb.provisioning.license.helper.constants.LicenseType;
+import com.liferay.osb.provisioning.license.helper.constants.LicenseVersion;
+import com.liferay.osb.provisioning.license.helper.constants.ProductId;
+import com.liferay.osb.provisioning.license.model.LicenseEntry;
+import com.liferay.osb.provisioning.license.service.LicenseEntryLocalService;
 import com.liferay.osb.provisioning.license.service.LicenseKeyLocalService;
 import com.liferay.osb.provisioning.rest.dto.v1_0.LicenseKey;
 import com.liferay.osb.provisioning.rest.dto.v1_0.util.LicenseKeyUtil;
 import com.liferay.osb.provisioning.rest.internal.odata.entity.v1_0.LicenseKeyEntityModel;
 import com.liferay.osb.provisioning.rest.resource.v1_0.LicenseKeyResource;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
@@ -28,6 +44,8 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
@@ -35,13 +53,17 @@ import com.liferay.portal.vulcan.resource.EntityModelResource;
 import com.liferay.portal.vulcan.util.SearchUtil;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
+
+import org.apache.commons.lang.time.DateUtils;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -235,6 +257,139 @@ public class LicenseKeyResourceImpl
 	}
 
 	@Override
+	public Response getProductGroupProductGroupNameDevelopmentLicenseKey(
+			String productGroupName, String accountKey, String productVersion)
+		throws Exception {
+
+		// TODO: User Authentication
+
+		List<LicenseEntry> licenseEntries =
+			_licenseEntryLocalService.getLicenseEntriesByType(
+				LicenseType.DEVELOPER);
+
+		LicenseEntry licenseEntry = null;
+
+		for (LicenseEntry curLicenseEntry : licenseEntries) {
+			String curLicenseEntryName = curLicenseEntry.getName();
+
+			if (StringUtil.startsWith(curLicenseEntryName, productGroupName)) {
+				licenseEntry = curLicenseEntry;
+			}
+		}
+
+		if (licenseEntry == null) {
+			return Response.status(
+				Response.Status.NOT_FOUND
+			).build();
+		}
+
+		Product product = _productWebService.getProduct(
+			licenseEntry.getProductKey());
+
+		String productName = product.getName();
+
+		StringBundler sb = new StringBundler(5);
+
+		sb.append("accountKey eq '");
+		sb.append(accountKey);
+		sb.append("' and state eq 'active' and (property_type eq 'primary' ");
+		sb.append("or contains(name, 'Commerce Subscription') or ");
+		sb.append("contains(name, 'DXP Cloud Subscription'))");
+
+		List<ProductPurchaseView> productPurchaseViews =
+			_productPurchaseViewWebService.getProductPurchaseViews(
+				StringPool.BLANK, sb.toString(), 1, 1000, StringPool.BLANK);
+
+		boolean hasActiveProduct = false;
+
+		for (ProductPurchaseView productPurchaseView : productPurchaseViews) {
+			Product curProduct = productPurchaseView.getProduct();
+
+			String curProductName = curProduct.getName();
+
+			if ((curProductName.contains(
+					ProductConstants.NAME_COMMERCE_SUBSCRIPTION) &&
+				 productName.contains(
+					 ProductConstants.NAME_COMMERCE_SUBSCRIPTION)) ||
+				((curProductName.contains(
+					ProductConstants.NAME_DIGITAL_ENTERPRISE) ||
+				  curProductName.startsWith(ProductConstants.NAME_DXP)) &&
+				 (productName.contains(
+					 ProductConstants.NAME_DIGITAL_ENTERPRISE) ||
+				  productName.startsWith(ProductConstants.NAME_DXP) ||
+				  productName.contains(ProductConstants.NAME_DXP_CLOUD))) ||
+				(curProductName.contains(ProductConstants.NAME_PORTAL) &&
+				 productName.contains(ProductConstants.NAME_PORTAL))) {
+
+				hasActiveProduct = true;
+			}
+		}
+
+		if (!hasActiveProduct) {
+			return Response.status(
+				Response.Status.NOT_FOUND
+			).build();
+		}
+
+		Account account = _accountWebService.getAccount(accountKey);
+
+		String accountName = _trimText(account.getName());
+
+		String licenseEntryName = _trimText(licenseEntry.getName());
+
+		int licenseVersion = LicenseVersion.getLicenseVersion(
+			productName, productVersion);
+
+		productName = _trimText(productName);
+
+		String productId = ProductId.PORTAL;
+
+		if (productName.contains(ProductConstants.NAME_COMMERCE_SUBSCRIPTION)) {
+			productId = ProductId.COMMERCE;
+		}
+
+		String description = _trimText(
+			account.getName() + " Developer Activation Keys");
+
+		Date createDate = new Date();
+
+		Date startDate = new Date();
+
+		Date expirationDate = new Date(
+			startDate.getTime() + LicenseLifetime.INDEFINITE);
+
+		startDate = DateUtils.round(startDate, Calendar.SECOND);
+
+		expirationDate = DateUtils.round(expirationDate, Calendar.SECOND);
+
+		String key = _keyGenerator.generate(
+			accountName, licenseEntryName, LicenseType.DEVELOPER,
+			licenseVersion, productName, productId, productVersion, accountName,
+			0, 1, 5, 0, 0, StringPool.BLANK, description, StringPool.BLANK,
+			StringPool.BLANK, StringPool.BLANK,
+			new String[] {LicenseServerId.DEVELOPER}, startDate,
+			expirationDate);
+
+		String licenseXML = _licenseKeyExporter.toXML(
+			key, accountName, licenseEntryName, LicenseType.DEVELOPER,
+			licenseVersion, productName, productId, productVersion, accountName,
+			0, 1, 5, 0, 0, StringPool.BLANK, description, StringPool.BLANK,
+			StringPool.BLANK, StringPool.BLANK, LicenseServerId.DEVELOPER,
+			startDate, expirationDate, createDate);
+
+		String fileName = _licenseKeyExporter.getFileName(
+			productName, productVersion, "Developer Activation Keys");
+
+		return Response.ok(
+			licenseXML.getBytes()
+		).header(
+			"content-disposition", "attachment; filename=\"" + fileName + "\""
+		).type(
+			ContentTypes.TEXT_XML
+		).build();
+	}
+
+	@Override
 	public Page<LicenseKey> postLicenseKeysExtendPage(LicenseKey[] licenseKeys)
 		throws Exception {
 
@@ -309,6 +464,27 @@ public class LicenseKeyResourceImpl
 		}
 	}
 
+	private static String _trimText(String text) {
+
+		// Copied from org.dom4j.tree.AbstractBranch.getTextTrim()
+
+		StringBuffer textContent = new StringBuffer();
+
+		StringTokenizer tokenizer = new StringTokenizer(text);
+
+		while (tokenizer.hasMoreTokens()) {
+			String str = tokenizer.nextToken();
+
+			textContent.append(str);
+
+			if (tokenizer.hasMoreTokens()) {
+				textContent.append(" ");
+			}
+		}
+
+		return textContent.toString();
+	}
+
 	private boolean _isAggregate(
 			List<com.liferay.osb.provisioning.license.model.LicenseKey>
 				licenseKeys)
@@ -366,9 +542,27 @@ public class LicenseKeyResourceImpl
 	private static final EntityModel _entityModel = new LicenseKeyEntityModel();
 
 	@Reference
+	private AccountWebService _accountWebService;
+
+	@Reference
+	private ContactWebService _contactWebService;
+
+	@Reference
+	private KeyGenerator _keyGenerator;
+
+	@Reference
+	private LicenseEntryLocalService _licenseEntryLocalService;
+
+	@Reference
 	private LicenseKeyExporter _licenseKeyExporter;
 
 	@Reference
 	private LicenseKeyLocalService _licenseKeyLocalService;
+
+	@Reference
+	private ProductPurchaseViewWebService _productPurchaseViewWebService;
+
+	@Reference
+	private ProductWebService _productWebService;
 
 }
