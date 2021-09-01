@@ -536,16 +536,25 @@ public class QueuedMessageModelImpl
 	public String toString() {
 		StringBundler sb = new StringBundler(13);
 
-		sb.append("{mvccVersion=");
+		sb.append("{\"mvccVersion\": ");
+
 		sb.append(getMvccVersion());
-		sb.append(", queuedMessageId=");
+
+		sb.append(", \"queuedMessageId\": ");
+
 		sb.append(getQueuedMessageId());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", messageBrokerClassName=");
-		sb.append(getMessageBrokerClassName());
-		sb.append(", topic=");
-		sb.append(getTopic());
+
+		sb.append(", \"createDate\": ");
+
+		sb.append("\"" + getCreateDate() + "\"");
+
+		sb.append(", \"messageBrokerClassName\": ");
+
+		sb.append("\"" + getMessageBrokerClassName() + "\"");
+
+		sb.append(", \"topic\": ");
+
+		sb.append("\"" + getTopic() + "\"");
 
 		return sb.toString();
 	}
@@ -560,23 +569,33 @@ public class QueuedMessageModelImpl
 
 		sb.append(
 			"<column><column-name>mvccVersion</column-name><column-value><![CDATA[");
+
 		sb.append(getMvccVersion());
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>queuedMessageId</column-name><column-value><![CDATA[");
+
 		sb.append(getQueuedMessageId());
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>createDate</column-name><column-value><![CDATA[");
+
 		sb.append(getCreateDate());
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>messageBrokerClassName</column-name><column-value><![CDATA[");
+
 		sb.append(getMessageBrokerClassName());
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>topic</column-name><column-value><![CDATA[");
+
 		sb.append(getTopic());
+
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
