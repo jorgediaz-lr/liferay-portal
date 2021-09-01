@@ -387,3 +387,32 @@ paths:
                                 format: binary
                                 type: string
             tags: ["LicenseKey"]
+    "/product-groups/{productGroupName}/development-license-key":
+        get:
+            description:
+                Retrives the account's product development license key download.
+            operationId: getProductGroupProductGroupNameDevelopmentLicenseKey
+            parameters:
+                - in: path
+                  name: productGroupName
+                  required: true
+                  schema:
+                      type: string
+                - in: query
+                  name: accountKey
+                  required: true
+                  schema:
+                      type: string
+                - in: query
+                  name: productVersion
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    content:
+                        application/xml:
+                            schema:
+                                format: binary
+                                type: string
+            tags: ["LicenseKey"]

@@ -387,6 +387,139 @@ public class LicenseKeyResourceImpl
 	}
 
 	@Override
+	public Response getProductGroupProductGroupNameDevelopmentLicenseKey(
+			String productGroupName, String accountKey, String productVersion)
+		throws Exception {
+
+		// TODO: User Authentication
+
+		List<LicenseEntry> licenseEntries =
+			_licenseEntryLocalService.getLicenseEntriesByType(
+				LicenseType.DEVELOPER);
+
+		LicenseEntry licenseEntry = null;
+
+		for (LicenseEntry curLicenseEntry : licenseEntries) {
+			String curLicenseEntryName = curLicenseEntry.getName();
+
+			if (StringUtil.startsWith(curLicenseEntryName, productGroupName)) {
+				licenseEntry = curLicenseEntry;
+			}
+		}
+
+		if (licenseEntry == null) {
+			return Response.status(
+				Response.Status.NOT_FOUND
+			).build();
+		}
+
+		Product product = _productWebService.getProduct(
+			licenseEntry.getProductKey());
+
+		String productName = product.getName();
+
+		StringBundler sb = new StringBundler(5);
+
+		sb.append("accountKey eq '");
+		sb.append(accountKey);
+		sb.append("' and state eq 'active' and (property_type eq 'primary' ");
+		sb.append("or contains(name, 'Commerce Subscription') or ");
+		sb.append("contains(name, 'DXP Cloud Subscription'))");
+
+		List<ProductPurchaseView> productPurchaseViews =
+			_productPurchaseViewWebService.getProductPurchaseViews(
+				StringPool.BLANK, sb.toString(), 1, 1000, StringPool.BLANK);
+
+		boolean hasActiveProduct = false;
+
+		for (ProductPurchaseView productPurchaseView : productPurchaseViews) {
+			Product curProduct = productPurchaseView.getProduct();
+
+			String curProductName = curProduct.getName();
+
+			if ((curProductName.contains(
+					ProductConstants.NAME_COMMERCE_SUBSCRIPTION) &&
+				 productName.contains(
+					 ProductConstants.NAME_COMMERCE_SUBSCRIPTION)) ||
+				((curProductName.contains(
+					ProductConstants.NAME_DIGITAL_ENTERPRISE) ||
+				  curProductName.startsWith(ProductConstants.NAME_DXP)) &&
+				 (productName.contains(
+					 ProductConstants.NAME_DIGITAL_ENTERPRISE) ||
+				  productName.startsWith(ProductConstants.NAME_DXP) ||
+				  productName.contains(ProductConstants.NAME_DXP_CLOUD))) ||
+				(curProductName.contains(ProductConstants.NAME_PORTAL) &&
+				 productName.contains(ProductConstants.NAME_PORTAL))) {
+
+				hasActiveProduct = true;
+			}
+		}
+
+		if (!hasActiveProduct) {
+			return Response.status(
+				Response.Status.NOT_FOUND
+			).build();
+		}
+
+		Account account = _accountWebService.getAccount(accountKey);
+
+		String accountName = _trimText(account.getName());
+
+		String licenseEntryName = _trimText(licenseEntry.getName());
+
+		int licenseVersion = LicenseVersion.getLicenseVersion(
+			productName, productVersion);
+
+		productName = _trimText(productName);
+
+		String productId = ProductId.PORTAL;
+
+		if (productName.contains(ProductConstants.NAME_COMMERCE_SUBSCRIPTION)) {
+			productId = ProductId.COMMERCE;
+		}
+
+		String description = _trimText(
+			account.getName() + " Developer Activation Keys");
+
+		Date createDate = new Date();
+
+		Date startDate = new Date();
+
+		Date expirationDate = new Date(
+			startDate.getTime() + LicenseLifetime.INDEFINITE);
+
+		startDate = DateUtils.round(startDate, Calendar.SECOND);
+
+		expirationDate = DateUtils.round(expirationDate, Calendar.SECOND);
+
+		String key = _keyGenerator.generate(
+			accountName, licenseEntryName, LicenseType.DEVELOPER,
+			licenseVersion, productName, productId, productVersion, accountName,
+			0, 1, 5, 0, 0, StringPool.BLANK, description, StringPool.BLANK,
+			StringPool.BLANK, StringPool.BLANK,
+			new String[] {LicenseServerId.DEVELOPER}, startDate,
+			expirationDate);
+
+		String licenseXML = _licenseKeyExporter.toXML(
+			key, accountName, licenseEntryName, LicenseType.DEVELOPER,
+			licenseVersion, productName, productId, productVersion, accountName,
+			0, 1, 5, 0, 0, StringPool.BLANK, description, StringPool.BLANK,
+			StringPool.BLANK, StringPool.BLANK, LicenseServerId.DEVELOPER,
+			startDate, expirationDate, createDate);
+
+		String fileName = _licenseKeyExporter.getFileName(
+			productName, productVersion, "Developer Activation Keys");
+
+		return Response.ok(
+			licenseXML.getBytes()
+		).header(
+			"content-disposition", "attachment; filename=\"" + fileName + "\""
+		).type(
+			ContentTypes.TEXT_XML
+		).build();
+	}
+
+	@Override
 	public Page<LicenseKey> postLicenseKeysExtendPage(LicenseKey[] licenseKeys)
 		throws Exception {
 
