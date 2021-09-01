@@ -40,6 +40,22 @@
 	<#assign useCache = "useFinderCache && productionMode" />
 </#if>
 
+<#if entity.localizedEntity??>
+	<#assign localizedEntity = entity.localizedEntity />
+
+	<#if localizedEntity.versionEntity??>
+		<#assign
+			localizedVersionEntity = localizedEntity.versionEntity
+		/>
+	</#if>
+</#if>
+
+<#if entity.versionedEntity?? && entity.versionedEntity.localizedEntity??>
+	<#assign
+		localizedVersionEntity = entity.versionedEntity.localizedEntity.versionEntity
+	/>
+</#if>
+
 package ${packagePath}.service.persistence.impl;
 
 import ${serviceBuilder.getCompatJavaClassName("StringBundler")};
@@ -179,26 +195,11 @@ import org.osgi.service.component.annotations.Reference;
 	</#if>
 </#list>
 
-<#if entity.localizedEntity??>
-	<#assign localizedEntity = entity.localizedEntity />
-
+<#if localizedEntity??>
 	import ${apiPackagePath}.service.persistence.${localizedEntity.name}Persistence;
-
-	<#if localizedEntity.versionEntity??>
-		<#assign
-			localizedVersionEntity = localizedEntity.versionEntity
-		/>
-
-		import ${apiPackagePath}.service.persistence.${localizedVersionEntity.name}Persistence;
-	</#if>
 </#if>
 
-<#if entity.versionedEntity?? && entity.versionedEntity.localizedEntity??>
-	<#assign
-		versionedEntity = entity.versionedEntity
-		localizedVersionEntity = versionedEntity.localizedEntity.versionEntity
-	/>
-
+<#if localizedVersionEntity??>
 	import ${apiPackagePath}.service.persistence.${localizedVersionEntity.name}Persistence;
 </#if>
 
@@ -712,31 +713,26 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 			</#if>
 		</#list>
 
-		<#if entity.localizedEntity??>
+		<#if localizedEntity??>
 			<#assign
-				localizedEntity = entity.localizedEntity
 				pkEntityColumn = entity.PKEntityColumns?first
 			/>
 
 			${localizedEntity.variableName}Persistence.removeBy${pkEntityColumn.methodName}(${entity.variableName}.get${pkEntityColumn.methodName}());
-
-			<#if localizedEntity.versionEntity??>
-				<#assign
-					localizedVersionEntity = localizedEntity.versionEntity
-				/>
-
-				${localizedVersionEntity.variableName}Persistence.removeBy${pkEntityColumn.methodName}(${entity.variableName}.get${pkEntityColumn.methodName}());
-			</#if>
 		</#if>
 
-		<#if entity.versionedEntity?? && entity.versionedEntity.localizedEntity??>
-			<#assign
-				versionedEntity = entity.versionedEntity
-				localizedVersionEntity = versionedEntity.localizedEntity.versionEntity
-				pkEntityColumn = versionedEntity.PKEntityColumns?first
-			/>
-
-			${localizedVersionEntity.variableName}Persistence.removeBy${pkEntityColumn.methodName}_Version(${entity.variableName}.getVersionedModelId(), ${entity.variableName}.getVersion());
+		<#if localizedVersionEntity??>
+			<#if entity.versionedEntity??>
+				<#assign
+					pkEntityColumn = entity.versionedEntity.PKEntityColumns?first
+				/>
+				${localizedVersionEntity.variableName}Persistence.removeBy${pkEntityColumn.methodName}_Version(${entity.variableName}.getVersionedModelId(), ${entity.variableName}.getVersion());
+			<#else>
+				<#assign
+					pkEntityColumn = entity.PKEntityColumns?first
+				/>
+				${localizedVersionEntity.variableName}Persistence.removeBy${pkEntityColumn.methodName}(${entity.variableName}.get${pkEntityColumn.methodName}());
+			</#if>
 		</#if>
 
 		Session session = null;
@@ -2914,9 +2910,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 		</#if>
 	</#list>
 
-	<#if entity.localizedEntity??>
-		<#assign localizedEntity = entity.localizedEntity />
-
+	<#if localizedEntity??>
 		<#if dependencyInjectorDS>
 			@Reference
 		<#else>
@@ -2924,26 +2918,9 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 		</#if>
 
 		protected ${localizedEntity.name}Persistence ${localizedEntity.variableName}Persistence;
-
-		<#if localizedEntity.versionEntity??>
-			<#assign localizedVersionEntity = localizedEntity.versionEntity />
-
-			<#if dependencyInjectorDS>
-				@Reference
-			<#else>
-				@BeanReference(type = ${localizedVersionEntity.name}Persistence.class)
-			</#if>
-
-			protected ${localizedVersionEntity.name}Persistence ${localizedVersionEntity.variableName}Persistence;
-		</#if>
 	</#if>
 
-	<#if entity.versionedEntity?? && entity.versionedEntity.localizedEntity??>
-		<#assign
-			versionedEntity = entity.versionedEntity
-			localizedVersionEntity = versionedEntity.localizedEntity.versionEntity
-		/>
-
+	<#if localizedVersionEntity??>
 		<#if dependencyInjectorDS>
 			@Reference
 		<#else>
