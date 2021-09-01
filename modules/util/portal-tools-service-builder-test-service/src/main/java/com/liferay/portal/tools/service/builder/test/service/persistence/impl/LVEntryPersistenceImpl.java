@@ -45,6 +45,7 @@ import com.liferay.portal.tools.service.builder.test.model.impl.LVEntryImpl;
 import com.liferay.portal.tools.service.builder.test.model.impl.LVEntryModelImpl;
 import com.liferay.portal.tools.service.builder.test.service.persistence.BigDecimalEntryPersistence;
 import com.liferay.portal.tools.service.builder.test.service.persistence.LVEntryLocalizationPersistence;
+import com.liferay.portal.tools.service.builder.test.service.persistence.LVEntryLocalizationVersionPersistence;
 import com.liferay.portal.tools.service.builder.test.service.persistence.LVEntryPersistence;
 
 import java.io.Serializable;
@@ -6157,6 +6158,9 @@ public class LVEntryPersistenceImpl
 		lvEntryLocalizationPersistence.removeByLvEntryId(
 			lvEntry.getLvEntryId());
 
+		lvEntryLocalizationVersionPersistence.removeByLvEntryId(
+			lvEntry.getLvEntryId());
+
 		Session session = null;
 
 		try {
@@ -7094,6 +7098,10 @@ public class LVEntryPersistenceImpl
 
 	@BeanReference(type = LVEntryLocalizationPersistence.class)
 	protected LVEntryLocalizationPersistence lvEntryLocalizationPersistence;
+
+	@BeanReference(type = LVEntryLocalizationVersionPersistence.class)
+	protected LVEntryLocalizationVersionPersistence
+		lvEntryLocalizationVersionPersistence;
 
 	private static final String _SQL_SELECT_LVENTRY =
 		"SELECT lvEntry FROM LVEntry lvEntry";
