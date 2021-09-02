@@ -53,14 +53,10 @@ public class AccountRoleContributor implements RoleContributor {
 			Group group = _groupLocalService.getGroup(
 				roleCollection.getGroupId());
 
-			User user = roleCollection.getUser();
-
-			if (user.getCompanyId() != group.getCompanyId()) {
-				return;
-			}
-
 			if (!Objects.equals(
 					AccountEntry.class.getName(), group.getClassName())) {
+
+				User user = roleCollection.getUser();
 
 				AccountEntry currentAccountEntry =
 					_currentAccountEntryManager.getCurrentAccountEntry(
@@ -80,6 +76,8 @@ public class AccountRoleContributor implements RoleContributor {
 				}
 			}
 			else {
+				User user = roleCollection.getUser();
+
 				if (_accountEntryUserRelLocalService.hasAccountEntryUserRel(
 						group.getClassPK(), user.getUserId())) {
 
