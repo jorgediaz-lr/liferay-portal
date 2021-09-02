@@ -311,13 +311,10 @@ public class LicenseKeyResourceImpl
 					ProductConstants.NAME_COMMERCE_SUBSCRIPTION) &&
 				 productName.contains(
 					 ProductConstants.NAME_COMMERCE_SUBSCRIPTION)) ||
-				((curProductName.contains(
-					ProductConstants.NAME_DIGITAL_ENTERPRISE) ||
-				  curProductName.startsWith(ProductConstants.NAME_DXP)) &&
-				 (productName.contains(
-					 ProductConstants.NAME_DIGITAL_ENTERPRISE) ||
-				  productName.startsWith(ProductConstants.NAME_DXP) ||
-				  productName.contains(ProductConstants.NAME_DXP_CLOUD))) ||
+				((curProductName.startsWith(ProductConstants.NAME_DXP) ||
+				  curProductName.contains(ProductConstants.NAME_DXP_CLOUD)) &&
+				 productName.startsWith(ProductConstants.NAME_DXP) &&
+				 !productName.contains(ProductConstants.NAME_DXP_CLOUD)) ||
 				(curProductName.contains(ProductConstants.NAME_PORTAL) &&
 				 productName.contains(ProductConstants.NAME_PORTAL))) {
 
