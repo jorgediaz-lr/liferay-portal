@@ -933,8 +933,6 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 				}
 			}
 
-			systemEventLocalService.deleteSystemEvents(group.getGroupId());
-
 			// Themes
 
 			ThemeLoader themeLoader =
@@ -1023,6 +1021,10 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 				workflowDefinitionLinkLocalService.deleteWorkflowDefinitionLink(
 					workflowDefinitionLink);
 			}
+
+			// System Events
+
+			systemEventLocalService.deleteSystemEvents(group.getGroupId());
 
 			// Group
 
