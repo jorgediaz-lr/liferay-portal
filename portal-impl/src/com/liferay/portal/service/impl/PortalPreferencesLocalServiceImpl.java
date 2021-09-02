@@ -321,6 +321,8 @@ public class PortalPreferencesLocalServiceImpl
 					PortalPreferenceValue portalPreferenceValue =
 						portalPreferenceValuePersistence.create(++batchCounter);
 
+					portalPreferenceValue.setCompanyId(
+						portalPreferences.getCompanyId());
 					portalPreferenceValue.setPortalPreferencesId(
 						portalPreferences.getPortalPreferencesId());
 					portalPreferenceValue.setIndex(i);
