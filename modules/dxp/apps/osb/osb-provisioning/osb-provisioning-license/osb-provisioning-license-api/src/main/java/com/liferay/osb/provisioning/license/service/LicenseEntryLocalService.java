@@ -216,6 +216,9 @@ public interface LicenseEntryLocalService
 	public List<LicenseEntry> getLicenseEntries(String productKey);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<LicenseEntry> getLicenseEntriesByType(String type);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseEntry> getLicenseEntriesByVersion(
 			String productKey, String version)
 		throws Exception;

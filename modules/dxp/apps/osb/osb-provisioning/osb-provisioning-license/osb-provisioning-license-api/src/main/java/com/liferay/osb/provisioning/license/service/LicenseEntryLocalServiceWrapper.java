@@ -266,6 +266,14 @@ public class LicenseEntryLocalServiceWrapper
 	@Override
 	public java.util.List
 		<com.liferay.osb.provisioning.license.model.LicenseEntry>
+			getLicenseEntriesByType(String type) {
+
+		return _licenseEntryLocalService.getLicenseEntriesByType(type);
+	}
+
+	@Override
+	public java.util.List
+		<com.liferay.osb.provisioning.license.model.LicenseEntry>
 				getLicenseEntriesByVersion(String productKey, String version)
 			throws Exception {
 

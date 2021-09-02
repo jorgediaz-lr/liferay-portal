@@ -184,6 +184,149 @@ public interface LicenseEntryPersistence extends BasePersistence<LicenseEntry> {
 	public int countByProductKey(String productKey);
 
 	/**
+	 * Returns all the license entries where type = &#63;.
+	 *
+	 * @param type the type
+	 * @return the matching license entries
+	 */
+	public java.util.List<LicenseEntry> findByT(String type);
+
+	/**
+	 * Returns a range of all the license entries where type = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LicenseEntryModelImpl</code>.
+	 * </p>
+	 *
+	 * @param type the type
+	 * @param start the lower bound of the range of license entries
+	 * @param end the upper bound of the range of license entries (not inclusive)
+	 * @return the range of matching license entries
+	 */
+	public java.util.List<LicenseEntry> findByT(
+		String type, int start, int end);
+
+	/**
+	 * Returns an ordered range of all the license entries where type = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LicenseEntryModelImpl</code>.
+	 * </p>
+	 *
+	 * @param type the type
+	 * @param start the lower bound of the range of license entries
+	 * @param end the upper bound of the range of license entries (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching license entries
+	 */
+	public java.util.List<LicenseEntry> findByT(
+		String type, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<LicenseEntry>
+			orderByComparator);
+
+	/**
+	 * Returns an ordered range of all the license entries where type = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LicenseEntryModelImpl</code>.
+	 * </p>
+	 *
+	 * @param type the type
+	 * @param start the lower bound of the range of license entries
+	 * @param end the upper bound of the range of license entries (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching license entries
+	 */
+	public java.util.List<LicenseEntry> findByT(
+		String type, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<LicenseEntry>
+			orderByComparator,
+		boolean useFinderCache);
+
+	/**
+	 * Returns the first license entry in the ordered set where type = &#63;.
+	 *
+	 * @param type the type
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching license entry
+	 * @throws NoSuchLicenseEntryException if a matching license entry could not be found
+	 */
+	public LicenseEntry findByT_First(
+			String type,
+			com.liferay.portal.kernel.util.OrderByComparator<LicenseEntry>
+				orderByComparator)
+		throws NoSuchLicenseEntryException;
+
+	/**
+	 * Returns the first license entry in the ordered set where type = &#63;.
+	 *
+	 * @param type the type
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching license entry, or <code>null</code> if a matching license entry could not be found
+	 */
+	public LicenseEntry fetchByT_First(
+		String type,
+		com.liferay.portal.kernel.util.OrderByComparator<LicenseEntry>
+			orderByComparator);
+
+	/**
+	 * Returns the last license entry in the ordered set where type = &#63;.
+	 *
+	 * @param type the type
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching license entry
+	 * @throws NoSuchLicenseEntryException if a matching license entry could not be found
+	 */
+	public LicenseEntry findByT_Last(
+			String type,
+			com.liferay.portal.kernel.util.OrderByComparator<LicenseEntry>
+				orderByComparator)
+		throws NoSuchLicenseEntryException;
+
+	/**
+	 * Returns the last license entry in the ordered set where type = &#63;.
+	 *
+	 * @param type the type
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching license entry, or <code>null</code> if a matching license entry could not be found
+	 */
+	public LicenseEntry fetchByT_Last(
+		String type,
+		com.liferay.portal.kernel.util.OrderByComparator<LicenseEntry>
+			orderByComparator);
+
+	/**
+	 * Returns the license entries before and after the current license entry in the ordered set where type = &#63;.
+	 *
+	 * @param licenseEntryId the primary key of the current license entry
+	 * @param type the type
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next license entry
+	 * @throws NoSuchLicenseEntryException if a license entry with the primary key could not be found
+	 */
+	public LicenseEntry[] findByT_PrevAndNext(
+			long licenseEntryId, String type,
+			com.liferay.portal.kernel.util.OrderByComparator<LicenseEntry>
+				orderByComparator)
+		throws NoSuchLicenseEntryException;
+
+	/**
+	 * Removes all the license entries where type = &#63; from the database.
+	 *
+	 * @param type the type
+	 */
+	public void removeByT(String type);
+
+	/**
+	 * Returns the number of license entries where type = &#63;.
+	 *
+	 * @param type the type
+	 * @return the number of matching license entries
+	 */
+	public int countByT(String type);
+
+	/**
 	 * Returns the license entry where productKey = &#63; and type = &#63; or throws a <code>NoSuchLicenseEntryException</code> if it could not be found.
 	 *
 	 * @param productKey the product key

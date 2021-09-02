@@ -231,6 +231,10 @@ public class LicenseEntryLocalServiceUtil {
 		return getService().getLicenseEntries(productKey);
 	}
 
+	public static List<LicenseEntry> getLicenseEntriesByType(String type) {
+		return getService().getLicenseEntriesByType(type);
+	}
+
 	public static List<LicenseEntry> getLicenseEntriesByVersion(
 			String productKey, String version)
 		throws Exception {
