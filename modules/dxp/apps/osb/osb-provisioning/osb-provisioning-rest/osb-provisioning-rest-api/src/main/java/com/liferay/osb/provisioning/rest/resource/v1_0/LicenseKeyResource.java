@@ -67,9 +67,13 @@ public interface LicenseKeyResource {
 	public Response getLicenseKeyDownload(Long[] licenseKeyIds)
 		throws Exception;
 
+	public Page<LicenseKey> postLicenseKeysExtendPage(LicenseKey[] licenseKeys)
+		throws Exception;
+
 	public Response getLicenseKeyDownload(Long licenseKeyId) throws Exception;
 
-	public Page<LicenseKey> postLicenseKeysExtendPage(LicenseKey[] licenseKeys)
+	public Response getProductGroupProductGroupNameDevelopmentLicenseKey(
+			String productGroupName, String accountKey, String productVersion)
 		throws Exception;
 
 	public default void setContextAcceptLanguage(

@@ -117,6 +117,29 @@ public class Query {
 				licenseKeyId));
 	}
 
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {productGroupProductGroupNameDevelopmentLicenseKey(accountKey: ___, productGroupName: ___, productVersion: ___){}}"}' -u 'test@liferay.com:test'
+	 */
+	@GraphQLField(
+		description = "Retrives the account's product development license key download."
+	)
+	public Response productGroupProductGroupNameDevelopmentLicenseKey(
+			@GraphQLName("productGroupName") String productGroupName,
+			@GraphQLName("accountKey") String accountKey,
+			@GraphQLName("productVersion") String productVersion)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_licenseKeyResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			licenseKeyResource ->
+				licenseKeyResource.
+					getProductGroupProductGroupNameDevelopmentLicenseKey(
+						productGroupName, accountKey, productVersion));
+	}
+
 	@GraphQLName("LicenseKeyPage")
 	public class LicenseKeyPage {
 

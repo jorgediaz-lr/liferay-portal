@@ -77,17 +77,27 @@ public interface LicenseKeyResource {
 			Long[] licenseKeyIds)
 		throws Exception;
 
+	public Page<LicenseKey> postLicenseKeysExtendPage(LicenseKey[] licenseKeys)
+		throws Exception;
+
+	public HttpInvoker.HttpResponse postLicenseKeysExtendPageHttpResponse(
+			LicenseKey[] licenseKeys)
+		throws Exception;
+
 	public void getLicenseKeyDownload(Long licenseKeyId) throws Exception;
 
 	public HttpInvoker.HttpResponse getLicenseKeyDownloadHttpResponse(
 			Long licenseKeyId)
 		throws Exception;
 
-	public Page<LicenseKey> postLicenseKeysExtendPage(LicenseKey[] licenseKeys)
+	public void getProductGroupProductGroupNameDevelopmentLicenseKey(
+			String productGroupName, String accountKey, String productVersion)
 		throws Exception;
 
-	public HttpInvoker.HttpResponse postLicenseKeysExtendPageHttpResponse(
-			LicenseKey[] licenseKeys)
+	public HttpInvoker.HttpResponse
+			getProductGroupProductGroupNameDevelopmentLicenseKeyHttpResponse(
+				String productGroupName, String accountKey,
+				String productVersion)
 		throws Exception;
 
 	public static class Builder {
@@ -617,74 +627,6 @@ public interface LicenseKeyResource {
 			return httpInvoker.invoke();
 		}
 
-		public void getLicenseKeyDownload(Long licenseKeyId) throws Exception {
-			HttpInvoker.HttpResponse httpResponse =
-				getLicenseKeyDownloadHttpResponse(licenseKeyId);
-
-			String content = httpResponse.getContent();
-
-			if ((httpResponse.getStatusCode() / 100) != 2) {
-				_logger.log(
-					Level.WARNING,
-					"Unable to process HTTP response content: " + content);
-				_logger.log(
-					Level.WARNING,
-					"HTTP response message: " + httpResponse.getMessage());
-				_logger.log(
-					Level.WARNING,
-					"HTTP response status code: " +
-						httpResponse.getStatusCode());
-
-				throw new Problem.ProblemException(Problem.toDTO(content));
-			}
-			else {
-				_logger.fine("HTTP response content: " + content);
-				_logger.fine(
-					"HTTP response message: " + httpResponse.getMessage());
-				_logger.fine(
-					"HTTP response status code: " +
-						httpResponse.getStatusCode());
-			}
-		}
-
-		public HttpInvoker.HttpResponse getLicenseKeyDownloadHttpResponse(
-				Long licenseKeyId)
-			throws Exception {
-
-			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
-
-			if (_builder._locale != null) {
-				httpInvoker.header(
-					"Accept-Language", _builder._locale.toLanguageTag());
-			}
-
-			for (Map.Entry<String, String> entry :
-					_builder._headers.entrySet()) {
-
-				httpInvoker.header(entry.getKey(), entry.getValue());
-			}
-
-			for (Map.Entry<String, String> entry :
-					_builder._parameters.entrySet()) {
-
-				httpInvoker.parameter(entry.getKey(), entry.getValue());
-			}
-
-			httpInvoker.httpMethod(HttpInvoker.HttpMethod.GET);
-
-			httpInvoker.path(
-				_builder._scheme + "://" + _builder._host + ":" +
-					_builder._port +
-						"/o/provisioning-rest/v1.0/license-keys/{licenseKeyId}/download");
-
-			httpInvoker.path("licenseKeyId", licenseKeyId);
-
-			httpInvoker.userNameAndPassword(
-				_builder._login + ":" + _builder._password);
-
-			return httpInvoker.invoke();
-		}
-
 		public Page<LicenseKey> postLicenseKeysExtendPage(
 				LicenseKey[] licenseKeys)
 			throws Exception {
@@ -768,6 +710,158 @@ public interface LicenseKeyResource {
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
 						"/o/provisioning-rest/v1.0/license-keys/extend");
+
+			httpInvoker.userNameAndPassword(
+				_builder._login + ":" + _builder._password);
+
+			return httpInvoker.invoke();
+		}
+
+		public void getLicenseKeyDownload(Long licenseKeyId) throws Exception {
+			HttpInvoker.HttpResponse httpResponse =
+				getLicenseKeyDownloadHttpResponse(licenseKeyId);
+
+			String content = httpResponse.getContent();
+
+			if ((httpResponse.getStatusCode() / 100) != 2) {
+				_logger.log(
+					Level.WARNING,
+					"Unable to process HTTP response content: " + content);
+				_logger.log(
+					Level.WARNING,
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.log(
+					Level.WARNING,
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
+
+				throw new Problem.ProblemException(Problem.toDTO(content));
+			}
+			else {
+				_logger.fine("HTTP response content: " + content);
+				_logger.fine(
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.fine(
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
+			}
+		}
+
+		public HttpInvoker.HttpResponse getLicenseKeyDownloadHttpResponse(
+				Long licenseKeyId)
+			throws Exception {
+
+			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
+
+			if (_builder._locale != null) {
+				httpInvoker.header(
+					"Accept-Language", _builder._locale.toLanguageTag());
+			}
+
+			for (Map.Entry<String, String> entry :
+					_builder._headers.entrySet()) {
+
+				httpInvoker.header(entry.getKey(), entry.getValue());
+			}
+
+			for (Map.Entry<String, String> entry :
+					_builder._parameters.entrySet()) {
+
+				httpInvoker.parameter(entry.getKey(), entry.getValue());
+			}
+
+			httpInvoker.httpMethod(HttpInvoker.HttpMethod.GET);
+
+			httpInvoker.path(
+				_builder._scheme + "://" + _builder._host + ":" +
+					_builder._port +
+						"/o/provisioning-rest/v1.0/license-keys/{licenseKeyId}/download");
+
+			httpInvoker.path("licenseKeyId", licenseKeyId);
+
+			httpInvoker.userNameAndPassword(
+				_builder._login + ":" + _builder._password);
+
+			return httpInvoker.invoke();
+		}
+
+		public void getProductGroupProductGroupNameDevelopmentLicenseKey(
+				String productGroupName, String accountKey,
+				String productVersion)
+			throws Exception {
+
+			HttpInvoker.HttpResponse httpResponse =
+				getProductGroupProductGroupNameDevelopmentLicenseKeyHttpResponse(
+					productGroupName, accountKey, productVersion);
+
+			String content = httpResponse.getContent();
+
+			if ((httpResponse.getStatusCode() / 100) != 2) {
+				_logger.log(
+					Level.WARNING,
+					"Unable to process HTTP response content: " + content);
+				_logger.log(
+					Level.WARNING,
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.log(
+					Level.WARNING,
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
+
+				throw new Problem.ProblemException(Problem.toDTO(content));
+			}
+			else {
+				_logger.fine("HTTP response content: " + content);
+				_logger.fine(
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.fine(
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
+			}
+		}
+
+		public HttpInvoker.HttpResponse
+				getProductGroupProductGroupNameDevelopmentLicenseKeyHttpResponse(
+					String productGroupName, String accountKey,
+					String productVersion)
+			throws Exception {
+
+			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
+
+			if (_builder._locale != null) {
+				httpInvoker.header(
+					"Accept-Language", _builder._locale.toLanguageTag());
+			}
+
+			for (Map.Entry<String, String> entry :
+					_builder._headers.entrySet()) {
+
+				httpInvoker.header(entry.getKey(), entry.getValue());
+			}
+
+			for (Map.Entry<String, String> entry :
+					_builder._parameters.entrySet()) {
+
+				httpInvoker.parameter(entry.getKey(), entry.getValue());
+			}
+
+			httpInvoker.httpMethod(HttpInvoker.HttpMethod.GET);
+
+			if (accountKey != null) {
+				httpInvoker.parameter("accountKey", String.valueOf(accountKey));
+			}
+
+			if (productVersion != null) {
+				httpInvoker.parameter(
+					"productVersion", String.valueOf(productVersion));
+			}
+
+			httpInvoker.path(
+				_builder._scheme + "://" + _builder._host + ":" +
+					_builder._port +
+						"/o/provisioning-rest/v1.0/product-groups/{productGroupName}/development-license-key");
+
+			httpInvoker.path("productGroupName", productGroupName);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);

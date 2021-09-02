@@ -185,6 +185,24 @@ public abstract class BaseLicenseKeyResourceImpl implements LicenseKeyResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
+	 * curl -X 'POST' 'http://localhost:8080/o/provisioning-rest/v1.0/license-keys/extend'  -u 'test@liferay.com:test'
+	 */
+	@Consumes({"application/json", "application/xml"})
+	@Operation(description = "Extends license keys.")
+	@Override
+	@Path("/license-keys/extend")
+	@POST
+	@Produces({"application/json", "application/xml"})
+	@Tags(value = {@Tag(name = "LicenseKey")})
+	public Page<LicenseKey> postLicenseKeysExtendPage(LicenseKey[] licenseKeys)
+		throws Exception {
+
+		return Page.of(Collections.emptyList());
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/provisioning-rest/v1.0/license-keys/{licenseKeyId}/download'  -u 'test@liferay.com:test'
 	 */
 	@GET
@@ -209,19 +227,35 @@ public abstract class BaseLicenseKeyResourceImpl implements LicenseKeyResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'POST' 'http://localhost:8080/o/provisioning-rest/v1.0/license-keys/extend'  -u 'test@liferay.com:test'
+	 * curl -X 'GET' 'http://localhost:8080/o/provisioning-rest/v1.0/product-groups/{productGroupName}/development-license-key'  -u 'test@liferay.com:test'
 	 */
-	@Consumes({"application/json", "application/xml"})
-	@Operation(description = "Extends license keys.")
+	@GET
+	@Operation(
+		description = "Retrives the account's product development license key download."
+	)
 	@Override
-	@Path("/license-keys/extend")
-	@POST
-	@Produces({"application/json", "application/xml"})
+	@Parameters(
+		value = {
+			@Parameter(in = ParameterIn.PATH, name = "productGroupName"),
+			@Parameter(in = ParameterIn.QUERY, name = "accountKey"),
+			@Parameter(in = ParameterIn.QUERY, name = "productVersion")
+		}
+	)
+	@Path("/product-groups/{productGroupName}/development-license-key")
+	@Produces("application/xml")
 	@Tags(value = {@Tag(name = "LicenseKey")})
-	public Page<LicenseKey> postLicenseKeysExtendPage(LicenseKey[] licenseKeys)
+	public Response getProductGroupProductGroupNameDevelopmentLicenseKey(
+			@NotNull @Parameter(hidden = true) @PathParam("productGroupName")
+				String productGroupName,
+			@NotNull @Parameter(hidden = true) @QueryParam("accountKey") String
+				accountKey,
+			@NotNull @Parameter(hidden = true) @QueryParam("productVersion")
+				String productVersion)
 		throws Exception {
 
-		return Page.of(Collections.emptyList());
+		Response.ResponseBuilder responseBuilder = Response.ok();
+
+		return responseBuilder.build();
 	}
 
 	public void setContextAcceptLanguage(AcceptLanguage contextAcceptLanguage) {
