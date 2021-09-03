@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.service.UserGroupRoleLocalService;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.CompanyTestUtil;
+import com.liferay.portal.kernel.test.util.DBAssertionUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
@@ -139,6 +140,9 @@ public class DepotEntryLocalServiceTest {
 		Assert.assertNull(
 			_depotEntryLocalService.fetchDepotEntry(
 				depotEntry.getDepotEntryId()));
+
+		DBAssertionUtil.assertTablesWithInvalidRecords(
+			"companyId", company.getCompanyId());
 	}
 
 	@Test(expected = NoSuchGroupException.class)
@@ -148,6 +152,9 @@ public class DepotEntryLocalServiceTest {
 		_depotEntryLocalService.deleteDepotEntry(depotEntry);
 
 		_depotEntries.remove(depotEntry);
+
+		DBAssertionUtil.assertTablesWithInvalidRecords(
+			"groupId", depotEntry.getGroupId());
 
 		_groupLocalService.getGroup(depotEntry.getGroupId());
 	}
