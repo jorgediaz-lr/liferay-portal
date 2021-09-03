@@ -103,7 +103,7 @@ public class AMBackwardsCompatibilityHtmlContentTransformer
 	}
 
 	private static final Pattern _pattern = Pattern.compile(
-		"<img\\s+src=['\"]/documents/(\\d+)/(\\d+)/([^/?]+)" +
+		"<img\\s+src=['\"](?:/?[^\\s]*)/documents/(\\d+)/(\\d+)/([^/?]+)" +
 			"(?:/([-0-9a-fA-F]+))?(?:\\?t=\\d+)?['\"]\\s*/>");
 
 	@Reference
