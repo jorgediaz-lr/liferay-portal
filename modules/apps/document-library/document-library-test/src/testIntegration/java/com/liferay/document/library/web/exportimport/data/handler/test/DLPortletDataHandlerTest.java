@@ -60,6 +60,7 @@ import com.liferay.portal.kernel.service.RepositoryLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.test.constants.TestDataConstants;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.util.DBAssertionUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
@@ -216,6 +217,9 @@ public class DLPortletDataHandlerTest extends BasePortletDataHandlerTestCase {
 			group.getGroupId(), DLFolderConstants.DEFAULT_PARENT_FOLDER_ID);
 
 		Assert.assertEquals(0, foldersCount);
+
+		DBAssertionUtil.assertTablesWithInvalidRecords(
+			"groupId", group.getGroupId());
 	}
 
 	@Test
@@ -242,6 +246,9 @@ public class DLPortletDataHandlerTest extends BasePortletDataHandlerTestCase {
 		Assert.assertNull(
 			_ddmStructureLocalService.fetchDDMStructure(
 				dataDefinition.getId()));
+
+		DBAssertionUtil.assertTablesWithInvalidRecords(
+			"groupId", group.getGroupId());
 	}
 
 	@Test

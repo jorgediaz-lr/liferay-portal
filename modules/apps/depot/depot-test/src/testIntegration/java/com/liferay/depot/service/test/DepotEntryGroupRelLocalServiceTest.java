@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
+import com.liferay.portal.kernel.test.util.DBAssertionUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
@@ -151,6 +152,9 @@ public class DepotEntryGroupRelLocalServiceTest {
 		Assert.assertEquals(
 			depotEntryGroupRelsCount,
 			_depotEntryGroupRelLocalService.getDepotEntryGroupRelsCount());
+
+		DBAssertionUtil.assertTablesWithInvalidRecords(
+			"groupId", group.getGroupId());
 	}
 
 	@Test
