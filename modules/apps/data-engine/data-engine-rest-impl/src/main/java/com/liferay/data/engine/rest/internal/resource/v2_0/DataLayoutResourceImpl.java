@@ -395,10 +395,10 @@ public class DataLayoutResourceImpl
 	}
 
 	private void _deleteDataLayout(long dataLayoutId) throws Exception {
-		_ddmStructureLayoutLocalService.deleteDDMStructureLayout(dataLayoutId);
-
 		_deDataDefinitionFieldLinkLocalService.deleteDEDataDefinitionFieldLinks(
 			_portal.getClassNameId(DDMStructureLayout.class), dataLayoutId);
+
+		_ddmStructureLayoutLocalService.deleteDDMStructureLayout(dataLayoutId);
 	}
 
 	private DataLayout _getDataLayout(long dataLayoutId) throws Exception {
