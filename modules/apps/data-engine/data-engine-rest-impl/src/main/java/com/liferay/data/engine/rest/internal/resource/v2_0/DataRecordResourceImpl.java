@@ -121,7 +121,7 @@ public class DataRecordResourceImpl
 		_ddmStorageLinkLocalService.deleteClassStorageLink(
 			ddlRecord.getDDMStorageId());
 
-		_ddlRecordLocalService.deleteDDLRecord(dataRecordId);
+		_ddlRecordLocalService.deleteRecord(dataRecordId);
 	}
 
 	@Override
