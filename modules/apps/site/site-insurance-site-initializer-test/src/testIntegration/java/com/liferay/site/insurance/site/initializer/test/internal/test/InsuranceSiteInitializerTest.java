@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.model.LayoutTypePortlet;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.service.CompanyLocalService;
+import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
@@ -46,7 +47,6 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
-import com.liferay.site.exception.InitializationException;
 import com.liferay.site.initializer.SiteInitializer;
 import com.liferay.site.initializer.SiteInitializerRegistry;
 import com.liferay.style.book.service.StyleBookEntryLocalService;
@@ -110,7 +110,7 @@ public class InsuranceSiteInitializerTest {
 	}
 
 	@Test
-	public void testCreateInsuranceSite() throws InitializationException {
+	public void testCreateInsuranceSite() throws Exception {
 		SiteInitializer siteInitializer =
 			_siteInitializerRegistry.getSiteInitializer(
 				"site-insurance-site-initializer");
@@ -153,6 +153,8 @@ public class InsuranceSiteInitializerTest {
 		Assert.assertNotNull(
 			_styleBookEntryLocalService.fetchStyleBookEntry(
 				_group.getGroupId(), "raylife"));
+
+		_groupLocalService.deleteGroup(_group);
 	}
 
 	private String[] _getLayoutNames(long groupId, boolean privateLayout) {
@@ -245,8 +247,10 @@ public class InsuranceSiteInitializerTest {
 	@Inject
 	private CompanyLocalService _companyLocalService;
 
-	@DeleteAfterTestRun
 	private Group _group;
+
+	@Inject
+	private GroupLocalService _groupLocalService;
 
 	private Layout _layout;
 
