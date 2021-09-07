@@ -1084,7 +1084,9 @@ public class CompanyLocalServiceTest {
 					String tableName = dbInspector.normalizeName(
 						tableResultSet.getString("TABLE_NAME"));
 
-					if (!dbInspector.hasColumn(tableName, columnName)) {
+					if (_ignoredTable(tableName) ||
+						!dbInspector.hasColumn(tableName, columnName)) {
+
 						continue;
 					}
 
@@ -1228,6 +1230,16 @@ public class CompanyLocalServiceTest {
 		CompanyLocalServiceUtil.deleteCompany(company.getCompanyId());
 	}
 
+	private boolean _ignoredTable(String tableName) {
+		for (String ignoredTableName : _ignoredTableNames) {
+			if (StringUtil.equalsIgnoreCase(ignoredTableName, tableName)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	private List<String> _registerModelListeners() {
 		List<String> list = new CopyOnWriteArrayList<>();
 
@@ -1270,6 +1282,8 @@ public class CompanyLocalServiceTest {
 	private static final Log _log = LogFactoryUtil.getLog(
 		CompanyLocalServiceTest.class);
 
+	private static final Set<String> _ignoredTableNames = new HashSet<>(
+		Arrays.asList("Audit_AuditEvent"));
 	private static final TransactionConfig _transactionConfig;
 
 	static {
