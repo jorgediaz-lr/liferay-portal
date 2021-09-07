@@ -17,6 +17,7 @@ package com.liferay.osb.koroneiki.phloem.rest.internal.resource.v1_0;
 import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.TeamRole;
 import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.TeamRolePermission;
 import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.util.TeamRoleUtil;
+import com.liferay.osb.koroneiki.phloem.rest.internal.PhloemNestedFieldsContextThreadLocal;
 import com.liferay.osb.koroneiki.phloem.rest.internal.odata.entity.v1_0.TeamRoleEntityModel;
 import com.liferay.osb.koroneiki.phloem.rest.internal.resource.v1_0.util.PhloemPermissionUtil;
 import com.liferay.osb.koroneiki.phloem.rest.internal.resource.v1_0.util.ServiceContextUtil;
@@ -34,6 +35,7 @@ import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.vulcan.fields.NestedField;
 import com.liferay.portal.vulcan.fields.NestedFieldId;
@@ -91,6 +93,17 @@ public class TeamRoleResourceImpl
 			String accountKey, @NestedFieldId("key") String teamKey,
 			Pagination pagination)
 		throws Exception {
+
+		String parentContextName =
+			PhloemNestedFieldsContextThreadLocal.getLastContextName();
+
+		if (Validator.isNotNull(parentContextName) &&
+			parentContextName.equals("assignedTeams")) {
+
+			accountKey =
+				(String)PhloemNestedFieldsContextThreadLocal.getContextValue(
+					"accountKey");
+		}
 
 		Account account = _accountLocalService.getAccount(accountKey);
 

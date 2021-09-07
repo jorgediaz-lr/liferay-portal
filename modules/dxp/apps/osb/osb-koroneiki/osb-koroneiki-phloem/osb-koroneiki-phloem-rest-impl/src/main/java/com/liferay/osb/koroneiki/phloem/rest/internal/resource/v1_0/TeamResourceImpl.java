@@ -18,6 +18,7 @@ import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.Team;
 import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.TeamPermission;
 import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.util.TeamUtil;
+import com.liferay.osb.koroneiki.phloem.rest.internal.PhloemNestedFieldsContextThreadLocal;
 import com.liferay.osb.koroneiki.phloem.rest.internal.odata.entity.v1_0.TeamEntityModel;
 import com.liferay.osb.koroneiki.phloem.rest.internal.resource.v1_0.util.PhloemPermissionUtil;
 import com.liferay.osb.koroneiki.phloem.rest.internal.resource.v1_0.util.ServiceContextUtil;
@@ -184,6 +185,10 @@ public class TeamResourceImpl
 	public List<Team> getAccountNestedFieldAssignedTeams(
 			@NestedFieldId("key") String accountKey)
 		throws Exception {
+
+		PhloemNestedFieldsContextThreadLocal.addContextName("assignedTeams");
+		PhloemNestedFieldsContextThreadLocal.setContextValue(
+			"accountKey", accountKey);
 
 		return transform(
 			_teamService.getAccountAssignedTeams(
