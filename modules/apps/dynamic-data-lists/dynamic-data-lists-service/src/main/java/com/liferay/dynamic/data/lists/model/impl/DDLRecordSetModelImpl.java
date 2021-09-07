@@ -1325,6 +1325,8 @@ public class DDLRecordSetModelImpl
 			ddlRecordSetCacheModel.lastPublishDate = Long.MIN_VALUE;
 		}
 
+		setDDMFormValues(null);
+
 		ddlRecordSetCacheModel._ddmFormValues = getDDMFormValues();
 
 		return ddlRecordSetCacheModel;
