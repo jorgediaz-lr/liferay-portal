@@ -174,6 +174,35 @@ info:
     version: v1.0
 openapi: 3.0.1
 paths:
+    "/accounts/{accountKey}/product-groups/{productGroupName}/product-version/{productVersion}/development-license-key":
+        get:
+            description:
+                Downloads the account's product development license key.
+            operationId: getAccountAccountKeyProductGroupProductGroupNameProductVersionDevelopmentLicenseKey
+            parameters:
+                - in: path
+                  name: accountKey
+                  required: true
+                  schema:
+                      type: string
+                - in: path
+                  name: productGroupName
+                  required: true
+                  schema:
+                      type: string
+                - in: path
+                  name: productVersion
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    content:
+                        application/xml:
+                            schema:
+                                format: binary
+                                type: string
+            tags: ["LicenseKey"]
     "/license-keys":
         get:
             description:
@@ -288,7 +317,7 @@ paths:
     "/license-keys/download":
         get:
             description:
-                Retrieves the aggregate license key download.
+                Downloads an aggregated license key of the specified license keys.
             operationId: getLicenseKeyDownload
             parameters:
                 - in: query
@@ -342,7 +371,7 @@ paths:
     "/license-keys/{licenseKeyId}/download":
         get:
             description:
-                Retrieves the license key download.
+                Downloads the license key.
             parameters:
                 - in: path
                   name: licenseKeyId
@@ -350,35 +379,6 @@ paths:
                   schema:
                       format: int64
                       type: integer
-            responses:
-                200:
-                    content:
-                        application/xml:
-                            schema:
-                                format: binary
-                                type: string
-            tags: ["LicenseKey"]
-    "/product-groups/{productGroupName}/development-license-key":
-        get:
-            description:
-                Retrives the account's product development license key download.
-            operationId: getProductGroupProductGroupNameDevelopmentLicenseKey
-            parameters:
-                - in: path
-                  name: productGroupName
-                  required: true
-                  schema:
-                      type: string
-                - in: query
-                  name: accountKey
-                  required: true
-                  schema:
-                      type: string
-                - in: query
-                  name: productVersion
-                  required: true
-                  schema:
-                      type: string
             responses:
                 200:
                     content:
