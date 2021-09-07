@@ -164,7 +164,9 @@ public abstract class BaseLicenseKeyResourceImpl implements LicenseKeyResource {
 	 * curl -X 'GET' 'http://localhost:8080/o/provisioning-rest/v1.0/license-keys/download'  -u 'test@liferay.com:test'
 	 */
 	@GET
-	@Operation(description = "Retrieves the aggregate license key download.")
+	@Operation(
+		description = "Downloads an aggregated license key of the specified license keys."
+	)
 	@Override
 	@Parameters(
 		value = {@Parameter(in = ParameterIn.QUERY, name = "licenseKeyIds")}
@@ -206,7 +208,7 @@ public abstract class BaseLicenseKeyResourceImpl implements LicenseKeyResource {
 	 * curl -X 'GET' 'http://localhost:8080/o/provisioning-rest/v1.0/license-keys/{licenseKeyId}/download'  -u 'test@liferay.com:test'
 	 */
 	@GET
-	@Operation(description = "Retrieves the license key download.")
+	@Operation(description = "Downloads the license key.")
 	@Override
 	@Parameters(
 		value = {@Parameter(in = ParameterIn.PATH, name = "licenseKeyId")}
@@ -227,30 +229,34 @@ public abstract class BaseLicenseKeyResourceImpl implements LicenseKeyResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/provisioning-rest/v1.0/product-groups/{productGroupName}/development-license-key'  -u 'test@liferay.com:test'
+	 * curl -X 'GET' 'http://localhost:8080/o/provisioning-rest/v1.0/accounts/{accountKey}/product-groups/{productGroupName}/product-version/{productVersion}/development-license-key'  -u 'test@liferay.com:test'
 	 */
 	@GET
 	@Operation(
-		description = "Retrives the account's product development license key download."
+		description = "Downloads the account's product development license key."
 	)
 	@Override
 	@Parameters(
 		value = {
+			@Parameter(in = ParameterIn.PATH, name = "accountKey"),
 			@Parameter(in = ParameterIn.PATH, name = "productGroupName"),
-			@Parameter(in = ParameterIn.QUERY, name = "accountKey"),
-			@Parameter(in = ParameterIn.QUERY, name = "productVersion")
+			@Parameter(in = ParameterIn.PATH, name = "productVersion")
 		}
 	)
-	@Path("/product-groups/{productGroupName}/development-license-key")
+	@Path(
+		"/accounts/{accountKey}/product-groups/{productGroupName}/product-version/{productVersion}/development-license-key"
+	)
 	@Produces("application/xml")
 	@Tags(value = {@Tag(name = "LicenseKey")})
-	public Response getProductGroupProductGroupNameDevelopmentLicenseKey(
-			@NotNull @Parameter(hidden = true) @PathParam("productGroupName")
+	public Response
+			getAccountAccountKeyProductGroupProductGroupNameProductVersionDevelopmentLicenseKey(
+				@NotNull @Parameter(hidden = true) @PathParam("accountKey")
+					String accountKey,
+				@NotNull @Parameter(hidden = true)
+				@PathParam("productGroupName")
 				String productGroupName,
-			@NotNull @Parameter(hidden = true) @QueryParam("accountKey") String
-				accountKey,
-			@NotNull @Parameter(hidden = true) @QueryParam("productVersion")
-				String productVersion)
+				@NotNull @Parameter(hidden = true) @PathParam("productVersion")
+					String productVersion)
 		throws Exception {
 
 		Response.ResponseBuilder responseBuilder = Response.ok();

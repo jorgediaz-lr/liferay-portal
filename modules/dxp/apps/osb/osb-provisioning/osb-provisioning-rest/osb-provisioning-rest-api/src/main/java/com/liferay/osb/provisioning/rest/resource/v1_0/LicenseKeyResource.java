@@ -72,8 +72,10 @@ public interface LicenseKeyResource {
 
 	public Response getLicenseKeyDownload(Long licenseKeyId) throws Exception;
 
-	public Response getProductGroupProductGroupNameDevelopmentLicenseKey(
-			String productGroupName, String accountKey, String productVersion)
+	public Response
+			getAccountAccountKeyProductGroupProductGroupNameProductVersionDevelopmentLicenseKey(
+				String accountKey, String productGroupName,
+				String productVersion)
 		throws Exception;
 
 	public default void setContextAcceptLanguage(

@@ -88,7 +88,9 @@ public class Query {
 	 *
 	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {licenseKeyDownload(licenseKeyIds: ___){}}"}' -u 'test@liferay.com:test'
 	 */
-	@GraphQLField(description = "Retrieves the aggregate license key download.")
+	@GraphQLField(
+		description = "Downloads an aggregated license key of the specified license keys."
+	)
 	public Response licenseKeyDownload(
 			@GraphQLName("licenseKeyIds") Long[] licenseKeyIds)
 		throws Exception {
@@ -105,7 +107,7 @@ public class Query {
 	 *
 	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {licenseKeyDownload(licenseKeyId: ___){}}"}' -u 'test@liferay.com:test'
 	 */
-	@GraphQLField(description = "Retrieves the license key download.")
+	@GraphQLField(description = "Downloads the license key.")
 	public Response licenseKeyDownload(
 			@GraphQLName("licenseKeyId") Long licenseKeyId)
 		throws Exception {
@@ -120,15 +122,16 @@ public class Query {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {productGroupProductGroupNameDevelopmentLicenseKey(accountKey: ___, productGroupName: ___, productVersion: ___){}}"}' -u 'test@liferay.com:test'
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {accountAccountKeyProductGroupProductGroupNameProductVersionDevelopmentLicenseKey(accountKey: ___, productGroupName: ___, productVersion: ___){}}"}' -u 'test@liferay.com:test'
 	 */
 	@GraphQLField(
-		description = "Retrives the account's product development license key download."
+		description = "Downloads the account's product development license key."
 	)
-	public Response productGroupProductGroupNameDevelopmentLicenseKey(
-			@GraphQLName("productGroupName") String productGroupName,
-			@GraphQLName("accountKey") String accountKey,
-			@GraphQLName("productVersion") String productVersion)
+	public Response
+			accountAccountKeyProductGroupProductGroupNameProductVersionDevelopmentLicenseKey(
+				@GraphQLName("accountKey") String accountKey,
+				@GraphQLName("productGroupName") String productGroupName,
+				@GraphQLName("productVersion") String productVersion)
 		throws Exception {
 
 		return _applyComponentServiceObjects(
@@ -136,8 +139,8 @@ public class Query {
 			this::_populateResourceContext,
 			licenseKeyResource ->
 				licenseKeyResource.
-					getProductGroupProductGroupNameDevelopmentLicenseKey(
-						productGroupName, accountKey, productVersion));
+					getAccountAccountKeyProductGroupProductGroupNameProductVersionDevelopmentLicenseKey(
+						accountKey, productGroupName, productVersion));
 	}
 
 	@GraphQLName("LicenseKeyPage")

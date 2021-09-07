@@ -90,13 +90,15 @@ public interface LicenseKeyResource {
 			Long licenseKeyId)
 		throws Exception;
 
-	public void getProductGroupProductGroupNameDevelopmentLicenseKey(
-			String productGroupName, String accountKey, String productVersion)
+	public void
+			getAccountAccountKeyProductGroupProductGroupNameProductVersionDevelopmentLicenseKey(
+				String accountKey, String productGroupName,
+				String productVersion)
 		throws Exception;
 
 	public HttpInvoker.HttpResponse
-			getProductGroupProductGroupNameDevelopmentLicenseKeyHttpResponse(
-				String productGroupName, String accountKey,
+			getAccountAccountKeyProductGroupProductGroupNameProductVersionDevelopmentLicenseKeyHttpResponse(
+				String accountKey, String productGroupName,
 				String productVersion)
 		throws Exception;
 
@@ -785,14 +787,15 @@ public interface LicenseKeyResource {
 			return httpInvoker.invoke();
 		}
 
-		public void getProductGroupProductGroupNameDevelopmentLicenseKey(
-				String productGroupName, String accountKey,
-				String productVersion)
+		public void
+				getAccountAccountKeyProductGroupProductGroupNameProductVersionDevelopmentLicenseKey(
+					String accountKey, String productGroupName,
+					String productVersion)
 			throws Exception {
 
 			HttpInvoker.HttpResponse httpResponse =
-				getProductGroupProductGroupNameDevelopmentLicenseKeyHttpResponse(
-					productGroupName, accountKey, productVersion);
+				getAccountAccountKeyProductGroupProductGroupNameProductVersionDevelopmentLicenseKeyHttpResponse(
+					accountKey, productGroupName, productVersion);
 
 			String content = httpResponse.getContent();
 
@@ -821,8 +824,8 @@ public interface LicenseKeyResource {
 		}
 
 		public HttpInvoker.HttpResponse
-				getProductGroupProductGroupNameDevelopmentLicenseKeyHttpResponse(
-					String productGroupName, String accountKey,
+				getAccountAccountKeyProductGroupProductGroupNameProductVersionDevelopmentLicenseKeyHttpResponse(
+					String accountKey, String productGroupName,
 					String productVersion)
 			throws Exception {
 
@@ -847,21 +850,14 @@ public interface LicenseKeyResource {
 
 			httpInvoker.httpMethod(HttpInvoker.HttpMethod.GET);
 
-			if (accountKey != null) {
-				httpInvoker.parameter("accountKey", String.valueOf(accountKey));
-			}
-
-			if (productVersion != null) {
-				httpInvoker.parameter(
-					"productVersion", String.valueOf(productVersion));
-			}
-
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/provisioning-rest/v1.0/product-groups/{productGroupName}/development-license-key");
+						"/o/provisioning-rest/v1.0/accounts/{accountKey}/product-groups/{productGroupName}/product-version/{productVersion}/development-license-key");
 
+			httpInvoker.path("accountKey", accountKey);
 			httpInvoker.path("productGroupName", productGroupName);
+			httpInvoker.path("productVersion", productVersion);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);

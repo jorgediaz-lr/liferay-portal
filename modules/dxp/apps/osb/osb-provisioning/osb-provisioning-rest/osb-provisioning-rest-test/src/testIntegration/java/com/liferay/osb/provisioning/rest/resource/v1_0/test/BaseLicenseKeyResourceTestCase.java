@@ -567,7 +567,7 @@ public abstract class BaseLicenseKeyResourceTestCase {
 	}
 
 	@Test
-	public void testGetProductGroupProductGroupNameDevelopmentLicenseKey()
+	public void testGetAccountAccountKeyProductGroupProductGroupNameProductVersionDevelopmentLicenseKey()
 		throws Exception {
 
 		Assert.assertTrue(false);
