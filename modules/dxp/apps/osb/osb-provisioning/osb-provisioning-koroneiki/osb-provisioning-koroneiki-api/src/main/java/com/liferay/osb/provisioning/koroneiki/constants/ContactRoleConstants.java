@@ -19,6 +19,9 @@ package com.liferay.osb.provisioning.koroneiki.constants;
  */
 public class ContactRoleConstants {
 
+	public static final String NAME_ADMINISTRATOR =
+		"Administrator";
+
 	public static final String NAME_ANALYTICS_CLOUD_OWNER =
 		"Analytics Cloud Owner";
 
