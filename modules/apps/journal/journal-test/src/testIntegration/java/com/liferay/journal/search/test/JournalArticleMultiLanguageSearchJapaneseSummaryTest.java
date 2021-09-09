@@ -115,7 +115,8 @@ public class JournalArticleMultiLanguageSearchJapaneseSummaryTest {
 
 		setSnippets(highlightedTitle, highlightedContent, document, locale);
 
-		_summaryFixture.assertSummary(highlightedTitle, _KEYWORD, document);
+		_summaryFixture.assertSummary(
+			highlightedTitle, highlightedContent, document);
 	}
 
 	@Test
