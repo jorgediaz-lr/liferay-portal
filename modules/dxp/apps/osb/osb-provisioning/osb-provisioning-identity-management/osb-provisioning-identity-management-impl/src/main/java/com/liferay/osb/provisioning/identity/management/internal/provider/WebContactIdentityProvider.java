@@ -16,7 +16,8 @@ package com.liferay.osb.provisioning.identity.management.internal.provider;
 
 import com.liferay.mail.kernel.model.MailMessage;
 import com.liferay.mail.kernel.service.MailService;
-import com.liferay.osb.provisioning.identity.management.provider.IdentityProvider;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
+import com.liferay.osb.provisioning.identity.management.provider.ContactIdentityProvider;
 import com.liferay.petra.json.web.service.client.JSONWebServiceClient;
 import com.liferay.petra.json.web.service.client.JSONWebServiceClientFactory;
 import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
@@ -53,25 +54,38 @@ import org.osgi.service.component.annotations.Reference;
 		"api.token=", "error.email.address=", "host=", "port=", "protocol=",
 		"provider=web"
 	},
-	service = IdentityProvider.class
+	service = ContactIdentityProvider.class
 )
-public class WebIdentityProvider implements IdentityProvider {
+public class WebContactIdentityProvider implements ContactIdentityProvider {
 
-	public JSONObject fetchByEmailAddress(String emailAddress)
+	public Contact fetchContactByEmailAddress(String emailAddress)
 		throws Exception {
 
-		Map<String, String> parameters = new HashMap<>();
+		JSONObject jsonObject = _fetchUserJSONObject(emailAddress);
 
-		parameters.put("emailAddress", emailAddress);
+		if (jsonObject == null) {
+			return null;
+		}
 
-		return _getToJSONObject(
-			_URL_API_REST_USERS + "email_address", parameters);
+		Contact contact = new Contact();
+
+		contact.setEmailAddress(jsonObject.getString("emailAddress"));
+		contact.setFirstName(jsonObject.getString("firstName"));
+		contact.setLastName(jsonObject.getString("lastName"));
+		contact.setMiddleName(jsonObject.getString("middleName"));
+		contact.setUuid(jsonObject.getString("uuid"));
+
+		return contact;
 	}
 
-	public Integer fetchStatusByEmailAddress(String emailAddress)
+	public Contact fetchContactBySessionId(String sessionId) throws Exception {
+		throw new UnsupportedOperationException();
+	}
+
+	public Integer fetchContactStatusByEmailAddress(String emailAddress)
 		throws Exception {
 
-		JSONObject jsonObject = fetchByEmailAddress(emailAddress);
+		JSONObject jsonObject = _fetchUserJSONObject(emailAddress);
 
 		if (jsonObject == null) {
 			return null;
@@ -109,6 +123,17 @@ public class WebIdentityProvider implements IdentityProvider {
 		if (_jsonWebServiceClient != null) {
 			_jsonWebServiceClient.destroy();
 		}
+	}
+
+	private JSONObject _fetchUserJSONObject(String emailAddress)
+		throws Exception {
+
+		Map<String, String> parameters = new HashMap<>();
+
+		parameters.put("emailAddress", emailAddress);
+
+		return _getToJSONObject(
+			_URL_API_REST_USERS + "email_address", parameters);
 	}
 
 	private JSONObject _getToJSONObject(
@@ -184,7 +209,7 @@ public class WebIdentityProvider implements IdentityProvider {
 	private static final String _URL_API_REST_USERS = "/osb-entity-web/users/";
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		WebIdentityProvider.class);
+		WebContactIdentityProvider.class);
 
 	private String _errorEmailAddress;
 

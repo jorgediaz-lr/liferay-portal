@@ -1,0 +1,17 @@
+<ehcache
+	dynamicConfig="true"
+	monitoring="off"
+	name="liferay-multi-vm-clustered"
+	updateCheck="false"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://www.ehcache.org/ehcache.xsd"
+>
+	<cache
+		eternal="false"
+		maxElementsInMemory="1000"
+		name="com.liferay.osb.provisioning.identity.management.internal.provider.OktaContactIdentityProvider"
+		overflowToDisk="false"
+		timeToIdleSeconds="3600"
+	>
+	</cache>
+</ehcache>

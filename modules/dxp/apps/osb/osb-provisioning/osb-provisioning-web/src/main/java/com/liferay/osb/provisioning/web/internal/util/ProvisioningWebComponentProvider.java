@@ -15,7 +15,7 @@
 package com.liferay.osb.provisioning.web.internal.util;
 
 import com.liferay.osb.provisioning.customer.web.service.AccountEntryWebService;
-import com.liferay.osb.provisioning.identity.management.provider.IdentityProvider;
+import com.liferay.osb.provisioning.identity.management.provider.ContactIdentityProvider;
 import com.liferay.osb.provisioning.koroneiki.reader.AccountReader;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.AuditEntryWebService;
@@ -364,7 +364,7 @@ public class ProvisioningWebComponentProvider {
 
 		return new AccountSearchDisplayContext(
 			renderRequest, renderResponse, httpServletRequest, _accountReader,
-			_accountWebService, _countryWebService, _identityProvider,
+			_accountWebService, _contactIdentityProvider, _countryWebService,
 			_productWebService, _teamRoleWebService, _userLocalService);
 	}
 
@@ -435,7 +435,7 @@ public class ProvisioningWebComponentProvider {
 
 		return new LicenseKeySearchDisplayContext(
 			renderRequest, renderResponse, httpServletRequest,
-			_identityProvider, _licenseEntryLocalService,
+			_contactIdentityProvider, _licenseEntryLocalService,
 			_licenseKeyLocalService, _licenseKeyPermission, _productWebService,
 			_userLocalService);
 	}
@@ -565,6 +565,9 @@ public class ProvisioningWebComponentProvider {
 	private AuditEntryWebService _auditEntryWebService;
 
 	@Reference
+	private ContactIdentityProvider _contactIdentityProvider;
+
+	@Reference
 	private ContactRoleWebService _contactRoleWebService;
 
 	@Reference
@@ -575,9 +578,6 @@ public class ProvisioningWebComponentProvider {
 
 	@Reference
 	private ExternalLinkWebService _externalLinkWebService;
-
-	@Reference
-	private IdentityProvider _identityProvider;
 
 	@Reference
 	private LicenseEntryLocalService _licenseEntryLocalService;

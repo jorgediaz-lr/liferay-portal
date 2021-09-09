@@ -31,7 +31,7 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.distributed.messaging.internal.configuration.DistributedMessagingConfiguration;
 import com.liferay.osb.provisioning.distributed.messaging.internal.constants.SalesforceConstants;
-import com.liferay.osb.provisioning.identity.management.provider.IdentityProvider;
+import com.liferay.osb.provisioning.identity.management.provider.ContactIdentityProvider;
 import com.liferay.osb.provisioning.koroneiki.constants.ContactRoleConstants;
 import com.liferay.osb.provisioning.koroneiki.constants.ProductConstants;
 import com.liferay.osb.provisioning.koroneiki.constants.TeamRoleConstants;
@@ -875,8 +875,9 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			List<Contact> contacts = parseContacts(jsonObject);
 
 			for (Contact contact : contacts) {
-				Integer status = _identityProvider.fetchStatusByEmailAddress(
-					contact.getEmailAddress());
+				Integer status =
+					_contactIdentityProvider.fetchContactStatusByEmailAddress(
+						contact.getEmailAddress());
 
 				if (status == null) {
 					missingContacts.add(contact);
@@ -2381,6 +2382,9 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 	private AccountWebService _accountWebService;
 
 	@Reference
+	private ContactIdentityProvider _contactIdentityProvider;
+
+	@Reference
 	private ContactRoleWebService _contactRoleWebService;
 
 	@Reference
@@ -2394,9 +2398,6 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 	@Reference
 	private GroupLocalService _groupLocalService;
-
-	@Reference
-	private IdentityProvider _identityProvider;
 
 	@Reference
 	private LockLocalService _lockLocalService;

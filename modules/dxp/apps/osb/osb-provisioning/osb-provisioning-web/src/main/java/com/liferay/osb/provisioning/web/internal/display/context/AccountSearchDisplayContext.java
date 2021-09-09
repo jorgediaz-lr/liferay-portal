@@ -15,12 +15,13 @@
 package com.liferay.osb.provisioning.web.internal.display.context;
 
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Country;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
 import com.liferay.osb.provisioning.constants.ProvisioningActionKeys;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
-import com.liferay.osb.provisioning.identity.management.provider.IdentityProvider;
+import com.liferay.osb.provisioning.identity.management.provider.ContactIdentityProvider;
 import com.liferay.osb.provisioning.koroneiki.constants.EntitlementConstants;
 import com.liferay.osb.provisioning.koroneiki.constants.ProductConstants;
 import com.liferay.osb.provisioning.koroneiki.constants.ProductPurchaseConstants;
@@ -34,7 +35,6 @@ import com.liferay.osb.provisioning.web.internal.permission.AccountPermissionChe
 import com.liferay.osb.provisioning.web.internal.search.AccountSearch;
 import com.liferay.osb.provisioning.web.internal.search.AccountSearchTerms;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
-import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
@@ -73,7 +73,8 @@ public class AccountSearchDisplayContext {
 		RenderRequest renderRequest, RenderResponse renderResponse,
 		HttpServletRequest httpServletRequest, AccountReader accountReader,
 		AccountWebService accountWebService,
-		CountryWebService countryWebService, IdentityProvider identityProvider,
+		ContactIdentityProvider contactIdentityProvider,
+		CountryWebService countryWebService,
 		ProductWebService productWebService,
 		TeamRoleWebService teamRoleWebService,
 		UserLocalService userLocalService) {
@@ -83,8 +84,8 @@ public class AccountSearchDisplayContext {
 		_httpServletRequest = httpServletRequest;
 		_accountReader = accountReader;
 		_accountWebService = accountWebService;
+		_contactIdentityProvider = contactIdentityProvider;
 		_countryWebService = countryWebService;
-		_identityProvider = identityProvider;
 		_productWebService = productWebService;
 		_teamRoleWebService = teamRoleWebService;
 		_userLocalService = userLocalService;
@@ -273,11 +274,11 @@ public class AccountSearchDisplayContext {
 			return user.getUuid();
 		}
 
-		JSONObject jsonObject = _identityProvider.fetchByEmailAddress(
+		Contact contact = _contactIdentityProvider.fetchContactByEmailAddress(
 			createdByEmailAddress);
 
-		if (jsonObject != null) {
-			return jsonObject.getString("uuid");
+		if (contact != null) {
+			return contact.getUuid();
 		}
 
 		return "not-available";
@@ -314,10 +315,10 @@ public class AccountSearchDisplayContext {
 	private final AccountReader _accountReader;
 	private AccountSearch _accountSearch;
 	private final AccountWebService _accountWebService;
+	private final ContactIdentityProvider _contactIdentityProvider;
 	private final CountryWebService _countryWebService;
 	private final PortletURL _currentURLObj;
 	private final HttpServletRequest _httpServletRequest;
-	private final IdentityProvider _identityProvider;
 	private final ProductWebService _productWebService;
 	private final RenderRequest _renderRequest;
 	private final RenderResponse _renderResponse;

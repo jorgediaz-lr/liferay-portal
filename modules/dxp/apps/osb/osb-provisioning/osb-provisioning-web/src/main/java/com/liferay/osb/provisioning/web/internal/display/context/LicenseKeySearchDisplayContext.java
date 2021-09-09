@@ -14,10 +14,11 @@
 
 package com.liferay.osb.provisioning.web.internal.display.context;
 
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.osb.provisioning.constants.ProvisioningActionKeys;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
-import com.liferay.osb.provisioning.identity.management.provider.IdentityProvider;
+import com.liferay.osb.provisioning.identity.management.provider.ContactIdentityProvider;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.provisioning.license.helper.constants.ProductVersion;
 import com.liferay.osb.provisioning.license.model.LicenseEntry;
@@ -31,7 +32,6 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
@@ -71,7 +71,7 @@ public class LicenseKeySearchDisplayContext {
 	public LicenseKeySearchDisplayContext(
 		RenderRequest renderRequest, RenderResponse renderResponse,
 		HttpServletRequest httpServletRequest,
-		IdentityProvider identityProvider,
+		ContactIdentityProvider contactIdentityProvider,
 		LicenseEntryLocalService licenseEntryLocalService,
 		LicenseKeyLocalService licenseKeyLocalService,
 		LicenseKeyPermission licenseKeyPermission,
@@ -81,7 +81,7 @@ public class LicenseKeySearchDisplayContext {
 		_renderRequest = renderRequest;
 		_renderResponse = renderResponse;
 		_httpServletRequest = httpServletRequest;
-		_identityProvider = identityProvider;
+		_contactIdentityProvider = contactIdentityProvider;
 		_licenseEntryLocalService = licenseEntryLocalService;
 		_licenseKeyLocalService = licenseKeyLocalService;
 		_licenseKeyPermission = licenseKeyPermission;
@@ -242,19 +242,19 @@ public class LicenseKeySearchDisplayContext {
 			return user.getUuid();
 		}
 
-		JSONObject jsonObject = _identityProvider.fetchByEmailAddress(
+		Contact contact = _contactIdentityProvider.fetchContactByEmailAddress(
 			emailAddress);
 
-		if (jsonObject != null) {
-			return jsonObject.getString("uuid");
+		if (contact != null) {
+			return contact.getUuid();
 		}
 
 		return "not-available";
 	}
 
+	private final ContactIdentityProvider _contactIdentityProvider;
 	private final PortletURL _currentURLObj;
 	private final HttpServletRequest _httpServletRequest;
-	private final IdentityProvider _identityProvider;
 	private final LicenseEntryLocalService _licenseEntryLocalService;
 	private final LicenseKeyLocalService _licenseKeyLocalService;
 	private final LicenseKeyPermission _licenseKeyPermission;

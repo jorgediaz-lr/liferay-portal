@@ -14,21 +14,27 @@
 
 package com.liferay.osb.provisioning.rest.internal.security.auth.verifier;
 
-import com.liferay.admin.kernel.util.Omniadmin;
-import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
+import com.liferay.osb.provisioning.identity.management.provider.ContactIdentityProvider;
+import com.liferay.osb.provisioning.rest.internal.ProvisioningContactThreadLocal;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Role;
+import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.security.auth.AccessControlContext;
 import com.liferay.portal.kernel.security.auth.AuthException;
-import com.liferay.portal.kernel.security.auth.http.HttpAuthManagerUtil;
-import com.liferay.portal.kernel.security.auth.http.HttpAuthorizationHeader;
 import com.liferay.portal.kernel.security.auth.verifier.AuthVerifier;
 import com.liferay.portal.kernel.security.auth.verifier.AuthVerifierResult;
+import com.liferay.portal.kernel.service.RoleLocalService;
+import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
-import java.util.Map;
 import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,6 +45,7 @@ import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Kyle Bischof
+ * @author Amos Fong
  */
 @Component(
 	immediate = true,
@@ -69,9 +76,9 @@ public class ProvisioningAuthVerifier implements AuthVerifier {
 				authVerifierResult.setUserId(Long.valueOf(credentials[0]));
 			}
 		}
-		catch (AuthException authException) {
+		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {
-				_log.debug(authException, authException);
+				_log.debug(exception, exception);
 			}
 
 			HttpServletResponse httpServletResponse =
@@ -80,7 +87,7 @@ public class ProvisioningAuthVerifier implements AuthVerifier {
 			try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(
 					httpServletResponse.getOutputStream())) {
 
-				objectOutputStream.writeObject(authException);
+				objectOutputStream.writeObject(exception);
 
 				authVerifierResult.setState(
 					AuthVerifierResult.State.INVALID_CREDENTIALS);
@@ -88,7 +95,7 @@ public class ProvisioningAuthVerifier implements AuthVerifier {
 			catch (IOException ioException) {
 				_log.error(ioException, ioException);
 
-				throw authException;
+				throw new AuthException(exception);
 			}
 		}
 
@@ -96,39 +103,53 @@ public class ProvisioningAuthVerifier implements AuthVerifier {
 	}
 
 	protected String[] verify(HttpServletRequest httpServletRequest)
-		throws AuthException {
+		throws Exception {
 
-		long userId = 0;
+		String oktaSessionId = httpServletRequest.getHeader("Okta-Session-ID");
 
-		try {
-			userId = HttpAuthManagerUtil.getBasicUserId(httpServletRequest);
-		}
-		catch (PortalException portalException) {
-			_log.error(portalException);
-		}
-
-		if ((userId > 0) && !_omniadmin.isOmniadmin(userId)) {
+		if (Validator.isNull(oktaSessionId)) {
 			return null;
 		}
 
-		HttpAuthorizationHeader httpAuthorizationHeader =
-			HttpAuthManagerUtil.parse(httpServletRequest);
+		Contact contact = _contactIdentityProvider.fetchContactBySessionId(
+			oktaSessionId);
 
-		Map<String, String> params =
-			httpAuthorizationHeader.getAuthParameters();
+		if (contact != null) {
+			ProvisioningContactThreadLocal.setContact(contact);
 
-		String[] credentials = new String[2];
+			long companyId = _portal.getCompanyId(httpServletRequest);
 
-		credentials[0] = String.valueOf(userId);
-		credentials[1] = params.get("password");
+			Role role = _roleLocalService.getRole(
+				companyId, RoleConstants.ADMINISTRATOR);
 
-		return credentials;
+			long[] userIds = _userLocalService.getRoleUserIds(role.getRoleId());
+
+			if (!ArrayUtil.isEmpty(userIds)) {
+				String[] credentials = new String[2];
+
+				credentials[0] = String.valueOf(userIds[0]);
+				credentials[1] = StringPool.BLANK;
+
+				return credentials;
+			}
+		}
+
+		return null;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ProvisioningAuthVerifier.class);
 
+	@Reference(target = "(provider=okta)")
+	private ContactIdentityProvider _contactIdentityProvider;
+
 	@Reference
-	private Omniadmin _omniadmin;
+	private Portal _portal;
+
+	@Reference
+	private RoleLocalService _roleLocalService;
+
+	@Reference
+	private UserLocalService _userLocalService;
 
 }
