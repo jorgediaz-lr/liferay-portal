@@ -42,21 +42,36 @@ public interface LicenseKeyResource {
 		return new Builder();
 	}
 
-	public Page<LicenseKey> getLicenseKeysPage(
-			String search, String filterString, Pagination pagination,
-			String sortString)
+	public Page<LicenseKey> getAccountAccountKeyLicenseKeysPage(
+			String accountKey, String search, String filterString,
+			Pagination pagination, String sortString)
 		throws Exception;
 
-	public HttpInvoker.HttpResponse getLicenseKeysPageHttpResponse(
-			String search, String filterString, Pagination pagination,
-			String sortString)
+	public HttpInvoker.HttpResponse
+			getAccountAccountKeyLicenseKeysPageHttpResponse(
+				String accountKey, String search, String filterString,
+				Pagination pagination, String sortString)
 		throws Exception;
 
-	public Page<LicenseKey> postLicenseKeysPage(LicenseKey[] licenseKeys)
+	public Page<LicenseKey> postAccountAccountKeyLicenseKeysPage(
+			String accountKey, LicenseKey[] licenseKeys)
 		throws Exception;
 
-	public HttpInvoker.HttpResponse postLicenseKeysPageHttpResponse(
-			LicenseKey[] licenseKeys)
+	public HttpInvoker.HttpResponse
+			postAccountAccountKeyLicenseKeysPageHttpResponse(
+				String accountKey, LicenseKey[] licenseKeys)
+		throws Exception;
+
+	public void
+			getAccountAccountKeyProductGroupProductGroupNameProductVersionDevelopmentLicenseKey(
+				String accountKey, String productGroupName,
+				String productVersion)
+		throws Exception;
+
+	public HttpInvoker.HttpResponse
+			getAccountAccountKeyProductGroupProductGroupNameProductVersionDevelopmentLicenseKeyHttpResponse(
+				String accountKey, String productGroupName,
+				String productVersion)
 		throws Exception;
 
 	public void putLicenseKeyActivate(Long[] licenseKeyIds) throws Exception;
@@ -88,18 +103,6 @@ public interface LicenseKeyResource {
 
 	public HttpInvoker.HttpResponse getLicenseKeyDownloadHttpResponse(
 			Long licenseKeyId)
-		throws Exception;
-
-	public void
-			getAccountAccountKeyProductGroupProductGroupNameProductVersionDevelopmentLicenseKey(
-				String accountKey, String productGroupName,
-				String productVersion)
-		throws Exception;
-
-	public HttpInvoker.HttpResponse
-			getAccountAccountKeyProductGroupProductGroupNameProductVersionDevelopmentLicenseKeyHttpResponse(
-				String accountKey, String productGroupName,
-				String productVersion)
 		throws Exception;
 
 	public static class Builder {
@@ -173,14 +176,14 @@ public interface LicenseKeyResource {
 
 	public static class LicenseKeyResourceImpl implements LicenseKeyResource {
 
-		public Page<LicenseKey> getLicenseKeysPage(
-				String search, String filterString, Pagination pagination,
-				String sortString)
+		public Page<LicenseKey> getAccountAccountKeyLicenseKeysPage(
+				String accountKey, String search, String filterString,
+				Pagination pagination, String sortString)
 			throws Exception {
 
 			HttpInvoker.HttpResponse httpResponse =
-				getLicenseKeysPageHttpResponse(
-					search, filterString, pagination, sortString);
+				getAccountAccountKeyLicenseKeysPageHttpResponse(
+					accountKey, search, filterString, pagination, sortString);
 
 			String content = httpResponse.getContent();
 
@@ -219,9 +222,10 @@ public interface LicenseKeyResource {
 			}
 		}
 
-		public HttpInvoker.HttpResponse getLicenseKeysPageHttpResponse(
-				String search, String filterString, Pagination pagination,
-				String sortString)
+		public HttpInvoker.HttpResponse
+				getAccountAccountKeyLicenseKeysPageHttpResponse(
+					String accountKey, String search, String filterString,
+					Pagination pagination, String sortString)
 			throws Exception {
 
 			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
@@ -266,7 +270,10 @@ public interface LicenseKeyResource {
 
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
-					_builder._port + "/o/provisioning-rest/v1.0/license-keys");
+					_builder._port +
+						"/o/provisioning-rest/v1.0/accounts/{accountKey}/license-keys");
+
+			httpInvoker.path("accountKey", accountKey);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -274,11 +281,13 @@ public interface LicenseKeyResource {
 			return httpInvoker.invoke();
 		}
 
-		public Page<LicenseKey> postLicenseKeysPage(LicenseKey[] licenseKeys)
+		public Page<LicenseKey> postAccountAccountKeyLicenseKeysPage(
+				String accountKey, LicenseKey[] licenseKeys)
 			throws Exception {
 
 			HttpInvoker.HttpResponse httpResponse =
-				postLicenseKeysPageHttpResponse(licenseKeys);
+				postAccountAccountKeyLicenseKeysPageHttpResponse(
+					accountKey, licenseKeys);
 
 			String content = httpResponse.getContent();
 
@@ -317,8 +326,9 @@ public interface LicenseKeyResource {
 			}
 		}
 
-		public HttpInvoker.HttpResponse postLicenseKeysPageHttpResponse(
-				LicenseKey[] licenseKeys)
+		public HttpInvoker.HttpResponse
+				postAccountAccountKeyLicenseKeysPageHttpResponse(
+					String accountKey, LicenseKey[] licenseKeys)
 			throws Exception {
 
 			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
@@ -354,7 +364,88 @@ public interface LicenseKeyResource {
 
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
-					_builder._port + "/o/provisioning-rest/v1.0/license-keys");
+					_builder._port +
+						"/o/provisioning-rest/v1.0/accounts/{accountKey}/license-keys");
+
+			httpInvoker.path("accountKey", accountKey);
+
+			httpInvoker.userNameAndPassword(
+				_builder._login + ":" + _builder._password);
+
+			return httpInvoker.invoke();
+		}
+
+		public void
+				getAccountAccountKeyProductGroupProductGroupNameProductVersionDevelopmentLicenseKey(
+					String accountKey, String productGroupName,
+					String productVersion)
+			throws Exception {
+
+			HttpInvoker.HttpResponse httpResponse =
+				getAccountAccountKeyProductGroupProductGroupNameProductVersionDevelopmentLicenseKeyHttpResponse(
+					accountKey, productGroupName, productVersion);
+
+			String content = httpResponse.getContent();
+
+			if ((httpResponse.getStatusCode() / 100) != 2) {
+				_logger.log(
+					Level.WARNING,
+					"Unable to process HTTP response content: " + content);
+				_logger.log(
+					Level.WARNING,
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.log(
+					Level.WARNING,
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
+
+				throw new Problem.ProblemException(Problem.toDTO(content));
+			}
+			else {
+				_logger.fine("HTTP response content: " + content);
+				_logger.fine(
+					"HTTP response message: " + httpResponse.getMessage());
+				_logger.fine(
+					"HTTP response status code: " +
+						httpResponse.getStatusCode());
+			}
+		}
+
+		public HttpInvoker.HttpResponse
+				getAccountAccountKeyProductGroupProductGroupNameProductVersionDevelopmentLicenseKeyHttpResponse(
+					String accountKey, String productGroupName,
+					String productVersion)
+			throws Exception {
+
+			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
+
+			if (_builder._locale != null) {
+				httpInvoker.header(
+					"Accept-Language", _builder._locale.toLanguageTag());
+			}
+
+			for (Map.Entry<String, String> entry :
+					_builder._headers.entrySet()) {
+
+				httpInvoker.header(entry.getKey(), entry.getValue());
+			}
+
+			for (Map.Entry<String, String> entry :
+					_builder._parameters.entrySet()) {
+
+				httpInvoker.parameter(entry.getKey(), entry.getValue());
+			}
+
+			httpInvoker.httpMethod(HttpInvoker.HttpMethod.GET);
+
+			httpInvoker.path(
+				_builder._scheme + "://" + _builder._host + ":" +
+					_builder._port +
+						"/o/provisioning-rest/v1.0/accounts/{accountKey}/product-groups/{productGroupName}/product-version/{productVersion}/development-license-key");
+
+			httpInvoker.path("accountKey", accountKey);
+			httpInvoker.path("productGroupName", productGroupName);
+			httpInvoker.path("productVersion", productVersion);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -780,84 +871,6 @@ public interface LicenseKeyResource {
 						"/o/provisioning-rest/v1.0/license-keys/{licenseKeyId}/download");
 
 			httpInvoker.path("licenseKeyId", licenseKeyId);
-
-			httpInvoker.userNameAndPassword(
-				_builder._login + ":" + _builder._password);
-
-			return httpInvoker.invoke();
-		}
-
-		public void
-				getAccountAccountKeyProductGroupProductGroupNameProductVersionDevelopmentLicenseKey(
-					String accountKey, String productGroupName,
-					String productVersion)
-			throws Exception {
-
-			HttpInvoker.HttpResponse httpResponse =
-				getAccountAccountKeyProductGroupProductGroupNameProductVersionDevelopmentLicenseKeyHttpResponse(
-					accountKey, productGroupName, productVersion);
-
-			String content = httpResponse.getContent();
-
-			if ((httpResponse.getStatusCode() / 100) != 2) {
-				_logger.log(
-					Level.WARNING,
-					"Unable to process HTTP response content: " + content);
-				_logger.log(
-					Level.WARNING,
-					"HTTP response message: " + httpResponse.getMessage());
-				_logger.log(
-					Level.WARNING,
-					"HTTP response status code: " +
-						httpResponse.getStatusCode());
-
-				throw new Problem.ProblemException(Problem.toDTO(content));
-			}
-			else {
-				_logger.fine("HTTP response content: " + content);
-				_logger.fine(
-					"HTTP response message: " + httpResponse.getMessage());
-				_logger.fine(
-					"HTTP response status code: " +
-						httpResponse.getStatusCode());
-			}
-		}
-
-		public HttpInvoker.HttpResponse
-				getAccountAccountKeyProductGroupProductGroupNameProductVersionDevelopmentLicenseKeyHttpResponse(
-					String accountKey, String productGroupName,
-					String productVersion)
-			throws Exception {
-
-			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
-
-			if (_builder._locale != null) {
-				httpInvoker.header(
-					"Accept-Language", _builder._locale.toLanguageTag());
-			}
-
-			for (Map.Entry<String, String> entry :
-					_builder._headers.entrySet()) {
-
-				httpInvoker.header(entry.getKey(), entry.getValue());
-			}
-
-			for (Map.Entry<String, String> entry :
-					_builder._parameters.entrySet()) {
-
-				httpInvoker.parameter(entry.getKey(), entry.getValue());
-			}
-
-			httpInvoker.httpMethod(HttpInvoker.HttpMethod.GET);
-
-			httpInvoker.path(
-				_builder._scheme + "://" + _builder._host + ":" +
-					_builder._port +
-						"/o/provisioning-rest/v1.0/accounts/{accountKey}/product-groups/{productGroupName}/product-version/{productVersion}/development-license-key");
-
-			httpInvoker.path("accountKey", accountKey);
-			httpInvoker.path("productGroupName", productGroupName);
-			httpInvoker.path("productVersion", productVersion);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);

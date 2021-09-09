@@ -238,20 +238,45 @@ public abstract class BaseLicenseKeyResourceTestCase {
 	}
 
 	@Test
-	public void testGetLicenseKeysPage() throws Exception {
-		Page<LicenseKey> page = licenseKeyResource.getLicenseKeysPage(
-			RandomTestUtil.randomString(), null, Pagination.of(1, 2), null);
+	public void testGetAccountAccountKeyLicenseKeysPage() throws Exception {
+		Page<LicenseKey> page =
+			licenseKeyResource.getAccountAccountKeyLicenseKeysPage(
+				testGetAccountAccountKeyLicenseKeysPage_getAccountKey(),
+				RandomTestUtil.randomString(), null, Pagination.of(1, 2), null);
 
 		Assert.assertEquals(0, page.getTotalCount());
 
-		LicenseKey licenseKey1 = testGetLicenseKeysPage_addLicenseKey(
-			randomLicenseKey());
+		String accountKey =
+			testGetAccountAccountKeyLicenseKeysPage_getAccountKey();
+		String irrelevantAccountKey =
+			testGetAccountAccountKeyLicenseKeysPage_getIrrelevantAccountKey();
 
-		LicenseKey licenseKey2 = testGetLicenseKeysPage_addLicenseKey(
-			randomLicenseKey());
+		if (irrelevantAccountKey != null) {
+			LicenseKey irrelevantLicenseKey =
+				testGetAccountAccountKeyLicenseKeysPage_addLicenseKey(
+					irrelevantAccountKey, randomIrrelevantLicenseKey());
 
-		page = licenseKeyResource.getLicenseKeysPage(
-			null, null, Pagination.of(1, 2), null);
+			page = licenseKeyResource.getAccountAccountKeyLicenseKeysPage(
+				irrelevantAccountKey, null, null, Pagination.of(1, 2), null);
+
+			Assert.assertEquals(1, page.getTotalCount());
+
+			assertEquals(
+				Arrays.asList(irrelevantLicenseKey),
+				(List<LicenseKey>)page.getItems());
+			assertValid(page);
+		}
+
+		LicenseKey licenseKey1 =
+			testGetAccountAccountKeyLicenseKeysPage_addLicenseKey(
+				accountKey, randomLicenseKey());
+
+		LicenseKey licenseKey2 =
+			testGetAccountAccountKeyLicenseKeysPage_addLicenseKey(
+				accountKey, randomLicenseKey());
+
+		page = licenseKeyResource.getAccountAccountKeyLicenseKeysPage(
+			accountKey, null, null, Pagination.of(1, 2), null);
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -262,7 +287,7 @@ public abstract class BaseLicenseKeyResourceTestCase {
 	}
 
 	@Test
-	public void testGetLicenseKeysPageWithFilterDateTimeEquals()
+	public void testGetAccountAccountKeyLicenseKeysPageWithFilterDateTimeEquals()
 		throws Exception {
 
 		List<EntityField> entityFields = getEntityFields(
@@ -272,14 +297,20 @@ public abstract class BaseLicenseKeyResourceTestCase {
 			return;
 		}
 
+		String accountKey =
+			testGetAccountAccountKeyLicenseKeysPage_getAccountKey();
+
 		LicenseKey licenseKey1 = randomLicenseKey();
 
-		licenseKey1 = testGetLicenseKeysPage_addLicenseKey(licenseKey1);
+		licenseKey1 = testGetAccountAccountKeyLicenseKeysPage_addLicenseKey(
+			accountKey, licenseKey1);
 
 		for (EntityField entityField : entityFields) {
-			Page<LicenseKey> page = licenseKeyResource.getLicenseKeysPage(
-				null, getFilterString(entityField, "between", licenseKey1),
-				Pagination.of(1, 2), null);
+			Page<LicenseKey> page =
+				licenseKeyResource.getAccountAccountKeyLicenseKeysPage(
+					accountKey, null,
+					getFilterString(entityField, "between", licenseKey1),
+					Pagination.of(1, 2), null);
 
 			assertEquals(
 				Collections.singletonList(licenseKey1),
@@ -288,7 +319,7 @@ public abstract class BaseLicenseKeyResourceTestCase {
 	}
 
 	@Test
-	public void testGetLicenseKeysPageWithFilterStringEquals()
+	public void testGetAccountAccountKeyLicenseKeysPageWithFilterStringEquals()
 		throws Exception {
 
 		List<EntityField> entityFields = getEntityFields(
@@ -298,17 +329,24 @@ public abstract class BaseLicenseKeyResourceTestCase {
 			return;
 		}
 
-		LicenseKey licenseKey1 = testGetLicenseKeysPage_addLicenseKey(
-			randomLicenseKey());
+		String accountKey =
+			testGetAccountAccountKeyLicenseKeysPage_getAccountKey();
+
+		LicenseKey licenseKey1 =
+			testGetAccountAccountKeyLicenseKeysPage_addLicenseKey(
+				accountKey, randomLicenseKey());
 
 		@SuppressWarnings("PMD.UnusedLocalVariable")
-		LicenseKey licenseKey2 = testGetLicenseKeysPage_addLicenseKey(
-			randomLicenseKey());
+		LicenseKey licenseKey2 =
+			testGetAccountAccountKeyLicenseKeysPage_addLicenseKey(
+				accountKey, randomLicenseKey());
 
 		for (EntityField entityField : entityFields) {
-			Page<LicenseKey> page = licenseKeyResource.getLicenseKeysPage(
-				null, getFilterString(entityField, "eq", licenseKey1),
-				Pagination.of(1, 2), null);
+			Page<LicenseKey> page =
+				licenseKeyResource.getAccountAccountKeyLicenseKeysPage(
+					accountKey, null,
+					getFilterString(entityField, "eq", licenseKey1),
+					Pagination.of(1, 2), null);
 
 			assertEquals(
 				Collections.singletonList(licenseKey1),
@@ -317,25 +355,35 @@ public abstract class BaseLicenseKeyResourceTestCase {
 	}
 
 	@Test
-	public void testGetLicenseKeysPageWithPagination() throws Exception {
-		LicenseKey licenseKey1 = testGetLicenseKeysPage_addLicenseKey(
-			randomLicenseKey());
+	public void testGetAccountAccountKeyLicenseKeysPageWithPagination()
+		throws Exception {
 
-		LicenseKey licenseKey2 = testGetLicenseKeysPage_addLicenseKey(
-			randomLicenseKey());
+		String accountKey =
+			testGetAccountAccountKeyLicenseKeysPage_getAccountKey();
 
-		LicenseKey licenseKey3 = testGetLicenseKeysPage_addLicenseKey(
-			randomLicenseKey());
+		LicenseKey licenseKey1 =
+			testGetAccountAccountKeyLicenseKeysPage_addLicenseKey(
+				accountKey, randomLicenseKey());
 
-		Page<LicenseKey> page1 = licenseKeyResource.getLicenseKeysPage(
-			null, null, Pagination.of(1, 2), null);
+		LicenseKey licenseKey2 =
+			testGetAccountAccountKeyLicenseKeysPage_addLicenseKey(
+				accountKey, randomLicenseKey());
+
+		LicenseKey licenseKey3 =
+			testGetAccountAccountKeyLicenseKeysPage_addLicenseKey(
+				accountKey, randomLicenseKey());
+
+		Page<LicenseKey> page1 =
+			licenseKeyResource.getAccountAccountKeyLicenseKeysPage(
+				accountKey, null, null, Pagination.of(1, 2), null);
 
 		List<LicenseKey> licenseKeys1 = (List<LicenseKey>)page1.getItems();
 
 		Assert.assertEquals(licenseKeys1.toString(), 2, licenseKeys1.size());
 
-		Page<LicenseKey> page2 = licenseKeyResource.getLicenseKeysPage(
-			null, null, Pagination.of(2, 2), null);
+		Page<LicenseKey> page2 =
+			licenseKeyResource.getAccountAccountKeyLicenseKeysPage(
+				accountKey, null, null, Pagination.of(2, 2), null);
 
 		Assert.assertEquals(3, page2.getTotalCount());
 
@@ -343,8 +391,9 @@ public abstract class BaseLicenseKeyResourceTestCase {
 
 		Assert.assertEquals(licenseKeys2.toString(), 1, licenseKeys2.size());
 
-		Page<LicenseKey> page3 = licenseKeyResource.getLicenseKeysPage(
-			null, null, Pagination.of(1, 3), null);
+		Page<LicenseKey> page3 =
+			licenseKeyResource.getAccountAccountKeyLicenseKeysPage(
+				accountKey, null, null, Pagination.of(1, 3), null);
 
 		assertEqualsIgnoringOrder(
 			Arrays.asList(licenseKey1, licenseKey2, licenseKey3),
@@ -352,8 +401,10 @@ public abstract class BaseLicenseKeyResourceTestCase {
 	}
 
 	@Test
-	public void testGetLicenseKeysPageWithSortDateTime() throws Exception {
-		testGetLicenseKeysPageWithSort(
+	public void testGetAccountAccountKeyLicenseKeysPageWithSortDateTime()
+		throws Exception {
+
+		testGetAccountAccountKeyLicenseKeysPageWithSort(
 			EntityField.Type.DATE_TIME,
 			(entityField, licenseKey1, licenseKey2) -> {
 				BeanUtils.setProperty(
@@ -363,8 +414,10 @@ public abstract class BaseLicenseKeyResourceTestCase {
 	}
 
 	@Test
-	public void testGetLicenseKeysPageWithSortInteger() throws Exception {
-		testGetLicenseKeysPageWithSort(
+	public void testGetAccountAccountKeyLicenseKeysPageWithSortInteger()
+		throws Exception {
+
+		testGetAccountAccountKeyLicenseKeysPageWithSort(
 			EntityField.Type.INTEGER,
 			(entityField, licenseKey1, licenseKey2) -> {
 				BeanUtils.setProperty(licenseKey1, entityField.getName(), 0);
@@ -373,8 +426,10 @@ public abstract class BaseLicenseKeyResourceTestCase {
 	}
 
 	@Test
-	public void testGetLicenseKeysPageWithSortString() throws Exception {
-		testGetLicenseKeysPageWithSort(
+	public void testGetAccountAccountKeyLicenseKeysPageWithSortString()
+		throws Exception {
+
+		testGetAccountAccountKeyLicenseKeysPageWithSort(
 			EntityField.Type.STRING,
 			(entityField, licenseKey1, licenseKey2) -> {
 				Class<?> clazz = licenseKey1.getClass();
@@ -423,7 +478,7 @@ public abstract class BaseLicenseKeyResourceTestCase {
 			});
 	}
 
-	protected void testGetLicenseKeysPageWithSort(
+	protected void testGetAccountAccountKeyLicenseKeysPageWithSort(
 			EntityField.Type type,
 			UnsafeTriConsumer<EntityField, LicenseKey, LicenseKey, Exception>
 				unsafeTriConsumer)
@@ -435,6 +490,9 @@ public abstract class BaseLicenseKeyResourceTestCase {
 			return;
 		}
 
+		String accountKey =
+			testGetAccountAccountKeyLicenseKeysPage_getAccountKey();
+
 		LicenseKey licenseKey1 = randomLicenseKey();
 		LicenseKey licenseKey2 = randomLicenseKey();
 
@@ -442,22 +500,26 @@ public abstract class BaseLicenseKeyResourceTestCase {
 			unsafeTriConsumer.accept(entityField, licenseKey1, licenseKey2);
 		}
 
-		licenseKey1 = testGetLicenseKeysPage_addLicenseKey(licenseKey1);
+		licenseKey1 = testGetAccountAccountKeyLicenseKeysPage_addLicenseKey(
+			accountKey, licenseKey1);
 
-		licenseKey2 = testGetLicenseKeysPage_addLicenseKey(licenseKey2);
+		licenseKey2 = testGetAccountAccountKeyLicenseKeysPage_addLicenseKey(
+			accountKey, licenseKey2);
 
 		for (EntityField entityField : entityFields) {
-			Page<LicenseKey> ascPage = licenseKeyResource.getLicenseKeysPage(
-				null, null, Pagination.of(1, 2),
-				entityField.getName() + ":asc");
+			Page<LicenseKey> ascPage =
+				licenseKeyResource.getAccountAccountKeyLicenseKeysPage(
+					accountKey, null, null, Pagination.of(1, 2),
+					entityField.getName() + ":asc");
 
 			assertEquals(
 				Arrays.asList(licenseKey1, licenseKey2),
 				(List<LicenseKey>)ascPage.getItems());
 
-			Page<LicenseKey> descPage = licenseKeyResource.getLicenseKeysPage(
-				null, null, Pagination.of(1, 2),
-				entityField.getName() + ":desc");
+			Page<LicenseKey> descPage =
+				licenseKeyResource.getAccountAccountKeyLicenseKeysPage(
+					accountKey, null, null, Pagination.of(1, 2),
+					entityField.getName() + ":desc");
 
 			assertEquals(
 				Arrays.asList(licenseKey2, licenseKey1),
@@ -465,51 +527,37 @@ public abstract class BaseLicenseKeyResourceTestCase {
 		}
 	}
 
-	protected LicenseKey testGetLicenseKeysPage_addLicenseKey(
-			LicenseKey licenseKey)
+	protected LicenseKey testGetAccountAccountKeyLicenseKeysPage_addLicenseKey(
+			String accountKey, LicenseKey licenseKey)
 		throws Exception {
 
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
 	}
 
-	@Test
-	public void testGraphQLGetLicenseKeysPage() throws Exception {
-		GraphQLField graphQLField = new GraphQLField(
-			"licenseKeys",
-			new HashMap<String, Object>() {
-				{
-					put("page", 1);
-					put("pageSize", 2);
-				}
-			},
-			new GraphQLField("items", getGraphQLFields()),
-			new GraphQLField("page"), new GraphQLField("totalCount"));
+	protected String testGetAccountAccountKeyLicenseKeysPage_getAccountKey()
+		throws Exception {
 
-		JSONObject licenseKeysJSONObject = JSONUtil.getValueAsJSONObject(
-			invokeGraphQLQuery(graphQLField), "JSONObject/data",
-			"JSONObject/licenseKeys");
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
+	}
 
-		Assert.assertEquals(0, licenseKeysJSONObject.get("totalCount"));
+	protected String
+			testGetAccountAccountKeyLicenseKeysPage_getIrrelevantAccountKey()
+		throws Exception {
 
-		LicenseKey licenseKey1 = testGraphQLLicenseKey_addLicenseKey();
-		LicenseKey licenseKey2 = testGraphQLLicenseKey_addLicenseKey();
-
-		licenseKeysJSONObject = JSONUtil.getValueAsJSONObject(
-			invokeGraphQLQuery(graphQLField), "JSONObject/data",
-			"JSONObject/licenseKeys");
-
-		Assert.assertEquals(2, licenseKeysJSONObject.get("totalCount"));
-
-		assertEqualsIgnoringOrder(
-			Arrays.asList(licenseKey1, licenseKey2),
-			Arrays.asList(
-				LicenseKeySerDes.toDTOs(
-					licenseKeysJSONObject.getString("items"))));
+		return null;
 	}
 
 	@Test
-	public void testPostLicenseKeysPage() throws Exception {
+	public void testPostAccountAccountKeyLicenseKeysPage() throws Exception {
+		Assert.assertTrue(false);
+	}
+
+	@Test
+	public void testGetAccountAccountKeyProductGroupProductGroupNameProductVersionDevelopmentLicenseKey()
+		throws Exception {
+
 		Assert.assertTrue(false);
 	}
 
@@ -563,13 +611,6 @@ public abstract class BaseLicenseKeyResourceTestCase {
 
 	@Test
 	public void testGetLicenseKeyDownload() throws Exception {
-		Assert.assertTrue(false);
-	}
-
-	@Test
-	public void testGetAccountAccountKeyProductGroupProductGroupNameProductVersionDevelopmentLicenseKey()
-		throws Exception {
-
 		Assert.assertTrue(false);
 	}
 

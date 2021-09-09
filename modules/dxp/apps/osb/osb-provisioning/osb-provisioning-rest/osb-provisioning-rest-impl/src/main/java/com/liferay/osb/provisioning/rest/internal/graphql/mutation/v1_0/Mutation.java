@@ -52,17 +52,20 @@ public class Mutation {
 			licenseKeyResourceComponentServiceObjects;
 	}
 
-	@GraphQLField(description = "Generates license keys.")
-	public java.util.Collection<LicenseKey> createLicenseKeysPage(
-			@GraphQLName("licenseKeys") LicenseKey[] licenseKeys)
+	@GraphQLField(description = "Generates license keys for an account.")
+	public java.util.Collection<LicenseKey>
+			createAccountAccountKeyLicenseKeysPage(
+				@GraphQLName("accountKey") String accountKey,
+				@GraphQLName("licenseKeys") LicenseKey[] licenseKeys)
 		throws Exception {
 
 		return _applyComponentServiceObjects(
 			_licenseKeyResourceComponentServiceObjects,
 			this::_populateResourceContext,
 			licenseKeyResource -> {
-				Page paginationPage = licenseKeyResource.postLicenseKeysPage(
-					licenseKeys);
+				Page paginationPage =
+					licenseKeyResource.postAccountAccountKeyLicenseKeysPage(
+						accountKey, licenseKeys);
 
 				return paginationPage.getItems();
 			});

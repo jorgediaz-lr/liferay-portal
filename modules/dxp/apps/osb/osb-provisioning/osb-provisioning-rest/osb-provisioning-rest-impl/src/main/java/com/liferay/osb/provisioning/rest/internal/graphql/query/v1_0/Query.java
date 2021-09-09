@@ -59,12 +59,13 @@ public class Query {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {licenseKeys(filter: ___, page: ___, pageSize: ___, search: ___, sorts: ___){items {__}, page, pageSize, totalCount}}"}' -u 'test@liferay.com:test'
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {accountAccountKeyLicenseKeys(accountKey: ___, filter: ___, page: ___, pageSize: ___, search: ___, sorts: ___){items {__}, page, pageSize, totalCount}}"}' -u 'test@liferay.com:test'
 	 */
 	@GraphQLField(
-		description = "Retrieves the license keys. Results can be paginated, filtered, searched, and sorted."
+		description = "Retrieves the account's license keys. Results can be paginated, filtered, searched, and sorted."
 	)
-	public LicenseKeyPage licenseKeys(
+	public LicenseKeyPage accountAccountKeyLicenseKeys(
+			@GraphQLName("accountKey") String accountKey,
 			@GraphQLName("search") String search,
 			@GraphQLName("filter") String filterString,
 			@GraphQLName("pageSize") int pageSize,
@@ -76,11 +77,35 @@ public class Query {
 			_licenseKeyResourceComponentServiceObjects,
 			this::_populateResourceContext,
 			licenseKeyResource -> new LicenseKeyPage(
-				licenseKeyResource.getLicenseKeysPage(
-					search,
+				licenseKeyResource.getAccountAccountKeyLicenseKeysPage(
+					accountKey, search,
 					_filterBiFunction.apply(licenseKeyResource, filterString),
 					Pagination.of(page, pageSize),
 					_sortsBiFunction.apply(licenseKeyResource, sortsString))));
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {accountAccountKeyProductGroupProductGroupNameProductVersionDevelopmentLicenseKey(accountKey: ___, productGroupName: ___, productVersion: ___){}}"}' -u 'test@liferay.com:test'
+	 */
+	@GraphQLField(
+		description = "Downloads the account's product development license key."
+	)
+	public Response
+			accountAccountKeyProductGroupProductGroupNameProductVersionDevelopmentLicenseKey(
+				@GraphQLName("accountKey") String accountKey,
+				@GraphQLName("productGroupName") String productGroupName,
+				@GraphQLName("productVersion") String productVersion)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_licenseKeyResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			licenseKeyResource ->
+				licenseKeyResource.
+					getAccountAccountKeyProductGroupProductGroupNameProductVersionDevelopmentLicenseKey(
+						accountKey, productGroupName, productVersion));
 	}
 
 	/**
@@ -117,30 +142,6 @@ public class Query {
 			this::_populateResourceContext,
 			licenseKeyResource -> licenseKeyResource.getLicenseKeyDownload(
 				licenseKeyId));
-	}
-
-	/**
-	 * Invoke this method with the command line:
-	 *
-	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {accountAccountKeyProductGroupProductGroupNameProductVersionDevelopmentLicenseKey(accountKey: ___, productGroupName: ___, productVersion: ___){}}"}' -u 'test@liferay.com:test'
-	 */
-	@GraphQLField(
-		description = "Downloads the account's product development license key."
-	)
-	public Response
-			accountAccountKeyProductGroupProductGroupNameProductVersionDevelopmentLicenseKey(
-				@GraphQLName("accountKey") String accountKey,
-				@GraphQLName("productGroupName") String productGroupName,
-				@GraphQLName("productVersion") String productVersion)
-		throws Exception {
-
-		return _applyComponentServiceObjects(
-			_licenseKeyResourceComponentServiceObjects,
-			this::_populateResourceContext,
-			licenseKeyResource ->
-				licenseKeyResource.
-					getAccountAccountKeyProductGroupProductGroupNameProductVersionDevelopmentLicenseKey(
-						accountKey, productGroupName, productVersion));
 	}
 
 	@GraphQLName("LicenseKeyPage")

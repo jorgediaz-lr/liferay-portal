@@ -72,15 +72,16 @@ public abstract class BaseLicenseKeyResourceImpl implements LicenseKeyResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/provisioning-rest/v1.0/license-keys'  -u 'test@liferay.com:test'
+	 * curl -X 'GET' 'http://localhost:8080/o/provisioning-rest/v1.0/accounts/{accountKey}/license-keys'  -u 'test@liferay.com:test'
 	 */
 	@GET
 	@Operation(
-		description = "Retrieves the license keys. Results can be paginated, filtered, searched, and sorted."
+		description = "Retrieves the account's license keys. Results can be paginated, filtered, searched, and sorted."
 	)
 	@Override
 	@Parameters(
 		value = {
+			@Parameter(in = ParameterIn.PATH, name = "accountKey"),
 			@Parameter(in = ParameterIn.QUERY, name = "search"),
 			@Parameter(in = ParameterIn.QUERY, name = "filter"),
 			@Parameter(in = ParameterIn.QUERY, name = "page"),
@@ -88,10 +89,12 @@ public abstract class BaseLicenseKeyResourceImpl implements LicenseKeyResource {
 			@Parameter(in = ParameterIn.QUERY, name = "sort")
 		}
 	)
-	@Path("/license-keys")
+	@Path("/accounts/{accountKey}/license-keys")
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "LicenseKey")})
-	public Page<LicenseKey> getLicenseKeysPage(
+	public Page<LicenseKey> getAccountAccountKeyLicenseKeysPage(
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
+				accountKey,
 			@Parameter(hidden = true) @QueryParam("search") String search,
 			@Context Filter filter, @Context Pagination pagination,
 			@Context Sort[] sorts)
@@ -103,19 +106,63 @@ public abstract class BaseLicenseKeyResourceImpl implements LicenseKeyResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'POST' 'http://localhost:8080/o/provisioning-rest/v1.0/license-keys'  -u 'test@liferay.com:test'
+	 * curl -X 'POST' 'http://localhost:8080/o/provisioning-rest/v1.0/accounts/{accountKey}/license-keys'  -u 'test@liferay.com:test'
 	 */
 	@Consumes({"application/json", "application/xml"})
-	@Operation(description = "Generates license keys.")
+	@Operation(description = "Generates license keys for an account.")
 	@Override
-	@Path("/license-keys")
+	@Parameters(
+		value = {@Parameter(in = ParameterIn.PATH, name = "accountKey")}
+	)
+	@Path("/accounts/{accountKey}/license-keys")
 	@POST
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "LicenseKey")})
-	public Page<LicenseKey> postLicenseKeysPage(LicenseKey[] licenseKeys)
+	public Page<LicenseKey> postAccountAccountKeyLicenseKeysPage(
+			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
+				accountKey,
+			LicenseKey[] licenseKeys)
 		throws Exception {
 
 		return Page.of(Collections.emptyList());
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -X 'GET' 'http://localhost:8080/o/provisioning-rest/v1.0/accounts/{accountKey}/product-groups/{productGroupName}/product-version/{productVersion}/development-license-key'  -u 'test@liferay.com:test'
+	 */
+	@GET
+	@Operation(
+		description = "Downloads the account's product development license key."
+	)
+	@Override
+	@Parameters(
+		value = {
+			@Parameter(in = ParameterIn.PATH, name = "accountKey"),
+			@Parameter(in = ParameterIn.PATH, name = "productGroupName"),
+			@Parameter(in = ParameterIn.PATH, name = "productVersion")
+		}
+	)
+	@Path(
+		"/accounts/{accountKey}/product-groups/{productGroupName}/product-version/{productVersion}/development-license-key"
+	)
+	@Produces("application/xml")
+	@Tags(value = {@Tag(name = "LicenseKey")})
+	public Response
+			getAccountAccountKeyProductGroupProductGroupNameProductVersionDevelopmentLicenseKey(
+				@NotNull @Parameter(hidden = true) @PathParam("accountKey")
+					String accountKey,
+				@NotNull @Parameter(hidden = true)
+				@PathParam("productGroupName")
+				String productGroupName,
+				@NotNull @Parameter(hidden = true) @PathParam("productVersion")
+					String productVersion)
+		throws Exception {
+
+		Response.ResponseBuilder responseBuilder = Response.ok();
+
+		return responseBuilder.build();
 	}
 
 	/**
@@ -219,44 +266,6 @@ public abstract class BaseLicenseKeyResourceImpl implements LicenseKeyResource {
 	public Response getLicenseKeyDownload(
 			@NotNull @Parameter(hidden = true) @PathParam("licenseKeyId") Long
 				licenseKeyId)
-		throws Exception {
-
-		Response.ResponseBuilder responseBuilder = Response.ok();
-
-		return responseBuilder.build();
-	}
-
-	/**
-	 * Invoke this method with the command line:
-	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/provisioning-rest/v1.0/accounts/{accountKey}/product-groups/{productGroupName}/product-version/{productVersion}/development-license-key'  -u 'test@liferay.com:test'
-	 */
-	@GET
-	@Operation(
-		description = "Downloads the account's product development license key."
-	)
-	@Override
-	@Parameters(
-		value = {
-			@Parameter(in = ParameterIn.PATH, name = "accountKey"),
-			@Parameter(in = ParameterIn.PATH, name = "productGroupName"),
-			@Parameter(in = ParameterIn.PATH, name = "productVersion")
-		}
-	)
-	@Path(
-		"/accounts/{accountKey}/product-groups/{productGroupName}/product-version/{productVersion}/development-license-key"
-	)
-	@Produces("application/xml")
-	@Tags(value = {@Tag(name = "LicenseKey")})
-	public Response
-			getAccountAccountKeyProductGroupProductGroupNameProductVersionDevelopmentLicenseKey(
-				@NotNull @Parameter(hidden = true) @PathParam("accountKey")
-					String accountKey,
-				@NotNull @Parameter(hidden = true)
-				@PathParam("productGroupName")
-				String productGroupName,
-				@NotNull @Parameter(hidden = true) @PathParam("productVersion")
-					String productVersion)
 		throws Exception {
 
 		Response.ResponseBuilder responseBuilder = Response.ok();

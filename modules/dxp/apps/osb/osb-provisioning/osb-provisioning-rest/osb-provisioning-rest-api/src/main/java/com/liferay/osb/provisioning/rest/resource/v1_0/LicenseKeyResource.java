@@ -53,11 +53,19 @@ public interface LicenseKeyResource {
 		return FactoryHolder.factory.create();
 	}
 
-	public Page<LicenseKey> getLicenseKeysPage(
-			String search, Filter filter, Pagination pagination, Sort[] sorts)
+	public Page<LicenseKey> getAccountAccountKeyLicenseKeysPage(
+			String accountKey, String search, Filter filter,
+			Pagination pagination, Sort[] sorts)
 		throws Exception;
 
-	public Page<LicenseKey> postLicenseKeysPage(LicenseKey[] licenseKeys)
+	public Page<LicenseKey> postAccountAccountKeyLicenseKeysPage(
+			String accountKey, LicenseKey[] licenseKeys)
+		throws Exception;
+
+	public Response
+			getAccountAccountKeyProductGroupProductGroupNameProductVersionDevelopmentLicenseKey(
+				String accountKey, String productGroupName,
+				String productVersion)
 		throws Exception;
 
 	public void putLicenseKeyActivate(Long[] licenseKeyIds) throws Exception;
@@ -71,12 +79,6 @@ public interface LicenseKeyResource {
 		throws Exception;
 
 	public Response getLicenseKeyDownload(Long licenseKeyId) throws Exception;
-
-	public Response
-			getAccountAccountKeyProductGroupProductGroupNameProductVersionDevelopmentLicenseKey(
-				String accountKey, String productGroupName,
-				String productVersion)
-		throws Exception;
 
 	public default void setContextAcceptLanguage(
 		AcceptLanguage contextAcceptLanguage) {
