@@ -171,14 +171,22 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			productVersion, name, owner, description, licenseEntryType,
 			maxClusterNodes);
 
+		List<String> serverIds = new ArrayList<>();
+
+		String serverId = LicenseServerId.getServerId(licenseEntryType);
+
+		if (Validator.isNotNull(serverId)) {
+			serverIds.add(serverId);
+		}
+
 		return doAddLicenseKeyVersion3_4(
 			new Date(), user, licenseEntry, product, accountKey,
 			productPurchaseKey, accountName, licenseEntryType, licenseVersion,
 			productVersion, clusterId, name, owner, maxClusterNodes, maxServers,
 			maxHttpSessions, maxConcurrentUsers, maxUsers, sizing, description,
 			hostNames, ipAddresses, macAddresses,
-			new String[] {LicenseServerId.getServerId(licenseEntryType)},
-			startDate, expirationDate, additionalInfo, complimentary, active);
+			serverIds.toArray(new String[0]), startDate, expirationDate,
+			additionalInfo, complimentary, active);
 	}
 
 	public LicenseKey addLicenseKey(
