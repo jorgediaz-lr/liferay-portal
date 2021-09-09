@@ -115,7 +115,7 @@ public class LicenseKeyResourceImpl
 				String productVersion)
 		throws Exception {
 
-		// TODO: User Authentication
+		_checkAccountMembership(accountKey);
 
 		List<LicenseEntry> licenseEntries =
 			_licenseEntryLocalService.getLicenseEntriesByType(
@@ -248,6 +248,8 @@ public class LicenseKeyResourceImpl
 		com.liferay.osb.provisioning.license.model.LicenseKey licenseKey =
 			_licenseKeyLocalService.getLicenseKey(licenseKeyId);
 
+		_checkAccountMembership(licenseKey.getAccountKey());
+
 		if (licenseKey.getLicenseVersion() >= 2) {
 			String fileName = _licenseKeyExporter.getFileName(
 				licenseKey.getProductName(), licenseKey.getProductVersion(),
@@ -297,6 +299,8 @@ public class LicenseKeyResourceImpl
 			if (!licenseKey.getActive()) {
 				continue;
 			}
+
+			_checkAccountMembership(licenseKey.getAccountKey());
 
 			licenseKeys.add(licenseKey);
 		}
@@ -432,6 +436,14 @@ public class LicenseKeyResourceImpl
 	public Page<LicenseKey> postLicenseKeysExtendPage(LicenseKey[] licenseKeys)
 		throws Exception {
 
+		for (LicenseKey licenseKey : licenseKeys) {
+			com.liferay.osb.provisioning.license.model.LicenseKey
+				curLicenseKey = _licenseKeyLocalService.getLicenseKey(
+					licenseKey.getId());
+
+			_checkAccountAdminContactRole(curLicenseKey.getAccountKey());
+		}
+
 		List<LicenseKey> curLicenseKeys = new ArrayList<>();
 
 		for (LicenseKey licenseKey : licenseKeys) {
@@ -453,6 +465,13 @@ public class LicenseKeyResourceImpl
 			com.liferay.osb.provisioning.license.model.LicenseKey licenseKey =
 				_licenseKeyLocalService.getLicenseKey(licenseKeyId);
 
+			_checkAccountAdminContactRole(licenseKey.getAccountKey());
+		}
+
+		for (long licenseKeyId : licenseKeyIds) {
+			com.liferay.osb.provisioning.license.model.LicenseKey licenseKey =
+				_licenseKeyLocalService.getLicenseKey(licenseKeyId);
+
 			_licenseKeyLocalService.updateLicenseKey(
 				contextUser.getUserId(), licenseKeyId,
 				licenseKey.getProductPurchaseKey(),
@@ -462,6 +481,13 @@ public class LicenseKeyResourceImpl
 
 	@Override
 	public void putLicenseKeyDeactivate(Long[] licenseKeyIds) throws Exception {
+		for (long licenseKeyId : licenseKeyIds) {
+			com.liferay.osb.provisioning.license.model.LicenseKey licenseKey =
+				_licenseKeyLocalService.getLicenseKey(licenseKeyId);
+
+			_checkAccountAdminContactRole(licenseKey.getAccountKey());
+		}
+
 		for (long licenseKeyId : licenseKeyIds) {
 			com.liferay.osb.provisioning.license.model.LicenseKey licenseKey =
 				_licenseKeyLocalService.getLicenseKey(licenseKeyId);
