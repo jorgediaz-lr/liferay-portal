@@ -499,27 +499,6 @@ public class LicenseKeyResourceImpl
 		}
 	}
 
-	private static String _trimText(String text) {
-
-		// Copied from org.dom4j.tree.AbstractBranch.getTextTrim()
-
-		StringBuffer textContent = new StringBuffer();
-
-		StringTokenizer tokenizer = new StringTokenizer(text);
-
-		while (tokenizer.hasMoreTokens()) {
-			String str = tokenizer.nextToken();
-
-			textContent.append(str);
-
-			if (tokenizer.hasMoreTokens()) {
-				textContent.append(" ");
-			}
-		}
-
-		return textContent.toString();
-	}
-
 	private void _checkAccountAdminContactRole(String accountKey)
 		throws Exception {
 
@@ -610,6 +589,27 @@ public class LicenseKeyResourceImpl
 		}
 
 		return true;
+	}
+
+	private String _trimText(String text) {
+
+		// Copied from org.dom4j.tree.AbstractBranch.getTextTrim()
+
+		StringBuffer textContent = new StringBuffer();
+
+		StringTokenizer tokenizer = new StringTokenizer(text);
+
+		while (tokenizer.hasMoreTokens()) {
+			String str = tokenizer.nextToken();
+
+			textContent.append(str);
+
+			if (tokenizer.hasMoreTokens()) {
+				textContent.append(" ");
+			}
+		}
+
+		return textContent.toString();
 	}
 
 	private static final EntityModel _entityModel = new LicenseKeyEntityModel();
