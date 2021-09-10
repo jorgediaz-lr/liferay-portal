@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.test.util.DBAssertionUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.ContentTypes;
@@ -70,6 +71,9 @@ public class GroupModelListenerTest {
 			count,
 			SubscriptionLocalServiceUtil.getUserSubscriptionsCount(
 				TestPropsValues.getUserId()));
+
+		DBAssertionUtil.assertTablesWithInvalidRecords(
+			"groupId", _group.getGroupId());
 	}
 
 	private Group _group;

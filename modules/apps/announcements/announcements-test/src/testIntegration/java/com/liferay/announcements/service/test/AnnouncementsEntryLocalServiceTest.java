@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.test.randomizerbumpers.NumericStringRandomizerB
 import com.liferay.portal.kernel.test.randomizerbumpers.UniqueStringRandomizerBumper;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.CompanyTestUtil;
+import com.liferay.portal.kernel.test.util.DBAssertionUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
@@ -156,6 +157,9 @@ public class AnnouncementsEntryLocalServiceTest {
 		Assert.assertNull(
 			_announcementsEntryLocalService.fetchAnnouncementsEntry(
 				entry.getEntryId()));
+
+		DBAssertionUtil.assertTablesWithInvalidRecords(
+			"groupId", group.getGroupId());
 	}
 
 	@Test

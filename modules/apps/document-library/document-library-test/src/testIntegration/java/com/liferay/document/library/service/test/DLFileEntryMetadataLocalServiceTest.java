@@ -46,6 +46,7 @@ import com.liferay.portal.kernel.test.constants.TestDataConstants;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.CompanyTestUtil;
+import com.liferay.portal.kernel.test.util.DBAssertionUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
@@ -175,6 +176,9 @@ public class DLFileEntryMetadataLocalServiceTest {
 		Assert.assertNull(
 			_ddmStructureLocalService.fetchDDMStructure(
 				ddmStructure.getStructureId()));
+
+		DBAssertionUtil.assertTablesWithInvalidRecords(
+			"groupId", group.getGroupId());
 	}
 
 	@Test
