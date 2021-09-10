@@ -163,6 +163,112 @@ components:
                     readOnly: true
                     type: string
             type: object
+        LicenseKeyGenerateForm:
+            description:
+                Represents the options available during license generation based on account and product.
+            properties:
+                subscriptionTerms:
+                    description:
+                        The subscription terms of the account available to generate the license key on.
+                    items:
+                        properties:
+                            endDate:
+                                description:
+                                    The date the subscription term ends.
+                                format: date-time
+                                readOnly: true
+                                type: string
+                            instanceSize:
+                                description:
+                                    The size of the instance.
+                                readOnly: true
+                                type: integer
+                            perpetual:
+                                description:
+                                    If the subscription is perpetual.
+                                readOnly: true
+                                type: boolean
+                            productKey:
+                                description:
+                                    The key of the subscription's product.
+                                readOnly: true
+                                type: string
+                            productPurchaseKey:
+                                description:
+                                    The key of the subscription's product purchase.
+                                readOnly: true
+                                type: string
+                            provisionedCount:
+                                description:
+                                    The amount of currently provisioned license keys.
+                                readOnly: true
+                                type: integer
+                            quantity:
+                                description:
+                                    The quantity of the subscription's purchased product.
+                                readOnly: true
+                                type: integer
+                            startDate:
+                                description:
+                                    The date the subscription term starts.
+                                format: date-time
+                                readOnly: true
+                                type: string
+                        type: object
+                    readOnly: true
+                    type: array
+                versions:
+                    description:
+                        The versions available to generate the license key for.
+                    items:
+                        properties:
+                            label:
+                                description:
+                                    The label of the version
+                                readOnly: true
+                                type: string
+                            types:
+                                description:
+                                    The license types available to generate the license key for.
+                                items:
+                                    properties:
+                                        licenseEntryDisplayName:
+                                            description:
+                                                The display name of the license entry shown on the UI.
+                                            readOnly: true
+                                            type: string
+                                        licenseEntryName:
+                                            description:
+                                                The name of the license entry of the license key.
+                                            readOnly: true
+                                            type: string
+                                        licenseEntryType:
+                                            description:
+                                                The type of the license entry of the license key.
+                                            readOnly: true
+                                            type: string
+                                        productKey:
+                                            description:
+                                                The key of the license entry product.
+                                            readOnly: true
+                                            type: string
+                                    type: object
+                                readOnly: true
+                                type: array
+                        type: object
+                    readOnly: true
+                    type: array
+            type: object
+        ProductGroup:
+            description:
+                The top level of products
+            properties:
+                name:
+                    description:
+                        The name of the product group.
+                    enum: ["Commerce", "DXP", "Portal"]
+                    type: string
+            type: object
 info:
     description:
         "A Java client JAR is available for use with the group ID 'com.liferay', artifact ID
@@ -254,6 +360,36 @@ paths:
                             schema:
                                 items:
                                     $ref: "#/components/schemas/LicenseKey"
+                                type: array
+            tags: ["LicenseKey"]
+    "/accounts/{accountKey}/product-groups/{productGroupName}/generate-form":
+        get:
+            description:
+                Retrieves the license key generation options for the given account.
+            operationId: getAccountAccountKeyProductGroupProductGroupNameGenerateFormPage
+            parameters:
+                - in: path
+                  name: accountKey
+                  required: true
+                  schema:
+                      type: string
+                - in: path
+                  name: productGroupName
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/LicenseKeyGenerateForm"
+                                type: array
+                        application/xml:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/LicenseKeyGenerateForm"
                                 type: array
             tags: ["LicenseKey"]
     "/accounts/{accountKey}/product-groups/{productGroupName}/product-version/{productVersion}/development-license-key":

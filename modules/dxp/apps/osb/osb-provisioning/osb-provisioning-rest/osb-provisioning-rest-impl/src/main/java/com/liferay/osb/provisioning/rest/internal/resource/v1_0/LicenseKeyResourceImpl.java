@@ -18,6 +18,8 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductConsumption;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchaseView;
 import com.liferay.osb.provisioning.koroneiki.constants.ContactRoleConstants;
 import com.liferay.osb.provisioning.koroneiki.constants.ProductConstants;
@@ -27,13 +29,23 @@ import com.liferay.osb.provisioning.koroneiki.web.service.ProductPurchaseViewWeb
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.provisioning.license.exporter.LicenseKeyExporter;
 import com.liferay.osb.provisioning.license.helper.constants.LicenseType;
+import com.liferay.osb.provisioning.license.helper.constants.LicenseVersion;
+import com.liferay.osb.provisioning.license.helper.constants.ProductId;
+import com.liferay.osb.provisioning.license.helper.constants.ProductVersion;
+import com.liferay.osb.provisioning.license.model.LicenseEntry;
 import com.liferay.osb.provisioning.license.service.LicenseEntryLocalService;
 import com.liferay.osb.provisioning.license.service.LicenseKeyLocalService;
 import com.liferay.osb.provisioning.rest.dto.v1_0.LicenseKey;
+import com.liferay.osb.provisioning.rest.dto.v1_0.LicenseKeyGenerateForm;
+import com.liferay.osb.provisioning.rest.dto.v1_0.ProductGroup;
+import com.liferay.osb.provisioning.rest.dto.v1_0.SubscriptionTerm;
+import com.liferay.osb.provisioning.rest.dto.v1_0.Type;
+import com.liferay.osb.provisioning.rest.dto.v1_0.Version;
 import com.liferay.osb.provisioning.rest.dto.v1_0.util.LicenseKeyUtil;
 import com.liferay.osb.provisioning.rest.internal.ProvisioningContactThreadLocal;
 import com.liferay.osb.provisioning.rest.internal.odata.entity.v1_0.LicenseKeyEntityModel;
 import com.liferay.osb.provisioning.rest.resource.v1_0.LicenseKeyResource;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Sort;
@@ -45,7 +57,6 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.vulcan.pagination.Page;
@@ -54,9 +65,12 @@ import com.liferay.portal.vulcan.resource.EntityModelResource;
 import com.liferay.portal.vulcan.util.SearchUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.ws.rs.core.MultivaluedMap;
@@ -97,6 +111,23 @@ public class LicenseKeyResourceImpl
 				_licenseKeyLocalService.getLicenseKey(
 					GetterUtil.getLong(document.get(Field.ENTRY_CLASS_PK)))),
 			sorts);
+	}
+
+	@Override
+	public Page<LicenseKeyGenerateForm>
+			getAccountAccountKeyProductGroupProductGroupNameGenerateFormPage(
+				String accountKey, String productGroupName)
+		throws Exception {
+
+		LicenseKeyGenerateForm licenseKeyGenerateForm =
+			new LicenseKeyGenerateForm();
+
+		licenseKeyGenerateForm.setVersions(
+			_getProductVersions(productGroupName));
+		licenseKeyGenerateForm.setSubscriptionTerms(
+			_getSubscriptionTerms(accountKey, productGroupName));
+
+		return Page.of(Arrays.asList(licenseKeyGenerateForm));
 	}
 
 	@Override
@@ -466,6 +497,151 @@ public class LicenseKeyResourceImpl
 		}
 
 		throw new PrincipalException();
+	}
+
+	private Version[] _getProductVersions(String productGroupName) {
+		Set<Version> versions = new HashSet<>();
+
+		String[] productVersions = ProductVersion.getProductGroupVersions(
+			productGroupName);
+
+		for (String productVersion : productVersions) {
+			Set<Type> types = new HashSet<>();
+
+			Version version = new Version();
+
+			version.setLabel(productVersion);
+
+			List<LicenseEntry> licenseEntries =
+				_licenseEntryLocalService.getLicenseEntriesByNameVersion(
+					"%" + productGroupName + "%", productVersion);
+
+			for (LicenseEntry licenseEntry : licenseEntries) {
+				Type type = new Type();
+
+				type.setLicenseEntryDisplayName(licenseEntry.getDisplayName());
+				type.setLicenseEntryName(licenseEntry.getName());
+				type.setLicenseEntryType(licenseEntry.getType());
+				type.setProductKey(licenseEntry.getProductKey());
+
+				types.add(type);
+			}
+
+			if (!types.isEmpty()) {
+				version.setTypes(types.toArray(new Type[0]));
+
+				versions.add(version);
+			}
+		}
+
+		return versions.toArray(new Version[0]);
+	}
+
+	private SubscriptionTerm[] _getSubscriptionTerms(
+			String accountKey, String productGroupName)
+		throws Exception {
+
+		StringBundler sb = new StringBundler(5);
+
+		sb.append("accountKey eq '");
+		sb.append(accountKey);
+		sb.append("' and property_licenses eq 'true' and ");
+
+		if (productGroupName.equals(ProductGroup.Name.COMMERCE.toString())) {
+			sb.append("contains(name, 'Commerce Subscription')");
+		}
+		else if (productGroupName.equals(ProductGroup.Name.DXP.toString())) {
+			sb.append("startswith(name, 'DXP') and not contains(name, 'DXP ");
+			sb.append("Cloud')");
+		}
+		else if (productGroupName.equals(ProductGroup.Name.PORTAL.toString())) {
+			sb.append("contains(name, 'Portal') and not contains(name, 'Early");
+			sb.append(" Access Program')");
+		}
+
+		List<ProductPurchaseView> productPurchaseViews =
+			_productPurchaseViewWebService.getProductPurchaseViews(
+				StringPool.BLANK, sb.toString(), 1, 1000, StringPool.BLANK);
+
+		if (productPurchaseViews.isEmpty()) {
+			return new SubscriptionTerm[0];
+		}
+
+		List<SubscriptionTerm> subscriptionTerms = new ArrayList<>();
+
+		for (ProductPurchaseView productPurchaseView : productPurchaseViews) {
+			SubscriptionTerm subscriptionTerm = new SubscriptionTerm();
+
+			if (productPurchaseView.getProductConsumptions() != null) {
+				Map<String, List<ProductConsumption>> productConsumptionsMap =
+					new HashMap<>();
+
+				for (ProductConsumption productConsumption :
+						productPurchaseView.getProductConsumptions()) {
+
+					List<ProductConsumption> productConsumptions =
+						productConsumptionsMap.get(
+							productConsumption.getProductPurchaseKey());
+
+					if (productConsumptions == null) {
+						productConsumptions = new ArrayList<>();
+
+						productConsumptionsMap.put(
+							productConsumption.getProductPurchaseKey(),
+							productConsumptions);
+					}
+
+					productConsumptions.add(productConsumption);
+				}
+
+				if (ArrayUtil.isNotEmpty(
+						productPurchaseView.getProductPurchases())) {
+
+					for (ProductPurchase productPurchase :
+							productPurchaseView.getProductPurchases()) {
+
+						Map<String, String> properties =
+							productPurchase.getProperties();
+
+						int sizing = 0;
+
+						if (properties != null) {
+							sizing = GetterUtil.getInteger(
+								properties.get("sizing"));
+						}
+
+						int provisionedCount = 0;
+
+						List<ProductConsumption> productConsumptions =
+							productConsumptionsMap.get(
+								productPurchase.getKey());
+
+						if (productConsumptions != null) {
+							provisionedCount = productConsumptions.size();
+						}
+
+						subscriptionTerm.setEndDate(
+							productPurchase.getEndDate());
+						subscriptionTerm.setInstanceSize(sizing);
+						subscriptionTerm.setPerpetual(
+							productPurchase.getPerpetual());
+						subscriptionTerm.setProductKey(
+							productPurchase.getProductKey());
+						subscriptionTerm.setProductPurchaseKey(
+							productPurchase.getKey());
+						subscriptionTerm.setProvisionedCount(provisionedCount);
+						subscriptionTerm.setQuantity(
+							productPurchase.getQuantity());
+						subscriptionTerm.setStartDate(
+							productPurchase.getStartDate());
+
+						subscriptionTerms.add(subscriptionTerm);
+					}
+				}
+			}
+		}
+
+		return subscriptionTerms.toArray(new SubscriptionTerm[0]);
 	}
 
 	private boolean _isAggregate(

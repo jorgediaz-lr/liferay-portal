@@ -112,6 +112,22 @@ public class ProductVersion {
 		return -1;
 	}
 
+	public static final String[] getProductGroupVersions(
+		String productGroupName) {
+
+		if (productGroupName.equals("Commerce")) {
+			return new String[] {COMMERCE_LICENSE_VERSION_1};
+		}
+		else if (productGroupName.equals("DXP")) {
+			return DXP_VERSIONS;
+		}
+		else if (productGroupName.equals("Portal")) {
+			return PORTAL_VERSIONS;
+		}
+
+		return new String[0];
+	}
+
 	public static final String[] getProductVersions(String productName) {
 		if (productName.contains("Commerce Subscription")) {
 			return new String[] {COMMERCE_LICENSE_VERSION_1};
