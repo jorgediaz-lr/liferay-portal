@@ -22,7 +22,6 @@ import com.liferay.portal.kernel.service.CountryService;
 import com.liferay.portal.kernel.service.RegionService;
 import com.liferay.portal.vulcan.fields.NestedField;
 import com.liferay.portal.vulcan.fields.NestedFieldId;
-import com.liferay.portal.vulcan.fields.NestedFieldSupport;
 import com.liferay.portal.vulcan.pagination.Page;
 
 import java.util.List;
@@ -36,11 +35,9 @@ import org.osgi.service.component.annotations.ServiceScope;
  */
 @Component(
 	properties = "OSGI-INF/liferay/rest/v1_0/country-region.properties",
-	scope = ServiceScope.PROTOTYPE,
-	service = {CountryRegionResource.class, NestedFieldSupport.class}
+	scope = ServiceScope.PROTOTYPE, service = CountryRegionResource.class
 )
-public class CountryRegionResourceImpl
-	extends BaseCountryRegionResourceImpl implements NestedFieldSupport {
+public class CountryRegionResourceImpl extends BaseCountryRegionResourceImpl {
 
 	@NestedField(parentClass = Country.class, value = "countryRegions")
 	public List<CountryRegion> getCountryNestedFieldRegions(
