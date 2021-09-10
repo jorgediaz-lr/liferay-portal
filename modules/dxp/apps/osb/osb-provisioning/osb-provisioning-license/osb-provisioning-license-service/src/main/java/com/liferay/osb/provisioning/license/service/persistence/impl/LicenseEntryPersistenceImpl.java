@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.Serializable;
 
@@ -639,9 +640,539 @@ public class LicenseEntryPersistenceImpl
 	private static final String _FINDER_COLUMN_PRODUCTKEY_PRODUCTKEY_3 =
 		"(licenseEntry.productKey IS NULL OR licenseEntry.productKey = '')";
 
-	private FinderPath _finderPathWithPaginationFindByT;
-	private FinderPath _finderPathWithoutPaginationFindByT;
-	private FinderPath _finderPathCountByT;
+	private FinderPath _finderPathWithPaginationFindByLikeName;
+	private FinderPath _finderPathWithPaginationCountByLikeName;
+
+	/**
+	 * Returns all the license entries where name LIKE &#63;.
+	 *
+	 * @param name the name
+	 * @return the matching license entries
+	 */
+	@Override
+	public List<LicenseEntry> findByLikeName(String name) {
+		return findByLikeName(name, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the license entries where name LIKE &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LicenseEntryModelImpl</code>.
+	 * </p>
+	 *
+	 * @param name the name
+	 * @param start the lower bound of the range of license entries
+	 * @param end the upper bound of the range of license entries (not inclusive)
+	 * @return the range of matching license entries
+	 */
+	@Override
+	public List<LicenseEntry> findByLikeName(String name, int start, int end) {
+		return findByLikeName(name, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the license entries where name LIKE &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LicenseEntryModelImpl</code>.
+	 * </p>
+	 *
+	 * @param name the name
+	 * @param start the lower bound of the range of license entries
+	 * @param end the upper bound of the range of license entries (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching license entries
+	 */
+	@Override
+	public List<LicenseEntry> findByLikeName(
+		String name, int start, int end,
+		OrderByComparator<LicenseEntry> orderByComparator) {
+
+		return findByLikeName(name, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the license entries where name LIKE &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LicenseEntryModelImpl</code>.
+	 * </p>
+	 *
+	 * @param name the name
+	 * @param start the lower bound of the range of license entries
+	 * @param end the upper bound of the range of license entries (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching license entries
+	 */
+	@Override
+	public List<LicenseEntry> findByLikeName(
+		String name, int start, int end,
+		OrderByComparator<LicenseEntry> orderByComparator,
+		boolean useFinderCache) {
+
+		name = Objects.toString(name, "");
+
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		finderPath = _finderPathWithPaginationFindByLikeName;
+		finderArgs = new Object[] {name, start, end, orderByComparator};
+
+		List<LicenseEntry> list = null;
+
+		if (useFinderCache) {
+			list = (List<LicenseEntry>)finderCache.getResult(
+				finderPath, finderArgs, this);
+
+			if ((list != null) && !list.isEmpty()) {
+				for (LicenseEntry licenseEntry : list) {
+					if (!StringUtil.wildcardMatches(
+							licenseEntry.getName(), name, '_', '%', '\\',
+							true)) {
+
+						list = null;
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler sb = null;
+
+			if (orderByComparator != null) {
+				sb = new StringBundler(
+					3 + (orderByComparator.getOrderByFields().length * 2));
+			}
+			else {
+				sb = new StringBundler(3);
+			}
+
+			sb.append(_SQL_SELECT_LICENSEENTRY_WHERE);
+
+			boolean bindName = false;
+
+			if (name.isEmpty()) {
+				sb.append(_FINDER_COLUMN_LIKENAME_NAME_3);
+			}
+			else {
+				bindName = true;
+
+				sb.append(_FINDER_COLUMN_LIKENAME_NAME_2);
+			}
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+			}
+			else {
+				sb.append(LicenseEntryModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				if (bindName) {
+					queryPos.add(name);
+				}
+
+				list = (List<LicenseEntry>)QueryUtil.list(
+					query, getDialect(), start, end);
+
+				cacheResult(list);
+
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
+			}
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
+
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first license entry in the ordered set where name LIKE &#63;.
+	 *
+	 * @param name the name
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching license entry
+	 * @throws NoSuchLicenseEntryException if a matching license entry could not be found
+	 */
+	@Override
+	public LicenseEntry findByLikeName_First(
+			String name, OrderByComparator<LicenseEntry> orderByComparator)
+		throws NoSuchLicenseEntryException {
+
+		LicenseEntry licenseEntry = fetchByLikeName_First(
+			name, orderByComparator);
+
+		if (licenseEntry != null) {
+			return licenseEntry;
+		}
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("nameLIKE");
+		sb.append(name);
+
+		sb.append("}");
+
+		throw new NoSuchLicenseEntryException(sb.toString());
+	}
+
+	/**
+	 * Returns the first license entry in the ordered set where name LIKE &#63;.
+	 *
+	 * @param name the name
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching license entry, or <code>null</code> if a matching license entry could not be found
+	 */
+	@Override
+	public LicenseEntry fetchByLikeName_First(
+		String name, OrderByComparator<LicenseEntry> orderByComparator) {
+
+		List<LicenseEntry> list = findByLikeName(name, 0, 1, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last license entry in the ordered set where name LIKE &#63;.
+	 *
+	 * @param name the name
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching license entry
+	 * @throws NoSuchLicenseEntryException if a matching license entry could not be found
+	 */
+	@Override
+	public LicenseEntry findByLikeName_Last(
+			String name, OrderByComparator<LicenseEntry> orderByComparator)
+		throws NoSuchLicenseEntryException {
+
+		LicenseEntry licenseEntry = fetchByLikeName_Last(
+			name, orderByComparator);
+
+		if (licenseEntry != null) {
+			return licenseEntry;
+		}
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("nameLIKE");
+		sb.append(name);
+
+		sb.append("}");
+
+		throw new NoSuchLicenseEntryException(sb.toString());
+	}
+
+	/**
+	 * Returns the last license entry in the ordered set where name LIKE &#63;.
+	 *
+	 * @param name the name
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching license entry, or <code>null</code> if a matching license entry could not be found
+	 */
+	@Override
+	public LicenseEntry fetchByLikeName_Last(
+		String name, OrderByComparator<LicenseEntry> orderByComparator) {
+
+		int count = countByLikeName(name);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<LicenseEntry> list = findByLikeName(
+			name, count - 1, count, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the license entries before and after the current license entry in the ordered set where name LIKE &#63;.
+	 *
+	 * @param licenseEntryId the primary key of the current license entry
+	 * @param name the name
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next license entry
+	 * @throws NoSuchLicenseEntryException if a license entry with the primary key could not be found
+	 */
+	@Override
+	public LicenseEntry[] findByLikeName_PrevAndNext(
+			long licenseEntryId, String name,
+			OrderByComparator<LicenseEntry> orderByComparator)
+		throws NoSuchLicenseEntryException {
+
+		name = Objects.toString(name, "");
+
+		LicenseEntry licenseEntry = findByPrimaryKey(licenseEntryId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			LicenseEntry[] array = new LicenseEntryImpl[3];
+
+			array[0] = getByLikeName_PrevAndNext(
+				session, licenseEntry, name, orderByComparator, true);
+
+			array[1] = licenseEntry;
+
+			array[2] = getByLikeName_PrevAndNext(
+				session, licenseEntry, name, orderByComparator, false);
+
+			return array;
+		}
+		catch (Exception exception) {
+			throw processException(exception);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected LicenseEntry getByLikeName_PrevAndNext(
+		Session session, LicenseEntry licenseEntry, String name,
+		OrderByComparator<LicenseEntry> orderByComparator, boolean previous) {
+
+		StringBundler sb = null;
+
+		if (orderByComparator != null) {
+			sb = new StringBundler(
+				4 + (orderByComparator.getOrderByConditionFields().length * 3) +
+					(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			sb = new StringBundler(3);
+		}
+
+		sb.append(_SQL_SELECT_LICENSEENTRY_WHERE);
+
+		boolean bindName = false;
+
+		if (name.isEmpty()) {
+			sb.append(_FINDER_COLUMN_LIKENAME_NAME_3);
+		}
+		else {
+			bindName = true;
+
+			sb.append(_FINDER_COLUMN_LIKENAME_NAME_2);
+		}
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields =
+				orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				sb.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			sb.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC);
+					}
+					else {
+						sb.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			sb.append(LicenseEntryModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = sb.toString();
+
+		Query query = session.createQuery(sql);
+
+		query.setFirstResult(0);
+		query.setMaxResults(2);
+
+		QueryPos queryPos = QueryPos.getInstance(query);
+
+		if (bindName) {
+			queryPos.add(name);
+		}
+
+		if (orderByComparator != null) {
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(licenseEntry)) {
+
+				queryPos.add(orderByConditionValue);
+			}
+		}
+
+		List<LicenseEntry> list = query.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Removes all the license entries where name LIKE &#63; from the database.
+	 *
+	 * @param name the name
+	 */
+	@Override
+	public void removeByLikeName(String name) {
+		for (LicenseEntry licenseEntry :
+				findByLikeName(
+					name, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+
+			remove(licenseEntry);
+		}
+	}
+
+	/**
+	 * Returns the number of license entries where name LIKE &#63;.
+	 *
+	 * @param name the name
+	 * @return the number of matching license entries
+	 */
+	@Override
+	public int countByLikeName(String name) {
+		name = Objects.toString(name, "");
+
+		FinderPath finderPath = _finderPathWithPaginationCountByLikeName;
+
+		Object[] finderArgs = new Object[] {name};
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler sb = new StringBundler(2);
+
+			sb.append(_SQL_COUNT_LICENSEENTRY_WHERE);
+
+			boolean bindName = false;
+
+			if (name.isEmpty()) {
+				sb.append(_FINDER_COLUMN_LIKENAME_NAME_3);
+			}
+			else {
+				bindName = true;
+
+				sb.append(_FINDER_COLUMN_LIKENAME_NAME_2);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				if (bindName) {
+					queryPos.add(name);
+				}
+
+				count = (Long)query.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception exception) {
+				finderCache.removeResult(finderPath, finderArgs);
+
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_LIKENAME_NAME_2 =
+		"licenseEntry.name LIKE ?";
+
+	private static final String _FINDER_COLUMN_LIKENAME_NAME_3 =
+		"(licenseEntry.name IS NULL OR licenseEntry.name LIKE '')";
+
+	private FinderPath _finderPathWithPaginationFindByType;
+	private FinderPath _finderPathWithoutPaginationFindByType;
+	private FinderPath _finderPathCountByType;
 
 	/**
 	 * Returns all the license entries where type = &#63;.
@@ -650,8 +1181,8 @@ public class LicenseEntryPersistenceImpl
 	 * @return the matching license entries
 	 */
 	@Override
-	public List<LicenseEntry> findByT(String type) {
-		return findByT(type, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	public List<LicenseEntry> findByType(String type) {
+		return findByType(type, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
 	/**
@@ -667,8 +1198,8 @@ public class LicenseEntryPersistenceImpl
 	 * @return the range of matching license entries
 	 */
 	@Override
-	public List<LicenseEntry> findByT(String type, int start, int end) {
-		return findByT(type, start, end, null);
+	public List<LicenseEntry> findByType(String type, int start, int end) {
+		return findByType(type, start, end, null);
 	}
 
 	/**
@@ -685,11 +1216,11 @@ public class LicenseEntryPersistenceImpl
 	 * @return the ordered range of matching license entries
 	 */
 	@Override
-	public List<LicenseEntry> findByT(
+	public List<LicenseEntry> findByType(
 		String type, int start, int end,
 		OrderByComparator<LicenseEntry> orderByComparator) {
 
-		return findByT(type, start, end, orderByComparator, true);
+		return findByType(type, start, end, orderByComparator, true);
 	}
 
 	/**
@@ -707,7 +1238,7 @@ public class LicenseEntryPersistenceImpl
 	 * @return the ordered range of matching license entries
 	 */
 	@Override
-	public List<LicenseEntry> findByT(
+	public List<LicenseEntry> findByType(
 		String type, int start, int end,
 		OrderByComparator<LicenseEntry> orderByComparator,
 		boolean useFinderCache) {
@@ -721,12 +1252,12 @@ public class LicenseEntryPersistenceImpl
 			(orderByComparator == null)) {
 
 			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindByT;
+				finderPath = _finderPathWithoutPaginationFindByType;
 				finderArgs = new Object[] {type};
 			}
 		}
 		else if (useFinderCache) {
-			finderPath = _finderPathWithPaginationFindByT;
+			finderPath = _finderPathWithPaginationFindByType;
 			finderArgs = new Object[] {type, start, end, orderByComparator};
 		}
 
@@ -763,12 +1294,12 @@ public class LicenseEntryPersistenceImpl
 			boolean bindType = false;
 
 			if (type.isEmpty()) {
-				sb.append(_FINDER_COLUMN_T_TYPE_3);
+				sb.append(_FINDER_COLUMN_TYPE_TYPE_3);
 			}
 			else {
 				bindType = true;
 
-				sb.append(_FINDER_COLUMN_T_TYPE_2);
+				sb.append(_FINDER_COLUMN_TYPE_TYPE_2);
 			}
 
 			if (orderByComparator != null) {
@@ -827,11 +1358,11 @@ public class LicenseEntryPersistenceImpl
 	 * @throws NoSuchLicenseEntryException if a matching license entry could not be found
 	 */
 	@Override
-	public LicenseEntry findByT_First(
+	public LicenseEntry findByType_First(
 			String type, OrderByComparator<LicenseEntry> orderByComparator)
 		throws NoSuchLicenseEntryException {
 
-		LicenseEntry licenseEntry = fetchByT_First(type, orderByComparator);
+		LicenseEntry licenseEntry = fetchByType_First(type, orderByComparator);
 
 		if (licenseEntry != null) {
 			return licenseEntry;
@@ -857,10 +1388,10 @@ public class LicenseEntryPersistenceImpl
 	 * @return the first matching license entry, or <code>null</code> if a matching license entry could not be found
 	 */
 	@Override
-	public LicenseEntry fetchByT_First(
+	public LicenseEntry fetchByType_First(
 		String type, OrderByComparator<LicenseEntry> orderByComparator) {
 
-		List<LicenseEntry> list = findByT(type, 0, 1, orderByComparator);
+		List<LicenseEntry> list = findByType(type, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -878,11 +1409,11 @@ public class LicenseEntryPersistenceImpl
 	 * @throws NoSuchLicenseEntryException if a matching license entry could not be found
 	 */
 	@Override
-	public LicenseEntry findByT_Last(
+	public LicenseEntry findByType_Last(
 			String type, OrderByComparator<LicenseEntry> orderByComparator)
 		throws NoSuchLicenseEntryException {
 
-		LicenseEntry licenseEntry = fetchByT_Last(type, orderByComparator);
+		LicenseEntry licenseEntry = fetchByType_Last(type, orderByComparator);
 
 		if (licenseEntry != null) {
 			return licenseEntry;
@@ -908,16 +1439,16 @@ public class LicenseEntryPersistenceImpl
 	 * @return the last matching license entry, or <code>null</code> if a matching license entry could not be found
 	 */
 	@Override
-	public LicenseEntry fetchByT_Last(
+	public LicenseEntry fetchByType_Last(
 		String type, OrderByComparator<LicenseEntry> orderByComparator) {
 
-		int count = countByT(type);
+		int count = countByType(type);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<LicenseEntry> list = findByT(
+		List<LicenseEntry> list = findByType(
 			type, count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -937,7 +1468,7 @@ public class LicenseEntryPersistenceImpl
 	 * @throws NoSuchLicenseEntryException if a license entry with the primary key could not be found
 	 */
 	@Override
-	public LicenseEntry[] findByT_PrevAndNext(
+	public LicenseEntry[] findByType_PrevAndNext(
 			long licenseEntryId, String type,
 			OrderByComparator<LicenseEntry> orderByComparator)
 		throws NoSuchLicenseEntryException {
@@ -953,12 +1484,12 @@ public class LicenseEntryPersistenceImpl
 
 			LicenseEntry[] array = new LicenseEntryImpl[3];
 
-			array[0] = getByT_PrevAndNext(
+			array[0] = getByType_PrevAndNext(
 				session, licenseEntry, type, orderByComparator, true);
 
 			array[1] = licenseEntry;
 
-			array[2] = getByT_PrevAndNext(
+			array[2] = getByType_PrevAndNext(
 				session, licenseEntry, type, orderByComparator, false);
 
 			return array;
@@ -971,7 +1502,7 @@ public class LicenseEntryPersistenceImpl
 		}
 	}
 
-	protected LicenseEntry getByT_PrevAndNext(
+	protected LicenseEntry getByType_PrevAndNext(
 		Session session, LicenseEntry licenseEntry, String type,
 		OrderByComparator<LicenseEntry> orderByComparator, boolean previous) {
 
@@ -991,12 +1522,12 @@ public class LicenseEntryPersistenceImpl
 		boolean bindType = false;
 
 		if (type.isEmpty()) {
-			sb.append(_FINDER_COLUMN_T_TYPE_3);
+			sb.append(_FINDER_COLUMN_TYPE_TYPE_3);
 		}
 		else {
 			bindType = true;
 
-			sb.append(_FINDER_COLUMN_T_TYPE_2);
+			sb.append(_FINDER_COLUMN_TYPE_TYPE_2);
 		}
 
 		if (orderByComparator != null) {
@@ -1096,9 +1627,9 @@ public class LicenseEntryPersistenceImpl
 	 * @param type the type
 	 */
 	@Override
-	public void removeByT(String type) {
+	public void removeByType(String type) {
 		for (LicenseEntry licenseEntry :
-				findByT(type, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				findByType(type, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 
 			remove(licenseEntry);
 		}
@@ -1111,10 +1642,10 @@ public class LicenseEntryPersistenceImpl
 	 * @return the number of matching license entries
 	 */
 	@Override
-	public int countByT(String type) {
+	public int countByType(String type) {
 		type = Objects.toString(type, "");
 
-		FinderPath finderPath = _finderPathCountByT;
+		FinderPath finderPath = _finderPathCountByType;
 
 		Object[] finderArgs = new Object[] {type};
 
@@ -1128,12 +1659,12 @@ public class LicenseEntryPersistenceImpl
 			boolean bindType = false;
 
 			if (type.isEmpty()) {
-				sb.append(_FINDER_COLUMN_T_TYPE_3);
+				sb.append(_FINDER_COLUMN_TYPE_TYPE_3);
 			}
 			else {
 				bindType = true;
 
-				sb.append(_FINDER_COLUMN_T_TYPE_2);
+				sb.append(_FINDER_COLUMN_TYPE_TYPE_2);
 			}
 
 			String sql = sb.toString();
@@ -1168,10 +1699,10 @@ public class LicenseEntryPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_T_TYPE_2 =
+	private static final String _FINDER_COLUMN_TYPE_TYPE_2 =
 		"licenseEntry.type = ?";
 
-	private static final String _FINDER_COLUMN_T_TYPE_3 =
+	private static final String _FINDER_COLUMN_TYPE_TYPE_3 =
 		"(licenseEntry.type IS NULL OR licenseEntry.type = '')";
 
 	private FinderPath _finderPathFetchByPK_T;
@@ -1803,8 +2334,9 @@ public class LicenseEntryPersistenceImpl
 
 			args = new Object[] {licenseEntryModelImpl.getType()};
 
-			finderCache.removeResult(_finderPathCountByT, args);
-			finderCache.removeResult(_finderPathWithoutPaginationFindByT, args);
+			finderCache.removeResult(_finderPathCountByType, args);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindByType, args);
 
 			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
 			finderCache.removeResult(
@@ -1831,21 +2363,22 @@ public class LicenseEntryPersistenceImpl
 			}
 
 			if ((licenseEntryModelImpl.getColumnBitmask() &
-				 _finderPathWithoutPaginationFindByT.getColumnBitmask()) != 0) {
+				 _finderPathWithoutPaginationFindByType.getColumnBitmask()) !=
+					 0) {
 
 				Object[] args = new Object[] {
 					licenseEntryModelImpl.getOriginalType()
 				};
 
-				finderCache.removeResult(_finderPathCountByT, args);
+				finderCache.removeResult(_finderPathCountByType, args);
 				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByT, args);
+					_finderPathWithoutPaginationFindByType, args);
 
 				args = new Object[] {licenseEntryModelImpl.getType()};
 
-				finderCache.removeResult(_finderPathCountByT, args);
+				finderCache.removeResult(_finderPathCountByType, args);
 				finderCache.removeResult(
-					_finderPathWithoutPaginationFindByT, args);
+					_finderPathWithoutPaginationFindByType, args);
 			}
 		}
 
@@ -2167,24 +2700,37 @@ public class LicenseEntryPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByProductKey",
 			new String[] {String.class.getName()});
 
-		_finderPathWithPaginationFindByT = new FinderPath(
+		_finderPathWithPaginationFindByLikeName = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, LicenseEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByT",
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByLikeName",
 			new String[] {
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			});
 
-		_finderPathWithoutPaginationFindByT = new FinderPath(
+		_finderPathWithPaginationCountByLikeName = new FinderPath(
+			entityCacheEnabled, finderCacheEnabled, Long.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByLikeName",
+			new String[] {String.class.getName()});
+
+		_finderPathWithPaginationFindByType = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, LicenseEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByT",
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByType",
+			new String[] {
+				String.class.getName(), Integer.class.getName(),
+				Integer.class.getName(), OrderByComparator.class.getName()
+			});
+
+		_finderPathWithoutPaginationFindByType = new FinderPath(
+			entityCacheEnabled, finderCacheEnabled, LicenseEntryImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByType",
 			new String[] {String.class.getName()},
 			LicenseEntryModelImpl.TYPE_COLUMN_BITMASK |
 			LicenseEntryModelImpl.NAME_COLUMN_BITMASK);
 
-		_finderPathCountByT = new FinderPath(
+		_finderPathCountByType = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByT",
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByType",
 			new String[] {String.class.getName()});
 
 		_finderPathFetchByPK_T = new FinderPath(

@@ -1,3 +1,4 @@
+create index IX_EAA5BCC8 on Provisioning_LicenseEntry (name[$COLUMN_LENGTH:75$]);
 create unique index IX_CDCDE588 on Provisioning_LicenseEntry (productKey[$COLUMN_LENGTH:75$], type_[$COLUMN_LENGTH:75$]);
 create index IX_CB38227B on Provisioning_LicenseEntry (productKey[$COLUMN_LENGTH:75$], versionMin[$COLUMN_LENGTH:75$]);
 create index IX_D0969DEC on Provisioning_LicenseEntry (type_[$COLUMN_LENGTH:75$]);

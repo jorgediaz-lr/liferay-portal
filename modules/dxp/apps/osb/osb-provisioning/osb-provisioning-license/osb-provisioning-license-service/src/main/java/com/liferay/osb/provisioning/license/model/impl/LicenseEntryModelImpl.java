@@ -117,11 +117,11 @@ public class LicenseEntryModelImpl
 
 	public static final String TX_MANAGER = "liferayTransactionManager";
 
-	public static final long PRODUCTKEY_COLUMN_BITMASK = 1L;
+	public static final long NAME_COLUMN_BITMASK = 1L;
 
-	public static final long TYPE_COLUMN_BITMASK = 2L;
+	public static final long PRODUCTKEY_COLUMN_BITMASK = 2L;
 
-	public static final long NAME_COLUMN_BITMASK = 4L;
+	public static final long TYPE_COLUMN_BITMASK = 4L;
 
 	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
 		_entityCacheEnabled = entityCacheEnabled;
@@ -492,7 +492,15 @@ public class LicenseEntryModelImpl
 	public void setName(String name) {
 		_columnBitmask = -1L;
 
+		if (_originalName == null) {
+			_originalName = _name;
+		}
+
 		_name = name;
+	}
+
+	public String getOriginalName() {
+		return GetterUtil.getString(_originalName);
 	}
 
 	@JSON
@@ -660,6 +668,8 @@ public class LicenseEntryModelImpl
 	public void resetOriginalValues() {
 		_setModifiedDate = false;
 		_originalProductKey = _productKey;
+
+		_originalName = _name;
 
 		_originalType = _type;
 
@@ -846,6 +856,7 @@ public class LicenseEntryModelImpl
 	private String _productKey;
 	private String _originalProductKey;
 	private String _name;
+	private String _originalName;
 	private String _type;
 	private String _originalType;
 	private String _versionMin;
