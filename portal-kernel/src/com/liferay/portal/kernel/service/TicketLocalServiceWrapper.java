@@ -125,6 +125,13 @@ public class TicketLocalServiceWrapper
 	}
 
 	@Override
+	public void deleteTickets(
+		long companyId, java.lang.String className, long classPK) {
+
+		_ticketLocalService.deleteTickets(companyId, className, classPK);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
 		return _ticketLocalService.dynamicQuery();
 	}
@@ -298,6 +305,13 @@ public class TicketLocalServiceWrapper
 		int start, int end) {
 
 		return _ticketLocalService.getTickets(start, end);
+	}
+
+	@Override
+	public java.util.List<com.liferay.portal.kernel.model.Ticket> getTickets(
+		long companyId, java.lang.String className, long classPK) {
+
+		return _ticketLocalService.getTickets(companyId, className, classPK);
 	}
 
 	@Override

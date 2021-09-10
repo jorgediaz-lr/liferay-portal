@@ -126,6 +126,12 @@ public class TicketLocalServiceUtil {
 		return getService().deleteTicket(ticket);
 	}
 
+	public static void deleteTickets(
+		long companyId, String className, long classPK) {
+
+		getService().deleteTickets(companyId, className, classPK);
+	}
+
 	public static DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}
@@ -270,6 +276,12 @@ public class TicketLocalServiceUtil {
 	 */
 	public static List<Ticket> getTickets(int start, int end) {
 		return getService().getTickets(start, end);
+	}
+
+	public static List<Ticket> getTickets(
+		long companyId, String className, long classPK) {
+
+		return getService().getTickets(companyId, className, classPK);
 	}
 
 	public static List<Ticket> getTickets(
