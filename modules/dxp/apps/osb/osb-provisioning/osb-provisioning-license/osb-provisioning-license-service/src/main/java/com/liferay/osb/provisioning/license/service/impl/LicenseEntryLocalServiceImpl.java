@@ -75,39 +75,29 @@ public class LicenseEntryLocalServiceImpl
 		return licenseEntryPersistence.findByProductKey(productKey);
 	}
 
+	public List<LicenseEntry> getLicenseEntriesByNameVersion(
+		String name, String version) {
+
+		List<LicenseEntry> licenseEntries =
+			licenseEntryPersistence.findByLikeName(name);
+
+		return filterByVersion(licenseEntries, name, version);
+	}
+
 	public List<LicenseEntry> getLicenseEntriesByType(String type) {
-		return licenseEntryPersistence.findByT(type);
+		return licenseEntryPersistence.findByType(type);
 	}
 
 	public List<LicenseEntry> getLicenseEntriesByVersion(
 			String productKey, String version)
 		throws Exception {
 
-		List<LicenseEntry> curLicenseEntries = new ArrayList<>();
-
 		Product product = _productWebService.getProduct(productKey);
 
 		List<LicenseEntry> licenseEntries =
 			licenseEntryPersistence.findByProductKey(productKey);
 
-		for (LicenseEntry licenseEntry : licenseEntries) {
-			int productVersionMinOrder = ProductVersion.getOrder(
-				product.getName(), licenseEntry.getVersionMin());
-			int productVersionMaxOrder = ProductVersion.getOrder(
-				product.getName(), licenseEntry.getVersionMax());
-
-			if ((Validator.isNull(licenseEntry.getVersionMin()) ||
-				 (productVersionMinOrder <= ProductVersion.getOrder(
-					 product.getName(), version))) &&
-				(Validator.isNull(licenseEntry.getVersionMax()) ||
-				 (ProductVersion.getOrder(product.getName(), version) <=
-					 productVersionMaxOrder))) {
-
-				curLicenseEntries.add(licenseEntry);
-			}
-		}
-
-		return curLicenseEntries;
+		return filterByVersion(licenseEntries, product.getName(), version);
 	}
 
 	public LicenseEntry getLicenseEntry(String productKey, String type)
@@ -134,6 +124,31 @@ public class LicenseEntryLocalServiceImpl
 		licenseEntry.setVersionMax(versionMax);
 
 		return licenseEntryPersistence.update(licenseEntry);
+	}
+
+	protected List<LicenseEntry> filterByVersion(
+		List<LicenseEntry> licenseEntries, String name, String version) {
+
+		List<LicenseEntry> curLicenseEntries = new ArrayList<>();
+
+		for (LicenseEntry licenseEntry : licenseEntries) {
+			int productVersionMinOrder = ProductVersion.getOrder(
+				name, licenseEntry.getVersionMin());
+			int productVersionMaxOrder = ProductVersion.getOrder(
+				name, licenseEntry.getVersionMax());
+
+			if ((Validator.isNull(licenseEntry.getVersionMin()) ||
+				 (productVersionMinOrder <= ProductVersion.getOrder(
+					 name, version))) &&
+				(Validator.isNull(licenseEntry.getVersionMax()) ||
+				 (ProductVersion.getOrder(name, version) <=
+					 productVersionMaxOrder))) {
+
+				curLicenseEntries.add(licenseEntry);
+			}
+		}
+
+		return curLicenseEntries;
 	}
 
 	protected void validate(String name) throws PortalException {
