@@ -21,18 +21,12 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchaseView;
 import com.liferay.osb.provisioning.koroneiki.constants.ContactRoleConstants;
 import com.liferay.osb.provisioning.koroneiki.constants.ProductConstants;
-import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ContactRoleWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ContactWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductPurchaseViewWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.provisioning.license.exporter.LicenseKeyExporter;
-import com.liferay.osb.provisioning.license.generator.KeyGenerator;
-import com.liferay.osb.provisioning.license.helper.constants.LicenseLifetime;
-import com.liferay.osb.provisioning.license.helper.constants.LicenseServerId;
 import com.liferay.osb.provisioning.license.helper.constants.LicenseType;
-import com.liferay.osb.provisioning.license.helper.constants.LicenseVersion;
-import com.liferay.osb.provisioning.license.helper.constants.ProductId;
 import com.liferay.osb.provisioning.license.model.LicenseEntry;
 import com.liferay.osb.provisioning.license.service.LicenseEntryLocalService;
 import com.liferay.osb.provisioning.license.service.LicenseKeyLocalService;
@@ -61,17 +55,13 @@ import com.liferay.portal.vulcan.resource.EntityModelResource;
 import com.liferay.portal.vulcan.util.SearchUtil;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.StringTokenizer;
 
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
-
-import org.apache.commons.lang.time.DateUtils;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -184,52 +174,12 @@ public class LicenseKeyResourceImpl
 			).build();
 		}
 
-		Account account = _accountWebService.getAccount(accountKey);
-
-		String accountName = _trimText(account.getName());
-
-		String licenseEntryName = _trimText(licenseEntry.getName());
-
-		int licenseVersion = LicenseVersion.getLicenseVersion(
-			productName, productVersion);
-
-		productName = _trimText(productName);
-
-		String productId = ProductId.PORTAL;
-
-		if (productName.contains(ProductConstants.NAME_COMMERCE_SUBSCRIPTION)) {
-			productId = ProductId.COMMERCE;
-		}
-
-		String description = _trimText(
-			account.getName() + " Developer Activation Key");
-
-		Date startDate = new Date();
-
-		startDate = DateUtils.round(startDate, Calendar.SECOND);
-
-		Date expirationDate = new Date(
-			startDate.getTime() + LicenseLifetime.INDEFINITE);
-
-		expirationDate = DateUtils.round(expirationDate, Calendar.SECOND);
-
-		String key = _keyGenerator.generate(
-			accountName, licenseEntryName, LicenseType.DEVELOPER,
-			licenseVersion, productName, productId, productVersion, accountName,
-			0, 1, 5, 0, 0, StringPool.BLANK, description, StringPool.BLANK,
-			StringPool.BLANK, StringPool.BLANK,
-			new String[] {LicenseServerId.DEVELOPER}, startDate,
-			expirationDate);
-
-		String licenseXML = _licenseKeyExporter.toXML(
-			key, accountName, licenseEntryName, LicenseType.DEVELOPER,
-			licenseVersion, productName, productId, productVersion, accountName,
-			0, 1, 5, 0, 0, StringPool.BLANK, description, StringPool.BLANK,
-			StringPool.BLANK, StringPool.BLANK, LicenseServerId.DEVELOPER,
-			startDate, expirationDate, new Date());
-
 		String fileName = _licenseKeyExporter.getFileName(
 			productName, productVersion, "Developer Activation Keys");
+
+		String licenseXML = StringUtil.read(
+			LicenseKeyResourceImpl.class.getResourceAsStream(
+				"/dependencies/" + fileName));
 
 		return Response.ok(
 			licenseXML.getBytes()
@@ -610,40 +560,13 @@ public class LicenseKeyResourceImpl
 		return false;
 	}
 
-	private String _trimText(String text) {
-
-		// Copied from org.dom4j.tree.AbstractBranch.getTextTrim()
-
-		StringBuffer textContent = new StringBuffer();
-
-		StringTokenizer tokenizer = new StringTokenizer(text);
-
-		while (tokenizer.hasMoreTokens()) {
-			String str = tokenizer.nextToken();
-
-			textContent.append(str);
-
-			if (tokenizer.hasMoreTokens()) {
-				textContent.append(" ");
-			}
-		}
-
-		return textContent.toString();
-	}
-
 	private static final EntityModel _entityModel = new LicenseKeyEntityModel();
-
-	@Reference
-	private AccountWebService _accountWebService;
 
 	@Reference
 	private ContactRoleWebService _contactRoleWebService;
 
 	@Reference
 	private ContactWebService _contactWebService;
-
-	@Reference
-	private KeyGenerator _keyGenerator;
 
 	@Reference
 	private LicenseEntryLocalService _licenseEntryLocalService;
