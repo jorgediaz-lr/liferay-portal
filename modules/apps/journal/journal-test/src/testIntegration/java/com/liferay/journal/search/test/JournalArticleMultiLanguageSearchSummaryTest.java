@@ -142,9 +142,7 @@ public class JournalArticleMultiLanguageSearchSummaryTest {
 		_summaryFixture.assertSummary(
 			brTitle,
 			StringBundler.concat(
-				"Sobre ", HighlightUtil.HIGHLIGHT_TAG_OPEN,
-				HighlightUtil.HIGHLIGHT_TAG_OPEN, "times",
-				HighlightUtil.HIGHLIGHT_TAG_CLOSE,
+				"Sobre ", HighlightUtil.HIGHLIGHT_TAG_OPEN, "times",
 				HighlightUtil.HIGHLIGHT_TAG_CLOSE, " de futebol"),
 			LocaleUtil.BRAZIL, document2);
 
@@ -152,7 +150,7 @@ public class JournalArticleMultiLanguageSearchSummaryTest {
 	}
 
 	@Test
-	public void testBrDescriptionUntranslatedHighlightedTwiceTranslatedPlain()
+	public void testBrDescriptionUntranslatedHighlightedOnceTranslatedPlain()
 		throws Exception {
 
 		String title = "All About Clocks";
@@ -178,9 +176,7 @@ public class JournalArticleMultiLanguageSearchSummaryTest {
 		_summaryFixture.assertSummary(
 			title,
 			StringBundler.concat(
-				"On clocks and ", HighlightUtil.HIGHLIGHT_TAG_OPEN,
-				HighlightUtil.HIGHLIGHT_TAG_OPEN, "time",
-				HighlightUtil.HIGHLIGHT_TAG_CLOSE,
+				"On clocks and ", HighlightUtil.HIGHLIGHT_TAG_OPEN, "time",
 				HighlightUtil.HIGHLIGHT_TAG_CLOSE),
 			LocaleUtil.BRAZIL, document1);
 
@@ -189,9 +185,7 @@ public class JournalArticleMultiLanguageSearchSummaryTest {
 		_summaryFixture.assertSummary(
 			brTitle,
 			StringBundler.concat(
-				"Sobre ", HighlightUtil.HIGHLIGHT_TAG_OPEN,
-				HighlightUtil.HIGHLIGHT_TAG_OPEN, "times",
-				HighlightUtil.HIGHLIGHT_TAG_CLOSE,
+				"Sobre ", HighlightUtil.HIGHLIGHT_TAG_OPEN, "times",
 				HighlightUtil.HIGHLIGHT_TAG_CLOSE, " de futebol"),
 			LocaleUtil.BRAZIL, document2);
 
@@ -234,7 +228,7 @@ public class JournalArticleMultiLanguageSearchSummaryTest {
 	}
 
 	@Test
-	public void testUsDescriptionUntranslatedHighlightedTwiceTranslatedPlain()
+	public void testUsDescriptionUntranslatedHighlightedOnceTranslatedPlain()
 		throws Exception {
 
 		String content = "Clocks are great for telling time";
@@ -261,9 +255,7 @@ public class JournalArticleMultiLanguageSearchSummaryTest {
 		_summaryFixture.assertSummary(
 			title,
 			StringBundler.concat(
-				"On clocks and ", HighlightUtil.HIGHLIGHT_TAG_OPEN,
-				HighlightUtil.HIGHLIGHT_TAG_OPEN, "time",
-				HighlightUtil.HIGHLIGHT_TAG_CLOSE,
+				"On clocks and ", HighlightUtil.HIGHLIGHT_TAG_OPEN, "time",
 				HighlightUtil.HIGHLIGHT_TAG_CLOSE),
 			LocaleUtil.US, document1);
 
