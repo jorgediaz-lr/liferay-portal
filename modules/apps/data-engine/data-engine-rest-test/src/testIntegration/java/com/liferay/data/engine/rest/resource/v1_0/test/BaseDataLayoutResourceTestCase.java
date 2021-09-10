@@ -203,17 +203,17 @@ public abstract class BaseDataLayoutResourceTestCase {
 
 	@Test
 	public void testGetDataDefinitionDataLayoutsPage() throws Exception {
-		Page<DataLayout> page =
-			dataLayoutResource.getDataDefinitionDataLayoutsPage(
-				testGetDataDefinitionDataLayoutsPage_getDataDefinitionId(),
-				RandomTestUtil.randomString(), Pagination.of(1, 2), null);
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long dataDefinitionId =
 			testGetDataDefinitionDataLayoutsPage_getDataDefinitionId();
 		Long irrelevantDataDefinitionId =
 			testGetDataDefinitionDataLayoutsPage_getIrrelevantDataDefinitionId();
+
+		Page<DataLayout> page =
+			dataLayoutResource.getDataDefinitionDataLayoutsPage(
+				dataDefinitionId, RandomTestUtil.randomString(),
+				Pagination.of(1, 10), null);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantDataDefinitionId != null) {
 			DataLayout irrelevantDataLayout =
@@ -240,7 +240,7 @@ public abstract class BaseDataLayoutResourceTestCase {
 				dataDefinitionId, randomDataLayout());
 
 		page = dataLayoutResource.getDataDefinitionDataLayoutsPage(
-			dataDefinitionId, null, Pagination.of(1, 2), null);
+			dataDefinitionId, null, Pagination.of(1, 10), null);
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -660,15 +660,14 @@ public abstract class BaseDataLayoutResourceTestCase {
 
 	@Test
 	public void testGetSiteDataLayoutsPage() throws Exception {
-		Page<DataLayout> page = dataLayoutResource.getSiteDataLayoutsPage(
-			testGetSiteDataLayoutsPage_getSiteId(),
-			RandomTestUtil.randomString(), Pagination.of(1, 2), null);
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long siteId = testGetSiteDataLayoutsPage_getSiteId();
 		Long irrelevantSiteId =
 			testGetSiteDataLayoutsPage_getIrrelevantSiteId();
+
+		Page<DataLayout> page = dataLayoutResource.getSiteDataLayoutsPage(
+			siteId, RandomTestUtil.randomString(), Pagination.of(1, 10), null);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantSiteId != null) {
 			DataLayout irrelevantDataLayout =
@@ -693,7 +692,7 @@ public abstract class BaseDataLayoutResourceTestCase {
 			siteId, randomDataLayout());
 
 		page = dataLayoutResource.getSiteDataLayoutsPage(
-			siteId, null, Pagination.of(1, 2), null);
+			siteId, null, Pagination.of(1, 10), null);
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -891,7 +890,7 @@ public abstract class BaseDataLayoutResourceTestCase {
 			new HashMap<String, Object>() {
 				{
 					put("page", 1);
-					put("pageSize", 2);
+					put("pageSize", 10);
 
 					put("siteKey", "\"" + siteId + "\"");
 				}
@@ -912,7 +911,7 @@ public abstract class BaseDataLayoutResourceTestCase {
 			invokeGraphQLQuery(graphQLField), "JSONObject/data",
 			"JSONObject/dataLayouts");
 
-		Assert.assertEquals(2, dataLayoutsJSONObject.get("totalCount"));
+		Assert.assertEquals(2, dataLayoutsJSONObject.getLong("totalCount"));
 
 		assertEqualsIgnoringOrder(
 			Arrays.asList(dataLayout1, dataLayout2),
@@ -997,6 +996,23 @@ public abstract class BaseDataLayoutResourceTestCase {
 
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
+	}
+
+	protected void assertContains(
+		DataLayout dataLayout, List<DataLayout> dataLayouts) {
+
+		boolean contains = false;
+
+		for (DataLayout item : dataLayouts) {
+			if (equals(dataLayout, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			dataLayouts + " does not contain " + dataLayout, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(

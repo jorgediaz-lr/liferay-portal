@@ -199,6 +199,20 @@ public abstract class BaseMetricResourceTestCase {
 		Assert.assertTrue(true);
 	}
 
+	protected void assertContains(Metric metric, List<Metric> metrics) {
+		boolean contains = false;
+
+		for (Metric item : metrics) {
+			if (equals(metric, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(metrics + " does not contain " + metric, contains);
+	}
+
 	protected void assertHttpResponseStatusCode(
 		int expectedHttpResponseStatusCode,
 		HttpInvoker.HttpResponse actualHttpResponse) {

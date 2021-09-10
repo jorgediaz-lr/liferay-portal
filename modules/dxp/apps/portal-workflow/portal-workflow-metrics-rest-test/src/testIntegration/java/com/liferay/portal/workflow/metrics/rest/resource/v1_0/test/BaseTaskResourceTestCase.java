@@ -200,16 +200,16 @@ public abstract class BaseTaskResourceTestCase {
 
 	@Test
 	public void testGetProcessTasksPage() throws Exception {
-		Page<Task> page = taskResource.getProcessTasksPage(
-			testGetProcessTasksPage_getProcessId(), null,
-			RandomTestUtil.nextDate(), RandomTestUtil.nextDate(),
-			RandomTestUtil.randomString(), Pagination.of(1, 2), null);
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long processId = testGetProcessTasksPage_getProcessId();
 		Long irrelevantProcessId =
 			testGetProcessTasksPage_getIrrelevantProcessId();
+
+		Page<Task> page = taskResource.getProcessTasksPage(
+			processId, null, RandomTestUtil.nextDate(),
+			RandomTestUtil.nextDate(), RandomTestUtil.randomString(),
+			Pagination.of(1, 10), null);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantProcessId != null) {
 			Task irrelevantTask = testGetProcessTasksPage_addTask(
@@ -231,7 +231,7 @@ public abstract class BaseTaskResourceTestCase {
 		Task task2 = testGetProcessTasksPage_addTask(processId, randomTask());
 
 		page = taskResource.getProcessTasksPage(
-			processId, null, null, null, null, Pagination.of(1, 2), null);
+			processId, null, null, null, null, Pagination.of(1, 10), null);
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -403,6 +403,20 @@ public abstract class BaseTaskResourceTestCase {
 		throws Exception {
 
 		return null;
+	}
+
+	protected void assertContains(Task task, List<Task> tasks) {
+		boolean contains = false;
+
+		for (Task item : tasks) {
+			if (equals(task, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(tasks + " does not contain " + task, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(

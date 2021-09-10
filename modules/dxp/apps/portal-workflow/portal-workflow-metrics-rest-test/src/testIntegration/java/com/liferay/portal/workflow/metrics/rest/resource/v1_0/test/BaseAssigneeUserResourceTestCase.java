@@ -193,15 +193,14 @@ public abstract class BaseAssigneeUserResourceTestCase {
 
 	@Test
 	public void testGetProcessAssigneeUsersPage() throws Exception {
-		Page<AssigneeUser> page =
-			assigneeUserResource.getProcessAssigneeUsersPage(
-				testGetProcessAssigneeUsersPage_getProcessId());
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long processId = testGetProcessAssigneeUsersPage_getProcessId();
 		Long irrelevantProcessId =
 			testGetProcessAssigneeUsersPage_getIrrelevantProcessId();
+
+		Page<AssigneeUser> page =
+			assigneeUserResource.getProcessAssigneeUsersPage(processId);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantProcessId != null) {
 			AssigneeUser irrelevantAssigneeUser =
@@ -263,6 +262,23 @@ public abstract class BaseAssigneeUserResourceTestCase {
 
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
+	}
+
+	protected void assertContains(
+		AssigneeUser assigneeUser, List<AssigneeUser> assigneeUsers) {
+
+		boolean contains = false;
+
+		for (AssigneeUser item : assigneeUsers) {
+			if (equals(assigneeUser, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			assigneeUsers + " does not contain " + assigneeUser, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(

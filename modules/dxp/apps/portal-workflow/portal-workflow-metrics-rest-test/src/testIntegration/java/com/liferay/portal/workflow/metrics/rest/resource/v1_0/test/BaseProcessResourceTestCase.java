@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.odata.entity.EntityField;
@@ -199,26 +200,31 @@ public abstract class BaseProcessResourceTestCase {
 	@Test
 	public void testGetProcessesPage() throws Exception {
 		Page<Process> page = processResource.getProcessesPage(
-			RandomTestUtil.randomString(), Pagination.of(1, 2), null);
+			RandomTestUtil.randomString(), Pagination.of(1, 10), null);
 
-		Assert.assertEquals(0, page.getTotalCount());
+		long totalCount = page.getTotalCount();
 
 		Process process1 = testGetProcessesPage_addProcess(randomProcess());
 
 		Process process2 = testGetProcessesPage_addProcess(randomProcess());
 
 		page = processResource.getProcessesPage(
-			null, Pagination.of(1, 2), null);
+			null, Pagination.of(1, 10), null);
 
-		Assert.assertEquals(2, page.getTotalCount());
+		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
-		assertEqualsIgnoringOrder(
-			Arrays.asList(process1, process2), (List<Process>)page.getItems());
+		assertContains(process1, (List<Process>)page.getItems());
+		assertContains(process2, (List<Process>)page.getItems());
 		assertValid(page);
 	}
 
 	@Test
 	public void testGetProcessesPageWithPagination() throws Exception {
+		Page<Process> totalPage = processResource.getProcessesPage(
+			null, null, null);
+
+		int totalCount = GetterUtil.getInteger(totalPage.getTotalCount());
+
 		Process process1 = testGetProcessesPage_addProcess(randomProcess());
 
 		Process process2 = testGetProcessesPage_addProcess(randomProcess());
@@ -226,27 +232,28 @@ public abstract class BaseProcessResourceTestCase {
 		Process process3 = testGetProcessesPage_addProcess(randomProcess());
 
 		Page<Process> page1 = processResource.getProcessesPage(
-			null, Pagination.of(1, 2), null);
+			null, Pagination.of(1, totalCount + 2), null);
 
 		List<Process> processes1 = (List<Process>)page1.getItems();
 
-		Assert.assertEquals(processes1.toString(), 2, processes1.size());
+		Assert.assertEquals(
+			processes1.toString(), totalCount + 2, processes1.size());
 
 		Page<Process> page2 = processResource.getProcessesPage(
-			null, Pagination.of(2, 2), null);
+			null, Pagination.of(2, totalCount + 2), null);
 
-		Assert.assertEquals(3, page2.getTotalCount());
+		Assert.assertEquals(totalCount + 3, page2.getTotalCount());
 
 		List<Process> processes2 = (List<Process>)page2.getItems();
 
 		Assert.assertEquals(processes2.toString(), 1, processes2.size());
 
 		Page<Process> page3 = processResource.getProcessesPage(
-			null, Pagination.of(1, 3), null);
+			null, Pagination.of(1, totalCount + 3), null);
 
-		assertEqualsIgnoringOrder(
-			Arrays.asList(process1, process2, process3),
-			(List<Process>)page3.getItems());
+		assertContains(process1, (List<Process>)page3.getItems());
+		assertContains(process2, (List<Process>)page3.getItems());
+		assertContains(process3, (List<Process>)page3.getItems());
 	}
 
 	@Test
@@ -375,7 +382,7 @@ public abstract class BaseProcessResourceTestCase {
 			new HashMap<String, Object>() {
 				{
 					put("page", 1);
-					put("pageSize", 2);
+					put("pageSize", 10);
 				}
 			},
 			new GraphQLField("items", getGraphQLFields()),
@@ -385,7 +392,7 @@ public abstract class BaseProcessResourceTestCase {
 			invokeGraphQLQuery(graphQLField), "JSONObject/data",
 			"JSONObject/processes");
 
-		Assert.assertEquals(0, processesJSONObject.get("totalCount"));
+		long totalCount = processesJSONObject.getLong("totalCount");
 
 		Process process1 = testGraphQLProcess_addProcess();
 		Process process2 = testGraphQLProcess_addProcess();
@@ -394,10 +401,15 @@ public abstract class BaseProcessResourceTestCase {
 			invokeGraphQLQuery(graphQLField), "JSONObject/data",
 			"JSONObject/processes");
 
-		Assert.assertEquals(2, processesJSONObject.get("totalCount"));
+		Assert.assertEquals(
+			totalCount + 2, processesJSONObject.getLong("totalCount"));
 
-		assertEqualsIgnoringOrder(
-			Arrays.asList(process1, process2),
+		assertContains(
+			process1,
+			Arrays.asList(
+				ProcessSerDes.toDTOs(processesJSONObject.getString("items"))));
+		assertContains(
+			process2,
 			Arrays.asList(
 				ProcessSerDes.toDTOs(processesJSONObject.getString("items"))));
 	}
@@ -467,6 +479,20 @@ public abstract class BaseProcessResourceTestCase {
 	protected Process testGraphQLProcess_addProcess() throws Exception {
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
+	}
+
+	protected void assertContains(Process process, List<Process> processes) {
+		boolean contains = false;
+
+		for (Process item : processes) {
+			if (equals(process, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(processes + " does not contain " + process, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(

@@ -427,16 +427,16 @@ public abstract class BaseDataDefinitionResourceTestCase {
 
 	@Test
 	public void testGetSiteDataDefinitionsPage() throws Exception {
-		Page<DataDefinition> page =
-			dataDefinitionResource.getSiteDataDefinitionsPage(
-				testGetSiteDataDefinitionsPage_getSiteId(),
-				RandomTestUtil.randomString(), Pagination.of(1, 2), null);
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long siteId = testGetSiteDataDefinitionsPage_getSiteId();
 		Long irrelevantSiteId =
 			testGetSiteDataDefinitionsPage_getIrrelevantSiteId();
+
+		Page<DataDefinition> page =
+			dataDefinitionResource.getSiteDataDefinitionsPage(
+				siteId, RandomTestUtil.randomString(), Pagination.of(1, 10),
+				null);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantSiteId != null) {
 			DataDefinition irrelevantDataDefinition =
@@ -463,7 +463,7 @@ public abstract class BaseDataDefinitionResourceTestCase {
 				siteId, randomDataDefinition());
 
 		page = dataDefinitionResource.getSiteDataDefinitionsPage(
-			siteId, null, Pagination.of(1, 2), null);
+			siteId, null, Pagination.of(1, 10), null);
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -683,7 +683,7 @@ public abstract class BaseDataDefinitionResourceTestCase {
 			new HashMap<String, Object>() {
 				{
 					put("page", 1);
-					put("pageSize", 2);
+					put("pageSize", 10);
 
 					put("siteKey", "\"" + siteId + "\"");
 				}
@@ -706,7 +706,7 @@ public abstract class BaseDataDefinitionResourceTestCase {
 			invokeGraphQLQuery(graphQLField), "JSONObject/data",
 			"JSONObject/dataDefinitions");
 
-		Assert.assertEquals(2, dataDefinitionsJSONObject.get("totalCount"));
+		Assert.assertEquals(2, dataDefinitionsJSONObject.getLong("totalCount"));
 
 		assertEqualsIgnoringOrder(
 			Arrays.asList(dataDefinition1, dataDefinition2),
@@ -920,6 +920,23 @@ public abstract class BaseDataDefinitionResourceTestCase {
 						graphQLFields)),
 				"JSONObject/data", "JSONObject/createSiteDataDefinition"),
 			DataDefinition.class);
+	}
+
+	protected void assertContains(
+		DataDefinition dataDefinition, List<DataDefinition> dataDefinitions) {
+
+		boolean contains = false;
+
+		for (DataDefinition item : dataDefinitions) {
+			if (equals(dataDefinition, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			dataDefinitions + " does not contain " + dataDefinition, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
