@@ -15,8 +15,10 @@
 package com.liferay.osb.provisioning.rest.internal.resource.v1_0;
 
 import com.liferay.osb.provisioning.rest.dto.v1_0.LicenseKey;
+import com.liferay.osb.provisioning.rest.dto.v1_0.LicenseKeyGenerateForm;
 import com.liferay.osb.provisioning.rest.resource.v1_0.LicenseKeyResource;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.GroupedModel;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
@@ -25,6 +27,8 @@ import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ResourceActionLocalService;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
 import com.liferay.portal.kernel.service.RoleLocalService;
+import com.liferay.portal.odata.filter.ExpressionConvert;
+import com.liferay.portal.odata.filter.FilterParserProvider;
 import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
@@ -122,6 +126,39 @@ public abstract class BaseLicenseKeyResourceImpl implements LicenseKeyResource {
 			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
 				accountKey,
 			LicenseKey[] licenseKeys)
+		throws Exception {
+
+		return Page.of(Collections.emptyList());
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -X 'GET' 'http://localhost:8080/o/provisioning-rest/v1.0/accounts/{accountKey}/product-groups/{productGroupName}/generate-form'  -u 'test@liferay.com:test'
+	 */
+	@GET
+	@Operation(
+		description = "Retrieves the license key generation options for the given account."
+	)
+	@Override
+	@Parameters(
+		value = {
+			@Parameter(in = ParameterIn.PATH, name = "accountKey"),
+			@Parameter(in = ParameterIn.PATH, name = "productGroupName")
+		}
+	)
+	@Path(
+		"/accounts/{accountKey}/product-groups/{productGroupName}/generate-form"
+	)
+	@Produces({"application/json", "application/xml"})
+	@Tags(value = {@Tag(name = "LicenseKey")})
+	public Page<LicenseKeyGenerateForm>
+			getAccountAccountKeyProductGroupProductGroupNameGenerateFormPage(
+				@NotNull @Parameter(hidden = true) @PathParam("accountKey")
+					String accountKey,
+				@NotNull @Parameter(hidden = true)
+				@PathParam("productGroupName")
+				String productGroupName)
 		throws Exception {
 
 		return Page.of(Collections.emptyList());
@@ -273,6 +310,40 @@ public abstract class BaseLicenseKeyResourceImpl implements LicenseKeyResource {
 		return responseBuilder.build();
 	}
 
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -X 'GET' 'http://localhost:8080/o/provisioning-rest/v1.0/product-groups/{productGroupName}/development-license-key'  -u 'test@liferay.com:test'
+	 */
+	@GET
+	@Operation(
+		description = "Retrives the account's product development license key download."
+	)
+	@Override
+	@Parameters(
+		value = {
+			@Parameter(in = ParameterIn.PATH, name = "productGroupName"),
+			@Parameter(in = ParameterIn.QUERY, name = "accountKey"),
+			@Parameter(in = ParameterIn.QUERY, name = "productVersion")
+		}
+	)
+	@Path("/product-groups/{productGroupName}/development-license-key")
+	@Produces("application/xml")
+	@Tags(value = {@Tag(name = "LicenseKey")})
+	public Response getProductGroupProductGroupNameDevelopmentLicenseKey(
+			@NotNull @Parameter(hidden = true) @PathParam("productGroupName")
+				String productGroupName,
+			@NotNull @Parameter(hidden = true) @QueryParam("accountKey") String
+				accountKey,
+			@NotNull @Parameter(hidden = true) @QueryParam("productVersion")
+				String productVersion)
+		throws Exception {
+
+		Response.ResponseBuilder responseBuilder = Response.ok();
+
+		return responseBuilder.build();
+	}
+
 	public void setContextAcceptLanguage(AcceptLanguage contextAcceptLanguage) {
 		this.contextAcceptLanguage = contextAcceptLanguage;
 	}
@@ -303,6 +374,18 @@ public abstract class BaseLicenseKeyResourceImpl implements LicenseKeyResource {
 		com.liferay.portal.kernel.model.User contextUser) {
 
 		this.contextUser = contextUser;
+	}
+
+	public void setExpressionConvert(
+		ExpressionConvert<Filter> expressionConvert) {
+
+		this.expressionConvert = expressionConvert;
+	}
+
+	public void setFilterParserProvider(
+		FilterParserProvider filterParserProvider) {
+
+		this.filterParserProvider = filterParserProvider;
 	}
 
 	public void setGroupLocalService(GroupLocalService groupLocalService) {
@@ -394,9 +477,14 @@ public abstract class BaseLicenseKeyResourceImpl implements LicenseKeyResource {
 	protected Object contextScopeChecker;
 	protected UriInfo contextUriInfo;
 	protected com.liferay.portal.kernel.model.User contextUser;
+	protected ExpressionConvert<Filter> expressionConvert;
+	protected FilterParserProvider filterParserProvider;
 	protected GroupLocalService groupLocalService;
 	protected ResourceActionLocalService resourceActionLocalService;
 	protected ResourcePermissionLocalService resourcePermissionLocalService;
 	protected RoleLocalService roleLocalService;
+
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseLicenseKeyResourceImpl.class);
 
 }

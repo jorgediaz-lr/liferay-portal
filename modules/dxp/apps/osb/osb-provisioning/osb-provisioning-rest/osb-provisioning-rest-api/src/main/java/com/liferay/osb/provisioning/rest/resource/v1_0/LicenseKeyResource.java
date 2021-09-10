@@ -15,17 +15,23 @@
 package com.liferay.osb.provisioning.rest.resource.v1_0;
 
 import com.liferay.osb.provisioning.rest.dto.v1_0.LicenseKey;
+import com.liferay.osb.provisioning.rest.dto.v1_0.LicenseKeyGenerateForm;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ResourceActionLocalService;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
 import com.liferay.portal.kernel.service.RoleLocalService;
+import com.liferay.portal.odata.filter.ExpressionConvert;
+import com.liferay.portal.odata.filter.FilterParserProvider;
 import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.annotation.Generated;
 
@@ -62,6 +68,11 @@ public interface LicenseKeyResource {
 			String accountKey, LicenseKey[] licenseKeys)
 		throws Exception;
 
+	public Page<LicenseKeyGenerateForm>
+			getAccountAccountKeyProductGroupProductGroupNameGenerateFormPage(
+				String accountKey, String productGroupName)
+		throws Exception;
+
 	public Response
 			getAccountAccountKeyProductGroupProductGroupNameProductVersionDevelopmentLicenseKey(
 				String accountKey, String productGroupName,
@@ -79,6 +90,10 @@ public interface LicenseKeyResource {
 		throws Exception;
 
 	public Response getLicenseKeyDownload(Long licenseKeyId) throws Exception;
+
+	public Response getProductGroupProductGroupNameDevelopmentLicenseKey(
+			String productGroupName, String accountKey, String productVersion)
+		throws Exception;
 
 	public default void setContextAcceptLanguage(
 		AcceptLanguage contextAcceptLanguage) {
@@ -101,6 +116,12 @@ public interface LicenseKeyResource {
 	public void setContextUser(
 		com.liferay.portal.kernel.model.User contextUser);
 
+	public void setExpressionConvert(
+		ExpressionConvert<Filter> expressionConvert);
+
+	public void setFilterParserProvider(
+		FilterParserProvider filterParserProvider);
+
 	public void setGroupLocalService(GroupLocalService groupLocalService);
 
 	public void setResourceActionLocalService(
@@ -110,6 +131,17 @@ public interface LicenseKeyResource {
 		ResourcePermissionLocalService resourcePermissionLocalService);
 
 	public void setRoleLocalService(RoleLocalService roleLocalService);
+
+	public default Filter toFilter(String filterString) {
+		return toFilter(
+			filterString, Collections.<String, List<String>>emptyMap());
+	}
+
+	public default Filter toFilter(
+		String filterString, Map<String, List<String>> multivaluedMap) {
+
+		return null;
+	}
 
 	public static class FactoryHolder {
 

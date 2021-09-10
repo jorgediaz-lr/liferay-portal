@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 
 import com.liferay.osb.provisioning.rest.client.dto.v1_0.LicenseKey;
+import com.liferay.osb.provisioning.rest.client.dto.v1_0.Type;
 import com.liferay.osb.provisioning.rest.client.http.HttpInvoker;
 import com.liferay.osb.provisioning.rest.client.pagination.Page;
 import com.liferay.osb.provisioning.rest.client.pagination.Pagination;
@@ -239,17 +240,17 @@ public abstract class BaseLicenseKeyResourceTestCase {
 
 	@Test
 	public void testGetAccountAccountKeyLicenseKeysPage() throws Exception {
-		Page<LicenseKey> page =
-			licenseKeyResource.getAccountAccountKeyLicenseKeysPage(
-				testGetAccountAccountKeyLicenseKeysPage_getAccountKey(),
-				RandomTestUtil.randomString(), null, Pagination.of(1, 2), null);
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		String accountKey =
 			testGetAccountAccountKeyLicenseKeysPage_getAccountKey();
 		String irrelevantAccountKey =
 			testGetAccountAccountKeyLicenseKeysPage_getIrrelevantAccountKey();
+
+		Page<LicenseKey> page =
+			licenseKeyResource.getAccountAccountKeyLicenseKeysPage(
+				accountKey, RandomTestUtil.randomString(), null,
+				Pagination.of(1, 10), null);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantAccountKey != null) {
 			LicenseKey irrelevantLicenseKey =
@@ -276,7 +277,7 @@ public abstract class BaseLicenseKeyResourceTestCase {
 				accountKey, randomLicenseKey());
 
 		page = licenseKeyResource.getAccountAccountKeyLicenseKeysPage(
-			accountKey, null, null, Pagination.of(1, 2), null);
+			accountKey, null, null, Pagination.of(1, 10), null);
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -555,6 +556,108 @@ public abstract class BaseLicenseKeyResourceTestCase {
 	}
 
 	@Test
+	public void testGetAccountAccountKeyProductGroupProductGroupNameGenerateFormPage()
+		throws Exception {
+
+		String accountKey =
+			testGetAccountAccountKeyProductGroupProductGroupNameGenerateFormPage_getAccountKey();
+		String irrelevantAccountKey =
+			testGetAccountAccountKeyProductGroupProductGroupNameGenerateFormPage_getIrrelevantAccountKey();
+		String productGroupName =
+			testGetAccountAccountKeyProductGroupProductGroupNameGenerateFormPage_getProductGroupName();
+		String irrelevantProductGroupName =
+			testGetAccountAccountKeyProductGroupProductGroupNameGenerateFormPage_getIrrelevantProductGroupName();
+
+		Page<LicenseKey> page =
+			licenseKeyResource.
+				getAccountAccountKeyProductGroupProductGroupNameGenerateFormPage(
+					accountKey, productGroupName);
+
+		Assert.assertEquals(0, page.getTotalCount());
+
+		if ((irrelevantAccountKey != null) &&
+			(irrelevantProductGroupName != null)) {
+
+			LicenseKey irrelevantLicenseKey =
+				testGetAccountAccountKeyProductGroupProductGroupNameGenerateFormPage_addLicenseKey(
+					irrelevantAccountKey, irrelevantProductGroupName,
+					randomIrrelevantLicenseKey());
+
+			page =
+				licenseKeyResource.
+					getAccountAccountKeyProductGroupProductGroupNameGenerateFormPage(
+						irrelevantAccountKey, irrelevantProductGroupName);
+
+			Assert.assertEquals(1, page.getTotalCount());
+
+			assertEquals(
+				Arrays.asList(irrelevantLicenseKey),
+				(List<LicenseKey>)page.getItems());
+			assertValid(page);
+		}
+
+		LicenseKey licenseKey1 =
+			testGetAccountAccountKeyProductGroupProductGroupNameGenerateFormPage_addLicenseKey(
+				accountKey, productGroupName, randomLicenseKey());
+
+		LicenseKey licenseKey2 =
+			testGetAccountAccountKeyProductGroupProductGroupNameGenerateFormPage_addLicenseKey(
+				accountKey, productGroupName, randomLicenseKey());
+
+		page =
+			licenseKeyResource.
+				getAccountAccountKeyProductGroupProductGroupNameGenerateFormPage(
+					accountKey, productGroupName);
+
+		Assert.assertEquals(2, page.getTotalCount());
+
+		assertEqualsIgnoringOrder(
+			Arrays.asList(licenseKey1, licenseKey2),
+			(List<LicenseKey>)page.getItems());
+		assertValid(page);
+	}
+
+	protected LicenseKey
+			testGetAccountAccountKeyProductGroupProductGroupNameGenerateFormPage_addLicenseKey(
+				String accountKey, String productGroupName,
+				LicenseKey licenseKey)
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
+	}
+
+	protected String
+			testGetAccountAccountKeyProductGroupProductGroupNameGenerateFormPage_getAccountKey()
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
+	}
+
+	protected String
+			testGetAccountAccountKeyProductGroupProductGroupNameGenerateFormPage_getIrrelevantAccountKey()
+		throws Exception {
+
+		return null;
+	}
+
+	protected String
+			testGetAccountAccountKeyProductGroupProductGroupNameGenerateFormPage_getProductGroupName()
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
+	}
+
+	protected String
+			testGetAccountAccountKeyProductGroupProductGroupNameGenerateFormPage_getIrrelevantProductGroupName()
+		throws Exception {
+
+		return null;
+	}
+
+	@Test
 	public void testGetAccountAccountKeyProductGroupProductGroupNameProductVersionDevelopmentLicenseKey()
 		throws Exception {
 
@@ -614,6 +717,13 @@ public abstract class BaseLicenseKeyResourceTestCase {
 		Assert.assertTrue(false);
 	}
 
+	@Test
+	public void testGetProductGroupProductGroupNameDevelopmentLicenseKey()
+		throws Exception {
+
+		Assert.assertTrue(false);
+	}
+
 	@Rule
 	public SearchTestRule searchTestRule = new SearchTestRule();
 
@@ -622,6 +732,23 @@ public abstract class BaseLicenseKeyResourceTestCase {
 
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
+	}
+
+	protected void assertContains(
+		LicenseKey licenseKey, List<LicenseKey> licenseKeys) {
+
+		boolean contains = false;
+
+		for (LicenseKey item : licenseKeys) {
+			if (equals(licenseKey, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			licenseKeys + " does not contain " + licenseKey, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
