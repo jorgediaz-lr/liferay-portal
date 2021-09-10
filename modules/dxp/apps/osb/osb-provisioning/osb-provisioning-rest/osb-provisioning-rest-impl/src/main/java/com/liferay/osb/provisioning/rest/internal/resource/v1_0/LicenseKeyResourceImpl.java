@@ -46,6 +46,8 @@ import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.DateUtil;
@@ -517,6 +519,9 @@ public class LicenseKeyResourceImpl
 				}
 			}
 		}
+		else if (_isOmniAdmin()) {
+			return;
+		}
 
 		throw new PrincipalException();
 	}
@@ -532,6 +537,9 @@ public class LicenseKeyResourceImpl
 					return;
 				}
 			}
+		}
+		else if (_isOmniAdmin()) {
+			return;
 		}
 
 		throw new PrincipalException();
@@ -589,6 +597,17 @@ public class LicenseKeyResourceImpl
 		}
 
 		return true;
+	}
+
+	private boolean _isOmniAdmin() {
+		PermissionChecker permissionChecker =
+			PermissionThreadLocal.getPermissionChecker();
+
+		if (permissionChecker.isOmniadmin()) {
+			return true;
+		}
+
+		return false;
 	}
 
 	private String _trimText(String text) {
