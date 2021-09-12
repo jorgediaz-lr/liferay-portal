@@ -15,8 +15,11 @@
 package com.liferay.document.library.internal.repository.capabilities;
 
 import com.liferay.document.library.configuration.DLConfiguration;
+import com.liferay.document.library.kernel.model.DLFileEntryConstants;
 import com.liferay.document.library.kernel.model.DLVersionNumberIncrease;
+import com.liferay.document.library.kernel.service.DLFileEntryMetadataLocalService;
 import com.liferay.document.library.versioning.VersionPurger;
+import com.liferay.expando.kernel.service.ExpandoRowLocalService;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -26,6 +29,7 @@ import com.liferay.portal.kernel.repository.capabilities.Capability;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileVersion;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService;
 import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.repository.capabilities.util.DLAppServiceAdapter;
 import com.liferay.portal.repository.util.LocalRepositoryWrapper;
@@ -213,6 +217,20 @@ public class LiferayVersioningCapability
 						versionPurgedListener.versionPurged(fileVersion);
 					}
 
+					_expandoRowLocalService.deleteRows(
+						fileVersion.getFileVersionId());
+
+					_dlFileEntryMetadataLocalService.
+						deleteFileVersionFileEntryMetadata(
+							fileVersion.getFileVersionId());
+
+					_workflowInstanceLinkLocalService.
+						deleteWorkflowInstanceLinks(
+							fileVersion.getCompanyId(),
+							fileVersion.getGroupId(),
+							DLFileEntryConstants.getClassName(),
+							fileVersion.getFileVersionId());
+
 					dlAppServiceAdapter.deleteFileVersion(
 						fileVersion.getFileVersionId());
 				}
@@ -226,6 +244,12 @@ public class LiferayVersioningCapability
 	@Reference
 	private DLConfiguration _dlConfiguration;
 
+	@Reference
+	private DLFileEntryMetadataLocalService _dlFileEntryMetadataLocalService;
+
+	@Reference
+	private ExpandoRowLocalService _expandoRowLocalService;
+
 	private ServiceTrackerList<VersionPurger.VersionPurgedListener>
 		_versionPurgedListeners;
 
@@ -234,5 +258,8 @@ public class LiferayVersioningCapability
 		policyOption = ReferencePolicyOption.GREEDY
 	)
 	private volatile VersionPurger _versionPurger;
+
+	@Reference
+	private WorkflowInstanceLinkLocalService _workflowInstanceLinkLocalService;
 
 }
