@@ -250,11 +250,20 @@ public class DLFileEntryModelDocumentContributor
 
 		StringBundler sb = new StringBundler(dlFileEntryMetadatas.size());
 
+		boolean firstField = true;
+
 		for (DLFileEntryMetadata dlFileEntryMetadata : dlFileEntryMetadatas) {
 			try {
 				DDMFormValues ddmFormValues =
 					storageEngineManager.getDDMFormValues(
 						dlFileEntryMetadata.getDDMStorageId());
+
+				if (!firstField) {
+					sb.append(StringPool.SPACE);
+				}
+				else {
+					firstField = false;
+				}
 
 				if (ddmFormValues != null) {
 					sb.append(
