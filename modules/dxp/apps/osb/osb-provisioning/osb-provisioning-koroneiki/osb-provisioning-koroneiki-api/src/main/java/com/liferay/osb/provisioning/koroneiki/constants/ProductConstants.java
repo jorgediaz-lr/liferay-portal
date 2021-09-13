@@ -19,6 +19,14 @@ package com.liferay.osb.provisioning.koroneiki.constants;
  */
 public class ProductConstants {
 
+	public static final String GROUP_NAME_COMMERCE = "Commerce";
+
+	public static final String GROUP_NAME_DXP = "DXP";
+
+	public static final String GROUP_NAME_DXP_CLOUD = "DXP Cloud";
+
+	public static final String GROUP_NAME_PORTAL = "Portal";
+
 	public static final String NAME_ANALYTICS_CLOUD_BUSINESS =
 		"Analytics Cloud Business";
 

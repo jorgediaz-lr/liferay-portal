@@ -27,7 +27,6 @@ import com.liferay.osb.provisioning.koroneiki.web.service.ProductPurchaseViewWeb
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.provisioning.license.exporter.LicenseKeyExporter;
 import com.liferay.osb.provisioning.license.helper.constants.LicenseType;
-import com.liferay.osb.provisioning.license.model.LicenseEntry;
 import com.liferay.osb.provisioning.license.service.LicenseEntryLocalService;
 import com.liferay.osb.provisioning.license.service.LicenseKeyLocalService;
 import com.liferay.osb.provisioning.rest.dto.v1_0.LicenseKey;
@@ -109,31 +108,6 @@ public class LicenseKeyResourceImpl
 
 		_checkAccountMembership(accountKey);
 
-		List<LicenseEntry> licenseEntries =
-			_licenseEntryLocalService.getLicenseEntriesByType(
-				LicenseType.DEVELOPER);
-
-		LicenseEntry licenseEntry = null;
-
-		for (LicenseEntry curLicenseEntry : licenseEntries) {
-			String curLicenseEntryName = curLicenseEntry.getName();
-
-			if (StringUtil.startsWith(curLicenseEntryName, productGroupName)) {
-				licenseEntry = curLicenseEntry;
-			}
-		}
-
-		if (licenseEntry == null) {
-			return Response.status(
-				Response.Status.NOT_FOUND
-			).build();
-		}
-
-		Product product = _productWebService.getProduct(
-			licenseEntry.getProductKey());
-
-		String productName = product.getName();
-
 		StringBundler sb = new StringBundler(5);
 
 		sb.append("accountKey eq '");
@@ -155,14 +129,13 @@ public class LicenseKeyResourceImpl
 
 			if ((curProductName.contains(
 					ProductConstants.NAME_COMMERCE_SUBSCRIPTION) &&
-				 productName.contains(
-					 ProductConstants.NAME_COMMERCE_SUBSCRIPTION)) ||
+				 productGroupName.equals(
+					 ProductConstants.GROUP_NAME_COMMERCE)) ||
 				((curProductName.startsWith(ProductConstants.NAME_DXP) ||
 				  curProductName.contains(ProductConstants.NAME_DXP_CLOUD)) &&
-				 productName.startsWith(ProductConstants.NAME_DXP) &&
-				 !productName.contains(ProductConstants.NAME_DXP_CLOUD)) ||
+				 productGroupName.equals(ProductConstants.GROUP_NAME_DXP)) ||
 				(curProductName.contains(ProductConstants.NAME_PORTAL) &&
-				 productName.contains(ProductConstants.NAME_PORTAL))) {
+				 productGroupName.equals(ProductConstants.GROUP_NAME_PORTAL))) {
 
 				hasActiveProduct = true;
 			}
@@ -175,7 +148,7 @@ public class LicenseKeyResourceImpl
 		}
 
 		String fileName = _licenseKeyExporter.getFileName(
-			productName, productVersion, "Developer Activation Keys");
+			productGroupName, productVersion, "development");
 
 		String licenseXML = StringUtil.read(
 			LicenseKeyResourceImpl.class.getResourceAsStream(
