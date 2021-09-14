@@ -512,7 +512,7 @@ public class DDMTemplateLocalServiceTest extends BaseDDMServiceTestCase {
 			getTestTemplateScript(language), WorkflowConstants.STATUS_APPROVED,
 			true, "foo");
 
-		Assert.assertEquals(false, template.isSmallImage());
+		Assert.assertFalse(template.isSmallImage());
 	}
 
 	@Test
@@ -527,7 +527,7 @@ public class DDMTemplateLocalServiceTest extends BaseDDMServiceTestCase {
 			getTestTemplateScript(language), WorkflowConstants.STATUS_APPROVED,
 			true, "http://foo.com/example.png");
 
-		Assert.assertEquals(true, template.isSmallImage());
+		Assert.assertTrue(template.isSmallImage());
 	}
 
 	protected DDMTemplate copyTemplate(DDMTemplate template) throws Exception {

@@ -85,8 +85,7 @@ public class SelectDDMFormFieldTemplateContextContributorTest
 
 		ddmFormFieldRenderingContext.setProperty("changedProperties", null);
 
-		Assert.assertEquals(
-			true,
+		Assert.assertTrue(
 			_selectDDMFormFieldTemplateContextContributor.getMultiple(
 				ddmFormField, ddmFormFieldRenderingContext));
 	}
@@ -105,8 +104,7 @@ public class SelectDDMFormFieldTemplateContextContributorTest
 		ddmFormFieldRenderingContext.setProperty(
 			"changedProperties", changedProperties);
 
-		Assert.assertEquals(
-			true,
+		Assert.assertTrue(
 			_selectDDMFormFieldTemplateContextContributor.getMultiple(
 				ddmFormField, ddmFormFieldRenderingContext));
 	}
@@ -128,8 +126,7 @@ public class SelectDDMFormFieldTemplateContextContributorTest
 		ddmFormFieldRenderingContext.setProperty(
 			"changedProperties", changedProperties);
 
-		Assert.assertEquals(
-			true,
+		Assert.assertTrue(
 			_selectDDMFormFieldTemplateContextContributor.getMultiple(
 				ddmFormField, ddmFormFieldRenderingContext));
 	}
@@ -205,7 +202,7 @@ public class SelectDDMFormFieldTemplateContextContributorTest
 		Assert.assertEquals("data-provider", parameters.get("dataSourceType"));
 
 		Assert.assertTrue(parameters.containsKey("multiple"));
-		Assert.assertEquals(false, parameters.get("multiple"));
+		Assert.assertFalse(parameters.get("multiple"));
 
 		Assert.assertTrue(parameters.containsKey("options"));
 
@@ -265,7 +262,7 @@ public class SelectDDMFormFieldTemplateContextContributorTest
 		Assert.assertEquals("manual", parameters.get("dataSourceType"));
 
 		Assert.assertTrue(parameters.containsKey("multiple"));
-		Assert.assertEquals(true, parameters.get("multiple"));
+		Assert.assertTrue(parameters.get("multiple"));
 
 		Assert.assertTrue(parameters.containsKey("options"));
 

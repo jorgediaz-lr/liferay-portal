@@ -277,7 +277,7 @@ public class LayoutConverterTest {
 			_layoutConverterRegistry.getLayoutConverter(
 				_getLayoutTemplateId(layout));
 
-		Assert.assertEquals(false, layoutConverter.isConvertible(layout));
+		Assert.assertFalse(layoutConverter.isConvertible(layout));
 	}
 
 	@Test
@@ -297,7 +297,7 @@ public class LayoutConverterTest {
 			_layoutConverterRegistry.getLayoutConverter(
 				_getLayoutTemplateId(layout));
 
-		Assert.assertEquals(false, layoutConverter.isConvertible(layout));
+		Assert.assertFalse(layoutConverter.isConvertible(layout));
 	}
 
 	@Test
@@ -308,7 +308,7 @@ public class LayoutConverterTest {
 			_layoutConverterRegistry.getLayoutConverter(
 				_getLayoutTemplateId(layout));
 
-		Assert.assertEquals(true, layoutConverter.isConvertible(layout));
+		Assert.assertTrue(layoutConverter.isConvertible(layout));
 	}
 
 	private String _getLayoutTemplateId(Layout layout) {

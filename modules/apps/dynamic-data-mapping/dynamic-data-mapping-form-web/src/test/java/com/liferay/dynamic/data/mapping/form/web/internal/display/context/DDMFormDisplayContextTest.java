@@ -126,7 +126,7 @@ public class DDMFormDisplayContextTest extends PowerMockito {
 		DDMFormDisplayContext ddmFormDisplayContext =
 			createDDMFormDisplayContext(renderRequest);
 
-		Assert.assertEquals(false, ddmFormDisplayContext.isAutosaveEnabled());
+		Assert.assertFalse(ddmFormDisplayContext.isAutosaveEnabled());
 	}
 
 	@Test
@@ -146,7 +146,7 @@ public class DDMFormDisplayContextTest extends PowerMockito {
 		DDMFormDisplayContext ddmFormDisplayContext =
 			createDDMFormDisplayContext(renderRequest);
 
-		Assert.assertEquals(false, ddmFormDisplayContext.isAutosaveEnabled());
+		Assert.assertFalse(ddmFormDisplayContext.isAutosaveEnabled());
 	}
 
 	@Test
@@ -172,7 +172,7 @@ public class DDMFormDisplayContextTest extends PowerMockito {
 		DDMFormDisplayContext ddmFormDisplayContext =
 			createDDMFormDisplayContext(renderRequest);
 
-		Assert.assertEquals(true, ddmFormDisplayContext.isAutosaveEnabled());
+		Assert.assertTrue(ddmFormDisplayContext.isAutosaveEnabled());
 	}
 
 	@Test
@@ -198,7 +198,7 @@ public class DDMFormDisplayContextTest extends PowerMockito {
 		DDMFormDisplayContext ddmFormDisplayContext =
 			createDDMFormDisplayContext(renderRequest);
 
-		Assert.assertEquals(false, ddmFormDisplayContext.isAutosaveEnabled());
+		Assert.assertFalse(ddmFormDisplayContext.isAutosaveEnabled());
 	}
 
 	@Test
