@@ -309,9 +309,14 @@ public class CalendarBookingLocalServiceTest {
 			firstChildCalendarBooking.getStartTime(),
 			firstChildCalendarBooking.getEndTime(), createServiceContext());
 
-		assertSentEmail(_user.getEmailAddress());
+		assertSentEmail(
+			StringBundler.concat(
+				_user.getFullName(), " <", _user.getEmailAddress(), ">"));
 
-		assertSentEmail(_invitingUser.getEmailAddress());
+		assertSentEmail(
+			StringBundler.concat(
+				invitingUser.getFullName(), " <",
+				invitingUser.getEmailAddress(), ">"));
 	}
 
 	@Test
