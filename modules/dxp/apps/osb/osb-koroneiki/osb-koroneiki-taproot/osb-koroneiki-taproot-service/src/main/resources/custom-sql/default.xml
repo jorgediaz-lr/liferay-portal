@@ -1,6 +1,14 @@
 <?xml version="1.0"?>
 
 <custom-sql>
+	<sql id="com.liferay.osb.koroneiki.taproot.service.persistence.AccountFieldFinder.findNames">
+		<![CDATA[
+			SELECT
+				DISTINCT Koroneiki_AccountField.name
+			FROM
+				Koroneiki_AccountField
+		]]>
+	</sql>
 	<sql id="com.liferay.osb.koroneiki.taproot.service.persistence.AccountFinder.countByContact">
 		<![CDATA[
 			SELECT

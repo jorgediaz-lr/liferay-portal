@@ -23,7 +23,9 @@ import com.liferay.osb.koroneiki.taproot.exception.AccountParentException;
 import com.liferay.osb.koroneiki.taproot.exception.RequiredAccountException;
 import com.liferay.osb.koroneiki.taproot.internal.util.DefaultTeamManager;
 import com.liferay.osb.koroneiki.taproot.model.Account;
+import com.liferay.osb.koroneiki.taproot.model.AccountField;
 import com.liferay.osb.koroneiki.taproot.model.Team;
+import com.liferay.osb.koroneiki.taproot.service.AccountFieldLocalService;
 import com.liferay.osb.koroneiki.taproot.service.TeamLocalService;
 import com.liferay.osb.koroneiki.taproot.service.base.AccountLocalServiceBaseImpl;
 import com.liferay.portal.aop.AopService;
@@ -89,7 +91,8 @@ public class AccountLocalServiceImpl extends AccountLocalServiceBaseImpl {
 			String description, long logoId, String contactEmailAddress,
 			String profileEmailAddress, String phoneNumber, String faxNumber,
 			String website, String tier, String region, String dataRegion,
-			String language, boolean internal, String status)
+			String language, boolean internal, String status,
+			List<AccountField> accountFields)
 		throws PortalException {
 
 		User user = userLocalService.getUser(userId);
@@ -131,6 +134,12 @@ public class AccountLocalServiceImpl extends AccountLocalServiceBaseImpl {
 		account = accountPersistence.update(account);
 
 		addResources(account.getCompanyId(), userId, account.getAccountId());
+
+		for (AccountField accountField : accountFields) {
+			_accountFieldLocalService.addAccountField(
+				userId, accountId, accountField.getName(),
+				accountField.getValue());
+		}
 
 		_defaultTeamManager.sync(account);
 
@@ -288,11 +297,12 @@ public class AccountLocalServiceImpl extends AccountLocalServiceBaseImpl {
 
 	@Indexable(type = IndexableType.REINDEX)
 	public Account updateAccount(
-			long accountId, long parentAccountId, String name, String code,
-			String description, long logoId, String contactEmailAddress,
-			String profileEmailAddress, String phoneNumber, String faxNumber,
-			String website, String tier, String region, String dataRegion,
-			String language, boolean internal, String status)
+			long userId, long accountId, long parentAccountId, String name,
+			String code, String description, long logoId,
+			String contactEmailAddress, String profileEmailAddress,
+			String phoneNumber, String faxNumber, String website, String tier,
+			String region, String dataRegion, String language, boolean internal,
+			String status, List<AccountField> accountFields)
 		throws PortalException {
 
 		code = StringUtil.toUpperCase(code);
@@ -322,6 +332,30 @@ public class AccountLocalServiceImpl extends AccountLocalServiceBaseImpl {
 
 		account = accountPersistence.update(account);
 
+		Map<String, AccountField> accountFieldsMap = getAccountFieldsMap(
+			accountId);
+
+		for (AccountField accountField : accountFields) {
+			AccountField curAccountField = accountFieldsMap.remove(
+				accountField.getName());
+
+			if (curAccountField == null) {
+				_accountFieldLocalService.addAccountField(
+					userId, accountId, accountField.getName(),
+					accountField.getValue());
+			}
+			else {
+				_accountFieldLocalService.updateAccountField(
+					curAccountField.getAccountFieldId(),
+					accountField.getValue());
+			}
+		}
+
+		for (AccountField accountField : accountFieldsMap.values()) {
+			_accountFieldLocalService.deleteAccountField(
+				accountField.getAccountFieldId());
+		}
+
 		_defaultTeamManager.sync(account);
 
 		if (oldParentAccountId != parentAccountId) {
@@ -343,6 +377,19 @@ public class AccountLocalServiceImpl extends AccountLocalServiceBaseImpl {
 		resourceLocalService.addResources(
 			companyId, 0, userId, Account.class.getName(), accountId, false,
 			false, false);
+	}
+
+	protected Map<String, AccountField> getAccountFieldsMap(long accountId) {
+		Map<String, AccountField> accountFieldsMap = new HashMap<>();
+
+		List<AccountField> accountFields =
+			_accountFieldLocalService.getAccountFields(accountId);
+
+		for (AccountField accountField : accountFields) {
+			accountFieldsMap.put(accountField.getName(), accountField);
+		}
+
+		return accountFieldsMap;
 	}
 
 	protected void validate(
@@ -379,6 +426,9 @@ public class AccountLocalServiceImpl extends AccountLocalServiceBaseImpl {
 			}
 		}
 	}
+
+	@Reference
+	private AccountFieldLocalService _accountFieldLocalService;
 
 	@Reference
 	private DefaultTeamManager _defaultTeamManager;

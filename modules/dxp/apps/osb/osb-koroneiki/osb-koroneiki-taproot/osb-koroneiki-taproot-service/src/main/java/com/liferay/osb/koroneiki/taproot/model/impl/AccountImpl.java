@@ -19,7 +19,9 @@ import com.liferay.osb.koroneiki.phytohormone.service.EntitlementLocalServiceUti
 import com.liferay.osb.koroneiki.root.model.ExternalLink;
 import com.liferay.osb.koroneiki.root.service.ExternalLinkLocalServiceUtil;
 import com.liferay.osb.koroneiki.taproot.model.Account;
+import com.liferay.osb.koroneiki.taproot.model.AccountField;
 import com.liferay.osb.koroneiki.taproot.model.Team;
+import com.liferay.osb.koroneiki.taproot.service.AccountFieldLocalServiceUtil;
 import com.liferay.osb.koroneiki.taproot.service.AccountLocalServiceUtil;
 import com.liferay.osb.koroneiki.taproot.service.TeamLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -27,7 +29,9 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.service.AddressLocalServiceUtil;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Kyle Bischof
@@ -35,6 +39,23 @@ import java.util.List;
 public class AccountImpl extends AccountBaseImpl {
 
 	public AccountImpl() {
+	}
+
+	public List<AccountField> getAccountFields() {
+		return AccountFieldLocalServiceUtil.getAccountFields(getAccountId());
+	}
+
+	public Map<String, String> getAccountFieldsMap() {
+		Map<String, String> accountFieldsMap = new HashMap<>();
+
+		List<AccountField> accountFields = getAccountFields();
+
+		for (AccountField accountField : accountFields) {
+			accountFieldsMap.put(
+				accountField.getName(), accountField.getValue());
+		}
+
+		return accountFieldsMap;
 	}
 
 	public List<Address> getAddresses() {

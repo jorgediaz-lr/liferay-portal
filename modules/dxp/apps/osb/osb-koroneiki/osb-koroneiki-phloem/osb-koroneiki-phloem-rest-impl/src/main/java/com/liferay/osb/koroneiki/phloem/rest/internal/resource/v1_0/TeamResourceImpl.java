@@ -77,7 +77,7 @@ public class TeamResourceImpl
 	}
 
 	@Override
-	public void deleteTeamContactByEmailAddress(
+	public void deleteTeamContactByEmailAddres(
 			String agentName, String agentUID, String teamKey,
 			String[] emailAddresses)
 		throws Exception {
@@ -96,7 +96,7 @@ public class TeamResourceImpl
 	}
 
 	@Override
-	public void deleteTeamContactByEmailAddressRole(
+	public void deleteTeamContactByEmailAddresEmailAddressRole(
 			String agentName, String agentUID, String teamKey,
 			String emailAddress, String[] contactRoleKeys)
 		throws Exception {
@@ -272,7 +272,7 @@ public class TeamResourceImpl
 	}
 
 	@Override
-	public void putTeamContactByEmailAddress(
+	public void putTeamContactByEmailAddres(
 			String agentName, String agentUID, String teamKey,
 			String[] emailAddresses)
 		throws Exception {
@@ -291,7 +291,7 @@ public class TeamResourceImpl
 	}
 
 	@Override
-	public void putTeamContactByEmailAddressRole(
+	public void putTeamContactByEmailAddresEmailAddressRole(
 			String agentName, String agentUID, String teamKey,
 			String emailAddress, String[] contactRoleKeys)
 		throws Exception {

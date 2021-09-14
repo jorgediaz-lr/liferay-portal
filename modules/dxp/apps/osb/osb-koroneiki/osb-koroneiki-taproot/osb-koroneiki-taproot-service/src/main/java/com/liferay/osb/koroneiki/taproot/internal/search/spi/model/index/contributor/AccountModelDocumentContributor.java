@@ -23,6 +23,7 @@ import com.liferay.osb.koroneiki.root.model.ExternalLink;
 import com.liferay.osb.koroneiki.root.service.AuditEntryLocalService;
 import com.liferay.osb.koroneiki.root.service.ExternalLinkLocalService;
 import com.liferay.osb.koroneiki.taproot.model.Account;
+import com.liferay.osb.koroneiki.taproot.model.AccountField;
 import com.liferay.osb.koroneiki.taproot.model.AccountNote;
 import com.liferay.osb.koroneiki.taproot.model.Contact;
 import com.liferay.osb.koroneiki.taproot.model.ContactAccountRole;
@@ -160,6 +161,7 @@ public class AccountModelDocumentContributor
 		document.addTextSortable("region", account.getRegion());
 		document.addTextSortable("language", account.getLanguage());
 
+		_contributeAccountFields(document, account);
 		_contributeAccountNotes(document, account.getAccountId());
 		_contributeAddresses(document, account.getAddresses());
 		_contributeContacts(document, account.getAccountId());
@@ -167,6 +169,17 @@ public class AccountModelDocumentContributor
 		_contributeExternalLinks(document, account.getAccountId());
 		_contributeProductPurchases(document, account.getAccountId());
 		_contributeTeams(document, account.getAccountId());
+	}
+
+	private void _contributeAccountFields(Document document, Account account)
+		throws PortalException {
+
+		List<AccountField> accountFields = account.getAccountFields();
+
+		for (AccountField accountField : accountFields) {
+			document.addKeyword(
+				"property_" + accountField.getName(), accountField.getValue());
+		}
 	}
 
 	private void _contributeAccountNotes(Document document, long accountId)

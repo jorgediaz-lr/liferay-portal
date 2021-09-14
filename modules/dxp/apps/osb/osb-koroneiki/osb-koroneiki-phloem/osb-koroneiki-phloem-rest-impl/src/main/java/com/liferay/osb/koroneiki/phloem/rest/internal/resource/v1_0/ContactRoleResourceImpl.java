@@ -209,7 +209,7 @@ public class ContactRoleResourceImpl
 	}
 
 	@Override
-	public ContactRole getContactRoleContactRoleTypeContactRoleName(
+	public ContactRole getContactRole(
 			String contactRoleType, String contactRoleName)
 		throws Exception {
 
@@ -244,8 +244,9 @@ public class ContactRoleResourceImpl
 	}
 
 	@Override
-	public Page<ContactRole> getTeamTeamKeyContactByEmailAddressRolesPage(
-			String teamKey, String emailAddress, Pagination pagination)
+	public Page<ContactRole>
+			getTeamTeamKeyContactByEmailAddresEmailAddressRolesPage(
+				String teamKey, String emailAddress, Pagination pagination)
 		throws Exception {
 
 		return _getTeamContactRolesPage(

@@ -35,6 +35,8 @@ import com.liferay.osb.koroneiki.phloem.rest.resource.v1_0.PostalAddressResource
 import com.liferay.osb.koroneiki.phloem.rest.resource.v1_0.ProductPurchaseResource;
 import com.liferay.osb.koroneiki.root.identity.management.provider.ContactIdentityProvider;
 import com.liferay.osb.koroneiki.taproot.constants.TaprootActionKeys;
+import com.liferay.osb.koroneiki.taproot.model.AccountField;
+import com.liferay.osb.koroneiki.taproot.service.AccountFieldLocalService;
 import com.liferay.osb.koroneiki.taproot.service.AccountLocalService;
 import com.liferay.osb.koroneiki.taproot.service.AccountService;
 import com.liferay.osb.koroneiki.taproot.service.ContactAccountRoleService;
@@ -64,7 +66,9 @@ import com.liferay.portal.vulcan.resource.EntityModelResource;
 import com.liferay.portal.vulcan.util.SearchUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.core.MultivaluedMap;
 
@@ -308,7 +312,8 @@ public class AccountResourceImpl
 
 	@Override
 	public EntityModel getEntityModel(MultivaluedMap multivaluedMap) {
-		return _entityModel;
+		return new AccountEntityModel(
+			_accountFieldLocalService.getAccountFieldNames());
 	}
 
 	@NestedField(parentClass = Team.class, value = "account")
@@ -393,6 +398,9 @@ public class AccountResourceImpl
 			status = accountStatus.toString();
 		}
 
+		List<AccountField> accountFields = getAccountFields(
+			account.getProperties(), Collections.emptyList());
+
 		Account curAccount = AccountUtil.toAccount(
 			_accountService.addAccount(
 				parentAccountId, account.getName(), account.getCode(),
@@ -402,7 +410,8 @@ public class AccountResourceImpl
 				account.getProfileEmailAddress(), account.getPhoneNumber(),
 				account.getFaxNumber(), account.getWebsite(), tier, region,
 				dataRegion, language,
-				GetterUtil.getBoolean(account.getInternal()), status));
+				GetterUtil.getBoolean(account.getInternal()), status,
+				accountFields));
 
 		if (!ArrayUtil.isEmpty(account.getContacts())) {
 			for (Contact contact : account.getContacts()) {
@@ -557,12 +566,15 @@ public class AccountResourceImpl
 			status = accountStatus.toString();
 		}
 
+		List<AccountField> accountFields = getAccountFields(
+			account.getProperties(), curAccount.getAccountFields());
+
 		return AccountUtil.toAccount(
 			_accountService.updateAccount(
 				accountKey, parentAccountId, name, code, description, logoId,
 				contactEmailAddress, profileEmailAddress, phoneNumber,
 				faxNumber, website, tier, region, dataRegion, language,
-				internal, status));
+				internal, status, accountFields));
 	}
 
 	@Override
@@ -617,6 +629,29 @@ public class AccountResourceImpl
 			accountKey,
 			_contactIdentityProvider.getContactByProviderId(contactUuid),
 			contactRoleKeys);
+	}
+
+	protected List<AccountField> getAccountFields(
+		Map<String, String> properties,
+		List<AccountField> defaultAccountFields) {
+
+		if (properties == null) {
+			return defaultAccountFields;
+		}
+
+		List<AccountField> accountFields = new ArrayList<>();
+
+		for (Map.Entry<String, String> entry : properties.entrySet()) {
+			AccountField accountField =
+				_accountFieldLocalService.createAccountField(0);
+
+			accountField.setName(entry.getKey());
+			accountField.setValue(entry.getValue());
+
+			accountFields.add(accountField);
+		}
+
+		return accountFields;
 	}
 
 	private void _deleteAccountContact(
@@ -756,7 +791,8 @@ public class AccountResourceImpl
 			actionIds);
 	}
 
-	private static final EntityModel _entityModel = new AccountEntityModel();
+	@Reference
+	private AccountFieldLocalService _accountFieldLocalService;
 
 	@Reference
 	private AccountLocalService _accountLocalService;

@@ -169,6 +169,52 @@ renderResponse.setTitle((koroneikiAccount == null) ? LanguageUtil.get(request, "
 
 			</aui:select>
 		</aui:fieldset>
+
+		<div class="form-group">
+			<h3 class="sheet-subtitle"><liferay-ui:message key="account-fields" /></h3>
+
+			<aui:fieldset id='<%= renderResponse.getNamespace() + "accountFields" %>'>
+
+				<%
+				List<AccountField> accountFields = new ArrayList<>();
+
+				if (koroneikiAccount != null) {
+					accountFields.addAll(koroneikiAccount.getAccountFields());
+				}
+
+				if (accountFields.isEmpty()) {
+					accountFields.add(AccountFieldLocalServiceUtil.createAccountField(0));
+				}
+
+				int[] accountFieldIndexes = new int[accountFields.size()];
+
+				for (int i = 0; i < accountFields.size(); i++) {
+					AccountField accountField = accountFields.get(i);
+
+					accountFieldIndexes[i] = i;
+				%>
+
+					<div class="lfr-form-row lfr-form-row-inline">
+						<div class="row-fields">
+							<aui:row>
+								<aui:col md="5">
+									<aui:input label="name" name='<%= "accountFieldName_" + i %>' type="text" value="<%= accountField.getName() %>" />
+								</aui:col>
+
+								<aui:col md="5">
+									<aui:input label="value" name='<%= "accountFieldValue_" + i %>' type="text" value="<%= accountField.getValue() %>" />
+								</aui:col>
+							</aui:row>
+						</div>
+					</div>
+
+				<%
+				}
+				%>
+
+				<aui:input name="accountFieldIndexes" type="hidden" value="<%= StringUtil.merge(accountFieldIndexes) %>" />
+			</aui:fieldset>
+		</div>
 	</aui:fieldset-group>
 
 	<aui:button-row>
@@ -178,7 +224,15 @@ renderResponse.setTitle((koroneikiAccount == null) ? LanguageUtil.get(request, "
 	</aui:button-row>
 </aui:form>
 
-<aui:script use="aui-base">
+<aui:script use="aui-base,liferay-auto-fields">
+	var autoFields = new Liferay.AutoFields(
+		{
+			contentBox: 'fieldset#<portlet:namespace />accountFields',
+			fieldIndexes: '<portlet:namespace />accountFieldIndexes',
+			namespace: '<portlet:namespace />'
+		}
+	).render();
+
 	<portlet:namespace />openAccountSelector = function() {
 		Liferay.Util.selectEntity(
 			{

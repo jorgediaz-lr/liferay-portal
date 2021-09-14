@@ -51,6 +51,29 @@
 			<finder-column name="code" />
 		</finder>
 	</entity>
+	<entity local-service="true" name="AccountField" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="accountFieldId" primary="true" type="long" />
+
+		<!-- Audit Fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+
+		<!-- Other fields -->
+
+		<column name="accountId" type="long" />
+		<column name="name" type="String" />
+		<column name="value" type="String" />
+
+		<!-- Finder methods -->
+
+		<finder name="AccountId" return-type="Collection">
+			<finder-column name="accountId" />
+		</finder>
+	</entity>
 	<entity local-service="true" name="AccountNote" remote-service="true" uuid="true">
 
 		<!-- PK fields -->

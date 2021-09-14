@@ -136,6 +136,10 @@ components:
                     description:
                         The account's profile email address.
                     type: string
+                properties:
+                    additionalProperties:
+                        type: string
+                    type: object
                 region:
                     description:
                         The region responsible for the account.
@@ -2826,7 +2830,6 @@ paths:
         get:
             description:
                 Retrieves the contact role by name.
-            operationId: getContactRoleContactRoleTypeContactRoleName
             parameters:
                 - in: path
                   name: contactRoleType
@@ -4733,7 +4736,6 @@ paths:
         get:
             description:
                 Retrieves the team role by name.
-            operationId: getTeamRoleTeamRoleTypeTeamRoleName
             parameters:
                 - in: path
                   name: teamRoleType
@@ -5007,7 +5009,7 @@ paths:
         delete:
             description:
                 Unassigns contacts from the team.
-            operationId: deleteTeamContactByEmailAddress
+            operationId: deleteTeamContactByEmailAddres
             parameters:
                 - $ref: "#/components/parameters/AgentName"
                 - $ref: "#/components/parameters/AgentUID"
@@ -5032,7 +5034,7 @@ paths:
         put:
             description:
                 Assigns contacts to the team.
-            operationId: putTeamContactByEmailAddress
+            operationId: putTeamContactByEmailAddres
             parameters:
                 - $ref: "#/components/parameters/AgentName"
                 - $ref: "#/components/parameters/AgentUID"
@@ -5058,7 +5060,7 @@ paths:
         delete:
             description:
                 Unassigns roles from the contact for the team.
-            operationId: deleteTeamContactByEmailAddressRole
+            operationId: deleteTeamContactByEmailAddresEmailAddressRole
             parameters:
                 - $ref: "#/components/parameters/AgentName"
                 - $ref: "#/components/parameters/AgentUID"
@@ -5088,7 +5090,7 @@ paths:
         get:
             description:
                 Retrieves the team's contact's contact roles.
-            operationId: getTeamTeamKeyContactByEmailAddressRolesPage
+            operationId: getTeamTeamKeyContactByEmailAddresEmailAddressRolesPage
             parameters:
                 - in: path
                   name: teamKey
@@ -5125,7 +5127,7 @@ paths:
         put:
             description:
                 Assigns roles to the contact for the team.
-            operationId: putTeamContactByEmailAddressRole
+            operationId: putTeamContactByEmailAddresEmailAddressRole
             parameters:
                 - $ref: "#/components/parameters/AgentName"
                 - $ref: "#/components/parameters/AgentUID"

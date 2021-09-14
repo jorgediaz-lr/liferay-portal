@@ -58,6 +58,7 @@ public class AccountUtil {
 					address -> PostalAddressUtil.toPostalAddress(address),
 					PostalAddress.class);
 				profileEmailAddress = account.getProfileEmailAddress();
+				properties = account.getAccountFieldsMap();
 				region = Region.create(account.getRegion());
 				status = Status.create(account.getStatus());
 				tier = Tier.create(account.getTier());

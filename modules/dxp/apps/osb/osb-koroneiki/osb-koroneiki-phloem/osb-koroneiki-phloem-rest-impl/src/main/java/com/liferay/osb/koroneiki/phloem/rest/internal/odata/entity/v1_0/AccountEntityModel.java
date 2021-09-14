@@ -22,6 +22,7 @@ import com.liferay.portal.odata.entity.EntityField;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.odata.entity.StringEntityField;
 
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -34,7 +35,7 @@ public class AccountEntityModel implements EntityModel {
 
 	public static final String NAME = "Account";
 
-	public AccountEntityModel() {
+	public AccountEntityModel(List<String> accountFieldNames) {
 		_entityFieldsMap = Stream.of(
 			new StringEntityField("accountKey", locale -> "accountKey"),
 			new CollectionEntityField(
@@ -186,6 +187,13 @@ public class AccountEntityModel implements EntityModel {
 		).collect(
 			Collectors.toMap(EntityField::getName, Function.identity())
 		);
+
+		for (String accountFieldName : accountFieldNames) {
+			String name = "property_" + accountFieldName;
+
+			_entityFieldsMap.put(
+				name, new StringEntityField(name, locale -> name));
+		}
 	}
 
 	@Override

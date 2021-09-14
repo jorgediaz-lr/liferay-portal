@@ -20,6 +20,8 @@ import com.liferay.osb.koroneiki.taproot.exception.AccountNameException;
 import com.liferay.osb.koroneiki.taproot.exception.AccountParentException;
 import com.liferay.osb.koroneiki.taproot.exception.RequiredAccountException;
 import com.liferay.osb.koroneiki.taproot.model.Account;
+import com.liferay.osb.koroneiki.taproot.model.AccountField;
+import com.liferay.osb.koroneiki.taproot.service.AccountFieldLocalService;
 import com.liferay.osb.koroneiki.taproot.service.AccountService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -31,7 +33,12 @@ import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -127,6 +134,32 @@ public class EditAccountMVCActionCommand extends BaseMVCActionCommand {
 		boolean internal = ParamUtil.getBoolean(actionRequest, "internal");
 		String status = ParamUtil.getString(actionRequest, "status");
 
+		List<AccountField> accountFields = new ArrayList<>();
+
+		int[] accountFieldIndexes = StringUtil.split(
+			ParamUtil.getString(actionRequest, "accountFieldIndexes"), 0);
+
+		for (int accountFieldIndex : accountFieldIndexes) {
+			String accountFieldName = ParamUtil.getString(
+				actionRequest, "accountFieldName_" + accountFieldIndex);
+			String accountFieldValue = ParamUtil.getString(
+				actionRequest, "accountFieldValue_" + accountFieldIndex);
+
+			if (Validator.isNull(accountFieldName) ||
+				Validator.isNull(accountFieldValue)) {
+
+				continue;
+			}
+
+			AccountField accountField =
+				_accountFieldLocalService.createAccountField(0);
+
+			accountField.setName(accountFieldName);
+			accountField.setValue(accountFieldValue);
+
+			accountFields.add(accountField);
+		}
+
 		Account account = null;
 
 		if (accountId <= 0) {
@@ -134,14 +167,14 @@ public class EditAccountMVCActionCommand extends BaseMVCActionCommand {
 				parentAccountId, name, code, description, 0,
 				contactEmailAddress, profileEmailAddress, phoneNumber,
 				faxNumber, website, tier, region, dataRegion, language,
-				internal, status);
+				internal, status, accountFields);
 		}
 		else {
 			account = _accountService.updateAccount(
 				accountId, parentAccountId, name, code, description, 0,
 				contactEmailAddress, profileEmailAddress, phoneNumber,
 				faxNumber, website, tier, region, dataRegion, language,
-				internal, status);
+				internal, status, accountFields);
 		}
 
 		String redirect = ParamUtil.getString(actionRequest, "redirect");
@@ -162,6 +195,9 @@ public class EditAccountMVCActionCommand extends BaseMVCActionCommand {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		EditAccountMVCActionCommand.class);
+
+	@Reference
+	private AccountFieldLocalService _accountFieldLocalService;
 
 	@Reference
 	private AccountService _accountService;

@@ -18,6 +18,7 @@ import com.liferay.osb.koroneiki.root.model.ExternalLink;
 import com.liferay.osb.koroneiki.root.service.ExternalLinkLocalService;
 import com.liferay.osb.koroneiki.taproot.constants.TaprootActionKeys;
 import com.liferay.osb.koroneiki.taproot.model.Account;
+import com.liferay.osb.koroneiki.taproot.model.AccountField;
 import com.liferay.osb.koroneiki.taproot.permission.AccountPermission;
 import com.liferay.osb.koroneiki.taproot.permission.ContactPermission;
 import com.liferay.osb.koroneiki.taproot.permission.TeamPermission;
@@ -49,7 +50,7 @@ public class AccountServiceImpl extends AccountServiceBaseImpl {
 			long logoId, String contactEmailAddress, String profileEmailAddress,
 			String phoneNumber, String faxNumber, String website, String tier,
 			String region, String dataRegion, String language, boolean internal,
-			String status)
+			String status, List<AccountField> accountFields)
 		throws PortalException {
 
 		_accountPermission.check(
@@ -58,7 +59,8 @@ public class AccountServiceImpl extends AccountServiceBaseImpl {
 		return accountLocalService.addAccount(
 			getUserId(), parentAccountId, name, code, description, logoId,
 			contactEmailAddress, profileEmailAddress, phoneNumber, faxNumber,
-			website, tier, region, dataRegion, language, internal, status);
+			website, tier, region, dataRegion, language, internal, status,
+			accountFields);
 	}
 
 	public Account deleteAccount(long accountId) throws PortalException {
@@ -172,16 +174,18 @@ public class AccountServiceImpl extends AccountServiceBaseImpl {
 			String description, long logoId, String contactEmailAddress,
 			String profileEmailAddress, String phoneNumber, String faxNumber,
 			String website, String tier, String region, String dataRegion,
-			String language, boolean internal, String status)
+			String language, boolean internal, String status,
+			List<AccountField> accountFields)
 		throws PortalException {
 
 		_accountPermission.check(
 			getPermissionChecker(), accountId, ActionKeys.UPDATE);
 
 		return accountLocalService.updateAccount(
-			accountId, parentAccountId, name, code, description, logoId,
-			contactEmailAddress, profileEmailAddress, phoneNumber, faxNumber,
-			website, tier, region, dataRegion, language, internal, status);
+			getUserId(), accountId, parentAccountId, name, code, description,
+			logoId, contactEmailAddress, profileEmailAddress, phoneNumber,
+			faxNumber, website, tier, region, dataRegion, language, internal,
+			status, accountFields);
 	}
 
 	public Account updateAccount(
@@ -189,7 +193,8 @@ public class AccountServiceImpl extends AccountServiceBaseImpl {
 			String description, long logoId, String contactEmailAddress,
 			String profileEmailAddress, String phoneNumber, String faxNumber,
 			String website, String tier, String region, String dataRegion,
-			String language, boolean internal, String status)
+			String language, boolean internal, String status,
+			List<AccountField> accountFields)
 		throws PortalException {
 
 		Account account = accountLocalService.getAccount(accountKey);
@@ -198,10 +203,10 @@ public class AccountServiceImpl extends AccountServiceBaseImpl {
 			getPermissionChecker(), account, ActionKeys.UPDATE);
 
 		return accountLocalService.updateAccount(
-			account.getAccountId(), parentAccountId, name, code, description,
-			logoId, contactEmailAddress, profileEmailAddress, phoneNumber,
-			faxNumber, website, tier, region, dataRegion, language, internal,
-			status);
+			getUserId(), account.getAccountId(), parentAccountId, name, code,
+			description, logoId, contactEmailAddress, profileEmailAddress,
+			phoneNumber, faxNumber, website, tier, region, dataRegion, language,
+			internal, status, accountFields);
 	}
 
 	@Reference
