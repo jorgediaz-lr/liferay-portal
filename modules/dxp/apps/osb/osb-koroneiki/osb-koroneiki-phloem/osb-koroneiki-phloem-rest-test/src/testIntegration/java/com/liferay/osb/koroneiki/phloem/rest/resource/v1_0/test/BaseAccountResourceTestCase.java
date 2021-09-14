@@ -34,7 +34,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -45,6 +44,7 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.RoleTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.odata.entity.EntityField;
@@ -221,21 +221,21 @@ public abstract class BaseAccountResourceTestCase {
 	@Test
 	public void testGetAccountsPage() throws Exception {
 		Page<Account> page = accountResource.getAccountsPage(
-			RandomTestUtil.randomString(), null, Pagination.of(1, 2), null);
+			RandomTestUtil.randomString(), null, Pagination.of(1, 10), null);
 
-		Assert.assertEquals(0, page.getTotalCount());
+		long totalCount = page.getTotalCount();
 
 		Account account1 = testGetAccountsPage_addAccount(randomAccount());
 
 		Account account2 = testGetAccountsPage_addAccount(randomAccount());
 
 		page = accountResource.getAccountsPage(
-			null, null, Pagination.of(1, 2), null);
+			null, null, Pagination.of(1, 10), null);
 
-		Assert.assertEquals(2, page.getTotalCount());
+		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
-		assertEqualsIgnoringOrder(
-			Arrays.asList(account1, account2), (List<Account>)page.getItems());
+		assertContains(account1, (List<Account>)page.getItems());
+		assertContains(account2, (List<Account>)page.getItems());
 		assertValid(page);
 	}
 
@@ -290,6 +290,11 @@ public abstract class BaseAccountResourceTestCase {
 
 	@Test
 	public void testGetAccountsPageWithPagination() throws Exception {
+		Page<Account> totalPage = accountResource.getAccountsPage(
+			null, null, null, null);
+
+		int totalCount = GetterUtil.getInteger(totalPage.getTotalCount());
+
 		Account account1 = testGetAccountsPage_addAccount(randomAccount());
 
 		Account account2 = testGetAccountsPage_addAccount(randomAccount());
@@ -297,27 +302,28 @@ public abstract class BaseAccountResourceTestCase {
 		Account account3 = testGetAccountsPage_addAccount(randomAccount());
 
 		Page<Account> page1 = accountResource.getAccountsPage(
-			null, null, Pagination.of(1, 2), null);
+			null, null, Pagination.of(1, totalCount + 2), null);
 
 		List<Account> accounts1 = (List<Account>)page1.getItems();
 
-		Assert.assertEquals(accounts1.toString(), 2, accounts1.size());
+		Assert.assertEquals(
+			accounts1.toString(), totalCount + 2, accounts1.size());
 
 		Page<Account> page2 = accountResource.getAccountsPage(
-			null, null, Pagination.of(2, 2), null);
+			null, null, Pagination.of(2, totalCount + 2), null);
 
-		Assert.assertEquals(3, page2.getTotalCount());
+		Assert.assertEquals(totalCount + 3, page2.getTotalCount());
 
 		List<Account> accounts2 = (List<Account>)page2.getItems();
 
 		Assert.assertEquals(accounts2.toString(), 1, accounts2.size());
 
 		Page<Account> page3 = accountResource.getAccountsPage(
-			null, null, Pagination.of(1, 3), null);
+			null, null, Pagination.of(1, totalCount + 3), null);
 
-		assertEqualsIgnoringOrder(
-			Arrays.asList(account1, account2, account3),
-			(List<Account>)page3.getItems());
+		assertContains(account1, (List<Account>)page3.getItems());
+		assertContains(account2, (List<Account>)page3.getItems());
+		assertContains(account3, (List<Account>)page3.getItems());
 	}
 
 	@Test
@@ -467,15 +473,6 @@ public abstract class BaseAccountResourceTestCase {
 	public void testGetAccountByExternalLinkDomainEntityNameEntityPage()
 		throws Exception {
 
-		Page<Account> page =
-			accountResource.getAccountByExternalLinkDomainEntityNameEntityPage(
-				testGetAccountByExternalLinkDomainEntityNameEntityPage_getDomain(),
-				testGetAccountByExternalLinkDomainEntityNameEntityPage_getEntityName(),
-				testGetAccountByExternalLinkDomainEntityNameEntityPage_getEntityId(),
-				Pagination.of(1, 2));
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		String domain =
 			testGetAccountByExternalLinkDomainEntityNameEntityPage_getDomain();
 		String irrelevantDomain =
@@ -488,6 +485,12 @@ public abstract class BaseAccountResourceTestCase {
 			testGetAccountByExternalLinkDomainEntityNameEntityPage_getEntityId();
 		String irrelevantEntityId =
 			testGetAccountByExternalLinkDomainEntityNameEntityPage_getIrrelevantEntityId();
+
+		Page<Account> page =
+			accountResource.getAccountByExternalLinkDomainEntityNameEntityPage(
+				domain, entityName, entityId, Pagination.of(1, 10));
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if ((irrelevantDomain != null) && (irrelevantEntityName != null) &&
 			(irrelevantEntityId != null)) {
@@ -521,7 +524,7 @@ public abstract class BaseAccountResourceTestCase {
 
 		page =
 			accountResource.getAccountByExternalLinkDomainEntityNameEntityPage(
-				domain, entityName, entityId, Pagination.of(1, 2));
+				domain, entityName, entityId, Pagination.of(1, 10));
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -708,15 +711,14 @@ public abstract class BaseAccountResourceTestCase {
 
 	@Test
 	public void testGetAccountChildAccountsPage() throws Exception {
-		Page<Account> page = accountResource.getAccountChildAccountsPage(
-			testGetAccountChildAccountsPage_getAccountKey(),
-			Pagination.of(1, 2));
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		String accountKey = testGetAccountChildAccountsPage_getAccountKey();
 		String irrelevantAccountKey =
 			testGetAccountChildAccountsPage_getIrrelevantAccountKey();
+
+		Page<Account> page = accountResource.getAccountChildAccountsPage(
+			accountKey, Pagination.of(1, 10));
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantAccountKey != null) {
 			Account irrelevantAccount =
@@ -741,7 +743,7 @@ public abstract class BaseAccountResourceTestCase {
 			accountKey, randomAccount());
 
 		page = accountResource.getAccountChildAccountsPage(
-			accountKey, Pagination.of(1, 2));
+			accountKey, Pagination.of(1, 10));
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -860,17 +862,16 @@ public abstract class BaseAccountResourceTestCase {
 
 	@Test
 	public void testGetContactByUuidContactUuidAccountsPage() throws Exception {
-		Page<Account> page =
-			accountResource.getContactByUuidContactUuidAccountsPage(
-				testGetContactByUuidContactUuidAccountsPage_getContactUuid(),
-				Pagination.of(1, 2));
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		String contactUuid =
 			testGetContactByUuidContactUuidAccountsPage_getContactUuid();
 		String irrelevantContactUuid =
 			testGetContactByUuidContactUuidAccountsPage_getIrrelevantContactUuid();
+
+		Page<Account> page =
+			accountResource.getContactByUuidContactUuidAccountsPage(
+				contactUuid, Pagination.of(1, 10));
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantContactUuid != null) {
 			Account irrelevantAccount =
@@ -897,7 +898,7 @@ public abstract class BaseAccountResourceTestCase {
 				contactUuid, randomAccount());
 
 		page = accountResource.getContactByUuidContactUuidAccountsPage(
-			contactUuid, Pagination.of(1, 2));
+			contactUuid, Pagination.of(1, 10));
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -977,15 +978,14 @@ public abstract class BaseAccountResourceTestCase {
 
 	@Test
 	public void testGetTeamTeamKeyAssignedAccountsPage() throws Exception {
-		Page<Account> page = accountResource.getTeamTeamKeyAssignedAccountsPage(
-			testGetTeamTeamKeyAssignedAccountsPage_getTeamKey(),
-			Pagination.of(1, 2));
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		String teamKey = testGetTeamTeamKeyAssignedAccountsPage_getTeamKey();
 		String irrelevantTeamKey =
 			testGetTeamTeamKeyAssignedAccountsPage_getIrrelevantTeamKey();
+
+		Page<Account> page = accountResource.getTeamTeamKeyAssignedAccountsPage(
+			teamKey, Pagination.of(1, 10));
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantTeamKey != null) {
 			Account irrelevantAccount =
@@ -1010,7 +1010,7 @@ public abstract class BaseAccountResourceTestCase {
 			teamKey, randomAccount());
 
 		page = accountResource.getTeamTeamKeyAssignedAccountsPage(
-			teamKey, Pagination.of(1, 2));
+			teamKey, Pagination.of(1, 10));
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -1085,6 +1085,20 @@ public abstract class BaseAccountResourceTestCase {
 
 	@Rule
 	public SearchTestRule searchTestRule = new SearchTestRule();
+
+	protected void assertContains(Account account, List<Account> accounts) {
+		boolean contains = false;
+
+		for (Account item : accounts) {
+			if (equals(account, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(accounts + " does not contain " + account, contains);
+	}
 
 	protected void assertHttpResponseStatusCode(
 		int expectedHttpResponseStatusCode,
@@ -1306,6 +1320,14 @@ public abstract class BaseAccountResourceTestCase {
 					"profileEmailAddress", additionalAssertFieldName)) {
 
 				if (account.getProfileEmailAddress() == null) {
+					valid = false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals("properties", additionalAssertFieldName)) {
+				if (account.getProperties() == null) {
 					valid = false;
 				}
 
@@ -1674,6 +1696,17 @@ public abstract class BaseAccountResourceTestCase {
 				continue;
 			}
 
+			if (Objects.equals("properties", additionalAssertFieldName)) {
+				if (!equals(
+						(Map)account1.getProperties(),
+						(Map)account2.getProperties())) {
+
+					return false;
+				}
+
+				continue;
+			}
+
 			if (Objects.equals("region", additionalAssertFieldName)) {
 				if (!Objects.deepEquals(
 						account1.getRegion(), account2.getRegion())) {
@@ -2009,6 +2042,11 @@ public abstract class BaseAccountResourceTestCase {
 			return sb.toString();
 		}
 
+		if (entityFieldName.equals("properties")) {
+			throw new IllegalArgumentException(
+				"Invalid entity field " + entityFieldName);
+		}
+
 		if (entityFieldName.equals("region")) {
 			throw new IllegalArgumentException(
 				"Invalid entity field " + entityFieldName);
@@ -2191,8 +2229,8 @@ public abstract class BaseAccountResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseAccountResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseAccountResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

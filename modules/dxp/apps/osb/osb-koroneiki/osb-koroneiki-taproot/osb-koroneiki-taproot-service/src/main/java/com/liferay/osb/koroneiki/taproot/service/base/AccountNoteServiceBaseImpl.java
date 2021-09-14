@@ -17,6 +17,8 @@ package com.liferay.osb.koroneiki.taproot.service.base;
 import com.liferay.osb.koroneiki.taproot.model.AccountNote;
 import com.liferay.osb.koroneiki.taproot.service.AccountNoteService;
 import com.liferay.osb.koroneiki.taproot.service.AccountNoteServiceUtil;
+import com.liferay.osb.koroneiki.taproot.service.persistence.AccountFieldFinder;
+import com.liferay.osb.koroneiki.taproot.service.persistence.AccountFieldPersistence;
 import com.liferay.osb.koroneiki.taproot.service.persistence.AccountFinder;
 import com.liferay.osb.koroneiki.taproot.service.persistence.AccountNotePersistence;
 import com.liferay.osb.koroneiki.taproot.service.persistence.AccountPersistence;
@@ -148,6 +150,12 @@ public abstract class AccountNoteServiceBaseImpl
 
 	@Reference
 	protected AccountFinder accountFinder;
+
+	@Reference
+	protected AccountFieldPersistence accountFieldPersistence;
+
+	@Reference
+	protected AccountFieldFinder accountFieldFinder;
 
 	@Reference
 	protected com.liferay.osb.koroneiki.taproot.service.AccountNoteLocalService

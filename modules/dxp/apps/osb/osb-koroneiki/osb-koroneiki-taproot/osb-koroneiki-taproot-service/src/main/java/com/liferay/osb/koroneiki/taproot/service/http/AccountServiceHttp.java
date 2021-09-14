@@ -57,7 +57,9 @@ public class AccountServiceHttp {
 			String contactEmailAddress, String profileEmailAddress,
 			String phoneNumber, String faxNumber, String website, String tier,
 			String region, String dataRegion, String language, boolean internal,
-			String status)
+			String status,
+			java.util.List<com.liferay.osb.koroneiki.taproot.model.AccountField>
+				accountFields)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		try {
@@ -69,7 +71,7 @@ public class AccountServiceHttp {
 				methodKey, parentAccountId, name, code, description, logoId,
 				contactEmailAddress, profileEmailAddress, phoneNumber,
 				faxNumber, website, tier, region, dataRegion, language,
-				internal, status);
+				internal, status, accountFields);
 
 			Object returnObj = null;
 
@@ -595,7 +597,9 @@ public class AccountServiceHttp {
 			String contactEmailAddress, String profileEmailAddress,
 			String phoneNumber, String faxNumber, String website, String tier,
 			String region, String dataRegion, String language, boolean internal,
-			String status)
+			String status,
+			java.util.List<com.liferay.osb.koroneiki.taproot.model.AccountField>
+				accountFields)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		try {
@@ -607,7 +611,7 @@ public class AccountServiceHttp {
 				methodKey, accountId, parentAccountId, name, code, description,
 				logoId, contactEmailAddress, profileEmailAddress, phoneNumber,
 				faxNumber, website, tier, region, dataRegion, language,
-				internal, status);
+				internal, status, accountFields);
 
 			Object returnObj = null;
 
@@ -643,7 +647,9 @@ public class AccountServiceHttp {
 			long logoId, String contactEmailAddress, String profileEmailAddress,
 			String phoneNumber, String faxNumber, String website, String tier,
 			String region, String dataRegion, String language, boolean internal,
-			String status)
+			String status,
+			java.util.List<com.liferay.osb.koroneiki.taproot.model.AccountField>
+				accountFields)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		try {
@@ -655,7 +661,7 @@ public class AccountServiceHttp {
 				methodKey, accountKey, parentAccountId, name, code, description,
 				logoId, contactEmailAddress, profileEmailAddress, phoneNumber,
 				faxNumber, website, tier, region, dataRegion, language,
-				internal, status);
+				internal, status, accountFields);
 
 			Object returnObj = null;
 
@@ -691,7 +697,7 @@ public class AccountServiceHttp {
 		long.class, String.class, String.class, String.class, long.class,
 		String.class, String.class, String.class, String.class, String.class,
 		String.class, String.class, String.class, String.class, boolean.class,
-		String.class
+		String.class, java.util.List.class
 	};
 	private static final Class<?>[] _deleteAccountParameterTypes1 =
 		new Class[] {long.class};
@@ -726,14 +732,14 @@ public class AccountServiceHttp {
 			long.class, long.class, String.class, String.class, String.class,
 			long.class, String.class, String.class, String.class, String.class,
 			String.class, String.class, String.class, String.class,
-			String.class, boolean.class, String.class
+			String.class, boolean.class, String.class, java.util.List.class
 		};
 	private static final Class<?>[] _updateAccountParameterTypes14 =
 		new Class[] {
 			String.class, long.class, String.class, String.class, String.class,
 			long.class, String.class, String.class, String.class, String.class,
 			String.class, String.class, String.class, String.class,
-			String.class, boolean.class, String.class
+			String.class, boolean.class, String.class, java.util.List.class
 		};
 
 }

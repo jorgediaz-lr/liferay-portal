@@ -34,7 +34,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -45,6 +44,7 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.RoleTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.odata.entity.EntityField;
@@ -208,14 +208,6 @@ public abstract class BaseTeamRoleResourceTestCase {
 	public void testGetAccountAccountKeyAssignedTeamTeamKeyRolesPage()
 		throws Exception {
 
-		Page<TeamRole> page =
-			teamRoleResource.getAccountAccountKeyAssignedTeamTeamKeyRolesPage(
-				testGetAccountAccountKeyAssignedTeamTeamKeyRolesPage_getAccountKey(),
-				testGetAccountAccountKeyAssignedTeamTeamKeyRolesPage_getTeamKey(),
-				Pagination.of(1, 2));
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		String accountKey =
 			testGetAccountAccountKeyAssignedTeamTeamKeyRolesPage_getAccountKey();
 		String irrelevantAccountKey =
@@ -224,6 +216,12 @@ public abstract class BaseTeamRoleResourceTestCase {
 			testGetAccountAccountKeyAssignedTeamTeamKeyRolesPage_getTeamKey();
 		String irrelevantTeamKey =
 			testGetAccountAccountKeyAssignedTeamTeamKeyRolesPage_getIrrelevantTeamKey();
+
+		Page<TeamRole> page =
+			teamRoleResource.getAccountAccountKeyAssignedTeamTeamKeyRolesPage(
+				accountKey, teamKey, Pagination.of(1, 10));
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if ((irrelevantAccountKey != null) && (irrelevantTeamKey != null)) {
 			TeamRole irrelevantTeamRole =
@@ -255,7 +253,7 @@ public abstract class BaseTeamRoleResourceTestCase {
 
 		page =
 			teamRoleResource.getAccountAccountKeyAssignedTeamTeamKeyRolesPage(
-				accountKey, teamKey, Pagination.of(1, 2));
+				accountKey, teamKey, Pagination.of(1, 10));
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -355,22 +353,21 @@ public abstract class BaseTeamRoleResourceTestCase {
 	@Test
 	public void testGetTeamRolesPage() throws Exception {
 		Page<TeamRole> page = teamRoleResource.getTeamRolesPage(
-			RandomTestUtil.randomString(), null, Pagination.of(1, 2), null);
+			RandomTestUtil.randomString(), null, Pagination.of(1, 10), null);
 
-		Assert.assertEquals(0, page.getTotalCount());
+		long totalCount = page.getTotalCount();
 
 		TeamRole teamRole1 = testGetTeamRolesPage_addTeamRole(randomTeamRole());
 
 		TeamRole teamRole2 = testGetTeamRolesPage_addTeamRole(randomTeamRole());
 
 		page = teamRoleResource.getTeamRolesPage(
-			null, null, Pagination.of(1, 2), null);
+			null, null, Pagination.of(1, 10), null);
 
-		Assert.assertEquals(2, page.getTotalCount());
+		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
-		assertEqualsIgnoringOrder(
-			Arrays.asList(teamRole1, teamRole2),
-			(List<TeamRole>)page.getItems());
+		assertContains(teamRole1, (List<TeamRole>)page.getItems());
+		assertContains(teamRole2, (List<TeamRole>)page.getItems());
 		assertValid(page);
 	}
 
@@ -427,6 +424,11 @@ public abstract class BaseTeamRoleResourceTestCase {
 
 	@Test
 	public void testGetTeamRolesPageWithPagination() throws Exception {
+		Page<TeamRole> totalPage = teamRoleResource.getTeamRolesPage(
+			null, null, null, null);
+
+		int totalCount = GetterUtil.getInteger(totalPage.getTotalCount());
+
 		TeamRole teamRole1 = testGetTeamRolesPage_addTeamRole(randomTeamRole());
 
 		TeamRole teamRole2 = testGetTeamRolesPage_addTeamRole(randomTeamRole());
@@ -434,27 +436,28 @@ public abstract class BaseTeamRoleResourceTestCase {
 		TeamRole teamRole3 = testGetTeamRolesPage_addTeamRole(randomTeamRole());
 
 		Page<TeamRole> page1 = teamRoleResource.getTeamRolesPage(
-			null, null, Pagination.of(1, 2), null);
+			null, null, Pagination.of(1, totalCount + 2), null);
 
 		List<TeamRole> teamRoles1 = (List<TeamRole>)page1.getItems();
 
-		Assert.assertEquals(teamRoles1.toString(), 2, teamRoles1.size());
+		Assert.assertEquals(
+			teamRoles1.toString(), totalCount + 2, teamRoles1.size());
 
 		Page<TeamRole> page2 = teamRoleResource.getTeamRolesPage(
-			null, null, Pagination.of(2, 2), null);
+			null, null, Pagination.of(2, totalCount + 2), null);
 
-		Assert.assertEquals(3, page2.getTotalCount());
+		Assert.assertEquals(totalCount + 3, page2.getTotalCount());
 
 		List<TeamRole> teamRoles2 = (List<TeamRole>)page2.getItems();
 
 		Assert.assertEquals(teamRoles2.toString(), 1, teamRoles2.size());
 
 		Page<TeamRole> page3 = teamRoleResource.getTeamRolesPage(
-			null, null, Pagination.of(1, 3), null);
+			null, null, Pagination.of(1, totalCount + 3), null);
 
-		assertEqualsIgnoringOrder(
-			Arrays.asList(teamRole1, teamRole2, teamRole3),
-			(List<TeamRole>)page3.getItems());
+		assertContains(teamRole1, (List<TeamRole>)page3.getItems());
+		assertContains(teamRole2, (List<TeamRole>)page3.getItems());
+		assertContains(teamRole3, (List<TeamRole>)page3.getItems());
 	}
 
 	@Test
@@ -662,26 +665,37 @@ public abstract class BaseTeamRoleResourceTestCase {
 	}
 
 	@Test
-	public void testGetTeamRoleTeamRoleTypeTeamRoleName() throws Exception {
+	public void testGetTeamRole() throws Exception {
 		Assert.assertTrue(false);
 	}
 
 	@Test
-	public void testGraphQLGetTeamRoleTeamRoleTypeTeamRoleName()
-		throws Exception {
-
+	public void testGraphQLGetTeamRole() throws Exception {
 		Assert.assertTrue(true);
 	}
 
 	@Test
-	public void testGraphQLGetTeamRoleTeamRoleTypeTeamRoleNameNotFound()
-		throws Exception {
-
+	public void testGraphQLGetTeamRoleNotFound() throws Exception {
 		Assert.assertTrue(true);
 	}
 
 	@Rule
 	public SearchTestRule searchTestRule = new SearchTestRule();
+
+	protected void assertContains(TeamRole teamRole, List<TeamRole> teamRoles) {
+		boolean contains = false;
+
+		for (TeamRole item : teamRoles) {
+			if (equals(teamRole, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			teamRoles + " does not contain " + teamRole, contains);
+	}
 
 	protected void assertHttpResponseStatusCode(
 		int expectedHttpResponseStatusCode,
@@ -1256,8 +1270,8 @@ public abstract class BaseTeamRoleResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseTeamRoleResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseTeamRoleResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

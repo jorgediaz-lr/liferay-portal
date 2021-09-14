@@ -344,7 +344,9 @@ public class Note implements Cloneable, Serializable {
 
 		public static Format create(String value) {
 			for (Format format : values()) {
-				if (Objects.equals(format.getValue(), value)) {
+				if (Objects.equals(format.getValue(), value) ||
+					Objects.equals(format.name(), value)) {
+
 					return format;
 				}
 			}
@@ -375,7 +377,9 @@ public class Note implements Cloneable, Serializable {
 
 		public static Status create(String value) {
 			for (Status status : values()) {
-				if (Objects.equals(status.getValue(), value)) {
+				if (Objects.equals(status.getValue(), value) ||
+					Objects.equals(status.name(), value)) {
+
 					return status;
 				}
 			}
@@ -406,7 +410,9 @@ public class Note implements Cloneable, Serializable {
 
 		public static Type create(String value) {
 			for (Type type : values()) {
-				if (Objects.equals(type.getValue(), value)) {
+				if (Objects.equals(type.getValue(), value) ||
+					Objects.equals(type.name(), value)) {
+
 					return type;
 				}
 			}

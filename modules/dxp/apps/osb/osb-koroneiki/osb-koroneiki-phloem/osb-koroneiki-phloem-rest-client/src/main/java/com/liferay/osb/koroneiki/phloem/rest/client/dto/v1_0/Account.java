@@ -20,6 +20,7 @@ import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.AccountSerDes;
 import java.io.Serializable;
 
 import java.util.Date;
+import java.util.Map;
 import java.util.Objects;
 
 import javax.annotation.Generated;
@@ -509,6 +510,28 @@ public class Account implements Cloneable, Serializable {
 
 	protected String profileEmailAddress;
 
+	public Map<String, String> getProperties() {
+		return properties;
+	}
+
+	public void setProperties(Map<String, String> properties) {
+		this.properties = properties;
+	}
+
+	public void setProperties(
+		UnsafeSupplier<Map<String, String>, Exception>
+			propertiesUnsafeSupplier) {
+
+		try {
+			properties = propertiesUnsafeSupplier.get();
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected Map<String, String> properties;
+
 	public Region getRegion() {
 		return region;
 	}
@@ -674,7 +697,9 @@ public class Account implements Cloneable, Serializable {
 
 		public static DataRegion create(String value) {
 			for (DataRegion dataRegion : values()) {
-				if (Objects.equals(dataRegion.getValue(), value)) {
+				if (Objects.equals(dataRegion.getValue(), value) ||
+					Objects.equals(dataRegion.name(), value)) {
+
 					return dataRegion;
 				}
 			}
@@ -706,7 +731,9 @@ public class Account implements Cloneable, Serializable {
 
 		public static Language create(String value) {
 			for (Language language : values()) {
-				if (Objects.equals(language.getValue(), value)) {
+				if (Objects.equals(language.getValue(), value) ||
+					Objects.equals(language.name(), value)) {
+
 					return language;
 				}
 			}
@@ -739,7 +766,9 @@ public class Account implements Cloneable, Serializable {
 
 		public static Region create(String value) {
 			for (Region region : values()) {
-				if (Objects.equals(region.getValue(), value)) {
+				if (Objects.equals(region.getValue(), value) ||
+					Objects.equals(region.name(), value)) {
+
 					return region;
 				}
 			}
@@ -770,7 +799,9 @@ public class Account implements Cloneable, Serializable {
 
 		public static Status create(String value) {
 			for (Status status : values()) {
-				if (Objects.equals(status.getValue(), value)) {
+				if (Objects.equals(status.getValue(), value) ||
+					Objects.equals(status.name(), value)) {
+
 					return status;
 				}
 			}
@@ -801,7 +832,9 @@ public class Account implements Cloneable, Serializable {
 
 		public static Tier create(String value) {
 			for (Tier tier : values()) {
-				if (Objects.equals(tier.getValue(), value)) {
+				if (Objects.equals(tier.getValue(), value) ||
+					Objects.equals(tier.name(), value)) {
+
 					return tier;
 				}
 			}

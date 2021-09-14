@@ -734,6 +734,36 @@ public class Account implements Serializable {
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected String profileEmailAddress;
 
+	@Schema
+	@Valid
+	public Map<String, String> getProperties() {
+		return properties;
+	}
+
+	public void setProperties(Map<String, String> properties) {
+		this.properties = properties;
+	}
+
+	@JsonIgnore
+	public void setProperties(
+		UnsafeSupplier<Map<String, String>, Exception>
+			propertiesUnsafeSupplier) {
+
+		try {
+			properties = propertiesUnsafeSupplier.get();
+		}
+		catch (RuntimeException re) {
+			throw re;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@GraphQLField
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	protected Map<String, String> properties;
+
 	@Schema(description = "The region responsible for the account.")
 	@Valid
 	public Region getRegion() {
@@ -1277,6 +1307,16 @@ public class Account implements Serializable {
 			sb.append(_escape(profileEmailAddress));
 
 			sb.append("\"");
+		}
+
+		if (properties != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"properties\": ");
+
+			sb.append(_toJSON(properties));
 		}
 
 		if (region != null) {

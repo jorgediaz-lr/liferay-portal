@@ -18,6 +18,7 @@ import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.Team;
 import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.TeamPermission;
 import com.liferay.osb.koroneiki.phloem.rest.resource.v1_0.TeamResource;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.GroupedModel;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
@@ -26,6 +27,8 @@ import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ResourceActionLocalService;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
 import com.liferay.portal.kernel.service.RoleLocalService;
+import com.liferay.portal.odata.filter.ExpressionConvert;
+import com.liferay.portal.odata.filter.FilterParserProvider;
 import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
@@ -310,7 +313,7 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	@Path("/teams/{teamKey}/contacts/by-email-address")
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Team")})
-	public void deleteTeamContactByEmailAddress(
+	public void deleteTeamContactByEmailAddres(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
 			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
@@ -339,7 +342,7 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	@Produces({"application/json", "application/xml"})
 	@PUT
 	@Tags(value = {@Tag(name = "Team")})
-	public void putTeamContactByEmailAddress(
+	public void putTeamContactByEmailAddres(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
 			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
@@ -369,7 +372,7 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	@Path("/teams/{teamKey}/contacts/by-email-address/{emailAddress}/roles")
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "Team")})
-	public void deleteTeamContactByEmailAddressRole(
+	public void deleteTeamContactByEmailAddresEmailAddressRole(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
 			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
@@ -401,7 +404,7 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	@Produces({"application/json", "application/xml"})
 	@PUT
 	@Tags(value = {@Tag(name = "Team")})
-	public void putTeamContactByEmailAddressRole(
+	public void putTeamContactByEmailAddresEmailAddressRole(
 			@Parameter(hidden = true) @QueryParam("agentName") String agentName,
 			@Parameter(hidden = true) @QueryParam("agentUID") String agentUID,
 			@NotNull @Parameter(hidden = true) @PathParam("teamKey") String
@@ -621,8 +624,32 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 		this.contextUser = contextUser;
 	}
 
+	public void setExpressionConvert(
+		ExpressionConvert<Filter> expressionConvert) {
+
+		this.expressionConvert = expressionConvert;
+	}
+
+	public void setFilterParserProvider(
+		FilterParserProvider filterParserProvider) {
+
+		this.filterParserProvider = filterParserProvider;
+	}
+
 	public void setGroupLocalService(GroupLocalService groupLocalService) {
 		this.groupLocalService = groupLocalService;
+	}
+
+	public void setResourceActionLocalService(
+		ResourceActionLocalService resourceActionLocalService) {
+
+		this.resourceActionLocalService = resourceActionLocalService;
+	}
+
+	public void setResourcePermissionLocalService(
+		ResourcePermissionLocalService resourcePermissionLocalService) {
+
+		this.resourcePermissionLocalService = resourcePermissionLocalService;
 	}
 
 	public void setRoleLocalService(RoleLocalService roleLocalService) {
@@ -698,9 +725,14 @@ public abstract class BaseTeamResourceImpl implements TeamResource {
 	protected Object contextScopeChecker;
 	protected UriInfo contextUriInfo;
 	protected com.liferay.portal.kernel.model.User contextUser;
+	protected ExpressionConvert<Filter> expressionConvert;
+	protected FilterParserProvider filterParserProvider;
 	protected GroupLocalService groupLocalService;
 	protected ResourceActionLocalService resourceActionLocalService;
 	protected ResourcePermissionLocalService resourcePermissionLocalService;
 	protected RoleLocalService roleLocalService;
+
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseTeamResourceImpl.class);
 
 }

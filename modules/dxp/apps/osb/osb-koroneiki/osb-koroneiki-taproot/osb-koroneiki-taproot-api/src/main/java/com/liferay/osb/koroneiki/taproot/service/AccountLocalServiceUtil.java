@@ -63,13 +63,16 @@ public class AccountLocalServiceUtil {
 			String description, long logoId, String contactEmailAddress,
 			String profileEmailAddress, String phoneNumber, String faxNumber,
 			String website, String tier, String region, String dataRegion,
-			String language, boolean internal, String status)
+			String language, boolean internal, String status,
+			List<com.liferay.osb.koroneiki.taproot.model.AccountField>
+				accountFields)
 		throws PortalException {
 
 		return getService().addAccount(
 			userId, parentAccountId, name, code, description, logoId,
 			contactEmailAddress, profileEmailAddress, phoneNumber, faxNumber,
-			website, tier, region, dataRegion, language, internal, status);
+			website, tier, region, dataRegion, language, internal, status,
+			accountFields);
 	}
 
 	/**
@@ -376,17 +379,21 @@ public class AccountLocalServiceUtil {
 	}
 
 	public static Account updateAccount(
-			long accountId, long parentAccountId, String name, String code,
-			String description, long logoId, String contactEmailAddress,
-			String profileEmailAddress, String phoneNumber, String faxNumber,
-			String website, String tier, String region, String dataRegion,
-			String language, boolean internal, String status)
+			long userId, long accountId, long parentAccountId, String name,
+			String code, String description, long logoId,
+			String contactEmailAddress, String profileEmailAddress,
+			String phoneNumber, String faxNumber, String website, String tier,
+			String region, String dataRegion, String language, boolean internal,
+			String status,
+			List<com.liferay.osb.koroneiki.taproot.model.AccountField>
+				accountFields)
 		throws PortalException {
 
 		return getService().updateAccount(
-			accountId, parentAccountId, name, code, description, logoId,
+			userId, accountId, parentAccountId, name, code, description, logoId,
 			contactEmailAddress, profileEmailAddress, phoneNumber, faxNumber,
-			website, tier, region, dataRegion, language, internal, status);
+			website, tier, region, dataRegion, language, internal, status,
+			accountFields);
 	}
 
 	public static AccountLocalService getService() {

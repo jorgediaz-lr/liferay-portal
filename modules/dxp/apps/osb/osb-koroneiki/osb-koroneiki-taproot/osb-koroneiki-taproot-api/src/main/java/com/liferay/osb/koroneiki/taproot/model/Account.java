@@ -58,6 +58,10 @@ public interface Account extends AccountModel, PersistedModel {
 
 		};
 
+	public java.util.List<AccountField> getAccountFields();
+
+	public java.util.Map<String, String> getAccountFieldsMap();
+
 	public java.util.List<com.liferay.portal.kernel.model.Address>
 		getAddresses();
 

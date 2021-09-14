@@ -200,7 +200,9 @@ public class TeamRole implements Cloneable, Serializable {
 
 		public static Type create(String value) {
 			for (Type type : values()) {
-				if (Objects.equals(type.getValue(), value)) {
+				if (Objects.equals(type.getValue(), value) ||
+					Objects.equals(type.name(), value)) {
+
 					return type;
 				}
 			}

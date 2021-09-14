@@ -15,6 +15,7 @@
 package com.liferay.osb.koroneiki.taproot.service;
 
 import com.liferay.osb.koroneiki.taproot.model.Account;
+import com.liferay.osb.koroneiki.taproot.model.AccountField;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
@@ -56,7 +57,7 @@ public interface AccountService extends BaseService {
 			long logoId, String contactEmailAddress, String profileEmailAddress,
 			String phoneNumber, String faxNumber, String website, String tier,
 			String region, String dataRegion, String language, boolean internal,
-			String status)
+			String status, List<AccountField> accountFields)
 		throws PortalException;
 
 	public Account deleteAccount(long accountId) throws PortalException;
@@ -113,7 +114,8 @@ public interface AccountService extends BaseService {
 			String description, long logoId, String contactEmailAddress,
 			String profileEmailAddress, String phoneNumber, String faxNumber,
 			String website, String tier, String region, String dataRegion,
-			String language, boolean internal, String status)
+			String language, boolean internal, String status,
+			List<AccountField> accountFields)
 		throws PortalException;
 
 	public Account updateAccount(
@@ -121,7 +123,8 @@ public interface AccountService extends BaseService {
 			String description, long logoId, String contactEmailAddress,
 			String profileEmailAddress, String phoneNumber, String faxNumber,
 			String website, String tier, String region, String dataRegion,
-			String language, boolean internal, String status)
+			String language, boolean internal, String status,
+			List<AccountField> accountFields)
 		throws PortalException;
 
 }

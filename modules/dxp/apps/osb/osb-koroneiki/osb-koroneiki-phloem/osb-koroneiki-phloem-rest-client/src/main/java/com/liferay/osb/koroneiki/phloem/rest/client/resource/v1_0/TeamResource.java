@@ -109,44 +109,44 @@ public interface TeamResource {
 			String agentName, String agentUID, String teamKey, Team team)
 		throws Exception;
 
-	public void deleteTeamContactByEmailAddress(
+	public void deleteTeamContactByEmailAddres(
 			String agentName, String agentUID, String teamKey,
 			String[] emailAddresses)
 		throws Exception;
 
-	public HttpInvoker.HttpResponse deleteTeamContactByEmailAddressHttpResponse(
+	public HttpInvoker.HttpResponse deleteTeamContactByEmailAddresHttpResponse(
 			String agentName, String agentUID, String teamKey,
 			String[] emailAddresses)
 		throws Exception;
 
-	public void putTeamContactByEmailAddress(
+	public void putTeamContactByEmailAddres(
 			String agentName, String agentUID, String teamKey,
 			String[] emailAddresses)
 		throws Exception;
 
-	public HttpInvoker.HttpResponse putTeamContactByEmailAddressHttpResponse(
+	public HttpInvoker.HttpResponse putTeamContactByEmailAddresHttpResponse(
 			String agentName, String agentUID, String teamKey,
 			String[] emailAddresses)
 		throws Exception;
 
-	public void deleteTeamContactByEmailAddressRole(
+	public void deleteTeamContactByEmailAddresEmailAddressRole(
 			String agentName, String agentUID, String teamKey,
 			String emailAddress, String[] contactRoleKeys)
 		throws Exception;
 
 	public HttpInvoker.HttpResponse
-			deleteTeamContactByEmailAddressRoleHttpResponse(
+			deleteTeamContactByEmailAddresEmailAddressRoleHttpResponse(
 				String agentName, String agentUID, String teamKey,
 				String emailAddress, String[] contactRoleKeys)
 		throws Exception;
 
-	public void putTeamContactByEmailAddressRole(
+	public void putTeamContactByEmailAddresEmailAddressRole(
 			String agentName, String agentUID, String teamKey,
 			String emailAddress, String[] contactRoleKeys)
 		throws Exception;
 
 	public HttpInvoker.HttpResponse
-			putTeamContactByEmailAddressRoleHttpResponse(
+			putTeamContactByEmailAddresEmailAddressRoleHttpResponse(
 				String agentName, String agentUID, String teamKey,
 				String emailAddress, String[] contactRoleKeys)
 		throws Exception;
@@ -1013,13 +1013,13 @@ public interface TeamResource {
 			return httpInvoker.invoke();
 		}
 
-		public void deleteTeamContactByEmailAddress(
+		public void deleteTeamContactByEmailAddres(
 				String agentName, String agentUID, String teamKey,
 				String[] emailAddresses)
 			throws Exception {
 
 			HttpInvoker.HttpResponse httpResponse =
-				deleteTeamContactByEmailAddressHttpResponse(
+				deleteTeamContactByEmailAddresHttpResponse(
 					agentName, agentUID, teamKey, emailAddresses);
 
 			String content = httpResponse.getContent();
@@ -1060,7 +1060,7 @@ public interface TeamResource {
 		}
 
 		public HttpInvoker.HttpResponse
-				deleteTeamContactByEmailAddressHttpResponse(
+				deleteTeamContactByEmailAddresHttpResponse(
 					String agentName, String agentUID, String teamKey,
 					String[] emailAddresses)
 			throws Exception {
@@ -1124,13 +1124,13 @@ public interface TeamResource {
 			return httpInvoker.invoke();
 		}
 
-		public void putTeamContactByEmailAddress(
+		public void putTeamContactByEmailAddres(
 				String agentName, String agentUID, String teamKey,
 				String[] emailAddresses)
 			throws Exception {
 
 			HttpInvoker.HttpResponse httpResponse =
-				putTeamContactByEmailAddressHttpResponse(
+				putTeamContactByEmailAddresHttpResponse(
 					agentName, agentUID, teamKey, emailAddresses);
 
 			String content = httpResponse.getContent();
@@ -1170,10 +1170,9 @@ public interface TeamResource {
 			}
 		}
 
-		public HttpInvoker.HttpResponse
-				putTeamContactByEmailAddressHttpResponse(
-					String agentName, String agentUID, String teamKey,
-					String[] emailAddresses)
+		public HttpInvoker.HttpResponse putTeamContactByEmailAddresHttpResponse(
+				String agentName, String agentUID, String teamKey,
+				String[] emailAddresses)
 			throws Exception {
 
 			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
@@ -1235,13 +1234,13 @@ public interface TeamResource {
 			return httpInvoker.invoke();
 		}
 
-		public void deleteTeamContactByEmailAddressRole(
+		public void deleteTeamContactByEmailAddresEmailAddressRole(
 				String agentName, String agentUID, String teamKey,
 				String emailAddress, String[] contactRoleKeys)
 			throws Exception {
 
 			HttpInvoker.HttpResponse httpResponse =
-				deleteTeamContactByEmailAddressRoleHttpResponse(
+				deleteTeamContactByEmailAddresEmailAddressRoleHttpResponse(
 					agentName, agentUID, teamKey, emailAddress,
 					contactRoleKeys);
 
@@ -1283,7 +1282,7 @@ public interface TeamResource {
 		}
 
 		public HttpInvoker.HttpResponse
-				deleteTeamContactByEmailAddressRoleHttpResponse(
+				deleteTeamContactByEmailAddresEmailAddressRoleHttpResponse(
 					String agentName, String agentUID, String teamKey,
 					String emailAddress, String[] contactRoleKeys)
 			throws Exception {
@@ -1348,13 +1347,13 @@ public interface TeamResource {
 			return httpInvoker.invoke();
 		}
 
-		public void putTeamContactByEmailAddressRole(
+		public void putTeamContactByEmailAddresEmailAddressRole(
 				String agentName, String agentUID, String teamKey,
 				String emailAddress, String[] contactRoleKeys)
 			throws Exception {
 
 			HttpInvoker.HttpResponse httpResponse =
-				putTeamContactByEmailAddressRoleHttpResponse(
+				putTeamContactByEmailAddresEmailAddressRoleHttpResponse(
 					agentName, agentUID, teamKey, emailAddress,
 					contactRoleKeys);
 
@@ -1396,7 +1395,7 @@ public interface TeamResource {
 		}
 
 		public HttpInvoker.HttpResponse
-				putTeamContactByEmailAddressRoleHttpResponse(
+				putTeamContactByEmailAddresEmailAddressRoleHttpResponse(
 					String agentName, String agentUID, String teamKey,
 					String emailAddress, String[] contactRoleKeys)
 			throws Exception {

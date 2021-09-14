@@ -4,6 +4,8 @@ create index IX_68C36822 on Koroneiki_Account (name[$COLUMN_LENGTH:150$]);
 create index IX_B9A3F00B on Koroneiki_Account (parentAccountId);
 create index IX_946B1DD7 on Koroneiki_Account (uuid_[$COLUMN_LENGTH:75$], companyId);
 
+create index IX_782E8095 on Koroneiki_AccountField (accountId);
+
 create index IX_23D24370 on Koroneiki_AccountNote (accountId, type_[$COLUMN_LENGTH:75$], priority, status[$COLUMN_LENGTH:75$]);
 create index IX_C79C658 on Koroneiki_AccountNote (accountId, type_[$COLUMN_LENGTH:75$], status[$COLUMN_LENGTH:75$]);
 create index IX_965A8949 on Koroneiki_AccountNote (accountNoteKey[$COLUMN_LENGTH:75$]);

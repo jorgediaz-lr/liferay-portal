@@ -409,6 +409,16 @@ public class AccountSerDes {
 			sb.append("\"");
 		}
 
+		if (account.getProperties() != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"properties\": ");
+
+			sb.append(_toJSON(account.getProperties()));
+		}
+
 		if (account.getRegion() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
@@ -678,6 +688,13 @@ public class AccountSerDes {
 				String.valueOf(account.getProfileEmailAddress()));
 		}
 
+		if (account.getProperties() == null) {
+			map.put("properties", null);
+		}
+		else {
+			map.put("properties", String.valueOf(account.getProperties()));
+		}
+
 		if (account.getRegion() == null) {
 			map.put("region", null);
 		}
@@ -904,6 +921,12 @@ public class AccountSerDes {
 				if (jsonParserFieldValue != null) {
 					account.setProfileEmailAddress(
 						(String)jsonParserFieldValue);
+				}
+			}
+			else if (Objects.equals(jsonParserFieldName, "properties")) {
+				if (jsonParserFieldValue != null) {
+					account.setProperties(
+						(Map)AccountSerDes.toMap((String)jsonParserFieldValue));
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "region")) {

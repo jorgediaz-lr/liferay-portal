@@ -25,6 +25,16 @@ create table Koroneiki_Account (
 	status VARCHAR(75) null
 );
 
+create table Koroneiki_AccountField (
+	mvccVersion LONG default 0 not null,
+	accountFieldId LONG not null primary key,
+	companyId LONG,
+	userId LONG,
+	accountId LONG,
+	name VARCHAR(75) null,
+	value VARCHAR(75) null
+);
+
 create table Koroneiki_AccountNote (
 	mvccVersion LONG default 0 not null,
 	uuid_ VARCHAR(75) null,

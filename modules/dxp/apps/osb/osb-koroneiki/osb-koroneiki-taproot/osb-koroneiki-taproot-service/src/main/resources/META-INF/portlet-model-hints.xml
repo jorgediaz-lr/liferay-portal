@@ -31,6 +31,15 @@
 		<field name="internal" type="boolean" />
 		<field name="status" type="String" />
 	</model>
+	<model name="com.liferay.osb.koroneiki.taproot.model.AccountField">
+		<field name="mvccVersion" type="long" />
+		<field name="accountFieldId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="accountId" type="long" />
+		<field name="name" type="String" />
+		<field name="value" type="String" />
+	</model>
 	<model name="com.liferay.osb.koroneiki.taproot.model.AccountNote">
 		<field name="mvccVersion" type="long" />
 		<field name="uuid" type="String" />

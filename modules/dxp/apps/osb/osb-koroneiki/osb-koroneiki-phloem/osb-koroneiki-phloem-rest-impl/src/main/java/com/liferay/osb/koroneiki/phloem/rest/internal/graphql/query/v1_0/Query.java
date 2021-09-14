@@ -270,7 +270,7 @@ public class Query {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {account(accountKey: ___){assignedTeams, code, contactEmailAddress, contacts, customerContacts, dataRegion, dateCreated, dateModified, description, entitlements, externalLinks, faxNumber, internal, key, language, logoId, name, parentAccountKey, phoneNumber, postalAddresses, productPurchases, profileEmailAddress, region, status, tier, website, workerContacts}}"}' -u 'test@liferay.com:test'
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {account(accountKey: ___){assignedTeams, code, contactEmailAddress, contacts, customerContacts, dataRegion, dateCreated, dateModified, description, entitlements, externalLinks, faxNumber, internal, key, language, logoId, name, parentAccountKey, phoneNumber, postalAddresses, productPurchases, profileEmailAddress, region, status, tier, website, workerContacts, properties}}"}' -u 'test@liferay.com:test'
 	 */
 	@GraphQLField(description = "Retrieves the account.")
 	public Account account(@GraphQLName("accountKey") String accountKey)
@@ -827,10 +827,10 @@ public class Query {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {contactRoleContactRoleTypeContactRoleName(contactRoleName: ___, contactRoleType: ___){dateCreated, dateModified, description, externalLinks, key, name, system, type}}"}' -u 'test@liferay.com:test'
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {contactRole(contactRoleName: ___, contactRoleType: ___){dateCreated, dateModified, description, externalLinks, key, name, system, type}}"}' -u 'test@liferay.com:test'
 	 */
 	@GraphQLField(description = "Retrieves the contact role by name.")
-	public ContactRole contactRoleContactRoleTypeContactRoleName(
+	public ContactRole contactRole(
 			@GraphQLName("contactRoleType") String contactRoleType,
 			@GraphQLName("contactRoleName") String contactRoleName)
 		throws Exception {
@@ -838,19 +838,17 @@ public class Query {
 		return _applyComponentServiceObjects(
 			_contactRoleResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			contactRoleResource ->
-				contactRoleResource.
-					getContactRoleContactRoleTypeContactRoleName(
-						contactRoleType, contactRoleName));
+			contactRoleResource -> contactRoleResource.getContactRole(
+				contactRoleType, contactRoleName));
 	}
 
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {teamTeamKeyContactByEmailAddressRoles(emailAddress: ___, page: ___, pageSize: ___, teamKey: ___){items {__}, page, pageSize, totalCount}}"}' -u 'test@liferay.com:test'
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {teamTeamKeyContactByEmailAddresEmailAddressRoles(emailAddress: ___, page: ___, pageSize: ___, teamKey: ___){items {__}, page, pageSize, totalCount}}"}' -u 'test@liferay.com:test'
 	 */
 	@GraphQLField(description = "Retrieves the team's contact's contact roles.")
-	public ContactRolePage teamTeamKeyContactByEmailAddressRoles(
+	public ContactRolePage teamTeamKeyContactByEmailAddresEmailAddressRoles(
 			@GraphQLName("teamKey") String teamKey,
 			@GraphQLName("emailAddress") String emailAddress,
 			@GraphQLName("pageSize") int pageSize,
@@ -862,7 +860,7 @@ public class Query {
 			this::_populateResourceContext,
 			contactRoleResource -> new ContactRolePage(
 				contactRoleResource.
-					getTeamTeamKeyContactByEmailAddressRolesPage(
+					getTeamTeamKeyContactByEmailAddresEmailAddressRolesPage(
 						teamKey, emailAddress, Pagination.of(page, pageSize))));
 	}
 
@@ -1757,10 +1755,10 @@ public class Query {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {teamRoleTeamRoleTypeTeamRoleName(teamRoleName: ___, teamRoleType: ___){dateCreated, dateModified, description, key, name, type}}"}' -u 'test@liferay.com:test'
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {teamRole(teamRoleName: ___, teamRoleType: ___){dateCreated, dateModified, description, key, name, type}}"}' -u 'test@liferay.com:test'
 	 */
 	@GraphQLField(description = "Retrieves the team role by name.")
-	public TeamRole teamRoleTeamRoleTypeTeamRoleName(
+	public TeamRole teamRole(
 			@GraphQLName("teamRoleType") String teamRoleType,
 			@GraphQLName("teamRoleName") String teamRoleName)
 		throws Exception {
@@ -1768,9 +1766,8 @@ public class Query {
 		return _applyComponentServiceObjects(
 			_teamRoleResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			teamRoleResource ->
-				teamRoleResource.getTeamRoleTeamRoleTypeTeamRoleName(
-					teamRoleType, teamRoleName));
+			teamRoleResource -> teamRoleResource.getTeamRole(
+				teamRoleType, teamRoleName));
 	}
 
 	@GraphQLTypeExtension(Account.class)
@@ -2261,6 +2258,39 @@ public class Query {
 		}
 
 		private Account _account;
+
+	}
+
+	@GraphQLTypeExtension(Team.class)
+	public class
+		GetTeamTeamKeyContactByEmailAddresEmailAddressRolesPageTypeExtension {
+
+		public GetTeamTeamKeyContactByEmailAddresEmailAddressRolesPageTypeExtension(
+			Team team) {
+
+			_team = team;
+		}
+
+		@GraphQLField(
+			description = "Retrieves the team's contact's contact roles."
+		)
+		public ContactRolePage teamKeyContactByEmailAddresEmailAddressRoles(
+				@GraphQLName("emailAddress") String emailAddress,
+				@GraphQLName("pageSize") int pageSize,
+				@GraphQLName("page") int page)
+			throws Exception {
+
+			return _applyComponentServiceObjects(
+				_contactRoleResourceComponentServiceObjects,
+				Query.this::_populateResourceContext,
+				contactRoleResource -> new ContactRolePage(
+					contactRoleResource.
+						getTeamTeamKeyContactByEmailAddresEmailAddressRolesPage(
+							_team.getKey(), emailAddress,
+							Pagination.of(page, pageSize))));
+		}
+
+		private Team _team;
 
 	}
 
@@ -2794,38 +2824,6 @@ public class Query {
 		}
 
 		private ProductPurchase _productPurchase;
-
-	}
-
-	@GraphQLTypeExtension(Team.class)
-	public class GetTeamTeamKeyContactByEmailAddressRolesPageTypeExtension {
-
-		public GetTeamTeamKeyContactByEmailAddressRolesPageTypeExtension(
-			Team team) {
-
-			_team = team;
-		}
-
-		@GraphQLField(
-			description = "Retrieves the team's contact's contact roles."
-		)
-		public ContactRolePage teamKeyContactByEmailAddressRoles(
-				@GraphQLName("emailAddress") String emailAddress,
-				@GraphQLName("pageSize") int pageSize,
-				@GraphQLName("page") int page)
-			throws Exception {
-
-			return _applyComponentServiceObjects(
-				_contactRoleResourceComponentServiceObjects,
-				Query.this::_populateResourceContext,
-				contactRoleResource -> new ContactRolePage(
-					contactRoleResource.
-						getTeamTeamKeyContactByEmailAddressRolesPage(
-							_team.getKey(), emailAddress,
-							Pagination.of(page, pageSize))));
-		}
-
-		private Team _team;
 
 	}
 

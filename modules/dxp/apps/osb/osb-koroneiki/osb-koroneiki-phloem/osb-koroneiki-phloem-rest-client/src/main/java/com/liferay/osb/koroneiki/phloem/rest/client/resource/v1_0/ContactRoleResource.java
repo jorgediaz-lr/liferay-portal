@@ -171,21 +171,21 @@ public interface ContactRoleResource {
 				ContactRolePermission contactRolePermission)
 		throws Exception;
 
-	public ContactRole getContactRoleContactRoleTypeContactRoleName(
+	public ContactRole getContactRole(
 			String contactRoleType, String contactRoleName)
 		throws Exception;
 
-	public HttpInvoker.HttpResponse
-			getContactRoleContactRoleTypeContactRoleNameHttpResponse(
-				String contactRoleType, String contactRoleName)
+	public HttpInvoker.HttpResponse getContactRoleHttpResponse(
+			String contactRoleType, String contactRoleName)
 		throws Exception;
 
-	public Page<ContactRole> getTeamTeamKeyContactByEmailAddressRolesPage(
-			String teamKey, String emailAddress, Pagination pagination)
+	public Page<ContactRole>
+			getTeamTeamKeyContactByEmailAddresEmailAddressRolesPage(
+				String teamKey, String emailAddress, Pagination pagination)
 		throws Exception;
 
 	public HttpInvoker.HttpResponse
-			getTeamTeamKeyContactByEmailAddressRolesPageHttpResponse(
+			getTeamTeamKeyContactByEmailAddresEmailAddressRolesPageHttpResponse(
 				String teamKey, String emailAddress, Pagination pagination)
 		throws Exception;
 
@@ -1491,13 +1491,12 @@ public interface ContactRoleResource {
 			return httpInvoker.invoke();
 		}
 
-		public ContactRole getContactRoleContactRoleTypeContactRoleName(
+		public ContactRole getContactRole(
 				String contactRoleType, String contactRoleName)
 			throws Exception {
 
-			HttpInvoker.HttpResponse httpResponse =
-				getContactRoleContactRoleTypeContactRoleNameHttpResponse(
-					contactRoleType, contactRoleName);
+			HttpInvoker.HttpResponse httpResponse = getContactRoleHttpResponse(
+				contactRoleType, contactRoleName);
 
 			String content = httpResponse.getContent();
 
@@ -1536,9 +1535,8 @@ public interface ContactRoleResource {
 			}
 		}
 
-		public HttpInvoker.HttpResponse
-				getContactRoleContactRoleTypeContactRoleNameHttpResponse(
-					String contactRoleType, String contactRoleName)
+		public HttpInvoker.HttpResponse getContactRoleHttpResponse(
+				String contactRoleType, String contactRoleName)
 			throws Exception {
 
 			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
@@ -1576,12 +1574,13 @@ public interface ContactRoleResource {
 			return httpInvoker.invoke();
 		}
 
-		public Page<ContactRole> getTeamTeamKeyContactByEmailAddressRolesPage(
-				String teamKey, String emailAddress, Pagination pagination)
+		public Page<ContactRole>
+				getTeamTeamKeyContactByEmailAddresEmailAddressRolesPage(
+					String teamKey, String emailAddress, Pagination pagination)
 			throws Exception {
 
 			HttpInvoker.HttpResponse httpResponse =
-				getTeamTeamKeyContactByEmailAddressRolesPageHttpResponse(
+				getTeamTeamKeyContactByEmailAddresEmailAddressRolesPageHttpResponse(
 					teamKey, emailAddress, pagination);
 
 			String content = httpResponse.getContent();
@@ -1622,7 +1621,7 @@ public interface ContactRoleResource {
 		}
 
 		public HttpInvoker.HttpResponse
-				getTeamTeamKeyContactByEmailAddressRolesPageHttpResponse(
+				getTeamTeamKeyContactByEmailAddresEmailAddressRolesPageHttpResponse(
 					String teamKey, String emailAddress, Pagination pagination)
 			throws Exception {
 

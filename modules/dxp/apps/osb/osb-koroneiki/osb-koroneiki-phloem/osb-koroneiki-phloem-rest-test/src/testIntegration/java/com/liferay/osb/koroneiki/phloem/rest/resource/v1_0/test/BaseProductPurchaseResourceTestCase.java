@@ -34,7 +34,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -45,6 +44,7 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.RoleTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.odata.entity.EntityField;
@@ -209,17 +209,16 @@ public abstract class BaseProductPurchaseResourceTestCase {
 	public void testGetAccountAccountKeyProductPurchasesPage()
 		throws Exception {
 
-		Page<ProductPurchase> page =
-			productPurchaseResource.getAccountAccountKeyProductPurchasesPage(
-				testGetAccountAccountKeyProductPurchasesPage_getAccountKey(),
-				Pagination.of(1, 2));
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		String accountKey =
 			testGetAccountAccountKeyProductPurchasesPage_getAccountKey();
 		String irrelevantAccountKey =
 			testGetAccountAccountKeyProductPurchasesPage_getIrrelevantAccountKey();
+
+		Page<ProductPurchase> page =
+			productPurchaseResource.getAccountAccountKeyProductPurchasesPage(
+				accountKey, Pagination.of(1, 10));
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantAccountKey != null) {
 			ProductPurchase irrelevantProductPurchase =
@@ -248,7 +247,7 @@ public abstract class BaseProductPurchaseResourceTestCase {
 				accountKey, randomProductPurchase());
 
 		page = productPurchaseResource.getAccountAccountKeyProductPurchasesPage(
-			accountKey, Pagination.of(1, 2));
+			accountKey, Pagination.of(1, 10));
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -357,18 +356,17 @@ public abstract class BaseProductPurchaseResourceTestCase {
 	public void testGetContactByUuidContactUuidProductPurchasesPage()
 		throws Exception {
 
-		Page<ProductPurchase> page =
-			productPurchaseResource.
-				getContactByUuidContactUuidProductPurchasesPage(
-					testGetContactByUuidContactUuidProductPurchasesPage_getContactUuid(),
-					Pagination.of(1, 2));
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		String contactUuid =
 			testGetContactByUuidContactUuidProductPurchasesPage_getContactUuid();
 		String irrelevantContactUuid =
 			testGetContactByUuidContactUuidProductPurchasesPage_getIrrelevantContactUuid();
+
+		Page<ProductPurchase> page =
+			productPurchaseResource.
+				getContactByUuidContactUuidProductPurchasesPage(
+					contactUuid, Pagination.of(1, 10));
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantContactUuid != null) {
 			ProductPurchase irrelevantProductPurchase =
@@ -399,7 +397,7 @@ public abstract class BaseProductPurchaseResourceTestCase {
 		page =
 			productPurchaseResource.
 				getContactByUuidContactUuidProductPurchasesPage(
-					contactUuid, Pagination.of(1, 2));
+					contactUuid, Pagination.of(1, 10));
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -490,9 +488,10 @@ public abstract class BaseProductPurchaseResourceTestCase {
 	public void testGetProductPurchasesPage() throws Exception {
 		Page<ProductPurchase> page =
 			productPurchaseResource.getProductPurchasesPage(
-				RandomTestUtil.randomString(), null, Pagination.of(1, 2), null);
+				RandomTestUtil.randomString(), null, Pagination.of(1, 10),
+				null);
 
-		Assert.assertEquals(0, page.getTotalCount());
+		long totalCount = page.getTotalCount();
 
 		ProductPurchase productPurchase1 =
 			testGetProductPurchasesPage_addProductPurchase(
@@ -503,13 +502,14 @@ public abstract class BaseProductPurchaseResourceTestCase {
 				randomProductPurchase());
 
 		page = productPurchaseResource.getProductPurchasesPage(
-			null, null, Pagination.of(1, 2), null);
+			null, null, Pagination.of(1, 10), null);
 
-		Assert.assertEquals(2, page.getTotalCount());
+		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
-		assertEqualsIgnoringOrder(
-			Arrays.asList(productPurchase1, productPurchase2),
-			(List<ProductPurchase>)page.getItems());
+		assertContains(
+			productPurchase1, (List<ProductPurchase>)page.getItems());
+		assertContains(
+			productPurchase2, (List<ProductPurchase>)page.getItems());
 		assertValid(page);
 	}
 
@@ -576,6 +576,12 @@ public abstract class BaseProductPurchaseResourceTestCase {
 
 	@Test
 	public void testGetProductPurchasesPageWithPagination() throws Exception {
+		Page<ProductPurchase> totalPage =
+			productPurchaseResource.getProductPurchasesPage(
+				null, null, null, null);
+
+		int totalCount = GetterUtil.getInteger(totalPage.getTotalCount());
+
 		ProductPurchase productPurchase1 =
 			testGetProductPurchasesPage_addProductPurchase(
 				randomProductPurchase());
@@ -590,19 +596,20 @@ public abstract class BaseProductPurchaseResourceTestCase {
 
 		Page<ProductPurchase> page1 =
 			productPurchaseResource.getProductPurchasesPage(
-				null, null, Pagination.of(1, 2), null);
+				null, null, Pagination.of(1, totalCount + 2), null);
 
 		List<ProductPurchase> productPurchases1 =
 			(List<ProductPurchase>)page1.getItems();
 
 		Assert.assertEquals(
-			productPurchases1.toString(), 2, productPurchases1.size());
+			productPurchases1.toString(), totalCount + 2,
+			productPurchases1.size());
 
 		Page<ProductPurchase> page2 =
 			productPurchaseResource.getProductPurchasesPage(
-				null, null, Pagination.of(2, 2), null);
+				null, null, Pagination.of(2, totalCount + 2), null);
 
-		Assert.assertEquals(3, page2.getTotalCount());
+		Assert.assertEquals(totalCount + 3, page2.getTotalCount());
 
 		List<ProductPurchase> productPurchases2 =
 			(List<ProductPurchase>)page2.getItems();
@@ -612,11 +619,14 @@ public abstract class BaseProductPurchaseResourceTestCase {
 
 		Page<ProductPurchase> page3 =
 			productPurchaseResource.getProductPurchasesPage(
-				null, null, Pagination.of(1, 3), null);
+				null, null, Pagination.of(1, totalCount + 3), null);
 
-		assertEqualsIgnoringOrder(
-			Arrays.asList(productPurchase1, productPurchase2, productPurchase3),
-			(List<ProductPurchase>)page3.getItems());
+		assertContains(
+			productPurchase1, (List<ProductPurchase>)page3.getItems());
+		assertContains(
+			productPurchase2, (List<ProductPurchase>)page3.getItems());
+		assertContains(
+			productPurchase3, (List<ProductPurchase>)page3.getItems());
 	}
 
 	@Test
@@ -758,16 +768,6 @@ public abstract class BaseProductPurchaseResourceTestCase {
 	public void testGetProductPurchaseByExternalLinkDomainEntityNameEntityPage()
 		throws Exception {
 
-		Page<ProductPurchase> page =
-			productPurchaseResource.
-				getProductPurchaseByExternalLinkDomainEntityNameEntityPage(
-					testGetProductPurchaseByExternalLinkDomainEntityNameEntityPage_getDomain(),
-					testGetProductPurchaseByExternalLinkDomainEntityNameEntityPage_getEntityName(),
-					testGetProductPurchaseByExternalLinkDomainEntityNameEntityPage_getEntityId(),
-					Pagination.of(1, 2));
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		String domain =
 			testGetProductPurchaseByExternalLinkDomainEntityNameEntityPage_getDomain();
 		String irrelevantDomain =
@@ -780,6 +780,13 @@ public abstract class BaseProductPurchaseResourceTestCase {
 			testGetProductPurchaseByExternalLinkDomainEntityNameEntityPage_getEntityId();
 		String irrelevantEntityId =
 			testGetProductPurchaseByExternalLinkDomainEntityNameEntityPage_getIrrelevantEntityId();
+
+		Page<ProductPurchase> page =
+			productPurchaseResource.
+				getProductPurchaseByExternalLinkDomainEntityNameEntityPage(
+					domain, entityName, entityId, Pagination.of(1, 10));
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if ((irrelevantDomain != null) && (irrelevantEntityName != null) &&
 			(irrelevantEntityId != null)) {
@@ -814,7 +821,7 @@ public abstract class BaseProductPurchaseResourceTestCase {
 		page =
 			productPurchaseResource.
 				getProductPurchaseByExternalLinkDomainEntityNameEntityPage(
-					domain, entityName, entityId, Pagination.of(1, 2));
+					domain, entityName, entityId, Pagination.of(1, 10));
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -1007,6 +1014,25 @@ public abstract class BaseProductPurchaseResourceTestCase {
 
 	@Rule
 	public SearchTestRule searchTestRule = new SearchTestRule();
+
+	protected void assertContains(
+		ProductPurchase productPurchase,
+		List<ProductPurchase> productPurchases) {
+
+		boolean contains = false;
+
+		for (ProductPurchase item : productPurchases) {
+			if (equals(productPurchase, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			productPurchases + " does not contain " + productPurchase,
+			contains);
+	}
 
 	protected void assertHttpResponseStatusCode(
 		int expectedHttpResponseStatusCode,
@@ -1834,8 +1860,8 @@ public abstract class BaseProductPurchaseResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseProductPurchaseResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseProductPurchaseResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

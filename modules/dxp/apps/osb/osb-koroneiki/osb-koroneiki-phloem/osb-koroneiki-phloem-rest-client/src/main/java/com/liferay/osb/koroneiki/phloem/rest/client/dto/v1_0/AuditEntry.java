@@ -310,7 +310,9 @@ public class AuditEntry implements Cloneable, Serializable {
 
 		public static Action create(String value) {
 			for (Action action : values()) {
-				if (Objects.equals(action.getValue(), value)) {
+				if (Objects.equals(action.getValue(), value) ||
+					Objects.equals(action.name(), value)) {
+
 					return action;
 				}
 			}

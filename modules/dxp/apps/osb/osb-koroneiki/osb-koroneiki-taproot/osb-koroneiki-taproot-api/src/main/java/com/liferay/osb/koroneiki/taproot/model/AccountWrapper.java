@@ -220,6 +220,16 @@ public class AccountWrapper
 		}
 	}
 
+	@Override
+	public java.util.List<AccountField> getAccountFields() {
+		return model.getAccountFields();
+	}
+
+	@Override
+	public Map<String, String> getAccountFieldsMap() {
+		return model.getAccountFieldsMap();
+	}
+
 	/**
 	 * Returns the account ID of this account.
 	 *

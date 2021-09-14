@@ -34,7 +34,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -43,6 +42,7 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.odata.entity.EntityField;
@@ -221,9 +221,10 @@ public abstract class BaseProductPurchaseViewResourceTestCase {
 	public void testGetProductPurchaseViewsPage() throws Exception {
 		Page<ProductPurchaseView> page =
 			productPurchaseViewResource.getProductPurchaseViewsPage(
-				RandomTestUtil.randomString(), null, Pagination.of(1, 2), null);
+				RandomTestUtil.randomString(), null, Pagination.of(1, 10),
+				null);
 
-		Assert.assertEquals(0, page.getTotalCount());
+		long totalCount = page.getTotalCount();
 
 		ProductPurchaseView productPurchaseView1 =
 			testGetProductPurchaseViewsPage_addProductPurchaseView(
@@ -234,13 +235,14 @@ public abstract class BaseProductPurchaseViewResourceTestCase {
 				randomProductPurchaseView());
 
 		page = productPurchaseViewResource.getProductPurchaseViewsPage(
-			null, null, Pagination.of(1, 2), null);
+			null, null, Pagination.of(1, 10), null);
 
-		Assert.assertEquals(2, page.getTotalCount());
+		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
-		assertEqualsIgnoringOrder(
-			Arrays.asList(productPurchaseView1, productPurchaseView2),
-			(List<ProductPurchaseView>)page.getItems());
+		assertContains(
+			productPurchaseView1, (List<ProductPurchaseView>)page.getItems());
+		assertContains(
+			productPurchaseView2, (List<ProductPurchaseView>)page.getItems());
 		assertValid(page);
 	}
 
@@ -312,6 +314,12 @@ public abstract class BaseProductPurchaseViewResourceTestCase {
 	public void testGetProductPurchaseViewsPageWithPagination()
 		throws Exception {
 
+		Page<ProductPurchaseView> totalPage =
+			productPurchaseViewResource.getProductPurchaseViewsPage(
+				null, null, null, null);
+
+		int totalCount = GetterUtil.getInteger(totalPage.getTotalCount());
+
 		ProductPurchaseView productPurchaseView1 =
 			testGetProductPurchaseViewsPage_addProductPurchaseView(
 				randomProductPurchaseView());
@@ -326,19 +334,20 @@ public abstract class BaseProductPurchaseViewResourceTestCase {
 
 		Page<ProductPurchaseView> page1 =
 			productPurchaseViewResource.getProductPurchaseViewsPage(
-				null, null, Pagination.of(1, 2), null);
+				null, null, Pagination.of(1, totalCount + 2), null);
 
 		List<ProductPurchaseView> productPurchaseViews1 =
 			(List<ProductPurchaseView>)page1.getItems();
 
 		Assert.assertEquals(
-			productPurchaseViews1.toString(), 2, productPurchaseViews1.size());
+			productPurchaseViews1.toString(), totalCount + 2,
+			productPurchaseViews1.size());
 
 		Page<ProductPurchaseView> page2 =
 			productPurchaseViewResource.getProductPurchaseViewsPage(
-				null, null, Pagination.of(2, 2), null);
+				null, null, Pagination.of(2, totalCount + 2), null);
 
-		Assert.assertEquals(3, page2.getTotalCount());
+		Assert.assertEquals(totalCount + 3, page2.getTotalCount());
 
 		List<ProductPurchaseView> productPurchaseViews2 =
 			(List<ProductPurchaseView>)page2.getItems();
@@ -348,13 +357,14 @@ public abstract class BaseProductPurchaseViewResourceTestCase {
 
 		Page<ProductPurchaseView> page3 =
 			productPurchaseViewResource.getProductPurchaseViewsPage(
-				null, null, Pagination.of(1, 3), null);
+				null, null, Pagination.of(1, totalCount + 3), null);
 
-		assertEqualsIgnoringOrder(
-			Arrays.asList(
-				productPurchaseView1, productPurchaseView2,
-				productPurchaseView3),
-			(List<ProductPurchaseView>)page3.getItems());
+		assertContains(
+			productPurchaseView1, (List<ProductPurchaseView>)page3.getItems());
+		assertContains(
+			productPurchaseView2, (List<ProductPurchaseView>)page3.getItems());
+		assertContains(
+			productPurchaseView3, (List<ProductPurchaseView>)page3.getItems());
 	}
 
 	@Test
@@ -503,6 +513,25 @@ public abstract class BaseProductPurchaseViewResourceTestCase {
 
 	@Rule
 	public SearchTestRule searchTestRule = new SearchTestRule();
+
+	protected void assertContains(
+		ProductPurchaseView productPurchaseView,
+		List<ProductPurchaseView> productPurchaseViews) {
+
+		boolean contains = false;
+
+		for (ProductPurchaseView item : productPurchaseViews) {
+			if (equals(productPurchaseView, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			productPurchaseViews + " does not contain " + productPurchaseView,
+			contains);
+	}
 
 	protected void assertHttpResponseStatusCode(
 		int expectedHttpResponseStatusCode,
@@ -978,8 +1007,8 @@ public abstract class BaseProductPurchaseViewResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseProductPurchaseViewResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseProductPurchaseViewResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

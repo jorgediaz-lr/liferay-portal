@@ -1,0 +1,157 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package com.liferay.osb.koroneiki.taproot.model;
+
+import java.io.Serializable;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * This class is used by SOAP remote services, specifically {@link com.liferay.osb.koroneiki.taproot.service.http.AccountFieldServiceSoap}.
+ *
+ * @author Brian Wing Shun Chan
+ * @generated
+ */
+public class AccountFieldSoap implements Serializable {
+
+	public static AccountFieldSoap toSoapModel(AccountField model) {
+		AccountFieldSoap soapModel = new AccountFieldSoap();
+
+		soapModel.setMvccVersion(model.getMvccVersion());
+		soapModel.setAccountFieldId(model.getAccountFieldId());
+		soapModel.setCompanyId(model.getCompanyId());
+		soapModel.setUserId(model.getUserId());
+		soapModel.setAccountId(model.getAccountId());
+		soapModel.setName(model.getName());
+		soapModel.setValue(model.getValue());
+
+		return soapModel;
+	}
+
+	public static AccountFieldSoap[] toSoapModels(AccountField[] models) {
+		AccountFieldSoap[] soapModels = new AccountFieldSoap[models.length];
+
+		for (int i = 0; i < models.length; i++) {
+			soapModels[i] = toSoapModel(models[i]);
+		}
+
+		return soapModels;
+	}
+
+	public static AccountFieldSoap[][] toSoapModels(AccountField[][] models) {
+		AccountFieldSoap[][] soapModels = null;
+
+		if (models.length > 0) {
+			soapModels = new AccountFieldSoap[models.length][models[0].length];
+		}
+		else {
+			soapModels = new AccountFieldSoap[0][0];
+		}
+
+		for (int i = 0; i < models.length; i++) {
+			soapModels[i] = toSoapModels(models[i]);
+		}
+
+		return soapModels;
+	}
+
+	public static AccountFieldSoap[] toSoapModels(List<AccountField> models) {
+		List<AccountFieldSoap> soapModels = new ArrayList<AccountFieldSoap>(
+			models.size());
+
+		for (AccountField model : models) {
+			soapModels.add(toSoapModel(model));
+		}
+
+		return soapModels.toArray(new AccountFieldSoap[soapModels.size()]);
+	}
+
+	public AccountFieldSoap() {
+	}
+
+	public long getPrimaryKey() {
+		return _accountFieldId;
+	}
+
+	public void setPrimaryKey(long pk) {
+		setAccountFieldId(pk);
+	}
+
+	public long getMvccVersion() {
+		return _mvccVersion;
+	}
+
+	public void setMvccVersion(long mvccVersion) {
+		_mvccVersion = mvccVersion;
+	}
+
+	public long getAccountFieldId() {
+		return _accountFieldId;
+	}
+
+	public void setAccountFieldId(long accountFieldId) {
+		_accountFieldId = accountFieldId;
+	}
+
+	public long getCompanyId() {
+		return _companyId;
+	}
+
+	public void setCompanyId(long companyId) {
+		_companyId = companyId;
+	}
+
+	public long getUserId() {
+		return _userId;
+	}
+
+	public void setUserId(long userId) {
+		_userId = userId;
+	}
+
+	public long getAccountId() {
+		return _accountId;
+	}
+
+	public void setAccountId(long accountId) {
+		_accountId = accountId;
+	}
+
+	public String getName() {
+		return _name;
+	}
+
+	public void setName(String name) {
+		_name = name;
+	}
+
+	public String getValue() {
+		return _value;
+	}
+
+	public void setValue(String value) {
+		_value = value;
+	}
+
+	private long _mvccVersion;
+	private long _accountFieldId;
+	private long _companyId;
+	private long _userId;
+	private long _accountId;
+	private String _name;
+	private String _value;
+
+}

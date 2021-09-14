@@ -16,6 +16,7 @@ package com.liferay.osb.koroneiki.taproot.service;
 
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.osb.koroneiki.taproot.model.Account;
+import com.liferay.osb.koroneiki.taproot.model.AccountField;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery;
@@ -84,7 +85,8 @@ public interface AccountLocalService
 			String description, long logoId, String contactEmailAddress,
 			String profileEmailAddress, String phoneNumber, String faxNumber,
 			String website, String tier, String region, String dataRegion,
-			String language, boolean internal, String status)
+			String language, boolean internal, String status,
+			List<AccountField> accountFields)
 		throws PortalException;
 
 	/**
@@ -330,11 +332,12 @@ public interface AccountLocalService
 
 	@Indexable(type = IndexableType.REINDEX)
 	public Account updateAccount(
-			long accountId, long parentAccountId, String name, String code,
-			String description, long logoId, String contactEmailAddress,
-			String profileEmailAddress, String phoneNumber, String faxNumber,
-			String website, String tier, String region, String dataRegion,
-			String language, boolean internal, String status)
+			long userId, long accountId, long parentAccountId, String name,
+			String code, String description, long logoId,
+			String contactEmailAddress, String profileEmailAddress,
+			String phoneNumber, String faxNumber, String website, String tier,
+			String region, String dataRegion, String language, boolean internal,
+			String status, List<AccountField> accountFields)
 		throws PortalException;
 
 }

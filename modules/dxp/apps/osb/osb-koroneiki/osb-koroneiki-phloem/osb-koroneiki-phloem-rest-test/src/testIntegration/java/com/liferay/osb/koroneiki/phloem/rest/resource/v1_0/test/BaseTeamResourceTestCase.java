@@ -34,7 +34,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -45,6 +44,7 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.RoleTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.odata.entity.EntityField;
@@ -206,16 +206,15 @@ public abstract class BaseTeamResourceTestCase {
 
 	@Test
 	public void testGetAccountAccountKeyAssignedTeamsPage() throws Exception {
-		Page<Team> page = teamResource.getAccountAccountKeyAssignedTeamsPage(
-			testGetAccountAccountKeyAssignedTeamsPage_getAccountKey(),
-			Pagination.of(1, 2));
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		String accountKey =
 			testGetAccountAccountKeyAssignedTeamsPage_getAccountKey();
 		String irrelevantAccountKey =
 			testGetAccountAccountKeyAssignedTeamsPage_getIrrelevantAccountKey();
+
+		Page<Team> page = teamResource.getAccountAccountKeyAssignedTeamsPage(
+			accountKey, Pagination.of(1, 10));
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantAccountKey != null) {
 			Team irrelevantTeam =
@@ -239,7 +238,7 @@ public abstract class BaseTeamResourceTestCase {
 			accountKey, randomTeam());
 
 		page = teamResource.getAccountAccountKeyAssignedTeamsPage(
-			accountKey, Pagination.of(1, 2));
+			accountKey, Pagination.of(1, 10));
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -311,15 +310,14 @@ public abstract class BaseTeamResourceTestCase {
 
 	@Test
 	public void testGetAccountAccountKeyTeamsPage() throws Exception {
-		Page<Team> page = teamResource.getAccountAccountKeyTeamsPage(
-			testGetAccountAccountKeyTeamsPage_getAccountKey(),
-			Pagination.of(1, 2));
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		String accountKey = testGetAccountAccountKeyTeamsPage_getAccountKey();
 		String irrelevantAccountKey =
 			testGetAccountAccountKeyTeamsPage_getIrrelevantAccountKey();
+
+		Page<Team> page = teamResource.getAccountAccountKeyTeamsPage(
+			accountKey, Pagination.of(1, 10));
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantAccountKey != null) {
 			Team irrelevantTeam = testGetAccountAccountKeyTeamsPage_addTeam(
@@ -342,7 +340,7 @@ public abstract class BaseTeamResourceTestCase {
 			accountKey, randomTeam());
 
 		page = teamResource.getAccountAccountKeyTeamsPage(
-			accountKey, Pagination.of(1, 2));
+			accountKey, Pagination.of(1, 10));
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -430,20 +428,21 @@ public abstract class BaseTeamResourceTestCase {
 	@Test
 	public void testGetTeamsPage() throws Exception {
 		Page<Team> page = teamResource.getTeamsPage(
-			RandomTestUtil.randomString(), null, Pagination.of(1, 2), null);
+			RandomTestUtil.randomString(), null, Pagination.of(1, 10), null);
 
-		Assert.assertEquals(0, page.getTotalCount());
+		long totalCount = page.getTotalCount();
 
 		Team team1 = testGetTeamsPage_addTeam(randomTeam());
 
 		Team team2 = testGetTeamsPage_addTeam(randomTeam());
 
-		page = teamResource.getTeamsPage(null, null, Pagination.of(1, 2), null);
+		page = teamResource.getTeamsPage(
+			null, null, Pagination.of(1, 10), null);
 
-		Assert.assertEquals(2, page.getTotalCount());
+		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
-		assertEqualsIgnoringOrder(
-			Arrays.asList(team1, team2), (List<Team>)page.getItems());
+		assertContains(team1, (List<Team>)page.getItems());
+		assertContains(team2, (List<Team>)page.getItems());
 		assertValid(page);
 	}
 
@@ -496,6 +495,11 @@ public abstract class BaseTeamResourceTestCase {
 
 	@Test
 	public void testGetTeamsPageWithPagination() throws Exception {
+		Page<Team> totalPage = teamResource.getTeamsPage(
+			null, null, null, null);
+
+		int totalCount = GetterUtil.getInteger(totalPage.getTotalCount());
+
 		Team team1 = testGetTeamsPage_addTeam(randomTeam());
 
 		Team team2 = testGetTeamsPage_addTeam(randomTeam());
@@ -503,26 +507,27 @@ public abstract class BaseTeamResourceTestCase {
 		Team team3 = testGetTeamsPage_addTeam(randomTeam());
 
 		Page<Team> page1 = teamResource.getTeamsPage(
-			null, null, Pagination.of(1, 2), null);
+			null, null, Pagination.of(1, totalCount + 2), null);
 
 		List<Team> teams1 = (List<Team>)page1.getItems();
 
-		Assert.assertEquals(teams1.toString(), 2, teams1.size());
+		Assert.assertEquals(teams1.toString(), totalCount + 2, teams1.size());
 
 		Page<Team> page2 = teamResource.getTeamsPage(
-			null, null, Pagination.of(2, 2), null);
+			null, null, Pagination.of(2, totalCount + 2), null);
 
-		Assert.assertEquals(3, page2.getTotalCount());
+		Assert.assertEquals(totalCount + 3, page2.getTotalCount());
 
 		List<Team> teams2 = (List<Team>)page2.getItems();
 
 		Assert.assertEquals(teams2.toString(), 1, teams2.size());
 
 		Page<Team> page3 = teamResource.getTeamsPage(
-			null, null, Pagination.of(1, 3), null);
+			null, null, Pagination.of(1, totalCount + 3), null);
 
-		assertEqualsIgnoringOrder(
-			Arrays.asList(team1, team2, team3), (List<Team>)page3.getItems());
+		assertContains(team1, (List<Team>)page3.getItems());
+		assertContains(team2, (List<Team>)page3.getItems());
+		assertContains(team3, (List<Team>)page3.getItems());
 	}
 
 	@Test
@@ -651,15 +656,6 @@ public abstract class BaseTeamResourceTestCase {
 	public void testGetTeamByExternalLinkDomainEntityNameEntityPage()
 		throws Exception {
 
-		Page<Team> page =
-			teamResource.getTeamByExternalLinkDomainEntityNameEntityPage(
-				testGetTeamByExternalLinkDomainEntityNameEntityPage_getDomain(),
-				testGetTeamByExternalLinkDomainEntityNameEntityPage_getEntityName(),
-				testGetTeamByExternalLinkDomainEntityNameEntityPage_getEntityId(),
-				Pagination.of(1, 2));
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		String domain =
 			testGetTeamByExternalLinkDomainEntityNameEntityPage_getDomain();
 		String irrelevantDomain =
@@ -672,6 +668,12 @@ public abstract class BaseTeamResourceTestCase {
 			testGetTeamByExternalLinkDomainEntityNameEntityPage_getEntityId();
 		String irrelevantEntityId =
 			testGetTeamByExternalLinkDomainEntityNameEntityPage_getIrrelevantEntityId();
+
+		Page<Team> page =
+			teamResource.getTeamByExternalLinkDomainEntityNameEntityPage(
+				domain, entityName, entityId, Pagination.of(1, 10));
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if ((irrelevantDomain != null) && (irrelevantEntityName != null) &&
 			(irrelevantEntityId != null)) {
@@ -701,7 +703,7 @@ public abstract class BaseTeamResourceTestCase {
 				domain, entityName, entityId, randomTeam());
 
 		page = teamResource.getTeamByExternalLinkDomainEntityNameEntityPage(
-			domain, entityName, entityId, Pagination.of(1, 2));
+			domain, entityName, entityId, Pagination.of(1, 10));
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -843,22 +845,26 @@ public abstract class BaseTeamResourceTestCase {
 	}
 
 	@Test
-	public void testDeleteTeamContactByEmailAddress() throws Exception {
+	public void testDeleteTeamContactByEmailAddres() throws Exception {
 		Assert.assertTrue(false);
 	}
 
 	@Test
-	public void testPutTeamContactByEmailAddress() throws Exception {
+	public void testPutTeamContactByEmailAddres() throws Exception {
 		Assert.assertTrue(false);
 	}
 
 	@Test
-	public void testDeleteTeamContactByEmailAddressRole() throws Exception {
+	public void testDeleteTeamContactByEmailAddresEmailAddressRole()
+		throws Exception {
+
 		Assert.assertTrue(false);
 	}
 
 	@Test
-	public void testPutTeamContactByEmailAddressRole() throws Exception {
+	public void testPutTeamContactByEmailAddresEmailAddressRole()
+		throws Exception {
+
 		Assert.assertTrue(false);
 	}
 
@@ -913,6 +919,20 @@ public abstract class BaseTeamResourceTestCase {
 
 	@Rule
 	public SearchTestRule searchTestRule = new SearchTestRule();
+
+	protected void assertContains(Team team, List<Team> teams) {
+		boolean contains = false;
+
+		for (Team item : teams) {
+			if (equals(team, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(teams + " does not contain " + team, contains);
+	}
 
 	protected void assertHttpResponseStatusCode(
 		int expectedHttpResponseStatusCode,
@@ -1567,8 +1587,8 @@ public abstract class BaseTeamResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseTeamResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseTeamResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -207,16 +206,16 @@ public abstract class BasePostalAddressResourceTestCase {
 
 	@Test
 	public void testGetAccountAccountKeyPostalAddressesPage() throws Exception {
-		Page<PostalAddress> page =
-			postalAddressResource.getAccountAccountKeyPostalAddressesPage(
-				testGetAccountAccountKeyPostalAddressesPage_getAccountKey());
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		String accountKey =
 			testGetAccountAccountKeyPostalAddressesPage_getAccountKey();
 		String irrelevantAccountKey =
 			testGetAccountAccountKeyPostalAddressesPage_getIrrelevantAccountKey();
+
+		Page<PostalAddress> page =
+			postalAddressResource.getAccountAccountKeyPostalAddressesPage(
+				accountKey);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantAccountKey != null) {
 			PostalAddress irrelevantPostalAddress =
@@ -460,6 +459,23 @@ public abstract class BasePostalAddressResourceTestCase {
 
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
+	}
+
+	protected void assertContains(
+		PostalAddress postalAddress, List<PostalAddress> postalAddresses) {
+
+		boolean contains = false;
+
+		for (PostalAddress item : postalAddresses) {
+			if (equals(postalAddress, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			postalAddresses + " does not contain " + postalAddress, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -1156,8 +1172,8 @@ public abstract class BasePostalAddressResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BasePostalAddressResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BasePostalAddressResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

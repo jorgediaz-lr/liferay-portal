@@ -1264,7 +1264,7 @@ public class Mutation {
 	}
 
 	@GraphQLField(description = "Unassigns contacts from the team.")
-	public boolean deleteTeamContactByEmailAddress(
+	public boolean deleteTeamContactByEmailAddres(
 			@GraphQLName("agentName") String agentName,
 			@GraphQLName("agentUID") String agentUID,
 			@GraphQLName("teamKey") String teamKey,
@@ -1274,14 +1274,14 @@ public class Mutation {
 		_applyVoidComponentServiceObjects(
 			_teamResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			teamResource -> teamResource.deleteTeamContactByEmailAddress(
+			teamResource -> teamResource.deleteTeamContactByEmailAddres(
 				agentName, agentUID, teamKey, emailAddresses));
 
 		return true;
 	}
 
 	@GraphQLField(description = "Assigns contacts to the team.")
-	public boolean updateTeamContactByEmailAddress(
+	public boolean updateTeamContactByEmailAddres(
 			@GraphQLName("agentName") String agentName,
 			@GraphQLName("agentUID") String agentUID,
 			@GraphQLName("teamKey") String teamKey,
@@ -1291,7 +1291,7 @@ public class Mutation {
 		_applyVoidComponentServiceObjects(
 			_teamResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			teamResource -> teamResource.putTeamContactByEmailAddress(
+			teamResource -> teamResource.putTeamContactByEmailAddres(
 				agentName, agentUID, teamKey, emailAddresses));
 
 		return true;
@@ -1300,7 +1300,7 @@ public class Mutation {
 	@GraphQLField(
 		description = "Unassigns roles from the contact for the team."
 	)
-	public boolean deleteTeamContactByEmailAddressRole(
+	public boolean deleteTeamContactByEmailAddresEmailAddressRole(
 			@GraphQLName("agentName") String agentName,
 			@GraphQLName("agentUID") String agentUID,
 			@GraphQLName("teamKey") String teamKey,
@@ -1311,14 +1311,16 @@ public class Mutation {
 		_applyVoidComponentServiceObjects(
 			_teamResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			teamResource -> teamResource.deleteTeamContactByEmailAddressRole(
-				agentName, agentUID, teamKey, emailAddress, contactRoleKeys));
+			teamResource ->
+				teamResource.deleteTeamContactByEmailAddresEmailAddressRole(
+					agentName, agentUID, teamKey, emailAddress,
+					contactRoleKeys));
 
 		return true;
 	}
 
 	@GraphQLField(description = "Assigns roles to the contact for the team.")
-	public boolean updateTeamContactByEmailAddressRole(
+	public boolean updateTeamContactByEmailAddresEmailAddressRole(
 			@GraphQLName("agentName") String agentName,
 			@GraphQLName("agentUID") String agentUID,
 			@GraphQLName("teamKey") String teamKey,
@@ -1329,8 +1331,10 @@ public class Mutation {
 		_applyVoidComponentServiceObjects(
 			_teamResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			teamResource -> teamResource.putTeamContactByEmailAddressRole(
-				agentName, agentUID, teamKey, emailAddress, contactRoleKeys));
+			teamResource ->
+				teamResource.putTeamContactByEmailAddresEmailAddressRole(
+					agentName, agentUID, teamKey, emailAddress,
+					contactRoleKeys));
 
 		return true;
 	}

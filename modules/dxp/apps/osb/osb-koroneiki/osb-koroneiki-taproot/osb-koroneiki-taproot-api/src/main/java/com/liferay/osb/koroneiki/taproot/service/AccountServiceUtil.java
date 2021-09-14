@@ -43,13 +43,16 @@ public class AccountServiceUtil {
 			long logoId, String contactEmailAddress, String profileEmailAddress,
 			String phoneNumber, String faxNumber, String website, String tier,
 			String region, String dataRegion, String language, boolean internal,
-			String status)
+			String status,
+			List<com.liferay.osb.koroneiki.taproot.model.AccountField>
+				accountFields)
 		throws PortalException {
 
 		return getService().addAccount(
 			parentAccountId, name, code, description, logoId,
 			contactEmailAddress, profileEmailAddress, phoneNumber, faxNumber,
-			website, tier, region, dataRegion, language, internal, status);
+			website, tier, region, dataRegion, language, internal, status,
+			accountFields);
 	}
 
 	public static Account deleteAccount(long accountId) throws PortalException {
@@ -136,13 +139,16 @@ public class AccountServiceUtil {
 			String description, long logoId, String contactEmailAddress,
 			String profileEmailAddress, String phoneNumber, String faxNumber,
 			String website, String tier, String region, String dataRegion,
-			String language, boolean internal, String status)
+			String language, boolean internal, String status,
+			List<com.liferay.osb.koroneiki.taproot.model.AccountField>
+				accountFields)
 		throws PortalException {
 
 		return getService().updateAccount(
 			accountId, parentAccountId, name, code, description, logoId,
 			contactEmailAddress, profileEmailAddress, phoneNumber, faxNumber,
-			website, tier, region, dataRegion, language, internal, status);
+			website, tier, region, dataRegion, language, internal, status,
+			accountFields);
 	}
 
 	public static Account updateAccount(
@@ -150,13 +156,16 @@ public class AccountServiceUtil {
 			String description, long logoId, String contactEmailAddress,
 			String profileEmailAddress, String phoneNumber, String faxNumber,
 			String website, String tier, String region, String dataRegion,
-			String language, boolean internal, String status)
+			String language, boolean internal, String status,
+			List<com.liferay.osb.koroneiki.taproot.model.AccountField>
+				accountFields)
 		throws PortalException {
 
 		return getService().updateAccount(
 			accountKey, parentAccountId, name, code, description, logoId,
 			contactEmailAddress, profileEmailAddress, phoneNumber, faxNumber,
-			website, tier, region, dataRegion, language, internal, status);
+			website, tier, region, dataRegion, language, internal, status,
+			accountFields);
 	}
 
 	public static AccountService getService() {

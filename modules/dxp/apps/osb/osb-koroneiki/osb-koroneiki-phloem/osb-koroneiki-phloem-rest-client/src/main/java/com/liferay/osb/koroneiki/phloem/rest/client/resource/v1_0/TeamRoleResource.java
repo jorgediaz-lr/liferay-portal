@@ -112,13 +112,11 @@ public interface TeamRoleResource {
 			TeamRolePermission teamRolePermission)
 		throws Exception;
 
-	public TeamRole getTeamRoleTeamRoleTypeTeamRoleName(
-			String teamRoleType, String teamRoleName)
+	public TeamRole getTeamRole(String teamRoleType, String teamRoleName)
 		throws Exception;
 
-	public HttpInvoker.HttpResponse
-			getTeamRoleTeamRoleTypeTeamRoleNameHttpResponse(
-				String teamRoleType, String teamRoleName)
+	public HttpInvoker.HttpResponse getTeamRoleHttpResponse(
+			String teamRoleType, String teamRoleName)
 		throws Exception;
 
 	public static class Builder {
@@ -931,13 +929,11 @@ public interface TeamRoleResource {
 			return httpInvoker.invoke();
 		}
 
-		public TeamRole getTeamRoleTeamRoleTypeTeamRoleName(
-				String teamRoleType, String teamRoleName)
+		public TeamRole getTeamRole(String teamRoleType, String teamRoleName)
 			throws Exception {
 
-			HttpInvoker.HttpResponse httpResponse =
-				getTeamRoleTeamRoleTypeTeamRoleNameHttpResponse(
-					teamRoleType, teamRoleName);
+			HttpInvoker.HttpResponse httpResponse = getTeamRoleHttpResponse(
+				teamRoleType, teamRoleName);
 
 			String content = httpResponse.getContent();
 
@@ -976,9 +972,8 @@ public interface TeamRoleResource {
 			}
 		}
 
-		public HttpInvoker.HttpResponse
-				getTeamRoleTeamRoleTypeTeamRoleNameHttpResponse(
-					String teamRoleType, String teamRoleName)
+		public HttpInvoker.HttpResponse getTeamRoleHttpResponse(
+				String teamRoleType, String teamRoleName)
 			throws Exception {
 
 			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();

@@ -68,7 +68,9 @@ public class AccountServiceSoap {
 				String profileEmailAddress, String phoneNumber,
 				String faxNumber, String website, String tier, String region,
 				String dataRegion, String language, boolean internal,
-				String status)
+				String status,
+				com.liferay.osb.koroneiki.taproot.model.AccountFieldSoap[]
+					accountFields)
 		throws RemoteException {
 
 		try {
@@ -77,7 +79,9 @@ public class AccountServiceSoap {
 					parentAccountId, name, code, description, logoId,
 					contactEmailAddress, profileEmailAddress, phoneNumber,
 					faxNumber, website, tier, region, dataRegion, language,
-					internal, status);
+					internal, status,
+					com.liferay.osb.koroneiki.taproot.model.impl.
+						AccountFieldModelImpl.toModels(accountFields));
 
 			return com.liferay.osb.koroneiki.taproot.model.AccountSoap.
 				toSoapModel(returnValue);
@@ -308,7 +312,9 @@ public class AccountServiceSoap {
 				String profileEmailAddress, String phoneNumber,
 				String faxNumber, String website, String tier, String region,
 				String dataRegion, String language, boolean internal,
-				String status)
+				String status,
+				com.liferay.osb.koroneiki.taproot.model.AccountFieldSoap[]
+					accountFields)
 		throws RemoteException {
 
 		try {
@@ -317,7 +323,9 @@ public class AccountServiceSoap {
 					accountId, parentAccountId, name, code, description, logoId,
 					contactEmailAddress, profileEmailAddress, phoneNumber,
 					faxNumber, website, tier, region, dataRegion, language,
-					internal, status);
+					internal, status,
+					com.liferay.osb.koroneiki.taproot.model.impl.
+						AccountFieldModelImpl.toModels(accountFields));
 
 			return com.liferay.osb.koroneiki.taproot.model.AccountSoap.
 				toSoapModel(returnValue);
@@ -336,7 +344,9 @@ public class AccountServiceSoap {
 				String contactEmailAddress, String profileEmailAddress,
 				String phoneNumber, String faxNumber, String website,
 				String tier, String region, String dataRegion, String language,
-				boolean internal, String status)
+				boolean internal, String status,
+				com.liferay.osb.koroneiki.taproot.model.AccountFieldSoap[]
+					accountFields)
 		throws RemoteException {
 
 		try {
@@ -345,7 +355,9 @@ public class AccountServiceSoap {
 					accountKey, parentAccountId, name, code, description,
 					logoId, contactEmailAddress, profileEmailAddress,
 					phoneNumber, faxNumber, website, tier, region, dataRegion,
-					language, internal, status);
+					language, internal, status,
+					com.liferay.osb.koroneiki.taproot.model.impl.
+						AccountFieldModelImpl.toModels(accountFields));
 
 			return com.liferay.osb.koroneiki.taproot.model.AccountSoap.
 				toSoapModel(returnValue);

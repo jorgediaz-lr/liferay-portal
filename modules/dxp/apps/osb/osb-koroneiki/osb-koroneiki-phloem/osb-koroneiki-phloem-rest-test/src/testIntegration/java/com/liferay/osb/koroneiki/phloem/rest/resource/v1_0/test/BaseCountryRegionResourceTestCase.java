@@ -32,7 +32,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -196,12 +195,54 @@ public abstract class BaseCountryRegionResourceTestCase {
 
 	@Test
 	public void testGetCountryRegionsPage() throws Exception {
-		Assert.assertTrue(false);
+		Page<CountryRegion> page =
+			countryRegionResource.getCountryRegionsPage();
+
+		long totalCount = page.getTotalCount();
+
+		CountryRegion countryRegion1 =
+			testGetCountryRegionsPage_addCountryRegion(randomCountryRegion());
+
+		CountryRegion countryRegion2 =
+			testGetCountryRegionsPage_addCountryRegion(randomCountryRegion());
+
+		page = countryRegionResource.getCountryRegionsPage();
+
+		Assert.assertEquals(totalCount + 2, page.getTotalCount());
+
+		assertContains(countryRegion1, (List<CountryRegion>)page.getItems());
+		assertContains(countryRegion2, (List<CountryRegion>)page.getItems());
+		assertValid(page);
+	}
+
+	protected CountryRegion testGetCountryRegionsPage_addCountryRegion(
+			CountryRegion countryRegion)
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
 	}
 
 	@Test
 	public void testGraphQLGetCountryRegionsPage() throws Exception {
 		Assert.assertTrue(false);
+	}
+
+	protected void assertContains(
+		CountryRegion countryRegion, List<CountryRegion> countryRegions) {
+
+		boolean contains = false;
+
+		for (CountryRegion item : countryRegions) {
+			if (equals(countryRegion, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			countryRegions + " does not contain " + countryRegion, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -692,8 +733,8 @@ public abstract class BaseCountryRegionResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseCountryRegionResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseCountryRegionResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

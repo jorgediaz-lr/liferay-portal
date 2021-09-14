@@ -36,13 +36,16 @@ public class AccountServiceWrapper
 			long logoId, String contactEmailAddress, String profileEmailAddress,
 			String phoneNumber, String faxNumber, String website, String tier,
 			String region, String dataRegion, String language, boolean internal,
-			String status)
+			String status,
+			java.util.List<com.liferay.osb.koroneiki.taproot.model.AccountField>
+				accountFields)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _accountService.addAccount(
 			parentAccountId, name, code, description, logoId,
 			contactEmailAddress, profileEmailAddress, phoneNumber, faxNumber,
-			website, tier, region, dataRegion, language, internal, status);
+			website, tier, region, dataRegion, language, internal, status,
+			accountFields);
 	}
 
 	@Override
@@ -157,13 +160,16 @@ public class AccountServiceWrapper
 			String description, long logoId, String contactEmailAddress,
 			String profileEmailAddress, String phoneNumber, String faxNumber,
 			String website, String tier, String region, String dataRegion,
-			String language, boolean internal, String status)
+			String language, boolean internal, String status,
+			java.util.List<com.liferay.osb.koroneiki.taproot.model.AccountField>
+				accountFields)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _accountService.updateAccount(
 			accountId, parentAccountId, name, code, description, logoId,
 			contactEmailAddress, profileEmailAddress, phoneNumber, faxNumber,
-			website, tier, region, dataRegion, language, internal, status);
+			website, tier, region, dataRegion, language, internal, status,
+			accountFields);
 	}
 
 	@Override
@@ -172,13 +178,16 @@ public class AccountServiceWrapper
 			String description, long logoId, String contactEmailAddress,
 			String profileEmailAddress, String phoneNumber, String faxNumber,
 			String website, String tier, String region, String dataRegion,
-			String language, boolean internal, String status)
+			String language, boolean internal, String status,
+			java.util.List<com.liferay.osb.koroneiki.taproot.model.AccountField>
+				accountFields)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _accountService.updateAccount(
 			accountKey, parentAccountId, name, code, description, logoId,
 			contactEmailAddress, profileEmailAddress, phoneNumber, faxNumber,
-			website, tier, region, dataRegion, language, internal, status);
+			website, tier, region, dataRegion, language, internal, status,
+			accountFields);
 	}
 
 	@Override

@@ -33,7 +33,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -42,6 +41,7 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.odata.entity.EntityField;
@@ -209,9 +209,9 @@ public abstract class BaseEntitlementDefinitionResourceTestCase {
 	public void testGetAccountEntitlementDefinitionsPage() throws Exception {
 		Page<EntitlementDefinition> page =
 			entitlementDefinitionResource.getAccountEntitlementDefinitionsPage(
-				RandomTestUtil.randomString(), Pagination.of(1, 2));
+				RandomTestUtil.randomString(), Pagination.of(1, 10));
 
-		Assert.assertEquals(0, page.getTotalCount());
+		long totalCount = page.getTotalCount();
 
 		EntitlementDefinition entitlementDefinition1 =
 			testGetAccountEntitlementDefinitionsPage_addEntitlementDefinition(
@@ -223,12 +223,15 @@ public abstract class BaseEntitlementDefinitionResourceTestCase {
 
 		page =
 			entitlementDefinitionResource.getAccountEntitlementDefinitionsPage(
-				null, Pagination.of(1, 2));
+				null, Pagination.of(1, 10));
 
-		Assert.assertEquals(2, page.getTotalCount());
+		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
-		assertEqualsIgnoringOrder(
-			Arrays.asList(entitlementDefinition1, entitlementDefinition2),
+		assertContains(
+			entitlementDefinition1,
+			(List<EntitlementDefinition>)page.getItems());
+		assertContains(
+			entitlementDefinition2,
 			(List<EntitlementDefinition>)page.getItems());
 		assertValid(page);
 	}
@@ -236,6 +239,12 @@ public abstract class BaseEntitlementDefinitionResourceTestCase {
 	@Test
 	public void testGetAccountEntitlementDefinitionsPageWithPagination()
 		throws Exception {
+
+		Page<EntitlementDefinition> totalPage =
+			entitlementDefinitionResource.getAccountEntitlementDefinitionsPage(
+				null, null);
+
+		int totalCount = GetterUtil.getInteger(totalPage.getTotalCount());
 
 		EntitlementDefinition entitlementDefinition1 =
 			testGetAccountEntitlementDefinitionsPage_addEntitlementDefinition(
@@ -251,20 +260,20 @@ public abstract class BaseEntitlementDefinitionResourceTestCase {
 
 		Page<EntitlementDefinition> page1 =
 			entitlementDefinitionResource.getAccountEntitlementDefinitionsPage(
-				null, Pagination.of(1, 2));
+				null, Pagination.of(1, totalCount + 2));
 
 		List<EntitlementDefinition> entitlementDefinitions1 =
 			(List<EntitlementDefinition>)page1.getItems();
 
 		Assert.assertEquals(
-			entitlementDefinitions1.toString(), 2,
+			entitlementDefinitions1.toString(), totalCount + 2,
 			entitlementDefinitions1.size());
 
 		Page<EntitlementDefinition> page2 =
 			entitlementDefinitionResource.getAccountEntitlementDefinitionsPage(
-				null, Pagination.of(2, 2));
+				null, Pagination.of(2, totalCount + 2));
 
-		Assert.assertEquals(3, page2.getTotalCount());
+		Assert.assertEquals(totalCount + 3, page2.getTotalCount());
 
 		List<EntitlementDefinition> entitlementDefinitions2 =
 			(List<EntitlementDefinition>)page2.getItems();
@@ -275,12 +284,16 @@ public abstract class BaseEntitlementDefinitionResourceTestCase {
 
 		Page<EntitlementDefinition> page3 =
 			entitlementDefinitionResource.getAccountEntitlementDefinitionsPage(
-				null, Pagination.of(1, 3));
+				null, Pagination.of(1, totalCount + 3));
 
-		assertEqualsIgnoringOrder(
-			Arrays.asList(
-				entitlementDefinition1, entitlementDefinition2,
-				entitlementDefinition3),
+		assertContains(
+			entitlementDefinition1,
+			(List<EntitlementDefinition>)page3.getItems());
+		assertContains(
+			entitlementDefinition2,
+			(List<EntitlementDefinition>)page3.getItems());
+		assertContains(
+			entitlementDefinition3,
 			(List<EntitlementDefinition>)page3.getItems());
 	}
 
@@ -319,9 +332,9 @@ public abstract class BaseEntitlementDefinitionResourceTestCase {
 	public void testGetContactEntitlementDefinitionsPage() throws Exception {
 		Page<EntitlementDefinition> page =
 			entitlementDefinitionResource.getContactEntitlementDefinitionsPage(
-				RandomTestUtil.randomString(), Pagination.of(1, 2));
+				RandomTestUtil.randomString(), Pagination.of(1, 10));
 
-		Assert.assertEquals(0, page.getTotalCount());
+		long totalCount = page.getTotalCount();
 
 		EntitlementDefinition entitlementDefinition1 =
 			testGetContactEntitlementDefinitionsPage_addEntitlementDefinition(
@@ -333,12 +346,15 @@ public abstract class BaseEntitlementDefinitionResourceTestCase {
 
 		page =
 			entitlementDefinitionResource.getContactEntitlementDefinitionsPage(
-				null, Pagination.of(1, 2));
+				null, Pagination.of(1, 10));
 
-		Assert.assertEquals(2, page.getTotalCount());
+		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
-		assertEqualsIgnoringOrder(
-			Arrays.asList(entitlementDefinition1, entitlementDefinition2),
+		assertContains(
+			entitlementDefinition1,
+			(List<EntitlementDefinition>)page.getItems());
+		assertContains(
+			entitlementDefinition2,
 			(List<EntitlementDefinition>)page.getItems());
 		assertValid(page);
 	}
@@ -346,6 +362,12 @@ public abstract class BaseEntitlementDefinitionResourceTestCase {
 	@Test
 	public void testGetContactEntitlementDefinitionsPageWithPagination()
 		throws Exception {
+
+		Page<EntitlementDefinition> totalPage =
+			entitlementDefinitionResource.getContactEntitlementDefinitionsPage(
+				null, null);
+
+		int totalCount = GetterUtil.getInteger(totalPage.getTotalCount());
 
 		EntitlementDefinition entitlementDefinition1 =
 			testGetContactEntitlementDefinitionsPage_addEntitlementDefinition(
@@ -361,20 +383,20 @@ public abstract class BaseEntitlementDefinitionResourceTestCase {
 
 		Page<EntitlementDefinition> page1 =
 			entitlementDefinitionResource.getContactEntitlementDefinitionsPage(
-				null, Pagination.of(1, 2));
+				null, Pagination.of(1, totalCount + 2));
 
 		List<EntitlementDefinition> entitlementDefinitions1 =
 			(List<EntitlementDefinition>)page1.getItems();
 
 		Assert.assertEquals(
-			entitlementDefinitions1.toString(), 2,
+			entitlementDefinitions1.toString(), totalCount + 2,
 			entitlementDefinitions1.size());
 
 		Page<EntitlementDefinition> page2 =
 			entitlementDefinitionResource.getContactEntitlementDefinitionsPage(
-				null, Pagination.of(2, 2));
+				null, Pagination.of(2, totalCount + 2));
 
-		Assert.assertEquals(3, page2.getTotalCount());
+		Assert.assertEquals(totalCount + 3, page2.getTotalCount());
 
 		List<EntitlementDefinition> entitlementDefinitions2 =
 			(List<EntitlementDefinition>)page2.getItems();
@@ -385,12 +407,16 @@ public abstract class BaseEntitlementDefinitionResourceTestCase {
 
 		Page<EntitlementDefinition> page3 =
 			entitlementDefinitionResource.getContactEntitlementDefinitionsPage(
-				null, Pagination.of(1, 3));
+				null, Pagination.of(1, totalCount + 3));
 
-		assertEqualsIgnoringOrder(
-			Arrays.asList(
-				entitlementDefinition1, entitlementDefinition2,
-				entitlementDefinition3),
+		assertContains(
+			entitlementDefinition1,
+			(List<EntitlementDefinition>)page3.getItems());
+		assertContains(
+			entitlementDefinition2,
+			(List<EntitlementDefinition>)page3.getItems());
+		assertContains(
+			entitlementDefinition3,
 			(List<EntitlementDefinition>)page3.getItems());
 	}
 
@@ -453,6 +479,26 @@ public abstract class BaseEntitlementDefinitionResourceTestCase {
 	@Test
 	public void testPostEntitlementDefinitionSynchronize() throws Exception {
 		Assert.assertTrue(false);
+	}
+
+	protected void assertContains(
+		EntitlementDefinition entitlementDefinition,
+		List<EntitlementDefinition> entitlementDefinitions) {
+
+		boolean contains = false;
+
+		for (EntitlementDefinition item : entitlementDefinitions) {
+			if (equals(entitlementDefinition, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			entitlementDefinitions + " does not contain " +
+				entitlementDefinition,
+			contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -1121,8 +1167,8 @@ public abstract class BaseEntitlementDefinitionResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseEntitlementDefinitionResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseEntitlementDefinitionResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

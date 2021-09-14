@@ -53,13 +53,16 @@ public class AccountLocalServiceWrapper
 			String description, long logoId, String contactEmailAddress,
 			String profileEmailAddress, String phoneNumber, String faxNumber,
 			String website, String tier, String region, String dataRegion,
-			String language, boolean internal, String status)
+			String language, boolean internal, String status,
+			java.util.List<com.liferay.osb.koroneiki.taproot.model.AccountField>
+				accountFields)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _accountLocalService.addAccount(
 			userId, parentAccountId, name, code, description, logoId,
 			contactEmailAddress, profileEmailAddress, phoneNumber, faxNumber,
-			website, tier, region, dataRegion, language, internal, status);
+			website, tier, region, dataRegion, language, internal, status,
+			accountFields);
 	}
 
 	/**
@@ -435,17 +438,21 @@ public class AccountLocalServiceWrapper
 
 	@Override
 	public com.liferay.osb.koroneiki.taproot.model.Account updateAccount(
-			long accountId, long parentAccountId, String name, String code,
-			String description, long logoId, String contactEmailAddress,
-			String profileEmailAddress, String phoneNumber, String faxNumber,
-			String website, String tier, String region, String dataRegion,
-			String language, boolean internal, String status)
+			long userId, long accountId, long parentAccountId, String name,
+			String code, String description, long logoId,
+			String contactEmailAddress, String profileEmailAddress,
+			String phoneNumber, String faxNumber, String website, String tier,
+			String region, String dataRegion, String language, boolean internal,
+			String status,
+			java.util.List<com.liferay.osb.koroneiki.taproot.model.AccountField>
+				accountFields)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _accountLocalService.updateAccount(
-			accountId, parentAccountId, name, code, description, logoId,
+			userId, accountId, parentAccountId, name, code, description, logoId,
 			contactEmailAddress, profileEmailAddress, phoneNumber, faxNumber,
-			website, tier, region, dataRegion, language, internal, status);
+			website, tier, region, dataRegion, language, internal, status,
+			accountFields);
 	}
 
 	@Override

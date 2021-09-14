@@ -18,6 +18,7 @@ import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.TeamRole;
 import com.liferay.osb.koroneiki.phloem.rest.dto.v1_0.TeamRolePermission;
 import com.liferay.osb.koroneiki.phloem.rest.resource.v1_0.TeamRoleResource;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.GroupedModel;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
@@ -26,6 +27,8 @@ import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ResourceActionLocalService;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
 import com.liferay.portal.kernel.service.RoleLocalService;
+import com.liferay.portal.odata.filter.ExpressionConvert;
+import com.liferay.portal.odata.filter.FilterParserProvider;
 import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
@@ -304,7 +307,7 @@ public abstract class BaseTeamRoleResourceImpl implements TeamRoleResource {
 	@Path("/team-roles/{teamRoleType}/{teamRoleName}")
 	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "TeamRole")})
-	public TeamRole getTeamRoleTeamRoleTypeTeamRoleName(
+	public TeamRole getTeamRole(
 			@NotNull @Parameter(hidden = true) @PathParam("teamRoleType") String
 				teamRoleType,
 			@NotNull @Parameter(hidden = true) @PathParam("teamRoleName") String
@@ -346,8 +349,32 @@ public abstract class BaseTeamRoleResourceImpl implements TeamRoleResource {
 		this.contextUser = contextUser;
 	}
 
+	public void setExpressionConvert(
+		ExpressionConvert<Filter> expressionConvert) {
+
+		this.expressionConvert = expressionConvert;
+	}
+
+	public void setFilterParserProvider(
+		FilterParserProvider filterParserProvider) {
+
+		this.filterParserProvider = filterParserProvider;
+	}
+
 	public void setGroupLocalService(GroupLocalService groupLocalService) {
 		this.groupLocalService = groupLocalService;
+	}
+
+	public void setResourceActionLocalService(
+		ResourceActionLocalService resourceActionLocalService) {
+
+		this.resourceActionLocalService = resourceActionLocalService;
+	}
+
+	public void setResourcePermissionLocalService(
+		ResourcePermissionLocalService resourcePermissionLocalService) {
+
+		this.resourcePermissionLocalService = resourcePermissionLocalService;
 	}
 
 	public void setRoleLocalService(RoleLocalService roleLocalService) {
@@ -423,9 +450,14 @@ public abstract class BaseTeamRoleResourceImpl implements TeamRoleResource {
 	protected Object contextScopeChecker;
 	protected UriInfo contextUriInfo;
 	protected com.liferay.portal.kernel.model.User contextUser;
+	protected ExpressionConvert<Filter> expressionConvert;
+	protected FilterParserProvider filterParserProvider;
 	protected GroupLocalService groupLocalService;
 	protected ResourceActionLocalService resourceActionLocalService;
 	protected ResourcePermissionLocalService resourcePermissionLocalService;
 	protected RoleLocalService roleLocalService;
+
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseTeamRoleResourceImpl.class);
 
 }
