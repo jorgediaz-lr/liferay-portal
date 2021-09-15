@@ -200,6 +200,111 @@ public class TransformAccount {
 		return "";
 	}
 
+	public static int getMaxRequestors(String productPurchases)
+		throws Exception {
+
+		String slaCurrent = getSLACurrent(productPurchases);
+
+		if (slaCurrent.isEmpty()) {
+			return 0;
+		}
+
+		int developerAddons = 0;
+		int productionInstances = 0;
+
+		JSONArray jsonArray = new JSONArray(productPurchases);
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+			Date startDate = DateUtil.parseStartDate(jsonObject);
+			Date endDate = DateUtil.parseEndDate(jsonObject);
+			String status = jsonObject.getString("status");
+
+			if (!_isActive(startDate, endDate, status)) {
+				continue;
+			}
+
+			int quantity = jsonObject.getInt("quantity");
+
+			JSONObject productJSONObject = jsonObject.getJSONObject("product");
+
+			String name = productJSONObject.getString("name");
+
+			if (name.equals(ProductConstants.NAME_DESIGNATED_CONTACT_ADD_ON)) {
+				developerAddons += quantity;
+			}
+			else if (name.equals(
+						ProductConstants.
+							NAME_DXP_CLOUD_SUBSCRIPTION_HA_PRODUCTION)) {
+
+				productionInstances += 2 * quantity;
+			}
+			else if (name.equals(ProductConstants.NAME_DXP_FLEX) ||
+					 name.equals(ProductConstants.NAME_DXP_PRODUCTION) ||
+					 name.equals(
+						 ProductConstants.
+							 NAME_DXP_CLOUD_SUBSCRIPTION_STD_PRODUCTION) ||
+					 name.equals(
+						 ProductConstants.NAME_DXP_CLOUD_INSTANCE_PRODUCTION) ||
+					 name.equals(ProductConstants.NAME_PORTAL_PRODUCTION)) {
+
+				productionInstances += quantity;
+			}
+		}
+
+		if (productionInstances <= 0) {
+			return 0;
+		}
+
+		int maxDeveloperCount = 0;
+
+		if (slaCurrent.equals(ProductConstants.NAME_GOLD)) {
+			if (productionInstances <= 4) {
+				maxDeveloperCount = 2;
+			}
+			else if (productionInstances <= 8) {
+				maxDeveloperCount = 4;
+			}
+			else if (productionInstances <= 12) {
+				maxDeveloperCount = 6;
+			}
+			else if (productionInstances <= 16) {
+				maxDeveloperCount = 8;
+			}
+			else if (productionInstances <= 20) {
+				maxDeveloperCount = 10;
+			}
+			else {
+				maxDeveloperCount = 12;
+			}
+		}
+		else if (slaCurrent.equals(ProductConstants.NAME_PLATINUM)) {
+			if (productionInstances <= 4) {
+				maxDeveloperCount = 3;
+			}
+			else if (productionInstances <= 8) {
+				maxDeveloperCount = 6;
+			}
+			else if (productionInstances <= 12) {
+				maxDeveloperCount = 9;
+			}
+			else if (productionInstances <= 16) {
+				maxDeveloperCount = 12;
+			}
+			else if (productionInstances <= 20) {
+				maxDeveloperCount = 15;
+			}
+			else {
+				maxDeveloperCount = 18;
+			}
+		}
+
+		maxDeveloperCount += developerAddons;
+
+		return maxDeveloperCount;
+	}
+
 	public static String getSLACurrent(String productPurchases)
 		throws Exception {
 

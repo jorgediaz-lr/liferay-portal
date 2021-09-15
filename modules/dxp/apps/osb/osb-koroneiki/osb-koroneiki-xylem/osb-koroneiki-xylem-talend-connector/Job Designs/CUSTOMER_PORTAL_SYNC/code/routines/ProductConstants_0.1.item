@@ -19,11 +19,29 @@ package routines;
  */
 public class ProductConstants {
 
+	public static final String NAME_DESIGNATED_CONTACT_ADD_ON =
+		"Designated Contact Add-on";
+
+	public static final String NAME_DXP_CLOUD_INSTANCE_PRODUCTION =
+		"DXP Cloud Instance - Production";
+
+	public static final String NAME_DXP_CLOUD_SUBSCRIPTION_HA_PRODUCTION =
+		"DXP Cloud Subscription HA Production";
+
+	public static final String NAME_DXP_CLOUD_SUBSCRIPTION_STD_PRODUCTION =
+		"DXP Cloud Subscription Std Production";
+
+	public static final String NAME_DXP_FLEX = "DXP Flex";
+
+	public static final String NAME_DXP_PRODUCTION = "DXP Production";
+
 	public static final String NAME_GOLD = "Gold Subscription";
 
 	public static final String NAME_LIMITED = "Limited Subscription";
 
 	public static final String NAME_PLATINUM = "Platinum Subscription";
+
+	public static final String NAME_PORTAL_PRODUCTION = "Portal Production";
 
 	public static final String NAME_SILVER = "Silver Subscription";
 
