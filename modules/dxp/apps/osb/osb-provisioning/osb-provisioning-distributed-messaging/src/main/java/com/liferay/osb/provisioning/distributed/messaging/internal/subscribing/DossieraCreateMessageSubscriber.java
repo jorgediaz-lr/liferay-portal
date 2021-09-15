@@ -493,6 +493,19 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			if (parentAccount != null) {
 				account.setParentAccountKey(parentAccount.getKey());
 			}
+
+			String liferayVersion = projectJSONObject.getString(
+				"_liferayVersion");
+
+			if (Validator.isNotNull(liferayVersion) &&
+				liferayVersion.contains("DXP")) {
+
+				Map<String, String> properties = new HashMap<>();
+
+				properties.put("liferayVersion", liferayVersion);
+
+				account.setProperties(properties);
+			}
 		}
 		else {
 			account.setName(accountName);
