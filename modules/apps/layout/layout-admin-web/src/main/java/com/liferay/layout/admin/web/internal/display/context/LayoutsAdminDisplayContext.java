@@ -959,6 +959,11 @@ public class LayoutsAdminDisplayContext {
 		return portletURL;
 	}
 
+	public String getPreviewDraftURL(Layout layout) throws PortalException {
+		return PortalUtil.getLayoutFriendlyURL(
+			layout.fetchDraftLayout(), themeDisplay);
+	}
+
 	public String getRedirect() {
 		if (_redirect != null) {
 			return _redirect;
@@ -1520,6 +1525,24 @@ public class LayoutsAdminDisplayContext {
 		}
 
 		return true;
+	}
+
+	public boolean isShowDraftActions(Layout layout) {
+		if (!layout.isTypeContent()) {
+			return false;
+		}
+
+		Layout draftLayout = layout.fetchDraftLayout();
+
+		if (draftLayout == null) {
+			return false;
+		}
+
+		if (draftLayout.getStatus() == WorkflowConstants.STATUS_DRAFT) {
+			return true;
+		}
+
+		return false;
 	}
 
 	public boolean isShowFirstColumnConfigureAction() throws PortalException {
