@@ -29,7 +29,7 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
 public interface ProvisioningWebConfiguration {
 
 	@Meta.AD(
-		deflt = "5.1|5.1 SP1|5.1 SP2|5.1 SP3|5.1 SP4|5.1 SP5|5.2|5.2 SP1|5.2 SP2|5.2 SP3|5.2 SP4|5.2 SP5|6.0|6.0 SP1|6.0 SP2|7.4",
+		deflt = "5.1|5.1 SP1|5.1 SP2|5.1 SP3|5.1 SP4|5.1 SP5|5.2|5.2 SP1|5.2 SP2|5.2 SP3|5.2 SP4|5.2 SP5|6.0|6.0 SP1|6.0 SP2",
 		name = "add-license-hidden-versions", required = false
 	)
 	public String[] addLicenseHiddenVersions();
