@@ -56,7 +56,7 @@ public class TeamWebServiceImpl
 		throws Exception {
 
 		HttpInvoker.HttpResponse httpResponse =
-			_teamResource.putTeamContactByEmailAddressHttpResponse(
+			_teamResource.putTeamContactByEmailAddresHttpResponse(
 				agentName, agentUID, teamKey, contactEmailAddresses);
 
 		validateResponse(httpResponse);
@@ -109,7 +109,7 @@ public class TeamWebServiceImpl
 		throws Exception {
 
 		HttpInvoker.HttpResponse httpResponse =
-			_teamResource.deleteTeamContactByEmailAddressHttpResponse(
+			_teamResource.deleteTeamContactByEmailAddresHttpResponse(
 				agentName, agentUID, teamKey, contactEmailAddresses);
 
 		validateResponse(httpResponse);

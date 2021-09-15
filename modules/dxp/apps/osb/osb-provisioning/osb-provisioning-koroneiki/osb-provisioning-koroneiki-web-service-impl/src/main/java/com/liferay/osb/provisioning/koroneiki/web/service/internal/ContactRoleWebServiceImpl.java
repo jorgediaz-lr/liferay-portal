@@ -58,9 +58,8 @@ public class ContactRoleWebServiceImpl implements ContactRoleWebService {
 		throws Exception {
 
 		HttpInvoker.HttpResponse httpResponse =
-			_contactRoleResource.
-				getContactRoleContactRoleTypeContactRoleNameHttpResponse(
-					_http.encodePath(type), _http.encodePath(name));
+			_contactRoleResource.getContactRoleHttpResponse(
+				_http.encodePath(type), _http.encodePath(name));
 
 		if (httpResponse.getStatusCode() == HttpServletResponse.SC_NOT_FOUND) {
 			return null;
@@ -112,9 +111,8 @@ public class ContactRoleWebServiceImpl implements ContactRoleWebService {
 	public ContactRole getContactRole(String type, String name)
 		throws Exception {
 
-		return _contactRoleResource.
-			getContactRoleContactRoleTypeContactRoleName(
-				_http.encodePath(type), _http.encodePath(name));
+		return _contactRoleResource.getContactRole(
+			_http.encodePath(type), _http.encodePath(name));
 	}
 
 	public List<ContactRole> search(

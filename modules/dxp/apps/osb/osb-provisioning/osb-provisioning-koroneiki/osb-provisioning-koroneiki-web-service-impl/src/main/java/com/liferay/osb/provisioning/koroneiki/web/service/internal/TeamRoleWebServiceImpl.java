@@ -42,7 +42,7 @@ import org.osgi.service.component.annotations.Reference;
 public class TeamRoleWebServiceImpl implements TeamRoleWebService {
 
 	public TeamRole getTeamRole(String type, String name) throws Exception {
-		return _teamRoleResource.getTeamRoleTeamRoleTypeTeamRoleName(
+		return _teamRoleResource.getTeamRole(
 			_http.encodePath(type), _http.encodePath(name));
 	}
 
