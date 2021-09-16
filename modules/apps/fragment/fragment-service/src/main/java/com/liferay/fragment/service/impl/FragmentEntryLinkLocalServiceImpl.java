@@ -418,6 +418,43 @@ public class FragmentEntryLinkLocalServiceImpl
 	}
 
 	@Override
+	public List<FragmentEntryLink> getLayoutFragmentEntryLinksByFragmentEntryId(
+		long groupId, long fragmentEntryId, int start, int end,
+		OrderByComparator<FragmentEntryLink> orderByComparator) {
+
+		return fragmentEntryLinkFinder.findByG_F_P_L(
+			groupId, fragmentEntryId, -1, start, end, orderByComparator);
+	}
+
+	@Override
+	public int getLayoutFragmentEntryLinksCountByFragmentEntryId(
+		long groupId, long fragmentEntryId) {
+
+		return fragmentEntryLinkFinder.countByG_F_P_L(
+			groupId, fragmentEntryId, -1);
+	}
+
+	@Override
+	public List<FragmentEntryLink>
+		getLayoutPageTemplateFragmentEntryLinksByFragmentEntryId(
+			long groupId, long fragmentEntryId, int layoutPageTemplateType,
+			int start, int end,
+			OrderByComparator<FragmentEntryLink> orderByComparator) {
+
+		return fragmentEntryLinkFinder.findByG_F_P_L(
+			groupId, fragmentEntryId, layoutPageTemplateType, start, end,
+			orderByComparator);
+	}
+
+	@Override
+	public int getLayoutPageTemplateFragmentEntryLinksCountByFragmentEntryId(
+		long groupId, long fragmentEntryId, int layoutPageTemplateType) {
+
+		return fragmentEntryLinkFinder.countByG_F_P_L(
+			groupId, fragmentEntryId, layoutPageTemplateType);
+	}
+
+	@Override
 	public void updateClassedModel(long classNameId, long classPK)
 		throws PortalException {
 
