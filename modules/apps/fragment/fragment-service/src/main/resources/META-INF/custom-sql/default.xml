@@ -31,7 +31,7 @@
 	<sql id="com.liferay.fragment.service.persistence.FragmentEntryLinkFinder.countByG_F_P">
 		<![CDATA[
 			SELECT
-				COUNT(DISTINCT FragmentEntryLink.plid) AS COUNT_VALUE
+				COUNT(DISTINCT FragmentEntryLink.classPK) AS COUNT_VALUE
 			FROM
 			(
 				SELECT
@@ -48,7 +48,7 @@
 			TEMP_TABLE
 				INNER JOIN
 					FragmentEntryLink ON
-						TEMP_TABLE.plid = FragmentEntryLink.plid
+						TEMP_TABLE.plid = FragmentEntryLink.classPK
 			WHERE
 				(groupId = ?) AND
 				(fragmentEntryId = ?)
@@ -74,7 +74,7 @@
 	<sql id="com.liferay.fragment.service.persistence.FragmentEntryLinkFinder.countByG_F_P_L">
 		<![CDATA[
 			SELECT
-				COUNT(DISTINCT FragmentEntryLink.plid) AS COUNT_VALUE
+				COUNT(DISTINCT FragmentEntryLink.classPK) AS COUNT_VALUE
 			FROM
 			(
 				SELECT
@@ -91,7 +91,7 @@
 			TEMP_TABLE
 				INNER JOIN
 					FragmentEntryLink ON
-						TEMP_TABLE.plid = FragmentEntryLink.plid
+						TEMP_TABLE.plid = FragmentEntryLink.classPK
 			WHERE
 				(FragmentEntryLink.groupId = ?) AND
 				(FragmentEntryLink.fragmentEntryId = ?)
@@ -170,7 +170,7 @@
 			TEMP_TABLE
 				INNER JOIN
 					FragmentEntryLink ON
-						TEMP_TABLE.plid = FragmentEntryLink.plid
+						TEMP_TABLE.plid = FragmentEntryLink.classPK
 			WHERE
 				(groupId = ?) AND
 				(fragmentEntryId = ?) AND
@@ -183,7 +183,7 @@
 								FragmentEntryLink tempFragmentEntryLink
 							WHERE
 								(tempFragmentEntryLink.groupId = FragmentEntryLink.groupId) AND
-								(tempFragmentEntryLink.plid = FragmentEntryLink.plid) AND
+								(tempFragmentEntryLink.classPK = FragmentEntryLink.classPK) AND
 								(tempFragmentEntryLink.fragmentEntryId = FragmentEntryLink.fragmentEntryId)
 						)
 				)
@@ -239,7 +239,7 @@
 			TEMP_TABLE
 				INNER JOIN
 					FragmentEntryLink ON
-						TEMP_TABLE.plid = FragmentEntryLink.plid
+						TEMP_TABLE.plid = FragmentEntryLink.classPK
 
 			WHERE
 				(FragmentEntryLink.groupId = ?) AND
@@ -253,7 +253,7 @@
 								FragmentEntryLink tempFragmentEntryLink
 							WHERE
 								(tempFragmentEntryLink.groupId = FragmentEntryLink.groupId) AND
-								(tempFragmentEntryLink.plid = FragmentEntryLink.plid) AND
+								(tempFragmentEntryLink.classPK = FragmentEntryLink.classPK) AND
 								(tempFragmentEntryLink.fragmentEntryId = FragmentEntryLink.fragmentEntryId)
 						)
 				)
