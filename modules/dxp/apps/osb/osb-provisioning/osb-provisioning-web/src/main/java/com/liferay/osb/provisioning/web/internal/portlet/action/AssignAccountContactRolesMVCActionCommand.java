@@ -76,7 +76,7 @@ public class AssignAccountContactRolesMVCActionCommand
 				actionRequest, "deleteContactRoleKeys");
 
 			if (!ArrayUtil.isEmpty(addContactRoleKeys)) {
-				_accountWebService.assignContactRoles(
+				_accountWebService.assignContactRolesByEmailAddress(
 					user.getFullName(), user.getUuid(), accountKey,
 					emailAddress, addContactRoleKeys);
 			}
@@ -95,7 +95,7 @@ public class AssignAccountContactRolesMVCActionCommand
 						accountKey, emailAddress);
 				}
 
-				_accountWebService.unassignContactRoles(
+				_accountWebService.unassignContactRolesByEmailAddress(
 					user.getFullName(), user.getUuid(), accountKey,
 					emailAddress, deleteContactRoleKeys);
 			}

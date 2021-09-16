@@ -27,9 +27,14 @@ public interface AccountWebService {
 			String agentName, String agentUID, Account account)
 		throws Exception;
 
-	public void assignContactRoles(
+	public void assignContactRolesByEmailAddress(
 			String agentName, String agentUID, String accountKey,
 			String contactEmailAddress, String[] contactRoleKeys)
+		throws Exception;
+
+	public void assignContactRolesByUuid(
+			String agentName, String agentUID, String accountKey,
+			String contactUuid, String[] contactRoleKeys)
 		throws Exception;
 
 	public void assignTeamRoles(
@@ -56,9 +61,14 @@ public interface AccountWebService {
 	public long searchCount(String search, String filterString)
 		throws Exception;
 
-	public void unassignContactRoles(
+	public void unassignContactRolesByEmailAddress(
 			String agentName, String agentUID, String accountKey,
 			String contactEmailAddress, String[] contactRoleKeys)
+		throws Exception;
+
+	public void unassignContactRolesByUuid(
+			String agentName, String agentUID, String accountKey,
+			String contactUuid, String[] contactRoleKeys)
 		throws Exception;
 
 	public void unassignCustomerContact(

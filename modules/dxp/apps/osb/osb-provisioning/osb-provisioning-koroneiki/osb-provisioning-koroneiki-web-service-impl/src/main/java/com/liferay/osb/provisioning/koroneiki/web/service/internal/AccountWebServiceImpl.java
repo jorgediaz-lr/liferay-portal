@@ -54,7 +54,7 @@ public class AccountWebServiceImpl
 		return _accountResource.postAccount(agentName, agentUID, account);
 	}
 
-	public void assignContactRoles(
+	public void assignContactRolesByEmailAddress(
 			String agentName, String agentUID, String accountKey,
 			String contactEmailAddress, String[] contactRoleKeys)
 		throws Exception {
@@ -64,6 +64,26 @@ public class AccountWebServiceImpl
 				putAccountContactByEmailAddresContactEmailAddressRoleHttpResponse(
 					agentName, agentUID, accountKey, contactEmailAddress,
 					contactRoleKeys);
+
+		if ((httpResponse.getStatusCode() ==
+				HttpServletResponse.SC_BAD_REQUEST) ||
+			(httpResponse.getStatusCode() ==
+				HttpServletResponse.SC_NOT_FOUND)) {
+
+			throw new NoSuchContactException();
+		}
+
+		validateResponse(httpResponse);
+	}
+
+	public void assignContactRolesByUuid(
+			String agentName, String agentUID, String accountKey,
+			String contactUuid, String[] contactRoleKeys)
+		throws Exception {
+
+		HttpInvoker.HttpResponse httpResponse =
+			_accountResource.putAccountContactByUuidContactUuidRoleHttpResponse(
+				agentName, agentUID, accountKey, contactUuid, contactRoleKeys);
 
 		if ((httpResponse.getStatusCode() ==
 				HttpServletResponse.SC_BAD_REQUEST) ||
@@ -159,7 +179,7 @@ public class AccountWebServiceImpl
 		return 0;
 	}
 
-	public void unassignContactRoles(
+	public void unassignContactRolesByEmailAddress(
 			String agentName, String agentUID, String accountKey,
 			String contactEmailAddress, String[] contactRoleKeys)
 		throws Exception {
@@ -168,6 +188,20 @@ public class AccountWebServiceImpl
 			_accountResource.
 				deleteAccountContactByEmailAddresContactEmailAddressRoleHttpResponse(
 					agentName, agentUID, accountKey, contactEmailAddress,
+					contactRoleKeys);
+
+		validateResponse(httpResponse);
+	}
+
+	public void unassignContactRolesByUuid(
+			String agentName, String agentUID, String accountKey,
+			String contactUuid, String[] contactRoleKeys)
+		throws Exception {
+
+		HttpInvoker.HttpResponse httpResponse =
+			_accountResource.
+				deleteAccountContactByUuidContactUuidRoleHttpResponse(
+					agentName, agentUID, accountKey, contactUuid,
 					contactRoleKeys);
 
 		validateResponse(httpResponse);

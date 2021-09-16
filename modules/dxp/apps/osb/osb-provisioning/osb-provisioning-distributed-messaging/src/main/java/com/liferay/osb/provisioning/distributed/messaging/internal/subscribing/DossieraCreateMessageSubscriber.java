@@ -2063,7 +2063,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 				contactRoleKeys[i] = contactRole.getKey();
 			}
 
-			_accountWebService.assignContactRoles(
+			_accountWebService.assignContactRolesByEmailAddress(
 				StringPool.BLANK, StringPool.BLANK, accountKey,
 				contact.getEmailAddress(), contactRoleKeys);
 		}

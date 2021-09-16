@@ -65,7 +65,7 @@ public class OrganizationAssignmentMessageSubscriber
 			ContactRoleConstants.NAME_MEMBER);
 
 		for (Account account : accounts) {
-			_accountWebService.assignContactRoles(
+			_accountWebService.assignContactRolesByEmailAddress(
 				StringPool.BLANK, StringPool.BLANK, account.getKey(),
 				userJSONObject.getString("emailAddress"),
 				new String[] {contactRole.getKey()});
