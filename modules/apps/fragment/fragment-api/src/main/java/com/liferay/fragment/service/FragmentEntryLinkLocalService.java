@@ -421,6 +421,26 @@ public interface FragmentEntryLinkLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<FragmentEntryLink> getLayoutFragmentEntryLinksByFragmentEntryId(
+		long groupId, long fragmentEntryId, int start, int end,
+		OrderByComparator<FragmentEntryLink> orderByComparator);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getLayoutFragmentEntryLinksCountByFragmentEntryId(
+		long groupId, long fragmentEntryId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<FragmentEntryLink>
+		getLayoutPageTemplateFragmentEntryLinksByFragmentEntryId(
+			long groupId, long fragmentEntryId, int layoutPageTemplateType,
+			int start, int end,
+			OrderByComparator<FragmentEntryLink> orderByComparator);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getLayoutPageTemplateFragmentEntryLinksCountByFragmentEntryId(
+		long groupId, long fragmentEntryId, int layoutPageTemplateType);
+
 	/**
 	 * Returns the OSGi service identifier.
 	 *

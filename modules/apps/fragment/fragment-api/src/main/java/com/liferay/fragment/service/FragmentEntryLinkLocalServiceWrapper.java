@@ -600,6 +600,52 @@ public class FragmentEntryLinkLocalServiceWrapper
 			getIndexableActionableDynamicQuery();
 	}
 
+	@Override
+	public java.util.List<com.liferay.fragment.model.FragmentEntryLink>
+		getLayoutFragmentEntryLinksByFragmentEntryId(
+			long groupId, long fragmentEntryId, int start, int end,
+			com.liferay.portal.kernel.util.OrderByComparator
+				<com.liferay.fragment.model.FragmentEntryLink>
+					orderByComparator) {
+
+		return _fragmentEntryLinkLocalService.
+			getLayoutFragmentEntryLinksByFragmentEntryId(
+				groupId, fragmentEntryId, start, end, orderByComparator);
+	}
+
+	@Override
+	public int getLayoutFragmentEntryLinksCountByFragmentEntryId(
+		long groupId, long fragmentEntryId) {
+
+		return _fragmentEntryLinkLocalService.
+			getLayoutFragmentEntryLinksCountByFragmentEntryId(
+				groupId, fragmentEntryId);
+	}
+
+	@Override
+	public java.util.List<com.liferay.fragment.model.FragmentEntryLink>
+		getLayoutPageTemplateFragmentEntryLinksByFragmentEntryId(
+			long groupId, long fragmentEntryId, int layoutPageTemplateType,
+			int start, int end,
+			com.liferay.portal.kernel.util.OrderByComparator
+				<com.liferay.fragment.model.FragmentEntryLink>
+					orderByComparator) {
+
+		return _fragmentEntryLinkLocalService.
+			getLayoutPageTemplateFragmentEntryLinksByFragmentEntryId(
+				groupId, fragmentEntryId, layoutPageTemplateType, start, end,
+				orderByComparator);
+	}
+
+	@Override
+	public int getLayoutPageTemplateFragmentEntryLinksCountByFragmentEntryId(
+		long groupId, long fragmentEntryId, int layoutPageTemplateType) {
+
+		return _fragmentEntryLinkLocalService.
+			getLayoutPageTemplateFragmentEntryLinksCountByFragmentEntryId(
+				groupId, fragmentEntryId, layoutPageTemplateType);
+	}
+
 	/**
 	 * Returns the OSGi service identifier.
 	 *

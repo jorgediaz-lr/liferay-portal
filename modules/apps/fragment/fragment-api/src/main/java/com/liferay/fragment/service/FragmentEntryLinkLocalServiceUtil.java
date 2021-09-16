@@ -538,6 +538,43 @@ public class FragmentEntryLinkLocalServiceUtil {
 		return getService().getIndexableActionableDynamicQuery();
 	}
 
+	public static List<FragmentEntryLink>
+		getLayoutFragmentEntryLinksByFragmentEntryId(
+			long groupId, long fragmentEntryId, int start, int end,
+			OrderByComparator<FragmentEntryLink> orderByComparator) {
+
+		return getService().getLayoutFragmentEntryLinksByFragmentEntryId(
+			groupId, fragmentEntryId, start, end, orderByComparator);
+	}
+
+	public static int getLayoutFragmentEntryLinksCountByFragmentEntryId(
+		long groupId, long fragmentEntryId) {
+
+		return getService().getLayoutFragmentEntryLinksCountByFragmentEntryId(
+			groupId, fragmentEntryId);
+	}
+
+	public static List<FragmentEntryLink>
+		getLayoutPageTemplateFragmentEntryLinksByFragmentEntryId(
+			long groupId, long fragmentEntryId, int layoutPageTemplateType,
+			int start, int end,
+			OrderByComparator<FragmentEntryLink> orderByComparator) {
+
+		return getService().
+			getLayoutPageTemplateFragmentEntryLinksByFragmentEntryId(
+				groupId, fragmentEntryId, layoutPageTemplateType, start, end,
+				orderByComparator);
+	}
+
+	public static int
+		getLayoutPageTemplateFragmentEntryLinksCountByFragmentEntryId(
+			long groupId, long fragmentEntryId, int layoutPageTemplateType) {
+
+		return getService().
+			getLayoutPageTemplateFragmentEntryLinksCountByFragmentEntryId(
+				groupId, fragmentEntryId, layoutPageTemplateType);
+	}
+
 	/**
 	 * Returns the OSGi service identifier.
 	 *
