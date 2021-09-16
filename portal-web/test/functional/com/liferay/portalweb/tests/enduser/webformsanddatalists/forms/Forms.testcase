@@ -4222,13 +4222,13 @@ definition {
 		FormsAdminNavigator.gotoEditFormByName();
 
 		AssertElementPresent(
-			key_fieldName = "First Field",
 			key_fieldLabel = "First Field",
+			key_fieldName = "First Field",
 			locator1 = "FormFields#TEXT_FIELD");
 
 		AssertElementPresent(
-			key_fieldName = "For Autosave",
 			key_fieldLabel = "For Autosave",
+			key_fieldName = "For Autosave",
 			locator1 = "FormFields#TEXT_FIELD");
 	}
 
