@@ -1,0 +1,237 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package com.liferay.osb.provisioning.rest.client.dto.v1_0;
+
+import com.liferay.osb.provisioning.rest.client.function.UnsafeSupplier;
+import com.liferay.osb.provisioning.rest.client.serdes.v1_0.SubscriptionTermSerDes;
+
+import java.io.Serializable;
+
+import java.util.Date;
+import java.util.Objects;
+
+import javax.annotation.Generated;
+
+/**
+ * @author Kyle Bischof
+ * @generated
+ */
+@Generated("")
+public class SubscriptionTerm implements Cloneable, Serializable {
+
+	public static SubscriptionTerm toDTO(String json) {
+		return SubscriptionTermSerDes.toDTO(json);
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+
+	public void setEndDate(
+		UnsafeSupplier<Date, Exception> endDateUnsafeSupplier) {
+
+		try {
+			endDate = endDateUnsafeSupplier.get();
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected Date endDate;
+
+	public Integer getInstanceSize() {
+		return instanceSize;
+	}
+
+	public void setInstanceSize(Integer instanceSize) {
+		this.instanceSize = instanceSize;
+	}
+
+	public void setInstanceSize(
+		UnsafeSupplier<Integer, Exception> instanceSizeUnsafeSupplier) {
+
+		try {
+			instanceSize = instanceSizeUnsafeSupplier.get();
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected Integer instanceSize;
+
+	public Boolean getPerpetual() {
+		return perpetual;
+	}
+
+	public void setPerpetual(Boolean perpetual) {
+		this.perpetual = perpetual;
+	}
+
+	public void setPerpetual(
+		UnsafeSupplier<Boolean, Exception> perpetualUnsafeSupplier) {
+
+		try {
+			perpetual = perpetualUnsafeSupplier.get();
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected Boolean perpetual;
+
+	public String getProductKey() {
+		return productKey;
+	}
+
+	public void setProductKey(String productKey) {
+		this.productKey = productKey;
+	}
+
+	public void setProductKey(
+		UnsafeSupplier<String, Exception> productKeyUnsafeSupplier) {
+
+		try {
+			productKey = productKeyUnsafeSupplier.get();
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected String productKey;
+
+	public String getProductPurchaseKey() {
+		return productPurchaseKey;
+	}
+
+	public void setProductPurchaseKey(String productPurchaseKey) {
+		this.productPurchaseKey = productPurchaseKey;
+	}
+
+	public void setProductPurchaseKey(
+		UnsafeSupplier<String, Exception> productPurchaseKeyUnsafeSupplier) {
+
+		try {
+			productPurchaseKey = productPurchaseKeyUnsafeSupplier.get();
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected String productPurchaseKey;
+
+	public Integer getProvisionedCount() {
+		return provisionedCount;
+	}
+
+	public void setProvisionedCount(Integer provisionedCount) {
+		this.provisionedCount = provisionedCount;
+	}
+
+	public void setProvisionedCount(
+		UnsafeSupplier<Integer, Exception> provisionedCountUnsafeSupplier) {
+
+		try {
+			provisionedCount = provisionedCountUnsafeSupplier.get();
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected Integer provisionedCount;
+
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
+
+	public void setQuantity(
+		UnsafeSupplier<Integer, Exception> quantityUnsafeSupplier) {
+
+		try {
+			quantity = quantityUnsafeSupplier.get();
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected Integer quantity;
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public void setStartDate(
+		UnsafeSupplier<Date, Exception> startDateUnsafeSupplier) {
+
+		try {
+			startDate = startDateUnsafeSupplier.get();
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected Date startDate;
+
+	@Override
+	public SubscriptionTerm clone() throws CloneNotSupportedException {
+		return (SubscriptionTerm)super.clone();
+	}
+
+	@Override
+	public boolean equals(Object object) {
+		if (this == object) {
+			return true;
+		}
+
+		if (!(object instanceof SubscriptionTerm)) {
+			return false;
+		}
+
+		SubscriptionTerm subscriptionTerm = (SubscriptionTerm)object;
+
+		return Objects.equals(toString(), subscriptionTerm.toString());
+	}
+
+	@Override
+	public int hashCode() {
+		String string = toString();
+
+		return string.hashCode();
+	}
+
+	public String toString() {
+		return SubscriptionTermSerDes.toJSON(this);
+	}
+
+}
