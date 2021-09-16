@@ -423,6 +423,25 @@ public class JournalArticleStagedModelDataHandlerTest
 		}
 
 		@Override
+		public void importCompanyStagedModel(
+				PortletDataContext portletDataContext, Element element)
+			throws PortletDataException {
+
+			_wrappedLayoutStagedModelDataHandler.importCompanyStagedModel(
+				portletDataContext, element);
+		}
+
+		@Override
+		public void importCompanyStagedModel(
+				PortletDataContext portletDataContext, String uuid,
+				long classPK)
+			throws PortletDataException {
+
+			_wrappedLayoutStagedModelDataHandler.importCompanyStagedModel(
+				portletDataContext, uuid, classPK);
+		}
+
+		@Override
 		public void importMissingReference(
 				PortletDataContext portletDataContext, Element referenceElement)
 			throws PortletDataException {
