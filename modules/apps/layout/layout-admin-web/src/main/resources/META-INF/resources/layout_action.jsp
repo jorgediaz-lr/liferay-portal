@@ -110,10 +110,10 @@ Layout curLayout = (Layout)row.getObject();
 		<%
 		String messageKey = "are-you-sure-you-want-to-delete-this-page";
 
-		if (curLayout.hasChildren() && curLayout.hasScopeGroup()) {
+		if (curLayout.hasChildren() && _hasScopeGroup(curLayout)) {
 			messageKey = "this-page-is-being-used-as-a-scope-for-content-and-also-has-child-pages-any-content-that-is-scoped-to-this-page-will-also-be-removed-along-with-any-child-pages-are-you-sure-you-want-to-delete-this-page";
 		}
-		else if (curLayout.hasScopeGroup()) {
+		else if (_hasScopeGroup(curLayout)) {
 			messageKey = "this-page-is-being-used-as-a-scope-for-content-any-content-that-is-scoped-to-this-page-will-also-be-removed-are-you-sure-you-want-to-delete-this-page";
 		}
 		else if (curLayout.hasChildren()) {
@@ -160,3 +160,20 @@ Layout curLayout = (Layout)row.getObject();
 
 	Liferay.on('destroyPortlet', handleDestroyPortlet);
 </aui:script>
+
+<%!
+private boolean _hasScopeGroup(Layout layout) throws Exception {
+	if (layout.hasScopeGroup()) {
+		return true;
+	}
+
+	Layout draftLayout = LayoutLocalServiceUtil.fetchLayout(
+		PortalUtil.getClassNameId(Layout.class), layout.getPlid());
+
+	if (draftLayout == null) {
+		return false;
+	}
+
+	return draftLayout.hasScopeGroup();
+}
+%>

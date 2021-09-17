@@ -705,7 +705,7 @@ public class LayoutsAdminDisplayContext {
 			layoutJSONObject.put(
 				"hasChild", childLayoutsCount > 0
 			).put(
-				"hasScopeGroup", layout.hasScopeGroup()
+				"hasScopeGroup", _hasScopeGroup(layout)
 			);
 
 			LayoutType layoutType = layout.getLayoutType();
@@ -2040,6 +2040,21 @@ public class LayoutsAdminDisplayContext {
 		return ContentUtil.get(
 			RobotsUtil.class.getClassLoader(),
 			PropsValues.ROBOTS_TXT_WITHOUT_SITEMAP);
+	}
+
+	private boolean _hasScopeGroup(Layout layout) throws Exception {
+		if (layout.hasScopeGroup()) {
+			return true;
+		}
+
+		Layout draftLayout = LayoutLocalServiceUtil.fetchLayout(
+			PortalUtil.getClassNameId(Layout.class), layout.getPlid());
+
+		if (draftLayout == null) {
+			return false;
+		}
+
+		return draftLayout.hasScopeGroup();
 	}
 
 	private boolean _isActive(long plid) throws PortalException {
