@@ -129,6 +129,7 @@ LayoutColumn.STATE = {
 			active: Config.bool().required(),
 			description: Config.string().required(),
 			hasChild: Config.bool().required(),
+			hasScopeGroup: Config.bool().required(),
 			plid: Config.string().required(),
 			title: Config.string().required(),
 			url: Config.string().required()

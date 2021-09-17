@@ -702,7 +702,11 @@ public class LayoutsAdminDisplayContext {
 				getSelGroupId(), layout.isPrivateLayout(),
 				layout.getLayoutId());
 
-			layoutJSONObject.put("hasChild", childLayoutsCount > 0);
+			layoutJSONObject.put(
+				"hasChild", childLayoutsCount > 0
+			).put(
+				"hasScopeGroup", layout.hasScopeGroup()
+			);
 
 			LayoutType layoutType = layout.getLayoutType();
 
@@ -1832,6 +1836,8 @@ public class LayoutsAdminDisplayContext {
 		).put(
 			"hasChild", true
 		).put(
+			"hasScopeGroup", true
+		).put(
 			"plid", LayoutConstants.DEFAULT_PLID
 		).put(
 			"title", getTitle(privatePages)
@@ -1967,6 +1973,8 @@ public class LayoutsAdminDisplayContext {
 					_getActiveLayoutSetBranchId()
 			).put(
 				"hasChild", true
+			).put(
+				"hasScopeGroup", true
 			).put(
 				"plid", LayoutConstants.DEFAULT_PLID
 			).put(

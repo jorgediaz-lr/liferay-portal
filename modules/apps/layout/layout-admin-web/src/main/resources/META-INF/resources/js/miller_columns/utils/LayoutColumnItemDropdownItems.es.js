@@ -111,9 +111,22 @@ const LAYOUT_COLUMN_ITEM_DROPDOWN_ITEMS = [
 		handleClick: event => {
 			let deleteMessage;
 
-			if (event.data.item.layoutColumnItem.hasChild) {
+			if (
+				event.data.item.layoutColumnItem.hasChild &&
+				event.data.item.layoutColumnItem.hasScopeGroup
+			) {
+				deleteMessage = Liferay.Language.get(
+					'this-page-is-being-used-as-a-scope-for-content-and-also-has-child-pages-any-content-that-is-scoped-to-this-page-will-also-be-removed-along-with-any-child-pages-are-you-sure-you-want-to-delete-this-page'
+				);
+			}
+			else if (event.data.item.layoutColumnItem.hasChild) {
 				deleteMessage = Liferay.Language.get(
 					'this-page-has-child-pages-that-will-also-be-removed-are-you-sure-you-want-to-delete-this-page'
+				);
+			}
+			else if (event.data.item.layoutColumnItem.hasScopeGroup) {
+				deleteMessage = Liferay.Language.get(
+					'this-page-is-being-used-as-a-scope-for-content-any-content-that-is-scoped-to-this-page-will-also-be-removed-are-you-sure-you-want-to-delete-this-page'
 				);
 			}
 			else {

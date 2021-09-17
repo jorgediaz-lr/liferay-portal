@@ -936,6 +936,7 @@ Layout.STATE = {
 				active: Config.bool().required(),
 				checked: Config.bool().required(),
 				hasChild: Config.bool().required(),
+				hasScopeGroup: Config.bool().required(),
 				parentable: Config.bool().required(),
 				plid: Config.string().required(),
 				title: Config.string().required(),
