@@ -28,6 +28,7 @@ function GeneralDetails({
 	assignParentAccountURL,
 	dataRegions,
 	details,
+	liferayVersions,
 	parentAccountName,
 	tiers
 }) {
@@ -36,6 +37,7 @@ function GeneralDetails({
 	const formData = {
 		code: convertDashToEmptyString(details.code),
 		dataRegion: convertDashToEmptyString(details.dataRegion),
+		liferayVersion: convertDashToEmptyString(details.liferayVersion),
 		name: convertDashToEmptyString(details.name),
 		region: convertDashToEmptyString(details.region),
 		tier: convertDashToEmptyString(details.tier),
@@ -141,6 +143,20 @@ function GeneralDetails({
 				}
 				value={details.dataRegion}
 			/>
+
+			<DetailField
+				fieldLabel={Liferay.Language.get('liferay-version')}
+				fieldName="liferayVersion"
+				formAction={details.editAccountURL}
+				formData={formData}
+				options={createSelectOptions(liferayVersions)}
+				type={
+					updatePermission
+						? FIELD_TYPE_SELECT
+						: FIELD_TYPE_NONEDITABLE
+				}
+				value={details.liferayVersion}
+			/>
 		</ClayList>
 	);
 }
@@ -157,6 +173,7 @@ GeneralDetails.propTypes = {
 		editAccountURL: PropTypes.string,
 		firstLineSupportTeamName: PropTypes.string,
 		key: PropTypes.string,
+		liferayVersion: PropTypes.string,
 		name: PropTypes.string,
 		parterTeamName: PropTypes.string,
 		region: PropTypes.string,
@@ -164,6 +181,7 @@ GeneralDetails.propTypes = {
 		subscriptionStateStyle: PropTypes.string,
 		tier: PropTypes.string
 	}),
+	liferayVersions: PropTypes.arrayOf(PropTypes.string).isRequired,
 	parentAccountName: PropTypes.string,
 	tiers: PropTypes.arrayOf(PropTypes.string).isRequired
 };

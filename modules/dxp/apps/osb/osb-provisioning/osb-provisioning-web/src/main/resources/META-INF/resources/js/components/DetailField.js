@@ -44,7 +44,7 @@ function DetailField({
 	useEffect(() => {
 		if (formRef.current && data[fieldName] !== formData[fieldName]) {
 			if (
-				(type === FIELD_TYPE_SELECT && data[fieldName] !== '') ||
+				type === FIELD_TYPE_SELECT ||
 				type === FIELD_TYPE_TEXT ||
 				type === FIELD_TYPE_TEXTAREA ||
 				type === FIELD_TYPE_TOGGLE

@@ -27,6 +27,7 @@ function renderGeneralDetails(permission = true) {
 					dateModified: new Date().toLocaleString('en-US'),
 					firstLineSupportTeamName: 'Test Support Team',
 					key: '123',
+					liferayVersion: 'DXP 7.0',
 					name: 'Test Account',
 					parterTeamName: 'Test Partner Team',
 					region: 'US',
@@ -34,6 +35,13 @@ function renderGeneralDetails(permission = true) {
 					subscriptionStateStyle: 'label-success',
 					tier: 'Regular'
 				}}
+				liferayVersions={[
+					'DXP 7.0',
+					'DXP 7.1',
+					'DXP 7.2',
+					'DXP 7.3',
+					'DXP 7.4'
+				]}
 				parentAccountName="Parent Account Name"
 				tiers={['1', '2', '3']}
 			/>

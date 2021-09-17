@@ -69,6 +69,7 @@ function renderAccountDetails(props) {
 				firstLineSupportTeamKey: 'first-line-123',
 				firstLineSupportTeamName: 'Test Support Team',
 				key: '123',
+				liferayVersion: 'DXP 7.0',
 				name: 'Test Account',
 				partnerTeamKey: 'partner-123',
 				partnerTeamName: 'Test Partner Team',
@@ -82,6 +83,13 @@ function renderAccountDetails(props) {
 				updateDossieraProjectURL: '/update/dossiera/project',
 				updateSalesforceProjectURL: 'update/salesforce/project'
 			}}
+			liferayVersionNames={[
+				'DXP 7.0',
+				'DXP 7.1',
+				'DXP 7.2',
+				'DXP 7.3',
+				'DXP 7.4'
+			]}
 			parentAccountName="parent"
 			tierNames={['1', '2', '3']}
 			{...props}

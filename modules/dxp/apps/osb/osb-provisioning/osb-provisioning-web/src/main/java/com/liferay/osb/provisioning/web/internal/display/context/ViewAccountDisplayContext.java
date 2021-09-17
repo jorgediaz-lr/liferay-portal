@@ -43,6 +43,7 @@ import com.liferay.osb.provisioning.koroneiki.web.service.ProductPurchaseViewWeb
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamRoleWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamWebService;
+import com.liferay.osb.provisioning.license.helper.constants.ProductVersion;
 import com.liferay.osb.provisioning.license.permission.LicenseKeyPermission;
 import com.liferay.osb.provisioning.license.service.LicenseKeyLocalService;
 import com.liferay.osb.provisioning.web.internal.permission.AccountPermissionChecker;
@@ -181,6 +182,16 @@ public class ViewAccountDisplayContext {
 		}
 
 		data.put("dataRegionNames", dataRegionNames);
+
+		List<String> liferayVersionNames = new ArrayList<>();
+
+		liferayVersionNames.add(StringPool.BLANK);
+
+		for (String version : ProductVersion.DXP_VERSIONS) {
+			liferayVersionNames.add("DXP " + version);
+		}
+
+		data.put("liferayVersionNames", liferayVersionNames);
 
 		data.put("details", getAccountDisplay());
 		data.put("hasManageAccountsPermission", hasManageAccountsPermission());

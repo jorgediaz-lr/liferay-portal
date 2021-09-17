@@ -41,7 +41,9 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -187,10 +189,12 @@ public class EditAccountMVCActionCommand extends BaseMVCActionCommand {
 			String region = ParamUtil.getString(actionRequest, "region");
 			String dataRegion = ParamUtil.getString(
 				actionRequest, "dataRegion");
+			String liferayVersion = ParamUtil.getString(
+				actionRequest, "liferayVersion");
 
 			validate(code);
 
-			Account account = new Account();
+			Account account = _accountWebService.getAccount(accountKey);
 
 			account.setName(name);
 
@@ -209,6 +213,21 @@ public class EditAccountMVCActionCommand extends BaseMVCActionCommand {
 			if (Validator.isNotNull(dataRegion)) {
 				account.setDataRegion(Account.DataRegion.create(dataRegion));
 			}
+
+			Map<String, String> properties = account.getProperties();
+
+			if (properties == null) {
+				properties = new HashMap<>();
+			}
+
+			if (Validator.isNotNull(liferayVersion)) {
+				properties.put("liferayVersion", liferayVersion);
+			}
+			else {
+				properties.remove("liferayVersion");
+			}
+
+			account.setProperties(properties);
 
 			_accountWebService.updateAccount(
 				user.getFullName(), user.getUuid(), accountKey, account);

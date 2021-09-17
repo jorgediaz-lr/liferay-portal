@@ -38,6 +38,7 @@ import java.text.Format;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.PortletRequest;
@@ -200,6 +201,20 @@ public class AccountDisplay {
 
 	public String getKey() {
 		return _account.getKey();
+	}
+
+	public String getLiferayVersion() {
+		Map<String, String> properties = _account.getProperties();
+
+		if (properties != null) {
+			String liferayVersion = properties.get("liferayVersion");
+
+			if (Validator.isNotNull(liferayVersion)) {
+				return liferayVersion;
+			}
+		}
+
+		return StringPool.DASH;
 	}
 
 	public String getName() {

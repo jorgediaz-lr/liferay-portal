@@ -27,6 +27,7 @@ function AccountDetails({
 	details,
 	hasManageAccountsPermission,
 	hasUpdateExternalLinksPermission,
+	liferayVersionNames,
 	parentAccountName,
 	tierNames
 }) {
@@ -39,6 +40,7 @@ function AccountDetails({
 					assignParentAccountURL={assignParentAccountURL}
 					dataRegions={dataRegionNames}
 					details={details}
+					liferayVersions={liferayVersionNames}
 					parentAccountName={parentAccountName}
 					tiers={tierNames}
 				/>
@@ -101,6 +103,7 @@ AccountDetails.propTypes = {
 		editAccountURL: PropTypes.string,
 		firstLineSupportTeamName: PropTypes.string,
 		key: PropTypes.string,
+		liferayVersion: PropTypes.string,
 		name: PropTypes.string,
 		parterTeamName: PropTypes.string,
 		postalAddressDisplays: PropTypes.arrayOf(
@@ -129,6 +132,7 @@ AccountDetails.propTypes = {
 	}),
 	hasManageAccountsPermission: PropTypes.bool,
 	hasUpdateExternalLinksPermission: PropTypes.bool,
+	liferayVersionNames: PropTypes.arrayOf(PropTypes.string),
 	parentAccountName: PropTypes.string,
 	tierNames: PropTypes.arrayOf(PropTypes.string)
 };
