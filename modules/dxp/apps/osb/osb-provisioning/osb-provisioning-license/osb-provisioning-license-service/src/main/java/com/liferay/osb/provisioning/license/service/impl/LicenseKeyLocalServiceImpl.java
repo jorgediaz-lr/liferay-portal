@@ -316,8 +316,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			Date startDate, Date expirationDate)
 		throws Exception {
 
-		validate(productPurchaseKey, startDate, expirationDate);
-
 		User user = userLocalService.getUser(userId);
 
 		LicenseKey licenseKey = licenseKeyPersistence.findByPrimaryKey(
@@ -1381,23 +1379,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		}
 
 		return text.substring(0, Math.min(maxLength, text.length()));
-	}
-
-	protected void validate(
-			String productPurchaseKey, Date startDate, Date expirationDate)
-		throws PortalException {
-
-		if (Validator.isNull(productPurchaseKey)) {
-			throw new LicenseKeyProductPurchaseKeyException(
-				"Invalid product purchase key");
-		}
-
-		if ((startDate == null) || (expirationDate == null) ||
-			expirationDate.before(startDate)) {
-
-			throw new LicenseKeyDateException(
-				"Invalid start date or expiration date");
-		}
 	}
 
 	protected void validate(

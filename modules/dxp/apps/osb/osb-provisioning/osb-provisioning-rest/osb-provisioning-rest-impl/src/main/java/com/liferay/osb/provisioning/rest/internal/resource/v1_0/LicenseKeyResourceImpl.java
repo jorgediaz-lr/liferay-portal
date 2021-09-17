@@ -27,6 +27,8 @@ import com.liferay.osb.provisioning.koroneiki.web.service.ContactRoleWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ContactWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductPurchaseViewWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
+import com.liferay.osb.provisioning.license.exception.LicenseKeyDateException;
+import com.liferay.osb.provisioning.license.exception.LicenseKeyProductPurchaseKeyException;
 import com.liferay.osb.provisioning.license.exporter.LicenseKeyExporter;
 import com.liferay.osb.provisioning.license.helper.constants.LicenseType;
 import com.liferay.osb.provisioning.license.helper.constants.ProductVersion;
@@ -45,6 +47,7 @@ import com.liferay.osb.provisioning.rest.internal.odata.entity.v1_0.LicenseKeyEn
 import com.liferay.osb.provisioning.rest.resource.v1_0.LicenseKeyResource;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
@@ -56,6 +59,7 @@ import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
@@ -396,6 +400,10 @@ public class LicenseKeyResourceImpl
 					licenseKey.getId());
 
 			_checkAccountAdminContactRole(curLicenseKey.getAccountKey());
+
+			_validate(
+				licenseKey.getProductPurchaseKey(), licenseKey.getStartDate(),
+				licenseKey.getExpirationDate());
 		}
 
 		List<LicenseKey> curLicenseKeys = new ArrayList<>();
@@ -705,6 +713,23 @@ public class LicenseKeyResourceImpl
 		}
 
 		return false;
+	}
+
+	private void _validate(
+			String productPurchaseKey, Date startDate, Date expirationDate)
+		throws PortalException {
+
+		if (Validator.isNull(productPurchaseKey)) {
+			throw new LicenseKeyProductPurchaseKeyException(
+				"Invalid product purchase key");
+		}
+
+		if ((startDate == null) || (expirationDate == null) ||
+			expirationDate.before(startDate)) {
+
+			throw new LicenseKeyDateException(
+				"Invalid start date or expiration date");
+		}
 	}
 
 	private static final EntityModel _entityModel = new LicenseKeyEntityModel();
