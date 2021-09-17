@@ -218,13 +218,15 @@ function BulkInput({
 		const validDateFormat = validateDateFieldFormat(value);
 
 		if (validDateFormat) {
+			const newOriginalEndDate = convertInputToDate(value);
+
 			updateAllValues(subscription =>
 				subscription
-					.set('originalEndDate', convertInputToDate(value))
+					.set('originalEndDate', newOriginalEndDate)
 					.update('endDate', endDate =>
 						endDate && validateCurrentGracePeriod(gracePeriod)
 							? generateNewDateByDay(
-									subscription.originalEndDate,
+									newOriginalEndDate,
 									gracePeriod
 							  )
 							: endDate
