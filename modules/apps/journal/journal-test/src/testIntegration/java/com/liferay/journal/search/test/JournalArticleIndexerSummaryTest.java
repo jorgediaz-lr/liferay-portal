@@ -133,7 +133,7 @@ public class JournalArticleIndexerSummaryTest {
 
 		setFields(staleTitle, staleContent, document);
 
-		_summaryFixture.assertSummary(staleTitle, content, document);
+		_summaryFixture.assertSummary(staleTitle, staleContent, document);
 	}
 
 	@Test
@@ -152,12 +152,8 @@ public class JournalArticleIndexerSummaryTest {
 
 		setSnippets(staleHighlightedTitle, staleHighlightedContent, document);
 
-		String highlightedContent = StringBundler.concat(
-			HighlightUtil.HIGHLIGHT_TAG_OPEN, "test",
-			HighlightUtil.HIGHLIGHT_TAG_CLOSE, " content");
-
 		_summaryFixture.assertSummary(
-			staleHighlightedTitle, highlightedContent, document);
+			staleHighlightedTitle, staleHighlightedContent, document);
 	}
 
 	protected Document getDocument(String title, String content)
