@@ -37,6 +37,8 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.io.Serializable;
@@ -677,6 +679,8 @@ public class QueuedMessagePersistenceImpl
 		queuedMessage.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the queued messages in the entity cache if it is enabled.
 	 *
@@ -684,6 +688,13 @@ public class QueuedMessagePersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<QueuedMessage> queuedMessages) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (queuedMessages.size() > _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (QueuedMessage queuedMessage : queuedMessages) {
 			if (entityCache.getResult(
 					entityCacheEnabled, QueuedMessageImpl.class,
@@ -1237,6 +1248,9 @@ public class QueuedMessagePersistenceImpl
 	public void activate() {
 		QueuedMessageModelImpl.setEntityCacheEnabled(entityCacheEnabled);
 		QueuedMessageModelImpl.setFinderCacheEnabled(finderCacheEnabled);
+
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, QueuedMessageImpl.class,

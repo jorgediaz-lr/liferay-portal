@@ -40,6 +40,8 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -3699,6 +3701,8 @@ public class TeamPersistenceImpl
 		team.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the teams in the entity cache if it is enabled.
 	 *
@@ -3706,6 +3710,13 @@ public class TeamPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<Team> teams) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (teams.size() > _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (Team team : teams) {
 			if (entityCache.getResult(
 					entityCacheEnabled, TeamImpl.class, team.getPrimaryKey()) ==
@@ -4408,6 +4419,9 @@ public class TeamPersistenceImpl
 	public void activate() {
 		TeamModelImpl.setEntityCacheEnabled(entityCacheEnabled);
 		TeamModelImpl.setFinderCacheEnabled(finderCacheEnabled);
+
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, TeamImpl.class,

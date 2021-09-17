@@ -47,6 +47,8 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -21167,6 +21169,8 @@ public class BlogsEntryPersistenceImpl
 		blogsEntry.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the blogs entries in the entity cache if it is enabled.
 	 *
@@ -21174,6 +21178,13 @@ public class BlogsEntryPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<BlogsEntry> blogsEntries) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (blogsEntries.size() > _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (BlogsEntry blogsEntry : blogsEntries) {
 			if (entityCache.getResult(
 					entityCacheEnabled, BlogsEntryImpl.class,
@@ -22130,6 +22141,9 @@ public class BlogsEntryPersistenceImpl
 	public void activate() {
 		BlogsEntryModelImpl.setEntityCacheEnabled(entityCacheEnabled);
 		BlogsEntryModelImpl.setFinderCacheEnabled(finderCacheEnabled);
+
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, BlogsEntryImpl.class,

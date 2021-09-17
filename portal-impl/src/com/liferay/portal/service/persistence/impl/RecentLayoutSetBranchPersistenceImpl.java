@@ -30,7 +30,10 @@ import com.liferay.portal.kernel.model.RecentLayoutSetBranch;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.RecentLayoutSetBranchPersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.model.impl.RecentLayoutSetBranchImpl;
 import com.liferay.portal.model.impl.RecentLayoutSetBranchModelImpl;
@@ -1878,6 +1881,8 @@ public class RecentLayoutSetBranchPersistenceImpl
 		recentLayoutSetBranch.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the recent layout set branchs in the entity cache if it is enabled.
 	 *
@@ -1886,6 +1891,14 @@ public class RecentLayoutSetBranchPersistenceImpl
 	@Override
 	public void cacheResult(
 		List<RecentLayoutSetBranch> recentLayoutSetBranchs) {
+
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (recentLayoutSetBranchs.size() >
+				 _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
 
 		for (RecentLayoutSetBranch recentLayoutSetBranch :
 				recentLayoutSetBranchs) {
@@ -2552,6 +2565,9 @@ public class RecentLayoutSetBranchPersistenceImpl
 	 * Initializes the recent layout set branch persistence.
 	 */
 	public void afterPropertiesSet() {
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
+
 		_finderPathWithPaginationFindAll = new FinderPath(
 			RecentLayoutSetBranchModelImpl.ENTITY_CACHE_ENABLED,
 			RecentLayoutSetBranchModelImpl.FINDER_CACHE_ENABLED,

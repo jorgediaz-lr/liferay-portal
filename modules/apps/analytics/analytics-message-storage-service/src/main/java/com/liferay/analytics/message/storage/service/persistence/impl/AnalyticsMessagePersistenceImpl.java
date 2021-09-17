@@ -38,6 +38,8 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.io.Serializable;
@@ -616,6 +618,8 @@ public class AnalyticsMessagePersistenceImpl
 		analyticsMessage.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the analytics messages in the entity cache if it is enabled.
 	 *
@@ -623,6 +627,14 @@ public class AnalyticsMessagePersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<AnalyticsMessage> analyticsMessages) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (analyticsMessages.size() >
+				 _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (AnalyticsMessage analyticsMessage : analyticsMessages) {
 			if (entityCache.getResult(
 					entityCacheEnabled, AnalyticsMessageImpl.class,
@@ -1174,6 +1186,9 @@ public class AnalyticsMessagePersistenceImpl
 	public void activate() {
 		AnalyticsMessageModelImpl.setEntityCacheEnabled(entityCacheEnabled);
 		AnalyticsMessageModelImpl.setFinderCacheEnabled(finderCacheEnabled);
+
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, AnalyticsMessageImpl.class,

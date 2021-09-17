@@ -36,6 +36,8 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.io.Serializable;
@@ -5158,6 +5160,8 @@ public class JournalContentSearchPersistenceImpl
 		journalContentSearch.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the journal content searchs in the entity cache if it is enabled.
 	 *
@@ -5165,6 +5169,14 @@ public class JournalContentSearchPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<JournalContentSearch> journalContentSearchs) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (journalContentSearchs.size() >
+				 _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (JournalContentSearch journalContentSearch :
 				journalContentSearchs) {
 
@@ -5997,6 +6009,9 @@ public class JournalContentSearchPersistenceImpl
 	public void activate() {
 		JournalContentSearchModelImpl.setEntityCacheEnabled(entityCacheEnabled);
 		JournalContentSearchModelImpl.setFinderCacheEnabled(finderCacheEnabled);
+
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled,

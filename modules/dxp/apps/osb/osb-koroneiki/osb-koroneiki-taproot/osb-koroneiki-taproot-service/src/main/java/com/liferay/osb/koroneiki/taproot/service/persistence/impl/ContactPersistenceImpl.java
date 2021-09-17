@@ -40,6 +40,8 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -2578,6 +2580,8 @@ public class ContactPersistenceImpl
 		contact.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the contacts in the entity cache if it is enabled.
 	 *
@@ -2585,6 +2589,13 @@ public class ContactPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<Contact> contacts) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (contacts.size() > _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (Contact contact : contacts) {
 			if (entityCache.getResult(
 					entityCacheEnabled, ContactImpl.class,
@@ -3236,6 +3247,9 @@ public class ContactPersistenceImpl
 	public void activate() {
 		ContactModelImpl.setEntityCacheEnabled(entityCacheEnabled);
 		ContactModelImpl.setFinderCacheEnabled(finderCacheEnabled);
+
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, ContactImpl.class,

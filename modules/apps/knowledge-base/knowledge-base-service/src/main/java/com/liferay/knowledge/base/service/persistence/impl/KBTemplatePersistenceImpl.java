@@ -46,6 +46,8 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -2374,6 +2376,8 @@ public class KBTemplatePersistenceImpl
 		kbTemplate.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the kb templates in the entity cache if it is enabled.
 	 *
@@ -2381,6 +2385,13 @@ public class KBTemplatePersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<KBTemplate> kbTemplates) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (kbTemplates.size() > _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (KBTemplate kbTemplate : kbTemplates) {
 			if (entityCache.getResult(
 					entityCacheEnabled, KBTemplateImpl.class,
@@ -3070,6 +3081,9 @@ public class KBTemplatePersistenceImpl
 	public void activate() {
 		KBTemplateModelImpl.setEntityCacheEnabled(entityCacheEnabled);
 		KBTemplateModelImpl.setFinderCacheEnabled(finderCacheEnabled);
+
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, KBTemplateImpl.class,

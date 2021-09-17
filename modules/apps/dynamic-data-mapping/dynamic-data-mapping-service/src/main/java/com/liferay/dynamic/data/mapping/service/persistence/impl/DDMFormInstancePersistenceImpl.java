@@ -41,6 +41,8 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -2857,6 +2859,8 @@ public class DDMFormInstancePersistenceImpl
 		ddmFormInstance.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the ddm form instances in the entity cache if it is enabled.
 	 *
@@ -2864,6 +2868,14 @@ public class DDMFormInstancePersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<DDMFormInstance> ddmFormInstances) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (ddmFormInstances.size() >
+				 _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (DDMFormInstance ddmFormInstance : ddmFormInstances) {
 			DDMFormInstance cachedDDMFormInstance =
 				(DDMFormInstance)entityCache.getResult(
@@ -3549,6 +3561,9 @@ public class DDMFormInstancePersistenceImpl
 	public void activate() {
 		DDMFormInstanceModelImpl.setEntityCacheEnabled(entityCacheEnabled);
 		DDMFormInstanceModelImpl.setFinderCacheEnabled(finderCacheEnabled);
+
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, DDMFormInstanceImpl.class,

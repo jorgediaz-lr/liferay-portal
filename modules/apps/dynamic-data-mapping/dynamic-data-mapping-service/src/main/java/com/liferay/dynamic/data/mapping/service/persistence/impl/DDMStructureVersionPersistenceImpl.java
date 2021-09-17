@@ -38,6 +38,8 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 
@@ -1444,6 +1446,8 @@ public class DDMStructureVersionPersistenceImpl
 		ddmStructureVersion.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the ddm structure versions in the entity cache if it is enabled.
 	 *
@@ -1451,6 +1455,14 @@ public class DDMStructureVersionPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<DDMStructureVersion> ddmStructureVersions) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (ddmStructureVersions.size() >
+				 _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (DDMStructureVersion ddmStructureVersion : ddmStructureVersions) {
 			DDMStructureVersion cachedDDMStructureVersion =
 				(DDMStructureVersion)entityCache.getResult(
@@ -2102,6 +2114,9 @@ public class DDMStructureVersionPersistenceImpl
 	public void activate() {
 		DDMStructureVersionModelImpl.setEntityCacheEnabled(entityCacheEnabled);
 		DDMStructureVersionModelImpl.setFinderCacheEnabled(finderCacheEnabled);
+
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled,

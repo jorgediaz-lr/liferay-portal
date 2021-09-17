@@ -32,7 +32,10 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.tasks.exception.NoSuchTasksEntryException;
@@ -9994,6 +9997,8 @@ public class TasksEntryPersistenceImpl
 		tasksEntry.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the tasks entries in the entity cache if it is enabled.
 	 *
@@ -10001,6 +10006,13 @@ public class TasksEntryPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<TasksEntry> tasksEntries) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (tasksEntries.size() > _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (TasksEntry tasksEntry : tasksEntries) {
 			if (EntityCacheUtil.getResult(
 					TasksEntryModelImpl.ENTITY_CACHE_ENABLED,
@@ -10859,6 +10871,9 @@ public class TasksEntryPersistenceImpl
 	 * Initializes the tasks entry persistence.
 	 */
 	public void afterPropertiesSet() {
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
+
 		_finderPathWithPaginationFindAll = new FinderPath(
 			TasksEntryModelImpl.ENTITY_CACHE_ENABLED,
 			TasksEntryModelImpl.FINDER_CACHE_ENABLED, TasksEntryImpl.class,

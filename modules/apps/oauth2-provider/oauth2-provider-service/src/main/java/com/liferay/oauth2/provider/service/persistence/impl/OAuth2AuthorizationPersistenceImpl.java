@@ -43,6 +43,8 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 
@@ -2204,6 +2206,8 @@ public class OAuth2AuthorizationPersistenceImpl
 		oAuth2Authorization.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the o auth2 authorizations in the entity cache if it is enabled.
 	 *
@@ -2211,6 +2215,14 @@ public class OAuth2AuthorizationPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<OAuth2Authorization> oAuth2Authorizations) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (oAuth2Authorizations.size() >
+				 _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (OAuth2Authorization oAuth2Authorization : oAuth2Authorizations) {
 			if (entityCache.getResult(
 					entityCacheEnabled, OAuth2AuthorizationImpl.class,
@@ -3208,6 +3220,9 @@ public class OAuth2AuthorizationPersistenceImpl
 	public void activate() {
 		OAuth2AuthorizationModelImpl.setEntityCacheEnabled(entityCacheEnabled);
 		OAuth2AuthorizationModelImpl.setFinderCacheEnabled(finderCacheEnabled);
+
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
 
 		oAuth2AuthorizationToOAuth2ScopeGrantTableMapper =
 			TableMapperFactory.getTableMapper(

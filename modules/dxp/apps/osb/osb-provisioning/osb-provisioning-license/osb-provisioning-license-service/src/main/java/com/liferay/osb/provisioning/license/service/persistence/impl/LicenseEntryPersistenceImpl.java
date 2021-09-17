@@ -37,6 +37,8 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 
@@ -1486,6 +1488,8 @@ public class LicenseEntryPersistenceImpl
 		licenseEntry.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the license entries in the entity cache if it is enabled.
 	 *
@@ -1493,6 +1497,13 @@ public class LicenseEntryPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<LicenseEntry> licenseEntries) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (licenseEntries.size() > _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (LicenseEntry licenseEntry : licenseEntries) {
 			if (entityCache.getResult(
 					entityCacheEnabled, LicenseEntryImpl.class,
@@ -2118,6 +2129,9 @@ public class LicenseEntryPersistenceImpl
 	public void activate() {
 		LicenseEntryModelImpl.setEntityCacheEnabled(entityCacheEnabled);
 		LicenseEntryModelImpl.setFinderCacheEnabled(finderCacheEnabled);
+
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, LicenseEntryImpl.class,

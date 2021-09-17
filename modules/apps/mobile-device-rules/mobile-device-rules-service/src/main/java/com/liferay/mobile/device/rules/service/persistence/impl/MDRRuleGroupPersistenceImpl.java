@@ -41,6 +41,8 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -2842,6 +2844,8 @@ public class MDRRuleGroupPersistenceImpl
 		mdrRuleGroup.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the mdr rule groups in the entity cache if it is enabled.
 	 *
@@ -2849,6 +2853,13 @@ public class MDRRuleGroupPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<MDRRuleGroup> mdrRuleGroups) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (mdrRuleGroups.size() > _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (MDRRuleGroup mdrRuleGroup : mdrRuleGroups) {
 			if (entityCache.getResult(
 					entityCacheEnabled, MDRRuleGroupImpl.class,
@@ -3517,6 +3528,9 @@ public class MDRRuleGroupPersistenceImpl
 	public void activate() {
 		MDRRuleGroupModelImpl.setEntityCacheEnabled(entityCacheEnabled);
 		MDRRuleGroupModelImpl.setFinderCacheEnabled(finderCacheEnabled);
+
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, MDRRuleGroupImpl.class,

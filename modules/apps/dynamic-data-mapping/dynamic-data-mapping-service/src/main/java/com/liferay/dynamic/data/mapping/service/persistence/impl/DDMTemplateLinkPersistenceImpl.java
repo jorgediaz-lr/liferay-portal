@@ -36,6 +36,8 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.io.Serializable;
@@ -1355,6 +1357,8 @@ public class DDMTemplateLinkPersistenceImpl
 		ddmTemplateLink.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the ddm template links in the entity cache if it is enabled.
 	 *
@@ -1362,6 +1366,14 @@ public class DDMTemplateLinkPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<DDMTemplateLink> ddmTemplateLinks) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (ddmTemplateLinks.size() >
+				 _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (DDMTemplateLink ddmTemplateLink : ddmTemplateLinks) {
 			if (entityCache.getResult(
 					entityCacheEnabled, DDMTemplateLinkImpl.class,
@@ -1969,6 +1981,9 @@ public class DDMTemplateLinkPersistenceImpl
 	public void activate() {
 		DDMTemplateLinkModelImpl.setEntityCacheEnabled(entityCacheEnabled);
 		DDMTemplateLinkModelImpl.setFinderCacheEnabled(finderCacheEnabled);
+
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, DDMTemplateLinkImpl.class,

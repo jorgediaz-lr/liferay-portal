@@ -39,6 +39,8 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -2096,6 +2098,8 @@ public class FriendlyURLEntryPersistenceImpl
 		friendlyURLEntry.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the friendly url entries in the entity cache if it is enabled.
 	 *
@@ -2103,6 +2107,14 @@ public class FriendlyURLEntryPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<FriendlyURLEntry> friendlyURLEntries) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (friendlyURLEntries.size() >
+				 _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (FriendlyURLEntry friendlyURLEntry : friendlyURLEntries) {
 			if (entityCache.getResult(
 					entityCacheEnabled, FriendlyURLEntryImpl.class,
@@ -2793,6 +2805,9 @@ public class FriendlyURLEntryPersistenceImpl
 	public void activate() {
 		FriendlyURLEntryModelImpl.setEntityCacheEnabled(entityCacheEnabled);
 		FriendlyURLEntryModelImpl.setFinderCacheEnabled(finderCacheEnabled);
+
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, FriendlyURLEntryImpl.class,

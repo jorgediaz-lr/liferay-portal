@@ -36,6 +36,8 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 
@@ -1185,6 +1187,8 @@ public class ProductBundleProductsPersistenceImpl
 		productBundleProducts.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the product bundle productses in the entity cache if it is enabled.
 	 *
@@ -1193,6 +1197,14 @@ public class ProductBundleProductsPersistenceImpl
 	@Override
 	public void cacheResult(
 		List<ProductBundleProducts> productBundleProductses) {
+
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (productBundleProductses.size() >
+				 _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
 
 		for (ProductBundleProducts productBundleProducts :
 				productBundleProductses) {
@@ -1788,6 +1800,9 @@ public class ProductBundleProductsPersistenceImpl
 			entityCacheEnabled);
 		ProductBundleProductsModelImpl.setFinderCacheEnabled(
 			finderCacheEnabled);
+
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled,

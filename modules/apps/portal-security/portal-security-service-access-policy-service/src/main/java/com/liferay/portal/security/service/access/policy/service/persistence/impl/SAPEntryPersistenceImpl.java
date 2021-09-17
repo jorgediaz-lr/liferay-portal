@@ -34,6 +34,8 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -4173,6 +4175,8 @@ public class SAPEntryPersistenceImpl
 		sapEntry.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the sap entries in the entity cache if it is enabled.
 	 *
@@ -4180,6 +4184,13 @@ public class SAPEntryPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<SAPEntry> sapEntries) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (sapEntries.size() > _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (SAPEntry sapEntry : sapEntries) {
 			if (entityCache.getResult(
 					entityCacheEnabled, SAPEntryImpl.class,
@@ -4872,6 +4883,9 @@ public class SAPEntryPersistenceImpl
 	public void activate() {
 		SAPEntryModelImpl.setEntityCacheEnabled(entityCacheEnabled);
 		SAPEntryModelImpl.setFinderCacheEnabled(finderCacheEnabled);
+
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, SAPEntryImpl.class,

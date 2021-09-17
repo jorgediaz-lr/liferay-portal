@@ -38,6 +38,8 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -5463,6 +5465,8 @@ public class FragmentEntryLinkPersistenceImpl
 		fragmentEntryLink.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the fragment entry links in the entity cache if it is enabled.
 	 *
@@ -5470,6 +5474,14 @@ public class FragmentEntryLinkPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<FragmentEntryLink> fragmentEntryLinks) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (fragmentEntryLinks.size() >
+				 _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (FragmentEntryLink fragmentEntryLink : fragmentEntryLinks) {
 			if (entityCache.getResult(
 					entityCacheEnabled, FragmentEntryLinkImpl.class,
@@ -6348,6 +6360,9 @@ public class FragmentEntryLinkPersistenceImpl
 	public void activate() {
 		FragmentEntryLinkModelImpl.setEntityCacheEnabled(entityCacheEnabled);
 		FragmentEntryLinkModelImpl.setFinderCacheEnabled(finderCacheEnabled);
+
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, FragmentEntryLinkImpl.class,

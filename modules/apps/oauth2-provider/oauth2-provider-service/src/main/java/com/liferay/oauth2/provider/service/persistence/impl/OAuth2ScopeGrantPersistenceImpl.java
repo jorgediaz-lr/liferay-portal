@@ -41,6 +41,8 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -1092,6 +1094,8 @@ public class OAuth2ScopeGrantPersistenceImpl
 		oAuth2ScopeGrant.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the o auth2 scope grants in the entity cache if it is enabled.
 	 *
@@ -1099,6 +1103,14 @@ public class OAuth2ScopeGrantPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<OAuth2ScopeGrant> oAuth2ScopeGrants) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (oAuth2ScopeGrants.size() >
+				 _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (OAuth2ScopeGrant oAuth2ScopeGrant : oAuth2ScopeGrants) {
 			if (entityCache.getResult(
 					entityCacheEnabled, OAuth2ScopeGrantImpl.class,
@@ -2049,6 +2061,9 @@ public class OAuth2ScopeGrantPersistenceImpl
 	public void activate() {
 		OAuth2ScopeGrantModelImpl.setEntityCacheEnabled(entityCacheEnabled);
 		OAuth2ScopeGrantModelImpl.setFinderCacheEnabled(finderCacheEnabled);
+
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
 
 		oAuth2ScopeGrantToOAuth2AuthorizationTableMapper =
 			TableMapperFactory.getTableMapper(

@@ -36,6 +36,8 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.io.Serializable;
@@ -1154,6 +1156,8 @@ public class ProductFieldPersistenceImpl
 		productField.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the product fields in the entity cache if it is enabled.
 	 *
@@ -1161,6 +1165,13 @@ public class ProductFieldPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<ProductField> productFields) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (productFields.size() > _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (ProductField productField : productFields) {
 			if (entityCache.getResult(
 					entityCacheEnabled, ProductFieldImpl.class,
@@ -1721,6 +1732,9 @@ public class ProductFieldPersistenceImpl
 	public void activate() {
 		ProductFieldModelImpl.setEntityCacheEnabled(entityCacheEnabled);
 		ProductFieldModelImpl.setFinderCacheEnabled(finderCacheEnabled);
+
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, ProductFieldImpl.class,

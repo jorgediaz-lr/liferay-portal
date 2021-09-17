@@ -38,6 +38,8 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -1819,6 +1821,8 @@ public class BatchEngineExportTaskPersistenceImpl
 		batchEngineExportTask.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the batch engine export tasks in the entity cache if it is enabled.
 	 *
@@ -1827,6 +1831,14 @@ public class BatchEngineExportTaskPersistenceImpl
 	@Override
 	public void cacheResult(
 		List<BatchEngineExportTask> batchEngineExportTasks) {
+
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (batchEngineExportTasks.size() >
+				 _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
 
 		for (BatchEngineExportTask batchEngineExportTask :
 				batchEngineExportTasks) {
@@ -2485,6 +2497,9 @@ public class BatchEngineExportTaskPersistenceImpl
 			entityCacheEnabled);
 		BatchEngineExportTaskModelImpl.setFinderCacheEnabled(
 			finderCacheEnabled);
+
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled,

@@ -40,6 +40,8 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -3574,6 +3576,8 @@ public class TeamRolePersistenceImpl
 		teamRole.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the team roles in the entity cache if it is enabled.
 	 *
@@ -3581,6 +3585,13 @@ public class TeamRolePersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<TeamRole> teamRoles) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (teamRoles.size() > _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (TeamRole teamRole : teamRoles) {
 			if (entityCache.getResult(
 					entityCacheEnabled, TeamRoleImpl.class,
@@ -4266,6 +4277,9 @@ public class TeamRolePersistenceImpl
 	public void activate() {
 		TeamRoleModelImpl.setEntityCacheEnabled(entityCacheEnabled);
 		TeamRoleModelImpl.setFinderCacheEnabled(finderCacheEnabled);
+
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, TeamRoleImpl.class,

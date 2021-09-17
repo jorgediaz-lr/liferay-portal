@@ -38,6 +38,8 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -2443,6 +2445,8 @@ public class MBDiscussionPersistenceImpl
 		mbDiscussion.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the message boards discussions in the entity cache if it is enabled.
 	 *
@@ -2450,6 +2454,13 @@ public class MBDiscussionPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<MBDiscussion> mbDiscussions) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (mbDiscussions.size() > _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (MBDiscussion mbDiscussion : mbDiscussions) {
 			if (entityCache.getResult(
 					entityCacheEnabled, MBDiscussionImpl.class,
@@ -3175,6 +3186,9 @@ public class MBDiscussionPersistenceImpl
 	public void activate() {
 		MBDiscussionModelImpl.setEntityCacheEnabled(entityCacheEnabled);
 		MBDiscussionModelImpl.setFinderCacheEnabled(finderCacheEnabled);
+
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, MBDiscussionImpl.class,

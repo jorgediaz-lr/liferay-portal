@@ -32,6 +32,8 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.workflow.kaleo.exception.NoSuchConditionException;
@@ -1365,6 +1367,8 @@ public class KaleoConditionPersistenceImpl
 		kaleoCondition.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the kaleo conditions in the entity cache if it is enabled.
 	 *
@@ -1372,6 +1376,13 @@ public class KaleoConditionPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<KaleoCondition> kaleoConditions) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (kaleoConditions.size() > _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (KaleoCondition kaleoCondition : kaleoConditions) {
 			if (entityCache.getResult(
 					entityCacheEnabled, KaleoConditionImpl.class,
@@ -2007,6 +2018,9 @@ public class KaleoConditionPersistenceImpl
 	public void activate() {
 		KaleoConditionModelImpl.setEntityCacheEnabled(entityCacheEnabled);
 		KaleoConditionModelImpl.setFinderCacheEnabled(finderCacheEnabled);
+
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, KaleoConditionImpl.class,
