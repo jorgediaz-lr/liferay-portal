@@ -100,6 +100,13 @@ describe('GeneralDetails', () => {
 		getByText('Brazil');
 	});
 
+	it('shows Liferay Version field', () => {
+		const {getByText} = renderGeneralDetails();
+
+		getByText('liferay-version');
+		getByText('DXP 7.0');
+	});
+
 	describe('General Details with full editing privilege', () => {
 		it('allows the Account Name field to be edited', () => {
 			const {getByText} = renderGeneralDetails();
