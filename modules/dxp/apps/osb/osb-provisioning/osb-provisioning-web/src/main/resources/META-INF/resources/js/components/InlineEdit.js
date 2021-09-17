@@ -119,11 +119,9 @@ function InlineEdit({
 								onChange={handleChange}
 								value={value}
 							>
-								{value === DASH && (
-									<option key={DASH} value="">
-										{DASH}
-									</option>
-								)}
+								<option key={DASH} value="">
+									{DASH}
+								</option>
 
 								{options.map(option => (
 									<option

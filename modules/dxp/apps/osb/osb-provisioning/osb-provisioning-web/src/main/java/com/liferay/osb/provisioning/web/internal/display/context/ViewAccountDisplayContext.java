@@ -185,8 +185,6 @@ public class ViewAccountDisplayContext {
 
 		List<String> liferayVersionNames = new ArrayList<>();
 
-		liferayVersionNames.add(StringPool.BLANK);
-
 		for (String version : ProductVersion.DXP_VERSIONS) {
 			liferayVersionNames.add("DXP " + version);
 		}
