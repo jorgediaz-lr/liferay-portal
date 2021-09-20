@@ -183,6 +183,12 @@ public class ViewAccountDisplayContext {
 
 		data.put("dataRegionNames", dataRegionNames);
 
+		data.put("details", getAccountDisplay());
+		data.put("hasManageAccountsPermission", hasManageAccountsPermission());
+		data.put(
+			"hasUpdateExternalLinksPermission",
+			_hasPermission(ProvisioningActionKeys.UPDATE_EXTERNAL_LINKS));
+
 		List<String> liferayVersionNames = new ArrayList<>();
 
 		for (String version : ProductVersion.DXP_VERSIONS) {
@@ -191,11 +197,6 @@ public class ViewAccountDisplayContext {
 
 		data.put("liferayVersionNames", liferayVersionNames);
 
-		data.put("details", getAccountDisplay());
-		data.put("hasManageAccountsPermission", hasManageAccountsPermission());
-		data.put(
-			"hasUpdateExternalLinksPermission",
-			_hasPermission(ProvisioningActionKeys.UPDATE_EXTERNAL_LINKS));
 		data.put("parentAccountName", getParentAccountName());
 
 		List<String> tierNames = new ArrayList<>();
