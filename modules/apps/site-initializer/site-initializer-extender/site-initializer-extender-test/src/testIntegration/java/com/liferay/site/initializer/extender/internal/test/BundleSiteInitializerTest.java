@@ -75,6 +75,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.rule.DataGuard;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
@@ -116,6 +117,14 @@ import org.osgi.framework.FrameworkUtil;
 /**
  * @author Brian Wing Shun Chan
  */
+@DataGuard(
+	autoDeleteClassNames = {
+		"com.liferay.document.library.sync.model.DLSyncEvent",
+		"com.liferay.portal.kernel.model.ClassName",
+		"com.liferay.portal.security.audit.storage.model.AuditEvent"
+	},
+	scope = DataGuard.Scope.CLASS
+)
 @RunWith(Arquillian.class)
 public class BundleSiteInitializerTest {
 
