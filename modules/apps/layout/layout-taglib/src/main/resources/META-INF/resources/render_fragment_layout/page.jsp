@@ -34,11 +34,7 @@ RenderFragmentLayoutDisplayContext renderFragmentLayoutDisplayContext = new Rend
 		<%
 		try {
 			request.setAttribute(WebKeys.PORTLET_DECORATE, Boolean.FALSE);
-		%>
 
-			<%= renderFragmentLayoutDisplayContext.getPortletPaths() %>
-
-			<%
 			for (int i = 0; i < structureJSONArray.length(); i++) {
 				JSONObject rowJSONObject = structureJSONArray.getJSONObject(i);
 
@@ -53,7 +49,7 @@ RenderFragmentLayoutDisplayContext renderFragmentLayoutDisplayContext = new Rend
 				}
 
 				int type = rowJSONObject.getInt("type", FragmentConstants.TYPE_COMPONENT);
-			%>
+		%>
 
 				<c:choose>
 					<c:when test="<%= type == FragmentConstants.TYPE_COMPONENT %>">

@@ -150,6 +150,10 @@ public class RenderFragmentLayoutDisplayContext {
 		return StringPool.BLANK;
 	}
 
+	/**
+	 * @deprecated As of Mueller (7.2.x), with no direct replacement
+	 */
+	@Deprecated
 	public String getPortletPaths() {
 		ThemeDisplay themeDisplay =
 			(ThemeDisplay)_httpServletRequest.getAttribute(
