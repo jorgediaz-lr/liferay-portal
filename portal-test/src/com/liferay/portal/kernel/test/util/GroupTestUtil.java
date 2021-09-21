@@ -23,10 +23,13 @@ import com.liferay.portal.kernel.cache.thread.local.ThreadLocalCacheManager;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.GroupServiceUtil;
 import com.liferay.portal.kernel.service.LayoutSetLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.test.randomizerbumpers.NumericStringRandomizerBumper;
 import com.liferay.portal.kernel.test.randomizerbumpers.UniqueStringRandomizerBumper;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
@@ -72,19 +75,40 @@ public class GroupTestUtil {
 			return scopeGroup;
 		}
 
-		return GroupLocalServiceUtil.addGroup(
-			userId, parentGroupId, Layout.class.getName(), layout.getPlid(),
-			GroupConstants.DEFAULT_LIVE_GROUP_ID,
-			HashMapBuilder.put(
-				LocaleUtil.getDefault(), String.valueOf(layout.getPlid())
-			).build(),
-			null, 0, true, GroupConstants.DEFAULT_MEMBERSHIP_RESTRICTION, null,
-			false, true, null);
+		Long previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+		try {
+			User user = UserLocalServiceUtil.getUser(userId);
+
+			CompanyThreadLocal.setCompanyId(user.getCompanyId());
+
+			return GroupLocalServiceUtil.addGroup(
+				userId, parentGroupId, Layout.class.getName(), layout.getPlid(),
+				GroupConstants.DEFAULT_LIVE_GROUP_ID,
+				HashMapBuilder.put(
+					LocaleUtil.getDefault(), String.valueOf(layout.getPlid())
+				).build(),
+				null, 0, true, GroupConstants.DEFAULT_MEMBERSHIP_RESTRICTION,
+				null, false, true, null);
+		}
+		finally {
+			CompanyThreadLocal.setCompanyId(previousCompanyId);
+		}
 	}
 
 	public static Group addGroup(
 			long companyId, long userId, long parentGroupId)
 		throws Exception {
+
+		User user = UserLocalServiceUtil.getUser(userId);
+
+		if (user.getCompanyId() != companyId) {
+			throw new IllegalArgumentException(
+				StringBundler.concat(
+					"The user ", String.valueOf(userId),
+					" does not belong to the company ",
+					String.valueOf(companyId)));
+		}
 
 		String name = RandomTestUtil.randomString(
 			NumericStringRandomizerBumper.INSTANCE,
@@ -109,14 +133,23 @@ public class GroupTestUtil {
 		int membershipRestriction =
 			GroupConstants.DEFAULT_MEMBERSHIP_RESTRICTION;
 
-		return GroupLocalServiceUtil.addGroup(
-			userId, parentGroupId, null, 0,
-			GroupConstants.DEFAULT_LIVE_GROUP_ID, nameMap,
-			HashMapBuilder.put(
-				LocaleUtil.getDefault(), RandomTestUtil.randomString()
-			).build(),
-			type, manualMembership, membershipRestriction, friendlyURL, site,
-			active, ServiceContextTestUtil.getServiceContext());
+		Long previousCompanyId = CompanyThreadLocal.getCompanyId();
+
+		try {
+			CompanyThreadLocal.setCompanyId(companyId);
+
+			return GroupLocalServiceUtil.addGroup(
+				userId, parentGroupId, null, 0,
+				GroupConstants.DEFAULT_LIVE_GROUP_ID, nameMap,
+				HashMapBuilder.put(
+					LocaleUtil.getDefault(), RandomTestUtil.randomString()
+				).build(),
+				type, manualMembership, membershipRestriction, friendlyURL,
+				site, active, ServiceContextTestUtil.getServiceContext());
+		}
+		finally {
+			CompanyThreadLocal.setCompanyId(previousCompanyId);
+		}
 	}
 
 	public static Group addGroup(
