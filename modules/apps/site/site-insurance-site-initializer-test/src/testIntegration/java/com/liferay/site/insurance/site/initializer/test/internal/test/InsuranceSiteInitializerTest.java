@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.test.portlet.MockLiferayPortletActionResponse;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.rule.DataGuard;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
@@ -71,6 +72,14 @@ import org.springframework.mock.web.MockHttpServletRequest;
 /**
  * @author Jürgen Kappler
  */
+@DataGuard(
+	autoDeleteClassNames = {
+		"com.liferay.document.library.sync.model.DLSyncEvent",
+		"com.liferay.portal.kernel.model.ClassName",
+		"com.liferay.portal.security.audit.storage.model.AuditEvent"
+	},
+	scope = DataGuard.Scope.CLASS
+)
 @RunWith(Arquillian.class)
 public class InsuranceSiteInitializerTest {
 

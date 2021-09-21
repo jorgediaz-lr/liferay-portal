@@ -29,6 +29,7 @@ import com.liferay.petra.io.StreamUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.rule.DataGuard;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -53,6 +54,14 @@ import org.osgi.framework.FrameworkUtil;
 /**
  * @author Brian Wing Shun Chan
  */
+@DataGuard(
+	autoDeleteClassNames = {
+		"com.liferay.document.library.sync.model.DLSyncEvent",
+		"com.liferay.portal.kernel.model.ClassName",
+		"com.liferay.portal.security.audit.storage.model.AuditEvent"
+	},
+	scope = DataGuard.Scope.CLASS
+)
 @RunWith(Arquillian.class)
 public class BundleSiteInitializerTest {
 
