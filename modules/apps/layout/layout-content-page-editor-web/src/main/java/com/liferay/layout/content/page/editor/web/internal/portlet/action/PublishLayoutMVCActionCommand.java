@@ -14,14 +14,18 @@
 
 package com.liferay.layout.content.page.editor.web.internal.portlet.action;
 
+import com.liferay.exportimport.kernel.staging.LayoutStagingUtil;
 import com.liferay.layout.content.page.editor.constants.ContentPageEditorPortletKeys;
 import com.liferay.layout.util.LayoutCopyHelper;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.model.LayoutRevision;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.LayoutLocalService;
+import com.liferay.portal.kernel.service.LayoutRevisionLocalService;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.permission.LayoutPermissionUtil;
 import com.liferay.portal.kernel.servlet.MultiSessionMessages;
 import com.liferay.portal.kernel.servlet.SessionMessages;
@@ -86,6 +90,9 @@ public class PublishLayoutMVCActionCommand extends BaseMVCActionCommand {
 	private LayoutLocalService _layoutLocalService;
 
 	@Reference
+	private LayoutRevisionLocalService _layoutRevisionLocalService;
+
+	@Reference
 	private Portal _portal;
 
 	private class PublishLayoutCallable implements Callable<Void> {
@@ -142,6 +149,8 @@ public class PublishLayoutMVCActionCommand extends BaseMVCActionCommand {
 				layout.getGroupId(), layout.isPrivateLayout(),
 				layout.getLayoutId(), new Date());
 
+			_updateLayoutRevision(layout, serviceContext);
+
 			String portletId = _portal.getPortletId(_actionRequest);
 
 			if (SessionMessages.contains(
@@ -179,6 +188,29 @@ public class PublishLayoutMVCActionCommand extends BaseMVCActionCommand {
 			_layoutLocalService.updateLayout(
 				layout.getGroupId(), layout.isPrivateLayout(),
 				layout.getLayoutId(), layoutTypeSettingsProperties.toString());
+		}
+
+		private void _updateLayoutRevision(
+				Layout layout, ServiceContext serviceContext)
+			throws Exception {
+
+			LayoutRevision layoutRevision = LayoutStagingUtil.getLayoutRevision(
+				layout);
+
+			if (layoutRevision == null) {
+				return;
+			}
+
+			_layoutRevisionLocalService.updateLayoutRevision(
+				serviceContext.getUserId(),
+				layoutRevision.getLayoutRevisionId(),
+				layoutRevision.getLayoutBranchId(), layoutRevision.getName(),
+				layoutRevision.getTitle(), layoutRevision.getDescription(),
+				layoutRevision.getKeywords(), layoutRevision.getRobots(),
+				layoutRevision.getTypeSettings(), layoutRevision.getIconImage(),
+				layoutRevision.getIconImageId(), layoutRevision.getThemeId(),
+				layoutRevision.getColorSchemeId(), layoutRevision.getCss(),
+				serviceContext);
 		}
 
 		private final ActionRequest _actionRequest;
