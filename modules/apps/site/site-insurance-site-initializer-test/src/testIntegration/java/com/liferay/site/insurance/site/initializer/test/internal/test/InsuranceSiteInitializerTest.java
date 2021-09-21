@@ -30,10 +30,10 @@ import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
+import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.test.portlet.MockLiferayPortletActionResponse;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DataGuard;
-import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
@@ -155,6 +155,8 @@ public class InsuranceSiteInitializerTest {
 				_group.getGroupId(), "raylife"));
 
 		_groupLocalService.deleteGroup(_group);
+
+		_userLocalService.deleteUser(_user);
 	}
 
 	private String[] _getLayoutNames(long groupId, boolean privateLayout) {
@@ -267,7 +269,9 @@ public class InsuranceSiteInitializerTest {
 	@Inject
 	private StyleBookEntryLocalService _styleBookEntryLocalService;
 
-	@DeleteAfterTestRun
 	private User _user;
+
+	@Inject
+	private UserLocalService _userLocalService;
 
 }
