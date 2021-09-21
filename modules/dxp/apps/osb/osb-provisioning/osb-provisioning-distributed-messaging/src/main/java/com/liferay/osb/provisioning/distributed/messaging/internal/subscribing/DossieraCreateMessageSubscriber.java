@@ -2394,7 +2394,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 	@Reference
 	private AccountWebService _accountWebService;
 
-	@Reference
+	@Reference(target = "(provider=web)")
 	private ContactIdentityProvider _contactIdentityProvider;
 
 	@Reference
