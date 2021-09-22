@@ -72,10 +72,10 @@ public class SiteFriendlyURLModelImpl
 
 	public static final Object[][] TABLE_COLUMNS = {
 		{"mvccVersion", Types.BIGINT}, {"uuid_", Types.VARCHAR},
-		{"siteFriendlyURLId", Types.BIGINT}, {"companyId", Types.BIGINT},
-		{"userId", Types.BIGINT}, {"userName", Types.VARCHAR},
-		{"createDate", Types.TIMESTAMP}, {"modifiedDate", Types.TIMESTAMP},
-		{"groupId", Types.BIGINT}, {"friendlyURL", Types.VARCHAR},
+		{"siteFriendlyURLId", Types.BIGINT}, {"groupId", Types.BIGINT},
+		{"companyId", Types.BIGINT}, {"userId", Types.BIGINT},
+		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
+		{"modifiedDate", Types.TIMESTAMP}, {"friendlyURL", Types.VARCHAR},
 		{"languageId", Types.VARCHAR}, {"lastPublishDate", Types.TIMESTAMP}
 	};
 
@@ -86,19 +86,19 @@ public class SiteFriendlyURLModelImpl
 		TABLE_COLUMNS_MAP.put("mvccVersion", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("uuid_", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("siteFriendlyURLId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("groupId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
-		TABLE_COLUMNS_MAP.put("groupId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("friendlyURL", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("languageId", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("lastPublishDate", Types.TIMESTAMP);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table SiteFriendlyURL (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,siteFriendlyURLId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,groupId LONG,friendlyURL VARCHAR(75) null,languageId VARCHAR(75) null,lastPublishDate DATE null)";
+		"create table SiteFriendlyURL (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,siteFriendlyURLId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,friendlyURL VARCHAR(75) null,languageId VARCHAR(75) null,lastPublishDate DATE null)";
 
 	public static final String TABLE_SQL_DROP = "drop table SiteFriendlyURL";
 
@@ -277,6 +277,10 @@ public class SiteFriendlyURLModelImpl
 			"siteFriendlyURLId",
 			(BiConsumer<SiteFriendlyURL, Long>)
 				SiteFriendlyURL::setSiteFriendlyURLId);
+		attributeGetterFunctions.put("groupId", SiteFriendlyURL::getGroupId);
+		attributeSetterBiConsumers.put(
+			"groupId",
+			(BiConsumer<SiteFriendlyURL, Long>)SiteFriendlyURL::setGroupId);
 		attributeGetterFunctions.put(
 			"companyId", SiteFriendlyURL::getCompanyId);
 		attributeSetterBiConsumers.put(
@@ -301,10 +305,6 @@ public class SiteFriendlyURLModelImpl
 			"modifiedDate",
 			(BiConsumer<SiteFriendlyURL, Date>)
 				SiteFriendlyURL::setModifiedDate);
-		attributeGetterFunctions.put("groupId", SiteFriendlyURL::getGroupId);
-		attributeSetterBiConsumers.put(
-			"groupId",
-			(BiConsumer<SiteFriendlyURL, Long>)SiteFriendlyURL::setGroupId);
 		attributeGetterFunctions.put(
 			"friendlyURL", SiteFriendlyURL::getFriendlyURL);
 		attributeSetterBiConsumers.put(
@@ -373,6 +373,28 @@ public class SiteFriendlyURLModelImpl
 	@Override
 	public void setSiteFriendlyURLId(long siteFriendlyURLId) {
 		_siteFriendlyURLId = siteFriendlyURLId;
+	}
+
+	@Override
+	public long getGroupId() {
+		return _groupId;
+	}
+
+	@Override
+	public void setGroupId(long groupId) {
+		_columnBitmask |= GROUPID_COLUMN_BITMASK;
+
+		if (!_setOriginalGroupId) {
+			_setOriginalGroupId = true;
+
+			_originalGroupId = _groupId;
+		}
+
+		_groupId = groupId;
+	}
+
+	public long getOriginalGroupId() {
+		return _originalGroupId;
 	}
 
 	@Override
@@ -462,28 +484,6 @@ public class SiteFriendlyURLModelImpl
 		_setModifiedDate = true;
 
 		_modifiedDate = modifiedDate;
-	}
-
-	@Override
-	public long getGroupId() {
-		return _groupId;
-	}
-
-	@Override
-	public void setGroupId(long groupId) {
-		_columnBitmask |= GROUPID_COLUMN_BITMASK;
-
-		if (!_setOriginalGroupId) {
-			_setOriginalGroupId = true;
-
-			_originalGroupId = _groupId;
-		}
-
-		_groupId = groupId;
-	}
-
-	public long getOriginalGroupId() {
-		return _originalGroupId;
 	}
 
 	@Override
@@ -591,12 +591,12 @@ public class SiteFriendlyURLModelImpl
 		siteFriendlyURLImpl.setMvccVersion(getMvccVersion());
 		siteFriendlyURLImpl.setUuid(getUuid());
 		siteFriendlyURLImpl.setSiteFriendlyURLId(getSiteFriendlyURLId());
+		siteFriendlyURLImpl.setGroupId(getGroupId());
 		siteFriendlyURLImpl.setCompanyId(getCompanyId());
 		siteFriendlyURLImpl.setUserId(getUserId());
 		siteFriendlyURLImpl.setUserName(getUserName());
 		siteFriendlyURLImpl.setCreateDate(getCreateDate());
 		siteFriendlyURLImpl.setModifiedDate(getModifiedDate());
-		siteFriendlyURLImpl.setGroupId(getGroupId());
 		siteFriendlyURLImpl.setFriendlyURL(getFriendlyURL());
 		siteFriendlyURLImpl.setLanguageId(getLanguageId());
 		siteFriendlyURLImpl.setLastPublishDate(getLastPublishDate());
@@ -662,15 +662,15 @@ public class SiteFriendlyURLModelImpl
 	public void resetOriginalValues() {
 		_originalUuid = _uuid;
 
+		_originalGroupId = _groupId;
+
+		_setOriginalGroupId = false;
+
 		_originalCompanyId = _companyId;
 
 		_setOriginalCompanyId = false;
 
 		_setModifiedDate = false;
-		_originalGroupId = _groupId;
-
-		_setOriginalGroupId = false;
-
 		_originalFriendlyURL = _friendlyURL;
 
 		_originalLanguageId = _languageId;
@@ -694,6 +694,8 @@ public class SiteFriendlyURLModelImpl
 		}
 
 		siteFriendlyURLCacheModel.siteFriendlyURLId = getSiteFriendlyURLId();
+
+		siteFriendlyURLCacheModel.groupId = getGroupId();
 
 		siteFriendlyURLCacheModel.companyId = getCompanyId();
 
@@ -724,8 +726,6 @@ public class SiteFriendlyURLModelImpl
 		else {
 			siteFriendlyURLCacheModel.modifiedDate = Long.MIN_VALUE;
 		}
-
-		siteFriendlyURLCacheModel.groupId = getGroupId();
 
 		siteFriendlyURLCacheModel.friendlyURL = getFriendlyURL();
 
@@ -850,6 +850,9 @@ public class SiteFriendlyURLModelImpl
 	private String _uuid;
 	private String _originalUuid;
 	private long _siteFriendlyURLId;
+	private long _groupId;
+	private long _originalGroupId;
+	private boolean _setOriginalGroupId;
 	private long _companyId;
 	private long _originalCompanyId;
 	private boolean _setOriginalCompanyId;
@@ -858,9 +861,6 @@ public class SiteFriendlyURLModelImpl
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
-	private long _groupId;
-	private long _originalGroupId;
-	private boolean _setOriginalGroupId;
 	private String _friendlyURL;
 	private String _originalFriendlyURL;
 	private String _languageId;
