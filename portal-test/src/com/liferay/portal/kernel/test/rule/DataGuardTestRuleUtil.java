@@ -197,14 +197,11 @@ public class DataGuardTestRuleUtil {
 
 					String backtraceInfo = null;
 
-					if (records != null) {
-						Map<Serializable, String> map = records.get(
-							baseModel.getModelClassName());
+					Map<Serializable, String> map = records.get(
+						baseModel.getModelClassName());
 
-						if (map != null) {
-							backtraceInfo = map.get(
-								baseModel.getPrimaryKeyObj());
-						}
+					if (map != null) {
+						backtraceInfo = map.get(baseModel.getPrimaryKeyObj());
 					}
 
 					if (backtraceInfo == null) {
