@@ -103,9 +103,7 @@ public class DataGuardTestRuleUtil {
 			DataBag dataBag, String testClassName, boolean autoDelete)
 		throws Throwable {
 
-		_autoDeleteAndAssert(
-			testClassName, dataBag._dataMap, dataBag._portlets,
-			dataBag._records, autoDelete);
+		afterClass(dataBag, testClassName, autoDelete);
 	}
 
 	public static DataBag beforeClass() {
@@ -127,9 +125,7 @@ public class DataGuardTestRuleUtil {
 	}
 
 	public static DataBag beforeMethod() {
-		return new DataBag(
-			_captureDataMap(), PortletLocalServiceUtil.getPortlets(), null,
-			null);
+		return beforeClass();
 	}
 
 	public static class DataBag {
