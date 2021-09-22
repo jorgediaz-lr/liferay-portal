@@ -96,6 +96,13 @@ Layout curLayout = (Layout)row.getObject();
 			url="<%= layoutsAdminDisplayContext.getDeleteLayoutURL(curLayout) %>"
 		/>
 	</c:if>
+
+	<c:if test="<%= layoutsAdminDisplayContext.isShowDraftActions(curLayout) %>">
+		<liferay-ui:icon
+			message="preview-draft"
+			url="<%= layoutsAdminDisplayContext.getPreviewDraftURL(curLayout) %>"
+		/>
+	</c:if>
 </liferay-ui:icon-menu>
 
 <aui:script require="metal-dom/src/all/dom as dom,frontend-js-web/liferay/modal/commands/OpenSimpleInputModal.es as modalCommands">
