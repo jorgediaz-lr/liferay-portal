@@ -198,8 +198,11 @@ public class PublishLayoutMVCActionCommand extends BaseMVCActionCommand {
 				Layout layout, ServiceContext serviceContext)
 			throws Exception {
 
+			Layout proxyLayout = _layoutLocalService.fetchLayout(
+				layout.getPlid());
+
 			LayoutRevision layoutRevision = LayoutStagingUtil.getLayoutRevision(
-				layout);
+				proxyLayout);
 
 			if (layoutRevision == null) {
 				return;
