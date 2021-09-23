@@ -22,6 +22,7 @@ import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.osb.provisioning.license.model.LicenseKey;
 import com.liferay.osb.provisioning.license.service.LicenseKeyLocalService;
 import com.liferay.osb.provisioning.license.service.LicenseKeyLocalServiceUtil;
+import com.liferay.osb.provisioning.license.service.persistence.CommonLicenseKeyPersistence;
 import com.liferay.osb.provisioning.license.service.persistence.LicenseEntryPersistence;
 import com.liferay.osb.provisioning.license.service.persistence.LicenseKeyFinder;
 import com.liferay.osb.provisioning.license.service.persistence.LicenseKeyPersistence;
@@ -533,6 +534,9 @@ public abstract class LicenseKeyLocalServiceBaseImpl
 			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
+
+	@Reference
+	protected CommonLicenseKeyPersistence commonLicenseKeyPersistence;
 
 	@Reference
 	protected LicenseEntryPersistence licenseEntryPersistence;

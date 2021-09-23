@@ -17,6 +17,7 @@ package com.liferay.osb.provisioning.license.service.base;
 import com.liferay.osb.provisioning.license.model.LicenseEntry;
 import com.liferay.osb.provisioning.license.service.LicenseEntryLocalService;
 import com.liferay.osb.provisioning.license.service.LicenseEntryLocalServiceUtil;
+import com.liferay.osb.provisioning.license.service.persistence.CommonLicenseKeyPersistence;
 import com.liferay.osb.provisioning.license.service.persistence.LicenseEntryPersistence;
 import com.liferay.osb.provisioning.license.service.persistence.LicenseKeyFinder;
 import com.liferay.osb.provisioning.license.service.persistence.LicenseKeyPersistence;
@@ -433,6 +434,9 @@ public abstract class LicenseEntryLocalServiceBaseImpl
 			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
+
+	@Reference
+	protected CommonLicenseKeyPersistence commonLicenseKeyPersistence;
 
 	protected LicenseEntryLocalService licenseEntryLocalService;
 

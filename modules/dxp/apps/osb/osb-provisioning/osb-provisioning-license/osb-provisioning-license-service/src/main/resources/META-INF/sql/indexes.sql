@@ -1,3 +1,7 @@
+create index IX_A19B1CDC on Provisioning_CommonLicenseKey (fileName[$COLUMN_LENGTH:75$]);
+create index IX_20F268B3 on Provisioning_CommonLicenseKey (productGroup[$COLUMN_LENGTH:75$], productEnvironment[$COLUMN_LENGTH:75$], productVersion[$COLUMN_LENGTH:75$], startDate, endDate);
+create index IX_31959A75 on Provisioning_CommonLicenseKey (uuid_[$COLUMN_LENGTH:75$], companyId);
+
 create index IX_EAA5BCC8 on Provisioning_LicenseEntry (name[$COLUMN_LENGTH:75$]);
 create unique index IX_CDCDE588 on Provisioning_LicenseEntry (productKey[$COLUMN_LENGTH:75$], type_[$COLUMN_LENGTH:75$]);
 create index IX_CB38227B on Provisioning_LicenseEntry (productKey[$COLUMN_LENGTH:75$], versionMin[$COLUMN_LENGTH:75$]);

@@ -247,8 +247,7 @@ public abstract class BaseLicenseKeyResourceTestCase {
 
 		Page<LicenseKey> page =
 			licenseKeyResource.getAccountAccountKeyLicenseKeysPage(
-				accountKey, RandomTestUtil.randomString(), null,
-				Pagination.of(1, 10), null);
+				accountKey, null, null, Pagination.of(1, 10), null);
 
 		Assert.assertEquals(0, page.getTotalCount());
 

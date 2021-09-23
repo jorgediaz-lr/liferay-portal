@@ -1,3 +1,20 @@
+create table Provisioning_CommonLicenseKey (
+	mvccVersion LONG default 0 not null,
+	uuid_ VARCHAR(75) null,
+	commonLicenseKeyId LONG not null primary key,
+	companyId LONG,
+	userId LONG,
+	userName VARCHAR(75) null,
+	createDate DATE null,
+	productGroup VARCHAR(75) null,
+	productEnvironment VARCHAR(75) null,
+	productVersion VARCHAR(75) null,
+	startDate DATE null,
+	endDate DATE null,
+	fileName VARCHAR(75) null,
+	fileSize LONG
+);
+
 create table Provisioning_LicenseEntry (
 	mvccVersion LONG default 0 not null,
 	licenseEntryId LONG not null primary key,

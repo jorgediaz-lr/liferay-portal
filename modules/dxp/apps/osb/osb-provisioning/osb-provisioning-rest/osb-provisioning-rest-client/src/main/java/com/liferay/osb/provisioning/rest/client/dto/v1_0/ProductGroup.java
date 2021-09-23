@@ -94,7 +94,8 @@ public class ProductGroup implements Cloneable, Serializable {
 
 	public static enum Name {
 
-		COMMERCE("Commerce"), DXP("DXP"), PORTAL("Portal");
+		COMMERCE("Commerce"), DXP("DXP"),
+		ENTERPRISE_SEARCH("Enterprise Search"), PORTAL("Portal");
 
 		public static Name create(String value) {
 			for (Name name : values()) {

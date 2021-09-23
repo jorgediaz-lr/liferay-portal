@@ -147,7 +147,8 @@ public class ProductGroup implements Serializable {
 	@GraphQLName("Name")
 	public static enum Name {
 
-		COMMERCE("Commerce"), DXP("DXP"), PORTAL("Portal");
+		COMMERCE("Commerce"), DXP("DXP"),
+		ENTERPRISE_SEARCH("Enterprise Search"), PORTAL("Portal");
 
 		@JsonCreator
 		public static Name create(String value) {

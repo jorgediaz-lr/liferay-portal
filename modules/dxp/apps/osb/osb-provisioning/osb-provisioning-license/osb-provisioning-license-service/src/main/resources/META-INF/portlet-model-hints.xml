@@ -1,6 +1,22 @@
 <?xml version="1.0"?>
 
 <model-hints>
+	<model name="com.liferay.osb.provisioning.license.model.CommonLicenseKey">
+		<field name="mvccVersion" type="long" />
+		<field name="uuid" type="String" />
+		<field name="commonLicenseKeyId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="productGroup" type="String" />
+		<field name="productEnvironment" type="String" />
+		<field name="productVersion" type="String" />
+		<field name="startDate" type="Date" />
+		<field name="endDate" type="Date" />
+		<field name="fileName" type="String" />
+		<field name="fileSize" type="long" />
+	</model>
 	<model name="com.liferay.osb.provisioning.license.model.LicenseEntry">
 		<field name="mvccVersion" type="long" />
 		<field name="licenseEntryId" type="long" />
