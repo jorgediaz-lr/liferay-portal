@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.rule.DataGuard;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -121,6 +122,7 @@ public class DepotEntryGroupRelLocalServiceTest {
 		}
 	}
 
+	@DataGuard(autoDeleteClassNames = {}, scope = DataGuard.Scope.METHOD)
 	@Test
 	public void testDeleteGroup() throws Exception {
 		DepotEntry depotEntry = _addDepotEntry();
