@@ -32,6 +32,10 @@ public class ContactRoleConstants {
 
 	public static final String NAME_PARTNER_MEMBER = "Partner Member";
 
+	public static final String NAME_PRIMARY_CONTACT = "Primary Contact";
+
+	public static final String NAME_SECONDARY_CONTACT = "Secondary Contact";
+
 	public static final String NAME_SUPPORT_CLOSED_WATCHER =
 		"Support Closed Watcher";
 

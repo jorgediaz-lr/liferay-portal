@@ -14,13 +14,16 @@
 
 package com.liferay.osb.provisioning.web.internal.portlet.action;
 
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
 import com.liferay.osb.koroneiki.phloem.rest.client.problem.Problem;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.exception.ContactRequiredException;
+import com.liferay.osb.provisioning.exception.DuplicateContactRoleException;
 import com.liferay.osb.provisioning.koroneiki.constants.ContactRoleConstants;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ContactRoleWebService;
+import com.liferay.osb.provisioning.koroneiki.web.service.ContactWebService;
 import com.liferay.osb.provisioning.web.internal.util.ZendeskValidator;
 import com.liferay.portal.kernel.exception.NoSuchContactException;
 import com.liferay.portal.kernel.log.Log;
@@ -32,8 +35,12 @@ import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+
+import java.util.List;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -76,6 +83,14 @@ public class AssignAccountContactRolesMVCActionCommand
 				actionRequest, "deleteContactRoleKeys");
 
 			if (!ArrayUtil.isEmpty(addContactRoleKeys)) {
+				_validateAccountWorkerContactRole(
+					accountKey, ContactRoleConstants.NAME_PRIMARY_CONTACT,
+					emailAddress, addContactRoleKeys);
+
+				_validateAccountWorkerContactRole(
+					accountKey, ContactRoleConstants.NAME_SECONDARY_CONTACT,
+					emailAddress, addContactRoleKeys);
+
 				_accountWebService.assignContactRolesByEmailAddress(
 					user.getFullName(), user.getUuid(), accountKey,
 					emailAddress, addContactRoleKeys);
@@ -102,30 +117,33 @@ public class AssignAccountContactRolesMVCActionCommand
 
 			sendRedirect(actionRequest, actionResponse);
 		}
-		catch (Problem.ProblemException problemException) {
-			SessionErrors.add(
-				actionRequest, problemException.getClass(), problemException);
+		catch (Exception exception) {
+			if (exception instanceof DuplicateContactRoleException ||
+				exception instanceof Problem.ProblemException) {
 
-			String contactRoleType = ParamUtil.getString(
-				actionRequest, "contactRoleType");
+				SessionErrors.add(
+					actionRequest, exception.getClass(), exception);
 
-			if (Validator.isNotNull(contactRoleType)) {
-				if (contactRoleType.equals(
-						ContactRole.Type.ACCOUNT_CUSTOMER.toString())) {
+				String contactRoleType = ParamUtil.getString(
+					actionRequest, "contactRoleType");
 
-					actionResponse.setRenderParameter(
-						"mvcRenderCommandName", "/accounts/assign_contacts");
-				}
-				else {
-					actionResponse.setRenderParameter(
-						"mvcRenderCommandName",
-						"/accounts/assign_liferay_workers");
+				if (Validator.isNotNull(contactRoleType)) {
+					if (contactRoleType.equals(
+							ContactRole.Type.ACCOUNT_CUSTOMER.toString())) {
+
+						actionResponse.setRenderParameter(
+							"mvcRenderCommandName",
+							"/accounts/assign_contacts");
+					}
+					else {
+						actionResponse.setRenderParameter(
+							"mvcRenderCommandName",
+							"/accounts/assign_liferay_workers");
+					}
 				}
 			}
-		}
-		catch (Exception exception) {
-			if (exception instanceof ContactRequiredException ||
-				exception instanceof NoSuchContactException) {
+			else if (exception instanceof ContactRequiredException ||
+					 exception instanceof NoSuchContactException) {
 
 				SessionErrors.add(
 					actionRequest, exception.getClass(), exception);
@@ -140,6 +158,36 @@ public class AssignAccountContactRolesMVCActionCommand
 		}
 	}
 
+	private void _validateAccountWorkerContactRole(
+			String accountKey, String contactRoleName, String emailAddress,
+			String[] addContactRoleKeys)
+		throws Exception {
+
+		ContactRole contactRole = _contactRoleWebService.getContactRole(
+			ContactRole.Type.ACCOUNT_WORKER.toString(), contactRoleName);
+
+		if (ArrayUtil.contains(addContactRoleKeys, contactRole.getKey())) {
+			StringBundler sb = new StringBundler(5);
+
+			sb.append("accountKeysContactRoleKeys/any(s:s eq '");
+			sb.append(accountKey);
+			sb.append(StringPool.UNDERLINE);
+			sb.append(contactRole.getKey());
+			sb.append("')");
+
+			List<Contact> contacts = _contactWebService.search(
+				StringPool.BLANK, sb.toString(), 1, 1, StringPool.BLANK);
+
+			if (!contacts.isEmpty()) {
+				Contact contact = contacts.get(0);
+
+				if (!emailAddress.equals(contact.getEmailAddress())) {
+					throw new DuplicateContactRoleException();
+				}
+			}
+		}
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		AssignAccountContactRolesMVCActionCommand.class);
 
@@ -148,6 +196,9 @@ public class AssignAccountContactRolesMVCActionCommand
 
 	@Reference
 	private ContactRoleWebService _contactRoleWebService;
+
+	@Reference
+	private ContactWebService _contactWebService;
 
 	@Reference
 	private ZendeskValidator _zendeskValidator;

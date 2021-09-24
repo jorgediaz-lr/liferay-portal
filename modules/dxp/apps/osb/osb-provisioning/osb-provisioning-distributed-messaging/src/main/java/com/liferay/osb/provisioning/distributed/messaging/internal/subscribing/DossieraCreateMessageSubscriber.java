@@ -879,13 +879,15 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		List<Contact> inactiveContacts = new ArrayList<>();
 		List<Contact> missingContacts = new ArrayList<>();
 
+		String accountKey = getAccountKey(jsonObject);
+
 		if ((salesforceOpportunityType ==
 				SalesforceConstants.OPPORTUNITY_TYPE_NEW_BUSINESS) ||
 			(salesforceOpportunityType ==
 				SalesforceConstants.
 					OPPORTUNITY_TYPE_NEW_PROJECT_EXISTING_BUSINESS)) {
 
-			List<Contact> contacts = parseContacts(jsonObject);
+			List<Contact> contacts = parseContacts(jsonObject, accountKey);
 
 			for (Contact contact : contacts) {
 				Integer status =
@@ -919,8 +921,6 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			soldBy, postalAddress.getAddressCountry());
 
 		Account account = null;
-
-		String accountKey = getAccountKey(jsonObject);
 
 		JSONObject projectJSONObject = jsonObject.getJSONObject("_project");
 
@@ -1638,7 +1638,8 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		return postalAddress;
 	}
 
-	protected List<Contact> parseContacts(JSONObject jsonObject)
+	protected List<Contact> parseContacts(
+			JSONObject jsonObject, String accountKey)
 		throws Exception {
 
 		List<Contact> contacts = new ArrayList<>();
@@ -1650,13 +1651,50 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 			contact.setFirstName(ownerJSONObject.getString("_firstName"));
 			contact.setLastName(ownerJSONObject.getString("_lastName"));
-			contact.setEmailAddress(ownerJSONObject.getString("_emailAddress"));
 
-			ContactRole contactRole = _contactRoleWebService.fetchContactRole(
-				ContactRole.Type.ACCOUNT_WORKER.toString(),
-				ContactRoleConstants.NAME_LIFERAY_SALES);
+			String ownerEmailAddress = ownerJSONObject.getString(
+				"_emailAddress");
 
-			contact.setContactRoles(new ContactRole[] {contactRole});
+			contact.setEmailAddress(ownerEmailAddress);
+
+			ContactRole salesContactRole =
+				_contactRoleWebService.fetchContactRole(
+					ContactRole.Type.ACCOUNT_WORKER.toString(),
+					ContactRoleConstants.NAME_LIFERAY_SALES);
+
+			ContactRole secondaryContactRole =
+				_contactRoleWebService.fetchContactRole(
+					ContactRole.Type.ACCOUNT_WORKER.toString(),
+					ContactRoleConstants.NAME_SECONDARY_CONTACT);
+
+			if (Validator.isNotNull(accountKey)) {
+				StringBundler sb = new StringBundler(5);
+
+				sb.append("accountKeysContactRoleKeys/any(s:s eq '");
+				sb.append(accountKey);
+				sb.append(StringPool.UNDERLINE);
+				sb.append(secondaryContactRole.getKey());
+				sb.append("')");
+
+				List<Contact> secondaryContacts = _contactWebService.search(
+					StringPool.BLANK, sb.toString(), 1, 1, StringPool.BLANK);
+
+				if (!secondaryContacts.isEmpty()) {
+					Contact secondaryContact = secondaryContacts.get(0);
+
+					if (!ownerEmailAddress.equals(
+							secondaryContact.getEmailAddress())) {
+
+						_accountWebService.unassignContactRolesByEmailAddress(
+							StringPool.BLANK, StringPool.BLANK, accountKey,
+							secondaryContact.getEmailAddress(),
+							new String[] {secondaryContactRole.getKey()});
+					}
+				}
+			}
+
+			contact.setContactRoles(
+				new ContactRole[] {salesContactRole, secondaryContactRole});
 
 			contacts.add(contact);
 		}

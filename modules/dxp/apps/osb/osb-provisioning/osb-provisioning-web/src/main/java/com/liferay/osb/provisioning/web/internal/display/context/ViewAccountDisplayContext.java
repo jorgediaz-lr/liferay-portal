@@ -20,6 +20,7 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.LabelItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.LabelItemList;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Country;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchaseView;
@@ -29,6 +30,7 @@ import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.constants.ProvisioningWebKeys;
 import com.liferay.osb.provisioning.customer.model.AccountEntry;
 import com.liferay.osb.provisioning.customer.web.service.AccountEntryWebService;
+import com.liferay.osb.provisioning.koroneiki.constants.ContactRoleConstants;
 import com.liferay.osb.provisioning.koroneiki.constants.ProductPurchaseConstants;
 import com.liferay.osb.provisioning.koroneiki.reader.AccountReader;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
@@ -434,6 +436,31 @@ public class ViewAccountDisplayContext {
 		portletURL.setParameter("accountKey", account.getKey());
 
 		return portletURL;
+	}
+
+	public String getPrimaryContactEmailAddress() throws Exception {
+		ContactRole contactRole = contactRoleWebService.getContactRole(
+			ContactRole.Type.ACCOUNT_WORKER.toString(),
+			ContactRoleConstants.NAME_PRIMARY_CONTACT);
+
+		StringBundler sb = new StringBundler(5);
+
+		sb.append("accountKeysContactRoleKeys/any(s:s eq '");
+		sb.append(account.getKey());
+		sb.append(StringPool.UNDERLINE);
+		sb.append(contactRole.getKey());
+		sb.append("')");
+
+		List<Contact> contacts = contactWebService.search(
+			StringPool.BLANK, sb.toString(), 1, 1, StringPool.BLANK);
+
+		if (!contacts.isEmpty()) {
+			Contact primaryContact = contacts.get(0);
+
+			return primaryContact.getEmailAddress();
+		}
+
+		return StringPool.DASH;
 	}
 
 	public SearchContainer getProductPurchaseViewsSearchContainer()

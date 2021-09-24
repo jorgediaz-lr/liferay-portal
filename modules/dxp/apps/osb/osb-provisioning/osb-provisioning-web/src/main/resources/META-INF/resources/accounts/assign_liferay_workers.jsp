@@ -42,6 +42,8 @@ AccountDisplay accountDisplay = viewAccountLiferayWorkersDisplayContext.getAccou
 		<%= problemException.getMessage() %>
 	</liferay-ui:error>
 
+	<liferay-ui:error exception="<%= DuplicateContactRoleException.class %>" message="primary-or-secondary-contact-is-already-assigned-to-another-user" />
+
 	<portlet:actionURL name="/accounts/assign_contact_roles" var="assignContactRolesURL">
 		<portlet:param name="redirect" value="<%= redirect %>" />
 		<portlet:param name="accountKey" value="<%= accountDisplay.getKey() %>" />

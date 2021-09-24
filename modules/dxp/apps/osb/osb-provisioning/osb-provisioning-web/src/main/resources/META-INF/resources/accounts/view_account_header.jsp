@@ -114,6 +114,13 @@ AccountDisplay accountDisplay = viewAccountDisplayContext.getAccountDisplay();
 					</c:otherwise>
 				</c:choose>
 			</li>
+			<li>
+				<div class="header-label">
+					<liferay-ui:message key="primary-contact" />
+				</div>
+
+				<%= viewAccountDisplayContext.getPrimaryContactEmailAddress() %>
+			</li>
 		</ul>
 	</div>
 
