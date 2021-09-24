@@ -123,7 +123,10 @@ import org.springframework.mock.web.MockServletContext;
  * @author Mika Koivisto
  * @author Dale Shan
  */
-@DataGuard(autoDelete = false, scope = DataGuard.Scope.METHOD)
+@DataGuard(
+	autoDeleteClassNames = "com.liferay.portal.kernel.model.ClassName",
+	scope = DataGuard.Scope.METHOD
+)
 @RunWith(Arquillian.class)
 @SybaseDumpTransactionLog(dumpBefore = {SybaseDump.CLASS, SybaseDump.METHOD})
 public class CompanyLocalServiceTest {
