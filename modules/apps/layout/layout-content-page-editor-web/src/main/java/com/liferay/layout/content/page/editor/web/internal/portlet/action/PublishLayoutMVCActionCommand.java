@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.LayoutRevisionLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.service.permission.LayoutPermissionUtil;
 import com.liferay.portal.kernel.servlet.MultiSessionMessages;
 import com.liferay.portal.kernel.servlet.SessionMessages;
@@ -145,9 +146,12 @@ public class PublishLayoutMVCActionCommand extends BaseMVCActionCommand {
 				layout.getLayoutId(), layout.getThemeId(),
 				layout.getColorSchemeId(), layout.getCss());
 
-			_layoutLocalService.updateLayout(
+			layout = _layoutLocalService.updateLayout(
 				layout.getGroupId(), layout.isPrivateLayout(),
 				layout.getLayoutId(), new Date());
+
+			ServiceContext serviceContext = ServiceContextFactory.getInstance(
+				_actionRequest);
 
 			_updateLayoutRevision(layout, serviceContext);
 
