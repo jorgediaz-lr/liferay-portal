@@ -31,6 +31,12 @@ String stagingURL = (String)renderRequest.getAttribute(StagingProcessesWebKeys.S
 if (liveLayout != null) {
 	request.setAttribute("view.jsp-typeSettingsProperties", liveLayout.getTypeSettingsProperties());
 }
+
+boolean isTypeContentLayout = false;
+
+if ((layout != null) && Objects.equals(layout.getType(), LayoutConstants.TYPE_CONTENT)) {
+	isTypeContentLayout = true;
+}
 %>
 
 <c:if test="<%= themeDisplay.isShowStagingIcon() %>">
@@ -211,7 +217,7 @@ if (liveLayout != null) {
 														</div>
 													</li>
 
-													<c:if test="<%= !layout.isTypeContent() %>">
+													<c:if test="<%= !isTypeContentLayout %>">
 														<li class="control-menu-nav-item staging-bar-level-2-nav-item" id="<portlet:namespace />layoutRevisionStatus">
 															<aui:model-context bean="<%= layoutRevision %>" model="<%= LayoutRevision.class %>" />
 
