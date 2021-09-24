@@ -75,9 +75,13 @@ public class DataGuardTestRule
 	protected DataGuardTestRuleUtil.DataBag beforeMethod(
 		Description description, Object target) {
 
-		Class<?> testClass = description.getTestClass();
+		DataGuard dataGuard = description.getAnnotation(DataGuard.class);
 
-		DataGuard dataGuard = testClass.getAnnotation(DataGuard.class);
+		if (dataGuard == null) {
+			Class<?> testClass = description.getTestClass();
+
+			dataGuard = testClass.getAnnotation(DataGuard.class);
+		}
 
 		if ((dataGuard == null) ||
 			(dataGuard.scope() != DataGuard.Scope.METHOD)) {
@@ -92,9 +96,15 @@ public class DataGuardTestRule
 	}
 
 	private String[] _autoDeleteClassNames(Description description) {
+		DataGuard dataGuard = description.getAnnotation(DataGuard.class);
+
+		if (dataGuard != null) {
+			return dataGuard.autoDeleteClassNames();
+		}
+
 		Class<?> testClass = description.getTestClass();
 
-		DataGuard dataGuard = testClass.getAnnotation(DataGuard.class);
+		dataGuard = testClass.getAnnotation(DataGuard.class);
 
 		if (dataGuard == null) {
 			return new String[] {StringPool.STAR};
