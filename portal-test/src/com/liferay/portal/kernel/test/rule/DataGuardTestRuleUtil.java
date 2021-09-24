@@ -42,6 +42,7 @@ import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.registry.Registry;
@@ -77,11 +78,12 @@ public class DataGuardTestRuleUtil {
 	public static void afterClass(DataBag dataBag, String testClassName)
 		throws Throwable {
 
-		afterClass(dataBag, testClassName, true);
+		afterClass(dataBag, testClassName, new String[] {StringPool.STAR});
 	}
 
 	public static void afterClass(
-			DataBag dataBag, String testClassName, boolean autoDelete)
+			DataBag dataBag, String testClassName,
+			String[] autoDeleteClassNames)
 		throws Throwable {
 
 		ServiceRegistration<SessionCustomizer> serviceRegistration =
@@ -93,22 +95,23 @@ public class DataGuardTestRuleUtil {
 
 		_autoDeleteAndAssert(
 			testClassName, dataBag._dataMap, dataBag._portlets,
-			dataBag._records, autoDelete);
+			dataBag._records, autoDeleteClassNames);
 	}
 
 	public static void afterMethod(DataBag dataBag, String testClassName)
 		throws Throwable {
 
-		afterMethod(dataBag, testClassName, true);
+		afterMethod(dataBag, testClassName, new String[] {StringPool.STAR});
 	}
 
 	public static void afterMethod(
-			DataBag dataBag, String testClassName, boolean autoDelete)
+			DataBag dataBag, String testClassName,
+			String[] autoDeleteClassNames)
 		throws Throwable {
 
 		_autoDeleteAndAssert(
 			testClassName, dataBag._dataMap, dataBag._portlets,
-			dataBag._records, autoDelete);
+			dataBag._records, autoDeleteClassNames);
 	}
 
 	public static DataBag beforeClass() {
@@ -160,7 +163,8 @@ public class DataGuardTestRuleUtil {
 			String testClassName,
 			Map<String, List<BaseModel<?>>> previousDataMap,
 			List<Portlet> previousPortlets,
-			Map<String, Map<Serializable, String>> records, boolean autoDelete)
+			Map<String, Map<Serializable, String>> records,
+			String[] autoDeleteClassNames)
 		throws Throwable {
 
 		for (Portlet portlet : PortletLocalServiceUtil.getPortlets()) {
@@ -169,9 +173,7 @@ public class DataGuardTestRuleUtil {
 			}
 		}
 
-		if (autoDelete) {
-			_autoDeleteLeftovers(previousDataMap);
-		}
+		_autoDeleteLeftovers(previousDataMap, autoDeleteClassNames);
 
 		StringBundler sb = new StringBundler();
 
@@ -231,8 +233,12 @@ public class DataGuardTestRuleUtil {
 	}
 
 	private static void _autoDeleteLeftovers(
-			Map<String, List<BaseModel<?>>> previousDataMap)
+			Map<String, List<BaseModel<?>>> previousDataMap,
+			String[] autoDeleteClassNames)
 		throws Throwable {
+
+		boolean autoDeleteAll = ArrayUtil.contains(
+			autoDeleteClassNames, StringPool.STAR);
 
 		Map<String, PersistedModelLocalService> persistedModelLocalServices =
 			_getPersistedModelLocalServices();
@@ -246,6 +252,12 @@ public class DataGuardTestRuleUtil {
 					dataMap.entrySet()) {
 
 				String className = entry.getKey();
+
+				if (!autoDeleteAll &&
+					!ArrayUtil.contains(autoDeleteClassNames, className)) {
+
+					continue;
+				}
 
 				PersistedModelLocalService persistedModelLocalService =
 					persistedModelLocalServices.get(className);
