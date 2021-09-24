@@ -25,7 +25,7 @@ import java.lang.annotation.Target;
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
+@Target({ElementType.METHOD, ElementType.TYPE})
 public @interface DataGuard {
 
 	public String[] autoDeleteClassNames() default "*";
