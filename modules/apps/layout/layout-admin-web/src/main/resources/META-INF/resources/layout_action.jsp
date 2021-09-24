@@ -59,6 +59,13 @@ Layout curLayout = (Layout)row.getObject();
 		/>
 	</c:if>
 
+	<c:if test="<%= layoutsAdminDisplayContext.isShowDraftActions(curLayout) %>">
+		<liferay-ui:icon
+			message="preview-draft"
+			url="<%= layoutsAdminDisplayContext.getPreviewDraftURL(curLayout) %>"
+		/>
+	</c:if>
+
 	<c:if test="<%= layoutsAdminDisplayContext.isShowCopyLayoutAction(curLayout) %>">
 		<liferay-ui:icon
 			cssClass='<%= liferayPortletResponse.getNamespace() + "copy-layout-action-option" %>'
@@ -94,13 +101,6 @@ Layout curLayout = (Layout)row.getObject();
 		<liferay-ui:icon-delete
 			confirmation='<%= curLayout.hasChildren() ? "this-page-has-child-pages-that-will-also-be-removed-are-you-sure-you-want-to-delete-this-page" : "are-you-sure-you-want-to-delete-this-page" %>'
 			url="<%= layoutsAdminDisplayContext.getDeleteLayoutURL(curLayout) %>"
-		/>
-	</c:if>
-
-	<c:if test="<%= layoutsAdminDisplayContext.isShowDraftActions(curLayout) %>">
-		<liferay-ui:icon
-			message="preview-draft"
-			url="<%= layoutsAdminDisplayContext.getPreviewDraftURL(curLayout) %>"
 		/>
 	</c:if>
 </liferay-ui:icon-menu>

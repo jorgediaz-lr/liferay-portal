@@ -960,8 +960,10 @@ public class LayoutsAdminDisplayContext {
 	}
 
 	public String getPreviewDraftURL(Layout layout) throws PortalException {
-		return PortalUtil.getLayoutFriendlyURL(
-			layout.fetchDraftLayout(), themeDisplay);
+		Layout draftLayout = LayoutLocalServiceUtil.fetchLayout(
+			PortalUtil.getClassNameId(Layout.class), layout.getPlid());
+
+		return PortalUtil.getLayoutFriendlyURL(draftLayout, _themeDisplay);
 	}
 
 	public String getRedirect() {
@@ -1528,17 +1530,29 @@ public class LayoutsAdminDisplayContext {
 	}
 
 	public boolean isShowDraftActions(Layout layout) {
-		if (!layout.isTypeContent()) {
+		if (!Objects.equals(layout.getType(), LayoutConstants.TYPE_CONTENT)) {
 			return false;
 		}
 
-		Layout draftLayout = layout.fetchDraftLayout();
+		Layout draftLayout = LayoutLocalServiceUtil.fetchLayout(
+			PortalUtil.getClassNameId(Layout.class), layout.getPlid());
 
 		if (draftLayout == null) {
 			return false;
 		}
 
-		if (draftLayout.getStatus() == WorkflowConstants.STATUS_DRAFT) {
+		Date modifiedDate = draftLayout.getModifiedDate();
+
+		Date publishDate = layout.getPublishDate();
+
+		if (publishDate == null) {
+			publishDate = modifiedDate;
+		}
+
+		boolean published = GetterUtil.getBoolean(
+			draftLayout.getTypeSettingsProperty("published"));
+
+		if (!published || (modifiedDate.getTime() > publishDate.getTime())) {
 			return true;
 		}
 
@@ -1655,6 +1669,10 @@ public class LayoutsAdminDisplayContext {
 
 		if (isShowConvertLayoutAction(layout)) {
 			jsonObject.put("convertLayoutURL", getConvertLayoutURL(layout));
+		}
+
+		if (isShowDraftActions(layout)) {
+			jsonObject.put("previewDraftURL", getPreviewDraftURL(layout));
 		}
 
 		if (isShowCopyLayoutAction(layout)) {

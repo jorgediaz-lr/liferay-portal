@@ -29,6 +29,11 @@ const LAYOUT_COLUMN_ITEM_DROPDOWN_ITEMS = [
 	},
 
 	{
+		label: Liferay.Language.get('preview-draft'),
+		name: 'previewDraftURL'
+	},
+
+	{
 		/**
 		 * Handle copy layout click in order to show simple input modal.
 		 * @param {Event} event
