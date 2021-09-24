@@ -52,9 +52,13 @@ page import="com.liferay.osb.provisioning.exception.MultipleDossieraKeysExceptio
 page import="com.liferay.osb.provisioning.exception.ProductBundleNameException" %><%@
 page import="com.liferay.osb.provisioning.exception.ProductPurchaseQuantityException" %><%@
 page import="com.liferay.osb.provisioning.exception.RequiredProductException" %><%@
+page import="com.liferay.osb.provisioning.license.exception.DuplicateCommonLicenseKeyException" %><%@
 page import="com.liferay.osb.provisioning.license.helper.constants.LicenseType" %><%@
+page import="com.liferay.osb.provisioning.license.model.CommonLicenseKey" %><%@
 page import="com.liferay.osb.provisioning.license.model.LicenseKey" %><%@
+page import="com.liferay.osb.provisioning.license.service.CommonLicenseKeyLocalServiceUtil" %><%@
 page import="com.liferay.osb.provisioning.model.ProductBundle" %><%@
+page import="com.liferay.osb.provisioning.rest.dto.v1_0.ProductGroup" %><%@
 page import="com.liferay.osb.provisioning.service.ProductBundleLocalServiceUtil" %><%@
 page import="com.liferay.osb.provisioning.web.internal.dao.search.ProductPurchaseResultRowSplitter" %><%@
 page import="com.liferay.osb.provisioning.web.internal.dao.search.ProductPurchaseViewResultRowSplitter" %><%@
@@ -115,7 +119,8 @@ page import="com.liferay.portal.kernel.util.Validator" %><%@
 page import="com.liferay.portal.kernel.util.WebKeys" %><%@
 page import="com.liferay.portal.vulcan.util.TransformUtil" %>
 
-<%@ page import="java.text.Format" %>
+<%@ page import="java.text.DateFormat" %><%@
+page import="java.text.Format" %>
 
 <%@ page import="java.util.ArrayList" %><%@
 page import="java.util.Arrays" %><%@
@@ -130,6 +135,10 @@ page import="java.util.Map" %>
 <liferay-theme:defineObjects />
 
 <portlet:defineObjects />
+
+<%
+Format mediumDateFormatDate = FastDateFormatFactoryUtil.getDate(DateFormat.MEDIUM, locale, timeZone);
+%>
 
 <aui:script>
 	window.ProvisioningConstants = {

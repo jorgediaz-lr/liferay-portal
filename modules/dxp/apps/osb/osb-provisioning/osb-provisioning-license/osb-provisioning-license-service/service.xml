@@ -3,6 +3,51 @@
 
 <service-builder mvcc-enabled="true" package-path="com.liferay.osb.provisioning.license">
 	<namespace>Provisioning</namespace>
+	<entity local-service="true" name="CommonLicenseKey" remote-service="true" uuid="true">
+
+		<!-- PK fields -->
+
+		<column name="commonLicenseKeyId" primary="true" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="productGroup" type="String" />
+		<column name="productEnvironment" type="String" />
+		<column name="productVersion" type="String" />
+		<column name="startDate" type="Date" />
+		<column name="endDate" type="Date" />
+		<column name="fileName" type="String" />
+		<column name="fileSize" type="long" />
+
+		<!-- Order -->
+
+		<order>
+			<order-column name="endDate" order-by="asc" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="ProductGroup" return-type="Collection">
+			<finder-column name="productGroup" />
+		</finder>
+		<finder name="FileName" return-type="CommonLicenseKey">
+			<finder-column name="fileName" />
+		</finder>
+		<finder name="PG_PE_PV_gtS_ltE" return-type="Collection">
+			<finder-column name="productGroup" />
+			<finder-column name="productEnvironment" />
+			<finder-column name="productVersion" />
+			<finder-column comparator="&gt;" name="startDate" />
+			<finder-column comparator="&lt;" name="endDate" />
+		</finder>
+	</entity>
 	<entity local-service="true" name="LicenseEntry" remote-service="true">
 
 		<!-- PK fields -->
@@ -176,6 +221,7 @@
 		</finder>
 	</entity>
 	<exceptions>
+		<exception>DuplicateCommonLicenseKey</exception>
 		<exception>DuplicateIPAddress</exception>
 		<exception>DuplicateMACAddress</exception>
 		<exception>LicenseEntryName</exception>

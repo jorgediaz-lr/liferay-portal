@@ -18,47 +18,123 @@
 
 <liferay-util:include page="/common/view_account_search_header.jsp" servletContext="<%= application %>" />
 
-<div class="title-bar">
-	<h3><liferay-ui:message key="admin" /></h3>
-</div>
+<%
+String tabs = ParamUtil.getString(request, "tabs", "elasticsearch-license");
+%>
+
+<clay:navigation-bar
+	inverted="<%= true %>"
+	navigationItems='<%=
+		new JSPNavigationItemList(pageContext) {
+			{
+				add(
+					navigationItem -> {
+						navigationItem.setActive(tabs.equals("elasticsearch-license"));
+						navigationItem.setHref(renderResponse.createRenderURL(), "tabs", "elasticsearch-license");
+						navigationItem.setLabel(LanguageUtil.get(request, "elasticsearch-license"));
+					});
+				add(
+					navigationItem -> {
+						navigationItem.setActive(tabs.equals("rabbitmq"));
+						navigationItem.setHref(renderResponse.createRenderURL(), "tabs", "rabbitmq");
+						navigationItem.setLabel(LanguageUtil.get(request, "rabbitmq"));
+					});
+			}
+		}
+	%>'
+/>
 
 <div class="container-fluid home">
+	<c:choose>
+		<c:when test='<%= tabs.equals("elasticsearch-license") %>'>
+			<portlet:actionURL name="/admin/upload_elasticsearch_license" var="uploadElasticsearchLicenseURL">
+				<portlet:param name="redirect" value="<%= currentURL %>" />
+			</portlet:actionURL>
 
-	<%
-	String tabs = ParamUtil.getString(request, "tabs", "rabbitmq");
-	%>
+			<aui:form action="<%= uploadElasticsearchLicenseURL %>" cssClass="container-fluid container-fluid-max-xl" enctype="multipart/form-data" method="post">
+				<liferay-ui:error exception="<%= DuplicateCommonLicenseKeyException.class %>" message="the-file-has-already-been-uploaded" />
 
-	<clay:navigation-bar
-		inverted="<%= true %>"
-		navigationItems='<%=
-			new JSPNavigationItemList(pageContext) {
-				{
-					add(
-						navigationItem -> {
-							navigationItem.setActive(tabs.equals("rabbitmq"));
-							navigationItem.setHref(renderResponse.createRenderURL(), "tabs", "rabbitmq");
-							navigationItem.setLabel(LanguageUtil.get(request, "rabbitmq"));
-						});
-				}
-			}
-		%>'
-	/>
+				<aui:fieldset-group>
+					<aui:fieldset>
+						<aui:input name="elasticsearchLicenseFile" type="file" />
 
-	<portlet:actionURL name="/admin/debug_rabbitmq" var="debugRabbitMQURL">
-		<portlet:param name="redirect" value="<%= currentURL %>" />
-	</portlet:actionURL>
+						<aui:button type="submit" value="submit" />
+					</aui:fieldset>
+				</aui:fieldset-group>
+			</aui:form>
 
-	<aui:form action="<%= debugRabbitMQURL %>" cssClass="container-fluid container-fluid-max-xl" method="post">
-		<aui:fieldset-group>
-			<aui:fieldset>
-				<aui:input name="routingKey" type="text" />
+			<liferay-ui:search-container
+				total="<%= CommonLicenseKeyLocalServiceUtil.getCommonLicenseKeysCount(ProductGroup.Name.ENTERPRISE_SEARCH.toString()) %>"
+			>
+				<liferay-ui:search-container-results
+					results="<%= CommonLicenseKeyLocalServiceUtil.getCommonLicenseKeys(ProductGroup.Name.ENTERPRISE_SEARCH.toString(), searchContainer.getStart(), searchContainer.getEnd()) %>"
+				/>
 
-				<aui:input name="message" type="textarea" />
+				<liferay-ui:search-container-row
+					className="com.liferay.osb.provisioning.license.model.CommonLicenseKey"
+					escapedModel="<%= true %>"
+					keyProperty="commonLicenseKeyId"
+					modelVar="commonLicenseKey"
+				>
+					<portlet:renderURL var="rowURL">
+						<portlet:param name="mvcRenderCommandName" value="/admin/edit_common_license_key" />
+						<portlet:param name="redirect" value="<%= currentURL %>" />
+						<portlet:param name="commonLicenseKeyId" value="<%= String.valueOf(commonLicenseKey.getCommonLicenseKeyId()) %>" />
+					</portlet:renderURL>
 
-				<aui:input name="properties" type="textarea" />
+					<liferay-ui:search-container-column-text
+						href="<%= rowURL %>"
+						name="name"
+						value="<%= commonLicenseKey.getFileName() %>"
+					/>
 
-				<aui:button type="submit" value="submit" />
-			</aui:fieldset>
-		</aui:fieldset-group>
-	</aui:form>
+					<liferay-ui:search-container-column-text
+						href="<%= rowURL %>"
+						name="product-environment"
+						value="<%= commonLicenseKey.getProductEnvironment() %>"
+					/>
+
+					<liferay-ui:search-container-column-text
+						href="<%= rowURL %>"
+						name="start-date"
+						value="<%= mediumDateFormatDate.format(commonLicenseKey.getStartDate()) %>"
+					/>
+
+					<liferay-ui:search-container-column-text
+						href="<%= rowURL %>"
+						name="end-date"
+						value="<%= mediumDateFormatDate.format(commonLicenseKey.getEndDate()) %>"
+					/>
+
+					<liferay-ui:search-container-column-jsp
+						align="right"
+						path="/admin/common_license_key_action.jsp"
+					/>
+				</liferay-ui:search-container-row>
+
+				<liferay-ui:search-iterator
+					markupView="lexicon"
+				/>
+			</liferay-ui:search-container>
+		</c:when>
+		<c:otherwise>
+			<portlet:actionURL name="/admin/debug_rabbitmq" var="debugRabbitMQURL">
+				<portlet:param name="redirect" value="<%= currentURL %>" />
+			</portlet:actionURL>
+
+			<aui:form action="<%= debugRabbitMQURL %>" cssClass="container-fluid container-fluid-max-xl" method="post">
+				<aui:fieldset-group>
+					<aui:fieldset>
+						<aui:input name="routingKey" type="text" />
+
+						<aui:input name="message" type="textarea" />
+
+						<aui:input name="properties" type="textarea" />
+
+						<aui:button type="submit" value="submit" />
+					</aui:fieldset>
+				</aui:fieldset-group>
+			</aui:form>
+		</c:otherwise>
+	</c:choose>
 </div>
