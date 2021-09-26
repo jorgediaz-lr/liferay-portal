@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.test.rule.DataGuard;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.ContentTypes;
@@ -44,6 +45,13 @@ public class GroupModelListenerTest {
 		_group = GroupTestUtil.addGroup();
 	}
 
+	@DataGuard(
+		autoDeleteClassNames = {
+			"com.liferay.portal.security.audit.storage.model.AuditEvent",
+			"com.liferay.document.library.sync.model.DLSyncEvent"
+		},
+		scope = DataGuard.Scope.METHOD
+	)
 	@Test
 	public void testDeleteGroupSubscriptions() throws Exception {
 		int count = SubscriptionLocalServiceUtil.getUserSubscriptionsCount(

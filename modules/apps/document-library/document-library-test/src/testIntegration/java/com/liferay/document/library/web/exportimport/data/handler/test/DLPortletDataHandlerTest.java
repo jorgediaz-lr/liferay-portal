@@ -60,6 +60,7 @@ import com.liferay.portal.kernel.service.RepositoryLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.test.constants.TestDataConstants;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.rule.DataGuard;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
@@ -188,6 +189,13 @@ public class DLPortletDataHandlerTest extends BasePortletDataHandlerTestCase {
 		Assert.assertEquals(0, folderModelAdditionCounter.getValue());
 	}
 
+	@DataGuard(
+		autoDeleteClassNames = {
+			"com.liferay.portal.security.audit.storage.model.AuditEvent",
+			"com.liferay.document.library.sync.model.DLSyncEvent"
+		},
+		scope = DataGuard.Scope.METHOD
+	)
 	@Test
 	public void testDeleteAllFolders() throws Exception {
 		Group group = GroupTestUtil.addGroup();
@@ -218,6 +226,10 @@ public class DLPortletDataHandlerTest extends BasePortletDataHandlerTestCase {
 		Assert.assertEquals(0, foldersCount);
 	}
 
+	@DataGuard(
+		autoDeleteClassNames = "com.liferay.portal.security.audit.storage.model.AuditEvent",
+		scope = DataGuard.Scope.METHOD
+	)
 	@Test
 	public void testDeleteGroup() throws Exception {
 		Class<?> clazz = getClass();

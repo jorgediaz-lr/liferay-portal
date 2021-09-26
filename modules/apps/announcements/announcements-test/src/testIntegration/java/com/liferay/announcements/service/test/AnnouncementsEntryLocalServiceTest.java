@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.UserGroupLocalService;
 import com.liferay.portal.kernel.test.randomizerbumpers.NumericStringRandomizerBumper;
 import com.liferay.portal.kernel.test.randomizerbumpers.UniqueStringRandomizerBumper;
+import com.liferay.portal.kernel.test.rule.DataGuard;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.CompanyTestUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
@@ -136,6 +137,10 @@ public class AnnouncementsEntryLocalServiceTest {
 		Assert.assertEquals(entries.toString(), 0, entries.size());
 	}
 
+	@DataGuard(
+		autoDeleteClassNames = "com.liferay.portal.security.audit.storage.model.AuditEvent",
+		scope = DataGuard.Scope.METHOD
+	)
 	@Test
 	public void testDeleteGroupAnnouncements() throws Exception {
 		Group group = GroupTestUtil.addGroup(
