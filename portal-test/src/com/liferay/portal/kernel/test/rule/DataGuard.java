@@ -28,6 +28,8 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface DataGuard {
 
+	public String[] autoDeleteClassNames() default "*";
+
 	public Scope scope() default Scope.CLASS;
 
 	public enum Scope {

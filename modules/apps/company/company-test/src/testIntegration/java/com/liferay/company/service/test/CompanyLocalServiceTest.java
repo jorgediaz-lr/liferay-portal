@@ -65,6 +65,7 @@ import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.service.VirtualHostLocalServiceUtil;
 import com.liferay.portal.kernel.test.randomizerbumpers.NumericStringRandomizerBumper;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.rule.DataGuard;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.UserGroupTestUtil;
@@ -122,6 +123,10 @@ import org.springframework.mock.web.MockServletContext;
  * @author Mika Koivisto
  * @author Dale Shan
  */
+@DataGuard(
+	autoDeleteClassNames = "com.liferay.portal.kernel.model.ClassName",
+	scope = DataGuard.Scope.METHOD
+)
 @RunWith(Arquillian.class)
 @SybaseDumpTransactionLog(dumpBefore = {SybaseDump.CLASS, SybaseDump.METHOD})
 public class CompanyLocalServiceTest {
@@ -768,8 +773,7 @@ public class CompanyLocalServiceTest {
 	public void testGetCompanyByVirtualHost() throws Exception {
 		String virtualHostName = "::1";
 
-		Company company = CompanyLocalServiceUtil.addCompany(
-			null, virtualHostName, virtualHostName, "test.com", false, 0, true);
+		Company company = addCompany(virtualHostName);
 
 		Assert.assertEquals(
 			company,
@@ -783,33 +787,26 @@ public class CompanyLocalServiceTest {
 
 	@Test
 	public void testUpdateCompanyLocales() throws Exception {
-		long companyId = CompanyThreadLocal.getCompanyId();
+		Company company = addCompany();
 
-		try {
-			Company company = addCompany();
+		String languageId = "ca_ES";
+		TimeZone timeZone = company.getTimeZone();
 
-			CompanyThreadLocal.setCompanyId(company.getCompanyId());
+		CompanyLocalServiceUtil.updateDisplay(
+			company.getCompanyId(), languageId, timeZone.getID());
 
-			String languageId = "ca_ES";
-			TimeZone timeZone = company.getTimeZone();
+		UnicodeProperties unicodeProperties = new UnicodeProperties();
 
-			CompanyLocalServiceUtil.updateDisplay(
-				company.getCompanyId(), languageId, timeZone.getID());
+		unicodeProperties.put(PropsKeys.LOCALES, languageId);
 
-			UnicodeProperties unicodeProperties = new UnicodeProperties();
+		CompanyLocalServiceUtil.updatePreferences(
+			company.getCompanyId(), unicodeProperties);
 
-			unicodeProperties.put(PropsKeys.LOCALES, languageId);
+		Assert.assertEquals(
+			Collections.singleton(LocaleUtil.fromLanguageId(languageId)),
+			LanguageUtil.getAvailableLocales());
 
-			CompanyLocalServiceUtil.updatePreferences(
-				company.getCompanyId(), unicodeProperties);
-
-			Assert.assertEquals(
-				Collections.singleton(LocaleUtil.fromLanguageId(languageId)),
-				LanguageUtil.getAvailableLocales());
-		}
-		finally {
-			CompanyThreadLocal.setCompanyId(companyId);
-		}
+		CompanyLocalServiceUtil.deleteCompany(company);
 	}
 
 	@Test
@@ -859,6 +856,8 @@ public class CompanyLocalServiceTest {
 		Assert.assertEquals(
 			languageIds,
 			groupTypeSettingsUnicodeProperties.getProperty(PropsKeys.LOCALES));
+
+		CompanyLocalServiceUtil.deleteCompany(company);
 	}
 
 	@Test
@@ -886,17 +885,16 @@ public class CompanyLocalServiceTest {
 	public void testUpdateInvalidCompanyNames() throws Exception {
 		Company company = addCompany();
 
-		Group group = GroupTestUtil.addGroup();
+		long companyId = company.getCompanyId();
 
-		group.setCompanyId(company.getCompanyId());
+		long userId = UserLocalServiceUtil.getDefaultUserId(companyId);
 
-		GroupLocalServiceUtil.updateGroup(group);
+		Group group = GroupTestUtil.addGroup(
+			companyId, userId, GroupConstants.DEFAULT_PARENT_GROUP_ID);
 
 		testUpdateCompanyNames(
 			company,
 			new String[] {StringPool.BLANK, group.getDescriptiveName()}, true);
-
-		GroupLocalServiceUtil.deleteGroup(group);
 
 		CompanyLocalServiceUtil.deleteCompany(company.getCompanyId());
 	}
@@ -942,12 +940,16 @@ public class CompanyLocalServiceTest {
 	}
 
 	protected Company addCompany() throws Exception {
-		String webId = RandomTestUtil.randomString() + "test.com";
+		return addCompany(RandomTestUtil.randomString() + "test.com");
+	}
 
+	protected Company addCompany(String webId) throws Exception {
 		Company company = CompanyLocalServiceUtil.addCompany(
 			null, webId, webId, "test.com", false, 0, true);
 
 		PortalInstances.initCompany(_mockServletContext, webId);
+
+		CompanyThreadLocal.setCompanyId(company.getCompanyId());
 
 		return company;
 	}

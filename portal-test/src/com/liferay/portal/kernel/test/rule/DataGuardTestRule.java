@@ -14,6 +14,8 @@
 
 package com.liferay.portal.kernel.test.rule;
 
+import com.liferay.petra.string.StringPool;
+
 import org.junit.runner.Description;
 
 /**
@@ -34,7 +36,9 @@ public class DataGuardTestRule
 			return;
 		}
 
-		DataGuardTestRuleUtil.afterClass(dataBag, description.getClassName());
+		DataGuardTestRuleUtil.afterClass(
+			dataBag, description.getClassName(),
+			_autoDeleteClassNames(description));
 	}
 
 	@Override
@@ -47,7 +51,9 @@ public class DataGuardTestRule
 			return;
 		}
 
-		DataGuardTestRuleUtil.afterMethod(dataBag, description.getClassName());
+		DataGuardTestRuleUtil.afterMethod(
+			dataBag, description.getClassName(),
+			_autoDeleteClassNames(description));
 	}
 
 	@Override
@@ -83,6 +89,18 @@ public class DataGuardTestRule
 	}
 
 	private DataGuardTestRule() {
+	}
+
+	private String[] _autoDeleteClassNames(Description description) {
+		Class<?> testClass = description.getTestClass();
+
+		DataGuard dataGuard = testClass.getAnnotation(DataGuard.class);
+
+		if (dataGuard == null) {
+			return new String[] {StringPool.STAR};
+		}
+
+		return dataGuard.autoDeleteClassNames();
 	}
 
 }
