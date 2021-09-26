@@ -44,6 +44,7 @@ import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.test.constants.TestDataConstants;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.rule.DataGuard;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.CompanyTestUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
@@ -118,6 +119,13 @@ public class DLFileEntryMetadataLocalServiceTest {
 			serviceContext);
 	}
 
+	@DataGuard(
+		autoDeleteClassNames = {
+			"com.liferay.portal.security.audit.storage.model.AuditEvent",
+			"com.liferay.document.library.sync.model.DLSyncEvent"
+		},
+		scope = DataGuard.Scope.METHOD
+	)
 	@Test
 	public void testDeleteGroup() throws Exception {
 		User user = TestPropsValues.getUser();

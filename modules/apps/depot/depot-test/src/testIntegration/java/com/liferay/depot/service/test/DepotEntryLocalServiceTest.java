@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserGroupRoleLocalService;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.rule.DataGuard;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.CompanyTestUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
@@ -118,6 +119,10 @@ public class DepotEntryLocalServiceTest {
 		_addDepotEntry(null, null);
 	}
 
+	@DataGuard(
+		autoDeleteClassNames = "com.liferay.portal.security.audit.storage.model.AuditEvent",
+		scope = DataGuard.Scope.METHOD
+	)
 	@Test
 	public void testDeleteCompany() throws Exception {
 		Company company = CompanyTestUtil.addCompany();
@@ -142,6 +147,10 @@ public class DepotEntryLocalServiceTest {
 				depotEntry.getDepotEntryId()));
 	}
 
+	@DataGuard(
+		autoDeleteClassNames = "com.liferay.portal.security.audit.storage.model.AuditEvent",
+		scope = DataGuard.Scope.METHOD
+	)
 	@Test(expected = NoSuchGroupException.class)
 	public void testDeleteDepotEntry() throws Exception {
 		DepotEntry depotEntry = _addDepotEntry("name", "description");
