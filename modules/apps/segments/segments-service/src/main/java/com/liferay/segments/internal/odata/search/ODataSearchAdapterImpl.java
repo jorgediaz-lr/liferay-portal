@@ -30,7 +30,6 @@ import com.liferay.portal.kernel.search.ParseException;
 import com.liferay.portal.kernel.search.Query;
 import com.liferay.portal.kernel.search.QueryConfig;
 import com.liferay.portal.kernel.search.SearchContext;
-import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.search.SearchResultPermissionFilterFactory;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.TermRangeQuery;
@@ -115,7 +114,7 @@ public class ODataSearchAdapterImpl implements ODataSearchAdapter {
 	protected Hits search(
 			Indexer<?> indexer, SearchContext searchContext,
 			BooleanQuery booleanQuery, int start, int end)
-		throws ParseException, SearchException {
+		throws PortalException {
 
 		if (start == QueryUtil.ALL_POS) {
 			start = 0;
@@ -209,7 +208,7 @@ public class ODataSearchAdapterImpl implements ODataSearchAdapter {
 	}
 
 	private BooleanClause<Query> _getBooleanClause(BooleanQuery booleanQuery)
-		throws Exception {
+		throws PortalException {
 
 		return BooleanClauseFactoryUtil.create(
 			booleanQuery, BooleanClauseOccur.MUST.getName());
