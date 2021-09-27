@@ -50,6 +50,7 @@ import com.liferay.portal.odata.filter.InvalidFilterException;
 import com.liferay.segments.odata.search.ODataSearchAdapter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -165,9 +166,7 @@ public class ODataSearchAdapterImpl implements ODataSearchAdapter {
 			}
 
 			if ((start < indexSearchLimit) && (end >= start)) {
-				for (Document document : docs) {
-					documentList.add(document);
-				}
+				Collections.addAll(documentList, docs);
 
 				if (docs.length != indexSearchLimit) {
 					break;
