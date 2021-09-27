@@ -147,11 +147,12 @@ public class ODataSearchAdapterImpl implements ODataSearchAdapter {
 				searchContext.setStart(indexSearchLimit - 1);
 			}
 
-			BooleanQuery filteredQuery = _getFilteredQuery(
-				booleanQuery, lastDocument);
-
 			searchContext.setBooleanClauses(
-				new BooleanClause[] {_getBooleanClause(filteredQuery)});
+				new BooleanClause[] {
+					_getBooleanClause(
+						_getBooleanQueryFromLastDocument(
+							booleanQuery, lastDocument))
+				});
 
 			Hits hits = indexer.search(searchContext);
 
@@ -237,7 +238,7 @@ public class ODataSearchAdapterImpl implements ODataSearchAdapter {
 		return booleanQuery;
 	}
 
-	private BooleanQuery _getFilteredQuery(
+	private BooleanQuery _getBooleanQueryFromLastDocument(
 			BooleanQuery booleanQuery, Document lastDocument)
 		throws ParseException {
 
@@ -245,17 +246,18 @@ public class ODataSearchAdapterImpl implements ODataSearchAdapter {
 			return booleanQuery;
 		}
 
-		BooleanQuery filteredQuery = new BooleanQueryImpl();
+		BooleanQuery booleanQueryFromLastDocument = new BooleanQueryImpl();
 
-		filteredQuery.add(booleanQuery, BooleanClauseOccur.MUST);
+		booleanQueryFromLastDocument.add(booleanQuery, BooleanClauseOccur.MUST);
 
 		TermRangeQuery termRangeQuery = new TermRangeQueryImpl(
 			Field.ENTRY_CLASS_PK, lastDocument.get(Field.ENTRY_CLASS_PK), null,
 			false, true);
 
-		filteredQuery.add(termRangeQuery, BooleanClauseOccur.MUST);
+		booleanQueryFromLastDocument.add(
+			termRangeQuery, BooleanClauseOccur.MUST);
 
-		return filteredQuery;
+		return booleanQueryFromLastDocument;
 	}
 
 	private com.liferay.portal.kernel.search.filter.Filter _getSearchFilter(
