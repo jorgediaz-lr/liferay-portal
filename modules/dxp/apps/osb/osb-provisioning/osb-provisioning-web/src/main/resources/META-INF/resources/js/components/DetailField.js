@@ -164,7 +164,7 @@ DetailField.propTypes = {
 		FIELD_TYPE_TEXTAREA,
 		FIELD_TYPE_TOGGLE
 	]),
-	value: PropTypes.string.isRequired
+	value: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]).isRequired
 };
 
 export default DetailField;

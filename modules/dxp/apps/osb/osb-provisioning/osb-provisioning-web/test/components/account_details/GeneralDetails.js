@@ -21,6 +21,8 @@ function renderGeneralDetails(permission = true) {
 			<GeneralDetails
 				dataRegions={['Brazil', 'Hungary', 'Japan', 'United States']}
 				details={{
+					allowPermanentLicenses: true,
+					allowSelfProvisioning: false,
 					code: '123',
 					dataRegion: 'Brazil',
 					dateCreated: new Date().toLocaleString('en-US'),
@@ -105,6 +107,20 @@ describe('GeneralDetails', () => {
 
 		getByText('liferay-version');
 		getByText('DXP 7.0');
+	});
+
+	it('shows Permanent Licenses field', () => {
+		const {getByText} = renderGeneralDetails();
+
+		getByText('permanent-licenses');
+		getByText('allowed');
+	});
+
+	it('shows Self Provisioning field', () => {
+		const {getByText} = renderGeneralDetails();
+
+		getByText('self-provisioning');
+		getByText('disallowed');
 	});
 
 	describe('General Details with full editing privilege', () => {

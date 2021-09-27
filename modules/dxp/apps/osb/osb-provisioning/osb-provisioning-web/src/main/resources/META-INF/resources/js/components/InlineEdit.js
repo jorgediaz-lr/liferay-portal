@@ -229,7 +229,7 @@ InlineEdit.propTypes = {
 	displayAs: PropTypes.oneOf(['label', 'text']),
 	displayValue: PropTypes.string,
 	fieldName: PropTypes.string,
-	fieldValue: PropTypes.string,
+	fieldValue: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
 	inputStyle: PropTypes.string,
 	options: PropTypes.arrayOf(
 		PropTypes.shape({

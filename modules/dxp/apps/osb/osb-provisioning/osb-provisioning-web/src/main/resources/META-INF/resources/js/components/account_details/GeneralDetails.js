@@ -19,6 +19,7 @@ import {
 	FIELD_TYPE_NONEDITABLE,
 	FIELD_TYPE_SELECT,
 	FIELD_TYPE_TEXT,
+	FIELD_TYPE_TOGGLE,
 	NAMESPACE
 } from '../../utilities/constants';
 import {convertDashToEmptyString} from '../../utilities/helpers';
@@ -35,6 +36,8 @@ function GeneralDetails({
 	const {updatePermission} = usePermissions();
 
 	const formData = {
+		allowPermanentLicenses: details.allowPermanentLicenses,
+		allowSelfProvisioning: details.allowSelfProvisioning,
 		code: convertDashToEmptyString(details.code),
 		dataRegion: convertDashToEmptyString(details.dataRegion),
 		liferayVersion: convertDashToEmptyString(details.liferayVersion),
@@ -157,6 +160,42 @@ function GeneralDetails({
 				}
 				value={details.liferayVersion}
 			/>
+
+			<DetailField
+				displayValue={
+					details.allowPermanentLicenses
+						? Liferay.Language.get('allowed')
+						: Liferay.Language.get('disallowed')
+				}
+				fieldLabel={Liferay.Language.get('permanent-licenses')}
+				fieldName="allowPermanentLicenses"
+				formAction={details.editAccountURL}
+				formData={formData}
+				type={
+					updatePermission
+						? FIELD_TYPE_TOGGLE
+						: FIELD_TYPE_NONEDITABLE
+				}
+				value={details.allowPermanentLicenses}
+			/>
+
+			<DetailField
+				displayValue={
+					details.allowSelfProvisioning
+						? Liferay.Language.get('allowed')
+						: Liferay.Language.get('disallowed')
+				}
+				fieldLabel={Liferay.Language.get('self-provisioning')}
+				fieldName="allowSelfProvisioning"
+				formAction={details.editAccountURL}
+				formData={formData}
+				type={
+					updatePermission
+						? FIELD_TYPE_TOGGLE
+						: FIELD_TYPE_NONEDITABLE
+				}
+				value={details.allowSelfProvisioning}
+			/>
 		</ClayList>
 	);
 }
@@ -165,6 +204,8 @@ GeneralDetails.propTypes = {
 	assignParentAccountURL: PropTypes.string,
 	dataRegions: PropTypes.arrayOf(PropTypes.string).isRequired,
 	details: PropTypes.shape({
+		allowPermanentLicenses: PropTypes.bool,
+		allowSelfProvisioning: PropTypes.bool,
 		code: PropTypes.string,
 		dataRegion: PropTypes.string,
 		dateCreated: PropTypes.string,

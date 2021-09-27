@@ -93,6 +93,8 @@ AccountDetails.propTypes = {
 	dataRegionNames: PropTypes.arrayOf(PropTypes.string),
 	details: PropTypes.shape({
 		addPostalAddressURL: PropTypes.string,
+		allowPermanentLicenses: PropTypes.bool,
+		allowSelfProvisioning: PropTypes.bool,
 		code: PropTypes.string,
 		dataRegion: PropTypes.string,
 		dateCreated: PropTypes.string,
