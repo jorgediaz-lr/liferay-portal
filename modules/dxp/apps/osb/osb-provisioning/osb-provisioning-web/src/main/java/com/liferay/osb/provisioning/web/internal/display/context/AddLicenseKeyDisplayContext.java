@@ -145,6 +145,7 @@ public class AddLicenseKeyDisplayContext {
 			data.put("currentProduct", productKey);
 		}
 
+		data.put("allowPermanentLicenses", _isAllowPermanentLicenses());
 		data.put("description", _account.getName());
 		data.put("licensableProducts", _getLicensableProductsJSONArray());
 		data.put("owner", _account.getName());
@@ -363,6 +364,17 @@ public class AddLicenseKeyDisplayContext {
 		}
 
 		return purchasedProductsJSONObject;
+	}
+
+	private boolean _isAllowPermanentLicenses() {
+		Map<String, String> properties = _account.getProperties();
+
+		if (properties != null) {
+			return GetterUtil.getBoolean(
+				properties.get("allowPermanentLicenses"), true);
+		}
+
+		return true;
 	}
 
 	private final Account _account;

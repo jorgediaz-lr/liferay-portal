@@ -143,6 +143,8 @@ public class LicenseKeyResourceImpl
 
 		_checkAccountMembership(accountKey);
 
+		_checkAccountSelfProvisioningPermission(accountKey);
+
 		StringBundler sb = new StringBundler(5);
 
 		sb.append("accountKey eq '");
@@ -571,6 +573,25 @@ public class LicenseKeyResourceImpl
 		}
 
 		throw new PrincipalException();
+	}
+
+	private void _checkAccountSelfProvisioningPermission(String accountKey)
+		throws Exception {
+
+		Account account = _accountWebService.getAccount(accountKey);
+
+		Map<String, String> properties = account.getProperties();
+
+		if (properties == null) {
+			return;
+		}
+
+		boolean selfProvisioning = GetterUtil.getBoolean(
+			properties.get("allowSelfProvisioning"), true);
+
+		if (!selfProvisioning) {
+			throw new PrincipalException();
+		}
 	}
 
 	private String _formatCsvFields(Object... objects) {

@@ -27,6 +27,7 @@ import com.liferay.osb.provisioning.koroneiki.reader.AccountReader;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
@@ -90,6 +91,28 @@ public class AccountDisplay {
 		addPostalAddressURL.setParameter("accountKey", _account.getKey());
 
 		return addPostalAddressURL.toString();
+	}
+
+	public boolean getAllowPermanentLicenses() {
+		Map<String, String> properties = _account.getProperties();
+
+		if (properties != null) {
+			return GetterUtil.getBoolean(
+				properties.get("allowPermanentLicenses"), true);
+		}
+
+		return true;
+	}
+
+	public boolean getAllowSelfProvisioning() {
+		Map<String, String> properties = _account.getProperties();
+
+		if (properties != null) {
+			return GetterUtil.getBoolean(
+				properties.get("allowSelfProvisioning"), true);
+		}
+
+		return true;
 	}
 
 	public String getCode() {
