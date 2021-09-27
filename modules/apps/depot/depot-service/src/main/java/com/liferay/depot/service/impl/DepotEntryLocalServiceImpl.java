@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.model.ModelHintsUtil;
+import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.GroupLocalService;
@@ -160,10 +161,21 @@ public class DepotEntryLocalServiceImpl extends DepotEntryLocalServiceBaseImpl {
 	public DepotEntry deleteDepotEntry(long depotEntryId)
 		throws PortalException {
 
-		if (_isStaged(depotEntryPersistence.fetchByPrimaryKey(depotEntryId))) {
+		DepotEntry depotEntry = depotEntryPersistence.fetchByPrimaryKey(
+			depotEntryId);
+
+		if (depotEntry == null) {
+			return null;
+		}
+
+		if (_isStaged(depotEntry)) {
 			throw new DepotEntryStagedException(
 				"Unstage depot entry " + depotEntryId + " before deleting it");
 		}
+
+		_resourceLocalService.deleteResource(
+			depotEntry.getCompanyId(), DepotEntry.class.getName(),
+			ResourceConstants.SCOPE_INDIVIDUAL, depotEntry.getDepotEntryId());
 
 		return super.deleteDepotEntry(depotEntryId);
 	}
