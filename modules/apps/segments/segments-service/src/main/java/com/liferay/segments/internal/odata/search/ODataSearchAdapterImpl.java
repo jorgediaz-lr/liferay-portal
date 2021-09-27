@@ -14,23 +14,35 @@
 
 package com.liferay.segments.internal.odata.search;
 
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.search.BooleanClause;
 import com.liferay.portal.kernel.search.BooleanClauseFactoryUtil;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
 import com.liferay.portal.kernel.search.BooleanQuery;
+import com.liferay.portal.kernel.search.Document;
+import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Hits;
+import com.liferay.portal.kernel.search.HitsImpl;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistry;
+import com.liferay.portal.kernel.search.ParseException;
 import com.liferay.portal.kernel.search.Query;
 import com.liferay.portal.kernel.search.QueryConfig;
 import com.liferay.portal.kernel.search.SearchContext;
+import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.search.SearchResultPermissionFilterFactory;
+import com.liferay.portal.kernel.search.Sort;
+import com.liferay.portal.kernel.search.TermRangeQuery;
 import com.liferay.portal.kernel.search.filter.BooleanFilter;
 import com.liferay.portal.kernel.search.generic.BooleanQueryImpl;
 import com.liferay.portal.kernel.search.generic.MatchAllQuery;
+import com.liferay.portal.kernel.search.generic.TermRangeQueryImpl;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.Props;
+import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.odata.filter.ExpressionConvert;
 import com.liferay.portal.odata.filter.Filter;
@@ -38,6 +50,8 @@ import com.liferay.portal.odata.filter.FilterParser;
 import com.liferay.portal.odata.filter.InvalidFilterException;
 import com.liferay.segments.odata.search.ODataSearchAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import org.osgi.service.component.annotations.Component;
@@ -57,18 +71,14 @@ public class ODataSearchAdapterImpl implements ODataSearchAdapter {
 		throws PortalException {
 
 		try {
-			SearchContext searchContext = _createSearchContext(
-				companyId, start, end);
+			SearchContext searchContext = _createSearchContext(companyId, 0, 0);
 
-			Indexer<?> indexer = _indexerRegistry.getIndexer(className);
+			BooleanQuery booleanQuery = _getBooleanQuery(
+				filterString, entityModel, filterParser, locale);
 
-			searchContext.setBooleanClauses(
-				new BooleanClause[] {
-					_getBooleanClause(
-						filterString, entityModel, filterParser, locale)
-				});
-
-			return indexer.search(searchContext);
+			return search(
+				_indexerRegistry.getIndexer(className), searchContext,
+				booleanQuery, start, end);
 		}
 		catch (Exception exception) {
 			throw new PortalException(
@@ -99,6 +109,84 @@ public class ODataSearchAdapterImpl implements ODataSearchAdapter {
 			throw new PortalException(
 				"Unable to search with filter " + filterString, exception);
 		}
+	}
+
+	protected Hits search(
+			Indexer<?> indexer, SearchContext searchContext,
+			BooleanQuery booleanQuery, int start, int end)
+		throws ParseException, SearchException {
+
+		if (start == QueryUtil.ALL_POS) {
+			start = 0;
+		}
+		else if (start < 0) {
+			throw new IllegalArgumentException("Invalid start " + start);
+		}
+
+		if (end == QueryUtil.ALL_POS) {
+			end = Integer.MAX_VALUE;
+		}
+		else if (end < start) {
+			throw new IllegalArgumentException("Invalid end " + end);
+		}
+
+		int indexSearchLimit = GetterUtil.getInteger(
+			_props.get(PropsKeys.INDEX_SEARCH_LIMIT));
+
+		Document lastDocument = null;
+
+		List<Document> documentList = new ArrayList<>();
+
+		while (true) {
+			searchContext.setSorts(new Sort(Field.ENTRY_CLASS_PK, false));
+
+			searchContext.setEnd(Math.min(end, indexSearchLimit));
+			searchContext.setStart(Math.min(start, indexSearchLimit));
+
+			if ((start >= indexSearchLimit) && (end >= indexSearchLimit)) {
+				searchContext.setStart(indexSearchLimit - 1);
+			}
+
+			BooleanQuery filteredQuery = _getFilteredQuery(
+				booleanQuery, lastDocument);
+
+			searchContext.setBooleanClauses(
+				new BooleanClause[] {
+					BooleanClauseFactoryUtil.create(
+						filteredQuery, BooleanClauseOccur.MUST.getName())
+				});
+
+			Hits hits = indexer.search(searchContext);
+
+			Document[] docs = hits.getDocs();
+
+			if (docs.length == 0) {
+				break;
+			}
+
+			if ((start < indexSearchLimit) && (end >= start)) {
+				for (Document document : docs) {
+					documentList.add(document);
+				}
+
+				if (docs.length != indexSearchLimit) {
+					break;
+				}
+			}
+
+			lastDocument = docs[docs.length - 1];
+
+			start = Math.max(0, start - indexSearchLimit);
+			end = Math.max(0, end - indexSearchLimit);
+		}
+
+		Hits hits = new HitsImpl();
+
+		hits.setDocs(documentList.toArray(new Document[0]));
+		hits.setLength(documentList.size());
+		hits.setStart(0);
+
+		return hits;
 	}
 
 	private SearchContext _createSearchContext(
@@ -159,6 +247,27 @@ public class ODataSearchAdapterImpl implements ODataSearchAdapter {
 		return booleanQuery;
 	}
 
+	private BooleanQuery _getFilteredQuery(
+			BooleanQuery booleanQuery, Document lastDocument)
+		throws ParseException {
+
+		if (lastDocument == null) {
+			return booleanQuery;
+		}
+
+		BooleanQuery filteredQuery = new BooleanQueryImpl();
+
+		filteredQuery.add(booleanQuery, BooleanClauseOccur.MUST);
+
+		TermRangeQuery termRangeQuery = new TermRangeQueryImpl(
+			Field.ENTRY_CLASS_PK, lastDocument.get(Field.ENTRY_CLASS_PK), null,
+			false, true);
+
+		filteredQuery.add(termRangeQuery, BooleanClauseOccur.MUST);
+
+		return filteredQuery;
+	}
+
 	private com.liferay.portal.kernel.search.filter.Filter _getSearchFilter(
 			String filterString, EntityModel entityModel,
 			FilterParser filterParser, Locale locale)
@@ -188,6 +297,9 @@ public class ODataSearchAdapterImpl implements ODataSearchAdapter {
 
 	@Reference
 	private IndexerRegistry _indexerRegistry;
+
+	@Reference
+	private Props _props;
 
 	@Reference
 	private SearchResultPermissionFilterFactory
