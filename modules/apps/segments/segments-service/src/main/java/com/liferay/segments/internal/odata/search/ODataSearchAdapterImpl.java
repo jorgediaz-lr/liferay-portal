@@ -137,7 +137,7 @@ public class ODataSearchAdapterImpl implements ODataSearchAdapter {
 
 		List<Document> documentList = new ArrayList<>();
 
-		Sort sort = new Sort(Field.ENTRY_CLASS_PK, false);
+		Sort sort = new Sort(Field.ENTRY_CLASS_PK, Sort.LONG_TYPE, false);
 
 		while (true) {
 			searchContext.setSorts(sort);
