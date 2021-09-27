@@ -71,7 +71,7 @@ public class ODataSearchAdapterImpl implements ODataSearchAdapter {
 		throws PortalException {
 
 		try {
-			SearchContext searchContext = _createSearchContext(companyId, 0, 0);
+			SearchContext searchContext = _createSearchContext(companyId);
 
 			BooleanQuery booleanQuery = _getBooleanQuery(
 				filterString, entityModel, filterParser, locale);
@@ -93,14 +93,15 @@ public class ODataSearchAdapterImpl implements ODataSearchAdapter {
 		throws PortalException {
 
 		try {
-			SearchContext searchContext = _createSearchContext(companyId, 0, 0);
+			SearchContext searchContext = _createSearchContext(companyId);
 
 			Indexer<?> indexer = _indexerRegistry.getIndexer(className);
 
 			searchContext.setBooleanClauses(
 				new BooleanClause[] {
 					_getBooleanClause(
-						filterString, entityModel, filterParser, locale)
+						_getBooleanQuery(
+							filterString, entityModel, filterParser, locale))
 				});
 
 			return (int)indexer.searchCount(searchContext);
@@ -151,10 +152,7 @@ public class ODataSearchAdapterImpl implements ODataSearchAdapter {
 				booleanQuery, lastDocument);
 
 			searchContext.setBooleanClauses(
-				new BooleanClause[] {
-					BooleanClauseFactoryUtil.create(
-						filteredQuery, BooleanClauseOccur.MUST.getName())
-				});
+				new BooleanClause[] {_getBooleanClause(filteredQuery)});
 
 			Hits hits = indexer.search(searchContext);
 
@@ -189,15 +187,11 @@ public class ODataSearchAdapterImpl implements ODataSearchAdapter {
 		return hits;
 	}
 
-	private SearchContext _createSearchContext(
-		long companyId, int start, int end) {
-
+	private SearchContext _createSearchContext(long companyId) {
 		SearchContext searchContext = new SearchContext();
 
 		searchContext.setCompanyId(companyId);
-		searchContext.setEnd(end);
 		searchContext.setGroupIds(new long[] {-1L});
-		searchContext.setStart(start);
 
 		PermissionChecker permissionChecker =
 			PermissionThreadLocal.getPermissionChecker();
@@ -214,14 +208,11 @@ public class ODataSearchAdapterImpl implements ODataSearchAdapter {
 		return searchContext;
 	}
 
-	private BooleanClause<Query> _getBooleanClause(
-			String filterString, EntityModel entityModel,
-			FilterParser filterParser, Locale locale)
+	private BooleanClause<Query> _getBooleanClause(BooleanQuery booleanQuery)
 		throws Exception {
 
 		return BooleanClauseFactoryUtil.create(
-			_getBooleanQuery(filterString, entityModel, filterParser, locale),
-			BooleanClauseOccur.MUST.getName());
+			booleanQuery, BooleanClauseOccur.MUST.getName());
 	}
 
 	private BooleanQuery _getBooleanQuery(
