@@ -61,7 +61,10 @@ Layout curLayout = (Layout)row.getObject();
 
 	<c:if test="<%= layoutsAdminDisplayContext.isShowDraftActions(curLayout) %>">
 		<liferay-ui:icon
+			linkCssClass="align-items-center d-flex justify-content-between"
+			markupView="lexicon"
 			message="preview-draft"
+			target="_blank"
 			url="<%= layoutsAdminDisplayContext.getPreviewDraftURL(curLayout) %>"
 		/>
 	</c:if>

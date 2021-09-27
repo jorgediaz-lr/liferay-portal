@@ -29,8 +29,10 @@ const LAYOUT_COLUMN_ITEM_DROPDOWN_ITEMS = [
 	},
 
 	{
+		icons: {right: 'shortcut'},
 		label: Liferay.Language.get('preview-draft'),
-		name: 'previewDraftURL'
+		name: 'previewDraftURL',
+		target: '_blank'
 	},
 
 	{

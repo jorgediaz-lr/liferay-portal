@@ -41,9 +41,11 @@ class LayoutColumn extends Component {
 		).map(dropdownItem => ({
 			handleClick: dropdownItem.handleClick || null,
 			href: actionURLs[dropdownItem.name],
+			icons: dropdownItem.icons,
 			label: dropdownItem.label,
 			layoutColumnItem,
-			namespace
+			namespace,
+			target: dropdownItem.target || '_self'
 		}));
 
 		return dropdownItems;
