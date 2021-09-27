@@ -210,11 +210,15 @@ if (liveLayout != null) {
 															</c:if>
 														</div>
 													</li>
-													<li class="control-menu-nav-item staging-bar-level-2-nav-item" id="<portlet:namespace />layoutRevisionStatus">
-														<aui:model-context bean="<%= layoutRevision %>" model="<%= LayoutRevision.class %>" />
 
-														<liferay-util:include page="/view_layout_revision_status.jsp" servletContext="<%= application %>" />
-													</li>
+													<c:if test="<%= !layout.isTypeContent() %>">
+														<li class="control-menu-nav-item staging-bar-level-2-nav-item" id="<portlet:namespace />layoutRevisionStatus">
+															<aui:model-context bean="<%= layoutRevision %>" model="<%= LayoutRevision.class %>" />
+
+															<liferay-util:include page="/view_layout_revision_status.jsp" servletContext="<%= application %>" />
+														</li>
+													</c:if>
+
 													<li class="control-menu-nav-item nav-item-flex-end staging-bar-level-2-nav-item staging-layout-revision-details" id="<portlet:namespace />layoutRevisionDetails">
 														<aui:model-context bean="<%= layoutRevision %>" model="<%= LayoutRevision.class %>" />
 
