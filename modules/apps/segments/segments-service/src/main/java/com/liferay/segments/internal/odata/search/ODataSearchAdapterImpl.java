@@ -137,8 +137,10 @@ public class ODataSearchAdapterImpl implements ODataSearchAdapter {
 
 		List<Document> documentList = new ArrayList<>();
 
+		Sort sort = new Sort(Field.ENTRY_CLASS_PK, false);
+
 		while (true) {
-			searchContext.setSorts(new Sort(Field.ENTRY_CLASS_PK, false));
+			searchContext.setSorts(sort);
 
 			searchContext.setEnd(Math.min(end, indexSearchLimit));
 			searchContext.setStart(Math.min(start, indexSearchLimit));
@@ -151,7 +153,7 @@ public class ODataSearchAdapterImpl implements ODataSearchAdapter {
 				new BooleanClause[] {
 					_getBooleanClause(
 						_getBooleanQueryFromLastDocument(
-							booleanQuery, lastDocument))
+							booleanQuery, sort.getFieldName(), lastDocument))
 				});
 
 			Hits hits = indexer.search(searchContext);
@@ -239,7 +241,7 @@ public class ODataSearchAdapterImpl implements ODataSearchAdapter {
 	}
 
 	private BooleanQuery _getBooleanQueryFromLastDocument(
-			BooleanQuery booleanQuery, Document lastDocument)
+			BooleanQuery booleanQuery, String sortField, Document lastDocument)
 		throws ParseException {
 
 		if (lastDocument == null) {
@@ -251,8 +253,7 @@ public class ODataSearchAdapterImpl implements ODataSearchAdapter {
 		booleanQueryFromLastDocument.add(booleanQuery, BooleanClauseOccur.MUST);
 
 		TermRangeQuery termRangeQuery = new TermRangeQueryImpl(
-			Field.ENTRY_CLASS_PK, lastDocument.get(Field.ENTRY_CLASS_PK), null,
-			false, true);
+			sortField, lastDocument.get(sortField), null, false, true);
 
 		booleanQueryFromLastDocument.add(
 			termRangeQuery, BooleanClauseOccur.MUST);
