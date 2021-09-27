@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.OrganizationLocalService;
 import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.UserGroupLocalService;
+import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.test.randomizerbumpers.NumericStringRandomizerBumper;
 import com.liferay.portal.kernel.test.randomizerbumpers.UniqueStringRandomizerBumper;
 import com.liferay.portal.kernel.test.rule.DataGuard;
@@ -164,6 +165,8 @@ public class AnnouncementsEntryLocalServiceTest {
 		Assert.assertNull(
 			_announcementsEntryLocalService.fetchAnnouncementsEntry(
 				entry.getEntryId()));
+
+		_userLocalService.deleteUser(_user);
 	}
 
 	@Test
@@ -422,5 +425,8 @@ public class AnnouncementsEntryLocalServiceTest {
 
 	@Inject
 	private UserGroupLocalService _userGroupLocalService;
+
+	@Inject
+	private UserLocalService _userLocalService;
 
 }
