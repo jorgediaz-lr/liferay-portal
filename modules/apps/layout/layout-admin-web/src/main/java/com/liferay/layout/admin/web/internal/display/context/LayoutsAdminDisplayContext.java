@@ -26,6 +26,7 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.NavigationItemList;
 import com.liferay.layout.admin.constants.LayoutAdminPortletKeys;
 import com.liferay.layout.admin.web.internal.configuration.LayoutConverterConfiguration;
 import com.liferay.layout.admin.web.internal.constants.LayoutAdminWebKeys;
+import com.liferay.layout.content.page.editor.constants.ContentPageEditorPortletKeys;
 import com.liferay.layout.page.template.model.LayoutPageTemplateCollection;
 import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
 import com.liferay.layout.page.template.service.LayoutPageTemplateCollectionLocalServiceUtil;
@@ -116,6 +117,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 import javax.portlet.ActionRequest;
+import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;
 
 import javax.servlet.http.HttpServletRequest;
@@ -218,6 +220,28 @@ public class LayoutsAdminDisplayContext {
 			portletURL.setParameter(
 				ActionRequest.ACTION_NAME, "/layout/add_simple_layout");
 		}
+
+		return portletURL.toString();
+	}
+
+	public String getApproveDraftURL(Layout layout) {
+		Layout draftLayout = LayoutLocalServiceUtil.fetchLayout(
+			PortalUtil.getClassNameId(Layout.class), layout.getPlid());
+
+		if (draftLayout == null) {
+			return StringPool.BLANK;
+		}
+
+		PortletURL portletURL = PortalUtil.getControlPanelPortletURL(
+			_liferayPortletRequest,
+			ContentPageEditorPortletKeys.CONTENT_PAGE_EDITOR_PORTLET,
+			PortletRequest.ACTION_PHASE);
+
+		portletURL.setParameter(
+			ActionRequest.ACTION_NAME, "/content_layout/publish_layout");
+		portletURL.setParameter("redirect", _themeDisplay.getURLCurrent());
+		portletURL.setParameter(
+			"classPK", String.valueOf(draftLayout.getPlid()));
 
 		return portletURL.toString();
 	}
@@ -1529,8 +1553,15 @@ public class LayoutsAdminDisplayContext {
 		return true;
 	}
 
-	public boolean isShowDraftActions(Layout layout) {
+	public boolean isShowDraftActions(Layout layout) throws PortalException {
 		if (!Objects.equals(layout.getType(), LayoutConstants.TYPE_CONTENT)) {
+			return false;
+		}
+
+		if (!LayoutPermissionUtil.contains(
+				_themeDisplay.getPermissionChecker(), layout,
+				ActionKeys.UPDATE)) {
+
 			return false;
 		}
 
@@ -1663,6 +1694,10 @@ public class LayoutsAdminDisplayContext {
 				getSelectLayoutPageTemplateEntryURL(
 					getFirstLayoutPageTemplateCollectionId(), layout.getPlid(),
 					layout.isPrivateLayout()));
+		}
+
+		if (isShowDraftActions(layout)) {
+			jsonObject.put("approveDraftURL", getApproveDraftURL(layout));
 		}
 
 		if (isShowConfigureAction(layout)) {

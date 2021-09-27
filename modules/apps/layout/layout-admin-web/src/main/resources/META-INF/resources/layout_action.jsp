@@ -67,6 +67,11 @@ Layout curLayout = (Layout)row.getObject();
 			target="_blank"
 			url="<%= layoutsAdminDisplayContext.getPreviewDraftURL(curLayout) %>"
 		/>
+
+		<liferay-ui:icon
+			message="approve-draft"
+			url="<%= layoutsAdminDisplayContext.getApproveDraftURL(curLayout) %>"
+		/>
 	</c:if>
 
 	<c:if test="<%= layoutsAdminDisplayContext.isShowCopyLayoutAction(curLayout) %>">
