@@ -31,6 +31,7 @@ const DEFAULT_MAX_HTTP_SESSIONS_FOR_DEVELOPER_LICENSES = 5;
 function GeneralInformation({
 	accountKey = '',
 	accountName = '',
+	allowPermanentLicenses,
 	currentProduct = '',
 	licensableProducts = [],
 	purchasedProducts = {},
@@ -313,6 +314,7 @@ function GeneralInformation({
 
 				{!!licenseEntryId && (
 					<Purchases
+						allowPermanentLicenses={allowPermanentLicenses}
 						detached={selectedProduct.detached}
 						purchased={purchasedProducts[product.productKey]}
 					/>
@@ -365,6 +367,7 @@ function ProductDropdown({products, purchased = []}) {
 GeneralInformation.propTypes = {
 	accountKey: PropTypes.string,
 	accountName: PropTypes.string,
+	allowPermanentLicenses: PropTypes.bool.isRequired,
 	currentProduct: PropTypes.string,
 	licensableProducts: PropTypes.arrayOf(
 		PropTypes.shape({

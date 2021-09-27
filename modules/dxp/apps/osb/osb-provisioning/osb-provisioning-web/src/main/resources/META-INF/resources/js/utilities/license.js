@@ -9,7 +9,10 @@
  * distribution rights of the Software.
  */
 
-import {RESTRICTED_EXPIRATION_DATE_TYPES} from './constants';
+import {
+	LICENSE_TYPE_PRODUCTION,
+	RESTRICTED_EXPIRATION_DATE_TYPES
+} from './constants';
 import {generateNewDateByDay, generateNewDateByYear} from './date';
 
 const TODAY = new Date();
@@ -22,7 +25,11 @@ const TODAY = new Date();
  * @returns {Object} An object of dates representing the start and expiration
  * dates of a detached license.
  */
-export function deriveLicenseDates(license, type) {
+export function deriveLicenseDates(
+	license,
+	type,
+	allowPermanentLicenses = true
+) {
 	const restricted = RESTRICTED_EXPIRATION_DATE_TYPES.find(
 		restrictedType => restrictedType === type
 	);
@@ -30,7 +37,11 @@ export function deriveLicenseDates(license, type) {
 	if (license.perpetual) {
 		let expirationDate = generateNewDateByDay(generateNewDateByYear());
 
-		if (!restricted) {
+		if (
+			!restricted &&
+			(allowPermanentLicenses === true ||
+				type !== LICENSE_TYPE_PRODUCTION)
+		) {
 			expirationDate = generateNewDateByYear(TODAY, 100);
 		}
 
@@ -39,7 +50,10 @@ export function deriveLicenseDates(license, type) {
 
 	let expirationDate = new Date(license.endDate);
 
-	if (!restricted) {
+	if (
+		!restricted &&
+		(allowPermanentLicenses === true || type !== LICENSE_TYPE_PRODUCTION)
+	) {
 		expirationDate = generateNewDateByYear(expirationDate, 100);
 	}
 

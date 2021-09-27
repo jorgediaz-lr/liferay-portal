@@ -17,6 +17,7 @@ import GenerateLicense from '../../../src/main/resources/META-INF/resources/js/c
 function renderGenerateLicense(props) {
 	return render(
 		<GenerateLicense
+			allowPermanentLicenses={true}
 			hasUpdateLicenseDatePermission={true}
 			redirect="back/url"
 			selectAccountActionURL="/action/url"

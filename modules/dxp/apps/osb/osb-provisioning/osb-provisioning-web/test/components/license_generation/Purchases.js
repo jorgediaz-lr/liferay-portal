@@ -36,6 +36,7 @@ function renderPurchases({
 				permissions={{updateDatePermission: permission}}
 			>
 				<Purchases
+					allowPermanentLicenses={true}
 					purchased={[
 						{
 							endDate: '2020-04-16',
