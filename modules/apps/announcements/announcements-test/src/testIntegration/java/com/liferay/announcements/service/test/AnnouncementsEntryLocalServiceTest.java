@@ -161,6 +161,8 @@ public class AnnouncementsEntryLocalServiceTest {
 		Assert.assertNull(
 			_announcementsEntryLocalService.fetchAnnouncementsEntry(
 				entry.getEntryId()));
+
+		_userLocalService.deleteUser(_user);
 	}
 
 	@Test
@@ -419,5 +421,8 @@ public class AnnouncementsEntryLocalServiceTest {
 
 	@Inject
 	private UserGroupLocalService _userGroupLocalService;
+
+	@Inject
+	private UserLocalService _userLocalService;
 
 }
