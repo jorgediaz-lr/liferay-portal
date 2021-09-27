@@ -72,7 +72,7 @@
 
 			var uniqueSelections = [];
 
-			Array.prototype.forEach.call(selections, function (selection) {
+			Array.prototype.forEach.call(selections, function(selection) {
 				if (!uniqueSelections.includes(selection)) {
 					uniqueSelections.push(selection);
 				}
