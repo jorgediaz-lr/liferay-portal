@@ -82,6 +82,8 @@ public class OpenAPIResourceImpl {
 		{
 			add(AccountResourceImpl.class);
 
+			add(CommonLicenseKeyResourceImpl.class);
+
 			add(LicenseKeyResourceImpl.class);
 
 			add(OpenAPIResourceImpl.class);

@@ -38,6 +38,8 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -2035,7 +2037,7 @@ public class CommonLicenseKeyPersistenceImpl
 	private FinderPath _finderPathWithPaginationCountByPG_PE_PV_gtS_ltE;
 
 	/**
-	 * Returns all the common license keies where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &gt; &#63; and endDate &lt; &#63;.
+	 * Returns all the common license keies where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &lt; &#63; and endDate &gt; &#63;.
 	 *
 	 * @param productGroup the product group
 	 * @param productEnvironment the product environment
@@ -2055,7 +2057,7 @@ public class CommonLicenseKeyPersistenceImpl
 	}
 
 	/**
-	 * Returns a range of all the common license keies where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &gt; &#63; and endDate &lt; &#63;.
+	 * Returns a range of all the common license keies where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &lt; &#63; and endDate &gt; &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CommonLicenseKeyModelImpl</code>.
@@ -2081,7 +2083,7 @@ public class CommonLicenseKeyPersistenceImpl
 	}
 
 	/**
-	 * Returns an ordered range of all the common license keies where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &gt; &#63; and endDate &lt; &#63;.
+	 * Returns an ordered range of all the common license keies where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &lt; &#63; and endDate &gt; &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CommonLicenseKeyModelImpl</code>.
@@ -2109,7 +2111,7 @@ public class CommonLicenseKeyPersistenceImpl
 	}
 
 	/**
-	 * Returns an ordered range of all the common license keies where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &gt; &#63; and endDate &lt; &#63;.
+	 * Returns an ordered range of all the common license keies where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &lt; &#63; and endDate &gt; &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CommonLicenseKeyModelImpl</code>.
@@ -2161,9 +2163,9 @@ public class CommonLicenseKeyPersistenceImpl
 							commonLicenseKey.getProductEnvironment()) ||
 						!productVersion.equals(
 							commonLicenseKey.getProductVersion()) ||
-						(startDate.getTime() >= commonLicenseKey.getStartDate(
+						(startDate.getTime() <= commonLicenseKey.getStartDate(
 						).getTime()) ||
-						(endDate.getTime() <= commonLicenseKey.getEndDate(
+						(endDate.getTime() >= commonLicenseKey.getEndDate(
 						).getTime())) {
 
 						list = null;
@@ -2306,7 +2308,7 @@ public class CommonLicenseKeyPersistenceImpl
 	}
 
 	/**
-	 * Returns the first common license key in the ordered set where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &gt; &#63; and endDate &lt; &#63;.
+	 * Returns the first common license key in the ordered set where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &lt; &#63; and endDate &gt; &#63;.
 	 *
 	 * @param productGroup the product group
 	 * @param productEnvironment the product environment
@@ -2345,10 +2347,10 @@ public class CommonLicenseKeyPersistenceImpl
 		sb.append(", productVersion=");
 		sb.append(productVersion);
 
-		sb.append(", startDate>");
+		sb.append(", startDate<");
 		sb.append(startDate);
 
-		sb.append(", endDate<");
+		sb.append(", endDate>");
 		sb.append(endDate);
 
 		sb.append("}");
@@ -2357,7 +2359,7 @@ public class CommonLicenseKeyPersistenceImpl
 	}
 
 	/**
-	 * Returns the first common license key in the ordered set where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &gt; &#63; and endDate &lt; &#63;.
+	 * Returns the first common license key in the ordered set where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &lt; &#63; and endDate &gt; &#63;.
 	 *
 	 * @param productGroup the product group
 	 * @param productEnvironment the product environment
@@ -2385,7 +2387,7 @@ public class CommonLicenseKeyPersistenceImpl
 	}
 
 	/**
-	 * Returns the last common license key in the ordered set where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &gt; &#63; and endDate &lt; &#63;.
+	 * Returns the last common license key in the ordered set where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &lt; &#63; and endDate &gt; &#63;.
 	 *
 	 * @param productGroup the product group
 	 * @param productEnvironment the product environment
@@ -2424,10 +2426,10 @@ public class CommonLicenseKeyPersistenceImpl
 		sb.append(", productVersion=");
 		sb.append(productVersion);
 
-		sb.append(", startDate>");
+		sb.append(", startDate<");
 		sb.append(startDate);
 
-		sb.append(", endDate<");
+		sb.append(", endDate>");
 		sb.append(endDate);
 
 		sb.append("}");
@@ -2436,7 +2438,7 @@ public class CommonLicenseKeyPersistenceImpl
 	}
 
 	/**
-	 * Returns the last common license key in the ordered set where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &gt; &#63; and endDate &lt; &#63;.
+	 * Returns the last common license key in the ordered set where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &lt; &#63; and endDate &gt; &#63;.
 	 *
 	 * @param productGroup the product group
 	 * @param productEnvironment the product environment
@@ -2472,7 +2474,7 @@ public class CommonLicenseKeyPersistenceImpl
 	}
 
 	/**
-	 * Returns the common license keies before and after the current common license key in the ordered set where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &gt; &#63; and endDate &lt; &#63;.
+	 * Returns the common license keies before and after the current common license key in the ordered set where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &lt; &#63; and endDate &gt; &#63;.
 	 *
 	 * @param commonLicenseKeyId the primary key of the current common license key
 	 * @param productGroup the product group
@@ -2708,7 +2710,7 @@ public class CommonLicenseKeyPersistenceImpl
 	}
 
 	/**
-	 * Removes all the common license keies where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &gt; &#63; and endDate &lt; &#63; from the database.
+	 * Removes all the common license keies where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &lt; &#63; and endDate &gt; &#63; from the database.
 	 *
 	 * @param productGroup the product group
 	 * @param productEnvironment the product environment
@@ -2731,7 +2733,7 @@ public class CommonLicenseKeyPersistenceImpl
 	}
 
 	/**
-	 * Returns the number of common license keies where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &gt; &#63; and endDate &lt; &#63;.
+	 * Returns the number of common license keies where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &lt; &#63; and endDate &gt; &#63;.
 	 *
 	 * @param productGroup the product group
 	 * @param productEnvironment the product environment
@@ -2893,13 +2895,13 @@ public class CommonLicenseKeyPersistenceImpl
 		"commonLicenseKey.startDate IS NULL AND ";
 
 	private static final String _FINDER_COLUMN_PG_PE_PV_GTS_LTE_STARTDATE_2 =
-		"commonLicenseKey.startDate > ? AND ";
+		"commonLicenseKey.startDate < ? AND ";
 
 	private static final String _FINDER_COLUMN_PG_PE_PV_GTS_LTE_ENDDATE_1 =
 		"commonLicenseKey.endDate IS NULL";
 
 	private static final String _FINDER_COLUMN_PG_PE_PV_GTS_LTE_ENDDATE_2 =
-		"commonLicenseKey.endDate < ?";
+		"commonLicenseKey.endDate > ?";
 
 	public CommonLicenseKeyPersistenceImpl() {
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
@@ -2932,6 +2934,8 @@ public class CommonLicenseKeyPersistenceImpl
 		commonLicenseKey.resetOriginalValues();
 	}
 
+	private int _valueObjectFinderCacheListThreshold;
+
 	/**
 	 * Caches the common license keies in the entity cache if it is enabled.
 	 *
@@ -2939,6 +2943,14 @@ public class CommonLicenseKeyPersistenceImpl
 	 */
 	@Override
 	public void cacheResult(List<CommonLicenseKey> commonLicenseKeies) {
+		if ((_valueObjectFinderCacheListThreshold == 0) ||
+			((_valueObjectFinderCacheListThreshold > 0) &&
+			 (commonLicenseKeies.size() >
+				 _valueObjectFinderCacheListThreshold))) {
+
+			return;
+		}
+
 		for (CommonLicenseKey commonLicenseKey : commonLicenseKeies) {
 			if (entityCache.getResult(
 					entityCacheEnabled, CommonLicenseKeyImpl.class,
@@ -3603,6 +3615,9 @@ public class CommonLicenseKeyPersistenceImpl
 	public void activate() {
 		CommonLicenseKeyModelImpl.setEntityCacheEnabled(entityCacheEnabled);
 		CommonLicenseKeyModelImpl.setFinderCacheEnabled(finderCacheEnabled);
+
+		_valueObjectFinderCacheListThreshold = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.VALUE_OBJECT_FINDER_CACHE_LIST_THRESHOLD));
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			entityCacheEnabled, finderCacheEnabled, CommonLicenseKeyImpl.class,

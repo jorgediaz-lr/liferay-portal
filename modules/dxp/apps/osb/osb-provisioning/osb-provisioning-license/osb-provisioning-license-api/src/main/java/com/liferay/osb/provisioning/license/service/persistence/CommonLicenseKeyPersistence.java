@@ -531,7 +531,7 @@ public interface CommonLicenseKeyPersistence
 	public int countByFileName(String fileName);
 
 	/**
-	 * Returns all the common license keies where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &gt; &#63; and endDate &lt; &#63;.
+	 * Returns all the common license keies where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &lt; &#63; and endDate &gt; &#63;.
 	 *
 	 * @param productGroup the product group
 	 * @param productEnvironment the product environment
@@ -545,7 +545,7 @@ public interface CommonLicenseKeyPersistence
 		Date startDate, Date endDate);
 
 	/**
-	 * Returns a range of all the common license keies where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &gt; &#63; and endDate &lt; &#63;.
+	 * Returns a range of all the common license keies where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &lt; &#63; and endDate &gt; &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CommonLicenseKeyModelImpl</code>.
@@ -565,7 +565,7 @@ public interface CommonLicenseKeyPersistence
 		Date startDate, Date endDate, int start, int end);
 
 	/**
-	 * Returns an ordered range of all the common license keies where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &gt; &#63; and endDate &lt; &#63;.
+	 * Returns an ordered range of all the common license keies where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &lt; &#63; and endDate &gt; &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CommonLicenseKeyModelImpl</code>.
@@ -588,7 +588,7 @@ public interface CommonLicenseKeyPersistence
 			orderByComparator);
 
 	/**
-	 * Returns an ordered range of all the common license keies where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &gt; &#63; and endDate &lt; &#63;.
+	 * Returns an ordered range of all the common license keies where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &lt; &#63; and endDate &gt; &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CommonLicenseKeyModelImpl</code>.
@@ -613,7 +613,7 @@ public interface CommonLicenseKeyPersistence
 		boolean useFinderCache);
 
 	/**
-	 * Returns the first common license key in the ordered set where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &gt; &#63; and endDate &lt; &#63;.
+	 * Returns the first common license key in the ordered set where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &lt; &#63; and endDate &gt; &#63;.
 	 *
 	 * @param productGroup the product group
 	 * @param productEnvironment the product environment
@@ -632,7 +632,7 @@ public interface CommonLicenseKeyPersistence
 		throws NoSuchCommonLicenseKeyException;
 
 	/**
-	 * Returns the first common license key in the ordered set where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &gt; &#63; and endDate &lt; &#63;.
+	 * Returns the first common license key in the ordered set where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &lt; &#63; and endDate &gt; &#63;.
 	 *
 	 * @param productGroup the product group
 	 * @param productEnvironment the product environment
@@ -649,7 +649,7 @@ public interface CommonLicenseKeyPersistence
 			orderByComparator);
 
 	/**
-	 * Returns the last common license key in the ordered set where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &gt; &#63; and endDate &lt; &#63;.
+	 * Returns the last common license key in the ordered set where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &lt; &#63; and endDate &gt; &#63;.
 	 *
 	 * @param productGroup the product group
 	 * @param productEnvironment the product environment
@@ -668,7 +668,7 @@ public interface CommonLicenseKeyPersistence
 		throws NoSuchCommonLicenseKeyException;
 
 	/**
-	 * Returns the last common license key in the ordered set where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &gt; &#63; and endDate &lt; &#63;.
+	 * Returns the last common license key in the ordered set where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &lt; &#63; and endDate &gt; &#63;.
 	 *
 	 * @param productGroup the product group
 	 * @param productEnvironment the product environment
@@ -685,7 +685,7 @@ public interface CommonLicenseKeyPersistence
 			orderByComparator);
 
 	/**
-	 * Returns the common license keies before and after the current common license key in the ordered set where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &gt; &#63; and endDate &lt; &#63;.
+	 * Returns the common license keies before and after the current common license key in the ordered set where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &lt; &#63; and endDate &gt; &#63;.
 	 *
 	 * @param commonLicenseKeyId the primary key of the current common license key
 	 * @param productGroup the product group
@@ -706,7 +706,7 @@ public interface CommonLicenseKeyPersistence
 		throws NoSuchCommonLicenseKeyException;
 
 	/**
-	 * Removes all the common license keies where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &gt; &#63; and endDate &lt; &#63; from the database.
+	 * Removes all the common license keies where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &lt; &#63; and endDate &gt; &#63; from the database.
 	 *
 	 * @param productGroup the product group
 	 * @param productEnvironment the product environment
@@ -719,7 +719,7 @@ public interface CommonLicenseKeyPersistence
 		Date startDate, Date endDate);
 
 	/**
-	 * Returns the number of common license keies where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &gt; &#63; and endDate &lt; &#63;.
+	 * Returns the number of common license keies where productGroup = &#63; and productEnvironment = &#63; and productVersion = &#63; and startDate &lt; &#63; and endDate &gt; &#63;.
 	 *
 	 * @param productGroup the product group
 	 * @param productEnvironment the product environment

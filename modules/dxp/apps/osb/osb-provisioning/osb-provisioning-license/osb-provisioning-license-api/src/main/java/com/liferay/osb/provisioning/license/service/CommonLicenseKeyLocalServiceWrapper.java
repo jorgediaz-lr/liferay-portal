@@ -231,6 +231,16 @@ public class CommonLicenseKeyLocalServiceWrapper
 			commonLicenseKeyId);
 	}
 
+	@Override
+	public com.liferay.osb.provisioning.license.model.CommonLicenseKey
+		fetchCommonLicenseKey(
+			String productGroup, String productEnvironment,
+			String productVersion, java.util.Date endDate) {
+
+		return _commonLicenseKeyLocalService.fetchCommonLicenseKey(
+			productGroup, productEnvironment, productVersion, endDate);
+	}
+
 	/**
 	 * Returns the common license key with the matching UUID and company.
 	 *
@@ -251,6 +261,13 @@ public class CommonLicenseKeyLocalServiceWrapper
 		getActionableDynamicQuery() {
 
 		return _commonLicenseKeyLocalService.getActionableDynamicQuery();
+	}
+
+	@Override
+	public byte[] getBytes(long commonLicenseKeyId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _commonLicenseKeyLocalService.getBytes(commonLicenseKeyId);
 	}
 
 	/**

@@ -197,6 +197,11 @@ public interface CommonLicenseKeyLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public CommonLicenseKey fetchCommonLicenseKey(long commonLicenseKeyId);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public CommonLicenseKey fetchCommonLicenseKey(
+		String productGroup, String productEnvironment, String productVersion,
+		Date endDate);
+
 	/**
 	 * Returns the common license key with the matching UUID and company.
 	 *
@@ -210,6 +215,9 @@ public interface CommonLicenseKeyLocalService
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public byte[] getBytes(long commonLicenseKeyId) throws PortalException;
 
 	/**
 	 * Returns a range of all the common license keies.

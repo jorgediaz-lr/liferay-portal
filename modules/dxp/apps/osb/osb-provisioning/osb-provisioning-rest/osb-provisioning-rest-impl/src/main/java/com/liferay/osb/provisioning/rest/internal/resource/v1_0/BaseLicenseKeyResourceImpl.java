@@ -35,13 +35,6 @@ import com.liferay.portal.vulcan.pagination.Pagination;
 import com.liferay.portal.vulcan.util.ActionUtil;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.tags.Tags;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -51,17 +44,6 @@ import javax.annotation.Generated;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import javax.validation.constraints.NotNull;
-
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
@@ -70,7 +52,7 @@ import javax.ws.rs.core.UriInfo;
  * @generated
  */
 @Generated("")
-@Path("/v1.0")
+@javax.ws.rs.Path("/v1.0")
 public abstract class BaseLicenseKeyResourceImpl implements LicenseKeyResource {
 
 	/**
@@ -78,30 +60,55 @@ public abstract class BaseLicenseKeyResourceImpl implements LicenseKeyResource {
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/provisioning-rest/v1.0/accounts/{accountKey}/license-keys'  -u 'test@liferay.com:test'
 	 */
-	@GET
-	@Operation(
+	@io.swagger.v3.oas.annotations.Operation(
 		description = "Retrieves the account's license keys. Results can be paginated, filtered, searched, and sorted."
 	)
-	@Override
-	@Parameters(
+	@io.swagger.v3.oas.annotations.Parameters(
 		value = {
-			@Parameter(in = ParameterIn.PATH, name = "accountKey"),
-			@Parameter(in = ParameterIn.QUERY, name = "search"),
-			@Parameter(in = ParameterIn.QUERY, name = "filter"),
-			@Parameter(in = ParameterIn.QUERY, name = "page"),
-			@Parameter(in = ParameterIn.QUERY, name = "pageSize"),
-			@Parameter(in = ParameterIn.QUERY, name = "sort")
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
+				name = "accountKey"
+			),
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY,
+				name = "search"
+			),
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY,
+				name = "filter"
+			),
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY,
+				name = "page"
+			),
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY,
+				name = "pageSize"
+			),
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY,
+				name = "sort"
+			)
 		}
 	)
-	@Path("/accounts/{accountKey}/license-keys")
-	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "LicenseKey")})
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "LicenseKey")}
+	)
+	@javax.ws.rs.GET
+	@javax.ws.rs.Path("/accounts/{accountKey}/license-keys")
+	@javax.ws.rs.Produces({"application/json", "application/xml"})
+	@Override
 	public Page<LicenseKey> getAccountAccountKeyLicenseKeysPage(
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
-				accountKey,
-			@Parameter(hidden = true) @QueryParam("search") String search,
-			@Context Filter filter, @Context Pagination pagination,
-			@Context Sort[] sorts)
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.validation.constraints.NotNull
+			@javax.ws.rs.PathParam("accountKey")
+			String accountKey,
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.ws.rs.QueryParam("search")
+			String search,
+			@javax.ws.rs.core.Context Filter filter,
+			@javax.ws.rs.core.Context Pagination pagination,
+			@javax.ws.rs.core.Context Sort[] sorts)
 		throws Exception {
 
 		return Page.of(Collections.emptyList());
@@ -112,19 +119,30 @@ public abstract class BaseLicenseKeyResourceImpl implements LicenseKeyResource {
 	 *
 	 * curl -X 'POST' 'http://localhost:8080/o/provisioning-rest/v1.0/accounts/{accountKey}/license-keys'  -u 'test@liferay.com:test'
 	 */
-	@Consumes({"application/json", "application/xml"})
-	@Operation(description = "Generates license keys for an account.")
-	@Override
-	@Parameters(
-		value = {@Parameter(in = ParameterIn.PATH, name = "accountKey")}
+	@io.swagger.v3.oas.annotations.Operation(
+		description = "Generates license keys for an account."
 	)
-	@Path("/accounts/{accountKey}/license-keys")
-	@POST
-	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "LicenseKey")})
+	@io.swagger.v3.oas.annotations.Parameters(
+		value = {
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
+				name = "accountKey"
+			)
+		}
+	)
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "LicenseKey")}
+	)
+	@javax.ws.rs.Consumes({"application/json", "application/xml"})
+	@javax.ws.rs.Path("/accounts/{accountKey}/license-keys")
+	@javax.ws.rs.POST
+	@javax.ws.rs.Produces({"application/json", "application/xml"})
+	@Override
 	public Page<LicenseKey> postAccountAccountKeyLicenseKeysPage(
-			@NotNull @Parameter(hidden = true) @PathParam("accountKey") String
-				accountKey,
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.validation.constraints.NotNull
+			@javax.ws.rs.PathParam("accountKey")
+			String accountKey,
 			LicenseKey[] licenseKeys)
 		throws Exception {
 
@@ -136,28 +154,39 @@ public abstract class BaseLicenseKeyResourceImpl implements LicenseKeyResource {
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/provisioning-rest/v1.0/accounts/{accountKey}/product-groups/{productGroupName}/generate-form'  -u 'test@liferay.com:test'
 	 */
-	@GET
-	@Operation(
+	@io.swagger.v3.oas.annotations.Operation(
 		description = "Retrieves the license key generation options for the given account."
 	)
-	@Override
-	@Parameters(
+	@io.swagger.v3.oas.annotations.Parameters(
 		value = {
-			@Parameter(in = ParameterIn.PATH, name = "accountKey"),
-			@Parameter(in = ParameterIn.PATH, name = "productGroupName")
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
+				name = "accountKey"
+			),
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
+				name = "productGroupName"
+			)
 		}
 	)
-	@Path(
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "LicenseKey")}
+	)
+	@javax.ws.rs.GET
+	@javax.ws.rs.Path(
 		"/accounts/{accountKey}/product-groups/{productGroupName}/generate-form"
 	)
-	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "LicenseKey")})
+	@javax.ws.rs.Produces({"application/json", "application/xml"})
+	@Override
 	public Page<LicenseKeyGenerateForm>
 			getAccountAccountKeyProductGroupProductGroupNameGenerateFormPage(
-				@NotNull @Parameter(hidden = true) @PathParam("accountKey")
-					String accountKey,
-				@NotNull @Parameter(hidden = true)
-				@PathParam("productGroupName")
+				@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+				@javax.validation.constraints.NotNull
+				@javax.ws.rs.PathParam("accountKey")
+				String accountKey,
+				@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+				@javax.validation.constraints.NotNull
+				@javax.ws.rs.PathParam("productGroupName")
 				String productGroupName)
 		throws Exception {
 
@@ -169,32 +198,48 @@ public abstract class BaseLicenseKeyResourceImpl implements LicenseKeyResource {
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/provisioning-rest/v1.0/accounts/{accountKey}/product-groups/{productGroupName}/product-version/{productVersion}/development-license-key'  -u 'test@liferay.com:test'
 	 */
-	@GET
-	@Operation(
+	@io.swagger.v3.oas.annotations.Operation(
 		description = "Downloads the account's product development license key."
 	)
-	@Override
-	@Parameters(
+	@io.swagger.v3.oas.annotations.Parameters(
 		value = {
-			@Parameter(in = ParameterIn.PATH, name = "accountKey"),
-			@Parameter(in = ParameterIn.PATH, name = "productGroupName"),
-			@Parameter(in = ParameterIn.PATH, name = "productVersion")
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
+				name = "accountKey"
+			),
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
+				name = "productGroupName"
+			),
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
+				name = "productVersion"
+			)
 		}
 	)
-	@Path(
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "LicenseKey")}
+	)
+	@javax.ws.rs.GET
+	@javax.ws.rs.Path(
 		"/accounts/{accountKey}/product-groups/{productGroupName}/product-version/{productVersion}/development-license-key"
 	)
-	@Produces("application/xml")
-	@Tags(value = {@Tag(name = "LicenseKey")})
+	@javax.ws.rs.Produces("application/xml")
+	@Override
 	public Response
 			getAccountAccountKeyProductGroupProductGroupNameProductVersionDevelopmentLicenseKey(
-				@NotNull @Parameter(hidden = true) @PathParam("accountKey")
-					String accountKey,
-				@NotNull @Parameter(hidden = true)
-				@PathParam("productGroupName")
+				@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+				@javax.validation.constraints.NotNull
+				@javax.ws.rs.PathParam("accountKey")
+				String accountKey,
+				@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+				@javax.validation.constraints.NotNull
+				@javax.ws.rs.PathParam("productGroupName")
 				String productGroupName,
-				@NotNull @Parameter(hidden = true) @PathParam("productVersion")
-					String productVersion)
+				@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+				@javax.validation.constraints.NotNull
+				@javax.ws.rs.PathParam("productVersion")
+				String productVersion)
 		throws Exception {
 
 		Response.ResponseBuilder responseBuilder = Response.ok();
@@ -207,18 +252,29 @@ public abstract class BaseLicenseKeyResourceImpl implements LicenseKeyResource {
 	 *
 	 * curl -X 'PUT' 'http://localhost:8080/o/provisioning-rest/v1.0/license-keys/activate'  -u 'test@liferay.com:test'
 	 */
-	@Operation(description = "Activates license keys.")
-	@Override
-	@Parameters(
-		value = {@Parameter(in = ParameterIn.QUERY, name = "licenseKeyIds")}
+	@io.swagger.v3.oas.annotations.Operation(
+		description = "Activates license keys."
 	)
-	@Path("/license-keys/activate")
-	@Produces({"application/json", "application/xml"})
-	@PUT
-	@Tags(value = {@Tag(name = "LicenseKey")})
+	@io.swagger.v3.oas.annotations.Parameters(
+		value = {
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY,
+				name = "licenseKeyIds"
+			)
+		}
+	)
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "LicenseKey")}
+	)
+	@javax.ws.rs.Path("/license-keys/activate")
+	@javax.ws.rs.Produces({"application/json", "application/xml"})
+	@javax.ws.rs.PUT
+	@Override
 	public void putLicenseKeyActivate(
-			@NotNull @Parameter(hidden = true) @QueryParam("licenseKeyIds")
-				Long[] licenseKeyIds)
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.validation.constraints.NotNull
+			@javax.ws.rs.QueryParam("licenseKeyIds")
+			Long[] licenseKeyIds)
 		throws Exception {
 	}
 
@@ -227,18 +283,29 @@ public abstract class BaseLicenseKeyResourceImpl implements LicenseKeyResource {
 	 *
 	 * curl -X 'PUT' 'http://localhost:8080/o/provisioning-rest/v1.0/license-keys/deactivate'  -u 'test@liferay.com:test'
 	 */
-	@Operation(description = "Deactivates license keys.")
-	@Override
-	@Parameters(
-		value = {@Parameter(in = ParameterIn.QUERY, name = "licenseKeyIds")}
+	@io.swagger.v3.oas.annotations.Operation(
+		description = "Deactivates license keys."
 	)
-	@Path("/license-keys/deactivate")
-	@Produces({"application/json", "application/xml"})
-	@PUT
-	@Tags(value = {@Tag(name = "LicenseKey")})
+	@io.swagger.v3.oas.annotations.Parameters(
+		value = {
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY,
+				name = "licenseKeyIds"
+			)
+		}
+	)
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "LicenseKey")}
+	)
+	@javax.ws.rs.Path("/license-keys/deactivate")
+	@javax.ws.rs.Produces({"application/json", "application/xml"})
+	@javax.ws.rs.PUT
+	@Override
 	public void putLicenseKeyDeactivate(
-			@NotNull @Parameter(hidden = true) @QueryParam("licenseKeyIds")
-				Long[] licenseKeyIds)
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.validation.constraints.NotNull
+			@javax.ws.rs.QueryParam("licenseKeyIds")
+			Long[] licenseKeyIds)
 		throws Exception {
 	}
 
@@ -247,20 +314,29 @@ public abstract class BaseLicenseKeyResourceImpl implements LicenseKeyResource {
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/provisioning-rest/v1.0/license-keys/download'  -u 'test@liferay.com:test'
 	 */
-	@GET
-	@Operation(
+	@io.swagger.v3.oas.annotations.Operation(
 		description = "Downloads an aggregated license key of the specified license keys."
 	)
-	@Override
-	@Parameters(
-		value = {@Parameter(in = ParameterIn.QUERY, name = "licenseKeyIds")}
+	@io.swagger.v3.oas.annotations.Parameters(
+		value = {
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY,
+				name = "licenseKeyIds"
+			)
+		}
 	)
-	@Path("/license-keys/download")
-	@Produces("application/xml")
-	@Tags(value = {@Tag(name = "LicenseKey")})
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "LicenseKey")}
+	)
+	@javax.ws.rs.GET
+	@javax.ws.rs.Path("/license-keys/download")
+	@javax.ws.rs.Produces("application/xml")
+	@Override
 	public Response getLicenseKeyDownload(
-			@NotNull @Parameter(hidden = true) @QueryParam("licenseKeyIds")
-				Long[] licenseKeyIds)
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.validation.constraints.NotNull
+			@javax.ws.rs.QueryParam("licenseKeyIds")
+			Long[] licenseKeyIds)
 		throws Exception {
 
 		Response.ResponseBuilder responseBuilder = Response.ok();
@@ -273,13 +349,17 @@ public abstract class BaseLicenseKeyResourceImpl implements LicenseKeyResource {
 	 *
 	 * curl -X 'POST' 'http://localhost:8080/o/provisioning-rest/v1.0/license-keys/extend'  -u 'test@liferay.com:test'
 	 */
-	@Consumes({"application/json", "application/xml"})
-	@Operation(description = "Extends license keys.")
+	@io.swagger.v3.oas.annotations.Operation(
+		description = "Extends license keys."
+	)
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "LicenseKey")}
+	)
+	@javax.ws.rs.Consumes({"application/json", "application/xml"})
+	@javax.ws.rs.Path("/license-keys/extend")
+	@javax.ws.rs.POST
+	@javax.ws.rs.Produces({"application/json", "application/xml"})
 	@Override
-	@Path("/license-keys/extend")
-	@POST
-	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "LicenseKey")})
 	public Page<LicenseKey> postLicenseKeysExtendPage(LicenseKey[] licenseKeys)
 		throws Exception {
 
@@ -291,18 +371,29 @@ public abstract class BaseLicenseKeyResourceImpl implements LicenseKeyResource {
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/provisioning-rest/v1.0/license-keys/{licenseKeyId}/download'  -u 'test@liferay.com:test'
 	 */
-	@GET
-	@Operation(description = "Downloads the license key.")
-	@Override
-	@Parameters(
-		value = {@Parameter(in = ParameterIn.PATH, name = "licenseKeyId")}
+	@io.swagger.v3.oas.annotations.Operation(
+		description = "Downloads the license key."
 	)
-	@Path("/license-keys/{licenseKeyId}/download")
-	@Produces("application/xml")
-	@Tags(value = {@Tag(name = "LicenseKey")})
+	@io.swagger.v3.oas.annotations.Parameters(
+		value = {
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
+				name = "licenseKeyId"
+			)
+		}
+	)
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "LicenseKey")}
+	)
+	@javax.ws.rs.GET
+	@javax.ws.rs.Path("/license-keys/{licenseKeyId}/download")
+	@javax.ws.rs.Produces("application/xml")
+	@Override
 	public Response getLicenseKeyDownload(
-			@NotNull @Parameter(hidden = true) @PathParam("licenseKeyId") Long
-				licenseKeyId)
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.validation.constraints.NotNull
+			@javax.ws.rs.PathParam("licenseKeyId")
+			Long licenseKeyId)
 		throws Exception {
 
 		Response.ResponseBuilder responseBuilder = Response.ok();
@@ -315,28 +406,47 @@ public abstract class BaseLicenseKeyResourceImpl implements LicenseKeyResource {
 	 *
 	 * curl -X 'GET' 'http://localhost:8080/o/provisioning-rest/v1.0/product-groups/{productGroupName}/development-license-key'  -u 'test@liferay.com:test'
 	 */
-	@GET
-	@Operation(
+	@io.swagger.v3.oas.annotations.Operation(
 		description = "Retrives the account's product development license key download."
 	)
-	@Override
-	@Parameters(
+	@io.swagger.v3.oas.annotations.Parameters(
 		value = {
-			@Parameter(in = ParameterIn.PATH, name = "productGroupName"),
-			@Parameter(in = ParameterIn.QUERY, name = "accountKey"),
-			@Parameter(in = ParameterIn.QUERY, name = "productVersion")
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
+				name = "productGroupName"
+			),
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY,
+				name = "accountKey"
+			),
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY,
+				name = "productVersion"
+			)
 		}
 	)
-	@Path("/product-groups/{productGroupName}/development-license-key")
-	@Produces("application/xml")
-	@Tags(value = {@Tag(name = "LicenseKey")})
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "LicenseKey")}
+	)
+	@javax.ws.rs.GET
+	@javax.ws.rs.Path(
+		"/product-groups/{productGroupName}/development-license-key"
+	)
+	@javax.ws.rs.Produces("application/xml")
+	@Override
 	public Response getProductGroupProductGroupNameDevelopmentLicenseKey(
-			@NotNull @Parameter(hidden = true) @PathParam("productGroupName")
-				String productGroupName,
-			@NotNull @Parameter(hidden = true) @QueryParam("accountKey") String
-				accountKey,
-			@NotNull @Parameter(hidden = true) @QueryParam("productVersion")
-				String productVersion)
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.validation.constraints.NotNull
+			@javax.ws.rs.PathParam("productGroupName")
+			String productGroupName,
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.validation.constraints.NotNull
+			@javax.ws.rs.QueryParam("accountKey")
+			String accountKey,
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.validation.constraints.NotNull
+			@javax.ws.rs.QueryParam("productVersion")
+			String productVersion)
 		throws Exception {
 
 		Response.ResponseBuilder responseBuilder = Response.ok();

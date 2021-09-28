@@ -211,6 +211,14 @@ public class CommonLicenseKeyLocalServiceUtil {
 		return getService().fetchCommonLicenseKey(commonLicenseKeyId);
 	}
 
+	public static CommonLicenseKey fetchCommonLicenseKey(
+		String productGroup, String productEnvironment, String productVersion,
+		java.util.Date endDate) {
+
+		return getService().fetchCommonLicenseKey(
+			productGroup, productEnvironment, productVersion, endDate);
+	}
+
 	/**
 	 * Returns the common license key with the matching UUID and company.
 	 *
@@ -229,6 +237,12 @@ public class CommonLicenseKeyLocalServiceUtil {
 		getActionableDynamicQuery() {
 
 		return getService().getActionableDynamicQuery();
+	}
+
+	public static byte[] getBytes(long commonLicenseKeyId)
+		throws PortalException {
+
+		return getService().getBytes(commonLicenseKeyId);
 	}
 
 	/**
