@@ -66,9 +66,14 @@ public class ProductConstants {
 
 	public static final String NAME_DXP_PRODUCTION = "DXP Production";
 
-	public static final String NAME_ENTERPRISE_SEARCH_PRODUCTION = "Enterprise Search - Production";
-	public static final String NAME_ENTERPRISE_SEARCH_NON_PRODUCTION = "Enterprise Search - Non-Production";
-	public static final String NAME_ENTERPRISE_SEARCH_BACKUP = "Enterprise Search - Backup";
+	public static final String NAME_ENTERPRISE_SEARCH_BACKUP =
+		"Enterprise Search - Backup";
+
+	public static final String NAME_ENTERPRISE_SEARCH_NON_PRODUCTION =
+		"Enterprise Search - Non-Production";
+
+	public static final String NAME_ENTERPRISE_SEARCH_PRODUCTION =
+		"Enterprise Search - Production";
 
 	public static final String NAME_GOLD = "Gold Subscription";
 
