@@ -19,6 +19,15 @@ import {
 } from '../utilities/constants';
 
 /**
+ * Takes an input string and returns a new capitalized string.
+ * @param {string} input The input string to be capitalized.
+ * @returns {string} The output string that has been capitalized.
+ */
+export function capitalize(input) {
+	return input[0].toUpperCase() + input.slice(1).toLowerCase();
+}
+
+/**
  * Certain empty values are represented by a dash in the UI.
  * This helper converts that value from its dash representation to its actual
  * value.

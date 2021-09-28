@@ -10,7 +10,6 @@
  */
 
 import ClayAlert from '@clayui/alert';
-import capitalize from 'lodash.capitalize';
 import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
 
@@ -26,6 +25,7 @@ import {
 	PATTERN_IP_ADDRESS_V6
 } from '../../utilities/constants';
 import {displayInMDYDateFormat, getUTCAdjustedDate} from '../../utilities/date';
+import {capitalize} from '../../utilities/helpers';
 import CancelLink from '../CancelLink';
 import RequiredFieldMarker from '../RequiredFieldMarker';
 import GenerateButton from './GenerateButton';
