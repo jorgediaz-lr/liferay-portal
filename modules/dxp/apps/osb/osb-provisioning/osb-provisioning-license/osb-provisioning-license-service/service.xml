@@ -44,8 +44,8 @@
 			<finder-column name="productGroup" />
 			<finder-column name="productEnvironment" />
 			<finder-column name="productVersion" />
-			<finder-column comparator="&gt;" name="startDate" />
-			<finder-column comparator="&lt;" name="endDate" />
+			<finder-column comparator="&lt;" name="startDate" />
+			<finder-column comparator="&gt;" name="endDate" />
 		</finder>
 	</entity>
 	<entity local-service="true" name="LicenseEntry" remote-service="true">

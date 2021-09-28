@@ -447,6 +447,44 @@ paths:
                                     $ref: "#/components/schemas/LicenseKeyGenerateForm"
                                 type: array
             tags: ["LicenseKey"]
+    "/accounts/{accountKey}/product-groups/{productGroupName}/product-environment/{productEnvironmentName}/common-license-key":
+        get:
+            description:
+                Retrieves the product group's common license based on date and environment.
+            parameters:
+                - in: path
+                  name: accountKey
+                  required: true
+                  schema:
+                      type: string
+                - in: path
+                  name: productGroupName
+                  required: true
+                  schema:
+                      type: string
+                - in: path
+                  name: productEnvironmentName
+                  required: true
+                  schema:
+                     type: string
+                - in: query
+                  name: dateEnd
+                  schema:
+                      format: date-time
+                      type: string
+                - in: query
+                  name: dateStart
+                  schema:
+                      format: date-time
+                      type: string
+            responses:
+                200:
+                    content:
+                        application/octet-stream:
+                            schema:
+                                format: binary
+                                type: string
+            tags: ["CommonLicenseKey"]
     "/accounts/{accountKey}/product-groups/{productGroupName}/product-version/{productVersion}/development-license-key":
         get:
             description:

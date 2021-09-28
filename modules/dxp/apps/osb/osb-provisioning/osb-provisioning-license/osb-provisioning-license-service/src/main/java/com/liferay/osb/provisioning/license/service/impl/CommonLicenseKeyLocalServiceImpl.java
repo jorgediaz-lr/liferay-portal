@@ -81,6 +81,31 @@ public class CommonLicenseKeyLocalServiceImpl
 		return commonLicenseKeyPersistence.update(commonLicenseKey);
 	}
 
+	public CommonLicenseKey fetchCommonLicenseKey(
+		String productGroup, String productEnvironment, String productVersion,
+		Date endDate) {
+
+		List<CommonLicenseKey> commonLicenseKeys =
+			commonLicenseKeyPersistence.findByPG_PE_PV_gtS_ltE(
+				productGroup, productEnvironment, productVersion, endDate,
+				endDate);
+
+		if (commonLicenseKeys.isEmpty()) {
+			return null;
+		}
+
+		return commonLicenseKeys.get(0);
+	}
+
+	public byte[] getBytes(long commonLicenseKeyId) throws PortalException {
+		CommonLicenseKey commonLicenseKey =
+			commonLicenseKeyPersistence.findByPrimaryKey(commonLicenseKeyId);
+
+		return DLStoreUtil.getFileAsBytes(
+			commonLicenseKey.getCompanyId(), CompanyConstants.SYSTEM,
+			commonLicenseKey.getFilePath());
+	}
+
 	public List<CommonLicenseKey> getCommonLicenseKeys(
 		String productGroup, int start, int end) {
 
