@@ -42,144 +42,146 @@ if ((layout != null) && Objects.equals(layout.getType(), LayoutConstants.TYPE_CO
 <c:if test="<%= themeDisplay.isShowStagingIcon() %>">
 	<c:if test="<%= liveGroup != null %>">
 		<ul class="control-menu-nav">
-			<li class="control-menu-nav-item dropdown staging-options-toggle visible-xs">
-				<a class="control-menu-icon dropdown-toggle" data-toggle="dropdown" href="javascript:;" value="staging">
-					<span class="control-menu-icon-label">
-						<c:choose>
-							<c:when test="<%= group.isStagingGroup() || group.isStagedRemotely() %>">
-								<c:if test="<%= stagingGroup != null %>">
-									<liferay-ui:message key="staging" />
-								</c:if>
-							</c:when>
-							<c:otherwise>
-								<liferay-ui:message key="live" />
-							</c:otherwise>
-						</c:choose>
-					</span>
+			<c:if test="<%= !stagingBarDisplayContext.isDraftLayout() %>">
+				<li class="control-menu-nav-item dropdown staging-options-toggle visible-xs">
+					<a class="control-menu-icon dropdown-toggle" data-toggle="dropdown" href="javascript:;" value="staging">
+						<span class="control-menu-icon-label">
+							<c:choose>
+								<c:when test="<%= group.isStagingGroup() || group.isStagedRemotely() %>">
+									<c:if test="<%= stagingGroup != null %>">
+										<liferay-ui:message key="staging" />
+									</c:if>
+								</c:when>
+								<c:otherwise>
+									<liferay-ui:message key="live" />
+								</c:otherwise>
+							</c:choose>
+						</span>
 
-					<aui:icon image="caret-double-l" markupView="lexicon" />
-				</a>
+						<aui:icon image="caret-double-l" markupView="lexicon" />
+					</a>
 
-				<ul class="dropdown-menu">
-					<li>
-						<a href="#" id="viewPageStagingOptions">
-							<liferay-ui:message key="view-page-staging-options" />
-						</a>
-					</li>
-
-					<c:if test="<%= !group.isStagingGroup() && !group.isStagedRemotely() && (stagingGroup != null) %>">
+					<ul class="dropdown-menu">
 						<li>
-							<a href="<%= HtmlUtil.escape(stagingURL) %>">
-								<liferay-ui:message key="go-to-staging" />
+							<a href="#" id="viewPageStagingOptions">
+								<liferay-ui:message key="view-page-staging-options" />
 							</a>
 						</li>
-					</c:if>
 
-					<c:if test="<%= group.isStagingGroup() %>">
-						<c:choose>
-							<c:when test="<%= group.isStagedRemotely() %>">
-								<li>
-									<a href="<%= HtmlUtil.escape(remoteURL) %>">
-										<liferay-ui:message key="go-to-remote-live" />
-									</a>
-								</li>
-							</c:when>
-							<c:when test="<%= group.isStagingGroup() && Validator.isNotNull(liveURL) %>">
-								<li>
-									<a href="<%= HtmlUtil.escape(liveURL) %>">
-										<liferay-ui:message key="go-to-live" />
-									</a>
-								</li>
-							</c:when>
-						</c:choose>
-					</c:if>
-				</ul>
-			</li>
+						<c:if test="<%= !group.isStagingGroup() && !group.isStagedRemotely() && (stagingGroup != null) %>">
+							<li>
+								<a href="<%= HtmlUtil.escape(stagingURL) %>">
+									<liferay-ui:message key="go-to-staging" />
+								</a>
+							</li>
+						</c:if>
 
-			<c:choose>
-				<c:when test="<%= group.isStagingGroup() || group.isStagedRemotely() %>">
-					<c:if test="<%= stagingGroup != null %>">
-						<li class="active control-menu-link control-menu-nav-item hidden-xs staging-link">
-							<a class="control-menu-icon" id="stagingLink" value="staging">
+						<c:if test="<%= group.isStagingGroup() %>">
+							<c:choose>
+								<c:when test="<%= group.isStagedRemotely() %>">
+									<li>
+										<a href="<%= HtmlUtil.escape(remoteURL) %>">
+											<liferay-ui:message key="go-to-remote-live" />
+										</a>
+									</li>
+								</c:when>
+								<c:when test="<%= group.isStagingGroup() && Validator.isNotNull(liveURL) %>">
+									<li>
+										<a href="<%= HtmlUtil.escape(liveURL) %>">
+											<liferay-ui:message key="go-to-live" />
+										</a>
+									</li>
+								</c:when>
+							</c:choose>
+						</c:if>
+					</ul>
+				</li>
+
+				<c:choose>
+					<c:when test="<%= group.isStagingGroup() || group.isStagedRemotely() %>">
+						<c:if test="<%= stagingGroup != null %>">
+							<li class="active control-menu-link control-menu-nav-item hidden-xs staging-link">
+								<a class="control-menu-icon" id="stagingLink" value="staging">
+									<liferay-ui:message key="staging" />
+								</a>
+							</li>
+						</c:if>
+					</c:when>
+					<c:otherwise>
+						<li class="control-menu-link control-menu-nav-item hidden-xs staging-link">
+							<a class="control-menu-icon" href="<%= (layoutSetBranches != null) ? null : stagingURL %>" value="staging">
 								<liferay-ui:message key="staging" />
 							</a>
 						</li>
-					</c:if>
-				</c:when>
-				<c:otherwise>
-					<li class="control-menu-link control-menu-nav-item hidden-xs staging-link">
-						<a class="control-menu-icon" href="<%= (layoutSetBranches != null) ? null : stagingURL %>" value="staging">
-							<liferay-ui:message key="staging" />
-						</a>
-					</li>
-				</c:otherwise>
-			</c:choose>
+					</c:otherwise>
+				</c:choose>
 
-			<c:choose>
-				<c:when test="<%= group.isStagedRemotely() %>">
-					<li class="control-menu-link control-menu-nav-item hidden-xs live-link">
-						<c:choose>
-							<c:when test="<%= !remoteSiteURL.isEmpty() %>">
-								<a class="control-menu-icon" href="<%= HtmlUtil.escape(remoteSiteURL) %>" value="go-to-remote-live">
-									<aui:icon image="home" label="go-to-remote-live" markupView="lexicon" />
-								</a>
-							</c:when>
-							<c:when test="<%= SessionErrors.contains(renderRequest, AuthException.class) %>">
-								<a class="control-menu-icon" value="go-to-remote-live">
-									<aui:icon image="home" label="go-to-remote-live" markupView="lexicon" />
-								</a>
-
-								<liferay-ui:icon
-									icon="exclamation-full"
-									markupView="lexicon"
-									message="an-error-occurred-while-authenticating-user"
-									toolTip="<%= true %>"
-								/>
-							</c:when>
-							<c:when test="<%= SessionErrors.contains(renderRequest, RemoteExportException.class) %>">
-								<a class="control-menu-icon" value="go-to-remote-live">
-									<aui:icon image="home" label="go-to-remote-live" markupView="lexicon" />
-								</a>
-
-								<liferay-ui:icon
-									icon="exclamation-full"
-									markupView="lexicon"
-									message="the-connection-to-the-remote-live-site-cannot-be-established-due-to-a-network-problem"
-									toolTip="<%= true %>"
-								/>
-							</c:when>
-							<c:otherwise>
-								<a class="control-menu-icon" value="go-to-remote-live">
-									<aui:icon image="home" label="go-to-remote-live" markupView="lexicon" />
-								</a>
-
-								<liferay-ui:icon
-									icon="exclamation-full"
-									markupView="lexicon"
-									message="an-unexpected-error-occurred"
-									toolTip="<%= true %>"
-								/>
-							</c:otherwise>
-						</c:choose>
-					</li>
-				</c:when>
-				<c:when test="<%= group.isStagingGroup() %>">
-					<c:if test="<%= Validator.isNotNull(liveURL) %>">
+				<c:choose>
+					<c:when test="<%= group.isStagedRemotely() %>">
 						<li class="control-menu-link control-menu-nav-item hidden-xs live-link">
-							<a class="control-menu-icon" href="<%= HtmlUtil.escape(liveURL) %>" value="live">
+							<c:choose>
+								<c:when test="<%= !remoteSiteURL.isEmpty() %>">
+									<a class="control-menu-icon" href="<%= HtmlUtil.escape(remoteSiteURL) %>" value="go-to-remote-live">
+										<aui:icon image="home" label="go-to-remote-live" markupView="lexicon" />
+									</a>
+								</c:when>
+								<c:when test="<%= SessionErrors.contains(renderRequest, AuthException.class) %>">
+									<a class="control-menu-icon" value="go-to-remote-live">
+										<aui:icon image="home" label="go-to-remote-live" markupView="lexicon" />
+									</a>
+
+									<liferay-ui:icon
+										icon="exclamation-full"
+										markupView="lexicon"
+										message="an-error-occurred-while-authenticating-user"
+										toolTip="<%= true %>"
+									/>
+								</c:when>
+								<c:when test="<%= SessionErrors.contains(renderRequest, RemoteExportException.class) %>">
+									<a class="control-menu-icon" value="go-to-remote-live">
+										<aui:icon image="home" label="go-to-remote-live" markupView="lexicon" />
+									</a>
+
+									<liferay-ui:icon
+										icon="exclamation-full"
+										markupView="lexicon"
+										message="the-connection-to-the-remote-live-site-cannot-be-established-due-to-a-network-problem"
+										toolTip="<%= true %>"
+									/>
+								</c:when>
+								<c:otherwise>
+									<a class="control-menu-icon" value="go-to-remote-live">
+										<aui:icon image="home" label="go-to-remote-live" markupView="lexicon" />
+									</a>
+
+									<liferay-ui:icon
+										icon="exclamation-full"
+										markupView="lexicon"
+										message="an-unexpected-error-occurred"
+										toolTip="<%= true %>"
+									/>
+								</c:otherwise>
+							</c:choose>
+						</li>
+					</c:when>
+					<c:when test="<%= group.isStagingGroup() %>">
+						<c:if test="<%= Validator.isNotNull(liveURL) %>">
+							<li class="control-menu-link control-menu-nav-item hidden-xs live-link">
+								<a class="control-menu-icon" href="<%= HtmlUtil.escape(liveURL) %>" value="live">
+									<liferay-ui:message key="live" />
+								</a>
+							</li>
+						</c:if>
+					</c:when>
+					<c:otherwise>
+						<li class="active control-menu-link control-menu-nav-item hidden-xs live-link">
+							<a class="control-menu-icon taglib-icon" id="liveLink" value="live">
 								<liferay-ui:message key="live" />
 							</a>
 						</li>
-					</c:if>
-				</c:when>
-				<c:otherwise>
-					<li class="active control-menu-link control-menu-nav-item hidden-xs live-link">
-						<a class="control-menu-icon taglib-icon" id="liveLink" value="live">
-							<liferay-ui:message key="live" />
-						</a>
-					</li>
-				</c:otherwise>
-			</c:choose>
+					</c:otherwise>
+				</c:choose>
+			</c:if>
 
 			<c:if test="<%= !layout.isSystem() || layout.isTypeControlPanel() || !Objects.equals(layout.getFriendlyURL(), PropsValues.CONTROL_PANEL_LAYOUT_FRIENDLY_URL) %>">
 				<li class="control-menu-nav-item staging-bar">
@@ -193,7 +195,15 @@ if ((layout != null) && Objects.equals(layout.getType(), LayoutConstants.TYPE_CO
 								</button>
 							</div>
 
-							<ul class="control-menu-level-2-nav control-menu-nav staging-bar-level-2-nav">
+							<%
+							String cssClass = "control-menu-level-2-nav control-menu-nav staging-bar-level-2-nav";
+
+							if (stagingBarDisplayContext.isDraftLayout()) {
+								cssClass = cssClass + " justify-content-end";
+							}
+							%>
+
+							<ul class="<%= cssClass %>">
 								<c:choose>
 									<c:when test="<%= group.isStagingGroup() || group.isStagedRemotely() %>">
 										<c:if test="<%= stagingGroup != null %>">
@@ -232,23 +242,48 @@ if ((layout != null) && Objects.equals(layout.getType(), LayoutConstants.TYPE_CO
 													</li>
 												</c:when>
 												<c:otherwise>
-													<liferay-staging:menu
-														cssClass="publish-link"
-														onlyActions="<%= true %>"
-													/>
+													<c:choose>
+														<c:when test="<%= !stagingBarDisplayContext.isDraftLayout() %>">
+															<liferay-staging:menu
+																cssClass="publish-link"
+																onlyActions="<%= true %>"
+															/>
 
-													<li>
-														<c:choose>
-															<c:when test="<%= liveLayout == null %>">
-																<span class="last-publication-branch">
-																	<liferay-ui:message arguments='<%= "<strong>" + HtmlUtil.escape(layout.getName(locale)) + "</strong>" %>' key="page-x-has-not-been-published-to-live-yet" translateArguments="<%= false %>" />
-																</span>
-															</c:when>
-															<c:otherwise>
-																<liferay-util:include page="/last_publication_date_message.jsp" servletContext="<%= application %>" />
-															</c:otherwise>
-														</c:choose>
-													</li>
+															<li>
+																<c:choose>
+																	<c:when test="<%= liveLayout == null %>">
+																		<span class="last-publication-branch">
+																			<liferay-ui:message arguments='<%= "<strong>" + HtmlUtil.escape(layout.getName(locale)) + "</strong>" %>' key="page-x-has-not-been-published-to-live-yet" translateArguments="<%= false %>" />
+																		</span>
+																	</c:when>
+																	<c:otherwise>
+																		<liferay-util:include page="/last_publication_date_message.jsp" servletContext="<%= application %>" />
+																	</c:otherwise>
+																</c:choose>
+															</li>
+														</c:when>
+														<c:otherwise>
+															<li class="control-menu-nav-item">
+																<aui:button cssClass="btn btn-primary btn-sm mr-2" disabled="<%= !stagingBarDisplayContext.isStatusDraft() %>" href="<%= stagingBarDisplayContext.getApproveDraftURL() %>" value="approve-draft" />
+															</li>
+
+															<c:choose>
+																<c:when test="<%= stagingBarDisplayContext.isDraftLayout() && stagingBarDisplayContext.isStatusDraft() %>">
+																	<c:if test="<%= group.isCompany() && GroupPermissionUtil.contains(permissionChecker, group, ActionKeys.PUBLISH_STAGING) %>">
+																		<li class="control-menu-nav-item">
+																			<aui:button cssClass="btn btn-primary btn-sm" disabled="<%= true %>" value="publish-to-live" />
+																		</li>
+																	</c:if>
+																</c:when>
+																<c:otherwise>
+																	<liferay-staging:menu
+																		cssClass="publish-link"
+																		onlyActions="<%= true %>"
+																	/>
+																</c:otherwise>
+															</c:choose>
+														</c:otherwise>
+													</c:choose>
 												</c:otherwise>
 											</c:choose>
 										</c:if>
