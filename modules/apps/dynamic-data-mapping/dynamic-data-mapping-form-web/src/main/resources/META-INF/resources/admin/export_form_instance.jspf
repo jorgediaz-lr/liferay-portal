@@ -102,7 +102,7 @@ boolean csvExportDisabled = StringUtil.equals("disabled", csvExport);
 				}
 			};
 
-			var showXLSWarning = function () {
+			var showXLSWarning = function() {
 				var xlsWarning = A.one('#<portlet:namespace />xlsWarning');
 
 				if (fileExtensionSelect.val() === 'xls') {
@@ -113,7 +113,7 @@ boolean csvExportDisabled = StringUtil.equals("disabled", csvExport);
 				}
 			};
 
-			var showWarnings = function () {
+			var showWarnings = function() {
 				showCSVWarning();
 
 				showXLSWarning();
