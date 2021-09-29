@@ -29,6 +29,8 @@ import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateHandler;
 import com.liferay.portal.kernel.template.TemplateHandlerRegistryUtil;
+import com.liferay.portal.kernel.template.TemplateManager;
+import com.liferay.portal.kernel.template.TemplateManagerUtil;
 import com.liferay.portal.kernel.template.TemplateVariableGroup;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -466,7 +468,11 @@ public class PortletDisplayTemplateImpl implements PortletDisplayTemplate {
 			TemplateHandlerRegistryUtil.getTemplateHandler(
 				ddmTemplate.getClassNameId());
 
-		contextObjects.putAll(templateHandler.getCustomContextObjects());
+		TemplateManager templateManager =
+			TemplateManagerUtil.getTemplateManager(ddmTemplate.getLanguage());
+
+		templateManager.addContextObjects(
+			contextObjects, templateHandler.getCustomContextObjects());
 
 		UnsyncStringWriter unsyncStringWriter = new UnsyncStringWriter();
 
