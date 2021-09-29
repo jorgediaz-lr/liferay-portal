@@ -16,6 +16,7 @@ import {
 } from '../../src/main/resources/META-INF/resources/js/utilities/license';
 
 const TODAY = new Date();
+const ALLOW_PERMANENT_LICENSES = true;
 
 const license = {
 	endDate: '2020-04-16',
@@ -35,7 +36,7 @@ describe('Dates for license associated with a Subscription', () => {
 			const dates = deriveLicenseDates(
 				perpetualLicense,
 				'developer',
-				true
+				ALLOW_PERMANENT_LICENSES
 			);
 
 			expect(formatDate(dates.licenseStartDate)).toMatch(
@@ -44,12 +45,12 @@ describe('Dates for license associated with a Subscription', () => {
 		});
 
 		describe('when Type is NOT Enterpirse, Limited, OEM, or Virtual Cluster ', () => {
-			describe('when permanent licenses are allowed', () => {
+			describe('when Permanent Licenses are allowed', () => {
 				it('always displays the Expiration Date as 100 years from Today in UTC', () => {
 					const dates = deriveLicenseDates(
 						perpetualLicense,
 						'developer',
-						true
+						ALLOW_PERMANENT_LICENSES
 					);
 					const {
 						licenseExpirationDate: expirationDate,
@@ -62,12 +63,12 @@ describe('Dates for license associated with a Subscription', () => {
 				});
 			});
 
-			describe('when permanent licenses are disallowed', () => {
+			describe('when Permanent Licenses are disallowed', () => {
 				it('when Type is NOT Production, displays the Expiration Date as 100 years from Today in UTC', () => {
 					const dates = deriveLicenseDates(
 						perpetualLicense,
 						'developer',
-						false
+						!ALLOW_PERMANENT_LICENSES
 					);
 					const {
 						licenseExpirationDate: expirationDate,
@@ -83,7 +84,7 @@ describe('Dates for license associated with a Subscription', () => {
 					const dates = deriveLicenseDates(
 						perpetualLicense,
 						'production',
-						false
+						!ALLOW_PERMANENT_LICENSES
 					);
 					const {
 						licenseExpirationDate: expirationDate,
@@ -99,7 +100,11 @@ describe('Dates for license associated with a Subscription', () => {
 
 		describe('when Type is Enterpirse, Limited, OEM, or Virtual Cluster', () => {
 			it('always displays the Expiration Date as 395 days (365 days + 30 days of grace period) from Today in UTC', () => {
-				const dates = deriveLicenseDates(perpetualLicense, 'oem', true);
+				const dates = deriveLicenseDates(
+					perpetualLicense,
+					'oem',
+					ALLOW_PERMANENT_LICENSES
+				);
 				const {
 					licenseExpirationDate: expirationDate,
 					licenseStartDate: startDate
@@ -117,18 +122,22 @@ describe('Dates for license associated with a Subscription', () => {
 
 	describe('for a non Perpetual Subscription', () => {
 		it('displays the license Start Date as the subscription start date', () => {
-			const dates = deriveLicenseDates(license, 'developer', true);
+			const dates = deriveLicenseDates(
+				license,
+				'developer',
+				ALLOW_PERMANENT_LICENSES
+			);
 
 			expect(formatDate(dates.licenseStartDate)).toMatch('2020-03-17');
 		});
 
 		describe('when Type is NOT Enterpirse, Limited, OEM, or Virtual Cluster', () => {
-			describe('when permanent licenses are allowed', () => {
-				it('alwasys displays the Expiration Date as 100 years from the subscription End Date', () => {
+			describe('when Permanent Licenses are allowed', () => {
+				it('alwasys displays the Expiration Date as 100 years from the grace period end date', () => {
 					const dates = deriveLicenseDates(
 						license,
 						'developer',
-						true
+						ALLOW_PERMANENT_LICENSES
 					);
 
 					expect(formatDate(dates.licenseExpirationDate)).toMatch(
@@ -137,12 +146,12 @@ describe('Dates for license associated with a Subscription', () => {
 				});
 			});
 
-			describe('when permanent licenses are disallowed', () => {
-				it('when Type is NOT Production, displays the Expiration Date as 100 years from the subscription End Date', () => {
+			describe('when Permanent Licenses are disallowed', () => {
+				it('when Type is NOT Production, displays the Expiration Date as 100 years from the grace period end date', () => {
 					const dates = deriveLicenseDates(
 						license,
 						'developer',
-						false
+						!ALLOW_PERMANENT_LICENSES
 					);
 
 					expect(formatDate(dates.licenseExpirationDate)).toMatch(
@@ -150,11 +159,11 @@ describe('Dates for license associated with a Subscription', () => {
 					);
 				});
 
-				it('when Type is Production, displays the Expiration Date the same as subscription End Date', () => {
+				it('when Type is Production, displays the Expiration Date the same as grace period end date', () => {
 					const dates = deriveLicenseDates(
 						license,
 						'production',
-						false
+						!ALLOW_PERMANENT_LICENSES
 					);
 
 					expect(formatDate(dates.licenseExpirationDate)).toMatch(
@@ -165,8 +174,12 @@ describe('Dates for license associated with a Subscription', () => {
 		});
 
 		describe('when Type is Enterpirse, Limited, OEM, or Virtual Cluster', () => {
-			it('displays the Expiration Date as the subscription End Date', () => {
-				const dates = deriveLicenseDates(license, 'oem', true);
+			it('displays the Expiration Date as the grace period end date', () => {
+				const dates = deriveLicenseDates(
+					license,
+					'oem',
+					ALLOW_PERMANENT_LICENSES
+				);
 
 				expect(formatDate(dates.licenseExpirationDate)).toMatch(
 					'2020-04-16'

@@ -22,6 +22,11 @@ const TODAY = new Date();
  * purchased product. The dates are determined by the type of the subscription
  * (perpetual or not) and the type of the license (one of the limited access
  * types or not).
+ * @param {object} license The license object that contains properties such as 
+ * start date, end date, and whether it's perpetual. 
+ * @param {string} type The license type
+ * @param {boolean} allowPermanentLicenses The property on the Account that 
+ * flags a special agreement.
  * @returns {Object} An object of dates representing the start and expiration
  * dates of a detached license.
  */
@@ -33,15 +38,14 @@ export function deriveLicenseDates(
 	const restricted = RESTRICTED_EXPIRATION_DATE_TYPES.find(
 		restrictedType => restrictedType === type
 	);
+	const isUnrestrictedLicenseType =
+		!restricted &&
+		(allowPermanentLicenses || type !== LICENSE_TYPE_PRODUCTION);
 
 	if (license.perpetual) {
 		let expirationDate = generateNewDateByDay(generateNewDateByYear());
 
-		if (
-			!restricted &&
-			(allowPermanentLicenses === true ||
-				type !== LICENSE_TYPE_PRODUCTION)
-		) {
+		if (isUnrestrictedLicenseType) {
 			expirationDate = generateNewDateByYear(TODAY, 100);
 		}
 
@@ -50,10 +54,7 @@ export function deriveLicenseDates(
 
 	let expirationDate = new Date(license.endDate);
 
-	if (
-		!restricted &&
-		(allowPermanentLicenses === true || type !== LICENSE_TYPE_PRODUCTION)
-	) {
+	if (isUnrestrictedLicenseType) {
 		expirationDate = generateNewDateByYear(expirationDate, 100);
 	}
 

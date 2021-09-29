@@ -18,11 +18,13 @@ import GeneralInformation from './GeneralInformation';
 import SpecificDetails from './SpecificDetails';
 
 function GenerateLicense(props) {
+	const {allowPermanentLicenses, hasUpdateLicenseDatePermission} = props;
+
 	return (
-		<NewLicenseProvider>
+		<NewLicenseProvider initialLicense={{allowPermanentLicenses}}>
 			<PermissionsProvider
 				permissions={{
-					updateDatePermission: props.hasUpdateLicenseDatePermission
+					updateDatePermission: hasUpdateLicenseDatePermission
 				}}
 			>
 				<Generate {...props} />
@@ -49,6 +51,7 @@ function Generate(props) {
 }
 
 GenerateLicense.propTypes = {
+	allowPermanentLicenses: PropTypes.bool.isRequired,
 	hasUpdateLicenseDatePermission: PropTypes.bool.isRequired
 };
 

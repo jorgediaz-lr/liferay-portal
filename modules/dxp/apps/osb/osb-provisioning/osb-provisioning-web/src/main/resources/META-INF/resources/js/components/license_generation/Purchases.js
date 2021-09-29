@@ -25,7 +25,7 @@ import Purchase from './Purchase';
 
 const TODAY = new Date();
 
-function Purchases({allowPermanentLicenses, detached, purchased}) {
+function Purchases({detached, purchased}) {
 	return (
 		<div className="choose-purchase">
 			<h4>{Liferay.Language.get('choose-purchase')}</h4>
@@ -49,10 +49,7 @@ function Purchases({allowPermanentLicenses, detached, purchased}) {
 					</ClayTable.Row>
 				</ClayTable.Head>
 				<ClayTable.Body>
-					<Purchased
-						allowPermanentLicenses={allowPermanentLicenses}
-						purchased={purchased}
-					/>
+					<Purchased purchased={purchased} />
 					<Detached detached={detached} />
 				</ClayTable.Body>
 			</ClayTable>
@@ -79,8 +76,8 @@ function Detached({detached}) {
 	);
 }
 
-function Purchased({allowPermanentLicenses, purchased}) {
-	const [{licenseEntry}] = useNewLicense();
+function Purchased({purchased}) {
+	const [{allowPermanentLicenses, licenseEntry}] = useNewLicense();
 
 	const processedPurchased = purchased
 		? purchased.map(item => {
@@ -146,7 +143,6 @@ function Purchased({allowPermanentLicenses, purchased}) {
 }
 
 Purchases.protoType = {
-	allowPermanentLicenses: PropTypes.bool.isRequired,
 	detached: PropTypes.shape({
 		instanceSize: PropTypes.arrayOf(PropTypes.number),
 		licenseKeysGenerated: PropTypes.string,

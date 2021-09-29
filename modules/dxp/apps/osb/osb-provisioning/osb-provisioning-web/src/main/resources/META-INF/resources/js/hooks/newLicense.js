@@ -15,6 +15,7 @@ import React, {useContext, useState} from 'react';
 export const License = Record({
 	accountKey: '',
 	accountName: '',
+	allowPermanentLicenses: true,
 	complimentary: false,
 	description: '',
 	expirationDate: null,
@@ -40,8 +41,8 @@ export const License = Record({
 
 const NewLicenseContext = React.createContext();
 
-export function NewLicenseProvider({initialLicense = new License(), children}) {
-	const [license, setLicense] = useState(initialLicense);
+export function NewLicenseProvider({initialLicense = {}, children}) {
+	const [license, setLicense] = useState(new License(initialLicense));
 
 	return (
 		<NewLicenseContext.Provider
