@@ -336,6 +336,7 @@ public class WorkflowMetricsSLADefinitionLocalServiceImpl
 			workflowMetricsSLADefinition.getWorkflowMetricsSLADefinitionId());
 		workflowMetricsSLADefinitionVersion.setStatus(
 			workflowMetricsSLADefinition.getStatus());
+
 		workflowMetricsSLADefinition.setStatusByUserId(user.getUserId());
 		workflowMetricsSLADefinition.setStatusByUserName(user.getFullName());
 		workflowMetricsSLADefinition.setStatusDate(now);
