@@ -292,7 +292,7 @@ public abstract class BaseAuditModelListener<T extends BaseModel<T>>
 		return auditSetId;
 	}
 
-	private final ThreadLocal<Map<String, Long>> _auditSetIdMap =
+	private static final ThreadLocal<Map<String, Long>> _auditSetIdMap =
 		new CentralizedThreadLocal<>("._auditSetIdMap", HashMap::new);
 
 }
