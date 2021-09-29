@@ -1552,7 +1552,9 @@ public class LayoutsAdminDisplayContext {
 		boolean published = GetterUtil.getBoolean(
 			draftLayout.getTypeSettingsProperty("published"));
 
-		if (!published || (modifiedDate.getTime() > publishDate.getTime())) {
+		if (((draftLayout.getPublishDate() == null) && !published) ||
+			(modifiedDate.getTime() > publishDate.getTime())) {
+
 			return true;
 		}
 
