@@ -223,6 +223,18 @@ definition {
 			editor = "name");
 	}
 
+	macro editPageDescription {
+		ScrollWebElementIntoView(locator1 = "Form#PAGE_DESCRIPTION_FIELD");
+
+		WaitForElementPresent(
+			locator1 = "Form#PAGE_DESCRIPTION_FIELD",
+			value1 = "${formPageDescriptionName}");
+
+		Type(
+			locator1 = "Form#PAGE_DESCRIPTION_FIELD",
+			value1 = "${formPageDescriptionName}");
+	}
+
 	macro editPageTitle {
 		Type(
 			locator1 = "Form#PAGE_TITLE_FIELD",
