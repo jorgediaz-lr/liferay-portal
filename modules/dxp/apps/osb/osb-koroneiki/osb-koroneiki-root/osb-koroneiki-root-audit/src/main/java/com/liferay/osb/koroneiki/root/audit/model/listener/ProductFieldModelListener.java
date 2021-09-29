@@ -167,7 +167,7 @@ public class ProductFieldModelListener
 			return productPurchase.getAccountId();
 		}
 
-		return productField.getClassNameId();
+		return productField.getClassPK();
 	}
 
 	@Override
