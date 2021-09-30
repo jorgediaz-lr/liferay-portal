@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.product.navigation.control.menu.BaseJSPProductNavigationControlMenuEntry;
 import com.liferay.product.navigation.control.menu.ProductNavigationControlMenuEntry;
@@ -82,6 +83,20 @@ public class StagingProductNavigationControlMenuEntry
 		super.setServletContext(servletContext);
 	}
 
+	private boolean _isDraftLayout(Layout layout) {
+		if (!Objects.equals(layout.getType(), LayoutConstants.TYPE_CONTENT)) {
+			return false;
+		}
+
+		if ((layout.getClassNameId() == _portal.getClassNameId(Layout.class)) &&
+			(layout.getClassPK() > 0)) {
+
+			return true;
+		}
+
+		return false;
+	}
+
 	private boolean _isShow(HttpServletRequest httpServletRequest)
 		throws PortalException {
 
@@ -99,7 +114,7 @@ public class StagingProductNavigationControlMenuEntry
 			return false;
 		}
 
-		if (Objects.equals(layout.getType(), LayoutConstants.TYPE_CONTENT)) {
+		if (_isDraftLayout(layout)) {
 			return false;
 		}
 
@@ -115,5 +130,8 @@ public class StagingProductNavigationControlMenuEntry
 
 	private static final String _SHOW =
 		StagingProductNavigationControlMenuEntry.class + "#_SHOW";
+
+	@Reference
+	private Portal _portal;
 
 }
