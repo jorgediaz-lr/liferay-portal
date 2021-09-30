@@ -9,6 +9,7 @@
  * distribution rights of the Software.
  */
 
+import {ClayToggle} from '@clayui/form';
 import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
 
@@ -72,12 +73,13 @@ function InlineEdit({
 	}
 
 	function handleToggle() {
+		setShowEditor(true);
 		setValue(!convertDashToEmptyString(value));
 	}
 
 	return (
 		<div className={`inline-edit ${showEditor ? 'block' : ''}`}>
-			{!showEditor && (
+			{!showEditor && type !== FIELD_TYPE_TOGGLE && (
 				<div
 					onClick={() => setShowEditor(true)}
 					onMouseEnter={() => setFieldEditable(true)}
@@ -96,7 +98,7 @@ function InlineEdit({
 				</div>
 			)}
 
-			{showEditor && (
+			{showEditor && type !== FIELD_TYPE_TOGGLE && (
 				<>
 					{type === FIELD_TYPE_EXTERNAL && (
 						<ExternalSelectField
@@ -165,57 +167,56 @@ function InlineEdit({
 						</label>
 					)}
 
-					{type === FIELD_TYPE_TOGGLE && (
-						<label
-							className="simple-toggle-switch toggle-switch"
-							htmlFor={namespacedFieldName}
-						>
-							<span className="toggle-switch-check-bar">
-								<input
-									checked={value}
-									className="toggle-switch-check"
-									id={namespacedFieldName}
-									onChange={handleToggle}
-									type="checkbox"
-									value={value}
-								/>
-								<span
-									aria-hidden="true"
-									className="toggle-switch-bar"
-								>
-									<span className="toggle-switch-handle"></span>
-								</span>
-							</span>
-						</label>
-					)}
-
-					<div
-						className="button-holder button-holder-sm"
-						role="group"
-					>
-						<button
-							className="btn btn-primary btn-sm save-btn"
-							disabled={
-								fieldValue !== DASH && value === fieldValue
-							}
-							onClick={handleClick}
-							role="button"
-							type="button"
-						>
-							{Liferay.Language.get('save')}
-						</button>
-
-						<button
-							className="btn btn-secondary btn-sm cancel-btn"
-							onClick={handleReset}
-							role="button"
-							type="button"
-						>
-							{Liferay.Language.get('cancel')}
-						</button>
-					</div>
+					<ButtonControls
+						clickHandler={handleClick}
+						disabled={fieldValue !== DASH && value === fieldValue}
+						resetHandler={handleReset}
+					/>
 				</>
 			)}
+
+			{type === FIELD_TYPE_TOGGLE && (
+				<>
+					<ClayToggle
+						aria-label={fieldName}
+						onToggle={handleToggle}
+						toggled={value}
+					/>
+
+					{showEditor && (
+						<ButtonControls
+							clickHandler={handleClick}
+							disabled={value === fieldValue}
+							resetHandler={handleReset}
+						/>
+					)}
+				</>
+			)}
+		</div>
+	);
+}
+
+function ButtonControls({clickHandler, disabled, resetHandler}) {
+	return (
+		<div className="button-holder button-holder-sm" role="group">
+			<button
+				className="btn btn-primary btn-sm save-btn"
+				disabled={disabled}
+				onClick={clickHandler}
+				role="button"
+				type="button"
+			>
+				{Liferay.Language.get('save')}
+			</button>
+
+			<button
+				className="btn btn-secondary btn-sm cancel-btn"
+				onClick={resetHandler}
+				role="button"
+				type="button"
+			>
+				{Liferay.Language.get('cancel')}
+			</button>
 		</div>
 	);
 }
@@ -226,7 +227,7 @@ function Label({inputStyle, value}) {
 
 InlineEdit.propTypes = {
 	deleteFn: PropTypes.func,
-	displayAs: PropTypes.oneOf(['label', 'text']),
+	displayAs: PropTypes.oneOf(['label', 'text', 'toggle']),
 	displayValue: PropTypes.string,
 	fieldName: PropTypes.string,
 	fieldValue: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),

@@ -30,7 +30,7 @@ function EditableField({value}) {
 }
 
 EditableField.propTypes = {
-	value: PropTypes.string.isRequired
+	value: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]).isRequired
 };
 
 export default EditableField;

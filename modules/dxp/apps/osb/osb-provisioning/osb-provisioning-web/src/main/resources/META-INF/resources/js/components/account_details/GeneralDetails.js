@@ -162,11 +162,7 @@ function GeneralDetails({
 			/>
 
 			<DetailField
-				displayValue={
-					details.allowPermanentLicenses
-						? Liferay.Language.get('allowed')
-						: Liferay.Language.get('disallowed')
-				}
+				displayAs="toggle"
 				fieldLabel={Liferay.Language.get('permanent-licenses')}
 				fieldName="allowPermanentLicenses"
 				formAction={details.editAccountURL}
@@ -180,11 +176,7 @@ function GeneralDetails({
 			/>
 
 			<DetailField
-				displayValue={
-					details.allowSelfProvisioning
-						? Liferay.Language.get('allowed')
-						: Liferay.Language.get('disallowed')
-				}
+				displayAs="toggle"
 				fieldLabel={Liferay.Language.get('self-provisioning')}
 				fieldName="allowSelfProvisioning"
 				formAction={details.editAccountURL}

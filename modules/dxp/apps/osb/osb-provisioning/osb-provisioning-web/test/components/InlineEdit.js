@@ -198,12 +198,40 @@ describe('InlineEdit', () => {
 		expect(container.querySelector('textarea')).toBeTruthy();
 	});
 
-	it('displays an editable toggle correctly', () => {
-		const {container} = renderInlineEdit({type: FIELD_TYPE_TOGGLE});
-		const {getByText} = within(container);
+	describe('Toggle', () => {
+		it('displays correctly', () => {
+			const {getByLabelText} = renderInlineEdit({
+				fieldValue: true,
+				type: FIELD_TYPE_TOGGLE
+			});
 
-		fireEvent.click(getByText('test'));
+			expect(getByLabelText('field1').type).toBe('checkbox');
+		});
 
-		expect(container.querySelector('input')['type']).toBe('checkbox');
+		it('displays saving controls when interacted with', () => {
+			const {getByLabelText, getByText} = renderInlineEdit({
+				fieldValue: true,
+				type: FIELD_TYPE_TOGGLE
+			});
+
+			fireEvent.click(getByLabelText('field1'));
+
+			expect(getByText('save'));
+			expect(getByText('save').disabled).toBeFalsy();
+			expect(getByText('cancel'));
+		});
+
+		it('displays Save button as disabled when toggling back to original state', () => {
+			const {getByLabelText, getByText} = renderInlineEdit({
+				fieldValue: true,
+				type: FIELD_TYPE_TOGGLE
+			});
+
+			const toggle = getByLabelText('field1');
+			fireEvent.click(toggle);
+			fireEvent.click(toggle);
+
+			expect(getByText('save').disabled).toBeTruthy();
+		});
 	});
 });

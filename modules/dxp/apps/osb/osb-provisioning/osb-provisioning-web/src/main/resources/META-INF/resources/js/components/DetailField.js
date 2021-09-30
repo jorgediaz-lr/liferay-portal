@@ -9,6 +9,7 @@
  * distribution rights of the Software.
  */
 
+import {ClayToggle} from '@clayui/form';
 import ClayList from '@clayui/list';
 import PropTypes from 'prop-types';
 import React, {useEffect, useRef, useState} from 'react';
@@ -86,6 +87,15 @@ function DetailField({
 							</span>
 						)}
 
+					{type === FIELD_TYPE_NONEDITABLE &&
+						displayAs === 'toggle' && (
+							<ClayToggle
+								aria-label={fieldName}
+								disabled
+								toggled={value}
+							/>
+						)}
+
 					{type === FIELD_TYPE_EXTERNAL && (
 						<>
 							<HiddenForm
@@ -137,7 +147,7 @@ function DetailField({
 }
 
 DetailField.propTypes = {
-	displayAs: PropTypes.oneOf(['label', 'text']),
+	displayAs: PropTypes.oneOf(['label', 'text', 'toggle']),
 	displayValue: PropTypes.string,
 	externalData: PropTypes.shape({
 		formField: PropTypes.string,

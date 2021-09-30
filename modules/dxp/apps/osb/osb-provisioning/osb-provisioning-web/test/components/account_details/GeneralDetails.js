@@ -110,21 +110,21 @@ describe('GeneralDetails', () => {
 	});
 
 	it('shows Permanent Licenses field', () => {
-		const {getByText} = renderGeneralDetails();
+		const {getByLabelText, getByText} = renderGeneralDetails();
 
 		getByText('permanent-licenses');
-		getByText('allowed');
+		expect(getByLabelText('allowPermanentLicenses').checked).toBeTruthy();
 	});
 
 	it('shows Self Provisioning field', () => {
-		const {getByText} = renderGeneralDetails();
+		const {getByLabelText, getByText} = renderGeneralDetails();
 
 		getByText('self-provisioning');
-		getByText('disallowed');
+		expect(getByLabelText('allowSelfProvisioning').checked).toBeFalsy();
 	});
 
 	describe('General Details with full editing privilege', () => {
-		it('allows the Account Name field to be edited', () => {
+		it('allows a permissioned field (Account Name) to be edited', () => {
 			const {getByText} = renderGeneralDetails();
 
 			fireEvent.click(getByText('Test Account'));
@@ -133,16 +133,15 @@ describe('GeneralDetails', () => {
 			getByText('cancel');
 		});
 
-		it('does not allow the State field to be edited', () => {
-			const {getByText, queryByText} = renderGeneralDetails();
+		it('allows a permissioned toggle field (Permanent Licenses) to be edited', () => {
+			const {getByLabelText, getByText} = renderGeneralDetails();
 
-			fireEvent.click(getByText('Active'));
+			fireEvent.click(getByLabelText('allowPermanentLicenses'));
 
-			expect(queryByText('save')).toBeFalsy();
-			expect(queryByText('cancel')).toBeFalsy();
+			getByText('save');
 		});
 
-		it('allows the Data Region field to be edited', () => {
+		it('allows a non permissioned field (Data Region) to be edited', () => {
 			const {getByText} = renderGeneralDetails();
 
 			fireEvent.click(getByText('Brazil'));
@@ -155,10 +154,19 @@ describe('GeneralDetails', () => {
 			getByText('save');
 			getByText('cancel');
 		});
+
+		it('does not allow an uneditable field to be edited', () => {
+			const {getByText, queryByText} = renderGeneralDetails();
+
+			fireEvent.click(getByText('Active'));
+
+			expect(queryByText('save')).toBeFalsy();
+			expect(queryByText('cancel')).toBeFalsy();
+		});
 	});
 
 	describe('General Details with limited editing privilege', () => {
-		it('does not allow the Account Name field to be edited', () => {
+		it('does not allow a permissioned field (Account Name) to be edited', () => {
 			const {getByText, queryByText} = renderGeneralDetails(false);
 
 			fireEvent.click(getByText('Test Account'));
@@ -167,16 +175,7 @@ describe('GeneralDetails', () => {
 			expect(queryByText('cancel')).toBeFalsy();
 		});
 
-		it('does not allow the State field to be edited', () => {
-			const {getByText, queryByText} = renderGeneralDetails(false);
-
-			fireEvent.click(getByText('Active'));
-
-			expect(queryByText('save')).toBeFalsy();
-			expect(queryByText('cancel')).toBeFalsy();
-		});
-
-		it('allows the Data Region field to be edited', () => {
+		it('allows a non permissioned field (Data Region) to be edited', () => {
 			const {getByText, queryByText} = renderGeneralDetails(false);
 
 			fireEvent.click(getByText('Brazil'));
@@ -184,6 +183,15 @@ describe('GeneralDetails', () => {
 			expect(queryByText('Hungary')).toBeFalsy();
 			expect(queryByText('Japan')).toBeFalsy();
 			expect(queryByText('United States')).toBeFalsy();
+
+			expect(queryByText('save')).toBeFalsy();
+			expect(queryByText('cancel')).toBeFalsy();
+		});
+
+		it('does not allow an uneditable field to be edited', () => {
+			const {getByText, queryByText} = renderGeneralDetails(false);
+
+			fireEvent.click(getByText('Active'));
 
 			expect(queryByText('save')).toBeFalsy();
 			expect(queryByText('cancel')).toBeFalsy();
