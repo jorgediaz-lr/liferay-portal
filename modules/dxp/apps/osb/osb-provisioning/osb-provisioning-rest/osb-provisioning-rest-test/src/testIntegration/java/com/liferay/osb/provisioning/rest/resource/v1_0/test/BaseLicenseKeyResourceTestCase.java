@@ -707,6 +707,11 @@ public abstract class BaseLicenseKeyResourceTestCase {
 	}
 
 	@Test
+	public void testGetLicenseKeyExport() throws Exception {
+		Assert.assertTrue(false);
+	}
+
+	@Test
 	public void testPostLicenseKeysExtendPage() throws Exception {
 		Assert.assertTrue(false);
 	}

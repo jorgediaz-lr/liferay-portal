@@ -153,6 +153,25 @@ public class Query {
 	/**
 	 * Invoke this method with the command line:
 	 *
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {licenseKeyExport(licenseKeyIds: ___){}}"}' -u 'test@liferay.com:test'
+	 */
+	@GraphQLField(
+		description = "Exports a CSV file of the license key details."
+	)
+	public Response licenseKeyExport(
+			@GraphQLName("licenseKeyIds") Long[] licenseKeyIds)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_licenseKeyResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			licenseKeyResource -> licenseKeyResource.getLicenseKeyExport(
+				licenseKeyIds));
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
 	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {licenseKeyDownload(licenseKeyId: ___){}}"}' -u 'test@liferay.com:test'
 	 */
 	@GraphQLField(description = "Downloads the license key.")
