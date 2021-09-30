@@ -466,7 +466,7 @@ paths:
                   name: productEnvironmentName
                   required: true
                   schema:
-                     type: string
+                      type: string
                 - in: query
                   name: dateEnd
                   schema:
@@ -572,6 +572,28 @@ paths:
                 200:
                     content:
                         application/xml:
+                            schema:
+                                format: binary
+                                type: string
+            tags: ["LicenseKey"]
+    "/license-keys/export":
+        get:
+            description:
+                Exports a CSV file of the license key details.
+            operationId: getLicenseKeyExport
+            parameters:
+                - in: query
+                  name: licenseKeyIds
+                  required: true
+                  schema:
+                      items:
+                          format: int64
+                          type: integer
+                      type: array
+            responses:
+                200:
+                    content:
+                        text/csv:
                             schema:
                                 format: binary
                                 type: string

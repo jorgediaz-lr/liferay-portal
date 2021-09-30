@@ -23,6 +23,8 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchaseView;
 import com.liferay.osb.provisioning.koroneiki.constants.ContactRoleConstants;
 import com.liferay.osb.provisioning.koroneiki.constants.ProductConstants;
+import com.liferay.osb.provisioning.koroneiki.reader.AccountReader;
+import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ContactRoleWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ContactWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductPurchaseViewWebService;
@@ -247,6 +249,12 @@ public class LicenseKeyResourceImpl
 	public Response getLicenseKeyDownload(Long[] licenseKeyIds)
 		throws Exception {
 
+		if (ArrayUtil.isEmpty(licenseKeyIds)) {
+			return Response.status(
+				Response.Status.NOT_FOUND
+			).build();
+		}
+
 		List<com.liferay.osb.provisioning.license.model.LicenseKey>
 			licenseKeys = new ArrayList<>();
 
@@ -261,12 +269,6 @@ public class LicenseKeyResourceImpl
 			_checkAccountMembership(licenseKey.getAccountKey());
 
 			licenseKeys.add(licenseKey);
-		}
-
-		if (ArrayUtil.isEmpty(licenseKeyIds) || licenseKeys.isEmpty()) {
-			return Response.status(
-				Response.Status.NOT_FOUND
-			).build();
 		}
 
 		if (_isAggregate(licenseKeys)) {
@@ -354,6 +356,72 @@ public class LicenseKeyResourceImpl
 			"content-disposition", "attachment; filename=\"" + fileName + "\""
 		).type(
 			ContentTypes.TEXT_XML
+		).build();
+	}
+
+	@Override
+	public Response getLicenseKeyExport(Long[] licenseKeyIds) throws Exception {
+		if (ArrayUtil.isEmpty(licenseKeyIds)) {
+			return Response.status(
+				Response.Status.NOT_FOUND
+			).build();
+		}
+
+		List<com.liferay.osb.provisioning.license.model.LicenseKey>
+			licenseKeys = new ArrayList<>();
+
+		for (long licenseKeyId : licenseKeyIds) {
+			com.liferay.osb.provisioning.license.model.LicenseKey licenseKey =
+				_licenseKeyLocalService.getLicenseKey(licenseKeyId);
+
+			_checkAccountMembership(licenseKey.getAccountKey());
+
+			licenseKeys.add(licenseKey);
+		}
+
+		StringBundler sb = new StringBundler(6 + licenseKeys.size());
+
+		sb.append("Project Name,Account Key,Project State,Support Region,");
+		sb.append("Product Version,Product Name,License Key Id,IP Addresses,");
+		sb.append("MAC Addresses,Host Name,Instance Sizing,");
+		sb.append("License Start Date,License Expiration Date,License Status,");
+		sb.append("Max Servers,Complimentary");
+		sb.append(StringPool.NEW_LINE);
+
+		for (com.liferay.osb.provisioning.license.model.LicenseKey licenseKey :
+				licenseKeys) {
+
+			Account account = _accountWebService.getAccount(
+				licenseKey.getAccountKey());
+
+			String status = "Active";
+
+			if (!licenseKey.getActive()) {
+				status = "Inactive";
+			}
+
+			String formattedCsvFields = _formatCsvFields(
+				licenseKey.getAccountName(), licenseKey.getAccountKey(),
+				_accountReader.getSubscriptionState(account),
+				account.getRegionAsString(),
+				licenseKey.getProductVersionLabel(),
+				licenseKey.getProductName(), licenseKey.getLicenseKeyId(),
+				licenseKey.getIpAddresses(), licenseKey.getMacAddresses(),
+				licenseKey.getHostName(), licenseKey.getSizing(),
+				licenseKey.getStartDate(), licenseKey.getExpirationDate(),
+				status, licenseKey.getMaxServers(),
+				licenseKey.getComplimentary());
+
+			sb.append(formattedCsvFields);
+		}
+
+		return Response.ok(
+			sb.toString()
+		).header(
+			"content-disposition",
+			"attachment; filename=\"activation-key-details.csv\""
+		).type(
+			ContentTypes.TEXT_CSV
 		).build();
 	}
 
@@ -503,6 +571,24 @@ public class LicenseKeyResourceImpl
 		}
 
 		throw new PrincipalException();
+	}
+
+	private String _formatCsvFields(Object... objects) {
+		StringBundler sb = new StringBundler(4 * objects.length);
+
+		for (int i = 0; i < objects.length; i++) {
+			sb.append(StringPool.QUOTE);
+			sb.append(objects[i]);
+			sb.append(StringPool.QUOTE);
+
+			if (i < (objects.length - 1)) {
+				sb.append(StringPool.COMMA);
+			}
+		}
+
+		sb.append(StringPool.NEW_LINE);
+
+		return sb.toString();
 	}
 
 	private Version[] _getProductVersions(String productGroupName) {
@@ -733,6 +819,12 @@ public class LicenseKeyResourceImpl
 	}
 
 	private static final EntityModel _entityModel = new LicenseKeyEntityModel();
+
+	@Reference
+	private AccountReader _accountReader;
+
+	@Reference
+	private AccountWebService _accountWebService;
 
 	@Reference
 	private ContactRoleWebService _contactRoleWebService;
