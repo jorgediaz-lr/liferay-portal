@@ -231,6 +231,13 @@ public class TransformAccount {
 
 			String name = productJSONObject.getString("name");
 
+			if (name.equals(ProductConstants.NAME_ANALYTICS_CLOUD_BASIC) ||
+				name.equals(ProductConstants.NAME_ANALYTICS_CLOUD_BUSINESS) ||
+				name.equals(ProductConstants.NAME_ANALYTICS_CLOUD_ENTERPRISE)) {
+
+				return -1;
+			}
+
 			if (name.equals(ProductConstants.NAME_DESIGNATED_CONTACT_ADD_ON)) {
 				developerAddons += quantity;
 			}

@@ -117,6 +117,7 @@ public class TransformProductPurchases {
 			Date now = new Date();
 
 			SubscriptionTerm subscriptionTerm = new SubscriptionTerm(
+				accountSubscriptionGroupExternalReferenceCode,
 				externalReferenceCode, jsonObject);
 
 			if (subscriptionTerm.status.equals(STATUS_APPROVED)) {
@@ -286,10 +287,13 @@ public class TransformProductPurchases {
 	private static class SubscriptionTerm {
 
 		public SubscriptionTerm(
+				String accountSubscriptionGroupExternalReferenceCode,
 				String accountSubscriptionExternalReferenceCode,
 				JSONObject jsonObject)
 			throws Exception {
 
+			this.accountSubscriptionGroupExternalReferenceCode =
+				accountSubscriptionGroupExternalReferenceCode;
 			this.accountSubscriptionExternalReferenceCode =
 				accountSubscriptionExternalReferenceCode;
 
@@ -315,6 +319,9 @@ public class TransformProductPurchases {
 			jsonObject.put(
 				"accountSubscriptionERC",
 				accountSubscriptionExternalReferenceCode);
+			jsonObject.put(
+				"accountSubscriptionGroupERC",
+				accountSubscriptionGroupExternalReferenceCode);
 			jsonObject.put("endDate", DateUtil.format(endDate));
 			jsonObject.put("externalReferenceCode", externalReferenceCode);
 			jsonObject.put("instanceSize", instanceSize);
@@ -327,6 +334,7 @@ public class TransformProductPurchases {
 
 		public String accountKey;
 		public String accountSubscriptionExternalReferenceCode;
+		public String accountSubscriptionGroupExternalReferenceCode;
 		public Date endDate;
 		public String externalReferenceCode;
 		public String instanceSize;

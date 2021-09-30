@@ -19,6 +19,15 @@ package routines;
  */
 public class ProductConstants {
 
+	public static final String NAME_ANALYTICS_CLOUD_BASIC =
+		"Analytics Cloud Basic";
+
+	public static final String NAME_ANALYTICS_CLOUD_BUSINESS =
+		"Analytics Cloud Business";
+
+	public static final String NAME_ANALYTICS_CLOUD_ENTERPRISE =
+		"Analytics Cloud Enterprise";
+
 	public static final String NAME_DESIGNATED_CONTACT_ADD_ON =
 		"Designated Contact Add-on";
 
