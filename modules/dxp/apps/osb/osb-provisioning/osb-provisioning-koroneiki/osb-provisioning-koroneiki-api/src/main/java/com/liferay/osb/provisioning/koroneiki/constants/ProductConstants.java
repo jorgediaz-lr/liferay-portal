@@ -27,6 +27,9 @@ public class ProductConstants {
 
 	public static final String GROUP_NAME_PORTAL = "Portal";
 
+	public static final String NAME_ANALYTICS_CLOUD_BASIC =
+		"Analytics Cloud Basic";
+
 	public static final String NAME_ANALYTICS_CLOUD_BUSINESS =
 		"Analytics Cloud Business";
 

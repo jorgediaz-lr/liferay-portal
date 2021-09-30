@@ -123,7 +123,16 @@ public class AccountDisplay {
 
 		sb.append(_accountReader.getDeveloperCount(_account));
 		sb.append(" / ");
-		sb.append(_accountReader.getMaxDeveloperCount(_account));
+
+		int maxDeveloperCount = _accountReader.getMaxDeveloperCount(_account);
+
+		if (maxDeveloperCount == -1) {
+			sb.append("∞");
+		}
+		else {
+			sb.append(maxDeveloperCount);
+		}
+
 		sb.append(" ");
 		sb.append(LanguageUtil.get(_httpServletRequest, "filled"));
 

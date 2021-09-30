@@ -120,6 +120,13 @@ public class AccountReaderImpl implements AccountReader {
 
 			String name = product.getName();
 
+			if (name.equals(ProductConstants.NAME_ANALYTICS_CLOUD_BASIC) ||
+				name.equals(ProductConstants.NAME_ANALYTICS_CLOUD_BUSINESS) ||
+				name.equals(ProductConstants.NAME_ANALYTICS_CLOUD_ENTERPRISE)) {
+
+				return -1;
+			}
+
 			if (name.equals(ProductConstants.NAME_DESIGNATED_CONTACT_ADD_ON)) {
 				developerAddons += productPurchase.getQuantity();
 			}
