@@ -139,13 +139,14 @@ public class AddLicenseKeyDisplayContext {
 
 		data.put("addLicenseKeyURL", addLicenseKeyURL.toString());
 
+		data.put("allowPermanentLicenses", _isAllowPermanentLicenses());
+
 		String productKey = ParamUtil.getString(_renderRequest, "productKey");
 
 		if (Validator.isNotNull(productKey)) {
 			data.put("currentProduct", productKey);
 		}
 
-		data.put("allowPermanentLicenses", _isAllowPermanentLicenses());
 		data.put("description", _account.getName());
 		data.put("licensableProducts", _getLicensableProductsJSONArray());
 		data.put("owner", _account.getName());
