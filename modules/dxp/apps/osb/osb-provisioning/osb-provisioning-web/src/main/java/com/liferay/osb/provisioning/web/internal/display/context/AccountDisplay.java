@@ -93,28 +93,6 @@ public class AccountDisplay {
 		return addPostalAddressURL.toString();
 	}
 
-	public boolean getAllowPermanentLicenses() {
-		Map<String, String> properties = _account.getProperties();
-
-		if (properties != null) {
-			return GetterUtil.getBoolean(
-				properties.get("allowPermanentLicenses"), true);
-		}
-
-		return true;
-	}
-
-	public boolean getAllowSelfProvisioning() {
-		Map<String, String> properties = _account.getProperties();
-
-		if (properties != null) {
-			return GetterUtil.getBoolean(
-				properties.get("allowSelfProvisioning"), true);
-		}
-
-		return true;
-	}
-
 	public String getCode() {
 		if (Validator.isNotNull(_account.getCode())) {
 			return _account.getCode();
@@ -419,6 +397,28 @@ public class AccountDisplay {
 			_getExternalLinkKey(
 				ExternalLinkDomain.SALESFORCE,
 				ExternalLinkEntityName.SALESFORCE_PROJECT));
+	}
+
+	public boolean isAllowPermanentLicenses() {
+		Map<String, String> properties = _account.getProperties();
+
+		if (properties != null) {
+			return GetterUtil.getBoolean(
+				properties.get("allowPermanentLicenses"), true);
+		}
+
+		return true;
+	}
+
+	public boolean isAllowSelfProvisioning() {
+		Map<String, String> properties = _account.getProperties();
+
+		if (properties != null) {
+			return GetterUtil.getBoolean(
+				properties.get("allowSelfProvisioning"), true);
+		}
+
+		return true;
 	}
 
 	private String _getAddExternalLinkURL() {
