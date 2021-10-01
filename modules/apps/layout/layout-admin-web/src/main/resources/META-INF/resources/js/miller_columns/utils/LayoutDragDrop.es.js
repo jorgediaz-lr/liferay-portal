@@ -50,6 +50,8 @@ class LayoutDragDrop extends State {
 		super(config, ...args);
 
 		this._initializeDragAndDrop();
+
+		this.sourceItemPlid = null;
 	}
 
 	/**
@@ -123,6 +125,10 @@ class LayoutDragDrop extends State {
 				}
 			}
 
+			if (this.sourceItemPlid === null) {
+				this.sourceItemPlid = sourceItemPlid;
+			}
+
 			this.emit('dragLayoutColumnItem', {
 				position: this._draggingItemPosition,
 				sourceItemPlid,
@@ -168,6 +174,10 @@ class LayoutDragDrop extends State {
 	 */
 	_handleDrop(data, event) {
 		event.preventDefault();
+
+		if (this.sourceItemPlid !== null) {
+			data.source.dataset.layoutColumnItemPlid = this.sourceItemPlid;
+		}
 
 		const sourceItemPlid = data.source.dataset.layoutColumnItemPlid;
 		let targetId = null;
