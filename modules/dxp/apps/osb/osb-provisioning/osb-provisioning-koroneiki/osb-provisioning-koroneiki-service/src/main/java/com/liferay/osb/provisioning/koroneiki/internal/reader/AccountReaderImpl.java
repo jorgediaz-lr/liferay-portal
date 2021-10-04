@@ -108,6 +108,16 @@ public class AccountReaderImpl implements AccountReader {
 			return 0;
 		}
 
+		Product product = slaProductPurchase.getProduct();
+
+		String name = product.getName();
+
+		if (!name.equals(ProductConstants.NAME_GOLD) &&
+			!name.equals(ProductConstants.NAME_PLATINUM)) {
+
+			return 0;
+		}
+
 		int developerAddons = 0;
 		int productionInstances = 0;
 
@@ -116,33 +126,37 @@ public class AccountReaderImpl implements AccountReader {
 				continue;
 			}
 
-			Product product = productPurchase.getProduct();
+			Product curProduct = productPurchase.getProduct();
 
-			String name = product.getName();
+			String curName = curProduct.getName();
 
-			if (name.equals(ProductConstants.NAME_ANALYTICS_CLOUD_BASIC) ||
-				name.equals(ProductConstants.NAME_ANALYTICS_CLOUD_BUSINESS) ||
-				name.equals(ProductConstants.NAME_ANALYTICS_CLOUD_ENTERPRISE)) {
+			if (curName.equals(ProductConstants.NAME_ANALYTICS_CLOUD_BASIC) ||
+				curName.equals(
+					ProductConstants.NAME_ANALYTICS_CLOUD_BUSINESS) ||
+				curName.equals(
+					ProductConstants.NAME_ANALYTICS_CLOUD_ENTERPRISE)) {
 
 				return -1;
 			}
 
-			if (name.equals(ProductConstants.NAME_DESIGNATED_CONTACT_ADD_ON)) {
+			if (curName.equals(
+					ProductConstants.NAME_DESIGNATED_CONTACT_ADD_ON)) {
+
 				developerAddons += productPurchase.getQuantity();
 			}
-			else if (name.equals(
+			else if (curName.equals(
 						ProductConstants.
 							NAME_DXP_CLOUD_SUBSCRIPTION_HA_PRODUCTION)) {
 
 				productionInstances += 2 * productPurchase.getQuantity();
 			}
-			else if (name.equals(ProductConstants.NAME_DXP_PRODUCTION) ||
-					 name.equals(
+			else if (curName.equals(ProductConstants.NAME_DXP_PRODUCTION) ||
+					 curName.equals(
 						 ProductConstants.
 							 NAME_DXP_CLOUD_SUBSCRIPTION_STD_PRODUCTION) ||
-					 name.equals(
+					 curName.equals(
 						 ProductConstants.NAME_DXP_CLOUD_INSTANCE_PRODUCTION) ||
-					 name.equals(ProductConstants.NAME_PORTAL_PRODUCTION)) {
+					 curName.equals(ProductConstants.NAME_PORTAL_PRODUCTION)) {
 
 				productionInstances += productPurchase.getQuantity();
 			}
@@ -153,10 +167,6 @@ public class AccountReaderImpl implements AccountReader {
 		}
 
 		int maxDeveloperCount = 0;
-
-		Product product = slaProductPurchase.getProduct();
-
-		String name = product.getName();
 
 		if (name.equals(ProductConstants.NAME_GOLD)) {
 			if (productionInstances <= 4) {
