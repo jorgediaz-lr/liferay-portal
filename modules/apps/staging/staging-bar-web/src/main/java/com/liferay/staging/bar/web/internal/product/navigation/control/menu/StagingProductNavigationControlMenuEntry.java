@@ -17,6 +17,9 @@ package com.liferay.staging.bar.web.internal.product.navigation.control.menu;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutConstants;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.service.LayoutLocalService;
+import com.liferay.portal.kernel.service.permission.LayoutPermissionUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -115,7 +118,15 @@ public class StagingProductNavigationControlMenuEntry
 		}
 
 		if (_isDraftLayout(layout)) {
-			return false;
+			Layout publishedLayout = _layoutLocalService.fetchLayout(
+				layout.getClassPK());
+
+			if ((publishedLayout == null) ||
+				!LayoutPermissionUtil.contains(
+					themeDisplay.getPermissionChecker(), layout,
+					ActionKeys.UPDATE))
+
+				return false;
 		}
 
 		String layoutMode = ParamUtil.getString(
@@ -130,6 +141,9 @@ public class StagingProductNavigationControlMenuEntry
 
 	private static final String _SHOW =
 		StagingProductNavigationControlMenuEntry.class + "#_SHOW";
+
+	@Reference
+	private LayoutLocalService _layoutLocalService;
 
 	@Reference
 	private Portal _portal;
