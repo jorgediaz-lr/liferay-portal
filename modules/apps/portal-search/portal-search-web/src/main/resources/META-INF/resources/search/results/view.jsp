@@ -121,13 +121,13 @@ com.liferay.portal.kernel.dao.search.SearchContainer<com.liferay.portal.kernel.s
 				<liferay-ui:search-container-column-text
 					colspan="<%= 2 %>"
 				>
-					<h4>
+					<div>
 						<a href="<%= searchResultSummaryDisplayContext.getViewURL() %>">
 							<strong><%= searchResultSummaryDisplayContext.getHighlightedTitle() %></strong>
 						</a>
-					</h4>
+					</div>
 
-					<h6 class="text-default">
+					<div class="text-default">
 						<c:if test="<%= searchResultSummaryDisplayContext.isModelResourceVisible() %>">
 							<strong><%= searchResultSummaryDisplayContext.getModelResource() %></strong>
 						</c:if>
@@ -147,16 +147,16 @@ com.liferay.portal.kernel.dao.search.SearchContainer<com.liferay.portal.kernel.s
 						<c:if test="<%= searchResultSummaryDisplayContext.isCreationDateVisible() %>">
 							<liferay-ui:message key="on-date" /> <%= searchResultSummaryDisplayContext.getCreationDateString() %>
 						</c:if>
-					</h6>
+					</div>
 
 					<c:if test="<%= searchResultSummaryDisplayContext.isContentVisible() %>">
-						<h6 class="search-document-content text-default">
+						<span class="search-document-content text-default">
 							<%= searchResultSummaryDisplayContext.getContent() %>
-						</h6>
+						</span>
 					</c:if>
 
 					<c:if test="<%= searchResultSummaryDisplayContext.isFieldsVisible() %>">
-						<h6 class="search-document-content text-default">
+						<div class="search-document-content text-default">
 
 							<%
 							boolean separate = false;
@@ -176,11 +176,11 @@ com.liferay.portal.kernel.dao.search.SearchContainer<com.liferay.portal.kernel.s
 							}
 							%>
 
-						</h6>
+						</div>
 					</c:if>
 
 					<c:if test="<%= searchResultSummaryDisplayContext.isAssetCategoriesOrTagsVisible() %>">
-						<h6 class="search-document-tags text-default">
+						<div class="search-document-tags text-default">
 							<liferay-asset:asset-tags-summary
 								className="<%= searchResultSummaryDisplayContext.getClassName() %>"
 								classPK="<%= searchResultSummaryDisplayContext.getClassPK() %>"
@@ -194,11 +194,11 @@ com.liferay.portal.kernel.dao.search.SearchContainer<com.liferay.portal.kernel.s
 								paramName="<%= searchResultSummaryDisplayContext.getFieldAssetCategoryIds() %>"
 								portletURL="<%= searchResultSummaryDisplayContext.getPortletURL() %>"
 							/>
-						</h6>
+						</div>
 					</c:if>
 
 					<c:if test="<%= searchResultSummaryDisplayContext.isDocumentFormVisible() %>">
-						<h6 class="expand-details text-default"><span style="font-size:xx-small;"><a href="javascript:;"><liferay-ui:message key="details" />...</a></span></h6>
+						<div class="expand-details text-default"><span style="font-size:xx-small;"><a href="javascript:;"><liferay-ui:message key="details" />...</a></span></div>
 
 						<div class="hide table-details table-responsive">
 							<table class="table">
