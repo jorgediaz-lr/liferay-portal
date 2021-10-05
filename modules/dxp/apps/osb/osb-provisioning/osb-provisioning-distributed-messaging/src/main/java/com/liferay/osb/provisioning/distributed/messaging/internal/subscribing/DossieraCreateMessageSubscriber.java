@@ -2083,14 +2083,6 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		}
 
 		for (Contact contact : contacts) {
-			Contact curContact = _contactWebService.fetchContactByEmailAddress(
-				contact.getEmailAddress());
-
-			if (curContact == null) {
-				_contactWebService.addContact(
-					StringPool.BLANK, StringPool.BLANK, contact);
-			}
-
 			ContactRole[] contactRoles = contact.getContactRoles();
 
 			String[] contactRoleKeys = new String[contactRoles.length];
