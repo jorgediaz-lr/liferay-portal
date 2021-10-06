@@ -27,9 +27,12 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.GroupKeyException;
 import com.liferay.portal.kernel.exception.LocaleException;
+import com.liferay.portal.kernel.exception.NoSuchGroupException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.model.ModelHintsUtil;
@@ -162,9 +165,17 @@ public class DepotEntryLocalServiceImpl extends DepotEntryLocalServiceBaseImpl {
 		DepotEntry depotEntry = depotEntryPersistence.fetchByPrimaryKey(
 			depotEntryId);
 
-		if (_isStaged(depotEntry)) {
-			throw new DepotEntryStagedException(
-				"Unstage depot entry " + depotEntryId + " before deleting it");
+		try {
+			if (_isStaged(depotEntry)) {
+				throw new DepotEntryStagedException(
+					"Unstage depot entry " + depotEntryId +
+						" before deleting it");
+			}
+		}
+		catch (NoSuchGroupException noSuchGroupException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(noSuchGroupException, noSuchGroupException);
+			}
 		}
 
 		_resourceLocalService.deleteResource(
@@ -397,6 +408,9 @@ public class DepotEntryLocalServiceImpl extends DepotEntryLocalServiceBaseImpl {
 	}
 
 	private static final String _ORGANIZATION_NAME_SUFFIX = " LFR_ORGANIZATION";
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		DepotEntryLocalServiceImpl.class);
 
 	@Reference
 	private DepotAppCustomizationLocalService
