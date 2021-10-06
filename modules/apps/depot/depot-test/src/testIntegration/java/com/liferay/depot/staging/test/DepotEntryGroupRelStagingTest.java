@@ -88,6 +88,9 @@ public class DepotEntryGroupRelStagingTest {
 				fetchDepotEntryGroupRelByDepotEntryIdToGroupId(
 					_liveDepotEntry.getDepotEntryId(),
 					_stagingGroup.getGroupId()));
+
+		DepotStagingTestUtil.disableLocalStaging(_liveDepotEntry);
+		DepotStagingTestUtil.disableLocalStaging(_liveGroup);
 	}
 
 	@Test
@@ -149,6 +152,9 @@ public class DepotEntryGroupRelStagingTest {
 				fetchDepotEntryGroupRelByDepotEntryIdToGroupId(
 					_liveDepotEntry.getDepotEntryId(),
 					_stagingGroup.getGroupId()));
+
+		DepotStagingTestUtil.disableLocalStaging(_liveDepotEntry);
+		DepotStagingTestUtil.disableLocalStaging(_liveGroup);
 	}
 
 	@Test
@@ -186,6 +192,9 @@ public class DepotEntryGroupRelStagingTest {
 					_liveGroup.getGroupId());
 
 		Assert.assertNull(liveDepotEntryGroupRel);
+
+		DepotStagingTestUtil.disableLocalStaging(_liveDepotEntry);
+		DepotStagingTestUtil.disableLocalStaging(_liveGroup);
 	}
 
 	@Test
@@ -223,6 +232,9 @@ public class DepotEntryGroupRelStagingTest {
 					_liveGroup.getGroupId());
 
 		Assert.assertFalse(liveDepotEntryGroupRel.isSearchable());
+
+		DepotStagingTestUtil.disableLocalStaging(_liveDepotEntry);
+		DepotStagingTestUtil.disableLocalStaging(_liveGroup);
 	}
 
 	@Test
@@ -245,6 +257,8 @@ public class DepotEntryGroupRelStagingTest {
 				fetchDepotEntryGroupRelByDepotEntryIdToGroupId(
 					_stagingDepotEntry.getDepotEntryId(),
 					_liveGroup.getGroupId()));
+
+		DepotStagingTestUtil.disableLocalStaging(_liveDepotEntry);
 	}
 
 	@Test
@@ -304,6 +318,9 @@ public class DepotEntryGroupRelStagingTest {
 				fetchDepotEntryGroupRelByDepotEntryIdToGroupId(
 					_liveDepotEntry.getDepotEntryId(),
 					_stagingGroup.getGroupId()));
+
+		DepotStagingTestUtil.disableLocalStaging(_liveDepotEntry);
+		DepotStagingTestUtil.disableLocalStaging(_liveGroup);
 	}
 
 	@Test
@@ -330,6 +347,9 @@ public class DepotEntryGroupRelStagingTest {
 				fetchDepotEntryGroupRelByDepotEntryIdToGroupId(
 					_stagingDepotEntry.getDepotEntryId(),
 					_stagingGroup.getGroupId()));
+
+		DepotStagingTestUtil.disableLocalStaging(_liveDepotEntry);
+		DepotStagingTestUtil.disableLocalStaging(_liveGroup);
 	}
 
 	private DepotEntry _addDepotEntry() throws Exception {
