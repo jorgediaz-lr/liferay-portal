@@ -200,6 +200,16 @@ public class TransformAccount {
 		return "";
 	}
 
+	public static String getLiferayVersion(String properties) throws Exception {
+		JSONObject jsonObject = new JSONObject(properties);
+
+		if (jsonObject.has("liferayVersion")) {
+			return jsonObject.getString("liferayVersion");
+		}
+
+		return "";
+	}
+
 	public static int getMaxRequestors(String productPurchases)
 		throws Exception {
 
@@ -419,6 +429,119 @@ public class TransformAccount {
 		}
 
 		return DateUtil.format(slaCurrentStartDate);
+	}
+
+	public static String getSLAExpired(String productPurchases)
+		throws Exception {
+
+		String slaCurrent = getSLACurrent(productPurchases);
+
+		if (!slaCurrent.isEmpty()) {
+			return "";
+		}
+
+		JSONObject slaJSONObject = null;
+
+		JSONArray jsonArray = new JSONArray(productPurchases);
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+			if (!_isSLAProduct(jsonObject)) {
+				continue;
+			}
+
+			String status = jsonObject.getString("status");
+
+			if (!_isActive(status)) {
+				continue;
+			}
+
+			if (_isHigherSLA(slaJSONObject, jsonObject)) {
+				slaJSONObject = jsonObject;
+			}
+		}
+
+		if (slaJSONObject != null) {
+			JSONObject productJSONObject = slaJSONObject.getJSONObject(
+				"product");
+
+			return productJSONObject.getString("name");
+		}
+
+		return "";
+	}
+
+	public static String getSLAExpiredEndDate(String productPurchases)
+		throws Exception {
+
+		String slaExpired = getSLAExpired(productPurchases);
+
+		Date slaExpiredEndDate = null;
+
+		JSONArray jsonArray = new JSONArray(productPurchases);
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+			JSONObject productJSONObject = jsonObject.getJSONObject("product");
+
+			if (!slaExpired.equals(productJSONObject.getString("name"))) {
+				continue;
+			}
+
+			String status = jsonObject.getString("status");
+
+			if (!_isActive(status)) {
+				continue;
+			}
+
+			Date endDate = DateUtil.parseEndDate(jsonObject);
+
+			if ((slaExpiredEndDate == null) ||
+				slaExpiredEndDate.before(endDate)) {
+
+				slaExpiredEndDate = endDate;
+			}
+		}
+
+		return DateUtil.format(slaExpiredEndDate);
+	}
+
+	public static String getSLAExpiredStartDate(String productPurchases)
+		throws Exception {
+
+		String slaExpired = getSLAExpired(productPurchases);
+
+		Date slaExpiredStartDate = null;
+
+		JSONArray jsonArray = new JSONArray(productPurchases);
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+			JSONObject productJSONObject = jsonObject.getJSONObject("product");
+
+			if (!slaExpired.equals(productJSONObject.getString("name"))) {
+				continue;
+			}
+
+			String status = jsonObject.getString("status");
+
+			if (!_isActive(status)) {
+				continue;
+			}
+
+			Date startDate = DateUtil.parseStartDate(jsonObject);
+
+			if ((slaExpiredStartDate == null) ||
+				slaExpiredStartDate.before(startDate)) {
+
+				slaExpiredStartDate = startDate;
+			}
+		}
+
+		return DateUtil.format(slaExpiredStartDate);
 	}
 
 	public static String getSLAFuture(String productPurchases)
