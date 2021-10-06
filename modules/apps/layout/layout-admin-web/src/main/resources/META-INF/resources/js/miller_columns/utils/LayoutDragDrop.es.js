@@ -50,8 +50,6 @@ class LayoutDragDrop extends State {
 		super(config, ...args);
 
 		this._initializeDragAndDrop();
-
-		this.sourceItemPlid = null;
 	}
 
 	/**
@@ -90,7 +88,6 @@ class LayoutDragDrop extends State {
 				: data.relativeY;
 
 			const placeholderItemRegion = position.getRegion(data.placeholder);
-			const sourceItemPlid = data.source.dataset.layoutColumnItemPlid;
 			const targetItemRegion = position.getRegion(targetItem);
 
 			let targetId = null;
@@ -125,13 +122,9 @@ class LayoutDragDrop extends State {
 				}
 			}
 
-			if (this.sourceItemPlid === null) {
-				this.sourceItemPlid = sourceItemPlid;
-			}
-
 			this.emit('dragLayoutColumnItem', {
 				position: this._draggingItemPosition,
-				sourceItemPlid,
+				sourceItemPlid: this._sourceItemPlid,
 				targetId,
 				targetType
 			});
@@ -155,11 +148,10 @@ class LayoutDragDrop extends State {
 	 * @review
 	 */
 	_handleDragStart(data, event) {
-		const sourceItemPlid = event.target.getActiveDrag().dataset
-			.layoutColumnItemPlid;
+		this.sourceItemPlid = event.target.getActiveDrag().dataset.layoutColumnItemPlid;
 
 		this.emit('startMovingLayoutColumnItem', {
-			sourceItemPlid
+			sourceItemPlid: this.sourceItemPlid
 		});
 	}
 
@@ -175,11 +167,6 @@ class LayoutDragDrop extends State {
 	_handleDrop(data, event) {
 		event.preventDefault();
 
-		if (this.sourceItemPlid !== null) {
-			data.source.dataset.layoutColumnItemPlid = this.sourceItemPlid;
-		}
-
-		const sourceItemPlid = data.source.dataset.layoutColumnItemPlid;
 		let targetId = null;
 		let targetType = null;
 
@@ -196,7 +183,7 @@ class LayoutDragDrop extends State {
 		}
 
 		this.emit('dropLayoutColumnItem', {
-			sourceItemPlid,
+			sourceItemPlid: this.sourceItemPlid,
 			targetId,
 			targetType
 		});
@@ -260,7 +247,20 @@ LayoutDragDrop.STATE = {
 	 * @type {!string}
 	 */
 
-	_draggingItemPosition: Config.internal().string()
+	_draggingItemPosition: Config.internal().string(),
+
+	/**
+	 * Initial item plid.
+	 * @default null
+	 * @instance
+	 * @memberOf LayoutDragDrop
+	 * @review
+	 * @type {!string}
+	 */
+
+	_sourceItemPlid: Config.string()
+		.internal()
+		.value(null)
 };
 
 export {DROP_TARGET_BORDERS, DROP_TARGET_ITEM_TYPES, LayoutDragDrop};
