@@ -1673,10 +1673,6 @@ public class LayoutsAdminDisplayContext {
 			jsonObject.put("convertLayoutURL", getConvertLayoutURL(layout));
 		}
 
-		if (isShowDraftActions(layout)) {
-			jsonObject.put("previewDraftURL", getPreviewDraftURL(layout));
-		}
-
 		if (isShowCopyLayoutAction(layout)) {
 			jsonObject.put("copyLayoutURL", getCopyLayoutRenderURL(layout));
 		}
@@ -1695,6 +1691,10 @@ public class LayoutsAdminDisplayContext {
 
 		if (isShowPermissionsAction(layout)) {
 			jsonObject.put("permissionsURL", getPermissionsURL(layout));
+		}
+
+		if (isShowDraftActions(layout)) {
+			jsonObject.put("previewDraftURL", getPreviewDraftURL(layout));
 		}
 
 		jsonObject.put("viewLayoutURL", getViewLayoutURL(layout));
