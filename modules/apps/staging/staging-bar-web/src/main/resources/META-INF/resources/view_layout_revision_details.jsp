@@ -37,10 +37,10 @@ if (workflowEnabled) {
 	hasWorkflowTask = StagingUtil.hasWorkflowTask(user.getUserId(), layoutRevision);
 }
 
-boolean isTypeContentLayout = false;
+boolean layoutTypeContent = false;
 
 if ((layout != null) && Objects.equals(layout.getType(), LayoutConstants.TYPE_CONTENT)) {
-	isTypeContentLayout = true;
+	layoutTypeContent = true;
 }
 
 String taglibHelpMessage = null;
@@ -75,7 +75,7 @@ else {
 				</portlet:actionURL>
 
 				<c:choose>
-					<c:when test="<%= !isTypeContentLayout && !layoutRevision.isIncomplete() && !workflowEnabled %>">
+					<c:when test="<%= !layoutTypeContent && !layoutRevision.isIncomplete() && !workflowEnabled %>">
 						<span class="staging-bar-control-toggle">
 							<aui:input id="readyToggle" label="<%= StringPool.BLANK %>" labelOff="ready-for-publication" labelOn="ready-for-publication" name="readyToggle" onChange='<%= liferayPortletResponse.getNamespace() + "submitLayoutRevision('" + publishURL + "')" %>' type="toggle-switch" value="<%= false %>" />
 						</span>
@@ -106,7 +106,7 @@ else {
 
 	<c:if test="<%= !layoutRevision.isIncomplete() %>">
 		<li class="control-menu-nav-item">
-			<c:if test="<%= !isTypeContentLayout && layoutRevision.isHead() %>">
+			<c:if test="<%= !layoutTypeContent && layoutRevision.isHead() %>">
 				<span class="staging-bar-control-toggle">
 					<aui:input disabled="<%= true %>" id="readyToggle" label="<%= StringPool.BLANK %>" labelOn="ready-for-publication" name="readyToggle" type="toggle-switch" value="<%= true %>" />
 				</span>

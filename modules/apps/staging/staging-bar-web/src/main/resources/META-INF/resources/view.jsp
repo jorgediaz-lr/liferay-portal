@@ -32,10 +32,10 @@ if (liveLayout != null) {
 	request.setAttribute("view.jsp-typeSettingsProperties", liveLayout.getTypeSettingsProperties());
 }
 
-boolean isTypeContentLayout = false;
+boolean layoutTypeContent = false;
 
 if ((layout != null) && Objects.equals(layout.getType(), LayoutConstants.TYPE_CONTENT)) {
-	isTypeContentLayout = true;
+	layoutTypeContent = true;
 }
 %>
 
@@ -217,7 +217,7 @@ if ((layout != null) && Objects.equals(layout.getType(), LayoutConstants.TYPE_CO
 														</div>
 													</li>
 
-													<c:if test="<%= !isTypeContentLayout %>">
+													<c:if test="<%= !layoutTypeContent %>">
 														<li class="control-menu-nav-item staging-bar-level-2-nav-item" id="<portlet:namespace />layoutRevisionStatus">
 															<aui:model-context bean="<%= layoutRevision %>" model="<%= LayoutRevision.class %>" />
 
