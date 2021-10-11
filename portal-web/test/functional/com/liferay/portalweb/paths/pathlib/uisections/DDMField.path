@@ -21,6 +21,16 @@
 	<td></td>
 </tr>
 <tr>
+	<td>COLOR_PICKER_COLOR_Last</td>
+	<td>xpath=(//a[@class='palette-item-inner'][@title='#${key_colorCode}'])[last()]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>COLOR_PICKER_COLOR_1</td>
+	<td>xpath=(//a[@class='palette-item-inner'][@title='#${key_colorCode}'])[last()-2]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>DDM_INPUT</td>
 	<td>//div[contains(@data-fieldname,'${key_fieldDefaultValue}')]//input</td>
 	<td></td>
