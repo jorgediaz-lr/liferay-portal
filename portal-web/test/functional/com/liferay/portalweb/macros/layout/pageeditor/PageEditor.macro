@@ -802,6 +802,23 @@ definition {
 		AssertTextNotPresent(value1 = "${fragmentComment}");
 	}
 
+	macro selectColorSwatchItem {
+		Click(
+			inputFieldId = "${fieldLabel}",
+			locator1 = "TextInput#INPUT_ID");
+
+		if ("${colorLeftLabel}" == "true") {
+			Click(
+				key_colorCode = "${colorSwatchItem}",
+				locator1 = "DDMField#COLOR_PICKER_COLOR_Last");
+		}
+		else {
+			Click(
+				key_colorCode = "${colorSwatchItem}",
+				locator1 = "DDMField#COLOR_PICKER_COLOR_1");
+		}
+	}
+
 	macro viewAutoSaveMessage {
 		AssertTextEquals.assertPartialText(
 			locator1 = "PageEditor#AUTOSAVE_MESSAGE",
