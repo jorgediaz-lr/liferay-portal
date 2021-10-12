@@ -924,36 +924,60 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 		JSONObject projectJSONObject = jsonObject.getJSONObject("_project");
 
-		Account parentAccount = null;
-
-		if (projectJSONObject != null) {
-			parentAccount = createParentAccount(jsonObject);
-		}
-
 		Account partnerAccount = parsePartnerAccount(jsonObject);
 
 		boolean partnerFirstLineSupport = jsonObject.getBoolean(
 			"_partnerFirstLineSupport");
 
-		if (Validator.isNotNull(accountKey)) {
-			account = updateAccount(
-				accountKey, parentAccount, activeContacts, region,
-				postalAddress, productPurchases, jsonObject);
+		String salesforceOpportunityKey = jsonObject.getString(
+			"_salesforceOpportunityKey");
+
+		boolean provision = isProvisionMessage(salesforceOpportunityKey);
+
+		if (provision) {
+			Account parentAccount = null;
+
+			if (projectJSONObject != null) {
+				parentAccount = createParentAccount(jsonObject);
+			}
+
+			if (Validator.isNotNull(accountKey)) {
+				account = updateAccount(
+					accountKey, parentAccount, activeContacts, region,
+					postalAddress, productPurchases, jsonObject);
+			}
+			else {
+				ExternalLink[] externalLinks = parseExternalLinks(jsonObject);
+
+				Team[] partnerTeams = parsePartnerTeams(
+					partnerAccount, partnerFirstLineSupport);
+
+				account = createAccount(
+					parentAccount, activeContacts.toArray(new Contact[0]),
+					externalLinks, language, region, postalAddress,
+					productPurchases.toArray(new ProductPurchase[0]),
+					partnerTeams, jsonObject);
+			}
+
+			createAccountNote(jsonObject, account);
+
+			for (Contact contact : missingContacts) {
+				sendUserCreationEmail(
+					contact, account, analyticsCloud, languageId);
+			}
 		}
 		else {
-			ExternalLink[] externalLinks = parseExternalLinks(jsonObject);
+			account = _accountWebService.fetchAccount(accountKey);
 
-			Team[] partnerTeams = parsePartnerTeams(
-				partnerAccount, partnerFirstLineSupport);
+			if (account == null) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(
+						"Account is null, skipping zendesk ticket creation");
+				}
 
-			account = createAccount(
-				parentAccount, activeContacts.toArray(new Contact[0]),
-				externalLinks, language, region, postalAddress,
-				productPurchases.toArray(new ProductPurchase[0]), partnerTeams,
-				jsonObject);
+				return;
+			}
 		}
-
-		createAccountNote(jsonObject, account);
 
 		checkWarnings(
 			accountKey, account, partnerAccount, analyticsCloud,
@@ -965,16 +989,9 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			"_salesforceOpportunityProductFamily");
 
 		if (!salesforceOpportunityProductFamily.equals("P")) {
-			String salesforceOpportunityKey = jsonObject.getString(
-				"_salesforceOpportunityKey");
-
 			createZendeskTicket(
 				account, postalAddress, productPurchases,
 				salesforceOpportunityTypeName, salesforceOpportunityKey);
-		}
-
-		for (Contact contact : missingContacts) {
-			sendUserCreationEmail(contact, account, analyticsCloud, languageId);
 		}
 	}
 
@@ -1549,8 +1566,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		return false;
 	}
 
-	@Override
-	protected boolean isParseMessage(Message message) throws Exception {
+	protected boolean isParseMessage(Message message) {
 		String salesforceOpportunityKey = _getSalesforceOpportunityKey(message);
 
 		if (Validator.isNull(salesforceOpportunityKey)) {
@@ -1577,6 +1593,16 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			return false;
 		}
 
+		return true;
+	}
+
+	protected boolean isProvisionMessage(String salesforceOpportunityKey)
+		throws Exception {
+
+		if (Validator.isNull(salesforceOpportunityKey)) {
+			return false;
+		}
+
 		StringBundler sb = new StringBundler(7);
 
 		sb.append("externalLinkEntityIds/any(s:s eq '");
@@ -1596,6 +1622,11 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 					"Product purchase already exists with opportunity key " +
 						salesforceOpportunityKey);
 			}
+
+			_logWarning(
+				"The opportunity was not provisioned automatically since " +
+					"subscriptions with this opportunity key already exist " +
+						"in the system.");
 
 			return false;
 		}

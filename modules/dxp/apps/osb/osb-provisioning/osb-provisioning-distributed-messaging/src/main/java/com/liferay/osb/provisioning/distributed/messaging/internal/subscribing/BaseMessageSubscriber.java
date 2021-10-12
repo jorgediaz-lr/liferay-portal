@@ -80,7 +80,7 @@ public abstract class BaseMessageSubscriber implements MessageSubscriber {
 			String routingKey, String message, Exception exception)
 		throws PortalException;
 
-	protected boolean isParseMessage(Message message) throws Exception {
+	protected boolean isParseMessage(Message message) {
 		return true;
 	}
 
