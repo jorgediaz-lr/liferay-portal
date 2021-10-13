@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -36,6 +37,7 @@ import com.liferay.taglib.util.IncludeTag;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.PageContext;
@@ -113,6 +115,9 @@ public class RenderFragmentLayoutTag extends IncludeTag {
 		super.setAttributes(httpServletRequest);
 
 		httpServletRequest.setAttribute(
+			"liferay-layout:render-fragment-layout:draftLayout",
+			_getDraftLayout());
+		httpServletRequest.setAttribute(
 			"liferay-layout:render-fragment-layout:fieldValues", _fieldValues);
 		httpServletRequest.setAttribute(
 			"liferay-layout:render-fragment-layout:mode", _mode);
@@ -161,6 +166,33 @@ public class RenderFragmentLayoutTag extends IncludeTag {
 
 			return "";
 		}
+	}
+
+	private Layout _getDraftLayout() {
+		long plid = getPlid();
+
+		if (plid <= 0) {
+			return null;
+		}
+
+		Layout layout = LayoutLocalServiceUtil.fetchLayout(plid);
+
+		if (layout == null) {
+			return null;
+		}
+
+		if (!Objects.equals(layout.getType(), LayoutConstants.TYPE_CONTENT)) {
+			return null;
+		}
+
+		if ((layout.getClassNameId() == PortalUtil.getClassNameId(
+				Layout.class)) &&
+			(layout.getClassPK() > 0)) {
+
+			return layout;
+		}
+
+		return null;
 	}
 
 	private List<String> _getNonIndexableFragmentEntryLinkIds(String data) {

@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.servlet.taglib.util.OutputData;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -233,10 +234,13 @@ public class FragmentEntryFragmentRenderer implements FragmentRenderer {
 
 		String content = StringPool.BLANK;
 
+		Layout draftLayout = (Layout)httpServletRequest.getAttribute(
+			"DRAFT_LAYOUT");
+
 		if (Objects.equals(
 				fragmentRendererContext.getMode(),
 				FragmentEntryLinkConstants.VIEW) &&
-			_isCacheable(fragmentEntryLink)) {
+			_isCacheable(fragmentEntryLink) && (draftLayout == null)) {
 
 			content = _portalCache.get(cacheKeySB.toString());
 
@@ -296,7 +300,7 @@ public class FragmentEntryFragmentRenderer implements FragmentRenderer {
 		if (Objects.equals(
 				fragmentRendererContext.getMode(),
 				FragmentEntryLinkConstants.VIEW) &&
-			_isCacheable(fragmentEntryLink)) {
+			_isCacheable(fragmentEntryLink) && (draftLayout == null)) {
 
 			_portalCache.put(cacheKeySB.toString(), content);
 		}

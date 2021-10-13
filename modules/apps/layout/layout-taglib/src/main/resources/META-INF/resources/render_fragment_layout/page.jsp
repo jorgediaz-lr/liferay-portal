@@ -17,6 +17,7 @@
 <%@ include file="/render_fragment_layout/init.jsp" %>
 
 <%
+Layout draftLayout = (Layout)request.getAttribute("liferay-layout:render-fragment-layout:draftLayout");
 Map<String, Object> fieldValues = (Map<String, Object>)request.getAttribute("liferay-layout:render-fragment-layout:fieldValues");
 String mode = (String)request.getAttribute("liferay-layout:render-fragment-layout:mode");
 List<String> nonIndexableFragmentEntryLinkIds = (List<String>)request.getAttribute("liferay-layout:render-fragment-layout:nonIndexableFragmentEntryLinkIds");
@@ -34,6 +35,10 @@ RenderFragmentLayoutDisplayContext renderFragmentLayoutDisplayContext = new Rend
 		<%
 		try {
 			request.setAttribute(WebKeys.PORTLET_DECORATE, Boolean.FALSE);
+
+			if (draftLayout != null) {
+				request.setAttribute("DRAFT_LAYOUT", draftLayout);
+			}
 
 			for (int i = 0; i < structureJSONArray.length(); i++) {
 				JSONObject rowJSONObject = structureJSONArray.getJSONObject(i);
