@@ -932,9 +932,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		String salesforceOpportunityKey = jsonObject.getString(
 			"_salesforceOpportunityKey");
 
-		boolean provision = isProvisionMessage(salesforceOpportunityKey);
-
-		if (provision) {
+		if (isProvisionMessage(salesforceOpportunityKey)) {
 			Account parentAccount = null;
 
 			if (projectJSONObject != null) {
