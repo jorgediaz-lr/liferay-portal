@@ -365,7 +365,7 @@ function ProductDropdown({products, purchased = []}) {
 GeneralInformation.propTypes = {
 	accountKey: PropTypes.string,
 	accountName: PropTypes.string,
-	allowPermanentLicenses: PropTypes.bool.isRequired,
+	allowPermanentLicenses: PropTypes.bool,
 	currentProduct: PropTypes.string,
 	licensableProducts: PropTypes.arrayOf(
 		PropTypes.shape({

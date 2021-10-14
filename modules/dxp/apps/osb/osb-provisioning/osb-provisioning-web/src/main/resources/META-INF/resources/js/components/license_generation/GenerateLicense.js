@@ -51,7 +51,7 @@ function Generate(props) {
 }
 
 GenerateLicense.propTypes = {
-	allowPermanentLicenses: PropTypes.bool.isRequired,
+	allowPermanentLicenses: PropTypes.bool,
 	hasUpdateLicenseDatePermission: PropTypes.bool.isRequired
 };
 
