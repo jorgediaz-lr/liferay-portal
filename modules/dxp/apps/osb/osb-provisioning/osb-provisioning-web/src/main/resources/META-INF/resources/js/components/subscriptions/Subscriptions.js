@@ -16,6 +16,7 @@ import React, {useEffect, useState} from 'react';
 import {useSubscriptions} from '../../hooks/subscriptions';
 import {
 	ADD_SUBSCRIPTIONS,
+	DASH,
 	EDIT_SUBSCRIPTIONS,
 	PRODUCT_PURCHASE_STATUS_APPROVED,
 	PRODUCT_PURCHASE_STATUS_CANCELLED
@@ -445,8 +446,8 @@ function Subscription({
 						value={sizing}
 					>
 						{instanceSizes.map(size => (
-							<option key={size} value={size}>
-								{size}
+							<option key={size} value={size === 0 ? '' : size}>
+								{size === 0 ? DASH : size}
 							</option>
 						))}
 					</select>
