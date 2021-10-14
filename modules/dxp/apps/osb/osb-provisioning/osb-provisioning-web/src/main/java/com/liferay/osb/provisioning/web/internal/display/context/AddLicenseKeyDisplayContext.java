@@ -180,7 +180,7 @@ public class AddLicenseKeyDisplayContext {
 
 		List<Integer> sizing = new ArrayList<>();
 
-		for (int i = 1; i <= 4; i++) {
+		for (int i = 0; i <= 4; i++) {
 			sizing.add(i);
 		}
 

@@ -156,14 +156,14 @@ describe('Purchases', () => {
 		expect(queryByText('active-subscriptions')).toBeFalsy();
 	});
 
-	it('only renders the Detached section with default values (dashes) if no purchased product is provided', () => {
-		const {getAllByText, getByText} = renderPurchases({
+	it('renders the Detached section with default values (dash for license generated) if no purchased product is provided', () => {
+		const {getByText} = renderPurchases({
 			props: {
 				purchased: []
 			}
 		});
 
-		expect(getAllByText('-').length).toBe(2);
+		getByText('-');
 		expect(getByText('choose').disabled).toBeTruthy();
 	});
 

@@ -23,7 +23,7 @@ import LicenseDates from '../LicenseDates';
 
 function Purchase({
 	detached = false,
-	instanceSize = DASH,
+	instanceSize = 1,
 	instanceSizes,
 	licenseExpirationDate,
 	licenseKeysGenerated = DASH,
@@ -37,7 +37,7 @@ function Purchase({
 	const [selectedStartDate, setSelectedStartDate] = useState(
 		licenseStartDate
 	);
-	const [sizing, setSizing] = useState();
+	const [sizing, setSizing] = useState(instanceSize);
 
 	const [validDates, setValidDates] = useState(
 		!isNaN(new Date(licenseExpirationDate)) &&
@@ -62,7 +62,7 @@ function Purchase({
 
 				.set('licenseKeysGenerated', licenseKeysGenerated)
 				.set('productPurchaseKey', productPurchaseKey)
-				.set('sizing', sizing ? sizing : instanceSize)
+				.set('sizing', sizing)
 
 				.set('showSpecificDetails', true)
 		);
@@ -109,14 +109,19 @@ function Purchase({
 							value={sizing}
 						>
 							{instanceSizes.map(size => (
-								<option key={size} value={size}>
-									{size}
+								<option
+									key={size}
+									value={size === 0 ? '' : size}
+								>
+									{size === 0 ? DASH : size}
 								</option>
 							))}
 						</select>
 					</label>
+				) : sizing === 0 ? (
+					DASH
 				) : (
-					instanceSize
+					sizing
 				)}
 			</ClayTableCell>
 			<ClayTableCell>{licenseKeysGenerated}</ClayTableCell>
