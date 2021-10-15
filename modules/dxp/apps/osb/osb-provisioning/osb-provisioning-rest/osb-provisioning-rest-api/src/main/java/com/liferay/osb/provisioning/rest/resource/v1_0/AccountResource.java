@@ -53,12 +53,14 @@ public interface AccountResource {
 		return FactoryHolder.factory.create();
 	}
 
-	public void deleteAccountContactByUuidContactUuidRole(
-			String accountKey, String contactUuid, String[] contactRoleNames)
+	public void deleteAccountContactByEmailAddresContactEmailAddressRole(
+			String accountKey, String contactEmailAddress,
+			String[] contactRoleNames)
 		throws Exception;
 
-	public void putAccountContactByUuidContactUuidRole(
-			String accountKey, String contactUuid, String[] contactRoleNames)
+	public void putAccountContactByEmailAddresContactEmailAddressRole(
+			String accountKey, String contactEmailAddress,
+			String[] contactRoleNames)
 		throws Exception;
 
 	public default void setContextAcceptLanguage(

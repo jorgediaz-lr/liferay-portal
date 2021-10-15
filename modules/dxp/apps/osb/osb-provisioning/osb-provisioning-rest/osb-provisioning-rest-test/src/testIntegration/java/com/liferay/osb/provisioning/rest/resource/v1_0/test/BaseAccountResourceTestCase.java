@@ -109,14 +109,16 @@ public abstract class BaseAccountResourceTestCase {
 	}
 
 	@Test
-	public void testDeleteAccountContactByUuidContactUuidRole()
+	public void testDeleteAccountContactByEmailAddresContactEmailAddressRole()
 		throws Exception {
 
 		Assert.assertTrue(false);
 	}
 
 	@Test
-	public void testPutAccountContactByUuidContactUuidRole() throws Exception {
+	public void testPutAccountContactByEmailAddresContactEmailAddressRole()
+		throws Exception {
+
 		Assert.assertTrue(false);
 	}
 

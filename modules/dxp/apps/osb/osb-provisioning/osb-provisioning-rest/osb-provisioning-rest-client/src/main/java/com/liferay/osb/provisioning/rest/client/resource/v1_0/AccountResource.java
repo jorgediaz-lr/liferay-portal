@@ -38,23 +38,25 @@ public interface AccountResource {
 		return new Builder();
 	}
 
-	public void deleteAccountContactByUuidContactUuidRole(
-			String accountKey, String contactUuid, String[] contactRoleNames)
+	public void deleteAccountContactByEmailAddresContactEmailAddressRole(
+			String accountKey, String contactEmailAddress,
+			String[] contactRoleNames)
 		throws Exception;
 
 	public HttpInvoker.HttpResponse
-			deleteAccountContactByUuidContactUuidRoleHttpResponse(
-				String accountKey, String contactUuid,
+			deleteAccountContactByEmailAddresContactEmailAddressRoleHttpResponse(
+				String accountKey, String contactEmailAddress,
 				String[] contactRoleNames)
 		throws Exception;
 
-	public void putAccountContactByUuidContactUuidRole(
-			String accountKey, String contactUuid, String[] contactRoleNames)
+	public void putAccountContactByEmailAddresContactEmailAddressRole(
+			String accountKey, String contactEmailAddress,
+			String[] contactRoleNames)
 		throws Exception;
 
 	public HttpInvoker.HttpResponse
-			putAccountContactByUuidContactUuidRoleHttpResponse(
-				String accountKey, String contactUuid,
+			putAccountContactByEmailAddresContactEmailAddressRoleHttpResponse(
+				String accountKey, String contactEmailAddress,
 				String[] contactRoleNames)
 		throws Exception;
 
@@ -129,14 +131,14 @@ public interface AccountResource {
 
 	public static class AccountResourceImpl implements AccountResource {
 
-		public void deleteAccountContactByUuidContactUuidRole(
-				String accountKey, String contactUuid,
+		public void deleteAccountContactByEmailAddresContactEmailAddressRole(
+				String accountKey, String contactEmailAddress,
 				String[] contactRoleNames)
 			throws Exception {
 
 			HttpInvoker.HttpResponse httpResponse =
-				deleteAccountContactByUuidContactUuidRoleHttpResponse(
-					accountKey, contactUuid, contactRoleNames);
+				deleteAccountContactByEmailAddresContactEmailAddressRoleHttpResponse(
+					accountKey, contactEmailAddress, contactRoleNames);
 
 			String content = httpResponse.getContent();
 
@@ -176,8 +178,8 @@ public interface AccountResource {
 		}
 
 		public HttpInvoker.HttpResponse
-				deleteAccountContactByUuidContactUuidRoleHttpResponse(
-					String accountKey, String contactUuid,
+				deleteAccountContactByEmailAddresContactEmailAddressRoleHttpResponse(
+					String accountKey, String contactEmailAddress,
 					String[] contactRoleNames)
 			throws Exception {
 
@@ -223,10 +225,10 @@ public interface AccountResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/provisioning-rest/v1.0/accounts/{accountKey}/contacts/by-uuid/{contactUuid}/roles");
+						"/o/provisioning-rest/v1.0/accounts/{accountKey}/contacts/by-email-address/{contactEmailAddress}/roles");
 
 			httpInvoker.path("accountKey", accountKey);
-			httpInvoker.path("contactUuid", contactUuid);
+			httpInvoker.path("contactEmailAddress", contactEmailAddress);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);
@@ -234,14 +236,14 @@ public interface AccountResource {
 			return httpInvoker.invoke();
 		}
 
-		public void putAccountContactByUuidContactUuidRole(
-				String accountKey, String contactUuid,
+		public void putAccountContactByEmailAddresContactEmailAddressRole(
+				String accountKey, String contactEmailAddress,
 				String[] contactRoleNames)
 			throws Exception {
 
 			HttpInvoker.HttpResponse httpResponse =
-				putAccountContactByUuidContactUuidRoleHttpResponse(
-					accountKey, contactUuid, contactRoleNames);
+				putAccountContactByEmailAddresContactEmailAddressRoleHttpResponse(
+					accountKey, contactEmailAddress, contactRoleNames);
 
 			String content = httpResponse.getContent();
 
@@ -281,8 +283,8 @@ public interface AccountResource {
 		}
 
 		public HttpInvoker.HttpResponse
-				putAccountContactByUuidContactUuidRoleHttpResponse(
-					String accountKey, String contactUuid,
+				putAccountContactByEmailAddresContactEmailAddressRoleHttpResponse(
+					String accountKey, String contactEmailAddress,
 					String[] contactRoleNames)
 			throws Exception {
 
@@ -328,10 +330,10 @@ public interface AccountResource {
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port +
-						"/o/provisioning-rest/v1.0/accounts/{accountKey}/contacts/by-uuid/{contactUuid}/roles");
+						"/o/provisioning-rest/v1.0/accounts/{accountKey}/contacts/by-email-address/{contactEmailAddress}/roles");
 
 			httpInvoker.path("accountKey", accountKey);
-			httpInvoker.path("contactUuid", contactUuid);
+			httpInvoker.path("contactEmailAddress", contactEmailAddress);
 
 			httpInvoker.userNameAndPassword(
 				_builder._login + ":" + _builder._password);

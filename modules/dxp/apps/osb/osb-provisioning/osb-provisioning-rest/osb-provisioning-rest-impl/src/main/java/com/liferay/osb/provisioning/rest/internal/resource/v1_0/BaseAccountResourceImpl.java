@@ -51,7 +51,7 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'DELETE' 'http://localhost:8080/o/provisioning-rest/v1.0/accounts/{accountKey}/contacts/by-uuid/{contactUuid}/roles'  -u 'test@liferay.com:test'
+	 * curl -X 'DELETE' 'http://localhost:8080/o/provisioning-rest/v1.0/accounts/{accountKey}/contacts/by-email-address/{contactEmailAddress}/roles'  -u 'test@liferay.com:test'
 	 */
 	@io.swagger.v3.oas.annotations.Operation(
 		description = "Unassigns roles from the contact for the account."
@@ -64,7 +64,7 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 			),
 			@io.swagger.v3.oas.annotations.Parameter(
 				in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
-				name = "contactUuid"
+				name = "contactEmailAddress"
 			),
 			@io.swagger.v3.oas.annotations.Parameter(
 				in = io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY,
@@ -77,19 +77,19 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	)
 	@javax.ws.rs.DELETE
 	@javax.ws.rs.Path(
-		"/accounts/{accountKey}/contacts/by-uuid/{contactUuid}/roles"
+		"/accounts/{accountKey}/contacts/by-email-address/{contactEmailAddress}/roles"
 	)
 	@javax.ws.rs.Produces({"application/json", "application/xml"})
 	@Override
-	public void deleteAccountContactByUuidContactUuidRole(
+	public void deleteAccountContactByEmailAddresContactEmailAddressRole(
 			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
 			@javax.validation.constraints.NotNull
 			@javax.ws.rs.PathParam("accountKey")
 			String accountKey,
 			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
 			@javax.validation.constraints.NotNull
-			@javax.ws.rs.PathParam("contactUuid")
-			String contactUuid,
+			@javax.ws.rs.PathParam("contactEmailAddress")
+			String contactEmailAddress,
 			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
 			@javax.validation.constraints.NotNull
 			@javax.ws.rs.QueryParam("contactRoleNames")
@@ -100,7 +100,7 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'PUT' 'http://localhost:8080/o/provisioning-rest/v1.0/accounts/{accountKey}/contacts/by-uuid/{contactUuid}/roles'  -u 'test@liferay.com:test'
+	 * curl -X 'PUT' 'http://localhost:8080/o/provisioning-rest/v1.0/accounts/{accountKey}/contacts/by-email-address/{contactEmailAddress}/roles'  -u 'test@liferay.com:test'
 	 */
 	@io.swagger.v3.oas.annotations.Operation(
 		description = "Assigns roles to the contact for the account."
@@ -113,7 +113,7 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 			),
 			@io.swagger.v3.oas.annotations.Parameter(
 				in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
-				name = "contactUuid"
+				name = "contactEmailAddress"
 			),
 			@io.swagger.v3.oas.annotations.Parameter(
 				in = io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY,
@@ -125,20 +125,20 @@ public abstract class BaseAccountResourceImpl implements AccountResource {
 		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "Account")}
 	)
 	@javax.ws.rs.Path(
-		"/accounts/{accountKey}/contacts/by-uuid/{contactUuid}/roles"
+		"/accounts/{accountKey}/contacts/by-email-address/{contactEmailAddress}/roles"
 	)
 	@javax.ws.rs.Produces({"application/json", "application/xml"})
 	@javax.ws.rs.PUT
 	@Override
-	public void putAccountContactByUuidContactUuidRole(
+	public void putAccountContactByEmailAddresContactEmailAddressRole(
 			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
 			@javax.validation.constraints.NotNull
 			@javax.ws.rs.PathParam("accountKey")
 			String accountKey,
 			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
 			@javax.validation.constraints.NotNull
-			@javax.ws.rs.PathParam("contactUuid")
-			String contactUuid,
+			@javax.ws.rs.PathParam("contactEmailAddress")
+			String contactEmailAddress,
 			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
 			@javax.validation.constraints.NotNull
 			@javax.ws.rs.QueryParam("contactRoleNames")
