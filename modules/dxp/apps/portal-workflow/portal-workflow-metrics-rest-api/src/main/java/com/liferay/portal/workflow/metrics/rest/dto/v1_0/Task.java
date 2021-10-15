@@ -51,6 +51,10 @@ public class Task implements Serializable {
 		return ObjectMapperUtil.readValue(Task.class, json);
 	}
 
+	public static Task unsafeToDTO(String json) {
+		return ObjectMapperUtil.unsafeReadValue(Task.class, json);
+	}
+
 	@Schema
 	public Long getBreachedInstanceCount() {
 		return breachedInstanceCount;

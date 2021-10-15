@@ -55,6 +55,10 @@ public class Metric implements Serializable {
 		return ObjectMapperUtil.readValue(Metric.class, json);
 	}
 
+	public static Metric unsafeToDTO(String json) {
+		return ObjectMapperUtil.unsafeReadValue(Metric.class, json);
+	}
+
 	@Schema
 	@Valid
 	public Histogram[] getHistograms() {

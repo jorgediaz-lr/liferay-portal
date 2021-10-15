@@ -52,6 +52,11 @@ public class DataRecordCollectionPermission implements Serializable {
 			DataRecordCollectionPermission.class, json);
 	}
 
+	public static DataRecordCollectionPermission unsafeToDTO(String json) {
+		return ObjectMapperUtil.unsafeReadValue(
+			DataRecordCollectionPermission.class, json);
+	}
+
 	@Schema
 	public Boolean getAddDataRecord() {
 		return addDataRecord;

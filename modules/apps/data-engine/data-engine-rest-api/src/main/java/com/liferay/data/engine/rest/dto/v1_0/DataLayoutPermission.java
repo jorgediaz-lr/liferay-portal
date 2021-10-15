@@ -51,6 +51,11 @@ public class DataLayoutPermission implements Serializable {
 		return ObjectMapperUtil.readValue(DataLayoutPermission.class, json);
 	}
 
+	public static DataLayoutPermission unsafeToDTO(String json) {
+		return ObjectMapperUtil.unsafeReadValue(
+			DataLayoutPermission.class, json);
+	}
+
 	@Schema
 	public Boolean getAddDataLayout() {
 		return addDataLayout;

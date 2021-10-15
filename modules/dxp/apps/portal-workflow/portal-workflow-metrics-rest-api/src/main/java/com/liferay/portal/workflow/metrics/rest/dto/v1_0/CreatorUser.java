@@ -53,6 +53,10 @@ public class CreatorUser implements Serializable {
 		return ObjectMapperUtil.readValue(CreatorUser.class, json);
 	}
 
+	public static CreatorUser unsafeToDTO(String json) {
+		return ObjectMapperUtil.unsafeReadValue(CreatorUser.class, json);
+	}
+
 	@Schema(description = "The user's ID.")
 	public Long getId() {
 		return id;

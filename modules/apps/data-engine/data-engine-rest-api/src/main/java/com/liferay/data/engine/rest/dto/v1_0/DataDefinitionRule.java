@@ -53,6 +53,10 @@ public class DataDefinitionRule implements Serializable {
 		return ObjectMapperUtil.readValue(DataDefinitionRule.class, json);
 	}
 
+	public static DataDefinitionRule unsafeToDTO(String json) {
+		return ObjectMapperUtil.unsafeReadValue(DataDefinitionRule.class, json);
+	}
+
 	@Schema
 	public String[] getDataDefinitionFieldNames() {
 		return dataDefinitionFieldNames;

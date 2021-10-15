@@ -53,6 +53,10 @@ public class AssigneeUser implements Serializable {
 		return ObjectMapperUtil.readValue(AssigneeUser.class, json);
 	}
 
+	public static AssigneeUser unsafeToDTO(String json) {
+		return ObjectMapperUtil.unsafeReadValue(AssigneeUser.class, json);
+	}
+
 	@Schema(description = "The user's ID.")
 	public Long getId() {
 		return id;

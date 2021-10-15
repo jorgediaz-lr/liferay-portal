@@ -51,6 +51,11 @@ public class DataDefinitionPermission implements Serializable {
 		return ObjectMapperUtil.readValue(DataDefinitionPermission.class, json);
 	}
 
+	public static DataDefinitionPermission unsafeToDTO(String json) {
+		return ObjectMapperUtil.unsafeReadValue(
+			DataDefinitionPermission.class, json);
+	}
+
 	@Schema
 	public Boolean getAddDataDefinition() {
 		return addDataDefinition;
