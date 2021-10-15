@@ -52,4 +52,8 @@ public class ContactRoleConstants {
 		NAME_SUPPORT_CLOSED_WATCHER
 	};
 
+	public static final String[] SUPPORT_DEVELOPER_CONTACT_ROLES = {
+		NAME_ADMINISTRATOR, NAME_SUPPORT_DEVELOPER
+	};
+
 }

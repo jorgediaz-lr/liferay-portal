@@ -14,9 +14,11 @@
 
 package com.liferay.osb.provisioning.rest.internal.resource.v1_0;
 
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
 import com.liferay.osb.provisioning.koroneiki.constants.ContactRoleConstants;
+import com.liferay.osb.provisioning.koroneiki.reader.AccountReader;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ContactRoleWebService;
 import com.liferay.osb.provisioning.rest.internal.ProvisioningContactThreadLocal;
@@ -28,6 +30,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
+import com.liferay.portal.kernel.util.ArrayUtil;
 
 import java.util.List;
 
@@ -80,6 +83,7 @@ public class AccountResourceImpl extends BaseAccountResourceImpl {
 		_checkAccountAdminContactRole(accountKey);
 
 		String[] contactRoleKeys = new String[contactRoleNames.length];
+		boolean checkSupportDeveloperCount = false;
 
 		for (int i = 0; i < contactRoleNames.length; i++) {
 			String contactRoleName = contactRoleNames[i];
@@ -93,6 +97,42 @@ public class AccountResourceImpl extends BaseAccountResourceImpl {
 			}
 
 			contactRoleKeys[i] = contactRole.getKey();
+
+			if (ArrayUtil.contains(
+					ContactRoleConstants.SUPPORT_DEVELOPER_CONTACT_ROLES,
+					contactRoleName)) {
+
+				checkSupportDeveloperCount = true;
+			}
+		}
+
+		if (checkSupportDeveloperCount) {
+			List<ContactRole> contactRoles =
+				_contactRoleWebService.getAccountCustomerContactRoles(
+					accountKey, contactEmailAddress, 1, 1000);
+
+			for (ContactRole contactRole : contactRoles) {
+				if (ArrayUtil.contains(
+						ContactRoleConstants.SUPPORT_DEVELOPER_CONTACT_ROLES,
+						contactRole.getName())) {
+
+					checkSupportDeveloperCount = false;
+				}
+			}
+		}
+
+		if (checkSupportDeveloperCount) {
+			Account account = _accountWebService.getAccount(accountKey);
+
+			int developerCount = _accountReader.getDeveloperCount(account);
+			int maxDeveloperCount = _accountReader.getMaxDeveloperCount(
+				account);
+
+			if ((developerCount + 1) > maxDeveloperCount) {
+				throw new PortalException(
+					"Account has reached the maximum allowed ticket " +
+						"requestors");
+			}
 		}
 
 		_accountWebService.assignContactRolesByUuid(
@@ -167,6 +207,9 @@ public class AccountResourceImpl extends BaseAccountResourceImpl {
 
 		return false;
 	}
+
+	@Reference
+	private AccountReader _accountReader;
 
 	@Reference
 	private AccountWebService _accountWebService;

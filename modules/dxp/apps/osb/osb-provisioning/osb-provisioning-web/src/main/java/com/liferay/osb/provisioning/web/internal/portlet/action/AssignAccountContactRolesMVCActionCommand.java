@@ -97,12 +97,19 @@ public class AssignAccountContactRolesMVCActionCommand
 			}
 
 			if (!ArrayUtil.isEmpty(deleteContactRoleKeys)) {
+				ContactRole administratorContactRole =
+					_contactRoleWebService.getContactRole(
+						ContactRole.Type.ACCOUNT_CUSTOMER.toString(),
+						ContactRoleConstants.NAME_ADMINISTRATOR);
 				ContactRole supportDeveloperContactRole =
 					_contactRoleWebService.getContactRole(
 						ContactRole.Type.ACCOUNT_CUSTOMER.toString(),
 						ContactRoleConstants.NAME_SUPPORT_DEVELOPER);
 
 				if (ArrayUtil.contains(
+						deleteContactRoleKeys,
+						administratorContactRole.getKey()) ||
+					ArrayUtil.contains(
 						deleteContactRoleKeys,
 						supportDeveloperContactRole.getKey())) {
 

@@ -173,9 +173,20 @@ public class ZendeskValidator {
 
 		boolean supportDeveloper = false;
 
-		StringBundler sb = new StringBundler(5);
+		StringBundler sb = new StringBundler(9);
 
 		sb.append("accountKeysContactRoleKeys/any(s:s eq '");
+		sb.append(accountKey);
+		sb.append(StringPool.UNDERLINE);
+
+		ContactRole administratorContactRole =
+			_contactRoleWebService.getContactRole(
+				ContactRole.Type.ACCOUNT_CUSTOMER.toString(),
+				ContactRoleConstants.NAME_ADMINISTRATOR);
+
+		sb.append(administratorContactRole.getKey());
+
+		sb.append("' or s eq '");
 		sb.append(accountKey);
 		sb.append(StringPool.UNDERLINE);
 

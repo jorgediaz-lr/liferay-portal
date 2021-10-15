@@ -80,9 +80,10 @@ public class AccountReaderImpl implements AccountReader {
 			}
 
 			for (ContactRole contactRole : contactRoles) {
-				String name = contactRole.getName();
+				if (ArrayUtil.contains(
+						ContactRoleConstants.SUPPORT_DEVELOPER_CONTACT_ROLES,
+						contactRole.getName())) {
 
-				if (name.equals(ContactRoleConstants.NAME_SUPPORT_DEVELOPER)) {
 					developerCount++;
 
 					break;
