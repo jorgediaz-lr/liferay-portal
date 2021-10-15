@@ -280,7 +280,7 @@ info:
     version: v1.0
 openapi: 3.0.1
 paths:
-    "/accounts/{accountKey}/contacts/by-uuid/{contactUuid}/roles":
+    "/accounts/{accountKey}/contacts/by-email-address/{contactEmailAddress}/roles":
         delete:
             description:
                 Unassigns roles from the contact for the account.
@@ -291,7 +291,7 @@ paths:
                   schema:
                       type: string
                 - in: path
-                  name: contactUuid
+                  name: contactEmailAddress
                   required: true
                   schema:
                       type: string
@@ -318,7 +318,7 @@ paths:
                   schema:
                       type: string
                 - in: path
-                  name: contactUuid
+                  name: contactEmailAddress
                   required: true
                   schema:
                       type: string

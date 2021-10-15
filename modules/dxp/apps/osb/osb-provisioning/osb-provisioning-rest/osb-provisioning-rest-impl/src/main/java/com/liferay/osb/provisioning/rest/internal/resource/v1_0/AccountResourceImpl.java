@@ -26,14 +26,21 @@ import com.liferay.osb.provisioning.rest.resource.v1_0.AccountResource;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ServiceScope;
@@ -48,8 +55,9 @@ import org.osgi.service.component.annotations.ServiceScope;
 public class AccountResourceImpl extends BaseAccountResourceImpl {
 
 	@Override
-	public void deleteAccountContactByUuidContactUuidRole(
-			String accountKey, String contactUuid, String[] contactRoleNames)
+	public void deleteAccountContactByEmailAddresContactEmailAddressRole(
+			String accountKey, String contactEmailAddress,
+			String[] contactRoleNames)
 		throws Exception {
 
 		_checkAccountAdminContactRole(accountKey);
@@ -70,17 +78,25 @@ public class AccountResourceImpl extends BaseAccountResourceImpl {
 			contactRoleKeys[i] = contactRole.getKey();
 		}
 
-		_accountWebService.unassignContactRolesByUuid(
-			_getAgentName(), _getAgentUID(), accountKey, contactUuid,
+		_accountWebService.unassignContactRolesByEmailAddress(
+			_getAgentName(), _getAgentUID(), accountKey, contactEmailAddress,
 			contactRoleKeys);
 	}
 
 	@Override
-	public void putAccountContactByUuidContactUuidRole(
-			String accountKey, String contactUuid, String[] contactRoleNames)
+	public void putAccountContactByEmailAddresContactEmailAddressRole(
+			String accountKey, String contactEmailAddress,
+			String[] contactRoleNames)
 		throws Exception {
 
 		_checkAccountAdminContactRole(accountKey);
+
+		String domain = contactEmailAddress.substring(
+			contactEmailAddress.indexOf(StringPool.AT) + 1);
+
+		if (_badDomains.contains(domain)) {
+			throw new PortalException("Domain " + domain + " is not allowed");
+		}
 
 		String[] contactRoleKeys = new String[contactRoleNames.length];
 		boolean checkSupportDeveloperCount = false;
@@ -135,9 +151,22 @@ public class AccountResourceImpl extends BaseAccountResourceImpl {
 			}
 		}
 
-		_accountWebService.assignContactRolesByUuid(
-			_getAgentName(), _getAgentUID(), accountKey, contactUuid,
+		_accountWebService.assignContactRolesByEmailAddress(
+			_getAgentName(), _getAgentUID(), accountKey, contactEmailAddress,
 			contactRoleKeys);
+	}
+
+	@Activate
+	protected void activate(Map<String, Object> properties) {
+		try {
+			StringUtil.readLines(
+				AccountResourceImpl.class.getResourceAsStream(
+					"/dependencies/bad_domains.txt"),
+				_badDomains);
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+		}
 	}
 
 	private void _checkAccountAdminContactRole(String accountKey)
@@ -208,11 +237,16 @@ public class AccountResourceImpl extends BaseAccountResourceImpl {
 		return false;
 	}
 
+	private static final Log _log = LogFactoryUtil.getLog(
+		AccountResourceImpl.class);
+
 	@Reference
 	private AccountReader _accountReader;
 
 	@Reference
 	private AccountWebService _accountWebService;
+
+	private final Set<String> _badDomains = new HashSet<>();
 
 	@Reference
 	private ContactRoleWebService _contactRoleWebService;
