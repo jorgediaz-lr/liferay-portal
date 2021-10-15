@@ -18,6 +18,7 @@ import {
 	NewLicenseProvider
 } from '../../../src/main/resources/META-INF/resources/js/hooks/newLicense';
 import {PermissionsProvider} from '../../../src/main/resources/META-INF/resources/js/hooks/permissions';
+import {DASH} from '../../../src/main/resources/META-INF/resources/js/utilities/constants';
 import {
 	formatDate,
 	generateNewDateByYear
@@ -171,16 +172,36 @@ describe('Purchases', () => {
 		const {getByLabelText} = renderPurchases({
 			props: {
 				detached: {
-					instanceSizes: [1, 2, 3, 4],
+					instanceSizes: [0, 1, 2, 3, 4],
 					licenseKeysGenerated: '0'
 				}
 			}
 		});
 
+		within(getByLabelText('instance-size')).getByText(DASH);
 		within(getByLabelText('instance-size')).getByText('1');
 		within(getByLabelText('instance-size')).getByText('2');
 		within(getByLabelText('instance-size')).getByText('3');
 		within(getByLabelText('instance-size')).getByText('4');
+	});
+
+	it('displays the Choose button as disabled in the Detached section until an instance size is selected', () => {
+		const {getAllByText, getByLabelText} = renderPurchases({
+			props: {
+				detached: {
+					instanceSizes: [0, 1, 2, 3, 4],
+					licenseKeysGenerated: '0'
+				}
+			}
+		});
+
+		const chooseBtns = getAllByText('choose');
+
+		expect(chooseBtns[2].disabled).toBeTruthy();
+
+		fireEvent.change(getByLabelText('instance-size'), {target: {value: 1}});
+
+		expect(chooseBtns[2].disabled).toBeFalsy();
 	});
 
 	it('displays a Choose button for each Purchase section', () => {

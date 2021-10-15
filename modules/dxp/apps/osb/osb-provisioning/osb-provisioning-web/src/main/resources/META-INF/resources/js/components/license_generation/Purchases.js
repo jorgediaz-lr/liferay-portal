@@ -39,7 +39,7 @@ function Purchases({detached, purchased}) {
 						<ClayTableCell headingCell>
 							{Liferay.Language.get('expiration-date')}
 						</ClayTableCell>
-						<ClayTableCell headingCell>
+						<ClayTableCell className="field-required" headingCell>
 							{Liferay.Language.get('instance-size')}
 						</ClayTableCell>
 						<ClayTableCell headingCell>

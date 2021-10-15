@@ -23,14 +23,14 @@ import LicenseDates from '../LicenseDates';
 
 function Purchase({
 	detached = false,
-	instanceSize = 1,
+	instanceSize = '',
 	instanceSizes,
 	licenseExpirationDate,
 	licenseKeysGenerated = DASH,
 	licenseStartDate,
 	productPurchaseKey = ''
 }) {
-	const [disableChoose, setDisableChoose] = useState(false);
+	const [disableChoose, setDisableChoose] = useState(true);
 	const [selectedExpirationDate, setSelectedExpirationDate] = useState(
 		licenseExpirationDate
 	);
@@ -51,8 +51,8 @@ function Purchase({
 	);
 
 	useEffect(() => {
-		setDisableChoose(!validDates);
-	}, [validDates]);
+		setDisableChoose(!sizing || !validDates);
+	}, [sizing, validDates]);
 
 	function handleChoosePurchase() {
 		updateLicense(license =>
