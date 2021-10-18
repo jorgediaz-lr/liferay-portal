@@ -79,10 +79,6 @@ public class LicenseKeyExporterImpl implements LicenseKeyExporter {
 
 		productName = StringUtil.extractChars(productName);
 
-		if (productName.startsWith("Portal")) {
-			productName = productName.substring(6);
-		}
-
 		sb.append("activation-key-");
 		sb.append(productName);
 		sb.append(StringPool.DASH);

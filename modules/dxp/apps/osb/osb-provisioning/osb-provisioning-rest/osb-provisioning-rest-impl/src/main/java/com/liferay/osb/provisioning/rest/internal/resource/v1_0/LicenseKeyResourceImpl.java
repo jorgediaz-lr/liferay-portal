@@ -153,6 +153,7 @@ public class LicenseKeyResourceImpl
 		filterQuery.addEquals("property_type", "primary", false);
 		filterQuery.addContains("name", "Commerce Subscription", false);
 		filterQuery.addContains("name", "DXP Cloud Subscription", false);
+		filterQuery.addContains("name", "Partnership", false);
 
 		List<ProductPurchaseView> productPurchaseViews =
 			_productPurchaseViewWebService.search(
@@ -173,9 +174,18 @@ public class LicenseKeyResourceImpl
 				  curProductName.contains(ProductConstants.NAME_DXP_CLOUD)) &&
 				 productGroupName.equals(ProductConstants.GROUP_NAME_DXP)) ||
 				(curProductName.contains(ProductConstants.NAME_PORTAL) &&
-				 productGroupName.equals(ProductConstants.GROUP_NAME_PORTAL))) {
+				 productGroupName.equals(ProductConstants.GROUP_NAME_PORTAL)) ||
+				(ArrayUtil.contains(
+					ProductConstants.NAMES_PARTNERSHIP, curProductName) &&
+				 (productGroupName.equals(
+					 ProductConstants.GROUP_NAME_COMMERCE) ||
+				  productGroupName.equals(ProductConstants.GROUP_NAME_DXP) ||
+				  productGroupName.equals(
+					  ProductConstants.GROUP_NAME_PORTAL)))) {
 
 				hasActiveProduct = true;
+
+				break;
 			}
 		}
 
