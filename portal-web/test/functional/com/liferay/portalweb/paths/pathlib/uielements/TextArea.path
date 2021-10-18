@@ -26,6 +26,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>BODY_SOURCE_VALUE</td>
+	<td>//*[contains(@value, 'Link to Document')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>CHANGE_LOG</td>
 	<td>//textarea[contains(@id,'ChangeLog')]</td>
 	<td></td>
