@@ -48,6 +48,14 @@ definition {
 		AlloyEditor.addContent(content = "${content}");
 	}
 
+	macro assertSourceContent {
+		AlloyEditor.clickContentField();
+
+		Click(locator1 = "Button#EDITOR_SWITCH");
+
+		AssertElementPresent(locator1 = "TextArea#BODY_SOURCE_VALUE");
+	}
+
 	macro clickContentField {
 		Click(
 			key_editor = "content",
