@@ -538,7 +538,7 @@ public class FreeMarkerManager extends BaseTemplateManager {
 			}
 		}
 
-		if (macroLibrary.length > 0) {
+		if (sb.index() > 0) {
 			sb.setIndex(sb.index() - 1);
 		}
 
