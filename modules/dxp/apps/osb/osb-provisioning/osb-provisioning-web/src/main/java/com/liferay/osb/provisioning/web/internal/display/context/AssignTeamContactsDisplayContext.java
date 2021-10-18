@@ -16,13 +16,13 @@ package com.liferay.osb.provisioning.web.internal.display.context;
 
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
+import com.liferay.osb.provisioning.search.FilterQuery;
 import com.liferay.osb.provisioning.web.internal.dao.search.AssignTeamContactRowChecker;
 import com.liferay.portal.kernel.dao.search.RowChecker;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
@@ -56,35 +56,21 @@ public class AssignTeamContactsDisplayContext extends ViewTeamDisplayContext {
 			renderRequest, currentURLObj, Collections.emptyList(),
 			"no-contacts-were-found");
 
-		StringBundler sb = new StringBundler(3);
+		FilterQuery filterQuery = new FilterQuery();
 
-		sb.append("customerAccountKeys/any(s:s eq '");
-		sb.append(account.getKey());
-		sb.append("')");
+		filterQuery.addLambdaEquals(
+			"customerAccountKeys", account.getKey(), true);
 
 		String[] contactRoleKeys = ParamUtil.getStringValues(
 			renderRequest, "contactRoleKeys");
 
 		if (!ArrayUtil.isEmpty(contactRoleKeys)) {
-			sb.append(" and accountKeysContactRoleKeys/any(s:");
-
-			for (int i = 0; i < contactRoleKeys.length; i++) {
-				if (i > 0) {
-					sb.append(" or ");
-				}
-
-				sb.append("s eq '");
-				sb.append(account.getKey());
-				sb.append("_");
-				sb.append(contactRoleKeys[i]);
-				sb.append("'");
-			}
-
-			sb.append(")");
+			filterQuery.addLambdaEquals(
+				"accountKeysContactRoleKeys", contactRoleKeys, true);
 		}
 
 		List<Contact> contacts = contactWebService.search(
-			keywords, sb.toString(), searchContainer.getCur(),
+			keywords, filterQuery, searchContainer.getCur(),
 			searchContainer.getEnd() - searchContainer.getStart(), "firstName");
 
 		searchContainer.setResults(
@@ -102,7 +88,7 @@ public class AssignTeamContactsDisplayContext extends ViewTeamDisplayContext {
 
 		searchContainer.setRowChecker(_getRowChecker());
 
-		int count = (int)contactWebService.searchCount(keywords, sb.toString());
+		int count = (int)contactWebService.searchCount(keywords, filterQuery);
 
 		searchContainer.setTotal(count);
 
@@ -110,14 +96,12 @@ public class AssignTeamContactsDisplayContext extends ViewTeamDisplayContext {
 	}
 
 	private RowChecker _getRowChecker() throws Exception {
-		StringBundler sb = new StringBundler(3);
+		FilterQuery filterQuery = new FilterQuery();
 
-		sb.append("teamKeys/any(s:s eq '");
-		sb.append(team.getKey());
-		sb.append("')");
+		filterQuery.addLambdaEquals("teamKeys", team.getKey(), true);
 
 		List<Contact> contacts = contactWebService.search(
-			StringPool.BLANK, sb.toString(), 1, 1000, StringPool.BLANK);
+			StringPool.BLANK, filterQuery, 1, 1000, StringPool.BLANK);
 
 		return new AssignTeamContactRowChecker(
 			renderResponse, ListUtil.toList(contacts, Contact::getKey));

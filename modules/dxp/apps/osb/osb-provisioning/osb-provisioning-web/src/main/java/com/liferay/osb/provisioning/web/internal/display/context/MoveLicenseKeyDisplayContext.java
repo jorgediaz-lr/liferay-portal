@@ -21,7 +21,7 @@ import com.liferay.osb.provisioning.constants.ProvisioningWebKeys;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductConsumptionWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductPurchaseViewWebService;
 import com.liferay.osb.provisioning.license.model.LicenseKey;
-import com.liferay.petra.string.StringBundler;
+import com.liferay.osb.provisioning.search.FilterQuery;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
 import com.liferay.portal.kernel.util.StringPool;
@@ -63,16 +63,14 @@ public class MoveLicenseKeyDisplayContext {
 	}
 
 	public String getDetachedLicenseKeysCount() throws Exception {
-		StringBundler sb = new StringBundler(5);
+		FilterQuery filterQuery = new FilterQuery();
 
-		sb.append("accountKey eq '");
-		sb.append(_licenseKey.getAccountKey());
-		sb.append("' and productKey eq '");
-		sb.append(_licenseKey.getProductKey());
-		sb.append("' and productPurchaseKey eq null");
+		filterQuery.addEquals("accountKey", _licenseKey.getAccountKey(), true);
+		filterQuery.addEquals("productKey", _licenseKey.getProductKey(), true);
+		filterQuery.addEquals("productPurchaseKey", (String)null, true);
 
 		long productConsumptionsCount =
-			_productConsumptionWebService.searchCount(sb.toString());
+			_productConsumptionWebService.searchCount(filterQuery);
 
 		if (productConsumptionsCount > 0) {
 			return String.valueOf(productConsumptionsCount);

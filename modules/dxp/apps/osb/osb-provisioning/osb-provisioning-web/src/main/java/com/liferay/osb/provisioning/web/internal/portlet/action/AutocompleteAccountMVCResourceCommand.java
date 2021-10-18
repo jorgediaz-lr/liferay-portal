@@ -30,7 +30,6 @@ import com.liferay.portal.kernel.servlet.ServletResponseUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.List;
@@ -100,7 +99,7 @@ public class AutocompleteAccountMVCResourceCommand
 				resourceRequest, "maxResults", 20);
 
 			List<Account> accounts = _accountWebService.search(
-				keywords, StringPool.BLANK, 1, maxResults, null);
+				keywords, null, 1, maxResults, null);
 
 			for (Account account : accounts) {
 				PortletURL portletURL = PortletURLFactoryUtil.create(

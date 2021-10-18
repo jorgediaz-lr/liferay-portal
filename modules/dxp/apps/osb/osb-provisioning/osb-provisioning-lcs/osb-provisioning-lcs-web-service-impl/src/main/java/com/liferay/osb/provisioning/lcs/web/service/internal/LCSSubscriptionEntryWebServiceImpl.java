@@ -30,6 +30,7 @@ import com.liferay.osb.provisioning.lcs.web.service.LCSSubscriptionEntryWebServi
 import com.liferay.osb.provisioning.lcs.web.service.internal.configuration.LCSConfiguration;
 import com.liferay.osb.provisioning.lcs.web.service.internal.model.LCSSubscriptionEntry;
 import com.liferay.osb.provisioning.license.helper.constants.LicenseType;
+import com.liferay.osb.provisioning.search.FilterQuery;
 import com.liferay.petra.json.web.service.client.JSONWebServiceClient;
 import com.liferay.petra.json.web.service.client.JSONWebServiceClientFactory;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
@@ -319,17 +320,15 @@ public class LCSSubscriptionEntryWebServiceImpl
 		Map<String, LCSSubscriptionEntry> lcsSubscriptionEntriesMap =
 			new HashMap<>();
 
-		StringBundler sb = new StringBundler(5);
+		FilterQuery filterQuery = new FilterQuery();
 
-		sb.append("(accountKey eq '");
-		sb.append(accountKey);
-		sb.append("') and (state eq '");
-		sb.append(ProductPurchaseConstants.STATE_ACTIVE);
-		sb.append("')");
+		filterQuery.addEquals("accountKey", accountKey, true);
+		filterQuery.addEquals(
+			"state", ProductPurchaseConstants.STATE_ACTIVE, true);
 
 		List<ProductPurchaseView> productPurchaseViews =
-			_productPurchaseViewWebService.getProductPurchaseViews(
-				StringPool.BLANK, sb.toString(), 1, 1000, StringPool.BLANK);
+			_productPurchaseViewWebService.search(
+				StringPool.BLANK, filterQuery, 1, 1000, StringPool.BLANK);
 
 		ProductPurchaseView slaProductPurchaseView = _getSLAProductPurchaseView(
 			productPurchaseViews);

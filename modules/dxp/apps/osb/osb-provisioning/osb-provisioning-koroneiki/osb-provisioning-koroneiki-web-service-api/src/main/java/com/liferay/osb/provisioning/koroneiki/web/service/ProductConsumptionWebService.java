@@ -15,6 +15,7 @@
 package com.liferay.osb.provisioning.koroneiki.web.service;
 
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductConsumption;
+import com.liferay.osb.provisioning.search.FilterQuery;
 
 import java.util.List;
 
@@ -38,9 +39,9 @@ public interface ProductConsumptionWebService {
 		throws Exception;
 
 	public List<ProductConsumption> search(
-			String filter, int page, int pageSize, String sort)
+			FilterQuery filterQuery, int page, int pageSize, String sort)
 		throws Exception;
 
-	public long searchCount(String filter) throws Exception;
+	public long searchCount(FilterQuery filterQuery) throws Exception;
 
 }

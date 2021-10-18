@@ -18,11 +18,11 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.osb.provisioning.exception.RequiredProductException;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.provisioning.model.ProductBundleProducts;
+import com.liferay.osb.provisioning.search.FilterQuery;
 import com.liferay.osb.provisioning.service.ProductBundleLocalService;
 import com.liferay.osb.provisioning.service.base.ProductBundleProductsLocalServiceBaseImpl;
 import com.liferay.osb.provisioning.service.persistence.ProductBundleProductsPK;
 import com.liferay.portal.aop.AopService;
-import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -82,24 +82,17 @@ public class ProductBundleProductsLocalServiceImpl
 		List<ProductBundleProducts> productBundleProducts =
 			getProductBundleProducts(productBundleId);
 
-		StringBundler sb = new StringBundler(
-			(productBundleProducts.size() * 4) - 1);
+		FilterQuery filterQuery = new FilterQuery();
 
-		for (int i = 0; i < productBundleProducts.size(); i++) {
-			ProductBundleProducts productBundleProduct =
-				productBundleProducts.get(i);
+		for (ProductBundleProducts productBundleProduct :
+				productBundleProducts) {
 
-			sb.append("(productKey eq '");
-			sb.append(productBundleProduct.getProductKey());
-			sb.append("')");
-
-			if (i < (productBundleProducts.size() - 1)) {
-				sb.append(" or ");
-			}
+			filterQuery.addEquals(
+				"productKey", productBundleProduct.getProductKey(), false);
 		}
 
-		return _productWebService.getProducts(
-			StringPool.BLANK, sb.toString(), 1, 1000, "name");
+		return _productWebService.search(
+			StringPool.BLANK, filterQuery, 1, 1000, "name");
 	}
 
 	public List<ProductBundleProducts> getProductBundleProducts(

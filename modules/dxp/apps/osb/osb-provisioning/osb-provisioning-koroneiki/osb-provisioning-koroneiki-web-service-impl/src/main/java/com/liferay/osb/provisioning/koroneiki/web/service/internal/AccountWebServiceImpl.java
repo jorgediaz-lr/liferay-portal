@@ -22,6 +22,7 @@ import com.liferay.osb.koroneiki.phloem.rest.client.resource.v1_0.AccountResourc
 import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.AccountSerDes;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.internal.configuration.KoroneikiConfiguration;
+import com.liferay.osb.provisioning.search.FilterQuery;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.exception.NoSuchContactException;
 import com.liferay.portal.kernel.util.StringPool;
@@ -152,9 +153,15 @@ public class AccountWebServiceImpl
 	}
 
 	public List<Account> search(
-			String search, String filterString, int page, int pageSize,
+			String search, FilterQuery filterQuery, int page, int pageSize,
 			String sortString)
 		throws Exception {
+
+		String filterString = null;
+
+		if (filterQuery != null) {
+			filterString = filterQuery.toString();
+		}
 
 		Page<Account> accountsPage = _accountResource.getAccountsPage(
 			search, filterString, Pagination.of(page, pageSize), sortString);
@@ -166,8 +173,14 @@ public class AccountWebServiceImpl
 		return Collections.emptyList();
 	}
 
-	public long searchCount(String search, String filterString)
+	public long searchCount(String search, FilterQuery filterQuery)
 		throws Exception {
+
+		String filterString = null;
+
+		if (filterQuery != null) {
+			filterString = filterQuery.toString();
+		}
 
 		Page<Account> accountsPage = _accountResource.getAccountsPage(
 			search, filterString, Pagination.of(1, 1), StringPool.BLANK);

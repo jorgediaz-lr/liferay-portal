@@ -28,13 +28,13 @@ import com.liferay.osb.provisioning.koroneiki.web.service.ContactRoleWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ContactWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamRoleWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamWebService;
+import com.liferay.osb.provisioning.search.FilterQuery;
 import com.liferay.osb.provisioning.zendesk.model.ZendeskOrganization;
 import com.liferay.osb.provisioning.zendesk.model.ZendeskTicket;
 import com.liferay.osb.provisioning.zendesk.model.ZendeskUser;
 import com.liferay.osb.provisioning.zendesk.web.service.ZendeskOrganizationWebService;
 import com.liferay.osb.provisioning.zendesk.web.service.ZendeskTicketWebService;
 import com.liferay.osb.provisioning.zendesk.web.service.ZendeskUserWebService;
-import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 
 import java.util.ArrayList;
@@ -108,16 +108,14 @@ public class ZendeskValidator {
 			TeamRole.Type.ACCOUNT.toString(),
 			TeamRoleConstants.NAME_FIRST_LINE_SUPPORT);
 
-		StringBundler sb = new StringBundler(5);
+		FilterQuery filterQuery = new FilterQuery();
 
-		sb.append("assignedTeamKeyTeamRoleKeys/any(s:s eq '");
-		sb.append(teamKey);
-		sb.append("_");
-		sb.append(flsTeamRole.getKey());
-		sb.append("')");
+		filterQuery.addLambdaEquals(
+			"assignedTeamKeyTeamRoleKeys", teamKey + "_" + flsTeamRole.getKey(),
+			true);
 
 		List<Account> accounts = _accountWebService.search(
-			StringPool.BLANK, sb.toString(), 1, 1000, StringPool.BLANK);
+			StringPool.BLANK, filterQuery, 1, 1000, StringPool.BLANK);
 
 		for (Account account : accounts) {
 			AccountEntry accountEntry =
@@ -173,34 +171,28 @@ public class ZendeskValidator {
 
 		boolean supportDeveloper = false;
 
-		StringBundler sb = new StringBundler(9);
-
-		sb.append("accountKeysContactRoleKeys/any(s:s eq '");
-		sb.append(accountKey);
-		sb.append(StringPool.UNDERLINE);
+		FilterQuery filterQuery = new FilterQuery();
 
 		ContactRole administratorContactRole =
 			_contactRoleWebService.getContactRole(
 				ContactRole.Type.ACCOUNT_CUSTOMER.toString(),
 				ContactRoleConstants.NAME_ADMINISTRATOR);
 
-		sb.append(administratorContactRole.getKey());
-
-		sb.append("' or s eq '");
-		sb.append(accountKey);
-		sb.append(StringPool.UNDERLINE);
+		filterQuery.addLambdaEquals(
+			"accountKeysContactRoleKeys",
+			accountKey + "_" + administratorContactRole.getKey(), false);
 
 		ContactRole supportDeveloperContactRole =
 			_contactRoleWebService.getContactRole(
 				ContactRole.Type.ACCOUNT_CUSTOMER.toString(),
 				ContactRoleConstants.NAME_SUPPORT_DEVELOPER);
 
-		sb.append(supportDeveloperContactRole.getKey());
-
-		sb.append("')");
+		filterQuery.addLambdaEquals(
+			"accountKeysContactRoleKeys",
+			accountKey + "_" + supportDeveloperContactRole.getKey(), false);
 
 		List<Contact> contacts = _contactWebService.search(
-			StringPool.BLANK, sb.toString(), 1, 1000, StringPool.BLANK);
+			StringPool.BLANK, filterQuery, 1, 1000, StringPool.BLANK);
 
 		for (Contact contact : contacts) {
 			String curEmailAddress = contact.getEmailAddress();
@@ -222,14 +214,12 @@ public class ZendeskValidator {
 	private boolean _isValidateFLSPartnerZendeskTickets(String teamKey)
 		throws Exception {
 
-		StringBundler sb = new StringBundler(3);
+		FilterQuery filterQuery = new FilterQuery();
 
-		sb.append("teamKeys/any(s:s eq '");
-		sb.append(teamKey);
-		sb.append("')");
+		filterQuery.addLambdaEquals("teamKeys", teamKey, true);
 
 		List<Contact> contacts = _contactWebService.search(
-			StringPool.BLANK, sb.toString(), 1, 1000, StringPool.BLANK);
+			StringPool.BLANK, filterQuery, 1, 1000, StringPool.BLANK);
 
 		if (contacts.size() <= 1) {
 			return true;

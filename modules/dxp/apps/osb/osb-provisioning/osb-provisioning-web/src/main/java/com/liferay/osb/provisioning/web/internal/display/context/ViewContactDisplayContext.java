@@ -24,6 +24,7 @@ import com.liferay.osb.provisioning.koroneiki.reader.AccountReader;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ContactRoleWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ContactWebService;
+import com.liferay.osb.provisioning.search.FilterQuery;
 import com.liferay.osb.provisioning.web.internal.permission.ContactPermissionChecker;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
@@ -32,7 +33,6 @@ import com.liferay.portal.kernel.portlet.PortletURLUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
@@ -80,15 +80,13 @@ public class ViewContactDisplayContext {
 			renderRequest, currentURLObj, Collections.emptyList(),
 			"this-user-is-not-assigned-to-any-" + type + "-roles-yet");
 
-		StringBundler sb = new StringBundler(4);
+		FilterQuery filterQuery = new FilterQuery();
 
-		sb.append(type);
-		sb.append("ContactUuids/any(s:s eq '");
-		sb.append(contact.getUuid());
-		sb.append("')");
+		filterQuery.addLambdaEquals(
+			type + "ContactUuids", contact.getUuid(), true);
 
 		List<Account> accounts = accountWebService.search(
-			StringPool.BLANK, sb.toString(), 1, 1000, "name");
+			StringPool.BLANK, filterQuery, 1, 1000, "name");
 
 		searchContainer.setResults(
 			TransformUtil.transform(

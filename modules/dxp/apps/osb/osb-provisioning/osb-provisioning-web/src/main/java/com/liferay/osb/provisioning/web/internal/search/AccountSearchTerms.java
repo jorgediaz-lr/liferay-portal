@@ -16,18 +16,12 @@ package com.liferay.osb.provisioning.web.internal.search;
 
 import com.liferay.osb.provisioning.koroneiki.constants.EntitlementConstants;
 import com.liferay.osb.provisioning.koroneiki.constants.ProductPurchaseConstants;
-import com.liferay.petra.string.StringPool;
+import com.liferay.osb.provisioning.search.FilterQuery;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
-import com.liferay.portal.kernel.util.DateUtil;
-import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.text.DateFormat;
-
-import java.util.Date;
-import java.util.Iterator;
-import java.util.Set;
 
 import javax.portlet.PortletRequest;
 
@@ -40,308 +34,183 @@ public class AccountSearchTerms extends AccountDisplayTerms {
 		super(portletRequest);
 	}
 
-	public String getAdvancedSearchFilter(
-			Set<String> subscriptionProductKeys, String createdByUuid,
+	public FilterQuery getAdvancedSearchFilter(
+			String[] subscriptionProductKeys, String createdByUuid,
 			String flsTeamRoleKey, String partnerTeamRoleKey)
 		throws Exception {
 
-		StringBundler sb = new StringBundler();
+		FilterQuery filterQuery = new FilterQuery();
 
 		if (!ArrayUtil.isEmpty(subscriptionStates)) {
-			sb.append(_getSubscriptionStateFilter(subscriptionProductKeys));
+			filterQuery.addFilterQuery(
+				_getSubscriptionStateFilter(subscriptionProductKeys),
+				andOperator);
 		}
 
 		if (!ArrayUtil.isEmpty(activeSLAs)) {
-			sb.append(_getBooleanOperator(sb));
+			FilterQuery nestedFilterQuery = new FilterQuery();
 
-			sb.append("(");
-
-			for (int i = 0; i < activeSLAs.length; i++) {
-				sb.append("entitlements/any(s:s eq '");
-				sb.append(activeSLAs[i]);
-				sb.append("')");
-
-				if ((i + 1) < activeSLAs.length) {
-					sb.append(" or ");
-				}
+			for (String activeSLA : activeSLAs) {
+				nestedFilterQuery.addLambdaEquals(
+					"entitlements", activeSLAs, false);
 			}
 
-			sb.append(")");
+			filterQuery.addFilterQuery(nestedFilterQuery, andOperator);
 		}
 
 		if (Validator.isNotNull(code)) {
-			sb.append(_getBooleanOperator(sb));
-
-			sb.append("contains(code, '");
-			sb.append(code);
-			sb.append("')");
+			filterQuery.addContains("code", code, andOperator);
 		}
 
 		if (Validator.isNotNull(countryName)) {
-			sb.append(_getBooleanOperator(sb));
-
-			sb.append("postalAddressCountries/any(s:s eq '");
-			sb.append(countryName);
-			sb.append("')");
+			filterQuery.addLambdaEquals(
+				"postalAddressCountries", countryName, andOperator);
 		}
 
 		if (Validator.isNotNull(createDateGT)) {
-			sb.append(_getBooleanOperator(sb));
-
-			sb.append("dateCreated gt ");
-
-			Date createDate = _dateFormat.parse(createDateGT);
-
-			sb.append(_isoDateFormat.format(createDate));
+			filterQuery.addGreaterThan(
+				"dateCreated", _dateFormat.parse(createDateGT), andOperator);
 		}
 
 		if (Validator.isNotNull(createDateLT)) {
-			sb.append(_getBooleanOperator(sb));
-
-			sb.append("dateCreated lt ");
-
-			Date createDate = _dateFormat.parse(createDateLT);
-
-			sb.append(_isoDateFormat.format(createDate));
+			filterQuery.addLessThan(
+				"dateCreated", _dateFormat.parse(createDateLT), andOperator);
 		}
 
 		if (Validator.isNotNull(createdByUuid)) {
-			sb.append(_getBooleanOperator(sb));
-
-			sb.append("creatorUuid eq '");
-			sb.append(createdByUuid);
-			sb.append("'");
+			filterQuery.addEquals("creatorUuid", createdByUuid, andOperator);
 		}
 
 		if (Validator.isNotNull(externalAccountKey)) {
-			sb.append(_getBooleanOperator(sb));
+			FilterQuery nestedFilterQuery = new FilterQuery();
 
-			sb.append("externalLinkEntityIds/any(s:contains(s, '");
-			sb.append(externalAccountKey);
-			sb.append("')) or ");
-			sb.append("productPurchaseExternalLinkEntityIds/any(s:contains(");
-			sb.append("s, '");
-			sb.append(externalAccountKey);
-			sb.append("'))");
+			nestedFilterQuery.addLambdaContains(
+				"externalLinkEntityIds", externalAccountKey, false);
+			nestedFilterQuery.addLambdaContains(
+				"productPurchaseExternalLinkEntityIds", externalAccountKey,
+				false);
+
+			filterQuery.addFilterQuery(nestedFilterQuery, andOperator);
 		}
 
 		if (Validator.isNotNull(flsTeamKey)) {
-			sb.append(_getBooleanOperator(sb));
-
-			sb.append("assignedTeamKeyTeamRoleKeys/any(s:s eq '");
-			sb.append(flsTeamKey);
-			sb.append("_");
-			sb.append(flsTeamRoleKey);
-			sb.append("')");
+			filterQuery.addLambdaEquals(
+				"assignedTeamKeyTeamRoleKeys",
+				flsTeamKey + "_" + flsTeamRoleKey, andOperator);
 		}
 
 		if (!ArrayUtil.isEmpty(internals)) {
-			sb.append(_getBooleanOperator(sb));
+			FilterQuery nestedFilterQuery = new FilterQuery();
 
-			sb.append("(");
-
-			for (int i = 0; i < internals.length; i++) {
-				sb.append("internal eq ");
-				sb.append(internals[i]);
-
-				if ((i + 1) < internals.length) {
-					sb.append(" or ");
-				}
+			for (boolean internal : internals) {
+				nestedFilterQuery.addEquals("internal", internal, false);
 			}
 
-			sb.append(")");
+			filterQuery.addFilterQuery(nestedFilterQuery, andOperator);
 		}
 
 		if (Validator.isNotNull(modifiedDateGT)) {
-			sb.append(_getBooleanOperator(sb));
-
-			sb.append("dateModified gt ");
-
-			Date modifiedDate = _dateFormat.parse(modifiedDateGT);
-
-			sb.append(_isoDateFormat.format(modifiedDate));
+			filterQuery.addGreaterThan(
+				"dateModified", _dateFormat.parse(modifiedDateGT), andOperator);
 		}
 
 		if (Validator.isNotNull(modifiedDateLT)) {
-			sb.append(_getBooleanOperator(sb));
-
-			sb.append("dateModified lt ");
-
-			Date modifiedDate = _dateFormat.parse(modifiedDateLT);
-
-			sb.append(_isoDateFormat.format(modifiedDate));
+			filterQuery.addLessThan(
+				"dateModified", _dateFormat.parse(modifiedDateLT), andOperator);
 		}
 
 		if (Validator.isNotNull(name)) {
-			sb.append(_getBooleanOperator(sb));
-
-			sb.append("contains(name, '");
-			sb.append(name);
-			sb.append("')");
+			filterQuery.addContains("name", name, andOperator);
 		}
 
 		if (Validator.isNotNull(notes)) {
-			sb.append(_getBooleanOperator(sb));
-
-			sb.append("generalNoteContent/any(s:contains(s, '");
-			sb.append(notes);
-			sb.append("'))");
+			filterQuery.addLambdaContains(
+				"generalNoteContent", notes, andOperator);
 		}
 
 		if (Validator.isNotNull(parentAccountKey)) {
-			sb.append(_getBooleanOperator(sb));
-
-			sb.append("parentAccountKey eq '");
-			sb.append(parentAccountKey);
-			sb.append("'");
+			filterQuery.addEquals(
+				"parentAccountKey", parentAccountKey, andOperator);
 		}
 
 		if (!ArrayUtil.isEmpty(partners)) {
-			sb.append(_getBooleanOperator(sb));
+			FilterQuery nestedFilterQuery = new FilterQuery();
 
-			sb.append("(");
-
-			for (int i = 0; i < partners.length; i++) {
-				if (!partners[i]) {
-					sb.append("not ");
-				}
-
-				sb.append("entitlements/any(s:s eq '");
-				sb.append(EntitlementConstants.PARTNER);
-				sb.append("')");
-
-				if ((i + 1) < partners.length) {
-					sb.append(" or ");
-				}
+			for (boolean partner : partners) {
+				nestedFilterQuery.addLambdaEquals(
+					"entitlements", EntitlementConstants.PARTNER, !partner,
+					false);
 			}
 
-			sb.append(")");
+			filterQuery.addFilterQuery(nestedFilterQuery, andOperator);
 		}
 
 		if (Validator.isNotNull(partnerTeamKey)) {
-			sb.append(_getBooleanOperator(sb));
-
-			sb.append("assignedTeamKeyTeamRoleKeys/any(s:s eq '");
-			sb.append(partnerTeamKey);
-			sb.append("_");
-			sb.append(partnerTeamRoleKey);
-			sb.append("')");
+			filterQuery.addLambdaEquals(
+				"assignedTeamKeyTeamRoleKeys",
+				partnerTeamKey + "_" + partnerTeamRoleKey, andOperator);
 		}
 
 		if (!ArrayUtil.isEmpty(providesFLS)) {
-			sb.append(_getBooleanOperator(sb));
+			FilterQuery nestedFilterQuery = new FilterQuery();
 
-			sb.append("(");
-
-			for (int i = 0; i < providesFLS.length; i++) {
-				if (!providesFLS[i]) {
-					sb.append("not ");
-				}
-
-				sb.append("teamsAssignedToAccountKeyTeamRoleKeys/any(s:");
-				sb.append("contains(s, '_");
-				sb.append(flsTeamRoleKey);
-				sb.append("'))");
-
-				if ((i + 1) < providesFLS.length) {
-					sb.append(" or ");
-				}
+			for (boolean providesFLSValue : providesFLS) {
+				nestedFilterQuery.addLambdaContains(
+					"teamsAssignedToAccountKeyTeamRoleKeys",
+					"_" + flsTeamRoleKey, !providesFLSValue, false);
 			}
 
-			sb.append(")");
+			filterQuery.addFilterQuery(nestedFilterQuery, andOperator);
 		}
 
 		if (!ArrayUtil.isEmpty(receivesFLS)) {
-			sb.append(_getBooleanOperator(sb));
+			FilterQuery nestedFilterQuery = new FilterQuery();
 
-			sb.append("(");
-
-			for (int i = 0; i < receivesFLS.length; i++) {
-				if (!receivesFLS[i]) {
-					sb.append("not ");
-				}
-
-				sb.append("assignedTeamKeyTeamRoleKeys/any(s:contains(s, '_");
-				sb.append(flsTeamRoleKey);
-				sb.append("'))");
-
-				if ((i + 1) < receivesFLS.length) {
-					sb.append(" or ");
-				}
+			for (boolean receivesFLSValue : receivesFLS) {
+				nestedFilterQuery.addLambdaContains(
+					"assignedTeamKeyTeamRoleKeys", "_" + flsTeamRoleKey,
+					!receivesFLSValue, false);
 			}
 
-			sb.append(")");
+			filterQuery.addFilterQuery(nestedFilterQuery, andOperator);
 		}
 
 		if (!ArrayUtil.isEmpty(regions)) {
-			sb.append(_getBooleanOperator(sb));
-
-			sb.append("(");
-
-			for (int i = 0; i < regions.length; i++) {
-				sb.append("region eq '");
-				sb.append(regions[i]);
-				sb.append("'");
-
-				if ((i + 1) < regions.length) {
-					sb.append(" or ");
-				}
-			}
-
-			sb.append(")");
+			filterQuery.addEquals("region", regions, andOperator);
 		}
 
 		if (Validator.isNotNull(salesInfo)) {
-			sb.append(_getBooleanOperator(sb));
-
-			sb.append("salesNoteContent/any(s:contains(s, '");
-			sb.append(salesInfo);
-			sb.append("'))");
+			filterQuery.addLambdaContains(
+				"salesNoteContent", salesInfo, andOperator);
 		}
 
 		if (!ArrayUtil.isEmpty(tiers)) {
-			sb.append(_getBooleanOperator(sb));
-
-			sb.append("(");
-
-			for (int i = 0; i < tiers.length; i++) {
-				sb.append("tier eq '");
-				sb.append(tiers[i]);
-				sb.append("'");
-
-				if ((i + 1) < tiers.length) {
-					sb.append(" or ");
-				}
-			}
-
-			sb.append(")");
+			filterQuery.addEquals("tier", tiers, andOperator);
 		}
 
 		if (Validator.isNotNull(workerContactEmailAddress)) {
-			sb.append(_getBooleanOperator(sb));
-
-			sb.append("workerContactEmailAddresses/any(s:s eq '");
-			sb.append(workerContactEmailAddress);
-			sb.append("')");
+			filterQuery.addLambdaEquals(
+				"workerContactEmailAddresses", workerContactEmailAddress,
+				andOperator);
 		}
 
-		return sb.toString();
+		return filterQuery;
 	}
 
-	public String getBasicSearchFilter(Set<String> subscriptionProductKeys) {
-		StringBundler sb = new StringBundler();
+	public FilterQuery getBasicSearchFilter(String[] subscriptionProductKeys) {
+		FilterQuery filterQuery = new FilterQuery();
 
 		if (!ArrayUtil.isEmpty(subscriptionStates)) {
-			sb.append(_getSubscriptionStateFilter(subscriptionProductKeys));
+			filterQuery.addFilterQuery(
+				_getSubscriptionStateFilter(subscriptionProductKeys),
+				andOperator);
 		}
 
 		if (parent) {
-			sb.append(_getBooleanOperator(sb));
-
-			sb.append("parent eq true");
+			filterQuery.addEquals("parent", true, andOperator);
 		}
 
-		return sb.toString();
+		return filterQuery;
 	}
 
 	public boolean hasSearchTerms() {
@@ -379,146 +248,85 @@ public class AccountSearchTerms extends AccountDisplayTerms {
 		return false;
 	}
 
-	private String _getBooleanOperator(StringBundler sb) {
-		if (sb.length() <= 0) {
-			return StringPool.BLANK;
-		}
+	private FilterQuery _getSubscriptionStateFilter(
+		String[] subscriptionProductKeys) {
 
-		if (andOperator) {
-			return " and ";
-		}
+		FilterQuery filterQuery = new FilterQuery();
 
-		return " or ";
-	}
-
-	private String _getSubscriptionStateFilter(
-		Set<String> subscriptionProductKeys) {
-
-		StringBundler sb = new StringBundler();
-
-		sb.append("(");
-
-		for (int i = 0; i < subscriptionStates.length; i++) {
-			String subscriptionState = subscriptionStates[i];
-
+		for (String subscriptionState : subscriptionStates) {
 			if (subscriptionState.equals(
 					ProductPurchaseConstants.STATE_ACTIVE)) {
 
-				sb.append(
-					_getSubscriptionStateFilter(
-						"activeProductKeys", subscriptionProductKeys));
+				filterQuery.addLambdaEquals(
+					"activeProductKeys", subscriptionProductKeys, false);
 			}
 			else if (subscriptionState.equals(
 						ProductPurchaseConstants.STATE_CANCELLED)) {
 
-				sb.append("(not ");
-				sb.append(
-					_getSubscriptionStateFilter(
-						"activeProductKeys", subscriptionProductKeys));
-				sb.append(" and not ");
-				sb.append(
-					_getSubscriptionStateFilter(
-						"expiredProductKeys", subscriptionProductKeys));
-				sb.append(" and not ");
-				sb.append(
-					_getSubscriptionStateFilter(
-						"unactivatedProductKeys", subscriptionProductKeys));
-				sb.append(" and ");
-				sb.append(
-					_getSubscriptionStateFilter(
-						"cancelledProductKeys", subscriptionProductKeys));
-				sb.append(")");
+				FilterQuery nestedFilterQuery = new FilterQuery();
+
+				nestedFilterQuery.addLambdaEquals(
+					"activeProductKeys", subscriptionProductKeys, true, true);
+				nestedFilterQuery.addLambdaEquals(
+					"expiredProductKeys", subscriptionProductKeys, true, true);
+				nestedFilterQuery.addLambdaEquals(
+					"unactivatedProductKeys", subscriptionProductKeys, true,
+					true);
+				nestedFilterQuery.addLambdaEquals(
+					"cancelledProductKeys", subscriptionProductKeys, true);
+
+				filterQuery.addFilterQuery(nestedFilterQuery, false);
 			}
 			else if (subscriptionState.equals(
 						ProductPurchaseConstants.STATE_EXPIRED)) {
 
-				sb.append("(not ");
-				sb.append(
-					_getSubscriptionStateFilter(
-						"activeProductKeys", subscriptionProductKeys));
-				sb.append(" and not ");
-				sb.append(
-					_getSubscriptionStateFilter(
-						"unactivatedProductKeys", subscriptionProductKeys));
-				sb.append(" and ");
-				sb.append(
-					_getSubscriptionStateFilter(
-						"expiredProductKeys", subscriptionProductKeys));
-				sb.append(")");
+				FilterQuery nestedFilterQuery = new FilterQuery();
+
+				nestedFilterQuery.addLambdaEquals(
+					"activeProductKeys", subscriptionProductKeys, true, true);
+				nestedFilterQuery.addLambdaEquals(
+					"unactivatedProductKeys", subscriptionProductKeys, true,
+					true);
+				nestedFilterQuery.addLambdaEquals(
+					"expiredProductKeys", subscriptionProductKeys, true);
+
+				filterQuery.addFilterQuery(nestedFilterQuery, false);
 			}
 			else if (subscriptionState.equals(
 						ProductPurchaseConstants.STATE_NOT_AVAILABLE)) {
 
-				sb.append("(not ");
-				sb.append(
-					_getSubscriptionStateFilter(
-						"activeProductKeys", subscriptionProductKeys));
-				sb.append(" and not ");
-				sb.append(
-					_getSubscriptionStateFilter(
-						"cancelledProductKeys", subscriptionProductKeys));
-				sb.append(" and not ");
-				sb.append(
-					_getSubscriptionStateFilter(
-						"expiredProductKeys", subscriptionProductKeys));
-				sb.append(" and not ");
-				sb.append(
-					_getSubscriptionStateFilter(
-						"unactivatedProductKeys", subscriptionProductKeys));
+				FilterQuery nestedFilterQuery = new FilterQuery();
 
-				sb.append(")");
+				nestedFilterQuery.addLambdaEquals(
+					"activeProductKeys", subscriptionProductKeys, true, true);
+				nestedFilterQuery.addLambdaEquals(
+					"cancelledProductKeys", subscriptionProductKeys, true,
+					true);
+				nestedFilterQuery.addLambdaEquals(
+					"expiredProductKeys", subscriptionProductKeys, true, true);
+				nestedFilterQuery.addLambdaEquals(
+					"unactivatedProductKeys", subscriptionProductKeys, true);
+
+				filterQuery.addFilterQuery(nestedFilterQuery, false);
 			}
 			else if (subscriptionState.equals(
 						ProductPurchaseConstants.STATE_UNACTIVATED)) {
 
-				sb.append("(not ");
-				sb.append(
-					_getSubscriptionStateFilter(
-						"activeProductKeys", subscriptionProductKeys));
-				sb.append(" and ");
-				sb.append(
-					_getSubscriptionStateFilter(
-						"unactivatedProductKeys", subscriptionProductKeys));
-				sb.append(")");
-			}
+				FilterQuery nestedFilterQuery = new FilterQuery();
 
-			if ((i + 1) < subscriptionStates.length) {
-				sb.append(" or ");
+				nestedFilterQuery.addLambdaEquals(
+					"activeProductKeys", subscriptionProductKeys, true, true);
+				nestedFilterQuery.addLambdaEquals(
+					"unactivatedProductKeys", subscriptionProductKeys, true);
+
+				filterQuery.addFilterQuery(nestedFilterQuery, false);
 			}
 		}
 
-		sb.append(")");
-
-		return sb.toString();
-	}
-
-	private String _getSubscriptionStateFilter(
-		String field, Set<String> subscriptionProductKeys) {
-
-		StringBundler sb = new StringBundler();
-
-		sb.append(field);
-		sb.append("/any(s:");
-
-		Iterator<String> iterator = subscriptionProductKeys.iterator();
-
-		while (iterator.hasNext()) {
-			sb.append("s eq '");
-			sb.append(iterator.next());
-			sb.append("'");
-
-			if (iterator.hasNext()) {
-				sb.append(" or ");
-			}
-		}
-
-		sb.append(")");
-
-		return sb.toString();
+		return filterQuery;
 	}
 
 	private final DateFormat _dateFormat =
 		DateFormatFactoryUtil.getSimpleDateFormat("yyyy-MM-dd");
-	private final DateFormat _isoDateFormat = DateUtil.getISO8601Format();
 
 }

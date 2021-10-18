@@ -15,6 +15,7 @@
 package com.liferay.osb.provisioning.koroneiki.web.service;
 
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
+import com.liferay.osb.provisioning.search.FilterQuery;
 
 import java.util.List;
 
@@ -31,11 +32,11 @@ public interface ProductPurchaseWebService {
 	public ProductPurchase getProductPurchase(String productPurchaseKey)
 		throws Exception;
 
-	public List<ProductPurchase> getProductPurchases(
-			String filterString, int page, int pageSize, String sortString)
+	public List<ProductPurchase> search(
+			FilterQuery filterQuery, int page, int pageSize, String sortString)
 		throws Exception;
 
-	public long getProductPurchasesCount(String filterString) throws Exception;
+	public long searchCount(FilterQuery filterQuery) throws Exception;
 
 	public ProductPurchase updateProductPurchase(
 			String agentName, String agentUID, String productPurchaseKey,

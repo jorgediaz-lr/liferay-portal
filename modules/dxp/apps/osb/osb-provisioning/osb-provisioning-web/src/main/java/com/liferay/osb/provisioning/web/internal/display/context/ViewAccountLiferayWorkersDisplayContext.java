@@ -22,6 +22,7 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.LabelItemList;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
 import com.liferay.osb.provisioning.constants.ProvisioningWebKeys;
+import com.liferay.osb.provisioning.search.FilterQuery;
 import com.liferay.portal.kernel.bean.BeanParamUtil;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -185,35 +186,29 @@ public class ViewAccountLiferayWorkersDisplayContext
 			renderRequest, currentURLObj, Collections.emptyList(),
 			"no-contacts-were-found");
 
-		StringBundler sb = new StringBundler();
+		FilterQuery filterQuery = new FilterQuery();
 
-		sb.append("workerAccountKeys/any(s:s eq '");
-		sb.append(account.getKey());
-		sb.append("')");
+		filterQuery.addLambdaEquals(
+			"workerAccountKeys", account.getKey(), true);
 
 		String[] contactRoleKeys = ParamUtil.getStringValues(
 			renderRequest, "contactRoleKeys");
 
 		if (!ArrayUtil.isEmpty(contactRoleKeys)) {
-			sb.append(" and accountKeysContactRoleKeys/any(s:");
+			String[] accountKeysContactRoleKeys =
+				new String[contactRoleKeys.length];
 
 			for (int i = 0; i < contactRoleKeys.length; i++) {
-				if (i > 0) {
-					sb.append(" or ");
-				}
-
-				sb.append("s eq '");
-				sb.append(account.getKey());
-				sb.append("_");
-				sb.append(contactRoleKeys[i]);
-				sb.append("'");
+				accountKeysContactRoleKeys[i] =
+					account.getKey() + "_" + contactRoleKeys[i];
 			}
 
-			sb.append(")");
+			filterQuery.addLambdaEquals(
+				"accountKeysContactRoleKeys", accountKeysContactRoleKeys, true);
 		}
 
 		List<Contact> contacts = contactWebService.search(
-			keywords, sb.toString(), searchContainer.getCur(),
+			keywords, filterQuery, searchContainer.getCur(),
 			searchContainer.getEnd() - searchContainer.getStart(), "firstName");
 
 		searchContainer.setResults(
@@ -229,7 +224,7 @@ public class ViewAccountLiferayWorkersDisplayContext
 						httpServletRequest, contact, contactRoles);
 				}));
 
-		int count = (int)contactWebService.searchCount(keywords, sb.toString());
+		int count = (int)contactWebService.searchCount(keywords, filterQuery);
 
 		searchContainer.setTotal(count);
 
@@ -286,9 +281,12 @@ public class ViewAccountLiferayWorkersDisplayContext
 	}
 
 	private List<ContactRole> _getContactRoles() throws Exception {
-		return contactRoleWebService.search(
-			"type eq '" + ContactRole.Type.ACCOUNT_WORKER.toString() + "'", 1,
-			1000, "name");
+		FilterQuery filterQuery = new FilterQuery();
+
+		filterQuery.addEquals(
+			"type", ContactRole.Type.ACCOUNT_WORKER.toString(), true);
+
+		return contactRoleWebService.search(filterQuery, 1, 1000, "name");
 	}
 
 	private List<DropdownItem> _getFilterRoleDropdownItems() throws Exception {

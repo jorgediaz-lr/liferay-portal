@@ -19,8 +19,8 @@ import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.exception.ContactRequiredException;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamWebService;
+import com.liferay.osb.provisioning.search.FilterQuery;
 import com.liferay.osb.provisioning.web.internal.util.ZendeskValidator;
-import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -92,11 +92,13 @@ public class UnassignAccountCustomerContactMVCActionCommand
 	}
 
 	private Team _getDefaultTeam(String accountKey) throws Exception {
-		String filterString = StringBundler.concat(
-			"accountKey eq '", accountKey, "' and system eq true");
+		FilterQuery filterQuery = new FilterQuery();
+
+		filterQuery.addEquals("accountKey", accountKey, true);
+		filterQuery.addEquals("system", true, true);
 
 		List<Team> teams = _teamWebService.search(
-			StringPool.BLANK, filterString, 1, 1, StringPool.BLANK);
+			StringPool.BLANK, filterQuery, 1, 1, StringPool.BLANK);
 
 		if (teams.isEmpty()) {
 			throw new ContactRequiredException();

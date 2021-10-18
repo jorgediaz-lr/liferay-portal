@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
@@ -79,8 +78,8 @@ public class AssignProductBundleProductsDisplayContext {
 
 		String keywords = ParamUtil.getString(_renderRequest, "keywords");
 
-		List<Product> products = _productWebService.getProducts(
-			keywords, StringPool.BLANK, searchContainer.getCur(),
+		List<Product> products = _productWebService.search(
+			keywords, null, searchContainer.getCur(),
 			searchContainer.getDelta(), "name");
 
 		searchContainer.setResults(
@@ -93,8 +92,7 @@ public class AssignProductBundleProductsDisplayContext {
 			new AssignProductsRowChecker(
 				_renderResponse, new long[0], Arrays.asList(_productKeys)));
 
-		int count = (int)_productWebService.getProductsCount(
-			keywords, StringPool.BLANK);
+		int count = (int)_productWebService.searchCount(keywords, null);
 
 		searchContainer.setTotal(count);
 

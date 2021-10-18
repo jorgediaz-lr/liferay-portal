@@ -21,7 +21,6 @@ import com.liferay.osb.provisioning.web.internal.permission.ProductPermissionChe
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
@@ -59,8 +58,8 @@ public class ProductSearchDisplayContext {
 
 		String keywords = ParamUtil.getString(_renderRequest, "keywords");
 
-		List<Product> products = _productWebService.getProducts(
-			keywords, StringPool.BLANK, searchContainer.getCur(),
+		List<Product> products = _productWebService.search(
+			keywords, null, searchContainer.getCur(),
 			searchContainer.getEnd() - searchContainer.getStart(), "name");
 
 		searchContainer.setResults(
@@ -69,8 +68,7 @@ public class ProductSearchDisplayContext {
 				product -> new ProductDisplay(
 					_renderRequest, _renderResponse, product)));
 
-		int count = (int)_productWebService.getProductsCount(
-			keywords, StringPool.BLANK);
+		int count = (int)_productWebService.searchCount(keywords, null);
 
 		searchContainer.setTotal(count);
 

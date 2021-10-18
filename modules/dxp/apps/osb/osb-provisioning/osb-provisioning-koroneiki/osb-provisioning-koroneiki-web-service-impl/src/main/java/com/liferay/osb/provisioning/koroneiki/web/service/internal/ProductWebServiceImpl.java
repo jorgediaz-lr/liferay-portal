@@ -22,6 +22,7 @@ import com.liferay.osb.koroneiki.phloem.rest.client.resource.v1_0.ProductResourc
 import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.ProductSerDes;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.internal.configuration.KoroneikiConfiguration;
+import com.liferay.osb.provisioning.search.FilterQuery;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.StringPool;
@@ -93,21 +94,6 @@ public class ProductWebServiceImpl
 	}
 
 	public List<Product> getProducts(
-			String search, String filterString, int page, int pageSize,
-			String sortString)
-		throws Exception {
-
-		Page<Product> productsPage = _productResource.getProductsPage(
-			search, filterString, Pagination.of(page, pageSize), sortString);
-
-		if ((productsPage != null) && (productsPage.getItems() != null)) {
-			return new ArrayList<>(productsPage.getItems());
-		}
-
-		return Collections.emptyList();
-	}
-
-	public List<Product> getProducts(
 			String domain, String entityName, String entityId, int page,
 			int pageSize)
 		throws Exception {
@@ -124,8 +110,35 @@ public class ProductWebServiceImpl
 		return Collections.emptyList();
 	}
 
-	public long getProductsCount(String search, String filterString)
+	public List<Product> search(
+			String search, FilterQuery filterQuery, int page, int pageSize,
+			String sortString)
 		throws Exception {
+
+		String filterString = null;
+
+		if (filterQuery != null) {
+			filterString = filterQuery.toString();
+		}
+
+		Page<Product> productsPage = _productResource.getProductsPage(
+			search, filterString, Pagination.of(page, pageSize), sortString);
+
+		if ((productsPage != null) && (productsPage.getItems() != null)) {
+			return new ArrayList<>(productsPage.getItems());
+		}
+
+		return Collections.emptyList();
+	}
+
+	public long searchCount(String search, FilterQuery filterQuery)
+		throws Exception {
+
+		String filterString = null;
+
+		if (filterQuery != null) {
+			filterString = filterQuery.toString();
+		}
 
 		Page<Product> productsPage = _productResource.getProductsPage(
 			search, filterString, Pagination.of(1, 1), StringPool.BLANK);

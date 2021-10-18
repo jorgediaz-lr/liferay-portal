@@ -26,6 +26,7 @@ import com.liferay.osb.provisioning.license.service.CommonLicenseKeyLocalService
 import com.liferay.osb.provisioning.rest.dto.v1_0.ProductGroup;
 import com.liferay.osb.provisioning.rest.internal.ProvisioningContactThreadLocal;
 import com.liferay.osb.provisioning.rest.resource.v1_0.CommonLicenseKeyResource;
+import com.liferay.osb.provisioning.search.FilterQuery;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
@@ -112,10 +113,13 @@ public class CommonLicenseKeyResourceImpl
 			String productEnvironment, Date dateEnd)
 		throws Exception {
 
+		FilterQuery filterQuery = new FilterQuery();
+
+		filterQuery.addEquals("accountKey", accountKey, true);
+
 		List<ProductPurchase> productPurchases =
-			_productPurchaseWebService.getProductPurchases(
-				"accountKey eq '" + accountKey + "'", 1, 1000,
-				StringPool.BLANK);
+			_productPurchaseWebService.search(
+				filterQuery, 1, 1000, StringPool.BLANK);
 
 		for (ProductPurchase productPurchase : productPurchases) {
 			ProductPurchase.Status status = productPurchase.getStatus();

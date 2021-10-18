@@ -25,6 +25,7 @@ import com.liferay.osb.provisioning.license.model.LicenseKey;
 import com.liferay.osb.provisioning.license.permission.LicenseKeyPermission;
 import com.liferay.osb.provisioning.license.service.LicenseEntryLocalService;
 import com.liferay.osb.provisioning.license.service.base.LicenseKeyServiceBaseImpl;
+import com.liferay.osb.provisioning.search.FilterQuery;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.instances.service.PortalInstancesLocalService;
@@ -37,7 +38,6 @@ import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.StringBundler;
 
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -70,19 +70,19 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		try {
 			User user = getUser();
 
-			StringBundler sb = new StringBundler(7);
+			FilterQuery filterQuery = new FilterQuery();
 
-			sb.append("accountKey eq '");
-			sb.append(accountKey);
-			sb.append("' and customerContactUuids/any(s:s eq '");
-			sb.append(user.getUuid());
-			sb.append("') and state eq 'active' and (property_type eq ");
-			sb.append("'primary' or contains(name, 'Commerce Subscription') ");
-			sb.append("or contains(name, 'DXP Cloud Subscription'))");
+			filterQuery.addEquals("accountKey", accountKey, true);
+			filterQuery.addLambdaEquals(
+				"customerContactUuids", user.getUuid(), true);
+			filterQuery.addEquals("state", "active", true);
+			filterQuery.addEquals("property_type", "primary", false);
+			filterQuery.addContains("name", "Commerce Subscription", false);
+			filterQuery.addContains("name", "DXP Cloud Subscription", false);
 
 			List<ProductPurchaseView> productPurchaseViews =
-				_productPurchaseViewWebService.getProductPurchaseViews(
-					StringPool.BLANK, sb.toString(), 1, 1000, StringPool.BLANK);
+				_productPurchaseViewWebService.search(
+					StringPool.BLANK, filterQuery, 1, 1000, StringPool.BLANK);
 
 			boolean hasActiveProduct = false;
 

@@ -47,6 +47,7 @@ import com.liferay.osb.provisioning.koroneiki.web.service.ProductPurchaseWebServ
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamRoleWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamWebService;
+import com.liferay.osb.provisioning.search.FilterQuery;
 import com.liferay.osb.provisioning.util.DataRegionUtil;
 import com.liferay.osb.provisioning.zendesk.model.ZendeskTicket;
 import com.liferay.osb.provisioning.zendesk.web.service.ZendeskTicketWebService;
@@ -195,34 +196,28 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 					" and the project already exists.");
 		}
 
-		StringBundler sb = new StringBundler(9);
-
-		sb.append("accountKeysContactRoleKeys/any(s:s eq '");
-		sb.append(accountKey);
-		sb.append(StringPool.UNDERLINE);
+		FilterQuery filterQuery = new FilterQuery();
 
 		ContactRole administratorContactRole =
 			_contactRoleWebService.getContactRole(
 				ContactRole.Type.ACCOUNT_CUSTOMER.toString(),
 				ContactRoleConstants.NAME_ADMINISTRATOR);
 
-		sb.append(administratorContactRole.getKey());
-
-		sb.append("' or s eq '");
-		sb.append(accountKey);
-		sb.append(StringPool.UNDERLINE);
+		filterQuery.addLambdaEquals(
+			"accountKeysContactRoleKeys",
+			accountKey + "_" + administratorContactRole.getKey(), false);
 
 		ContactRole supportDeveloperContactRole =
 			_contactRoleWebService.getContactRole(
 				ContactRole.Type.ACCOUNT_CUSTOMER.toString(),
 				ContactRoleConstants.NAME_SUPPORT_DEVELOPER);
 
-		sb.append(supportDeveloperContactRole.getKey());
-
-		sb.append("')");
+		filterQuery.addLambdaEquals(
+			"accountKeysContactRoleKeys",
+			accountKey + "_" + supportDeveloperContactRole.getKey(), false);
 
 		long curDeveloperCount = _contactWebService.searchCount(
-			StringPool.BLANK, sb.toString());
+			StringPool.BLANK, filterQuery);
 
 		int maxDeveloperCount = _accountReader.getMaxDeveloperCount(account);
 
@@ -235,7 +230,8 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		}
 
 		if (!inactiveContacts.isEmpty()) {
-			sb = new StringBundler((2 * inactiveContacts.size()) + 2);
+			StringBundler sb = new StringBundler(
+				(2 * inactiveContacts.size()) + 2);
 
 			sb.append("The following inactive contact(s) cannot be assigned ");
 			sb.append("to the account:<br />");
@@ -249,7 +245,8 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		}
 
 		if (!missingContacts.isEmpty()) {
-			sb = new StringBundler((2 * missingContacts.size()) + 2);
+			StringBundler sb = new StringBundler(
+				(2 * missingContacts.size()) + 2);
 
 			sb.append("The following missing contact(s) cannot be assigned ");
 			sb.append("to the account:<br />");
@@ -277,7 +274,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		}
 
 		if (!curPartnerAccountKey.equals(partnerAccountKey)) {
-			sb = new StringBundler(5);
+			StringBundler sb = new StringBundler(5);
 
 			sb.append("The partner account (");
 
@@ -318,7 +315,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			 (!partnerFirstLineSupport ||
 			  !curFLSAccountKey.equals(partnerAccountKey)))) {
 
-			sb = new StringBundler(5);
+			StringBundler sb = new StringBundler(5);
 
 			sb.append("The FLS partner account (");
 
@@ -365,18 +362,15 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 			Product product = productPurchase.getProduct();
 
-			sb = new StringBundler(7);
+			FilterQuery filterQuery2 = new FilterQuery();
 
-			sb.append("accountKey eq '");
-			sb.append(accountKey);
-			sb.append("' and productKey eq '");
-			sb.append(product.getKey());
-			sb.append("' and (endDate eq null or endDate le ");
-			sb.append(_dateFormat.format(new Date()));
-			sb.append(")");
+			filterQuery2.addEquals("accountKey", accountKey, true);
+			filterQuery2.addEquals("productKey", product.getKey(), true);
+			filterQuery2.addEquals("endDate", (String)null, false);
+			filterQuery2.addLessThanEquals("endDate", new Date(), false);
 
 			int productConsumptionCount =
-				(int)_productConsumptionWebService.searchCount(sb.toString());
+				(int)_productConsumptionWebService.searchCount(filterQuery2);
 
 			String productName = product.getName();
 
@@ -396,19 +390,16 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 				productName.contains(ProductConstants.NAME_COMMERCE) ||
 				productName.contains(ProductConstants.NAME_PORTAL)) {
 
-				sb = new StringBundler(7);
+				FilterQuery filterQuery3 = new FilterQuery();
 
-				sb.append("accountKey eq '");
-				sb.append(accountKey);
-				sb.append("' and productKey eq '");
-				sb.append(product.getKey());
-				sb.append("' and (endDate eq null or endDate ge ");
-				sb.append(_dateFormat.format(new Date()));
-				sb.append(")");
+				filterQuery3.addEquals("accountKey", accountKey, true);
+				filterQuery3.addEquals("productKey", product.getKey(), true);
+				filterQuery3.addEquals("endDate", (String)null, false);
+				filterQuery3.addGreaterThanEquals("endDate", new Date(), false);
 
 				productConsumptionCount =
 					(int)_productConsumptionWebService.searchCount(
-						sb.toString());
+						filterQuery3);
 
 				if (productConsumptionCount == 0) {
 					inactiveProvisionedProducts.add(productName);
@@ -420,24 +411,20 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 		if (renewal) {
 			if (analyticsCloud) {
-				sb = new StringBundler(5);
-
-				sb.append("accountKeysContactRoleKeys/any(s:s eq '");
-				sb.append(accountKey);
-				sb.append(StringPool.UNDERLINE);
+				FilterQuery filterQuery2 = new FilterQuery();
 
 				ContactRole analyticsCloudOwnerRole =
 					_contactRoleWebService.fetchContactRole(
 						ContactRole.Type.ACCOUNT_CUSTOMER.toString(),
 						ContactRoleConstants.NAME_ANALYTICS_CLOUD_OWNER);
 
-				sb.append(analyticsCloudOwnerRole.getKey());
-
-				sb.append("')");
+				filterQuery2.addLambdaEquals(
+					"accountKeysContactRoleKeys",
+					accountKey + "_" + analyticsCloudOwnerRole.getKey(), true);
 
 				long curAnalyticsCloudOwnerCount =
 					_contactWebService.searchCount(
-						StringPool.BLANK, sb.toString());
+						StringPool.BLANK, filterQuery2);
 
 				if (curAnalyticsCloudOwnerCount == 0) {
 					_logWarning(
@@ -449,10 +436,13 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 				}
 			}
 
+			FilterQuery filterQuery2 = new FilterQuery();
+
+			filterQuery2.addLambdaEquals(
+				"customerAccountKeys", accountKey, true);
+
 			long curContactsCount = _contactWebService.searchCount(
-				StringPool.BLANK,
-				StringBundler.concat(
-					"customerAccountKeys/any(s:s eq '", accountKey, "')"));
+				StringPool.BLANK, filterQuery2);
 
 			if (curContactsCount == 0) {
 				_logWarning(
@@ -493,13 +483,13 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		JSONObject accountJSONObject = jsonObject.getJSONObject("_account");
 		JSONObject projectJSONObject = jsonObject.getJSONObject("_project");
 
-		String accountName = accountJSONObject.getString("_name");
+		String name = accountJSONObject.getString("_name");
 
 		if (projectJSONObject != null) {
 			String projectName = projectJSONObject.getString("_name");
 
 			account.setName(projectName);
-			account.setCode(_getCode(accountName, projectName));
+			account.setCode(_getCode(name, projectName));
 
 			if (parentAccount != null) {
 				account.setParentAccountKey(parentAccount.getKey());
@@ -519,20 +509,24 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			}
 		}
 		else {
-			account.setName(accountName);
-			account.setCode(_getCode(accountName, null));
+			account.setName(name);
+			account.setCode(_getCode(name, null));
 		}
 
-		accountName = account.getName();
+		name = account.getName();
+
+		FilterQuery filterQuery = new FilterQuery();
+
+		filterQuery.addEquals("name", name, true);
 
 		List<Account> duplicateAccounts = _accountWebService.search(
-			StringPool.BLANK, "name eq '" + accountName + "'", 0, 1, null);
+			StringPool.BLANK, filterQuery, 0, 1, null);
 
 		if (!duplicateAccounts.isEmpty()) {
 			_logWarning("Account name must be unique");
 		}
 
-		if (accountName.contains(StringPool.PIPE)) {
+		if (name.contains(StringPool.PIPE)) {
 			_logWarning("Account name must not contain the | character");
 		}
 
@@ -586,15 +580,15 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		String dossieraAccountKey = accountJSONObject.getString(
 			"_dossieraAccountKey");
 
-		String accountName = accountJSONObject.getString("_name");
+		String name = accountJSONObject.getString("_name");
 
 		Account parentAccount = fetchAccount(dossieraAccountKey);
 
 		if (parentAccount != null) {
 			String parentAccountName = parentAccount.getName();
 
-			if (!accountName.equals(parentAccountName)) {
-				parentAccount.setName(accountName);
+			if (!name.equals(parentAccountName)) {
+				parentAccount.setName(name);
 
 				return _accountWebService.updateAccount(
 					StringPool.BLANK, StringPool.BLANK, parentAccount.getKey(),
@@ -606,8 +600,8 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 		parentAccount = new Account();
 
-		parentAccount.setName(accountName);
-		parentAccount.setCode(_getCode(accountName, null));
+		parentAccount.setName(name);
+		parentAccount.setCode(_getCode(name, null));
 
 		ExternalLink dossieraExternalLink = new ExternalLink();
 
@@ -629,14 +623,18 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		parentAccount.setExternalLinks(
 			new ExternalLink[] {dossieraExternalLink, salesforceExternalLink});
 
+		FilterQuery filterQuery = new FilterQuery();
+
+		filterQuery.addEquals("name", name, true);
+
 		List<Account> duplicateAccounts = _accountWebService.search(
-			StringPool.BLANK, "name eq '" + accountName + "'", 0, 1, null);
+			StringPool.BLANK, filterQuery, 0, 1, null);
 
 		if (!duplicateAccounts.isEmpty()) {
 			_logWarning("Parent Account name must be unique");
 		}
 
-		if (accountName.contains(StringPool.PIPE)) {
+		if (name.contains(StringPool.PIPE)) {
 			_logWarning("Parent Account name must not contain the | character");
 		}
 
@@ -1612,18 +1610,21 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			return false;
 		}
 
-		StringBundler sb = new StringBundler(7);
+		FilterQuery filterQuery = new FilterQuery();
 
-		sb.append("externalLinkEntityIds/any(s:s eq '");
+		StringBundler sb = new StringBundler(5);
+
 		sb.append(ExternalLinkDomain.SALESFORCE);
 		sb.append(StringPool.UNDERLINE);
 		sb.append(ExternalLinkEntityName.SALESFORCE_OPPORTUNITY);
 		sb.append(StringPool.UNDERLINE);
 		sb.append(salesforceOpportunityKey);
-		sb.append("')");
 
-		long productPurchaseCount =
-			_productPurchaseWebService.getProductPurchasesCount(sb.toString());
+		filterQuery.addLambdaEquals(
+			"externalLinkEntityIds", sb.toString(), true);
+
+		long productPurchaseCount = _productPurchaseWebService.searchCount(
+			filterQuery);
 
 		if (productPurchaseCount > 0) {
 			if (_log.isDebugEnabled()) {
@@ -1708,16 +1709,14 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 					ContactRoleConstants.NAME_SECONDARY_CONTACT);
 
 			if (Validator.isNotNull(accountKey)) {
-				StringBundler sb = new StringBundler(5);
+				FilterQuery filterQuery = new FilterQuery();
 
-				sb.append("accountKeysContactRoleKeys/any(s:s eq '");
-				sb.append(accountKey);
-				sb.append(StringPool.UNDERLINE);
-				sb.append(secondaryContactRole.getKey());
-				sb.append("')");
+				filterQuery.addLambdaEquals(
+					"accountKeysContactRoleKeys",
+					accountKey + "_" + secondaryContactRole.getKey(), true);
 
 				List<Contact> secondaryContacts = _contactWebService.search(
-					StringPool.BLANK, sb.toString(), 1, 1, StringPool.BLANK);
+					StringPool.BLANK, filterQuery, 1, 1, StringPool.BLANK);
 
 				if (!secondaryContacts.isEmpty()) {
 					Contact secondaryContact = secondaryContacts.get(0);
@@ -1850,11 +1849,13 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			return new Team[0];
 		}
 
-		String filterString = StringBundler.concat(
-			"accountKey eq '", partnerAccount.getKey(), "' and system eq true");
+		FilterQuery filterQuery = new FilterQuery();
+
+		filterQuery.addEquals("accountKey", partnerAccount.getKey(), true);
+		filterQuery.addEquals("system", true, true);
 
 		List<Team> partnerDefaultTeams = _teamWebService.search(
-			StringPool.BLANK, filterString, 1, 1, StringPool.BLANK);
+			StringPool.BLANK, filterQuery, 1, 1, StringPool.BLANK);
 
 		if (partnerDefaultTeams.isEmpty()) {
 			return new Team[0];
@@ -1872,12 +1873,13 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			return new Team[] {partnerDefaultTeam};
 		}
 
-		filterString = StringBundler.concat(
-			"accountKey eq '", partnerAccount.getKey(),
-			"' and contains(name, 'FLS')");
+		FilterQuery filterQuery2 = new FilterQuery();
+
+		filterQuery2.addEquals("accountKey", partnerAccount.getKey(), true);
+		filterQuery2.addContains("name", "FLS", true);
 
 		List<Team> partnerFLSTeams = _teamWebService.search(
-			StringPool.BLANK, filterString, 1, 1, StringPool.BLANK);
+			StringPool.BLANK, filterQuery2, 1, 1, StringPool.BLANK);
 
 		if (!partnerFLSTeams.isEmpty()) {
 			Team partnerFLSTeam = partnerFLSTeams.get(0);
@@ -2138,15 +2140,14 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 				contact.getEmailAddress(), contactRoleKeys);
 		}
 
-		StringBundler sb = new StringBundler(3);
+		FilterQuery filterQuery = new FilterQuery();
 
-		sb.append("accountKey eq '");
-		sb.append(accountKey);
-		sb.append("' and state eq 'Active'");
+		filterQuery.addEquals("accountKey", accountKey, true);
+		filterQuery.addEquals("state", "Active", true);
 
 		List<ProductPurchase> activeProductPurchases =
-			_productPurchaseWebService.getProductPurchases(
-				sb.toString(), 1, 1000, StringPool.BLANK);
+			_productPurchaseWebService.search(
+				filterQuery, 1, 1000, StringPool.BLANK);
 
 		Date newStartDate = new Date();
 
@@ -2226,15 +2227,15 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			if (activeProductPurchases.isEmpty() &&
 				(ewsaProductPurchase != null)) {
 
-				sb = new StringBundler(3);
+				FilterQuery filterQuery2 = new FilterQuery();
 
-				sb.append("accountKey eq '");
-				sb.append(getAccountKey(jsonObject));
-				sb.append("' and state eq 'Expired'");
+				filterQuery2.addEquals(
+					"accountKey", getAccountKey(jsonObject), true);
+				filterQuery2.addEquals("state", "Expired", true);
 
 				List<ProductPurchaseView> expiredProductPurchaseViews =
-					_productPurchaseViewWebService.getProductPurchaseViews(
-						StringPool.BLANK, sb.toString(), 1, 1000,
+					_productPurchaseViewWebService.search(
+						StringPool.BLANK, filterQuery2, 1, 1000,
 						StringPool.BLANK);
 
 				for (ProductPurchaseView expiredProductPurchaseView :
@@ -2410,8 +2411,12 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 	}
 
 	private boolean _isDuplicateCode(String code) throws Exception {
+		FilterQuery filterQuery = new FilterQuery();
+
+		filterQuery.addEquals("code", code, true);
+
 		List<Account> accounts = _accountWebService.search(
-			StringPool.BLANK, "code eq '" + code + "'", 1, 1, null);
+			StringPool.BLANK, filterQuery, 1, 1, null);
 
 		if (!accounts.isEmpty()) {
 			return true;
@@ -2473,9 +2478,6 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 	@Reference
 	private ContactWebService _contactWebService;
 
-	private final Format _dateFormat =
-		FastDateFormatFactoryUtil.getSimpleDateFormat(
-			"yyyy-MM-dd'T'HH:mm:ss'Z'");
 	private volatile DistributedMessagingConfiguration
 		_distributedMessagingConfiguration;
 

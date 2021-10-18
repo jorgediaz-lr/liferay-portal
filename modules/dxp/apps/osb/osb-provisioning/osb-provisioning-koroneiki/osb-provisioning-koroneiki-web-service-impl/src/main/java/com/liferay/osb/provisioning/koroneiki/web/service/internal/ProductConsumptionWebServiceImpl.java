@@ -20,6 +20,7 @@ import com.liferay.osb.koroneiki.phloem.rest.client.pagination.Pagination;
 import com.liferay.osb.koroneiki.phloem.rest.client.resource.v1_0.ProductConsumptionResource;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductConsumptionWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.internal.configuration.KoroneikiConfiguration;
+import com.liferay.osb.provisioning.search.FilterQuery;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 
@@ -80,12 +81,19 @@ public class ProductConsumptionWebServiceImpl
 	}
 
 	public List<ProductConsumption> search(
-			String filter, int page, int pageSize, String sort)
+			FilterQuery filterQuery, int page, int pageSize, String sort)
 		throws Exception {
+
+		String filterString = null;
+
+		if (filterQuery != null) {
+			filterString = filterQuery.toString();
+		}
 
 		Page<ProductConsumption> productConsumptionsPage =
 			_productConsumptionResource.getProductConsumptionsPage(
-				StringPool.BLANK, filter, Pagination.of(page, pageSize), sort);
+				StringPool.BLANK, filterString, Pagination.of(page, pageSize),
+				sort);
 
 		if ((productConsumptionsPage != null) &&
 			(productConsumptionsPage.getItems() != null)) {
@@ -96,10 +104,16 @@ public class ProductConsumptionWebServiceImpl
 		return Collections.emptyList();
 	}
 
-	public long searchCount(String filter) throws Exception {
+	public long searchCount(FilterQuery filterQuery) throws Exception {
+		String filterString = null;
+
+		if (filterQuery != null) {
+			filterString = filterQuery.toString();
+		}
+
 		Page<ProductConsumption> productConsumptionsPage =
 			_productConsumptionResource.getProductConsumptionsPage(
-				StringPool.BLANK, filter, Pagination.of(1, 1),
+				StringPool.BLANK, filterString, Pagination.of(1, 1),
 				StringPool.BLANK);
 
 		if (productConsumptionsPage != null) {

@@ -31,6 +31,7 @@ import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.CountryWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamRoleWebService;
+import com.liferay.osb.provisioning.search.FilterQuery;
 import com.liferay.osb.provisioning.web.internal.permission.AccountPermissionChecker;
 import com.liferay.osb.provisioning.web.internal.search.AccountSearch;
 import com.liferay.osb.provisioning.web.internal.search.AccountSearchTerms;
@@ -41,6 +42,7 @@ import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
@@ -207,9 +209,9 @@ public class AccountSearchDisplayContext {
 		AccountSearchTerms searchTerms =
 			(AccountSearchTerms)_accountSearch.getSearchTerms();
 
-		String filter = null;
+		FilterQuery filterQuery = null;
 
-		Set<String> subscriptionProductKeys = _getSubscriptionProductKeys();
+		String[] subscriptionProductKeys = _getSubscriptionProductKeys();
 
 		if (searchTerms.isAdvancedSearch()) {
 			String createdByUuid = _getCreatedByUuid(
@@ -222,12 +224,13 @@ public class AccountSearchDisplayContext {
 				TeamRole.Type.ACCOUNT.toString(),
 				TeamRoleConstants.NAME_PARTNER);
 
-			filter = searchTerms.getAdvancedSearchFilter(
+			filterQuery = searchTerms.getAdvancedSearchFilter(
 				subscriptionProductKeys, createdByUuid, flsTeamRole.getKey(),
 				partnerTeamRole.getKey());
 		}
 		else {
-			filter = searchTerms.getBasicSearchFilter(subscriptionProductKeys);
+			filterQuery = searchTerms.getBasicSearchFilter(
+				subscriptionProductKeys);
 		}
 
 		String sort = StringPool.BLANK;
@@ -237,7 +240,7 @@ public class AccountSearchDisplayContext {
 		}
 
 		List<Account> accounts = _accountWebService.search(
-			searchTerms.getKeywords(), filter, _accountSearch.getCur(),
+			searchTerms.getKeywords(), filterQuery, _accountSearch.getCur(),
 			_accountSearch.getEnd() - _accountSearch.getStart(), sort);
 
 		_accountSearch.setResults(
@@ -247,7 +250,7 @@ public class AccountSearchDisplayContext {
 					_renderRequest, _renderResponse, _accountReader, account)));
 
 		int count = (int)_accountWebService.searchCount(
-			searchTerms.getKeywords(), filter);
+			searchTerms.getKeywords(), filterQuery);
 
 		_accountSearch.setTotal(count);
 
@@ -284,7 +287,7 @@ public class AccountSearchDisplayContext {
 		return "not-available";
 	}
 
-	private Set<String> _getSubscriptionProductKeys() throws Exception {
+	private String[] _getSubscriptionProductKeys() throws Exception {
 		if (_subscriptionProductKeys != null) {
 			return _subscriptionProductKeys;
 		}
@@ -307,7 +310,8 @@ public class AccountSearchDisplayContext {
 			}
 		}
 
-		_subscriptionProductKeys = subscriptionProductKeys;
+		_subscriptionProductKeys = ArrayUtil.toStringArray(
+			subscriptionProductKeys);
 
 		return _subscriptionProductKeys;
 	}
@@ -322,7 +326,7 @@ public class AccountSearchDisplayContext {
 	private final ProductWebService _productWebService;
 	private final RenderRequest _renderRequest;
 	private final RenderResponse _renderResponse;
-	private Set<String> _subscriptionProductKeys;
+	private String[] _subscriptionProductKeys;
 	private final TeamRoleWebService _teamRoleWebService;
 	private final ThemeDisplay _themeDisplay;
 	private final UserLocalService _userLocalService;

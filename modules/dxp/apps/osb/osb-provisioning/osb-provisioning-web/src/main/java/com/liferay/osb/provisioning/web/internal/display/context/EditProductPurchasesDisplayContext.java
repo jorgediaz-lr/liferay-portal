@@ -19,6 +19,7 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductConsumption;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchaseView;
 import com.liferay.osb.provisioning.constants.ProvisioningWebKeys;
+import com.liferay.osb.provisioning.search.FilterQuery;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONUtil;
@@ -168,14 +169,13 @@ public class EditProductPurchasesDisplayContext
 			ProductPurchase productPurchase)
 		throws Exception {
 
-		StringBundler sb = new StringBundler(3);
+		FilterQuery filterQuery = new FilterQuery();
 
-		sb.append("productPurchaseKey eq '");
-		sb.append(productPurchase.getKey());
-		sb.append("'");
+		filterQuery.addEquals(
+			"productPurchaseKey", productPurchase.getKey(), true);
 
 		long productConsumptionsCount =
-			productConsumptionWebService.searchCount(sb.toString());
+			productConsumptionWebService.searchCount(filterQuery);
 
 		return new ProductPurchaseDisplay(
 			httpServletRequest, productPurchase, productConsumptionsCount);

@@ -48,6 +48,7 @@ import com.liferay.osb.provisioning.koroneiki.web.service.TeamWebService;
 import com.liferay.osb.provisioning.license.helper.constants.ProductVersion;
 import com.liferay.osb.provisioning.license.permission.LicenseKeyPermission;
 import com.liferay.osb.provisioning.license.service.LicenseKeyLocalService;
+import com.liferay.osb.provisioning.search.FilterQuery;
 import com.liferay.osb.provisioning.web.internal.permission.AccountPermissionChecker;
 import com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
@@ -295,7 +296,7 @@ public class ViewAccountDisplayContext {
 				addGroup(
 					dropdownGroupItem -> {
 						dropdownGroupItem.setDropdownItems(
-							_getFilterCustomerRoleDropdownItems());
+							_getFilterQueryCustomerRoleDropdownItems());
 						dropdownGroupItem.setLabel(
 							LanguageUtil.get(
 								httpServletRequest, "filter-by-role"));
@@ -443,16 +444,14 @@ public class ViewAccountDisplayContext {
 			ContactRole.Type.ACCOUNT_WORKER.toString(),
 			ContactRoleConstants.NAME_PRIMARY_CONTACT);
 
-		StringBundler sb = new StringBundler(5);
+		FilterQuery filterQuery = new FilterQuery();
 
-		sb.append("accountKeysContactRoleKeys/any(s:s eq '");
-		sb.append(account.getKey());
-		sb.append(StringPool.UNDERLINE);
-		sb.append(contactRole.getKey());
-		sb.append("')");
+		filterQuery.addLambdaEquals(
+			"accountKeysContactRoleKeys",
+			account.getKey() + "_" + contactRole.getKey(), true);
 
 		List<Contact> contacts = contactWebService.search(
-			StringPool.BLANK, sb.toString(), 1, 1, StringPool.BLANK);
+			StringPool.BLANK, filterQuery, 1, 1, StringPool.BLANK);
 
 		if (!contacts.isEmpty()) {
 			Contact primaryContact = contacts.get(0);
@@ -478,8 +477,8 @@ public class ViewAccountDisplayContext {
 			renderRequest, "orderByType", "asc");
 
 		List<ProductPurchaseView> productPurchaseViews =
-			productPurchaseViewWebService.getProductPurchaseViews(
-				keywords, _getFilter(tabs2), searchContainer.getCur(),
+			productPurchaseViewWebService.search(
+				keywords, _getFilterQuery(tabs2), searchContainer.getCur(),
 				searchContainer.getEnd() - searchContainer.getStart(),
 				_getSorts(orderByCol, orderByType));
 
@@ -489,9 +488,8 @@ public class ViewAccountDisplayContext {
 				productPurchaseView -> new ProductPurchaseViewDisplay(
 					httpServletRequest, account, productPurchaseView)));
 
-		int count =
-			(int)productPurchaseViewWebService.getProductPurchaseViewsCount(
-				keywords, _getFilter(tabs2));
+		int count = (int)productPurchaseViewWebService.searchCount(
+			keywords, _getFilterQuery(tabs2));
 
 		searchContainer.setTotal(count);
 
@@ -585,41 +583,41 @@ public class ViewAccountDisplayContext {
 		List<String> tabsNames = new ArrayList<>();
 
 		long activeProductPurchaseViewsCount =
-			productPurchaseViewWebService.getProductPurchaseViewsCount(
-				StringPool.BLANK, _getFilter("active"));
+			productPurchaseViewWebService.searchCount(
+				StringPool.BLANK, _getFilterQuery("active"));
 
 		tabsNames.add(getTabName("active", activeProductPurchaseViewsCount));
 
 		long futureProductPurchaseViewsCount =
-			productPurchaseViewWebService.getProductPurchaseViewsCount(
-				StringPool.BLANK, _getFilter("future"));
+			productPurchaseViewWebService.searchCount(
+				StringPool.BLANK, _getFilterQuery("future"));
 
 		tabsNames.add(getTabName("future", futureProductPurchaseViewsCount));
 
 		long complimentaryProductPurchaseViewsCount =
-			productPurchaseViewWebService.getProductPurchaseViewsCount(
-				StringPool.BLANK, _getFilter("complimentary"));
+			productPurchaseViewWebService.searchCount(
+				StringPool.BLANK, _getFilterQuery("complimentary"));
 
 		tabsNames.add(
 			getTabName(
 				"complimentary", complimentaryProductPurchaseViewsCount));
 
 		long expiredProductPurchaseViewsCount =
-			productPurchaseViewWebService.getProductPurchaseViewsCount(
-				StringPool.BLANK, _getFilter("expired"));
+			productPurchaseViewWebService.searchCount(
+				StringPool.BLANK, _getFilterQuery("expired"));
 
 		tabsNames.add(getTabName("expired", expiredProductPurchaseViewsCount));
 
 		long cancelledProductPurchaseViewsCount =
-			productPurchaseViewWebService.getProductPurchaseViewsCount(
-				StringPool.BLANK, _getFilter("cancelled"));
+			productPurchaseViewWebService.searchCount(
+				StringPool.BLANK, _getFilterQuery("cancelled"));
 
 		tabsNames.add(
 			getTabName("cancelled", cancelledProductPurchaseViewsCount));
 
 		long allProductPurchaseViewsCount =
-			productPurchaseViewWebService.getProductPurchaseViewsCount(
-				StringPool.BLANK, _getFilter(StringPool.BLANK));
+			productPurchaseViewWebService.searchCount(
+				StringPool.BLANK, _getFilterQuery(StringPool.BLANK));
 
 		tabsNames.add(getTabName("all", allProductPurchaseViewsCount));
 
@@ -753,7 +751,7 @@ public class ViewAccountDisplayContext {
 		return accountEntryWebService.fetchAccountEntry(account.getKey());
 	}
 
-	private String _getFilter(String tabs2) throws Exception {
+	private FilterQuery _getFilterQuery(String tabs2) throws Exception {
 		String[] productKeys = ParamUtil.getStringValues(
 			renderRequest, "productKeys");
 		String[] states = ParamUtil.getStringValues(renderRequest, "states");
@@ -772,54 +770,50 @@ public class ViewAccountDisplayContext {
 		Date endDate = PortalUtil.getDate(
 			endDateMonth, endDateDay, endDateYear, null);
 
-		StringBundler sb = new StringBundler(9);
+		FilterQuery filterQuery = new FilterQuery();
 
-		sb.append("(accountKey eq '");
-		sb.append(account.getKey());
-		sb.append("')");
+		filterQuery.addEquals("accountKey", account.getKey(), true);
 
 		if (tabs2.equals("active")) {
-			sb.append(" and (state eq '");
-			sb.append(ProductPurchaseConstants.STATE_ACTIVE);
-			sb.append("')");
+			filterQuery.addEquals(
+				"state", ProductPurchaseConstants.STATE_ACTIVE, true);
 		}
 		else if (tabs2.equals("cancelled")) {
-			sb.append(" and (state eq '");
-			sb.append(ProductPurchaseConstants.STATE_CANCELLED);
-			sb.append("')");
+			filterQuery.addEquals(
+				"state", ProductPurchaseConstants.STATE_CANCELLED, true);
 		}
 		else if (tabs2.equals("complimentary")) {
-			sb.append(" and (status eq '");
-			sb.append(WorkflowConstants.STATUS_INACTIVE);
-			sb.append("')");
+			filterQuery.addEquals(
+				"state", String.valueOf(WorkflowConstants.STATUS_INACTIVE),
+				true);
 		}
 		else if (tabs2.equals("expired")) {
-			sb.append(" and (state eq '");
-			sb.append(ProductPurchaseConstants.STATE_EXPIRED);
-			sb.append("')");
+			filterQuery.addEquals(
+				"state", ProductPurchaseConstants.STATE_EXPIRED, true);
 		}
 		else if (tabs2.equals("future")) {
-			sb.append(" and (state eq '");
-			sb.append(ProductPurchaseConstants.STATE_UNACTIVATED);
-			sb.append("')");
+			filterQuery.addEquals(
+				"state", ProductPurchaseConstants.STATE_UNACTIVATED, true);
 		}
 
 		if (!tabs2.equals("active") && (states.length > 0)) {
-			sb.append(_getStatesFilter(states));
+			filterQuery.addEquals("state", states, true);
 		}
 
 		if (productKeys.length > 0) {
-			sb.append(_getProductKeysFilter(productKeys));
+			filterQuery.addEquals("productKey", productKeys, true);
 		}
 
 		if ((startDate != null) && (endDate != null)) {
-			sb.append(_getSupportLifeFilter(startDate, endDate));
+			filterQuery.addGreaterThanEquals(
+				"supportLifeStartDate", startDate, true);
+			filterQuery.addLessThanEquals("supportLifeEndDate", endDate, true);
 		}
 
-		return sb.toString();
+		return filterQuery;
 	}
 
-	private List<DropdownItem> _getFilterCustomerRoleDropdownItems()
+	private List<DropdownItem> _getFilterQueryCustomerRoleDropdownItems()
 		throws Exception {
 
 		String[] contactRoleKeys = ParamUtil.getStringValues(
@@ -827,10 +821,13 @@ public class ViewAccountDisplayContext {
 
 		return new DropdownItemList() {
 			{
+				FilterQuery filterQuery = new FilterQuery();
+
+				filterQuery.addEquals(
+					"type", ContactRole.Type.ACCOUNT_CUSTOMER.toString(), true);
+
 				List<ContactRole> contactRoles = contactRoleWebService.search(
-					"type eq '" + ContactRole.Type.ACCOUNT_CUSTOMER.toString() +
-						"'",
-					1, 1000, "name");
+					filterQuery, 1, 1000, "name");
 
 				for (ContactRole contactRole : contactRoles) {
 					add(
@@ -934,28 +931,6 @@ public class ViewAccountDisplayContext {
 		return portletURL.toString();
 	}
 
-	private String _getProductKeysFilter(String[] productKeys) {
-		StringBundler sb = new StringBundler((5 * productKeys.length) + 1);
-
-		for (int i = 0; i < productKeys.length; i++) {
-			if (i == 0) {
-				sb.append(" and (");
-			}
-
-			sb.append("(productKey eq '");
-			sb.append(productKeys[i]);
-			sb.append("')");
-
-			if (i < (productKeys.length - 1)) {
-				sb.append(" or ");
-			}
-		}
-
-		sb.append(")");
-
-		return sb.toString();
-	}
-
 	private String _getSorts(String orderByCol, String orderByType) {
 		StringBundler sb = new StringBundler(4);
 
@@ -971,32 +946,6 @@ public class ViewAccountDisplayContext {
 		}
 
 		return sb.toString();
-	}
-
-	private String _getStatesFilter(String[] states) {
-		StringBundler sb = new StringBundler((4 * states.length) + 2);
-
-		sb.append(" and (");
-
-		for (int i = 0; i < states.length; i++) {
-			String state = states[i];
-
-			sb.append("(state eq '");
-			sb.append(state);
-			sb.append("')");
-
-			if (i < (states.length - 1)) {
-				sb.append(" or ");
-			}
-		}
-
-		sb.append(")");
-
-		if (sb.length() > 7) {
-			return sb.toString();
-		}
-
-		return StringPool.BLANK;
 	}
 
 	private String _getSupportInstructions(AccountEntry accountEntry) {
@@ -1028,18 +977,6 @@ public class ViewAccountDisplayContext {
 		).put(
 			"name", StringPool.DASH
 		);
-	}
-
-	private String _getSupportLifeFilter(Date startDate, Date endDate) {
-		StringBundler sb = new StringBundler(5);
-
-		sb.append(" and ((supportLifeStartDate ge ");
-		sb.append(dateFormat.format(startDate));
-		sb.append(") and (supportLifeEndDate le ");
-		sb.append(dateFormat.format(endDate));
-		sb.append("))");
-
-		return sb.toString();
 	}
 
 	private boolean _hasPermission(String actionId) throws Exception {

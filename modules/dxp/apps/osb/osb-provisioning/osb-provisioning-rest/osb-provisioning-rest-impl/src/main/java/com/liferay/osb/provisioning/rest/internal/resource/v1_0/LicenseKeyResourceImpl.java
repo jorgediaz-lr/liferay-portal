@@ -47,6 +47,7 @@ import com.liferay.osb.provisioning.rest.dto.v1_0.util.LicenseKeyUtil;
 import com.liferay.osb.provisioning.rest.internal.ProvisioningContactThreadLocal;
 import com.liferay.osb.provisioning.rest.internal.odata.entity.v1_0.LicenseKeyEntityModel;
 import com.liferay.osb.provisioning.rest.resource.v1_0.LicenseKeyResource;
+import com.liferay.osb.provisioning.search.FilterQuery;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -145,17 +146,17 @@ public class LicenseKeyResourceImpl
 
 		_checkAccountSelfProvisioningPermission(accountKey);
 
-		StringBundler sb = new StringBundler(5);
+		FilterQuery filterQuery = new FilterQuery();
 
-		sb.append("accountKey eq '");
-		sb.append(accountKey);
-		sb.append("' and state eq 'active' and (property_type eq 'primary' ");
-		sb.append("or contains(name, 'Commerce Subscription') or ");
-		sb.append("contains(name, 'DXP Cloud Subscription'))");
+		filterQuery.addEquals("accountKey", accountKey, true);
+		filterQuery.addEquals("state", "active", true);
+		filterQuery.addEquals("property_type", "primary", false);
+		filterQuery.addContains("name", "Commerce Subscription", false);
+		filterQuery.addContains("name", "DXP Cloud Subscription", false);
 
 		List<ProductPurchaseView> productPurchaseViews =
-			_productPurchaseViewWebService.getProductPurchaseViews(
-				StringPool.BLANK, sb.toString(), 1, 1000, StringPool.BLANK);
+			_productPurchaseViewWebService.search(
+				StringPool.BLANK, filterQuery, 1, 1000, StringPool.BLANK);
 
 		boolean hasActiveProduct = false;
 
@@ -654,27 +655,29 @@ public class LicenseKeyResourceImpl
 			String accountKey, String productGroupName)
 		throws Exception {
 
-		StringBundler sb = new StringBundler(5);
+		FilterQuery filterQuery = new FilterQuery();
 
-		sb.append("accountKey eq '");
-		sb.append(accountKey);
-		sb.append("' and property_licenses eq 'true' and ");
+		filterQuery.addEquals("accountKey", accountKey, true);
+		filterQuery.addEquals("property_licenses", "true", true);
 
 		if (productGroupName.equals(ProductGroup.Name.COMMERCE.toString())) {
-			sb.append("contains(name, 'Commerce Subscription')");
+			filterQuery.addContains("name", "Commerce Subscription", true);
 		}
 		else if (productGroupName.equals(ProductGroup.Name.DXP.toString())) {
-			sb.append("startswith(name, 'DXP') and not contains(name, 'DXP ");
-			sb.append("Cloud')");
+			filterQuery.addStartsWith("name", "DXP", true);
+
+			filterQuery.addContains("name", "DXP Cloud", true, true);
 		}
 		else if (productGroupName.equals(ProductGroup.Name.PORTAL.toString())) {
-			sb.append("contains(name, 'Portal') and not contains(name, 'Early");
-			sb.append(" Access Program')");
+			filterQuery.addContains("name", "Portal", true);
+
+			filterQuery.addContains(
+				"name", "Early  Access Program", true, true);
 		}
 
 		List<ProductPurchaseView> productPurchaseViews =
-			_productPurchaseViewWebService.getProductPurchaseViews(
-				StringPool.BLANK, sb.toString(), 1, 1000, StringPool.BLANK);
+			_productPurchaseViewWebService.search(
+				StringPool.BLANK, filterQuery, 1, 1000, StringPool.BLANK);
 
 		if (productPurchaseViews.isEmpty()) {
 			return new SubscriptionTerm[0];

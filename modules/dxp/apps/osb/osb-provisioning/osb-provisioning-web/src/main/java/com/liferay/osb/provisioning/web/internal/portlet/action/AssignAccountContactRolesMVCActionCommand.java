@@ -24,6 +24,7 @@ import com.liferay.osb.provisioning.koroneiki.constants.ContactRoleConstants;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ContactRoleWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ContactWebService;
+import com.liferay.osb.provisioning.search.FilterQuery;
 import com.liferay.osb.provisioning.web.internal.util.ZendeskValidator;
 import com.liferay.portal.kernel.exception.NoSuchContactException;
 import com.liferay.portal.kernel.log.Log;
@@ -35,7 +36,6 @@ import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -174,16 +174,14 @@ public class AssignAccountContactRolesMVCActionCommand
 			ContactRole.Type.ACCOUNT_WORKER.toString(), contactRoleName);
 
 		if (ArrayUtil.contains(addContactRoleKeys, contactRole.getKey())) {
-			StringBundler sb = new StringBundler(5);
+			FilterQuery filterQuery = new FilterQuery();
 
-			sb.append("accountKeysContactRoleKeys/any(s:s eq '");
-			sb.append(accountKey);
-			sb.append(StringPool.UNDERLINE);
-			sb.append(contactRole.getKey());
-			sb.append("')");
+			filterQuery.addLambdaEquals(
+				"accountKeysContactRoleKeys",
+				accountKey + "_" + contactRole.getKey(), true);
 
 			List<Contact> contacts = _contactWebService.search(
-				StringPool.BLANK, sb.toString(), 1, 1, StringPool.BLANK);
+				StringPool.BLANK, filterQuery, 1, 1, StringPool.BLANK);
 
 			if (!contacts.isEmpty()) {
 				Contact contact = contacts.get(0);

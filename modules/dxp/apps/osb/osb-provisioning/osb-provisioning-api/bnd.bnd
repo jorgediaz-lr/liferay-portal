@@ -5,6 +5,7 @@ Export-Package:\
 	com.liferay.osb.provisioning.constants,\
 	com.liferay.osb.provisioning.exception,\
 	com.liferay.osb.provisioning.model,\
+	com.liferay.osb.provisioning.search,\
 	com.liferay.osb.provisioning.service,\
 	com.liferay.osb.provisioning.service.persistence,\
 	com.liferay.osb.provisioning.util

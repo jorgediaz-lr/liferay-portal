@@ -73,7 +73,7 @@ public class ContactSearchDisplayContext {
 		String keywords = ParamUtil.getString(_renderRequest, "keywords");
 
 		List<Contact> contacts = _contactWebService.search(
-			keywords, StringPool.BLANK, searchContainer.getCur(),
+			keywords, null, searchContainer.getCur(),
 			searchContainer.getEnd() - searchContainer.getStart(),
 			StringPool.BLANK);
 
@@ -83,8 +83,7 @@ public class ContactSearchDisplayContext {
 				contact -> new ContactDisplay(
 					_httpServletRequest, contact, null)));
 
-		int count = (int)_contactWebService.searchCount(
-			keywords, StringPool.BLANK);
+		int count = (int)_contactWebService.searchCount(keywords, null);
 
 		searchContainer.setTotal(count);
 

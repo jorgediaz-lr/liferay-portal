@@ -28,8 +28,8 @@ import com.liferay.osb.provisioning.license.helper.constants.ProductVersion;
 import com.liferay.osb.provisioning.license.model.LicenseEntry;
 import com.liferay.osb.provisioning.license.permission.LicenseKeyPermission;
 import com.liferay.osb.provisioning.license.service.LicenseEntryLocalService;
+import com.liferay.osb.provisioning.search.FilterQuery;
 import com.liferay.osb.provisioning.web.internal.configuration.ProvisioningWebConfiguration;
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -167,16 +167,14 @@ public class AddLicenseKeyDisplayContext {
 	}
 
 	private JSONObject _getDetachedDetails(String productKey) throws Exception {
-		StringBundler sb = new StringBundler(5);
+		FilterQuery filterQuery = new FilterQuery();
 
-		sb.append("accountKey eq '");
-		sb.append(_account.getKey());
-		sb.append("' and productKey eq '");
-		sb.append(productKey);
-		sb.append("' and productPurchaseKey eq null");
+		filterQuery.addEquals("accountKey", _account.getKey(), true);
+		filterQuery.addEquals("productKey", productKey, true);
+		filterQuery.addEquals("productPurchaseKey", (String)null, true);
 
 		long productConsumptionsCount =
-			_productConsumptionWebService.searchCount(sb.toString());
+			_productConsumptionWebService.searchCount(filterQuery);
 
 		List<Integer> sizing = new ArrayList<>();
 
@@ -195,9 +193,12 @@ public class AddLicenseKeyDisplayContext {
 		JSONArray licensableProductsJSONArray =
 			JSONFactoryUtil.createJSONArray();
 
-		List<Product> products = _productWebService.getProducts(
-			StringPool.BLANK, "property_licenses eq 'true'", 1, 1000,
-			StringPool.BLANK);
+		FilterQuery filterQuery = new FilterQuery();
+
+		filterQuery.addEquals("property_licenses", "true", true);
+
+		List<Product> products = _productWebService.search(
+			StringPool.BLANK, filterQuery, 1, 1000, StringPool.BLANK);
 
 		for (Product product : products) {
 			String[] versions = ProductVersion.getProductVersions(
@@ -265,15 +266,14 @@ public class AddLicenseKeyDisplayContext {
 	}
 
 	private JSONObject _getPurchasedProductsJSONObject() throws Exception {
-		StringBundler sb = new StringBundler(3);
+		FilterQuery filterQuery = new FilterQuery();
 
-		sb.append("accountKey eq '");
-		sb.append(_account.getKey());
-		sb.append("' and property_licenses eq 'true'");
+		filterQuery.addEquals("accountKey", _account.getKey(), true);
+		filterQuery.addEquals("property_licenses", "true", true);
 
 		List<ProductPurchaseView> productPurchaseViews =
-			_productPurchaseViewWebService.getProductPurchaseViews(
-				StringPool.BLANK, sb.toString(), 1, 1000, StringPool.BLANK);
+			_productPurchaseViewWebService.search(
+				StringPool.BLANK, filterQuery, 1, 1000, StringPool.BLANK);
 
 		JSONObject purchasedProductsJSONObject =
 			JSONFactoryUtil.createJSONObject();

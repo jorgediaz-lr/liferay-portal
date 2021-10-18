@@ -123,8 +123,8 @@ public class LicenseKeySearchDisplayContext {
 
 		JSONArray productsJSONArray = JSONFactoryUtil.createJSONArray();
 
-		List<Product> products = _productWebService.getProducts(
-			StringPool.BLANK, StringPool.BLANK, 1, 1000, StringPool.BLANK);
+		List<Product> products = _productWebService.search(
+			StringPool.BLANK, null, 1, 1000, StringPool.BLANK);
 
 		for (Product product : products) {
 			productsJSONArray.put(

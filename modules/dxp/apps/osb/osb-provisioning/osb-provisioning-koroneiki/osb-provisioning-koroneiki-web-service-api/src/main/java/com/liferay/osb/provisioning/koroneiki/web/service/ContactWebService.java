@@ -15,6 +15,7 @@
 package com.liferay.osb.provisioning.koroneiki.web.service;
 
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
+import com.liferay.osb.provisioning.search.FilterQuery;
 
 import java.util.List;
 
@@ -34,11 +35,11 @@ public interface ContactWebService {
 		throws Exception;
 
 	public List<Contact> search(
-			String search, String filterString, int page, int pageSize,
+			String search, FilterQuery filterQuery, int page, int pageSize,
 			String sortString)
 		throws Exception;
 
-	public long searchCount(String search, String filterString)
+	public long searchCount(String search, FilterQuery filterQuery)
 		throws Exception;
 
 	public Contact updateContact(

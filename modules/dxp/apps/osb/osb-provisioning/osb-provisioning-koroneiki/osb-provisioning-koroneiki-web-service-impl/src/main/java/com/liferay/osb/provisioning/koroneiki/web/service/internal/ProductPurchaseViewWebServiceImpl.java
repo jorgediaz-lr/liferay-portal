@@ -20,6 +20,7 @@ import com.liferay.osb.koroneiki.phloem.rest.client.pagination.Pagination;
 import com.liferay.osb.koroneiki.phloem.rest.client.resource.v1_0.ProductPurchaseViewResource;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductPurchaseViewWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.internal.configuration.KoroneikiConfiguration;
+import com.liferay.osb.provisioning.search.FilterQuery;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -52,12 +53,18 @@ public class ProductPurchaseViewWebServiceImpl
 				accountKey, productKey);
 	}
 
-	public List<ProductPurchaseView> getProductPurchaseViews(
-			String search, String filterString, int page, int pageSize,
+	public List<ProductPurchaseView> search(
+			String search, FilterQuery filterQuery, int page, int pageSize,
 			String sortString)
 		throws Exception {
 
 		try {
+			String filterString = null;
+
+			if (filterQuery != null) {
+				filterString = filterQuery.toString();
+			}
+
 			Page<ProductPurchaseView> productPurchaseViewsPage =
 				_productPurchaseViewResource.getProductPurchaseViewsPage(
 					search, filterString, Pagination.of(page, pageSize),
@@ -76,10 +83,16 @@ public class ProductPurchaseViewWebServiceImpl
 		return Collections.emptyList();
 	}
 
-	public long getProductPurchaseViewsCount(String search, String filterString)
+	public long searchCount(String search, FilterQuery filterQuery)
 		throws Exception {
 
 		try {
+			String filterString = null;
+
+			if (filterQuery != null) {
+				filterString = filterQuery.toString();
+			}
+
 			Page<ProductPurchaseView> productPurchaseViewsPage =
 				_productPurchaseViewResource.getProductPurchaseViewsPage(
 					search, filterString, Pagination.of(1, 1),

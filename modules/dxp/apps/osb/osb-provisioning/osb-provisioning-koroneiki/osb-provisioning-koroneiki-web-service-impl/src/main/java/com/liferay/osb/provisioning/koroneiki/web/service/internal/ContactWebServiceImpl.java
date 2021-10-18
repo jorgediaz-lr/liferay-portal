@@ -22,6 +22,7 @@ import com.liferay.osb.koroneiki.phloem.rest.client.resource.v1_0.ContactResourc
 import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.ContactSerDes;
 import com.liferay.osb.provisioning.koroneiki.web.service.ContactWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.internal.configuration.KoroneikiConfiguration;
+import com.liferay.osb.provisioning.search.FilterQuery;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.util.StringPool;
 
@@ -77,9 +78,15 @@ public class ContactWebServiceImpl implements ContactWebService {
 	}
 
 	public List<Contact> search(
-			String search, String filterString, int page, int pageSize,
+			String search, FilterQuery filterQuery, int page, int pageSize,
 			String sortString)
 		throws Exception {
+
+		String filterString = null;
+
+		if (filterQuery != null) {
+			filterString = filterQuery.toString();
+		}
 
 		Page<Contact> contactsPage = _contactResource.getContactsPage(
 			search, filterString, Pagination.of(page, pageSize), sortString);
@@ -91,8 +98,14 @@ public class ContactWebServiceImpl implements ContactWebService {
 		return Collections.emptyList();
 	}
 
-	public long searchCount(String search, String filterString)
+	public long searchCount(String search, FilterQuery filterQuery)
 		throws Exception {
+
+		String filterString = null;
+
+		if (filterQuery != null) {
+			filterString = filterQuery.toString();
+		}
 
 		Page<Contact> contactsPage = _contactResource.getContactsPage(
 			search, filterString, Pagination.of(1, 1), StringPool.BLANK);

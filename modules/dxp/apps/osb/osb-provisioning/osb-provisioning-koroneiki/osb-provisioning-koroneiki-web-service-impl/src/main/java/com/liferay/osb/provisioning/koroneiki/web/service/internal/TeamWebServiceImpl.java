@@ -21,6 +21,7 @@ import com.liferay.osb.koroneiki.phloem.rest.client.pagination.Pagination;
 import com.liferay.osb.koroneiki.phloem.rest.client.resource.v1_0.TeamResource;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.internal.configuration.KoroneikiConfiguration;
+import com.liferay.osb.provisioning.search.FilterQuery;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.util.StringPool;
 
@@ -76,9 +77,15 @@ public class TeamWebServiceImpl
 	}
 
 	public List<Team> search(
-			String search, String filterString, int page, int pageSize,
+			String search, FilterQuery filterQuery, int page, int pageSize,
 			String sortString)
 		throws Exception {
+
+		String filterString = null;
+
+		if (filterQuery != null) {
+			filterString = filterQuery.toString();
+		}
 
 		Page<Team> teamsPage = _teamResource.getTeamsPage(
 			search, filterString, Pagination.of(page, pageSize), sortString);
@@ -90,8 +97,14 @@ public class TeamWebServiceImpl
 		return Collections.emptyList();
 	}
 
-	public long searchCount(String search, String filterString)
+	public long searchCount(String search, FilterQuery filterQuery)
 		throws Exception {
+
+		String filterString = null;
+
+		if (filterQuery != null) {
+			filterString = filterQuery.toString();
+		}
 
 		Page<Team> teamsPage = _teamResource.getTeamsPage(
 			search, filterString, Pagination.of(1, 1), StringPool.BLANK);

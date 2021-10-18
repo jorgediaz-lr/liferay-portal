@@ -18,10 +18,10 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenu;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
 import com.liferay.osb.provisioning.koroneiki.constants.TeamRoleConstants;
+import com.liferay.osb.provisioning.search.FilterQuery;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
@@ -64,10 +64,12 @@ public class ViewAccountTeamsDisplayContext extends ViewAccountDisplayContext {
 
 		String keywords = ParamUtil.getString(renderRequest, "keywords");
 
-		String filterString = "accountKey eq '" + account.getKey() + "'";
+		FilterQuery filterQuery = new FilterQuery();
+
+		filterQuery.addEquals("accountKey", account.getKey(), true);
 
 		List<Team> teams = teamWebService.search(
-			keywords, filterString, searchContainer.getCur(),
+			keywords, filterQuery, searchContainer.getCur(),
 			searchContainer.getEnd() - searchContainer.getStart(), "name");
 
 		searchContainer.setResults(
@@ -80,7 +82,7 @@ public class ViewAccountTeamsDisplayContext extends ViewAccountDisplayContext {
 					_getAssignedAccountsCount(
 						team, TeamRoleConstants.NAME_PARTNER))));
 
-		int count = (int)teamWebService.searchCount(keywords, filterString);
+		int count = (int)teamWebService.searchCount(keywords, filterQuery);
 
 		searchContainer.setTotal(count);
 
@@ -93,15 +95,13 @@ public class ViewAccountTeamsDisplayContext extends ViewAccountDisplayContext {
 		TeamRole teamRole = teamRoleWebService.getTeamRole(
 			TeamRole.Type.ACCOUNT.toString(), teamRoleName);
 
-		StringBundler sb = new StringBundler(5);
+		FilterQuery filterQuery = new FilterQuery();
 
-		sb.append("assignedTeamKeyTeamRoleKeys/any(s:s eq '");
-		sb.append(team.getKey());
-		sb.append("_");
-		sb.append(teamRole.getKey());
-		sb.append("')");
+		filterQuery.addLambdaEquals(
+			"assignedTeamKeyTeamRoleKeys",
+			team.getKey() + "_" + teamRole.getKey(), true);
 
-		return accountWebService.searchCount(StringPool.BLANK, sb.toString());
+		return accountWebService.searchCount(StringPool.BLANK, filterQuery);
 	}
 
 }

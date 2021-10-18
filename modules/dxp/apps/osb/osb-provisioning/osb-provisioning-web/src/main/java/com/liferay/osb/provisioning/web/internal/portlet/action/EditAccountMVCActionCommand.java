@@ -24,8 +24,8 @@ import com.liferay.osb.provisioning.koroneiki.constants.TeamRoleConstants;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamRoleWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.TeamWebService;
+import com.liferay.osb.provisioning.search.FilterQuery;
 import com.liferay.osb.provisioning.util.DataRegionUtil;
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -283,12 +283,14 @@ public class EditAccountMVCActionCommand extends BaseMVCActionCommand {
 		TeamRole teamRole = _teamRoleWebService.getTeamRole(
 			TeamRole.Type.ACCOUNT.toString(), teamRoleName);
 
-		String filterString = StringBundler.concat(
-			"accountKeyTeamRoleKeys/any(s:s eq '", accountKey, "_",
-			teamRole.getKey(), "')");
+		FilterQuery filterQuery = new FilterQuery();
+
+		filterQuery.addLambdaEquals(
+			"accountKeyTeamRoleKeys", accountKey + "_" + teamRole.getKey(),
+			true);
 
 		List<Team> teams = _teamWebService.search(
-			StringPool.BLANK, filterString, 1, 1000, StringPool.BLANK);
+			StringPool.BLANK, filterQuery, 1, 1000, StringPool.BLANK);
 
 		for (Team team : teams) {
 			if (teamKey.equals(team.getKey())) {

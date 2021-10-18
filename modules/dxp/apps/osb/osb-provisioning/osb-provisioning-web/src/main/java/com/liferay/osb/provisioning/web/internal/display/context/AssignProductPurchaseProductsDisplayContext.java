@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
@@ -100,8 +99,7 @@ public class AssignProductPurchaseProductsDisplayContext {
 
 		String keywords = ParamUtil.getString(_renderRequest, "keywords");
 
-		int count = (int)_productWebService.getProductsCount(
-			keywords, StringPool.BLANK);
+		int count = (int)_productWebService.searchCount(keywords, null);
 
 		List<Object> results = new ArrayList<>();
 
@@ -123,8 +121,8 @@ public class AssignProductPurchaseProductsDisplayContext {
 			}
 
 			if (results.size() < searchContainer.getDelta()) {
-				List<Product> products = _productWebService.getProducts(
-					keywords, StringPool.BLANK, 1,
+				List<Product> products = _productWebService.search(
+					keywords, null, 1,
 					searchContainer.getDelta() - results.size(), "name");
 
 				results.addAll(
@@ -158,8 +156,8 @@ public class AssignProductPurchaseProductsDisplayContext {
 					endPage = (int)Math.ceil(end * 1.0 / size);
 				}
 
-				List<Product> products = _productWebService.getProducts(
-					keywords, StringPool.BLANK, endPage, size, "name");
+				List<Product> products = _productWebService.search(
+					keywords, null, endPage, size, "name");
 
 				start = start % size;
 

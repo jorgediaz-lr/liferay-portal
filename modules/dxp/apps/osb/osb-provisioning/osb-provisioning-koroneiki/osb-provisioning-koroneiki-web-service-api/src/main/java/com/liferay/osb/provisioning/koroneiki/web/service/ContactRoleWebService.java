@@ -15,6 +15,7 @@
 package com.liferay.osb.provisioning.koroneiki.web.service;
 
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
+import com.liferay.osb.provisioning.search.FilterQuery;
 
 import java.util.List;
 
@@ -44,7 +45,7 @@ public interface ContactRoleWebService {
 		throws Exception;
 
 	public List<ContactRole> search(
-			String filterString, int page, int pageSize, String sortString)
+			FilterQuery filterQuery, int page, int pageSize, String sortString)
 		throws Exception;
 
 }
