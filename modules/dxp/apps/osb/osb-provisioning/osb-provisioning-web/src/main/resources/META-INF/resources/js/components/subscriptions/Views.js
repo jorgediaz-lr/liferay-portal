@@ -82,18 +82,20 @@ export function AddView({
 				/>
 			)}
 
-			<div className="info">
-				<svg
-					aria-label={Liferay.Language.get('info-icon')}
-					className="lexicon-icon-info-circle-full"
-					role="img"
-				>
-					<use xlinkHref="#info-circle-full" />
-				</svg>
+			<div className="info-container">
+				<div className="info">
+					<svg
+						aria-label={Liferay.Language.get('info-icon')}
+						className="lexicon-icon-info-circle-full"
+						role="img"
+					>
+						<use xlinkHref="#info-circle-full" />
+					</svg>
 
-				{Liferay.Language.get(
-					'date-and-time-displayed-in-utc-all-end-dates-are-exclusive'
-				)}
+					{Liferay.Language.get(
+						'date-and-time-displayed-in-utc-all-end-dates-are-exclusive'
+					)}
+				</div>
 			</div>
 
 			<div className="subscriptions">
@@ -166,18 +168,20 @@ export function EditView({
 					/>
 				)}
 
-				<div className="info">
-					<svg
-						aria-label={Liferay.Language.get('info-icon')}
-						className="lexicon-icon-info-circle-full"
-						role="img"
-					>
-						<use xlinkHref="#info-circle-full" />
-					</svg>
+				<div className="info-container">
+					<div className="info">
+						<svg
+							aria-label={Liferay.Language.get('info-icon')}
+							className="lexicon-icon-info-circle-full"
+							role="img"
+						>
+							<use xlinkHref="#info-circle-full" />
+						</svg>
 
-					{Liferay.Language.get(
-						'date-and-time-displayed-in-utc-all-end-dates-are-exclusive'
-					)}
+						{Liferay.Language.get(
+							'date-and-time-displayed-in-utc-all-end-dates-are-exclusive'
+						)}
+					</div>
 				</div>
 
 				<div className="subscriptions">

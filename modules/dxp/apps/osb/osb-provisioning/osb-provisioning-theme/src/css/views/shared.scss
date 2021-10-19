@@ -242,12 +242,15 @@
 	padding: $spacing-default;
 }
 
-.info {
+.info-container {
+	align-items: center;
 	color: $secondary;
+	display: flex;
 	font-size: $mid-font-size;
-	margin-bottom: $spacing-default;
+	justify-content: space-between;
+	margin: 0 $spacing-default $spacing-default;
 
-	svg {
+	.info svg {
 		fill: $secondary;
 		margin-right: $spacing-xs;
 		vertical-align: middle;

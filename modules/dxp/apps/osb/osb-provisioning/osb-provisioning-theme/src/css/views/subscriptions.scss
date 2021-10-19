@@ -45,6 +45,11 @@
 		}
 	}
 
+	.info-container {
+		margin-left: 0;
+		margin-right: 0;
+	}
+
 	.subscriptions {
 		label {
 			display: block;
@@ -68,8 +73,4 @@
 		justify-content: space-between;
 		padding: $spacing-lg 0;
 	}
-}
-
-.subscriptions-date-time-info {
-	padding: 0 $spacing-default;
 }

@@ -28,12 +28,25 @@ PortletURL portletURL = viewAccountDisplayContext.getPortletURL();
 SearchContainer productPurchasesSearchContainer = viewAccountDisplayContext.getProductPurchaseViewsSearchContainer();
 %>
 
-<div class="info subscriptions-date-time-info">
-	<svg aria-label="<liferay-ui:message key="info-icon" />" class="lexicon-icon-info-circle-full" role="img">
-		<use xlink:href="#info-circle-full" />
-	</svg>
+<div class="info-container">
+	<div class="info">
+		<svg aria-label="<liferay-ui:message key="info-icon" />" class="lexicon-icon-info-circle-full" role="img">
+			<use xlink:href="#info-circle-full" />
+		</svg>
 
-	<liferay-ui:message key="date-and-time-displayed-in-utc-all-end-dates-are-exclusive" />
+		<liferay-ui:message key="date-and-time-displayed-in-utc-all-end-dates-are-exclusive" />
+	</div>
+
+	<c:if test="<%= viewAccountDisplayContext.hasManageAccountsPermission() %>">
+		<clay:button
+			elementClasses="test"
+			icon="time"
+			monospaced="<%= true %>"
+			style="secondary"
+			title='<%= LanguageUtil.get(request, "extend-all-active-subscriptions") %>'
+			type="button"
+		/>
+	</c:if>
 </div>
 
 <div class="details-table table-striped">
