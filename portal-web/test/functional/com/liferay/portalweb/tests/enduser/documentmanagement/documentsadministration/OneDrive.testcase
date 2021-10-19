@@ -89,7 +89,8 @@ definition {
 		}
 	}
 
-	@description = "This test ensures that an Excel sheet can be added via the OneDrive editor."
+	@description = "This will be ignored until LPS-111761 is fixed.This test ensures that an Excel sheet can be added via the OneDrive editor."
+	@ignore = "true"
 	@priority = "5"
 	test AddExcelSheet {
 		property test.name.skip.portal.instance = "OneDrive#AddExcelSheet";
@@ -256,7 +257,8 @@ definition {
 			tagNameList = "adventures");
 	}
 
-	@description = "This test ensures that no residual data is left in the Portal UI after canceling checkout under site admin on an Excel document during creation."
+	@description = "This will be ignored until LPS-111761 is fixed.This test ensures that no residual data is left in the Portal UI after canceling checkout under site admin on an Excel document during creation."
+	@ignore = "true"
 	@priority = "4"
 	test CancelCheckoutOnExcelSheet {
 		property test.name.skip.portal.instance = "OneDrive#CancelCheckoutOnExcelSheet";
@@ -309,7 +311,8 @@ definition {
 			locator1 = "DocumentsAndMedia#DESCRIPTIVE_LIST_DOCUMENT_TITLE");
 	}
 
-	@description = "This test ensures that an Excel sheet can be deleted."
+	@description = "This will be ignored until LPS-111761 is fixed.This test ensures that an Excel sheet can be deleted."
+	@ignore = "true"
 	@priority = "5"
 	test DeleteExcelSheet {
 		property test.name.skip.portal.instance = "OneDrive#DeleteExcelSheet";

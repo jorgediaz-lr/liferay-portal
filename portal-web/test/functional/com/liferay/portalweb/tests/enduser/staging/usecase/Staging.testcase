@@ -779,7 +779,8 @@ definition {
 			remoteStaging = "true");
 	}
 
-	@description = "This is a use case for LPS-93695."
+	@description = "This will be ignored until LPS-127502 is fixed.This is a use case for LPS-93695."
+	@ignore = "true"
 	@priority = "3"
 	test PublishContentPageWithCategory {
 		JSONLayout.addPublicLayout(

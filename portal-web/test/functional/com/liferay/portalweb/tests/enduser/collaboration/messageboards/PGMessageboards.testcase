@@ -155,6 +155,8 @@ definition {
 			threadSubject = "MB Thread Message Subject");
 	}
 
+	@description = "This will be ignored until LPS-122137 is fixed."
+	@ignore = "true"
 	@priority = "4"
 	test AddMBCategoryThreadQuestion {
 		Navigator.gotoPage(pageName = "Message Boards Page");
@@ -348,6 +350,8 @@ definition {
 			threadSubject = "MB Thread Message Subject");
 	}
 
+	@description = "This will be ignored until LPS-122137 is fixed."
+	@ignore = "true"
 	@priority = "4"
 	test AddMBThreadWithMultipleAttachments {
 		Navigator.gotoPage(pageName = "Message Boards Page");
@@ -642,7 +646,8 @@ definition {
 			threadSubject2 = "MB Explanation Post Subject");
 	}
 
-	@description = "This is a use case for LPS-67722."
+	@description = "This will be ignored until LPS-122137 is fixed.This is a use case for LPS-67722."
+	@ignore = "true"
 	@priority = "5"
 	test ReplyAfterDownloadingMBThreadAttachmentTwice {
 		Navigator.gotoPage(pageName = "Message Boards Page");

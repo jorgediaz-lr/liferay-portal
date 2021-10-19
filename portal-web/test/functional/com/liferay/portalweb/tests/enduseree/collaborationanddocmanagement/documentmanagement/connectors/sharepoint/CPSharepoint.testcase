@@ -97,6 +97,8 @@ definition {
 		}
 	}
 
+	@description = "This will be ignored until LRCI-2393 is fixed."
+	@ignore = "true"
 	@priority = "4"
 	test CheckinDocument {
 		property test.name.skip.portal.instance = "CPSharepoint#CheckinDocument";
@@ -154,6 +156,8 @@ definition {
 			dmRepositoryName = "true");
 	}
 
+	@description = "This will be ignored until LRCI-2393 is fixed."
+	@ignore = "true"
 	@priority = "4"
 	test DeleteDocumentInSubfolder {
 		DMRepository.gotoCP(dmRepositoryName = "Sharepoint Repository Name");
@@ -212,6 +216,8 @@ definition {
 		DMDocument.viewDefaultCP();
 	}
 
+	@description = "This will be ignored until LRCI-2393 is fixed."
+	@ignore = "true"
 	@priority = "4"
 	test DeleteSubfolder {
 		property test.name.skip.portal.instance = "CPSharepoint#DeleteSubfolder";
@@ -238,6 +244,8 @@ definition {
 		DMFolder.viewDefaultCP();
 	}
 
+	@description = "This will be ignored until LRCI-2393 is fixed."
+	@ignore = "true"
 	@priority = "4"
 	test EditDocumentFile {
 		property test.name.skip.portal.instance = "CPSharepoint#EditDocumentFile";
@@ -291,6 +299,8 @@ definition {
 			metadataLabel = "Content Encoding");
 	}
 
+	@description = "This will be ignored until LRCI-2393 is fixed."
+	@ignore = "true"
 	@priority = "4"
 	test EditRepository {
 		property test.name.skip.portal.instance = "CPSharepoint#EditRepository";
@@ -352,6 +362,8 @@ definition {
 			value1 = "Sharepoint Repository Name Edit");
 	}
 
+	@description = "This will be ignored until LRCI-2393 is fixed."
+	@ignore = "true"
 	@priority = "4"
 	test MoveCheckedoutDocumentToFolder {
 		property test.name.skip.portal.instance = "CPSharepoint#MoveCheckedoutDocumentToFolder";
@@ -426,6 +438,8 @@ definition {
 		DMDocument.viewCheckedoutCP(dmRepositoryName = "true");
 	}
 
+	@description = "This will be ignored until LRCI-2393 is fixed."
+	@ignore = "true"
 	@priority = "4"
 	test MoveDocumentToHome {
 		property test.name.skip.portal.instance = "CPSharepoint#MoveDocumentToHome";
@@ -463,6 +477,8 @@ definition {
 		DMDocument.cannotViewCP(dmDocumentTitle = "Document_1.odt");
 	}
 
+	@description = "This will be ignored until LRCI-2393 is fixed."
+	@ignore = "true"
 	@priority = "4"
 	test SearchDocumentViaHome {
 		property test.name.skip.portal.instance = "CPSharepoint#SearchDocumentViaHome";
@@ -487,6 +503,8 @@ definition {
 			dmRepositoryName = "Sharepoint Repository Name");
 	}
 
+	@description = "This will be ignored until LRCI-2393 is fixed."
+	@ignore = "true"
 	@priority = "4"
 	test ViewEditedCheckedoutDocument {
 		property test.name.skip.portal.instance = "CPSharepoint#ViewEditedCheckedoutDocument";

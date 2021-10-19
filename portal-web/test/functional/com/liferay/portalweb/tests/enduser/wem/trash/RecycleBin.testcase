@@ -641,6 +641,8 @@ definition {
 		DMDocument.viewCP(dmDocumentTitle = "DM Document Title 2");
 	}
 
+	@description = "This will be ignored until LPS-122137 is fixed."
+	@ignore = "true"
 	@priority = "3"
 	test RestoreMessageboardsThreadViaRBCP {
 		MessageBoardsAdmin.openMessageBoardsAdmin(siteURLKey = "site-name");

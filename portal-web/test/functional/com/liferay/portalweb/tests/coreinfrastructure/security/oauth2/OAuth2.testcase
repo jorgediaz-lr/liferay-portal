@@ -109,6 +109,8 @@ definition {
 		OAuth2.deleteApplication(applicationName = "OAuth Application Edited");
 	}
 
+	@description = "This will be ignored until LPS-134311 is fixed."
+	@ignore = "true"
 	test AddAndEditOAuthSAPEntries {
 		property custom.properties = "json.service.serialize.throwable=true";
 
@@ -324,7 +326,8 @@ definition {
 		}
 	}
 
-	@description = "This is a use case for OAUTH2-259."
+	@description = "This will be ignored until LPS-134311 is fixed.This is a use case for OAUTH2-259."
+	@ignore = "true"
 	@priority = "4"
 	test AssertClientCredentialsIsUserScoped {
 		property custom.properties = "json.service.serialize.throwable=true";

@@ -228,6 +228,8 @@ definition {
 		Page.viewInactiveRequestMessage(resource = "instance");
 	}
 
+	@description = "This will be ignored until LPS-98456 is fixed."
+	@ignore = "true"
 	@priority = "4"
 	test ViewVirtualHostPrivateSitePage {
 		property custom.properties = "virtual.hosts.valid.hosts=localhost,127.0.0.1,www.able.com,www.baker.com,www.charlie.com";

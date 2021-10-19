@@ -238,6 +238,8 @@ definition {
 			threadSubject = "MB Thread Message Subject");
 	}
 
+	@description = "This will be ignored until LPS-122137 is fixed."
+	@ignore = "true"
 	@priority = "3"
 	test SearchMessageBoardsAttachment {
 		JSONLayout.addPublicLayout(
@@ -323,7 +325,8 @@ definition {
 			threadSubject = "MB Thread Message Subject");
 	}
 
-	@description = "This is a use case for LPS-65368."
+	@description = "This will be ignored until LPS-122137 is fixed.This is a use case for LPS-65368."
+	@ignore = "true"
 	@priority = "5"
 	test ViewBBCodeNoXSSWithRemoteServices {
 		property custom.properties = "message.boards.message.formats.default=bbcode";
@@ -818,7 +821,8 @@ definition {
 			userName = "Test Test");
 	}
 
-	@description = "This is a use case for LPS-65365."
+	@description = "This will be ignored until LPS-122137 is fixed.This is a use case for LPS-65365."
+	@ignore = "true"
 	@priority = "5"
 	test ViewNoHTMLXSS {
 		property custom.properties = "message.boards.message.formats.default=html";
@@ -852,6 +856,8 @@ definition {
 		AssertHTMLSourceTextPresent(value1 = "${escapedScript}");
 	}
 
+	@description = "This will be ignored until LPS-122137 is fixed."
+	@ignore = "true"
 	@priority = "4"
 	test ViewNoMBThreadXSS {
 		JSONLayout.addPublicLayout(
@@ -1080,6 +1086,8 @@ definition {
 		Pagination.viewResults(results = "Showing 1 to 5 of 6 entries.");
 	}
 
+	@description = "This will be ignored until LPS-122137 is fixed."
+	@ignore = "true"
 	@priority = "3"
 	test ViewQuestionOnSplitThread {
 		JSONLayout.addPublicLayout(
