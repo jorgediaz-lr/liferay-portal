@@ -34,6 +34,20 @@ public class DateUtil {
 		return _simpleDateFormat.format(date);
 	}
 
+	public static Date parseDate(JSONObject jsonObject, String fieldName)
+		throws Exception {
+
+		String dateString = jsonObject.optString(fieldName);
+
+		if (dateString.isEmpty()) {
+			return null;
+		}
+
+		DateFormat dateFormat = new SimpleDateFormat(Constants.DATE_PATTERN);
+
+		return dateFormat.parse(dateString);
+	}
+
 	public static Date parseEndDate(JSONObject jsonObject) throws Exception {
 		String dateString = jsonObject.optString("endDate");
 

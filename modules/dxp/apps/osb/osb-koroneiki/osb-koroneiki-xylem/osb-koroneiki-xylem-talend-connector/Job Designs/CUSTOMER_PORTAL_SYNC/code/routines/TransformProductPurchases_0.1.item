@@ -252,7 +252,6 @@ public class TransformProductPurchases {
 			JSONObject jsonObject = new JSONObject();
 
 			jsonObject.put("accountKey", accountKey);
-			jsonObject.put("activationStatus", "In Progress");
 			jsonObject.put("externalReferenceCode", externalReferenceCode);
 
 			if (name.equals(SubscriptionConstants.GROUP_NAME_DXP) ||
@@ -277,7 +276,6 @@ public class TransformProductPurchases {
 		}
 
 		public String accountKey;
-		public String activationStatus;
 		public String externalReferenceCode;
 		public String name;
 		public Map<String, Subscription> subscriptionsMap = new HashMap<>();
