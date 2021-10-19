@@ -15,14 +15,21 @@
 package com.liferay.staging.bar.web.internal.display.context;
 
 import com.liferay.layout.content.page.editor.constants.ContentPageEditorPortletKeys;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutConstants;
+import com.liferay.portal.kernel.model.LayoutRevision;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
+import com.liferay.portal.kernel.service.LayoutRevisionLocalServiceUtil;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.util.Date;
 import java.util.Objects;
@@ -133,6 +140,49 @@ public class StagingBarDisplayContext {
 
 		return _statusDraft;
 	}
+
+	public LayoutRevision updateLayoutRevision(LayoutRevision layoutRevision) {
+		if (!Objects.equals(_layout.getType(), LayoutConstants.TYPE_CONTENT)) {
+			return layoutRevision;
+		}
+
+		if ((layoutRevision == null) || layoutRevision.isApproved() ||
+			isDraftLayout()) {
+
+			return layoutRevision;
+		}
+
+		ServiceContext serviceContext = new ServiceContext();
+
+		serviceContext.setWorkflowAction(WorkflowConstants.ACTION_PUBLISH);
+
+		try {
+			layoutRevision =
+				LayoutRevisionLocalServiceUtil.updateLayoutRevision(
+					_themeDisplay.getUserId(),
+					layoutRevision.getLayoutRevisionId(),
+					layoutRevision.getLayoutBranchId(),
+					layoutRevision.getName(), layoutRevision.getTitle(),
+					layoutRevision.getDescription(),
+					layoutRevision.getKeywords(), layoutRevision.getRobots(),
+					layoutRevision.getTypeSettings(),
+					layoutRevision.getIconImage(),
+					layoutRevision.getIconImageId(),
+					layoutRevision.getThemeId(),
+					layoutRevision.getColorSchemeId(), layoutRevision.getCss(),
+					serviceContext);
+		}
+		catch (PortalException portalException) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(portalException, portalException);
+			}
+		}
+
+		return layoutRevision;
+	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		StagingBarDisplayContext.class);
 
 	private Boolean _draftLayout;
 	private final Layout _layout;
