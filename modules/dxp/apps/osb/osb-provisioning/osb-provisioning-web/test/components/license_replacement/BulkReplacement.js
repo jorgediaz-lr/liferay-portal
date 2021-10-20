@@ -14,17 +14,6 @@ import React from 'react';
 
 import BulkReplacement from '../../../src/main/resources/META-INF/resources/js/components/license_replacement/BulkReplacement';
 
-const handleOnClick = () => {
-	const event = new CustomEvent('bulkReplaceLicenses', {
-		detail: {
-			licenseKeyIds: 'id123',
-			modalVisible: true
-		}
-	});
-
-	window.dispatchEvent(event);
-};
-
 describe('BulkReplacement', () => {
 	afterEach(cleanup);
 
@@ -39,10 +28,23 @@ describe('BulkReplacement', () => {
 		expect(container).toBeTruthy();
 	});
 
-	it('triggers the replacement modal when the replace button was clicked', async () => {
+	it('triggers the replacement modal when the replace button is clicked', async () => {
 		const {getByText} = render(
 			<div>
-				<button onClick={handleOnClick}>Test</button>
+				<button
+					onClick={() => {
+						const event = new CustomEvent('bulkReplaceLicenses', {
+							detail: {
+								licenseKeyIds: 'id123',
+								modalVisible: true
+							}
+						});
+
+						window.dispatchEvent(event);
+					}}
+				>
+					Replace
+				</button>
 
 				<BulkReplacement
 					accountKey="KEY-1"
@@ -51,7 +53,7 @@ describe('BulkReplacement', () => {
 			</div>
 		);
 
-		fireEvent.click(getByText('Test'));
+		fireEvent.click(getByText('Replace'));
 
 		await wait(() => {
 			getByText('start-date');

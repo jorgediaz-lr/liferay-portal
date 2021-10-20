@@ -38,14 +38,24 @@ SearchContainer productPurchasesSearchContainer = viewAccountDisplayContext.getP
 	</div>
 
 	<c:if test="<%= viewAccountDisplayContext.hasManageAccountsPermission() %>">
-		<clay:button
-			elementClasses="test"
-			icon="time"
-			monospaced="<%= true %>"
-			style="secondary"
-			title='<%= LanguageUtil.get(request, "extend-all-active-subscriptions") %>'
-			type="button"
-		/>
+		<div>
+			<clay:button
+				ariaLabel='<%= LanguageUtil.get(request, "extend-all-active-subscriptions") %>'
+				elementClasses="btn-secondary"
+				icon="time"
+				id='<%= renderResponse.getNamespace() + "openExtendAllActiveSubscriptionsModal" %>'
+				monospaced="<%= true %>"
+				title='<%= LanguageUtil.get(request, "extend-all-active-subscriptions") %>'
+				type="button"
+			/>
+
+			<span id="extendAllSubscriptions">
+				<react:component
+					data="<%= viewAccountDisplayContext.getAccountLatestActiveSubscriptionDetails() %>"
+					module="js/apps/ExtendAllSubscriptionsApp"
+				/>
+			</span>
+		</div>
 	</c:if>
 </div>
 
@@ -263,5 +273,22 @@ SearchContainer productPurchasesSearchContainer = viewAccountDisplayContext.getP
 		if (editProductPurchasesFm) {
 			editProductPurchasesFm.submit();
 		}
+	}
+
+	var extendAllActiveSubscriptionsBtn = document.getElementById(
+		'<portlet:namespace />openExtendAllActiveSubscriptionsModal'
+	);
+
+	var extendAllActiveSubscriptionsEvent = new CustomEvent(
+		'extendAllActiveSubscriptions',
+		{
+			detail: {modalVisible: true}
+		}
+	);
+
+	if (extendAllActiveSubscriptionsBtn) {
+		extendAllActiveSubscriptionsBtn.addEventListener('click', function() {
+			window.dispatchEvent(extendAllActiveSubscriptionsEvent);
+		});
 	}
 </aui:script>

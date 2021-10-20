@@ -231,6 +231,28 @@ public class ViewAccountDisplayContext {
 		return portletURL;
 	}
 
+	public Map<String, Object> getAccountLatestActiveSubscriptionDetails() {
+		Map<String, Object> data = new HashMap<>();
+
+		PortletURL extendActiveSubscriptionsURL =
+			renderResponse.createRenderURL();
+
+		extendActiveSubscriptionsURL.setParameter(
+			"accountKey", account.getKey());
+
+		data.put(
+			"extendActiveSubscriptionsURL",
+			extendActiveSubscriptionsURL.toString());
+
+		Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
+			"yyyy-MM-dd");
+
+		data.put(
+			"latestActiveSubscriptionEndDate", dateFormat.format(new Date()));
+
+		return data;
+	}
+
 	public String getAssignProductsURL() throws Exception {
 		PortletURL portletURL = renderResponse.createRenderURL();
 

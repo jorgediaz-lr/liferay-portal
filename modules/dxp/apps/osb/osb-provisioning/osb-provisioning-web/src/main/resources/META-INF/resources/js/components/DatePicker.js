@@ -60,7 +60,7 @@ function DatePicker({
 
 	return (
 		<ClayDatePicker
-			id={id}
+			id={id || inputName}
 			inputName={inputName}
 			onValueChange={handleOnValueChange}
 			placeholder={placeholder}

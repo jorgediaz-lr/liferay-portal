@@ -48,21 +48,15 @@ export default function BulkReplacement({
 		}
 	}, [expirationDate, startDate]);
 
-	function handleClose() {
-		setModalVisible(false);
-	}
-
-	function handleReplace(startDate, expirationDate) {
-		setStartDate(startDate);
-		setExpirationDate(expirationDate);
-	}
-
 	return (
 		<>
 			{modalVisible && (
 				<ReplacementModal
-					closeFn={handleClose}
-					replaceFn={handleReplace}
+					closeFn={() => setModalVisible(false)}
+					replaceFn={(startDate, expirationDate) => {
+						setStartDate(startDate);
+						setExpirationDate(expirationDate);
+					}}
 				/>
 			)}
 
@@ -85,5 +79,5 @@ export default function BulkReplacement({
 BulkReplacement.propTypes = {
 	accountKey: PropTypes.string,
 	productKey: PropTypes.string,
-	replacementURL: PropTypes.string
+	replacementURL: PropTypes.string.isRequired
 };
