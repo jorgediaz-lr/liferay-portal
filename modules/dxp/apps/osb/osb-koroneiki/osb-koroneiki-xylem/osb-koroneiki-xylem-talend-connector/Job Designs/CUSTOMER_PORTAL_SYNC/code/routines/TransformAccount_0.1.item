@@ -33,6 +33,26 @@ public class TransformAccount {
 
 	public static final String STATUS_CANCELLED = "Cancelled";
 
+	public static String getACWorkspaceName(String externalLinks) {
+		JSONArray jsonArray = new JSONArray(externalLinks);
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+			String domain = jsonObject.getString("domain");
+			String entityName = jsonObject.getString("entityName");
+
+			if (domain.equals(Constants.EXTERNAL_LINK_DOMAIN_AC) &&
+				entityName.equals(
+					Constants.EXTERNAL_LINK_ENTITY_NAME_AC_WORKSPACE)) {
+
+				return jsonObject.getString("entityId");
+			}
+		}
+
+		return "";
+	}
+
 	public static String getLiferayContactEmailAddress(
 		String region, String workerContacts) {
 

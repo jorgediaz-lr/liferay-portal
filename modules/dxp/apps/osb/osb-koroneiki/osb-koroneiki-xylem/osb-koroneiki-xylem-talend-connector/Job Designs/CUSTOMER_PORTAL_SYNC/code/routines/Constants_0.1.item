@@ -25,6 +25,11 @@ public class Constants {
 
 	public static final String ENTITLEMENT_PARTNER = "Partner";
 
+	public static final String EXTERNAL_LINK_DOMAIN_AC = "analytics-cloud";
+
+	public static final String EXTERNAL_LINK_ENTITY_NAME_AC_WORKSPACE =
+		"workspace";
+
 	public static final long START_DATE_PERPETUAL = 0L;
 
 }
