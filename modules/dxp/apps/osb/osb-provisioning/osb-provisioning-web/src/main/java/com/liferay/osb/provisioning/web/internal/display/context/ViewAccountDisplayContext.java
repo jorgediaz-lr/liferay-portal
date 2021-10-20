@@ -221,6 +221,16 @@ public class ViewAccountDisplayContext {
 		return accountEntryWebService.fetchAccountEntry(account.getKey());
 	}
 
+	public PortletURL getAccountURL() {
+		PortletURL portletURL = renderResponse.createRenderURL();
+
+		portletURL.setParameter(
+			"mvcRenderCommandName", "/accounts/view_account");
+		portletURL.setParameter("accountKey", account.getKey());
+
+		return portletURL;
+	}
+
 	public String getAssignProductsURL() throws Exception {
 		PortletURL portletURL = renderResponse.createRenderURL();
 

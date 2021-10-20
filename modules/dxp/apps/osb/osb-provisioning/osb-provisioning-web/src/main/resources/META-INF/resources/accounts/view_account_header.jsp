@@ -37,7 +37,7 @@ AccountDisplay accountDisplay = viewAccountDisplayContext.getAccountDisplay();
 
 		<h3 class="account-name">
 			<span class="account-code">
-				<%= HtmlUtil.escape(accountDisplay.getCode()) %>
+				<a href="<%= viewAccountDisplayContext.getAccountURL() %>"><%= HtmlUtil.escape(accountDisplay.getCode()) %></a>
 			</span>
 
 			<%= HtmlUtil.escape(accountDisplay.getName()) %>
