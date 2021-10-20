@@ -269,6 +269,8 @@ definition {
 
 		Navigator.gotoPage(pageName = "Documents and Media Page");
 
+		DMDocument.enableActionsMenuOnPortlet();
+
 		DMNavigator.gotoAddDocumentTypePG(dmDocumentTypeName = "Excel");
 
 		OneDrive.AddDocument(
