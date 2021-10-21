@@ -68,7 +68,7 @@ String tabs1 = ParamUtil.getString(request, "tabs1");
 		</c:choose>
 	</div>
 
-	<div class="side-panel" id="sidePanel">
+	<div class="side-panel" id="<portlet:namespace />sidePanel">
 		<react:component
 			data="<%= viewAccountDisplayContext.getPanelData() %>"
 			module="js/apps/SidePanelApp"

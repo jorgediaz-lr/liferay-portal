@@ -48,7 +48,7 @@ if (Validator.isNull(backURL)) {
 
 	<liferay-ui:error exception="<%= ProductPurchaseQuantityException.class %>" message="to-remove-a-subscription-change-the-status-to-cancelled-instead" />
 
-	<div id="editSubscriptions">
+	<div id="<portlet:namespace />editSubscriptions">
 		<react:component
 			data="<%= editProductPurchasesDisplayContext.getEditProductPurchasesData() %>"
 			module="js/apps/EditSubscriptionsApp"

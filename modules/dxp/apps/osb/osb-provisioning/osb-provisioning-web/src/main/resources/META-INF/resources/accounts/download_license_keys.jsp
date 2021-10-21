@@ -31,7 +31,7 @@ DownloadLicenseKeysDisplayContext downloadLicenseKeysDisplayContext = new Downlo
 		title='<%= LanguageUtil.get(request, "download-licenses") %>'
 	/>
 
-	<div id="downloadLicenses">
+	<div id="<portlet:namespace />downloadLicenses">
 		<react:component
 			data="<%= downloadLicenseKeysDisplayContext.getDownloadLicenseKeysData() %>"
 			module="js/apps/DownloadLicensesApp"

@@ -33,7 +33,7 @@ ViewAccountDisplayContext viewAccountDisplayContext = ProvisioningWebComponentPr
 	<%= problemException.getMessage() %>
 </liferay-ui:error>
 
-<div class="account-details details-table" id="accountDetails">
+<div class="account-details details-table" id="<portlet:namespace />accountDetails">
 	<react:component
 		data="<%= viewAccountDisplayContext.getAccountDetailsData() %>"
 		module="js/apps/AccountDetailsApp"

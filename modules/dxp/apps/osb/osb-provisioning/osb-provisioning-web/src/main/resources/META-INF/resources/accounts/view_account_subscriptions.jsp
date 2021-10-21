@@ -49,7 +49,7 @@ SearchContainer productPurchasesSearchContainer = viewAccountDisplayContext.getP
 				type="button"
 			/>
 
-			<span id="extendAllSubscriptions">
+			<span id="<portlet:namespace />extendAllSubscriptions">
 				<react:component
 					data="<%= viewAccountDisplayContext.getAccountLatestActiveSubscriptionDetails() %>"
 					module="js/apps/ExtendAllSubscriptionsApp"
