@@ -13,7 +13,7 @@ import ClayPanel from '@clayui/panel';
 import PropTypes from 'prop-types';
 import React, {useRef, useState} from 'react';
 
-import {useClickOutside} from '../../../hooks/useClickOutside';
+import useClickOutside from '../../../hooks/useClickOutside';
 import {NAMESPACE} from '../../../utilities/constants';
 import {submitOnEnter} from '../../../utilities/helpers';
 import CheckboxGroups from '../CheckboxGroups';
