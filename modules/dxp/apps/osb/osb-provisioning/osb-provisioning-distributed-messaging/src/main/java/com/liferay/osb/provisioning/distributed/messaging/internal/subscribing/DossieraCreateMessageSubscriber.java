@@ -125,7 +125,8 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 	protected ProductPurchase addEWSAProductPurchase(
 			ProductPurchase ewsaProductPurchase,
-			ProductPurchase productPurchase, JSONObject jsonObject, String name)
+			ProductPurchase productPurchase, JSONObject jsonObject,
+			String accountName)
 		throws Exception {
 
 		ProductPurchase newProductPurchase = new ProductPurchase();
@@ -161,7 +162,10 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 		newProductPurchase.setProperties(properties);
 
-		_setRenewedAccountName(name);
+		Set<String> renewedEWSAAccountNames =
+			_renewedEWSAAccountNamesThreadLocal.get();
+
+		renewedEWSAAccountNames.add(accountName);
 
 		return _productPurchaseWebService.addProductPurchase(
 			StringPool.BLANK, StringPool.BLANK,
@@ -754,7 +758,8 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		subjectSB.append(salesforceOpportunityTypeName);
 		subjectSB.append(": ");
 
-		Set<String> renewedAccountNames = _renewedAccountNamesThreadLocal.get();
+		Set<String> renewedAccountNames =
+			_renewedEWSAAccountNamesThreadLocal.get();
 
 		if (!renewedAccountNames.isEmpty()) {
 			sb.append("<br /><br />EWSA Accounts renewed:");
@@ -863,6 +868,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			return;
 		}
 
+		_renewedEWSAAccountNamesThreadLocal.set(new HashSet<>());
 		_warningMessagesThreadLocal.set(new ArrayList<>());
 
 		String salesforceOpportunityStageName = jsonObject.getString(
@@ -2208,36 +2214,35 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		}
 
 		if (renewal) {
-			_renewedAccountNamesThreadLocal.set(new HashSet<>());
+			FilterQuery filterQuery2 = new FilterQuery();
 
-			FilterQuery filterQuery1 = new FilterQuery();
-
-			filterQuery1.addEquals(
+			filterQuery2.addEquals(
 				"parentAccountKey", account.getParentAccountKey(), true);
 
 			List<Account> siblingAccounts = _accountWebService.search(
-				StringPool.BLANK, filterQuery1, 1, 1000, null);
+				StringPool.BLANK, filterQuery2, 1, 1000, null);
 
-			for (Account curAccount : siblingAccounts) {
-				FilterQuery filterQuery2 = new FilterQuery();
+			for (Account siblingAccount : siblingAccounts) {
+				FilterQuery filterQuery3 = new FilterQuery();
 
-				filterQuery2.addEquals("accountKey", curAccount.getKey(), true);
-				filterQuery2.addEquals("state", "Active", true);
+				filterQuery3.addEquals(
+					"accountKey", siblingAccount.getKey(), true);
+				filterQuery3.addEquals("state", "Active", true);
 
 				List<ProductPurchase> activeProductPurchases =
 					_productPurchaseWebService.search(
-						filterQuery2, 1, 1000, StringPool.BLANK);
+						filterQuery3, 1, 1000, StringPool.BLANK);
 
 				for (ProductPurchase productPurchase : activeProductPurchases) {
 					if ((ewsaProductPurchase != null) &&
-						(!accountKey.equals(curAccount.getKey()) ||
+						(!accountKey.equals(siblingAccount.getKey()) ||
 						 !_containsProduct(
 							 productPurchases,
 							 productPurchase.getProductKey()))) {
 
 						addEWSAProductPurchase(
 							ewsaProductPurchase, productPurchase, jsonObject,
-							curAccount.getName());
+							siblingAccount.getName());
 
 						newStartDate = ewsaProductPurchase.getStartDate();
 					}
@@ -2262,15 +2267,15 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 				if ((ewsaProductPurchase != null) &&
 					(previousActiveProductPurchases == 0)) {
 
-					FilterQuery filterQuery3 = new FilterQuery();
+					FilterQuery filterQuery4 = new FilterQuery();
 
-					filterQuery3.addEquals(
-						"accountKey", curAccount.getKey(), true);
-					filterQuery3.addEquals("state", "Expired", true);
+					filterQuery4.addEquals(
+						"accountKey", siblingAccount.getKey(), true);
+					filterQuery4.addEquals("state", "Expired", true);
 
 					List<ProductPurchaseView> expiredProductPurchaseViews =
 						_productPurchaseViewWebService.search(
-							StringPool.BLANK, filterQuery3, 1, 1000,
+							StringPool.BLANK, filterQuery4, 1, 1000,
 							StringPool.BLANK);
 
 					for (ProductPurchaseView expiredProductPurchaseView :
@@ -2279,7 +2284,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 						Product product =
 							expiredProductPurchaseView.getProduct();
 
-						if (accountKey.equals(curAccount.getKey()) &&
+						if (accountKey.equals(siblingAccount.getKey()) &&
 							_containsProduct(
 								productPurchases, product.getKey())) {
 
@@ -2310,7 +2315,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 						addEWSAProductPurchase(
 							ewsaProductPurchase, latestProductPurchase,
-							jsonObject, curAccount.getName());
+							jsonObject, siblingAccount.getName());
 					}
 				}
 			}
@@ -2495,19 +2500,13 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		warningMessages.add(s);
 	}
 
-	private void _setRenewedAccountName(String name) {
-		Set<String> renewedAccountNames = _renewedAccountNamesThreadLocal.get();
-
-		renewedAccountNames.add(name);
-	}
-
 	private static final String[] _PRODUCT_FAMILY_TOKENS = {"E", "P", "S"};
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		DossieraCreateMessageSubscriber.class);
 
 	private static final ThreadLocal<Set<String>>
-		_renewedAccountNamesThreadLocal = new CentralizedThreadLocal<>(
+		_renewedEWSAAccountNamesThreadLocal = new CentralizedThreadLocal<>(
 			DossieraCreateMessageSubscriber.class +
 				"._renewedAccountNamesThreadLocal");
 	private static final ThreadLocal<ArrayList<String>>
