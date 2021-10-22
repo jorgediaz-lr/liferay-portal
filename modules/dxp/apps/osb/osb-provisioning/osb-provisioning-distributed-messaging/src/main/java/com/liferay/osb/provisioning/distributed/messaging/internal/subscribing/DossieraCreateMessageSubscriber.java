@@ -913,9 +913,12 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 				SalesforceConstants.OPPORTUNITY_TYPE_NEW_BUSINESS) ||
 			(salesforceOpportunityType ==
 				SalesforceConstants.
-					OPPORTUNITY_TYPE_NEW_PROJECT_EXISTING_BUSINESS)) {
+					OPPORTUNITY_TYPE_NEW_PROJECT_EXISTING_BUSINESS) ||
+			(salesforceOpportunityType ==
+				SalesforceConstants.OPPORTUNITY_TYPE_EXISTING_BUSINESS)) {
 
-			List<Contact> contacts = parseContacts(jsonObject, accountKey);
+			List<Contact> contacts = parseContacts(
+				jsonObject, accountKey, salesforceOpportunityType);
 
 			for (Contact contact : contacts) {
 				Integer status =
@@ -1699,7 +1702,8 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 	}
 
 	protected List<Contact> parseContacts(
-			JSONObject jsonObject, String accountKey)
+			JSONObject jsonObject, String accountKey,
+			int salesforceOpportunityType)
 		throws Exception {
 
 		List<Contact> contacts = new ArrayList<>();
@@ -1755,6 +1759,12 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 				new ContactRole[] {salesContactRole, secondaryContactRole});
 
 			contacts.add(contact);
+		}
+
+		if (salesforceOpportunityType ==
+				SalesforceConstants.OPPORTUNITY_TYPE_EXISTING_BUSINESS) {
+
+			return contacts;
 		}
 
 		JSONArray contactsJSONArray = jsonObject.getJSONArray("_contacts");
