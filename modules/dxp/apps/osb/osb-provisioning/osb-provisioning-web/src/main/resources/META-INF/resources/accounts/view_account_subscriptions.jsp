@@ -30,9 +30,9 @@ SearchContainer productPurchasesSearchContainer = viewAccountDisplayContext.getP
 
 <div class="info-container">
 	<div class="info">
-		<svg aria-label="<liferay-ui:message key="info-icon" />" class="lexicon-icon-info-circle-full" role="img">
-			<use xlink:href="#info-circle-full" />
-		</svg>
+		<clay:icon
+			symbol="exclamation-circle"
+		/>
 
 		<liferay-ui:message key="date-and-time-displayed-in-utc-all-end-dates-are-exclusive" />
 	</div>

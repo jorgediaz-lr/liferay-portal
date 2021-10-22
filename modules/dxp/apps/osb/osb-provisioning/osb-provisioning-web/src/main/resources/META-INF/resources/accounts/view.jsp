@@ -34,11 +34,13 @@ renderResponse.setTitle(StringBundler.concat(LanguageUtil.get(request, "accounts
 		<h3><liferay-ui:message key="accounts" /></h3>
 
 		<c:if test="<%= accountSearchDisplayContext.hasManageAccountsPermission() %>">
-			<a aria-label="<%= LanguageUtil.get(request, "new-account") %>" class="btn btn-primary nav-btn nav-btn-monospaced" href="<%= addAccountURL %>" title="<%= LanguageUtil.get(request, "new-account") %>">
-				<svg class="lexicon-icon lexicon-icon-plus" focusable="false" role="presentation">
-					<use xlink:href="#plus" />
-				</svg>
-			</a>
+			<clay:link
+				ariaLabel='<%= LanguageUtil.get(request, "new-account") %>'
+				elementClasses="btn btn-primary nav-btn nav-btn-monospaced"
+				href="<%= addAccountURL %>"
+				icon="plus"
+				title='<%= LanguageUtil.get(request, "new-account") %>'
+			/>
 		</c:if>
 	</div>
 
