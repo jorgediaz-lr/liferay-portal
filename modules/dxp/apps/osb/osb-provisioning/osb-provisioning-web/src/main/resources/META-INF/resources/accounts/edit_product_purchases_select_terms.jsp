@@ -79,7 +79,7 @@ AccountDisplay accountDisplay = editProductPurchasesDisplayContext.getAccountDis
 									<aui:select cssClass="account-edit-subscription" label="" name="subscriptionTerm">
 
 										<%
-										List<ProductPurchaseDisplay> productPurchaseDisplays = editProductPurchasesDisplayContext.getProductPurchaseViewDisplays(productPurchaseView);
+										List<ProductPurchaseDisplay> productPurchaseDisplays = editProductPurchasesDisplayContext.getProductPurchaseDisplays(productPurchaseView);
 
 										for (ProductPurchaseDisplay productPurchaseDisplay : productPurchaseDisplays) {
 										%>

@@ -181,7 +181,7 @@ public class EditProductPurchasesDisplayContext
 			httpServletRequest, productPurchase, productConsumptionsCount);
 	}
 
-	public List<ProductPurchaseDisplay> getProductPurchaseViewDisplays(
+	public List<ProductPurchaseDisplay> getProductPurchaseDisplays(
 		ProductPurchaseView productPurchaseView) {
 
 		Map<String, Long> productConsumptionsCount = new HashMap<>();
