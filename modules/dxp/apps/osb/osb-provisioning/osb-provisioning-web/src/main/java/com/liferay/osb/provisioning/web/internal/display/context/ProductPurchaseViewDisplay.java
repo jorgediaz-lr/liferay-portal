@@ -128,6 +128,10 @@ public class ProductPurchaseViewDisplay {
 		return sb.toString();
 	}
 
+	public Date getLatestEndDate() {
+		return _latestEndDate;
+	}
+
 	public String getLatestPurchasedCount() {
 		return String.valueOf(_latestPurchasedCount);
 	}
@@ -285,8 +289,6 @@ public class ProductPurchaseViewDisplay {
 
 		_inSupportGap = true;
 
-		Date latestEndDate = null;
-
 		for (ProductPurchase productPurchase : productPurchases) {
 			Date startDate = productPurchase.getStartDate();
 			Date originalEndDate = productPurchase.getOriginalEndDate();
@@ -365,14 +367,14 @@ public class ProductPurchaseViewDisplay {
 			}
 
 			if ((endDate == null) ||
-				((latestEndDate == null) && (_latestPurchasedCount == 0)) ||
-				((latestEndDate != null) && endDate.after(latestEndDate))) {
+				((_latestEndDate == null) && (_latestPurchasedCount == 0)) ||
+				((_latestEndDate != null) && endDate.after(_latestEndDate))) {
 
-				latestEndDate = endDate;
+				_latestEndDate = endDate;
 
 				_latestPurchasedCount = productPurchase.getQuantity();
 			}
-			else if (endDate.equals(latestEndDate)) {
+			else if (endDate.equals(_latestEndDate)) {
 				_latestPurchasedCount += productPurchase.getQuantity();
 			}
 
@@ -394,6 +396,7 @@ public class ProductPurchaseViewDisplay {
 	private Date _endDate;
 	private final HttpServletRequest _httpServletRequest;
 	private boolean _inSupportGap;
+	private Date _latestEndDate;
 	private int _latestPurchasedCount;
 	private Date _nextTermStartDate;
 	private Date _originalEndDate;

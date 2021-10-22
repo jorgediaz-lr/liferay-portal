@@ -231,28 +231,6 @@ public class ViewAccountDisplayContext {
 		return portletURL;
 	}
 
-	public Map<String, Object> getAccountLatestActiveSubscriptionDetails() {
-		Map<String, Object> data = new HashMap<>();
-
-		PortletURL extendActiveSubscriptionsURL =
-			renderResponse.createRenderURL();
-
-		extendActiveSubscriptionsURL.setParameter(
-			"accountKey", account.getKey());
-
-		data.put(
-			"extendActiveSubscriptionsURL",
-			extendActiveSubscriptionsURL.toString());
-
-		Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
-			"yyyy-MM-dd");
-
-		data.put(
-			"latestActiveSubscriptionEndDate", dateFormat.format(new Date()));
-
-		return data;
-	}
-
 	public String getAssignProductsURL() throws Exception {
 		PortletURL portletURL = renderResponse.createRenderURL();
 
@@ -405,6 +383,75 @@ public class ViewAccountDisplayContext {
 						_getHeaderAddSubscriptionsDropdownItems()));
 			}
 		};
+	}
+
+	public Map<String, Object> getLatestActiveProductPurchaseDetails()
+		throws Exception {
+
+		Map<String, Object> data = new HashMap<>();
+
+		PortletURL extendActiveSubscriptionsURL = renderResponse.createActionURL();
+
+		extendActiveSubscriptionsURL.setParameter(
+			ActionRequest.ACTION_NAME, "/accounts/edit_product_purchases");
+		extendActiveSubscriptionsURL.setParameter("redirect", _getPortletURL());
+		extendActiveSubscriptionsURL.setParameter("accountKey", account.getKey());
+
+		extendActiveSubscriptionsURL.setParameter(
+			"accountKey", account.getKey());
+
+		data.put(
+			"extendActiveSubscriptionsURL",
+			extendActiveSubscriptionsURL.toString());
+
+		if (Validator.isNotNull(getLatestProductPurchaseEndDate())) {
+			data.put(
+				"latestActiveSubscriptionEndDate",
+				getLatestProductPurchaseEndDate());
+		}
+
+		return data;
+	}
+
+	public String getLatestProductPurchaseEndDate() throws Exception {
+		Date latestEndDate = null;
+
+		FilterQuery filterQuery = new FilterQuery();
+
+		filterQuery.addEquals("accountKey", account.getKey(), true);
+
+		List<ProductPurchaseView> productPurchaseViews =
+			productPurchaseViewWebService.search(
+				StringPool.BLANK, filterQuery, 1, 1000, StringPool.BLANK);
+
+		if (!productPurchaseViews.isEmpty()) {
+			for (ProductPurchaseView productPurchaseView :
+					productPurchaseViews) {
+
+				ProductPurchaseViewDisplay productPurchaseViewDisplay =
+					new ProductPurchaseViewDisplay(
+						httpServletRequest, account, productPurchaseView);
+
+				Date curLatestEndDate =
+					productPurchaseViewDisplay.getLatestEndDate();
+
+				if ((curLatestEndDate != null) &&
+					((latestEndDate == null) ||
+					 curLatestEndDate.after(latestEndDate))) {
+
+					latestEndDate = curLatestEndDate;
+				}
+			}
+		}
+
+		Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
+			"yyyy-MM-dd");
+
+		if (latestEndDate != null) {
+			return dateFormat.format(latestEndDate);
+		}
+
+		return null;
 	}
 
 	public Map<String, Object> getPanelData() throws Exception {
