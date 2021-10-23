@@ -404,29 +404,31 @@ public class ViewAccountDisplayContext {
 			"extendActiveSubscriptionsURL",
 			extendActiveSubscriptionsURL.toString());
 
-		if (Validator.isNotNull(getLatestProductPurchaseEndDate())) {
+		if (Validator.isNotNull(getLatestActiveProductPurchaseEndDate())) {
 			data.put(
 				"latestActiveSubscriptionEndDate",
-				getLatestProductPurchaseEndDate());
+				getLatestActiveProductPurchaseEndDate());
 		}
 
 		return data;
 	}
 
-	public String getLatestProductPurchaseEndDate() throws Exception {
+	public String getLatestActiveProductPurchaseEndDate() throws Exception {
 		Date latestEndDate = null;
 
 		FilterQuery filterQuery = new FilterQuery();
 
 		filterQuery.addEquals("accountKey", account.getKey(), true);
+		filterQuery.addEquals(
+			"state", ProductPurchaseConstants.STATE_ACTIVE, true);
 
-		List<ProductPurchaseView> productPurchaseViews =
+		List<ProductPurchaseView> activeProductPurchaseViews =
 			productPurchaseViewWebService.search(
 				StringPool.BLANK, filterQuery, 1, 1000, StringPool.BLANK);
 
-		if (!productPurchaseViews.isEmpty()) {
+		if (!activeProductPurchaseViews.isEmpty()) {
 			for (ProductPurchaseView productPurchaseView :
-					productPurchaseViews) {
+					activeProductPurchaseViews) {
 
 				ProductPurchaseViewDisplay productPurchaseViewDisplay =
 					new ProductPurchaseViewDisplay(

@@ -37,7 +37,7 @@ SearchContainer productPurchasesSearchContainer = viewAccountDisplayContext.getP
 		<liferay-ui:message key="date-and-time-displayed-in-utc-all-end-dates-are-exclusive" />
 	</div>
 
-	<c:if test="<%= viewAccountDisplayContext.hasManageAccountsPermission() && (viewAccountDisplayContext.getLatestProductPurchaseEndDate() != null) %>">
+	<c:if test="<%= viewAccountDisplayContext.hasManageAccountsPermission() && (viewAccountDisplayContext.getLatestActiveProductPurchaseEndDate() != null) %>">
 		<div>
 			<clay:button
 				ariaLabel='<%= LanguageUtil.get(request, "extend-all-active-subscriptions") %>'
