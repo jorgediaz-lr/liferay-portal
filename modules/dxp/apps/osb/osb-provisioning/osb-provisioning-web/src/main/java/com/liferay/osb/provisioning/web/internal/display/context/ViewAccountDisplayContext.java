@@ -23,6 +23,7 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Country;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchaseView;
 import com.liferay.osb.provisioning.constants.AccountEntryLocales;
 import com.liferay.osb.provisioning.constants.ProvisioningActionKeys;
@@ -81,9 +82,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.PortletRequest;
@@ -390,15 +393,15 @@ public class ViewAccountDisplayContext {
 
 		Map<String, Object> data = new HashMap<>();
 
-		PortletURL extendActiveSubscriptionsURL = renderResponse.createActionURL();
+		PortletURL extendActiveSubscriptionsURL =
+			renderResponse.createActionURL();
 
 		extendActiveSubscriptionsURL.setParameter(
-			ActionRequest.ACTION_NAME, "/accounts/edit_product_purchases");
-		extendActiveSubscriptionsURL.setParameter("redirect", _getPortletURL());
-		extendActiveSubscriptionsURL.setParameter("accountKey", account.getKey());
-
+			ActionRequest.ACTION_NAME,
+			"/accounts/edit_active_product_purchases_end_date");
+		extendActiveSubscriptionsURL.setParameter("redirect", getCurrentURL());
 		extendActiveSubscriptionsURL.setParameter(
-			"accountKey", account.getKey());
+			"activeProductPurchaseKeys", _getActiveProductPurchaseKeys());
 
 		data.put(
 			"extendActiveSubscriptionsURL",
@@ -416,15 +419,8 @@ public class ViewAccountDisplayContext {
 	public String getLatestActiveProductPurchaseEndDate() throws Exception {
 		Date latestEndDate = null;
 
-		FilterQuery filterQuery = new FilterQuery();
-
-		filterQuery.addEquals("accountKey", account.getKey(), true);
-		filterQuery.addEquals(
-			"state", ProductPurchaseConstants.STATE_ACTIVE, true);
-
 		List<ProductPurchaseView> activeProductPurchaseViews =
-			productPurchaseViewWebService.search(
-				StringPool.BLANK, filterQuery, 1, 1000, StringPool.BLANK);
+			_getActiveProductPurchaseViews();
 
 		if (!activeProductPurchaseViews.isEmpty()) {
 			for (ProductPurchaseView productPurchaseView :
@@ -830,6 +826,41 @@ public class ViewAccountDisplayContext {
 
 	private AccountEntry _fetchAccountEntry() throws Exception {
 		return accountEntryWebService.fetchAccountEntry(account.getKey());
+	}
+
+	private String[] _getActiveProductPurchaseKeys() throws Exception {
+		Set<String> activeProductPurchaseKeys = new HashSet<>();
+
+		List<ProductPurchaseView> activeProductPurchaseViews =
+			_getActiveProductPurchaseViews();
+
+		if (!activeProductPurchaseViews.isEmpty()) {
+			for (ProductPurchaseView productPurchaseView :
+					activeProductPurchaseViews) {
+
+				ProductPurchase[] productPurchases =
+					productPurchaseView.getProductPurchases();
+
+				for (ProductPurchase productPurchase : productPurchases) {
+					activeProductPurchaseKeys.add(productPurchase.getKey());
+				}
+			}
+		}
+
+		return ArrayUtil.toStringArray(activeProductPurchaseKeys);
+	}
+
+	private List<ProductPurchaseView> _getActiveProductPurchaseViews()
+		throws Exception {
+
+		FilterQuery filterQuery = new FilterQuery();
+
+		filterQuery.addEquals("accountKey", account.getKey(), true);
+		filterQuery.addEquals(
+			"state", ProductPurchaseConstants.STATE_ACTIVE, true);
+
+		return productPurchaseViewWebService.search(
+			StringPool.BLANK, filterQuery, 1, 1000, StringPool.BLANK);
 	}
 
 	private FilterQuery _getFilterQuery(String tabs2) throws Exception {
