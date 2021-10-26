@@ -315,9 +315,7 @@ public abstract class BaseExperimentRunResourceImpl
 				contextAcceptLanguage.getPreferredLocale(), entityModel);
 		}
 		catch (Exception exception) {
-			if (_log.isDebugEnabled()) {
-				_log.debug("Invalid filter " + filterString, exception);
-			}
+			_log.error("Invalid filter " + filterString, exception);
 		}
 
 		return null;
