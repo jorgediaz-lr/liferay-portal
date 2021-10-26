@@ -23,7 +23,6 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Country;
-import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchaseView;
 import com.liferay.osb.provisioning.constants.AccountEntryLocales;
 import com.liferay.osb.provisioning.constants.ProvisioningActionKeys;
@@ -82,11 +81,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.PortletRequest;
@@ -401,7 +398,7 @@ public class ViewAccountDisplayContext {
 			"/accounts/edit_active_product_purchases_end_date");
 		extendActiveSubscriptionsURL.setParameter("redirect", getCurrentURL());
 		extendActiveSubscriptionsURL.setParameter(
-			"activeProductPurchaseKeys", _getActiveProductPurchaseKeys());
+			"accountKey", account.getKey());
 
 		data.put(
 			"extendActiveSubscriptionsURL",
@@ -827,26 +824,6 @@ public class ViewAccountDisplayContext {
 
 	private AccountEntry _fetchAccountEntry() throws Exception {
 		return accountEntryWebService.fetchAccountEntry(account.getKey());
-	}
-
-	private String[] _getActiveProductPurchaseKeys() throws Exception {
-		Set<String> activeProductPurchaseKeys = new HashSet<>();
-
-		List<ProductPurchaseView> activeProductPurchaseViews =
-			_getActiveProductPurchaseViews();
-
-		for (ProductPurchaseView productPurchaseView :
-				activeProductPurchaseViews) {
-
-			ProductPurchase[] productPurchases =
-				productPurchaseView.getProductPurchases();
-
-			for (ProductPurchase productPurchase : productPurchases) {
-				activeProductPurchaseKeys.add(productPurchase.getKey());
-			}
-		}
-
-		return ArrayUtil.toStringArray(activeProductPurchaseKeys);
 	}
 
 	private List<ProductPurchaseView> _getActiveProductPurchaseViews()

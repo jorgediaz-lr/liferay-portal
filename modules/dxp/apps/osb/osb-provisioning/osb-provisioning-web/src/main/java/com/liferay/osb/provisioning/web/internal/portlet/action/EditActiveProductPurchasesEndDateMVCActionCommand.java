@@ -17,7 +17,9 @@ package com.liferay.osb.provisioning.web.internal.portlet.action;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.osb.koroneiki.phloem.rest.client.problem.Problem;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
+import com.liferay.osb.provisioning.koroneiki.constants.ProductPurchaseConstants;
 import com.liferay.osb.provisioning.koroneiki.web.service.ProductPurchaseWebService;
+import com.liferay.osb.provisioning.search.FilterQuery;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
@@ -26,12 +28,14 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -63,19 +67,25 @@ public class EditActiveProductPurchasesEndDateMVCActionCommand
 
 			User user = themeDisplay.getUser();
 
-			String[] activeProductPurchaseKeys = ParamUtil.getStringValues(
-				actionRequest, "activeProductPurchaseKeys");
+			String accountKey = ParamUtil.getString(
+				actionRequest, "accountKey");
 
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 			Date endDate = ParamUtil.getDate(
 				actionRequest, "endDate", dateFormat);
 
-			for (String productPurchaseKey : activeProductPurchaseKeys) {
-				ProductPurchase productPurchase =
-					_productPurchaseWebService.getProductPurchase(
-						productPurchaseKey);
+			FilterQuery filterQuery = new FilterQuery();
 
+			filterQuery.addEquals("accountKey", accountKey, true);
+			filterQuery.addEquals(
+				"state", ProductPurchaseConstants.STATE_ACTIVE, true);
+
+			List<ProductPurchase> activeProductPurchases =
+				_productPurchaseWebService.search(
+					filterQuery, 1, 1000, StringPool.BLANK);
+
+			for (ProductPurchase productPurchase : activeProductPurchases) {
 				productPurchase.setEndDate(endDate);
 
 				_productPurchaseWebService.updateProductPurchase(
