@@ -47,24 +47,8 @@ function Address({accountKey, addFn, address, count, countryOptions}) {
 		);
 	}, [countryOptions, values.addressCountryName]);
 
-	function getDisabled() {
-		if (values.streetAddressLine1 && values.addressLocality) {
-			if (getZipcodeRequirement()) {
-				return values.addressZip ? false : true;
-			}
-
-			return false;
-		}
-
-		return true;
-	}
-
 	function getRegionOptions() {
 		return selectedCountry ? selectedCountry.countryRegions : [];
-	}
-
-	function getZipcodeRequirement() {
-		return selectedCountry ? selectedCountry.zipRequired : false;
 	}
 
 	function handleCancel() {
@@ -106,7 +90,6 @@ function Address({accountKey, addFn, address, count, countryOptions}) {
 					fieldName="streetAddressLine1"
 					onChangeFn={handleOnChange}
 					readOnly={!updatePermission}
-					required
 					setEditableFn={handleSetEditable}
 					value={values.streetAddressLine1}
 				/>
@@ -117,7 +100,6 @@ function Address({accountKey, addFn, address, count, countryOptions}) {
 					fieldName="addressLocality"
 					onChangeFn={handleOnChange}
 					readOnly={!updatePermission}
-					required
 					setEditableFn={handleSetEditable}
 					value={values.addressLocality}
 				/>
@@ -160,7 +142,6 @@ function Address({accountKey, addFn, address, count, countryOptions}) {
 					fieldName="addressZip"
 					onChangeFn={handleOnChange}
 					readOnly={!updatePermission}
-					required={getZipcodeRequirement()}
 					setEditableFn={handleSetEditable}
 					value={values.addressZip}
 				/>
@@ -204,7 +185,6 @@ function Address({accountKey, addFn, address, count, countryOptions}) {
 								<div className="btn-group-item">
 									<button
 										className="btn btn-primary btn-sm save-btn"
-										disabled={getDisabled()}
 										role="button"
 										type="submit"
 									>
