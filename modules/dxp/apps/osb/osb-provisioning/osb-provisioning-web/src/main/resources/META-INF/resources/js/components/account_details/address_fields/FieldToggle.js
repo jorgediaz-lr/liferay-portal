@@ -28,6 +28,7 @@ function AddressToggle({fieldName, onChangeFn, value = false}) {
 		>
 			<span className="toggle-switch-check-bar">
 				<input
+					aria-label={fieldName}
 					checked={value}
 					className="toggle-switch-check"
 					id={namespacedFieldName}

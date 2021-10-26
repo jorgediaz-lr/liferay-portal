@@ -164,11 +164,6 @@ function Address({accountKey, addFn, address, count, countryOptions}) {
 					fieldName="addressPrimary"
 					onChangeFn={handleOnChange}
 					readOnly={!updatePermission}
-					readOnlyValue={
-						address.primary
-							? Liferay.Language.get('yes')
-							: Liferay.Language.get('no')
-					}
 					setEditableFn={handleSetEditable}
 					value={values.addressPrimary}
 				/>

@@ -9,6 +9,7 @@
  * distribution rights of the Software.
  */
 
+import {ClayToggle} from '@clayui/form';
 import ClayList from '@clayui/list';
 import React, {useState} from 'react';
 
@@ -35,9 +36,15 @@ function FieldWrapper(AddressField, props) {
 	} = props;
 	const [fieldEditable, setFieldEditable] = useState(false);
 
+	const displayValue = getDisplayValue();
+
 	function getDisplayValue() {
 		if (readOnlyValue) {
 			return readOnlyValue;
+		}
+
+		if (typeof value === 'boolean') {
+			return null;
 		}
 
 		if (!value) {
@@ -54,13 +61,21 @@ function FieldWrapper(AddressField, props) {
 					{fieldLabel} {required && <RequiredFieldMarker />}
 				</ClayList.ItemTitle>
 
-				{readOnly && (
-					<div className="list-group-text">{getDisplayValue()}</div>
+				{readOnly && displayValue && (
+					<div className="list-group-text">{displayValue}</div>
+				)}
+
+				{readOnly && !displayValue && (
+					<ClayToggle
+						aria-label={fieldLabel}
+						disabled
+						toggled={value}
+					/>
 				)}
 
 				{!readOnly && (
 					<div className="list-group-text">
-						{!editable && (
+						{!editable && displayValue && (
 							<div className="inline-edit">
 								<div
 									onClick={() => setEditableFn(true)}
@@ -68,14 +83,20 @@ function FieldWrapper(AddressField, props) {
 									onMouseLeave={() => setFieldEditable(false)}
 								>
 									{fieldEditable ? (
-										<EditableField
-											value={getDisplayValue()}
-										/>
+										<EditableField value={displayValue} />
 									) : (
-										getDisplayValue()
+										displayValue
 									)}
 								</div>
 							</div>
+						)}
+
+						{!editable && !displayValue && (
+							<ClayToggle
+								aria-label={fieldLabel}
+								onToggle={() => setEditableFn(true)}
+								toggled={value}
+							/>
 						)}
 
 						{editable && <AddressField {...props} />}

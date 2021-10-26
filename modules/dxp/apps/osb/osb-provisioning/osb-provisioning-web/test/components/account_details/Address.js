@@ -129,10 +129,10 @@ describe('Address', () => {
 		expect(getByText('save').disabled).toBeFalsy();
 	});
 
-	it('displays Primary field as toggled on edit when the field is displayed as "Yes"', () => {
-		const {container, getByText} = renderAddress();
+	it('displays Primary field as toggled on', () => {
+		const {container, getByLabelText} = renderAddress();
 
-		fireEvent.click(getByText('yes'));
+		fireEvent.click(getByLabelText('primary'));
 
 		expect(container.querySelector('input[type=checkbox]').checked).toBe(
 			true
