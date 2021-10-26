@@ -407,10 +407,13 @@ public class ViewAccountDisplayContext {
 			"extendActiveSubscriptionsURL",
 			extendActiveSubscriptionsURL.toString());
 
-		if (Validator.isNotNull(getLatestActiveProductPurchaseEndDate())) {
+		String latestActiveProductPurchaseEndDate =
+			getLatestActiveProductPurchaseEndDate();
+
+		if (Validator.isNotNull(latestActiveProductPurchaseEndDate)) {
 			data.put(
 				"latestActiveSubscriptionEndDate",
-				getLatestActiveProductPurchaseEndDate());
+				latestActiveProductPurchaseEndDate);
 		}
 
 		return data;
@@ -422,31 +425,29 @@ public class ViewAccountDisplayContext {
 		List<ProductPurchaseView> activeProductPurchaseViews =
 			_getActiveProductPurchaseViews();
 
-		if (!activeProductPurchaseViews.isEmpty()) {
-			for (ProductPurchaseView productPurchaseView :
-					activeProductPurchaseViews) {
+		for (ProductPurchaseView productPurchaseView :
+				activeProductPurchaseViews) {
 
-				ProductPurchaseViewDisplay productPurchaseViewDisplay =
-					new ProductPurchaseViewDisplay(
-						httpServletRequest, account, productPurchaseView);
+			ProductPurchaseViewDisplay productPurchaseViewDisplay =
+				new ProductPurchaseViewDisplay(
+					httpServletRequest, account, productPurchaseView);
 
-				Date curLatestEndDate =
-					productPurchaseViewDisplay.getLatestEndDate();
+			Date curLatestEndDate =
+				productPurchaseViewDisplay.getLatestEndDate();
 
-				if ((curLatestEndDate != null) &&
-					((latestEndDate == null) ||
-					 curLatestEndDate.after(latestEndDate))) {
+			if ((curLatestEndDate != null) &&
+				((latestEndDate == null) ||
+				 curLatestEndDate.after(latestEndDate))) {
 
-					latestEndDate = curLatestEndDate;
-				}
+				latestEndDate = curLatestEndDate;
 			}
 		}
 
-		Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
-			"yyyy-MM-dd");
-
 		if (latestEndDate != null) {
-			return dateFormat.format(latestEndDate);
+			_dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
+				"MMM dd, yyyy");
+
+			return _dateFormat.format(latestEndDate);
 		}
 
 		return null;
@@ -834,16 +835,14 @@ public class ViewAccountDisplayContext {
 		List<ProductPurchaseView> activeProductPurchaseViews =
 			_getActiveProductPurchaseViews();
 
-		if (!activeProductPurchaseViews.isEmpty()) {
-			for (ProductPurchaseView productPurchaseView :
-					activeProductPurchaseViews) {
+		for (ProductPurchaseView productPurchaseView :
+				activeProductPurchaseViews) {
 
-				ProductPurchase[] productPurchases =
-					productPurchaseView.getProductPurchases();
+			ProductPurchase[] productPurchases =
+				productPurchaseView.getProductPurchases();
 
-				for (ProductPurchase productPurchase : productPurchases) {
-					activeProductPurchaseKeys.add(productPurchase.getKey());
-				}
+			for (ProductPurchase productPurchase : productPurchases) {
+				activeProductPurchaseKeys.add(productPurchase.getKey());
 			}
 		}
 
@@ -1095,5 +1094,7 @@ public class ViewAccountDisplayContext {
 		return AccountPermissionChecker.contains(
 			themeDisplay.getPermissionChecker(), actionId);
 	}
+
+	private final Format _dateFormat;
 
 }

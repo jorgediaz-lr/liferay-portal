@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -72,18 +71,16 @@ public class EditActiveProductPurchasesEndDateMVCActionCommand
 			Date endDate = ParamUtil.getDate(
 				actionRequest, "endDate", dateFormat);
 
-			if (!ArrayUtil.isEmpty(activeProductPurchaseKeys)) {
-				for (String productPurchaseKey : activeProductPurchaseKeys) {
-					ProductPurchase productPurchase =
-						_productPurchaseWebService.getProductPurchase(
-							productPurchaseKey);
+			for (String productPurchaseKey : activeProductPurchaseKeys) {
+				ProductPurchase productPurchase =
+					_productPurchaseWebService.getProductPurchase(
+						productPurchaseKey);
 
-					productPurchase.setEndDate(endDate);
+				productPurchase.setEndDate(endDate);
 
-					_productPurchaseWebService.updateProductPurchase(
-						user.getFullName(), user.getUuid(),
-						productPurchase.getKey(), productPurchase);
-				}
+				_productPurchaseWebService.updateProductPurchase(
+					user.getFullName(), user.getUuid(),
+					productPurchase.getKey(), productPurchase);
 			}
 		}
 		catch (Exception exception) {
