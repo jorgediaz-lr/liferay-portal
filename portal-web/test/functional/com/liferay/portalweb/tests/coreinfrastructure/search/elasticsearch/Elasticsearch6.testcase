@@ -57,8 +57,10 @@ definition {
 
 		var companyId = JSONCompany.getCompanyId();
 
+		var portalHostname = PropsUtil.get("portal.hostname");
+
 		var curl = '''
-			http://localhost:9200/liferay-${companyId}/_delete_by_query?pretty \
+			http://${portalHostname}:9200/liferay-${companyId}/_delete_by_query?pretty \
 			-H 'Content-Type: application/json' \
 			-d '{
 				"query": {
@@ -290,7 +292,9 @@ definition {
 		property osgi.module.configurations = "clusterName=&quot;LiferayElasticsearchCluster1&quot;";
 		property portal.acceptance = "true";
 
-		Navigator.openSpecificURL(url = "http://localhost:9200");
+		var portalHostname = PropsUtil.get("portal.hostname");
+
+		Navigator.openSpecificURL(url = "http://${portalHostname}:9200");
 
 		Elasticsearch.viewClusterStatus(clusterStatus = "&quot;cluster_name&quot; : &quot;LiferayElasticsearchCluster1&quot;");
 	}
