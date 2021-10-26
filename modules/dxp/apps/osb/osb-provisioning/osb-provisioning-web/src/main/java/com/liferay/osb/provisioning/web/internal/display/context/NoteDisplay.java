@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -60,7 +61,7 @@ public class NoteDisplay {
 	}
 
 	public String getContent() {
-		return _note.getContent();
+		return HtmlUtil.escape(_note.getContent());
 	}
 
 	public String getCreateDate() {
@@ -107,12 +108,13 @@ public class NoteDisplay {
 	public String getHtmlContent() {
 		Note.Format format = _note.getFormat();
 
+		String noteContent = HtmlUtil.escape(_note.getContent());
+
 		if (format == Note.Format.PLAIN) {
-			return StringUtil.replace(
-				_note.getContent(), CharPool.NEW_LINE, "<br />");
+			return StringUtil.replace(noteContent, CharPool.NEW_LINE, "<br />");
 		}
 
-		return _note.getContent();
+		return noteContent;
 	}
 
 	public String getKey() {
