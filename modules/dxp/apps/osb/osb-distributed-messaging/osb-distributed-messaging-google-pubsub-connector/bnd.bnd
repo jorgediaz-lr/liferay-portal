@@ -1,0 +1,34 @@
+Bundle-Name: Liferay OSB Distributed Messaging Google PubSub Connector
+Bundle-SymbolicName: com.liferay.osb.distributed.messaging.google.pubsub.connector
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.liferay.osb.distributed.messaging.google.pubsub.connector,\
+	com.liferay.osb.distributed.messaging.google.pubsub.connector.broker
+Import-Package:\
+	!com.google.protobuf.nano.*,\
+	\
+	!com.jcraft.jzlib,\
+	\
+	!com.lmax.disruptor.*,\
+	\
+	!com.ning.compress.*,\
+	\
+	!com.oracle.svm.core.annotate.*,\
+	\
+	!lzma.sdk.*,\
+	\
+	!net.jpountz.*,\
+	\
+	!org.apache.avalon.framework.logger,\
+	\
+	!org.bouncycastle.*,\
+	\
+	!org.eclipse.jetty.*,\
+	\
+	!org.jboss.marshalling.*,\
+	\
+	!reactor.blockhound.*,\
+	\
+	!sun.security.x509,\
+	\
+	*

@@ -23,6 +23,7 @@ import java.io.InputStream;
 
 import java.nio.ByteBuffer;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -61,12 +62,31 @@ public class Message extends com.liferay.portal.kernel.messaging.Message {
 		return getValues();
 	}
 
+	public Map<String, String> getStringAttributes() {
+		Map<String, String> stringAttributes = new HashMap<>();
+
+		Map<String, Object> attributes = getValues();
+
+		if (attributes != null) {
+			for (Map.Entry<String, Object> entry : attributes.entrySet()) {
+				stringAttributes.put(
+					entry.getKey(), String.valueOf(entry.getValue()));
+			}
+		}
+
+		return stringAttributes;
+	}
+
 	public String getTopic() {
 		return getDestinationName();
 	}
 
 	public void setAttributes(Map<String, Object> attributes) {
 		setValues(attributes);
+	}
+
+	public void setStringAttributes(Map<String, String> attributes) {
+		setValues(new HashMap<String, Object>(attributes));
 	}
 
 	public void setTopic(String topic) {
