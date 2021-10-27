@@ -910,12 +910,12 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		String accountKey = getAccountKey(jsonObject);
 
 		if ((salesforceOpportunityType ==
+				SalesforceConstants.OPPORTUNITY_TYPE_EXISTING_BUSINESS) ||
+			(salesforceOpportunityType ==
 				SalesforceConstants.OPPORTUNITY_TYPE_NEW_BUSINESS) ||
 			(salesforceOpportunityType ==
 				SalesforceConstants.
-					OPPORTUNITY_TYPE_NEW_PROJECT_EXISTING_BUSINESS) ||
-			(salesforceOpportunityType ==
-				SalesforceConstants.OPPORTUNITY_TYPE_EXISTING_BUSINESS)) {
+					OPPORTUNITY_TYPE_NEW_PROJECT_EXISTING_BUSINESS)) {
 
 			List<Contact> contacts = parseContacts(
 				jsonObject, accountKey, salesforceOpportunityType);
