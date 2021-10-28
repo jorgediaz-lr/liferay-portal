@@ -284,7 +284,7 @@ public class LicenseKeyResourceImpl
 			licenseKeys.add(licenseKey);
 		}
 
-		if (_isAggregate(licenseKeys)) {
+		if (_isAggregateVersion1(licenseKeys)) {
 			String[] hostNames = new String[licenseKeys.size()];
 			String[] ipAddresses = new String[licenseKeys.size()];
 			String[] macAddresses = new String[licenseKeys.size()];
@@ -327,6 +327,11 @@ public class LicenseKeyResourceImpl
 			).type(
 				ContentTypes.TEXT_XML
 			).build();
+		}
+
+		if (!_isAggregateVersion2(licenseKeys)) {
+			throw new Exception(
+				"The specified activation keys cannot be aggregated together");
 		}
 
 		Set<String> names = new HashSet<>();
@@ -770,7 +775,7 @@ public class LicenseKeyResourceImpl
 		return subscriptionTerms.toArray(new SubscriptionTerm[0]);
 	}
 
-	private boolean _isAggregate(
+	private boolean _isAggregateVersion1(
 			List<com.liferay.osb.provisioning.license.model.LicenseKey>
 				licenseKeys)
 		throws Exception {
@@ -817,6 +822,26 @@ public class LicenseKeyResourceImpl
 			if (!DateUtil.equals(
 					expirationDate, licenseKey.getExpirationDate())) {
 
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	private boolean _isAggregateVersion2(
+			List<com.liferay.osb.provisioning.license.model.LicenseKey>
+				licenseKeys)
+		throws Exception {
+
+		if (licenseKeys.isEmpty() || (licenseKeys.size() <= 1)) {
+			return false;
+		}
+
+		for (com.liferay.osb.provisioning.license.model.LicenseKey licenseKey :
+				licenseKeys) {
+
+			if (licenseKey.getLicenseVersion() <= 5) {
 				return false;
 			}
 		}
