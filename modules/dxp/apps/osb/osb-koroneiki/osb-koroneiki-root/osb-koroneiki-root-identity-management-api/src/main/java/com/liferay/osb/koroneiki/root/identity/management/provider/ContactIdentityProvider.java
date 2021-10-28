@@ -24,11 +24,11 @@ public interface ContactIdentityProvider {
 	public Contact fetchContactByEmailAddress(String emailAddress)
 		throws Exception;
 
-	public Contact fetchContactByProviderId(String providerId) throws Exception;
+	public Contact fetchContactByUuid(String uuid) throws Exception;
 
 	public Contact getContactByEmailAddress(String emailAddress)
 		throws Exception;
 
-	public Contact getContactByProviderId(String providerId) throws Exception;
+	public Contact getContactByUuid(String uuid) throws Exception;
 
 }

@@ -144,8 +144,7 @@ public class AccountResourceImpl
 		ServiceContextUtil.setAgentFields(agentName, agentUID);
 
 		_deleteAccountContactRole(
-			accountKey,
-			_contactIdentityProvider.getContactByProviderId(contactUuid),
+			accountKey, _contactIdentityProvider.getContactByUuid(contactUuid),
 			contactRoleKeys);
 	}
 
@@ -176,7 +175,7 @@ public class AccountResourceImpl
 		for (String contactUuid : contactUuids) {
 			_deleteAccountContact(
 				accountKey,
-				_contactIdentityProvider.getContactByProviderId(contactUuid),
+				_contactIdentityProvider.getContactByUuid(contactUuid),
 				ContactRole.Type.ACCOUNT_CUSTOMER.toString());
 		}
 	}
@@ -208,7 +207,7 @@ public class AccountResourceImpl
 		for (String contactUuid : contactUuids) {
 			_deleteAccountContact(
 				accountKey,
-				_contactIdentityProvider.getContactByProviderId(contactUuid),
+				_contactIdentityProvider.getContactByUuid(contactUuid),
 				ContactRole.Type.ACCOUNT_WORKER.toString());
 		}
 	}
@@ -626,8 +625,7 @@ public class AccountResourceImpl
 		ServiceContextUtil.setAgentFields(agentName, agentUID);
 
 		_putAccountContactRole(
-			accountKey,
-			_contactIdentityProvider.getContactByProviderId(contactUuid),
+			accountKey, _contactIdentityProvider.getContactByUuid(contactUuid),
 			contactRoleKeys);
 	}
 
@@ -807,7 +805,7 @@ public class AccountResourceImpl
 	@Reference
 	private ContactAccountRoleService _contactAccountRoleService;
 
-	@Reference(target = "(provider=web)")
+	@Reference(target = "(provider=okta)")
 	private ContactIdentityProvider _contactIdentityProvider;
 
 	@Reference

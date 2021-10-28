@@ -79,13 +79,11 @@ public class WebContactIdentityProvider implements ContactIdentityProvider {
 		return contact;
 	}
 
-	public Contact fetchContactByProviderId(String providerId)
-		throws Exception {
-
-		Contact contact = _contactLocalService.fetchContactByUuid(providerId);
+	public Contact fetchContactByUuid(String uuid) throws Exception {
+		Contact contact = _contactLocalService.fetchContactByUuid(uuid);
 
 		if (contact == null) {
-			contact = _importContactByUuid(providerId);
+			contact = _importContactByUuid(uuid);
 		}
 
 		return contact;
@@ -103,8 +101,8 @@ public class WebContactIdentityProvider implements ContactIdentityProvider {
 		return contact;
 	}
 
-	public Contact getContactByProviderId(String providerId) throws Exception {
-		Contact contact = fetchContactByProviderId(providerId);
+	public Contact getContactByUuid(String uuid) throws Exception {
+		Contact contact = fetchContactByUuid(uuid);
 
 		if (contact == null) {
 			throw new NoSuchContactException();

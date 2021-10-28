@@ -120,7 +120,7 @@ public class TeamResourceImpl
 
 		for (String contactUuid : contactUuids) {
 			contacts.add(
-				_contactIdentityProvider.getContactByProviderId(contactUuid));
+				_contactIdentityProvider.getContactByUuid(contactUuid));
 		}
 
 		_deleteTeamContacts(contacts, teamKey);
@@ -135,8 +135,8 @@ public class TeamResourceImpl
 		ServiceContextUtil.setAgentFields(agentName, agentUID);
 
 		_deleteTeamContactRole(
-			_contactIdentityProvider.getContactByProviderId(contactUuid),
-			teamKey, contactRoleKeys);
+			_contactIdentityProvider.getContactByUuid(contactUuid), teamKey,
+			contactRoleKeys);
 	}
 
 	@Override
@@ -315,7 +315,7 @@ public class TeamResourceImpl
 
 		for (String contactUuid : contactUuids) {
 			contacts.add(
-				_contactIdentityProvider.getContactByProviderId(contactUuid));
+				_contactIdentityProvider.getContactByUuid(contactUuid));
 		}
 
 		_putTeamContacts(contacts, teamKey);
@@ -330,8 +330,8 @@ public class TeamResourceImpl
 		ServiceContextUtil.setAgentFields(agentName, agentUID);
 
 		_putTeamContactRole(
-			_contactIdentityProvider.getContactByProviderId(contactUuid),
-			teamKey, contactRoleKeys);
+			_contactIdentityProvider.getContactByUuid(contactUuid), teamKey,
+			contactRoleKeys);
 	}
 
 	@Override
@@ -453,7 +453,7 @@ public class TeamResourceImpl
 
 	private static final EntityModel _entityModel = new TeamEntityModel();
 
-	@Reference(target = "(provider=web)")
+	@Reference(target = "(provider=okta)")
 	private ContactIdentityProvider _contactIdentityProvider;
 
 	@Reference
