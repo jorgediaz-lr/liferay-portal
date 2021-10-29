@@ -4938,7 +4938,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 						<![CDATA[
 							#!/bin/bash
 
-							while [[ ! "$(/bin/su - db2inst1 -c '/opt/ibm/db2/V11.1/bin/db2 db2start')" =~ "SQL1026N" ]]
+							until [[ "$(/bin/su - db2inst1 -c '/opt/ibm/db2/V11.1/bin/db2 db2start')" =~ "SQL1026N" ]]
 							do
 								echo "Waiting for DB2 ${database.version} to be ready"
 
@@ -4978,7 +4978,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 							<![CDATA[
 								#!/bin/bash
 
-								while ! mysqladmin ping --host=${database.host} --silent
+								until mysqladmin ping --host=${database.host} --silent
 								do
 									echo "Waiting for ${database.name} ${database.version} to be ready"
 
@@ -5009,7 +5009,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 							<![CDATA[
 								#!/bin/bash
 
-								while [[ "$(${ORACLE_HOME}/bin/lsnrctl status | grep READY)" == "" ]]
+								until [[ "$(${ORACLE_HOME}/bin/lsnrctl status | grep READY)" != "" ]]
 								do
 									echo "Waiting for Oracle ${database.version} to be ready"
 
@@ -5042,7 +5042,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 							<![CDATA[
 								#!/bin/bash
 
-								while [[ "$(pg_isready | grep 'accepting connections')" == "" ]]
+								until [[ "$(pg_isready | grep 'accepting connections')" != "" ]]
 								do
 									echo "Waiting for PostgreSQL ${database.version} to be ready"
 
@@ -5077,7 +5077,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 							<![CDATA[
 								#!/bin/bash
 
-								while ! /opt/mssql-tools/bin/sqlcmd -P ${database.password} -U ${database.username} -Q "select name from sys.databases" 2>/dev/null
+								until /opt/mssql-tools/bin/sqlcmd -P ${database.password} -U ${database.username} -Q "select name from sys.databases" 2>/dev/null
 								do
 									echo "Waiting for SQL Server ${database.version} to be ready"
 
@@ -5108,7 +5108,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 							<![CDATA[
 								#!/bin/bash
 
-								while ! nc -z ${database.host} 5000
+								until nc -z ${database.host} 5000
 								do
 									echo "Waiting for Sybase ${database.version} to be ready"
 
@@ -6144,6 +6144,7 @@ war.path=${app.server.portal.dir}/</echo>
 					#!/bin/bash
 
 					until @{shell.condition}
+
 					do
 						echo "Waiting for ${database.name} ${database.version} to be ready"
 
