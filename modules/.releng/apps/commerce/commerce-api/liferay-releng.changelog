@@ -22,3 +22,8 @@
 # Bundle Version 20.3.0
 #
 de44c5f7eb6af12d315c696e3fb6e689a958d343^..28ca0b00b5e7d71ad0edcfe1a1ac927266f57364=COMMERCE-6503
+
+#
+# Bundle Version 20.3.1
+#
+28ca0b00b5e7d71ad0edcfe1a1ac927266f57364^..6cbd4a3fe6aecc6882ccc6ab78c3bfe96c865f8c=LPS-141826
