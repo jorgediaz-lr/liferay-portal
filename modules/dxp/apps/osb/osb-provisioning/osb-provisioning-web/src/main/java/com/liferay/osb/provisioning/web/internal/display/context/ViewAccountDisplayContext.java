@@ -441,10 +441,10 @@ public class ViewAccountDisplayContext {
 		}
 
 		if (latestEndDate != null) {
-			_dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
+			Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
 				"MMM dd, yyyy");
 
-			return _dateFormat.format(latestEndDate);
+			return dateFormat.format(latestEndDate);
 		}
 
 		return null;
@@ -1071,7 +1071,5 @@ public class ViewAccountDisplayContext {
 		return AccountPermissionChecker.contains(
 			themeDisplay.getPermissionChecker(), actionId);
 	}
-
-	private final Format _dateFormat;
 
 }
