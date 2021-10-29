@@ -14,7 +14,6 @@
 
 package com.liferay.portal.kernel.service.persistence;
 
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.model.LayoutVersion;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -8640,15 +8639,9 @@ public class LayoutVersionUtil {
 	}
 
 	public static LayoutVersionPersistence getPersistence() {
-		if (_persistence == null) {
-			_persistence =
-				(LayoutVersionPersistence)PortalBeanLocatorUtil.locate(
-					LayoutVersionPersistence.class.getName());
-		}
-
 		return _persistence;
 	}
 
-	private static LayoutVersionPersistence _persistence;
+	private static volatile LayoutVersionPersistence _persistence;
 
 }

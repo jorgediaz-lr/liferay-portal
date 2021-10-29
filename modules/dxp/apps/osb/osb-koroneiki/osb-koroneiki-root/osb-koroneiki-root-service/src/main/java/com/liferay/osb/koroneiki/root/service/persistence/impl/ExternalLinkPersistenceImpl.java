@@ -19,6 +19,7 @@ import com.liferay.osb.koroneiki.root.model.ExternalLink;
 import com.liferay.osb.koroneiki.root.model.impl.ExternalLinkImpl;
 import com.liferay.osb.koroneiki.root.model.impl.ExternalLinkModelImpl;
 import com.liferay.osb.koroneiki.root.service.persistence.ExternalLinkPersistence;
+import com.liferay.osb.koroneiki.root.service.persistence.ExternalLinkUtil;
 import com.liferay.osb.koroneiki.root.service.persistence.impl.constants.KoroneikiPersistenceConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.configuration.Configuration;
@@ -44,6 +45,7 @@ import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Date;
@@ -2383,15 +2385,35 @@ public class ExternalLinkPersistenceImpl
 				Long.class.getName(), String.class.getName(),
 				String.class.getName(), String.class.getName()
 			});
+
+		_setExternalLinkUtilPersistence(this);
 	}
 
 	@Deactivate
 	public void deactivate() {
+		_setExternalLinkUtilPersistence(null);
+
 		entityCache.removeCache(ExternalLinkImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setExternalLinkUtilPersistence(
+		ExternalLinkPersistence externalLinkPersistence) {
+
+		try {
+			Field field = ExternalLinkUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, externalLinkPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@Override

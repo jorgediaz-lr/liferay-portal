@@ -19,6 +19,7 @@ import com.liferay.osb.koroneiki.trunk.model.ProductConsumption;
 import com.liferay.osb.koroneiki.trunk.model.impl.ProductConsumptionImpl;
 import com.liferay.osb.koroneiki.trunk.model.impl.ProductConsumptionModelImpl;
 import com.liferay.osb.koroneiki.trunk.service.persistence.ProductConsumptionPersistence;
+import com.liferay.osb.koroneiki.trunk.service.persistence.ProductConsumptionUtil;
 import com.liferay.osb.koroneiki.trunk.service.persistence.impl.constants.KoroneikiPersistenceConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.configuration.Configuration;
@@ -49,6 +50,7 @@ import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Date;
@@ -7148,15 +7150,35 @@ public class ProductConsumptionPersistenceImpl
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
 			});
+
+		_setProductConsumptionUtilPersistence(this);
 	}
 
 	@Deactivate
 	public void deactivate() {
+		_setProductConsumptionUtilPersistence(null);
+
 		entityCache.removeCache(ProductConsumptionImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setProductConsumptionUtilPersistence(
+		ProductConsumptionPersistence productConsumptionPersistence) {
+
+		try {
+			Field field = ProductConsumptionUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, productConsumptionPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@Override

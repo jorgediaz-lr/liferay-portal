@@ -19,6 +19,7 @@ import com.liferay.osb.provisioning.model.ProductBundle;
 import com.liferay.osb.provisioning.model.impl.ProductBundleImpl;
 import com.liferay.osb.provisioning.model.impl.ProductBundleModelImpl;
 import com.liferay.osb.provisioning.service.persistence.ProductBundlePersistence;
+import com.liferay.osb.provisioning.service.persistence.ProductBundleUtil;
 import com.liferay.osb.provisioning.service.persistence.impl.constants.ProvisioningPersistenceConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.configuration.Configuration;
@@ -48,6 +49,7 @@ import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
@@ -2223,15 +2225,35 @@ public class ProductBundlePersistenceImpl
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByName",
 			new String[] {String.class.getName()});
+
+		_setProductBundleUtilPersistence(this);
 	}
 
 	@Deactivate
 	public void deactivate() {
+		_setProductBundleUtilPersistence(null);
+
 		entityCache.removeCache(ProductBundleImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setProductBundleUtilPersistence(
+		ProductBundlePersistence productBundlePersistence) {
+
+		try {
+			Field field = ProductBundleUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, productBundlePersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@Override

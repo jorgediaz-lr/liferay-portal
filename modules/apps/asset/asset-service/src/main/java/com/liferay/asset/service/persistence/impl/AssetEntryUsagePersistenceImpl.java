@@ -19,6 +19,7 @@ import com.liferay.asset.model.AssetEntryUsage;
 import com.liferay.asset.model.impl.AssetEntryUsageImpl;
 import com.liferay.asset.model.impl.AssetEntryUsageModelImpl;
 import com.liferay.asset.service.persistence.AssetEntryUsagePersistence;
+import com.liferay.asset.service.persistence.AssetEntryUsageUtil;
 import com.liferay.asset.service.persistence.impl.constants.AssetPersistenceConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.configuration.Configuration;
@@ -46,6 +47,7 @@ import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Date;
@@ -4378,15 +4380,35 @@ public class AssetEntryUsagePersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				String.class.getName(), Long.class.getName()
 			});
+
+		_setAssetEntryUsageUtilPersistence(this);
 	}
 
 	@Deactivate
 	public void deactivate() {
+		_setAssetEntryUsageUtilPersistence(null);
+
 		entityCache.removeCache(AssetEntryUsageImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setAssetEntryUsageUtilPersistence(
+		AssetEntryUsagePersistence assetEntryUsagePersistence) {
+
+		try {
+			Field field = AssetEntryUsageUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, assetEntryUsagePersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@Override

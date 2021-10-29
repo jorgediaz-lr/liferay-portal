@@ -19,6 +19,7 @@ import com.liferay.osb.koroneiki.taproot.model.Contact;
 import com.liferay.osb.koroneiki.taproot.model.impl.ContactImpl;
 import com.liferay.osb.koroneiki.taproot.model.impl.ContactModelImpl;
 import com.liferay.osb.koroneiki.taproot.service.persistence.ContactPersistence;
+import com.liferay.osb.koroneiki.taproot.service.persistence.ContactUtil;
 import com.liferay.osb.koroneiki.taproot.service.persistence.impl.constants.KoroneikiPersistenceConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.configuration.Configuration;
@@ -50,6 +51,7 @@ import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
@@ -3326,15 +3328,34 @@ public class ContactPersistenceImpl
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByEmailAddress",
 			new String[] {String.class.getName()});
+
+		_setContactUtilPersistence(this);
 	}
 
 	@Deactivate
 	public void deactivate() {
+		_setContactUtilPersistence(null);
+
 		entityCache.removeCache(ContactImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setContactUtilPersistence(
+		ContactPersistence contactPersistence) {
+
+		try {
+			Field field = ContactUtil.class.getDeclaredField("_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, contactPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@Override

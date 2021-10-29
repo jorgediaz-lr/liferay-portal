@@ -20,6 +20,7 @@ import com.liferay.osb.koroneiki.taproot.model.impl.ContactTeamRoleImpl;
 import com.liferay.osb.koroneiki.taproot.model.impl.ContactTeamRoleModelImpl;
 import com.liferay.osb.koroneiki.taproot.service.persistence.ContactTeamRolePK;
 import com.liferay.osb.koroneiki.taproot.service.persistence.ContactTeamRolePersistence;
+import com.liferay.osb.koroneiki.taproot.service.persistence.ContactTeamRoleUtil;
 import com.liferay.osb.koroneiki.taproot.service.persistence.impl.constants.KoroneikiPersistenceConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.configuration.Configuration;
@@ -43,6 +44,7 @@ import com.liferay.portal.kernel.util.SetUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.List;
@@ -2905,15 +2907,35 @@ public class ContactTeamRolePersistenceImpl
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCI_TI",
 			new String[] {Long.class.getName(), Long.class.getName()});
+
+		_setContactTeamRoleUtilPersistence(this);
 	}
 
 	@Deactivate
 	public void deactivate() {
+		_setContactTeamRoleUtilPersistence(null);
+
 		entityCache.removeCache(ContactTeamRoleImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setContactTeamRoleUtilPersistence(
+		ContactTeamRolePersistence contactTeamRolePersistence) {
+
+		try {
+			Field field = ContactTeamRoleUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, contactTeamRolePersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@Override

@@ -46,10 +46,12 @@ import com.liferay.portal.security.service.access.policy.model.SAPEntry;
 import com.liferay.portal.security.service.access.policy.model.impl.SAPEntryImpl;
 import com.liferay.portal.security.service.access.policy.model.impl.SAPEntryModelImpl;
 import com.liferay.portal.security.service.access.policy.service.persistence.SAPEntryPersistence;
+import com.liferay.portal.security.service.access.policy.service.persistence.SAPEntryUtil;
 import com.liferay.portal.security.service.access.policy.service.persistence.impl.constants.SAPPersistenceConstants;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
@@ -4992,15 +4994,34 @@ public class SAPEntryPersistenceImpl
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_N",
 			new String[] {Long.class.getName(), String.class.getName()});
+
+		_setSAPEntryUtilPersistence(this);
 	}
 
 	@Deactivate
 	public void deactivate() {
+		_setSAPEntryUtilPersistence(null);
+
 		entityCache.removeCache(SAPEntryImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setSAPEntryUtilPersistence(
+		SAPEntryPersistence sapEntryPersistence) {
+
+		try {
+			Field field = SAPEntryUtil.class.getDeclaredField("_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, sapEntryPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@Override

@@ -36,9 +36,12 @@ import com.liferay.revert.schema.version.model.RSVEntry;
 import com.liferay.revert.schema.version.model.impl.RSVEntryImpl;
 import com.liferay.revert.schema.version.model.impl.RSVEntryModelImpl;
 import com.liferay.revert.schema.version.service.persistence.RSVEntryPersistence;
+import com.liferay.revert.schema.version.service.persistence.RSVEntryUtil;
 import com.liferay.revert.schema.version.service.persistence.impl.constants.RSVPersistenceConstants;
 
 import java.io.Serializable;
+
+import java.lang.reflect.Field;
 
 import java.util.List;
 import java.util.Map;
@@ -611,15 +614,34 @@ public class RSVEntryPersistenceImpl
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
+
+		_setRSVEntryUtilPersistence(this);
 	}
 
 	@Deactivate
 	public void deactivate() {
+		_setRSVEntryUtilPersistence(null);
+
 		entityCache.removeCache(RSVEntryImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setRSVEntryUtilPersistence(
+		RSVEntryPersistence rsvEntryPersistence) {
+
+		try {
+			Field field = RSVEntryUtil.class.getDeclaredField("_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, rsvEntryPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@Override

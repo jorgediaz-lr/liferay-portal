@@ -25,10 +25,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
  * The persistence utility for the product bundle products service. This utility wraps <code>com.liferay.osb.provisioning.service.persistence.impl.ProductBundleProductsPersistenceImpl</code> and provides direct access to the database for CRUD operations. This utility should only be used by the service layer, as it must operate within a transaction. Never access this utility in a JSP, controller, model, or other front-end class.
  *
@@ -652,29 +648,9 @@ public class ProductBundleProductsUtil {
 	}
 
 	public static ProductBundleProductsPersistence getPersistence() {
-		return _serviceTracker.getService();
+		return _persistence;
 	}
 
-	private static ServiceTracker
-		<ProductBundleProductsPersistence, ProductBundleProductsPersistence>
-			_serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(
-			ProductBundleProductsPersistence.class);
-
-		ServiceTracker
-			<ProductBundleProductsPersistence, ProductBundleProductsPersistence>
-				serviceTracker =
-					new ServiceTracker
-						<ProductBundleProductsPersistence,
-						 ProductBundleProductsPersistence>(
-							 bundle.getBundleContext(),
-							 ProductBundleProductsPersistence.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static volatile ProductBundleProductsPersistence _persistence;
 
 }

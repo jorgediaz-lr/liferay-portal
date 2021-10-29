@@ -19,6 +19,7 @@ import com.liferay.osb.provisioning.license.model.LicenseKey;
 import com.liferay.osb.provisioning.license.model.impl.LicenseKeyImpl;
 import com.liferay.osb.provisioning.license.model.impl.LicenseKeyModelImpl;
 import com.liferay.osb.provisioning.license.service.persistence.LicenseKeyPersistence;
+import com.liferay.osb.provisioning.license.service.persistence.LicenseKeyUtil;
 import com.liferay.osb.provisioning.license.service.persistence.impl.constants.ProvisioningPersistenceConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.configuration.Configuration;
@@ -49,6 +50,7 @@ import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Date;
@@ -12696,15 +12698,34 @@ public class LicenseKeyPersistenceImpl
 				String.class.getName(), String.class.getName(),
 				Boolean.class.getName(), Boolean.class.getName()
 			});
+
+		_setLicenseKeyUtilPersistence(this);
 	}
 
 	@Deactivate
 	public void deactivate() {
+		_setLicenseKeyUtilPersistence(null);
+
 		entityCache.removeCache(LicenseKeyImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setLicenseKeyUtilPersistence(
+		LicenseKeyPersistence licenseKeyPersistence) {
+
+		try {
+			Field field = LicenseKeyUtil.class.getDeclaredField("_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, licenseKeyPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@Override

@@ -19,6 +19,7 @@ import com.liferay.osb.koroneiki.taproot.model.AccountField;
 import com.liferay.osb.koroneiki.taproot.model.impl.AccountFieldImpl;
 import com.liferay.osb.koroneiki.taproot.model.impl.AccountFieldModelImpl;
 import com.liferay.osb.koroneiki.taproot.service.persistence.AccountFieldPersistence;
+import com.liferay.osb.koroneiki.taproot.service.persistence.AccountFieldUtil;
 import com.liferay.osb.koroneiki.taproot.service.persistence.impl.constants.KoroneikiPersistenceConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.configuration.Configuration;
@@ -42,6 +43,7 @@ import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.List;
@@ -1188,15 +1190,35 @@ public class AccountFieldPersistenceImpl
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByAccountId",
 			new String[] {Long.class.getName()});
+
+		_setAccountFieldUtilPersistence(this);
 	}
 
 	@Deactivate
 	public void deactivate() {
+		_setAccountFieldUtilPersistence(null);
+
 		entityCache.removeCache(AccountFieldImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setAccountFieldUtilPersistence(
+		AccountFieldPersistence accountFieldPersistence) {
+
+		try {
+			Field field = AccountFieldUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, accountFieldPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@Override

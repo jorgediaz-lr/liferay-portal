@@ -19,6 +19,7 @@ import com.liferay.osb.koroneiki.phytohormone.model.EntitlementDefinition;
 import com.liferay.osb.koroneiki.phytohormone.model.impl.EntitlementDefinitionImpl;
 import com.liferay.osb.koroneiki.phytohormone.model.impl.EntitlementDefinitionModelImpl;
 import com.liferay.osb.koroneiki.phytohormone.service.persistence.EntitlementDefinitionPersistence;
+import com.liferay.osb.koroneiki.phytohormone.service.persistence.EntitlementDefinitionUtil;
 import com.liferay.osb.koroneiki.phytohormone.service.persistence.impl.constants.KoroneikiPersistenceConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.configuration.Configuration;
@@ -50,6 +51,7 @@ import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
@@ -5561,15 +5563,35 @@ public class EntitlementDefinitionPersistenceImpl
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_S",
 			new String[] {Long.class.getName(), Integer.class.getName()});
+
+		_setEntitlementDefinitionUtilPersistence(this);
 	}
 
 	@Deactivate
 	public void deactivate() {
+		_setEntitlementDefinitionUtilPersistence(null);
+
 		entityCache.removeCache(EntitlementDefinitionImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setEntitlementDefinitionUtilPersistence(
+		EntitlementDefinitionPersistence entitlementDefinitionPersistence) {
+
+		try {
+			Field field = EntitlementDefinitionUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, entitlementDefinitionPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@Override

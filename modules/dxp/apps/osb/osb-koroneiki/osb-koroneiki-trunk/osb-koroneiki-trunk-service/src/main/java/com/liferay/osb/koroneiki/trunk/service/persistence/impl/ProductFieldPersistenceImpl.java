@@ -19,6 +19,7 @@ import com.liferay.osb.koroneiki.trunk.model.ProductField;
 import com.liferay.osb.koroneiki.trunk.model.impl.ProductFieldImpl;
 import com.liferay.osb.koroneiki.trunk.model.impl.ProductFieldModelImpl;
 import com.liferay.osb.koroneiki.trunk.service.persistence.ProductFieldPersistence;
+import com.liferay.osb.koroneiki.trunk.service.persistence.ProductFieldUtil;
 import com.liferay.osb.koroneiki.trunk.service.persistence.impl.constants.KoroneikiPersistenceConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.configuration.Configuration;
@@ -42,6 +43,7 @@ import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.List;
@@ -1789,15 +1791,35 @@ public class ProductFieldPersistenceImpl
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C",
 			new String[] {Long.class.getName(), Long.class.getName()});
+
+		_setProductFieldUtilPersistence(this);
 	}
 
 	@Deactivate
 	public void deactivate() {
+		_setProductFieldUtilPersistence(null);
+
 		entityCache.removeCache(ProductFieldImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setProductFieldUtilPersistence(
+		ProductFieldPersistence productFieldPersistence) {
+
+		try {
+			Field field = ProductFieldUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, productFieldPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@Override

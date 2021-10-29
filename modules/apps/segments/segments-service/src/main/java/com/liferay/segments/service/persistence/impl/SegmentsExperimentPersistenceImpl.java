@@ -47,10 +47,12 @@ import com.liferay.segments.model.SegmentsExperiment;
 import com.liferay.segments.model.impl.SegmentsExperimentImpl;
 import com.liferay.segments.model.impl.SegmentsExperimentModelImpl;
 import com.liferay.segments.service.persistence.SegmentsExperimentPersistence;
+import com.liferay.segments.service.persistence.SegmentsExperimentUtil;
 import com.liferay.segments.service.persistence.impl.constants.SegmentsPersistenceConstants;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Date;
@@ -6990,15 +6992,35 @@ public class SegmentsExperimentPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Long.class.getName(), Integer.class.getName()
 			});
+
+		_setSegmentsExperimentUtilPersistence(this);
 	}
 
 	@Deactivate
 	public void deactivate() {
+		_setSegmentsExperimentUtilPersistence(null);
+
 		entityCache.removeCache(SegmentsExperimentImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setSegmentsExperimentUtilPersistence(
+		SegmentsExperimentPersistence segmentsExperimentPersistence) {
+
+		try {
+			Field field = SegmentsExperimentUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, segmentsExperimentPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@Override

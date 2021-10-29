@@ -20,6 +20,7 @@ import com.liferay.osb.koroneiki.taproot.model.impl.ContactAccountRoleImpl;
 import com.liferay.osb.koroneiki.taproot.model.impl.ContactAccountRoleModelImpl;
 import com.liferay.osb.koroneiki.taproot.service.persistence.ContactAccountRolePK;
 import com.liferay.osb.koroneiki.taproot.service.persistence.ContactAccountRolePersistence;
+import com.liferay.osb.koroneiki.taproot.service.persistence.ContactAccountRoleUtil;
 import com.liferay.osb.koroneiki.taproot.service.persistence.impl.constants.KoroneikiPersistenceConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.configuration.Configuration;
@@ -43,6 +44,7 @@ import com.liferay.portal.kernel.util.SetUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.List;
@@ -2955,15 +2957,35 @@ public class ContactAccountRolePersistenceImpl
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCI_AI",
 			new String[] {Long.class.getName(), Long.class.getName()});
+
+		_setContactAccountRoleUtilPersistence(this);
 	}
 
 	@Deactivate
 	public void deactivate() {
+		_setContactAccountRoleUtilPersistence(null);
+
 		entityCache.removeCache(ContactAccountRoleImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setContactAccountRoleUtilPersistence(
+		ContactAccountRolePersistence contactAccountRolePersistence) {
+
+		try {
+			Field field = ContactAccountRoleUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, contactAccountRolePersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@Override

@@ -43,10 +43,12 @@ import com.liferay.site.model.SiteFriendlyURL;
 import com.liferay.site.model.impl.SiteFriendlyURLImpl;
 import com.liferay.site.model.impl.SiteFriendlyURLModelImpl;
 import com.liferay.site.service.persistence.SiteFriendlyURLPersistence;
+import com.liferay.site.service.persistence.SiteFriendlyURLUtil;
 import com.liferay.site.service.persistence.impl.constants.SitePersistenceConstants;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Date;
@@ -3873,15 +3875,35 @@ public class SiteFriendlyURLPersistenceImpl
 				Long.class.getName(), String.class.getName(),
 				String.class.getName()
 			});
+
+		_setSiteFriendlyURLUtilPersistence(this);
 	}
 
 	@Deactivate
 	public void deactivate() {
+		_setSiteFriendlyURLUtilPersistence(null);
+
 		entityCache.removeCache(SiteFriendlyURLImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setSiteFriendlyURLUtilPersistence(
+		SiteFriendlyURLPersistence siteFriendlyURLPersistence) {
+
+		try {
+			Field field = SiteFriendlyURLUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, siteFriendlyURLPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@Override

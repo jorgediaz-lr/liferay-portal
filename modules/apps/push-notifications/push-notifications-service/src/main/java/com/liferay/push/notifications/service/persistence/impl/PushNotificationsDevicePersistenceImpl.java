@@ -42,10 +42,12 @@ import com.liferay.push.notifications.model.PushNotificationsDevice;
 import com.liferay.push.notifications.model.impl.PushNotificationsDeviceImpl;
 import com.liferay.push.notifications.model.impl.PushNotificationsDeviceModelImpl;
 import com.liferay.push.notifications.service.persistence.PushNotificationsDevicePersistence;
+import com.liferay.push.notifications.service.persistence.PushNotificationsDeviceUtil;
 import com.liferay.push.notifications.service.persistence.impl.constants.PushNotificationsPersistenceConstants;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Date;
@@ -1963,15 +1965,35 @@ public class PushNotificationsDevicePersistenceImpl
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByU_P",
 			new String[] {Long.class.getName(), String.class.getName()});
+
+		_setPushNotificationsDeviceUtilPersistence(this);
 	}
 
 	@Deactivate
 	public void deactivate() {
+		_setPushNotificationsDeviceUtilPersistence(null);
+
 		entityCache.removeCache(PushNotificationsDeviceImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setPushNotificationsDeviceUtilPersistence(
+		PushNotificationsDevicePersistence pushNotificationsDevicePersistence) {
+
+		try {
+			Field field = PushNotificationsDeviceUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, pushNotificationsDevicePersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@Override

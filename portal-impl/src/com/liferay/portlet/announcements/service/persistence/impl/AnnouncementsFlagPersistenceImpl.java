@@ -17,6 +17,7 @@ package com.liferay.portlet.announcements.service.persistence.impl;
 import com.liferay.announcements.kernel.exception.NoSuchFlagException;
 import com.liferay.announcements.kernel.model.AnnouncementsFlag;
 import com.liferay.announcements.kernel.service.persistence.AnnouncementsFlagPersistence;
+import com.liferay.announcements.kernel.service.persistence.AnnouncementsFlagUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
@@ -42,6 +43,7 @@ import com.liferay.portlet.announcements.model.impl.AnnouncementsFlagModelImpl;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Date;
@@ -2117,14 +2119,34 @@ public class AnnouncementsFlagPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Integer.class.getName()
 			});
+
+		_setAnnouncementsFlagUtilPersistence(this);
 	}
 
 	public void destroy() {
+		_setAnnouncementsFlagUtilPersistence(null);
+
 		EntityCacheUtil.removeCache(AnnouncementsFlagImpl.class.getName());
 
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setAnnouncementsFlagUtilPersistence(
+		AnnouncementsFlagPersistence announcementsFlagPersistence) {
+
+		try {
+			Field field = AnnouncementsFlagUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, announcementsFlagPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	private static final String _SQL_SELECT_ANNOUNCEMENTSFLAG =

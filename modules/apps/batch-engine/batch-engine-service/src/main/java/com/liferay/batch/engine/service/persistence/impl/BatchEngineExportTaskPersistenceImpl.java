@@ -19,6 +19,7 @@ import com.liferay.batch.engine.model.BatchEngineExportTask;
 import com.liferay.batch.engine.model.impl.BatchEngineExportTaskImpl;
 import com.liferay.batch.engine.model.impl.BatchEngineExportTaskModelImpl;
 import com.liferay.batch.engine.service.persistence.BatchEngineExportTaskPersistence;
+import com.liferay.batch.engine.service.persistence.BatchEngineExportTaskUtil;
 import com.liferay.batch.engine.service.persistence.impl.constants.BatchEnginePersistenceConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.configuration.Configuration;
@@ -47,6 +48,7 @@ import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Date;
@@ -2581,15 +2583,35 @@ public class BatchEngineExportTaskPersistenceImpl
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByExecuteStatus",
 			new String[] {String.class.getName()});
+
+		_setBatchEngineExportTaskUtilPersistence(this);
 	}
 
 	@Deactivate
 	public void deactivate() {
+		_setBatchEngineExportTaskUtilPersistence(null);
+
 		entityCache.removeCache(BatchEngineExportTaskImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setBatchEngineExportTaskUtilPersistence(
+		BatchEngineExportTaskPersistence batchEngineExportTaskPersistence) {
+
+		try {
+			Field field = BatchEngineExportTaskUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, batchEngineExportTaskPersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@Override

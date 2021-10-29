@@ -19,6 +19,7 @@ import com.liferay.osb.distributed.messaging.model.QueuedMessage;
 import com.liferay.osb.distributed.messaging.model.impl.QueuedMessageImpl;
 import com.liferay.osb.distributed.messaging.model.impl.QueuedMessageModelImpl;
 import com.liferay.osb.distributed.messaging.service.persistence.QueuedMessagePersistence;
+import com.liferay.osb.distributed.messaging.service.persistence.QueuedMessageUtil;
 import com.liferay.osb.distributed.messaging.service.persistence.impl.constants.DMPersistenceConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.configuration.Configuration;
@@ -43,6 +44,7 @@ import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Date;
@@ -1289,15 +1291,35 @@ public class QueuedMessagePersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"countByMessageBrokerClassName",
 			new String[] {String.class.getName()});
+
+		_setQueuedMessageUtilPersistence(this);
 	}
 
 	@Deactivate
 	public void deactivate() {
+		_setQueuedMessageUtilPersistence(null);
+
 		entityCache.removeCache(QueuedMessageImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setQueuedMessageUtilPersistence(
+		QueuedMessagePersistence queuedMessagePersistence) {
+
+		try {
+			Field field = QueuedMessageUtil.class.getDeclaredField(
+				"_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, queuedMessagePersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@Override

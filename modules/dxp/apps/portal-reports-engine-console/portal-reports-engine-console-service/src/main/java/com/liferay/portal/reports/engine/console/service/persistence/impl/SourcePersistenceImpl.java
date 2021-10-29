@@ -45,10 +45,12 @@ import com.liferay.portal.reports.engine.console.model.Source;
 import com.liferay.portal.reports.engine.console.model.impl.SourceImpl;
 import com.liferay.portal.reports.engine.console.model.impl.SourceModelImpl;
 import com.liferay.portal.reports.engine.console.service.persistence.SourcePersistence;
+import com.liferay.portal.reports.engine.console.service.persistence.SourceUtil;
 import com.liferay.portal.reports.engine.console.service.persistence.impl.constants.ReportsPersistenceConstants;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Date;
@@ -3655,15 +3657,34 @@ public class SourcePersistenceImpl
 			entityCacheEnabled, finderCacheEnabled, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCompanyId",
 			new String[] {Long.class.getName()});
+
+		_setSourceUtilPersistence(this);
 	}
 
 	@Deactivate
 	public void deactivate() {
+		_setSourceUtilPersistence(null);
+
 		entityCache.removeCache(SourceImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+	}
+
+	private void _setSourceUtilPersistence(
+		SourcePersistence sourcePersistence) {
+
+		try {
+			Field field = SourceUtil.class.getDeclaredField("_persistence");
+
+			field.setAccessible(true);
+
+			field.set(null, sourcePersistence);
+		}
+		catch (ReflectiveOperationException reflectiveOperationException) {
+			throw new RuntimeException(reflectiveOperationException);
+		}
 	}
 
 	@Override
