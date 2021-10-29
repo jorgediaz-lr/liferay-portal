@@ -871,7 +871,7 @@ public class ViewAccountDisplayContext {
 		}
 		else if (tabs2.equals("complimentary")) {
 			filterQuery.addEquals(
-				"state", String.valueOf(WorkflowConstants.STATUS_INACTIVE),
+				"status", String.valueOf(WorkflowConstants.STATUS_INACTIVE),
 				true);
 		}
 		else if (tabs2.equals("expired")) {
