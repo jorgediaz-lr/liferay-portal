@@ -441,10 +441,7 @@ public class ViewAccountDisplayContext {
 		}
 
 		if (latestEndDate != null) {
-			Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
-				"MMM dd, yyyy");
-
-			return dateFormat.format(latestEndDate);
+			return shortDateFormat.format(latestEndDate);
 		}
 
 		return null;
@@ -817,6 +814,8 @@ public class ViewAccountDisplayContext {
 	protected ProductWebService productWebService;
 	protected RenderRequest renderRequest;
 	protected RenderResponse renderResponse;
+	protected final Format shortDateFormat =
+		FastDateFormatFactoryUtil.getSimpleDateFormat("MMM dd, yyyy");
 	protected TeamRoleWebService teamRoleWebService;
 	protected TeamWebService teamWebService;
 	protected ThemeDisplay themeDisplay;
