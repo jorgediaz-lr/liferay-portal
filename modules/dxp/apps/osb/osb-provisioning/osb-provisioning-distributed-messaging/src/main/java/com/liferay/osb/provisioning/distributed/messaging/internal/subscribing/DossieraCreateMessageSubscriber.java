@@ -2530,7 +2530,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 	@Reference
 	private AccountWebService _accountWebService;
 
-	@Reference(target = "(provider=web)")
+	@Reference(target = "(provider=okta)")
 	private ContactIdentityProvider _contactIdentityProvider;
 
 	@Reference

@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.util.Map;
 
@@ -45,9 +46,30 @@ public class OktaContactIdentityProvider implements ContactIdentityProvider {
 	public Contact fetchContactByEmailAddress(String emailAddress)
 		throws Exception {
 
-		// TODO
+		Contact contact = _contactWebService.fetchContactByEmailAddress(
+			emailAddress);
 
-		throw new UnsupportedOperationException();
+		if (contact == null) {
+			String response = _sendRequest(_URL_API_REST_USERS + emailAddress);
+
+			JSONObject jsonObject = _jsonFactory.createJSONObject(response);
+
+			if (jsonObject.has("errorCode")) {
+				return null;
+			}
+
+			JSONObject profileJSONObject = jsonObject.getJSONObject("profile");
+
+			contact = new Contact();
+
+			contact.setEmailAddress(emailAddress);
+			contact.setFirstName(profileJSONObject.getString("firstName"));
+			contact.setLastName(profileJSONObject.getString("lastName"));
+			contact.setMiddleName(profileJSONObject.getString("middleName"));
+			contact.setUuid(profileJSONObject.getString("uuid"));
+		}
+
+		return contact;
 	}
 
 	public Contact fetchContactBySessionId(String sessionId) throws Exception {
@@ -81,9 +103,21 @@ public class OktaContactIdentityProvider implements ContactIdentityProvider {
 	public Integer fetchContactStatusByEmailAddress(String emailAddress)
 		throws Exception {
 
-		// TODO
+		String response = _sendRequest(_URL_API_REST_USERS + emailAddress);
 
-		throw new UnsupportedOperationException();
+		JSONObject jsonObject = _jsonFactory.createJSONObject(response);
+
+		if (jsonObject.has("errorCode")) {
+			return null;
+		}
+
+		String status = jsonObject.getString("status");
+
+		if (Validator.isNotNull(status) && status.equals("ACTIVE")) {
+			return WorkflowConstants.STATUS_APPROVED;
+		}
+
+		return WorkflowConstants.STATUS_INACTIVE;
 	}
 
 	@Activate
@@ -127,6 +161,8 @@ public class OktaContactIdentityProvider implements ContactIdentityProvider {
 	}
 
 	private static final String _URL_API_GET_SESSION = "/api/v1/sessions/";
+
+	private static final String _URL_API_REST_USERS = "/api/v1/users/";
 
 	private String _apiToken;
 
