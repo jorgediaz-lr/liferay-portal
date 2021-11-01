@@ -371,7 +371,7 @@ public class ContactResourceImpl
 
 	private static final EntityModel _entityModel = new ContactEntityModel();
 
-	@Reference(target = "(provider=okta)")
+	@Reference(target = "(provider=web)")
 	private ContactIdentityProvider _contactIdentityProvider;
 
 	@Reference
