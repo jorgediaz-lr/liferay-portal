@@ -608,6 +608,7 @@ public abstract class BaseDataLayoutResourceTestCase {
 		DataLayout dataLayout =
 			testPostDataLayoutDataLayoutPermission_addDataLayout();
 
+		@SuppressWarnings("PMD.UnusedLocalVariable")
 		com.liferay.portal.kernel.model.Role role = RoleTestUtil.addRole(
 			RoleConstants.TYPE_REGULAR);
 
@@ -635,6 +636,7 @@ public abstract class BaseDataLayoutResourceTestCase {
 		DataLayout dataLayout =
 			testPostSiteDataLayoutPermission_addDataLayout();
 
+		@SuppressWarnings("PMD.UnusedLocalVariable")
 		com.liferay.portal.kernel.model.Role role = RoleTestUtil.addRole(
 			RoleConstants.TYPE_REGULAR);
 
