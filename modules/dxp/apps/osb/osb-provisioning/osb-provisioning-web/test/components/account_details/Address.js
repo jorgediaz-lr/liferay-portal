@@ -138,4 +138,74 @@ describe('Address', () => {
 			true
 		);
 	});
+
+	it('displays the Save button as disabled until at least one field is filled out', () => {
+		const {getAllByDisplayValue, getAllByText, getByText} = render(
+			<PermissionsProvider permissions={{updatePermission: true}}>
+				<Address
+					accountKey="key123"
+					addFn={jest.fn()}
+					address={{
+						addressCountry: DASH,
+						addressLocality: DASH,
+						addressRegion: DASH,
+						deletePostalAddressURL: '/',
+						editPostalAddressURL: '/',
+						id: '123',
+						postalCode: DASH,
+						primary: false,
+						streetAddressLine1: DASH,
+						streetAddressLine2: DASH,
+						streetAddressLine3: DASH
+					}}
+					count={1}
+					countryOptions={[]}
+				/>
+			</PermissionsProvider>
+		);
+
+		fireEvent.click(getAllByText(DASH)[0]);
+
+		expect(getByText('save').disabled).toBeTruthy();
+
+		fireEvent.change(getAllByDisplayValue('')[0], {
+			target: {value: 'street 1'}
+		});
+
+		expect(getByText('save').disabled).toBeFalsy();
+	});
+
+	it('displays the Save button as disabled if user only toggles the Primary Address field', () => {
+		const {getAllByText, getByLabelText, getByText} = render(
+			<PermissionsProvider permissions={{updatePermission: true}}>
+				<Address
+					accountKey="key123"
+					addFn={jest.fn()}
+					address={{
+						addressCountry: DASH,
+						addressLocality: DASH,
+						addressRegion: DASH,
+						deletePostalAddressURL: '/',
+						editPostalAddressURL: '/',
+						id: '123',
+						postalCode: DASH,
+						primary: false,
+						streetAddressLine1: DASH,
+						streetAddressLine2: DASH,
+						streetAddressLine3: DASH
+					}}
+					count={1}
+					countryOptions={[]}
+				/>
+			</PermissionsProvider>
+		);
+
+		fireEvent.click(getAllByText(DASH)[0]);
+
+		expect(getByText('save').disabled).toBeTruthy();
+
+		fireEvent.click(getByLabelText('addressPrimary'));
+
+		expect(getByText('save').disabled).toBeTruthy();
+	});
 });

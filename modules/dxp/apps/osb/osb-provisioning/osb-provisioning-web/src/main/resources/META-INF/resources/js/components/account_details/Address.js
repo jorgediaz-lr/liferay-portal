@@ -20,6 +20,7 @@ import IconButton from '../IconButton';
 import * as AddressField from './address_fields/AddressField';
 
 function Address({accountKey, addFn, address, count, countryOptions}) {
+	const [disableSave, setDisableSave] = useState(true);
 	const [editable, setEditable] = useState(false);
 	const [selectedCountry, setSelectedCountry] = useState(
 		countryOptions.find(({name}) => name === address.addressCountry)
@@ -46,6 +47,13 @@ function Address({accountKey, addFn, address, count, countryOptions}) {
 			countryOptions.find(({name}) => name === values.addressCountryName)
 		);
 	}, [countryOptions, values.addressCountryName]);
+
+	useEffect(() => {
+		const newValues = {...values};
+		delete newValues.addressPrimary;
+
+		setDisableSave(!Object.values(newValues).some(val => val));
+	}, [values]);
 
 	function getRegionOptions() {
 		return selectedCountry ? selectedCountry.countryRegions : [];
@@ -180,6 +188,7 @@ function Address({accountKey, addFn, address, count, countryOptions}) {
 								<div className="btn-group-item">
 									<button
 										className="btn btn-primary btn-sm save-btn"
+										disabled={disableSave}
 										role="button"
 										type="submit"
 									>
