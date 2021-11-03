@@ -18,6 +18,7 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.PostalAddress;
 import com.liferay.osb.koroneiki.phloem.rest.client.problem.Problem;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.koroneiki.web.service.PostalAddressWebService;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
@@ -120,9 +121,11 @@ public class EditPostalAddressMVCActionCommand extends BaseMVCActionCommand {
 
 		PostalAddress postalAddress = new PostalAddress();
 
-		if (Validator.isNotNull(streetAddressLine1)) {
-			postalAddress.setStreetAddressLine1(streetAddressLine1);
+		if (Validator.isNull(streetAddressLine1)) {
+			streetAddressLine1 = StringPool.DASH;
 		}
+
+		postalAddress.setStreetAddressLine1(streetAddressLine1);
 
 		if (Validator.isNotNull(streetAddressLine2)) {
 			postalAddress.setStreetAddressLine2(streetAddressLine2);
@@ -132,13 +135,17 @@ public class EditPostalAddressMVCActionCommand extends BaseMVCActionCommand {
 			postalAddress.setStreetAddressLine3(streetAddressLine3);
 		}
 
-		if (Validator.isNotNull(addressLocality)) {
-			postalAddress.setAddressLocality(addressLocality);
+		if (Validator.isNull(addressLocality)) {
+			addressLocality = StringPool.DASH;
 		}
 
-		if (Validator.isNotNull(addressZip)) {
-			postalAddress.setPostalCode(addressZip);
+		postalAddress.setAddressLocality(addressLocality);
+
+		if (Validator.isNull(addressZip)) {
+			addressZip = StringPool.DASH;
 		}
+
+		postalAddress.setPostalCode(addressZip);
 
 		if (Validator.isNotNull(addressRegionName)) {
 			postalAddress.setAddressRegion(addressRegionName);
