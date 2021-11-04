@@ -41,6 +41,9 @@ public class ProductConstants {
 
 	public static final String NAME_COMMERCE = "Commerce";
 
+	public static final String NAME_COMMERCE_FOR_DXP_CLOUD =
+		"Commerce for DXP Cloud";
+
 	public static final String NAME_COMMERCE_SUBSCRIPTION =
 		"Commerce Subscription";
 

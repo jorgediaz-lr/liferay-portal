@@ -151,6 +151,7 @@ public class LicenseKeyResourceImpl
 		filterQuery.addEquals("accountKey", accountKey, true);
 		filterQuery.addEquals("state", "active", true);
 		filterQuery.addEquals("property_type", "primary", false);
+		filterQuery.addContains("name", "Commerce for DXP Cloud", false);
 		filterQuery.addContains("name", "Commerce Subscription", false);
 		filterQuery.addContains("name", "DXP Cloud Subscription", false);
 		filterQuery.addContains("name", "Partnership", false);
@@ -166,8 +167,10 @@ public class LicenseKeyResourceImpl
 
 			String curProductName = curProduct.getName();
 
-			if ((curProductName.contains(
-					ProductConstants.NAME_COMMERCE_SUBSCRIPTION) &&
+			if (((curProductName.startsWith(
+					ProductConstants.NAME_COMMERCE_FOR_DXP_CLOUD) ||
+				  curProductName.startsWith(
+					  ProductConstants.NAME_COMMERCE_SUBSCRIPTION)) &&
 				 productGroupName.equals(
 					 ProductConstants.GROUP_NAME_COMMERCE)) ||
 				((curProductName.startsWith(ProductConstants.NAME_DXP) ||
