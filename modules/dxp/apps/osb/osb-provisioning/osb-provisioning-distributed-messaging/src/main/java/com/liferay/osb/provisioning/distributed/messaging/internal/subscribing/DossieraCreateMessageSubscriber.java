@@ -1785,7 +1785,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 			ContactRole contactRole = _contactRoleWebService.fetchContactRole(
 				ContactRole.Type.ACCOUNT_CUSTOMER.toString(),
-				ContactRoleConstants.NAME_SUPPORT_WATCHER);
+				ContactRoleConstants.NAME_ADMINISTRATOR);
 
 			contact.setContactRoles(new ContactRole[] {contactRole});
 

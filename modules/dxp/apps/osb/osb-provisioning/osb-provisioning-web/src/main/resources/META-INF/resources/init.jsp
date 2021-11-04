@@ -49,6 +49,7 @@ page import="com.liferay.osb.provisioning.exception.AccountCodeException" %><%@
 page import="com.liferay.osb.provisioning.exception.ContactRequiredException" %><%@
 page import="com.liferay.osb.provisioning.exception.DuplicateContactRoleException" %><%@
 page import="com.liferay.osb.provisioning.exception.DuplicateDossieraKeyException" %><%@
+page import="com.liferay.osb.provisioning.exception.MultipleCustomerContactRoleException" %><%@
 page import="com.liferay.osb.provisioning.exception.MultipleDossieraKeysException" %><%@
 page import="com.liferay.osb.provisioning.exception.ProductBundleNameException" %><%@
 page import="com.liferay.osb.provisioning.exception.ProductPurchaseQuantityException" %><%@
