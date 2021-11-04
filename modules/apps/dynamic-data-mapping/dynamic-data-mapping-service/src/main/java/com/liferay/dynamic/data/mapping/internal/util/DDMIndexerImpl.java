@@ -627,7 +627,7 @@ public class DDMIndexerImpl implements DDMIndexer {
 				});
 		}
 
-		final String fieldValueString = String.valueOf(ddmStructureFieldValue);
+		String fieldValueString = String.valueOf(ddmStructureFieldValue);
 
 		return createFieldValueQueryFilter(
 			ddmStructure, fieldReference, locale, indexType,
