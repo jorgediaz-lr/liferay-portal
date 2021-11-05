@@ -768,9 +768,12 @@ definition {
 		}
 	}
 
-	@description = "This is a test for LPS-90066. A user can preview a scheduled Web Content article through the 'View Usages' screen."
+	@description = "This is a test for LPS-90066 and LPS-86164. A user can preview a scheduled Web Content article through the 'View Usages' screen."
 	@priority = "5"
 	test PreviewScheduledWebContentInWCD {
+		property test.assert.javascript.errors = "true";
+		property test.assert.warning.exceptions = "true";
+
 		task ("Add a web content article with a future display date") {
 			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
@@ -781,6 +784,20 @@ definition {
 				webContentTitle = "WC WebContent Title");
 
 			WebContent.editDisplayDate(displayDate = "01/01/2100");
+
+			Click(locator1 = "TextInput#DISPLAY_DATE_TIME");
+
+			AssertVisible(locator1 = "TextInput#DISPLAY_DATE_TIME_TIMEPICKER");
+
+			Click(locator1 = "TextInput#DISPLAY_DATE");
+
+			AssertNotVisible(locator1 = "TextInput#DISPLAY_DATE_TIME_TIMEPICKER");
+
+			Click(locator1 = "TextInput#DISPLAY_DATE_TIME");
+
+			Click(locator1 = "TextInput#DISPLAY_DATE_TIME_TIMEPICKER");
+
+			AssertNotVisible(locator1 = "TextInput#DISPLAY_DATE_TIME_TIMEPICKER");
 
 			PortletEntry.publish();
 		}
