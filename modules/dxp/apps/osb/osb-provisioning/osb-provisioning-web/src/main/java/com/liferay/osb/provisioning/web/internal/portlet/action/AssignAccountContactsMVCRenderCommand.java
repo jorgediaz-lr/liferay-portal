@@ -14,7 +14,6 @@
 
 package com.liferay.osb.provisioning.web.internal.portlet.action;
 
-import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.constants.ProvisioningWebKeys;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
@@ -58,14 +57,12 @@ public class AssignAccountContactsMVCRenderCommand implements MVCRenderCommand {
 				ProvisioningWebKeys.ACCOUNT,
 				_accountWebService.getAccount(accountKey));
 
-			if (Validator.isNotNull(emailAddress)) {
-				Contact contact = _contactWebService.fetchContactByEmailAddress(
-					emailAddress);
+			if (SessionErrors.isEmpty(renderRequest) &&
+				Validator.isNotNull(emailAddress)) {
 
-				if (contact != null) {
-					renderRequest.setAttribute(
-						ProvisioningWebKeys.CONTACT, contact);
-				}
+				renderRequest.setAttribute(
+					ProvisioningWebKeys.CONTACT,
+					_contactWebService.getContactByEmailAddress(emailAddress));
 			}
 
 			return "/accounts/assign_contacts.jsp";

@@ -20,7 +20,6 @@ import com.liferay.osb.koroneiki.phloem.rest.client.problem.Problem;
 import com.liferay.osb.provisioning.constants.ProvisioningPortletKeys;
 import com.liferay.osb.provisioning.exception.ContactRequiredException;
 import com.liferay.osb.provisioning.exception.DuplicateContactRoleException;
-import com.liferay.osb.provisioning.exception.MultipleCustomerContactRoleException;
 import com.liferay.osb.provisioning.koroneiki.constants.ContactRoleConstants;
 import com.liferay.osb.provisioning.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.provisioning.koroneiki.web.service.ContactRoleWebService;
@@ -84,9 +83,6 @@ public class AssignAccountContactRolesMVCActionCommand
 				actionRequest, "deleteContactRoleKeys");
 
 			if (!ArrayUtil.isEmpty(addContactRoleKeys)) {
-				_validateAccountCustomerContactRoles(
-					accountKey, emailAddress, addContactRoleKeys);
-
 				_validateAccountWorkerContactRole(
 					accountKey, ContactRoleConstants.NAME_PRIMARY_CONTACT,
 					emailAddress, addContactRoleKeys);
@@ -130,7 +126,6 @@ public class AssignAccountContactRolesMVCActionCommand
 		}
 		catch (Exception exception) {
 			if (exception instanceof DuplicateContactRoleException ||
-				exception instanceof MultipleCustomerContactRoleException ||
 				exception instanceof Problem.ProblemException) {
 
 				SessionErrors.add(
@@ -167,50 +162,6 @@ public class AssignAccountContactRolesMVCActionCommand
 
 				throw exception;
 			}
-		}
-	}
-
-	private void _validateAccountCustomerContactRoles(
-			String accountKey, String emailAddress, String[] addContactRoleKeys)
-		throws Exception {
-
-		int customerRoleCount = 0;
-
-		for (String contactRoleKey : addContactRoleKeys) {
-			ContactRole contactRole = _contactRoleWebService.getContactRole(
-				contactRoleKey);
-
-			String name = contactRole.getName();
-
-			if (name.equals(ContactRoleConstants.NAME_ADMINISTRATOR) ||
-				name.equals(ContactRoleConstants.NAME_SUPPORT_DEVELOPER) ||
-				name.equals(ContactRoleConstants.NAME_SUPPORT_WATCHER)) {
-
-				customerRoleCount++;
-			}
-		}
-
-		if (customerRoleCount <= 0) {
-			return;
-		}
-
-		List<ContactRole> contactRoles =
-			_contactRoleWebService.getAccountCustomerContactRoles(
-				accountKey, emailAddress, 1, 1000);
-
-		for (ContactRole contactRole : contactRoles) {
-			String name = contactRole.getName();
-
-			if (name.equals(ContactRoleConstants.NAME_ADMINISTRATOR) ||
-				name.equals(ContactRoleConstants.NAME_SUPPORT_DEVELOPER) ||
-				name.equals(ContactRoleConstants.NAME_SUPPORT_WATCHER)) {
-
-				customerRoleCount++;
-			}
-		}
-
-		if (customerRoleCount > 1) {
-			throw new MultipleCustomerContactRoleException();
 		}
 	}
 

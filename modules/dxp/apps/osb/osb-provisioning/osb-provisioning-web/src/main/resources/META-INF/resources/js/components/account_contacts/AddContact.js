@@ -44,7 +44,11 @@ export default function AddContact({
 			.filter(role => role.name.startsWith('Partner'))
 			.map(partner => partner.key),
 		support: allRoles
-			.filter(role => role.name.startsWith('Support'))
+			.filter(
+				role =>
+					role.name == 'Administrator' ||
+					role.name.startsWith('Support')
+			)
 			.map(support => support.key)
 	};
 

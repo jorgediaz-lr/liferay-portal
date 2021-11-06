@@ -33,8 +33,6 @@ AccountDisplay accountDisplay = viewAccountContactsDisplayContext.getAccountDisp
 		title="<%= viewAccountContactsDisplayContext.getAssignContactTitle() %>"
 	/>
 
-	<liferay-ui:error exception="<%= MultipleCustomerContactRoleException.class %>" message="customers-can-only-have-one-customer-portal-role" />
-
 	<liferay-ui:error exception="<%= Problem.ProblemException.class %>">
 
 		<%
