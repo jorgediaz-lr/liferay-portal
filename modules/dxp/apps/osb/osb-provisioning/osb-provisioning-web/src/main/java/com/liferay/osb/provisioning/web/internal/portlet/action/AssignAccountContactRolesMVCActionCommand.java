@@ -177,8 +177,8 @@ public class AssignAccountContactRolesMVCActionCommand
 			FilterQuery filterQuery = new FilterQuery();
 
 			filterQuery.addLambdaEquals(
-				"accountKeysContactRoleKeys",
-				accountKey + "_" + contactRole.getKey(), true);
+				true, "accountKeysContactRoleKeys",
+				accountKey + "_" + contactRole.getKey());
 
 			List<Contact> contacts = _contactWebService.search(
 				StringPool.BLANK, filterQuery, 1, 1, StringPool.BLANK);

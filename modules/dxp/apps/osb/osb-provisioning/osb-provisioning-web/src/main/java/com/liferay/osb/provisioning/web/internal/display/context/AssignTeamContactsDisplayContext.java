@@ -58,16 +58,16 @@ public class AssignTeamContactsDisplayContext extends ViewTeamDisplayContext {
 
 		FilterQuery filterQuery = new FilterQuery();
 
-		filterQuery.addLambdaEquals(
-			"customerAccountKeys", account.getKey(), true);
-
 		String[] contactRoleKeys = ParamUtil.getStringValues(
 			renderRequest, "contactRoleKeys");
 
 		if (!ArrayUtil.isEmpty(contactRoleKeys)) {
 			filterQuery.addLambdaEquals(
-				"accountKeysContactRoleKeys", contactRoleKeys, true);
+				true, "accountKeysContactRoleKeys", contactRoleKeys);
 		}
+
+		filterQuery.addLambdaEquals(
+			true, "customerAccountKeys", account.getKey());
 
 		List<Contact> contacts = contactWebService.search(
 			keywords, filterQuery, searchContainer.getCur(),
@@ -98,7 +98,7 @@ public class AssignTeamContactsDisplayContext extends ViewTeamDisplayContext {
 	private RowChecker _getRowChecker() throws Exception {
 		FilterQuery filterQuery = new FilterQuery();
 
-		filterQuery.addLambdaEquals("teamKeys", team.getKey(), true);
+		filterQuery.addLambdaEquals(true, "teamKeys", team.getKey());
 
 		List<Contact> contacts = contactWebService.search(
 			StringPool.BLANK, filterQuery, 1, 1000, StringPool.BLANK);

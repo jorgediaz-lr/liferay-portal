@@ -66,7 +66,7 @@ public class ViewAccountTeamsDisplayContext extends ViewAccountDisplayContext {
 
 		FilterQuery filterQuery = new FilterQuery();
 
-		filterQuery.addEquals("accountKey", account.getKey(), true);
+		filterQuery.addEquals(true, "accountKey", account.getKey());
 
 		List<Team> teams = teamWebService.search(
 			keywords, filterQuery, searchContainer.getCur(),
@@ -98,8 +98,8 @@ public class ViewAccountTeamsDisplayContext extends ViewAccountDisplayContext {
 		FilterQuery filterQuery = new FilterQuery();
 
 		filterQuery.addLambdaEquals(
-			"assignedTeamKeyTeamRoleKeys",
-			team.getKey() + "_" + teamRole.getKey(), true);
+			true, "assignedTeamKeyTeamRoleKeys",
+			team.getKey() + "_" + teamRole.getKey());
 
 		return accountWebService.searchCount(StringPool.BLANK, filterQuery);
 	}

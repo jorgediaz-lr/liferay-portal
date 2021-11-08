@@ -188,9 +188,6 @@ public class ViewAccountLiferayWorkersDisplayContext
 
 		FilterQuery filterQuery = new FilterQuery();
 
-		filterQuery.addLambdaEquals(
-			"workerAccountKeys", account.getKey(), true);
-
 		String[] contactRoleKeys = ParamUtil.getStringValues(
 			renderRequest, "contactRoleKeys");
 
@@ -204,8 +201,11 @@ public class ViewAccountLiferayWorkersDisplayContext
 			}
 
 			filterQuery.addLambdaEquals(
-				"accountKeysContactRoleKeys", accountKeysContactRoleKeys, true);
+				true, "accountKeysContactRoleKeys", accountKeysContactRoleKeys);
 		}
+
+		filterQuery.addLambdaEquals(
+			true, "workerAccountKeys", account.getKey());
 
 		List<Contact> contacts = contactWebService.search(
 			keywords, filterQuery, searchContainer.getCur(),
@@ -284,7 +284,7 @@ public class ViewAccountLiferayWorkersDisplayContext
 		FilterQuery filterQuery = new FilterQuery();
 
 		filterQuery.addEquals(
-			"type", ContactRole.Type.ACCOUNT_WORKER.toString(), true);
+			true, "type", ContactRole.Type.ACCOUNT_WORKER.toString());
 
 		return contactRoleWebService.search(filterQuery, 1, 1000, "name");
 	}

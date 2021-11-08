@@ -43,124 +43,8 @@ public class AccountSearchTerms extends AccountDisplayTerms {
 
 		if (!ArrayUtil.isEmpty(subscriptionStates)) {
 			filterQuery.addFilterQuery(
-				_getSubscriptionStateFilter(subscriptionProductKeys),
-				andOperator);
-		}
-
-		if (!ArrayUtil.isEmpty(activeSLAs)) {
-			FilterQuery nestedFilterQuery = new FilterQuery();
-
-			for (String activeSLA : activeSLAs) {
-				nestedFilterQuery.addLambdaEquals(
-					"entitlements", activeSLAs, false);
-			}
-
-			filterQuery.addFilterQuery(nestedFilterQuery, andOperator);
-		}
-
-		if (Validator.isNotNull(code)) {
-			filterQuery.addContains("code", code, andOperator);
-		}
-
-		if (Validator.isNotNull(countryName)) {
-			filterQuery.addLambdaEquals(
-				"postalAddressCountries", countryName, andOperator);
-		}
-
-		if (Validator.isNotNull(createDateGT)) {
-			filterQuery.addGreaterThan(
-				"dateCreated", _dateFormat.parse(createDateGT), andOperator);
-		}
-
-		if (Validator.isNotNull(createDateLT)) {
-			filterQuery.addLessThan(
-				"dateCreated", _dateFormat.parse(createDateLT), andOperator);
-		}
-
-		if (Validator.isNotNull(createdByUuid)) {
-			filterQuery.addEquals("creatorUuid", createdByUuid, andOperator);
-		}
-
-		if (Validator.isNotNull(externalAccountKey)) {
-			FilterQuery nestedFilterQuery = new FilterQuery();
-
-			nestedFilterQuery.addLambdaContains(
-				"externalLinkEntityIds", externalAccountKey, false);
-			nestedFilterQuery.addLambdaContains(
-				"productPurchaseExternalLinkEntityIds", externalAccountKey,
-				false);
-
-			filterQuery.addFilterQuery(nestedFilterQuery, andOperator);
-		}
-
-		if (Validator.isNotNull(flsTeamKey)) {
-			filterQuery.addLambdaEquals(
-				"assignedTeamKeyTeamRoleKeys",
-				flsTeamKey + "_" + flsTeamRoleKey, andOperator);
-		}
-
-		if (!ArrayUtil.isEmpty(internals)) {
-			FilterQuery nestedFilterQuery = new FilterQuery();
-
-			for (boolean internal : internals) {
-				nestedFilterQuery.addEquals("internal", internal, false);
-			}
-
-			filterQuery.addFilterQuery(nestedFilterQuery, andOperator);
-		}
-
-		if (Validator.isNotNull(modifiedDateGT)) {
-			filterQuery.addGreaterThan(
-				"dateModified", _dateFormat.parse(modifiedDateGT), andOperator);
-		}
-
-		if (Validator.isNotNull(modifiedDateLT)) {
-			filterQuery.addLessThan(
-				"dateModified", _dateFormat.parse(modifiedDateLT), andOperator);
-		}
-
-		if (Validator.isNotNull(name)) {
-			filterQuery.addContains("name", name, andOperator);
-		}
-
-		if (Validator.isNotNull(notes)) {
-			filterQuery.addLambdaContains(
-				"generalNoteContent", notes, andOperator);
-		}
-
-		if (Validator.isNotNull(parentAccountKey)) {
-			filterQuery.addEquals(
-				"parentAccountKey", parentAccountKey, andOperator);
-		}
-
-		if (!ArrayUtil.isEmpty(partners)) {
-			FilterQuery nestedFilterQuery = new FilterQuery();
-
-			for (boolean partner : partners) {
-				nestedFilterQuery.addLambdaEquals(
-					"entitlements", EntitlementConstants.PARTNER, !partner,
-					false);
-			}
-
-			filterQuery.addFilterQuery(nestedFilterQuery, andOperator);
-		}
-
-		if (Validator.isNotNull(partnerTeamKey)) {
-			filterQuery.addLambdaEquals(
-				"assignedTeamKeyTeamRoleKeys",
-				partnerTeamKey + "_" + partnerTeamRoleKey, andOperator);
-		}
-
-		if (!ArrayUtil.isEmpty(providesFLS)) {
-			FilterQuery nestedFilterQuery = new FilterQuery();
-
-			for (boolean providesFLSValue : providesFLS) {
-				nestedFilterQuery.addLambdaContains(
-					"teamsAssignedToAccountKeyTeamRoleKeys",
-					"_" + flsTeamRoleKey, !providesFLSValue, false);
-			}
-
-			filterQuery.addFilterQuery(nestedFilterQuery, andOperator);
+				andOperator,
+				_getSubscriptionStateFilter(subscriptionProductKeys));
 		}
 
 		if (!ArrayUtil.isEmpty(receivesFLS)) {
@@ -168,30 +52,146 @@ public class AccountSearchTerms extends AccountDisplayTerms {
 
 			for (boolean receivesFLSValue : receivesFLS) {
 				nestedFilterQuery.addLambdaContains(
-					"assignedTeamKeyTeamRoleKeys", "_" + flsTeamRoleKey,
-					!receivesFLSValue, false);
+					false, "assignedTeamKeyTeamRoleKeys", "_" + flsTeamRoleKey,
+					!receivesFLSValue);
 			}
 
-			filterQuery.addFilterQuery(nestedFilterQuery, andOperator);
+			filterQuery.addFilterQuery(andOperator, nestedFilterQuery);
+		}
+
+		if (!ArrayUtil.isEmpty(activeSLAs)) {
+			FilterQuery nestedFilterQuery = new FilterQuery();
+
+			for (String activeSLA : activeSLAs) {
+				nestedFilterQuery.addLambdaEquals(
+					false, "entitlements", activeSLAs);
+			}
+
+			filterQuery.addFilterQuery(andOperator, nestedFilterQuery);
+		}
+
+		if (!ArrayUtil.isEmpty(partners)) {
+			FilterQuery nestedFilterQuery = new FilterQuery();
+
+			for (boolean partner : partners) {
+				nestedFilterQuery.addLambdaEquals(
+					false, "entitlements", EntitlementConstants.PARTNER,
+					!partner);
+			}
+
+			filterQuery.addFilterQuery(andOperator, nestedFilterQuery);
+		}
+
+		if (Validator.isNotNull(externalAccountKey)) {
+			FilterQuery nestedFilterQuery = new FilterQuery();
+
+			nestedFilterQuery.addLambdaContains(
+				false, "externalLinkEntityIds", externalAccountKey);
+			nestedFilterQuery.addLambdaContains(
+				false, "productPurchaseExternalLinkEntityIds",
+				externalAccountKey);
+
+			filterQuery.addFilterQuery(andOperator, nestedFilterQuery);
+		}
+
+		if (!ArrayUtil.isEmpty(internals)) {
+			FilterQuery nestedFilterQuery = new FilterQuery();
+
+			for (boolean internal : internals) {
+				nestedFilterQuery.addEquals(false, "internal", internal);
+			}
+
+			filterQuery.addFilterQuery(andOperator, nestedFilterQuery);
+		}
+
+		if (!ArrayUtil.isEmpty(providesFLS)) {
+			FilterQuery nestedFilterQuery = new FilterQuery();
+
+			for (boolean providesFLSValue : providesFLS) {
+				nestedFilterQuery.addLambdaContains(
+					false, "teamsAssignedToAccountKeyTeamRoleKeys",
+					"_" + flsTeamRoleKey, !providesFLSValue);
+			}
+
+			filterQuery.addFilterQuery(andOperator, nestedFilterQuery);
+		}
+
+		if (Validator.isNotNull(flsTeamKey)) {
+			filterQuery.addLambdaEquals(
+				andOperator, "assignedTeamKeyTeamRoleKeys",
+				flsTeamKey + "_" + flsTeamRoleKey);
+		}
+
+		if (Validator.isNotNull(partnerTeamKey)) {
+			filterQuery.addLambdaEquals(
+				andOperator, "assignedTeamKeyTeamRoleKeys",
+				partnerTeamKey + "_" + partnerTeamRoleKey);
+		}
+
+		if (Validator.isNotNull(code)) {
+			filterQuery.addContains(andOperator, "code", code);
+		}
+
+		if (Validator.isNotNull(createdByUuid)) {
+			filterQuery.addEquals(andOperator, "creatorUuid", createdByUuid);
+		}
+
+		if (Validator.isNotNull(createDateGT)) {
+			filterQuery.addGreaterThan(
+				andOperator, "dateCreated", _dateFormat.parse(createDateGT));
+		}
+
+		if (Validator.isNotNull(createDateLT)) {
+			filterQuery.addLessThan(
+				andOperator, "dateCreated", _dateFormat.parse(createDateLT));
+		}
+
+		if (Validator.isNotNull(modifiedDateGT)) {
+			filterQuery.addGreaterThan(
+				andOperator, "dateModified", _dateFormat.parse(modifiedDateGT));
+		}
+
+		if (Validator.isNotNull(modifiedDateLT)) {
+			filterQuery.addLessThan(
+				andOperator, "dateModified", _dateFormat.parse(modifiedDateLT));
+		}
+
+		if (Validator.isNotNull(notes)) {
+			filterQuery.addLambdaContains(
+				andOperator, "generalNoteContent", notes);
+		}
+
+		if (Validator.isNotNull(name)) {
+			filterQuery.addContains(andOperator, "name", name);
+		}
+
+		if (Validator.isNotNull(parentAccountKey)) {
+			filterQuery.addEquals(
+				andOperator, "parentAccountKey", parentAccountKey);
+		}
+
+		if (Validator.isNotNull(countryName)) {
+			filterQuery.addLambdaEquals(
+				andOperator, "postalAddressCountries", countryName);
 		}
 
 		if (!ArrayUtil.isEmpty(regions)) {
-			filterQuery.addEquals("region", regions, andOperator);
+			filterQuery.addEquals(andOperator, "region", regions);
 		}
 
 		if (Validator.isNotNull(salesInfo)) {
 			filterQuery.addLambdaContains(
-				"salesNoteContent", salesInfo, andOperator);
+				andOperator, "salesNoteContent", salesInfo);
 		}
 
 		if (!ArrayUtil.isEmpty(tiers)) {
-			filterQuery.addEquals("tier", tiers, andOperator);
+			filterQuery.addEquals(andOperator, "tier", tiers);
 		}
 
 		if (Validator.isNotNull(workerContactEmailAddress)) {
 			filterQuery.addLambdaEquals(
-				"workerContactEmailAddresses", workerContactEmailAddress,
-				andOperator);
+				andOperator, "workerContactEmailAddresses",
+				workerContactEmailAddress);
 		}
 
 		return filterQuery;
@@ -202,12 +202,12 @@ public class AccountSearchTerms extends AccountDisplayTerms {
 
 		if (!ArrayUtil.isEmpty(subscriptionStates)) {
 			filterQuery.addFilterQuery(
-				_getSubscriptionStateFilter(subscriptionProductKeys),
-				andOperator);
+				andOperator,
+				_getSubscriptionStateFilter(subscriptionProductKeys));
 		}
 
 		if (parent) {
-			filterQuery.addEquals("parent", true, andOperator);
+			filterQuery.addEquals(andOperator, "parent", true);
 		}
 
 		return filterQuery;
@@ -258,7 +258,7 @@ public class AccountSearchTerms extends AccountDisplayTerms {
 					ProductPurchaseConstants.STATE_ACTIVE)) {
 
 				filterQuery.addLambdaEquals(
-					"activeProductKeys", subscriptionProductKeys, false);
+					false, "activeProductKeys", subscriptionProductKeys);
 			}
 			else if (subscriptionState.equals(
 						ProductPurchaseConstants.STATE_CANCELLED)) {
@@ -266,16 +266,17 @@ public class AccountSearchTerms extends AccountDisplayTerms {
 				FilterQuery nestedFilterQuery = new FilterQuery();
 
 				nestedFilterQuery.addLambdaEquals(
-					"activeProductKeys", subscriptionProductKeys, true, true);
+					true, "activeProductKeys", subscriptionProductKeys, true);
 				nestedFilterQuery.addLambdaEquals(
-					"expiredProductKeys", subscriptionProductKeys, true, true);
+					true, "expiredProductKeys", subscriptionProductKeys, true);
 				nestedFilterQuery.addLambdaEquals(
-					"unactivatedProductKeys", subscriptionProductKeys, true,
+					true, "unactivatedProductKeys", subscriptionProductKeys,
 					true);
-				nestedFilterQuery.addLambdaEquals(
-					"cancelledProductKeys", subscriptionProductKeys, true);
 
-				filterQuery.addFilterQuery(nestedFilterQuery, false);
+				nestedFilterQuery.addLambdaEquals(
+					true, "cancelledProductKeys", subscriptionProductKeys);
+
+				filterQuery.addFilterQuery(false, nestedFilterQuery);
 			}
 			else if (subscriptionState.equals(
 						ProductPurchaseConstants.STATE_EXPIRED)) {
@@ -283,14 +284,15 @@ public class AccountSearchTerms extends AccountDisplayTerms {
 				FilterQuery nestedFilterQuery = new FilterQuery();
 
 				nestedFilterQuery.addLambdaEquals(
-					"activeProductKeys", subscriptionProductKeys, true, true);
+					true, "activeProductKeys", subscriptionProductKeys, true);
 				nestedFilterQuery.addLambdaEquals(
-					"unactivatedProductKeys", subscriptionProductKeys, true,
+					true, "unactivatedProductKeys", subscriptionProductKeys,
 					true);
-				nestedFilterQuery.addLambdaEquals(
-					"expiredProductKeys", subscriptionProductKeys, true);
 
-				filterQuery.addFilterQuery(nestedFilterQuery, false);
+				nestedFilterQuery.addLambdaEquals(
+					true, "expiredProductKeys", subscriptionProductKeys);
+
+				filterQuery.addFilterQuery(false, nestedFilterQuery);
 			}
 			else if (subscriptionState.equals(
 						ProductPurchaseConstants.STATE_NOT_AVAILABLE)) {
@@ -298,16 +300,17 @@ public class AccountSearchTerms extends AccountDisplayTerms {
 				FilterQuery nestedFilterQuery = new FilterQuery();
 
 				nestedFilterQuery.addLambdaEquals(
-					"activeProductKeys", subscriptionProductKeys, true, true);
+					true, "activeProductKeys", subscriptionProductKeys, true);
 				nestedFilterQuery.addLambdaEquals(
-					"cancelledProductKeys", subscriptionProductKeys, true,
+					true, "cancelledProductKeys", subscriptionProductKeys,
 					true);
 				nestedFilterQuery.addLambdaEquals(
-					"expiredProductKeys", subscriptionProductKeys, true, true);
-				nestedFilterQuery.addLambdaEquals(
-					"unactivatedProductKeys", subscriptionProductKeys, true);
+					true, "expiredProductKeys", subscriptionProductKeys, true);
 
-				filterQuery.addFilterQuery(nestedFilterQuery, false);
+				nestedFilterQuery.addLambdaEquals(
+					true, "unactivatedProductKeys", subscriptionProductKeys);
+
+				filterQuery.addFilterQuery(false, nestedFilterQuery);
 			}
 			else if (subscriptionState.equals(
 						ProductPurchaseConstants.STATE_UNACTIVATED)) {
@@ -315,11 +318,12 @@ public class AccountSearchTerms extends AccountDisplayTerms {
 				FilterQuery nestedFilterQuery = new FilterQuery();
 
 				nestedFilterQuery.addLambdaEquals(
-					"activeProductKeys", subscriptionProductKeys, true, true);
-				nestedFilterQuery.addLambdaEquals(
-					"unactivatedProductKeys", subscriptionProductKeys, true);
+					true, "activeProductKeys", subscriptionProductKeys, true);
 
-				filterQuery.addFilterQuery(nestedFilterQuery, false);
+				nestedFilterQuery.addLambdaEquals(
+					true, "unactivatedProductKeys", subscriptionProductKeys);
+
+				filterQuery.addFilterQuery(false, nestedFilterQuery);
 			}
 		}
 

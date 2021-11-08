@@ -148,13 +148,13 @@ public class LicenseKeyResourceImpl
 
 		FilterQuery filterQuery = new FilterQuery();
 
-		filterQuery.addEquals("accountKey", accountKey, true);
-		filterQuery.addEquals("state", "active", true);
-		filterQuery.addEquals("property_type", "primary", false);
-		filterQuery.addContains("name", "Commerce for DXP Cloud", false);
-		filterQuery.addContains("name", "Commerce Subscription", false);
-		filterQuery.addContains("name", "DXP Cloud Subscription", false);
-		filterQuery.addContains("name", "Partnership", false);
+		filterQuery.addEquals(true, "accountKey", accountKey);
+		filterQuery.addEquals(true, "property_type", "primary");
+		filterQuery.addEquals(true, "state", "active");
+		filterQuery.addContains(false, "name", "Commerce for DXP Cloud");
+		filterQuery.addContains(false, "name", "Commerce Subscription");
+		filterQuery.addContains(false, "name", "DXP Cloud Subscription");
+		filterQuery.addContains(false, "name", "Partnership");
 
 		List<ProductPurchaseView> productPurchaseViews =
 			_productPurchaseViewWebService.search(
@@ -675,22 +675,20 @@ public class LicenseKeyResourceImpl
 
 		FilterQuery filterQuery = new FilterQuery();
 
-		filterQuery.addEquals("accountKey", accountKey, true);
-		filterQuery.addEquals("property_licenses", "true", true);
+		filterQuery.addEquals(true, "accountKey", accountKey);
+		filterQuery.addEquals(true, "property_licenses", "true");
 
 		if (productGroupName.equals(ProductGroup.Name.COMMERCE.toString())) {
-			filterQuery.addContains("name", "Commerce Subscription", true);
+			filterQuery.addContains(true, "name", "Commerce Subscription");
 		}
 		else if (productGroupName.equals(ProductGroup.Name.DXP.toString())) {
-			filterQuery.addStartsWith("name", "DXP", true);
-
-			filterQuery.addContains("name", "DXP Cloud", true, true);
+			filterQuery.addStartsWith(true, "name", "DXP");
+			filterQuery.addContains(true, "name", "DXP Cloud", true);
 		}
 		else if (productGroupName.equals(ProductGroup.Name.PORTAL.toString())) {
-			filterQuery.addContains("name", "Portal", true);
-
 			filterQuery.addContains(
-				"name", "Early  Access Program", true, true);
+				true, "name", "Early  Access Program", true);
+			filterQuery.addContains(true, "name", "Portal");
 		}
 
 		List<ProductPurchaseView> productPurchaseViews =

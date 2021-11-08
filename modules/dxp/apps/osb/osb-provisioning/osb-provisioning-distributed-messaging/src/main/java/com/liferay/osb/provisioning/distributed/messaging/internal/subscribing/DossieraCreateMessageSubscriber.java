@@ -210,8 +210,8 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 				ContactRoleConstants.NAME_ADMINISTRATOR);
 
 		filterQuery.addLambdaEquals(
-			"accountKeysContactRoleKeys",
-			accountKey + "_" + administratorContactRole.getKey(), false);
+			false, "accountKeysContactRoleKeys",
+			accountKey + "_" + administratorContactRole.getKey());
 
 		ContactRole supportDeveloperContactRole =
 			_contactRoleWebService.getContactRole(
@@ -219,8 +219,8 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 				ContactRoleConstants.NAME_SUPPORT_DEVELOPER);
 
 		filterQuery.addLambdaEquals(
-			"accountKeysContactRoleKeys",
-			accountKey + "_" + supportDeveloperContactRole.getKey(), false);
+			false, "accountKeysContactRoleKeys",
+			accountKey + "_" + supportDeveloperContactRole.getKey());
 
 		long curDeveloperCount = _contactWebService.searchCount(
 			StringPool.BLANK, filterQuery);
@@ -370,10 +370,10 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 			FilterQuery filterQuery2 = new FilterQuery();
 
-			filterQuery2.addEquals("accountKey", accountKey, true);
-			filterQuery2.addEquals("productKey", product.getKey(), true);
-			filterQuery2.addEquals("endDate", (String)null, false);
-			filterQuery2.addLessThanEquals("endDate", new Date(), false);
+			filterQuery2.addEquals(true, "accountKey", accountKey);
+			filterQuery2.addEquals(true, "productKey", product.getKey());
+			filterQuery2.addEquals(false, "endDate", (String)null);
+			filterQuery2.addLessThanEquals(false, "endDate", new Date());
 
 			int productConsumptionCount =
 				(int)_productConsumptionWebService.searchCount(filterQuery2);
@@ -398,10 +398,10 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 				FilterQuery filterQuery3 = new FilterQuery();
 
-				filterQuery3.addEquals("accountKey", accountKey, true);
-				filterQuery3.addEquals("productKey", product.getKey(), true);
-				filterQuery3.addEquals("endDate", (String)null, false);
-				filterQuery3.addGreaterThanEquals("endDate", new Date(), false);
+				filterQuery3.addEquals(true, "accountKey", accountKey);
+				filterQuery3.addEquals(true, "productKey", product.getKey());
+				filterQuery3.addEquals(false, "endDate", (String)null);
+				filterQuery3.addGreaterThanEquals(false, "endDate", new Date());
 
 				productConsumptionCount =
 					(int)_productConsumptionWebService.searchCount(
@@ -425,8 +425,8 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 						ContactRoleConstants.NAME_ANALYTICS_CLOUD_OWNER);
 
 				filterQuery2.addLambdaEquals(
-					"accountKeysContactRoleKeys",
-					accountKey + "_" + analyticsCloudOwnerRole.getKey(), true);
+					true, "accountKeysContactRoleKeys",
+					accountKey + "_" + analyticsCloudOwnerRole.getKey());
 
 				long curAnalyticsCloudOwnerCount =
 					_contactWebService.searchCount(
@@ -445,7 +445,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			FilterQuery filterQuery2 = new FilterQuery();
 
 			filterQuery2.addLambdaEquals(
-				"customerAccountKeys", accountKey, true);
+				true, "customerAccountKeys", accountKey);
 
 			long curContactsCount = _contactWebService.searchCount(
 				StringPool.BLANK, filterQuery2);
@@ -523,7 +523,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 		FilterQuery filterQuery = new FilterQuery();
 
-		filterQuery.addEquals("name", name, true);
+		filterQuery.addEquals(true, "name", name);
 
 		List<Account> duplicateAccounts = _accountWebService.search(
 			StringPool.BLANK, filterQuery, 0, 1, null);
@@ -631,7 +631,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 		FilterQuery filterQuery = new FilterQuery();
 
-		filterQuery.addEquals("name", name, true);
+		filterQuery.addEquals(true, "name", name);
 
 		List<Account> duplicateAccounts = _accountWebService.search(
 			StringPool.BLANK, filterQuery, 0, 1, null);
@@ -1643,7 +1643,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 		sb.append(salesforceOpportunityKey);
 
 		filterQuery.addLambdaEquals(
-			"externalLinkEntityIds", sb.toString(), true);
+			true, "externalLinkEntityIds", sb.toString());
 
 		long productPurchaseCount = _productPurchaseWebService.searchCount(
 			filterQuery);
@@ -1735,8 +1735,8 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 				FilterQuery filterQuery = new FilterQuery();
 
 				filterQuery.addLambdaEquals(
-					"accountKeysContactRoleKeys",
-					accountKey + "_" + secondaryContactRole.getKey(), true);
+					true, "accountKeysContactRoleKeys",
+					accountKey + "_" + secondaryContactRole.getKey());
 
 				List<Contact> secondaryContacts = _contactWebService.search(
 					StringPool.BLANK, filterQuery, 1, 1, StringPool.BLANK);
@@ -1880,8 +1880,8 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 		FilterQuery filterQuery = new FilterQuery();
 
-		filterQuery.addEquals("accountKey", partnerAccount.getKey(), true);
-		filterQuery.addEquals("system", true, true);
+		filterQuery.addEquals(true, "accountKey", partnerAccount.getKey());
+		filterQuery.addEquals(true, "system", true);
 
 		List<Team> partnerDefaultTeams = _teamWebService.search(
 			StringPool.BLANK, filterQuery, 1, 1, StringPool.BLANK);
@@ -1904,8 +1904,8 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 		FilterQuery filterQuery2 = new FilterQuery();
 
-		filterQuery2.addEquals("accountKey", partnerAccount.getKey(), true);
-		filterQuery2.addContains("name", "FLS", true);
+		filterQuery2.addEquals(true, "accountKey", partnerAccount.getKey());
+		filterQuery2.addContains(true, "name", "FLS");
 
 		List<Team> partnerFLSTeams = _teamWebService.search(
 			StringPool.BLANK, filterQuery2, 1, 1, StringPool.BLANK);
@@ -2171,8 +2171,8 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 
 		FilterQuery filterQuery = new FilterQuery();
 
-		filterQuery.addEquals("accountKey", accountKey, true);
-		filterQuery.addEquals("state", "Active", true);
+		filterQuery.addEquals(true, "accountKey", accountKey);
+		filterQuery.addEquals(true, "state", "Active");
 
 		long previousActiveProductPurchases =
 			_productPurchaseWebService.searchCount(filterQuery);
@@ -2227,7 +2227,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 			FilterQuery filterQuery2 = new FilterQuery();
 
 			filterQuery2.addEquals(
-				"parentAccountKey", account.getParentAccountKey(), true);
+				true, "parentAccountKey", account.getParentAccountKey());
 
 			List<Account> siblingAccounts = _accountWebService.search(
 				StringPool.BLANK, filterQuery2, 1, 1000, null);
@@ -2236,8 +2236,8 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 				FilterQuery filterQuery3 = new FilterQuery();
 
 				filterQuery3.addEquals(
-					"accountKey", siblingAccount.getKey(), true);
-				filterQuery3.addEquals("state", "Active", true);
+					true, "accountKey", siblingAccount.getKey());
+				filterQuery3.addEquals(true, "state", "Active");
 
 				List<ProductPurchase> activeProductPurchases =
 					_productPurchaseWebService.search(
@@ -2280,8 +2280,8 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 					FilterQuery filterQuery4 = new FilterQuery();
 
 					filterQuery4.addEquals(
-						"accountKey", siblingAccount.getKey(), true);
-					filterQuery4.addEquals("state", "Expired", true);
+						true, "accountKey", siblingAccount.getKey());
+					filterQuery4.addEquals(true, "state", "Expired");
 
 					List<ProductPurchaseView> expiredProductPurchaseViews =
 						_productPurchaseViewWebService.search(
@@ -2470,7 +2470,7 @@ public class DossieraCreateMessageSubscriber extends BaseMessageSubscriber {
 	private boolean _isDuplicateCode(String code) throws Exception {
 		FilterQuery filterQuery = new FilterQuery();
 
-		filterQuery.addEquals("code", code, true);
+		filterQuery.addEquals(true, "code", code);
 
 		List<Account> accounts = _accountWebService.search(
 			StringPool.BLANK, filterQuery, 1, 1, null);

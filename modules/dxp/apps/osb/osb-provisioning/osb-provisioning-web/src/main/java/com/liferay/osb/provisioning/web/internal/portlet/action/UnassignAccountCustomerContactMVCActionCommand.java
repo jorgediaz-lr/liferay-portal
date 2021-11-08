@@ -94,8 +94,8 @@ public class UnassignAccountCustomerContactMVCActionCommand
 	private Team _getDefaultTeam(String accountKey) throws Exception {
 		FilterQuery filterQuery = new FilterQuery();
 
-		filterQuery.addEquals("accountKey", accountKey, true);
-		filterQuery.addEquals("system", true, true);
+		filterQuery.addEquals(true, "accountKey", accountKey);
+		filterQuery.addEquals(true, "system", true);
 
 		List<Team> teams = _teamWebService.search(
 			StringPool.BLANK, filterQuery, 1, 1, StringPool.BLANK);

@@ -77,9 +77,9 @@ public class EditActiveProductPurchasesEndDateMVCActionCommand
 
 			FilterQuery filterQuery = new FilterQuery();
 
-			filterQuery.addEquals("accountKey", accountKey, true);
+			filterQuery.addEquals(true, "accountKey", accountKey);
 			filterQuery.addEquals(
-				"state", ProductPurchaseConstants.STATE_ACTIVE, true);
+				true, "state", ProductPurchaseConstants.STATE_ACTIVE);
 
 			List<ProductPurchase> activeProductPurchases =
 				_productPurchaseWebService.search(

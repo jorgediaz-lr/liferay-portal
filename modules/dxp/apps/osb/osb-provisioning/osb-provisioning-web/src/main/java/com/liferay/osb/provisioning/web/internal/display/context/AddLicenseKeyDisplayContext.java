@@ -169,9 +169,9 @@ public class AddLicenseKeyDisplayContext {
 	private JSONObject _getDetachedDetails(String productKey) throws Exception {
 		FilterQuery filterQuery = new FilterQuery();
 
-		filterQuery.addEquals("accountKey", _account.getKey(), true);
-		filterQuery.addEquals("productKey", productKey, true);
-		filterQuery.addEquals("productPurchaseKey", (String)null, true);
+		filterQuery.addEquals(true, "accountKey", _account.getKey());
+		filterQuery.addEquals(true, "productKey", productKey);
+		filterQuery.addEquals(true, "productPurchaseKey", (String)null);
 
 		long productConsumptionsCount =
 			_productConsumptionWebService.searchCount(filterQuery);
@@ -195,7 +195,7 @@ public class AddLicenseKeyDisplayContext {
 
 		FilterQuery filterQuery = new FilterQuery();
 
-		filterQuery.addEquals("property_licenses", "true", true);
+		filterQuery.addEquals(true, "property_licenses", "true");
 
 		List<Product> products = _productWebService.search(
 			StringPool.BLANK, filterQuery, 1, 1000, StringPool.BLANK);
@@ -268,8 +268,8 @@ public class AddLicenseKeyDisplayContext {
 	private JSONObject _getPurchasedProductsJSONObject() throws Exception {
 		FilterQuery filterQuery = new FilterQuery();
 
-		filterQuery.addEquals("accountKey", _account.getKey(), true);
-		filterQuery.addEquals("property_licenses", "true", true);
+		filterQuery.addEquals(true, "accountKey", _account.getKey());
+		filterQuery.addEquals(true, "property_licenses", "true");
 
 		List<ProductPurchaseView> productPurchaseViews =
 			_productPurchaseViewWebService.search(

@@ -45,7 +45,7 @@ public class ViewAccountRelatedAccountsDisplayContext
 	public List<AccountDisplay> getChildAccountDisplays() throws Exception {
 		FilterQuery filterQuery = new FilterQuery();
 
-		filterQuery.addEquals("parentAccountKey", account.getKey(), false);
+		filterQuery.addEquals(false, "parentAccountKey", account.getKey());
 
 		return TransformUtil.transform(
 			accountWebService.search(
@@ -133,25 +133,25 @@ public class ViewAccountRelatedAccountsDisplayContext
 	private FilterQuery _getFilterQuery(String status) {
 		FilterQuery filterQuery = new FilterQuery();
 
+		if (Validator.isNotNull(status)) {
+			filterQuery.addEquals(true, "status", status);
+		}
+
 		if (Validator.isNotNull(account.getParentAccountKey())) {
 			filterQuery.addEquals(
-				"accountKey", account.getParentAccountKey(), false);
+				false, "accountKey", account.getParentAccountKey());
 
 			FilterQuery nestedFilterQuery = new FilterQuery();
 
 			nestedFilterQuery.addEquals(
-				"parentAccountKey", account.getParentAccountKey(), true);
+				true, "accountKey", account.getKey(), true);
 			nestedFilterQuery.addEquals(
-				"accountKey", account.getKey(), true, true);
+				true, "parentAccountKey", account.getParentAccountKey());
 
-			filterQuery.addFilterQuery(nestedFilterQuery, false);
+			filterQuery.addFilterQuery(false, nestedFilterQuery);
 		}
 
-		filterQuery.addEquals("parentAccountKey", account.getKey(), false);
-
-		if (Validator.isNotNull(status)) {
-			filterQuery.addEquals("status", status, true);
-		}
+		filterQuery.addEquals(false, "parentAccountKey", account.getKey());
 
 		return filterQuery;
 	}

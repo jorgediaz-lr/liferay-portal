@@ -65,9 +65,9 @@ public class MoveLicenseKeyDisplayContext {
 	public String getDetachedLicenseKeysCount() throws Exception {
 		FilterQuery filterQuery = new FilterQuery();
 
-		filterQuery.addEquals("accountKey", _licenseKey.getAccountKey(), true);
-		filterQuery.addEquals("productKey", _licenseKey.getProductKey(), true);
-		filterQuery.addEquals("productPurchaseKey", (String)null, true);
+		filterQuery.addEquals(true, "accountKey", _licenseKey.getAccountKey());
+		filterQuery.addEquals(true, "productKey", _licenseKey.getProductKey());
+		filterQuery.addEquals(true, "productPurchaseKey", (String)null);
 
 		long productConsumptionsCount =
 			_productConsumptionWebService.searchCount(filterQuery);

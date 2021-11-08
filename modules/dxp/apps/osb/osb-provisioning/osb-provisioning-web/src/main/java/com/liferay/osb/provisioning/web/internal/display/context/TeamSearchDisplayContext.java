@@ -80,7 +80,7 @@ public class TeamSearchDisplayContext {
 
 		if (partner) {
 			filterQuery.addLambdaEquals(
-				"accountEntitlements", EntitlementConstants.PARTNER, true);
+				true, "accountEntitlements", EntitlementConstants.PARTNER);
 		}
 
 		List<Team> teams = _teamWebService.search(
@@ -113,8 +113,8 @@ public class TeamSearchDisplayContext {
 		FilterQuery filterQuery = new FilterQuery();
 
 		filterQuery.addLambdaEquals(
-			"assignedTeamKeyTeamRoleKeys",
-			team.getKey() + "_" + teamRole.getKey(), true);
+			true, "assignedTeamKeyTeamRoleKeys",
+			team.getKey() + "_" + teamRole.getKey());
 
 		return _accountWebService.searchCount(StringPool.BLANK, filterQuery);
 	}

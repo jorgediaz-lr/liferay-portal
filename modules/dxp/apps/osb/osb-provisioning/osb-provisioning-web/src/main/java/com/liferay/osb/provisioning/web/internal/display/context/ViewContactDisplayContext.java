@@ -83,7 +83,7 @@ public class ViewContactDisplayContext {
 		FilterQuery filterQuery = new FilterQuery();
 
 		filterQuery.addLambdaEquals(
-			type + "ContactUuids", contact.getUuid(), true);
+			true, type + "ContactUuids", contact.getUuid());
 
 		List<Account> accounts = accountWebService.search(
 			StringPool.BLANK, filterQuery, 1, 1000, "name");

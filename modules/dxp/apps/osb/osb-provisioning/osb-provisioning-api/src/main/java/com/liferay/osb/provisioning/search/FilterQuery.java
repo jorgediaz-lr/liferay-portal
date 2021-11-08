@@ -30,12 +30,12 @@ import java.util.List;
  */
 public class FilterQuery {
 
-	public void addContains(String field, String value, boolean required) {
-		addContains(field, value, false, required);
+	public void addContains(boolean required, String field, String value) {
+		addContains(required, field, value, false);
 	}
 
 	public void addContains(
-		String field, String value, boolean negate, boolean required) {
+		boolean required, String field, String value, boolean negate) {
 
 		StringBundler sb = new StringBundler(6);
 
@@ -49,25 +49,25 @@ public class FilterQuery {
 		sb.append(_escape(value));
 		sb.append("')");
 
-		_addFilter(sb.toString(), required);
+		_addFilter(required, sb.toString());
 	}
 
-	public void addEquals(String field, boolean value, boolean required) {
+	public void addEquals(boolean required, String field, boolean value) {
 		StringBundler sb = new StringBundler(3);
 
 		sb.append(field);
 		sb.append(" eq ");
 		sb.append(value);
 
-		_addFilter(sb.toString(), required);
+		_addFilter(required, sb.toString());
 	}
 
-	public void addEquals(String field, String value, boolean required) {
-		addEquals(field, value, false, required);
+	public void addEquals(boolean required, String field, String value) {
+		addEquals(required, field, value, false);
 	}
 
 	public void addEquals(
-		String field, String value, boolean negate, boolean required) {
+		boolean required, String field, String value, boolean negate) {
 
 		StringBundler sb = new StringBundler(5);
 
@@ -90,10 +90,10 @@ public class FilterQuery {
 			sb.append("'");
 		}
 
-		_addFilter(sb.toString(), required);
+		_addFilter(required, sb.toString());
 	}
 
-	public void addEquals(String field, String[] values, boolean required) {
+	public void addEquals(boolean required, String field, String[] values) {
 		StringBundler sb = new StringBundler(4);
 
 		for (int i = 0; i < values.length; i++) {
@@ -106,25 +106,25 @@ public class FilterQuery {
 			}
 		}
 
-		_addFilter(sb.toString(), required);
+		_addFilter(required, sb.toString());
 	}
 
-	public void addFilterQuery(FilterQuery filterQuery, boolean required) {
-		_addFilter(filterQuery.toString(), required);
+	public void addFilterQuery(boolean required, FilterQuery filterQuery) {
+		_addFilter(required, filterQuery.toString());
 	}
 
-	public void addGreaterThan(String field, Date dateValue, boolean required) {
+	public void addGreaterThan(boolean required, String field, Date dateValue) {
 		StringBundler sb = new StringBundler(3);
 
 		sb.append(field);
 		sb.append(" gt ");
 		sb.append(_isoDateFormat.format(dateValue));
 
-		_addFilter(sb.toString(), required);
+		_addFilter(required, sb.toString());
 	}
 
 	public void addGreaterThanEquals(
-		String field, Date dateValue, boolean required) {
+		boolean required, String field, Date dateValue) {
 
 		StringBundler sb = new StringBundler(3);
 
@@ -132,17 +132,17 @@ public class FilterQuery {
 		sb.append(" ge ");
 		sb.append(_isoDateFormat.format(dateValue));
 
-		_addFilter(sb.toString(), required);
+		_addFilter(required, sb.toString());
 	}
 
 	public void addLambdaContains(
-		String field, String value, boolean required) {
+		boolean required, String field, String value) {
 
-		addLambdaContains(field, value, false, required);
+		addLambdaContains(required, field, value, false);
 	}
 
 	public void addLambdaContains(
-		String field, String value, boolean negate, boolean required) {
+		boolean required, String field, String value, boolean negate) {
 
 		StringBundler sb = new StringBundler(5);
 
@@ -155,15 +155,15 @@ public class FilterQuery {
 		sb.append(_escape(value));
 		sb.append("'))");
 
-		_addFilter(sb.toString(), required);
+		_addFilter(required, sb.toString());
 	}
 
-	public void addLambdaEquals(String field, String value, boolean required) {
-		addLambdaEquals(field, value, false, required);
+	public void addLambdaEquals(boolean required, String field, String value) {
+		addLambdaEquals(required, field, value, false);
 	}
 
 	public void addLambdaEquals(
-		String field, String value, boolean negate, boolean required) {
+		boolean required, String field, String value, boolean negate) {
 
 		StringBundler sb = new StringBundler(5);
 
@@ -176,17 +176,17 @@ public class FilterQuery {
 		sb.append(_escape(value));
 		sb.append("')");
 
-		_addFilter(sb.toString(), required);
+		_addFilter(required, sb.toString());
 	}
 
 	public void addLambdaEquals(
-		String field, String[] values, boolean required) {
+		boolean required, String field, String[] values) {
 
-		addLambdaEquals(field, values, false, required);
+		addLambdaEquals(required, field, values, false);
 	}
 
 	public void addLambdaEquals(
-		String field, String[] values, boolean negate, boolean required) {
+		boolean required, String field, String[] values, boolean negate) {
 
 		StringBundler sb = new StringBundler();
 
@@ -209,21 +209,21 @@ public class FilterQuery {
 
 		sb.append(")");
 
-		_addFilter(sb.toString(), required);
+		_addFilter(required, sb.toString());
 	}
 
-	public void addLessThan(String field, Date dateValue, boolean required) {
+	public void addLessThan(boolean required, String field, Date dateValue) {
 		StringBundler sb = new StringBundler(3);
 
 		sb.append(field);
 		sb.append(" lt ");
 		sb.append(_isoDateFormat.format(dateValue));
 
-		_addFilter(sb.toString(), required);
+		_addFilter(required, sb.toString());
 	}
 
 	public void addLessThanEquals(
-		String field, Date dateValue, boolean required) {
+		boolean required, String field, Date dateValue) {
 
 		StringBundler sb = new StringBundler(3);
 
@@ -231,10 +231,10 @@ public class FilterQuery {
 		sb.append(" le ");
 		sb.append(_isoDateFormat.format(dateValue));
 
-		_addFilter(sb.toString(), required);
+		_addFilter(required, sb.toString());
 	}
 
-	public void addStartsWith(String field, String value, boolean required) {
+	public void addStartsWith(boolean required, String field, String value) {
 		StringBundler sb = new StringBundler(5);
 
 		sb.append("startsWith(");
@@ -243,7 +243,7 @@ public class FilterQuery {
 		sb.append(_escape(value));
 		sb.append("')");
 
-		_addFilter(sb.toString(), required);
+		_addFilter(required, sb.toString());
 	}
 
 	public String toString() {
@@ -274,7 +274,7 @@ public class FilterQuery {
 		return _toString;
 	}
 
-	private void _addFilter(String filter, boolean required) {
+	private void _addFilter(boolean required, String filter) {
 		if (required) {
 			_requiredFilters.add(filter);
 		}

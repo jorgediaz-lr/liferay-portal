@@ -111,8 +111,8 @@ public class ZendeskValidator {
 		FilterQuery filterQuery = new FilterQuery();
 
 		filterQuery.addLambdaEquals(
-			"assignedTeamKeyTeamRoleKeys", teamKey + "_" + flsTeamRole.getKey(),
-			true);
+			true, "assignedTeamKeyTeamRoleKeys",
+			teamKey + "_" + flsTeamRole.getKey());
 
 		List<Account> accounts = _accountWebService.search(
 			StringPool.BLANK, filterQuery, 1, 1000, StringPool.BLANK);
@@ -179,8 +179,8 @@ public class ZendeskValidator {
 				ContactRoleConstants.NAME_ADMINISTRATOR);
 
 		filterQuery.addLambdaEquals(
-			"accountKeysContactRoleKeys",
-			accountKey + "_" + administratorContactRole.getKey(), false);
+			false, "accountKeysContactRoleKeys",
+			accountKey + "_" + administratorContactRole.getKey());
 
 		ContactRole supportDeveloperContactRole =
 			_contactRoleWebService.getContactRole(
@@ -188,8 +188,8 @@ public class ZendeskValidator {
 				ContactRoleConstants.NAME_SUPPORT_DEVELOPER);
 
 		filterQuery.addLambdaEquals(
-			"accountKeysContactRoleKeys",
-			accountKey + "_" + supportDeveloperContactRole.getKey(), false);
+			false, "accountKeysContactRoleKeys",
+			accountKey + "_" + supportDeveloperContactRole.getKey());
 
 		List<Contact> contacts = _contactWebService.search(
 			StringPool.BLANK, filterQuery, 1, 1000, StringPool.BLANK);
@@ -216,7 +216,7 @@ public class ZendeskValidator {
 
 		FilterQuery filterQuery = new FilterQuery();
 
-		filterQuery.addLambdaEquals("teamKeys", teamKey, true);
+		filterQuery.addLambdaEquals(true, "teamKeys", teamKey);
 
 		List<Contact> contacts = _contactWebService.search(
 			StringPool.BLANK, filterQuery, 1, 1000, StringPool.BLANK);

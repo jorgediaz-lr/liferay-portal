@@ -72,13 +72,13 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 			FilterQuery filterQuery = new FilterQuery();
 
-			filterQuery.addEquals("accountKey", accountKey, true);
+			filterQuery.addEquals(true, "accountKey", accountKey);
 			filterQuery.addLambdaEquals(
-				"customerContactUuids", user.getUuid(), true);
-			filterQuery.addEquals("state", "active", true);
-			filterQuery.addEquals("property_type", "primary", false);
-			filterQuery.addContains("name", "Commerce Subscription", false);
-			filterQuery.addContains("name", "DXP Cloud Subscription", false);
+				true, "customerContactUuids", user.getUuid());
+			filterQuery.addEquals(true, "state", "active");
+			filterQuery.addContains(false, "name", "Commerce Subscription");
+			filterQuery.addContains(false, "name", "DXP Cloud Subscription");
+			filterQuery.addEquals(false, "property_type", "primary");
 
 			List<ProductPurchaseView> productPurchaseViews =
 				_productPurchaseViewWebService.search(

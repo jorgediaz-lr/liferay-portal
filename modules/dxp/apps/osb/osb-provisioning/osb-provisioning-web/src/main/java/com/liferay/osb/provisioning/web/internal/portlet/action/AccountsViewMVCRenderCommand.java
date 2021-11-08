@@ -63,7 +63,7 @@ public class AccountsViewMVCRenderCommand implements MVCRenderCommand {
 
 				FilterQuery filterQuery = new FilterQuery();
 
-				filterQuery.addEquals("code", keywords[0], true);
+				filterQuery.addEquals(true, "code", keywords[0]);
 
 				List<Account> accounts = _accountWebService.search(
 					StringPool.BLANK, filterQuery, 0, 1, null);

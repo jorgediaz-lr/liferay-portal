@@ -88,7 +88,7 @@ public class ProductBundleProductsLocalServiceImpl
 				productBundleProducts) {
 
 			filterQuery.addEquals(
-				"productKey", productBundleProduct.getProductKey(), false);
+				false, "productKey", productBundleProduct.getProductKey());
 		}
 
 		return _productWebService.search(

@@ -519,8 +519,8 @@ public class ViewAccountDisplayContext {
 		FilterQuery filterQuery = new FilterQuery();
 
 		filterQuery.addLambdaEquals(
-			"accountKeysContactRoleKeys",
-			account.getKey() + "_" + contactRole.getKey(), true);
+			true, "accountKeysContactRoleKeys",
+			account.getKey() + "_" + contactRole.getKey());
 
 		List<Contact> contacts = contactWebService.search(
 			StringPool.BLANK, filterQuery, 1, 1, StringPool.BLANK);
@@ -830,9 +830,9 @@ public class ViewAccountDisplayContext {
 
 		FilterQuery filterQuery = new FilterQuery();
 
-		filterQuery.addEquals("accountKey", account.getKey(), true);
+		filterQuery.addEquals(true, "accountKey", account.getKey());
 		filterQuery.addEquals(
-			"state", ProductPurchaseConstants.STATE_ACTIVE, true);
+			true, "state", ProductPurchaseConstants.STATE_ACTIVE);
 
 		return productPurchaseViewWebService.search(
 			StringPool.BLANK, filterQuery, 1, 1000, StringPool.BLANK);
@@ -859,42 +859,42 @@ public class ViewAccountDisplayContext {
 
 		FilterQuery filterQuery = new FilterQuery();
 
-		filterQuery.addEquals("accountKey", account.getKey(), true);
+		filterQuery.addEquals(true, "accountKey", account.getKey());
+
+		if (productKeys.length > 0) {
+			filterQuery.addEquals(true, "productKey", productKeys);
+		}
 
 		if (tabs2.equals("active")) {
 			filterQuery.addEquals(
-				"state", ProductPurchaseConstants.STATE_ACTIVE, true);
+				true, "state", ProductPurchaseConstants.STATE_ACTIVE);
 		}
 		else if (tabs2.equals("cancelled")) {
 			filterQuery.addEquals(
-				"state", ProductPurchaseConstants.STATE_CANCELLED, true);
+				true, "state", ProductPurchaseConstants.STATE_CANCELLED);
 		}
 		else if (tabs2.equals("complimentary")) {
 			filterQuery.addEquals(
-				"status", String.valueOf(WorkflowConstants.STATUS_INACTIVE),
-				true);
+				true, "status",
+				String.valueOf(WorkflowConstants.STATUS_INACTIVE));
 		}
 		else if (tabs2.equals("expired")) {
 			filterQuery.addEquals(
-				"state", ProductPurchaseConstants.STATE_EXPIRED, true);
+				true, "state", ProductPurchaseConstants.STATE_EXPIRED);
 		}
 		else if (tabs2.equals("future")) {
 			filterQuery.addEquals(
-				"state", ProductPurchaseConstants.STATE_UNACTIVATED, true);
+				true, "state", ProductPurchaseConstants.STATE_UNACTIVATED);
 		}
 
 		if (!tabs2.equals("active") && (states.length > 0)) {
-			filterQuery.addEquals("state", states, true);
-		}
-
-		if (productKeys.length > 0) {
-			filterQuery.addEquals("productKey", productKeys, true);
+			filterQuery.addEquals(true, "state", states);
 		}
 
 		if ((startDate != null) && (endDate != null)) {
+			filterQuery.addLessThanEquals(true, "supportLifeEndDate", endDate);
 			filterQuery.addGreaterThanEquals(
-				"supportLifeStartDate", startDate, true);
-			filterQuery.addLessThanEquals("supportLifeEndDate", endDate, true);
+				true, "supportLifeStartDate", startDate);
 		}
 
 		return filterQuery;
@@ -911,7 +911,7 @@ public class ViewAccountDisplayContext {
 				FilterQuery filterQuery = new FilterQuery();
 
 				filterQuery.addEquals(
-					"type", ContactRole.Type.ACCOUNT_CUSTOMER.toString(), true);
+					true, "type", ContactRole.Type.ACCOUNT_CUSTOMER.toString());
 
 				List<ContactRole> contactRoles = contactRoleWebService.search(
 					filterQuery, 1, 1000, "name");

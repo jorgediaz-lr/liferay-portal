@@ -172,7 +172,7 @@ public class EditProductPurchasesDisplayContext
 		FilterQuery filterQuery = new FilterQuery();
 
 		filterQuery.addEquals(
-			"productPurchaseKey", productPurchase.getKey(), true);
+			true, "productPurchaseKey", productPurchase.getKey());
 
 		long productConsumptionsCount =
 			productConsumptionWebService.searchCount(filterQuery);

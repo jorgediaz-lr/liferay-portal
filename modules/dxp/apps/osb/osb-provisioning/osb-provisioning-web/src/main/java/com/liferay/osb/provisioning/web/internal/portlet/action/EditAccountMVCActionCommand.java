@@ -286,8 +286,8 @@ public class EditAccountMVCActionCommand extends BaseMVCActionCommand {
 		FilterQuery filterQuery = new FilterQuery();
 
 		filterQuery.addLambdaEquals(
-			"accountKeyTeamRoleKeys", accountKey + "_" + teamRole.getKey(),
-			true);
+			true, "accountKeyTeamRoleKeys",
+			accountKey + "_" + teamRole.getKey());
 
 		List<Team> teams = _teamWebService.search(
 			StringPool.BLANK, filterQuery, 1, 1000, StringPool.BLANK);

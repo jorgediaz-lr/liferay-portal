@@ -115,7 +115,7 @@ public class CommonLicenseKeyResourceImpl
 
 		FilterQuery filterQuery = new FilterQuery();
 
-		filterQuery.addEquals("accountKey", accountKey, true);
+		filterQuery.addEquals(true, "accountKey", accountKey);
 
 		List<ProductPurchase> productPurchases =
 			_productPurchaseWebService.search(
