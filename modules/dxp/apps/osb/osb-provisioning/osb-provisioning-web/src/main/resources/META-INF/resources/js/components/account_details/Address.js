@@ -67,6 +67,10 @@ function Address({accountKey, addFn, address, count, countryOptions}) {
 		const newValue = {};
 		newValue[fieldName] = value;
 
+		if (fieldName === 'addressCountryName') {
+			newValue['addressRegionName'] = '';
+		}
+
 		setValues({...values, ...newValue});
 	}
 

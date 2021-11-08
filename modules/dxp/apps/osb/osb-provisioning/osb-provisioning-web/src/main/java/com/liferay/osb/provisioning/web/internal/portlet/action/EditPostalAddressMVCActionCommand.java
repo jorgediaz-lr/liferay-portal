@@ -147,14 +147,8 @@ public class EditPostalAddressMVCActionCommand extends BaseMVCActionCommand {
 
 		postalAddress.setPostalCode(addressZip);
 
-		if (Validator.isNotNull(addressRegionName)) {
-			postalAddress.setAddressRegion(addressRegionName);
-		}
-
-		if (Validator.isNotNull(addressCountryName)) {
-			postalAddress.setAddressCountry(addressCountryName);
-		}
-
+		postalAddress.setAddressRegion(addressRegionName);
+		postalAddress.setAddressCountry(addressCountryName);
 		postalAddress.setPrimary(primary);
 
 		if (postalAddressId > 0) {

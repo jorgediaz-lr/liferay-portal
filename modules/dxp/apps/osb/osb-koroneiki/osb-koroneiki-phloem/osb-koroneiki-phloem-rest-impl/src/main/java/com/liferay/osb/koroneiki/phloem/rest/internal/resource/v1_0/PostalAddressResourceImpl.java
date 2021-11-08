@@ -194,11 +194,15 @@ public class PostalAddressResourceImpl extends BasePostalAddressResourceImpl {
 				"Country is required when specifying a Region");
 		}
 
-		if (Validator.isNull(addressRegion)) {
-			return regionId;
-		}
-
 		List<Region> regions = _regionService.getRegions(countryId);
+
+		if (Validator.isNull(addressRegion)) {
+			if (!regions.isEmpty()) {
+				return regionId;
+			}
+			
+			return 0;
+		}
 
 		for (Region region : regions) {
 			if (StringUtil.equalsIgnoreCase(region.getName(), addressRegion)) {
