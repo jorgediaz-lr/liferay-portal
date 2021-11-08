@@ -53,6 +53,7 @@ page import="com.liferay.osb.provisioning.exception.MultipleDossieraKeysExceptio
 page import="com.liferay.osb.provisioning.exception.ProductBundleNameException" %><%@
 page import="com.liferay.osb.provisioning.exception.ProductPurchaseQuantityException" %><%@
 page import="com.liferay.osb.provisioning.exception.RequiredProductException" %><%@
+page import="com.liferay.osb.provisioning.koroneiki.constants.ContactRoleConstants" %><%@
 page import="com.liferay.osb.provisioning.license.exception.DuplicateCommonLicenseKeyException" %><%@
 page import="com.liferay.osb.provisioning.license.helper.constants.LicenseType" %><%@
 page import="com.liferay.osb.provisioning.license.model.CommonLicenseKey" %><%@
@@ -145,6 +146,9 @@ Format mediumDateFormatDate = FastDateFormatFactoryUtil.getDate(DateFormat.MEDIU
 	window.ProvisioningConstants = {
 		accountsPortletNamespace:
 			'<%= PortalUtil.getPortletNamespace(ProvisioningPortletKeys.ACCOUNTS) %>',
+		contactRole: {
+			administrator: '<%= ContactRoleConstants.NAME_ADMINISTRATOR %>'
+		},
 		licenseType: {
 			cluster: '<%= LicenseType.CLUSTER %>',
 			developer: '<%= LicenseType.DEVELOPER %>',

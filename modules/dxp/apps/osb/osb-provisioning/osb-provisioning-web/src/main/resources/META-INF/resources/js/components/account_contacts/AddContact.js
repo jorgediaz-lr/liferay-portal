@@ -14,7 +14,7 @@ import {Set} from 'immutable';
 import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
 
-import {NAMESPACE} from '../../utilities/constants';
+import {CONTACT_ROLE_ADMINISTRATOR, NAMESPACE} from '../../utilities/constants';
 import CancelLink from '../CancelLink';
 import RequiredFieldMarker from '../RequiredFieldMarker';
 import ContactEntry from './ContactEntry';
@@ -46,7 +46,7 @@ export default function AddContact({
 		support: allRoles
 			.filter(
 				role =>
-					role.name == 'Administrator' ||
+					role.name === CONTACT_ROLE_ADMINISTRATOR ||
 					role.name.startsWith('Support')
 			)
 			.map(support => support.key)
