@@ -49,10 +49,7 @@ function Address({accountKey, addFn, address, count, countryOptions}) {
 	}, [countryOptions, values.addressCountryName]);
 
 	useEffect(() => {
-		const newValues = {...values};
-		delete newValues.addressPrimary;
-
-		setDisableSave(!Object.values(newValues).some(val => val));
+		setDisableSave(!values.addressCountryName);
 	}, [values]);
 
 	function getRegionOptions() {
@@ -166,6 +163,7 @@ function Address({accountKey, addFn, address, count, countryOptions}) {
 					options={countryOptions}
 					readOnly={!updatePermission}
 					readOnlyValue={address.addressCountry}
+					required
 					setEditableFn={handleSetEditable}
 					value={values.addressCountryName}
 				/>

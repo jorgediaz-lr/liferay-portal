@@ -16,6 +16,41 @@ import Address from '../../../src/main/resources/META-INF/resources/js/component
 import {PermissionsProvider} from '../../../src/main/resources/META-INF/resources/js/hooks/permissions';
 import {DASH} from '../../../src/main/resources/META-INF/resources/js/utilities/constants';
 
+const countryOptions = [
+	{
+		active: true,
+		countryRegions: [
+			{
+				active: true,
+				name: 'Shanghai'
+			},
+			{
+				active: true,
+				name: 'Sichuan'
+			}
+		],
+		name: 'China',
+		zipRequired: true
+	},
+	{
+		active: true,
+		countryRegions: [],
+		name: 'United Arab Emirates',
+		zipRequired: false
+	},
+	{
+		active: true,
+		countryRegions: [
+			{
+				active: true,
+				name: 'California'
+			}
+		],
+		name: 'United States',
+		zipRequired: true
+	}
+];
+
 function renderAddress(permission = true) {
 	return render(
 		<PermissionsProvider permissions={{updatePermission: permission}}>
@@ -36,40 +71,7 @@ function renderAddress(permission = true) {
 					streetAddressLine3: DASH
 				}}
 				count={1}
-				countryOptions={[
-					{
-						active: true,
-						countryRegions: [
-							{
-								active: true,
-								name: 'Shanghai'
-							},
-							{
-								active: true,
-								name: 'Sichuan'
-							}
-						],
-						name: 'China',
-						zipRequired: true
-					},
-					{
-						active: true,
-						countryRegions: [],
-						name: 'United Arab Emirates',
-						zipRequired: false
-					},
-					{
-						active: true,
-						countryRegions: [
-							{
-								active: true,
-								name: 'California'
-							}
-						],
-						name: 'United States',
-						zipRequired: true
-					}
-				]}
+				countryOptions={countryOptions}
 			/>
 		</PermissionsProvider>
 	);
@@ -121,12 +123,12 @@ describe('Address', () => {
 	it('displays Shanghai as a region option when the user selects PRC as the country', () => {
 		const {getByDisplayValue, getByText} = renderAddress();
 
-		fireEvent.click(getByText('91765'));
-		fireEvent.change(getByDisplayValue('91765'), {
-			target: {value: ''}
+		fireEvent.click(getByText('United States'));
+		fireEvent.change(getByDisplayValue('United States'), {
+			target: {value: 'China'}
 		});
 
-		expect(getByText('save').disabled).toBeFalsy();
+		getByText('Shanghai');
 	});
 
 	it('displays Primary field as toggled on', () => {
@@ -139,8 +141,13 @@ describe('Address', () => {
 		);
 	});
 
-	it('displays the Save button as disabled until at least one field is filled out', () => {
-		const {getAllByDisplayValue, getAllByText, getByText} = render(
+	it('displays the Save button as disabled until Country is filled out', () => {
+		const {
+			getAllByDisplayValue,
+			getAllByText,
+			getByLabelText,
+			getByText
+		} = render(
 			<PermissionsProvider permissions={{updatePermission: true}}>
 				<Address
 					accountKey="key123"
@@ -159,43 +166,7 @@ describe('Address', () => {
 						streetAddressLine3: DASH
 					}}
 					count={1}
-					countryOptions={[]}
-				/>
-			</PermissionsProvider>
-		);
-
-		fireEvent.click(getAllByText(DASH)[0]);
-
-		expect(getByText('save').disabled).toBeTruthy();
-
-		fireEvent.change(getAllByDisplayValue('')[0], {
-			target: {value: 'street 1'}
-		});
-
-		expect(getByText('save').disabled).toBeFalsy();
-	});
-
-	it('displays the Save button as disabled if user only toggles the Primary Address field', () => {
-		const {getAllByText, getByLabelText, getByText} = render(
-			<PermissionsProvider permissions={{updatePermission: true}}>
-				<Address
-					accountKey="key123"
-					addFn={jest.fn()}
-					address={{
-						addressCountry: DASH,
-						addressLocality: DASH,
-						addressRegion: DASH,
-						deletePostalAddressURL: '/',
-						editPostalAddressURL: '/',
-						id: '123',
-						postalCode: DASH,
-						primary: false,
-						streetAddressLine1: DASH,
-						streetAddressLine2: DASH,
-						streetAddressLine3: DASH
-					}}
-					count={1}
-					countryOptions={[]}
+					countryOptions={countryOptions}
 				/>
 			</PermissionsProvider>
 		);
@@ -207,5 +178,11 @@ describe('Address', () => {
 		fireEvent.click(getByLabelText('addressPrimary'));
 
 		expect(getByText('save').disabled).toBeTruthy();
+
+		fireEvent.change(getAllByDisplayValue(DASH)[1], {
+			target: {value: 'China'}
+		});
+
+		expect(getByText('save').disabled).toBeFalsy();
 	});
 });
