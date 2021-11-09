@@ -224,7 +224,11 @@ public class TransformAccount {
 		JSONObject jsonObject = new JSONObject(properties);
 
 		if (jsonObject.has("liferayVersion")) {
-			return jsonObject.getString("liferayVersion");
+			String liferayVersion = jsonObject.getString("liferayVersion");
+
+			if (liferayVersion.startsWith("DXP ")) {
+				return liferayVersion.substring(4);
+			}
 		}
 
 		return "";
