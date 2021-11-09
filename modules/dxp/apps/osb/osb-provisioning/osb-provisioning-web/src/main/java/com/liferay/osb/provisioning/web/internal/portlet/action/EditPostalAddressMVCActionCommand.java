@@ -127,13 +127,8 @@ public class EditPostalAddressMVCActionCommand extends BaseMVCActionCommand {
 
 		postalAddress.setStreetAddressLine1(streetAddressLine1);
 
-		if (Validator.isNotNull(streetAddressLine2)) {
-			postalAddress.setStreetAddressLine2(streetAddressLine2);
-		}
-
-		if (Validator.isNotNull(streetAddressLine3)) {
-			postalAddress.setStreetAddressLine3(streetAddressLine3);
-		}
+		postalAddress.setStreetAddressLine2(streetAddressLine2);
+		postalAddress.setStreetAddressLine3(streetAddressLine3);
 
 		if (Validator.isNull(addressLocality)) {
 			addressLocality = StringPool.DASH;

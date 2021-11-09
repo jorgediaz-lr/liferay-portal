@@ -35,6 +35,7 @@ export const PATTERN_IP_ADDRESS_V6 = /^(?:[0-9A-Fa-f]{1,4})(?::[0-9A-Fa-f]{1,4})
 export const PATTERN_MAC_ADDRESS = /^([0-9A-Fa-f]{2}[. :-]){5}([0-9A-Fa-f]{2})|([0-9A-Fa-f]{4}[. :-][0-9A-Fa-f]{4}[. :-][0-9A-Fa-f]{4})$/;
 
 // Contact Role
+
 export const CONTACT_ROLE_ADMINISTRATOR =
 	window.ProvisioningConstants.contactRole.administrator;
 
