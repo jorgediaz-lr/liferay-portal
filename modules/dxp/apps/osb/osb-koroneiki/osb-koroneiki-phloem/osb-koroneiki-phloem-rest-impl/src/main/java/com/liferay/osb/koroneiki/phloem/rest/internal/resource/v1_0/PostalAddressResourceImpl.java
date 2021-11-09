@@ -189,20 +189,20 @@ public class PostalAddressResourceImpl extends BasePostalAddressResourceImpl {
 			long countryId, String addressRegion, long regionId)
 		throws PortalException {
 
+		if (addressRegion == null) {
+			return regionId;
+		}
+
 		if ((countryId <= 0) && Validator.isNotNull(addressRegion)) {
 			throw new PortalException(
 				"Country is required when specifying a Region");
 		}
 
-		List<Region> regions = _regionService.getRegions(countryId);
-
 		if (Validator.isNull(addressRegion)) {
-			if (!regions.isEmpty()) {
-				return regionId;
-			}
-			
 			return 0;
 		}
+
+		List<Region> regions = _regionService.getRegions(countryId);
 
 		for (Region region : regions) {
 			if (StringUtil.equalsIgnoreCase(region.getName(), addressRegion)) {
