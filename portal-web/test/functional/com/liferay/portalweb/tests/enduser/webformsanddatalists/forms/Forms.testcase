@@ -4422,7 +4422,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-71485 and LPS-71512, LPS-78540."
-	@priority = "2"
+	@priority = "4"
 	test ViewAltSuccessPagePagination {
 		property test.name.skip.portal.instance = "Forms#ViewAltSuccessPagePagination";
 
