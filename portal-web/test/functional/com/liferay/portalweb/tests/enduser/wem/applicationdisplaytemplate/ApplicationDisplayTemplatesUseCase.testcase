@@ -38,7 +38,7 @@ definition {
 
 	@description = "This is a use case for LPS-89348."
 	@priority = "5"
-	test AddADTWithInvalidScript {
+	test ADTWithWhitelistingScriptReturnsVoid {
 		JSONLayout.addWidgetToPublicLayout(
 			groupName = "Test Site Name",
 			layoutName = "ADT Test Page",
