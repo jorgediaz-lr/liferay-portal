@@ -51,7 +51,7 @@ Team team = viewTeamDisplayContext.getTeam();
 		<portlet:param name="teamKey" value='<%= (team != null) ? team.getKey() : "" %>' />
 	</portlet:actionURL>
 
-	<aui:form action="<%= editTeamURL.toString() %>" cssClass="container-fluid container-fluid-max-xl" method="post" name="editTeamFm">
+	<aui:form action="<%= editTeamURL %>" cssClass="container-fluid container-fluid-max-xl" method="post" name="editTeamFm">
 		<div class="add-items-sheet sheet sheet-lg">
 			<aui:input inlineLabel="left" name="name" required="<%= true %>" value='<%= (team != null) ? team.getName() : "" %>' />
 

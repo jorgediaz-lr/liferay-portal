@@ -51,7 +51,7 @@ if (product != null) {
 		<portlet:param name="productKey" value='<%= (product != null) ? product.getKey() : "" %>' />
 	</portlet:actionURL>
 
-	<aui:form action="<%= editProductURL.toString() %>" cssClass="container-fluid container-fluid-max-xl" method="post" name="fm">
+	<aui:form action="<%= editProductURL %>" cssClass="container-fluid container-fluid-max-xl" method="post" name="fm">
 		<div class="add-items-sheet sheet sheet-lg">
 			<aui:input inlineLabel="left" name="name" value='<%= (product != null) ? product.getName() : "" %>' />
 

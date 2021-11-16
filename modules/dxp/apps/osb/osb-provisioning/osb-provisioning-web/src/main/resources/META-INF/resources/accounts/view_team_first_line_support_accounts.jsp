@@ -26,7 +26,7 @@ PortletURL searchURL = viewTeamDisplayContext.getPortletURL();
 	<div class="container-fluid">
 		<div class="navbar-form navbar-form-autofit navbar-overlay navbar-overlay-sm-down">
 			<div class="container-fluid">
-				<aui:form action="<%= searchURL.toString() %>" method="get" name="fm">
+				<aui:form action="<%= searchURL %>" method="get" name="fm">
 					<liferay-portlet:renderURLParams portletURL="<%= searchURL %>" />
 
 					<div class="input-group search-input">

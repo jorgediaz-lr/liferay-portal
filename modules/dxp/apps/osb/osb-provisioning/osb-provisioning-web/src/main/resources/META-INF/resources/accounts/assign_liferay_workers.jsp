@@ -49,7 +49,7 @@ AccountDisplay accountDisplay = viewAccountLiferayWorkersDisplayContext.getAccou
 		<portlet:param name="accountKey" value="<%= accountDisplay.getKey() %>" />
 	</portlet:actionURL>
 
-	<aui:form action="<%= assignContactRolesURL.toString() %>" cssClass="container-fluid container-fluid-max-xl" method="post" name="assignLiferayWorkersFm">
+	<aui:form action="<%= assignContactRolesURL %>" cssClass="container-fluid container-fluid-max-xl" method="post" name="assignLiferayWorkersFm">
 		<aui:input name="contactRoleType" type="hidden" value="<%= ContactRole.Type.ACCOUNT_WORKER.toString() %>" />
 
 		<div class="assign-contacts-sheet sheet">

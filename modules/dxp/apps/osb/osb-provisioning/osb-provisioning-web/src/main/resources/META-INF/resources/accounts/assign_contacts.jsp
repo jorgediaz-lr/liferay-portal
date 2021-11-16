@@ -47,7 +47,7 @@ AccountDisplay accountDisplay = viewAccountContactsDisplayContext.getAccountDisp
 		<portlet:param name="accountKey" value="<%= accountDisplay.getKey() %>" />
 	</portlet:actionURL>
 
-	<aui:form action="<%= assignContactRolesURL.toString() %>" cssClass="container-fluid container-fluid-max-xl" method="post" name="assignContactFm">
+	<aui:form action="<%= assignContactRolesURL %>" cssClass="container-fluid container-fluid-max-xl" method="post" name="assignContactFm">
 		<aui:input name="contactRoleType" type="hidden" value="<%= ContactRole.Type.ACCOUNT_CUSTOMER.toString() %>" />
 
 		<div class="assign-contacts-sheet sheet">
