@@ -316,7 +316,7 @@ public class ContentDashboardItemSubtypeItemSelectorViewTest {
 			Assert.assertNotNull(data.get("itemSelectorSaveEvent"));
 		}
 		finally {
-			DDMStructureLocalServiceUtil.deleteDDMStructure(ddmStructure);
+			DDMStructureLocalServiceUtil.deleteStructure(ddmStructure);
 		}
 	}
 
