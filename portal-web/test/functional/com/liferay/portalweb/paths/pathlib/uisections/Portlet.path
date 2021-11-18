@@ -26,6 +26,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>CONFIGURATION_ICON_CONTENT_PAGE</td>
+	<td>//section[contains(@id,'${key_portletName}')]//*[*[name()='svg'][contains(@class,'lexicon-icon-cog')]]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>ERROR</td>
 	<td>//div[contains(@class,'alert-error') or contains(@class,'alert-danger')]</td>
 	<td></td>
