@@ -1153,7 +1153,7 @@ definition {
 		Vocabulary.viewSearchResultsCP(nullResult = "true");
 	}
 
-	@Description = "This is for LPS-101409. Validate if select a required category when entering the content page name."
+	@description = "This is for LPS-101409. Validate if select a required category when entering the content page name."
 	@priority = "5"
 	test SelectRequiredCategoryWhenEnterContentPageName {
 		property testray.component.names = "Categories";
@@ -1203,7 +1203,7 @@ definition {
 		}
 	}
 
-	@Description = "This is for LPS-101409. Validate if select a required category when entering the widget page name."
+	@description = "This is for LPS-101409. Validate if select a required category when entering the widget page name."
 	@priority = "5"
 	test SelectRequiredCategoryWhenEnterWidgetPageName {
 		property testray.component.names = "Categories";
