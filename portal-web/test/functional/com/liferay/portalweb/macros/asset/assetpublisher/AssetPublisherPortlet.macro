@@ -41,6 +41,16 @@ definition {
 		SiteSelector.viewSite(site = "${siteName}");
 	}
 
+	macro changePagination {
+		Click(locator1 = "Pagination#CURRENT_PAGE_MENU");
+
+		MenuItem.click(menuItem = "${paginationItem}");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "Pagination#CURRENT_PAGE_MENU",
+			value1 = "Page ${currentPageNumber}");
+	}
+
 	macro clickAssetTitle {
 		Click(
 			key_assetTitle = "${assetTitle}",
@@ -409,7 +419,7 @@ definition {
 	}
 
 	macro configurePaginationPG {
-		AssetPublisherPortlet.gotoConfigurationPG();
+		AssetPublisherPortlet.gotoConfigurationPG(contentPage = "${contentPage}");
 
 		Navigator.gotoNavTab(navTab = "Display Settings");
 
@@ -736,9 +746,20 @@ definition {
 			var portletName = "Asset Publisher";
 		}
 
-		Portlet.gotoPortletOptions(
-			portletName = "${portletName}",
-			portletOption = "Configuration");
+		if (isSet(contentPage)) {
+			MouseOver.mouseOverNotVisible(
+				key_portletName = "AssetPublisherPortlet",
+				locator1 = "Portlet#CONFIGURATION_ICON_CONTENT_PAGE");
+
+			Click(
+				key_portletName = "AssetPublisherPortlet",
+				locator1 = "Portlet#CONFIGURATION_ICON_CONTENT_PAGE");
+		}
+		else {
+			Portlet.gotoPortletOptions(
+				portletName = "${portletName}",
+				portletOption = "Configuration");
+		}
 
 		SelectFrame(locator1 = "IFrame#DIALOG");
 	}
