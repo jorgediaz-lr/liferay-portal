@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.test.rule;
 
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ORMException;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.SessionCustomizer;
@@ -105,8 +106,9 @@ public class OrphanDetectionTestRule
 
 			if (count > 0) {
 				throw new ORMException(
-					"Orphan ResourcePermission after " + baseModel +
-						" deletion");
+					StringBundler.concat(
+						"Orphan ResourcePermission after the deletion of ",
+						baseModel.getModelClassName(), ": ", baseModel));
 			}
 		}
 
