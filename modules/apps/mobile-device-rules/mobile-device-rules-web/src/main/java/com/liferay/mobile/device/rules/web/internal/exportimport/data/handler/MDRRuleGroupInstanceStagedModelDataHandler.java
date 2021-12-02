@@ -25,6 +25,7 @@ import com.liferay.mobile.device.rules.model.MDRRuleGroupInstance;
 import com.liferay.mobile.device.rules.service.MDRRuleGroupInstanceLocalService;
 import com.liferay.mobile.device.rules.service.MDRRuleGroupLocalService;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.service.LayoutLocalService;
@@ -52,14 +53,17 @@ public class MDRRuleGroupInstanceStagedModelDataHandler
 	};
 
 	@Override
-	public void deleteStagedModel(MDRRuleGroupInstance ruleGroupInstance) {
+	public void deleteStagedModel(MDRRuleGroupInstance ruleGroupInstance)
+		throws PortalException {
+
 		_mdrRuleGroupInstanceLocalService.deleteRuleGroupInstance(
 			ruleGroupInstance);
 	}
 
 	@Override
 	public void deleteStagedModel(
-		String uuid, long groupId, String className, String extraData) {
+			String uuid, long groupId, String className, String extraData)
+		throws PortalException {
 
 		MDRRuleGroupInstance ruleGroupInstance =
 			fetchStagedModelByUuidAndGroupId(uuid, groupId);
