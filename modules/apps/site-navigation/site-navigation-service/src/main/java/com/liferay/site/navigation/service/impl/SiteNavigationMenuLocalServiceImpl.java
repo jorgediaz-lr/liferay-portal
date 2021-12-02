@@ -18,6 +18,7 @@ import com.liferay.portal.aop.AopService;
 import com.liferay.portal.dao.orm.custom.sql.CustomSQL;
 import com.liferay.portal.kernel.dao.orm.WildcardMode;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.ModelHintsUtil;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.SystemEventConstants;
@@ -161,7 +162,16 @@ public class SiteNavigationMenuLocalServiceImpl
 
 	@Override
 	public void deleteSiteNavigationMenus(long groupId) {
-		siteNavigationMenuPersistence.removeByGroupId(groupId);
+		for (SiteNavigationMenu siteNavigationMenu :
+				getSiteNavigationMenus(groupId)) {
+
+			try {
+				deleteSiteNavigationMenu(siteNavigationMenu);
+			}
+			catch (PortalException portalException) {
+				throw new SystemException(portalException);
+			}
+		}
 	}
 
 	@Override
