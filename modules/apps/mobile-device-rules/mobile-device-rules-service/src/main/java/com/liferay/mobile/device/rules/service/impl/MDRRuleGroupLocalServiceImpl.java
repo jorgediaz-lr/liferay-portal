@@ -27,6 +27,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.SystemEventConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ResourceLocalService;
@@ -129,7 +130,7 @@ public class MDRRuleGroupLocalServiceImpl
 	}
 
 	@Override
-	public void deleteRuleGroup(long ruleGroupId) {
+	public void deleteRuleGroup(long ruleGroupId) throws PortalException {
 		MDRRuleGroup ruleGroup = mdrRuleGroupPersistence.fetchByPrimaryKey(
 			ruleGroupId);
 
@@ -143,7 +144,12 @@ public class MDRRuleGroupLocalServiceImpl
 		action = SystemEventConstants.ACTION_SKIP,
 		type = SystemEventConstants.TYPE_DELETE
 	)
-	public void deleteRuleGroup(MDRRuleGroup ruleGroup) {
+	public void deleteRuleGroup(MDRRuleGroup ruleGroup) throws PortalException {
+
+		// Resource
+
+		_resourceLocalService.deleteResource(
+			ruleGroup, ResourceConstants.SCOPE_INDIVIDUAL);
 
 		// Rule group
 
@@ -160,7 +166,7 @@ public class MDRRuleGroupLocalServiceImpl
 	}
 
 	@Override
-	public void deleteRuleGroups(long groupId) {
+	public void deleteRuleGroups(long groupId) throws PortalException {
 		List<MDRRuleGroup> ruleGroups = mdrRuleGroupPersistence.findByGroupId(
 			groupId);
 
