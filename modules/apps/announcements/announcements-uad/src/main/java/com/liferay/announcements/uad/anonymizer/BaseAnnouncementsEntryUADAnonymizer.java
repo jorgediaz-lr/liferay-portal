@@ -19,6 +19,7 @@ import com.liferay.announcements.kernel.service.AnnouncementsEntryLocalService;
 import com.liferay.announcements.uad.constants.AnnouncementsUADConstants;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.user.associated.data.anonymizer.DynamicQueryUADAnonymizer;
 
@@ -53,8 +54,12 @@ public abstract class BaseAnnouncementsEntryUADAnonymizer
 
 	@Override
 	public void delete(AnnouncementsEntry announcementsEntry) {
-		announcementsEntryLocalService.deleteAnnouncementsEntry(
-			announcementsEntry);
+		try {
+			announcementsEntryLocalService.deleteEntry(announcementsEntry);
+		}
+		catch (PortalException portalException) {
+			throw new SystemException(portalException);
+		}
 	}
 
 	@Override
