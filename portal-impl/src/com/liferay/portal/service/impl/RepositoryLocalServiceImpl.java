@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.exception.InvalidRepositoryException;
 import com.liferay.portal.kernel.exception.NoSuchRepositoryException;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
@@ -177,7 +178,12 @@ public class RepositoryLocalServiceImpl extends RepositoryLocalServiceBaseImpl {
 			repository.getDlFolderId());
 
 		if (dlFolder != null) {
-			_dlFolderLocalService.deleteDLFolder(dlFolder);
+			try {
+				_dlFolderLocalService.deleteFolder(dlFolder);
+			}
+			catch (PortalException portalException) {
+				throw new SystemException(portalException);
+			}
 		}
 
 		repositoryPersistence.remove(repository);

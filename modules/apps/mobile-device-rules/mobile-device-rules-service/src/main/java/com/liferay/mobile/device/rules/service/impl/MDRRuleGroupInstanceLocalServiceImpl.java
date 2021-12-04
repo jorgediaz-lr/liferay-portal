@@ -24,6 +24,8 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.SystemEventConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
@@ -137,6 +139,16 @@ public class MDRRuleGroupInstanceLocalServiceImpl
 	)
 	public void deleteRuleGroupInstance(
 		MDRRuleGroupInstance ruleGroupInstance) {
+
+		// Resource
+
+		try {
+			_resourceLocalService.deleteResource(
+				ruleGroupInstance, ResourceConstants.SCOPE_INDIVIDUAL);
+		}
+		catch (PortalException portalException) {
+			throw new SystemException(portalException);
+		}
 
 		// Rule group instance
 

@@ -26,7 +26,9 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.SystemEventConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ResourceLocalService;
@@ -144,6 +146,16 @@ public class MDRRuleGroupLocalServiceImpl
 		type = SystemEventConstants.TYPE_DELETE
 	)
 	public void deleteRuleGroup(MDRRuleGroup ruleGroup) {
+
+		// Resource
+
+		try {
+			_resourceLocalService.deleteResource(
+				ruleGroup, ResourceConstants.SCOPE_INDIVIDUAL);
+		}
+		catch (PortalException portalException) {
+			throw new SystemException(portalException);
+		}
 
 		// Rule group
 
