@@ -25,7 +25,11 @@ import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.ShardedModel;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
+import com.liferay.portal.kernel.service.PersistedModelLocalService;
+import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistryUtil;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalServiceUtil;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -69,13 +73,13 @@ public class OrphanDetectionTestRule
 		ServiceRegistration<SessionCustomizer> serviceRegistration =
 			dataBag._serviceRegistration;
 
+		serviceRegistration.unregister();
+
 		Map<BaseModel<?>, String> records = dataBag._records;
 
 		for (Map.Entry<BaseModel<?>, String> entry : records.entrySet()) {
 			_checkOrphanData(entry.getKey(), entry.getValue());
 		}
-
-		serviceRegistration.unregister();
 	}
 
 	@Override
@@ -94,12 +98,26 @@ public class OrphanDetectionTestRule
 	}
 
 	private OrphanDetectionTestRule() {
+		_persistedModelLocalServices = _getPersistedModelLocalServices();
 	}
 
 	private void _checkOrphanData(BaseModel<?> baseModel, String backtraceInfo)
 		throws ORMException {
 
 		if (!(baseModel instanceof ShardedModel)) {
+			return;
+		}
+
+		PersistedModelLocalService persistedModelLocalService =
+			_persistedModelLocalServices.get(baseModel.getModelClassName());
+
+		BasePersistence<?> basePersistence =
+			persistedModelLocalService.getBasePersistence();
+
+		Object object = basePersistence.fetchByPrimaryKey(
+			baseModel.getPrimaryKeyObj());
+
+		if (object != null) {
 			return;
 		}
 
@@ -118,6 +136,18 @@ public class OrphanDetectionTestRule
 				" with backtraceInfo ", backtraceInfo),
 			0, count);
 	}
+
+	private Map<String, PersistedModelLocalService>
+		_getPersistedModelLocalServices() {
+
+		return ReflectionTestUtil.getFieldValue(
+			PersistedModelLocalServiceRegistryUtil.
+				getPersistedModelLocalServiceRegistry(),
+			"_persistedModelLocalServices");
+	}
+
+	private final Map<String, PersistedModelLocalService>
+		_persistedModelLocalServices;
 
 	private static class OrphanDetectionSessionCustomizer
 		implements SessionCustomizer {
