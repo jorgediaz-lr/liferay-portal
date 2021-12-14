@@ -75,10 +75,14 @@ public class OrphanDetectionTestRule
 
 		serviceRegistration.unregister();
 
+		Map<String, PersistedModelLocalService> persistedModelLocalServices =
+			_getPersistedModelLocalServices();
+
 		Map<BaseModel<?>, String> records = dataBag._records;
 
 		for (Map.Entry<BaseModel<?>, String> entry : records.entrySet()) {
-			_checkOrphanData(entry.getKey(), entry.getValue());
+			_checkOrphanData(
+				persistedModelLocalServices, entry.getKey(), entry.getValue());
 		}
 	}
 
@@ -98,10 +102,11 @@ public class OrphanDetectionTestRule
 	}
 
 	private OrphanDetectionTestRule() {
-		_persistedModelLocalServices = _getPersistedModelLocalServices();
 	}
 
-	private void _checkOrphanData(BaseModel<?> baseModel, String backtraceInfo)
+	private void _checkOrphanData(
+			Map<String, PersistedModelLocalService> persistedModelLocalServices,
+			BaseModel<?> baseModel, String backtraceInfo)
 		throws ORMException {
 
 		if (!(baseModel instanceof ShardedModel)) {
@@ -109,7 +114,7 @@ public class OrphanDetectionTestRule
 		}
 
 		PersistedModelLocalService persistedModelLocalService =
-			_persistedModelLocalServices.get(baseModel.getModelClassName());
+			persistedModelLocalServices.get(baseModel.getModelClassName());
 
 		BasePersistence<?> basePersistence =
 			persistedModelLocalService.getBasePersistence();
@@ -145,9 +150,6 @@ public class OrphanDetectionTestRule
 				getPersistedModelLocalServiceRegistry(),
 			"_persistedModelLocalServices");
 	}
-
-	private final Map<String, PersistedModelLocalService>
-		_persistedModelLocalServices;
 
 	private static class OrphanDetectionSessionCustomizer
 		implements SessionCustomizer {
