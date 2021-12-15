@@ -25,11 +25,10 @@ import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.ShardedModel;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
-import com.liferay.portal.kernel.service.PersistedModelLocalService;
-import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistryUtil;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalServiceUtil;
-import com.liferay.portal.kernel.service.persistence.BasePersistence;
-import com.liferay.portal.kernel.test.ReflectionTestUtil;
+import com.liferay.portal.kernel.transaction.TransactionAttribute;
+import com.liferay.portal.kernel.transaction.TransactionLifecycleListener;
+import com.liferay.portal.kernel.transaction.TransactionStatus;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -53,15 +52,23 @@ public class OrphanDetectionTestRule
 
 		private DataBag(
 			Map<BaseModel<?>, String> records,
-			ServiceRegistration<SessionCustomizer> serviceRegistration) {
+			ServiceRegistration<SessionCustomizer>
+				sessionCustomizerServiceRegistration,
+			ServiceRegistration<TransactionLifecycleListener>
+				transactionLifecycleListenerServiceRegistration) {
 
 			_records = records;
-			_serviceRegistration = serviceRegistration;
+			_sessionCustomizerServiceRegistration =
+				sessionCustomizerServiceRegistration;
+			_transactionLifecycleListenerServiceRegistration =
+				transactionLifecycleListenerServiceRegistration;
 		}
 
 		private final Map<BaseModel<?>, String> _records;
 		private final ServiceRegistration<SessionCustomizer>
-			_serviceRegistration;
+			_sessionCustomizerServiceRegistration;
+		private final ServiceRegistration<TransactionLifecycleListener>
+			_transactionLifecycleListenerServiceRegistration;
 
 	}
 
@@ -70,20 +77,17 @@ public class OrphanDetectionTestRule
 			Description description, DataBag dataBag, Object target)
 		throws Throwable {
 
-		ServiceRegistration<SessionCustomizer> serviceRegistration =
-			dataBag._serviceRegistration;
+		ServiceRegistration<SessionCustomizer>
+			sessionCustomizerServiceRegistration =
+				dataBag._sessionCustomizerServiceRegistration;
 
-		serviceRegistration.unregister();
+		sessionCustomizerServiceRegistration.unregister();
 
-		Map<String, PersistedModelLocalService> persistedModelLocalServices =
-			_getPersistedModelLocalServices();
+		ServiceRegistration<TransactionLifecycleListener>
+			transactionLifecycleListenerServiceRegistration =
+				dataBag._transactionLifecycleListenerServiceRegistration;
 
-		Map<BaseModel<?>, String> records = dataBag._records;
-
-		for (Map.Entry<BaseModel<?>, String> entry : records.entrySet()) {
-			_checkOrphanData(
-				persistedModelLocalServices, entry.getKey(), entry.getValue());
-		}
+		transactionLifecycleListenerServiceRegistration.unregister();
 	}
 
 	@Override
@@ -98,57 +102,14 @@ public class OrphanDetectionTestRule
 			records,
 			bundleContext.registerService(
 				SessionCustomizer.class,
-				new OrphanDetectionSessionCustomizer(records), null));
+				new OrphanDetectionSessionCustomizer(records), null),
+			bundleContext.registerService(
+				TransactionLifecycleListener.class,
+				new OrphanDetectionTransactionLifecycleListener(records),
+				null));
 	}
 
 	private OrphanDetectionTestRule() {
-	}
-
-	private void _checkOrphanData(
-			Map<String, PersistedModelLocalService> persistedModelLocalServices,
-			BaseModel<?> baseModel, String backtraceInfo)
-		throws ORMException {
-
-		if (!(baseModel instanceof ShardedModel)) {
-			return;
-		}
-
-		PersistedModelLocalService persistedModelLocalService =
-			persistedModelLocalServices.get(baseModel.getModelClassName());
-
-		BasePersistence<?> basePersistence =
-			persistedModelLocalService.getBasePersistence();
-
-		Object object = basePersistence.fetchByPrimaryKey(
-			baseModel.getPrimaryKeyObj());
-
-		if (object != null) {
-			return;
-		}
-
-		ShardedModel shardedModel = (ShardedModel)baseModel;
-
-		int count =
-			ResourcePermissionLocalServiceUtil.getResourcePermissionsCount(
-				shardedModel.getCompanyId(), baseModel.getModelClassName(),
-				ResourceConstants.SCOPE_INDIVIDUAL,
-				String.valueOf(baseModel.getPrimaryKeyObj()));
-
-		Assert.assertEquals(
-			StringBundler.concat(
-				"Orphan ResourcePermission after the deletion of ",
-				baseModel.getModelClassName(), ": ", baseModel,
-				" with backtraceInfo ", backtraceInfo),
-			0, count);
-	}
-
-	private Map<String, PersistedModelLocalService>
-		_getPersistedModelLocalServices() {
-
-		return ReflectionTestUtil.getFieldValue(
-			PersistedModelLocalServiceRegistryUtil.
-				getPersistedModelLocalServiceRegistry(),
-			"_persistedModelLocalServices");
 	}
 
 	private static class OrphanDetectionSessionCustomizer
@@ -239,6 +200,73 @@ public class OrphanDetectionTestRule
 				new UnsyncPrintWriter(unsyncStringWriter));
 
 			_records.put(baseModel, unsyncStringWriter.toString());
+		}
+
+		private Map<BaseModel<?>, String> _records;
+
+	}
+
+	private static class OrphanDetectionTransactionLifecycleListener
+		implements TransactionLifecycleListener {
+
+		@Override
+		public void committed(
+			TransactionAttribute transactionAttribute,
+			TransactionStatus transactionStatus) {
+
+			for (Map.Entry<BaseModel<?>, String> entry : _records.entrySet()) {
+				_checkOrphanData(entry.getKey(), entry.getValue());
+			}
+
+			_records.clear();
+		}
+
+		@Override
+		public void created(
+			TransactionAttribute transactionAttribute,
+			TransactionStatus transactionStatus) {
+
+			Assert.assertEquals(
+				"Records map should be empty at transaction creation", 0,
+				_records.size());
+		}
+
+		@Override
+		public void rollbacked(
+			TransactionAttribute transactionAttribute,
+			TransactionStatus transactionStatus, Throwable throwable) {
+
+			_records.clear();
+		}
+
+		private OrphanDetectionTransactionLifecycleListener(
+			Map<BaseModel<?>, String> records) {
+
+			_records = records;
+		}
+
+		private void _checkOrphanData(
+				BaseModel<?> baseModel, String backtraceInfo)
+			throws ORMException {
+
+			if (!(baseModel instanceof ShardedModel)) {
+				return;
+			}
+
+			ShardedModel shardedModel = (ShardedModel)baseModel;
+
+			int count =
+				ResourcePermissionLocalServiceUtil.getResourcePermissionsCount(
+					shardedModel.getCompanyId(), baseModel.getModelClassName(),
+					ResourceConstants.SCOPE_INDIVIDUAL,
+					String.valueOf(baseModel.getPrimaryKeyObj()));
+
+			Assert.assertEquals(
+				StringBundler.concat(
+					"Orphan ResourcePermission after the deletion of ",
+					baseModel.getModelClassName(), ": ", baseModel,
+					" with backtraceInfo ", backtraceInfo),
+				0, count);
 		}
 
 		private Map<BaseModel<?>, String> _records;
