@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.transaction.TransactionLifecycleListener;
 import com.liferay.portal.kernel.transaction.TransactionStatus;
 
 import java.util.Map;
+import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.junit.Assert;
@@ -51,20 +52,17 @@ public class OrphanDetectionTestRule
 	public static class DataBag {
 
 		private DataBag(
-			Map<BaseModel<?>, String> records,
 			ServiceRegistration<SessionCustomizer>
 				sessionCustomizerServiceRegistration,
 			ServiceRegistration<TransactionLifecycleListener>
 				transactionLifecycleListenerServiceRegistration) {
 
-			_records = records;
 			_sessionCustomizerServiceRegistration =
 				sessionCustomizerServiceRegistration;
 			_transactionLifecycleListenerServiceRegistration =
 				transactionLifecycleListenerServiceRegistration;
 		}
 
-		private final Map<BaseModel<?>, String> _records;
 		private final ServiceRegistration<SessionCustomizer>
 			_sessionCustomizerServiceRegistration;
 		private final ServiceRegistration<TransactionLifecycleListener>
@@ -94,18 +92,17 @@ public class OrphanDetectionTestRule
 	protected DataBag beforeMethod(Description description, Object target)
 		throws Throwable {
 
-		Map<BaseModel<?>, String> records = new ConcurrentHashMap<>();
+		Stack<Map<BaseModel<?>, String>> recordsStack = new Stack<>();
 
 		BundleContext bundleContext = SystemBundleUtil.getBundleContext();
 
 		return new DataBag(
-			records,
 			bundleContext.registerService(
 				SessionCustomizer.class,
-				new OrphanDetectionSessionCustomizer(records), null),
+				new OrphanDetectionSessionCustomizer(recordsStack), null),
 			bundleContext.registerService(
 				TransactionLifecycleListener.class,
-				new OrphanDetectionTransactionLifecycleListener(records),
+				new OrphanDetectionTransactionLifecycleListener(recordsStack),
 				null));
 	}
 
@@ -117,16 +114,16 @@ public class OrphanDetectionTestRule
 
 		@Override
 		public Session customize(Session session) {
-			return new OrphanDetectionSessionWrapper(session, _records);
+			return new OrphanDetectionSessionWrapper(session, _recordsStack);
 		}
 
 		private OrphanDetectionSessionCustomizer(
-			Map<BaseModel<?>, String> records) {
+			Stack<Map<BaseModel<?>, String>> recordsStack) {
 
-			_records = records;
+			_recordsStack = recordsStack;
 		}
 
-		private Map<BaseModel<?>, String> _records;
+		private Stack<Map<BaseModel<?>, String>> _recordsStack;
 
 	}
 
@@ -146,11 +143,11 @@ public class OrphanDetectionTestRule
 		}
 
 		private OrphanDetectionSessionWrapper(
-			Session session, Map<BaseModel<?>, String> records) {
+			Session session, Stack<Map<BaseModel<?>, String>> recordsStack) {
 
 			super(session);
 
-			_records = records;
+			_recordsStack = recordsStack;
 		}
 
 		private boolean _checkOrphanData(Object object) {
@@ -176,6 +173,12 @@ public class OrphanDetectionTestRule
 		}
 
 		private void _record(Object object) {
+			if (_recordsStack.isEmpty()) {
+				/* TODO THROW AN ERROR ? */
+
+				return;
+			}
+
 			BaseModel<?> baseModel = (BaseModel<?>)object;
 
 			if (baseModel.isNew()) {
@@ -199,10 +202,12 @@ public class OrphanDetectionTestRule
 			exception.printStackTrace(
 				new UnsyncPrintWriter(unsyncStringWriter));
 
-			_records.put(baseModel, unsyncStringWriter.toString());
+			Map<BaseModel<?>, String> records = _recordsStack.peek();
+
+			records.put(baseModel, unsyncStringWriter.toString());
 		}
 
-		private Map<BaseModel<?>, String> _records;
+		private Stack<Map<BaseModel<?>, String>> _recordsStack;
 
 	}
 
@@ -214,11 +219,11 @@ public class OrphanDetectionTestRule
 			TransactionAttribute transactionAttribute,
 			TransactionStatus transactionStatus) {
 
-			for (Map.Entry<BaseModel<?>, String> entry : _records.entrySet()) {
+			Map<BaseModel<?>, String> records = _recordsStack.pop();
+
+			for (Map.Entry<BaseModel<?>, String> entry : records.entrySet()) {
 				_checkOrphanData(entry.getKey(), entry.getValue());
 			}
-
-			_records.clear();
 		}
 
 		@Override
@@ -226,9 +231,7 @@ public class OrphanDetectionTestRule
 			TransactionAttribute transactionAttribute,
 			TransactionStatus transactionStatus) {
 
-			Assert.assertEquals(
-				"Records map should be empty at transaction creation", 0,
-				_records.size());
+			_recordsStack.push(new ConcurrentHashMap<>());
 		}
 
 		@Override
@@ -236,13 +239,13 @@ public class OrphanDetectionTestRule
 			TransactionAttribute transactionAttribute,
 			TransactionStatus transactionStatus, Throwable throwable) {
 
-			_records.clear();
+			_recordsStack.pop();
 		}
 
 		private OrphanDetectionTransactionLifecycleListener(
-			Map<BaseModel<?>, String> records) {
+			Stack<Map<BaseModel<?>, String>> recordsStack) {
 
-			_records = records;
+			_recordsStack = recordsStack;
 		}
 
 		private void _checkOrphanData(
@@ -269,7 +272,7 @@ public class OrphanDetectionTestRule
 				0, count);
 		}
 
-		private Map<BaseModel<?>, String> _records;
+		private Stack<Map<BaseModel<?>, String>> _recordsStack;
 
 	}
 
