@@ -107,7 +107,8 @@ public interface MDRRuleGroupInstanceLocalService
 	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
 		throws PortalException;
 
-	public void deleteGroupRuleGroupInstances(long groupId);
+	public void deleteGroupRuleGroupInstances(long groupId)
+		throws PortalException;
 
 	/**
 	 * Deletes the mdr rule group instance with the primary key from the database. Also notifies the appropriate model listeners.
@@ -146,15 +147,18 @@ public interface MDRRuleGroupInstanceLocalService
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException;
 
-	public void deleteRuleGroupInstance(long ruleGroupInstanceId);
+	public void deleteRuleGroupInstance(long ruleGroupInstanceId)
+		throws PortalException;
 
 	@SystemEvent(
 		action = SystemEventConstants.ACTION_SKIP,
 		type = SystemEventConstants.TYPE_DELETE
 	)
-	public void deleteRuleGroupInstance(MDRRuleGroupInstance ruleGroupInstance);
+	public void deleteRuleGroupInstance(MDRRuleGroupInstance ruleGroupInstance)
+		throws PortalException;
 
-	public void deleteRuleGroupInstances(long ruleGroupId);
+	public void deleteRuleGroupInstances(long ruleGroupId)
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public <T> T dslQuery(DSLQuery dslQuery);
