@@ -107,7 +107,9 @@ public class MDRRuleGroupInstanceLocalServiceWrapper
 	}
 
 	@Override
-	public void deleteGroupRuleGroupInstances(long groupId) {
+	public void deleteGroupRuleGroupInstances(long groupId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
 		_mdrRuleGroupInstanceLocalService.deleteGroupRuleGroupInstances(
 			groupId);
 	}
@@ -165,22 +167,27 @@ public class MDRRuleGroupInstanceLocalServiceWrapper
 	}
 
 	@Override
-	public void deleteRuleGroupInstance(long ruleGroupInstanceId) {
+	public void deleteRuleGroupInstance(long ruleGroupInstanceId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
 		_mdrRuleGroupInstanceLocalService.deleteRuleGroupInstance(
 			ruleGroupInstanceId);
 	}
 
 	@Override
 	public void deleteRuleGroupInstance(
-		com.liferay.mobile.device.rules.model.MDRRuleGroupInstance
-			ruleGroupInstance) {
+			com.liferay.mobile.device.rules.model.MDRRuleGroupInstance
+				ruleGroupInstance)
+		throws com.liferay.portal.kernel.exception.PortalException {
 
 		_mdrRuleGroupInstanceLocalService.deleteRuleGroupInstance(
 			ruleGroupInstance);
 	}
 
 	@Override
-	public void deleteRuleGroupInstances(long ruleGroupId) {
+	public void deleteRuleGroupInstances(long ruleGroupId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
 		_mdrRuleGroupInstanceLocalService.deleteRuleGroupInstances(ruleGroupId);
 	}
 
