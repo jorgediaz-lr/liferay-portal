@@ -147,15 +147,15 @@ public interface MDRRuleGroupLocalService
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException;
 
-	public void deleteRuleGroup(long ruleGroupId);
+	public void deleteRuleGroup(long ruleGroupId) throws PortalException;
 
 	@SystemEvent(
 		action = SystemEventConstants.ACTION_SKIP,
 		type = SystemEventConstants.TYPE_DELETE
 	)
-	public void deleteRuleGroup(MDRRuleGroup ruleGroup);
+	public void deleteRuleGroup(MDRRuleGroup ruleGroup) throws PortalException;
 
-	public void deleteRuleGroups(long groupId);
+	public void deleteRuleGroups(long groupId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public <T> T dslQuery(DSLQuery dslQuery);
