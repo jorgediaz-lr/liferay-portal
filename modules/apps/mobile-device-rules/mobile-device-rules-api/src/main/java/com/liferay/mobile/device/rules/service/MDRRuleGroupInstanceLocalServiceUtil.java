@@ -102,7 +102,9 @@ public class MDRRuleGroupInstanceLocalServiceUtil {
 		return getService().createPersistedModel(primaryKeyObj);
 	}
 
-	public static void deleteGroupRuleGroupInstances(long groupId) {
+	public static void deleteGroupRuleGroupInstances(long groupId)
+		throws PortalException {
+
 		getService().deleteGroupRuleGroupInstances(groupId);
 	}
 
@@ -150,17 +152,22 @@ public class MDRRuleGroupInstanceLocalServiceUtil {
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static void deleteRuleGroupInstance(long ruleGroupInstanceId) {
+	public static void deleteRuleGroupInstance(long ruleGroupInstanceId)
+		throws PortalException {
+
 		getService().deleteRuleGroupInstance(ruleGroupInstanceId);
 	}
 
 	public static void deleteRuleGroupInstance(
-		MDRRuleGroupInstance ruleGroupInstance) {
+			MDRRuleGroupInstance ruleGroupInstance)
+		throws PortalException {
 
 		getService().deleteRuleGroupInstance(ruleGroupInstance);
 	}
 
-	public static void deleteRuleGroupInstances(long ruleGroupId) {
+	public static void deleteRuleGroupInstances(long ruleGroupId)
+		throws PortalException {
+
 		getService().deleteRuleGroupInstances(ruleGroupId);
 	}
 

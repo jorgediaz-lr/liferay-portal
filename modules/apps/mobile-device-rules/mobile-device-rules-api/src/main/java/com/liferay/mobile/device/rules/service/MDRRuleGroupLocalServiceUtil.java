@@ -149,15 +149,19 @@ public class MDRRuleGroupLocalServiceUtil {
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static void deleteRuleGroup(long ruleGroupId) {
+	public static void deleteRuleGroup(long ruleGroupId)
+		throws PortalException {
+
 		getService().deleteRuleGroup(ruleGroupId);
 	}
 
-	public static void deleteRuleGroup(MDRRuleGroup ruleGroup) {
+	public static void deleteRuleGroup(MDRRuleGroup ruleGroup)
+		throws PortalException {
+
 		getService().deleteRuleGroup(ruleGroup);
 	}
 
-	public static void deleteRuleGroups(long groupId) {
+	public static void deleteRuleGroups(long groupId) throws PortalException {
 		getService().deleteRuleGroups(groupId);
 	}
 
