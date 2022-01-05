@@ -21,11 +21,19 @@ import com.liferay.portal.kernel.dao.orm.ORMException;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.SessionCustomizer;
 import com.liferay.portal.kernel.dao.orm.SessionWrapper;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.BaseModel;
+import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.ResourceConstants;
+import com.liferay.portal.kernel.model.ResourcedModel;
 import com.liferay.portal.kernel.model.ShardedModel;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
+import com.liferay.portal.kernel.service.PersistedModelLocalService;
+import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistryUtil;
+import com.liferay.portal.kernel.service.PersistedResourcedModelLocalService;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalServiceUtil;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.transaction.TransactionAttribute;
 import com.liferay.portal.kernel.transaction.TransactionLifecycleListener;
 import com.liferay.portal.kernel.transaction.TransactionStatus;
@@ -160,6 +168,9 @@ public class OrphanDetectionTestRule
 
 			Map<BaseModel<?>, String> records = _recordsStack.pop();
 
+			Map<String, PersistedModelLocalService>
+				persistedModelLocalServices = _getPersistedModelLocalServices();
+
 			for (Map.Entry<BaseModel<?>, String> entry : records.entrySet()) {
 				BaseModel<?> baseModel = entry.getKey();
 
@@ -183,6 +194,17 @@ public class OrphanDetectionTestRule
 						baseModel.getModelClassName(), ": ", baseModel,
 						" with backtraceInfo ", entry.getValue()),
 					0, count);
+
+				if (baseModel instanceof ResourcedModel) {
+					try {
+						_checkResourceModelResourcePermissions(
+							baseModel, entry.getValue(),
+							persistedModelLocalServices);
+					}
+					catch (PortalException portalException) {
+						throw new SystemException(portalException);
+					}
+				}
 			}
 		}
 
@@ -206,6 +228,61 @@ public class OrphanDetectionTestRule
 			Stack<Map<BaseModel<?>, String>> recordsStack) {
 
 			_recordsStack = recordsStack;
+		}
+
+		private void _checkResourceModelResourcePermissions(
+				BaseModel<?> baseModel, String backtraceInfo,
+				Map<String, PersistedModelLocalService>
+					persistedModelLocalServices)
+			throws PortalException {
+
+			PersistedModelLocalService persistedModelLocalService =
+				persistedModelLocalServices.get(baseModel.getModelClassName());
+
+			if (!(persistedModelLocalService instanceof
+					PersistedResourcedModelLocalService)) {
+
+				return;
+			}
+
+			ResourcedModel resourcedModel = (ResourcedModel)baseModel;
+
+			PersistedResourcedModelLocalService
+				persistedResourcedModelLocalService =
+					(PersistedResourcedModelLocalService)
+						persistedModelLocalService;
+
+			List<? extends PersistedModel> persistedResourcedModels =
+				persistedResourcedModelLocalService.getPersistedModel(
+					resourcedModel.getResourcePrimKey());
+
+			if (!persistedResourcedModels.isEmpty()) {
+				return;
+			}
+
+			ShardedModel shardedModel = (ShardedModel)baseModel;
+
+			int count =
+				ResourcePermissionLocalServiceUtil.getResourcePermissionsCount(
+					shardedModel.getCompanyId(), baseModel.getModelClassName(),
+					ResourceConstants.SCOPE_INDIVIDUAL,
+					String.valueOf(resourcedModel.getResourcePrimKey()));
+
+			Assert.assertEquals(
+				StringBundler.concat(
+					"Orphan ResourcePermission after the deletion of ",
+					baseModel.getModelClassName(), ": ", baseModel,
+					" with backtraceInfo ", backtraceInfo),
+				0, count);
+		}
+
+		private Map<String, PersistedModelLocalService>
+			_getPersistedModelLocalServices() {
+
+			return ReflectionTestUtil.getFieldValue(
+				PersistedModelLocalServiceRegistryUtil.
+					getPersistedModelLocalServiceRegistry(),
+				"_persistedModelLocalServices");
 		}
 
 		private Stack<Map<BaseModel<?>, String>> _recordsStack;
