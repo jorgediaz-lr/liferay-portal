@@ -461,9 +461,14 @@ public class RoleLocalServiceImpl extends RoleLocalServiceBaseImpl {
 				resourcePermission);
 		}
 
-		_resourceLocalService.deleteResource(
-			role.getCompanyId(), Role.class.getName(),
-			ResourceConstants.SCOPE_INDIVIDUAL, role.getRoleId());
+		String className = role.getClassName();
+		long classNameId = role.getClassNameId();
+
+		if ((classNameId <= 0) || className.equals(Role.class.getName())) {
+			_resourceLocalService.deleteResource(
+				role.getCompanyId(), Role.class.getName(),
+				ResourceConstants.SCOPE_INDIVIDUAL, role.getRoleId());
+		}
 
 		if ((role.getType() == RoleConstants.TYPE_DEPOT) ||
 			(role.getType() == RoleConstants.TYPE_ORGANIZATION) ||
