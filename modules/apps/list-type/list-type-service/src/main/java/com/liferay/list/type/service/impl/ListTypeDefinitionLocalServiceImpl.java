@@ -95,9 +95,6 @@ public class ListTypeDefinitionLocalServiceImpl
 			throw new RequiredListTypeDefinitionException();
 		}
 
-		_resourceLocalService.deleteResource(
-			listTypeDefinition, ResourceConstants.SCOPE_INDIVIDUAL);
-
 		listTypeDefinition = listTypeDefinitionPersistence.remove(
 			listTypeDefinition);
 
@@ -117,7 +114,12 @@ public class ListTypeDefinitionLocalServiceImpl
 			listTypeDefinitionPersistence.findByPrimaryKey(
 				listTypeDefinitionId);
 
-		return deleteListTypeDefinition(listTypeDefinition);
+		listTypeDefinition = deleteListTypeDefinition(listTypeDefinition);
+
+		_resourceLocalService.deleteResource(
+			listTypeDefinition, ResourceConstants.SCOPE_INDIVIDUAL);
+
+		return listTypeDefinition;
 	}
 
 	@Indexable(type = IndexableType.REINDEX)
