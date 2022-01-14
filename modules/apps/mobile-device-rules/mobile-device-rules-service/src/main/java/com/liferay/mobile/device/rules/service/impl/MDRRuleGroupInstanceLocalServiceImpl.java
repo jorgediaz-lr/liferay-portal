@@ -24,6 +24,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.SystemEventConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
@@ -110,7 +111,9 @@ public class MDRRuleGroupInstanceLocalServiceImpl
 	}
 
 	@Override
-	public void deleteGroupRuleGroupInstances(long groupId) {
+	public void deleteGroupRuleGroupInstances(long groupId)
+		throws PortalException {
+
 		List<MDRRuleGroupInstance> ruleGroupInstances =
 			mdrRuleGroupInstancePersistence.findByGroupId(groupId);
 
@@ -121,7 +124,9 @@ public class MDRRuleGroupInstanceLocalServiceImpl
 	}
 
 	@Override
-	public void deleteRuleGroupInstance(long ruleGroupInstanceId) {
+	public void deleteRuleGroupInstance(long ruleGroupInstanceId)
+		throws PortalException {
+
 		MDRRuleGroupInstance ruleGroupInstance =
 			mdrRuleGroupInstancePersistence.fetchByPrimaryKey(
 				ruleGroupInstanceId);
@@ -135,8 +140,13 @@ public class MDRRuleGroupInstanceLocalServiceImpl
 		action = SystemEventConstants.ACTION_SKIP,
 		type = SystemEventConstants.TYPE_DELETE
 	)
-	public void deleteRuleGroupInstance(
-		MDRRuleGroupInstance ruleGroupInstance) {
+	public void deleteRuleGroupInstance(MDRRuleGroupInstance ruleGroupInstance)
+		throws PortalException {
+
+		// Resource
+
+		_resourceLocalService.deleteResource(
+			ruleGroupInstance, ResourceConstants.SCOPE_INDIVIDUAL);
 
 		// Rule group instance
 
@@ -169,7 +179,9 @@ public class MDRRuleGroupInstanceLocalServiceImpl
 	}
 
 	@Override
-	public void deleteRuleGroupInstances(long ruleGroupId) {
+	public void deleteRuleGroupInstances(long ruleGroupId)
+		throws PortalException {
+
 		List<MDRRuleGroupInstance> ruleGroupInstances =
 			mdrRuleGroupInstancePersistence.findByRuleGroupId(ruleGroupId);
 
