@@ -75,6 +75,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.BiConsumer;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -550,11 +551,16 @@ public class DDMIndexerImpl implements DDMIndexer {
 			locale = null;
 		}
 
+		Serializable fieldValue = ddmStructureFieldValue;
+
+		BiConsumer<BooleanQuery, String> addQueryTermBiConsumer =
+			(booleanQuery, fieldName) -> _addFieldValueRequiredTerm(
+				booleanQuery, fieldName, fieldValue);
+
 		BooleanQuery booleanQuery = new BooleanQueryImpl();
 
 		if (isLegacyDDMIndexFieldsEnabled()) {
-			_addFieldValueRequiredTerm(
-				booleanQuery, ddmStructureFieldName, ddmStructureFieldValue);
+			addQueryTermBiConsumer.accept(booleanQuery, ddmStructureFieldName);
 
 			return new QueryFilter(booleanQuery);
 		}
@@ -564,12 +570,11 @@ public class DDMIndexerImpl implements DDMIndexer {
 				DDM_FIELD_ARRAY, StringPool.PERIOD, DDM_FIELD_NAME),
 			ddmStructureFieldName);
 
-		_addFieldValueRequiredTerm(
+		addQueryTermBiConsumer.accept(
 			booleanQuery,
 			StringBundler.concat(
 				DDM_FIELD_ARRAY, StringPool.PERIOD,
-				getValueFieldName(indexType, locale)),
-			ddmStructureFieldValue);
+				getValueFieldName(indexType, locale)));
 
 		return new QueryFilter(new NestedQuery(DDM_FIELD_ARRAY, booleanQuery));
 	}
