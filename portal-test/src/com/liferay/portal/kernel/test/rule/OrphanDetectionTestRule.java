@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.transaction.TransactionLifecycleListener;
 import com.liferay.portal.kernel.transaction.TransactionStatus;
 import com.liferay.portal.kernel.util.ListUtil;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
@@ -76,6 +77,14 @@ public class OrphanDetectionTestRule
 	protected List<ServiceRegistration<?>> beforeMethod(
 			Description description, Object target)
 		throws Throwable {
+
+		Class<?> testClass = description.getTestClass();
+
+		String testClassName = testClass.getName();
+
+		if (!testClassName.endsWith("ServiceTest")) {
+			return Collections.emptyList();
+		}
 
 		Stack<Map<BaseModel<?>, String>> recordsStack = new Stack<>();
 
