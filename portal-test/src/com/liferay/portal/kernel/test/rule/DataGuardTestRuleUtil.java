@@ -182,14 +182,14 @@ public class DataGuardTestRuleUtil {
 
 			List<BaseModel<?>> currentBaseModels = entry.getValue();
 
-			List<BaseModel<?>> previsoutBaseModels = previousDataMap.remove(
+			List<BaseModel<?>> previousBaseModels = previousDataMap.remove(
 				className);
 
 			List<BaseModel<?>> leftoverBaseModels = new ArrayList<>(
 				currentBaseModels);
 
-			if (previsoutBaseModels != null) {
-				leftoverBaseModels.removeAll(previsoutBaseModels);
+			if (previousBaseModels != null) {
+				leftoverBaseModels.removeAll(previousBaseModels);
 			}
 
 			if (!leftoverBaseModels.isEmpty()) {
@@ -259,14 +259,14 @@ public class DataGuardTestRuleUtil {
 
 				List<BaseModel<?>> currentBaseModels = entry.getValue();
 
-				List<BaseModel<?>> previsoutBaseModels = previousDataMap.get(
+				List<BaseModel<?>> previousBaseModels = previousDataMap.get(
 					className);
 
 				List<BaseModel<?>> leftoverBaseModels = new ArrayList<>(
 					currentBaseModels);
 
-				if (previsoutBaseModels != null) {
-					leftoverBaseModels.removeAll(previsoutBaseModels);
+				if (previousBaseModels != null) {
+					leftoverBaseModels.removeAll(previousBaseModels);
 				}
 
 				for (BaseModel<?> leftoverBaseModel : leftoverBaseModels) {
