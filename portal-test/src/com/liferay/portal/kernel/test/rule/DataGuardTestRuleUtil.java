@@ -169,13 +169,13 @@ public class DataGuardTestRuleUtil {
 			}
 		}
 
+		Map<String, List<BaseModel<?>>> dataMap = _captureDataMap();
+
 		if (autoDelete) {
-			_autoDeleteLeftovers(previousDataMap);
+			dataMap = _autoDeleteLeftovers(previousDataMap, dataMap);
 		}
 
 		StringBundler sb = new StringBundler();
-
-		Map<String, List<BaseModel<?>>> dataMap = _captureDataMap();
 
 		for (Map.Entry<String, List<BaseModel<?>>> entry : dataMap.entrySet()) {
 			String className = entry.getKey();
@@ -230,8 +230,9 @@ public class DataGuardTestRuleUtil {
 		Assert.assertTrue(sb.toString(), sb.index() == 0);
 	}
 
-	private static void _autoDeleteLeftovers(
-			Map<String, List<BaseModel<?>>> previousDataMap)
+	private static Map<String, List<BaseModel<?>>> _autoDeleteLeftovers(
+			Map<String, List<BaseModel<?>>> previousDataMap,
+			Map<String, List<BaseModel<?>>> dataMap)
 		throws Throwable {
 
 		Map<String, PersistedModelLocalService> persistedModelLocalServices =
@@ -239,8 +240,6 @@ public class DataGuardTestRuleUtil {
 
 		while (true) {
 			boolean deleted = false;
-
-			Map<String, List<BaseModel<?>>> dataMap = _captureDataMap();
 
 			for (Map.Entry<String, List<BaseModel<?>>> entry :
 					dataMap.entrySet()) {
@@ -282,7 +281,11 @@ public class DataGuardTestRuleUtil {
 			if (!deleted) {
 				break;
 			}
+
+			dataMap = _captureDataMap();
 		}
+
+		return dataMap;
 	}
 
 	private static Map<String, List<BaseModel<?>>> _captureDataMap() {
