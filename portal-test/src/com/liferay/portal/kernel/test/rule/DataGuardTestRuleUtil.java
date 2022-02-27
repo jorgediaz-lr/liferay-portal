@@ -97,12 +97,12 @@ public class DataGuardTestRuleUtil {
 
 		Map<String, List<BaseModel<?>>> dataMap = _captureDataMap();
 
-		_orphanDetection(
-			testClassName, dataBag._dataMap, dataMap, dataBag._records);
-
 		_autoDeleteAndAssert(
 			testClassName, dataBag._dataMap, dataBag._portlets, dataMap,
 			dataBag._records, autoDelete);
+
+		_orphanDetection(
+			testClassName, dataBag._dataMap, dataMap, dataBag._records);
 	}
 
 	public static void afterMethod(DataBag dataBag, String testClassName)
@@ -117,12 +117,12 @@ public class DataGuardTestRuleUtil {
 
 		Map<String, List<BaseModel<?>>> dataMap = _captureDataMap();
 
-		_orphanDetection(
-			testClassName, dataBag._dataMap, dataMap, dataBag._records);
-
 		_autoDeleteAndAssert(
 			testClassName, dataBag._dataMap, dataBag._portlets, dataMap,
 			dataBag._records, autoDelete);
+
+		_orphanDetection(
+			testClassName, dataBag._dataMap, dataMap, dataBag._records);
 	}
 
 	public static DataBag beforeClass() {
