@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.model.ResourcedModel;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
+import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistryUtil;
 import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
@@ -47,7 +48,6 @@ import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
-import com.liferay.portal.kernel.util.Validator;
 
 import java.io.Closeable;
 import java.io.Serializable;
@@ -596,7 +596,10 @@ public class DataGuardTestRuleUtil {
 		Map<String, List<BaseModel<?>>> dataMap, String relatedClassName,
 		long relatedPrimaryKey) {
 
-		if ((relatedPrimaryKey == 0) || Validator.isNull(relatedClassName)) {
+		if ((relatedPrimaryKey == 0) ||
+			(ClassNameLocalServiceUtil.fetchClassName(relatedClassName) ==
+				null)) {
+
 			return false;
 		}
 
