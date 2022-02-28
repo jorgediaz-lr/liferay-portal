@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.dao.orm.SessionWrapper;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.BaseModel;
+import com.liferay.portal.kernel.model.ClassName;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.ResourceConstants;
@@ -596,10 +597,14 @@ public class DataGuardTestRuleUtil {
 		Map<String, List<BaseModel<?>>> dataMap, String relatedClassName,
 		long relatedPrimaryKey) {
 
-		if ((relatedPrimaryKey == 0) ||
-			(ClassNameLocalServiceUtil.fetchClassName(relatedClassName) ==
-				null)) {
+		if (relatedPrimaryKey == 0) {
+			return false;
+		}
 
+		ClassName relatedClassNameObj =
+			ClassNameLocalServiceUtil.fetchClassName(relatedClassName);
+
+		if (relatedClassNameObj.getClassNameId() == 0) {
 			return false;
 		}
 
