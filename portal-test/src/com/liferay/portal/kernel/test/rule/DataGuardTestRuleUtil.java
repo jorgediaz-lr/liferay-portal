@@ -57,13 +57,13 @@ import java.lang.reflect.Method;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Stream;
 
 import org.junit.Assert;
 
@@ -512,6 +512,13 @@ public class DataGuardTestRuleUtil {
 			Map<String, Map<Serializable, String>> records)
 		throws Throwable {
 
+		Map<Serializable, String> resourcePermissionRecords = records.get(
+			ResourcePermission.class.getName());
+
+		if (resourcePermissionRecords == null) {
+			return;
+		}
+
 		List<BaseModel<?>> resourcePermissions = dataMap.get(
 			ResourcePermission.class.getName());
 
@@ -536,17 +543,25 @@ public class DataGuardTestRuleUtil {
 			ResourcePermission resourcePermission =
 				(ResourcePermission)createdResourcePermission;
 
-			if (resourcePermission.getScope() !=
-					ResourceConstants.SCOPE_INDIVIDUAL) {
+			if ((resourcePermission.getScope() !=
+					ResourceConstants.SCOPE_INDIVIDUAL) ||
+				!resourcePermissionRecords.containsKey(
+					resourcePermission.getPrimaryKey())) {
 
 				continue;
 			}
 
-			if (_orphanObject(
-					persistedModelLocalServices, dataMap,
-					resourcePermission.getName(),
-					resourcePermission.getPrimKeyId())) {
+			String relatedClassNames = resourcePermission.getName();
 
+			Stream<String> relatedClassNamesStream = Arrays.stream(
+				relatedClassNames.split("-"));
+
+			boolean orphan = relatedClassNamesStream.allMatch(
+				relatedClassName -> _orphanObject(
+					persistedModelLocalServices, dataMap, relatedClassName,
+					resourcePermission.getPrimKeyId()));
+
+			if (orphan) {
 				orphanResourcePermissions.add(resourcePermission);
 			}
 		}
@@ -560,29 +575,18 @@ public class DataGuardTestRuleUtil {
 		sb.append(testClassName);
 		sb.append(" caused orphan ResourcePermission with data : [\n");
 
-		Map<Serializable, String> resourcePermissionRecords =
-			records.getOrDefault(
-				ResourcePermission.class.getName(), Collections.emptyMap());
-
 		for (ResourcePermission resourcePermission :
 				orphanResourcePermissions) {
 
 			sb.append(StringPool.TAB);
 			sb.append(resourcePermission);
-
-			String backtraceInfo = resourcePermissionRecords.get(
-				resourcePermission.getPrimaryKeyObj());
-
-			if (backtraceInfo == null) {
-				sb.append(" with no backtrace info,\n");
-			}
-			else {
-				sb.append(" with backtrace info,\n");
-				sb.append(StringPool.TAB);
-				sb.append(StringPool.TAB);
-				sb.append(backtraceInfo);
-				sb.append(",\n");
-			}
+			sb.append(" with backtrace info,\n");
+			sb.append(StringPool.TAB);
+			sb.append(StringPool.TAB);
+			sb.append(
+				resourcePermissionRecords.get(
+					resourcePermission.getPrimaryKeyObj()));
+			sb.append(",\n");
 		}
 
 		sb.setStringAt("\n]\n", sb.index() - 1);
