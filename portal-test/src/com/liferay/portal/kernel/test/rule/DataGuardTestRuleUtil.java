@@ -511,6 +511,10 @@ public class DataGuardTestRuleUtil {
 			Map<String, Map<Serializable, String>> records)
 		throws Throwable {
 
+		if (!testClassName.endsWith("ServiceTest")) {
+			return;
+		}
+
 		Map<Serializable, String> resourcePermissionRecords = records.get(
 			ResourcePermission.class.getName());
 
