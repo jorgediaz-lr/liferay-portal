@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.dao.orm.SessionWrapper;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.BaseModel;
-import com.liferay.portal.kernel.model.ClassName;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.ResourceConstants;
@@ -37,7 +36,6 @@ import com.liferay.portal.kernel.model.ResourcedModel;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
-import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistryUtil;
 import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
@@ -534,6 +532,9 @@ public class DataGuardTestRuleUtil {
 			createdResourcePermissions.removeAll(previousResourcePermissions);
 		}
 
+		Map<String, PersistedModelLocalService> persistedModelLocalServices =
+			_getPersistedModelLocalServices();
+
 		List<ResourcePermission> orphanResourcePermissions = new ArrayList<>();
 
 		for (BaseModel<?> createdResourcePermission :
@@ -557,7 +558,7 @@ public class DataGuardTestRuleUtil {
 
 			boolean orphan = relatedClassNamesStream.allMatch(
 				relatedClassName -> _orphanObject(
-					dataMap, relatedClassName,
+					persistedModelLocalServices, dataMap, relatedClassName,
 					resourcePermission.getPrimKeyId()));
 
 			if (orphan) {
@@ -594,17 +595,13 @@ public class DataGuardTestRuleUtil {
 	}
 
 	private static boolean _orphanObject(
+		Map<String, PersistedModelLocalService> persistedModelLocalServices,
 		Map<String, List<BaseModel<?>>> dataMap, String relatedClassName,
 		long relatedPrimaryKey) {
 
-		if (relatedPrimaryKey == 0) {
-			return false;
-		}
+		if ((relatedPrimaryKey == 0) ||
+			(persistedModelLocalServices.get(relatedClassName) == null)) {
 
-		ClassName relatedClassNameObj =
-			ClassNameLocalServiceUtil.fetchClassName(relatedClassName);
-
-		if (relatedClassNameObj.getClassNameId() == 0) {
 			return false;
 		}
 
