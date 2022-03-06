@@ -63,7 +63,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Stream;
 
 import org.junit.Assert;
 
@@ -551,15 +550,20 @@ public class DataGuardTestRuleUtil {
 				continue;
 			}
 
-			String relatedClassNames = resourcePermission.getName();
+			/*String relatedClassNames = resourcePermission.getName();
 
 			Stream<String> relatedClassNamesStream = Arrays.stream(
 				relatedClassNames.split("-"));
 
 			boolean orphan = relatedClassNamesStream.allMatch(
 				relatedClassName -> _orphanObject(
-					persistedModelLocalServices, dataMap, relatedClassName,
-					resourcePermission.getPrimKeyId()));
+					dataMap, relatedClassName,
+					resourcePermission.getPrimKeyId()));*/
+
+			boolean orphan = _orphanObject(
+				persistedModelLocalServices, dataMap,
+				resourcePermission.getName(),
+				resourcePermission.getPrimKeyId());
 
 			if (orphan) {
 				orphanResourcePermissions.add(resourcePermission);
