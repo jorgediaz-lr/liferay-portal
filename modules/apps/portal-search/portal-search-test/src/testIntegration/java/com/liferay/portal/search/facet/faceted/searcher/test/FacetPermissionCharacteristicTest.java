@@ -21,6 +21,7 @@ import com.liferay.journal.service.JournalFolderServiceUtil;
 import com.liferay.journal.test.util.JournalTestUtil;
 import com.liferay.petra.function.UnsafeRunnable;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.model.ResourceConstants;
@@ -137,10 +138,10 @@ public class FacetPermissionCharacteristicTest {
 		throws Exception {
 
 		_setUp(
-			HashMapBuilder.<Role, Object[]>put(
-				_roleA, new Object[] {_journalArticleA}
+			HashMapBuilder.<Role, BaseModel[]>put(
+				_roleA, new BaseModel[] {_journalArticleA}
 			).put(
-				_roleB, new Object[] {_journalArticleB}
+				_roleB, new BaseModel[] {_journalArticleB}
 			).build());
 
 		_test(
@@ -161,10 +162,10 @@ public class FacetPermissionCharacteristicTest {
 	@Test
 	public void testFolderChildAssetWithTheDifferentRoles() throws Exception {
 		_setUp(
-			HashMapBuilder.<Role, Object[]>put(
-				_roleA, new Object[] {_journalFolderA, _journalArticleB}
+			HashMapBuilder.<Role, BaseModel[]>put(
+				_roleA, new BaseModel[] {_journalFolderA, _journalArticleB}
 			).put(
-				_roleB, new Object[] {_journalFolderB, _journalArticleA}
+				_roleB, new BaseModel[] {_journalFolderB, _journalArticleA}
 			).build());
 
 		_test(
@@ -189,10 +190,10 @@ public class FacetPermissionCharacteristicTest {
 	@Test
 	public void testFolderChildAssetWithTheFolderRoleOnly() throws Exception {
 		_setUp(
-			HashMapBuilder.<Role, Object[]>put(
-				_roleA, new Object[] {_journalFolderA}
+			HashMapBuilder.<Role, BaseModel[]>put(
+				_roleA, new BaseModel[] {_journalFolderA}
 			).put(
-				_roleB, new Object[] {_journalFolderB}
+				_roleB, new BaseModel[] {_journalFolderB}
 			).build());
 
 		_test(
@@ -212,10 +213,10 @@ public class FacetPermissionCharacteristicTest {
 	@Test
 	public void testFolderChildAssetWithTheSameRoles() throws Exception {
 		_setUp(
-			HashMapBuilder.<Role, Object[]>put(
-				_roleA, new Object[] {_journalFolderA, _journalArticleA}
+			HashMapBuilder.<Role, BaseModel[]>put(
+				_roleA, new BaseModel[] {_journalFolderA, _journalArticleA}
 			).put(
-				_roleB, new Object[] {_journalFolderB, _journalArticleB}
+				_roleB, new BaseModel[] {_journalFolderB, _journalArticleB}
 			).build());
 
 		_test(
@@ -279,44 +280,17 @@ public class FacetPermissionCharacteristicTest {
 			searchResponse.getDocumentsStream(), "title_en_US", expected);
 	}
 
-	private String _getName(Object object) {
-		if (object instanceof JournalFolder) {
-			return JournalFolder.class.getName();
-		}
-		else if (object instanceof JournalArticle) {
-			return JournalArticle.class.getName();
-		}
-		else {
-			return null;
-		}
-	}
-
-	private String _getPrimKey(Object object) {
-		if (object instanceof JournalArticle) {
-			JournalArticle journalArticle = (JournalArticle)object;
-
-			return String.valueOf(journalArticle.getId());
-		}
-		else if (object instanceof JournalFolder) {
-			JournalFolder journalFolder = (JournalFolder)object;
-
-			return String.valueOf(journalFolder.getFolderId());
-		}
-		else {
-			return null;
-		}
-	}
-
-	private void _setUp(Map<Role, Object[]> map) throws Exception {
-		for (Map.Entry<Role, Object[]> entry : map.entrySet()) {
+	private void _setUp(Map<Role, BaseModel[]> map) throws Exception {
+		for (Map.Entry<Role, BaseModel[]> entry : map.entrySet()) {
 			Role role = entry.getKey();
 
-			Object[] objects = entry.getValue();
+			BaseModel[] baseModels = entry.getValue();
 
-			for (Object object : objects) {
+			for (BaseModel<?> baseModel : baseModels) {
 				ResourcePermissionLocalServiceUtil.setResourcePermissions(
-					_groupB.getCompanyId(), _getName(object),
-					ResourceConstants.SCOPE_INDIVIDUAL, _getPrimKey(object),
+					_groupB.getCompanyId(), baseModel.getModelClassName(),
+					ResourceConstants.SCOPE_INDIVIDUAL,
+					String.valueOf(baseModel.getPrimaryKeyObj()),
 					role.getRoleId(), new String[] {ActionKeys.VIEW});
 			}
 		}
@@ -331,13 +305,15 @@ public class FacetPermissionCharacteristicTest {
 				continue;
 			}
 
-			for (Map.Entry<Role, Object[]> entry : map.entrySet()) {
-				Object[] objects = entry.getValue();
+			for (Map.Entry<Role, BaseModel[]> entry : map.entrySet()) {
+				BaseModel[] baseModels = entry.getValue();
 
-				for (Object object : objects) {
+				for (BaseModel<?> baseModel : baseModels) {
 					ResourcePermissionLocalServiceUtil.removeResourcePermission(
-						TestPropsValues.getCompanyId(), _getName(object),
-						ResourceConstants.SCOPE_INDIVIDUAL, _getPrimKey(object),
+						TestPropsValues.getCompanyId(),
+						baseModel.getModelClassName(),
+						ResourceConstants.SCOPE_INDIVIDUAL,
+						String.valueOf(baseModel.getPrimaryKeyObj()),
 						role.getRoleId(), ActionKeys.VIEW);
 				}
 			}
