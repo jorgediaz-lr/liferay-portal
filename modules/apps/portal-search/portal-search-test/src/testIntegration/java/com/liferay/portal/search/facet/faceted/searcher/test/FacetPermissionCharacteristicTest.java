@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.search.facet.faceted.searcher.FacetedSearcherMa
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
+import com.liferay.portal.kernel.service.ResourceLocalServiceUtil;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -65,6 +66,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -131,6 +133,14 @@ public class FacetPermissionCharacteristicTest {
 			RandomTestUtil.randomString(), RoleConstants.TYPE_REGULAR);
 		_roleB = RoleTestUtil.addRole(
 			RandomTestUtil.randomString(), RoleConstants.TYPE_REGULAR);
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		ResourceLocalServiceUtil.deleteResource(
+			_journalArticleA, ResourceConstants.SCOPE_INDIVIDUAL);
+		ResourceLocalServiceUtil.deleteResource(
+			_journalArticleB, ResourceConstants.SCOPE_INDIVIDUAL);
 	}
 
 	@Test
