@@ -30,6 +30,9 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.Portlet;
+import com.liferay.portal.kernel.model.ResourceConstants;
+import com.liferay.portal.kernel.model.ResourcePermission;
+import com.liferay.portal.kernel.model.ResourcedModel;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
@@ -91,9 +94,14 @@ public class DataGuardTestRuleUtil {
 
 		_recordsThreadLocal.remove();
 
+		Map<String, List<BaseModel<?>>> dataMap = _captureDataMap();
+
 		_autoDeleteAndAssert(
-			testClassName, dataBag._dataMap, dataBag._portlets,
+			testClassName, dataBag._dataMap, dataBag._portlets, dataMap,
 			dataBag._records, autoDelete);
+
+		_orphanDetection(
+			testClassName, dataBag._dataMap, dataMap, dataBag._records);
 	}
 
 	public static void afterMethod(DataBag dataBag, String testClassName)
@@ -106,9 +114,14 @@ public class DataGuardTestRuleUtil {
 			DataBag dataBag, String testClassName, boolean autoDelete)
 		throws Throwable {
 
+		Map<String, List<BaseModel<?>>> dataMap = _captureDataMap();
+
 		_autoDeleteAndAssert(
-			testClassName, dataBag._dataMap, dataBag._portlets,
+			testClassName, dataBag._dataMap, dataBag._portlets, dataMap,
 			dataBag._records, autoDelete);
+
+		_orphanDetection(
+			testClassName, dataBag._dataMap, dataMap, dataBag._records);
 	}
 
 	public static DataBag beforeClass() {
@@ -160,6 +173,7 @@ public class DataGuardTestRuleUtil {
 			String testClassName,
 			Map<String, List<BaseModel<?>>> previousDataMap,
 			List<Portlet> previousPortlets,
+			Map<String, List<BaseModel<?>>> dataMap,
 			Map<String, Map<Serializable, String>> records, boolean autoDelete)
 		throws Throwable {
 
@@ -170,26 +184,24 @@ public class DataGuardTestRuleUtil {
 		}
 
 		if (autoDelete) {
-			_autoDeleteLeftovers(previousDataMap);
+			dataMap = _autoDeleteLeftovers(previousDataMap, dataMap);
 		}
 
 		StringBundler sb = new StringBundler();
-
-		Map<String, List<BaseModel<?>>> dataMap = _captureDataMap();
 
 		for (Map.Entry<String, List<BaseModel<?>>> entry : dataMap.entrySet()) {
 			String className = entry.getKey();
 
 			List<BaseModel<?>> currentBaseModels = entry.getValue();
 
-			List<BaseModel<?>> previsoutBaseModels = previousDataMap.remove(
+			List<BaseModel<?>> previousBaseModels = previousDataMap.get(
 				className);
 
 			List<BaseModel<?>> leftoverBaseModels = new ArrayList<>(
 				currentBaseModels);
 
-			if (previsoutBaseModels != null) {
-				leftoverBaseModels.removeAll(previsoutBaseModels);
+			if (previousBaseModels != null) {
+				leftoverBaseModels.removeAll(previousBaseModels);
 			}
 
 			if (!leftoverBaseModels.isEmpty()) {
@@ -230,8 +242,9 @@ public class DataGuardTestRuleUtil {
 		Assert.assertTrue(sb.toString(), sb.index() == 0);
 	}
 
-	private static void _autoDeleteLeftovers(
-			Map<String, List<BaseModel<?>>> previousDataMap)
+	private static Map<String, List<BaseModel<?>>> _autoDeleteLeftovers(
+			Map<String, List<BaseModel<?>>> previousDataMap,
+			Map<String, List<BaseModel<?>>> dataMap)
 		throws Throwable {
 
 		Map<String, PersistedModelLocalService> persistedModelLocalServices =
@@ -239,8 +252,6 @@ public class DataGuardTestRuleUtil {
 
 		while (true) {
 			boolean deleted = false;
-
-			Map<String, List<BaseModel<?>>> dataMap = _captureDataMap();
 
 			for (Map.Entry<String, List<BaseModel<?>>> entry :
 					dataMap.entrySet()) {
@@ -282,7 +293,11 @@ public class DataGuardTestRuleUtil {
 			if (!deleted) {
 				break;
 			}
+
+			dataMap = _captureDataMap();
 		}
+
+		return dataMap;
 	}
 
 	private static Map<String, List<BaseModel<?>>> _captureDataMap() {
@@ -487,6 +502,137 @@ public class DataGuardTestRuleUtil {
 
 			bundleContext.ungetService(serviceReference);
 		};
+	}
+
+	private static void _orphanDetection(
+			String testClassName,
+			Map<String, List<BaseModel<?>>> previousDataMap,
+			Map<String, List<BaseModel<?>>> dataMap,
+			Map<String, Map<Serializable, String>> records)
+		throws Throwable {
+
+		Map<Serializable, String> resourcePermissionRecords = records.get(
+			ResourcePermission.class.getName());
+
+		if (resourcePermissionRecords == null) {
+			return;
+		}
+
+		List<BaseModel<?>> resourcePermissions = dataMap.get(
+			ResourcePermission.class.getName());
+
+		List<BaseModel<?>> createdResourcePermissions = new ArrayList<>(
+			resourcePermissions);
+
+		List<BaseModel<?>> previousResourcePermissions = previousDataMap.get(
+			ResourcePermission.class.getName());
+
+		if (previousResourcePermissions != null) {
+			createdResourcePermissions.removeAll(previousResourcePermissions);
+		}
+
+		Map<String, PersistedModelLocalService> persistedModelLocalServices =
+			_getPersistedModelLocalServices();
+
+		List<ResourcePermission> orphanResourcePermissions = new ArrayList<>();
+
+		for (BaseModel<?> createdResourcePermission :
+				createdResourcePermissions) {
+
+			ResourcePermission resourcePermission =
+				(ResourcePermission)createdResourcePermission;
+
+			if ((resourcePermission.getScope() !=
+					ResourceConstants.SCOPE_INDIVIDUAL) ||
+				!resourcePermissionRecords.containsKey(
+					resourcePermission.getPrimaryKey())) {
+
+				continue;
+			}
+
+			/*String relatedClassNames = resourcePermission.getName();
+
+			Stream<String> relatedClassNamesStream = Arrays.stream(
+				relatedClassNames.split("-"));
+
+			boolean orphan = relatedClassNamesStream.allMatch(
+				relatedClassName -> _orphanObject(
+					dataMap, relatedClassName,
+					resourcePermission.getPrimKeyId()));*/
+
+			boolean orphan = _orphanObject(
+				persistedModelLocalServices, dataMap,
+				resourcePermission.getName(),
+				resourcePermission.getPrimKeyId());
+
+			if (orphan) {
+				orphanResourcePermissions.add(resourcePermission);
+			}
+		}
+
+		if (orphanResourcePermissions.isEmpty()) {
+			return;
+		}
+
+		StringBundler sb = new StringBundler();
+
+		sb.append(testClassName);
+		sb.append(" caused orphan ResourcePermission with data : [\n");
+
+		for (ResourcePermission resourcePermission :
+				orphanResourcePermissions) {
+
+			sb.append(StringPool.TAB);
+			sb.append(resourcePermission);
+			sb.append(" with backtrace info,\n");
+			sb.append(StringPool.TAB);
+			sb.append(StringPool.TAB);
+			sb.append(
+				resourcePermissionRecords.get(
+					resourcePermission.getPrimaryKeyObj()));
+			sb.append(",\n");
+		}
+
+		sb.setStringAt("\n]\n", sb.index() - 1);
+
+		Assert.assertTrue(sb.toString(), sb.index() == 0);
+	}
+
+	private static boolean _orphanObject(
+		Map<String, PersistedModelLocalService> persistedModelLocalServices,
+		Map<String, List<BaseModel<?>>> dataMap, String relatedClassName,
+		long relatedPrimaryKey) {
+
+		if ((relatedPrimaryKey == 0) ||
+			(persistedModelLocalServices.get(relatedClassName) == null)) {
+
+			return false;
+		}
+
+		List<BaseModel<?>> relatedBaseModels = dataMap.get(relatedClassName);
+
+		if (relatedBaseModels == null) {
+			return true;
+		}
+
+		for (BaseModel<?> relatedBaseModel : relatedBaseModels) {
+			long primaryKey = (long)relatedBaseModel.getPrimaryKeyObj();
+
+			if (relatedPrimaryKey == primaryKey) {
+				return false;
+			}
+
+			if (relatedBaseModel instanceof ResourcedModel) {
+				ResourcedModel resourcedModel =
+					(ResourcedModel)relatedBaseModel;
+
+				if (relatedPrimaryKey == resourcedModel.getResourcePrimKey()) {
+					return false;
+				}
+			}
+		}
+
+		return true;
 	}
 
 	private static Closeable _removeSessionFactoryVerifier(
