@@ -555,7 +555,7 @@ public class DLAppLocalServiceImpl extends DLAppLocalServiceBaseImpl {
 		}
 		catch (NoSuchGroupException noSuchGroupException) {
 			if (_log.isDebugEnabled()) {
-				_log.debug(noSuchGroupException, noSuchGroupException);
+				_log.debug(noSuchGroupException);
 			}
 		}
 	}
@@ -570,8 +570,7 @@ public class DLAppLocalServiceImpl extends DLAppLocalServiceBaseImpl {
 		}
 		catch (InvalidRepositoryIdException invalidRepositoryIdException) {
 			if (_log.isDebugEnabled()) {
-				_log.debug(
-					invalidRepositoryIdException, invalidRepositoryIdException);
+				_log.debug(invalidRepositoryIdException);
 			}
 
 			return;
