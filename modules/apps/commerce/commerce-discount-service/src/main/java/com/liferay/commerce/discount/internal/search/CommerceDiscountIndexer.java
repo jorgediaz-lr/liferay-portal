@@ -395,7 +395,7 @@ public class CommerceDiscountIndexer extends BaseIndexer<CommerceDiscount> {
 			}
 			catch (Exception exception) {
 				if (_log.isDebugEnabled()) {
-					_log.debug(exception, exception);
+					_log.debug(exception);
 				}
 			}
 		}

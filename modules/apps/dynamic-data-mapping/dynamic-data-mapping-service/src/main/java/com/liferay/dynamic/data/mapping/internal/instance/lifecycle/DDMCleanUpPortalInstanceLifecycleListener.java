@@ -54,7 +54,7 @@ public class DDMCleanUpPortalInstanceLifecycleListener
 		}
 		catch (NoSuchGroupException noSuchGroupException) {
 			if (_log.isDebugEnabled()) {
-				_log.debug(noSuchGroupException, noSuchGroupException);
+				_log.debug(noSuchGroupException);
 			}
 
 			return;
