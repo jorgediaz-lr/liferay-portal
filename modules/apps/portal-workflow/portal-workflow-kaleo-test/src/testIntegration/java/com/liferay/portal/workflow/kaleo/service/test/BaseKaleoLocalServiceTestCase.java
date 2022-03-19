@@ -123,7 +123,7 @@ public abstract class BaseKaleoLocalServiceTestCase {
 
 	protected KaleoInstance addKaleoInstance() throws Exception {
 		return _kaleoInstanceLocalService.addKaleoInstance(
-			1, 1, "Test", 1,
+			9999999, 9999999, "Test", 9999999,
 			HashMapBuilder.<String, Serializable>put(
 				WorkflowConstants.CONTEXT_ENTRY_CLASS_NAME,
 				(Serializable)BlogsEntry.class.getName()
@@ -188,7 +188,7 @@ public abstract class BaseKaleoLocalServiceTestCase {
 		throws Exception {
 
 		return kaleoTaskInstanceTokenLocalService.addKaleoTaskInstanceToken(
-			kaleoInstanceToken.getKaleoInstanceTokenId(), 1, "task",
+			kaleoInstanceToken.getKaleoInstanceTokenId(), 9999999, "task",
 			Collections.emptyList(), null,
 			WorkflowContextUtil.convert(kaleoInstance.getWorkflowContext()),
 			serviceContext);

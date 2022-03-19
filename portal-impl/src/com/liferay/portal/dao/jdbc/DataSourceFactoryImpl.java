@@ -49,6 +49,8 @@ import com.liferay.portal.util.PropsValues;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
+import com.p6spy.engine.spy.P6DataSource;
+
 import com.zaxxer.hikari.HikariDataSource;
 
 import java.io.Closeable;
@@ -231,13 +233,19 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 			_log.debug("Created data source " + dataSource.getClass());
 		}
 
-		if (PropsValues.RETRY_DATA_SOURCE_MAX_RETRIES > 0) {
-			DBType dbType = DBManagerUtil.getDBType(
-				DialectDetector.getDialect(dataSource));
+		DBType dbType = DBManagerUtil.getDBType(
+			DialectDetector.getDialect(dataSource));
 
-			if (dbType == DBType.SYBASE) {
-				dataSource = new RetryDataSourceWrapper(dataSource);
-			}
+		if ((PropsValues.RETRY_DATA_SOURCE_MAX_RETRIES > 0) &&
+			(dbType == DBType.SYBASE)) {
+
+			dataSource = new RetryDataSourceWrapper(dataSource);
+		}
+
+		if ((dbType == DBType.MYSQL) || (dbType == DBType.ORACLE) ||
+			(dbType == DBType.POSTGRESQL)) {
+
+			return new P6DataSource(dataSource);
 		}
 
 		return dataSource;

@@ -116,12 +116,12 @@ public class DataRecordResourceImpl
 		DataStorage dataStorage = _getDataStorage(
 			ddmStructure.getStorageType());
 
-		dataStorage.delete(ddlRecord.getDDMStorageId());
-
 		_ddmStorageLinkLocalService.deleteClassStorageLink(
 			ddlRecord.getDDMStorageId());
 
-		_ddlRecordLocalService.deleteDDLRecord(dataRecordId);
+		_ddlRecordLocalService.deleteRecord(dataRecordId);
+
+		dataStorage.delete(ddlRecord.getDDMStorageId());
 	}
 
 	@Override

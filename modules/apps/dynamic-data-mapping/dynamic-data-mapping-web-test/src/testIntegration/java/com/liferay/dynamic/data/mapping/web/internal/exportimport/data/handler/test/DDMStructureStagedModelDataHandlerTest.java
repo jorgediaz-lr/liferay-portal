@@ -163,8 +163,7 @@ public class DDMStructureStagedModelDataHandlerTest
 		try {
 			ExportImportThreadLocal.setPortletImportInProcess(true);
 
-			StagedModelDataHandlerUtil.importStagedModel(
-				portletDataContext, exportedStagedModel);
+			importStagedModel(portletDataContext, exportedStagedModel);
 		}
 		finally {
 			ExportImportThreadLocal.setPortletImportInProcess(false);
@@ -215,8 +214,7 @@ public class DDMStructureStagedModelDataHandlerTest
 		try {
 			ExportImportThreadLocal.setPortletImportInProcess(true);
 
-			StagedModelDataHandlerUtil.importStagedModel(
-				portletDataContext, exportedStagedModel);
+			importStagedModel(portletDataContext, exportedStagedModel);
 		}
 		finally {
 			ExportImportThreadLocal.setPortletImportInProcess(false);
@@ -553,8 +551,7 @@ public class DDMStructureStagedModelDataHandlerTest
 			DDMStructure exportedStructure =
 				(DDMStructure)readExportedStagedModel(structure);
 
-			StagedModelDataHandlerUtil.importStagedModel(
-				portletDataContext, exportedStructure);
+			importStagedModel(portletDataContext, exportedStructure);
 		}
 	}
 

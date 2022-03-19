@@ -119,12 +119,15 @@ public class LayoutPageTemplateEntryStagedModelDataHandlerTest
 		try {
 			ExportImportThreadLocal.setPortletImportInProcess(true);
 
-			StagedModelDataHandlerUtil.importStagedModel(
-				portletDataContext, exportedStagedModel);
+			importStagedModel(portletDataContext, exportedStagedModel);
 		}
 		finally {
 			ExportImportThreadLocal.setPortletImportInProcess(false);
 		}
+	}
+
+	@Override
+	protected void addRatings(StagedModel stagedModel) throws Exception {
 	}
 
 	@Override

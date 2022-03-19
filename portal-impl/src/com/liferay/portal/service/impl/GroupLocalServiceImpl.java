@@ -865,6 +865,12 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 	 */
 	@Override
 	public Group deleteGroup(Group group) throws PortalException {
+		group = groupPersistence.fetchByPrimaryKey(group.getGroupId());
+
+		if (group == null) {
+			return null;
+		}
+
 		boolean deleteInProcess = GroupThreadLocal.isDeleteInProcess();
 
 		try {
@@ -1141,7 +1147,11 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 	 */
 	@Override
 	public Group deleteGroup(long groupId) throws PortalException {
-		Group group = groupPersistence.findByPrimaryKey(groupId);
+		Group group = fetchGroup(groupId);
+
+		if (group == null) {
+			return null;
+		}
 
 		return deleteGroup(group);
 	}
@@ -4087,6 +4097,12 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 	}
 
 	protected void deletePortletData(Group group) throws PortalException {
+		group = groupPersistence.fetchByPrimaryKey(group.getGroupId());
+
+		if (group == null) {
+			return;
+		}
+
 		PortletDataContext portletDataContext =
 			PortletDataContextFactoryUtil.createPreparePortletDataContext(
 				group.getCompanyId(), group.getGroupId(), null, null);

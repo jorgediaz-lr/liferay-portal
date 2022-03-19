@@ -1546,10 +1546,13 @@ public class JournalArticleLocalServiceImpl
 						article.getResourcePrimKey())) {
 
 					articleResource =
-						_journalArticleResourceLocalService.getArticleResource(
-							article.getResourcePrimKey());
+						_journalArticleResourceLocalService.
+							fetchJournalArticleResource(
+								article.getResourcePrimKey());
 
-					articleResources.add(articleResource);
+					if (articleResource != null) {
+						articleResources.add(articleResource);
+					}
 				}
 
 				journalArticleLocalService.deleteArticle(article, null, null);
@@ -8734,11 +8737,18 @@ public class JournalArticleLocalServiceImpl
 	protected void updatePreviousApprovedArticle(JournalArticle article)
 		throws PortalException {
 
+		AssetEntry assetEntry = _assetEntryLocalService.fetchEntry(
+			JournalArticle.class.getName(), article.getResourcePrimKey());
+
+		if (assetEntry == null) {
+			updateAsset(article.getUserId(), article, null, null, null, null);
+		}
+
 		JournalArticle previousApprovedArticle = getPreviousApprovedArticle(
 			article);
 
 		if (previousApprovedArticle.getVersion() == article.getVersion()) {
-			AssetEntry assetEntry = _assetEntryLocalService.updateVisible(
+			assetEntry = _assetEntryLocalService.updateVisible(
 				JournalArticle.class.getName(), article.getResourcePrimKey(),
 				false);
 
@@ -8749,7 +8759,7 @@ public class JournalArticleLocalServiceImpl
 			}
 		}
 		else {
-			AssetEntry assetEntry = _assetEntryLocalService.updateEntry(
+			assetEntry = _assetEntryLocalService.updateEntry(
 				JournalArticle.class.getName(), article.getResourcePrimKey(),
 				previousApprovedArticle.getDisplayDate(),
 				previousApprovedArticle.getExpirationDate(),
