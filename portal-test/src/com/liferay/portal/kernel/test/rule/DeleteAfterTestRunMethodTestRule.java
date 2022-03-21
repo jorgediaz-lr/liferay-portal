@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.model.LayoutSetPrototype;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.ResourceConstants;
+import com.liferay.portal.kernel.model.ResourcePermission;
 import com.liferay.portal.kernel.model.ResourcedModel;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.ShardedModel;
@@ -31,6 +32,7 @@ import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistryUtil;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalServiceUtil;
+import com.liferay.portal.kernel.service.persistence.ResourcePermissionUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 
 import java.lang.reflect.Field;
@@ -303,6 +305,18 @@ public class DeleteAfterTestRunMethodTestRule extends MethodTestRule<Void> {
 	private DeleteAfterTestRunMethodTestRule() {
 	}
 
+	private void _deleteResourcePermissions(
+		long companyId, int scope, String primKey) {
+
+		List<ResourcePermission> resourcePermissions =
+			ResourcePermissionUtil.findByC_S_P(companyId, scope, primKey);
+
+		for (ResourcePermission resourcePermission : resourcePermissions) {
+			ResourcePermissionLocalServiceUtil.deleteResourcePermission(
+				resourcePermission);
+		}
+	}
+
 	private void _deleteResourcePermissions(PersistedModel persistedModel)
 		throws Exception {
 
@@ -316,9 +330,8 @@ public class DeleteAfterTestRunMethodTestRule extends MethodTestRule<Void> {
 
 		ShardedModel shardedModel = (ShardedModel)baseModel;
 
-		ResourcePermissionLocalServiceUtil.deleteResourcePermissions(
-			shardedModel.getCompanyId(), baseModel.getModelClassName(),
-			ResourceConstants.SCOPE_INDIVIDUAL,
+		_deleteResourcePermissions(
+			shardedModel.getCompanyId(), ResourceConstants.SCOPE_INDIVIDUAL,
 			String.valueOf(baseModel.getPrimaryKeyObj()));
 
 		if (!(persistedModel instanceof ResourcedModel)) {
@@ -327,9 +340,8 @@ public class DeleteAfterTestRunMethodTestRule extends MethodTestRule<Void> {
 
 		ResourcedModel resourcedModel = (ResourcedModel)baseModel;
 
-		ResourcePermissionLocalServiceUtil.deleteResourcePermissions(
-			shardedModel.getCompanyId(), baseModel.getModelClassName(),
-			ResourceConstants.SCOPE_INDIVIDUAL,
+		_deleteResourcePermissions(
+			shardedModel.getCompanyId(), ResourceConstants.SCOPE_INDIVIDUAL,
 			String.valueOf(resourcedModel.getResourcePrimKey()));
 	}
 
