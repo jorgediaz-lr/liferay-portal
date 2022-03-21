@@ -169,7 +169,7 @@ public class DLServiceVerifyProcessTest extends BaseVerifyProcessTestCase {
 		com.liferay.dynamic.data.mapping.kernel.DDMStructure ddmStructure =
 			ddmStructures.get(0);
 
-		DDMStructureLocalServiceUtil.deleteDDMStructure(
+		DDMStructureLocalServiceUtil.deleteStructure(
 			ddmStructure.getStructureId());
 
 		DLFileVersion dlFileVersion = dlFileEntry.getFileVersion();
