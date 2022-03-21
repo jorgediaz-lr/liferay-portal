@@ -14,6 +14,8 @@
 
 package com.liferay.portal.kernel.test.rule;
 
+import com.liferay.petra.sql.dsl.DSLQueryFactoryUtil;
+import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.Company;
@@ -23,7 +25,7 @@ import com.liferay.portal.kernel.model.LayoutSetPrototype;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.ResourceConstants;
-import com.liferay.portal.kernel.model.ResourcePermission;
+import com.liferay.portal.kernel.model.ResourcePermissionTable;
 import com.liferay.portal.kernel.model.ResourcedModel;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.ShardedModel;
@@ -32,7 +34,6 @@ import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistryUtil;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalServiceUtil;
-import com.liferay.portal.kernel.service.persistence.ResourcePermissionUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 
 import java.lang.reflect.Field;
@@ -306,14 +307,30 @@ public class DeleteAfterTestRunMethodTestRule extends MethodTestRule<Void> {
 	}
 
 	private void _deleteResourcePermissions(
-		long companyId, int scope, String primKey) {
+			long companyId, int scope, String primKey)
+		throws Exception {
 
-		List<ResourcePermission> resourcePermissions =
-			ResourcePermissionUtil.findByC_S_P(companyId, scope, primKey);
+		DSLQuery dslQuery = DSLQueryFactoryUtil.select(
+			ResourcePermissionTable.INSTANCE.resourcePermissionId
+		).from(
+			ResourcePermissionTable.INSTANCE
+		).where(
+			ResourcePermissionTable.INSTANCE.companyId.eq(
+				companyId
+			).and(
+				ResourcePermissionTable.INSTANCE.scope.eq(
+					ResourceConstants.SCOPE_INDIVIDUAL)
+			).and(
+				ResourcePermissionTable.INSTANCE.primKey.eq(primKey)
+			)
+		);
 
-		for (ResourcePermission resourcePermission : resourcePermissions) {
+		for (long resourcePermissionId :
+				ResourcePermissionLocalServiceUtil.<List<Long>>dslQuery(
+					dslQuery)) {
+
 			ResourcePermissionLocalServiceUtil.deleteResourcePermission(
-				resourcePermission);
+				resourcePermissionId);
 		}
 	}
 
