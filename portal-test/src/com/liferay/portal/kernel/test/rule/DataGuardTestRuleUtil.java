@@ -31,7 +31,6 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.Portlet;
-import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.ResourcePermission;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.search.Indexer;
@@ -530,32 +529,17 @@ public class DataGuardTestRuleUtil {
 			createdResourcePermissions.removeAll(previousResourcePermissions);
 		}
 
-		Map<String, PersistedModelLocalService> persistedModelLocalServices =
-			_getPersistedModelLocalServices();
-
 		List<ResourcePermission> orphanResourcePermissions = new ArrayList<>();
 
 		for (ResourcePermission resourcePermission :
 				createdResourcePermissions) {
 
+			if (resourcePermission.getPrimKeyId() != 0) {
+				orphanResourcePermissions.add(resourcePermission);
+			}
+
 			ResourcePermissionLocalServiceUtil.deleteResourcePermission(
 				resourcePermission);
-
-			if ((resourcePermission.getScope() !=
-					ResourceConstants.SCOPE_INDIVIDUAL) ||
-				(resourcePermission.getPrimKeyId() == 0)) {
-
-				continue;
-			}
-
-			PersistedModelLocalService persistedModelLocalService =
-				persistedModelLocalServices.get(resourcePermission.getName());
-
-			if (persistedModelLocalService == null) {
-				continue;
-			}
-
-			orphanResourcePermissions.add(resourcePermission);
 		}
 
 		if (orphanResourcePermissions.isEmpty()) {
