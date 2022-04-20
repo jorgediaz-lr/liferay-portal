@@ -21,6 +21,8 @@ import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.ResourcePermission;
 import com.liferay.portal.kernel.model.ResourcedModel;
 import com.liferay.portal.kernel.model.ShardedModel;
+import com.liferay.portal.kernel.model.TypedModel;
+import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 
@@ -87,6 +89,19 @@ public class ResourcePermissionTestUtil {
 			shardedModel.getCompanyId(), baseModel.getModelClassName(),
 			ResourceConstants.SCOPE_INDIVIDUAL,
 			String.valueOf(baseModel.getPrimaryKeyObj()));
+
+		if (persistedModel instanceof TypedModel) {
+			TypedModel typedModel = (TypedModel)persistedModel;
+
+			String compositeModelName =
+				ResourceActionsUtil.getCompositeModelName(
+					typedModel.getClassName(), baseModel.getModelClassName());
+
+			ResourcePermissionLocalServiceUtil.deleteResourcePermissions(
+				shardedModel.getCompanyId(), compositeModelName,
+				ResourceConstants.SCOPE_INDIVIDUAL,
+				String.valueOf(baseModel.getPrimaryKeyObj()));
+		}
 
 		if (!(persistedModel instanceof ResourcedModel)) {
 			return;
