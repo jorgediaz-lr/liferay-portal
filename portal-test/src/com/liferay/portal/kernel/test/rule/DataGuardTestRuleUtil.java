@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.model.ResourcePermission;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
+import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistryUtil;
 import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
@@ -548,14 +549,14 @@ public class DataGuardTestRuleUtil {
 				continue;
 			}
 
-			PersistedModelLocalService persistedModelLocalService =
-				persistedModelLocalServices.get(resourcePermission.getName());
+			String className = resourcePermission.getName();
 
-			if (persistedModelLocalService == null) {
-				continue;
+			if ((persistedModelLocalServices.get(className) != null) ||
+				className.contains(
+					ResourceActionsUtil.getCompositeModelNameSeparator())) {
+
+				orphanResourcePermissions.add(resourcePermission);
 			}
-
-			orphanResourcePermissions.add(resourcePermission);
 		}
 
 		if (orphanResourcePermissions.isEmpty()) {
