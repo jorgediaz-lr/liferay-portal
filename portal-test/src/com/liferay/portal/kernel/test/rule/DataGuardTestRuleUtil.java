@@ -538,9 +538,7 @@ public class DataGuardTestRuleUtil {
 
 			if ((resourcePermission.getPrimKeyId() != 0) &&
 				!className.equals(
-					"com.liferay.commerce.account.model.CommerceAccount") &&
-				!className.equals(
-					"com.liferay.commerce.account.model.CommerceAccountGroup")) {
+					"com.liferay.commerce.account.model.CommerceAccount")) {
 
 				orphanResourcePermissions.add(resourcePermission);
 			}
