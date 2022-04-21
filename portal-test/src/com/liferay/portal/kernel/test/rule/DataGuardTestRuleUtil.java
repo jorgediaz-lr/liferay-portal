@@ -534,12 +534,7 @@ public class DataGuardTestRuleUtil {
 		for (ResourcePermission resourcePermission :
 				createdResourcePermissions) {
 
-			String className = resourcePermission.getName();
-
-			if ((resourcePermission.getPrimKeyId() != 0) &&
-				!className.equals(
-					"com.liferay.commerce.account.model.CommerceAccount")) {
-
+			if (resourcePermission.getPrimKeyId() != 0) {
 				orphanResourcePermissions.add(resourcePermission);
 			}
 
