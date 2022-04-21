@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.Portlet;
+import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.ResourcePermission;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.search.Indexer;
@@ -540,7 +541,10 @@ public class DataGuardTestRuleUtil {
 			ResourcePermissionLocalServiceUtil.deleteResourcePermission(
 				resourcePermission);
 
-			if (resourcePermission.getPrimKeyId() == 0) {
+			if ((resourcePermission.getScope() !=
+					ResourceConstants.SCOPE_INDIVIDUAL) ||
+				(resourcePermission.getPrimKeyId() == 0)) {
+
 				continue;
 			}
 
