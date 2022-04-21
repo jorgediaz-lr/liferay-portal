@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.SessionCustomizer;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.dao.orm.SessionWrapper;
+import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.BaseModel;
@@ -36,6 +37,7 @@ import com.liferay.portal.kernel.model.ResourcePermission;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
+import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistryUtil;
 import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
@@ -49,6 +51,7 @@ import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.Closeable;
 import java.io.Serializable;
@@ -512,6 +515,43 @@ public class DataGuardTestRuleUtil {
 		};
 	}
 
+	private static boolean _isOrphanResourcePermission(
+			Map<String, PersistedModelLocalService> persistedModelLocalServices,
+			ResourcePermission resourcePermission)
+		throws PortalException {
+
+		if ((resourcePermission.getScope() !=
+				ResourceConstants.SCOPE_INDIVIDUAL) ||
+			(resourcePermission.getPrimKeyId() == 0)) {
+
+			return false;
+		}
+
+		String[] classNames = StringUtil.split(
+			resourcePermission.getName(),
+			ResourceActionsUtil.getCompositeModelNameSeparator());
+
+		for (String className : classNames) {
+			PersistedModelLocalService persistedModelLocalService =
+				persistedModelLocalServices.get(className);
+
+			if (persistedModelLocalService == null) {
+				return false;
+			}
+
+			try {
+				persistedModelLocalService.getPersistedModel(
+					resourcePermission.getPrimKeyId());
+
+				return false;
+			}
+			catch (NoSuchModelException noSuchModelException) {
+			}
+		}
+
+		return true;
+	}
+
 	private static void _orphanResourcePermissionDetection(
 			String testClassName,
 			Map<String, List<BaseModel<?>>> previousDataMap,
@@ -543,21 +583,11 @@ public class DataGuardTestRuleUtil {
 			ResourcePermissionLocalServiceUtil.deleteResourcePermission(
 				resourcePermission);
 
-			if ((resourcePermission.getScope() !=
-					ResourceConstants.SCOPE_INDIVIDUAL) ||
-				(resourcePermission.getPrimKeyId() == 0)) {
+			if (_isOrphanResourcePermission(
+					persistedModelLocalServices, resourcePermission)) {
 
-				continue;
+				orphanResourcePermissions.add(resourcePermission);
 			}
-
-			PersistedModelLocalService persistedModelLocalService =
-				persistedModelLocalServices.get(resourcePermission.getName());
-
-			if (persistedModelLocalService == null) {
-				continue;
-			}
-
-			orphanResourcePermissions.add(resourcePermission);
 		}
 
 		if (orphanResourcePermissions.isEmpty()) {
