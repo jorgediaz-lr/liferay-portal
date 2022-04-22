@@ -16,6 +16,7 @@ package com.liferay.portal.kernel.test.util;
 
 import com.liferay.counter.kernel.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.model.BaseModel;
+import com.liferay.portal.kernel.model.ClassName;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.ResourcePermission;
@@ -23,6 +24,7 @@ import com.liferay.portal.kernel.model.ResourcedModel;
 import com.liferay.portal.kernel.model.ShardedModel;
 import com.liferay.portal.kernel.model.TypedModel;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
+import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 
@@ -93,14 +95,21 @@ public class ResourcePermissionTestUtil {
 		if (persistedModel instanceof TypedModel) {
 			TypedModel typedModel = (TypedModel)persistedModel;
 
-			String compositeModelName =
-				ResourceActionsUtil.getCompositeModelName(
-					typedModel.getClassName(), baseModel.getModelClassName());
+			ClassName typedModelClassName =
+				ClassNameLocalServiceUtil.fetchByClassNameId(
+					typedModel.getClassNameId());
 
-			ResourcePermissionLocalServiceUtil.deleteResourcePermissions(
-				shardedModel.getCompanyId(), compositeModelName,
-				ResourceConstants.SCOPE_INDIVIDUAL,
-				String.valueOf(baseModel.getPrimaryKeyObj()));
+			if (typedModelClassName != null) {
+				String compositeModelName =
+					ResourceActionsUtil.getCompositeModelName(
+						typedModelClassName.getValue(),
+						baseModel.getModelClassName());
+
+				ResourcePermissionLocalServiceUtil.deleteResourcePermissions(
+					shardedModel.getCompanyId(), compositeModelName,
+					ResourceConstants.SCOPE_INDIVIDUAL,
+					String.valueOf(baseModel.getPrimaryKeyObj()));
+			}
 		}
 
 		if (!(persistedModel instanceof ResourcedModel)) {
