@@ -61,6 +61,7 @@ import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.GroupThreadLocal;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.test.rule.Inject;
@@ -169,8 +170,17 @@ public class DLServiceVerifyProcessTest extends BaseVerifyProcessTestCase {
 		com.liferay.dynamic.data.mapping.kernel.DDMStructure ddmStructure =
 			ddmStructures.get(0);
 
-		DDMStructureLocalServiceUtil.deleteDDMStructure(
-			ddmStructure.getStructureId());
+		boolean deleteInProcess = GroupThreadLocal.isDeleteInProcess();
+
+		try {
+			GroupThreadLocal.setDeleteInProcess(true);
+
+			DDMStructureLocalServiceUtil.deleteStructure(
+				ddmStructure.getStructureId());
+		}
+		finally {
+			GroupThreadLocal.setDeleteInProcess(deleteInProcess);
+		}
 
 		DLFileVersion dlFileVersion = dlFileEntry.getFileVersion();
 
