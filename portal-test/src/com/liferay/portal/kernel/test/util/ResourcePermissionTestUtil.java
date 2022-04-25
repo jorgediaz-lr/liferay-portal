@@ -28,6 +28,8 @@ import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 
+import java.util.Map;
+
 /**
  * @author Alberto Chaparro
  */
@@ -100,6 +102,19 @@ public class ResourcePermissionTestUtil {
 					typedModel.getClassNameId());
 
 			if (typedModelClassName != null) {
+				Map<String, Object> modelAttributes =
+					baseModel.getModelAttributes();
+
+				if (modelAttributes.containsKey("resourceClassNameId")) {
+					ClassName resourceClassName =
+						ClassNameLocalServiceUtil.fetchByClassNameId(
+							(Long)modelAttributes.get("resourceClassNameId"));
+
+					if (resourceClassName != null) {
+						typedModelClassName = resourceClassName;
+					}
+				}
+
 				String compositeModelName =
 					ResourceActionsUtil.getCompositeModelName(
 						typedModelClassName.getValue(),
