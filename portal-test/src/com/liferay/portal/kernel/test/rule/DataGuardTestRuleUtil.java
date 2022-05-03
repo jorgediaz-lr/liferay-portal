@@ -51,6 +51,7 @@ import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.Closeable;
 import java.io.Serializable;
@@ -502,30 +503,29 @@ public class DataGuardTestRuleUtil {
 			return false;
 		}
 
-		String className = resourcePermission.getName();
+		String[] classNames = StringUtil.split(
+			resourcePermission.getName(),
+			ResourceActionsUtil.getCompositeModelNameSeparator());
 
-		if (className.contains(
-				ResourceActionsUtil.getCompositeModelNameSeparator())) {
+		for (String className : classNames) {
+			PersistedModelLocalService persistedModelLocalService =
+				persistedModelLocalServices.get(className);
 
-			return true;
+			if (persistedModelLocalService == null) {
+				return false;
+			}
+
+			try {
+				persistedModelLocalService.getPersistedModel(
+					resourcePermission.getPrimKeyId());
+
+				return false;
+			}
+			catch (NoSuchModelException noSuchModelException) {
+			}
 		}
 
-		PersistedModelLocalService persistedModelLocalService =
-			persistedModelLocalServices.get(className);
-
-		if (persistedModelLocalService == null) {
-			return false;
-		}
-
-		try {
-			persistedModelLocalService.getPersistedModel(
-				resourcePermission.getPrimKeyId());
-		}
-		catch (NoSuchModelException noSuchModelException) {
-			return true;
-		}
-
-		return false;
+		return true;
 	}
 
 	private static void _orphanResourcePermissionDetection(
