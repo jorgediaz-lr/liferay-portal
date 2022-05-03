@@ -107,24 +107,6 @@ public class DataGuardTestRuleUtil {
 			testClassName, dataBag._dataMap, dataBag._records);
 	}
 
-	public static void afterMethod(DataBag dataBag, String testClassName)
-		throws Throwable {
-
-		afterMethod(dataBag, testClassName, true);
-	}
-
-	public static void afterMethod(
-			DataBag dataBag, String testClassName, boolean autoDelete)
-		throws Throwable {
-
-		_autoDeleteAndAssert(
-			testClassName, dataBag._dataMap, dataBag._portlets,
-			dataBag._records, autoDelete);
-
-		_orphanResourcePermissionDetection(
-			testClassName, dataBag._dataMap, dataBag._records);
-	}
-
 	public static DataBag beforeClass() {
 		BundleContext bundleContext = SystemBundleUtil.getBundleContext();
 
@@ -141,12 +123,6 @@ public class DataGuardTestRuleUtil {
 		return new DataBag(
 			_captureDataMap(), PortletLocalServiceUtil.getPortlets(), records,
 			serviceRegistration);
-	}
-
-	public static DataBag beforeMethod() {
-		return new DataBag(
-			_captureDataMap(), PortletLocalServiceUtil.getPortlets(),
-			_recordsThreadLocal.get(), null);
 	}
 
 	public static class DataBag {
