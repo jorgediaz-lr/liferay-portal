@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.CompanyTestUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
@@ -95,6 +96,8 @@ public class AcceptLanguageContextProviderTest {
 		CompanyTestUtil.resetCompanyLocales(
 			PortalUtil.getDefaultCompanyId(), _availableLocales,
 			_defaultLocale);
+
+		_companyLocalService.deleteCompany(_company);
 	}
 
 	@Before
@@ -185,6 +188,10 @@ public class AcceptLanguageContextProviderTest {
 
 	private static Set<Locale> _availableLocales;
 	private static Company _company;
+
+	@Inject
+	private static CompanyLocalService _companyLocalService;
+
 	private static Locale _defaultLocale;
 	private static Group _group;
 	private static User _user;
