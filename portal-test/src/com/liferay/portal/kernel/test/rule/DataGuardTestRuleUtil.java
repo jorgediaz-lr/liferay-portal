@@ -171,10 +171,6 @@ public class DataGuardTestRuleUtil {
 		for (Map.Entry<String, List<BaseModel<?>>> entry : dataMap.entrySet()) {
 			String className = entry.getKey();
 
-			if (className.equals(ResourcePermission.class.getName())) {
-				continue;
-			}
-
 			List<BaseModel<?>> currentBaseModels = entry.getValue();
 
 			List<BaseModel<?>> previousBaseModels = previousDataMap.get(
@@ -241,10 +237,6 @@ public class DataGuardTestRuleUtil {
 
 				String className = entry.getKey();
 
-				if (className.equals(ResourcePermission.class.getName())) {
-					continue;
-				}
-
 				PersistedModelLocalService persistedModelLocalService =
 					persistedModelLocalServices.get(className);
 
@@ -307,6 +299,12 @@ public class DataGuardTestRuleUtil {
 			}
 
 			Class<?> clazz = basePersistence.getClass();
+
+			String className = clazz.getName();
+
+			if (className.equals(ResourcePermission.class.getName())) {
+				continue;
+			}
 
 			try (Closeable closeable1 = _installTransactionExecutor(
 					_getSymbolicName(clazz.getClassLoader()))) {
