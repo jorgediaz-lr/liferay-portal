@@ -48,7 +48,7 @@ public class DataGuardTestRule
 			return;
 		}
 
-		DataGuardTestRuleUtil.afterClass(
+		DataGuardTestRuleUtil.afterMethod(
 			dataBag, description.getClassName(), _autoDelete(description));
 	}
 
@@ -81,7 +81,7 @@ public class DataGuardTestRule
 			return null;
 		}
 
-		return DataGuardTestRuleUtil.beforeClass();
+		return DataGuardTestRuleUtil.beforeMethod();
 	}
 
 	private DataGuardTestRule() {
