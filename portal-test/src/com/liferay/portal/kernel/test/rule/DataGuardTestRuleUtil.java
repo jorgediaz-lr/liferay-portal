@@ -588,7 +588,7 @@ public class DataGuardTestRuleUtil {
 		List<ResourcePermission> createdResourcePermissions = new ArrayList<>(
 			resourcePermissions);
 
-		List<BaseModel<?>> previousResourcePermissions = previousDataMap.get(
+		List<BaseModel<?>> previousResourcePermissions = previousDataMap.remove(
 			ResourcePermission.class.getName());
 
 		if (previousResourcePermissions != null) {
