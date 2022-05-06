@@ -105,54 +105,9 @@ public class ResourcePermissionTestUtil {
 
 		ShardedModel shardedModel = (ShardedModel)baseModel;
 
-		ResourcePermissionLocalServiceUtil.deleteResourcePermissions(
-			shardedModel.getCompanyId(), baseModel.getModelClassName(),
-			ResourceConstants.SCOPE_INDIVIDUAL,
+		_deleteResourcePermissions(
+			shardedModel.getCompanyId(), ResourceConstants.SCOPE_INDIVIDUAL,
 			String.valueOf(baseModel.getPrimaryKeyObj()));
-
-		if (persistedModel instanceof TypedModel) {
-			TypedModel typedModel = (TypedModel)persistedModel;
-
-			ClassName typedModelClassName =
-				ClassNameLocalServiceUtil.fetchByClassNameId(
-					typedModel.getClassNameId());
-
-			if (typedModelClassName != null) {
-				Map<String, Object> modelAttributes =
-					baseModel.getModelAttributes();
-
-				if (modelAttributes.containsKey("resourceClassNameId")) {
-					ClassName resourceClassName =
-						ClassNameLocalServiceUtil.fetchByClassNameId(
-							(Long)modelAttributes.get("resourceClassNameId"));
-
-					if (resourceClassName != null) {
-						typedModelClassName = resourceClassName;
-					}
-				}
-
-				String compositeModelName =
-					ResourceActionsUtil.getCompositeModelName(
-						typedModelClassName.getValue(),
-						baseModel.getModelClassName());
-
-				ResourcePermissionLocalServiceUtil.deleteResourcePermissions(
-					shardedModel.getCompanyId(), compositeModelName,
-					ResourceConstants.SCOPE_INDIVIDUAL,
-					String.valueOf(baseModel.getPrimaryKeyObj()));
-			}
-		}
-
-		if (!(persistedModel instanceof ResourcedModel)) {
-			return;
-		}
-
-		ResourcedModel resourcedModel = (ResourcedModel)baseModel;
-
-		ResourcePermissionLocalServiceUtil.deleteResourcePermissions(
-			shardedModel.getCompanyId(), baseModel.getModelClassName(),
-			ResourceConstants.SCOPE_INDIVIDUAL,
-			String.valueOf(resourcedModel.getResourcePrimKey()));
 	}
 
 	private static void _deleteResourcePermissions(
