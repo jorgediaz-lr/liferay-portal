@@ -15,9 +15,20 @@
 package com.liferay.portal.kernel.test.util;
 
 import com.liferay.counter.kernel.service.CounterLocalServiceUtil;
+import com.liferay.portal.kernel.model.BaseModel;
+import com.liferay.portal.kernel.model.ClassName;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.ResourcePermission;
+import com.liferay.portal.kernel.model.ResourcedModel;
+import com.liferay.portal.kernel.model.ShardedModel;
+import com.liferay.portal.kernel.model.TypedModel;
+import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
+import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+
+import java.util.Map;
 
 /**
  * @author Alberto Chaparro
@@ -63,6 +74,69 @@ public class ResourcePermissionTestUtil {
 
 		return ResourcePermissionLocalServiceUtil.addResourcePermission(
 			resourcePermission);
+	}
+
+	public static void deleteResourcePermissions(PersistedModel persistedModel)
+		throws Exception {
+
+		if (!(persistedModel instanceof BaseModel) ||
+			!(persistedModel instanceof ShardedModel)) {
+
+			return;
+		}
+
+		BaseModel<?> baseModel = (BaseModel)persistedModel;
+
+		ShardedModel shardedModel = (ShardedModel)baseModel;
+
+		ResourcePermissionLocalServiceUtil.deleteResourcePermissions(
+			shardedModel.getCompanyId(), baseModel.getModelClassName(),
+			ResourceConstants.SCOPE_INDIVIDUAL,
+			String.valueOf(baseModel.getPrimaryKeyObj()));
+
+		if (persistedModel instanceof TypedModel) {
+			TypedModel typedModel = (TypedModel)persistedModel;
+
+			ClassName typedModelClassName =
+				ClassNameLocalServiceUtil.fetchByClassNameId(
+					typedModel.getClassNameId());
+
+			if (typedModelClassName != null) {
+				Map<String, Object> modelAttributes =
+					baseModel.getModelAttributes();
+
+				if (modelAttributes.containsKey("resourceClassNameId")) {
+					ClassName resourceClassName =
+						ClassNameLocalServiceUtil.fetchByClassNameId(
+							(Long)modelAttributes.get("resourceClassNameId"));
+
+					if (resourceClassName != null) {
+						typedModelClassName = resourceClassName;
+					}
+				}
+
+				String compositeModelName =
+					ResourceActionsUtil.getCompositeModelName(
+						typedModelClassName.getValue(),
+						baseModel.getModelClassName());
+
+				ResourcePermissionLocalServiceUtil.deleteResourcePermissions(
+					shardedModel.getCompanyId(), compositeModelName,
+					ResourceConstants.SCOPE_INDIVIDUAL,
+					String.valueOf(baseModel.getPrimaryKeyObj()));
+			}
+		}
+
+		if (!(persistedModel instanceof ResourcedModel)) {
+			return;
+		}
+
+		ResourcedModel resourcedModel = (ResourcedModel)baseModel;
+
+		ResourcePermissionLocalServiceUtil.deleteResourcePermissions(
+			shardedModel.getCompanyId(), baseModel.getModelClassName(),
+			ResourceConstants.SCOPE_INDIVIDUAL,
+			String.valueOf(resourcedModel.getResourcePrimKey()));
 	}
 
 }
