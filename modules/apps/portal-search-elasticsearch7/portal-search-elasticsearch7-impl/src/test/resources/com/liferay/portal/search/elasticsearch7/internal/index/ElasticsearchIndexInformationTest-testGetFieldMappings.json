@@ -24,6 +24,97 @@
 					}
 				},
 				{
+					"template_string_sortable_en": {
+						"mapping": {
+							"country": "US",
+							"language": "en",
+							"store": true,
+							"type": "icu_collation_keyword"
+						},
+						"match": "\\w+_en_[A-Z]{2}_sortable\\b|\\w+_en_[A-Z]{2}_\\w+_sortable\\b",
+						"match_mapping_type": "string",
+						"match_pattern": "regex"
+					}
+				},
+				{
+					"template_string_sortable_fr": {
+						"mapping": {
+							"country": "FR",
+							"language": "fr",
+							"store": true,
+							"type": "icu_collation_keyword"
+						},
+						"match": "\\w+_fr_[A-Z]{2}_sortable\\b|\\w+_fr_[A-Z]{2}_\\w+_sortable\\b",
+						"match_mapping_type": "string",
+						"match_pattern": "regex"
+					}
+				},
+				{
+					"template_string_sortable_de": {
+						"mapping": {
+							"country": "DE",
+							"language": "de",
+							"store": true,
+							"type": "icu_collation_keyword"
+						},
+						"match": "\\w+_de_[A-Z]{2}_sortable\\b|\\w+_de_[A-Z]{2}_\\w+_sortable\\b",
+						"match_mapping_type": "string",
+						"match_pattern": "regex"
+					}
+				},
+				{
+					"template_string_sortable_pl": {
+						"mapping": {
+							"country": "PL",
+							"language": "pl",
+							"store": true,
+							"type": "icu_collation_keyword"
+						},
+						"match": "\\w+_pl_[A-Z]{2}_sortable\\b|\\w+_pl_[A-Z]{2}_\\w+_sortable\\b",
+						"match_mapping_type": "string",
+						"match_pattern": "regex"
+					}
+				},
+				{
+					"template_string_sortable_pt": {
+						"mapping": {
+							"country": "BR",
+							"language": "pt",
+							"store": true,
+							"type": "icu_collation_keyword"
+						},
+						"match": "\\w+_pt_[A-Z]{2}_sortable\\b|\\w+_pt_[A-Z]{2}_\\w+_sortable\\b",
+						"match_mapping_type": "string",
+						"match_pattern": "regex"
+					}
+				},
+				{
+					"template_string_sortable_ja": {
+						"mapping": {
+							"country": "JP",
+							"language": "ja",
+							"store": true,
+							"type": "icu_collation_keyword"
+						},
+						"match": "\\w+_ja_[A-Z]{2}_sortable\\b|\\w+_ja_[A-Z]{2}_\\w+_sortable\\b",
+						"match_mapping_type": "string",
+						"match_pattern": "regex"
+					}
+				},
+				{
+					"template_string_sortable_es": {
+						"mapping": {
+							"country": "ES",
+							"language": "es",
+							"store": true,
+							"type": "icu_collation_keyword"
+						},
+						"match": "\\w+_es_[A-Z]{2}_sortable\\b|\\w+_es_[A-Z]{2}_\\w+_sortable\\b",
+						"match_mapping_type": "string",
+						"match_pattern": "regex"
+					}
+				},
+				{
 					"template_string_sortable": {
 						"mapping": {
 							"store": true,
