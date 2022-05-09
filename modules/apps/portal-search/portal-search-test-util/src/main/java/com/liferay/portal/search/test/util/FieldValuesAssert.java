@@ -51,8 +51,8 @@ public class FieldValuesAssert {
 		com.liferay.portal.kernel.search.Document document, String message) {
 
 		AssertUtils.assertEquals(
-			message, _toStringValuesMap(expected),
-			_toLegacyFieldValuesMap(document));
+			message, _filterSortableFields(_toStringValuesMap(expected)),
+			_filterSortableFields(_toLegacyFieldValuesMap(document)));
 	}
 
 	public static void assertFieldValues(
@@ -77,7 +77,8 @@ public class FieldValuesAssert {
 				() -> StringBundler.concat(
 					searchResponse.getRequestString(), "->",
 					actualFieldValuesMap, "->", filteredFieldValuesMap),
-				expectedFieldValuesMap, filteredFieldValuesMap);
+				_filterSortableFields(expectedFieldValuesMap),
+				_filterSortableFields(filteredFieldValuesMap));
 		}
 		else {
 			AssertUtils.assertEquals(
@@ -98,17 +99,19 @@ public class FieldValuesAssert {
 		com.liferay.portal.kernel.search.Document document, String message) {
 
 		AssertUtils.assertEquals(
-			message, _toStringValuesMap(expected),
-			_filterOnKey(
-				_toLegacyFieldValuesMap(document),
-				name -> name.startsWith(prefix)));
+			message, _filterSortableFields(_toStringValuesMap(expected)),
+			_filterSortableFields(
+				_filterOnKey(
+					_toLegacyFieldValuesMap(document),
+					name -> name.startsWith(prefix))));
 	}
 
 	public static void assertFieldValues(
 		String message, Document document, Map<?, ?> expected) {
 
 		AssertUtils.assertEquals(
-			message, expected, _toFieldValuesMap(document));
+			message, _filterSortableFields(expected),
+			_filterSortableFields(_toFieldValuesMap(document)));
 	}
 
 	/**
@@ -120,8 +123,9 @@ public class FieldValuesAssert {
 		Map<?, ?> expected) {
 
 		AssertUtils.assertEquals(
-			message, expected,
-			_filterOnKey(_toFieldValuesMap(document), keysPredicate));
+			message, _filterSortableFields(expected),
+			_filterSortableFields(
+				_filterOnKey(_toFieldValuesMap(document), keysPredicate)));
 	}
 
 	private static void _addFields(
@@ -150,14 +154,14 @@ public class FieldValuesAssert {
 		}
 	}
 
-	private static Map<String, String> _filterOnKey(
-		Map<String, String> map, Predicate<String> predicate) {
+	private static <K, V> Map<K, V> _filterOnKey(
+		Map<K, V> map, Predicate<K> predicate) {
 
 		if (predicate == null) {
 			return map;
 		}
 
-		Stream<Map.Entry<String, String>> stream = SearchStreamUtil.stream(
+		Stream<Map.Entry<K, V>> stream = SearchStreamUtil.stream(
 			map.entrySet());
 
 		return stream.filter(
@@ -165,6 +169,23 @@ public class FieldValuesAssert {
 		).collect(
 			Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)
 		);
+	}
+
+	private static Map<?, ?> _filterSortableFields(Map<?, ?> map) {
+		return _filterOnKey(
+			map,
+			key -> {
+				if (!(key instanceof String)) {
+					return true;
+				}
+
+				String string = (String)key;
+
+				return !string.endsWith(
+					StringPool.UNDERLINE.concat(
+						com.liferay.portal.kernel.search.Field.
+							SORTABLE_FIELD_SUFFIX));
+			});
 	}
 
 	private static <E> List<E> _sort(List<E> list) {
