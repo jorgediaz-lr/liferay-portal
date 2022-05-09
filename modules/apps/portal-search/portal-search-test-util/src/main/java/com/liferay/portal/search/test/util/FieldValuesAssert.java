@@ -52,7 +52,7 @@ public class FieldValuesAssert {
 
 		AssertUtils.assertEquals(
 			message, _toStringValuesMap(expected),
-			_toLegacyFieldValuesMap(document));
+			_filterSortableFields(_toLegacyFieldValuesMap(document)));
 	}
 
 	public static void assertFieldValues(
@@ -77,7 +77,8 @@ public class FieldValuesAssert {
 				() -> StringBundler.concat(
 					searchResponse.getRequestString(), "->",
 					actualFieldValuesMap, "->", filteredFieldValuesMap),
-				expectedFieldValuesMap, filteredFieldValuesMap);
+				expectedFieldValuesMap,
+				_filterSortableFields(filteredFieldValuesMap));
 		}
 		else {
 			AssertUtils.assertEquals(
@@ -99,16 +100,18 @@ public class FieldValuesAssert {
 
 		AssertUtils.assertEquals(
 			message, _toStringValuesMap(expected),
-			_filterOnKey(
-				_toLegacyFieldValuesMap(document),
-				name -> name.startsWith(prefix)));
+			_filterSortableFields(
+				_filterOnKey(
+					_toLegacyFieldValuesMap(document),
+					name -> name.startsWith(prefix))));
 	}
 
 	public static void assertFieldValues(
 		String message, Document document, Map<?, ?> expected) {
 
 		AssertUtils.assertEquals(
-			message, expected, _toFieldValuesMap(document));
+			message, expected,
+			_filterSortableFields(_toFieldValuesMap(document)));
 	}
 
 	/**
@@ -121,7 +124,8 @@ public class FieldValuesAssert {
 
 		AssertUtils.assertEquals(
 			message, expected,
-			_filterOnKey(_toFieldValuesMap(document), keysPredicate));
+			_filterSortableFields(
+				_filterOnKey(_toFieldValuesMap(document), keysPredicate)));
 	}
 
 	private static void _addFields(
@@ -165,6 +169,32 @@ public class FieldValuesAssert {
 		).collect(
 			Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)
 		);
+	}
+
+	private static Map<String, String> _filterSortableFields(
+		Map<String, String> map) {
+
+		List<String> rawKeys = new ArrayList<>();
+
+		String sortableRawSuffix = StringBundler.concat(
+			StringPool.UNDERLINE,
+			com.liferay.portal.kernel.search.Field.SORTABLE_FIELD_SUFFIX,
+			_RAW_SUFFIX);
+
+		for (String key : map.keySet()) {
+			if (key.endsWith(sortableRawSuffix)) {
+				rawKeys.add(key);
+			}
+		}
+
+		for (String rawKey : rawKeys) {
+			String originalKey = rawKey.substring(
+				0, rawKey.length() - _RAW_SUFFIX.length());
+
+			map.put(originalKey, map.remove(rawKey));
+		}
+
+		return map;
 	}
 
 	private static <E> List<E> _sort(List<E> list) {
@@ -252,5 +282,7 @@ public class FieldValuesAssert {
 				entry -> entry.getKey(),
 				entry -> function.apply(entry.getValue())));
 	}
+
+	private static final String _RAW_SUFFIX = ".raw";
 
 }
