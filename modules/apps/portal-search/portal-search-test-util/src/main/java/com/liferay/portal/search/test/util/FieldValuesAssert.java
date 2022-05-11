@@ -51,7 +51,7 @@ public class FieldValuesAssert {
 		com.liferay.portal.kernel.search.Document document, String message) {
 
 		AssertUtils.assertEquals(
-			message, _filterSortableFields(_toStringValuesMap(expected)),
+			message, _toStringValuesMap(expected),
 			_filterSortableFields(_toLegacyFieldValuesMap(document)));
 	}
 
@@ -77,7 +77,7 @@ public class FieldValuesAssert {
 				() -> StringBundler.concat(
 					searchResponse.getRequestString(), "->",
 					actualFieldValuesMap, "->", filteredFieldValuesMap),
-				_filterSortableFields(expectedFieldValuesMap),
+				expectedFieldValuesMap,
 				_filterSortableFields(filteredFieldValuesMap));
 		}
 		else {
@@ -99,7 +99,7 @@ public class FieldValuesAssert {
 		com.liferay.portal.kernel.search.Document document, String message) {
 
 		AssertUtils.assertEquals(
-			message, _filterSortableFields(_toStringValuesMap(expected)),
+			message, _toStringValuesMap(expected),
 			_filterSortableFields(
 				_filterOnKey(
 					_toLegacyFieldValuesMap(document),
@@ -110,7 +110,7 @@ public class FieldValuesAssert {
 		String message, Document document, Map<?, ?> expected) {
 
 		AssertUtils.assertEquals(
-			message, _filterSortableFields(expected),
+			message, expected,
 			_filterSortableFields(_toFieldValuesMap(document)));
 	}
 
@@ -123,7 +123,7 @@ public class FieldValuesAssert {
 		Map<?, ?> expected) {
 
 		AssertUtils.assertEquals(
-			message, _filterSortableFields(expected),
+			message, expected,
 			_filterSortableFields(
 				_filterOnKey(_toFieldValuesMap(document), keysPredicate)));
 	}
@@ -171,21 +171,25 @@ public class FieldValuesAssert {
 		);
 	}
 
-	private static Map<?, ?> _filterSortableFields(Map<?, ?> map) {
-		return _filterOnKey(
-			map,
-			key -> {
-				if (!(key instanceof String)) {
-					return true;
-				}
+	private static Map<String, String> _filterSortableFields(
+		Map<String, String> map) {
 
-				String string = (String)key;
+		List<String> rawKeys = new ArrayList<>();
 
-				return !string.endsWith(
-					StringPool.UNDERLINE.concat(
-						com.liferay.portal.kernel.search.Field.
-							SORTABLE_FIELD_SUFFIX));
-			});
+		for (String key : map.keySet()) {
+			if (key.endsWith("_sortable.raw")) {
+				rawKeys.add(key);
+			}
+		}
+
+		for (String rawKey : rawKeys) {
+			String originalKey = rawKey.substring(
+				0, rawKey.length() - ".raw".length());
+
+			map.put(originalKey, map.remove(rawKey));
+		}
+
+		return map;
 	}
 
 	private static <E> List<E> _sort(List<E> list) {
