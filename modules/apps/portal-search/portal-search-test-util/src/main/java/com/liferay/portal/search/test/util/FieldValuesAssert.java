@@ -154,14 +154,14 @@ public class FieldValuesAssert {
 		}
 	}
 
-	private static <K, V> Map<K, V> _filterOnKey(
-		Map<K, V> map, Predicate<K> predicate) {
+	private static Map<String, String> _filterOnKey(
+		Map<String, String> map, Predicate<String> predicate) {
 
 		if (predicate == null) {
 			return map;
 		}
 
-		Stream<Map.Entry<K, V>> stream = SearchStreamUtil.stream(
+		Stream<Map.Entry<String, String>> stream = SearchStreamUtil.stream(
 			map.entrySet());
 
 		return stream.filter(
