@@ -15,9 +15,26 @@
 package com.liferay.portal.kernel.test.util;
 
 import com.liferay.counter.kernel.service.CounterLocalServiceUtil;
+import com.liferay.petra.sql.dsl.DSLQueryFactoryUtil;
+import com.liferay.petra.sql.dsl.query.DSLQuery;
+import com.liferay.portal.kernel.model.BaseModel;
+import com.liferay.portal.kernel.model.ClassName;
+import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.ResourcePermission;
+import com.liferay.portal.kernel.model.ResourcePermissionTable;
+import com.liferay.portal.kernel.model.ResourcedModel;
+import com.liferay.portal.kernel.model.ShardedModel;
+import com.liferay.portal.kernel.model.TypedModel;
+import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
+import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Alberto Chaparro
@@ -63,6 +80,124 @@ public class ResourcePermissionTestUtil {
 
 		return ResourcePermissionLocalServiceUtil.addResourcePermission(
 			resourcePermission);
+	}
+
+	public static void deleteResourcePermissions(PersistedModel persistedModel)
+		throws Exception {
+
+		if (persistedModel instanceof Company) {
+			Company company = (Company)persistedModel;
+
+			_deleteResourcePermissions(
+				company.getCompanyId(), ResourceConstants.SCOPE_COMPANY,
+				String.valueOf(company.getCompanyId()));
+
+			_deleteResourcePermissions(
+				company.getCompanyId(), ResourceConstants.SCOPE_INDIVIDUAL,
+				String.valueOf(company.getCompanyId()));
+
+			return;
+		}
+
+		if (persistedModel instanceof Group) {
+			Group group = (Group)persistedModel;
+
+			_deleteResourcePermissions(
+				group.getCompanyId(), ResourceConstants.SCOPE_GROUP,
+				String.valueOf(group.getGroupId()));
+
+			_deleteResourcePermissions(
+				group.getCompanyId(), ResourceConstants.SCOPE_INDIVIDUAL,
+				String.valueOf(group.getGroupId()));
+
+			return;
+		}
+
+		if (!(persistedModel instanceof BaseModel) ||
+			!(persistedModel instanceof ShardedModel)) {
+
+			return;
+		}
+
+		BaseModel<?> baseModel = (BaseModel)persistedModel;
+
+		ShardedModel shardedModel = (ShardedModel)baseModel;
+
+		ResourcePermissionLocalServiceUtil.deleteResourcePermissions(
+			shardedModel.getCompanyId(), baseModel.getModelClassName(),
+			ResourceConstants.SCOPE_INDIVIDUAL,
+			String.valueOf(baseModel.getPrimaryKeyObj()));
+
+		if (persistedModel instanceof TypedModel) {
+			TypedModel typedModel = (TypedModel)persistedModel;
+
+			ClassName typedModelClassName =
+				ClassNameLocalServiceUtil.fetchByClassNameId(
+					typedModel.getClassNameId());
+
+			if (typedModelClassName != null) {
+				Map<String, Object> modelAttributes =
+					baseModel.getModelAttributes();
+
+				if (modelAttributes.containsKey("resourceClassNameId")) {
+					ClassName resourceClassName =
+						ClassNameLocalServiceUtil.fetchByClassNameId(
+							(Long)modelAttributes.get("resourceClassNameId"));
+
+					if (resourceClassName != null) {
+						typedModelClassName = resourceClassName;
+					}
+				}
+
+				String compositeModelName =
+					ResourceActionsUtil.getCompositeModelName(
+						typedModelClassName.getValue(),
+						baseModel.getModelClassName());
+
+				ResourcePermissionLocalServiceUtil.deleteResourcePermissions(
+					shardedModel.getCompanyId(), compositeModelName,
+					ResourceConstants.SCOPE_INDIVIDUAL,
+					String.valueOf(baseModel.getPrimaryKeyObj()));
+			}
+		}
+
+		if (!(persistedModel instanceof ResourcedModel)) {
+			return;
+		}
+
+		ResourcedModel resourcedModel = (ResourcedModel)baseModel;
+
+		ResourcePermissionLocalServiceUtil.deleteResourcePermissions(
+			shardedModel.getCompanyId(), baseModel.getModelClassName(),
+			ResourceConstants.SCOPE_INDIVIDUAL,
+			String.valueOf(resourcedModel.getResourcePrimKey()));
+	}
+
+	private static void _deleteResourcePermissions(
+			long companyId, int scope, String primKey)
+		throws Exception {
+
+		DSLQuery dslQuery = DSLQueryFactoryUtil.select(
+			ResourcePermissionTable.INSTANCE.resourcePermissionId
+		).from(
+			ResourcePermissionTable.INSTANCE
+		).where(
+			ResourcePermissionTable.INSTANCE.companyId.eq(
+				companyId
+			).and(
+				ResourcePermissionTable.INSTANCE.scope.eq(scope)
+			).and(
+				ResourcePermissionTable.INSTANCE.primKey.eq(primKey)
+			)
+		);
+
+		for (long resourcePermissionId :
+				ResourcePermissionLocalServiceUtil.<List<Long>>dslQuery(
+					dslQuery)) {
+
+			ResourcePermissionLocalServiceUtil.deleteResourcePermission(
+				resourcePermissionId);
+		}
 	}
 
 }

@@ -21,29 +21,41 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.ClassLoaderBeanHandler;
 import com.liferay.portal.kernel.dao.orm.ORMException;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.SessionCustomizer;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.dao.orm.SessionWrapper;
+import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.BaseModel;
+import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.Portlet;
+import com.liferay.portal.kernel.model.ResourceConstants;
+import com.liferay.portal.kernel.model.ResourcePermission;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
+import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
+import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
+import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistryUtil;
 import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
+import com.liferay.portal.kernel.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
+import com.liferay.portal.kernel.test.util.ResourcePermissionTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.Closeable;
 import java.io.Serializable;
@@ -54,6 +66,7 @@ import java.lang.reflect.Method;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
@@ -94,6 +107,9 @@ public class DataGuardTestRuleUtil {
 		_autoDeleteAndAssert(
 			testClassName, dataBag._dataMap, dataBag._portlets,
 			dataBag._records, autoDelete);
+
+		_orphanResourcePermissionDetection(
+			testClassName, dataBag._dataMap, dataBag._records);
 	}
 
 	public static void afterMethod(DataBag dataBag, String testClassName)
@@ -109,6 +125,9 @@ public class DataGuardTestRuleUtil {
 		_autoDeleteAndAssert(
 			testClassName, dataBag._dataMap, dataBag._portlets,
 			dataBag._records, autoDelete);
+
+		_orphanResourcePermissionDetection(
+			testClassName, dataBag._dataMap, dataBag._records);
 	}
 
 	public static DataBag beforeClass() {
@@ -180,6 +199,10 @@ public class DataGuardTestRuleUtil {
 		for (Map.Entry<String, List<BaseModel<?>>> entry : dataMap.entrySet()) {
 			String className = entry.getKey();
 
+			if (className.equals(ResourcePermission.class.getName())) {
+				continue;
+			}
+
 			List<BaseModel<?>> currentBaseModels = entry.getValue();
 
 			List<BaseModel<?>> previsoutBaseModels = previousDataMap.remove(
@@ -246,6 +269,10 @@ public class DataGuardTestRuleUtil {
 					dataMap.entrySet()) {
 
 				String className = entry.getKey();
+
+				if (className.equals(ResourcePermission.class.getName())) {
+					continue;
+				}
 
 				PersistedModelLocalService persistedModelLocalService =
 					persistedModelLocalServices.get(className);
@@ -489,6 +516,139 @@ public class DataGuardTestRuleUtil {
 		};
 	}
 
+	private static boolean _isOrphanResourcePermission(
+			Map<String, PersistedModelLocalService> persistedModelLocalServices,
+			ResourcePermission resourcePermission)
+		throws PortalException {
+
+		if (resourcePermission.getPrimKeyId() == 0) {
+			return false;
+		}
+
+		if (resourcePermission.getScope() == ResourceConstants.SCOPE_COMPANY) {
+			Company company = CompanyLocalServiceUtil.fetchCompany(
+				resourcePermission.getPrimKeyId());
+
+			if (company == null) {
+				return true;
+			}
+
+			return false;
+		}
+
+		if (resourcePermission.getScope() == ResourceConstants.SCOPE_GROUP) {
+			Group group = GroupLocalServiceUtil.fetchGroup(
+				resourcePermission.getPrimKeyId());
+
+			if (group == null) {
+				return true;
+			}
+
+			return false;
+		}
+
+		String[] classNames = StringUtil.split(
+			resourcePermission.getName(),
+			ResourceActionsUtil.getCompositeModelNameSeparator());
+
+		for (String className : classNames) {
+			PersistedModelLocalService persistedModelLocalService =
+				persistedModelLocalServices.get(className);
+
+			if (persistedModelLocalService == null) {
+				return false;
+			}
+
+			try {
+				persistedModelLocalService.getPersistedModel(
+					resourcePermission.getPrimKeyId());
+
+				return false;
+			}
+			catch (NoSuchModelException noSuchModelException) {
+			}
+		}
+
+		return true;
+	}
+
+	private static void _orphanResourcePermissionDetection(
+			String testClassName,
+			Map<String, List<BaseModel<?>>> previousDataMap,
+			Map<String, Map<Serializable, String>> records)
+		throws Throwable {
+
+		List<ResourcePermission> resourcePermissions =
+			ResourcePermissionLocalServiceUtil.getResourcePermissions(
+				QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+
+		List<ResourcePermission> createdResourcePermissions = new ArrayList<>(
+			resourcePermissions);
+
+		List<BaseModel<?>> previousResourcePermissions = previousDataMap.remove(
+			ResourcePermission.class.getName());
+
+		if (previousResourcePermissions != null) {
+			createdResourcePermissions.removeAll(previousResourcePermissions);
+		}
+
+		Map<String, PersistedModelLocalService> persistedModelLocalServices =
+			_getPersistedModelLocalServices();
+
+		List<ResourcePermission> orphanResourcePermissions = new ArrayList<>();
+
+		for (ResourcePermission resourcePermission :
+				createdResourcePermissions) {
+
+			ResourcePermissionLocalServiceUtil.deleteResourcePermission(
+				resourcePermission);
+
+			if (_isOrphanResourcePermission(
+					persistedModelLocalServices, resourcePermission)) {
+
+				orphanResourcePermissions.add(resourcePermission);
+			}
+		}
+
+		if (orphanResourcePermissions.isEmpty()) {
+			return;
+		}
+
+		StringBundler sb = new StringBundler();
+
+		sb.append(testClassName);
+		sb.append(" caused orphan ResourcePermission with data : [\n");
+
+		Map<Serializable, String> resourcePermissionRecords =
+			records.getOrDefault(
+				ResourcePermission.class.getName(), Collections.emptyMap());
+
+		for (ResourcePermission resourcePermission :
+				orphanResourcePermissions) {
+
+			sb.append(StringPool.TAB);
+			sb.append(resourcePermission);
+
+			String backtraceInfo = resourcePermissionRecords.get(
+				resourcePermission.getPrimaryKeyObj());
+
+			if (backtraceInfo == null) {
+				sb.append(" with no backtrace info,\n");
+			}
+			else {
+				sb.append(" with backtrace info,\n");
+				sb.append(StringPool.TAB);
+				sb.append(StringPool.TAB);
+				sb.append(backtraceInfo);
+				sb.append(",\n");
+			}
+		}
+
+		sb.setStringAt("\n]\n", sb.index() - 1);
+
+		Assert.assertTrue(sb.toString(), sb.index() == 0);
+	}
+
 	private static Closeable _removeSessionFactoryVerifier(
 		BasePersistence<?> basePersistence) {
 
@@ -521,6 +681,8 @@ public class DataGuardTestRuleUtil {
 			PersistedModelLocalService persistedModelLocalService,
 			Class<?> modelClass, PersistedModel persistedModel)
 		throws Throwable {
+
+		ResourcePermissionTestUtil.deleteResourcePermissions(persistedModel);
 
 		Method deleteMethod = null;
 
@@ -636,20 +798,6 @@ public class DataGuardTestRuleUtil {
 	}
 
 	private static class RecordingSessionWrapper extends SessionWrapper {
-
-		@Override
-		public void delete(Object object) throws ORMException {
-			super.delete(object);
-
-			BaseModel<?> baseModel = (BaseModel<?>)object;
-
-			Map<Serializable, String> map = _records.get(
-				baseModel.getModelClassName());
-
-			if (map != null) {
-				map.remove(baseModel.getPrimaryKeyObj());
-			}
-		}
 
 		@Override
 		public Serializable save(Object object) throws ORMException {
