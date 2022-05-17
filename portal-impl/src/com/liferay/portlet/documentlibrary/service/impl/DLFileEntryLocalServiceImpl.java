@@ -712,9 +712,9 @@ public class DLFileEntryLocalServiceImpl
 
 		// Resources
 
-		_resourceLocalService.deleteResource(
+		/*_resourceLocalService.deleteResource(
 			dlFileEntry.getCompanyId(), DLFileEntry.class.getName(),
-			ResourceConstants.SCOPE_INDIVIDUAL, dlFileEntry.getFileEntryId());
+			ResourceConstants.SCOPE_INDIVIDUAL, dlFileEntry.getFileEntryId());*/
 
 		// WebDAVProps
 
