@@ -32,9 +32,6 @@ import org.osgi.annotation.versioning.ProviderType;
 @ProviderType
 public interface IndexerRegistryConfiguration {
 
-	@Meta.AD(deflt = "true", name = "buffered", required = false)
-	public boolean buffered();
-
 	@Meta.AD(
 		deflt = "DEFAULT", name = "buffered-execution-mode", required = false
 	)

@@ -323,9 +323,7 @@ public class IndexerRegistryImpl implements IndexerRegistry {
 
 		IndexerRequestBuffer indexerRequestBuffer = IndexerRequestBuffer.get();
 
-		if ((indexerRequestBuffer == null) ||
-			!_indexerRegistryConfiguration.buffered()) {
-
+		if (indexerRequestBuffer == null) {
 			return indexer;
 		}
 
