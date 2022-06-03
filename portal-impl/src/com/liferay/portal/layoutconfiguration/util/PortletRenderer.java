@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.portlet.PortletContainerException;
 import com.liferay.portal.kernel.portlet.PortletContainerUtil;
 import com.liferay.portal.kernel.servlet.BufferCacheServletResponse;
+import com.liferay.portal.kernel.util.WebKeys;
 
 import java.io.IOException;
 
@@ -145,6 +146,11 @@ public class PortletRenderer {
 		BufferCacheServletResponse bufferCacheServletResponse =
 			new BufferCacheServletResponse(httpServletResponse);
 
+		if (_columnId == null) {
+			httpServletRequest.setAttribute(
+				WebKeys.RENDER_PORTLET_RESOURCE, Boolean.TRUE);
+		}
+
 		try {
 			PortletContainerUtil.render(
 				httpServletRequest, bufferCacheServletResponse, _portlet);
@@ -153,6 +159,9 @@ public class PortletRenderer {
 		}
 		catch (IOException ioException) {
 			throw new PortletContainerException(ioException);
+		}
+		finally {
+			httpServletRequest.removeAttribute(WebKeys.RENDER_PORTLET_RESOURCE);
 		}
 	}
 
