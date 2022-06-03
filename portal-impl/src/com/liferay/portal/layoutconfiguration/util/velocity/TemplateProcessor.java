@@ -267,33 +267,16 @@ public class TemplateProcessor implements ColumnProcessor {
 			}
 		}
 
-		_httpServletRequest.setAttribute(
-			WebKeys.RENDER_PORTLET_RESOURCE, Boolean.TRUE);
-
-		BufferCacheServletResponse bufferCacheServletResponse =
-			new BufferCacheServletResponse(_httpServletResponse);
-
 		Map<String, Object> paths = PortletPathsUtil.getPortletPaths(
 			_httpServletRequest, StringPool.BLANK, portlet);
 
-		try {
-			PortletPathsUtil.writeHeaderPaths(_httpServletResponse, paths);
+		PortletPathsUtil.writeHeaderPaths(_httpServletResponse, paths);
 
-			HttpServletRequest httpServletRequest =
-				PortletContainerUtil.setupOptionalRenderParameters(
-					_httpServletRequest, null, null, null, null);
+		PortletPathsUtil.writeFooterPaths(_httpServletResponse, paths);
 
-			PortletContainerUtil.render(
-				httpServletRequest, bufferCacheServletResponse, portlet);
+		StringBundler sb = _renderPortlet(portlet, null, null, null);
 
-			PortletPathsUtil.writeFooterPaths(_httpServletResponse, paths);
-
-			return bufferCacheServletResponse.getString();
-		}
-		finally {
-			_httpServletRequest.removeAttribute(
-				WebKeys.RENDER_PORTLET_RESOURCE);
-		}
+		return sb.toString();
 	}
 
 	@Override
