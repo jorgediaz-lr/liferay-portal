@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutTypePortlet;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.portlet.PortletContainerUtil;
-import com.liferay.portal.kernel.portlet.PortletPathsUtil;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletProvider;
 import com.liferay.portal.kernel.portlet.PortletProviderUtil;
@@ -266,13 +265,6 @@ public class TemplateProcessor implements ColumnProcessor {
 				modifiableSettings.store();
 			}
 		}
-
-		Map<String, Object> paths = PortletPathsUtil.getPortletPaths(
-			_httpServletRequest, StringPool.BLANK, portlet);
-
-		PortletPathsUtil.writeHeaderPaths(_httpServletResponse, paths);
-
-		PortletPathsUtil.writeFooterPaths(_httpServletResponse, paths);
 
 		StringBundler sb = _renderPortlet(portlet, null, null, null);
 
