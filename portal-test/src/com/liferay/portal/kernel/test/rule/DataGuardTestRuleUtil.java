@@ -28,12 +28,17 @@ import com.liferay.portal.kernel.dao.orm.SessionWrapper;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.BaseModel;
+import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.Portlet;
+import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.ResourcePermission;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
+import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
+import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistryUtil;
 import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
@@ -278,11 +283,7 @@ public class DataGuardTestRuleUtil {
 						ResourcePermission resourcePermission =
 							(ResourcePermission)leftoverBaseModel;
 
-						String resourceName = resourcePermission.getName();
-
-						if ((resourcePermission.getPrimKeyId() == 0) ||
-							resourceName.equals("90")) {
-
+						if (!_isOrphanResourcePermission(resourcePermission)) {
 							ResourcePermissionLocalServiceUtil.
 								deleteResourcePermission(resourcePermission);
 						}
@@ -506,6 +507,43 @@ public class DataGuardTestRuleUtil {
 
 			bundleContext.ungetService(serviceReference);
 		};
+	}
+
+	private static boolean _isOrphanResourcePermission(
+			ResourcePermission resourcePermission)
+		throws PortalException {
+
+		String resourceName = resourcePermission.getName();
+
+		if ((resourcePermission.getPrimKeyId() == 0) ||
+			resourceName.equals("90")) {
+
+			return false;
+		}
+
+		if (resourcePermission.getScope() == ResourceConstants.SCOPE_COMPANY) {
+			Company company = CompanyLocalServiceUtil.fetchCompany(
+				resourcePermission.getPrimKeyId());
+
+			if (company == null) {
+				return true;
+			}
+
+			return false;
+		}
+
+		if (resourcePermission.getScope() == ResourceConstants.SCOPE_GROUP) {
+			Group group = GroupLocalServiceUtil.fetchGroup(
+				resourcePermission.getPrimKeyId());
+
+			if (group == null) {
+				return true;
+			}
+
+			return false;
+		}
+
+		return true;
 	}
 
 	private static Closeable _removeSessionFactoryVerifier(
