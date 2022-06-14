@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistryUtil;
 import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
+import com.liferay.portal.kernel.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
@@ -249,10 +250,6 @@ public class DataGuardTestRuleUtil {
 
 				String className = entry.getKey();
 
-				if (className.equals(ResourcePermission.class.getName())) {
-					continue;
-				}
-
 				PersistedModelLocalService persistedModelLocalService =
 					persistedModelLocalServices.get(className);
 
@@ -277,6 +274,18 @@ public class DataGuardTestRuleUtil {
 				}
 
 				for (BaseModel<?> leftoverBaseModel : leftoverBaseModels) {
+					if (className.equals(ResourcePermission.class.getName())) {
+						ResourcePermission resourcePermission =
+							(ResourcePermission)leftoverBaseModel;
+
+						if (resourcePermission.getPrimKeyId() == 0) {
+							ResourcePermissionLocalServiceUtil.
+								deleteResourcePermission(resourcePermission);
+						}
+
+						continue;
+					}
+
 					_smartDelete(
 						persistedModelLocalService, modelClass,
 						(PersistedModel)leftoverBaseModel);
