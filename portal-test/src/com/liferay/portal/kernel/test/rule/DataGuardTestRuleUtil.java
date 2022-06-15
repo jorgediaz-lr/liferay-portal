@@ -21,6 +21,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.ClassLoaderBeanHandler;
 import com.liferay.portal.kernel.dao.orm.ORMException;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.SessionCustomizer;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
@@ -186,9 +187,6 @@ public class DataGuardTestRuleUtil {
 
 		Map<String, List<BaseModel<?>>> dataMap = _captureDataMap();
 
-		Map<String, PersistedModelLocalService> persistedModelLocalServices =
-			_getPersistedModelLocalServices();
-
 		for (Map.Entry<String, List<BaseModel<?>>> entry : dataMap.entrySet()) {
 			String className = entry.getKey();
 
@@ -202,28 +200,6 @@ public class DataGuardTestRuleUtil {
 
 			if (previsoutBaseModels != null) {
 				leftoverBaseModels.removeAll(previsoutBaseModels);
-			}
-
-			if (className.equals(ResourcePermission.class.getName())) {
-				List<BaseModel<?>> orphanResourcePermissions =
-					new ArrayList<>();
-
-				for (BaseModel<?> leftoverBaseModel : leftoverBaseModels) {
-					ResourcePermission resourcePermission =
-						(ResourcePermission)leftoverBaseModel;
-
-					if (_isOrphanResourcePermission(
-							persistedModelLocalServices, resourcePermission)) {
-
-						orphanResourcePermissions.add(resourcePermission);
-					}
-					else {
-						ResourcePermissionLocalServiceUtil.
-							deleteResourcePermission(resourcePermission);
-					}
-				}
-
-				leftoverBaseModels = orphanResourcePermissions;
 			}
 
 			if (!leftoverBaseModels.isEmpty()) {
@@ -319,6 +295,31 @@ public class DataGuardTestRuleUtil {
 
 			if (!deleted) {
 				break;
+			}
+		}
+
+		List<ResourcePermission> resourcePermissions =
+			ResourcePermissionLocalServiceUtil.getResourcePermissions(
+				QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+
+		List<ResourcePermission> createdResourcePermissions = new ArrayList<>(
+			resourcePermissions);
+
+		List<BaseModel<?>> previousResourcePermissions = previousDataMap.get(
+			ResourcePermission.class.getName());
+
+		if (previousResourcePermissions != null) {
+			createdResourcePermissions.removeAll(previousResourcePermissions);
+		}
+
+		for (ResourcePermission resourcePermission :
+				createdResourcePermissions) {
+
+			if (!_isOrphanResourcePermission(
+					persistedModelLocalServices, resourcePermission)) {
+
+				ResourcePermissionLocalServiceUtil.deleteResourcePermission(
+					resourcePermission);
 			}
 		}
 	}
