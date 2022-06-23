@@ -21,24 +21,34 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.ClassLoaderBeanHandler;
 import com.liferay.portal.kernel.dao.orm.ORMException;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.SessionCustomizer;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.dao.orm.SessionWrapper;
+import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.BaseModel;
+import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.Portlet;
+import com.liferay.portal.kernel.model.ResourceConstants;
+import com.liferay.portal.kernel.model.ResourcePermission;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
+import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
+import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistryUtil;
 import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
+import com.liferay.portal.kernel.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
+import com.liferay.portal.kernel.test.util.ResourcePermissionTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
@@ -247,6 +257,10 @@ public class DataGuardTestRuleUtil {
 
 				String className = entry.getKey();
 
+				if (className.equals(ResourcePermission.class.getName())) {
+					continue;
+				}
+
 				PersistedModelLocalService persistedModelLocalService =
 					persistedModelLocalServices.get(className);
 
@@ -281,6 +295,31 @@ public class DataGuardTestRuleUtil {
 
 			if (!deleted) {
 				break;
+			}
+		}
+
+		List<ResourcePermission> resourcePermissions =
+			ResourcePermissionLocalServiceUtil.getResourcePermissions(
+				QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+
+		List<ResourcePermission> createdResourcePermissions = new ArrayList<>(
+			resourcePermissions);
+
+		List<BaseModel<?>> previousResourcePermissions = previousDataMap.get(
+			ResourcePermission.class.getName());
+
+		if (previousResourcePermissions != null) {
+			createdResourcePermissions.removeAll(previousResourcePermissions);
+		}
+
+		for (ResourcePermission resourcePermission :
+				createdResourcePermissions) {
+
+			if (!_isOrphanResourcePermission(
+					persistedModelLocalServices, resourcePermission)) {
+
+				ResourcePermissionLocalServiceUtil.deleteResourcePermission(
+					resourcePermission);
 			}
 		}
 	}
@@ -489,6 +528,56 @@ public class DataGuardTestRuleUtil {
 		};
 	}
 
+	private static boolean _isOrphanResourcePermission(
+			Map<String, PersistedModelLocalService> persistedModelLocalServices,
+			ResourcePermission resourcePermission)
+		throws PortalException {
+
+		if (resourcePermission.getPrimKeyId() == 0) {
+			return false;
+		}
+
+		if (resourcePermission.getScope() == ResourceConstants.SCOPE_COMPANY) {
+			Company company = CompanyLocalServiceUtil.fetchCompany(
+				resourcePermission.getPrimKeyId());
+
+			if (company == null) {
+				return true;
+			}
+
+			return false;
+		}
+
+		if (resourcePermission.getScope() == ResourceConstants.SCOPE_GROUP) {
+			Group group = GroupLocalServiceUtil.fetchGroup(
+				resourcePermission.getPrimKeyId());
+
+			if (group == null) {
+				return true;
+			}
+
+			return false;
+		}
+
+		PersistedModelLocalService persistedModelLocalService =
+			persistedModelLocalServices.get(resourcePermission.getName());
+
+		if (persistedModelLocalService == null) {
+			return false;
+		}
+
+		try {
+			persistedModelLocalService.getPersistedModel(
+				resourcePermission.getPrimKeyId());
+
+			return false;
+		}
+		catch (NoSuchModelException noSuchModelException) {
+		}
+
+		return true;
+	}
+
 	private static Closeable _removeSessionFactoryVerifier(
 		BasePersistence<?> basePersistence) {
 
@@ -521,6 +610,8 @@ public class DataGuardTestRuleUtil {
 			PersistedModelLocalService persistedModelLocalService,
 			Class<?> modelClass, PersistedModel persistedModel)
 		throws Throwable {
+
+		ResourcePermissionTestUtil.deleteResourcePermissions(persistedModel);
 
 		Method deleteMethod = null;
 
@@ -636,20 +727,6 @@ public class DataGuardTestRuleUtil {
 	}
 
 	private static class RecordingSessionWrapper extends SessionWrapper {
-
-		@Override
-		public void delete(Object object) throws ORMException {
-			super.delete(object);
-
-			BaseModel<?> baseModel = (BaseModel<?>)object;
-
-			Map<Serializable, String> map = _records.get(
-				baseModel.getModelClassName());
-
-			if (map != null) {
-				map.remove(baseModel.getPrimaryKeyObj());
-			}
-		}
 
 		@Override
 		public Serializable save(Object object) throws ORMException {
