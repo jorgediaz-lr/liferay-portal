@@ -118,8 +118,21 @@ public class ResourcePermissionTestUtil {
 
 		ShardedModel shardedModel = (ShardedModel)baseModel;
 
+		String resourceName = baseModel.getModelClassName();
+
+		if (resourceName.equals(_DDM_STRUCTURE) ||
+			resourceName.equals(_DDM_TEMPLATE) ||
+			resourceName.equals(_DDL_RECORD_SET)) {
+
+			_deleteResourcePermissions(
+				shardedModel.getCompanyId(), ResourceConstants.SCOPE_INDIVIDUAL,
+				String.valueOf(baseModel.getPrimaryKeyObj()));
+
+			return;
+		}
+
 		ResourcePermissionLocalServiceUtil.deleteResourcePermissions(
-			shardedModel.getCompanyId(), baseModel.getModelClassName(),
+			shardedModel.getCompanyId(), resourceName,
 			ResourceConstants.SCOPE_INDIVIDUAL,
 			String.valueOf(baseModel.getPrimaryKeyObj()));
 
@@ -130,7 +143,7 @@ public class ResourcePermissionTestUtil {
 		ResourcedModel resourcedModel = (ResourcedModel)baseModel;
 
 		ResourcePermissionLocalServiceUtil.deleteResourcePermissions(
-			shardedModel.getCompanyId(), baseModel.getModelClassName(),
+			shardedModel.getCompanyId(), resourceName,
 			ResourceConstants.SCOPE_INDIVIDUAL,
 			String.valueOf(resourcedModel.getResourcePrimKey()));
 	}
@@ -161,5 +174,14 @@ public class ResourcePermissionTestUtil {
 				resourcePermissionId);
 		}
 	}
+
+	private static final String _DDL_RECORD_SET =
+		"com.liferay.dynamic.data.lists.model.DDLRecordSet";
+
+	private static final String _DDM_STRUCTURE =
+		"com.liferay.dynamic.data.mapping.model.DDMStructure";
+
+	private static final String _DDM_TEMPLATE =
+		"com.liferay.dynamic.data.mapping.model.DDMTemplate";
 
 }
