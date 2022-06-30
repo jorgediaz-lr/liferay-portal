@@ -120,6 +120,17 @@ public class ResourcePermissionTestUtil {
 
 		String resourceName = baseModel.getModelClassName();
 
+		if (resourceName.equals(_DDM_STRUCTURE) ||
+			resourceName.equals(_DDM_TEMPLATE) ||
+			resourceName.equals(_DDL_RECORD_SET)) {
+
+			_deleteResourcePermissions(
+				shardedModel.getCompanyId(), ResourceConstants.SCOPE_INDIVIDUAL,
+				String.valueOf(baseModel.getPrimaryKeyObj()));
+
+			return;
+		}
+
 		ResourcePermissionLocalServiceUtil.deleteResourcePermissions(
 			shardedModel.getCompanyId(), resourceName,
 			ResourceConstants.SCOPE_INDIVIDUAL,
@@ -188,5 +199,14 @@ public class ResourcePermissionTestUtil {
 
 	private static final String _COMMERCE_ACCOUNT_GROUP =
 		"com.liferay.commerce.account.model.CommerceAccountGroup";
+
+	private static final String _DDL_RECORD_SET =
+		"com.liferay.dynamic.data.lists.model.DDLRecordSet";
+
+	private static final String _DDM_STRUCTURE =
+		"com.liferay.dynamic.data.mapping.model.DDMStructure";
+
+	private static final String _DDM_TEMPLATE =
+		"com.liferay.dynamic.data.mapping.model.DDMTemplate";
 
 }
