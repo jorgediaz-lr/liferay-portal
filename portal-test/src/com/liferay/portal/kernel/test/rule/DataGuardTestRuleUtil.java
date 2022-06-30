@@ -278,7 +278,11 @@ public class DataGuardTestRuleUtil {
 						ResourcePermission resourcePermission =
 							(ResourcePermission)leftoverBaseModel;
 
-						if (resourcePermission.getPrimKeyId() == 0) {
+						String resourceName = resourcePermission.getName();
+
+						if ((resourcePermission.getPrimKeyId() == 0) ||
+							resourceName.equals("90")) {
+
 							ResourcePermissionLocalServiceUtil.
 								deleteResourcePermission(resourcePermission);
 						}
