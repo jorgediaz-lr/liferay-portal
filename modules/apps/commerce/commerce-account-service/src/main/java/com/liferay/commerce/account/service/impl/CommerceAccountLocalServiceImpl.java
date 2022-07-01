@@ -284,8 +284,7 @@ public class CommerceAccountLocalServiceImpl
 	public CommerceAccount deleteCommerceAccount(long commerceAccountId)
 		throws PortalException {
 
-		return CommerceAccountImpl.fromAccountEntry(
-			_accountEntryLocalService.deleteAccountEntry(commerceAccountId));
+		return deleteCommerceAccount(fetchCommerceAccount(commerceAccountId));
 	}
 
 	@Override

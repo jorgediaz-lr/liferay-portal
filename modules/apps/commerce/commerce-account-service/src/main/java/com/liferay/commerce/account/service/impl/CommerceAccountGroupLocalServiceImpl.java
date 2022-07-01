@@ -177,9 +177,8 @@ public class CommerceAccountGroupLocalServiceImpl
 			long commerceAccountGroupId)
 		throws PortalException {
 
-		return CommerceAccountGroupImpl.fromAccountGroup(
-			_accountGroupLocalService.deleteAccountGroup(
-				commerceAccountGroupId));
+		return deleteCommerceAccountGroup(
+			fetchCommerceAccountGroup(commerceAccountGroupId));
 	}
 
 	@Override
