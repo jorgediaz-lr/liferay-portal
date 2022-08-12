@@ -30,6 +30,8 @@ import com.liferay.portal.security.audit.event.generators.util.AuditMessageBuild
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
+import com.liferay.portal.kernel.service.GroupLocalService;
+
 /**
  * @author Mika Koivisto
  * @author Brian Wing Shun Chan
@@ -68,13 +70,15 @@ public class UserGroupRoleModelListener
 
 			additionalInfoJSONObject.put("roleName", role.getName());
 
-			Group group = userGroupRole.getGroup();
+			Group group = _groupLocalService.fetchGroup(userGroupRole.getGroupId());
 
-			additionalInfoJSONObject.put(
-				"scopeClassName", group.getClassName()
-			).put(
-				"scopeClassPK", group.getClassPK()
-			);
+			if (group != null) {
+				additionalInfoJSONObject.put(
+					"scopeClassName", group.getClassName()
+				).put(
+					"scopeClassPK", group.getClassPK()
+				);
+			}
 
 			_auditRouter.route(auditMessage);
 		}
@@ -85,5 +89,8 @@ public class UserGroupRoleModelListener
 
 	@Reference
 	private AuditRouter _auditRouter;
+
+	@Reference
+	private GroupLocalService _groupLocalService;
 
 }
