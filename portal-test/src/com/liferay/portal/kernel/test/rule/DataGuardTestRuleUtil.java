@@ -579,8 +579,6 @@ public class DataGuardTestRuleUtil {
 			Class<?> modelClass, PersistedModel persistedModel)
 		throws Throwable {
 
-		ResourcePermissionTestUtil.deleteResourcePermissions(persistedModel);
-
 		Method deleteMethod = null;
 
 		Class<?> clazz = persistedModelLocalService.getClass();
@@ -608,6 +606,9 @@ public class DataGuardTestRuleUtil {
 
 		try {
 			if (deleteMethod == null) {
+				ResourcePermissionTestUtil.deleteResourcePermissions(
+					persistedModel);
+
 				persistedModelLocalService.deletePersistedModel(persistedModel);
 			}
 			else {
@@ -615,6 +616,9 @@ public class DataGuardTestRuleUtil {
 			}
 		}
 		catch (Throwable throwable1) {
+			ResourcePermissionTestUtil.deleteResourcePermissions(
+				persistedModel);
+
 			BasePersistence<?> basePersistence = _getBasePersistence(
 				persistedModelLocalService);
 
