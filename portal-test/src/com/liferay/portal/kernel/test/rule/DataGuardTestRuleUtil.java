@@ -42,6 +42,7 @@ import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
+import com.liferay.portal.kernel.util.GroupThreadLocal;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
@@ -170,7 +171,16 @@ public class DataGuardTestRuleUtil {
 		}
 
 		if (autoDelete) {
-			_autoDeleteLeftovers(previousDataMap);
+			boolean groupDeleteInProcess = GroupThreadLocal.isDeleteInProcess();
+
+			try {
+				GroupThreadLocal.setDeleteInProcess(true);
+
+				_autoDeleteLeftovers(previousDataMap);
+			}
+			finally {
+				GroupThreadLocal.setDeleteInProcess(groupDeleteInProcess);
+			}
 		}
 
 		StringBundler sb = new StringBundler();
