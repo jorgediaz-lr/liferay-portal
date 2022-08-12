@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserGroupRole;
+import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.security.audit.event.generators.constants.EventTypes;
 import com.liferay.portal.security.audit.event.generators.util.AuditMessageBuilder;
 
@@ -68,13 +69,16 @@ public class UserGroupRoleModelListener
 
 			additionalInfoJSONObject.put("roleName", role.getName());
 
-			Group group = userGroupRole.getGroup();
+			Group group = _groupLocalService.fetchGroup(
+				userGroupRole.getGroupId());
 
-			additionalInfoJSONObject.put(
-				"scopeClassName", group.getClassName()
-			).put(
-				"scopeClassPK", group.getClassPK()
-			);
+			if (group != null) {
+				additionalInfoJSONObject.put(
+					"scopeClassName", group.getClassName()
+				).put(
+					"scopeClassPK", group.getClassPK()
+				);
+			}
 
 			_auditRouter.route(auditMessage);
 		}
@@ -85,5 +89,8 @@ public class UserGroupRoleModelListener
 
 	@Reference
 	private AuditRouter _auditRouter;
+
+	@Reference
+	private GroupLocalService _groupLocalService;
 
 }
